@@ -8,8 +8,9 @@ import hashlib
 import json
 from collections.abc import Sequence
 from logging import getLogger
+from math import ceil
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
@@ -20,6 +21,15 @@ from .transcribed_segment import TranscribedSegment
 __all__ = ["WhisperTranscriber"]
 
 _LOCAL_MODEL_PATH_PREFIXES = {"checkpoint", "checkpoints", "model", "models"}
+_MAX_SAMPLE_LEN = 224
+"""Maximum token budget supported by the configured Whisper models."""
+
+_MAX_TOKENS_PER_SECOND = 16
+"""Generous decode budget per second of source audio."""
+
+_MIN_SAMPLE_LEN = 32
+"""Minimum token budget for very short source audio."""
+
 _TRANSCRIPTION_EXTRA_MESSAGE = (
     "Whisper transcription support requires optional transcription dependencies. "
     "Install scinoephile with the 'transcription' extra."
@@ -34,6 +44,9 @@ logger = getLogger(__name__)
 class WhisperTranscriber:
     """Transcribes audio using Whisper."""
 
+    _models: ClassVar[dict[tuple[str, str], Any]] = {}
+    """Loaded models shared by model name and device within the current process."""
+
     def __init__(
         self,
         model_name: str = "khleeloo/whisper-large-v3-cantonese",
@@ -41,6 +54,8 @@ class WhisperTranscriber:
         cache_dir_path: Path | None = None,
         use_demucs: bool = False,
         use_vad: bool = True,
+        temperature: float | Sequence[float] = 0.0,
+        condition_on_previous_text: bool = True,
     ):
         """Initialize.
 
@@ -50,28 +65,42 @@ class WhisperTranscriber:
             cache_dir_path: directory in which to cache
             use_demucs: whether Demucs preprocessing was applied
             use_vad: whether to enable Whisper VAD
+            temperature: decoding temperature or fallback schedule
+            condition_on_previous_text: whether to condition each decoding window on
+                the preceding window
         """
         self.model_name = model_name
         self._model: Any | None = None
         self.language = language
         self.use_demucs = use_demucs
         self.use_vad = use_vad
+        self.temperature = temperature
+        self.condition_on_previous_text = condition_on_previous_text
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
     def __call__(
-        self, audio: AudioSegment, *, cache_audio: AudioSegment | None = None
+        self,
+        audio: AudioSegment,
+        *,
+        cache_audio: AudioSegment | None = None,
+        use_cache: bool = True,
     ) -> list[TranscribedSegment]:
         """Transcribe audio.
 
         Arguments:
             audio: audio to transcribe
             cache_audio: optional audio used for cache-key generation
+            use_cache: whether to return a cached transcription when available
         Returns:
             transcription, split into segments
         """
-        return self.transcribe(audio, cache_audio=cache_audio)
+        return self.transcribe(
+            audio,
+            cache_audio=cache_audio,
+            use_cache=use_cache,
+        )
 
     @property
     def model(self) -> Any:
@@ -81,11 +110,15 @@ class WhisperTranscriber:
             loaded Whisper model
         """
         if self._model is None:
+            device = get_torch_device()
+            model_key = (self.model_name, device)
+            if model_key in self._models:
+                self._model = self._models[model_key]
+                return self._model
+
             whisper = self._get_whisper_module()
             try:
-                self._model = whisper.load_model(
-                    self.model_name, device=get_torch_device()
-                )
+                self._model = whisper.load_model(self.model_name, device=device)
             except FileNotFoundError:
                 if not self._model_name_is_huggingface_repo_id():
                     raise
@@ -95,9 +128,8 @@ class WhisperTranscriber:
                 )
                 snapshot_download = self._get_snapshot_download()
                 snapshot_download(repo_id=self.model_name)
-                self._model = whisper.load_model(
-                    self.model_name, device=get_torch_device()
-                )
+                self._model = whisper.load_model(self.model_name, device=device)
+            self._models[model_key] = self._model
         return self._model
 
     def get_cached_transcription(
@@ -126,18 +158,26 @@ class WhisperTranscriber:
         return segments
 
     def transcribe(
-        self, audio: AudioSegment, *, cache_audio: AudioSegment | None = None
+        self,
+        audio: AudioSegment,
+        *,
+        cache_audio: AudioSegment | None = None,
+        use_cache: bool = True,
     ) -> list[TranscribedSegment]:
         """Transcribe audio.
 
         Arguments:
             audio: audio to transcribe
             cache_audio: optional audio used for cache-key generation
+            use_cache: whether to return a cached transcription when available
         Returns:
             transcription, split into segments
         """
         cache_audio = cache_audio or audio
-        if (segments := self.get_cached_transcription(cache_audio)) is not None:
+        if (
+            use_cache
+            and (segments := self.get_cached_transcription(cache_audio)) is not None
+        ):
             return segments
 
         # Transcribe using Whisper
@@ -145,11 +185,19 @@ class WhisperTranscriber:
         whisper = self._get_whisper_module()
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
+            sample_len = self._get_sample_len(audio)
+            logger.info(
+                f"Limiting Whisper decoding to {sample_len} tokens for "
+                f"{len(audio) / 1000:.2f}s of audio"
+            )
             result = whisper.transcribe(
                 self.model,
                 str(temp_audio_path),
                 language=self.language,
                 vad=self.use_vad,
+                temperature=self.temperature,
+                condition_on_previous_text=self.condition_on_previous_text,
+                sample_len=sample_len,
             )
         segments = [TranscribedSegment(**s) for s in result["segments"]]
         segments = self._normalize_transcription_segments(
@@ -167,6 +215,25 @@ class WhisperTranscriber:
                 logger.info(f"Saved transcription to cache: {cache_path}")
 
         return segments
+
+    @staticmethod
+    def _get_sample_len(audio: AudioSegment) -> int:
+        """Get a bounded token budget for one Whisper decode.
+
+        The timestamped Whisper implementation retains decoder attention maps for
+        word alignment. Repetitive decoding can otherwise run to the model-wide
+        token limit even for a very short clip, consuming excessive time and memory.
+
+        Arguments:
+            audio: audio to be transcribed
+        Returns:
+            maximum number of tokens Whisper may decode
+        """
+        duration_seconds = len(audio) / 1000
+        return min(
+            _MAX_SAMPLE_LEN,
+            max(_MIN_SAMPLE_LEN, ceil(duration_seconds * _MAX_TOKENS_PER_SECOND)),
+        )
 
     def _model_name_is_huggingface_repo_id(self) -> bool:
         """Determine whether model name looks like a HuggingFace repo ID.
@@ -311,7 +378,7 @@ class WhisperTranscriber:
     def _get_huggingface_repo_validation() -> tuple[type[Exception], Any]:
         """Import HuggingFace repo validation helpers on demand."""
         try:
-            from huggingface_hub.utils import (  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
+            from huggingface_hub.utils import (  # noqa: E501, PLC0415
                 HFValidationError,
                 validate_repo_id,
             )
@@ -323,7 +390,7 @@ class WhisperTranscriber:
     def _get_snapshot_download() -> Any:
         """Import HuggingFace snapshot downloader on demand."""
         try:
-            from huggingface_hub import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+            from huggingface_hub import (  # noqa: PLC0415
                 snapshot_download,
             )
         except ImportError as exc:
@@ -334,7 +401,7 @@ class WhisperTranscriber:
     def _get_whisper_module() -> Any:
         """Import whisper-timestamped on demand."""
         try:
-            import whisper_timestamped as whisper  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
+            import whisper_timestamped as whisper  # noqa: E501, PLC0415
         except ImportError as exc:
             raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
         return whisper
@@ -356,5 +423,17 @@ class WhisperTranscriber:
             f"demucs-{'on' if self.use_demucs else 'off'}_"
             f"vad-{'on' if self.use_vad else 'off'}"
         )
+        if self.temperature != 0.0 or not self.condition_on_previous_text:
+            if isinstance(self.temperature, Sequence):
+                temperature_key = ",".join(
+                    f"{temperature:g}" for temperature in self.temperature
+                )
+            else:
+                temperature_key = f"{self.temperature:g}"
+            cache_key += (
+                f"_temperature-{temperature_key}_"
+                "condition-on-previous-text-"
+                f"{'on' if self.condition_on_previous_text else 'off'}"
+            )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"

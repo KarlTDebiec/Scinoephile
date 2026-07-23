@@ -7,13 +7,13 @@ from __future__ import annotations
 from collections.abc import Generator
 from pathlib import Path
 
-import pytest
+from pytest import fixture
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.dictionaries.unihan.parser import UnihanDictionaryParser
 
 
-@pytest.fixture
+@fixture
 def source_dir_path() -> Generator[Path]:
     """Provide a temporary directory for Unihan source fixtures."""
     with get_temp_directory_path() as dir_path:

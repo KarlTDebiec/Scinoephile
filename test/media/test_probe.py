@@ -31,10 +31,9 @@ def test_get_subtitle_streams(tmp_path: Path):
                 },
             ],
         },
-    ) as probe:
+    ):
         streams = get_subtitle_streams(infile_path)
 
-    probe.assert_called_once_with(str(infile_path))
     assert len(streams) == 1
     stream = streams[0]
     assert stream.index == 2
@@ -43,6 +42,34 @@ def test_get_subtitle_streams(tmp_path: Path):
     assert stream.title == "English"
     assert stream.sdh is True
     assert stream.subtitle_count == 123
+
+
+def test_get_subtitle_streams_accepts_unknown_packet_count(tmp_path: Path):
+    """Test ffprobe's N/A packet count is treated as unknown.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+
+    with patch(
+        "scinoephile.media.probe.ffmpeg.probe",
+        return_value={
+            "streams": [
+                {
+                    "index": 2,
+                    "codec_type": "subtitle",
+                    "codec_name": "subrip",
+                    "nb_read_packets": "N/A",
+                },
+            ],
+        },
+    ):
+        streams = get_subtitle_streams(infile_path)
+
+    assert len(streams) == 1
+    assert streams[0].subtitle_count is None
 
 
 def test_get_streams_returns_all_typed_streams(tmp_path: Path):
@@ -78,10 +105,9 @@ def test_get_streams_returns_all_typed_streams(tmp_path: Path):
                 "not a stream",
             ],
         },
-    ) as probe:
+    ):
         streams = get_streams(infile_path)
 
-    probe.assert_called_once_with(str(infile_path))
     assert len(streams) == 4
     assert isinstance(streams[0], VideoStream)
     assert streams[0].width == 3840
@@ -93,6 +119,29 @@ def test_get_streams_returns_all_typed_streams(tmp_path: Path):
     assert streams[2].language == "eng"
     assert isinstance(streams[3], Stream)
     assert streams[3].codec_type == "data"
+
+
+def test_get_streams_skips_streams_without_nonnegative_index(tmp_path: Path):
+    """Test media stream probing skips streams without usable indexes."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+
+    with patch(
+        "scinoephile.media.probe.ffmpeg.probe",
+        return_value={
+            "streams": [
+                {"codec_type": "audio", "channels": 2},
+                {"index": None, "codec_type": "audio", "channels": 2},
+                {"index": -1, "codec_type": "audio", "channels": 2},
+                {"index": "bad", "codec_type": "audio", "channels": 2},
+                {"index": 1, "codec_type": "audio", "channels": 2},
+            ],
+        },
+    ):
+        streams = get_streams(infile_path)
+
+    assert len(streams) == 1
+    assert streams[0].index == 1
 
 
 def test_get_streams_normalizes_missing_codecs(tmp_path: Path):

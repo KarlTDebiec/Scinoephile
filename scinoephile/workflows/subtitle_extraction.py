@@ -11,6 +11,7 @@ from pathlib import Path
 from shutil import copy2
 
 from scinoephile.common.described_enum import DescribedEnum
+from scinoephile.common.validation import val_child_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries
@@ -83,18 +84,18 @@ def extract_subtitles(
     *,
     cache_dir_path: Path | None = None,
     details: bool = False,
-    extract_sup: bool = False,
+    export_images: bool = False,
     overwrite: bool = False,
 ) -> SubtitleExtractionResult:
     """Extract matching subtitle streams from media.
 
     Arguments:
         infile_path: media input file
-        languages: ISO 639 language codes to extract
+        languages: language tags to extract
         output_dir_path: directory to which matching subtitles will be extracted
         cache_dir_path: cache directory path
         details: whether to include expensive stream details
-        extract_sup: whether to convert extracted SUP subtitles to image directories
+        export_images: whether to export SUP subtitles as image directories
         overwrite: whether to overwrite existing outputs
     Returns:
         subtitle extraction result
@@ -111,14 +112,14 @@ def extract_subtitles(
             languages,
             output_dir_path,
             details=details,
-            extract_sup=extract_sup,
+            export_images=export_images,
             overwrite=overwrite,
             cache_dir_path=cache_dir_path,
         )
         return SubtitleExtractionResult(infile_path=infile_path, outputs=outputs)
 
     # Select matching subtitle streams from the media container
-    language_codes = set(languages)
+    requested_language_tags = set(languages)
     streams = [
         stream
         for stream in _get_workflow_subtitle_streams(
@@ -126,15 +127,17 @@ def extract_subtitles(
             cache_dir_path=cache_dir_path,
             details=details,
         )
-        if stream.language is not None
-        and stream.language.split("-", 1)[0] in language_codes
+        if _language_matches(stream.language, requested_language_tags)
     ]
 
     # Determine subtitle file outputs and which streams need cache extraction
     outputs = []
     streams_to_extract = []
     for stream in streams:
-        outfile_path = output_dir_path / stream.outfile_filename
+        outfile_path = _get_subtitle_output_path(
+            output_dir_path,
+            stream.outfile_filename,
+        )
         status = _get_stream_file_status(outfile_path, overwrite=overwrite)
         outputs.append(
             SubtitleExtractionOutput(
@@ -153,6 +156,7 @@ def extract_subtitles(
             infile_path,
             streams_to_extract,
             cache_dir_path=cache_dir_path,
+            render_images=False,
         )
 
     # Copy cached subtitle files into place and optionally render SUP image directories
@@ -166,15 +170,15 @@ def extract_subtitles(
                 cache_dir_path=cache_dir_path,
             )
         handled_outputs.append(output)
-        if output.stream.extension == "sup" and extract_sup:
-            handled_outputs.append(
-                _extract_sup_image_series(
-                    output.stream,
-                    output.path,
-                    output.path.with_suffix(""),
-                    overwrite=overwrite,
-                )
+        if output.stream.extension == "sup" and export_images:
+            image_output = _try_extract_sup_image_series(
+                output.stream,
+                output.path,
+                output.path.with_suffix(""),
+                overwrite=overwrite,
             )
+            if image_output is not None:
+                handled_outputs.append(image_output)
     return SubtitleExtractionResult(infile_path=infile_path, outputs=handled_outputs)
 
 
@@ -236,6 +240,22 @@ def _get_workflow_subtitle_streams(
     return get_subtitle_streams(infile_path)
 
 
+def _language_matches(language: str | None, requested_language_tags: set[str]) -> bool:
+    """Return whether a stream language matches requested language tags.
+
+    Arguments:
+        language: stream language tag
+        requested_language_tags: requested language tags
+    Returns:
+        whether the language matches exactly or by base language code
+    """
+    if language is None:
+        return False
+    if language in requested_language_tags:
+        return True
+    return language.split("-", 1)[0] in requested_language_tags
+
+
 def _get_stream_file_status(
     outfile_path: Path,
     *,
@@ -266,18 +286,18 @@ def _extract_sup_file(
     *,
     cache_dir_path: Path | None,
     details: bool,
-    extract_sup: bool,
+    export_images: bool,
     overwrite: bool,
 ) -> list[SubtitleExtractionOutput]:
     """Extract or copy a SUP subtitle input file.
 
     Arguments:
         infile_path: SUP input file
-        languages: ISO 639 language codes to extract
+        languages: language tags to extract
         output_dir_path: output directory
         cache_dir_path: cache directory path
         details: whether to include expensive stream details
-        extract_sup: whether to convert SUP subtitles to image directories
+        export_images: whether to export SUP subtitles as image directories
         overwrite: whether to overwrite existing outputs
     Returns:
         outputs handled for the SUP file
@@ -292,17 +312,17 @@ def _extract_sup_file(
         raise ScinoephileError(f"No subtitle streams found in {infile_path}")
 
     # Determine the output SUP filename from detected stream metadata
-    language_codes = set(languages)
+    requested_language_tags = set(languages)
     stream = streams[0]
-    if (
-        stream.language is not None
-        and stream.language.split("-", 1)[0] not in language_codes
+    if stream.language is not None and not _language_matches(
+        stream.language,
+        requested_language_tags,
     ):
         return []
     outfile_name = infile_path.name
     if stream.language is not None and "-" in stream.language:
         outfile_name = f"{stream.language}{infile_path.suffix}"
-    outfile_path = output_dir_path / outfile_name
+    outfile_path = _get_subtitle_output_path(output_dir_path, outfile_name)
 
     # Copy the SUP file and report its output status
     status = _copy_sup_file(
@@ -320,7 +340,7 @@ def _extract_sup_file(
     ]
 
     # Optionally render the SUP file as an image directory
-    if stream.extension == "sup" and extract_sup:
+    if stream.extension == "sup" and export_images:
         outputs.append(
             _extract_sup_image_series(
                 stream,
@@ -362,6 +382,25 @@ def _copy_sup_file(
     return SubtitleExtractionOutputStatus.CREATED
 
 
+def _get_subtitle_output_path(output_dir_path: Path, outfile_name: str) -> Path:
+    """Build a contained subtitle output path.
+
+    Arguments:
+        output_dir_path: subtitle output directory
+        outfile_name: proposed subtitle output filename
+    Returns:
+        contained subtitle output path
+    Raises:
+        ScinoephileError: if the filename could escape the output directory
+    """
+    try:
+        return val_child_path(output_dir_path, outfile_name)
+    except ValueError as exc:
+        raise ScinoephileError(
+            f"Unsafe subtitle output filename from stream metadata: {outfile_name!r}"
+        ) from exc
+
+
 def _extract_sup_image_series(
     stream: SubtitleStream,
     infile_path: Path,
@@ -396,3 +435,34 @@ def _extract_sup_image_series(
         stream=stream,
         path=output_dir_path,
     )
+
+
+def _try_extract_sup_image_series(
+    stream: SubtitleStream,
+    infile_path: Path,
+    output_dir_path: Path,
+    *,
+    overwrite: bool,
+) -> SubtitleExtractionOutput | None:
+    """Convert a SUP subtitle file to images, warning on parse failures.
+
+    Arguments:
+        stream: subtitle stream associated with the SUP file
+        infile_path: SUP subtitle file
+        output_dir_path: output image directory
+        overwrite: whether to overwrite existing output
+    Returns:
+        output handled for the image directory, if rendering succeeded
+    """
+    try:
+        return _extract_sup_image_series(
+            stream,
+            infile_path,
+            output_dir_path,
+            overwrite=overwrite,
+        )
+    except (OSError, RuntimeError, ScinoephileError, ValueError) as exc:
+        logger.warning(
+            f"Could not export SUP image series for stream #{stream.index}: {exc}"
+        )
+        return None

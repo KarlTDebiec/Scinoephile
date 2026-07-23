@@ -12,14 +12,16 @@ from scinoephile.common.argument_parsing import get_arg_groups_by_name
 from scinoephile.common.cli import ListAllCommandsAction
 from scinoephile.core.cli import ScinoephileCliBase
 
+from .audit import AuditCli
 from .dictionary import DictionaryCli
-from .eng import EngCli
 from .media import MediaCli
 from .multi import MultiCli
 from .ocr import OcrCli
+from .process_cli import ProcessCli
+from .review_cli import ReviewCli
+from .transcribe_cli import TranscribeCli
+from .translate_cli import TranslateCli
 from .utility import UtilityCli
-from .yue import YueCli
-from .zho import ZhoCli
 
 __all__ = ["ScinoephileCli"]
 
@@ -27,21 +29,18 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "additional help": "附加帮助",
         "Available subcommands:": "可用子命令：",
+        "audit subtitle workflows": "审核字幕工作流",
         "build or search Chinese dictionaries": "构建或查询中文词典",
         "calculate the Character Error Rate (CER) of one series relative to "
         "another": "计算一个序列相对于另一个序列的字符错误率（CER）",
         "calculate the diff between two series": "计算两个序列之间的差异",
         "command-line interface for Scinoephile": "Scinoephile 命令行界面",
-        "combine two series into the top and bottom of a synchronized series": (
-            "将两个序列合并为上下行同步字幕"
-        ),
         "fuse OCR output for a selected language": "融合所选语言的 OCR 输出",
         "inspect and extract media streams": "检查并提取媒体流",
         "list all subcommands and exit": "列出所有子命令并退出",
-        "modify English subtitles": "修改英文字幕",
-        "modify standard Chinese subtitles": "修改标准中文字幕",
-        "modify written Cantonese subtitles": "修改书面粤语字幕",
         "operate on multiple subtitle series": "处理多个字幕序列",
+        "process subtitles": "处理字幕",
+        "review subtitles using an LLM": "使用大语言模型审校字幕",
         "recognize text from image-based subtitles": "识别图像字幕中的文本",
         "run utility commands": "运行实用工具命令",
         (
@@ -51,26 +50,30 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "shift and stretch the timings of one subtitle series to match another": (
             "平移并拉伸一个字幕序列的时间轴以匹配另一个序列"
         ),
+        "stack two series into top and bottom subtitle lines": (
+            "将两个序列堆叠为上下行字幕"
+        ),
+        "translate subtitles between supported languages": (
+            "在受支持的语言之间翻译字幕"
+        ),
+        "transcribe audio using reference subtitles": "使用参考字幕转写音频",
         "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
     },
     "zh-hant": {
         "additional help": "附加說明",
         "Available subcommands:": "可用子命令：",
+        "audit subtitle workflows": "稽核字幕工作流程",
         "build or search Chinese dictionaries": "建置或查詢中文詞典",
         "calculate the Character Error Rate (CER) of one series relative to "
         "another": "計算一個序列相對於另一個序列的字元錯誤率（CER）",
         "calculate the diff between two series": "計算兩個序列之間的差異",
         "command-line interface for Scinoephile": "Scinoephile 命令列介面",
-        "combine two series into the top and bottom of a synchronized series": (
-            "將兩個序列合併為上下行同步字幕"
-        ),
         "fuse OCR output for a selected language": "融合所選語言的 OCR 輸出",
         "inspect and extract media streams": "檢查並提取媒體流",
         "list all subcommands and exit": "列出所有子命令並結束",
-        "modify English subtitles": "修改英文字幕",
-        "modify standard Chinese subtitles": "修改標準中文字幕",
-        "modify written Cantonese subtitles": "修改書面粵語字幕",
         "operate on multiple subtitle series": "處理多個字幕序列",
+        "process subtitles": "處理字幕",
+        "review subtitles using an LLM": "使用大型語言模型審校字幕",
         "recognize text from image-based subtitles": "識別影像字幕中的文字",
         "run utility commands": "執行實用工具命令",
         (
@@ -80,6 +83,11 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "shift and stretch the timings of one subtitle series to match another": (
             "平移並拉伸一個字幕序列的時間軸以匹配另一個序列"
         ),
+        "stack two series into top and bottom subtitle lines": (
+            "將兩個序列堆疊為上下行字幕"
+        ),
+        "translate subtitles between supported languages": ("在支援的語言之間翻譯字幕"),
+        "transcribe audio using reference subtitles": "使用參考字幕轉寫音訊",
         "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
     },
 }
@@ -136,14 +144,16 @@ class ScinoephileCli(ScinoephileCliBase):
             mapping of subcommand names to CLI classes
         """
         return {
+            AuditCli.name(): AuditCli,
             DictionaryCli.name(): DictionaryCli,
-            EngCli.name(): EngCli,
             MediaCli.name(): MediaCli,
             MultiCli.name(): MultiCli,
             OcrCli.name(): OcrCli,
+            ProcessCli.name(): ProcessCli,
+            ReviewCli.name(): ReviewCli,
+            TranscribeCli.name(): TranscribeCli,
+            TranslateCli.name(): TranslateCli,
             UtilityCli.name(): UtilityCli,
-            YueCli.name(): YueCli,
-            ZhoCli.name(): ZhoCli,
         }
 
     @classmethod

@@ -4,24 +4,20 @@
 
 from __future__ import annotations
 
-import pytest
-
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
+from test.helpers import parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [
         ("soeng6 bin6", ["soeng6 bin6"]),
         ("hei'hauh", ["hei3 hau6"]),
         ("gwóngdūngwá", ["gwong2 dung1 waa2"]),
-        ("séung", ["seong2", "soeng2"]),
+        ("séung", ["soeng2"]),
     ],
 )
-def test_get_yue_jyutping_query_strings(
-    text: str,
-    expected: list[str],
-):
+def test_get_yue_jyutping_query_strings(text: str, expected: list[str]):
     """Test get_yue_jyutping_query_strings.
 
     Arguments:

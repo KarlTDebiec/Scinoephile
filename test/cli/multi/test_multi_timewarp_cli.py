@@ -8,7 +8,7 @@ from io import StringIO
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
+from pytest import raises
 
 from scinoephile.cli.multi.multi_timewarp_cli import MultiTimewarpCli
 from scinoephile.common.testing import run_cli_with_args
@@ -33,12 +33,33 @@ def test_multi_timewarp_cli_passes_arguments_and_writes_file(tmp_path: Path):
         "1\n00:00:00,000 --> 00:00:01,000\nB\n",
         format_="srt",
     )
+    timewarp_calls = 0
+
+    def get_timewarped(
+        *,
+        source_one: Series,
+        source_two: Series,
+        one_start_idx: int,
+        one_end_idx: int,
+        two_start_idx: int,
+        two_end_idx: int,
+    ) -> Series:
+        """Validate timewarp inputs."""
+        nonlocal timewarp_calls
+        timewarp_calls += 1
+        assert_series_equal(source_one, anchor_series)
+        assert_series_equal(source_two, mobile_series)
+        assert one_start_idx == 1
+        assert one_end_idx == 2
+        assert two_start_idx == 3
+        assert two_end_idx == 4
+        return timewarped_series
 
     with (
         patch(
             "scinoephile.cli.multi.multi_timewarp_cli.get_series_timewarped",
-            return_value=timewarped_series,
-        ) as get_series_timewarped,
+            side_effect=get_timewarped,
+        ),
     ):
         run_cli_with_args(
             MultiTimewarpCli,
@@ -48,13 +69,7 @@ def test_multi_timewarp_cli_passes_arguments_and_writes_file(tmp_path: Path):
             f"--outfile {output_path}",
         )
 
-    called_kwargs = get_series_timewarped.call_args.kwargs
-    assert_series_equal(called_kwargs["source_one"], anchor_series)
-    assert_series_equal(called_kwargs["source_two"], mobile_series)
-    assert called_kwargs["one_start_idx"] == 1
-    assert called_kwargs["one_end_idx"] == 2
-    assert called_kwargs["two_start_idx"] == 3
-    assert called_kwargs["two_end_idx"] == 4
+    assert timewarp_calls == 1
     assert_series_equal(Series.load(output_path), timewarped_series)
 
 
@@ -79,7 +94,7 @@ def test_multi_timewarp_cli_pipe(tmp_path: Path):
             "scinoephile.cli.multi.multi_timewarp_cli.get_series_timewarped",
             return_value=timewarped_series,
         ),
-        patch("scinoephile.core.cli.stdout", stdout_stream),
+        patch("scinoephile.cli.helpers.io.stdout", stdout_stream),
     ):
         run_cli_with_args(
             MultiTimewarpCli,
@@ -101,7 +116,7 @@ def test_multi_timewarp_cli_rejects_old_one_two_index_flags(tmp_path: Path):
     anchor_path.write_text("1\n00:00:00,000 --> 00:00:01,000\nA\n", encoding="utf-8")
     mobile_path.write_text("1\n00:00:02,000 --> 00:00:03,000\nB\n", encoding="utf-8")
 
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             MultiTimewarpCli,
             f"--anchor-infile {anchor_path} --mobile-infile {mobile_path} "

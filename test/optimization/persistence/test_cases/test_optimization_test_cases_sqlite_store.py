@@ -1,259 +1,276 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for SQLite test case store."""
+"""Tests for normalized SQLite test-case persistence."""
 
 from __future__ import annotations
 
 import sqlite3
 from contextlib import closing
+from dataclasses import replace
 from pathlib import Path
 
-import pytest
+from pydantic import JsonValue
+from pytest import raises
 
-from scinoephile.core.llms import OperationSpec
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YuePunctuationVsZhoPromptYueHans,
-    YueZhoPunctuationManager,
-)
+from scinoephile.core import ScinoephileError
+from scinoephile.core.llms import Manager
+from scinoephile.llms.review import ReviewManager
+from scinoephile.llms.translation import TranslationManager
 from scinoephile.optimization.persistence.test_cases import (
     PersistedTestCase,
     TestCaseSqliteStore,
 )
+from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 
 
-def get_punctuation_operation_spec() -> OperationSpec:
-    """Get operation spec with a split written Cantonese query list."""
-    return OperationSpec(
-        operation="unit-punctuation",
-        test_case_table_name="test_cases__unit__punctuation",
-        manager_cls=YueZhoPunctuationManager,
-        prompt_cls=YuePunctuationVsZhoPromptYueHans,
-        list_fields={"query.yuewen_to_punctuate": 10},
+def get_test_case(
+    *,
+    difficulty: int = 0,
+    few_shot: bool = False,
+    verified: bool = False,
+    query: dict[str, JsonValue] | None = None,
+    answer: dict[str, JsonValue] | None = None,
+    manager_cls: type[Manager] = TranslationManager,
+) -> PersistedTestCase:
+    """Get a persisted test case with provided values."""
+    if query is None:
+        query = {"input": "same"}
+    if answer is None:
+        answer = {"output": "same"}
+    return PersistedTestCase(
+        test_case_id=get_test_case_id(
+            query,
+            answer,
+            manager_cls,
+        ),
+        operation=manager_cls.operation,
+        difficulty=difficulty,
+        few_shot=few_shot,
+        verified=verified,
+        query=query,
+        answer=answer,
+        source_paths=(),
     )
 
 
-def test_store_upsert_and_fetch(tmp_path: Path):
-    """Upserting a row should allow fetching it back."""
-    db_path = tmp_path / "test_cases.sqlite"
-    store = TestCaseSqliteStore(db_path)
-    table_name = "test_cases__unit__basic"
-
-    tc = PersistedTestCase(
-        test_case_id="abc",
+def test_store_round_trips_normalized_json(tmp_path: Path):
+    """JSON payloads should round-trip without operation-specific columns."""
+    database_path = tmp_path / "test_cases.sqlite"
+    store = TestCaseSqliteStore(database_path)
+    test_case = get_test_case(
         difficulty=1,
-        prompt=False,
+        few_shot=True,
         verified=True,
-        query={"q": 1},
-        answer={"a": 2},
-        source_paths=["x.json"],
+        query={
+            "items": ["one", "two", {"nested": True}],
+            "literal_array": "[]",
+        },
+        answer={"value": {"nested": [1, 2, 3]}},
     )
-    store.upsert_table_test_cases(table_name, [tc], source_path="x.json")
 
-    loaded = store.get_test_case(table_name, "abc")
+    store.sync_source_paths(
+        {"x.json": [test_case]},
+        manager_cls=TranslationManager,
+        dry_run=False,
+    )
+
+    loaded = store.get_test_case(test_case.test_case_id)
     assert loaded is not None
-    assert loaded.test_case_id == "abc"
-    assert loaded.query == {"q": 1}
-    assert loaded.answer == {"a": 2}
-    assert "x.json" in loaded.source_paths
+    assert loaded.operation == "translation"
+    assert loaded.few_shot
+    assert loaded.query == test_case.query
+    assert loaded.answer == test_case.answer
+    assert loaded.source_paths == ("x.json",)
 
-    with closing(sqlite3.connect(db_path)) as connection:
+    with closing(sqlite3.connect(database_path)) as connection:
+        few_shot = connection.execute("SELECT few_shot FROM test_cases").fetchone()[0]
         columns = {
-            str(row[1])
-            for row in connection.execute(f"PRAGMA table_info({table_name})")
+            str(row[1]) for row in connection.execute("PRAGMA table_info(test_cases)")
         }
-    assert "query" not in columns
-    assert "answer" not in columns
-    assert "source_paths" not in columns
-    assert "query__q" in columns
-    assert "answer__a" in columns
+        source_columns = {
+            str(row[1])
+            for row in connection.execute("PRAGMA table_info(test_case_sources)")
+        }
+    assert columns == {
+        "answer_json",
+        "difficulty",
+        "operation",
+        "few_shot",
+        "query_json",
+        "test_case_id",
+        "verified",
+    }
+    assert source_columns == {"source_path", "test_case_id"}
+    assert few_shot == 1
 
 
-def test_store_does_not_create_parent_dir_on_init(tmp_path: Path):
-    """Initializing a store should not create parent directories."""
-    db_path = tmp_path / "missing/test_cases.sqlite"
-    store = TestCaseSqliteStore(db_path)
+def test_store_defers_parent_dir_creation_until_schema_creation(tmp_path: Path):
+    """Initializing and reading should not create parent directories."""
+    database_path = tmp_path / "missing/test_cases.sqlite"
+    store = TestCaseSqliteStore(database_path)
 
-    assert not db_path.parent.exists()
-    assert store.get_test_case("test_cases__unit__basic", "abc") is None
-    assert store.list_tables() == []
-    assert not db_path.parent.exists()
+    assert not database_path.parent.exists()
+    assert store.get_test_case("missing") is None
+    assert not database_path.parent.exists()
+
+    store.create_schema()
+
+    assert database_path.is_file()
 
 
-def test_store_merges_duplicate_id_metadata_without_downgrading(tmp_path: Path):
-    """Duplicate IDs from different sources should preserve curated metadata."""
-    db_path = tmp_path / "test_cases.sqlite"
-    table_name = "test_cases__unit__basic"
-    query = {"q": "same"}
-    answer = {"a": "same"}
+def test_store_keeps_sql_owned_metadata_when_source_is_removed(tmp_path: Path):
+    """Removing provenance should not change SQL-owned curation metadata."""
+    database_path = tmp_path / "test_cases.sqlite"
+    store = TestCaseSqliteStore(database_path)
+    low_metadata = get_test_case(difficulty=1)
+    high_metadata = get_test_case(difficulty=3, few_shot=True, verified=True)
+    assert low_metadata.test_case_id == high_metadata.test_case_id
 
-    low_metadata = PersistedTestCase(
-        test_case_id="same",
-        difficulty=1,
-        prompt=False,
-        verified=False,
-        query=query,
-        answer=answer,
-        source_paths=["low.json"],
+    store.sync_source_paths(
+        {
+            "low.json": [low_metadata],
+            "high.json": [high_metadata],
+        },
+        manager_cls=TranslationManager,
+        dry_run=False,
     )
-    high_metadata = PersistedTestCase(
-        test_case_id="same",
-        difficulty=3,
-        prompt=True,
-        verified=True,
-        query=query,
-        answer=answer,
-        source_paths=["high.json"],
-    )
-
-    store = TestCaseSqliteStore(db_path)
-    store.upsert_table_test_cases(table_name, [low_metadata], source_path="low.json")
-    store.upsert_table_test_cases(table_name, [high_metadata], source_path="high.json")
-    loaded = store.get_test_case(table_name, "same")
+    loaded = store.get_test_case(low_metadata.test_case_id)
     assert loaded is not None
     assert loaded.difficulty == 3
-    assert loaded.prompt
+    assert loaded.few_shot
     assert loaded.verified
+    assert loaded.source_paths == ("high.json", "low.json")
 
-    reversed_store = TestCaseSqliteStore(tmp_path / "reversed.sqlite")
-    reversed_store.upsert_table_test_cases(
-        table_name, [high_metadata], source_path="high.json"
+    store.sync_source_paths(
+        {"high.json": []},
+        manager_cls=TranslationManager,
+        dry_run=False,
     )
-    reversed_store.upsert_table_test_cases(
-        table_name, [low_metadata], source_path="low.json"
+    retained = store.get_test_case(low_metadata.test_case_id)
+    assert retained is not None
+    assert retained.difficulty == 3
+    assert retained.few_shot
+    assert retained.verified
+    assert retained.source_paths == ("low.json",)
+
+
+def test_store_filters_source_lookup_by_operation(tmp_path: Path):
+    """Source lookup should support catalog operation filters."""
+    database_path = tmp_path / "test_cases.sqlite"
+    store = TestCaseSqliteStore(database_path)
+    first = get_test_case(
+        manager_cls=ReviewManager,
+        query={"input": "first"},
     )
-    reversed_loaded = reversed_store.get_test_case(table_name, "same")
-    assert reversed_loaded is not None
-    assert reversed_loaded.difficulty == 3
-    assert reversed_loaded.prompt
-    assert reversed_loaded.verified
+    second = get_test_case(
+        manager_cls=ReviewManager,
+        query={"input": "second"},
+    )
+    third = get_test_case(
+        manager_cls=TranslationManager,
+        query={"input": "third"},
+    )
 
-
-def test_store_preserves_json_looking_strings(tmp_path: Path):
-    """JSON-looking string fields should round-trip as strings."""
-    db_path = tmp_path / "test_cases.sqlite"
-    store = TestCaseSqliteStore(db_path)
-    table_name = "test_cases__unit__basic"
-
-    tc = PersistedTestCase(
-        test_case_id="abc",
-        difficulty=1,
-        prompt=False,
-        verified=True,
-        query={
-            "literal_array": "[]",
-            "literal_object": "{}",
+    store.sync_source_paths(
+        {
+            "first.json": [first],
+            "second.json": [second],
         },
-        answer={
-            "literal_array": "[]",
-            "literal_object": "{}",
-        },
-        source_paths=["x.json"],
+        manager_cls=ReviewManager,
+        dry_run=False,
     )
-    store.upsert_table_test_cases(table_name, [tc], source_path="x.json")
-
-    loaded = store.get_test_case(table_name, "abc")
-    assert loaded is not None
-    assert loaded.query["literal_array"] == "[]"
-    assert loaded.query["literal_object"] == "{}"
-    assert loaded.answer["literal_array"] == "[]"
-    assert loaded.answer["literal_object"] == "{}"
-
-
-def test_store_splits_configured_list_fields(tmp_path: Path):
-    """Configured list fields should persist as numbered scalar columns."""
-    db_path = tmp_path / "test_cases.sqlite"
-    store = TestCaseSqliteStore(
-        db_path,
-        operation_spec=get_punctuation_operation_spec(),
-    )
-    table_name = "test_cases__unit__punctuation"
-
-    tc = PersistedTestCase(
-        test_case_id="abc",
-        difficulty=1,
-        prompt=False,
-        verified=True,
-        query={
-            "yuewen_to_punctuate": ["噉我哋", "而家开始"],
-            "zhongwen": "那我们现在开始。",
-        },
-        answer={"yuewen_punctuated": "噉我哋，而家开始。"},
-        source_paths=["x.json"],
-    )
-    store.upsert_table_test_cases(table_name, [tc], source_path="x.json")
-
-    loaded = store.get_test_case(table_name, "abc")
-    assert loaded is not None
-    assert loaded.query == tc.query
-
-    with closing(sqlite3.connect(db_path)) as connection:
-        row = connection.execute(
-            f"""SELECT query__yuewen_to_punctuate_01,
-                       query__yuewen_to_punctuate_02,
-                       query__yuewen_to_punctuate_03
-                FROM {table_name}
-                WHERE test_case_id = ?""",
-            ("abc",),
-        ).fetchone()
-        columns = {
-            str(column[1])
-            for column in connection.execute(f"PRAGMA table_info({table_name})")
-        }
-    assert row == ("噉我哋", "而家开始", None)
-    assert "query__yuewen_to_punctuate" not in columns
-    assert "query__yuewen_to_punctuate_10" in columns
-
-
-def test_store_rejects_configured_list_fields_over_max(tmp_path: Path):
-    """Configured list fields should fail clearly when they exceed max width."""
-    db_path = tmp_path / "test_cases.sqlite"
-    store = TestCaseSqliteStore(
-        db_path,
-        operation_spec=get_punctuation_operation_spec(),
-    )
-    table_name = "test_cases__unit__punctuation"
-
-    tc = PersistedTestCase(
-        test_case_id="abc",
-        difficulty=1,
-        prompt=False,
-        verified=True,
-        query={
-            "yuewen_to_punctuate": [str(idx) for idx in range(11)],
-            "zhongwen": "那我们现在开始。",
-        },
-        answer={"yuewen_punctuated": "噉我哋，而家开始。"},
-        source_paths=["x.json"],
+    store.sync_source_paths(
+        {"third.json": [third]},
+        manager_cls=TranslationManager,
+        dry_run=False,
     )
 
-    with pytest.raises(ValueError, match="supports at most 10 items"):
-        store.upsert_table_test_cases(table_name, [tc], source_path="x.json")
-
-
-def test_store_source_path_index(tmp_path: Path):
-    """`test_case_sources` should support lookup by source path."""
-    db_path = tmp_path / "test_cases.sqlite"
-    store = TestCaseSqliteStore(db_path)
-    table_name = "test_cases__unit__basic"
-
-    tc1 = PersistedTestCase(
-        test_case_id="a",
-        difficulty=0,
-        prompt=False,
-        verified=False,
-        query={"q": 1},
-        answer={"a": 1},
-        source_paths=["s1.json"],
+    filtered = store.get_test_cases_by_source_path(
+        "second.json",
+        manager_cls=ReviewManager,
     )
-    tc2 = PersistedTestCase(
-        test_case_id="b",
-        difficulty=0,
-        prompt=False,
-        verified=False,
-        query={"q": 2},
-        answer={"a": 2},
-        source_paths=["s2.json"],
+    assert [test_case.test_case_id for test_case in filtered] == [second.test_case_id]
+    assert (
+        store.get_test_cases_by_source_path(
+            "second.json",
+            manager_cls=TranslationManager,
+        )
+        == []
     )
-    store.upsert_table_test_cases(table_name, [tc1, tc2], source_path="s1.json")
-    by_s1 = store.get_test_cases_by_source_path(table_name, "s1.json")
-    assert {x.test_case_id for x in by_s1} == {"a", "b"}
+
+
+def test_store_rejects_mismatched_content_addressed_id(tmp_path: Path):
+    """Writes should reject test cases whose ID does not match their content."""
+    database_path = tmp_path / "test_cases.sqlite"
+    store = TestCaseSqliteStore(database_path)
+    test_case = replace(get_test_case(), test_case_id="incorrect")
+
+    with raises(ScinoephileError, match="does not match its content-addressed ID"):
+        store.sync_source_paths(
+            {"source.json": [test_case]},
+            manager_cls=TranslationManager,
+            dry_run=False,
+        )
+
+    assert not database_path.exists()
+
+
+def test_store_rejects_mismatched_manager(tmp_path: Path):
+    """Writes should reject test cases from another manager's operation."""
+    database_path = tmp_path / "test_cases.sqlite"
+    store = TestCaseSqliteStore(database_path)
+    test_case = get_test_case(manager_cls=TranslationManager)
+
+    with raises(ScinoephileError, match="does not match synchronized operation"):
+        store.sync_source_paths(
+            {"source.json": [test_case]},
+            manager_cls=ReviewManager,
+            dry_run=False,
+        )
+
+    assert not database_path.exists()
+
+
+def test_store_syncs_shared_source_path_within_operation(tmp_path: Path):
+    """Syncing one operation should preserve another operation's provenance."""
+    database_path = tmp_path / "test_cases.sqlite"
+    store = TestCaseSqliteStore(database_path)
+    review = get_test_case(manager_cls=ReviewManager)
+    translation = get_test_case(manager_cls=TranslationManager)
+
+    store.sync_source_paths(
+        {"source.json": [review]},
+        manager_cls=ReviewManager,
+        dry_run=False,
+    )
+    store.sync_source_paths(
+        {"source.json": [translation]},
+        manager_cls=TranslationManager,
+        dry_run=False,
+    )
+    store.sync_source_paths(
+        {"source.json": []},
+        manager_cls=ReviewManager,
+        dry_run=False,
+    )
+
+    loaded_review = store.get_test_case(review.test_case_id)
+    loaded_translation = store.get_test_case(translation.test_case_id)
+    assert loaded_review is not None
+    assert loaded_review.source_paths == ()
+    assert loaded_translation is not None
+    assert loaded_translation.source_paths == ("source.json",)
+
+
+def test_store_does_not_manage_a_global_schema_version(tmp_path: Path):
+    """Component table creation should leave SQLite user versions untouched."""
+    database_path = tmp_path / "test_cases.sqlite"
+    with closing(sqlite3.connect(database_path)) as connection:
+        connection.execute("PRAGMA user_version=3")
+    store = TestCaseSqliteStore(database_path)
+
+    store.create_schema()
+
+    with closing(sqlite3.connect(database_path)) as connection:
+        version = connection.execute("PRAGMA user_version").fetchone()[0]
+    assert version == 3

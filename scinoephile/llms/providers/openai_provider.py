@@ -20,7 +20,7 @@ class OpenAIProvider(OpenAIProviderBase):
     }
     """Provider description translations keyed by locale."""
 
-    model = "gpt-5.4"
+    model = "gpt-5.6-luna"
     """OpenAI model identifier."""
 
     api_key_env_var_name = "OPENAI_API_KEY"

@@ -4,9 +4,10 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from logging import getLogger
 from os import read
+from pathlib import Path
 from subprocess import PIPE, Popen, TimeoutExpired
 from threading import Thread
 from time import monotonic
@@ -33,6 +34,9 @@ def run_command(
     command: list[str],
     timeout: int = 600,
     acceptable_exitcodes: Iterable[int] | None = None,
+    *,
+    cwd_path: Path | None = None,
+    env: Mapping[str, str] | None = None,
 ) -> tuple[int, str, str]:
     """Run a provided command.
 
@@ -40,6 +44,8 @@ def run_command(
         command: command to run as a list of arguments
         timeout: maximum time to await command's completion
         acceptable_exitcodes: acceptable exit codes
+        cwd_path: working directory
+        env: environment variables
     Returns:
         exitcode, standard output, and standard error
     Raises:
@@ -48,7 +54,7 @@ def run_command(
     if acceptable_exitcodes is None:
         acceptable_exitcodes = [0]
 
-    with Popen(command, stdout=PIPE, stderr=PIPE) as child:
+    with Popen(command, stdout=PIPE, stderr=PIPE, cwd=cwd_path, env=env) as child:
         try:
             stdout, stderr = child.communicate(timeout=timeout)
         except TimeoutExpired:
@@ -86,13 +92,18 @@ def run_command_live(
     command: list[str],
     timeout: int | None = 86400,
     acceptable_exitcodes: Iterable[int] | None = None,
+    *,
+    cwd_path: Path | None = None,
+    env: Mapping[str, str] | None = None,
 ) -> tuple[int, str, str]:
     """Run a provided command and stream output live.
 
     Arguments:
         command: command to run as a list of arguments
-        timeout: Maximum time to await command's completion
-        acceptable_exitcodes: Acceptable exit codes
+        timeout: maximum time to await command's completion
+        acceptable_exitcodes: acceptable exit codes
+        cwd_path: working directory
+        env: environment variables
     Returns:
         exitcode, standard output, and standard error
     Raises:
@@ -108,6 +119,8 @@ def run_command_live(
         command,
         stdout=PIPE,
         stderr=PIPE,
+        cwd=cwd_path,
+        env=env,
         bufsize=0,
     ) as child:
         assert child.stdout is not None

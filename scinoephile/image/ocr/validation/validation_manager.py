@@ -9,11 +9,10 @@ from pathlib import Path
 
 from scinoephile.common import package_root
 from scinoephile.common.validation import val_input_dir_path, val_output_dir_path
+from scinoephile.core import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
-from scinoephile.core.text import whitespace_chars
-from scinoephile.image.bbox import Bbox
+from scinoephile.core.text import WHITESPACE_CHARS
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
-from scinoephile.image.drawing import get_img_with_bboxes
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 from .char_cursor import CharCursor
@@ -26,10 +25,16 @@ from .char_pair_gaps import (
 )
 from .gap_cursor import GapCursor
 
-__all__ = ["ValidationManager"]
+__all__ = [
+    "MAX_CHAR_DIM_BBOXES",
+    "ValidationManager",
+]
 
 
 logger = getLogger(__name__)
+
+MAX_CHAR_DIM_BBOXES = 6
+"""Maximum supported bbox count for one character."""
 
 
 class ValidationManager:
@@ -62,7 +67,7 @@ class ValidationManager:
       * Lower bound for 'tab' characters
     """
 
-    def __init__(  # noqa: PLR0912
+    def __init__(
         self,
         *,
         cache_dir_path: Path | str | None = None,
@@ -74,11 +79,53 @@ class ValidationManager:
             cache_dir_path: cache directory for local OCR validation data
             dev: whether validation data updates should write to repo data
         """
+        try:
+            self._init_data(cache_dir_path, dev)
+        except (OSError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to initialize OCR validation data: {exc}"
+            ) from exc
+
+    def validate(
+        self,
+        series: ImageSeries,
+    ) -> ImageSeries:
+        """Validate all subtitles in an image series.
+
+        Arguments:
+            series: image series to validate
+        Returns:
+            validated image series
+        """
+        messages = []
+        events = []
+        for sub_idx, sub in enumerate(series.events):
+            sub_messages = self._validate_sub(sub, sub_idx)
+            messages.extend(sub_messages)
+            events.append(
+                ImageSubtitle(img=sub.img, start=sub.start, end=sub.end, text=sub.text)
+            )
+        output_series = ImageSeries(events=events)
+        for message in messages:
+            logger.warning(message)
+        return output_series
+
+    def _init_data(  # noqa: PLR0912
+        self,
+        cache_dir_path: Path | str | None,
+        dev: bool,
+    ):
+        """Initialize OCR validation data.
+
+        Arguments:
+            cache_dir_path: cache directory for local OCR validation data
+            dev: whether validation data updates should write to repo data
+        """
         repo_data_dir_path = val_input_dir_path(package_root / "data/ocr")
 
         # Initialize char_dims_by_n
         self.char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
-        for n in range(1, 6):
+        for n in range(1, MAX_CHAR_DIM_BBOXES + 1):
             self.char_dims_by_n[n] = {}
             file_path = repo_data_dir_path / f"char_dims_{n}.csv"
             if file_path.exists():
@@ -110,7 +157,7 @@ class ValidationManager:
                 self.cache_dir_path = val_output_dir_path(cache_dir_path, create=False)
 
             # Initialize char_dims_by_n
-            for n in range(1, 6):
+            for n in range(1, MAX_CHAR_DIM_BBOXES + 1):
                 self.cache_char_dims_by_n[n] = {}
                 file_path = self.cache_dir_path / f"char_dims_{n}.csv"
                 if file_path.exists():
@@ -137,79 +184,38 @@ class ValidationManager:
                 self.cache_char_pair_gaps = load_char_pair_gaps(file_path)
                 self.char_pair_gaps.update(self.cache_char_pair_gaps)
 
-    def validate(
-        self,
-        series: ImageSeries,
-        stop_at_idx: int | None = None,
-        interactive: bool = True,
-    ) -> ImageSeries:
-        """Validate all subtitles in an image series.
-
-        Arguments:
-            series: image series to validate
-            stop_at_idx: stop validating at this index
-            interactive: whether to prompt user for confirmations
-        Returns:
-            validated image series
-        """
-        if stop_at_idx is None:
-            stop_at_idx = len(series) - 1
-        messages = []
-        events = []
-        for sub_idx, sub in enumerate(series.events):
-            if sub_idx > stop_at_idx:
-                break
-            sub_messages, bboxes = self._validate_sub(sub, sub_idx, interactive)
-            messages.extend(sub_messages)
-            annotated_img = get_img_with_bboxes(sub.img, bboxes)
-            events.append(
-                ImageSubtitle(
-                    img=annotated_img,
-                    start=sub.start,
-                    end=sub.end,
-                    text=sub.text,
-                )
-            )
-        output_series = ImageSeries(events=events)
-        for message in messages:
-            logger.warning(message)
-        return output_series
-
-    def _validate_sub(
-        self, sub: ImageSubtitle, sub_idx: int, interactive: bool = True
-    ) -> tuple[list[str], list[Bbox]]:
+    def _validate_sub(self, sub: ImageSubtitle, sub_idx: int) -> list[str]:
         """Validate per-character bboxes for a subtitle.
 
         Arguments:
             sub: subtitle to validate
             sub_idx: subtitle index for logging
-            interactive: whether to prompt user for confirmations
         Returns:
-            validation messages and validated bboxes
+            validation messages
         """
         sub.bboxes = get_bboxes(sub.img)
-        bboxes = sub.bboxes
 
-        char_messages = self._validate_chars(sub, sub_idx, interactive)
+        char_messages = self._validate_chars(sub, sub_idx)
         if len(char_messages) > 0:
-            return char_messages, bboxes
+            return char_messages
 
-        gap_messages = self._validate_gaps(sub, sub_idx, interactive)
+        original_text = sub.text
+        gap_messages = self._validate_gaps(sub, sub_idx)
+        if len(gap_messages) > 0:
+            sub.text = original_text
 
-        return char_messages + gap_messages, bboxes
+        return char_messages + gap_messages
 
     def _validate_chars(
         self,
         sub: ImageSubtitle,
         sub_idx: int,
-        interactive: bool = True,
     ) -> list[str]:
         """Merge bboxes per character and collect validation messages.
 
         Arguments:
             sub: subtitle to validate
             sub_idx: subtitle index for logging
-            interactive: whether to prompt user for confirmations
         Returns:
             validation messages
         """
@@ -218,7 +224,7 @@ class ValidationManager:
         cursor = CharCursor(sub=sub, sub_idx=sub_idx)
         while cursor.char_idx < len(sub.text_with_newline):
             # No validation to perform for whitespace
-            if cursor.char in whitespace_chars or cursor.char == "\n":
+            if cursor.char in WHITESPACE_CHARS or cursor.char == "\n":
                 cursor.advance(n_chars=1, n_bboxes=0)
                 continue
 
@@ -230,31 +236,19 @@ class ValidationManager:
                 break
 
             # Check if next bbox matches two or more characters
-            matched = self._match_grouped_chars(cursor)
+            matched = self.match_grouped_chars(cursor)
             if matched:
                 continue
 
             # Check if next one or more bboxes matches single character
-            matched = self._match_char_dims(cursor)
+            matched = self.match_char_dims(cursor)
             if matched:
                 continue
 
-            # Prompt user to assign bbox(es) to character(s)
-            if not interactive:
-                messages.append(
-                    f"{cursor.intro_msg} | "
-                    f"no approved or automatic match for '{cursor.char}'"
-                )
-                break
-            matched, new_messages, skipped = self._prompt_char_dims(cursor)
-            messages.extend(new_messages)
-            if skipped:
-                return messages
-            if matched:
-                continue
-
-            # May or may not be reachable
-            messages.append(f"{cursor.intro_msg} | unexpected state at '{cursor.char}'")
+            messages.append(
+                f"{cursor.intro_msg} | question about bboxes for '{cursor.char}'"
+            )
+            break
 
         # Cannot have leftover bboxes
         if cursor.bbox_idx != len(cursor.bboxes):
@@ -265,7 +259,7 @@ class ValidationManager:
 
         return messages
 
-    def _match_grouped_chars(self, cursor: CharCursor) -> bool:
+    def match_grouped_chars(self, cursor: CharCursor) -> bool:
         """Match grouped characters against approved dimensions.
 
         Arguments:
@@ -277,7 +271,7 @@ class ValidationManager:
             if cursor.char_idx + n_chars > len(cursor.sub.text_with_newline):
                 continue
             char_grp = cursor.char_grp(n_chars)
-            if any(c in whitespace_chars for c in char_grp) or "\n" in char_grp:
+            if any(c in WHITESPACE_CHARS for c in char_grp) or "\n" in char_grp:
                 continue
             dims = get_dims_tuple(cursor.bboxes[cursor.bbox_idx])
             ok_dims = self.char_grp_dims_by_n[n_chars].get(char_grp, set())
@@ -297,7 +291,7 @@ class ValidationManager:
                     return True
         return False
 
-    def _match_char_dims(self, cursor: CharCursor) -> bool:
+    def match_char_dims(self, cursor: CharCursor) -> bool:
         """Match character against approved dimensions.
 
         Arguments:
@@ -331,88 +325,21 @@ class ValidationManager:
                     cursor.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
                         merged_bbox
                     ]
-                    self._update_char_dims(cursor.char, dims)
+                    self.update_char_dims(cursor.char, dims)
                     cursor.advance(n_chars=1, n_bboxes=1)
                     return True
         return False
-
-    def _prompt_char_dims(self, cursor: CharCursor) -> tuple[bool, list[str], bool]:
-        """Prompt user to confirm character dimensions.
-
-        Arguments:
-            cursor: character cursor
-        Returns:
-            tuple of (matched, validation messages, skip_subtitle)
-        """
-        messages: list[str] = []
-
-        for n_bboxes in self.char_dims_by_n.keys():
-            if cursor.bbox_idx + n_bboxes > len(cursor.bboxes):
-                break
-            dims = get_dims_tuple(cursor.bbox_grp(n_bboxes))
-
-            n_chars = 0
-            annotated = get_img_with_bboxes(cursor.sub.img, cursor.bbox_grp(n_bboxes))
-            annotated.show()
-            response = input(
-                f"{cursor.intro_msg} | "
-                f"'{cursor.char}' bbox dims {dims} | extend/group? (y/n/s): "
-            )
-            if response.lower().startswith("s"):
-                messages.append(f"{cursor.intro_msg} | skipped by user")
-                return False, messages, True
-            extend = not response.lower().startswith("y")
-            if n_bboxes == 1:
-                try:
-                    n_chars = int(response)
-                    if n_chars > 1:
-                        extend = False
-                except ValueError:
-                    pass
-
-            if extend:
-                bbox_grp = cursor.bbox_grp(n_bboxes)
-                merged_bbox = get_merged_bbox(bbox_grp)
-                cursor.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
-                    merged_bbox
-                ]
-                self._update_char_dims(cursor.char, dims)
-                cursor.advance(n_chars=1, n_bboxes=1)
-                return True, messages, False
-
-            if n_chars > 1:
-                if cursor.char_idx + n_chars > len(cursor.sub.text_with_newline):
-                    messages.append(
-                        f"{cursor.intro_msg} | "
-                        f"cannot group {n_chars} chars starting at '{cursor.char}' "
-                        "beyond text length"
-                    )
-                    continue
-                char_grp = cursor.char_grp(n_chars)
-                if any(c in whitespace_chars for c in char_grp):
-                    messages.append(
-                        f"{cursor.intro_msg} | "
-                        f"cannot group '{char_grp}' due to whitespace"
-                    )
-                    continue
-                dims = get_dims_tuple(cursor.bbox_grp(1))
-                self._update_char_grp_dims(char_grp, dims)
-                cursor.advance(n_chars=n_chars, n_bboxes=1)
-                return True, messages, False
-        return False, messages, False
 
     def _validate_gaps(  # noqa: PLR0912, PLR0915
         self,
         sub: ImageSubtitle,
         sub_idx: int,
-        interactive: bool = True,
     ) -> list[str]:
         """Validate gaps between bboxes and collect validation messages.
 
         Arguments:
             sub: subtitle to validate
             sub_idx: subtitle index for logging
-            interactive: whether to prompt user for confirmations
         Returns:
             validation messages
         """
@@ -439,7 +366,7 @@ class ValidationManager:
             if len(cursor.gap_chars) == 0:
                 char_grp = f"{cursor.char_1}{cursor.char_2}"
                 dims = get_dims_tuple(bbox_1)
-                ok_dims = self.char_grp_dims_by_n[2].get(char_grp, set())
+                ok_dims = self.char_grp_dims_by_n.get(2, {}).get(char_grp, set())
                 if dims in ok_dims:
                     logger.debug(
                         f"|{cursor.char_1_idx}|{cursor.char_2_idx}|"
@@ -473,23 +400,19 @@ class ValidationManager:
             cutoffs = self.char_pair_gaps.get(cursor.char_pair)
             if not cutoffs:
                 cutoffs = get_default_char_pair_cutoffs(cursor.char_1, cursor.char_2)
-                self._update_pair_gaps(cursor.char_pair, cutoffs)
+                self.update_pair_gaps(cursor.char_pair, cutoffs)
 
             # Adjacent
             if cursor.gap <= cutoffs[0]:
                 if cursor.gap_chars != "":
-                    messages.append(
-                        f"{cursor.intro_msg} | {cursor.gap_msg} | "
-                        "expected '' observed "
-                        f"'{cursor.gap_chars_escaped}'"
-                    )
+                    self._replace_gap_text(cursor, "")
                 cursor.advance()
                 continue
 
-            # Adjacent or space? Prompt the user
+            # Adjacent or space needs human judgment
             if cutoffs[0] < cursor.gap < cutoffs[1]:
                 if cursor.gap == cutoffs[0] + 1 and cursor.gap_chars == "":
-                    self._update_pair_gaps(
+                    self.update_pair_gaps(
                         cursor.char_pair,
                         (cursor.gap, cutoffs[1], cutoffs[2], cutoffs[3]),
                     )
@@ -499,171 +422,85 @@ class ValidationManager:
                     cursor.gap == cutoffs[1] - 1
                     and cursor.gap_chars == cursor.expected_space
                 ):
-                    self._update_pair_gaps(
+                    self.update_pair_gaps(
                         cursor.char_pair,
                         (cutoffs[0], cursor.gap, cutoffs[2], cutoffs[3]),
                     )
                     cursor.advance()
                     continue
-                if not interactive:
-                    messages.append(
-                        f"{cursor.intro_msg} | {cursor.gap_msg} | "
-                        "no approved or automatic match for gap"
-                    )
-                    return messages
-                gap_messages, skipped = self._prompt_space_gap(cursor, cutoffs)
-                messages.extend(gap_messages)
-                if skipped:
-                    return messages
-                cursor.advance()
-                continue
+                messages.append(
+                    f"{cursor.intro_msg} | {cursor.gap_msg} | "
+                    f"question about adjacent or space gap, observed "
+                    f"'{cursor.gap_chars_escaped}'"
+                )
+                return messages
 
             # Space
             if cutoffs[1] <= cursor.gap <= cutoffs[2]:
                 if cursor.gap_chars != cursor.expected_space:
-                    messages.append(
-                        f"{cursor.intro_msg} | {cursor.gap_msg} | "
-                        f"expected '{cursor.expected_space}' "
-                        f"observed '{cursor.gap_chars_escaped}'"
-                    )
+                    self._replace_gap_text(cursor, cursor.expected_space)
                 cursor.advance()
                 continue
 
-            # Space or tab? Prompt the user
+            # Space or tab needs human judgment
             if cutoffs[2] < cursor.gap < cutoffs[3]:
                 if (
                     cursor.gap == cutoffs[2] + 1
                     and cursor.gap_chars == cursor.expected_space
                 ):
-                    self._update_pair_gaps(
+                    self.update_pair_gaps(
                         cursor.char_pair,
                         (cutoffs[0], cutoffs[1], cursor.gap, cutoffs[3]),
                     )
                     cursor.advance()
                     continue
-                if cursor.gap == cutoffs[3] - 1 and cursor.gap_chars in (
-                    cursor.expected_tab,
-                    "\n",
+                if (
+                    cursor.gap == cutoffs[3] - 1
+                    and cursor.gap_chars == cursor.expected_tab
                 ):
-                    self._update_pair_gaps(
+                    self.update_pair_gaps(
                         cursor.char_pair,
                         (cutoffs[0], cutoffs[1], cutoffs[2], cursor.gap),
                     )
                     cursor.advance()
                     continue
-                if not interactive:
-                    messages.append(
-                        f"{cursor.intro_msg} | {cursor.gap_msg} | "
-                        "no approved or automatic match for gap"
-                    )
-                    return messages
-                gap_messages, skipped = self._prompt_tab_gap(cursor, cutoffs)
-                messages.extend(gap_messages)
-                if skipped:
-                    return messages
-                cursor.advance()
-                continue
+                messages.append(
+                    f"{cursor.intro_msg} | {cursor.gap_msg} | "
+                    f"question about space or tab gap, observed "
+                    f"'{cursor.gap_chars_escaped}'"
+                )
+                return messages
 
             # Tab
             if cutoffs[3] <= cursor.gap:
-                if cursor.gap_chars not in (cursor.expected_tab, "\n"):
-                    messages.append(
-                        f"{cursor.intro_msg} | {cursor.gap_msg} | "
-                        f"expected '{cursor.expected_tab}' "
-                        f"observed '{cursor.gap_chars_escaped}'"
-                    )
+                if cursor.gap_chars != cursor.expected_tab:
+                    self._replace_gap_text(cursor, cursor.expected_tab)
                 cursor.advance()
                 continue
 
         return messages
 
-    def _prompt_space_gap(
-        self, cursor: GapCursor, cutoffs: tuple[int, int, int, int]
-    ) -> tuple[list[str], bool]:
-        """Prompt user to confirm a space gap.
+    def _replace_gap_text(self, cursor: GapCursor, replacement: str):
+        """Replace the current gap text in a subtitle.
 
         Arguments:
-            cursor: gap cursor
-            cutoffs: gap cutoffs for this character pair
-        Returns:
-            tuple of (validation messages, skip_subtitle)
+            cursor: prepared gap cursor
+            replacement: replacement gap text
         """
-        messages: list[str] = []
-
-        cursor.annotated_img(2).show()
-        response = input(
-            f"{cursor.intro_msg} | {cursor.gap_msg} | "
-            f"observed '{cursor.gap_chars_escaped}', "
-            f"should be '{cursor.expected_space}'? (y/n/s): "
+        replacement_escaped = replacement.replace(chr(10), "\\n")
+        logger.info(
+            f"{cursor.intro_msg} | {cursor.gap_msg} | corrected gap text from "
+            f"'{cursor.gap_chars_escaped}' to '{replacement_escaped}'"
         )
-        if response.lower().startswith("s"):
-            messages.append(f"{cursor.intro_msg} | skipped by user")
-            return messages, True
-        approved = response.lower().startswith("y")
-        if approved:
-            self._update_pair_gaps(
-                (cursor.char_1, cursor.char_2),
-                (cutoffs[0], cursor.gap, cutoffs[2], cutoffs[3]),
-            )
-            expected_gap_chars = cursor.expected_space
-        else:
-            self._update_pair_gaps(
-                (cursor.char_1, cursor.char_2),
-                (cursor.gap, cutoffs[1], cutoffs[2], cutoffs[3]),
-            )
-            expected_gap_chars = ""
-        if cursor.gap_chars != expected_gap_chars:
-            messages.append(
-                f"{cursor.intro_msg} | {cursor.gap_msg} | "
-                f"expected '{expected_gap_chars}' "
-                f"observed '{cursor.gap_chars_escaped}'"
-            )
-        return messages, False
+        text = cursor.sub.text_with_newline
+        start_idx = cursor.char_1_idx + 1
+        end_idx = cursor.char_2_idx
+        updated_text = f"{text[:start_idx]}{replacement}{text[end_idx:]}"
+        cursor.sub.text = updated_text.replace("\n", "\\N")
+        cursor.char_2_idx = start_idx + len(replacement)
+        cursor.gap_chars = replacement
 
-    def _prompt_tab_gap(
-        self, cursor: GapCursor, cutoffs: tuple[int, int, int, int]
-    ) -> tuple[list[str], bool]:
-        """Prompt user to confirm a tab gap.
-
-        Arguments:
-            cursor: gap cursor
-            cutoffs: gap cutoffs for this character pair
-        Returns:
-            tuple of (validation messages, skip_subtitle)
-        """
-        messages: list[str] = []
-
-        cursor.annotated_img(2).show()
-        response = input(
-            f"{cursor.intro_msg} | {cursor.gap_msg} | "
-            f"observed '{cursor.gap_chars_escaped}', "
-            f"should be '{cursor.expected_tab}'? (y/n/s): "
-        )
-        if response.lower().startswith("s"):
-            messages.append(f"{cursor.intro_msg} | skipped by user")
-            return messages, True
-        approved = response.lower().startswith("y")
-        if approved:
-            self._update_pair_gaps(
-                (cursor.char_1, cursor.char_2),
-                (cutoffs[0], cutoffs[1], cutoffs[2], cursor.gap),
-            )
-            expected_gap_chars = cursor.expected_tab
-        else:
-            self._update_pair_gaps(
-                (cursor.char_1, cursor.char_2),
-                (cutoffs[0], cutoffs[1], cursor.gap, cutoffs[3]),
-            )
-            expected_gap_chars = cursor.expected_space
-        if cursor.gap_chars != expected_gap_chars:
-            messages.append(
-                f"{cursor.intro_msg} | {cursor.gap_msg} | "
-                f"expected '{expected_gap_chars}' "
-                f"observed '{cursor.gap_chars_escaped}'"
-            )
-        return messages, False
-
-    def _update_char_dims(self, char: str, dims: tuple[int, ...]):
+    def update_char_dims(self, char: str, dims: tuple[int, ...]):
         """Update char dims and save.
 
         Arguments:
@@ -703,7 +540,7 @@ class ValidationManager:
             output_char_grp_dims.setdefault(n, {}).setdefault(group, set()).add(dims)
         save_char_grp_dims(output_char_grp_dims, self._char_grp_dims_path())
 
-    def _update_pair_gaps(
+    def update_pair_gaps(
         self, char_pair: tuple[str, str], cutoffs: tuple[int, int, int, int]
     ):
         """Update char pair gaps and save.
@@ -712,7 +549,21 @@ class ValidationManager:
             char_pair: character pair
             cutoffs: cutoffs
         """
-        if self.char_pair_gaps.get(char_pair) == cutoffs:
+        previous_cutoffs = self.char_pair_gaps.get(char_pair)
+        if previous_cutoffs == cutoffs:
+            return
+        if cutoffs == get_default_char_pair_cutoffs(*char_pair):
+            self.char_pair_gaps[char_pair] = cutoffs
+            if previous_cutoffs is None:
+                return
+            if self.dev:
+                output_char_pair_gaps = self.char_pair_gaps
+            elif char_pair in self.cache_char_pair_gaps:
+                self.cache_char_pair_gaps.pop(char_pair, None)
+                output_char_pair_gaps = self.cache_char_pair_gaps
+            else:
+                return
+            save_char_pair_gaps(output_char_pair_gaps, self._char_pair_gaps_path())
             return
         self.char_pair_gaps[char_pair] = cutoffs
         logger.info(f"Added ({char_pair}, {cutoffs})")

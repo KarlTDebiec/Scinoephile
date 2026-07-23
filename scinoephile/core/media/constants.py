@@ -9,6 +9,7 @@ __all__ = ["SUBTITLE_CODEC_OUTPUTS"]
 SUBTITLE_CODEC_OUTPUTS = {
     "ass": ("ass", "ass"),
     "dvd_subtitle": ("sub", "copy"),
+    "eia_608": ("srt", "subrip"),
     "hdmv_pgs_subtitle": ("sup", "copy"),
     "mov_text": ("srt", "subrip"),
     "ssa": ("ssa", "ass"),

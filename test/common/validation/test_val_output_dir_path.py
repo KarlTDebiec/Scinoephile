@@ -6,173 +6,71 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+from pytest import MonkeyPatch, raises
 
 from scinoephile.common.validation import val_output_dir_path
 
 
-def test_val_output_dir_path_valid(tmp_path: Path):
-    """Test validation of valid output directory path."""
-    test_dir = tmp_path / "outputdir"
+def test_val_output_dir_path_accepts_path_values_and_creates_directories(
+    tmp_path: Path,
+):
+    """Test output directory validation accepts path values and creates directories."""
+    dir_path = tmp_path / "outputdir"
+    string_dir_path = tmp_path / "stringdir"
 
-    result = val_output_dir_path(test_dir)
-    assert isinstance(result, Path)
-    assert result.exists()
-    assert result.is_dir()
-
-
-def test_val_output_dir_path_from_string(tmp_path: Path):
-    """Test validation of output directory path from string."""
-    test_dir = tmp_path / "outputdir"
-
-    result = val_output_dir_path(str(test_dir))
-    assert isinstance(result, Path)
-    assert result.exists()
-    assert result.is_dir()
+    assert val_output_dir_path(dir_path) == dir_path.resolve()
+    assert dir_path.is_dir()
+    assert val_output_dir_path(str(string_dir_path)) == string_dir_path.resolve()
+    assert string_dir_path.is_dir()
 
 
-def test_val_output_dir_path_creates_dir(tmp_path: Path):
-    """Test that directory is created if it doesn't exist."""
-    test_dir = tmp_path / "newdir"
-    assert not test_dir.exists()
-
-    result = val_output_dir_path(test_dir)
-    assert result.exists()
-    assert result.is_dir()
-
-
-def test_val_output_dir_path_without_create(tmp_path: Path):
-    """Test that directory is not created when create is False."""
-    test_dir = tmp_path / "newdir"
-    assert not test_dir.exists()
-
-    result = val_output_dir_path(test_dir, create=False)
-    assert result == test_dir.resolve()
-    assert not result.exists()
-
-
-def test_val_output_dir_path_without_create_rejects_file_ancestor(tmp_path: Path):
-    """Test that create=False rejects paths below a file ancestor."""
+def test_val_output_dir_path_respects_create_option(tmp_path: Path):
+    """Test output directory validation respects the create option."""
+    dir_path = tmp_path / "newdir"
     file_path = tmp_path / "parent"
-    file_path.write_text("test content")
-    test_dir = file_path / "child"
+    file_path.write_text("test content", encoding="utf-8")
 
-    with pytest.raises(NotADirectoryError):
-        val_output_dir_path(test_dir, create=False)
-
-
-def test_val_output_dir_path_nested_dirs(tmp_path: Path):
-    """Test that nested directories are created."""
-    test_dir = tmp_path / "dir1/dir2/dir3"
-    assert not test_dir.exists()
-
-    result = val_output_dir_path(test_dir)
-    assert result.exists()
-    assert result.is_dir()
+    assert val_output_dir_path(dir_path, create=False) == dir_path.resolve()
+    assert not dir_path.exists()
+    with raises(NotADirectoryError):
+        val_output_dir_path(file_path / "child", create=False)
 
 
-def test_val_output_dir_path_already_exists(tmp_path: Path):
-    """Test validation when directory already exists."""
-    test_dir = tmp_path / "outputdir"
-    test_dir.mkdir()
+def test_val_output_dir_path_rejects_file_paths(tmp_path: Path):
+    """Test output directory validation rejects file paths."""
+    file_path = tmp_path / "output.txt"
+    file_path.write_text("test content", encoding="utf-8")
 
-    result = val_output_dir_path(test_dir)
-    assert isinstance(result, Path)
-    assert result.exists()
-    assert result.is_dir()
+    with raises(NotADirectoryError):
+        val_output_dir_path(file_path)
 
 
-def test_val_output_dir_path_not_a_directory(tmp_path: Path):
-    """Test validation when path exists but is not a directory."""
-    test_file = tmp_path / "output.txt"
-    test_file.write_text("test content")
+def test_val_output_dir_path_handles_iterables(tmp_path: Path):
+    """Test output directory validation handles iterable values."""
+    existing_dir_path = tmp_path / "existingdir"
+    existing_dir_path.mkdir()
+    new_dir_path = tmp_path / "newdir"
+    file_path = tmp_path / "output.txt"
+    file_path.write_text("test content", encoding="utf-8")
 
-    with pytest.raises(NotADirectoryError):
-        val_output_dir_path(test_file)
+    assert val_output_dir_path([existing_dir_path, new_dir_path]) == [
+        existing_dir_path.resolve(),
+        new_dir_path.resolve(),
+    ]
+    assert existing_dir_path.is_dir()
+    assert new_dir_path.is_dir()
+    assert val_output_dir_path(()) == []
 
-
-def test_val_output_dir_path_absolute(tmp_path: Path):
-    """Test that returned path is absolute."""
-    test_dir = tmp_path / "outputdir"
-
-    result = val_output_dir_path(test_dir)
-    assert result.is_absolute()
-
-
-def test_val_output_dir_path_list_valid(tmp_path: Path):
-    """Test validation of list of valid output directory paths."""
-    dirs = [tmp_path / f"outputdir{i}" for i in range(3)]
-
-    result = val_output_dir_path(dirs)
-    assert isinstance(result, list)
-    assert len(result) == 3
-    assert all(isinstance(p, Path) for p in result)
-    assert all(p.exists() and p.is_dir() for p in result)
+    with raises(NotADirectoryError):
+        val_output_dir_path([existing_dir_path, file_path])
 
 
-def test_val_output_dir_path_list_empty():
-    """Test validation of empty list."""
-    result = val_output_dir_path([])
-    assert result == []
-
-
-def test_val_output_dir_path_list_with_file(tmp_path: Path):
-    """Test validation of list with a file path."""
-    test_dir = tmp_path / "outputdir"
-    test_file = tmp_path / "output.txt"
-    test_file.write_text("test content")
-
-    with pytest.raises(NotADirectoryError):
-        val_output_dir_path([test_dir, test_file])
-
-
-def test_val_output_dir_path_tuple(tmp_path: Path):
-    """Test validation of tuple of output directory paths."""
-    dirs = tuple([tmp_path / f"outputdir{i}" for i in range(2)])
-
-    result = val_output_dir_path(dirs)
-    assert isinstance(result, list)
-    assert len(result) == 2
-    assert all(p.exists() and p.is_dir() for p in result)
-
-
-def test_val_output_dir_path_expands_user(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+def test_val_output_dir_path_expands_environment_variables(
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test that path expands ~ user directory."""
+    """Test output directory validation expands environment variables."""
+    dir_path = tmp_path / "outputdir"
+    monkeypatch.setenv("OUTPUT_DIR", str(dir_path))
 
-    # Mock expanduser to return our test path
-    def mock_expanduser(path: str) -> str:
-        """Map `~` paths to the temporary output directory."""
-        if path.startswith("~"):
-            return str(tmp_path / "outputdir")
-        return path
-
-    monkeypatch.setattr("scinoephile.common.validation.expanduser", mock_expanduser)
-
-    result = val_output_dir_path("~/outputdir")
-    assert result.exists()
-    assert result.is_dir()
-
-
-def test_val_output_dir_path_expands_vars(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-):
-    """Test that path expands environment variables."""
-    monkeypatch.setenv("OUTPUT_DIR", str(tmp_path / "outputdir"))
-
-    result = val_output_dir_path("$OUTPUT_DIR")
-    assert result.exists()
-    assert result.is_dir()
-
-
-def test_val_output_dir_path_list_mixed(tmp_path: Path):
-    """Test validation of list with existing and non-existing directories."""
-    test_dir1 = tmp_path / "existingdir"
-    test_dir1.mkdir()
-
-    test_dir2 = tmp_path / "newdir"
-
-    result = val_output_dir_path([test_dir1, test_dir2])
-    assert len(result) == 2
-    assert all(p.exists() and p.is_dir() for p in result)
+    assert val_output_dir_path("$OUTPUT_DIR") == dir_path.resolve()
+    assert dir_path.is_dir()

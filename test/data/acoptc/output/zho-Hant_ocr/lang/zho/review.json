@@ -1,0 +1,8415 @@
+[
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好漂亮呀！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "各位客官"
+        },
+        {
+          "index": 2,
+          "text": "擔擱大家一會，很快就點著了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "耽擱大家一會，很快就點著了",
+          "note": "將「擔擱」更正為「耽擱」，修正錯別字。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不好意思，對不起呀！"
+        },
+        {
+          "index": 2,
+          "text": "老伯，你這樣點燈是點不著的"
+        },
+        {
+          "index": 3,
+          "text": "你只有油，沒有燈芯"
+        },
+        {
+          "index": 4,
+          "text": "我知道"
+        },
+        {
+          "index": 5,
+          "text": "可是燈芯不見了，有甚麼辦法呢？"
+        },
+        {
+          "index": 6,
+          "text": "買一根喏"
+        },
+        {
+          "index": 7,
+          "text": "有道理⋯"
+        },
+        {
+          "index": 8,
+          "text": "姑娘，請問你"
+        },
+        {
+          "index": 9,
+          "text": "如果如來佛祖那盞神燈的燈芯不見了"
+        },
+        {
+          "index": 10,
+          "text": "上哪去買？"
+        },
+        {
+          "index": 11,
+          "text": "早知道你有問題，現身吧！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "原來是二郎神和南天門的四大天王"
+        },
+        {
+          "index": 2,
+          "text": "紫霞，你跟你姐姐青霞仙子"
+        },
+        {
+          "index": 3,
+          "text": "原來是佛祖日月明燈裡面"
+        },
+        {
+          "index": 4,
+          "text": "纏在一起的燈芯"
+        },
+        {
+          "index": 5,
+          "text": "你竟然擅自離開天庭"
+        },
+        {
+          "index": 6,
+          "text": "還到處跟人說"
+        },
+        {
+          "index": 7,
+          "text": "誰能拔出你手中的紫青寶劍"
+        },
+        {
+          "index": 8,
+          "text": "就是你的如意郎君"
+        },
+        {
+          "index": 9,
+          "text": "你是神仙怎麼能動凡心"
+        },
+        {
+          "index": 10,
+          "text": "假如邪魔外道把你的寶劍拔出來"
+        },
+        {
+          "index": 11,
+          "text": "我們仙界豈不是成為笑柄"
+        },
+        {
+          "index": 12,
+          "text": "神仙也好，妖怪也好"
+        },
+        {
+          "index": 13,
+          "text": "劍只有我跟我的意中人能拔得出"
+        },
+        {
+          "index": 14,
+          "text": "就算他是妖怪"
+        },
+        {
+          "index": 15,
+          "text": "我也會一生一世跟著他"
+        },
+        {
+          "index": 16,
+          "text": "如果不能跟我喜歡的人在一起的話"
+        },
+        {
+          "index": 17,
+          "text": "就算讓我做玉皇大帝我也不會開心"
+        },
+        {
+          "index": 18,
+          "text": "一派胡言"
+        },
+        {
+          "index": 19,
+          "text": "既然你執迷不悟"
+        },
+        {
+          "index": 20,
+          "text": "我今天就要替天行道"
+        },
+        {
+          "index": 21,
+          "text": "要你在人間仙界消失"
+        },
+        {
+          "index": 22,
+          "text": "只羨鴛鴦不羨仙，消失就消失"
+        },
+        {
+          "index": 23,
+          "text": "放肆！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不用說！"
+        },
+        {
+          "index": 2,
+          "text": "這件事誰說出去，我就殺了他！"
+        },
+        {
+          "index": 3,
+          "text": "我說了不用再說了"
+        },
+        {
+          "index": 4,
+          "text": "不是啊！"
+        },
+        {
+          "index": 5,
+          "text": "你的吼天犬在那邊騎著一條母狗"
+        },
+        {
+          "index": 6,
+          "text": "連牠都動了凡心"
+        },
+        {
+          "index": 7,
+          "text": "今天晚上我就殺了牠大家一塊吃"
+        },
+        {
+          "index": 8,
+          "text": "好啊⋯"
+        },
+        {
+          "index": 9,
+          "text": "我們早就這麼想了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "晶晶"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "晶晶"
+        },
+        {
+          "index": 2,
+          "text": "怎會這樣的，人呢？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "神仙？"
+        },
+        {
+          "index": 2,
+          "text": "妖怪"
+        },
+        {
+          "index": 3,
+          "text": "謝謝"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "盤絲洞不要亂闖"
+        },
+        {
+          "index": 2,
+          "text": "盤絲洞？"
+        },
+        {
+          "index": 3,
+          "text": "你以為我看不懂啊？水簾洞嘛！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "盤絲洞，這個名字蠻好聽的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "就叫你盤絲洞吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好，我以後就住在這兒"
+        },
+        {
+          "index": 2,
+          "text": "慢著"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我現在鄭重宣佈"
+        },
+        {
+          "index": 2,
+          "text": "這個山頭所有東西都屬於我的"
+        },
+        {
+          "index": 3,
+          "text": "包括你在內"
+        },
+        {
+          "index": 4,
+          "text": "我？"
+        },
+        {
+          "index": 5,
+          "text": "是呀！"
+        },
+        {
+          "index": 6,
+          "text": "就像我的騾子一樣，給你蓋個章"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "這個山頭所有東西都屬於我",
+          "note": "刪除句末「的」，與語義和對應字幕保持一致。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你現在是我的人了"
+        },
+        {
+          "index": 2,
+          "text": "如果有人欺負你呢，就報我的名字"
+        },
+        {
+          "index": 3,
+          "text": "從今天起，我叫盤絲洞大仙"
+        },
+        {
+          "index": 4,
+          "text": "盤絲大仙？"
+        },
+        {
+          "index": 5,
+          "text": "五百年前？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你沒有變成孫悟空托世"
+        },
+        {
+          "index": 2,
+          "text": "是因為你還沒遇見給你三顆痣的人"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "芝麻開門"
+        },
+        {
+          "index": 2,
+          "text": "芝麻關門"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我不信⋯"
+        },
+        {
+          "index": 2,
+          "text": "我不要當猴子"
+        },
+        {
+          "index": 3,
+          "text": "我要去救晶晶"
+        },
+        {
+          "index": 4,
+          "text": "拜托你把寶盒還給我"
+        },
+        {
+          "index": 5,
+          "text": "芝麻開門"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "沒道理啊，明明聽到她說芝麻開門的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "芝麻開門"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你賴皮"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "怕了你了，想別的辦法"
+        },
+        {
+          "index": 2,
+          "text": "小心"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這一邊"
+        },
+        {
+          "index": 2,
+          "text": "芝麻開門"
+        },
+        {
+          "index": 3,
+          "text": "誰啊？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "怎麼壓得四分五裂了？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "嘩！好棒呀！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有了這個月光寶盒"
+        },
+        {
+          "index": 2,
+          "text": "以後就不怕被青霞姐姐追殺"
+        },
+        {
+          "index": 3,
+          "text": "出來吧！鬼鬼崇崇的，害羞呀你？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "出來吧！鬼鬼祟祟的，害羞呀你？",
+          "note": "「崇崇」應為「祟祟」，屬錯別字修正。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這個月光寶盒呢⋯　　我的！"
+        },
+        {
+          "index": 2,
+          "text": "我說過了，這裡所有東西都是我的"
+        },
+        {
+          "index": 3,
+          "text": "你想幹嘛？"
+        },
+        {
+          "index": 4,
+          "text": "沒⋯"
+        },
+        {
+          "index": 5,
+          "text": "我聽說你要走"
+        },
+        {
+          "index": 6,
+          "text": "能不能帶我一起走呀？"
+        },
+        {
+          "index": 7,
+          "text": "你也被人追殺呀？"
+        },
+        {
+          "index": 8,
+          "text": "我趕著去救人"
+        },
+        {
+          "index": 9,
+          "text": "救誰啊？"
+        },
+        {
+          "index": 10,
+          "text": "救我娘子"
+        },
+        {
+          "index": 11,
+          "text": "就是白晶晶嘛，你認識她的"
+        },
+        {
+          "index": 12,
+          "text": "不認識"
+        },
+        {
+          "index": 13,
+          "text": "我知道，不過你很快就會認識她了"
+        },
+        {
+          "index": 14,
+          "text": "因為她將會做你的徒弟"
+        },
+        {
+          "index": 15,
+          "text": "還有這個寶盒呢⋯"
+        },
+        {
+          "index": 16,
+          "text": "我的！"
+        },
+        {
+          "index": 17,
+          "text": "我知道"
+        },
+        {
+          "index": 18,
+          "text": "不過其實呢，是我給你"
+        },
+        {
+          "index": 19,
+          "text": "然後你再⋯在那個時候交給我"
+        },
+        {
+          "index": 20,
+          "text": "那麼才會有我回到這裡來"
+        },
+        {
+          "index": 21,
+          "text": "然後又交還給你"
+        },
+        {
+          "index": 22,
+          "text": "你明白嗎？"
+        },
+        {
+          "index": 23,
+          "text": "我明白？你神經病　　對呀"
+        },
+        {
+          "index": 24,
+          "text": "反正你一定要帶我走就對"
+        },
+        {
+          "index": 25,
+          "text": "我為甚麼要對你這麼好？"
+        },
+        {
+          "index": 26,
+          "text": "因為你是我的主人"
+        },
+        {
+          "index": 27,
+          "text": "你走了我一個人留在這裡甚麼意思"
+        },
+        {
+          "index": 28,
+          "text": "真的嗎？"
+        },
+        {
+          "index": 29,
+          "text": "坐"
+        },
+        {
+          "index": 30,
+          "text": "地下"
+        },
+        {
+          "index": 31,
+          "text": "手"
+        },
+        {
+          "index": 32,
+          "text": "乖啊！待會給你買件新衣服"
+        },
+        {
+          "index": 33,
+          "text": "讓你回去見你娘子啊"
+        },
+        {
+          "index": 34,
+          "text": "叫啊！"
+        },
+        {
+          "index": 35,
+          "text": "喔"
+        },
+        {
+          "index": 36,
+          "text": "用心點"
+        },
+        {
+          "index": 37,
+          "text": "喔⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "仙子⋯"
+        },
+        {
+          "index": 2,
+          "text": "快點呀，月亮出來了"
+        },
+        {
+          "index": 3,
+          "text": "走啦"
+        },
+        {
+          "index": 4,
+          "text": "去哪兒？"
+        },
+        {
+          "index": 5,
+          "text": "你不走啊？"
+        },
+        {
+          "index": 6,
+          "text": "你不走把寶盒給我，我走啊"
+        },
+        {
+          "index": 7,
+          "text": "你說甚麼寶盒？"
+        },
+        {
+          "index": 8,
+          "text": "我是不會再等到明天晚上了"
+        },
+        {
+          "index": 9,
+          "text": "我告訴你"
+        },
+        {
+          "index": 10,
+          "text": "你快點啦，還說"
+        },
+        {
+          "index": 11,
+          "text": "等一下你那個賤人姐姐又出來害你了"
+        },
+        {
+          "index": 12,
+          "text": "賤人，到處跟人家說我害她"
+        },
+        {
+          "index": 13,
+          "text": "甚麼？"
+        },
+        {
+          "index": 14,
+          "text": "我就是那個賤人的姐姐"
+        },
+        {
+          "index": 15,
+          "text": "你不要聽她胡說八道"
+        },
+        {
+          "index": 16,
+          "text": "至尊寶"
+        },
+        {
+          "index": 17,
+          "text": "至尊寶"
+        },
+        {
+          "index": 18,
+          "text": "你昨晚怎麼不叫醒我呀？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "怎麼了？"
+        },
+        {
+          "index": 2,
+          "text": "你到那兒去？站住"
+        },
+        {
+          "index": 3,
+          "text": "坐下"
+        },
+        {
+          "index": 4,
+          "text": "椅子"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你怎麼了？"
+        },
+        {
+          "index": 2,
+          "text": "怎麼這樣看我？"
+        },
+        {
+          "index": 3,
+          "text": "你看到甚麼啦？"
+        },
+        {
+          "index": 4,
+          "text": "你看到她啦？"
+        },
+        {
+          "index": 5,
+          "text": "你真的看到我姐姐嗎？"
+        },
+        {
+          "index": 6,
+          "text": "她那麼快就來啦"
+        },
+        {
+          "index": 7,
+          "text": "她跟你說了甚麼？"
+        },
+        {
+          "index": 8,
+          "text": "你不要相信她，她是神經病"
+        },
+        {
+          "index": 9,
+          "text": "可能她前世跟我鬥得太厲害"
+        },
+        {
+          "index": 10,
+          "text": "所以後來佛祖"
+        },
+        {
+          "index": 11,
+          "text": "把我們兩個捲在一起變成一根燈芯"
+        },
+        {
+          "index": 12,
+          "text": "要我們苦練修行"
+        },
+        {
+          "index": 13,
+          "text": "化解這段恩怨"
+        },
+        {
+          "index": 14,
+          "text": "可惜事與願違"
+        },
+        {
+          "index": 15,
+          "text": "現在鬥得比以前更厲害"
+        },
+        {
+          "index": 16,
+          "text": "不要說那麼多了"
+        },
+        {
+          "index": 17,
+          "text": "我們快走吧！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你以為我精神分裂啦"
+        },
+        {
+          "index": 2,
+          "text": "我沒有，那個真的是我姐姐"
+        },
+        {
+          "index": 3,
+          "text": "你不相信是嗎？"
+        },
+        {
+          "index": 4,
+          "text": "來呀，拿來呀"
+        },
+        {
+          "index": 5,
+          "text": "我們把手綁在一起"
+        },
+        {
+          "index": 6,
+          "text": "今天晚上就知道"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我看今晚不會有月光了"
+        },
+        {
+          "index": 2,
+          "text": "是嗎？"
+        },
+        {
+          "index": 3,
+          "text": "賤人"
+        },
+        {
+          "index": 4,
+          "text": "你跑不出我的五指山"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "貴姓啊？"
+        },
+        {
+          "index": 2,
+          "text": "姓林！"
+        },
+        {
+          "index": 3,
+          "text": "原來你就是我大哥說的那個林青霞"
+        },
+        {
+          "index": 4,
+          "text": "你大哥？"
+        },
+        {
+          "index": 5,
+          "text": "昨天被你打那個傢伙，叫做至尊寶"
+        },
+        {
+          "index": 6,
+          "text": "那你呢？"
+        },
+        {
+          "index": 7,
+          "text": "我是他的雙胞胎弟弟叫至尊玉"
+        },
+        {
+          "index": 8,
+          "text": "至尊寶？　玉尊玉？　想騙我啊？"
+        },
+        {
+          "index": 9,
+          "text": "你真是聰明伶俐"
+        },
+        {
+          "index": 10,
+          "text": "其實我大哥的真名叫秦漢"
+        },
+        {
+          "index": 11,
+          "text": "我叫秦祥林"
+        },
+        {
+          "index": 12,
+          "text": "你在這裡幹甚麼？"
+        },
+        {
+          "index": 13,
+          "text": "我很仰慕你"
+        },
+        {
+          "index": 14,
+          "text": "你仰慕我？"
+        },
+        {
+          "index": 15,
+          "text": "豈止仰慕，簡直害怕失去你"
+        },
+        {
+          "index": 16,
+          "text": "所以跟你綁在一起"
+        },
+        {
+          "index": 17,
+          "text": "你接受我對你的愛吧"
+        },
+        {
+          "index": 18,
+          "text": "我們一起遠走高飛"
+        },
+        {
+          "index": 19,
+          "text": "愛我就要付出代價"
+        },
+        {
+          "index": 20,
+          "text": "別說了，可能你姐姐恨你入骨"
+        },
+        {
+          "index": 21,
+          "text": "我今天晚上騙她我殺了你"
+        },
+        {
+          "index": 22,
+          "text": "你以後就可安心"
+        },
+        {
+          "index": 23,
+          "text": "所以我要你身上一件信物給她看"
+        },
+        {
+          "index": 24,
+          "text": "你有什麼頸鍊⋯"
+        },
+        {
+          "index": 25,
+          "text": "手飾，珠寶，月光寶盒什麼⋯"
+        },
+        {
+          "index": 26,
+          "text": "好呀，不過那些沒有用"
+        },
+        {
+          "index": 27,
+          "text": "你今天晚上拿我的紫青寶劍給她看"
+        },
+        {
+          "index": 28,
+          "text": "她一定會相信的"
+        },
+        {
+          "index": 29,
+          "text": "也好"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 8,
+          "text": "至尊寶？　至尊玉？　想騙我啊？",
+          "note": "修正「玉尊玉」為「至尊玉」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "居然是他"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "趁現在天沒黑，帶我到市集去走走吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "怎麼了？"
+        },
+        {
+          "index": 2,
+          "text": "幹甚麼？"
+        },
+        {
+          "index": 3,
+          "text": "我的心跳得好厲害"
+        },
+        {
+          "index": 4,
+          "text": "那怎麼辦？"
+        },
+        {
+          "index": 5,
+          "text": "來"
+        },
+        {
+          "index": 6,
+          "text": "現在大師兄變了人樣"
+        },
+        {
+          "index": 7,
+          "text": "還跟紫霞仙子在一起"
+        },
+        {
+          "index": 8,
+          "text": "難道抓師父這件事"
+        },
+        {
+          "index": 9,
+          "text": "紫霞仙子也有份？"
+        },
+        {
+          "index": 10,
+          "text": "我們跟緊他不要打草驚蛇"
+        },
+        {
+          "index": 11,
+          "text": "論智慧跟武功"
+        },
+        {
+          "index": 12,
+          "text": "我一直比他高一點點"
+        },
+        {
+          "index": 13,
+          "text": "可是現在多了一個紫霞仙子"
+        },
+        {
+          "index": 14,
+          "text": "她恐怕比我高一點點了"
+        },
+        {
+          "index": 15,
+          "text": "這邊有我嘛"
+        },
+        {
+          "index": 16,
+          "text": "就是因為多了你這個累贅"
+        },
+        {
+          "index": 17,
+          "text": "他才會高我一點點"
+        },
+        {
+          "index": 18,
+          "text": "這個豬頭切不半給我，謝謝"
+        },
+        {
+          "index": 19,
+          "text": "豬頭不賣，豬鞭要不要？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 18,
+          "text": "這個豬頭切一半給我，謝謝",
+          "note": "修正「切不半」為「切一半」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "幹甚麼？"
+        },
+        {
+          "index": 2,
+          "text": "我的意中人在附近"
+        },
+        {
+          "index": 3,
+          "text": "你看到他了？"
+        },
+        {
+          "index": 4,
+          "text": "沒有"
+        },
+        {
+          "index": 5,
+          "text": "因為我的紫青寶劍發出嘟嘟的訊號"
+        },
+        {
+          "index": 6,
+          "text": "哪來的嘟嘟聲"
+        },
+        {
+          "index": 7,
+          "text": "嘟⋯嘟⋯嘟⋯對不對呀？"
+        },
+        {
+          "index": 8,
+          "text": "你嘟的，寶劍沒有嘟呀"
+        },
+        {
+          "index": 9,
+          "text": "我知道你聽不見才嘟給你聽"
+        },
+        {
+          "index": 10,
+          "text": "完了我好害怕啊！"
+        },
+        {
+          "index": 11,
+          "text": "我不騙你，我真的好害怕啊！"
+        },
+        {
+          "index": 12,
+          "text": "你怕甚麼？"
+        },
+        {
+          "index": 13,
+          "text": "這段姻緣是上天安排的你說我怕不怕"
+        },
+        {
+          "index": 14,
+          "text": "又來了？"
+        },
+        {
+          "index": 15,
+          "text": "是啊！　我的心在跳"
+        },
+        {
+          "index": 16,
+          "text": "我的寶劍在嘟"
+        },
+        {
+          "index": 17,
+          "text": "怎麼辦？"
+        },
+        {
+          "index": 18,
+          "text": "我怎麼跟他說，怎麼跟他說呢？"
+        },
+        {
+          "index": 19,
+          "text": "你就告訴他說"
+        },
+        {
+          "index": 20,
+          "text": "這是上天安排了這麼一段姻緣"
+        },
+        {
+          "index": 21,
+          "text": "他不喜歡我，怎麼辦？"
+        },
+        {
+          "index": 22,
+          "text": "他有老婆怎麼辦呀？"
+        },
+        {
+          "index": 23,
+          "text": "你管他那麼多，上天的安排是最大"
+        },
+        {
+          "index": 24,
+          "text": "真的？"
+        },
+        {
+          "index": 25,
+          "text": "上天安排的，還不夠你臭屁的啊？"
+        },
+        {
+          "index": 26,
+          "text": "對啊！對⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "他來了"
+        },
+        {
+          "index": 2,
+          "text": "不會是我吧？"
+        },
+        {
+          "index": 3,
+          "text": "哎⋯就是你，你怎麼知道？就是你"
+        },
+        {
+          "index": 4,
+          "text": "你知不知道我剛才都不知"
+        },
+        {
+          "index": 5,
+          "text": "怎麼跟你說才好"
+        },
+        {
+          "index": 6,
+          "text": "你真是聰明啊"
+        },
+        {
+          "index": 7,
+          "text": "可是我有老婆了"
+        },
+        {
+          "index": 8,
+          "text": "我知道，可是我也沒辦法呀"
+        },
+        {
+          "index": 9,
+          "text": "這段姻緣是上天安排的最大嘛"
+        },
+        {
+          "index": 10,
+          "text": "喏！你現在呢只要甩掉你哪個老婆"
+        },
+        {
+          "index": 11,
+          "text": "然後跟我一起走"
+        },
+        {
+          "index": 12,
+          "text": "也好啊！"
+        },
+        {
+          "index": 13,
+          "text": "好啊？"
+        },
+        {
+          "index": 14,
+          "text": "是很好呀！"
+        },
+        {
+          "index": 15,
+          "text": "那麼我們大家立刻開始這段感情吧！"
+        },
+        {
+          "index": 16,
+          "text": "好！就立刻開始！"
+        },
+        {
+          "index": 17,
+          "text": "你先親我一下吧"
+        },
+        {
+          "index": 18,
+          "text": "也好，自動送上門來"
+        },
+        {
+          "index": 19,
+          "text": "來啊！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "來，拿出來"
+        },
+        {
+          "index": 2,
+          "text": "你騙我"
+        },
+        {
+          "index": 3,
+          "text": "你根本不想親我"
+        },
+        {
+          "index": 4,
+          "text": "你剛剛說的話全都是騙我的"
+        },
+        {
+          "index": 5,
+          "text": "我是認真的，你先把寶盒拿出來"
+        },
+        {
+          "index": 6,
+          "text": "要不要我把心托出來給你看看？"
+        },
+        {
+          "index": 7,
+          "text": "不用，我自己來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你的心怎麼像椰子一樣"
+        },
+        {
+          "index": 2,
+          "text": "小姐，不可否認我長得很醜"
+        },
+        {
+          "index": 3,
+          "text": "可是我很溫柔，而且永遠不會說謊"
+        },
+        {
+          "index": 4,
+          "text": "那你老實告訴我"
+        },
+        {
+          "index": 5,
+          "text": "他跟他娘子是不是很恩愛"
+        },
+        {
+          "index": 6,
+          "text": "誰敢惹我就殺誰"
+        },
+        {
+          "index": 7,
+          "text": "菩提大哥你看看"
+        },
+        {
+          "index": 8,
+          "text": "看看！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "真的不動啦"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我懂了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "搜搜看"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "老兄，這是甚麼意思啊？"
+        },
+        {
+          "index": 2,
+          "text": "我看你身裁好，所以摸摸看了"
+        },
+        {
+          "index": 3,
+          "text": "是這樣的，那就請繼續摸啦"
+        },
+        {
+          "index": 4,
+          "text": "沒事了，繼續摸"
+        },
+        {
+          "index": 5,
+          "text": "誰的手啊？"
+        },
+        {
+          "index": 6,
+          "text": "你說甚麼？"
+        },
+        {
+          "index": 7,
+          "text": "拿開！"
+        },
+        {
+          "index": 8,
+          "text": "妖怪呀"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "我看你身材好，所以摸摸看了",
+          "note": "將「身裁」修正為「身材」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "鬧夠了沒有？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你別生氣，我是跟你鬧著玩的"
+        },
+        {
+          "index": 2,
+          "text": "好好照顧姐姐"
+        },
+        {
+          "index": 3,
+          "text": "她一定會給你的"
+        },
+        {
+          "index": 4,
+          "text": "我怎麼敢生你的氣呢，大姐"
+        },
+        {
+          "index": 5,
+          "text": "把你當觀世音供著還來不及呢"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "天黑了，我要去找姐姐了"
+        },
+        {
+          "index": 2,
+          "text": "祝你好運"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有好運才怪"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "青霞"
+        },
+        {
+          "index": 2,
+          "text": "你在那裡呀？"
+        },
+        {
+          "index": 3,
+          "text": "出來呀"
+        },
+        {
+          "index": 4,
+          "text": "我已經殺了你妹妹啦"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "孫悟空"
+        },
+        {
+          "index": 2,
+          "text": "你這個畜生"
+        },
+        {
+          "index": 3,
+          "text": "你為了跟牛魔王的妹妹成親"
+        },
+        {
+          "index": 4,
+          "text": "居然把你師父唐三藏作賀禮"
+        },
+        {
+          "index": 5,
+          "text": "還約了妖魔鬼怪一起吃唐僧肉"
+        },
+        {
+          "index": 6,
+          "text": "你認不認錯"
+        },
+        {
+          "index": 7,
+          "text": "三八婆！"
+        },
+        {
+          "index": 8,
+          "text": "你追了我三天三夜"
+        },
+        {
+          "index": 9,
+          "text": "因為你是女人，我才不殺你"
+        },
+        {
+          "index": 10,
+          "text": "別要以為我是怕了你"
+        },
+        {
+          "index": 11,
+          "text": "悟空"
+        },
+        {
+          "index": 12,
+          "text": "你怎麼可以這樣跟觀音姐姐講話呢"
+        },
+        {
+          "index": 13,
+          "text": "閉嘴！"
+        },
+        {
+          "index": 14,
+          "text": "你又嚇我！"
+        },
+        {
+          "index": 15,
+          "text": "孫悟空，唐三藏？"
+        },
+        {
+          "index": 16,
+          "text": "你知不知道你已經犯了彌天大罪了？"
+        },
+        {
+          "index": 17,
+          "text": "你還搶了紫霞仙子的月光寶盒"
+        },
+        {
+          "index": 18,
+          "text": "分明就是想避開我"
+        },
+        {
+          "index": 19,
+          "text": "既然避不了"
+        },
+        {
+          "index": 20,
+          "text": "我老孫就跟你決一死戰啦"
+        },
+        {
+          "index": 21,
+          "text": "幹甚麼呀？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "悟空，你也真調皮啊"
+        },
+        {
+          "index": 2,
+          "text": "我教你不要亂扔東西啊"
+        },
+        {
+          "index": 3,
+          "text": "亂扔東西是不對的"
+        },
+        {
+          "index": 4,
+          "text": "我話沒說完，你怎把棍子也給扔掉了"
+        },
+        {
+          "index": 5,
+          "text": "月光寶盒是寶物"
+        },
+        {
+          "index": 6,
+          "text": "亂扔會染污環境！"
+        },
+        {
+          "index": 7,
+          "text": "砸著小朋友怎麼辦？"
+        },
+        {
+          "index": 8,
+          "text": "就算砸不著小朋友"
+        },
+        {
+          "index": 9,
+          "text": "砸著花花草草也不好嘛"
+        },
+        {
+          "index": 10,
+          "text": "你幹甚麼？"
+        },
+        {
+          "index": 11,
+          "text": "放手！"
+        },
+        {
+          "index": 12,
+          "text": "你想要呀？"
+        },
+        {
+          "index": 13,
+          "text": "你想要說清楚就行了嘛"
+        },
+        {
+          "index": 14,
+          "text": "你想要的話我會給你的"
+        },
+        {
+          "index": 15,
+          "text": "你想要我當然不會不給你的"
+        },
+        {
+          "index": 16,
+          "text": "不可能你說要我不給你的"
+        },
+        {
+          "index": 17,
+          "text": "你說不要我卻偏要給你"
+        },
+        {
+          "index": 18,
+          "text": "大家講道理嘛"
+        },
+        {
+          "index": 19,
+          "text": "現在我數三下"
+        },
+        {
+          "index": 20,
+          "text": "你要說清楚你要不要"
+        },
+        {
+          "index": 21,
+          "text": "孫悟空"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "亂扔會污染環境！",
+          "note": "修正「染污」為「污染」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大家看到了"
+        },
+        {
+          "index": 2,
+          "text": "這傢伙沒事就長篇大論，婆婆媽媽"
+        },
+        {
+          "index": 3,
+          "text": "嘰嘰歪歪"
+        },
+        {
+          "index": 4,
+          "text": "就活像整天一隻蒼蠅"
+        },
+        {
+          "index": 5,
+          "text": "對不起，不是一隻"
+        },
+        {
+          "index": 6,
+          "text": "是一堆蒼蠅圍著你呀"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "飛到你的耳朵裡面"
+        },
+        {
+          "index": 2,
+          "text": "救命呀⋯"
+        },
+        {
+          "index": 3,
+          "text": "救命呀！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "所以我就抓住這隻蒼蠅擠破它肚子"
+        },
+        {
+          "index": 2,
+          "text": "把它腸子扯出來"
+        },
+        {
+          "index": 3,
+          "text": "再將它腸子纏著它脖子，用力一拉"
+        },
+        {
+          "index": 4,
+          "text": "整條舌頭都伸出來了，我再手起刀落"
+        },
+        {
+          "index": 5,
+          "text": "整個世界清靜了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "現在大家知道"
+        },
+        {
+          "index": 2,
+          "text": "我為甚麼要殺它了"
+        },
+        {
+          "index": 3,
+          "text": "真的嗎？"
+        },
+        {
+          "index": 4,
+          "text": "諸多藉口"
+        },
+        {
+          "index": 5,
+          "text": "你根本不想去取西經"
+        },
+        {
+          "index": 6,
+          "text": "不管怎麼解釋也不能原諒你"
+        },
+        {
+          "index": 7,
+          "text": "欺師滅祖的行為"
+        },
+        {
+          "index": 8,
+          "text": "姐姐"
+        },
+        {
+          "index": 9,
+          "text": "這是你的不對了"
+        },
+        {
+          "index": 10,
+          "text": "悟空他要吃我"
+        },
+        {
+          "index": 11,
+          "text": "只不過是一個構思"
+        },
+        {
+          "index": 12,
+          "text": "還沒有成為一個事實"
+        },
+        {
+          "index": 13,
+          "text": "你又沒有證據"
+        },
+        {
+          "index": 14,
+          "text": "牠又何罪之有呢？"
+        },
+        {
+          "index": 15,
+          "text": "不如等牠吃了我之後"
+        },
+        {
+          "index": 16,
+          "text": "你有憑有據，再定牠的罪也不遲"
+        },
+        {
+          "index": 17,
+          "text": "唐三藏，你囉嗦我早就聽說過了"
+        },
+        {
+          "index": 18,
+          "text": "不過沒想到你居然這麼囉嗦"
+        },
+        {
+          "index": 19,
+          "text": "我給你的金剛圈要你用來制服這猴子"
+        },
+        {
+          "index": 20,
+          "text": "你居然不用"
+        },
+        {
+          "index": 21,
+          "text": "那個金剛圈尺吋太差"
+        },
+        {
+          "index": 22,
+          "text": "前重後輕，左寬右窄"
+        },
+        {
+          "index": 23,
+          "text": "他戴上之後很不舒服"
+        },
+        {
+          "index": 24,
+          "text": "整晚失眠，會連累我嘛"
+        },
+        {
+          "index": 25,
+          "text": "牠雖然是個猴子"
+        },
+        {
+          "index": 26,
+          "text": "可是你也不能這樣對牠呀"
+        },
+        {
+          "index": 27,
+          "text": "官府知道會說我虐待動物的"
+        },
+        {
+          "index": 28,
+          "text": "講起個金剛圈⋯"
+        },
+        {
+          "index": 29,
+          "text": "去年我在陳家村認識了一位鐵匠"
+        },
+        {
+          "index": 30,
+          "text": "他手工精美，價錢又公道"
+        },
+        {
+          "index": 31,
+          "text": "童叟無欺"
+        },
+        {
+          "index": 32,
+          "text": "乾脆我介紹你"
+        },
+        {
+          "index": 33,
+          "text": "再訂造一個吧"
+        },
+        {
+          "index": 34,
+          "text": "閉嘴！"
+        },
+        {
+          "index": 35,
+          "text": "閉嘴！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 21,
+          "text": "那個金剛圈尺寸太差",
+          "note": "修正「尺吋」為「尺寸」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "罪過⋯"
+        },
+        {
+          "index": 2,
+          "text": "現在你們體會到我的痛苦了吧！"
+        },
+        {
+          "index": 3,
+          "text": "回答我！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "搞定了"
+        },
+        {
+          "index": 2,
+          "text": "我叫你不要亂扔東西了"
+        },
+        {
+          "index": 3,
+          "text": "你看看，真是的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "妖猴受死吧！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "憑你也想收服我！"
+        },
+        {
+          "index": 2,
+          "text": "你以為你是如來佛祖呀"
+        },
+        {
+          "index": 3,
+          "text": "不要打了⋯"
+        },
+        {
+          "index": 4,
+          "text": "觀音姐姐"
+        },
+        {
+          "index": 5,
+          "text": "請你放過悟空，不要傷害牠啦"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你們不要打了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "今天我要替天行道！"
+        },
+        {
+          "index": 2,
+          "text": "觀音姐姐，手下留情呀"
+        },
+        {
+          "index": 3,
+          "text": "試問人誰無過？"
+        },
+        {
+          "index": 4,
+          "text": "牠總算是我的徒弟"
+        },
+        {
+          "index": 5,
+          "text": "徒弟有錯，做師父也有責任"
+        },
+        {
+          "index": 6,
+          "text": "求觀音姐姐放牠一條生路吧"
+        },
+        {
+          "index": 7,
+          "text": "我不消滅牠"
+        },
+        {
+          "index": 8,
+          "text": "無法向玉皇大帝交代"
+        },
+        {
+          "index": 9,
+          "text": "我不會使你為難的"
+        },
+        {
+          "index": 10,
+          "text": "請觀音姐姐跟玉皇大帝說一聲"
+        },
+        {
+          "index": 11,
+          "text": "貧僧願意一命賠一命"
+        },
+        {
+          "index": 12,
+          "text": "吓？"
+        },
+        {
+          "index": 13,
+          "text": "正所謂我不入地獄，誰入地獄呢？"
+        },
+        {
+          "index": 14,
+          "text": "求姐姐你體諒"
+        },
+        {
+          "index": 15,
+          "text": "我這樣做，無非是想感化劣徒"
+        },
+        {
+          "index": 16,
+          "text": "以配合我佛慈悲的大無畏精神啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "善哉⋯"
+        },
+        {
+          "index": 2,
+          "text": "悟空，希望你有一天能夠領悟到"
+        },
+        {
+          "index": 3,
+          "text": "你師父這種捨身取義的精神"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喃嘸阿彌陀佛"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "難道又做夢了？"
+        },
+        {
+          "index": 2,
+          "text": "這次麻煩大了"
+        },
+        {
+          "index": 3,
+          "text": "沒有一次做的夢是好夢"
+        },
+        {
+          "index": 4,
+          "text": "青霞呢？"
+        },
+        {
+          "index": 5,
+          "text": "沒來過呀"
+        },
+        {
+          "index": 6,
+          "text": "青霞⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "各位兄台，大家好嗎？"
+        },
+        {
+          "index": 2,
+          "text": "天氣好冷啊！"
+        },
+        {
+          "index": 3,
+          "text": "有沒有多穿件衣服啊！"
+        },
+        {
+          "index": 4,
+          "text": "小弟一時迷失方向"
+        },
+        {
+          "index": 5,
+          "text": "想借個地方宿一個晚上"
+        },
+        {
+          "index": 6,
+          "text": "馬屁精，到那邊睡覺"
+        },
+        {
+          "index": 7,
+          "text": "真是出門遇貴人"
+        },
+        {
+          "index": 8,
+          "text": "祝大家萬壽無疆啊，謝謝"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "明明看見大師兄上山來了嘛"
+        },
+        {
+          "index": 2,
+          "text": "怎麼人不見了？"
+        },
+        {
+          "index": 3,
+          "text": "都是你害的，尿甚麼尿嘛！"
+        },
+        {
+          "index": 4,
+          "text": "忍忍會憋死呀"
+        },
+        {
+          "index": 5,
+          "text": "尿尿也犯法呀？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "黑山老妖？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "悟空"
+        },
+        {
+          "index": 2,
+          "text": "你又扮人樣啦"
+        },
+        {
+          "index": 3,
+          "text": "還認得為師嗎？"
+        },
+        {
+          "index": 4,
+          "text": "又是你這隻蒼蠅"
+        },
+        {
+          "index": 5,
+          "text": "悟空⋯"
+        },
+        {
+          "index": 6,
+          "text": "不可能，一定是在作夢"
+        },
+        {
+          "index": 7,
+          "text": "悟空要作夢還早著呢，不過⋯"
+        },
+        {
+          "index": 8,
+          "text": "我在時空穿梭的時候"
+        },
+        {
+          "index": 9,
+          "text": "經常在夢裡見到你"
+        },
+        {
+          "index": 10,
+          "text": "你是不是很想念為師啊？"
+        },
+        {
+          "index": 11,
+          "text": "對了，那月光寶盒是否在你哪兒啊？"
+        },
+        {
+          "index": 12,
+          "text": "是在我這兒，你還想要？"
+        },
+        {
+          "index": 13,
+          "text": "是誰啊？"
+        },
+        {
+          "index": 14,
+          "text": "甚麼事呀？"
+        },
+        {
+          "index": 15,
+          "text": "有官兵啊！"
+        },
+        {
+          "index": 16,
+          "text": "有官兵"
+        },
+        {
+          "index": 17,
+          "text": "他也想在這兒借宿一晚，是我老爸"
+        },
+        {
+          "index": 18,
+          "text": "沒問題吧！"
+        },
+        {
+          "index": 19,
+          "text": "你老爸！"
+        },
+        {
+          "index": 20,
+          "text": "是啊，老爸，出來跟諸位大哥打招呼"
+        },
+        {
+          "index": 21,
+          "text": "他哪兒來的？"
+        },
+        {
+          "index": 22,
+          "text": "印度來的"
+        },
+        {
+          "index": 23,
+          "text": "印度？怎麼沒聽過？"
+        },
+        {
+          "index": 24,
+          "text": "我們明天還要趕路，你睡那邊吧！"
+        },
+        {
+          "index": 25,
+          "text": "多謝"
+        },
+        {
+          "index": 26,
+          "text": "真吵死人了"
+        },
+        {
+          "index": 27,
+          "text": "煩不煩呀？"
+        },
+        {
+          "index": 28,
+          "text": "睡裡面"
+        },
+        {
+          "index": 29,
+          "text": "真要命啊，時差不對"
+        },
+        {
+          "index": 30,
+          "text": "剛剛才從印度那邊才睡醒又要我睡"
+        },
+        {
+          "index": 31,
+          "text": "要你睡就睡啦"
+        },
+        {
+          "index": 32,
+          "text": "月光寶盒在哪裡？"
+        },
+        {
+          "index": 33,
+          "text": "悟空，你斯文點不行"
+        },
+        {
+          "index": 34,
+          "text": "為甚麼老是那麼猴急呢？你看"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "他在幹甚麼？"
+        },
+        {
+          "index": 2,
+          "text": "他在吸陽氣啊"
+        },
+        {
+          "index": 3,
+          "text": "裝睡吧！"
+        },
+        {
+          "index": 4,
+          "text": "希望他吸飽了別人就不吸我們了"
+        },
+        {
+          "index": 5,
+          "text": "快睡啊！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "散啦"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你不認得我了"
+        },
+        {
+          "index": 2,
+          "text": "剛剛那印度阿三⋯"
+        },
+        {
+          "index": 3,
+          "text": "你喜歡啊，拿去吧！"
+        },
+        {
+          "index": 4,
+          "text": "我徒弟叫我了bye bye"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我叫你不要玩火了嘛"
+        },
+        {
+          "index": 2,
+          "text": "阿彌陀佛goodbye"
+        },
+        {
+          "index": 3,
+          "text": "我又不認識你們拜託不要跟著我們"
+        },
+        {
+          "index": 4,
+          "text": "師父能夠見到你真好了"
+        },
+        {
+          "index": 5,
+          "text": "那個盒子呢？盒子呢？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "又是牛魔王？"
+        },
+        {
+          "index": 2,
+          "text": "賢弟，你把唐僧抓來給我啦⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小姐，毛巾"
+        },
+        {
+          "index": 2,
+          "text": "結婚嘛，你哭甚麼哭？"
+        },
+        {
+          "index": 3,
+          "text": "我不是哭，我看到你流口水嘛"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "今天是雙喜臨門"
+        },
+        {
+          "index": 2,
+          "text": "為甚麼？"
+        },
+        {
+          "index": 3,
+          "text": "今天除了舍妹出閣之日"
+        },
+        {
+          "index": 4,
+          "text": "也是我雄牛納妾之時"
+        },
+        {
+          "index": 5,
+          "text": "你說納妾？"
+        },
+        {
+          "index": 6,
+          "text": "那大嫂沒有意見嗎？"
+        },
+        {
+          "index": 7,
+          "text": "呸，那黃臉婆"
+        },
+        {
+          "index": 8,
+          "text": "現在在十萬九千里外的火焰山裡"
+        },
+        {
+          "index": 9,
+          "text": "就算她知道也奈何不了我"
+        },
+        {
+          "index": 10,
+          "text": "牛大哥你能說你怎麼認識"
+        },
+        {
+          "index": 11,
+          "text": "這位新夫人呀？"
+        },
+        {
+          "index": 12,
+          "text": "我前天路過洛陽沙漠"
+        },
+        {
+          "index": 13,
+          "text": "看到一個貌美如花的女子"
+        },
+        {
+          "index": 14,
+          "text": "趴在地上奄奄一息"
+        },
+        {
+          "index": 15,
+          "text": "大師兄，現在怎麼辦？"
+        },
+        {
+          "index": 16,
+          "text": "好了啦！沒問題啦⋯"
+        },
+        {
+          "index": 17,
+          "text": "真的沒問題啦，喲！我們這次成功了"
+        },
+        {
+          "index": 18,
+          "text": "紫霞你的名字太好聽了"
+        },
+        {
+          "index": 19,
+          "text": "來⋯我來介紹我妹妹和妹夫給你認識"
+        },
+        {
+          "index": 20,
+          "text": "香香，賢弟"
+        },
+        {
+          "index": 21,
+          "text": "來⋯跟我來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這個呢是我妹夫"
+        },
+        {
+          "index": 2,
+          "text": "這是我妹妹香香"
+        },
+        {
+          "index": 3,
+          "text": "紫霞姑娘"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你能留在這裡成親嗎？"
+        },
+        {
+          "index": 2,
+          "text": "可以吧！"
+        },
+        {
+          "index": 3,
+          "text": "那你家裡的老婆怎麼辦？"
+        },
+        {
+          "index": 4,
+          "text": "老婆？你們兩個認識嗎？"
+        },
+        {
+          "index": 5,
+          "text": "你有老婆？"
+        },
+        {
+          "index": 6,
+          "text": "已經離婚了"
+        },
+        {
+          "index": 7,
+          "text": "怎麼我從來就沒有聽你說過呢？"
+        },
+        {
+          "index": 8,
+          "text": "哎⋯妹妹"
+        },
+        {
+          "index": 9,
+          "text": "男人有三妻四妾很平常嘛"
+        },
+        {
+          "index": 10,
+          "text": "別那麼緊張"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "賢弟，你說對不對？"
+        },
+        {
+          "index": 2,
+          "text": "對⋯"
+        },
+        {
+          "index": 3,
+          "text": "紫霞，實不相瞞"
+        },
+        {
+          "index": 4,
+          "text": "經過這兩天朝夕相處"
+        },
+        {
+          "index": 5,
+          "text": "我發覺我已經深深的愛上你"
+        },
+        {
+          "index": 6,
+          "text": "為了表示對你的誠意"
+        },
+        {
+          "index": 7,
+          "text": "我當著這麼多兄弟面前向你求婚"
+        },
+        {
+          "index": 8,
+          "text": "這個月光寶盒"
+        },
+        {
+          "index": 9,
+          "text": "是我送給你的訂情信物"
+        },
+        {
+          "index": 10,
+          "text": "希望你能嫁給我"
+        },
+        {
+          "index": 11,
+          "text": "我反對這門親事！"
+        },
+        {
+          "index": 12,
+          "text": "你說甚麼？"
+        },
+        {
+          "index": 13,
+          "text": "讓我來，說甚麼⋯"
+        },
+        {
+          "index": 14,
+          "text": "人家郎才女貌，天生一對"
+        },
+        {
+          "index": 15,
+          "text": "輪到你這妖怪來反對啊？"
+        },
+        {
+          "index": 16,
+          "text": "紫霞仙子擇偶是有一個規矩的"
+        },
+        {
+          "index": 17,
+          "text": "如果大哥你能做得到"
+        },
+        {
+          "index": 18,
+          "text": "我們就心服口服"
+        },
+        {
+          "index": 19,
+          "text": "有甚麼規矩啊？"
+        },
+        {
+          "index": 20,
+          "text": "她曾經發誓"
+        },
+        {
+          "index": 21,
+          "text": "如果誰能把紫青寶劍拔出鞘的話"
+        },
+        {
+          "index": 22,
+          "text": "就是她的如意中人"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "紫青寶劍"
+        },
+        {
+          "index": 2,
+          "text": "讓我來"
+        },
+        {
+          "index": 3,
+          "text": "沒有這種事"
+        },
+        {
+          "index": 4,
+          "text": "這個只不過是我跟大家開的一個玩笑"
+        },
+        {
+          "index": 5,
+          "text": "開玩笑？"
+        },
+        {
+          "index": 6,
+          "text": "這把劍誰拔得出，誰拔不出"
+        },
+        {
+          "index": 7,
+          "text": "根本沒有關係"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你們這些混蛋在我地盤瞎搞和？"
+        },
+        {
+          "index": 2,
+          "text": "誰敢阻止我誰就死"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "你們這些混蛋在我地盤瞎搞啥？",
+          "note": "將句末錯字「和」修正為「啥」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "誰敢阻止我，我就殺了誰"
+        },
+        {
+          "index": 2,
+          "text": "大王，鐵扇公主來了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "哎！你怎麼躲在這裡啊？"
+        },
+        {
+          "index": 2,
+          "text": "當時那把劍離我喉嚨"
+        },
+        {
+          "index": 3,
+          "text": "只有零點零一公分"
+        },
+        {
+          "index": 4,
+          "text": "但是四分之一柱香之後"
+        },
+        {
+          "index": 5,
+          "text": "那把劍的女主人將會徹底的愛上我"
+        },
+        {
+          "index": 6,
+          "text": "因為我決定說一個謊話"
+        },
+        {
+          "index": 7,
+          "text": "雖然本人生平說了無數的謊話"
+        },
+        {
+          "index": 8,
+          "text": "但是這一個，我認為是最完美的"
+        },
+        {
+          "index": 9,
+          "text": "你再往前半步，我就把你給殺了"
+        },
+        {
+          "index": 10,
+          "text": "你應該這麼做"
+        },
+        {
+          "index": 11,
+          "text": "我也應該死"
+        },
+        {
+          "index": 12,
+          "text": "曾經有一份真誠的愛情放在我面前"
+        },
+        {
+          "index": 13,
+          "text": "我沒有珍惜"
+        },
+        {
+          "index": 14,
+          "text": "等我失去的時候"
+        },
+        {
+          "index": 15,
+          "text": "我才後悔莫及"
+        },
+        {
+          "index": 16,
+          "text": "人世間最痛苦的事莫過於此"
+        },
+        {
+          "index": 17,
+          "text": "你的劍在我的咽喉上割下去吧！"
+        },
+        {
+          "index": 18,
+          "text": "不用再猶豫了"
+        },
+        {
+          "index": 19,
+          "text": "如果上天能夠給我一個"
+        },
+        {
+          "index": 20,
+          "text": "再來一次的機會"
+        },
+        {
+          "index": 21,
+          "text": "我會對那個女孩說三個字"
+        },
+        {
+          "index": 22,
+          "text": "我愛你"
+        },
+        {
+          "index": 23,
+          "text": "如果非要在這份愛上面加一個期限"
+        },
+        {
+          "index": 24,
+          "text": "我希望是一萬年"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "那麼你怎麼向你娘子交代？"
+        },
+        {
+          "index": 2,
+          "text": "一定要交代"
+        },
+        {
+          "index": 3,
+          "text": "所以我一定要拿回那個月光寶盒"
+        },
+        {
+          "index": 4,
+          "text": "帶你一起回去，跟她們說清楚"
+        },
+        {
+          "index": 5,
+          "text": "我不管別人怎麼說我"
+        },
+        {
+          "index": 6,
+          "text": "我也不怕後世會有千千萬萬的人"
+        },
+        {
+          "index": 7,
+          "text": "對我唾罵"
+        },
+        {
+          "index": 8,
+          "text": "我一個人承擔下來"
+        },
+        {
+          "index": 9,
+          "text": "你不要騙我吧！"
+        },
+        {
+          "index": 10,
+          "text": "但是我痛恨我自己沒本事"
+        },
+        {
+          "index": 11,
+          "text": "去拿回那個月光寶盒"
+        },
+        {
+          "index": 12,
+          "text": "我"
+        },
+        {
+          "index": 13,
+          "text": "我幫你"
+        },
+        {
+          "index": 14,
+          "text": "不要！太危險了"
+        },
+        {
+          "index": 15,
+          "text": "你不想"
+        },
+        {
+          "index": 16,
+          "text": "想"
+        },
+        {
+          "index": 17,
+          "text": "我怎麼會金屋藏嬌呢"
+        },
+        {
+          "index": 18,
+          "text": "謠言啊，夫人"
+        },
+        {
+          "index": 19,
+          "text": "鬼才相信你⋯"
+        },
+        {
+          "index": 20,
+          "text": "你們在這兒你幹甚麼？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 20,
+          "text": "你們在這兒幹甚麼？",
+          "note": "刪除多餘的「你」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "他是誰啊？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我問你啊，他是誰啊？"
+        },
+        {
+          "index": 2,
+          "text": "他"
+        },
+        {
+          "index": 3,
+          "text": "賢弟，他是誰啊？你說呀"
+        },
+        {
+          "index": 4,
+          "text": "他是我的髮妻"
+        },
+        {
+          "index": 5,
+          "text": "嘩！賢弟你太過份了"
+        },
+        {
+          "index": 6,
+          "text": "好哥們"
+        },
+        {
+          "index": 7,
+          "text": "你居然還把妹妹嫁給他？"
+        },
+        {
+          "index": 8,
+          "text": "所以他老婆也看不過去，用劍指他呀"
+        },
+        {
+          "index": 9,
+          "text": "你跟我過來，我有話要問你"
+        },
+        {
+          "index": 10,
+          "text": "原來你有老婆呀"
+        },
+        {
+          "index": 11,
+          "text": "感情破裂了"
+        },
+        {
+          "index": 12,
+          "text": "你跟我說清楚到底發生甚麼事"
+        },
+        {
+          "index": 13,
+          "text": "我說過啦⋯大嫂！"
+        },
+        {
+          "index": 14,
+          "text": "你叫我大嫂？"
+        },
+        {
+          "index": 15,
+          "text": "對不起，應該是牛夫人"
+        },
+        {
+          "index": 16,
+          "text": "以前陪我看月亮的時候"
+        },
+        {
+          "index": 17,
+          "text": "叫人家做小甜甜"
+        },
+        {
+          "index": 18,
+          "text": "現在新人勝舊人啦！叫人家牛夫人"
+        },
+        {
+          "index": 19,
+          "text": "小甜甜？"
+        },
+        {
+          "index": 20,
+          "text": "你以為我這麼辛苦來這裡"
+        },
+        {
+          "index": 21,
+          "text": "真的是為了這條臭牛嗎？"
+        },
+        {
+          "index": 22,
+          "text": "是為了你這個沒良心的臭猴子啦"
+        },
+        {
+          "index": 23,
+          "text": "賢弟！真是難為你了"
+        },
+        {
+          "index": 24,
+          "text": "不關我的事"
+        },
+        {
+          "index": 25,
+          "text": "我不管"
+        },
+        {
+          "index": 26,
+          "text": "今晚三更時分你一定要在這裡等我"
+        },
+        {
+          "index": 27,
+          "text": "我有話跟你說"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "如果我是你啊"
+        },
+        {
+          "index": 2,
+          "text": "我老公要討小老婆，我就死了算了"
+        },
+        {
+          "index": 3,
+          "text": "真的？"
+        },
+        {
+          "index": 4,
+          "text": "沒錯！不過先把你閹了"
+        },
+        {
+          "index": 5,
+          "text": "跟我走"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "紫霞，其實我⋯"
+        },
+        {
+          "index": 2,
+          "text": "我相信你"
+        },
+        {
+          "index": 3,
+          "text": "今天我去拿月光寶盒"
+        },
+        {
+          "index": 4,
+          "text": "二更在這裡見"
+        },
+        {
+          "index": 5,
+          "text": "師兄⋯"
+        },
+        {
+          "index": 6,
+          "text": "那麼我先搞定我的兄弟"
+        },
+        {
+          "index": 7,
+          "text": "晚上見"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "死猴子，都二更了還沒出現"
+        },
+        {
+          "index": 2,
+          "text": "大師兄！"
+        },
+        {
+          "index": 3,
+          "text": "對不對"
+        },
+        {
+          "index": 4,
+          "text": "我早跟你說大師兄不會敷衍我們"
+        },
+        {
+          "index": 5,
+          "text": "一定會來救師父的"
+        },
+        {
+          "index": 6,
+          "text": "這麼晚出來難道是尿尿的嗎？"
+        },
+        {
+          "index": 7,
+          "text": "不用誇"
+        },
+        {
+          "index": 8,
+          "text": "我高你一點之嘛沒甚麼大不了的"
+        },
+        {
+          "index": 9,
+          "text": "別那麼多廢話啦，快去救師父，走呀"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我受不了啦"
+        },
+        {
+          "index": 2,
+          "text": "我肯定師父就在這裡了"
+        },
+        {
+          "index": 3,
+          "text": "對⋯"
+        },
+        {
+          "index": 4,
+          "text": "除了他之外，沒有人會讓人受不了"
+        },
+        {
+          "index": 5,
+          "text": "你們先進去，我在後面⋯"
+        },
+        {
+          "index": 6,
+          "text": "走吧！你在中間"
+        },
+        {
+          "index": 7,
+          "text": "這邊⋯師父在這裡，進去吧！"
+        },
+        {
+          "index": 8,
+          "text": "師父"
+        },
+        {
+          "index": 9,
+          "text": "師父啊，師父"
+        },
+        {
+          "index": 10,
+          "text": "我們來帶你走的"
+        },
+        {
+          "index": 11,
+          "text": "我不會走的"
+        },
+        {
+          "index": 12,
+          "text": "啊，是嗎？為甚麼？　　不會走"
+        },
+        {
+          "index": 13,
+          "text": "我們師徒四人這次取西經"
+        },
+        {
+          "index": 14,
+          "text": "可以說是困難重重"
+        },
+        {
+          "index": 15,
+          "text": "原因是我們不同心協力"
+        },
+        {
+          "index": 16,
+          "text": "所以被妖魔得逞"
+        },
+        {
+          "index": 17,
+          "text": "既然要這樣"
+        },
+        {
+          "index": 18,
+          "text": "我在這監獄裡跟在外面有甚麼分別呢"
+        },
+        {
+          "index": 19,
+          "text": "外面對我來說"
+        },
+        {
+          "index": 20,
+          "text": "只不過是個大一點的監獄"
+        },
+        {
+          "index": 21,
+          "text": "你們先出去，我有話跟大師兄說"
+        },
+        {
+          "index": 22,
+          "text": "師父"
+        },
+        {
+          "index": 23,
+          "text": "八戒你又不聽話"
+        },
+        {
+          "index": 24,
+          "text": "不是呀師父"
+        },
+        {
+          "index": 25,
+          "text": "我在外面替你把風"
+        },
+        {
+          "index": 26,
+          "text": "沙僧，跟我來　　哦"
+        },
+        {
+          "index": 27,
+          "text": "你走開"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "吹個球，吹個大氣球"
+        },
+        {
+          "index": 2,
+          "text": "你東西掉了"
+        },
+        {
+          "index": 3,
+          "text": "師弟呀，收起它一下"
+        },
+        {
+          "index": 4,
+          "text": "為甚麼要我收呀"
+        },
+        {
+          "index": 5,
+          "text": "因為我本領比你高一點嘛"
+        },
+        {
+          "index": 6,
+          "text": "高你的頭"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你進來坐吧！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "坦白說，我不是你的徒弟"
+        },
+        {
+          "index": 2,
+          "text": "我更不想是你的徒弟"
+        },
+        {
+          "index": 3,
+          "text": "大師，你慈悲為懷"
+        },
+        {
+          "index": 4,
+          "text": "你就放了我一馬吧！好嗎？"
+        },
+        {
+          "index": 5,
+          "text": "你知不知道甚麼是噹噹⋯？"
+        },
+        {
+          "index": 6,
+          "text": "甚麼噹噹噹呀？"
+        },
+        {
+          "index": 7,
+          "text": "只有你　　能伴我取西經"
+        },
+        {
+          "index": 8,
+          "text": "只有你　　能殺妖和除魔"
+        },
+        {
+          "index": 9,
+          "text": "只有你　　能保護我"
+        },
+        {
+          "index": 10,
+          "text": "叫螃蟹和蚌精無法吃我"
+        },
+        {
+          "index": 11,
+          "text": "你本領最大，就只你一個"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "只有你，別怪師父嘀咕"
+        },
+        {
+          "index": 2,
+          "text": "戴上〝緊箍兒〞"
+        },
+        {
+          "index": 3,
+          "text": "別怕死，別顫抖"
+        },
+        {
+          "index": 4,
+          "text": "背黑鍋我來　　送死你去"
+        },
+        {
+          "index": 5,
+          "text": "拼全力為眾生，犧牲也值得"
+        },
+        {
+          "index": 6,
+          "text": "喃嘸阿彌陀佛"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我真的不行呀，我跟你說"
+        },
+        {
+          "index": 2,
+          "text": "你有完沒完呀"
+        },
+        {
+          "index": 3,
+          "text": "我已經說不行了"
+        },
+        {
+          "index": 4,
+          "text": "你還在喔喔"
+        },
+        {
+          "index": 5,
+          "text": "完全不理人家受得了受不了"
+        },
+        {
+          "index": 6,
+          "text": "你再喔，我一刀捅死你"
+        },
+        {
+          "index": 7,
+          "text": "悟空，你盡管捅死我吧！"
+        },
+        {
+          "index": 8,
+          "text": "生又何哀，死又何苦"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 7,
+          "text": "悟空，你儘管捅死我吧！",
+          "note": "將「盡管」修正為繁體常用寫法「儘管」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "等你明白　了捨身取義"
+        },
+        {
+          "index": 2,
+          "text": "你自然會回來跟我唱這首歌的"
+        },
+        {
+          "index": 3,
+          "text": "喃嘸阿彌陀佛⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "紫霞"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "師兄，你麼帶個女人走呀？"
+        },
+        {
+          "index": 2,
+          "text": "師父已經走了"
+        },
+        {
+          "index": 3,
+          "text": "叫你們在三百里外大樹林等他"
+        },
+        {
+          "index": 4,
+          "text": "你們快去，拜託"
+        },
+        {
+          "index": 5,
+          "text": "等等"
+        },
+        {
+          "index": 6,
+          "text": "幹甚麼？"
+        },
+        {
+          "index": 7,
+          "text": "前面有埋伏"
+        },
+        {
+          "index": 8,
+          "text": "一眼就看出來啦，還聽甚麼聽？"
+        },
+        {
+          "index": 9,
+          "text": "真是白痴"
+        },
+        {
+          "index": 10,
+          "text": "來，抱著"
+        },
+        {
+          "index": 11,
+          "text": "香香！"
+        },
+        {
+          "index": 12,
+          "text": "你怎麼會在這裡？"
+        },
+        {
+          "index": 13,
+          "text": "怎麼那麼多血呀，你的手？"
+        },
+        {
+          "index": 14,
+          "text": "這些血"
+        },
+        {
+          "index": 15,
+          "text": "是你抱著的女人的"
+        },
+        {
+          "index": 16,
+          "text": "是她的？"
+        },
+        {
+          "index": 17,
+          "text": "沒錯！"
+        },
+        {
+          "index": 18,
+          "text": "今天晚上"
+        },
+        {
+          "index": 19,
+          "text": "我趁她睡著的時候捅了她幾刀"
+        },
+        {
+          "index": 20,
+          "text": "這個女人一天不死"
+        },
+        {
+          "index": 21,
+          "text": "你就一天不會回到我身邊的"
+        },
+        {
+          "index": 22,
+          "text": "這種事怎麼能勉強呢？"
+        },
+        {
+          "index": 23,
+          "text": "天意怎樣就是怎樣嘛！"
+        },
+        {
+          "index": 24,
+          "text": "廢話！"
+        },
+        {
+          "index": 25,
+          "text": "上天要你喜歡豬八戒"
+        },
+        {
+          "index": 26,
+          "text": "你會不會喜歡他？"
+        },
+        {
+          "index": 27,
+          "text": "上天真的這麼安排"
+        },
+        {
+          "index": 28,
+          "text": "那我也沒有辦法"
+        },
+        {
+          "index": 29,
+          "text": "好！"
+        },
+        {
+          "index": 30,
+          "text": "不用上天安排"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "師兄，你怎麼帶個女人走呀？",
+          "note": "「你麼」修正為「你怎麼」，屬錯別字/輸入錯誤。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你想幹甚麼？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "走，走⋯"
+        },
+        {
+          "index": 2,
+          "text": "移形換影大法！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我要把你跟石頭調換"
+        },
+        {
+          "index": 2,
+          "text": "放開我！"
+        },
+        {
+          "index": 3,
+          "text": "你的胸部啊！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "紫霞⋯！"
+        },
+        {
+          "index": 2,
+          "text": "你醒醒"
+        },
+        {
+          "index": 3,
+          "text": "大師兄，你幹嘛摟著我啊？"
+        },
+        {
+          "index": 4,
+          "text": "豬八戒？"
+        },
+        {
+          "index": 5,
+          "text": "是呀！"
+        },
+        {
+          "index": 6,
+          "text": "那紫霞呢？"
+        },
+        {
+          "index": 7,
+          "text": "秦祥林⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "青霞？"
+        },
+        {
+          "index": 2,
+          "text": "這個玩笑開大了吧"
+        },
+        {
+          "index": 3,
+          "text": "完了⋯！連我也中招了"
+        },
+        {
+          "index": 4,
+          "text": "我兩塊胸肌都掉到肚臍上了"
+        },
+        {
+          "index": 5,
+          "text": "你不會嫌棄我吧？"
+        },
+        {
+          "index": 6,
+          "text": "當然不會"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你明明就是嫌棄我"
+        },
+        {
+          "index": 2,
+          "text": "好！從此一刀兩斷"
+        },
+        {
+          "index": 3,
+          "text": "給多一點時間"
+        },
+        {
+          "index": 4,
+          "text": "我吐哇吐哇的就會習慣了"
+        },
+        {
+          "index": 5,
+          "text": "好！我相信你"
+        },
+        {
+          "index": 6,
+          "text": "我給你一點時間"
+        },
+        {
+          "index": 7,
+          "text": "等你吐慣了再說"
+        },
+        {
+          "index": 8,
+          "text": "我習慣了"
+        },
+        {
+          "index": 9,
+          "text": "別再說了"
+        },
+        {
+          "index": 10,
+          "text": "連我都想吐啦"
+        },
+        {
+          "index": 11,
+          "text": "都怪你！長得跟豬一樣"
+        },
+        {
+          "index": 12,
+          "text": "要不然的話他會吐成這樣子嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "他為我著想"
+        },
+        {
+          "index": 2,
+          "text": "我決定嫁給他"
+        },
+        {
+          "index": 3,
+          "text": "我要給他一個溫暖的家庭"
+        },
+        {
+          "index": 4,
+          "text": "為他生很多很多小孩子"
+        },
+        {
+          "index": 5,
+          "text": "祥林！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我要殺了你！"
+        },
+        {
+          "index": 2,
+          "text": "殺了你！"
+        },
+        {
+          "index": 3,
+          "text": "師弟，你也中招了？"
+        },
+        {
+          "index": 4,
+          "text": "你快給我換過來"
+        },
+        {
+          "index": 5,
+          "text": "別吵！"
+        },
+        {
+          "index": 6,
+          "text": "告訴你，不為難你"
+        },
+        {
+          "index": 7,
+          "text": "你趕快發功，把我們換回來"
+        },
+        {
+          "index": 8,
+          "text": "你以為我不想嗎？"
+        },
+        {
+          "index": 9,
+          "text": "發一次功要等七七四十九天以後"
+        },
+        {
+          "index": 10,
+          "text": "才能發第二次的嘛"
+        },
+        {
+          "index": 11,
+          "text": "七七四十九天以後？我⋯"
+        },
+        {
+          "index": 12,
+          "text": "祥林，你面對現實吧！"
+        },
+        {
+          "index": 13,
+          "text": "你不快發功，我要你好看"
+        },
+        {
+          "index": 14,
+          "text": "快發功！少裝蒜！"
+        },
+        {
+          "index": 15,
+          "text": "快點！"
+        },
+        {
+          "index": 16,
+          "text": "誰在我裡面啊？"
+        },
+        {
+          "index": 17,
+          "text": "誰在你裡面？我也不知道我自己在哪"
+        },
+        {
+          "index": 18,
+          "text": "兩個聲音？"
+        },
+        {
+          "index": 19,
+          "text": "你是誰？"
+        },
+        {
+          "index": 20,
+          "text": "我是豬八戒啊，你呢？"
+        },
+        {
+          "index": 21,
+          "text": "我是紫霞"
+        },
+        {
+          "index": 22,
+          "text": "祥林"
+        },
+        {
+          "index": 23,
+          "text": "至尊寶"
+        },
+        {
+          "index": 24,
+          "text": "師兄"
+        },
+        {
+          "index": 25,
+          "text": "紫霞"
+        },
+        {
+          "index": 26,
+          "text": "紫霞，你還在這裡？"
+        },
+        {
+          "index": 27,
+          "text": "你這個賤人"
+        },
+        {
+          "index": 28,
+          "text": "終於被我看到你了"
+        },
+        {
+          "index": 29,
+          "text": "你怎麼啦？"
+        },
+        {
+          "index": 30,
+          "text": "沒見多久怎麼變成這個樣子啊？"
+        },
+        {
+          "index": 31,
+          "text": "月光寶盒呢？"
+        },
+        {
+          "index": 32,
+          "text": "忘了拿啦"
+        },
+        {
+          "index": 33,
+          "text": "騙你的"
+        },
+        {
+          "index": 34,
+          "text": "拿來"
+        },
+        {
+          "index": 35,
+          "text": "等等"
+        },
+        {
+          "index": 36,
+          "text": "你拿月光寶盒幹甚麼？"
+        },
+        {
+          "index": 37,
+          "text": "跟我遠走高飛呀"
+        },
+        {
+          "index": 38,
+          "text": "你不要纏著他，肥婆！"
+        },
+        {
+          "index": 39,
+          "text": "祥林會跟你遠走高⋯牛魔王"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "少在那做白日夢"
+        },
+        {
+          "index": 2,
+          "text": "你不信啊，你問問他！"
+        },
+        {
+          "index": 3,
+          "text": "你說喜歡我"
+        },
+        {
+          "index": 4,
+          "text": "就是為了拿這個跟她遠走高飛"
+        },
+        {
+          "index": 5,
+          "text": "是不是？"
+        },
+        {
+          "index": 6,
+          "text": "等等⋯"
+        },
+        {
+          "index": 7,
+          "text": "完全沒這回事"
+        },
+        {
+          "index": 8,
+          "text": "不信你扔掉這塊爛東西吧！"
+        },
+        {
+          "index": 9,
+          "text": "好！"
+        },
+        {
+          "index": 10,
+          "text": "做人幹嘛那麼認真，衝動呢"
+        },
+        {
+          "index": 11,
+          "text": "你看你那副賤相"
+        },
+        {
+          "index": 12,
+          "text": "你還說不是？"
+        },
+        {
+          "index": 13,
+          "text": "我就扔掉它"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "哥哥⋯"
+        },
+        {
+          "index": 2,
+          "text": "好有男子氣慨！"
+        },
+        {
+          "index": 3,
+          "text": "閉咀！"
+        },
+        {
+          "index": 4,
+          "text": "我很喜歡"
+        },
+        {
+          "index": 5,
+          "text": "看你們能到哪兒去！"
+        },
+        {
+          "index": 6,
+          "text": "牛兄，你怎麼傷成這樣？"
+        },
+        {
+          "index": 7,
+          "text": "你以為那黃臉婆，比我傷得輕嗎？"
+        },
+        {
+          "index": 8,
+          "text": "你看看！"
+        },
+        {
+          "index": 9,
+          "text": "你騙得我好慘啊"
+        },
+        {
+          "index": 10,
+          "text": "其實我根本就不是"
+        },
+        {
+          "index": 11,
+          "text": "祥林，她是誰呀？"
+        },
+        {
+          "index": 12,
+          "text": "我相信你才怪！"
+        },
+        {
+          "index": 13,
+          "text": "混蛋！我們現在正式離婚"
+        },
+        {
+          "index": 14,
+          "text": "以後誰也別管誰！"
+        },
+        {
+          "index": 15,
+          "text": "好！你要我的！我要我的！"
+        },
+        {
+          "index": 16,
+          "text": "快點救紫霞，肉身你也有份的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "好有男子氣概！",
+          "note": "將「氣慨」更正為「氣概」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "打得血肉模糊的，拿回來也沒用啦"
+        },
+        {
+          "index": 2,
+          "text": "對！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "想跑？"
+        },
+        {
+          "index": 2,
+          "text": "今天說清楚別走！"
+        },
+        {
+          "index": 3,
+          "text": "不准打他！"
+        },
+        {
+          "index": 4,
+          "text": "死肥婆"
+        },
+        {
+          "index": 5,
+          "text": "我跟他的事用不著你幫忙？"
+        },
+        {
+          "index": 6,
+          "text": "省省吧！"
+        },
+        {
+          "index": 7,
+          "text": "我是怕他打壞我的肉身"
+        },
+        {
+          "index": 8,
+          "text": "鬼才有空幫你"
+        },
+        {
+          "index": 9,
+          "text": "打就打，那麼多廢話幹嘛？"
+        },
+        {
+          "index": 10,
+          "text": "當心我幫他一起打你呀"
+        },
+        {
+          "index": 11,
+          "text": "你試試看！"
+        },
+        {
+          "index": 12,
+          "text": "我是女人，玩真的，我跟你拼了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我就不幫你們，看你們打多久"
+        },
+        {
+          "index": 2,
+          "text": "快走"
+        },
+        {
+          "index": 3,
+          "text": "不行"
+        },
+        {
+          "index": 4,
+          "text": "我一定要幫你把月光寶盒拿回來"
+        },
+        {
+          "index": 5,
+          "text": "好讓你跟你娘子有個交待"
+        },
+        {
+          "index": 6,
+          "text": "你這個人真講義氣，沒話說"
+        },
+        {
+          "index": 7,
+          "text": "真的？"
+        },
+        {
+          "index": 8,
+          "text": "你都這麼做了，我還有甚麼話說？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "等等！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你！"
+        },
+        {
+          "index": 2,
+          "text": "黃臉婆，別打我馬子"
+        },
+        {
+          "index": 3,
+          "text": "我喜歡"
+        },
+        {
+          "index": 4,
+          "text": "你的小白臉跑了"
+        },
+        {
+          "index": 5,
+          "text": "跑都跑得那麼帥"
+        },
+        {
+          "index": 6,
+          "text": "我真幸福"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "沒辦法，假裝跳一下吧！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "擺近一點比較像"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "孫悟空"
+        },
+        {
+          "index": 2,
+          "text": "別跳下去啊！"
+        },
+        {
+          "index": 3,
+          "text": "鬼才想跳啦！"
+        },
+        {
+          "index": 4,
+          "text": "你寧願跳懸崖也不肯見我"
+        },
+        {
+          "index": 5,
+          "text": "算了，我還是回火燄山吧！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "早知道要充軍的話"
+        },
+        {
+          "index": 2,
+          "text": "我們就不做這件案子啦！"
+        },
+        {
+          "index": 3,
+          "text": "誰知道偷葡萄會那麼大罪要充軍呢？"
+        },
+        {
+          "index": 4,
+          "text": "早知道這樣就不要做賊啦嘛"
+        },
+        {
+          "index": 5,
+          "text": "早知道就別做賊！"
+        },
+        {
+          "index": 6,
+          "text": "像我這樣當兵．"
+        },
+        {
+          "index": 7,
+          "text": "你們沒有機會了"
+        },
+        {
+          "index": 8,
+          "text": "除非神仙來救你們"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "早知道不當兵了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "真有神仙來救了"
+        },
+        {
+          "index": 2,
+          "text": "神仙啊！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "晶晶！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "菩提大哥啊"
+        },
+        {
+          "index": 2,
+          "text": "他蒸呀蒸的又想蒸饅頭呀"
+        },
+        {
+          "index": 3,
+          "text": "你別多事啦！"
+        },
+        {
+          "index": 4,
+          "text": "晶晶！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "哎，你別再吃我豆腐！"
+        },
+        {
+          "index": 2,
+          "text": "人家喜歡你才吃你豆腐嘛"
+        },
+        {
+          "index": 3,
+          "text": "聽著，你要做我的女人"
+        },
+        {
+          "index": 4,
+          "text": "以後就別像你哥那樣，為非作歹"
+        },
+        {
+          "index": 5,
+          "text": "知道了！"
+        },
+        {
+          "index": 6,
+          "text": "走吧！"
+        },
+        {
+          "index": 7,
+          "text": "喝茶！"
+        },
+        {
+          "index": 8,
+          "text": "麻煩你了！"
+        },
+        {
+          "index": 9,
+          "text": "不要客氣！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "唉！為甚麼帶我回這個洞來？"
+        },
+        {
+          "index": 2,
+          "text": "不是我帶你來的"
+        },
+        {
+          "index": 3,
+          "text": "是你昏倒迷迷糊糊帶我們來的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我一定是太想念晶晶了"
+        },
+        {
+          "index": 2,
+          "text": "是啊！你昏倒的時候"
+        },
+        {
+          "index": 3,
+          "text": "叫晶晶這個名字叫了九十八次"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "晶晶是我娘子"
+        },
+        {
+          "index": 2,
+          "text": "還有一個名字叫紫霞的"
+        },
+        {
+          "index": 3,
+          "text": "你叫了七百八十四次"
+        },
+        {
+          "index": 4,
+          "text": "七百八十四次"
+        },
+        {
+          "index": 5,
+          "text": "這紫霞一定欠你很多錢"
+        },
+        {
+          "index": 6,
+          "text": "我要拜盤絲大仙為師"
+        },
+        {
+          "index": 7,
+          "text": "她分明把水濂洞改為盤絲洞"
+        },
+        {
+          "index": 8,
+          "text": "你們竟敢騙我說沒這個人？"
+        },
+        {
+          "index": 9,
+          "text": "不知道啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "臭猴子，原來你還在這兒！"
+        },
+        {
+          "index": 2,
+          "text": "你為甚麼這樣對我？"
+        },
+        {
+          "index": 3,
+          "text": "晶晶"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "晶晶，再看到你太好了"
+        },
+        {
+          "index": 2,
+          "text": "甚麼？"
+        },
+        {
+          "index": 3,
+          "text": "你瘦了"
+        },
+        {
+          "index": 4,
+          "text": "我不是孫悟空呀"
+        },
+        {
+          "index": 5,
+          "text": "但是我不知道怎麼告訴你"
+        },
+        {
+          "index": 6,
+          "text": "因為你一定不會相信我"
+        },
+        {
+          "index": 7,
+          "text": "我相信"
+        },
+        {
+          "index": 8,
+          "text": "因為那個臭猴子不會對我這麼溫柔"
+        },
+        {
+          "index": 9,
+          "text": "你到底是誰？"
+        },
+        {
+          "index": 10,
+          "text": "我就是你五百年後的老公"
+        },
+        {
+          "index": 11,
+          "text": "五百年後"
+        },
+        {
+          "index": 12,
+          "text": "你會因為我而放棄現在這段感情"
+        },
+        {
+          "index": 13,
+          "text": "我千辛萬苦回這裡和做的所有事情"
+        },
+        {
+          "index": 14,
+          "text": "完全都是為了你"
+        },
+        {
+          "index": 15,
+          "text": "晶晶，我想念你"
+        },
+        {
+          "index": 16,
+          "text": "我真的很想念你"
+        },
+        {
+          "index": 17,
+          "text": "我太想念你了"
+        },
+        {
+          "index": 18,
+          "text": "喂！你相不相信？"
+        },
+        {
+          "index": 19,
+          "text": "不相信！"
+        },
+        {
+          "index": 20,
+          "text": "這也不能怪你"
+        },
+        {
+          "index": 21,
+          "text": "我看看怎麼回事"
+        },
+        {
+          "index": 22,
+          "text": "不過我覺得我認識你"
+        },
+        {
+          "index": 23,
+          "text": "絕對認識"
+        },
+        {
+          "index": 24,
+          "text": "而且很熟"
+        },
+        {
+          "index": 25,
+          "text": "非常的熟！"
+        },
+        {
+          "index": 26,
+          "text": "五百年之後，我們怎麼認識的？"
+        },
+        {
+          "index": 27,
+          "text": "在一個月黑風高陰森恐怖的晚上"
+        },
+        {
+          "index": 28,
+          "text": "我是至尊寶，你是白晶晶"
+        },
+        {
+          "index": 29,
+          "text": "奇妙的愛情"
+        },
+        {
+          "index": 30,
+          "text": "就從橋頭上的這一點火開始的"
+        },
+        {
+          "index": 31,
+          "text": "我才一轉過身你就突如奇來向我一指"
+        },
+        {
+          "index": 32,
+          "text": "我的整隻手就著火了"
+        },
+        {
+          "index": 33,
+          "text": "你還要衝過來向我打"
+        },
+        {
+          "index": 34,
+          "text": "拼命的打⋯！"
+        },
+        {
+          "index": 35,
+          "text": "不是不是，不是這樣打"
+        },
+        {
+          "index": 36,
+          "text": "是這樣，這樣⋯"
+        },
+        {
+          "index": 37,
+          "text": "對啦，就是這樣打你看到了嗎？"
+        },
+        {
+          "index": 38,
+          "text": "以後的發展我可以用一句"
+        },
+        {
+          "index": 39,
+          "text": "峰迴路轉來形容"
+        },
+        {
+          "index": 40,
+          "text": "因為突然之間殺出一個牛魔王"
+        },
+        {
+          "index": 41,
+          "text": "當時你手拿一條龍骨大戰牛魔王之後"
+        },
+        {
+          "index": 42,
+          "text": "還把我抓到盤絲洞裡去"
+        },
+        {
+          "index": 43,
+          "text": "所謂光陰似箭真的一點也不錯"
+        },
+        {
+          "index": 44,
+          "text": "因為才一轉眼就說到重點了"
+        },
+        {
+          "index": 45,
+          "text": "在斷崖頂上，就是感情爆發的時候"
+        },
+        {
+          "index": 46,
+          "text": "當時我不顧一切的摸你"
+        },
+        {
+          "index": 47,
+          "text": "你也不顧一切的摸我"
+        },
+        {
+          "index": 48,
+          "text": "還立下永不分離誓言"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 13,
+          "text": "我千辛萬苦回這裡所做的所有事情",
+          "note": "將「和做」更正為「所做」。"
+        },
+        {
+          "index": 31,
+          "text": "我才一轉過身你就突如其來向我一指",
+          "note": "修正「奇來」為「其來」，屬錯別字。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "可惜快樂永遠都是短暫的"
+        },
+        {
+          "index": 2,
+          "text": "換來的只是無窮無盡的痛苦和長嘆！"
+        },
+        {
+          "index": 3,
+          "text": "為甚麼你會死的？"
+        },
+        {
+          "index": 4,
+          "text": "我當時只有利用月光寶盒使時光倒流"
+        },
+        {
+          "index": 5,
+          "text": "查出真相"
+        },
+        {
+          "index": 6,
+          "text": "終於被我發現原來你是自殺的"
+        },
+        {
+          "index": 7,
+          "text": "在最後關頭"
+        },
+        {
+          "index": 8,
+          "text": "我終於能夠把你救活！"
+        },
+        {
+          "index": 9,
+          "text": "可是在最後一次時光倒流"
+        },
+        {
+          "index": 10,
+          "text": "月光寶盒發生故障"
+        },
+        {
+          "index": 11,
+          "text": "我〝超〞的一聲回到五百年前"
+        },
+        {
+          "index": 12,
+          "text": "就這樣"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你現在想怎麼樣？"
+        },
+        {
+          "index": 2,
+          "text": "看到你不用再回去了"
+        },
+        {
+          "index": 3,
+          "text": "我們成親！"
+        },
+        {
+          "index": 4,
+          "text": "我⋯剛剛睡醒"
+        },
+        {
+          "index": 5,
+          "text": "經過外面無所事事"
+        },
+        {
+          "index": 6,
+          "text": "我就順便進來拜師學藝的"
+        },
+        {
+          "index": 7,
+          "text": "你突然跟我提到成親這件事"
+        },
+        {
+          "index": 8,
+          "text": "我⋯牙齒還沒有刷呢！"
+        },
+        {
+          "index": 9,
+          "text": "我知道你心裡面一定有懷疑"
+        },
+        {
+          "index": 10,
+          "text": "如果我可以把心掏出來給你看"
+        },
+        {
+          "index": 11,
+          "text": "就會知道我根本沒有騙你"
+        },
+        {
+          "index": 12,
+          "text": "很簡單呀！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你怎麼那麼像⋯"
+        },
+        {
+          "index": 2,
+          "text": "椰子是嘛？"
+        },
+        {
+          "index": 3,
+          "text": "以前有個女孩子也這麼說過"
+        },
+        {
+          "index": 4,
+          "text": "那麼椰子啊椰子"
+        },
+        {
+          "index": 5,
+          "text": "他剛才說的話是不是真的？"
+        },
+        {
+          "index": 6,
+          "text": "別用想了，照舊"
+        },
+        {
+          "index": 7,
+          "text": "你搜下面！"
+        },
+        {
+          "index": 8,
+          "text": "謝你了椰子！"
+        },
+        {
+          "index": 9,
+          "text": "那麼請問你，他最喜歡的是不是我呀？"
+        },
+        {
+          "index": 10,
+          "text": "哼！你回來這麼久"
+        },
+        {
+          "index": 11,
+          "text": "一天到晚跟我要月光寶盒"
+        },
+        {
+          "index": 12,
+          "text": "甚麼意思啊？"
+        },
+        {
+          "index": 13,
+          "text": "我問你哪天跟我成親"
+        },
+        {
+          "index": 14,
+          "text": "你卻一直推三推四"
+        },
+        {
+          "index": 15,
+          "text": "你到底嫁不嫁給我？"
+        },
+        {
+          "index": 16,
+          "text": "I do！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你妹妹是不是瘋了？"
+        },
+        {
+          "index": 2,
+          "text": "一個晚上講鬼話"
+        },
+        {
+          "index": 3,
+          "text": "她不是瘋了，她是神經病"
+        },
+        {
+          "index": 4,
+          "text": "神經病也行，只要她答應"
+        },
+        {
+          "index": 5,
+          "text": "七天後成親"
+        },
+        {
+          "index": 6,
+          "text": "你真的決定嫁給他了？"
+        },
+        {
+          "index": 7,
+          "text": "我騙他的"
+        },
+        {
+          "index": 8,
+          "text": "我等我的男人回來接我"
+        },
+        {
+          "index": 9,
+          "text": "你居然會相信那個小猾頭會回來接你"
+        },
+        {
+          "index": 10,
+          "text": "要是真的話，我可得恭喜你啦！"
+        },
+        {
+          "index": 11,
+          "text": "不過就算他回來"
+        },
+        {
+          "index": 12,
+          "text": "他有甚麼本事"
+        },
+        {
+          "index": 13,
+          "text": "把你從牛魔王手上搶回去？"
+        },
+        {
+          "index": 14,
+          "text": "上天既然安排他能拔出我的紫青寶劍"
+        },
+        {
+          "index": 15,
+          "text": "他一定是一個不平凡的人"
+        },
+        {
+          "index": 16,
+          "text": "錯不了"
+        },
+        {
+          "index": 17,
+          "text": "我知道有一天"
+        },
+        {
+          "index": 18,
+          "text": "他在一個萬眾矚目的情形下出現"
+        },
+        {
+          "index": 19,
+          "text": "身披金甲聖衣"
+        },
+        {
+          "index": 20,
+          "text": "腳踏七色雲彩來娶我"
+        },
+        {
+          "index": 21,
+          "text": "還說不是神經病"
+        },
+        {
+          "index": 22,
+          "text": "這不是神經病！是理想"
+        },
+        {
+          "index": 23,
+          "text": "承認吧！小瘋子"
+        },
+        {
+          "index": 24,
+          "text": "不承認！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "兄弟，世事難料"
+        },
+        {
+          "index": 2,
+          "text": "沒想到你這麼快跟白姑娘成親"
+        },
+        {
+          "index": 3,
+          "text": "是呀，我自己也沒想到"
+        },
+        {
+          "index": 4,
+          "text": "我們都為你高興！"
+        },
+        {
+          "index": 5,
+          "text": "謝謝你"
+        },
+        {
+          "index": 6,
+          "text": "昨晚你做夢"
+        },
+        {
+          "index": 7,
+          "text": "又叫了紫霞姑娘的名字七百八十五次"
+        },
+        {
+          "index": 8,
+          "text": "比上次多了一次"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "過了六天了，明天晚上你就出嫁了"
+        },
+        {
+          "index": 2,
+          "text": "哼！他會來？才怪"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "昨天晚上我托一隻蜘蛛跟你說"
+        },
+        {
+          "index": 2,
+          "text": "叫牠告訴你，我很想念你"
+        },
+        {
+          "index": 3,
+          "text": "你知不知道呀？"
+        },
+        {
+          "index": 4,
+          "text": "你又知不知道？"
+        },
+        {
+          "index": 5,
+          "text": "我一直在騙你"
+        },
+        {
+          "index": 6,
+          "text": "騙就騙吧！"
+        },
+        {
+          "index": 7,
+          "text": "就像飛蛾一樣"
+        },
+        {
+          "index": 8,
+          "text": "明知道會受傷還是飛撲到火上"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "飛蛾就那麼傻！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "出來吧葡萄"
+        },
+        {
+          "index": 2,
+          "text": "我不是想監視你"
+        },
+        {
+          "index": 3,
+          "text": "我只不過想研究一下"
+        },
+        {
+          "index": 4,
+          "text": "人與人之間的一些微妙的感情"
+        },
+        {
+          "index": 5,
+          "text": "你只是強盜啊，大哥"
+        },
+        {
+          "index": 6,
+          "text": "別學人家學問"
+        },
+        {
+          "index": 7,
+          "text": "強盜也有學問"
+        },
+        {
+          "index": 8,
+          "text": "省省吧！睡啦！"
+        },
+        {
+          "index": 9,
+          "text": "紫霞在你心目中是不是一個驚嘆號？"
+        },
+        {
+          "index": 10,
+          "text": "還是一個句號？"
+        },
+        {
+          "index": 11,
+          "text": "你腦袋裡是不是充滿了問號呢？"
+        },
+        {
+          "index": 12,
+          "text": "紫霞只不過是一個我認識的人"
+        },
+        {
+          "index": 13,
+          "text": "我以前說過一個謊話騙她"
+        },
+        {
+          "index": 14,
+          "text": "現在只不過心裡面有一點內疚而已"
+        },
+        {
+          "index": 15,
+          "text": "我越來越討厭她"
+        },
+        {
+          "index": 16,
+          "text": "我明天就要結婚了，你想怎麼樣呀？"
+        },
+        {
+          "index": 17,
+          "text": "有一天當你發覺"
+        },
+        {
+          "index": 18,
+          "text": "你愛上一個你討厭的人"
+        },
+        {
+          "index": 19,
+          "text": "這段感情才是最要命的"
+        },
+        {
+          "index": 20,
+          "text": "可是我怎麼會愛上一個我討厭的人呢？"
+        },
+        {
+          "index": 21,
+          "text": "請你給我個理由好不好？拜託！"
+        },
+        {
+          "index": 22,
+          "text": "愛一個人需要理由嗎？"
+        },
+        {
+          "index": 23,
+          "text": "不需要嗎？"
+        },
+        {
+          "index": 24,
+          "text": "需要嗎？"
+        },
+        {
+          "index": 25,
+          "text": "不需要嗎？"
+        },
+        {
+          "index": 26,
+          "text": "需要嗎？"
+        },
+        {
+          "index": 27,
+          "text": "不需要嗎？"
+        },
+        {
+          "index": 28,
+          "text": "哎⋯我來跟你研究嘛"
+        },
+        {
+          "index": 29,
+          "text": "幹嘛這麼認真呢？需要嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "誰？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "時辰到"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你有多少兄弟姐妹？"
+        },
+        {
+          "index": 2,
+          "text": "你父母尚在嗎？"
+        },
+        {
+          "index": 3,
+          "text": "你說句話啊"
+        },
+        {
+          "index": 4,
+          "text": "我只是想在臨死之前"
+        },
+        {
+          "index": 5,
+          "text": "多交一個朋友而已嘛"
+        },
+        {
+          "index": 6,
+          "text": "糟了，怎麼上去救師父？"
+        },
+        {
+          "index": 7,
+          "text": "所以說做妖就像做人一樣"
+        },
+        {
+          "index": 8,
+          "text": "要有仁慈的心"
+        },
+        {
+          "index": 9,
+          "text": "有了仁慈的心"
+        },
+        {
+          "index": 10,
+          "text": "就不再是妖，是人妖"
+        },
+        {
+          "index": 11,
+          "text": "他明白　了"
+        },
+        {
+          "index": 12,
+          "text": "你明白　了沒有？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "沒有人會來接你的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你的信"
+        },
+        {
+          "index": 2,
+          "text": "謝了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你的良心告訴我"
+        },
+        {
+          "index": 2,
+          "text": "你最愛的不是我"
+        },
+        {
+          "index": 3,
+          "text": "而是另外一個女人"
+        },
+        {
+          "index": 4,
+          "text": "當我見到她在你良心留下的東西之後"
+        },
+        {
+          "index": 5,
+          "text": "我覺得，你經過五百年"
+        },
+        {
+          "index": 6,
+          "text": "回來要找的不是我，而是她"
+        },
+        {
+          "index": 7,
+          "text": "你我都要相信這是天意"
+        },
+        {
+          "index": 8,
+          "text": "也傳說中的緣份"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 8,
+          "text": "也是傳說中的緣份",
+          "note": "補入「是」，修正句意。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "晶晶走了"
+        },
+        {
+          "index": 2,
+          "text": "我知道"
+        },
+        {
+          "index": 3,
+          "text": "信我看過了"
+        },
+        {
+          "index": 4,
+          "text": "菩提大哥"
+        },
+        {
+          "index": 5,
+          "text": "她怎麼啦？"
+        },
+        {
+          "index": 6,
+          "text": "你們看過這封信了嗎？"
+        },
+        {
+          "index": 7,
+          "text": "沒有呀！"
+        },
+        {
+          "index": 8,
+          "text": "你們看啊"
+        },
+        {
+          "index": 9,
+          "text": "好"
+        },
+        {
+          "index": 10,
+          "text": "想走？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我知道我師妹白晶晶來過這裡"
+        },
+        {
+          "index": 2,
+          "text": "她在哪裡？"
+        },
+        {
+          "index": 3,
+          "text": "說！"
+        },
+        {
+          "index": 4,
+          "text": "有那麼大仇嗎？"
+        },
+        {
+          "index": 5,
+          "text": "這麼多年了你還不肯放過你師妹"
+        },
+        {
+          "index": 6,
+          "text": "新郎哥，你跟她很熟嗎？"
+        },
+        {
+          "index": 7,
+          "text": "乾脆告訴我了"
+        },
+        {
+          "index": 8,
+          "text": "我不知道她在哪裡"
+        },
+        {
+          "index": 9,
+          "text": "不知道"
+        },
+        {
+          "index": 10,
+          "text": "聽說你心腸不錯呀"
+        },
+        {
+          "index": 11,
+          "text": "那些是你朋友？"
+        },
+        {
+          "index": 12,
+          "text": "不要啊！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你知道？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "如果你一定要殺人的話，就殺我吧！"
+        },
+        {
+          "index": 2,
+          "text": "他們不認識你師妹的"
+        },
+        {
+          "index": 3,
+          "text": "他們全是無辜的"
+        },
+        {
+          "index": 4,
+          "text": "我同意！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我非常佩服不怕死的人"
+        },
+        {
+          "index": 2,
+          "text": "既然這樣"
+        },
+        {
+          "index": 3,
+          "text": "那我成全你！"
+        },
+        {
+          "index": 4,
+          "text": "等等！"
+        },
+        {
+          "index": 5,
+          "text": "我還真以為你不怕死呢？"
+        },
+        {
+          "index": 6,
+          "text": "反正我要死了你就幫個忙"
+        },
+        {
+          "index": 7,
+          "text": "我聽說過如果刀子出得快，部位準"
+        },
+        {
+          "index": 8,
+          "text": "把人破開之後，人不會馬上死掉"
+        },
+        {
+          "index": 9,
+          "text": "眼睛還看得見"
+        },
+        {
+          "index": 10,
+          "text": "你就幫個忙，出手快一點"
+        },
+        {
+          "index": 11,
+          "text": "把我的心挖出來"
+        },
+        {
+          "index": 12,
+          "text": "讓你自己看行不行"
+        },
+        {
+          "index": 13,
+          "text": "你說甚麼？"
+        },
+        {
+          "index": 14,
+          "text": "我有個朋友說"
+        },
+        {
+          "index": 15,
+          "text": "留了東西在我的心裡面"
+        },
+        {
+          "index": 16,
+          "text": "我很想看看到底是甚麼？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "莫明奇妙"
+        },
+        {
+          "index": 2,
+          "text": "你負我"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "莫名其妙",
+          "note": "「明」改為「名」、「奇」與「妙」之間補正為「其」，修正為常用正確寫法。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "人和妖精，都是媽生的"
+        },
+        {
+          "index": 2,
+          "text": "不同的人是人他媽的"
+        },
+        {
+          "index": 3,
+          "text": "妖呢是妖他的媽的！"
+        },
+        {
+          "index": 4,
+          "text": "我受不了啦"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你媽貴姓啊？"
+        },
+        {
+          "index": 2,
+          "text": "交拜天地"
+        },
+        {
+          "index": 3,
+          "text": "美人我們拜堂吧"
+        },
+        {
+          "index": 4,
+          "text": "等等"
+        },
+        {
+          "index": 5,
+          "text": "看"
+        },
+        {
+          "index": 6,
+          "text": "現在是妹妹要救姐姐"
+        },
+        {
+          "index": 7,
+          "text": "等一會兒呢那個姐姐一定會救妹妹的"
+        },
+        {
+          "index": 8,
+          "text": "你又想幹嘛？"
+        },
+        {
+          "index": 9,
+          "text": "我們今天都成親了，你先放了我姐姐"
+        },
+        {
+          "index": 10,
+          "text": "我一定會遵守諾言的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我不想再鬥了"
+        },
+        {
+          "index": 2,
+          "text": "你走吧！"
+        },
+        {
+          "index": 3,
+          "text": "我這一子就你這麼一個姐姐"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "我這輩子就你這麼一個姐姐",
+          "note": "「一子」應為「一輩子」，修正錯別字。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "姐姐"
+        },
+        {
+          "index": 2,
+          "text": "牛魔王！"
+        },
+        {
+          "index": 3,
+          "text": "我不會讓我妹妹嫁給你的"
+        },
+        {
+          "index": 4,
+          "text": "姐姐"
+        },
+        {
+          "index": 5,
+          "text": "你說甚麼？"
+        },
+        {
+          "index": 6,
+          "text": "我這輩子也就你這麼一個妹妹"
+        },
+        {
+          "index": 7,
+          "text": "你來吧！"
+        },
+        {
+          "index": 8,
+          "text": "看，我說對了吧！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "居然比我還快"
+        },
+        {
+          "index": 2,
+          "text": "你真行"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "是時候了"
+        },
+        {
+          "index": 2,
+          "text": "移形換影大法"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "香香？"
+        },
+        {
+          "index": 2,
+          "text": "我不是你妹妹"
+        },
+        {
+          "index": 3,
+          "text": "香香，你幹甚麼？"
+        },
+        {
+          "index": 4,
+          "text": "哥哥"
+        },
+        {
+          "index": 5,
+          "text": "哥哥，我的移魂大法"
+        },
+        {
+          "index": 6,
+          "text": "香香"
+        },
+        {
+          "index": 7,
+          "text": "幫我移到狗的身上"
+        },
+        {
+          "index": 8,
+          "text": "你是誰呀？"
+        },
+        {
+          "index": 9,
+          "text": "我是青霞呀！"
+        },
+        {
+          "index": 10,
+          "text": "姐姐⋯"
+        },
+        {
+          "index": 11,
+          "text": "我殺了你們"
+        },
+        {
+          "index": 12,
+          "text": "先救師父！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不准打我姐姐呀！"
+        },
+        {
+          "index": 2,
+          "text": "快來救我"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "把那個女的給我釘死"
+        },
+        {
+          "index": 2,
+          "text": "不可以！"
+        },
+        {
+          "index": 3,
+          "text": "那是你們⋯走"
+        },
+        {
+          "index": 4,
+          "text": "誰攔著我，我就殺了誰"
+        },
+        {
+          "index": 5,
+          "text": "觀音大士"
+        },
+        {
+          "index": 6,
+          "text": "我開始明白你說的話了"
+        },
+        {
+          "index": 7,
+          "text": "以前我看事物，是用肉眼去看"
+        },
+        {
+          "index": 8,
+          "text": "但是在我死去的一剎那"
+        },
+        {
+          "index": 9,
+          "text": "我開始用心眼去看這個世界"
+        },
+        {
+          "index": 10,
+          "text": "所有的事物"
+        },
+        {
+          "index": 11,
+          "text": "真的可以看得前所未有那麼清楚"
+        },
+        {
+          "index": 12,
+          "text": "原來那個女孩子⋯"
+        },
+        {
+          "index": 13,
+          "text": "在我的心裡面留下了一滴眼淚"
+        },
+        {
+          "index": 14,
+          "text": "我完全可以感受到"
+        },
+        {
+          "index": 15,
+          "text": "她當時是多麼的傷心"
+        },
+        {
+          "index": 16,
+          "text": "塵世間的事"
+        },
+        {
+          "index": 17,
+          "text": "你不再留戀了嗎？"
+        },
+        {
+          "index": 18,
+          "text": "沒關係了"
+        },
+        {
+          "index": 19,
+          "text": "生亦何哀"
+        },
+        {
+          "index": 20,
+          "text": "死亦何苦"
+        },
+        {
+          "index": 21,
+          "text": "說得好，說得好"
+        },
+        {
+          "index": 22,
+          "text": "恭喜，恭喜"
+        },
+        {
+          "index": 23,
+          "text": "怎樣啊老兄？"
+        },
+        {
+          "index": 24,
+          "text": "來，坐坐坐"
+        },
+        {
+          "index": 25,
+          "text": "請坐！"
+        },
+        {
+          "index": 26,
+          "text": "最倒霉的是連累了我這三位新朋友"
+        },
+        {
+          "index": 27,
+          "text": "跟他們完全沒關係嘛"
+        },
+        {
+          "index": 28,
+          "text": "不過我真的不明白"
+        },
+        {
+          "index": 29,
+          "text": "恨一個人，可以十年，五十年"
+        },
+        {
+          "index": 30,
+          "text": "甚至於五百年的恨下去"
+        },
+        {
+          "index": 31,
+          "text": "為甚麼仇恨可以大到這種地步？"
+        },
+        {
+          "index": 32,
+          "text": "所以唐三藏去取西經"
+        },
+        {
+          "index": 33,
+          "text": "他就是想指望這本經書"
+        },
+        {
+          "index": 34,
+          "text": "去化解人世間的仇恨"
+        },
+        {
+          "index": 35,
+          "text": "明白"
+        },
+        {
+          "index": 36,
+          "text": "我要留下來"
+        },
+        {
+          "index": 37,
+          "text": "因為還有事情等著我去做"
+        },
+        {
+          "index": 38,
+          "text": "你們自己跑快點趕去投胎吧！"
+        },
+        {
+          "index": 39,
+          "text": "好！"
+        },
+        {
+          "index": 40,
+          "text": "這輩子我害你們被人砍了一刀"
+        },
+        {
+          "index": 41,
+          "text": "希望下輩子有機會可以還"
+        },
+        {
+          "index": 42,
+          "text": "要還就還三刀"
+        },
+        {
+          "index": 43,
+          "text": "怎麼說都行，親愛的葡萄"
+        },
+        {
+          "index": 44,
+          "text": "再見，不送了"
+        },
+        {
+          "index": 45,
+          "text": "我們走啦"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我要再提醒你一次"
+        },
+        {
+          "index": 2,
+          "text": "金箍戴上之後"
+        },
+        {
+          "index": 3,
+          "text": "你再也不是個凡人"
+        },
+        {
+          "index": 4,
+          "text": "人世間的情慾不能再沾半點"
+        },
+        {
+          "index": 5,
+          "text": "如果動心"
+        },
+        {
+          "index": 6,
+          "text": "這個金箍兒就會在你頭上越收越緊"
+        },
+        {
+          "index": 7,
+          "text": "苦不堪言"
+        },
+        {
+          "index": 8,
+          "text": "聽到"
+        },
+        {
+          "index": 9,
+          "text": "在戴上這個金箍之前"
+        },
+        {
+          "index": 10,
+          "text": "你還有甚麼話想說？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "曾經有一份真誠的愛情擺在我面前"
+        },
+        {
+          "index": 2,
+          "text": "但是我沒有珍惜"
+        },
+        {
+          "index": 3,
+          "text": "等到了失去的時候才後悔莫及"
+        },
+        {
+          "index": 4,
+          "text": "塵世間最痛苦的事莫過於此"
+        },
+        {
+          "index": 5,
+          "text": "如果上天可以給我個機會"
+        },
+        {
+          "index": 6,
+          "text": "再來一次的話"
+        },
+        {
+          "index": 7,
+          "text": "我會跟那個女孩說我愛她！"
+        },
+        {
+          "index": 8,
+          "text": "如果非要把這份愛加上一個期限"
+        },
+        {
+          "index": 9,
+          "text": "我希望是⋯一萬年"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "再叩首"
+        },
+        {
+          "index": 2,
+          "text": "三叩首"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "拜過祖師爺，喝過合卺酒"
+        },
+        {
+          "index": 2,
+          "text": "你就是我牛家的人了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "雲彩！"
+        },
+        {
+          "index": 2,
+          "text": "好大的棉花糖呀"
+        },
+        {
+          "index": 3,
+          "text": "難道真的是他？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小心！"
+        },
+        {
+          "index": 2,
+          "text": "打雷囉！"
+        },
+        {
+          "index": 3,
+          "text": "下雨，收衣服呀！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "勾引我老婆的臭猴子"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "熟歸熟啊"
+        },
+        {
+          "index": 2,
+          "text": "你再亂講話我一樣會告你毀謗"
+        },
+        {
+          "index": 3,
+          "text": "給我殺了他"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "對不起！"
+        },
+        {
+          "index": 2,
+          "text": "這個噴嚏一定讓大家很失望"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "至尊寶"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這一次大家滿足了吧？"
+        },
+        {
+          "index": 2,
+          "text": "師父"
+        },
+        {
+          "index": 3,
+          "text": "啊！原來是悟空"
+        },
+        {
+          "index": 4,
+          "text": "我還以為是片雨雲"
+        },
+        {
+          "index": 5,
+          "text": "師父，弟子昔日罪孽深重"
+        },
+        {
+          "index": 6,
+          "text": "幸得觀音大士指點迷津"
+        },
+        {
+          "index": 7,
+          "text": "現在已一心歸於我佛"
+        },
+        {
+          "index": 8,
+          "text": "絕不會再留戀人世間半點情慾"
+        },
+        {
+          "index": 9,
+          "text": "護送師父去取西經這個重任"
+        },
+        {
+          "index": 10,
+          "text": "弟子願一肩承擔"
+        },
+        {
+          "index": 11,
+          "text": "善哉善哉"
+        },
+        {
+          "index": 12,
+          "text": "你終於肯重返正途了"
+        },
+        {
+          "index": 13,
+          "text": "至尊寶"
+        },
+        {
+          "index": 14,
+          "text": "至尊寶，你終於來了"
+        },
+        {
+          "index": 15,
+          "text": "姑娘"
+        },
+        {
+          "index": 16,
+          "text": "我⋯確實識得有個朋友叫做至尊寶"
+        },
+        {
+          "index": 17,
+          "text": "他還有些話托一個叫紫霞仙子的說"
+        },
+        {
+          "index": 18,
+          "text": "是不是你啊？"
+        },
+        {
+          "index": 19,
+          "text": "至尊寶"
+        },
+        {
+          "index": 20,
+          "text": "停！"
+        },
+        {
+          "index": 21,
+          "text": "我問是不是你？"
+        },
+        {
+          "index": 22,
+          "text": "是不是？"
+        },
+        {
+          "index": 23,
+          "text": "說呀⋯"
+        },
+        {
+          "index": 24,
+          "text": "對了"
+        },
+        {
+          "index": 25,
+          "text": "他說，他已經回到從前的地方"
+        },
+        {
+          "index": 26,
+          "text": "還希望仙子你能夠"
+        },
+        {
+          "index": 27,
+          "text": "早日找到個如意郎君呢"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你別跟我開玩笑了，至尊寶"
+        },
+        {
+          "index": 2,
+          "text": "我再說一次"
+        },
+        {
+          "index": 3,
+          "text": "我的名字叫做齊天大⋯聖"
+        },
+        {
+          "index": 4,
+          "text": "不要再叫錯了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我今天要你的命"
+        },
+        {
+          "index": 2,
+          "text": "變！"
+        },
+        {
+          "index": 3,
+          "text": "打死你這隻臭猴子"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "看叉"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "烤雞翅膀，我最愛吃！"
+        },
+        {
+          "index": 2,
+          "text": "拿我叉子烤雞翅膀？"
+        },
+        {
+          "index": 3,
+          "text": "對了，我差點忘記了"
+        },
+        {
+          "index": 4,
+          "text": "我是吃齋"
+        },
+        {
+          "index": 5,
+          "text": "還給我！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "覺得好不好玩呀，說來聽聽，說"
+        },
+        {
+          "index": 2,
+          "text": "說呀⋯"
+        },
+        {
+          "index": 3,
+          "text": "為甚麼你老是⋯不說話呢？"
+        },
+        {
+          "index": 4,
+          "text": "快救我"
+        },
+        {
+          "index": 5,
+          "text": "對不起！"
+        },
+        {
+          "index": 6,
+          "text": "在你手下面前，我不應該你那麼丟臉"
+        },
+        {
+          "index": 7,
+          "text": "我來幫你"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "在你手下面前，我不應該讓你那麼丟臉",
+          "note": "修正錯別字與漏字：「你」改為「讓你」，使句子通順。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "還給你"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好！看我的厲害"
+        },
+        {
+          "index": 2,
+          "text": "無敵牛蚤"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "無敵牛虻",
+          "note": "將「蚤」修正為「虻」，屬明顯錯別字。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我好怕啊，好多牛蚤啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "幸虧我們的猴崽子也不少"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "把猴子通通殺了"
+        },
+        {
+          "index": 2,
+          "text": "讓他殺"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "齊天大聖孫悟空是嗎？"
+        },
+        {
+          "index": 2,
+          "text": "你不是要去西天取西經？"
+        },
+        {
+          "index": 3,
+          "text": "帶我一起去，好吧！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "對啊！"
+        },
+        {
+          "index": 2,
+          "text": "有個女人一起"
+        },
+        {
+          "index": 3,
+          "text": "寂寞的時候還有人可以當個慰安婦"
+        },
+        {
+          "index": 4,
+          "text": "想起來真是⋯"
+        },
+        {
+          "index": 5,
+          "text": "我不行，我真的不行了"
+        },
+        {
+          "index": 6,
+          "text": "過來，摟著我！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你受不了我了"
+        },
+        {
+          "index": 2,
+          "text": "受得了"
+        },
+        {
+          "index": 3,
+          "text": "我受不了你！"
+        },
+        {
+          "index": 4,
+          "text": "你長得這麼醜，幫個忙大家都是神仙"
+        },
+        {
+          "index": 5,
+          "text": "不要再性騷擾我行不行？"
+        },
+        {
+          "index": 6,
+          "text": "你為甚麼這樣對我？"
+        },
+        {
+          "index": 7,
+          "text": "你生氣啦？"
+        },
+        {
+          "index": 8,
+          "text": "我會生氣的"
+        },
+        {
+          "index": 9,
+          "text": "那就哭出來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我送你們這些畜牲上西天"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "芭焦扇"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "芭蕉扇",
+          "note": "「焦」應為「蕉」，修正錯別字。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "救我呀"
+        },
+        {
+          "index": 2,
+          "text": "真是麻煩！"
+        },
+        {
+          "index": 3,
+          "text": "師父"
+        },
+        {
+          "index": 4,
+          "text": "悟空，救我呀！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我不相信你這樣對我"
+        },
+        {
+          "index": 2,
+          "text": "你們兩個保護師父"
+        },
+        {
+          "index": 3,
+          "text": "知道了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "紫霞，不要呀！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你幹甚麼？"
+        },
+        {
+          "index": 2,
+          "text": "你肯過來了嗎？"
+        },
+        {
+          "index": 3,
+          "text": "為甚麼這麼關心我，讓我死好了"
+        },
+        {
+          "index": 4,
+          "text": "我不是關心你"
+        },
+        {
+          "index": 5,
+          "text": "只不過螻蟻都尚且偷生"
+        },
+        {
+          "index": 6,
+          "text": "神仙幹成你這個樣子乾脆不要幹算了"
+        },
+        {
+          "index": 7,
+          "text": "孫悟空，你鬥不過我的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好大條溝呀"
+        },
+        {
+          "index": 2,
+          "text": "接住呀，快接住！"
+        },
+        {
+          "index": 3,
+          "text": "開甚麼玩笑"
+        },
+        {
+          "index": 4,
+          "text": "我把整座城搧到太陽那邊去"
+        },
+        {
+          "index": 5,
+          "text": "我看你救得了誰？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "別妨礙我做正經事，要死你死遠點"
+        },
+        {
+          "index": 2,
+          "text": "等等！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "還騙我？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "臭猴子把城頂住"
+        },
+        {
+          "index": 2,
+          "text": "我摔！"
+        },
+        {
+          "index": 3,
+          "text": "我把你頂回去"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "糟了，太熱，著火了"
+        },
+        {
+          "index": 2,
+          "text": "混蛋！"
+        },
+        {
+          "index": 3,
+          "text": "你又想怎麼樣啊？賤人"
+        },
+        {
+          "index": 4,
+          "text": "混蛋！"
+        },
+        {
+          "index": 5,
+          "text": "你才混蛋"
+        },
+        {
+          "index": 6,
+          "text": "你不是人"
+        },
+        {
+          "index": 7,
+          "text": "你才不是人"
+        },
+        {
+          "index": 8,
+          "text": "你不要再發瘋了"
+        },
+        {
+          "index": 9,
+          "text": "我剛才跟你說的話你明不明白？"
+        },
+        {
+          "index": 10,
+          "text": "你又明不明白我已經不再是神仙呢？"
+        },
+        {
+          "index": 11,
+          "text": "我只明白一件事"
+        },
+        {
+          "index": 12,
+          "text": "愛一個人原來是這麼痛苦"
+        },
+        {
+          "index": 13,
+          "text": "不要跟我說這種廢話"
+        },
+        {
+          "index": 14,
+          "text": "我說過你認錯人啦！"
+        },
+        {
+          "index": 15,
+          "text": "那麼這串金鈴是在哪裡買的？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小心"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小心呀師父"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我的意中人是一個蓋世英雄"
+        },
+        {
+          "index": 2,
+          "text": "有一天他會踩著七色雲彩來迎娶我"
+        },
+        {
+          "index": 3,
+          "text": "我猜中了前頭"
+        },
+        {
+          "index": 4,
+          "text": "可是我猜不著這結局"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "師父⋯"
+        },
+        {
+          "index": 2,
+          "text": "我要你的命！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好熱啊！我快變烤豬了"
+        },
+        {
+          "index": 2,
+          "text": "這裡快要爆炸了"
+        },
+        {
+          "index": 3,
+          "text": "一定要靠月光寶盒才能離開這裡． ．"
+        },
+        {
+          "index": 4,
+          "text": "走"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "快撞太陽，快走"
+        },
+        {
+          "index": 2,
+          "text": "帶師父先走"
+        },
+        {
+          "index": 3,
+          "text": "快走！"
+        },
+        {
+          "index": 4,
+          "text": "青霞"
+        },
+        {
+          "index": 5,
+          "text": "我妹妹已經不在了"
+        },
+        {
+          "index": 6,
+          "text": "我看我應該回如來佛祖那兒做燈芯"
+        },
+        {
+          "index": 7,
+          "text": "你保重吧！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大師兄，這麼早就起來啦！"
+        },
+        {
+          "index": 2,
+          "text": "發生甚麼事啊？"
+        },
+        {
+          "index": 3,
+          "text": "大師兄，你都忘記啦？"
+        },
+        {
+          "index": 4,
+          "text": "昨晚碰上一場大風沙"
+        },
+        {
+          "index": 5,
+          "text": "你把我們帶回這裡來啦"
+        },
+        {
+          "index": 6,
+          "text": "走！"
+        },
+        {
+          "index": 7,
+          "text": "上那去師父？"
+        },
+        {
+          "index": 8,
+          "text": "天竺"
+        },
+        {
+          "index": 9,
+          "text": "師父，怎麼這麼說話？"
+        },
+        {
+          "index": 10,
+          "text": "師父說話一向簡潔明瞭，走吧！"
+        },
+        {
+          "index": 11,
+          "text": "師父，別走那麼快嘛"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 7,
+          "text": "上哪去師父？",
+          "note": "「那」誤作「哪」，修正為「哪去」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "師兄，小心呀！"
+        },
+        {
+          "index": 2,
+          "text": "謝謝！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "相傳五百年前這裡就是水濂洞"
+        },
+        {
+          "index": 2,
+          "text": "齊天大聖住的地方"
+        },
+        {
+          "index": 3,
+          "text": "自從他打死牛魔王"
+        },
+        {
+          "index": 4,
+          "text": "救回唐僧之後"
+        },
+        {
+          "index": 5,
+          "text": "這個世界再沒有妖怪了"
+        },
+        {
+          "index": 6,
+          "text": "從此以後很多人來這混水摸魚"
+        },
+        {
+          "index": 7,
+          "text": "那個傢伙"
+        },
+        {
+          "index": 8,
+          "text": "裝個豬頭居然說自己是豬八戒"
+        },
+        {
+          "index": 9,
+          "text": "嘩，大哥呀"
+        },
+        {
+          "index": 10,
+          "text": "你化這個裝就說自己是孫悟空啊？"
+        },
+        {
+          "index": 11,
+          "text": "給點專業精神好不好？"
+        },
+        {
+          "index": 12,
+          "text": "你看，那些毛通通都開叉了"
+        },
+        {
+          "index": 13,
+          "text": "頭上像戴了兩塊年糕是的"
+        },
+        {
+          "index": 14,
+          "text": "出來混飯吃得花點本錢嘛"
+        },
+        {
+          "index": 15,
+          "text": "看甚麼看？"
+        },
+        {
+          "index": 16,
+          "text": "你的裝是噁心嘛"
+        },
+        {
+          "index": 17,
+          "text": "生我氣我也這麼說"
+        },
+        {
+          "index": 18,
+          "text": "我不會生氣的"
+        },
+        {
+          "index": 19,
+          "text": "再給我三刀吧！"
+        },
+        {
+          "index": 20,
+          "text": "你以為我不敢啊，你這混蛋"
+        },
+        {
+          "index": 21,
+          "text": "多謝"
+        },
+        {
+          "index": 22,
+          "text": "真奇怪，為什麼要給他三刀？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 13,
+          "text": "頭上像戴了兩塊年糕似的",
+          "note": "將「是的」修正為「似的」，屬錯別字修正。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大師兄"
+        },
+        {
+          "index": 2,
+          "text": "師兄啊，準備出發了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "菩提洞"
+        },
+        {
+          "index": 2,
+          "text": "好的⋯謝謝！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "謝謝⋯"
+        },
+        {
+          "index": 2,
+          "text": "大師兄啊，你在看甚麼？"
+        },
+        {
+          "index": 3,
+          "text": "八戒，賣豆腐那兩個"
+        },
+        {
+          "index": 4,
+          "text": "哪兩個？"
+        },
+        {
+          "index": 5,
+          "text": "豆腐西施嘛"
+        },
+        {
+          "index": 6,
+          "text": "聽這裡的人說"
+        },
+        {
+          "index": 7,
+          "text": "她們辛辛苦苦賣豆腐"
+        },
+        {
+          "index": 8,
+          "text": "賺到錢"
+        },
+        {
+          "index": 9,
+          "text": "是給她們相公上京考狀元的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "狀元到"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "哎呀，媚娘啊媚娘"
+        },
+        {
+          "index": 2,
+          "text": "真是恭喜你啊！恭喜你們"
+        },
+        {
+          "index": 3,
+          "text": "你們相公高中狀元了"
+        },
+        {
+          "index": 4,
+          "text": "還不趕快去迎接他？"
+        },
+        {
+          "index": 5,
+          "text": "娘子！"
+        },
+        {
+          "index": 6,
+          "text": "相公　　娘子"
+        },
+        {
+          "index": 7,
+          "text": "走開吧！三八你看甚麼？"
+        },
+        {
+          "index": 8,
+          "text": "娘子，啊"
+        },
+        {
+          "index": 9,
+          "text": "辛苦娘子磨豆腐"
+        },
+        {
+          "index": 10,
+          "text": "辛苦娘子磨豆腐啊"
+        },
+        {
+          "index": 11,
+          "text": "相公"
+        },
+        {
+          "index": 12,
+          "text": "相公"
+        },
+        {
+          "index": 13,
+          "text": "磨豆腐有甚麼了不起，我也會呀"
+        },
+        {
+          "index": 14,
+          "text": "走！"
+        },
+        {
+          "index": 15,
+          "text": "走啦！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "吹個球"
+        },
+        {
+          "index": 2,
+          "text": "吹個大球球"
+        },
+        {
+          "index": 3,
+          "text": "吹大了氣球玩球球"
+        },
+        {
+          "index": 4,
+          "text": "來這邊看熱鬧"
+        },
+        {
+          "index": 5,
+          "text": "有熱鬧看啊"
+        },
+        {
+          "index": 6,
+          "text": "悟空"
+        },
+        {
+          "index": 7,
+          "text": "師父"
+        },
+        {
+          "index": 8,
+          "text": "看看"
+        },
+        {
+          "index": 9,
+          "text": "好！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這兩位站在上面已經三天三夜了"
+        },
+        {
+          "index": 2,
+          "text": "都沒下來"
+        },
+        {
+          "index": 3,
+          "text": "你們瞧，這個妖怪"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "看來我不應該來"
+        },
+        {
+          "index": 2,
+          "text": "現在才知道太晚了"
+        },
+        {
+          "index": 3,
+          "text": "留下點回憶行不行？"
+        },
+        {
+          "index": 4,
+          "text": "我不要回憶"
+        },
+        {
+          "index": 5,
+          "text": "要留的話留下你的人"
+        },
+        {
+          "index": 6,
+          "text": "這樣子只得到我的肉體"
+        },
+        {
+          "index": 7,
+          "text": "並不能得到我的靈魂"
+        },
+        {
+          "index": 8,
+          "text": "我已經有愛人了"
+        },
+        {
+          "index": 9,
+          "text": "我們不會有結果"
+        },
+        {
+          "index": 10,
+          "text": "你讓我走吧！"
+        },
+        {
+          "index": 11,
+          "text": "好，我讓你走"
+        },
+        {
+          "index": 12,
+          "text": "不過臨走前你要親我一下"
+        },
+        {
+          "index": 13,
+          "text": "親一下⋯"
+        },
+        {
+          "index": 14,
+          "text": "親啊⋯"
+        },
+        {
+          "index": 15,
+          "text": "我再怎麼說也是個夕陽武士"
+        },
+        {
+          "index": 16,
+          "text": "你叫我親我就親"
+        },
+        {
+          "index": 17,
+          "text": "那我的形像不是全毀了"
+        },
+        {
+          "index": 18,
+          "text": "你說謊"
+        },
+        {
+          "index": 19,
+          "text": "你不敢親我"
+        },
+        {
+          "index": 20,
+          "text": "因為你還喜歡我"
+        },
+        {
+          "index": 21,
+          "text": "我告訴你"
+        },
+        {
+          "index": 22,
+          "text": "如果你這一次拒絕我的話"
+        },
+        {
+          "index": 23,
+          "text": "你會後悔一輩子"
+        },
+        {
+          "index": 24,
+          "text": "後悔我也不會親"
+        },
+        {
+          "index": 25,
+          "text": "只能怪相逢恨晚，造物弄人啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我這輩子都不會走"
+        },
+        {
+          "index": 2,
+          "text": "我愛你"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "幹甚麼？"
+        },
+        {
+          "index": 2,
+          "text": "那個人的樣子好怪啊"
+        },
+        {
+          "index": 3,
+          "text": "我也看到"
+        },
+        {
+          "index": 4,
+          "text": "他好像條狗啊！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  }
+]

@@ -9,8 +9,8 @@ from collections.abc import Mapping, Sequence
 from unittest.mock import Mock, patch
 
 import numpy as np
-import pytest
 from pydub import AudioSegment
+from pytest import MonkeyPatch, importorskip, raises
 
 from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
 
@@ -47,9 +47,7 @@ def test_get_audio_segment_restores_mono_output():
     assert audio.channels == 1
 
 
-def test_demucs_model_loader_requires_transcription_extra(
-    monkeypatch: pytest.MonkeyPatch,
-):
+def test_demucs_model_loader_requires_transcription_extra(monkeypatch: MonkeyPatch):
     """Test Demucs import errors mention the transcription extra."""
     original_import = builtins.__import__
 
@@ -66,25 +64,31 @@ def test_demucs_model_loader_requires_transcription_extra(
 
     monkeypatch.setattr(builtins, "__import__", import_without_demucs)
 
-    with pytest.raises(ImportError, match="'transcription' extra"):
+    with raises(ImportError, match="'transcription' extra"):
         DemucsSeparator._get_model_loader()
 
 
 def test_separate_vocals_uses_default_demucs_shifts():
     """Test Demucs separation relies on library-default shift behavior."""
-    torch = pytest.importorskip("torch")
+    torch = importorskip("torch")
     separator = DemucsSeparator()
     separator._model = Mock(samplerate=16000, sources=["vocals"])
     separator._model.to.return_value = separator._model
     separator._model.eval.return_value = separator._model
     input_audio = AudioSegment.silent(duration=1000, frame_rate=16000).set_channels(1)
     separated_sources = torch.zeros((1, 1, 2, 16000), dtype=torch.float32)
-    apply_model = Mock(return_value=separated_sources)
+    apply_model_kwargs: list[dict[str, object]] = []
+
+    def apply_model(*args: object, **kwargs: object) -> object:
+        """Record Demucs apply_model keyword arguments."""
+        assert args
+        apply_model_kwargs.append(kwargs)
+        return separated_sources
 
     with patch.object(DemucsSeparator, "_get_apply_model", return_value=apply_model):
         output_audio = separator.separate_vocals(input_audio)
 
     assert isinstance(output_audio, AudioSegment)
     assert output_audio.frame_rate == input_audio.frame_rate
-    apply_model.assert_called_once()
-    assert "shifts" not in apply_model.call_args.kwargs
+    assert len(apply_model_kwargs) == 1
+    assert "shifts" not in apply_model_kwargs[0]

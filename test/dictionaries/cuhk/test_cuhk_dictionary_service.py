@@ -4,13 +4,11 @@
 
 from __future__ import annotations
 
-from collections.abc import Generator
 from contextlib import AbstractContextManager, nullcontext
 from pathlib import Path
 
-import pytest
+from pytest import fixture, raises
 
-from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
@@ -18,16 +16,10 @@ from scinoephile.core.dictionaries import (
     DictionarySqliteStore,
 )
 from scinoephile.dictionaries.cuhk import CuhkDictionaryService
+from test.helpers import parametrize
 
 
-@pytest.fixture
-def database_path() -> Generator[Path]:
-    """Provide a temporary SQLite database path."""
-    with get_temp_file_path(".db") as temp_path:
-        yield temp_path
-
-
-@pytest.fixture
+@fixture
 def sample_entries() -> list[DictionaryEntry]:
     """Provide deterministic dictionary entries for CUHK service tests."""
     return [
@@ -69,7 +61,7 @@ def sample_entries() -> list[DictionaryEntry]:
     ]
 
 
-@pytest.fixture
+@fixture
 def sample_source() -> DictionarySource:
     """Provide deterministic dictionary source metadata."""
     return DictionarySource(
@@ -84,7 +76,7 @@ def sample_source() -> DictionarySource:
     )
 
 
-@pytest.fixture
+@fixture
 def service(
     database_path: Path,
     sample_entries: list[DictionaryEntry],
@@ -96,7 +88,7 @@ def service(
     return CuhkDictionaryService(database_path=database_path)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("query", "expected", "expectation"),
     [
         ("", [], nullcontext()),
@@ -106,7 +98,7 @@ def service(
         (
             "gully",
             None,
-            pytest.raises(
+            raises(
                 ValueError,
                 match="Could not infer a supported lookup format",
             ),

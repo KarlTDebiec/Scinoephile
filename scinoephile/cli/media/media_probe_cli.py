@@ -7,14 +7,16 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.utility.cache.argument_types import cache_dir_path_arg
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.media import SubtitleStream
+from scinoephile.lang.zho.subtitles.analysis import analyze_zho_subtitle_stream_script
 from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
 from scinoephile.media.probe import get_streams
 
@@ -22,17 +24,23 @@ __all__ = ["MediaProbeCli"]
 
 MEDIA_PROBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "command-line interface for probing media streams": ("探测媒体流的命令行界面"),
+        "command-line interface for probing media streams": "探测媒体流的命令行界面",
         "cache directory for reusable media stream inspection data (default: "
-        "%(default)s)": ("可复用媒体流检查数据的缓存目录（默认：%(default)s）"),
+        "%(default)s)": "可复用媒体流检查数据的缓存目录（默认：%(default)s）",
+        "force Chinese script analysis for a standalone SUP infile": (
+            "对独立 SUP 输入文件强制执行中文脚本分析"
+        ),
         "list media streams in a media file": "列出媒体文件中的媒体流",
         "include additional stream details": "包含更多媒体流详细信息",
         "video infile containing media streams": "包含媒体流的视频输入文件",
     },
     "zh-hant": {
-        "command-line interface for probing media streams": ("探測媒體流的命令列介面"),
+        "command-line interface for probing media streams": "探測媒體流的命令列介面",
         "cache directory for reusable media stream inspection data (default: "
-        "%(default)s)": ("可重用媒體流檢查資料的快取目錄（預設：%(default)s）"),
+        "%(default)s)": "可重用媒體流檢查資料的快取目錄（預設：%(default)s）",
+        "force Chinese script analysis for a standalone SUP infile": (
+            "對獨立 SUP 輸入檔強制執行中文腳本分析"
+        ),
         "list media streams in a media file": "列出媒體檔中的媒體流",
         "include additional stream details": "包含更多媒體流詳細資訊",
         "video infile containing media streams": "包含媒體流的影片輸入檔",
@@ -44,7 +52,7 @@ MEDIA_PROBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class MediaProbeCli(ScinoephileCliBase):
     """List media streams in a media file."""
 
-    localizations = MEDIA_PROBE_LOCALIZATIONS
+    localizations = merge_localizations(CACHE_LOCALIZATIONS, MEDIA_PROBE_LOCALIZATIONS)
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -78,11 +86,15 @@ class MediaProbeCli(ScinoephileCliBase):
             help="include additional stream details",
         )
         arg_groups["operation arguments"].add_argument(
-            "--cache-dir",
-            default=cache_dir_path_arg("media", "subtitles"),
-            dest="cache_dir_path",
-            type=cache_dir_path_arg,
-            help=(
+            "--force-check-script",
+            action="store_true",
+            help="force Chinese script analysis for a standalone SUP infile",
+        )
+        add_cache_dir_arg(
+            arg_groups["operation arguments"],
+            "media",
+            "subtitles",
+            help_text=(
                 "cache directory for reusable media stream inspection data "
                 "(default: %(default)s)"
             ),
@@ -105,32 +117,51 @@ class MediaProbeCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         infile_path: Path,
         details: bool,
+        force_check_script: bool,
         cache_dir_path: Path,
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
+        if force_check_script and infile_path.suffix.lower() != ".sup":
+            parser.error("--force-check-script requires a SUP infile")
 
         # Perform operations
         try:
-            if details:
-                streams = get_streams(infile_path)
-                detailed_subtitle_streams = get_zho_subtitle_streams(
-                    infile_path,
-                    cache_dir_path=cache_dir_path,
-                    streams=streams,
+            if force_check_script:
+                stream = SubtitleStream(
+                    index=0,
+                    codec_type="subtitle",
+                    codec_name="hdmv_pgs_subtitle",
+                    language="zho",
                 )
-                detailed_subtitle_streams_by_index = {
-                    stream.index: stream for stream in detailed_subtitle_streams
-                }
-                streams = [
-                    detailed_subtitle_streams_by_index.get(stream.index, stream)
-                    if isinstance(stream, SubtitleStream)
-                    else stream
-                    for stream in streams
-                ]
+                analysis = analyze_zho_subtitle_stream_script(
+                    infile_path,
+                    stream,
+                    cache_dir_path=cache_dir_path,
+                )
+                language = analysis.script
+                if language is None:
+                    language = "zho-Unknown"
+                stream.language = language
+                streams = [stream]
             else:
                 streams = get_streams(infile_path)
+                if details:
+                    detailed_subtitle_streams_by_index = {
+                        stream.index: stream
+                        for stream in get_zho_subtitle_streams(
+                            infile_path,
+                            cache_dir_path=cache_dir_path,
+                            streams=streams,
+                        )
+                    }
+                    for index, stream in enumerate(streams):
+                        if isinstance(stream, SubtitleStream):
+                            streams[index] = detailed_subtitle_streams_by_index.get(
+                                stream.index,
+                                stream,
+                            )
         except ScinoephileError as exc:
             parser.error(str(exc))
 

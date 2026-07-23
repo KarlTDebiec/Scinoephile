@@ -5,11 +5,10 @@
 from __future__ import annotations
 
 from datetime import timedelta
-from os import utime
 from pathlib import Path
 from time import time
 
-import pytest
+from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import (
@@ -19,6 +18,7 @@ from scinoephile.core.cache.operations import (
     get_cache_stats,
     prune_cache,
 )
+from test.helpers.files import set_mtime, write_cache_file
 
 
 def test_discover_cache_namespaces(tmp_path: Path):
@@ -27,9 +27,9 @@ def test_discover_cache_namespaces(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    _write_cache_file(tmp_path / "llm/one.json")
-    _write_cache_file(tmp_path / "whisper/two.json")
-    _write_cache_file(tmp_path / "root.json")
+    write_cache_file(tmp_path / "llm/one.json")
+    write_cache_file(tmp_path / "whisper/two.json")
+    write_cache_file(tmp_path / "root.json")
 
     assert discover_cache_namespaces(tmp_path) == ["llm", "whisper"]
 
@@ -40,8 +40,8 @@ def test_get_cache_entries_filters_namespace(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    _write_cache_file(tmp_path / "llm/one.json", "one")
-    _write_cache_file(tmp_path / "whisper/two.json", "two")
+    write_cache_file(tmp_path / "llm/one.json", "one")
+    write_cache_file(tmp_path / "whisper/two.json", "two")
 
     entries = get_cache_entries(tmp_path, namespace="llm")
 
@@ -66,9 +66,9 @@ def test_get_cache_entries_invalid_namespace(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    _write_cache_file(tmp_path / "llm/one.json")
+    write_cache_file(tmp_path / "llm/one.json")
 
-    with pytest.raises(ScinoephileError, match="was not found"):
+    with raises(ScinoephileError, match="was not found"):
         get_cache_entries(tmp_path, namespace="ocr")
 
 
@@ -78,9 +78,9 @@ def test_get_cache_stats(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    _write_cache_file(tmp_path / "llm/one.json", "one")
-    _write_cache_file(tmp_path / "llm/two.json", "two")
-    _write_cache_file(tmp_path / "whisper/three.json", "three")
+    write_cache_file(tmp_path / "llm/one.json", "one")
+    write_cache_file(tmp_path / "llm/two.json", "two")
+    write_cache_file(tmp_path / "whisper/three.json", "three")
 
     stats_by_namespace = get_cache_stats(tmp_path)
     stats = {
@@ -101,12 +101,12 @@ def test_prune_cache(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    old_path = _write_cache_file(tmp_path / "llm/old.json")
-    new_path = _write_cache_file(tmp_path / "llm/new.json")
+    old_path = write_cache_file(tmp_path / "llm/old.json")
+    new_path = write_cache_file(tmp_path / "llm/new.json")
     old_timestamp = time() - 60 * 60 * 24 * 40
     old_path.touch()
     new_path.touch()
-    _set_mtime(old_path, old_timestamp)
+    set_mtime(old_path, old_timestamp)
 
     deleted_entries = prune_cache(tmp_path, older_than=timedelta(days=30))
 
@@ -121,35 +121,11 @@ def test_clear_cache_namespace(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    _write_cache_file(tmp_path / "llm/one.json")
-    whisper_path = _write_cache_file(tmp_path / "whisper/two.json")
+    write_cache_file(tmp_path / "llm/one.json")
+    whisper_path = write_cache_file(tmp_path / "whisper/two.json")
 
     deleted_entries = clear_cache(tmp_path, namespace="llm")
 
     assert [entry.relative_path for entry in deleted_entries] == [Path("llm/one.json")]
     assert not (tmp_path / "llm").exists()
     assert whisper_path.exists()
-
-
-def _set_mtime(path: Path, timestamp: float):
-    """Set a path modification and access time.
-
-    Arguments:
-        path: path to modify
-        timestamp: timestamp to set
-    """
-    utime(path, (timestamp, timestamp))
-
-
-def _write_cache_file(path: Path, text: str = "{}") -> Path:
-    """Write a cache file.
-
-    Arguments:
-        path: path to write
-        text: text to write
-    Returns:
-        written path
-    """
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
-    return path

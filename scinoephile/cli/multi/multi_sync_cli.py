@@ -1,12 +1,15 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for multi-series subtitle synchronization."""
+"""Command-line interface for syncing subtitle timings by offset."""
 
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from copy import deepcopy
+from logging import getLogger
 from pathlib import Path
 
+from scinoephile.cli.helpers.io import read_series, write_series
 from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
@@ -14,52 +17,61 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_file_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.core.synchronization import get_synced_series
+from scinoephile.core import ScinoephileError
+from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.synchronization import get_sync_offset_stats
 
 __all__ = ["MultiSyncCli"]
 
+logger = getLogger(__name__)
+
 MULTI_SYNC_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "combine two series into the top and bottom of a synchronized series": (
-            "将两个序列合并为上下行同步字幕"
+        "estimate subtitle offset and shift a mobile series to an anchor series": (
+            "估计字幕偏移并将移动序列平移到锚定序列"
+        ),
+        "Positive offset means the mobile series is later than the anchor series.": (
+            "正数偏移表示移动序列晚于锚定序列。"
         ),
         (
             "minimum timing-overlap score from 0.0 to 1.0 used to form sync "
             "groups (default: 0.16)"
         ): ("用于形成同步组的最小时间重叠分数，范围 0.0 到 1.0（默认：0.16）"),
+        'anchor subtitle infile or "-" for stdin': (
+            '锚定字幕输入文件，或使用 "-" 表示标准输入'
+        ),
+        'mobile subtitle infile to shift or "-" for stdin': (
+            '要平移的移动字幕输入文件，或使用 "-" 表示标准输入'
+        ),
         "pause length in milliseconds used to split subtitle blocks (default: 3000)": (
             "用于分割字幕块的停顿时长，单位为毫秒（默认：3000）"
         ),
-        'subtitle infile for bottom line or "-" for stdin': (
-            '底行字幕输入文件，或使用 "-" 表示标准输入'
-        ),
-        'subtitle infile for top line or "-" for stdin': (
-            '顶行字幕输入文件，或使用 "-" 表示标准输入'
-        ),
-        "synchronized subtitle outfile path (default: stdout)": (
-            "同步字幕输出文件路径（默认：标准输出）"
+        "synced mobile subtitle outfile path (default: stdout)": (
+            "同步后的移动字幕输出文件路径（默认：标准输出）"
         ),
     },
     "zh-hant": {
-        "combine two series into the top and bottom of a synchronized series": (
-            "將兩個序列合併為上下行同步字幕"
+        "estimate subtitle offset and shift a mobile series to an anchor series": (
+            "估計字幕偏移並將移動序列平移到錨定序列"
+        ),
+        "Positive offset means the mobile series is later than the anchor series.": (
+            "正數偏移表示移動序列晚於錨定序列。"
         ),
         (
             "minimum timing-overlap score from 0.0 to 1.0 used to form sync "
             "groups (default: 0.16)"
         ): ("用於形成同步組的最小時間重疊分數，範圍 0.0 到 1.0（預設：0.16）"),
+        'anchor subtitle infile or "-" for stdin': (
+            '錨定字幕輸入檔，或使用 "-" 代表標準輸入'
+        ),
+        'mobile subtitle infile to shift or "-" for stdin': (
+            '要平移的移動字幕輸入檔，或使用 "-" 代表標準輸入'
+        ),
         "pause length in milliseconds used to split subtitle blocks (default: 3000)": (
             "用於分割字幕區塊的停頓時長，單位為毫秒（預設：3000）"
         ),
-        'subtitle infile for bottom line or "-" for stdin': (
-            '底行字幕輸入檔，或使用 "-" 代表標準輸入'
-        ),
-        'subtitle infile for top line or "-" for stdin': (
-            '頂行字幕輸入檔，或使用 "-" 代表標準輸入'
-        ),
-        "synchronized subtitle outfile path (default: stdout)": (
-            "同步字幕輸出檔路徑（預設：標準輸出）"
+        "synced mobile subtitle outfile path (default: stdout)": (
+            "同步後的移動字幕輸出檔路徑（預設：標準輸出）"
         ),
     },
 }
@@ -67,7 +79,10 @@ MULTI_SYNC_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class MultiSyncCli(ScinoephileCliBase):
-    """Combine two series into the top and bottom of a synchronized series."""
+    """Estimate subtitle offset and shift a mobile series to an anchor series.
+
+    Positive offset means the mobile series is later than the anchor series.
+    """
 
     localizations = MULTI_SYNC_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
@@ -90,18 +105,18 @@ class MultiSyncCli(ScinoephileCliBase):
 
         # Input arguments
         arg_groups["input arguments"].add_argument(
-            "--top-infile",
-            dest="top_infile_path",
+            "--anchor-infile",
+            dest="anchor_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='subtitle infile for top line or "-" for stdin',
+            help='anchor subtitle infile or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
-            "--bottom-infile",
-            dest="bottom_infile_path",
+            "--mobile-infile",
+            dest="mobile_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='subtitle infile for bottom line or "-" for stdin',
+            help='mobile subtitle infile to shift or "-" for stdin',
         )
 
         # Operation arguments
@@ -128,10 +143,9 @@ class MultiSyncCli(ScinoephileCliBase):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            default=None,
             dest="outfile_path",
             type=output_file_arg(exist_ok=True),
-            help="synchronized subtitle outfile path (default: stdout)",
+            help="synced mobile subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -154,8 +168,8 @@ class MultiSyncCli(ScinoephileCliBase):
         cls,
         *,
         _parser: ArgumentParser | None = None,
-        top_infile_path: Path | str,
-        bottom_infile_path: Path | str,
+        anchor_infile_path: Path | str,
+        mobile_infile_path: Path | str,
         sync_cutoff: float,
         pause_length: int,
         outfile_path: Path | None,
@@ -164,26 +178,36 @@ class MultiSyncCli(ScinoephileCliBase):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
-        if top_infile_path == "-" and bottom_infile_path == "-":
-            parser.error("--top-infile and --bottom-infile may not both be '-'")
+        if anchor_infile_path == "-" and mobile_infile_path == "-":
+            parser.error("--anchor-infile and --mobile-infile may not both be '-'")
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
 
         # Read inputs
-        top = read_series(parser, top_infile_path, allow_stdin=True)
-        bottom = read_series(parser, bottom_infile_path, allow_stdin=True)
+        anchor = read_series(parser, anchor_infile_path, allow_stdin=True)
+        mobile = read_series(parser, mobile_infile_path, allow_stdin=True)
 
         # Perform operations
-        synced = get_synced_series(
-            top,
-            bottom,
-            sync_cutoff=sync_cutoff,
-            pause_length=pause_length,
-        )
+        try:
+            stats = get_sync_offset_stats(
+                anchor,
+                mobile,
+                sync_cutoff=sync_cutoff,
+                pause_length=pause_length,
+            )
+        except ScinoephileError as exc:
+            parser.error(str(exc))
+        logger.info(f"Mean offset: {stats.mean_ms / 1000:+.3f} s")
+
+        synced = deepcopy(mobile)
+        synced.shift(ms=int(round(-stats.mean_ms)))
 
         # Write outputs
         write_series(
-            parser, synced, outfile_path if outfile_path is not None else "-", overwrite
+            parser,
+            synced,
+            outfile_path if outfile_path is not None else "-",
+            overwrite,
         )
 
 

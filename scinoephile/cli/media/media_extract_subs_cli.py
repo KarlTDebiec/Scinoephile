@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.utility.cache.argument_types import cache_dir_path_arg
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -16,6 +16,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.argument_types import language_arg
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.media.constants import DEFAULT_SUBTITLE_LANGUAGES
 from scinoephile.workflows.subtitle_extraction import (
     SubtitleExtractionOutputStatus,
@@ -27,13 +28,13 @@ __all__ = ["MediaExtractSubsCli"]
 
 MEDIA_EXTRACT_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "convert extracted SUP subtitle streams to image directories": (
-            "将提取的 SUP 字幕流转换为图像目录"
+        "directory where extracted subtitle files or exported image directories "
+        "will be written": ("写入已提取字幕文件或已导出图像目录的目录"),
+        "export extracted SUP subtitle streams as image directories": (
+            "将提取的 SUP 字幕流导出为图像目录"
         ),
         "cache directory for extracted or converted subtitle artifacts (default: "
         "%(default)s)": ("提取或转换字幕产物的缓存目录（默认：%(default)s）"),
-        "directory where extracted subtitle files or converted image directories "
-        "will be written": ("写入已提取字幕文件或已转换图像目录的目录"),
         "extract matching subtitle streams from a video file": (
             "从视频文件提取匹配的字幕流"
         ),
@@ -49,13 +50,13 @@ MEDIA_EXTRACT_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "video infile containing subtitle streams": "包含字幕流的视频输入文件",
     },
     "zh-hant": {
-        "convert extracted SUP subtitle streams to image directories": (
-            "將提取的 SUP 字幕流轉換為影像目錄"
+        "directory where extracted subtitle files or exported image directories "
+        "will be written": ("寫入已提取字幕檔或已匯出影像目錄的目錄"),
+        "export extracted SUP subtitle streams as image directories": (
+            "將提取的 SUP 字幕流匯出為影像目錄"
         ),
         "cache directory for extracted or converted subtitle artifacts (default: "
         "%(default)s)": ("提取或轉換字幕產物的快取目錄（預設：%(default)s）"),
-        "directory where extracted subtitle files or converted image directories "
-        "will be written": ("寫入已提取字幕檔或已轉換影像目錄的目錄"),
         "extract matching subtitle streams from a video file": (
             "從影片檔提取匹配的字幕流"
         ),
@@ -77,7 +78,10 @@ MEDIA_EXTRACT_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class MediaExtractSubsCli(ScinoephileCliBase):
     """Extract matching subtitle streams from a video file."""
 
-    localizations = MEDIA_EXTRACT_SUBS_LOCALIZATIONS
+    localizations = merge_localizations(
+        CACHE_LOCALIZATIONS,
+        MEDIA_EXTRACT_SUBS_LOCALIZATIONS,
+    )
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -121,12 +125,11 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             action="store_true",
             help="include additional subtitle stream details",
         )
-        arg_groups["operation arguments"].add_argument(
-            "--cache-dir",
-            default=cache_dir_path_arg("media", "subtitles"),
-            dest="cache_dir_path",
-            type=cache_dir_path_arg,
-            help=(
+        add_cache_dir_arg(
+            arg_groups["operation arguments"],
+            "media",
+            "subtitles",
+            help_text=(
                 "cache directory for extracted or converted subtitle artifacts "
                 "(default: %(default)s)"
             ),
@@ -140,14 +143,14 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             required=True,
             type=output_dir_arg(create=False),
             help=(
-                "directory where extracted subtitle files or converted image "
+                "directory where extracted subtitle files or exported image "
                 "directories will be written"
             ),
         )
         arg_groups["output arguments"].add_argument(
-            "--extract-sup",
+            "--export-images",
             action="store_true",
-            help="convert extracted SUP subtitle streams to image directories",
+            help="export extracted SUP subtitle streams as image directories",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -174,7 +177,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         languages: list[str],
         details: bool,
         cache_dir_path: Path,
-        extract_sup: bool,
+        export_images: bool,
         overwrite: bool,
         output_dir_path: Path,
     ):
@@ -187,7 +190,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                 output_dir_path=output_dir_path,
                 cache_dir_path=cache_dir_path,
                 details=details,
-                extract_sup=extract_sup,
+                export_images=export_images,
                 overwrite=overwrite,
             )
         except ScinoephileError as exc:

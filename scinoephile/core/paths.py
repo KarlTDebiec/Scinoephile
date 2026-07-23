@@ -7,6 +7,7 @@ from __future__ import annotations
 from os import getenv
 from pathlib import Path
 from platform import system
+from tempfile import gettempdir
 
 from scinoephile.common.validation import val_output_dir_path
 
@@ -27,11 +28,27 @@ def get_runtime_cache_dir_path(*parts: str, create: bool = True) -> Path:
     elif system() == "Darwin":
         cache_root_path = Path.home() / "Library/Caches"
     elif system() == "Windows":
-        cache_root_path = Path(getenv("LOCALAPPDATA") or Path.home() / "AppData/Local")
+        cache_root_path = _get_windows_cache_root_path()
+    elif xdg_cache_home := getenv("XDG_CACHE_HOME"):
+        cache_root_path = Path(xdg_cache_home)
     else:
-        cache_root_path = Path(getenv("XDG_CACHE_HOME") or Path.home() / ".cache")
+        cache_root_path = Path.home() / ".cache"
 
     return val_output_dir_path(
         cache_root_path / "scinoephile" / Path(*parts),
         create=create,
     )
+
+
+def _get_windows_cache_root_path() -> Path:
+    """Get the Windows cache root path, falling back to temp if home is absent.
+
+    Returns:
+        cache root path
+    """
+    if local_appdata := getenv("LOCALAPPDATA"):
+        return Path(local_appdata)
+    try:
+        return Path.home() / "AppData/Local"
+    except RuntimeError:
+        return Path(gettempdir())

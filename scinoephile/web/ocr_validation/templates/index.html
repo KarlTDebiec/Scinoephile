@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8" />
+   <title>OCR validation</title>
+   <script src="{{ url_for('static', filename='htmx.min.js') }}"></script>
+   <style>
+      {% for row in style_rows %}
+      #subtitle-{{ row.sub_idx }} {
+         --subtitle-image-width: {{ row.image_width }}px;
+         --subtitle-text-color: {{ row.text_color_css }};
+         --subtitle-shadow-color: {{ row.text_shadow_color_css }};
+         --subtitle-font-size: {{ row.text_font_size_css }};
+         --subtitle-font-size-cqw: {{ row.text_font_size_cqw_css }};
+         --subtitle-letter-spacing: {{ row.text_letter_spacing_css }};
+         --subtitle-letter-spacing-cqw: {{ row.text_letter_spacing_cqw_css }};
+      }
+
+      {% endfor %}
+      .subtitle {
+         margin-bottom: 1em;
+      }
+
+      .subtitle > div {
+         text-align: center;
+      }
+
+      .subtitle > div > :not(figure) {
+         margin-top: 0.5em;
+      }
+
+      .subtitle figure {
+         container-type: inline-size;
+         display: inline-block;
+         margin: 0;
+         max-width: calc(100vw - 16px);
+         width: var(--subtitle-image-width);
+      }
+
+      .subtitle figure img {
+         display: block;
+         height: auto;
+         image-rendering: pixelated;
+         width: 100%;
+      }
+
+      .subtitle figure textarea {
+         --subtitle-shadow-negative-1: -1px;
+         --subtitle-shadow-negative-2: -2px;
+         --subtitle-shadow-positive-1: 1px;
+         --subtitle-shadow-positive-2: 2px;
+         background-color: white;
+         border: 0;
+         box-sizing: border-box;
+         caret-color: var(--subtitle-shadow-color);
+         color: var(--subtitle-text-color);
+         display: block;
+         field-sizing: content;
+         font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+         font-size: var(--subtitle-font-size, 50px);
+         font-size: var(--subtitle-font-size-cqw, var(--subtitle-font-size, 50px));
+         letter-spacing: var(--subtitle-letter-spacing, 10px);
+         letter-spacing: var(--subtitle-letter-spacing-cqw, var(--subtitle-letter-spacing, 10px));
+         left: 50%;
+         line-height: 1;
+         max-width: calc(100vw - 16px);
+         min-height: 1lh;
+         outline: none;
+         overflow: hidden;
+         padding-block: 0.1em 0.14em;
+         position: relative;
+         resize: none;
+         text-align: center;
+         text-shadow:
+            var(--subtitle-shadow-negative-2) var(--subtitle-shadow-negative-2) 0 var(--subtitle-shadow-color),
+            var(--subtitle-shadow-negative-1) var(--subtitle-shadow-negative-2) 0 var(--subtitle-shadow-color),
+            0 var(--subtitle-shadow-negative-2) 0 var(--subtitle-shadow-color),
+            var(--subtitle-shadow-positive-1) var(--subtitle-shadow-negative-2) 0 var(--subtitle-shadow-color),
+            var(--subtitle-shadow-positive-2) var(--subtitle-shadow-negative-2) 0 var(--subtitle-shadow-color),
+            var(--subtitle-shadow-negative-2) var(--subtitle-shadow-negative-1) 0 var(--subtitle-shadow-color),
+            var(--subtitle-shadow-positive-2) var(--subtitle-shadow-negative-1) 0 var(--subtitle-shadow-color),
+            var(--subtitle-shadow-negative-2) 0 0 var(--subtitle-shadow-color),
+            var(--subtitle-shadow-positive-2) 0 0 var(--subtitle-shadow-color),
+            var(--subtitle-shadow-negative-2) var(--subtitle-shadow-positive-1) 0 var(--subtitle-shadow-color),
+            var(--subtitle-shadow-positive-2) var(--subtitle-shadow-positive-1) 0 var(--subtitle-shadow-color),
+            var(--subtitle-shadow-negative-2) var(--subtitle-shadow-positive-2) 0 var(--subtitle-shadow-color),
+            var(--subtitle-shadow-negative-1) var(--subtitle-shadow-positive-2) 0 var(--subtitle-shadow-color),
+            0 var(--subtitle-shadow-positive-2) 0 var(--subtitle-shadow-color),
+            var(--subtitle-shadow-positive-1) var(--subtitle-shadow-positive-2) 0 var(--subtitle-shadow-color),
+            var(--subtitle-shadow-positive-2) var(--subtitle-shadow-positive-2) 0 var(--subtitle-shadow-color);
+         white-space: pre;
+         transform: translateX(-50%);
+         width: calc(100vw - 16px);
+      }
+
+      .subtitle table {
+         background-color: white;
+         border-collapse: collapse;
+         color: black;
+         margin: 0.5em auto 0;
+      }
+
+      .subtitle th,
+      .subtitle td {
+         border: 1px solid #ccc;
+         padding: 0.25em 0.5em;
+         text-align: center;
+      }
+
+      .subtitle td[data-char] {
+         min-width: 4em;
+      }
+
+      .subtitle td[data-char] span,
+      .subtitle td[data-char] small {
+         display: block;
+      }
+
+      .subtitle td[data-char] small {
+         color: #666;
+         font-size: 0.75em;
+         line-height: 1.1;
+         margin-top: 0.1em;
+      }
+
+      .subtitle code {
+         font-family: monospace;
+         white-space: pre;
+      }
+
+      .validation-controls {
+         bottom: 0.5em;
+         display: flex;
+         gap: 0.5em;
+         position: fixed;
+         right: 0.5em;
+         z-index: 10;
+
+         button {
+            background-color: white;
+            border: 1px solid #888;
+            border-radius: 0.25em;
+            color: black;
+            cursor: pointer;
+            font: inherit;
+            padding: 0.35em 0.6em;
+         }
+      }
+   </style>
+</head>
+<body>
+   {{ index_body|safe }}
+</body>
+</html>

@@ -12,8 +12,9 @@ from typing import Any, Unpack, cast
 
 from openai import OpenAI, OpenAIError
 from openai.types.chat import ChatCompletionMessageFunctionToolCall
+from pydantic import JsonValue, ValidationError
 
-from scinoephile.core import ScinoephileError
+from scinoephile.core.exceptions import ScinoephileError
 
 from .answer import Answer
 from .llm_provider import ChatCompletionKwargs, LLMProvider
@@ -69,6 +70,33 @@ class OpenAIProviderBase(LLMProvider):
         return os.environ.get(self.api_key_env_var_name)
 
     @property
+    def cache_identity(self) -> dict[str, JsonValue]:
+        """Stable, non-secret OpenAI-compatible provider configuration."""
+        identity = super().cache_identity
+        base_url = None
+        if self._sync_client is not None:
+            client_base_url = getattr(self._sync_client, "base_url", None)
+            if client_base_url is not None:
+                base_url = str(client_base_url)
+        if base_url is None:
+            base_url = self.base_url
+        if base_url is None:
+            base_url = os.environ.get(
+                "OPENAI_BASE_URL",
+                "https://api.openai.com/v1",
+            )
+        if base_url is not None:
+            base_url = base_url.rstrip("/")
+        identity.update(
+            {
+                "model": self.model,
+                "base_url": base_url,
+                "use_strict_tools": self.use_strict_tools,
+            }
+        )
+        return identity
+
+    @property
     def sync_client(self) -> OpenAI:
         """Synchronous OpenAI client."""
         if self._sync_client is None:
@@ -83,7 +111,7 @@ class OpenAIProviderBase(LLMProvider):
     def chat_completion(
         self,
         messages: list[dict[str, Any]],
-        response_format: type[Answer] | None = None,
+        response_format: type[Answer],
         tool_box: ToolBox | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
@@ -91,7 +119,7 @@ class OpenAIProviderBase(LLMProvider):
 
         Arguments:
             messages: messages to send
-            response_format: response format
+            response_format: structured response format
             tool_box: available tools and handlers
             **kwargs: additional keyword arguments
         Returns:
@@ -112,7 +140,7 @@ class OpenAIProviderBase(LLMProvider):
             max_tool_rounds = 8
             for _ in range(max_tool_rounds):
                 # Query provider
-                completion = self._query(messages, response_format, request_kwargs)
+                completion = self._query(messages, request_kwargs)
                 message = completion.choices[0].message
                 tool_calls = cast(
                     list[ChatCompletionMessageFunctionToolCall],
@@ -157,6 +185,11 @@ class OpenAIProviderBase(LLMProvider):
                 f"OpenAI-compatible API error ({exc_code=}, {exc_type=} {exc_param=}): "
                 f"{exc}"
             ) from exc
+        except ValidationError as exc:
+            raise ScinoephileError(
+                "OpenAI-compatible API returned content that failed structured "
+                "response validation."
+            ) from exc
 
     def _build_openai_tools(self, tool_box: ToolBox) -> list[dict[str, object]]:
         """Build OpenAI tool payload from local tool specs.
@@ -182,29 +215,21 @@ class OpenAIProviderBase(LLMProvider):
     def _query(
         self,
         messages: list[dict[str, Any]],
-        response_format: type[Answer] | None,
         request_kwargs: dict[str, Any],
     ) -> Any:
         """Query provider for completion.
 
         Arguments:
             messages: messages to send
-            response_format: structured response format, if any
             request_kwargs: OpenAI SDK request keyword arguments
         Returns:
             completion response object
         """
-        if response_format:
-            return self.sync_client.beta.chat.completions.parse(
-                messages=messages,  # ty:ignore[invalid-argument-type]
-                model=self.model,
-                **request_kwargs,
-            )
-        return self.sync_client.chat.completions.create(
-            messages=messages,
+        return self.sync_client.beta.chat.completions.parse(
+            messages=messages,  # ty:ignore[invalid-argument-type]
             model=self.model,
             **request_kwargs,
-        )  # ty:ignore[no-matching-overload]
+        )
 
     @staticmethod
     def _call_tool(
@@ -258,7 +283,7 @@ class OpenAIProviderBase(LLMProvider):
 
     @staticmethod
     def _build_request_kwargs(
-        response_format: type[Answer] | None,
+        response_format: type[Answer],
         openai_tools: list[dict[str, object]] | None,
         kwargs: Mapping[str, Any],
     ) -> dict[str, Any]:
@@ -272,8 +297,7 @@ class OpenAIProviderBase(LLMProvider):
             request kwargs for the OpenAI SDK call
         """
         request_kwargs: dict[str, Any] = dict(kwargs)
-        if response_format:
-            request_kwargs["response_format"] = response_format
+        request_kwargs["response_format"] = response_format
         if openai_tools is not None:
             request_kwargs.setdefault("tool_choice", "auto")
             request_kwargs.setdefault("parallel_tool_calls", False)

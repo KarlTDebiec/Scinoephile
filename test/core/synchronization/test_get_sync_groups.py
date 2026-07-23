@@ -4,11 +4,26 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.synchronization import get_sync_groups
+
+
+def test_get_sync_groups_preserves_subtitles_when_other_series_is_empty():
+    """Test empty-series handling preserves every subtitle from the other series."""
+    empty = Series()
+    populated = Series(
+        events=[
+            Subtitle(start=0, end=100, text="A"),
+            Subtitle(start=200, end=300, text="B"),
+        ]
+    )
+
+    assert get_sync_groups(empty, populated) == [([], [0]), ([], [1])]
+    assert get_sync_groups(populated, empty) == [([0], []), ([1], [])]
+    assert get_sync_groups(empty, empty) == []
 
 
 def test_get_sync_groups_exceeds_max_cutoff():
@@ -31,7 +46,7 @@ def test_get_sync_groups_exceeds_max_cutoff():
     two.events.append(Subtitle(start=0, end=100, text="3"))
 
     # This should raise ScinoephileError due to max_cutoff being exceeded
-    with pytest.raises(ScinoephileError) as exc_info:
+    with raises(ScinoephileError) as exc_info:
         get_sync_groups(one, two)
 
     # Verify the error message contains expected information
@@ -62,3 +77,25 @@ def test_get_sync_groups_converges_below_max_cutoff():
     assert len(sync_groups) == 2
     assert sync_groups[0] == ([0], [0])
     assert sync_groups[1] == ([1], [1])
+
+
+def test_get_sync_groups_sorts_unpaired_groups_by_timing():
+    """Test unpaired sync groups are sorted by timing when indexes cannot compare."""
+    one = Series()
+    one.events.append(Subtitle(start=0, end=100, text="A"))
+    one.events.append(Subtitle(start=2_000_000, end=2_000_100, text="B"))
+    one.events.append(Subtitle(start=4_000_000, end=4_000_100, text="C"))
+
+    two = Series()
+    two.events.append(Subtitle(start=0, end=100, text="1"))
+    two.events.append(Subtitle(start=1_000_000, end=1_000_100, text="2"))
+    two.events.append(Subtitle(start=4_000_000, end=4_000_100, text="3"))
+
+    sync_groups = get_sync_groups(one, two)
+
+    assert sync_groups == [
+        ([0], [0]),
+        ([], [1]),
+        ([1], []),
+        ([2], [2]),
+    ]

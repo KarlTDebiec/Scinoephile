@@ -7,22 +7,28 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.cli.helpers.io import read_image_series, write_series
 from scinoephile.common.argument_parsing import (
+    enum_arg,
+    enum_metavar,
     get_arg_groups_by_name,
     input_file_or_dir_arg,
+    int_arg,
     output_file_arg,
 )
-from scinoephile.core import ScinoephileError
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.image.ocr.lens import ocr_image_series_with_lens
-from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["OcrLensCli"]
 
 OCR_LENS_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "Google Lens language code such as en, zh-CN, or zh-TW (default: en)": (
-            "Google Lens 语言代码，例如 en、zh-CN 或 zh-TW（默认：en）"
+        "language of the OCR text to recognize (default: %(default)s)": (
+            "要识别的 OCR 文本语言（默认：%(default)s）"
+        ),
+        "Google Lens request attempts per uncached image (default: %(default)s)": (
+            "每张未缓存图像的 Google Lens 请求尝试次数（默认：%(default)s）"
         ),
         "Recognize image subtitles with Google Lens.": (
             "使用 Google Lens 识别图像字幕。"
@@ -34,8 +40,11 @@ OCR_LENS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "recognized subtitle outfile path": "识别后字幕输出文件路径",
     },
     "zh-hant": {
-        "Google Lens language code such as en, zh-CN, or zh-TW (default: en)": (
-            "Google Lens 語言代碼，例如 en、zh-CN 或 zh-TW（預設：en）"
+        "language of the OCR text to recognize (default: %(default)s)": (
+            "要識別的 OCR 文字語言（預設：%(default)s）"
+        ),
+        "Google Lens request attempts per uncached image (default: %(default)s)": (
+            "每張未快取影像的 Google Lens 請求嘗試次數（預設：%(default)s）"
         ),
         "Recognize image subtitles with Google Lens.": (
             "使用 Google Lens 識別影像字幕。"
@@ -87,8 +96,18 @@ class OcrLensCli(ScinoephileCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--language",
-            default="en",
-            help="Google Lens language code such as en, zh-CN, or zh-TW (default: en)",
+            default=Language.eng,
+            metavar=enum_metavar(Language),
+            type=enum_arg(Language),
+            help="language of the OCR text to recognize (default: %(default)s)",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--retries",
+            default=3,
+            type=int_arg(min_value=1),
+            help=(
+                "Google Lens request attempts per uncached image (default: %(default)s)"
+            ),
         )
 
         # Output arguments
@@ -121,9 +140,10 @@ class OcrLensCli(ScinoephileCliBase):
         *,
         _parser: ArgumentParser | None = None,
         infile_path: Path,
-        language: str,
+        language: Language,
         outfile_path: Path,
         overwrite: bool,
+        retries: int,
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
@@ -132,34 +152,20 @@ class OcrLensCli(ScinoephileCliBase):
             parser.error(f"{outfile_path} already exists")
 
         # Read inputs
-        try:
-            image_series = ImageSeries.load(infile_path)
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+        image_series = read_image_series(parser, infile_path)
 
         # Perform operations
         try:
             text_series = ocr_image_series_with_lens(
                 image_series,
                 language=language,
+                retries=retries,
             )
-        except (
-            ImportError,
-            NotADirectoryError,
-            OSError,
-            RuntimeError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
+        except ScinoephileError as exc:
             parser.error(str(exc))
 
         # Write outputs
-        text_series.save(outfile_path, format_="srt")
+        write_series(parser, text_series, outfile_path, overwrite)
 
 
 if __name__ == "__main__":

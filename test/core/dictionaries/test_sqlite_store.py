@@ -5,13 +5,12 @@
 from __future__ import annotations
 
 import sqlite3
-from collections.abc import Generator
 from contextlib import closing
 from pathlib import Path
+from unittest.mock import patch
 
-import pytest
+from pytest import fixture, raises
 
-from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
@@ -20,14 +19,7 @@ from scinoephile.core.dictionaries import (
 )
 
 
-@pytest.fixture
-def database_path() -> Generator[Path]:
-    """Provide a temporary SQLite database path."""
-    with get_temp_file_path(".db") as temp_path:
-        yield temp_path
-
-
-@pytest.fixture
+@fixture
 def sample_entries() -> list[DictionaryEntry]:
     """Provide deterministic dictionary entries for SQLite tests."""
     return [
@@ -55,7 +47,7 @@ def sample_entries() -> list[DictionaryEntry]:
     ]
 
 
-@pytest.fixture
+@fixture
 def sample_source() -> DictionarySource:
     """Provide deterministic dictionary source metadata."""
     return DictionarySource(
@@ -160,6 +152,31 @@ def test_sqlite_store_literal_like_lookups(
     assert store.lookup_by_jyutping("%", limit=5) == [entries[0]]
     assert store.lookup_by_jyutping("_", limit=5) == [entries[1]]
     assert store.lookup_by_jyutping("\\", limit=5) == [entries[2]]
+
+
+def test_sqlite_store_preserves_existing_database_when_rebuild_fails(
+    database_path: Path,
+    sample_entries: list[DictionaryEntry],
+    sample_source: DictionarySource,
+):
+    """Test a failed rebuild leaves the existing database unchanged."""
+    store = DictionarySqliteStore(database_path=database_path)
+    store.persist((sample_source, sample_entries))
+    original_database = database_path.read_bytes()
+
+    with (
+        patch.object(
+            store,
+            "_generate_indices",
+            side_effect=RuntimeError("index generation failed"),
+        ),
+        raises(RuntimeError, match="index generation failed"),
+    ):
+        store.persist((sample_source, sample_entries[:1]))
+
+    assert database_path.read_bytes() == original_database
+    assert store.lookup_by_traditional("山坑水", limit=5) == [sample_entries[1]]
+    assert list(database_path.parent.glob(f".{database_path.name}.*")) == []
 
 
 def test_sqlite_store_collapses_duplicate_entries_and_definitions(

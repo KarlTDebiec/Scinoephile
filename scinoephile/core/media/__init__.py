@@ -3,7 +3,7 @@
 """Core media models.
 
 Package hierarchy (modules may import from any above):
-* constants / language / stream
+* constants / stream
 * audio_stream / subtitle_stream / video_stream
 """
 

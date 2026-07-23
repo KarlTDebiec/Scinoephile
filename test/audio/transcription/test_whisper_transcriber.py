@@ -5,20 +5,24 @@
 from __future__ import annotations
 
 import builtins
+import hashlib
 import os
-import subprocess
 import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from textwrap import dedent
 from unittest.mock import Mock
 
-import pytest
+from pydub import AudioSegment
+from pytest import MonkeyPatch, importorskip, raises
 
 from scinoephile.audio.transcription import get_segment_split_at_idx
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
+from scinoephile.common import package_root
+from scinoephile.common.subprocess import run_command
+from test.helpers import parametrize
 
 _OPTIONAL_TRANSCRIPTION_MODULES = (
     "demucs_infer",
@@ -29,18 +33,20 @@ _OPTIONAL_TRANSCRIPTION_MODULES = (
     "transformers",
     "whisper_timestamped",
 )
-_REPO_ROOT_PATH = Path(__file__).parents[3]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("field_name", "first_value", "second_value"),
     [
         ("use_vad", True, False),
         ("model_name", "model/one", "model/two"),
         ("use_demucs", True, False),
+        ("temperature", 0.0, (0.0, 0.2, 0.4)),
+        ("condition_on_previous_text", True, False),
     ],
 )
 def test_get_cache_path_separates_configuration(
+    tmp_path: Path,
     field_name: str,
     first_value: object,
     second_value: object,
@@ -48,13 +54,20 @@ def test_get_cache_path_separates_configuration(
     """Test Whisper cache paths differ by cache-relevant configuration.
 
     Arguments:
+        tmp_path: temporary cache directory path
         field_name: transcriber configuration field under test
         first_value: first transcriber field value
         second_value: second transcriber field value
     """
     audio = Mock(raw_data=b"audio")
-    first_transcriber = _get_whisper_transcriber()
-    second_transcriber = _get_whisper_transcriber()
+    first_transcriber = WhisperTranscriber(
+        cache_dir_path=tmp_path,
+        model_name="custom/model",
+    )
+    second_transcriber = WhisperTranscriber(
+        cache_dir_path=tmp_path,
+        model_name="custom/model",
+    )
     setattr(first_transcriber, field_name, first_value)
     setattr(second_transcriber, field_name, second_value)
     first_cache_path = first_transcriber._get_cache_path(audio)
@@ -62,12 +75,143 @@ def test_get_cache_path_separates_configuration(
 
     assert first_cache_path is not None
     assert second_cache_path is not None
-    assert first_cache_path.parent == Path("/tmp/whisper")
-    assert second_cache_path.parent == Path("/tmp/whisper")
+    assert first_cache_path.parent == tmp_path
+    assert second_cache_path.parent == tmp_path
     assert first_cache_path != second_cache_path
 
 
-@pytest.mark.parametrize(
+def test_get_cache_path_preserves_default_decoding_identity(tmp_path: Path):
+    """Test default decoding continues to use legacy Whisper cache keys."""
+    audio = Mock(raw_data=b"audio")
+    transcriber = WhisperTranscriber(
+        cache_dir_path=tmp_path,
+        model_name="custom/model",
+    )
+    audio_sha256 = hashlib.sha256(audio.raw_data).hexdigest()
+    cache_key = f"{audio_sha256}_custom/model_yue_demucs-off_vad-on"
+    expected_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
+
+    assert transcriber._get_cache_path(audio) == tmp_path / f"{expected_sha256}.json"
+
+
+def test_get_cache_path_accepts_list_temperature_schedule(tmp_path: Path):
+    """Test list and tuple temperature schedules use the same cache key."""
+    audio = Mock(raw_data=b"audio")
+    list_transcriber = WhisperTranscriber(
+        cache_dir_path=tmp_path,
+        model_name="custom/model",
+        temperature=[0.0, 0.2, 0.4],
+    )
+    tuple_transcriber = WhisperTranscriber(
+        cache_dir_path=tmp_path,
+        model_name="custom/model",
+        temperature=(0.0, 0.2, 0.4),
+    )
+
+    assert list_transcriber._get_cache_path(audio) == tuple_transcriber._get_cache_path(
+        audio
+    )
+
+
+def test_transcribe_forwards_recovery_decoding_options(monkeypatch: MonkeyPatch):
+    """Test Whisper receives configured defensive decoding options."""
+    whisper = Mock()
+    whisper.transcribe.return_value = {"segments": []}
+    temperatures = (0.0, 0.2, 0.4)
+    transcriber = WhisperTranscriber(
+        model_name="custom/model",
+        temperature=temperatures,
+        condition_on_previous_text=False,
+    )
+    transcriber._model = Mock()
+    monkeypatch.setattr(transcriber, "_get_whisper_module", Mock(return_value=whisper))
+    audio = AudioSegment.silent(duration=1000)
+
+    assert transcriber(audio) == []
+    whisper.transcribe.assert_called_once()
+    assert whisper.transcribe.call_args.kwargs["temperature"] == temperatures
+    assert whisper.transcribe.call_args.kwargs["condition_on_previous_text"] is False
+    assert whisper.transcribe.call_args.kwargs["sample_len"] == 32
+
+
+@parametrize(
+    ("duration_ms", "expected"),
+    [
+        (100, 32),
+        (1000, 32),
+        (6530, 105),
+        (14000, 224),
+        (30000, 224),
+    ],
+)
+def test_get_sample_len_bounds_decode_by_audio_duration(
+    duration_ms: int,
+    expected: int,
+):
+    """Bound the decode token budget while leaving room for dense speech.
+
+    Arguments:
+        duration_ms: source audio duration in milliseconds
+        expected: expected Whisper token budget
+    """
+    audio = AudioSegment.silent(duration=duration_ms)
+
+    assert WhisperTranscriber._get_sample_len(audio) == expected
+
+
+def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch):
+    """Reuse one loaded model across fallback transcription configurations."""
+    whisper = Mock()
+    loaded_model = Mock()
+    whisper.load_model.return_value = loaded_model
+    monkeypatch.setattr(
+        WhisperTranscriber,
+        "_get_whisper_module",
+        Mock(return_value=whisper),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper_transcriber.get_torch_device",
+        Mock(return_value="cpu"),
+    )
+    WhisperTranscriber._models.clear()
+    vad_transcriber = WhisperTranscriber(
+        model_name="custom/model",
+        use_vad=True,
+    )
+    no_vad_transcriber = WhisperTranscriber(
+        model_name="custom/model",
+        use_vad=False,
+    )
+
+    try:
+        assert vad_transcriber.model is loaded_model
+        assert no_vad_transcriber.model is loaded_model
+        whisper.load_model.assert_called_once()
+    finally:
+        WhisperTranscriber._models.clear()
+
+
+def test_transcribe_bypasses_cache_when_requested(monkeypatch: MonkeyPatch):
+    """Test an explicit uncached transcription does not reload rejected output."""
+    whisper = Mock()
+    whisper.transcribe.return_value = {"segments": []}
+    transcriber = WhisperTranscriber(model_name="custom/model")
+    transcriber._model = Mock()
+    monkeypatch.setattr(transcriber, "_get_whisper_module", Mock(return_value=whisper))
+    get_cached_transcription = Mock()
+    monkeypatch.setattr(
+        transcriber,
+        "get_cached_transcription",
+        get_cached_transcription,
+    )
+    audio = AudioSegment.silent(duration=1000)
+
+    assert transcriber(audio, use_cache=False) == []
+    get_cached_transcription.assert_not_called()
+    whisper.transcribe.assert_called_once()
+
+
+@parametrize(
     ("model_name", "expected"),
     [
         ("khleeloo/whisper-large-v3-cantonese", True),
@@ -82,9 +226,8 @@ def test_model_name_is_huggingface_repo_id_rejects_local_paths(
     expected: bool,
 ):
     """Test HuggingFace retry is skipped for local filesystem paths."""
-    pytest.importorskip("huggingface_hub")
-    transcriber = object.__new__(WhisperTranscriber)
-    transcriber.model_name = model_name
+    importorskip("huggingface_hub")
+    transcriber = WhisperTranscriber(model_name=model_name)
 
     assert transcriber._model_name_is_huggingface_repo_id() is expected
 
@@ -112,32 +255,29 @@ def test_transcription_imports_without_optional_runtime_dependencies():
             WhisperTranscriber,
             get_segment_split_at_idx,
         )
-        from scinoephile.cli.yue.yue_cli import YueCli
+        from scinoephile.cli.transcribe_cli import TranscribeCli
 
         WhisperTranscriber()
         assert DemucsSeparator.__name__ == "DemucsSeparator"
         assert TranscribedSegment.__name__ == "TranscribedSegment"
         assert get_segment_split_at_idx.__name__ == "get_segment_split_at_idx"
-        assert "transcribe-vs-zho" in YueCli.subcommands()
+        assert TranscribeCli.name() == "transcribe"
         """
     )
     env = os.environ.copy()
     env["PYTHONPATH"] = os.pathsep.join(
-        [str(_REPO_ROOT_PATH), env.get("PYTHONPATH", "")]
+        [str(package_root.parent), env.get("PYTHONPATH", "")]
     )
-    result = subprocess.run(
+    exitcode, _, _ = run_command(
         [sys.executable, "-c", script],
-        cwd=_REPO_ROOT_PATH,
+        cwd_path=package_root.parent,
         env=env,
-        check=False,
-        capture_output=True,
-        text=True,
     )
 
-    assert result.returncode == 0, result.stderr
+    assert exitcode == 0
 
 
-def test_whisper_module_requires_transcription_extra(monkeypatch: pytest.MonkeyPatch):
+def test_whisper_module_requires_transcription_extra(monkeypatch: MonkeyPatch):
     """Test Whisper import errors mention the transcription extra."""
     original_import = builtins.__import__
 
@@ -154,15 +294,13 @@ def test_whisper_module_requires_transcription_extra(monkeypatch: pytest.MonkeyP
 
     monkeypatch.setattr(builtins, "__import__", import_without_whisper)
 
-    with pytest.raises(ImportError, match="'transcription' extra"):
+    with raises(ImportError, match="'transcription' extra"):
         WhisperTranscriber._get_whisper_module()
 
 
 def test_normalize_transcription_segments_coalesces_malformed_duplicate_pair():
     """Test malformed empty-text and duplicate-text segments are coalesced."""
-    transcriber = object.__new__(WhisperTranscriber)
-    transcriber.model_name = "custom/model"
-    transcriber.use_vad = True
+    transcriber = WhisperTranscriber(model_name="custom/model")
 
     segments = [
         TranscribedSegment(
@@ -237,38 +375,10 @@ def test_get_segment_split_at_idx_includes_segment_details_in_error():
         words=None,
     )
 
-    with pytest.raises(ValueError) as exc_info:
+    with raises(ValueError) as exc_info:
         get_segment_split_at_idx(segment, 3)
 
     assert str(exc_info.value) == (
         "Cannot split segment without word timing data: "
         "id=9 start=156.4 end=161.29 text='照先生你就展示畀朕睇下係' text_len=12."
     )
-
-
-def _get_whisper_transcriber(
-    *,
-    cache_dir_path: Path = Path("/tmp/whisper"),
-    model_name: str = "custom/model",
-    language: str = "yue",
-    use_demucs: bool = False,
-    use_vad: bool = True,
-) -> WhisperTranscriber:
-    """Get a minimally initialized Whisper transcriber.
-
-    Arguments:
-        cache_dir_path: cache directory path
-        model_name: Whisper model name
-        language: transcription language code
-        use_demucs: whether Demucs preprocessing is enabled
-        use_vad: whether VAD is enabled
-    Returns:
-        minimally initialized transcriber
-    """
-    transcriber = object.__new__(WhisperTranscriber)
-    transcriber.cache_dir_path = cache_dir_path
-    transcriber.model_name = model_name
-    transcriber.language = language
-    transcriber.use_demucs = use_demucs
-    transcriber.use_vad = use_vad
-    return transcriber

@@ -1,26 +1,32 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to 普通话 text romanization."""
+"""Code related to cmn text romanization."""
 
 from __future__ import annotations
 
 import re
 import unicodedata
-from copy import deepcopy
+from functools import cache
 from warnings import catch_warnings, simplefilter
 
 with catch_warnings():
     simplefilter("ignore", SyntaxWarning)
     import jieba
-from pypinyin import pinyin
+from pypinyin import Style, lazy_pinyin, pinyin
 from pypinyin.contrib.tone_convert import tone_to_tone3
 
-from scinoephile.core.subtitles import Series
-from scinoephile.core.text import full_to_half_punc
+from scinoephile.core.romanization import (
+    RomanizedTokenKind,
+    is_romanized_punctuation,
+    join_romanized_tokens,
+    normalize_romanized_punctuation,
+)
+from scinoephile.core.text import RE_HANZI
 
 __all__ = [
+    "get_cmn_char_romanized",
     "get_cmn_pinyin_query_strings",
-    "get_cmn_romanized",
+    "get_cmn_text_romanized",
     "is_accented_pinyin",
     "is_numbered_pinyin",
 ]
@@ -37,6 +43,19 @@ RE_CMN_PINYIN = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]?$")
 RE_CMN_PINYIN_ACCENTED = re.compile(rf"^{RE_CMN_PINYIN_BASE}$")
 RE_CMN_PINYIN_NUMBERED = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]$")
 RE_CMN_PROHIBITED_TOKEN = re.compile(r"^(gw|kw|ng)|h$", re.IGNORECASE)
+RE_CMN_WHITESPACE = re.compile(r"(\s+)")
+
+
+@cache
+def get_cmn_char_romanized(text: str) -> str:
+    """Get Mandarin pinyin romanization of a Hanzi character or short text.
+
+    Arguments:
+        text: Hanzi character or short text
+    Returns:
+        Mandarin pinyin romanization, or empty string for non-Hanzi text
+    """
+    return " ".join(lazy_pinyin(text, style=Style.TONE, errors="ignore", strict=False))
 
 
 def get_cmn_pinyin_query_strings(text: str) -> list[str]:
@@ -72,26 +91,6 @@ def get_cmn_pinyin_query_strings(text: str) -> list[str]:
             query_strings.add(query_string.replace("v", "u:"))
 
     return sorted(query_strings)
-
-
-def get_cmn_romanized(series: Series, append: bool = True) -> Series:
-    """Get the Mandarin pinyin romanization of Hanzi series.
-
-    Arguments:
-        series: Series for which to get Mandarin pinyin romanization
-        append: Whether to append romanization to original text
-    Returns:
-        Mandarin pinyin romanization of series
-    """
-    series = deepcopy(series)
-    for event in series:
-        romanized = _get_cmn_text_romanized(event.text)
-        if append:
-            if romanized:
-                event.text = f"{event.text}\\N{romanized}"
-        else:
-            event.text = romanized
-    return series
 
 
 def is_accented_pinyin(text: str) -> bool:
@@ -155,7 +154,7 @@ def is_numbered_pinyin(text: str) -> bool:
     return all(RE_CMN_PINYIN_NUMBERED.fullmatch(token) for token in tokens)
 
 
-def _get_cmn_text_romanized(text: str) -> str:
+def get_cmn_text_romanized(text: str) -> str:
     """Get the Mandarin pinyin romanization of Hanzi text.
 
     Arguments:
@@ -163,21 +162,124 @@ def _get_cmn_text_romanized(text: str) -> str:
     Returns:
         Mandarin pinyin romanization
     """
-    text_romanization = ""
+    lines: list[str] = []
     for line in text.split("\n"):
-        line_romanization = ""
-        for section in line.split():
-            section_romanization = ""
-            for word in jieba.cut(section):
-                if word in full_to_half_punc:
-                    if word in {"＜", "＞"}:
-                        section_romanization += word
+        line_output = ""
+        open_symmetric_quotes: set[str] = set()
+        pending_separator = ""
+        for section in RE_CMN_WHITESPACE.split(line.strip()):
+            if not section:
+                continue
+            if section.isspace():
+                if line_output:
+                    if "\u3000" in section:
+                        pending_separator = "  "
                     else:
-                        section_romanization += full_to_half_punc[word]
-                else:
-                    section_romanization += " " + "".join([a[0] for a in pinyin(word)])
-            line_romanization += "  " + section_romanization.strip()
-        text_romanization += "\n" + line_romanization.strip()
-    text_romanization = text_romanization.strip()
+                        pending_separator = " "
+                continue
 
-    return text_romanization
+            romanized_section = _get_cmn_section_romanized(
+                section, open_symmetric_quotes
+            )
+            if romanized_section:
+                if line_output and pending_separator:
+                    line_output = f"{line_output}{pending_separator}"
+                line_output = f"{line_output}{romanized_section}"
+                pending_separator = ""
+        lines.append(line_output)
+    return "\n".join(lines).strip()
+
+
+def _get_cmn_section_romanized(
+    section: str,
+    open_symmetric_quotes: set[str],
+) -> str:
+    """Get Mandarin pinyin romanization for a whitespace-delimited section.
+
+    Arguments:
+        section: text section to romanize
+        open_symmetric_quotes: straight quotes open before this section
+    Returns:
+        pinyin romanization for this section
+    """
+    tokens: list[str] = []
+    token_kinds: list[RomanizedTokenKind] = []
+    for word in jieba.cut(section):
+        for token, token_kind in _get_cmn_word_romanization_tokens(word):
+            tokens.append(token)
+            token_kinds.append(token_kind)
+    return join_romanized_tokens(tokens, open_symmetric_quotes, token_kinds)
+
+
+def _get_cmn_word_romanization_tokens(
+    word: str,
+) -> list[tuple[str, RomanizedTokenKind]]:
+    """Get romanization tokens for a Jieba word.
+
+    Arguments:
+        word: word segmented by Jieba
+    Returns:
+        romanized text and punctuation tokens
+    """
+    tokens: list[tuple[str, RomanizedTokenKind]] = []
+    current_chars: list[str] = []
+    current_kind: str | None = None
+    for char in word:
+        if is_romanized_punctuation(char):
+            char_kind = "punctuation"
+        elif RE_HANZI.fullmatch(char) is not None:
+            char_kind = "hanzi"
+        else:
+            char_kind = "raw"
+
+        if char_kind == "punctuation":
+            if current_chars and current_kind is not None:
+                tokens.append(
+                    (
+                        _romanize_cmn_token(current_chars, current_kind),
+                        "romanized" if current_kind == "hanzi" else "raw",
+                    )
+                )
+            current_chars = []
+            current_kind = None
+            tokens.append((normalize_romanized_punctuation(char), "punctuation"))
+            continue
+
+        if char_kind != current_kind:
+            if current_chars and current_kind is not None:
+                tokens.append(
+                    (
+                        _romanize_cmn_token(current_chars, current_kind),
+                        "romanized" if current_kind == "hanzi" else "raw",
+                    )
+                )
+            current_chars = []
+            current_kind = char_kind
+        current_chars.append(char)
+
+    if current_chars and current_kind is not None:
+        tokens.append(
+            (
+                _romanize_cmn_token(current_chars, current_kind),
+                "romanized" if current_kind == "hanzi" else "raw",
+            )
+        )
+    return tokens
+
+
+def _romanize_cmn_token(
+    chars: list[str],
+    token_kind: str,
+) -> str:
+    """Romanize a Mandarin token.
+
+    Arguments:
+        chars: token characters
+        token_kind: kind of token to romanize
+    Returns:
+        romanized or raw token text
+    """
+    text = "".join(chars)
+    if token_kind == "raw":
+        return text
+    return "".join(item[0] for item in pinyin(text, style=Style.TONE, strict=False))

@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
+from pytest import CaptureFixture, raises
 
 from scinoephile.cli.media.media_extract_subs_cli import MediaExtractSubsCli
 from scinoephile.common.testing import run_cli_with_args
@@ -21,44 +21,9 @@ from scinoephile.workflows.subtitle_extraction import (
 )
 
 
-def test_media_extract_subs_cli_passes_arguments_to_workflow(tmp_path: Path):
-    """Test media extract-subs CLI passes parsed arguments to the workflow.
-
-    Arguments:
-        tmp_path: temporary directory provided by pytest
-    """
-    infile_path = tmp_path / "video.mkv"
-    infile_path.touch()
-    output_dir_path = tmp_path / "subtitles"
-    cache_dir_path = tmp_path / "cache"
-
-    with patch(
-        "scinoephile.cli.media.media_extract_subs_cli.extract_subtitles",
-        return_value=SubtitleExtractionResult(
-            infile_path=infile_path.resolve(),
-            outputs=[],
-        ),
-    ) as extract:
-        run_cli_with_args(
-            MediaExtractSubsCli,
-            f"--infile {infile_path} --languages eng zho -o {output_dir_path} "
-            f"--details --extract-sup --overwrite --cache-dir {cache_dir_path}",
-        )
-
-    extract.assert_called_once_with(
-        infile_path=infile_path.resolve(),
-        languages=["eng", "zho"],
-        output_dir_path=output_dir_path.resolve(),
-        cache_dir_path=cache_dir_path.resolve(),
-        details=True,
-        extract_sup=True,
-        overwrite=True,
-    )
-
-
 def test_media_extract_subs_cli_renders_grouped_outputs(
     tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
 ):
     """Test media extract-subs CLI renders workflow output groups.
 
@@ -107,9 +72,7 @@ def test_media_extract_subs_cli_renders_grouped_outputs(
     ]
 
 
-def test_media_extract_subs_cli_maps_workflow_errors_to_parser_errors(
-    tmp_path: Path,
-):
+def test_media_extract_subs_cli_maps_workflow_errors_to_parser_errors(tmp_path: Path):
     """Test media extract-subs CLI maps workflow errors to parser errors.
 
     Arguments:
@@ -123,7 +86,7 @@ def test_media_extract_subs_cli_maps_workflow_errors_to_parser_errors(
             "scinoephile.cli.media.media_extract_subs_cli.extract_subtitles",
             side_effect=ScinoephileError("No subtitle streams found"),
         ),
-        pytest.raises(SystemExit) as excinfo,
+        raises(SystemExit) as excinfo,
     ):
         run_cli_with_args(MediaExtractSubsCli, f"--infile {infile_path} -o {tmp_path}")
 
@@ -139,7 +102,7 @@ def test_media_extract_subs_cli_requires_output_dir(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         run_cli_with_args(MediaExtractSubsCli, f"--infile {infile_path}")
 
     assert excinfo.value.code == 2

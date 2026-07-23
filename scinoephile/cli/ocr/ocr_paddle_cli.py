@@ -7,26 +7,24 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.cli.helpers.io import read_image_series, write_series
 from scinoephile.common.argument_parsing import (
+    enum_arg,
+    enum_metavar,
     get_arg_groups_by_name,
     input_file_or_dir_arg,
     output_file_arg,
 )
-from scinoephile.core import ScinoephileError
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.image.ocr.paddle import ocr_image_series_with_paddle
-from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["OcrPaddleCli"]
 
 OCR_PADDLE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        (
-            "PaddleOCR language code: en (English), ch (simplified Chinese "
-            "and English), chinese_cht (traditional Chinese)"
-        ): (
-            "PaddleOCR 语言代码：en（英语），ch（简体中文和英语），"
-            "chinese_cht（繁体中文）"
+        "language of the OCR text to recognize (default: %(default)s)": (
+            "要识别的 OCR 文本语言（默认：%(default)s）"
         ),
         "PaddleOCR requires the optional PaddleOCR runtime dependencies.": (
             "PaddleOCR 需要可选的 PaddleOCR 运行时依赖。"
@@ -39,12 +37,8 @@ OCR_PADDLE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "recognized subtitle outfile path": "识别后字幕输出文件路径",
     },
     "zh-hant": {
-        (
-            "PaddleOCR language code: en (English), ch (simplified Chinese "
-            "and English), chinese_cht (traditional Chinese)"
-        ): (
-            "PaddleOCR 語言代碼：en（英語），ch（簡體中文和英語），"
-            "chinese_cht（繁體中文）"
+        "language of the OCR text to recognize (default: %(default)s)": (
+            "要識別的 OCR 文字語言（預設：%(default)s）"
         ),
         "PaddleOCR requires the optional PaddleOCR runtime dependencies.": (
             "PaddleOCR 需要可選的 PaddleOCR 執行時依賴。"
@@ -100,12 +94,10 @@ class OcrPaddleCli(ScinoephileCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--language",
-            choices=("ch", "chinese_cht", "en"),
-            default="en",
-            help=(
-                "PaddleOCR language code: en (English), ch (simplified Chinese "
-                "and English), chinese_cht (traditional Chinese)"
-            ),
+            default=Language.eng,
+            metavar=enum_metavar(Language),
+            type=enum_arg(Language),
+            help="language of the OCR text to recognize (default: %(default)s)",
         )
 
         # Output arguments
@@ -139,7 +131,7 @@ class OcrPaddleCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         infile_path: Path,
         outfile_path: Path,
-        language: str,
+        language: Language,
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
@@ -149,15 +141,7 @@ class OcrPaddleCli(ScinoephileCliBase):
             parser.error(f"{outfile_path} already exists")
 
         # Read inputs
-        try:
-            image_series = ImageSeries.load(infile_path)
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+        image_series = read_image_series(parser, infile_path)
 
         # Perform operations
         try:
@@ -165,17 +149,11 @@ class OcrPaddleCli(ScinoephileCliBase):
                 image_series,
                 language=language,
             )
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            ImportError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
+        except ScinoephileError as exc:
             parser.error(str(exc))
 
         # Write outputs
-        text_series.save(outfile_path, format_="srt")
+        write_series(parser, text_series, outfile_path, overwrite)
 
 
 if __name__ == "__main__":

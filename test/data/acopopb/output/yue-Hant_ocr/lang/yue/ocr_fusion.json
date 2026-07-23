@@ -1,0 +1,8702 @@
+[
+  {
+    "query": {
+      "one": "見你係女人，\n唔打你",
+      "two": "見你係女人， 唔打你"
+    },
+    "answer": {
+      "output": "見你係女人，　　唔打你",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔好以為我怕咗你喎",
+      "two": "唔好以為我怕你嗝"
+    },
+    "answer": {
+      "output": "唔好以為我怕咗你喎",
+      "note": "採用 Google Lens 中較可靠的漢字與語氣詞「咗、喎」，修正了 PaddleOCR 中的「怕你嗝」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "悟空，你點可以同觀音姐姐咁樣講嘢呢？",
+      "two": "悟空， 你點可以同觀音姐姐咁樣講嘢呢？"
+    },
+    "answer": {
+      "output": "悟空，你點可以同觀音姐姐咁樣講嘢呢？",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你知唔知你犯咗彌天大罪呀？",
+      "two": "你知唔知你犯彌天大罪呀？"
+    },
+    "answer": {
+      "output": "你知唔知你犯咗彌天大罪呀？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」；保留了 Google Lens 中較可靠的漢字與標點。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大家唔好嬲啦！",
+      "two": "大家唔好啦！"
+    },
+    "answer": {
+      "output": "大家唔好嬲啦！",
+      "note": "採用 Google Lens 中識別出的「嬲」；其餘標點與文字保持一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁會犯嗔戒㗎",
+      "two": "咁會犯嗔戒磔"
+    },
+    "answer": {
+      "output": "咁會犯嗔戒㗎",
+      "note": "採用 Google Lens 中的「㗎」，修正了 PaddleOCR 誤識為「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "悟空，\n你真係曳曳呀！",
+      "two": "悟空， 你真係曳曳呀！"
+    },
+    "answer": {
+      "output": "悟空，你真係曳曳呀！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我叫咗你唔好亂咁掟嘢㗎",
+      "two": "我叫咗你唔好亂喵掟嘢磔"
+    },
+    "answer": {
+      "output": "我叫咗你唔好亂咁掟嘢㗎",
+      "note": "採用 Google Lens 的「亂咁」與句尾「㗎」，修正了 PaddleOCR 中錯識的「亂喵」與「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你咁亂咁掟嘢係唔啱嘅",
+      "two": "你咁亂咁掟嘢係唔喏慨"
+    },
+    "answer": {
+      "output": "你咁亂咁掟嘢係唔啱嘅",
+      "note": "採用 Google Lens 中更可信的漢字「啱嘅」，修正了 PaddleOCR 的誤識別「喏慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嚀，話口未完，你又掟咗支棍啦",
+      "two": "啍， 話口未完， 你又掟支棍啦"
+    },
+    "answer": {
+      "output": "嚀，話口未完，你又掟咗支棍啦",
+      "note": "採用 Google Lens 的「嚀」與標點「，」；將 PaddleOCR 中多餘的空格省略，並保留 Google Lens 中的「咗」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "月光寶盒係寶物嚟吖嘛！",
+      "two": "月光寶盒係寶物吖嘛！"
+    },
+    "answer": {
+      "output": "月光寶盒係寶物嚟吖嘛！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」；其餘標點與文字以 Google Lens 為準。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你咁亂咁掟會染污環境㗎",
+      "two": "你咁亂喵掟會染污環境架"
+    },
+    "answer": {
+      "output": "你咁亂咁掟會染污環境㗎",
+      "note": "採用 Google Lens 中的「咁」與「㗎」；修正了 PaddleOCR 中誤識別的「喵」和「架」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唉，又會掟親啲小朋友",
+      "two": "唉， 又會掟親喲小朋友"
+    },
+    "answer": {
+      "output": "唉，又會掟親啲小朋友",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；採用 Google Lens 的「啲」而非 PaddleOCR 的「喲」；省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "就算冇小朋友",
+      "two": "就算有小朋友"
+    },
+    "answer": {
+      "output": "就算冇小朋友",
+      "note": "採用 Google Lens 中的「冇」而非 PaddleOCR 的「有」，因為 Google Lens 在漢字識別方面更可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "掟親啲花花草草，都係唔好嘅",
+      "two": "掟親啦花花草草，者 都係唔好慨"
+    },
+    "answer": {
+      "output": "掟親啲花花草草，都係唔好嘅",
+      "note": "採用 Google Lens 較可靠的用字「啲」與句末「嘅」，並保留其標點逗號；省略了 PaddleOCR 中誤識的「啦」「者」及「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "悟空，\n你愛就要講啦！",
+      "two": "悟空，1 你愛就要講啦"
+    },
+    "answer": {
+      "output": "悟空，你愛就要講啦！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号和感嘆号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；将 PaddleOCR 中误识别的「1」忽略为分隔/噪声。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我係好高興，你都要講㗎",
+      "two": "我係好高興， 你都要講磔"
+    },
+    "answer": {
+      "output": "我係好高興，你都要講㗎",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格；更正了 PaddleOCR 中的「磔」為 Google Lens 識別的「㗎」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "攞去啦！",
+      "two": "擺去啦！"
+    },
+    "answer": {
+      "output": "攞去啦！",
+      "note": "採用 Google Lens 的漢字「攞」，因其對漢字識別更可靠；保留兩者一致的標點「！」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "孫悟空⋯⋯",
+      "two": "孫悟空⋯"
+    },
+    "answer": {
+      "output": "孫悟空⋯⋯",
+      "note": "採用了 Google Lens 中的完整省略號「⋯⋯」，補足了 PaddleOCR 中少識別的一個省略號符號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "九唔搭八，\n依依哦哦",
+      "two": "九唔搭八， 依依哦哦"
+    },
+    "answer": {
+      "output": "九唔搭八，依依哦哦",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，并省略了 PaddleOCR 中多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "就成日好似有隻烏蠅嬲住",
+      "two": "就成日好似有隻烏蠅住"
+    },
+    "answer": {
+      "output": "就成日好似有隻烏蠅嬲住",
+      "note": "采用了 Google Lens 中識別出的「嬲」字，補全了 PaddleOCR 中缺失的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "對唔住，唔係一隻",
+      "two": "對唔住， 唔係一隻"
+    },
+    "answer": {
+      "output": "對唔住，唔係一隻",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係一群烏蠅喺你耳仔邊⋯⋯",
+      "two": "係一群烏蠅你耳仔邊⋯⋯"
+    },
+    "answer": {
+      "output": "係一群烏蠅喺你耳仔邊⋯⋯",
+      "note": "採用 Google Lens 中的「喺」；保留兩者共有的省略號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一路飛入你嘅腦裡面",
+      "two": "一路飛入你慨腦裡面"
+    },
+    "answer": {
+      "output": "一路飛入你嘅腦裡面",
+      "note": "採用 Google Lens 的「嘅」覆蓋 PaddleOCR 的「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "鏈爆佢個肚",
+      "two": "鏈爆佰個肚"
+    },
+    "answer": {
+      "output": "鏈爆佢個肚",
+      "note": "採用 Google Lens 中的「佢」替換 PaddleOCR 誤識別的「佰」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "〝唧〞佢啲腸出嚟",
+      "two": "唧 佰喲腸出"
+    },
+    "answer": {
+      "output": "〝唧〞佢啲腸出嚟",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的引號與「佢啲」；省略了 PaddleOCR 中多餘且與 Google Lens 不一致的字詞「佰喲」及結尾缺失的內容。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "再將啲腸箍返佢條頸",
+      "two": "再將喲腸箍返但條頸"
+    },
+    "answer": {
+      "output": "再將啲腸箍返佢條頸",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，將 PaddleOCR 中的「喲」更正為「啲」，將「但」更正為「佢」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "各位，成條脷根出咗嚟",
+      "two": "各位， 成條脷根出咗㰀"
+    },
+    "answer": {
+      "output": "各位，成條脷根出咗嚟",
+      "note": "採用 Google Lens 中更可靠的漢字「嚟」，並省略了 PaddleOCR 中多餘的空格；同時修正了 PaddleOCR 中誤識的字「㰀」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁你而家明白⋯⋯",
+      "two": "喵你而家明白⋯⋯"
+    },
+    "answer": {
+      "output": "咁你而家明白⋯⋯",
+      "note": "採用 Google Lens 的漢字「咁」，修正了 PaddleOCR 中誤識別的「喵」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "點解我要殺咗佢",
+      "two": "點解我要殺但"
+    },
+    "answer": {
+      "output": "點解我要殺咗佢",
+      "note": "採用 Google Lens 的漢字識別結果「殺咗佢」；修正了 PaddleOCR 誤識的「殺但」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "悟空，\n你諸多藉口",
+      "two": "悟空，1 你諸多藉口"
+    },
+    "answer": {
+      "output": "悟空，你諸多藉口",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；省略了 PaddleOCR 中误识别的「1」以及多余空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔，\n講咁多做乜呀？",
+      "two": "唔， 講咁多做乜呀？"
+    },
+    "answer": {
+      "output": "唔，講咁多做乜呀？",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "做師父嘅都有責任嘅！",
+      "two": "做師父嘅都有責任嘅 i"
+    },
+    "answer": {
+      "output": "做師父嘅都有責任嘅！",
+      "note": "採用 Google Lens 中更可靠的標點符號，將 PaddleOCR 誤識別的字元 i 更正為驚嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "求觀世音姐姐放佢一條生路啦！",
+      "two": "求觀世音姐姐放但一條生路啦！"
+    },
+    "answer": {
+      "output": "求觀世音姐姐放佢一條生路啦！",
+      "note": "將 PaddleOCR 中的「但」更正為 Google Lens 識別的「佢」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我唔消滅佢，無辦法同玉皇大帝交代",
+      "two": "我唔消滅但， 無辦法同玉皇大帝交代"
+    },
+    "answer": {
+      "output": "我唔消滅佢，無辦法同玉皇大帝交代",
+      "note": "包括了 Google Lens 中更可靠的「佢」和逗号；省略了 PaddleOCR 中错误的「但」以及多余空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喃嘸阿彌陀佛⋯⋯⋯⋯",
+      "two": "喃噍阿彌陀佛⋯⋯"
+    },
+    "answer": {
+      "output": "喃嘸阿彌陀佛⋯⋯",
+      "note": "採用 Google Lens 中較可靠的漢字「嘸」修正 PaddleOCR 的「噍」；保留較合理的省略號數量，省略了 Google Lens OCR 中多出的省略號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "獎舊肉俾佢",
+      "two": "獎舊肉俾佰"
+    },
+    "answer": {
+      "output": "獎舊肉俾佢",
+      "note": "採用 Google Lens 的「佢」，修正了 PaddleOCR 中誤識別的「佰」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大家醒定啲！",
+      "two": "大家醒定啦！"
+    },
+    "answer": {
+      "output": "大家醒定啲！",
+      "note": "採用了 Google Lens 中更可靠的漢字「啲」；保留了感嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "出面有嗰女人入緊嚟！",
+      "two": "出面有咽女人入緊！"
+    },
+    "answer": {
+      "output": "出面有嗰女人入緊嚟！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嗰」和「嚟」；修正了 PaddleOCR 中的「咽」為「嗰女人」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "二當家，你估會唔會係官兵呢？",
+      "two": "二當家， 你估會唔會係官兵呢？"
+    },
+    "answer": {
+      "output": "二當家，你估會唔會係官兵呢？",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格；保留了 Google Lens 中的標點符號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "頭先你睇唔到啞仔扭吓個籮友嘅咩",
+      "two": "頭先你睇唔到啞仔扭吓個籬友慨咩"
+    },
+    "answer": {
+      "output": "頭先你睇唔到啞仔扭吓個籮友嘅咩",
+      "note": "採用 Google Lens 中較可靠的漢字「籮友」和助詞「嘅」，並修正 PaddleOCR 中的誤識「籬友」「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哼！\n就算係呀",
+      "two": "哼！ 就算係呀"
+    },
+    "answer": {
+      "output": "哼！　　就算係呀",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "都係一個生咗痔瘡嘅官兵",
+      "two": "都係一個生痔瘡嘅官兵"
+    },
+    "answer": {
+      "output": "都係一個生咗痔瘡嘅官兵",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」；採用 Google Lens 的漢字識別結果。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "驚佢咩呀？",
+      "two": "驚但咩呀？"
+    },
+    "answer": {
+      "output": "驚佢咩呀？",
+      "note": "採用 Google Lens 中的「佢」取代 PaddleOCR 中誤識別的「但」；其餘標點一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你嚟呢度做咩呀？",
+      "two": "你呢度做咩呀？"
+    },
+    "answer": {
+      "output": "你嚟呢度做咩呀？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」字；其餘標點與文字依 Google Lens 為準。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "世途險惡，北風如刀",
+      "two": "世途險惡， 北風如刀"
+    },
+    "answer": {
+      "output": "世途險惡，北風如刀",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一個弱質女子，想搵個地方歇一歇腳",
+      "two": "一 個弱質女子， 想–個地方歇一歇腳"
+    },
+    "answer": {
+      "output": "一個弱質女子，想搵個地方歇一歇腳",
+      "note": "採用了 Google Lens 中較可靠的漢字「一個」「想搵個」以及標點逗號；省略了 PaddleOCR 中多餘的空格與誤識別符號「–」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "此處烏煙瘴氣，各位又面目猙獰",
+      "two": "此處烏煙瘴氣， 各位又面目掙猝"
+    },
+    "answer": {
+      "output": "此處烏煙瘴氣，各位又面目猙獰",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「猙獰」，並省略了 PaddleOCR 中多出的空格與錯誤識別「掙猝」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "邊個係羊？邊個係虎？",
+      "two": "邊個係羊？ 邊個係虎？"
+    },
+    "answer": {
+      "output": "邊個係羊？邊個係虎？",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "桃花過處，\n寸草不生！",
+      "two": "桃花過處， 寸草不生！"
+    },
+    "answer": {
+      "output": "桃花過處，　　寸草不生！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗號；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "金錢落地，\n人頭不保！",
+      "two": "金錢落地，  人頭不保！"
+    },
+    "answer": {
+      "output": "金錢落地，人頭不保！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "春三十娘佢嚟五嶽山做乜嘢呢？",
+      "two": "春三十娘但五嶽山做乜嘢呢？"
+    },
+    "answer": {
+      "output": "春三十娘佢嚟五嶽山做乜嘢呢？",
+      "note": "採用了 Google Lens 中更可靠的字詞「佢嚟」，修正了 PaddleOCR 誤識的「但」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你班粉腸仲〝棟〞啲銀喺個頭做咩嘢？",
+      "two": "你班粉腸仲〝棟〞喲銀個頭做咩嘢？"
+    },
+    "answer": {
+      "output": "你班粉腸仲〝棟〞啲銀喺個頭做咩嘢？",
+      "note": "採用 Google Lens 中較可靠的漢字「啲」「喺」與標點「？」；修正 PaddleOCR 中的「喲」「個」為 Google Lens 版本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "個女魔頭話金錢落地，人頭不保！\n幫主！",
+      "two": "個女魔頭話金錢落地，人頭不保！青 幫主！"
+    },
+    "answer": {
+      "output": "個女魔頭話金錢落地，人頭不保！青　　幫主！",
+      "note": "保留了 Google Lens 中的標點符號；將 Google Lens 的換行位置與 PaddleOCR 中對應的空格間隙融合為兩個表意空格；保留了 PaddleOCR 中多出的「青」字，因兩者文字內容不一致，無法僅依規則確認應刪除。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你咁冇膽點做我二當家？",
+      "two": "你咁有膽點做我二當家？"
+    },
+    "answer": {
+      "output": "你咁冇膽點做我二當家？",
+      "note": "採用 Google Lens 中的「冇」而非 PaddleOCR 的「有」，因為 Google Lens 在漢字識別上更可靠；其餘標點與文字一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主，我唔係二當家！我係盲炳！",
+      "two": "幫主，手 我唔係二當家！我係盲炳！"
+    },
+    "answer": {
+      "output": "幫主，我唔係二當家！我係盲炳！",
+      "note": "採用了 Google Lens 中較可靠的標點「，」，並省略了 PaddleOCR 中誤識別的「手」與多餘空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "佢至係二當家！",
+      "two": "但至係二當家！"
+    },
+    "answer": {
+      "output": "佢至係二當家！",
+      "note": "採用 Google Lens 中的「佢」；保留兩者一致的其餘內容。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係囉，\n我至係二當家！",
+      "two": "係囉，手 我至係二當家！"
+    },
+    "answer": {
+      "output": "係囉，我至係二當家！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符；省略了 PaddleOCR 中多出的「手」字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我唔知咩，我鬧亞炳係要你慚愧",
+      "two": "我唔知咩，我 我鬧亞炳係要你慚愧"
+    },
+    "answer": {
+      "output": "我唔知咩，我鬧亞炳係要你慚愧",
+      "note": "省略了 PaddleOCR 中多餘的「我」；採用 Google Lens 中較可靠的漢字結果。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "走啊！",
+      "two": "走啊 i"
+    },
+    "answer": {
+      "output": "走啊！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的感叹号；省略了 PaddleOCR 中误识别的字母 i。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你望下你自己，鬼鬼崇崇，冇嚟大體",
+      "two": "你望下你自己， 鬼鬼崇崇， 有大體"
+    },
+    "answer": {
+      "output": "你望下你自己，鬼鬼崇崇，冇嚟大體",
+      "note": "省略了 PaddleOCR 中多出的空格；採用 Google Lens 的「冇嚟大體」而非 PaddleOCR 的「有大體」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "仲學人留到披頭散髮！點跟我闖蕩江湖呀？\n啊？",
+      "two": "仲學人留到披頭散髮 i 點跟我闖蕩江湖呀？ 啊？"
+    },
+    "answer": {
+      "output": "仲學人留到披頭散髮！點跟我闖蕩江湖呀？　　啊？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號；省略了 PaddleOCR 中多出的字元「i」；將 Google Lens 中的換行符與 PaddleOCR 中對應的空格間隙替換為兩個表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主，\n我喺呢度喎！",
+      "two": "幫主，手 我呢度蝸 1"
+    },
+    "answer": {
+      "output": "幫主，我喺呢度喎！",
+      "note": "採用 Google Lens 的「我喺呢度喎！」作為主要識別結果；省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符，並忽略了 PaddleOCR 中多出的錯誤字元「手」與「1」，以及將「蝸」更正為「喎」以符合 Google Lens 的識別。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "仲唔蒲頭！",
+      "two": "仲唔蒲頭"
+    },
+    "answer": {
+      "output": "仲唔蒲頭！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主，你中咗崑崙三聖嘅七傷拳",
+      "two": "幫主， 你中崑崙三聖嘅七傷拳"
+    },
+    "answer": {
+      "output": "幫主，你中咗崑崙三聖嘅七傷拳",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」；採用了 Google Lens 中的逗號，省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你仲好講，嗰日唔係得你縮低個頭",
+      "two": "你仲好講， 咽日唔係得你縮低個頭"
+    },
+    "answer": {
+      "output": "你仲好講，嗰日唔係得你縮低個頭",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嗰日」；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我使俾佢打中個鼻",
+      "two": "我使俾但打中個鼻"
+    },
+    "answer": {
+      "output": "我使俾佢打中個鼻",
+      "note": "採用 Google Lens 中的「佢」取代 PaddleOCR 中誤識別的「但」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主，我當日嚇到自己跪低㗎咋！",
+      "two": "幫主，手 我當日嚇到自己跪低架咋！"
+    },
+    "answer": {
+      "output": "幫主，我當日嚇到自己跪低㗎咋！",
+      "note": "採用 Google Lens 中較可靠的「我」取代 PaddleOCR 中誤識別的「手 」；保留了 Google Lens 中的逗號與句尾驚嘆號，並融合為完整句子。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "聽講話中咗七傷拳",
+      "two": "聽講話中七傷拳"
+    },
+    "answer": {
+      "output": "聽講話中咗七傷拳",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」；其餘文字一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "然之後就聲綫失控，講嘢走哂音",
+      "two": "然之後就聲線失控， 講嘢走哂音"
+    },
+    "answer": {
+      "output": "然之後就聲線失控，講嘢走哂音",
+      "note": "將 Google Lens 中的「聲綫」修正為「聲線」；包括了 Google Lens 中存在但 PaddleOCR 中不存在的標點逗號；省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "最後就心臟五官爆炸，咁就死啦！",
+      "two": "最後就心臟五官爆炸， 咁就死啦！"
+    },
+    "answer": {
+      "output": "最後就心臟五官爆炸，咁就死啦！",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主，你而家鬥雞得好緊要喎！",
+      "two": "幫主， 你而家鬥雞得好緊要蝸 1"
+    },
+    "answer": {
+      "output": "幫主，你而家鬥雞得好緊要喎！",
+      "note": "採用了 Google Lens 中更可靠的漢字「喎」與感嘆號；省略了 PaddleOCR 中多餘的空格與誤識別的「1」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "邊嗰話我鬥雞？",
+      "two": "邊咽話我鬥雞？"
+    },
+    "answer": {
+      "output": "邊嗰話我鬥雞？",
+      "note": "採用了 Google Lens 中較可靠的「嗰」來修正 PaddleOCR 的「咽」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我只係將我視力集中喺一點",
+      "two": "我只係將我視力集中一點"
+    },
+    "answer": {
+      "output": "我只係將我視力集中喺一點",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "專登話我唔掂想坐我個位呀！\n？",
+      "two": "專登話我唔掂想坐我個位呀！？"
+    },
+    "answer": {
+      "output": "專登話我唔掂想坐我個位呀！？",
+      "note": "採用 Google Lens 與 PaddleOCR 一致的內容；將 Google Lens 中存在但 PaddleOCR 中不存在的换行符合并，并保留 Google Lens 與 PaddleOCR 都顯示的問號與驚嘆號順序。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔係呀幫主，唔敢呀幫主",
+      "two": "唔係呀幫主， 唔敢呀幫主"
+    },
+    "answer": {
+      "output": "唔係呀幫主，唔敢呀幫主",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔敢？\n我踩死你我唔敢？",
+      "two": "唔敢？手 我踩死你我唔敢？"
+    },
+    "answer": {
+      "output": "唔敢？　　我踩死你我唔敢？",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；省略了 PaddleOCR 中多出的「手」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喂？我踩咁多腳應酬吓都嗌兩聲好嶓",
+      "two": "喂？手 我踩喵多腳應酬吓都嗌兩聲好嶓"
+    },
+    "answer": {
+      "output": "喂？我踩咁多腳應酬吓都嗌兩聲好嶓",
+      "note": "採用 Google Lens 中較可靠的漢字與標點，省略了 PaddleOCR 中多出的「手」和空格，並修正為「咁多」而非「喵多」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好！\n大家上齊架生去殺！",
+      "two": "好！大家上齊架生去殺！"
+    },
+    "answer": {
+      "output": "好！大家上齊架生去殺！",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "驚咩呀！\n萬事有我！",
+      "two": "驚咩呀！  萬事有我！"
+    },
+    "answer": {
+      "output": "驚咩呀！　　萬事有我！",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "久聞春三十娘大名，如雷貫耳",
+      "two": "久聞春三十娘大名， 如雷貫耳"
+    },
+    "answer": {
+      "output": "久聞春三十娘大名，如雷貫耳",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔知春三十娘光臨敝幫，有咩嘢幫趁呢？",
+      "two": "唔知春三十娘光臨敝幫， 有咩嘢幫趁呢？"
+    },
+    "answer": {
+      "output": "唔知春三十娘光臨敝幫，有咩嘢幫趁呢？",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "總之等到我要等嘅人出現，我就會走㗎嘞",
+      "two": "總之等到我要等嘅人出現， 我就會走磔嘞"
+    },
+    "answer": {
+      "output": "總之等到我要等嘅人出現，我就會走㗎嘞",
+      "note": "採用 Google Lens 中更可靠的標點符號「，」以及字詞「㗎嘞」；省略了 PaddleOCR 中多出的空格，並更正了其誤識別的「磔」為「㗎」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我怕你冇咁長命嶓",
+      "two": "我怕你有咁長命嶓"
+    },
+    "answer": {
+      "output": "我怕你冇咁長命嶓",
+      "note": "採用了 Google Lens 中較可靠的「冇」；其餘文字依兩者一致結果保留。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冇！\n小完便邱番條褲啫！",
+      "two": "有！小完便邱番條褲啫！"
+    },
+    "answer": {
+      "output": "冇！小完便邱番條褲啫！",
+      "note": "採用 Google Lens 識別的「冇！」，並省略了 Google Lens 中存在但 PaddleOCR 中不存在的換行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我話你冇咁長命等到你要見嘅人！",
+      "two": "我話你有咁長命等到你要見嘅人！"
+    },
+    "answer": {
+      "output": "我話你冇咁長命等到你要見嘅人！",
+      "note": "採用 Google Lens 中較可靠的漢字「冇」，修正了 PaddleOCR 中的「有」；其餘標點與格式一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "想殺我冇咁易",
+      "two": "想殺我有咁易"
+    },
+    "answer": {
+      "output": "想殺我冇咁易",
+      "note": "採用 Google Lens 中較可靠的「冇」而非 PaddleOCR 的「有」；其餘一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冇義氣呀！⋯⋯",
+      "two": "有義氣呀！⋯・"
+    },
+    "answer": {
+      "output": "冇義氣呀！⋯⋯",
+      "note": "採用了 Google Lens 中更可靠的漢字「冇」；採用了 Google Lens 中更可靠的標點「⋯⋯」，並省略了 PaddleOCR 中多出的「・」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你有本事就殺晒我哋！",
+      "two": "你有本事就殺晒我"
+    },
+    "answer": {
+      "output": "你有本事就殺晒我哋！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「哋！」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "蠢材！\n你估求佢就會放過你嘅咩？",
+      "two": "蠢材！ 你估求但就會放過你嘅咩？"
+    },
+    "answer": {
+      "output": "蠢材！　　你估求佢就會放過你嘅咩？",
+      "note": "包括了 Google Lens 中存在的「蠢材！」和「你估求佢就會放過你嘅咩？」；將 Google Lens 中顯示為换行符、PaddleOCR 中顯示为空格的間隙替換為两个表意空格；同时修正 PaddleOCR 中「但」为 Google Lens 中更可靠的「佢」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我本條命都同你死過！",
+      "two": "我本條命都同你死過"
+    },
+    "answer": {
+      "output": "我本條命都同你死過！",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的驚嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "男兒膝下有黃金！\n既然佢哋肯求我",
+      "two": "男兒膝下有黃金！艮 既然柜呲肯求我"
+    },
+    "answer": {
+      "output": "男兒膝下有黃金！既然佢哋肯求我",
+      "note": "採用 Google Lens 的漢字「既然佢哋肯求我」以修正 PaddleOCR 中誤識別的「艮 既然柜呲肯求我」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁條命就暫寄喺我度",
+      "two": "咁條命就暫寄我度"
+    },
+    "answer": {
+      "output": "咁條命就暫寄喺我度",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "至於你囉喎⋯咁有骨氣！",
+      "two": "至於你囉嗝⋯咁有骨氣！"
+    },
+    "answer": {
+      "output": "至於你囉喎⋯咁有骨氣！",
+      "note": "採用了 Google Lens 中的「喎」而非 PaddleOCR 的「嗝」；保留了 Google Lens 中的省略號與標點。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "叫大家洗乾淨隻腳板喺出便等我！",
+      "two": "叫大家洗乾淨隻腳板出便等我！"
+    },
+    "answer": {
+      "output": "叫大家洗乾淨隻腳板喺出便等我！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "點解有個疤嘅？",
+      "two": "點解有個疤慨？"
+    },
+    "answer": {
+      "output": "點解有個疤嘅？",
+      "note": "採用 Google Lens 中的「嘅？」而非 PaddleOCR 的「慨？」；保留 Google Lens 的標點與字詞。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔係疤嚟嘅，係污糟嚟嘅！",
+      "two": "唔係疤慨， 係污糟嘅"
+    },
+    "answer": {
+      "output": "唔係疤嚟嘅，係污糟嚟嘅！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟嘅」；修正了 PaddleOCR 中將「嚟」誤識為「慨」；包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗號與驚嘆號；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "即刻洗乾淨佢，唔係就成隻腳斬落嚟",
+      "two": "即刻洗乾淨但， 唔係就成隻腳斬落"
+    },
+    "answer": {
+      "output": "即刻洗乾淨佢，唔係就成隻腳斬落嚟",
+      "note": "採用 Google Lens 中較可靠的漢字「佢」與標點「，」，並保留其完整句子結尾「嚟」；省略了 PaddleOCR 中誤識的「但」以及多餘空格，並修正其缺失的結尾內容。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主呀，點解要睇我哋腳板底呢？",
+      "two": "幫主呀， 點解要睇我呲腳板底呢？"
+    },
+    "answer": {
+      "output": "幫主呀，點解要睇我哋腳板底呢？",
+      "note": "採用 Google Lens 識別的「我哋」修正 PaddleOCR 的「我呲」；省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好彩淨係睇腳板，唔係睇籮友咋",
+      "two": "好彩淨係睇腳板， ， 唔係睇籬友咋"
+    },
+    "answer": {
+      "output": "好彩淨係睇腳板，唔係睇籮友咋",
+      "note": "省略了 PaddleOCR 中多餘的空格與标点；採用 Google Lens 中的「籮友」作為較可靠的漢字識別結果。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我唔驚，你驚咋！",
+      "two": "我唔驚， 你驚咋！"
+    },
+    "answer": {
+      "output": "我唔驚，你驚咋！",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你個籮友生咁多熱痱",
+      "two": "你個籬友生咁多熱痱"
+    },
+    "answer": {
+      "output": "你個籮友生咁多熱痱",
+      "note": "採用 Google Lens 中較可靠的漢字「籮」；其餘部分兩者一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "容乜易話你唔乾淨要你切咗佢㗎！",
+      "two": "容乜易話你唔乾淨要你切但磔！"
+    },
+    "answer": {
+      "output": "容乜易話你唔乾淨要你切咗佢㗎！",
+      "note": "採用 Google Lens 中較可靠的字詞「切咗佢㗎」，修正了 PaddleOCR 中誤識的「切但磔」；標點符號沿用 Google Lens 的驚嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你點知我籮友？",
+      "two": "你點知我蘿友？"
+    },
+    "answer": {
+      "output": "你點知我籮友？",
+      "note": "採用了 Google Lens 中的「籮」而非 PaddleOCR 的「蘿」，因為 Google Lens 在漢字識別方面更可靠；標點符號「？」一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我唔止〝莊〞你一個，我冚扮爛都〝莊〞過哂啦",
+      "two": "我唔止 莊 你一個，手 我冚扮爛都 莊＂過哂啦"
+    },
+    "answer": {
+      "output": "我唔止〝莊〞你一個，我冚扮爛都〝莊〞過哂啦",
+      "note": "採用 Google Lens 中較可靠的漢字與標點，修正了 PaddleOCR 中多餘的空格、錯誤的「手」字與異常引號；保留了 Lens 的「〝莊〞」及逗號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "點解咁多毛㗎？",
+      "two": "點解咁多毛磔？"
+    },
+    "answer": {
+      "output": "點解咁多毛㗎？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的字「㗎」；省略了 PaddleOCR 中誤識別的字「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係呀！我身體其他地方仲長得更加茂盛",
+      "two": "係呀！手 我身體其他地方仲長得更加茂盛"
+    },
+    "answer": {
+      "output": "係呀！我身體其他地方仲長得更加茂盛",
+      "note": "省略了 PaddleOCR 中多出的「手」與空格；採用 Google Lens 的較可靠漢字識別結果。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "點呀？係咪睇到你熱血奔騰呢？",
+      "two": "點呀？ 係咪睇到你熱血奔騰呢？"
+    },
+    "answer": {
+      "output": "點呀？係咪睇到你熱血奔騰呢？",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔係呀！其實我淨係得個頭同腳板有",
+      "two": "唔係呀！ 其實我淨係得個頭同腳板有"
+    },
+    "answer": {
+      "output": "唔係呀！其實我淨係得個頭同腳板有",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "由今日起，不分日夜截查所有經過呢度嘅人！",
+      "two": "由今日起， 不分日夜截查所有經過呢度慨人！"
+    },
+    "answer": {
+      "output": "由今日起，不分日夜截查所有經過呢度嘅人！",
+      "note": "採用了 Google Lens 中存在的「不分日夜截查所有經過呢度嘅人！」並修正了 PaddleOCR 中多出的空格；將 PaddleOCR 的「慨」更正為 Google Lens 的「嘅」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "查吓佢哋腳板",
+      "two": "查吓佰腳板"
+    },
+    "answer": {
+      "output": "查吓佢哋腳板",
+      "note": "採用 Google Lens 中較可靠的漢字「佢哋」，修正 PaddleOCR 中誤識別的「佰」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "如果發現有三粒痣嘅，既刻通知我！",
+      "two": "如果發現有三粒痣嘅， 既刻通知我！"
+    },
+    "answer": {
+      "output": "如果發現有三粒痣嘅，既刻通知我！",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主呀！又唔去打劫，淨係睇人哋腳板底",
+      "two": "幫主呀！又唔去打劫， 淨係睇人呲腳板底"
+    },
+    "answer": {
+      "output": "幫主呀！又唔去打劫，淨係睇人哋腳板底",
+      "note": "採用了 Google Lens 中較可靠的漢字「哋」並省略了 PaddleOCR 中多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "俾啲行家知道，會唔會笑我地變態㗎？",
+      "two": "俾喲行家知道，  會唔會笑我地變態架？"
+    },
+    "answer": {
+      "output": "俾啲行家知道，會唔會笑我地變態㗎？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「啲」和「㗎」；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格；修正了 PaddleOCR 中的「喲」為 Google Lens 的「啲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "明刀明槍唔夠佢鍊啫，暗箭佢難防嘅",
+      "two": "明刀明槍唔夠但錬啫， 暗箭佰難防嘅"
+    },
+    "answer": {
+      "output": "明刀明槍唔夠佢鍊啫，暗箭佢難防嘅",
+      "note": "採用 Google Lens 中較可靠的漢字「佢鍊」與逗號「，」；修正了 PaddleOCR 中誤識的「但錬」「佰」以及多餘空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "今晚三更整招五毒迷暈香等佢歎吓，先姦後殺",
+      "two": "今晚三更整招五毒迷量香等但歎吓， 先姦後殺"
+    },
+    "answer": {
+      "output": "今晚三更整招五毒迷暈香等佢歎吓，先姦後殺",
+      "note": "採用了 Google Lens 中更可靠的漢字「暈」與「佢」；省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你都覺得好，呢招就你去執行",
+      "two": "你都覺得好， 呢招就你去執行"
+    },
+    "answer": {
+      "output": "你都覺得好，呢招就你去執行",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁睇得起我，\n唔好掛",
+      "two": "喵睇得起我， 唔好掛"
+    },
+    "answer": {
+      "output": "咁睇得起我，唔好掛",
+      "note": "採用 Google Lens 中較可靠的「咁」取代 PaddleOCR 的「喵」；包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的換行符；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我去喺啦，唔使跪啦幫主！",
+      "two": "我去嚼啦， 唔使跪啦幫主！"
+    },
+    "answer": {
+      "output": "我去喺啦，唔使跪啦幫主！",
+      "note": "包括了 Google Lens 中更可靠的漢字「喺」以修正 PaddleOCR 的「嚼」；省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你估我想嘅咩！\n死人腳唔聽使咋",
+      "two": "你估我想慨咩！  死人腳唔聽使咋"
+    },
+    "answer": {
+      "output": "你估我想嘅咩！死人腳唔聽使咋",
+      "note": "採用 Google Lens 中較可靠的「嘅」取代 PaddleOCR 的「慨」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，並去掉了 PaddleOCR 中多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主，你七傷拳嘅傷勢開始擴大啦",
+      "two": "幫主， 你七傷拳嘅傷勢開始擴大啦"
+    },
+    "answer": {
+      "output": "幫主，你七傷拳嘅傷勢開始擴大啦",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我唔會屈服嘅！",
+      "two": "我唔會屈服嘅"
+    },
+    "answer": {
+      "output": "我唔會屈服嘅！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的感叹号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主跌咗落屎坑喎！",
+      "two": "幫主跌落屎坑 ！"
+    },
+    "answer": {
+      "output": "幫主跌咗落屎坑喎！",
+      "note": "採用了 Google Lens 中更可靠的漢字「跌咗」、「喎」以及驚嘆號「！」；省略了 PaddleOCR 中多餘的空格與不準確的「跌落」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "痾屎呀！",
+      "two": "病屎呀！"
+    },
+    "answer": {
+      "output": "痾屎呀！",
+      "note": "採用 Google Lens 中較可靠的漢字識別「痾屎呀！」，保留其標點符號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你搵到三粒痣未？",
+      "two": "你–到三粒痣未？"
+    },
+    "answer": {
+      "output": "你搵到三粒痣未？",
+      "note": "採用了 Google Lens 中更可靠的漢字「搵」；保留了問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "搵到你就可救番佢",
+      "two": "–到你就可救番但"
+    },
+    "answer": {
+      "output": "搵到你就可救番佢",
+      "note": "採用了 Google Lens 中較可靠的漢字「搵」以及「佢」，並修正了 PaddleOCR 中誤識別的破折號與「但」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "〝隊〞冧咗個賤人係嘛！",
+      "two": "〝隊〞罧咗個賤人係嘛！"
+    },
+    "answer": {
+      "output": "〝隊〞冧咗個賤人係嘛！",
+      "note": "採用 Google Lens 較可靠的漢字「冧」，修正了 PaddleOCR 的「罧」；其餘標點與文字保留。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "蜘蛛！\n蜘蛛呀！⋯⋯",
+      "two": "蜘蛛！蜘蛛呀！⋯"
+    },
+    "answer": {
+      "output": "蜘蛛！蜘蛛呀！⋯⋯",
+      "note": "省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符；採用了 Google Lens 較可靠的省略號「⋯⋯」而非 PaddleOCR 的「⋯」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哇！我叫咗你班友仔平時勤啲打掃吓啦",
+      "two": "哇！我叫咗你班友仔平時勤哟打掃吓啦"
+    },
+    "answer": {
+      "output": "哇！我叫咗你班友仔平時勤啲打掃吓啦",
+      "note": "包括了 Google Lens 中更可靠的漢字「啲」，並省略了 PaddleOCR 中錯識的「哟」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "家吓養到啲蜘蛛仲大隻過我！點算呢？！",
+      "two": "家吓養到啪蜘蛛仲大隻過我！黑 點算呢？"
+    },
+    "answer": {
+      "output": "家吓養到啲蜘蛛仲大隻過我！點算呢？！",
+      "note": "將 PaddleOCR 中誤識為「啪」的字更正為 Google Lens 的「啲」；省略了 PaddleOCR 中多出的「黑 」；採用 Google Lens 的句末標點「？！」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "弊啦，咁多個唔追淨係追住我",
+      "two": "弊啦， 咁多個唔追淨係追住我"
+    },
+    "answer": {
+      "output": "弊啦，咁多個唔追淨係追住我",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咩嘢事？\n二當家",
+      "two": "咩嘢事？ ？二當家"
+    },
+    "answer": {
+      "output": "咩嘢事？　　二當家",
+      "note": "采用了 Google Lens 中的問號；将 Google Lens 中的换行与 PaddleOCR 中对应的空格间隙替换为两个表意空格，并省略了 PaddleOCR 中多出的問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係咪呢邊呀？\n唔係⋯⋯",
+      "two": "係咪呢邊呀？ 唔係⋯⋯"
+    },
+    "answer": {
+      "output": "係咪呢邊呀？　　唔係⋯⋯",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "有冇搞錯？",
+      "two": "有有搞錯 ∴"
+    },
+    "answer": {
+      "output": "有冇搞錯？",
+      "note": "採用 Google Lens 中更可靠的漢字「冇」與問號；省略了 PaddleOCR 中誤識的「有」和「∴」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "人嚟呀！\n我喺呢度呀！",
+      "two": "人呀！我呢度呀！"
+    },
+    "answer": {
+      "output": "人嚟呀！我喺呢度呀！",
+      "note": "採用 Google Lens 較可靠的漢字識別，將 PaddleOCR 中的「人呀！我呢度呀！」更正為「人嚟呀！我喺呢度呀！」；並省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "前面乜都冇，大家返轉頭！",
+      "two": "前面乜都有， 大家返轉頭"
+    },
+    "answer": {
+      "output": "前面乜都冇，大家返轉頭！",
+      "note": "採用 Google Lens 中較可靠的漢字「冇」並保留其感嘆號；省略了 PaddleOCR 中多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "乜唔係曱甴嚟咩？",
+      "two": "乜唔係甲由咩？"
+    },
+    "answer": {
+      "output": "乜唔係曱甴嚟咩？",
+      "note": "採用了 Google Lens 中較可靠的漢字「曱甴嚟」與標點「？」，並忽略了 PaddleOCR 中不一致的識別結果「甲由」；兩者在句末標點一致，因此保留 Google Lens 的版本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主嚟嘅",
+      "two": "幫主㰀嘅"
+    },
+    "answer": {
+      "output": "幫主嚟嘅",
+      "note": "採用 Google Lens 中的「嚟」替換了 PaddleOCR 誤識別的「㰀」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主，\n我嚟救你",
+      "two": "幫主，手 我救你"
+    },
+    "answer": {
+      "output": "幫主，　　我嚟救你",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；省略了 PaddleOCR 中多出的“手”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我而家掂嘅係咩嘢嚟㗎？",
+      "two": "我而家掂嘅係咩嘢㰀磔？"
+    },
+    "answer": {
+      "output": "我而家掂嘅係咩嘢嚟㗎？",
+      "note": "採用 Google Lens 中較可靠的「嚟㗎」與問號，修正了 PaddleOCR 中的錯誤字元「㰀磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "二當家咁開心攬住舊乜嘢走呢？",
+      "two": "二當家咁開心攬住舊也嘢走呢？"
+    },
+    "answer": {
+      "output": "二當家咁開心攬住舊乜嘢走呢？",
+      "note": "採用 Google Lens 中較可靠的漢字識別，將 PaddleOCR 的「也」更正為「乜」；標點符號維持 Google Lens 的「？」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主，\n乜唔係抱走你咩？",
+      "two": "幫主， 乜唔係抱走你咩？"
+    },
+    "answer": {
+      "output": "幫主，乜唔係抱走你咩？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冇事啦，\n返屋企⋯⋯",
+      "two": "有事啦， 返屋企⋯⋯"
+    },
+    "answer": {
+      "output": "冇事啦，　　返屋企⋯⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「冇」；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "陣間沖個涼，\n早啲瞓",
+      "two": "陣間沖個涼， 早喲腳"
+    },
+    "answer": {
+      "output": "陣間沖個涼，　　早啲瞓",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的『早啲瞓』；将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "放火！係",
+      "two": "放火！ 係"
+    },
+    "answer": {
+      "output": "放火！係",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "燒佢！\n⋯⋯",
+      "two": "燒但！⋯"
+    },
+    "answer": {
+      "output": "燒佢！⋯⋯",
+      "note": "採用 Google Lens 中較可靠的漢字「佢」與標點「！」；省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符，並補足為省略號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "搵到個靚位，要抖抖先得啦",
+      "two": "–到個靚位， 要抖抖先得啦"
+    },
+    "answer": {
+      "output": "搵到個靚位，要抖抖先得啦",
+      "note": "採用了 Google Lens 中的「搵到」；修正了 PaddleOCR 中多出的破折號樣字符與空格，並保留 Google Lens 中的標點與整體句子格式。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "燒佢！",
+      "two": "燒佰！"
+    },
+    "answer": {
+      "output": "燒佢！",
+      "note": "採用 Google Lens 中較可靠的漢字「佢」，並保留 Google Lens 的驚嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔好放佢走⋯燒佢",
+      "two": "唔好放但走⋯燒但"
+    },
+    "answer": {
+      "output": "唔好放佢走⋯燒佢",
+      "note": "採用 Google Lens 中較可靠的漢字「佢走」與「燒佢」，並保留 Google Lens 中的省略號「⋯」；修正 PaddleOCR 將「佢」誤識為「但」的錯誤。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "行開啦，\n驚乜嘢啫？",
+      "two": "行開啦， 驚乜嘢啫？"
+    },
+    "answer": {
+      "output": "行開啦，　　驚乜嘢啫？",
+      "note": "包括了 Google Lens 中存在的逗號與問號；將 Google Lens OCR 中顯示為換行符、PaddleOCR 中顯示為空格的間隙替換為兩個表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係嗰度呀⋯⋯",
+      "two": "係咽度呀⋯・"
+    },
+    "answer": {
+      "output": "係嗰度呀⋯⋯",
+      "note": "採用 Google Lens 的「嗰」與完整省略號；修正 PaddleOCR 將「嗰」誤識為「咽」，並省略其末尾多出的標點。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係嗰邊呀，\n快點去⋯⋯",
+      "two": "係咽邊呀， 快點去⋯⋯"
+    },
+    "answer": {
+      "output": "係嗰邊呀，快點去⋯⋯",
+      "note": "採用了 Google Lens 中的「嗰」與逗號，修正了 PaddleOCR 誤識的「咽」；省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符，並去除了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "呢隻細隻啲",
+      "two": "呢隻細隻喲"
+    },
+    "answer": {
+      "output": "呢隻細隻啲",
+      "note": "採用了 Google Lens 中的「啲」，修正了 PaddleOCR 中誤識別的「喲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "曱甴呀！",
+      "two": "甲由呀！"
+    },
+    "answer": {
+      "output": "曱甴呀！",
+      "note": "採用了 Google Lens 中較可靠的漢字「曱甴」，並保留兩者一致的感嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喺邊呀？",
+      "two": "邊呀？"
+    },
+    "answer": {
+      "output": "喺邊呀？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」字；保留了 Google Lens 中的問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好似喺嗰邊！",
+      "two": "好似咽邊 ！"
+    },
+    "answer": {
+      "output": "好似喺嗰邊！",
+      "note": "包括了 Google Lens 中正確識別的「喺嗰邊」與驚嘆號；省略了 PaddleOCR 中誤識別的「咽邊」以及多餘空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "得番兩隻爪，等我中間破你柴",
+      "two": "得番兩隻爪， 等我中間破你柴"
+    },
+    "answer": {
+      "output": "得番兩隻爪，等我中間破你柴",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "死啦！\n哎吔⋯⋯",
+      "two": "死啦！ 哎吧⋯⋯"
+    },
+    "answer": {
+      "output": "死啦！　　哎吔⋯⋯",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；採用了 Google Lens 中的「哎吔」與省略號「⋯⋯」，修正了 PaddleOCR 中的「哎吧⋯⋯」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係呢度啊！",
+      "two": "係呢度啊"
+    },
+    "answer": {
+      "output": "係呢度啊！",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的驚嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "打佢！",
+      "two": "打但！・"
+    },
+    "answer": {
+      "output": "打佢！",
+      "note": "採用 Google Lens 中的漢字「佢」與標點「！」；省略了 PaddleOCR 中識別錯誤的「但」及多餘的「・」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "攬住佢！",
+      "two": "攬住但！"
+    },
+    "answer": {
+      "output": "攬住佢！",
+      "note": "採用了 Google Lens 中的「佢」與驚嘆號，修正了 PaddleOCR 中誤識別的「但」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "打死佢！",
+      "two": "打死但！"
+    },
+    "answer": {
+      "output": "打死佢！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「佢」；採用了 Google Lens 的標點「！」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "攞嚟",
+      "two": "擺"
+    },
+    "answer": {
+      "output": "攞嚟",
+      "note": "採用了 Google Lens 中的漢字識別結果，忽略了 PaddleOCR 的不同識別。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "〝冚扮爛〞行開！等我嚟燒死佢！",
+      "two": "冚扮爛 行開！等 等我㰀燒死但！"
+    },
+    "answer": {
+      "output": "〝冚扮爛〞行開！等我嚟燒死佢！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的引號〝〞；采用了 Google Lens 的字詞“等我嚟燒死佢！”以修正 PaddleOCR 中的錯字與多餘重複字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁似幫主把聲嘅",
+      "two": "咁似幫主把聲慨"
+    },
+    "answer": {
+      "output": "咁似幫主把聲嘅",
+      "note": "將 PaddleOCR 中誤識別為「慨」的字更正為 Google Lens 較可靠的「嘅」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主嚟嘅，快啲救幫主",
+      "two": "幫主㰀嘅， 快喲救幫主"
+    },
+    "answer": {
+      "output": "幫主嚟嘅，快啲救幫主",
+      "note": "采用了 Google Lens 中更可靠的漢字「嚟嘅、快啲」与標點「，」，并省略了 PaddleOCR 中多出的空格與錯誤字形「㰀、快喲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主，\n你太公着火！",
+      "two": "幫主， 你太公着火！"
+    },
+    "answer": {
+      "output": "幫主，你太公着火！",
+      "note": "包括了 Google Lens 中存在的逗號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的換行符，並省略了 PaddleOCR 中多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "救火！\n攞水嚟呀⋯⋯",
+      "two": "救火！擺水㰀呀⋯⋯"
+    },
+    "answer": {
+      "output": "救火！攞水嚟呀⋯⋯",
+      "note": "採用 Google Lens 中較可靠的漢字「攞水嚟呀」並保留其省略號「⋯⋯」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "救火！救火！\n唔得⋯⋯",
+      "two": "救火！救火！ 唔得⋯"
+    },
+    "answer": {
+      "output": "救火！救火！唔得⋯⋯",
+      "note": "採用 Google Lens 的標點與字形；省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符，並補回了 PaddleOCR 中少於 Google Lens 的省略號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔得⋯快啲⋯⋯",
+      "two": "唔得⋯快啪⋯"
+    },
+    "answer": {
+      "output": "唔得⋯快啲⋯⋯",
+      "note": "採用了 Google Lens 中較可靠的「啲」以及完整的省略號；省略了 PaddleOCR 中誤識別的「啪」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "禾稈草邊救到火㗎？你哋行開一邊啦！",
+      "two": "禾稈草邊救到火磔？ 你行開一邊啦！"
+    },
+    "answer": {
+      "output": "禾稈草邊救到火㗎？你哋行開一邊啦！",
+      "note": "採用 Google Lens 中較可靠的漢字「㗎」與「你哋」；省略了 PaddleOCR 中將「㗎」誤識為「磔」的字，以及多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "揸住，\n等我嚟！",
+      "two": "揸住， 等我！"
+    },
+    "answer": {
+      "output": "揸住，　　等我嚟！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的感叹号位置差异以保留 Lens 的标点与断行判断。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "瞓低！",
+      "two": "低！"
+    },
+    "answer": {
+      "output": "瞓低！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的字〝瞓〞。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔好郁，\n我幫你踩熄佢！",
+      "two": "唔好郁，手 我幫你踩熄但！"
+    },
+    "answer": {
+      "output": "唔好郁，\n我幫你踩熄佢！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「佢！」，並保留 Google Lens 的逗號與換行符；PaddleOCR 中的「手」和「但」疑似誤識，未採用。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "熄未！熄未！仲唔熄啦！",
+      "two": "熄未！熄未！1 仲唔熄啦！"
+    },
+    "answer": {
+      "output": "熄未！熄未！仲唔熄啦！",
+      "note": "省略了 PaddleOCR 中多出的「1」；採用 Google Lens 的標點與漢字結果。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "踩爆你！\n踩爆你！",
+      "two": "踩爆你！  踩爆你！"
+    },
+    "answer": {
+      "output": "踩爆你！　　踩爆你！",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哇！\n我唔得啦⋯⋯",
+      "two": "哇！我唔得啦⋯"
+    },
+    "answer": {
+      "output": "哇！我唔得啦⋯⋯",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；補上了 Google Lens 中的省略号為完整的⋯⋯。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "二當家真係好嘢！",
+      "two": "二當家真係好野"
+    },
+    "answer": {
+      "output": "二當家真係好嘢！",
+      "note": "包括了 Google Lens 中識別的「嘢」與驚嘆號；省略了 PaddleOCR 中對應的「野」及缺失的標點。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嚀，啲火就咁踩至熄嘅嘛！",
+      "two": "， 喲火就喵踩至熄慨嘛 ト！"
+    },
+    "answer": {
+      "output": "嚀，啲火就咁踩至熄嘅嘛！",
+      "note": "採用 Google Lens 的漢字與標點，修正了 PaddleOCR 中誤識別的字詞與多餘空格；忽略了 PaddleOCR 中不可靠的『ト』。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "死蠢！\n你真係！",
+      "two": "死蠢！ 你真係！"
+    },
+    "answer": {
+      "output": "死蠢！　　你真係！",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "邊個燒我？",
+      "two": "邊個燒我"
+    },
+    "answer": {
+      "output": "邊個燒我？",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "估到係你嘅嘞！",
+      "two": "估到係你嘅嘞"
+    },
+    "answer": {
+      "output": "估到係你嘅嘞！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的感嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係想坐我個位嘅！",
+      "two": "係想坐我個位慨！"
+    },
+    "answer": {
+      "output": "係想坐我個位嘅！",
+      "note": "採用 Google Lens 中較可靠的漢字「嘅」，修正了 PaddleOCR 中的誤識別「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冇啊⋯幫主",
+      "two": "有啊⋯幫主"
+    },
+    "answer": {
+      "output": "冇啊⋯幫主",
+      "note": "採用 Google Lens 中較可靠的漢字「冇啊」；保留兩者一致的省略號「⋯」與「幫主」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "乜幫主對眼冇鬥雞嘅？",
+      "two": "乜幫主對眼有鬥雞嘅？"
+    },
+    "answer": {
+      "output": "乜幫主對眼冇鬥雞嘅？",
+      "note": "採用 Google Lens 中的「冇」修正了 PaddleOCR 中誤識別的「有」；其餘標點一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主，你嘅七傷拳好番哂？",
+      "two": "幫主， 你嘅七傷拳好番哂"
+    },
+    "answer": {
+      "output": "幫主，你嘅七傷拳好番哂？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；包括了 Google Lens 中存在但 PaddleOCR 中不存在的問號；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係嶓！\n點解呢？",
+      "two": "係皤！  點解呢？"
+    },
+    "answer": {
+      "output": "係嶓！　　點解呢？",
+      "note": "以 Google Lens 的「嶓」為準；将 Google Lens 中的换行与 PaddleOCR 中对应的空格间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我明啦！醫七傷拳嘅方法係以毒攻毒，傷上加傷",
+      "two": "我明啦！ 醫七傷拳慨方法係以毒攻毒， 傷上加傷"
+    },
+    "answer": {
+      "output": "我明啦！醫七傷拳嘅方法係以毒攻毒，傷上加傷",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格；採用了 Google Lens 中較可靠的「嘅」與標點。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "有道理！\n⋯⋯",
+      "two": "有道理！⋯"
+    },
+    "answer": {
+      "output": "有道理！⋯⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "至於二當家囉喎！佢係冇心之失嘅啫",
+      "two": "至於二當家囉蝸！  但係有心之失慨啫"
+    },
+    "answer": {
+      "output": "至於二當家囉喎！佢係冇心之失嘅啫",
+      "note": "採用 Google Lens 中較可靠的漢字「喎」「佢係冇心之失嘅啫」，並省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格與錯字「蝸」「但係有心之失慨啫」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "如果唔係佢打你祠堂個吓",
+      "two": "如果唔係但打你祠堂個吓"
+    },
+    "answer": {
+      "output": "如果唔係佢打你祠堂個吓",
+      "note": "採用 Google Lens 中較可靠的漢字識別，將 PaddleOCR 的「但」更正為「佢」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啲病都唔會醫得好咁快啦",
+      "two": "喲病都唔會醫得好咁快啦"
+    },
+    "answer": {
+      "output": "啲病都唔會醫得好咁快啦",
+      "note": "採用 Google Lens 中的「啲」取代 PaddleOCR 誤識別的「喲」；其餘文字一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你咁維護佢，莫非你同佢有路？",
+      "two": "你咁維護但，真 莫非你同但有路？"
+    },
+    "answer": {
+      "output": "你咁維護佢，莫非你同佢有路？",
+      "note": "採用 Google Lens 中較可靠的漢字與標點；修正了 PaddleOCR 中的「但」為「佢」，並省略了 PaddleOCR 中多餘的空格與錯誤字詞。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咦！\n人哋對你一條心",
+      "two": "咦！人吡對你一條心"
+    },
+    "answer": {
+      "output": "咦！人哋對你一條心",
+      "note": "採用 Google Lens 中較可靠的漢字「哋對」，修正了 PaddleOCR 誤識別的「吡」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "去你媽的！你幹甚麼？幹你娘你！",
+      "two": "去你媽的！ 你乾甚麼？ 乾你娘你！"
+    },
+    "answer": {
+      "output": "去你媽的！你幹甚麼？幹你娘你！",
+      "note": "採用 Google Lens 中較可靠的漢字「幹甚麼」「幹你娘你」，並省略了 PaddleOCR 中多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "二當家，叫你去殺春三十娘，你攪掂未？",
+      "two": "二當家，  叫你去殺春三十娘， 你攪掂未？"
+    },
+    "answer": {
+      "output": "二當家，叫你去殺春三十娘，你攪掂未？",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嗰春三十娘係妖怪嚟",
+      "two": "咽春三十娘係妖怪"
+    },
+    "answer": {
+      "output": "嗰春三十娘係妖怪嚟",
+      "note": "採用 Google Lens 中較可靠的漢字「嗰」和結尾「嚟」；修正了 PaddleOCR 中的誤識別「咽」以及省略的尾字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你叫我點能夠接受啲咁無稽嘅嘢得㗎！殺佢",
+      "two": "你叫我點能夠接受喲咁無稽嘅嘢得磔！殺柜"
+    },
+    "answer": {
+      "output": "你叫我點能夠接受啲咁無稽嘅嘢得㗎！殺佢",
+      "note": "採用 Google Lens 中較可靠的漢字「啲」「㗎」「佢」，並修正 PaddleOCR 誤識的「喲」「得磔」「柜」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主，你就咁去呀？唔怕？",
+      "two": "幫主， 你就咁去呀？唔怕？"
+    },
+    "answer": {
+      "output": "幫主，你就咁去呀？唔怕？",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "怕咩呀？我傷好番哂，驚唔夠佢打？",
+      "two": "怕咩呀？手 我傷好番哂， 驚唔夠但打？"
+    },
+    "answer": {
+      "output": "怕咩呀？我傷好番哂，驚唔夠佢打？",
+      "note": "採用 Google Lens 的漢字與標點；省略了 PaddleOCR 中多出的「手 」和「但」；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好！\n有種！",
+      "two": "好！有 有種！"
+    },
+    "answer": {
+      "output": "好！　　有種！",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为多余空格的间隙替换为两个表意空格；省略了 PaddleOCR 中多识别出的一个“有”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主，\n你當我冇講過囉！",
+      "two": "幫主， 你當我有講過囉"
+    },
+    "answer": {
+      "output": "幫主，你當我冇講過囉！",
+      "note": "採用了 Google Lens 中較可靠的「冇」與驚嘆號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，並將 PaddleOCR 中的空格去除。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你〝是但〞拿把嘢衝入佢房就劈",
+      "two": "你－＇，是但 拿把嘢衝入但房就劈"
+    },
+    "answer": {
+      "output": "你〝是但〞拿把嘢衝入佢房就劈",
+      "note": "採用了 Google Lens 中更可靠的漢字與標點，修正了 PaddleOCR 中的「－＇，」為「〝」及「佢」等識別錯誤；省略了 PaddleOCR 中多餘的空格與錯字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我哋喺你後面掩護你！",
+      "two": "我呲你後面掩護你！"
+    },
+    "answer": {
+      "output": "我哋喺你後面掩護你！",
+      "note": "採用 Google Lens 中較可靠的漢字「哋喺」，修正 PaddleOCR 的誤識別「呲」；標點保留 Google Lens 的驚嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喺我後面唔得",
+      "two": "我後面唔得"
+    },
+    "answer": {
+      "output": "喺我後面唔得",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」；省略了 PaddleOCR 中不存在於 Google Lens 的缺漏。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哇！又話掩護我，行近啲好嶓",
+      "two": "哇！ 又話掩護我， 行近喲好嶓"
+    },
+    "answer": {
+      "output": "哇！又話掩護我，行近啲好嶓",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格；採用了 Google Lens 較可靠的漢字「啲」，而非 PaddleOCR 的「喲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "定啲嚟吖，我哋呢度幾廿把嘢〝航〞住㗎嘛",
+      "two": "定啪吖， 我吡呢度幾廿把嘢〝航〞住磔嘛"
+    },
+    "answer": {
+      "output": "定啲嚟吖，我哋呢度幾廿把嘢〝航〞住㗎嘛",
+      "note": "採用 Google Lens 中較可靠的漢字與標點，修正了「啪」為「啲」、「吡」為「哋」、「磔」為「㗎」，並省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一有乜嘢依郁就捉埋去",
+      "two": "一有乜嘢依郁就掟埋去"
+    },
+    "answer": {
+      "output": "一有乜嘢依郁就捉埋去",
+      "note": "採用 Google Lens 中的「捉埋去」而非 PaddleOCR 的「掟埋去」，因 Google Lens 在漢字辨識方面更可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁咪連我都掟死埋",
+      "two": "喵咪連我都掟死埋"
+    },
+    "answer": {
+      "output": "咁咪連我都掟死埋",
+      "note": "採納了 Google Lens 中的「咁咪」以修正 PaddleOCR 誤識的「喵咪」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "傻嘅！至多咪重傷，邊有死得咁易！",
+      "two": "傻嘅！ 至多咪重傷， 邊有死得咁易！"
+    },
+    "answer": {
+      "output": "傻嘅！至多咪重傷，邊有死得咁易！",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "起身！喺我面前唔好〝詐詐諦諦〞，我話你聽",
+      "two": "起身！ 我面前唔好 詐詐諦諦  我話你聽"
+    },
+    "answer": {
+      "output": "起身！喺我面前唔好〝詐詐諦諦〞，我話你聽",
+      "note": "採用 Google Lens 中較可靠的漢字「喺」、引號樣式「〝詐詐諦諦〞」與逗號「，」；省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "真係暈咗呀？",
+      "two": "真係暈呀？"
+    },
+    "answer": {
+      "output": "真係暈咗呀？",
+      "note": "採用了 Google Lens 中多出的「咗」；其餘標點一致，未作其他更動。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "成班都係廢柴，我自己嚟",
+      "two": "成班都係廢柴，我自己㰀"
+    },
+    "answer": {
+      "output": "成班都係廢柴，我自己嚟",
+      "note": "採用 Google Lens 中的「嚟」取代 PaddleOCR 誤識別的「㰀」；其餘內容一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你頭先真係詐暈㗎？",
+      "two": "你頭先真係詐暈磔？"
+    },
+    "answer": {
+      "output": "你頭先真係詐暈㗎？",
+      "note": "採用 Google Lens 中較可靠的漢字「㗎」並保留其標點「？」，修正了 PaddleOCR 中誤識別的字「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "呢一招叫做忍辱偷生，插一刀大脾算得咩？",
+      "two": "呢一招叫做忍辱偷生， 插一刀大脾算得咩？"
+    },
+    "answer": {
+      "output": "呢一招叫做忍辱偷生，插一刀大脾算得咩？",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "二當家，唔係漏水，係你流血呀",
+      "two": "二當家， 唔係漏水， 係你流血呀"
+    },
+    "answer": {
+      "output": "二當家，唔係漏水，係你流血呀",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "只要我點曲池，疾宮兩個穴位即時冇血流",
+      "two": "只要我點曲池， 疾宮兩個穴位即時右血流"
+    },
+    "answer": {
+      "output": "只要我點曲池，疾宮兩個穴位即時冇血流",
+      "note": "採用 Google Lens 的「冇」取代 PaddleOCR 的「右」；省略了 PaddleOCR 中多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "呢度唔算係山明水秀，但係都別有一番風貌㗎！",
+      "two": "呢度唔算係山明水秀， 但係都別有一番風貌磔！"
+    },
+    "answer": {
+      "output": "呢度唔算係山明水秀，但係都別有一番風貌㗎！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；修正了 PaddleOCR 中誤識別的「磔」為 Google Lens 的「㗎」；省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "兩位住落相信會喜歡㗎",
+      "two": "兩位住落相信會喜歡磔"
+    },
+    "answer": {
+      "output": "兩位住落相信會喜歡㗎",
+      "note": "採用 Google Lens 中的「㗎」，修正 PaddleOCR 誤識為「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "早啲抖！",
+      "two": "早哟抖！"
+    },
+    "answer": {
+      "output": "早啲抖！",
+      "note": "採用 Google Lens 中較可靠的漢字「啲」，修正 PaddleOCR 的「哟」；保留兩者一致的感嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "點呀？\n係咪妖怪呀？",
+      "two": "點呀？1 係咪妖怪呀？"
+    },
+    "answer": {
+      "output": "點呀？　　係咪妖怪呀？",
+      "note": "將 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格；省略了 PaddleOCR 中多出的「1」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "搞到我心兵嘭兵嘭跳！",
+      "two": "搞到我心兵嘭兵嘭跳"
+    },
+    "answer": {
+      "output": "搞到我心兵嘭兵嘭跳！",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的驚嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "師姐話，幫主你大仁大義，係俠中之俠",
+      "two": "師姐話， 幫主你大仁大義， 係俠中之俠"
+    },
+    "answer": {
+      "output": "師姐話，幫主你大仁大義，係俠中之俠",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "今日〝棟〞係你班手足頭上啲錢",
+      "two": "今日〝棟〞係你班手足頭上喲錢"
+    },
+    "answer": {
+      "output": "今日〝棟〞係你班手足頭上啲錢",
+      "note": "採用了 Google Lens 中的「啲」而非 PaddleOCR 中的「喲」，因 Google Lens 在漢字識別方面更可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主，\n普通料嚟啫",
+      "two": "幫主，音 普通料啫"
+    },
+    "answer": {
+      "output": "幫主，普通料啫",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；修正了 PaddleOCR 中多出的「音 」為 Google Lens 識別的「普通」；並省略了 PaddleOCR 中將「嚟」誤作「音」的錯誤。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "走咗嚟啲窮鄉僻壤",
+      "two": "走咗㰀喲窮鄉僻壤"
+    },
+    "answer": {
+      "output": "走咗嚟啲窮鄉僻壤",
+      "note": "採用 Google Lens 的「嚟啲」取代 PaddleOCR 的誤識別「㰀喲」；其餘文字一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁你呢？",
+      "two": "喵你呢？"
+    },
+    "answer": {
+      "output": "咁你呢？",
+      "note": "採用 Google Lens 中更可靠的漢字「咁」；保留兩者一致的問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你想喺度等唐三藏出現",
+      "two": "你想度等唐三藏出現"
+    },
+    "answer": {
+      "output": "你想喺度等唐三藏出現",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺度」；其餘文字以 Google Lens 為準。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一嚐佢長生不老之肉",
+      "two": "一噌但長生不老之肉"
+    },
+    "answer": {
+      "output": "一嚐佢長生不老之肉",
+      "note": "採用 Google Lens 較可靠的漢字識別，將 PaddleOCR 的「噌但」更正為「嚐佢」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你可以喺菩提老祖口中〝氹〞佢講出呢個天機",
+      "two": "你可以菩提老祖口中〝氹〞但講出呢個天機"
+    },
+    "answer": {
+      "output": "你可以喺菩提老祖口中〝氹〞佢講出呢個天機",
+      "note": "採納了 Google Lens 中的「喺」與「佢」，並保留兩邊一致的引號「〝氹〞」；省略了 PaddleOCR 中誤識別的「但」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "亂噏",
+      "two": "亂嗡"
+    },
+    "answer": {
+      "output": "亂噏",
+      "note": "採用 Google Lens 中較可靠的漢字識別「噏」，替換 PaddleOCR 的「嗡」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "天機洩漏咗佢會轉世成人",
+      "two": "天機洩漏但會轉世成人"
+    },
+    "answer": {
+      "output": "天機洩漏咗佢會轉世成人",
+      "note": "採用了 Google Lens 識別的「咗佢會」而非 PaddleOCR 的「但會」；其餘內容一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "祇要搵到佢就可以搵到唐三藏",
+      "two": "只要到但就可以–到唐三藏"
+    },
+    "answer": {
+      "output": "祇要搵到佢就可以搵到唐三藏",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，修正了 PaddleOCR 中的錯字與漏字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "師姐，我咁樣講，唔知算唔算亂噏呢？",
+      "two": "師姐， 我咁樣講， 唔知算唔算亂嗡呢？"
+    },
+    "answer": {
+      "output": "師姐，我咁樣講，唔知算唔算亂噏呢？",
+      "note": "採用 Google Lens 的標點與漢字「噏」；省略了 PaddleOCR 中多餘的空格，以及將「嗡」更正為 Google Lens 中的「噏」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你自己想見返嗰隻死馬騮啫卦",
+      "two": "你自己想見返咽隻死馬騮啫卦"
+    },
+    "answer": {
+      "output": "你自己想見返嗰隻死馬騮啫卦",
+      "note": "採用 Google Lens 中的「嗰」修正 PaddleOCR 誤識別為「咽」；其餘內容一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "分別祗不過佢上次死喺觀世音手上",
+      "two": "分別只不過但上次死觀世音手上"
+    },
+    "answer": {
+      "output": "分別祗不過佢上次死喺觀世音手上",
+      "note": "採用 Google Lens 較可靠的漢字識別「祗不過」「佢上次死喺」；修正了 PaddleOCR 中誤識的「只不過但上次死觀世音手上」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "而今次就會死喺我手上",
+      "two": "而今次就會死我手上"
+    },
+    "answer": {
+      "output": "而今次就會死喺我手上",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "妖怪！\n⋯⋯⋯",
+      "two": "妖怪！・"
+    },
+    "answer": {
+      "output": "妖怪！⋯⋯⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你見到啲咩呀？",
+      "two": "你見到喲咩呀？"
+    },
+    "answer": {
+      "output": "你見到啲咩呀？",
+      "note": "採用 Google Lens 中較可靠的漢字「啲」，修正了 PaddleOCR 中的「喲」；標點符號維持 Google Lens 的問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冇嘢呀",
+      "two": "右嘢呀"
+    },
+    "answer": {
+      "output": "冇嘢呀",
+      "note": "採用了 Google Lens 中較可靠的漢字識別結果「冇嘢呀」，修正了 PaddleOCR 將「冇」誤識為「右」的錯誤。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冇？\n咁你踎低做乜嘢？",
+      "two": "有？喵你跖低做乜嘢？"
+    },
+    "answer": {
+      "output": "冇？　　咁你踎低做乜嘢？",
+      "note": "採用 Google Lens 中較可靠的漢字「冇」「咁」「踎低」與標點「？」；將 Google Lens 中的換行符與 PaddleOCR 中對應的空格間隙替換為兩個表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我第一個就殺咗你",
+      "two": "我第一個就殺你"
+    },
+    "answer": {
+      "output": "我第一個就殺咗你",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "連隻牛都開口講嘢，今次真係百妖交集",
+      "two": "連隻牛都開口講嘢， 今次真係百妖交集"
+    },
+    "answer": {
+      "output": "連隻牛都開口講嘢，今次真係百妖交集",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格；保留了 Google Lens 中的逗號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "走啦⋯離開呢度",
+      "two": "走啦・離開呢度"
+    },
+    "answer": {
+      "output": "走啦⋯離開呢度",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁樣走咗咪好冇義氣！",
+      "two": "喵樣走咪好有義氣！"
+    },
+    "answer": {
+      "output": "咁樣走咗咪好冇義氣！",
+      "note": "採用 Google Lens 的識別結果「咁樣走咗咪好冇義氣！」，因其漢字與語意更可靠；PaddleOCR 中的「喵樣走咪好有義氣！」有明顯誤識別，未採用。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔得，\n報告幫主",
+      "two": "唔得， 報告幫主"
+    },
+    "answer": {
+      "output": "唔得，　　報告幫主",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "原來我哋呢度五嶽山，即係以前嘅五指山",
+      "two": "原來我呢度五嶽山，民 即係以前嘅五指山"
+    },
+    "answer": {
+      "output": "原來我哋呢度五嶽山，即係以前嘅五指山",
+      "note": "採用 Google Lens 中較可靠的「我哋」及逗號，並省略了 PaddleOCR 中多餘的「民」與空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唐僧同孫悟空呢就會喺呢度會合",
+      "two": "唐僧同孫悟空呢就會呢度會合"
+    },
+    "answer": {
+      "output": "唐僧同孫悟空呢就會喺呢度會合",
+      "note": "採用 Google Lens 中正確的「喺」；其餘內容與 PaddleOCR 一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嗰兩隻嘢，一個有八隻腳，一個個頭頭⋯⋯⋯",
+      "two": "咽兩隻嘢，一個有八隻腳，一個個頭頭⋯⋯"
+    },
+    "answer": {
+      "output": "嗰兩隻嘢，一個有八隻腳，一個個頭頭⋯⋯⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嗰」與逗號；保留了 Google Lens 中較完整的省略號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冇呀，你豬欄隻豬姆生咗兩隻豬仔喎",
+      "two": "有呀， 你豬欄隻豬乸生咗兩隻豬仔唱"
+    },
+    "answer": {
+      "output": "冇呀，你豬欄隻豬乸生咗兩隻豬仔喎",
+      "note": "包括了 Google Lens 中更可靠的漢字“冇呀”和“豬乸”，並省略了 PaddleOCR 中多餘的空格與誤識別字“有呀”“唱”；保留了 Google Lens 的標點。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "以後唔好做山賊嘞！\n我哋淨係⋯⋯",
+      "two": "以後唔好做山賊嘞！手 我地淨係⋯⋯"
+    },
+    "answer": {
+      "output": "以後唔好做山賊嘞！　　我哋淨係⋯⋯",
+      "note": "將 Google Lens 中顯示為換行符、PaddleOCR 中顯示為空格的間隙替換為兩個表意空格；採用 Google Lens 的「我哋」與標點「！」，並忽略 PaddleOCR 中多出的「手」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我哋邊有養豬得㗎？",
+      "two": "我呲邊有養豬得磔？"
+    },
+    "answer": {
+      "output": "我哋邊有養豬得㗎？",
+      "note": "採用 Google Lens 中較可靠的漢字「哋」「㗎」以及標點「？」；修正 PaddleOCR 中的錯字「呲」「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "羊？\n我哋冇⋯冇養豬咩？",
+      "two": "我有⋯有養豬咩？"
+    },
+    "answer": {
+      "output": "羊？我哋冇⋯冇養豬咩？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「羊？」和「我哋冇」；省略了 Google Lens 中存在但 PaddleOCR 中不存在的換行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "或者我發緊夢亂噏嘢呢！",
+      "two": "或者我發緊夢亂嗡嘢呢！"
+    },
+    "answer": {
+      "output": "或者我發緊夢亂噏嘢呢！",
+      "note": "採用 Google Lens 中的「噏」而非 PaddleOCR 中的「嗡」；其餘標點一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁我走啦，唔阻各位休息",
+      "two": "喵我走啦， 唔阻各位休息"
+    },
+    "answer": {
+      "output": "咁我走啦，唔阻各位休息",
+      "note": "包括了 Google Lens 中更可靠的漢字「咁」与逗号；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我哋都走",
+      "two": "我都走"
+    },
+    "answer": {
+      "output": "我哋都走",
+      "note": "採用了 Google Lens 中存在但 PaddleOCR 中不存在的「哋」；其餘文字以兩者共同內容為準。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "聽日我實行派有關人等喺隔離左右",
+      "two": "聽日我實行派有關人等係隔離左右"
+    },
+    "answer": {
+      "output": "聽日我實行派有關人等喺隔離左右",
+      "note": "採用了 Google Lens 中的「喺」，修正了 PaddleOCR 中誤識為「係」的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "徹底搜查你哋要搵嘅人",
+      "two": "徹底搜查你吡要摳嘅人"
+    },
+    "answer": {
+      "output": "徹底搜查你哋要搵嘅人",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，修正了 PaddleOCR 中的「吡」為「哋」、「摳」為「搵」，並保留 Lens 的整體句子。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "早抖幫主！\n行啦",
+      "two": "早抖幫主！ 行啦"
+    },
+    "answer": {
+      "output": "早抖幫主！　　行啦",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "去！\n出去！",
+      "two": "去！ 出去！"
+    },
+    "answer": {
+      "output": "去！　　出去！",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "點解晶晶姑娘對我呢個造型完全冇反應嘅！",
+      "two": "點解晶晶姑娘對我呢個造型完全有反應嘅！"
+    },
+    "answer": {
+      "output": "點解晶晶姑娘對我呢個造型完全冇反應嘅！",
+      "note": "採用 Google Lens 中的「冇」以更正 PaddleOCR 中誤識別為「有」的字詞；其餘標點相同。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冇辦法啦",
+      "two": "右辦法啦"
+    },
+    "answer": {
+      "output": "冇辦法啦",
+      "note": "採用了 Google Lens 中的「冇」以更正 PaddleOCR 中誤識別的「右」；其餘文字一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔好殺我！\n⋯⋯唔好殺我！",
+      "two": "唔好殺我！⋯⋯唔好殺我！"
+    },
+    "answer": {
+      "output": "唔好殺我！⋯⋯唔好殺我！",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；保留了 Google Lens 中的省略号「⋯⋯」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我唔玩啦⋯⋯",
+      "two": "我唔玩啦⋯"
+    },
+    "answer": {
+      "output": "我唔玩啦⋯⋯",
+      "note": "保留了 Google Lens 中存在但 PaddleOCR 中缺少的第二個省略號點。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我唔記得啦⋯⋯",
+      "two": "我唔記得啦⋯"
+    },
+    "answer": {
+      "output": "我唔記得啦⋯⋯",
+      "note": "採用了 Google Lens 中的省略號「⋯⋯」，因為 Google Lens 在標點符號方面更可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁我個頭係咪咁樣㗎？",
+      "two": "咁我個頭係咪咁樣磔？"
+    },
+    "answer": {
+      "output": "咁我個頭係咪咁樣㗎？",
+      "note": "採用了 Google Lens 中更可靠的漢字「㗎」與標點符號「？」；修正了 PaddleOCR 將「㗎」誤識為「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係呀，係呀，\n唔好呀",
+      "two": "係呀， 係呀， 唔好呀"
+    },
+    "answer": {
+      "output": "係呀，係呀，唔好呀",
+      "note": "包括了 Google Lens 中存在的逗號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，並省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係咩啫！\n佢都未變",
+      "two": "係咩啫！但都未變"
+    },
+    "answer": {
+      "output": "係咩啫！但都未變",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「但」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嘩！\n而家咪變囉",
+      "two": "嘩！而家咪變囉"
+    },
+    "answer": {
+      "output": "嘩！而家咪變囉",
+      "note": "省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一刀殺咗佢",
+      "two": "一刀殺但"
+    },
+    "answer": {
+      "output": "一刀殺咗佢",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，將 PaddleOCR 的「但」更正為「咗佢」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我要用移魂大法迷咗佢，留返嚟做我嘅臥底",
+      "two": "我要用移魂大法迷但， 留返㰀做我嘅臥底"
+    },
+    "answer": {
+      "output": "我要用移魂大法迷咗佢，留返嚟做我嘅臥底",
+      "note": "採用了 Google Lens 中較可靠的漢字「咗佢」「留返嚟」，並採用了 Google Lens 中較可靠的標點「，」；省略了 PaddleOCR 中錯誤的「但」「㰀」以及多餘空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喂！\n喺呢處唔好扮嘢",
+      "two": "喂！呢處唔好扮嘢"
+    },
+    "answer": {
+      "output": "喂！呢處唔好扮嘢",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔係我\n會〝逐忽逐忽〞肉同你片出嚟呀",
+      "two": "唔係我會 7 逐忽逐忽 肉同你片出㰀呀"
+    },
+    "answer": {
+      "output": "唔係我會〝逐忽逐忽〞肉同你片出嚟呀",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的引號〝逐忽逐忽〞；採用了 Google Lens 的漢字「出嚟」而非 PaddleOCR 的「出㰀」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；省略了 PaddleOCR 中多出的數字與空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嘩！\n你唔係咁殘忍呀？",
+      "two": "嘩！  你唔係喵殘忍呀？"
+    },
+    "answer": {
+      "output": "嘩！　　你唔係咁殘忍呀？",
+      "note": "採用了 Google Lens 中的「咁」以更正 PaddleOCR 的「喵」；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的間隙替換為两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "長夜漫漫，無心睡眠",
+      "two": "長夜漫漫， 無心睡眠"
+    },
+    "answer": {
+      "output": "長夜漫漫，無心睡眠",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我以為我一個瞓唔着啫",
+      "two": "我以為我一個唔着啫"
+    },
+    "answer": {
+      "output": "我以為我一個瞓唔着啫",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「瞓」字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "原來晶晶姑娘，你都瞓唔着呀？",
+      "two": "原來晶晶姑娘， 你都聯唔着呀？"
+    },
+    "answer": {
+      "output": "原來晶晶姑娘，你都瞓唔着呀？",
+      "note": "採用 Google Lens 中較可靠的「瞓唔着」與逗號；省略了 PaddleOCR 中多出的空格，以及將 PaddleOCR 的「聯」更正為 Google Lens 的「瞓」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係呀！唔知幫主你又為乜瞓唔着呢？",
+      "two": "係呀！ 唔知幫主你又為乜腳唔着呢？"
+    },
+    "answer": {
+      "output": "係呀！唔知幫主你又為乜瞓唔着呢？",
+      "note": "採用 Google Lens 中的「唔知幫主你又為乜瞓唔着呢？」以修正 PaddleOCR 誤識成「腳」；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我唔再要見到以前嘅我",
+      "two": "我唔再要見到以前慨我"
+    },
+    "answer": {
+      "output": "我唔再要見到以前嘅我",
+      "note": "採用 Google Lens 中更可靠的漢字「嘅」，修正了 PaddleOCR 中的「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啱睇嘛？！",
+      "two": "喏睇嘛？"
+    },
+    "answer": {
+      "output": "啱睇嘛？！",
+      "note": "採用 Google Lens 中較可靠的漢字與標點，保留了「啱睇嘛？！」，並省略了 PaddleOCR 中將其誤識為「喏睇嘛？」的差異。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係你隻馬騮精？！",
+      "two": "係你隻馬騮精？"
+    },
+    "answer": {
+      "output": "係你隻馬騮精？！",
+      "note": "採用了 Google Lens 中存在的驚嘆號；保留了 Google Lens 中的問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "馬騮精？",
+      "two": "馬騮精"
+    },
+    "answer": {
+      "output": "馬騮精？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的问号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你變咗人樣就得㗎啦？",
+      "two": "你變咗人樣就得磔啦？"
+    },
+    "answer": {
+      "output": "你變咗人樣就得㗎啦？",
+      "note": "採用了 Google Lens 中較可靠的漢字「㗎」來修正 PaddleOCR 的誤識別「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "睇嚟我唔用三味白骨火你都唔會認㗎啦",
+      "two": "睇我唔用三味白骨火你都唔會認磔啦"
+    },
+    "answer": {
+      "output": "睇嚟我唔用三味白骨火你都唔會認㗎啦",
+      "note": "採用 Google Lens 中較可靠的漢字「睇嚟」「㗎」，並修正了 PaddleOCR 中誤識別的「我」為「嚟」及「磔」為「㗎」；保留其餘文字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嘩！使唔使呀！又燒！",
+      "two": "嘩！1 使唔使呀！ ！又燒"
+    },
+    "answer": {
+      "output": "嘩！使唔使呀！又燒！",
+      "note": "採用了 Google Lens 中更可靠的漢字與標點；省略了 PaddleOCR 中多餘的數字「1」、空格，以及最後缺失的驚嘆號之外的錯誤分隔。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嘩！你做咩用火焰彈燒我呀？",
+      "two": "嘩！ 你做咩用火焰彈燒我呀？"
+    },
+    "answer": {
+      "output": "嘩！你做咩用火焰彈燒我呀？",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你做咩無端端剃哂啲鬚呀？",
+      "two": "你做咩無端端剃哂喲鬚呀？"
+    },
+    "answer": {
+      "output": "你做咩無端端剃哂啲鬚呀？",
+      "note": "採用 Google Lens 中較可靠的漢字「啲」，修正了 PaddleOCR 中誤識別的「喲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你知唔知你冇咗啲鬚好冇性格㗎？",
+      "two": "你知唔知你有啪鬚好有性格磔？"
+    },
+    "answer": {
+      "output": "你知唔知你冇咗啲鬚好冇性格㗎？",
+      "note": "採用 Google Lens 的漢字與標點結果，修正了 PaddleOCR 中的錯字「有啪鬚」為「冇咗啲鬚」，並保留了句末問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "文又唔得，武又唔得",
+      "two": "文又唔得， 武又唔得"
+    },
+    "answer": {
+      "output": "文又唔得，武又唔得",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "都有諗過吓嘅，\n不過",
+      "two": "都有諗過吓嘅， 不過"
+    },
+    "answer": {
+      "output": "都有諗過吓嘅，不過",
+      "note": "包括了 Google Lens 中存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，并省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "慳啲啦，\n你學人轉形象",
+      "two": "悭喲啦， 你學人轉形象"
+    },
+    "answer": {
+      "output": "慳啲啦，你學人轉形象",
+      "note": "採用 Google Lens 中較可靠的漢字「慳啲啦」與逗號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，並去除了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "安安分分做山賊呢份咁有前途嘅職業吖嘛",
+      "two": "安安分分做山賊呢份喵有前途嘅職業吖嘛"
+    },
+    "answer": {
+      "output": "安安分分做山賊呢份咁有前途嘅職業吖嘛",
+      "note": "將 PaddleOCR 中的「喵」更正為 Google Lens 中較可靠的「咁」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好似唔似，\n似嗰隻衰嘢！",
+      "two": "好似唔似， 似咽隻衰嘢！"
+    },
+    "answer": {
+      "output": "好似唔似，似嗰隻衰嘢！",
+      "note": "採用了 Google Lens 中較可靠的漢字「嗰隻」與標點「，」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，並修正了 PaddleOCR 中錯誤識別的「咽」為「嗰」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "原來晶晶姑娘佢鍾意我粗獷嘅一面",
+      "two": "原來晶晶姑娘但鍾意我粗獷嘅一面"
+    },
+    "answer": {
+      "output": "原來晶晶姑娘佢鍾意我粗獷嘅一面",
+      "note": "採用了 Google Lens 中的「佢」取代 PaddleOCR 中誤識別的「但」；其餘文字一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "亂就亂啲，都總算回復幾分風采",
+      "two": "亂就亂啪，者 都總算回複幾分風採"
+    },
+    "answer": {
+      "output": "亂就亂啲，都總算回復幾分風采",
+      "note": "包括了 Google Lens 中更可靠的漢字「啲」「回復」「風采」以及標點「，」；省略了 PaddleOCR 中多出的錯誤字「啪」「者」和多餘空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "孫悟空，\n你同我躙出嚟！",
+      "two": "孫悟空，1 你同我瀾出！"
+    },
+    "answer": {
+      "output": "孫悟空，你同我躙出嚟！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「你同我躙出嚟！」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；更正了 PaddleOCR 中誤識別的「1」與「瀾出」為 Google Lens 中的「躙出嚟」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喺我十八歳嗰年你話會嚟娶我",
+      "two": "我十八歲咽年你話會娶我"
+    },
+    "answer": {
+      "output": "喺我十八歲嗰年你話會嚟娶我",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，補回 PaddleOCR 漏識的「喺」與「嚟」，並修正「歳」為「歲」；同時忽略 PaddleOCR 中誤識的「咽」與缺失的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "而家我等咗你三年",
+      "two": "而家我等你三年"
+    },
+    "answer": {
+      "output": "而家我等咗你三年",
+      "note": "採用了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你同我死出嚟！",
+      "two": "你同我死出！"
+    },
+    "answer": {
+      "output": "你同我死出嚟！",
+      "note": "採用了 Google Lens 中正確識別的「嚟」，修正了 PaddleOCR 中缺失的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我哋大王有啲事行開咗",
+      "two": "我呲大王有喲事行開"
+    },
+    "answer": {
+      "output": "我哋大王有啲事行開咗",
+      "note": "採納了 Google Lens 中較可靠的漢字識別結果，並補回了 PaddleOCR 遺漏的「咗」；未採納 PaddleOCR 中的錯誤字形「我呲」「有喲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "佢話白姑娘嚟咗，就將呢件嘢交返俾你",
+      "two": "但話白姑娘， 就將呢件嘢交返俾你"
+    },
+    "answer": {
+      "output": "佢話白姑娘嚟咗，就將呢件嘢交返俾你",
+      "note": "採用 Google Lens 中較可靠的漢字「佢話」「嚟咗」，並保留 Google Lens 的逗號；省略了 PaddleOCR 中多出的空格與錯誤字「但」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "佢就無福消受",
+      "two": "但就無福消受"
+    },
+    "answer": {
+      "output": "佢就無福消受",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，將 PaddleOCR 的「但」更正為「佢」；其餘一致，未作其他更動。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "卒之搵到唐三藏嘅蹤跡啦",
+      "two": "卒之–到唐三藏嘅蹤跡啦"
+    },
+    "answer": {
+      "output": "卒之搵到唐三藏嘅蹤跡啦",
+      "note": "採用 Google Lens 中的「搵」而非 PaddleOCR 中的「–」，因 Google Lens 在漢字辨識上更可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "腳板毛都剃埋，都唔知幾時先生得返添㗎？",
+      "two": "腳板毛都剃埋，者 都唔知幾時先生得返添磔？"
+    },
+    "answer": {
+      "output": "腳板毛都剃埋，都唔知幾時先生得返添㗎？",
+      "note": "採用 Google Lens 的「腳板毛都剃埋，都唔知幾時先生得返添㗎？」；省略了 PaddleOCR 中多出的「者 」與「磔」等誤識別內容。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "弊！俾嗰兩隻嘢到先一步添！",
+      "two": "弊！1 俾咽兩隻嘢到先一步添！"
+    },
+    "answer": {
+      "output": "弊！俾嗰兩隻嘢到先一步添！",
+      "note": "採用 Google Lens 中較可靠的漢字「俾嗰」，並省略了 PaddleOCR 中多出的「1」；其餘標點與內容依 Google Lens 為準。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你又返嚟水濂洞啦？",
+      "two": "你又返㰀水濂洞啦？"
+    },
+    "answer": {
+      "output": "你又返嚟水濂洞啦？",
+      "note": "採用 Google Lens 中較可靠的漢字「嚟」，修正了 PaddleOCR 誤識的「㰀」；標點符號沿用 Google Lens 的「？」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你邊位呀？整日帶我嚟呢度做咩呀？",
+      "two": "你邊位呀？ 整日帶我呢度做咩呀？"
+    },
+    "answer": {
+      "output": "你邊位呀？整日帶我嚟呢度做咩呀？",
+      "note": "採用 Google Lens 的用字「帶我嚟呢度」；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冇人帶你嚟，你自己要返來",
+      "two": "有人帶你， 你自己要返來"
+    },
+    "answer": {
+      "output": "冇人帶你嚟，你自己要返來",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「冇人帶你嚟」；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一個人離開屋企太耐，始終都想返嚟嘅",
+      "two": "一個人離開屋企太耐， 始終都想返嘅"
+    },
+    "answer": {
+      "output": "一個人離開屋企太耐，始終都想返嚟嘅",
+      "note": "採用了 Google Lens 中的「始終都想返嚟嘅」，並省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你搞錯咗啦，聽到嗎？",
+      "two": "你搞錯啦， 聽到嗎？"
+    },
+    "answer": {
+      "output": "你搞錯咗啦，聽到嗎？",
+      "note": "採用了 Google Lens 中更可靠的漢字「咗」；省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "以後唔好再煩我啦，唔該！",
+      "two": "以後唔好再煩我啦， 唔該！"
+    },
+    "answer": {
+      "output": "以後唔好再煩我啦，唔該！",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "出發啦幫主，唔係就遲到嘅啦",
+      "two": "出發啦幫主，   唔係就遲到嘅啦"
+    },
+    "answer": {
+      "output": "出發啦幫主，唔係就遲到嘅啦",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "出咩嘢發呀？\n你想點呀？",
+      "two": "出咩嘢發呀？休 你想點呀？"
+    },
+    "answer": {
+      "output": "出咩嘢發呀？　　你想點呀？",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的“休”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "邊個夠膽嚟打劫呀？",
+      "two": "邊個夠膽打劫呀？"
+    },
+    "answer": {
+      "output": "邊個夠膽嚟打劫呀？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」；保留了 Google Lens 較可靠的標點符號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我哋去打劫人哋呀？",
+      "two": "我去打劫人地呀？"
+    },
+    "answer": {
+      "output": "我哋去打劫人哋呀？",
+      "note": "採用 Google Lens 中較可靠的漢字「哋」與「人哋」，並保留其標點符號「？」；省略了 PaddleOCR 中缺失的字詞「哋」與「人地」的誤識別。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "去咪去！\n怕咗你啦！",
+      "two": "去咪去！ 怕咗你啦！"
+    },
+    "answer": {
+      "output": "去咪去！　　怕咗你啦！",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "去打劫⋯打劫腳板⋯",
+      "two": "去打劫⋯打劫腳板・"
+    },
+    "answer": {
+      "output": "去打劫⋯打劫腳板⋯",
+      "note": "採用了 Google Lens 中的省略號「⋯」；將 PaddleOCR 中末尾的中點「・」更正為 Google Lens 中的「⋯」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "腳板喎，老爺",
+      "two": "腳板蝸，老爺"
+    },
+    "answer": {
+      "output": "腳板喎，老爺",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喎」；省略了 PaddleOCR 中誤識的「蝸」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我冇腳嗰喎，咁點呀？",
+      "two": "我有腳咽蝸， 喵點呀？"
+    },
+    "answer": {
+      "output": "我冇腳嗰喎，咁點呀？",
+      "note": "採用 Google Lens 中較可靠的漢字與標點；省略了 PaddleOCR 中誤識的文字與多餘空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係呀⋯",
+      "two": "係呀・"
+    },
+    "answer": {
+      "output": "係呀⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "妒忌就妒忌啦！\n你班友⋯⋯",
+      "two": "妒忌就妒忌啦！ 你班友⋯⋯"
+    },
+    "answer": {
+      "output": "妒忌就妒忌啦！　　你班友⋯⋯",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主，菩提子洗乾淨啦",
+      "two": "幫主， 菩提子洗乾淨啦"
+    },
+    "answer": {
+      "output": "幫主，菩提子洗乾淨啦",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我咪係你帶番嚟個揪菩提子囉！",
+      "two": "我咪係你帶番㰀個揪菩提子囉"
+    },
+    "answer": {
+      "output": "我咪係你帶番嚟個揪菩提子囉！",
+      "note": "採用 Google Lens 中較可靠的漢字「嚟」取代 PaddleOCR 的「㰀」；補回 Google Lens 中的驚嘆號「！」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔係，\n我係菩提老祖！",
+      "two": "唔係，手 我係菩提老祖"
+    },
+    "answer": {
+      "output": "唔係，我係菩提老祖！",
+      "note": "包括了 Google Lens 中存在的逗號和驚嘆號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，並忽略了 PaddleOCR 中多出的「手 」一詞。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "乜\n〝唔提老母〞呀？",
+      "two": "セ 唔提老母 呀？"
+    },
+    "answer": {
+      "output": "乜〝唔提老母〞呀？",
+      "note": "採用了 Google Lens 中更可靠的漢字「乜」及引號「〝〞」和問號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，並去除了 PaddleOCR 中多餘的日文假名與空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你講粗口，我係菩提老祖，我係神仙",
+      "two": "你講粗口， 我係菩提老祖， 我係神仙"
+    },
+    "answer": {
+      "output": "你講粗口，我係菩提老祖，我係神仙",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我化做菩提子嚟救你㗎",
+      "two": "我化做菩提子㰀救你磔"
+    },
+    "answer": {
+      "output": "我化做菩提子嚟救你㗎",
+      "note": "採用了 Google Lens 中較可靠的漢字「嚟、㗎」，並省略了 PaddleOCR 中錯誤的「㰀、磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你撻咗我揪菩提子，仲唔提老母？",
+      "two": "你撻我揪菩提子， 仲唔提老母？"
+    },
+    "answer": {
+      "output": "你撻咗我揪菩提子，仲唔提老母？",
+      "note": "採用 Google Lens 中較可靠的「撻咗」與逗號；省略了 PaddleOCR 中多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嗰兩個女人係妖怪嚟嘅",
+      "two": "咽兩個女人係妖怪慨"
+    },
+    "answer": {
+      "output": "嗰兩個女人係妖怪嚟嘅",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，修正了 PaddleOCR 中的「咽」為「嗰」，並修正了結尾的「慨」為「嚟嘅」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "搵我個照妖鏡一照呢你就明白哂！",
+      "two": "–我個照妖鏡一照呢你就明白哂！"
+    },
+    "answer": {
+      "output": "搵我個照妖鏡一照呢你就明白哂！",
+      "note": "採用了 Google Lens 中的「搵」以補正 PaddleOCR 中缺失的字；其餘內容一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你係咪撻咗我揪菩提子？",
+      "two": "你係咪撻我揪菩提子？"
+    },
+    "answer": {
+      "output": "你係咪撻咗我揪菩提子？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」；保留了 Google Lens 中的問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我冇呀！⋯",
+      "two": "我有呀！"
+    },
+    "answer": {
+      "output": "我冇呀！⋯",
+      "note": "採用 Google Lens 中更可靠的漢字「冇」以及省略號「⋯」，並忽略了 PaddleOCR 中不一致的「有」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我揪菩提子喺邊？",
+      "two": "我揪菩提子邊？"
+    },
+    "answer": {
+      "output": "我揪菩提子喺邊？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」；保留了 Google Lens 中的標點符號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我咪就係你嗰揪菩提子囉！",
+      "two": "我咪就係你咽揪菩提子囉！"
+    },
+    "answer": {
+      "output": "我咪就係你嗰揪菩提子囉！",
+      "note": "包括了 Google Lens 中更可靠的漢字「嗰」，修正了 PaddleOCR 的「咽」；其餘標點保留 Google Lens 的結果。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大聲啲",
+      "two": "大聲喲"
+    },
+    "answer": {
+      "output": "大聲啲",
+      "note": "採用 Google Lens 識別的「大聲啲」，因其漢字辨識通常更可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "點解唔係萍果？\n要係菩提子！",
+      "two": "點解唔係萍果？要係菩提子！"
+    },
+    "answer": {
+      "output": "點解唔係萍果？要係菩提子！",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你唔好以為我唔夠你打喎！",
+      "two": "你唔好以為我唔夠你打蝸！"
+    },
+    "answer": {
+      "output": "你唔好以為我唔夠你打喎！",
+      "note": "將 PaddleOCR 中的「蝸」更正為 Google Lens 識別較可靠的「喎」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嚟，\n有排你傷呀",
+      "two": "㰀， 有排你傷呀"
+    },
+    "answer": {
+      "output": "嚟，有排你傷呀",
+      "note": "採用了 Google Lens 中的「嚟」與逗號「，」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，並省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嘩！\n幫主筆鬚好粗獷呀！",
+      "two": "嘩！ 幫主筆鬚好粗獷呀！"
+    },
+    "answer": {
+      "output": "嘩！幫主筆鬚好粗獷呀！",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "得呀！\n頭先點解兵兵嘭嘭嘅？",
+      "two": "得呀！ 頭先點解兵兵嘭嘭慨？"
+    },
+    "answer": {
+      "output": "得呀！　　頭先點解兵兵嘭嘭嘅？",
+      "note": "將了 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格；採用了 Google Lens 中較可靠的「嘅？」而不是 PaddleOCR 的「慨？」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啱啱打緊揪菩提子",
+      "two": "喏喏打緊揪菩提子"
+    },
+    "answer": {
+      "output": "啱啱打緊揪菩提子",
+      "note": "採用 Google Lens 較可靠的漢字識別結果「啱啱」；其餘部分與 PaddleOCR 一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "打菩提子都有嘅",
+      "two": "打菩提子都有慨"
+    },
+    "answer": {
+      "output": "打菩提子都有嘅",
+      "note": "採用 Google Lens 中較可靠的漢字「嘅」，修正 PaddleOCR 中誤識別為「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "今日嗰個月光咁靚，不如",
+      "two": "今日咽個月光喵靚， 不如"
+    },
+    "answer": {
+      "output": "今日嗰個月光咁靚，不如",
+      "note": "採用了 Google Lens 中較可靠的漢字「嗰個」「咁靚」及標點「，」；省略了 PaddleOCR 中誤識的「咽」「喵」以及多餘空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "月光，\n冇呀",
+      "two": "月光， 有呀"
+    },
+    "answer": {
+      "output": "月光，　　冇呀",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的『冇呀』；将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁大個月光你都睇唔到，睇真少少啦",
+      "two": "咁大個月光你都睇唔到， 睇真少少啦"
+    },
+    "answer": {
+      "output": "咁大個月光你都睇唔到，睇真少少啦",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "天都未黑，點會有月光喎",
+      "two": "天都未黑， 點會有月光蝸"
+    },
+    "answer": {
+      "output": "天都未黑，點會有月光喎",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喎」；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "邊個？\n邊個老母？⋯⋯",
+      "two": "邊個？邊個老母？⋯・"
+    },
+    "answer": {
+      "output": "邊個？　　邊個老母？⋯⋯",
+      "note": "採用 Google Lens 中的問號與省略號；將 Google Lens 中的換行符與 PaddleOCR 中對應的空隙合併為兩個表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你喺邊呀？",
+      "two": "你邊呀？"
+    },
+    "answer": {
+      "output": "你喺邊呀？",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的「喺」；採用了 Google Lens 中的標點符號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喺你褲襠",
+      "two": "你褲襠"
+    },
+    "answer": {
+      "output": "喺你褲襠",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嘩！\n咁大揪掛喺度",
+      "two": "嘩！ 喵大揪掛度"
+    },
+    "answer": {
+      "output": "嘩！　　咁大揪掛喺度",
+      "note": "採用了 Google Lens 中的「咁大揪掛喺度」與感嘆號，並將 Google Lens 中的換行符與 PaddleOCR 中對應的空格間隙合併為兩個表意空格；未採用 PaddleOCR 中誤識別的「喵」與省略的「喺」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "呢揪你嘅，我喺你後面！",
+      "two": "呢揪你嘅，手 我你後面"
+    },
+    "answer": {
+      "output": "呢揪你嘅，我喺你後面！",
+      "note": "採用了 Google Lens 中較可靠的標點符號「，」與驚嘆號「！」，並省略了 PaddleOCR 中多餘且不合理的「手 」與空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你而家信喇！",
+      "two": "你而家信喇"
+    },
+    "answer": {
+      "output": "你而家信喇！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喂？點解呢度會有妖精㗎？",
+      "two": "喂？ 點解呢度會有妖精磔？"
+    },
+    "answer": {
+      "output": "喂？點解呢度會有妖精㗎？",
+      "note": "採用 Google Lens 的標點與漢字識別，省略了 PaddleOCR 中多餘的空格，並更正了 PaddleOCR 將「㗎」誤識為「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "蠢材呀，\n我話你知啦",
+      "two": "蠢材呀，手 我話你知啦"
+    },
+    "answer": {
+      "output": "蠢材呀，　　我話你知啦",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "呢班妖精就喺度等唐三藏重現人間嘅",
+      "two": "呢班妖精就度等唐三藏重現人間嘅"
+    },
+    "answer": {
+      "output": "呢班妖精就喺度等唐三藏重現人間嘅",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺度」；修正了 PaddleOCR 误漏的字詞。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "佢師父唐三藏為咗救佢",
+      "two": "但師父唐三藏為救但"
+    },
+    "answer": {
+      "output": "但師父唐三藏為咗救但",
+      "note": "採用了 Google Lens 中較可靠的漢字「佢」「咗」；其餘字詞以 PaddleOCR 的結果為主，並保留 PaddleOCR 中的整體語序。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "用自己嘅性命換取孫悟空一次重生嘅機會",
+      "two": "用自己嘅性命換取孫悟空一次重生慨機會"
+    },
+    "answer": {
+      "output": "用自己嘅性命換取孫悟空一次重生嘅機會",
+      "note": "將 PaddleOCR 中的「慨」更正為 Google Lens 中更可靠的「嘅」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唐三藏點解要喺呢度出現，你仲未答我？",
+      "two": "唐三藏點解要呢度出現， 你仲未答我？"
+    },
+    "answer": {
+      "output": "唐三藏點解要喺呢度出現，你仲未答我？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "沒錯，唐三藏當年為咗普渡眾生",
+      "two": "沒錯，唐三藏當年為普渡眾生"
+    },
+    "answer": {
+      "output": "沒錯，唐三藏當年為咗普渡眾生",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」；其餘內容以 Google Lens 為準。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "希望藉此經書嚟感化世人",
+      "two": "希望藉此經書感化世人"
+    },
+    "answer": {
+      "output": "希望藉此經書嚟感化世人",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "滿天神佛都被佢呢種精神所感動",
+      "two": "滿天神佛都被柜呢種精神所感動"
+    },
+    "answer": {
+      "output": "滿天神佛都被佢呢種精神所感動",
+      "note": "將 PaddleOCR 中的「柜」更正為 Google Lens 較可靠的「佢」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "安排佢兩師徒今世喺呢度重逢",
+      "two": "安排但兩師徒今世呢度重逢"
+    },
+    "answer": {
+      "output": "安排佢兩師徒今世喺呢度重逢",
+      "note": "採用了 Google Lens 中的「佢」「喺」等更可靠的漢字，並補回 PaddleOCR 中缺失的字詞；省略了 PaddleOCR 中錯誤的「但」與缺失的「喺」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "繼續完成取西經嘅使命",
+      "two": "繼續完成取西經慨使命"
+    },
+    "answer": {
+      "output": "繼續完成取西經嘅使命",
+      "note": "採用 Google Lens 中的「嘅」修正 PaddleOCR 的「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你而家明白點解有咁多妖精喺呢度出現啦",
+      "two": "你而家明白點解有咁多妖精呢度出現啦"
+    },
+    "answer": {
+      "output": "你而家明白點解有咁多妖精喺呢度出現啦",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的「喺」；其餘文字以兩者共同內容為準。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔怪得一路以嚟我都發著同一個惡夢",
+      "two": "唔怪得一路以我都發著同一個惡夢"
+    },
+    "answer": {
+      "output": "唔怪得一路以嚟我都發著同一個惡夢",
+      "note": "採用 Google Lens 中的「嚟」，修正了 PaddleOCR 漏掉的字；其餘文字一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喺一遍漆黑孤獨嘅環境裡頭",
+      "two": "一遍漆黑孤獨嘅環境裡頭"
+    },
+    "answer": {
+      "output": "喺一遍漆黑孤獨嘅環境裡頭",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」；其餘內容一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一對一對非常之鹹濕嘅眼睛係咁望住我",
+      "two": "一對一對非常之鹹濕慨眼睛係咁望住我"
+    },
+    "answer": {
+      "output": "一對一對非常之鹹濕嘅眼睛係咁望住我",
+      "note": "採用 Google Lens 中的「嘅」而非 PaddleOCR 中誤識別的「慨」；其餘文字一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "有幾次仲望到我有啲面紅添",
+      "two": "有幾次仲望到我有喲面紅添"
+    },
+    "answer": {
+      "output": "有幾次仲望到我有啲面紅添",
+      "note": "採用了 Google Lens 中較可靠的漢字「啲」，修正了 PaddleOCR 的「喲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係呀！\n你今日真係撞妖！",
+      "two": "係呀！ 你今日真係撞妖！"
+    },
+    "answer": {
+      "output": "係呀！　　你今日真係撞妖！",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嚀！呢度有兩個乾坤袋，一疊隱身符",
+      "two": "拿！（b√id 呢度有兩個乾坤袋，一疊隱身符"
+    },
+    "answer": {
+      "output": "嚀！呢度有兩個乾坤袋，一疊隱身符",
+      "note": "採用 Google Lens 識別的「嚀！」而省略了 PaddleOCR 中錯誤的「拿！（b√id」；其餘文字兩者一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你一貼咗度符喺身，佢就睇唔到你",
+      "two": "你一貼度符身， 佰就睇唔到你"
+    },
+    "answer": {
+      "output": "你一貼咗度符喺身，佢就睇唔到你",
+      "note": "採用了 Google Lens 中較可靠的漢字與標點；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格，並修正了 PaddleOCR 的誤識別字詞。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "吼佢唔覺意你就一笠笠落佢個頭嗰度",
+      "two": "吼但唔覺意你就一笠笠落但個頭咽度"
+    },
+    "answer": {
+      "output": "吼佢唔覺意你就一笠笠落佢個頭嗰度",
+      "note": "採用了 Google Lens 中更可靠的漢字「佢」「個」「嗰度」，並修正了 PaddleOCR 中誤識別的「但」「咽度」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嚀我喺後面掩護你",
+      "two": "我後面掩護你"
+    },
+    "answer": {
+      "output": "嚀我喺後面掩護你",
+      "note": "保留了 Google Lens 中識別出的「嚀」與「喺」；省略了 PaddleOCR 中不存在的前置內容。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哇！你句對白不〝嬲〞我講嗰喎",
+      "two": "哇！ 你句對白不 我講咽唱"
+    },
+    "answer": {
+      "output": "哇！你句對白不〝嬲〞我講嗰喎",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的引號內字詞〝嬲〞；省略了 PaddleOCR 中多出的空格與錯誤識別文字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你同邊個講？",
+      "two": "你同邊個講"
+    },
+    "answer": {
+      "output": "你同邊個講？",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "同佢囉",
+      "two": "同但囉"
+    },
+    "answer": {
+      "output": "同佢囉",
+      "note": "採用 Google Lens 中的漢字「佢」，修正 PaddleOCR 中誤識別為「但」的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好呃！\n等我幫你呢",
+      "two": "好呃！  等我幫你呢"
+    },
+    "answer": {
+      "output": "好呃！　　等我幫你呢",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冇得頂！\n你不愧為我好兄弟",
+      "two": "右得頂！！你不愧為我好兄弟"
+    },
+    "answer": {
+      "output": "冇得頂！你不愧為我好兄弟",
+      "note": "採用了 Google Lens 中的「冇得頂！」與單個驚嘆號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，並修正了 PaddleOCR 中將「冇」誤識為「右」及多出的驚嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嚀，你而家出去叫晒啲手足入嚟",
+      "two": "， 你而家出去叫晒喲手足入"
+    },
+    "answer": {
+      "output": "嚀，你而家出去叫晒啲手足入嚟",
+      "note": "包括了 Google Lens 中存在的「嚀，」；採用 Google Lens 中較可靠的漢字「啲」和完整結尾「入嚟」；省略了 PaddleOCR 中多餘的空格與錯誤字「喲」及不完整的結尾「入」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "每人俾度符佢",
+      "two": "每人俾度符但"
+    },
+    "answer": {
+      "output": "每人俾度符佢",
+      "note": "採用了 Google Lens 中的「佢」；忽略了 PaddleOCR 中的「但」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我返去菩提老祖度攞埋個乾坤袋",
+      "two": "我返去菩提老祖度擺埋個乾坤袋"
+    },
+    "answer": {
+      "output": "我返去菩提老祖度攞埋個乾坤袋",
+      "note": "採用了 Google Lens 中的「攞埋」；修正了 PaddleOCR 中誤識別的「擺埋」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冇問題",
+      "two": "右問題"
+    },
+    "answer": {
+      "output": "冇問題",
+      "note": "採用 Google Lens 中更可靠的漢字識別，將 PaddleOCR 的「右」更正為「冇」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你今日啲眼神好似咁⋯⋯",
+      "two": "你今日喲眼神好似喵⋯⋯"
+    },
+    "answer": {
+      "output": "你今日啲眼神好似咁⋯⋯",
+      "note": "採用了 Google Lens 中較可靠的漢字「啲」「咁」；保留了兩邊一致的省略號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "通知其他人，幫主搵我哋呀",
+      "two": "通知其他人， 幫主–我呲呀"
+    },
+    "answer": {
+      "output": "通知其他人，幫主搵我哋呀",
+      "note": "採用 Google Lens 中較可靠的漢字「幫主搵我哋呀」與標點「，」，並省略了 PaddleOCR 中多出的空格與錯誤字形「–」「我呲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我哋不動聲色，睇佢哋想點",
+      "two": "我地不動聲色， 睇柜呲想點"
+    },
+    "answer": {
+      "output": "我哋不動聲色，睇佢哋想點",
+      "note": "採用 Google Lens 較可靠的漢字「哋」「佢哋」與標點逗號；省略了 PaddleOCR 中多餘的空格與誤識別字「地」「柜呲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "師姐，\n你都飲",
+      "two": "師姐， 你都飲"
+    },
+    "answer": {
+      "output": "師姐，你都飲",
+      "note": "包括了 Google Lens 中存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我有啲醉，瞓陣先",
+      "two": "我有喲醉， 陣先"
+    },
+    "answer": {
+      "output": "我有啲醉，瞓陣先",
+      "note": "採納了 Google Lens 中更可靠的「啲」與「瞓」；省略了 PaddleOCR 中多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔使驚，\n睇唔到㗎",
+      "two": "唔使驚， 睇唔到磔"
+    },
+    "answer": {
+      "output": "唔使驚，睇唔到㗎",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的字詞「㗎」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格，并将 PaddleOCR 誤識的「磔」更正為「㗎」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔飲得唔好學人飲啦，真失禮",
+      "two": "唔飲得唔好學人飲啦， 真失禮"
+    },
+    "answer": {
+      "output": "唔飲得唔好學人飲啦，真失禮",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "真係睇唔到喎",
+      "two": "真係睇唔到"
+    },
+    "answer": {
+      "output": "真係睇唔到喎",
+      "note": "採用 Google Lens 中存在但 PaddleOCR 中不存在的「喎」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你不〝嬲〞都睇唔到嘅啦",
+      "two": "你不 都睇唔到嘅啦"
+    },
+    "answer": {
+      "output": "你不〝嬲〞都睇唔到嘅啦",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的〝嬲〞；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主咁耐都未嚟嘅",
+      "two": "幫主咁耐都未慨"
+    },
+    "answer": {
+      "output": "幫主咁耐都未嚟嘅",
+      "note": "採用了 Google Lens 中更可靠的漢字「嚟嘅」，修正了 PaddleOCR 的錯字「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幫主！\n着火啦",
+      "two": "幫主！着火啦"
+    },
+    "answer": {
+      "output": "幫主！着火啦",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好還錢喎，靚仔！",
+      "two": "好還錢蝸， 靚仔！"
+    },
+    "answer": {
+      "output": "好還錢喎，靚仔！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喎」和逗号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "發你唔起呀，借錢唔使還呀？",
+      "two": "發你唔起呀， 借錢唔使還呀？"
+    },
+    "answer": {
+      "output": "發你唔起呀，借錢唔使還呀？",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "講呀，\n我幾時掙你錢呀？",
+      "two": "講呀， 我幾時掙你錢呀？"
+    },
+    "answer": {
+      "output": "講呀，我幾時掙你錢呀？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係呀⋯⋯",
+      "two": "係呀⋯"
+    },
+    "answer": {
+      "output": "係呀⋯⋯",
+      "note": "採用 Google Lens 中的省略號「⋯⋯」，因其對標點符號較可靠；省略了 PaddleOCR 中多出的截斷。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冇記性",
+      "two": "右記性"
+    },
+    "answer": {
+      "output": "冇記性",
+      "note": "採用 Google Lens 中更可靠的漢字識別結果「冇記性」，修正了 PaddleOCR 誤識為「右記性」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你真係犀利，對唔住呀",
+      "two": "你真係犀利， 對唔住呀"
+    },
+    "answer": {
+      "output": "你真係犀利，對唔住呀",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "靚仔，到你好還錢喎！",
+      "two": "靚仔，至 到你好還錢唱"
+    },
+    "answer": {
+      "output": "靚仔，到你好還錢喎！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号和感叹号；修正了 PaddleOCR 中的错字「至」為「靚仔」相关缺失造成的开头断裂，并省略了 PaddleOCR 中多余的空格与错字「唱」，采用 Google Lens 的完整句子「靚仔，到你好還錢喎！」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "還咗\n？啊係嶓，還咗嶓",
+      "two": "還？  啊係皤， 還咗嶓"
+    },
+    "answer": {
+      "output": "還咗？　　啊係皤，還咗嶓",
+      "note": "採用了 Google Lens 中存在的「還咗」與問號「？」；採用了 PaddleOCR 中與換行對應的空格位置，將其融合為兩個表意空格；並採用了 Google Lens 中的逗號，省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你老了，\n你冇記性呀",
+      "two": "你老了， 你右記性呀"
+    },
+    "answer": {
+      "output": "你老了，你冇記性呀",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「冇」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "算啦，頭先又係我唔啱先嘅",
+      "two": "算啦， 頭先又係我唔喏先嘅"
+    },
+    "answer": {
+      "output": "算啦，頭先又係我唔啱先嘅",
+      "note": "採用 Google Lens 的漢字「頭先又係我唔啱先嘅」與標點「，」；省略了 PaddleOCR 中多出的空格，並修正了其將「啱」誤識為「喏」的錯誤。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "切咗佢！\n都煨晒咯",
+      "two": "切柜！者 都煨晒咯"
+    },
+    "answer": {
+      "output": "切咗佢！　　都煨晒咯",
+      "note": "采用了 Google Lens 中的「切咗佢！」与「都煨晒咯」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；将 Google Lens 中的换行位置与 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "香口啲啫！\n總好過冇",
+      "two": "香口n啫！  總好過有"
+    },
+    "answer": {
+      "output": "香口啲啫！　　總好過冇",
+      "note": "採用 Google Lens 中的「香口啲啫！」與「總好過冇」；将 Google Lens 中显示为换行符、PaddleOCR 中显示为空格的间隙替换为两个表意空格；忽略 PaddleOCR 中多出的「n」以及「有」的誤識別。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "明刀明槍同佢鍊過！現身啦！兄弟",
+      "two": "明刀明槍同但錬過 i「現身啦！  兄弟"
+    },
+    "answer": {
+      "output": "明刀明槍同佢鍊過！現身啦！兄弟",
+      "note": "採用 Google Lens 較可靠的漢字與標點；修正了 PaddleOCR 中的「但」「錬」與多餘符號/空格，並省略了其間不準確的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "兩隻妖怪出嚟受死",
+      "two": "兩隻妖怪出㰀受死"
+    },
+    "answer": {
+      "output": "兩隻妖怪出嚟受死",
+      "note": "採用 Google Lens 中的「嚟」取代 PaddleOCR 中誤識別的「㰀」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "乾坤袋呢？\n喂！",
+      "two": "乾坤袋呢？ 喂！"
+    },
+    "answer": {
+      "output": "乾坤袋呢？　　喂！",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "乾坤袋喺度，主人，佢哋想陷害你",
+      "two": "乾坤袋度，主人， 佰呲想陷害你"
+    },
+    "answer": {
+      "output": "乾坤袋喺度，主人，佢哋想陷害你",
+      "note": "採用了 Google Lens 中較可靠的「喺度」與「佢哋」，並修正了 PaddleOCR 中的錯字「佰呲」；省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "反骨仔，你出賣我哋",
+      "two": "反骨仔， 你出賣我"
+    },
+    "answer": {
+      "output": "反骨仔，你出賣我哋",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的「哋」；省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "平時條友使吓佢做嘢，梗推三推四嘅",
+      "two": "平時條友使吓但做嘢， 梗推三推四嘅"
+    },
+    "answer": {
+      "output": "平時條友使吓佢做嘢，梗推三推四嘅",
+      "note": "採用 Google Lens 中更可靠的漢字「佢」取代 PaddleOCR 的「但」；採用 Google Lens 中的逗號，並省略 PaddleOCR 中多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "今次咁順攤，梗有〝景轟〞啦",
+      "two": "今次咁順攤， 梗有 景轟 啦"
+    },
+    "answer": {
+      "output": "今次咁順攤，梗有〝景轟〞啦",
+      "note": "採用了 Google Lens 中較可靠的標點與漢字「〝景轟〞」；省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "拖佢出嚟",
+      "two": "拖佰出㰀"
+    },
+    "answer": {
+      "output": "拖佢出嚟",
+      "note": "採用了 Google Lens 中較可靠的漢字識別結果，修正了 PaddleOCR 中的誤識字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "行，\n⋯⋯行呀",
+      "two": "行，⋯⋯行呀"
+    },
+    "answer": {
+      "output": "行，⋯⋯行呀",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "放咗我\n快啲",
+      "two": "放我 快喲"
+    },
+    "answer": {
+      "output": "放咗我　　快啲",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」；将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；採納 Google Lens 中的「啲」并更正 PaddleOCR 的「喲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你條〝沐契〞，今晚我就劏咗你當燒豬食",
+      "two": "你條＂沐契》今晚我就當你當燒豬食"
+    },
+    "answer": {
+      "output": "你條〝沐契〞，今晚我就劏咗你當燒豬食",
+      "note": "採用了 Google Lens 中較可靠的引號與逗號；修正了 PaddleOCR 中錯誤的引號符號與漏識的「劏咗」；保留了 Google Lens 的整體句子結構。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁又唔怪得佢嘅",
+      "two": "喵又唔怪得但嘅"
+    },
+    "answer": {
+      "output": "咁又唔怪得佢嘅",
+      "note": "採用 Google Lens 的識別結果「咁又唔怪得佢嘅」；修正了 PaddleOCR 中將「咁」誤識為「喵」、將「佢」誤識為「但」的錯誤。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "佢不過係受咗嗰兩個妖女嘅移魂大法啫",
+      "two": "但不過係受咗咽兩個妖女嘅移魂大法啫"
+    },
+    "answer": {
+      "output": "佢不過係受咗嗰兩個妖女嘅移魂大法啫",
+      "note": "採用 Google Lens 中較可靠的漢字「佢」與「嗰」，並修正 PaddleOCR 中誤識的「但」與「咽」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "放咗我！",
+      "two": "放我！"
+    },
+    "answer": {
+      "output": "放咗我！",
+      "note": "採用 Google Lens 中的「咗」；PaddleOCR 省略了該字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "如果唔係我叫我主人殺咗你哋",
+      "two": "如果唔係我叫我主人殺你"
+    },
+    "answer": {
+      "output": "如果唔係我叫我主人殺咗你哋",
+      "note": "採用 Google Lens 中更可靠的漢字識別，補回了 PaddleOCR 中缺失的「咗」與「哋」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "乜你咬住條繩好似咁面善咁嘅？",
+      "two": "乜你咬住條繩好似咁面善咁慨？"
+    },
+    "answer": {
+      "output": "乜你咬住條繩好似咁面善咁嘅？",
+      "note": "採用 Google Lens 中的「嘅」而非 PaddleOCR 的「慨」，因為 Lens 在漢字識別上更可靠；保留 Google Lens 中的問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咪係我綁乾坤袋條繩嚟囉",
+      "two": "咪係我綁乾坤袋條繩囉"
+    },
+    "answer": {
+      "output": "咪係我綁乾坤袋條繩嚟囉",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的「嚟」字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "天堂有路你唔走，地獄無門闖進來",
+      "two": "天堂有路你唔走， 地獄無門闖進來"
+    },
+    "answer": {
+      "output": "天堂有路你唔走，地獄無門闖進來",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嚟吖！",
+      "two": "吖！"
+    },
+    "answer": {
+      "output": "嚟吖！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」；保留了句尾的驚嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你就永遠都搵唔到唐三藏㗎嘞",
+      "two": "你就永遠都摺唔到唐三藏磔嘞"
+    },
+    "answer": {
+      "output": "你就永遠都搵唔到唐三藏㗎嘞",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，將 PaddleOCR 中的「摺唔到」「磔」更正為「搵唔到」「㗎」；保留 Google Lens 的整體標點與句式。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "佢係孫悟空？",
+      "two": "但係孫悟空？"
+    },
+    "answer": {
+      "output": "佢係孫悟空？",
+      "note": "採用 Google Lens 中較可靠的漢字識別「佢係」；保留兩者一致的問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "快啲認孫悟空吖",
+      "two": "快認孫悟空吖"
+    },
+    "answer": {
+      "output": "快啲認孫悟空吖",
+      "note": "採用了 Google Lens 中存在但 PaddleOCR 中不存在的「啲」；其餘文字一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔係就一鑊熟㗎嘞",
+      "two": "唔係就一鑊熟磔嘞"
+    },
+    "answer": {
+      "output": "唔係就一鑊熟㗎嘞",
+      "note": "採用 Google Lens 中較可靠的漢字「㗎」，修正了 PaddleOCR 中誤識別的「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "佢唔係孫悟空！",
+      "two": "但唔係孫悟空！"
+    },
+    "answer": {
+      "output": "佢唔係孫悟空！",
+      "note": "採用了 Google Lens 中識別較可靠的「佢唔係孫悟空！」，未採用 PaddleOCR 的「但唔係孫悟空！」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "佢連我三味白骨火都頂唔住",
+      "two": "但連我三味白骨火都頂唔住"
+    },
+    "answer": {
+      "output": "佢連我三味白骨火都頂唔住",
+      "note": "採用 Google Lens 的漢字識別結果「佢連我三味白骨火都頂唔住」，因其較 PaddleOCR 的「但連我三味白骨火都頂唔住」更合理；未涉及標點或換行差異。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "豈有此理！咁嘅天機你都洩露出嚟嘅",
+      "two": "豈有此理！  咁嘅天機你都洩露出㰀嘅"
+    },
+    "answer": {
+      "output": "豈有此理！咁嘅天機你都洩露出嚟嘅",
+      "note": "採用 Google Lens 中較可靠的漢字「嚟」，並省略了 PaddleOCR 中多出的空格；將 PaddleOCR 誤識的「㰀」更正為 Google Lens 的「嚟」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你仲算係神仙嚟嘅你",
+      "two": "你仲算係神仙慨你"
+    },
+    "answer": {
+      "output": "你仲算係神仙嚟嘅你",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟嘅」；修正了 PaddleOCR 中的「慨」為 Google Lens 中的「嚟嘅」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "攞隻手嚟吖",
+      "two": "羅隻手吖"
+    },
+    "answer": {
+      "output": "攞隻手嚟吖",
+      "note": "採用 Google Lens 較可靠的漢字識別結果，保留了「攞隻手嚟吖」；未採用 PaddleOCR 中的「羅隻手吖」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我唔怕嘞！係咪呀！？",
+      "two": "我唔怕嘞！ 係咪呀！"
+    },
+    "answer": {
+      "output": "我唔怕嘞！係咪呀！？",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格；包括了 Google Lens 中存在但 PaddleOCR 中不存在的问号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係曬！",
+      "two": "係皤！"
+    },
+    "answer": {
+      "output": "係曬！",
+      "note": "採用了 Google Lens 中較可靠的漢字「曬」，並保留了兩者一致的驚嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我孫悟空就一路擺隻手喺度俾你燒",
+      "two": "我孫悟空就一路擺隻手度俾你燒"
+    },
+    "answer": {
+      "output": "我孫悟空就一路擺隻手喺度俾你燒",
+      "note": "採用 Google Lens 中的「喺度」，補回了 PaddleOCR 中缺失的字詞；其餘內容一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "真係燒到爛晒都冇事喎",
+      "two": "真係燒到煨晒都有事蝸"
+    },
+    "answer": {
+      "output": "真係燒到爛晒都冇事喎",
+      "note": "採用 Google Lens 中較可靠的漢字「爛晒」「冇事喎」，修正了 PaddleOCR 中的誤識別「煨晒」「有事蝸」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "而家知我堅嚟㗎啦",
+      "two": "而家知我堅磔啦"
+    },
+    "answer": {
+      "output": "而家知我堅嚟㗎啦",
+      "note": "採用 Google Lens 中的「嚟㗎」以修正 PaddleOCR 誤識別為「磔」；其餘內容一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我仲有成班兄弟，再加個神仙",
+      "two": "我仲有成班兄弟， 再加個神仙"
+    },
+    "answer": {
+      "output": "我仲有成班兄弟，再加個神仙",
+      "note": "包括了 Google Lens 中存在的逗號；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喂，\n你去邊呀？",
+      "two": "喂， 你去邊呀？"
+    },
+    "answer": {
+      "output": "喂，你去邊呀？",
+      "note": "包括了 Google Lens 中存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，并省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "第日我會同你報仇㗎嘞",
+      "two": "第日我會同你報仇磔嘞"
+    },
+    "answer": {
+      "output": "第日我會同你報仇㗎嘞",
+      "note": "以 Google Lens 的「㗎」修正了 PaddleOCR 誤識別的「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嘩\n！連神仙都咁冇義氣",
+      "two": "嘩！ 連神仙都咁有義氣"
+    },
+    "answer": {
+      "output": "嘩！連神仙都咁冇義氣",
+      "note": "採用了 Google Lens 中的驚嘆號位置與「冇義氣」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，並修正了 PaddleOCR 中誤識為「有」的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我成班兄弟梗過晒嗰邊啦",
+      "two": "我成班兄弟梗過晒咽邊啦"
+    },
+    "answer": {
+      "output": "我成班兄弟梗過晒嗰邊啦",
+      "note": "採用了 Google Lens 中更可靠的漢字「嗰」，修正了 PaddleOCR 中的誤識別「咽」；其餘一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係呀！\n幫主！",
+      "two": "係呀！幫主！"
+    },
+    "answer": {
+      "output": "係呀！幫主！",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你就喺嗰個負心人？",
+      "two": "你就咽個負心人？"
+    },
+    "answer": {
+      "output": "你就喺嗰個負心人？",
+      "note": "採用 Google Lens 中較可靠的漢字「喺嗰個」，修正了 PaddleOCR 中的錯誤識別「咽個」；保留了問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咪就係嗰隻馬騮精囉",
+      "two": "咪就係咽隻馬騮精囉"
+    },
+    "answer": {
+      "output": "咪就係嗰隻馬騮精囉",
+      "note": "採用 Google Lens 中較可靠的漢字「嗰」取代 PaddleOCR 的誤識別「咽」；其餘文字一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咪嚟啦",
+      "two": "咪啦"
+    },
+    "answer": {
+      "output": "咪嚟啦",
+      "note": "採用 Google Lens 中較可靠的漢字識別「嚟」；補全了 PaddleOCR 中遺漏的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔好殺我啲兄弟啊！",
+      "two": "唔好殺我的兄弟啊！"
+    },
+    "answer": {
+      "output": "唔好殺我啲兄弟啊！",
+      "note": "採用了 Google Lens 中更可靠的漢字「啲」，修正了 PaddleOCR 中的「的」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "有我喺度唔使怕，盲炳",
+      "two": "有我度唔使怕，盲炳"
+    },
+    "answer": {
+      "output": "有我喺度唔使怕，盲炳",
+      "note": "採用了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」；其餘內容以兩者共同部分融合。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "對唔住，\n盲炳",
+      "two": "對唔住， 盲炳"
+    },
+    "answer": {
+      "output": "對唔住，　　盲炳",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "計錯數，\n行少咗一步",
+      "two": "計錯數， 行少咗一步"
+    },
+    "answer": {
+      "output": "計錯數，行少咗一步",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我呢一世人都盲累累做人\n我知",
+      "two": "我呢一世人都盲累累做人 我知"
+    },
+    "answer": {
+      "output": "我呢一世人都盲累累做人　　我知",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔捨得殺個負心人",
+      "two": "唔舍得殺個負心人"
+    },
+    "answer": {
+      "output": "唔捨得殺個負心人",
+      "note": "採用了 Google Lens 中較可靠的漢字「捨」，修正了 PaddleOCR 中的「舍」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你仲幫住佢",
+      "two": "你仲幫住但"
+    },
+    "answer": {
+      "output": "你仲幫住佢",
+      "note": "採用 Google Lens 中的漢字「佢」取代 PaddleOCR 中的「但」；其餘一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "仲要靠佢搵唐僧",
+      "two": "仲要靠但摳唐僧"
+    },
+    "answer": {
+      "output": "仲要靠佢搵唐僧",
+      "note": "採用 Google Lens 中較可靠的漢字識別，將 PaddleOCR 誤識的「但摳」更正為「佢搵」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一個和尚擔水食，兩個和尚冇水食",
+      "two": "－個和尚擔水食， 兩個和尚有水食"
+    },
+    "answer": {
+      "output": "一個和尚擔水食，兩個和尚冇水食",
+      "note": "採用了 Google Lens 中的「一個」與「冇水食」；省略了 PaddleOCR 中錯識的「－個」與「有水食」，並保留 Google Lens 的逗號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你打傷咗我，都唔見得一定有水食吖",
+      "two": "你打傷我， 都唔見得一定有水食吖"
+    },
+    "answer": {
+      "output": "你打傷咗我，都唔見得一定有水食吖",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」；包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗號；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "吓！\n黑寡婦",
+      "two": "吓！ 黑寡婦"
+    },
+    "answer": {
+      "output": "吓！　　黑寡婦",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你中咗我盤絲軟甲嘅毒",
+      "two": "你中我盤絲軟甲嘅毒"
+    },
+    "answer": {
+      "output": "你中咗我盤絲軟甲嘅毒",
+      "note": "採用了 Google Lens 中的「咗」，因為 Google Lens 在漢字識別上更可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "七日之內如果冇我嘅解藥",
+      "two": "七日之內如果有我慨解藥"
+    },
+    "answer": {
+      "output": "七日之內如果冇我嘅解藥",
+      "note": "採納了 Google Lens 中的「冇」「嘅」；修正了 PaddleOCR 中誤識別的「有」「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "師姐，\n我以後唔敢啦",
+      "two": "師姐， 我以後唔敢啦"
+    },
+    "answer": {
+      "output": "師姐，我以後唔敢啦",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔係呀！出面嚟咗隻猛嘢呀",
+      "two": "唔係呀！ ！出面隻猛嘢呀"
+    },
+    "answer": {
+      "output": "唔係呀！出面嚟咗隻猛嘢呀",
+      "note": "採用 Google Lens 中較可靠的漢字與標點；省略了 PaddleOCR 中多出的空格與重複驚嘆號，並補回 Google Lens 中的「嚟咗」與「隻」前的語句。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你哋去邊呀？",
+      "two": "你呲去邊呀？"
+    },
+    "answer": {
+      "output": "你哋去邊呀？",
+      "note": "採用了 Google Lens 中較可靠的「哋」，修正了 PaddleOCR 將其誤識別為「呲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔好呀！⋯",
+      "two": "唔好呀！"
+    },
+    "answer": {
+      "output": "唔好呀！⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "牛魔王都嚟咗？",
+      "two": "牛魔王都咗？"
+    },
+    "answer": {
+      "output": "牛魔王都嚟咗？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」；採用 Google Lens 中更可靠的漢字與標點。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嚟呢度詐死呀？",
+      "two": "呢度詐死呀？"
+    },
+    "answer": {
+      "output": "嚟呢度詐死呀？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」；保留了 Google Lens 中更可靠的標點「？」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我都話你嚟⋯⋯",
+      "two": "我都話你㰀⋯⋯"
+    },
+    "answer": {
+      "output": "我都話你嚟⋯⋯",
+      "note": "採用了 Google Lens 中較可靠的漢字「嚟」，修正了 PaddleOCR 中誤識別的「㰀」；保留了兩者一致的省略號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "快啲走吖，\n走吖",
+      "two": "快哟走吖， 走吖"
+    },
+    "answer": {
+      "output": "快啲走吖，　　走吖",
+      "note": "採用了 Google Lens 中更可靠的「啲」和逗號；将 Google Lens 中顯示為换行符而 PaddleOCR 中顯示為空格的間隙替換為两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "今日你唔將唐三藏交出嚟",
+      "two": "今日你唔將唐三藏交出"
+    },
+    "answer": {
+      "output": "今日你唔將唐三藏交出嚟",
+      "note": "採用 Google Lens 中較可靠的漢字識別，補回 PaddleOCR 漏識的「嚟」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喺邊到呀？",
+      "two": "邊到呀？"
+    },
+    "answer": {
+      "output": "喺邊到呀？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」；保留了 Google Lens 中的問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "呢件猛料原來就係孫悟空嘅結拜大佬",
+      "two": "呢件猛料原來就係孫悟空慨結拜大佬"
+    },
+    "answer": {
+      "output": "呢件猛料原來就係孫悟空嘅結拜大佬",
+      "note": "將 PaddleOCR 中的「慨」更正為 Google Lens 中較可靠的「嘅」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "細佬就係結拜大佬你嘅結拜細佬孫悟空托世嘞",
+      "two": "細佬就係結拜大佬你慨結拜細佬孫悟空托世嘞"
+    },
+    "answer": {
+      "output": "細佬就係結拜大佬你嘅結拜細佬孫悟空托世嘞",
+      "note": "採用 Google Lens 中的「嘅」，修正了 PaddleOCR 中的「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係嘞！\n就係細佬嘞",
+      "two": "係嘞！就係細佬嘞"
+    },
+    "answer": {
+      "output": "係嘞！就係細佬嘞",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我殺咗你呢個勾二嫂嘅反骨仔！",
+      "two": "我殺你呢個勾二嫂嘅反骨仔！"
+    },
+    "answer": {
+      "output": "我殺咗你呢個勾二嫂嘅反骨仔！",
+      "note": "採用了 Google Lens 中比 PaddleOCR 更完整的「咗」；其餘標點與文本一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "何方妖女！\n報上名來",
+      "two": "何方妖女！ 報上名來"
+    },
+    "answer": {
+      "output": "何方妖女！　　報上名來",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "盤絲大仙座下大弟子白骨精\n蜘蛛精",
+      "two": "盤絲大仙座下大弟子白骨精 蜘蛛精"
+    },
+    "answer": {
+      "output": "盤絲大仙座下大弟子白骨精　　蜘蛛精",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我識你哋祖師爺嗰陣",
+      "two": "我識你祖師爺咽陣"
+    },
+    "answer": {
+      "output": "我識你哋祖師爺嗰陣",
+      "note": "採用 Google Lens 中較可靠的漢字「哋」與「嗰」，並修正 PaddleOCR 中誤識的「咽」為「嗰」；保留原本未出現換行的格式。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你兩個都唔知喺邊度呀？",
+      "two": "你兩個都唔知邊度呀？"
+    },
+    "answer": {
+      "output": "你兩個都唔知喺邊度呀？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」；其餘標點與文字採用 Google Lens 的結果。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "變",
+      "two": "變⋯⋯"
+    },
+    "answer": {
+      "output": "變⋯⋯",
+      "note": "包括了 PaddleOCR 中存在但 Google Lens 中不存在的省略號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "領教我嘅白骨鞭啦！",
+      "two": "領教我慨白骨鞭啦！"
+    },
+    "answer": {
+      "output": "領教我嘅白骨鞭啦！",
+      "note": "採用了 Google Lens 中更可靠的字詞「嘅」，修正了 PaddleOCR 識別成「慨」的錯誤。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "絲",
+      "two": "變"
+    },
+    "answer": {
+      "output": "絲",
+      "note": "採用 Google Lens 中的漢字「絲」，因 Google Lens 在漢字識別方面更可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "盲炳乜你仲未死嘅咩？",
+      "two": "盲炳乜你仲未死慨咩？"
+    },
+    "answer": {
+      "output": "盲炳乜你仲未死嘅咩？",
+      "note": "採用 Google Lens 中較可靠的漢字「嘅」，修正了 PaddleOCR 的誤識別「慨」；保留了原有標點「？」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我哋正話揸流攤㗎咋",
+      "two": "我正話楂流攤架咋"
+    },
+    "answer": {
+      "output": "我哋正話揸流攤㗎咋",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，保留「我哋」「揸」「㗎」等字詞；省略了 PaddleOCR 中的錯誤識別「我」「楂」「架」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冇得頂呀你",
+      "two": "有得頂呀你"
+    },
+    "answer": {
+      "output": "冇得頂呀你",
+      "note": "採用 Google Lens 中的漢字「冇」以修正 PaddleOCR 誤識的「有」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喂，\n唔好走呀⋯⋯",
+      "two": "喂， 唔好走呀⋯"
+    },
+    "answer": {
+      "output": "喂，唔好走呀⋯⋯",
+      "note": "包括了 Google Lens 中存在的逗号；省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符；補全了 Google Lens 中的省略号為完整的「⋯⋯」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "睇你哋仲有咩嘢法寶？",
+      "two": "睇你呲仲有咩嘢法寶？"
+    },
+    "answer": {
+      "output": "睇你哋仲有咩嘢法寶？",
+      "note": "採用 Google Lens 中較可靠的「哋」來更正 PaddleOCR 的「呲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "死牛精\n走",
+      "two": "死牛精 走"
+    },
+    "answer": {
+      "output": "死牛精　　走",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "俾佢整傷條菩提根",
+      "two": "俾但整傷條菩提根"
+    },
+    "answer": {
+      "output": "俾佢整傷條菩提根",
+      "note": "採用 Google Lens 中更可靠的漢字「佢」，修正 PaddleOCR 的「但」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "起碼練番一百幾廿年先至可以再同佢鍊過",
+      "two": "起碼練番一百幾廿年先至可以再同但鍊過"
+    },
+    "answer": {
+      "output": "起碼練番一百幾廿年先至可以再同佢鍊過",
+      "note": "採用 Google Lens 中的「佢」取代 PaddleOCR 中誤識別的「但」；其餘文字一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咩嘢地方嚟㗎？",
+      "two": "咩嘢地方㰀磔？"
+    },
+    "answer": {
+      "output": "咩嘢地方嚟㗎？",
+      "note": "採用 Google Lens 中較可靠的字詞「嚟㗎」與標點「？」；修正了 PaddleOCR 中對應位置的錯字「㰀磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "行啦！\n死馬騮",
+      "two": "行啦！ 死馬騮"
+    },
+    "answer": {
+      "output": "行啦！　　死馬騮",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喂，\n你傻咗",
+      "two": "喂， 你傻"
+    },
+    "answer": {
+      "output": "喂，你傻咗",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的字「咗」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我就係傻咗，你仲詐諦",
+      "two": "我就係傻， 你仲詐諦"
+    },
+    "answer": {
+      "output": "我就係傻咗，你仲詐諦",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」；包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗號；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你喺山寨已經承認\n咗自己係齊天大聖",
+      "two": "你山寨已經承認咗自己係齊天大聖"
+    },
+    "answer": {
+      "output": "你喺山寨已經承認咗自己係齊天大聖",
+      "note": "採用了 Google Lens 中的「喺」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你搵次醒啲吖",
+      "two": "你–次醒喲吖"
+    },
+    "answer": {
+      "output": "你搵次醒啲吖",
+      "note": "採用 Google Lens 中的「搵」與「啲」，修正 PaddleOCR 中誤識別的「–」與「喲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我局住認㗎咋嘛",
+      "two": "我局住認磔咋嘛"
+    },
+    "answer": {
+      "output": "我局住認㗎咋嘛",
+      "note": "採用 Google Lens 中較可靠的漢字「㗎」，修正 PaddleOCR 的「磔」為「㗎」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嚀，\n睇到啦嘛",
+      "two": "啍， 睇到啦嘛"
+    },
+    "answer": {
+      "output": "嚀，睇到啦嘛",
+      "note": "採用了 Google Lens 中的漢字「嚀」與逗號「，」，並省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符；未保留 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "清楚冇？",
+      "two": "清楚有？"
+    },
+    "answer": {
+      "output": "清楚冇？",
+      "note": "採用 Google Lens 中的「冇」作為較可靠的漢字識別結果；保留 Google Lens 中的問號標點。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "師姐，\n當可憐吓我啦",
+      "two": "師姐， 當可憐吓我啦"
+    },
+    "answer": {
+      "output": "師姐，當可憐吓我啦",
+      "note": "包括了 Google Lens 中存在的逗號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的換行符，並省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喺呢段時間你聽聽話話，我擔保你冇事",
+      "two": "呢段時間你聽聽話話， ， 我擔保你有事"
+    },
+    "answer": {
+      "output": "喺呢段時間你聽聽話話，我擔保你冇事",
+      "note": "採用了 Google Lens 中的「喺」以及「冇事」；省略了 PaddleOCR 中多餘的空格與標點，並忽略了 PaddleOCR 將「冇事」誤識為「有事」的錯誤。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "主人呀！\n死馬騮嚟咗啦",
+      "two": "主人呀！死馬騮㰀咗啦"
+    },
+    "answer": {
+      "output": "主人呀！死馬騮嚟咗啦",
+      "note": "採用了 Google Lens 中的「嚟」而非 PaddleOCR 的「㰀」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的換行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唐三藏究竟喺邊？\n馬騮精",
+      "two": "唐三藏究竟邊？ ？馬騮精"
+    },
+    "answer": {
+      "output": "唐三藏究竟喺邊？　　馬騮精",
+      "note": "採用 Google Lens 中較可靠的字詞「喺邊」與問號；將 Google Lens 中存在但 PaddleOCR 中不存在的換行符，按 PaddleOCR 的空格間隔方式融合為兩個表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "呢個誤會大到點吖嚀？",
+      "two": "呢個誤會大到點吖？"
+    },
+    "answer": {
+      "output": "呢個誤會大到點吖？",
+      "note": "採用了 Google Lens 中較可靠的標點符號「？」；省略了 Google Lens OCR 中多出的「嚀」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我確係屬猴，不過查實就唔係馬騮精嚟嘅",
+      "two": "我確係屬猴， 不過查實就唔係馬騮精慨"
+    },
+    "answer": {
+      "output": "我確係屬猴，不過查實就唔係馬騮精嚟嘅",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格；修正了 PaddleOCR 将「嚟嘅」误识为「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我照妖鏡又有，咩嘢都有",
+      "two": "我照妖鏡又有， 咩嘢都有"
+    },
+    "answer": {
+      "output": "我照妖鏡又有，咩嘢都有",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你攞嚟照吓吖",
+      "two": "你擺照吓吖"
+    },
+    "answer": {
+      "output": "你攞嚟照吓吖",
+      "note": "採用 Google Lens 的漢字識別結果「攞嚟」；PaddleOCR 中的「擺」應為誤識。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "假嘅，\n假嘅",
+      "two": "假嘅， 假嘅"
+    },
+    "answer": {
+      "output": "假嘅，　　假嘅",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哼！\n你唔好再扮嘢呀",
+      "two": "噙！ 你唔好再扮嘢呀"
+    },
+    "answer": {
+      "output": "哼！　　你唔好再扮嘢呀",
+      "note": "採用 Google Lens 的「哼！」；将 Google Lens 中的换行符与 PaddleOCR 中对应的空格間隙替換為两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我使企喺度俾你咬住隻手咩",
+      "two": "我使企度俾你咬住隻手咩"
+    },
+    "answer": {
+      "output": "我使企喺度俾你咬住隻手咩",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的“喺”字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一個跟斗打上天",
+      "two": "個跟斗打上天"
+    },
+    "answer": {
+      "output": "一個跟斗打上天",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「一」；省略了 PaddleOCR 中缺失的字詞。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一人痾篤屎喺你哋天靈蓋啦",
+      "two": "一人病篤屎你呲天靈蓋啦"
+    },
+    "answer": {
+      "output": "一人痾篤屎喺你哋天靈蓋啦",
+      "note": "採用 Google Lens 較可靠的漢字識別結果，保留了「痾篤」、「喺你哋」；修正了 PaddleOCR 中誤識別的「病」、「你呲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "到時你慌你唔痾呀",
+      "two": "到時你慌你唔病呀"
+    },
+    "answer": {
+      "output": "到時你慌你唔痾呀",
+      "note": "採用了 Google Lens 中更可靠的漢字「痾」，修正了 PaddleOCR 中的「病」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "點呀？師妹",
+      "two": "點呀？ ？師妹"
+    },
+    "answer": {
+      "output": "點呀？師妹",
+      "note": "省略了 PaddleOCR 中多出的空格與重複的問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "師姐，\n我冇呃你",
+      "two": "師姐， 我有呃你"
+    },
+    "answer": {
+      "output": "師姐，我冇呃你",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「冇」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，並省略了 PaddleOCR 中多餘的空格與誤識別的「有」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "殺咗佢",
+      "two": "殺佰"
+    },
+    "answer": {
+      "output": "殺咗佢",
+      "note": "採用了 Google Lens 中較可靠的漢字識別結果，將 PaddleOCR 的「殺佰」修正為「殺咗佢」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁你唔想搵唐三藏？",
+      "two": "咁你唔想摺唐三藏？"
+    },
+    "answer": {
+      "output": "咁你唔想搵唐三藏？",
+      "note": "採用了 Google Lens 中的「搵」而非 PaddleOCR 中的「摺」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "想呀！不過我唔信你會一劍殺咗佢",
+      "two": "想呀！  不過我唔信你會一劍殺但"
+    },
+    "answer": {
+      "output": "想呀！不過我唔信你會一劍殺咗佢",
+      "note": "採用 Google Lens 中更可靠的漢字「咗佢」以修正 PaddleOCR 的「但」；省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "俾把劍佢！",
+      "two": "俾把劍但！"
+    },
+    "answer": {
+      "output": "俾把劍佢！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的漢字「佢」；保留了 Google Lens 中的驚嘆號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "佢呀！\n知道",
+      "two": "佰呀！ 知道"
+    },
+    "answer": {
+      "output": "佢呀！　　知道",
+      "note": "將了 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格；採用 Google Lens 的「佢呀！」修正 PaddleOCR 的「佰呀！」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "殺佢",
+      "two": "殺佰"
+    },
+    "answer": {
+      "output": "殺佢",
+      "note": "採用 Google Lens 中較可靠的漢字識別，將 PaddleOCR 的「佰」更正為「佢」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你片咗我大脾一嘢呀",
+      "two": "你片我大脾一嘢呀"
+    },
+    "answer": {
+      "output": "你片咗我大脾一嘢呀",
+      "note": "採用 Google Lens 中較可靠的漢字「咗」，補回了 PaddleOCR 中遺漏的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我有心嘅",
+      "two": "我有心慨"
+    },
+    "answer": {
+      "output": "我有心嘅",
+      "note": "採用 Google Lens 中的「嘅」，因其對漢字識別較可靠；PaddleOCR 的「慨」視為誤識。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "賤人，早知你對隻死馬騮精餘情未了",
+      "two": "賤人， 早知你對隻死馬騮精餘情未了"
+    },
+    "answer": {
+      "output": "賤人，早知你對隻死馬騮精餘情未了",
+      "note": "包括了 Google Lens 中存在的逗号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "廢話少講，攞你命",
+      "two": "廢話少講，擺你命"
+    },
+    "answer": {
+      "output": "廢話少講，攞你命",
+      "note": "採用了 Google Lens 中較可靠的漢字「攞」，修正了 PaddleOCR 中的「擺」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冇嘢吖嘛？",
+      "two": "有嘢吖嘛？"
+    },
+    "answer": {
+      "output": "冇嘢吖嘛？",
+      "note": "採用 Google Lens 中較可靠的漢字「冇」，保留雙方一致的標點「？」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁緊張嘅時刻都仲咁關心我",
+      "two": "咁緊張嘅時刻都仲喵關心我"
+    },
+    "answer": {
+      "output": "咁緊張嘅時刻都仲咁關心我",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咁」；省略了 PaddleOCR 中誤識別的「喵」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "度門頂唔頂得住㗎？",
+      "two": "度門頂唔頂得住磔？"
+    },
+    "answer": {
+      "output": "度門頂唔頂得住㗎？",
+      "note": "採用 Google Lens 中的「㗎」與問號，修正 PaddleOCR 誤識別為「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "師妹，你唔記得佢以前點樣對你呀？",
+      "two": "師妹， 你唔記得但以前點樣對你呀？"
+    },
+    "answer": {
+      "output": "師妹，你唔記得佢以前點樣對你呀？",
+      "note": "採用 Google Lens 中較可靠的「佢」取代 PaddleOCR 的「但」；包括了 Google Lens 中存在的逗號，並省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "佢欺騙感情，背棄婚約",
+      "two": "但欺騙感情，青 背棄婚約"
+    },
+    "answer": {
+      "output": "佢欺騙感情，背棄婚約",
+      "note": "採用 Google Lens 較可靠的漢字「佢」以取代 PaddleOCR 的「但」；省略了 PaddleOCR 中多出的空格與誤識字「青」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "都係俾佢又喎㗎咋",
+      "two": "都係俾但叉唱磔咋"
+    },
+    "answer": {
+      "output": "都係俾佢又喎㗎咋",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，修正了 PaddleOCR 中錯誤的「但叉唱磔」為「佢又喎」；其餘部分一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "佢而家未有本事",
+      "two": "佰而家未有本事"
+    },
+    "answer": {
+      "output": "佢而家未有本事",
+      "note": "採用了 Google Lens 中更可靠的漢字「佢」，修正了 PaddleOCR 的誤識別「佰」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "到佢回復真身之後",
+      "two": "到但回復真身之後"
+    },
+    "answer": {
+      "output": "到佢回復真身之後",
+      "note": "採用 Google Lens 中較可靠的漢字「佢」，修正 PaddleOCR 的「但」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "講完未？\n八婆",
+      "two": "講完未？ 八婆"
+    },
+    "answer": {
+      "output": "講完未？　　八婆",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "死馬騮，\n你叫我八婆！",
+      "two": "死馬騮， 你叫我八婆！"
+    },
+    "answer": {
+      "output": "死馬騮，你叫我八婆！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "吹呀，八婆",
+      "two": "吹呀， 八婆"
+    },
+    "answer": {
+      "output": "吹呀，八婆",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你咪懶得戚，以為匿埋喺裡面好安全",
+      "two": "你咪懶得戚， 以為匿埋裡面好安全"
+    },
+    "answer": {
+      "output": "你咪懶得戚，以為匿埋喺裡面好安全",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」；省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "今晚喺十五月圓之夜",
+      "two": "今晚十五月圓之夜"
+    },
+    "answer": {
+      "output": "今晚喺十五月圓之夜",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」；省略了 PaddleOCR 中不存在的字詞。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "到時佢會屍變你就知死！",
+      "two": "到時但會屍變你就知死！"
+    },
+    "answer": {
+      "output": "到時佢會屍變你就知死！",
+      "note": "採用 Google Lens 中較可靠的漢字「佢」取代 PaddleOCR 的「但」；其餘內容一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我嚇大㗎！\n八婆",
+      "two": "我嚇大磔！ 八婆"
+    },
+    "answer": {
+      "output": "我嚇大㗎！　　八婆",
+      "note": "將了 Google Lens 中存在的「㗎」；將 Google Lens OCR 中顯示為换行符和 PaddleOCR 中顯示为空格的間隙替換為两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大王，呢度有幾千個山頭，山洞又多",
+      "two": "大王， 呢度有幾千個山頭， | 山洞又多"
+    },
+    "answer": {
+      "output": "大王，呢度有幾千個山頭，山洞又多",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格與分隔符號「|」；採用 Google Lens 的單行標點與文字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "多！多得我身上嘅牛虱，同我搵！",
+      "two": "多！ 多得我身上慨牛虱， 同我–"
+    },
+    "answer": {
+      "output": "多！多得我身上嘅牛虱，同我搵！",
+      "note": "採用 Google Lens 中較可靠的漢字「嘅」與句末「搵！」；省略了 PaddleOCR 中多餘的空格、誤識的「慨」以及不完整的破折號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你冇事吖嗎？",
+      "two": "你有事吖嗎？"
+    },
+    "answer": {
+      "output": "你冇事吖嗎？",
+      "note": "採用 Google Lens 中的「冇」替換了 PaddleOCR 中誤識別的「有」；保留了 Google Lens 中的標點符號「？」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "裡面點呀？死得未呀？",
+      "two": "裡面點呀？ 死得未呀？"
+    },
+    "answer": {
+      "output": "裡面點呀？　　死得未呀？",
+      "note": "将了 Google Lens 中显示为无间隔和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你死我哋未死呀",
+      "two": "你死我呲未死呀"
+    },
+    "answer": {
+      "output": "你死我哋未死呀",
+      "note": "採用了 Google Lens 中的「哋」，修正了 PaddleOCR 中錯識的「呲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我哋乜事都冇呀",
+      "two": "我呲乜事都有呀"
+    },
+    "answer": {
+      "output": "我哋乜事都冇呀",
+      "note": "採用 Google Lens 中的「哋」「冇」等較可靠漢字，修正了 PaddleOCR 中的誤識「呲」「有」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我哋大家不知幾靚仔靚女",
+      "two": "我大家不知幾靚仔靚女"
+    },
+    "answer": {
+      "output": "我哋大家不知幾靚仔靚女",
+      "note": "採用 Google Lens 中的「哋」以補正 PaddleOCR 遺漏的字；其餘內容一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "呀⋯⋯\n救命呀",
+      "two": "呀⋯⋯救命呀"
+    },
+    "answer": {
+      "output": "呀⋯⋯救命呀",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "試吓嘴對嘴過啲陽氣俾佢",
+      "two": "試吓嘴對嘴過喲陽氣俾但"
+    },
+    "answer": {
+      "output": "試吓嘴對嘴過啲陽氣俾佢",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，修正了 PaddleOCR 中的「喲」為「啲」、以及「但」為「佢」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁可以阻止到佢一陣嘅",
+      "two": "咁可以阻止到但一陣慨"
+    },
+    "answer": {
+      "output": "咁可以阻止到佢一陣嘅",
+      "note": "採用 Google Lens 中較可靠的漢字「佢」與「嘅」，並修正 PaddleOCR 中的誤識別「但」與「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "吓，\n嚇死我！",
+      "two": "吓， 嚇死我！"
+    },
+    "answer": {
+      "output": "吓，嚇死我！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的換行符；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "師妹，你鬥我唔過嘅",
+      "two": "師妹， 你鬥我唔過嘅"
+    },
+    "answer": {
+      "output": "師妹，你鬥我唔過嘅",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一日到黑咁恨入去呀啦",
+      "two": "一日到黑喵恨入去呀啦"
+    },
+    "answer": {
+      "output": "一日到黑咁恨入去呀啦",
+      "note": "採用 Google Lens 中較可靠的「咁」，修正了 PaddleOCR 中誤識別的「喵」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "打時打，\n唔好打面⋯⋯",
+      "two": "打時打， 唔好打面⋯⋯"
+    },
+    "answer": {
+      "output": "打時打，唔好打面⋯⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "邊度都唔好打，唔該",
+      "two": "邊度都唔好打， 唔該"
+    },
+    "answer": {
+      "output": "邊度都唔好打，唔該",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊，\n唔好呀",
+      "two": "啊， 唔好呀"
+    },
+    "answer": {
+      "output": "啊，唔好呀",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一錫佢就唔郁嘅",
+      "two": "一錫佰就唔郁嘅"
+    },
+    "answer": {
+      "output": "一錫佢就唔郁嘅",
+      "note": "採用 Google Lens 中的「佢」取代 PaddleOCR 中誤識別的「佰」；其餘部分一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好！\n你仲唔開門呀嘛",
+      "two": "好！ 你仲唔開門呀嘛"
+    },
+    "answer": {
+      "output": "好！　　你仲唔開門呀嘛",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我打咗個冷震",
+      "two": "我打個冷震"
+    },
+    "answer": {
+      "output": "我打咗個冷震",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的字「咗」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "如果佢唔係妖怪你話幾好呢！",
+      "two": "如果但唔係妖怪你話幾好呢！"
+    },
+    "answer": {
+      "output": "如果佢唔係妖怪你話幾好呢！",
+      "note": "採用了 Google Lens 中更可靠的漢字「佢」；其餘內容與 PaddleOCR 相同。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你中嘅毒越嚟越深",
+      "two": "你中嘅毒越越深"
+    },
+    "answer": {
+      "output": "你中嘅毒越嚟越深",
+      "note": "採用了 Google Lens 中的「嚟」以修正 PaddleOCR 的漏識；其餘文字一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "再唔解，死囉喎",
+      "two": "再唔解， 死囉唱"
+    },
+    "answer": {
+      "output": "再唔解，死囉喎",
+      "note": "採用了 Google Lens 中的「死囉喎」與標點「，」；省略了 PaddleOCR 中多出的空格及錯誤識別的「唱」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "解咗又點吖？",
+      "two": "解又點吖？"
+    },
+    "answer": {
+      "output": "解咗又點吖？",
+      "note": "採用了 Google Lens 中的「咗」字；其餘標點一致，未做其他更正。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔開心，\n長生不死都冇用",
+      "two": "唔開心， 長生不死都有用"
+    },
+    "answer": {
+      "output": "唔開心，長生不死都冇用",
+      "note": "採用 Google Lens 中的「冇用」以修正 PaddleOCR 的「有用」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的換行符，並省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "如果開心，就算剩番幾日命都已經足夠",
+      "two": "如果開心， 就算剩番幾日命都已經足夠"
+    },
+    "answer": {
+      "output": "如果開心，就算剩番幾日命都已經足夠",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗號；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "如果我話你聽我唔係孫悟空，你會點呀？",
+      "two": "如果我話你聽我唔係孫悟空，1 你會點呀？"
+    },
+    "answer": {
+      "output": "如果我話你聽我唔係孫悟空，你會點呀？",
+      "note": "省略了 PaddleOCR 中誤識別的「1」及其前後多餘空格，保留了 Google Lens 中更可靠的標點與漢字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我會殺咗你",
+      "two": "我會殺你"
+    },
+    "answer": {
+      "output": "我會殺咗你",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我的而且確唔係佢",
+      "two": "我的而且確唔係但"
+    },
+    "answer": {
+      "output": "我的而且確唔係佢",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，將 PaddleOCR 的「但」更正為「佢」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "呢塊真係照妖鏡嚟㗎，你照吓就知㗎喇",
+      "two": "呢塊真係照妖鏡㰀磔， 你照吓就知磔喇"
+    },
+    "answer": {
+      "output": "呢塊真係照妖鏡嚟㗎，你照吓就知㗎喇",
+      "note": "採用 Google Lens 中較可靠的漢字「嚟㗎」「知㗎喇」及標點逗號；省略了 PaddleOCR 中多出的空格與誤識字「㰀磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咩話，\n你唔係佢？",
+      "two": "咩話， 你唔係但？"
+    },
+    "answer": {
+      "output": "咩話，你唔係佢？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「你唔係佢？」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你唔怕我殺咗你？",
+      "two": "你唔怕我殺你？"
+    },
+    "answer": {
+      "output": "你唔怕我殺咗你？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」；其餘標點採用 Google Lens 的結果。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "怕！\n但係冇辦法",
+      "two": "怕！1 但係有辦法"
+    },
+    "answer": {
+      "output": "怕！但係冇辦法",
+      "note": "省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符；採用 Google Lens 的「冇辦法」以修正 PaddleOCR 誤識的「有辦法」；省略了 PaddleOCR 中多餘的「1」與空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我就殺咗你",
+      "two": "我就殺你"
+    },
+    "answer": {
+      "output": "我就殺咗你",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的字「咗」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "就算要咁長命都冇用㗎",
+      "two": "就算要咁長命都有用磔"
+    },
+    "answer": {
+      "output": "就算要咁長命都冇用㗎",
+      "note": "採用 Google Lens 識別的「冇用㗎」；修正了 PaddleOCR 中誤識別的「都有用磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嚟啦",
+      "two": "啦"
+    },
+    "answer": {
+      "output": "嚟啦",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的字“嚟”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嚟咪嚟！",
+      "two": "咪！"
+    },
+    "answer": {
+      "output": "嚟咪嚟！",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的「嚟」；採用 Google Lens 的標點符號「！」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "小喇叭！\n邊個綁到個結咁又實？",
+      "two": "小喇叭！邊個綁到個結咁叉實？"
+    },
+    "answer": {
+      "output": "小喇叭！邊個綁到個結咁又實？",
+      "note": "採用了 Google Lens 中的「又」而非 PaddleOCR 的「叉」；省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "等我嚟！",
+      "two": "等我！"
+    },
+    "answer": {
+      "output": "等我嚟！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "對唔住，\n我唔係有心㗎",
+      "two": "對唔住，  我唔係有心磔"
+    },
+    "answer": {
+      "output": "對唔住，我唔係有心㗎",
+      "note": "採用 Google Lens 中較可靠的漢字「㗎」，並省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符；同時省略了 PaddleOCR 中多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我諗住配合吓㗎咋",
+      "two": "我諗住配合吓磔咋"
+    },
+    "answer": {
+      "output": "我諗住配合吓㗎咋",
+      "note": "採用了 Google Lens 中的「㗎」而非 PaddleOCR 的「磔」，因漢字識別以 Google Lens 較可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "天黑好，\n天光好",
+      "two": "天黑好， 天光好"
+    },
+    "answer": {
+      "output": "天黑好，　　天光好",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗號；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你隨時需要，隨時吩咐啦",
+      "two": "你隨時需要， 隨時吩咐啦"
+    },
+    "answer": {
+      "output": "你隨時需要，隨時吩咐啦",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "搵唔搵到呀？",
+      "two": "摺唔–到呀？"
+    },
+    "answer": {
+      "output": "搵唔搵到呀？",
+      "note": "採用了 Google Lens 中的漢字「搵唔搵到呀？」；修正了 PaddleOCR 中誤識別的字元與破折號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "繼續搵啦",
+      "two": "繼續溫啦"
+    },
+    "answer": {
+      "output": "繼續搵啦",
+      "note": "採用了 Google Lens 中的「搵」；修正了 PaddleOCR 中將「搵」誤識為「溫」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "天冇眼囉",
+      "two": "天有眼囉"
+    },
+    "answer": {
+      "output": "天冇眼囉",
+      "note": "採用 Google Lens 中的「冇」而非 PaddleOCR 中的「有」，因漢字識別以 Google Lens 較可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "竟然同個咁肉酸嘅男人有咗",
+      "two": "竟然同個咁肉酸慨男人有"
+    },
+    "answer": {
+      "output": "竟然同個咁肉酸嘅男人有咗",
+      "note": "採用 Google Lens 中較可靠的「嘅」及句末「咗」，修正了 PaddleOCR 中對應的誤識別「慨」和漏字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我唔係為咗個肚，我一掌打死你添",
+      "two": "我唔係為個肚，手 我一掌打死你添"
+    },
+    "answer": {
+      "output": "我唔係為咗個肚，我一掌打死你添",
+      "note": "採用 Google Lens 識別到的「咗」與逗號，並省略了 PaddleOCR 中多出的「手」與空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "第日佢大咗你唔好認佢嘅⋯⋯咩添喎",
+      "two": "第日但大你唔好認但嘅⋯⋯咩添嗝"
+    },
+    "answer": {
+      "output": "第日佢大咗你唔好認佢嘅⋯⋯咩添喎",
+      "note": "採用 Google Lens 較可靠的漢字「佢」「咗」「認佢嘅」及標點「⋯⋯」「喎」，並修正 PaddleOCR 中的誤識字「但」為「佢」與「咗」相關內容。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁？\n咁我認佢嘅咩呀？",
+      "two": "喵？ 咁我認但嘅咩呀？"
+    },
+    "answer": {
+      "output": "咁？　　咁我認佢嘅咩呀？",
+      "note": "採用了 Google Lens 中的「咁」以及「佢嘅咩呀？」等較可靠的漢字與標點；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，並將 Google Lens 的换行與 PaddleOCR 的空格間隙合併為兩個表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "吓？男人老狗點做奶媽喎？",
+      "two": "吓？ 男人老狗點做奶媽蝸？"
+    },
+    "answer": {
+      "output": "吓？男人老狗點做奶媽喎？",
+      "note": "采用了 Google Lens 中的「喎？」而非 PaddleOCR 中的「蝸？」；省略了 PaddleOCR 中多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我哋帶大佢㗎嘛",
+      "two": "我呲帶大但磔嘛"
+    },
+    "answer": {
+      "output": "我哋帶大佢㗎嘛",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，修正了 PaddleOCR 中的「呲」「但」「磔」等錯誤識別。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你唔講，佢點知奶媽男人唔做得啫？",
+      "two": "你唔講， 但點知奶媽男人唔做得啫？"
+    },
+    "answer": {
+      "output": "你唔講，佢點知奶媽男人唔做得啫？",
+      "note": "採用了 Google Lens 中識別較可靠的「佢點知」取代 PaddleOCR 的「但點知」；保留了 Google Lens 中的標點。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁又係",
+      "two": "喵又係"
+    },
+    "answer": {
+      "output": "咁又係",
+      "note": "採用 Google Lens 中的漢字「咁」，因 Google Lens 在漢字識別方面更可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我搵到個好似你嘅人嘞",
+      "two": "我–到個好似你嘅人嘞"
+    },
+    "answer": {
+      "output": "我搵到個好似你嘅人嘞",
+      "note": "採用 Google Lens 中的「搵」替換了 PaddleOCR 誤識別的「–」；其餘文字一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我就話你知唐僧喺邊",
+      "two": "我就話你知唐僧邊"
+    },
+    "answer": {
+      "output": "我就話你知唐僧喺邊",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的字「喺」；省略了 PaddleOCR 中缺失的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我順啦，\n聽日出發啦",
+      "two": "我順啦， 聽日出發啦"
+    },
+    "answer": {
+      "output": "我順啦，聽日出發啦",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "快啲啦，\n係咪想救人㗎",
+      "two": "快喲啦，1 係咪想救人磔"
+    },
+    "answer": {
+      "output": "快啲啦，　　係咪想救人㗎",
+      "note": "採用了 Google Lens 中較可靠的「啲」與「㗎」，並保留了 Google Lens 中的逗號；将 Google Lens 中的换行与 PaddleOCR 中对应的空格间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你俾我上馬得㗎",
+      "two": "你俾我上馬得傑"
+    },
+    "answer": {
+      "output": "你俾我上馬得㗎",
+      "note": "採用 Google Lens 中較可靠的漢字「㗎」，修正 PaddleOCR 誤識為「傑」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你再唔快啲，師妹唔掂嘞",
+      "two": "你再唔快哟， 師妹唔掂嘞"
+    },
+    "answer": {
+      "output": "你再唔快啲，師妹唔掂嘞",
+      "note": "包括了 Google Lens 中更可靠的漢字「啲」與逗号；省略了 PaddleOCR 中多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你俾我⋯⋯上馬得㗎",
+      "two": "你俾我⋯⋯上馬得磔"
+    },
+    "answer": {
+      "output": "你俾我⋯⋯上馬得㗎",
+      "note": "採用了 Google Lens 中的「㗎」以修正 PaddleOCR 的誤識別「磔」；其餘標點與文字保持不變。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔見咗喎",
+      "two": "唔見咗嗝"
+    },
+    "answer": {
+      "output": "唔見咗喎",
+      "note": "採用了 Google Lens 中的「喎」；修正了 PaddleOCR 中誤識別的「嗝」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "¡뱀뱀",
+      "two": "晶 晶"
+    },
+    "answer": {
+      "output": "晶晶",
+      "note": "採用 PaddleOCR 的漢字識別結果，去除了中間空格；Google Lens 的結果為非漢字誤識，未採用。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "梗係以為我走咗唔理佢",
+      "two": "梗係以為我走咗唔理但"
+    },
+    "answer": {
+      "output": "梗係以為我走咗唔理佢",
+      "note": "採用了 Google Lens 中的「佢」，修正了 PaddleOCR 誤識為「但」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "仲要搵幾耐呀？",
+      "two": "仲要–幾耐呀？"
+    },
+    "answer": {
+      "output": "仲要搵幾耐呀？",
+      "note": "採用 Google Lens 中識別較可靠的漢字「搵」，並保留兩者一致的問號。PaddleOCR 中的「–」視為誤識別，予以省略。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "뱀뱀",
+      "two": "首音\n晶晶"
+    },
+    "answer": {
+      "output": "首音\n晶晶",
+      "note": "採用了 PaddleOCR 的換行格式；同時以 Google Lens 結果未能對應為準，未合併 Lens 中的「뱀뱀」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一定係毒發轆咗落崖囉",
+      "two": "一定係毒髮轆咗落崖囉"
+    },
+    "answer": {
+      "output": "一定係毒發轆咗落崖囉",
+      "note": "採用了 Google Lens 中的「發」，修正了 PaddleOCR 中的「髮」；其餘部分一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "點解俾我瞓一晚啫？",
+      "two": "點解俾我一晚啫？"
+    },
+    "answer": {
+      "output": "點解俾我瞓一晚啫？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「瞓」字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "應該漏夜趕嚟㗎嘛",
+      "two": "應該漏夜趕磔嘛"
+    },
+    "answer": {
+      "output": "應該漏夜趕嚟㗎嘛",
+      "note": "採用了 Google Lens 中更可靠的漢字「嚟」，修正了 PaddleOCR 的誤識別「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我跟到嘛，仲大把有得快嘅嘛",
+      "two": "我跟到嘛， 仲大把有得快嘅嘛"
+    },
+    "answer": {
+      "output": "我跟到嘛，仲大把有得快嘅嘛",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你唔使旨意我講唐三藏啲嘢俾你聽",
+      "two": "你唔使旨意我講唐三藏啦嘢俾你聽"
+    },
+    "answer": {
+      "output": "你唔使旨意我講唐三藏啲嘢俾你聽",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「啲」；省略了 PaddleOCR 中多出的「啦」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你自己衰咗仲發我欄渣！",
+      "two": "你自己衰仲發我欄渣！"
+    },
+    "answer": {
+      "output": "你自己衰咗仲發我欄渣！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」；其餘標點維持 Google Lens 結果。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大王，我哋發現白晶晶暈倒山崖",
+      "two": "大王， 我發現白晶晶暈倒山崖"
+    },
+    "answer": {
+      "output": "大王，我哋發現白晶晶暈倒山崖",
+      "note": "採用 Google Lens 中較可靠的「我哋」取代 PaddleOCR 的「我」；保留了 Google Lens 中的逗號，並省略了 PaddleOCR 中多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你唔講出嚟",
+      "two": "你唔講出㰀"
+    },
+    "answer": {
+      "output": "你唔講出嚟",
+      "note": "採用了 Google Lens 中較可靠的漢字「嚟」，修正了 PaddleOCR 中的誤識別「㰀」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "睬你都傻㗎",
+      "two": "睬你都傻磔"
+    },
+    "answer": {
+      "output": "睬你都傻㗎",
+      "note": "採用了 Google Lens 中的漢字「㗎」，因其在漢字識別上更可靠；修正了 PaddleOCR 誤識別的「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咦\n，塊地都唔係好硬",
+      "two": "咦， 塊地都唔係好硬"
+    },
+    "answer": {
+      "output": "咦，塊地都唔係好硬",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "蓋世魔王，神功護體",
+      "two": "蓋世魔王， 神功護體"
+    },
+    "answer": {
+      "output": "蓋世魔王，神功護體",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格；保留了 Google Lens 中的逗號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我而家醫番好你嘅傷",
+      "two": "我而家醫番好你慨傷"
+    },
+    "answer": {
+      "output": "我而家醫番好你嘅傷",
+      "note": "採用了 Google Lens 中更可靠的漢字「嘅」，省略了 PaddleOCR 中誤識別為「慨」的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "但係你要帶我入盤絲洞搵隻馬騮精託世",
+      "two": "但係你要帶我入盤絲洞摺隻馬騮精託世"
+    },
+    "answer": {
+      "output": "但係你要帶我入盤絲洞搵隻馬騮精託世",
+      "note": "採用 Google Lens 識別到的「搵隻」取代了 PaddleOCR 的「摺隻」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁遲早搵到唐三藏",
+      "two": "咁遲早–到唐三藏"
+    },
+    "answer": {
+      "output": "咁遲早搵到唐三藏",
+      "note": "採用 Google Lens 中的「搵到」修正了 PaddleOCR 中誤識別的破折號與缺字；其餘文字一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "到時食唐僧肉唔少得你嗰份",
+      "two": "到時食唐僧肉唔少得你咽份"
+    },
+    "answer": {
+      "output": "到時食唐僧肉唔少得你嗰份",
+      "note": "以 Google Lens 的「嗰」校正了 PaddleOCR 誤識別成「咽」的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我掘隧道，\n驚你",
+      "two": "我掘隧道，驚你"
+    },
+    "answer": {
+      "output": "我掘隧道，驚你",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咩嘢嚟呢？",
+      "two": "咩嘢呢？"
+    },
+    "answer": {
+      "output": "咩嘢嚟呢？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "般若波羅密，梵文嚟嗰喎",
+      "two": "般若波羅密， 梵文㰀咽唱"
+    },
+    "answer": {
+      "output": "般若波羅密，梵文嚟嗰喎",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟嗰喎」；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "快啲帶我入盤絲洞",
+      "two": "快喲帶我入盤絲洞"
+    },
+    "answer": {
+      "output": "快啲帶我入盤絲洞",
+      "note": "採用了 Google Lens 中的「啲」，修正了 PaddleOCR 的「喲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "個肚做乜突然咁痛嘅呢",
+      "two": "個肚做乜突然喵痛嘅呢"
+    },
+    "answer": {
+      "output": "個肚做乜突然咁痛嘅呢",
+      "note": "採用 Google Lens 中較可靠的漢字「咁」，修正了 PaddleOCR 中誤識別為「喵」的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁多機關㗎？！",
+      "two": "咁多機關磔？"
+    },
+    "answer": {
+      "output": "咁多機關㗎？！",
+      "note": "採用了 Google Lens 中更可靠的字詞「㗎」及標點「？！」，並忽略了 PaddleOCR 中的誤識別「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "越行越濕嘅？",
+      "two": "越行越濕慨？"
+    },
+    "answer": {
+      "output": "越行越濕嘅？",
+      "note": "採用 Google Lens 中的「嘅」與問號；省略了 PaddleOCR 中誤識別為「慨」的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大王你返嚟拿？！",
+      "two": "大王你返？"
+    },
+    "answer": {
+      "output": "大王你返嚟拿？！",
+      "note": "採用 Google Lens 中較可靠的漢字與標點「嚟拿？！」，補全了 PaddleOCR 中缺失的字詞。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "無，見你成日諗唐三藏",
+      "two": "無， 見你成日諗唐三藏"
+    },
+    "answer": {
+      "output": "無，見你成日諗唐三藏",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "特登扮佢嚟哄你開心囉",
+      "two": "特登扮但哄你開心囉"
+    },
+    "answer": {
+      "output": "特登扮佢嚟哄你開心囉",
+      "note": "採用 Google Lens 中更可靠的漢字「佢嚟」，修正了 PaddleOCR 的誤識別「但」；其餘文本保持一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "個頭出嚟喎！",
+      "two": "個頭出唱 1"
+    },
+    "answer": {
+      "output": "個頭出嚟喎！",
+      "note": "採用 Google Lens 中更可靠的漢字與標點；忽略了 PaddleOCR 中誤識別的「唱 1」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔係呀，嗰個係我膝頭嚟㗎",
+      "two": "唔係呀， 咽個係我膝頭磔"
+    },
+    "answer": {
+      "output": "唔係呀，嗰個係我膝頭嚟㗎",
+      "note": "採用 Google Lens 中較可靠的漢字「嗰個」「嚟㗎」與標點「，」；省略了 PaddleOCR 中多出的空格及錯誤字詞「咽個」「磔」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "怪唔知冇頭髮啦",
+      "two": "怪唔知有頭髮啦"
+    },
+    "answer": {
+      "output": "怪唔知冇頭髮啦",
+      "note": "採用 Google Lens 中的「冇」以修正 PaddleOCR 中誤識別為「有」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "有人嚟緊\n有人嚟呀",
+      "two": "有人緊 有人呀"
+    },
+    "answer": {
+      "output": "有人嚟緊　　有人嚟呀",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的『嚟』；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "匿埋先，\n避避先⋯⋯",
+      "two": "匿埋先， 避避先⋯"
+    },
+    "answer": {
+      "output": "匿埋先，　　避避先⋯⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的標點逗號與省略號；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "孫悟空，你當年罪惡滔天",
+      "two": "孫悟空， 你當年罪惡滔天"
+    },
+    "answer": {
+      "output": "孫悟空，你當年罪惡滔天",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗號；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "希望你今生會大徹大悟，痛改前非",
+      "two": "希望你今生會大徹大悟， 痛改前非"
+    },
+    "answer": {
+      "output": "希望你今生會大徹大悟，痛改前非",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "邊個講嘢？",
+      "two": "邊個講嘢"
+    },
+    "answer": {
+      "output": "邊個講嘢？",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的問號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "犧牲咗佢自己",
+      "two": "犧牲佰自己"
+    },
+    "answer": {
+      "output": "犧牲咗佢自己",
+      "note": "採用 Google Lens 中更可靠的「咗佢」修正 PaddleOCR 的「佰自己」；保留 Google Lens 的整體字詞。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "能夠捨己為人",
+      "two": "能夠舍己為人"
+    },
+    "answer": {
+      "output": "能夠捨己為人",
+      "note": "採用 Google Lens 中的「捨」而非 PaddleOCR 的「舍」，因 Google Lens 在漢字識別方面更可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "祇要你肯自願帶上金剛圈",
+      "two": "只要你肯自願帶上金剛圈"
+    },
+    "answer": {
+      "output": "祇要你肯自願帶上金剛圈",
+      "note": "採用 Google Lens 中的「祇」而非 PaddleOCR 的「只」，因為 Google Lens 在漢字識別方面更可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不過從此人間一切與你冇關",
+      "two": "不過從此人間一切與你有關"
+    },
+    "answer": {
+      "output": "不過從此人間一切與你冇關",
+      "note": "採用 Google Lens 中的「冇」而非 PaddleOCR 的「有」，因為 Google Lens 在漢字識別方面更可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "再唔可以有半點情慾，半點留戀",
+      "two": "再唔可以有半點情慾， 半點留戀"
+    },
+    "answer": {
+      "output": "再唔可以有半點情慾，半點留戀",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你未變成真正嘅孫悟空托世",
+      "two": "你未變成真正慨孫悟空托世"
+    },
+    "answer": {
+      "output": "你未變成真正嘅孫悟空托世",
+      "note": "採用 Google Lens 中較可靠的「嘅」，修正了 PaddleOCR 中誤識別的「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "祗係因為你未遇上嗰個俾三粒痣你嘅人",
+      "two": "只係因為你未遇上咽個俾三粒痣你嘅人"
+    },
+    "answer": {
+      "output": "祗係因為你未遇上嗰個俾三粒痣你嘅人",
+      "note": "採用 Google Lens 中較可靠的漢字「祗係」「嗰個」，並修正 PaddleOCR 中誤識別的「只係」「咽個」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "當你遇到佢之後",
+      "two": "當你遇到但之後"
+    },
+    "answer": {
+      "output": "當你遇到佢之後",
+      "note": "採用 Google Lens 中的「佢」取代 PaddleOCR 中誤識別為「但」的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你嘅一生就會改變",
+      "two": "你慨一生就會改變"
+    },
+    "answer": {
+      "output": "你嘅一生就會改變",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嘅」；省略了 PaddleOCR 中的誤識別「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "黐孖根",
+      "two": "孖根"
+    },
+    "answer": {
+      "output": "黐孖根",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的「黐」字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你夠整到我好痛，你放手先啦",
+      "two": "你夠整到我好痛， 你放手先啦"
+    },
+    "answer": {
+      "output": "你夠整到我好痛，你放手先啦",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "豈有此理，\n真係",
+      "two": "豈有此理， ，真係"
+    },
+    "answer": {
+      "output": "豈有此理，真係",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；省略了 PaddleOCR 中多餘的標點與空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你冷靜啲好嗎\n唔得",
+      "two": "你冷靜啦好嗎 唔得"
+    },
+    "answer": {
+      "output": "你冷靜啲好嗎　　唔得",
+      "note": "採用了 Google Lens 中的「啲」取代 PaddleOCR 的「啦」；將 Google Lens 中的換行符與 PaddleOCR 中的空格對應為兩個表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冷靜，\n淡定",
+      "two": "冷靜， 淡定"
+    },
+    "answer": {
+      "output": "冷靜，　　淡定",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替換为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "冷靜呀\n痛呀",
+      "two": "冷靜呀 痛呀"
+    },
+    "answer": {
+      "output": "冷靜呀　　痛呀",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "去買餸啦你",
+      "two": "去買ğ啦你"
+    },
+    "answer": {
+      "output": "去買餸啦你",
+      "note": "採用 Google Lens 中較可靠的漢字「餸」，修正了 PaddleOCR 中的錯字「ğ」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "快啲過嚟捉住我呀",
+      "two": "快啪過捉住我呀"
+    },
+    "answer": {
+      "output": "快啲過嚟捉住我呀",
+      "note": "採用了 Google Lens 中較可靠的漢字識別結果，修正了 PaddleOCR 中的錯誤字詞。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "捉住啦，\n生啦⋯⋯",
+      "two": "捉住啦， 生啦⋯"
+    },
+    "answer": {
+      "output": "捉住啦，　　生啦⋯⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号與省略号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係⋯⋯",
+      "two": "係⋯"
+    },
+    "answer": {
+      "output": "係⋯⋯",
+      "note": "保留了 Google Lens 中识别出的省略号形式；未采用 PaddleOCR 中较短的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "仔呀！\n似你多過似我",
+      "two": "仔呀！ 似你多過似我"
+    },
+    "answer": {
+      "output": "仔呀！　　似你多過似我",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "最重要嘅就係以後我哋能夠好好地咁生活",
+      "two": "最重要嘅就係以後我能夠好好地喵生活"
+    },
+    "answer": {
+      "output": "最重要嘅就係以後我哋能夠好好地咁生活",
+      "note": "採用 Google Lens 中的「我哋」與「能夠」，修正了 PaddleOCR 中誤識別為「我」與「喵」的字詞。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "個細路你㗎？",
+      "two": "個細路你架？"
+    },
+    "answer": {
+      "output": "個細路你㗎？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「㗎」；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的「架」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係呀！\n係我同至尊寶生嘅",
+      "two": "係呀！ 係我同至尊寶生嘅"
+    },
+    "answer": {
+      "output": "係呀！　　係我同至尊寶生嘅",
+      "note": "將 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "奶媽，\n話俾佢知啫",
+      "two": "奶媽， 話俾但知啫"
+    },
+    "answer": {
+      "output": "奶媽，話俾佢知啫",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「佢」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係佢同至尊寶生嘅",
+      "two": "係但同至尊寶生嘅"
+    },
+    "answer": {
+      "output": "係佢同至尊寶生嘅",
+      "note": "採用 Google Lens 中較可信的漢字「佢」，修正了 PaddleOCR 中的「但」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔駛驚，\n我保護你",
+      "two": "唔駛驚，手 我保護你"
+    },
+    "answer": {
+      "output": "唔駛驚，　　我保護你",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗號；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；省略了 PaddleOCR 中多出的「手」字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "幾時輪到你嚟保護我？",
+      "two": "幾時輪到你保護我？"
+    },
+    "answer": {
+      "output": "幾時輪到你嚟保護我？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」；其餘標點一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "呢個我個仔嚟嘅",
+      "two": "呢個我個仔嘅"
+    },
+    "answer": {
+      "output": "呢個我個仔嚟嘅",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」；採用 Google Lens 的漢字識別結果。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔係唐三藏嚟呀",
+      "two": "唔係唐三藏呀"
+    },
+    "answer": {
+      "output": "唔係唐三藏嚟呀",
+      "note": "採用 Google Lens 中識別出的「嚟」；PaddleOCR 將其誤識為缺失。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你咁肉緊我，我願意為你精盡人亡",
+      "two": "你咁肉緊我， 我願意為你精盡人亡"
+    },
+    "answer": {
+      "output": "你咁肉緊我，我願意為你精盡人亡",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "帶我個仔走先\n唔走",
+      "two": "帶我個仔走先 唔走"
+    },
+    "answer": {
+      "output": "帶我個仔走先　　唔走",
+      "note": "將了 Google Lens 中顯示為换行符和 PaddleOCR 中顯示为空格的間隙替換為兩個表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好彩走得返出嚟",
+      "two": "好彩走得返出㰀"
+    },
+    "answer": {
+      "output": "好彩走得返出嚟",
+      "note": "採用了 Google Lens 中較可靠的漢字「嚟」，修正了 PaddleOCR 誤識為「㰀」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我片你啲內臟，問你點擋？",
+      "two": "我片你啪內臟， 問你點擋"
+    },
+    "answer": {
+      "output": "我片你啲內臟，問你點擋？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「啲」和問號；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的「啪」以及空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "〝元神出竅〞",
+      "two": "元神出竅"
+    },
+    "answer": {
+      "output": "〝元神出竅〞",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的引號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "八婆，你唔好再踩我條腸呀",
+      "two": "八婆， 你唔好再踩我條腸呀"
+    },
+    "answer": {
+      "output": "八婆，你唔好再踩我條腸呀",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "出嚟呀？！",
+      "two": "出呀？"
+    },
+    "answer": {
+      "output": "出嚟呀？！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」和驚嘆號；以 Google Lens 的標點「？！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喺咪真係可以時光倒流啊？",
+      "two": "咪真係可以時光倒流啊"
+    },
+    "answer": {
+      "output": "喺咪真係可以時光倒流啊？",
+      "note": "採用了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」及句末問號；省略了 PaddleOCR 中缺失的字與標點。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你哋走先啦！走！",
+      "two": "你呲走先啦！走！"
+    },
+    "answer": {
+      "output": "你哋走先啦！走！",
+      "note": "包括了 Google Lens 中更可靠的漢字「哋」，修正了 PaddleOCR 誤識的「呲」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我唔走！\n要走一齊走！",
+      "two": "我唔走！ 要走一齊走！"
+    },
+    "answer": {
+      "output": "我唔走！　　要走一齊走！",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好好哋揍大我哋嗰仔佢",
+      "two": "好好揍大我咽仔但"
+    },
+    "answer": {
+      "output": "好好哋揍大我哋嗰仔佢",
+      "note": "採用了 Google Lens 中較可靠的漢字識別結果，並保留其原有文本；未採用 PaddleOCR 中的錯字「我咽」「但」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我哋嗰仔！\n娘子！",
+      "two": "我呲咽仔！ 娘子！"
+    },
+    "answer": {
+      "output": "我哋嗰仔！　　娘子！",
+      "note": "采用了 Google Lens 中的「我哋嗰仔！」，修正了 PaddleOCR 中的误识别字；将 Google Lens 中显示为换行符、PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你再唔走，我即刻死喺你嘅面前！",
+      "two": "你再唔走， 我即刻死你嘅面前！"
+    },
+    "answer": {
+      "output": "你再唔走，我即刻死喺你嘅面前！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「喺」；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "吓！\n唔好啊",
+      "two": "吓！ 唔好啊"
+    },
+    "answer": {
+      "output": "吓！　　唔好啊",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "娘子⋯娘子⋯",
+      "two": "娘子⋯娘子・"
+    },
+    "answer": {
+      "output": "娘子⋯娘子⋯",
+      "note": "採用了 Google Lens 中的省略號；省略了 PaddleOCR 中末尾的錯誤標點。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "月光快啲出嚟呀！",
+      "two": "月光快啪出㰀呀！"
+    },
+    "answer": {
+      "output": "月光快啲出嚟呀！",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果「啲出嚟」，並保留感嘆號「！」；修正了 PaddleOCR 中的錯字「啪出㰀」為「啲出嚟」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "般若⋯乜Q嘢呀？唔記得咗呀！",
+      "two": "般若⋯乜Q嘢呀？ 唔記得呀！"
+    },
+    "answer": {
+      "output": "般若⋯乜Q嘢呀？唔記得咗呀！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "般若波羅密！般若波羅密！⋯⋯",
+      "two": "般若波羅密！般若波羅密！⋯"
+    },
+    "answer": {
+      "output": "般若波羅密！般若波羅密！⋯⋯",
+      "note": "採用了 Google Lens 中的標點與文字；保留了末尾的省略號為「⋯⋯」，因 PaddleOCR 僅顯示為「⋯」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哇！\n升仙啦！",
+      "two": "哇！升仙啦！"
+    },
+    "answer": {
+      "output": "哇！升仙啦！",
+      "note": "省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "呢鑊杰啦！\n真係時光倒流啊！",
+      "two": "呢鑊傑啦！真係時光倒流啊 í"
+    },
+    "answer": {
+      "output": "呢鑊傑啦！真係時光倒流啊！",
+      "note": "採用 Google Lens 較可靠的漢字「傑」與驚嘆號；省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符，並忽略 PaddleOCR 多出的雜訊「í」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喂！\n等埋等埋！",
+      "two": "喂！ 等埋等埋"
+    },
+    "answer": {
+      "output": "喂！　　等埋等埋！",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；包括了 Google Lens 中存在但 PaddleOCR 中不存在的感叹号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "兇手走得咁快？再嚟！",
+      "two": "兇手走得喵快？ 再！"
+    },
+    "answer": {
+      "output": "兇手走得咁快？再嚟！",
+      "note": "採用了 Google Lens 中較可靠的「咁快」與「再嚟！」；省略了 PaddleOCR 中多出的「喵」與空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喂！\n我老婆？",
+      "two": "喂！手 我老婆？"
+    },
+    "answer": {
+      "output": "喂！　　我老婆？",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；省略了 PaddleOCR 中多出的「手」字，因为 Google Lens 中不存在该字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你老婆就出嚟啦，定啲嚟啦",
+      "two": "你老婆就出啦， 定喲啦"
+    },
+    "answer": {
+      "output": "你老婆就出嚟啦，定啲嚟啦",
+      "note": "採用了 Google Lens 中更可靠的漢字「出嚟啦」「定啲嚟啦」以及標點逗號；省略了 PaddleOCR 中多餘的空格與誤識別字「出啦」「定喲啦」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我都未講完，你點知呢？",
+      "two": "我都未講完， 你點知呢？"
+    },
+    "answer": {
+      "output": "我都未講完，你點知呢？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中存在的逗号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "真係出嚟喎\n走呀",
+      "two": "真係出唱 走呀"
+    },
+    "answer": {
+      "output": "真係出嚟喎　　走呀",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟喎」；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替換為两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "娘子，娘子⋯⋯",
+      "two": "娘子， 娘子⋯⋯"
+    },
+    "answer": {
+      "output": "娘子，娘子⋯⋯",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哇，\n又升仙啦！",
+      "two": "哇， 又升仙啦！"
+    },
+    "answer": {
+      "output": "哇，　　又升仙啦！",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "點解我講\n〝又〞嘅？",
+      "two": "點解我講〝又〞嘅？"
+    },
+    "answer": {
+      "output": "點解我講〝又〞嘅？",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "等埋啊，\n等埋啊",
+      "two": "等埋啊， 等埋啊"
+    },
+    "answer": {
+      "output": "等埋啊，　　等埋啊",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗號；將了 Google Lens OCR 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "再嚟！",
+      "two": "再！"
+    },
+    "answer": {
+      "output": "再嚟！",
+      "note": "包括了 Google Lens 中识别出的「嚟」；省略了 PaddleOCR 中错误识别的「再！」里多余的感叹号位置差异。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喂⋯做乜嘢要叫我咪煩你？仲要警告我啊",
+      "two": "喂⋯做乜嘢要叫我咪煩你？ 仲要警告我啊"
+    },
+    "answer": {
+      "output": "喂⋯做乜嘢要叫我咪煩你？仲要警告我啊",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你好〝尋〞呀！仆街！",
+      "two": "你好 子〝尋〞呀！仆街！"
+    },
+    "answer": {
+      "output": "你好〝尋〞呀！仆街！",
+      "note": "採用 Google Lens 中較可靠的漢字識別，省略了 PaddleOCR 中多出的「子」；其餘標點與內容沿用 Google Lens。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "點解呀？\n我好驚呀！",
+      "two": "點解呀？手 我好驚呀！"
+    },
+    "answer": {
+      "output": "點解呀？　　我好驚呀！",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为“手 ”的间隙替换为两个表意空格；保留了 Google Lens 中的问号和感叹号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "出嚟啦！？",
+      "two": "出啦！"
+    },
+    "answer": {
+      "output": "出嚟啦！？",
+      "note": "採用了 Google Lens 中的「嚟」與「？」；保留了 Google Lens 的標點符號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "娘子！娘子！⋯⋯⋯⋯⋯",
+      "two": "娘子！娘子！⋯⋯"
+    },
+    "answer": {
+      "output": "娘子！娘子！⋯⋯⋯⋯⋯",
+      "note": "採用了 Google Lens 較完整的省略號；保留了 Google Lens 中的標點與文字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "〝妖〞你咪一樣咁〝尋〞",
+      "two": "＂妖＂你咪一樣喵＂尋"
+    },
+    "answer": {
+      "output": "〝妖〞你咪一樣咁〝尋〞",
+      "note": "採用 Google Lens 中較可靠的引號樣式與文字「咁」；省略了 PaddleOCR 中錯識的「喵」並補回結尾引號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "老婆！老婆！⋯⋯⋯⋯⋯",
+      "two": "老婆！老婆！⋯"
+    },
+    "answer": {
+      "output": "老婆！老婆！⋯⋯⋯⋯⋯",
+      "note": "採用了 Google Lens 中較完整的省略號；保留了 Google Lens 中的標點符號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "攞嚟呀",
+      "two": "擺呀"
+    },
+    "answer": {
+      "output": "攞嚟呀",
+      "note": "採用 Google Lens 的識別結果，因其在漢字識別上更可靠；PaddleOCR 的結果「擺呀」與之不一致，未採用。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "娘子！\n娘子⋯⋯",
+      "two": "娘子！ 娘子⋯⋯"
+    },
+    "answer": {
+      "output": "娘子！　　娘子⋯⋯",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "娘子呀，同牛魔王出嚟睇耶穌",
+      "two": "娘子呀， 同牛魔王出睇耶穌"
+    },
+    "answer": {
+      "output": "娘子呀，同牛魔王出嚟睇耶穌",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」；修正了 PaddleOCR 中的「出睇」为 Google Lens 的「出嚟睇」；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "自殺？\n係都殺咗你先啦！",
+      "two": "自殺？係都殺你先啦！"
+    },
+    "answer": {
+      "output": "自殺？係都殺咗你先啦！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「咗」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你俾一個我唔殺你嘅理由吖！",
+      "two": "你俾一個我唔殺你慨理由吖！"
+    },
+    "answer": {
+      "output": "你俾一個我唔殺你嘅理由吖！",
+      "note": "採用 Google Lens 中更可靠的「嘅」，修正了 PaddleOCR 誤識別的「慨」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "唔啱咁吖！你俾個殺我嘅理由我先啦",
+      "two": "唔喏喵吖！ 你俾個殺我慨理由我先啦"
+    },
+    "answer": {
+      "output": "唔啱咁吖！你俾個殺我嘅理由我先啦",
+      "note": "採用 Google Lens 中較可靠的漢字與標點；省略了 PaddleOCR 中錯誤的字詞「唔喏喵」及「慨」，並省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好呀！\n你粒聲唔出揼低我唔理",
+      "two": "好呀！ 你粒聲唔出掠低我唔理"
+    },
+    "answer": {
+      "output": "好呀！　　你粒聲唔出揼低我唔理",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「揼」；将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "咁你誤會晒嘞呢趟\n想死呀？",
+      "two": "咁你誤會晒嘞呢趟 想死呀？"
+    },
+    "answer": {
+      "output": "咁你誤會晒嘞呢趟　　想死呀？",
+      "note": "將了 Google Lens OCR 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "其實我嗰日走咗係想返嚟問你師姐攞解藥去救你",
+      "two": "其實我咽日走係想返問你師姐擺解藥去救你"
+    },
+    "answer": {
+      "output": "其實我嗰日走咗係想返嚟問你師姐攞解藥去救你",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，修正了 PaddleOCR 中的錯字「咽日」為「嗰日」、「返」為「返嚟」、以及「擺」為「攞」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "點知遲咗一步，返去已經搵你唔到啦",
+      "two": "點知遲一步， 返去已經–你唔到啦"
+    },
+    "answer": {
+      "output": "點知遲咗一步，返去已經搵你唔到啦",
+      "note": "採用了 Google Lens 中較可靠的「遲咗一步」、「搵你唔到啦」及逗號；省略了 PaddleOCR 中多餘的空格與錯誤的破折號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你快啲衝出去",
+      "two": "你快喲衝出去"
+    },
+    "answer": {
+      "output": "你快啲衝出去",
+      "note": "採用 Google Lens 中較可靠的漢字「啲」，修正了 PaddleOCR 的誤識「喲」；其餘一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "娘子⋯",
+      "two": "娘子・"
+    },
+    "answer": {
+      "output": "娘子⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号；省略了 PaddleOCR 中存在但 Google Lens 中不存在的點。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "等我嚟啦",
+      "two": "等我啦"
+    },
+    "answer": {
+      "output": "等我嚟啦",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「嚟」字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "再嚟",
+      "two": "再㰀"
+    },
+    "answer": {
+      "output": "再嚟",
+      "note": "採用了 Google Lens 中較可靠的漢字「嚟」，修正了 PaddleOCR 的誤識別「㰀」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "人呢？\n去哂邊呀？",
+      "two": "人呢？ 去哂邊呀？"
+    },
+    "answer": {
+      "output": "人呢？　　去哂邊呀？",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你〝蝦〞\n我唔識字呀！",
+      "two": "你 蝦＂我唔識字呀！"
+    },
+    "answer": {
+      "output": "你〝蝦〞我唔識字呀！",
+      "note": "保留了 Google Lens 中較可靠的引號樣式與標點，並省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；同時省略了 PaddleOCR 中多餘的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "呢個名又幾好聽喎",
+      "two": "呢個名又幾好聽蝸"
+    },
+    "answer": {
+      "output": "呢個名又幾好聽喎",
+      "note": "採用 Google Lens 中較可靠的「喎」，修正了 PaddleOCR 誤識為「蝸」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "係呢個山頭所有嘢都係我㗎！",
+      "two": "係呢個山頭所有嘢都係我磔！"
+    },
+    "answer": {
+      "output": "係呢個山頭所有嘢都係我㗎！",
+      "note": "採用了 Google Lens 中較可靠的字詞「㗎」並保留了其標點「！」；更正了 PaddleOCR 中誤識別為「磔」的字。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好似騾仔咁，幫你打個印先",
+      "two": "好似騾仔咁， 幫你打個印先"
+    },
+    "answer": {
+      "output": "好似騾仔咁，幫你打個印先",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "如果有人〝恰〞你，你就〝撻〞我啦",
+      "two": "如果有人、〝恰〞你， 你就 撻 我啦"
+    },
+    "answer": {
+      "output": "如果有人〝恰〞你，你就〝撻〞我啦",
+      "note": "保留了 Google Lens 中更可靠的漢字與標點（〝恰〞、〝撻〞以及逗號）；省略了 PaddleOCR 中多餘的空格與誤識別的頓號。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "五百年前？",
+      "two": "五百年前"
+    },
+    "answer": {
+      "output": "五百年前？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的问号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  }
+]

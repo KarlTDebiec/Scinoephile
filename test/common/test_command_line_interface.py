@@ -9,13 +9,14 @@ from pathlib import Path
 from typing import ClassVar
 from unittest.mock import patch
 
-import pytest
+from pytest import MonkeyPatch, raises
 
 from scinoephile.common.command_line_interface import (
     CommandLineInterface,
 )
 from scinoephile.common.testing import run_cli_with_args
 from test import helpers
+from test.helpers import parametrize
 
 
 class ArgsCaptureCli(CommandLineInterface):
@@ -35,11 +36,7 @@ class ArgsCaptureCli(CommandLineInterface):
         parser.add_argument("--name", type=str, required=True)
 
     @classmethod
-    def _main(
-        cls,
-        *,
-        name: str,
-    ):
+    def _main(cls, *, name: str):
         """Execute test CLI."""
         cls.captured["name"] = name
 
@@ -58,11 +55,7 @@ class RequiredArgCli(CommandLineInterface):
         parser.add_argument("--name", required=True)
 
     @classmethod
-    def _main(
-        cls,
-        *,
-        name: str,
-    ):
+    def _main(cls, *, name: str):
         """Execute test CLI."""
 
 
@@ -106,7 +99,7 @@ class ReportTool(CommandLineInterface):
         pass
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("cli_cls", "expected_name"),
     [
         (TestCli, "test"),
@@ -259,9 +252,7 @@ def test_run_cli_with_args_quoted_values():
     assert ArgsCaptureCli.captured.get("name") == "value with spaces"
 
 
-def test_assert_cli_usage_failure_reports_streams(
-    monkeypatch: pytest.MonkeyPatch,
-):
+def test_assert_cli_usage_failure_reports_streams(monkeypatch: MonkeyPatch):
     """Test CLI usage assertion failures include expected and actual streams.
 
     Arguments:
@@ -273,7 +264,7 @@ def test_assert_cli_usage_failure_reports_streams(
         lambda cli: "usage: intentionally-wrong.py",
     )
 
-    with pytest.raises(AssertionError) as excinfo:
+    with raises(AssertionError) as excinfo:
         helpers.assert_cli_usage((RequiredArgCli,))
 
     message = str(excinfo.value)

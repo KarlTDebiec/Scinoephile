@@ -6,64 +6,67 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import ClassVar
 
 from scinoephile.analysis.diff import SeriesDiff
+from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
     input_file_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase, read_series
+from scinoephile.core.cli import ScinoephileCliBase
 
 __all__ = ["MultiDiffCli"]
+
+MULTI_DIFF_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "calculate the diff between two series": "计算两个序列之间的差异",
+        "command-line interface for multi-series subtitle diffs": (
+            "多序列字幕差异命令行界面"
+        ),
+        "series label for candidate output in diff messages (default: candidate)": (
+            "差异消息中候选输出的序列标签（默认：candidate）"
+        ),
+        "series label for reference input in diff messages (default: reference)": (
+            "差异消息中参考输入的序列标签（默认：reference）"
+        ),
+        "similarity threshold used to pair replacements (default: 0.6)": (
+            "用于配对替换项的相似度阈值（默认：0.6）"
+        ),
+        'candidate subtitle infile to compare against the reference, or "-" '
+        "for stdin": ('要与参考输入比较的候选字幕输入文件，或用 "-" 表示标准输入'),
+        'reference subtitle infile or "-" for stdin': (
+            '参考字幕输入文件，或用 "-" 表示标准输入'
+        ),
+    },
+    "zh-hant": {
+        "calculate the diff between two series": "計算兩個序列之間的差異",
+        "command-line interface for multi-series subtitle diffs": (
+            "多序列字幕差異命令列介面"
+        ),
+        "series label for candidate output in diff messages (default: candidate)": (
+            "差異訊息中候選輸出的序列標籤（預設：candidate）"
+        ),
+        "series label for reference input in diff messages (default: reference)": (
+            "差異訊息中參考輸入的序列標籤（預設：reference）"
+        ),
+        "similarity threshold used to pair replacements (default: 0.6)": (
+            "用於配對替換項的相似度閾值（預設：0.6）"
+        ),
+        'candidate subtitle infile to compare against the reference, or "-" '
+        "for stdin": ('要與參考輸入比較的候選字幕輸入檔，或用 "-" 表示標準輸入'),
+        'reference subtitle infile or "-" for stdin': (
+            '參考字幕輸入檔，或用 "-" 表示標準輸入'
+        ),
+    },
+}
+"""Localized help text keyed by locale and English source text."""
 
 
 class MultiDiffCli(ScinoephileCliBase):
     """Calculate the diff between two series."""
 
-    localizations: ClassVar[dict[str, dict[str, str]]] = {
-        "zh-hans": {
-            "calculate the diff between two series": "计算两个序列之间的差异",
-            "command-line interface for multi-series subtitle diffs": (
-                "多序列字幕差异命令行界面"
-            ),
-            "series label for candidate output in diff messages (default: candidate)": (
-                "差异消息中候选输出的序列标签（默认：candidate）"
-            ),
-            "series label for reference input in diff messages (default: reference)": (
-                "差异消息中参考输入的序列标签（默认：reference）"
-            ),
-            "similarity threshold used to pair replacements (default: 0.6)": (
-                "用于配对替换项的相似度阈值（默认：0.6）"
-            ),
-            'candidate subtitle infile to compare against the reference, or "-" '
-            "for stdin": ('要与参考输入比较的候选字幕输入文件，或用 "-" 表示标准输入'),
-            'reference subtitle infile or "-" for stdin': (
-                '参考字幕输入文件，或用 "-" 表示标准输入'
-            ),
-        },
-        "zh-hant": {
-            "calculate the diff between two series": "計算兩個序列之間的差異",
-            "command-line interface for multi-series subtitle diffs": (
-                "多序列字幕差異命令列介面"
-            ),
-            "series label for candidate output in diff messages (default: candidate)": (
-                "差異訊息中候選輸出的序列標籤（預設：candidate）"
-            ),
-            "series label for reference input in diff messages (default: reference)": (
-                "差異訊息中參考輸入的序列標籤（預設：reference）"
-            ),
-            "similarity threshold used to pair replacements (default: 0.6)": (
-                "用於配對替換項的相似度閾值（預設：0.6）"
-            ),
-            'candidate subtitle infile to compare against the reference, or "-" '
-            "for stdin": ('要與參考輸入比較的候選字幕輸入檔，或用 "-" 表示標準輸入'),
-            'reference subtitle infile or "-" for stdin': (
-                '參考字幕輸入檔，或用 "-" 表示標準輸入'
-            ),
-        },
-    }
+    localizations = MULTI_DIFF_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

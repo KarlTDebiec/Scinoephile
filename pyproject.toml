@@ -11,53 +11,69 @@ requires-python = ">=3.13,<3.14"
 dependencies = [
     "aiofiles>=25.1.0",
     "audioop-lts>=0.2.2",
-    "beautifulsoup4>=4.14.3",
+    "beautifulsoup4>=4.15.0",
     "ffmpeg-python>=0.2.0",
     "hkscs-unicode-converter>=1.1.0",
     "jieba>=0.42.1",
-    "numba>=0.65.1",
-    "numpy>=2.4.3",
-    "openai>=2.36.0",
-    "opencc>=1.3.0",
-    "pillow>=12.1.1",
-    "pycantonese>=4.1.0",
+    "numba>=0.66.0",
+    "numpy>=2.4.6",
+    "openai>=2.46.0",
+    "opencc>=1.4.1",
+    "pillow>=12.3.0",
+    "pycantonese>=5.0.0",
     "pydantic>=2.13.4",
     "pydub>=0.25.1",
     "pypinyin>=0.55.0",
     "pysubs2>=1.8.1",
-    "requests>=2.33.1",
-    "setuptools>=82.0.1",
-    "sqlalchemy>=2.0.49",
-    "typing-extensions>=4.15.0",
+    "requests>=2.34.2",
+    "setuptools>=83.0.0",
+    "sqlalchemy>=2.0.51",
+    "typing-extensions>=4.16.0",
 ]
 
 [project.optional-dependencies]
 ocr = [
-    "chrome-lens-py>=3.4.2",
+    "chrome-lens-py>=3.4.5",
     "paddleocr>=3.1.0",
     "paddlepaddle>=3.3.1; (platform_machine == 'arm64' and sys_platform == 'darwin') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine == 'AMD64' and sys_platform == 'win32')",
 ]
+ocr-cuda = [
+    "chrome-lens-py>=3.4.5",
+    "nvidia-cudnn-cu12>=9.0.0.312; platform_machine == 'AMD64' and sys_platform == 'win32'",
+    "paddleocr>=3.1.0",
+    "paddlepaddle-gpu==3.2.2; platform_machine == 'AMD64' and sys_platform == 'win32'",
+]
 transcription = [
-    "demucs-infer>=4.1.2",
-    "huggingface-hub>=1.14.0",
-    "onnxruntime>=1.26.0",
+    "demucs-infer>=4.2.2",
+    "huggingface-hub>=1.23.0",
+    "onnxruntime>=1.27.0",
     "torch>=2.10.0",
     "torchaudio>=2.10.0,<2.11.0",
-    "transformers>=5.8.0",
+    "transformers>=5.13.1",
     "whisper-timestamped>=1.15.9",
+]
+web = [
+    "flask>=3.1.3",
 ]
 
 [project.scripts]
 scinoephile = "scinoephile.cli.scinoephile_cli:ScinoephileCli.main"
 
 [dependency-groups]
+ocr-cuda = [
+    "chrome-lens-py>=3.4.5",
+    "nvidia-cudnn-cu12>=9.0.0.312; platform_machine == 'AMD64' and sys_platform == 'win32'",
+    "paddleocr>=3.1.0",
+    "paddlepaddle-gpu==3.2.2; platform_machine == 'AMD64' and sys_platform == 'win32'",
+]
 dev = [
-    "pytest>=9.0.3",
+    "flask>=3.1.3",
+    "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
-    "pytest-github-actions-annotate-failures>=0.4.0",
+    "pytest-github-actions-annotate-failures>=0.4.2",
     "pytest-xdist>=3.8.0",
-    "ruff>=0.15.12",
-    "ty>=0.0.34",
+    "ruff>=0.15.20",
+    "ty>=0.0.61",
 ]
 
 [tool.pytest.ini_options]
@@ -94,6 +110,16 @@ ignore = [
 [tool.ruff.lint.pydocstyle]
 convention = 'google'
 
+[tool.ty.analysis]
+allowed-unresolved-imports = [
+    "chrome_lens_py",
+    "chrome_lens_py.**",
+    "huggingface_hub",
+    "huggingface_hub.**",
+    "paddleocr",
+    "whisper_timestamped",
+]
+
 [tool.setuptools]
 include-package-data = true
 packages = { find = { include = ["scinoephile*"] } }
@@ -105,7 +131,17 @@ scinoephile = [
     "data/dictionaries/unihan/*.txt",
     "data/ocr/*.csv",
     "data/ocr/*.txt",
+    "web/static/*.js",
+    "web/ocr_validation/templates/*.html",
 ]
 
 [tool.uv]
 package = true
+
+[[tool.uv.index]]
+name = "paddlepaddle-cu126"
+url = "https://www.paddlepaddle.org.cn/packages/stable/cu126/"
+explicit = true
+
+[tool.uv.sources]
+paddlepaddle-gpu = { index = "paddlepaddle-cu126" }

@@ -5,45 +5,13 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Iterable
-from copy import deepcopy
-from logging import getLogger
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
 
-__all__ = ["get_eng_flattened"]
-
-
-logger = getLogger(__name__)
+__all__ = ["get_eng_text_flattened"]
 
 
-def get_eng_flattened(
-    series: Series, exclusions: Iterable[int] | None = None
-) -> Series:
-    """Get multi-line English series flattened to single lines.
-
-    Arguments:
-        series: Series to flatten
-        exclusions: list of subtitle indexes to exclude from flattening
-    Returns:
-        flattened Series
-    """
-    exclusion_set = set(exclusions or [])
-    if any(idx < 1 for idx in exclusion_set):
-        raise ScinoephileError("Exclusion indexes must be positive (1-based).")
-    series = deepcopy(series)
-    for i, event in enumerate(series, 1):
-        if i in exclusion_set:
-            logger.info(
-                f"Skipping flattening of subtitle {i}, with text:\n{event.text}"
-            )
-            continue
-        event.text = _get_eng_text_flattened(event.text.strip())
-    return series
-
-
-def _get_eng_text_flattened(text: str) -> str:
+def get_eng_text_flattened(text: str) -> str:
     """Get multi-line English text flattened to a single line.
 
     Accounts for dashes ('-') used for dialogue from multiple sources.
@@ -51,7 +19,7 @@ def _get_eng_text_flattened(text: str) -> str:
     Arguments:
         text: text to flatten
     Returns:
-        Flattened text
+        flattened text
     """
     line_sep = "\\N"
     flattened = text.replace("\r\n", "\n").replace("\n", line_sep)

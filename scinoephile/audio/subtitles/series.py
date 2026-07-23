@@ -5,13 +5,15 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Sequence
+from copy import deepcopy
 from logging import getLogger
 from os import PathLike
 from pathlib import Path
 from typing import Any, Self, TypedDict, override
 
-import ffmpeg
 from pydub import AudioSegment
+from pydub.exceptions import PydubException
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.validation import (
@@ -21,7 +23,8 @@ from scinoephile.common.validation import (
     val_output_path,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.media.audio import extract_audio
 
 from .subtitle import AudioSubtitle
 
@@ -101,8 +104,10 @@ class AudioSeries(Series):
 
         The buffering provides context audio around subtitle boundaries.
         """
-        if self._blocks is None:
+        signature = self._get_blocks_signature()
+        if self._blocks is None or self._blocks_signature != signature:
             self._init_blocks()
+            self._blocks_signature = signature
         assert self._blocks is not None
         return self._blocks
 
@@ -115,11 +120,12 @@ class AudioSeries(Series):
             blocks: List of blocks in the series
         """
         self._blocks = blocks
+        self._blocks_signature = self._get_blocks_signature()
 
     @override
     def save(
         self,
-        path: str | PathLike[Any],
+        path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
@@ -138,47 +144,35 @@ class AudioSeries(Series):
         """
         path = Path(path)
 
-        # Check if directory
-        if format_ == "wav" or (not format_ and path.suffix == ""):
-            validated_output_dir_path = val_output_dir_path(path)
-            self._save_wav(validated_output_dir_path)
-            logger.info(f"Saved series to {validated_output_dir_path}")
-            return
+        try:
+            # Check if directory
+            if format_ == "wav" or (not format_ and path.suffix == ""):
+                validated_output_dir_path = val_output_dir_path(path)
+                self._save_wav(validated_output_dir_path)
+                logger.info(f"Saved series to {validated_output_dir_path}")
+                return
 
-        # Otherwise, continue as superclass
-        validated_output_path = val_output_path(path, exist_ok=True)
-        super().save(
-            validated_output_path,
-            encoding=encoding,
-            format_=format_,
-            fps=fps,
-            errors=errors,
-            **kwargs,
-        )
+            # Otherwise, continue as superclass
+            validated_output_path = val_output_path(path, exist_ok=True)
+            super().save(
+                validated_output_path,
+                encoding=encoding,
+                format_=format_,
+                fps=fps,
+                errors=errors,
+                **kwargs,
+            )
+        except (OSError, PydubException, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to save {type(self).__name__} to {path}: {exc}"
+            ) from exc
         logger.info(f"Saved series to {validated_output_path}")
-
-    @override
-    def slice(self, start: int, end: int) -> Self:
-        """Slice series.
-
-        Arguments:
-            start: start index
-            end: end index
-        Returns:
-            new sliced series
-        """
-        audio = self.audio[self.events[start].start : self.events[end - 1].end]
-        sliced = type(self)(audio=audio)
-        sliced.events = [
-            self.event_class(**event.as_dict()) for event in self.events[start:end]
-        ]
-        return sliced
 
     @classmethod
     @override
     def load(
         cls,
-        path: str | PathLike[Any],
+        path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
@@ -197,24 +191,29 @@ class AudioSeries(Series):
         Returns:
             loaded series
         """
-        validated_path = val_input_dir_path(path)
-        buffer = kwargs.pop("buffer", 1000)
-        validated_srt_path = val_input_path(
-            validated_path / f"{validated_path.stem}.srt"
-        )
-        text_series = Series.load(
-            validated_srt_path,
-            encoding=encoding,
-            format_=format_,
-            fps=fps,
-            errors=errors,
-            **kwargs,
-        )
+        try:
+            validated_path = val_input_dir_path(path)
+            buffer = kwargs.pop("buffer", 1000)
+            validated_srt_path = val_input_path(
+                validated_path / f"{validated_path.stem}.srt"
+            )
+            text_series = Series.load(
+                validated_srt_path,
+                encoding=encoding,
+                format_=format_,
+                fps=fps,
+                errors=errors,
+                **kwargs,
+            )
 
-        validated_audio_path = val_input_path(
-            validated_path / f"{validated_path.stem}.wav"
-        )
-        full_audio = AudioSegment.from_wav(validated_audio_path)
+            validated_audio_path = val_input_path(
+                validated_path / f"{validated_path.stem}.wav"
+            )
+            full_audio = AudioSegment.from_wav(validated_audio_path)
+        except (OSError, PydubException, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to load {cls.__name__} from {path}: {exc}"
+            ) from exc
         logger.info(f"Loaded full audio from {validated_audio_path}")
 
         return cls.build_series(text_series, full_audio, buffer)
@@ -224,7 +223,7 @@ class AudioSeries(Series):
         cls,
         media_path: Path | str,
         subtitle_path: Path | str,
-        stream_index: int = 0,
+        stream_index: int | None = None,
         buffer: int = 1000,
         **kwargs: Any,
     ) -> Self:
@@ -233,64 +232,33 @@ class AudioSeries(Series):
         Arguments:
             media_path: path to media file
             subtitle_path: path to subtitle file
-            stream_index: audio stream index (zero-based)
+            stream_index: media stream index of an audio stream, or None to use the
+              first audio stream
             buffer: additional buffer to include before and after subtitles (ms)
             **kwargs: additional keyword arguments passed to Series.load
         Returns:
             loaded series
         """
-        validated_media_path = val_input_path(media_path)
-        validated_subtitle_path = val_input_path(subtitle_path)
-        text_series = Series.load(validated_subtitle_path, **kwargs)
-
         try:
-            probe = ffmpeg.probe(str(validated_media_path))
-        except ffmpeg.Error as exc:
-            raise ScinoephileError(
-                f"Could not probe media file {validated_media_path}"
-            ) from exc
-        audio_streams = [
-            stream
-            for stream in probe.get("streams", [])
-            if stream.get("codec_type") == "audio"
-        ]
-        if not audio_streams:
-            raise ScinoephileError(
-                f"No audio streams found in media file {validated_media_path}"
-            )
-        if stream_index < 0 or stream_index >= len(audio_streams):
-            raise ScinoephileError(
-                f"Invalid audio stream index {stream_index} for "
-                f"{validated_media_path}; found {len(audio_streams)} audio stream(s)."
-            )
-        stream = audio_streams[stream_index]
-        channels = stream.get("channels")
-        try:
-            channel_count = int(channels)
-        except (TypeError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Audio stream {stream_index} in {validated_media_path} "
-                "cannot be used for transcription."
-            ) from exc
+            validated_media_path = val_input_path(media_path)
+            validated_subtitle_path = val_input_path(subtitle_path)
+            text_series = Series.load(validated_subtitle_path, **kwargs)
 
-        with get_temp_directory_path() as temp_dir_path:
-            full_audio_path = temp_dir_path / "full_audio.wav"
-            try:
-                cls.extract_audio_track(
+            with get_temp_directory_path() as temp_dir_path:
+                full_audio_path = temp_dir_path / "full_audio.wav"
+                extract_audio(
                     validated_media_path,
                     full_audio_path,
-                    stream_index,
-                    channel_count,
+                    stream_index=stream_index,
                 )
                 logger.info(f"Loading full audio from {full_audio_path}")
                 full_audio = AudioSegment.from_wav(full_audio_path)
-            except ffmpeg.Error as exc:
-                raise ScinoephileError(
-                    f"Could not extract audio stream {stream_index} from "
-                    f"{validated_media_path}"
-                ) from exc
 
-        return cls.build_series(text_series, full_audio, buffer)
+            return cls.build_series(text_series, full_audio, buffer)
+        except (OSError, PydubException, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to load {cls.__name__} from media {media_path}: {exc}"
+            ) from exc
 
     @classmethod
     def build_series(
@@ -350,47 +318,28 @@ class AudioSeries(Series):
 
         return series
 
-    @staticmethod
-    def extract_audio_track(
-        video_input_path: Path,
-        audio_output_path: Path,
-        audio_track: int,
-        channels: int,
-    ):
-        """Extract a mono audio track from a video file.
+    @override
+    def _copy_with_events(self, events: Sequence[Subtitle]) -> Self:
+        """Copy this audio series with a selected collection of events.
 
         Arguments:
-            video_input_path: Path to input video file
-            audio_output_path: Path to output audio file
-            audio_track: Audio track (zero-indexed)
-            channels: Number of channels in audio track
+            events: events to include in the copied series
+        Returns:
+            copied audio series
         """
-        if channels >= 6:
-            logger.info(
-                "Extracting center channel of audio stream "
-                f"{audio_track} from {video_input_path} to {audio_output_path}"
-            )
-            ffmpeg.input(str(video_input_path)).output(
-                str(audio_output_path),
-                format="wav",
-                ar=16000,
-                **{
-                    "filter_complex": f"[0:a:{audio_track}]pan=mono|c0=c2[out]",
-                    "map": "[out]",
-                },
-            ).run(quiet=False, overwrite_output=True)
+        audio_events: list[AudioSubtitle] = []
+        for event in events:
+            if not isinstance(event, AudioSubtitle):
+                raise TypeError("AudioSeries events must be AudioSubtitle instances")
+            audio_events.append(deepcopy(event))
+
+        if events:
+            audio = self.audio[events[0].start : events[-1].end]
         else:
-            logger.info(
-                f"Downmixing audio stream {audio_track} from {video_input_path} to "
-                f"{audio_output_path}"
-            )
-            ffmpeg.input(str(video_input_path)).output(
-                str(audio_output_path),
-                format="wav",
-                ar=16000,
-                map=f"0:a:{audio_track}",
-                ac=1,
-            ).run(quiet=False, overwrite_output=True)
+            audio = self.audio[0:0]
+        copied = type(self)(audio=audio, events=audio_events)
+        self._copy_metadata_to(copied)
+        return copied
 
     @override
     def _init_blocks(self):
@@ -399,7 +348,7 @@ class AudioSeries(Series):
         block_indexes = Series.get_block_indexes_by_pause(self)
 
         # Calculate buffered times and create series for each block
-        blocks = []
+        blocks: list[AudioSeries] = []
         for i, (start_idx, end_idx) in enumerate(block_indexes):
             block_start_time = self.events[start_idx].start
             block_end_time = self.events[end_idx - 1].end

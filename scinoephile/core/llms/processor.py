@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from abc import ABC
 from pathlib import Path
+from typing import TypedDict
 
-from scinoephile.common.validation import val_output_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
 from .llm_provider import LLMProvider
@@ -16,9 +16,31 @@ from .prompt import Prompt
 from .queryer import Queryer
 from .test_case import TestCase
 from .tool_box import ToolBox
-from .utils import load_test_cases_from_json
+from .utils import load_test_cases, save_test_cases_to_json
 
-__all__ = ["Processor"]
+__all__ = [
+    "Processor",
+    "ProcessorKwargs",
+]
+
+
+class ProcessorKwargs(TypedDict, total=False):
+    """Keyword arguments commonly forwarded to Processor initialization."""
+
+    additional_context: str | None
+    """Additional context to include in the system prompt."""
+
+    auto_verify: bool
+    """Whether generated test cases should be marked verified."""
+
+    prune_test_cases: bool
+    """Whether to remove persisted test cases not encountered in the current run."""
+
+    test_case_path: Path | None
+    """Path where test cases are persisted."""
+
+    tool_box: ToolBox | None
+    """Available tools and handlers."""
 
 
 class Processor(ABC):
@@ -27,54 +49,53 @@ class Processor(ABC):
     manager_cls: type[Manager] | None = None
     """Manager class used to construct test case models."""
 
-    prompt_cls: type[Prompt]
+    prompt: Prompt
     """Text for LLM correspondence."""
+    test_case_cls: type[TestCase]
+    """Test-case class for the configured prompt."""
 
     def __init__(
         self,
-        prompt_cls: type[Prompt],
+        prompt: Prompt,
         test_cases: list[TestCase] | None = None,
         test_case_path: Path | None = None,
         *,
         provider: LLMProvider,
         additional_context: str | None = None,
         auto_verify: bool = False,
+        prune_test_cases: bool = False,
         tool_box: ToolBox | None = None,
     ):
         """Initialize.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
             test_cases: test cases
             test_case_path: path to file containing test cases
             provider: provider to use for queries
             additional_context: additional context to include in the system prompt
             auto_verify: automatically verify test cases if they meet selected criteria
+            prune_test_cases: remove persisted cases not encountered in this run
             tool_box: available tools and handlers
         """
-        self.prompt_cls = prompt_cls
+        self.prompt = prompt
         if self.manager_cls is None:
             raise ValueError("manager_cls must be set on Processor subclasses.")
+        self.test_case_cls = self.manager_cls.get_test_case_cls(self.prompt)
 
-        if test_cases is None:
-            test_cases = []
-
-        if test_case_path is not None:
-            test_case_path = val_output_path(test_case_path, exist_ok=True)
-            if test_case_path.exists():
-                test_cases.extend(
-                    load_test_cases_from_json(
-                        test_case_path,
-                        self.manager_cls,
-                        prompt_cls=self.prompt_cls,
-                    )
-                )
+        test_cases, test_case_path = load_test_cases(
+            self.manager_cls,
+            self.prompt,
+            test_cases=test_cases,
+            test_case_path=test_case_path,
+        )
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
+        self.prune_test_cases = prune_test_cases
+        """Whether to remove persisted cases not encountered in the current run."""
 
-        queryer_cls = Queryer.get_queryer_cls(self.prompt_cls)
-        self.queryer = queryer_cls(
-            prompt_test_cases=[tc for tc in test_cases if tc.prompt],
+        self.queryer = Queryer(
+            self.test_case_cls,
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
@@ -83,3 +104,14 @@ class Processor(ABC):
             tool_box=tool_box,
         )
         """LLM queryer."""
+
+    def save_test_cases(self):
+        """Persist encountered test cases."""
+        if self.test_case_path is None or self.manager_cls is None:
+            return
+        save_test_cases_to_json(
+            self.test_case_path,
+            self.queryer.encountered_test_cases.values(),
+            self.manager_cls,
+            prune=self.prune_test_cases,
+        )

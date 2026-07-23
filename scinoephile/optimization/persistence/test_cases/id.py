@@ -7,31 +7,35 @@ from __future__ import annotations
 import hashlib
 import json
 
-from scinoephile.core.llms import Answer, Query
+from pydantic import JsonValue
+
+from scinoephile.core.llms import Manager
 
 __all__ = ["get_test_case_id"]
 
 
-def get_test_case_id(query: Query, answer: Answer) -> str:
+def get_test_case_id(
+    query: dict[str, JsonValue],
+    answer: dict[str, JsonValue],
+    manager_cls: type[Manager],
+) -> str:
     """Compute canonical identifier for a test case.
 
     Arguments:
         query: query payload
         answer: answer payload
+        manager_cls: manager defining the test case's operation
     Returns:
         deterministic hexadecimal identifier
     """
-    query_json = json.dumps(
-        query.model_dump(),
+    payload_json = json.dumps(
+        {
+            "answer": dict(answer),
+            "operation": manager_cls.operation,
+            "query": dict(query),
+        },
         ensure_ascii=False,
-        sort_keys=True,
         separators=(",", ":"),
-    )
-    answer_json = json.dumps(
-        answer.model_dump(),
-        ensure_ascii=False,
         sort_keys=True,
-        separators=(",", ":"),
     )
-    digest = hashlib.sha256(f"{query_json}\n{answer_json}".encode()).hexdigest()
-    return digest
+    return hashlib.sha256(payload_json.encode()).hexdigest()

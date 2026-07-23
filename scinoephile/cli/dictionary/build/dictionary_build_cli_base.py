@@ -19,6 +19,34 @@ __all__ = ["DictionaryBuildCliBase"]
 
 logger = getLogger(__name__)
 
+DICTIONARY_BUILD_BASE_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "base class for building a specific dictionary cache": (
+            "用于构建特定词典缓存的基类"
+        ),
+        "replace an existing SQLite database; without this, an existing "
+        "database is left untouched": (
+            "替换已有 SQLite 数据库；未指定时保留已有数据库"
+        ),
+        "SQLite database output path (default: source-specific runtime cache)": (
+            "SQLite 数据库输出路径（默认：对应来源的运行时缓存）"
+        ),
+    },
+    "zh-hant": {
+        "base class for building a specific dictionary cache": (
+            "用於建立特定詞典快取的基底類別"
+        ),
+        "replace an existing SQLite database; without this, an existing "
+        "database is left untouched": (
+            "替換已有 SQLite 資料庫；未指定時保留已有資料庫"
+        ),
+        "SQLite database output path (default: source-specific runtime cache)": (
+            "SQLite 資料庫輸出路徑（預設：對應來源的執行時快取）"
+        ),
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class DictionaryBuildCliBase(ScinoephileCliBase, ABC):
     """Base class for building a specific dictionary cache."""
@@ -26,32 +54,7 @@ class DictionaryBuildCliBase(ScinoephileCliBase, ABC):
     source: ClassVar[DictionarySource | None] = None
     """Dictionary source built by this CLI."""
 
-    localizations: ClassVar[dict[str, dict[str, str]]] = {
-        "zh-hans": {
-            "base class for building a specific dictionary cache": (
-                "用于构建特定词典缓存的基类"
-            ),
-            "replace an existing SQLite database; without this, an existing "
-            "database is left untouched": (
-                "替换已有 SQLite 数据库；未指定时保留已有数据库"
-            ),
-            "SQLite database output path (default: source-specific runtime cache)": (
-                "SQLite 数据库输出路径（默认：对应来源的运行时缓存）"
-            ),
-        },
-        "zh-hant": {
-            "base class for building a specific dictionary cache": (
-                "用於建立特定詞典快取的基底類別"
-            ),
-            "replace an existing SQLite database; without this, an existing "
-            "database is left untouched": (
-                "替換已有 SQLite 資料庫；未指定時保留已有資料庫"
-            ),
-            "SQLite database output path (default: source-specific runtime cache)": (
-                "SQLite 資料庫輸出路徑（預設：對應來源的執行時快取）"
-            ),
-        },
-    }
+    localizations = DICTIONARY_BUILD_BASE_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -63,6 +66,8 @@ class DictionaryBuildCliBase(ScinoephileCliBase, ABC):
         """
         arg_groups = get_arg_groups_by_name(
             parser,
+            "input arguments",
+            "operation arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
         )
@@ -70,7 +75,6 @@ class DictionaryBuildCliBase(ScinoephileCliBase, ABC):
         # Output arguments
         arg_groups["output arguments"].add_argument(
             "--database-path",
-            default=None,
             type=output_file_arg(exist_ok=True),
             help="SQLite database output path (default: source-specific runtime cache)",
         )

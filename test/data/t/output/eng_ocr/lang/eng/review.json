@@ -1,0 +1,6771 @@
+[
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Police."
+        },
+        {
+          "index": 2,
+          "text": "Show me your ID."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Check his ID.\n- Yes sir."
+        },
+        {
+          "index": 2,
+          "text": "- What's in your bag?\n- Headquarter,"
+        },
+        {
+          "index": 3,
+          "text": "- Let me see.\n- please verify ID number C532743…"
+        },
+        {
+          "index": 4,
+          "text": "Bracket 1, Kwai Ching-hung."
+        },
+        {
+          "index": 5,
+          "text": "Open it."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The arrangement for Hong Kong"
+        },
+        {
+          "index": 2,
+          "text": "contained in the agreement\nare not measures of expediency."
+        },
+        {
+          "index": 3,
+          "text": "They are long-term policies\nwhich will be incorporated"
+        },
+        {
+          "index": 4,
+          "text": "in the Basic Law for Hong Kong"
+        },
+        {
+          "index": 5,
+          "text": "and preserved intact for 50 years from 1997."
+        },
+        {
+          "index": 6,
+          "text": "It is the common interests"
+        },
+        {
+          "index": 7,
+          "text": "as well as shared\nresponsibilities of China and Britain"
+        },
+        {
+          "index": 8,
+          "text": "to ensure the Joint Declaration is fully\nimplemented with no encumbrances."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "It is the common interest",
+          "note": "Corrected 'interests' to 'interest' for subject-verb agreement with the singular 'It is the common interest'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "An armed robbery took place this afternoon in Kwun Tong."
+        },
+        {
+          "index": 2,
+          "text": "4 armed suspects robbed 5 gold shops\non Mut Wah Street."
+        },
+        {
+          "index": 3,
+          "text": "Fuck you!"
+        },
+        {
+          "index": 4,
+          "text": "In the footage provided by our audience,"
+        },
+        {
+          "index": 5,
+          "text": "the robbers exchanged fire"
+        },
+        {
+          "index": 6,
+          "text": "with the Special Duties Unit."
+        },
+        {
+          "index": 7,
+          "text": "2 passersby and 3 policemen\nwere injured in the incident."
+        },
+        {
+          "index": 8,
+          "text": "The 5 gold shops lost $10M in total."
+        },
+        {
+          "index": 9,
+          "text": "The police believe the mastermind"
+        },
+        {
+          "index": 10,
+          "text": "is the “Most Wanted” Yip Kwok-foon."
+        },
+        {
+          "index": 11,
+          "text": "Bro Foon, you're unbeatable!"
+        },
+        {
+          "index": 12,
+          "text": "But shit has hit the fan!"
+        },
+        {
+          "index": 13,
+          "text": "I told you to put more newspaper underneath!"
+        },
+        {
+          "index": 14,
+          "text": "Look, there's blood everywhere!"
+        },
+        {
+          "index": 15,
+          "text": "Take it, jerk!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Shit has really hit the fan!"
+        },
+        {
+          "index": 2,
+          "text": "I can give you 20% tops. Sorry."
+        },
+        {
+          "index": 3,
+          "text": "We agreed on 40%."
+        },
+        {
+          "index": 4,
+          "text": "Don't you have moral principle?"
+        },
+        {
+          "index": 5,
+          "text": "You're paying $2M for $10M's worth of swag?"
+        },
+        {
+          "index": 6,
+          "text": "We used to get 50%!"
+        },
+        {
+          "index": 7,
+          "text": "Now you fences are getting it all!"
+        },
+        {
+          "index": 8,
+          "text": "We're getting shit!"
+        },
+        {
+          "index": 9,
+          "text": "Time has changed."
+        },
+        {
+          "index": 10,
+          "text": "The cops are on the prowl!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Especially for your swag, Bro Foon!"
+        },
+        {
+          "index": 2,
+          "text": "It took us 2 years to fence it last time!"
+        },
+        {
+          "index": 3,
+          "text": "Stocks, real estate,\nand even chestnuts are more profitable!"
+        },
+        {
+          "index": 4,
+          "text": "Do me a favor."
+        },
+        {
+          "index": 5,
+          "text": "40%."
+        },
+        {
+          "index": 6,
+          "text": "Bro Foon, you always have your way!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "How about you find another fence?"
+        },
+        {
+          "index": 2,
+          "text": "If I can't take it, I doubt others would dare to!"
+        },
+        {
+          "index": 3,
+          "text": "Fuck you!"
+        },
+        {
+          "index": 4,
+          "text": "Open the safe!"
+        },
+        {
+          "index": 5,
+          "text": "Are you robbing me?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Don't make me do it."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Thanks so much, Bro Foon."
+        },
+        {
+          "index": 2,
+          "text": "Don't look me up in the future."
+        },
+        {
+          "index": 3,
+          "text": "There's no more business between us!"
+        },
+        {
+          "index": 4,
+          "text": "We go separate ways!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Light, Bro Foon."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Fisherman!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Don't worry."
+        },
+        {
+          "index": 2,
+          "text": "These ships belong to Yi Fa."
+        },
+        {
+          "index": 3,
+          "text": "What's Yi Fa?"
+        },
+        {
+          "index": 4,
+          "text": "Yi Fa from Panyu, Guangzhou."
+        },
+        {
+          "index": 5,
+          "text": "They smuggle electric appliances."
+        },
+        {
+          "index": 6,
+          "text": "So pompously? So brazenly?"
+        },
+        {
+          "index": 7,
+          "text": "They have strong backing. It's legit!"
+        },
+        {
+          "index": 8,
+          "text": "A TV set sells for $2K\nin Hong Kong and $8K in China."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "They earn millions of dollars in each transaction."
+        },
+        {
+          "index": 2,
+          "text": "Cash keeps rolling in!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Used notes with no consecutive serial numbers."
+        },
+        {
+          "index": 2,
+          "text": "I need them today!"
+        },
+        {
+          "index": 3,
+          "text": "You have $80M over there."
+        },
+        {
+          "index": 4,
+          "text": "I want it by 5pm!"
+        },
+        {
+          "index": 5,
+          "text": "You go get it. I want it now!"
+        },
+        {
+          "index": 6,
+          "text": "Manager Shum, how much do we have?"
+        },
+        {
+          "index": 7,
+          "text": "Manager Fok!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "We are in love but can't be together."
+        },
+        {
+          "index": 2,
+          "text": "I wait day by day but you never come back…"
+        },
+        {
+          "index": 3,
+          "text": "I want to forget you but you haunt my memory."
+        },
+        {
+          "index": 4,
+          "text": "Mr Cheuk,"
+        },
+        {
+          "index": 5,
+          "text": "let's discuss the price."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Was it a bit flat?"
+        },
+        {
+          "index": 2,
+          "text": "No way! Let's start over!"
+        },
+        {
+          "index": 3,
+          "text": "Red face,"
+        },
+        {
+          "index": 4,
+          "text": "red skirt, red scarf,"
+        },
+        {
+          "index": 5,
+          "text": "like white paper…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I said let's start over. Didn't you hear me?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I said let's start over. Didn't you hear me?"
+        },
+        {
+          "index": 2,
+          "text": "Let's not waste time!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mr Tycoon,"
+        },
+        {
+          "index": 2,
+          "text": "we agreed on $3 billion."
+        },
+        {
+          "index": 3,
+          "text": "That's final."
+        },
+        {
+          "index": 4,
+          "text": "It's impossible to get so much cash\nout of the blue."
+        },
+        {
+          "index": 5,
+          "text": "I've only got $500M on hand."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Did I say you could go?"
+        },
+        {
+          "index": 2,
+          "text": "Take the $500M now."
+        },
+        {
+          "index": 3,
+          "text": "Don't get too greedy."
+        },
+        {
+          "index": 4,
+          "text": "Then I'll give you back half of your son."
+        },
+        {
+          "index": 5,
+          "text": "You want the upper or lower half?"
+        },
+        {
+          "index": 6,
+          "text": "Do you really think I won't call the police?"
+        },
+        {
+          "index": 7,
+          "text": "Do the cops know where your son is?"
+        },
+        {
+          "index": 8,
+          "text": "All they can do is arrest and torture me."
+        },
+        {
+          "index": 9,
+          "text": "But after 48 hours, they have to release me."
+        },
+        {
+          "index": 10,
+          "text": "By that time, however, you son will be…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 10,
+          "text": "By that time, however, your son will be…",
+          "note": "Corrected 'you son' to 'your son'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Call the Commissioner of Police!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I said let's start over. Didn't you hear me?"
+        },
+        {
+          "index": 2,
+          "text": "You hear me, or not?"
+        },
+        {
+          "index": 3,
+          "text": "If you can't hear me with your ear,"
+        },
+        {
+          "index": 4,
+          "text": "I might as well cut if off, OK?"
+        },
+        {
+          "index": 5,
+          "text": "Please don't!"
+        },
+        {
+          "index": 6,
+          "text": "I'm sorry! I'm sorry!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "I might as well cut it off, OK?",
+          "note": "Corrected 'if' to 'it' to match the intended meaning: 'cut it off'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You should've said so earlier."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What's up?"
+        },
+        {
+          "index": 2,
+          "text": "The Commissioner didn't answer?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You're playing me, right?"
+        },
+        {
+          "index": 2,
+          "text": "Let's play it all the way then!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Leaving so soon, Officer Wu?"
+        },
+        {
+          "index": 2,
+          "text": "Mr Tycoon is looking for you."
+        },
+        {
+          "index": 3,
+          "text": "Mr Tycoon, didn't you call the cops? Come here!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mr Ho."
+        },
+        {
+          "index": 2,
+          "text": "They are sending these dogs after me,"
+        },
+        {
+          "index": 3,
+          "text": "but they are useless."
+        },
+        {
+          "index": 4,
+          "text": "No wonder it was easy to kidnap your son."
+        },
+        {
+          "index": 5,
+          "text": "So, you are willing to confess?"
+        },
+        {
+          "index": 6,
+          "text": "Officer,"
+        },
+        {
+          "index": 7,
+          "text": "if I said I'd fucked your mother,\ndid I really fuck her?"
+        },
+        {
+          "index": 8,
+          "text": "Shouldn't you ask Mr Ho where his son is?"
+        },
+        {
+          "index": 9,
+          "text": "My son…"
+        },
+        {
+          "index": 10,
+          "text": "is all right."
+        },
+        {
+          "index": 11,
+          "text": "I came here to borrow money from Mr Tycoon."
+        },
+        {
+          "index": 12,
+          "text": "Is that a crime?"
+        },
+        {
+          "index": 13,
+          "text": "Mr Ho, tell us if he’s threatening you."
+        },
+        {
+          "index": 14,
+          "text": "We can arrest him right away!"
+        },
+        {
+          "index": 15,
+          "text": "No, he’s not."
+        },
+        {
+          "index": 16,
+          "text": "Have you heard it loud and clear, Officer?"
+        },
+        {
+          "index": 17,
+          "text": "I said he's not threatening me!"
+        },
+        {
+          "index": 18,
+          "text": "Calm down, Royal Hong Kong Police!"
+        },
+        {
+          "index": 19,
+          "text": "Mr Tycoon,"
+        },
+        {
+          "index": 20,
+          "text": "how much will you “lend” me?"
+        },
+        {
+          "index": 21,
+          "text": "$3 billion."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": ""
+        },
+        {
+          "index": 2,
+          "text": "Are you in Guangzhou for business or leisure?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Excuse me?"
+        },
+        {
+          "index": 2,
+          "text": "Business? Travel?"
+        },
+        {
+          "index": 3,
+          "text": "Yea, I am a businessman."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "Yeah, I am a businessman.",
+          "note": "Corrected 'Yea' to 'Yeah' for standard usage in this context."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Guangzhou Railway Station"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'd like to reserve a private room"
+        },
+        {
+          "index": 2,
+          "text": "at 8pm tomorrow."
+        },
+        {
+          "index": 3,
+          "text": "My name is Chen. Thank you."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hello, Commander."
+        },
+        {
+          "index": 2,
+          "text": "8pm tomorrow at Fengman Restaurant."
+        },
+        {
+          "index": 3,
+          "text": "Who the fuck am I? I'm Chiu."
+        },
+        {
+          "index": 4,
+          "text": "Don't make me fucking wait for you."
+        },
+        {
+          "index": 5,
+          "text": "That's it."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Fengman Restaurant"
+        },
+        {
+          "index": 2,
+          "text": "Almost there, Mr Fong."
+        },
+        {
+          "index": 3,
+          "text": "OK."
+        },
+        {
+          "index": 4,
+          "text": "Which room?"
+        },
+        {
+          "index": 5,
+          "text": "OK. Coming."
+        },
+        {
+          "index": 6,
+          "text": "- Take it.\n- What?"
+        },
+        {
+          "index": 7,
+          "text": "Take it. Let me put the tie on."
+        },
+        {
+          "index": 8,
+          "text": "Da-bao. This way."
+        },
+        {
+          "index": 9,
+          "text": "Mr Fong."
+        },
+        {
+          "index": 10,
+          "text": "Where's the vase?"
+        },
+        {
+          "index": 11,
+          "text": "It's just a cheap one."
+        },
+        {
+          "index": 12,
+          "text": "Never mind. Let's go."
+        },
+        {
+          "index": 13,
+          "text": "Chief Chen."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chief Chen."
+        },
+        {
+          "index": 2,
+          "text": "This is Zhang Da-bao, Boss Zhang,"
+        },
+        {
+          "index": 3,
+          "text": "who has bought Yi Fa."
+        },
+        {
+          "index": 4,
+          "text": "This is Chief Chen from Industry and Commerce."
+        },
+        {
+          "index": 5,
+          "text": "We're buddies."
+        },
+        {
+          "index": 6,
+          "text": "Nice to meet you, Chief Chen."
+        },
+        {
+          "index": 7,
+          "text": "Nice to meet you."
+        },
+        {
+          "index": 8,
+          "text": "Let's have a drink."
+        },
+        {
+          "index": 9,
+          "text": "Let's drink together."
+        },
+        {
+          "index": 10,
+          "text": "Have a seat."
+        },
+        {
+          "index": 11,
+          "text": "Bottoms up!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Boss Zhang cannot drink?"
+        },
+        {
+          "index": 2,
+          "text": "Bottoms up!"
+        },
+        {
+          "index": 3,
+          "text": "I said bottoms up!"
+        },
+        {
+          "index": 4,
+          "text": "Yes!"
+        },
+        {
+          "index": 5,
+          "text": "Bottoms up!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Da-bao is my buddy."
+        },
+        {
+          "index": 2,
+          "text": "We've only met quite recently."
+        },
+        {
+          "index": 3,
+          "text": "But we hit it off right away!"
+        },
+        {
+          "index": 4,
+          "text": "Chief Chen,"
+        },
+        {
+          "index": 5,
+          "text": "Chief Chen,"
+        },
+        {
+          "index": 6,
+          "text": "please help him."
+        },
+        {
+          "index": 7,
+          "text": "This vase must be expensive!"
+        },
+        {
+          "index": 8,
+          "text": "Just a modest gift."
+        },
+        {
+          "index": 9,
+          "text": "Here's how it works:"
+        },
+        {
+          "index": 10,
+          "text": "when Chief Chen grows tired of it,\nBoss Zhang can buy it back!"
+        },
+        {
+          "index": 11,
+          "text": "It's worth at least RMB¥300K!"
+        },
+        {
+          "index": 12,
+          "text": "Didn't we agree on RMB¥200K?"
+        },
+        {
+          "index": 13,
+          "text": "I got the price wrong?"
+        },
+        {
+          "index": 14,
+          "text": "Oh, even Homer sometimes nods."
+        },
+        {
+          "index": 15,
+          "text": "No way!"
+        },
+        {
+          "index": 16,
+          "text": "Chief Chen is a connoisseur."
+        },
+        {
+          "index": 17,
+          "text": "What do we know?"
+        },
+        {
+          "index": 18,
+          "text": "If Chief Chen says RMB¥300K, then it's RMB¥300K."
+        },
+        {
+          "index": 19,
+          "text": "Come get the business license tomorrow."
+        },
+        {
+          "index": 20,
+          "text": "I'll have it nicely framed for you."
+        },
+        {
+          "index": 21,
+          "text": "Thanks so much, Chief Chen."
+        },
+        {
+          "index": 22,
+          "text": "We're buddies."
+        },
+        {
+          "index": 23,
+          "text": "Boss Zhang, what would you like to eat?"
+        },
+        {
+          "index": 24,
+          "text": "Braised pork with preserved vegetables."
+        },
+        {
+          "index": 25,
+          "text": "That's too oily for me."
+        },
+        {
+          "index": 26,
+          "text": "Let me order."
+        },
+        {
+          "index": 27,
+          "text": "Shall we have a seafood platter?"
+        },
+        {
+          "index": 28,
+          "text": "Let me order it."
+        },
+        {
+          "index": 29,
+          "text": "Waiter!"
+        },
+        {
+          "index": 30,
+          "text": "Mr Zhang, best of luck with your business!"
+        },
+        {
+          "index": 31,
+          "text": "Thanks a lot."
+        },
+        {
+          "index": 32,
+          "text": "Cheers."
+        },
+        {
+          "index": 33,
+          "text": "Bottoms up!"
+        },
+        {
+          "index": 34,
+          "text": "Bottoms up!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "This guy plays golf every Sunday\nin Clear Water Bay."
+        },
+        {
+          "index": 2,
+          "text": "One-way road. Quiet. No phone signal. It may work."
+        },
+        {
+          "index": 3,
+          "text": "Hey! Where's our rice?"
+        },
+        {
+          "index": 4,
+          "text": "Next."
+        },
+        {
+          "index": 5,
+          "text": "This one is easy."
+        },
+        {
+          "index": 6,
+          "text": "A super playboy."
+        },
+        {
+          "index": 7,
+          "text": "Drunk every night."
+        },
+        {
+          "index": 8,
+          "text": "He recently has an actress as a mistress."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hey!"
+        },
+        {
+          "index": 2,
+          "text": "Where is our rice?"
+        },
+        {
+          "index": 3,
+          "text": "Rice? Give me a second."
+        },
+        {
+          "index": 4,
+          "text": "Your rice is coming right away."
+        },
+        {
+          "index": 5,
+          "text": "Sometimes he would send his driver away."
+        },
+        {
+          "index": 6,
+          "text": "Sorry to keep you waiting."
+        },
+        {
+          "index": 7,
+          "text": "Enjoy your food."
+        },
+        {
+          "index": 8,
+          "text": "Close the door."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Sir, please follow me."
+        },
+        {
+          "index": 2,
+          "text": "Give me a cup of tea."
+        },
+        {
+          "index": 3,
+          "text": "Hey! Haven't you gone to the bathroom just now?"
+        },
+        {
+          "index": 4,
+          "text": "- Wait! Don't puke.\n- Hey! The rice is cold!"
+        },
+        {
+          "index": 5,
+          "text": "Give me a second."
+        },
+        {
+          "index": 6,
+          "text": "- I'm sorry. The rice is cold?\n- I want tea."
+        },
+        {
+          "index": 7,
+          "text": "- Hurry up!\n- Tell me the room number…"
+        },
+        {
+          "index": 8,
+          "text": "- I want tea.\n- Give me a second. I'll show you the way."
+        },
+        {
+          "index": 9,
+          "text": "Sure, I'll get you tea."
+        },
+        {
+          "index": 10,
+          "text": "Give me a second. I will be right back."
+        },
+        {
+          "index": 11,
+          "text": "Take it easy."
+        },
+        {
+          "index": 12,
+          "text": "We came to China to shake off those cop dogs."
+        },
+        {
+          "index": 13,
+          "text": "You went too far last time!"
+        },
+        {
+          "index": 14,
+          "text": "I live life to the full."
+        },
+        {
+          "index": 15,
+          "text": "C'est la vie."
+        },
+        {
+          "index": 16,
+          "text": "There's no other way."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "We've stolen cars, committed burglaries,"
+        },
+        {
+          "index": 2,
+          "text": "and robbed cash vans."
+        },
+        {
+          "index": 3,
+          "text": "We even kidnapped the tycoon's son."
+        },
+        {
+          "index": 4,
+          "text": "Should we do more kidnaps?"
+        },
+        {
+          "index": 5,
+          "text": "What do you have in mind?"
+        },
+        {
+          "index": 6,
+          "text": "Spit it out. We can discuss."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "Should we do more kidnappings?",
+          "note": "Changed 'kidnaps' to 'kidnappings' for correct noun usage."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'm a mountaineer."
+        },
+        {
+          "index": 2,
+          "text": "After conquering one mountain,"
+        },
+        {
+          "index": 3,
+          "text": "I need to find a higher and harder mountain."
+        },
+        {
+          "index": 4,
+          "text": "That's it."
+        },
+        {
+          "index": 5,
+          "text": "Before finding that mountain,"
+        },
+        {
+          "index": 6,
+          "text": "let's find the money first."
+        },
+        {
+          "index": 7,
+          "text": "Let's keep doing it."
+        },
+        {
+          "index": 8,
+          "text": "Cheng, 53 years old."
+        },
+        {
+          "index": 9,
+          "text": "No children. His wife is in charge."
+        },
+        {
+          "index": 10,
+          "text": "A mobile phone used to cost over RMB¥10K.\nWho could afford that?"
+        },
+        {
+          "index": 11,
+          "text": "Not everyone is a child of\na high-ranking official."
+        },
+        {
+          "index": 12,
+          "text": "Now the cheaper, the better."
+        },
+        {
+          "index": 13,
+          "text": "We have a population of 10 million."
+        },
+        {
+          "index": 14,
+          "text": "Say RMB¥1K a set,"
+        },
+        {
+          "index": 15,
+          "text": "RMB¥10K for 10 sets."
+        },
+        {
+          "index": 16,
+          "text": "We will be fatter than Chow Yun-fat!"
+        },
+        {
+          "index": 17,
+          "text": "Beepers are already outdated."
+        },
+        {
+          "index": 18,
+          "text": "OK, I'll talk to you later."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Excuse me, Boss."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Please go on."
+        },
+        {
+          "index": 2,
+          "text": "Don't give us a hard time.\nWe're doing small business."
+        },
+        {
+          "index": 3,
+          "text": "Big Bro, these kids are great."
+        },
+        {
+          "index": 4,
+          "text": "The guy who came in first\nhas criminal record in Hong Kong."
+        },
+        {
+          "index": 5,
+          "text": "Don't know why you brought him here."
+        },
+        {
+          "index": 6,
+          "text": "I told you to bring some decent-looking guys."
+        },
+        {
+          "index": 7,
+          "text": "They all look like criminals and idiots."
+        },
+        {
+          "index": 8,
+          "text": "You should be out of business."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What is he staring at?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "He is smart and helpful"
+        },
+        {
+          "index": 2,
+          "text": "I don't want the guy in blue either."
+        },
+        {
+          "index": 3,
+          "text": "You only need two men this time?"
+        },
+        {
+          "index": 4,
+          "text": "Take the others to broaden their horizons."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Got it!"
+        },
+        {
+          "index": 2,
+          "text": "Let me see to it."
+        },
+        {
+          "index": 3,
+          "text": "What are you fucking looking at?"
+        },
+        {
+          "index": 4,
+          "text": "You, you, get lost!"
+        },
+        {
+          "index": 5,
+          "text": "Stop drinking and scram!"
+        },
+        {
+          "index": 6,
+          "text": "You two come with me."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Faster."
+        },
+        {
+          "index": 2,
+          "text": "So slow!"
+        },
+        {
+          "index": 3,
+          "text": "Big Bro Chiu,"
+        },
+        {
+          "index": 4,
+          "text": "Wang Lei."
+        },
+        {
+          "index": 5,
+          "text": "Hong Qi."
+        },
+        {
+          "index": 6,
+          "text": "Say Big Bro Chiu."
+        },
+        {
+          "index": 7,
+          "text": "Big Bro Chiu!"
+        },
+        {
+          "index": 8,
+          "text": "They understand Cantonese?"
+        },
+        {
+          "index": 9,
+          "text": "Of course!"
+        },
+        {
+          "index": 10,
+          "text": "Come have a drink."
+        },
+        {
+          "index": 11,
+          "text": "Spruce them up before sending them to Hong Kong."
+        },
+        {
+          "index": 12,
+          "text": "Sure will!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Motherfucker."
+        },
+        {
+          "index": 2,
+          "text": "Sit and eat."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Commander,"
+        },
+        {
+          "index": 2,
+          "text": "who's this Big Bro Chiu?"
+        },
+        {
+          "index": 3,
+          "text": "Who cares if he is Big Bro Chiu or not?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "He is a douchebag."
+        },
+        {
+          "index": 2,
+          "text": "He is a sly,"
+        },
+        {
+          "index": 3,
+          "text": "old fox who changes identities."
+        },
+        {
+          "index": 4,
+          "text": "He looks fucking like Kwai Ching-hung,"
+        },
+        {
+          "index": 5,
+          "text": "the invisible King of Thieves in Hong Kong."
+        },
+        {
+          "index": 6,
+          "text": "Kwai Ching-hung disappeared"
+        },
+        {
+          "index": 7,
+          "text": "after killing cops."
+        },
+        {
+          "index": 8,
+          "text": "Then Big Bro Chiu popped up."
+        },
+        {
+          "index": 9,
+          "text": "Big Bro Chiu is just a name."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Is Fai here?"
+        },
+        {
+          "index": 2,
+          "text": "Fai."
+        },
+        {
+          "index": 3,
+          "text": "What's up?"
+        },
+        {
+          "index": 4,
+          "text": "- Someone is looking for you.\n- Hey."
+        },
+        {
+          "index": 5,
+          "text": "Bro Coke?"
+        },
+        {
+          "index": 6,
+          "text": "Hey!"
+        },
+        {
+          "index": 7,
+          "text": "She's Thai?"
+        },
+        {
+          "index": 8,
+          "text": "Noon, go buy a dozen of Cokes."
+        },
+        {
+          "index": 9,
+          "text": "When did you come back?"
+        },
+        {
+          "index": 10,
+          "text": "Just now."
+        },
+        {
+          "index": 11,
+          "text": "You are too kind. Come in and have a seat."
+        },
+        {
+          "index": 12,
+          "text": "Did you just speak Thai?"
+        },
+        {
+          "index": 13,
+          "text": "Do you think I speak French?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You stink!"
+        },
+        {
+          "index": 2,
+          "text": "Really?"
+        },
+        {
+          "index": 3,
+          "text": "Bo."
+        },
+        {
+          "index": 4,
+          "text": "How can you be so rude?"
+        },
+        {
+          "index": 5,
+          "text": "Come help set the table."
+        },
+        {
+          "index": 6,
+          "text": "Dinner will be served soon."
+        },
+        {
+          "index": 7,
+          "text": "Naughty girl."
+        },
+        {
+          "index": 8,
+          "text": "Go wash your hands."
+        },
+        {
+          "index": 9,
+          "text": "I did wash my hands."
+        },
+        {
+          "index": 10,
+          "text": "You ate yesterday. Are you going to eat today?"
+        },
+        {
+          "index": 11,
+          "text": "Bo, slow down. Don't rush."
+        },
+        {
+          "index": 12,
+          "text": "Bro Coke."
+        },
+        {
+          "index": 13,
+          "text": "You want some?"
+        },
+        {
+          "index": 14,
+          "text": "Shall we share it?"
+        },
+        {
+          "index": 15,
+          "text": "Don't let her drink it."
+        },
+        {
+          "index": 16,
+          "text": "She was coughing.\nI don't wanna spend money on meds."
+        },
+        {
+          "index": 17,
+          "text": "I wasn't coughing. I just had a fever."
+        },
+        {
+          "index": 18,
+          "text": "It's all right to have a sip."
+        },
+        {
+          "index": 19,
+          "text": "Not coughing? You are being cheeky!"
+        },
+        {
+          "index": 20,
+          "text": "I say no Coke."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Fai, I'm not gonna eat. I'm running late."
+        },
+        {
+          "index": 2,
+          "text": "You're going now?"
+        },
+        {
+          "index": 3,
+          "text": "Yes."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Be a good girl."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Bro Coke, dig in."
+        },
+        {
+          "index": 2,
+          "text": "She's not eating with us?"
+        },
+        {
+          "index": 3,
+          "text": "She has to work night shift."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "She's a legit masseuse."
+        },
+        {
+          "index": 2,
+          "text": "Eat some barbecued pork."
+        },
+        {
+          "index": 3,
+          "text": "Bo, eat some veggies."
+        },
+        {
+          "index": 4,
+          "text": "You seldom eat veggies."
+        },
+        {
+          "index": 5,
+          "text": "Shall we go to Ocean Park?"
+        },
+        {
+          "index": 6,
+          "text": "Shall we ride the roller coaster?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Shall we fly higher and farther?"
+        },
+        {
+          "index": 2,
+          "text": "Tickle, tickle."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Stop making noise, or the landlady will be nasty."
+        },
+        {
+          "index": 2,
+          "text": "She's nasty because you haven't paid the rent."
+        },
+        {
+          "index": 3,
+          "text": "You're being cheeky. Come down."
+        },
+        {
+          "index": 4,
+          "text": "What a dragon lady, arguing with your father!"
+        },
+        {
+          "index": 5,
+          "text": "This girl plays too much! Wear your slippers."
+        },
+        {
+          "index": 6,
+          "text": "Have you finished your homework? Homework first."
+        },
+        {
+          "index": 7,
+          "text": "Quick!"
+        },
+        {
+          "index": 8,
+          "text": "- I'll spank you.\n- Good girl."
+        },
+        {
+          "index": 9,
+          "text": "This naughty girl!"
+        },
+        {
+          "index": 10,
+          "text": "I've quit smoking."
+        },
+        {
+          "index": 11,
+          "text": "Quit?"
+        },
+        {
+          "index": 12,
+          "text": "I've quit smoking."
+        },
+        {
+          "index": 13,
+          "text": "\"Whoring, gambling, drinking, roaming…"
+        },
+        {
+          "index": 14,
+          "text": "and smoking are the hobbies of a king.\""
+        },
+        {
+          "index": 15,
+          "text": "Your mantra."
+        },
+        {
+          "index": 16,
+          "text": "I'm on dialysis. I have to quit."
+        },
+        {
+          "index": 17,
+          "text": "Told you you're impotent."
+        },
+        {
+          "index": 18,
+          "text": "You feel dizzy when you squat."
+        },
+        {
+          "index": 19,
+          "text": "Fuck!"
+        },
+        {
+          "index": 20,
+          "text": "What have you been up to?"
+        },
+        {
+          "index": 21,
+          "text": "What can I do?"
+        },
+        {
+          "index": 22,
+          "text": "I used to do temporary construction work."
+        },
+        {
+          "index": 23,
+          "text": "Now I'm a full-time babysitter."
+        },
+        {
+          "index": 24,
+          "text": "What about you?"
+        },
+        {
+          "index": 25,
+          "text": "Me?"
+        },
+        {
+          "index": 26,
+          "text": "I sell this in China."
+        },
+        {
+          "index": 27,
+          "text": "People won't use beepers anymore."
+        },
+        {
+          "index": 28,
+          "text": "Every Chinese will own\na mobile phone in the future."
+        },
+        {
+          "index": 29,
+          "text": "One sells for RMB¥1K, 10 for RMB¥10K."
+        },
+        {
+          "index": 30,
+          "text": "I'll be fatter than Chow Yun-fat."
+        },
+        {
+          "index": 31,
+          "text": "Fat with loads of money?"
+        },
+        {
+          "index": 32,
+          "text": "Great."
+        },
+        {
+          "index": 33,
+          "text": "You're doing great. You're becoming a boss."
+        },
+        {
+          "index": 34,
+          "text": "Going straight is better than going astray."
+        },
+        {
+          "index": 35,
+          "text": "We're not fierce enough to be Kings of Thieves."
+        },
+        {
+          "index": 36,
+          "text": "All we did were some petty crimes."
+        },
+        {
+          "index": 37,
+          "text": "Our life was insecure. We couldn't sleep well."
+        },
+        {
+          "index": 38,
+          "text": "And we didn't earn that much.\nSo what's the point?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'd like to stay here for a few days."
+        },
+        {
+          "index": 2,
+          "text": "What?"
+        },
+        {
+          "index": 3,
+          "text": "I can sleep on the couch."
+        },
+        {
+          "index": 4,
+          "text": "What's that for?"
+        },
+        {
+          "index": 5,
+          "text": "Take it. It will lessen your wife's burden."
+        },
+        {
+          "index": 6,
+          "text": "Dad, I can't find my school manual!"
+        },
+        {
+          "index": 7,
+          "text": "Dad, Dad."
+        },
+        {
+          "index": 8,
+          "text": "Coming!"
+        },
+        {
+          "index": 9,
+          "text": "That's fine"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(Gold shop)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(Jockey Club)"
+        },
+        {
+          "index": 2,
+          "text": "Panyu Yi Fa Market"
+        },
+        {
+          "index": 3,
+          "text": "30 sets of 29-inch TVs. RMB¥12K apiece."
+        },
+        {
+          "index": 4,
+          "text": "Plus 80 VCD players. RMB¥4K a piece."
+        },
+        {
+          "index": 5,
+          "text": "RMB¥680K, thank you."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "Plus 80 VCD players. RMB¥4K apiece.",
+          "note": "Changed 'a piece' to 'apiece' for correct usage."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You pay me RMB¥700K."
+        },
+        {
+          "index": 2,
+          "text": "I will notify you once the goods are delivered."
+        },
+        {
+          "index": 3,
+          "text": "Next."
+        },
+        {
+          "index": 4,
+          "text": "RMB¥30K for Chief Chen. Please count it."
+        },
+        {
+          "index": 5,
+          "text": "Business License"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "RMB¥30K. The amount is correct."
+        },
+        {
+          "index": 2,
+          "text": "Will notify you once the goods are onboard."
+        },
+        {
+          "index": 3,
+          "text": "Please extend my thanks to Chief Chen."
+        },
+        {
+          "index": 4,
+          "text": "My VCD player is broken."
+        },
+        {
+          "index": 5,
+          "text": "I'll give you a new one. Kam."
+        },
+        {
+          "index": 6,
+          "text": "Yes."
+        },
+        {
+          "index": 7,
+          "text": "The latest 33-inch TV set."
+        },
+        {
+          "index": 8,
+          "text": "Good stuff."
+        },
+        {
+          "index": 9,
+          "text": "I'll give it to you, too."
+        },
+        {
+          "index": 10,
+          "text": "Thanks so much, Boss Zhang."
+        },
+        {
+          "index": 11,
+          "text": "You're welcome."
+        },
+        {
+          "index": 12,
+          "text": "Gui, Guang, a 33-inch TV set and a VCD player."
+        },
+        {
+          "index": 13,
+          "text": "Sure."
+        },
+        {
+          "index": 14,
+          "text": "Da-bao Electronics"
+        },
+        {
+          "index": 15,
+          "text": "She is greedy."
+        },
+        {
+          "index": 16,
+          "text": "That's business."
+        },
+        {
+          "index": 17,
+          "text": "Don't pull a long face all day long."
+        },
+        {
+          "index": 18,
+          "text": "Boss Zhang, Boss Zhang."
+        },
+        {
+          "index": 19,
+          "text": "No worries. They will take care of it."
+        },
+        {
+          "index": 20,
+          "text": "- Quick\n- What's wrong?"
+        },
+        {
+          "index": 21,
+          "text": "Boss Zhang."
+        },
+        {
+          "index": 22,
+          "text": "What's wrong?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Will notify you once the goods are on board.",
+          "note": "Corrected 'onboard' to 'on board' for standard usage in this context."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Something wrong with the goods?"
+        },
+        {
+          "index": 2,
+          "text": "No, close the door."
+        },
+        {
+          "index": 3,
+          "text": "Close the door."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Want to play tough guy? Call your wife now."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Call your wife now."
+        },
+        {
+          "index": 2,
+          "text": "Tell your folks you're OK, asshole."
+        },
+        {
+          "index": 3,
+          "text": "If you kill me, you won't get a cent."
+        },
+        {
+          "index": 4,
+          "text": "Are you threatening me?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Cheuk, be patient."
+        },
+        {
+          "index": 2,
+          "text": "If he doesn't talk, don't give him food or water."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You're so noisy."
+        },
+        {
+          "index": 2,
+          "text": "Hey, what are you doing?"
+        },
+        {
+          "index": 3,
+          "text": "Get him back! Get him back!"
+        },
+        {
+          "index": 4,
+          "text": "This is the gold shop."
+        },
+        {
+          "index": 5,
+          "text": "Usually there's a police wagon at the entrance."
+        },
+        {
+          "index": 6,
+          "text": "Jockey Club is across the street."
+        },
+        {
+          "index": 7,
+          "text": "We keep a close eye on the police wagon."
+        },
+        {
+          "index": 8,
+          "text": "As soon as it leaves at 8pm,\nwe rob the gold shop right away."
+        },
+        {
+          "index": 9,
+          "text": "It's the racing night. It will be crowded.\nAfter it's done…"
+        },
+        {
+          "index": 10,
+          "text": "- There's not much money in this.\n- Follow me closely."
+        },
+        {
+          "index": 11,
+          "text": "What did you just say?"
+        },
+        {
+          "index": 12,
+          "text": "You've committed big crimes."
+        },
+        {
+          "index": 13,
+          "text": "Why pick this small gold shop?"
+        },
+        {
+          "index": 14,
+          "text": "Yes,"
+        },
+        {
+          "index": 15,
+          "text": "I've heard the 3 Kings\nof Thieves would join forces."
+        },
+        {
+          "index": 16,
+          "text": "At least millions of dollars will be involved."
+        },
+        {
+          "index": 17,
+          "text": "What 3 Kings of Thieves?"
+        },
+        {
+          "index": 18,
+          "text": "Say it!"
+        },
+        {
+          "index": 19,
+          "text": "Bro Foon, are you making a comeback?"
+        },
+        {
+          "index": 20,
+          "text": "This time with Cheuk Tze-keung\nand Kwai Ching-hung."
+        },
+        {
+          "index": 21,
+          "text": "The 3 Kings of Thieves are collaborating?"
+        },
+        {
+          "index": 22,
+          "text": "Someone has seen you three meeting in China."
+        },
+        {
+          "index": 23,
+          "text": "Where did you hear this?"
+        },
+        {
+          "index": 24,
+          "text": "Everyone is saying that."
+        },
+        {
+          "index": 25,
+          "text": "And you believe it?"
+        },
+        {
+          "index": 26,
+          "text": "Didn't Big Bro say you couldn't\nmake money by toting guns?"
+        },
+        {
+          "index": 27,
+          "text": "If I'm Kwai,"
+        },
+        {
+          "index": 28,
+          "text": "I don't have\nto eat lunch boxes with you."
+        },
+        {
+          "index": 29,
+          "text": "Idiots."
+        },
+        {
+          "index": 30,
+          "text": "That's ridiculous!"
+        },
+        {
+          "index": 31,
+          "text": "Yip is all noise and fury."
+        },
+        {
+          "index": 32,
+          "text": "Kwai is hush and shush."
+        },
+        {
+          "index": 33,
+          "text": "We are so different. How can it work?"
+        },
+        {
+          "index": 34,
+          "text": "Smuggle more goods with me."
+        },
+        {
+          "index": 35,
+          "text": "Let's make more money together!"
+        },
+        {
+          "index": 36,
+          "text": "Got it."
+        },
+        {
+          "index": 37,
+          "text": "Brilliant!"
+        },
+        {
+          "index": 38,
+          "text": "Sometimes I feel like toting my gun again."
+        },
+        {
+          "index": 39,
+          "text": "Robbery! Robbery!"
+        },
+        {
+          "index": 40,
+          "text": "That's so cool!"
+        },
+        {
+          "index": 41,
+          "text": "You call that cool?"
+        },
+        {
+          "index": 42,
+          "text": "Big Bro wielding AK-47 is cool!"
+        },
+        {
+          "index": 43,
+          "text": "Not like this."
+        },
+        {
+          "index": 44,
+          "text": "AK-47 recoil is powerful."
+        },
+        {
+          "index": 45,
+          "text": "Don't hold it."
+        },
+        {
+          "index": 46,
+          "text": "Press it."
+        },
+        {
+          "index": 47,
+          "text": "Stand firm."
+        },
+        {
+          "index": 48,
+          "text": "Shoot the hell out of him."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What the fuck?! Join me"
+        },
+        {
+          "index": 2,
+          "text": "or go home and eat shit."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Big Bro Chiu,"
+        },
+        {
+          "index": 2,
+          "text": "how much can we earn from robbing this gold shop?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You're calling or not?"
+        },
+        {
+          "index": 2,
+          "text": "If the 3 Kings of Thieves join forces,"
+        },
+        {
+          "index": 3,
+          "text": "even if we open a fish ball stall together,"
+        },
+        {
+          "index": 4,
+          "text": "we will create a stir, right?"
+        },
+        {
+          "index": 5,
+          "text": "What shall I call our stall?"
+        },
+        {
+          "index": 6,
+          "text": "Are you calling your family or not?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hey, wake up!"
+        },
+        {
+          "index": 2,
+          "text": "Gold depository?"
+        },
+        {
+          "index": 3,
+          "text": "Racecourse?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Kidnap Hong Kong Governor Chris Patten?"
+        },
+        {
+          "index": 2,
+          "text": "The Head of Hong Kong and Macau Affairs, Lu Ping?"
+        },
+        {
+          "index": 3,
+          "text": "No way."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What are you listening?"
+        },
+        {
+          "index": 2,
+          "text": "The 4 Heavenly Kings singing on stage together."
+        },
+        {
+          "index": 3,
+          "text": "What are they singing?"
+        },
+        {
+          "index": 4,
+          "text": "I can't hear a thing. What's so good about it?"
+        },
+        {
+          "index": 5,
+          "text": "When the 4 Heavenly Kings sing together,"
+        },
+        {
+          "index": 6,
+          "text": "it's terrific no matter what they sing."
+        },
+        {
+          "index": 7,
+          "text": "Water, give me water."
+        },
+        {
+          "index": 8,
+          "text": "I will make the call."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "What are you listening to?",
+          "note": "Added 'to' at the end for correct grammar: 'listening to'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "How's my husband? I beg you!"
+        },
+        {
+          "index": 2,
+          "text": "He's not in good health. Don't hurt him."
+        },
+        {
+          "index": 3,
+          "text": "We are not as loaded as it may seem."
+        },
+        {
+          "index": 4,
+          "text": "Mr Cheuk, can you let my husband go?"
+        },
+        {
+          "index": 5,
+          "text": "Name a price. I'll pay you from my own pocket…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hello?"
+        },
+        {
+          "index": 2,
+          "text": "I have $80M in cash."
+        },
+        {
+          "index": 3,
+          "text": "Is it OK?"
+        },
+        {
+          "index": 4,
+          "text": "$80M it is!"
+        },
+        {
+          "index": 5,
+          "text": "Find Yip and Kwai!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What the hell?"
+        },
+        {
+          "index": 2,
+          "text": "The 3 Kings of Thieves\njoin forces for the first time."
+        },
+        {
+          "index": 3,
+          "text": "It will be terrific no matter what we do!"
+        },
+        {
+          "index": 4,
+          "text": "You don't even have a plan yet,"
+        },
+        {
+          "index": 5,
+          "text": "and you want 2 wanted men around you?"
+        },
+        {
+          "index": 6,
+          "text": "You know I will"
+        },
+        {
+          "index": 7,
+          "text": "come up with a plan!"
+        },
+        {
+          "index": 8,
+          "text": "This is the mountain I'm looking for."
+        },
+        {
+          "index": 9,
+          "text": "Himalaya!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Having night snack?"
+        },
+        {
+          "index": 2,
+          "text": "There's Coke in the fridge."
+        },
+        {
+          "index": 3,
+          "text": "OK, I'll get it myself."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Fai, how long is your friend staying?"
+        },
+        {
+          "index": 2,
+          "text": "3 or 4 nights."
+        },
+        {
+          "index": 3,
+          "text": "We have a daughter."
+        },
+        {
+          "index": 4,
+          "text": "I don't feel comfortable…"
+        },
+        {
+          "index": 5,
+          "text": "with a guy suddenly staying with us."
+        },
+        {
+          "index": 6,
+          "text": "What does he do?"
+        },
+        {
+          "index": 7,
+          "text": "He sells mobile phones."
+        },
+        {
+          "index": 8,
+          "text": "Don't worry."
+        },
+        {
+          "index": 9,
+          "text": "Go to sleep."
+        },
+        {
+          "index": 10,
+          "text": "OK."
+        },
+        {
+          "index": 11,
+          "text": "I'll go to bed after sewing."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I will arrive with clients in 3 minutes."
+        },
+        {
+          "index": 2,
+          "text": "Got it."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Gui, Guang, unload the goods. Be quick."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Big Bro, we have a situation!"
+        },
+        {
+          "index": 2,
+          "text": "Panyu Customs!"
+        },
+        {
+          "index": 3,
+          "text": "Kam! Kam!"
+        },
+        {
+          "index": 4,
+          "text": "Chung, pull over!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Take a look over there."
+        },
+        {
+          "index": 2,
+          "text": "Take a look again over there."
+        },
+        {
+          "index": 3,
+          "text": "Don't move. Hands on your head."
+        },
+        {
+          "index": 4,
+          "text": "Let's go."
+        },
+        {
+          "index": 5,
+          "text": "Let's go."
+        },
+        {
+          "index": 6,
+          "text": "What about Kam?"
+        },
+        {
+          "index": 7,
+          "text": "Find Mr Fong."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chinese customs"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Comrade."
+        },
+        {
+          "index": 2,
+          "text": "What do you want?"
+        },
+        {
+          "index": 3,
+          "text": "We're looking for Chief Long."
+        },
+        {
+          "index": 4,
+          "text": "We're wondering"
+        },
+        {
+          "index": 5,
+          "text": "if he can discharge the Lianhuashan goods and men?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "We know Mr Fong."
+        },
+        {
+          "index": 2,
+          "text": "In 4 days, the goods will be confiscated"
+        },
+        {
+          "index": 3,
+          "text": "and the men will be executed."
+        },
+        {
+          "index": 4,
+          "text": "Yes, we understand."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chief, someone wants to see you."
+        },
+        {
+          "index": 2,
+          "text": "OK."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chief Long is busy today."
+        },
+        {
+          "index": 2,
+          "text": "Come again tomorrow."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "All right. Yes…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chief Long is not seeing guests today."
+        },
+        {
+          "index": 2,
+          "text": "Come again tomorrow."
+        },
+        {
+          "index": 3,
+          "text": "Asshole."
+        },
+        {
+          "index": 4,
+          "text": "Who do you think you are?"
+        },
+        {
+          "index": 5,
+          "text": "You don't want to save Kam anymore?"
+        },
+        {
+          "index": 6,
+          "text": "Yes, yes."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chief Long said he wanted to talk over dinner."
+        },
+        {
+          "index": 2,
+          "text": "Find a restaurant and wait for him."
+        },
+        {
+          "index": 3,
+          "text": "Good."
+        },
+        {
+          "index": 4,
+          "text": "Fengman Restaurant."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hello?"
+        },
+        {
+          "index": 2,
+          "text": "I am in Fugui Restaurant with Chief Long."
+        },
+        {
+          "index": 3,
+          "text": "Coming right away."
+        },
+        {
+          "index": 4,
+          "text": "Let's go."
+        },
+        {
+          "index": 5,
+          "text": "Remember to bring a vase."
+        },
+        {
+          "index": 6,
+          "text": "Take the vase."
+        },
+        {
+          "index": 7,
+          "text": "Quick!"
+        },
+        {
+          "index": 8,
+          "text": "Okay!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hurry up!"
+        },
+        {
+          "index": 2,
+          "text": "Chief Long of Customs."
+        },
+        {
+          "index": 3,
+          "text": "He's my buddy."
+        },
+        {
+          "index": 4,
+          "text": "Chief Long, nice to meet you."
+        },
+        {
+          "index": 5,
+          "text": "I'm an official but you made me wait!"
+        },
+        {
+          "index": 6,
+          "text": "Sorry,"
+        },
+        {
+          "index": 7,
+          "text": "I went to Fengman Restaurant."
+        },
+        {
+          "index": 8,
+          "text": "Is the food there edible?"
+        },
+        {
+          "index": 9,
+          "text": "He knows nothing about food!"
+        },
+        {
+          "index": 10,
+          "text": "Chief Long is a foodie."
+        },
+        {
+          "index": 11,
+          "text": "Yes, you're right."
+        },
+        {
+          "index": 12,
+          "text": "Chief Long, he's my buddy."
+        },
+        {
+          "index": 13,
+          "text": "Help him this time."
+        },
+        {
+          "index": 14,
+          "text": "Thank you."
+        },
+        {
+          "index": 15,
+          "text": "He's your buddy, not mine."
+        },
+        {
+          "index": 16,
+          "text": "I only help my friends!"
+        },
+        {
+          "index": 17,
+          "text": "If we hit it off, we're friends."
+        },
+        {
+          "index": 18,
+          "text": "I'm hungry!"
+        },
+        {
+          "index": 19,
+          "text": "Let's order first."
+        },
+        {
+          "index": 20,
+          "text": "Yes, let's order."
+        },
+        {
+          "index": 21,
+          "text": "What would you like?"
+        },
+        {
+          "index": 22,
+          "text": "Braised pork with preserved vegetables."
+        },
+        {
+          "index": 23,
+          "text": "It's not refined enough for me."
+        },
+        {
+          "index": 24,
+          "text": "Let's order delicacies."
+        },
+        {
+          "index": 25,
+          "text": "Waiter!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Thanks a lot."
+        },
+        {
+          "index": 2,
+          "text": "What's your name?"
+        },
+        {
+          "index": 3,
+          "text": "Boss Zhang."
+        },
+        {
+          "index": 4,
+          "text": "Boss Zhang, right?"
+        },
+        {
+          "index": 5,
+          "text": "You're a fun guy! A fun guy!"
+        },
+        {
+          "index": 6,
+          "text": "Thank you."
+        },
+        {
+          "index": 7,
+          "text": "Chief Long, thanks for your help."
+        },
+        {
+          "index": 8,
+          "text": "Let's sing karaoke first."
+        },
+        {
+          "index": 9,
+          "text": "OK, karaoke first."
+        },
+        {
+          "index": 10,
+          "text": "Chung"
+        },
+        {
+          "index": 11,
+          "text": "Give me name cards of karaoke bars and the phone."
+        },
+        {
+          "index": 12,
+          "text": "Let's go for more fun."
+        },
+        {
+          "index": 13,
+          "text": "I can't…"
+        },
+        {
+          "index": 14,
+          "text": "Let's take a bath."
+        },
+        {
+          "index": 15,
+          "text": "It's good to take a bath."
+        },
+        {
+          "index": 16,
+          "text": "Find a sauna."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Don't forget the vase."
+        },
+        {
+          "index": 2,
+          "text": "Yes."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chinese customs"
+        },
+        {
+          "index": 2,
+          "text": "Thanks to connections,\nI didn't need to rot in jail."
+        },
+        {
+          "index": 3,
+          "text": "We stayed in a motel,"
+        },
+        {
+          "index": 4,
+          "text": "with a bed, TV, OK food,"
+        },
+        {
+          "index": 5,
+          "text": "though no whores!"
+        },
+        {
+          "index": 6,
+          "text": "It's not bad, huh? What do you say?"
+        },
+        {
+          "index": 7,
+          "text": "Yes, yes."
+        },
+        {
+          "index": 8,
+          "text": "Asshole, you didn't need to carouse\nwith those officials!"
+        },
+        {
+          "index": 9,
+          "text": "Don't complain about carousing,"
+        },
+        {
+          "index": 10,
+          "text": "for money's sake."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hey! Come here."
+        },
+        {
+          "index": 2,
+          "text": "Our goods!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Come."
+        },
+        {
+          "index": 2,
+          "text": "Your goods are here."
+        },
+        {
+          "index": 3,
+          "text": "Take a look. Any problems?"
+        },
+        {
+          "index": 4,
+          "text": "Thanks so much."
+        },
+        {
+          "index": 5,
+          "text": "Let me take a look."
+        },
+        {
+          "index": 6,
+          "text": "Sign here if there's no problem."
+        },
+        {
+          "index": 7,
+          "text": "Thanks so much."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "OK."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Your mole hasn't found Kwai's dossier"
+        },
+        {
+          "index": 2,
+          "text": "in the police station?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "No news about Yip in China?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What about his underlings? His fences?"
+        },
+        {
+          "index": 2,
+          "text": "His fellow illegal immigrants? His village mates?"
+        },
+        {
+          "index": 3,
+          "text": "Can't find them?"
+        },
+        {
+          "index": 4,
+          "text": "Nothing at all?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Good."
+        },
+        {
+          "index": 2,
+          "text": "Good."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Fuck you!"
+        },
+        {
+          "index": 2,
+          "text": "Fuck you!"
+        },
+        {
+          "index": 3,
+          "text": "The cops have offered a $1M reward on him."
+        },
+        {
+          "index": 4,
+          "text": "But there's no news over these years."
+        },
+        {
+          "index": 5,
+          "text": "Give me some time."
+        },
+        {
+          "index": 6,
+          "text": "Reward money is a good idea."
+        },
+        {
+          "index": 7,
+          "text": "The cops offer $1M; I'll up it to $10M!"
+        },
+        {
+          "index": 8,
+          "text": "If it's not enough, then $100M!"
+        },
+        {
+          "index": 9,
+          "text": "I'll set up a special phone line."
+        },
+        {
+          "index": 10,
+          "text": "Whoever knows their\nwhereabouts will get the money."
+        },
+        {
+          "index": 11,
+          "text": "So brazenly? The cops will tap the phone."
+        },
+        {
+          "index": 12,
+          "text": "Those assholes will prevent the 3 Kings\nfrom meeting up."
+        },
+        {
+          "index": 13,
+          "text": "Not necessarily."
+        },
+        {
+          "index": 14,
+          "text": "The cops want them too."
+        },
+        {
+          "index": 15,
+          "text": "They will send loads of people after us."
+        },
+        {
+          "index": 16,
+          "text": "Find a way to shake them off."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hello?"
+        },
+        {
+          "index": 2,
+          "text": "Are you Cheuk?"
+        },
+        {
+          "index": 3,
+          "text": "Yes."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Noon tomorrow. Bring a purple umbrella\nto Temple Street."
+        },
+        {
+          "index": 2,
+          "text": "I'll have you picked up."
+        },
+        {
+          "index": 3,
+          "text": "Get on."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Take off your clothes."
+        },
+        {
+          "index": 2,
+          "text": "Take them all off."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I worked with Kwai once. He's so average."
+        },
+        {
+          "index": 2,
+          "text": "I know Yip. He lived in Guangdong."
+        },
+        {
+          "index": 3,
+          "text": "Kwai's real name is Xing Zhennan."
+        },
+        {
+          "index": 4,
+          "text": "His ancestral house was built by me."
+        },
+        {
+          "index": 5,
+          "text": "Yes."
+        },
+        {
+          "index": 6,
+          "text": "OK."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I drove for Yip and was chased by the cops."
+        },
+        {
+          "index": 2,
+          "text": "I fenced for Yip."
+        },
+        {
+          "index": 3,
+          "text": "I was present in Yip's every heist."
+        },
+        {
+          "index": 4,
+          "text": "We wielded AK-47 together."
+        },
+        {
+          "index": 5,
+          "text": "Mr Cheuk, I envy you. I admire all your works."
+        },
+        {
+          "index": 6,
+          "text": "Yip bought sex from me."
+        },
+        {
+          "index": 7,
+          "text": "He was loud and proud."
+        },
+        {
+          "index": 8,
+          "text": "Heists? Hong Kong kids?"
+        },
+        {
+          "index": 9,
+          "text": "These barking dogs are sneaky wussies."
+        },
+        {
+          "index": 10,
+          "text": "I imported the Chinese\nretired soldiers to Hong Kong."
+        },
+        {
+          "index": 11,
+          "text": "What did I teach them before a heist?"
+        },
+        {
+          "index": 12,
+          "text": "Moral principle!"
+        },
+        {
+          "index": 13,
+          "text": "Father of the Chinese retired soldiers,"
+        },
+        {
+          "index": 14,
+          "text": "can you cut to the chase?"
+        },
+        {
+          "index": 15,
+          "text": "Do you know Yip or Kwai?"
+        },
+        {
+          "index": 16,
+          "text": "Don't interrupt me when I talk."
+        },
+        {
+          "index": 17,
+          "text": "If I talk too fast, you won't understand!"
+        },
+        {
+          "index": 18,
+          "text": "Where was I?"
+        },
+        {
+          "index": 19,
+          "text": "Moral principle."
+        },
+        {
+          "index": 20,
+          "text": "I once brought 3 Mainlanders"
+        },
+        {
+          "index": 21,
+          "text": "to a showdown with the cops. Bang!"
+        },
+        {
+          "index": 22,
+          "text": "One of them, Wei,\nwas so scared he dropped his gun!"
+        },
+        {
+          "index": 23,
+          "text": "You know what? I rushed to save him!"
+        },
+        {
+          "index": 24,
+          "text": "He owes me a lot."
+        },
+        {
+          "index": 25,
+          "text": "Know who Kun-xi is?"
+        },
+        {
+          "index": 26,
+          "text": "Yip's former boss?"
+        },
+        {
+          "index": 27,
+          "text": "Quincy is Wei's godson."
+        },
+        {
+          "index": 28,
+          "text": "Want to meet him?"
+        },
+        {
+          "index": 29,
+          "text": "$1M!"
+        },
+        {
+          "index": 30,
+          "text": "You better check him out thoroughly."
+        },
+        {
+          "index": 31,
+          "text": "Check me out? Motherfucker."
+        },
+        {
+          "index": 32,
+          "text": "It's just $1M."
+        },
+        {
+          "index": 33,
+          "text": "Act fast."
+        },
+        {
+          "index": 34,
+          "text": "Quincy will stand in front of you tomorrow."
+        },
+        {
+          "index": 35,
+          "text": "Give me the dough."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "We wielded AK-47s together.",
+          "note": "Added 's' to 'AK-47' to indicate plural, as 'we' implies more than one weapon."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hey."
+        },
+        {
+          "index": 2,
+          "text": "Thanks so much!"
+        },
+        {
+          "index": 3,
+          "text": "Let's go have some fun?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Are you tight in cash lately, Taishan Boy?"
+        },
+        {
+          "index": 2,
+          "text": "How can 3 pieces be enough?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Guns are for firing, not for sniffing."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Our commander taught us: safety first."
+        },
+        {
+          "index": 2,
+          "text": "Have you sniffed that Cheuk\nis looking for Yip and Kwai?"
+        },
+        {
+          "index": 3,
+          "text": "Mr Cheuk says he wants to meet those two."
+        },
+        {
+          "index": 4,
+          "text": "Look, he has set up a special phone line."
+        },
+        {
+          "index": 5,
+          "text": "Info for money."
+        },
+        {
+          "index": 6,
+          "text": "How generous!"
+        },
+        {
+          "index": 7,
+          "text": "Both of them are very dangerous."
+        },
+        {
+          "index": 8,
+          "text": "Which kingpin is not dangerous?"
+        },
+        {
+          "index": 9,
+          "text": "They are being so brazenly?"
+        },
+        {
+          "index": 10,
+          "text": "The Handover is imminent."
+        },
+        {
+          "index": 11,
+          "text": "Because the Handover is imminent,\nyou have to do big!"
+        },
+        {
+          "index": 12,
+          "text": "After the Handover,\nit will be slim pickings, Idiot."
+        },
+        {
+          "index": 13,
+          "text": "Listen."
+        },
+        {
+          "index": 14,
+          "text": "Sniff out their whereabouts."
+        },
+        {
+          "index": 15,
+          "text": "The restoration of this\nAssociation depends on you!"
+        },
+        {
+          "index": 16,
+          "text": "Keep me posted, kiddo."
+        },
+        {
+          "index": 17,
+          "text": "Keep me posted!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Have you sniffed out that Cheuk\nis looking for Yip and Kwai?",
+          "note": "Added 'out' to complete the phrasal verb 'sniffed out'."
+        },
+        {
+          "index": 9,
+          "text": "They are being so brazen?",
+          "note": "Removed 'ly' from 'brazenly' to correct the phrase to 'so brazen'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Stand still, sir."
+        },
+        {
+          "index": 2,
+          "text": "What's wrong?"
+        },
+        {
+          "index": 3,
+          "text": "Where are you going?"
+        },
+        {
+          "index": 4,
+          "text": "Home."
+        },
+        {
+          "index": 5,
+          "text": "Your ID, please."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Bo!"
+        },
+        {
+          "index": 2,
+          "text": "Why didn't you come home right after school?"
+        },
+        {
+          "index": 3,
+          "text": "I told you so many times."
+        },
+        {
+          "index": 4,
+          "text": "Where have you been?"
+        },
+        {
+          "index": 5,
+          "text": "We've been looking for you everywhere."
+        },
+        {
+          "index": 6,
+          "text": "Bro Coke, you should've told us beforehand."
+        },
+        {
+          "index": 7,
+          "text": "- I thought I was on my way.\n- You've scared the hell out of us."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Shut up!"
+        },
+        {
+          "index": 2,
+          "text": "Still drinking? Bad girl!"
+        },
+        {
+          "index": 3,
+          "text": "What happened?"
+        },
+        {
+          "index": 4,
+          "text": "She's naughty."
+        },
+        {
+          "index": 5,
+          "text": "Teach your girl at home, not on the street."
+        },
+        {
+          "index": 6,
+          "text": "- I'm sorry.\n- You've frightened her."
+        },
+        {
+          "index": 7,
+          "text": "Yes, I'm sorry."
+        },
+        {
+          "index": 8,
+          "text": "Let's go home."
+        },
+        {
+          "index": 9,
+          "text": "Thank you, sir."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Sorry."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Darling."
+        },
+        {
+          "index": 2,
+          "text": "Daddy loves you."
+        },
+        {
+          "index": 3,
+          "text": "My good girl."
+        },
+        {
+          "index": 4,
+          "text": "3 Days!"
+        },
+        {
+          "index": 5,
+          "text": "Chief Song helped us recover the goods in 3 days."
+        },
+        {
+          "index": 6,
+          "text": "Chief Song, my buddy!"
+        },
+        {
+          "index": 7,
+          "text": "You rock!"
+        },
+        {
+          "index": 8,
+          "text": "It's incumbent on the police to maintain order."
+        },
+        {
+          "index": 9,
+          "text": "Boss Zhang,"
+        },
+        {
+          "index": 10,
+          "text": "can you do me a favor?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Go!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Let him vent his anger."
+        },
+        {
+          "index": 2,
+          "text": "Stop!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chief Song, you're a tea connoisseur."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Enough."
+        },
+        {
+          "index": 2,
+          "text": "I need you to do me a favor."
+        },
+        {
+          "index": 3,
+          "text": "What do you mean?"
+        },
+        {
+          "index": 4,
+          "text": "They are the sons of my ex-commander's friend."
+        },
+        {
+          "index": 5,
+          "text": "Forgive them."
+        },
+        {
+          "index": 6,
+          "text": "Give me face."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "They robbed me."
+        },
+        {
+          "index": 2,
+          "text": "What have you lost?"
+        },
+        {
+          "index": 3,
+          "text": "They robbed me! Me!"
+        },
+        {
+          "index": 4,
+          "text": "We're good buddies."
+        },
+        {
+          "index": 5,
+          "text": "Who do you think you are?"
+        },
+        {
+          "index": 6,
+          "text": "A petit bourgeois!"
+        },
+        {
+          "index": 7,
+          "text": "A greedy, smuggling, tax-evading petit bourgeois!"
+        },
+        {
+          "index": 8,
+          "text": "Don't think too highly of yourself."
+        },
+        {
+          "index": 9,
+          "text": "We're good buddies."
+        },
+        {
+          "index": 10,
+          "text": "Take them away!"
+        },
+        {
+          "index": 11,
+          "text": "We're good buddies."
+        },
+        {
+          "index": 12,
+          "text": "Shoot him,"
+        },
+        {
+          "index": 13,
+          "text": "I'll act according to the law!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "A petite bourgeois!",
+          "note": "Corrected the misspelling 'petit' to 'petite' to match the French term for 'small'."
+        },
+        {
+          "index": 7,
+          "text": "A greedy, smuggling, tax-evading petite bourgeois!",
+          "note": "Corrected the misspelling 'petit' to 'petite' to match the French term for 'small'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Great, there's a vase in the toilet…"
+        },
+        {
+          "index": 2,
+          "text": "We're lucky…"
+        },
+        {
+          "index": 3,
+          "text": "It's small but it will do."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "We're good buddies."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "RMB¥2M, thank you!"
+        },
+        {
+          "index": 2,
+          "text": "I receive RMB¥1.3M from you. Thanks."
+        },
+        {
+          "index": 3,
+          "text": "I'll notify you once we have the goods."
+        },
+        {
+          "index": 4,
+          "text": "Next."
+        },
+        {
+          "index": 5,
+          "text": "Take your time."
+        },
+        {
+          "index": 6,
+          "text": "It's insane!"
+        },
+        {
+          "index": 7,
+          "text": "Everyone out."
+        },
+        {
+          "index": 8,
+          "text": "Get out!"
+        },
+        {
+          "index": 9,
+          "text": "It's insane!"
+        },
+        {
+          "index": 10,
+          "text": "What happened?"
+        },
+        {
+          "index": 11,
+          "text": "Bro Foon, Cheuk has gone mad!"
+        },
+        {
+          "index": 12,
+          "text": "He set up a special phone line to look for you."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Inspector Wu."
+        },
+        {
+          "index": 2,
+          "text": "You're difficult to tail."
+        },
+        {
+          "index": 3,
+          "text": "I had to wait here for you!"
+        },
+        {
+          "index": 4,
+          "text": "I caught this guy for you."
+        },
+        {
+          "index": 5,
+          "text": "He said you gave him $1M for Kun-xi's whereabouts."
+        },
+        {
+          "index": 6,
+          "text": "Is it a crime to look for someone?"
+        },
+        {
+          "index": 7,
+          "text": "No."
+        },
+        {
+          "index": 8,
+          "text": "But have you checked him out?"
+        },
+        {
+          "index": 9,
+          "text": "He's been in jail for 20 years."
+        },
+        {
+          "index": 10,
+          "text": "The phone numbers back then only had 6 digits!"
+        },
+        {
+          "index": 11,
+          "text": "He's out of touch now!"
+        },
+        {
+          "index": 12,
+          "text": "Out of touch?"
+        },
+        {
+          "index": 13,
+          "text": "If I go to China, Wei will pick me up!"
+        },
+        {
+          "index": 14,
+          "text": "Wei?"
+        },
+        {
+          "index": 15,
+          "text": "He was shot dead two years ago!"
+        },
+        {
+          "index": 16,
+          "text": "Kun-xi betrayed him!"
+        },
+        {
+          "index": 17,
+          "text": "Have you been conned?"
+        },
+        {
+          "index": 18,
+          "text": "I can arrest him now if you have."
+        },
+        {
+          "index": 19,
+          "text": "An eye for an eye."
+        },
+        {
+          "index": 20,
+          "text": "That's moral principle."
+        },
+        {
+          "index": 21,
+          "text": "Calm down!"
+        },
+        {
+          "index": 22,
+          "text": "I'm very calm."
+        },
+        {
+          "index": 23,
+          "text": "Or I'd have kicked you too!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Want to report the crime?"
+        },
+        {
+          "index": 2,
+          "text": "If not, I'll let him go."
+        },
+        {
+          "index": 3,
+          "text": "Well?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "If not, I'll let him go!"
+        },
+        {
+          "index": 2,
+          "text": "Get lost!"
+        },
+        {
+          "index": 3,
+          "text": "- Are you assaulting a police officer?\n- Don't play tricks."
+        },
+        {
+          "index": 4,
+          "text": "So what? Motherfucker!"
+        },
+        {
+          "index": 5,
+          "text": "Don't give up,"
+        },
+        {
+          "index": 6,
+          "text": "keep searching for him."
+        },
+        {
+          "index": 7,
+          "text": "The Royal Hong Kong Police relies\non your phone calls."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Why don't you just drop it?"
+        },
+        {
+          "index": 2,
+          "text": "Don't ruin your impeccable record."
+        },
+        {
+          "index": 3,
+          "text": "I'd help you if I could!"
+        },
+        {
+          "index": 4,
+          "text": "Even if you were to hit me,"
+        },
+        {
+          "index": 5,
+          "text": "I must say it's a dead end!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I know, I know!"
+        },
+        {
+          "index": 2,
+          "text": "We've come to the climax of tonight."
+        },
+        {
+          "index": 3,
+          "text": "The last leg of the Triple Trio."
+        },
+        {
+          "index": 4,
+          "text": "The $170M jackpot pool."
+        },
+        {
+          "index": 5,
+          "text": "Plus the total bet amount. A single winner"
+        },
+        {
+          "index": 6,
+          "text": "can collect over $300M."
+        },
+        {
+          "index": 7,
+          "text": "Many horse racing fans are placing bets."
+        },
+        {
+          "index": 8,
+          "text": "The whole city is abuzz!"
+        },
+        {
+          "index": 9,
+          "text": "A single winning ticket will make\nyou richer than any kings."
+        },
+        {
+          "index": 10,
+          "text": "See if you can win."
+        },
+        {
+          "index": 11,
+          "text": "Bets are placed on Wind Chaser."
+        },
+        {
+          "index": 12,
+          "text": "Gold Weather is the horse least expected to win."
+        },
+        {
+          "index": 13,
+          "text": "The odds are 99."
+        },
+        {
+          "index": 14,
+          "text": "Win & Place."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 9,
+          "text": "A single winning ticket will make\nyou richer than any king.",
+          "note": "Corrected 'kings' to 'king' for correct idiomatic usage: 'richer than any king'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Motherfucker, almost $400M in the pool."
+        },
+        {
+          "index": 2,
+          "text": "Hong Kong citizens are robbed by the Triple Trio."
+        },
+        {
+          "index": 3,
+          "text": "What does Triple Trio mean?"
+        },
+        {
+          "index": 4,
+          "text": "The $170M jackpot pool"
+        },
+        {
+          "index": 5,
+          "text": "has attracted many fans queuing\nto place their bets."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "No more clothes pegs?"
+        },
+        {
+          "index": 2,
+          "text": "No."
+        },
+        {
+          "index": 3,
+          "text": "Go get some in the room."
+        },
+        {
+          "index": 4,
+          "text": "Sure."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The race is about to start."
+        },
+        {
+          "index": 2,
+          "text": "The $170M jackpot pool."
+        },
+        {
+          "index": 3,
+          "text": "A single winner"
+        },
+        {
+          "index": 4,
+          "text": "can collect over $300M!"
+        },
+        {
+          "index": 5,
+          "text": "Who will be the lucky one?"
+        },
+        {
+          "index": 6,
+          "text": "A dark horse will increase the size"
+        },
+        {
+          "index": 7,
+          "text": "of the betting pool."
+        },
+        {
+          "index": 8,
+          "text": "The horses are in the stalls and ready to go."
+        },
+        {
+          "index": 9,
+          "text": "Which horse will take off first?"
+        },
+        {
+          "index": 10,
+          "text": "It's Wind Chaser."
+        },
+        {
+          "index": 11,
+          "text": "It runs faster and faster."
+        },
+        {
+          "index": 12,
+          "text": "The rest can hardly catch up."
+        },
+        {
+          "index": 13,
+          "text": "Go! Go! Go!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Faster! Faster! Faster!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "No one wins. The warehouse\nmust be filled with money."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Big Bro Chiu."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hey."
+        },
+        {
+          "index": 2,
+          "text": "Mr Cheuk, you know who Kun-xi is?"
+        },
+        {
+          "index": 3,
+          "text": "It's Kun-xi speaking."
+        },
+        {
+          "index": 4,
+          "text": "Look me up in Guangdong. I won't let you down."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You're really quitting? It's a cushy job."
+        },
+        {
+          "index": 2,
+          "text": "You're telling me!"
+        },
+        {
+          "index": 3,
+          "text": "Talk to Big Bro yourself."
+        },
+        {
+          "index": 4,
+          "text": "I have invested all I got in the goods."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You already know all those officials"
+        },
+        {
+          "index": 2,
+          "text": "and connections well…"
+        },
+        {
+          "index": 3,
+          "text": "What did you say?"
+        },
+        {
+          "index": 4,
+          "text": "Fisherman!"
+        },
+        {
+          "index": 5,
+          "text": "Yes, Bro Foon."
+        },
+        {
+          "index": 6,
+          "text": "Give me Cheuk's number."
+        },
+        {
+          "index": 7,
+          "text": "Bro Foon."
+        },
+        {
+          "index": 8,
+          "text": "You got something to say?"
+        },
+        {
+          "index": 9,
+          "text": "No."
+        },
+        {
+          "index": 10,
+          "text": "Give me the number!"
+        },
+        {
+          "index": 11,
+          "text": "Sure."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Fuck! Thought I would be famous overnight."
+        },
+        {
+          "index": 2,
+          "text": "What a waste of time!"
+        },
+        {
+          "index": 3,
+          "text": "Fame is not an issue."
+        },
+        {
+          "index": 4,
+          "text": "I can't just go back empty-handed."
+        },
+        {
+          "index": 5,
+          "text": "Not to mention having to chew this bread here."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Big Bro Chiu,"
+        },
+        {
+          "index": 2,
+          "text": "coming to Hong Kong has not been easy for us."
+        },
+        {
+          "index": 3,
+          "text": "We can't just go back like this."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Big Bro Chiu, you really want us to leave?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "If you guys have something big in mind,"
+        },
+        {
+          "index": 2,
+          "text": "count us in!"
+        },
+        {
+          "index": 3,
+          "text": "We can do anything."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I can keep a secret."
+        },
+        {
+          "index": 2,
+          "text": "If you say you're Big Bro Chiu, then so be it."
+        },
+        {
+          "index": 3,
+          "text": "I understand. Don't worry."
+        },
+        {
+          "index": 4,
+          "text": "I know the rules. It's between you and me."
+        },
+        {
+          "index": 5,
+          "text": "We have moral principle."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Share it."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Seriously, we can make it work."
+        },
+        {
+          "index": 2,
+          "text": "The 3 Kings of Thieves join forces…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mind your own business."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Aren't you on dialysis? Still smoking?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Old habits die hard."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Are you still angry with me?"
+        },
+        {
+          "index": 2,
+          "text": "You're planning to rob the gold shop downstairs?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I thought you're paying me a visit."
+        },
+        {
+          "index": 2,
+          "text": "You're here just for the location."
+        },
+        {
+          "index": 3,
+          "text": "Listen to me…"
+        },
+        {
+          "index": 4,
+          "text": "No more!"
+        },
+        {
+          "index": 5,
+          "text": "Listen to me…"
+        },
+        {
+          "index": 6,
+          "text": "I treat you as my brother. You treat me as a fool!"
+        },
+        {
+          "index": 7,
+          "text": "I never treat you as a fool."
+        },
+        {
+          "index": 8,
+          "text": "Forget it! Just shut up!"
+        },
+        {
+          "index": 9,
+          "text": "I have a wife and a daughter now."
+        },
+        {
+          "index": 10,
+          "text": "My life is great."
+        },
+        {
+          "index": 11,
+          "text": "Can you leave my family alone?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'm in the wrong this time."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You know it's hard to make a living."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "We're sworn brothers."
+        },
+        {
+          "index": 2,
+          "text": "I owe you this time."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Forget what happened these past few days."
+        },
+        {
+          "index": 2,
+          "text": "Keep it to yourself."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'll leave early tomorrow morning."
+        },
+        {
+          "index": 2,
+          "text": "You won't see me again."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Uncle Coke."
+        },
+        {
+          "index": 2,
+          "text": "Not in bed yet?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Guangdong province"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Sai Wan Container Terminal, Hong Kong"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mr Cheuk,"
+        },
+        {
+          "index": 2,
+          "text": "I've heard so much about you."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Where's Yip?"
+        },
+        {
+          "index": 2,
+          "text": "Let me show you something."
+        },
+        {
+          "index": 3,
+          "text": "This way."
+        },
+        {
+          "index": 4,
+          "text": "Mr Cheuk. How's your journey?"
+        },
+        {
+          "index": 5,
+          "text": "I'll treat you to something special."
+        },
+        {
+          "index": 6,
+          "text": "Shrimps and crabs are local specialties."
+        },
+        {
+          "index": 7,
+          "text": "After food we'll find two shampoo girls for you."
+        },
+        {
+          "index": 8,
+          "text": "This way, please."
+        },
+        {
+          "index": 9,
+          "text": "Type 54 pistols, grenades, AK weapons."
+        },
+        {
+          "index": 10,
+          "text": "I've got all you want."
+        },
+        {
+          "index": 11,
+          "text": "Where's Yip?"
+        },
+        {
+          "index": 12,
+          "text": "The truck outside holds a ton of dynamite."
+        },
+        {
+          "index": 13,
+          "text": "Bang!"
+        },
+        {
+          "index": 14,
+          "text": "You can blow up whatever you want."
+        },
+        {
+          "index": 15,
+          "text": "Where's Yip?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "Mr  Cheuk. How was your journey?",
+          "note": "Changed 'How's' to 'How was' for correct grammar in this context."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "They were all retired soldiers."
+        },
+        {
+          "index": 2,
+          "text": "They're fearless veterans in battles!"
+        },
+        {
+          "index": 3,
+          "text": "I want Yip!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Coin!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Give it to me!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Big Bro, let's think it through."
+        },
+        {
+          "index": 2,
+          "text": "Give it to me!"
+        },
+        {
+          "index": 3,
+          "text": "We're doing all right."
+        },
+        {
+          "index": 4,
+          "text": "Why go back to our old business?"
+        },
+        {
+          "index": 5,
+          "text": "Are you lecturing me?"
+        },
+        {
+          "index": 6,
+          "text": "We're making money!"
+        },
+        {
+          "index": 7,
+          "text": "We can't be robbers for the rest of our lives!"
+        },
+        {
+          "index": 8,
+          "text": "You do it!"
+        },
+        {
+          "index": 9,
+          "text": "You have struck a deal with the Fisherman!"
+        },
+        {
+          "index": 10,
+          "text": "Big Bro, he was just thinking out loud."
+        },
+        {
+          "index": 11,
+          "text": "Leave if you want!"
+        },
+        {
+          "index": 12,
+          "text": "I won't stop you!"
+        },
+        {
+          "index": 13,
+          "text": "Do you know what time it is? You don't sleep?"
+        },
+        {
+          "index": 14,
+          "text": "Go fuck yourself!"
+        },
+        {
+          "index": 15,
+          "text": "Fuck you!"
+        },
+        {
+          "index": 16,
+          "text": "Come down!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Yip has retired!"
+        },
+        {
+          "index": 2,
+          "text": "He used to be my man!"
+        },
+        {
+          "index": 3,
+          "text": "Am I not a better partner?"
+        },
+        {
+          "index": 4,
+          "text": "Who the hell are you?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hello?"
+        },
+        {
+          "index": 2,
+          "text": "Hello, Cheuk."
+        },
+        {
+          "index": 3,
+          "text": "It's Yip Kwok-foon speaking."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Are you kidding me?"
+        },
+        {
+          "index": 2,
+          "text": "Why should I believe you?"
+        },
+        {
+          "index": 3,
+          "text": "I am who I am!"
+        },
+        {
+          "index": 4,
+          "text": "If you don't believe me, let's meet up!"
+        },
+        {
+          "index": 5,
+          "text": "Wait. Got another call."
+        },
+        {
+          "index": 6,
+          "text": "Fuck you!"
+        },
+        {
+          "index": 7,
+          "text": "Wait for what? Hello?"
+        },
+        {
+          "index": 8,
+          "text": "Hello?"
+        },
+        {
+          "index": 9,
+          "text": "Hey!"
+        },
+        {
+          "index": 10,
+          "text": "Hey!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You are dead!"
+        },
+        {
+          "index": 2,
+          "text": "Go up!"
+        },
+        {
+          "index": 3,
+          "text": "Go up!"
+        },
+        {
+          "index": 4,
+          "text": "Hello?"
+        },
+        {
+          "index": 5,
+          "text": "Speak!"
+        },
+        {
+          "index": 6,
+          "text": "Are you Cheuk?"
+        },
+        {
+          "index": 7,
+          "text": "Who's speaking?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Kwai Ching-hung."
+        },
+        {
+          "index": 2,
+          "text": "Need my help?"
+        },
+        {
+          "index": 3,
+          "text": "Are you kidding me?"
+        },
+        {
+          "index": 4,
+          "text": "Do you have any proof?"
+        },
+        {
+          "index": 5,
+          "text": "I robbed Tung Shing Watch in 1986."
+        },
+        {
+          "index": 6,
+          "text": "I killed 3 plainclothes"
+        },
+        {
+          "index": 7,
+          "text": "in 1988."
+        },
+        {
+          "index": 8,
+          "text": "And Landmark in 1992…"
+        },
+        {
+          "index": 9,
+          "text": "Wasn't it Yip who robbed Landmark in 1992!"
+        },
+        {
+          "index": 10,
+          "text": "Don't be so gullible."
+        },
+        {
+          "index": 11,
+          "text": "Jumbo Watch in 1994\nand Lucky Guy Jewellery two years ago."
+        },
+        {
+          "index": 12,
+          "text": "I did them all."
+        },
+        {
+          "index": 13,
+          "text": "Do you think only Yip had AK-47?"
+        },
+        {
+          "index": 14,
+          "text": "He loved to be on camera\nand the cops were dumb."
+        },
+        {
+          "index": 15,
+          "text": "- I just took advantage of the situation…\n- Hold on! Don't hang up."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 13,
+          "text": "Do you think only Yip had an AK-47?",
+          "note": "Added 'an' before 'AK-47' for grammatical correctness."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What did you just say?"
+        },
+        {
+          "index": 2,
+          "text": "Fuck you!"
+        },
+        {
+          "index": 3,
+          "text": "Are you playing me?"
+        },
+        {
+          "index": 4,
+          "text": "It's you, Yip!"
+        },
+        {
+          "index": 5,
+          "text": "Landmark in 1992, Jumbo in 1994,\nand Lucky Guy two years ago."
+        },
+        {
+          "index": 6,
+          "text": "Are you responsible for all?"
+        },
+        {
+          "index": 7,
+          "text": "No!"
+        },
+        {
+          "index": 8,
+          "text": "I never did my jobs in clandestine!"
+        },
+        {
+          "index": 9,
+          "text": "Why should I hide myself?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 8,
+          "text": "I never did my jobs clandestinely!",
+          "note": "Changed 'in clandestine' to 'clandestinely' for correct adverb usage."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "We're all here."
+        },
+        {
+          "index": 2,
+          "text": "Where are you right now?"
+        },
+        {
+          "index": 3,
+          "text": "Hong Kong!"
+        },
+        {
+          "index": 4,
+          "text": "I'll call you when I'm back in Hong Kong."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hello?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hello?"
+        },
+        {
+          "index": 2,
+          "text": "Kwai Ching-hung, you still there?"
+        },
+        {
+          "index": 3,
+          "text": "Hello?"
+        },
+        {
+          "index": 4,
+          "text": "Yes."
+        },
+        {
+          "index": 5,
+          "text": "Where are you?"
+        },
+        {
+          "index": 6,
+          "text": "Hong Kong."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Call you when I'm back in Hong Kong."
+        },
+        {
+          "index": 2,
+          "text": "Let's talk later."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Motherfucker! The 3 Kings"
+        },
+        {
+          "index": 2,
+          "text": "of Thieves have nothing to do with you."
+        },
+        {
+          "index": 3,
+          "text": "Since you're here,"
+        },
+        {
+          "index": 4,
+          "text": "you can't bail without leaving something."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Yes."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "There's less than $10M here."
+        },
+        {
+          "index": 2,
+          "text": "Mr Cheuk's life"
+        },
+        {
+          "index": 3,
+          "text": "worth at least $100M!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Put your guns down!"
+        },
+        {
+          "index": 2,
+          "text": "Retired soldiers? Go!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Car key."
+        },
+        {
+          "index": 2,
+          "text": "Car key!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You think I'm bullshitting?"
+        },
+        {
+          "index": 2,
+          "text": "If you don't treat me as your Big Bro,\nlet's split!"
+        },
+        {
+          "index": 3,
+          "text": "Big Bro, we always follow your orders."
+        },
+        {
+          "index": 4,
+          "text": "You said “drop the guns,” we dropped the guns."
+        },
+        {
+          "index": 5,
+          "text": "Is that very hard for you?"
+        },
+        {
+          "index": 6,
+          "text": "No, we always follow you, Big Bro."
+        },
+        {
+          "index": 7,
+          "text": "We support you no matter what!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Are you looking down on me?"
+        },
+        {
+          "index": 2,
+          "text": "I stoop so low that I need your support?"
+        },
+        {
+          "index": 3,
+          "text": "I don't need you!"
+        },
+        {
+          "index": 4,
+          "text": "You're just my followers!"
+        },
+        {
+          "index": 5,
+          "text": "Hey you!"
+        },
+        {
+          "index": 6,
+          "text": "What are you fighting for?"
+        },
+        {
+          "index": 7,
+          "text": "Sorry, we're tourists."
+        },
+        {
+          "index": 8,
+          "text": "We got lost, so we quarreled."
+        },
+        {
+          "index": 9,
+          "text": "The residents upstairs filed a complaint."
+        },
+        {
+          "index": 10,
+          "text": "- Where are your IDs?\n- Here."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "We planned to take a boat to Macau"
+        },
+        {
+          "index": 2,
+          "text": "but got lost here."
+        },
+        {
+          "index": 3,
+          "text": "We couldn't find the pier."
+        },
+        {
+          "index": 4,
+          "text": "So we quarreled."
+        },
+        {
+          "index": 5,
+          "text": "Call the station."
+        },
+        {
+          "index": 6,
+          "text": "PC1844 calling the station. Send."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Quick!"
+        },
+        {
+          "index": 2,
+          "text": "Don't let him flee!"
+        },
+        {
+          "index": 3,
+          "text": "Motherfucker!"
+        },
+        {
+          "index": 4,
+          "text": "He's in the front!"
+        },
+        {
+          "index": 5,
+          "text": "Go after him!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hello? Uncle Dog, I've found them."
+        },
+        {
+          "index": 2,
+          "text": "Believe it or not, they called me up!"
+        },
+        {
+          "index": 3,
+          "text": "I even got a whole ton of dynamite!"
+        },
+        {
+          "index": 4,
+          "text": "It will work this time. Get me a boat."
+        },
+        {
+          "index": 5,
+          "text": "I have an idea!"
+        },
+        {
+          "index": 6,
+          "text": "We'll blow up the Handover ceremony!"
+        },
+        {
+          "index": 7,
+          "text": "We can threaten either the British queen\nor the Chinese government."
+        },
+        {
+          "index": 8,
+          "text": "It will create a stir for sure!"
+        },
+        {
+          "index": 9,
+          "text": "What the fuck!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The night snack is here. Back yet?"
+        },
+        {
+          "index": 2,
+          "text": "Coming back."
+        },
+        {
+          "index": 3,
+          "text": "We're at the entrance\nto the complainant's building."
+        },
+        {
+          "index": 4,
+          "text": "It's quiet. No one's here. OVER."
+        },
+        {
+          "index": 5,
+          "text": "Be civilized. Don't talk too loud."
+        },
+        {
+          "index": 6,
+          "text": "If you go to Macau, take the ferry in Sheung Wan."
+        },
+        {
+          "index": 7,
+          "text": "This is Sai Wan."
+        },
+        {
+          "index": 8,
+          "text": "Oh."
+        },
+        {
+          "index": 9,
+          "text": "Go to the main street and take a cab."
+        },
+        {
+          "index": 10,
+          "text": "Take a cab!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mainlanders are numskulls."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Quick!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mainlanders?"
+        },
+        {
+          "index": 2,
+          "text": "I'm Yip Kwok-foon!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Military Police"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Waiter."
+        },
+        {
+          "index": 2,
+          "text": "Sir, have you reserved a table?"
+        },
+        {
+          "index": 3,
+          "text": "I booked a room under the name of Chen."
+        },
+        {
+          "index": 4,
+          "text": "Give me a second."
+        },
+        {
+          "index": 5,
+          "text": "Mr Chen. Please follow me."
+        },
+        {
+          "index": 6,
+          "text": "This way, please."
+        },
+        {
+          "index": 7,
+          "text": "Hey."
+        },
+        {
+          "index": 8,
+          "text": "Where is our rice?"
+        },
+        {
+          "index": 9,
+          "text": "Rice? Give me a second."
+        },
+        {
+          "index": 10,
+          "text": "Your rice is coming right away."
+        },
+        {
+          "index": 11,
+          "text": "Sorry to keep you waiting."
+        },
+        {
+          "index": 12,
+          "text": "Thank you."
+        },
+        {
+          "index": 13,
+          "text": "Enjoy your food."
+        },
+        {
+          "index": 14,
+          "text": "Mr Chen. This way, please."
+        },
+        {
+          "index": 15,
+          "text": "Hey! Haven't you gone to the bathroom just now?"
+        },
+        {
+          "index": 16,
+          "text": "Wait! Don't puke!"
+        },
+        {
+          "index": 17,
+          "text": "Are you all right?"
+        },
+        {
+          "index": 18,
+          "text": "I thought you went to the restroom.\nWhy are you here?"
+        },
+        {
+          "index": 19,
+          "text": "I'm sorry. This way, please."
+        },
+        {
+          "index": 20,
+          "text": "We are super busy today."
+        },
+        {
+          "index": 21,
+          "text": "- Hey!\n- This way, please."
+        },
+        {
+          "index": 22,
+          "text": "The rice is cold!"
+        },
+        {
+          "index": 23,
+          "text": "Give me a second."
+        },
+        {
+          "index": 24,
+          "text": "- I'm sorry. The rice is cold?\n- I want tea."
+        },
+        {
+          "index": 25,
+          "text": "Give me a second. I'll give you another bowl."
+        },
+        {
+          "index": 26,
+          "text": "- Quick!\n- Tell me the room number. I'll look for it myself."
+        },
+        {
+          "index": 27,
+          "text": "- I want tea.\n- Give me a second."
+        },
+        {
+          "index": 28,
+          "text": "Sure I'll get you tea."
+        },
+        {
+          "index": 29,
+          "text": "Give me a second. I'll be right back."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "We should not forget you."
+        },
+        {
+          "index": 2,
+          "text": "And we should watch with the closest interests"
+        },
+        {
+          "index": 3,
+          "text": "as you embark on this new era\nof your remarkable history."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "And we should watch with the closest interest",
+          "note": "Corrected 'interests' to 'interest' for correct usage in this context."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  }
+]

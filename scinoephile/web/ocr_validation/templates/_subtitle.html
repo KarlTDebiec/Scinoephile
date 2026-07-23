@@ -1,0 +1,38 @@
+<div id="subtitle-{{ row.sub_idx }}" class="subtitle">
+   <a
+      id="sub-{{ row.number }}"
+      href="#sub-{{ row.number }}"
+   >#{{ row.number }}</a>:{{ row.start }}->{{ row.end }}
+   <div>
+      <figure>
+         {% if row.has_concern_image %}
+            <img
+               src="/subtitles/{{ row.sub_idx }}/concern.png?v={{ row.image_cache_key }}"
+               width="{{ row.image_width }}"
+               height="{{ row.image_height }}"
+               loading="eager"
+            />
+         {% else %}
+            <img
+               src="/subtitles/{{ row.sub_idx }}/validation.png?v={{ row.image_cache_key }}"
+               width="{{ row.image_width }}"
+               height="{{ row.image_height }}"
+               loading="eager"
+            />
+         {% endif %}
+         <textarea
+            id="subtitle-text-{{ row.sub_idx }}"
+            name="text-{{ row.sub_idx }}"
+            autocomplete="off"
+            rows="1"
+            hx-post="/subtitles/{{ row.sub_idx }}/text"
+            hx-trigger="blur changed"
+            hx-target="#subtitle-{{ row.sub_idx }}"
+            hx-swap="outerHTML"
+            wrap="off"
+         >{{ row.text.replace("\\N", "\n") }}</textarea>
+      </figure>
+      {% include "_concern.html" %}
+   </div>
+   <br /><hr />
+</div>

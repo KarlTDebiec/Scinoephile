@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit Aligned Subtitle Diffs"
+  short_description: "Audit aligned subtitle transcription differences"
+  default_prompt: "Use $audit-aligned-subtitle-diffs to audit a transcription against its reference and optional guide."

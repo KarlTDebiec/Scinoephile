@@ -5,45 +5,26 @@
 from __future__ import annotations
 
 import re
-from copy import deepcopy
 
-from scinoephile.core.subtitles import Series
-from scinoephile.core.text import half_to_full_punc
+from scinoephile.core.text import HALF_TO_FULL_PUNC, normalize_text
 
-__all__ = ["get_zho_cleaned"]
+__all__ = ["get_zho_text_cleaned"]
 
 
-def get_zho_cleaned(series: Series, remove_empty: bool = True) -> Series:
-    """Get standard Chinese series cleaned.
-
-    Arguments:
-        series: Series to clean
-        remove_empty: whether to remove subtitles with empty text
-    Returns:
-        Cleaned series
-    """
-    series = deepcopy(series)
-    new_events = []
-    for event in series:
-        raw_text = (event.text or "").strip()
-        text = _get_zho_text_cleaned(raw_text)
-        if text or not remove_empty:
-            event.text = text if text is not None else ""
-            new_events.append(event)
-    series.events = new_events
-    return series
-
-
-def _get_zho_text_cleaned(text: str) -> str | None:
+def get_zho_text_cleaned(text: str) -> str | None:
     """Get standard Chinese text cleaned.
 
     Arguments:
         text: text to clean
     Returns:
-        Cleaned text
+        cleaned text
     """
     line_sep = r"\N"
-    cleaned = text.strip()
+    cleaned = normalize_text(text)
+
+    # Remove extraction markup before punctuation normalization
+    cleaned = re.sub(r"</?font\b[^>]*>", "", cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"\{\\an\d+\}", "", cleaned)
 
     cleaned_lines = []
     for raw_line in cleaned.split(line_sep):
@@ -53,8 +34,11 @@ def _get_zho_text_cleaned(text: str) -> str | None:
         cleaned_line = re.sub(r"[^\S]*\.\.\.[^\S]*", "⋯", cleaned_line)
         cleaned_line = re.sub(r"[^\S]*…[^\S]*", "⋯", cleaned_line)
 
+        # Normalize ambiguous Middle Dot to wide Katakana Middle Dot
+        cleaned_line = re.sub(r"[^\S]*·[^\S]*", "・", cleaned_line)
+
         # Replace half-width punctuation with full-width punctuation
-        for old_punc, new_punc in half_to_full_punc.items():
+        for old_punc, new_punc in HALF_TO_FULL_PUNC.items():
             cleaned_line = re.sub(
                 rf"[^\S]*{re.escape(old_punc)}[^\S]*", new_punc, cleaned_line
             )

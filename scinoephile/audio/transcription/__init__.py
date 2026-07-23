@@ -11,13 +11,7 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from copy import deepcopy
 from logging import getLogger
-
-from scinoephile.lang.zho.script.conversion import (
-    OpenCCConfig,
-    get_zho_text_converted,
-)
 
 from .base_transcriber import BaseTranscriber
 from .demucs_separator import DemucsSeparator
@@ -57,39 +51,9 @@ __all__ = [
     "get_segment_merged",
     "get_segment_split_at_idx",
     "get_segment_split_on_whitespace",
-    "get_segment_zho_converted",
 ]
 
 logger = getLogger(__name__)
-
-
-def get_segment_zho_converted(
-    segment: TranscribedSegment,
-    config: OpenCCConfig = OpenCCConfig.t2s,
-    apply_exclusions: bool = True,
-) -> TranscribedSegment:
-    """Convert standard Chinese between character sets.
-
-    Arguments:
-        segment: transcribed segment to convert
-        config: OpenCC configuration for conversion
-        apply_exclusions: whether to apply character exclusions during conversion
-    Returns:
-        transcribed segment with converted standard Chinese text
-    """
-    converted_segment = deepcopy(segment)
-    converted_segment.text = get_zho_text_converted(
-        converted_segment.text, config, apply_exclusions
-    )
-
-    if converted_segment.words:
-        i = 0
-        for word in converted_segment.words:
-            word_length = len(word.text)
-            word.text = converted_segment.text[i : i + word_length]
-            i += word_length
-
-    return converted_segment
 
 
 def get_segment_merged(segments: list[TranscribedSegment]) -> TranscribedSegment:

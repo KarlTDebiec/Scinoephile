@@ -4,15 +4,30 @@
 
 from __future__ import annotations
 
-import pytest
-
 from scinoephile.lang.yue.romanization import is_accented_yale
-from test.lang.test_language_id import LANGUAGE_ID_TEST_CASES
+from test.helpers import parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "expected"),
-    [(case.text, case.is_accented_yale) for case in LANGUAGE_ID_TEST_CASES],
+    [
+        ("nǐ hǎo", False),
+        ("lüè", False),
+        ("ni3 hao3", False),
+        ("lu:e4", False),
+        ("lv4", False),
+        ("ni hao", False),
+        ("néih hóu", True),
+        ("gwóngdūngwá", True),
+        ("nei5 hou2", False),
+        ("gwong2 dung1 waa2", False),
+        ("简体中文", False),
+        ("汉字", False),
+        ("繁體中文", False),
+        ("漢字", False),
+        ("中文", False),
+        ("", False),
+    ],
 )
 def test_is_accented_yale(text: str, expected: bool):
     """Detect accented Yale tokens.

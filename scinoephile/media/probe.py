@@ -37,7 +37,10 @@ def get_streams(infile_path: Path) -> list[Stream]:
     for stream in probe.get("streams", []):
         if not isinstance(stream, dict):
             continue
-        streams.append(_from_ffprobe_stream(stream))
+        stream_index = _get_stream_index(stream)
+        if stream_index is None:
+            continue
+        streams.append(_from_ffprobe_stream(stream, stream_index))
     return streams
 
 
@@ -58,23 +61,24 @@ def get_subtitle_streams(infile_path: Path) -> list[SubtitleStream]:
     ]
 
 
-def _from_ffprobe_stream(stream: dict[str, Any]) -> Stream:
+def _from_ffprobe_stream(stream: dict[str, Any], stream_index: int) -> Stream:
     """Parse a probed ffmpeg stream into typed stream metadata.
 
     Arguments:
         stream: ffprobe stream object
+        stream_index: absolute media stream index
     Returns:
         stream metadata
     """
     codec_type = _get_codec_type(stream)
     if codec_type == "audio":
-        return _from_ffprobe_audio_stream(stream)
+        return _from_ffprobe_audio_stream(stream, stream_index)
     if codec_type == "subtitle":
-        return _from_ffprobe_subtitle_stream(stream)
+        return _from_ffprobe_subtitle_stream(stream, stream_index)
     if codec_type == "video":
-        return _from_ffprobe_video_stream(stream)
+        return _from_ffprobe_video_stream(stream, stream_index)
     return Stream(
-        index=int(stream.get("index", 0)),
+        index=stream_index,
         codec_type=codec_type,
         codec_name=_get_codec_name(stream, codec_type),
         language=_get_language(stream),
@@ -82,11 +86,14 @@ def _from_ffprobe_stream(stream: dict[str, Any]) -> Stream:
     )
 
 
-def _from_ffprobe_audio_stream(stream: dict[str, Any]) -> AudioStream:
+def _from_ffprobe_audio_stream(
+    stream: dict[str, Any], stream_index: int
+) -> AudioStream:
     """Parse a probed ffmpeg stream into audio stream metadata.
 
     Arguments:
         stream: ffprobe stream object
+        stream_index: absolute media stream index
     Returns:
         audio stream metadata
     """
@@ -94,7 +101,7 @@ def _from_ffprobe_audio_stream(stream: dict[str, Any]) -> AudioStream:
     if not isinstance(channels, int):
         channels = None
     return AudioStream(
-        index=int(stream.get("index", 0)),
+        index=stream_index,
         codec_type="audio",
         codec_name=_get_codec_name(stream, "audio"),
         language=_get_language(stream),
@@ -103,11 +110,14 @@ def _from_ffprobe_audio_stream(stream: dict[str, Any]) -> AudioStream:
     )
 
 
-def _from_ffprobe_subtitle_stream(stream: dict[str, Any]) -> SubtitleStream:
+def _from_ffprobe_subtitle_stream(
+    stream: dict[str, Any], stream_index: int
+) -> SubtitleStream:
     """Parse a probed ffmpeg stream into subtitle metadata.
 
     Arguments:
         stream: ffprobe stream object
+        stream_index: absolute media stream index
     Returns:
         subtitle stream metadata
     """
@@ -117,12 +127,15 @@ def _from_ffprobe_subtitle_stream(stream: dict[str, Any]) -> SubtitleStream:
 
     subtitle_count = stream.get("nb_read_packets")
     if isinstance(subtitle_count, int | str):
-        subtitle_count = int(subtitle_count)
+        try:
+            subtitle_count = int(subtitle_count)
+        except ValueError:
+            subtitle_count = None
     else:
         subtitle_count = None
 
     return SubtitleStream(
-        index=int(stream.get("index", 0)),
+        index=stream_index,
         codec_type="subtitle",
         codec_name=_get_codec_name(stream, "subtitle"),
         language=_get_language(stream),
@@ -133,11 +146,14 @@ def _from_ffprobe_subtitle_stream(stream: dict[str, Any]) -> SubtitleStream:
     )
 
 
-def _from_ffprobe_video_stream(stream: dict[str, Any]) -> VideoStream:
+def _from_ffprobe_video_stream(
+    stream: dict[str, Any], stream_index: int
+) -> VideoStream:
     """Parse a probed ffmpeg stream into video stream metadata.
 
     Arguments:
         stream: ffprobe stream object
+        stream_index: absolute media stream index
     Returns:
         video stream metadata
     """
@@ -148,7 +164,7 @@ def _from_ffprobe_video_stream(stream: dict[str, Any]) -> VideoStream:
     if not isinstance(height, int):
         height = None
     return VideoStream(
-        index=int(stream.get("index", 0)),
+        index=stream_index,
         codec_type="video",
         codec_name=_get_codec_name(stream, "video"),
         language=_get_language(stream),
@@ -185,6 +201,26 @@ def _get_codec_type(stream: dict[str, Any]) -> str:
     if not isinstance(codec_type, str) or not codec_type:
         codec_type = "unknown"
     return codec_type
+
+
+def _get_stream_index(stream: dict[str, Any]) -> int | None:
+    """Return usable stream index from an ffprobe stream.
+
+    Arguments:
+        stream: ffprobe stream object
+    Returns:
+        absolute media stream index, if present and nonnegative
+    """
+    stream_index_value = stream.get("index")
+    if stream_index_value is None:
+        return None
+    try:
+        stream_index = int(stream_index_value)
+    except (TypeError, ValueError):
+        return None
+    if stream_index < 0:
+        return None
+    return stream_index
 
 
 def _get_language(stream: dict[str, Any]) -> str | None:

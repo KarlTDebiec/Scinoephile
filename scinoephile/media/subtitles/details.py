@@ -12,8 +12,8 @@ from pathlib import Path
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.media import Stream, SubtitleStream
 from scinoephile.media.probe import get_subtitle_streams
-from scinoephile.media.subtitles.cache import cache_subtitles
 
+from .cache import cache_subtitles
 from .stats import get_subtitle_stream_stats
 
 __all__ = ["get_detailed_subtitle_streams"]

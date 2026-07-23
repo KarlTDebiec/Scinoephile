@@ -4,46 +4,24 @@
 
 from __future__ import annotations
 
-from abc import ABC
-from typing import ClassVar
+from typing import Final
 
-from scinoephile.lang.zho.prompts import PromptZhoHans
+from scinoephile.core.llms import SharedPromptLocalizationFields
 
-__all__ = ["PromptYueHans"]
+__all__ = ["YUE_HANT_PROMPT_FIELDS"]
 
 
-class PromptYueHans(PromptZhoHans, ABC):
-    """LLM correspondence text for written Cantonese."""
-
-    # Prompt
-    schema_intro: ClassVar[str] = "你嘅回覆一定要系一个有以下结构嘅 JSON 物件："
-    """Text preceding schema description."""
-
-    few_shot_intro: ClassVar[str] = "下面系一啲查询同埋佢哋预期答案嘅例子："
-    """Text preceding few-shot examples."""
-
-    few_shot_query_intro: ClassVar[str] = "例子查询："
-    """Text preceding each few-shot example query."""
-
-    few_shot_answer_intro: ClassVar[str] = "预期答案："
-    """Text preceding each few-shot expected answer."""
-
-    # Answer validation errors
-    answer_invalid_pre: ClassVar[str] = (
-        "你之前嘅回覆唔系有效嘅 JSON，或者未符合预期嘅模式要求。错误详情："
-    )
-    """Text preceding answer validation errors."""
-
-    answer_invalid_post: ClassVar[str] = (
-        "请你再试一次，并且净系返返一个符合该模式要求嘅有效 JSON 物件。"
-    )
-    """Text following answer validation errors."""
-
-    # Test case validation errors
-    test_case_invalid_pre: ClassVar[str] = (
-        "你之前嘅回覆系符合答案模式嘅有效 JSON，但唔适用于而家呢个特定查询。错误详情："
-    )
-    """Text preceding test case validation errors."""
-
-    test_case_invalid_post: ClassVar[str] = "请你根据错误信息对你嘅回覆作相应修改。"
-    """Text following test case validation errors."""
+YUE_HANT_PROMPT_FIELDS: Final[SharedPromptLocalizationFields] = {
+    "few_shot_intro": "下面係一啲查詢同埋佢哋預期答案嘅例子：",
+    "few_shot_query_intro": "例子查詢：",
+    "few_shot_answer_intro": "預期答案：",
+    "answer_invalid_pre": "你之前嘅回覆唔係有效嘅 JSON，或者未符合預期嘅模式要求。",
+    "answer_invalid_post": (
+        "請你再試一次，並且淨係返返一個符合該模式要求嘅有效 JSON 物件。"
+    ),
+    "test_case_invalid_pre": (
+        "你之前嘅回覆係符合答案模式嘅有效 JSON，但唔適用於而家呢個特定查詢。錯誤詳情："
+    ),
+    "test_case_invalid_post": "請你根據錯誤信息對你嘅回覆作相應修改。",
+}
+"""Shared traditional written Cantonese LLM correspondence fields."""

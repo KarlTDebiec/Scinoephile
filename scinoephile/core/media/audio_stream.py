@@ -11,7 +11,7 @@ from .stream import Stream
 __all__ = ["AudioStream"]
 
 
-@dataclass(frozen=True)
+@dataclass
 class AudioStream(Stream):
     """Audio stream metadata."""
 

@@ -69,6 +69,7 @@ class OcrCli(ScinoephileCliBase):
         from .ocr_fuse_cli import OcrFuseCli  # noqa: PLC0415
         from .ocr_lens_cli import OcrLensCli  # noqa: PLC0415
         from .ocr_paddle_cli import OcrPaddleCli  # noqa: PLC0415
+        from .ocr_process_cli import OcrProcessCli  # noqa: PLC0415
         from .ocr_tesseract_cli import OcrTesseractCli  # noqa: PLC0415
         from .ocr_validate_cli import OcrValidateCli  # noqa: PLC0415
 
@@ -76,6 +77,7 @@ class OcrCli(ScinoephileCliBase):
             OcrFuseCli.name(): OcrFuseCli,
             OcrLensCli.name(): OcrLensCli,
             OcrPaddleCli.name(): OcrPaddleCli,
+            OcrProcessCli.name(): OcrProcessCli,
             OcrTesseractCli.name(): OcrTesseractCli,
             OcrValidateCli.name(): OcrValidateCli,
         }

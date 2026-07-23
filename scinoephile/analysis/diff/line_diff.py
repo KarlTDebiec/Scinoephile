@@ -7,7 +7,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOperation
-from scinoephile.core.text import AnsiColor, colorize, is_full_width_char
+from scinoephile.core.text import (
+    AnsiColor,
+    colorize,
+    is_full_width_char,
+    join_text_lines,
+)
 
 from .line_diff_kind import LineDiffKind
 
@@ -83,6 +88,22 @@ class LineDiff:
             f"{one_text_repr} -> {two_text_repr}"
         )
 
+    def get_aligned_texts(self) -> tuple[str, str]:
+        """Get the two character-aligned text rows without display markup.
+
+        Returns:
+            first- and second-side aligned text
+        """
+        if self.kind == LineDiffKind.DELETE:
+            return join_text_lines(self.one_texts or ()), ""
+        if self.kind == LineDiffKind.INSERT:
+            return "", join_text_lines(self.two_texts or ())
+        if self.kind == LineDiffKind.EQUAL:
+            one_text = join_text_lines(self.one_texts or ())
+            two_text = join_text_lines(self.two_texts or ())
+            return one_text, two_text
+        return self._get_edit_aligned_texts(color=False)
+
     def get_stacked_str(
         self, *, color: bool = True, three_texts: tuple[str, ...] | None = None
     ) -> str:
@@ -123,14 +144,65 @@ class LineDiff:
                 three_texts=three_texts,
             )
 
-        return self._get_edit_stacked_str(
-            one_range=one_range,
-            two_range=two_range,
-            one_texts=self.one_texts or (),
-            two_texts=self.two_texts or (),
-            color=color,
-            three_texts=three_texts,
-        )
+        header = f"{one_range} {two_range}".rstrip()
+        one_text, two_text = self._get_edit_aligned_texts(color=color)
+        if three_texts is None:
+            return f"{header}\n{one_text}\n{two_text}\n"
+        three_text = join_text_lines(three_texts)
+        return f"{header}\n{one_text}\n{two_text}\n{three_text}\n"
+
+    def _get_edit_aligned_texts(self, *, color: bool) -> tuple[str, str]:
+        """Character-align text for an edit-like diff.
+
+        Arguments:
+            color: whether to emit ANSI color escapes
+        Returns:
+            first- and second-side aligned text
+        """
+        one_text = join_text_lines(self.one_texts or ())
+        two_text = join_text_lines(self.two_texts or ())
+        alignment = LineAlignment(one_text, two_text).alignment_pairs
+
+        one_out: list[str] = []
+        two_out: list[str] = []
+        for column in alignment:
+            if column.operation == LineAlignmentOperation.MATCH:
+                one_char = column.one or ""
+                two_char = column.two or ""
+                if color:
+                    one_char = colorize(one_char, AnsiColor.GREEN)
+                    two_char = colorize(two_char, AnsiColor.GREEN)
+                one_out.append(one_char)
+                two_out.append(two_char)
+                continue
+
+            if column.operation == LineAlignmentOperation.SUBSTITUTE:
+                one_char = column.one or ""
+                two_char = column.two or ""
+                if color:
+                    one_char = colorize(one_char, AnsiColor.PURPLE)
+                    two_char = colorize(two_char, AnsiColor.PURPLE)
+                one_out.append(one_char)
+                two_out.append(two_char)
+                continue
+
+            if column.operation == LineAlignmentOperation.DELETE:
+                assert column.one is not None
+                one_char = column.one
+                if color:
+                    one_char = colorize(one_char, AnsiColor.RED)
+                one_out.append(one_char)
+                two_out.append(self._get_placeholder(column.one))
+                continue
+
+            assert column.two is not None
+            one_out.append(self._get_placeholder(column.two))
+            two_char = column.two
+            if color:
+                two_char = colorize(two_char, AnsiColor.BLUE)
+            two_out.append(two_char)
+
+        return "".join(one_out), "".join(two_out)
 
     @staticmethod
     def _format_idxs(idxs: tuple[int, ...]) -> str:
@@ -192,12 +264,12 @@ class LineDiff:
             formatted delete diff chunk
         """
         header = f"{one_range} |"
-        one_text = LineDiff._join_texts(one_texts)
+        one_text = join_text_lines(one_texts)
         if color:
             one_text = colorize(one_text, AnsiColor.RED)
         if three_texts is None:
             return f"{header}\n{one_text}\n\n"
-        three_text = LineDiff._join_texts(three_texts)
+        three_text = join_text_lines(three_texts)
         return f"{header}\n{one_text}\n\n{three_text}\n"
 
     @staticmethod
@@ -222,87 +294,16 @@ class LineDiff:
         Returns:
             formatted equal diff chunk
         """
-        one_text = LineDiff._join_texts(one_texts)
-        two_text = LineDiff._join_texts(two_texts)
+        one_text = join_text_lines(one_texts)
+        two_text = join_text_lines(two_texts)
         if color:
             one_text = colorize(one_text, AnsiColor.GREEN)
             two_text = colorize(two_text, AnsiColor.GREEN)
         header = f"{one_range} {two_range}".rstrip()
         if three_texts is None:
             return f"{header}\n{one_text}\n{two_text}\n"
-        three_text = LineDiff._join_texts(three_texts)
+        three_text = join_text_lines(three_texts)
         return f"{header}\n{one_text}\n{two_text}\n{three_text}\n"
-
-    @staticmethod
-    def _get_edit_stacked_str(
-        *,
-        one_range: str,
-        two_range: str,
-        one_texts: tuple[str, ...],
-        two_texts: tuple[str, ...],
-        color: bool,
-        three_texts: tuple[str, ...] | None,
-    ) -> str:
-        """Format an edit-like diff as stacked output.
-
-        Arguments:
-            one_range: formatted index range for the first side
-            two_range: formatted index range for the second side
-            one_texts: first-side text lines
-            two_texts: second-side text lines
-            color: whether to emit ANSI color escapes
-            three_texts: optional unaligned third-side text lines
-        Returns:
-            formatted edit diff chunk
-        """
-        one_text = LineDiff._join_texts(one_texts)
-        two_text = LineDiff._join_texts(two_texts)
-        header = f"{one_range} {two_range}".rstrip()
-        alignment = LineAlignment(one_text, two_text).alignment_pairs
-
-        one_out: list[str] = []
-        two_out: list[str] = []
-        for column in alignment:
-            if column.operation == LineAlignmentOperation.MATCH:
-                one_text = column.one or ""
-                two_text = column.two or ""
-                if color:
-                    one_text = colorize(one_text, AnsiColor.GREEN)
-                    two_text = colorize(two_text, AnsiColor.GREEN)
-                one_out.append(one_text)
-                two_out.append(two_text)
-                continue
-
-            if column.operation == LineAlignmentOperation.SUBSTITUTE:
-                one_text = column.one or ""
-                two_text = column.two or ""
-                if color:
-                    one_text = colorize(one_text, AnsiColor.PURPLE)
-                    two_text = colorize(two_text, AnsiColor.PURPLE)
-                one_out.append(one_text)
-                two_out.append(two_text)
-                continue
-
-            if column.operation == LineAlignmentOperation.DELETE:
-                assert column.one is not None
-                one_text = column.one
-                if color:
-                    one_text = colorize(one_text, AnsiColor.RED)
-                one_out.append(one_text)
-                two_out.append(LineDiff._get_placeholder(column.one))
-                continue
-
-            assert column.two is not None
-            one_out.append(LineDiff._get_placeholder(column.two))
-            two_text = column.two
-            if color:
-                two_text = colorize(two_text, AnsiColor.BLUE)
-            two_out.append(two_text)
-
-        if three_texts is None:
-            return f"{header}\n{''.join(one_out)}\n{''.join(two_out)}\n"
-        three_text = LineDiff._join_texts(three_texts)
-        return f"{header}\n{''.join(one_out)}\n{''.join(two_out)}\n{three_text}\n"
 
     @staticmethod
     def _get_insert_stacked_str(
@@ -323,29 +324,13 @@ class LineDiff:
             formatted insert diff chunk
         """
         header = f"| {LineDiff._format_idxs_or_empty(insert_idxs)}"
-        two_text = LineDiff._join_texts(insert_texts)
+        two_text = join_text_lines(insert_texts)
         if color:
             two_text = colorize(two_text, AnsiColor.BLUE)
         if three_texts is None:
             return f"{header}\n\n{two_text}\n"
-        three_text = LineDiff._join_texts(three_texts)
+        three_text = join_text_lines(three_texts)
         return f"{header}\n\n{two_text}\n{three_text}\n"
-
-    @staticmethod
-    def _get_joiner(prev_char: str | None, next_char: str | None) -> str:
-        """Get joiner for concatenating lines.
-
-        Arguments:
-            prev_char: trailing character of previous chunk
-            next_char: leading character of next chunk
-        Returns:
-            ASCII or ideographic space joiner
-        """
-        if prev_char is not None and is_full_width_char(prev_char):
-            return "\u3000"
-        if next_char is not None and is_full_width_char(next_char):
-            return "\u3000"
-        return " "
 
     @staticmethod
     def _get_placeholder(char: str) -> str:
@@ -359,29 +344,3 @@ class LineDiff:
         if is_full_width_char(char):
             return "\u3000"
         return " "
-
-    @staticmethod
-    def _join_texts(texts: tuple[str, ...]) -> str:
-        """Join a list of subtitle lines into a single string.
-
-        Arguments:
-            texts: text lines to join
-        Returns:
-            joined text
-        """
-        if not texts:
-            return ""
-        if len(texts) == 1:
-            return texts[0]
-        chunks: list[str] = [texts[0]]
-        for next_text in texts[1:]:
-            previous_text = chunks[-1]
-            previous_char = None
-            if previous_text:
-                previous_char = previous_text[-1]
-            next_char = None
-            if next_text:
-                next_char = next_text[0]
-            chunks.append(LineDiff._get_joiner(previous_char, next_char))
-            chunks.append(next_text)
-        return "".join(chunks)

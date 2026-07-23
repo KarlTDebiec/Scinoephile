@@ -1,75 +1,36 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.lang.cmn.get_cmn_romanized."""
+"""Tests of Mandarin text romanization."""
 
 from __future__ import annotations
 
-import pytest
-
-from scinoephile.core.subtitles import Series
-
-# noinspection PyProtectedMember
-from scinoephile.lang.cmn.romanization import _get_cmn_text_romanized, get_cmn_romanized
-from test.helpers import assert_series_equal
+from scinoephile.lang.cmn.romanization import get_cmn_text_romanized
+from test.helpers import parametrize
 
 
-def _test_get_cmn_romanized(series: Series, expected: Series):
-    """Test get_cmn_romanized.
-
-    Arguments:
-        series: Series with which to test
-        expected: Expected output series
-    """
-    output = get_cmn_romanized(series, append=True)
-    assert_series_equal(output, expected)
-
-
-@pytest.mark.parametrize(
-    ("series_fixture", "expected_fixture"),
-    [
-        (
-            "mlamd_zho_hans_fuse_clean_validate_review_flatten",
-            "mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize",
-        ),
-        (
-            "mnt_zho_hans_fuse_clean_validate_review_flatten",
-            "mnt_zho_hans_fuse_clean_validate_review_flatten_romanize",
-        ),
-        (
-            "t_zho_hans_fuse_clean_validate_review_flatten",
-            "t_zho_hans_fuse_clean_validate_review_flatten_romanize",
-        ),
-    ],
-)
-def test_get_cmn_romanized_titles(
-    request: pytest.FixtureRequest,
-    series_fixture: str,
-    expected_fixture: str,
-):
-    """Test get_cmn_romanized against expected romanized outputs.
-
-    Arguments:
-        request: pytest request for fixture lookup
-        series_fixture: Fixture name for input series
-        expected_fixture: Fixture name for expected output series
-    """
-    _test_get_cmn_romanized(
-        request.getfixturevalue(series_fixture),
-        request.getfixturevalue(expected_fixture),
-    )
-
-
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [
         ("你好世界", "nǐhǎo shìjiè"),
+        ("你好,世界!", "nǐhǎo, shìjiè!"),
+        ("「你好」世界？", "｢nǐhǎo｣ shìjiè?"),
+        ("＂你好＂世界", '"nǐhǎo" shìjiè'),
+        ("＇你好＇世界", "'nǐhǎo' shìjiè"),
+        ("他说＇你好＇", "tā shuō 'nǐhǎo'"),
+        ("你好：世界；再见。", "nǐhǎo: shìjiè; zàijiàn｡"),
+        ("don't你好", "don't nǐhǎo"),
+        ("rock'n'roll你好", "rock'n'roll nǐhǎo"),
+        ('"t i"你好', '"t i" nǐhǎo'),
+        ("你好 world 吗", "nǐhǎo world ma"),
+        ("你好 where ？", "nǐhǎo where ?"),
+        ("你好　世界", "nǐhǎo  shìjiè"),
     ],
 )
-def test_get_mandarin_text_romanization(text: str, expected: str):
-    """Test _get_mandarin_text_romanization.
+def test_get_cmn_text_romanized(text: str, expected: str):
+    """Test get_cmn_text_romanized.
 
     Arguments:
         text: Text to romanize
         expected: Expected romanization
     """
-    assert _get_cmn_text_romanized(text) == expected
+    assert get_cmn_text_romanized(text) == expected

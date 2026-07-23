@@ -1,34 +1,34 @@
 [
   {
     "query": {
-      "lens": "Hey, let's go♪",
-      "tesseract": "{\\i1}♪{\\i0}Hey, let's go ♪"
+      "one": "Hey, let's go♪",
+      "two": "{\\i1}♪{\\i0}Hey, let's go ♪"
     },
     "answer": {
       "output": "♪ Hey, let's go ♪",
       "note": "Corrected italics and musical notes placement from Tesseract."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
     "query": {
-      "lens": "I'm happy as can\nbe♪",
-      "tesseract": "{\\i1}♪ I'm happy as can be ♪{\\i0}"
+      "one": "I'm happy as can\nbe♪",
+      "two": "{\\i1}♪ I'm happy as can be ♪{\\i0}"
     },
     "answer": {
       "output": "♪ I'm happy as can be ♪",
       "note": "Used musical notes from Tesseract and corrected italics placement."
     },
     "difficulty": 3,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
     "query": {
-      "lens": "Let's go walking\nYou and me♪♪",
-      "tesseract": "♪ Let's go walking\nYou and me ♪"
+      "one": "Let's go walking\nYou and me♪♪",
+      "two": "♪ Let's go walking\nYou and me ♪"
     },
     "answer": {
       "output": "♪ Let's go walking\nYou and me ♪",
@@ -39,8 +39,8 @@
   },
   {
     "query": {
-      "lens": "Ready, set\nCome on, let's go♪",
-      "tesseract": "♪ Ready, set\nCome on, let's go ♪"
+      "one": "Ready, set\nCome on, let's go♪",
+      "two": "♪ Ready, set\nCome on, let's go ♪"
     },
     "answer": {
       "output": "♪ Ready, set\nCome on, let's go ♪",
@@ -51,8 +51,8 @@
   },
   {
     "query": {
-      "lens": "♪Over the hill\nAcross the field♪♪",
-      "tesseract": "♪ Over the hill\nAcross the field{\\i1}♪{\\i0}"
+      "one": "♪Over the hill\nAcross the field♪♪",
+      "two": "♪ Over the hill\nAcross the field{\\i1}♪{\\i0}"
     },
     "answer": {
       "output": "♪ Over the hill\nAcross the field ♪",
@@ -63,21 +63,21 @@
   },
   {
     "query": {
-      "lens": "Through the tunnel we'll go♪",
-      "tesseract": "♪ Through the tunnel we'll 90 ♪"
+      "one": "Through the tunnel we'll go♪",
+      "two": "♪ Through the tunnel we'll 90 ♪"
     },
     "answer": {
       "output": "♪ Through the tunnel we'll go ♪",
       "note": "Corrected '90' to 'go' from Lens; added musical notes from Tesseract."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
     "query": {
-      "lens": "We'll run across the bridge♪",
-      "tesseract": "{\\i1}♪ We'\" run across the bridge ♪{\\i0}"
+      "one": "We'll run across the bridge♪",
+      "two": "{\\i1}♪ We'\" run across the bridge ♪{\\i0}"
     },
     "answer": {
       "output": "♪ We'll run across the bridge ♪",
@@ -88,8 +88,8 @@
   },
   {
     "query": {
-      "lens": "And down the bumpy gravel\nroad♪♪",
-      "tesseract": "♪ And down the bumpy gravel road ♪"
+      "one": "And down the bumpy gravel\nroad♪♪",
+      "two": "♪ And down the bumpy gravel road ♪"
     },
     "answer": {
       "output": "♪ And down the bumpy gravel road ♪",
@@ -100,8 +100,8 @@
   },
   {
     "query": {
-      "lens": "Right beneath the spider's web♪",
-      "tesseract": "{\\i1}♪ Right beneath the spider's web ♪{\\i0}"
+      "one": "Right beneath the spider's web♪",
+      "two": "{\\i1}♪ Right beneath the spider's web ♪{\\i0}"
     },
     "answer": {
       "output": "♪ Right beneath the spider's web ♪",
@@ -112,8 +112,8 @@
   },
   {
     "query": {
-      "lens": "Ready, set, let's\ngo♪",
-      "tesseract": "{\\i1}♪{\\i0}Ready, set, let's go ♪"
+      "one": "Ready, set, let's\ngo♪",
+      "two": "{\\i1}♪{\\i0}Ready, set, let's go ♪"
     },
     "answer": {
       "output": "♪ Ready, set, let's go ♪",
@@ -124,8 +124,8 @@
   },
   {
     "query": {
-      "lens": "The foxes and the badgers, too♪",
-      "tesseract": "♪ The foxes and the badgers, too ♪"
+      "one": "The foxes and the badgers, too♪",
+      "two": "♪ The foxes and the badgers, too ♪"
     },
     "answer": {
       "output": "♪ The foxes and the badgers, too ♪",
@@ -136,21 +136,21 @@
   },
   {
     "query": {
-      "lens": "♪All come out to play♪♪",
-      "tesseract": "{\\i1}♪ A\" come out to May ♪{\\i0}"
+      "one": "♪All come out to play♪♪",
+      "two": "{\\i1}♪ A\" come out to May ♪{\\i0}"
     },
     "answer": {
       "output": "♪ All come out to play ♪",
       "note": "Used musical notes and correct words from Lens; corrected spacing around the first note and reduced double closing notes to a single one."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
     "query": {
-      "lens": "They all want to explore♪",
-      "tesseract": "♪ They all want to explore ♪"
+      "one": "They all want to explore♪",
+      "two": "♪ They all want to explore ♪"
     },
     "answer": {
       "output": "♪ They all want to explore ♪",
@@ -161,8 +161,8 @@
   },
   {
     "query": {
-      "lens": "The deep and wonderful woods all\nday♪",
-      "tesseract": "♪ The deep and wonderful woods all day ♪"
+      "one": "The deep and wonderful woods all\nday♪",
+      "two": "♪ The deep and wonderful woods all day ♪"
     },
     "answer": {
       "output": "♪ The deep and wonderful woods all day ♪",
@@ -173,8 +173,8 @@
   },
   {
     "query": {
-      "lens": "Look at all my many friends",
-      "tesseract": "{\\i1}♪ Look at a\" my many friends ♪{\\i0}"
+      "one": "Look at all my many friends",
+      "two": "{\\i1}♪ Look at a\" my many friends ♪{\\i0}"
     },
     "answer": {
       "output": "♪ Look at all my many friends ♪",
@@ -185,8 +185,8 @@
   },
   {
     "query": {
-      "lens": "- Hey Dad, want some caramel?\n- Thanks. How you doing back there?",
-      "tesseract": "- Hey Dad, want some caramel?\n-Thanks. How you doing back there?"
+      "one": "- Hey Dad, want some caramel?\n- Thanks. How you doing back there?",
+      "two": "- Hey Dad, want some caramel?\n-Thanks. How you doing back there?"
     },
     "answer": {
       "output": "- Hey Dad, want some caramel?\n- Thanks. How you doing back there?",
@@ -197,8 +197,8 @@
   },
   {
     "query": {
-      "lens": "Great.\nThanks.",
-      "tesseract": "Great. Thanks."
+      "one": "Great.\nThanks.",
+      "two": "Great. Thanks."
     },
     "answer": {
       "output": "Great. Thanks.",
@@ -209,8 +209,8 @@
   },
   {
     "query": {
-      "lens": "- Wait up!\n- Here you go.",
-      "tesseract": "-Wait up!\n- Here you go."
+      "one": "- Wait up!\n- Here you go.",
+      "two": "-Wait up!\n- Here you go."
     },
     "answer": {
       "output": "- Wait up!\n- Here you go.",
@@ -221,8 +221,8 @@
   },
   {
     "query": {
-      "lens": "Oh, wow!\nLook!",
-      "tesseract": "Oh, wow! Look!"
+      "one": "Oh, wow!\nLook!",
+      "two": "Oh, wow! Look!"
     },
     "answer": {
       "output": "Oh, wow! Look!",
@@ -233,21 +233,21 @@
   },
   {
     "query": {
-      "lens": "Let me see.",
-      "tesseract": "Let me{\\i1}see.{\\i0}"
+      "one": "Let me see.",
+      "two": "Let me{\\i1}see.{\\i0}"
     },
     "answer": {
       "output": "Let me see.",
       "note": "Removed incorrect italics from Tesseract."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
     "query": {
-      "lens": "- The bath.\n- Yep.",
-      "tesseract": "-The bath.\n-Yep."
+      "one": "- The bath.\n- Yep.",
+      "two": "-The bath.\n-Yep."
     },
     "answer": {
       "output": "- The bath.\n- Yep.",
@@ -258,8 +258,8 @@
   },
   {
     "query": {
-      "lens": "But ghosts don't usually like\nto come out on nice days like this.",
-      "tesseract": "but ghosts don't usually like\nto come out on nice days like this."
+      "one": "But ghosts don't usually like\nto come out on nice days like this.",
+      "two": "but ghosts don't usually like\nto come out on nice days like this."
     },
     "answer": {
       "output": "but ghosts don't usually like\nto come out on nice days like this.",
@@ -270,8 +270,8 @@
   },
   {
     "query": {
-      "lens": "When you go from a bright place to\na dark one, you can catch a glimpse of them.",
-      "tesseract": "when you go from a bright place to\na dark one, you can catch a glimpse of them."
+      "one": "When you go from a bright place to\na dark one, you can catch a glimpse of them.",
+      "two": "when you go from a bright place to\na dark one, you can catch a glimpse of them."
     },
     "answer": {
       "output": "when you go from a bright place to\na dark one, you can catch a glimpse of them.",
@@ -282,8 +282,8 @@
   },
   {
     "query": {
-      "lens": "The stairs to the top floor of the house.",
-      "tesseract": "the stairs to the top floor of the house."
+      "one": "The stairs to the top floor of the house.",
+      "two": "the stairs to the top floor of the house."
     },
     "answer": {
       "output": "the stairs to the top floor of the house.",
@@ -294,8 +294,8 @@
   },
   {
     "query": {
-      "lens": "- Ah!\n- Oof!",
-      "tesseract": "{\\i1}- Ah'.\n- 001'.!{\\i0}"
+      "one": "- Ah!\n- Oof!",
+      "two": "{\\i1}- Ah'.\n- 001'.!{\\i0}"
     },
     "answer": {
       "output": "- Ah!\n- Oof!",
@@ -306,8 +306,8 @@
   },
   {
     "query": {
-      "lens": "To clean up more before you got here.",
-      "tesseract": "to clean up more before you got here."
+      "one": "To clean up more before you got here.",
+      "two": "to clean up more before you got here."
     },
     "answer": {
       "output": "to clean up more before you got here.",
@@ -318,8 +318,8 @@
   },
   {
     "query": {
-      "lens": "But I did manage to keep the place\nwell-dusted, as you can see.",
-      "tesseract": "but I did manage to keep the place\nwell-dusted, as you can see."
+      "one": "But I did manage to keep the place\nwell-dusted, as you can see.",
+      "two": "but I did manage to keep the place\nwell-dusted, as you can see."
     },
     "answer": {
       "output": "but I did manage to keep the place\nwell-dusted, as you can see.",
@@ -330,8 +330,8 @@
   },
   {
     "query": {
-      "lens": "Ah\n…",
-      "tesseract": "Ah…"
+      "one": "Ah\n…",
+      "two": "Ah…"
     },
     "answer": {
       "output": "Ah…",
@@ -342,8 +342,8 @@
   },
   {
     "query": {
-      "lens": "And run all over the place,\ncovering everything with dirt.",
-      "tesseract": "and run all over the place,\ncovering everything with dirt."
+      "one": "And run all over the place,\ncovering everything with dirt.",
+      "two": "and run all over the place,\ncovering everything with dirt."
     },
     "answer": {
       "output": "and run all over the place,\ncovering everything with dirt.",
@@ -354,8 +354,8 @@
   },
   {
     "query": {
-      "lens": "And after a while, they'll just go away.",
-      "tesseract": "and after a while, they'll just go away."
+      "one": "And after a while, they'll just go away.",
+      "two": "and after a while, they'll just go away."
     },
     "answer": {
       "output": "and after a while, they'll just go away.",
@@ -366,8 +366,8 @@
   },
   {
     "query": {
-      "lens": "Having a talk about whether\nor not they should move out.",
-      "tesseract": "having a talk about whether\nor not they should move out."
+      "one": "Having a talk about whether\nor not they should move out.",
+      "two": "having a talk about whether\nor not they should move out."
     },
     "answer": {
       "output": "having a talk about whether\nor not they should move out.",
@@ -378,8 +378,8 @@
   },
   {
     "query": {
-      "lens": "- Hear that, Mei? They're gonna move out.\nI don't want them to leave.",
-      "tesseract": "- Hear that, Mei? They're gonna move out.\n- I don't want them to leave."
+      "one": "- Hear that, Mei? They're gonna move out.\nI don't want them to leave.",
+      "two": "- Hear that, Mei? They're gonna move out.\n- I don't want them to leave."
     },
     "answer": {
       "output": "- Hear that, Mei? They're gonna move out.\n- I don't want them to leave.",
@@ -390,8 +390,8 @@
   },
   {
     "query": {
-      "lens": "Right. Then you can go to the bathroom",
-      "tesseract": "Right.Then you can go to the bathroom"
+      "one": "Right. Then you can go to the bathroom",
+      "two": "Right.Then you can go to the bathroom"
     },
     "answer": {
       "output": "Right. Then you can go to the bathroom",
@@ -402,8 +402,8 @@
   },
   {
     "query": {
-      "lens": "By yourself in the middle of the night.",
-      "tesseract": "by yourself in the middle of the night."
+      "one": "By yourself in the middle of the night.",
+      "two": "by yourself in the middle of the night."
     },
     "answer": {
       "output": "by yourself in the middle of the night.",
@@ -414,8 +414,8 @@
   },
   {
     "query": {
-      "lens": "Is that\nKanta?",
-      "tesseract": "Is that Kanta?"
+      "one": "Is that\nKanta?",
+      "two": "Is that Kanta?"
     },
     "answer": {
       "output": "Is that Kanta?",
@@ -426,8 +426,8 @@
   },
   {
     "query": {
-      "lens": "- Your house is haunted!\n- Kanta!",
-      "tesseract": "-Your house is haunted!\n- Kanta!"
+      "one": "- Your house is haunted!\n- Kanta!",
+      "two": "-Your house is haunted!\n- Kanta!"
     },
     "answer": {
       "output": "- Your house is haunted!\n- Kanta!",
@@ -438,8 +438,8 @@
   },
   {
     "query": {
-      "lens": "Okay. That's all the chores.",
-      "tesseract": "Okay.That's all the chores."
+      "one": "Okay. That's all the chores.",
+      "two": "Okay.That's all the chores."
     },
     "answer": {
       "output": "Okay. That's all the chores.",
@@ -450,8 +450,8 @@
   },
   {
     "query": {
-      "lens": "- You're done.\n- BOTH: Yay!",
-      "tesseract": "-You're done.\n- BOTH:Yay!"
+      "one": "- You're done.\n- BOTH: Yay!",
+      "two": "-You're done.\n- BOTH:Yay!"
     },
     "answer": {
       "output": "- You're done.\n- BOTH: Yay!",
@@ -462,8 +462,8 @@
   },
   {
     "query": {
-      "lens": "SATSUKI:\nWe will!",
-      "tesseract": "SATSUKI: We will!"
+      "one": "SATSUKI:\nWe will!",
+      "two": "SATSUKI: We will!"
     },
     "answer": {
       "output": "SATSUKI: We will!",
@@ -474,8 +474,8 @@
   },
   {
     "query": {
-      "lens": "- Yeah.\n- Hmm?",
-      "tesseract": "-Yeah.\n- Hmm?"
+      "one": "- Yeah.\n- Hmm?",
+      "two": "-Yeah.\n- Hmm?"
     },
     "answer": {
       "output": "- Yeah.\n- Hmm?",
@@ -486,8 +486,8 @@
   },
   {
     "query": {
-      "lens": "- Do you two like it?\n- Yeah!",
-      "tesseract": "- Do you two like it?\n-Yeah!"
+      "one": "- Do you two like it?\n- Yeah!",
+      "two": "- Do you two like it?\n-Yeah!"
     },
     "answer": {
       "output": "- Do you two like it?\n- Yeah!",
@@ -498,8 +498,8 @@
   },
   {
     "query": {
-      "lens": "- What a lucky girl you are.\n- Yeah, but she yells at me a lot.",
-      "tesseract": "- What a lucky girl you are.\n-Yeah, but she yells at me a lot."
+      "one": "- What a lucky girl you are.\n- Yeah, but she yells at me a lot.",
+      "two": "- What a lucky girl you are.\n-Yeah, but she yells at me a lot."
     },
     "answer": {
       "output": "- What a lucky girl you are.\n- Yeah, but she yells at me a lot.",
@@ -510,8 +510,8 @@
   },
   {
     "query": {
-      "lens": "- That's because you never sit still.\n- Let's see your hair, Satsuki.",
-      "tesseract": "-That's because you never sit still.\n- Let's see your hair, Satsuki."
+      "one": "- That's because you never sit still.\n- Let's see your hair, Satsuki.",
+      "two": "-That's because you never sit still.\n- Let's see your hair, Satsuki."
     },
     "answer": {
       "output": "- That's because you never sit still.\n- Let's see your hair, Satsuki.",
@@ -522,8 +522,8 @@
   },
   {
     "query": {
-      "lens": "- Brush my hair! Brush mine!\n- Wait your turn, Mei.",
-      "tesseract": "- Brush my hair! Brush mine!\n-Wait your turn, Mei."
+      "one": "- Brush my hair! Brush mine!\n- Wait your turn, Mei.",
+      "two": "- Brush my hair! Brush mine!\n-Wait your turn, Mei."
     },
     "answer": {
       "output": "- Brush my hair! Brush mine!\n- Wait your turn, Mei.",
@@ -534,8 +534,8 @@
   },
   {
     "query": {
-      "lens": "Her doctor said she should be able\nto come home real soon.",
-      "tesseract": "her doctor said she should be able\nto come home real soon."
+      "one": "Her doctor said she should be able\nto come home real soon.",
+      "two": "her doctor said she should be able\nto come home real soon."
     },
     "answer": {
       "output": "her doctor said she should be able\nto come home real soon.",
@@ -546,8 +546,8 @@
   },
   {
     "query": {
-      "lens": "- So she'll be home tomorrow?\n- There she goes again with tomorrow.",
-      "tesseract": "- So she'll be home tomorrow?\n-There she goes again with tomorrow."
+      "one": "- So she'll be home tomorrow?\n- There she goes again with tomorrow.",
+      "two": "- So she'll be home tomorrow?\n-There she goes again with tomorrow."
     },
     "answer": {
       "output": "- So she'll be home tomorrow?\n- There she goes again with tomorrow.",
@@ -558,8 +558,8 @@
   },
   {
     "query": {
-      "lens": "- - Sorry. I overslept again. I\nhave to take lunch to school today.",
-      "tesseract": "- Sorry. I overslept again.\n- I have to take lunch to school today."
+      "one": "- - Sorry. I overslept again. I\nhave to take lunch to school today.",
+      "two": "- Sorry. I overslept again.\n- I have to take lunch to school today."
     },
     "answer": {
       "output": "- Sorry. I overslept again.\n- I have to take lunch to school today.",
@@ -570,8 +570,8 @@
   },
   {
     "query": {
-      "lens": "- Satsuki!\n- That's Michiko.",
-      "tesseract": "- Satsuki!\n-That's Michiko."
+      "one": "- Satsuki!\n- That's Michiko.",
+      "two": "- Satsuki!\n-That's Michiko."
     },
     "answer": {
       "output": "- Satsuki!\n- That's Michiko.",
@@ -582,8 +582,8 @@
   },
   {
     "query": {
-      "lens": "- Hi. Ready for school?\n- Yep.",
-      "tesseract": "- Hi. Ready for school?\n-Yep."
+      "one": "- Hi. Ready for school?\n- Yep.",
+      "two": "- Hi. Ready for school?\n-Yep."
     },
     "answer": {
       "output": "- Hi. Ready for school?\n- Yep.",
@@ -594,8 +594,8 @@
   },
   {
     "query": {
-      "lens": "Totoro?",
-      "tesseract": "{\\i1}Totem?{\\i0}"
+      "one": "Totoro?",
+      "two": "{\\i1}Totem?{\\i0}"
     },
     "answer": {
       "output": "Totoro?",
@@ -606,8 +606,8 @@
   },
   {
     "query": {
-      "lens": "Mmm.\nTotoro.",
-      "tesseract": "Mmm. Totoro."
+      "one": "Mmm.\nTotoro.",
+      "two": "Mmm. Totoro."
     },
     "answer": {
       "output": "Mmm. Totoro.",
@@ -618,21 +618,21 @@
   },
   {
     "query": {
-      "lens": "Hmm?\nHmm.",
-      "tesseract": "Hmm? Hmm."
+      "one": "Hmm?\nHmm.",
+      "two": "Hmm? Hmm."
     },
     "answer": {
       "output": "Hmm? Hmm.",
       "note": "Used space instead of newline as in Tesseract."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
     "query": {
-      "lens": "- No, I saw Totoro.\n- Totoro?",
-      "tesseract": "- No, I saw Totoro.\n-Totoro?"
+      "one": "- No, I saw Totoro.\n- Totoro?",
+      "two": "- No, I saw Totoro.\n-Totoro?"
     },
     "answer": {
       "output": "- No, I saw Totoro.\n- Totoro?",
@@ -643,8 +643,8 @@
   },
   {
     "query": {
-      "lens": "And a huge one that kept falling asleep.",
-      "tesseract": "and a huge one that kept falling asleep."
+      "one": "And a huge one that kept falling asleep.",
+      "two": "and a huge one that kept falling asleep."
     },
     "answer": {
       "output": "and a huge one that kept falling asleep.",
@@ -655,8 +655,8 @@
   },
   {
     "query": {
-      "lens": "Wow. This would make\na great secret hiding place.",
-      "tesseract": "Wow.This would make\na great secret hiding place."
+      "one": "Wow. This would make\na great secret hiding place.",
+      "two": "Wow.This would make\na great secret hiding place."
     },
     "answer": {
       "output": "Wow. This would make\na great secret hiding place.",
@@ -667,8 +667,8 @@
   },
   {
     "query": {
-      "lens": "- A Totoro?\n- Mmm-hmm.",
-      "tesseract": "-A Totoro?\n- Mmm-hmm."
+      "one": "- A Totoro?\n- Mmm-hmm.",
+      "two": "-A Totoro?\n- Mmm-hmm."
     },
     "answer": {
       "output": "- A Totoro?\n- Mmm-hmm.",
@@ -679,8 +679,8 @@
   },
   {
     "query": {
-      "lens": "Back in the time when trees\nand people used to be friends.",
-      "tesseract": "back in the time when trees\nand people used to befriends."
+      "one": "Back in the time when trees\nand people used to be friends.",
+      "two": "back in the time when trees\nand people used to befriends."
     },
     "answer": {
       "output": "back in the time when trees\nand people used to be friends.",
@@ -691,8 +691,8 @@
   },
   {
     "query": {
-      "lens": "So her sister Mei is going\nto stay with us today, okay, class?",
-      "tesseract": "so her sister Mei is going\nto stay with us today, okay, class?"
+      "one": "So her sister Mei is going\nto stay with us today, okay, class?",
+      "two": "so her sister Mei is going\nto stay with us today, okay, class?"
     },
     "answer": {
       "output": "so her sister Mei is going\nto stay with us today, okay, class?",
@@ -703,8 +703,8 @@
   },
   {
     "query": {
-      "lens": "- Mmm. Huh?",
-      "tesseract": "- Mmm.\n- Huh?"
+      "one": "- Mmm. Huh?",
+      "two": "- Mmm.\n- Huh?"
     },
     "answer": {
       "output": "- Mmm.\n- Huh?",
@@ -715,8 +715,8 @@
   },
   {
     "query": {
-      "lens": "- That was lucky, wasn't it?\n- Mmm-hmm.",
-      "tesseract": "-That was lucky, wasn't it?\n- Mmm-hmm."
+      "one": "- That was lucky, wasn't it?\n- Mmm-hmm.",
+      "two": "-That was lucky, wasn't it?\n- Mmm-hmm."
     },
     "answer": {
       "output": "- That was lucky, wasn't it?\n- Mmm-hmm.",
@@ -727,8 +727,8 @@
   },
   {
     "query": {
-      "lens": "- MEI: This umbrella has holes.\n- Hmm.",
-      "tesseract": "- MEI:This umbrella has holes.\n- Hmm."
+      "one": "- MEI: This umbrella has holes.\n- Hmm.",
+      "two": "- MEI:This umbrella has holes.\n- Hmm."
     },
     "answer": {
       "output": "- MEI: This umbrella has holes.\n- Hmm.",
@@ -739,8 +739,8 @@
   },
   {
     "query": {
-      "lens": "And you broke it.",
-      "tesseract": "and you broke it."
+      "one": "And you broke it.",
+      "two": "and you broke it."
     },
     "answer": {
       "output": "and you broke it.",
@@ -751,8 +751,8 @@
   },
   {
     "query": {
-      "lens": "So, it was really nice of him\nto help us out. Tell him thank you.",
-      "tesseract": "So, it was really nice of him\nto help us out.Tell him thank you."
+      "one": "So, it was really nice of him\nto help us out. Tell him thank you.",
+      "two": "So, it was really nice of him\nto help us out.Tell him thank you."
     },
     "answer": {
       "output": "So, it was really nice of him\nto help us out. Tell him thank you.",
@@ -763,8 +763,8 @@
   },
   {
     "query": {
-      "lens": "- He must have been drenched.\n- That's okay.",
-      "tesseract": "- He must have been drenched.\n-That's okay."
+      "one": "- He must have been drenched.\n- That's okay.",
+      "two": "- He must have been drenched.\n-That's okay."
     },
     "answer": {
       "output": "- He must have been drenched.\n- That's okay.",
@@ -775,8 +775,8 @@
   },
   {
     "query": {
-      "lens": "- SATSUKI: Yes, he forgot his umbrella.\n- Such good kids.",
-      "tesseract": "- SATSUKI:Yes, he forgot his umbrella.\n- Such good kids."
+      "one": "- SATSUKI: Yes, he forgot his umbrella.\n- Such good kids.",
+      "two": "- SATSUKI:Yes, he forgot his umbrella.\n- Such good kids."
     },
     "answer": {
       "output": "- SATSUKI: Yes, he forgot his umbrella.\n- Such good kids.",
@@ -787,8 +787,8 @@
   },
   {
     "query": {
-      "lens": "- What?\n- It was huge!",
-      "tesseract": "-What?\n- It was huge!"
+      "one": "- What?\n- It was huge!",
+      "two": "-What?\n- It was huge!"
     },
     "answer": {
       "output": "- What?\n- It was huge!",
@@ -799,8 +799,8 @@
   },
   {
     "query": {
-      "lens": "And tied with a ribbon made of grass.",
-      "tesseract": "and tied with a ribbon made of grass."
+      "one": "And tied with a ribbon made of grass.",
+      "two": "and tied with a ribbon made of grass."
     },
     "answer": {
       "output": "and tied with a ribbon made of grass.",
@@ -811,8 +811,8 @@
   },
   {
     "query": {
-      "lens": "“ so we planted them in\nyour garden out back, but…”",
-      "tesseract": "“ so we planted them\nin your garden out back, but…”"
+      "one": "“ so we planted them in\nyour garden out back, but…”",
+      "two": "“ so we planted them\nin your garden out back, but…”"
     },
     "answer": {
       "output": "“so we planted them\nin your garden out back, but…”",
@@ -823,8 +823,8 @@
   },
   {
     "query": {
-      "lens": "SATSUKI: … they just won't grow.\nMei watches them",
-      "tesseract": "SATSUKI: they just won't grow.\nMei watches them"
+      "one": "SATSUKI: … they just won't grow.\nMei watches them",
+      "two": "SATSUKI: they just won't grow.\nMei watches them"
     },
     "answer": {
       "output": "SATSUKI: …they just won't grow.\nMei watches them",
@@ -835,8 +835,8 @@
   },
   {
     "query": {
-      "lens": "All day, every day,",
-      "tesseract": "all day, every day,"
+      "one": "All day, every day,",
+      "two": "all day, every day,"
     },
     "answer": {
       "output": "all day, every day,",
@@ -847,8 +847,8 @@
   },
   {
     "query": {
-      "lens": "Waiting for them to sprout,",
-      "tesseract": "waiting for them to sprout,"
+      "one": "Waiting for them to sprout,",
+      "two": "waiting for them to sprout,"
     },
     "answer": {
       "output": "waiting for them to sprout,",
@@ -859,8 +859,8 @@
   },
   {
     "query": {
-      "lens": "It's starting to make her crabby.",
-      "tesseract": "it's starting to make her crabby."
+      "one": "It's starting to make her crabby.",
+      "two": "it's starting to make her crabby."
     },
     "answer": {
       "output": "it's starting to make her crabby.",
@@ -871,8 +871,8 @@
   },
   {
     "query": {
-      "lens": "And I can't wait to play\noutside with you.",
-      "tesseract": "and I can't wait to play\noutside with you."
+      "one": "And I can't wait to play\noutside with you.",
+      "two": "and I can't wait to play\noutside with you."
     },
     "answer": {
       "output": "and I can't wait to play\noutside with you.",
@@ -883,8 +883,8 @@
   },
   {
     "query": {
-      "lens": "GIRLS: Yay! We did it! We did it!",
-      "tesseract": "GIRLS:Yay! We did it! We did it!"
+      "one": "GIRLS: Yay! We did it! We did it!",
+      "two": "GIRLS:Yay! We did it! We did it!"
     },
     "answer": {
       "output": "GIRLS: Yay! We did it! We did it!",
@@ -895,8 +895,8 @@
   },
   {
     "query": {
-      "lens": "GIRLS: Yay!",
-      "tesseract": "GIRLS:Yay!"
+      "one": "GIRLS: Yay!",
+      "two": "GIRLS:Yay!"
     },
     "answer": {
       "output": "GIRLS: Yay!",
@@ -907,8 +907,8 @@
   },
   {
     "query": {
-      "lens": "Where'd the tree go?",
-      "tesseract": "Where'd the tree 90?"
+      "one": "Where'd the tree go?",
+      "two": "Where'd the tree 90?"
     },
     "answer": {
       "output": "Where'd the tree go?",
@@ -919,8 +919,8 @@
   },
   {
     "query": {
-      "lens": "- Ahh!\n- Ahh!",
-      "tesseract": "-Ahh!\n-Ahh!"
+      "one": "- Ahh!\n- Ahh!",
+      "two": "-Ahh!\n-Ahh!"
     },
     "answer": {
       "output": "- Ahh!\n- Ahh!",
@@ -931,8 +931,8 @@
   },
   {
     "query": {
-      "lens": "Mr.\nKUSAKABE?",
-      "tesseract": "Mr. KUSAKABE?"
+      "one": "Mr.\nKUSAKABE?",
+      "two": "Mr. KUSAKABE?"
     },
     "answer": {
       "output": "Mr. KUSAKABE?",
@@ -943,8 +943,8 @@
   },
   {
     "query": {
-      "lens": "We've picked enough,\nhaven't we? Let's take a rest.",
-      "tesseract": "{\\i1}We've{\\i0}picked enough,\nhaven't we? Let's take a rest."
+      "one": "We've picked enough,\nhaven't we? Let's take a rest.",
+      "two": "{\\i1}We've{\\i0}picked enough,\nhaven't we? Let's take a rest."
     },
     "answer": {
       "output": "We've picked enough,\nhaven't we? Let's take a rest.",
@@ -955,8 +955,8 @@
   },
   {
     "query": {
-      "lens": "- I bet that will do her wonders.\n- Yep.",
-      "tesseract": "- I bet that will do her wonders.\n-Yep."
+      "one": "- I bet that will do her wonders.\n- Yep.",
+      "two": "- I bet that will do her wonders.\n-Yep."
     },
     "answer": {
       "output": "- I bet that will do her wonders.\n- Yep.",
@@ -967,8 +967,8 @@
   },
   {
     "query": {
-      "lens": "Here. The postman\nleft us your telegram.",
-      "tesseract": "Here.The postman\nleft us your telegram."
+      "one": "Here. The postman\nleft us your telegram.",
+      "two": "Here.The postman\nleft us your telegram."
     },
     "answer": {
       "output": "Here. The postman\nleft us your telegram.",
@@ -979,8 +979,8 @@
   },
   {
     "query": {
-      "lens": "- Satsuki, what's wrong?\n- We got a telegram.",
-      "tesseract": "- Satsuki, what's{\\i1}wrong?{\\i0}\n- We got a telegram."
+      "one": "- Satsuki, what's wrong?\n- We got a telegram.",
+      "two": "- Satsuki, what's{\\i1}wrong?{\\i0}\n- We got a telegram."
     },
     "answer": {
       "output": "- Satsuki, what's wrong?\n- We got a telegram.",
@@ -991,8 +991,8 @@
   },
   {
     "query": {
-      "lens": "- Yeah.\n- Just wait by the phone.",
-      "tesseract": "-Yeah.\n-{\\i1}Just wait{\\i0}by the phone."
+      "one": "- Yeah.\n- Just wait by the phone.",
+      "two": "-Yeah.\n-{\\i1}Just wait{\\i0}by the phone."
     },
     "answer": {
       "output": "- Yeah.\n- Just wait by the phone.",
@@ -1003,8 +1003,8 @@
   },
   {
     "query": {
-      "lens": "- No!\n- You want her to die, Mei?",
-      "tesseract": "- No!\n-You want her to die, Mei?"
+      "one": "- No!\n- You want her to die, Mei?",
+      "two": "- No!\n-You want her to die, Mei?"
     },
     "answer": {
       "output": "- No!\n- You want her to die, Mei?",
@@ -1015,8 +1015,8 @@
   },
   {
     "query": {
-      "lens": "- Yeah?\n- I'm looking for my sister.",
-      "tesseract": "-Yeah?\n- I'm looking for my sister."
+      "one": "- Yeah?\n- I'm looking for my sister.",
+      "two": "-Yeah?\n- I'm looking for my sister."
     },
     "answer": {
       "output": "- Yeah?\n- I'm looking for my sister.",
@@ -1027,8 +1027,8 @@
   },
   {
     "query": {
-      "lens": "No. We just came from the hospital,",
-      "tesseract": "No. We just{\\i1}came{\\i0}from the hospital,"
+      "one": "No. We just came from the hospital,",
+      "two": "No. We just{\\i1}came{\\i0}from the hospital,"
     },
     "answer": {
       "output": "No. We just came from the hospital,",
@@ -1039,8 +1039,8 @@
   },
   {
     "query": {
-      "lens": "And there was no sign of\na little girl on the road.",
-      "tesseract": "and there was no sign of\na little girl on the road."
+      "one": "And there was no sign of\na little girl on the road.",
+      "two": "and there was no sign of\na little girl on the road."
     },
     "answer": {
       "output": "and there was no sign of\na little girl on the road.",
@@ -1051,8 +1051,8 @@
   },
   {
     "query": {
-      "lens": "A four-year-old couldn't walk this far.",
-      "tesseract": "A four-year—old couldn't walk this far."
+      "one": "A four-year-old couldn't walk this far.",
+      "two": "A four-year—old couldn't walk this far."
     },
     "answer": {
       "output": "A four-year-old couldn't walk this far.",
@@ -1063,8 +1063,8 @@
   },
   {
     "query": {
-      "lens": "- You should go back home.\n- Check all around.",
-      "tesseract": "-You should go back home.\n- Check all around."
+      "one": "- You should go back home.\n- Check all around.",
+      "two": "-You should go back home.\n- Check all around."
     },
     "answer": {
       "output": "- You should go back home.\n- Check all around.",
@@ -1075,8 +1075,8 @@
   },
   {
     "query": {
-      "lens": "But we still need your help.",
-      "tesseract": "but we still need your help."
+      "one": "But we still need your help.",
+      "two": "but we still need your help."
     },
     "answer": {
       "output": "but we still need your help.",
@@ -1087,8 +1087,8 @@
   },
   {
     "query": {
-      "lens": "Totoro!",
-      "tesseract": "Toto ro!"
+      "one": "Totoro!",
+      "two": "Toto ro!"
     },
     "answer": {
       "output": "Totoro!",
@@ -1099,8 +1099,8 @@
   },
   {
     "query": {
-      "lens": "ΜΕΙ",
-      "tesseract": "MEI"
+      "one": "ΜΕΙ",
+      "two": "MEI"
     },
     "answer": {
       "output": "MEI",
@@ -1111,8 +1111,8 @@
   },
   {
     "query": {
-      "lens": "- She tries to act so adult.\n- That's true.",
-      "tesseract": "- She tries to act so adult.\n-That's true."
+      "one": "- She tries to act so adult.\n- That's true.",
+      "two": "- She tries to act so adult.\n-That's true."
     },
     "answer": {
       "output": "- She tries to act so adult.\n- That's true.",
@@ -1123,8 +1123,8 @@
   },
   {
     "query": {
-      "lens": "- Everything must be okay.\n- Yeah.",
-      "tesseract": "- Everything must be okay.\n-Yeah."
+      "one": "- Everything must be okay.\n- Yeah.",
+      "two": "- Everything must be okay.\n-Yeah."
     },
     "answer": {
       "output": "- Everything must be okay.\n- Yeah.",
@@ -1135,8 +1135,8 @@
   },
   {
     "query": {
-      "lens": "Totoro,\nTotoro♪",
-      "tesseract": "{\\i1}♪{\\i0}Totoro, Totoro ♪"
+      "one": "Totoro,\nTotoro♪",
+      "two": "{\\i1}♪{\\i0}Totoro, Totoro ♪"
     },
     "answer": {
       "output": "♪ Totoro, Totoro ♪",
@@ -1147,8 +1147,8 @@
   },
   {
     "query": {
-      "lens": "Who leaves the seeds",
-      "tesseract": "♪ Who leaves the seeds ♪"
+      "one": "Who leaves the seeds",
+      "two": "♪ Who leaves the seeds ♪"
     },
     "answer": {
       "output": "♪ Who leaves the seeds ♪",
@@ -1159,8 +1159,8 @@
   },
   {
     "query": {
-      "lens": "For you to find♪",
-      "tesseract": "{\\i1}♪ For you to find ♪{\\i0}"
+      "one": "For you to find♪",
+      "two": "{\\i1}♪ For you to find ♪{\\i0}"
     },
     "answer": {
       "output": "♪ For you to find ♪",
@@ -1171,8 +1171,8 @@
   },
   {
     "query": {
-      "lens": "Follow them and you will see♪",
-      "tesseract": "♪ Follow them and you will see ♪"
+      "one": "Follow them and you will see♪",
+      "two": "♪ Follow them and you will see ♪"
     },
     "answer": {
       "output": "♪ Follow them and you will see ♪",
@@ -1183,8 +1183,8 @@
   },
   {
     "query": {
-      "lens": "A treasure\nthere♪♪",
-      "tesseract": "{\\i1}♪ A treasure there I'{\\i0}"
+      "one": "A treasure\nthere♪♪",
+      "two": "{\\i1}♪ A treasure there I'{\\i0}"
     },
     "answer": {
       "output": "♪ A treasure there ♪",
@@ -1195,8 +1195,8 @@
   },
   {
     "query": {
-      "lens": "♪Then plant the seeds",
-      "tesseract": "♪ Then plant the seeds ♪"
+      "one": "♪Then plant the seeds",
+      "two": "♪ Then plant the seeds ♪"
     },
     "answer": {
       "output": "♪ Then plant the seeds ♪",
@@ -1207,8 +1207,8 @@
   },
   {
     "query": {
-      "lens": "And help them grow",
-      "tesseract": "♪ And help them grow ♪"
+      "one": "And help them grow",
+      "two": "♪ And help them grow ♪"
     },
     "answer": {
       "output": "♪ And help them grow ♪",
@@ -1219,8 +1219,8 @@
   },
   {
     "query": {
-      "lens": "It may seem like a dream♪",
-      "tesseract": "♪ It may{\\i1}seem{\\i0}like a dream{\\i1}♪{\\i0}"
+      "one": "It may seem like a dream♪",
+      "two": "♪ It may{\\i1}seem{\\i0}like a dream{\\i1}♪{\\i0}"
     },
     "answer": {
       "output": "♪ It may seem like a dream ♪",
@@ -1231,8 +1231,8 @@
   },
   {
     "query": {
-      "lens": "Things are not what they seem",
-      "tesseract": "{\\i1}♪ Things are not what they seem ♪{\\i0}"
+      "one": "Things are not what they seem",
+      "two": "{\\i1}♪ Things are not what they seem ♪{\\i0}"
     },
     "answer": {
       "output": "♪ Things are not what they seem ♪",
@@ -1243,8 +1243,8 @@
   },
   {
     "query": {
-      "lens": "Now begins a new adventure♪",
-      "tesseract": "{\\i1}♪{\\i0}Now begins a new adventure ♪"
+      "one": "Now begins a new adventure♪",
+      "two": "{\\i1}♪{\\i0}Now begins a new adventure ♪"
     },
     "answer": {
       "output": "♪ Now begins a new adventure ♪",
@@ -1255,8 +1255,8 @@
   },
   {
     "query": {
-      "lens": "♪For you♪",
-      "tesseract": "{\\i1}♪{\\i0}For you ♪"
+      "one": "♪For you♪",
+      "two": "{\\i1}♪{\\i0}For you ♪"
     },
     "answer": {
       "output": "♪ For you ♪",
@@ -1267,8 +1267,8 @@
   },
   {
     "query": {
-      "lens": "And you'll be with Totoro♪",
-      "tesseract": "♪ And you'll be with Totoro ♪"
+      "one": "And you'll be with Totoro♪",
+      "two": "♪ And you'll be with Totoro ♪"
     },
     "answer": {
       "output": "♪ And you'll be with Totoro ♪",
@@ -1279,8 +1279,8 @@
   },
   {
     "query": {
-      "lens": "♪Totoro♪",
-      "tesseract": "♪ Totoro ♪"
+      "one": "♪Totoro♪",
+      "two": "♪ Totoro ♪"
     },
     "answer": {
       "output": "♪ Totoro ♪",
@@ -1291,8 +1291,8 @@
   },
   {
     "query": {
-      "lens": "Living in the forest trees",
-      "tesseract": "♪ Living in the forest trees ♪"
+      "one": "Living in the forest trees",
+      "two": "♪ Living in the forest trees ♪"
     },
     "answer": {
       "output": "♪ Living in the forest trees ♪",
@@ -1303,8 +1303,8 @@
   },
   {
     "query": {
-      "lens": "♪For such a very, very long time♪♪",
-      "tesseract": "♪ For such a very, very long time ♪"
+      "one": "♪For such a very, very long time♪♪",
+      "two": "♪ For such a very, very long time ♪"
     },
     "answer": {
       "output": "♪ For such a very, very long time ♪",
@@ -1315,8 +1315,8 @@
   },
   {
     "query": {
-      "lens": "There you'll be with Totoro,\nTotoro♪",
-      "tesseract": "♪) There you'll be with Totoro, Totoro ♪’"
+      "one": "There you'll be with Totoro,\nTotoro♪",
+      "two": "♪) There you'll be with Totoro, Totoro ♪’"
     },
     "answer": {
       "output": "♪ There you'll be with Totoro, Totoro ♪",
@@ -1327,8 +1327,8 @@
   },
   {
     "query": {
-      "lens": "You only see him\nWhen you're very young",
-      "tesseract": "♪ You only see him\nWhen you're very young{\\i1}♪{\\i0}"
+      "one": "You only see him\nWhen you're very young",
+      "two": "♪ You only see him\nWhen you're very young{\\i1}♪{\\i0}"
     },
     "answer": {
       "output": "♪ You only see him\nWhen you're very young ♪",
@@ -1339,8 +1339,8 @@
   },
   {
     "query": {
-      "lens": "A magical adventure for you",
-      "tesseract": "PA magical adventure for you ♪"
+      "one": "A magical adventure for you",
+      "two": "PA magical adventure for you ♪"
     },
     "answer": {
       "output": "♪ A magical adventure for you ♪",
@@ -1351,8 +1351,8 @@
   },
   {
     "query": {
-      "lens": "It's magic for\nyou♪",
-      "tesseract": "{\\i1}♪{\\i0}It's magic for you ♪"
+      "one": "It's magic for\nyou♪",
+      "two": "{\\i1}♪{\\i0}It's magic for you ♪"
     },
     "answer": {
       "output": "♪ It's magic for you ♪",
@@ -1363,8 +1363,8 @@
   },
   {
     "query": {
-      "lens": "Rain tumbles\ndown♪♪",
-      "tesseract": "{\\i1}♪{\\i0}Rain tumbles down ♪"
+      "one": "Rain tumbles\ndown♪♪",
+      "two": "{\\i1}♪{\\i0}Rain tumbles down ♪"
     },
     "answer": {
       "output": "♪ Rain tumbles down ♪",
@@ -1375,8 +1375,8 @@
   },
   {
     "query": {
-      "lens": "The bus is\nlate♪♪",
-      "tesseract": "♪ The bus is late ♪"
+      "one": "The bus is\nlate♪♪",
+      "two": "♪ The bus is late ♪"
     },
     "answer": {
       "output": "♪ The bus is late ♪",
@@ -1387,8 +1387,8 @@
   },
   {
     "query": {
-      "lens": "Suddenly, a furry white giant♪",
-      "tesseract": "{\\i1}♪ Suddenly, a flurry white giant ♪{\\i0}"
+      "one": "Suddenly, a furry white giant♪",
+      "two": "{\\i1}♪ Suddenly, a flurry white giant ♪{\\i0}"
     },
     "answer": {
       "output": "♪ Suddenly, a furry white giant ♪",
@@ -1399,8 +1399,8 @@
   },
   {
     "query": {
-      "lens": "Is by your\nside♪",
-      "tesseract": "♪ Is by your side ♪"
+      "one": "Is by your\nside♪",
+      "two": "♪ Is by your side ♪"
     },
     "answer": {
       "output": "♪ Is by your side ♪",
@@ -1411,8 +1411,8 @@
   },
   {
     "query": {
-      "lens": "Don't be\nafraid♪♪",
-      "tesseract": "{\\i1}♪ Don't be afraid ♪{\\i0}"
+      "one": "Don't be\nafraid♪♪",
+      "two": "{\\i1}♪ Don't be afraid ♪{\\i0}"
     },
     "answer": {
       "output": "♪ Don't be afraid ♪",
@@ -1423,8 +1423,8 @@
   },
   {
     "query": {
-      "lens": "Just open\nwide♪",
-      "tesseract": "{\\i1}♪ Just open wide ♪{\\i0}"
+      "one": "Just open\nwide♪",
+      "two": "{\\i1}♪ Just open wide ♪{\\i0}"
     },
     "answer": {
       "output": "♪ Just open wide ♪",
@@ -1435,8 +1435,8 @@
   },
   {
     "query": {
-      "lens": "Your umbrella for\nhim♪♪",
-      "tesseract": "♪ Your umbrella for him{\\i1}♪{\\i0}"
+      "one": "Your umbrella for\nhim♪♪",
+      "two": "♪ Your umbrella for him{\\i1}♪{\\i0}"
     },
     "answer": {
       "output": "♪ Your umbrella for him ♪",
@@ -1447,8 +1447,8 @@
   },
   {
     "query": {
-      "lens": "Watch him play in the rain♪",
-      "tesseract": "♪ Watch him play in the rain ♪"
+      "one": "Watch him play in the rain♪",
+      "two": "♪ Watch him play in the rain ♪"
     },
     "answer": {
       "output": "♪ Watch him play in the rain ♪",
@@ -1459,8 +1459,8 @@
   },
   {
     "query": {
-      "lens": "And on a moonlit night",
-      "tesseract": "{\\i1}♪ And on a moon fit night ♪{\\i0}"
+      "one": "And on a moonlit night",
+      "two": "{\\i1}♪ And on a moon fit night ♪{\\i0}"
     },
     "answer": {
       "output": "♪ And on a moonlit night ♪",
@@ -1471,8 +1471,8 @@
   },
   {
     "query": {
-      "lens": "♪He plays a magic flute in the sky♪",
-      "tesseract": "{\\i1}♪ He Nays a magic flute \"in the sky ♪{\\i0}"
+      "one": "♪He plays a magic flute in the sky♪",
+      "two": "{\\i1}♪ He Nays a magic flute \"in the sky ♪{\\i0}"
     },
     "answer": {
       "output": "♪ He plays a magic flute in the sky ♪",
@@ -1483,8 +1483,8 @@
   },
   {
     "query": {
-      "lens": "♪There you'll be with Totoro♪",
-      "tesseract": "♪ There you'll be with Totoro{\\i1}♪{\\i0}"
+      "one": "♪There you'll be with Totoro♪",
+      "two": "♪ There you'll be with Totoro{\\i1}♪{\\i0}"
     },
     "answer": {
       "output": "♪ There you'll be with Totoro ♪",

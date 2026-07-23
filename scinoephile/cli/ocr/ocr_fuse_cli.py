@@ -6,102 +6,89 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import ClassVar
 
-from scinoephile.cli.conversion import (
+from scinoephile.cli.helpers.conversion import (
     CONVERSION_LOCALIZATIONS,
-    add_opencc_convert_argument,
+    add_opencc_convert_auto_argument,
 )
-from scinoephile.cli.llms import (
+from scinoephile.cli.helpers.io import read_series, write_series
+from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
-    add_llm_provider_arguments,
+    LlmArguments,
+    add_llm_provider_args,
+    add_llm_test_case_json_arg,
     read_llm_additional_context,
 )
 from scinoephile.common.argument_parsing import (
+    enum_arg,
+    enum_metavar,
     get_arg_groups_by_name,
     input_file_arg,
     output_file_arg,
-    str_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core import Language, ScinoephileError
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.core.llms import LLMProvider
-from scinoephile.lang.eng.cleaning import get_eng_cleaned
-from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
-from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.ocr_fusion import (
-    OcrFusionPromptZhoHant,
-    get_zho_ocr_fused,
-    get_zho_ocr_fuser,
-)
 from scinoephile.lang.zho.script.conversion import (
     SIMPLIFIED_CONFIGS,
     TRADITIONAL_CONFIGS,
     OpenCCConfig,
     get_zho_converted,
 )
-from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionProcessor
 from scinoephile.llms.providers.registry import get_provider
+from scinoephile.workflows.clean import clean_series
+from scinoephile.workflows.ocr_fusion import fuse_ocr_series
 
 __all__ = ["OcrFuseCli"]
+
+OCR_FUSE_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "Chinese subtitles OCRed using PaddleOCR or '-' for stdin": (
+            "使用 PaddleOCR OCR 的中文字幕，或用 '-' 表示标准输入"
+        ),
+        "clean OCR subtitle inputs before fusing": "在融合前清理 OCR 字幕输入",
+        "command-line interface for OCR subtitle fusion": "OCR 字幕融合命令行界面",
+        "English subtitles OCRed using Tesseract or '-' for stdin": (
+            "使用 Tesseract OCR 的英文字幕，或用 '-' 表示标准输入"
+        ),
+        "fuse OCR output for a selected language": "融合所选语言的 OCR 输出",
+        "fused subtitle outfile path (default: stdout)": (
+            "融合后字幕输出文件路径（默认：标准输出）"
+        ),
+        "language of the OCR text to fuse": "要融合的 OCR 文本语言",
+        "OCR subtitles OCRed using Google Lens or '-' for stdin": (
+            "使用 Google Lens OCR 的字幕，或用 '-' 表示标准输入"
+        ),
+    },
+    "zh-hant": {
+        "Chinese subtitles OCRed using PaddleOCR or '-' for stdin": (
+            "使用 PaddleOCR OCR 的中文字幕，或用 '-' 表示標準輸入"
+        ),
+        "clean OCR subtitle inputs before fusing": "在融合前清理 OCR 字幕輸入",
+        "command-line interface for OCR subtitle fusion": "OCR 字幕融合命令列介面",
+        "English subtitles OCRed using Tesseract or '-' for stdin": (
+            "使用 Tesseract OCR 的英文字幕，或用 '-' 表示標準輸入"
+        ),
+        "fuse OCR output for a selected language": "融合所選語言的 OCR 輸出",
+        "fused subtitle outfile path (default: stdout)": (
+            "融合後字幕輸出檔路徑（預設：標準輸出）"
+        ),
+        "language of the OCR text to fuse": "要融合的 OCR 文字語言",
+        "OCR subtitles OCRed using Google Lens or '-' for stdin": (
+            "使用 Google Lens OCR 的字幕，或用 '-' 表示標準輸入"
+        ),
+    },
+}
+"""Localized help text keyed by locale and English source text."""
 
 
 class OcrFuseCli(ScinoephileCliBase):
     """Fuse OCR output for a selected language."""
 
-    localizations: ClassVar[dict[str, dict[str, str]]] = merge_localizations(
+    localizations = merge_localizations(
         CONVERSION_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
-        {
-            "zh-hans": {
-                "clean OCR subtitle inputs before fusing": (
-                    "在融合前清理 OCR 字幕输入"
-                ),
-                "command-line interface for OCR subtitle fusion": (
-                    "OCR 字幕融合命令行界面"
-                ),
-                "English subtitles OCRed using Tesseract or '-' for stdin": (
-                    "使用 Tesseract OCR 的英文字幕，或用 '-' 表示标准输入"
-                ),
-                "fuse OCR output for a selected language": "融合所选语言的 OCR 输出",
-                "language of the OCR text to fuse (eng or zho)": (
-                    "要融合的 OCR 文本语言（eng 或 zho）"
-                ),
-                "OCR subtitles OCRed using Google Lens or '-' for stdin": (
-                    "使用 Google Lens OCR 的字幕，或用 '-' 表示标准输入"
-                ),
-                "Standard Chinese subtitles OCRed using PaddleOCR or '-' for stdin": (
-                    "使用 PaddleOCR OCR 的标准中文字幕，或用 '-' 表示标准输入"
-                ),
-                "fused subtitle outfile path (default: stdout)": (
-                    "融合后字幕输出文件路径（默认：标准输出）"
-                ),
-            },
-            "zh-hant": {
-                "clean OCR subtitle inputs before fusing": (
-                    "在融合前清理 OCR 字幕輸入"
-                ),
-                "command-line interface for OCR subtitle fusion": (
-                    "OCR 字幕融合命令列介面"
-                ),
-                "English subtitles OCRed using Tesseract or '-' for stdin": (
-                    "使用 Tesseract OCR 的英文字幕，或用 '-' 表示標準輸入"
-                ),
-                "fuse OCR output for a selected language": "融合所選語言的 OCR 輸出",
-                "language of the OCR text to fuse (eng or zho)": (
-                    "要融合的 OCR 文字語言（eng 或 zho）"
-                ),
-                "OCR subtitles OCRed using Google Lens or '-' for stdin": (
-                    "使用 Google Lens OCR 的字幕，或用 '-' 表示標準輸入"
-                ),
-                "Standard Chinese subtitles OCRed using PaddleOCR or '-' for stdin": (
-                    "使用 PaddleOCR OCR 的標準中文字幕，或用 '-' 表示標準輸入"
-                ),
-                "fused subtitle outfile path (default: stdout)": (
-                    "融合後字幕輸出檔路徑（預設：標準輸出）"
-                ),
-            },
-        },
+        OCR_FUSE_LOCALIZATIONS,
     )
     """Localized help text keyed by locale and English source text."""
 
@@ -117,6 +104,7 @@ class OcrFuseCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
+            "llm arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -133,46 +121,43 @@ class OcrFuseCli(ScinoephileCliBase):
         arg_groups["input arguments"].add_argument(
             "--tesseract-infile",
             dest="tesseract_infile_path",
-            default=None,
             type=input_file_arg(allow_stdin=True),
             help="English subtitles OCRed using Tesseract or '-' for stdin",
         )
         arg_groups["input arguments"].add_argument(
             "--paddle-infile",
             dest="paddle_infile_path",
-            default=None,
             type=input_file_arg(allow_stdin=True),
-            help="Standard Chinese subtitles OCRed using PaddleOCR or '-' for stdin",
+            help="Chinese subtitles OCRed using PaddleOCR or '-' for stdin",
         )
 
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--language",
             required=True,
-            metavar="{eng,zho}",
-            type=str_arg(options=("eng", "zho")),
-            help="language of the OCR text to fuse (eng or zho)",
+            metavar=enum_metavar(Language),
+            type=enum_arg(Language),
+            help="language of the OCR text to fuse",
         )
         arg_groups["operation arguments"].add_argument(
             "--clean",
             action="store_true",
-            default=False,
             help="clean OCR subtitle inputs before fusing",
         )
-        add_opencc_convert_argument(
+        add_opencc_convert_auto_argument(
             arg_groups["operation arguments"], arg_groups["additional help"]
         )
-        add_llm_provider_arguments(
-            arg_groups["operation arguments"], arg_groups["additional help"]
+        add_llm_provider_args(
+            arg_groups["llm arguments"], arg_groups["additional help"]
         )
+        add_llm_test_case_json_arg(arg_groups["llm arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            default=None,
             dest="outfile_path",
-            type=output_file_arg(),
+            type=output_file_arg(exist_ok=True),
             help="fused subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
@@ -192,19 +177,18 @@ class OcrFuseCli(ScinoephileCliBase):
         return "fuse"
 
     @classmethod
-    def _main(
+    def _main(  # noqa: PLR0912, PLR0915
         cls,
         *,
         _parser: ArgumentParser | None = None,
-        language: str,
+        language: Language,
         lens_infile_path: Path | str,
         tesseract_infile_path: Path | str | None,
         paddle_infile_path: Path | str | None,
         clean: bool,
-        convert: OpenCCConfig | None,
-        llm_provider_name: str,
-        llm_model_name: str | None,
-        llm_additional_context_file_path: Path | None,
+        convert: OpenCCConfig | bool | None,
+        llm_args: LlmArguments,
+        json_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -213,195 +197,75 @@ class OcrFuseCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
-        additional_context = read_llm_additional_context(
-            parser, llm_additional_context_file_path
-        )
-        provider = get_provider(llm_provider_name, model=llm_model_name)
-
-        # Dispatch to language-specific implementation
-        if language == "eng":
-            cls._main_eng(
-                parser=parser,
-                lens_infile_path=lens_infile_path,
-                tesseract_infile_path=tesseract_infile_path,
-                paddle_infile_path=paddle_infile_path,
-                clean=clean,
-                convert=convert,
-                provider=provider,
-                additional_context=additional_context,
-                outfile_path=outfile_path,
-                overwrite=overwrite,
-            )
+        if language is Language.eng:
+            if tesseract_infile_path is None:
+                parser.error("--tesseract-infile is required when --language is eng")
+            if paddle_infile_path is not None:
+                parser.error("--paddle-infile may only be used with Chinese subtitles")
+            if convert is not None:
+                parser.error("--convert may only be used with Chinese subtitles")
+            secondary_infile_path = tesseract_infile_path
         else:
-            cls._main_zho(
-                parser=parser,
-                lens_infile_path=lens_infile_path,
-                tesseract_infile_path=tesseract_infile_path,
-                paddle_infile_path=paddle_infile_path,
-                clean=clean,
-                convert=convert,
-                provider=provider,
-                additional_context=additional_context,
-                outfile_path=outfile_path,
-                overwrite=overwrite,
-            )
-
-    @classmethod
-    def _get_ocr_fuser(
-        cls,
-        convert: OpenCCConfig | None,
-        provider: LLMProvider,
-        additional_context: str | None,
-    ) -> OcrFusionProcessor:
-        """Get OCR fuser for selected conversion output script.
-
-        Arguments:
-            convert: OpenCC conversion configuration
-            provider: provider to use for queries
-            additional_context: additional context to include in LLM prompts
-        Returns:
-            configured OCR fuser
-        """
-        script = cls._get_script_for_conversion(convert)
-        if script == "traditional":
-            return get_zho_ocr_fuser(
-                prompt_cls=OcrFusionPromptZhoHant,
-                provider=provider,
-                additional_context=additional_context,
-            )
-        return get_zho_ocr_fuser(
-            provider=provider,
-            additional_context=additional_context,
-        )
-
-    @classmethod
-    def _get_script_for_conversion(cls, convert: OpenCCConfig | None) -> str:
-        """Get output script implied by conversion configuration.
-
-        If conversion is omitted, script defaults to simplified for OCR fusion prompts.
-
-        Arguments:
-            convert: OpenCC conversion configuration
-        Returns:
-            "simplified" or "traditional"
-        """
-        if convert in TRADITIONAL_CONFIGS:
-            return "traditional"
-        if convert in SIMPLIFIED_CONFIGS:
-            return "simplified"
-        return "simplified"
-
-    @classmethod
-    def _main_eng(
-        cls,
-        *,
-        parser: ArgumentParser,
-        lens_infile_path: Path | str,
-        tesseract_infile_path: Path | str | None,
-        paddle_infile_path: Path | str | None,
-        clean: bool,
-        convert: OpenCCConfig | None,
-        provider: LLMProvider,
-        additional_context: str | None,
-        outfile_path: Path | None,
-        overwrite: bool,
-    ):
-        """Execute English OCR fusion.
-
-        Arguments:
-            parser: active argument parser
-            lens_infile_path: Google Lens OCR subtitle path
-            tesseract_infile_path: Tesseract OCR subtitle path
-            paddle_infile_path: PaddleOCR subtitle path, if provided
-            clean: whether to clean inputs before fusion
-            convert: OpenCC conversion configuration, if provided
-            provider: provider to use for queries
-            additional_context: additional context to include in LLM prompts
-            outfile_path: output subtitle path
-            overwrite: whether to overwrite an existing output file
-        """
-        # Validate arguments
-        if tesseract_infile_path is None:
-            parser.error("--tesseract-infile is required when --language is eng")
-        if paddle_infile_path is not None:
-            parser.error("--paddle-infile may only be used when --language is zho")
-        if convert is not None:
-            parser.error("--convert may only be used when --language is zho")
-        if lens_infile_path == "-" and tesseract_infile_path == "-":
-            parser.error("--lens-infile and --tesseract-infile may not both be '-'")
+            if tesseract_infile_path is not None:
+                parser.error(
+                    "--tesseract-infile may only be used when --language is eng"
+                )
+            if paddle_infile_path is None:
+                parser.error("--paddle-infile is required with Chinese subtitles")
+            secondary_infile_path = paddle_infile_path
+        if lens_infile_path == "-" and secondary_infile_path == "-":
+            parser.error("OCR input files may not both be '-'")
+        resolved_convert: OpenCCConfig | None = None
+        if isinstance(convert, OpenCCConfig):
+            resolved_convert = convert
+        elif convert:
+            if language.script == "Hans":
+                resolved_convert = OpenCCConfig.s2t
+            else:
+                resolved_convert = OpenCCConfig.t2s
 
         # Read inputs
         lens = read_series(parser, lens_infile_path, allow_stdin=True)
-        tesseract = read_series(parser, tesseract_infile_path, allow_stdin=True)
+        secondary = read_series(parser, secondary_infile_path, allow_stdin=True)
 
-        # Perform operations
+        # Clean and convert inputs
         if clean:
-            lens = get_eng_cleaned(lens, remove_empty=False)
-            tesseract = get_eng_cleaned(tesseract, remove_empty=False)
-        fuser = get_eng_ocr_fuser(
-            provider=provider,
-            additional_context=additional_context,
-        )
-        fused = get_eng_ocr_fused(lens, tesseract, processor=fuser)
+            lens = clean_series(lens, language=language, remove_empty=False)
+            secondary = clean_series(secondary, language=language, remove_empty=False)
+        fusion_language = language
+        if resolved_convert is not None:
+            lens = get_zho_converted(lens, resolved_convert)
+            secondary = get_zho_converted(secondary, resolved_convert)
+            if language.is_cantonese:
+                if resolved_convert in SIMPLIFIED_CONFIGS:
+                    fusion_language = Language.yue_hans
+                elif resolved_convert in TRADITIONAL_CONFIGS:
+                    fusion_language = Language.yue_hant
+            elif resolved_convert in SIMPLIFIED_CONFIGS:
+                fusion_language = Language.zho_hans
+            elif resolved_convert in TRADITIONAL_CONFIGS:
+                fusion_language = Language.zho_hant
 
-        # Write outputs
-        write_series(
-            parser, fused, outfile_path if outfile_path is not None else "-", overwrite
-        )
+        # Fuse inputs
+        try:
+            fused = fuse_ocr_series(
+                lens,
+                secondary,
+                language=fusion_language,
+                provider=get_provider(
+                    llm_args.provider_name,
+                    model=llm_args.model_name,
+                ),
+                additional_context=read_llm_additional_context(
+                    parser,
+                    llm_args.additional_context_file_path,
+                ),
+                test_case_path=json_path,
+            )
+        except ScinoephileError as exc:
+            parser.error(str(exc))
 
-    @classmethod
-    def _main_zho(
-        cls,
-        *,
-        parser: ArgumentParser,
-        lens_infile_path: Path | str,
-        tesseract_infile_path: Path | str | None,
-        paddle_infile_path: Path | str | None,
-        clean: bool,
-        convert: OpenCCConfig | None,
-        provider: LLMProvider,
-        additional_context: str | None,
-        outfile_path: Path | None,
-        overwrite: bool,
-    ):
-        """Execute standard Chinese OCR fusion.
-
-        Arguments:
-            parser: active argument parser
-            lens_infile_path: Google Lens OCR subtitle path
-            tesseract_infile_path: Tesseract subtitle path, if provided
-            paddle_infile_path: PaddleOCR OCR subtitle path
-            clean: whether to clean inputs before fusion
-            convert: OpenCC conversion configuration, if provided
-            provider: provider to use for queries
-            additional_context: additional context to include in LLM prompts
-            outfile_path: output subtitle path
-            overwrite: whether to overwrite an existing output file
-        """
-        # Validate arguments
-        if tesseract_infile_path is not None:
-            parser.error("--tesseract-infile may only be used when --language is eng")
-        if paddle_infile_path is None:
-            parser.error("--paddle-infile is required when --language is zho")
-        if lens_infile_path == "-" and paddle_infile_path == "-":
-            parser.error("--lens-infile and --paddle-infile may not both be '-'")
-
-        # Read inputs
-        lens = read_series(parser, lens_infile_path, allow_stdin=True)
-        paddle = read_series(parser, paddle_infile_path, allow_stdin=True)
-
-        # Perform operations
-        if clean:
-            lens = get_zho_cleaned(lens, remove_empty=False)
-            paddle = get_zho_cleaned(paddle, remove_empty=False)
-        if convert is not None:
-            lens = get_zho_converted(lens, convert)
-            paddle = get_zho_converted(paddle, convert)
-
-        processor = cls._get_ocr_fuser(convert, provider, additional_context)
-        fused = get_zho_ocr_fused(lens, paddle, processor=processor)
-
-        # Write outputs
+        # Write output
         write_series(
             parser, fused, outfile_path if outfile_path is not None else "-", overwrite
         )

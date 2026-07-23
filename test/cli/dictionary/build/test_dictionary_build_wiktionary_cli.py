@@ -9,8 +9,8 @@ from io import StringIO
 from pathlib import Path
 from typing import Any
 
-import pytest
 import requests
+from pytest import MonkeyPatch, raises
 
 from scinoephile.cli.dictionary.build.dictionary_build_wiktionary_cli import (
     DictionaryBuildWiktionaryCli,
@@ -20,7 +20,7 @@ from scinoephile.dictionaries.wiktionary import WiktionaryDictionaryService
 
 
 def test_dictionary_build_wiktionary_exits_cleanly_on_missing_source(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Exit with status 1 when the service reports a missing source file.
 
@@ -43,7 +43,7 @@ def test_dictionary_build_wiktionary_exits_cleanly_on_missing_source(
 
     monkeypatch.setattr(WiktionaryDictionaryService, "build", _mock_build)
 
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(DictionaryBuildWiktionaryCli, "")
@@ -53,7 +53,7 @@ def test_dictionary_build_wiktionary_exits_cleanly_on_missing_source(
 
 
 def test_dictionary_build_wiktionary_exits_cleanly_on_download_error(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Exit with status 1 when the service reports a download error.
 
@@ -76,7 +76,7 @@ def test_dictionary_build_wiktionary_exits_cleanly_on_download_error(
 
     monkeypatch.setattr(WiktionaryDictionaryService, "build", _mock_build)
 
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(DictionaryBuildWiktionaryCli, "")

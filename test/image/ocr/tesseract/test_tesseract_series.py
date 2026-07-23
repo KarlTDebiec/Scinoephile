@@ -6,74 +6,25 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
 from PIL import Image
+from pytest import LogCaptureFixture, MonkeyPatch, raises
 
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.tesseract import (
-    TesseractOcrRecognizer,
     ocr_image_series_with_tesseract,
 )
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
+from test.helpers import parametrize
+from test.helpers.ocr_recognizers import FailingOcrRecognizer, RecordingOcrRecognizer
 
 
-class FakeTesseractRecognizer(TesseractOcrRecognizer):
-    """Fake Tesseract recognizer for tests."""
-
-    def __init__(self, texts: list[str]):
-        """Initialize.
-
-        Arguments:
-            texts: texts to return from subsequent recognitions
-        """
-        self.texts = texts
-        self.images: list[Image.Image] = []
-
-    def recognize_image(self, image: Image.Image) -> str:
-        """Recognize text from an image.
-
-        Arguments:
-            image: input image
-        Returns:
-            recognized text
-        """
-        self.images.append(image)
-        return self.texts.pop(0)
-
-
-def test_ocr_image_series_with_tesseract_preserves_timings_and_sets_text():
-    """Test Tesseract image series processing preserves timings and text."""
-    image_series = ImageSeries(
-        events=[
-            ImageSubtitle(
-                start=1000,
-                end=2000,
-                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
-            ),
-            ImageSubtitle(
-                start=3000,
-                end=4000,
-                img=Image.new("RGBA", (12, 9), (255, 255, 255, 0)),
-            ),
-        ]
-    )
-    recognizer = FakeTesseractRecognizer(["first", "second"])
-
-    text_series = ocr_image_series_with_tesseract(image_series, recognizer=recognizer)
-
-    assert [(event.start, event.end, event.text) for event in text_series] == [
-        (1000, 2000, "first"),
-        (3000, 4000, "second"),
-    ]
-    assert [image.size for image in recognizer.images] == [(10, 8), (12, 9)]
-
-
-def test_ocr_image_series_with_tesseract_logs_progress(
-    caplog: pytest.LogCaptureFixture,
+def test_ocr_image_series_with_tesseract_preserves_timings_and_sets_text(
+    monkeypatch: MonkeyPatch,
 ):
-    """Test Tesseract image series processing logs OCR progress.
+    """Test Tesseract image series processing preserves timings and text.
 
     Arguments:
-        caplog: pytest log capture fixture
+        monkeypatch: pytest monkeypatch fixture
     """
     image_series = ImageSeries(
         events=[
@@ -89,10 +40,54 @@ def test_ocr_image_series_with_tesseract_logs_progress(
             ),
         ]
     )
-    recognizer = FakeTesseractRecognizer(["first", "second"])
+    RecordingOcrRecognizer.reset("first", "second")
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.tesseract.TesseractRecognizer",
+        RecordingOcrRecognizer,
+    )
+
+    text_series = ocr_image_series_with_tesseract(image_series)
+
+    assert [(event.start, event.end, event.text) for event in text_series] == [
+        (1000, 2000, "first"),
+        (3000, 4000, "second"),
+    ]
+    recognizer = RecordingOcrRecognizer.instances[0]
+    assert [image.size for image in recognizer.images] == [(10, 8), (12, 9)]
+
+
+def test_ocr_image_series_with_tesseract_logs_progress(
+    caplog: LogCaptureFixture,
+    monkeypatch: MonkeyPatch,
+):
+    """Test Tesseract image series processing logs OCR progress.
+
+    Arguments:
+        caplog: pytest log capture fixture
+        monkeypatch: pytest monkeypatch fixture
+    """
+    image_series = ImageSeries(
+        events=[
+            ImageSubtitle(
+                start=1000,
+                end=2000,
+                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
+            ),
+            ImageSubtitle(
+                start=3000,
+                end=4000,
+                img=Image.new("RGBA", (12, 9), (255, 255, 255, 0)),
+            ),
+        ]
+    )
+    RecordingOcrRecognizer.reset("first", "second")
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.tesseract.TesseractRecognizer",
+        RecordingOcrRecognizer,
+    )
 
     with caplog.at_level("INFO", logger="scinoephile.image.ocr.tesseract"):
-        ocr_image_series_with_tesseract(image_series, recognizer=recognizer)
+        ocr_image_series_with_tesseract(image_series)
 
     assert [
         record.message
@@ -105,7 +100,7 @@ def test_ocr_image_series_with_tesseract_logs_progress(
 
 
 def test_ocr_image_series_with_tesseract_uses_runtime_cache(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
     """Test Tesseract image series processing uses runtime cache by default.
@@ -115,57 +110,18 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
         tmp_path: temporary path fixture
     """
     cache_dir_path = tmp_path / "cache"
+    tessdata_dir_path = tmp_path / "tessdata"
     observed_cache_dir_paths = []
     observed_cache_namespaces = []
-
-    class FakeDefaultRecognizer(FakeTesseractRecognizer):
-        """Fake default recognizer with cache directory tracking."""
-
-        def __init__(
-            self,
-            *,
-            cache_dir_path: Path | None = None,
-            executable_path: Path | str = "tesseract",
-            detect_italics: bool = False,
-            language: str = "eng",
-            oem: int = 3,
-            psm: int = 6,
-            scale: int = 2,
-            skip_executable_validation: bool = False,
-            tessdata_dir_path: Path | None = None,
-        ):
-            """Initialize.
-
-            Arguments:
-                cache_dir_path: directory in which to cache OCR results
-                executable_path: Tesseract executable path or command name
-                detect_italics: whether to run a legacy-engine pass for italics
-                language: Tesseract language code
-                oem: Tesseract OCR engine mode
-                psm: Tesseract page segmentation mode
-                scale: image preprocessing scale
-                skip_executable_validation: whether to skip executable validation
-                tessdata_dir_path: optional tessdata directory
-            """
-            _ = (
-                executable_path,
-                detect_italics,
-                oem,
-                psm,
-                scale,
-                skip_executable_validation,
-                tessdata_dir_path,
-            )
-            super().__init__([language])
-            observed_cache_dir_paths.append(cache_dir_path)
+    RecordingOcrRecognizer.reset(Language.eng.code)
 
     monkeypatch.setattr(
         "scinoephile.image.ocr.tesseract.get_runtime_cache_dir_path",
         lambda *parts: observed_cache_namespaces.extend(parts) or cache_dir_path,
     )
     monkeypatch.setattr(
-        "scinoephile.image.ocr.tesseract.TesseractOcrRecognizer",
-        FakeDefaultRecognizer,
+        "scinoephile.image.ocr.tesseract.TesseractRecognizer",
+        RecordingOcrRecognizer,
     )
     image_series = ImageSeries(
         events=[
@@ -177,8 +133,71 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
         ]
     )
 
-    text_series = ocr_image_series_with_tesseract(image_series, language="eng")
+    text_series = ocr_image_series_with_tesseract(
+        image_series,
+        executable_path="custom-tesseract",
+        detect_italics=True,
+        language=Language.eng,
+        oem=None,
+        psm=7,
+        scale=3,
+        skip_executable_validation=True,
+        tessdata_dir_path=tessdata_dir_path,
+    )
 
     assert [event.text for event in text_series] == ["eng"]
+    recognizer = RecordingOcrRecognizer.instances[0]
+    observed_cache_dir_paths.append(recognizer.kwargs["cache_dir_path"])
     assert observed_cache_dir_paths == [cache_dir_path]
     assert observed_cache_namespaces == ["tesseract"]
+    assert recognizer.kwargs["executable_path"] == "custom-tesseract"
+    assert recognizer.kwargs["detect_italics"] is True
+    assert recognizer.kwargs["language"] is Language.eng
+    assert recognizer.kwargs["oem"] is None
+    assert recognizer.kwargs["psm"] == 7
+    assert recognizer.kwargs["scale"] == 3
+    assert recognizer.kwargs["skip_executable_validation"] is True
+    assert recognizer.kwargs["tessdata_dir_path"] == tessdata_dir_path
+
+
+@parametrize(
+    "exception",
+    [
+        ImportError("missing tesseract dependency"),
+        OSError("cache read failed"),
+        RuntimeError("tesseract request failed"),
+        ValueError("invalid tesseract response"),
+    ],
+)
+def test_ocr_image_series_with_tesseract_wraps_processing_errors(
+    monkeypatch: MonkeyPatch,
+    exception: Exception,
+):
+    """Test Tesseract image series processing wraps implementation errors.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        exception: implementation exception raised during OCR
+    """
+    FailingOcrRecognizer.exception = exception
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.tesseract.TesseractRecognizer",
+        FailingOcrRecognizer,
+    )
+    image_series = ImageSeries(
+        events=[
+            ImageSubtitle(
+                start=1000,
+                end=2000,
+                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
+            ),
+        ]
+    )
+
+    with raises(
+        ScinoephileError,
+        match="Unable to OCR image series with Tesseract",
+    ) as excinfo:
+        ocr_image_series_with_tesseract(image_series)
+
+    assert excinfo.value.__cause__ is exception

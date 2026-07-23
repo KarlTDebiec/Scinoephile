@@ -4,67 +4,33 @@
 
 from __future__ import annotations
 
-from scinoephile.core.llms import OperationSpec
-from scinoephile.lang.eng.block_review import (
-    ENG_BLOCK_REVIEW_OPERATION_SPEC,
-)
-from scinoephile.lang.eng.ocr_fusion import ENG_OCR_FUSION_OPERATION_SPEC
-from scinoephile.lang.zho.block_review import (
-    ZHO_BLOCK_REVIEW_OPERATION_SPEC,
-)
-from scinoephile.lang.zho.ocr_fusion import ZHO_OCR_FUSION_OPERATION_SPEC
-from scinoephile.multilang.eng_zho.gapped_translation import (
-    ENG_ZHO_GAPPED_TRANSLATION_OPERATION_SPEC,
-)
-from scinoephile.multilang.eng_zho.guided_translation import (
-    ENG_ZHO_GUIDED_TRANSLATION_OPERATION_SPEC,
-)
-from scinoephile.multilang.eng_zho.translation import (
-    ENG_ZHO_TRANSLATION_OPERATION_SPEC,
-)
-from scinoephile.multilang.yue_zho.block_review import (
-    YUE_ZHO_BLOCK_REVIEW_OPERATION_SPEC,
-)
-from scinoephile.multilang.yue_zho.gapped_translation import (
-    YUE_ZHO_GAPPED_TRANSLATION_OPERATION_SPEC,
-)
-from scinoephile.multilang.yue_zho.guided_translation import (
-    YUE_ZHO_GUIDED_TRANSLATION_OPERATION_SPEC,
-)
-from scinoephile.multilang.yue_zho.line_review import (
-    YUE_ZHO_LINE_REVIEW_OPERATION_SPEC,
-)
-from scinoephile.multilang.yue_zho.transcription import (
-    YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC,
-    YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC,
-)
-from scinoephile.multilang.yue_zho.translation import (
-    YUE_ZHO_TRANSLATION_OPERATION_SPEC,
-)
+from scinoephile.core.llms import Manager
+from scinoephile.llms.delineation import DelineationManager
+from scinoephile.llms.gap_translation import GapTranslationManager
+from scinoephile.llms.guided_review import GuidedReviewManager
+from scinoephile.llms.guided_translation import GuidedTranslationManager
+from scinoephile.llms.ocr_fusion import OcrFusionManager
+from scinoephile.llms.punctuation import PunctuationManager
+from scinoephile.llms.review import ReviewManager
+from scinoephile.llms.translation import TranslationManager
 
 __all__ = ["OPERATIONS"]
 
 
-OPERATIONS: dict[str, OperationSpec] = {
-    spec.operation: spec
-    for spec in sorted(
+OPERATIONS: dict[str, type[Manager]] = {
+    manager_cls.operation: manager_cls
+    for manager_cls in sorted(
         (
-            ENG_BLOCK_REVIEW_OPERATION_SPEC,
-            ENG_OCR_FUSION_OPERATION_SPEC,
-            ENG_ZHO_GAPPED_TRANSLATION_OPERATION_SPEC,
-            ENG_ZHO_GUIDED_TRANSLATION_OPERATION_SPEC,
-            ENG_ZHO_TRANSLATION_OPERATION_SPEC,
-            ZHO_BLOCK_REVIEW_OPERATION_SPEC,
-            ZHO_OCR_FUSION_OPERATION_SPEC,
-            YUE_ZHO_BLOCK_REVIEW_OPERATION_SPEC,
-            YUE_ZHO_LINE_REVIEW_OPERATION_SPEC,
-            YUE_ZHO_GAPPED_TRANSLATION_OPERATION_SPEC,
-            YUE_ZHO_GUIDED_TRANSLATION_OPERATION_SPEC,
-            YUE_ZHO_TRANSLATION_OPERATION_SPEC,
-            YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC,
-            YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC,
+            DelineationManager,
+            GapTranslationManager,
+            GuidedReviewManager,
+            GuidedTranslationManager,
+            OcrFusionManager,
+            PunctuationManager,
+            ReviewManager,
+            TranslationManager,
         ),
-        key=lambda operation_spec: operation_spec.operation,
+        key=lambda manager_cls: manager_cls.operation,
     )
 }
-"""Optimization operations keyed by operation name."""
+"""Optimization manager classes keyed by operation name."""

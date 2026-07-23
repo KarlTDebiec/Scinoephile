@@ -1,0 +1,4898 @@
+[
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "龍貓"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸，牛奶糖"
+        },
+        {
+          "index": 2,
+          "text": "謝謝"
+        },
+        {
+          "index": 3,
+          "text": "妳們兩個累不累啊"
+        },
+        {
+          "index": 4,
+          "text": "就快到了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美，快躲起來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "還以為是警察呢！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有沒有人在家啊？"
+        },
+        {
+          "index": 2,
+          "text": "謝謝"
+        },
+        {
+          "index": 3,
+          "text": "我姓草壁\n新搬來的"
+        },
+        {
+          "index": 4,
+          "text": "請多關照"
+        },
+        {
+          "index": 5,
+          "text": "搬家辛苦了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "謝謝你"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好，到了"
+        },
+        {
+          "index": 2,
+          "text": "等等我吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美，有座橋啊"
+        },
+        {
+          "index": 2,
+          "text": "有橋？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有魚呢，又閃了一下"
+        },
+        {
+          "index": 2,
+          "text": "怎麼樣？喜不喜歡？"
+        },
+        {
+          "index": 3,
+          "text": "爸爸，這裡太好了"
+        },
+        {
+          "index": 4,
+          "text": "樹林中還有隧道啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "那就是新家嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "跑快一點！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "很舊啊"
+        },
+        {
+          "index": 2,
+          "text": "很舊啊"
+        },
+        {
+          "index": 3,
+          "text": "好像一間鬼屋"
+        },
+        {
+          "index": 4,
+          "text": "鬼屋"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "柱子爛掉了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "要倒了！"
+        },
+        {
+          "index": 2,
+          "text": "要倒了！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美，妳看"
+        },
+        {
+          "index": 2,
+          "text": "妳看"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好大啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸，好大的樹啊"
+        },
+        {
+          "index": 2,
+          "text": "那叫做樟樹"
+        },
+        {
+          "index": 3,
+          "text": "樟樹呢"
+        },
+        {
+          "index": 4,
+          "text": "樟樹"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "橡果子"
+        },
+        {
+          "index": 2,
+          "text": "我看一下"
+        },
+        {
+          "index": 3,
+          "text": "那裡也有"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "撿到了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "別玩了\n這樣木門打不開"
+        },
+        {
+          "index": 2,
+          "text": "橡果子"
+        },
+        {
+          "index": 3,
+          "text": "有很多橡果子掉到屋裡"
+        },
+        {
+          "index": 4,
+          "text": "從上面掉下來的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "該不會是我們家有松鼠吧"
+        },
+        {
+          "index": 2,
+          "text": "松鼠？"
+        },
+        {
+          "index": 3,
+          "text": "還是\n吃橡果子的老鼠呢？"
+        },
+        {
+          "index": 4,
+          "text": "我喜歡松鼠"
+        },
+        {
+          "index": 5,
+          "text": "這要搬到哪兒呢？"
+        },
+        {
+          "index": 6,
+          "text": "放這裡，我這就開門"
+        },
+        {
+          "index": 7,
+          "text": "小月，你去把後門打開"
+        },
+        {
+          "index": 8,
+          "text": "好"
+        },
+        {
+          "index": 9,
+          "text": "去了就看得到"
+        },
+        {
+          "index": 10,
+          "text": "快點"
+        },
+        {
+          "index": 11,
+          "text": "等等"
+        },
+        {
+          "index": 12,
+          "text": "快點"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "還是吃橡果子的老鼠呢？",
+          "note": "刪除不必要的換行符，統一成一行字幕。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "進去囉"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "浴室"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不見了"
+        },
+        {
+          "index": 2,
+          "text": "這間是浴室"
+        },
+        {
+          "index": 3,
+          "text": "爸爸，有怪東西"
+        },
+        {
+          "index": 4,
+          "text": "松鼠嗎？"
+        },
+        {
+          "index": 5,
+          "text": "不知道"
+        },
+        {
+          "index": 6,
+          "text": "不像蟑螂也不像老鼠"
+        },
+        {
+          "index": 7,
+          "text": "只知道是一堆黑色的東西"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有沒有？"
+        },
+        {
+          "index": 2,
+          "text": "那一定是〝灰塵精靈〞"
+        },
+        {
+          "index": 3,
+          "text": "灰塵精靈"
+        },
+        {
+          "index": 4,
+          "text": "畫冊裡有嗎？"
+        },
+        {
+          "index": 5,
+          "text": "有啊"
+        },
+        {
+          "index": 6,
+          "text": "今天天氣那麼好\n不可能會有鬼的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "那一定是「灰塵精靈」",
+          "note": "將直角引號〝〞改為標準全形書名號/引號「」以統一標點格式。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我們從光的地方\n一下子進到暗的地方"
+        },
+        {
+          "index": 2,
+          "text": "眼睛就會發昏\n灰塵精靈就會跑出來"
+        },
+        {
+          "index": 3,
+          "text": "原來是這樣啊"
+        },
+        {
+          "index": 4,
+          "text": "灰塵精靈快點滾出來"
+        },
+        {
+          "index": 5,
+          "text": "你要躲著不出來\n我就把你眼睛挖出來！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好了，去做事"
+        },
+        {
+          "index": 2,
+          "text": "上二樓的樓梯\n到底在哪裡呢？"
+        },
+        {
+          "index": 3,
+          "text": "你們兩個去把樓梯找出來"
+        },
+        {
+          "index": 4,
+          "text": "然後把二樓的窗戶打開"
+        },
+        {
+          "index": 5,
+          "text": "好"
+        },
+        {
+          "index": 6,
+          "text": "小美也要"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "廁所"
+        },
+        {
+          "index": 2,
+          "text": "咦？"
+        },
+        {
+          "index": 3,
+          "text": "咦？"
+        },
+        {
+          "index": 4,
+          "text": "咦？"
+        },
+        {
+          "index": 5,
+          "text": "咦？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "咦？"
+        },
+        {
+          "index": 2,
+          "text": "沒有"
+        },
+        {
+          "index": 3,
+          "text": "沒有"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美，找到了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "烏漆抹黑的"
+        },
+        {
+          "index": 2,
+          "text": "灰塵精靈呢？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "橡果子"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "灰塵精靈快點滾出來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "灰塵精靈"
+        },
+        {
+          "index": 2,
+          "text": "你在不在？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸，真的有怪東西"
+        },
+        {
+          "index": 2,
+          "text": "那真是太好了"
+        },
+        {
+          "index": 3,
+          "text": "爸爸從小就夢想\n能夠住在鬼屋裡面"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "糟了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "抓到了！姐姐"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好活潑啊"
+        },
+        {
+          "index": 2,
+          "text": "這位是一直照顧這個家"
+        },
+        {
+          "index": 3,
+          "text": "住在隔壁的婆婆"
+        },
+        {
+          "index": 4,
+          "text": "婆婆今天是來幫忙的"
+        },
+        {
+          "index": 5,
+          "text": "我叫做小月，這是我妹妹小美"
+        },
+        {
+          "index": 6,
+          "text": "婆婆好"
+        },
+        {
+          "index": 7,
+          "text": "好，你們好啊"
+        },
+        {
+          "index": 8,
+          "text": "這孩子真是聰明伶俐"
+        },
+        {
+          "index": 9,
+          "text": "如果你們不急著搬進來"
+        },
+        {
+          "index": 10,
+          "text": "我還打算請人先收拾一下呢"
+        },
+        {
+          "index": 11,
+          "text": "這樣子已經很好了"
+        },
+        {
+          "index": 12,
+          "text": "現在這時田裡農事很忙碌呢"
+        },
+        {
+          "index": 13,
+          "text": "不過我還是偶爾會來打掃"
+        },
+        {
+          "index": 14,
+          "text": "小美，妳手怎麼髒兮兮的？"
+        },
+        {
+          "index": 15,
+          "text": "怎麼弄的？"
+        },
+        {
+          "index": 16,
+          "text": "灰塵精靈跑掉了"
+        },
+        {
+          "index": 17,
+          "text": "妳看妳的腳"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我的腳也髒兮兮的"
+        },
+        {
+          "index": 2,
+          "text": "哎呀呀！"
+        },
+        {
+          "index": 3,
+          "text": "看樣子是煤煤蟲在作怪"
+        },
+        {
+          "index": 4,
+          "text": "煤煤蟲？"
+        },
+        {
+          "index": 5,
+          "text": "你說的煤煤蟲是不是會"
+        },
+        {
+          "index": 6,
+          "text": "〝哇啦哇啦〞的亂跑啊"
+        },
+        {
+          "index": 7,
+          "text": "是啊"
+        },
+        {
+          "index": 8,
+          "text": "它們專門跑到沒人住的舊房子裡"
+        },
+        {
+          "index": 9,
+          "text": "然後弄得滿屋子的灰塵和煤灰"
+        },
+        {
+          "index": 10,
+          "text": "我小時候也有看過"
+        },
+        {
+          "index": 11,
+          "text": "想不到妳們也看到"
+        },
+        {
+          "index": 12,
+          "text": "婆婆，它們是妖怪嗎？"
+        },
+        {
+          "index": 13,
+          "text": "其實也沒什麼好怕的"
+        },
+        {
+          "index": 14,
+          "text": "只要對它們笑笑\n它們就不會害人"
+        },
+        {
+          "index": 15,
+          "text": "住上一陣子之後\n它們自然就會不見"
+        },
+        {
+          "index": 16,
+          "text": "說不定它們已經在天花板上\n討論該搬去哪裡了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "「哇啦哇啦」的亂跑啊",
+          "note": "將直角引號〝〞改為中文全形書名號式引號「」，屬標點樣式統一，未改動用詞與語氣。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美，它們很快就會不見了"
+        },
+        {
+          "index": 2,
+          "text": "不好玩"
+        },
+        {
+          "index": 3,
+          "text": "可是要是來這麼一大堆\n該怎麼辦？"
+        },
+        {
+          "index": 4,
+          "text": "小美才不怕那些"
+        },
+        {
+          "index": 5,
+          "text": "是嗎？"
+        },
+        {
+          "index": 6,
+          "text": "那以後晚上\n姐姐就不陪妳上廁所"
+        },
+        {
+          "index": 7,
+          "text": "來來⋯快來打掃吧"
+        },
+        {
+          "index": 8,
+          "text": "妳們去河邊打點水回來吧"
+        },
+        {
+          "index": 9,
+          "text": "河邊啊"
+        },
+        {
+          "index": 10,
+          "text": "小美也要去"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "可是要是來這麼一大堆，\n該怎麼辦？",
+          "note": "將原本分行處的頓號改為逗號，以符合標點用法；保留原本換行。"
+        },
+        {
+          "index": 6,
+          "text": "那以後晚上，\n姐姐就不陪妳上廁所",
+          "note": "在「那以後晚上」之後補上逗號，改善標點斷句。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美，妳在一邊等著"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有沒有抓到魚？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆，有水了"
+        },
+        {
+          "index": 2,
+          "text": "好好打啊"
+        },
+        {
+          "index": 3,
+          "text": "打到水變涼為止"
+        },
+        {
+          "index": 4,
+          "text": "好"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你不是剛剛那個嗎？\n有事嗎"
+        },
+        {
+          "index": 2,
+          "text": "我媽媽要給婆婆的"
+        },
+        {
+          "index": 3,
+          "text": "是什麼？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "等等，這是什麼啊"
+        },
+        {
+          "index": 2,
+          "text": "是勘太嗎？"
+        },
+        {
+          "index": 3,
+          "text": "你們家是可怕的大鬼屋"
+        },
+        {
+          "index": 4,
+          "text": "勘太！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸以前也這樣作弄過女生"
+        },
+        {
+          "index": 2,
+          "text": "男生最討人厭了"
+        },
+        {
+          "index": 3,
+          "text": "不過\n婆婆這個糯米糰很好吃"
+        },
+        {
+          "index": 4,
+          "text": "那便多吃點啊"
+        },
+        {
+          "index": 5,
+          "text": "謝謝您"
+        },
+        {
+          "index": 6,
+          "text": "真是太謝謝您了"
+        },
+        {
+          "index": 7,
+          "text": "婆婆再見"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸，我們家\n破破爛爛的會否倒下來"
+        },
+        {
+          "index": 2,
+          "text": "要是才剛搬來就倒塌\n那可怎麼得了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我們一起大笑看看"
+        },
+        {
+          "index": 2,
+          "text": "可怕的東西就會跑光"
+        },
+        {
+          "index": 3,
+          "text": "小美才不怕呢！"
+        },
+        {
+          "index": 4,
+          "text": "小美才不怕呢！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "一，二，一，二，一，二"
+        },
+        {
+          "index": 2,
+          "text": "很好，加油"
+        },
+        {
+          "index": 3,
+          "text": "用力，加把勁"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好了\n衣服都洗好了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "出發了！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆"
+        },
+        {
+          "index": 2,
+          "text": "您好！！"
+        },
+        {
+          "index": 3,
+          "text": "您可真忙啊"
+        },
+        {
+          "index": 4,
+          "text": "三個一起出門啊？"
+        },
+        {
+          "index": 5,
+          "text": "我們要去醫院看媽媽"
+        },
+        {
+          "index": 6,
+          "text": "可有好一段路呢"
+        },
+        {
+          "index": 7,
+          "text": "替我幫妳們媽媽問好"
+        },
+        {
+          "index": 8,
+          "text": "好的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "您好！",
+          "note": "將連續兩個全形驚嘆號「！！」改為一個「！」以修正常見標點用法。"
+        },
+        {
+          "index": 7,
+          "text": "替我幫你們媽媽問好",
+          "note": "將「妳們」改為「你們」，統一第二人稱複數用字，屬常見輸入錯誤修正。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "走這邊！走這邊！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大家好"
+        },
+        {
+          "index": 2,
+          "text": "妳好"
+        },
+        {
+          "index": 3,
+          "text": "媽媽！"
+        },
+        {
+          "index": 4,
+          "text": "小美妳也來啦"
+        },
+        {
+          "index": 5,
+          "text": "爸爸還走錯路呢"
+        },
+        {
+          "index": 6,
+          "text": "真的嗎"
+        },
+        {
+          "index": 7,
+          "text": "妳也來啦"
+        },
+        {
+          "index": 8,
+          "text": "今天是農假，學校休息一天"
+        },
+        {
+          "index": 9,
+          "text": "是啊"
+        },
+        {
+          "index": 10,
+          "text": "爸爸正在跟醫生說話"
+        },
+        {
+          "index": 11,
+          "text": "媽媽很高興你們都來了"
+        },
+        {
+          "index": 12,
+          "text": "新家怎麼樣啦"
+        },
+        {
+          "index": 13,
+          "text": "都整理好了沒？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "小美妳也來啦！",
+          "note": "補上句末感嘆號，使與第 3 句「媽媽！」等口語感嘆句式一致。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "甚麼？我們家是鬼屋啊"
+        },
+        {
+          "index": 2,
+          "text": "媽媽喜歡住鬼屋嗎？"
+        },
+        {
+          "index": 3,
+          "text": "當然囉"
+        },
+        {
+          "index": 4,
+          "text": "媽媽真想快點出院\n看看鬼長什麼樣子"
+        },
+        {
+          "index": 5,
+          "text": "小美太好了"
+        },
+        {
+          "index": 6,
+          "text": "我好擔心啊"
+        },
+        {
+          "index": 7,
+          "text": "因為我好怕\n媽媽會不喜歡那裡"
+        },
+        {
+          "index": 8,
+          "text": "那妳們兩個呢？"
+        },
+        {
+          "index": 9,
+          "text": "喜歡"
+        },
+        {
+          "index": 10,
+          "text": "媽媽我不怕鬼"
+        },
+        {
+          "index": 11,
+          "text": "小美的頭髮都是妳梳的？"
+        },
+        {
+          "index": 12,
+          "text": "梳得真好"
+        },
+        {
+          "index": 13,
+          "text": "要好好謝姐姐啊！小美"
+        },
+        {
+          "index": 14,
+          "text": "可是姐姐動不動就生氣"
+        },
+        {
+          "index": 15,
+          "text": "還不都是因為妳不乖"
+        },
+        {
+          "index": 16,
+          "text": "小月，過來讓媽媽看看"
+        },
+        {
+          "index": 17,
+          "text": "你的頭髮會不會太短了"
+        },
+        {
+          "index": 18,
+          "text": "我喜歡這個樣子"
+        },
+        {
+          "index": 19,
+          "text": "小美也要！小美也要！"
+        },
+        {
+          "index": 20,
+          "text": "排隊！"
+        },
+        {
+          "index": 21,
+          "text": "頭髮還是一樣經常打結"
+        },
+        {
+          "index": 22,
+          "text": "就跟媽媽小時候一樣"
+        },
+        {
+          "index": 23,
+          "text": "那我長大以後"
+        },
+        {
+          "index": 24,
+          "text": "頭髮會不會\n變得跟媽媽的一樣呢？"
+        },
+        {
+          "index": 25,
+          "text": "應該會吧"
+        },
+        {
+          "index": 26,
+          "text": "因為妳跟媽媽最像了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "媽媽好像好了很多"
+        },
+        {
+          "index": 2,
+          "text": "是啊"
+        },
+        {
+          "index": 3,
+          "text": "醫生也說\n再過不久就可以出院了"
+        },
+        {
+          "index": 4,
+          "text": "再過不久，明天嗎？"
+        },
+        {
+          "index": 5,
+          "text": "妳什麼都是明天"
+        },
+        {
+          "index": 6,
+          "text": "明天可能有點難"
+        },
+        {
+          "index": 7,
+          "text": "媽媽說想跟小美一起睡"
+        },
+        {
+          "index": 8,
+          "text": "妳不是說妳已經長大\n要自己一個人睡的嗎？"
+        },
+        {
+          "index": 9,
+          "text": "跟媽媽睡沒關係"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸"
+        },
+        {
+          "index": 2,
+          "text": "天亮了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "起床！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "對不起，爸爸又睡過頭"
+        },
+        {
+          "index": 2,
+          "text": "今天開始要帶便當"
+        },
+        {
+          "index": 3,
+          "text": "糟糕，爸爸忘記了"
+        },
+        {
+          "index": 4,
+          "text": "沒關係，我也幫你們做好了"
+        },
+        {
+          "index": 5,
+          "text": "燒焦了"
+        },
+        {
+          "index": 6,
+          "text": "馬上來"
+        },
+        {
+          "index": 7,
+          "text": "這是小美的"
+        },
+        {
+          "index": 8,
+          "text": "我的"
+        },
+        {
+          "index": 9,
+          "text": "小美，坐下來好好吃飯"
+        },
+        {
+          "index": 10,
+          "text": "來"
+        },
+        {
+          "index": 11,
+          "text": "便當自己包好"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小月"
+        },
+        {
+          "index": 2,
+          "text": "糟了，來啊"
+        },
+        {
+          "index": 3,
+          "text": "這麼快就交到朋友啦？"
+        },
+        {
+          "index": 4,
+          "text": "叫得很真親密呢"
+        },
+        {
+          "index": 5,
+          "text": "她叫小滿"
+        },
+        {
+          "index": 6,
+          "text": "我吃飽了"
+        },
+        {
+          "index": 7,
+          "text": "我去上學了"
+        },
+        {
+          "index": 8,
+          "text": "路上小心啊"
+        },
+        {
+          "index": 9,
+          "text": "早"
+        },
+        {
+          "index": 10,
+          "text": "－早，趕快走吧\n－好"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸！"
+        },
+        {
+          "index": 2,
+          "text": "你看我像不像姐姐"
+        },
+        {
+          "index": 3,
+          "text": "妳拿著便當要上哪兒去？"
+        },
+        {
+          "index": 4,
+          "text": "就在附近走走"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸，可以吃便當了嗎？"
+        },
+        {
+          "index": 2,
+          "text": "一早就想吃呀？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸你開花店了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小蝌蚪！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "破了一個大洞"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "發現了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你是誰？"
+        },
+        {
+          "index": 2,
+          "text": "灰塵精靈嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "龍貓！你叫做龍貓呀？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你一定就叫做大龍貓"
+        },
+        {
+          "index": 2,
+          "text": "大龍貓"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "待會見"
+        },
+        {
+          "index": 2,
+          "text": "待會見"
+        },
+        {
+          "index": 3,
+          "text": "我回來了"
+        },
+        {
+          "index": 4,
+          "text": "妳回來啦"
+        },
+        {
+          "index": 5,
+          "text": "都已經這時間啦"
+        },
+        {
+          "index": 6,
+          "text": "小美呢？待會我要去小滿家"
+        },
+        {
+          "index": 7,
+          "text": "爸爸還沒吃便當呢"
+        },
+        {
+          "index": 8,
+          "text": "小美沒有在院子裡玩嗎？"
+        },
+        {
+          "index": 9,
+          "text": "小美"
+        },
+        {
+          "index": 10,
+          "text": "小美"
+        },
+        {
+          "index": 11,
+          "text": "小美"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸！\n小美的帽子掉在這裡"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美！小美！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美！夠了，快起來"
+        },
+        {
+          "index": 2,
+          "text": "妳幹什麼睡在這裡！"
+        },
+        {
+          "index": 3,
+          "text": "大龍貓？"
+        },
+        {
+          "index": 4,
+          "text": "大龍貓？"
+        },
+        {
+          "index": 5,
+          "text": "怪了"
+        },
+        {
+          "index": 6,
+          "text": "你做夢啦"
+        },
+        {
+          "index": 7,
+          "text": "大龍貓剛才還在的"
+        },
+        {
+          "index": 8,
+          "text": "大龍貓？"
+        },
+        {
+          "index": 9,
+          "text": "你是說畫冊上那個大妖怪嗎？"
+        },
+        {
+          "index": 10,
+          "text": "牠的名字叫做大龍貓啊"
+        },
+        {
+          "index": 11,
+          "text": "牠的毛好多啊"
+        },
+        {
+          "index": 12,
+          "text": "嘴巴是這樣子的"
+        },
+        {
+          "index": 13,
+          "text": "有這麼小的"
+        },
+        {
+          "index": 14,
+          "text": "還有這麼大的"
+        },
+        {
+          "index": 15,
+          "text": "還有一隻這麼大的在睡覺"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "找到了"
+        },
+        {
+          "index": 2,
+          "text": "真是個好地方"
+        },
+        {
+          "index": 3,
+          "text": "簡直像是個祕密基地一樣"
+        },
+        {
+          "index": 4,
+          "text": "爸爸"
+        },
+        {
+          "index": 5,
+          "text": "小美說\n她看到一隻大龍貓"
+        },
+        {
+          "index": 6,
+          "text": "大龍貓？"
+        },
+        {
+          "index": 7,
+          "text": "這邊！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "簡直像是個秘密基地一樣",
+          "note": "將「祕密」改為「秘密」，統一常用字寫法。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "妳們兩個等等我"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "是這裡嗎？"
+        },
+        {
+          "index": 2,
+          "text": "牠剛才\n睡在一棵很大的樹裡面"
+        },
+        {
+          "index": 3,
+          "text": "可是這裡只有一條路啊"
+        },
+        {
+          "index": 4,
+          "text": "小美，你快回來啊"
+        },
+        {
+          "index": 5,
+          "text": "小美，回來啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "牠剛才\n睡在一棵很大的樹下面",
+          "note": "將「樹裡面」改為「樹下面」，配合常見表達與畫面情境，屬於明顯口誤型輸入錯誤修正。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "真的有啦"
+        },
+        {
+          "index": 2,
+          "text": "剛才真的有大龍貓"
+        },
+        {
+          "index": 3,
+          "text": "我沒有騙你們"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美啊"
+        },
+        {
+          "index": 2,
+          "text": "我沒有騙你們"
+        },
+        {
+          "index": 3,
+          "text": "其實爸爸跟姐姐"
+        },
+        {
+          "index": 4,
+          "text": "也沒有認為妳在騙人啊"
+        },
+        {
+          "index": 5,
+          "text": "小美剛才一定是\n遇到了森林的主人"
+        },
+        {
+          "index": 6,
+          "text": "這就表示小美運氣很好"
+        },
+        {
+          "index": 7,
+          "text": "不過這種機會並不常有"
+        },
+        {
+          "index": 8,
+          "text": "對了，我們還沒有跟它打招呼"
+        },
+        {
+          "index": 9,
+          "text": "打招呼？"
+        },
+        {
+          "index": 10,
+          "text": "現在向大樹出發了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美好像變重了"
+        },
+        {
+          "index": 2,
+          "text": "爸爸，你看那樟樹"
+        },
+        {
+          "index": 3,
+          "text": "好大啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "就是它！"
+        },
+        {
+          "index": 2,
+          "text": "是這棵嗎？"
+        },
+        {
+          "index": 3,
+          "text": "爸爸，快來啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "那個洞不見了"
+        },
+        {
+          "index": 2,
+          "text": "真的是這裡嗎？"
+        },
+        {
+          "index": 3,
+          "text": "小美她說洞不見了"
+        },
+        {
+          "index": 4,
+          "text": "所以我說啦"
+        },
+        {
+          "index": 5,
+          "text": "那不是想看\n隨時就能看到的"
+        },
+        {
+          "index": 6,
+          "text": "還會再看得到嗎？"
+        },
+        {
+          "index": 7,
+          "text": "我也好想看啊"
+        },
+        {
+          "index": 8,
+          "text": "那得碰運氣"
+        },
+        {
+          "index": 9,
+          "text": "這棵樹真大啊"
+        },
+        {
+          "index": 10,
+          "text": "一定是從很久很久以前"
+        },
+        {
+          "index": 11,
+          "text": "就已經長在這裡的"
+        },
+        {
+          "index": 12,
+          "text": "很久很久以前"
+        },
+        {
+          "index": 13,
+          "text": "樹木跟我們人的感情很好"
+        },
+        {
+          "index": 14,
+          "text": "爸爸就是因為看到這棵樹"
+        },
+        {
+          "index": 15,
+          "text": "才會這麼喜歡現在這個家的"
+        },
+        {
+          "index": 16,
+          "text": "而且知道\n媽媽一定也會喜歡這裡"
+        },
+        {
+          "index": 17,
+          "text": "來，我們謝謝它再回家"
+        },
+        {
+          "index": 18,
+          "text": "該吃飯了"
+        },
+        {
+          "index": 19,
+          "text": "對了\n我跟小滿約好要到她家去"
+        },
+        {
+          "index": 20,
+          "text": "小美也要去"
+        },
+        {
+          "index": 21,
+          "text": "立正站好！"
+        },
+        {
+          "index": 22,
+          "text": "多謝您照顧我們家小美"
+        },
+        {
+          "index": 23,
+          "text": "從今以後還盼您多多關照"
+        },
+        {
+          "index": 24,
+          "text": "請您多多關照"
+        },
+        {
+          "index": 25,
+          "text": "比賽跑回家"
+        },
+        {
+          "index": 26,
+          "text": "爸爸偷跑"
+        },
+        {
+          "index": 27,
+          "text": "等等"
+        },
+        {
+          "index": 28,
+          "text": "小美，快點"
+        },
+        {
+          "index": 29,
+          "text": "等等嘛"
+        },
+        {
+          "index": 30,
+          "text": "媽媽，今天出了一件大新聞"
+        },
+        {
+          "index": 31,
+          "text": "因為小美說她看到了\n一隻很大的龍貓精靈"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我好希望我也能夠見牠一面"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "勘太"
+        },
+        {
+          "index": 2,
+          "text": "－再不快點就要遲到了\n－嗯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美"
+        },
+        {
+          "index": 2,
+          "text": "老師"
+        },
+        {
+          "index": 3,
+          "text": "什麼事？小月"
+        },
+        {
+          "index": 4,
+          "text": "我妹妹⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆，小美？"
+        },
+        {
+          "index": 2,
+          "text": "對不起"
+        },
+        {
+          "index": 3,
+          "text": "她一直吵著\n要到姐姐那邊去所以⋯"
+        },
+        {
+          "index": 4,
+          "text": "可是"
+        },
+        {
+          "index": 5,
+          "text": "小美"
+        },
+        {
+          "index": 6,
+          "text": "今天是爸爸\n要到大學去教課的日子"
+        },
+        {
+          "index": 7,
+          "text": "我們不是說好了"
+        },
+        {
+          "index": 8,
+          "text": "你要在婆婆家\n乖乖等姐姐放學的嗎？"
+        },
+        {
+          "index": 9,
+          "text": "姐姐還要再上兩個小時的課"
+        },
+        {
+          "index": 10,
+          "text": "婆婆的田裡又那麼忙"
+        },
+        {
+          "index": 11,
+          "text": "小美在婆婆的家裡一直都很乖的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆，那我去跟老師說說看"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "現在小月因為媽媽住院"
+        },
+        {
+          "index": 2,
+          "text": "所以妹妹暫時沒人照顧"
+        },
+        {
+          "index": 3,
+          "text": "同學們要好好跟她相處啊"
+        },
+        {
+          "index": 4,
+          "text": "是的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這是什麼啊"
+        },
+        {
+          "index": 2,
+          "text": "大龍貓呀"
+        },
+        {
+          "index": 3,
+          "text": "不要吵"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "再見再見，明天見了"
+        },
+        {
+          "index": 2,
+          "text": "再見"
+        },
+        {
+          "index": 3,
+          "text": "我今天不能去社團了"
+        },
+        {
+          "index": 4,
+          "text": "我去跟老師說"
+        },
+        {
+          "index": 5,
+          "text": "再見了"
+        },
+        {
+          "index": 6,
+          "text": "拜拜，再見"
+        },
+        {
+          "index": 7,
+          "text": "小美，快點，要下雨了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "下雨了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "－小美都沒有哭，了不起？\n－嗯"
+        },
+        {
+          "index": 2,
+          "text": "可是真傷腦筋"
+        },
+        {
+          "index": 3,
+          "text": "土地公爺爺\n請您讓我們躲一下雨"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "－小美都沒有哭，了不起。\n－嗯",
+          "note": "將結尾的問號「？」改為句號「。」以符合陳述語氣，屬標點用法修正。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "可是⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "姐姐，有傘子真好啊"
+        },
+        {
+          "index": 2,
+          "text": "傘子破了好多洞洞"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸今天好像沒帶傘"
+        },
+        {
+          "index": 2,
+          "text": "小美也要去接爸爸"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不就是忘記了"
+        },
+        {
+          "index": 2,
+          "text": "明明都已經下雨了"
+        },
+        {
+          "index": 3,
+          "text": "竟然還會傻得忘了帶傘\n你騙鬼啊！"
+        },
+        {
+          "index": 4,
+          "text": "好痛啊"
+        },
+        {
+          "index": 5,
+          "text": "我看啊\n你八成是把傘子弄壞了"
+        },
+        {
+          "index": 6,
+          "text": "才不是呢"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "我看啊\n你八成是把傘弄壞了",
+          "note": "刪去「傘子」中的「子」，口語中字多餘，屬細微用字調整。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有人在家嗎？"
+        },
+        {
+          "index": 2,
+          "text": "小月？還有小美"
+        },
+        {
+          "index": 3,
+          "text": "媽"
+        },
+        {
+          "index": 4,
+          "text": "今天真的是麻煩你們了"
+        },
+        {
+          "index": 5,
+          "text": "不用客氣"
+        },
+        {
+          "index": 6,
+          "text": "對了\n這是勘太今天借我們的傘"
+        },
+        {
+          "index": 7,
+          "text": "這孩子⋯"
+        },
+        {
+          "index": 8,
+          "text": "這麼破的傘子真不好意思"
+        },
+        {
+          "index": 9,
+          "text": "這把傘幫了我們好大的忙"
+        },
+        {
+          "index": 10,
+          "text": "不過卻害勘太都淋濕了"
+        },
+        {
+          "index": 11,
+          "text": "麻煩伯母謝謝勘太"
+        },
+        {
+          "index": 12,
+          "text": "不必客氣"
+        },
+        {
+          "index": 13,
+          "text": "反正他老是弄得全身都是泥"
+        },
+        {
+          "index": 14,
+          "text": "淋淋雨反而乾淨些"
+        },
+        {
+          "index": 15,
+          "text": "你們要去接爸爸啊"
+        },
+        {
+          "index": 16,
+          "text": "真是孝順啊"
+        },
+        {
+          "index": 17,
+          "text": "小美，拜拜"
+        },
+        {
+          "index": 18,
+          "text": "拜拜"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "對了，這是勘太今天借我們的傘",
+          "note": "第 6 條將原本的換行符改為逗號，使句子排版為同一行。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "剛才是誰來了呀"
+        },
+        {
+          "index": 2,
+          "text": "才懶得理呢"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "剛好趕上"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你們要坐車嗎？"
+        },
+        {
+          "index": 2,
+          "text": "開車"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸沒有搭這班車"
+        },
+        {
+          "index": 2,
+          "text": "一定是搭下一班啦"
+        },
+        {
+          "index": 3,
+          "text": "小美，妳到婆婆家等好不好？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "怎麼啦？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美"
+        },
+        {
+          "index": 2,
+          "text": "妳睏啦"
+        },
+        {
+          "index": 3,
+          "text": "早跟妳說過的嘛"
+        },
+        {
+          "index": 4,
+          "text": "要不要先到婆婆家去睡一下？"
+        },
+        {
+          "index": 5,
+          "text": "爸爸就快到了\n撐著點啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "巴士怎麼這麼慢"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大龍貓？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "等我一下"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這個借你"
+        },
+        {
+          "index": 2,
+          "text": "快點啊\n小美快要掉下來了啦"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "快點啊，小美快要掉下來了啦",
+          "note": "將原本同一條字幕中的分行符號「\\n」改為逗號，使一句話在同一行顯示，屬於排版調整，未改動原意與語氣。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "要這樣子用"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "巴士來了！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大龍貓\n把爸爸的傘給帶走了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "對不起，對不起"
+        },
+        {
+          "index": 2,
+          "text": "開車"
+        },
+        {
+          "index": 3,
+          "text": "爸爸沒搭上電車"
+        },
+        {
+          "index": 4,
+          "text": "所以就沒趕上平常那班巴士"
+        },
+        {
+          "index": 5,
+          "text": "害你們擔心啦"
+        },
+        {
+          "index": 6,
+          "text": "出現了，爸爸\n真的出現了"
+        },
+        {
+          "index": 7,
+          "text": "對呀，還有貓的巴士"
+        },
+        {
+          "index": 8,
+          "text": "那輛巴士好大啊"
+        },
+        {
+          "index": 9,
+          "text": "眼睛像這樣子啊"
+        },
+        {
+          "index": 10,
+          "text": "嚇死人了"
+        },
+        {
+          "index": 11,
+          "text": "看到了！\n我看到大龍貓了！"
+        },
+        {
+          "index": 12,
+          "text": "太好了！"
+        },
+        {
+          "index": 13,
+          "text": "好嚇人啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "媽媽"
+        },
+        {
+          "index": 2,
+          "text": "我現在心還在蹦蹦亂跳呢"
+        },
+        {
+          "index": 3,
+          "text": "今天真是既嚇人又驚奇\n又開心的一天"
+        },
+        {
+          "index": 4,
+          "text": "而且大龍貓送給我們的禮物\n實在是妙極了"
+        },
+        {
+          "index": 5,
+          "text": "是一個用竹葉包著"
+        },
+        {
+          "index": 6,
+          "text": "然後外面再用\n龍鬚草綁著的小包包"
+        },
+        {
+          "index": 7,
+          "text": "我跟小美回家以後打開一看"
+        },
+        {
+          "index": 8,
+          "text": "發現裡面都是橡果子"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我們想家裡院子\n變成森林的話一定很精彩"
+        },
+        {
+          "index": 2,
+          "text": "所以就把它們灑在院子裡"
+        },
+        {
+          "index": 3,
+          "text": "不過"
+        },
+        {
+          "index": 4,
+          "text": "它們現在都還沒有發芽"
+        },
+        {
+          "index": 5,
+          "text": "所以小美每天都一直在說"
+        },
+        {
+          "index": 6,
+          "text": "還沒發芽，還沒發芽"
+        },
+        {
+          "index": 7,
+          "text": "就好像猴子螃蟹大戰\n裡面那個螃蟹一樣啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 7,
+          "text": "就好像猴子蟹大戰\n裡面那個螃蟹一樣啊",
+          "note": "將「猴子螃蟹大戰」修正為較常見的作品名稱「猴子蟹大戰」，屬於固定名稱的錯別字修正。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "學校很快就要放暑假了"
+        },
+        {
+          "index": 2,
+          "text": "希望媽媽的病\n能夠快點好起來好嗎？"
+        },
+        {
+          "index": 3,
+          "text": "小月"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "要關燈了"
+        },
+        {
+          "index": 2,
+          "text": "等等"
+        },
+        {
+          "index": 3,
+          "text": "爸爸，明天會不會發芽？"
+        },
+        {
+          "index": 4,
+          "text": "這個問題呀"
+        },
+        {
+          "index": 5,
+          "text": "我看要問大龍貓才會知道"
+        },
+        {
+          "index": 6,
+          "text": "晚安"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "那是我們種橡果子的地方"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "太好了！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美，我們都變成風了啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大樹不見了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "成功了！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好像在作夢"
+        },
+        {
+          "index": 2,
+          "text": "卻又不是夢"
+        },
+        {
+          "index": 3,
+          "text": "好像在作夢"
+        },
+        {
+          "index": 4,
+          "text": "卻又不是夢"
+        },
+        {
+          "index": 5,
+          "text": "萬歲！"
+        },
+        {
+          "index": 6,
+          "text": "好啊！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "草壁先生在嗎？電報"
+        },
+        {
+          "index": 2,
+          "text": "草壁先生在家嗎？"
+        },
+        {
+          "index": 3,
+          "text": "有您的電報"
+        },
+        {
+          "index": 4,
+          "text": "沒人在家啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我在這兒"
+        },
+        {
+          "index": 2,
+          "text": "長成這個樣就能吃了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆，那這個呢？"
+        },
+        {
+          "index": 2,
+          "text": "可以"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆你的這塊田\n好像是一座寶山啊"
+        },
+        {
+          "index": 2,
+          "text": "來，休息一下喘口氣"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "已經冰透了"
+        },
+        {
+          "index": 2,
+          "text": "那我要吃了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好好吃啊"
+        },
+        {
+          "index": 2,
+          "text": "真的呀"
+        },
+        {
+          "index": 3,
+          "text": "這是因為經常被太陽曬"
+        },
+        {
+          "index": 4,
+          "text": "對身體非常健康的啊"
+        },
+        {
+          "index": 5,
+          "text": "對媽媽的身體也有益嗎？"
+        },
+        {
+          "index": 6,
+          "text": "當然啦"
+        },
+        {
+          "index": 7,
+          "text": "只要是\n吃了婆婆田裡種的東西"
+        },
+        {
+          "index": 8,
+          "text": "身體就會好啦"
+        },
+        {
+          "index": 9,
+          "text": "這個星期六\n我媽媽就會回來了"
+        },
+        {
+          "index": 10,
+          "text": "媽媽要跟我一起睡覺啊"
+        },
+        {
+          "index": 11,
+          "text": "是嗎？\n馬上就要出院了"
+        },
+        {
+          "index": 12,
+          "text": "不算是真正的出院"
+        },
+        {
+          "index": 13,
+          "text": "星期一還得回去覆診"
+        },
+        {
+          "index": 14,
+          "text": "還沒有那麼快好"
+        },
+        {
+          "index": 15,
+          "text": "這樣嗎？"
+        },
+        {
+          "index": 16,
+          "text": "那可要多吃點東西補一補了"
+        },
+        {
+          "index": 17,
+          "text": "我要把我自己摘的\n粟米給媽媽吃"
+        },
+        {
+          "index": 18,
+          "text": "那她一定會很高興的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 7,
+          "text": "只要是吃了婆婆田裡種的東西",
+          "note": "刪除不必要的換行，保持同一句話在同一行。"
+        },
+        {
+          "index": 9,
+          "text": "這個星期六我媽媽就會回來了",
+          "note": "刪除不必要的換行，保持同一句話在同一行。"
+        },
+        {
+          "index": 11,
+          "text": "是嗎？馬上就要出院了",
+          "note": "刪除不必要的換行，保持同一句話在同一行。"
+        },
+        {
+          "index": 17,
+          "text": "我要把我自己摘的粟米給媽媽吃",
+          "note": "刪除不必要的換行，保持同一句話在同一行。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "電報"
+        },
+        {
+          "index": 2,
+          "text": "你們不在\n所以郵差送去我家"
+        },
+        {
+          "index": 3,
+          "text": "給我們的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆\n我爸爸不到傍晚不回來"
+        },
+        {
+          "index": 2,
+          "text": "快打開看吧\n要是急事耽擱就不好了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "發電處七國山醫院"
+        },
+        {
+          "index": 2,
+          "text": "七國山醫院送來的"
+        },
+        {
+          "index": 3,
+          "text": "那就是從媽媽的醫院"
+        },
+        {
+          "index": 4,
+          "text": "難道媽媽發生了什麼事"
+        },
+        {
+          "index": 5,
+          "text": "婆婆，怎麼辦？\n醫院要我們跟他們聯絡"
+        },
+        {
+          "index": 6,
+          "text": "你別緊張，冷靜一點"
+        },
+        {
+          "index": 7,
+          "text": "知不知道爸爸上班的地方？"
+        },
+        {
+          "index": 8,
+          "text": "爸爸研究室的電話號碼\n我是知道"
+        },
+        {
+          "index": 9,
+          "text": "可是沒有電話可打呀"
+        },
+        {
+          "index": 10,
+          "text": "勘太\n你帶小月去打電話"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "發電出七國山醫院",
+          "note": "「處」應為「出」，此處為電話顯示來源「發電出××」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美妳留下來陪婆婆"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美妳回去婆婆那裡"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "請你接市外電話"
+        },
+        {
+          "index": 2,
+          "text": "請接東京31局1382號"
+        },
+        {
+          "index": 3,
+          "text": "好"
+        },
+        {
+          "index": 4,
+          "text": "這個女孩還真是討人喜歡呢"
+        },
+        {
+          "index": 5,
+          "text": "喂！是的"
+        },
+        {
+          "index": 6,
+          "text": "請問是考古學教室嗎？"
+        },
+        {
+          "index": 7,
+          "text": "我爸爸⋯\n麻煩請草壁先生聽電話"
+        },
+        {
+          "index": 8,
+          "text": "我叫做草壁月"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 7,
+          "text": "我爸爸⋯\n麻煩請找草壁先生聽電話",
+          "note": "將「請草壁先生聽電話」改為「請找草壁先生聽電話」，補上漏字「找」，使句子結構完整，屬輸入性疏漏修正。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸，是我，小月"
+        },
+        {
+          "index": 2,
+          "text": "怎麼了？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "醫院來電報？我知道了"
+        },
+        {
+          "index": 2,
+          "text": "爸爸現在就\n打電話到醫院去問"
+        },
+        {
+          "index": 3,
+          "text": "是不是媽媽出事了"
+        },
+        {
+          "index": 4,
+          "text": "怎麼辦呀？爸爸"
+        },
+        {
+          "index": 5,
+          "text": "不會有事的"
+        },
+        {
+          "index": 6,
+          "text": "爸爸給醫院打過電話\n就馬上就回妳電話"
+        },
+        {
+          "index": 7,
+          "text": "你在那邊等一下"
+        },
+        {
+          "index": 8,
+          "text": "待會兒就打給妳"
+        },
+        {
+          "index": 9,
+          "text": "婆婆\n我還可以在這裡待一會嗎？"
+        },
+        {
+          "index": 10,
+          "text": "我爸爸還會打電話來"
+        },
+        {
+          "index": 11,
+          "text": "沒關係，慢慢來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "爸爸給醫院打過電話\n就馬上回妳電話",
+          "note": "刪除重複的「就」，屬於輸入性重複錯誤。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "姐姐"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不可以啦"
+        },
+        {
+          "index": 2,
+          "text": "這個是要給媽媽的粟米"
+        },
+        {
+          "index": 3,
+          "text": "不可以！"
+        },
+        {
+          "index": 4,
+          "text": "這個是要給媽媽的啦"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美"
+        },
+        {
+          "index": 2,
+          "text": "爸爸說媽媽的病又有點惡化了"
+        },
+        {
+          "index": 3,
+          "text": "所以這個禮拜媽媽不能回家了"
+        },
+        {
+          "index": 4,
+          "text": "我不要！"
+        },
+        {
+          "index": 5,
+          "text": "你不要也不行啊"
+        },
+        {
+          "index": 6,
+          "text": "媽媽要是勉強出院\n反而更嚴重了那怎麼辦"
+        },
+        {
+          "index": 7,
+          "text": "我不要！"
+        },
+        {
+          "index": 8,
+          "text": "不過是晚幾天而已"
+        },
+        {
+          "index": 9,
+          "text": "我不要！"
+        },
+        {
+          "index": 10,
+          "text": "那媽媽死掉\n也沒有關係是不是"
+        },
+        {
+          "index": 11,
+          "text": "不要！"
+        },
+        {
+          "index": 12,
+          "text": "妳這個大笨蛋！"
+        },
+        {
+          "index": 13,
+          "text": "我不管妳了！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "媽媽要是勉強出院\n反而更嚴重了，那怎麼辦",
+          "note": "在第二行「更嚴重了」與「那怎麼辦」之間補上一個頓號，以符合中文標點習慣。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "走吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "姐姐是大壞蛋！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "衣服該收收了"
+        },
+        {
+          "index": 2,
+          "text": "別這麼沮喪"
+        },
+        {
+          "index": 3,
+          "text": "婆婆不是過來幫忙了嗎"
+        },
+        {
+          "index": 4,
+          "text": "打起精神"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你爸爸說他今天\n要留在醫院過夜"
+        },
+        {
+          "index": 2,
+          "text": "妳媽媽不過是感冒而已"
+        },
+        {
+          "index": 3,
+          "text": "下個星期六一定會回來的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "之前也是這樣"
+        },
+        {
+          "index": 2,
+          "text": "醫生說只要住數天就會好了"
+        },
+        {
+          "index": 3,
+          "text": "而且那次也是說得了感冒"
+        },
+        {
+          "index": 4,
+          "text": "我媽媽要是死了該怎麼辦"
+        },
+        {
+          "index": 5,
+          "text": "小月"
+        },
+        {
+          "index": 6,
+          "text": "我媽媽要是死了那我們⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "我媽媽要是死了，該怎麼辦",
+          "note": "補上頓號，以符合中文標點習慣。"
+        },
+        {
+          "index": 6,
+          "text": "我媽媽要是死了，那我們⋯",
+          "note": "補上逗號，以符合中文標點習慣。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "妳放心，不要亂想"
+        },
+        {
+          "index": 2,
+          "text": "妳媽媽哪捨得下\n妳們這些可愛的孩子"
+        },
+        {
+          "index": 3,
+          "text": "別哭了別哭了"
+        },
+        {
+          "index": 4,
+          "text": "在妳爸爸回來之前"
+        },
+        {
+          "index": 5,
+          "text": "婆婆都會陪著妳的\n好不好呀"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美呀"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美回來了沒？"
+        },
+        {
+          "index": 2,
+          "text": "沒在巴士站牌那邊嗎？"
+        },
+        {
+          "index": 3,
+          "text": "這就奇怪了"
+        },
+        {
+          "index": 4,
+          "text": "她會跑到哪裡去了？"
+        },
+        {
+          "index": 5,
+          "text": "我剛剛跟小美吵了一架"
+        },
+        {
+          "index": 6,
+          "text": "因為她⋯"
+        },
+        {
+          "index": 7,
+          "text": "她會不會\n跑去媽媽住的醫院了"
+        },
+        {
+          "index": 8,
+          "text": "七國山醫院去了呀"
+        },
+        {
+          "index": 9,
+          "text": "可是就連大人也得\n走上三個鐘頭才會到"
+        },
+        {
+          "index": 10,
+          "text": "我去看看"
+        },
+        {
+          "index": 11,
+          "text": "勘太\n快點去叫你爸爸回來"
+        },
+        {
+          "index": 12,
+          "text": "小美不見了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 7,
+          "text": "她會不會跑去媽媽住的醫院了",
+          "note": "刪除不必要的換行，避免字幕中途斷行影響閱讀。"
+        },
+        {
+          "index": 9,
+          "text": "可是就連大人也得走上三個鐘頭才會到",
+          "note": "刪除不必要的換行，保持一句話同一行。"
+        },
+        {
+          "index": 11,
+          "text": "勘太 快點去叫你爸爸回來",
+          "note": "刪除多餘換行，將人名與後句放在同一行。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美真是笨蛋\n不知道路又愛亂跑"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "打攪了，伯伯，請問⋯"
+        },
+        {
+          "index": 2,
+          "text": "您有沒有看見束辮子的小女孩\n從這條路經過"
+        },
+        {
+          "index": 3,
+          "text": "她是我妹妹"
+        },
+        {
+          "index": 4,
+          "text": "這個嘛⋯小女孩啊"
+        },
+        {
+          "index": 5,
+          "text": "沒什麼印象"
+        },
+        {
+          "index": 6,
+          "text": "她會不會沒往這邊來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "您有沒有看見束辮子的小女孩，\n從這條路經過",
+          "note": "在「小女孩」後面增加逗號，用於分隔句子成分，使標點更符合常規用法。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "妳確定她是往這邊來的？"
+        },
+        {
+          "index": 2,
+          "text": "我也不知道"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "停車！"
+        },
+        {
+          "index": 2,
+          "text": "搞什麼啊！危險啊"
+        },
+        {
+          "index": 3,
+          "text": "我在找我妹妹"
+        },
+        {
+          "index": 4,
+          "text": "你們有沒有看一個小女孩"
+        },
+        {
+          "index": 5,
+          "text": "妳妹妹？"
+        },
+        {
+          "index": 6,
+          "text": "她好像是往七國山醫院去了"
+        },
+        {
+          "index": 7,
+          "text": "她是一個四歲的小女孩"
+        },
+        {
+          "index": 8,
+          "text": "良子啊，妳剛才有沒有看到"
+        },
+        {
+          "index": 9,
+          "text": "我們兩個\n就是從那個方向來的"
+        },
+        {
+          "index": 10,
+          "text": "不過\n好像沒有看到那樣的小孩"
+        },
+        {
+          "index": 11,
+          "text": "謝謝你們"
+        },
+        {
+          "index": 12,
+          "text": "妳從哪裡來的？"
+        },
+        {
+          "index": 13,
+          "text": "松鄉"
+        },
+        {
+          "index": 14,
+          "text": "松鄉！？"
+        },
+        {
+          "index": 15,
+          "text": "會不會搞錯了呀"
+        },
+        {
+          "index": 16,
+          "text": "再見囉"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小月"
+        },
+        {
+          "index": 2,
+          "text": "勘太"
+        },
+        {
+          "index": 3,
+          "text": "怎麼樣？"
+        },
+        {
+          "index": 4,
+          "text": "沒看到，那妳呢？"
+        },
+        {
+          "index": 5,
+          "text": "現在我爸爸他們也去找了"
+        },
+        {
+          "index": 6,
+          "text": "我去往七國山的路上看看"
+        },
+        {
+          "index": 7,
+          "text": "妳先回家去"
+        },
+        {
+          "index": 8,
+          "text": "我想小美一定是想去醫院"
+        },
+        {
+          "index": 9,
+          "text": "可是卻走錯路了"
+        },
+        {
+          "index": 10,
+          "text": "一定是"
+        },
+        {
+          "index": 11,
+          "text": "剛才有人在神池\n發現一隻小孩的涼鞋"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不過還不確定\n那就是小美的鞋子"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "找到了嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喃嘸阿彌陀佛"
+        },
+        {
+          "index": 2,
+          "text": "池那邊泥比較深一點\n從那邊開始啊"
+        },
+        {
+          "index": 3,
+          "text": "遞根竹竿給我！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "南無阿彌陀佛",
+          "note": "「喃嘸」為口語諧音，正式佛教用語常作「南無」，此處視為常見輸入錯別字，予以更正。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆，小月來了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆"
+        },
+        {
+          "index": 2,
+          "text": "妳看看這個"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不是小美的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "太好了"
+        },
+        {
+          "index": 2,
+          "text": "我還以\n為這是小美的"
+        },
+        {
+          "index": 3,
+          "text": "婆婆就愛窮緊張"
+        },
+        {
+          "index": 4,
+          "text": "虛驚一場啊"
+        },
+        {
+          "index": 5,
+          "text": "那孩子到底跑到哪去了？"
+        },
+        {
+          "index": 6,
+          "text": "再去四處找找"
+        },
+        {
+          "index": 7,
+          "text": "快點啊，天要黑了"
+        },
+        {
+          "index": 8,
+          "text": "大家，不好意思啊"
+        },
+        {
+          "index": 9,
+          "text": "麻煩再分開找找"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "我還以為這是小美的",
+          "note": "刪除錯誤換行，將「以\\n為」合併為「以為」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "求求你們"
+        },
+        {
+          "index": 2,
+          "text": "把我帶去龍貓那裡"
+        },
+        {
+          "index": 3,
+          "text": "我的妹妹走丟了"
+        },
+        {
+          "index": 4,
+          "text": "不久天就要黑了"
+        },
+        {
+          "index": 5,
+          "text": "她一定在哪裡迷了路"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大龍貓？"
+        },
+        {
+          "index": 2,
+          "text": "大龍貓"
+        },
+        {
+          "index": 3,
+          "text": "我妹妹小美走失了"
+        },
+        {
+          "index": 4,
+          "text": "我找了好久都找不到"
+        },
+        {
+          "index": 5,
+          "text": "求求你，幫我找小美好不好"
+        },
+        {
+          "index": 6,
+          "text": "她一定已經嚇哭了"
+        },
+        {
+          "index": 7,
+          "text": "我現在不知道該怎麼辦好"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大家都看不到牠"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "〝小美〞"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "「小美」",
+          "note": "將直角雙引號及全形〝〞更正為標準中文書名號式引號「」，屬於標點與字形規範上的排版修正。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "樹林開出了一條路了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "姐姐"
+        },
+        {
+          "index": 2,
+          "text": "姐姐"
+        },
+        {
+          "index": 3,
+          "text": "小美"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美"
+        },
+        {
+          "index": 2,
+          "text": "姐姐"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "妳這個傻瓜"
+        },
+        {
+          "index": 2,
+          "text": "對不起"
+        },
+        {
+          "index": 3,
+          "text": "妳是不是想要把粟米\n送去醫院給媽媽？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "〝七國山醫院〞"
+        },
+        {
+          "index": 2,
+          "text": "你要送我們去醫院嗎？"
+        },
+        {
+          "index": 3,
+          "text": "謝謝你"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "「七國山醫院」",
+          "note": "將全形直角引號 〝〞 改為中文標點常用的直引號「」；刪除兩側多餘空格。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "對不起，只不過是感冒"
+        },
+        {
+          "index": 2,
+          "text": "醫院就擅自決定\n發電報給家裡了"
+        },
+        {
+          "index": 3,
+          "text": "那兩個孩子一定都很擔心我吧"
+        },
+        {
+          "index": 4,
+          "text": "真是苦了她們了"
+        },
+        {
+          "index": 5,
+          "text": "她們知道你平安就會安心的"
+        },
+        {
+          "index": 6,
+          "text": "這些年來我們一家四口"
+        },
+        {
+          "index": 7,
+          "text": "不都這樣努力過來的嗎？"
+        },
+        {
+          "index": 8,
+          "text": "享福之前總得吃點苦啊"
+        },
+        {
+          "index": 9,
+          "text": "她們表面好像沒事\n可是心裡一定很難過"
+        },
+        {
+          "index": 10,
+          "text": "小月越是懂事\n就越教人於心不忍"
+        },
+        {
+          "index": 11,
+          "text": "是啊"
+        },
+        {
+          "index": 12,
+          "text": "出院以後我要好好疼疼她們\n們盡情耍耍小脾氣"
+        },
+        {
+          "index": 13,
+          "text": "妳呀"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "醫院就擅自決定，\n發電報給家裡了",
+          "note": "在「決定」後新增頓號換成逗號以符合常見標點；保留原有換行。"
+        },
+        {
+          "index": 12,
+          "text": "出院以後我要好好疼疼她們，\n讓她們盡情耍耍小脾氣",
+          "note": "補上缺失的「讓」字，並將「們盡情」中的多餘「們」移到「她們」後，改為「讓她們盡情」，以修正明顯輸入錯誤；在前半句與後半句之間加逗號。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "媽媽在笑"
+        },
+        {
+          "index": 2,
+          "text": "看樣子是沒事了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我得趕快把身體養好才行"
+        },
+        {
+          "index": 2,
+          "text": "是啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "是誰擺的啊？"
+        },
+        {
+          "index": 2,
+          "text": "怎麼啦？"
+        },
+        {
+          "index": 3,
+          "text": "我好像看到小月和小美\n坐在那棵松樹上笑"
+        },
+        {
+          "index": 4,
+          "text": "搞不好是真的也說不定啊"
+        },
+        {
+          "index": 5,
+          "text": "妳看"
+        },
+        {
+          "index": 6,
+          "text": "〝送給媽媽〞"
+        },
+        {
+          "index": 7,
+          "text": "〝送給媽媽〞"
+        },
+        {
+          "index": 8,
+          "text": "〝送給媽媽〞"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "「送給媽媽」",
+          "note": "將直角引號〝〞改為常用全形書名號/引號樣式「」，屬於排版符號統一。"
+        },
+        {
+          "index": 7,
+          "text": "「送給媽媽」",
+          "note": "同第 6 條，統一標點符號樣式。"
+        },
+        {
+          "index": 8,
+          "text": "「送給媽媽」",
+          "note": "同第 6 條，統一標點符號樣式。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "完"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  }
+]

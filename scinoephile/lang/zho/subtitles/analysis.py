@@ -10,8 +10,9 @@ from dataclasses import asdict, dataclass
 from logging import getLogger
 from pathlib import Path
 
+from scinoephile.core import Language
+from scinoephile.core.language import is_chinese_language_tag
 from scinoephile.core.media import SubtitleStream
-from scinoephile.core.media.language import is_chinese
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
@@ -25,8 +26,8 @@ __all__ = [
 
 _DEFAULT_ZHO_SUBTITLE_SAMPLE_SIZE = 4
 """Default number of image subtitle samples to OCR."""
-_ZHO_SUBTITLE_OCR_LANGUAGES = ("ch", "chinese_cht")
-"""PaddleOCR languages to compare for Chinese subtitle script analysis."""
+_ZHO_SUBTITLE_OCR_LANGUAGES = (Language.zho_hans, Language.zho_hant)
+"""Languages to compare for Chinese subtitle script analysis."""
 
 logger = getLogger(__name__)
 
@@ -68,7 +69,7 @@ def analyze_zho_subtitle_stream_script(
     Returns:
         subtitle script analysis
     """
-    if not is_chinese(stream.language):
+    if not is_chinese_language_tag(stream.language):
         return ZhoSubtitleScriptAnalysis(
             failure_reason="not a Chinese subtitle stream",
         )
@@ -171,7 +172,7 @@ def _get_image_subtitle_sample_analysis(
         traditional_count=reference_analysis.traditional_count,
         shared_count=reference_analysis.shared_count,
         sample_indexes=tuple(sample_indexes),
-        ocr_languages=_ZHO_SUBTITLE_OCR_LANGUAGES,
+        ocr_languages=tuple(language.code for language in _ZHO_SUBTITLE_OCR_LANGUAGES),
         failure_reason=failure_reason,
     )
 
@@ -204,7 +205,9 @@ def _get_subtitle_analysis_cache_path(
         "stream_index": stream.index,
         "codec_name": stream.codec_name,
         "sample_size": sample_size,
-        "ocr_languages": _ZHO_SUBTITLE_OCR_LANGUAGES,
+        "ocr_languages": tuple(
+            language.code for language in _ZHO_SUBTITLE_OCR_LANGUAGES
+        ),
     }
     encoded_payload = json.dumps(payload, sort_keys=True).encode("utf-8")
     cache_key = hashlib.sha256(encoded_payload).hexdigest()

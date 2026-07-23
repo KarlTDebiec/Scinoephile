@@ -6,18 +6,19 @@ from __future__ import annotations
 
 import json
 from abc import ABC
-from typing import ClassVar
+from typing import ClassVar, Self
 
-from pydantic import BaseModel
+from pydantic import Field, model_validator
 
 from .answer import Answer
+from .models import LLMModel
 from .prompt import Prompt
 from .query import Query
 
 __all__ = ["TestCase"]
 
 
-class TestCase(BaseModel, ABC):
+class TestCase(LLMModel, ABC):
     """ABC for LLM test cases."""
 
     __test__ = False
@@ -27,22 +28,63 @@ class TestCase(BaseModel, ABC):
     """Query model class."""
     answer_cls: ClassVar[type[Answer]]
     """Answer model class."""
-    prompt_cls: ClassVar[type[Prompt]]
+    prompt: ClassVar[Prompt]
     """Text for LLM correspondence."""
     query: Query
     """Query data for the test case."""
     answer: Answer | None = None
     """Answer data for the test case."""
-    difficulty: int = 0
+    difficulty: int = Field(
+        0,
+        description="Difficulty level of the test case, used for filtering.",
+    )
     """Difficulty level for filtering and prioritization."""
-    prompt: bool = False
-    """Whether the test case is included in the prompt."""
-    verified: bool = False
+    few_shot: bool = Field(
+        False,
+        description="Whether to include test case in few-shot examples.",
+    )
+    """Whether the test case is included as a few-shot example."""
+    verified: bool = Field(
+        False,
+        description="Whether to include test case in the verified answers cache.",
+    )
     """Whether the test case answer has been verified."""
 
     def __str__(self) -> str:
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
+
+    @model_validator(mode="after")
+    def enforce_min_difficulty(self) -> Self:
+        """Ensure difficulty is at least the model-defined minimum.
+
+        Returns:
+            validated test case
+        """
+        self.difficulty = max(self.difficulty, self.get_min_difficulty())
+        return self
+
+    @model_validator(mode="after")
+    def require_answer(self) -> Self:
+        """Ensure verified test cases include an answer.
+
+        Returns:
+            validated test case
+        """
+        if self.answer is None and self.verified:
+            raise ValueError("Verified test cases must include an answer.")
+        return self
+
+    @model_validator(mode="after")
+    def require_few_shot_verification(self) -> Self:
+        """Ensure few-shot test cases are verified.
+
+        Returns:
+            validated test case
+        """
+        if self.few_shot and not self.verified:
+            raise ValueError("Few-shot test cases must be verified.")
+        return self
 
     def get_auto_verified(self) -> bool:
         """Whether this test case should automatically be verified.

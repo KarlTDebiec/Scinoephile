@@ -7,15 +7,17 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.cli.helpers.io import read_image_series, write_series
 from scinoephile.common.argument_parsing import (
+    enum_arg,
+    enum_metavar,
     get_arg_groups_by_name,
     input_file_or_dir_arg,
     output_file_arg,
 )
-from scinoephile.core import ScinoephileError
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
-from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["OcrTesseractCli"]
 
@@ -24,9 +26,8 @@ OCR_TESSERACT_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "Recognize image subtitles with Tesseract OCR.": (
             "使用 Tesseract OCR 识别图像字幕。"
         ),
-        "Tesseract language code installed in Tesseract, such as eng or chi_sim "
-        "(default: %(default)s)": (
-            "Tesseract 中已安装的语言代码，例如 eng 或 chi_sim（默认：%(default)s）"
+        "language of the OCR text to recognize (default: %(default)s)": (
+            "要识别的 OCR 文本语言（默认：%(default)s）"
         ),
         "Tesseract requires the system tesseract executable and language data.": (
             "Tesseract 需要系统 tesseract 可执行文件和语言数据。"
@@ -44,9 +45,8 @@ OCR_TESSERACT_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "Recognize image subtitles with Tesseract OCR.": (
             "使用 Tesseract OCR 識別影像字幕。"
         ),
-        "Tesseract language code installed in Tesseract, such as eng or chi_sim "
-        "(default: %(default)s)": (
-            "Tesseract 中已安裝的語言代碼，例如 eng 或 chi_sim（預設：%(default)s）"
+        "language of the OCR text to recognize (default: %(default)s)": (
+            "要識別的 OCR 文字語言（預設：%(default)s）"
         ),
         "Tesseract requires the system tesseract executable and language data.": (
             "Tesseract 需要系統 tesseract 可執行檔和語言資料。"
@@ -104,11 +104,10 @@ class OcrTesseractCli(ScinoephileCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--language",
-            default="eng",
-            help=(
-                "Tesseract language code installed in Tesseract, such as eng or "
-                "chi_sim (default: %(default)s)"
-            ),
+            default=Language.eng,
+            metavar=enum_metavar(Language),
+            type=enum_arg(Language),
+            help="language of the OCR text to recognize (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
             "--detect-italics",
@@ -148,7 +147,7 @@ class OcrTesseractCli(ScinoephileCliBase):
         infile_path: Path,
         outfile_path: Path,
         detect_italics: bool,
-        language: str,
+        language: Language,
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
@@ -156,19 +155,11 @@ class OcrTesseractCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if outfile_path.exists() and not overwrite:
             parser.error(f"{outfile_path} already exists")
-        if detect_italics and language != "eng":
+        if detect_italics and language is not Language.eng:
             parser.error("--detect-italics may only be used with --language eng")
 
         # Read inputs
-        try:
-            image_series = ImageSeries.load(infile_path)
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+        image_series = read_image_series(parser, infile_path)
 
         # Perform operations
         try:
@@ -177,15 +168,11 @@ class OcrTesseractCli(ScinoephileCliBase):
                 detect_italics=detect_italics,
                 language=language,
             )
-        except (
-            ImportError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
+        except ScinoephileError as exc:
             parser.error(str(exc))
 
         # Write outputs
-        text_series.save(outfile_path, format_="srt")
+        write_series(parser, text_series, outfile_path, overwrite)
 
 
 if __name__ == "__main__":

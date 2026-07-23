@@ -3,6 +3,6 @@
 """Code related to English (eng) text.
 
 Package hierarchy (modules may import from any above):
-* cleaning / flattening / ocr_validation / prompts
-* block_review / ocr_fusion
+* cleaning / flattening / prompts
+* ocr_fusion / review
 """

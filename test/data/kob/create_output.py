@@ -9,46 +9,15 @@ from pathlib import Path
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
-from scinoephile.core.timing import get_series_timewarped
-from scinoephile.lang.eng.block_review import (
-    get_eng_block_reviewed,
-    get_eng_block_reviewer,
-)
-from scinoephile.lang.eng.cleaning import get_eng_cleaned
-from scinoephile.lang.eng.flattening import get_eng_flattened
-from scinoephile.lang.yue.romanization import get_yue_romanized
-from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.flattening import get_zho_flattened
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.multilang.yue_zho.block_review import (
-    YueBlockReviewVsZhoPromptYueHans,
-    YueBlockReviewVsZhoPromptYueHant,
-)
-from scinoephile.multilang.yue_zho.gapped_translation import (
-    YueGappedTranslationVsZhoPromptYueHans,
-    YueGappedTranslationVsZhoPromptYueHant,
-)
-from scinoephile.multilang.yue_zho.line_review import (
-    YueLineReviewVsZhoPromptYueHans,
-    YueLineReviewVsZhoPromptYueHant,
-)
-from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
-from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueDeliniationVsZhoPromptYueHans,
-    YueDeliniationVsZhoPromptYueHant,
-)
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YuePunctuationVsZhoPromptYueHans,
-    YuePunctuationVsZhoPromptYueHant,
-)
-from test.data.ocr import process_eng_ocr, process_zho_hant_ocr
-from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
-from test.data.transcription import process_yue_hans_transcription
+from test.data.ocr import process_ocr
+from test.data.srt import process_srt
+from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
+from test.data.transcription import process_transcription
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
-input_path = title_root / "input"
 output_path = title_root / "output"
 set_logging_verbosity(2)
 
@@ -57,149 +26,130 @@ eng_path = output_path / "eng"
 zho_hant_ocr_path = output_path / "zho-Hant_ocr"
 yue_hant_path = output_path / "yue-Hant"
 yue_hans_path = output_path / "yue-Hans"
-yue_hans_transcribe_path = output_path / "yue-Hans_transcribe"
+yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
+zho_hant_guide_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
+
+transcription_additional_context = """
+電影背景：
+呢套係1992年嘅香港粵語武俠喜劇《武狀元蘇乞兒》（King of Beggars），故事發生
+喺清朝。紈絝子弟蘇察哈爾燦目不識丁，為咗如霜上京考武狀元，後來被貶做
+乞兒，加入丐幫，最後對抗天理教教主趙無極。對白會喺通俗粵語喜劇、仿古
+朝廷用語同武俠術語之間轉換；要保留呢啲語域差異同既定嘅繁體人名。
+zho-Hant字幕只係語義指引；如果佢嘅字眼同實際粵語對白唔同，應該保留粵語
+講法。
+
+電影特定人名同術語：
+- 蘇察哈爾燦 / 蘇燦 / 阿燦 / 蘇乞兒：都係主角嘅稱呼；按實際對白保留所講
+  嘅稱呼，包括暱稱「阿燦」
+- 如霜 / 如霜姑娘：女主角，亦係丐幫中人
+- 小翠：如霜個妹
+- 趙無極 / 趙大人 / 趙先生：天理教教主；寫「無極」，唔係「無忌」
+- 僧格林沁：蒙古王爺，亦係博達爾多嘅叔父；寫「沁」，唔係「慶」
+- 博達爾多：蘇燦喺武科舉嘅對手
+- 洪日新 / 老鬼新 / 新師叔：都係同一個老乞兒，係洪七公嘅傳人；寫「日新」，
+  唔係「日慶」
+- 莫老三 / 莫大叔：都係同一位丐幫長老
+- 丐幫 / 乞兒幫：同一個幫會；按實際對白保留所講嘅叫法
+- 天理教：趙無極領導嘅教派
+- 怡紅院：如霜以清倌人身份出現嘅妓院
+- 武狀元：武科舉第一名
+- 打狗棒 / 打狗棒法：zho-Hant指引嘅寫法；粵語對白寫「打狗棍 / 打狗棍法」
+- 醉回夢生法 / 睡夢羅漢拳：洪日新傳畀蘇燦嘅睡眠武功
+- 降龍十八掌：丐幫絕學
+- 大還丹：恢復功力嘅丹藥
+- 蓮花落陣：用嚟考驗蘇燦能否統領丐幫嘅陣法
+- 麒麟煙：天理教使用嘅煙霧武器
+"""
 
 actions = {
-    # "繁體中文 (OCR)",
-    # "English (OCR)",
-    # "Bilingual 繁體中文 and English",
-    # "繁體粵文 (SRT)",
-    # "简体粤文 (SRT)",
-    # "English (SRT)",
-    # "Bilingual 简体粤文 and English",
-    # "简体粤文 (Transcription)",
-    "简体粤文 (Diff)",
+    # "eng_ocr",
+    # "zho-Hant_ocr",
+    # "eng",
+    # "yue-Hans",
+    # "yue-Hant",
+    # "zho-Hans_eng",
+    # "yue-Hans_eng",
+    # "yue-Hant_transcribe",
+    "yue-Hant_diff",
 }
 
-if "繁體中文 (OCR)" in actions:
-    process_zho_hant_ocr(title_root, overwrite_srt=False, force_validation=False)
-if "English (OCR)" in actions:
-    process_eng_ocr(title_root, overwrite_srt=True, force_validation=True)
-if "Bilingual 繁體中文 and English" in actions:
-    zho_hans_path = (
+if "eng_ocr" in actions:
+    process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
+if "zho-Hant_ocr" in actions:
+    process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=True)
+if "zho-Hans_eng" in actions:
+    zho_hans_srt_path = (
         zho_hant_ocr_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )
-    process_zho_hans_eng(
+    eng_srt_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    process_zho_hans_eng(title_root, zho_hans_srt_path, eng_srt_path, overwrite=False)
+if "eng" in actions:
+    process_srt(
         title_root,
-        zho_hans_path=zho_hans_path,
-        eng_path=eng_ocr_path / "fuse_clean_validate_review_flatten.srt",
+        Language.eng,
+        reference_path=eng_ocr_path / "fuse_clean_validate_review.srt",
+        one_end_idx=1421,
         overwrite=True,
     )
-if "繁體粵文 (SRT)" in actions:
-    zho_hant = Series.load(zho_hant_ocr_path / "fuse_clean_validate_review.srt")
-    yue_hant = Series.load(input_path / "yue-Hant.srt")
-    yue_hant_timewarp = get_series_timewarped(
-        zho_hant, yue_hant, one_end_idx=1421, two_end_idx=1461
-    )
-    yue_hant_timewarp.save(yue_hant_path / "timewarp.srt")
-    clean = get_zho_cleaned(yue_hant_timewarp)
-    clean.save(yue_hant_path / "timewarp_clean.srt")
-    flatten = get_zho_flattened(clean)
-    flatten.save(yue_hant_path / "timewarp_clean_flatten.srt")
-if "简体粤文 (SRT)" in actions:
-    zho_hant = Series.load(zho_hant_ocr_path / "fuse_clean_validate_review.srt")
-    yue_hans = Series.load(input_path / "yue-Hans.srt")
-    yue_hans_timewarp = get_series_timewarped(
-        zho_hant, yue_hans, one_end_idx=1421, two_end_idx=1461
-    )
-    yue_hans_timewarp.save(yue_hans_path / "timewarp.srt")
-    yue_hans_clean = get_zho_cleaned(yue_hans_timewarp)
-    yue_hans_clean.save(yue_hans_path / "timewarp_clean.srt")
-    yue_hans_reference = get_zho_flattened(yue_hans_clean)
-    yue_hans_reference.save(yue_hans_path / "timewarp_clean_flatten.srt")
-    yue_hans_romanized = get_yue_romanized(yue_hans_reference, append=True)
-    yue_hans_romanized.save(yue_hans_path / "timewarp_clean_flatten_romanize.srt")
-if "English (SRT)" in actions:
-    eng_ocr = Series.load(eng_ocr_path / "fuse_clean_validate_review.srt")
-    eng_srt = Series.load(input_path / "eng.srt")
-    eng_timewarp = get_series_timewarped(eng_ocr, eng_srt, one_end_idx=1421)
-    eng_timewarp.save(eng_path / "timewarp.srt")
-    eng_clean = get_eng_cleaned(eng_timewarp)
-    eng_clean.save(eng_path / "timewarp_clean.srt")
-    eng_proofreader = get_eng_block_reviewer(
-        test_case_path=eng_path / "lang/eng/block_review.json",
-        auto_verify=True,
-    )
-    eng_proofread = get_eng_block_reviewed(eng_clean, eng_proofreader)
-    eng_proofread.save(eng_path / "timewarp_clean_review.srt")
-    eng_flatten = get_eng_flattened(eng_proofread)
-    eng_flatten.save(eng_path / "timewarp_clean_review_flatten.srt")
-if "Bilingual 简体粤文 and English" in actions:
-    process_yue_hans_eng(
+if "yue-Hans" in actions:
+    process_srt(
         title_root,
-        yue_hans_path=yue_hans_path / "timewarp_clean_flatten.srt",
-        eng_path=eng_path / "timewarp_clean_review_flatten.srt",
+        Language.yue_hans,
+        reference_path=zho_hant_ocr_path / "fuse_clean_validate_review.srt",
+        one_end_idx=1421,
+        two_end_idx=1461,
         overwrite=True,
     )
-if "简体粤文 (Transcription)" in actions:
-    zh_hant_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
-    zho_hans_path = (
-        zho_hant_ocr_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
-    )
-    simplified_reference_path = yue_hans_path / "timewarp_clean_flatten.srt"
-    traditional_reference_path = yue_hant_path / "timewarp_clean_flatten.srt"
-    audio_path = yue_hans_transcribe_path / "audio/yue-Hans_audio.wav"
-
-    process_yue_hans_transcription(
+if "yue-Hant" in actions:
+    process_srt(
         title_root,
-        zho_path=zho_hans_path,
-        reference_path=simplified_reference_path,
-        output_dir_path=yue_hans_transcribe_path / "test_simplified",
-        audio_path=audio_path,
-        name="KOB transcription test 1 (simplified)",
-        transcriber_kw={
-            "model_name": "khleeloo/whisper-large-v3-cantonese",
-            "demucs_mode": DemucsMode.ON,
-            "vad_mode": VADMode.AUTO,
-            "convert": OpenCCConfig.hk2s,
-            "deliniation_prompt_cls": YueDeliniationVsZhoPromptYueHans,
-            "punctuation_prompt_cls": YuePunctuationVsZhoPromptYueHans,
-        },
-        line_reviewer_kw={"prompt_cls": YueLineReviewVsZhoPromptYueHans},
-        translator_kw={"prompt_cls": YueGappedTranslationVsZhoPromptYueHans},
-        block_reviewer_kw={"prompt_cls": YueBlockReviewVsZhoPromptYueHans},
-        overwrite_srt=True,
+        Language.yue_hant,
+        reference_path=zho_hant_ocr_path / "fuse_clean_validate_review.srt",
+        one_end_idx=1421,
+        two_end_idx=1461,
+        overwrite=True,
     )
-
-    process_yue_hans_transcription(
+if "yue-Hans_eng" in actions:
+    yue_hans_srt_path = yue_hans_path / "clean_review_flatten_timewarp.srt"
+    eng_srt_path = eng_path / "clean_review_flatten_timewarp.srt"
+    process_yue_hans_eng(title_root, yue_hans_srt_path, eng_srt_path, overwrite=True)
+if "yue-Hant_transcribe" in actions:
+    process_transcription(
         title_root,
-        zho_path=zh_hant_path,
-        reference_path=traditional_reference_path,
-        output_dir_path=yue_hans_transcribe_path / "test_traditional",
-        audio_path=audio_path,
-        name="KOB transcription test 2 (traditional)",
-        transcriber_kw={
-            "model_name": "khleeloo/whisper-large-v3-cantonese",
-            "demucs_mode": DemucsMode.ON,
-            "vad_mode": VADMode.AUTO,
-            "convert": OpenCCConfig.s2hk,
-            "deliniation_prompt_cls": YueDeliniationVsZhoPromptYueHant,
-            "punctuation_prompt_cls": YuePunctuationVsZhoPromptYueHant,
-        },
-        line_reviewer_kw={"prompt_cls": YueLineReviewVsZhoPromptYueHant},
-        translator_kw={"prompt_cls": YueGappedTranslationVsZhoPromptYueHant},
-        block_reviewer_kw={"prompt_cls": YueBlockReviewVsZhoPromptYueHant},
-        overwrite_srt=True,
+        zho_hant_guide_path,
+        reference_path=yue_hant_path / "clean_review_flatten_timewarp.srt",
+        output_dir_path=yue_hant_transcribe_path,
+        # stop_at_idx=8,
+        additional_context=transcription_additional_context,
+        overwrite=True,
     )
-if "简体粤文 (Diff)" in actions:
-    # yue_hans_transcribe = Series.load(
-    #     yue_hans_transcribe_path / "test_simplified/transcribe.srt"
-    # )
-    yue_hans_transcribe = Series.load(
-        yue_hans_transcribe_path
-        / "test_simplified"
-        / "transcribe_review_translate_block_review.srt"
+if "yue-Hant_diff" in actions:
+    zho_hant_guide = Series.load(zho_hant_guide_path)
+    yue_hant_transcribe = Series.load(
+        yue_hant_transcribe_path / "transcribe_clean_review_translate.srt"
     )
-    yue_hans_reference = Series.load(yue_hans_path / "timewarp_clean_flatten.srt")
-    zho_hans_reference = Series.load(
-        zho_hant_ocr_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
+    yue_hant_reference = Series.load(
+        yue_hant_path / "clean_review_flatten_timewarp.srt"
+    )
+    zho_hant_guide_by_timing = {
+        (subtitle.start, subtitle.end): subtitle for subtitle in zho_hant_guide
+    }
+    aligned_zho_hant_guide = Series(
+        events=[
+            zho_hant_guide_by_timing[(subtitle.start, subtitle.end)]
+            for subtitle in yue_hant_transcribe
+        ]
     )
     diff = SeriesDiff(
-        yue_hans_transcribe,
-        yue_hans_reference,
-        one_lbl="TRANSCRIBE",
+        yue_hant_transcribe,
+        yue_hant_reference,
+        one_lbl="GAP TRANSLATION",
         two_lbl="REFERENCE",
     )
-    print(diff)
-    print(diff.get_stacked_str(three=zho_hans_reference, include_equal=True))
-    print(SeriesCER(yue_hans_reference, yue_hans_transcribe))
+    print(
+        diff.get_stacked_str(
+            three=aligned_zho_hant_guide,
+            include_equal=True,
+        )
+    )
+    print(SeriesCER(yue_hant_reference, yue_hant_transcribe))

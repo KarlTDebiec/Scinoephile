@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit Subtitle Reviews"
+  short_description: "Audit subtitle review workflows across languages"
+  default_prompt: "Use $audit-subtitle-reviews to audit the available subtitle review stages for this dataset."

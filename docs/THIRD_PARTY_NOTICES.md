@@ -232,6 +232,40 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
+## htmx (vendored web UI runtime)
+
+Scinoephile vendors the HTMX runtime for the OCR validation web UI:
+
+- Project: https://github.com/bigskysoftware/htmx
+- Package: https://www.npmjs.com/package/htmx.org/v/2.0.4
+- Vendored file: `scinoephile/web/ocr_validation/static/htmx.min.js`
+- License: 0BSD
+
+The HTMX package metadata for version 2.0.4 identifies the package license as
+0BSD.
+
+For the complete license text used by HTMX, see:
+
+- https://unpkg.com/htmx.org@2.0.4/LICENSE
+
+0BSD license text (from HTMX 2.0.4):
+
+```text
+Zero-Clause BSD
+=============
+
+Permission to use, copy, modify, and/or distribute this software for
+any purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE
+FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY
+DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
+AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
+OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+```
+
 ## CUHK dictionary data source
 
 The CUHK data source used by the scraper is:

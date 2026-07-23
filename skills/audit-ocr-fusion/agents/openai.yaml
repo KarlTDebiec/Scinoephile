@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit OCR Fusion"
+  short_description: "Audit fused OCR against sources and optional truth"
+  default_prompt: "Use $audit-ocr-fusion to audit OCR-fusion decisions and compare them with the validated subtitle track when available."

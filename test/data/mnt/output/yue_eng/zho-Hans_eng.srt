@@ -310,7 +310,7 @@ I found a drumstick too!
 
 63
 00:06:52,270 --> 00:06:54,570
-鸡腿？在这裏怎会有鸡腿？
+鸡腿？在这里怎会有鸡腿？
 Chicken drumsticks? Why would there be chicken drumsticks here?
 
 64
@@ -330,7 +330,7 @@ I found one too!
 
 67
 00:07:05,490 --> 00:07:08,110
-种子？在屋裏怎会有种子？
+种子？在屋里怎会有种子？
 Seeds? How could there be seeds in the house?
 
 68
@@ -350,7 +350,7 @@ Do squirrels know how to move house?
 
 71
 00:07:16,130 --> 00:07:17,790
-先生，这些东西搬到那裏？
+先生，这些东西搬到那里？
 Sir, where should I put these?
 
 72
@@ -415,7 +415,7 @@ Mm, no problem!
 
 84
 00:08:17,390 --> 00:08:19,860
-爸爸说，见到鬼怪就要靠嚇
+爸爸说，见到鬼怪就要靠吓
 Dad says if you see ghosts, you have to scare them away.
 
 85
@@ -465,7 +465,7 @@ What?
 
 94
 00:08:42,180 --> 00:08:44,080
-那些鬼怪给我们两个嚇倒
+那些鬼怪给我们两个吓倒
 The two of us scared those ghosts away.
 
 95
@@ -565,7 +565,7 @@ The stairs!
 
 114
 00:09:52,350 --> 00:09:53,350
-不是这裏
+不是这里
 Not here.
 
 115
@@ -680,7 +680,7 @@ Dad! Dad!
 
 137
 00:12:14,090 --> 00:12:15,690
-屋裏又有鬼怪
+屋里又有鬼怪
 There are ghosts in the house again!
 
 138
@@ -875,7 +875,7 @@ they'll help you with that too.
 
 176
 00:15:17,380 --> 00:15:18,280
-你这样嚇它
+你这样吓它
 You'll scare them like that.
 
 177
@@ -900,7 +900,7 @@ You're not even scared of a soot sprite that big.
 
 181
 00:15:26,890 --> 00:15:28,180
-你不用嚇我
+你不用吓我
 Don't try to scare me.
 
 182
@@ -1265,7 +1265,7 @@ Mom, are you scared of soot sprites?
 
 254
 00:23:17,190 --> 00:23:19,660
-心裏没鬼怪，又怎会见到鬼怪呢
+心里没鬼怪，又怎会见到鬼怪呢
 If there's nothing to fear in your heart, then you won't see any ghosts.
 
 255
@@ -1875,7 +1875,7 @@ I saw a Totoro that looked like a big drumstick.
 
 376
 00:37:05,520 --> 00:37:07,540
-龙猫，在漫画书裏面才有的
+龙猫，在漫画书里面才有的
 Totoro? That's only in picture books.
 
 377
@@ -3185,7 +3185,7 @@ You have a telegram.
 
 638
 01:04:22,050 --> 01:04:23,080
-因为你们家裏没有人
+因为你们家里没有人
 Since no one was home,
 
 639
@@ -3255,7 +3255,7 @@ I know the number for his office.
 
 652
 01:04:58,390 --> 01:04:59,720
-但是家裏没有电话
+但是家里没有电话
 But we don't have a phone.
 
 653
@@ -3795,7 +3795,7 @@ Kanta, did you find her?
 
 760
 01:14:09,770 --> 01:14:11,070
-还没有，裏面都没有
+还没有，里面都没有
 Not yet. She's not in there.
 
 761
@@ -3890,7 +3890,7 @@ Thank goodness, it wasn't Mei's.
 
 779
 01:16:21,500 --> 01:16:22,500
-嚇死我了
+吓死我了
 You gave me such a scare.
 
 780
@@ -3915,7 +3915,7 @@ That's a relief…
 
 784
 01:16:32,980 --> 01:16:34,110
-真是嚇死呀⋯
+真是吓死呀⋯
 What a scare…
 
 785
@@ -4060,7 +4060,7 @@ so I was so excited, I sent you a telegram.
 
 813
 01:22:12,620 --> 01:22:14,140
-嚇了你们，真不好意思
+吓了你们，真不好意思
 I'm sorry I gave you such a scare.
 
 814
@@ -4090,7 +4090,7 @@ and they've had to go through so much.
 
 819
 01:22:27,240 --> 01:22:29,860
-没人照顾她们，我心裏很难过
+没人照顾她们，我心里很难过
 It breaks my heart not being there to take care of them.
 
 820

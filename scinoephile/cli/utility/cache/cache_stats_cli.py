@@ -8,12 +8,13 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Literal
 
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
 from scinoephile.common.argument_parsing import get_arg_groups_by_name
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import get_cache_stats
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli.localization import merge_localizations
 
-from .argument_types import cache_dir_path_arg
 from .output import print_stats
 
 __all__ = ["CacheStatsCli"]
@@ -42,7 +43,7 @@ CACHE_STATS_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class CacheStatsCli(ScinoephileCliBase):
     """Show cache statistics."""
 
-    localizations = CACHE_STATS_LOCALIZATIONS
+    localizations = merge_localizations(CACHE_LOCALIZATIONS, CACHE_STATS_LOCALIZATIONS)
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -61,18 +62,14 @@ class CacheStatsCli(ScinoephileCliBase):
         )
 
         # Input arguments
-        arg_groups["input arguments"].add_argument(
-            "--cache-dir",
-            default=cache_dir_path_arg(None),
-            dest="cache_dir_path",
-            type=cache_dir_path_arg,
-            help="cache root directory to inspect (default: %(default)s)",
+        add_cache_dir_arg(
+            arg_groups["input arguments"],
+            help_text="cache root directory to inspect (default: %(default)s)",
         )
 
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--namespace",
-            default=None,
             help="cache namespace to inspect",
         )
         arg_groups["operation arguments"].add_argument(

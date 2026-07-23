@@ -1,0 +1,6876 @@
+[
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "警察"
+        },
+        {
+          "index": 2,
+          "text": "拿身份證出來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "檢查一下　　收到"
+        },
+        {
+          "index": 2,
+          "text": "袋子裡裝甚麼？　　總機"
+        },
+        {
+          "index": 3,
+          "text": "打開來看看　　身份證號碼C 5 3 2 7 4 3"
+        },
+        {
+          "index": 4,
+          "text": "尾數一，季正雄"
+        },
+        {
+          "index": 5,
+          "text": "打開"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "檢查一下 收到",
+          "note": "修正多餘空格。"
+        },
+        {
+          "index": 2,
+          "text": "袋子裡裝甚麼？ 總機",
+          "note": "修正多餘空格。"
+        },
+        {
+          "index": 3,
+          "text": "打開來看看 身份證號碼C 5 3 2 7 4 3",
+          "note": "修正多餘空格。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "協議中有關香港的安排"
+        },
+        {
+          "index": 2,
+          "text": "不是權宜之計"
+        },
+        {
+          "index": 3,
+          "text": "這些安排是長期的政策"
+        },
+        {
+          "index": 4,
+          "text": "它們將寫入為香港制定的基本法"
+        },
+        {
+          "index": 5,
+          "text": "五十年不變"
+        },
+        {
+          "index": 6,
+          "text": "確保《聯合聲明》"
+        },
+        {
+          "index": 7,
+          "text": "不受干擾地全面貫徹實施"
+        },
+        {
+          "index": 8,
+          "text": "是中英兩國的共同利益"
+        },
+        {
+          "index": 9,
+          "text": "也是我們雙方共同的責任"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "今天下午觀塘發生械劫案"
+        },
+        {
+          "index": 2,
+          "text": "四名持槍械匪徒"
+        },
+        {
+          "index": 3,
+          "text": "連環打劫物華街五間金行"
+        },
+        {
+          "index": 4,
+          "text": "去你媽的！"
+        },
+        {
+          "index": 5,
+          "text": "由觀眾提供片段，見到賊人離開的時候"
+        },
+        {
+          "index": 6,
+          "text": "在附近秘密執勤的飛虎隊員發生槍戰"
+        },
+        {
+          "index": 7,
+          "text": "雙方開槍過百發"
+        },
+        {
+          "index": 8,
+          "text": "事件中，兩名途人及三名軍裝警員受傷"
+        },
+        {
+          "index": 9,
+          "text": "五間金行合共損失大約一千萬"
+        },
+        {
+          "index": 10,
+          "text": "警方相信，今次械劫案的主謀"
+        },
+        {
+          "index": 11,
+          "text": "是「頭號通緝犯」葉國歡"
+        },
+        {
+          "index": 12,
+          "text": "一夫當關，萬夫莫敵！"
+        },
+        {
+          "index": 13,
+          "text": "真是威風！歡哥！"
+        },
+        {
+          "index": 14,
+          "text": "但大事不妙了！"
+        },
+        {
+          "index": 15,
+          "text": "都說放多些報紙！"
+        },
+        {
+          "index": 16,
+          "text": "你看！到處都是血！"
+        },
+        {
+          "index": 17,
+          "text": "拿去吧，混蛋！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "真是很不妙！"
+        },
+        {
+          "index": 2,
+          "text": "兩折，不好意思，最多兩折！"
+        },
+        {
+          "index": 3,
+          "text": "說好四折"
+        },
+        {
+          "index": 4,
+          "text": "還有道義嗎？"
+        },
+        {
+          "index": 5,
+          "text": "一千萬貨你只給兩百萬？"
+        },
+        {
+          "index": 6,
+          "text": "以前至少五折！"
+        },
+        {
+          "index": 7,
+          "text": "你們銷贓的全賺了！"
+        },
+        {
+          "index": 8,
+          "text": "賺你個屁！"
+        },
+        {
+          "index": 9,
+          "text": "今時不同往日"
+        },
+        {
+          "index": 10,
+          "text": "外面的警察盯得很緊！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "尤其是你的貨，歡哥！"
+        },
+        {
+          "index": 2,
+          "text": "上次那一批，銷了兩年，足足兩年！"
+        },
+        {
+          "index": 3,
+          "text": "炒股、炒樓、炒栗子更能賺錢！"
+        },
+        {
+          "index": 4,
+          "text": "幫個忙"
+        },
+        {
+          "index": 5,
+          "text": "四折！"
+        },
+        {
+          "index": 6,
+          "text": "歡哥開口，怎麼著都行！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不如你找其他買家？"
+        },
+        {
+          "index": 2,
+          "text": "我都買不下手，我看沒人敢收⋯"
+        },
+        {
+          "index": 3,
+          "text": "去你媽的！"
+        },
+        {
+          "index": 4,
+          "text": "開保險箱！"
+        },
+        {
+          "index": 5,
+          "text": "你算是搶我？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不要逼我自己動手"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "真的多謝了，歡哥！"
+        },
+        {
+          "index": 2,
+          "text": "以後別來找我"
+        },
+        {
+          "index": 3,
+          "text": "不要再合作"
+        },
+        {
+          "index": 4,
+          "text": "各走各路！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "歡哥，火！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "船家！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "沒事沒事"
+        },
+        {
+          "index": 2,
+          "text": "是「易發」的船"
+        },
+        {
+          "index": 3,
+          "text": "甚麼「易發」？"
+        },
+        {
+          "index": 4,
+          "text": "番禺「易發」"
+        },
+        {
+          "index": 5,
+          "text": "走私電器的！"
+        },
+        {
+          "index": 6,
+          "text": "這麼大模大樣？如此明目張膽？"
+        },
+        {
+          "index": 7,
+          "text": "人家有靠山，拿牌照做生意的！"
+        },
+        {
+          "index": 8,
+          "text": "一部電視機，香港賣兩千，大陸賣八千"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "一趟都數百萬！"
+        },
+        {
+          "index": 2,
+          "text": "賺到笑！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "要舊鈔，不連號！"
+        },
+        {
+          "index": 2,
+          "text": "今天要！"
+        },
+        {
+          "index": 3,
+          "text": "你那邊有八千萬"
+        },
+        {
+          "index": 4,
+          "text": "五時之前要，你一定要給我！"
+        },
+        {
+          "index": 5,
+          "text": "你立刻去金庫取，馬上要！"
+        },
+        {
+          "index": 6,
+          "text": "沈經理，籌到多少？"
+        },
+        {
+          "index": 7,
+          "text": "霍經理！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "戀一生　差一些　不可一起"
+        },
+        {
+          "index": 2,
+          "text": "祇一心　等一天　日月如飛　卻等不到你"
+        },
+        {
+          "index": 3,
+          "text": "願忘記　又想起你"
+        },
+        {
+          "index": 4,
+          "text": "卓先生"
+        },
+        {
+          "index": 5,
+          "text": "要不我們先談談銀碼？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "是不是低了點兒？"
+        },
+        {
+          "index": 2,
+          "text": "不行！再來！"
+        },
+        {
+          "index": 3,
+          "text": "紅笑臉"
+        },
+        {
+          "index": 4,
+          "text": "紅裙　紅絲巾"
+        },
+        {
+          "index": 5,
+          "text": "白紙般"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "紅裙　　紅絲巾",
+          "note": "將「紅裙　紅絲巾」中的單個空格修正為全形間隔，與字幕排版一致。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我說再唱一次，你聽不見？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我說再唱一次，你聽到沒有？"
+        },
+        {
+          "index": 2,
+          "text": "別再浪費時間！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大富翁"
+        },
+        {
+          "index": 2,
+          "text": "不是說好了三十億嗎？"
+        },
+        {
+          "index": 3,
+          "text": "還談甚麼？"
+        },
+        {
+          "index": 4,
+          "text": "突然要那麼多現金，不可能"
+        },
+        {
+          "index": 5,
+          "text": "我現在手上就這五億"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我有讓你走開嗎？"
+        },
+        {
+          "index": 2,
+          "text": "五億，先拿著吧"
+        },
+        {
+          "index": 3,
+          "text": "見好就收"
+        },
+        {
+          "index": 4,
+          "text": "那我先還一半兒子給你"
+        },
+        {
+          "index": 5,
+          "text": "你要上半，還是下半？"
+        },
+        {
+          "index": 6,
+          "text": "你真的以為我不敢報警？"
+        },
+        {
+          "index": 7,
+          "text": "警察知道你兒子在哪兒嗎？"
+        },
+        {
+          "index": 8,
+          "text": "最多抓我回去打"
+        },
+        {
+          "index": 9,
+          "text": "倒吊、灌水、燒陰囊，全都玩過"
+        },
+        {
+          "index": 10,
+          "text": "四十八小時就會放了我"
+        },
+        {
+          "index": 11,
+          "text": "不過，那時候你兒子就⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "打電話給警務處處長！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我剛才說再唱一次，你聽不見？"
+        },
+        {
+          "index": 2,
+          "text": "那你是這樣聽得見？還是這樣聽不見？"
+        },
+        {
+          "index": 3,
+          "text": "耳朵生來不是用來聽的嗎？"
+        },
+        {
+          "index": 4,
+          "text": "要是這樣都聽不見，不如切掉它，好嗎？"
+        },
+        {
+          "index": 5,
+          "text": "不要！不要！"
+        },
+        {
+          "index": 6,
+          "text": "對不起，對不起！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "早點說，不就沒事了嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "怎麼了？"
+        },
+        {
+          "index": 2,
+          "text": "警務處處長不接你電話？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你要我的吧？"
+        },
+        {
+          "index": 2,
+          "text": "我就有多大玩多大！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "胡警官，走這麼快？"
+        },
+        {
+          "index": 2,
+          "text": "大富翁找你！"
+        },
+        {
+          "index": 3,
+          "text": "大富翁！你不是找警察嗎？過來！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "何先生"
+        },
+        {
+          "index": 2,
+          "text": "這群狗仔隊負責跟我"
+        },
+        {
+          "index": 3,
+          "text": "非常無能"
+        },
+        {
+          "index": 4,
+          "text": "不然怎會那麼容易抓到你兒子？"
+        },
+        {
+          "index": 5,
+          "text": "你肯招認了？"
+        },
+        {
+          "index": 6,
+          "text": "警察先生！"
+        },
+        {
+          "index": 7,
+          "text": "我說幹了你娘就真的幹了你娘嗎？"
+        },
+        {
+          "index": 8,
+          "text": "人家的兒子在哪兒，你應問當事人"
+        },
+        {
+          "index": 9,
+          "text": "我兒子⋯"
+        },
+        {
+          "index": 10,
+          "text": "沒事"
+        },
+        {
+          "index": 11,
+          "text": "我今天來是找大富翁借錢"
+        },
+        {
+          "index": 12,
+          "text": "不犯法吧？"
+        },
+        {
+          "index": 13,
+          "text": "何先生，如果有人威脅你，你說一句"
+        },
+        {
+          "index": 14,
+          "text": "馬上開檔案抓人！"
+        },
+        {
+          "index": 15,
+          "text": "沒有"
+        },
+        {
+          "index": 16,
+          "text": "聽見嗎？警察先生？"
+        },
+        {
+          "index": 17,
+          "text": "我說沒有就沒有！"
+        },
+        {
+          "index": 18,
+          "text": "克制點，皇家警察！"
+        },
+        {
+          "index": 19,
+          "text": "大富翁！"
+        },
+        {
+          "index": 20,
+          "text": "你剛才說借多少錢給我？"
+        },
+        {
+          "index": 21,
+          "text": "三十億"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "David Michael Wu"
+        },
+        {
+          "index": 2,
+          "text": "來廣州做生意還是旅？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "甚麼？"
+        },
+        {
+          "index": 2,
+          "text": "公幹？旅遊？"
+        },
+        {
+          "index": 3,
+          "text": "是，我是商人"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "廣州站"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我要訂一個房間"
+        },
+        {
+          "index": 2,
+          "text": "明天八時"
+        },
+        {
+          "index": 3,
+          "text": "姓陳的，謝謝"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "連長"
+        },
+        {
+          "index": 2,
+          "text": "明晚八時，風滿樓"
+        },
+        {
+          "index": 3,
+          "text": "我他媽的是誰？潮哥！"
+        },
+        {
+          "index": 4,
+          "text": "別他媽要我等你！"
+        },
+        {
+          "index": 5,
+          "text": "就這樣"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "風滿樓"
+        },
+        {
+          "index": 2,
+          "text": "快到了，方老闆"
+        },
+        {
+          "index": 3,
+          "text": "好"
+        },
+        {
+          "index": 4,
+          "text": "哪間房？"
+        },
+        {
+          "index": 5,
+          "text": "好，馬上到"
+        },
+        {
+          "index": 6,
+          "text": "拿著　　甚麼？"
+        },
+        {
+          "index": 7,
+          "text": "拿著，我要戴狗帶"
+        },
+        {
+          "index": 8,
+          "text": "大寶，這裡"
+        },
+        {
+          "index": 9,
+          "text": "方老闆"
+        },
+        {
+          "index": 10,
+          "text": "花瓶呢？"
+        },
+        {
+          "index": 11,
+          "text": "只是平價貨"
+        },
+        {
+          "index": 12,
+          "text": "行了，走吧"
+        },
+        {
+          "index": 13,
+          "text": "陳科"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "拿著，甚麼？",
+          "note": "修正多餘空白與標點排版，將「拿著　　甚麼？」改為「拿著，甚麼？」"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "陳科"
+        },
+        {
+          "index": 2,
+          "text": "我來介紹"
+        },
+        {
+          "index": 3,
+          "text": "這位就是接手「易發」舖位的張大寶"
+        },
+        {
+          "index": 4,
+          "text": "張總！"
+        },
+        {
+          "index": 5,
+          "text": "這位就是工商局陳科"
+        },
+        {
+          "index": 6,
+          "text": "好兄弟來的！"
+        },
+        {
+          "index": 7,
+          "text": "陳科你好"
+        },
+        {
+          "index": 8,
+          "text": "幸會"
+        },
+        {
+          "index": 9,
+          "text": "喝一杯"
+        },
+        {
+          "index": 10,
+          "text": "大家先喝一杯"
+        },
+        {
+          "index": 11,
+          "text": "來，坐"
+        },
+        {
+          "index": 12,
+          "text": "乾杯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "張總不會喝嗎？"
+        },
+        {
+          "index": 2,
+          "text": "乾呀！"
+        },
+        {
+          "index": 3,
+          "text": "我說乾杯！"
+        },
+        {
+          "index": 4,
+          "text": "是"
+        },
+        {
+          "index": 5,
+          "text": "乾，乾"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "乾啊！",
+          "note": "「呀」修正為常見口語用字「啊」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大寶是好兄弟"
+        },
+        {
+          "index": 2,
+          "text": "我們認識不久"
+        },
+        {
+          "index": 3,
+          "text": "但是一見如故，相逢恨晚！"
+        },
+        {
+          "index": 4,
+          "text": "陳科"
+        },
+        {
+          "index": 5,
+          "text": "陳科"
+        },
+        {
+          "index": 6,
+          "text": "幫幫他吧"
+        },
+        {
+          "index": 7,
+          "text": "咦？這個花瓶是貴價貨！"
+        },
+        {
+          "index": 8,
+          "text": "小小意思"
+        },
+        {
+          "index": 9,
+          "text": "老規矩"
+        },
+        {
+          "index": 10,
+          "text": "陳科玩膩了，就讓回給張總！"
+        },
+        {
+          "index": 11,
+          "text": "那至少值三十萬！"
+        },
+        {
+          "index": 12,
+          "text": "不是說好了二十萬嗎？"
+        },
+        {
+          "index": 13,
+          "text": "我看錯？"
+        },
+        {
+          "index": 14,
+          "text": "老貓燒鬚？"
+        },
+        {
+          "index": 15,
+          "text": "怎會？"
+        },
+        {
+          "index": 16,
+          "text": "說到古董，陳科才是專家"
+        },
+        {
+          "index": 17,
+          "text": "我們哪會懂，對吧？"
+        },
+        {
+          "index": 18,
+          "text": "陳科說三十便三十"
+        },
+        {
+          "index": 19,
+          "text": "明天上來工商局拿批文"
+        },
+        {
+          "index": 20,
+          "text": "我找個漂亮的框鑲好給你"
+        },
+        {
+          "index": 21,
+          "text": "謝謝陳科"
+        },
+        {
+          "index": 22,
+          "text": "好兄弟"
+        },
+        {
+          "index": 23,
+          "text": "張總，看看想吃甚麼？"
+        },
+        {
+          "index": 24,
+          "text": "鹹菜扣肉"
+        },
+        {
+          "index": 25,
+          "text": "我才不吃肥膩的"
+        },
+        {
+          "index": 26,
+          "text": "讓我來點菜"
+        },
+        {
+          "index": 27,
+          "text": "就吃魚蝦蟹海鮮餐，好嗎？"
+        },
+        {
+          "index": 28,
+          "text": "我去叫"
+        },
+        {
+          "index": 29,
+          "text": "服務員！"
+        },
+        {
+          "index": 30,
+          "text": "張總，祝你生意興隆"
+        },
+        {
+          "index": 31,
+          "text": "好，多謝"
+        },
+        {
+          "index": 32,
+          "text": "喝一杯"
+        },
+        {
+          "index": 33,
+          "text": "乾"
+        },
+        {
+          "index": 34,
+          "text": "乾！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這一個，逢星期日，打高球，清水灣"
+        },
+        {
+          "index": 2,
+          "text": "單行路，夠清靜，電話有盲點，可以考慮"
+        },
+        {
+          "index": 3,
+          "text": "飯還沒到嗎？"
+        },
+        {
+          "index": 4,
+          "text": "下一個"
+        },
+        {
+          "index": 5,
+          "text": "這個好辦"
+        },
+        {
+          "index": 6,
+          "text": "超級玩家"
+        },
+        {
+          "index": 7,
+          "text": "每晚喝到天昏地暗"
+        },
+        {
+          "index": 8,
+          "text": "最近還包養了小明星"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂"
+        },
+        {
+          "index": 2,
+          "text": "飯呢？"
+        },
+        {
+          "index": 3,
+          "text": "飯，稍等我一下"
+        },
+        {
+          "index": 4,
+          "text": "飯馬上來，很快"
+        },
+        {
+          "index": 5,
+          "text": "有時候，司機會被支開"
+        },
+        {
+          "index": 6,
+          "text": "不好意思，讓你們久等"
+        },
+        {
+          "index": 7,
+          "text": "請慢用"
+        },
+        {
+          "index": 8,
+          "text": "關門"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "先生，這邊請"
+        },
+        {
+          "index": 2,
+          "text": "給我一杯茶"
+        },
+        {
+          "index": 3,
+          "text": "喂！你剛不是去廁所嗎？"
+        },
+        {
+          "index": 4,
+          "text": "不要吐　　飯是冷的！"
+        },
+        {
+          "index": 5,
+          "text": "你稍等我一下"
+        },
+        {
+          "index": 6,
+          "text": "不好意思，飯是冷的嗎？　　我要茶！"
+        },
+        {
+          "index": 7,
+          "text": "快點　　小姐，麻煩你告訴我⋯"
+        },
+        {
+          "index": 8,
+          "text": "我要茶！　　等我一下，我帶你去"
+        },
+        {
+          "index": 9,
+          "text": "茶，我幫你拿"
+        },
+        {
+          "index": 10,
+          "text": "等一下，你們都等我一下，馬上回來"
+        },
+        {
+          "index": 11,
+          "text": "將就一下吧"
+        },
+        {
+          "index": 12,
+          "text": "上來聊才能甩掉那些狗仔隊"
+        },
+        {
+          "index": 13,
+          "text": "你上次玩得那麼大！"
+        },
+        {
+          "index": 14,
+          "text": "要玩就玩大的"
+        },
+        {
+          "index": 15,
+          "text": "人生就這樣"
+        },
+        {
+          "index": 16,
+          "text": "不然怎麼精彩？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我們之前偷車、爆竊、打劫運鈔車"
+        },
+        {
+          "index": 2,
+          "text": "一次比一次厲害！"
+        },
+        {
+          "index": 3,
+          "text": "連大富翁都動了"
+        },
+        {
+          "index": 4,
+          "text": "還綁架？"
+        },
+        {
+          "index": 5,
+          "text": "那你想到甚麼好主意？"
+        },
+        {
+          "index": 6,
+          "text": "說出來，我們商量一下"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我是一個攀山運動員"
+        },
+        {
+          "index": 2,
+          "text": "我征服了一座山"
+        },
+        {
+          "index": 3,
+          "text": "當然得再找一座更高、更難爬的山"
+        },
+        {
+          "index": 4,
+          "text": "就這樣"
+        },
+        {
+          "index": 5,
+          "text": "還沒找到那座山"
+        },
+        {
+          "index": 6,
+          "text": "先找錢吧"
+        },
+        {
+          "index": 7,
+          "text": "繼續"
+        },
+        {
+          "index": 8,
+          "text": "鄭建權，五十三歲"
+        },
+        {
+          "index": 9,
+          "text": "沒兒沒女，老婆當家"
+        },
+        {
+          "index": 10,
+          "text": "以前一萬多塊錢一部，誰買得起？"
+        },
+        {
+          "index": 11,
+          "text": "你以為誰都是高幹子弟？"
+        },
+        {
+          "index": 12,
+          "text": "現在愈便宜愈好"
+        },
+        {
+          "index": 13,
+          "text": "我們一千萬人口"
+        },
+        {
+          "index": 14,
+          "text": "你算算"
+        },
+        {
+          "index": 15,
+          "text": "對，一千塊錢一部"
+        },
+        {
+          "index": 16,
+          "text": "十部就一萬塊，那時候就發過周潤發了"
+        },
+        {
+          "index": 17,
+          "text": "對，現在沒人用傳呼機了"
+        },
+        {
+          "index": 18,
+          "text": "好了，不說了，談正事，一會兒再聊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "潮哥，不好意思"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "繼續講吧"
+        },
+        {
+          "index": 2,
+          "text": "你別難為小的了，小生意"
+        },
+        {
+          "index": 3,
+          "text": "不說我的事了，潮哥，這幫小弟很棒"
+        },
+        {
+          "index": 4,
+          "text": "走最前的老鬼在香港有案底"
+        },
+        {
+          "index": 5,
+          "text": "你帶來有個屁用"
+        },
+        {
+          "index": 6,
+          "text": "混蛋，叫你帶些像樣的來"
+        },
+        {
+          "index": 7,
+          "text": "全都賊眉賊眼，都是蠢貨"
+        },
+        {
+          "index": 8,
+          "text": "幹你娘的，你該收山了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "他看甚麼？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "可是這個很聰明、很能幹的"
+        },
+        {
+          "index": 2,
+          "text": "藍衣那個也不要"
+        },
+        {
+          "index": 3,
+          "text": "這次兩個就夠了？"
+        },
+        {
+          "index": 4,
+          "text": "帶他們去開開眼界嘛"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "明白，完全明白"
+        },
+        {
+          "index": 2,
+          "text": "我去安排"
+        },
+        {
+          "index": 3,
+          "text": "你看看看，他媽的看甚麼？"
+        },
+        {
+          "index": 4,
+          "text": "走了，向陽、老胡"
+        },
+        {
+          "index": 5,
+          "text": "走了！別喝了！走了！"
+        },
+        {
+          "index": 6,
+          "text": "你們兩個，跟我進來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "快點了，快點了"
+        },
+        {
+          "index": 2,
+          "text": "慢死了"
+        },
+        {
+          "index": 3,
+          "text": "潮哥"
+        },
+        {
+          "index": 4,
+          "text": "王磊"
+        },
+        {
+          "index": 5,
+          "text": "紅旗"
+        },
+        {
+          "index": 6,
+          "text": "叫潮哥"
+        },
+        {
+          "index": 7,
+          "text": "潮哥！"
+        },
+        {
+          "index": 8,
+          "text": "聽得懂廣東話吧？"
+        },
+        {
+          "index": 9,
+          "text": "懂，當然懂"
+        },
+        {
+          "index": 10,
+          "text": "來！先喝一杯"
+        },
+        {
+          "index": 11,
+          "text": "裝扮一下來香港見我"
+        },
+        {
+          "index": 12,
+          "text": "好，一定，我會的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "他媽的"
+        },
+        {
+          "index": 2,
+          "text": "坐，吃飯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "連長"
+        },
+        {
+          "index": 2,
+          "text": "這潮哥是甚麼來頭？"
+        },
+        {
+          "index": 3,
+          "text": "他就是不讓你知道他甚麼來頭"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "他這個賤人"
+        },
+        {
+          "index": 2,
+          "text": "反正就是見一個人"
+        },
+        {
+          "index": 3,
+          "text": "就換一個名字的老狐狸"
+        },
+        {
+          "index": 4,
+          "text": "跟他媽早年香港那個隱形賊王季正雄"
+        },
+        {
+          "index": 5,
+          "text": "一個他媽的樣子"
+        },
+        {
+          "index": 6,
+          "text": "那個季正雄殺掉警察被通緝"
+        },
+        {
+          "index": 7,
+          "text": "就銷聲匿跡了"
+        },
+        {
+          "index": 8,
+          "text": "然後又蹦出個潮哥出來"
+        },
+        {
+          "index": 9,
+          "text": "「潮哥」，不就是個名字而已"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大輝在嗎？"
+        },
+        {
+          "index": 2,
+          "text": "阿輝"
+        },
+        {
+          "index": 3,
+          "text": "甚麼事？"
+        },
+        {
+          "index": 4,
+          "text": "有人找你　　喂"
+        },
+        {
+          "index": 5,
+          "text": "可樂哥"
+        },
+        {
+          "index": 6,
+          "text": "喂"
+        },
+        {
+          "index": 7,
+          "text": "泰國人？"
+        },
+        {
+          "index": 8,
+          "text": "Noon，去買可樂"
+        },
+        {
+          "index": 9,
+          "text": "你甚麼時候回來的？"
+        },
+        {
+          "index": 10,
+          "text": "剛剛回來"
+        },
+        {
+          "index": 11,
+          "text": "你幹甚麼？這麼客氣，進來坐"
+        },
+        {
+          "index": 12,
+          "text": "你說泰語嗎？"
+        },
+        {
+          "index": 13,
+          "text": "難道我講法語嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "有人找你　喂",
+          "note": "刪除多餘空白。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好臭！"
+        },
+        {
+          "index": 2,
+          "text": "是嗎？"
+        },
+        {
+          "index": 3,
+          "text": "寶兒"
+        },
+        {
+          "index": 4,
+          "text": "你怎能這麼沒規矩？"
+        },
+        {
+          "index": 5,
+          "text": "進去幫爸爸開飯"
+        },
+        {
+          "index": 6,
+          "text": "你坐一下，很快開飯"
+        },
+        {
+          "index": 7,
+          "text": "你真頑皮"
+        },
+        {
+          "index": 8,
+          "text": "去洗手"
+        },
+        {
+          "index": 9,
+          "text": "剛才洗過了"
+        },
+        {
+          "index": 10,
+          "text": "你昨天吃過飯，今天要不要吃？就是嘛"
+        },
+        {
+          "index": 11,
+          "text": "慢慢來，寶兒，這麼著急"
+        },
+        {
+          "index": 12,
+          "text": "可樂哥"
+        },
+        {
+          "index": 13,
+          "text": "想喝嗎？"
+        },
+        {
+          "index": 14,
+          "text": "我跟你一人一半吧"
+        },
+        {
+          "index": 15,
+          "text": "別讓她喝"
+        },
+        {
+          "index": 16,
+          "text": "早前又咳嗽了，不然又要花錢看醫生"
+        },
+        {
+          "index": 17,
+          "text": "我沒咳嗽，只是發燒而已"
+        },
+        {
+          "index": 18,
+          "text": "對，只是喝一點"
+        },
+        {
+          "index": 19,
+          "text": "甚麼沒咳嗽？你就會頂嘴！"
+        },
+        {
+          "index": 20,
+          "text": "總之不能喝"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "輝，我不吃，快要遲到"
+        },
+        {
+          "index": 2,
+          "text": "現在就出去？"
+        },
+        {
+          "index": 3,
+          "text": "是的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "乖乖的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "可樂哥，吃飯"
+        },
+        {
+          "index": 2,
+          "text": "她不吃？"
+        },
+        {
+          "index": 3,
+          "text": "她去上夜班"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "她做按摩師的"
+        },
+        {
+          "index": 2,
+          "text": "吃塊燒肉"
+        },
+        {
+          "index": 3,
+          "text": "來，吃蔬菜"
+        },
+        {
+          "index": 4,
+          "text": "經常不吃蔬菜"
+        },
+        {
+          "index": 5,
+          "text": "去不去海洋公園？"
+        },
+        {
+          "index": 6,
+          "text": "玩過雲霄飛車嗎？想玩嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我帶你飛高一點，遠一點，好嗎？"
+        },
+        {
+          "index": 2,
+          "text": "不答我？搔你癢"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不要那麼吵，要不然房東太太又罵人了"
+        },
+        {
+          "index": 2,
+          "text": "她罵你沒交房租吧"
+        },
+        {
+          "index": 3,
+          "text": "還頂嘴，下來"
+        },
+        {
+          "index": 4,
+          "text": "厲害，臭丫頭，敢跟老爸頂嘴"
+        },
+        {
+          "index": 5,
+          "text": "這丫頭，一玩就忘形了！穿好拖鞋"
+        },
+        {
+          "index": 6,
+          "text": "做好功課沒有？快點，進去做功課"
+        },
+        {
+          "index": 7,
+          "text": "快點！"
+        },
+        {
+          "index": 8,
+          "text": "我待會打你屁股　　真乖"
+        },
+        {
+          "index": 9,
+          "text": "這丫頭！"
+        },
+        {
+          "index": 10,
+          "text": "戒了"
+        },
+        {
+          "index": 11,
+          "text": "戒了？"
+        },
+        {
+          "index": 12,
+          "text": "戒了"
+        },
+        {
+          "index": 13,
+          "text": "「嫖賭飲蕩吹⋯"
+        },
+        {
+          "index": 14,
+          "text": "戒了不夠帥」"
+        },
+        {
+          "index": 15,
+          "text": "是你說的"
+        },
+        {
+          "index": 16,
+          "text": "我要洗腎，不戒不行"
+        },
+        {
+          "index": 17,
+          "text": "早就說你腎虧"
+        },
+        {
+          "index": 18,
+          "text": "一蹲下就頭暈"
+        },
+        {
+          "index": 19,
+          "text": "去！"
+        },
+        {
+          "index": 20,
+          "text": "最近在幹甚麼？"
+        },
+        {
+          "index": 21,
+          "text": "我可以幹甚麼？"
+        },
+        {
+          "index": 22,
+          "text": "以前幹地盤臨時工"
+        },
+        {
+          "index": 23,
+          "text": "現在全職帶女兒"
+        },
+        {
+          "index": 24,
+          "text": "你呢？"
+        },
+        {
+          "index": 25,
+          "text": "我？"
+        },
+        {
+          "index": 26,
+          "text": "我賣這個去大陸"
+        },
+        {
+          "index": 27,
+          "text": "以後沒有人用傳呼機了"
+        },
+        {
+          "index": 28,
+          "text": "將來大陸人一人一部"
+        },
+        {
+          "index": 29,
+          "text": "一部賣一千，十部一萬"
+        },
+        {
+          "index": 30,
+          "text": "發過周潤發"
+        },
+        {
+          "index": 31,
+          "text": "那麼發？"
+        },
+        {
+          "index": 32,
+          "text": "真厲害"
+        },
+        {
+          "index": 33,
+          "text": "你真好，做老闆了"
+        },
+        {
+          "index": 34,
+          "text": "也對，走正路總比以前走偏門好"
+        },
+        {
+          "index": 35,
+          "text": "我和你都不夠狠，做不成大賊"
+        },
+        {
+          "index": 36,
+          "text": "盡幹些偷雞摸狗的勾當"
+        },
+        {
+          "index": 37,
+          "text": "生活沒保障，覺也睡不好"
+        },
+        {
+          "index": 38,
+          "text": "又不是賺很多，也不知為了甚麼"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 13,
+          "text": "「嫖賭飲盪吹⋯",
+          "note": "修正錯別字：「蕩」改為「盪」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我想在這裡住幾天"
+        },
+        {
+          "index": 2,
+          "text": "甚麼？"
+        },
+        {
+          "index": 3,
+          "text": "我睡沙發就可以"
+        },
+        {
+          "index": 4,
+          "text": "幹甚麼？"
+        },
+        {
+          "index": 5,
+          "text": "收下吧，幫補一下阿嫂"
+        },
+        {
+          "index": 6,
+          "text": "爸爸，手冊不見了！"
+        },
+        {
+          "index": 7,
+          "text": "爸爸，爸爸"
+        },
+        {
+          "index": 8,
+          "text": "來了！"
+        },
+        {
+          "index": 9,
+          "text": "行了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": ""
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": ""
+        },
+        {
+          "index": 2,
+          "text": "番禺易發市場"
+        },
+        {
+          "index": 3,
+          "text": "三十部廿九吋新畫皇，每部一萬二"
+        },
+        {
+          "index": 4,
+          "text": "另外八十部VCD機，每部四千"
+        },
+        {
+          "index": 5,
+          "text": "多謝你，六十八萬"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "收了你七十萬"
+        },
+        {
+          "index": 2,
+          "text": "貨到通知你"
+        },
+        {
+          "index": 3,
+          "text": "下一個"
+        },
+        {
+          "index": 4,
+          "text": "陳科的三十萬，你點算一下"
+        },
+        {
+          "index": 5,
+          "text": "企業法人營業執照"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "三十萬，數目正確"
+        },
+        {
+          "index": 2,
+          "text": "貨到第一時間通知你"
+        },
+        {
+          "index": 3,
+          "text": "替我多謝陳科"
+        },
+        {
+          "index": 4,
+          "text": "我家的VCD機壞了"
+        },
+        {
+          "index": 5,
+          "text": "送你一部新的，金"
+        },
+        {
+          "index": 6,
+          "text": "是"
+        },
+        {
+          "index": 7,
+          "text": "新款的三十三吋新畫皇"
+        },
+        {
+          "index": 8,
+          "text": "好東西"
+        },
+        {
+          "index": 9,
+          "text": "也送給你吧"
+        },
+        {
+          "index": 10,
+          "text": "多謝張總"
+        },
+        {
+          "index": 11,
+          "text": "不用客氣"
+        },
+        {
+          "index": 12,
+          "text": "阿貴、阿廣，拿部三十三吋新畫皇"
+        },
+        {
+          "index": 13,
+          "text": "還有一部VCD機"
+        },
+        {
+          "index": 14,
+          "text": "好"
+        },
+        {
+          "index": 15,
+          "text": "大寶電器"
+        },
+        {
+          "index": 16,
+          "text": "貪得無厭"
+        },
+        {
+          "index": 17,
+          "text": "做生意便是這樣了"
+        },
+        {
+          "index": 18,
+          "text": "別整天擺副臭臉"
+        },
+        {
+          "index": 19,
+          "text": "張總！張總！"
+        },
+        {
+          "index": 20,
+          "text": "放心，他們倆會搞定"
+        },
+        {
+          "index": 21,
+          "text": "快點　　甚麼事？"
+        },
+        {
+          "index": 22,
+          "text": "張總"
+        },
+        {
+          "index": 23,
+          "text": "甚麼事？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "貨物出事了？"
+        },
+        {
+          "index": 2,
+          "text": "不是，關門"
+        },
+        {
+          "index": 3,
+          "text": "關門"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "嘴這麼硬？打給你老婆報平安"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "打給你老婆"
+        },
+        {
+          "index": 2,
+          "text": "報平安，混蛋"
+        },
+        {
+          "index": 3,
+          "text": "打死我，你一分錢也拿不到"
+        },
+        {
+          "index": 4,
+          "text": "敢唬弄我？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "卓，耐心點"
+        },
+        {
+          "index": 2,
+          "text": "他再不說，就斷他糧水吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你好吵"
+        },
+        {
+          "index": 2,
+          "text": "喂，幹甚麼？"
+        },
+        {
+          "index": 3,
+          "text": "撿他上來，撿上來！"
+        },
+        {
+          "index": 4,
+          "text": "這裡是金寶珠寶金行"
+        },
+        {
+          "index": 5,
+          "text": "平常會有一輛警車在門口"
+        },
+        {
+          "index": 6,
+          "text": "對面街有馬會"
+        },
+        {
+          "index": 7,
+          "text": "我們在裡面看緊"
+        },
+        {
+          "index": 8,
+          "text": "待八時警車離去，我們立刻動手"
+        },
+        {
+          "index": 9,
+          "text": "那天跑夜馬，會有好多人，搞定之後⋯"
+        },
+        {
+          "index": 10,
+          "text": "賺不了錢！　　記得要跟緊我"
+        },
+        {
+          "index": 11,
+          "text": "你剛說甚麼？"
+        },
+        {
+          "index": 12,
+          "text": "你們做大茶飯的"
+        },
+        {
+          "index": 13,
+          "text": "怎麼就打劫小金行？"
+        },
+        {
+          "index": 14,
+          "text": "對啊"
+        },
+        {
+          "index": 15,
+          "text": "聽人家說，你們三大賊王合作"
+        },
+        {
+          "index": 16,
+          "text": "沒幾個億，都有幾千萬了"
+        },
+        {
+          "index": 17,
+          "text": "甚麼三大賊王？"
+        },
+        {
+          "index": 18,
+          "text": "說吧！"
+        },
+        {
+          "index": 19,
+          "text": "歡哥，你是否真的重出江湖"
+        },
+        {
+          "index": 20,
+          "text": "跟卓子強、季正雄"
+        },
+        {
+          "index": 21,
+          "text": "三大賊王合作做大案？"
+        },
+        {
+          "index": 22,
+          "text": "有人看到你們三人在大陸見面"
+        },
+        {
+          "index": 23,
+          "text": "你從哪兒聽回來的？"
+        },
+        {
+          "index": 24,
+          "text": "外面全這麼說"
+        },
+        {
+          "index": 25,
+          "text": "這你也信！"
+        },
+        {
+          "index": 26,
+          "text": "老大不是說過，拿槍混不到飯吃！"
+        },
+        {
+          "index": 27,
+          "text": "如果我是季正雄"
+        },
+        {
+          "index": 28,
+          "text": "就不用和你們一起吃盒飯"
+        },
+        {
+          "index": 29,
+          "text": "蠢貨"
+        },
+        {
+          "index": 30,
+          "text": "神經病"
+        },
+        {
+          "index": 31,
+          "text": "一個「砰！砰！砰！」"
+        },
+        {
+          "index": 32,
+          "text": "一個鬼鬼祟祟"
+        },
+        {
+          "index": 33,
+          "text": "三個風格不一樣，搞甚麼？"
+        },
+        {
+          "index": 34,
+          "text": "跟我走私多些電器"
+        },
+        {
+          "index": 35,
+          "text": "一起賺到笑！"
+        },
+        {
+          "index": 36,
+          "text": "收到"
+        },
+        {
+          "index": 37,
+          "text": "英明！"
+        },
+        {
+          "index": 38,
+          "text": "有時心癢，也想重拾槍桿"
+        },
+        {
+          "index": 39,
+          "text": "打劫！打劫！"
+        },
+        {
+          "index": 40,
+          "text": "多威風！"
+        },
+        {
+          "index": 41,
+          "text": "你這叫威風？"
+        },
+        {
+          "index": 42,
+          "text": "老大開AK才威風！"
+        },
+        {
+          "index": 43,
+          "text": "不是這樣開"
+        },
+        {
+          "index": 44,
+          "text": "AK後座力大"
+        },
+        {
+          "index": 45,
+          "text": "不是托著"
+        },
+        {
+          "index": 46,
+          "text": "而是按著"
+        },
+        {
+          "index": 47,
+          "text": "站穩馬步"
+        },
+        {
+          "index": 48,
+          "text": "射他老子"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "怎麼了？跟就跟"
+        },
+        {
+          "index": 2,
+          "text": "不跟就回去吃屎"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "潮哥，那⋯"
+        },
+        {
+          "index": 2,
+          "text": "我們打個小金行，能賺多少錢？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "打不打電話？"
+        },
+        {
+          "index": 2,
+          "text": "你們覺得，如果三大賊王合作"
+        },
+        {
+          "index": 3,
+          "text": "就算開「魚蛋檔」"
+        },
+        {
+          "index": 4,
+          "text": "也很轟動吧？"
+        },
+        {
+          "index": 5,
+          "text": "起甚麼名字好呢？"
+        },
+        {
+          "index": 6,
+          "text": "打不打電話？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不要睡！"
+        },
+        {
+          "index": 2,
+          "text": "金庫？"
+        },
+        {
+          "index": 3,
+          "text": "馬場？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "綁架彭定康？"
+        },
+        {
+          "index": 2,
+          "text": "魯平？"
+        },
+        {
+          "index": 3,
+          "text": "不行"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "搞甚麼？"
+        },
+        {
+          "index": 2,
+          "text": "四大天王同台演出"
+        },
+        {
+          "index": 3,
+          "text": "唱甚麼歌？"
+        },
+        {
+          "index": 4,
+          "text": "唱甚麼也聽不到，有甚麼好聽？"
+        },
+        {
+          "index": 5,
+          "text": "四大天王破天荒第一次合唱"
+        },
+        {
+          "index": 6,
+          "text": "唱甚麼也很厲害"
+        },
+        {
+          "index": 7,
+          "text": "我要水，水！"
+        },
+        {
+          "index": 8,
+          "text": "我肯打了，我打了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我丈夫怎麼樣？我求求你！"
+        },
+        {
+          "index": 2,
+          "text": "他身體不好，別為難他"
+        },
+        {
+          "index": 3,
+          "text": "你別以為我們很有錢，只是表面風光"
+        },
+        {
+          "index": 4,
+          "text": "卓先生，你怎麼才肯放過我丈夫？"
+        },
+        {
+          "index": 5,
+          "text": "要不你開個價，我自己掏腰包⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂？"
+        },
+        {
+          "index": 2,
+          "text": "要不這樣，我有八千萬現金"
+        },
+        {
+          "index": 3,
+          "text": "全給你好嗎？"
+        },
+        {
+          "index": 4,
+          "text": "就八千吧"
+        },
+        {
+          "index": 5,
+          "text": "給我找葉國歡、季正雄！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "搞甚麼？"
+        },
+        {
+          "index": 2,
+          "text": "三大賊王破天荒第一次合作"
+        },
+        {
+          "index": 3,
+          "text": "搞甚麼都厲害！"
+        },
+        {
+          "index": 4,
+          "text": "甚麼也沒想到"
+        },
+        {
+          "index": 5,
+          "text": "找兩個通緝犯放在身邊"
+        },
+        {
+          "index": 6,
+          "text": "我一定能想到"
+        },
+        {
+          "index": 7,
+          "text": "你知道我一定能想得到的！"
+        },
+        {
+          "index": 8,
+          "text": "這座山，就是我要找的山"
+        },
+        {
+          "index": 9,
+          "text": "喜瑪拉雅山！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "吃宵夜？"
+        },
+        {
+          "index": 2,
+          "text": "冰箱有可樂"
+        },
+        {
+          "index": 3,
+          "text": "行，自己來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "輝，你朋友要住到甚麼時候？"
+        },
+        {
+          "index": 2,
+          "text": "三、四晚吧"
+        },
+        {
+          "index": 3,
+          "text": "我們有個女兒"
+        },
+        {
+          "index": 4,
+          "text": "突然家中多了個男人"
+        },
+        {
+          "index": 5,
+          "text": "不是很方便"
+        },
+        {
+          "index": 6,
+          "text": "他做甚麼工作的？"
+        },
+        {
+          "index": 7,
+          "text": "賣手提電話的"
+        },
+        {
+          "index": 8,
+          "text": "別說了"
+        },
+        {
+          "index": 9,
+          "text": "睡吧"
+        },
+        {
+          "index": 10,
+          "text": "好的"
+        },
+        {
+          "index": 11,
+          "text": "我縫好衣服就去睡覺"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "正在帶客人過來，三分鐘到"
+        },
+        {
+          "index": 2,
+          "text": "收到"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿貴、阿廣，卸貨，趕快！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "老大，出事了！"
+        },
+        {
+          "index": 2,
+          "text": "番禺海關"
+        },
+        {
+          "index": 3,
+          "text": "金，金！"
+        },
+        {
+          "index": 4,
+          "text": "阿忠，停車"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你去那邊看看"
+        },
+        {
+          "index": 2,
+          "text": "你再到那邊看一下"
+        },
+        {
+          "index": 3,
+          "text": "別動，手放頭上"
+        },
+        {
+          "index": 4,
+          "text": "走"
+        },
+        {
+          "index": 5,
+          "text": "走啊！"
+        },
+        {
+          "index": 6,
+          "text": "那阿金怎麼辦？"
+        },
+        {
+          "index": 7,
+          "text": "找方老闆"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "中國海關"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "同志"
+        },
+        {
+          "index": 2,
+          "text": "甚麼事？"
+        },
+        {
+          "index": 3,
+          "text": "我們來找龍科長"
+        },
+        {
+          "index": 4,
+          "text": "想請教一下"
+        },
+        {
+          "index": 5,
+          "text": "蓮花山那批貨還有人，能不能通融通融？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我們認識方老闆的"
+        },
+        {
+          "index": 2,
+          "text": "四日立案，上報省廳"
+        },
+        {
+          "index": 3,
+          "text": "貨物充公，人就槍斃"
+        },
+        {
+          "index": 4,
+          "text": "是，明白明白"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "科長，有人找你"
+        },
+        {
+          "index": 2,
+          "text": "好，好⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "龍科今天很忙"
+        },
+        {
+          "index": 2,
+          "text": "明天再來吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好，是⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "龍科今天不見客"
+        },
+        {
+          "index": 2,
+          "text": "明天再來吧"
+        },
+        {
+          "index": 3,
+          "text": "混蛋"
+        },
+        {
+          "index": 4,
+          "text": "在這耍大牌！"
+        },
+        {
+          "index": 5,
+          "text": "是否不想救阿金？"
+        },
+        {
+          "index": 6,
+          "text": "好，是⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "龍科說，晚上再談"
+        },
+        {
+          "index": 2,
+          "text": "你先找個館子等他"
+        },
+        {
+          "index": 3,
+          "text": "好"
+        },
+        {
+          "index": 4,
+          "text": "風滿樓，風滿樓！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂"
+        },
+        {
+          "index": 2,
+          "text": "我跟龍科在大富貴啊"
+        },
+        {
+          "index": 3,
+          "text": "好，馬上來"
+        },
+        {
+          "index": 4,
+          "text": "走"
+        },
+        {
+          "index": 5,
+          "text": "記得拿花瓶"
+        },
+        {
+          "index": 6,
+          "text": "拿花瓶"
+        },
+        {
+          "index": 7,
+          "text": "快些！"
+        },
+        {
+          "index": 8,
+          "text": "行⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "快點！"
+        },
+        {
+          "index": 2,
+          "text": "海關龍科"
+        },
+        {
+          "index": 3,
+          "text": "我好兄弟來的"
+        },
+        {
+          "index": 4,
+          "text": "龍科你好"
+        },
+        {
+          "index": 5,
+          "text": "有人架子真大，官等人！"
+        },
+        {
+          "index": 6,
+          "text": "不好意思"
+        },
+        {
+          "index": 7,
+          "text": "我去了風滿樓"
+        },
+        {
+          "index": 8,
+          "text": "風滿樓的東西能吃嗎？"
+        },
+        {
+          "index": 9,
+          "text": "就是，他不懂吃！"
+        },
+        {
+          "index": 10,
+          "text": "飲食之道，龍科才是專家"
+        },
+        {
+          "index": 11,
+          "text": "是⋯"
+        },
+        {
+          "index": 12,
+          "text": "龍科，他是我的好兄弟"
+        },
+        {
+          "index": 13,
+          "text": "這一次，幫幫他吧"
+        },
+        {
+          "index": 14,
+          "text": "麻煩你"
+        },
+        {
+          "index": 15,
+          "text": "你兄弟，不是我兄弟"
+        },
+        {
+          "index": 16,
+          "text": "我不是每個都幫，只幫朋友！"
+        },
+        {
+          "index": 17,
+          "text": "談得合，玩得開，便是朋友"
+        },
+        {
+          "index": 18,
+          "text": "餓了！"
+        },
+        {
+          "index": 19,
+          "text": "先叫菜吧"
+        },
+        {
+          "index": 20,
+          "text": "是，應該點菜了"
+        },
+        {
+          "index": 21,
+          "text": "吃甚麼？吃甚麼？"
+        },
+        {
+          "index": 22,
+          "text": "吃甚麼？"
+        },
+        {
+          "index": 23,
+          "text": "鹹菜扣肉"
+        },
+        {
+          "index": 24,
+          "text": "這麼粗，你吃吧！"
+        },
+        {
+          "index": 25,
+          "text": "鮑參翅肚！"
+        },
+        {
+          "index": 26,
+          "text": "服務員！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "多謝"
+        },
+        {
+          "index": 2,
+          "text": "你，叫甚麼總？"
+        },
+        {
+          "index": 3,
+          "text": "張總"
+        },
+        {
+          "index": 4,
+          "text": "張總是吧？"
+        },
+        {
+          "index": 5,
+          "text": "你這個人，有意思！有意思！"
+        },
+        {
+          "index": 6,
+          "text": "謝謝"
+        },
+        {
+          "index": 7,
+          "text": "龍科，那事就拜託你"
+        },
+        {
+          "index": 8,
+          "text": "我們去找間KTV，先唱歌吧"
+        },
+        {
+          "index": 9,
+          "text": "好，KTV"
+        },
+        {
+          "index": 10,
+          "text": "阿忠"
+        },
+        {
+          "index": 11,
+          "text": "KTV的卡片，還有電話"
+        },
+        {
+          "index": 12,
+          "text": "下一場了"
+        },
+        {
+          "index": 13,
+          "text": "不行了⋯"
+        },
+        {
+          "index": 14,
+          "text": "先泡個澡"
+        },
+        {
+          "index": 15,
+          "text": "泡澡，泡澡好"
+        },
+        {
+          "index": 16,
+          "text": "找間桑拿"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不要忘了花瓶啊"
+        },
+        {
+          "index": 2,
+          "text": "是⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "中國海關"
+        },
+        {
+          "index": 2,
+          "text": "幸好有關係，不用蹲監倉"
+        },
+        {
+          "index": 3,
+          "text": "住賓館"
+        },
+        {
+          "index": 4,
+          "text": "有床有電視，伙食也不差"
+        },
+        {
+          "index": 5,
+          "text": "只是不能召妓！"
+        },
+        {
+          "index": 6,
+          "text": "你們說，是不是很好？"
+        },
+        {
+          "index": 7,
+          "text": "對⋯"
+        },
+        {
+          "index": 8,
+          "text": "混蛋，又不是你招呼那些官！"
+        },
+        {
+          "index": 9,
+          "text": "吃吃喝喝也埋怨？"
+        },
+        {
+          "index": 10,
+          "text": "看在錢的份上"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂，你們過來"
+        },
+        {
+          "index": 2,
+          "text": "我們的貨！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "來⋯"
+        },
+        {
+          "index": 2,
+          "text": "看看你們的貨，都在這裡了"
+        },
+        {
+          "index": 3,
+          "text": "看一看，有沒有問題？"
+        },
+        {
+          "index": 4,
+          "text": "感謝⋯"
+        },
+        {
+          "index": 5,
+          "text": "等我看一下對不對"
+        },
+        {
+          "index": 6,
+          "text": "沒問題的話，在這裡簽個字，別弄錯了"
+        },
+        {
+          "index": 7,
+          "text": "感謝"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "行了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "叫你派線人到警察局找季正雄的檔案"
+        },
+        {
+          "index": 2,
+          "text": "還沒找到？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "那麼葉國歡潛逃回大陸，還沒找到？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "以前跟他混的那些手下、銷贓那些呢？"
+        },
+        {
+          "index": 2,
+          "text": "一塊兒偷渡來的？同鄉呢？"
+        },
+        {
+          "index": 3,
+          "text": "也找不到？"
+        },
+        {
+          "index": 4,
+          "text": "沒有？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好"
+        },
+        {
+          "index": 2,
+          "text": "好"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "去你媽的！"
+        },
+        {
+          "index": 2,
+          "text": "去你媽的！"
+        },
+        {
+          "index": 3,
+          "text": "警察懸紅一百多萬"
+        },
+        {
+          "index": 4,
+          "text": "這麼多年都沒消息"
+        },
+        {
+          "index": 5,
+          "text": "你再給我一點時間"
+        },
+        {
+          "index": 6,
+          "text": "懸紅可以考慮"
+        },
+        {
+          "index": 7,
+          "text": "警察出一百多萬，我就出一千萬！"
+        },
+        {
+          "index": 8,
+          "text": "不夠？再出一億！"
+        },
+        {
+          "index": 9,
+          "text": "我開一條專線"
+        },
+        {
+          "index": 10,
+          "text": "誰報料，誰就有錢收"
+        },
+        {
+          "index": 11,
+          "text": "那麼張揚？警察一定竊聽"
+        },
+        {
+          "index": 12,
+          "text": "你們三個賊王聚在一起"
+        },
+        {
+          "index": 13,
+          "text": "那群混蛋一定攔路的"
+        },
+        {
+          "index": 14,
+          "text": "未必"
+        },
+        {
+          "index": 15,
+          "text": "警察不知多想找到他們"
+        },
+        {
+          "index": 16,
+          "text": "肯定派很多人來打聽"
+        },
+        {
+          "index": 17,
+          "text": "想想怎麼甩掉他們吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂"
+        },
+        {
+          "index": 2,
+          "text": "是卓老闆嗎？"
+        },
+        {
+          "index": 3,
+          "text": "是"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "明天十二時，在廟街打把紫色傘"
+        },
+        {
+          "index": 2,
+          "text": "我找人接你"
+        },
+        {
+          "index": 3,
+          "text": "上車"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "脫衣服"
+        },
+        {
+          "index": 2,
+          "text": "全脫掉"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "季正雄，跟他合作過一次，很普通"
+        },
+        {
+          "index": 2,
+          "text": "葉國歡，我認識他，住在海陸豐那個"
+        },
+        {
+          "index": 3,
+          "text": "季正雄本名是邢鎮南"
+        },
+        {
+          "index": 4,
+          "text": "我幫他興建祖屋的"
+        },
+        {
+          "index": 5,
+          "text": "是"
+        },
+        {
+          "index": 6,
+          "text": "就這樣了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我當過葉國歡司機，被警察追"
+        },
+        {
+          "index": 2,
+          "text": "葉國歡的貨，也是我銷的"
+        },
+        {
+          "index": 3,
+          "text": "葉國歡打劫時我也在現場的"
+        },
+        {
+          "index": 4,
+          "text": "大家都一起開AK"
+        },
+        {
+          "index": 5,
+          "text": "卓老闆，我好羨慕你，你所有新聞我都看過"
+        },
+        {
+          "index": 6,
+          "text": "葉國歡曾光顧過我"
+        },
+        {
+          "index": 7,
+          "text": "他那時粗聲粗氣，很厲害的"
+        },
+        {
+          "index": 8,
+          "text": "打劫？香港仔？"
+        },
+        {
+          "index": 9,
+          "text": "打架最在行，鬼祟又沒膽"
+        },
+        {
+          "index": 10,
+          "text": "旗兵，是鼎爺我第一個引入的，知道嗎？"
+        },
+        {
+          "index": 11,
+          "text": "打劫前，最重要教他們甚麼？"
+        },
+        {
+          "index": 12,
+          "text": "道義兩個字！"
+        },
+        {
+          "index": 13,
+          "text": "省港旗兵之父"
+        },
+        {
+          "index": 14,
+          "text": "進入正題沒有？"
+        },
+        {
+          "index": 15,
+          "text": "你究竟認識葉國歡，還是季正雄？"
+        },
+        {
+          "index": 16,
+          "text": "別打斷老子講話"
+        },
+        {
+          "index": 17,
+          "text": "說得快你又聽不懂！"
+        },
+        {
+          "index": 18,
+          "text": "我說到哪裡？"
+        },
+        {
+          "index": 19,
+          "text": "道義兩個字"
+        },
+        {
+          "index": 20,
+          "text": "我有一次，帶大圈文、湖南鬼、潮州威"
+        },
+        {
+          "index": 21,
+          "text": "跟警察駁火的時候，「砰！砰！砰！」"
+        },
+        {
+          "index": 22,
+          "text": "潮州威嚇得槍都掉了！"
+        },
+        {
+          "index": 23,
+          "text": "你知道嗎？是我衝過去救他的！"
+        },
+        {
+          "index": 24,
+          "text": "所以他欠我很多，知道嗎？"
+        },
+        {
+          "index": 25,
+          "text": "知道昆西是誰嗎？"
+        },
+        {
+          "index": 26,
+          "text": "葉國歡以前的老大？"
+        },
+        {
+          "index": 27,
+          "text": "就是潮州威的乾兒子"
+        },
+        {
+          "index": 28,
+          "text": "想見他嗎？"
+        },
+        {
+          "index": 29,
+          "text": "一百萬！"
+        },
+        {
+          "index": 30,
+          "text": "要查清楚他"
+        },
+        {
+          "index": 31,
+          "text": "我查你媽的"
+        },
+        {
+          "index": 32,
+          "text": "一百萬而已"
+        },
+        {
+          "index": 33,
+          "text": "但是要快"
+        },
+        {
+          "index": 34,
+          "text": "明天站在你倆面前"
+        },
+        {
+          "index": 35,
+          "text": "來⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂"
+        },
+        {
+          "index": 2,
+          "text": "多謝"
+        },
+        {
+          "index": 3,
+          "text": "帶你去逛街好嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "怎麼了，台山仔，最近手頭很緊？"
+        },
+        {
+          "index": 2,
+          "text": "三根槍夠用了嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "槍不是用來嗅的，是用來開的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "長官教我們：安全第一"
+        },
+        {
+          "index": 2,
+          "text": "那你嗅這麼久"
+        },
+        {
+          "index": 3,
+          "text": "有否嗅到卓子強，在找葉國歡和季正雄？"
+        },
+        {
+          "index": 4,
+          "text": "卓老闆說，要找那兩位大哥聊一聊"
+        },
+        {
+          "index": 5,
+          "text": "看，他開了專線"
+        },
+        {
+          "index": 6,
+          "text": "報料也有獎金"
+        },
+        {
+          "index": 7,
+          "text": "多豪爽！"
+        },
+        {
+          "index": 8,
+          "text": "他們二人很危險的"
+        },
+        {
+          "index": 9,
+          "text": "不危險，怎麼做大哥？"
+        },
+        {
+          "index": 10,
+          "text": "他們搞那麼大？"
+        },
+        {
+          "index": 11,
+          "text": "快要回歸了"
+        },
+        {
+          "index": 12,
+          "text": "就是快回歸才要幹一次大的"
+        },
+        {
+          "index": 13,
+          "text": "回歸之後，連飯也不給你吃，蠢貨"
+        },
+        {
+          "index": 14,
+          "text": "這樣吧"
+        },
+        {
+          "index": 15,
+          "text": "你替我打聽一下"
+        },
+        {
+          "index": 16,
+          "text": "我喝茶、吃飯、裝修也全靠你了！"
+        },
+        {
+          "index": 17,
+          "text": "老弟，有消息就告訴我"
+        },
+        {
+          "index": 18,
+          "text": "有消息就告訴我"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "先生，請站住"
+        },
+        {
+          "index": 2,
+          "text": "甚麼事？"
+        },
+        {
+          "index": 3,
+          "text": "去哪？"
+        },
+        {
+          "index": 4,
+          "text": "回家"
+        },
+        {
+          "index": 5,
+          "text": "身份證"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "寶兒！"
+        },
+        {
+          "index": 2,
+          "text": "你為何放學不立即回家？"
+        },
+        {
+          "index": 3,
+          "text": "跟你說過幾多次"
+        },
+        {
+          "index": 4,
+          "text": "你去了哪裡？"
+        },
+        {
+          "index": 5,
+          "text": "我們四處找你啊！"
+        },
+        {
+          "index": 6,
+          "text": "可樂哥，接走她也通知一聲嘛"
+        },
+        {
+          "index": 7,
+          "text": "我剛好順路　　嚇壞我們了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 7,
+          "text": "我剛好順路　嚇壞我們了",
+          "note": "刪除多餘空格，排版修正。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不要吵！"
+        },
+        {
+          "index": 2,
+          "text": "還喝？還不聽話！"
+        },
+        {
+          "index": 3,
+          "text": "甚麼事？"
+        },
+        {
+          "index": 4,
+          "text": "小女孩頑皮"
+        },
+        {
+          "index": 5,
+          "text": "教女兒回家教嘛"
+        },
+        {
+          "index": 6,
+          "text": "不好意思　　把小女孩嚇壞了"
+        },
+        {
+          "index": 7,
+          "text": "是，不好意思⋯"
+        },
+        {
+          "index": 8,
+          "text": "先回家吧"
+        },
+        {
+          "index": 9,
+          "text": "感謝"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "不好意思，把小女孩嚇壞了",
+          "note": "刪除多餘空格，並補正標點符號。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不好意思"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "傻丫頭"
+        },
+        {
+          "index": 2,
+          "text": "爸爸疼妳"
+        },
+        {
+          "index": 3,
+          "text": "乖女"
+        },
+        {
+          "index": 4,
+          "text": "三天"
+        },
+        {
+          "index": 5,
+          "text": "只用了三天，貨就找回來，人也抓到了"
+        },
+        {
+          "index": 6,
+          "text": "宋局，你真是好兄弟"
+        },
+        {
+          "index": 7,
+          "text": "牛！"
+        },
+        {
+          "index": 8,
+          "text": "維護社會治安，也是我們公安的天職嘛"
+        },
+        {
+          "index": 9,
+          "text": "算不了甚麼"
+        },
+        {
+          "index": 10,
+          "text": "張總"
+        },
+        {
+          "index": 11,
+          "text": "我倒要請你幫個忙"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "走"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "讓他消消氣"
+        },
+        {
+          "index": 2,
+          "text": "還跑！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "品茶之道，宋局才是專家"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "夠了"
+        },
+        {
+          "index": 2,
+          "text": "我倒要你幫個忙"
+        },
+        {
+          "index": 3,
+          "text": "甚麼意思？"
+        },
+        {
+          "index": 4,
+          "text": "他們倆，是我當兵時"
+        },
+        {
+          "index": 5,
+          "text": "老首長朋友的兒子"
+        },
+        {
+          "index": 6,
+          "text": "這事別追究了"
+        },
+        {
+          "index": 7,
+          "text": "給我一個面子"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "他們搶我"
+        },
+        {
+          "index": 2,
+          "text": "你這次也沒甚麼損失"
+        },
+        {
+          "index": 3,
+          "text": "他們敢搶我，搶我！"
+        },
+        {
+          "index": 4,
+          "text": "好兄弟嘛"
+        },
+        {
+          "index": 5,
+          "text": "你是誰？"
+        },
+        {
+          "index": 6,
+          "text": "小資！"
+        },
+        {
+          "index": 7,
+          "text": "一個唯利是圖、走私逃稅的小資"
+        },
+        {
+          "index": 8,
+          "text": "不要把自己看得這麼重"
+        },
+        {
+          "index": 9,
+          "text": "我們是好兄弟⋯"
+        },
+        {
+          "index": 10,
+          "text": "抓走他們！"
+        },
+        {
+          "index": 11,
+          "text": "好兄弟⋯"
+        },
+        {
+          "index": 12,
+          "text": "斃了他"
+        },
+        {
+          "index": 13,
+          "text": "我就依法辦事"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "幸好⋯"
+        },
+        {
+          "index": 2,
+          "text": "幸好廁所有⋯"
+        },
+        {
+          "index": 3,
+          "text": "小小的，先頂替"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好兄弟"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "老闆，多謝二百萬"
+        },
+        {
+          "index": 2,
+          "text": "收你一百三十萬，多謝"
+        },
+        {
+          "index": 3,
+          "text": "貨到通知你"
+        },
+        {
+          "index": 4,
+          "text": "下一位"
+        },
+        {
+          "index": 5,
+          "text": "慢慢看，慢慢挑"
+        },
+        {
+          "index": 6,
+          "text": "瘋了！"
+        },
+        {
+          "index": 7,
+          "text": "出去等，先出去，出去"
+        },
+        {
+          "index": 8,
+          "text": "出去等，全都出去！"
+        },
+        {
+          "index": 9,
+          "text": "瘋了，瘋了！"
+        },
+        {
+          "index": 10,
+          "text": "你做甚麼？"
+        },
+        {
+          "index": 11,
+          "text": "歡哥，卓子強真的瘋了"
+        },
+        {
+          "index": 12,
+          "text": "他真的開了專線找你！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "胡警官"
+        },
+        {
+          "index": 2,
+          "text": "你知道你有多難跟吧？"
+        },
+        {
+          "index": 3,
+          "text": "只能站這兒等你"
+        },
+        {
+          "index": 4,
+          "text": "幫你抓到這傢伙"
+        },
+        {
+          "index": 5,
+          "text": "他說收了你一百萬，幫你找昆西"
+        },
+        {
+          "index": 6,
+          "text": "找人犯法的嗎？"
+        },
+        {
+          "index": 7,
+          "text": "不犯法"
+        },
+        {
+          "index": 8,
+          "text": "但你查清楚他的底細沒有？"
+        },
+        {
+          "index": 9,
+          "text": "這傢伙剛剛蹲了十多二十年"
+        },
+        {
+          "index": 10,
+          "text": "他進牢時，香港電話才是六位數！"
+        },
+        {
+          "index": 11,
+          "text": "現在脫節了！"
+        },
+        {
+          "index": 12,
+          "text": "脫甚麼節？"
+        },
+        {
+          "index": 13,
+          "text": "我上去大陸，潮州威跑出來接我啊！"
+        },
+        {
+          "index": 14,
+          "text": "潮州威？"
+        },
+        {
+          "index": 15,
+          "text": "兩年前被槍斃了！"
+        },
+        {
+          "index": 16,
+          "text": "就是被昆西出賣的！"
+        },
+        {
+          "index": 17,
+          "text": "是不是被騙？"
+        },
+        {
+          "index": 18,
+          "text": "我可以立刻逮捕他"
+        },
+        {
+          "index": 19,
+          "text": "江湖救急，有借有還"
+        },
+        {
+          "index": 20,
+          "text": "道義啊⋯"
+        },
+        {
+          "index": 21,
+          "text": "克制點！"
+        },
+        {
+          "index": 22,
+          "text": "我已經很克制"
+        },
+        {
+          "index": 23,
+          "text": "要不然，我連你也揍了！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "你知道你有多難找吧？",
+          "note": "將「難跟」校正為「難找」，屬錯別字/輸入錯誤。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "報不報警啊？"
+        },
+        {
+          "index": 2,
+          "text": "你不報警我就放人了"
+        },
+        {
+          "index": 3,
+          "text": "怎麼樣？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不報警？那我就放人了！"
+        },
+        {
+          "index": 2,
+          "text": "叫完就滾吧！"
+        },
+        {
+          "index": 3,
+          "text": "你襲警？　　別耍花樣"
+        },
+        {
+          "index": 4,
+          "text": "打你又怎樣？吃屎狗！"
+        },
+        {
+          "index": 5,
+          "text": "不要氣餒"
+        },
+        {
+          "index": 6,
+          "text": "繼續找他們"
+        },
+        {
+          "index": 7,
+          "text": "我們皇家警察抓不抓到人就看你！"
+        },
+        {
+          "index": 8,
+          "text": "靠你的電話啊！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "收手吧！"
+        },
+        {
+          "index": 2,
+          "text": "無謂聰明一世，蠢鈍一時"
+        },
+        {
+          "index": 3,
+          "text": "有辦法我一定幫你！"
+        },
+        {
+          "index": 4,
+          "text": "就算打我"
+        },
+        {
+          "index": 5,
+          "text": "我也要說，死路一條！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我知道，我知道了！"
+        },
+        {
+          "index": 2,
+          "text": "來到今晚最重要的場合"
+        },
+        {
+          "index": 3,
+          "text": "就是3 T的尾關"
+        },
+        {
+          "index": 4,
+          "text": "這場關係到一億七千萬的多寶彩池"
+        },
+        {
+          "index": 5,
+          "text": "加上投注總額，相信一注獨中"
+        },
+        {
+          "index": 6,
+          "text": "會有超過三億派彩，事關重大"
+        },
+        {
+          "index": 7,
+          "text": "現在有很多馬迷集中投注"
+        },
+        {
+          "index": 8,
+          "text": "全城哄動！"
+        },
+        {
+          "index": 9,
+          "text": "一注獨中的話，真是「肥過肥豬仔」"
+        },
+        {
+          "index": 10,
+          "text": "那就看有沒有人能拿到了"
+        },
+        {
+          "index": 11,
+          "text": "投注都集中在大熱門「追風神駒」身上"
+        },
+        {
+          "index": 12,
+          "text": "冷門馬有很多"
+        },
+        {
+          "index": 13,
+          "text": "最冷的是「好天氣」，是九十九倍"
+        },
+        {
+          "index": 14,
+          "text": "全買獨贏及位置"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "他媽的，彩池升到三、四億了！"
+        },
+        {
+          "index": 2,
+          "text": "一場3 T就搶光香港人的錢了"
+        },
+        {
+          "index": 3,
+          "text": "3 T甚麼意思？"
+        },
+        {
+          "index": 4,
+          "text": "這場賽事的一億七千多萬的多寶獎金"
+        },
+        {
+          "index": 5,
+          "text": "吸引到很多人下注"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "一場3T就搶光香港人的錢了",
+          "note": "刪除「3」與「T」之間的多餘空格，屬排版錯誤。"
+        },
+        {
+          "index": 3,
+          "text": "3T甚麼意思？",
+          "note": "刪除「3」與「T」之間的多餘空格，屬排版錯誤。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "沒夾子了？"
+        },
+        {
+          "index": 2,
+          "text": "沒了"
+        },
+        {
+          "index": 3,
+          "text": "幫我去拿"
+        },
+        {
+          "index": 4,
+          "text": "是"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好，隨時開跑了！"
+        },
+        {
+          "index": 2,
+          "text": "一億七千萬的多寶彩池"
+        },
+        {
+          "index": 3,
+          "text": "如果一注獨中的話"
+        },
+        {
+          "index": 4,
+          "text": "就有超過三億的派彩了！"
+        },
+        {
+          "index": 5,
+          "text": "就看看哪位幸運兒能一注獨中"
+        },
+        {
+          "index": 6,
+          "text": "如果爆冷門的話"
+        },
+        {
+          "index": 7,
+          "text": "彩池累積獎金就會更多了"
+        },
+        {
+          "index": 8,
+          "text": "馬匹全部入閘，都準備好了！"
+        },
+        {
+          "index": 9,
+          "text": "看哪匹馬最快跑出來！"
+        },
+        {
+          "index": 10,
+          "text": "出閘最快的就是「追風神駒」"
+        },
+        {
+          "index": 11,
+          "text": "這匹熱門馬愈放愈快"
+        },
+        {
+          "index": 12,
+          "text": "後面的都很難追得上"
+        },
+        {
+          "index": 13,
+          "text": "上！上！上！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "快！快！快！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "又爆冷，沒有人中，庫房又滿瀉了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "潮哥"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂"
+        },
+        {
+          "index": 2,
+          "text": "卓老闆，知道誰是昆西嗎？"
+        },
+        {
+          "index": 3,
+          "text": "我就是昆西"
+        },
+        {
+          "index": 4,
+          "text": "上來海陸豐找我，保證你不會失望"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "真的不幹？賺到笑啊"
+        },
+        {
+          "index": 2,
+          "text": "難道我不知道？"
+        },
+        {
+          "index": 3,
+          "text": "你跟老大說"
+        },
+        {
+          "index": 4,
+          "text": "慘了，這次傾家蕩產入貨"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "金哥、忠哥，其實那些官"
+        },
+        {
+          "index": 2,
+          "text": "你們都相熟了吧？"
+        },
+        {
+          "index": 3,
+          "text": "你說甚麼？"
+        },
+        {
+          "index": 4,
+          "text": "船家"
+        },
+        {
+          "index": 5,
+          "text": "是，歡哥"
+        },
+        {
+          "index": 6,
+          "text": "拿姓卓的電話給我"
+        },
+        {
+          "index": 7,
+          "text": "歡哥"
+        },
+        {
+          "index": 8,
+          "text": "有話說啊？"
+        },
+        {
+          "index": 9,
+          "text": "沒有"
+        },
+        {
+          "index": 10,
+          "text": "拿來！"
+        },
+        {
+          "index": 11,
+          "text": "是"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "操！本想可以一戰成名，光宗耀祖"
+        },
+        {
+          "index": 2,
+          "text": "白來一趟"
+        },
+        {
+          "index": 3,
+          "text": "揚不揚名不是問題"
+        },
+        {
+          "index": 4,
+          "text": "來到這兒，一個錢也沒得分就回去"
+        },
+        {
+          "index": 5,
+          "text": "還在這兒啃麵包"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "潮哥"
+        },
+        {
+          "index": 2,
+          "text": "我們來到香港也不容易"
+        },
+        {
+          "index": 3,
+          "text": "總不能，就這樣回去吧？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "總不能就這樣回去吧？",
+          "note": "刪除「總不能，」中的逗號，屬於排版性修正。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "潮哥，真要我們回去嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你們要是真有甚麼大茶飯的話"
+        },
+        {
+          "index": 2,
+          "text": "也算我們兩兄弟一份"
+        },
+        {
+          "index": 3,
+          "text": "我們甚麼都可以做的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我很能守秘密的"
+        },
+        {
+          "index": 2,
+          "text": "你說是潮哥就是潮哥吧"
+        },
+        {
+          "index": 3,
+          "text": "我知道的了，您放心"
+        },
+        {
+          "index": 4,
+          "text": "規矩我懂，一定不會跟別人亂說話的"
+        },
+        {
+          "index": 5,
+          "text": "我們也是講義氣的嘛"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "我知道了，您放心",
+          "note": "修正「知道的了」為「知道了」，屬於錯別字/多餘字詞。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "分了它"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "說真的，我們可以的"
+        },
+        {
+          "index": 2,
+          "text": "你們三大賊王合作⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "多管閒事"
+        },
+        {
+          "index": 2,
+          "text": "知道這麼多幹嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不是要洗腎嗎？還抽煙？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "都說你狗改不了吃屎"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不是還生氣吧？"
+        },
+        {
+          "index": 2,
+          "text": "你們想打劫樓下的金行嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "還以為你真的來探我"
+        },
+        {
+          "index": 2,
+          "text": "原來貪我這裡方便"
+        },
+        {
+          "index": 3,
+          "text": "你聽我說"
+        },
+        {
+          "index": 4,
+          "text": "還有甚麼好說？"
+        },
+        {
+          "index": 5,
+          "text": "先聽我講完"
+        },
+        {
+          "index": 6,
+          "text": "我當你是兄弟，你當我是凱子啊！"
+        },
+        {
+          "index": 7,
+          "text": "我沒當你是凱子"
+        },
+        {
+          "index": 8,
+          "text": "算了，不用說了！"
+        },
+        {
+          "index": 9,
+          "text": "我現在有妻有女"
+        },
+        {
+          "index": 10,
+          "text": "生活過得很好"
+        },
+        {
+          "index": 11,
+          "text": "你不要來搞我家人好嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這次是老大不對"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你也知道現在賺錢不易"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大家好兄弟"
+        },
+        {
+          "index": 2,
+          "text": "這次是我欠你的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這幾天的事就算是粉筆字，抹了它"
+        },
+        {
+          "index": 2,
+          "text": "不要對人說"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "老大明天一早就走"
+        },
+        {
+          "index": 2,
+          "text": "總之你不會再見到我"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "可樂叔叔"
+        },
+        {
+          "index": 2,
+          "text": "還未睡？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "海陸豐"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "香港西環碼頭"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "卓老闆"
+        },
+        {
+          "index": 2,
+          "text": "久仰大名"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "人呢？"
+        },
+        {
+          "index": 2,
+          "text": "來，帶你看點好東西"
+        },
+        {
+          "index": 3,
+          "text": "這邊"
+        },
+        {
+          "index": 4,
+          "text": "卓老闆，一路上來辛苦了"
+        },
+        {
+          "index": 5,
+          "text": "待會帶你吃點好的洗塵"
+        },
+        {
+          "index": 6,
+          "text": "我們這裡的蝦蛄、鹹蟹很有特色"
+        },
+        {
+          "index": 7,
+          "text": "吃完找兩個髮花幫你洗頭"
+        },
+        {
+          "index": 8,
+          "text": "來，這邊這邊"
+        },
+        {
+          "index": 9,
+          "text": "黑星、手榴彈、AK"
+        },
+        {
+          "index": 10,
+          "text": "甚麼貨我都有"
+        },
+        {
+          "index": 11,
+          "text": "葉國歡呢？"
+        },
+        {
+          "index": 12,
+          "text": "外面那輛貨車，還有一噸炸藥"
+        },
+        {
+          "index": 13,
+          "text": "砰！"
+        },
+        {
+          "index": 14,
+          "text": "炸甚麼都行！"
+        },
+        {
+          "index": 15,
+          "text": "葉國歡啊！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 7,
+          "text": "吃完找兩個髮婆幫你洗頭",
+          "note": "「髮花」疑為錯別字，依語境修正為「髮婆」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "全都部隊出身"
+        },
+        {
+          "index": 2,
+          "text": "膽大包天，身經百戰！"
+        },
+        {
+          "index": 3,
+          "text": "我要葉國歡！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "全都是部隊出身",
+          "note": "「都」疑為錯字，修正為「是」。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "零錢！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "拿來！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "老大，再考慮一下"
+        },
+        {
+          "index": 2,
+          "text": "拿來！"
+        },
+        {
+          "index": 3,
+          "text": "現在也不錯"
+        },
+        {
+          "index": 4,
+          "text": "為何要走回頭路？"
+        },
+        {
+          "index": 5,
+          "text": "你教我做事？"
+        },
+        {
+          "index": 6,
+          "text": "能賺錢啊！"
+        },
+        {
+          "index": 7,
+          "text": "以前那種活，不能混一世"
+        },
+        {
+          "index": 8,
+          "text": "你去做吧！"
+        },
+        {
+          "index": 9,
+          "text": "你跟船家都談好吧！"
+        },
+        {
+          "index": 10,
+          "text": "老大，他只是想想罷了"
+        },
+        {
+          "index": 11,
+          "text": "要走就走"
+        },
+        {
+          "index": 12,
+          "text": "我不阻人發達！"
+        },
+        {
+          "index": 13,
+          "text": "現在幾點？不用睡啊？"
+        },
+        {
+          "index": 14,
+          "text": "拜山再說！"
+        },
+        {
+          "index": 15,
+          "text": "去你媽的！"
+        },
+        {
+          "index": 16,
+          "text": "下來！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "那傢伙收山了"
+        },
+        {
+          "index": 2,
+          "text": "他以前跟我的！"
+        },
+        {
+          "index": 3,
+          "text": "跟我合作不更好？"
+        },
+        {
+          "index": 4,
+          "text": "你是誰啊？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂？"
+        },
+        {
+          "index": 2,
+          "text": "喂，卓子強"
+        },
+        {
+          "index": 3,
+          "text": "我是葉國歡"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不會吧？"
+        },
+        {
+          "index": 2,
+          "text": "你說是就是呀？"
+        },
+        {
+          "index": 3,
+          "text": "我葉國歡有麟有角！"
+        },
+        {
+          "index": 4,
+          "text": "不信我們見個面吧！"
+        },
+        {
+          "index": 5,
+          "text": "你先等等"
+        },
+        {
+          "index": 6,
+          "text": "去你媽的！"
+        },
+        {
+          "index": 7,
+          "text": "等甚麼？喂？"
+        },
+        {
+          "index": 8,
+          "text": "喂？"
+        },
+        {
+          "index": 9,
+          "text": "喂"
+        },
+        {
+          "index": 10,
+          "text": "喂！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "我葉國歡有稜有角！",
+          "note": "「麟」應為「稜」，修正錯別字。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你死定了！"
+        },
+        {
+          "index": 2,
+          "text": "上去！"
+        },
+        {
+          "index": 3,
+          "text": "上去！"
+        },
+        {
+          "index": 4,
+          "text": "喂？"
+        },
+        {
+          "index": 5,
+          "text": "說話啊！"
+        },
+        {
+          "index": 6,
+          "text": "是不是卓子強？"
+        },
+        {
+          "index": 7,
+          "text": "誰？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "季正雄"
+        },
+        {
+          "index": 2,
+          "text": "要我幫忙嗎？"
+        },
+        {
+          "index": 3,
+          "text": "不會吧！"
+        },
+        {
+          "index": 4,
+          "text": "你說是就是了？"
+        },
+        {
+          "index": 5,
+          "text": "8 6年油麻地東盛錶行是我做的"
+        },
+        {
+          "index": 6,
+          "text": "8 8年，旺角金太子門口"
+        },
+        {
+          "index": 7,
+          "text": "三個便衣探員是我殺的"
+        },
+        {
+          "index": 8,
+          "text": "還有9 2年置地廣場⋯"
+        },
+        {
+          "index": 9,
+          "text": "9 2年置地廣場是葉國歡幹的吧！"
+        },
+        {
+          "index": 10,
+          "text": "別人說你就信"
+        },
+        {
+          "index": 11,
+          "text": "9 4年珍寶錶行、前年好運佳"
+        },
+        {
+          "index": 12,
+          "text": "也是我幹的"
+        },
+        {
+          "index": 13,
+          "text": "你以為只有他有AK嗎？"
+        },
+        {
+          "index": 14,
+          "text": "他老哥愛上鏡，警察又笨"
+        },
+        {
+          "index": 15,
+          "text": "我只好順水推舟⋯　　你等一會！別掛啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "86年油麻地東盛錶行是我做的",
+          "note": "修正數字間多餘空格，合併為年份格式。"
+        },
+        {
+          "index": 6,
+          "text": "88年，旺角金太子門口",
+          "note": "修正數字間多餘空格，合併為年份格式。"
+        },
+        {
+          "index": 8,
+          "text": "還有92年置地廣場⋯",
+          "note": "修正數字間多餘空格，合併為年份格式。"
+        },
+        {
+          "index": 9,
+          "text": "92年置地廣場是葉國歡幹的吧！",
+          "note": "修正數字間多餘空格，合併為年份格式。"
+        },
+        {
+          "index": 11,
+          "text": "94年珍寶錶行、前年好運佳",
+          "note": "修正數字間多餘空格，合併為年份格式。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "剛剛最後一句你說甚麼？"
+        },
+        {
+          "index": 2,
+          "text": "去你媽的！"
+        },
+        {
+          "index": 3,
+          "text": "耍我啊？"
+        },
+        {
+          "index": 4,
+          "text": "就是你，葉國歡！"
+        },
+        {
+          "index": 5,
+          "text": "9 2年置地、9 4年珍寶、前年好運佳"
+        },
+        {
+          "index": 6,
+          "text": "也是你幹的？"
+        },
+        {
+          "index": 7,
+          "text": "不是！"
+        },
+        {
+          "index": 8,
+          "text": "我要遮遮掩掩？"
+        },
+        {
+          "index": 9,
+          "text": "鬼鬼祟祟？見不了人啊？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "92年置地、94年珍寶、前年好運佳",
+          "note": "修正數字與年份之間的多餘空格，統一為連寫。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "人齊了"
+        },
+        {
+          "index": 2,
+          "text": "你現在在哪？"
+        },
+        {
+          "index": 3,
+          "text": "香港"
+        },
+        {
+          "index": 4,
+          "text": "好，回香港再聯絡"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂？"
+        },
+        {
+          "index": 2,
+          "text": "季正雄，你還在嗎？"
+        },
+        {
+          "index": 3,
+          "text": "喂？"
+        },
+        {
+          "index": 4,
+          "text": "喂"
+        },
+        {
+          "index": 5,
+          "text": "你現在在哪？"
+        },
+        {
+          "index": 6,
+          "text": "香港"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "回香港再聯絡"
+        },
+        {
+          "index": 2,
+          "text": "再聊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你媽的！我們三大賊王合作"
+        },
+        {
+          "index": 2,
+          "text": "關你屁事啊？"
+        },
+        {
+          "index": 3,
+          "text": "一場來到"
+        },
+        {
+          "index": 4,
+          "text": "怎樣也要留下些甚麼吧？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "是"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這裡最多一千幾百萬"
+        },
+        {
+          "index": 2,
+          "text": "卓老闆的性命"
+        },
+        {
+          "index": 3,
+          "text": "怎麼也值一個「紅白藍」吧！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "放下槍！"
+        },
+        {
+          "index": 2,
+          "text": "部隊？走！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "車匙"
+        },
+        {
+          "index": 2,
+          "text": "車匙！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "當我說的是廢話？"
+        },
+        {
+          "index": 2,
+          "text": "不當我是老大，散伙！"
+        },
+        {
+          "index": 3,
+          "text": "老大，一向都是你說了算"
+        },
+        {
+          "index": 4,
+          "text": "你說放下槍便放下槍"
+        },
+        {
+          "index": 5,
+          "text": "不做生意就不做生意"
+        },
+        {
+          "index": 6,
+          "text": "很難為呀？"
+        },
+        {
+          "index": 7,
+          "text": "不是⋯"
+        },
+        {
+          "index": 8,
+          "text": "老大，你說甚麼就是甚麼"
+        },
+        {
+          "index": 9,
+          "text": "我們怎樣也會挺你！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "你當我說的是廢話？",
+          "note": "補上漏字「你」，使語句完整。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "看不起我？"
+        },
+        {
+          "index": 2,
+          "text": "淪落到要人挺？"
+        },
+        {
+          "index": 3,
+          "text": "我沒有誰也行！"
+        },
+        {
+          "index": 4,
+          "text": "你們只是跟我的！"
+        },
+        {
+          "index": 5,
+          "text": "你們幾個"
+        },
+        {
+          "index": 6,
+          "text": "這麼晚在吵甚麼？"
+        },
+        {
+          "index": 7,
+          "text": "不好意思，警察大哥，我們來旅遊的"
+        },
+        {
+          "index": 8,
+          "text": "迷了路，便吵了兩句"
+        },
+        {
+          "index": 9,
+          "text": "現在樓上投訴"
+        },
+        {
+          "index": 10,
+          "text": "證件呢？　　有"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我們打算坐船去澳門"
+        },
+        {
+          "index": 2,
+          "text": "但不知這裡是甚麼地方"
+        },
+        {
+          "index": 3,
+          "text": "碼頭又不對"
+        },
+        {
+          "index": 4,
+          "text": "心急之下，便吵了起來"
+        },
+        {
+          "index": 5,
+          "text": "報上電台"
+        },
+        {
+          "index": 6,
+          "text": "PC 1 8 4 4，叫電台"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "報上電台。",
+          "note": "補上句末標點。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "快點！追快點！"
+        },
+        {
+          "index": 2,
+          "text": "不要讓他逃掉！"
+        },
+        {
+          "index": 3,
+          "text": "他媽的！"
+        },
+        {
+          "index": 4,
+          "text": "在前面！"
+        },
+        {
+          "index": 5,
+          "text": "追他！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂？狗叔，我找到他們"
+        },
+        {
+          "index": 2,
+          "text": "告訴你也不信，他倆給我打電話！"
+        },
+        {
+          "index": 3,
+          "text": "還搶了一整噸炸藥！"
+        },
+        {
+          "index": 4,
+          "text": "這次行了，快找船上來接我"
+        },
+        {
+          "index": 5,
+          "text": "我想到幹甚麼了！"
+        },
+        {
+          "index": 6,
+          "text": "就把回歸典禮給炸了！"
+        },
+        {
+          "index": 7,
+          "text": "到時無論要脅英女皇，還是中央政府"
+        },
+        {
+          "index": 8,
+          "text": "我就不信這次不轟動！"
+        },
+        {
+          "index": 9,
+          "text": "媽的！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "宵夜到了，回來沒有？"
+        },
+        {
+          "index": 2,
+          "text": "知道，馬上回來"
+        },
+        {
+          "index": 3,
+          "text": "現在位置在投訴人大廈樓下"
+        },
+        {
+          "index": 4,
+          "text": "這裡水靜鵝飛，甚麼人也沒有，完畢"
+        },
+        {
+          "index": 5,
+          "text": "文明些，不用高聲說話"
+        },
+        {
+          "index": 6,
+          "text": "去澳門，是上環碼頭"
+        },
+        {
+          "index": 7,
+          "text": "這裡是西環"
+        },
+        {
+          "index": 8,
+          "text": "啊"
+        },
+        {
+          "index": 9,
+          "text": "待會出去大街，坐的士"
+        },
+        {
+          "index": 10,
+          "text": "「打的」啊！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "「大陸喱」，懵頭懵腦"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "快"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "「大陸喱」？"
+        },
+        {
+          "index": 2,
+          "text": "我是葉國歡！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "武警"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "服務員"
+        },
+        {
+          "index": 2,
+          "text": "你好，先生請問幾位？"
+        },
+        {
+          "index": 3,
+          "text": "姓陳的，訂了房"
+        },
+        {
+          "index": 4,
+          "text": "訂了房，好，稍等一下"
+        },
+        {
+          "index": 5,
+          "text": "陳先生！來，麻煩這邊請"
+        },
+        {
+          "index": 6,
+          "text": "請跟我來"
+        },
+        {
+          "index": 7,
+          "text": "喂"
+        },
+        {
+          "index": 8,
+          "text": "飯到了沒？"
+        },
+        {
+          "index": 9,
+          "text": "飯，稍等我一下"
+        },
+        {
+          "index": 10,
+          "text": "飯馬上來，很快"
+        },
+        {
+          "index": 11,
+          "text": "不好意思，讓你們久等"
+        },
+        {
+          "index": 12,
+          "text": "謝謝"
+        },
+        {
+          "index": 13,
+          "text": "請慢用"
+        },
+        {
+          "index": 14,
+          "text": "陳先生，這邊請"
+        },
+        {
+          "index": 15,
+          "text": "喂！你剛不是去廁所嗎？"
+        },
+        {
+          "index": 16,
+          "text": "等等，不要吐，吐在這裡"
+        },
+        {
+          "index": 17,
+          "text": "來⋯沒事吧？"
+        },
+        {
+          "index": 18,
+          "text": "不是去了洗手間嗎？怎麼會在這裡出現"
+        },
+        {
+          "index": 19,
+          "text": "不好意思，這邊請"
+        },
+        {
+          "index": 20,
+          "text": "今天真的比較忙一點"
+        },
+        {
+          "index": 21,
+          "text": "喂　　這邊請"
+        },
+        {
+          "index": 22,
+          "text": "飯是冷的！"
+        },
+        {
+          "index": 23,
+          "text": "稍等我一下"
+        },
+        {
+          "index": 24,
+          "text": "不好意思，飯是冷的嗎？　　我要茶！"
+        },
+        {
+          "index": 25,
+          "text": "好，等我一下，我幫你換過"
+        },
+        {
+          "index": 26,
+          "text": "快！　　小姐，你告訴我，我自己去找吧"
+        },
+        {
+          "index": 27,
+          "text": "我要茶！　　我帶你去，等我一下"
+        },
+        {
+          "index": 28,
+          "text": "茶，我幫你拿"
+        },
+        {
+          "index": 29,
+          "text": "等一下，你們都等我一下，馬上回來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我們不會忘記你們"
+        },
+        {
+          "index": 2,
+          "text": "我們會以最關切的目光"
+        },
+        {
+          "index": 3,
+          "text": "看著你們開展非凡的新時代"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  }
+]

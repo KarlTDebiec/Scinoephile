@@ -9,7 +9,7 @@ from io import StringIO
 from pathlib import Path
 from typing import Any
 
-import pytest
+from pytest import MonkeyPatch, raises
 
 from scinoephile.cli.dictionary.build.dictionary_build_unihan_cli import (
     DictionaryBuildUnihanCli,
@@ -19,7 +19,7 @@ from scinoephile.dictionaries.unihan import UnihanDictionaryService
 
 
 def test_dictionary_build_unihan_exits_cleanly_on_missing_archive_member(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Exit with status 1 when the service reports a missing archive member.
 
@@ -42,7 +42,7 @@ def test_dictionary_build_unihan_exits_cleanly_on_missing_archive_member(
 
     monkeypatch.setattr(UnihanDictionaryService, "build", _mock_build)
 
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(DictionaryBuildUnihanCli, "")

@@ -12,8 +12,7 @@ from os import getenv
 from pathlib import Path
 from typing import Any
 
-import pytest
-from pytest import fixture, mark
+from pytest import fixture, mark, raises, skip
 
 from scinoephile.common import CommandLineInterface, package_root
 from scinoephile.common.testing import run_cli_with_args
@@ -21,6 +20,8 @@ from scinoephile.common.testing import run_cli_with_args
 from .series_assertions import assert_series_equal
 from .series_cer_result import SeriesCERResult
 
+parametrize = mark.parametrize
+skipif = mark.skipif
 __all__ = [
     "SeriesCERResult",
     "assert_cli_help",
@@ -28,14 +29,16 @@ __all__ = [
     "assert_expected_warnings",
     "assert_series_equal",
     "build_subcommands",
+    "create_symlink_or_skip",
     "get_warning_messages",
     "get_usage_prefix",
+    "parametrize",
     "parametrized_fixture",
     "skip_if_ci",
     "skip_if_codex",
+    "skipif",
     "test_data_root",
 ]
-
 
 test_data_root = package_root.parent / "test/data"
 
@@ -49,7 +52,7 @@ def assert_cli_help(cli: tuple[type[CommandLineInterface], ...]):
     subcommands = build_subcommands(cli)
     stdout = StringIO()
     stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(cli[0], f"{subcommands} -h".strip())
@@ -67,7 +70,7 @@ def assert_cli_usage(cli: tuple[type[CommandLineInterface], ...]):
     subcommands = build_subcommands(cli)
     stdout = StringIO()
     stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(cli[0], subcommands)
@@ -113,6 +116,24 @@ def build_subcommands(cli: tuple[type[CommandLineInterface], ...]) -> str:
         subcommand string to append to the base CLI
     """
     return " ".join(f"{command.name()}" for command in cli[1:])
+
+
+def create_symlink_or_skip(
+    symlink_path: Path, target_path: Path, *, target_is_directory: bool = False
+):
+    """Create a symlink, skipping when Windows privileges do not allow it.
+
+    Arguments:
+        symlink_path: path at which to create the symlink
+        target_path: symlink target path
+        target_is_directory: whether the target is a directory
+    """
+    try:
+        symlink_path.symlink_to(target_path, target_is_directory=target_is_directory)
+    except OSError as exc:
+        if getattr(exc, "winerror", None) == 1314:
+            skip("Windows symlink privilege is not available")
+        raise
 
 
 def get_usage_prefix(cli: tuple[type[CommandLineInterface], ...]) -> str:
@@ -170,7 +191,7 @@ def skip_if_ci() -> Any:
     Returns:
         pytest mark decorator
     """
-    return mark.skipif(
+    return skipif(
         bool(getenv("CI")),
         reason="Skip when running in CI",
     )
@@ -182,7 +203,7 @@ def skip_if_codex() -> Any:
     Returns:
         pytest mark decorator
     """
-    return mark.skipif(
+    return skipif(
         bool(getenv("CODEX_ENV_PYTHON_VERSION")),
         reason="Skip when running in Codex environment",
     )

@@ -10,72 +10,61 @@ from functools import cache
 from pathlib import Path
 from typing import Any
 
-import pytest
+from pytest import fixture
 
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series
-from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng.block_review import BlockReviewPromptEng
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
-from scinoephile.lang.zho.block_review import (
-    BlockReviewPromptZhoHans,
-    BlockReviewPromptZhoHant,
-)
+from scinoephile.lang.eng.review import ReviewPromptEng
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
-from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
-from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
-from scinoephile.llms.dual_n_to_m import DualNToMManager, DualNToMPrompt
-from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
-from test.data.prompts import EngGuidedTranslationVsZhoOfYuePrompt
+from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
+from scinoephile.llms.guided_translation import (
+    GuidedTranslationManager,
+    GuidedTranslationPrompt,
+)
+from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
+from scinoephile.llms.review import ReviewManager, ReviewPrompt
+from test.data.prompts import EngZhoYueGuidedTranslationPrompt
 from test.helpers import test_data_root
 
 __all__ = [
-    "mnt_eng_ocr_lens",
-    "mnt_eng_ocr_lens_new",
-    "mnt_eng_ocr_tesseract",
-    "mnt_eng_ocr_tesseract_new",
     "mnt_jpn_eng",
     "mnt_yue_zho_hant",
-    "mnt_zho_hans_ocr_lens",
-    "mnt_zho_hans_ocr_lens_new",
-    "mnt_zho_hans_ocr_paddle",
-    "mnt_zho_hans_ocr_paddle_new",
-    "mnt_zho_hans_ocr_tesseract_new",
     "mnt_zho_hant",
-    "mnt_zho_hant_ocr_lens",
-    "mnt_zho_hant_ocr_lens_new",
-    "mnt_zho_hant_ocr_paddle",
-    "mnt_zho_hant_ocr_paddle_new",
-    "mnt_zho_hant_ocr_tesseract_new",
-    "get_mnt_eng_block_review_test_cases",
     "get_mnt_eng_ocr_fusion_test_cases",
+    "get_mnt_eng_review_test_cases",
     "get_mnt_eng_zho_guided_translation_test_cases",
-    "get_mnt_zho_hans_block_review_test_cases",
     "get_mnt_zho_hans_ocr_fusion_test_cases",
-    "get_mnt_zho_hant_block_review_test_cases",
+    "get_mnt_zho_hans_review_test_cases",
     "get_mnt_zho_hant_ocr_fusion_test_cases",
-    "get_mnt_zho_hant_simplify_block_review_test_cases",
+    "get_mnt_zho_hant_review_test_cases",
+    "get_mnt_zho_hant_simplify_review_test_cases",
     "mnt_eng_fuse",
     "mnt_eng_fuse_clean",
     "mnt_eng_fuse_clean_validate",
     "mnt_eng_fuse_clean_validate_review",
     "mnt_eng_fuse_clean_validate_review_flatten",
-    "mnt_eng_image",
-    "mnt_eng_image_path",
+    "mnt_eng_ocr_lens",
+    "mnt_eng_ocr_lens_clean",
+    "mnt_eng_ocr_tesseract",
+    "mnt_eng_ocr_tesseract_clean",
     "mnt_yue_eng",
     "mnt_yue_zho_hans_eng",
+    "mnt_zho_hans_eng",
     "mnt_zho_hans_fuse",
     "mnt_zho_hans_fuse_clean",
     "mnt_zho_hans_fuse_clean_validate",
     "mnt_zho_hans_fuse_clean_validate_review",
     "mnt_zho_hans_fuse_clean_validate_review_flatten",
     "mnt_zho_hans_fuse_clean_validate_review_flatten_romanize",
-    "mnt_zho_hans_image",
-    "mnt_zho_hans_image_path",
+    "mnt_zho_hans_ocr_lens",
+    "mnt_zho_hans_ocr_lens_clean",
+    "mnt_zho_hans_ocr_paddle",
+    "mnt_zho_hans_ocr_paddle_clean",
     "mnt_zho_hant_fuse",
     "mnt_zho_hant_fuse_clean",
     "mnt_zho_hant_fuse_clean_validate",
@@ -83,8 +72,11 @@ __all__ = [
     "mnt_zho_hant_fuse_clean_validate_review_flatten",
     "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify",
     "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
-    "mnt_zho_hant_image",
-    "mnt_zho_hant_image_path",
+    "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize",
+    "mnt_zho_hant_ocr_lens",
+    "mnt_zho_hant_ocr_lens_clean",
+    "mnt_zho_hant_ocr_paddle",
+    "mnt_zho_hant_ocr_paddle_clean",
     "mnt_zho_simplify_expected_series_diff",
 ]
 
@@ -93,409 +85,337 @@ input_dir = title_root / "input"
 output_dir = title_root / "output"
 
 
-@pytest.fixture
-def mnt_eng_ocr_lens() -> Series:
-    """MNT English subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "eng_ocr/lens.srt")
-
-
-@pytest.fixture
-def mnt_eng_ocr_lens_new() -> Series:
-    """MNT English subtitles OCRed using internal Google Lens."""
-    return Series.load(input_dir / "eng_ocr/lens_new.srt")
-
-
-@pytest.fixture
-def mnt_eng_ocr_tesseract() -> Series:
-    """MNT English subtitles OCRed using Tesseract."""
-    return Series.load(input_dir / "eng_ocr/tesseract.srt")
-
-
-@pytest.fixture
-def mnt_eng_ocr_tesseract_new() -> Series:
-    """MNT English subtitles OCRed using internal Tesseract."""
-    return Series.load(input_dir / "eng_ocr/tesseract_new.srt")
-
-
-@pytest.fixture
+@fixture
 def mnt_jpn_eng() -> Series:
     """MNT Bilingual Japanese and English subtitles."""
     return Series.load(input_dir / "jpn_eng.srt")
 
 
-@pytest.fixture
+@fixture
 def mnt_yue_zho_hant() -> Series:
-    """MNT 粤语 audio track 繁体粤文 subtitles."""
+    """MNT yue audio track zho-Hant subtitles."""
     return Series.load(input_dir / "yue_zho-Hant.srt")
 
 
-@pytest.fixture
-def mnt_zho_hans_ocr_lens() -> Series:
-    """MNT 简体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hans_ocr/lens.srt")
-
-
-@pytest.fixture
-def mnt_zho_hans_ocr_lens_new() -> Series:
-    """MNT 简体中文 subtitles OCRed using internal Google Lens."""
-    return Series.load(input_dir / "zho-Hans_ocr/lens_new.srt")
-
-
-@pytest.fixture
-def mnt_zho_hans_ocr_paddle() -> Series:
-    """MNT 简体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hans_ocr/paddle.srt")
-
-
-@pytest.fixture
-def mnt_zho_hans_ocr_paddle_new() -> Series:
-    """MNT 简体中文 subtitles OCRed using internal PaddleOCR."""
-    return Series.load(input_dir / "zho-Hans_ocr/paddle_new.srt")
-
-
-@pytest.fixture
-def mnt_zho_hans_ocr_tesseract_new() -> Series:
-    """MNT 简体中文 subtitles OCRed using internal Tesseract."""
-    return Series.load(input_dir / "zho-Hans_ocr/tesseract_new.srt")
-
-
-@pytest.fixture
+@fixture
 def mnt_zho_hant() -> Series:
-    """MNT 繁体中文 series."""
+    """MNT zho-Hant series."""
     return Series.load(input_dir / "zho-Hant.srt")
-
-
-@pytest.fixture
-def mnt_zho_hant_ocr_lens() -> Series:
-    """MNT 繁体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hant_ocr/lens.srt")
-
-
-@pytest.fixture
-def mnt_zho_hant_ocr_lens_new() -> Series:
-    """MNT 繁体中文 subtitles OCRed using internal Google Lens."""
-    return Series.load(input_dir / "zho-Hant_ocr/lens_new.srt")
-
-
-@pytest.fixture
-def mnt_zho_hant_ocr_paddle() -> Series:
-    """MNT 繁体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_ocr/paddle.srt")
-
-
-@pytest.fixture
-def mnt_zho_hant_ocr_paddle_new() -> Series:
-    """MNT 繁体中文 subtitles OCRed using internal PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_ocr/paddle_new.srt")
-
-
-@pytest.fixture
-def mnt_zho_hant_ocr_tesseract_new() -> Series:
-    """MNT 繁体中文 subtitles OCRed using internal Tesseract."""
-    return Series.load(input_dir / "zho-Hant_ocr/tesseract_new.srt")
-
-
-@cache
-def get_mnt_eng_block_review_test_cases(
-    prompt_cls: type[MonoNPrompt] = BlockReviewPromptEng,
-    **kwargs: Any,
-) -> list[TestCase]:
-    """Get MNT English block review test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = output_dir / "eng_ocr/lang/eng/block_review.json"
-    return load_test_cases_from_json(
-        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
-    )
 
 
 @cache
 def get_mnt_eng_ocr_fusion_test_cases(
-    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptEng,
+    prompt: OcrFusionPrompt = OcrFusionPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT English OCR fusion test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "eng_ocr/lang/eng/ocr_fusion.json"
-    return load_test_cases_from_json(
-        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, OcrFusionManager, prompt=prompt, **kwargs)
+
+
+@cache
+def get_mnt_eng_review_test_cases(
+    prompt: ReviewPrompt = ReviewPromptEng, **kwargs: Any
+) -> list[TestCase]:
+    """Get MNT English review test cases.
+
+    Arguments:
+        prompt: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = output_dir / "eng_ocr/lang/eng/review.json"
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_mnt_eng_zho_guided_translation_test_cases(
-    prompt_cls: type[DualNToMPrompt] = EngGuidedTranslationVsZhoOfYuePrompt,
+    prompt: GuidedTranslationPrompt = EngZhoYueGuidedTranslationPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT English-from-Cantonese guided translation test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
-    path = output_dir / "yue_eng/multilang/eng_zho/guided_translation.json"
+    path = output_dir / "yue_eng/lang/eng_zho/guided_translation.json"
     return load_test_cases_from_json(
-        path, DualNToMManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
-def get_mnt_zho_hans_block_review_test_cases(
-    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
-    **kwargs: Any,
-) -> list[TestCase]:
-    """Get MNT 简体中文 block review test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = output_dir / "zho-Hans_ocr/lang/zho/block_review.json"
-    return load_test_cases_from_json(
-        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
+        path, GuidedTranslationManager, prompt=prompt, **kwargs
     )
 
 
 @cache
 def get_mnt_zho_hans_ocr_fusion_test_cases(
-    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHans,
+    prompt: OcrFusionPrompt = OcrFusionPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MNT 简体中文 OCR fusion test cases.
+    """Get MNT zho-Hans OCR fusion test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "zho-Hans_ocr/lang/zho/ocr_fusion.json"
-    return load_test_cases_from_json(
-        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, OcrFusionManager, prompt=prompt, **kwargs)
 
 
 @cache
-def get_mnt_zho_hant_block_review_test_cases(
-    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHant,
-    **kwargs: Any,
+def get_mnt_zho_hans_review_test_cases(
+    prompt: ReviewPrompt = ReviewPromptZhoHans, **kwargs: Any
 ) -> list[TestCase]:
-    """Get MNT 繁体中文 block review test cases.
+    """Get MNT zho-Hans review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hant_ocr/lang/zho/block_review.json"
-    return load_test_cases_from_json(
-        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
-    )
+    path = output_dir / "zho-Hans_ocr/lang/zho/review.json"
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_mnt_zho_hant_ocr_fusion_test_cases(
-    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHant,
+    prompt: OcrFusionPrompt = OcrFusionPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MNT 繁体中文 OCR fusion test cases.
+    """Get MNT zho-Hant OCR fusion test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/ocr_fusion.json"
-    return load_test_cases_from_json(
-        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, OcrFusionManager, prompt=prompt, **kwargs)
 
 
 @cache
-def get_mnt_zho_hant_simplify_block_review_test_cases(
-    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
-    **kwargs: Any,
+def get_mnt_zho_hant_review_test_cases(
+    prompt: ReviewPrompt = ReviewPromptZhoHant, **kwargs: Any
 ) -> list[TestCase]:
-    """Get MNT 繁体中文 simplification block review test cases.
+    """Get MNT zho-Hant review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hant_ocr/lang/zho/simplify_block_review.json"
-    return load_test_cases_from_json(
-        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
-    )
+    path = output_dir / "zho-Hant_ocr/lang/zho/review.json"
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
-@pytest.fixture
+@cache
+def get_mnt_zho_hant_simplify_review_test_cases(
+    prompt: ReviewPrompt = ReviewPromptZhoHans, **kwargs: Any
+) -> list[TestCase]:
+    """Get MNT zho-Hant simplification review test cases.
+
+    Arguments:
+        prompt: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = output_dir / "zho-Hant_ocr/lang/zho/simplify_review.json"
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
+
+
+@fixture
 def mnt_eng_fuse() -> Series:
     """MNT English fused subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse.srt")
 
 
-@pytest.fixture
+@fixture
 def mnt_eng_fuse_clean() -> Series:
     """MNT English fused and cleaned subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean.srt")
 
 
-@pytest.fixture
+@fixture
 def mnt_eng_fuse_clean_validate() -> Series:
     """MNT English fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate.srt")
 
 
-@pytest.fixture
+@fixture
 def mnt_eng_fuse_clean_validate_review() -> Series:
     """MNT English fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review.srt")
 
 
-@pytest.fixture
+@fixture
 def mnt_eng_fuse_clean_validate_review_flatten() -> Series:
     """MNT English fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review_flatten.srt")
 
 
-@pytest.fixture
-def mnt_eng_image() -> ImageSeries:
-    """MNT English image subtitles."""
-    return ImageSeries.load(output_dir / "eng_ocr/image", encoding="utf-8")
+@fixture
+def mnt_eng_ocr_lens() -> Series:
+    """MNT English subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "eng_ocr/lens.srt")
 
 
-@pytest.fixture
-def mnt_eng_image_path() -> Path:
-    """Path to MNT English image subtitles."""
-    return output_dir / "eng_ocr/image"
+@fixture
+def mnt_eng_ocr_lens_clean() -> Series:
+    """MNT English Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "eng_ocr/lens_clean.srt")
 
 
-@pytest.fixture
+@fixture
+def mnt_eng_ocr_tesseract() -> Series:
+    """MNT English subtitles OCRed using Tesseract."""
+    return Series.load(output_dir / "eng_ocr/tesseract.srt")
+
+
+@fixture
+def mnt_eng_ocr_tesseract_clean() -> Series:
+    """MNT English Tesseract OCR subtitles, cleaned."""
+    return Series.load(output_dir / "eng_ocr/tesseract_clean.srt")
+
+
+@fixture
 def mnt_yue_eng() -> Series:
-    """MNT English subtitles translated from 粤语 audio track subtitles."""
+    """MNT English subtitles translated from yue audio track subtitles."""
     return Series.load(output_dir / "yue_eng/eng.srt")
 
 
-@pytest.fixture
+@fixture
 def mnt_yue_zho_hans_eng() -> Series:
-    """MNT Bilingual 简体粤文 and English subtitles for the 粤语 audio track."""
+    """MNT Bilingual yue-Hans and English subtitles for the yue audio track."""
     return Series.load(output_dir / "yue_eng/zho-Hans_eng.srt")
 
 
-@pytest.fixture
+@fixture
+def mnt_zho_hans_eng() -> Series:
+    """MNT bilingual zho-Hans and English subtitles."""
+    return Series.load(output_dir / "zho-Hans_eng.srt")
+
+
+@fixture
 def mnt_zho_hans_fuse() -> Series:
-    """MNT 简体中文 fused subtitles."""
+    """MNT zho-Hans fused subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse.srt")
 
 
-@pytest.fixture
+@fixture
 def mnt_zho_hans_fuse_clean() -> Series:
-    """MNT 简体中文 fused and cleaned subtitles."""
+    """MNT zho-Hans fused and cleaned subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean.srt")
 
 
-@pytest.fixture
+@fixture
 def mnt_zho_hans_fuse_clean_validate() -> Series:
-    """MNT 简体中文 fused, cleaned, and validated subtitles."""
+    """MNT zho-Hans fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean_validate.srt")
 
 
-@pytest.fixture
+@fixture
 def mnt_zho_hans_fuse_clean_validate_review() -> Series:
-    """MNT 简体中文 fused, cleaned, validated, and reviewed subtitles."""
+    """MNT zho-Hans fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean_validate_review.srt")
 
 
-@pytest.fixture
+@fixture
 def mnt_zho_hans_fuse_clean_validate_review_flatten() -> Series:
-    """MNT 简体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """MNT zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
 
 
-@pytest.fixture
+@fixture
 def mnt_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
-    """MNT 简体中文 fused/cleaned/validated/reviewed/flattened romanized subtitles."""
+    """MNT zho-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles."""
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten_romanize.srt"
     )
 
 
-@pytest.fixture
-def mnt_zho_hans_image() -> ImageSeries:
-    """MNT 简体中文 image subtitles."""
-    return ImageSeries.load(output_dir / "zho-Hans_ocr/image", encoding="utf-8")
+@fixture
+def mnt_zho_hans_ocr_lens() -> Series:
+    """MNT zho-Hans subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "zho-Hans_ocr/lens.srt")
 
 
-@pytest.fixture
-def mnt_zho_hans_image_path() -> Path:
-    """Path to MNT 简体中文 image subtitles."""
-    return output_dir / "zho-Hans_ocr/image"
+@fixture
+def mnt_zho_hans_ocr_lens_clean() -> Series:
+    """MNT zho-Hans Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hans_ocr/lens_clean.srt")
 
 
-@pytest.fixture
+@fixture
+def mnt_zho_hans_ocr_paddle() -> Series:
+    """MNT zho-Hans subtitles OCRed using PaddleOCR."""
+    return Series.load(output_dir / "zho-Hans_ocr/paddle.srt")
+
+
+@fixture
+def mnt_zho_hans_ocr_paddle_clean() -> Series:
+    """MNT zho-Hans PaddleOCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hans_ocr/paddle_clean.srt")
+
+
+@fixture
 def mnt_zho_hant_fuse() -> Series:
-    """MNT 繁体中文 fused subtitles."""
+    """MNT zho-Hant fused subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse.srt")
 
 
-@pytest.fixture
+@fixture
 def mnt_zho_hant_fuse_clean() -> Series:
-    """MNT 繁体中文 fused and cleaned subtitles."""
+    """MNT zho-Hant fused and cleaned subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean.srt")
 
 
-@pytest.fixture
+@fixture
 def mnt_zho_hant_fuse_clean_validate() -> Series:
-    """MNT 繁体中文 fused, cleaned, and validated subtitles."""
+    """MNT zho-Hant fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate.srt")
 
 
-@pytest.fixture
+@fixture
 def mnt_zho_hant_fuse_clean_validate_review() -> Series:
-    """MNT 繁体中文 fused, cleaned, validated, and reviewed subtitles."""
+    """MNT zho-Hant fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate_review.srt")
 
 
-@pytest.fixture
+@fixture
 def mnt_zho_hant_fuse_clean_validate_review_flatten() -> Series:
-    """MNT 繁体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """MNT zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
 
 
-@pytest.fixture
+@fixture
 def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
-    """MNT 繁体中文 fused/cleaned/validated/reviewed/flattened/simplified subtitles."""
+    """MNT zho-Hant fused/cleaned/validated/reviewed/flattened/simplified subtitles."""
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten_simplify.srt"
     )
 
 
-@pytest.fixture
+@fixture
 def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
-    """MNT 繁体中文 simplified/reviewed fused/cleaned subtitles."""
+    """MNT zho-Hant simplified/reviewed fused/cleaned subtitles."""
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -503,19 +423,43 @@ def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
     )
 
 
-@pytest.fixture
-def mnt_zho_hant_image() -> ImageSeries:
-    """MNT 繁体中文 image subtitles."""
-    return ImageSeries.load(output_dir / "zho-Hant_ocr/image", encoding="utf-8")
+@fixture
+def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize() -> (
+    Series
+):
+    """MNT zho-Hant simplified/reviewed fused/cleaned romanized subtitles."""
+    return Series.load(
+        output_dir
+        / "zho-Hant_ocr"
+        / "fuse_clean_validate_review_flatten_simplify_review_romanize.srt"
+    )
 
 
-@pytest.fixture
-def mnt_zho_hant_image_path() -> Path:
-    """Path to MNT 繁体中文 image subtitles."""
-    return output_dir / "zho-Hant_ocr/image"
+@fixture
+def mnt_zho_hant_ocr_lens() -> Series:
+    """MNT zho-Hant subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "zho-Hant_ocr/lens.srt")
 
 
-@pytest.fixture
+@fixture
+def mnt_zho_hant_ocr_lens_clean() -> Series:
+    """MNT zho-Hant Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hant_ocr/lens_clean.srt")
+
+
+@fixture
+def mnt_zho_hant_ocr_paddle() -> Series:
+    """MNT zho-Hant subtitles OCRed using PaddleOCR."""
+    return Series.load(output_dir / "zho-Hant_ocr/paddle.srt")
+
+
+@fixture
+def mnt_zho_hant_ocr_paddle_clean() -> Series:
+    """MNT zho-Hant PaddleOCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")
+
+
+@fixture
 def mnt_zho_simplify_expected_series_diff() -> list[str]:
     """Expected differences for MNT Simplified vs Traditional subtitles."""
     return [
@@ -543,7 +487,7 @@ def mnt_zho_simplify_expected_series_diff() -> list[str]:
         "edit: SIMP[147] -> TRAD[147]: '人家也要去' -> '小美也要去'",
         "edit: SIMP[154] -> TRAD[154]: '你不是刚刚那个吗？\\u3000有事吗' -> '你不是刚刚那个吗？有事吗'",
         "edit: SIMP[163] -> TRAD[163]: '不过\\u3000婆婆这个糯米团很好吃' -> '不过婆婆这个糯米团很好吃'",
-        "delete: SIMP[165] '婆婆，谢谢您的糯米团' not present in TRAD",
+        "edit: SIMP[165] -> TRAD[165]: '婆婆，谢谢您的糯米团' -> '谢谢您'",
         "edit: SIMP[168] -> TRAD[168]: '爸爸，我们家\\u3000破破烂烂的会否倒下来' -> '爸爸，我们家破破烂烂的会否倒下来'",
         "edit: SIMP[172] -> TRAD[172]: '人家才不怕呢！' -> '小美才不怕呢！'",
         "edit: SIMP[173] -> TRAD[173]: '人家才不怕呢！' -> '小美才不怕呢！'",
@@ -586,7 +530,7 @@ def mnt_zho_simplify_expected_series_diff() -> list[str]:
         "edit: SIMP[382] -> TRAD[381]: '你要在婆婆家\\u3000乖乖等姊姊放学的吗？' -> '你要在婆婆家\\u3000乖乖等姐姐放学的吗？'",
         "edit: SIMP[383] -> TRAD[382]: '姊姊还要再上两个小时的课' -> '姐姐还要再上两个小时的课'",
         "edit: SIMP[390] -> TRAD[389]: '好、好' -> '是的'",
-        "edit: SIMP[402] -> TRAD[401]: '人家都没有哭，棒不棒？\\u3000嗯' -> '-小美都没有哭，了不起。 -嗯'",
+        "edit: SIMP[402] -> TRAD[401]: '人家都没有哭，棒不棒？\\u3000嗯' -> '－小美都没有哭，了不起。－嗯'",
         "edit: SIMP[404] -> TRAD[403]: '土地公爷爷\\u3000请您让我们躲一下雨' -> '土地公爷爷，请您让我们躲一下雨'",
         "edit: SIMP[406] -> TRAD[405]: '姊姊，有伞子真棒啊' -> '姐姐，有伞子真好啊'",
         "edit: SIMP[407] -> TRAD[406]: '可是伞子顶破了一个大洞' -> '伞子破了好多洞洞'",

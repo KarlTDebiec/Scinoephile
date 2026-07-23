@@ -3,7 +3,7 @@
 """Persistence utilities for LLM test cases.
 
 Package hierarchy (modules may import from any above):
-* id / sync_report
+* id
 * persisted_test_case
 * sqlite_store
 * sync
@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from .persisted_test_case import PersistedTestCase
 from .sqlite_store import TestCaseSqliteStore
-from .sync_report import SyncReport
+from .sync import SyncReport
 
 __all__ = [
     "PersistedTestCase",

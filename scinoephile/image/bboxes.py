@@ -61,6 +61,9 @@ def get_bboxes(img: Image.Image) -> list[Bbox]:  # noqa: PLR0912, PLR0915
             final_lines = [[lines[0][0], lines[-1][1]]]
         else:
             merge_dirs: list[str | None] = [None] * len(lines)
+            merged_line_candidates: list[list[int] | None] = [
+                line.copy() for line in lines
+            ]
             for idx, (y1, y2) in enumerate(lines):
                 if (y2 - y1) >= min_line_height:
                     continue
@@ -78,19 +81,39 @@ def get_bboxes(img: Image.Image) -> list[Bbox]:  # noqa: PLR0912, PLR0915
                     merge_dirs[idx] = "up"
 
             for idx, direction in enumerate(merge_dirs):
-                if direction == "up" and idx > 0 and lines[idx - 1] is not None:
-                    lines[idx - 1][1] = max(lines[idx - 1][1], lines[idx][1])
-                    lines[idx] = None
+                current_line = merged_line_candidates[idx]
+                if current_line is None:
+                    continue
+                if direction == "up" and idx > 0:
+                    previous_line = merged_line_candidates[idx - 1]
+                    if previous_line is None:
+                        continue
+                    previous_line[0] = min(previous_line[0], current_line[0])
+                    previous_line[1] = max(previous_line[1], current_line[1])
+                    merged_line_candidates[idx] = None
                 elif direction == "down" and idx + 1 < len(lines):
-                    lines[idx + 1][0] = min(lines[idx + 1][0], lines[idx][0])
-                    lines[idx + 1][1] = max(lines[idx + 1][1], lines[idx][1])
-                    lines[idx] = None
+                    next_line = merged_line_candidates[idx + 1]
+                    if next_line is None:
+                        continue
+                    next_line[0] = min(next_line[0], current_line[0])
+                    next_line[1] = max(next_line[1], current_line[1])
+                    merged_line_candidates[idx] = None
 
             merged_lines: list[list[int]] = []
-            for line in lines:
+            for line in merged_line_candidates:
                 if line is None:
                     continue
-                if merged_lines and line[0] - merged_lines[-1][1] < min_line_gap:
+                if not merged_lines:
+                    merged_lines.append(line)
+                    continue
+                gap = line[0] - merged_lines[-1][1]
+                previous_line_height = merged_lines[-1][1] - merged_lines[-1][0]
+                line_height = line[1] - line[0]
+                merge_at_minimum_gap = gap == min_line_gap and (
+                    previous_line_height < min_line_height
+                    or line_height < min_line_height
+                )
+                if gap < min_line_gap or merge_at_minimum_gap:
                     merged_lines[-1][1] = max(merged_lines[-1][1], line[1])
                 else:
                     merged_lines.append(line)

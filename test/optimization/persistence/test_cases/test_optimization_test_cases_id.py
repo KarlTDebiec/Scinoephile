@@ -4,50 +4,65 @@
 
 from __future__ import annotations
 
-from scinoephile.llms.mono_n.manager import MonoNManager
-from scinoephile.llms.mono_n.prompt import MonoNPrompt
+from pydantic import JsonValue
+
+from scinoephile.llms.review import ReviewManager
+from scinoephile.llms.translation import TranslationManager
 from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 
 
+def _get_translation_answer(text: str) -> dict[str, JsonValue]:
+    """Get a canonical translation answer payload."""
+    return {"outputs": [{"index": 1, "text": text}]}
+
+
+def _get_translation_query(text: str) -> dict[str, JsonValue]:
+    """Get a canonical translation query payload."""
+    return {"subtitles": [{"index": 1, "text": text}]}
+
+
 def test_get_test_case_id_stable_for_same_payload():
-    """Computing an ID twice for identical data should match."""
-    test_case_cls = MonoNManager.get_test_case_cls(size=1, prompt_cls=MonoNPrompt)
-    tc1 = test_case_cls.model_validate(
-        {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "b", "note_1": "changed"},
-        }
-    )
-    tc2 = test_case_cls.model_validate(
-        {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "b", "note_1": "changed"},
-        }
-    )
-    assert tc1.answer is not None
-    assert tc2.answer is not None
-    assert get_test_case_id(tc1.query, tc1.answer) == get_test_case_id(
-        tc2.query, tc2.answer
+    """Computing an ID twice for identical normalized data should match."""
+    query = _get_translation_query("a")
+    answer = _get_translation_answer("b")
+
+    assert get_test_case_id(
+        query,
+        answer,
+        TranslationManager,
+    ) == get_test_case_id(
+        query,
+        answer,
+        TranslationManager,
     )
 
 
 def test_get_test_case_id_changes_with_answer():
-    """Changing answer content should change computed ID."""
-    test_case_cls = MonoNManager.get_test_case_cls(size=1, prompt_cls=MonoNPrompt)
-    tc1 = test_case_cls.model_validate(
-        {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "b", "note_1": "changed"},
-        }
+    """Changing normalized answer content should change the computed ID."""
+    query = _get_translation_query("a")
+
+    assert get_test_case_id(
+        query,
+        _get_translation_answer("b"),
+        TranslationManager,
+    ) != get_test_case_id(
+        query,
+        _get_translation_answer("c"),
+        TranslationManager,
     )
-    tc2 = test_case_cls.model_validate(
-        {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "c", "note_1": "changed"},
-        }
-    )
-    assert tc1.answer is not None
-    assert tc2.answer is not None
-    assert get_test_case_id(tc1.query, tc1.answer) != get_test_case_id(
-        tc2.query, tc2.answer
+
+
+def test_get_test_case_id_changes_with_operation():
+    """Catalog scope should contribute to the content-addressed ID."""
+    query = _get_translation_query("a")
+    answer = _get_translation_answer("b")
+
+    assert get_test_case_id(
+        query,
+        answer,
+        TranslationManager,
+    ) != get_test_case_id(
+        query,
+        answer,
+        ReviewManager,
     )

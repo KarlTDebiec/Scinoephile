@@ -3,7 +3,7 @@
 """Subtitle media helpers.
 
 Package hierarchy (modules may import from any above):
-* cache
+* cache / selection
 * extraction / stats
 * details
 """

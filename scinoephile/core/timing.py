@@ -55,15 +55,21 @@ def get_series_timewarped(
     if not source_two.events:
         raise ScinoephileError("Source two has no subtitle events to timewarp")
 
-    one_start_idx = one_start_idx or 1
-    one_end_idx = one_end_idx or len(source_one)
-    two_start_idx = two_start_idx or 1
-    two_end_idx = two_end_idx or len(source_two)
+    if one_start_idx is None:
+        one_start_idx = 1
+    if one_end_idx is None:
+        one_end_idx = len(source_one)
+    if two_start_idx is None:
+        two_start_idx = 1
+    if two_end_idx is None:
+        two_end_idx = len(source_two)
 
     _validate_idx(one_start_idx, source_one, "source one start")
     _validate_idx(one_end_idx, source_one, "source one end")
     _validate_idx(two_start_idx, source_two, "source two start")
     _validate_idx(two_end_idx, source_two, "source two end")
+    _validate_range(one_start_idx, one_end_idx, "source one")
+    _validate_range(two_start_idx, two_end_idx, "source two")
 
     one_start_event = source_one.events[one_start_idx - 1]
     one_end_event = source_one.events[one_end_idx - 1]
@@ -111,4 +117,21 @@ def _validate_idx(idx: int, source: Series, label: str):
     if idx > len(source):
         raise ScinoephileError(
             f"Invalid {label} index {idx}; series has {len(source)} subtitles"
+        )
+
+
+def _validate_range(start_idx: int, end_idx: int, label: str):
+    """Validate the ordering of a 1-based timewarp index range.
+
+    Arguments:
+        start_idx: 1-based start index
+        end_idx: 1-based end index
+        label: label for error messages
+    Raises:
+        ScinoephileError: If the range is reversed
+    """
+    if start_idx > end_idx:
+        raise ScinoephileError(
+            f"Invalid {label} range {start_idx}-{end_idx}; "
+            "start index must not exceed end index"
         )

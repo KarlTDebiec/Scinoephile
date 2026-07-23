@@ -6,8 +6,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from pydantic import JsonValue
+
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import Manager, TestCase
 
 from .id import get_test_case_id
 
@@ -19,40 +21,56 @@ class PersistedTestCase:
     """A persisted test case row loaded from SQLite."""
 
     test_case_id: str
-    """Deterministic identifier derived from query+answer JSON."""
+    """Deterministic identifier derived from operation and normalized payload."""
+    operation: str
+    """Operation to which this test case belongs."""
     difficulty: int
     """Difficulty level for filtering and prioritization."""
-    prompt: bool
-    """Whether the test case is included in the prompt."""
+    few_shot: bool
+    """Whether the test case is included as a few-shot example."""
     verified: bool
     """Whether the test case answer has been verified."""
-    query: dict
-    """Query JSON."""
-    answer: dict
-    """Answer JSON."""
-    source_paths: list[str]
+    query: dict[str, JsonValue]
+    """Query JSON using base-prompt field names."""
+    answer: dict[str, JsonValue]
+    """Answer JSON using base-prompt field names."""
+    source_paths: tuple[str, ...]
     """Source JSON paths that contributed this test case."""
 
-    @staticmethod
-    def from_test_case(test_case: TestCase) -> PersistedTestCase:
+    @classmethod
+    def from_test_case(
+        cls,
+        test_case: TestCase,
+        manager_cls: type[Manager],
+    ) -> PersistedTestCase:
         """Convert a loaded test case to its persisted representation.
 
         Arguments:
             test_case: loaded test case
+            manager_cls: manager defining the test case's operation and base prompt
         Returns:
             persisted test case
         """
-        query_dict = test_case.query.model_dump()
         if test_case.answer is None:
             raise ScinoephileError("Optimization test cases must include an answer.")
-        answer_dict = test_case.answer.model_dump()
-        test_case_id = get_test_case_id(test_case.query, test_case.answer)
-        return PersistedTestCase(
+        base_test_case_cls = manager_cls.get_test_case_cls(
+            manager_cls.base_prompt,
+        )
+        base_test_case = base_test_case_cls.model_validate(
+            test_case.model_dump(mode="json")
+        )
+        query = base_test_case.query.model_dump(mode="json", by_alias=True)
+        if base_test_case.answer is None:
+            raise ScinoephileError("Optimization test cases must include an answer.")
+        answer = base_test_case.answer.model_dump(mode="json", by_alias=True)
+        test_case_id = get_test_case_id(query, answer, manager_cls)
+        return cls(
             test_case_id=test_case_id,
-            difficulty=int(test_case.difficulty),
-            prompt=bool(test_case.prompt),
-            verified=bool(test_case.verified),
-            query=query_dict,
-            answer=answer_dict,
-            source_paths=[],
+            operation=manager_cls.operation,
+            difficulty=test_case.difficulty,
+            few_shot=test_case.few_shot,
+            verified=test_case.verified,
+            query=query,
+            answer=answer,
+            source_paths=(),
         )

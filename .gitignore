@@ -6,8 +6,16 @@ __pycache__
 scinoephile.egg-info
 /local/
 /test/.coverage
+/test/data/*/input/*_ocr/source.sup
 /test/data/*/output/**/*.html
 /test/data/*/output/**/*.json
+!/test/data/*/output/*/lang/*/ocr_fusion.json
+!/test/data/*/output/*/lang/*/review.json
+!/test/data/*/output/*/lang/*/simplify_review.json
+!/test/data/*/output/*/lang/yue_zho/gap_translation/*.json
+!/test/data/*/output/*/lang/yue_zho/guided_review/*.json
+!/test/data/*/output/*/lang/yue_zho/transcription/delineation/*.json
+!/test/data/*/output/*/lang/yue_zho/transcription/punctuation/*.json
 /test/data/*/output/**/*.png
 /test/data/*/output/**/*.wav
 /test/data/cache/**

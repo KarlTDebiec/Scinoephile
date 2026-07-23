@@ -7,7 +7,6 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
-from typing import ClassVar
 
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.dictionaries.gzzj import GzzjDictionaryService
@@ -19,6 +18,30 @@ __all__ = ["DictionaryBuildGzzjCli"]
 
 logger = getLogger(__name__)
 
+DICTIONARY_BUILD_GZZJ_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "build GZZJ dictionary cache": "构建 GZZJ 词典缓存",
+        (
+            "Digital data derived from the 2004 second edition of 《廣州話正音字典》."
+        ): "由 2004 年第二版《广州话正音字典》整理而成的数字数据。",
+        "path to manually downloaded GZZJ source JSON; required unless bundled "
+        "local data is already available": (
+            "手动下载的 GZZJ 源 JSON 路径；除非已有随包本地数据，否则必须提供"
+        ),
+    },
+    "zh-hant": {
+        "build GZZJ dictionary cache": "建立 GZZJ 詞典快取",
+        (
+            "Digital data derived from the 2004 second edition of 《廣州話正音字典》."
+        ): "由 2004 年第二版《廣州話正音字典》整理而成的數碼資料。",
+        "path to manually downloaded GZZJ source JSON; required unless bundled "
+        "local data is already available": (
+            "手動下載的 GZZJ 來源 JSON 路徑；除非已有隨包本機資料，否則必須提供"
+        ),
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
     """Build GZZJ dictionary cache."""
@@ -26,30 +49,7 @@ class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
     source = GZZJ_SOURCE
     """Dictionary source built by this CLI."""
 
-    localizations: ClassVar[dict[str, dict[str, str]]] = {
-        "zh-hans": {
-            "build GZZJ dictionary cache": "构建 GZZJ 词典缓存",
-            (
-                "Digital data derived from the 2004 second edition of "
-                "《廣州話正音字典》."
-            ): "由 2004 年第二版《广州话正音字典》整理而成的数字数据。",
-            "path to manually downloaded GZZJ source JSON; required unless bundled "
-            "local data is already available": (
-                "手动下载的 GZZJ 源 JSON 路径；除非已有随包本地数据，否则必须提供"
-            ),
-        },
-        "zh-hant": {
-            "build GZZJ dictionary cache": "建立 GZZJ 詞典快取",
-            (
-                "Digital data derived from the 2004 second edition of "
-                "《廣州話正音字典》."
-            ): "由 2004 年第二版《廣州話正音字典》整理而成的數碼資料。",
-            "path to manually downloaded GZZJ source JSON; required unless bundled "
-            "local data is already available": (
-                "手動下載的 GZZJ 來源 JSON 路徑；除非已有隨包本機資料，否則必須提供"
-            ),
-        },
-    }
+    localizations = DICTIONARY_BUILD_GZZJ_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -70,7 +70,6 @@ class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--source-json-path",
-            default=None,
             type=input_file_arg(),
             help=(
                 "path to manually downloaded GZZJ source JSON; required unless "

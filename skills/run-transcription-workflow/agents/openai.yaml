@@ -1,0 +1,4 @@
+interface:
+  display_name: "Run Transcription Audits"
+  short_description: "Audit transcription delineation and punctuation"
+  default_prompt: "Use $run-transcription-workflow to transcribe a movie and verify delineation and punctuation in five-block batches."

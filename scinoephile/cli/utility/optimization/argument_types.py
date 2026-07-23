@@ -6,19 +6,19 @@ from __future__ import annotations
 
 from argparse import ArgumentTypeError
 
-from scinoephile.core.llms import OperationSpec
+from scinoephile.core.llms import Manager
 from scinoephile.optimization.operations import OPERATIONS
 
 __all__ = ["operation_arg"]
 
 
-def operation_arg(value: str) -> OperationSpec:
+def operation_arg(value: str) -> type[Manager]:
     """Validate an optimization operation CLI argument.
 
     Arguments:
         value: raw CLI argument value
     Returns:
-        parsed operation specification
+        manager class for the parsed operation
     Raises:
         ArgumentTypeError: if operation is not known
     """

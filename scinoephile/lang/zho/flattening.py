@@ -1,33 +1,16 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to flattening standard Chinese text."""
+"""Code related to flattening Chinese text."""
 
 from __future__ import annotations
 
 import re
-from copy import deepcopy
 
-from scinoephile.core.subtitles import Series
-
-__all__ = ["get_zho_flattened"]
+__all__ = ["get_zho_text_flattened"]
 
 
-def get_zho_flattened(series: Series) -> Series:
-    """Get multi-line standard Chinese series flattened to single lines.
-
-    Arguments:
-        series: Series to flatten
-    Returns:
-        Flattened series
-    """
-    series = deepcopy(series)
-    for event in series:
-        event.text = _get_zho_text_flattened(event.text)
-    return series
-
-
-def _get_zho_text_flattened(text: str) -> str:
-    """Get multi-line standard Chinese text flattened to a single line.
+def get_zho_text_flattened(text: str) -> str:
+    """Get multi-line Chinese text flattened to a single line.
 
     Accounts for dashes ('﹣') used for dialogue from multiple sources.
 
@@ -36,7 +19,7 @@ def _get_zho_text_flattened(text: str) -> str:
     Arguments:
         text: text to flatten
     Returns:
-        Flattened text
+        flattened text
     """
     line_sep = "\\N"
     flattened = text.replace("\r\n", "\n").replace("\n", line_sep)

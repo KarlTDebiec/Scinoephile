@@ -1,0 +1,3 @@
+interface:
+  display_name: "Audit Zho Conversion Exclusions"
+  short_description: "Audit Chinese conversion exclusions across test subtitle fixtures"

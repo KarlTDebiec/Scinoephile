@@ -4,10 +4,10 @@
 
 Package hierarchy (modules may import from any above):
 * models / prompt / tool
-* answer / query / tool_box
+* answer / query / test_case_subtitle / tool_box
 * llm_provider / test_case
 * manager / openai_provider_base / queryer
-* operation_spec / utils
+* utils
 * processor
 """
 
@@ -15,30 +15,33 @@ from __future__ import annotations
 
 from .answer import Answer
 from .llm_provider import ChatCompletionKwargs, LLMProvider
-from .manager import Manager, TestCaseClsKwargs
+from .manager import Manager, PromptModelField
 from .openai_provider_base import OpenAIProviderBase
-from .operation_spec import OperationSpec
-from .processor import Processor
-from .prompt import Prompt
+from .processor import Processor, ProcessorKwargs
+from .prompt import Prompt, SharedPromptLocalizationFields
 from .query import Query
 from .queryer import Queryer
 from .test_case import TestCase
+from .test_case_subtitle import AnnotatedTestCaseSubtitle, TestCaseSubtitle
 from .tool import Tool
 from .tool_box import ToolBox
 
 __all__ = [
+    "AnnotatedTestCaseSubtitle",
     "Answer",
     "ChatCompletionKwargs",
     "LLMProvider",
     "Manager",
     "OpenAIProviderBase",
-    "OperationSpec",
     "Processor",
+    "ProcessorKwargs",
     "Prompt",
+    "PromptModelField",
     "Query",
     "Queryer",
-    "TestCaseClsKwargs",
+    "SharedPromptLocalizationFields",
     "TestCase",
+    "TestCaseSubtitle",
     "Tool",
     "ToolBox",
 ]

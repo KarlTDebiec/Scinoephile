@@ -8,19 +8,22 @@ import json
 from abc import ABC
 from typing import ClassVar
 
-from pydantic import BaseModel
-
+from .models import LLMModel
 from .prompt import Prompt
 
 __all__ = ["Answer"]
 
 
-class Answer(BaseModel, ABC):
+class Answer(LLMModel, ABC):
     """ABC for LLM answers."""
 
-    prompt_cls: ClassVar[type[Prompt]]
+    prompt: ClassVar[Prompt]
     """Text for LLM correspondence."""
 
     def __str__(self) -> str:
         """String representation."""
-        return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
+        return json.dumps(
+            self.model_dump(by_alias=True),
+            indent=2,
+            ensure_ascii=False,
+        )

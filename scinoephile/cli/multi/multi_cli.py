@@ -12,6 +12,7 @@ from scinoephile.core.cli import ScinoephileCliBase
 
 from .multi_cer_cli import MultiCerCli
 from .multi_diff_cli import MultiDiffCli
+from .multi_stack_cli import MultiStackCli
 from .multi_sync_cli import MultiSyncCli
 from .multi_timewarp_cli import MultiTimewarpCli
 
@@ -71,6 +72,7 @@ class MultiCli(ScinoephileCliBase):
         return {
             MultiCerCli.name(): MultiCerCli,
             MultiDiffCli.name(): MultiDiffCli,
+            MultiStackCli.name(): MultiStackCli,
             MultiSyncCli.name(): MultiSyncCli,
             MultiTimewarpCli.name(): MultiTimewarpCli,
         }

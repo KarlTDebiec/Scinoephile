@@ -5,47 +5,29 @@
 from __future__ import annotations
 
 import re
-from copy import deepcopy
 
-from scinoephile.core.subtitles import Series
+from scinoephile.core.text import normalize_text
 
-__all__ = ["get_eng_cleaned"]
-
-
-def get_eng_cleaned(series: Series, remove_empty: bool = True) -> Series:
-    """Get English series cleaned.
-
-    Arguments:
-        series: Series to clean
-        remove_empty: whether to remove subtitles with empty text
-    Returns:
-        cleaned Series
-    """
-    series = deepcopy(series)
-    new_events = []
-    for event in series:
-        raw_text = (event.text or "").strip()
-        text = _get_english_text_cleaned(raw_text)
-        if text or not remove_empty:
-            event.text = text if text is not None else ""
-            new_events.append(event)
-    series.events = new_events
-    return series
+__all__ = ["get_eng_text_cleaned"]
 
 
-def _get_english_text_cleaned(text: str) -> str | None:
+def get_eng_text_cleaned(text: str) -> str | None:
     """Get English text cleaned.
 
     Arguments:
         text: text to clean
     Returns:
-        Cleaned text, or None if no text remains
+        cleaned text, or None if no text remains
     """
     line_sep = "\\N"
-    cleaned = text.strip()
+    cleaned = normalize_text(text)
 
     # Remove ASS hard-space \h
     cleaned = re.sub(r"\\h", "", cleaned)
+
+    # Remove extraction markup from EIA-608 captions
+    cleaned = re.sub(r"</?font\b[^>]*>", "", cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"\{\\an\d+\}", "", cleaned)
 
     # Remove closed caption annotations ([...])
     cleaned = re.sub(r"\[.*?][^\S\n]*", "", cleaned, flags=re.DOTALL).strip()

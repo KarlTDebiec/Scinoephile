@@ -5,87 +5,69 @@
 Package hierarchy (modules may import from any above):
 * bounding_box / preprocessing
 * text_result
-* paddle_ocr_recognizer
+* paddle_recognizer
 """
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import TypedDict, Unpack, cast
+from logging import getLogger
+from typing import Unpack, cast
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
-from .paddle_ocr_recognizer import PaddleOcrRecognizer
-from .preprocessing import preprocess_paddle_ocr_image
+from .paddle_recognizer import PaddleRecognizer, PaddleRecognizerKwargs
 
 __all__ = [
-    "PaddleOcrRecognizer",
-    "PaddleOcrRecognizerKwargs",
-    "get_paddle_ocr_recognizer",
+    "PaddleRecognizer",
+    "PaddleRecognizerKwargs",
     "ocr_image_series_with_paddle",
 ]
 
-
-class PaddleOcrRecognizerKwargs(TypedDict, total=False):
-    """Additional keyword arguments forwarded to PaddleOcrRecognizer."""
-
-    language: str
-    """PaddleOCR language code."""
-
-    min_confidence: float
-    """Minimum confidence to include."""
-
-
-def get_paddle_ocr_recognizer(
-    *,
-    cache_dir_path: Path | None = None,
-    **kwargs: Unpack[PaddleOcrRecognizerKwargs],
-) -> PaddleOcrRecognizer:
-    """Get PaddleOCR recognizer with provided configuration.
-
-    Arguments:
-        cache_dir_path: directory in which to cache OCR results
-        **kwargs: additional keyword arguments for PaddleOcrRecognizer
-    Returns:
-        PaddleOCR recognizer
-    """
-    if cache_dir_path is None:
-        cache_dir_path = get_runtime_cache_dir_path("paddleocr")
-    return PaddleOcrRecognizer(cache_dir_path=cache_dir_path, **kwargs)
+logger = getLogger(__name__)
 
 
 def ocr_image_series_with_paddle(
     image_series: ImageSeries,
-    *,
-    recognizer: PaddleOcrRecognizer | None = None,
-    language: str = "en",
+    **kwargs: Unpack[PaddleRecognizerKwargs],
 ) -> Series:
     """OCR an image subtitle series with PaddleOCR.
 
     Arguments:
         image_series: image subtitle series
-        recognizer: PaddleOCR-compatible recognizer
-        language: PaddleOCR language code
+        **kwargs: additional keyword arguments for PaddleRecognizer
     Returns:
         text subtitle series
     """
-    if recognizer is None:
-        paddle_recognizer = get_paddle_ocr_recognizer(language=language)
-    else:
-        paddle_recognizer = recognizer
+    try:
+        from .preprocessing import preprocess_paddle_ocr_image  # noqa: PLC0415
 
-    events = []
-    for subtitle in image_series:
-        image_subtitle = cast(ImageSubtitle, subtitle)
-        preprocessed_image = preprocess_paddle_ocr_image(image_subtitle.img)
-        text = paddle_recognizer.recognize_image(preprocessed_image)
-        events.append(
-            Subtitle(
-                start=image_subtitle.start,
-                end=image_subtitle.end,
-                text=text,
+        if "cache_dir_path" not in kwargs:
+            kwargs["cache_dir_path"] = get_runtime_cache_dir_path("paddleocr")
+        paddle_recognizer = PaddleRecognizer(**kwargs)
+
+        events = []
+        subtitle_count = len(image_series.events)
+        for subtitle_idx, subtitle in enumerate(image_series, 1):
+            logger.info(
+                f"OCRing subtitle {subtitle_idx}/{subtitle_count} with PaddleOCR"
             )
-        )
-    return Series(events=events)
+            image_subtitle = cast(ImageSubtitle, subtitle)
+            preprocessed_image = preprocess_paddle_ocr_image(image_subtitle.img)
+            text = paddle_recognizer.recognize_image(preprocessed_image)
+            events.append(
+                Subtitle(
+                    start=image_subtitle.start,
+                    end=image_subtitle.end,
+                    text=text,
+                )
+            )
+        return Series(events=events)
+    except ScinoephileError:
+        raise
+    except (ImportError, OSError, RuntimeError, ValueError) as exc:
+        raise ScinoephileError(
+            f"Unable to OCR image series with PaddleOCR: {exc}"
+        ) from exc

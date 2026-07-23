@@ -10,86 +10,74 @@ from functools import cache
 from pathlib import Path
 from typing import TypedDict, Unpack
 
-import pytest
+from pytest import fixture
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
-from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng.block_review import BlockReviewPromptEng
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
-from scinoephile.lang.zho.block_review import (
-    BlockReviewPromptZhoHans,
-    BlockReviewPromptZhoHant,
+from scinoephile.lang.eng.review import ReviewPromptEng
+from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
+from scinoephile.lang.yue_zho.review import YueZhoGuidedReviewPromptYueHant
+from scinoephile.lang.yue_zho.transcription import (
+    YueZhoDelineationPromptYueHant,
+    YueZhoPunctuationPromptYueHant,
 )
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
-from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
-from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
-from scinoephile.llms.dual_2_to_2 import Dual2To2Manager, Dual2To2Prompt
-from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
-from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
-from scinoephile.multilang.yue_zho.line_review import (
-    YueLineReviewVsZhoPromptYueHans,
-    YueZhoLineReviewManager,
-)
-from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueDeliniationVsZhoPromptYueHans,
-)
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YuePunctuationVsZhoPromptYueHans,
-    YueZhoPunctuationManager,
-)
-from test.helpers import SeriesCERResult, test_data_root
+from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
+from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
+from scinoephile.llms.guided_review import GuidedReviewManager, GuidedReviewPrompt
+from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
+from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
+from scinoephile.llms.review import ReviewManager, ReviewPrompt
+from test.helpers import test_data_root
 
 __all__ = [
     "kob_eng",
-    "kob_eng_ocr_lens",
-    "kob_eng_ocr_lens_new",
-    "kob_eng_ocr_paddle_new",
-    "kob_eng_ocr_tesseract",
-    "kob_eng_ocr_tesseract_new",
     "kob_yue_hans",
     "kob_yue_hant",
-    "kob_zho_hant_ocr_lens",
-    "kob_zho_hant_ocr_lens_new",
-    "kob_zho_hant_ocr_paddle",
-    "kob_zho_hant_ocr_paddle_new",
-    "kob_zho_hant_ocr_tesseract_new",
-    "get_kob_eng_block_review_test_cases",
     "get_kob_eng_ocr_fusion_test_cases",
-    "get_kob_yue_deliniation_test_cases",
-    "get_kob_yue_punctuation_test_cases",
-    "get_kob_yue_vs_zho_line_review_test_cases",
-    "get_kob_zho_hant_block_review_test_cases",
+    "get_kob_eng_review_test_cases",
+    "get_kob_yue_hans_review_test_cases",
+    "get_kob_yue_hant_delineation_test_cases",
+    "get_kob_yue_hant_guided_review_test_cases",
+    "get_kob_yue_hant_punctuation_test_cases",
+    "get_kob_yue_hant_review_test_cases",
+    "get_kob_yue_hant_simplify_review_test_cases",
     "get_kob_zho_hant_ocr_fusion_test_cases",
-    "get_kob_zho_hant_simplify_block_review_test_cases",
+    "get_kob_zho_hant_review_test_cases",
+    "get_kob_zho_hant_simplify_review_test_cases",
+    "kob_eng_clean",
+    "kob_eng_clean_review",
+    "kob_eng_clean_review_flatten",
+    "kob_eng_clean_review_flatten_timewarp",
     "kob_eng_expected_series_diff",
     "kob_eng_ocr_fuse",
     "kob_eng_ocr_fuse_clean",
     "kob_eng_ocr_fuse_clean_validate",
     "kob_eng_ocr_fuse_clean_validate_review",
     "kob_eng_ocr_fuse_clean_validate_review_flatten",
-    "kob_eng_ocr_image",
-    "kob_eng_timewarp",
-    "kob_eng_timewarp_clean",
-    "kob_eng_timewarp_clean_review",
-    "kob_eng_timewarp_clean_review_flatten",
-    "kob_yue_hans_audio",
-    "kob_yue_hans_timewarp",
-    "kob_yue_hans_timewarp_clean",
-    "kob_yue_hans_timewarp_clean_flatten",
-    "kob_yue_hans_timewarp_clean_flatten_romanize",
-    "kob_yue_hans_transcribe",
-    "kob_yue_hans_transcribe_expected_cer",
-    "kob_yue_hans_transcribe_review",
-    "kob_yue_hans_transcribe_review_translate",
-    "kob_yue_hans_transcribe_review_translate_block_review",
-    "kob_yue_hans_transcribe_review_translate_block_review_expected_cer",
-    "kob_yue_hant_timewarp",
-    "kob_yue_hant_timewarp_clean",
-    "kob_yue_hant_timewarp_clean_flatten",
+    "kob_eng_ocr_lens",
+    "kob_eng_ocr_lens_clean",
+    "kob_eng_ocr_tesseract",
+    "kob_eng_ocr_tesseract_clean",
+    "kob_yue_hans_clean",
+    "kob_yue_hans_clean_review",
+    "kob_yue_hans_clean_review_flatten",
+    "kob_yue_hans_clean_review_flatten_timewarp",
+    "kob_yue_hans_clean_review_flatten_timewarp_romanize",
+    "kob_yue_hans_eng",
+    "kob_yue_hant_audio",
+    "kob_yue_hant_clean",
+    "kob_yue_hant_clean_review",
+    "kob_yue_hant_clean_review_flatten",
+    "kob_yue_hant_clean_review_flatten_timewarp",
+    "kob_yue_hant_clean_review_flatten_timewarp_simplify",
+    "kob_yue_hant_clean_review_flatten_timewarp_simplify_review",
+    "kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize",
+    "kob_yue_simplify_expected_series_diff",
     "kob_zho_hans_eng",
     "kob_zho_hant_ocr_fuse",
     "kob_zho_hant_ocr_fuse_clean",
@@ -99,7 +87,10 @@ __all__ = [
     "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
     "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
     "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize",
-    "kob_zho_hant_ocr_image",
+    "kob_zho_hant_ocr_lens",
+    "kob_zho_hant_ocr_lens_clean",
+    "kob_zho_hant_ocr_paddle",
+    "kob_zho_hant_ocr_paddle_clean",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -111,265 +102,251 @@ class _KobTestCaseKwargs(TypedDict, total=False):
     """Keyword arguments forwarded to KOB test case loading helpers."""
 
 
-@pytest.fixture
+@fixture
 def kob_eng() -> Series:
     """KOB English subtitles."""
     return Series.load(input_dir / "eng.srt")
 
 
-@pytest.fixture
-def kob_eng_ocr_lens() -> Series:
-    """KOB English subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "eng_ocr/lens.srt")
-
-
-@pytest.fixture
-def kob_eng_ocr_lens_new() -> Series:
-    """KOB English subtitles OCRed using internal Google Lens."""
-    return Series.load(input_dir / "eng_ocr/lens_new.srt")
-
-
-@pytest.fixture
-def kob_eng_ocr_paddle_new() -> Series:
-    """KOB English subtitles OCRed using internal PaddleOCR."""
-    return Series.load(input_dir / "eng_ocr/paddle_new.srt")
-
-
-@pytest.fixture
-def kob_eng_ocr_tesseract() -> Series:
-    """KOB English subtitles OCRed using Tesseract."""
-    return Series.load(input_dir / "eng_ocr/tesseract.srt")
-
-
-@pytest.fixture
-def kob_eng_ocr_tesseract_new() -> Series:
-    """KOB English subtitles OCRed using internal Tesseract."""
-    return Series.load(input_dir / "eng_ocr/tesseract_new.srt")
-
-
-@pytest.fixture
+@fixture
 def kob_yue_hans() -> Series:
-    """KOB 简体粤文 subtitles (input)."""
+    """KOB yue-Hans subtitles (input)."""
     return Series.load(input_dir / "yue-Hans.srt")
 
 
-@pytest.fixture
+@fixture
 def kob_yue_hant() -> Series:
-    """KOB 繁体粤文 subtitles."""
+    """KOB yue-Hant subtitles."""
     return Series.load(input_dir / "yue-Hant.srt")
-
-
-@pytest.fixture
-def kob_zho_hant_ocr_lens() -> Series:
-    """KOB 繁体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hant_ocr/lens.srt")
-
-
-@pytest.fixture
-def kob_zho_hant_ocr_lens_new() -> Series:
-    """KOB 繁体中文 subtitles OCRed using internal Google Lens."""
-    return Series.load(input_dir / "zho-Hant_ocr/lens_new.srt")
-
-
-@pytest.fixture
-def kob_zho_hant_ocr_paddle() -> Series:
-    """KOB 繁体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_ocr/paddle.srt")
-
-
-@pytest.fixture
-def kob_zho_hant_ocr_paddle_new() -> Series:
-    """KOB 繁体中文 subtitles OCRed using internal PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_ocr/paddle_new.srt")
-
-
-@pytest.fixture
-def kob_zho_hant_ocr_tesseract_new() -> Series:
-    """KOB 繁体中文 subtitles OCRed using internal Tesseract."""
-    return Series.load(input_dir / "zho-Hant_ocr/tesseract_new.srt")
-
-
-@cache
-def get_kob_eng_block_review_test_cases(
-    prompt_cls: type[MonoNPrompt] = BlockReviewPromptEng,
-    **kwargs: Unpack[_KobTestCaseKwargs],
-) -> list[TestCase]:
-    """Get KOB English block review test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    ocr_path = output_dir / "eng_ocr/lang/eng/block_review.json"
-    srt_path = output_dir / "eng/lang/eng/block_review.json"
-    ocr_test_cases = load_test_cases_from_json(
-        ocr_path, MonoNManager, prompt_cls=prompt_cls, **kwargs
-    )
-    srt_test_cases = load_test_cases_from_json(
-        srt_path, MonoNManager, prompt_cls=prompt_cls, **kwargs
-    )
-    return ocr_test_cases + srt_test_cases
 
 
 @cache
 def get_kob_eng_ocr_fusion_test_cases(
-    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptEng,
+    prompt: OcrFusionPrompt = OcrFusionPromptEng,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB English OCR fusion test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "eng_ocr/lang/eng/ocr_fusion.json"
-    return load_test_cases_from_json(
-        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, OcrFusionManager, prompt=prompt, **kwargs)
 
 
 @cache
-def get_kob_yue_deliniation_test_cases(
-    prompt_cls: type[Dual2To2Prompt] = YueDeliniationVsZhoPromptYueHans,
+def get_kob_eng_review_test_cases(
+    prompt: ReviewPrompt = ReviewPromptEng,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB 简体粤文 deliniation test cases.
+    """Get KOB English review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    ocr_path = output_dir / "eng_ocr/lang/eng/review.json"
+    srt_path = output_dir / "eng/lang/eng/review.json"
+    ocr_test_cases = load_test_cases_from_json(
+        ocr_path, ReviewManager, prompt=prompt, **kwargs
+    )
+    srt_test_cases = load_test_cases_from_json(
+        srt_path, ReviewManager, prompt=prompt, **kwargs
+    )
+    return ocr_test_cases + srt_test_cases
+
+
+@cache
+def get_kob_yue_hant_delineation_test_cases(
+    prompt: DelineationPrompt = YueZhoDelineationPromptYueHant,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB yue-Hant delineation test cases.
+
+    Arguments:
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = (
         output_dir
-        / "yue-Hans_transcribe"
-        / "multilang"
+        / "yue-Hant_transcribe"
+        / "lang"
         / "yue_zho"
         / "transcription"
-        / "deliniation"
+        / "delineation"
         / f"{get_torch_device()}.json"
     )
-    return load_test_cases_from_json(
-        path, Dual2To2Manager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, DelineationManager, prompt=prompt, **kwargs)
 
 
 @cache
-def get_kob_yue_punctuation_test_cases(
-    prompt_cls: type[DualNTo1Prompt] = YuePunctuationVsZhoPromptYueHans,
+def get_kob_yue_hant_guided_review_test_cases(
+    prompt: GuidedReviewPrompt = YueZhoGuidedReviewPromptYueHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB 简体粤文 punctuation test cases.
+    """Get KOB yue-Hant guided-review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = (
         output_dir
-        / "yue-Hans_transcribe"
-        / "multilang"
+        / "yue-Hant_transcribe"
+        / "lang"
+        / "yue_zho"
+        / "guided_review"
+        / f"{get_torch_device()}.json"
+    )
+    return load_test_cases_from_json(path, GuidedReviewManager, prompt=prompt, **kwargs)
+
+
+@cache
+def get_kob_yue_hans_review_test_cases(
+    prompt: ReviewPrompt = ReviewPromptYueHans,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB yue-Hans review test cases.
+
+    Arguments:
+        prompt: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = output_dir / "yue-Hans/lang/yue/review.json"
+    test_cases = load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
+    for test_case in test_cases:
+        test_case.verified = True
+    return test_cases
+
+
+@cache
+def get_kob_yue_hant_review_test_cases(
+    prompt: ReviewPrompt = ReviewPromptYueHant,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB yue-Hant review test cases.
+
+    Arguments:
+        prompt: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = output_dir / "yue-Hant/lang/yue/review.json"
+    test_cases = load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
+    for test_case in test_cases:
+        test_case.verified = True
+    return test_cases
+
+
+@cache
+def get_kob_yue_hant_simplify_review_test_cases(
+    prompt: ReviewPrompt = ReviewPromptYueHans,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB yue-Hant simplification review test cases.
+
+    Arguments:
+        prompt: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = output_dir / "yue-Hant/lang/yue/simplify_review.json"
+    test_cases = load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
+    for test_case in test_cases:
+        test_case.verified = True
+    return test_cases
+
+
+@cache
+def get_kob_yue_hant_punctuation_test_cases(
+    prompt: PunctuationPrompt = YueZhoPunctuationPromptYueHant,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB yue-Hant punctuation test cases.
+
+    Arguments:
+        prompt: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = (
+        output_dir
+        / "yue-Hant_transcribe"
+        / "lang"
         / "yue_zho"
         / "transcription"
         / "punctuation"
         / f"{get_torch_device()}.json"
     )
-    return load_test_cases_from_json(
-        path, YueZhoPunctuationManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
-def get_kob_yue_vs_zho_line_review_test_cases(
-    prompt_cls: type[Dual1To1Prompt] = YueLineReviewVsZhoPromptYueHans,
-    **kwargs: Unpack[_KobTestCaseKwargs],
-) -> list[TestCase]:
-    """Get KOB 简体粤文 vs 简体中文 line-review test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = (
-        output_dir
-        / "yue-Hans_transcribe"
-        / "multilang"
-        / "yue_zho"
-        / "line_review"
-        / f"{get_torch_device()}.json"
-    )
-    return load_test_cases_from_json(
-        path, YueZhoLineReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
-def get_kob_zho_hant_block_review_test_cases(
-    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHant,
-    **kwargs: Unpack[_KobTestCaseKwargs],
-) -> list[TestCase]:
-    """Get KOB 繁体中文 block review test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = output_dir / "zho-Hant_ocr/lang/zho/block_review.json"
-    return load_test_cases_from_json(
-        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, PunctuationManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_kob_zho_hant_ocr_fusion_test_cases(
-    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHant,
+    prompt: OcrFusionPrompt = OcrFusionPromptZhoHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB 繁体中文 OCR fusion test cases.
+    """Get KOB zho-Hant OCR fusion test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/ocr_fusion.json"
-    return load_test_cases_from_json(
-        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, OcrFusionManager, prompt=prompt, **kwargs)
 
 
 @cache
-def get_kob_zho_hant_simplify_block_review_test_cases(
-    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
+def get_kob_zho_hant_review_test_cases(
+    prompt: ReviewPrompt = ReviewPromptZhoHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB 繁体中文 simplification block review test cases.
+    """Get KOB zho-Hant review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hant_ocr/lang/zho/simplify_block_review.json"
-    return load_test_cases_from_json(
-        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
-    )
+    path = output_dir / "zho-Hant_ocr/lang/zho/review.json"
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
-@pytest.fixture
+@cache
+def get_kob_zho_hant_simplify_review_test_cases(
+    prompt: ReviewPrompt = ReviewPromptZhoHans,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB zho-Hant simplification review test cases.
+
+    Arguments:
+        prompt: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = output_dir / "zho-Hant_ocr/lang/zho/simplify_review.json"
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
+
+
+@fixture
 def kob_eng_expected_series_diff() -> list[str]:
     """Expected differences for KOB OCR English vs SRT English subtitles."""
     return [
@@ -404,7 +381,6 @@ def kob_eng_expected_series_diff() -> list[str]:
         "edit: OCR[428] -> SRT[440]: 'I wanted to trick you actually, you are really smart' -> 'I wanted to trick you actually, you are really smart.'",
         "split: OCR[477] -> SRT[489-490]: [\"- You shouldn't put it that way    - What?\"] -> [\"You shouldn't put it that way\", 'What?']",
         "insert: SRT[530] 'Bravo…' not present in OCR",
-        "insert: SRT[531] 'They should add 2 more marks for that powerful shoot' not present in OCR",
         "split: OCR[539] -> SRT[553-554]: ['What did you say?'] -> ['What did', 'you say?']",
         "split: OCR[544] -> SRT[559-560]: ['Damn you Cheng! You betrayed me!'] -> ['Damn you Cheng!', 'You betrayed me!']",
         "delete: OCR[562] 'You… You…' not present in SRT",
@@ -445,10 +421,10 @@ def kob_eng_expected_series_diff() -> list[str]:
         "edit: OCR[780] -> SRT[807]: 'But he framed us in return' -> 'But he framed us in return.'",
         "edit: OCR[782] -> SRT[809]: 'during the examination' -> 'during the examination.'",
         "insert: SRT[811] 'He finally won the race' not present in OCR",
-        "insert: SRT[812] 'To be the greatest Kung-fu fighter, invincible' not present in OCR",
         "edit: OCR[791] -> SRT[819]: 'Because being the scholar is too simple for me' -> 'Because being the scholar is too simple to me'",
         "split: OCR[797] -> SRT[825-826]: [\"Although you have taken 2 months' rest,\"] -> ['Although you have taken', \"2 months' rest,\"]",
-        "split_edit: OCR[799] -> SRT[827-828]: ['- Mr. Ha Yee    - Coming'] -> ['your legs and hands have not been totally recovered.', 'Coming']",
+        "edit: OCR[798] -> SRT[827]: 'your legs and hands have not been totally recovered' -> 'your legs and hands have not been totally recovered.'",
+        "edit: OCR[799] -> SRT[828]: '- Mr. Ha Yee    - Coming' -> 'Coming'",
         "split: OCR[801] -> SRT[830-831]: ['I will make the last herbal tea for you later'] -> ['I will make the last herbal tea', 'for you later']",
         'edit: OCR[812] -> SRT[842]: "We can\'t beg for food if we are late!" -> "We can\'t beg for good if we are late!"',
         'delete: OCR[814] "You\'re not a master now." not present in SRT',
@@ -522,221 +498,235 @@ def kob_eng_expected_series_diff() -> list[str]:
     ]
 
 
-@pytest.fixture
+@fixture
 def kob_eng_ocr_fuse() -> Series:
     """KOB English fused subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse.srt")
 
 
-@pytest.fixture
+@fixture
 def kob_eng_ocr_fuse_clean() -> Series:
     """KOB English fused and cleaned subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean.srt")
 
 
-@pytest.fixture
+@fixture
 def kob_eng_ocr_fuse_clean_validate() -> Series:
     """KOB English fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate.srt")
 
 
-@pytest.fixture
+@fixture
 def kob_eng_ocr_fuse_clean_validate_review() -> Series:
     """KOB English fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review.srt")
 
 
-@pytest.fixture
+@fixture
 def kob_eng_ocr_fuse_clean_validate_review_flatten() -> Series:
     """KOB English fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review_flatten.srt")
 
 
-@pytest.fixture
-def kob_eng_ocr_image() -> ImageSeries:
-    """KOB English image subtitles."""
-    return ImageSeries.load(output_dir / "eng_ocr/image", encoding="utf-8")
+@fixture
+def kob_eng_ocr_lens() -> Series:
+    """KOB English subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "eng_ocr/lens.srt")
 
 
-@pytest.fixture
-def kob_eng_timewarp() -> Series:
-    """KOB English timewarp subtitles."""
-    return Series.load(output_dir / "eng/timewarp.srt")
+@fixture
+def kob_eng_ocr_lens_clean() -> Series:
+    """KOB English Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "eng_ocr/lens_clean.srt")
 
 
-@pytest.fixture
-def kob_eng_timewarp_clean() -> Series:
-    """KOB English timewarp and cleaned subtitles."""
-    return Series.load(output_dir / "eng/timewarp_clean.srt")
+@fixture
+def kob_eng_ocr_tesseract() -> Series:
+    """KOB English subtitles OCRed using Tesseract."""
+    return Series.load(output_dir / "eng_ocr/tesseract.srt")
 
 
-@pytest.fixture
-def kob_eng_timewarp_clean_review() -> Series:
-    """KOB English timewarp, cleaned, and reviewed subtitles."""
-    return Series.load(output_dir / "eng/timewarp_clean_review.srt")
+@fixture
+def kob_eng_ocr_tesseract_clean() -> Series:
+    """KOB English Tesseract OCR subtitles, cleaned."""
+    return Series.load(output_dir / "eng_ocr/tesseract_clean.srt")
 
 
-@pytest.fixture
-def kob_eng_timewarp_clean_review_flatten() -> Series:
-    """KOB English timewarp, cleaned, reviewed, and flattened subtitles."""
-    return Series.load(output_dir / "eng/timewarp_clean_review_flatten.srt")
+@fixture
+def kob_eng_clean() -> Series:
+    """KOB English cleaned SRT subtitles."""
+    return Series.load(output_dir / "eng/clean.srt")
 
 
-@pytest.fixture
-def kob_yue_hans_audio() -> AudioSeries:
-    """KOB 简体粤文 audio subtitles."""
-    return AudioSeries.load(output_dir / "yue-Hans_transcribe/audio")
+@fixture
+def kob_eng_clean_review() -> Series:
+    """KOB English cleaned and reviewed SRT subtitles."""
+    return Series.load(output_dir / "eng/clean_review.srt")
 
 
-@pytest.fixture
-def kob_yue_hans_timewarp() -> Series:
-    """KOB 简体粤文 timewarp subtitles."""
-    return Series.load(output_dir / "yue-Hans/timewarp.srt")
+@fixture
+def kob_eng_clean_review_flatten() -> Series:
+    """KOB English cleaned, reviewed, and flattened SRT subtitles."""
+    return Series.load(output_dir / "eng/clean_review_flatten.srt")
 
 
-@pytest.fixture
-def kob_yue_hans_timewarp_clean() -> Series:
-    """KOB 简体粤文 timewarp and cleaned subtitles."""
-    return Series.load(output_dir / "yue-Hans/timewarp_clean.srt")
+@fixture
+def kob_eng_clean_review_flatten_timewarp() -> Series:
+    """KOB English cleaned, reviewed, flattened, and timewarped SRT subtitles."""
+    return Series.load(output_dir / "eng/clean_review_flatten_timewarp.srt")
 
 
-@pytest.fixture
-def kob_yue_hans_timewarp_clean_flatten() -> Series:
-    """KOB 简体粤文 timewarp, cleaned, and flattened subtitles."""
-    return Series.load(output_dir / "yue-Hans/timewarp_clean_flatten.srt")
+@fixture
+def kob_yue_hans_clean() -> Series:
+    """KOB yue-Hans cleaned SRT subtitles."""
+    return Series.load(output_dir / "yue-Hans/clean.srt")
 
 
-@pytest.fixture
-def kob_yue_hans_timewarp_clean_flatten_romanize() -> Series:
-    """KOB 简体粤文 timewarp/cleaned/flattened romanized subtitles."""
-    return Series.load(output_dir / "yue-Hans/timewarp_clean_flatten_romanize.srt")
+@fixture
+def kob_yue_hans_clean_review() -> Series:
+    """KOB yue-Hans cleaned and reviewed SRT subtitles."""
+    return Series.load(output_dir / "yue-Hans/clean_review.srt")
 
 
-@pytest.fixture
-def kob_yue_hans_transcribe() -> Series:
-    """KOB 简体粤文 transcribed subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe/transcribe.srt")
+@fixture
+def kob_yue_hans_clean_review_flatten() -> Series:
+    """KOB yue-Hans cleaned, reviewed, and flattened SRT subtitles."""
+    return Series.load(output_dir / "yue-Hans/clean_review_flatten.srt")
 
 
-@pytest.fixture
-def kob_yue_hans_transcribe_expected_cer() -> SeriesCERResult:
-    """Expected CER for KOB transcribed subtitles against flattened reference."""
-    return SeriesCERResult(
-        cer=0.5691643920049309,
-        substitutions=4937,
-        insertions=663,
-        deletions=864,
-        correct=5556,
-        reference_length=11357,
-    )
+@fixture
+def kob_yue_hans_clean_review_flatten_timewarp() -> Series:
+    """KOB yue-Hans cleaned, reviewed, flattened, and timewarped SRT subtitles."""
+    return Series.load(output_dir / "yue-Hans/clean_review_flatten_timewarp.srt")
 
 
-@pytest.fixture
-def kob_yue_hans_transcribe_review() -> Series:
-    """KOB 简体粤文 transcribed and line reviewed subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe/transcribe_review.srt")
-
-
-@pytest.fixture
-def kob_yue_hans_transcribe_review_translate() -> Series:
-    """KOB 简体粤文 transcribed/line-reviewed/translated subtitles."""
+@fixture
+def kob_yue_hans_clean_review_flatten_timewarp_romanize() -> Series:
+    """KOB yue-Hans cleaned, reviewed, flattened, timewarped, and romanized subtitles."""
     return Series.load(
-        output_dir / "yue-Hans_transcribe/transcribe_review_translate.srt"
+        output_dir / "yue-Hans/clean_review_flatten_timewarp_romanize.srt"
     )
 
 
-@pytest.fixture
-def kob_yue_hans_transcribe_review_translate_block_review() -> Series:
-    """KOB 简体粤文 transcribed/line-reviewed/translated/block-reviewed subtitles."""
+@fixture
+def kob_yue_hans_eng() -> Series:
+    """KOB bilingual yue-Hans and English subtitles."""
+    return Series.load(output_dir / "yue-Hans_eng.srt")
+
+
+@fixture
+def kob_yue_hant_audio() -> AudioSeries:
+    """KOB yue-Hant transcription audio guided by zho-Hant subtitles."""
+    return AudioSeries.load(output_dir / "yue-Hant_transcribe/audio")
+
+
+@fixture
+def kob_yue_hant_clean() -> Series:
+    """KOB yue-Hant cleaned SRT subtitles."""
+    return Series.load(output_dir / "yue-Hant/clean.srt")
+
+
+@fixture
+def kob_yue_hant_clean_review() -> Series:
+    """KOB yue-Hant cleaned and reviewed SRT subtitles."""
+    return Series.load(output_dir / "yue-Hant/clean_review.srt")
+
+
+@fixture
+def kob_yue_hant_clean_review_flatten() -> Series:
+    """KOB yue-Hant cleaned, reviewed, and flattened SRT subtitles."""
+    return Series.load(output_dir / "yue-Hant/clean_review_flatten.srt")
+
+
+@fixture
+def kob_yue_hant_clean_review_flatten_timewarp() -> Series:
+    """KOB yue-Hant cleaned, reviewed, flattened, and timewarped SRT subtitles."""
+    return Series.load(output_dir / "yue-Hant/clean_review_flatten_timewarp.srt")
+
+
+@fixture
+def kob_yue_hant_clean_review_flatten_timewarp_simplify() -> Series:
+    """KOB yue-Hant simplified cleaned/reviewed/flattened/timewarped subtitles."""
+    return Series.load(
+        output_dir / "yue-Hant/clean_review_flatten_timewarp_simplify.srt"
+    )
+
+
+@fixture
+def kob_yue_hant_clean_review_flatten_timewarp_simplify_review() -> Series:
+    """KOB yue-Hant simplified and reviewed SRT subtitles."""
+    return Series.load(
+        output_dir / "yue-Hant/clean_review_flatten_timewarp_simplify_review.srt"
+    )
+
+
+@fixture
+def kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize() -> Series:
+    """KOB yue-Hant simplified, reviewed, and romanized SRT subtitles."""
     return Series.load(
         output_dir
-        / "yue-Hans_transcribe"
-        / "transcribe_review_translate_block_review.srt"
+        / "yue-Hant"
+        / "clean_review_flatten_timewarp_simplify_review_romanize.srt"
     )
 
 
-@pytest.fixture
-def kob_yue_hans_transcribe_review_translate_block_review_expected_cer() -> (
-    SeriesCERResult
-):
-    """Expected CER for KOB reviewed subtitles against flattened reference."""
-    return SeriesCERResult(
-        cer=0.4607730914854275,
-        substitutions=3866,
-        insertions=611,
-        deletions=756,
-        correct=6735,
-        reference_length=11357,
-    )
+@fixture
+def kob_yue_simplify_expected_series_diff() -> list[str]:
+    """Expected differences for KOB Yue Simplified vs Traditional subtitles."""
+    return [
+        "edit: SIMP[1229] -> TRAD[1229]: '但系第十八式〝杀龙有悔〞' -> '但系第十八式「杀龙有悔」'",
+    ]
 
 
-@pytest.fixture
-def kob_yue_hant_timewarp() -> Series:
-    """KOB 繁體粵文 timewarp subtitles."""
-    return Series.load(output_dir / "yue-Hant/timewarp.srt")
-
-
-@pytest.fixture
-def kob_yue_hant_timewarp_clean() -> Series:
-    """KOB 繁體粵文 timewarp and cleaned subtitles."""
-    return Series.load(output_dir / "yue-Hant/timewarp_clean.srt")
-
-
-@pytest.fixture
-def kob_yue_hant_timewarp_clean_flatten() -> Series:
-    """KOB 繁體粵文 timewarp, cleaned, and flattened subtitles."""
-    return Series.load(output_dir / "yue-Hant/timewarp_clean_flatten.srt")
-
-
-@pytest.fixture
+@fixture
 def kob_zho_hans_eng() -> Series:
-    """KOB Bilingual 简体中文 and English subtitles."""
+    """KOB Bilingual zho-Hans and English subtitles."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
-@pytest.fixture
+@fixture
 def kob_zho_hant_ocr_fuse() -> Series:
-    """KOB 繁体中文 fused subtitles."""
+    """KOB zho-Hant fused subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse.srt")
 
 
-@pytest.fixture
+@fixture
 def kob_zho_hant_ocr_fuse_clean() -> Series:
-    """KOB 繁体中文 fused and cleaned subtitles."""
+    """KOB zho-Hant fused and cleaned subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean.srt")
 
 
-@pytest.fixture
+@fixture
 def kob_zho_hant_ocr_fuse_clean_validate() -> Series:
-    """KOB 繁体中文 fused, cleaned, and validated subtitles."""
+    """KOB zho-Hant fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate.srt")
 
 
-@pytest.fixture
+@fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review() -> Series:
-    """KOB 繁体中文 fused, cleaned, validated, and reviewed subtitles."""
+    """KOB zho-Hant fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate_review.srt")
 
 
-@pytest.fixture
+@fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review_flatten() -> Series:
-    """KOB 繁体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """KOB zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
 
 
-@pytest.fixture
+@fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify() -> Series:
-    """KOB 繁体中文 simplified fused/cleaned/validated/reviewed/flattened subtitles."""
+    """KOB zho-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten_simplify.srt"
     )
 
 
-@pytest.fixture
+@fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() -> Series:
-    """KOB 繁体中文 simplified/reviewed fused/cleaned subtitles."""
+    """KOB zho-Hant simplified/reviewed fused/cleaned subtitles."""
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -744,10 +734,10 @@ def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() -> Ser
     )
 
 
-@pytest.fixture
+@fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize(  # noqa: E501
 ) -> Series:
-    """KOB 简体中文 simplified/reviewed fused/cleaned romanized subtitles."""
+    """KOB zho-Hans simplified/reviewed fused/cleaned romanized subtitles."""
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -755,7 +745,25 @@ def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize
     )
 
 
-@pytest.fixture
-def kob_zho_hant_ocr_image() -> ImageSeries:
-    """KOB 繁体中文 image subtitles."""
-    return ImageSeries.load(output_dir / "zho-Hant_ocr/image", encoding="utf-8")
+@fixture
+def kob_zho_hant_ocr_lens() -> Series:
+    """KOB zho-Hant subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "zho-Hant_ocr/lens.srt")
+
+
+@fixture
+def kob_zho_hant_ocr_lens_clean() -> Series:
+    """KOB zho-Hant Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hant_ocr/lens_clean.srt")
+
+
+@fixture
+def kob_zho_hant_ocr_paddle() -> Series:
+    """KOB zho-Hant subtitles OCRed using PaddleOCR."""
+    return Series.load(output_dir / "zho-Hant_ocr/paddle.srt")
+
+
+@fixture
+def kob_zho_hant_ocr_paddle_clean() -> Series:
+    """KOB zho-Hant PaddleOCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")

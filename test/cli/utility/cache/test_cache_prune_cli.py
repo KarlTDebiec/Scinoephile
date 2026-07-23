@@ -4,24 +4,24 @@
 
 from __future__ import annotations
 
-from os import utime
 from pathlib import Path
 from time import time
 
-import pytest
+from pytest import CaptureFixture, raises
 
 from scinoephile.cli.utility.cache.cache_prune_cli import CachePruneCli
 from scinoephile.common.testing import run_cli_with_args
+from test.helpers.files import set_mtime, write_cache_file
 
 
-def test_cache_prune_dry_run(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
+def test_cache_prune_dry_run(tmp_path: Path, capsys: CaptureFixture[str]):
     """Test dry-run cache pruning.
 
     Arguments:
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    old_path = _write_cache_file(tmp_path / "llm/old.json")
+    old_path = write_cache_file(tmp_path / "llm/old.json")
     _set_old(old_path)
 
     run_cli_with_args(
@@ -38,8 +38,8 @@ def test_cache_prune_confirmed(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    old_path = _write_cache_file(tmp_path / "llm/old.json")
-    new_path = _write_cache_file(tmp_path / "llm/new.json")
+    old_path = write_cache_file(tmp_path / "llm/old.json")
+    new_path = write_cache_file(tmp_path / "llm/new.json")
     _set_old(old_path)
 
     run_cli_with_args(CachePruneCli, f"--cache-dir {tmp_path} --older-than 30d --yes")
@@ -54,7 +54,7 @@ def test_cache_prune_requires_confirmation(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    with pytest.raises(SystemExit) as exc_info:
+    with raises(SystemExit) as exc_info:
         run_cli_with_args(CachePruneCli, f"--cache-dir {tmp_path} --older-than 30d")
     assert exc_info.value.code == 2
 
@@ -66,17 +66,4 @@ def _set_old(path: Path):
         path: path to modify
     """
     timestamp = time() - 60 * 60 * 24 * 40
-    utime(path, (timestamp, timestamp))
-
-
-def _write_cache_file(path: Path) -> Path:
-    """Write a cache file.
-
-    Arguments:
-        path: path to write
-    Returns:
-        written path
-    """
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("{}", encoding="utf-8")
-    return path
+    set_mtime(path, timestamp)

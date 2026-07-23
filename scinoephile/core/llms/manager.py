@@ -5,47 +5,115 @@
 from __future__ import annotations
 
 from abc import ABC
+from collections.abc import Mapping
+from copy import copy
+from dataclasses import dataclass
 from functools import cache
-from typing import Any, TypedDict, Unpack, cast
+from typing import Any, ClassVar, cast
 
-from pydantic import Field, create_model, model_validator
-
-from scinoephile.core import ScinoephileError
+from pydantic import create_model
 
 from .answer import Answer
-from .models import get_model_name
+from .models import LLMModel, get_model_name
 from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
 
 __all__ = [
     "Manager",
-    "TestCaseClsKwargs",
+    "PromptModelField",
 ]
 
 
-class TestCaseClsKwargs(TypedDict, total=False):
-    """Keyword arguments for Manager.get_test_case_cls_from_data."""
+@dataclass(frozen=True, slots=True, kw_only=True)
+class PromptModelField:
+    """Prompt-specific changes to one semantic model field."""
 
-    prompt_cls: type[Prompt]
-    """Prompt class used to construct the test case."""
-    manager_cls: type[Manager]
-    """Manager class used to construct the test case."""
+    alias: str | None = None
+    """Serialized field name, or None to retain the semantic name."""
+    annotation: Any = None
+    """Replacement field annotation, or None to retain the semantic annotation."""
+    description: str | None = None
+    """JSON schema description, or None to retain the semantic description."""
 
 
-class Manager(ABC):
+class Manager[TTestCase: TestCase](ABC):
     """ABC for LLM managers."""
 
+    operation: ClassVar[str]
+    """Stable operation identifier used in persistence and CLIs."""
+    base_prompt: ClassVar[Prompt]
+    """Base prompt defining persisted test-case field names."""
+    test_case_base_cls: ClassVar[type[TestCase]]
+    """Static test-case model defining the operation's semantic shape."""
+
     @classmethod
-    @cache
-    def get_query_cls(
+    def create_prompt_model[TModel: LLMModel](
         cls,
-        prompt_cls: type[Prompt],
-    ) -> type[Query]:
+        base_cls: type[TModel],
+        prompt: Prompt,
+        field_configs: Mapping[str, PromptModelField],
+        *,
+        module: str | None = None,
+        name: str | None = None,
+    ) -> type[TModel]:
+        """Create a prompt-specific model from a semantic base model.
+
+        Arguments:
+            base_cls: semantic model class whose shape and constraints are retained
+            prompt: text and field aliases for LLM correspondence
+            field_configs: prompt-specific field changes keyed by semantic field name
+            module: generated model module, or None to use the base model module
+            name: generated model base name, or None to use the base model name
+        Returns:
+            prompt-specific model class
+        """
+        fields: dict[str, Any] = {}
+        for field_name, field_config in field_configs.items():
+            field_info = copy(base_cls.model_fields[field_name])
+            if field_config.alias is not None:
+                field_info.alias = field_config.alias
+                field_info.validation_alias = field_config.alias
+                field_info.serialization_alias = field_config.alias
+            if field_config.description is not None:
+                field_info.description = field_config.description
+
+            annotation = field_config.annotation
+            if annotation is None:
+                annotation = field_info.annotation
+            fields[field_name] = (annotation, field_info)
+
+        if module is None:
+            module = base_cls.__module__
+        if name is None:
+            name = base_cls.__name__
+        model = create_model(
+            get_model_name(name, prompt.name),
+            __base__=base_cls,
+            __module__=module,
+            **fields,
+        )
+        if issubclass(model, (Answer, Query, TestCase)):
+            model.prompt = prompt
+        return model
+
+    @classmethod
+    def get_answer_cls(cls, prompt: Prompt) -> type[Answer]:
+        """Get concrete answer class with provided configuration.
+
+        Arguments:
+            prompt: text for LLM correspondence
+        Returns:
+            answer model class
+        """
+        raise NotImplementedError
+
+    @classmethod
+    def get_query_cls(cls, prompt: Prompt) -> type[Query]:
         """Get concrete query class with provided configuration.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             query model class
         """
@@ -53,185 +121,32 @@ class Manager(ABC):
 
     @classmethod
     @cache
-    def get_answer_cls(
-        cls,
-        prompt_cls: type[Prompt],
-    ) -> type[Answer]:
-        """Get concrete answer class with provided configuration.
-
-        Arguments:
-            prompt_cls: text for LLM correspondence
-        Returns:
-            answer model class
-        """
-        raise NotImplementedError
-
-    @classmethod
-    @cache
-    def get_test_case_cls[TTestCase: TestCase](
-        cls,
-        prompt_cls: type[Prompt],
-    ) -> type[TTestCase]:
+    def get_test_case_cls(cls, prompt: Prompt) -> type[TTestCase]:
         """Get concrete test case class with provided configuration.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             test case model class
+        Raises:
+            TypeError: prompt type does not match this manager
         """
-        query_cls = cls.get_query_cls(prompt_cls)
-        answer_cls = cls.get_answer_cls(prompt_cls)
-        fields = cls.get_test_case_fields(query_cls, answer_cls, prompt_cls)
-        validators = cls.get_test_case_validators()
-
-        model = cast(
-            "type[TTestCase]",
-            create_model(
-                get_model_name(TestCase.__name__, prompt_cls.__name__),
-                __base__=TestCase,
-                __module__=TestCase.__module__,
-                __validators__=validators,
-                **fields,
-            ),
+        expected_prompt_cls = type(cls.base_prompt)
+        if not isinstance(prompt, expected_prompt_cls):
+            raise TypeError(
+                f"{cls.__name__} requires {expected_prompt_cls.__name__}; "
+                f"got {type(prompt).__name__}."
+            )
+        query_cls = cls.get_query_cls(prompt)
+        answer_cls = cls.get_answer_cls(prompt)
+        model = cls.create_prompt_model(
+            cls.test_case_base_cls,
+            prompt,
+            {
+                "query": PromptModelField(annotation=query_cls),
+                "answer": PromptModelField(annotation=answer_cls | None),
+            },
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
-        model.prompt_cls = prompt_cls
-        setattr(model, "get_auto_verified", cls.get_auto_verified)
-        setattr(model, "get_min_difficulty", cls.get_min_difficulty)
-        return model
-
-    @classmethod
-    def get_test_case_cls_from_data[TTestCase: TestCase](
-        cls,
-        data: dict,
-        **kwargs: Unpack[TestCaseClsKwargs],
-    ) -> type[TTestCase]:
-        """Get concrete test case class for provided data with provided configuration.
-
-        Arguments:
-            data: data from JSON
-            **kwargs: additional keyword arguments passed to get_test_case_cls
-        Returns:
-            test case class
-        """
-        if (prompt_cls := kwargs.get("prompt_cls")) is None:
-            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        manager_cls = kwargs.get("manager_cls") or cls
-        return manager_cls.get_test_case_cls(prompt_cls=prompt_cls)
-
-    @classmethod
-    def get_test_case_fields(
-        cls,
-        query_cls: type[Query],
-        answer_cls: type[Answer],
-        prompt_cls: type[Prompt],
-    ) -> dict[str, Any]:
-        """Get fields dictionary for dynamic TestCase class creation.
-
-        Arguments:
-            query_cls: query model class
-            answer_cls: answer model class
-            prompt_cls: text for LLM correspondence
-        Returns:
-            fields dictionary for create_model
-        """
-        fields: dict[str, Any] = {
-            "query": (query_cls, Field(...)),
-            "answer": (answer_cls | None, Field(default=None)),
-            "difficulty": (
-                int,
-                Field(0, description=prompt_cls.difficulty_description),
-            ),
-            "prompt": (
-                bool,
-                Field(False, description=prompt_cls.prompt_description),
-            ),
-            "verified": (
-                bool,
-                Field(False, description=prompt_cls.verified_description),
-            ),
-        }
-        return fields
-
-    @classmethod
-    def get_test_case_validators(cls) -> dict[str, Any]:
-        """Get validators dictionary for dynamic TestCase class creation.
-
-        Returns:
-            validators dictionary for create_model
-        """
-        validators: dict[str, Any] = {
-            "enforce_min_difficulty": model_validator(mode="after")(
-                cls.enforce_min_difficulty
-            ),
-            "validate_test_case": model_validator(mode="after")(cls.validate_test_case),
-        }
-        return validators
-
-    @staticmethod
-    def enforce_min_difficulty(model: TestCase) -> TestCase:
-        """Ensure difficulty reflects prompt/split status if not already higher.
-
-        Arguments:
-            model: test case to validate
-        Returns:
-            validated test case
-        """
-        model.difficulty = max(model.difficulty, model.get_min_difficulty())
-        return model
-
-    @staticmethod
-    def get_auto_verified(model: TestCase) -> bool:
-        """Whether this test case should automatically be verified.
-
-        Arguments:
-            model: test case to inspect
-        Returns:
-            whether the test case should be auto-verified
-        """
-        return False
-
-    @staticmethod
-    def get_min_difficulty(model: TestCase) -> int:
-        """Get minimum difficulty based on the test case properties.
-
-        Arguments:
-            model: test case to inspect
-        Returns:
-            minimum difficulty
-        """
-        return 0
-
-    @staticmethod
-    def validate_query(model: Query) -> Query:
-        """Ensure query is valid.
-
-        Arguments:
-            model: query to validate
-        Returns:
-            validated query
-        """
-        return model
-
-    @staticmethod
-    def validate_answer(model: Answer) -> Answer:
-        """Ensure answer is valid.
-
-        Arguments:
-            model: answer to validate
-        Returns:
-            validated answer
-        """
-        return model
-
-    @staticmethod
-    def validate_test_case(model: TestCase) -> TestCase:
-        """Ensure query and answer together are valid.
-
-        Arguments:
-            model: test case to validate
-        Returns:
-            validated test case
-        """
-        return model
+        return cast("type[TTestCase]", model)

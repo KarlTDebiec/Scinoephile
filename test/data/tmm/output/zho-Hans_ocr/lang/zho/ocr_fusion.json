@@ -1,0 +1,7057 @@
+[
+  {
+    "query": {
+      "one": "众卿家大发雷霆所为何事",
+      "two": "众卿家大发雷霆 所为何事"
+    },
+    "answer": {
+      "output": "众卿家大发雷霆　　所为何事",
+      "note": "将 PaddleOCR 中存在而 Google Lens 中不存在的空格处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "王母\n你先讲",
+      "two": "王母 你先讲"
+    },
+    "answer": {
+      "output": "王母　　你先讲",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "玉帝啊\n降龙罗汉",
+      "two": "玉帝啊 降龙罗汉"
+    },
+    "answer": {
+      "output": "玉帝啊　　降龙罗汉",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "让牛郎织女幽会\n丑大了",
+      "two": "让牛郎织女幽会 丑大了"
+    },
+    "answer": {
+      "output": "让牛郎织女幽会　　丑大了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "玉帝\n我这只眼",
+      "two": "玉帝 我这只眼"
+    },
+    "answer": {
+      "output": "玉帝　　我这只眼",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "国有国法\n天有天条",
+      "two": "国有国法 天有天条"
+    },
+    "answer": {
+      "output": "国有国法　　天有天条",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哼财神你也不必这么冲动啊",
+      "two": "哼 财神 你也不必这么冲动啊"
+    },
+    "answer": {
+      "output": "哼财神你也不必这么冲动啊",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "弄得那些仵作都没事做",
+      "two": "弄得那些仵作都沒事做"
+    },
+    "answer": {
+      "output": "弄得那些仵作都没事做",
+      "note": "采用了 Google Lens OCR 识别的汉字“没”，替换了 PaddleOCR 中的“沒”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "玉帝你不摆平这个混蛋",
+      "two": "玉帝 你不摆平这个混蛋"
+    },
+    "answer": {
+      "output": "玉帝你不摆平这个混蛋",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我阎王一定告到九重天\n小事化大",
+      "two": "我阎王一定告到九重天 小事化大"
+    },
+    "answer": {
+      "output": "我阎王一定告到九重天　　小事化大",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "来人呢替我抓降龙上殿",
+      "two": "来人呢 替我抓降龙上殿"
+    },
+    "answer": {
+      "output": "来人呢　　替我抓降龙上殿",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎⋯⋯哎哟⋯⋯不要这么用劲儿嘛",
+      "two": "哎⋯哎哟⋯不要这么用劲儿嘛"
+    },
+    "answer": {
+      "output": "哎⋯⋯哎哟⋯⋯不要这么用劲儿嘛",
+      "note": "采用了 Google Lens OCR 中更完整的省略号，将 PaddleOCR 中较短的省略号补正为双省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "怎么\n大家都来了\n各位",
+      "two": "怎么 大家都来了 各位"
+    },
+    "answer": {
+      "output": "怎么　　大家都来了　　各位",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你又不是降龙\n你是伏虎\n你来干吗",
+      "two": "你又不是降龙 你是伏虎 你来干吗"
+    },
+    "answer": {
+      "output": "你又不是降龙　　你是伏虎　　你来干吗",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎是玉帝",
+      "two": "哎是 玉帝"
+    },
+    "answer": {
+      "output": "哎是玉帝",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "没你的事你干吗上来呀",
+      "two": "没你的事 你干吗上来呀"
+    },
+    "answer": {
+      "output": "没你的事你干吗上来呀",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你这么讲义气\n难道你也有份",
+      "two": "你这么讲义气 难道你也有份"
+    },
+    "answer": {
+      "output": "你这么讲义气　　难道你也有份",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎\n神仙就大了",
+      "two": "哎神仙就大了"
+    },
+    "answer": {
+      "output": "哎神仙就大了",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "伏虎你真是个管家婆",
+      "two": "伏虎 你真是个管家婆"
+    },
+    "answer": {
+      "output": "伏虎你真是个管家婆",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不过你还挺讲义气我心领了",
+      "two": "不过你还挺讲义气 我心领了"
+    },
+    "answer": {
+      "output": "不过你还挺讲义气　　我心领了",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙被处理为两个表意空格，以保留 PaddleOCR 更可靠的换行/分隔格式。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎谢谢⋯",
+      "two": "哎谢谢．"
+    },
+    "answer": {
+      "output": "哎谢谢⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的句号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎照目前情形看起来",
+      "two": "哎 照目前情形看起来"
+    },
+    "answer": {
+      "output": "哎照目前情形看起来",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我们俩兄弟聊天\n几时轮到你插嘴",
+      "two": "我们俩兄弟聊天 几时轮到你插嘴"
+    },
+    "answer": {
+      "output": "我们俩兄弟聊天　　几时轮到你插嘴",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嘿呀\n你这个灶君",
+      "two": "嘿呀 你这个灶君"
+    },
+    "answer": {
+      "output": "嘿呀　　你这个灶君",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你就到上面来说人家不是插他",
+      "two": "你就到上面来说人家不是 插他"
+    },
+    "answer": {
+      "output": "你就到上面来说人家不是插他",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊刚才插完好痛\n现在又要插",
+      "two": "啊 刚才插完好痛 现在又要插"
+    },
+    "answer": {
+      "output": "啊刚才插完好痛　　现在又要插",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格；将 Google Lens OCR 中显示为换行符、PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "小小一个罗汉什么事情你都要管",
+      "two": "小小一个罗汉 什么事情你都要管"
+    },
+    "answer": {
+      "output": "小小一个罗汉　　什么事情你都要管",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "岂有此理你偷吃我的蟠桃 赔来",
+      "two": "岂有此理 你偷吃我的蟠桃 赔来"
+    },
+    "answer": {
+      "output": "岂有此理　　你偷吃我的蟠桃　　赔来",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应的空格替换为表意空格，其中“岂有此理”和“你偷吃我的蟠桃”之间根据 PaddleOCR 的分隔采用两个表意空格；“你偷吃我的蟠桃”和“赔来”之间的空格也替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "今年换换口味吃香蕉好了",
+      "two": "今年換換口味吃香蕉好了"
+    },
+    "answer": {
+      "output": "今年换换口味吃香蕉好了",
+      "note": "采用了 Google Lens OCR 的汉字识别，将 PaddleOCR 中的繁体字“換換”更正为简体字“换换”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我照吃不误\n到哪一个了",
+      "two": "我照吃不误 到哪一个了"
+    },
+    "answer": {
+      "output": "我照吃不误　　到哪一个了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "到哪一个了\n就你好了",
+      "two": "到哪一个了 就你好了"
+    },
+    "answer": {
+      "output": "到哪一个了　　就你好了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你这个月老仗着几根破烂红绳",
+      "two": "你这个月老 仗着几根破烂红绳"
+    },
+    "answer": {
+      "output": "你这个月老　　仗着几根破烂红绳",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我说你老了\n没事就退休吧",
+      "two": "我说你老了 没事就退休吧"
+    },
+    "answer": {
+      "output": "我说你老了　　没事就退休吧",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "弄得男跟男女跟女",
+      "two": "弄得男跟男 女跟女"
+    },
+    "answer": {
+      "output": "弄得男跟男　　女跟女",
+      "note": "保留了 Google Lens OCR 中更可靠的汉字识别结果；将 PaddleOCR 中体现分隔的空格处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "再弄下去\n人跟猪\n蟑螂配牛了",
+      "two": "再弄下去 人跟豬 蟑螂配牛了"
+    },
+    "answer": {
+      "output": "再弄下去　　人跟猪　　蟑螂配牛了",
+      "note": "采用了 Google Lens OCR 识别的汉字“猪”替换 PaddleOCR 的“豬”；将 Google Lens OCR 中的换行符和 PaddleOCR 中的空格统一替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "最慘的是蚂蚁跟大象啊",
+      "two": "最惨的是蚂蚁跟大象啊"
+    },
+    "answer": {
+      "output": "最慘的是蚂蚁跟大象啊",
+      "note": "采用了 Google Lens OCR 的汉字识别，将 PaddleOCR 识别为“惨”的字更正为“慘”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎人家年纪不小了不要欺负他",
+      "two": "哎人家年纪不小了 不要欺负他"
+    },
+    "answer": {
+      "output": "哎人家年纪不小了　　不要欺负他",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙被规范为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀\n你想管闲事吗\n阎罗王",
+      "two": "哎呀 你想管闲事吗 阎罗王"
+    },
+    "answer": {
+      "output": "哎呀　　你想管闲事吗　　阎罗王",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不要碰面就插\n我们是讲道理的",
+      "two": "不要碰面就插 我们是讲道理的"
+    },
+    "answer": {
+      "output": "不要碰面就插　　我们是讲道理的",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "就不肯给她一个儿子为什么",
+      "two": "就不肯给她一个儿子 为什么"
+    },
+    "answer": {
+      "output": "就不肯给她一个儿子为什么",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "搞得那个女的终于想不开跳海自尽",
+      "two": "搞得那个女的终于想不开 跳海自尽"
+    },
+    "answer": {
+      "output": "搞得那个女的终于想不开　　跳海自尽",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "到了下面\n他还说她是枉死的",
+      "two": "到了下面 他还说她是枉死的"
+    },
+    "answer": {
+      "output": "到了下面　　他还说她是枉死的",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "降龙⋯",
+      "two": "降龙・"
+    },
+    "answer": {
+      "output": "降龙⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，纠正了 PaddleOCR 误识别的标点符号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "凡人的命运早已经成定数并无不妥",
+      "two": "凡人的命运早已经成定数 并无不妥"
+    },
+    "answer": {
+      "output": "凡人的命运早已经成定数　　并无不妥",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎我⋯",
+      "two": "哎我・"
+    },
+    "answer": {
+      "output": "哎我⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号“⋯”，替换了 PaddleOCR 误识别的间隔号“・”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "谁说照例执行谁订的令",
+      "two": "谁说照例执行 谁订的令"
+    },
+    "answer": {
+      "output": "谁说照例执行　　谁订的令",
+      "note": "将 PaddleOCR 中存在但 Google Lens 中不存在的空格对应为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "玉帝你定的例",
+      "two": "玉帝 你定的例"
+    },
+    "answer": {
+      "output": "玉帝你定的例",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "玉帝各位仙友",
+      "two": "玉帝 各位仙友"
+    },
+    "answer": {
+      "output": "玉帝　　各位仙友",
+      "note": "PaddleOCR 中存在而 Google Lens 中不存在的空格，结合语义判断应为停顿，故以两个表意空格表示。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "笑死人了\n你打得过他吗",
+      "two": "笑死人了 你打得过他吗"
+    },
+    "answer": {
+      "output": "笑死人了　　你打得过他吗",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我要跟他拼了\n我不会放过他的",
+      "two": "我要跟他拼了 我不会放过他的"
+    },
+    "answer": {
+      "output": "我要跟他拼了　　我不会放过他的",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "听着就算天条有什么不对",
+      "two": "听着 就算天条有什么不对"
+    },
+    "answer": {
+      "output": "听着　　就算天条有什么不对",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一个做猪\n一个做狗",
+      "two": "一个做猪 一个做狗"
+    },
+    "answer": {
+      "output": "一个做猪　　一个做狗",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我说你做蟑螂你怎么说",
+      "two": "我说你做蟑螂 你怎么说"
+    },
+    "answer": {
+      "output": "我说你做蟑螂　　你怎么说",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应位置的间隙统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊哎\n慢点\n观音来了",
+      "two": "啊哎慢点 观音来了"
+    },
+    "answer": {
+      "output": "啊哎慢点　　观音来了",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "玉帝我们每一位成仙至今",
+      "two": "玉帝 我们每一位成仙至今"
+    },
+    "answer": {
+      "output": "玉帝我们每一位成仙至今",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "世情种种凡间一切在我们来说",
+      "two": "世情种种 凡间一切在我们来说"
+    },
+    "answer": {
+      "output": "世情种种　　凡间一切在我们来说",
+      "note": "Google Lens OCR 中不存在而 PaddleOCR 中存在的空格被替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊听观音大士说话真是好听啊",
+      "two": "啊 听观音大士说话真是好听啊"
+    },
+    "answer": {
+      "output": "啊听观音大士说话真是好听啊",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎舒服\n舒服",
+      "two": "哎舒服 舒服"
+    },
+    "answer": {
+      "output": "哎舒服　　舒服",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你不要乱说话\n阎罗王",
+      "two": "你不要乱说话 阎罗王"
+    },
+    "answer": {
+      "output": "你不要乱说话　　阎罗王",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "慢点\n大士自有分寸",
+      "two": "慢点 大士自有分寸"
+    },
+    "answer": {
+      "output": "慢点　　大士自有分寸",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "降龙你做了这么多的事情",
+      "two": "降龙 你做了这么多的事情"
+    },
+    "answer": {
+      "output": "降龙你做了这么多的事情",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "无论他们是多么的笨多么的无知",
+      "two": "无论他们是多么的笨 多么的无知"
+    },
+    "answer": {
+      "output": "无论他们是多么的笨　　多么的无知",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "怎么凶\n怎么该死也好",
+      "two": "怎么凶 怎么该死也好"
+    },
+    "answer": {
+      "output": "怎么凶　　怎么该死也好",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "始终都是⋯",
+      "two": "始终都是・"
+    },
+    "answer": {
+      "output": "始终都是⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的间隔号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "是这个⋯",
+      "two": "是这个・"
+    },
+    "answer": {
+      "output": "是这个⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的间隔号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎是这个⋯",
+      "two": "哎是这个・"
+    },
+    "answer": {
+      "output": "哎是这个⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号“⋯”，替换了 PaddleOCR 误识别的间隔号“・”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "是不是\n降龙",
+      "two": "是不是 降龙"
+    },
+    "answer": {
+      "output": "是不是　　降龙",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "是啊\n就是这样",
+      "two": "是啊 就是这样"
+    },
+    "answer": {
+      "output": "是啊　　就是这样",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哟我怕你啊我正有此意",
+      "two": "哟我怕你啊 我正有此意"
+    },
+    "answer": {
+      "output": "哟我怕你啊　　我正有此意",
+      "note": "将 PaddleOCR 中存在而 Google Lens 中不存在的空格处理为两个表意空格，以保留 PaddleOCR 的换行格式信息。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊⋯不用法力⋯",
+      "two": "啊⋯不用法力・"
+    },
+    "answer": {
+      "output": "啊⋯不用法力⋯",
+      "note": "采用了 Google Lens OCR 末尾识别出的省略号“⋯”，替换了 PaddleOCR 末尾误识别的间隔号“・”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "降龙就用你的诚意去感化他们",
+      "two": "降龙 就用你的诚意去感化他们"
+    },
+    "answer": {
+      "output": "降龙　　就用你的诚意去感化他们",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "谢谢不过两天半就够了",
+      "two": "谢谢 不过两天半就够了"
+    },
+    "answer": {
+      "output": "谢谢　　不过两天半就够了",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "第一 除非你有公文批准",
+      "two": "第一除非你有公文批准"
+    },
+    "answer": {
+      "output": "第一除非你有公文批准",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "彼此彼此",
+      "two": "彼此 彼此"
+    },
+    "answer": {
+      "output": "彼此彼此",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好兄弟还有什么话跟我说",
+      "two": "好兄弟 还有什么话跟我说"
+    },
+    "answer": {
+      "output": "好兄弟　　还有什么话跟我说",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你死定了\n你打也不会打",
+      "two": "你死定了 你打也不会打"
+    },
+    "answer": {
+      "output": "你死定了　　你打也不会打",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "法力也不准用\n你到下面去死定了",
+      "two": "法力也不准用 你到下面去死定了"
+    },
+    "answer": {
+      "output": "法力也不准用　　你到下面去死定了",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "降龙你不会死的",
+      "two": "降龙 你不会死的"
+    },
+    "answer": {
+      "output": "降龙　　你不会死的",
+      "note": "PaddleOCR 中的空格表示更可靠的换行间隙，结合 Google Lens 的汉字识别，已将该间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "也要靠它才能够返回天庭",
+      "two": "也要靠它才能夠返回天庭"
+    },
+    "answer": {
+      "output": "也要靠它才能够返回天庭",
+      "note": "采用了 Google Lens OCR 的汉字识别，将 PaddleOCR 中的“夠”更正为“够”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嗯一天三次\n太可怜了",
+      "two": "嗯 一天三次 太可怜了"
+    },
+    "answer": {
+      "output": "嗯　　一天三次\n太可怜了",
+      "note": "采用了 PaddleOCR 的换行格式之外的分词间隔信息与 Google Lens 的文本内容：将“嗯”和“一天三次”之间在两者中均体现出的停顿处理为两个表意空格，并保留了 PaddleOCR 体现出的第二处分行格式。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "凡事小心 切记千万不要堕入邪道",
+      "two": "凡事小心切记千万不要堕入邪道"
+    },
+    "answer": {
+      "output": "凡事小心切记千万不要堕入邪道",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎你是不是存心整他他扇子都没有拿",
+      "two": "哎你是不是存心整他 他扇子都沒有拿"
+    },
+    "answer": {
+      "output": "哎你是不是存心整他　　他扇子都没有拿",
+      "note": "采用了 Google Lens OCR 识别的“没有”字形；将 Google Lens OCR 中无空格而 PaddleOCR 中有空格的位置视为换行间隙，并替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎我问你你是干什么吃的你啊",
+      "two": "哎我问你 你是干什么吃的你啊"
+    },
+    "answer": {
+      "output": "哎我问你　　你是干什么吃的你啊",
+      "note": "Google Lens OCR 和 PaddleOCR 中对应位置的间隙被统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "换班",
+      "two": "換班"
+    },
+    "answer": {
+      "output": "换班",
+      "note": "采用了 Google Lens OCR 识别出的汉字“换班”，替换了 PaddleOCR 中对应的异体字“換班”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎那好啊跟我一道把扇子送给降龙",
+      "two": "哎 那好啊 跟我一道把扇子送给降龙"
+    },
+    "answer": {
+      "output": "哎　　那好啊　　跟我一道把扇子送给降龙",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应的语句间隙统一为表意空格：把 PaddleOCR 中存在而 Google Lens OCR 中未明确分开的空格，以及 Google Lens OCR 中连续语流里的停顿，融合为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "只有你一个人可以随便出入的哎走",
+      "two": "只有你一个人可以随便出入的 哎走"
+    },
+    "answer": {
+      "output": "只有你一个人可以随便出入的　　哎走",
+      "note": "Google Lens OCR 和 PaddleOCR 中对应的间隙被统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎不行犯天条的",
+      "two": "哎 不行 犯天条的"
+    },
+    "answer": {
+      "output": "哎　　不行　　犯天条的",
+      "note": "根据 PaddleOCR 的换行/分隔格式，将词组之间的间隙处理为两个表意空格；省略了 Google Lens OCR 中未体现的普通空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀犯什么天条嘛去一次嘛",
+      "two": "哎呀 犯什么天条嘛 去一次嘛"
+    },
+    "answer": {
+      "output": "哎呀　　犯什么天条嘛　　去一次嘛",
+      "note": "Google Lens 和 PaddleOCR 中对应语义停顿处的间隙已统一为表意空格；采用了 Google Lens OCR 的汉字识别，保留了 PaddleOCR 体现的分隔格式。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "很快就回来的\n走啊",
+      "two": "很快就回来的 走啊"
+    },
+    "answer": {
+      "output": "很快就回来的　　走啊",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你这个王八蛋翘起来了",
+      "two": "你这个王八蛋 翘起来了"
+    },
+    "answer": {
+      "output": "你这个王八蛋　　翘起来了",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "别嚷嚷\n别嚷嚷嘛",
+      "two": "別嚷嚷 別嚷嚷嘛"
+    },
+    "answer": {
+      "output": "别嚷嚷　　别嚷嚷嘛",
+      "note": "采用了 Google Lens OCR 识别的简体汉字“别”；将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我怕你\n我怕你可以了吧",
+      "two": "我怕你 我怕你可以了吧"
+    },
+    "answer": {
+      "output": "我怕你　　我怕你可以了吧",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "自认为官清廉\n问心无愧",
+      "two": "自认为官清廉 问心无愧"
+    },
+    "answer": {
+      "output": "自认为官清廉　　问心无愧",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "降龙伏虎在这边如果求子⋯",
+      "two": "降龙伏虎在这边 如果求子⋯"
+    },
+    "answer": {
+      "output": "降龙伏虎在这边　　如果求子⋯",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大师你刚才已经说过了",
+      "two": "大师 你刚才已经说过了"
+    },
+    "answer": {
+      "output": "大师你刚才已经说过了",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊再见⋯",
+      "two": "啊再见・"
+    },
+    "answer": {
+      "output": "啊再见⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的中点。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哦拜神⋯",
+      "two": "哦 拜神・"
+    },
+    "answer": {
+      "output": "哦拜神⋯",
+      "note": "采用了 Google Lens OCR 的连写形式与省略号；省略了 PaddleOCR 中多余的空格，并将末尾误识别的间隔号更正为省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎大师我们想⋯",
+      "two": "哎大师 我们想．"
+    },
+    "answer": {
+      "output": "哎大师　　我们想⋯",
+      "note": "采用了 Google Lens OCR 的省略号；将 Google Lens 和 PaddleOCR 中对应的间隙统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哦我记得\n要儿子嘛",
+      "two": "哦我记得 要儿子嘛"
+    },
+    "answer": {
+      "output": "哦我记得　　要儿子嘛",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "夫人用不着这么担心",
+      "two": "夫人 用不着这么担心"
+    },
+    "answer": {
+      "output": "夫人　　用不着这么担心",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "老爷、夫人\n你们看",
+      "two": "老爷夫人 你们看"
+    },
+    "answer": {
+      "output": "老爷、夫人　　你们看",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的顿号；将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "老爷\n怎么\n会这样\n呢\n老爷\n夫人",
+      "two": "老爷 怎么会这样呢 老爷 夫人"
+    },
+    "answer": {
+      "output": "老爷　　怎么会这样呢　　老爷　　夫人",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格或连写的间隙进行融合：保留 PaddleOCR 的连写格式“怎么会这样呢”，并将句间停顿统一为表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "恭喜老爷\n夫人生了",
+      "two": "恭喜老爷 夫人生了"
+    },
+    "answer": {
+      "output": "恭喜老爷　　夫人生了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大街去你妈的大街",
+      "two": "大街 去你妈的大街"
+    },
+    "answer": {
+      "output": "大街　　去你妈的大街",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "天杀的他妈的那家馆子吃完了之后",
+      "two": "天杀的 他妈的 那家馆子吃完了之后"
+    },
+    "answer": {
+      "output": "天杀的　他妈的　那家馆子吃完了之后",
+      "note": "Google Lens OCR 和 PaddleOCR 中出现的间隙已被表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "就是⋯",
+      "two": "就是"
+    },
+    "answer": {
+      "output": "就是⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "麻烦一下茅房借用一下 十万火急",
+      "two": "麻烦一下 茅房借用一下 十万火急"
+    },
+    "answer": {
+      "output": "麻烦一下　　茅房借用一下　　十万火急",
+      "note": "Google Lens 和 PaddleOCR 中出现的空格已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我们只有两间茅房请便吧",
+      "two": "我们只有两间茅房 请便吧"
+    },
+    "answer": {
+      "output": "我们只有两间茅房　　请便吧",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙被处理为两个表意空格，以保留 PaddleOCR 的分隔格式，同时不引入额外标点。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎降龙⋯",
+      "two": "哎降龙・"
+    },
+    "answer": {
+      "output": "哎降龙⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号“⋯”，替换了 PaddleOCR 中误识别的间隔号“・”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哇老兄\n我等你好久了",
+      "two": "哇 老兄 我等你好久了"
+    },
+    "answer": {
+      "output": "哇老兄　　我等你好久了",
+      "note": "采用了 Google Lens OCR 的汉字识别，省略了 PaddleOCR 中多余的空格；将 Google Lens OCR 中的换行符与 PaddleOCR 中对应的空格融合为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎别说那么多了\n快点拿回你的扇子",
+      "two": "哎别说那么多了 快点拿回你的扇子"
+    },
+    "answer": {
+      "output": "哎别说那么多了　　快点拿回你的扇子",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哇 我叫你买两只蟋蟀",
+      "two": "哇我叫你买两只蟋蟀"
+    },
+    "answer": {
+      "output": "哇我叫你买两只蟋蟀",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你怎么去这么\n久啊",
+      "two": "你怎么去这么久啊"
+    },
+    "answer": {
+      "output": "你怎么去这么久啊",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎阿龙\n糟糕\n他根本看不见我",
+      "two": "哎阿龙 糟糕 他根本看不见我"
+    },
+    "answer": {
+      "output": "哎阿龙　　糟糕　　他根本看不见我",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "他已经是个凡人了\n你想跟他接触",
+      "two": "他已经是个凡人了 你想跟他接触"
+    },
+    "answer": {
+      "output": "他已经是个凡人了　　你想跟他接触",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "上面一天凡间就十年",
+      "two": "上面一天 凡间就十年"
+    },
+    "answer": {
+      "output": "上面一天　　凡间就十年",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "但是别怕我会把你吹大的",
+      "two": "但是別怕 我会把你吹大的"
+    },
+    "answer": {
+      "output": "但是别怕　　我会把你吹大的",
+      "note": "采用了 Google Lens OCR 中更可靠的汉字“别”替换 PaddleOCR 的“別”；将 PaddleOCR 中存在而 Google Lens 中不存在的空格处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "就算变成了凡人也会是个白痴",
+      "two": "就算变成了凡人 也会是个白痴"
+    },
+    "answer": {
+      "output": "就算变成了凡人　　也会是个白痴",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你不明白的当乌云盖月的时候",
+      "two": "你不明白的 当乌云盖月的时候"
+    },
+    "answer": {
+      "output": "你不明白的　　当乌云盖月的时候",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎\n大肚子\n哎\n就这个好了",
+      "two": "哎 大肚子 哎 就这个好了"
+    },
+    "answer": {
+      "output": "哎　　大肚子　　哎　　就这个好了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎好舒服该你了⋯",
+      "two": "哎好舒服 该你了⋯"
+    },
+    "answer": {
+      "output": "哎好舒服　　该你了⋯",
+      "note": "Google Lens OCR 和 PaddleOCR 中对应的间隙被处理为两个表意空格；保留了 Google Lens OCR 中更可靠的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎⋯不要走开呀哎哟老太婆也认了",
+      "two": "哎⋯不要走开呀 哎哟 老太婆也认了"
+    },
+    "answer": {
+      "output": "哎⋯不要走开呀　　哎哟　　老太婆也认了",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应的停顿间隙统一为表意空格；保留了 Google Lens OCR 中更可靠的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊 这怎么回事啊",
+      "two": "啊这怎么回事啊"
+    },
+    "answer": {
+      "output": "啊这怎么回事啊",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎真舒服",
+      "two": "哎 真舒服"
+    },
+    "answer": {
+      "output": "哎　　真舒服",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊⋯⋯你的肚子⋯",
+      "two": "啊⋯你的肚子．"
+    },
+    "answer": {
+      "output": "啊⋯⋯你的肚子⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；将 PaddleOCR 末尾误识别的句号修正为 Google Lens OCR 中的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀 糟糕 扇子忘了快⋯",
+      "two": "哎呀 糟糕 扇子忘了 快．"
+    },
+    "answer": {
+      "output": "哎呀　糟糕　扇子忘了　快⋯",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应的空格规范为表意空格；采用了 Google Lens OCR 中更可靠的省略号“⋯”，并更正了 PaddleOCR 误识别的句号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊⋯哎⋯生了⋯⋯",
+      "two": "啊⋯哎⋯生了⋯"
+    },
+    "answer": {
+      "output": "啊⋯哎⋯生了⋯⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我们快点去准备一下\n帮帮他们嘛",
+      "two": "我们快点去准备一下 帮帮他们嘛"
+    },
+    "answer": {
+      "output": "我们快点去准备一下　　帮帮他们嘛",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊⋯哎⋯老婆是男的还是女的",
+      "two": "啊⋯哎⋯老婆 是男的还是女的"
+    },
+    "answer": {
+      "output": "啊⋯哎⋯老婆　　是男的还是女的",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中出现的空格取代为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我生了\n生了个儿子",
+      "two": "我生了 生了个儿子"
+    },
+    "answer": {
+      "output": "我生了生了个儿子",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "生下来了是吧好⋯",
+      "two": "生下来了是吧 好⋯"
+    },
+    "answer": {
+      "output": "生下来了是吧好⋯",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "这个肚兜啊是我修缘小时候穿过的",
+      "two": "这个肚兜啊 是我修缘小时候穿过的"
+    },
+    "answer": {
+      "output": "这个肚兜啊是我修缘小时候穿过的",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "怎么会这样\n我也不知道",
+      "two": "怎么会这样 我也不知道"
+    },
+    "answer": {
+      "output": "怎么会这样　　我也不知道",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "妖怪呀⋯",
+      "two": "妖怪呀．"
+    },
+    "answer": {
+      "output": "妖怪呀⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的句号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "妖什么怪\n他会变戏法",
+      "two": "妖什么怪 他会变戏法"
+    },
+    "answer": {
+      "output": "妖什么怪　　他会变戏法",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "老爷\n我去报官",
+      "two": "老爷 我去报官"
+    },
+    "answer": {
+      "output": "老爷　　我去报官",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "报什么官\n我不就是官吗",
+      "two": "报什么官 我不就是官吗"
+    },
+    "answer": {
+      "output": "报什么官我不就是官吗",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，以及 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀还是把他留下来好了",
+      "two": "哎呀 还是把他留下来好了"
+    },
+    "answer": {
+      "output": "哎呀还是把他留下来好了",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你看看他\n长得多逗人呢",
+      "two": "你看看他 长得多逗人呢"
+    },
+    "answer": {
+      "output": "你看看他　　长得多逗人呢",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "打⋯",
+      "two": "打"
+    },
+    "answer": {
+      "output": "打⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你究竟是何方神圣快说",
+      "two": "你究竟是何方神圣 快说"
+    },
+    "answer": {
+      "output": "你究竟是何方神圣　　快说",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我没有〝摸摸〞嘛",
+      "two": "我沒有〝摸摸〞嘛"
+    },
+    "answer": {
+      "output": "我没有〝摸摸〞嘛",
+      "note": "采用了 Google Lens OCR 识别的汉字“没”，替换了 PaddleOCR 中识别为繁体的“沒”；其余内容两者一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "摸摸⋯",
+      "two": "摸摸・"
+    },
+    "answer": {
+      "output": "摸摸⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的间隔号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嘿我看你还能〝盯〞到什么时候嗨",
+      "two": "嘿 我看你还能〝盯〞到什么时候嗨"
+    },
+    "answer": {
+      "output": "嘿我看你还能〝盯〞到什么时候嗨",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "摸⋯",
+      "two": "摸"
+    },
+    "answer": {
+      "output": "摸⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "没有\n没有〝摸摸〞",
+      "two": "沒有 沒有〝摸摸〞"
+    },
+    "answer": {
+      "output": "没有　　没有〝摸摸〞",
+      "note": "采用了 Google Lens OCR 的汉字字形，将 PaddleOCR 的“沒有”改为“没有”；将 Google Lens OCR 中的换行符和 PaddleOCR 中的空格所对应的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "one": "快走\n走啊\n走",
+      "two": "快走 走啊走"
+    },
+    "answer": {
+      "output": "快走　　走啊走",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哥哥⋯",
+      "two": "哥哥・"
+    },
+    "answer": {
+      "output": "哥哥⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 中误识别的间隔号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "老爷看来你那点银子不够他吃的呀",
+      "two": "老爷 看来你那点银子不够他吃的呀"
+    },
+    "answer": {
+      "output": "老爷　　看来你那点银子不够他吃的呀",
+      "note": "Google Lens OCR 和 PaddleOCR 中对应位置的间隙被处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "他已经懂事多\n了\n东西是吃了不少",
+      "two": "他已经懂事多了 东西是吃了不少"
+    },
+    "answer": {
+      "output": "他已经懂事多了　　东西是吃了不少",
+      "note": "将 Google Lens OCR 中词语内部的换行符省略，并将 Google Lens OCR 中显示为换行符、PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎看着啊哎⋯叫我",
+      "two": "哎看着啊 哎⋯叫我"
+    },
+    "answer": {
+      "output": "哎看着啊　　哎⋯叫我",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应位置的间隙统一为两个表意空格，并保留了 Google Lens OCR 中更可靠的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀〝鲍鱼〞是一片一片的叫我哥哥",
+      "two": "哎呀〝鲍鱼〞是一片一片的 叫我哥哥"
+    },
+    "answer": {
+      "output": "哎呀〝鲍鱼〞是一片一片的　　叫我哥哥",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应位置的间隔融合为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎⋯叫她⋯",
+      "two": "哎⋯叫她・"
+    },
+    "answer": {
+      "output": "哎⋯叫她⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，将 PaddleOCR 末尾误识别的间隔号更正为省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "〝知知〞",
+      "two": "＂知知"
+    },
+    "answer": {
+      "output": "〝知知〞",
+      "note": "采用了 Google Lens OCR 中更完整且更可靠的引号，补全了 PaddleOCR 中缺失的右引号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "他才那么小\n怎么会记得嘛",
+      "two": "他才那么小 怎么会记得嘛"
+    },
+    "answer": {
+      "output": "他才那么小　　怎么会记得嘛",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "总算缘分一场\n尽力而为吧",
+      "two": "总算缘分一场 尽力而为吧"
+    },
+    "answer": {
+      "output": "总算缘分一场　　尽力而为吧",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "跟他多玩一会好了\n我去看看公文",
+      "two": "跟他多玩一会好了 我去看看公文"
+    },
+    "answer": {
+      "output": "跟他多玩一会好了　　我去看看公文",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎老兄啊\n你到哪儿去了",
+      "two": "哎老兄啊 你到哪儿去了"
+    },
+    "answer": {
+      "output": "哎老兄啊　　你到哪儿去了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我没什么时间呢\n你听着\n你是神仙",
+      "two": "我没什么时间呢 你听着 你是神仙"
+    },
+    "answer": {
+      "output": "我没什么时间呢　　你听着　　你是神仙",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你记着啊打雷的时候你把头伸出去",
+      "two": "你记着啊 打雷的时候你把头伸出去"
+    },
+    "answer": {
+      "output": "你记着啊　　打雷的时候你把头伸出去",
+      "note": "将 PaddleOCR 中存在而 Google Lens 中不存在的空格处理为两个表意空格，以保留 PaddleOCR 的换行格式信息。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "叫什么叫\n一定是尿尿了\n我看看",
+      "two": "叫什么叫 一定是尿尿了 我看看"
+    },
+    "answer": {
+      "output": "叫什么叫　　一定是尿尿了　　我看看",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "扇扇⋯",
+      "two": "扇扇"
+    },
+    "answer": {
+      "output": "扇扇⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎\n走开嘛",
+      "two": "哎 走开嘛"
+    },
+    "answer": {
+      "output": "哎　　走开嘛",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "真是没得救\n了\n太可怜了",
+      "two": "真是沒得救了 太可怜了"
+    },
+    "answer": {
+      "output": "真是没得救了　　太可怜了",
+      "note": "采用了 Google Lens OCR 的汉字识别结果，将 PaddleOCR 中的“沒”改为“没”；将 Google Lens OCR 中的换行和 PaddleOCR 中的空格对应的间隙统一为两个表意空格，并省略了 Google Lens OCR 中“救”与“了”之间不必要的换行。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大夫麻烦你帮我看看这家伙",
+      "two": "大夫 麻烦你帮我看看这家伙"
+    },
+    "answer": {
+      "output": "大夫　　麻烦你帮我看看这家伙",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎了解我只是没事问问 不好意思",
+      "two": "哎了解 我只是没事问问 不好意思"
+    },
+    "answer": {
+      "output": "哎了解　　我只是没事问问　　不好意思",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应的语句间隙统一为表意空格：把 PaddleOCR 中“哎了解”后、两者中“不好意思”前的空格处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "真的快点",
+      "two": "真的 快点"
+    },
+    "answer": {
+      "output": "真的快点",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "还有大夫我⋯",
+      "two": "还有大夫 我"
+    },
+    "answer": {
+      "output": "还有大夫我⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "叫什么叫\n你他妈的叫春呢",
+      "two": "叫什么叫 你他妈的叫春呢"
+    },
+    "answer": {
+      "output": "叫什么叫　　你他妈的叫春呢",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "臭婆娘\n你这烂皮货",
+      "two": "臭婆娘 你这烂皮货"
+    },
+    "answer": {
+      "output": "臭婆娘你这烂皮货",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；省略了 PaddleOCR 中对应位置的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊马上风",
+      "two": "啊 马上风"
+    },
+    "answer": {
+      "output": "啊　　马上风",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应位置的间隙统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你想怎么样啊你有种上来呀\n哎呀累死了⋯下来休息一下吧",
+      "two": "你想怎么样啊你 有种上来呀\n哎呀 累死了⋯下来休息一下吧"
+    },
+    "answer": {
+      "output": "你想怎么样啊你　　有种上来呀\n哎呀累死了⋯下来休息一下吧",
+      "note": "将第一行中 Google Lens OCR 和 PaddleOCR 中对应的间隙处理为两个表意空格；省略了 PaddleOCR 第二行中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嘿干吗停下来呀\n我可是在赶时间呢",
+      "two": "嘿干吗停下来呀 我可是在赶时间呢"
+    },
+    "answer": {
+      "output": "嘿干吗停下来呀　　我可是在赶时间呢",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "死得真冤枉啊啊",
+      "two": "死得真冤枉啊 啊"
+    },
+    "answer": {
+      "output": "死得真冤枉啊啊",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "怎么样要不要来参观比较一下",
+      "two": "怎么样 要不要来参观比较一下"
+    },
+    "answer": {
+      "output": "怎么样　　要不要来参观比较一下",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "是我丢你",
+      "two": "是我丟你"
+    },
+    "answer": {
+      "output": "是我丢你",
+      "note": "采用了 Google Lens OCR 识别的汉字“丢”，替换了 PaddleOCR 中的“丟”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "什么\n装我不会了",
+      "two": "什么 装我不会了"
+    },
+    "answer": {
+      "output": "什么　　装我不会了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊哈太不知羞耻 当心被雷劈",
+      "two": "啊哈 太不知羞耻 当心被雷劈"
+    },
+    "answer": {
+      "output": "啊哈　　太不知羞耻　　当心被雷劈",
+      "note": "Google Lens OCR 和 PaddleOCR 中出现的空格已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "在那一边看准一点 再来",
+      "two": "在那一边 看准一点 再来"
+    },
+    "answer": {
+      "output": "在那一边　　看准一点　　再来",
+      "note": "Google Lens OCR 和 PaddleOCR 中出现的空格已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "降龙罗汉现身\n下凡普度众生啊",
+      "two": "降龙罗汉现身 下凡普度众生啊"
+    },
+    "answer": {
+      "output": "降龙罗汉现身　　下凡普度众生啊",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "干什么你们⋯⋯放开我",
+      "two": "干什么你们⋯放开我"
+    },
+    "answer": {
+      "output": "干什么你们⋯⋯放开我",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你们大家都是女人何苦互相残杀呢",
+      "two": "你们大家都是女人 何苦互相残杀呢"
+    },
+    "answer": {
+      "output": "你们大家都是女人　　何苦互相残杀呢",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "姓名只是代号\n怎么叫都一样",
+      "two": "姓名只是代号 怎么叫都一样"
+    },
+    "answer": {
+      "output": "姓名只是代号　　怎么叫都一样",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "人家在叫你\n还不走",
+      "two": "人家在叫你 还不走"
+    },
+    "answer": {
+      "output": "人家在叫你　　还不走",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "妈妈⋯",
+      "two": "妈妈"
+    },
+    "answer": {
+      "output": "妈妈⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "爸爸⋯",
+      "two": "爸爸"
+    },
+    "answer": {
+      "output": "爸爸⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎老兄\n我等你好久了",
+      "two": "哎老兄 我等你好久了"
+    },
+    "answer": {
+      "output": "哎老兄　　我等你好久了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "土地公啊这也不能怪你",
+      "two": "土地公啊 这也不能怪你"
+    },
+    "answer": {
+      "output": "土地公啊　　这也不能怪你",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "还有啊你这个金身呢",
+      "two": "还有啊 你这个金身呢"
+    },
+    "answer": {
+      "output": "还有啊你这个金身呢",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "金身就是我我也⋯",
+      "two": "金身就是我 我也⋯"
+    },
+    "answer": {
+      "output": "金身就是我我也⋯",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你跟我说没用\n跟他们说去",
+      "two": "你跟我说没用 跟他们说去"
+    },
+    "answer": {
+      "output": "你跟我说没用　　跟他们说去",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎⋯⋯你们两个头放错了",
+      "two": "哎⋯你们两个头放错了"
+    },
+    "answer": {
+      "output": "哎⋯⋯你们两个头放错了",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不会吧\n先换过来",
+      "two": "不会吧 先换过来"
+    },
+    "answer": {
+      "output": "不会吧　　先换过来",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎师傅打搅你一会儿容我说两句话",
+      "two": "哎 师傅 打搅你一会儿 容我说两句话"
+    },
+    "answer": {
+      "output": "哎　　师傅　　打搅你一会儿　　容我说两句话",
+      "note": "将 PaddleOCR 中存在而 Google Lens 中不存在的多个分隔空格按语义保留，并统一替换为表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "请跟我来然后你猜会怎么样",
+      "two": "请跟我来 然后你猜会怎么样"
+    },
+    "answer": {
+      "output": "请跟我来　　然后你猜会怎么样",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "看你这个德行\n资质平常",
+      "two": "看你这个德行 资质平常"
+    },
+    "answer": {
+      "output": "看你这个德行　　资质平常",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "够意思吧",
+      "two": "夠意思吧"
+    },
+    "answer": {
+      "output": "够意思吧",
+      "note": "采用了 Google Lens OCR 识别的汉字“够”，替换了 PaddleOCR 中对应的异体字“夠”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅\n他是疯子",
+      "two": "师傅 他是疯子"
+    },
+    "answer": {
+      "output": "师傅　　他是疯子",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "这一根是我的宝贝\n不能吃的",
+      "two": "这一根是我的宝贝 不能吃的"
+    },
+    "answer": {
+      "output": "这一根是我的宝贝　　不能吃的",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "求你温柔一点拜托",
+      "two": "求你温柔一点 拜托"
+    },
+    "answer": {
+      "output": "求你温柔一点　　拜托",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应位置的间隙统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅照惯例帮我取个名吧",
+      "two": "师傅 照惯例帮我取个名吧"
+    },
+    "answer": {
+      "output": "师傅　　照惯例帮我取个名吧",
+      "note": "Google Lens OCR 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你这么癫\n就叫济癫吧",
+      "two": "你这么癫 就叫济癫吧"
+    },
+    "answer": {
+      "output": "你这么癫　　就叫济癫吧",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "救命啊\n不要追我",
+      "two": "救命啊 不要追我"
+    },
+    "answer": {
+      "output": "救命啊　　不要追我",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊\n袁霸天\n快躲",
+      "two": "啊 袁霸天 快躲"
+    },
+    "answer": {
+      "output": "啊　　袁霸天　　快躲",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "袁霸天来了 先到我家躲一躲走",
+      "two": "袁霸天来了 先到我家躲一躲 走"
+    },
+    "answer": {
+      "output": "袁霸天来了　先到我家躲一躲　走",
+      "note": "Google Lens OCR 和 PaddleOCR 中出现的空格已被表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "九世恶人\n全都到齐了",
+      "two": "九世恶人 全都到齐了"
+    },
+    "answer": {
+      "output": "九世恶人　　全都到齐了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我一看到你\n我就火大",
+      "two": "我一看到你 我就火大"
+    },
+    "answer": {
+      "output": "我一看到你　　我就火大",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我也不想让你看到我你不要过来",
+      "two": "我也不想让你看到我 你不要过来"
+    },
+    "answer": {
+      "output": "我也不想让你看到我　　你不要过来",
+      "note": "将 PaddleOCR 中存在但 Google Lens 中不存在的空格处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我要避开你但是避不了",
+      "two": "我要避开你 但是避不了"
+    },
+    "answer": {
+      "output": "我要避开你　　但是避不了",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你打我的头好了不要打我的背啊",
+      "two": "你打我的头好了 不要打我的背啊"
+    },
+    "answer": {
+      "output": "你打我的头好了　　不要打我的背啊",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙被处理为两个表意空格，以保留 PaddleOCR 的分行/停顿格式，同时采用 Google Lens 的汉字识别。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好\n我把庙也烧了\n看你能往哪儿跑",
+      "two": "好我把庙也烧了 看你能往哪儿跑"
+    },
+    "answer": {
+      "output": "好　　我把庙也烧了　　看你能往哪儿跑",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为无间隔或空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我要烧你你竟敢吹灭我的火",
+      "two": "我要烧你 你竟敢吹灭我的火"
+    },
+    "answer": {
+      "output": "我要烧你　　你竟敢吹灭我的火",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应位置的停顿间隙统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你⋯",
+      "two": "你"
+    },
+    "answer": {
+      "output": "你⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "放下屠刀立地成佛",
+      "two": "放下屠刀 立地成佛"
+    },
+    "answer": {
+      "output": "放下屠刀　　立地成佛",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我不会生气\n我疼你\n我爱你",
+      "two": "我不会生气 我疼你 我爱你"
+    },
+    "answer": {
+      "output": "我不会生气　　我疼你　　我爱你",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "重新做人\n乖孩子",
+      "two": "重新做人 乖孩子"
+    },
+    "answer": {
+      "output": "重新做人　　乖孩子",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不可能\n我的娘哎",
+      "two": "不可能 我的娘哎"
+    },
+    "answer": {
+      "output": "不可能　　我的娘哎",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你不要再行乞了\n跟我回家吧",
+      "two": "你不要再行乞了 跟我回家吧"
+    },
+    "answer": {
+      "output": "你不要再行乞了　　跟我回家吧",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我不要⋯",
+      "two": "我不要・"
+    },
+    "answer": {
+      "output": "我不要⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的间隔号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊哥哥⋯",
+      "two": "啊 哥哥・"
+    },
+    "answer": {
+      "output": "啊　　哥哥⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号“⋯”，并将 PaddleOCR 中“啊 哥哥”之间的空格按字幕停顿处理为两个表意空格；省略了 PaddleOCR 末尾误识别的间隔号“・”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "孩子你怎么弄成这个样子 爸爸",
+      "two": "孩子 你怎么弄成这个样子 爸爸"
+    },
+    "answer": {
+      "output": "孩子　　你怎么弄成这个样子　　爸爸",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应的空格统一处理为表意空格：在“孩子”与“你怎么弄成这个样子”之间，以及“这个样子”与“爸爸”之间，采用两个表意空格分隔。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嚯\n我换了发型\n不错吧",
+      "two": "嚯我换了发型 不错吧"
+    },
+    "answer": {
+      "output": "嚯　　我换了发型　　不错吧",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为无间隔或空格的间隙统一为表意空格：首处用两个表意空格表示语气停顿，第二处将 PaddleOCR 的空格替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊房子怎么也变了样了",
+      "two": "啊 房子怎么也变了样了"
+    },
+    "answer": {
+      "output": "啊房子怎么也变了样了",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "屙巴巴⋯",
+      "two": "屙巴巴・"
+    },
+    "answer": {
+      "output": "屙巴巴⋯",
+      "note": "包括了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的间隔号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "李修缘\n我誓要杀你全家",
+      "two": "李修缘 我誓要杀你全家"
+    },
+    "answer": {
+      "output": "李修缘　　我誓要杀你全家",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎老爷他杀光了我们全家的畜牲",
+      "two": "哎老爷 他杀光了我们全家的畜牲"
+    },
+    "answer": {
+      "output": "哎老爷　　他杀光了我们全家的畜牲",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "还有只蟑螂是大肚子的太残忍了",
+      "two": "还有只蟑螂是大肚子的 太残忍了"
+    },
+    "answer": {
+      "output": "还有只蟑螂是大肚子的　　太残忍了",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀还好我们跟老爷夫人去拜神了",
+      "two": "哎呀 还好我们跟老爷夫人去拜神了"
+    },
+    "answer": {
+      "output": "哎呀还好我们跟老爷夫人去拜神了",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "这么快就查到我底细\n真厉害",
+      "two": "这么快就查到我底细 真厉害"
+    },
+    "answer": {
+      "output": "这么快就查到我底细　　真厉害",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嘿看不出来他还写了一手好书法",
+      "two": "嘿 看不出来他还写了一手好书法"
+    },
+    "answer": {
+      "output": "嘿　　看不出来他还写了一手好书法",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "耶嘿这个家伙做事还挺有条理的",
+      "two": "耶嘿 这个家伙做事还挺有条理的"
+    },
+    "answer": {
+      "output": "耶嘿　　这个家伙做事还挺有条理的",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊 老爷⋯",
+      "two": "啊 老爷・"
+    },
+    "answer": {
+      "output": "啊　　老爷⋯",
+      "note": "Google Lens OCR 和 PaddleOCR 中出现的空格已被两个表意空格取代；采用了 Google Lens OCR 中更可靠的省略号“⋯”，替换了 PaddleOCR 误识别的“・”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哇寿终正寝\n福气到极点了",
+      "two": "哇 寿终正寝 福气到极点了"
+    },
+    "answer": {
+      "output": "哇　　寿终正寝　　福气到极点了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙，以及两者中共同出现的空格，统一替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "让我算算\n哎哟 下辈子做皇帝啊",
+      "two": "让我算算 哎哟 下辈子做皇帝啊"
+    },
+    "answer": {
+      "output": "让我算算　　哎哟　下辈子做皇帝啊",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；将两者中出现的空格替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "修缘呢\n你这孩子\n你是不是疯了",
+      "two": "修缘呢 你这孩子 你是不是疯了"
+    },
+    "answer": {
+      "output": "修缘呢　　你这孩子　　你是不是疯了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "对了现在我的新名字叫济癫",
+      "two": "对了 现在我的新名字叫济癫"
+    },
+    "answer": {
+      "output": "对了　　现在我的新名字叫济癫",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应位置的间隙统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊哎呀\n天呢",
+      "two": "啊 哎呀 天呢"
+    },
+    "answer": {
+      "output": "啊　　哎呀　　天呢",
+      "note": "参考了 PaddleOCR 的换行格式，将各片段之间的间隙统一处理为两个表意空格；省略了 Google Lens OCR 中的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "是啊你要是没做错事",
+      "two": "是啊 你要是没做错事"
+    },
+    "answer": {
+      "output": "是啊　　你要是没做错事",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊夫人⋯",
+      "two": "啊夫人・"
+    },
+    "answer": {
+      "output": "啊夫人⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的间隔号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎 快拿麝香让夫人闻一闻呢 快",
+      "two": "哎快拿麝香让夫人闻一闻呢快"
+    },
+    "answer": {
+      "output": "哎快拿麝香让夫人闻一闻呢快",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎别动\n他们俩好好的",
+      "two": "哎别动 他们俩好好的"
+    },
+    "answer": {
+      "output": "哎别动　　他们俩好好的",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "他们俩是鸳鸯蝴蝶命死也死一双啊",
+      "two": "他们俩是鸳鸯蝴蝶命 死也死一双啊"
+    },
+    "answer": {
+      "output": "他们俩是鸳鸯蝴蝶命　　死也死一双啊",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙被处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎少爷\n那我们该怎么办呢",
+      "two": "哎少爷 那我们该怎么办呢"
+    },
+    "answer": {
+      "output": "哎少爷　　那我们该怎么办呢",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "还有你找个仵作回来送他们一程",
+      "two": "还有你 找个仵作回来送他们一程"
+    },
+    "answer": {
+      "output": "还有你找个仵作回来送他们一程",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "走吧⋯快点⋯",
+      "two": "走吧⋯快点．"
+    },
+    "answer": {
+      "output": "走吧⋯快点⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 末尾误识别的句号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我⋯",
+      "two": "我"
+    },
+    "answer": {
+      "output": "我⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "鸭乖乖⋯",
+      "two": "鸭乖乖"
+    },
+    "answer": {
+      "output": "鸭乖乖⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不要过来⋯",
+      "two": "不要过来．"
+    },
+    "answer": {
+      "output": "不要过来⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的句号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "没有没有",
+      "two": "沒有 没有"
+    },
+    "answer": {
+      "output": "没有没有",
+      "note": "采用了 Google Lens OCR 的汉字“没”，将 PaddleOCR 中“沒有”与“没有”之间多余的空格省略。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎对了一定是勾引了九官鸟",
+      "two": "哎对了 一定是勾引了九官鸟"
+    },
+    "answer": {
+      "output": "哎对了　　一定是勾引了九官鸟",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙被统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "什么时候要你来管\n我告诉你",
+      "two": "什么时候要你来管 我告诉你"
+    },
+    "answer": {
+      "output": "什么时候要你来管　　我告诉你",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哪个愿意的可以跟我走哼",
+      "two": "哪个愿意的 可以跟我走哼"
+    },
+    "answer": {
+      "output": "哪个愿意的　　可以跟我走哼",
+      "note": "将 PaddleOCR 中存在而 Google Lens OCR 中不存在的空格按语义处理为停顿，并替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎哟我⋯我崇拜你啊",
+      "two": "哎哟 我⋯我崇拜你啊"
+    },
+    "answer": {
+      "output": "哎哟我⋯我崇拜你啊",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅有什么我可以效劳的",
+      "two": "师傅 有什么我可以效劳的"
+    },
+    "answer": {
+      "output": "师傅有什么我可以效劳的",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "晚了\n你该睡了",
+      "two": "晚了 你该睡了"
+    },
+    "answer": {
+      "output": "晚了　　你该睡了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊师傅你怎么把我当猪",
+      "two": "啊 师傅 你怎么把我当猪"
+    },
+    "answer": {
+      "output": "啊师傅你怎么把我当猪",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大种你老爸来找你了",
+      "two": "大种 你老爸来找你了"
+    },
+    "answer": {
+      "output": "大种　　你老爸来找你了",
+      "note": "Google Lens OCR 中未显示间隔而 PaddleOCR 中显示为空格；结合语义判断，此处保留停顿并将该间隙规范为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你妈才来找你呢\n我老爸早死了",
+      "two": "你妈才来找你呢 我老爸早死了"
+    },
+    "answer": {
+      "output": "你妈才来找你呢　　我老爸早死了",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊老爸\n你好吗",
+      "two": "啊 老爸 你好吗"
+    },
+    "answer": {
+      "output": "啊老爸　　你好吗",
+      "note": "采用了 Google Lens OCR 的汉字识别结果，省略了 PaddleOCR 中多余的空格；将 Google Lens OCR 中的换行符与 PaddleOCR 中对应的空格融合为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大种你听不听老爸的话",
+      "two": "大种 你听不听老爸的话"
+    },
+    "answer": {
+      "output": "大种　　你听不听老爸的话",
+      "note": "Google Lens OCR 中未显示间隔而 PaddleOCR 中显示为空格的间隙已替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "老爸我也是这么想啊",
+      "two": "老爸 我也是这么想啊"
+    },
+    "answer": {
+      "output": "老爸我也是这么想啊",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊哼\n你他妈的",
+      "two": "啊哼 你他妈的"
+    },
+    "answer": {
+      "output": "啊哼你他妈的",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哇\n大爷\n请坐\n请坐",
+      "two": "哇 大爷 请坐 请坐"
+    },
+    "answer": {
+      "output": "哇　　大爷　　请坐　　请坐",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀\n臭和尚\n滚出去",
+      "two": "哎呀 臭和尚 滾出去"
+    },
+    "answer": {
+      "output": "哎呀　　臭和尚　　滚出去",
+      "note": "采用了 Google Lens OCR 识别的汉字“滚”替代 PaddleOCR 的“滾”；将 Google Lens OCR 中的换行符和 PaddleOCR 中的空格统一替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊哎\n两位大爷\n请坐\n请坐",
+      "two": "啊哎 两位大爷 请坐 请坐"
+    },
+    "answer": {
+      "output": "啊哎　　两位大爷　　请坐　　请坐",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "您先坐会儿我去给您沏茶啊",
+      "two": "您先坐会儿 我去给您沏茶啊"
+    },
+    "answer": {
+      "output": "您先坐会儿　　我去给您沏茶啊",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎好⋯",
+      "two": "哎好・"
+    },
+    "answer": {
+      "output": "哎好⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的间隔号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大种喜欢吃什么就点\n啊",
+      "two": "大种 喜欢吃什么就点啊"
+    },
+    "answer": {
+      "output": "大种　　喜欢吃什么就点啊",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哦好啊",
+      "two": "哦 好啊"
+    },
+    "answer": {
+      "output": "哦好啊",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我不敢叫\n还是你叫",
+      "two": "我不敢叫 还是你叫"
+    },
+    "answer": {
+      "output": "我不敢叫　　还是你叫",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀你连这一点自信心都没有",
+      "two": "哎呀 你连这一点自信心都没有"
+    },
+    "answer": {
+      "output": "哎呀你连这一点自信心都没有",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "怎么出人头地\n鼓起勇气来",
+      "two": "怎么出人头地 鼓起勇气来"
+    },
+    "answer": {
+      "output": "怎么出人头地　　鼓起勇气来",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你耍我是不是说",
+      "two": "你耍我是不是 说"
+    },
+    "answer": {
+      "output": "你耍我是不是说",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我要你大声地说连街坊都听得到",
+      "two": "我要你大声地说 连街坊都听得到"
+    },
+    "answer": {
+      "output": "我要你大声地说　　连街坊都听得到",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不是屎是翅",
+      "two": "不是屎 是翅"
+    },
+    "answer": {
+      "output": "不是屎　　是翅",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "别傻了\n我怎么会逼你呢",
+      "two": "別傻了 我怎么会逼你呢"
+    },
+    "answer": {
+      "output": "别傻了　　我怎么会逼你呢",
+      "note": "采用了 Google Lens OCR 的汉字识别，将 PaddleOCR 的“別”改为“别”；将 Google Lens OCR 中的换行符和 PaddleOCR 中的空格统一替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "要听话\n啊",
+      "two": "要听话 啊"
+    },
+    "answer": {
+      "output": "要听话啊",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，以及 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你说说给我一碗鱼翅漱漱口",
+      "two": "你说 说 给我一碗鱼翅漱漱口"
+    },
+    "answer": {
+      "output": "你说说给我一碗鱼翅漱漱口",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的多余空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你个王八蛋你\n啊",
+      "two": "你个王八蛋 你啊"
+    },
+    "answer": {
+      "output": "你个王八蛋你啊",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "气死我\n你个臭小子",
+      "two": "气死我 你个臭小子"
+    },
+    "answer": {
+      "output": "气死我你个臭小子",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，以及 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大种废话我不想多说了",
+      "two": "大种 废话我不想多说了"
+    },
+    "answer": {
+      "output": "大种　　废话我不想多说了",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "这是我本来的面目\n降龙罗汉",
+      "two": "这是我本来的面目 降龙罗汉"
+    },
+    "answer": {
+      "output": "这是我本来的面目　　降龙罗汉",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "少鸡猫子喊叫了\n鬼不是这样子",
+      "two": "少鸡猫子喊叫了 鬼不是这样子"
+    },
+    "answer": {
+      "output": "少鸡猫子喊叫了　　鬼不是这样子",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "来吓乞丐\n白吃屎啊你",
+      "two": "来吓乞丐 白吃屎啊你"
+    },
+    "answer": {
+      "output": "来吓乞丐白吃屎啊你",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎⋯别那么冲动嘛⋯",
+      "two": "哎⋯别那么冲动嘛・・"
+    },
+    "answer": {
+      "output": "哎⋯别那么冲动嘛⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，将 PaddleOCR 末尾识别为“・・”的标点更正为“⋯”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "神经病啊他\n大白天来吓人呢",
+      "two": "神经病啊他 大白天来吓人呢"
+    },
+    "answer": {
+      "output": "神经病啊他　　大白天来吓人呢",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大种你终于明白\n了吧",
+      "two": "大种 你终于明白了吧"
+    },
+    "answer": {
+      "output": "大种　　你终于明白了吧",
+      "note": "将 Google Lens OCR 中显示为换行符且 PaddleOCR 中在对应位置分开的间隙，结合 PaddleOCR 的连贯换行格式处理为两个表意空格；同时保留了 Google Lens OCR 更可靠的汉字识别“了”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "如假包换所以你有什么愿望",
+      "two": "如假包換 所以你有什么愿望"
+    },
+    "answer": {
+      "output": "如假包换　　所以你有什么愿望",
+      "note": "采用了 Google Lens OCR 中更可靠的汉字“换”替换 PaddleOCR 的“換”；将两者之间对应的间隙处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅外面那个乞丐怎么办",
+      "two": "师傅 外面那个乞丐怎么办"
+    },
+    "answer": {
+      "output": "师傅外面那个乞丐怎么办",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我佛慈悲寺院大开方便之门",
+      "two": "我佛慈悲 寺院大开方便之门"
+    },
+    "answer": {
+      "output": "我佛慈悲　　寺院大开方便之门",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙被统一处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "鱼鱼⋯",
+      "two": "鱼鱼．"
+    },
+    "answer": {
+      "output": "鱼鱼⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号，并纠正了 PaddleOCR 将省略号误识别为句号的问题。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "生个叉烧都比生你好\n臭小子",
+      "two": "生个叉烧都比生你好 臭小子"
+    },
+    "answer": {
+      "output": "生个叉烧都比生你好　　臭小子",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不是我\n我很臭\n不能吃啊",
+      "two": "不是我 我很臭 不能吃啊"
+    },
+    "answer": {
+      "output": "不是我　　我很臭　　不能吃啊",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀伏虎罗汉现真身",
+      "two": "哎呀 伏虎罗汉现真身"
+    },
+    "answer": {
+      "output": "哎呀　　伏虎罗汉现真身",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙分别表现为无空格和空格；结合语气停顿处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "麒麟怪\n你怎么搞成这样子",
+      "two": "麒麟怪 你怎么搞成这样子"
+    },
+    "answer": {
+      "output": "麒麟怪　　你怎么搞成这样子",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "还派了瘟神下来\n到处散播瘟疫",
+      "two": "还派了瘟神下来 到处散播瘟疫"
+    },
+    "answer": {
+      "output": "还派了瘟神下来　　到处散播瘟疫",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "到时候伤了多少人\n死了多少人",
+      "two": "到时候伤了多少人 死了多少人"
+    },
+    "answer": {
+      "output": "到时候伤了多少人　　死了多少人",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "伏虎\n你醒过来了",
+      "two": "伏虎 你醒过来了"
+    },
+    "answer": {
+      "output": "伏虎　　你醒过来了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎降龙啊这件事情不关我的事啊",
+      "two": "哎降龙啊 这件事情不关我的事啊"
+    },
+    "answer": {
+      "output": "哎降龙啊　　这件事情不关我的事啊",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "这下你可麻烦了\n就是嘛",
+      "two": "这下你可麻烦了 就是嘛"
+    },
+    "answer": {
+      "output": "这下你可麻烦了　　就是嘛",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你告诉我是哪个下令放瘟疫的",
+      "two": "你告诉我 是哪个下令放瘟疫的"
+    },
+    "answer": {
+      "output": "你告诉我是哪个下令放瘟疫的",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊哎说呀\n我不会讲是你说的",
+      "two": "啊哎 说呀 我不会讲是你说的"
+    },
+    "answer": {
+      "output": "啊哎　　说呀我不会讲是你说的",
+      "note": "将 Google Lens OCR 中的换行符与 PaddleOCR 中对应的空格融合为两个表意空格；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嗯 康乐部是搞旅游的",
+      "two": "嗯康乐部是搞旅游的"
+    },
+    "answer": {
+      "output": "嗯康乐部是搞旅游的",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎 会计部是发薪水的",
+      "two": "哎会计部是发薪水的"
+    },
+    "answer": {
+      "output": "哎　　会计部是发薪水的",
+      "note": "Google Lens OCR 中“哎”和“会计部”之间的空格被替换为两个表意空格；省略了 PaddleOCR 中缺失的该间隙。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎降龙别理他\n我回到上面去了啊",
+      "two": "哎降龙 別理他 我回到上面去了啊"
+    },
+    "answer": {
+      "output": "哎降龙别理他　　我回到上面去了啊",
+      "note": "采用了 Google Lens OCR 识别的汉字“别”替换 PaddleOCR 的“別”；将 Google Lens OCR 中的换行符和 PaddleOCR 中对应的空格合并为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你自己小心点\n保重啊",
+      "two": "你自己小心点 保重啊"
+    },
+    "answer": {
+      "output": "你自己小心点　　保重啊",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "上去认个错\n看有没有办法补救",
+      "two": "上去认个错 看有没有办法补救"
+    },
+    "answer": {
+      "output": "上去认个错　　看有没有办法补救",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "那你就丑大啰\n你说是不是",
+      "two": "那你就丑大啰 你说是不是"
+    },
+    "answer": {
+      "output": "那你就丑大啰　　你说是不是",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "死乞丐\n生那么\n多大毒疮",
+      "two": "死乞丐 生那么多大毒疮"
+    },
+    "answer": {
+      "output": "死乞丐　　生那么多大毒疮",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不用怕\n多生几粒你都不会死",
+      "two": "不用怕 多生几粒你都不会死"
+    },
+    "answer": {
+      "output": "不用怕　　多生几粒你都不会死",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "让我做法事\n替你们消灾解难",
+      "two": "让我做法事 替你们消灾解难"
+    },
+    "answer": {
+      "output": "让我做法事　　替你们消灾解难",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我做这场法事可能要我减寿十年呢",
+      "two": "我做这场法事 可能要我减寿十年呢"
+    },
+    "answer": {
+      "output": "我做这场法事　　可能要我减寿十年呢",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "妖言惑众\n打搅我睡觉",
+      "two": "妖言惑众 打搅我睡觉"
+    },
+    "answer": {
+      "output": "妖言惑众　　打搅我睡觉",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你再〝盯〞啊把你屁股变到嘴巴上去",
+      "two": "你再〝盯〞啊 把你屁股变到嘴巴上去"
+    },
+    "answer": {
+      "output": "你再〝盯〞啊　　把你屁股变到嘴巴上去",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊 一天只能三次算你走运了\n帮你找一个人出来祭神呢",
+      "two": "啊 一天只能三次 算你走运了\n帮你找一个人出来祭神呢"
+    },
+    "answer": {
+      "output": "啊　　一天只能三次算你走运了\n帮你找一个人出来祭神呢",
+      "note": "将开头处 Google Lens 和 PaddleOCR 中出现的空格替换为两个表意空格；省略了 PaddleOCR 中存在但 Google Lens 中不存在的“次”和“算”之间的空格；保留了 PaddleOCR 的换行格式。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "是啊\n到哪儿去找",
+      "two": "是啊 到哪儿去找"
+    },
+    "answer": {
+      "output": "是啊　　到哪儿去找",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊哎\n老鸨",
+      "two": "啊哎 老鸨"
+    },
+    "answer": {
+      "output": "啊哎老鸨",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，并省略了 PaddleOCR 中对应位置的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "快⋯叫她们交出一个人来啊快点⋯",
+      "two": "快⋯叫她们交出一个人来 啊 快点⋯"
+    },
+    "answer": {
+      "output": "快⋯叫她们交出一个人来啊快点⋯",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大家一起进去地保你先走啊快⋯",
+      "two": "大家一起进去 地保 你先走啊 快⋯"
+    },
+    "answer": {
+      "output": "大家一起进去　　地保　　你先走啊　　快⋯",
+      "note": "根据 PaddleOCR 的换行/分隔格式，将对应间隙处理为表意空格；保留了 Google Lens OCR 中更可靠的文字和省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "天爷\n你也知道",
+      "two": "天爷 你也知道"
+    },
+    "answer": {
+      "output": "天爷　　你也知道",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎天爷\n你很为难\n嚯",
+      "two": "哎天爷 你很为难嚯"
+    },
+    "answer": {
+      "output": "哎天爷　　你很为难嚯",
+      "note": "将 Google Lens OCR 中第一处换行符和 PaddleOCR 中对应的空格替换为两个表意空格；省略了 Google Lens OCR 中第二处存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我有什么为难的这里全是我的人",
+      "two": "我有什么为难的 这里全是我的人"
+    },
+    "answer": {
+      "output": "我有什么为难的　　这里全是我的人",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙被统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "要她死就死\n要生就生\n对不对",
+      "two": "要她死就死 要生就生 对不对"
+    },
+    "answer": {
+      "output": "要她死就死　　要生就生　　对不对",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊哪几个没人要的统统给我站出来",
+      "two": "啊哪几个没人要的 统统给我站出来"
+    },
+    "answer": {
+      "output": "啊哪几个没人要的　　统统给我站出来",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "站出来快⋯快点站出来",
+      "two": "站出来 快⋯快点 站出来"
+    },
+    "answer": {
+      "output": "站出来　　快⋯快点　　站出来",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应的空格间隙统一为表意空格，并保留了 Google Lens OCR 中更可靠的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎用不了那么多\n一个半个就够了",
+      "two": "哎用不了那么多 一个半个就够了"
+    },
+    "answer": {
+      "output": "哎用不了那么多　　一个半个就够了",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "出来围一圈围一圈⋯快点⋯",
+      "two": "哎出来围一圈 围一圈⋯快点．"
+    },
+    "answer": {
+      "output": "哎出来围一圈　　围一圈⋯快点⋯",
+      "note": "包括了 PaddleOCR 中存在但 Google Lens 中不存在的“哎”；将两者间对应的空格替换为两个表意空格；采用了 Google Lens OCR 中更可靠的省略号“⋯”替换 PaddleOCR 中的句号“．”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "围好⋯围个圈啊快点⋯围好了⋯",
+      "two": "围好⋯围个圈啊 快点⋯围好了⋯・"
+    },
+    "answer": {
+      "output": "围好⋯围个圈啊　　快点⋯围好了⋯",
+      "note": "将 PaddleOCR 中“围个圈啊”和“快点”之间的空格替换为两个表意空格；采用了 Google Lens OCR 中更可靠的末尾省略号，省略了 PaddleOCR 中多余的“・”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哦你耍赖",
+      "two": "哦 你耍赖"
+    },
+    "answer": {
+      "output": "哦你耍赖",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哦⋯你⋯不是我⋯",
+      "two": "哦⋯你⋯不是⋯"
+    },
+    "answer": {
+      "output": "哦⋯你⋯不是我⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的汉字识别结果，将 PaddleOCR 误识别或遗漏的“我”补回，并保留了 Google Lens 中的省略号标点。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我说你收费太高啊走⋯",
+      "two": "我说你收费太高啊 走⋯"
+    },
+    "answer": {
+      "output": "我说你收费太高啊走⋯",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嗯敢在我怡香院撒野\n嗯",
+      "two": "嗯敢在我怡香院撒野！ 嗯"
+    },
+    "answer": {
+      "output": "嗯敢在我怡香院撒野！嗯",
+      "note": "包括了 Google Lens OCR 中不存在但 PaddleOCR 中存在的感叹号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符和 PaddleOCR 中多余的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎红烧",
+      "two": "哎 红烧"
+    },
+    "answer": {
+      "output": "哎红烧",
+      "note": "采用了 Google Lens OCR 的连写结果，省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你们先等着\n留只左腿给我",
+      "two": "你们先等着 留只左腿给我"
+    },
+    "answer": {
+      "output": "你们先等着　　留只左腿给我",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "抓她去沐浴更衣走",
+      "two": "抓她去沐浴更衣 走"
+    },
+    "answer": {
+      "output": "抓她去沐浴更衣　　走",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙被规范为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哇\n好漂亮\n烧死\n了\n多可惜",
+      "two": "哇 好漂亮 烧死了多可惜"
+    },
+    "answer": {
+      "output": "哇　　好漂亮　　烧死了多可惜",
+      "note": "采用了 PaddleOCR 的换行格式，将 Google Lens OCR 中的多处换行符与 PaddleOCR 中对应的空格统一替换为两个表意空格；同时根据 Google Lens OCR 将“烧死了”合并，省略了其中不必要的换行。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "漂亮的才救\n烧你就不用救了",
+      "two": "漂亮的才救 烧你就不用救了"
+    },
+    "answer": {
+      "output": "漂亮的才救　　烧你就不用救了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不明白\n我就是不明白",
+      "two": "不明白 我就是不明白"
+    },
+    "answer": {
+      "output": "不明白　　我就是不明白",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我⋯照我吩咐做烧啊⋯",
+      "two": "我⋯照我吩咐做 烧啊・"
+    },
+    "answer": {
+      "output": "我⋯照我吩咐做　　烧啊⋯",
+      "note": "保留了 Google Lens OCR 中更可靠的省略号；将 Google Lens OCR 和 PaddleOCR 中对应的空隙统一为两个表意空格；纠正了 PaddleOCR 中的句号点“・”为 Google Lens OCR 中的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎慢一点\n请问一下",
+      "two": "哎慢一点 请问一下"
+    },
+    "answer": {
+      "output": "哎慢一点　　请问一下",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊你⋯",
+      "two": "啊你・"
+    },
+    "answer": {
+      "output": "啊你⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的间隔号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "神经病\n走开",
+      "two": "神经病 走开"
+    },
+    "answer": {
+      "output": "神经病　　走开",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "时间到了\n快骂",
+      "two": "时间到了 快骂"
+    },
+    "answer": {
+      "output": "时间到了　　快骂",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你们看他的脸\n比神仙还要灵验",
+      "two": "你们看他的脸 比神仙还要灵验"
+    },
+    "answer": {
+      "output": "你们看他的脸　　比神仙还要灵验",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎各位他已经跟王母娘娘谈好了",
+      "two": "哎各位 他已经跟王母娘娘谈好了"
+    },
+    "answer": {
+      "output": "哎各位　　他已经跟王母娘娘谈好了",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "以后不会再有瘟疫了\n马上放人",
+      "two": "以后不会再有瘟疫了 马上放人"
+    },
+    "answer": {
+      "output": "以后不会再有瘟疫了　　马上放人",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "如果放了她还有瘟疫那怎么办呢",
+      "two": "如果放了她 还有瘟疫那怎么办呢"
+    },
+    "answer": {
+      "output": "如果放了她　　还有瘟疫那怎么办呢",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "对啊⋯还有瘟疫怎么办⋯⋯怎么办⋯",
+      "two": "对啊⋯还有瘟疫怎么办⋯怎么办⋯"
+    },
+    "answer": {
+      "output": "对啊⋯还有瘟疫怎么办⋯⋯怎么办⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "要是烧死她还有瘟疫的话就烧死你们",
+      "two": "要是烧死她还有瘟疫的话 就烧死你们"
+    },
+    "answer": {
+      "output": "要是烧死她还有瘟疫的话　　就烧死你们",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎⋯听到没有马上放人",
+      "two": "哎⋯听到没有 马上放人"
+    },
+    "answer": {
+      "output": "哎⋯听到没有　　马上放人",
+      "note": "Google Lens OCR 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "街口的井给封了哪来的水呀",
+      "two": "街口的井给封了 哪来的水呀"
+    },
+    "answer": {
+      "output": "街口的井给封了　　哪来的水呀",
+      "note": "Google Lens OCR 中的停顿与 PaddleOCR 中的空格对应，已将该间隙统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "没有水随便什么水都可以",
+      "two": "沒有水 随便什么水都可以"
+    },
+    "answer": {
+      "output": "没有水随便什么水都可以",
+      "note": "采用了 Google Lens OCR 的汉字“没”；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嗯\n你实在太神勇\n了\n避都不避啊",
+      "two": "嗯你实在太神勇了 避都不避啊"
+    },
+    "answer": {
+      "output": "嗯你实在太神勇了　　避都不避啊",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "口水嘛\n又不是没吃过",
+      "two": "口水嘛 又不是没吃过"
+    },
+    "answer": {
+      "output": "口水嘛　　又不是没吃过",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你放心那些人不会再来烧你了",
+      "two": "你放心 那些人不会再来烧你了"
+    },
+    "answer": {
+      "output": "你放心　　那些人不会再来烧你了",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "那些人来找你\n就跟坐马桶一样",
+      "two": "那些人来找你 就跟坐马桶一样"
+    },
+    "answer": {
+      "output": "那些人来找你　　就跟坐马桶一样",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "也就是说请你以后不要再做马桶了",
+      "two": "也就是说 请你以后不要再做马桶了"
+    },
+    "answer": {
+      "output": "也就是说请你以后不要再做马桶了",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎不要你真是〝鸡〞性难改耶",
+      "two": "哎不要 你真是〝鸡〞性难改耶"
+    },
+    "answer": {
+      "output": "哎不要　　你真是〝鸡〞性难改耶",
+      "note": "Google Lens OCR 中无标点而 PaddleOCR 中有空格的间隙，结合上下文保留为停顿，并将该空格替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你不收钱\n我还收呢",
+      "two": "你不收钱 我还收呢"
+    },
+    "answer": {
+      "output": "你不收钱　　我还收呢",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嗯倒挂也行\n不会吧",
+      "two": "嗯倒挂也行 不会吧"
+    },
+    "answer": {
+      "output": "嗯倒挂也行　　不会吧",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀妈的 我怎么会跟你谈这个玩意儿",
+      "two": "哎呀 妈的 我怎么会跟你谈这个玩意儿"
+    },
+    "answer": {
+      "output": "哎呀妈的　　我怎么会跟你谈这个玩意儿",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格；将两者中“妈的”和后文之间的间隙统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哇嗯好香啊有没有我的份",
+      "two": "哇嗯 好香啊 有没有我的份"
+    },
+    "answer": {
+      "output": "哇嗯　　好香啊　　有没有我的份",
+      "note": "将 PaddleOCR 中存在而 Google Lens 中不存在的两个空格位置保留为分隔，并用两个表意空格表示。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎别这样连汤都喝光了",
+      "two": "哎 别这样 连汤都喝光了"
+    },
+    "answer": {
+      "output": "哎　　别这样　　连汤都喝光了",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应语义停顿处的间隙统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "是条洋狗\n没什么味",
+      "two": "是条洋狗 没什么味"
+    },
+    "answer": {
+      "output": "是条洋狗　　没什么味",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "还有一口\n我试试就知道了",
+      "two": "还有一口 我试试就知道了"
+    },
+    "answer": {
+      "output": "还有一口　　我试试就知道了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你想吃你还没这个本事呢",
+      "two": "你想吃 你还没这个本事呢"
+    },
+    "answer": {
+      "output": "你想吃　　你还没这个本事呢",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应位置的间隙融合为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎不会吧\n师傅",
+      "two": "哎不会吧 师傅"
+    },
+    "answer": {
+      "output": "哎不会吧　　师傅",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "狗肉穿肠过徒弟的肚子好饿",
+      "two": "狗肉穿肠过 徒弟的肚子好饿"
+    },
+    "answer": {
+      "output": "狗肉穿肠过　　徒弟的肚子好饿",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "做做好事嘛\n要留块骨头给我尝尝",
+      "two": "做做好事嘛 要留块骨头给我尝尝"
+    },
+    "answer": {
+      "output": "做做好事嘛　　要留块骨头给我尝尝",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "拜托嘛\n师傅\n拜托",
+      "two": "拜托嘛 师傅 拜托"
+    },
+    "answer": {
+      "output": "拜托嘛　　师傅　　拜托",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不就根毛吗 好了嘛好了拜托⋯",
+      "two": "不就根毛吗 好了嘛 好了 拜托・"
+    },
+    "answer": {
+      "output": "不就根毛吗　　好了嘛　　好了　　拜托⋯",
+      "note": "以 Google Lens OCR 的汉字和标点为准，将两处语句间隔及一处空格统一为表意空格，并将 PaddleOCR 误识别的句号点“・”更正为省略号“⋯”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你这个臭小子除了要饭你还会什么\n师傅你给我一块嘛",
+      "two": "你这个臭小子 除了要饭你还会什么\n师傅 你给我一块嘛"
+    },
+    "answer": {
+      "output": "你这个臭小子　　除了要饭你还会什么\n师傅　　你给我一块嘛",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中出现的空格或换行对应的间隙统一处理：第一句中把 Google Lens 的换行与 PaddleOCR 的空格替换为两个表意空格；第二句中把 PaddleOCR 中存在而 Google Lens 中不存在的空格替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅你看",
+      "two": "师傅 你看"
+    },
+    "answer": {
+      "output": "师傅你看",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎内裤拿走了没",
+      "two": "哎內裤拿走了没"
+    },
+    "answer": {
+      "output": "哎内裤拿走了没",
+      "note": "采用了 Google Lens OCR 识别的“内”，替换了 PaddleOCR 误识别的“內”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "拿了⋯",
+      "two": "拿了"
+    },
+    "answer": {
+      "output": "拿了⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "快点\n你欢玩了\n换我了啦",
+      "two": "快点 你欢玩了 换我了啦"
+    },
+    "answer": {
+      "output": "快点　　你欢玩了　　换我了啦",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "来⋯",
+      "two": "来"
+    },
+    "answer": {
+      "output": "来⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你不但不听我的话还变本加厉",
+      "two": "你不但不听我的话 还变本加厉"
+    },
+    "answer": {
+      "output": "你不但不听我的话　　还变本加厉",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "没错\n我是在卖豆腐",
+      "two": "没错 我是在卖豆腐"
+    },
+    "answer": {
+      "output": "没错　　我是在卖豆腐",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎快一点\n你到底做不做生意了",
+      "two": "哎快一点 你到底做不做生意了"
+    },
+    "answer": {
+      "output": "哎快一点　　你到底做不做生意了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不干是吧\n退钱啊",
+      "two": "不干是吧 退钱啊"
+    },
+    "answer": {
+      "output": "不干是吧　　退钱啊",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "别生气嘛走⋯",
+      "two": "别生气嘛 走"
+    },
+    "answer": {
+      "output": "别生气嘛走⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎⋯来⋯",
+      "two": "哎⋯来・"
+    },
+    "answer": {
+      "output": "哎⋯来⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的句末省略号，将 PaddleOCR 误识别的间隔号“・”更正为省略号“⋯”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊哦她是改了\n只是用错方法了",
+      "two": "啊哦 她是改了 只是用错方法了"
+    },
+    "answer": {
+      "output": "啊哦　　她是改了　　只是用错方法了",
+      "note": "将 Google Lens OCR 中的换行符以及两者中对应位置的空格统一替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大种\n跟我来",
+      "two": "大种 跟我来"
+    },
+    "answer": {
+      "output": "大种　　跟我来",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅你以后不要在小玉的面前",
+      "two": "师傅 你以后不要在小玉的面前"
+    },
+    "answer": {
+      "output": "师傅你以后不要在小玉的面前",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "别忘了你叫朱大常\n你这臭小子",
+      "two": "别忘了你叫朱大常 你这臭小子"
+    },
+    "answer": {
+      "output": "别忘了你叫朱大常　　你这臭小子",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哦原来要在小玉面前",
+      "two": "哦 原来要在小玉面前"
+    },
+    "answer": {
+      "output": "哦原来要在小玉面前",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哦好爽哦",
+      "two": "哦 好爽哦"
+    },
+    "answer": {
+      "output": "哦好爽哦",
+      "note": "采用了 Google Lens OCR 的汉字识别结果“好爽”，并省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "上面的人听着我赢定了",
+      "two": "上面的人听着 我贏定了"
+    },
+    "answer": {
+      "output": "上面的人听着　　我赢定了",
+      "note": "采用了 Google Lens OCR 识别的汉字“赢”替换 PaddleOCR 的“贏”；将两者之间的空格处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嗯你才坏呢\n不许你这样说我",
+      "two": "嗯你才坏呢 不许你这样说我"
+    },
+    "answer": {
+      "output": "嗯你才坏呢　　不许你这样说我",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不会痛嘛我就知道是在做梦",
+      "two": "不会痛嘛 我就知道是在做梦"
+    },
+    "answer": {
+      "output": "不会痛嘛我就知道是在做梦",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嗯这什么虫啊\n长得真难看呢",
+      "two": "嗯这什么虫啊 长得真难看呢"
+    },
+    "answer": {
+      "output": "嗯这什么虫啊　　长得真难看呢",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎你看",
+      "two": "哎 你看"
+    },
+    "answer": {
+      "output": "哎你看",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哇真漂亮",
+      "two": "哇 真漂亮"
+    },
+    "answer": {
+      "output": "哇真漂亮",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "那我要做凤凰行不行",
+      "two": "那我要做凤凰 行不行"
+    },
+    "answer": {
+      "output": "那我要做凤凰　　行不行",
+      "note": "Google Lens OCR 中未分隔而 PaddleOCR 中分隔的部分，结合上下文判断应保留停顿，并将该间隙规范为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "主公你真有先见之明",
+      "two": "主公 你真有先见之明"
+    },
+    "answer": {
+      "output": "主公　　你真有先见之明",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你有什么吩咐\n尽管说",
+      "two": "你有什么吩咐 尽管说"
+    },
+    "answer": {
+      "output": "你有什么吩咐　　尽管说",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嫖妓\n改天吧",
+      "two": "嫖妓 改天吧"
+    },
+    "answer": {
+      "output": "嫖妓　　改天吧",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我没空",
+      "two": "我沒空"
+    },
+    "answer": {
+      "output": "我没空",
+      "note": "采用了 Google Lens OCR 识别的汉字“没”，替换了 PaddleOCR 识别的“沒”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我推你是可以你敢推我你给我过来",
+      "two": "我推你是可以 你敢推我 你给我过来"
+    },
+    "answer": {
+      "output": "我推你是可以　　你敢推我　　你给我过来",
+      "note": "根据 PaddleOCR 的换行格式，将句间停顿处的空格统一替换为表意空格；文字内容以 Google Lens OCR 为准。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "厕所上过了\n你又不用洗澡",
+      "two": "厕所上过了 你又不用洗澡"
+    },
+    "answer": {
+      "output": "厕所上过了　　你又不用洗澡",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大种\n你要切记",
+      "two": "大种 你要切记"
+    },
+    "answer": {
+      "output": "大种　　你要切记",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀她的大姨妈刚走啊",
+      "two": "哎呀 她的大姨妈刚走啊"
+    },
+    "answer": {
+      "output": "哎呀她的大姨妈刚走啊",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀不要紧她偶尔客串一下",
+      "two": "哎呀 不要紧 她偶尔客串一下"
+    },
+    "answer": {
+      "output": "哎呀　　不要紧　　她偶尔客串一下",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应语义停顿处的间隙统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哦哎呀原来是你",
+      "two": "哦哎呀 原来是你"
+    },
+    "answer": {
+      "output": "哦哎呀原来是你",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "那个叫我来找你⋯",
+      "two": "那个叫我来找你⋯・"
+    },
+    "answer": {
+      "output": "那个叫我来找你⋯",
+      "note": "采用了 Google Lens OCR 的标点，省略了 PaddleOCR 末尾多识别的符号“・”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎哟\n你坏死喽",
+      "two": "哎哟 你坏死喽"
+    },
+    "answer": {
+      "output": "哎哟　　你坏死喽",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哦来得正好\n顺便把你解决",
+      "two": "哦 来得正好 顺便把你解决"
+    },
+    "answer": {
+      "output": "哦来得正好　　顺便把你解决",
+      "note": "保留了 Google Lens OCR 中更可靠的汉字识别，省略了 PaddleOCR 中多余的空格；将 Google Lens OCR 中的换行符与 PaddleOCR 中对应的间隙融合为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "没有理由摆不平你\n站住",
+      "two": "没有理由摆不平你 站住"
+    },
+    "answer": {
+      "output": "没有理由摆不平你　　站住",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "是⋯",
+      "two": "是"
+    },
+    "answer": {
+      "output": "是⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "看你这个德行\n无恶不作\n罪孽深重",
+      "two": "看你这个德行 无恶不作 罪孽深重"
+    },
+    "answer": {
+      "output": "看你这个德行　　无恶不作　　罪孽深重",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "开我的玩笑\n藤条",
+      "two": "开我的玩笑 藤条"
+    },
+    "answer": {
+      "output": "开我的玩笑　　藤条",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "妈的好累呀",
+      "two": "妈的 好累呀"
+    },
+    "answer": {
+      "output": "妈的　　好累呀",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "他妈的二百五教不会的",
+      "two": "他妈的二百五 教不会的"
+    },
+    "answer": {
+      "output": "他妈的二百五教不会的",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不好意思\n让你费这么大劲儿",
+      "two": "不好意思 让你费这么大劲儿"
+    },
+    "answer": {
+      "output": "不好意思　　让你费这么大劲儿",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "没关系我喜欢",
+      "two": "没关系 我喜欢"
+    },
+    "answer": {
+      "output": "没关系　　我喜欢",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "记得跟那个说明天我会加卖豆浆啊",
+      "two": "记得跟那个说 明天我会加卖豆浆啊"
+    },
+    "answer": {
+      "output": "记得跟那个说明天我会加卖豆浆啊",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "锵⋯小玉无敌豆浆霸",
+      "two": "$⋯小玉无敌豆浆霸"
+    },
+    "answer": {
+      "output": "锵⋯小玉无敌豆浆霸",
+      "note": "采用了 Google Lens OCR 识别正确的首字“锵”，替换了 PaddleOCR 误识别的符号“$”；其余文字及省略号沿用两者一致/更可靠的识别结果。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀我是来嫖妓的",
+      "two": "哎呀 我是来嫖妓的"
+    },
+    "answer": {
+      "output": "哎呀　　我是来嫖妓的",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "事到如今\n我只好以暴制暴",
+      "two": "事到如今 我只好以暴制暴"
+    },
+    "answer": {
+      "output": "事到如今　　我只好以暴制暴",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "叫你当和尚\n又不叫你去死",
+      "two": "叫你当和尚 又不叫你去死"
+    },
+    "answer": {
+      "output": "叫你当和尚　　又不叫你去死",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "算了不做和尚好了",
+      "two": "算了 不做和尚好了"
+    },
+    "answer": {
+      "output": "算了　　不做和尚好了",
+      "note": "PaddleOCR 中出现而 Google Lens 中未明确显示的间隙，结合语义判断为字幕中的停顿，已用两个表意空格表示。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "总之不能杀人\n行不行",
+      "two": "总之不能杀人 行不行"
+    },
+    "answer": {
+      "output": "总之不能杀人　　行不行",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我佛慈悲\n大吉大利",
+      "two": "我佛慈悲 大吉大利"
+    },
+    "answer": {
+      "output": "我佛慈悲　　大吉大利",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊丑了\n大种时辰到了",
+      "two": "啊丑了 大种 时辰到了"
+    },
+    "answer": {
+      "output": "啊丑了　　大种时辰到了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；采用了 Google Lens OCR 中更可靠的汉字识别，省略了 PaddleOCR 中“大种”和“时辰”之间多余的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "每天都有人来卖粽子\n别理他",
+      "two": "每天都有人来卖粽子 别理他"
+    },
+    "answer": {
+      "output": "每天都有人来卖粽子　　别理他",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "法术全用完了\n快走啊",
+      "two": "法术全用完了 快走啊"
+    },
+    "answer": {
+      "output": "法术全用完了　　快走啊",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "糟糕\n时辰到了",
+      "two": "糟糕 时辰到了"
+    },
+    "answer": {
+      "output": "糟糕　　时辰到了",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀嗯我怎么又变回乞丐了",
+      "two": "哎呀 嗯 我怎么又变回乞丐了"
+    },
+    "answer": {
+      "output": "哎呀嗯我怎么又变回乞丐了",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你还什么样你本来就是乞丐啊",
+      "two": "你还什么样 你本来就是乞丐啊"
+    },
+    "answer": {
+      "output": "你还什么样　　你本来就是乞丐啊",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应位置的间隙融合为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎不行啊\n我要走了",
+      "two": "哎 不行啊 我要走了"
+    },
+    "answer": {
+      "output": "哎不行啊　　我要走了",
+      "note": "采用了 Google Lens OCR 的汉字识别结果，省略了 PaddleOCR 中多余的空格；将 Google Lens OCR 中的换行符与 PaddleOCR 中对应的间隙融合为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喂我们是好朋友嘛",
+      "two": "喂 我们是好朋友嘛"
+    },
+    "answer": {
+      "output": "喂我们是好朋友嘛",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀\n还不下来",
+      "two": "哎呀 还不下来"
+    },
+    "answer": {
+      "output": "哎呀　　还不下来",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎臭小子有没看到一个大胡子",
+      "two": "哎臭小子 有没看到一个大胡子"
+    },
+    "answer": {
+      "output": "哎臭小子有没看到一个大胡子",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "有他好像在大便呢",
+      "two": "有 他好像在大便呢"
+    },
+    "answer": {
+      "output": "有他好像在大便呢",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "两位壮士\n你们认错人了",
+      "two": "两位壮士 你们认错人了"
+    },
+    "answer": {
+      "output": "两位壮士　　你们认错人了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嗯你⋯",
+      "two": "嗯你・"
+    },
+    "answer": {
+      "output": "嗯你⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号“⋯”，替换了 PaddleOCR 误识别的间隔号“・”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "没有我没有白吃我有钱",
+      "two": "没有 我没有白吃 我有钱"
+    },
+    "answer": {
+      "output": "没有　　我没有白吃　　我有钱",
+      "note": "根据 PaddleOCR 的换行格式，将 Google Lens OCR 中对应的语句间隔处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不要打了\n求你不要打了",
+      "two": "不要打了 求你不要打了"
+    },
+    "answer": {
+      "output": "不要打了　　求你不要打了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "他没有白吃你不要打了",
+      "two": "他没有白吃 你不要打了"
+    },
+    "answer": {
+      "output": "他没有白吃　　你不要打了",
+      "note": "将 PaddleOCR 中存在但 Google Lens 中不存在的空格处理为两个表意空格，以保留更自然的换行节奏。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "真下贱\n满身疮你都要\n啊",
+      "two": "真下贱 满身疮你都要 啊"
+    },
+    "answer": {
+      "output": "真下贱　　满身疮你都要　　啊",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "老大早跟你说不是我",
+      "two": "老大 早跟你说不是我"
+    },
+    "answer": {
+      "output": "老大　　早跟你说不是我",
+      "note": "Google Lens OCR 中未分开的“老大早”结合 PaddleOCR 的换行倾向，判断“老大”与“早跟你说不是我”之间应有停顿，将该处空格处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哼你胳膊肘子朝外拐",
+      "two": "哼 你胳膊肘子朝外拐"
+    },
+    "answer": {
+      "output": "哼你胳膊肘子朝外拐",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我告诉你\n我忍你很久了",
+      "two": "我告诉你 我忍你很久了"
+    },
+    "answer": {
+      "output": "我告诉你　　我忍你很久了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "喂⋯哎⋯不要打我老大⋯滚啊 你们",
+      "two": "喂⋯哎⋯不要打我老大⋯滾啊 你们"
+    },
+    "answer": {
+      "output": "喂⋯哎⋯不要打我老大⋯滚啊　　你们",
+      "note": "采用了 Google Lens OCR 中更可靠的汉字识别，将 PaddleOCR 的“滾”改为“滚”；并将两者中出现的空格替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你滚吧",
+      "two": "你滾吧"
+    },
+    "answer": {
+      "output": "你滚吧",
+      "note": "采用了 Google Lens OCR 识别的汉字“滚”，替换了 PaddleOCR 中的异体字“滾”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不要救命啊",
+      "two": "不要 救命啊"
+    },
+    "answer": {
+      "output": "不要　　救命啊",
+      "note": "将 PaddleOCR 中的空格替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎\n大爷\n不要啊",
+      "two": "哎大爷 不要啊"
+    },
+    "answer": {
+      "output": "哎大爷　　不要啊",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎哟吓死我了",
+      "two": "哎哟 吓死我了"
+    },
+    "answer": {
+      "output": "哎哟吓死我了",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎 对不起啊\n我找错人了",
+      "two": "哎 对不起啊 我找错人了"
+    },
+    "answer": {
+      "output": "哎　　对不起啊　　我找错人了",
+      "note": "将 Google Lens OCR 中的换行符及两者中对应的空格统一替换为表意空格：保留“哎”和“对不起啊”之间的间隙，并将“对不起啊”和“我找错人了”之间原为换行/空格的间隙处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "记着关门啊\n来\n吃香蕉",
+      "two": "记着关门啊 来 吃香蕉"
+    },
+    "answer": {
+      "output": "记着关门啊　　来　　吃香蕉",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎对不起⋯",
+      "two": "哎对不起・"
+    },
+    "answer": {
+      "output": "哎对不起⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，将 PaddleOCR 误识别的间隔号“・”更正为省略号“⋯”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅我⋯",
+      "two": "师傅 我．"
+    },
+    "answer": {
+      "output": "师傅我⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格和句号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "这么久也不下来找死",
+      "two": "这么久也不下来 找死"
+    },
+    "answer": {
+      "output": "这么久也不下来找死",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "都变回乞丐\n了\n快点走啊",
+      "two": "都变回乞丐了 快点走啊"
+    },
+    "answer": {
+      "output": "都变回乞丐了　　快点走啊",
+      "note": "将 Google Lens OCR 中“都变回乞丐”与“了”之间的换行符省略；将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的“了”与“快点走啊”之间的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大种乞丐\n赶紧死吧",
+      "two": "大种乞丐 赶紧死吧"
+    },
+    "answer": {
+      "output": "大种乞丐　　赶紧死吧",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不要叫我大种\n叫我朱大常",
+      "two": "不要叫我大种 叫我朱大常"
+    },
+    "answer": {
+      "output": "不要叫我大种　　叫我朱大常",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大种\n你不能死\n要撑下去啊\n大种",
+      "two": "大种 你不能死 要撐下去啊 大种"
+    },
+    "answer": {
+      "output": "大种　　你不能死　　要撑下去啊　　大种",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；采用了 Google Lens OCR 的汉字识别，将 PaddleOCR 的“撐”改为“撑”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你没有法术了吗\n嗯",
+      "two": "你没有法术了吗嗯"
+    },
+    "answer": {
+      "output": "你没有法术了吗嗯",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "明天有\n明天你就知道厉害了",
+      "two": "明天有 明天你就知道厉害了"
+    },
+    "answer": {
+      "output": "明天有　　明天你就知道厉害了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "转过去⋯过去\n再过去\n看好",
+      "two": "转过去⋯过去 再过去 看好"
+    },
+    "answer": {
+      "output": "转过去⋯过去　　再过去　　看好",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "天爷说放你一马\n你以后当心点",
+      "two": "天爷说放你一马 你以后当心点"
+    },
+    "answer": {
+      "output": "天爷说放你一马　　你以后当心点",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "刚才看得真爽\n眼睛都不眨一下啊",
+      "two": "刚才看得真爽 眼睛都不眨一下啊"
+    },
+    "answer": {
+      "output": "刚才看得真爽　　眼睛都不眨一下啊",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "土地公⋯快点出来你给我出来",
+      "two": "土地公⋯快点出来 你给我出来"
+    },
+    "answer": {
+      "output": "土地公⋯快点出来　　你给我出来",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎⋯我不是来了嘛干吗大呼小叫的",
+      "two": "哎⋯我不是来了嘛 干吗大呼小叫的"
+    },
+    "answer": {
+      "output": "哎⋯我不是来了嘛　　干吗大呼小叫的",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应位置的间隙统一为两个表意空格，并保留了 Google Lens OCR 中更可靠的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀\n大种这次枉死",
+      "two": "哎呀 大种这次枉死"
+    },
+    "answer": {
+      "output": "哎呀　　大种这次枉死",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "枉死一定是下地狱",
+      "two": "枉死一定是下地獄"
+    },
+    "answer": {
+      "output": "枉死一定是下地狱",
+      "note": "采用了 Google Lens OCR 的汉字识别，将 PaddleOCR 识别为繁体的“獄”更正为简体“狱”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "阎罗王这个人没得商量不过⋯",
+      "two": "阎罗王这个人没得商量 不过．"
+    },
+    "answer": {
+      "output": "阎罗王这个人没得商量不过⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格和句号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎 快点带我下去见见他",
+      "two": "哎快点带我下去见见他"
+    },
+    "answer": {
+      "output": "哎快点带我下去见见他",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀\n我只是一个\n小神\n没有资格下去",
+      "two": "哎呀 我只是一个小神 没有资格下去"
+    },
+    "answer": {
+      "output": "哎呀　　我只是一个小神　　没有资格下去",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格或无间隙的分隔进行融合：保留 PaddleOCR 的行内连续性，将“我只是一个”和“小神”合并；并将句间停顿处的换行/空格统一替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不像你你有金身护着",
+      "two": "不像你 你有金身护着"
+    },
+    "answer": {
+      "output": "不像你　　你有金身护着",
+      "note": "将 PaddleOCR 中存在而 Google Lens 中不存在的空格处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀放手",
+      "two": "哎呀 放手"
+    },
+    "answer": {
+      "output": "哎呀放手",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅说这个金身不能离开这间寺庙",
+      "two": "师傅说 这个金身不能离开这间寺庙"
+    },
+    "answer": {
+      "output": "师傅说　　这个金身不能离开这间寺庙",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀离开了又怎么样",
+      "two": "哎呀 离开了又怎么样"
+    },
+    "answer": {
+      "output": "哎呀　　离开了又怎么样",
+      "note": "将 PaddleOCR 中存在而 Google Lens 中不存在的空格处理为两个表意空格，以保留 PaddleOCR 的换行节奏。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "那就是没事情",
+      "two": "那就是沒事情"
+    },
+    "answer": {
+      "output": "那就是没事情",
+      "note": "采用了 Google Lens OCR 的汉字识别，将 PaddleOCR 识别为“沒”的字更正为“没”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "借来用用\n最多付你利息",
+      "two": "借来用用 最多付你利息"
+    },
+    "answer": {
+      "output": "借来用用　　最多付你利息",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "不行啊\n怎么变",
+      "two": "不行 啊 怎么变"
+    },
+    "answer": {
+      "output": "不行啊　　怎么变",
+      "note": "根据 Google Lens OCR 补上了 PaddleOCR 中误分开的“啊”；将表示分隔的空格替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大黑鬼\n你给我站住",
+      "two": "大黑鬼 你给我站住"
+    },
+    "answer": {
+      "output": "大黑鬼　　你给我站住",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大黑鬼\n你真没礼貌",
+      "two": "大黑鬼 你真没礼貌"
+    },
+    "answer": {
+      "output": "大黑鬼　　你真没礼貌",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我告诉你\n我跟佛祖是好朋友",
+      "two": "我告诉你 我跟佛祖是好朋友"
+    },
+    "answer": {
+      "output": "我告诉你　　我跟佛祖是好朋友",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀你好大的胆子 不要过来⋯",
+      "two": "哎呀 你好大的胆子 不要过来⋯"
+    },
+    "answer": {
+      "output": "哎呀　　你好大的胆子　　不要过来⋯",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应的空格取代为表意空格，并保留了 Google Lens OCR 中更可靠的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "垃圾叫释迦牟尼来见我",
+      "two": "垃圾 叫释迦牟尼来见我"
+    },
+    "answer": {
+      "output": "垃圾　　叫释迦牟尼来见我",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "这样子好了\n我叫你老大",
+      "two": "这样子好了 我叫你老大"
+    },
+    "answer": {
+      "output": "这样子好了　　我叫你老大",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "多一个不多少一个不少",
+      "two": "多一个不多 少一个不少"
+    },
+    "answer": {
+      "output": "多一个不多　　少一个不少",
+      "note": "将 PaddleOCR 中显示为空格而 Google Lens OCR 中未显示的间隙处理为两个表意空格，以保留更自然的换行停顿。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "1我帮你修下脚趾甲好长啊",
+      "two": "哎哟 我帮你修下腳趾甲 好长啊"
+    },
+    "answer": {
+      "output": "哎哟　　我帮你修下脚趾甲　　好长啊",
+      "note": "采用了 PaddleOCR 中存在而 Google Lens OCR 中缺失的语气词“哎哟”；采用了 Google Lens OCR 中更可靠的简体字“脚趾甲”；根据 PaddleOCR 的换行/分段格式，将对应间隙处理为两个表意空格；省略了 Google Lens OCR 开头明显误识别的“1”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "王八蛋你个死黑鬼好换了",
+      "two": "王八蛋 你个死黑鬼 好 换了"
+    },
+    "answer": {
+      "output": "王八蛋　　你个死黑鬼　　好　　换了",
+      "note": "Google Lens OCR 和 PaddleOCR 中对应的间隙被统一处理为表意空格：将“王八蛋”与“你个死黑鬼”之间以及“你个死黑鬼”与“好”之间的间隙替换为两个表意空格，并保留了 PaddleOCR 体现的分隔；同时将“好”与“换了”之间的空格也处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大种我再怎么样也要带你回去",
+      "two": "大种 我再怎么样也要带你回去"
+    },
+    "answer": {
+      "output": "大种　　我再怎么样也要带你回去",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "臭和尚\n你跟鬼一样",
+      "two": "臭和尚 你跟鬼一样"
+    },
+    "answer": {
+      "output": "臭和尚　　你跟鬼一样",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "糟了\n又回到上面来了",
+      "two": "糟了 又回到上面来了"
+    },
+    "answer": {
+      "output": "糟了　　又回到上面来了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你不喜欢的话就回到下面去好了",
+      "two": "你不喜欢的话 就回到下面去好了"
+    },
+    "answer": {
+      "output": "你不喜欢的话就回到下面去好了",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀这下可惨了\n连金身都被人家拿走",
+      "two": "哎呀 这下可惨了 连金身都被人家拿走"
+    },
+    "answer": {
+      "output": "哎呀　　这下可惨了　　连金身都被人家拿走",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙，以及两者中共有的空格，统一替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大种⋯",
+      "two": "大种"
+    },
+    "answer": {
+      "output": "大种⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "所以呢\n全都跑光了",
+      "two": "所以呢 全都跑光了"
+    },
+    "answer": {
+      "output": "所以呢　　全都跑光了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "对不起啊为了我的终身俸",
+      "two": "对不起啊 为了我的终身俸"
+    },
+    "answer": {
+      "output": "对不起啊　　为了我的终身俸",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "只好跟着大家走\n了\n看着办吧\n啊",
+      "two": "只好跟着大家走了 看着办吧啊"
+    },
+    "answer": {
+      "output": "只好跟着大家走了　　看着办吧啊",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；省略了 Google Lens OCR 中用于拆分同一句的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "搞什么鬼啊\n东西呢",
+      "two": "搞什么鬼啊 东西呢"
+    },
+    "answer": {
+      "output": "搞什么鬼啊　　东西呢",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "济癫\n那个金身呢",
+      "two": "济癫 那个金身呢"
+    },
+    "answer": {
+      "output": "济癫　　那个金身呢",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你死定了\n惹这么大的祸",
+      "two": "你死定了 惹这么大的祸"
+    },
+    "answer": {
+      "output": "你死定了　　惹这么大的祸",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "糟了\n土地公也不见了",
+      "two": "糟了 土地公也不见了"
+    },
+    "answer": {
+      "output": "糟了　　土地公也不见了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀这次祸闯大了",
+      "two": "哎呀 这次祸闯大了"
+    },
+    "answer": {
+      "output": "哎呀　　这次祸闯大了",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅 快走了\n师傅\n快走吧",
+      "two": "师傅 快走了 师傅 快走吧"
+    },
+    "answer": {
+      "output": "师傅　　快走了　　师傅　　快走吧",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙统一替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅你要到哪儿去",
+      "two": "师傅 你要到哪儿去"
+    },
+    "answer": {
+      "output": "师傅你要到哪儿去",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "济癫\n我早跟你说过",
+      "two": "济癫 我早跟你说过"
+    },
+    "answer": {
+      "output": "济癫　　我早跟你说过",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅⋯",
+      "two": "师傅"
+    },
+    "answer": {
+      "output": "师傅⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "阿弥陀佛⋯",
+      "two": "阿弥陀佛・"
+    },
+    "answer": {
+      "output": "阿弥陀佛⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的间隔号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎小玉听说你昨天晚上被天爷搞坏了",
+      "two": "哎小玉 听说你昨天晚上被天爷搞坏了"
+    },
+    "answer": {
+      "output": "哎小玉　　听说你昨天晚上被天爷搞坏了",
+      "note": "将 PaddleOCR 中存在而 Google Lens OCR 中不存在的空格处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "叫也不理有什么了不起嘛",
+      "two": "叫也不理 有什么了不起嘛"
+    },
+    "answer": {
+      "output": "叫也不理　　有什么了不起嘛",
+      "note": "将 PaddleOCR 中存在但 Google Lens 中不存在的空格替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊叫我啊",
+      "two": "啊 叫我啊"
+    },
+    "answer": {
+      "output": "啊叫我啊",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我不收你们的钱你们肯不肯要我",
+      "two": "我不收你们的钱 你们肯不肯要我"
+    },
+    "answer": {
+      "output": "我不收你们的钱　　你们肯不肯要我",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎好啊\n我们马上就来",
+      "two": "哎好啊 我们马上就来"
+    },
+    "answer": {
+      "output": "哎好啊　　我们马上就来",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我也要⋯",
+      "two": "我也要・"
+    },
+    "answer": {
+      "output": "我也要⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的间隔号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "她先叫我的\n当然我先",
+      "two": "她先叫我的 当然我先"
+    },
+    "answer": {
+      "output": "她先叫我的　　当然我先",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好啊一起上也可以",
+      "two": "好啊 一起上也可以"
+    },
+    "answer": {
+      "output": "好啊一起上也可以",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你告诉我\n要怎么样你才开心",
+      "two": "你告诉我 要怎么样你才开心"
+    },
+    "answer": {
+      "output": "你告诉我　　要怎么样你才开心",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我降龙罗汉\n法号济癫和尚",
+      "two": "我降龙罗汉 法号济癫和尚"
+    },
+    "answer": {
+      "output": "我降龙罗汉　　法号济癫和尚",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "无论前世种种今生何样",
+      "two": "无论前世种种 今生何样"
+    },
+    "answer": {
+      "output": "无论前世种种　　今生何样",
+      "note": "Google Lens OCR 中无空格而 PaddleOCR 中有空格，结合语义判断该处为字幕分隔，故将该间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "半点朱唇万客尝你也⋯",
+      "two": "半点朱唇万客尝 你也・"
+    },
+    "answer": {
+      "output": "半点朱唇万客尝　　你也⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号“⋯”；将 Google Lens 和 PaddleOCR 中对应位置的间隙统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎不要紧\n我承受得了",
+      "two": "哎不要紧 我承受得了"
+    },
+    "answer": {
+      "output": "哎不要紧　　我承受得了",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哦我好怕",
+      "two": "哦 我好怕"
+    },
+    "answer": {
+      "output": "哦我好怕",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我⋯耶⋯",
+      "two": "我⋯耶"
+    },
+    "answer": {
+      "output": "我⋯耶⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好棒啊\n拜堂吧",
+      "two": "好棒啊 拜堂吧"
+    },
+    "answer": {
+      "output": "好棒啊　　拜堂吧",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊⋯你的脚⋯",
+      "two": "啊⋯你的脚・"
+    },
+    "answer": {
+      "output": "啊⋯你的脚⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的句末省略号，替换了 PaddleOCR 误识别的间隔号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "臭小子你在骗我的对不对",
+      "two": "臭小子 你在骗我的 对不对"
+    },
+    "answer": {
+      "output": "臭小子　　你在骗我的　　对不对",
+      "note": "将 Google Lens OCR 和 PaddleOCR 中对应的语义停顿处处理为表意空格：把 PaddleOCR 中的空格统一替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "快点我们先拜堂吧",
+      "two": "快点 我们先拜堂吧"
+    },
+    "answer": {
+      "output": "快点　　我们先拜堂吧",
+      "note": "将 Google Lens OCR 中未分开的语句与 PaddleOCR 中的分隔对齐，把该处间隙处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "没关系⋯",
+      "two": "没关系．"
+    },
+    "answer": {
+      "output": "没关系⋯",
+      "note": "采用了 Google Lens OCR 中更可靠的省略号，替换了 PaddleOCR 误识别的句号。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "臭娘们\n你耍我是不是",
+      "two": "臭娘们 你耍我是不是"
+    },
+    "answer": {
+      "output": "臭娘们　　你耍我是不是",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "没错我是在耍你",
+      "two": "没错 我是在耍你"
+    },
+    "answer": {
+      "output": "没错我是在耍你",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "就算他找到了\n武功也已经全废",
+      "two": "就算他找到了 武功也已经全废"
+    },
+    "answer": {
+      "output": "就算他找到了　　武功也已经全废",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你终于出现了吧 不过已经没有用了",
+      "two": "你终于出现了吧不过已经没有用了"
+    },
+    "answer": {
+      "output": "你终于出现了吧　　不过已经没有用了",
+      "note": "将 Google Lens OCR 中存在而 PaddleOCR 中不存在的空格替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哼九世恶人\n我看是你恶还是我恶",
+      "two": "哼九世恶人 我看是你恶还是我恶"
+    },
+    "answer": {
+      "output": "哼九世恶人　　我看是你恶还是我恶",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "嘿是吗",
+      "two": "嘿 是吗"
+    },
+    "answer": {
+      "output": "嘿是吗",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我打死你打死你⋯",
+      "two": "我打死你 打死你"
+    },
+    "answer": {
+      "output": "我打死你　　打死你⋯",
+      "note": "保留了 Google Lens OCR 中更可靠的省略号；将 Google Lens 和 PaddleOCR 中对应的间隙统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "只要你肯认输\n再连降三级",
+      "two": "只要你肯认输 再连降三级"
+    },
+    "answer": {
+      "output": "只要你肯认输　　再连降三级",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "现在时间不多\n了\n快点回去吧",
+      "two": "现在时间不多了 快点回去吧"
+    },
+    "answer": {
+      "output": "现在时间不多了　　快点回去吧",
+      "note": "根据 PaddleOCR 的换行格式将 Google Lens OCR 中拆开的“了”并入上一行；将两者之间表示分句的间隙统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "王八蛋\n我早该杀了你",
+      "two": "王八蛋 我早该杀了你"
+    },
+    "answer": {
+      "output": "王八蛋　　我早该杀了你",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "看清楚你的千年不死心",
+      "two": "看清楚 你的千年不死心"
+    },
+    "answer": {
+      "output": "看清楚　　你的千年不死心",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙被统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "石头\n怎么会这样",
+      "two": "石头 怎么会这样"
+    },
+    "answer": {
+      "output": "石头　　怎么会这样",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "他不但让你死心而且还对他塌地的",
+      "two": "他不但让你死心 而且还对他塌地的"
+    },
+    "answer": {
+      "output": "他不但让你死心　　而且还对他塌地的",
+      "note": "Google Lens OCR 和 PaddleOCR 中对应位置的间隙被保留，并规范为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "主公你骗我",
+      "two": "主公 你骗我"
+    },
+    "answer": {
+      "output": "主公你骗我",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀骗你就骗你了",
+      "two": "哎呀 骗你就骗你了"
+    },
+    "answer": {
+      "output": "哎呀骗你就骗你了",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "像你这种傻瓜\n不骗你骗谁呀",
+      "two": "像你这种傻瓜 不骗你骗谁呀"
+    },
+    "answer": {
+      "output": "像你这种傻瓜　　不骗你骗谁呀",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "黑罗煞有什么阴谋\n快说",
+      "two": "黑罗煞有什么阴谋 快说"
+    },
+    "answer": {
+      "output": "黑罗煞有什么阴谋　　快说",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "说不然我劈死你",
+      "two": "说 不然我劈死你"
+    },
+    "answer": {
+      "output": "说不然我劈死你",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎⋯阿龙啊没有时间了",
+      "two": "哎⋯阿龙啊 没有时间了"
+    },
+    "answer": {
+      "output": "哎⋯阿龙啊　　没有时间了",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好难过把心还给我我不想死",
+      "two": "好难过 把心还给我 我不想死"
+    },
+    "answer": {
+      "output": "好难过　把心还给我　我不想死",
+      "note": "Google Lens OCR 和 PaddleOCR 中出现的空格或分隔间隙已统一为表意空格；采用了 PaddleOCR 的换行分段格式。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "大种乞丐这里的几十条人命",
+      "two": "大种乞丐 这里的几十条人命"
+    },
+    "answer": {
+      "output": "大种乞丐　　这里的几十条人命",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙分别表现为无空格与空格，结合语义判断在此处保留停顿，并将该间隙统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "继续滥杀无辜\n你是不是想这么做",
+      "two": "继续滥杀无辜 你是不是想这么做"
+    },
+    "answer": {
+      "output": "继续滥杀无辜　　你是不是想这么做",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你疯了\n现在不走就没有机会了",
+      "two": "你疯了 现在不走就没有机会了"
+    },
+    "answer": {
+      "output": "你疯了　　现在不走就没有机会了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "黑罗煞是罪魁祸首\n我要摆平他",
+      "two": "黑罗煞是罪魁祸首 我要摆平他"
+    },
+    "answer": {
+      "output": "黑罗煞是罪魁祸首　　我要摆平他",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "今晚全靠你\n你知道吗",
+      "two": "今晚全靠你 你知道吗"
+    },
+    "answer": {
+      "output": "今晚全靠你　　你知道吗",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎呀\n糟了",
+      "two": "哎呀 糟了"
+    },
+    "answer": {
+      "output": "哎呀　　糟了",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我们又见面了\n啊快走吧",
+      "two": "我们又见面了啊快走吧"
+    },
+    "answer": {
+      "output": "我们又见面了啊快走吧",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅\n你干吗来这里呀",
+      "two": "师傅 你干吗来这里呀"
+    },
+    "answer": {
+      "output": "师傅你干吗来这里呀",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你知道我处境危险你干吗回来找我",
+      "two": "你知道我处境危险 你干吗回来找我"
+    },
+    "answer": {
+      "output": "你知道我处境危险　　你干吗回来找我",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙被统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅我的金身所剩无几",
+      "two": "师傅 我的金身所剩无几"
+    },
+    "answer": {
+      "output": "师傅我的金身所剩无几",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "金身耗尽\n你也会被毁灭",
+      "two": "金身耗尽 你也会被毁灭"
+    },
+    "answer": {
+      "output": "金身耗尽　　你也会被毁灭",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "金粉呢师傅你该不会是⋯",
+      "two": "金粉呢 师傅 你该不会是⋯"
+    },
+    "answer": {
+      "output": "金粉呢　　师傅　　你该不会是⋯",
+      "note": "根据 Google Lens OCR 保留了省略号；将 Google Lens OCR 和 PaddleOCR 中对应的间隙统一为表意空格，其中“金粉呢”和“师傅”之间替换为两个表意空格，“师傅”和“你该不会是⋯”之间替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "是啊我全吞下去了",
+      "two": "是啊 我全吞下去了"
+    },
+    "answer": {
+      "output": "是啊我全吞下去了",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊在这么危急的关头你竟然⋯",
+      "two": "啊在这么危急的关头 你竟然⋯"
+    },
+    "answer": {
+      "output": "啊在这么危急的关头你竟然⋯",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "吞了这些金粉\n我肚子觉得怪怪的",
+      "two": "吞了这些金粉 我肚子觉得怪怪的"
+    },
+    "answer": {
+      "output": "吞了这些金粉　　我肚子觉得怪怪的",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅你快点想想办法把金粉拉出来",
+      "two": "师傅 你快点想想办法 把金粉拉出来"
+    },
+    "answer": {
+      "output": "师傅　　你快点想想办法　　把金粉拉出来",
+      "note": "Google Lens 和 PaddleOCR 中对应的停顿间隙分别表现为无空格和空格，结合字幕格式将其统一为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "啊好\n偷东西",
+      "two": "啊好 偷东西"
+    },
+    "answer": {
+      "output": "啊好　　偷东西",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "噓我没牙\n借用一下嘛",
+      "two": "嘘 我沒牙 借用一下嘛"
+    },
+    "answer": {
+      "output": "噓我没牙　　借用一下嘛",
+      "note": "保留了 Google Lens OCR 中更可靠的汉字写法；将 Google Lens OCR 中的换行符与 PaddleOCR 中对应的空格融合为两个表意空格；省略了 PaddleOCR 开头多出的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "撑不住了",
+      "two": "撐不住了"
+    },
+    "answer": {
+      "output": "撑不住了",
+      "note": "采用了 Google Lens OCR 识别的汉字“撑”替换 PaddleOCR 识别的“撐”，因为 Google Lens 在汉字识别方面更可靠。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "师傅\n帮我最后一个忙",
+      "two": "师傅 帮我最后一个忙"
+    },
+    "answer": {
+      "output": "师傅　　帮我最后一个忙",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "那跪下磕三个响头我就饶了你",
+      "two": "那跪下磕三个响头 我就饶了你"
+    },
+    "answer": {
+      "output": "那跪下磕三个响头　　我就饶了你",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "济癲⋯",
+      "two": "济癫・"
+    },
+    "answer": {
+      "output": "济癲⋯",
+      "note": "采用了 Google Lens OCR 识别的汉字“癲”和省略号“⋯”，替换了 PaddleOCR 中的“癫”和间隔号“・”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "阿弥陀佛\n南无阿弥陀佛",
+      "two": "阿弥陀佛 南无阿弥陀佛"
+    },
+    "answer": {
+      "output": "阿弥陀佛　　南无阿弥陀佛",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "现在不但死了\n临死还是个乞丐",
+      "two": "现在不但死了 临死还是个乞丐"
+    },
+    "answer": {
+      "output": "现在不但死了　　临死还是个乞丐",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "他害得那个〝野鸡〞刮破了脸好可怜呢",
+      "two": "他害得那个〝野鸡〞刮破了脸 好可怜呢"
+    },
+    "answer": {
+      "output": "他害得那个〝野鸡〞刮破了脸好可怜呢",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "临死之前呢还多伤了几十条人命",
+      "two": "临死之前呢 还多伤了几十条人命"
+    },
+    "answer": {
+      "output": "临死之前呢　　还多伤了几十条人命",
+      "note": "Google Lens 和 PaddleOCR 中对应位置的间隙分别表现为无空格和空格，结合语气停顿处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "失败⋯失败呀⋯",
+      "two": "失败⋯失败呀⋯・"
+    },
+    "answer": {
+      "output": "失败⋯失败呀⋯",
+      "note": "采用了 Google Lens OCR 的标点，省略了 PaddleOCR 中多出的句末符号「・」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "如果那天让我跟他单挑打败了他",
+      "two": "如果那天让我跟他单挑 打败了他"
+    },
+    "answer": {
+      "output": "如果那天让我跟他单挑　　打败了他",
+      "note": "将 Google Lens OCR 中与 PaddleOCR 中对应为空格的间隙处理为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "你算了吧\n整天都说单挑",
+      "two": "你算了吧 整天都说单挑"
+    },
+    "answer": {
+      "output": "你算了吧　　整天都说单挑",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "降龙究竟是输还是贏呢",
+      "two": "降龙究竟是输还是赢呢"
+    },
+    "answer": {
+      "output": "降龙究竟是输还是赢呢",
+      "note": "采用了 PaddleOCR 中的“赢”字，替换了 Google Lens OCR 误识别的“贏”，其余文字保持一致。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "哎⋯这⋯",
+      "two": "哎⋯这・"
+    },
+    "answer": {
+      "output": "哎⋯这⋯",
+      "note": "采用了 Google Lens OCR 结果中的省略号，将 PaddleOCR 末尾误识别的间隔号“・”更正为省略号“⋯”。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "降龙今天你成为降龙尊者",
+      "two": "降龙 今天你成为降龙尊者"
+    },
+    "answer": {
+      "output": "降龙　　今天你成为降龙尊者",
+      "note": "Google Lens 和 PaddleOCR 中出现的间隙已被两个表意空格取代。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "只要有爱\n哪里都是天堂",
+      "two": "只要有爱 哪里都是天堂"
+    },
+    "answer": {
+      "output": "只要有爱　　哪里都是天堂",
+      "note": "将 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "一个做九世\n〝野鸡〞",
+      "two": "一个做九世〝野鸡〞"
+    },
+    "answer": {
+      "output": "一个做九世〝野鸡〞",
+      "note": "按预期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "我没有\n〝摸摸〞\n嘛",
+      "two": "我沒有〝摸摸〞嘛"
+    },
+    "answer": {
+      "output": "我没有〝摸摸〞嘛",
+      "note": "按预期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "没有\n没有\n〝摸摸〞",
+      "two": "沒有 沒有〝摸摸〞"
+    },
+    "answer": {
+      "output": "没有　　没有〝摸摸〞",
+      "note": "按预期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "＂\n爸爸＂",
+      "two": "〝爸爸〞"
+    },
+    "answer": {
+      "output": "〝爸爸〞",
+      "note": "按预期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "九世\n〝野鸡〞",
+      "two": "九世〝野鸡〞"
+    },
+    "answer": {
+      "output": "九世〝野鸡〞",
+      "note": "按预期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "她是\n〝野鸡〞\n啊",
+      "two": "她是〝野鸡〞啊"
+    },
+    "answer": {
+      "output": "她是〝野鸡〞啊",
+      "note": "按预期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "〝离〞你⋯我\n〝离〞你",
+      "two": "〝离〞你⋯我〝离〞你"
+    },
+    "answer": {
+      "output": "〝离〞你⋯我〝离〞你",
+      "note": "按预期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "好\n〝黄〞\n啊",
+      "two": "好〝黄〞啊"
+    },
+    "answer": {
+      "output": "好〝黄〞啊",
+      "note": "按预期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "one": "就不再做\n〝野鸡〞\n了",
+      "two": "就不再做〝野鸡〞了"
+    },
+    "answer": {
+      "output": "就不再做〝野鸡〞了",
+      "note": "按预期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  }
+]

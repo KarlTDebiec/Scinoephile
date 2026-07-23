@@ -6,16 +6,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+from pytest import CaptureFixture, raises
 
 from scinoephile.cli.multi.multi_diff_cli import MultiDiffCli
 from scinoephile.common.testing import run_cli_with_args
 
 
-def test_multi_diff_cli(
-    tmp_path: Path,
-    capsys: pytest.CaptureFixture,
-):
+def test_multi_diff_cli(tmp_path: Path, capsys: CaptureFixture):
     """Test multi diff CLI output.
 
     Arguments:
@@ -44,10 +41,7 @@ def test_multi_diff_cli(
     assert output == ("edit: REFERENCE[1] -> CANDIDATE[1]: '靠你了' -> '靠你喇！'\n")
 
 
-def test_multi_diff_cli_multiline_split_edit(
-    tmp_path: Path,
-    capsys: pytest.CaptureFixture,
-):
+def test_multi_diff_cli_multiline_split_edit(tmp_path: Path, capsys: CaptureFixture):
     """Test multi diff CLI output for multi-line alignment.
 
     Arguments:
@@ -82,7 +76,7 @@ def test_multi_diff_cli_multiline_split_edit(
 
 def test_multi_diff_cli_identical_series_prints_no_differences(
     tmp_path: Path,
-    capsys: pytest.CaptureFixture,
+    capsys: CaptureFixture,
 ):
     """Test multi diff reports when there are no differences.
 
@@ -118,7 +112,7 @@ def test_multi_diff_cli_rejects_old_one_two_flags(tmp_path: Path):
     reference_infile_path.write_text(content, encoding="utf-8")
     candidate_infile_path.write_text(content, encoding="utf-8")
 
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             MultiDiffCli,
             f"--one-infile {reference_infile_path} "

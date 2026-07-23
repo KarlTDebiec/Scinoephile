@@ -5,11 +5,10 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from dataclasses import replace
 from pathlib import Path
 
+from scinoephile.core.language import is_chinese_language_tag
 from scinoephile.core.media import Stream, SubtitleStream
-from scinoephile.core.media.language import is_chinese
 from scinoephile.media.subtitles.details import get_detailed_subtitle_streams
 
 from .analysis import analyze_zho_subtitle_stream_script
@@ -39,7 +38,7 @@ def get_zho_subtitle_streams(
         streams=streams,
     ):
         language = stream.language
-        if not is_chinese(language):
+        if language is None or not is_chinese_language_tag(language):
             zho_streams.append(stream)
             continue
 
@@ -56,5 +55,6 @@ def get_zho_subtitle_streams(
             language = f"{language}-{script}"
         else:
             language = f"{language}-Unknown"
-        zho_streams.append(replace(stream, language=language))
+        stream.language = language
+        zho_streams.append(stream)
     return zho_streams

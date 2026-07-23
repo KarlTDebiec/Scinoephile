@@ -1,0 +1,115 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Processes OCR fusion."""
+
+from __future__ import annotations
+
+from logging import getLogger
+from typing import cast
+
+from scinoephile.core import ScinoephileError
+from scinoephile.core.llms import Processor
+from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.core.synchronization import are_series_one_to_one
+
+from .manager import OcrFusionManager
+from .models import OcrFusionAnswer
+from .prompt import OcrFusionPrompt
+
+__all__ = ["OcrFusionProcessor"]
+
+
+logger = getLogger(__name__)
+
+
+class OcrFusionProcessor(Processor):
+    """Processes OCR fusion."""
+
+    manager_cls = OcrFusionManager
+    """Manager class used to construct test case models."""
+
+    def process(
+        self, source_one: Series, source_two: Series, stop_at_idx: int | None = None
+    ) -> Series:
+        """Fuse two one-to-one OCR subtitle series.
+
+        Arguments:
+            source_one: subtitles from source one
+            source_two: subtitles from source two
+            stop_at_idx: stop processing at this index
+        Returns:
+            processed subtitles
+        """
+        # Validate series
+        if not are_series_one_to_one(source_one, source_two):
+            raise ScinoephileError(
+                "Series from sources one and two must have the same number of "
+                f"subtitles; got {len(source_one)} and {len(source_two)}."
+            )
+
+        prompt: OcrFusionPrompt = getattr(self, "prompt")
+
+        # Process subtitles
+        output_subtitles = []
+        if stop_at_idx is None:
+            stop_at_idx = len(source_one)
+        elif stop_at_idx < 0:
+            raise ValueError("stop_at_idx must be greater than or equal to 0")
+        for sub_idx, (sub_one, sub_two) in enumerate(
+            zip(source_one.events, source_two.events)
+        ):
+            if sub_idx >= stop_at_idx:
+                break
+            text_one = sub_one.text_with_newline
+            text_two = sub_two.text_with_newline
+
+            # Handle missing data
+            if not text_one and not text_two:
+                output_subtitles.append(
+                    Subtitle(start=sub_one.start, end=sub_one.end, text="")
+                )
+                logger.info(f"Subtitle {sub_idx + 1} empty.")
+                continue
+            if text_one == text_two:
+                output_subtitles.append(sub_one)
+                logger.info(
+                    f"Subtitle {sub_idx + 1} identical:     "
+                    f"{sub_one.text_with_newline.replace('\n', ' ')}"
+                )
+                continue
+            if not text_two:
+                output_subtitles.append(sub_one)
+                logger.info(
+                    f"Subtitle {sub_idx + 1} from {prompt.src_1}: "
+                    f"{sub_one.text_with_newline.replace('\n', ' ')}"
+                )
+                continue
+            if not text_one:
+                output_subtitles.append(sub_two)
+                logger.info(
+                    f"Subtitle {sub_idx + 1} from {prompt.src_2}: "
+                    f"{sub_two.text_with_newline.replace('\n', ' ')}"
+                )
+                continue
+
+            # Query LLM
+            test_case_cls = self.test_case_cls
+            query_cls = test_case_cls.query_cls
+            query = query_cls.model_validate(
+                {"source_one": text_one, "source_two": text_two}
+            )
+            test_case = test_case_cls(query=query)
+            test_case = self.queryer(test_case)
+
+            answer = cast(OcrFusionAnswer, test_case.answer)
+            output_text = answer.output
+            sub = Subtitle(start=sub_one.start, end=sub_one.end, text=output_text)
+            logger.info(
+                f"Subtitle {sub_idx + 1} processed:     {sub.text.replace('\n', '\\n')}"
+            )
+            output_subtitles.append(sub)
+
+        self.save_test_cases()
+
+        # Organize and return
+        return Series(events=output_subtitles)

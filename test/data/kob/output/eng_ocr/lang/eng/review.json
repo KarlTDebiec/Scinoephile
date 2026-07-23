@@ -1,0 +1,8551 @@
+[
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Young master, we are ready"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What's a hard job for you, young master"
+        },
+        {
+          "index": 2,
+          "text": "The towel, young master"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What did he write?"
+        },
+        {
+          "index": 2,
+          "text": "His name!"
+        },
+        {
+          "index": 3,
+          "text": "Great! Young master knows how to\nwrite his name!"
+        },
+        {
+          "index": 4,
+          "text": "Yes!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Nice calligraphy"
+        },
+        {
+          "index": 2,
+          "text": "Get lost"
+        },
+        {
+          "index": 3,
+          "text": "Nice calligraphy! So Cha Ha Yee Chan!"
+        },
+        {
+          "index": 4,
+          "text": "It's reversed, Master"
+        },
+        {
+          "index": 5,
+          "text": "Chan Yee Ha Cha So"
+        },
+        {
+          "index": 6,
+          "text": "Good boy, but, don't be proud! Got me?"
+        },
+        {
+          "index": 7,
+          "text": "Dad, since the first\nemperor of the Ching Dynasty,"
+        },
+        {
+          "index": 8,
+          "text": "our family"
+        },
+        {
+          "index": 9,
+          "text": "has been illiterate"
+        },
+        {
+          "index": 10,
+          "text": "But not, my son, that's your grandson,"
+        },
+        {
+          "index": 11,
+          "text": "he knows how to write his name!"
+        },
+        {
+          "index": 12,
+          "text": "Dad, it's very great!"
+        },
+        {
+          "index": 13,
+          "text": "He knows writing now,"
+        },
+        {
+          "index": 14,
+          "text": "he will be scholar one day"
+        },
+        {
+          "index": 15,
+          "text": "Now, he knows how to write his name,"
+        },
+        {
+          "index": 16,
+          "text": "he will have a son later"
+        },
+        {
+          "index": 17,
+          "text": "Young master, you should try hard to learn"
+        },
+        {
+          "index": 18,
+          "text": "Chan, I think, we should mount it"
+        },
+        {
+          "index": 19,
+          "text": "OK"
+        },
+        {
+          "index": 20,
+          "text": "Professor, show it in some obvious places"
+        },
+        {
+          "index": 21,
+          "text": "By the way, one minute,"
+        },
+        {
+          "index": 22,
+          "text": "why don't you carry it with traditional\ndecoration in the street?"
+        },
+        {
+          "index": 23,
+          "text": "Let's go!"
+        },
+        {
+          "index": 24,
+          "text": "Chan, come and sit…"
+        },
+        {
+          "index": 25,
+          "text": "I am so pleased that you are that hard\nworking and filial"
+        },
+        {
+          "index": 26,
+          "text": "Listen to me, I am notorious of being\na spendthrift"
+        },
+        {
+          "index": 27,
+          "text": "My fortune is almost used up"
+        },
+        {
+          "index": 28,
+          "text": "If I die one day,"
+        },
+        {
+          "index": 29,
+          "text": "you should depend on yourself"
+        },
+        {
+          "index": 30,
+          "text": "I used to depend on myself"
+        },
+        {
+          "index": 31,
+          "text": "The cheques worth 100,000 taels!\nDon't be an extravagant spender"
+        },
+        {
+          "index": 32,
+          "text": "Give me the imported hat"
+        },
+        {
+          "index": 33,
+          "text": "Where are you going? Chan!"
+        },
+        {
+          "index": 34,
+          "text": "I am having a grand birthday party tonight"
+        },
+        {
+          "index": 35,
+          "text": "How old are you?"
+        },
+        {
+          "index": 36,
+          "text": "25 years old. Come earlier"
+        },
+        {
+          "index": 37,
+          "text": "But you should dress up first"
+        },
+        {
+          "index": 38,
+          "text": "You are like beggar!"
+        },
+        {
+          "index": 39,
+          "text": "How can a beggar be that rich?!\nI do want to be a rich beggar!"
+        },
+        {
+          "index": 40,
+          "text": "That fat-headed…"
+        },
+        {
+          "index": 41,
+          "text": "Come over here"
+        },
+        {
+          "index": 42,
+          "text": "What's the matter?"
+        },
+        {
+          "index": 43,
+          "text": "The invitation card of my son is great!"
+        },
+        {
+          "index": 44,
+          "text": "If I hold a birthday party in future,\nI want a better invitation card!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Your Majesty, how do you think about\nthe Cantonese Opera?"
+        },
+        {
+          "index": 2,
+          "text": "For sure, it can't compete with Peking Opera!"
+        },
+        {
+          "index": 3,
+          "text": "But, I am appreciated to view this"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "Your Majesty, what do you think about\nthe Cantonese Opera?",
+          "note": "Changed 'how do you think about' to 'what do you think about' for correct phrasing."
+        },
+        {
+          "index": 3,
+          "text": "But, I appreciate viewing this",
+          "note": "Corrected 'I am appreciated to view this' to 'I appreciate viewing this' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Money…"
+        },
+        {
+          "index": 2,
+          "text": "Happy birthday to you, Mr So"
+        },
+        {
+          "index": 3,
+          "text": "I am homeless and sick…"
+        },
+        {
+          "index": 4,
+          "text": "I am poor, I am damn poor!"
+        },
+        {
+          "index": 5,
+          "text": "- Please give me some money\n- Kidding? Damn you beggar!"
+        },
+        {
+          "index": 6,
+          "text": "How can you beg here?"
+        },
+        {
+          "index": 7,
+          "text": "Go to hell!"
+        },
+        {
+          "index": 8,
+          "text": "- Give him tips\n- Yes, young master"
+        },
+        {
+          "index": 9,
+          "text": "Are you kidding? How can you give him tips?"
+        },
+        {
+          "index": 10,
+          "text": "A beggar is a man too"
+        },
+        {
+          "index": 11,
+          "text": "Everyone can come here\nif he has money"
+        },
+        {
+          "index": 12,
+          "text": "Your living,"
+        },
+        {
+          "index": 13,
+          "text": "including the expenditure for hooking,\nI will pay for you!"
+        },
+        {
+          "index": 14,
+          "text": "You pay it?"
+        },
+        {
+          "index": 15,
+          "text": "So what?"
+        },
+        {
+          "index": 16,
+          "text": "Nothing!"
+        },
+        {
+          "index": 17,
+          "text": "- Come into my room…\n- Please follow me."
+        },
+        {
+          "index": 18,
+          "text": "Mr So!"
+        },
+        {
+          "index": 19,
+          "text": "Hello…"
+        },
+        {
+          "index": 20,
+          "text": "How are you, Madam Pimp?"
+        },
+        {
+          "index": 21,
+          "text": "It's very bad of you to call me that!"
+        },
+        {
+          "index": 22,
+          "text": "Just be frank, why not?"
+        },
+        {
+          "index": 23,
+          "text": "You should be frank!"
+        },
+        {
+          "index": 24,
+          "text": "Your hat, is like the mourning uniform!"
+        },
+        {
+          "index": 25,
+          "text": "Is your dad passed away?"
+        },
+        {
+          "index": 26,
+          "text": "I feel happy to talk in this way"
+        },
+        {
+          "index": 27,
+          "text": "Mr Chiu, you helped me to terminate\nthe Hairy Gang,"
+        },
+        {
+          "index": 28,
+          "text": "the emperor will give you award for this"
+        },
+        {
+          "index": 29,
+          "text": "I'll appreciate it if you"
+        },
+        {
+          "index": 30,
+          "text": "speak something nice in front of the emperor"
+        },
+        {
+          "index": 31,
+          "text": "Please have the towel"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 17,
+          "text": "- Come into my room.\n- Please follow me",
+          "note": "Removed trailing period after 'Please follow me' for consistency with the other subtitle source."
+        },
+        {
+          "index": 25,
+          "text": "Has your dad passed away?",
+          "note": "Changed 'Is your dad passed away?' to 'Has your dad passed away?' for correct grammar."
+        },
+        {
+          "index": 28,
+          "text": "the emperor will give you an award for this",
+          "note": "Changed 'give you award' to 'give you an award' to add the necessary article."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mr So has come"
+        },
+        {
+          "index": 2,
+          "text": "Congratulation!"
+        },
+        {
+          "index": 3,
+          "text": "This way…"
+        },
+        {
+          "index": 4,
+          "text": "Mr So, today is your big day,\nyou must be very happy!"
+        },
+        {
+          "index": 5,
+          "text": "We have some new girls,\nyou must be satisfied with it"
+        },
+        {
+          "index": 6,
+          "text": "What are they? Gold fish, or cooked fish?"
+        },
+        {
+          "index": 7,
+          "text": "What does that mean?"
+        },
+        {
+          "index": 8,
+          "text": "You idiot! Gold fish is for watching only"
+        },
+        {
+          "index": 9,
+          "text": "Cooked fish can be eaten"
+        },
+        {
+          "index": 10,
+          "text": "Cooked fish of course"
+        },
+        {
+          "index": 11,
+          "text": "You, cooked fishes, why don't you\ncome and serve Mr So?"
+        },
+        {
+          "index": 12,
+          "text": "Mr So, you are the superior master today"
+        },
+        {
+          "index": 13,
+          "text": "What kind of woman do you want? Just tell me"
+        },
+        {
+          "index": 14,
+          "text": "I won't mind, every women is just the same"
+        },
+        {
+          "index": 15,
+          "text": "Nothing special"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Congratulations!",
+          "note": "Corrected 'Congratulation!' to 'Congratulations!' for proper usage."
+        },
+        {
+          "index": 5,
+          "text": "We have some new girls,\nyou must be satisfied with them",
+          "note": "Changed 'it' to 'them' to correctly refer to 'girls' (plural)."
+        },
+        {
+          "index": 6,
+          "text": "What are they? Goldfish, or cooked fish?",
+          "note": "Corrected 'Gold fish' to 'Goldfish' (one word) for proper noun usage."
+        },
+        {
+          "index": 8,
+          "text": "You idiot! Goldfish are for watching only",
+          "note": "Changed 'Gold fish is' to 'Goldfish are' for correct plural subject-verb agreement."
+        },
+        {
+          "index": 11,
+          "text": "You, cooked fish, why don't you\ncome and serve Mr So?",
+          "note": "Changed 'cooked fishes' to 'cooked fish' for correct pluralization (fish is both singular and plural)."
+        },
+        {
+          "index": 14,
+          "text": "I won't mind, every woman is just the same",
+          "note": "Changed 'women' to 'woman' for correct singular usage in this context."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mr So, what's the matter?"
+        },
+        {
+          "index": 2,
+          "text": "I am attacked"
+        },
+        {
+          "index": 3,
+          "text": "What?"
+        },
+        {
+          "index": 4,
+          "text": "Who dared so? I will hit that\nbastard's mouth for you"
+        },
+        {
+          "index": 5,
+          "text": "She didn't use her mouth"
+        },
+        {
+          "index": 6,
+          "text": "She used her eyes"
+        },
+        {
+          "index": 7,
+          "text": "Tempting, and I smell blood\nI haven't seen such eyesight before"
+        },
+        {
+          "index": 8,
+          "text": "Who is she?"
+        },
+        {
+          "index": 9,
+          "text": "Miss Yushang comes to be part time hooker only"
+        },
+        {
+          "index": 10,
+          "text": "Is Mr Chiu interested to sleep with her?"
+        },
+        {
+          "index": 11,
+          "text": "You should ask His Majesty first"
+        },
+        {
+          "index": 12,
+          "text": "How is it? Your Majesty?"
+        },
+        {
+          "index": 13,
+          "text": "We are friends, just go ahead if you want!"
+        },
+        {
+          "index": 14,
+          "text": "Mr Chiu, help yourself"
+        },
+        {
+          "index": 15,
+          "text": "Thank you then"
+        },
+        {
+          "index": 16,
+          "text": "The room service please"
+        },
+        {
+          "index": 17,
+          "text": "Yushang, come and greet Mr Chiu"
+        },
+        {
+          "index": 18,
+          "text": "Sister, he is the one we want"
+        },
+        {
+          "index": 19,
+          "text": "He killed dad"
+        },
+        {
+          "index": 20,
+          "text": "I know, stay calm"
+        },
+        {
+          "index": 21,
+          "text": "Let's go"
+        },
+        {
+          "index": 22,
+          "text": "- May I be excused\n- Mr Chiu"
+        },
+        {
+          "index": 23,
+          "text": "Miss Yushang has arrived"
+        },
+        {
+          "index": 24,
+          "text": "How are you? Mr Chiu"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 9,
+          "text": "Miss Yushang comes to be a part-time hooker only",
+          "note": "Added 'a' before 'part-time hooker' and hyphenated 'part-time' for correct grammar and adjective use."
+        },
+        {
+          "index": 22,
+          "text": "- May I be excused,\n- Mr Chiu,",
+          "note": "Added a comma after 'Mr Chiu' to match address punctuation."
+        },
+        {
+          "index": 24,
+          "text": "How are you, Mr Chiu?",
+          "note": "Added comma and question mark for correct address and sentence completion."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "A pretty woman!"
+        },
+        {
+          "index": 2,
+          "text": "Mr Chiu, about tonight…"
+        },
+        {
+          "index": 3,
+          "text": "100,000 taels"
+        },
+        {
+          "index": 4,
+          "text": "if Miss Yushang sleeps with our\nyoung master tonight…"
+        },
+        {
+          "index": 5,
+          "text": "You are not welcomed"
+        },
+        {
+          "index": 6,
+          "text": "I am sorry, I am damn sorry"
+        },
+        {
+          "index": 7,
+          "text": "Don't you have any objection?"
+        },
+        {
+          "index": 8,
+          "text": "Let me say something fair"
+        },
+        {
+          "index": 9,
+          "text": "If any of you can offer more than 100,000 taels"
+        },
+        {
+          "index": 10,
+          "text": "Yushang will sleep with whom"
+        },
+        {
+          "index": 11,
+          "text": "Don't quarrel because of such\nsmall amount, isn't it right?"
+        },
+        {
+          "index": 12,
+          "text": "Pal, you are a big spender"
+        },
+        {
+          "index": 13,
+          "text": "The cheque is too simple to me"
+        },
+        {
+          "index": 14,
+          "text": "I have a pearl which is granted by the\nRoyal family, it's invaluable!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "You are not welcome",
+          "note": "Corrected 'welcomed' to 'welcome'."
+        },
+        {
+          "index": 10,
+          "text": "Yushang will sleep with them",
+          "note": "Replaced 'whom' with 'them' to match intended meaning."
+        },
+        {
+          "index": 11,
+          "text": "Don't quarrel because of such\na small amount, isn't it right?",
+          "note": "Added 'a' before 'small amount' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I love the pearl more"
+        },
+        {
+          "index": 2,
+          "text": "Mr Chiu, I will wait you in my room"
+        },
+        {
+          "index": 3,
+          "text": "Does the pearl worth 100,000 taels?"
+        },
+        {
+          "index": 4,
+          "text": "Don't you think that's too little for you?"
+        },
+        {
+          "index": 5,
+          "text": "I love money too. But, I don't like you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Mr Chiu, I will wait for you in my room",
+          "note": "Added 'for' to correct the phrase to 'wait for you'."
+        },
+        {
+          "index": 3,
+          "text": "Is the pearl worth 100,000 taels?",
+          "note": "Changed 'Does the pearl worth 100,000 taels?' to 'Is the pearl worth 100,000 taels?' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You are frank! I love it very much"
+        },
+        {
+          "index": 2,
+          "text": "Mr So…"
+        },
+        {
+          "index": 3,
+          "text": "It doesn't matter,"
+        },
+        {
+          "index": 4,
+          "text": "I think, my hat doesn't match me"
+        },
+        {
+          "index": 5,
+          "text": "Yushang doesn't like me, I deserve it"
+        },
+        {
+          "index": 6,
+          "text": "I am glad you understand this"
+        },
+        {
+          "index": 7,
+          "text": "Don't worry, I have many pretty girls here"
+        },
+        {
+          "index": 8,
+          "text": "I trust your arrangement"
+        },
+        {
+          "index": 9,
+          "text": "None of my business"
+        },
+        {
+          "index": 10,
+          "text": "How bold are you?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mantis Fist? It seems to be powerful"
+        },
+        {
+          "index": 2,
+          "text": "Music!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Keep this"
+        },
+        {
+          "index": 2,
+          "text": "See my Crane's Fists!"
+        },
+        {
+          "index": 3,
+          "text": "The Tiger's Claws!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "How can a mantis fight with a tiger?"
+        },
+        {
+          "index": 2,
+          "text": "I know Tiger Claws and Crane's Fists too!"
+        },
+        {
+          "index": 3,
+          "text": "Well, try my mantis!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "Well, try me, mantis!",
+          "note": "Changed 'my mantis' to 'me, mantis' for correct phrasing."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Bravo…"
+        },
+        {
+          "index": 2,
+          "text": "Your Tiger's claws are defeated"
+        },
+        {
+          "index": 3,
+          "text": "Actually it's not Tiger's Claws,"
+        },
+        {
+          "index": 4,
+          "text": "it's beggar's fists!"
+        },
+        {
+          "index": 5,
+          "text": "That's why it's too weak"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You move fast!"
+        },
+        {
+          "index": 2,
+          "text": "It seems to be powerful…"
+        },
+        {
+          "index": 3,
+          "text": "Kid, you don't know how the wind blows"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The general of Canton has arrived"
+        },
+        {
+          "index": 2,
+          "text": "Get lost…"
+        },
+        {
+          "index": 3,
+          "text": "Who dares bully my son, let me teach him a lesson"
+        },
+        {
+          "index": 4,
+          "text": "Master"
+        },
+        {
+          "index": 5,
+          "text": "Don't panic, Chan who bullied you?"
+        },
+        {
+          "index": 6,
+          "text": "It's me who bullied others"
+        },
+        {
+          "index": 7,
+          "text": "What? You bullied others?"
+        },
+        {
+          "index": 8,
+          "text": "How much does he have?\nIs he qualified to be bullied by you?"
+        },
+        {
+          "index": 9,
+          "text": "Master, they are the ones"
+        },
+        {
+          "index": 10,
+          "text": "Who are they?"
+        },
+        {
+          "index": 11,
+          "text": "Just take a look"
+        },
+        {
+          "index": 12,
+          "text": "The King of Iron Hat?"
+        },
+        {
+          "index": 13,
+          "text": "Send the gift"
+        },
+        {
+          "index": 14,
+          "text": "Chan"
+        },
+        {
+          "index": 15,
+          "text": "They send you so valuable present,\nyou'd stop bullying them"
+        },
+        {
+          "index": 16,
+          "text": "- Come on, give tips to the girl here\n- Master"
+        },
+        {
+          "index": 17,
+          "text": "King of Iron Hat, Seng-ko-lin-ch'in\nis written on the medal"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 15,
+          "text": "They send you such a valuable present,\nyou'd stop bullying them",
+          "note": "Changed 'so' to 'such' for correct usage: 'such a valuable present'."
+        },
+        {
+          "index": 16,
+          "text": "- Come on, give tips to the girls here\n- Master",
+          "note": "Changed 'girl' to 'girls' to match the addressed group."
+        },
+        {
+          "index": 17,
+          "text": "King of Iron Hat, Seng-ko-lin-ch'in, is written on the medal",
+          "note": "Added a comma after 'Seng-ko-lin-ch'in' to set off the appositive phrase."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "How dare you seize the medal of His Majesty?"
+        },
+        {
+          "index": 2,
+          "text": "Cuff him"
+        },
+        {
+          "index": 3,
+          "text": "Hold it, according to the Ching's law,"
+        },
+        {
+          "index": 4,
+          "text": "Courtier is not allowed hooking"
+        },
+        {
+          "index": 5,
+          "text": "Now, you are in the brothel"
+        },
+        {
+          "index": 6,
+          "text": "Do you know you have committed the laws of Ching?"
+        },
+        {
+          "index": 7,
+          "text": "How about you?"
+        },
+        {
+          "index": 8,
+          "text": "- You mean me?\n- Yes!"
+        },
+        {
+          "index": 9,
+          "text": "That's right, I come…"
+        },
+        {
+          "index": 10,
+          "text": "- to arrest…\n- You!"
+        },
+        {
+          "index": 11,
+          "text": "- Him!\n- Arrest him"
+        },
+        {
+          "index": 12,
+          "text": "I am the general of Canton,"
+        },
+        {
+          "index": 13,
+          "text": "so I should arrest those bad people"
+        },
+        {
+          "index": 14,
+          "text": "By the way…"
+        },
+        {
+          "index": 15,
+          "text": "What else? Go ahead"
+        },
+        {
+          "index": 16,
+          "text": "Today is the birthday of the Ex-Empress Dowager"
+        },
+        {
+          "index": 17,
+          "text": "So your crime is doubled"
+        },
+        {
+          "index": 18,
+          "text": "It may cause to capital punishment"
+        },
+        {
+          "index": 19,
+          "text": "Kill him…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "Do you know you have violated the laws of Ching?",
+          "note": "Changed 'committed the laws of Ching' to 'violated the laws of Ching' for correct meaning."
+        },
+        {
+          "index": 11,
+          "text": "- Him!\n- Arrest him!",
+          "note": "Added an exclamation mark to match the emphatic command 'Arrest him!'"
+        },
+        {
+          "index": 18,
+          "text": "It may lead to capital punishment",
+          "note": "Changed 'cause to capital punishment' to 'lead to capital punishment' for correct phrasing."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "According to the Ching laws,"
+        },
+        {
+          "index": 2,
+          "text": "anyone without a tail should be killed"
+        },
+        {
+          "index": 3,
+          "text": "So you…"
+        },
+        {
+          "index": 4,
+          "text": "Do you want to see my hair?"
+        },
+        {
+          "index": 5,
+          "text": "You can see as much as you want! Fat-headed"
+        },
+        {
+          "index": 6,
+          "text": "Cut the crap, just kill him"
+        },
+        {
+          "index": 7,
+          "text": "OK, it's finished"
+        },
+        {
+          "index": 8,
+          "text": "General So, let's play happily together,\nso forget it"
+        },
+        {
+          "index": 9,
+          "text": "I haven't played!"
+        },
+        {
+          "index": 10,
+          "text": "Your Majesty,"
+        },
+        {
+          "index": 11,
+          "text": "a rascal has ruined the atmosphere here,"
+        },
+        {
+          "index": 12,
+          "text": "I should be blamed for poor arrangement"
+        },
+        {
+          "index": 13,
+          "text": "None of your business"
+        },
+        {
+          "index": 14,
+          "text": "Let's go"
+        },
+        {
+          "index": 15,
+          "text": "Master, you can't fool this guy. Let's go"
+        },
+        {
+          "index": 16,
+          "text": "OK, go"
+        },
+        {
+          "index": 17,
+          "text": "Just forget the trouble"
+        },
+        {
+          "index": 18,
+          "text": "Young master, your hat"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "You can see as much as you want! Fat-head",
+          "note": "Corrected 'Fat-headed' to 'Fat-head' for proper insult form; 'Fat-headed' is not standard in this context."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "He is great!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Uncle Mok, the dishes are all poisoned"
+        },
+        {
+          "index": 2,
+          "text": "Chiu assassinated our Master"
+        },
+        {
+          "index": 3,
+          "text": "and some generals of The Taiping Reign"
+        },
+        {
+          "index": 4,
+          "text": "And he framed us, the Beggars Association,\nto be the assassinators"
+        },
+        {
+          "index": 5,
+          "text": "Thus made us"
+        },
+        {
+          "index": 6,
+          "text": "being despised by the world"
+        },
+        {
+          "index": 7,
+          "text": "Saying that we became the dogs of the government"
+        },
+        {
+          "index": 8,
+          "text": "I should ask him to pay for it"
+        },
+        {
+          "index": 9,
+          "text": "His initial power is harmful"
+        },
+        {
+          "index": 10,
+          "text": "Don't take action until he is trapped"
+        },
+        {
+          "index": 11,
+          "text": "Because we can't defeat him even\nwe group together"
+        },
+        {
+          "index": 12,
+          "text": "I will try my best to seduce him to the bed"
+        },
+        {
+          "index": 13,
+          "text": "Senior, somebody is coming"
+        },
+        {
+          "index": 14,
+          "text": "Get ready…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "And he framed us, the Beggars Association,\nto be the assassins",
+          "note": "Corrected 'assassinators' to 'assassins'."
+        },
+        {
+          "index": 6,
+          "text": "to be despised by the world",
+          "note": "Changed 'being despised by the world' to 'to be despised by the world' for correct grammar."
+        },
+        {
+          "index": 11,
+          "text": "Because we can't defeat him even if\nwe group together",
+          "note": "Added 'if' after 'even' for correct grammar: 'even if we group together'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Miss Yushang, we meet again"
+        },
+        {
+          "index": 2,
+          "text": "Why do you come here? Where is Mister Chiu?"
+        },
+        {
+          "index": 3,
+          "text": "The pearl of Mr Chiu is broken"
+        },
+        {
+          "index": 4,
+          "text": "by Mr So and become pearl powder"
+        },
+        {
+          "index": 5,
+          "text": "I have drunk it"
+        },
+        {
+          "index": 6,
+          "text": "Don't judge Mr So from his hair,"
+        },
+        {
+          "index": 7,
+          "text": "he is really romantic and funny"
+        },
+        {
+          "index": 8,
+          "text": "But…"
+        },
+        {
+          "index": 9,
+          "text": "Stop, I have taken his money,\n100,000 taels you know?"
+        },
+        {
+          "index": 10,
+          "text": "I won't give it back"
+        },
+        {
+          "index": 11,
+          "text": "About the personality of Mr So…"
+        },
+        {
+          "index": 12,
+          "text": "Cut the crap, pimp!"
+        },
+        {
+          "index": 13,
+          "text": "Leave here first"
+        },
+        {
+          "index": 14,
+          "text": "Yes, you are right"
+        },
+        {
+          "index": 15,
+          "text": "- Miss Seven…\n- Just accept this"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "The pearl of Mr. Chiu is broken",
+          "note": "Added a period after 'Mr' to be consistent with abbreviation formatting."
+        },
+        {
+          "index": 4,
+          "text": "by Mr So and became pearl powder",
+          "note": "Changed 'become' to 'became' for correct past tense."
+        },
+        {
+          "index": 6,
+          "text": "Don't judge Mr. So from his hair,",
+          "note": "Added a period after 'Mr' to be consistent with abbreviation formatting."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Who is this guy?"
+        },
+        {
+          "index": 2,
+          "text": "I don't know"
+        },
+        {
+          "index": 3,
+          "text": "Miss, first of all, I have a good news to you"
+        },
+        {
+          "index": 4,
+          "text": "I love you"
+        },
+        {
+          "index": 5,
+          "text": "To me, this is a bad news"
+        },
+        {
+          "index": 6,
+          "text": "I know you will reply like this"
+        },
+        {
+          "index": 7,
+          "text": "Cut the crap"
+        },
+        {
+          "index": 8,
+          "text": "I wish to pay you 100 pearls"
+        },
+        {
+          "index": 9,
+          "text": "for you your company tonight"
+        },
+        {
+          "index": 10,
+          "text": "I don't want to talk to you"
+        },
+        {
+          "index": 11,
+          "text": "Please get out"
+        },
+        {
+          "index": 12,
+          "text": "I haven't chosen a wrong one"
+        },
+        {
+          "index": 13,
+          "text": "OK, I will drink this wine first"
+        },
+        {
+          "index": 14,
+          "text": "No…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "Miss, first of all, I have good news for you",
+          "note": "Changed 'a good news to you' to 'good news for you' for correct grammar and usage."
+        },
+        {
+          "index": 9,
+          "text": "for your company tonight",
+          "note": "Removed extra 'you' to correct the phrase to 'for your company tonight'."
+        },
+        {
+          "index": 12,
+          "text": "I haven't chosen the wrong one",
+          "note": "Changed 'a wrong one' to 'the wrong one' for correct idiomatic usage."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It surprised me"
+        },
+        {
+          "index": 2,
+          "text": "Miss"
+        },
+        {
+          "index": 3,
+          "text": "Hands off!"
+        },
+        {
+          "index": 4,
+          "text": "You know Kung-fu?"
+        },
+        {
+          "index": 5,
+          "text": "No, I don't know Kung-fu at all"
+        },
+        {
+          "index": 6,
+          "text": "I beg you, stop bothering me"
+        },
+        {
+          "index": 7,
+          "text": "I won't accompany you"
+        },
+        {
+          "index": 8,
+          "text": "Yushang, no one treats me like this"
+        },
+        {
+          "index": 9,
+          "text": "I have found that I am in love with you"
+        },
+        {
+          "index": 10,
+          "text": "What?"
+        },
+        {
+          "index": 11,
+          "text": "I have been in love with you"
+        },
+        {
+          "index": 12,
+          "text": "Are you kidding?"
+        },
+        {
+          "index": 13,
+          "text": "I am not kidding, I decided to marry you"
+        },
+        {
+          "index": 14,
+          "text": "Are you nuts?"
+        },
+        {
+          "index": 15,
+          "text": "Kidding?"
+        },
+        {
+          "index": 16,
+          "text": "Are there anyone hiding here?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "You know kung fu?",
+          "note": "Corrected 'Kung-fu' to 'kung fu' for standard spelling."
+        },
+        {
+          "index": 16,
+          "text": "Is there anyone hiding here?",
+          "note": "Corrected 'Are there anyone' to 'Is there anyone' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "That's good, I want a witness"
+        },
+        {
+          "index": 2,
+          "text": "- Witness?\n- Yes"
+        },
+        {
+          "index": 3,
+          "text": "I swear in front of your sword"
+        },
+        {
+          "index": 4,
+          "text": "I do want to marry Miss Yushang\nas my wife, I am sincere"
+        },
+        {
+          "index": 5,
+          "text": "If I cheat, I will be killed by thunder"
+        },
+        {
+          "index": 6,
+          "text": "Sister, I feel excited for you"
+        },
+        {
+          "index": 7,
+          "text": "Hey"
+        },
+        {
+          "index": 8,
+          "text": "Don't you know it's that easy to be my husband?"
+        },
+        {
+          "index": 9,
+          "text": "How can I be your husband?"
+        },
+        {
+          "index": 10,
+          "text": "I want him to be the superior Kung-fu master"
+        },
+        {
+          "index": 11,
+          "text": "Be the top of all"
+        },
+        {
+          "index": 12,
+          "text": "Can you do that?"
+        },
+        {
+          "index": 13,
+          "text": "Let me think for one second"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 8,
+          "text": "Don't you know it isn't that easy to be my husband?",
+          "note": "Corrected 'it's' to 'it isn't' to match the intended meaning (that it is not easy to be my husband)."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I can do it"
+        },
+        {
+          "index": 2,
+          "text": "OK"
+        },
+        {
+          "index": 3,
+          "text": "Do it first and then look for me"
+        },
+        {
+          "index": 4,
+          "text": "Well, I think we should fix a date for our wedding"
+        },
+        {
+          "index": 5,
+          "text": "Because, this is too easy to me\nto be the Kung-fu scholar!"
+        },
+        {
+          "index": 6,
+          "text": "OK, but you'd give me some time to consider it"
+        },
+        {
+          "index": 7,
+          "text": "No problem, I will wait for your answer\noutside the garden"
+        },
+        {
+          "index": 8,
+          "text": "I won't leave until seeing you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "Because, this is too easy for me\nto be the Kung-fu scholar!",
+          "note": "Corrected 'to me' to 'for me' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Crazy!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "We come for the Beggars Association,\nthose unrelated persons leave at once"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Sir, the timing is fit"
+        },
+        {
+          "index": 2,
+          "text": "The road is safe now, please go"
+        },
+        {
+          "index": 3,
+          "text": "Good, very good"
+        },
+        {
+          "index": 4,
+          "text": "Let's go!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "Sir, the timing is right",
+          "note": "Replaced 'fit' with 'right' for correct usage in this context."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Shit, we are late"
+        },
+        {
+          "index": 2,
+          "text": "That Manchurian should be blamed"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Sister…"
+        },
+        {
+          "index": 2,
+          "text": "What's the matter?"
+        },
+        {
+          "index": 3,
+          "text": "The idiot is still there"
+        },
+        {
+          "index": 4,
+          "text": "Let's kill him"
+        },
+        {
+          "index": 5,
+          "text": "Forget it, he doesn't mean to bother us"
+        },
+        {
+          "index": 6,
+          "text": "Let him go"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Are you fond of him?"
+        },
+        {
+          "index": 2,
+          "text": "What did you say?"
+        },
+        {
+          "index": 3,
+          "text": "I won't fall in love with anybody"
+        },
+        {
+          "index": 4,
+          "text": "until Chiu is killed"
+        },
+        {
+          "index": 5,
+          "text": "Especially him"
+        },
+        {
+          "index": 6,
+          "text": "Chiu is good at Kung-fu"
+        },
+        {
+          "index": 7,
+          "text": "Mok said, we can't defeat him unless\nusing the “Dragon Killing Palms”"
+        },
+        {
+          "index": 8,
+          "text": "So, I can never marry!"
+        },
+        {
+          "index": 9,
+          "text": "Let's go, if you want to marry"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What evil are you? How dare you scare me?"
+        },
+        {
+          "index": 2,
+          "text": "Mr So, it's me!"
+        },
+        {
+          "index": 3,
+          "text": "You are the pimp?!"
+        },
+        {
+          "index": 4,
+          "text": "Yes!"
+        },
+        {
+          "index": 5,
+          "text": "You have flat figure, where are your busts?"
+        },
+        {
+          "index": 6,
+          "text": "It's early in the morning,\nthey haven't waken up yet"
+        },
+        {
+          "index": 7,
+          "text": "It's lucky of you for not being killed"
+        },
+        {
+          "index": 8,
+          "text": "Don't go around if you haven't made up yet"
+        },
+        {
+          "index": 9,
+          "text": "I won't do it again"
+        },
+        {
+          "index": 10,
+          "text": "Stop waiting for Miss Yushang, she left"
+        },
+        {
+          "index": 11,
+          "text": "What?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "You have a flat figure, where are your busts?",
+          "note": "Added 'a' before 'flat figure' for correct grammar."
+        },
+        {
+          "index": 6,
+          "text": "It's early in the morning,\nthey haven't woken up yet",
+          "note": "Corrected 'waken' to 'woken' for correct verb form."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Where is she going?"
+        },
+        {
+          "index": 2,
+          "text": "She… she is going to Peking"
+        },
+        {
+          "index": 3,
+          "text": "Peking?"
+        },
+        {
+          "index": 4,
+          "text": "Men should contribute to the country"
+        },
+        {
+          "index": 5,
+          "text": "Where should I put my pig-tail?"
+        },
+        {
+          "index": 6,
+          "text": "Swing and swing…"
+        },
+        {
+          "index": 7,
+          "text": "I pull it and play it…"
+        },
+        {
+          "index": 8,
+          "text": "Dad!"
+        },
+        {
+          "index": 9,
+          "text": "I decided to join the examination for the\nscholar of Martial Arts"
+        },
+        {
+          "index": 10,
+          "text": "Chan"
+        },
+        {
+          "index": 11,
+          "text": "I have been longing for this word for 25 years"
+        },
+        {
+          "index": 12,
+          "text": "For the family of us, you should do that"
+        },
+        {
+          "index": 13,
+          "text": "Don't misunderstand it, I do it not for no one"
+        },
+        {
+          "index": 14,
+          "text": "But for a woman"
+        },
+        {
+          "index": 15,
+          "text": "What a hero!"
+        },
+        {
+          "index": 16,
+          "text": "For a girl, you want to be the scholar\nof Martial Arts!"
+        },
+        {
+          "index": 17,
+          "text": "Who is that girl?"
+        },
+        {
+          "index": 18,
+          "text": "The hooker of Yee Hung Brothel, Miss Yushang"
+        },
+        {
+          "index": 19,
+          "text": "For a hooker?"
+        },
+        {
+          "index": 20,
+          "text": "What's wrong with it?"
+        },
+        {
+          "index": 21,
+          "text": "You have different taste, you are great!"
+        },
+        {
+          "index": 22,
+          "text": "I am admiring you!"
+        },
+        {
+          "index": 23,
+          "text": "I will accompany you to Peking"
+        },
+        {
+          "index": 24,
+          "text": "2, 3, 4, 5, 6"
+        },
+        {
+          "index": 25,
+          "text": "I am coming"
+        },
+        {
+          "index": 26,
+          "text": "Young master is going for the examination,\nlet's move to Peking too"
+        },
+        {
+          "index": 27,
+          "text": "Stop chasing,"
+        },
+        {
+          "index": 28,
+          "text": "we won't take the hens with us"
+        },
+        {
+          "index": 29,
+          "text": "Be careful!"
+        },
+        {
+          "index": 30,
+          "text": "If you break my stuff,\nI will teach you good lesson"
+        },
+        {
+          "index": 31,
+          "text": "Be careful!"
+        },
+        {
+          "index": 32,
+          "text": "Good morning dad"
+        },
+        {
+          "index": 33,
+          "text": "Good morning"
+        },
+        {
+          "index": 34,
+          "text": "You want to move everything to Peking?"
+        },
+        {
+          "index": 35,
+          "text": "Sure"
+        },
+        {
+          "index": 36,
+          "text": "Please leave me a clothe"
+        },
+        {
+          "index": 37,
+          "text": "You are only a kid, you don't need this"
+        },
+        {
+          "index": 38,
+          "text": "But I am not small"
+        },
+        {
+          "index": 39,
+          "text": "Are you bigger than mine?"
+        },
+        {
+          "index": 40,
+          "text": "You despise me!"
+        },
+        {
+          "index": 41,
+          "text": "Mine will be bigger than yours one day"
+        },
+        {
+          "index": 42,
+          "text": "Let's find something, say trousers to cover it"
+        },
+        {
+          "index": 43,
+          "text": "I don't want to see it"
+        },
+        {
+          "index": 44,
+          "text": "Why are you standing here for?\nWhy don't you remove it?"
+        },
+        {
+          "index": 45,
+          "text": "It's a hard job to remove such a big house!"
+        },
+        {
+          "index": 46,
+          "text": "Please, work hard men!"
+        },
+        {
+          "index": 47,
+          "text": "Ready, 1, 2, 3, push!"
+        },
+        {
+          "index": 48,
+          "text": "Push!"
+        },
+        {
+          "index": 49,
+          "text": "Be careful!"
+        },
+        {
+          "index": 50,
+          "text": "Tie it well…"
+        },
+        {
+          "index": 51,
+          "text": "Master, do you want to move the tree too?"
+        },
+        {
+          "index": 52,
+          "text": "Sure,"
+        },
+        {
+          "index": 53,
+          "text": "or how can I eat Lychee in Peking?"
+        },
+        {
+          "index": 54,
+          "text": "Push it over…"
+        },
+        {
+          "index": 55,
+          "text": "Be careful"
+        },
+        {
+          "index": 56,
+          "text": "Take care of my Lychee, you fat headed!"
+        },
+        {
+          "index": 57,
+          "text": "Chiu helped me to terminate"
+        },
+        {
+          "index": 58,
+          "text": "the Hairy Gang in Kwangsi"
+        },
+        {
+          "index": 59,
+          "text": "So I bring him here to greet Your Majesty"
+        },
+        {
+          "index": 60,
+          "text": "Fine, I am now appointing you to be\nthe Deputy Secretary"
+        },
+        {
+          "index": 61,
+          "text": "Hope you will serve our Ching Dynasty\nwhole-heartedly"
+        },
+        {
+          "index": 62,
+          "text": "Thank you, Your Majesty"
+        },
+        {
+          "index": 63,
+          "text": "Your Majesty, Mr Chiu is a magician"
+        },
+        {
+          "index": 64,
+          "text": "Why don't you ask him to show you something?"
+        },
+        {
+          "index": 65,
+          "text": "Magic?"
+        },
+        {
+          "index": 66,
+          "text": "Mr Chiu, then show me your magic"
+        },
+        {
+          "index": 67,
+          "text": "Yes, Your Majesty"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "Where should I put my pigtail?",
+          "note": "Corrected 'pig-tail' to 'pigtail'."
+        },
+        {
+          "index": 12,
+          "text": "For the sake of our family, you should do that",
+          "note": "Changed 'For the family of us' to 'For the sake of our family' for correct phrasing."
+        },
+        {
+          "index": 30,
+          "text": "If you break my stuff,\nI will teach you a good lesson",
+          "note": "Added 'a' before 'good lesson' for correct grammar."
+        },
+        {
+          "index": 36,
+          "text": "Please leave me a cloth",
+          "note": "Corrected 'clothe' to 'cloth'."
+        },
+        {
+          "index": 46,
+          "text": "Please, work hard, men!",
+          "note": "Added comma after 'hard' for correct address to 'men'."
+        },
+        {
+          "index": 56,
+          "text": "Take care of my lychee, you fathead!",
+          "note": "Changed 'Lychee' to lowercase and 'fat headed' to 'fathead' for correct usage."
+        },
+        {
+          "index": 61,
+          "text": "Hope you will serve our Ching Dynasty\nwholeheartedly",
+          "note": "Changed 'whole-heartedly' to 'wholeheartedly' (no hyphen needed)."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "There is nothing surprising, go"
+        },
+        {
+          "index": 2,
+          "text": "Yes"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I am sorry for scaring you"
+        },
+        {
+          "index": 2,
+          "text": "If this girl is real, that's fantastic!"
+        },
+        {
+          "index": 3,
+          "text": "Hurry up!"
+        },
+        {
+          "index": 4,
+          "text": "What's the matter?"
+        },
+        {
+          "index": 5,
+          "text": "Come on, go in"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What's the matter?"
+        },
+        {
+          "index": 2,
+          "text": "Hide in"
+        },
+        {
+          "index": 3,
+          "text": "Get ready, young master"
+        },
+        {
+          "index": 4,
+          "text": "Come on"
+        },
+        {
+          "index": 5,
+          "text": "Freeze, don't move"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Sweet smell, are you Piu Hung?"
+        },
+        {
+          "index": 2,
+          "text": "You are great! I love it"
+        },
+        {
+          "index": 3,
+          "text": "Closer"
+        },
+        {
+          "index": 4,
+          "text": "So big! You must be Small!"
+        },
+        {
+          "index": 5,
+          "text": "You are bad, how can you say so to me?"
+        },
+        {
+          "index": 6,
+          "text": "You are big!"
+        },
+        {
+          "index": 7,
+          "text": "What? Pregnant woman? You can't cheat me"
+        },
+        {
+          "index": 8,
+          "text": "You are dad"
+        },
+        {
+          "index": 9,
+          "text": "How bad are you, how can you guess that?"
+        },
+        {
+          "index": 10,
+          "text": "Good boy"
+        },
+        {
+          "index": 11,
+          "text": "I wanted to trick you actually,\nyou are really smart"
+        },
+        {
+          "index": 12,
+          "text": "Young master has to join the examination tomorrow,"
+        },
+        {
+          "index": 13,
+          "text": "stop playing"
+        },
+        {
+          "index": 14,
+          "text": "Get out…"
+        },
+        {
+          "index": 15,
+          "text": "Chan, have you prepared"
+        },
+        {
+          "index": 16,
+          "text": "for your examination?"
+        },
+        {
+          "index": 17,
+          "text": "What should I prepare?\nI must win, don't you know that?"
+        },
+        {
+          "index": 18,
+          "text": "Yes I do!"
+        },
+        {
+          "index": 19,
+          "text": "I have faith in you from seeing your behaviour!"
+        },
+        {
+          "index": 20,
+          "text": "Chan, this is Uncle Cheng"
+        },
+        {
+          "index": 21,
+          "text": "He will be the examiner"
+        },
+        {
+          "index": 22,
+          "text": "Say hello to Uncle Cheng"
+        },
+        {
+          "index": 23,
+          "text": "How are you, Uncle Cheng?"
+        },
+        {
+          "index": 24,
+          "text": "See"
+        },
+        {
+          "index": 25,
+          "text": "Doesn't he seem to be the winner?"
+        },
+        {
+          "index": 26,
+          "text": "It depends on the fate"
+        },
+        {
+          "index": 27,
+          "text": "Cheng, I've asked someone"
+        },
+        {
+          "index": 28,
+          "text": "to finish the papers which you gave me"
+        },
+        {
+          "index": 29,
+          "text": "Will the questions be changed?"
+        },
+        {
+          "index": 30,
+          "text": "Don't worry about the question paper"
+        },
+        {
+          "index": 31,
+          "text": "But about the test of arrows shooting,"
+        },
+        {
+          "index": 32,
+          "text": "riding, boxing and weapons…"
+        },
+        {
+          "index": 33,
+          "text": "He should try his best"
+        },
+        {
+          "index": 34,
+          "text": "Don't worry"
+        },
+        {
+          "index": 35,
+          "text": "My son is keen in martial arts"
+        },
+        {
+          "index": 36,
+          "text": "So, can I deduct some from the payment\nof 2 million taels?"
+        },
+        {
+          "index": 37,
+          "text": "We are friends, but that is business"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 8,
+          "text": "You are a dad.",
+          "note": "Added 'a' before 'dad' for correct grammar and added period at the end."
+        },
+        {
+          "index": 26,
+          "text": "It depends on fate.",
+          "note": "Removed 'the' before 'fate' for correct idiomatic usage and added period at the end."
+        },
+        {
+          "index": 35,
+          "text": "My son is keen on martial arts.",
+          "note": "Changed 'keen in' to 'keen on' for correct usage."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Let the Horse teams be the pioneer"
+        },
+        {
+          "index": 2,
+          "text": "The arrows teams go side ways,\nthe gunmen stay back"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "The arrows teams go sideways,\nthe gunmen stay back",
+          "note": "Corrected 'side ways' to 'sideways'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The candidates come in"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I can't lift it"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I don't want to waste my force"
+        },
+        {
+          "index": 2,
+          "text": "Shameless? Damn you!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Oh, 10 marks"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The final race now starts"
+        },
+        {
+          "index": 2,
+          "text": "The candidates,"
+        },
+        {
+          "index": 3,
+          "text": "Po Ye Tat Tor from Mongolia"
+        },
+        {
+          "index": 4,
+          "text": "Bravo…"
+        },
+        {
+          "index": 5,
+          "text": "And So Cha Ha Yee Chan from Canton"
+        },
+        {
+          "index": 6,
+          "text": "Last call"
+        },
+        {
+          "index": 7,
+          "text": "So, one to ten Po, one to one"
+        },
+        {
+          "index": 8,
+          "text": "Are you kidding, how can the betting rates\ndiffer so much?"
+        },
+        {
+          "index": 9,
+          "text": "One to ten for Chan? Kidding?"
+        },
+        {
+          "index": 10,
+          "text": "Why don't you have faith in Chan?"
+        },
+        {
+          "index": 11,
+          "text": "That is, Chan defaulted in weight lifting"
+        },
+        {
+          "index": 12,
+          "text": "Look, Po entered the final race"
+        },
+        {
+          "index": 13,
+          "text": "with full marks, it differs"
+        },
+        {
+          "index": 14,
+          "text": "It's an examination of the Scholar of\nMartial Arts, not king of coolie"
+        },
+        {
+          "index": 15,
+          "text": "It's meaningless to be the champion\nof weight lifting"
+        },
+        {
+          "index": 16,
+          "text": "- You shouldn't put it that way\n- What?"
+        },
+        {
+          "index": 17,
+          "text": "He is smart"
+        },
+        {
+          "index": 18,
+          "text": "I've studied this race for a long time"
+        },
+        {
+          "index": 19,
+          "text": "I feel strange about the rate too"
+        },
+        {
+          "index": 20,
+          "text": "Po is smart and strong"
+        },
+        {
+          "index": 21,
+          "text": "But see the sweat of his neck"
+        },
+        {
+          "index": 22,
+          "text": "I think it's because he is getting tired"
+        },
+        {
+          "index": 23,
+          "text": "Really?"
+        },
+        {
+          "index": 24,
+          "text": "But this So"
+        },
+        {
+          "index": 25,
+          "text": "What do you thing?"
+        },
+        {
+          "index": 26,
+          "text": "He has been disappointing the audience"
+        },
+        {
+          "index": 27,
+          "text": "But he has achieved very hard"
+        },
+        {
+          "index": 28,
+          "text": "What?"
+        },
+        {
+          "index": 29,
+          "text": "He tried very hard"
+        },
+        {
+          "index": 30,
+          "text": "So I want to bet on him"
+        },
+        {
+          "index": 31,
+          "text": "How much do you want to bet?"
+        },
+        {
+          "index": 32,
+          "text": "800,000 taels"
+        },
+        {
+          "index": 33,
+          "text": "Why not 2 million taels?"
+        },
+        {
+          "index": 34,
+          "text": "What? Why are you so optimistic about Chan?"
+        },
+        {
+          "index": 35,
+          "text": "You have good analyse"
+        },
+        {
+          "index": 36,
+          "text": "I feel Chan"
+        },
+        {
+          "index": 37,
+          "text": "will be the champion"
+        },
+        {
+          "index": 38,
+          "text": "Come on"
+        },
+        {
+          "index": 39,
+          "text": "I want to bet more on him"
+        },
+        {
+          "index": 40,
+          "text": "Really?"
+        },
+        {
+          "index": 41,
+          "text": "2 million taels!"
+        },
+        {
+          "index": 42,
+          "text": "How generous!"
+        },
+        {
+          "index": 43,
+          "text": "Why don't you bet?"
+        },
+        {
+          "index": 44,
+          "text": "Why should I bet? He is my son"
+        },
+        {
+          "index": 45,
+          "text": "Shit, I miss one thing out of my calculation"
+        },
+        {
+          "index": 46,
+          "text": "What?"
+        },
+        {
+          "index": 47,
+          "text": "The blood"
+        },
+        {
+          "index": 48,
+          "text": "Here comes the Examiner"
+        },
+        {
+          "index": 49,
+          "text": "What? Isn't Cheng the examiner?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 25,
+          "text": "What do you think?",
+          "note": "Corrected 'thing' to 'think'."
+        },
+        {
+          "index": 27,
+          "text": "But he has worked very hard",
+          "note": "Change 'vert' to 'very'."
+        },
+        {
+          "index": 35,
+          "text": "You have good analysis",
+          "note": "Corrected 'analyse' to 'analysis'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Please take a seat"
+        },
+        {
+          "index": 2,
+          "text": "Seng-ko-lin-ch'in?!"
+        },
+        {
+          "index": 3,
+          "text": "What's the problem?"
+        },
+        {
+          "index": 4,
+          "text": "He is the uncle of Po"
+        },
+        {
+          "index": 5,
+          "text": "Let's start"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Start!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "They should act 2 more marks for that\npowerful shoot"
+        },
+        {
+          "index": 2,
+          "text": "I do think so"
+        },
+        {
+          "index": 3,
+          "text": "So's arrow isn't on the target,\nPo won this section"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "They should add 2 more marks for that\npowerful shoot",
+          "note": "Corrected 'act' to 'add' for correct meaning: 'add 2 more marks'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Kidding? Damn you! They are cheating"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The candidates please get on the horses"
+        },
+        {
+          "index": 2,
+          "text": "Mr Chiu"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Take these with you, may be you will\nfind them useful"
+        },
+        {
+          "index": 2,
+          "text": "Here comes the 2nd round"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "Take these with you, maybe you will\nfind them useful",
+          "note": "Corrected 'may be' to 'maybe'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "They trick again"
+        },
+        {
+          "index": 2,
+          "text": "It's corrupt! May I give up the betting?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "They tricked again",
+          "note": "Changed 'trick' to 'tricked' for correct tense."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chan won this race"
+        },
+        {
+          "index": 2,
+          "text": "Did you tear the ticket?"
+        },
+        {
+          "index": 3,
+          "text": "Not yet"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Are you kidding?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Once again?!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "OK, let's start from the very beginning,\nI'll fight with single hand and leg"
+        },
+        {
+          "index": 2,
+          "text": "I won't take your advantage"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "OK, let's start from the very beginning,\nI'll fight with a single hand and leg",
+          "note": "Added 'a' before 'single hand and leg' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "How can you use such dirty stance?"
+        },
+        {
+          "index": 2,
+          "text": "Have you waken?"
+        },
+        {
+          "index": 3,
+          "text": "Bravo! He won"
+        },
+        {
+          "index": 4,
+          "text": "Have some tea"
+        },
+        {
+          "index": 5,
+          "text": "All the best!"
+        },
+        {
+          "index": 6,
+          "text": "What did you say?"
+        },
+        {
+          "index": 7,
+          "text": "It's English"
+        },
+        {
+          "index": 8,
+          "text": "It's English"
+        },
+        {
+          "index": 9,
+          "text": "There is no regulation stating that\nweapon is not allowed"
+        },
+        {
+          "index": 10,
+          "text": "You fell down first, Po is the winner again"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "How can you use such a dirty stance?",
+          "note": "Added 'a' before 'dirty stance' for correct grammar."
+        },
+        {
+          "index": 2,
+          "text": "Have you woken?",
+          "note": "Corrected 'waken' to 'woken'."
+        },
+        {
+          "index": 9,
+          "text": "There is no regulation stating that a\nweapon is not allowed",
+          "note": "Added 'a' before 'weapon' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Damn you Cheng! You betrayed me!"
+        },
+        {
+          "index": 2,
+          "text": "I will beat you to death"
+        },
+        {
+          "index": 3,
+          "text": "if I see you again"
+        },
+        {
+          "index": 4,
+          "text": "Forget it, you won't see him anymore"
+        },
+        {
+          "index": 5,
+          "text": "Why?"
+        },
+        {
+          "index": 6,
+          "text": "I am now going to kill him!"
+        },
+        {
+          "index": 7,
+          "text": "I don't have 2 million to lose!"
+        },
+        {
+          "index": 8,
+          "text": "Just kidding"
+        },
+        {
+          "index": 9,
+          "text": "You shameless"
+        },
+        {
+          "index": 10,
+          "text": "Po is the Scholar of Martial Arts"
+        },
+        {
+          "index": 11,
+          "text": "I did win! Objection"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "difficulty": 1,
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What are you doing?"
+        },
+        {
+          "index": 2,
+          "text": "The dart is poisoned"
+        },
+        {
+          "index": 3,
+          "text": "He deserves it!"
+        },
+        {
+          "index": 4,
+          "text": "He was poisoned by his own dart"
+        },
+        {
+          "index": 5,
+          "text": "Well, my son will be the Scholar then"
+        },
+        {
+          "index": 6,
+          "text": "I am going to be rich!"
+        },
+        {
+          "index": 7,
+          "text": "Yes!"
+        },
+        {
+          "index": 8,
+          "text": "You… You…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Thank you, my ancestors!"
+        },
+        {
+          "index": 2,
+          "text": "You have good judgement"
+        },
+        {
+          "index": 3,
+          "text": "Sir, His Majesty wants to\nappoint the title himself"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "OK"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I want to take some statement from you as record"
+        },
+        {
+          "index": 2,
+          "text": "You won this time, who are you going to thank?"
+        },
+        {
+          "index": 3,
+          "text": "Miss Yushang!"
+        },
+        {
+          "index": 4,
+          "text": "Is Miss Yushang his mom?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "I want to take a statement from you as record",
+          "note": "Added 'a' before 'statement' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Long life to you!"
+        },
+        {
+          "index": 2,
+          "text": "Please get up"
+        },
+        {
+          "index": 3,
+          "text": "Thank you"
+        },
+        {
+          "index": 4,
+          "text": "Who is the new Scholar of Martial Arts?"
+        },
+        {
+          "index": 5,
+          "text": "Your Majesty, So Chan from Canton\nis the Scholar this year"
+        },
+        {
+          "index": 6,
+          "text": "Your Majesty, I am So Cha Ha Yee Chan"
+        },
+        {
+          "index": 7,
+          "text": "Your Majesty, I want to report something"
+        },
+        {
+          "index": 8,
+          "text": "Go ahead"
+        },
+        {
+          "index": 9,
+          "text": "I have found that. So is illiterate"
+        },
+        {
+          "index": 10,
+          "text": "So how could he answer the\nquestion paper of strategy?"
+        },
+        {
+          "index": 11,
+          "text": "That should be tricks"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 9,
+          "text": "I have found that So is illiterate",
+          "note": "Removed the period after 'that' for correct sentence structure."
+        },
+        {
+          "index": 11,
+          "text": "That should be a trick",
+          "note": "Changed 'tricks' to 'a trick' for correct singular usage in context."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Take the stationery out!"
+        },
+        {
+          "index": 2,
+          "text": "Yes"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "So Cha Ha Yee Chan, write your name now"
+        },
+        {
+          "index": 2,
+          "text": "Thank God, he knows how to write his name!"
+        },
+        {
+          "index": 3,
+          "text": "He can write his name!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I don't know how to write"
+        },
+        {
+          "index": 2,
+          "text": "That's shit!"
+        },
+        {
+          "index": 3,
+          "text": "Kill him now"
+        },
+        {
+          "index": 4,
+          "text": "No! No!"
+        },
+        {
+          "index": 5,
+          "text": "Your Majesty, I am the one who cheated"
+        },
+        {
+          "index": 6,
+          "text": "It's none of his business"
+        },
+        {
+          "index": 7,
+          "text": "Just chop me to death"
+        },
+        {
+          "index": 8,
+          "text": "No, you should kill me"
+        },
+        {
+          "index": 9,
+          "text": "Sorry dad"
+        },
+        {
+          "index": 10,
+          "text": "I don't know how to write my name"
+        },
+        {
+          "index": 11,
+          "text": "Stop, I have known it already"
+        },
+        {
+          "index": 12,
+          "text": "Your Majesty, I should be killed"
+        },
+        {
+          "index": 13,
+          "text": "- Kill me\n- No, kill me"
+        },
+        {
+          "index": 14,
+          "text": "- Kill me.\n- Your Majesty, you'd better kill me"
+        },
+        {
+          "index": 15,
+          "text": "Shit, are you giving order?"
+        },
+        {
+          "index": 16,
+          "text": "You two co-operated to cheat me"
+        },
+        {
+          "index": 17,
+          "text": "The Secretary for Justice,\nannounce the penalty for them"
+        },
+        {
+          "index": 18,
+          "text": "Come out! Hurry up"
+        },
+        {
+          "index": 19,
+          "text": "I am here!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 16,
+          "text": "You two cooperated to cheat me",
+          "note": "Corrected 'co-operated' to 'cooperated' (no hyphen needed)."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "He is the Secretary for Justice"
+        },
+        {
+          "index": 2,
+          "text": "So's family should be sentenced to death"
+        },
+        {
+          "index": 3,
+          "text": "But their ancestors achieved a lot\nto Ching, they can be exampled"
+        },
+        {
+          "index": 4,
+          "text": "But, their fortune should be forfeited"
+        },
+        {
+          "index": 5,
+          "text": "Have you carried out any military duty?"
+        },
+        {
+          "index": 6,
+          "text": "I haven't gone back to my camp for\n7 years, I haven't done anything"
+        },
+        {
+          "index": 7,
+          "text": "So, he didn't miscarry out any duty"
+        },
+        {
+          "index": 8,
+          "text": "So, the maximum penalty"
+        },
+        {
+          "index": 9,
+          "text": "is forfeiture of property only"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "But their ancestors achieved a lot\nfor Ching, they can be exempted",
+          "note": "Corrected 'to Ching, they can be exampled' to 'for Ching, they can be exempted' for correct meaning and grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What? Are you sure?"
+        },
+        {
+          "index": 2,
+          "text": "I am fair"
+        },
+        {
+          "index": 3,
+          "text": "I judge it from the Law Book"
+        },
+        {
+          "index": 4,
+          "text": "Can I add something?"
+        },
+        {
+          "index": 5,
+          "text": "Sure, since you are the Emperor"
+        },
+        {
+          "index": 6,
+          "text": "I want them to be beggars for the rest\nof their lives"
+        },
+        {
+          "index": 7,
+          "text": "Why couldn't you find out"
+        },
+        {
+          "index": 8,
+          "text": "they cheated during the examination?"
+        },
+        {
+          "index": 9,
+          "text": "Luckily Chiu reported it to me on time"
+        },
+        {
+          "index": 10,
+          "text": "Chiu, you would be rewarded"
+        },
+        {
+          "index": 11,
+          "text": "I am wandering…"
+        },
+        {
+          "index": 12,
+          "text": "That's the spirit tablet of my dad,\ndo you want to take it too?"
+        },
+        {
+          "index": 13,
+          "text": "It's useless for you"
+        },
+        {
+          "index": 14,
+          "text": "How poor are we…"
+        },
+        {
+          "index": 15,
+          "text": "I am thinking of my better half…"
+        },
+        {
+          "index": 16,
+          "text": "Young master,"
+        },
+        {
+          "index": 17,
+          "text": "from now on,"
+        },
+        {
+          "index": 18,
+          "text": "you'd be hard working to learn how to write"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 18,
+          "text": "you'd be hardworking to learn how to write",
+          "note": "Corrected 'hard working' to 'hardworking' (should be one word)."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "But I can't sell the affection…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Professor"
+        },
+        {
+          "index": 2,
+          "text": "I will learn it"
+        },
+        {
+          "index": 3,
+          "text": "I regret that…"
+        },
+        {
+          "index": 4,
+          "text": "Master, I will take good care of little turtle"
+        },
+        {
+          "index": 5,
+          "text": "I am sorry"
+        },
+        {
+          "index": 6,
+          "text": "We haven't given birth to any baby of yours"
+        },
+        {
+          "index": 7,
+          "text": "It doesn't matter"
+        },
+        {
+          "index": 8,
+          "text": "It's all my fault"
+        },
+        {
+          "index": 9,
+          "text": "If I did better, you could have many babies"
+        },
+        {
+          "index": 10,
+          "text": "But I think Chan is enough for me"
+        },
+        {
+          "index": 11,
+          "text": "Why are you standing here? Go now"
+        },
+        {
+          "index": 12,
+          "text": "Master, we are leaving"
+        },
+        {
+          "index": 13,
+          "text": "We are leaving, master"
+        },
+        {
+          "index": 14,
+          "text": "Go, go now"
+        },
+        {
+          "index": 15,
+          "text": "We are free"
+        },
+        {
+          "index": 16,
+          "text": "I feel so happy"
+        },
+        {
+          "index": 17,
+          "text": "How happy are we!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "Master, I will take good care of the little turtle",
+          "note": "Added 'the' before 'little turtle' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Go in…"
+        },
+        {
+          "index": 2,
+          "text": "Hurry up…"
+        },
+        {
+          "index": 3,
+          "text": "Why are they so happy?"
+        },
+        {
+          "index": 4,
+          "text": "I am very happy"
+        },
+        {
+          "index": 5,
+          "text": "Please go in…"
+        },
+        {
+          "index": 6,
+          "text": "Welcome…"
+        },
+        {
+          "index": 7,
+          "text": "Damn sequestration, I wanna cry, my son"
+        },
+        {
+          "index": 8,
+          "text": "Hold it, don't lose our face"
+        },
+        {
+          "index": 9,
+          "text": "Keep on laughing"
+        },
+        {
+          "index": 10,
+          "text": "Son. Have you kept any money?"
+        },
+        {
+          "index": 11,
+          "text": "No, how about you?"
+        },
+        {
+          "index": 12,
+          "text": "I forgot that"
+        },
+        {
+          "index": 13,
+          "text": "Shit, damn sequestration!"
+        },
+        {
+          "index": 14,
+          "text": "Be merciful, please give money to us"
+        },
+        {
+          "index": 15,
+          "text": "Son, that guy is like dad"
+        },
+        {
+          "index": 16,
+          "text": "You mean the one who sings?"
+        },
+        {
+          "index": 17,
+          "text": "No, the one who pays"
+        },
+        {
+          "index": 18,
+          "text": "He is more disgusting than the one who sings"
+        },
+        {
+          "index": 19,
+          "text": "Not exactly, he is smart"
+        },
+        {
+          "index": 20,
+          "text": "Dad should be blamed"
+        },
+        {
+          "index": 21,
+          "text": "I always called you beggar"
+        },
+        {
+          "index": 22,
+          "text": "Now, it becomes true"
+        },
+        {
+          "index": 23,
+          "text": "What's wrong with you?"
+        },
+        {
+          "index": 24,
+          "text": "The emperor wants us to be beggars"
+        },
+        {
+          "index": 25,
+          "text": "Do you think we'd be beggars?"
+        },
+        {
+          "index": 26,
+          "text": "I am smart, I am keen in kung-fu fighting"
+        },
+        {
+          "index": 27,
+          "text": "Even the Gods won't let me be beggars"
+        },
+        {
+          "index": 28,
+          "text": "That's true"
+        },
+        {
+          "index": 29,
+          "text": "Am I like beggar?"
+        },
+        {
+          "index": 30,
+          "text": "No"
+        },
+        {
+          "index": 31,
+          "text": "Buy something to eat, you beggars"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 27,
+          "text": "Even the Gods won't let me be a beggar",
+          "note": "Changed 'be beggars' to 'be a beggar' for correct singular usage."
+        },
+        {
+          "index": 29,
+          "text": "Am I like a beggar?",
+          "note": "Added 'a' before 'beggar' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You treat us as beggars?"
+        },
+        {
+          "index": 2,
+          "text": "Damn you!"
+        },
+        {
+          "index": 3,
+          "text": "It's weird! Let's eat"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chan, since we have nothing to do"
+        },
+        {
+          "index": 2,
+          "text": "Let me take a seat, may be we can\nhave something to eat tonight"
+        },
+        {
+          "index": 3,
+          "text": "You are treating yourself a beggar?"
+        },
+        {
+          "index": 4,
+          "text": "Dad, don't worry"
+        },
+        {
+          "index": 5,
+          "text": "I need no begging for money"
+        },
+        {
+          "index": 6,
+          "text": "How can you get money if you don't beg?"
+        },
+        {
+          "index": 7,
+          "text": "Just ask someone to give us money"
+        },
+        {
+          "index": 8,
+          "text": "Pal, may I know your name?"
+        },
+        {
+          "index": 9,
+          "text": "Nau Tai Chung"
+        },
+        {
+          "index": 10,
+          "text": "Do you have money?"
+        },
+        {
+          "index": 11,
+          "text": "- Yes\n- Just give it to me"
+        },
+        {
+          "index": 12,
+          "text": "OK"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Let me take a seat, maybe we can\nhave something to eat tonight",
+          "note": "Corrected 'may be' to 'maybe'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Thank you"
+        },
+        {
+          "index": 2,
+          "text": "Why should I give you money?"
+        },
+        {
+          "index": 3,
+          "text": "Why do you ask so many questions?"
+        },
+        {
+          "index": 4,
+          "text": "But I should know the reason"
+        },
+        {
+          "index": 5,
+          "text": "Anyway, you should pay it"
+        },
+        {
+          "index": 6,
+          "text": "No, let's fix it up first"
+        },
+        {
+          "index": 7,
+          "text": "Just give it to us, why are you asking so much?"
+        },
+        {
+          "index": 8,
+          "text": "Hands off"
+        },
+        {
+          "index": 9,
+          "text": "You mean robbing?"
+        },
+        {
+          "index": 10,
+          "text": "Robbery…"
+        },
+        {
+          "index": 11,
+          "text": "I am not robbing, I am begging"
+        },
+        {
+          "index": 12,
+          "text": "Begging? How dare are you, you beggar,\nyou are cheating me!"
+        },
+        {
+          "index": 13,
+          "text": "Don't you think I am stupid? I am smart, you know?"
+        },
+        {
+          "index": 14,
+          "text": "Hey, two days passed,"
+        },
+        {
+          "index": 15,
+          "text": "It's cold and I am hungry now"
+        },
+        {
+          "index": 16,
+          "text": "Have you had any idea?"
+        },
+        {
+          "index": 17,
+          "text": "I have a friend's girl-friend"
+        },
+        {
+          "index": 18,
+          "text": "who is living in Peking"
+        },
+        {
+          "index": 19,
+          "text": "She always admires you"
+        },
+        {
+          "index": 20,
+          "text": "Really?"
+        },
+        {
+          "index": 21,
+          "text": "Yes, if you are willing to date her"
+        },
+        {
+          "index": 22,
+          "text": "I think she will help us to go back to Canton"
+        },
+        {
+          "index": 23,
+          "text": "But, you have to sacrifice"
+        },
+        {
+          "index": 24,
+          "text": "Do you mean…"
+        },
+        {
+          "index": 25,
+          "text": "For our family, just as you said"
+        },
+        {
+          "index": 26,
+          "text": "I know it's very hard for you"
+        },
+        {
+          "index": 27,
+          "text": "Cut the crap, let's go and find her"
+        },
+        {
+          "index": 28,
+          "text": "I have arranged it"
+        },
+        {
+          "index": 29,
+          "text": "The one wearing red dress who stands\nunder the lantern, that's her"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 12,
+          "text": "Begging? How dare you, you beggar,\nyou are cheating me!",
+          "note": "Corrected 'How dare are you' to 'How dare you' for correct grammar."
+        },
+        {
+          "index": 17,
+          "text": "I have a friend's girlfriend",
+          "note": "Corrected 'girl-friend' to 'girlfriend' (no hyphen needed)."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Ghost!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's a benefit of you!"
+        },
+        {
+          "index": 2,
+          "text": "Why don't you go yourself?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "It's a benefit for you!",
+          "note": "Changed 'of' to 'for' to correct the preposition: 'benefit for you'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chan, I haven't tried this before"
+        },
+        {
+          "index": 2,
+          "text": "Be careful!"
+        },
+        {
+          "index": 3,
+          "text": "Don't worry"
+        },
+        {
+          "index": 4,
+          "text": "I'll take care of you"
+        },
+        {
+          "index": 5,
+          "text": "You want to earn money for shark-fins, right?"
+        },
+        {
+          "index": 6,
+          "text": "Right…"
+        },
+        {
+          "index": 7,
+          "text": "Get lost…"
+        },
+        {
+          "index": 8,
+          "text": "No show here"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "We just want to earn some money"
+        },
+        {
+          "index": 2,
+          "text": "to go back to Canton"
+        },
+        {
+          "index": 3,
+          "text": "Don't be that mean to us"
+        },
+        {
+          "index": 4,
+          "text": "It's the Royal instruction that,"
+        },
+        {
+          "index": 5,
+          "text": "the So's family'd be beggars for life"
+        },
+        {
+          "index": 6,
+          "text": "You two can only be beggars"
+        },
+        {
+          "index": 7,
+          "text": "I am carrying my duty only Men!"
+        },
+        {
+          "index": 8,
+          "text": "- Yes!\n- Remove all the things"
+        },
+        {
+          "index": 9,
+          "text": "Yes"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "It's the Royal instruction that",
+          "note": "Removed comma."
+        },
+        {
+          "index": 7,
+          "text": "I am carrying out my duty only, men!",
+          "note": "Added 'out' after 'carrying' and a comma before 'men' for correct phrasing and punctuation."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Help!"
+        },
+        {
+          "index": 2,
+          "text": "Master Chiu, it's hard for one to carry it"
+        },
+        {
+          "index": 3,
+          "text": "Ask more men to remove it"
+        },
+        {
+          "index": 4,
+          "text": "Yes"
+        },
+        {
+          "index": 5,
+          "text": "What do you want?"
+        },
+        {
+          "index": 6,
+          "text": "- No, we can't move it\n- Let me do it"
+        },
+        {
+          "index": 7,
+          "text": "You want a fight, don't you?"
+        },
+        {
+          "index": 8,
+          "text": "Last time you can escape from Yee Hung Hostel"
+        },
+        {
+          "index": 9,
+          "text": "But you won't be that lucky this time"
+        },
+        {
+          "index": 10,
+          "text": "He is powerful!"
+        },
+        {
+          "index": 11,
+          "text": "I've to defeat him by one powerful strike"
+        },
+        {
+          "index": 12,
+          "text": "I can't give him another chance to counter attack"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 8,
+          "text": "Last time you escaped from Yee Hung Hostel",
+          "note": "Changed 'you can escape' to 'you escaped' for correct tense and grammar."
+        },
+        {
+          "index": 11,
+          "text": "I've got to defeat him by one powerful strike",
+          "note": "Expanded contraction 'I've' to 'I've got' for correct usage in this context."
+        },
+        {
+          "index": 12,
+          "text": "I can't give him another chance to counterattack",
+          "note": "Changed 'counter attack' to 'counterattack' (one word)."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chan…"
+        },
+        {
+          "index": 2,
+          "text": "Chan…"
+        },
+        {
+          "index": 3,
+          "text": "Your legs and hands are all broken by me"
+        },
+        {
+          "index": 4,
+          "text": "You will be cripple for the rest of your life"
+        },
+        {
+          "index": 5,
+          "text": "You want to fight? Not now!"
+        },
+        {
+          "index": 6,
+          "text": "But, you can beg for money"
+        },
+        {
+          "index": 7,
+          "text": "Be a good beggar"
+        },
+        {
+          "index": 8,
+          "text": "Go, go away…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "You will be a cripple for the rest of your life",
+          "note": "Added 'a' before 'cripple' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Don't panic, Chan, it's OK"
+        },
+        {
+          "index": 2,
+          "text": "Don't panic, you'll be alright… Chan!"
+        },
+        {
+          "index": 3,
+          "text": "Don't panic"
+        },
+        {
+          "index": 4,
+          "text": "I went to the examination hall"
+        },
+        {
+          "index": 5,
+          "text": "with my son,"
+        },
+        {
+          "index": 6,
+          "text": "don't you know who was the examiner?"
+        },
+        {
+          "index": 7,
+          "text": "He is Seng-ko-lin-ch'in, that bastard"
+        },
+        {
+          "index": 8,
+          "text": "He was the enemy of us!"
+        },
+        {
+          "index": 9,
+          "text": "About our story…"
+        },
+        {
+          "index": 10,
+          "text": "Let me stop here first, I want a smoke"
+        },
+        {
+          "index": 11,
+          "text": "It's better to smoke now"
+        },
+        {
+          "index": 12,
+          "text": "Yes, it's better"
+        },
+        {
+          "index": 13,
+          "text": "We let him go in"
+        },
+        {
+          "index": 14,
+          "text": "the Yee Hung Brothel"
+        },
+        {
+          "index": 15,
+          "text": "But he framed us in return"
+        },
+        {
+          "index": 16,
+          "text": "He tricked my son"
+        },
+        {
+          "index": 17,
+          "text": "during the examination"
+        },
+        {
+          "index": 18,
+          "text": "But, my son was really smart and great"
+        },
+        {
+          "index": 19,
+          "text": "To be the greatest Kung-fu fighter, invincible"
+        },
+        {
+          "index": 20,
+          "text": "Be the top"
+        },
+        {
+          "index": 21,
+          "text": "Can you do that?"
+        },
+        {
+          "index": 22,
+          "text": "Sure!"
+        },
+        {
+          "index": 23,
+          "text": "Well"
+        },
+        {
+          "index": 24,
+          "text": "Come back to me if you can do that"
+        },
+        {
+          "index": 25,
+          "text": "I think we should fix our wedding date first"
+        },
+        {
+          "index": 26,
+          "text": "Because being the scholar is too simple to me"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 26,
+          "text": "Because being the scholar is too simple for me",
+          "note": "Changed 'to me' to 'for me' for correct usage."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Write your name at once"
+        },
+        {
+          "index": 2,
+          "text": "I don't know how to write"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chan, what's wrong with you?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Nightmare again?"
+        },
+        {
+          "index": 2,
+          "text": "Don't think so much!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Although you have taken 2 months' rest,"
+        },
+        {
+          "index": 2,
+          "text": "your legs and hands have not been\ntotally recovered"
+        },
+        {
+          "index": 3,
+          "text": "- Mr. Ha Yee\n- Coming"
+        },
+        {
+          "index": 4,
+          "text": "I am going to beg for food"
+        },
+        {
+          "index": 5,
+          "text": "I will make the last herbal tea for you later"
+        },
+        {
+          "index": 6,
+          "text": "Dad, you go begging again?"
+        },
+        {
+          "index": 7,
+          "text": "This job should leave to me"
+        },
+        {
+          "index": 8,
+          "text": "You are the Scholar…"
+        },
+        {
+          "index": 9,
+          "text": "Chan, to be a beggar,"
+        },
+        {
+          "index": 10,
+          "text": "there is some lessons!"
+        },
+        {
+          "index": 11,
+          "text": "You can't just show your hand and beg for money"
+        },
+        {
+          "index": 12,
+          "text": "At least you should have a bowl,\nthat represents your class"
+        },
+        {
+          "index": 13,
+          "text": "Is it ridiculous?"
+        },
+        {
+          "index": 14,
+          "text": "Hurry up"
+        },
+        {
+          "index": 15,
+          "text": "I am coming"
+        },
+        {
+          "index": 16,
+          "text": "We can't beg for good if we are late!"
+        },
+        {
+          "index": 17,
+          "text": "Yes…"
+        },
+        {
+          "index": 18,
+          "text": "You not a master now."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 7,
+          "text": "This job should be left to me",
+          "note": "Corrected 'should leave to me' to 'should be left to me' for correct grammar."
+        },
+        {
+          "index": 10,
+          "text": "there are some lessons!",
+          "note": "Corrected 'there is some lessons!' to 'there are some lessons!' for subject-verb agreement."
+        },
+        {
+          "index": 16,
+          "text": "We can't beg for food if we are late!",
+          "note": "Corrected 'beg for good' to 'beg for food' to match context and likely intended meaning."
+        },
+        {
+          "index": 18,
+          "text": "You're not a master now.",
+          "note": "Corrected 'You not a master now.' to 'You're not a master now.' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Give me money please"
+        },
+        {
+          "index": 2,
+          "text": "Go, go , I won't give you money"
+        },
+        {
+          "index": 3,
+          "text": "Go, don't stop me from doing business"
+        },
+        {
+          "index": 4,
+          "text": "Chan, dad is leaving"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Go, go, I won't give you money",
+          "note": "Removed the extra space before the comma in 'go ,'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Thank you…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Are you that mean?"
+        },
+        {
+          "index": 2,
+          "text": "Why don't you write it yourself?"
+        },
+        {
+          "index": 3,
+          "text": "You are off duty, so I just want to lend it"
+        },
+        {
+          "index": 4,
+          "text": "Don't you think I am idiot?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "Don't you think I am an idiot?",
+          "note": "Added 'an' before 'idiot' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Dad!"
+        },
+        {
+          "index": 2,
+          "text": "What are you doing?"
+        },
+        {
+          "index": 3,
+          "text": "I am cold… I am cold… Chan"
+        },
+        {
+          "index": 4,
+          "text": "No, your body is as hot as fire"
+        },
+        {
+          "index": 5,
+          "text": "Are you sick?"
+        },
+        {
+          "index": 6,
+          "text": "I am not…"
+        },
+        {
+          "index": 7,
+          "text": "It's late"
+        },
+        {
+          "index": 8,
+          "text": "I have to search for food"
+        },
+        {
+          "index": 9,
+          "text": "Lie down, I will go this time"
+        },
+        {
+          "index": 10,
+          "text": "Are you go for begging?"
+        },
+        {
+          "index": 11,
+          "text": "I have my own way to get food"
+        },
+        {
+          "index": 12,
+          "text": "Take a rest now"
+        },
+        {
+          "index": 13,
+          "text": "I will take you to the doctor after\ngetting some money"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 10,
+          "text": "Are you going for begging?",
+          "note": "Corrected 'Are you go for begging?' to 'Are you going for begging?' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You bastard, why don't you eat?"
+        },
+        {
+          "index": 2,
+          "text": "You should eat more so as to be strong!"
+        },
+        {
+          "index": 3,
+          "text": "Finish it"
+        },
+        {
+          "index": 4,
+          "text": "No, I am full"
+        },
+        {
+          "index": 5,
+          "text": "You should take all the food"
+        },
+        {
+          "index": 6,
+          "text": "OK, just forget it, let's go home"
+        },
+        {
+          "index": 7,
+          "text": "Come on, eat them all"
+        },
+        {
+          "index": 8,
+          "text": "Little kid!"
+        },
+        {
+          "index": 9,
+          "text": "What?"
+        },
+        {
+          "index": 10,
+          "text": "- May I…\n- No"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Be merciful!"
+        },
+        {
+          "index": 2,
+          "text": "Be merciful to me please"
+        },
+        {
+          "index": 3,
+          "text": "My dad is dying!"
+        },
+        {
+          "index": 4,
+          "text": "Beggar, do you want the broken carbon?"
+        },
+        {
+          "index": 5,
+          "text": "Thank you"
+        },
+        {
+          "index": 6,
+          "text": "Can you give me some coins?"
+        },
+        {
+          "index": 7,
+          "text": "It's you!"
+        },
+        {
+          "index": 8,
+          "text": "No, you have mistaken"
+        },
+        {
+          "index": 9,
+          "text": "Sister, it's him"
+        },
+        {
+          "index": 10,
+          "text": "No, no"
+        },
+        {
+          "index": 11,
+          "text": "Sister, he is So Chan"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Be merciful to me, please",
+          "note": "Added a comma after 'me' for correct punctuation."
+        },
+        {
+          "index": 4,
+          "text": "Beggar, do you want the broken charcoal?",
+          "note": "Corrected 'carbon' to 'charcoal', which is the correct term in this context."
+        },
+        {
+          "index": 8,
+          "text": "No, you are mistaken",
+          "note": "Changed 'you have mistaken' to 'you are mistaken' for correct usage."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Wait!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Miss, who are you looking for?"
+        },
+        {
+          "index": 2,
+          "text": "I am sorry, I have mistaken"
+        },
+        {
+          "index": 3,
+          "text": "Tracy, take some dumpling out"
+        },
+        {
+          "index": 4,
+          "text": "You have mistake, he is not So Chan"
+        },
+        {
+          "index": 5,
+          "text": "You are like my friend"
+        },
+        {
+          "index": 6,
+          "text": "Come to get some dumplings if you\nget nothing to eat"
+        },
+        {
+          "index": 7,
+          "text": "We always have surplus"
+        },
+        {
+          "index": 8,
+          "text": "Dumpling"
+        },
+        {
+          "index": 9,
+          "text": "Take it"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "I am sorry, I was mistaken",
+          "note": "Changed 'have mistaken' to 'was mistaken' for correct usage."
+        },
+        {
+          "index": 3,
+          "text": "Tracy, take some dumplings out",
+          "note": "Changed 'dumpling' to 'dumplings' for correct plural usage."
+        },
+        {
+          "index": 4,
+          "text": "You are mistaken, he is not So Chan",
+          "note": "Changed 'have mistake' to 'are mistaken' for correct phrasing."
+        },
+        {
+          "index": 8,
+          "text": "Dumplings",
+          "note": "Changed 'Dumpling' to 'Dumplings' for correct plural usage."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Thank you…"
+        },
+        {
+          "index": 2,
+          "text": "Sister,"
+        },
+        {
+          "index": 3,
+          "text": "he wouldn't be that poor if not were you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "he wouldn't be that poor if it were not for you",
+          "note": "Corrected 'if not were you' to 'if it were not for you' for proper grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Dad, what are you doing?"
+        },
+        {
+          "index": 2,
+          "text": "I can't stand the hunger"
+        },
+        {
+          "index": 3,
+          "text": "So I bit the dumpling of the kid"
+        },
+        {
+          "index": 4,
+          "text": "I have dumpling, take it back"
+        },
+        {
+          "index": 5,
+          "text": "Could I pay you another head"
+        },
+        {
+          "index": 6,
+          "text": "if I chopped yours"
+        },
+        {
+          "index": 7,
+          "text": "Are you the Scholar?"
+        },
+        {
+          "index": 8,
+          "text": "Yes, are you the Scholar?"
+        },
+        {
+          "index": 9,
+          "text": "I was nearly the Scholar"
+        },
+        {
+          "index": 10,
+          "text": "He is the Scholar!"
+        },
+        {
+          "index": 11,
+          "text": "We should give him face"
+        },
+        {
+          "index": 12,
+          "text": "Thank you"
+        },
+        {
+          "index": 13,
+          "text": "Hold it"
+        },
+        {
+          "index": 14,
+          "text": "Are they going to treat me some food?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "I have a dumpling, take it back",
+          "note": "Added 'a' before 'dumpling' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The dog's rice"
+        },
+        {
+          "index": 2,
+          "text": "Sir, I will let your dad go if you eat\nthe dog's rice now"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What's the matter?"
+        },
+        {
+          "index": 2,
+          "text": "Come on"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chan, don't eat that"
+        },
+        {
+          "index": 2,
+          "text": "You can't face the others if you eat this"
+        },
+        {
+          "index": 3,
+          "text": "Let's forget about me"
+        },
+        {
+          "index": 4,
+          "text": "Sir, I was a general in Canton"
+        },
+        {
+          "index": 5,
+          "text": "So what?"
+        },
+        {
+          "index": 6,
+          "text": "Stop fighting"
+        },
+        {
+          "index": 7,
+          "text": "Stand properly"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The Scholar eats the dog's food"
+        },
+        {
+          "index": 2,
+          "text": "Dad. It's quite delicious"
+        },
+        {
+          "index": 3,
+          "text": "Try some. Come on"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's delicious, isn't it?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Dad, look!"
+        },
+        {
+          "index": 2,
+          "text": "There is a slice of meat here"
+        },
+        {
+          "index": 3,
+          "text": "It's pock chop!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "It's pork chop!",
+          "note": "Corrected 'pock chop' to 'pork chop'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "They are as hungry as dogs!"
+        },
+        {
+          "index": 2,
+          "text": "Enjoy the dog food!"
+        },
+        {
+          "index": 3,
+          "text": "Hurry, finish it"
+        },
+        {
+          "index": 4,
+          "text": "That's too delicious!"
+        },
+        {
+          "index": 5,
+          "text": "I want to save it for midnight snack"
+        },
+        {
+          "index": 6,
+          "text": "It's very clever of you!"
+        },
+        {
+          "index": 7,
+          "text": "You deserve to be beggars"
+        },
+        {
+          "index": 8,
+          "text": "The Scholar is eating dog's food"
+        },
+        {
+          "index": 9,
+          "text": "Come on, let's go and eat the man's food"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 8,
+          "text": "The Scholar is eating dog food",
+          "note": "Changed \"dog's food\" to \"dog food\" for correct usage."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Uncle So!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You are…"
+        },
+        {
+          "index": 2,
+          "text": "My dad was the Master of the\nBeggar's Association"
+        },
+        {
+          "index": 3,
+          "text": "Why don't you join our Beggar's Association"
+        },
+        {
+          "index": 4,
+          "text": "Uncle Mok, isn't it a good idea?"
+        },
+        {
+          "index": 5,
+          "text": "Good"
+        },
+        {
+          "index": 6,
+          "text": "Isn't it the association for beggars?"
+        },
+        {
+          "index": 7,
+          "text": "Yes!"
+        },
+        {
+          "index": 8,
+          "text": "That's right, we are being beggars"
+        },
+        {
+          "index": 9,
+          "text": "It's wise to join the Beggars' Association\nso as to be taken care"
+        },
+        {
+          "index": 10,
+          "text": "Chan… where is that fool going?"
+        },
+        {
+          "index": 11,
+          "text": "Where is Chan?"
+        },
+        {
+          "index": 12,
+          "text": "OK, we will join you!"
+        },
+        {
+          "index": 13,
+          "text": "Chan… Chan…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "My dad was the Master of the\nBeggars' Association",
+          "note": "Added apostrophe to 'Beggars'' for correct possessive form."
+        },
+        {
+          "index": 3,
+          "text": "Why don't you join our Beggars' Association",
+          "note": "Added apostrophe to 'Beggars'' for correct possessive form."
+        },
+        {
+          "index": 9,
+          "text": "It's wise to join the Beggars' Association\nso as to be taken care of",
+          "note": "Added 'of' to complete the phrase 'taken care of'. Added apostrophe to 'Beggars'' for correct possessive form."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Yushang, good year!"
+        },
+        {
+          "index": 2,
+          "text": "Uncle Mok, happy new year!"
+        },
+        {
+          "index": 3,
+          "text": "This is for you"
+        },
+        {
+          "index": 4,
+          "text": "Thank you"
+        },
+        {
+          "index": 5,
+          "text": "One clothe is for you\nand the other is for Chan"
+        },
+        {
+          "index": 6,
+          "text": "Thank you. Put it down first"
+        },
+        {
+          "index": 7,
+          "text": "Do you have any coins?"
+        },
+        {
+          "index": 8,
+          "text": "Yes!"
+        },
+        {
+          "index": 9,
+          "text": "- Give them to me, come on\n- What for?"
+        },
+        {
+          "index": 10,
+          "text": "It's new year, you should receive red pocket"
+        },
+        {
+          "index": 11,
+          "text": "Come on, happy new year"
+        },
+        {
+          "index": 12,
+          "text": "Good year!"
+        },
+        {
+          "index": 13,
+          "text": "- Wish you ever beauty\n- Thank you"
+        },
+        {
+          "index": 14,
+          "text": "Uncle Mok, we needn't give red\npocket to each other"
+        },
+        {
+          "index": 15,
+          "text": "How about Chan"
+        },
+        {
+          "index": 16,
+          "text": "Chan?"
+        },
+        {
+          "index": 17,
+          "text": "He is still sleeping"
+        },
+        {
+          "index": 18,
+          "text": "Don't wake him up"
+        },
+        {
+          "index": 19,
+          "text": "I will cook you some new year cake"
+        },
+        {
+          "index": 20,
+          "text": "Let me help you"
+        },
+        {
+          "index": 21,
+          "text": "How can he sleep on the 1st day of this year?"
+        },
+        {
+          "index": 22,
+          "text": "He is useless"
+        },
+        {
+          "index": 23,
+          "text": "Are you all here?"
+        },
+        {
+          "index": 24,
+          "text": "To fight against Chiu, we need a union of\nthe Beggar's Association"
+        },
+        {
+          "index": 25,
+          "text": "So we must choose a new master to\nin-charge the association"
+        },
+        {
+          "index": 26,
+          "text": "Yushang…"
+        },
+        {
+          "index": 27,
+          "text": "To defeat the Lotus position of the three seniors"
+        },
+        {
+          "index": 28,
+          "text": "You should try your best"
+        },
+        {
+          "index": 29,
+          "text": "Uncle, I don't have faith to defeat them"
+        },
+        {
+          "index": 30,
+          "text": "Judging from my kung-fu now,"
+        },
+        {
+          "index": 31,
+          "text": "how can I defeat them and become the new master?"
+        },
+        {
+          "index": 32,
+          "text": "Take this Taiwan pill, after this,\nyour power will be improved"
+        },
+        {
+          "index": 33,
+          "text": "No, this is the only medicine to cure\nyour inner injury"
+        },
+        {
+          "index": 34,
+          "text": "How can I take this?"
+        },
+        {
+          "index": 35,
+          "text": "Don't worry,"
+        },
+        {
+          "index": 36,
+          "text": "you can ask my son to fight for you"
+        },
+        {
+          "index": 37,
+          "text": "He was a scholar of Martial Arts"
+        },
+        {
+          "index": 38,
+          "text": "before…"
+        },
+        {
+          "index": 39,
+          "text": "Before…"
+        },
+        {
+          "index": 40,
+          "text": "Look at him, he is so lazy,"
+        },
+        {
+          "index": 41,
+          "text": "he knows sleeping only"
+        },
+        {
+          "index": 42,
+          "text": "He is not even qualified to be beggar!"
+        },
+        {
+          "index": 43,
+          "text": "Don't be that frank, can you?"
+        },
+        {
+          "index": 44,
+          "text": "Don't shout that loudly, OK?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "One cloth is for you\nand the other is for Chan",
+          "note": "Corrected 'clothe' to 'cloth'."
+        },
+        {
+          "index": 10,
+          "text": "It's new year, you should receive a red packet",
+          "note": "Added 'a' before 'red pocket' for correct grammar."
+        },
+        {
+          "index": 14,
+          "text": "Uncle Mok, we needn't give red\npackets to each other",
+          "note": "Changed 'red pocket' to 'red packets' for correct plural usage."
+        },
+        {
+          "index": 25,
+          "text": "So we must choose a new master to\nbe in charge of the association",
+          "note": "Changed 'in-charge' to 'be in charge of' for correct usage."
+        },
+        {
+          "index": 42,
+          "text": "He is not even qualified to be a beggar!",
+          "note": "Added 'a' before 'beggar' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chan, no matter how they despise you,"
+        },
+        {
+          "index": 2,
+          "text": "I have faith on you"
+        },
+        {
+          "index": 3,
+          "text": "Although you lost your power"
+        },
+        {
+          "index": 4,
+          "text": "With your background,"
+        },
+        {
+          "index": 5,
+          "text": "only you try hard,"
+        },
+        {
+          "index": 6,
+          "text": "you can achieve something"
+        },
+        {
+          "index": 7,
+          "text": "But I am now powerless,\nI don't want to fight again"
+        },
+        {
+          "index": 8,
+          "text": "You have power!"
+        },
+        {
+          "index": 9,
+          "text": "Come on, beat me"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "I have faith in you",
+          "note": "Corrected 'faith on you' to 'faith in you'."
+        },
+        {
+          "index": 5,
+          "text": "only if you try hard,",
+          "note": "Added 'if' to correct the conditional phrase: 'only if you try hard'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "See, that was powerful"
+        },
+        {
+          "index": 2,
+          "text": "Well, being a people…"
+        },
+        {
+          "index": 3,
+          "text": "Forget it, don't waste time"
+        },
+        {
+          "index": 4,
+          "text": "Why don't you let me sleep?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Why did you lock the door?"
+        },
+        {
+          "index": 2,
+          "text": "Enjoy sleeping"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Son, I tried very hard to get this for you"
+        },
+        {
+          "index": 2,
+          "text": "Try hard to practise, be good"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Why do you go up?"
+        },
+        {
+          "index": 2,
+          "text": "Even you want me to practise Kung-fu,"
+        },
+        {
+          "index": 3,
+          "text": "you should give me a waddy first"
+        },
+        {
+          "index": 4,
+          "text": "I am sorry, catch it"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "difficulty": 1,
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Before being appointed important task,"
+        },
+        {
+          "index": 2,
+          "text": "God will give you severe\ntraining for soul and flesh."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "Before being appointed an important task,",
+          "note": "Added 'an' before 'important task' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Did you write it?"
+        },
+        {
+          "index": 2,
+          "text": "It's ugly, it's right to wipe it away"
+        },
+        {
+          "index": 3,
+          "text": "Hey, beggar?"
+        },
+        {
+          "index": 4,
+          "text": "Yes"
+        },
+        {
+          "index": 5,
+          "text": "Me too"
+        },
+        {
+          "index": 6,
+          "text": "Congratulation"
+        },
+        {
+          "index": 7,
+          "text": "- Are there anything to eat?\n- No"
+        },
+        {
+          "index": 8,
+          "text": "Luckily, I have"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "Congratulations",
+          "note": "Corrected 'Congratulation' to 'Congratulations'."
+        },
+        {
+          "index": 7,
+          "text": "- Is there anything to eat?\n- No",
+          "note": "Corrected 'Are there anything to eat?' to 'Is there anything to eat?' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "See your look, it's a waste for you not to beg"
+        },
+        {
+          "index": 2,
+          "text": "None of your damn business"
+        },
+        {
+          "index": 3,
+          "text": "You are too lazy to be a beggar!"
+        },
+        {
+          "index": 4,
+          "text": "Your fellows despise you"
+        },
+        {
+          "index": 5,
+          "text": "I was always respected by others"
+        },
+        {
+          "index": 6,
+          "text": "But now, I am despised"
+        },
+        {
+          "index": 7,
+          "text": "Dislike from you,"
+        },
+        {
+          "index": 8,
+          "text": "no one respected me before"
+        },
+        {
+          "index": 9,
+          "text": "Listen to me. Don't go!"
+        },
+        {
+          "index": 10,
+          "text": "I remembered once in Canton"
+        },
+        {
+          "index": 11,
+          "text": "A fool paid my living, including hooking"
+        },
+        {
+          "index": 12,
+          "text": "What a weird man"
+        },
+        {
+          "index": 13,
+          "text": "Kid, I remembered you"
+        },
+        {
+          "index": 14,
+          "text": "Me too"
+        },
+        {
+          "index": 15,
+          "text": "Hey, hurry up"
+        },
+        {
+          "index": 16,
+          "text": "Repay my money, I am in urgent need"
+        },
+        {
+          "index": 17,
+          "text": "If I had money,"
+        },
+        {
+          "index": 18,
+          "text": "I wouldn't be beggar!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 18,
+          "text": "I wouldn't be a beggar!",
+          "note": "Added 'a' before 'beggar' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "But, don't worry, you were my benefitor,"
+        },
+        {
+          "index": 2,
+          "text": "I will repay you one day"
+        },
+        {
+          "index": 3,
+          "text": "Thank you very much"
+        },
+        {
+          "index": 4,
+          "text": "But, you can't buy back what you lost"
+        },
+        {
+          "index": 5,
+          "text": "even you have money again"
+        },
+        {
+          "index": 6,
+          "text": "What did I lose?"
+        },
+        {
+          "index": 7,
+          "text": "Pride and faith"
+        },
+        {
+          "index": 8,
+          "text": "And your woman too"
+        },
+        {
+          "index": 9,
+          "text": "Who are you?"
+        },
+        {
+          "index": 10,
+          "text": "I am Hung Yat-sun, nicked name Old Bag Sun"
+        },
+        {
+          "index": 11,
+          "text": "I am the most senior one among the beggars"
+        },
+        {
+          "index": 12,
+          "text": "It's good to be beggar"
+        },
+        {
+          "index": 13,
+          "text": "You can do everything you want"
+        },
+        {
+          "index": 14,
+          "text": "You can do the same"
+        },
+        {
+          "index": 15,
+          "text": "Tell me, what do you want?\nI will make your wish come true"
+        },
+        {
+          "index": 16,
+          "text": "I want to be human again"
+        },
+        {
+          "index": 17,
+          "text": "Don't you think you are not human like?"
+        },
+        {
+          "index": 18,
+          "text": "Not at all"
+        },
+        {
+          "index": 19,
+          "text": "So you have to be beggar now"
+        },
+        {
+          "index": 20,
+          "text": "Very good! Very good!"
+        },
+        {
+          "index": 21,
+          "text": "But I won't cheat you, from your head to toes"
+        },
+        {
+          "index": 22,
+          "text": "Every parts of you are beggar like"
+        },
+        {
+          "index": 23,
+          "text": "So what?"
+        },
+        {
+          "index": 24,
+          "text": "That means, you will be beggar for your life"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "But, don't worry, you were my benefactor,",
+          "note": "Corrected 'benefitor' to 'benefactor'."
+        },
+        {
+          "index": 5,
+          "text": "even if you have money again",
+          "note": "Added 'if' after 'even' for correct grammar."
+        },
+        {
+          "index": 10,
+          "text": "I am Hung Yat-sun, nicknamed Old Bag Sun",
+          "note": "Corrected 'nicked name' to 'nicknamed'."
+        },
+        {
+          "index": 12,
+          "text": "It's good to be a beggar",
+          "note": "Added article 'a' before 'beggar' for correct grammar."
+        },
+        {
+          "index": 17,
+          "text": "Don't you think you are not human-like?",
+          "note": "Added hyphen in 'human-like' to form a correct compound adjective."
+        },
+        {
+          "index": 19,
+          "text": "So you have to be a beggar now",
+          "note": "Added article 'a' before 'beggar' for correct grammar."
+        },
+        {
+          "index": 22,
+          "text": "Every part of you is beggar-like",
+          "note": "Changed 'Every parts' to singular 'Every part' and 'are' to 'is' for subject-verb agreement; added hyphen in 'beggar-like'."
+        },
+        {
+          "index": 24,
+          "text": "That means, you will be a beggar for your life",
+          "note": "Added article 'a' before 'beggar' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I don't want to talk to you, I want a sleep first"
+        },
+        {
+          "index": 2,
+          "text": "Don't go, you can achieve in your profession"
+        },
+        {
+          "index": 3,
+          "text": "From my judgement,"
+        },
+        {
+          "index": 4,
+          "text": "you will be the king of beggars"
+        },
+        {
+          "index": 5,
+          "text": "King of beggars, what does that mean?"
+        },
+        {
+          "index": 6,
+          "text": "That is beggar"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "I don't want to talk to you, I want to sleep first",
+          "note": "Changed 'I want a sleep first' to 'I want to sleep first' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I won't care who you are,\nI just want to stop the conversation"
+        },
+        {
+          "index": 2,
+          "text": "Please step aside, don't stop me from sleeping"
+        },
+        {
+          "index": 3,
+          "text": "Damn you!"
+        },
+        {
+          "index": 4,
+          "text": "No… I just want to sleep"
+        },
+        {
+          "index": 5,
+          "text": "with you"
+        },
+        {
+          "index": 6,
+          "text": "Idiot!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Kid, see you in the dream"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Before the Buddha, the Disciples\nreturns to your position"
+        },
+        {
+          "index": 2,
+          "text": "To suppress the dragon and tight"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "Before the Buddha, the Disciples\nreturn to your position",
+          "note": "Changed 'returns' to 'return' for subject-verb agreement."
+        },
+        {
+          "index": 2,
+          "text": "To suppress the dragon and tiger",
+          "note": "Corrected 'tight' to 'tiger', which is the likely intended word in the common phrase 'dragon and tiger'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "So Chan, you enjoyed the prosperity of the world"
+        },
+        {
+          "index": 2,
+          "text": "And you tasted the bitter fruit of the world too"
+        },
+        {
+          "index": 3,
+          "text": "Now you regretted"
+        },
+        {
+          "index": 4,
+          "text": "On behalf of Master Hung"
+        },
+        {
+          "index": 5,
+          "text": "I appoint you to be the “Sleeping Disciple”"
+        },
+        {
+          "index": 6,
+          "text": "Now, I will teach you the\n“Sleeping Disciple's Fist”!"
+        },
+        {
+          "index": 7,
+          "text": "Hope you can make good use of it Come on"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "Now you regret it",
+          "note": "Changed 'regretted' to 'regret it' for correct tense and grammar."
+        },
+        {
+          "index": 7,
+          "text": "Hope you can make good use of it. Come on",
+          "note": "Added a period between 'it' and 'Come on' to separate the sentences."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Senior…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The bitter pasted"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "The bitter past",
+          "note": "Corrected 'pasted' to 'past' to fix the OCR error."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Long life to you…"
+        },
+        {
+          "index": 2,
+          "text": "Here comes the white Goat"
+        },
+        {
+          "index": 3,
+          "text": "My mother, give me power"
+        },
+        {
+          "index": 4,
+          "text": "To save the people!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Tomorrow the Emperor will go hunting"
+        },
+        {
+          "index": 2,
+          "text": "I will send him a pretty girl,\nso as to get close to him"
+        },
+        {
+          "index": 3,
+          "text": "Yuen Ling, you should seduce him tomorrow"
+        },
+        {
+          "index": 4,
+          "text": "Yes"
+        },
+        {
+          "index": 5,
+          "text": "If we can kill the Emperor,"
+        },
+        {
+          "index": 6,
+          "text": "I can take over his reign"
+        },
+        {
+          "index": 7,
+          "text": "I will give you a share of wealth!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Long life to you"
+        },
+        {
+          "index": 2,
+          "text": "Senior!"
+        },
+        {
+          "index": 3,
+          "text": "Let's go back now"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Senior!"
+        },
+        {
+          "index": 2,
+          "text": "Let's go!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Senior!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Let's chase them\n- Stop!"
+        },
+        {
+          "index": 2,
+          "text": "The Emperor is setting off soon"
+        },
+        {
+          "index": 3,
+          "text": "You killed woman…"
+        },
+        {
+          "index": 4,
+          "text": "You should replace her to be\na gift to the Emperor!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "You killed a woman…",
+          "note": "Added 'a' before 'woman' for correct grammar."
+        },
+        {
+          "index": 4,
+          "text": "You should replace her as\na gift to the Emperor!",
+          "note": "Changed 'replace her to be' to 'replace her as' for correct usage."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "No one dares come up to fight for the leadership?"
+        },
+        {
+          "index": 2,
+          "text": "Ask Mok to give us the “Dog Hitting Waddy”!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Where have they been?"
+        },
+        {
+          "index": 2,
+          "text": "I don't know,"
+        },
+        {
+          "index": 3,
+          "text": "I saw them chat,"
+        },
+        {
+          "index": 4,
+          "text": "then they went away"
+        },
+        {
+          "index": 5,
+          "text": "Are there any affair between them?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "Is there any affair between them?",
+          "note": "Changed 'Are there any affair between them?' to 'Is there any affair between them?' for correct subject-verb agreement and singular noun usage."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Now, we are going to choose the new leader"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Uncle Mok…"
+        },
+        {
+          "index": 2,
+          "text": "I am scared,"
+        },
+        {
+          "index": 3,
+          "text": "I think you won't come back"
+        },
+        {
+          "index": 4,
+          "text": "- How is it?\n- Where is sister?"
+        },
+        {
+          "index": 5,
+          "text": "Your sister is caught by Chiu"
+        },
+        {
+          "index": 6,
+          "text": "We'd find someone to compete for the leadership"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "We'd better find someone to compete for the leadership",
+          "note": "Added 'better' to correct the grammar: 'We'd better find someone...'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Who should go?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'll do it"
+        },
+        {
+          "index": 2,
+          "text": "Uncle Mok"
+        },
+        {
+          "index": 3,
+          "text": "Why don't you let me try?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chan,"
+        },
+        {
+          "index": 2,
+          "text": "you are not qualified, come down"
+        },
+        {
+          "index": 3,
+          "text": "Since you don't have a good candidate,\nI'll give you some advantage"
+        },
+        {
+          "index": 4,
+          "text": "Chan, it's not a game"
+        },
+        {
+          "index": 5,
+          "text": "You will be killed, come down"
+        },
+        {
+          "index": 6,
+          "text": "It doesn't matter, I have forgotten\nmy life already"
+        },
+        {
+          "index": 7,
+          "text": "Bull shit, throw him to death"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 7,
+          "text": "Bullshit, throw him to death",
+          "note": "Corrected 'Bull shit' to the standard single-word form 'Bullshit'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Well, I will make your wish come true"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What is he doing?"
+        },
+        {
+          "index": 2,
+          "text": "Sleeping"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Isn't this stance…"
+        },
+        {
+          "index": 2,
+          "text": "Uncle Sun's \"Sleeping Disciple's Fists'?"
+        },
+        {
+          "index": 3,
+          "text": "Set the position!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Uncle Sun's “Sleeping Disciple's Fists”?",
+          "note": "Corrected quotation marks."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Is it dawn?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I am sorry!"
+        },
+        {
+          "index": 2,
+          "text": "I won"
+        },
+        {
+          "index": 3,
+          "text": "What is the use for defeating us?"
+        },
+        {
+          "index": 4,
+          "text": "You don't know how to use the\n“Dog Hitting Waddy”."
+        },
+        {
+          "index": 5,
+          "text": "You are not qualified to be the leader of us"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "“Dog Hitting Waddy”?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's for hitting dogs"
+        },
+        {
+          "index": 2,
+          "text": "I do know how to use this waddy!"
+        },
+        {
+          "index": 3,
+          "text": "But it's dislike from the standard stances!"
+        },
+        {
+          "index": 4,
+          "text": "It's quite powerful!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "But it's different from the standard stances!",
+          "note": "Corrected 'dislike' to 'different' for correct meaning: 'different from the standard stances'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "He broke the waddy!"
+        },
+        {
+          "index": 2,
+          "text": "He broke the treasure of our Association,\nlet's kill him!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I am Master Hung, who dares go against me?"
+        },
+        {
+          "index": 2,
+          "text": "I set the rules of the association"
+        },
+        {
+          "index": 3,
+          "text": "Any student who defeated the Lotus Position"
+        },
+        {
+          "index": 4,
+          "text": "could be the leader"
+        },
+        {
+          "index": 5,
+          "text": "Have you all forgotten?"
+        },
+        {
+          "index": 6,
+          "text": "We becomes the biggest association"
+        },
+        {
+          "index": 7,
+          "text": "because of being united"
+        },
+        {
+          "index": 8,
+          "text": "I left you the “Dog Hitting Waddy”,"
+        },
+        {
+          "index": 9,
+          "text": "is just for memory"
+        },
+        {
+          "index": 10,
+          "text": "The waddy is meaningless"
+        },
+        {
+          "index": 11,
+          "text": "But you fools take this as treasure"
+        },
+        {
+          "index": 12,
+          "text": "And fight among yourselves for this damn waddy!"
+        },
+        {
+          "index": 13,
+          "text": "In these five years, you have had no\nleader, don't you feel shy?"
+        },
+        {
+          "index": 14,
+          "text": "So Chan broke the waddy,"
+        },
+        {
+          "index": 15,
+          "text": "so you won't fight for this anymore"
+        },
+        {
+          "index": 16,
+          "text": "He is correct to do so"
+        },
+        {
+          "index": 17,
+          "text": "This youngster is so junior,"
+        },
+        {
+          "index": 18,
+          "text": "but he is a genius, a smart ass"
+        },
+        {
+          "index": 19,
+          "text": "He is being taught by my disciple Hung Yat Sun"
+        },
+        {
+          "index": 20,
+          "text": "Who doesn't respect him is going against me too"
+        },
+        {
+          "index": 21,
+          "text": "You should respect him,"
+        },
+        {
+          "index": 22,
+          "text": "your new leader, and you'd love him,"
+        },
+        {
+          "index": 23,
+          "text": "whole-heartedly, to care much for him,\nmaybe, treat him dinner"
+        },
+        {
+          "index": 24,
+          "text": "Then, although I am in heaven,"
+        },
+        {
+          "index": 25,
+          "text": "I will bless all of you, all the best"
+        },
+        {
+          "index": 26,
+          "text": "Isn't it true?"
+        },
+        {
+          "index": 27,
+          "text": "You'd better trust it"
+        },
+        {
+          "index": 28,
+          "text": "Master Hung's soul talked to us,"
+        },
+        {
+          "index": 29,
+          "text": "we are blessed"
+        },
+        {
+          "index": 30,
+          "text": "They are easily to be cheated,\nI am really a genius!"
+        },
+        {
+          "index": 31,
+          "text": "We'll have better living"
+        },
+        {
+          "index": 32,
+          "text": "What happened?"
+        },
+        {
+          "index": 33,
+          "text": "Let's greet the new Master"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Bravo…"
+        },
+        {
+          "index": 2,
+          "text": "Uncle Mok, my son is really great!"
+        },
+        {
+          "index": 3,
+          "text": "I can't guess you have learnt the\n“Sleeping Disciple's Fists”?!"
+        },
+        {
+          "index": 4,
+          "text": "From now on, you are the new leader of us"
+        },
+        {
+          "index": 5,
+          "text": "This is the book of “Dragon Suppressing Stances”"
+        },
+        {
+          "index": 6,
+          "text": "And, I will give you the Taiwan Pill"
+        },
+        {
+          "index": 7,
+          "text": "Hope you will be a good leader"
+        },
+        {
+          "index": 8,
+          "text": "I just want to save Yushang as soon as possible"
+        },
+        {
+          "index": 9,
+          "text": "Yushang didn't make a wrong choice"
+        },
+        {
+          "index": 10,
+          "text": "Bravo! Bravo!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Uncle Mok, how are you?"
+        },
+        {
+          "index": 2,
+          "text": "Uncle Mok!"
+        },
+        {
+          "index": 3,
+          "text": "Uncle Mok…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": ""
+        },
+        {
+          "index": 2,
+          "text": ""
+        },
+        {
+          "index": 3,
+          "text": ""
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
+          "index": 5,
+          "text": ""
+        },
+        {
+          "index": 6,
+          "text": ""
+        },
+        {
+          "index": 7,
+          "text": ""
+        },
+        {
+          "index": 8,
+          "text": "Chan,"
+        },
+        {
+          "index": 9,
+          "text": "do you understand everything written in this book?"
+        },
+        {
+          "index": 10,
+          "text": "Don't think that I am so foolish"
+        },
+        {
+          "index": 11,
+          "text": "After getting the help of Taiwan Pill"
+        },
+        {
+          "index": 12,
+          "text": "My initial power is increased"
+        },
+        {
+          "index": 13,
+          "text": "I can control the 17th stances"
+        },
+        {
+          "index": 14,
+          "text": "But the last stance,"
+        },
+        {
+          "index": 15,
+          "text": "there is no picture or description of it"
+        },
+        {
+          "index": 16,
+          "text": "I can't understand at all"
+        },
+        {
+          "index": 17,
+          "text": "But Uncle Mok is dead, what'll we do now?"
+        },
+        {
+          "index": 18,
+          "text": "Just go ahead"
+        },
+        {
+          "index": 19,
+          "text": "No matter how, I have to save Yushang first"
+        },
+        {
+          "index": 20,
+          "text": ""
+        },
+        {
+          "index": 21,
+          "text": ""
+        },
+        {
+          "index": 22,
+          "text": ""
+        },
+        {
+          "index": 23,
+          "text": ""
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 13,
+          "text": "I can control the 17 stances",
+          "note": "Corrected '17th stances' to '17 stances' for grammatical accuracy."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Check whether the camp is ready or not?"
+        },
+        {
+          "index": 2,
+          "text": "Yes!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chiu,"
+        },
+        {
+          "index": 2,
+          "text": "why do you bring this woman here?"
+        },
+        {
+          "index": 3,
+          "text": "I know the Emperor loves pretty woman"
+        },
+        {
+          "index": 4,
+          "text": "So I want to send him this gift"
+        },
+        {
+          "index": 5,
+          "text": "And I want to meet him too"
+        },
+        {
+          "index": 6,
+          "text": "There is no order from the Emperor"
+        },
+        {
+          "index": 7,
+          "text": "Men, come and take this woman to the camp"
+        },
+        {
+          "index": 8,
+          "text": "Yes"
+        },
+        {
+          "index": 9,
+          "text": "Go!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "I know the Emperor loves pretty women",
+          "note": "Corrected 'woman' to 'women' for correct plural form."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Sir, you look great!"
+        },
+        {
+          "index": 2,
+          "text": "I think you should go back"
+        },
+        {
+          "index": 3,
+          "text": "to your own position"
+        },
+        {
+          "index": 4,
+          "text": "Yes"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Your Majesty,"
+        },
+        {
+          "index": 2,
+          "text": "Officer Chiu brings this woman to you"
+        },
+        {
+          "index": 3,
+          "text": "Woman?"
+        },
+        {
+          "index": 4,
+          "text": "Chiu knows my hobby!"
+        },
+        {
+          "index": 5,
+          "text": "I want to take a bath first, bring her to me later"
+        },
+        {
+          "index": 6,
+          "text": "Yes"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "This bastard wants to see the Emperor,"
+        },
+        {
+          "index": 2,
+          "text": "if I let him see His Majesty oftenly,\nmy post will be taken away"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "if I let him see His Majesty often,\nmy post will be taken away",
+          "note": "Corrected 'oftenly' to 'often'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Men"
+        },
+        {
+          "index": 2,
+          "text": "Sir"
+        },
+        {
+          "index": 3,
+          "text": "- Check what had happened\n- Yes"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "- Check what has happened\n- Yes",
+          "note": "Changed 'had' to 'has' for correct tense in the context."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Sir, there are many people coming from the forest"
+        },
+        {
+          "index": 2,
+          "text": "Who are they?"
+        },
+        {
+          "index": 3,
+          "text": "I don't know!"
+        },
+        {
+          "index": 4,
+          "text": "Release the alarm smoke"
+        },
+        {
+          "index": 5,
+          "text": "Be alert"
+        },
+        {
+          "index": 6,
+          "text": "Yes"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "There is smoke ahead, let's get armed"
+        },
+        {
+          "index": 2,
+          "text": "Yes"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Damn you beggars"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "So Chan, what are you doing?"
+        },
+        {
+          "index": 2,
+          "text": "Nothing, I just want to beg for money"
+        },
+        {
+          "index": 3,
+          "text": "Shit, do you want to be killed"
+        },
+        {
+          "index": 4,
+          "text": "It's you who will be killed"
+        },
+        {
+          "index": 5,
+          "text": "Chiu wants to raise a rebel,"
+        },
+        {
+          "index": 6,
+          "text": "he is going to assassinate the king"
+        },
+        {
+          "index": 7,
+          "text": "You fat-headed"
+        },
+        {
+          "index": 8,
+          "text": "Who do you think you are?"
+        },
+        {
+          "index": 9,
+          "text": "How dare you frame the courtier?"
+        },
+        {
+          "index": 10,
+          "text": "I will kill you if you step forward"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "Chiu wants to raise a rebellion,",
+          "note": "Corrected 'raise a rebel' to 'raise a rebellion' for correct meaning."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chan, how can we fight with them?"
+        },
+        {
+          "index": 2,
+          "text": "- Senior\n- Yes"
+        },
+        {
+          "index": 3,
+          "text": "Where are the rest of our men?"
+        },
+        {
+          "index": 4,
+          "text": "They are coming"
+        },
+        {
+          "index": 5,
+          "text": "We have no time,"
+        },
+        {
+          "index": 6,
+          "text": "you stay here to wait for the others"
+        },
+        {
+          "index": 7,
+          "text": "I will go first"
+        },
+        {
+          "index": 8,
+          "text": "I will follow"
+        },
+        {
+          "index": 9,
+          "text": "Be serious"
+        },
+        {
+          "index": 10,
+          "text": "Master, don't worry"
+        },
+        {
+          "index": 11,
+          "text": "Am I going to die?"
+        },
+        {
+          "index": 12,
+          "text": "Say something lucky, OK?"
+        },
+        {
+          "index": 13,
+          "text": "Sure! Happy birthday to you…"
+        },
+        {
+          "index": 14,
+          "text": "Happy birthday to you…"
+        },
+        {
+          "index": 15,
+          "text": "Happy birthday to you…"
+        },
+        {
+          "index": 16,
+          "text": "That's enough"
+        },
+        {
+          "index": 17,
+          "text": "I haven't finished"
+        },
+        {
+          "index": 18,
+          "text": "- Go on after I left\n- Sure"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 18,
+          "text": "- Go on after I've left\n- Sure",
+          "note": "Changed 'after I left' to 'after I've left' for correct tense."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "There is smoke ahead,\nsomeone must have alarmed them"
+        },
+        {
+          "index": 2,
+          "text": "- Get ready the Unicom Smoke\n- Yes"
+        },
+        {
+          "index": 3,
+          "text": "Attack the main camp"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "There is smoke ahead,\nsomeone must have alarmed them.",
+          "note": "Added a period at the end of the sentence for proper punctuation."
+        },
+        {
+          "index": 2,
+          "text": "- Get ready the Unicom Smoke.\n- Yes.",
+          "note": "Added periods at the end of both lines for proper sentence punctuation."
+        },
+        {
+          "index": 3,
+          "text": "Attack the main camp.",
+          "note": "Added a period at the end of the sentence for proper punctuation."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Rebel! Help!"
+        },
+        {
+          "index": 2,
+          "text": "They should be killed"
+        },
+        {
+          "index": 3,
+          "text": "The one who didn't kill you should be killed"
+        },
+        {
+          "index": 4,
+          "text": "Shit, the poisoned smoke"
+        },
+        {
+          "index": 5,
+          "text": "is blowing to the Royal camp"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "No, the wind direction changed"
+        },
+        {
+          "index": 2,
+          "text": "Yes, wait for me"
+        },
+        {
+          "index": 3,
+          "text": "If the beggars don't retreat now,\nwe will kill with no mercy"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Have a look"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The Unicom Smoke of the Tin Li Sect"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Be calm, urine is the antidote to the poison"
+        },
+        {
+          "index": 2,
+          "text": "Come and piss"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "How about me?"
+        },
+        {
+          "index": 2,
+          "text": "Don't worry, I can give you some urine"
+        },
+        {
+          "index": 3,
+          "text": "Come on, hold it"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Rush in!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "How is the situation?"
+        },
+        {
+          "index": 2,
+          "text": "Thanks for Your Majesty's luck,\nthe wind direction changed"
+        },
+        {
+          "index": 3,
+          "text": "The smoke is going to the other direction"
+        },
+        {
+          "index": 4,
+          "text": "How about our armies?"
+        },
+        {
+          "index": 5,
+          "text": "They are all dead"
+        },
+        {
+          "index": 6,
+          "text": "Take me the sword"
+        },
+        {
+          "index": 7,
+          "text": "Don't… don't!"
+        },
+        {
+          "index": 8,
+          "text": "Get lost! Get lost!"
+        },
+        {
+          "index": 9,
+          "text": "Your Majesty, it's dangerous, don't go!"
+        },
+        {
+          "index": 10,
+          "text": "Get lost, don't you want\nto wait for death, get lost"
+        },
+        {
+          "index": 11,
+          "text": "You are ordered to get away"
+        },
+        {
+          "index": 12,
+          "text": "You can't go!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "The smoke is going in the other direction",
+          "note": "Changed 'to' to 'in' for correct phrasing: 'going in the other direction'."
+        },
+        {
+          "index": 6,
+          "text": "Bring me the sword",
+          "note": "Changed 'Take me the sword' to 'Bring me the sword' for correct usage."
+        },
+        {
+          "index": 10,
+          "text": "Get lost, don't you want\nto wait for death? Get lost",
+          "note": "Added a question mark after 'wait for death' to correct the sentence structure."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Protect me"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chan?"
+        },
+        {
+          "index": 2,
+          "text": "Yushang"
+        },
+        {
+          "index": 3,
+          "text": "How did you get here?"
+        },
+        {
+          "index": 4,
+          "text": "It's a long story"
+        },
+        {
+          "index": 5,
+          "text": "We left our base last night"
+        },
+        {
+          "index": 6,
+          "text": "We reached the Great Wall"
+        },
+        {
+          "index": 7,
+          "text": "this morning"
+        },
+        {
+          "index": 8,
+          "text": "We stayed one hour for lunch"
+        },
+        {
+          "index": 9,
+          "text": "I pissed once"
+        },
+        {
+          "index": 10,
+          "text": "- Really?\n- Yes"
+        },
+        {
+          "index": 11,
+          "text": "Then I want to eat a sweet potato"
+        },
+        {
+          "index": 12,
+          "text": "But only dumpling left"
+        },
+        {
+          "index": 13,
+          "text": "You know, I don't like eating dumpling"
+        },
+        {
+          "index": 14,
+          "text": "I am late to save you, please forgive me"
+        },
+        {
+          "index": 15,
+          "text": "To protect the Emperor"
+        },
+        {
+          "index": 16,
+          "text": "Yes"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 12,
+          "text": "But only dumplings left",
+          "note": "Changed 'dumpling' to 'dumplings' for correct plural form."
+        },
+        {
+          "index": 13,
+          "text": "You know, I don't like eating dumplings",
+          "note": "Changed 'dumpling' to 'dumplings' for correct plural form."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You betrayer!"
+        },
+        {
+          "index": 2,
+          "text": "Catch him"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Your Majesty"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You bastard, give your kingdom to me"
+        },
+        {
+          "index": 2,
+          "text": "What are you telling him?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's you"
+        },
+        {
+          "index": 2,
+          "text": "Yes, I am Beggar So"
+        },
+        {
+          "index": 3,
+          "text": "Why don't you sleep in your hut?"
+        },
+        {
+          "index": 4,
+          "text": "Well, I am a little bit sleepy"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "“Sleeping Disciple”?"
+        },
+        {
+          "index": 2,
+          "text": "Yes. Look at you, you are like beggar too"
+        },
+        {
+          "index": 3,
+          "text": "Are you interested to join us?"
+        },
+        {
+          "index": 4,
+          "text": "I can't guess you could recover!"
+        },
+        {
+          "index": 5,
+          "text": "Yes, it's all because of you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Did you generate all your force? I didn't"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Fool, only the “Dragon Suppressing\nStances” scare me"
+        },
+        {
+          "index": 2,
+          "text": "I won't give a damn to any other stances"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "“Dragon Suppress Stances”"
+        },
+        {
+          "index": 2,
+          "text": "“Dragon in the sky”"
+        },
+        {
+          "index": 3,
+          "text": "“Dragon swings its tail”"
+        },
+        {
+          "index": 4,
+          "text": "“Dragon steals the heart”"
+        },
+        {
+          "index": 5,
+          "text": "Dragon swims, dragon in the field,"
+        },
+        {
+          "index": 6,
+          "text": "dragon dances…"
+        },
+        {
+          "index": 7,
+          "text": "Dragon's descendant,"
+        },
+        {
+          "index": 8,
+          "text": "dragon's wish…"
+        },
+        {
+          "index": 9,
+          "text": "Dragon's spirit, dragon's couple"
+        },
+        {
+          "index": 10,
+          "text": "Finished"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You can't finish the last stance,"
+        },
+        {
+          "index": 2,
+          "text": "you can defeat me"
+        },
+        {
+          "index": 3,
+          "text": "after learning the 18th stance"
+        },
+        {
+          "index": 4,
+          "text": "But you have no chance"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chan!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I've got it. Just mix the 17 stances,"
+        },
+        {
+          "index": 2,
+          "text": "it's the 18th stance then"
+        },
+        {
+          "index": 3,
+          "text": "I am too smart!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The 18 stance, “It's a regret to kill the Dragon”!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chan, are you alright?"
+        },
+        {
+          "index": 2,
+          "text": "See, don't you think I am alright?"
+        },
+        {
+          "index": 3,
+          "text": "Your post is really smart"
+        },
+        {
+          "index": 4,
+          "text": "But your look is awful!"
+        },
+        {
+          "index": 5,
+          "text": "Idiot, I am fine"
+        },
+        {
+          "index": 6,
+          "text": "I can marry tonight"
+        },
+        {
+          "index": 7,
+          "text": "You are great!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "Your pose is really smart",
+          "note": "Corrected 'post' to 'pose' to match the intended meaning."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Chan! Are you okay?"
+        },
+        {
+          "index": 2,
+          "text": "Where is Chiu?"
+        },
+        {
+          "index": 3,
+          "text": "He is around"
+        },
+        {
+          "index": 4,
+          "text": "Around?"
+        },
+        {
+          "index": 5,
+          "text": "He became ash"
+        },
+        {
+          "index": 6,
+          "text": "Damn it!"
+        },
+        {
+          "index": 7,
+          "text": "Master"
+        },
+        {
+          "index": 8,
+          "text": "Chiu's fellows are all caught by us"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "He became ashes",
+          "note": "Corrected 'ash' to 'ashes' for proper usage in this context."
+        },
+        {
+          "index": 8,
+          "text": "Chiu's fellows have all been caught by us",
+          "note": "Changed 'are all caught by us' to 'have all been caught by us' for correct tense and grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Thank you, buddies"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Yushang"
+        },
+        {
+          "index": 2,
+          "text": "We have an agreement, do you remember?"
+        },
+        {
+          "index": 3,
+          "text": "Yes, be the top of all"
+        },
+        {
+          "index": 4,
+          "text": "Invincible"
+        },
+        {
+          "index": 5,
+          "text": "But, I can't be the Scholar"
+        },
+        {
+          "index": 6,
+          "text": "But I don't like Scholar at all"
+        },
+        {
+          "index": 7,
+          "text": "I love beggar"
+        },
+        {
+          "index": 8,
+          "text": "You first, I will go after you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 7,
+          "text": "I love beggars.",
+          "note": "Changed 'beggar' to 'beggars' for correct grammar (referring to a group/type, not a single person)."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Seng-ko-lin-ch'in,\nyou are really a fool"
+        },
+        {
+          "index": 2,
+          "text": "You bring a thief to harm me"
+        },
+        {
+          "index": 3,
+          "text": "Now, you are titled to be a beggar"
+        },
+        {
+          "index": 4,
+          "text": "You have potential to be beggar"
+        },
+        {
+          "index": 5,
+          "text": "Report duty in the temple tomorrow"
+        },
+        {
+          "index": 6,
+          "text": "If there anyone bullies you,\njust tell them my name"
+        },
+        {
+          "index": 7,
+          "text": "Thank you, thank you master"
+        },
+        {
+          "index": 8,
+          "text": "So Chan, what do you want as reward?"
+        },
+        {
+          "index": 9,
+          "text": "Don't you have anything to tell me?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "You have potential to be a beggar",
+          "note": "Added 'a' before 'beggar' for correct grammar."
+        },
+        {
+          "index": 6,
+          "text": "If there is anyone bullies you,\njust tell them my name",
+          "note": "Corrected 'If there anyone' to 'If there is anyone' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Nothing special, let's go"
+        },
+        {
+          "index": 2,
+          "text": "Pick me up"
+        },
+        {
+          "index": 3,
+          "text": "Mister So!"
+        },
+        {
+          "index": 4,
+          "text": "Put me down"
+        },
+        {
+          "index": 5,
+          "text": "Although you have saved me,"
+        },
+        {
+          "index": 6,
+          "text": "if you don't respect me, I will kill you"
+        },
+        {
+          "index": 7,
+          "text": "If so, you needn't squat and talk to me"
+        },
+        {
+          "index": 8,
+          "text": "Don't move, it'll attract their attention"
+        },
+        {
+          "index": 9,
+          "text": "Actually we have no relation,"
+        },
+        {
+          "index": 10,
+          "text": "we have nothing to chat"
+        },
+        {
+          "index": 11,
+          "text": "You have billions of fellows"
+        },
+        {
+          "index": 12,
+          "text": "Your force makes me worry"
+        },
+        {
+          "index": 13,
+          "text": "The number of fellow doesn't depend on me,"
+        },
+        {
+          "index": 14,
+          "text": "but you"
+        },
+        {
+          "index": 15,
+          "text": "What?"
+        },
+        {
+          "index": 16,
+          "text": "If you are great, making the\nsociety peace and wealthy,"
+        },
+        {
+          "index": 17,
+          "text": "no one wishes to be beggar, right?"
+        },
+        {
+          "index": 18,
+          "text": "- It's reasonable\n- Be smart"
+        },
+        {
+          "index": 19,
+          "text": "But,"
+        },
+        {
+          "index": 20,
+          "text": "give me some face"
+        },
+        {
+          "index": 21,
+          "text": "Yes"
+        },
+        {
+          "index": 22,
+          "text": "Long life…"
+        },
+        {
+          "index": 23,
+          "text": "- … to Your Majesty\n- Get up"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 7,
+          "text": "If so, you needn't squat to talk to me",
+          "note": "Added 'to' in 'squat to talk' for correct verb construction."
+        },
+        {
+          "index": 10,
+          "text": "we have nothing to chat about",
+          "note": "Added 'about' to complete the phrasal verb 'chat about'."
+        },
+        {
+          "index": 11,
+          "text": "You have billions of fellows.",
+          "note": "Added a period at the end of the sentence for consistency with surrounding subtitles."
+        },
+        {
+          "index": 13,
+          "text": "The number of fellows doesn't depend on me,",
+          "note": "Changed 'fellow' to 'fellows' and 'does not' contraction to agree with the plural subject."
+        },
+        {
+          "index": 16,
+          "text": "If you are great, making the\nsociety peaceful and wealthy,",
+          "note": "Corrected 'peace' to the adjective 'peaceful' to match 'wealthy'."
+        },
+        {
+          "index": 17,
+          "text": "no one wishes to be a beggar, right?",
+          "note": "Added article 'a' before 'beggar' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Pal, do you know me?"
+        },
+        {
+          "index": 2,
+          "text": "Of course! You beggar"
+        },
+        {
+          "index": 3,
+          "text": "You beg with your girl, you think I'll\ngive you money out of mercy?"
+        },
+        {
+          "index": 4,
+          "text": "Yes, please give me money"
+        },
+        {
+          "index": 5,
+          "text": "No mercy, go away"
+        },
+        {
+          "index": 6,
+          "text": "No, you should pay me"
+        },
+        {
+          "index": 7,
+          "text": "It's a must, pal"
+        },
+        {
+          "index": 8,
+          "text": "A must? Kidding?"
+        },
+        {
+          "index": 9,
+          "text": "It's true, be quick"
+        },
+        {
+          "index": 10,
+          "text": "It's bad luck to meet you"
+        },
+        {
+          "index": 11,
+          "text": "Stop"
+        },
+        {
+          "index": 12,
+          "text": "What?"
+        },
+        {
+          "index": 13,
+          "text": "See my family? Give more"
+        },
+        {
+          "index": 14,
+          "text": "How much?"
+        },
+        {
+          "index": 15,
+          "text": "Not less than a thousand, got me?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Say thank you now"
+        },
+        {
+          "index": 2,
+          "text": "Thank you, uncle"
+        },
+        {
+          "index": 3,
+          "text": "Hurry up"
+        },
+        {
+          "index": 4,
+          "text": "Follow me… go…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  }
+]

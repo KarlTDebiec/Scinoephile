@@ -7,7 +7,6 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
-from typing import ClassVar
 
 import requests
 
@@ -21,6 +20,46 @@ __all__ = ["DictionaryBuildWiktionaryCli"]
 
 logger = getLogger(__name__)
 
+DICTIONARY_BUILD_WIKTIONARY_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "build Wiktionary dictionary cache": "构建 Wiktionary 词典缓存",
+        (
+            "Data derived from Kaikki JSONL exports of Chinese entries from Wiktionary."
+        ): "由 Kaikki 导出的 Wiktionary 中文词条 JSONL 整理而成的数据。",
+        "download fresh Kaikki JSONL before building": (
+            "在构建前下载最新 Kaikki JSONL"
+        ),
+        "path to Kaikki Chinese Wiktionary JSONL dump (default: bundled local "
+        "data; use --force-download to fetch a fresh dump)": (
+            "Kaikki 中文 Wiktionary JSONL 转储路径（默认：随包本地数据；使用 "
+            "--force-download 获取最新转储）"
+        ),
+        "maintainer option: update source file under "
+        "scinoephile/data/dictionaries/wiktionary": (
+            "维护者选项：更新 scinoephile/data/dictionaries/wiktionary 下的源文件"
+        ),
+    },
+    "zh-hant": {
+        "build Wiktionary dictionary cache": "建立 Wiktionary 詞典快取",
+        (
+            "Data derived from Kaikki JSONL exports of Chinese entries from Wiktionary."
+        ): "由 Kaikki 匯出的 Wiktionary 中文詞條 JSONL 整理而成的資料。",
+        "download fresh Kaikki JSONL before building": (
+            "在建立前下載最新 Kaikki JSONL"
+        ),
+        "path to Kaikki Chinese Wiktionary JSONL dump (default: bundled local "
+        "data; use --force-download to fetch a fresh dump)": (
+            "Kaikki 中文 Wiktionary JSONL 傾印路徑（預設：隨包本機資料；使用 "
+            "--force-download 取得最新傾印）"
+        ),
+        "maintainer option: update source file under "
+        "scinoephile/data/dictionaries/wiktionary": (
+            "維護者選項：更新 scinoephile/data/dictionaries/wiktionary 下的來源檔案"
+        ),
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
     """Build Wiktionary dictionary cache."""
@@ -28,46 +67,7 @@ class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
     source = WIKTIONARY_SOURCE
     """Dictionary source built by this CLI."""
 
-    localizations: ClassVar[dict[str, dict[str, str]]] = {
-        "zh-hans": {
-            "build Wiktionary dictionary cache": "构建 Wiktionary 词典缓存",
-            (
-                "Data derived from Kaikki JSONL exports of Chinese entries from "
-                "Wiktionary."
-            ): "由 Kaikki 导出的 Wiktionary 中文词条 JSONL 整理而成的数据。",
-            "download fresh Kaikki JSONL before building": (
-                "在构建前下载最新 Kaikki JSONL"
-            ),
-            "path to Kaikki Chinese Wiktionary JSONL dump (default: bundled local "
-            "data; use --force-download to fetch a fresh dump)": (
-                "Kaikki 中文 Wiktionary JSONL 转储路径（默认：随包本地数据；使用 "
-                "--force-download 获取最新转储）"
-            ),
-            "maintainer option: update source file under "
-            "scinoephile/data/dictionaries/wiktionary": (
-                "维护者选项：更新 scinoephile/data/dictionaries/wiktionary 下的源文件"
-            ),
-        },
-        "zh-hant": {
-            "build Wiktionary dictionary cache": "建立 Wiktionary 詞典快取",
-            (
-                "Data derived from Kaikki JSONL exports of Chinese entries from "
-                "Wiktionary."
-            ): "由 Kaikki 匯出的 Wiktionary 中文詞條 JSONL 整理而成的資料。",
-            "download fresh Kaikki JSONL before building": (
-                "在建立前下載最新 Kaikki JSONL"
-            ),
-            "path to Kaikki Chinese Wiktionary JSONL dump (default: bundled local "
-            "data; use --force-download to fetch a fresh dump)": (
-                "Kaikki 中文 Wiktionary JSONL 傾印路徑（預設：隨包本機資料；使用 "
-                "--force-download 取得最新傾印）"
-            ),
-            "maintainer option: update source file under "
-            "scinoephile/data/dictionaries/wiktionary": (
-                "維護者選項：更新 scinoephile/data/dictionaries/wiktionary 下的來源檔案"
-            ),
-        },
-    }
+    localizations = DICTIONARY_BUILD_WIKTIONARY_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -89,7 +89,6 @@ class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--source-jsonl-path",
-            default=None,
             type=input_file_arg(),
             help=(
                 "path to Kaikki Chinese Wiktionary JSONL dump (default: bundled "

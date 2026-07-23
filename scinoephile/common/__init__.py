@@ -5,7 +5,7 @@
 This module should not import from other modules outside the standard library.
 
 Package hierarchy (modules may import from any above):
-* csv / described_enum / exceptions / file / logs / subprocess
+* csv / described_enum / duration / exceptions / file / logs / subprocess
 * command_line_interface / validation
 * argument_parsing / cli / testing
 """

@@ -10,7 +10,7 @@ from scinoephile.common.validation import val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, DictionarySqliteStore
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
-from scinoephile.lang.language_id import LanguageId
+from scinoephile.lang.id import LanguageId
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
 
 from .constants import MAX_LOOKUP_LIMIT

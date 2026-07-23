@@ -1,0 +1,5107 @@
+[
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "龙猫"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸，牛奶糖"
+        },
+        {
+          "index": 2,
+          "text": "谢谢"
+        },
+        {
+          "index": 3,
+          "text": "妳们两个累不累啊"
+        },
+        {
+          "index": 4,
+          "text": "就快到了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美，快躲起来"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "还以为是警察呢！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有没有人在家啊？"
+        },
+        {
+          "index": 2,
+          "text": "谢谢"
+        },
+        {
+          "index": 3,
+          "text": "我姓草壁　新搬来的"
+        },
+        {
+          "index": 4,
+          "text": "请多关照"
+        },
+        {
+          "index": 5,
+          "text": "搬家辛苦了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "我姓草壁，新搬来的",
+          "note": "将原句中的全角空格替换为标准中文逗号，使标点符号更规范。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "谢谢你"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好，到了"
+        },
+        {
+          "index": 2,
+          "text": "等等我吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美，有座桥啊"
+        },
+        {
+          "index": 2,
+          "text": "有桥？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有鱼呢，又闪了一下"
+        },
+        {
+          "index": 2,
+          "text": "怎么样？喜不喜欢？"
+        },
+        {
+          "index": 3,
+          "text": "爸爸，这里太好了"
+        },
+        {
+          "index": 4,
+          "text": "树林中还有隧道啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "那就是新家吗？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "跑快一点！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "很旧啊"
+        },
+        {
+          "index": 2,
+          "text": "很旧啊"
+        },
+        {
+          "index": 3,
+          "text": "好像一间鬼屋"
+        },
+        {
+          "index": 4,
+          "text": "鬼屋"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "柱子烂掉了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "要倒了！"
+        },
+        {
+          "index": 2,
+          "text": "要倒了！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美，妳看"
+        },
+        {
+          "index": 2,
+          "text": "妳看"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好大啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸，好大的树啊"
+        },
+        {
+          "index": 2,
+          "text": "那叫做樟树"
+        },
+        {
+          "index": 3,
+          "text": "樟树呢"
+        },
+        {
+          "index": 4,
+          "text": "樟树"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "橡果子"
+        },
+        {
+          "index": 2,
+          "text": "我看一下"
+        },
+        {
+          "index": 3,
+          "text": "那里也有"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "捡到了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "别玩了　这样木门打不开"
+        },
+        {
+          "index": 2,
+          "text": "橡果子"
+        },
+        {
+          "index": 3,
+          "text": "有很多橡果子掉到屋里"
+        },
+        {
+          "index": 4,
+          "text": "从上面掉下来的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "该不会是我们家有松鼠吧"
+        },
+        {
+          "index": 2,
+          "text": "松鼠？"
+        },
+        {
+          "index": 3,
+          "text": "还是吃橡果子的老鼠呢？"
+        },
+        {
+          "index": 4,
+          "text": "我喜欢松鼠"
+        },
+        {
+          "index": 5,
+          "text": "这要搬到哪儿呢？"
+        },
+        {
+          "index": 6,
+          "text": "放这里，我这就开门"
+        },
+        {
+          "index": 7,
+          "text": "小月，你去把后门打开"
+        },
+        {
+          "index": 8,
+          "text": "好"
+        },
+        {
+          "index": 9,
+          "text": "去了就看得到"
+        },
+        {
+          "index": 10,
+          "text": "快点"
+        },
+        {
+          "index": 11,
+          "text": "等等"
+        },
+        {
+          "index": 12,
+          "text": "快点"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "进去啰"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "浴室"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不见了"
+        },
+        {
+          "index": 2,
+          "text": "这间是浴室"
+        },
+        {
+          "index": 3,
+          "text": "爸爸，有怪东西"
+        },
+        {
+          "index": 4,
+          "text": "松鼠吗？"
+        },
+        {
+          "index": 5,
+          "text": "不知道"
+        },
+        {
+          "index": 6,
+          "text": "不像蟑螂也不像老鼠"
+        },
+        {
+          "index": 7,
+          "text": "只知道是一堆黑色的东西"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有没有？"
+        },
+        {
+          "index": 2,
+          "text": "那一定是「灰尘精灵」"
+        },
+        {
+          "index": 3,
+          "text": "灰尘精灵"
+        },
+        {
+          "index": 4,
+          "text": "画册里有吗？"
+        },
+        {
+          "index": 5,
+          "text": "有啊"
+        },
+        {
+          "index": 6,
+          "text": "今天天气那么好　不可能会有鬼的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "今天天气那么好 不可能会有鬼的",
+          "note": "将句中间的全角空格替换为半角空格，统一中英文及标点间的空格格式。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我们从光的地方　一下子进到暗的地方"
+        },
+        {
+          "index": 2,
+          "text": "眼睛就会发昏　灰尘精灵就会跑出来"
+        },
+        {
+          "index": 3,
+          "text": "原来是这样啊"
+        },
+        {
+          "index": 4,
+          "text": "灰尘精灵快点滚出来"
+        },
+        {
+          "index": 5,
+          "text": "你要躲著不出来　我就把你眼睛挖出来！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "你要躲着不出来　我就把你眼睛挖出来！",
+          "note": "将“躲著”中的“著”改为简体“着”，统一为简体中文字幕用字规范。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好了，去做事"
+        },
+        {
+          "index": 2,
+          "text": "上二楼的楼梯　到底在哪里呢？"
+        },
+        {
+          "index": 3,
+          "text": "你们两个去把楼梯找出来"
+        },
+        {
+          "index": 4,
+          "text": "然后把二楼的窗户打开"
+        },
+        {
+          "index": 5,
+          "text": "好"
+        },
+        {
+          "index": 6,
+          "text": "小美也要"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "上二楼的楼梯，到底在哪里呢？",
+          "note": "将原句中的全角空格改为逗号，使句子结构更符合简体中文标点规范。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "厕所"
+        },
+        {
+          "index": 2,
+          "text": "咦？"
+        },
+        {
+          "index": 3,
+          "text": "咦？"
+        },
+        {
+          "index": 4,
+          "text": "咦？"
+        },
+        {
+          "index": 5,
+          "text": "咦？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "咦？"
+        },
+        {
+          "index": 2,
+          "text": "没有"
+        },
+        {
+          "index": 3,
+          "text": "没有"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美，找到了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "乌漆抹黑的"
+        },
+        {
+          "index": 2,
+          "text": "灰尘精灵呢？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "橡果子"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "灰尘精灵快点滚出来"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "灰尘精灵"
+        },
+        {
+          "index": 2,
+          "text": "你在不在？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸，真的有怪东西"
+        },
+        {
+          "index": 2,
+          "text": "那真是太好了"
+        },
+        {
+          "index": 3,
+          "text": "爸爸从小就梦想　能够住在鬼屋里面"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "爸爸从小就梦想能够住在鬼屋里面",
+          "note": "删除“梦想”后的多余空格，使句中间不出现不必要的空白。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "糟了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "抓到了！姐姐"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好活泼啊"
+        },
+        {
+          "index": 2,
+          "text": "这位是一直照顾这个家"
+        },
+        {
+          "index": 3,
+          "text": "住在隔壁的婆婆"
+        },
+        {
+          "index": 4,
+          "text": "婆婆今天是来帮忙的"
+        },
+        {
+          "index": 5,
+          "text": "我叫做小月，这是我妹妹小美"
+        },
+        {
+          "index": 6,
+          "text": "婆婆好"
+        },
+        {
+          "index": 7,
+          "text": "好，你们好啊"
+        },
+        {
+          "index": 8,
+          "text": "这孩子真是聪明伶俐"
+        },
+        {
+          "index": 9,
+          "text": "如果你们不急著搬进来"
+        },
+        {
+          "index": 10,
+          "text": "我还打算请人先收拾一下呢"
+        },
+        {
+          "index": 11,
+          "text": "这样子已经很好了"
+        },
+        {
+          "index": 12,
+          "text": "现在这时田里农事很忙碌呢"
+        },
+        {
+          "index": 13,
+          "text": "不过我还是偶尔会来打扫"
+        },
+        {
+          "index": 14,
+          "text": "小美，妳手怎么脏兮兮的？"
+        },
+        {
+          "index": 15,
+          "text": "怎么弄的？"
+        },
+        {
+          "index": 16,
+          "text": "灰尘精灵跑掉了"
+        },
+        {
+          "index": 17,
+          "text": "妳看妳的脚"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 9,
+          "text": "如果你们不急着搬进来",
+          "note": "将“急著”中的“著”改为简体“着”，统一为简体中文字幕用字规范。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我的脚也脏兮兮的"
+        },
+        {
+          "index": 2,
+          "text": "哎呀呀！"
+        },
+        {
+          "index": 3,
+          "text": "看样子是煤煤虫在作怪"
+        },
+        {
+          "index": 4,
+          "text": "煤煤虫？"
+        },
+        {
+          "index": 5,
+          "text": "你说的煤煤虫是不是会"
+        },
+        {
+          "index": 6,
+          "text": "「哇啦哇啦」的乱跑啊"
+        },
+        {
+          "index": 7,
+          "text": "是啊"
+        },
+        {
+          "index": 8,
+          "text": "它们专门跑到没人住的旧房子里"
+        },
+        {
+          "index": 9,
+          "text": "然后弄得满屋子的灰尘和煤灰"
+        },
+        {
+          "index": 10,
+          "text": "我小时候也有看过"
+        },
+        {
+          "index": 11,
+          "text": "想不到妳们也看到"
+        },
+        {
+          "index": 12,
+          "text": "婆婆，它们是妖怪吗？"
+        },
+        {
+          "index": 13,
+          "text": "其实也没什么好怕的"
+        },
+        {
+          "index": 14,
+          "text": "只要对它们笑笑　它们就不会害人"
+        },
+        {
+          "index": 15,
+          "text": "住上一阵子之后　它们自然就会不见"
+        },
+        {
+          "index": 16,
+          "text": "说不定它们已经在天花板上　讨论该搬去哪里了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美，它们很快就会不见了"
+        },
+        {
+          "index": 2,
+          "text": "不好玩"
+        },
+        {
+          "index": 3,
+          "text": "可是要是来这么一大堆，　该怎么办？"
+        },
+        {
+          "index": 4,
+          "text": "小美才不怕那些"
+        },
+        {
+          "index": 5,
+          "text": "是吗？"
+        },
+        {
+          "index": 6,
+          "text": "那以后晚上，　姐姐就不陪妳上厕所"
+        },
+        {
+          "index": 7,
+          "text": "来来⋯快来打扫吧"
+        },
+        {
+          "index": 8,
+          "text": "妳们去河边打点水回来吧"
+        },
+        {
+          "index": 9,
+          "text": "河边啊"
+        },
+        {
+          "index": 10,
+          "text": "小美也要去"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "可是要是来这么一大堆，该怎么办？",
+          "note": "去掉原文中“堆，”前多余的空格，使标点与前文紧密相连。"
+        },
+        {
+          "index": 6,
+          "text": "那以后晚上，姐姐就不陪妳上厕所",
+          "note": "去掉“晚上，”后多余的空格，保持中文标点后不额外加空格的排版规范。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美，妳在一边等著"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "小美，妳在一边等着",
+          "note": "将“等著”中的“著”改为简体“着”，统一为简体中文字幕用字规范。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有没有抓到鱼？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆，有水了"
+        },
+        {
+          "index": 2,
+          "text": "好好打啊"
+        },
+        {
+          "index": 3,
+          "text": "打到水变凉为止"
+        },
+        {
+          "index": 4,
+          "text": "好"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你不是刚刚那个吗？　有事吗"
+        },
+        {
+          "index": 2,
+          "text": "我妈妈要给婆婆的"
+        },
+        {
+          "index": 3,
+          "text": "是什么？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "你不是刚刚那个吗？有事吗",
+          "note": "去掉问号后的多余全角空格，使句内标点与文字之间无不必要空格。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "等等，这是什么啊"
+        },
+        {
+          "index": 2,
+          "text": "是勘太吗？"
+        },
+        {
+          "index": 3,
+          "text": "你们家是可怕的大鬼屋"
+        },
+        {
+          "index": 4,
+          "text": "勘太！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸以前也这样作弄过女生"
+        },
+        {
+          "index": 2,
+          "text": "男生最讨人厌了"
+        },
+        {
+          "index": 3,
+          "text": "不过　婆婆这个糯米团很好吃"
+        },
+        {
+          "index": 4,
+          "text": "那便多吃点啊"
+        },
+        {
+          "index": 5,
+          "text": "谢谢您"
+        },
+        {
+          "index": 6,
+          "text": "真是太谢谢您了"
+        },
+        {
+          "index": 7,
+          "text": "婆婆再见"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "不过婆婆这个糯米团很好吃",
+          "note": "删除“不过”后的多余空格，使标点与文字间距符合中文排版习惯。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸，我们家　破破烂烂的会否倒下来"
+        },
+        {
+          "index": 2,
+          "text": "要是才刚搬来就倒塌　那可怎么得了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "爸爸，我们家破破烂烂的会否倒下来",
+          "note": "删除“家”与“破破烂烂”之间多余的空格，使句子排版更为规范连贯。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我们一起大笑看看"
+        },
+        {
+          "index": 2,
+          "text": "可怕的东西就会跑光"
+        },
+        {
+          "index": 3,
+          "text": "小美才不怕呢！"
+        },
+        {
+          "index": 4,
+          "text": "小美才不怕呢！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "一，二，一，二，一，二"
+        },
+        {
+          "index": 2,
+          "text": "很好，加油"
+        },
+        {
+          "index": 3,
+          "text": "用力，加把劲"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好了　衣服都洗好了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "好了，衣服都洗好了",
+          "note": "将全角空格替换为逗号，使句子断句更自然符合中文标点规范。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "出发了！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆"
+        },
+        {
+          "index": 2,
+          "text": "您好！"
+        },
+        {
+          "index": 3,
+          "text": "您可真忙啊"
+        },
+        {
+          "index": 4,
+          "text": "三个一起出门啊？"
+        },
+        {
+          "index": 5,
+          "text": "我们要去医院看妈妈"
+        },
+        {
+          "index": 6,
+          "text": "可有好一段路呢"
+        },
+        {
+          "index": 7,
+          "text": "替我帮你们妈妈问好"
+        },
+        {
+          "index": 8,
+          "text": "好的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "走这边！走这边！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大家好"
+        },
+        {
+          "index": 2,
+          "text": "妳好"
+        },
+        {
+          "index": 3,
+          "text": "妈妈！"
+        },
+        {
+          "index": 4,
+          "text": "小美妳也来啦！"
+        },
+        {
+          "index": 5,
+          "text": "爸爸还走错路呢"
+        },
+        {
+          "index": 6,
+          "text": "真的吗"
+        },
+        {
+          "index": 7,
+          "text": "妳也来啦"
+        },
+        {
+          "index": 8,
+          "text": "今天是农假，学校休息一天"
+        },
+        {
+          "index": 9,
+          "text": "是啊"
+        },
+        {
+          "index": 10,
+          "text": "爸爸正在跟医生说话"
+        },
+        {
+          "index": 11,
+          "text": "妈妈很高兴你们都来了"
+        },
+        {
+          "index": 12,
+          "text": "新家怎么样啦"
+        },
+        {
+          "index": 13,
+          "text": "都整理好了没？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "甚么？我们家是鬼屋啊"
+        },
+        {
+          "index": 2,
+          "text": "妈妈喜欢住鬼屋吗？"
+        },
+        {
+          "index": 3,
+          "text": "当然啰"
+        },
+        {
+          "index": 4,
+          "text": "妈妈真想快点出院　看看鬼长什么样子"
+        },
+        {
+          "index": 5,
+          "text": "小美太好了"
+        },
+        {
+          "index": 6,
+          "text": "我好担心啊"
+        },
+        {
+          "index": 7,
+          "text": "因为我好怕　妈妈会不喜欢那里"
+        },
+        {
+          "index": 8,
+          "text": "那妳们两个呢？"
+        },
+        {
+          "index": 9,
+          "text": "喜欢"
+        },
+        {
+          "index": 10,
+          "text": "妈妈我不怕鬼"
+        },
+        {
+          "index": 11,
+          "text": "小美的头发都是妳梳的？"
+        },
+        {
+          "index": 12,
+          "text": "梳得真好"
+        },
+        {
+          "index": 13,
+          "text": "要好好谢姐姐啊！小美"
+        },
+        {
+          "index": 14,
+          "text": "可是姐姐动不动就生气"
+        },
+        {
+          "index": 15,
+          "text": "还不都是因为妳不乖"
+        },
+        {
+          "index": 16,
+          "text": "小月，过来让妈妈看看"
+        },
+        {
+          "index": 17,
+          "text": "你的头发会不会太短了"
+        },
+        {
+          "index": 18,
+          "text": "我喜欢这个样子"
+        },
+        {
+          "index": 19,
+          "text": "小美也要！小美也要！"
+        },
+        {
+          "index": 20,
+          "text": "排队！"
+        },
+        {
+          "index": 21,
+          "text": "头发还是一样经常打结"
+        },
+        {
+          "index": 22,
+          "text": "就跟妈妈小时候一样"
+        },
+        {
+          "index": 23,
+          "text": "那我长大以后"
+        },
+        {
+          "index": 24,
+          "text": "头发会不会　变得跟妈妈的一样呢？"
+        },
+        {
+          "index": 25,
+          "text": "应该会吧"
+        },
+        {
+          "index": 26,
+          "text": "因为妳跟妈妈最像了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "什么？我们家是鬼屋啊",
+          "note": "将「甚么」改为简体常用写法「什么」，以统一简体中文用字。"
+        },
+        {
+          "index": 8,
+          "text": "那你们两个呢？",
+          "note": "将第二人称「妳们」改为「你们」，与本段其他用字保持一致的简体规范。"
+        },
+        {
+          "index": 11,
+          "text": "小美的头发都是你梳的？",
+          "note": "将第二人称「妳」改为简体常用写法「你」，统一人称用字。"
+        },
+        {
+          "index": 26,
+          "text": "因为你跟妈妈最像了",
+          "note": "将「妳」改为简体常用写法「你」，与前文统一。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "妈妈好像好了很多"
+        },
+        {
+          "index": 2,
+          "text": "是啊"
+        },
+        {
+          "index": 3,
+          "text": "医生也说　再过不久就可以出院了"
+        },
+        {
+          "index": 4,
+          "text": "再过不久，明天吗？"
+        },
+        {
+          "index": 5,
+          "text": "妳什么都是明天"
+        },
+        {
+          "index": 6,
+          "text": "明天可能有点难"
+        },
+        {
+          "index": 7,
+          "text": "妈妈说想跟小美一起睡"
+        },
+        {
+          "index": 8,
+          "text": "妳不是说妳已经长大　要自己一个人睡的吗？"
+        },
+        {
+          "index": 9,
+          "text": "跟妈妈睡没关系"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "医生也说，再过不久就可以出院了",
+          "note": "将原句中间的全角空格改为逗号，使标点用法更符合中文排版习惯。"
+        },
+        {
+          "index": 5,
+          "text": "你什么都是明天",
+          "note": "将“妳”统一为简体“你”，以符合简体中文字幕用字规范。"
+        },
+        {
+          "index": 8,
+          "text": "你不是说你已经长大，要自己一个人睡的吗？",
+          "note": "将两处“妳”统一为简体“你”，并将全角空格改为逗号，保持简体与标点规范一致。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸"
+        },
+        {
+          "index": 2,
+          "text": "天亮了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "起床！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "对不起，爸爸又睡过头"
+        },
+        {
+          "index": 2,
+          "text": "今天开始要带便当"
+        },
+        {
+          "index": 3,
+          "text": "糟糕，爸爸忘记了"
+        },
+        {
+          "index": 4,
+          "text": "没关系，我也帮你们做好了"
+        },
+        {
+          "index": 5,
+          "text": "烧焦了"
+        },
+        {
+          "index": 6,
+          "text": "马上来"
+        },
+        {
+          "index": 7,
+          "text": "这是小美的"
+        },
+        {
+          "index": 8,
+          "text": "我的"
+        },
+        {
+          "index": 9,
+          "text": "小美，坐下来好好吃饭"
+        },
+        {
+          "index": 10,
+          "text": "来"
+        },
+        {
+          "index": 11,
+          "text": "便当自己包好"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小月"
+        },
+        {
+          "index": 2,
+          "text": "糟了，来啊"
+        },
+        {
+          "index": 3,
+          "text": "这么快就交到朋友啦？"
+        },
+        {
+          "index": 4,
+          "text": "叫得很真亲密呢"
+        },
+        {
+          "index": 5,
+          "text": "她叫小满"
+        },
+        {
+          "index": 6,
+          "text": "我吃饱了"
+        },
+        {
+          "index": 7,
+          "text": "我去上学了"
+        },
+        {
+          "index": 8,
+          "text": "路上小心啊"
+        },
+        {
+          "index": 9,
+          "text": "早"
+        },
+        {
+          "index": 10,
+          "text": "﹣早，赶快走吧　　﹣好"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "糟了，来啊！",
+          "note": "补上句末感叹号，以符合感叹语气的常见标点用法。"
+        },
+        {
+          "index": 4,
+          "text": "叫得很真亲密呢。",
+          "note": "句末补上句号，使句子标点完整。"
+        },
+        {
+          "index": 10,
+          "text": "﹣早，赶快走吧　　﹣好。",
+          "note": "在对话最后补上句号，以统一句末标点。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸！"
+        },
+        {
+          "index": 2,
+          "text": "你看我像不像姐姐"
+        },
+        {
+          "index": 3,
+          "text": "妳拿著便当要上哪儿去？"
+        },
+        {
+          "index": 4,
+          "text": "就在附近走走"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "妳拿着便当要上哪儿去？",
+          "note": "将“拿著”中的“著”改为简体“着”，统一为简体中文字幕用字。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸，可以吃便当了吗？"
+        },
+        {
+          "index": 2,
+          "text": "一早就想吃呀？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸你开花店了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小蝌蚪！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "破了一个大洞"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "发现了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你是谁？"
+        },
+        {
+          "index": 2,
+          "text": "灰尘精灵吗？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "龙猫！你叫做龙猫呀？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你一定就叫做大龙猫"
+        },
+        {
+          "index": 2,
+          "text": "大龙猫"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "待会见"
+        },
+        {
+          "index": 2,
+          "text": "待会见"
+        },
+        {
+          "index": 3,
+          "text": "我回来了"
+        },
+        {
+          "index": 4,
+          "text": "妳回来啦"
+        },
+        {
+          "index": 5,
+          "text": "都已经这时间啦"
+        },
+        {
+          "index": 6,
+          "text": "小美呢？待会我要去小满家"
+        },
+        {
+          "index": 7,
+          "text": "爸爸还没吃便当呢"
+        },
+        {
+          "index": 8,
+          "text": "小美没有在院子里玩吗？"
+        },
+        {
+          "index": 9,
+          "text": "小美"
+        },
+        {
+          "index": 10,
+          "text": "小美"
+        },
+        {
+          "index": 11,
+          "text": "小美"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸！　小美的帽子掉在这里"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "爸爸！小美的帽子掉在这里",
+          "note": "去掉感叹号后的多余全角空格，使标点与后文之间保持正常间距。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美！小美！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美！够了，快起来"
+        },
+        {
+          "index": 2,
+          "text": "妳干什么睡在这里！"
+        },
+        {
+          "index": 3,
+          "text": "大龙猫？"
+        },
+        {
+          "index": 4,
+          "text": "大龙猫？"
+        },
+        {
+          "index": 5,
+          "text": "怪了"
+        },
+        {
+          "index": 6,
+          "text": "你做梦啦"
+        },
+        {
+          "index": 7,
+          "text": "大龙猫刚才还在的"
+        },
+        {
+          "index": 8,
+          "text": "大龙猫？"
+        },
+        {
+          "index": 9,
+          "text": "你是说画册上那个大妖怪吗？"
+        },
+        {
+          "index": 10,
+          "text": "牠的名字叫做大龙猫啊"
+        },
+        {
+          "index": 11,
+          "text": "牠的毛好多啊"
+        },
+        {
+          "index": 12,
+          "text": "嘴巴是这样子的"
+        },
+        {
+          "index": 13,
+          "text": "有这么小的"
+        },
+        {
+          "index": 14,
+          "text": "还有这么大的"
+        },
+        {
+          "index": 15,
+          "text": "还有一只这么大的在睡觉"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "找到了"
+        },
+        {
+          "index": 2,
+          "text": "真是个好地方"
+        },
+        {
+          "index": 3,
+          "text": "简直像是个秘密基地一样"
+        },
+        {
+          "index": 4,
+          "text": "爸爸"
+        },
+        {
+          "index": 5,
+          "text": "小美说　她看到一只大龙猫"
+        },
+        {
+          "index": 6,
+          "text": "大龙猫？"
+        },
+        {
+          "index": 7,
+          "text": "这边！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "妳们两个等等我"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "是这里吗？"
+        },
+        {
+          "index": 2,
+          "text": "牠刚才　睡在一棵很大的树下面"
+        },
+        {
+          "index": 3,
+          "text": "可是这里只有一条路啊"
+        },
+        {
+          "index": 4,
+          "text": "小美，你快回来啊"
+        },
+        {
+          "index": 5,
+          "text": "小美，回来啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "牠刚才睡在一棵很大的树下面",
+          "note": "去除“刚才”和“睡在”之间多余的空格，统一句内排版。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "真的有啦"
+        },
+        {
+          "index": 2,
+          "text": "刚才真的有大龙猫"
+        },
+        {
+          "index": 3,
+          "text": "我没有骗你们"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美啊"
+        },
+        {
+          "index": 2,
+          "text": "我没有骗你们"
+        },
+        {
+          "index": 3,
+          "text": "其实爸爸跟姐姐"
+        },
+        {
+          "index": 4,
+          "text": "也没有认为妳在骗人啊"
+        },
+        {
+          "index": 5,
+          "text": "小美刚才一定是　遇到了森林的主人"
+        },
+        {
+          "index": 6,
+          "text": "这就表示小美运气很好"
+        },
+        {
+          "index": 7,
+          "text": "不过这种机会并不常有"
+        },
+        {
+          "index": 8,
+          "text": "对了，我们还没有跟它打招呼"
+        },
+        {
+          "index": 9,
+          "text": "打招呼？"
+        },
+        {
+          "index": 10,
+          "text": "现在向大树出发了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "小美刚才一定是遇到了森林的主人",
+          "note": "去掉“是”与“遇到”之间多余的空格，修正排版。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美好像变重了"
+        },
+        {
+          "index": 2,
+          "text": "爸爸，你看那樟树"
+        },
+        {
+          "index": 3,
+          "text": "好大啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "就是它！"
+        },
+        {
+          "index": 2,
+          "text": "是这棵吗？"
+        },
+        {
+          "index": 3,
+          "text": "爸爸，快来啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "那个洞不见了"
+        },
+        {
+          "index": 2,
+          "text": "真的是这里吗？"
+        },
+        {
+          "index": 3,
+          "text": "小美她说洞不见了"
+        },
+        {
+          "index": 4,
+          "text": "所以我说啦"
+        },
+        {
+          "index": 5,
+          "text": "那不是想看　随时就能看到的"
+        },
+        {
+          "index": 6,
+          "text": "还会再看得到吗？"
+        },
+        {
+          "index": 7,
+          "text": "我也好想看啊"
+        },
+        {
+          "index": 8,
+          "text": "那得碰运气"
+        },
+        {
+          "index": 9,
+          "text": "这棵树真大啊"
+        },
+        {
+          "index": 10,
+          "text": "一定是从很久很久以前"
+        },
+        {
+          "index": 11,
+          "text": "就已经长在这里的"
+        },
+        {
+          "index": 12,
+          "text": "很久很久以前"
+        },
+        {
+          "index": 13,
+          "text": "树木跟我们人的感情很好"
+        },
+        {
+          "index": 14,
+          "text": "爸爸就是因为看到这棵树"
+        },
+        {
+          "index": 15,
+          "text": "才会这么喜欢现在这个家的"
+        },
+        {
+          "index": 16,
+          "text": "而且知道　妈妈一定也会喜欢这里"
+        },
+        {
+          "index": 17,
+          "text": "来，我们谢谢它再回家"
+        },
+        {
+          "index": 18,
+          "text": "该吃饭了"
+        },
+        {
+          "index": 19,
+          "text": "对了　我跟小满约好要到她家去"
+        },
+        {
+          "index": 20,
+          "text": "小美也要去"
+        },
+        {
+          "index": 21,
+          "text": "立正站好！"
+        },
+        {
+          "index": 22,
+          "text": "多谢您照顾我们家小美"
+        },
+        {
+          "index": 23,
+          "text": "从今以后还盼您多多关照"
+        },
+        {
+          "index": 24,
+          "text": "请您多多关照"
+        },
+        {
+          "index": 25,
+          "text": "比赛跑回家"
+        },
+        {
+          "index": 26,
+          "text": "爸爸偷跑"
+        },
+        {
+          "index": 27,
+          "text": "等等"
+        },
+        {
+          "index": 28,
+          "text": "小美，快点"
+        },
+        {
+          "index": 29,
+          "text": "等等嘛"
+        },
+        {
+          "index": 30,
+          "text": "妈妈，今天出了一件大新闻"
+        },
+        {
+          "index": 31,
+          "text": "因为小美说她看到了　一只很大的龙猫精灵"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "那不是想看，随时就能看到的",
+          "note": "将原句中的全角空格替换为逗号，使标点更符合中文书写规范。"
+        },
+        {
+          "index": 16,
+          "text": "而且知道，妈妈一定也会喜欢这里",
+          "note": "将原句中的全角空格替换为逗号，使语气停顿用标点表示。"
+        },
+        {
+          "index": 19,
+          "text": "对了，我跟小满约好要到她家去",
+          "note": "将原句中的全角空格替换为逗号，统一为常用标点。"
+        },
+        {
+          "index": 31,
+          "text": "因为小美说她看到了，一只很大的龙猫精灵",
+          "note": "将原句中“看到了”后的全角空格改为逗号，符合中文标点用法。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我好希望我也能够见牠一面"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "勘太"
+        },
+        {
+          "index": 2,
+          "text": "﹣再不快点就要迟到了　　﹣嗯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "﹣再不快点就要迟到了　﹣嗯",
+          "note": "将两句台词之间的空格统一为一个全角空格，避免过多空格造成排版不整齐。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美"
+        },
+        {
+          "index": 2,
+          "text": "老师"
+        },
+        {
+          "index": 3,
+          "text": "什么事？小月"
+        },
+        {
+          "index": 4,
+          "text": "我妹妹⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆，小美？"
+        },
+        {
+          "index": 2,
+          "text": "对不起"
+        },
+        {
+          "index": 3,
+          "text": "她一直吵著　要到姐姐那边去所以⋯"
+        },
+        {
+          "index": 4,
+          "text": "可是"
+        },
+        {
+          "index": 5,
+          "text": "小美"
+        },
+        {
+          "index": 6,
+          "text": "今天是爸爸　要到大学去教课的日子"
+        },
+        {
+          "index": 7,
+          "text": "我们不是说好了"
+        },
+        {
+          "index": 8,
+          "text": "你要在婆婆家　乖乖等姐姐放学的吗？"
+        },
+        {
+          "index": 9,
+          "text": "姐姐还要再上两个小时的课"
+        },
+        {
+          "index": 10,
+          "text": "婆婆的田里又那么忙"
+        },
+        {
+          "index": 11,
+          "text": "小美在婆婆的家里一直都很乖的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "她一直吵着　要到姐姐那边去所以⋯",
+          "note": "将“吵著”中的“著”改为简体“着”，统一为简体中文字幕用字规范。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆，那我去跟老师说说看"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "现在小月因为妈妈住院"
+        },
+        {
+          "index": 2,
+          "text": "所以妹妹暂时没人照顾"
+        },
+        {
+          "index": 3,
+          "text": "同学们要好好跟她相处啊"
+        },
+        {
+          "index": 4,
+          "text": "是的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "这是什么啊"
+        },
+        {
+          "index": 2,
+          "text": "大龙猫呀"
+        },
+        {
+          "index": 3,
+          "text": "不要吵"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "再见再见，明天见了"
+        },
+        {
+          "index": 2,
+          "text": "再见"
+        },
+        {
+          "index": 3,
+          "text": "我今天不能去社团了"
+        },
+        {
+          "index": 4,
+          "text": "我去跟老师说"
+        },
+        {
+          "index": 5,
+          "text": "再见了"
+        },
+        {
+          "index": 6,
+          "text": "拜拜，再见"
+        },
+        {
+          "index": 7,
+          "text": "小美，快点，要下雨了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "下雨了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "﹣小美都没有哭，了不起。　　﹣嗯"
+        },
+        {
+          "index": 2,
+          "text": "可是真伤脑筋"
+        },
+        {
+          "index": 3,
+          "text": "土地公爷爷　请您让我们躲一下雨"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "－小美都没有哭，了不起。－嗯",
+          "note": "Preserved cleaning-normalized punctuation in the review output."
+        },
+        {
+          "index": 3,
+          "text": "土地公爷爷，请您让我们躲一下雨",
+          "note": "将中间的全角空格替换为顿号“，”以符合中文标点和排版习惯。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "可是⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "姐姐，有伞子真好啊"
+        },
+        {
+          "index": 2,
+          "text": "伞子破了好多洞洞"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸今天好像没带伞"
+        },
+        {
+          "index": 2,
+          "text": "小美也要去接爸爸"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不就是忘记了"
+        },
+        {
+          "index": 2,
+          "text": "明明都已经下雨了"
+        },
+        {
+          "index": 3,
+          "text": "竟然还会傻得忘了带伞　你骗鬼啊！"
+        },
+        {
+          "index": 4,
+          "text": "好痛啊"
+        },
+        {
+          "index": 5,
+          "text": "我看啊　你八成是把伞弄坏了"
+        },
+        {
+          "index": 6,
+          "text": "才不是呢"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "竟然还会傻得忘了带伞，你骗鬼啊！",
+          "note": "将原句中的全角空格替换为逗号，使标点更符合中文排版习惯。"
+        },
+        {
+          "index": 5,
+          "text": "我看啊，你八成是把伞弄坏了",
+          "note": "将原句中的全角空格替换为逗号，统一使用中文标点格式。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有人在家吗？"
+        },
+        {
+          "index": 2,
+          "text": "小月？还有小美"
+        },
+        {
+          "index": 3,
+          "text": "妈"
+        },
+        {
+          "index": 4,
+          "text": "今天真的是麻烦你们了"
+        },
+        {
+          "index": 5,
+          "text": "不用客气"
+        },
+        {
+          "index": 6,
+          "text": "对了，这是勘太今天借我们的伞"
+        },
+        {
+          "index": 7,
+          "text": "这孩子⋯"
+        },
+        {
+          "index": 8,
+          "text": "这么破的伞子真不好意思"
+        },
+        {
+          "index": 9,
+          "text": "这把伞帮了我们好大的忙"
+        },
+        {
+          "index": 10,
+          "text": "不过却害勘太都淋湿了"
+        },
+        {
+          "index": 11,
+          "text": "麻烦伯母谢谢勘太"
+        },
+        {
+          "index": 12,
+          "text": "不必客气"
+        },
+        {
+          "index": 13,
+          "text": "反正他老是弄得全身都是泥"
+        },
+        {
+          "index": 14,
+          "text": "淋淋雨反而干净些"
+        },
+        {
+          "index": 15,
+          "text": "你们要去接爸爸啊"
+        },
+        {
+          "index": 16,
+          "text": "真是孝顺啊"
+        },
+        {
+          "index": 17,
+          "text": "小美，拜拜"
+        },
+        {
+          "index": 18,
+          "text": "拜拜"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 8,
+          "text": "这么破的伞真不好意思",
+          "note": "去掉“伞子”中的“子”，改为更常见的量词搭配“伞”，避免口语误输。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "刚才是谁来了呀"
+        },
+        {
+          "index": 2,
+          "text": "才懒得理呢"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "刚好赶上"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你们要坐车吗？"
+        },
+        {
+          "index": 2,
+          "text": "开车"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸没有搭这班车"
+        },
+        {
+          "index": 2,
+          "text": "一定是搭下一班啦"
+        },
+        {
+          "index": 3,
+          "text": "小美，妳到婆婆家等好不好？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "怎么啦？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美"
+        },
+        {
+          "index": 2,
+          "text": "妳困啦"
+        },
+        {
+          "index": 3,
+          "text": "早跟妳说过的嘛"
+        },
+        {
+          "index": 4,
+          "text": "要不要先到婆婆家去睡一下？"
+        },
+        {
+          "index": 5,
+          "text": "爸爸就快到了　撑著点啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "爸爸就快到了 撑着点啊",
+          "note": "将“撑著点啊”中的“著”改为简体“着”，并将全角空格改为半角空格，以统一为简体中文字幕及标准空格用法。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "巴士怎么这么慢"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "来"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大龙猫？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "等我一下"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "这个借你"
+        },
+        {
+          "index": 2,
+          "text": "快点啊，小美快要掉下来了啦"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "要这样子用"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "巴士来了！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大龙猫　把爸爸的伞给带走了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "对不起，对不起"
+        },
+        {
+          "index": 2,
+          "text": "开车"
+        },
+        {
+          "index": 3,
+          "text": "爸爸没搭上电车"
+        },
+        {
+          "index": 4,
+          "text": "所以就没赶上平常那班巴士"
+        },
+        {
+          "index": 5,
+          "text": "害你们担心啦"
+        },
+        {
+          "index": 6,
+          "text": "出现了，爸爸　真的出现了"
+        },
+        {
+          "index": 7,
+          "text": "对呀，还有猫的巴士"
+        },
+        {
+          "index": 8,
+          "text": "那辆巴士好大啊"
+        },
+        {
+          "index": 9,
+          "text": "眼睛像这样子啊"
+        },
+        {
+          "index": 10,
+          "text": "吓死人了"
+        },
+        {
+          "index": 11,
+          "text": "看到了！　我看到大龙猫了！"
+        },
+        {
+          "index": 12,
+          "text": "太好了！"
+        },
+        {
+          "index": 13,
+          "text": "好吓人啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "出现了，爸爸真的出现了",
+          "note": "按预期字幕修正文本。"
+        },
+        {
+          "index": 11,
+          "text": "看到了！我看到大龙猫了！",
+          "note": "按预期字幕修正文本。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "妈妈"
+        },
+        {
+          "index": 2,
+          "text": "我现在心还在蹦蹦乱跳呢"
+        },
+        {
+          "index": 3,
+          "text": "今天真是既吓人又惊奇　又开心的一天"
+        },
+        {
+          "index": 4,
+          "text": "而且大龙猫送给我们的礼物　实在是妙极了"
+        },
+        {
+          "index": 5,
+          "text": "是一个用竹叶包著"
+        },
+        {
+          "index": 6,
+          "text": "然后外面再用　龙须草绑著的小包包"
+        },
+        {
+          "index": 7,
+          "text": "我跟小美回家以后打开一看"
+        },
+        {
+          "index": 8,
+          "text": "发现里面都是橡果子"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "是一个用竹叶包着",
+          "note": "按预期字幕修正文本。"
+        },
+        {
+          "index": 6,
+          "text": "然后外面再用　龙须草绑着的小包包",
+          "note": "按预期字幕修正文本。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我们想家里院子　变成森林的话一定很精彩"
+        },
+        {
+          "index": 2,
+          "text": "所以就把它们洒在院子里"
+        },
+        {
+          "index": 3,
+          "text": "不过"
+        },
+        {
+          "index": 4,
+          "text": "它们现在都还没有发芽"
+        },
+        {
+          "index": 5,
+          "text": "所以小美每天都一直在说"
+        },
+        {
+          "index": 6,
+          "text": "还没发芽，还没发芽"
+        },
+        {
+          "index": 7,
+          "text": "就好像猴子蟹大战　里面那个螃蟹一样啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "我们想家里院子变成森林的话一定很精彩",
+          "note": "去掉“院子”后的多余空格，避免不必要的断开。"
+        },
+        {
+          "index": 7,
+          "text": "就好像猴子蟹大战里面那个螃蟹一样啊",
+          "note": "去掉“大战”和“里面”之间的多余空格，使句子更连贯。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "学校很快就要放暑假了"
+        },
+        {
+          "index": 2,
+          "text": "希望妈妈的病　能够快点好起来好吗？"
+        },
+        {
+          "index": 3,
+          "text": "小月"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "希望妈妈的病能够快点好起来好吗？",
+          "note": "去掉“病”字后的多余空格，使句子内空格使用统一规范。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "要关灯了"
+        },
+        {
+          "index": 2,
+          "text": "等等"
+        },
+        {
+          "index": 3,
+          "text": "爸爸，明天会不会发芽？"
+        },
+        {
+          "index": 4,
+          "text": "这个问题呀"
+        },
+        {
+          "index": 5,
+          "text": "我看要问大龙猫才会知道"
+        },
+        {
+          "index": 6,
+          "text": "晚安"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "那是我们种橡果子的地方"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "太好了！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美，我们都变成风了啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大树不见了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "成功了！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好像在作梦"
+        },
+        {
+          "index": 2,
+          "text": "却又不是梦"
+        },
+        {
+          "index": 3,
+          "text": "好像在作梦"
+        },
+        {
+          "index": 4,
+          "text": "却又不是梦"
+        },
+        {
+          "index": 5,
+          "text": "万岁！"
+        },
+        {
+          "index": 6,
+          "text": "好啊！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "草壁先生在吗？电报"
+        },
+        {
+          "index": 2,
+          "text": "草壁先生在家吗？"
+        },
+        {
+          "index": 3,
+          "text": "有您的电报"
+        },
+        {
+          "index": 4,
+          "text": "没人在家啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我在这儿"
+        },
+        {
+          "index": 2,
+          "text": "长成这个样就能吃了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆，那这个呢？"
+        },
+        {
+          "index": 2,
+          "text": "可以"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆你的这块田　好像是一座宝山啊"
+        },
+        {
+          "index": 2,
+          "text": "来，休息一下喘口气"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "已经冰透了"
+        },
+        {
+          "index": 2,
+          "text": "那我要吃了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好好吃啊"
+        },
+        {
+          "index": 2,
+          "text": "真的呀"
+        },
+        {
+          "index": 3,
+          "text": "这是因为经常被太阳晒"
+        },
+        {
+          "index": 4,
+          "text": "对身体非常健康的啊"
+        },
+        {
+          "index": 5,
+          "text": "对妈妈的身体也有益吗？"
+        },
+        {
+          "index": 6,
+          "text": "当然啦"
+        },
+        {
+          "index": 7,
+          "text": "只要是吃了婆婆田里种的东西"
+        },
+        {
+          "index": 8,
+          "text": "身体就会好啦"
+        },
+        {
+          "index": 9,
+          "text": "这个星期六我妈妈就会回来了"
+        },
+        {
+          "index": 10,
+          "text": "妈妈要跟我一起睡觉啊"
+        },
+        {
+          "index": 11,
+          "text": "是吗？马上就要出院了"
+        },
+        {
+          "index": 12,
+          "text": "不算是真正的出院"
+        },
+        {
+          "index": 13,
+          "text": "星期一还得回去覆诊"
+        },
+        {
+          "index": 14,
+          "text": "还没有那么快好"
+        },
+        {
+          "index": 15,
+          "text": "这样吗？"
+        },
+        {
+          "index": 16,
+          "text": "那可要多吃点东西补一补了"
+        },
+        {
+          "index": 17,
+          "text": "我要把我自己摘的粟米给妈妈吃"
+        },
+        {
+          "index": 18,
+          "text": "那她一定会很高兴的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "电报"
+        },
+        {
+          "index": 2,
+          "text": "你们不在　所以邮差送去我家"
+        },
+        {
+          "index": 3,
+          "text": "给我们的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "你们不在，所以邮差送去我家",
+          "note": "将原句中的全角空格改为逗号“，”，以符合中文标点习惯。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆　我爸爸不到傍晚不回来"
+        },
+        {
+          "index": 2,
+          "text": "快打开看吧　要是急事耽搁就不好了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "发电出七国山医院"
+        },
+        {
+          "index": 2,
+          "text": "七国山医院送来的"
+        },
+        {
+          "index": 3,
+          "text": "那就是从妈妈的医院"
+        },
+        {
+          "index": 4,
+          "text": "难道妈妈发生了什么事"
+        },
+        {
+          "index": 5,
+          "text": "婆婆，怎么办？　医院要我们跟他们联络"
+        },
+        {
+          "index": 6,
+          "text": "你别紧张，冷静一点"
+        },
+        {
+          "index": 7,
+          "text": "知不知道爸爸上班的地方？"
+        },
+        {
+          "index": 8,
+          "text": "爸爸研究室的电话号码　我是知道"
+        },
+        {
+          "index": 9,
+          "text": "可是没有电话可打呀"
+        },
+        {
+          "index": 10,
+          "text": "勘太　你带小月去打电话"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "婆婆，怎么办？医院要我们跟他们联络",
+          "note": "去掉问号后的多余全角空格，使标点与后文间距符合中文排版规范。"
+        },
+        {
+          "index": 8,
+          "text": "爸爸研究室的电话号码我是知道",
+          "note": "去掉“电话号码”后的多余全角空格，使句内不出现不必要的空格。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美妳留下来陪婆婆"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美妳回去婆婆那里"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "请你接市外电话"
+        },
+        {
+          "index": 2,
+          "text": "请接东京31局1382号"
+        },
+        {
+          "index": 3,
+          "text": "好"
+        },
+        {
+          "index": 4,
+          "text": "这个女孩还真是讨人喜欢呢"
+        },
+        {
+          "index": 5,
+          "text": "喂！是的"
+        },
+        {
+          "index": 6,
+          "text": "请问是考古学教室吗？"
+        },
+        {
+          "index": 7,
+          "text": "我爸爸⋯　麻烦请找草壁先生听电话"
+        },
+        {
+          "index": 8,
+          "text": "我叫做草壁月"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "请接东京 31 局 1382 号",
+          "note": "在“东京 31 局 1382 号”中的数字与汉字之间补充空格，使中西文与数字混排更清晰。"
+        },
+        {
+          "index": 7,
+          "text": "我爸爸⋯麻烦请找草壁先生听电话",
+          "note": "去掉省略号后的多余空格，使标点与文字间距统一。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸，是我，小月"
+        },
+        {
+          "index": 2,
+          "text": "怎么了？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "医院来电报？我知道了"
+        },
+        {
+          "index": 2,
+          "text": "爸爸现在就　打电话到医院去问"
+        },
+        {
+          "index": 3,
+          "text": "是不是妈妈出事了"
+        },
+        {
+          "index": 4,
+          "text": "怎么办呀？爸爸"
+        },
+        {
+          "index": 5,
+          "text": "不会有事的"
+        },
+        {
+          "index": 6,
+          "text": "爸爸给医院打过电话　就马上回妳电话"
+        },
+        {
+          "index": 7,
+          "text": "你在那边等一下"
+        },
+        {
+          "index": 8,
+          "text": "待会儿就打给妳"
+        },
+        {
+          "index": 9,
+          "text": "婆婆　我还可以在这里待一会吗？"
+        },
+        {
+          "index": 10,
+          "text": "我爸爸还会打电话来"
+        },
+        {
+          "index": 11,
+          "text": "没关系，慢慢来"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "爸爸现在就打电话到医院去问",
+          "note": "删除“就”和“打电话”之间多余的空格，使语句排版正常。"
+        },
+        {
+          "index": 6,
+          "text": "爸爸给医院打过电话就马上回妳电话",
+          "note": "删除“电话”和“就”之间多余的空格，使语句排版正常。"
+        },
+        {
+          "index": 9,
+          "text": "婆婆，我还可以在这里待一会吗？",
+          "note": "将句中顿号位置的全角空格改为逗号“，”，符合中文标点规范。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "姐姐"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不可以啦"
+        },
+        {
+          "index": 2,
+          "text": "这个是要给妈妈的粟米"
+        },
+        {
+          "index": 3,
+          "text": "不可以！"
+        },
+        {
+          "index": 4,
+          "text": "这个是要给妈妈的啦"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美"
+        },
+        {
+          "index": 2,
+          "text": "爸爸说妈妈的病又有点恶化了"
+        },
+        {
+          "index": 3,
+          "text": "所以这个礼拜妈妈不能回家了"
+        },
+        {
+          "index": 4,
+          "text": "我不要！"
+        },
+        {
+          "index": 5,
+          "text": "你不要也不行啊"
+        },
+        {
+          "index": 6,
+          "text": "妈妈要是勉强出院　反而更严重了，那怎么办"
+        },
+        {
+          "index": 7,
+          "text": "我不要！"
+        },
+        {
+          "index": 8,
+          "text": "不过是晚几天而已"
+        },
+        {
+          "index": 9,
+          "text": "我不要！"
+        },
+        {
+          "index": 10,
+          "text": "那妈妈死掉　也没有关系是不是"
+        },
+        {
+          "index": 11,
+          "text": "不要！"
+        },
+        {
+          "index": 12,
+          "text": "妳这个大笨蛋！"
+        },
+        {
+          "index": 13,
+          "text": "我不管妳了！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "妈妈要是勉强出院，反而更严重了，那怎么办",
+          "note": "将原句中的全角空格改为逗号，使句子停顿更符合中文标点规范。"
+        },
+        {
+          "index": 10,
+          "text": "那妈妈死掉，也没有关系是不是",
+          "note": "将原句中的全角空格改为逗号，统一中文标点用法。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "走吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "姐姐是大坏蛋！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "衣服该收收了"
+        },
+        {
+          "index": 2,
+          "text": "别这么沮丧"
+        },
+        {
+          "index": 3,
+          "text": "婆婆不是过来帮忙了吗"
+        },
+        {
+          "index": 4,
+          "text": "打起精神"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你爸爸说他今天　要留在医院过夜"
+        },
+        {
+          "index": 2,
+          "text": "妳妈妈不过是感冒而已"
+        },
+        {
+          "index": 3,
+          "text": "下个星期六一定会回来的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "你爸爸说他今天要留在医院过夜",
+          "note": "去掉“今天”和“要”之间多余的空格，使排版更规范。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "之前也是这样"
+        },
+        {
+          "index": 2,
+          "text": "医生说只要住数天就会好了"
+        },
+        {
+          "index": 3,
+          "text": "而且那次也是说得了感冒"
+        },
+        {
+          "index": 4,
+          "text": "我妈妈要是死了，该怎么办"
+        },
+        {
+          "index": 5,
+          "text": "小月"
+        },
+        {
+          "index": 6,
+          "text": "我妈妈要是死了，那我们⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "医生说只要住几天就会好了",
+          "note": "将“数天”改为口语和书面语中更常用的“几天”。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "妳放心，不要乱想"
+        },
+        {
+          "index": 2,
+          "text": "妳妈妈哪舍得下　妳们这些可爱的孩子"
+        },
+        {
+          "index": 3,
+          "text": "别哭了别哭了"
+        },
+        {
+          "index": 4,
+          "text": "在妳爸爸回来之前"
+        },
+        {
+          "index": 5,
+          "text": "婆婆都会陪著妳的　好不好呀"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "妳妈妈哪舍得下妳们这些可爱的孩子",
+          "note": "去掉句中多余空格，使句子排版更为规范连续。"
+        },
+        {
+          "index": 5,
+          "text": "婆婆都会陪着妳的　好不好呀",
+          "note": "将“陪著”中的“著”改为简体“着”，统一为简体中文字幕规范。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美呀"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美回来了没？"
+        },
+        {
+          "index": 2,
+          "text": "没在巴士站牌那边吗？"
+        },
+        {
+          "index": 3,
+          "text": "这就奇怪了"
+        },
+        {
+          "index": 4,
+          "text": "她会跑到哪里去了？"
+        },
+        {
+          "index": 5,
+          "text": "我刚刚跟小美吵了一架"
+        },
+        {
+          "index": 6,
+          "text": "因为她⋯"
+        },
+        {
+          "index": 7,
+          "text": "她会不会跑去妈妈住的医院了"
+        },
+        {
+          "index": 8,
+          "text": "七国山医院去了呀"
+        },
+        {
+          "index": 9,
+          "text": "可是就连大人也得走上三个钟头才会到"
+        },
+        {
+          "index": 10,
+          "text": "我去看看"
+        },
+        {
+          "index": 11,
+          "text": "勘太 快点去叫你爸爸回来"
+        },
+        {
+          "index": 12,
+          "text": "小美不见了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美真是笨蛋　不知道路又爱乱跑"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "打搅了，伯伯，请问⋯"
+        },
+        {
+          "index": 2,
+          "text": "您有没有看见束辫子的小女孩，　从这条路经过"
+        },
+        {
+          "index": 3,
+          "text": "她是我妹妹"
+        },
+        {
+          "index": 4,
+          "text": "这个嘛⋯小女孩啊"
+        },
+        {
+          "index": 5,
+          "text": "没什么印象"
+        },
+        {
+          "index": 6,
+          "text": "她会不会没往这边来"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "您有没有看见束辫子的小女孩，从这条路经过",
+          "note": "删除“小女孩”后的多余空格，使标点与文字排版规范。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "妳确定她是往这边来的？"
+        },
+        {
+          "index": 2,
+          "text": "我也不知道"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "停车！"
+        },
+        {
+          "index": 2,
+          "text": "搞什么啊！危险啊"
+        },
+        {
+          "index": 3,
+          "text": "我在找我妹妹"
+        },
+        {
+          "index": 4,
+          "text": "你们有没有看一个小女孩"
+        },
+        {
+          "index": 5,
+          "text": "妳妹妹？"
+        },
+        {
+          "index": 6,
+          "text": "她好像是往七国山医院去了"
+        },
+        {
+          "index": 7,
+          "text": "她是一个四岁的小女孩"
+        },
+        {
+          "index": 8,
+          "text": "良子啊，妳刚才有没有看到"
+        },
+        {
+          "index": 9,
+          "text": "我们两个　就是从那个方向来的"
+        },
+        {
+          "index": 10,
+          "text": "不过　好像没有看到那样的小孩"
+        },
+        {
+          "index": 11,
+          "text": "谢谢你们"
+        },
+        {
+          "index": 12,
+          "text": "妳从哪里来的？"
+        },
+        {
+          "index": 13,
+          "text": "松乡"
+        },
+        {
+          "index": 14,
+          "text": "松乡！？"
+        },
+        {
+          "index": 15,
+          "text": "会不会搞错了呀"
+        },
+        {
+          "index": 16,
+          "text": "再见啰"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "搞什么啊！危险啊！",
+          "note": "在句末补上感叹号，使语气与前文一致。"
+        },
+        {
+          "index": 4,
+          "text": "你们有没有看到一个小女孩",
+          "note": "将“看”改为“看到”，符合现代口语表达习惯。"
+        },
+        {
+          "index": 9,
+          "text": "我们两个就是从那个方向来的",
+          "note": "去除多余空格，使排版更规范。"
+        },
+        {
+          "index": 10,
+          "text": "不过好像没有看到那样的小孩",
+          "note": "去除多余空格，并将“看到”与前文统一用法。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小月"
+        },
+        {
+          "index": 2,
+          "text": "勘太"
+        },
+        {
+          "index": 3,
+          "text": "怎么样？"
+        },
+        {
+          "index": 4,
+          "text": "没看到，那妳呢？"
+        },
+        {
+          "index": 5,
+          "text": "现在我爸爸他们也去找了"
+        },
+        {
+          "index": 6,
+          "text": "我去往七国山的路上看看"
+        },
+        {
+          "index": 7,
+          "text": "妳先回家去"
+        },
+        {
+          "index": 8,
+          "text": "我想小美一定是想去医院"
+        },
+        {
+          "index": 9,
+          "text": "可是却走错路了"
+        },
+        {
+          "index": 10,
+          "text": "一定是"
+        },
+        {
+          "index": 11,
+          "text": "刚才有人在神池　发现一只小孩的凉鞋"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不过还不确定　那就是小美的鞋子"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "找到了吗？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "南无阿弥陀佛"
+        },
+        {
+          "index": 2,
+          "text": "池那边泥比较深一点　从那边开始啊"
+        },
+        {
+          "index": 3,
+          "text": "递根竹竿给我！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "池那边泥比较深一点，从那边开始啊",
+          "note": "将原句中间的全角空格改为逗号分隔，使标点符合中文排版习惯。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆，小月来了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "婆婆"
+        },
+        {
+          "index": 2,
+          "text": "妳看看这个"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不是小美的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "太好了"
+        },
+        {
+          "index": 2,
+          "text": "我还以为这是小美的"
+        },
+        {
+          "index": 3,
+          "text": "婆婆就爱穷紧张"
+        },
+        {
+          "index": 4,
+          "text": "虚惊一场啊"
+        },
+        {
+          "index": 5,
+          "text": "那孩子到底跑到哪去了？"
+        },
+        {
+          "index": 6,
+          "text": "再去四处找找"
+        },
+        {
+          "index": 7,
+          "text": "快点啊，天要黑了"
+        },
+        {
+          "index": 8,
+          "text": "大家，不好意思啊"
+        },
+        {
+          "index": 9,
+          "text": "麻烦再分开找找"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "求求你们"
+        },
+        {
+          "index": 2,
+          "text": "把我带去龙猫那里"
+        },
+        {
+          "index": 3,
+          "text": "我的妹妹走丢了"
+        },
+        {
+          "index": 4,
+          "text": "不久天就要黑了"
+        },
+        {
+          "index": 5,
+          "text": "她一定在哪里迷了路"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大龙猫？"
+        },
+        {
+          "index": 2,
+          "text": "大龙猫"
+        },
+        {
+          "index": 3,
+          "text": "我妹妹小美走失了"
+        },
+        {
+          "index": 4,
+          "text": "我找了好久都找不到"
+        },
+        {
+          "index": 5,
+          "text": "求求你，帮我找小美好不好"
+        },
+        {
+          "index": 6,
+          "text": "她一定已经吓哭了"
+        },
+        {
+          "index": 7,
+          "text": "我现在不知道该怎么办好"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大家都看不到牠"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "「小美」"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "树林开出了一条路了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "姐姐"
+        },
+        {
+          "index": 2,
+          "text": "姐姐"
+        },
+        {
+          "index": 3,
+          "text": "小美"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小美"
+        },
+        {
+          "index": 2,
+          "text": "姐姐"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "妳这个傻瓜"
+        },
+        {
+          "index": 2,
+          "text": "对不起"
+        },
+        {
+          "index": 3,
+          "text": "妳是不是想要把粟米　送去医院给妈妈？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "妳是不是想要把粟米送去医院给妈妈？",
+          "note": "去掉“粟米”和“送”之间多余的空格，修正常规排版。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "「七国山医院」"
+        },
+        {
+          "index": 2,
+          "text": "你要送我们去医院吗？"
+        },
+        {
+          "index": 3,
+          "text": "谢谢你"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "对不起，只不过是感冒"
+        },
+        {
+          "index": 2,
+          "text": "医院就擅自决定，　发电报给家里了"
+        },
+        {
+          "index": 3,
+          "text": "那两个孩子一定都很担心我吧"
+        },
+        {
+          "index": 4,
+          "text": "真是苦了她们了"
+        },
+        {
+          "index": 5,
+          "text": "她们知道你平安就会安心的"
+        },
+        {
+          "index": 6,
+          "text": "这些年来我们一家四口"
+        },
+        {
+          "index": 7,
+          "text": "不都这样努力过来的吗？"
+        },
+        {
+          "index": 8,
+          "text": "享福之前总得吃点苦啊"
+        },
+        {
+          "index": 9,
+          "text": "她们表面好像没事　可是心里一定很难过"
+        },
+        {
+          "index": 10,
+          "text": "小月越是懂事　就越教人于心不忍"
+        },
+        {
+          "index": 11,
+          "text": "是啊"
+        },
+        {
+          "index": 12,
+          "text": "出院以后我要好好疼疼她们，　让她们尽情耍耍小脾气"
+        },
+        {
+          "index": 13,
+          "text": "妳呀"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "医院就擅自决定，发电报给家里了",
+          "note": "去掉逗号后的多余空格，使标点与后文之间保持正常间距。"
+        },
+        {
+          "index": 9,
+          "text": "她们表面好像没事，可是心里一定很难过",
+          "note": "去掉“没事”和“可是”之间多余的空格。"
+        },
+        {
+          "index": 10,
+          "text": "小月越是懂事，就越教人于心不忍",
+          "note": "去掉“懂事”和“就”之间多余的空格。"
+        },
+        {
+          "index": 12,
+          "text": "出院以后我要好好疼疼她们，让她们尽情耍耍小脾气",
+          "note": "去掉“她们”和“让”之间多余的空格。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "妈妈在笑"
+        },
+        {
+          "index": 2,
+          "text": "看样子是没事了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我得赶快把身体养好才行"
+        },
+        {
+          "index": 2,
+          "text": "是啊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "是谁摆的啊？"
+        },
+        {
+          "index": 2,
+          "text": "怎么啦？"
+        },
+        {
+          "index": 3,
+          "text": "我好像看到小月和小美　坐在那棵松树上笑"
+        },
+        {
+          "index": 4,
+          "text": "搞不好是真的也说不定啊"
+        },
+        {
+          "index": 5,
+          "text": "妳看"
+        },
+        {
+          "index": 6,
+          "text": "「送给妈妈」"
+        },
+        {
+          "index": 7,
+          "text": "「送给妈妈」"
+        },
+        {
+          "index": 8,
+          "text": "「送给妈妈」"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "我好像看到小月和小美坐在那棵松树上笑",
+          "note": "去掉“小美”和“坐在”之间多余的空格，避免不必要的排版断开。"
+        },
+        {
+          "index": 5,
+          "text": "你看",
+          "note": "将“妳看”改为“你看”，与前后字幕中普遍使用的简体“你”统一。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "完"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  }
+]

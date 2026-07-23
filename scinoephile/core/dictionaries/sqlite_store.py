@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from logging import getLogger
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from sqlalchemy import (
     Boolean,
@@ -24,7 +25,7 @@ from sqlalchemy import (
     text,
 )
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
-from sqlalchemy.engine import URL, Connection, RowMapping
+from sqlalchemy.engine import URL, Connection, Engine, RowMapping
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.pool import NullPool
 from sqlalchemy.sql import Select
@@ -208,11 +209,7 @@ class DictionarySqliteStore:
             database_path: SQLite database path
         """
         self.database_path = val_output_path(database_path, exist_ok=True)
-        self.engine = create_engine(
-            URL.create("sqlite", database=str(self.database_path)),
-            future=True,
-            poolclass=NullPool,
-        )
+        self.engine = self._create_engine(self.database_path)
 
     def lookup_by_jyutping(self, query: str, limit: int) -> list[DictionaryEntry]:
         """Lookup entries by Jyutping.
@@ -323,22 +320,35 @@ class DictionarySqliteStore:
         """
         source, entries = source_data
         self.database_path.parent.mkdir(parents=True, exist_ok=True)
-        if self.database_path.exists():
-            logger.info(f"Deleting existing SQLite database: {self.database_path}")
-            self.database_path.unlink()
+        with TemporaryDirectory(
+            dir=self.database_path.parent,
+            prefix=f".{self.database_path.name}.",
+        ) as temporary_dir_name:
+            temporary_database_path = Path(temporary_dir_name) / self.database_path.name
+            temporary_engine = self._create_engine(temporary_database_path)
+            try:
+                with temporary_engine.begin() as connection:
+                    self._write_database_version(connection)
+                    self._create_tables(connection)
 
-        with self.engine.begin() as connection:
-            self._write_database_version(connection)
-            self._drop_tables(connection)
-            self._create_tables(connection)
+                    source_id = self._insert_source(connection, source)
+                    for entry in entries:
+                        entry_id = self._insert_entry(connection, entry)
+                        for definition in entry.definitions:
+                            self._insert_definition(
+                                connection,
+                                definition,
+                                entry_id,
+                                source_id,
+                            )
 
-            source_id = self._insert_source(connection, source)
-            for entry in entries:
-                entry_id = self._insert_entry(connection, entry)
-                for definition in entry.definitions:
-                    self._insert_definition(connection, definition, entry_id, source_id)
+                    self._generate_indices(connection)
+                self._validate_database(temporary_engine)
+            finally:
+                temporary_engine.dispose()
 
-            self._generate_indices(connection)
+            temporary_database_path.replace(self.database_path)
+            logger.info(f"Rebuilt SQLite database: {self.database_path}")
 
         return self.database_path
 
@@ -439,26 +449,19 @@ class DictionarySqliteStore:
                 raise
 
     @staticmethod
-    def _drop_tables(connection: Connection):
-        """Drop dictionary tables.
+    def _create_engine(database_path: Path) -> Engine:
+        """Create a SQLite engine for a database path.
 
         Arguments:
-            connection: SQLAlchemy connection
+            database_path: SQLite database path
+        Returns:
+            SQLite engine
         """
-        connection.execute(text("DROP TABLE IF EXISTS entries_fts"))
-        connection.execute(text("DROP TABLE IF EXISTS definitions_fts"))
-        connection.execute(text("DROP INDEX IF EXISTS fk_entry_id_index"))
-
-        connection.execute(
-            text("DROP TABLE IF EXISTS definitions_chinese_sentences_links")
+        return create_engine(
+            URL.create("sqlite", database=str(database_path)),
+            future=True,
+            poolclass=NullPool,
         )
-        connection.execute(text("DROP TABLE IF EXISTS sentence_links"))
-        connection.execute(text("DROP TABLE IF EXISTS definitions"))
-        connection.execute(text("DROP TABLE IF EXISTS entries"))
-        connection.execute(text("DROP TABLE IF EXISTS sources"))
-
-        connection.execute(text("DROP TABLE IF EXISTS chinese_sentences"))
-        connection.execute(text("DROP TABLE IF EXISTS nonchinese_sentences"))
 
     def _fetch_entries(
         self,
@@ -678,6 +681,32 @@ class DictionarySqliteStore:
         with self.engine.connect() as connection:
             rows = connection.execute(statement).scalars().all()
         return [int(row) for row in rows]
+
+    @classmethod
+    def _validate_database(cls, engine: Engine):
+        """Validate a rebuilt SQLite database before publication.
+
+        Arguments:
+            engine: SQLite engine connected to the rebuilt database
+        Raises:
+            RuntimeError: If database integrity or schema version is invalid
+        """
+        with engine.connect() as connection:
+            integrity_result = connection.execute(
+                text("PRAGMA quick_check")
+            ).scalar_one()
+            if integrity_result != "ok":
+                raise RuntimeError(
+                    f"SQLite database integrity check failed: {integrity_result}"
+                )
+            schema_version = connection.execute(
+                text("PRAGMA user_version")
+            ).scalar_one()
+            if schema_version != cls.schema_version:
+                raise RuntimeError(
+                    "SQLite database schema version mismatch: "
+                    f"{schema_version} != {cls.schema_version}"
+                )
 
     def _write_database_version(self, connection: Connection):
         """Write schema version.

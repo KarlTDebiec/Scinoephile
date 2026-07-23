@@ -10,6 +10,8 @@ from pathlib import Path
 
 from scinoephile.image.bbox import Bbox
 
+from .csv import save_csv_rows
+
 __all__ = [
     "get_dims_tuple",
     "load_char_dims",
@@ -73,7 +75,5 @@ def save_char_dims(char_dims: dict[str, set[tuple[int, ...]]], file_path: Path):
     for char, dims_set in char_dims.items():
         rows.extend([[char, *dims] for dims in dims_set])
     rows = sorted({tuple(row) for row in rows})
-    with file_path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.writer(handle)
-        writer.writerows(rows)
+    save_csv_rows(rows, file_path)
     logger.info(f"Saved {file_path}")

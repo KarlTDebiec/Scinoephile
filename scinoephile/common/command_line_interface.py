@@ -128,7 +128,7 @@ class CommandLineInterface(ABC):
         log_file = kwargs.pop("log_file")
         if log_file:
             log_file_path = Path(log_file).resolve()
-            file_handler = FileHandler(log_file_path)
+            file_handler = FileHandler(log_file_path, encoding="utf-8")
             file_handler.setLevel(getLogger().level)
             formatter = Formatter(DEFAULT_LOG_FORMAT)
             file_handler.setFormatter(formatter)

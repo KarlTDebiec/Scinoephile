@@ -89,6 +89,27 @@ def test_get_arg_groups_by_name_order():
     assert first_idx < second_idx < third_idx < optional_idx
 
 
+def test_get_arg_groups_by_name_preserves_unspecified_group_order():
+    """Test unspecified argument groups retain their relative order."""
+    parser = ArgumentParser()
+    parser.add_argument_group("operation arguments")
+    parser.add_argument_group("output arguments")
+
+    get_arg_groups_by_name(
+        parser,
+        "input arguments",
+        optional_arguments_name="additional arguments",
+    )
+
+    group_titles = [ag.title for ag in parser._action_groups]
+    assert group_titles == [
+        "input arguments",
+        "operation arguments",
+        "output arguments",
+        "additional arguments",
+    ]
+
+
 def test_get_arg_groups_by_name_rename_optional():
     """Test renaming optional arguments group."""
     parser = ArgumentParser()

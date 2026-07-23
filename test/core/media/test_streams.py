@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media.audio_stream import AudioStream
@@ -84,6 +84,15 @@ def test_subtitle_stream_outfile_filename():
     assert stream.outfile_filename == "eng-2.srt"
 
 
+def test_subtitle_stream_supports_eia_608_output():
+    """Test EIA-608 subtitles are extracted as SubRip SRT files."""
+    stream = SubtitleStream(index=19, language="eng", codec_name="eia_608")
+
+    assert stream.extension == "srt"
+    assert stream.output_codec == "subrip"
+    assert stream.outfile_filename == "eng-19.srt"
+
+
 def test_subtitle_stream_outfile_filename_requires_language():
     """Test subtitle stream output filename rejects missing language."""
     stream = SubtitleStream(index=2, language=None, codec_name="subrip")
@@ -100,5 +109,5 @@ def test_subtitle_stream_rejects_unknown_codec():
     """Test subtitle stream output properties reject unknown codecs."""
     stream = SubtitleStream(index=2, language="eng", codec_name="unknown")
 
-    with pytest.raises(ScinoephileError, match="Unsupported subtitle codec unknown"):
+    with raises(ScinoephileError, match="Unsupported subtitle codec unknown"):
         stream.extension

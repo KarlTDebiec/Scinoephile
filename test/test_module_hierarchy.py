@@ -5,71 +5,206 @@
 from __future__ import annotations
 
 import ast
-from collections import defaultdict
-from functools import cache
 from pathlib import Path
 
-REPO_DIR_PATH = Path(__file__).resolve().parents[1]
-PACKAGE_DIR_PATH = REPO_DIR_PATH / "scinoephile"
+from scinoephile.common import package_root
+
+_HIERARCHY_HEADER = "Package hierarchy (modules may import from any above):"
 
 
-def test_module_hierarchy_docs_match_imports():
-    """Test package hierarchy docs match the compact import hierarchy."""
+def test_declared_module_hierarchy_may_be_stricter_than_import_graph(tmp_path: Path):
+    """Test declared hierarchy need not be compacted to current imports."""
+    package_dir_path = tmp_path / "example"
+    package_dir_path.mkdir()
+    init_path = package_dir_path / "__init__.py"
+    init_path.write_text(
+        '"""Example package.\n\n'
+        "Package hierarchy (modules may import from any above):\n"
+        "* foundation\n"
+        "* feature\n"
+        '"""\n',
+        encoding="utf-8",
+    )
+    (package_dir_path / "feature.py").write_text(
+        '"""Feature module with no current dependency on foundation."""\n',
+        encoding="utf-8",
+    )
+    (package_dir_path / "foundation.py").write_text(
+        '"""Foundation module."""\n',
+        encoding="utf-8",
+    )
+
+    assert (
+        get_module_hierarchy_violations(
+            init_path,
+            package_parent_path=tmp_path,
+        )
+        == []
+    )
+
+
+def test_hierarchy_declarations_require_standard_heading(tmp_path: Path):
+    """Test incidental hierarchy prose is not parsed as a declaration."""
+    package_dir_path = tmp_path / "example"
+    package_dir_path.mkdir()
+    init_path = package_dir_path / "__init__.py"
+    init_path.write_text(
+        '"""Example package.\n\nHierarchy notes:\n* child\n"""\n',
+        encoding="utf-8",
+    )
+    (package_dir_path / "child.py").write_text(
+        '"""Child module."""\n',
+        encoding="utf-8",
+    )
+
+    assert get_module_hierarchy_violations(
+        init_path,
+        package_parent_path=tmp_path,
+    ) == ["example/__init__.py: missing hierarchy block"]
+
+
+def test_module_hierarchy_docs_are_authoritative():
+    """Test package imports comply with declared module hierarchies."""
     violations: list[str] = []
-    for init_path in sorted(PACKAGE_DIR_PATH.rglob("__init__.py")):
-        package_dir_path = init_path.parent
-        child_names = get_child_names(package_dir_path)
-        if len(child_names) < 2:
-            continue
-
-        package_dotted = get_package_dotted(package_dir_path)
-        documented_levels = get_documented_levels(init_path)
-        if documented_levels is None:
-            violations.append(
-                f"{init_path.relative_to(REPO_DIR_PATH)}: missing hierarchy block"
-            )
-            continue
-
-        documented_violations = get_documented_level_violations(
-            init_path=init_path,
-            child_names=child_names,
-            documented_levels=documented_levels,
-        )
-        violations.extend(documented_violations)
-        if documented_violations:
-            continue
-
-        edges = get_sibling_import_edges(
-            package_dir_path=package_dir_path,
-            package_dotted=package_dotted,
-            child_names=child_names,
-        )
-        documented_level_by_child = {
-            child_name: level
-            for level, level_child_names in documented_levels.items()
-            for child_name in level_child_names
-        }
-        violations.extend(
-            get_import_order_violations(
-                init_path=init_path,
-                documented_level_by_child=documented_level_by_child,
-                edges=edges,
-            )
-        )
-        cycle_violations = get_cycle_violations(init_path=init_path, edges=edges)
-        violations.extend(cycle_violations)
-        if cycle_violations:
-            continue
-
-        expected_levels = get_compact_levels(edges)
-        if documented_levels != expected_levels:
-            violations.append(
-                f"{init_path.relative_to(REPO_DIR_PATH)}: hierarchy is not compact\n"
-                f"  documented: {format_levels(documented_levels)}\n"
-                f"  expected:   {format_levels(expected_levels)}"
-            )
+    for init_path in sorted(package_root.rglob("__init__.py")):
+        violations.extend(get_module_hierarchy_violations(init_path))
 
     assert not violations, "\n\n".join(violations)
+
+
+def test_module_import_style_rules(tmp_path: Path):
+    """Test import style distinguishes modules, packages, and facades."""
+    package_dir_path = tmp_path / "example"
+    fixture_sources = {
+        "__init__.py": "",
+        "shared.py": 'value = "shared"\n',
+        "core/__init__.py": (
+            "from .errors import PublicError\n\n"
+            "class HiddenError(Exception):\n"
+            "    pass\n\n"
+            '__all__ = ["PublicError"]\n'
+        ),
+        "core/errors.py": (
+            'class PublicError(Exception):\n    pass\n\n__all__ = ["PublicError"]\n'
+        ),
+        "core/llms/__init__.py": "",
+        "feature/__init__.py": "",
+        "feature/prompts.py": "FIELDS = {}\n",
+        "feature/sibling/__init__.py": (
+            "class HiddenSibling:\n"
+            "    pass\n\n"
+            "class Sibling:\n"
+            "    pass\n\n"
+            '__all__ = ["Sibling"]\n'
+        ),
+        "feature/sibling/models.py": "MODEL = object()\n",
+    }
+    for relative_path, source in fixture_sources.items():
+        file_path = package_dir_path / relative_path
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        file_path.write_text(source, encoding="utf-8")
+
+    cases = [
+        ("feature/local_relative.py", "from .prompts import FIELDS\n", None),
+        (
+            "feature/local_absolute.py",
+            "from example.feature.prompts import FIELDS\n",
+            "imports rooted in the current package must be relative",
+        ),
+        (
+            "feature/local_absolute_plain.py",
+            "import example.feature.prompts\n",
+            "imports rooted in the current package must be relative",
+        ),
+        ("feature/parent_absolute.py", "from example.shared import value\n", None),
+        ("feature/parent_absolute_plain.py", "import example.shared\n", None),
+        (
+            "feature/parent_relative.py",
+            "from ..shared import value\n",
+            "relative imports may not climb to parent packages",
+        ),
+        (
+            "feature/sibling_absolute.py",
+            "from example.feature.sibling import Sibling\n",
+            "imports rooted in the current package must be relative",
+        ),
+        (
+            "feature/sibling_relative.py",
+            "from .sibling import Sibling\n",
+            None,
+        ),
+        (
+            "feature/sibling_module_relative.py",
+            "from .sibling.models import MODEL\n",
+            None,
+        ),
+        (
+            "feature/sibling_module_absolute.py",
+            "from example.feature.sibling.models import MODEL\n",
+            "imports rooted in the current package must be relative",
+        ),
+        (
+            "feature/sibling_private_relative.py",
+            "from .sibling import HiddenSibling\n",
+            "package facade imports must name exports listed in __all__",
+        ),
+        (
+            "feature/child_alias_relative.py",
+            "from . import sibling\n",
+            None,
+        ),
+        (
+            "feature/child_alias_absolute.py",
+            "from example.feature import sibling\n",
+            "imports rooted in the current package must be relative",
+        ),
+        (
+            "feature/public_facade.py",
+            "from example.core import PublicError\n",
+            None,
+        ),
+        (
+            "feature/private_facade.py",
+            "from example.core import HiddenError\n",
+            "package facade imports must name exports listed in __all__",
+        ),
+        (
+            "core/llms/concrete.py",
+            "from example.core.errors import PublicError\n",
+            None,
+        ),
+        (
+            "core/llms/ancestor_facade.py",
+            "from example.core import PublicError\n",
+            "own ancestor package facades may not be used internally",
+        ),
+        (
+            "core/llms/ancestor_facade_plain.py",
+            "import example.core\n",
+            "own ancestor package facades may not be used internally",
+        ),
+    ]
+    for relative_path, source, expected_reason in cases:
+        file_path = package_dir_path / relative_path
+        file_path.write_text(source, encoding="utf-8")
+        violations = get_import_style_violations(
+            file_path,
+            package_parent_path=tmp_path,
+        )
+        if expected_reason is None:
+            assert violations == []
+        else:
+            assert len(violations) == 1
+            assert expected_reason in violations[0]
+
+
+def test_module_imports_follow_style_rules():
+    """Test package imports make their concrete dependencies visible."""
+    violations: list[str] = []
+    for file_path in sorted(package_root.rglob("*.py")):
+        violations.extend(get_import_style_violations(file_path))
+
+    assert not violations, "\n".join(violations)
 
 
 def test_resolve_import_from_modules_includes_absolute_package_aliases():
@@ -78,7 +213,7 @@ def test_resolve_import_from_modules_includes_absolute_package_aliases():
     assert isinstance(node, ast.ImportFrom)
 
     imported_modules = resolve_import_from_modules(
-        file_path=REPO_DIR_PATH / "scinoephile/core/cache/operations.py",
+        file_path=package_root / "core/cache/operations.py",
         node=node,
         root_package_parts=["scinoephile", "core"],
     )
@@ -96,7 +231,7 @@ def test_resolve_import_from_modules_includes_relative_package_aliases():
     assert isinstance(node, ast.ImportFrom)
 
     imported_modules = resolve_import_from_modules(
-        file_path=REPO_DIR_PATH / "scinoephile/core/cache/cache_entry.py",
+        file_path=package_root / "core/cache/cache_entry.py",
         node=node,
         root_package_parts=["scinoephile", "core", "cache"],
     )
@@ -105,6 +240,23 @@ def test_resolve_import_from_modules_includes_relative_package_aliases():
         "scinoephile.core.cache",
         "scinoephile.core.cache.operations",
     ]
+
+
+def test_single_child_package_requires_hierarchy(tmp_path: Path):
+    """Test packages with one child still require a hierarchy declaration."""
+    package_dir_path = tmp_path / "example"
+    package_dir_path.mkdir()
+    init_path = package_dir_path / "__init__.py"
+    init_path.write_text('"""Example package."""\n', encoding="utf-8")
+    (package_dir_path / "child.py").write_text(
+        '"""Child module."""\n',
+        encoding="utf-8",
+    )
+
+    assert get_module_hierarchy_violations(
+        init_path,
+        package_parent_path=tmp_path,
+    ) == ["example/__init__.py: missing hierarchy block"]
 
 
 def get_child_names(package_dir_path: Path) -> list[str]:
@@ -126,15 +278,20 @@ def get_child_names(package_dir_path: Path) -> list[str]:
     return sorted(child_names)
 
 
-def get_package_dotted(package_dir_path: Path) -> str:
+def get_package_dotted(
+    package_dir_path: Path,
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> str:
     """Get dotted package name for a package directory.
 
     Arguments:
         package_dir_path: package directory path
+        package_parent_path: parent path from which the package name begins
     Returns:
         dotted package name
     """
-    return ".".join(package_dir_path.relative_to(REPO_DIR_PATH).parts)
+    return ".".join(package_dir_path.relative_to(package_parent_path).parts)
 
 
 def get_documented_levels(init_path: Path) -> dict[int, list[str]] | None:
@@ -156,7 +313,7 @@ def get_documented_levels(init_path: Path) -> dict[int, list[str]] | None:
     for line in docstring.splitlines():
         stripped_line = line.strip()
         if not hierarchy_seen:
-            if "hierarchy" in stripped_line.lower():
+            if stripped_line == _HIERARCHY_HEADER:
                 hierarchy_seen = True
             continue
 
@@ -223,17 +380,20 @@ def get_documented_level_violations(
     violations: list[str] = []
     if duplicate_names:
         violations.append(
-            f"{init_path.relative_to(REPO_DIR_PATH)}: duplicated hierarchy entries: "
+            f"{init_path.relative_to(package_root.parent)}: "
+            "duplicated hierarchy entries: "
             f"{', '.join(duplicate_names)}"
         )
     if missing_names:
         violations.append(
-            f"{init_path.relative_to(REPO_DIR_PATH)}: missing hierarchy entries: "
+            f"{init_path.relative_to(package_root.parent)}: "
+            "missing hierarchy entries: "
             f"{', '.join(missing_names)}"
         )
     if extra_names:
         violations.append(
-            f"{init_path.relative_to(REPO_DIR_PATH)}: unknown hierarchy entries: "
+            f"{init_path.relative_to(package_root.parent)}: "
+            "unknown hierarchy entries: "
             f"{', '.join(extra_names)}"
         )
     return violations
@@ -307,6 +467,407 @@ def get_imported_modules(file_path: Path, root_package_parts: list[str]) -> list
     return imported_modules
 
 
+def format_import_style_violation(
+    file_path: Path,
+    node: ast.Import | ast.ImportFrom,
+    reason: str,
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> str:
+    """Format one package import style violation.
+
+    Arguments:
+        file_path: Python file path
+        node: import node
+        reason: violation reason
+        package_parent_path: parent path from which the package name begins
+    Returns:
+        formatted violation description
+    """
+    return (
+        f"{file_path.relative_to(package_parent_path)}:{node.lineno}: {reason}: "
+        f"{ast.unparse(node)}"
+    )
+
+
+def get_absolute_import_from_style_violations(
+    file_path: Path,
+    node: ast.ImportFrom,
+    current_package_parts: list[str],
+    root_package_name: str,
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> list[str]:
+    """Get style violations from one absolute import-from statement.
+
+    Arguments:
+        file_path: Python file path
+        node: absolute import-from node
+        current_package_parts: dotted parts of the importing package
+        root_package_name: source root package name
+        package_parent_path: parent path from which the package name begins
+    Returns:
+        violation descriptions
+    """
+    module_name = node.module
+    if module_name is None or not (
+        module_name == root_package_name
+        or module_name.startswith(f"{root_package_name}.")
+    ):
+        return []
+
+    current_package_name = ".".join(current_package_parts)
+    if module_name.startswith(f"{current_package_name}."):
+        return [
+            format_import_style_violation(
+                file_path,
+                node,
+                "imports rooted in the current package must be relative",
+                package_parent_path=package_parent_path,
+            )
+        ]
+
+    target_path = get_module_source_path(
+        module_name,
+        package_parent_path=package_parent_path,
+    )
+    if target_path is None:
+        return []
+    if target_path.name != "__init__.py":
+        return []
+
+    target_module_parts = module_name.split(".")
+    target_is_ancestor = (
+        target_module_parts == current_package_parts[: len(target_module_parts)]
+    )
+    package_exports = get_package_exports(target_path)
+    violations: list[str] = []
+    for alias in node.names:
+        child_target_path = get_module_source_path(
+            f"{module_name}.{alias.name}",
+            package_parent_path=package_parent_path,
+        )
+        if child_target_path is not None:
+            if module_name == current_package_name:
+                violations.append(
+                    format_import_style_violation(
+                        file_path,
+                        node,
+                        "imports rooted in the current package must be relative",
+                        package_parent_path=package_parent_path,
+                    )
+                )
+            continue
+        if target_is_ancestor:
+            violations.append(
+                format_import_style_violation(
+                    file_path,
+                    node,
+                    "own ancestor package facades may not be used internally",
+                    package_parent_path=package_parent_path,
+                )
+            )
+        elif package_exports is None or alias.name not in package_exports:
+            violations.append(
+                format_import_style_violation(
+                    file_path,
+                    node,
+                    "package facade imports must name exports listed in __all__",
+                    package_parent_path=package_parent_path,
+                )
+            )
+    return violations
+
+
+def get_absolute_import_style_violations(
+    file_path: Path,
+    node: ast.Import,
+    current_package_parts: list[str],
+    root_package_name: str,
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> list[str]:
+    """Get style violations from one absolute import statement.
+
+    Arguments:
+        file_path: Python file path
+        node: absolute import node
+        current_package_parts: dotted parts of the importing package
+        root_package_name: source root package name
+        package_parent_path: parent path from which the package name begins
+    Returns:
+        violation descriptions
+    """
+    violations: list[str] = []
+    current_package_name = ".".join(current_package_parts)
+    for alias in node.names:
+        if not (
+            alias.name == root_package_name
+            or alias.name.startswith(f"{root_package_name}.")
+        ):
+            continue
+
+        if alias.name.startswith(f"{current_package_name}."):
+            violations.append(
+                format_import_style_violation(
+                    file_path,
+                    node,
+                    "imports rooted in the current package must be relative",
+                    package_parent_path=package_parent_path,
+                )
+            )
+            continue
+
+        target_path = get_module_source_path(
+            alias.name,
+            package_parent_path=package_parent_path,
+        )
+        if target_path is None:
+            continue
+
+        target_module_parts = alias.name.split(".")
+        if (
+            target_path.name == "__init__.py"
+            and target_module_parts
+            == (current_package_parts[: len(target_module_parts)])
+        ):
+            violations.append(
+                format_import_style_violation(
+                    file_path,
+                    node,
+                    "own ancestor package facades may not be used internally",
+                    package_parent_path=package_parent_path,
+                )
+            )
+    return violations
+
+
+def get_import_style_violations(
+    file_path: Path,
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> list[str]:
+    """Get violations of package import style rules in one Python file.
+
+    Arguments:
+        file_path: Python file path
+        package_parent_path: parent path from which the package name begins
+    Returns:
+        violation descriptions
+    """
+    relative_path = file_path.relative_to(package_parent_path)
+    current_package_parts = list(relative_path.parent.parts)
+    root_package_name = current_package_parts[0]
+    tree = ast.parse(file_path.read_text(encoding="utf-8"))
+    violations: list[str] = []
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            violations.extend(
+                get_absolute_import_style_violations(
+                    file_path,
+                    node,
+                    current_package_parts,
+                    root_package_name,
+                    package_parent_path=package_parent_path,
+                )
+            )
+            continue
+
+        if isinstance(node, ast.ImportFrom):
+            if node.level:
+                violations.extend(
+                    get_relative_import_style_violations(
+                        file_path,
+                        node,
+                        current_package_parts,
+                        package_parent_path=package_parent_path,
+                    )
+                )
+            else:
+                violations.extend(
+                    get_absolute_import_from_style_violations(
+                        file_path,
+                        node,
+                        current_package_parts,
+                        root_package_name,
+                        package_parent_path=package_parent_path,
+                    )
+                )
+    return violations
+
+
+def get_relative_import_style_violations(
+    file_path: Path,
+    node: ast.ImportFrom,
+    current_package_parts: list[str],
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> list[str]:
+    """Get style violations from one relative import-from statement.
+
+    Arguments:
+        file_path: Python file path
+        node: relative import-from node
+        current_package_parts: dotted parts of the importing package
+        package_parent_path: parent path from which the package name begins
+    Returns:
+        violation descriptions
+    """
+    current_package_name = ".".join(current_package_parts)
+    if node.level != 1:
+        return [
+            format_import_style_violation(
+                file_path,
+                node,
+                "relative imports may not climb to parent packages",
+                package_parent_path=package_parent_path,
+            )
+        ]
+
+    target_module_name = current_package_name
+    if node.module:
+        target_module_name = f"{target_module_name}.{node.module}"
+    target_path = get_module_source_path(
+        target_module_name,
+        package_parent_path=package_parent_path,
+    )
+    package_exports: set[str] | None = None
+    if target_path is not None and target_path.name == "__init__.py":
+        package_exports = get_package_exports(target_path)
+
+    violations: list[str] = []
+    for alias in node.names:
+        child_target_path = get_module_source_path(
+            f"{target_module_name}.{alias.name}",
+            package_parent_path=package_parent_path,
+        )
+        if child_target_path is not None:
+            continue
+        if target_path is None or target_path.name != "__init__.py":
+            continue
+        if package_exports is None or alias.name not in package_exports:
+            violations.append(
+                format_import_style_violation(
+                    file_path,
+                    node,
+                    "package facade imports must name exports listed in __all__",
+                    package_parent_path=package_parent_path,
+                )
+            )
+    return violations
+
+
+def get_module_source_path(
+    module_name: str,
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> Path | None:
+    """Get the source path for an importable module or package.
+
+    Arguments:
+        module_name: absolute dotted module name
+        package_parent_path: parent path from which the package name begins
+    Returns:
+        module file or package `__init__.py` path, if present
+    """
+    target_path = package_parent_path.joinpath(*module_name.split("."))
+    module_path = target_path.with_suffix(".py")
+    if module_path.exists():
+        return module_path
+
+    init_path = target_path / "__init__.py"
+    if init_path.exists():
+        return init_path
+    return None
+
+
+def get_package_exports(init_path: Path) -> set[str] | None:
+    """Get literal public exports declared by a package.
+
+    Arguments:
+        init_path: package `__init__.py` path
+    Returns:
+        public export names, or None if no literal `__all__` is declared
+    """
+    tree = ast.parse(init_path.read_text(encoding="utf-8"))
+    for node in tree.body:
+        if not isinstance(node, ast.Assign):
+            continue
+        if not any(
+            isinstance(target, ast.Name) and target.id == "__all__"
+            for target in node.targets
+        ):
+            continue
+        if not isinstance(node.value, (ast.List, ast.Tuple, ast.Set)):
+            return None
+        exports: set[str] = set()
+        for element in node.value.elts:
+            if not isinstance(element, ast.Constant) or not isinstance(
+                element.value, str
+            ):
+                return None
+            exports.add(element.value)
+        return exports
+    return None
+
+
+def get_module_hierarchy_violations(
+    init_path: Path,
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> list[str]:
+    """Get violations of one package's declared module hierarchy.
+
+    Arguments:
+        init_path: package `__init__.py` path
+        package_parent_path: parent path from which the package name begins
+    Returns:
+        violation descriptions
+    """
+    package_dir_path = init_path.parent
+    child_names = get_child_names(package_dir_path)
+    if not child_names:
+        return []
+
+    documented_levels = get_documented_levels(init_path)
+    if documented_levels is None:
+        return [
+            f"{init_path.relative_to(package_parent_path)}: missing hierarchy block"
+        ]
+
+    violations = get_documented_level_violations(
+        init_path=init_path,
+        child_names=child_names,
+        documented_levels=documented_levels,
+    )
+    if violations:
+        return violations
+
+    edges = get_sibling_import_edges(
+        package_dir_path=package_dir_path,
+        package_dotted=get_package_dotted(
+            package_dir_path,
+            package_parent_path=package_parent_path,
+        ),
+        child_names=child_names,
+    )
+    documented_level_by_child = {
+        child_name: level
+        for level, level_child_names in documented_levels.items()
+        for child_name in level_child_names
+    }
+    violations.extend(
+        get_import_order_violations(
+            init_path=init_path,
+            documented_level_by_child=documented_level_by_child,
+            edges=edges,
+        )
+    )
+    violations.extend(get_cycle_violations(init_path=init_path, edges=edges))
+    return violations
+
+
 def resolve_import_from_modules(
     file_path: Path,
     node: ast.ImportFrom,
@@ -351,7 +912,7 @@ def get_file_package_parts(file_path: Path) -> list[str]:
     Returns:
         package name parts
     """
-    relative_path = file_path.relative_to(REPO_DIR_PATH)
+    relative_path = file_path.relative_to(package_root.parent)
     if file_path.name == "__init__.py":
         return list(relative_path.parent.parts)
     return list(relative_path.parent.parts)
@@ -378,7 +939,7 @@ def get_import_order_violations(
             imported_level = documented_level_by_child[imported_name]
             if importer_level <= imported_level:
                 violations.append(
-                    f"{init_path.relative_to(REPO_DIR_PATH)}: "
+                    f"{init_path.relative_to(package_root.parent)}: "
                     f"{importer_name} imports {imported_name}, but "
                     f"{importer_name} is level {importer_level} and "
                     f"{imported_name} is level {imported_level}"
@@ -425,53 +986,7 @@ def get_cycle_violations(init_path: Path, edges: dict[str, set[str]]) -> list[st
             visit(child_name)
 
     return [
-        f"{init_path.relative_to(REPO_DIR_PATH)}: import cycle: {' -> '.join(cycle)}"
+        f"{init_path.relative_to(package_root.parent)}: "
+        f"import cycle: {' -> '.join(cycle)}"
         for cycle in sorted(cycles)
     ]
-
-
-def get_compact_levels(edges: dict[str, set[str]]) -> dict[int, list[str]]:
-    """Get the compact hierarchy levels for an acyclic import graph.
-
-    Arguments:
-        edges: sibling import edges
-    Returns:
-        compact dependency levels
-    """
-
-    @cache
-    def get_level(child_name: str) -> int:
-        """Get compact dependency level for one child.
-
-        Arguments:
-            child_name: child module or package name
-        Returns:
-            compact dependency level
-        """
-        imported_names = edges[child_name]
-        if imported_names:
-            level = 1 + max(
-                get_level(imported_name) for imported_name in imported_names
-            )
-        else:
-            level = 1
-        return level
-
-    levels: dict[int, list[str]] = defaultdict(list)
-    for child_name in sorted(edges):
-        levels[get_level(child_name)].append(child_name)
-    return dict(sorted(levels.items()))
-
-
-def format_levels(levels: dict[int, list[str]]) -> str:
-    """Format hierarchy levels for assertion output.
-
-    Arguments:
-        levels: hierarchy levels
-    Returns:
-        formatted hierarchy levels
-    """
-    return "; ".join(
-        f"L{level}: {' / '.join(child_names)}"
-        for level, child_names in sorted(levels.items())
-    )

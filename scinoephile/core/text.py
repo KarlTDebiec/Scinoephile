@@ -6,32 +6,47 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from collections.abc import Sequence
 from enum import Enum
 from functools import cache
 from textwrap import dedent
+from typing import Literal
 
 from .exceptions import ScinoephileError
 
 __all__ = [
-    "half_punc",
-    "full_punc",
-    "whitespace",
-    "half_punc_chars",
-    "full_punc_chars",
-    "whitespace_chars",
-    "half_to_full_punc",
-    "full_to_half_punc",
+    "ChineseScript",
+    "HALF_PUNC",
+    "FULL_PUNC",
+    "WHITESPACE",
+    "HALF_PUNC_CHARS",
+    "FULL_PUNC_CHARS",
+    "WHITESPACE_CHARS",
+    "HALF_TO_FULL_PUNC",
+    "FULL_TO_HALF_PUNC",
+    "RE_ASS_OVERRIDE_BLOCK",
     "RE_HANZI",
+    "RE_LATIN_WORD",
     "RE_PRIVATE_USE_AREA_BMP",
     "RE_WESTERN",
+    "RE_WHITESPACE",
     "AnsiColor",
     "colorize",
     "dedent_and_compact",
     "get_char_type",
     "is_full_width_char",
+    "join_text_lines",
+    "normalize_fullwidth_alphanumerics",
+    "normalize_ocr_confusables",
+    "normalize_text",
+    "replace_control_characters",
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
 ]
+
+
+type ChineseScript = Literal["Hans", "Hant"]
+"""Chinese script supported by text processing helpers."""
 
 
 class AnsiColor(Enum):
@@ -51,7 +66,7 @@ class AnsiColor(Enum):
 
 # See https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)
 # See https://en.wikipedia.org/wiki/CJK_Symbols_and_Punctuation
-half_punc = {
+HALF_PUNC = {
     "APOSTROPHE": "'",
     "BULLET": "•",
     "BULLET OPERATOR": "∙",
@@ -98,7 +113,7 @@ half_punc = {
 }
 """Selected half-width punctuation characters."""
 
-full_punc = {
+FULL_PUNC = {
     "BOX DRAWINGS LIGHT HORIZONTAL": "─",
     "DOUBLE PRIME QUOTATION MARK": "〞",
     "FULLWIDTH APOSTROPHE": "＇",
@@ -143,35 +158,59 @@ full_punc = {
 }
 """Selected full-width punctuation characters."""
 
-whitespace = {
+WHITESPACE = {
     "IDEOGRAPHIC SPACE": "　",
     "SPACE": " ",
 }
 """Selected whitespace characters."""
 
-half_punc_chars = set(half_punc.values())
+HALF_PUNC_CHARS = set(HALF_PUNC.values())
 """Set of half-width punctuation characters."""
 
-full_punc_chars = set(full_punc.values())
+FULL_PUNC_CHARS = set(FULL_PUNC.values())
 """Set of full-width punctuation characters."""
 
-whitespace_chars = set(whitespace.values())
+WHITESPACE_CHARS = set(WHITESPACE.values())
 """Set of whitespace characters."""
 
-half_to_full_punc = {
+HALF_TO_FULL_PUNC = {
     **{
-        half_punc[key]: full_punc[f"FULLWIDTH {key}"]
-        for key in half_punc
-        if f"FULLWIDTH {key}" in full_punc
+        HALF_PUNC[key]: FULL_PUNC[f"FULLWIDTH {key}"]
+        for key in HALF_PUNC
+        if f"FULLWIDTH {key}" in FULL_PUNC
+    },
+    **{
+        HALF_PUNC[f"HALFWIDTH {key}"]: FULL_PUNC[key]
+        for key in FULL_PUNC
+        if f"HALFWIDTH {key}" in HALF_PUNC
     },
     "“": "〝",
     "”": "〞",
-    "·": "・",
+    "…": "⋯",
 }
 """Mapping from half-width to full-width punctuation characters."""
 
-full_to_half_punc = {v: k for k, v in half_to_full_punc.items()}
+FULL_TO_HALF_PUNC = {v: k for k, v in HALF_TO_FULL_PUNC.items()}
 """Mapping from full-width to half-width punctuation characters."""
+
+_FULLWIDTH_ALPHANUMERICS_TO_ASCII = str.maketrans(
+    {
+        **{chr(code): chr(code - 0xFEE0) for code in range(0xFF10, 0xFF1A)},
+        **{chr(code): chr(code - 0xFEE0) for code in range(0xFF21, 0xFF3B)},
+        **{chr(code): chr(code - 0xFEE0) for code in range(0xFF41, 0xFF5B)},
+    }
+)
+"""Mapping from fullwidth ASCII letters and digits to regular ASCII."""
+
+_OCR_CONFUSABLES_TO_ASCII = str.maketrans(
+    {
+        "Κ": "K",
+        "Ο": "O",
+        "κ": "k",
+        "ο": "o",
+    }
+)
+"""Mapping from OCR-confusable characters to regular ASCII."""
 
 RE_HANZI = re.compile(
     r"[\u4e00-\u9fff"
@@ -200,11 +239,20 @@ Includes the following Unicode blocks:
   - CJK Unified Ideographs Extension H (U+31350–U+323AF)
 """
 
+RE_ASS_OVERRIDE_BLOCK = re.compile(r"\{[^{}]*\}")
+"""Regular expression for ASS override blocks."""
+
+RE_LATIN_WORD = re.compile(r"[A-Za-z][A-Za-z']*")
+"""Regular expression for Latin words."""
+
 RE_PRIVATE_USE_AREA_BMP = re.compile(r"[\ue000-\uf8ff]")
 """Regular expression for BMP private-use area code points."""
 
 RE_WESTERN = re.compile(r"[a-zA-Z0-9]")
 """Regular expression for Western characters."""
+
+RE_WHITESPACE = re.compile(r"\s+")
+"""Regular expression for runs of whitespace."""
 
 
 def dedent_and_compact(text: str) -> str:
@@ -244,46 +292,23 @@ def get_char_type(char: str) -> str:
     Raises:
         ScinoephileError: If character type is not recognized
     """
-    punctuation = set(half_punc.values()) | set(full_punc.values())
+    punctuation = set(HALF_PUNC.values()) | set(FULL_PUNC.values())
 
     # Check if character is punctuation
     if char in punctuation:
         return "punc"
 
-    # Check if character is full-width (CJK)
-    if any(
-        [
-            "\u4e00" <= char <= "\u9fff",  # CJK Unified Ideographs
-            "\u3400" <= char <= "\u4dbf",  # CJK Unified Ideographs Extension A
-            "\uf900" <= char <= "\ufaff",  # CJK Compatibility Ideographs
-            "\U00020000" <= char <= "\U0002a6df",  # CJK Unified Ideographs Ext B
-            "\U0002a700" <= char <= "\U0002b73f",  # CJK Unified Ideographs Ext C
-            "\U0002b740" <= char <= "\U0002b81f",  # CJK Unified Ideographs Ext D
-            "\U0002b820" <= char <= "\U0002ceaf",  # CJK Unified Ideographs Ext E
-            "\U0002ceb0" <= char <= "\U0002ebef",  # CJK Unified Ideographs Ext F
-            "\U0002ebf0" <= char <= "\U0002ee5d",  # CJK Unified Ideographs Ext I
-            "\U00030000" <= char <= "\U0003134a",  # CJK Unified Ideographs Ext G
-            "\U00031350" <= char <= "\U000323af",  # CJK Unified Ideographs Ext H
-            "\u3000" <= char <= "\u303f",  # CJK Symbols and Punctuation
-        ]
-    ):
+    # Reject control, format, and combining characters unsupported by this model
+    if unicodedata.category(char).startswith(("C", "M")):
+        name = unicodedata.name(char, "<unnamed>")
+        raise ScinoephileError(f"Unrecognized char type for {char!r} of name {name}")
+
+    # Check Unicode characters with wide or full-width display properties
+    if unicodedata.east_asian_width(char) in {"F", "W"}:
         return "full"
 
-    # Check if character is half-width (Western)
-    if any(
-        [
-            "\u0020" <= char <= "\u007f",  # Basic Latin
-            "\u00a0" <= char <= "\u00ff",  # Latin-1 Supplement
-            "\u0100" <= char <= "\u017f",  # Latin Extended-A
-            "\u0180" <= char <= "\u024f",  # Latin Extended-B
-        ]
-    ):
-        return "half"
-
-    # Raise exception if character type is not recognized
-    raise ScinoephileError(
-        f"Unrecognized char type for '{char}' of name {unicodedata.name(char)}"
-    )
+    # Treat narrow, half-width, neutral, and ambiguous characters as half-width
+    return "half"
 
 
 def is_full_width_char(char: str) -> bool:
@@ -294,9 +319,74 @@ def is_full_width_char(char: str) -> bool:
     Returns:
         whether the character should use full-width spacing
     """
-    if char in full_punc_chars:
+    if char in FULL_PUNC_CHARS:
         return True
     return get_char_type(char) == "full"
+
+
+def join_text_lines(texts: Sequence[str]) -> str:
+    """Join text lines with display-width-aware spaces.
+
+    Arguments:
+        texts: text lines to join
+    Returns:
+        joined text
+    """
+    if not texts:
+        return ""
+
+    chunks = [texts[0]]
+    for text in texts[1:]:
+        previous_char = None
+        if chunks[-1]:
+            previous_char = chunks[-1][-1]
+        next_char = None
+        if text:
+            next_char = text[0]
+
+        joiner = " "
+        if previous_char is not None and is_full_width_char(previous_char):
+            joiner = "\u3000"
+        elif next_char is not None and is_full_width_char(next_char):
+            joiner = "\u3000"
+        chunks.extend((joiner, text))
+    return "".join(chunks)
+
+
+def normalize_fullwidth_alphanumerics(text: str) -> str:
+    """Convert fullwidth ASCII letters and digits to regular ASCII.
+
+    Arguments:
+        text: text to normalize
+    Returns:
+        text with fullwidth alphanumeric characters normalized
+    """
+    return text.translate(_FULLWIDTH_ALPHANUMERICS_TO_ASCII)
+
+
+def normalize_ocr_confusables(text: str) -> str:
+    """Convert OCR-confusable characters to regular ASCII.
+
+    Arguments:
+        text: text to normalize
+    Returns:
+        text with OCR-confusable characters normalized
+    """
+    return text.translate(_OCR_CONFUSABLES_TO_ASCII)
+
+
+def normalize_text(text: str) -> str:
+    """Normalize text using non-language-specific cleanup.
+
+    Arguments:
+        text: text to normalize
+    Returns:
+        normalized text
+    """
+    normalized = replace_control_characters(text)
+    normalized = normalized.replace("\xa0", " ").strip()
+    normalized = normalize_fullwidth_alphanumerics(normalized)
+    return normalize_ocr_confusables(normalized)
 
 
 def remove_non_punc_and_whitespace(text: str) -> str:
@@ -307,7 +397,7 @@ def remove_non_punc_and_whitespace(text: str) -> str:
     Returns:
         Stripped text with only punctuation and whitespace remaining
     """
-    chars_to_keep = half_punc_chars | full_punc_chars | whitespace_chars
+    chars_to_keep = HALF_PUNC_CHARS | FULL_PUNC_CHARS | WHITESPACE_CHARS
     return "".join(char for char in text if char.isspace() or char in chars_to_keep)
 
 
@@ -319,7 +409,21 @@ def remove_punc_and_whitespace(text: str) -> str:
     Returns:
         Stripped text with punctuation and whitespace removed
     """
-    chars_to_remove = half_punc_chars | full_punc_chars | whitespace_chars
+    chars_to_remove = HALF_PUNC_CHARS | FULL_PUNC_CHARS | WHITESPACE_CHARS
     return "".join(
         char for char in text if not char.isspace() and char not in chars_to_remove
+    )
+
+
+def replace_control_characters(text: str) -> str:
+    """Replace invalid control characters in text.
+
+    Arguments:
+        text: text to process
+    Returns:
+        text with unsupported control characters replaced by spaces
+    """
+    return "".join(
+        char if unicodedata.category(char)[0] != "C" or char in "\t\n\r" else " "
+        for char in text
     )

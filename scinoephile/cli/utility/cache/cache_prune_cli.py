@@ -8,12 +8,17 @@ from argparse import ArgumentParser
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
+from scinoephile.common.argument_parsing import (
+    duration_arg,
+    get_arg_groups_by_name,
+    int_arg,
+)
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import get_cache_entries, prune_cache
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli.localization import merge_localizations
 
-from .argument_types import cache_dir_path_arg, duration_arg
 from .output import print_entries
 
 __all__ = ["CachePruneCli"]
@@ -60,7 +65,7 @@ CACHE_PRUNE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class CachePruneCli(ScinoephileCliBase):
     """Prune old cache entries."""
 
-    localizations = CACHE_PRUNE_LOCALIZATIONS
+    localizations = merge_localizations(CACHE_LOCALIZATIONS, CACHE_PRUNE_LOCALIZATIONS)
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -79,12 +84,9 @@ class CachePruneCli(ScinoephileCliBase):
         )
 
         # Input arguments
-        arg_groups["input arguments"].add_argument(
-            "--cache-dir",
-            default=cache_dir_path_arg(None),
-            dest="cache_dir_path",
-            type=cache_dir_path_arg,
-            help="cache root directory to inspect (default: %(default)s)",
+        add_cache_dir_arg(
+            arg_groups["input arguments"],
+            help_text="cache root directory to inspect (default: %(default)s)",
         )
 
         # Operation arguments
@@ -96,7 +98,6 @@ class CachePruneCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--namespace",
-            default=None,
             help="cache namespace to inspect",
         )
         arg_groups["operation arguments"].add_argument(

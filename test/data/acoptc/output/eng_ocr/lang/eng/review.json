@@ -1,0 +1,8880 @@
+[
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Very pretty"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Everybody!"
+        },
+        {
+          "index": 2,
+          "text": "I'm sorry to you. It'll OK soon"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "I'm sorry to you. It'll be OK soon",
+          "note": "Inserted 'be' in 'It'll be OK soon' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Sorry…sorry"
+        },
+        {
+          "index": 2,
+          "text": "Granny, you can't light it up in this way"
+        },
+        {
+          "index": 3,
+          "text": "You've just got the oil,\nbut you haven't got a lampwick"
+        },
+        {
+          "index": 4,
+          "text": "I know that"
+        },
+        {
+          "index": 5,
+          "text": "But I've lost the lampwick.\nI can do nothing about it"
+        },
+        {
+          "index": 6,
+          "text": "Buy a new one"
+        },
+        {
+          "index": 7,
+          "text": "It's reasonable…"
+        },
+        {
+          "index": 8,
+          "text": "Miss, excuse me"
+        },
+        {
+          "index": 9,
+          "text": "if it is the lamp of Buddha"
+        },
+        {
+          "index": 10,
+          "text": "where to buy a new lampwick for it?"
+        },
+        {
+          "index": 11,
+          "text": "Show your real image!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The Four Kings from the Nantian Gate\nand Erland God"
+        },
+        {
+          "index": 2,
+          "text": "Zixia. Your sister Zixia and you"
+        },
+        {
+          "index": 3,
+          "text": "is the lampwick"
+        },
+        {
+          "index": 4,
+          "text": "inside the lamp of Buddha"
+        },
+        {
+          "index": 5,
+          "text": "You left Heaven without permission"
+        },
+        {
+          "index": 6,
+          "text": "You told the public that"
+        },
+        {
+          "index": 7,
+          "text": "the one who can pull your Magic Sword\nout"
+        },
+        {
+          "index": 8,
+          "text": "is your best love"
+        },
+        {
+          "index": 9,
+          "text": "You're an immortal.\nYou can't love any ordinary man"
+        },
+        {
+          "index": 10,
+          "text": "If a devil pulls your sword out"
+        },
+        {
+          "index": 11,
+          "text": "we'll become the laughing-stocks"
+        },
+        {
+          "index": 12,
+          "text": "No matter who he is,\nan immortal or a devil"
+        },
+        {
+          "index": 13,
+          "text": "the sword can only be pulled out\nby me and my lover"
+        },
+        {
+          "index": 14,
+          "text": "I will stand by him forever"
+        },
+        {
+          "index": 15,
+          "text": "I will stand by him forever"
+        },
+        {
+          "index": 16,
+          "text": "If I can't be with the one who I love"
+        },
+        {
+          "index": 17,
+          "text": "I won't be happy\neven if I were Heaven Emperor"
+        },
+        {
+          "index": 18,
+          "text": "How dare you are"
+        },
+        {
+          "index": 19,
+          "text": "You're this stubborn"
+        },
+        {
+          "index": 20,
+          "text": "I'm gonna kill you"
+        },
+        {
+          "index": 21,
+          "text": "You're gonna vanish"
+        },
+        {
+          "index": 22,
+          "text": "That's fine.\nI don't wanna be a lonely immortal"
+        },
+        {
+          "index": 23,
+          "text": "Look out!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "No need to say anything"
+        },
+        {
+          "index": 2,
+          "text": "I'll kill whoever speaks it out"
+        },
+        {
+          "index": 3,
+          "text": "I've said it's not permitted to speak it out"
+        },
+        {
+          "index": 4,
+          "text": "I wanna tell you"
+        },
+        {
+          "index": 5,
+          "text": "Your beloved dog is doing that\nwith a bitch"
+        },
+        {
+          "index": 6,
+          "text": "How dare it is!"
+        },
+        {
+          "index": 7,
+          "text": "Ok, I'll kill it. Let's eat it"
+        },
+        {
+          "index": 8,
+          "text": "Ok…"
+        },
+        {
+          "index": 9,
+          "text": "We've decided to do so for a long time"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Jing Jing"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Jing Jing"
+        },
+        {
+          "index": 2,
+          "text": "Jing Jing, where are they?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Immortals?"
+        },
+        {
+          "index": 2,
+          "text": "Devils"
+        },
+        {
+          "index": 3,
+          "text": "Thank you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Please go into the Spider Web Cave"
+        },
+        {
+          "index": 2,
+          "text": "Spider Web Cave?"
+        },
+        {
+          "index": 3,
+          "text": "Don't cheat me! It is the Waterfall Cave"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Spider Web Cave, what a nice name"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Just call it Spider Web Cave"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I live at here"
+        },
+        {
+          "index": 2,
+          "text": "Hold it"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "I live here",
+          "note": "Removed 'at' from 'at here'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Listen to me"
+        },
+        {
+          "index": 2,
+          "text": "all things here belong to me!"
+        },
+        {
+          "index": 3,
+          "text": "Including you!"
+        },
+        {
+          "index": 4,
+          "text": "Me?"
+        },
+        {
+          "index": 5,
+          "text": "Yes"
+        },
+        {
+          "index": 6,
+          "text": "just like a donkey,\nlet me make a mark on you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You're my guy now"
+        },
+        {
+          "index": 2,
+          "text": "Don't scare of anyone.\nJust tell them you know me"
+        },
+        {
+          "index": 3,
+          "text": "I'm called Spider Web Immortal now"
+        },
+        {
+          "index": 4,
+          "text": "Spider Web Immortal?"
+        },
+        {
+          "index": 5,
+          "text": "500 years ago?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Don't be scared of anyone.\nJust tell them you know me",
+          "note": "Corrected 'scare' to 'be scared'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You hasn't turned back into\nthe Monkey King because"
+        },
+        {
+          "index": 2,
+          "text": "you haven't met the guy who'll give you\nthe 3 birthmarks"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "You haven't turned back into\nthe Monkey King because",
+          "note": "Corrected 'hasn't' to 'haven't'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Open the door"
+        },
+        {
+          "index": 2,
+          "text": "Close the door"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I can't believe it…"
+        },
+        {
+          "index": 2,
+          "text": "I don't wanna be the Monkey King"
+        },
+        {
+          "index": 3,
+          "text": "I have to save Jing Jing"
+        },
+        {
+          "index": 4,
+          "text": "Give me back the Box"
+        },
+        {
+          "index": 5,
+          "text": "Open the door"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I have heard that she said “open the door”"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Open the door"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "How dare you are?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "How dare you?",
+          "note": "Removed the incorrect 'are' to fix the sentence."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Let's go there through another way"
+        },
+        {
+          "index": 2,
+          "text": "Be careful"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "That way"
+        },
+        {
+          "index": 2,
+          "text": "Open the door"
+        },
+        {
+          "index": 3,
+          "text": "Who?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Is it necessary?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's great!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "We needn't scare of Qingxia"
+        },
+        {
+          "index": 2,
+          "text": "since we've got the box"
+        },
+        {
+          "index": 3,
+          "text": "Come out! Are you really this shy?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "this Box is… It's me!"
+        },
+        {
+          "index": 2,
+          "text": "I've said that all things here are mine"
+        },
+        {
+          "index": 3,
+          "text": "What do you want?"
+        },
+        {
+          "index": 4,
+          "text": "Nothing…"
+        },
+        {
+          "index": 5,
+          "text": "I've heard that you wanna go"
+        },
+        {
+          "index": 6,
+          "text": "Can you bring me with you?"
+        },
+        {
+          "index": 7,
+          "text": "Are you also chased after by someone?"
+        },
+        {
+          "index": 8,
+          "text": "I'm going to save someone"
+        },
+        {
+          "index": 9,
+          "text": "Save whom?"
+        },
+        {
+          "index": 10,
+          "text": "Save my wife"
+        },
+        {
+          "index": 11,
+          "text": "It's Pak Jing Jing. You know her"
+        },
+        {
+          "index": 12,
+          "text": "I don't know her"
+        },
+        {
+          "index": 13,
+          "text": "I know that. But you'll know her soon"
+        },
+        {
+          "index": 14,
+          "text": "Because she'll be your disciple."
+        },
+        {
+          "index": 15,
+          "text": "And this Box…"
+        },
+        {
+          "index": 16,
+          "text": "It's mine!"
+        },
+        {
+          "index": 17,
+          "text": "I know that"
+        },
+        {
+          "index": 18,
+          "text": "But in fact, I gave you this"
+        },
+        {
+          "index": 19,
+          "text": "Then, you gave me back at that time"
+        },
+        {
+          "index": 20,
+          "text": "So I come back and"
+        },
+        {
+          "index": 21,
+          "text": "give it back to you again now"
+        },
+        {
+          "index": 22,
+          "text": "Do you understand?"
+        },
+        {
+          "index": 23,
+          "text": "Yes, you're crazy Yes"
+        },
+        {
+          "index": 24,
+          "text": "And you have to bring me with you"
+        },
+        {
+          "index": 25,
+          "text": "Why need I do so good to you?"
+        },
+        {
+          "index": 26,
+          "text": "This is because you're my master"
+        },
+        {
+          "index": 27,
+          "text": "It's meaningless if you leave me here"
+        },
+        {
+          "index": 28,
+          "text": "Really?"
+        },
+        {
+          "index": 29,
+          "text": "Sit down"
+        },
+        {
+          "index": 30,
+          "text": "Ground"
+        },
+        {
+          "index": 31,
+          "text": "Give me your hand"
+        },
+        {
+          "index": 32,
+          "text": "I'll buy a new clothes"
+        },
+        {
+          "index": 33,
+          "text": "for you later"
+        },
+        {
+          "index": 34,
+          "text": "Bark!"
+        },
+        {
+          "index": 35,
+          "text": "Wow!"
+        },
+        {
+          "index": 36,
+          "text": "Louder!"
+        },
+        {
+          "index": 37,
+          "text": "Wow…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "This Box is… It's me!",
+          "note": "Capitalized the first word 'this' to 'This'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Immortal…"
+        },
+        {
+          "index": 2,
+          "text": "Be quick, the moon has come out"
+        },
+        {
+          "index": 3,
+          "text": "Go!"
+        },
+        {
+          "index": 4,
+          "text": "Where to go?"
+        },
+        {
+          "index": 5,
+          "text": "Are you leaving?"
+        },
+        {
+          "index": 6,
+          "text": "If you aren't, give me the Box.\nI'm leaving"
+        },
+        {
+          "index": 7,
+          "text": "What Box?"
+        },
+        {
+          "index": 8,
+          "text": "Listen to me"
+        },
+        {
+          "index": 9,
+          "text": "I won't wait until tomorrow"
+        },
+        {
+          "index": 10,
+          "text": "Be quick, shut up"
+        },
+        {
+          "index": 11,
+          "text": "Then your bitch sister will come here"
+        },
+        {
+          "index": 12,
+          "text": "Shit, how dare you tell the others that\nI do bad to her"
+        },
+        {
+          "index": 13,
+          "text": "What?"
+        },
+        {
+          "index": 14,
+          "text": "I'm that bitch's sister"
+        },
+        {
+          "index": 15,
+          "text": "Don't listen to her nonsense words"
+        },
+        {
+          "index": 16,
+          "text": "Joker"
+        },
+        {
+          "index": 17,
+          "text": "Joker"
+        },
+        {
+          "index": 18,
+          "text": "Why didn't tell me to wake up last night?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 18,
+          "text": "Why didn't you tell me to wake up last night?",
+          "note": "Added 'you' to correct the grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What?"
+        },
+        {
+          "index": 2,
+          "text": "Where have you been? Stand still"
+        },
+        {
+          "index": 3,
+          "text": "Sit down"
+        },
+        {
+          "index": 4,
+          "text": "Chair"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What about you?"
+        },
+        {
+          "index": 2,
+          "text": "Why are you looking at me in this way?"
+        },
+        {
+          "index": 3,
+          "text": "What did you see?"
+        },
+        {
+          "index": 4,
+          "text": "Did you see her?"
+        },
+        {
+          "index": 5,
+          "text": "Did you see my sister?"
+        },
+        {
+          "index": 6,
+          "text": "She's come"
+        },
+        {
+          "index": 7,
+          "text": "What did she tell you?"
+        },
+        {
+          "index": 8,
+          "text": "don't trust her, she's crazy!"
+        },
+        {
+          "index": 9,
+          "text": "Maybe she had a fierce fight with me\nin our past lives"
+        },
+        {
+          "index": 10,
+          "text": "So Buddha"
+        },
+        {
+          "index": 11,
+          "text": "turned us into a lampwick"
+        },
+        {
+          "index": 12,
+          "text": "told us to practise more"
+        },
+        {
+          "index": 13,
+          "text": "Solve our disputes"
+        },
+        {
+          "index": 14,
+          "text": "But we couldn't do that"
+        },
+        {
+          "index": 15,
+          "text": "We are still fighting with each other"
+        },
+        {
+          "index": 16,
+          "text": "don't say that anymore"
+        },
+        {
+          "index": 17,
+          "text": "Let's go"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Do you think that I'm crazy?"
+        },
+        {
+          "index": 2,
+          "text": "No. That's really my sister"
+        },
+        {
+          "index": 3,
+          "text": "Don't you believe me?"
+        },
+        {
+          "index": 4,
+          "text": "Come on, come on"
+        },
+        {
+          "index": 5,
+          "text": "Let's tie our hand up"
+        },
+        {
+          "index": 6,
+          "text": "You will know that tonight"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "Let's tie our hands up",
+          "note": "Corrected 'hand' to 'hands' for grammatical agreement."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I don't think the moon will come out\ntonight"
+        },
+        {
+          "index": 2,
+          "text": "Really?"
+        },
+        {
+          "index": 3,
+          "text": "Bitch"
+        },
+        {
+          "index": 4,
+          "text": "You can't escape from me"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What's you name?"
+        },
+        {
+          "index": 2,
+          "text": "My surname is Lin?"
+        },
+        {
+          "index": 3,
+          "text": "You're Lin Qingxia.\nMy brother talks about you usually"
+        },
+        {
+          "index": 4,
+          "text": "Your brother?"
+        },
+        {
+          "index": 5,
+          "text": "The guy who you beat up is called Joker"
+        },
+        {
+          "index": 6,
+          "text": "How about you?"
+        },
+        {
+          "index": 7,
+          "text": "I'm his twin brother Broker"
+        },
+        {
+          "index": 8,
+          "text": "Joker? Broker? You tell lies"
+        },
+        {
+          "index": 9,
+          "text": "You're so smart"
+        },
+        {
+          "index": 10,
+          "text": "My brother is called Qin Han."
+        },
+        {
+          "index": 11,
+          "text": "I'm called Qin Xiang Lin"
+        },
+        {
+          "index": 12,
+          "text": "What are you doing?"
+        },
+        {
+          "index": 13,
+          "text": "I admire you"
+        },
+        {
+          "index": 14,
+          "text": "You admire me?"
+        },
+        {
+          "index": 15,
+          "text": "Not only admire, I don't want to lose you"
+        },
+        {
+          "index": 16,
+          "text": "So I tie myself with you."
+        },
+        {
+          "index": 17,
+          "text": "Please accept my love"
+        },
+        {
+          "index": 18,
+          "text": "Let's go together"
+        },
+        {
+          "index": 19,
+          "text": "You have to pay something for my love"
+        },
+        {
+          "index": 20,
+          "text": "You hate your sister so much"
+        },
+        {
+          "index": 21,
+          "text": "I've lied to her that\nI would kill you tonight"
+        },
+        {
+          "index": 22,
+          "text": "Then you have nothing to worry"
+        },
+        {
+          "index": 23,
+          "text": "So I have to take a thing as a sign"
+        },
+        {
+          "index": 24,
+          "text": "Do you have valuable thing such as…"
+        },
+        {
+          "index": 25,
+          "text": "jewels or Pandora's Box…"
+        },
+        {
+          "index": 26,
+          "text": "ok, but they are useless"
+        },
+        {
+          "index": 27,
+          "text": "Give her my Magic Sword tonight"
+        },
+        {
+          "index": 28,
+          "text": "She'll believe it"
+        },
+        {
+          "index": 29,
+          "text": "Fine"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "What's your name?",
+          "note": "Corrected 'What's you name?' to 'What's your name?'"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's him"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Bring me to the market\nsince it's not dark yet"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What?"
+        },
+        {
+          "index": 2,
+          "text": "What's up?"
+        },
+        {
+          "index": 3,
+          "text": "My heart is pounding"
+        },
+        {
+          "index": 4,
+          "text": "What to do?"
+        },
+        {
+          "index": 5,
+          "text": "Follow me"
+        },
+        {
+          "index": 6,
+          "text": "Now Big Brother has turned back into\nhuman face"
+        },
+        {
+          "index": 7,
+          "text": "and he's with Zixia Immortal"
+        },
+        {
+          "index": 8,
+          "text": "Did Zixia has a part in"
+        },
+        {
+          "index": 9,
+          "text": "the capture of Master?"
+        },
+        {
+          "index": 10,
+          "text": "We should keep it secret"
+        },
+        {
+          "index": 11,
+          "text": "My martial arts skills and IQ"
+        },
+        {
+          "index": 12,
+          "text": "is better than him"
+        },
+        {
+          "index": 13,
+          "text": "But there is Zixia Immortal now"
+        },
+        {
+          "index": 14,
+          "text": "She's better than me, I think"
+        },
+        {
+          "index": 15,
+          "text": "I'm here"
+        },
+        {
+          "index": 16,
+          "text": "She's better than me because"
+        },
+        {
+          "index": 17,
+          "text": "I've got a burden, it's you"
+        },
+        {
+          "index": 18,
+          "text": "Give me half of this pig head, thanks"
+        },
+        {
+          "index": 19,
+          "text": "I don't sell pig head.\nDo you like pig penis?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 8,
+          "text": "Did Zixia have a part in",
+          "note": "Corrected 'has' to 'have' for subject-verb agreement."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What?"
+        },
+        {
+          "index": 2,
+          "text": "My lover is nearby"
+        },
+        {
+          "index": 3,
+          "text": "Did you see him?"
+        },
+        {
+          "index": 4,
+          "text": "No"
+        },
+        {
+          "index": 5,
+          "text": "because my Magic Sword is beeping"
+        },
+        {
+          "index": 6,
+          "text": "Where does the beeping sound\ncome from?"
+        },
+        {
+          "index": 7,
+          "text": "Do…do…do…right?"
+        },
+        {
+          "index": 8,
+          "text": "you made this, not the sword"
+        },
+        {
+          "index": 9,
+          "text": "I know you didn't hear that.\nSo I made it for you"
+        },
+        {
+          "index": 10,
+          "text": "I'm scared!"
+        },
+        {
+          "index": 11,
+          "text": "I'm really scared!"
+        },
+        {
+          "index": 12,
+          "text": "What?"
+        },
+        {
+          "index": 13,
+          "text": "It's fate. So don't be afraid"
+        },
+        {
+          "index": 14,
+          "text": "Come again?"
+        },
+        {
+          "index": 15,
+          "text": "My heart is pounding"
+        },
+        {
+          "index": 16,
+          "text": "My heart is beeping"
+        },
+        {
+          "index": 17,
+          "text": "What?"
+        },
+        {
+          "index": 18,
+          "text": "How should I tell him?"
+        },
+        {
+          "index": 19,
+          "text": "Just tell him"
+        },
+        {
+          "index": 20,
+          "text": "it is fate"
+        },
+        {
+          "index": 21,
+          "text": "If he doesn't like me, what to do?"
+        },
+        {
+          "index": 22,
+          "text": "If he has wife, what should I do?"
+        },
+        {
+          "index": 23,
+          "text": "It's fate. It's God's order.\nHe has to accept this"
+        },
+        {
+          "index": 24,
+          "text": "Really?"
+        },
+        {
+          "index": 25,
+          "text": "It's fate! He has to accept this"
+        },
+        {
+          "index": 26,
+          "text": "Yes! Yes…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "He's come"
+        },
+        {
+          "index": 2,
+          "text": "It's me?"
+        },
+        {
+          "index": 3,
+          "text": "It's you. How do you know? It's you"
+        },
+        {
+          "index": 4,
+          "text": "I didn't know"
+        },
+        {
+          "index": 5,
+          "text": "how to tell you"
+        },
+        {
+          "index": 6,
+          "text": "You're so smart"
+        },
+        {
+          "index": 7,
+          "text": "But I have a wife"
+        },
+        {
+          "index": 8,
+          "text": "I know, but I can do nothing about it"
+        },
+        {
+          "index": 9,
+          "text": "This is fate. You have to accept this"
+        },
+        {
+          "index": 10,
+          "text": "You just need to leave your wife"
+        },
+        {
+          "index": 11,
+          "text": "And then follow me"
+        },
+        {
+          "index": 12,
+          "text": "That's great!"
+        },
+        {
+          "index": 13,
+          "text": "Fine?"
+        },
+        {
+          "index": 14,
+          "text": "That's fine"
+        },
+        {
+          "index": 15,
+          "text": "Let's start our affair"
+        },
+        {
+          "index": 16,
+          "text": "Ok, let's start"
+        },
+        {
+          "index": 17,
+          "text": "Kiss me first"
+        },
+        {
+          "index": 18,
+          "text": "Fine, come to me"
+        },
+        {
+          "index": 19,
+          "text": "Come!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Give me!"
+        },
+        {
+          "index": 2,
+          "text": "You deceive me"
+        },
+        {
+          "index": 3,
+          "text": "You don't wanna kiss me"
+        },
+        {
+          "index": 4,
+          "text": "You deceived me! You lied to me!"
+        },
+        {
+          "index": 5,
+          "text": "I'm serious. Give me the Box first"
+        },
+        {
+          "index": 6,
+          "text": "Should I show you my heart?"
+        },
+        {
+          "index": 7,
+          "text": "No, I do this"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Wow! Your heart looks like a coconut"
+        },
+        {
+          "index": 2,
+          "text": "Miss, I'm ugly"
+        },
+        {
+          "index": 3,
+          "text": "But I'm a gentleman"
+        },
+        {
+          "index": 4,
+          "text": "Tell me honestly"
+        },
+        {
+          "index": 5,
+          "text": "does she love his wife?"
+        },
+        {
+          "index": 6,
+          "text": "I'll kill the one who're gonna block\nmy way"
+        },
+        {
+          "index": 7,
+          "text": "Granpa Buddha, look"
+        },
+        {
+          "index": 8,
+          "text": "Look!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "I'll kill the one who's gonna block\nmy way",
+          "note": "Corrected 'who're' to 'who's'."
+        },
+        {
+          "index": 7,
+          "text": "Grandpa Buddha, look",
+          "note": "Corrected 'Granpa' to 'Grandpa'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "He doesn't move"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I know that"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Let's go"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Brother, what is this mean?"
+        },
+        {
+          "index": 2,
+          "text": "I know you've got good figure,\nso I touch you"
+        },
+        {
+          "index": 3,
+          "text": "Yes, please go on"
+        },
+        {
+          "index": 4,
+          "text": "That's fine. Touch me again"
+        },
+        {
+          "index": 5,
+          "text": "Whose hand is it?"
+        },
+        {
+          "index": 6,
+          "text": "What are you talking about?"
+        },
+        {
+          "index": 7,
+          "text": "Take away"
+        },
+        {
+          "index": 8,
+          "text": "Devil"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "Brother, what does this mean?",
+          "note": "Corrected 'is this mean' to 'does this mean'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Have you finished?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Don't get angry, I just do that for fun"
+        },
+        {
+          "index": 2,
+          "text": "Take care of sister"
+        },
+        {
+          "index": 3,
+          "text": "She will give you back"
+        },
+        {
+          "index": 4,
+          "text": "Sister, I won't angry at you"
+        },
+        {
+          "index": 5,
+          "text": "We should regard you as Goddess and\nworship you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "Sister, I won't be angry at you",
+          "note": "Inserted 'be' in 'won't be angry' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's dark. I will go to find sister"
+        },
+        {
+          "index": 2,
+          "text": "Good luck"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "It's dark. I will go to find my sister",
+          "note": "Added 'my' before 'sister' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's really lucky"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Qingxia"
+        },
+        {
+          "index": 2,
+          "text": "Where are you?"
+        },
+        {
+          "index": 3,
+          "text": "Come out"
+        },
+        {
+          "index": 4,
+          "text": "I've killed your sister"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Monkey King"
+        },
+        {
+          "index": 2,
+          "text": "You bastard"
+        },
+        {
+          "index": 3,
+          "text": "You wanted to marry\nthe King Bull's sister"
+        },
+        {
+          "index": 4,
+          "text": "But you regarded the Longevity Monk\nas a wedding gift"
+        },
+        {
+          "index": 5,
+          "text": "And you invited all devils to eat his flesh"
+        },
+        {
+          "index": 6,
+          "text": "Do you admit your guilt?"
+        },
+        {
+          "index": 7,
+          "text": "Bitch!"
+        },
+        {
+          "index": 8,
+          "text": "She's chased me for 3 whole days"
+        },
+        {
+          "index": 9,
+          "text": "I didn't beat you up\nbecause you're a woman"
+        },
+        {
+          "index": 10,
+          "text": "Don't think I'm scared of you"
+        },
+        {
+          "index": 11,
+          "text": "Monkey King"
+        },
+        {
+          "index": 12,
+          "text": "Don't say that to Goddess"
+        },
+        {
+          "index": 13,
+          "text": "Shut up!"
+        },
+        {
+          "index": 14,
+          "text": "You scare me again!"
+        },
+        {
+          "index": 15,
+          "text": "Monkey King, Longevity Monk?"
+        },
+        {
+          "index": 16,
+          "text": "Do you know you've committed offences"
+        },
+        {
+          "index": 17,
+          "text": "You've grabbed Zixia Immortal's\nPandora's Box"
+        },
+        {
+          "index": 18,
+          "text": "You don't want to see me"
+        },
+        {
+          "index": 19,
+          "text": "Now, I can't escape"
+        },
+        {
+          "index": 20,
+          "text": "I'm gonna fight against you!"
+        },
+        {
+          "index": 21,
+          "text": "What's up ?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 21,
+          "text": "What's up?",
+          "note": "Removed the extra space before the question mark."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Monkey King, you're so naughty"
+        },
+        {
+          "index": 2,
+          "text": "I've told you don't throw things"
+        },
+        {
+          "index": 3,
+          "text": "It's wrong to throw things"
+        },
+        {
+          "index": 4,
+          "text": "I haven't finished yet.\nYou've thrown away the stick"
+        },
+        {
+          "index": 5,
+          "text": "The Box is a treasure"
+        },
+        {
+          "index": 6,
+          "text": "You'll pollute the environment!"
+        },
+        {
+          "index": 7,
+          "text": "What to do if kids are hurt?"
+        },
+        {
+          "index": 8,
+          "text": "It's still bad"
+        },
+        {
+          "index": 9,
+          "text": "if you hurt plants"
+        },
+        {
+          "index": 10,
+          "text": "What are you doing?"
+        },
+        {
+          "index": 11,
+          "text": "Let go!"
+        },
+        {
+          "index": 12,
+          "text": "What do you want?"
+        },
+        {
+          "index": 13,
+          "text": "Tell me if you like it"
+        },
+        {
+          "index": 14,
+          "text": "I will give you that if you like it"
+        },
+        {
+          "index": 15,
+          "text": "Of course, I will give you if you like it"
+        },
+        {
+          "index": 16,
+          "text": "I won't give you if you don't like it"
+        },
+        {
+          "index": 17,
+          "text": "I'm pretty sure that I won't give you\nif you don't like it"
+        },
+        {
+          "index": 18,
+          "text": "We're reasonable"
+        },
+        {
+          "index": 19,
+          "text": "I'll count to 3"
+        },
+        {
+          "index": 20,
+          "text": "Tell me if you want it!"
+        },
+        {
+          "index": 21,
+          "text": "Monkey King"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You know him now"
+        },
+        {
+          "index": 2,
+          "text": "This guy is very annoying"
+        },
+        {
+          "index": 3,
+          "text": "Ver disturbing"
+        },
+        {
+          "index": 4,
+          "text": "Just like a fly"
+        },
+        {
+          "index": 5,
+          "text": "Sorry, not a fly"
+        },
+        {
+          "index": 6,
+          "text": "but a swarm of flies"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "Very disturbing",
+          "note": "Corrected 'Ver' to 'Very'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Fly into your ears"
+        },
+        {
+          "index": 2,
+          "text": "Help…"
+        },
+        {
+          "index": 3,
+          "text": "Help!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "So I tear the fly's belly open."
+        },
+        {
+          "index": 2,
+          "text": "Tear out its intestines"
+        },
+        {
+          "index": 3,
+          "text": "Put them around its neck, then pull them"
+        },
+        {
+          "index": 4,
+          "text": "Then its tongue comes out\nand I use my blade to cut!"
+        },
+        {
+          "index": 5,
+          "text": "The world's silent then"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "We all know this now"
+        },
+        {
+          "index": 2,
+          "text": "why I kill it"
+        },
+        {
+          "index": 3,
+          "text": "Really?"
+        },
+        {
+          "index": 4,
+          "text": "So many excuses"
+        },
+        {
+          "index": 5,
+          "text": "You don't want to get scriptures"
+        },
+        {
+          "index": 6,
+          "text": "I won't forgive you"
+        },
+        {
+          "index": 7,
+          "text": "because you're so cruel to your master"
+        },
+        {
+          "index": 8,
+          "text": "Sister"
+        },
+        {
+          "index": 9,
+          "text": "you're wrong"
+        },
+        {
+          "index": 10,
+          "text": "The Monkey King wanted to eat me"
+        },
+        {
+          "index": 11,
+          "text": "It's just a thought"
+        },
+        {
+          "index": 12,
+          "text": "Not a fact"
+        },
+        {
+          "index": 13,
+          "text": "You haven't got any evidence"
+        },
+        {
+          "index": 14,
+          "text": "He's not guility!"
+        },
+        {
+          "index": 15,
+          "text": "Just wait, when he's eaten me up"
+        },
+        {
+          "index": 16,
+          "text": "you can prove him guilty"
+        },
+        {
+          "index": 17,
+          "text": "Longevity Monk, I know you're annoying"
+        },
+        {
+          "index": 18,
+          "text": "But I don't know you're this annoying"
+        },
+        {
+          "index": 19,
+          "text": "I gave you the Gold Ring to control\nthis monkey"
+        },
+        {
+          "index": 20,
+          "text": "But you don't use the ring"
+        },
+        {
+          "index": 21,
+          "text": "The size of that ring doesn't suit him"
+        },
+        {
+          "index": 22,
+          "text": "He can't wear it"
+        },
+        {
+          "index": 23,
+          "text": "It makes him very uneasy"
+        },
+        {
+          "index": 24,
+          "text": "He can't sleep at night. It disturbed me, too"
+        },
+        {
+          "index": 25,
+          "text": "Although it is just a monkey"
+        },
+        {
+          "index": 26,
+          "text": "you cannot do that do it"
+        },
+        {
+          "index": 27,
+          "text": "I'll be indicted animal abused\nif the government knows it"
+        },
+        {
+          "index": 28,
+          "text": "That Gold Ring…"
+        },
+        {
+          "index": 29,
+          "text": "I met iron-smith last year\nat the Chan's village"
+        },
+        {
+          "index": 30,
+          "text": "His skill is wonderful and the price is low"
+        },
+        {
+          "index": 31,
+          "text": "Really fair price"
+        },
+        {
+          "index": 32,
+          "text": "I think"
+        },
+        {
+          "index": 33,
+          "text": "you should buy a new one from him"
+        },
+        {
+          "index": 34,
+          "text": "Shut up!"
+        },
+        {
+          "index": 35,
+          "text": "Shut up!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 14,
+          "text": "He's not guilty!",
+          "note": "Corrected 'guility' to 'guilty'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's a sin…"
+        },
+        {
+          "index": 2,
+          "text": "Now, I think you know my pain!"
+        },
+        {
+          "index": 3,
+          "text": "Answer me!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's Ok!"
+        },
+        {
+          "index": 2,
+          "text": "I've told you not to throw things"
+        },
+        {
+          "index": 3,
+          "text": "Look!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "It's OK!",
+          "note": "Corrected 'Ok' to 'OK'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Monkey devil, go to hell"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You can't defeat me!"
+        },
+        {
+          "index": 2,
+          "text": "You're not Buddha"
+        },
+        {
+          "index": 3,
+          "text": "No more fighting…"
+        },
+        {
+          "index": 4,
+          "text": "Goddess"
+        },
+        {
+          "index": 5,
+          "text": "Please let the Monkey King go,\ndon't hurt him"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "No more fighting"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'm gonna kill him!"
+        },
+        {
+          "index": 2,
+          "text": "Goddess, stop!"
+        },
+        {
+          "index": 3,
+          "text": "It's normal to make mistakes"
+        },
+        {
+          "index": 4,
+          "text": "He's my disciple"
+        },
+        {
+          "index": 5,
+          "text": "I have to take the responsibility"
+        },
+        {
+          "index": 6,
+          "text": "Goddess, please let him go"
+        },
+        {
+          "index": 7,
+          "text": "If I won't kill him"
+        },
+        {
+          "index": 8,
+          "text": "I can't report to Heaven Emperor"
+        },
+        {
+          "index": 9,
+          "text": "I know that"
+        },
+        {
+          "index": 10,
+          "text": "Please tell Heaven Emperor that"
+        },
+        {
+          "index": 11,
+          "text": "I'm gonna sacrifice my life to him"
+        },
+        {
+          "index": 12,
+          "text": "What?"
+        },
+        {
+          "index": 13,
+          "text": "It is a master’s responsibility"
+        },
+        {
+          "index": 14,
+          "text": "Goddess, please listen to me"
+        },
+        {
+          "index": 15,
+          "text": "I just wanna teach him…"
+        },
+        {
+          "index": 16,
+          "text": "in order to show my spirit"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "That's great…"
+        },
+        {
+          "index": 2,
+          "text": "Monkey King, I hope you'll learn"
+        },
+        {
+          "index": 3,
+          "text": "your master's spirit!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Namonitabhaya"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Dreaming again?"
+        },
+        {
+          "index": 2,
+          "text": "It's big trouble."
+        },
+        {
+          "index": 3,
+          "text": "I always have nightmares"
+        },
+        {
+          "index": 4,
+          "text": "Where is Qingxia?"
+        },
+        {
+          "index": 5,
+          "text": "Not here"
+        },
+        {
+          "index": 6,
+          "text": "Qingxia…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Everybody, how are you?"
+        },
+        {
+          "index": 2,
+          "text": "It's cold!"
+        },
+        {
+          "index": 3,
+          "text": "Have you worn more clothes"
+        },
+        {
+          "index": 4,
+          "text": "I've lost my way"
+        },
+        {
+          "index": 5,
+          "text": "I wanna find a place to stay at night"
+        },
+        {
+          "index": 6,
+          "text": "Go there to sleep"
+        },
+        {
+          "index": 7,
+          "text": "Thank you very much."
+        },
+        {
+          "index": 8,
+          "text": "Wish you all long live"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I saw him come here"
+        },
+        {
+          "index": 2,
+          "text": "Where is he now?"
+        },
+        {
+          "index": 3,
+          "text": "Why did you go to pee?\nYou have to take the blame"
+        },
+        {
+          "index": 4,
+          "text": "It won't hurt you"
+        },
+        {
+          "index": 5,
+          "text": "Is it illegal?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Old Black Mountain Devil?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Monkey King"
+        },
+        {
+          "index": 2,
+          "text": "You turn into human face again"
+        },
+        {
+          "index": 3,
+          "text": "Do you still recognise me?"
+        },
+        {
+          "index": 4,
+          "text": "You are the fly"
+        },
+        {
+          "index": 5,
+          "text": "Monkey King…"
+        },
+        {
+          "index": 6,
+          "text": "Impossible, I must be dreaming"
+        },
+        {
+          "index": 7,
+          "text": "It is still early to make dreams, but…"
+        },
+        {
+          "index": 8,
+          "text": "I dream of you"
+        },
+        {
+          "index": 9,
+          "text": "when I was travel through time and space"
+        },
+        {
+          "index": 10,
+          "text": "Do you miss me?"
+        },
+        {
+          "index": 11,
+          "text": "The Box is at your side?"
+        },
+        {
+          "index": 12,
+          "text": "Yes, it is. Do you want it?"
+        },
+        {
+          "index": 13,
+          "text": "Who?"
+        },
+        {
+          "index": 14,
+          "text": "What's up?"
+        },
+        {
+          "index": 15,
+          "text": "Soldier"
+        },
+        {
+          "index": 16,
+          "text": "Soldier"
+        },
+        {
+          "index": 17,
+          "text": "My dad also wanna stay here"
+        },
+        {
+          "index": 18,
+          "text": "No problem"
+        },
+        {
+          "index": 19,
+          "text": "It's your dad!"
+        },
+        {
+          "index": 20,
+          "text": "Yes, dad, come out to say hello to all bros"
+        },
+        {
+          "index": 21,
+          "text": "Where does he come from?"
+        },
+        {
+          "index": 22,
+          "text": "From India"
+        },
+        {
+          "index": 23,
+          "text": "India? Where is it?"
+        },
+        {
+          "index": 24,
+          "text": "I need to carry on tomorrow. Sleep there"
+        },
+        {
+          "index": 25,
+          "text": "Thanks"
+        },
+        {
+          "index": 26,
+          "text": "It's really noisy"
+        },
+        {
+          "index": 27,
+          "text": "Annoying"
+        },
+        {
+          "index": 28,
+          "text": "Sleep inside"
+        },
+        {
+          "index": 29,
+          "text": "It is the problem of time difference"
+        },
+        {
+          "index": 30,
+          "text": "I have just slept in India.\nNow you tell me to sleep again"
+        },
+        {
+          "index": 31,
+          "text": "You go to sleep"
+        },
+        {
+          "index": 32,
+          "text": "Where is the Pandora's Box?"
+        },
+        {
+          "index": 33,
+          "text": "Monkey King, can you behave yourself ?"
+        },
+        {
+          "index": 34,
+          "text": "Look, just keep calm"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "You turn into a human face again",
+          "note": "Inserted 'a' before 'human face'."
+        },
+        {
+          "index": 7,
+          "text": "It's still early to make dreams, but…",
+          "note": "Corrected 'It' to 'It's'."
+        },
+        {
+          "index": 9,
+          "text": "when I was travelling through time and space",
+          "note": "Corrected 'travel' to 'travelling'."
+        },
+        {
+          "index": 11,
+          "text": "Is the Box at your side?",
+          "note": "Corrected 'The Box is' to 'Is the Box' for the intended question form."
+        },
+        {
+          "index": 17,
+          "text": "My dad also wanna stay here.",
+          "note": "Added a period at the end."
+        },
+        {
+          "index": 20,
+          "text": "Yes, dad, come out to say hello to all bros.",
+          "note": "Added a period at the end."
+        },
+        {
+          "index": 24,
+          "text": "I need to carry on tomorrow. Sleep there.",
+          "note": "Added a period at the end."
+        },
+        {
+          "index": 33,
+          "text": "Monkey King, can you behave yourself?",
+          "note": "Removed the extra space before the question mark."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What is he doing ?"
+        },
+        {
+          "index": 2,
+          "text": "He's breathing in life"
+        },
+        {
+          "index": 3,
+          "text": "Pretend to sleep."
+        },
+        {
+          "index": 4,
+          "text": "I hope that he won't breath in ours"
+        },
+        {
+          "index": 5,
+          "text": "Go to sleep!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "What is he doing?",
+          "note": "Removed the extra space before the question mark."
+        },
+        {
+          "index": 4,
+          "text": "I hope that he won't breathe in ours",
+          "note": "Corrected 'breath' to 'breathe'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Do you know me?"
+        },
+        {
+          "index": 2,
+          "text": "That Indian…"
+        },
+        {
+          "index": 3,
+          "text": "You like it, take it"
+        },
+        {
+          "index": 4,
+          "text": "My disciple is calling me, bye bye"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Don't play with fire again"
+        },
+        {
+          "index": 2,
+          "text": "bye"
+        },
+        {
+          "index": 3,
+          "text": "Please don't follow us. I don't know you"
+        },
+        {
+          "index": 4,
+          "text": "It's great to see you"
+        },
+        {
+          "index": 5,
+          "text": "Where is the Box? The Box?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "Where is the box? The box?",
+          "note": "Corrected 'Box' to 'box' for standard lowercase noun usage."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The King Bull?"
+        },
+        {
+          "index": 2,
+          "text": "Bro. catch the Longevity Monk\nand give him to me"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Miss, handkerchief"
+        },
+        {
+          "index": 2,
+          "text": "It's wedding day, why are you weeping?"
+        },
+        {
+          "index": 3,
+          "text": "I'm not weeping. My mouth is watering"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's a very happy day"
+        },
+        {
+          "index": 2,
+          "text": "What?"
+        },
+        {
+          "index": 3,
+          "text": "It's not only the wedding day of my sister"
+        },
+        {
+          "index": 4,
+          "text": "but also the day of my marriage\nwith my concubine"
+        },
+        {
+          "index": 5,
+          "text": "Concubine?"
+        },
+        {
+          "index": 6,
+          "text": "What does sister-in-law say about this?"
+        },
+        {
+          "index": 7,
+          "text": "That bitch"
+        },
+        {
+          "index": 8,
+          "text": "She's now at the Flame Mountain"
+        },
+        {
+          "index": 9,
+          "text": "She can do nothing about this even if\nshe knows it"
+        },
+        {
+          "index": 10,
+          "text": "Bull, how did you know"
+        },
+        {
+          "index": 11,
+          "text": "this new wife?"
+        },
+        {
+          "index": 12,
+          "text": "I passed the desert yesterday"
+        },
+        {
+          "index": 13,
+          "text": "I saw a pretty girl"
+        },
+        {
+          "index": 14,
+          "text": "She's dying"
+        },
+        {
+          "index": 15,
+          "text": "Master, what to do now?"
+        },
+        {
+          "index": 16,
+          "text": "Fine! No problem…"
+        },
+        {
+          "index": 17,
+          "text": "Really? We succeed now!"
+        },
+        {
+          "index": 18,
+          "text": "Zixia, what a nice name you've got"
+        },
+        {
+          "index": 19,
+          "text": "Let me introduce my sister and\nmy brother-in-law to you"
+        },
+        {
+          "index": 20,
+          "text": "Xiang Xiang, Bro"
+        },
+        {
+          "index": 21,
+          "text": "Come here, follow me"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "This my brother-in-law"
+        },
+        {
+          "index": 2,
+          "text": "This is my sister Xiang Xiang"
+        },
+        {
+          "index": 3,
+          "text": "Zixia!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "This is my brother-in-law",
+          "note": "Added 'is' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "How can you get marry here?"
+        },
+        {
+          "index": 2,
+          "text": "I can!"
+        },
+        {
+          "index": 3,
+          "text": "How about your wife?"
+        },
+        {
+          "index": 4,
+          "text": "My wife? Do you know her?"
+        },
+        {
+          "index": 5,
+          "text": "You've got a wife?"
+        },
+        {
+          "index": 6,
+          "text": "We're divorced"
+        },
+        {
+          "index": 7,
+          "text": "I haven't heard you say that before"
+        },
+        {
+          "index": 8,
+          "text": "Sister…"
+        },
+        {
+          "index": 9,
+          "text": "It's normal that a man has many wives."
+        },
+        {
+          "index": 10,
+          "text": "Take it easy"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "How can you get married here?",
+          "note": "Corrected 'get marry' to 'get married'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Bro, do you think so?"
+        },
+        {
+          "index": 2,
+          "text": "Yes…"
+        },
+        {
+          "index": 3,
+          "text": "Zixia, be honest"
+        },
+        {
+          "index": 4,
+          "text": "I think I've fallen for you"
+        },
+        {
+          "index": 5,
+          "text": "after these two days"
+        },
+        {
+          "index": 6,
+          "text": "I wanna show my sincerity"
+        },
+        {
+          "index": 7,
+          "text": "Thus I'm gonna request you to marry me\nin front of my bros"
+        },
+        {
+          "index": 8,
+          "text": "This Pandora's Box"
+        },
+        {
+          "index": 9,
+          "text": "is my gift to you"
+        },
+        {
+          "index": 10,
+          "text": "I hope you'll marry me"
+        },
+        {
+          "index": 11,
+          "text": "I object this marriage!"
+        },
+        {
+          "index": 12,
+          "text": "Why?"
+        },
+        {
+          "index": 13,
+          "text": "Let me speak…"
+        },
+        {
+          "index": 14,
+          "text": "What a good couple they are!"
+        },
+        {
+          "index": 15,
+          "text": "You're a devil,\nyou're not qualified to object"
+        },
+        {
+          "index": 16,
+          "text": "You have to pass Zixia's test first"
+        },
+        {
+          "index": 17,
+          "text": "If you can pass it"
+        },
+        {
+          "index": 18,
+          "text": "I won't object it anymore"
+        },
+        {
+          "index": 19,
+          "text": "What test?"
+        },
+        {
+          "index": 20,
+          "text": "She has sworn that"
+        },
+        {
+          "index": 21,
+          "text": "she would marry the guy"
+        },
+        {
+          "index": 22,
+          "text": "who could pull out"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "her Magic Sword"
+        },
+        {
+          "index": 2,
+          "text": "Listen to me"
+        },
+        {
+          "index": 3,
+          "text": "It's untrue"
+        },
+        {
+          "index": 4,
+          "text": "It's just a joke"
+        },
+        {
+          "index": 5,
+          "text": "What joke?"
+        },
+        {
+          "index": 6,
+          "text": "It's not important"
+        },
+        {
+          "index": 7,
+          "text": "who can pull out the sword"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Stop nagging in my place!"
+        },
+        {
+          "index": 2,
+          "text": "I'm gonna kill the ones\nwho block my way"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'm gonna kill the ones\nwho blcok my way"
+        },
+        {
+          "index": 2,
+          "text": "King, Iron Fan Princess has come"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "I'm gonna kill the ones\nwho block my way",
+          "note": "Corrected 'blcok' to 'block'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Why are you here?"
+        },
+        {
+          "index": 2,
+          "text": "At this time, the sword is close to me"
+        },
+        {
+          "index": 3,
+          "text": "0.01cm I think"
+        },
+        {
+          "index": 4,
+          "text": "But after 0.01 seconds"
+        },
+        {
+          "index": 5,
+          "text": "the owner of the sword will fall for me"
+        },
+        {
+          "index": 6,
+          "text": "This is because I've decided to tell lies"
+        },
+        {
+          "index": 7,
+          "text": "Although I have told many lies before"
+        },
+        {
+          "index": 8,
+          "text": "this is the best, I think"
+        },
+        {
+          "index": 9,
+          "text": "You're gonna kill me\nif you step forward again"
+        },
+        {
+          "index": 10,
+          "text": "You should do that"
+        },
+        {
+          "index": 11,
+          "text": "I deserve to die"
+        },
+        {
+          "index": 12,
+          "text": "I have had my best love before"
+        },
+        {
+          "index": 13,
+          "text": "but I didn't treasure her"
+        },
+        {
+          "index": 14,
+          "text": "When I lose her"
+        },
+        {
+          "index": 15,
+          "text": "I fell regretful"
+        },
+        {
+          "index": 16,
+          "text": "It is the most painful matter in this world"
+        },
+        {
+          "index": 17,
+          "text": "Just cut my throat!"
+        },
+        {
+          "index": 18,
+          "text": "No hesitation"
+        },
+        {
+          "index": 19,
+          "text": "If God can give me"
+        },
+        {
+          "index": 20,
+          "text": "another chance"
+        },
+        {
+          "index": 21,
+          "text": "I will say 3 words to her"
+        },
+        {
+          "index": 22,
+          "text": "I love you"
+        },
+        {
+          "index": 23,
+          "text": "If you have to give a time limit to\nthis love"
+        },
+        {
+          "index": 24,
+          "text": "I hope it is 10 thousand year"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "0.01 cm I think",
+          "note": "Added a space between '0.01' and 'cm'."
+        },
+        {
+          "index": 24,
+          "text": "I hope it is 10 thousand years",
+          "note": "Corrected 'year' to 'years'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "But how will you tell your wife?"
+        },
+        {
+          "index": 2,
+          "text": "I have to tell her"
+        },
+        {
+          "index": 3,
+          "text": "So I must get the Box back"
+        },
+        {
+          "index": 4,
+          "text": "Tell her clearly and go back with you"
+        },
+        {
+          "index": 5,
+          "text": "I won't listen to the others opinions"
+        },
+        {
+          "index": 6,
+          "text": "I won't listen to the others"
+        },
+        {
+          "index": 7,
+          "text": "objections"
+        },
+        {
+          "index": 8,
+          "text": "I will take all those on my own"
+        },
+        {
+          "index": 9,
+          "text": "Don't lie to me!"
+        },
+        {
+          "index": 10,
+          "text": "But I hate myself"
+        },
+        {
+          "index": 11,
+          "text": "because I can't get back the Box"
+        },
+        {
+          "index": 12,
+          "text": "l"
+        },
+        {
+          "index": 13,
+          "text": "I'll help you"
+        },
+        {
+          "index": 14,
+          "text": "No! it's dangerous"
+        },
+        {
+          "index": 15,
+          "text": "You don't want"
+        },
+        {
+          "index": 16,
+          "text": "I want"
+        },
+        {
+          "index": 17,
+          "text": "I won't hide a woman"
+        },
+        {
+          "index": 18,
+          "text": "It's just rumour"
+        },
+        {
+          "index": 19,
+          "text": "I won't trust you anymore…"
+        },
+        {
+          "index": 20,
+          "text": "What are you doing here?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 12,
+          "text": "I",
+          "note": "Corrected lowercase 'l' to uppercase 'I'."
+        },
+        {
+          "index": 14,
+          "text": "No! It's dangerous",
+          "note": "Capitalized 'it's' after the exclamation mark."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Who's he?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'm asking you, who's he?"
+        },
+        {
+          "index": 2,
+          "text": "He"
+        },
+        {
+          "index": 3,
+          "text": "Bro, who's he? Tell me"
+        },
+        {
+          "index": 4,
+          "text": "He's my wife"
+        },
+        {
+          "index": 5,
+          "text": "Bro, it's too much of you"
+        },
+        {
+          "index": 6,
+          "text": "Bros"
+        },
+        {
+          "index": 7,
+          "text": "You marry your sister to him!"
+        },
+        {
+          "index": 8,
+          "text": "So his wife pointed a sword at him"
+        },
+        {
+          "index": 9,
+          "text": "You follow me,\nI have something to ask you"
+        },
+        {
+          "index": 10,
+          "text": "You've got a wife"
+        },
+        {
+          "index": 11,
+          "text": "I've lost my feeling to her"
+        },
+        {
+          "index": 12,
+          "text": "Tell me what's going on"
+        },
+        {
+          "index": 13,
+          "text": "I've told you…Sister-in-law"
+        },
+        {
+          "index": 14,
+          "text": "Sister-in-law?"
+        },
+        {
+          "index": 15,
+          "text": "Sorry, Madam Bull"
+        },
+        {
+          "index": 16,
+          "text": "When you watched the moon with me\nin the past"
+        },
+        {
+          "index": 17,
+          "text": "you called me Sweetie"
+        },
+        {
+          "index": 18,
+          "text": "Now you yet your new lover!\nCall me Madam Bull?"
+        },
+        {
+          "index": 19,
+          "text": "Sweetie?"
+        },
+        {
+          "index": 20,
+          "text": "Do you think that I come here for"
+        },
+        {
+          "index": 21,
+          "text": "that ugly Bull?"
+        },
+        {
+          "index": 22,
+          "text": "I come here for you, heartless monkey"
+        },
+        {
+          "index": 23,
+          "text": "Bro, thank you"
+        },
+        {
+          "index": 24,
+          "text": "It's none of business"
+        },
+        {
+          "index": 25,
+          "text": "Sorry"
+        },
+        {
+          "index": 26,
+          "text": "wait for me here at midnight"
+        },
+        {
+          "index": 27,
+          "text": "I have something to tell you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "If I were you"
+        },
+        {
+          "index": 2,
+          "text": "I'll die when my husband decides to get\na concubine"
+        },
+        {
+          "index": 3,
+          "text": "Really?"
+        },
+        {
+          "index": 4,
+          "text": "Yes! But I'll castrate you first"
+        },
+        {
+          "index": 5,
+          "text": "Follow me"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Zixia, I …"
+        },
+        {
+          "index": 2,
+          "text": "I trust you"
+        },
+        {
+          "index": 3,
+          "text": "I'll get the Box today"
+        },
+        {
+          "index": 4,
+          "text": "Wait for me here at midnight"
+        },
+        {
+          "index": 5,
+          "text": "Bro…"
+        },
+        {
+          "index": 6,
+          "text": "Let me go to see my bros first"
+        },
+        {
+          "index": 7,
+          "text": "See you tonight"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Damn monkey, it's midnight now.\nWhere is he?"
+        },
+        {
+          "index": 2,
+          "text": "Big Brother!"
+        },
+        {
+          "index": 3,
+          "text": "I've told you that"
+        },
+        {
+          "index": 4,
+          "text": "Big Brother won't do so to us"
+        },
+        {
+          "index": 5,
+          "text": "He'll come to save Master"
+        },
+        {
+          "index": 6,
+          "text": "Gout at night, wanna pee?"
+        },
+        {
+          "index": 7,
+          "text": "No need to praise me"
+        },
+        {
+          "index": 8,
+          "text": "I'm just better than you a little bit"
+        },
+        {
+          "index": 9,
+          "text": "Stop nagging, go to save Master"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I can't take this anymore"
+        },
+        {
+          "index": 2,
+          "text": "I'm sure that Master is inside"
+        },
+        {
+          "index": 3,
+          "text": "Right…"
+        },
+        {
+          "index": 4,
+          "text": "He's very annoying.\nI can't take this anymore"
+        },
+        {
+          "index": 5,
+          "text": "You go in, I stay back…"
+        },
+        {
+          "index": 6,
+          "text": "Go! You at the middle"
+        },
+        {
+          "index": 7,
+          "text": "This way…Master is here, go in"
+        },
+        {
+          "index": 8,
+          "text": "Master"
+        },
+        {
+          "index": 9,
+          "text": "Master, master"
+        },
+        {
+          "index": 10,
+          "text": "We come to bring you out"
+        },
+        {
+          "index": 11,
+          "text": "I won't go"
+        },
+        {
+          "index": 12,
+          "text": "Really? Why? No"
+        },
+        {
+          "index": 13,
+          "text": "There're full of obstacles in the way of"
+        },
+        {
+          "index": 14,
+          "text": "getting scriptures"
+        },
+        {
+          "index": 15,
+          "text": "This is because we're not united enough"
+        },
+        {
+          "index": 16,
+          "text": "so the devils can do bad to us"
+        },
+        {
+          "index": 17,
+          "text": "Ok, now it is the case"
+        },
+        {
+          "index": 18,
+          "text": "Staying in this prison or not is\njust the same"
+        },
+        {
+          "index": 19,
+          "text": "The outside world"
+        },
+        {
+          "index": 20,
+          "text": "is just a larger prison to me"
+        },
+        {
+          "index": 21,
+          "text": "You go out first,\nI have something to talk to Big Brother"
+        },
+        {
+          "index": 22,
+          "text": "Master"
+        },
+        {
+          "index": 23,
+          "text": "Piggy, you're naughty again"
+        },
+        {
+          "index": 24,
+          "text": "No, Master"
+        },
+        {
+          "index": 25,
+          "text": "I go out and protect you"
+        },
+        {
+          "index": 26,
+          "text": "Sandy, follow me. Yes"
+        },
+        {
+          "index": 27,
+          "text": "You stand aside"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 13,
+          "text": "There are full of obstacles in the way of",
+          "note": "Corrected 'There're' to 'There are'."
+        },
+        {
+          "index": 17,
+          "text": "OK, now it is the case",
+          "note": "Corrected 'Ok' to 'OK'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Blow up and blow up the ball"
+        },
+        {
+          "index": 2,
+          "text": "You've dropped your thing"
+        },
+        {
+          "index": 3,
+          "text": "Bro, keep it"
+        },
+        {
+          "index": 4,
+          "text": "Why should I keep it?"
+        },
+        {
+          "index": 5,
+          "text": "Because I'm stronger than you"
+        },
+        {
+          "index": 6,
+          "text": "Stronger than your shit!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Come in and have a sit"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "Come in and have a seat",
+          "note": "Corrected 'sit' to 'seat' for the intended expression."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Honestly, I'm not your bro"
+        },
+        {
+          "index": 2,
+          "text": "I don't want to be your disciple"
+        },
+        {
+          "index": 3,
+          "text": "Master, be kind to me"
+        },
+        {
+          "index": 4,
+          "text": "Please let go of me, alright?"
+        },
+        {
+          "index": 5,
+          "text": "Do you know what “Dong, Dong…”is?"
+        },
+        {
+          "index": 6,
+          "text": "What “Dong, Dong, Dong”?"
+        },
+        {
+          "index": 7,
+          "text": "Only you…\ncan take me to get scriptures in the west"
+        },
+        {
+          "index": 8,
+          "text": "Only you… can kill the devils"
+        },
+        {
+          "index": 9,
+          "text": "Only you… can protect me"
+        },
+        {
+          "index": 10,
+          "text": "No need to eat by the monster"
+        },
+        {
+          "index": 11,
+          "text": "Only you are that strong"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Only you…\ndon't blame the master so talkative"
+        },
+        {
+          "index": 2,
+          "text": "Wear the ring back"
+        },
+        {
+          "index": 3,
+          "text": "Don't scare the death"
+        },
+        {
+          "index": 4,
+          "text": "Don't scare the shit"
+        },
+        {
+          "index": 5,
+          "text": "Do your best, if you scare,\nI'll be with you…"
+        },
+        {
+          "index": 6,
+          "text": "Namonitabhaya"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "Don't scare to death",
+          "note": "Corrected 'the death' to 'to death'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I can't take this anymore!"
+        },
+        {
+          "index": 2,
+          "text": "Oh your shit! Stop it!"
+        },
+        {
+          "index": 3,
+          "text": "I've said I can't take this anymore"
+        },
+        {
+          "index": 4,
+          "text": "But you still sing"
+        },
+        {
+          "index": 5,
+          "text": "You disregard my feelings"
+        },
+        {
+          "index": 6,
+          "text": "I'll kill you if you sing again"
+        },
+        {
+          "index": 7,
+          "text": "Monkey King, you kill you again"
+        },
+        {
+          "index": 8,
+          "text": "Life and death are minor"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Oh, you're shit! Stop it!",
+          "note": "Corrected 'Oh your' to 'Oh, you're'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You'll sing this song with me"
+        },
+        {
+          "index": 2,
+          "text": "when you know making sacrifices is\nso meaningful"
+        },
+        {
+          "index": 3,
+          "text": "Namonitabhaya…."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Zixia"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Bro, why are you taking a woman\nwith you?"
+        },
+        {
+          "index": 2,
+          "text": "Master has gone"
+        },
+        {
+          "index": 3,
+          "text": "He said we had to wait for him\nat the forest 300 miles away"
+        },
+        {
+          "index": 4,
+          "text": "Go there quickly, please"
+        },
+        {
+          "index": 5,
+          "text": "Hold it!t"
+        },
+        {
+          "index": 6,
+          "text": "What?"
+        },
+        {
+          "index": 7,
+          "text": "Ambush at the front"
+        },
+        {
+          "index": 8,
+          "text": "I can see it, no need to listen"
+        },
+        {
+          "index": 9,
+          "text": "Stupid"
+        },
+        {
+          "index": 10,
+          "text": "Hold you"
+        },
+        {
+          "index": 11,
+          "text": "Xiang Xiang!"
+        },
+        {
+          "index": 12,
+          "text": "Why are you here?"
+        },
+        {
+          "index": 13,
+          "text": "Wow! Why is there so much blood\non your hand?"
+        },
+        {
+          "index": 14,
+          "text": "This is the blood"
+        },
+        {
+          "index": 15,
+          "text": "of the woman you're holding"
+        },
+        {
+          "index": 16,
+          "text": "Her blood?"
+        },
+        {
+          "index": 17,
+          "text": "Yes! It's hers"
+        },
+        {
+          "index": 18,
+          "text": "I stabbed her"
+        },
+        {
+          "index": 19,
+          "text": "when she's sleeping"
+        },
+        {
+          "index": 20,
+          "text": "If this woman is still alive"
+        },
+        {
+          "index": 21,
+          "text": "you won't come back to me"
+        },
+        {
+          "index": 22,
+          "text": "You have to let it be"
+        },
+        {
+          "index": 23,
+          "text": "It is fate"
+        },
+        {
+          "index": 24,
+          "text": "Bullshit!"
+        },
+        {
+          "index": 25,
+          "text": "If it is fate that you love Piggy"
+        },
+        {
+          "index": 26,
+          "text": "will you love him?"
+        },
+        {
+          "index": 27,
+          "text": "If this is God's order"
+        },
+        {
+          "index": 28,
+          "text": "I have to accept it"
+        },
+        {
+          "index": 29,
+          "text": "Great!"
+        },
+        {
+          "index": 30,
+          "text": "You don't have to wait for God's order"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "Hold it!",
+          "note": "Removed the extra 't' in 'Hold it!t'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Wow! What are you going to do?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Go, go…"
+        },
+        {
+          "index": 2,
+          "text": "Changing Image Magic!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I will turn you into a rock"
+        },
+        {
+          "index": 2,
+          "text": "Let go of me!"
+        },
+        {
+          "index": 3,
+          "text": "Grab your breasts!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Zixia…!"
+        },
+        {
+          "index": 2,
+          "text": "Wake up"
+        },
+        {
+          "index": 3,
+          "text": "Big Bro, why are you embracing me?"
+        },
+        {
+          "index": 4,
+          "text": "Piggy?"
+        },
+        {
+          "index": 5,
+          "text": "Yes!"
+        },
+        {
+          "index": 6,
+          "text": "Where is Zixia?"
+        },
+        {
+          "index": 7,
+          "text": "Qin Xianglin…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Qingxia?"
+        },
+        {
+          "index": 2,
+          "text": "Wow! Please don't play joke!"
+        },
+        {
+          "index": 3,
+          "text": "I'm also hurt!"
+        },
+        {
+          "index": 4,
+          "text": "My chest muscles nearly touch\nmy stomach"
+        },
+        {
+          "index": 5,
+          "text": "Do you hate me?"
+        },
+        {
+          "index": 6,
+          "text": "No!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Wow! Please don't play a joke!",
+          "note": "Added 'a' before 'joke'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You hate me!"
+        },
+        {
+          "index": 2,
+          "text": "Fine! End now!"
+        },
+        {
+          "index": 3,
+          "text": "Stop! Give me some time"
+        },
+        {
+          "index": 4,
+          "text": "I just vomit. I'll vomit all things out soon"
+        },
+        {
+          "index": 5,
+          "text": "Fine! I trust you"
+        },
+        {
+          "index": 6,
+          "text": "Give you some time"
+        },
+        {
+          "index": 7,
+          "text": "Try to get used to it now"
+        },
+        {
+          "index": 8,
+          "text": "I'm used to it already"
+        },
+        {
+          "index": 9,
+          "text": "Fine, I'm OK"
+        },
+        {
+          "index": 10,
+          "text": "I wanna vomit!"
+        },
+        {
+          "index": 11,
+          "text": "You're so disgusting!"
+        },
+        {
+          "index": 12,
+          "text": "If you're not, he won't vomit"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "I just vomited. I'll vomit all things out soon",
+          "note": "Corrected 'vomit' to 'vomited' for past tense consistency."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Please be good to me"
+        },
+        {
+          "index": 2,
+          "text": "I will marry him"
+        },
+        {
+          "index": 3,
+          "text": "I'll give him a warm family"
+        },
+        {
+          "index": 4,
+          "text": "Give birth to many kids"
+        },
+        {
+          "index": 5,
+          "text": "Xianglin"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I will kill you!"
+        },
+        {
+          "index": 2,
+          "text": "Kill you"
+        },
+        {
+          "index": 3,
+          "text": "Bro, you're also hurt?"
+        },
+        {
+          "index": 4,
+          "text": "Turn me back!"
+        },
+        {
+          "index": 5,
+          "text": "Shut up!"
+        },
+        {
+          "index": 6,
+          "text": "Listen to me!"
+        },
+        {
+          "index": 7,
+          "text": "Change me back!"
+        },
+        {
+          "index": 8,
+          "text": "I also want to do so!"
+        },
+        {
+          "index": 9,
+          "text": "I've used my power once."
+        },
+        {
+          "index": 10,
+          "text": "I need 49 days to recover"
+        },
+        {
+          "index": 11,
+          "text": "49 days! I …"
+        },
+        {
+          "index": 12,
+          "text": "Xianglin, face the reality!"
+        },
+        {
+          "index": 13,
+          "text": "Use your energy!"
+        },
+        {
+          "index": 14,
+          "text": "Use your energy! Stop playing!"
+        },
+        {
+          "index": 15,
+          "text": "Be quick!"
+        },
+        {
+          "index": 16,
+          "text": "Who is inside you?"
+        },
+        {
+          "index": 17,
+          "text": "I don't know where I am"
+        },
+        {
+          "index": 18,
+          "text": "Two voices?"
+        },
+        {
+          "index": 19,
+          "text": "Who are you?"
+        },
+        {
+          "index": 20,
+          "text": "I'm Piggy. Who are you?"
+        },
+        {
+          "index": 21,
+          "text": "I'm Zixia"
+        },
+        {
+          "index": 22,
+          "text": "Xianglin"
+        },
+        {
+          "index": 23,
+          "text": "Joker"
+        },
+        {
+          "index": 24,
+          "text": "Bro"
+        },
+        {
+          "index": 25,
+          "text": "Zixia"
+        },
+        {
+          "index": 26,
+          "text": "Ziaxia, you're still here"
+        },
+        {
+          "index": 27,
+          "text": "You bitch!"
+        },
+        {
+          "index": 28,
+          "text": "I find you at last"
+        },
+        {
+          "index": 29,
+          "text": "What are you doing?"
+        },
+        {
+          "index": 30,
+          "text": "Long time no see, and you become this"
+        },
+        {
+          "index": 31,
+          "text": "Where's the Pandora's Box?"
+        },
+        {
+          "index": 32,
+          "text": "I didn't take it"
+        },
+        {
+          "index": 33,
+          "text": "Kidding"
+        },
+        {
+          "index": 34,
+          "text": "Give me"
+        },
+        {
+          "index": 35,
+          "text": "Wait"
+        },
+        {
+          "index": 36,
+          "text": "What will you do to the Box?"
+        },
+        {
+          "index": 37,
+          "text": "Go with me!"
+        },
+        {
+          "index": 38,
+          "text": "Fat woman! Don't hang around with me"
+        },
+        {
+          "index": 39,
+          "text": "Xianglin will go away with you…\nThe King Bull"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Don't dream"
+        },
+        {
+          "index": 2,
+          "text": "you ask him if you don't believe it"
+        },
+        {
+          "index": 3,
+          "text": "You said you love me"
+        },
+        {
+          "index": 4,
+          "text": "because you wanna take this and"
+        },
+        {
+          "index": 5,
+          "text": "go away with her?"
+        },
+        {
+          "index": 6,
+          "text": "Wait…"
+        },
+        {
+          "index": 7,
+          "text": "It's not true"
+        },
+        {
+          "index": 8,
+          "text": "Don't want you to throw it away"
+        },
+        {
+          "index": 9,
+          "text": "Great!"
+        },
+        {
+          "index": 10,
+          "text": "You should not do that"
+        },
+        {
+          "index": 11,
+          "text": "Look at you"
+        },
+        {
+          "index": 12,
+          "text": "Don't deny it!"
+        },
+        {
+          "index": 13,
+          "text": "I'll throw that away!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Bro…"
+        },
+        {
+          "index": 2,
+          "text": "What a man!"
+        },
+        {
+          "index": 3,
+          "text": "Shut up!"
+        },
+        {
+          "index": 4,
+          "text": "I love that!"
+        },
+        {
+          "index": 5,
+          "text": "You can't leave anymore"
+        },
+        {
+          "index": 6,
+          "text": "Bull, you're seriously hurt"
+        },
+        {
+          "index": 7,
+          "text": "Do you think that bitch hurt lesser?"
+        },
+        {
+          "index": 8,
+          "text": "Have a look!"
+        },
+        {
+          "index": 9,
+          "text": "You've deceived me so long"
+        },
+        {
+          "index": 10,
+          "text": "In fact, I'm not"
+        },
+        {
+          "index": 11,
+          "text": "Xianglin, who's that woman?"
+        },
+        {
+          "index": 12,
+          "text": "I won't listen to you!"
+        },
+        {
+          "index": 13,
+          "text": "Bastard! I'll leave you"
+        },
+        {
+          "index": 14,
+          "text": "You affairs are none of my business"
+        },
+        {
+          "index": 15,
+          "text": "You get yours! And I get mine!"
+        },
+        {
+          "index": 16,
+          "text": "Help Zixia, you have a part in the body"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 14,
+          "text": "Your affairs are none of my business",
+          "note": "Corrected 'You' to 'Your'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Beat it up, make it hurt! Then you can\ndo nothing about it even if you"
+        },
+        {
+          "index": 2,
+          "text": "Yes!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Wanna go?"
+        },
+        {
+          "index": 2,
+          "text": "Explain it clearly or you can't leave!"
+        },
+        {
+          "index": 3,
+          "text": "Don't hit him!"
+        },
+        {
+          "index": 4,
+          "text": "Bitch"
+        },
+        {
+          "index": 5,
+          "text": "Bitch, stand aside,\nit's none of your business"
+        },
+        {
+          "index": 6,
+          "text": "Stop it!"
+        },
+        {
+          "index": 7,
+          "text": "I'm afraid that she'll hurt my body"
+        },
+        {
+          "index": 8,
+          "text": "I won't help you"
+        },
+        {
+          "index": 9,
+          "text": "Shut up!"
+        },
+        {
+          "index": 10,
+          "text": "I'll help her and beat you up"
+        },
+        {
+          "index": 11,
+          "text": "Have a try!"
+        },
+        {
+          "index": 12,
+          "text": "I'm a woman. Please don't hit her strongly.\nI'll kill you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I won't give help.\nI just wanna see your fight!"
+        },
+        {
+          "index": 2,
+          "text": "Go!"
+        },
+        {
+          "index": 3,
+          "text": "No"
+        },
+        {
+          "index": 4,
+          "text": "I'll take the Box for you"
+        },
+        {
+          "index": 5,
+          "text": "And you can explain to your wife"
+        },
+        {
+          "index": 6,
+          "text": "Wow, you're great! Perfect!"
+        },
+        {
+          "index": 7,
+          "text": "Really?"
+        },
+        {
+          "index": 8,
+          "text": "You're as perfect as possible"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Wait!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You!"
+        },
+        {
+          "index": 2,
+          "text": "Bitch, don't hit my girl"
+        },
+        {
+          "index": 3,
+          "text": "I like to do it"
+        },
+        {
+          "index": 4,
+          "text": "Your man has gone"
+        },
+        {
+          "index": 5,
+          "text": "How cool he is!"
+        },
+        {
+          "index": 6,
+          "text": "I'm a lucky woman!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Ok, I can play jumping down\nfrom the cliff"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Go nearer"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Monkey King"
+        },
+        {
+          "index": 2,
+          "text": "Don't jump!"
+        },
+        {
+          "index": 3,
+          "text": "I don't want to do so"
+        },
+        {
+          "index": 4,
+          "text": "You prefer jumping down to seeing me"
+        },
+        {
+          "index": 5,
+          "text": "Ok,\nI'd better go back to the Flam Mountain"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "Ok,\nI'd better go back to the Flame Mountain",
+          "note": "Corrected 'Flam' to 'Flame'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I won't do this case"
+        },
+        {
+          "index": 2,
+          "text": "if I know this before"
+        },
+        {
+          "index": 3,
+          "text": "I don't know stealing grapes will\nmake me suffer such punishment"
+        },
+        {
+          "index": 4,
+          "text": "If I know that, I won't be a robber"
+        },
+        {
+          "index": 5,
+          "text": "Yes, sure"
+        },
+        {
+          "index": 6,
+          "text": "Like me, being a soldier"
+        },
+        {
+          "index": 7,
+          "text": "you have no chance yet"
+        },
+        {
+          "index": 8,
+          "text": "unless immortal comes to save you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I won't be a soldier"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Immortal has come"
+        },
+        {
+          "index": 2,
+          "text": "Immortal!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Granpa Buddha"
+        },
+        {
+          "index": 2,
+          "text": "He steams buns"
+        },
+        {
+          "index": 3,
+          "text": "None of your business!"
+        },
+        {
+          "index": 4,
+          "text": "Jing Jing!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "Grandpa Buddha",
+          "note": "Corrected 'Granpa' to 'Grandpa'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Don't flirt me!"
+        },
+        {
+          "index": 2,
+          "text": "I flirt you because I love you"
+        },
+        {
+          "index": 3,
+          "text": "Listen, if you want to be my wife"
+        },
+        {
+          "index": 4,
+          "text": "don't do bad anymore in the future"
+        },
+        {
+          "index": 5,
+          "text": "Sure!"
+        },
+        {
+          "index": 6,
+          "text": "Let's go"
+        },
+        {
+          "index": 7,
+          "text": "Drink tea"
+        },
+        {
+          "index": 8,
+          "text": "Thank you!"
+        },
+        {
+          "index": 9,
+          "text": "You're welcome"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "Don't flirt with me!",
+          "note": "Inserted 'with' after 'flirt' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Why bring me back to this cave?"
+        },
+        {
+          "index": 2,
+          "text": "I didn't bring you back"
+        },
+        {
+          "index": 3,
+          "text": "It's you who brought us back"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It may be because I miss Jing Jing\nvery much"
+        },
+        {
+          "index": 2,
+          "text": "Yes! When you fainted"
+        },
+        {
+          "index": 3,
+          "text": "you spoke out the name Jing Jing\n98 times!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Jing Jing is my wife"
+        },
+        {
+          "index": 2,
+          "text": "and a name Zixia"
+        },
+        {
+          "index": 3,
+          "text": "You repeated 784 times"
+        },
+        {
+          "index": 4,
+          "text": "784 times"
+        },
+        {
+          "index": 5,
+          "text": "She must have owed you lots of money"
+        },
+        {
+          "index": 6,
+          "text": "I want Spider Web Cave Immortal to be\nmy master"
+        },
+        {
+          "index": 7,
+          "text": "She's changed Waterfall Cave into\nSpider Web Cave"
+        },
+        {
+          "index": 8,
+          "text": "You tell me there's no such person!"
+        },
+        {
+          "index": 9,
+          "text": "We don't know"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "Jing Jing is my wife,",
+          "note": "Added a comma at the end for punctuation consistency."
+        },
+        {
+          "index": 2,
+          "text": "and a name Zixia,",
+          "note": "Added a comma at the end for punctuation consistency."
+        },
+        {
+          "index": 3,
+          "text": "You repeated 784 times,",
+          "note": "Added a comma at the end for punctuation consistency."
+        },
+        {
+          "index": 4,
+          "text": "784 times,",
+          "note": "Added a comma at the end for punctuation consistency."
+        },
+        {
+          "index": 5,
+          "text": "She must have owed you lots of money,",
+          "note": "Added a comma at the end for punctuation consistency."
+        },
+        {
+          "index": 6,
+          "text": "I want Spider Web Cave Immortal to be\nmy master,",
+          "note": "Added a comma at the end for punctuation consistency."
+        },
+        {
+          "index": 7,
+          "text": "She's changed Waterfall Cave into\nSpider Web Cave,",
+          "note": "Added a comma at the end for punctuation consistency."
+        },
+        {
+          "index": 8,
+          "text": "You tell me there's no such person,",
+          "note": "Added a comma at the end for punctuation consistency."
+        },
+        {
+          "index": 9,
+          "text": "We don't know,",
+          "note": "Added a comma at the end for punctuation consistency."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Son of a bitch, you're still here!"
+        },
+        {
+          "index": 2,
+          "text": "Why did you do that to me?"
+        },
+        {
+          "index": 3,
+          "text": "Jing Jing"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Jing Jing, it's nice to see you"
+        },
+        {
+          "index": 2,
+          "text": "What?"
+        },
+        {
+          "index": 3,
+          "text": "You've got thinner"
+        },
+        {
+          "index": 4,
+          "text": "I'm not the Monkey King"
+        },
+        {
+          "index": 5,
+          "text": "But I don't how to tell you"
+        },
+        {
+          "index": 6,
+          "text": "because you won't believe in it"
+        },
+        {
+          "index": 7,
+          "text": "I will"
+        },
+        {
+          "index": 8,
+          "text": "Because that damn monkey won't be\nso gentle to me"
+        },
+        {
+          "index": 9,
+          "text": "Who are you?"
+        },
+        {
+          "index": 10,
+          "text": "I'll be your husband 500 years later"
+        },
+        {
+          "index": 11,
+          "text": "500 years later"
+        },
+        {
+          "index": 12,
+          "text": "you will give up this affair because of me"
+        },
+        {
+          "index": 13,
+          "text": "What I did is totally"
+        },
+        {
+          "index": 14,
+          "text": "just for you"
+        },
+        {
+          "index": 15,
+          "text": "Jing Jing, I miss you"
+        },
+        {
+          "index": 16,
+          "text": "I miss you much and much"
+        },
+        {
+          "index": 17,
+          "text": "I miss you much and much and much"
+        },
+        {
+          "index": 18,
+          "text": "Don't you trust me?"
+        },
+        {
+          "index": 19,
+          "text": "No!"
+        },
+        {
+          "index": 20,
+          "text": "I can't blame you"
+        },
+        {
+          "index": 21,
+          "text": "Let me see what's going on"
+        },
+        {
+          "index": 22,
+          "text": "But I think I know you"
+        },
+        {
+          "index": 23,
+          "text": "Absolutely"
+        },
+        {
+          "index": 24,
+          "text": "Very and absolutely"
+        },
+        {
+          "index": 25,
+          "text": "Very and absolutely and extremely!"
+        },
+        {
+          "index": 26,
+          "text": "How will we meet 500 years later?"
+        },
+        {
+          "index": 27,
+          "text": "At a pitch-dark night"
+        },
+        {
+          "index": 28,
+          "text": "I'm Joker, you're Pak Jing Jing"
+        },
+        {
+          "index": 29,
+          "text": "Fantastic love"
+        },
+        {
+          "index": 30,
+          "text": "starts from a fire at the bridge"
+        },
+        {
+          "index": 31,
+          "text": "When I turn back,\nyou point at me with your finger"
+        },
+        {
+          "index": 32,
+          "text": "then my hand gets burning"
+        },
+        {
+          "index": 33,
+          "text": "you rush to me and hit me!"
+        },
+        {
+          "index": 34,
+          "text": "Hit and hit and hit!"
+        },
+        {
+          "index": 35,
+          "text": "No…"
+        },
+        {
+          "index": 36,
+          "text": "look at me…"
+        },
+        {
+          "index": 37,
+          "text": "yes, can you see it!"
+        },
+        {
+          "index": 38,
+          "text": "there are many"
+        },
+        {
+          "index": 39,
+          "text": "twists and turns"
+        },
+        {
+          "index": 40,
+          "text": "Suddenly, the King Bull comes to us"
+        },
+        {
+          "index": 41,
+          "text": "I fight with him with a bone"
+        },
+        {
+          "index": 42,
+          "text": "He grabbed me to the Spider Web Cave"
+        },
+        {
+          "index": 43,
+          "text": "It's right that time flies"
+        },
+        {
+          "index": 44,
+          "text": "The following is the main content"
+        },
+        {
+          "index": 45,
+          "text": "On the cliff, we reach the climax"
+        },
+        {
+          "index": 46,
+          "text": "At that time, I touch you"
+        },
+        {
+          "index": 47,
+          "text": "You touch me too"
+        },
+        {
+          "index": 48,
+          "text": "We make promise that we won't separate"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "But I don't know how to tell you",
+          "note": "Corrected 'don't how' to 'don't know'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "But happiness is always a flash of time"
+        },
+        {
+          "index": 2,
+          "text": "We only have endless pain!"
+        },
+        {
+          "index": 3,
+          "text": "Why will you die?"
+        },
+        {
+          "index": 4,
+          "text": "So I use the Box to travel back"
+        },
+        {
+          "index": 5,
+          "text": "to the past"
+        },
+        {
+          "index": 6,
+          "text": "I discover that you kill yourself"
+        },
+        {
+          "index": 7,
+          "text": "At the last moment"
+        },
+        {
+          "index": 8,
+          "text": "I save your life!"
+        },
+        {
+          "index": 9,
+          "text": "But at the last time of time travel"
+        },
+        {
+          "index": 10,
+          "text": "the Box doesn't work properly."
+        },
+        {
+          "index": 11,
+          "text": "I go back to 500 years ago"
+        },
+        {
+          "index": 12,
+          "text": "That is the story"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What are you gonna do now?"
+        },
+        {
+          "index": 2,
+          "text": "I've found you, I needn't go back now"
+        },
+        {
+          "index": 3,
+          "text": "Let's get married!"
+        },
+        {
+          "index": 4,
+          "text": "I … I just wake up"
+        },
+        {
+          "index": 5,
+          "text": "I have nothing to do"
+        },
+        {
+          "index": 6,
+          "text": "So I come here. I wanna be a disciple"
+        },
+        {
+          "index": 7,
+          "text": "You request marriage suddenly"
+        },
+        {
+          "index": 8,
+          "text": "I…haven't brushed my teeth!"
+        },
+        {
+          "index": 9,
+          "text": "I know you're suspecting…"
+        },
+        {
+          "index": 10,
+          "text": "If I can give you my heart"
+        },
+        {
+          "index": 11,
+          "text": "you'll know I'm not cheating you"
+        },
+        {
+          "index": 12,
+          "text": "it's very simple!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You look like a thing"
+        },
+        {
+          "index": 2,
+          "text": "Coconut?"
+        },
+        {
+          "index": 3,
+          "text": "A girl said that to me"
+        },
+        {
+          "index": 4,
+          "text": "Oh, coconut"
+        },
+        {
+          "index": 5,
+          "text": "are his words all true?"
+        },
+        {
+          "index": 6,
+          "text": "No need to think!"
+        },
+        {
+          "index": 7,
+          "text": "You search the bottom!"
+        },
+        {
+          "index": 8,
+          "text": "Coconut, thank you very much"
+        },
+        {
+          "index": 9,
+          "text": "Please tell you, am I his best love?"
+        },
+        {
+          "index": 10,
+          "text": "You've come back for a long time"
+        },
+        {
+          "index": 11,
+          "text": "You just wanna get the Pandora's Box"
+        },
+        {
+          "index": 12,
+          "text": "What do you mean?"
+        },
+        {
+          "index": 13,
+          "text": "I'm asking you when we will get marry"
+        },
+        {
+          "index": 14,
+          "text": "But you keep saying no"
+        },
+        {
+          "index": 15,
+          "text": "Will you marry me?"
+        },
+        {
+          "index": 16,
+          "text": "I do!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 13,
+          "text": "I'm asking you when we will get married",
+          "note": "Corrected 'get marry' to 'get married'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Is your sister crazy?"
+        },
+        {
+          "index": 2,
+          "text": "She keeps speaking nonsense all day long"
+        },
+        {
+          "index": 3,
+          "text": "She's not crazy.\nShe's something wrong with the brain"
+        },
+        {
+          "index": 4,
+          "text": "If she promises…"
+        },
+        {
+          "index": 5,
+          "text": "she has promised to marry him\n7 days later"
+        },
+        {
+          "index": 6,
+          "text": "you have made up your mind?"
+        },
+        {
+          "index": 7,
+          "text": "I cheated him"
+        },
+        {
+          "index": 8,
+          "text": "I'm waiting for my man to pick me up!"
+        },
+        {
+          "index": 9,
+          "text": "You think that bastard will come to\npick you up?"
+        },
+        {
+          "index": 10,
+          "text": "Congratulations!"
+        },
+        {
+          "index": 11,
+          "text": "But even if he comes back"
+        },
+        {
+          "index": 12,
+          "text": "he can't get you back"
+        },
+        {
+          "index": 13,
+          "text": "from the King Bull"
+        },
+        {
+          "index": 14,
+          "text": "It is fate that he can pull out\nmy Magic Sword"
+        },
+        {
+          "index": 15,
+          "text": "He must be an inordinary man"
+        },
+        {
+          "index": 16,
+          "text": "I'm sure"
+        },
+        {
+          "index": 17,
+          "text": "I know he'll come back one day"
+        },
+        {
+          "index": 18,
+          "text": "appear in public"
+        },
+        {
+          "index": 19,
+          "text": "wearing golden armour"
+        },
+        {
+          "index": 20,
+          "text": "and stepping on colorful cloud,\ncome to marry me"
+        },
+        {
+          "index": 21,
+          "text": "You are crazy!"
+        },
+        {
+          "index": 22,
+          "text": "I'm not crazy! This is just my hope"
+        },
+        {
+          "index": 23,
+          "text": "Promise me! Little psycho"
+        },
+        {
+          "index": 24,
+          "text": "No!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Bro, things are always unpredictable"
+        },
+        {
+          "index": 2,
+          "text": "I can't think you'll get marry with\nMiss Pak so soon"
+        },
+        {
+          "index": 3,
+          "text": "Yes, me too"
+        },
+        {
+          "index": 4,
+          "text": "We're happy for you!"
+        },
+        {
+          "index": 5,
+          "text": "Thank you!"
+        },
+        {
+          "index": 6,
+          "text": "You made dreams last night"
+        },
+        {
+          "index": 7,
+          "text": "You repeated the name Zixia 785 times"
+        },
+        {
+          "index": 8,
+          "text": "One time more than last night"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "I can't think you'll get married with\nMiss Pak so soon",
+          "note": "Corrected 'marry' to 'married'."
+        },
+        {
+          "index": 6,
+          "text": "You had dreams last night",
+          "note": "Corrected 'made dreams' to 'had dreams'."
+        },
+        {
+          "index": 8,
+          "text": "One time more than last night.",
+          "note": "Added a period at the end."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "6 days have passed.\nYou'll get marry tomorrow"
+        },
+        {
+          "index": 2,
+          "text": "He will come? I don't think so"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "6 days have passed.\nYou'll get married tomorrow",
+          "note": "Corrected 'get marry' to 'get married'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Yesterday, I told a spider to tell you"
+        },
+        {
+          "index": 2,
+          "text": "Told you I missed you much"
+        },
+        {
+          "index": 3,
+          "text": "Do you know?"
+        },
+        {
+          "index": 4,
+          "text": "You don't know again"
+        },
+        {
+          "index": 5,
+          "text": "I am cheating you"
+        },
+        {
+          "index": 6,
+          "text": "That's fine!"
+        },
+        {
+          "index": 7,
+          "text": "Just like a moth"
+        },
+        {
+          "index": 8,
+          "text": "it flies to fire even it knows it'll get hurt"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 8,
+          "text": "it flies to fire even though it knows it'll get hurt",
+          "note": "Corrected 'even it' to 'even though it'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Moth is so silly!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Come out, grapes"
+        },
+        {
+          "index": 2,
+          "text": "I don't want to watch you"
+        },
+        {
+          "index": 3,
+          "text": "I just want to study"
+        },
+        {
+          "index": 4,
+          "text": "the interesting relationship among humans"
+        },
+        {
+          "index": 5,
+          "text": "Bro, you're a robber"
+        },
+        {
+          "index": 6,
+          "text": "Don't pretend to be a scholar"
+        },
+        {
+          "index": 7,
+          "text": "Even a robber has its own knowledge"
+        },
+        {
+          "index": 8,
+          "text": "Stop it, go to sleep"
+        },
+        {
+          "index": 9,
+          "text": "In your mind,\nis Zixia an exclamation mark?"
+        },
+        {
+          "index": 10,
+          "text": "Or she's a full stop?"
+        },
+        {
+          "index": 11,
+          "text": "Is your mind full of question marks?"
+        },
+        {
+          "index": 12,
+          "text": "Zixia is just a girl who I know"
+        },
+        {
+          "index": 13,
+          "text": "I lied to her in the past"
+        },
+        {
+          "index": 14,
+          "text": "I'm just feeling a little bit regretful"
+        },
+        {
+          "index": 15,
+          "text": "I hate him"
+        },
+        {
+          "index": 16,
+          "text": "I'll get marry today. What do you want?"
+        },
+        {
+          "index": 17,
+          "text": "When you discover that"
+        },
+        {
+          "index": 18,
+          "text": "you've fallen in love with a man you hate"
+        },
+        {
+          "index": 19,
+          "text": "this affair is really hurting you"
+        },
+        {
+          "index": 20,
+          "text": "But how can I fall in love\nwith a person I hate?"
+        },
+        {
+          "index": 21,
+          "text": "Please give me a reason. Please!"
+        },
+        {
+          "index": 22,
+          "text": "We don't need any reason to love a person"
+        },
+        {
+          "index": 23,
+          "text": "Don't we?"
+        },
+        {
+          "index": 24,
+          "text": "Do we?"
+        },
+        {
+          "index": 25,
+          "text": "Don't we?"
+        },
+        {
+          "index": 26,
+          "text": "Do we?"
+        },
+        {
+          "index": 27,
+          "text": "Don't we?"
+        },
+        {
+          "index": 28,
+          "text": "Let me study it for you"
+        },
+        {
+          "index": 29,
+          "text": "Why are you so serious? Need we?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 16,
+          "text": "I'll get married today. What do you want?",
+          "note": "Corrected 'marry' to 'married'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Who?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Time's up"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "How many brothers and sisters\ndo you have?"
+        },
+        {
+          "index": 2,
+          "text": "Are you parents alive?"
+        },
+        {
+          "index": 3,
+          "text": "Speak up!"
+        },
+        {
+          "index": 4,
+          "text": "I just wanna make a new friend"
+        },
+        {
+          "index": 5,
+          "text": "when I'm going to die"
+        },
+        {
+          "index": 6,
+          "text": "How to save Master?"
+        },
+        {
+          "index": 7,
+          "text": "Being a devil is the same as\nbeing a human"
+        },
+        {
+          "index": 8,
+          "text": "We should be kind"
+        },
+        {
+          "index": 9,
+          "text": "If we are kind"
+        },
+        {
+          "index": 10,
+          "text": "we are not a devil, we are a hybrid"
+        },
+        {
+          "index": 11,
+          "text": "He understand?"
+        },
+        {
+          "index": 12,
+          "text": "do you understand?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Are your parents alive?",
+          "note": "Corrected 'Are you parents' to 'Are your parents'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "No one will come to pick you up"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Your letter"
+        },
+        {
+          "index": 2,
+          "text": "Thank you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Your conscience told me that"
+        },
+        {
+          "index": 2,
+          "text": "I'm not your best love"
+        },
+        {
+          "index": 3,
+          "text": "Your best love is another woman"
+        },
+        {
+          "index": 4,
+          "text": "When I saw the thing left by her\nin your heart"
+        },
+        {
+          "index": 5,
+          "text": "I know that you came back not for me"
+        },
+        {
+          "index": 6,
+          "text": "but for her"
+        },
+        {
+          "index": 7,
+          "text": "This is God's order"
+        },
+        {
+          "index": 8,
+          "text": "It is also called fate"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Jing Jing's gone"
+        },
+        {
+          "index": 2,
+          "text": "I know"
+        },
+        {
+          "index": 3,
+          "text": "I've read the letter"
+        },
+        {
+          "index": 4,
+          "text": "Granpa Buddha"
+        },
+        {
+          "index": 5,
+          "text": "What's going on with her?"
+        },
+        {
+          "index": 6,
+          "text": "Have you read this letter?"
+        },
+        {
+          "index": 7,
+          "text": "No"
+        },
+        {
+          "index": 8,
+          "text": "You read it"
+        },
+        {
+          "index": 9,
+          "text": "Good"
+        },
+        {
+          "index": 10,
+          "text": "Wanna go?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "Grandpa Buddha",
+          "note": "Corrected 'Granpa' to 'Grandpa'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I know my sister Pak Jing Jing\nhas been here"
+        },
+        {
+          "index": 2,
+          "text": "Where is she now?"
+        },
+        {
+          "index": 3,
+          "text": "Speak up!"
+        },
+        {
+          "index": 4,
+          "text": "Does she owe you this much?"
+        },
+        {
+          "index": 5,
+          "text": "You don't let your sister go"
+        },
+        {
+          "index": 6,
+          "text": "Just tell me"
+        },
+        {
+          "index": 7,
+          "text": "I don't know"
+        },
+        {
+          "index": 8,
+          "text": "I don't know"
+        },
+        {
+          "index": 9,
+          "text": "it is heard that you're kind"
+        },
+        {
+          "index": 10,
+          "text": "They are your friends?"
+        },
+        {
+          "index": 11,
+          "text": "No!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 9,
+          "text": "it is said that you're kind",
+          "note": "Corrected 'it is heard' to 'it is said'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Do you know?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Kill me if you must kill someone"
+        },
+        {
+          "index": 2,
+          "text": "They don't know your sister"
+        },
+        {
+          "index": 3,
+          "text": "All of them are innocent"
+        },
+        {
+          "index": 4,
+          "text": "I agree!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I admire bold people very much"
+        },
+        {
+          "index": 2,
+          "text": "If you're one of them"
+        },
+        {
+          "index": 3,
+          "text": "I can fulfill your desire!"
+        },
+        {
+          "index": 4,
+          "text": "Wait!"
+        },
+        {
+          "index": 5,
+          "text": "I really think that\nyou aren't scared of death!"
+        },
+        {
+          "index": 6,
+          "text": "I'm gonna die. Please do me a favor"
+        },
+        {
+          "index": 7,
+          "text": "I've heard that if you cut fast and\naccurately"
+        },
+        {
+          "index": 8,
+          "text": "the man got hurt won't die at once\nwhen he's cut open"
+        },
+        {
+          "index": 9,
+          "text": "He can still see"
+        },
+        {
+          "index": 10,
+          "text": "Help me, do it as fast as you can"
+        },
+        {
+          "index": 11,
+          "text": "Tear out my heart"
+        },
+        {
+          "index": 12,
+          "text": "Let you see it clearly"
+        },
+        {
+          "index": 13,
+          "text": "What are you talking about?"
+        },
+        {
+          "index": 14,
+          "text": "A friend of mind"
+        },
+        {
+          "index": 15,
+          "text": "left something in my heart"
+        },
+        {
+          "index": 16,
+          "text": "I want to know what's that"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 14,
+          "text": "A friend of mine",
+          "note": "Corrected 'mind' to 'mine'."
+        },
+        {
+          "index": 16,
+          "text": "I want to know what's that.",
+          "note": "Added a period at the end of the sentence."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's strange"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Humans and devils are born\nby their mothers"
+        },
+        {
+          "index": 2,
+          "text": "Different person acts as a different mom"
+        },
+        {
+          "index": 3,
+          "text": "A devil's mom is a devil's mom"
+        },
+        {
+          "index": 4,
+          "text": "I can take this"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What's your name of your mom?"
+        },
+        {
+          "index": 2,
+          "text": "Kowtow to Heaven and Earth"
+        },
+        {
+          "index": 3,
+          "text": "Let's marry"
+        },
+        {
+          "index": 4,
+          "text": "Wait!"
+        },
+        {
+          "index": 5,
+          "text": "Look!"
+        },
+        {
+          "index": 6,
+          "text": "Now, she is the younger sister and\nshe'll save her elder sister"
+        },
+        {
+          "index": 7,
+          "text": "The elder sister\nwill save the younger sister"
+        },
+        {
+          "index": 8,
+          "text": "What do you want?"
+        },
+        {
+          "index": 9,
+          "text": "We're married today. Let my sister go"
+        },
+        {
+          "index": 10,
+          "text": "I won't break my promise"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "What's your mom's name?",
+          "note": "Corrected word order and changed 'your name of your mom' to 'your mom's name'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I don't want to fight anymore"
+        },
+        {
+          "index": 2,
+          "text": "You go!"
+        },
+        {
+          "index": 3,
+          "text": "I just have one sister in my life"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Sister"
+        },
+        {
+          "index": 2,
+          "text": "King Bull!"
+        },
+        {
+          "index": 3,
+          "text": "I won't let my sister marry you"
+        },
+        {
+          "index": 4,
+          "text": "Sister"
+        },
+        {
+          "index": 5,
+          "text": "What are you talking about?"
+        },
+        {
+          "index": 6,
+          "text": "I just have one sister in my whole life"
+        },
+        {
+          "index": 7,
+          "text": "Come on!"
+        },
+        {
+          "index": 8,
+          "text": "I'm right"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Faster than me"
+        },
+        {
+          "index": 2,
+          "text": "you're so great"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's time"
+        },
+        {
+          "index": 2,
+          "text": "Changing image"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Xiang Xiang?"
+        },
+        {
+          "index": 2,
+          "text": "I'm not your sister"
+        },
+        {
+          "index": 3,
+          "text": "Xiang Xiang, what are you doing?"
+        },
+        {
+          "index": 4,
+          "text": "Brother"
+        },
+        {
+          "index": 5,
+          "text": "Brother, my Changing Image Magic…"
+        },
+        {
+          "index": 6,
+          "text": "Xiang Xiang"
+        },
+        {
+          "index": 7,
+          "text": "Turn me into a dog"
+        },
+        {
+          "index": 8,
+          "text": "Who are you?"
+        },
+        {
+          "index": 9,
+          "text": "I'm Qingxia!"
+        },
+        {
+          "index": 10,
+          "text": "Sister…"
+        },
+        {
+          "index": 11,
+          "text": "I will kill you"
+        },
+        {
+          "index": 12,
+          "text": "Go to save Master!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Don't hit my sister!"
+        },
+        {
+          "index": 2,
+          "text": "Come to save us"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Kill that girl!"
+        },
+        {
+          "index": 2,
+          "text": "No!"
+        },
+        {
+          "index": 3,
+          "text": "It's you!…Go away!"
+        },
+        {
+          "index": 4,
+          "text": "I'll kill the one who block my way"
+        },
+        {
+          "index": 5,
+          "text": "Goddess"
+        },
+        {
+          "index": 6,
+          "text": "I'm about to understand your words"
+        },
+        {
+          "index": 7,
+          "text": "I use my eyes to see"
+        },
+        {
+          "index": 8,
+          "text": "When I'm dying"
+        },
+        {
+          "index": 9,
+          "text": "I use my heart to see this world"
+        },
+        {
+          "index": 10,
+          "text": "and all things"
+        },
+        {
+          "index": 11,
+          "text": "I see it clearly"
+        },
+        {
+          "index": 12,
+          "text": "That girl…"
+        },
+        {
+          "index": 13,
+          "text": "left a drop of tear in my heart"
+        },
+        {
+          "index": 14,
+          "text": "I felt"
+        },
+        {
+          "index": 15,
+          "text": "her sorrow"
+        },
+        {
+          "index": 16,
+          "text": "Have you given up"
+        },
+        {
+          "index": 17,
+          "text": "all things in human world?"
+        },
+        {
+          "index": 18,
+          "text": "Yes"
+        },
+        {
+          "index": 19,
+          "text": "Life and death"
+        },
+        {
+          "index": 20,
+          "text": "is minor"
+        },
+        {
+          "index": 21,
+          "text": "Great, great"
+        },
+        {
+          "index": 22,
+          "text": "Congratulations"
+        },
+        {
+          "index": 23,
+          "text": "Bro, what's up?"
+        },
+        {
+          "index": 24,
+          "text": "Come on, have a sit"
+        },
+        {
+          "index": 25,
+          "text": "Have a sit"
+        },
+        {
+          "index": 26,
+          "text": "It's unlucky that 3 friends of mine were\nget involved"
+        },
+        {
+          "index": 27,
+          "text": "It's none of their business!"
+        },
+        {
+          "index": 28,
+          "text": "But I don't understand"
+        },
+        {
+          "index": 29,
+          "text": "Why can human hatred lasts 10 years,\n50 years"
+        },
+        {
+          "index": 30,
+          "text": "and even 500 years?"
+        },
+        {
+          "index": 31,
+          "text": "What hatred is it?"
+        },
+        {
+          "index": 32,
+          "text": "So the Longevity Monk went to the west"
+        },
+        {
+          "index": 33,
+          "text": "and got scriptures"
+        },
+        {
+          "index": 34,
+          "text": "which clean our heart"
+        },
+        {
+          "index": 35,
+          "text": "Understand"
+        },
+        {
+          "index": 36,
+          "text": "I wanna stay. There are"
+        },
+        {
+          "index": 37,
+          "text": "many things waiting for me to do"
+        },
+        {
+          "index": 38,
+          "text": "You go to have your next lives\nas soon as possible!"
+        },
+        {
+          "index": 39,
+          "text": "Good!"
+        },
+        {
+          "index": 40,
+          "text": "You're slashed because of me"
+        },
+        {
+          "index": 41,
+          "text": "I hope I can pay you back in my next life"
+        },
+        {
+          "index": 42,
+          "text": "Pay back more"
+        },
+        {
+          "index": 43,
+          "text": "I can do what I can do, grapes"
+        },
+        {
+          "index": 44,
+          "text": "Goodbye"
+        },
+        {
+          "index": 45,
+          "text": "We're leaving"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "I'll kill the one who blocks my way",
+          "note": "Corrected 'block' to 'blocks'."
+        },
+        {
+          "index": 20,
+          "text": "Life and death",
+          "note": "Removed the unnecessary 'is' by correcting the subtitle to match the intended sentence fragment."
+        },
+        {
+          "index": 24,
+          "text": "Come on, have a seat",
+          "note": "Corrected 'sit' to 'seat'."
+        },
+        {
+          "index": 25,
+          "text": "Have a seat",
+          "note": "Corrected 'sit' to 'seat'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I wanna warn you again"
+        },
+        {
+          "index": 2,
+          "text": "After wearing the Gold Ring"
+        },
+        {
+          "index": 3,
+          "text": "you're no longer a normal human"
+        },
+        {
+          "index": 4,
+          "text": "You can't touch human desires anymore"
+        },
+        {
+          "index": 5,
+          "text": "If you do so"
+        },
+        {
+          "index": 6,
+          "text": "the Gold Ring will get smaller and smaller"
+        },
+        {
+          "index": 7,
+          "text": "It's very uncomfortable"
+        },
+        {
+          "index": 8,
+          "text": "Ok!"
+        },
+        {
+          "index": 9,
+          "text": "Before wearing this Ring"
+        },
+        {
+          "index": 10,
+          "text": "what do you wanna say?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I had my best love"
+        },
+        {
+          "index": 2,
+          "text": "But I don't treasure her"
+        },
+        {
+          "index": 3,
+          "text": "When I lost her, I felt regretful"
+        },
+        {
+          "index": 4,
+          "text": "It is the most painful thing in this world"
+        },
+        {
+          "index": 5,
+          "text": "If God can give me"
+        },
+        {
+          "index": 6,
+          "text": "another chance"
+        },
+        {
+          "index": 7,
+          "text": "I will say “I love you” to her!"
+        },
+        {
+          "index": 8,
+          "text": "If there is a time limit"
+        },
+        {
+          "index": 9,
+          "text": "I hope…it is 10 thousand years"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 9,
+          "text": "I hope…it is 10,000 years",
+          "note": "Added a comma in '10 thousand' for correct number formatting."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Kowtow"
+        },
+        {
+          "index": 2,
+          "text": "Kowtow"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Kowtow to the forefather,\ndrink wedding wine"
+        },
+        {
+          "index": 2,
+          "text": "Now you're a member of the Bull Family"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Colorful clouds…"
+        },
+        {
+          "index": 2,
+          "text": "Look like mashmallow"
+        },
+        {
+          "index": 3,
+          "text": "Really?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Look like marshmallow",
+          "note": "Corrected 'mashmallow' to 'marshmallow'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Be careful!"
+        },
+        {
+          "index": 2,
+          "text": "Thundering"
+        },
+        {
+          "index": 3,
+          "text": "It's raining, get the clothes"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "It's raining, get the clothes.",
+          "note": "Added a missing period at the end."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Damn monkey, you flirt with my life"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Although we are friends"
+        },
+        {
+          "index": 2,
+          "text": "I'll indict you slander if you repeat again"
+        },
+        {
+          "index": 3,
+          "text": "Kill him"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "I'll indict you for slander if you repeat it again",
+          "note": "Inserted 'for' and 'it' to correct the grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Sorry!"
+        },
+        {
+          "index": 2,
+          "text": "This sneeze may make you disappointed"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Joker"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Are you satisfied this time?"
+        },
+        {
+          "index": 2,
+          "text": "Master"
+        },
+        {
+          "index": 3,
+          "text": "It's the Monkey King"
+        },
+        {
+          "index": 4,
+          "text": "I just thought it's a piece of cloud"
+        },
+        {
+          "index": 5,
+          "text": "Master, I committed many offences\nin the past"
+        },
+        {
+          "index": 6,
+          "text": "It's lucky that Goddess show a right road\nto me"
+        },
+        {
+          "index": 7,
+          "text": "Now I'm gonna worship Buddha\nwhole-heartedly"
+        },
+        {
+          "index": 8,
+          "text": "I won't feel reluctant to give up\nhuman desires"
+        },
+        {
+          "index": 9,
+          "text": "Master"
+        },
+        {
+          "index": 10,
+          "text": "I will take the responsibility"
+        },
+        {
+          "index": 11,
+          "text": "Great"
+        },
+        {
+          "index": 12,
+          "text": "You're now on the right road"
+        },
+        {
+          "index": 13,
+          "text": "Joker"
+        },
+        {
+          "index": 14,
+          "text": "Joker, you're here eventually"
+        },
+        {
+          "index": 15,
+          "text": "Miss!"
+        },
+        {
+          "index": 16,
+          "text": "I… know a friend called Joker"
+        },
+        {
+          "index": 17,
+          "text": "He ask me to tell Zixia Immortal\nsomething"
+        },
+        {
+          "index": 18,
+          "text": "Is it you ?"
+        },
+        {
+          "index": 19,
+          "text": "Joker"
+        },
+        {
+          "index": 20,
+          "text": "Stop!"
+        },
+        {
+          "index": 21,
+          "text": "I'm asking you, is it you?"
+        },
+        {
+          "index": 22,
+          "text": "Is it you?"
+        },
+        {
+          "index": 23,
+          "text": "Speak up"
+        },
+        {
+          "index": 24,
+          "text": "Yes"
+        },
+        {
+          "index": 25,
+          "text": "He said he had went back to the\nstarting point"
+        },
+        {
+          "index": 26,
+          "text": "And he hoped that"
+        },
+        {
+          "index": 27,
+          "text": "she would find her best love\nas soon as possible"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "It's lucky that Goddess shows the right road\nto me",
+          "note": "Corrected 'show' to 'shows' and 'a right road' to 'the right road'."
+        },
+        {
+          "index": 25,
+          "text": "He said he had gone back to the\nstarting point",
+          "note": "Corrected 'had went' to 'had gone'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Don't kid me, Joker"
+        },
+        {
+          "index": 2,
+          "text": "Let me tell you again"
+        },
+        {
+          "index": 3,
+          "text": "I'm the Monkey…King"
+        },
+        {
+          "index": 4,
+          "text": "Don't make any mistake"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'm gonna kill you today"
+        },
+        {
+          "index": 2,
+          "text": "Change!"
+        },
+        {
+          "index": 3,
+          "text": "Beat you to death, damn monkey"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Look out my fork"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "Look at my fork",
+          "note": "Corrected 'out' to 'at'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I like barbecued chicken wing!"
+        },
+        {
+          "index": 2,
+          "text": "Use my fork to make\nbarbecued chicken wing?"
+        },
+        {
+          "index": 3,
+          "text": "I nearly forget it"
+        },
+        {
+          "index": 4,
+          "text": "I'm a vegetarian"
+        },
+        {
+          "index": 5,
+          "text": "Give me back!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Use my fork to make\nbarbecued chicken wings?",
+          "note": "Corrected 'wing' to 'wings'."
+        },
+        {
+          "index": 3,
+          "text": "I nearly forgot it",
+          "note": "Corrected 'forget' to 'forgot'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Is it funny! Tell me!"
+        },
+        {
+          "index": 2,
+          "text": "Tell me…"
+        },
+        {
+          "index": 3,
+          "text": "Why are you so quiet?"
+        },
+        {
+          "index": 4,
+          "text": "Help me"
+        },
+        {
+          "index": 5,
+          "text": "Sorry"
+        },
+        {
+          "index": 6,
+          "text": "I don't want you lose face in front of\nyour bros"
+        },
+        {
+          "index": 7,
+          "text": "Let me help you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 6,
+          "text": "I don't want you to lose face in front of\nyour bros",
+          "note": "Added 'to' after 'you' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Give back to you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Great! Look out"
+        },
+        {
+          "index": 2,
+          "text": "Super bugs"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'm scared, so many bugs"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's lucky that I have many little monkeys"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Kill all the monkeys"
+        },
+        {
+          "index": 2,
+          "text": "Let him kill"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Are you the Monkey King ?"
+        },
+        {
+          "index": 2,
+          "text": "Will you go to the west to get scriptures?"
+        },
+        {
+          "index": 3,
+          "text": "bring me with you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "Are you the Monkey King?",
+          "note": "Removed the extra space before the question mark."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Yes!"
+        },
+        {
+          "index": 2,
+          "text": "She can act as a whore"
+        },
+        {
+          "index": 3,
+          "text": "if she goes with me"
+        },
+        {
+          "index": 4,
+          "text": "That's great…"
+        },
+        {
+          "index": 5,
+          "text": "I can't take this anymore"
+        },
+        {
+          "index": 6,
+          "text": "Come here, hold me tight!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You can't take me anymore"
+        },
+        {
+          "index": 2,
+          "text": "I can"
+        },
+        {
+          "index": 3,
+          "text": "I can't take you anymore"
+        },
+        {
+          "index": 4,
+          "text": "You're so ugly, we're immortals"
+        },
+        {
+          "index": 5,
+          "text": "please no more sexual harassment"
+        },
+        {
+          "index": 6,
+          "text": "Why did you do that to me?"
+        },
+        {
+          "index": 7,
+          "text": "Are you angry?"
+        },
+        {
+          "index": 8,
+          "text": "I would get angry!"
+        },
+        {
+          "index": 9,
+          "text": "Cry if you want"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'll kill you all bastards"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "I'll kill you, all bastards",
+          "note": "Added a comma after 'you' to correct punctuation."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Magic Fan"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Help me"
+        },
+        {
+          "index": 2,
+          "text": "So troublesome!"
+        },
+        {
+          "index": 3,
+          "text": "Master!"
+        },
+        {
+          "index": 4,
+          "text": "Monkey King, help me!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I can't believe that you do that to me"
+        },
+        {
+          "index": 2,
+          "text": "You two protect Master"
+        },
+        {
+          "index": 3,
+          "text": "I know"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Zixia, no"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What are you doing?"
+        },
+        {
+          "index": 2,
+          "text": "Will you come?"
+        },
+        {
+          "index": 3,
+          "text": "Why are you so concerned about me?\nLet me die"
+        },
+        {
+          "index": 4,
+          "text": "I'm not concerned about out."
+        },
+        {
+          "index": 5,
+          "text": "We'll treasure our lives"
+        },
+        {
+          "index": 6,
+          "text": "You are no immortals"
+        },
+        {
+          "index": 7,
+          "text": "Monkey King, you can't defeat me"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "I'm not concerned about it.",
+          "note": "Corrected 'out' to 'it'."
+        },
+        {
+          "index": 6,
+          "text": "You are no immortal.",
+          "note": "Corrected 'immortals' to 'immortal'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What a wide ditch"
+        },
+        {
+          "index": 2,
+          "text": "It's coming!"
+        },
+        {
+          "index": 3,
+          "text": "Stop kidding"
+        },
+        {
+          "index": 4,
+          "text": "Put the whole city to the side of the sun"
+        },
+        {
+          "index": 5,
+          "text": "Whom can you save now?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Don't bother me, you go to hell"
+        },
+        {
+          "index": 2,
+          "text": "Wait!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Lie to me again?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Damn monkey,\nhow dare you stop my attack!"
+        },
+        {
+          "index": 2,
+          "text": "Go!"
+        },
+        {
+          "index": 3,
+          "text": "Go back!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Shit, burning"
+        },
+        {
+          "index": 2,
+          "text": "Stupid!"
+        },
+        {
+          "index": 3,
+          "text": "Bitch! What do you want?"
+        },
+        {
+          "index": 4,
+          "text": "Stupid!"
+        },
+        {
+          "index": 5,
+          "text": "you're stupid!"
+        },
+        {
+          "index": 6,
+          "text": "You're not human"
+        },
+        {
+          "index": 7,
+          "text": "You're not human"
+        },
+        {
+          "index": 8,
+          "text": "Don't get mad"
+        },
+        {
+          "index": 9,
+          "text": "Do you understand what I've told you?"
+        },
+        {
+          "index": 10,
+          "text": "Do you know I'm not an immortal now?"
+        },
+        {
+          "index": 11,
+          "text": "I only understand one thing"
+        },
+        {
+          "index": 12,
+          "text": "Love means pain"
+        },
+        {
+          "index": 13,
+          "text": "Don't bullshit with me"
+        },
+        {
+          "index": 14,
+          "text": "You've mistaken me!"
+        },
+        {
+          "index": 15,
+          "text": "Where did you buy these gold rings?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "You're stupid!",
+          "note": "Corrected capitalization at the start of the subtitle."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Be careful!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Master, look out!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "My lover is a hero"
+        },
+        {
+          "index": 2,
+          "text": "One day he'll come with a cloud,\ncome to me and marry me"
+        },
+        {
+          "index": 3,
+          "text": "I've guessed the start"
+        },
+        {
+          "index": 4,
+          "text": "But I haven't guessed the ending"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Master…"
+        },
+        {
+          "index": 2,
+          "text": "I want your life!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's very hot! You'll be a roast pig"
+        },
+        {
+          "index": 2,
+          "text": "It'll explode"
+        },
+        {
+          "index": 3,
+          "text": "We have to get the help of Pandora's Box"
+        },
+        {
+          "index": 4,
+          "text": "Go"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The sun is coming, hurry up"
+        },
+        {
+          "index": 2,
+          "text": "Bring Master go"
+        },
+        {
+          "index": 3,
+          "text": "Hurry up!"
+        },
+        {
+          "index": 4,
+          "text": "Qingxia"
+        },
+        {
+          "index": 5,
+          "text": "My sister is not here"
+        },
+        {
+          "index": 6,
+          "text": "I think I should go back\nto be Buddha's lampwick again"
+        },
+        {
+          "index": 7,
+          "text": "Goodbye"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Big Brother, you get up so early!"
+        },
+        {
+          "index": 2,
+          "text": "What's happened?"
+        },
+        {
+          "index": 3,
+          "text": "Big Brother, you've forgot it"
+        },
+        {
+          "index": 4,
+          "text": "I met a storm last night"
+        },
+        {
+          "index": 5,
+          "text": "You brought me here!"
+        },
+        {
+          "index": 6,
+          "text": "Go!"
+        },
+        {
+          "index": 7,
+          "text": "Master, where are we going now?"
+        },
+        {
+          "index": 8,
+          "text": "India"
+        },
+        {
+          "index": 9,
+          "text": "Why does Master speak in this way?"
+        },
+        {
+          "index": 10,
+          "text": "Master is a clear cut guy. Let's go"
+        },
+        {
+          "index": 11,
+          "text": "Master, walk slowly please"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "Big Brother, you've forgotten it",
+          "note": "Corrected 'forgot' to 'forgotten'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Bro, be careful!"
+        },
+        {
+          "index": 2,
+          "text": "Thanks!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It is said that this was the Waterfall Cave\n500 years ago"
+        },
+        {
+          "index": 2,
+          "text": "It's the living place of the Monkey King"
+        },
+        {
+          "index": 3,
+          "text": "Since he's killed the King Bull"
+        },
+        {
+          "index": 4,
+          "text": "and saved the Longevity Monk"
+        },
+        {
+          "index": 5,
+          "text": "there are no devils in the world"
+        },
+        {
+          "index": 6,
+          "text": "After that, many people came here,\nfooling around"
+        },
+        {
+          "index": 7,
+          "text": "That guy put on a pig head"
+        },
+        {
+          "index": 8,
+          "text": "and say that he's Piggy"
+        },
+        {
+          "index": 9,
+          "text": "Bro"
+        },
+        {
+          "index": 10,
+          "text": "There is only make-upon your face"
+        },
+        {
+          "index": 11,
+          "text": "Please be more professional"
+        },
+        {
+          "index": 12,
+          "text": "Look at your hair"
+        },
+        {
+          "index": 13,
+          "text": "There are two cakes on your head"
+        },
+        {
+          "index": 14,
+          "text": "You should pay more money to make\nyourself up"
+        },
+        {
+          "index": 15,
+          "text": "What's up?"
+        },
+        {
+          "index": 16,
+          "text": "Your image is really disgusting"
+        },
+        {
+          "index": 17,
+          "text": "Don't angry at me,\nI'm always an honest guy"
+        },
+        {
+          "index": 18,
+          "text": "I won't get angry"
+        },
+        {
+          "index": 19,
+          "text": "Cut me if you like"
+        },
+        {
+          "index": 20,
+          "text": "You son of bitch!\nDo you think I daren't do so?"
+        },
+        {
+          "index": 21,
+          "text": "Thanks"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 8,
+          "text": "and says that he's Piggy",
+          "note": "Corrected 'say' to 'says'."
+        },
+        {
+          "index": 10,
+          "text": "There is only make-up on your face",
+          "note": "Corrected 'make-upon' to 'make-up on'."
+        },
+        {
+          "index": 17,
+          "text": "Don't be angry at me,\nI'm always an honest guy",
+          "note": "Corrected 'Don't angry' to 'Don't be angry'."
+        },
+        {
+          "index": 20,
+          "text": "You son of a bitch!\nDo you think I daren't do so?",
+          "note": "Added 'a' in 'son of a bitch'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "This is really sage"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Big Bro"
+        },
+        {
+          "index": 2,
+          "text": "Bro, let's go"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Buddha Cave"
+        },
+        {
+          "index": 2,
+          "text": "Fine, thanks"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Thanks…"
+        },
+        {
+          "index": 2,
+          "text": "Big Bro, what are you looking at?"
+        },
+        {
+          "index": 3,
+          "text": "Both girls who know Piggy"
+        },
+        {
+          "index": 4,
+          "text": "Who?"
+        },
+        {
+          "index": 5,
+          "text": "Beancurd Beauty"
+        },
+        {
+          "index": 6,
+          "text": "It is heard that"
+        },
+        {
+          "index": 7,
+          "text": "they sell beancurds"
+        },
+        {
+          "index": 8,
+          "text": "They have earned much money"
+        },
+        {
+          "index": 9,
+          "text": "for their husbands to attend\nthe civil service exam"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The Highest Graduate"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mei!"
+        },
+        {
+          "index": 2,
+          "text": "Congratulations!"
+        },
+        {
+          "index": 3,
+          "text": "You husband has become\nthe Highest Graduates of the exam"
+        },
+        {
+          "index": 4,
+          "text": "Go to welcome him"
+        },
+        {
+          "index": 5,
+          "text": "Honey"
+        },
+        {
+          "index": 6,
+          "text": "Honey Honey"
+        },
+        {
+          "index": 7,
+          "text": "Go away, no one of your business"
+        },
+        {
+          "index": 8,
+          "text": "Honey, Ah"
+        },
+        {
+          "index": 9,
+          "text": "You work so hard in making beancurds"
+        },
+        {
+          "index": 10,
+          "text": "You work so hard in making beancurd"
+        },
+        {
+          "index": 11,
+          "text": "Honey"
+        },
+        {
+          "index": 12,
+          "text": "Honey"
+        },
+        {
+          "index": 13,
+          "text": "I know ow to make beancurds, too"
+        },
+        {
+          "index": 14,
+          "text": "Go!"
+        },
+        {
+          "index": 15,
+          "text": "Go!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "You husband has become\nthe Highest Graduate of the exam",
+          "note": "Corrected 'Graduates' to 'Graduate'."
+        },
+        {
+          "index": 9,
+          "text": "You work so hard in making beancurd",
+          "note": "Corrected 'beancurds' to 'beancurd'."
+        },
+        {
+          "index": 13,
+          "text": "I know how to make beancurds, too",
+          "note": "Corrected 'ow' to 'how'."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Blow the ball"
+        },
+        {
+          "index": 2,
+          "text": "I blow the ball up"
+        },
+        {
+          "index": 3,
+          "text": "Blow the ball up and up"
+        },
+        {
+          "index": 4,
+          "text": "Come here!"
+        },
+        {
+          "index": 5,
+          "text": "It's crowded!"
+        },
+        {
+          "index": 6,
+          "text": "Monkey King"
+        },
+        {
+          "index": 7,
+          "text": "Master"
+        },
+        {
+          "index": 8,
+          "text": "Have a look"
+        },
+        {
+          "index": 9,
+          "text": "Ok!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "They've stood there for 3 days"
+        },
+        {
+          "index": 2,
+          "text": "They didn't"
+        },
+        {
+          "index": 3,
+          "text": "Look, devil"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I think I shouldn't come"
+        },
+        {
+          "index": 2,
+          "text": "It's too late"
+        },
+        {
+          "index": 3,
+          "text": "Leave some memories, Ok?"
+        },
+        {
+          "index": 4,
+          "text": "I don't need memory"
+        },
+        {
+          "index": 5,
+          "text": "I want you"
+        },
+        {
+          "index": 6,
+          "text": "You can just get my body"
+        },
+        {
+          "index": 7,
+          "text": "instead of my spirit"
+        },
+        {
+          "index": 8,
+          "text": "I've got a lover already"
+        },
+        {
+          "index": 9,
+          "text": "We won't have godd result"
+        },
+        {
+          "index": 10,
+          "text": "Let go of me"
+        },
+        {
+          "index": 11,
+          "text": "I'll let you go"
+        },
+        {
+          "index": 12,
+          "text": "But you have to kiss me\nbefore you've left"
+        },
+        {
+          "index": 13,
+          "text": "Have a kiss…"
+        },
+        {
+          "index": 14,
+          "text": "Kiss…"
+        },
+        {
+          "index": 15,
+          "text": "I'm just a powerless warrior"
+        },
+        {
+          "index": 16,
+          "text": "If kiss you"
+        },
+        {
+          "index": 17,
+          "text": "my image will be ruined"
+        },
+        {
+          "index": 18,
+          "text": "You're lying"
+        },
+        {
+          "index": 19,
+          "text": "You daren't kiss me"
+        },
+        {
+          "index": 20,
+          "text": "Because you still love me"
+        },
+        {
+          "index": 21,
+          "text": "I'm telling you"
+        },
+        {
+          "index": 22,
+          "text": "If you reject me"
+        },
+        {
+          "index": 23,
+          "text": "you'll regret for you whole life"
+        },
+        {
+          "index": 24,
+          "text": "I won't kiss you even if I regret"
+        },
+        {
+          "index": 25,
+          "text": "It's fate"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 9,
+          "text": "We won't have good result",
+          "note": "Corrected 'godd' to 'good'."
+        },
+        {
+          "index": 23,
+          "text": "you'll regret it for your whole life",
+          "note": "Corrected 'you' to 'your' and added 'it' for correct grammar."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I will stay here for my whole life"
+        },
+        {
+          "index": 2,
+          "text": "I love you"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "I will stay here for my whole life.",
+          "note": "Added a missing period at the end."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What's up?"
+        },
+        {
+          "index": 2,
+          "text": "That guy looks strange"
+        },
+        {
+          "index": 3,
+          "text": "I know"
+        },
+        {
+          "index": 4,
+          "text": "He looks like a dog!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  }
+]

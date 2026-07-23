@@ -12,10 +12,16 @@ from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
     input_file_arg,
+    int_arg,
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.media.video_offset import VideoOffsetResult, get_video_offset
+from scinoephile.core.timing import format_time_ms
+from scinoephile.media.offset.video import VideoOffsetResult
+from scinoephile.media.offset.video.detection import get_video_offset
+from scinoephile.media.offset.video.video_offset_window_result import (
+    VideoOffsetWindowResult,
+)
 
 __all__ = ["MediaOffsetCli"]
 
@@ -36,9 +42,6 @@ MEDIA_OFFSET_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "duration to sample in seconds (default: %(default)s)": (
             "采样持续时间，单位为秒（默认：%(default)s）"
         ),
-        "fine search step in seconds (default: %(default)s)": (
-            "精细搜索步长，单位为秒（默认：%(default)s）"
-        ),
         "maximum absolute offset to search in seconds (default: %(default)s)": (
             "要搜索的最大绝对偏移，单位为秒（默认：%(default)s）"
         ),
@@ -46,8 +49,8 @@ MEDIA_OFFSET_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "sample rate in frames per second (default: %(default)s)": (
             "采样率，单位为每秒帧数（默认：%(default)s）"
         ),
-        "start time for sampling in seconds (default: %(default)s)": (
-            "采样开始时间，单位为秒（默认：%(default)s）"
+        "sample window count (default: %(default)s)": (
+            "采样窗口数（默认：%(default)s）"
         ),
         "target video infile": "目标视频输入文件",
     },
@@ -67,9 +70,6 @@ MEDIA_OFFSET_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "duration to sample in seconds (default: %(default)s)": (
             "取樣持續時間，單位為秒（預設：%(default)s）"
         ),
-        "fine search step in seconds (default: %(default)s)": (
-            "精細搜尋步長，單位為秒（預設：%(default)s）"
-        ),
         "maximum absolute offset to search in seconds (default: %(default)s)": (
             "要搜尋的最大絕對偏移，單位為秒（預設：%(default)s）"
         ),
@@ -77,8 +77,8 @@ MEDIA_OFFSET_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "sample rate in frames per second (default: %(default)s)": (
             "取樣率，單位為每秒影格數（預設：%(default)s）"
         ),
-        "start time for sampling in seconds (default: %(default)s)": (
-            "取樣開始時間，單位為秒（預設：%(default)s）"
+        "sample window count (default: %(default)s)": (
+            "取樣視窗數（預設：%(default)s）"
         ),
         "target video infile": "目標影片輸入檔",
     },
@@ -141,12 +141,6 @@ class MediaOffsetCli(ScinoephileCliBase):
             help="sample rate in frames per second (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
-            "--start-time",
-            default=0.0,
-            type=float_arg(min_value=0.0),
-            help="start time for sampling in seconds (default: %(default)s)",
-        )
-        arg_groups["operation arguments"].add_argument(
             "--duration",
             default=300.0,
             type=float_arg(min_value=positive_float_min),
@@ -159,10 +153,10 @@ class MediaOffsetCli(ScinoephileCliBase):
             help="coarse search step in seconds (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
-            "--fine-step",
-            default=0.04,
-            type=float_arg(min_value=positive_float_min),
-            help="fine search step in seconds (default: %(default)s)",
+            "--sample-windows",
+            default=4,
+            type=int_arg(min_value=1),
+            help="sample window count (default: %(default)s)",
         )
         parser.set_defaults(_parser=parser)
 
@@ -184,10 +178,9 @@ class MediaOffsetCli(ScinoephileCliBase):
         target_infile_path: Path,
         max_offset: float,
         sample_rate: float,
-        start_time: float,
         duration: float,
         coarse_step: float,
-        fine_step: float,
+        sample_windows: int,
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
@@ -197,10 +190,9 @@ class MediaOffsetCli(ScinoephileCliBase):
                 target_infile_path=target_infile_path,
                 max_offset=max_offset,
                 sample_rate=sample_rate,
-                start_time=start_time,
                 duration=duration,
                 coarse_step=coarse_step,
-                fine_step=fine_step,
+                sample_windows=sample_windows,
             )
             print(cls._get_result_description(result))
         except (ScinoephileError, ValueError) as exc:
@@ -215,13 +207,24 @@ class MediaOffsetCli(ScinoephileCliBase):
         Returns:
             human-readable result
         """
+        if result.aggregate is not None:
+            return MediaOffsetCli._get_window_result_description(result)
+
         lines = [
-            f"Offset: {result.offset:+.3f} s",
-            f"Direction: {MediaOffsetCli._get_direction_description(result.offset)}",
-            f"Confidence: {result.confidence}",
-            f"Matched samples: {result.best.matched_count}",
-            f"Best score: {result.best.score:.6f}",
+            f"Offset: {result.offset:+.6f} s",
+            f"Frames: {result.offset_frames:+d}",
         ]
+        lines.extend(
+            [
+                (
+                    "Direction: "
+                    f"{MediaOffsetCli._get_direction_description(result.offset)}"
+                ),
+                f"Confidence: {result.confidence}",
+                f"Matched samples: {result.best.matched_count}",
+                f"Best score: {result.best.score:.6f}",
+            ]
+        )
         if result.second_best is not None:
             lines.append(f"Next-best score: {result.second_best.score:.6f}")
         return "\n".join(lines)
@@ -236,7 +239,57 @@ class MediaOffsetCli(ScinoephileCliBase):
             human-readable offset direction
         """
         if offset > 0:
-            return f"target is {offset:.3f} s later than reference"
+            return f"target is {offset:.6f} s later than reference"
         if offset < 0:
-            return f"target is {abs(offset):.3f} s earlier than reference"
+            return f"target is {abs(offset):.6f} s earlier than reference"
         return "target is aligned with reference"
+
+    @staticmethod
+    def _get_window_result_description(result: VideoOffsetResult) -> str:
+        """Return a human-readable multi-window offset result.
+
+        Arguments:
+            result: video offset result
+        Returns:
+            human-readable result
+        """
+        window_lines = [
+            MediaOffsetCli._get_window_summary(index, window)
+            for index, window in enumerate(result.windows, start=1)
+        ]
+        agg = result.aggregate
+        if agg is None:
+            return "\n".join(window_lines)
+
+        aggregate_lines = [
+            "",
+            "Aggregate:",
+            f"  Offset: {agg.offset_frames:+d} frames ({agg.offset:+.6f} s)",
+            f"  Mean: {agg.mean_frames:+.2f} frames",
+            f"  Median: {agg.median_frames:+d} frames",
+            f"  Stdev: {agg.stdev_frames:.2f} frames",
+            f"  Range: {agg.min_frames:+d} to {agg.max_frames:+d} frames",
+            f"  Agreement: {agg.agreeing_count}/{agg.total_count} windows",
+            f"  Confidence: {result.confidence}",
+        ]
+        return "\n".join([*window_lines, *aggregate_lines])
+
+    @staticmethod
+    def _get_window_summary(index: int, window: VideoOffsetWindowResult) -> str:
+        """Return one formatted window result line.
+
+        Arguments:
+            index: 1-based window index
+            window: video offset window result
+        Returns:
+            formatted window result
+        """
+        start = format_time_ms(int(round(window.start_time * 1000)))
+        line = (
+            f"Window {index}: start={start} "
+            f"offset={window.offset_frames:+d} frames ({window.offset:+.6f} s), "
+            f"confidence={window.confidence}, best={window.best.score:.6f}"
+        )
+        if window.second_best is not None:
+            line = f"{line}, next={window.second_best.score:.6f}"
+        return line

@@ -6,13 +6,53 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import ClassVar
 
 from scinoephile.analysis.character_error_rate import SeriesCER
+from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
-from scinoephile.core.cli import ScinoephileCliBase, read_series
+from scinoephile.core.cli import ScinoephileCliBase
 
 __all__ = ["MultiCerCli"]
+
+MULTI_CER_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        (
+            "calculate the Character Error Rate (CER) of one series relative to another"
+        ): "计算一个序列相对于另一个序列的字符错误率（CER）",
+        (
+            "Character Error Rate is printed as edits divided by reference "
+            "character count."
+        ): "字符错误率按编辑次数除以参考字符数输出。",
+        (
+            "command-line interface for multi-series character error rate calculation"
+        ): "多序列字符错误率计算命令行界面",
+        'subtitle infile for candidate series or "-" for stdin': (
+            '候选序列的字幕输入文件，或用 "-" 表示标准输入'
+        ),
+        'subtitle infile for reference series or "-" for stdin': (
+            '参考序列的字幕输入文件，或用 "-" 表示标准输入'
+        ),
+    },
+    "zh-hant": {
+        (
+            "calculate the Character Error Rate (CER) of one series relative to another"
+        ): "計算一個序列相對於另一個序列的字元錯誤率（CER）",
+        (
+            "Character Error Rate is printed as edits divided by reference "
+            "character count."
+        ): "字元錯誤率按編輯次數除以參考字元數輸出。",
+        (
+            "command-line interface for multi-series character error rate calculation"
+        ): "多序列字元錯誤率計算命令列介面",
+        'subtitle infile for candidate series or "-" for stdin': (
+            '候選序列的字幕輸入檔，或用 "-" 表示標準輸入'
+        ),
+        'subtitle infile for reference series or "-" for stdin': (
+            '參考序列的字幕輸入檔，或用 "-" 表示標準輸入'
+        ),
+    },
+}
+"""Localized help text keyed by locale and English source text."""
 
 
 class MultiCerCli(ScinoephileCliBase):
@@ -21,48 +61,7 @@ class MultiCerCli(ScinoephileCliBase):
     Character Error Rate is printed as edits divided by reference character count.
     """
 
-    localizations: ClassVar[dict[str, dict[str, str]]] = {
-        "zh-hans": {
-            (
-                "calculate the Character Error Rate (CER) "
-                "of one series relative to another"
-            ): "计算一个序列相对于另一个序列的字符错误率（CER）",
-            (
-                "Character Error Rate is printed as edits divided by reference "
-                "character count."
-            ): "字符错误率按编辑次数除以参考字符数输出。",
-            (
-                "command-line interface for multi-series character error rate "
-                "calculation"
-            ): "多序列字符错误率计算命令行界面",
-            'subtitle infile for candidate series or "-" for stdin': (
-                '候选序列的字幕输入文件，或用 "-" 表示标准输入'
-            ),
-            'subtitle infile for reference series or "-" for stdin': (
-                '参考序列的字幕输入文件，或用 "-" 表示标准输入'
-            ),
-        },
-        "zh-hant": {
-            (
-                "calculate the Character Error Rate (CER) "
-                "of one series relative to another"
-            ): "計算一個序列相對於另一個序列的字元錯誤率（CER）",
-            (
-                "Character Error Rate is printed as edits divided by reference "
-                "character count."
-            ): "字元錯誤率按編輯次數除以參考字元數輸出。",
-            (
-                "command-line interface for multi-series character error rate "
-                "calculation"
-            ): "多序列字元錯誤率計算命令列介面",
-            'subtitle infile for candidate series or "-" for stdin': (
-                '候選序列的字幕輸入檔，或用 "-" 表示標準輸入'
-            ),
-            'subtitle infile for reference series or "-" for stdin': (
-                '參考序列的字幕輸入檔，或用 "-" 表示標準輸入'
-            ),
-        },
-    }
+    localizations = MULTI_CER_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

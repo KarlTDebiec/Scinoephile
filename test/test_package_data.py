@@ -7,17 +7,18 @@ from __future__ import annotations
 import json
 import os
 import shutil
-import subprocess
 import sys
 from pathlib import Path
 
-import pytest
+from pytest import fail
+
+from scinoephile.common import package_root
+from scinoephile.common.subprocess import run_command
 
 
 def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
     """Test installed wheels expose runtime data files under package_root."""
-    project_root_path = Path(__file__).resolve().parents[1]
-    build_source_dir_path = _copy_build_source(project_root_path, tmp_path / "source")
+    build_source_dir_path = _copy_build_source(package_root.parent, tmp_path / "source")
     source_data_dir_path = build_source_dir_path / "scinoephile/data"
     ignored_local_dump_path = (
         source_data_dir_path / "dictionaries/wiktionary/entries.jsonl"
@@ -28,8 +29,12 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
     expected_data_file_paths = sorted(
         path.relative_to(source_data_dir_path).as_posix()
         for path in source_data_dir_path.rglob("*")
-        if path.is_file()
+        if path.is_file() and path != ignored_local_dump_path
     )
+    expected_package_file_paths = [
+        "web/static/htmx.min.js",
+        "web/ocr_validation/templates/index.html",
+    ]
     ignored_local_dump_path.parent.mkdir(parents=True, exist_ok=True)
     ignored_local_dump_path.write_text("{}\n", encoding="utf-8")
 
@@ -39,7 +44,7 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
     command_env = os.environ.copy()
     command_env["UV_CACHE_DIR"] = command_env.get("UV_CACHE_DIR", "/tmp/uv-cache")
 
-    _run_required_command(
+    run_command(
         [
             uv_path,
             "build",
@@ -52,7 +57,7 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
     )
     wheel_path = _get_single_wheel_path(wheel_dir_path)
 
-    _run_required_command(
+    run_command(
         [
             uv_path,
             "pip",
@@ -68,8 +73,9 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
 
     smoke_env = command_env.copy()
     smoke_env["EXPECTED_DATA_FILES"] = json.dumps(expected_data_file_paths)
+    smoke_env["EXPECTED_PACKAGE_FILES"] = json.dumps(expected_package_file_paths)
     smoke_env["PYTHONPATH"] = str(install_dir_path)
-    result = subprocess.run(
+    exitcode, _, _ = run_command(
         [
             sys.executable,
             "-c",
@@ -80,6 +86,7 @@ import os
 from scinoephile.common import package_root
 
 expected_data_file_paths = json.loads(os.environ["EXPECTED_DATA_FILES"])
+expected_package_file_paths = json.loads(os.environ["EXPECTED_PACKAGE_FILES"])
 missing_data_file_paths = [
     data_file_path
     for data_file_path in expected_data_file_paths
@@ -91,16 +98,22 @@ if missing_data_file_paths:
     )
 if (package_root / "data/dictionaries/wiktionary/entries.jsonl").exists():
     raise AssertionError("Installed wheel includes ignored Wiktionary dump")
+missing_package_file_paths = [
+    package_file_path
+    for package_file_path in expected_package_file_paths
+    if not (package_root / package_file_path).is_file()
+]
+if missing_package_file_paths:
+    raise AssertionError(
+        f"Missing installed package files: {missing_package_file_paths}"
+    )
 """,
         ],
-        cwd=tmp_path,
         env=smoke_env,
-        text=True,
-        capture_output=True,
-        check=False,
+        cwd_path=tmp_path,
     )
 
-    assert result.returncode == 0, result.stderr
+    assert exitcode == 0
 
 
 def _copy_build_source(project_root_path: Path, output_dir_path: Path) -> Path:
@@ -141,38 +154,8 @@ def _get_single_wheel_path(wheel_dir_path: Path) -> Path:
     wheel_paths = sorted(wheel_dir_path.glob("scinoephile-*.whl"))
     if len(wheel_paths) != 1:
         found_file_names = sorted(path.name for path in wheel_dir_path.iterdir())
-        pytest.fail(
+        fail(
             "Expected exactly one scinoephile wheel in "
             f"{wheel_dir_path}, found {len(wheel_paths)}: {found_file_names}"
         )
     return wheel_paths[0]
-
-
-def _run_required_command(
-    args: list[str],
-    *,
-    cwd_path: Path,
-    env: dict[str, str],
-) -> subprocess.CompletedProcess[str]:
-    """Run a required subprocess command.
-
-    Arguments:
-        args: command and arguments to run
-        cwd_path: working directory
-        env: environment variables
-    Returns:
-        completed subprocess result
-    """
-    result = subprocess.run(
-        args,
-        cwd=cwd_path,
-        env=env,
-        text=True,
-        capture_output=True,
-        check=False,
-    )
-    if result.returncode != 0:
-        pytest.fail(
-            f"Command failed: {' '.join(args)}\n{result.stdout}\n{result.stderr}"
-        )
-    return result

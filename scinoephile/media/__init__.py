@@ -3,6 +3,7 @@
 """Media file operations.
 
 Package hierarchy (modules may import from any above):
-* constants / probe / video_offset
+* constants / offset / probe
+* audio
 * subtitles
 """

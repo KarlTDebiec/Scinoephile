@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import numpy as np
-import pytest
+from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
@@ -23,7 +23,7 @@ def test_get_sync_overlap_matrix_zero_duration_series_one():
     two.events.append(Subtitle(start=0, end=100, text="1"))
     two.events.append(Subtitle(start=100, end=200, text="2"))
 
-    with pytest.raises(ScinoephileError) as exc_info:
+    with raises(ScinoephileError) as exc_info:
         get_sync_overlap_matrix(one, two)
 
     error_msg = str(exc_info.value)
@@ -46,7 +46,7 @@ def test_get_sync_overlap_matrix_zero_duration_series_two():
     two.events.append(Subtitle(start=150, end=150, text="2"))  # Zero duration
     two.events.append(Subtitle(start=150, end=250, text="3"))
 
-    with pytest.raises(ScinoephileError) as exc_info:
+    with raises(ScinoephileError) as exc_info:
         get_sync_overlap_matrix(one, two)
 
     error_msg = str(exc_info.value)
@@ -69,7 +69,7 @@ def test_get_sync_overlap_matrix_negative_duration_series_one():
     two.events.append(Subtitle(start=0, end=100, text="1"))
     two.events.append(Subtitle(start=100, end=200, text="2"))
 
-    with pytest.raises(ScinoephileError) as exc_info:
+    with raises(ScinoephileError) as exc_info:
         get_sync_overlap_matrix(one, two)
 
     error_msg = str(exc_info.value)
@@ -92,7 +92,7 @@ def test_get_sync_overlap_matrix_negative_duration_series_two():
     two.events.append(Subtitle(start=300, end=200, text="2"))  # Negative duration
     two.events.append(Subtitle(start=300, end=400, text="3"))
 
-    with pytest.raises(ScinoephileError) as exc_info:
+    with raises(ScinoephileError) as exc_info:
         get_sync_overlap_matrix(one, two)
 
     error_msg = str(exc_info.value)
@@ -157,7 +157,7 @@ def test_get_sync_overlap_matrix_first_subtitle_zero_duration():
     two = Series()
     two.events.append(Subtitle(start=0, end=100, text="1"))
 
-    with pytest.raises(ScinoephileError) as exc_info:
+    with raises(ScinoephileError) as exc_info:
         get_sync_overlap_matrix(one, two)
 
     error_msg = str(exc_info.value)
@@ -175,7 +175,7 @@ def test_get_sync_overlap_matrix_last_subtitle_zero_duration():
     two = Series()
     two.events.append(Subtitle(start=0, end=100, text="1"))
 
-    with pytest.raises(ScinoephileError) as exc_info:
+    with raises(ScinoephileError) as exc_info:
         get_sync_overlap_matrix(one, two)
 
     error_msg = str(exc_info.value)

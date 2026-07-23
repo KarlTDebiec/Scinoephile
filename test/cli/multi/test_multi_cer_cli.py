@@ -6,13 +6,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+from pytest import CaptureFixture
 
 from scinoephile.cli.multi.multi_cer_cli import MultiCerCli
 from scinoephile.common.testing import run_cli_with_args
 
 
-def test_multi_cer_cli(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
+def test_multi_cer_cli(tmp_path: Path, capsys: CaptureFixture[str]):
     """Test multi cer CLI output.
 
     Arguments:

@@ -4,15 +4,18 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
+from copy import deepcopy
 from logging import getLogger
 from os import PathLike
 from typing import Any, Self, cast, override
 
 from pysubs2 import SSAFile
+from pysubs2.exceptions import Pysubs2Error
 from pysubs2.time import ms_to_str
 
 from scinoephile.common.validation import val_input_path, val_output_path
+from scinoephile.core.exceptions import ScinoephileError
 
 from .subtitle import Subtitle
 
@@ -41,6 +44,7 @@ class Series(SSAFile):
         if events is not None:
             self.events = events
         self._blocks: list[Series] | None = None
+        self._blocks_signature: tuple[tuple[int, str], ...] | None = None
 
     def __eq__(self, other: object) -> bool:
         """Whether this series is equal to another.
@@ -113,12 +117,15 @@ class Series(SSAFile):
         super().__setattr__(name, value)
         if name == "events" and hasattr(self, "_blocks"):
             self._blocks = None
+            self._blocks_signature = None
 
     @property
     def blocks(self) -> list[Series]:
         """List of blocks in the series."""
-        if self._blocks is None:
+        signature = self._get_blocks_signature()
+        if self._blocks is None or self._blocks_signature != signature:
             self._init_blocks()
+            self._blocks_signature = signature
         assert self._blocks is not None
         return self._blocks
 
@@ -130,11 +137,12 @@ class Series(SSAFile):
             blocks: List of blocks in the series
         """
         self._blocks = blocks
+        self._blocks_signature = self._get_blocks_signature()
 
     @override
     def save(
         self,
-        path: str | PathLike[Any],
+        path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
@@ -151,16 +159,21 @@ class Series(SSAFile):
             errors: encoding error handling
             **kwargs: additional keyword arguments
         """
-        validated_path = val_output_path(path, exist_ok=True)
-        SSAFile.save(
-            self,
-            str(validated_path),
-            encoding=encoding,
-            format_=format_,
-            fps=fps,
-            errors=errors,
-            **kwargs,
-        )
+        try:
+            validated_path = val_output_path(path, exist_ok=True)
+            SSAFile.save(
+                self,
+                str(validated_path),
+                encoding=encoding,
+                format_=format_,
+                fps=fps,
+                errors=errors,
+                **kwargs,
+            )
+        except (OSError, Pysubs2Error, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to save {type(self).__name__} to {path}: {exc}"
+            ) from exc
         logger.info(f"Saved series to {validated_path}")
 
     def slice(self, start: int, end: int) -> Self:
@@ -172,11 +185,7 @@ class Series(SSAFile):
         Returns:
             sliced series
         """
-        sliced = type(self)()
-        sliced.events = [
-            self.event_class(**event.as_dict()) for event in self.events[start:end]
-        ]
-        return sliced
+        return self._copy_with_events(self.events[start:end])
 
     def to_simple_string(
         self, start: int | None = None, duration: int | None = None
@@ -208,6 +217,29 @@ class Series(SSAFile):
             )
         return string.rstrip()
 
+    @override
+    def to_string(
+        self,
+        format_: str,
+        fps: float | None = None,
+        **kwargs: Any,
+    ) -> str:
+        """Serialize series to a string.
+
+        Arguments:
+            format_: output string format
+            fps: frames per second
+            **kwargs: additional keyword arguments
+        Returns:
+            serialized subtitle series
+        """
+        try:
+            return super().to_string(format_, fps=fps, **kwargs)
+        except (Pysubs2Error, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to serialize {type(self).__name__} to string: {exc}"
+            ) from exc
+
     @classmethod
     @override
     def from_string(
@@ -227,11 +259,18 @@ class Series(SSAFile):
         Returns:
             parsed series
         """
-        series = cast(
-            Self,
-            super().from_string(string, format_=format_, fps=fps, **kwargs),
-        )
-        series.events = [cls.event_class(**ssaevent.as_dict()) for ssaevent in series]
+        try:
+            series = cast(
+                Self,
+                super().from_string(string, format_=format_, fps=fps, **kwargs),
+            )
+            series.events = [
+                cls.event_class(**ssaevent.as_dict()) for ssaevent in series
+            ]
+        except (Pysubs2Error, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to parse {cls.__name__} from string: {exc}"
+            ) from exc
 
         return series
 
@@ -239,7 +278,7 @@ class Series(SSAFile):
     @override
     def load(
         cls,
-        path: str | PathLike[Any],
+        path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
@@ -258,16 +297,23 @@ class Series(SSAFile):
         Returns:
             loaded series
         """
-        validated_path = val_input_path(path)
+        try:
+            validated_path = val_input_path(path)
 
-        with open(str(validated_path), encoding=encoding, errors=errors) as input_file:
-            series = cast(
-                Self,
-                cls.from_file(input_file, format_=format_, fps=fps, **kwargs),
-            )
-            series.events = [
-                cls.event_class(**ssaevent.as_dict()) for ssaevent in series
-            ]
+            with open(
+                str(validated_path), encoding=encoding, errors=errors
+            ) as input_file:
+                series = cast(
+                    Self,
+                    cls.from_file(input_file, format_=format_, fps=fps, **kwargs),
+                )
+                series.events = [
+                    cls.event_class(**ssaevent.as_dict()) for ssaevent in series
+                ]
+        except (OSError, Pysubs2Error, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to load {cls.__name__} from {path}: {exc}"
+            ) from exc
 
         logger.info(f"Loaded series from {validated_path}")
         return series
@@ -298,6 +344,40 @@ class Series(SSAFile):
         block_indexes.append((start, len(series)))
 
         return block_indexes
+
+    def _copy_metadata_to(self, copied: Series):
+        """Copy pysubs2 series metadata to another series.
+
+        Arguments:
+            copied: series to receive the copied metadata
+        """
+        copied.styles = deepcopy(self.styles)
+        copied.info = deepcopy(self.info)
+        copied.aegisub_project = deepcopy(self.aegisub_project)
+        copied.fonts_opaque = deepcopy(self.fonts_opaque)
+        copied.graphics_opaque = deepcopy(self.graphics_opaque)
+        copied.fps = self.fps
+        copied.format = self.format
+
+    def _copy_with_events(self, events: Sequence[Subtitle]) -> Self:
+        """Copy this series with a selected collection of events.
+
+        Arguments:
+            events: events to include in the copied series
+        Returns:
+            copied series
+        """
+        if type(self) is not Series:
+            raise NotImplementedError(
+                f"{type(self).__name__} must implement _copy_with_events()"
+            )
+        copied = Series(events=[deepcopy(event) for event in events])
+        self._copy_metadata_to(copied)
+        return copied
+
+    def _get_blocks_signature(self) -> tuple[tuple[int, str], ...]:
+        """Get event identity and SSA state used to detect block mutations."""
+        return tuple((id(event), repr(event.as_dict())) for event in self.events)
 
     def _init_blocks(self):
         """Initialize blocks."""

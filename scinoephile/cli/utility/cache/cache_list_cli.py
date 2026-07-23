@@ -8,12 +8,13 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Literal
 
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import get_cache_entries
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli.localization import merge_localizations
 
-from .argument_types import cache_dir_path_arg
 from .output import print_entries, sort_entries
 
 __all__ = ["CacheListCli"]
@@ -48,7 +49,7 @@ CACHE_LIST_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class CacheListCli(ScinoephileCliBase):
     """List cache entries."""
 
-    localizations = CACHE_LIST_LOCALIZATIONS
+    localizations = merge_localizations(CACHE_LOCALIZATIONS, CACHE_LIST_LOCALIZATIONS)
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -67,18 +68,14 @@ class CacheListCli(ScinoephileCliBase):
         )
 
         # Input arguments
-        arg_groups["input arguments"].add_argument(
-            "--cache-dir",
-            default=cache_dir_path_arg(None),
-            dest="cache_dir_path",
-            type=cache_dir_path_arg,
-            help="cache root directory to inspect (default: %(default)s)",
+        add_cache_dir_arg(
+            arg_groups["input arguments"],
+            help_text="cache root directory to inspect (default: %(default)s)",
         )
 
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--namespace",
-            default=None,
             help="cache namespace to inspect",
         )
         arg_groups["operation arguments"].add_argument(
@@ -91,7 +88,6 @@ class CacheListCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--limit",
             type=int_arg(min_value=1),
-            default=None,
             help="maximum number of entries to show",
         )
         arg_groups["operation arguments"].add_argument(

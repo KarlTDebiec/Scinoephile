@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from typing import cast
 
-import pytest
 from pysubs2 import SSAFile
+from pytest import raises
 
 from scinoephile.core.subtitles import Series, Subtitle
 from test.helpers import assert_series_equal
@@ -36,7 +36,7 @@ def test_assert_series_equal_reports_mismatching_subtitle():
         ]
     )
 
-    with pytest.raises(AssertionError) as excinfo:
+    with raises(AssertionError) as excinfo:
         assert_series_equal(actual, expected)
 
     message = str(excinfo.value)
@@ -50,7 +50,7 @@ def test_assert_series_equal_rejects_non_series_actual():
     actual = [Subtitle(start=1000, end=2000, text="same")]
     expected = Series(events=[Subtitle(start=1000, end=2000, text="same")])
 
-    with pytest.raises(AssertionError) as excinfo:
+    with raises(AssertionError) as excinfo:
         assert_series_equal(cast(SSAFile, actual), expected)
 
     assert str(excinfo.value) == "actual is not a subtitle series: list"
@@ -61,7 +61,7 @@ def test_assert_series_equal_rejects_non_series_expected():
     actual = Series(events=[Subtitle(start=1000, end=2000, text="same")])
     expected = [Subtitle(start=1000, end=2000, text="same")]
 
-    with pytest.raises(AssertionError) as excinfo:
+    with raises(AssertionError) as excinfo:
         assert_series_equal(actual, cast(SSAFile, expected))
 
     assert str(excinfo.value) == "expected is not a subtitle series: list"

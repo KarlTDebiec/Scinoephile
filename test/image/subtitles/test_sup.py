@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import numpy as np
-import pytest
+from pytest import raises
 
 from scinoephile.image.subtitles.sup import read_sup_image_array, read_sup_series
 
@@ -43,7 +43,7 @@ def test_read_sup_image_array_rejects_row_overflow():
     """Test SUP image RLE data cannot exceed the declared row width."""
     data = np.array([0x00, 0x02], dtype=np.uint8)
 
-    with pytest.raises(ValueError, match="declared row width"):
+    with raises(ValueError, match="declared row width"):
         read_sup_image_array(data, height=1, width=1)
 
 
@@ -68,7 +68,7 @@ def test_read_sup_series_rejects_truncated_segment_data():
         dtype=np.uint8,
     )
 
-    with pytest.raises(ValueError, match="segment data is truncated"):
+    with raises(ValueError, match="segment data is truncated"):
         read_sup_series(data)
 
 
@@ -145,5 +145,5 @@ def test_read_sup_series_rejects_truncated_palette_entry():
         dtype=np.uint8,
     )
 
-    with pytest.raises(ValueError, match="palette segment is truncated"):
+    with raises(ValueError, match="palette segment is truncated"):
         read_sup_series(data)

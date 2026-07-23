@@ -4,53 +4,29 @@
 
 from __future__ import annotations
 
-from abc import ABC
-from typing import ClassVar
+from typing import Final
 
-from scinoephile.core.llms import Prompt
+from scinoephile.core.llms import SharedPromptLocalizationFields
 
-__all__ = ["PromptEng"]
+__all__ = ["ENG_PROMPT_FIELDS"]
 
 
-class PromptEng(Prompt, ABC):
-    """LLM correspondence text for English."""
-
-    # Prompt
-    schema_intro: ClassVar[str] = (
-        "Your response must be a JSON object with the following structure:"
-    )
-    """Text preceding schema description."""
-
-    few_shot_intro: ClassVar[str] = (
-        "Here are some examples of queries and expected answers:"
-    )
-    """Text preceding few-shot examples."""
-
-    few_shot_query_intro: ClassVar[str] = "Example query:"
-    """Text preceding each few-shot example query."""
-
-    few_shot_answer_intro: ClassVar[str] = "Expected answer:"
-    """Text preceding each few-shot expected answer."""
-
-    # Answer validation errors
-    answer_invalid_pre: ClassVar[str] = (
-        "Your previous response was not valid JSON or did "
-        "not match the expected schema. Error details:"
-    )
-    """Text preceding answer validation errors."""
-
-    answer_invalid_post: ClassVar[str] = (
-        "Please try again and respond only with a valid "
-        "JSON object matching the schema."
-    )
-    """Text following answer validation errors."""
-
-    # Test case validation errors
-    test_case_invalid_pre: ClassVar[str] = (
-        "Your previous response was valid JSON compliant with "
-        "the answer schema, but not valid for this specific query. Error details:"
-    )
-    """Text preceding test case validation errors."""
-
-    test_case_invalid_post: ClassVar[str] = "Please revise your response accordingly."
-    """Text following test case validation errors."""
+ENG_PROMPT_FIELDS: Final[SharedPromptLocalizationFields] = {
+    "few_shot_intro": "Here are some examples of queries and expected answers:",
+    "few_shot_query_intro": "Example query:",
+    "few_shot_answer_intro": "Expected answer:",
+    "answer_invalid_pre": (
+        "Your previous response was not valid JSON or did not match the expected "
+        "schema."
+    ),
+    "answer_invalid_post": (
+        "Please try again and respond only with a valid JSON object matching the "
+        "schema."
+    ),
+    "test_case_invalid_pre": (
+        "Your previous response was valid JSON compliant with the answer schema, but "
+        "not valid for this specific query. Error details:"
+    ),
+    "test_case_invalid_post": "Please revise your response accordingly.",
+}
+"""Shared English LLM correspondence fields."""

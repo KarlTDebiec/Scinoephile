@@ -4,36 +4,13 @@
 
 from __future__ import annotations
 
-from collections.abc import Generator
 from pathlib import Path
 from types import TracebackType
 
-import pytest
 import requests
+from pytest import MonkeyPatch, raises
 
-from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.dictionaries.unihan import UnihanDictionaryService
-
-
-@pytest.fixture
-def local_data_dir_path() -> Generator[Path]:
-    """Provide a temporary canonical local data directory."""
-    with get_temp_directory_path() as dir_path:
-        yield dir_path
-
-
-@pytest.fixture
-def runtime_data_dir_path() -> Generator[Path]:
-    """Provide a temporary runtime canonical data directory."""
-    with get_temp_directory_path() as dir_path:
-        yield dir_path
-
-
-@pytest.fixture
-def database_path() -> Generator[Path]:
-    """Provide a temporary SQLite database path."""
-    with get_temp_file_path(".db") as temp_path:
-        yield temp_path
 
 
 def _write_fixture_sources(base_dir_path: Path):
@@ -93,7 +70,7 @@ def test_build_downloads_when_local_sources_missing(
     database_path: Path,
     local_data_dir_path: Path,
     runtime_data_dir_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Build Unihan DB by downloading when local source files are missing.
 
@@ -170,7 +147,7 @@ def test_build_updates_local_data_from_existing_runtime_files(
 
 def test_download_and_extract_raises_file_not_found_for_missing_archive_member(
     runtime_data_dir_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Raise FileNotFoundError when Unihan.zip is missing a required source file.
 
@@ -269,5 +246,5 @@ def test_download_and_extract_raises_file_not_found_for_missing_archive_member(
 
     service = UnihanDictionaryService(runtime_data_dir_path=runtime_data_dir_path)
 
-    with pytest.raises(FileNotFoundError, match="Unihan_Readings.txt"):
+    with raises(FileNotFoundError, match="Unihan_Readings.txt"):
         service._download_and_extract_to_runtime()

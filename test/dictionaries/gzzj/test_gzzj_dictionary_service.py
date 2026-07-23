@@ -8,13 +8,14 @@ from collections.abc import Generator
 from contextlib import AbstractContextManager, nullcontext
 from pathlib import Path
 
-import pytest
+from pytest import fixture, raises
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.dictionaries.gzzj import GzzjDictionaryService
+from test.helpers import parametrize
 
 
-@pytest.fixture
+@fixture
 def source_json_path() -> Generator[Path]:
     """Provide a minimal temporary GZZJ source JSON file."""
     with get_temp_file_path(".json") as temp_path:
@@ -34,14 +35,7 @@ def source_json_path() -> Generator[Path]:
         yield temp_path
 
 
-@pytest.fixture
-def database_path() -> Generator[Path]:
-    """Provide a temporary SQLite database path."""
-    with get_temp_file_path(".db") as temp_path:
-        yield temp_path
-
-
-@pytest.fixture
+@fixture
 def service(database_path: Path, source_json_path: Path) -> GzzjDictionaryService:
     """Provide a GZZJ service backed by deterministic JSON fixture data."""
     service = GzzjDictionaryService(
@@ -52,7 +46,7 @@ def service(database_path: Path, source_json_path: Path) -> GzzjDictionaryServic
     return service
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("query", "expected", "expectation"),
     [
         ("", [], nullcontext()),
@@ -62,7 +56,7 @@ def service(database_path: Path, source_json_path: Path) -> GzzjDictionaryServic
         (
             "gully",
             None,
-            pytest.raises(
+            raises(
                 ValueError,
                 match="Could not infer a supported lookup format",
             ),

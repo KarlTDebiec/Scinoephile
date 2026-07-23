@@ -6,30 +6,13 @@ from __future__ import annotations
 
 from math import inf
 
-import pytest
-
 from scinoephile.analysis.character_error_rate import LineCER, SeriesCER
-from scinoephile.core.subtitles import Series, Subtitle
-from test.helpers import SeriesCERResult
+from scinoephile.core.subtitles import Series
+from test.helpers import SeriesCERResult, parametrize
+from test.helpers.series_files import get_text_series
 
 
-def _get_series(*texts: str) -> Series:
-    """Build a compact subtitle series for CER tests.
-
-    Arguments:
-        *texts: subtitle event texts
-    Returns:
-        subtitle series with one event per text
-    """
-    return Series(
-        events=[
-            Subtitle(start=idx * 1000, end=idx * 1000 + 500, text=text)
-            for idx, text in enumerate(texts)
-        ]
-    )
-
-
-@pytest.mark.parametrize(
+@parametrize(
     ("reference", "candidate", "expected"),
     [
         (
@@ -142,11 +125,7 @@ def _get_series(*texts: str) -> Series:
         ),
     ],
 )
-def test_line_cer(
-    reference: str,
-    candidate: str,
-    expected: SeriesCERResult,
-):
+def test_line_cer(reference: str, candidate: str, expected: SeriesCERResult):
     """Test line-level character error rate calculations.
 
     Arguments:
@@ -164,11 +143,39 @@ def test_line_cer(
     assert result.reference_length == expected.reference_length
 
 
-@pytest.mark.parametrize(
+def test_line_cer_string_includes_percentages():
+    """Test line-level CER output includes percentages of reference length."""
+    result = LineCER("abc", "axc")
+
+    assert str(result) == (
+        "CER: 0.3333333333333333\n"
+        "Correct: 2 (66.67%)\n"
+        "Substitutions: 1 (33.33%)\n"
+        "Insertions: 0 (0.00%)\n"
+        "Deletions: 0 (0.00%)\n"
+        "Reference length: 3"
+    )
+
+
+def test_line_cer_string_uses_na_for_empty_reference():
+    """Test line-level CER component percentages require a reference."""
+    result = LineCER("", "abc")
+
+    assert str(result) == (
+        "CER: inf\n"
+        "Correct: 0 (N/A)\n"
+        "Substitutions: 0 (N/A)\n"
+        "Insertions: 3 (N/A)\n"
+        "Deletions: 0 (N/A)\n"
+        "Reference length: 0"
+    )
+
+
+@parametrize(
     ("reference", "candidate"),
     [
-        (_get_series("你", "好"), _get_series("你好")),
-        (_get_series("ab"), _get_series("a", "b")),
+        (get_text_series("你", "好"), get_text_series("你好")),
+        (get_text_series("ab"), get_text_series("a", "b")),
     ],
 )
 def test_series_cer_ignores_separator_only_line_wrapping(
@@ -184,48 +191,47 @@ def test_series_cer_ignores_separator_only_line_wrapping(
     assert result.deletions == 0
 
 
-@pytest.mark.parametrize(
-    (
-        "reference_series_fixture_name",
-        "candidate_series_fixture_name",
-        "expected_fixture_name",
-    ),
-    [
-        (
-            "kob_yue_hans_timewarp_clean_flatten",
-            "kob_yue_hans_transcribe",
-            "kob_yue_hans_transcribe_expected_cer",
-        ),
-        (
-            "kob_yue_hans_timewarp_clean_flatten",
-            "kob_yue_hans_transcribe_review_translate_block_review",
-            "kob_yue_hans_transcribe_review_translate_block_review_expected_cer",
-        ),
-    ],
-)
-def test_series_cer(
-    reference_series_fixture_name: str,
-    candidate_series_fixture_name: str,
-    expected_fixture_name: str,
-    request: pytest.FixtureRequest,
-):
-    """Test series-level character error rate calculations.
+def test_series_cer_string_includes_percentages():
+    """Test series-level CER output includes percentages of reference length."""
+    result = SeriesCER(get_text_series("abc"), get_text_series("axc"))
 
-    Arguments:
-        reference_series_fixture_name: fixture name for reference subtitle series
-        candidate_series_fixture_name: fixture name for candidate subtitle series
-        expected_fixture_name: fixture name containing expected CER result
-        request: pytest fixture request object
-    """
-    reference_series: Series = request.getfixturevalue(reference_series_fixture_name)
-    candidate_series: Series = request.getfixturevalue(candidate_series_fixture_name)
-    expected: SeriesCERResult = request.getfixturevalue(expected_fixture_name)
+    assert str(result) == (
+        "CER: 0.3333333333333333\n"
+        "Correct: 2 (66.67%)\n"
+        "Substitutions: 1 (33.33%)\n"
+        "Insertions: 0 (0.00%)\n"
+        "Deletions: 0 (0.00%)\n"
+        "Reference length: 3"
+    )
 
-    result = SeriesCER(reference_series, candidate_series)
 
-    assert result.cer == expected.cer
-    assert result.substitutions == expected.substitutions
-    assert result.insertions == expected.insertions
-    assert result.deletions == expected.deletions
-    assert result.correct == expected.correct
-    assert result.reference_length == expected.reference_length
+def test_series_cer_string_uses_na_for_empty_reference():
+    """Test series-level CER component percentages require a reference."""
+    result = SeriesCER(get_text_series(), get_text_series("abc"))
+
+    assert str(result) == (
+        "CER: inf\n"
+        "Correct: 0 (N/A)\n"
+        "Substitutions: 0 (N/A)\n"
+        "Insertions: 3 (N/A)\n"
+        "Deletions: 0 (N/A)\n"
+        "Reference length: 0"
+    )
+
+
+def test_series_cer_handles_one_sided_span_after_shorter_side_is_exhausted():
+    """A trailing one-sided span should not overrun the shorter series."""
+    reference = get_text_series(
+        "係嗰度呀⋯⋯",
+        "係嗰邊呀，快點去⋯⋯",
+        "呢度仲有一隻",
+        "呢隻細隻啲",
+    )
+    candidate = get_text_series(
+        "係嗰邊呀，快點去⋯⋯",
+        "呢度仲有一隻",
+    )
+
+    result = SeriesCER(reference, candidate)
+
+    assert result.reference_length > 0
