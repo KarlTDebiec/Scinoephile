@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from collections.abc import Sequence
 from enum import StrEnum
 from pathlib import Path
 
@@ -23,7 +22,6 @@ from scinoephile.common.argument_parsing import (
     enum_arg,
     get_arg_groups_by_name,
     input_file_arg,
-    int_arg,
 )
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.llms.gap_translation import GapTranslationManager
@@ -58,9 +56,6 @@ AUDIT_TRANSLATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "rows to include: all or unverified (default: all)": (
             "要包含的行：all 表示全部，unverified 表示未验证（默认：all）"
         ),
-        "exact case difficulty levels to include (default: all)": (
-            "要包含的指定测试用例难度级别（默认：all）"
-        ),
     },
     "zh-hant": {
         "audit standard, gapped, or guided subtitle translations": (
@@ -84,9 +79,6 @@ AUDIT_TRANSLATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "rows to include: all or unverified (default: all)": (
             "要包含的列：all 表示全部，unverified 表示未驗證（預設：all）"
-        ),
-        "exact case difficulty levels to include (default: all)": (
-            "要包含的指定測試案例難度級別（預設：all）"
         ),
     },
 }
@@ -124,6 +116,8 @@ class AuditTranslationCli(AuditCliBase):
             "operation arguments",
             optional_arguments_name="additional arguments",
         )
+
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--source",
             dest="source_path",
@@ -149,6 +143,8 @@ class AuditTranslationCli(AuditCliBase):
             type=input_file_arg(),
             help="translation test-case JSON file for the selected workflow",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--mode",
             choices=tuple(_TranslationAuditMode),
@@ -168,19 +164,14 @@ class AuditTranslationCli(AuditCliBase):
             type=enum_arg(TranslationAuditFilter),
             help="rows to include: all or unverified (default: all)",
         )
-        arg_groups["operation arguments"].add_argument(
-            "--difficulty",
-            default=(),
-            dest="difficulties",
-            metavar="LEVEL",
-            nargs="+",
-            type=int_arg(min_value=0),
-            help="exact case difficulty levels to include (default: all)",
-        )
 
     @classmethod
     def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser."""
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
         return "translation"
 
     @classmethod
@@ -191,14 +182,28 @@ class AuditTranslationCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        difficulties: Sequence[int],
         row_filter: TranslationAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
         last_block: int | None,
     ) -> str:
-        """Load and audit one gapped-translation workflow."""
+        """Load and audit one gapped-translation workflow.
+
+        Arguments:
+            parser: parser used to report user-facing errors
+            target_path: gapped target subtitle SRT path
+            guide_path: complete guide subtitle SRT path
+            json_path: gap-translation test-case JSON path
+            row_filter: rows to include in the report
+            first_index: first guide subtitle number to include
+            last_index: last guide subtitle number to include
+            first_block: first paired block number to include
+            last_block: last paired block number to include
+        Returns:
+            Markdown audit report
+        """
+        # Read inputs
         target = read_series(parser, target_path)
         guide = read_series(parser, guide_path)
         test_cases = cls.load_test_cases(
@@ -207,11 +212,12 @@ class AuditTranslationCli(AuditCliBase):
             GapTranslationManager,
             workflow_name="gapped translation",
         )
+
+        # Perform operation
         return audit_gap_translation(
             target,
             guide,
             test_cases,
-            difficulties=difficulties,
             row_filter=GapTranslationAuditFilter(row_filter.value),
             first_index=first_index,
             last_index=last_index,
@@ -227,14 +233,28 @@ class AuditTranslationCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        difficulties: Sequence[int],
         row_filter: TranslationAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
         last_block: int | None,
     ) -> str:
-        """Load and audit one guided-translation workflow."""
+        """Load and audit one guided-translation workflow.
+
+        Arguments:
+            parser: parser used to report user-facing errors
+            source_path: source subtitle SRT path
+            guide_path: target-language guide subtitle SRT path
+            json_path: guided-translation test-case JSON path
+            row_filter: rows to include in the report
+            first_index: first source subtitle number to include
+            last_index: last source subtitle number to include
+            first_block: first paired block number to include
+            last_block: last paired block number to include
+        Returns:
+            Markdown audit report
+        """
+        # Read inputs
         source = read_series(parser, source_path)
         guide = read_series(parser, guide_path)
         test_cases = cls.load_test_cases(
@@ -243,11 +263,12 @@ class AuditTranslationCli(AuditCliBase):
             GuidedTranslationManager,
             workflow_name="guided translation",
         )
+
+        # Perform operation
         return audit_guided_translation(
             source,
             guide,
             test_cases,
-            difficulties=difficulties,
             row_filter=row_filter,
             first_index=first_index,
             last_index=last_index,
@@ -262,14 +283,27 @@ class AuditTranslationCli(AuditCliBase):
         source_path: Path,
         json_path: Path,
         *,
-        difficulties: Sequence[int],
         row_filter: TranslationAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
         last_block: int | None,
     ) -> str:
-        """Load and audit one standard-translation workflow."""
+        """Load and audit one standard-translation workflow.
+
+        Arguments:
+            parser: parser used to report user-facing errors
+            source_path: source subtitle SRT path
+            json_path: translation test-case JSON path
+            row_filter: rows to include in the report
+            first_index: first source subtitle number to include
+            last_index: last source subtitle number to include
+            first_block: first source block number to include
+            last_block: last source block number to include
+        Returns:
+            Markdown audit report
+        """
+        # Read inputs
         source = read_series(parser, source_path)
         test_cases = cls.load_test_cases(
             parser,
@@ -277,10 +311,11 @@ class AuditTranslationCli(AuditCliBase):
             TranslationManager,
             workflow_name="standard translation",
         )
+
+        # Perform operation
         return audit_translation(
             source,
             test_cases,
-            difficulties=difficulties,
             row_filter=row_filter,
             first_index=first_index,
             last_index=last_index,
@@ -298,7 +333,6 @@ class AuditTranslationCli(AuditCliBase):
         guide_path: Path | None,
         json_path: Path,
         mode: _TranslationAuditMode,
-        difficulties: Sequence[int],
         row_filter: TranslationAuditFilter,
         first_index: int | None,
         last_index: int | None,
@@ -307,7 +341,24 @@ class AuditTranslationCli(AuditCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            _parser: parser used to report user-facing errors
+            source_path: optional source subtitle SRT path
+            target_path: optional gapped target subtitle SRT path
+            guide_path: optional guide subtitle SRT path
+            json_path: translation test-case JSON path
+            mode: translation workflow to audit
+            row_filter: rows to include in the report
+            first_index: first workflow subtitle number to include
+            last_index: last workflow subtitle number to include
+            first_block: first workflow block number to include
+            last_block: last workflow block number to include
+            outfile_path: optional Markdown output path
+            overwrite: whether to overwrite an existing output file
+        """
+        # Validate arguments
         parser = _parser or cls.argparser()
         cls._validate_mode_inputs(
             parser,
@@ -317,6 +368,7 @@ class AuditTranslationCli(AuditCliBase):
             guide_path=guide_path,
         )
 
+        # Perform operation
         try:
             if mode is _TranslationAuditMode.standard:
                 assert source_path is not None
@@ -324,7 +376,6 @@ class AuditTranslationCli(AuditCliBase):
                     parser,
                     source_path,
                     json_path,
-                    difficulties=difficulties,
                     row_filter=row_filter,
                     first_index=first_index,
                     last_index=last_index,
@@ -338,7 +389,6 @@ class AuditTranslationCli(AuditCliBase):
                     target_path,
                     guide_path,
                     json_path,
-                    difficulties=difficulties,
                     row_filter=row_filter,
                     first_index=first_index,
                     last_index=last_index,
@@ -352,7 +402,6 @@ class AuditTranslationCli(AuditCliBase):
                     source_path,
                     guide_path,
                     json_path,
-                    difficulties=difficulties,
                     row_filter=row_filter,
                     first_index=first_index,
                     last_index=last_index,
@@ -361,6 +410,8 @@ class AuditTranslationCli(AuditCliBase):
                 )
         except ScinoephileError as exc:
             parser.error(str(exc))
+
+        # Write output
         cls.write_report(parser, report, outfile_path, overwrite)
 
     @staticmethod
@@ -372,7 +423,16 @@ class AuditTranslationCli(AuditCliBase):
         target_path: Path | None,
         guide_path: Path | None,
     ):
-        """Validate mode-specific translation input paths."""
+        """Validate mode-specific translation input paths.
+
+        Arguments:
+            parser: parser used to report user-facing errors
+            mode: translation workflow to audit
+            source_path: optional source subtitle SRT path
+            target_path: optional gapped target subtitle SRT path
+            guide_path: optional guide subtitle SRT path
+        """
+        # Validate required inputs
         required = {
             _TranslationAuditMode.standard: ((source_path, "--source"),),
             _TranslationAuditMode.gapped: (
@@ -388,6 +448,7 @@ class AuditTranslationCli(AuditCliBase):
             if path is None:
                 parser.error(f"{option} is required in {mode.value} mode")
 
+        # Validate unsupported inputs
         unsupported = {
             _TranslationAuditMode.standard: (
                 (target_path, "--target"),

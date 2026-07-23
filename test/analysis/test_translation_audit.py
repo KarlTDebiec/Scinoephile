@@ -69,8 +69,8 @@ def test_audit_translation_formats_standard_blocks_and_unanswered_case():
     assert "| S 3<br>Q 1 |" in block_report
 
 
-def test_audit_guided_translation_formats_guide_and_filters_range_difficulty():
-    """Test guided translation displays guide context and composes filters."""
+def test_audit_guided_translation_formats_guide_and_filters_range():
+    """Test guided translation displays guide context and filters its range."""
     source = _get_series((0, "甲"), (1000, "乙"))
     guide = _get_series((0, "Guide one"), (1000, "Guide two"))
     test_case = GuidedTranslationTestCase.model_validate(
@@ -99,13 +99,11 @@ def test_audit_guided_translation_formats_guide_and_filters_range_difficulty():
         source,
         guide,
         (test_case,),
-        difficulties=(2,),
         first_index=2,
         last_index=2,
     )
 
     assert report.startswith("# Guided Translation Audit\n")
-    assert "- difficulty filter: 2" in report
     assert "- source subtitle range: 2 through 2" in report
     assert "- table rows: 1" in report
     assert (
@@ -139,8 +137,6 @@ def test_audit_translation_uses_latest_case_and_rejects_invalid_selection():
     assert "Old" not in report
     with raises(ScinoephileError, match="First index must be at least 1"):
         audit_translation(source, (new_case,), first_index=0)
-    with raises(ScinoephileError, match="Difficulty must be at least 0"):
-        audit_translation(source, (new_case,), difficulties=(-1,))
     with raises(ScinoephileError, match="no matching logged test case"):
         audit_translation(source, ())
 

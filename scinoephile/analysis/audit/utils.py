@@ -17,7 +17,6 @@ __all__ = [
     "escape_table_cell",
     "format_audit_report",
     "format_block_range",
-    "format_difficulty_filter",
     "format_index_range",
     "get_contextual_index",
     "get_selected_event_indexes",
@@ -151,19 +150,6 @@ def format_block_range(
     if last_block is None:
         return f"- block range: from {first_block}"
     return f"- block range: {first_block} through {last_block}"
-
-
-def format_difficulty_filter(difficulties: Sequence[int]) -> str:
-    """Format an exact difficulty filter for a report summary.
-
-    Arguments:
-        difficulties: selected exact difficulty levels
-    Returns:
-        formatted difficulty-filter summary
-    """
-    if not difficulties:
-        return "- difficulty filter: all"
-    return f"- difficulty filter: {', '.join(str(value) for value in difficulties)}"
 
 
 def format_index_range(
@@ -507,22 +493,3 @@ def _get_validated_block_pairs_by_pause(
     block_pairs = get_block_pairs_by_pause(one, two)
     validate_block_range(first_block, last_block, len(block_pairs))
     return block_pairs
-
-
-def _is_block_in_range(
-    block_number: int,
-    first_block: int | None,
-    last_block: int | None,
-) -> bool:
-    """Check whether a one-based block number is selected.
-
-    Arguments:
-        block_number: one-based block number
-        first_block: first included block number
-        last_block: last included block number
-    Returns:
-        whether the block is selected
-    """
-    return (first_block is None or block_number >= first_block) and (
-        last_block is None or block_number <= last_block
-    )

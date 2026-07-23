@@ -1,6 +1,6 @@
 ---
 name: audit-translations
-description: Audit Scinoephile standard, gapped, or guided translation JSON against the exact source, target-context, and guide SRT files used to generate it. Use when inspecting translation, gap_translation, or guided_translation JSON; judging translated, empty, unnecessary, or unanswered outputs; filtering by difficulty or verification state; or correcting and verifying translation cases.
+description: Audit Scinoephile standard, gapped, or guided translation JSON against the exact source, target-context, and guide SRT files used to generate it. Use when inspecting translation, gap_translation, or guided_translation JSON; judging translated, empty, unnecessary, or unanswered outputs; filtering by verification state; or correcting and verifying translation cases.
 ---
 
 # Audit Translations
@@ -110,9 +110,7 @@ Use `--first-block` and `--last-block` for inclusive, one-based workflow block
 ranges: source blocks in standard mode and paired blocks in guided or gapped
 mode. Block and subtitle bounds may be combined; their intersection determines
 the displayed rows. Omit either bound for an open-ended range.
-Use `--filter unverified` to resume verification; the default is `all`. Omit
-`--difficulty` for all levels or pass exact values such as
-`--difficulty 1 2`. Difficulty and verification filters compose.
+Use `--filter unverified` to resume verification; the default is `all`.
 
 `(unanswered)` means the case has no answer. In gapped mode, `(empty)` is an
 answered output that intentionally emits no target subtitle.

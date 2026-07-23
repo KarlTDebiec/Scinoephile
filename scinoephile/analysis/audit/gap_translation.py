@@ -17,10 +17,8 @@ from scinoephile.llms.gap_translation import GapTranslationTestCase
 from .utils import (
     _get_paired_event_block_numbers,
     _get_validated_block_pairs_by_pause,
-    _is_block_in_range,
     escape_table_cell,
     format_block_range,
-    format_difficulty_filter,
     format_index_range,
     validate_block_range,
     validate_index_range,
@@ -55,8 +53,6 @@ class _GapTranslationRow:
 
     answered: bool
     """Whether the source test case has an answer."""
-    difficulty: int
-    """Difficulty level of the source test case."""
     empty: bool
     """Whether the answer deliberately emitted empty text."""
     global_index: int
@@ -84,7 +80,6 @@ def audit_gap_translation(
     guide: Series,
     test_cases: Sequence[GapTranslationTestCase],
     *,
-    difficulties: Sequence[int] = (),
     row_filter: GapTranslationAuditFilter = GapTranslationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
@@ -97,7 +92,6 @@ def audit_gap_translation(
         target: gapped target subtitle series provided for gap translation
         guide: complete guide subtitle series provided for gap translation
         test_cases: logged gap-translation test cases
-        difficulties: exact case difficulty levels to include, or all if empty
         row_filter: row verification filter
         first_index: first 1-indexed guide subtitle number to include
         last_index: last 1-indexed guide subtitle number to include
@@ -110,9 +104,6 @@ def audit_gap_translation(
     """
     validate_index_range(first_index, last_index)
     validate_block_range(first_block, last_block)
-    if any(difficulty < 0 for difficulty in difficulties):
-        raise ScinoephileError("Difficulty must be at least 0")
-    difficulty_filter = tuple(sorted(set(difficulties)))
 
     block_pairs = _get_validated_block_pairs_by_pause(
         target,
@@ -127,7 +118,6 @@ def audit_gap_translation(
         guide_block_numbers,
         test_cases,
         blocks,
-        difficulties=difficulty_filter,
         first_index=first_index,
         last_index=last_index,
         first_block=first_block,
@@ -176,7 +166,6 @@ def audit_gap_translation(
             all_rows.append(
                 _GapTranslationRow(
                     answered=answered,
-                    difficulty=test_case.difficulty,
                     empty=empty,
                     global_index=global_index,
                     markdown=(
@@ -211,7 +200,6 @@ def audit_gap_translation(
         f"- unverified gaps: {len(all_rows) - verified_gaps}",
         f"- row filter: {row_filter.value}",
     ]
-    lines.append(format_difficulty_filter(difficulty_filter))
     range_summary = format_index_range(
         first_index,
         last_index,
@@ -257,18 +245,18 @@ def _block_intersects_range(
     Returns:
         whether any target gap in the block is selected
     """
-    return _is_block_in_range(
-        block.block_number,
-        first_block,
-        last_block,
-    ) and any(
-        target_text is None
-        and (first_index is None or guide_index >= first_index)
-        and (last_index is None or guide_index <= last_index)
-        for guide_index, target_text in zip(
-            block.guide_indexes,
-            block.target_texts,
-            strict=True,
+    return (
+        (first_block is None or block.block_number >= first_block)
+        and (last_block is None or block.block_number <= last_block)
+        and any(
+            target_text is None
+            and (first_index is None or guide_index >= first_index)
+            and (last_index is None or guide_index <= last_index)
+            for guide_index, target_text in zip(
+                block.guide_indexes,
+                block.target_texts,
+                strict=True,
+            )
         )
     )
 
@@ -304,7 +292,6 @@ def _get_active_test_case_blocks(
     test_cases: Sequence[GapTranslationTestCase],
     blocks: Sequence[_GapTranslationBlock],
     *,
-    difficulties: Sequence[int],
     first_index: int | None,
     last_index: int | None,
     first_block: int | None,
@@ -317,7 +304,6 @@ def _get_active_test_case_blocks(
         guide_block_numbers: paired block number for every guide subtitle
         test_cases: logged gap-translation test cases
         blocks: current target and guide blocks containing gaps
-        difficulties: exact case difficulty levels to include, or all if empty
         first_index: first included guide subtitle number
         last_index: last included guide subtitle number
         first_block: first included paired block number
@@ -378,8 +364,6 @@ def _get_active_test_case_blocks(
             unmatched_cases.append((test_case_index, test_case))
             continue
         if len(selected_matches) > 1:
-            if difficulties and test_case.difficulty not in difficulties:
-                continue
             block_numbers = ", ".join(
                 str(block.block_number) for block in selected_matches
             )
@@ -397,8 +381,6 @@ def _get_active_test_case_blocks(
 
     active_block_numbers = set(active_by_block_number)
     for test_case_index, test_case in unmatched_cases:
-        if difficulties and test_case.difficulty not in difficulties:
-            continue
         guides = tuple(guide_subtitle.text for guide_subtitle in test_case.query.guides)
         matches = blocks_by_guides.get(guides, [])
         selected_matches = [
@@ -439,12 +421,10 @@ def _get_active_test_case_blocks(
             f"{selected_matches[0].block_number}"
         )
 
-    active_cases = [
-        item
-        for item in active_by_block_number.values()
-        if not difficulties or item[1].difficulty in difficulties
-    ]
-    return sorted(active_cases, key=lambda item: item[2].block_number)
+    return sorted(
+        active_by_block_number.values(),
+        key=lambda item: item[2].block_number,
+    )
 
 
 def _get_blocks(
@@ -540,10 +520,13 @@ def _is_test_case_outside_range(
             (
                 (first_index is not None and start + gap_index < first_index)
                 or (last_index is not None and start + gap_index > last_index)
-                or not _is_block_in_range(
-                    guide_block_numbers[start + gap_index - 1],
-                    first_block,
-                    last_block,
+                or (
+                    first_block is not None
+                    and guide_block_numbers[start + gap_index - 1] < first_block
+                )
+                or (
+                    last_block is not None
+                    and guide_block_numbers[start + gap_index - 1] > last_block
                 )
             )
             for gap_index in gap_indexes

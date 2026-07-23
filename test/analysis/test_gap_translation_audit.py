@@ -44,7 +44,6 @@ def test_audit_gap_translation_formats_answer_and_context():
     assert "- gaps: 1" in report
     assert "- translated gaps: 1" in report
     assert "- verified gaps: 1" in report
-    assert "- difficulty filter: all" in report
     assert (
         "| G 2<br>Q 2 | C 1<br>B 1 | 1 | 參\\|考二 | "
         "G 1: 現有\\|一<br>G 3: 現有三 | 翻譯<br>二 |  | ✓ |"
@@ -117,46 +116,6 @@ def test_audit_gap_translation_formats_empty_and_unanswered_gaps():
     assert "| G 4<br>Q 2 |" in block_report
 
 
-def test_audit_gap_translation_filters_case_difficulty():
-    """Test exact difficulty levels compose into one case selection."""
-    target = _get_series(
-        (0, 1000, "現有一"),
-        (6000, 7000, "現有三"),
-    )
-    guide = _get_series(
-        (0, 1000, "參考一"),
-        (1000, 2000, "參考二"),
-        (6000, 7000, "參考三"),
-        (7000, 8000, "參考四"),
-    )
-    test_cases = (
-        _get_test_case(
-            targets=((1, "現有一"),),
-            guides=((1, "參考一"), (2, "參考二")),
-            outputs=((2, "翻譯二"),),
-        ),
-        _get_test_case(
-            targets=((1, "現有三"),),
-            guides=((1, "參考三"), (2, "參考四")),
-            outputs=((2, "翻譯四"),),
-            difficulty=2,
-        ),
-    )
-
-    report = audit_gap_translation(
-        target,
-        guide,
-        test_cases,
-        difficulties=(2,),
-    )
-
-    assert "- difficulty filter: 2" in report
-    assert "- logged cases: 1" in report
-    assert "- gaps: 1" in report
-    assert "| G 2<br>Q 2 |" not in report
-    assert "| G 4<br>Q 2 | C 2<br>B 2 | 2 |" in report
-
-
 def test_audit_gap_translation_ignores_superseded_target_revision():
     """Test a current query supersedes retained history for the same guide block."""
     target = _get_series((0, 1000, "目前"))
@@ -209,12 +168,6 @@ def test_audit_gap_translation_rejects_ambiguous_block():
     with raises(ScinoephileError, match="test case 1 is ambiguous.*1, 2"):
         audit_gap_translation(target, guide, (test_case,))
 
-    report = audit_gap_translation(
-        target,
-        guide,
-        (test_case,),
-        difficulties=(2,),
-    )
     block_report = audit_gap_translation(
         target,
         guide,
@@ -222,8 +175,6 @@ def test_audit_gap_translation_rejects_ambiguous_block():
         first_block=2,
         last_block=2,
     )
-    assert "- logged cases: 0" in report
-    assert "- table rows: 0" in report
     assert "| G 4<br>Q 2 | C 1<br>B 2 |" in block_report
 
 
@@ -234,9 +185,6 @@ def test_audit_gap_translation_rejects_invalid_range():
 
     with raises(ScinoephileError, match="First block must be at least 1"):
         audit_gap_translation(Series(), Series(), (), first_block=0)
-
-    with raises(ScinoephileError, match="Difficulty must be at least 0"):
-        audit_gap_translation(Series(), Series(), (), difficulties=(-1,))
 
 
 def test_audit_gap_translation_rejects_unmatched_case():
@@ -275,7 +223,6 @@ def _get_test_case(
     targets: tuple[tuple[int, str], ...],
     guides: tuple[tuple[int, str], ...],
     outputs: tuple[tuple[int, str], ...] | None = None,
-    difficulty: int = 0,
     verified: bool = False,
 ) -> GapTranslationTestCase:
     """Construct one gap-translation test case.
@@ -284,7 +231,6 @@ def _get_test_case(
         targets: query-local indexes and existing target texts
         guides: query-local indexes and guide texts
         outputs: optional query-local indexes and translated texts
-        difficulty: requested test-case difficulty
         verified: whether the complete case is verified
     Returns:
         constructed gap-translation test case
@@ -308,6 +254,5 @@ def _get_test_case(
             ],
         ),
         answer=answer,
-        difficulty=difficulty,
         verified=verified,
     )

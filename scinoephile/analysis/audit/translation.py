@@ -15,10 +15,8 @@ from scinoephile.llms.translation import TranslationTestCase
 
 from .utils import (
     _get_validated_block_pairs_by_pause,
-    _is_block_in_range,
     escape_table_cell,
     format_block_range,
-    format_difficulty_filter,
     format_index_range,
     validate_block_range,
     validate_index_range,
@@ -78,7 +76,6 @@ def audit_guided_translation(
     guide: Series,
     test_cases: Sequence[GuidedTranslationTestCase],
     *,
-    difficulties: Sequence[int] = (),
     row_filter: TranslationAuditFilter = TranslationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
@@ -91,7 +88,6 @@ def audit_guided_translation(
         source: source-language subtitle series provided for translation
         guide: target-language guide subtitle series
         test_cases: logged guided-translation test cases
-        difficulties: exact case difficulty levels to include, or all if empty
         row_filter: row verification filter
         first_index: first 1-indexed source subtitle number to include
         last_index: last 1-indexed source subtitle number to include
@@ -100,7 +96,7 @@ def audit_guided_translation(
     Returns:
         Markdown audit report
     Raises:
-        ScinoephileError: if a range, difficulty, or logged case is invalid
+        ScinoephileError: if a range or logged case is invalid
     """
     block_pairs = _get_validated_block_pairs_by_pause(
         source,
@@ -113,7 +109,6 @@ def audit_guided_translation(
         blocks,
         test_cases,
         title="Guided Translation Audit",
-        difficulties=difficulties,
         row_filter=row_filter,
         first_index=first_index,
         last_index=last_index,
@@ -126,7 +121,6 @@ def audit_translation(
     source: Series,
     test_cases: Sequence[TranslationTestCase],
     *,
-    difficulties: Sequence[int] = (),
     row_filter: TranslationAuditFilter = TranslationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
@@ -138,7 +132,6 @@ def audit_translation(
     Arguments:
         source: source-language subtitle series provided for translation
         test_cases: logged standard-translation test cases
-        difficulties: exact case difficulty levels to include, or all if empty
         row_filter: row verification filter
         first_index: first 1-indexed source subtitle number to include
         last_index: last 1-indexed source subtitle number to include
@@ -147,7 +140,7 @@ def audit_translation(
     Returns:
         Markdown audit report
     Raises:
-        ScinoephileError: if a range, difficulty, or logged case is invalid
+        ScinoephileError: if a range or logged case is invalid
     """
     blocks = _get_standard_blocks(source)
     validate_block_range(first_block, last_block, len(blocks))
@@ -155,7 +148,6 @@ def audit_translation(
         blocks,
         test_cases,
         title="Standard Translation Audit",
-        difficulties=difficulties,
         row_filter=row_filter,
         first_index=first_index,
         last_index=last_index,
@@ -169,7 +161,6 @@ def _audit_translation_blocks(
     test_cases: Sequence[_TranslationCase],
     *,
     title: str,
-    difficulties: Sequence[int],
     row_filter: TranslationAuditFilter,
     first_index: int | None,
     last_index: int | None,
@@ -182,7 +173,6 @@ def _audit_translation_blocks(
         blocks: current source blocks
         test_cases: logged translation cases
         title: report title
-        difficulties: exact case difficulty levels to include, or all if empty
         row_filter: row verification filter
         first_index: first included source subtitle number
         last_index: last included source subtitle number
@@ -195,9 +185,6 @@ def _audit_translation_blocks(
     """
     validate_index_range(first_index, last_index)
     validate_block_range(first_block, last_block)
-    if any(difficulty < 0 for difficulty in difficulties):
-        raise ScinoephileError("Difficulty must be at least 0")
-    difficulty_filter = tuple(sorted(set(difficulties)))
 
     cases_by_key: dict[_TranslationKey, tuple[int, _TranslationCase]] = {}
     for case_index, test_case in enumerate(test_cases, 1):
@@ -210,7 +197,8 @@ def _audit_translation_blocks(
     selected_blocks = (
         block
         for block in blocks
-        if _is_block_in_range(block.block_number, first_block, last_block)
+        if (first_block is None or block.block_number >= first_block)
+        and (last_block is None or block.block_number <= last_block)
     )
     for block in selected_blocks:
         selected_positions = [
@@ -229,8 +217,6 @@ def _audit_translation_blocks(
                 "matching logged test case"
             )
         case_index, test_case = case_data
-        if difficulty_filter and test_case.difficulty not in difficulty_filter:
-            continue
         selected_case_indexes.add(case_index)
 
         outputs_by_index = {}
@@ -285,7 +271,6 @@ def _audit_translation_blocks(
         f"- unverified subtitles: {len(all_rows) - verified_subtitles}",
         f"- row filter: {row_filter.value}",
     ]
-    lines.append(format_difficulty_filter(difficulty_filter))
     range_summary = format_index_range(
         first_index,
         last_index,
