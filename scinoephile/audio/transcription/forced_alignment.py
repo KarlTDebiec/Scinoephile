@@ -428,7 +428,7 @@ def _get_ctc_components(*, model_name: str, device: str) -> tuple[object, object
         return cached_components
 
     try:
-        from transformers import (  # noqa: PLC0415
+        from transformers import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
             AutoModelForCTC,
             AutoProcessor,
         )
@@ -575,7 +575,7 @@ def _get_torch_module() -> Any:
         ImportError: if torch is unavailable
     """
     try:
-        import torch  # noqa: PLC0415
+        import torch  # ty: ignore[unresolved-import]  # noqa: PLC0415
     except ImportError as exc:
         raise ImportError(
             "CTC timestamp alignment requires transformers and torch dependencies."
