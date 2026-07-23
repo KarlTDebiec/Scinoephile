@@ -190,6 +190,7 @@ def test_audit_review_cli_help_is_consistent():
         }
         if cli_class is AuditReviewCli:
             assert "mode" not in actions
+            assert actions["original_path"].option_strings == ["--original"]
         character_help = actions["characters"].help
         assert isinstance(character_help, str)
         assert "(default: no character filter)" in character_help
@@ -237,7 +238,7 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
         ),
         encoding="utf-8",
     )
-    arguments = f"--target {target_path} --guide {guide_path} --json {json_path}"
+    arguments = f"--original {target_path} --guide {guide_path} --json {json_path}"
 
     run_cli_with_args(
         AuditReviewCli,
@@ -279,7 +280,7 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
     with raises(SystemExit):
         run_cli_with_args(
             AuditReviewCli,
-            (f"--target {target_path} --guide {guide_path} --filter unverified"),
+            (f"--original {target_path} --guide {guide_path} --filter unverified"),
         )
     assert "--filter unverified requires --json" in capsys.readouterr().err
 

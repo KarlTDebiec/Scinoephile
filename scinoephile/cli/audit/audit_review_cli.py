@@ -34,7 +34,7 @@ __all__ = ["AuditReviewCli"]
 AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "audit regular or guided subtitle reviews": "审核常规或引导式字幕校对",
-        "target subtitle SRT file before review": "校对前的目标字幕 SRT 文件",
+        "original subtitle SRT file before review": "校对前的原始字幕 SRT 文件",
         "subtitle SRT file after regular review": "常规校对后的字幕 SRT 文件",
         "guide subtitle SRT file used for guided review": (
             "用于引导式校对的参考字幕 SRT 文件"
@@ -56,7 +56,7 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
     "zh-hant": {
         "audit regular or guided subtitle reviews": "稽核常規或引導式字幕校對",
-        "target subtitle SRT file before review": "校對前的目標字幕 SRT 檔",
+        "original subtitle SRT file before review": "校對前的原始字幕 SRT 檔",
         "subtitle SRT file after regular review": "常規校對後的字幕 SRT 檔",
         "guide subtitle SRT file used for guided review": (
             "用於引導式校對的參考字幕 SRT 檔"
@@ -111,11 +111,10 @@ class AuditReviewCli(AuditCliBase):
         )
         arg_groups["input arguments"].add_argument(
             "--original",
-            "--target",
             dest="original_path",
             required=True,
             type=input_file_arg(),
-            help="target subtitle SRT file before review",
+            help="original subtitle SRT file before review",
         )
         workflow_inputs = arg_groups["input arguments"].add_mutually_exclusive_group(
             required=True
