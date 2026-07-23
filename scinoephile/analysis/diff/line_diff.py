@@ -7,7 +7,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOperation
-from scinoephile.core.text import AnsiColor, colorize, is_full_width_char
+from scinoephile.core.text import (
+    AnsiColor,
+    colorize,
+    is_full_width_char,
+    join_text_lines,
+)
 
 from .line_diff_kind import LineDiffKind
 
@@ -90,12 +95,12 @@ class LineDiff:
             first- and second-side aligned text
         """
         if self.kind == LineDiffKind.DELETE:
-            return self._join_texts(self.one_texts or ()), ""
+            return join_text_lines(self.one_texts or ()), ""
         if self.kind == LineDiffKind.INSERT:
-            return "", self._join_texts(self.two_texts or ())
+            return "", join_text_lines(self.two_texts or ())
         if self.kind == LineDiffKind.EQUAL:
-            one_text = self._join_texts(self.one_texts or ())
-            two_text = self._join_texts(self.two_texts or ())
+            one_text = join_text_lines(self.one_texts or ())
+            two_text = join_text_lines(self.two_texts or ())
             return one_text, two_text
         return self._get_edit_aligned_texts(color=False)
 
@@ -143,7 +148,7 @@ class LineDiff:
         one_text, two_text = self._get_edit_aligned_texts(color=color)
         if three_texts is None:
             return f"{header}\n{one_text}\n{two_text}\n"
-        three_text = self._join_texts(three_texts)
+        three_text = join_text_lines(three_texts)
         return f"{header}\n{one_text}\n{two_text}\n{three_text}\n"
 
     def _get_edit_aligned_texts(self, *, color: bool) -> tuple[str, str]:
@@ -154,8 +159,8 @@ class LineDiff:
         Returns:
             first- and second-side aligned text
         """
-        one_text = self._join_texts(self.one_texts or ())
-        two_text = self._join_texts(self.two_texts or ())
+        one_text = join_text_lines(self.one_texts or ())
+        two_text = join_text_lines(self.two_texts or ())
         alignment = LineAlignment(one_text, two_text).alignment_pairs
 
         one_out: list[str] = []
@@ -259,12 +264,12 @@ class LineDiff:
             formatted delete diff chunk
         """
         header = f"{one_range} |"
-        one_text = LineDiff._join_texts(one_texts)
+        one_text = join_text_lines(one_texts)
         if color:
             one_text = colorize(one_text, AnsiColor.RED)
         if three_texts is None:
             return f"{header}\n{one_text}\n\n"
-        three_text = LineDiff._join_texts(three_texts)
+        three_text = join_text_lines(three_texts)
         return f"{header}\n{one_text}\n\n{three_text}\n"
 
     @staticmethod
@@ -289,15 +294,15 @@ class LineDiff:
         Returns:
             formatted equal diff chunk
         """
-        one_text = LineDiff._join_texts(one_texts)
-        two_text = LineDiff._join_texts(two_texts)
+        one_text = join_text_lines(one_texts)
+        two_text = join_text_lines(two_texts)
         if color:
             one_text = colorize(one_text, AnsiColor.GREEN)
             two_text = colorize(two_text, AnsiColor.GREEN)
         header = f"{one_range} {two_range}".rstrip()
         if three_texts is None:
             return f"{header}\n{one_text}\n{two_text}\n"
-        three_text = LineDiff._join_texts(three_texts)
+        three_text = join_text_lines(three_texts)
         return f"{header}\n{one_text}\n{two_text}\n{three_text}\n"
 
     @staticmethod
@@ -319,29 +324,13 @@ class LineDiff:
             formatted insert diff chunk
         """
         header = f"| {LineDiff._format_idxs_or_empty(insert_idxs)}"
-        two_text = LineDiff._join_texts(insert_texts)
+        two_text = join_text_lines(insert_texts)
         if color:
             two_text = colorize(two_text, AnsiColor.BLUE)
         if three_texts is None:
             return f"{header}\n\n{two_text}\n"
-        three_text = LineDiff._join_texts(three_texts)
+        three_text = join_text_lines(three_texts)
         return f"{header}\n\n{two_text}\n{three_text}\n"
-
-    @staticmethod
-    def _get_joiner(prev_char: str | None, next_char: str | None) -> str:
-        """Get joiner for concatenating lines.
-
-        Arguments:
-            prev_char: trailing character of previous chunk
-            next_char: leading character of next chunk
-        Returns:
-            ASCII or ideographic space joiner
-        """
-        if prev_char is not None and is_full_width_char(prev_char):
-            return "\u3000"
-        if next_char is not None and is_full_width_char(next_char):
-            return "\u3000"
-        return " "
 
     @staticmethod
     def _get_placeholder(char: str) -> str:
@@ -355,29 +344,3 @@ class LineDiff:
         if is_full_width_char(char):
             return "\u3000"
         return " "
-
-    @staticmethod
-    def _join_texts(texts: tuple[str, ...]) -> str:
-        """Join a list of subtitle lines into a single string.
-
-        Arguments:
-            texts: text lines to join
-        Returns:
-            joined text
-        """
-        if not texts:
-            return ""
-        if len(texts) == 1:
-            return texts[0]
-        chunks: list[str] = [texts[0]]
-        for next_text in texts[1:]:
-            previous_text = chunks[-1]
-            previous_char = None
-            if previous_text:
-                previous_char = previous_text[-1]
-            next_char = None
-            if next_text:
-                next_char = next_text[0]
-            chunks.append(LineDiff._get_joiner(previous_char, next_char))
-            chunks.append(next_text)
-        return "".join(chunks)

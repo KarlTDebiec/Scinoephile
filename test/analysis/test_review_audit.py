@@ -4,6 +4,9 @@
 
 from __future__ import annotations
 
+from enum import StrEnum
+from typing import cast
+
 from pytest import raises
 
 from scinoephile.analysis.audit.dual_review import DualReviewAuditFilter
@@ -15,6 +18,13 @@ from scinoephile.analysis.audit.review import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.review import ReviewTestCase
+
+
+class UnsupportedReviewAuditFilter(StrEnum):
+    """Review audit filter used to test runtime validation."""
+
+    unsupported = "unsupported"
+    """Unsupported row filter value."""
 
 
 def test_audit_review_filters_unverified_cases():
@@ -119,6 +129,26 @@ def test_audit_review_ignores_retained_historical_cases():
         "| 1 | Current input<br>Current output | Test review: Current note. | ✓ |"
         in report
     )
+
+
+def test_audit_review_rejects_unsupported_filter():
+    """Test unrelated filter enums cannot silently select unverified rows."""
+    original = _get_series(("Input",))
+    reviews = (
+        ReviewAuditPair(
+            label="Test",
+            original=original,
+            reviewed=original,
+        ),
+    )
+
+    with raises(ScinoephileError, match="unsupported row filter 'unsupported'"):
+        audit_review(
+            reviews=reviews,
+            row_filter=cast(
+                ReviewAuditFilter, UnsupportedReviewAuditFilter.unsupported
+            ),
+        )
 
 
 def test_audit_review_selects_blocks():

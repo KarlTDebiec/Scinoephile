@@ -26,8 +26,8 @@ __all__ = ["AuditAlignedDiffCli"]
 AUDIT_ALIGNED_DIFF_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "audit character-aligned subtitle differences": "审核字符对齐的字幕差异",
-        "optional original subtitle SRT file aligned with the transcription": (
-            "与转写字幕对齐的可选原始字幕 SRT 文件"
+        "optional original subtitle SRT file matched by timing overlap": (
+            "按时间重叠匹配的可选原始字幕 SRT 文件"
         ),
         "transcribed subtitle SRT file under audit": "待审核的转写字幕 SRT 文件",
         "reference subtitle SRT file used for comparison": (
@@ -46,8 +46,8 @@ AUDIT_ALIGNED_DIFF_LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
     "zh-hant": {
         "audit character-aligned subtitle differences": "稽核字元對齊的字幕差異",
-        "optional original subtitle SRT file aligned with the transcription": (
-            "與轉寫字幕對齊的可選原始字幕 SRT 檔"
+        "optional original subtitle SRT file matched by timing overlap": (
+            "按時間重疊配對的可選原始字幕 SRT 檔"
         ),
         "transcribed subtitle SRT file under audit": "待稽核的轉寫字幕 SRT 檔",
         "reference subtitle SRT file used for comparison": (
@@ -95,7 +95,7 @@ class AuditAlignedDiffCli(AuditCliBase):
             "--original",
             dest="original_path",
             type=input_file_arg(),
-            help="optional original subtitle SRT file aligned with the transcription",
+            help="optional original subtitle SRT file matched by timing overlap",
         )
         arg_groups["input arguments"].add_argument(
             "--transcription",

@@ -31,6 +31,23 @@ def test_audit_aligned_diff_cli_filter_help_is_consistent():
     assert "changes includes differing rows" in action.help
 
 
+def test_audit_aligned_diff_cli_track_help_describes_alignment():
+    """Test ancillary-track help distinguishes timing overlap from alignment."""
+    actions = {
+        action.dest: action
+        for action in AuditAlignedDiffCli.argparser()._actions  # noqa: SLF001
+    }
+
+    assert (
+        actions["original_path"].help
+        == "optional original subtitle SRT file matched by timing overlap"
+    )
+    assert (
+        actions["guide_path"].help
+        == "optional guide subtitle SRT file aligned with the transcription"
+    )
+
+
 def test_audit_aligned_diff_cli_writes_report(
     tmp_path: Path,
     capsys: CaptureFixture,

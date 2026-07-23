@@ -10,7 +10,7 @@ from html import escape
 from scinoephile.analysis.diff import LineDiff, LineDiffKind, SeriesDiff
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.core.text import is_full_width_char
+from scinoephile.core.text import join_text_lines
 
 from .utils import (
     format_audit_report,
@@ -72,7 +72,22 @@ def audit_aligned_diff(
         first_block=first_block,
         last_block=last_block,
     )
-    time_window = _get_time_window(transcription, selected_transcription_idxs)
+    range_applied = any(
+        boundary is not None
+        for boundary in (first_index, last_index, first_block, last_block)
+    )
+    time_window = None
+    if range_applied and selected_transcription_idxs:
+        time_window = (
+            min(
+                transcription[event_idx].start
+                for event_idx in selected_transcription_idxs
+            ),
+            max(
+                transcription[event_idx].end
+                for event_idx in selected_transcription_idxs
+            ),
+        )
 
     # Align the optional guide and build the character-level diff
     aligned_guide = _align_guide(transcription, guide)
@@ -88,16 +103,12 @@ def audit_aligned_diff(
     selected_messages: list[tuple[LineDiff, tuple[int, ...], tuple[int, ...]]] = []
     for message in diff.get_messages(include_equal=True):
         transcription_idxs, reference_idxs = diff.get_event_indices(message)
-        if not _message_is_in_range(
+        if range_applied and not _message_is_in_range(
             transcription_idxs,
             reference_idxs,
             reference,
             selected_transcription_idxs,
             time_window,
-            range_applied=any(
-                boundary is not None
-                for boundary in (first_index, last_index, first_block, last_block)
-            ),
         ):
             continue
         selected_messages.append((message, transcription_idxs, reference_idxs))
@@ -270,7 +281,7 @@ def _format_original_text(
         for line in subtitle.text_with_newline.splitlines()
         if line.strip()
     ]
-    return _join_track_texts(texts)
+    return join_text_lines(texts)
 
 
 def _format_row(
@@ -345,59 +356,7 @@ def _format_track_text(track: Series, event_idxs: tuple[int, ...]) -> str:
             for line in track.events[event_idx].text_with_newline.splitlines()
             if line.strip()
         )
-    return _join_track_texts(texts)
-
-
-def _get_time_window(
-    transcription: Series,
-    event_idxs: frozenset[int],
-) -> tuple[int, int] | None:
-    """Get the selected transcription events' combined time window.
-
-    Arguments:
-        transcription: transcription series
-        event_idxs: selected zero-based event indices
-    Returns:
-        start and end milliseconds, or None when no events are selected
-    """
-    if not event_idxs:
-        return None
-    return (
-        min(transcription[event_idx].start for event_idx in event_idxs),
-        max(transcription[event_idx].end for event_idx in event_idxs),
-    )
-
-
-def _join_track_texts(texts: list[str]) -> str:
-    """Join one track's text lines with display-width-aware spaces.
-
-    Arguments:
-        texts: nonempty text lines in time order
-    Returns:
-        joined track text
-    """
-    if not texts:
-        return ""
-
-    chunks = [texts[0]]
-    for text in texts[1:]:
-        previous_char = None
-        if chunks[-1]:
-            previous_char = chunks[-1][-1]
-        next_char = None
-        if text:
-            next_char = text[0]
-        if (
-            previous_char is not None
-            and is_full_width_char(previous_char)
-            or next_char is not None
-            and is_full_width_char(next_char)
-        ):
-            chunks.append("\u3000")
-        else:
-            chunks.append(" ")
-        chunks.append(text)
-    return "".join(chunks)
+    return join_text_lines(texts)
 
 
 def _message_is_in_range(
@@ -406,8 +365,6 @@ def _message_is_in_range(
     reference: Series,
     selected_transcription_idxs: frozenset[int],
     time_window: tuple[int, int] | None,
-    *,
-    range_applied: bool,
 ) -> bool:
     """Check whether an aligned message belongs in the requested range.
 
@@ -417,12 +374,9 @@ def _message_is_in_range(
         reference: reference series
         selected_transcription_idxs: selected transcription event indices
         time_window: selected transcription time window
-        range_applied: whether either range boundary was supplied
     Returns:
         whether the message belongs in the range
     """
-    if not range_applied:
-        return True
     if transcription_idxs:
         return any(idx in selected_transcription_idxs for idx in transcription_idxs)
     if time_window is None:
