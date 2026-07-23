@@ -15,58 +15,6 @@ from scinoephile.llms.guided_translation import GuidedTranslationTestCase
 from scinoephile.llms.translation import TranslationTestCase
 
 
-def test_audit_translation_formats_standard_blocks_and_unanswered_case():
-    """Test standard translation rows retain global, local, case, and block indexes."""
-    source = _get_series((0, "甲"), (1000, "乙"), (6000, "丙"))
-    test_cases = (
-        TranslationTestCase.model_validate(
-            {
-                "query": {
-                    "subtitles": [
-                        {"index": 1, "text": "甲"},
-                        {"index": 2, "text": "乙"},
-                    ]
-                },
-                "answer": {
-                    "outputs": [
-                        {"index": 1, "text": "A"},
-                        {"index": 2, "text": "B"},
-                    ]
-                },
-                "verified": True,
-            }
-        ),
-        TranslationTestCase.model_validate(
-            {"query": {"subtitles": [{"index": 1, "text": "丙"}]}}
-        ),
-    )
-
-    report = audit_translation(source, test_cases)
-    unverified_report = audit_translation(
-        source,
-        test_cases,
-        row_filter=VerificationAuditFilter.unverified,
-    )
-    block_report = audit_translation(
-        source,
-        test_cases,
-        first_block=2,
-        last_block=2,
-    )
-
-    assert report.startswith("# Standard Translation Audit\n")
-    assert "- logged cases: 2" in report
-    assert "- translated subtitles: 2" in report
-    assert "- unanswered subtitles: 1" in report
-    assert "| S 1<br>Q 1 | C 1<br>B 1 | 0 | 甲 | — | A |  | ✓ |" in report
-    assert "| S 3<br>Q 1 | C 2<br>B 2 | 0 | 丙 | — | (unanswered) |" in report
-    assert "- table rows: 1" in unverified_report
-    assert "| S 3<br>Q 1 |" in unverified_report
-    assert "- block range: 2 through 2" in block_report
-    assert "| S 1<br>Q 1 |" not in block_report
-    assert "| S 3<br>Q 1 |" in block_report
-
-
 def test_audit_guided_translation_formats_guide_and_filters_range():
     """Test guided translation displays guide context and filters its range."""
     source = _get_series((0, "甲"), (1000, "乙"))
@@ -128,8 +76,60 @@ def test_audit_translation_formats_empty_output():
     assert "| S 1<br>Q 1 | C 1<br>B 1 | 0 | 甲 | — | (empty) |" in report
 
 
-def test_audit_translation_rejects_ambiguous_repeated_block():
-    """Test repeated current blocks require a range that selects only one."""
+def test_audit_translation_formats_standard_blocks_and_unanswered_case():
+    """Test standard translation rows retain global, local, case, and block indexes."""
+    source = _get_series((0, "甲"), (1000, "乙"), (6000, "丙"))
+    test_cases = (
+        TranslationTestCase.model_validate(
+            {
+                "query": {
+                    "subtitles": [
+                        {"index": 1, "text": "甲"},
+                        {"index": 2, "text": "乙"},
+                    ]
+                },
+                "answer": {
+                    "outputs": [
+                        {"index": 1, "text": "A"},
+                        {"index": 2, "text": "B"},
+                    ]
+                },
+                "verified": True,
+            }
+        ),
+        TranslationTestCase.model_validate(
+            {"query": {"subtitles": [{"index": 1, "text": "丙"}]}}
+        ),
+    )
+
+    report = audit_translation(source, test_cases)
+    unverified_report = audit_translation(
+        source,
+        test_cases,
+        row_filter=VerificationAuditFilter.unverified,
+    )
+    block_report = audit_translation(
+        source,
+        test_cases,
+        first_block=2,
+        last_block=2,
+    )
+
+    assert report.startswith("# Standard Translation Audit\n")
+    assert "- logged cases: 2" in report
+    assert "- translated subtitles: 2" in report
+    assert "- unanswered subtitles: 1" in report
+    assert "| S 1<br>Q 1 | C 1<br>B 1 | 0 | 甲 | — | A |  | ✓ |" in report
+    assert "| S 3<br>Q 1 | C 2<br>B 2 | 0 | 丙 | — | (unanswered) |" in report
+    assert "- table rows: 1" in unverified_report
+    assert "| S 3<br>Q 1 |" in unverified_report
+    assert "- block range: 2 through 2" in block_report
+    assert "| S 1<br>Q 1 |" not in block_report
+    assert "| S 3<br>Q 1 |" in block_report
+
+
+def test_audit_translation_reuses_case_for_repeated_blocks():
+    """Test one deduplicated case applies to every identical current block."""
     source = _get_series((0, "重複"), (6000, "重複"))
     test_case = TranslationTestCase.model_validate(
         {
@@ -138,8 +138,7 @@ def test_audit_translation_rejects_ambiguous_repeated_block():
         }
     )
 
-    with raises(ScinoephileError, match="blocks 1, 2 have identical"):
-        audit_translation(source, (test_case,))
+    report = audit_translation(source, (test_case,))
 
     second_block_report = audit_translation(
         source,
@@ -147,6 +146,10 @@ def test_audit_translation_rejects_ambiguous_repeated_block():
         first_block=2,
         last_block=2,
     )
+    assert "- logged cases: 1" in report
+    assert "- subtitles: 2" in report
+    assert "| S 1<br>Q 1 | C 1<br>B 1 |" in report
+    assert "| S 2<br>Q 1 | C 1<br>B 2 |" in report
     assert "| S 2<br>Q 1 | C 1<br>B 2 |" in second_block_report
 
 

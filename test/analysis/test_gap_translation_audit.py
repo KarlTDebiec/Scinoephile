@@ -145,35 +145,25 @@ def test_audit_gap_translation_ignores_superseded_target_revision():
     assert "舊翻譯" not in report
 
 
-def test_audit_gap_translation_rejects_ambiguous_block():
-    """Test repeated current blocks cannot be assigned an arbitrary index."""
-    target = _get_series(
-        (0, 1000, "現有"),
-        (6000, 7000, "現有"),
-    )
-    guide = _get_series(
-        (0, 1000, "重複一"),
-        (1000, 2000, "重複二"),
-        (6000, 7000, "重複一"),
-        (7000, 8000, "重複二"),
-    )
-    test_case = _get_test_case(
-        targets=((1, "現有"),),
-        guides=((1, "重複一"), (2, "重複二")),
-        outputs=((2, "翻譯"),),
-    )
+def test_audit_gap_translation_rejects_invalid_range():
+    """Test direct callers receive a domain error for an invalid range."""
+    with raises(ScinoephileError, match="First index must be at least 1"):
+        audit_gap_translation(Series(), Series(), (), first_index=0)
 
-    with raises(ScinoephileError, match="test case 1 is ambiguous.*1, 2"):
-        audit_gap_translation(target, guide, (test_case,))
+    with raises(ScinoephileError, match="First block must be at least 1"):
+        audit_gap_translation(Series(), Series(), (), first_block=0)
 
-    block_report = audit_gap_translation(
-        target,
-        guide,
-        (test_case,),
-        first_block=2,
-        last_block=2,
-    )
-    assert "| G 4<br>Q 2 | C 1<br>B 2 |" in block_report
+    with raises(
+        ScinoephileError,
+        match="Subtitle-index and block ranges are mutually exclusive",
+    ):
+        audit_gap_translation(
+            Series(),
+            Series(),
+            (),
+            first_index=1,
+            first_block=1,
+        )
 
 
 def test_audit_gap_translation_rejects_missing_current_case():
@@ -207,27 +197,6 @@ def test_audit_gap_translation_rejects_missing_current_case():
     assert "| G 2<br>Q 2 | C 1<br>B 1 |" in first_block_report
 
 
-def test_audit_gap_translation_rejects_invalid_range():
-    """Test direct callers receive a domain error for an invalid range."""
-    with raises(ScinoephileError, match="First index must be at least 1"):
-        audit_gap_translation(Series(), Series(), (), first_index=0)
-
-    with raises(ScinoephileError, match="First block must be at least 1"):
-        audit_gap_translation(Series(), Series(), (), first_block=0)
-
-    with raises(
-        ScinoephileError,
-        match="Subtitle-index and block ranges are mutually exclusive",
-    ):
-        audit_gap_translation(
-            Series(),
-            Series(),
-            (),
-            first_index=1,
-            first_block=1,
-        )
-
-
 def test_audit_gap_translation_rejects_unmatched_case():
     """Test a logged case absent from current blocks is rejected."""
     test_case = _get_test_case(
@@ -242,6 +211,40 @@ def test_audit_gap_translation_rejects_unmatched_case():
             _get_series((0, 1000, "參考一"), (1000, 2000, "參考二")),
             (test_case,),
         )
+
+
+def test_audit_gap_translation_reuses_case_for_repeated_blocks():
+    """Test one deduplicated case applies to every identical current block."""
+    target = _get_series(
+        (0, 1000, "現有"),
+        (6000, 7000, "現有"),
+    )
+    guide = _get_series(
+        (0, 1000, "重複一"),
+        (1000, 2000, "重複二"),
+        (6000, 7000, "重複一"),
+        (7000, 8000, "重複二"),
+    )
+    test_case = _get_test_case(
+        targets=((1, "現有"),),
+        guides=((1, "重複一"), (2, "重複二")),
+        outputs=((2, "翻譯"),),
+    )
+
+    report = audit_gap_translation(target, guide, (test_case,))
+
+    block_report = audit_gap_translation(
+        target,
+        guide,
+        (test_case,),
+        first_block=2,
+        last_block=2,
+    )
+    assert "- logged cases: 1" in report
+    assert "- gaps: 2" in report
+    assert "| G 2<br>Q 2 | C 1<br>B 1 |" in report
+    assert "| G 4<br>Q 2 | C 1<br>B 2 |" in report
+    assert "| G 4<br>Q 2 | C 1<br>B 2 |" in block_report
 
 
 def _get_series(*events: tuple[int, int, str]) -> Series:

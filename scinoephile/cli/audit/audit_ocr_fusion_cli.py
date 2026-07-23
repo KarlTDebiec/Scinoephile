@@ -40,8 +40,9 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "with --filter discrepancies"
         ): ("用作真值的可选已验证字幕 SRT 文件；使用 --filter discrepancies 时为必需"),
         (
-            "optional OCR-fusion test-case JSON file; required with --filter unverified"
-        ): ("可选的 OCR 融合测试用例 JSON 文件；使用 --filter unverified 时为必需"),
+            "optional OCR-fusion test-case JSON file supplying notes and "
+            "verification state"
+        ): ("提供备注和验证状态的可选 OCR 融合测试用例 JSON 文件"),
         (
             "rows to include: all, changes, discrepancies, or unverified "
             "(default: %(default)s)"
@@ -63,8 +64,9 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "with --filter discrepancies"
         ): ("用作真值的選用已驗證字幕 SRT 檔；使用 --filter discrepancies 時為必需"),
         (
-            "optional OCR-fusion test-case JSON file; required with --filter unverified"
-        ): ("選用的 OCR 融合測試案例 JSON 檔；使用 --filter unverified 時為必需"),
+            "optional OCR-fusion test-case JSON file supplying notes and "
+            "verification state"
+        ): ("提供備註和驗證狀態的選用 OCR 融合測試案例 JSON 檔"),
         (
             "rows to include: all, changes, discrepancies, or unverified "
             "(default: %(default)s)"
@@ -134,8 +136,8 @@ class AuditOcrFusionCli(AuditCliBase):
             dest="json_path",
             type=input_file_arg(),
             help=(
-                "optional OCR-fusion test-case JSON file; required with --filter "
-                "unverified"
+                "optional OCR-fusion test-case JSON file supplying notes and "
+                "verification state"
             ),
         )
 
@@ -198,8 +200,6 @@ class AuditOcrFusionCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is OcrFusionAuditFilter.unverified and json_path is None:
-            parser.error("--filter unverified requires --json")
         if row_filter is OcrFusionAuditFilter.discrepancies and validated_path is None:
             parser.error("--filter discrepancies requires --validated")
 

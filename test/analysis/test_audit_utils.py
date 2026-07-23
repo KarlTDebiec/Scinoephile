@@ -9,6 +9,7 @@ from pytest import raises
 from scinoephile.analysis.audit.utils import (
     AuditFilter,
     format_audit_report,
+    format_verification_marker,
     resolve_contextual_index,
 )
 from scinoephile.core.exceptions import ScinoephileError
@@ -21,6 +22,19 @@ def test_audit_filter_has_common_options():
         AuditFilter.changes,
         AuditFilter.unverified,
     )
+
+
+def test_format_audit_report_formats_block_range():
+    """Test shared report framing includes an optional block range."""
+    report = format_audit_report(
+        title="Example Audit",
+        summary_items=(),
+        columns=(("Index", "right"),),
+        rows=(),
+        first_block=4,
+    )
+
+    assert "- block range: from 4" in report
 
 
 def test_format_audit_report_formats_ranges_and_table():
@@ -52,19 +66,6 @@ def test_format_audit_report_formats_ranges_and_table():
     )
 
 
-def test_format_audit_report_formats_block_range():
-    """Test shared report framing includes an optional block range."""
-    report = format_audit_report(
-        title="Example Audit",
-        summary_items=(),
-        columns=(("Index", "right"),),
-        rows=(),
-        first_block=4,
-    )
-
-    assert "- block range: from 4" in report
-
-
 def test_format_audit_report_rejects_invalid_semantic_data():
     """Test report ranges, column alignments, and row widths are validated."""
     with raises(ScinoephileError, match="ranges are mutually exclusive"):
@@ -94,14 +95,11 @@ def test_format_audit_report_rejects_invalid_semantic_data():
         )
 
 
-def test_resolve_contextual_index_returns_direct_index():
-    """Test a directly resolved index is returned without modification."""
-    resolved_indexes = [2, None]
-
-    index = resolve_contextual_index((1, 2), resolved_indexes, 0)
-
-    assert index == 2
-    assert resolved_indexes == [2, None]
+def test_format_verification_marker_formats_semantic_state():
+    """Test verification states use the shared report markers."""
+    assert format_verification_marker(True) == "✓"
+    assert format_verification_marker(False) == ""
+    assert format_verification_marker(None) == "—"
 
 
 def test_resolve_contextual_index_memoizes_contextual_match():
@@ -122,3 +120,13 @@ def test_resolve_contextual_index_retains_ambiguity_without_anchors():
 
     assert index is None
     assert resolved_indexes == [None, None, None]
+
+
+def test_resolve_contextual_index_returns_direct_index():
+    """Test a directly resolved index is returned without modification."""
+    resolved_indexes = [2, None]
+
+    index = resolve_contextual_index((1, 2), resolved_indexes, 0)
+
+    assert index == 2
+    assert resolved_indexes == [2, None]

@@ -15,6 +15,7 @@ from .utils import (
     AuditFilter,
     AuditResult,
     format_audit_report,
+    format_verification_marker,
     get_selected_event_indexes,
     get_superseded_keys,
     resolve_contextual_index,
@@ -105,9 +106,7 @@ def audit_delineation(
         ) or (row_filter is AuditFilter.unverified and test_case.verified):
             continue
 
-        verified_marker = ""
-        if test_case.verified:
-            verified_marker = "✓"
+        verified_marker = format_verification_marker(test_case.verified)
         cells = (
             f"{first_subtitle_index}\n{second_subtitle_index}",
             _format_pair(query.reference_one, query.reference_two),

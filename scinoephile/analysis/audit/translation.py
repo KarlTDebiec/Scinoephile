@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from collections import defaultdict
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 
@@ -15,6 +14,7 @@ from scinoephile.llms.translation import TranslationTestCase
 from .utils import (
     VerificationAuditFilter,
     format_audit_report,
+    format_verification_marker,
     validate_audit_range,
 )
 
@@ -183,9 +183,7 @@ def audit_translation_blocks(
         selected_case_indexes.add(case.case_index)
 
         guide_text = _format_guide_text(block.guide_texts)
-        verified_marker = ""
-        if case.verified:
-            verified_marker = "✓"
+        verified_marker = format_verification_marker(case.verified)
         for position in selected_positions:
             local_index = position + 1
             output_text, answered, empty = resolve_translation_audit_output(
@@ -294,7 +292,7 @@ def _get_selected_block_data(
     first_block: int | None,
     last_block: int | None,
 ) -> list[tuple[TranslationAuditBlock, list[int]]]:
-    """Select block positions and reject indistinguishable repeated blocks.
+    """Select block positions within the requested range.
 
     Arguments:
         blocks: current source blocks
@@ -304,8 +302,6 @@ def _get_selected_block_data(
         last_block: last included block number
     Returns:
         selected blocks and their zero-based source positions
-    Raises:
-        ScinoephileError: if selected blocks have identical logged query keys
     """
     # Select current blocks and source positions within the requested range
     selected_block_data: list[tuple[TranslationAuditBlock, list[int]]] = []
@@ -323,22 +319,6 @@ def _get_selected_block_data(
         if selected_positions:
             selected_block_data.append((block, selected_positions))
 
-    # Reject repeated current blocks that cannot be matched uniquely to log cases
-    selected_blocks_by_key: dict[
-        _TranslationAuditKey,
-        list[TranslationAuditBlock],
-    ] = defaultdict(list)
-    for block, _ in selected_block_data:
-        selected_blocks_by_key[block.key].append(block)
-    for matching_blocks in selected_blocks_by_key.values():
-        if len(matching_blocks) < 2:
-            continue
-        block_numbers = ", ".join(str(block.block_number) for block in matching_blocks)
-        raise ScinoephileError(
-            "Unable to audit translation: "
-            f"blocks {block_numbers} have identical source and guide text and cannot "
-            "be matched uniquely to logged test cases"
-        )
     return selected_block_data
 
 

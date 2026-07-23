@@ -113,7 +113,11 @@ class AuditPunctuationCli(AuditCliBase):
 
     @classmethod
     def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser."""
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
         return "punctuation"
 
     @classmethod
@@ -132,7 +136,21 @@ class AuditPunctuationCli(AuditCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            _parser: parser used to report user-facing errors
+            reference_path: reference subtitle SRT path
+            target_path: punctuated target subtitle SRT path
+            json_path: punctuation test-case JSON path
+            row_filter: rows to include in the report
+            first_index: first reference subtitle number to include
+            last_index: last reference subtitle number to include
+            first_block: first reference block number to include
+            last_block: last reference block number to include
+            outfile_path: optional Markdown output path
+            overwrite: whether to overwrite an existing output file
+        """
         # Read inputs
         parser = _parser or cls.argparser()
         reference = read_series(parser, reference_path)

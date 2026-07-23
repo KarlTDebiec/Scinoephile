@@ -18,6 +18,7 @@ from .translation import resolve_translation_audit_output
 from .utils import (
     VerificationAuditFilter,
     format_audit_report,
+    format_verification_marker,
     validate_audit_range,
 )
 
@@ -124,9 +125,7 @@ def audit_gap_translation(
             outputs_by_index = {
                 output.index: output.text for output in test_case.answer.outputs
             }
-        verified_marker = ""
-        if test_case.verified:
-            verified_marker = "✓"
+        verified_marker = format_verification_marker(test_case.verified)
         for local_index, (global_index, guide_text, target_text) in enumerate(
             zip(
                 block.guide_indexes,
@@ -350,21 +349,13 @@ def _get_active_test_case_blocks(
                 continue
             unmatched_cases.append((test_case_index, test_case))
             continue
-        if len(selected_matches) > 1:
-            block_numbers = ", ".join(
-                str(block.block_number) for block in selected_matches
+        # Reuse one deduplicated logged query for every exact current match
+        for block in selected_matches:
+            active_by_block_number[block.block_number] = (
+                test_case_index,
+                test_case,
+                block,
             )
-            raise ScinoephileError(
-                "Unable to audit gap translation: "
-                f"test case {test_case_index} is ambiguous; it matches blocks "
-                f"{block_numbers}"
-            )
-        block = selected_matches[0]
-        active_by_block_number[block.block_number] = (
-            test_case_index,
-            test_case,
-            block,
-        )
 
     # Reconcile unmatched historical cases against current guide blocks
     active_block_numbers = set(active_by_block_number)

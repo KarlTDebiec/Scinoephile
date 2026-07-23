@@ -55,6 +55,110 @@ class _AuditInputs(TypedDict):
     """Simplified review test cases."""
 
 
+def test_audit_review_workflow_filters_unverified_cases():
+    """Test regular review audits select subtitles in unverified logged cases."""
+    original = _get_series(("First", "Second", "Third"))
+    reviewed = _get_series(("First revised", "Second", "Third"))
+    unverified_case = ReviewTestCase.model_validate(
+        {
+            "query": {"subtitles": [{"index": 1, "text": "First"}]},
+            "answer": {
+                "revisions": [{"index": 1, "text": "First revised", "note": "Revised."}]
+            },
+        }
+    )
+    verified_case = ReviewTestCase.model_validate(
+        {
+            "query": {"subtitles": [{"index": 1, "text": "Second"}]},
+            "answer": {"revisions": []},
+            "verified": True,
+        }
+    )
+
+    report = audit_review_workflow(
+        reviews=(
+            ReviewAuditPair(
+                label="Test",
+                original=original,
+                reviewed=reviewed,
+                review_cases=(unverified_case, verified_case),
+            ),
+        ),
+        row_filter=AuditFilter.unverified,
+    )
+
+    assert "- row filter: unverified" in report
+    assert "- table rows: 1" in report
+    assert "| 1 | First<br>First revised | Test review: Revised. |  |" in report
+    assert "| 2 |" not in report
+    assert "| 3 |" not in report
+
+    all_report = audit_review_workflow(
+        reviews=(
+            ReviewAuditPair(
+                label="Test",
+                original=original,
+                reviewed=reviewed,
+                review_cases=(unverified_case, verified_case),
+            ),
+        ),
+        row_filter=AuditFilter.all,
+    )
+    assert "| 1 | First<br>First revised | Test review: Revised. |  |" in all_report
+    assert "| 2 | Second |  | ✓ |" in all_report
+    assert "| 3 | Third |  | — |" in all_report
+
+
+def test_audit_review_workflow_selects_blocks():
+    """Test review audits select one workflow block at a time."""
+    original = Series(
+        events=[
+            Subtitle(start=0, end=500, text="First"),
+            Subtitle(start=1_000, end=1_500, text="Second"),
+            Subtitle(start=5_000, end=5_500, text="Third"),
+        ]
+    )
+    reviewed = Series(
+        events=[
+            Subtitle(start=0, end=500, text="First"),
+            Subtitle(start=1_000, end=1_500, text="Second"),
+            Subtitle(start=5_000, end=5_500, text="Third revised"),
+        ]
+    )
+    reviews = (
+        ReviewAuditPair(
+            label="Test",
+            original=original,
+            reviewed=reviewed,
+        ),
+    )
+
+    report = audit_review_workflow(
+        reviews=reviews,
+        row_filter=AuditFilter.all,
+        first_block=2,
+        last_block=2,
+    )
+
+    assert "- block range: 2 through 2" in report
+    assert "| 1 |" not in report
+    assert "| 2 |" not in report
+    assert "| 3 | Third<br>Third revised |" in report
+
+    with raises(ScinoephileError, match="mutually exclusive"):
+        audit_review_workflow(
+            reviews=reviews,
+            first_index=1,
+            first_block=2,
+        )
+
+    with raises(ScinoephileError, match="requires at least one comparison"):
+        audit_review_workflow(
+            reviews=reviews,
+            row_filter=ComparativeReviewAuditFilter.discrepancies,
+        )
+
+
 def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
     """Test row filters, character filters, and JSON-backed notes.
 
@@ -119,58 +223,19 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
     assert "| 4 |" not in report
 
 
-def test_audit_review_workflow_filters_unverified_cases():
-    """Test regular review audits select subtitles in unverified logged cases."""
-    original = _get_series(("First", "Second", "Third"))
-    reviewed = _get_series(("First revised", "Second", "Third"))
-    unverified_case = ReviewTestCase.model_validate(
-        {
-            "query": {"subtitles": [{"index": 1, "text": "First"}]},
-            "answer": {
-                "revisions": [{"index": 1, "text": "First revised", "note": "Revised."}]
-            },
-        }
-    )
-    verified_case = ReviewTestCase.model_validate(
-        {
-            "query": {"subtitles": [{"index": 1, "text": "Second"}]},
-            "answer": {"revisions": []},
-            "verified": True,
-        }
-    )
+def test_audit_reviews_ignores_timing_differences(tmp_path: Path):
+    """Test timing differences do not prevent count-aligned audits.
 
-    report = audit_review_workflow(
-        reviews=(
-            ReviewAuditPair(
-                label="Test",
-                original=original,
-                reviewed=reviewed,
-                review_cases=(unverified_case, verified_case),
-            ),
-        ),
-        row_filter=AuditFilter.unverified,
-    )
+    Arguments:
+        tmp_path: temporary path
+    """
+    inputs = _get_audit_inputs(tmp_path)
+    inputs["traditional_reviewed"].events[1].start = 62_000
+    inputs["traditional_reviewed"].events[1].end = 62_500
 
-    assert "- row filter: unverified" in report
-    assert "- table rows: 1" in report
-    assert "| 1 | First<br>First revised | Test review: Revised. |  |" in report
-    assert "| 2 |" not in report
-    assert "| 3 |" not in report
+    report = audit_reviews(**inputs, row_filter=ComparativeReviewAuditFilter.all)
 
-    all_report = audit_review_workflow(
-        reviews=(
-            ReviewAuditPair(
-                label="Test",
-                original=original,
-                reviewed=reviewed,
-                review_cases=(unverified_case, verified_case),
-            ),
-        ),
-        row_filter=AuditFilter.all,
-    )
-    assert "| 1 | First<br>First revised | Test review: Revised. |  |" in all_report
-    assert "| 2 | Second |  | ✓ |" in all_report
-    assert "| 3 | Third |  | — |" in all_report
+    assert "- table rows: 4" in report
 
 
 def test_audit_reviews_reuses_deduplicated_json_note(tmp_path: Path):
@@ -197,71 +262,6 @@ def test_audit_reviews_reuses_deduplicated_json_note(tmp_path: Path):
     )
 
     assert report.count("Traditional review: 修正。") == 2
-
-
-def test_audit_reviews_ignores_timing_differences(tmp_path: Path):
-    """Test timing differences do not prevent count-aligned audits.
-
-    Arguments:
-        tmp_path: temporary path
-    """
-    inputs = _get_audit_inputs(tmp_path)
-    inputs["traditional_reviewed"].events[1].start = 62_000
-    inputs["traditional_reviewed"].events[1].end = 62_500
-
-    report = audit_reviews(**inputs, row_filter=ComparativeReviewAuditFilter.all)
-
-    assert "- table rows: 4" in report
-
-
-def test_audit_review_workflow_selects_blocks():
-    """Test review audits select one workflow block at a time."""
-    original = Series(
-        events=[
-            Subtitle(start=0, end=500, text="First"),
-            Subtitle(start=1_000, end=1_500, text="Second"),
-            Subtitle(start=5_000, end=5_500, text="Third"),
-        ]
-    )
-    reviewed = Series(
-        events=[
-            Subtitle(start=0, end=500, text="First"),
-            Subtitle(start=1_000, end=1_500, text="Second"),
-            Subtitle(start=5_000, end=5_500, text="Third revised"),
-        ]
-    )
-    reviews = (
-        ReviewAuditPair(
-            label="Test",
-            original=original,
-            reviewed=reviewed,
-        ),
-    )
-
-    report = audit_review_workflow(
-        reviews=reviews,
-        row_filter=AuditFilter.all,
-        first_block=2,
-        last_block=2,
-    )
-
-    assert "- block range: 2 through 2" in report
-    assert "| 1 |" not in report
-    assert "| 2 |" not in report
-    assert "| 3 | Third<br>Third revised |" in report
-
-    with raises(ScinoephileError, match="mutually exclusive"):
-        audit_review_workflow(
-            reviews=reviews,
-            first_index=1,
-            first_block=2,
-        )
-
-    with raises(ScinoephileError, match="requires at least one comparison"):
-        audit_review_workflow(
-            reviews=reviews,
-            row_filter=ComparativeReviewAuditFilter.discrepancies,
-        )
 
 
 def _get_audit_inputs(tmp_path: Path) -> _AuditInputs:

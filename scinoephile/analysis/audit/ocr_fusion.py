@@ -7,15 +7,16 @@ from __future__ import annotations
 from collections.abc import Sequence
 from dataclasses import dataclass
 from enum import StrEnum
-from typing import Protocol
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import are_series_one_to_one
+from scinoephile.llms.ocr_fusion import OcrFusionTestCase
 
 from .utils import (
     AuditColumn,
     format_audit_report,
+    format_verification_marker,
     get_selected_event_indexes,
 )
 
@@ -57,58 +58,6 @@ class _OcrFusionDecision:
     """Whether the associated LLM case is verified."""
 
 
-class _OcrFusionAnswer(Protocol):
-    """OCR-fusion answer fields required for audit reporting."""
-
-    @property
-    def note(self) -> str:
-        """Note recorded for the fusion decision."""
-        ...
-
-    @property
-    def output(self) -> str:
-        """Selected fused subtitle text."""
-        ...
-
-
-class _OcrFusionQuery(Protocol):
-    """OCR-fusion query fields required for audit reporting."""
-
-    @property
-    def source_one(self) -> str:
-        """Text from the first OCR source."""
-        ...
-
-    @property
-    def source_two(self) -> str:
-        """Text from the second OCR source."""
-        ...
-
-
-class _OcrFusionTestCase(Protocol):
-    """OCR-fusion test-case fields required for audit reporting."""
-
-    @property
-    def answer(self) -> _OcrFusionAnswer | None:
-        """Optional decision answer."""
-        ...
-
-    @property
-    def difficulty(self) -> int:
-        """Decision difficulty."""
-        ...
-
-    @property
-    def query(self) -> _OcrFusionQuery:
-        """OCR source texts."""
-        ...
-
-    @property
-    def verified(self) -> bool:
-        """Whether the decision has been reviewed."""
-        ...
-
-
 class OcrFusionAuditFilter(StrEnum):
     """Row filters supported by an OCR-fusion audit."""
 
@@ -129,7 +78,7 @@ def audit_ocr_fusion(
     source_one: Series,
     source_two: Series,
     fused: Series,
-    test_cases: Sequence[_OcrFusionTestCase] | None = None,
+    test_cases: Sequence[OcrFusionTestCase] | None = None,
     *,
     validated: Series | None = None,
     row_filter: OcrFusionAuditFilter = OcrFusionAuditFilter.changes,
@@ -175,7 +124,7 @@ def audit_ocr_fusion(
         _validate_alignment(source_one, validated, "Validated")
 
     has_decision_log = test_cases is not None
-    cases_by_key: dict[tuple[str, str], tuple[int, _OcrFusionTestCase]] = {}
+    cases_by_key: dict[tuple[str, str], tuple[int, OcrFusionTestCase]] = {}
     for case_index, test_case in enumerate(test_cases or (), 1):
         key = (test_case.query.source_one, test_case.query.source_two)
         cases_by_key[key] = (case_index, test_case)
@@ -232,9 +181,10 @@ def audit_ocr_fusion(
         ("Source two", "left"),
         ("Fused", "left"),
         ("Validated", "left"),
+        ("Notes", "left"),
     ]
     if has_decision_log:
-        columns.extend((("Notes", "left"), ("Verified", "center")))
+        columns.append(("Verified", "center"))
     return format_audit_report(
         title="OCR Fusion Audit",
         summary_items=summary_items,
@@ -269,20 +219,6 @@ def _filter_rows(
     return [row for row in rows if row.requires_llm and not row.verified]
 
 
-def _get_automatic_output(source_one_text: str, source_two_text: str) -> str:
-    """Get the deterministic fusion output for a pair not sent to the LLM.
-
-    Arguments:
-        source_one_text: first source text
-        source_two_text: second source text
-    Returns:
-        automatic fused text
-    """
-    if source_one_text:
-        return source_one_text
-    return source_two_text
-
-
 def _get_automatic_note(source_one_text: str, source_two_text: str) -> str:
     """Describe the deterministic fusion decision for a source pair.
 
@@ -301,12 +237,26 @@ def _get_automatic_note(source_one_text: str, source_two_text: str) -> str:
     return "Source one empty"
 
 
+def _get_automatic_output(source_one_text: str, source_two_text: str) -> str:
+    """Get the deterministic fusion output for a pair not sent to the LLM.
+
+    Arguments:
+        source_one_text: first source text
+        source_two_text: second source text
+    Returns:
+        automatic fused text
+    """
+    if source_one_text:
+        return source_one_text
+    return source_two_text
+
+
 def _get_decision(
     index: int,
     source_one_text: str,
     source_two_text: str,
     fused_text: str,
-    cases_by_key: dict[tuple[str, str], tuple[int, _OcrFusionTestCase]],
+    cases_by_key: dict[tuple[str, str], tuple[int, OcrFusionTestCase]],
     *,
     has_decision_log: bool,
 ) -> _OcrFusionDecision:
@@ -379,7 +329,7 @@ def _get_row(
     source_one: Series,
     source_two: Series,
     fused: Series,
-    cases_by_key: dict[tuple[str, str], tuple[int, _OcrFusionTestCase]],
+    cases_by_key: dict[tuple[str, str], tuple[int, OcrFusionTestCase]],
     *,
     has_decision_log: bool,
     validated: Series | None,
@@ -423,7 +373,7 @@ def _get_row(
     if validated_text:
         validated_display = validated_text
 
-    # Keep verification unavailable for deterministic rows
+    # Keep the Notes column available even when no decision log was supplied
     cells = (
         str(index),
         case_index,
@@ -432,14 +382,14 @@ def _get_row(
         source_two_text or "—",
         fused_text or "—",
         validated_display,
+        decision.note,
     )
     if has_decision_log:
-        verified_marker = "—"
+        verified: bool | None = None
         if decision.requires_llm:
-            verified_marker = ""
-            if decision.verified:
-                verified_marker = "✓"
-        cells += (decision.note, verified_marker)
+            verified = decision.verified
+        verified_marker = format_verification_marker(verified)
+        cells += (verified_marker,)
 
     return _OcrFusionRow(
         changed=source_one_text != source_two_text,

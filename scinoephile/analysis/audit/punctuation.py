@@ -16,6 +16,7 @@ from .utils import (
     AuditFilter,
     AuditResult,
     format_audit_report,
+    format_verification_marker,
     get_selected_event_indexes,
     get_superseded_keys,
     resolve_contextual_index,
@@ -159,9 +160,7 @@ def _format_case_row(
         output = answer.output
         result = AuditResult.changed
 
-    verified_marker = ""
-    if test_case.verified:
-        verified_marker = "✓"
+    verified_marker = format_verification_marker(test_case.verified)
     cells = (
         str(index + 1),
         test_case.query.guide,

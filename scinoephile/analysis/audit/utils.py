@@ -17,6 +17,7 @@ __all__ = [
     "AuditResult",
     "VerificationAuditFilter",
     "format_audit_report",
+    "format_verification_marker",
     "get_contextual_index",
     "get_selected_event_indexes",
     "get_superseded_keys",
@@ -152,6 +153,21 @@ def format_audit_report(
         )
     )
     return "\n".join(lines) + "\n"
+
+
+def format_verification_marker(verified: bool | None) -> str:
+    """Format semantic verification state for an audit table.
+
+    Arguments:
+        verified: verification state, or None when verification is unavailable
+    Returns:
+        check mark, blank text, or em dash
+    """
+    if verified is None:
+        return "—"
+    if verified:
+        return "✓"
+    return ""
 
 
 def get_contextual_index(

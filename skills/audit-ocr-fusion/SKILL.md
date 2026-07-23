@@ -12,17 +12,18 @@ cleaning or review stages.
 
 Save the complete Markdown report under `local/`.
 
-- Keep these columns: `Index`, `Case`, `Difficulty`, `Source one`, `Source two`,
-  `Fused`, and `Validated`. When JSON is supplied, also include `Notes` and
+- Keep these columns: `Subtitle`, `Case`, `Difficulty`, `Source one`, `Source
+  two`, `Fused`, `Validated`, and `Notes`. When JSON is supplied, also include
   `Verified`.
 - `Case` and `Difficulty` are `—` for deterministic rows and rows audited
   without JSON. When JSON is supplied, `Verified` is `—` for deterministic
   rows, `✓` for verified JSON cases, and empty for unverified JSON cases.
 - Treat `Validated` as ground truth when supplied. It is `—` when omitted.
-- When JSON is supplied, generated `Notes` contains the recorded LLM note or
-  the automatic fusion explanation. Read it as context, then replace the entire
-  cell with your own independent judgment; do not append to or merely endorse
-  the generated content.
+- Generated `Notes` contains the recorded LLM note when JSON is supplied, an
+  automatic fusion explanation for deterministic rows, or an empty cell when
+  no context is available. Read it as context, then replace the entire cell
+  with your own independent judgment; do not append to or merely endorse the
+  generated content.
 - Validate the saved table after generating it and provide a clickable link.
   Do not paste the full table inline unless the user requests it.
 
