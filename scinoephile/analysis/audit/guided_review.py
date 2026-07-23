@@ -256,7 +256,7 @@ def _get_blocks_by_key(
             range(target_offset + 1, target_offset + len(target_block) + 1)
         )
         target_offset += len(target_block)
-        if not target_block or not guide_block:
+        if not target_block:
             continue
 
         target_texts = tuple(

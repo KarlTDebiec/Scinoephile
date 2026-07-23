@@ -77,6 +77,33 @@ def test_audit_guided_review_formats_unanswered_case():
     assert "| 1 | 1 | 參考 | 原文<br>(unanswered) |  |  |" in report
 
 
+def test_audit_guided_review_supports_target_only_block_in_range():
+    """Test a target-only block remains auditable with an index range."""
+    target = Series(events=[Subtitle(start=0, end=1000, text="原文")])
+    guide = Series()
+    test_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "原文"}],
+                "guides": [],
+            },
+            "answer": {"revisions": []},
+        }
+    )
+
+    report = audit_guided_review(
+        target,
+        guide,
+        (test_case,),
+        first_index=1,
+        last_index=1,
+    )
+
+    assert "- subtitles: 1" in report
+    assert "- target subtitle range: 1 through 1" in report
+    assert "| 1 | 1 | — | 原文 |  |  |" in report
+
+
 def test_audit_guided_review_rejects_invalid_range():
     """Test direct callers receive domain errors for invalid options."""
     target, guide = _get_series_pair()
