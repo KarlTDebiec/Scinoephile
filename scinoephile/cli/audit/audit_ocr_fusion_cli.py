@@ -14,6 +14,8 @@ from scinoephile.analysis.audit.ocr_fusion import (
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
+    enum_metavar,
+    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
 )
@@ -33,16 +35,19 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "first OCR source subtitle SRT file": "第一个 OCR 来源字幕 SRT 文件",
         "second OCR source subtitle SRT file": "第二个 OCR 来源字幕 SRT 文件",
         "fused OCR subtitle SRT file": "OCR 融合字幕 SRT 文件",
-        "optional validated subtitle SRT file used as ground truth": (
-            "用作真值的可选已验证字幕 SRT 文件"
-        ),
-        "optional OCR-fusion test-case JSON file": "可选的 OCR 融合测试用例 JSON 文件",
+        (
+            "optional validated subtitle SRT file used as ground truth; required "
+            "with --filter discrepancies"
+        ): ("用作真值的可选已验证字幕 SRT 文件；使用 --filter discrepancies 时为必需"),
+        (
+            "optional OCR-fusion test-case JSON file; required with --filter unverified"
+        ): ("可选的 OCR 融合测试用例 JSON 文件；使用 --filter unverified 时为必需"),
         (
             "rows to include: all, changes, discrepancies, or unverified "
-            "(default: changes)"
+            "(default: %(default)s)"
         ): (
             "要包含的行：all 表示全部，changes 表示来源差异，discrepancies "
-            "表示与已验证轨道不同，unverified 表示未验证（默认：changes）"
+            "表示与已验证轨道不同，unverified 表示未验证（默认：%(default)s）"
         ),
     },
     "zh-hant": {
@@ -53,16 +58,19 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "first OCR source subtitle SRT file": "第一個 OCR 來源字幕 SRT 檔",
         "second OCR source subtitle SRT file": "第二個 OCR 來源字幕 SRT 檔",
         "fused OCR subtitle SRT file": "OCR 融合字幕 SRT 檔",
-        "optional validated subtitle SRT file used as ground truth": (
-            "用作真值的選用已驗證字幕 SRT 檔"
-        ),
-        "optional OCR-fusion test-case JSON file": "選用的 OCR 融合測試案例 JSON 檔",
+        (
+            "optional validated subtitle SRT file used as ground truth; required "
+            "with --filter discrepancies"
+        ): ("用作真值的選用已驗證字幕 SRT 檔；使用 --filter discrepancies 時為必需"),
+        (
+            "optional OCR-fusion test-case JSON file; required with --filter unverified"
+        ): ("選用的 OCR 融合測試案例 JSON 檔；使用 --filter unverified 時為必需"),
         (
             "rows to include: all, changes, discrepancies, or unverified "
-            "(default: changes)"
+            "(default: %(default)s)"
         ): (
             "要包含的列：all 表示全部，changes 表示來源差異，discrepancies "
-            "表示與已驗證軌道不同，unverified 表示未驗證（預設：changes）"
+            "表示與已驗證軌道不同，unverified 表示未驗證（預設：%(default)s）"
         ),
     },
 }
@@ -116,32 +124,41 @@ class AuditOcrFusionCli(AuditCliBase):
             "--validated",
             dest="validated_path",
             type=input_file_arg(),
-            help="optional validated subtitle SRT file used as ground truth",
+            help=(
+                "optional validated subtitle SRT file used as ground truth; required "
+                "with --filter discrepancies"
+            ),
         )
         arg_groups["input arguments"].add_argument(
             "--json",
             dest="json_path",
             type=input_file_arg(),
-            help="optional OCR-fusion test-case JSON file",
+            help=(
+                "optional OCR-fusion test-case JSON file; required with --filter "
+                "unverified"
+            ),
         )
 
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            choices=tuple(OcrFusionAuditFilter),
             default=OcrFusionAuditFilter.changes,
             dest="row_filter",
-            metavar="{all,changes,discrepancies,unverified}",
+            metavar=enum_metavar(OcrFusionAuditFilter),
             type=enum_arg(OcrFusionAuditFilter),
             help=(
-                "rows to include: all, changes, discrepancies, or unverified "
-                "(default: changes)"
+                f"rows to include: {enum_options_list_str(OcrFusionAuditFilter)} "
+                "(default: %(default)s)"
             ),
         )
 
     @classmethod
     def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser."""
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
         return "ocr-fusion"
 
     @classmethod
@@ -162,8 +179,29 @@ class AuditOcrFusionCli(AuditCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            _parser: parser used to report user-facing errors
+            source_one_path: first OCR source subtitle SRT path
+            source_two_path: second OCR source subtitle SRT path
+            fused_path: fused OCR subtitle SRT path
+            validated_path: optional validated subtitle SRT path
+            json_path: optional OCR-fusion test-case JSON path
+            row_filter: rows to include in the report
+            first_index: first subtitle number to include
+            last_index: last subtitle number to include
+            first_block: first workflow block number to include
+            last_block: last workflow block number to include
+            outfile_path: optional Markdown output path
+            overwrite: whether to overwrite an existing output file
+        """
+        # Validate arguments
         parser = _parser or cls.argparser()
+        if row_filter is OcrFusionAuditFilter.unverified and json_path is None:
+            parser.error("--filter unverified requires --json")
+        if row_filter is OcrFusionAuditFilter.discrepancies and validated_path is None:
+            parser.error("--filter discrepancies requires --validated")
 
         # Read inputs
         source_one = read_series(parser, source_one_path)
@@ -172,7 +210,6 @@ class AuditOcrFusionCli(AuditCliBase):
         validated = None
         if validated_path is not None:
             validated = read_series(parser, validated_path)
-
         test_cases = None
         if json_path is not None:
             test_cases = cls.load_test_cases(

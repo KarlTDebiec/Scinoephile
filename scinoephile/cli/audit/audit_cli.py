@@ -72,7 +72,12 @@ class AuditCli(ScinoephileCliBase):
         audit_subcommand_name: str,
         **kwargs: Any,
     ):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            audit_subcommand_name: audit subcommand to execute
+            **kwargs: arguments forwarded to the selected audit subcommand
+        """
         cls.subcommands()[audit_subcommand_name]._main(**kwargs)
 
 

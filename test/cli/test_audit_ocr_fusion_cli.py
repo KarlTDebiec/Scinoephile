@@ -9,8 +9,27 @@ from pathlib import Path
 
 from pytest import CaptureFixture, raises
 
+from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter
 from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
+from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.testing import run_cli_with_args
+
+
+def test_audit_ocr_fusion_cli_filter_help_is_consistent():
+    """Test filter validation, metavar, and help derive from the filter enum."""
+    actions = {
+        action.dest: action
+        for action in AuditOcrFusionCli.argparser()._actions  # noqa: SLF001
+    }
+    action = actions["row_filter"]
+
+    assert action.choices is None
+    assert action.metavar == enum_metavar(OcrFusionAuditFilter)
+    assert isinstance(action.help, str)
+    assert enum_options_list_str(OcrFusionAuditFilter) in action.help
+    json_help = actions["json_path"].help
+    assert isinstance(json_help, str)
+    assert "--filter unverified" in json_help
 
 
 def test_audit_ocr_fusion_cli_writes_validated_discrepancy_report(
@@ -85,10 +104,27 @@ def test_audit_ocr_fusion_cli_writes_validated_discrepancy_report(
     )
     assert capsys.readouterr().out == ""
 
+    no_json_arguments = (
+        f"--source-one {source_one_path} --source-two {source_two_path} "
+        f"--fused {fused_path}"
+    )
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditOcrFusionCli,
+            f"{no_json_arguments} --filter unverified",
+        )
+    assert "--filter unverified requires --json" in capsys.readouterr().err
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditOcrFusionCli,
+            f"{no_json_arguments} --filter discrepancies",
+        )
+    assert "--filter discrepancies requires --validated" in capsys.readouterr().err
+
     run_cli_with_args(
         AuditOcrFusionCli,
-        f"--source-one {source_one_path} --source-two {source_two_path} "
-        f"--fused {fused_path}",
+        no_json_arguments,
     )
     report = capsys.readouterr().out
     assert "- decision log: omitted" in report

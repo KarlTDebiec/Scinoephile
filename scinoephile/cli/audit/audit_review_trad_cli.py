@@ -14,11 +14,18 @@ from scinoephile.analysis.audit.review import (
     audit_review_workflow,
 )
 from scinoephile.cli.helpers.io import read_series
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
+from scinoephile.common.argument_parsing import (
+    enum_arg,
+    enum_metavar,
+    enum_options_list_str,
+    get_arg_groups_by_name,
+    input_file_arg,
+)
 from scinoephile.core import ScinoephileError
 from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
-from .audit_review_cli_base import AuditReviewCliBase
+from .audit_cli_base import AuditCliBase
+from .utils import load_review_test_cases
 
 __all__ = ["AuditReviewTradCli"]
 
@@ -35,11 +42,28 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "simplified traditional-script SRT file after review": (
             "校对后由繁体字转换的简体字 SRT 文件"
         ),
-        "optional JSON corresponding to the traditional review": (
-            "与繁体字校对对应的可选 JSON"
+        (
+            "optional test-case JSON file for the traditional review; required "
+            "with --filter unverified"
+        ): ("繁体字校对的可选测试用例 JSON 文件；使用 --filter unverified 时为必需"),
+        (
+            "optional test-case JSON file for the traditional simplification "
+            "review; required with --filter unverified"
+        ): (
+            "繁体字简化校对的可选测试用例 JSON 文件；使用 --filter unverified 时为必需"
         ),
-        "optional JSON corresponding to the traditional simplification review": (
-            "与繁体字简化校对对应的可选 JSON"
+        "rows to include: all, changes, or unverified (default: %(default)s)": (
+            "要包含的行：all 表示全部，changes 表示校对更改，unverified 表示"
+            "未验证日志案例中的字幕（默认：%(default)s）"
+        ),
+        (
+            "further limit rows to those containing any listed character in any "
+            "input; values may be separated or combined, and simplified and "
+            "traditional variants are included automatically (default: no "
+            "character filter)"
+        ): (
+            "进一步仅包含任一输入中含有所列字符的行；字符可分开或合并输入，"
+            "并自动包含简繁体变体（默认：无字符筛选）"
         ),
     },
     "zh-hant": {
@@ -54,18 +78,33 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "simplified traditional-script SRT file after review": (
             "校對後由繁體字轉換的簡體字 SRT 檔"
         ),
-        "optional JSON corresponding to the traditional review": (
-            "與繁體字校對對應的選用 JSON"
+        (
+            "optional test-case JSON file for the traditional review; required "
+            "with --filter unverified"
+        ): ("繁體字校對的選用測試案例 JSON 檔；使用 --filter unverified 時為必需"),
+        (
+            "optional test-case JSON file for the traditional simplification "
+            "review; required with --filter unverified"
+        ): ("繁體字簡化校對的選用測試案例 JSON 檔；使用 --filter unverified 時為必需"),
+        "rows to include: all, changes, or unverified (default: %(default)s)": (
+            "要包含的列：all 表示全部，changes 表示校對變更，unverified 表示"
+            "未驗證日誌案例中的字幕（預設：%(default)s）"
         ),
-        "optional JSON corresponding to the traditional simplification review": (
-            "與繁體字簡化校對對應的選用 JSON"
+        (
+            "further limit rows to those containing any listed character in any "
+            "input; values may be separated or combined, and simplified and "
+            "traditional variants are included automatically (default: no "
+            "character filter)"
+        ): (
+            "進一步僅包含任一輸入中含有所列字元的列；字元可分開或合併輸入，"
+            "並自動包含簡繁體變體（預設：無字元篩選）"
         ),
     },
 }
 """Localized help text keyed by locale and English source text."""
 
 
-class AuditReviewTradCli(AuditReviewCliBase):
+class AuditReviewTradCli(AuditCliBase):
     """Audit traditional review followed by review of its simplified form."""
 
     localizations = AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS
@@ -82,8 +121,11 @@ class AuditReviewTradCli(AuditReviewCliBase):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
+            "operation arguments",
             optional_arguments_name="additional arguments",
         )
+
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--traditional",
             dest="traditional_path",
@@ -116,14 +158,43 @@ class AuditReviewTradCli(AuditReviewCliBase):
             "--traditional-json",
             dest="traditional_json_path",
             type=input_file_arg(),
-            help="optional JSON corresponding to the traditional review",
+            help=(
+                "optional test-case JSON file for the traditional review; required "
+                "with --filter unverified"
+            ),
         )
         arg_groups["input arguments"].add_argument(
             "--traditional-simplified-json",
             dest="traditional_simplified_json_path",
             type=input_file_arg(),
             help=(
-                "optional JSON corresponding to the traditional simplification review"
+                "optional test-case JSON file for the traditional simplification "
+                "review; required with --filter unverified"
+            ),
+        )
+
+        # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "--filter",
+            default=ReviewAuditFilter.changes,
+            dest="row_filter",
+            metavar=enum_metavar(ReviewAuditFilter),
+            type=enum_arg(ReviewAuditFilter),
+            help=(
+                f"rows to include: {enum_options_list_str(ReviewAuditFilter)} "
+                "(default: %(default)s)"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--characters",
+            default=(),
+            metavar="CHARACTER",
+            nargs="+",
+            help=(
+                "further limit rows to those containing any listed character in "
+                "any input; values may be separated or combined, and simplified "
+                "and traditional variants are included automatically (default: "
+                "no character filter)"
             ),
         )
 
@@ -156,8 +227,36 @@ class AuditReviewTradCli(AuditReviewCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            _parser: parser used to report user-facing errors
+            traditional_path: traditional-script review input SRT path
+            traditional_reviewed_path: traditional-script reviewed SRT path
+            traditional_simplified_path: simplified traditional-script SRT path
+            traditional_simplified_reviewed_path: reviewed simplified
+                traditional-script SRT path
+            traditional_json_path: optional traditional-review test-case JSON path
+            traditional_simplified_json_path: optional traditional-simplification
+                review test-case JSON path
+            row_filter: rows to include in the report
+            characters: characters used to further limit included rows
+            first_index: first subtitle number to include
+            last_index: last subtitle number to include
+            first_block: first workflow block number to include
+            last_block: last workflow block number to include
+            outfile_path: optional Markdown output path
+            overwrite: whether to overwrite an existing output file
+        """
+        # Validate arguments
         parser = _parser or cls.argparser()
+        if row_filter is ReviewAuditFilter.unverified and (
+            traditional_json_path is None or traditional_simplified_json_path is None
+        ):
+            parser.error(
+                "--filter unverified requires --traditional-json and "
+                "--traditional-simplified-json"
+            )
 
         # Read inputs
         traditional = read_series(parser, traditional_path)
@@ -166,6 +265,10 @@ class AuditReviewTradCli(AuditReviewCliBase):
         traditional_simplified_reviewed = read_series(
             parser,
             traditional_simplified_reviewed_path,
+        )
+        traditional_review_cases = load_review_test_cases(parser, traditional_json_path)
+        traditional_simplified_review_cases = load_review_test_cases(
+            parser, traditional_simplified_json_path
         )
 
         # Perform operation
@@ -176,19 +279,13 @@ class AuditReviewTradCli(AuditReviewCliBase):
                         label="Traditional",
                         original=traditional,
                         reviewed=traditional_reviewed,
-                        review_cases=cls.load_review_test_cases(
-                            parser,
-                            traditional_json_path,
-                        ),
+                        review_cases=traditional_review_cases,
                     ),
                     ReviewAuditPair(
                         label="Traditional simplification",
                         original=traditional_simplified,
                         reviewed=traditional_simplified_reviewed,
-                        review_cases=cls.load_review_test_cases(
-                            parser,
-                            traditional_simplified_json_path,
-                        ),
+                        review_cases=traditional_simplified_review_cases,
                     ),
                 ),
                 row_filter=row_filter,

@@ -11,6 +11,7 @@ from typing import TypedDict
 from pytest import raises
 
 from scinoephile.analysis.audit.review import (
+    ComparativeReviewAuditFilter,
     ReviewAuditFilter,
     ReviewAuditPair,
     audit_review_workflow,
@@ -20,7 +21,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.llms.review import ReviewManager
+from scinoephile.llms.review import ReviewManager, ReviewTestCase
 
 
 class _AuditInputs(TypedDict):
@@ -64,7 +65,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ReviewAuditFilter.changes,
+        row_filter=ComparativeReviewAuditFilter.changes,
     )
 
     assert "- simplified review edits: 1" in report
@@ -81,7 +82,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ReviewAuditFilter.discrepancies,
+        row_filter=ComparativeReviewAuditFilter.discrepancies,
     )
     assert "- table rows: 2" in report
     assert "| 2 |" in report
@@ -90,7 +91,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ReviewAuditFilter.all,
+        row_filter=ComparativeReviewAuditFilter.all,
         characters=("著", "丙"),
     )
     assert "- character filter: 著, 丙" in report
@@ -100,7 +101,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ReviewAuditFilter.all,
+        row_filter=ComparativeReviewAuditFilter.all,
         first_index=2,
         last_index=3,
     )
@@ -111,6 +112,45 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
     assert "| 2 |" in report
     assert "| 3 |" in report
     assert "| 4 |" not in report
+
+
+def test_audit_review_workflow_filters_unverified_cases():
+    """Test regular review audits select subtitles in unverified logged cases."""
+    original = _get_series(("First", "Second", "Third"))
+    reviewed = _get_series(("First revised", "Second", "Third"))
+    unverified_case = ReviewTestCase.model_validate(
+        {
+            "query": {"subtitles": [{"index": 1, "text": "First"}]},
+            "answer": {
+                "revisions": [{"index": 1, "text": "First revised", "note": "Revised."}]
+            },
+        }
+    )
+    verified_case = ReviewTestCase.model_validate(
+        {
+            "query": {"subtitles": [{"index": 1, "text": "Second"}]},
+            "answer": {"revisions": []},
+            "verified": True,
+        }
+    )
+
+    report = audit_review_workflow(
+        reviews=(
+            ReviewAuditPair(
+                label="Test",
+                original=original,
+                reviewed=reviewed,
+                review_cases=(unverified_case, verified_case),
+            ),
+        ),
+        row_filter=ReviewAuditFilter.unverified,
+    )
+
+    assert "- row filter: unverified" in report
+    assert "- table rows: 1" in report
+    assert "| 1 | First<br>First revised | Test review: Revised. |" in report
+    assert "| 2 |" not in report
+    assert "| 3 |" not in report
 
 
 def test_audit_reviews_reuses_deduplicated_json_note(tmp_path: Path):
@@ -149,7 +189,7 @@ def test_audit_reviews_ignores_timing_differences(tmp_path: Path):
     inputs["traditional_reviewed"].events[1].start = 62_000
     inputs["traditional_reviewed"].events[1].end = 62_500
 
-    report = audit_reviews(**inputs, row_filter=ReviewAuditFilter.all)
+    report = audit_reviews(**inputs, row_filter=ComparativeReviewAuditFilter.all)
 
     assert "- table rows: 4" in report
 
@@ -195,6 +235,12 @@ def test_audit_review_workflow_selects_blocks():
             reviews=reviews,
             first_index=1,
             first_block=2,
+        )
+
+    with raises(ScinoephileError, match="requires at least one comparison"):
+        audit_review_workflow(
+            reviews=reviews,
+            row_filter=ComparativeReviewAuditFilter.discrepancies,
         )
 
 
