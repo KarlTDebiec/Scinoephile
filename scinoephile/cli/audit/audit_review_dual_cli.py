@@ -14,6 +14,8 @@ from scinoephile.analysis.audit.review import (
 )
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
+    enum_arg,
+    enum_metavar,
     enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
@@ -77,12 +79,13 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
         (
             "further limit rows to those containing any listed character in any "
             "input; values may be separated or combined, and simplified and "
-            "traditional variants are included automatically (Yue examples: 些 番 "
-            "是 着 喇啦啰 这那; Zho examples: 著 着 甚 什)"
+            "traditional variants are included automatically; Yue examples: 些 番 "
+            "是 着 喇啦啰 这那; Zho examples: 著 着 甚 什 (default: no character "
+            "filter)"
         ): (
             "进一步仅包含任一输入中含有所列字符的行；字符可分开或合并输入，"
             "并自动包含简繁体变体（粤语示例：些 番 是 着 喇啦啰 这那；中文"
-            "示例：著 着 甚 什）"
+            "示例：著 着 甚 什；默认：无字符筛选）"
         ),
         "Markdown outfile path (default: stdout)": (
             "Markdown 输出文件路径（默认：标准输出）"
@@ -137,12 +140,13 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
         (
             "further limit rows to those containing any listed character in any "
             "input; values may be separated or combined, and simplified and "
-            "traditional variants are included automatically (Yue examples: 些 番 "
-            "是 着 喇啦啰 这那; Zho examples: 著 着 甚 什)"
+            "traditional variants are included automatically; Yue examples: 些 番 "
+            "是 着 喇啦啰 这那; Zho examples: 著 着 甚 什 (default: no character "
+            "filter)"
         ): (
             "進一步僅包含任一輸入中含有所列字元的列；字元可分開或合併輸入，"
             "並自動包含簡繁體變體（粵語範例：些 番 是 着 喇啦啰 这那；中文"
-            "範例：著 着 甚 什）"
+            "範例：著 着 甚 什；預設：無字元篩選）"
         ),
         "Markdown outfile path (default: stdout)": (
             "Markdown 輸出檔路徑（預設：標準輸出）"
@@ -157,16 +161,6 @@ class AuditReviewDualCli(AuditReviewCliBase):
 
     localizations = AUDIT_REVIEW_DUAL_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
-    row_filter_help = (
-        f"rows to include: {enum_options_list_str(ComparativeReviewAuditFilter)}; "
-        "changes includes any review edit or final discrepancy; discrepancies "
-        "includes final discrepancies only; unverified includes subtitles in "
-        "unverified logged cases "
-        "(default: %(default)s)"
-    )
-    """Help text for the workflow's supported row filters."""
-    row_filter_type = ComparativeReviewAuditFilter
-    """Enum defining the workflow's supported row filters."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -179,6 +173,7 @@ class AuditReviewDualCli(AuditReviewCliBase):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
+            "operation arguments",
             optional_arguments_name="additional arguments",
         )
 
@@ -250,6 +245,35 @@ class AuditReviewDualCli(AuditReviewCliBase):
             help=(
                 "optional test-case JSON file for the traditional simplification "
                 "review; required with --filter unverified"
+            ),
+        )
+
+        # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "--filter",
+            default=ComparativeReviewAuditFilter.changes,
+            dest="row_filter",
+            metavar=enum_metavar(ComparativeReviewAuditFilter),
+            type=enum_arg(ComparativeReviewAuditFilter),
+            help=(
+                "rows to include: "
+                f"{enum_options_list_str(ComparativeReviewAuditFilter)}; changes "
+                "includes any review edit or final discrepancy; discrepancies "
+                "includes final discrepancies only; unverified includes subtitles "
+                "in unverified logged cases (default: %(default)s)"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--characters",
+            default=(),
+            metavar="CHARACTER",
+            nargs="+",
+            help=(
+                "further limit rows to those containing any listed character in "
+                "any input; values may be separated or combined, and simplified "
+                "and traditional variants are included automatically; Yue "
+                "examples: 些 番 是 着 喇啦啰 这那; Zho examples: 著 着 甚 什 "
+                "(default: no character filter)"
             ),
         )
 
@@ -345,16 +369,15 @@ class AuditReviewDualCli(AuditReviewCliBase):
         )
         if len(set(map(len, input_series))) != 1:
             parser.error("Subtitle inputs must contain the same number of subtitles")
-
-        # Load review JSON
-        review_cases = {
-            "simplified": cls.load_review_test_cases(parser, simplified_json_path),
-            "traditional": cls.load_review_test_cases(parser, traditional_json_path),
-            "traditional_simplified": cls.load_review_test_cases(
-                parser,
-                traditional_simplified_json_path,
-            ),
-        }
+        simplified_review_cases = cls.load_review_test_cases(
+            parser, simplified_json_path
+        )
+        traditional_review_cases = cls.load_review_test_cases(
+            parser, traditional_json_path
+        )
+        traditional_simplified_review_cases = cls.load_review_test_cases(
+            parser, traditional_simplified_json_path
+        )
 
         # Perform operation
         try:
@@ -365,11 +388,9 @@ class AuditReviewDualCli(AuditReviewCliBase):
                 traditional_reviewed=traditional_reviewed,
                 traditional_simplified=traditional_simplified,
                 traditional_simplified_reviewed=traditional_simplified_reviewed,
-                simplified_review_cases=review_cases["simplified"],
-                traditional_review_cases=review_cases["traditional"],
-                traditional_simplified_review_cases=(
-                    review_cases["traditional_simplified"]
-                ),
+                simplified_review_cases=simplified_review_cases,
+                traditional_review_cases=traditional_review_cases,
+                traditional_simplified_review_cases=traditional_simplified_review_cases,
                 row_filter=row_filter,
                 characters=characters,
                 first_index=first_index,

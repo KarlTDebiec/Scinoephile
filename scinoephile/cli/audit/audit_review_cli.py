@@ -16,6 +16,9 @@ from scinoephile.analysis.audit.review import (
 )
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
+    enum_arg,
+    enum_metavar,
+    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
 )
@@ -92,12 +95,6 @@ class AuditReviewCli(AuditReviewCliBase):
 
     localizations = AUDIT_REVIEW_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
-    characters_help = (
-        "characters to match in regular-review input; values may be separated "
-        "or combined, and simplified and traditional variants are included "
-        "automatically (default: no character filter)"
-    )
-    """Help text for the workflow's character filter."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -110,6 +107,7 @@ class AuditReviewCli(AuditReviewCliBase):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
+            "operation arguments",
             optional_arguments_name="additional arguments",
         )
 
@@ -141,6 +139,30 @@ class AuditReviewCli(AuditReviewCliBase):
             dest="json_path",
             type=input_file_arg(),
             help=("test-case JSON file; required with --guide or --filter unverified"),
+        )
+
+        # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "--filter",
+            default=ReviewAuditFilter.changes,
+            dest="row_filter",
+            metavar=enum_metavar(ReviewAuditFilter),
+            type=enum_arg(ReviewAuditFilter),
+            help=(
+                f"rows to include: {enum_options_list_str(ReviewAuditFilter)} "
+                "(default: %(default)s)"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--characters",
+            default=(),
+            metavar="CHARACTER",
+            nargs="+",
+            help=(
+                "characters to match in regular-review input; values may be "
+                "separated or combined, and simplified and traditional variants "
+                "are included automatically (default: no character filter)"
+            ),
         )
 
     @classmethod
@@ -184,8 +206,6 @@ class AuditReviewCli(AuditReviewCliBase):
         # Read inputs
         target = read_series(parser, target_path)
         guide = read_series(parser, guide_path)
-
-        # Load guided-review JSON
         test_cases = cls.load_test_cases(
             parser,
             json_path,
@@ -239,6 +259,7 @@ class AuditReviewCli(AuditReviewCliBase):
         # Read inputs
         original = read_series(parser, original_path)
         reviewed = read_series(parser, reviewed_path)
+        review_cases = cls.load_review_test_cases(parser, json_path)
 
         # Detect language
         detected_languages = {
@@ -254,14 +275,6 @@ class AuditReviewCli(AuditReviewCliBase):
         if not detected_languages:
             parser.error("Unable to detect the language and script of subtitle inputs")
         language = detected_languages.pop()
-
-        # Load regular-review JSON
-        review_cases = ()
-        if json_path is not None:
-            review_cases = cls.load_review_test_cases(
-                parser,
-                json_path,
-            )
 
         # Perform operation
         return audit_review_workflow(

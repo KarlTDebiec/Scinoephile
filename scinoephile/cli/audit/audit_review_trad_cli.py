@@ -14,7 +14,13 @@ from scinoephile.analysis.audit.review import (
     audit_review_workflow,
 )
 from scinoephile.cli.helpers.io import read_series
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
+from scinoephile.common.argument_parsing import (
+    enum_arg,
+    enum_metavar,
+    enum_options_list_str,
+    get_arg_groups_by_name,
+    input_file_arg,
+)
 from scinoephile.core import ScinoephileError
 from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
@@ -45,6 +51,19 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ): (
             "繁体字简化校对的可选测试用例 JSON 文件；使用 --filter unverified 时为必需"
         ),
+        "rows to include: all, changes, or unverified (default: %(default)s)": (
+            "要包含的行：all 表示全部，changes 表示校对更改，unverified 表示"
+            "未验证日志案例中的字幕（默认：%(default)s）"
+        ),
+        (
+            "further limit rows to those containing any listed character in any "
+            "input; values may be separated or combined, and simplified and "
+            "traditional variants are included automatically (default: no "
+            "character filter)"
+        ): (
+            "进一步仅包含任一输入中含有所列字符的行；字符可分开或合并输入，"
+            "并自动包含简繁体变体（默认：无字符筛选）"
+        ),
     },
     "zh-hant": {
         "audit traditional review followed by review of its simplified form": (
@@ -66,6 +85,19 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "optional test-case JSON file for the traditional simplification "
             "review; required with --filter unverified"
         ): ("繁體字簡化校對的選用測試案例 JSON 檔；使用 --filter unverified 時為必需"),
+        "rows to include: all, changes, or unverified (default: %(default)s)": (
+            "要包含的列：all 表示全部，changes 表示校對變更，unverified 表示"
+            "未驗證日誌案例中的字幕（預設：%(default)s）"
+        ),
+        (
+            "further limit rows to those containing any listed character in any "
+            "input; values may be separated or combined, and simplified and "
+            "traditional variants are included automatically (default: no "
+            "character filter)"
+        ): (
+            "進一步僅包含任一輸入中含有所列字元的列；字元可分開或合併輸入，"
+            "並自動包含簡繁體變體（預設：無字元篩選）"
+        ),
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -88,6 +120,7 @@ class AuditReviewTradCli(AuditReviewCliBase):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
+            "operation arguments",
             optional_arguments_name="additional arguments",
         )
 
@@ -136,6 +169,31 @@ class AuditReviewTradCli(AuditReviewCliBase):
             help=(
                 "optional test-case JSON file for the traditional simplification "
                 "review; required with --filter unverified"
+            ),
+        )
+
+        # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "--filter",
+            default=ReviewAuditFilter.changes,
+            dest="row_filter",
+            metavar=enum_metavar(ReviewAuditFilter),
+            type=enum_arg(ReviewAuditFilter),
+            help=(
+                f"rows to include: {enum_options_list_str(ReviewAuditFilter)} "
+                "(default: %(default)s)"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--characters",
+            default=(),
+            metavar="CHARACTER",
+            nargs="+",
+            help=(
+                "further limit rows to those containing any listed character in "
+                "any input; values may be separated or combined, and simplified "
+                "and traditional variants are included automatically (default: "
+                "no character filter)"
             ),
         )
 
@@ -207,6 +265,12 @@ class AuditReviewTradCli(AuditReviewCliBase):
             parser,
             traditional_simplified_reviewed_path,
         )
+        traditional_review_cases = cls.load_review_test_cases(
+            parser, traditional_json_path
+        )
+        traditional_simplified_review_cases = cls.load_review_test_cases(
+            parser, traditional_simplified_json_path
+        )
 
         # Perform operation
         try:
@@ -216,19 +280,13 @@ class AuditReviewTradCli(AuditReviewCliBase):
                         label="Traditional",
                         original=traditional,
                         reviewed=traditional_reviewed,
-                        review_cases=cls.load_review_test_cases(
-                            parser,
-                            traditional_json_path,
-                        ),
+                        review_cases=traditional_review_cases,
                     ),
                     ReviewAuditPair(
                         label="Traditional simplification",
                         original=traditional_simplified,
                         reviewed=traditional_simplified_reviewed,
-                        review_cases=cls.load_review_test_cases(
-                            parser,
-                            traditional_simplified_json_path,
-                        ),
+                        review_cases=traditional_simplified_review_cases,
                     ),
                 ),
                 row_filter=row_filter,
