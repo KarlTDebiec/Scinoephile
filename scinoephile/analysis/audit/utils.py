@@ -12,11 +12,14 @@ from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 
 __all__ = [
+    "AuditResult",
     "escape_table_cell",
     "format_block_range",
     "format_difficulty_filter",
     "format_index_range",
+    "get_contextual_index",
     "get_selected_event_indexes",
+    "get_superseded_keys",
     "is_block_in_range",
     "validate_audit_range",
     "validate_block_range",
@@ -24,7 +27,7 @@ __all__ = [
 ]
 
 
-class _AuditResult(StrEnum):
+class AuditResult(StrEnum):
     """Result types shared by decision-log audit rows."""
 
     changed = "changed"
@@ -109,6 +112,77 @@ def format_index_range(
     return f"- {range_name} range: {first_index} through {last_index}"
 
 
+def get_contextual_index(
+    candidate_indexes: Sequence[int],
+    direct_indexes: Sequence[int | None],
+    test_case_index: int,
+) -> int | None:
+    """Resolve a repeated source key from neighboring logged cases.
+
+    Arguments:
+        candidate_indexes: possible zero-indexed source positions
+        direct_indexes: directly resolved indexes for every logged case
+        test_case_index: zero-indexed test case position
+    Returns:
+        uniquely resolved source position, or None if ambiguity remains
+    """
+    previous_index = next(
+        (
+            index
+            for index in reversed(direct_indexes[:test_case_index])
+            if index is not None
+        ),
+        None,
+    )
+    next_index = next(
+        (index for index in direct_indexes[test_case_index + 1 :] if index is not None),
+        None,
+    )
+    if previous_index is None and next_index is None:
+        return None
+
+    narrowed_candidates = list(candidate_indexes)
+    if (
+        previous_index is not None
+        and next_index is not None
+        and previous_index <= next_index
+    ):
+        candidates_between_anchors = [
+            candidate
+            for candidate in candidate_indexes
+            if previous_index <= candidate <= next_index
+        ]
+        if len(candidates_between_anchors) == 1:
+            return candidates_between_anchors[0]
+        if candidates_between_anchors:
+            narrowed_candidates = candidates_between_anchors
+
+    scores: dict[int, tuple[int, int]] = {}
+    for candidate in narrowed_candidates:
+        distances = []
+        if previous_index is not None:
+            distances.append(abs(candidate - previous_index))
+        if next_index is not None:
+            distances.append(abs(candidate - next_index))
+        if previous_index is not None and next_index is not None:
+            primary_score = sum(distances)
+        else:
+            primary_score = distances[0]
+
+        previous_distance = 0
+        if previous_index is not None:
+            previous_distance = abs(candidate - previous_index)
+        scores[candidate] = (primary_score, previous_distance)
+
+    minimum_score = min(scores.values())
+    best_candidates = [
+        candidate for candidate, score in scores.items() if score == minimum_score
+    ]
+    if len(best_candidates) == 1:
+        return best_candidates[0]
+    return None
+
+
 def get_selected_event_indexes(
     series: Series,
     *,
@@ -162,6 +236,32 @@ def get_selected_event_indexes(
         for event_index in range(block_start, block_stop)
     }
     return frozenset(selected_block_indexes)
+
+
+def get_superseded_keys[KeyT: Hashable, ValueT: Hashable](
+    current_keys: Collection[KeyT],
+    values_by_key: Mapping[KeyT, Collection[ValueT]],
+) -> set[KeyT]:
+    """Get historical keys directly replaced by current logged cases.
+
+    A historical key is superseded only when one of its logged values also
+    appears under a current key. Avoid transitive propagation because a reused
+    historical key may otherwise connect unrelated cases.
+
+    Arguments:
+        current_keys: keys present in the current source data
+        values_by_key: logged target values grouped by source key
+    Returns:
+        absent keys directly connected to a current key by a shared value
+    """
+    current_values = {
+        value for key in current_keys for value in values_by_key.get(key, ())
+    }
+    return {
+        key
+        for key, values in values_by_key.items()
+        if key not in current_keys and not current_values.isdisjoint(values)
+    }
 
 
 def is_block_in_range(
@@ -259,77 +359,6 @@ def validate_index_range(first_index: int | None, last_index: int | None):
         raise ScinoephileError("First index must be less than or equal to last index")
 
 
-def _get_contextual_index(
-    candidate_indexes: Sequence[int],
-    direct_indexes: Sequence[int | None],
-    test_case_index: int,
-) -> int | None:
-    """Resolve a repeated source key from neighboring logged cases.
-
-    Arguments:
-        candidate_indexes: possible zero-indexed source positions
-        direct_indexes: directly resolved indexes for every logged case
-        test_case_index: zero-indexed test case position
-    Returns:
-        uniquely resolved source position, or None if ambiguity remains
-    """
-    previous_index = next(
-        (
-            index
-            for index in reversed(direct_indexes[:test_case_index])
-            if index is not None
-        ),
-        None,
-    )
-    next_index = next(
-        (index for index in direct_indexes[test_case_index + 1 :] if index is not None),
-        None,
-    )
-    if previous_index is None and next_index is None:
-        return None
-
-    narrowed_candidates = list(candidate_indexes)
-    if (
-        previous_index is not None
-        and next_index is not None
-        and previous_index <= next_index
-    ):
-        candidates_between_anchors = [
-            candidate
-            for candidate in candidate_indexes
-            if previous_index <= candidate <= next_index
-        ]
-        if len(candidates_between_anchors) == 1:
-            return candidates_between_anchors[0]
-        if candidates_between_anchors:
-            narrowed_candidates = candidates_between_anchors
-
-    scores: dict[int, tuple[int, int]] = {}
-    for candidate in narrowed_candidates:
-        distances = []
-        if previous_index is not None:
-            distances.append(abs(candidate - previous_index))
-        if next_index is not None:
-            distances.append(abs(candidate - next_index))
-        if previous_index is not None and next_index is not None:
-            primary_score = sum(distances)
-        else:
-            primary_score = distances[0]
-
-        previous_distance = 0
-        if previous_index is not None:
-            previous_distance = abs(candidate - previous_index)
-        scores[candidate] = (primary_score, previous_distance)
-
-    minimum_score = min(scores.values())
-    best_candidates = [
-        candidate for candidate, score in scores.items() if score == minimum_score
-    ]
-    if len(best_candidates) == 1:
-        return best_candidates[0]
-    return None
-
-
 def _get_paired_event_block_numbers(
     block_pairs: Sequence[tuple[Series, Series]],
 ) -> tuple[tuple[int, ...], tuple[int, ...]]:
@@ -346,32 +375,6 @@ def _get_paired_event_block_numbers(
         one_block_numbers.extend([block_number] * len(one_block))
         two_block_numbers.extend([block_number] * len(two_block))
     return tuple(one_block_numbers), tuple(two_block_numbers)
-
-
-def _get_superseded_keys[KeyT: Hashable, ValueT: Hashable](
-    current_keys: Collection[KeyT],
-    values_by_key: Mapping[KeyT, Collection[ValueT]],
-) -> set[KeyT]:
-    """Get historical keys directly replaced by current logged cases.
-
-    A historical key is superseded only when one of its logged values also
-    appears under a current key. Avoid transitive propagation because a reused
-    historical key may otherwise connect unrelated cases.
-
-    Arguments:
-        current_keys: keys present in the current source data
-        values_by_key: logged target values grouped by source key
-    Returns:
-        absent keys directly connected to a current key by a shared value
-    """
-    current_values = {
-        value for key in current_keys for value in values_by_key.get(key, ())
-    }
-    return {
-        key
-        for key, values in values_by_key.items()
-        if key not in current_keys and not current_values.isdisjoint(values)
-    }
 
 
 def _get_validated_block_pairs_by_pause(

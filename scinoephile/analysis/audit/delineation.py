@@ -13,13 +13,13 @@ from scinoephile.core.subtitles import Series
 from scinoephile.llms.delineation import DelineationTestCase
 
 from .utils import (
-    _AuditResult,
-    _get_contextual_index,
-    _get_superseded_keys,
+    AuditResult,
     escape_table_cell,
     format_block_range,
     format_index_range,
+    get_contextual_index,
     get_selected_event_indexes,
+    get_superseded_keys,
     validate_block_range,
     validate_index_range,
 )
@@ -113,19 +113,19 @@ def audit_delineation(
         if answer is None:
             output = "(unanswered)"
             unanswered += 1
-            result = _AuditResult.unanswered
+            result = AuditResult.unanswered
         elif answer.output_one or answer.output_two:
             output = _format_pair(answer.output_one, answer.output_two)
             shifts += 1
-            result = _AuditResult.changed
+            result = AuditResult.changed
         else:
             output = ""
             no_shifts += 1
-            result = _AuditResult.unchanged
+            result = AuditResult.unchanged
 
         if (
             row_filter is DelineationAuditFilter.changes
-            and result is not _AuditResult.changed
+            and result is not AuditResult.changed
         ) or (row_filter is DelineationAuditFilter.unverified and test_case.verified):
             continue
 
@@ -214,7 +214,7 @@ def _get_case_index(
     if direct_index is not None:
         return direct_index
 
-    contextual_index = _get_contextual_index(
+    contextual_index = get_contextual_index(
         candidate_indexes,
         direct_indexes,
         test_case_index - 1,
@@ -257,7 +257,7 @@ def _get_case_indexes(
         reference_pair = (query.reference_one, query.reference_two)
         target_pair = (query.target_one, query.target_two)
         target_pairs_by_reference_pair[reference_pair].add(target_pair)
-    superseded_pairs = _get_superseded_keys(
+    superseded_pairs = get_superseded_keys(
         pair_indexes,
         target_pairs_by_reference_pair,
     )

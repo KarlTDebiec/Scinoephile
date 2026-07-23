@@ -14,13 +14,13 @@ from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.punctuation import PunctuationTestCase
 
 from .utils import (
-    _AuditResult,
-    _get_contextual_index,
-    _get_superseded_keys,
+    AuditResult,
     escape_table_cell,
     format_block_range,
     format_index_range,
+    get_contextual_index,
     get_selected_event_indexes,
+    get_superseded_keys,
     validate_block_range,
     validate_index_range,
 )
@@ -118,16 +118,16 @@ def audit_punctuation(
 
         logged_cases += 1
         row, result = _format_case_row(test_case, index)
-        if result is _AuditResult.unanswered:
+        if result is AuditResult.unanswered:
             unanswered += 1
-        elif result is _AuditResult.unchanged:
+        elif result is AuditResult.unchanged:
             unchanged += 1
         else:
             changes += 1
 
         if (
             row_filter is PunctuationAuditFilter.changes
-            and result is not _AuditResult.changed
+            and result is not AuditResult.changed
         ) or (row_filter is PunctuationAuditFilter.unverified and test_case.verified):
             continue
         rows.append((index, test_case_index, row))
@@ -171,7 +171,7 @@ def audit_punctuation(
 def _format_case_row(
     test_case: PunctuationTestCase,
     index: int,
-) -> tuple[str, _AuditResult]:
+) -> tuple[str, AuditResult]:
     """Format one punctuation case as a Markdown table row.
 
     Arguments:
@@ -184,13 +184,13 @@ def _format_case_row(
     answer = test_case.answer
     if answer is None:
         output = "(unanswered)"
-        result = _AuditResult.unanswered
+        result = AuditResult.unanswered
     elif answer.output == input_text:
         output = ""
-        result = _AuditResult.unchanged
+        result = AuditResult.unchanged
     else:
         output = answer.output
-        result = _AuditResult.changed
+        result = AuditResult.changed
 
     cells = (
         str(index + 1),
@@ -223,7 +223,7 @@ def _get_case_index(
     """
     index = direct_indexes[test_case_index - 1]
     if index is None:
-        index = _get_contextual_index(
+        index = get_contextual_index(
             candidates,
             direct_indexes,
             test_case_index - 1,
@@ -260,7 +260,7 @@ def _get_case_indexes(
     inputs_by_guide: dict[str, set[tuple[str, ...]]] = defaultdict(set)
     for test_case in test_cases:
         inputs_by_guide[test_case.query.guide].add(tuple(test_case.query.subtitles))
-    superseded_guides = _get_superseded_keys(
+    superseded_guides = get_superseded_keys(
         reference_indexes_by_text,
         inputs_by_guide,
     )
