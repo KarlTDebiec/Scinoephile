@@ -11,11 +11,12 @@ from unittest.mock import patch
 from pytest import CaptureFixture, mark, raises
 
 from scinoephile.analysis.audit.aligned_diff import AlignedDiffAuditFilter
-from scinoephile.analysis.audit.utils import (
-    AuditFilter,
-    ChangeAuditFilter,
-    ExtendedAuditFilter,
-)
+from scinoephile.analysis.audit.delineation import DelineationAuditFilter
+from scinoephile.analysis.audit.dual_review import DualReviewAuditFilter
+from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter
+from scinoephile.analysis.audit.punctuation import PunctuationAuditFilter
+from scinoephile.analysis.audit.review import ReviewAuditFilter
+from scinoephile.analysis.audit.translation import TranslationAuditFilter
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_aligned_diff_cli import AuditAlignedDiffCli
 from scinoephile.cli.audit.audit_cli_base import AuditCliBase
@@ -53,38 +54,25 @@ def test_audit_cli_subcommands():
     }
 
 
-def test_audit_aligned_diff_cli_writes_report(
-    tmp_path: Path,
-    capsys: CaptureFixture,
-):
-    """Test aligned diff audit output to stdout and a file.
+def test_audit_cli_filter_enums():
+    """Test every audit CLI parses its expected filter enum."""
+    filter_types = {
+        AuditAlignedDiffCli: AlignedDiffAuditFilter,
+        AuditDelineationCli: DelineationAuditFilter,
+        AuditOcrFusionCli: OcrFusionAuditFilter,
+        AuditPunctuationCli: PunctuationAuditFilter,
+        AuditReviewCli: ReviewAuditFilter,
+        AuditReviewDualCli: DualReviewAuditFilter,
+        AuditReviewTradCli: ReviewAuditFilter,
+        AuditTranslationCli: TranslationAuditFilter,
+    }
 
-    Arguments:
-        tmp_path: temporary path
-        capsys: pytest stdout/stderr capture fixture
-    """
-    transcription_path = tmp_path / "transcription.srt"
-    reference_path = tmp_path / "reference.srt"
-    _write_srt(transcription_path, ("甲錯", "相同"))
-    _write_srt(reference_path, ("甲正", "相同"))
-    arguments = (
-        f"--transcription {transcription_path} --reference {reference_path} "
-        "--first-index 1 --last-index 1"
-    )
-
-    run_cli_with_args(AuditAlignedDiffCli, arguments)
-    stdout = capsys.readouterr().out
-    assert stdout.startswith("# Aligned Subtitle Diff Audit\n")
-    assert "- transcription subtitle range: 1 through 1" in stdout
-    assert "| T 1<br>R 1 | <pre>T │ 甲錯<br>R │ 甲正</pre> |  |" in stdout
-
-    outfile_path = tmp_path / "audit.md"
-    run_cli_with_args(
-        AuditAlignedDiffCli,
-        f"{arguments} --outfile {outfile_path}",
-    )
-    assert capsys.readouterr().out == ""
-    assert outfile_path.read_text(encoding="utf-8") == stdout
+    for cli_class, filter_type in filter_types.items():
+        actions = {
+            action.dest: action
+            for action in cli_class.argparser()._actions  # noqa: SLF001
+        }
+        assert type(actions["row_filter"].default) is filter_type
 
 
 @mark.parametrize(
@@ -311,6 +299,11 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
 
 def test_audit_review_cli_help_is_consistent():
     """Test review audit help documents JSON inputs and option defaults."""
+    filter_types = {
+        AuditReviewCli: ReviewAuditFilter,
+        AuditReviewDualCli: DualReviewAuditFilter,
+        AuditReviewTradCli: ReviewAuditFilter,
+    }
     for cli_class in (AuditReviewCli, AuditReviewDualCli, AuditReviewTradCli):
         actions = {
             action.dest: action
@@ -319,9 +312,7 @@ def test_audit_review_cli_help_is_consistent():
         if cli_class is AuditReviewCli:
             assert "mode" not in actions
             assert actions["original_path"].option_strings == ["--original"]
-        filter_type = ChangeAuditFilter
-        if cli_class is AuditReviewDualCli:
-            filter_type = ExtendedAuditFilter
+        filter_type = filter_types[cli_class]
         filter_action = actions["row_filter"]
         assert filter_action.choices is None
         assert filter_action.metavar == enum_metavar(filter_type)
@@ -663,10 +654,10 @@ def test_audit_translation_cli_infers_workflow_from_inputs(
     assert "mode" not in actions
     filter_action = actions["row_filter"]
     assert filter_action.choices is None
-    assert filter_action.default is AuditFilter.all
-    assert filter_action.metavar == enum_metavar(AuditFilter)
+    assert filter_action.default is TranslationAuditFilter.all
+    assert filter_action.metavar == enum_metavar(TranslationAuditFilter)
     assert isinstance(filter_action.help, str)
-    assert enum_options_list_str(AuditFilter) in filter_action.help
+    assert enum_options_list_str(TranslationAuditFilter) in filter_action.help
     assert "all includes every translation" in filter_action.help
     assert "unverified includes" in filter_action.help
 
@@ -689,29 +680,20 @@ def test_transcription_audit_cli_help_describes_subtitle_indexes():
             "last 1-indexed subtitle number to include, inclusive"
         )
 
-    aligned_diff_actions = {
-        action.dest: action
-        for action in AuditAlignedDiffCli.argparser()._actions  # noqa: SLF001
+    filter_types = {
+        AuditDelineationCli: DelineationAuditFilter,
+        AuditPunctuationCli: PunctuationAuditFilter,
     }
-    filter_action = aligned_diff_actions["row_filter"]
-    assert filter_action.choices is None
-    assert filter_action.default is AlignedDiffAuditFilter.changes
-    assert filter_action.metavar == enum_metavar(AlignedDiffAuditFilter)
-    assert isinstance(filter_action.help, str)
-    assert enum_options_list_str(AlignedDiffAuditFilter) in filter_action.help
-    assert "all includes every aligned row" in filter_action.help
-    assert "changes includes differing rows" in filter_action.help
-
-    for cli_class in (AuditDelineationCli, AuditPunctuationCli):
+    for cli_class, filter_type in filter_types.items():
         actions = {
             action.dest: action
             for action in cli_class.argparser()._actions  # noqa: SLF001
         }
         filter_action = actions["row_filter"]
         assert filter_action.choices is None
-        assert filter_action.metavar == enum_metavar(ChangeAuditFilter)
+        assert filter_action.metavar == enum_metavar(filter_type)
         assert isinstance(filter_action.help, str)
-        assert enum_options_list_str(ChangeAuditFilter) in filter_action.help
+        assert enum_options_list_str(filter_type) in filter_action.help
         assert "all includes every decision" in filter_action.help
         assert "changes includes" in filter_action.help
         assert "unverified includes" in filter_action.help

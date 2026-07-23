@@ -8,8 +8,10 @@ import json
 from pathlib import Path
 from typing import TypedDict
 
-from scinoephile.analysis.audit.dual_review import audit_dual_review
-from scinoephile.analysis.audit.utils import ExtendedAuditFilter
+from scinoephile.analysis.audit.dual_review import (
+    DualReviewAuditFilter,
+    audit_dual_review,
+)
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series, Subtitle
@@ -57,7 +59,7 @@ def test_audit_dual_review_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_dual_review(
         **inputs,
-        row_filter=ExtendedAuditFilter.changes,
+        row_filter=DualReviewAuditFilter.changes,
     )
 
     assert "- simplified review edits: 1" in report
@@ -79,7 +81,7 @@ def test_audit_dual_review_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_dual_review(
         **inputs,
-        row_filter=ExtendedAuditFilter.discrepancies,
+        row_filter=DualReviewAuditFilter.discrepancies,
     )
     assert "- table rows: 2" in report
     assert "| 2 |" in report
@@ -88,7 +90,7 @@ def test_audit_dual_review_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_dual_review(
         **inputs,
-        row_filter=ExtendedAuditFilter.all,
+        row_filter=DualReviewAuditFilter.all,
         characters=("著", "丙"),
     )
     assert "- character filter: 著, 丙" in report
@@ -98,7 +100,7 @@ def test_audit_dual_review_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_dual_review(
         **inputs,
-        row_filter=ExtendedAuditFilter.all,
+        row_filter=DualReviewAuditFilter.all,
         first_index=2,
         last_index=3,
     )
@@ -121,7 +123,7 @@ def test_audit_dual_review_ignores_timing_differences(tmp_path: Path):
     inputs["traditional_reviewed"].events[1].start = 62_000
     inputs["traditional_reviewed"].events[1].end = 62_500
 
-    report = audit_dual_review(**inputs, row_filter=ExtendedAuditFilter.all)
+    report = audit_dual_review(**inputs, row_filter=DualReviewAuditFilter.all)
 
     assert "- table rows: 4" in report
 

@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from collections.abc import Sequence
+from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -14,7 +15,6 @@ from scinoephile.llms.punctuation import PunctuationTestCase
 
 from .utils import (
     AuditResult,
-    ChangeAuditFilter,
     format_audit_report,
     format_verification_marker,
     get_selected_event_indexes,
@@ -22,7 +22,23 @@ from .utils import (
     resolve_contextual_index,
 )
 
-__all__ = ["audit_punctuation"]
+__all__ = [
+    "PunctuationAuditFilter",
+    "audit_punctuation",
+]
+
+
+class PunctuationAuditFilter(StrEnum):
+    """Row filters supported by a transcription punctuation audit."""
+
+    all = "all"
+    """Include every eligible row."""
+
+    changes = "changes"
+    """Include only rows with punctuation changes."""
+
+    unverified = "unverified"
+    """Include only rows from cases not marked as verified."""
 
 
 def audit_punctuation(
@@ -30,7 +46,7 @@ def audit_punctuation(
     target: Series,
     test_cases: Sequence[PunctuationTestCase],
     *,
-    row_filter: ChangeAuditFilter = ChangeAuditFilter.all,
+    row_filter: PunctuationAuditFilter = PunctuationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -104,9 +120,9 @@ def audit_punctuation(
             changes += 1
 
         if (
-            row_filter is ChangeAuditFilter.changes
+            row_filter is PunctuationAuditFilter.changes
             and result is not AuditResult.changed
-        ) or (row_filter is ChangeAuditFilter.unverified and test_case.verified):
+        ) or (row_filter is PunctuationAuditFilter.unverified and test_case.verified):
             continue
         rows.append((index, test_case_index, row))
 

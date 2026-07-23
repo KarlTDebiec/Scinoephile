@@ -7,8 +7,10 @@ from __future__ import annotations
 from pytest import raises
 
 from scinoephile.analysis.audit.guided_translation import audit_guided_translation
-from scinoephile.analysis.audit.translation import audit_translation
-from scinoephile.analysis.audit.utils import AuditFilter
+from scinoephile.analysis.audit.translation import (
+    TranslationAuditFilter,
+    audit_translation,
+)
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.guided_translation import GuidedTranslationTestCase
@@ -106,7 +108,7 @@ def test_audit_translation_formats_standard_blocks_and_unanswered_case():
     unverified_report = audit_translation(
         source,
         test_cases,
-        row_filter=AuditFilter.unverified,
+        row_filter=TranslationAuditFilter.unverified,
     )
     block_report = audit_translation(
         source,

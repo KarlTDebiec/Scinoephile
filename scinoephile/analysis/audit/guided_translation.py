@@ -13,9 +13,10 @@ from scinoephile.llms.guided_translation import GuidedTranslationTestCase
 from .translation import (
     TranslationAuditBlock,
     TranslationAuditCase,
+    TranslationAuditFilter,
     audit_translation_blocks,
 )
-from .utils import AuditFilter, validate_audit_range
+from .utils import validate_audit_range
 
 __all__ = ["audit_guided_translation"]
 
@@ -25,7 +26,7 @@ def audit_guided_translation(
     guide: Series,
     test_cases: Sequence[GuidedTranslationTestCase],
     *,
-    row_filter: AuditFilter = AuditFilter.all,
+    row_filter: TranslationAuditFilter = TranslationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,

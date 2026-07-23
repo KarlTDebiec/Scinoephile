@@ -7,41 +7,11 @@ from __future__ import annotations
 from pytest import raises
 
 from scinoephile.analysis.audit.utils import (
-    AuditFilter,
-    ChangeAuditFilter,
-    ExtendedAuditFilter,
     format_audit_report,
     format_verification_marker,
     resolve_contextual_index,
 )
 from scinoephile.core.exceptions import ScinoephileError
-
-
-def test_audit_filter_has_verification_options():
-    """Test the base audit filter exposes verification row options."""
-    assert tuple(AuditFilter) == (
-        AuditFilter.all,
-        AuditFilter.unverified,
-    )
-
-
-def test_change_audit_filter_has_change_options():
-    """Test change audits share one filter contract."""
-    assert tuple(ChangeAuditFilter) == (
-        ChangeAuditFilter.all,
-        ChangeAuditFilter.changes,
-        ChangeAuditFilter.unverified,
-    )
-
-
-def test_extended_audit_filter_has_extended_options():
-    """Test extended audits share one filter contract."""
-    assert tuple(ExtendedAuditFilter) == (
-        ExtendedAuditFilter.all,
-        ExtendedAuditFilter.changes,
-        ExtendedAuditFilter.discrepancies,
-        ExtendedAuditFilter.unverified,
-    )
 
 
 def test_format_audit_report_formats_block_range():

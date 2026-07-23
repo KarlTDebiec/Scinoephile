@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from collections.abc import Collection, Sequence
+from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -13,7 +14,6 @@ from scinoephile.llms.delineation import DelineationTestCase
 
 from .utils import (
     AuditResult,
-    ChangeAuditFilter,
     format_audit_report,
     format_verification_marker,
     get_selected_event_indexes,
@@ -21,14 +21,30 @@ from .utils import (
     resolve_contextual_index,
 )
 
-__all__ = ["audit_delineation"]
+__all__ = [
+    "DelineationAuditFilter",
+    "audit_delineation",
+]
+
+
+class DelineationAuditFilter(StrEnum):
+    """Row filters supported by a transcription delineation audit."""
+
+    all = "all"
+    """Include every eligible row."""
+
+    changes = "changes"
+    """Include only rows that shift a subtitle boundary."""
+
+    unverified = "unverified"
+    """Include only rows from cases not marked as verified."""
 
 
 def audit_delineation(
     reference: Series,
     test_cases: Sequence[DelineationTestCase],
     *,
-    row_filter: ChangeAuditFilter = ChangeAuditFilter.all,
+    row_filter: DelineationAuditFilter = DelineationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -102,9 +118,9 @@ def audit_delineation(
             result = AuditResult.unchanged
 
         if (
-            row_filter is ChangeAuditFilter.changes
+            row_filter is DelineationAuditFilter.changes
             and result is not AuditResult.changed
-        ) or (row_filter is ChangeAuditFilter.unverified and test_case.verified):
+        ) or (row_filter is DelineationAuditFilter.unverified and test_case.verified):
             continue
 
         verified_marker = format_verification_marker(test_case.verified)

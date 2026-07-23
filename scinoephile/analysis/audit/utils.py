@@ -14,10 +14,7 @@ from scinoephile.core.subtitles import Series
 
 __all__ = [
     "AuditColumn",
-    "AuditFilter",
     "AuditResult",
-    "ChangeAuditFilter",
-    "ExtendedAuditFilter",
     "format_audit_report",
     "format_verification_marker",
     "get_contextual_index",
@@ -32,16 +29,6 @@ type AuditColumn = tuple[str, Literal["left", "right", "center"]]
 """Semantic label and alignment for one audit report column."""
 
 
-class AuditFilter(StrEnum):
-    """Row filters for audits whose only row state is verification."""
-
-    all = "all"
-    """Include every eligible row."""
-
-    unverified = "unverified"
-    """Include only rows from cases not marked as verified."""
-
-
 class AuditResult(StrEnum):
     """Result types shared by decision-log audit rows."""
 
@@ -53,35 +40,6 @@ class AuditResult(StrEnum):
 
     unanswered = "unanswered"
     """The logged case has no answer."""
-
-
-class ChangeAuditFilter(StrEnum):
-    """Row filters shared by audit reports that identify changed rows."""
-
-    all = "all"
-    """Include every eligible row."""
-
-    changes = "changes"
-    """Include only changed rows."""
-
-    unverified = "unverified"
-    """Include only rows from unverified logged cases."""
-
-
-class ExtendedAuditFilter(StrEnum):
-    """Row filters for audits that also identify final discrepancies."""
-
-    all = "all"
-    """Include every eligible row."""
-
-    changes = "changes"
-    """Include rows that the audit classifies as changed."""
-
-    discrepancies = "discrepancies"
-    """Include only final discrepancies."""
-
-    unverified = "unverified"
-    """Include only rows from unverified logged cases."""
 
 
 def format_audit_report(
