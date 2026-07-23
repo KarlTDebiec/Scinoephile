@@ -222,8 +222,6 @@ class TranslateCli(ScinoephileCliBase):
             guide = read_series(parser, guide_infile_path)
             block_count = len(get_block_pair_indexes_by_pause(source, guide))
         else:
-            if target_language is None:
-                parser.error("--target-language is required")
             block_count = len(source.blocks)
         start_at_idx, stop_at_idx = get_block_range_indexes(
             parser,
@@ -250,7 +248,8 @@ class TranslateCli(ScinoephileCliBase):
             elif guide is not None:
                 output = translate_series_guided(source, guide, **kwargs)
             else:
-                assert target_language is not None
+                if target_language is None:
+                    parser.error("--target-language is required")
                 kwargs["target_language"] = target_language
                 output = translate_series(source, **kwargs)
         except ScinoephileError as exc:
