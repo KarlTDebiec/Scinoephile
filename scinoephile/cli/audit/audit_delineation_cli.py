@@ -31,12 +31,6 @@ AUDIT_DELINEATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "用于指导转写的参考字幕 SRT 文件"
         ),
         "delineation test-case JSON file": "字幕边界测试用例 JSON 文件",
-        "first 1-indexed reference subtitle number to include, inclusive": (
-            "要包含的第一个字幕编号（从 1 开始，包含该编号）"
-        ),
-        "last 1-indexed reference subtitle number to include, inclusive": (
-            "要包含的最后一个字幕编号（从 1 开始，包含该编号）"
-        ),
         "rows to include: all, changes, or unverified (default: all)": (
             "要包含的行：all 表示全部，changes 表示边界调整，unverified "
             "表示未验证（默认：all）"
@@ -48,12 +42,6 @@ AUDIT_DELINEATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "用於指導轉寫的參考字幕 SRT 檔"
         ),
         "delineation test-case JSON file": "字幕邊界測試案例 JSON 檔",
-        "first 1-indexed reference subtitle number to include, inclusive": (
-            "要包含的第一個字幕編號（從 1 開始，包含該編號）"
-        ),
-        "last 1-indexed reference subtitle number to include, inclusive": (
-            "要包含的最後一個字幕編號（從 1 開始，包含該編號）"
-        ),
         "rows to include: all, changes, or unverified (default: all)": (
             "要包含的列：all 表示全部，changes 表示邊界調整，unverified "
             "表示未驗證（預設：all）"
@@ -66,10 +54,6 @@ AUDIT_DELINEATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class AuditDelineationCli(AuditCliBase):
     """Audit transcription delineation decisions."""
 
-    first_index_help = "first 1-indexed reference subtitle number to include, inclusive"
-    """Help text describing the first selected reference index."""
-    last_index_help = "last 1-indexed reference subtitle number to include, inclusive"
-    """Help text describing the last selected reference index."""
     localizations = AUDIT_DELINEATION_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
