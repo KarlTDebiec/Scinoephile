@@ -21,6 +21,7 @@ __all__ = [
     "get_contextual_index",
     "get_selected_event_indexes",
     "get_superseded_keys",
+    "get_validated_block_pairs_by_pause",
     "is_block_in_range",
     "resolve_contextual_index",
     "validate_audit_range",
@@ -331,6 +332,29 @@ def get_superseded_keys[KeyT: Hashable, ValueT: Hashable](
     }
 
 
+def get_validated_block_pairs_by_pause(
+    one: Series,
+    two: Series,
+    first_block: int | None,
+    last_block: int | None,
+) -> list[tuple[Series, Series]]:
+    """Get paired workflow blocks and validate a range against their count.
+
+    Arguments:
+        one: first subtitle series
+        two: second subtitle series
+        first_block: first included one-based block number
+        last_block: last included one-based block number
+    Returns:
+        paired workflow blocks
+    Raises:
+        ScinoephileError: if the requested range exceeds the available blocks
+    """
+    block_pairs = get_block_pairs_by_pause(one, two)
+    validate_block_range(first_block, last_block, len(block_pairs))
+    return block_pairs
+
+
 def is_block_in_range(
     block_number: int,
     first_block: int | None,
@@ -452,44 +476,3 @@ def validate_index_range(first_index: int | None, last_index: int | None):
         raise ScinoephileError("Last index must be at least 1")
     if first_index is not None and last_index is not None and first_index > last_index:
         raise ScinoephileError("First index must be less than or equal to last index")
-
-
-def _get_paired_event_block_numbers(
-    block_pairs: Sequence[tuple[Series, Series]],
-) -> tuple[tuple[int, ...], tuple[int, ...]]:
-    """Get paired workflow block numbers for two subtitle series.
-
-    Arguments:
-        block_pairs: paired subtitle workflow blocks
-    Returns:
-        one-based paired block number for every event in each series
-    """
-    one_block_numbers: list[int] = []
-    two_block_numbers: list[int] = []
-    for block_number, (one_block, two_block) in enumerate(block_pairs, 1):
-        one_block_numbers.extend([block_number] * len(one_block))
-        two_block_numbers.extend([block_number] * len(two_block))
-    return tuple(one_block_numbers), tuple(two_block_numbers)
-
-
-def _get_validated_block_pairs_by_pause(
-    one: Series,
-    two: Series,
-    first_block: int | None,
-    last_block: int | None,
-) -> list[tuple[Series, Series]]:
-    """Get paired workflow blocks and validate a range against their count.
-
-    Arguments:
-        one: first subtitle series
-        two: second subtitle series
-        first_block: first included one-based block number
-        last_block: last included one-based block number
-    Returns:
-        paired workflow blocks
-    Raises:
-        ScinoephileError: if the requested range exceeds the available blocks
-    """
-    block_pairs = get_block_pairs_by_pause(one, two)
-    validate_block_range(first_block, last_block, len(block_pairs))
-    return block_pairs

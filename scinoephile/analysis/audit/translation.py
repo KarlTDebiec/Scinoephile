@@ -14,10 +14,10 @@ from scinoephile.llms.guided_translation import GuidedTranslationTestCase
 from scinoephile.llms.translation import TranslationTestCase
 
 from .utils import (
-    _get_validated_block_pairs_by_pause,
     escape_table_cell,
     format_block_range,
     format_index_range,
+    get_validated_block_pairs_by_pause,
     validate_block_range,
     validate_index_range,
 )
@@ -98,7 +98,7 @@ def audit_guided_translation(
     Raises:
         ScinoephileError: if a range or logged case is invalid
     """
-    block_pairs = _get_validated_block_pairs_by_pause(
+    block_pairs = get_validated_block_pairs_by_pause(
         source,
         guide,
         first_block,

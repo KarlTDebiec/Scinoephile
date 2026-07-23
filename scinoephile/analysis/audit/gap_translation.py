@@ -15,11 +15,10 @@ from scinoephile.core.synchronization import get_sync_overlap_matrix
 from scinoephile.llms.gap_translation import GapTranslationTestCase
 
 from .utils import (
-    _get_paired_event_block_numbers,
-    _get_validated_block_pairs_by_pause,
     escape_table_cell,
     format_block_range,
     format_index_range,
+    get_validated_block_pairs_by_pause,
     validate_block_range,
     validate_index_range,
 )
@@ -105,14 +104,18 @@ def audit_gap_translation(
     validate_index_range(first_index, last_index)
     validate_block_range(first_block, last_block)
 
-    block_pairs = _get_validated_block_pairs_by_pause(
+    block_pairs = get_validated_block_pairs_by_pause(
         target,
         guide,
         first_block,
         last_block,
     )
     blocks = _get_blocks(block_pairs)
-    _, guide_block_numbers = _get_paired_event_block_numbers(block_pairs)
+    guide_block_numbers = tuple(
+        block_number
+        for block_number, (_, guide_block) in enumerate(block_pairs, 1)
+        for _ in guide_block
+    )
     active_cases = _get_active_test_case_blocks(
         guide,
         guide_block_numbers,
