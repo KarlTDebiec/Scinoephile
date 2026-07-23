@@ -114,6 +114,36 @@ def test_audit_gap_translation_formats_empty_and_unanswered_gaps():
     assert "| G 4<br>Q 2 |" in block_report
 
 
+def test_audit_gap_translation_ignores_superseded_guide_revision():
+    """Test a current query supersedes retained history with old guide text."""
+    target = _get_series((0, 1000, "現有"))
+    guide = _get_series(
+        (0, 1000, "新參考一"),
+        (1000, 2000, "新參考二"),
+    )
+    historical_case = _get_test_case(
+        targets=((1, "現有"),),
+        guides=((1, "舊參考一"), (2, "舊參考二")),
+        outputs=((2, "舊翻譯"),),
+    )
+    current_case = _get_test_case(
+        targets=((1, "現有"),),
+        guides=((1, "新參考一"), (2, "新參考二")),
+        outputs=((2, "新翻譯"),),
+    )
+
+    report = audit_gap_translation(
+        target,
+        guide,
+        (historical_case, current_case),
+    )
+
+    assert "C 1" not in report
+    assert "| G 2<br>Q 2 | C 2<br>B 1 |" in report
+    assert "新翻譯" in report
+    assert "舊翻譯" not in report
+
+
 def test_audit_gap_translation_ignores_superseded_target_revision():
     """Test a current query supersedes retained history for the same guide block."""
     target = _get_series((0, 1000, "目前"))

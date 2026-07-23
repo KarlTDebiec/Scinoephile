@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
-from enum import StrEnum
 from typing import cast
 
 from scinoephile.core import ScinoephileError
@@ -16,34 +15,18 @@ from scinoephile.core.subtitles import Series
 from .utils import (
     AuditColumn,
     AuditFilter,
+    ComparisonAuditFilter,
     format_audit_report,
     format_verification_marker,
     get_selected_event_indexes,
 )
 
 __all__ = [
-    "ComparativeReviewAuditFilter",
     "ReviewAuditComparison",
     "ReviewAuditPair",
     "audit_review_workflow",
     "audit_reviews",
 ]
-
-
-class ComparativeReviewAuditFilter(StrEnum):
-    """Row filters supported by review audits with final comparisons."""
-
-    all = "all"
-    """Include every subtitle row."""
-
-    changes = "changes"
-    """Include review edits and final discrepancies."""
-
-    discrepancies = "discrepancies"
-    """Include only final discrepancies."""
-
-    unverified = "unverified"
-    """Include only subtitles from unverified logged cases."""
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -78,11 +61,23 @@ class ReviewAuditComparison:
     """Right-hand subtitle series."""
 
 
+@dataclass(frozen=True, kw_only=True)
+class _ReviewAuditMetadata:
+    """Matched notes and verification state for one review decision log."""
+
+    covered_indexes: frozenset[int]
+    """Zero-based subtitle indexes covered by current logged cases."""
+    notes_by_index: Mapping[int, tuple[str, ...]]
+    """Current revision notes keyed by zero-based subtitle index."""
+    unverified_indexes: frozenset[int]
+    """Covered subtitle indexes belonging to unverified cases."""
+
+
 def audit_review_workflow(
     *,
     reviews: Sequence[ReviewAuditPair],
     comparisons: Sequence[ReviewAuditComparison] = (),
-    row_filter: AuditFilter | ComparativeReviewAuditFilter = AuditFilter.changes,
+    row_filter: AuditFilter | ComparisonAuditFilter = AuditFilter.changes,
     characters: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
@@ -108,7 +103,7 @@ def audit_review_workflow(
     """
     if not reviews:
         raise ScinoephileError("Unable to audit subtitle reviews: no reviews provided")
-    if row_filter is ComparativeReviewAuditFilter.discrepancies and not comparisons:
+    if row_filter is ComparisonAuditFilter.discrepancies and not comparisons:
         raise ScinoephileError(
             "Unable to audit subtitle reviews: discrepancy filtering requires at "
             "least one comparison"
@@ -144,31 +139,22 @@ def audit_review_workflow(
 
     # Match block-based log data against the complete inputs
     try:
-        notes = tuple(
-            _get_review_notes(review.review_cases, original, reviewed)
+        review_metadata = tuple(
+            _get_review_metadata(review.review_cases, original, reviewed)
             for review, (original, reviewed) in zip(
                 reviews,
                 review_series,
                 strict=True,
             )
         )
-        verification_indexes = tuple(
-            _get_verification_indexes(
-                review.review_cases,
-                original,
-                reviewed,
-            )
-            for review, (original, reviewed) in zip(
-                reviews,
-                review_series,
-                strict=True,
-            )
-        )
+        notes = tuple(metadata.notes_by_index for metadata in review_metadata)
         covered_indexes = frozenset(
-            index for covered, _ in verification_indexes for index in covered
+            index for metadata in review_metadata for index in metadata.covered_indexes
         )
         unverified_indexes = frozenset(
-            index for _, unverified in verification_indexes for index in unverified
+            index
+            for metadata in review_metadata
+            for index in metadata.unverified_indexes
         )
         has_review_cases = any(review.review_cases for review in reviews)
     except ValueError as exc:
@@ -232,7 +218,7 @@ def audit_reviews(
     traditional_review_cases: Sequence[TestCase] = (),
     traditional_simplified_review_cases: Sequence[TestCase] = (),
     simplified_review_cases: Sequence[TestCase] = (),
-    row_filter: ComparativeReviewAuditFilter = ComparativeReviewAuditFilter.changes,
+    row_filter: ComparisonAuditFilter = ComparisonAuditFilter.changes,
     characters: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
@@ -314,7 +300,7 @@ def _format_report(
     covered_indexes: frozenset[int],
     has_review_cases: bool,
     indexes: Sequence[int],
-    row_filter: AuditFilter | ComparativeReviewAuditFilter,
+    row_filter: AuditFilter | ComparisonAuditFilter,
     unverified_indexes: frozenset[int],
     characters: Sequence[str],
     first_index: int | None,
@@ -456,7 +442,7 @@ def _get_filtered_indexes(
     review_changes: Sequence[set[int]],
     comparison_changes: Sequence[set[int]],
     indexes: Iterable[int],
-    row_filter: AuditFilter | ComparativeReviewAuditFilter,
+    row_filter: AuditFilter | ComparisonAuditFilter,
     unverified_indexes: frozenset[int],
     characters: Sequence[str],
 ) -> list[int]:
@@ -481,7 +467,7 @@ def _get_filtered_indexes(
             for changed_indexes in (*review_changes, *comparison_changes)
             for index in changed_indexes
         }
-    elif row_filter is ComparativeReviewAuditFilter.discrepancies:
+    elif row_filter is ComparisonAuditFilter.discrepancies:
         selected_indexes = {
             index for changed_indexes in comparison_changes for index in changed_indexes
         }
@@ -540,101 +526,69 @@ def _get_review_case_data(
     return query_texts, revised_texts, revision_by_index
 
 
-def _get_review_notes(
+def _get_review_metadata(
     review_cases: Sequence[TestCase],
     original: tuple[str, ...],
     reviewed: tuple[str, ...],
-) -> dict[int, tuple[str, ...]]:
-    """Match review test-case notes to subtitle text.
+) -> _ReviewAuditMetadata:
+    """Match the latest current review cases to subtitle text.
 
     Arguments:
         review_cases: deserialized review test cases
         original: original subtitle text
         reviewed: reviewed subtitle text
     Returns:
-        review notes keyed by zero-based subtitle index
+        current notes and verification metadata
     Raises:
-        ValueError: if a review test case does not match the subtitles
+        ValueError: if a current query's answer does not match reviewed subtitles
     """
+    # Retain the latest logged decision for each deduplicated query
+    latest_cases_by_query = {
+        review_case.query.key: (case_index, review_case)
+        for case_index, review_case in enumerate(review_cases, 1)
+    }
+
+    # Match current cases once and derive all report metadata together
+    covered_indexes: set[int] = set()
     notes_by_index: dict[int, list[str]] = {}
-    for case_index, review_case in enumerate(review_cases, 1):
-        if review_case.answer is None:
-            continue
+    unverified_indexes: set[int] = set()
+    for case_index, review_case in latest_cases_by_query.values():
         query_texts, revised_texts, revision_by_index = _get_review_case_data(
             review_case
         )
-        note_fields = {
-            local_index: cast(str, revision["note"]).strip()
-            for local_index, revision in revision_by_index.items()
-        }
-        if not note_fields:
-            continue
-
         candidate_starts = [
             start
             for start in range(len(original) - len(query_texts) + 1)
             if original[start : start + len(query_texts)] == query_texts
         ]
         if not candidate_starts:
-            raise ValueError(
-                f"Review test case {case_index} does not match its subtitle pair"
-            )
-        matched_note_fields: set[int] = set()
-        for start in candidate_starts:
-            for local_index, note in note_fields.items():
-                if reviewed[start + local_index - 1] != revised_texts[local_index - 1]:
-                    continue
-                index = start + local_index - 1
-                notes = notes_by_index.setdefault(index, [])
-                if note not in notes:
-                    notes.append(note)
-                matched_note_fields.add(local_index)
-        unmatched_note_fields = sorted(note_fields.keys() - matched_note_fields)
-        if unmatched_note_fields:
-            formatted_fields = ", ".join(
-                f"revision {local_index}" for local_index in unmatched_note_fields
-            )
-            raise ValueError(
-                f"Review test case {case_index} fields {formatted_fields} do not "
-                "match reviewed subtitle text"
-            )
+            # Persisted logs retain historical queries after their input changes
+            continue
 
-    return {index: tuple(notes) for index, notes in notes_by_index.items()}
-
-
-def _get_verification_indexes(
-    review_cases: Sequence[TestCase],
-    original: tuple[str, ...],
-    reviewed: tuple[str, ...],
-) -> tuple[set[int], set[int]]:
-    """Get subtitle indexes covered by logged and unverified review cases.
-
-    Arguments:
-        review_cases: deserialized review test cases
-        original: original subtitle text
-        reviewed: reviewed subtitle text
-    Returns:
-        zero-based subtitle indexes covered by all and unverified cases
-    Raises:
-        ValueError: if a logged case does not match the subtitles
-    """
-    covered_indexes: set[int] = set()
-    unverified_indexes: set[int] = set()
-    for case_index, review_case in enumerate(review_cases, 1):
-        query_texts, revised_texts, _ = _get_review_case_data(review_case)
         matched_starts = [
             start
-            for start in range(len(original) - len(query_texts) + 1)
-            if original[start : start + len(query_texts)] == query_texts
-            and reviewed[start : start + len(revised_texts)] == revised_texts
+            for start in candidate_starts
+            if reviewed[start : start + len(revised_texts)] == revised_texts
         ]
         if not matched_starts:
             raise ValueError(
                 f"Review test case {case_index} does not match its subtitle pair"
             )
+
         for start in matched_starts:
             matched_indexes = set(range(start, start + len(query_texts)))
             covered_indexes.update(matched_indexes)
             if not review_case.verified:
                 unverified_indexes.update(matched_indexes)
-    return covered_indexes, unverified_indexes
+            for local_index, revision in revision_by_index.items():
+                index = start + local_index - 1
+                note = cast(str, revision["note"]).strip()
+                notes = notes_by_index.setdefault(index, [])
+                if note not in notes:
+                    notes.append(note)
+
+    return _ReviewAuditMetadata(
+        covered_indexes=frozenset(covered_indexes),
+        notes_by_index={index: tuple(notes) for index, notes in notes_by_index.items()},
+        unverified_indexes=frozenset(unverified_indexes),
+    )

@@ -11,12 +11,11 @@ from typing import TypedDict
 from pytest import raises
 
 from scinoephile.analysis.audit.review import (
-    ComparativeReviewAuditFilter,
     ReviewAuditPair,
     audit_review_workflow,
     audit_reviews,
 )
-from scinoephile.analysis.audit.utils import AuditFilter
+from scinoephile.analysis.audit.utils import AuditFilter, ComparisonAuditFilter
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
@@ -109,6 +108,56 @@ def test_audit_review_workflow_filters_unverified_cases():
     assert "| 3 | Third |  | — |" in all_report
 
 
+def test_audit_review_workflow_ignores_retained_historical_cases():
+    """Test source revisions do not make retained review history fatal."""
+    original = _get_series(("Current input",))
+    reviewed = _get_series(("Current output",))
+    historical_case = ReviewTestCase.model_validate(
+        {
+            "query": {"subtitles": [{"index": 1, "text": "Historical input"}]},
+            "answer": {
+                "revisions": [
+                    {
+                        "index": 1,
+                        "text": "Historical output",
+                        "note": "Historical note.",
+                    }
+                ]
+            },
+        }
+    )
+    current_case = ReviewTestCase.model_validate(
+        {
+            "query": {"subtitles": [{"index": 1, "text": "Current input"}]},
+            "answer": {
+                "revisions": [
+                    {"index": 1, "text": "Current output", "note": "Current note."}
+                ]
+            },
+            "verified": True,
+        }
+    )
+
+    report = audit_review_workflow(
+        reviews=(
+            ReviewAuditPair(
+                label="Test",
+                original=original,
+                reviewed=reviewed,
+                review_cases=(historical_case, current_case),
+            ),
+        ),
+        row_filter=AuditFilter.all,
+    )
+
+    assert "Historical note." not in report
+    assert "Test review: Current note." in report
+    assert (
+        "| 1 | Current input<br>Current output | Test review: Current note. | ✓ |"
+        in report
+    )
+
+
 def test_audit_review_workflow_selects_blocks():
     """Test review audits select one workflow block at a time."""
     original = Series(
@@ -155,8 +204,52 @@ def test_audit_review_workflow_selects_blocks():
     with raises(ScinoephileError, match="requires at least one comparison"):
         audit_review_workflow(
             reviews=reviews,
-            row_filter=ComparativeReviewAuditFilter.discrepancies,
+            row_filter=ComparisonAuditFilter.discrepancies,
         )
+
+
+def test_audit_review_workflow_uses_latest_duplicate_case():
+    """Test the latest duplicate review case controls notes and verification."""
+    original = _get_series(("Input",))
+    reviewed = _get_series(("Output",))
+    historical_case = ReviewTestCase.model_validate(
+        {
+            "query": {"subtitles": [{"index": 1, "text": "Input"}]},
+            "answer": {
+                "revisions": [
+                    {"index": 1, "text": "Output", "note": "Historical note."}
+                ]
+            },
+        }
+    )
+    current_case = ReviewTestCase.model_validate(
+        {
+            "query": historical_case.query.model_dump(),
+            "answer": {
+                "revisions": [{"index": 1, "text": "Output", "note": "Current note."}]
+            },
+            "verified": True,
+        }
+    )
+    reviews = (
+        ReviewAuditPair(
+            label="Test",
+            original=original,
+            reviewed=reviewed,
+            review_cases=(historical_case, current_case),
+        ),
+    )
+
+    report = audit_review_workflow(reviews=reviews, row_filter=AuditFilter.all)
+    unverified_report = audit_review_workflow(
+        reviews=reviews,
+        row_filter=AuditFilter.unverified,
+    )
+
+    assert "Historical note." not in report
+    assert "Test review: Current note." in report
+    assert "| 1 | Input<br>Output | Test review: Current note. | ✓ |" in report
+    assert "- table rows: 0" in unverified_report
 
 
 def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
@@ -169,7 +262,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ComparativeReviewAuditFilter.changes,
+        row_filter=ComparisonAuditFilter.changes,
     )
 
     assert "- simplified review edits: 1" in report
@@ -191,7 +284,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ComparativeReviewAuditFilter.discrepancies,
+        row_filter=ComparisonAuditFilter.discrepancies,
     )
     assert "- table rows: 2" in report
     assert "| 2 |" in report
@@ -200,7 +293,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ComparativeReviewAuditFilter.all,
+        row_filter=ComparisonAuditFilter.all,
         characters=("著", "丙"),
     )
     assert "- character filter: 著, 丙" in report
@@ -210,7 +303,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ComparativeReviewAuditFilter.all,
+        row_filter=ComparisonAuditFilter.all,
         first_index=2,
         last_index=3,
     )
@@ -233,7 +326,7 @@ def test_audit_reviews_ignores_timing_differences(tmp_path: Path):
     inputs["traditional_reviewed"].events[1].start = 62_000
     inputs["traditional_reviewed"].events[1].end = 62_500
 
-    report = audit_reviews(**inputs, row_filter=ComparativeReviewAuditFilter.all)
+    report = audit_reviews(**inputs, row_filter=ComparisonAuditFilter.all)
 
     assert "- table rows: 4" in report
 

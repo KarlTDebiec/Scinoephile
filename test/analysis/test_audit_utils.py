@@ -8,6 +8,7 @@ from pytest import raises
 
 from scinoephile.analysis.audit.utils import (
     AuditFilter,
+    ComparisonAuditFilter,
     format_audit_report,
     format_verification_marker,
     resolve_contextual_index,
@@ -21,6 +22,16 @@ def test_audit_filter_has_common_options():
         AuditFilter.all,
         AuditFilter.changes,
         AuditFilter.unverified,
+    )
+
+
+def test_comparison_audit_filter_has_comparison_options():
+    """Test comparison audits share one filter contract."""
+    assert tuple(ComparisonAuditFilter) == (
+        ComparisonAuditFilter.all,
+        ComparisonAuditFilter.changes,
+        ComparisonAuditFilter.discrepancies,
+        ComparisonAuditFilter.unverified,
     )
 
 

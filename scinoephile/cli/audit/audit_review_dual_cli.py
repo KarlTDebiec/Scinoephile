@@ -8,10 +8,8 @@ from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
 
-from scinoephile.analysis.audit.review import (
-    ComparativeReviewAuditFilter,
-    audit_reviews,
-)
+from scinoephile.analysis.audit.review import audit_reviews
+from scinoephile.analysis.audit.utils import ComparisonAuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -252,13 +250,13 @@ class AuditReviewDualCli(AuditCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            default=ComparativeReviewAuditFilter.changes,
+            default=ComparisonAuditFilter.changes,
             dest="row_filter",
-            metavar=enum_metavar(ComparativeReviewAuditFilter),
-            type=enum_arg(ComparativeReviewAuditFilter),
+            metavar=enum_metavar(ComparisonAuditFilter),
+            type=enum_arg(ComparisonAuditFilter),
             help=(
                 "rows to include: "
-                f"{enum_options_list_str(ComparativeReviewAuditFilter)}; changes "
+                f"{enum_options_list_str(ComparisonAuditFilter)}; changes "
                 "includes any review edit or final discrepancy; discrepancies "
                 "includes final discrepancies only; unverified includes subtitles "
                 "in unverified logged cases (default: %(default)s)"
@@ -301,7 +299,7 @@ class AuditReviewDualCli(AuditCliBase):
         simplified_json_path: Path | None,
         traditional_json_path: Path | None,
         traditional_simplified_json_path: Path | None,
-        row_filter: ComparativeReviewAuditFilter,
+        row_filter: ComparisonAuditFilter,
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
@@ -336,7 +334,7 @@ class AuditReviewDualCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is ComparativeReviewAuditFilter.unverified and any(
+        if row_filter is ComparisonAuditFilter.unverified and any(
             json_path is None
             for json_path in (
                 simplified_json_path,

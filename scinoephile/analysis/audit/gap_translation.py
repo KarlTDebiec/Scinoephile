@@ -304,6 +304,9 @@ def _get_active_test_case_blocks(
     blocks_by_guides: dict[tuple[str, ...], list[_GapTranslationBlock]] = defaultdict(
         list
     )
+    blocks_by_targets: dict[tuple[tuple[int, str], ...], list[_GapTranslationBlock]] = (
+        defaultdict(list)
+    )
     for block in blocks:
         targets = tuple(
             (position, text)
@@ -312,6 +315,7 @@ def _get_active_test_case_blocks(
         )
         blocks_by_key[(targets, block.guide_texts)].append(block)
         blocks_by_guides[block.guide_texts].append(block)
+        blocks_by_targets[targets].append(block)
 
     # Match exact current cases, retaining the latest case for each block
     active_by_block_number: dict[
@@ -360,6 +364,16 @@ def _get_active_test_case_blocks(
     # Reconcile unmatched historical cases against current guide blocks
     active_block_numbers = set(active_by_block_number)
     for test_case_index, test_case in unmatched_cases:
+        targets = tuple(
+            (target.index, target.text) for target in test_case.query.targets
+        )
+        if any(
+            block.block_number in active_block_numbers
+            for block in blocks_by_targets.get(targets, [])
+        ):
+            # A current case for the same target layout supersedes old guide text
+            continue
+
         guides = tuple(guide_subtitle.text for guide_subtitle in test_case.query.guides)
         matches = blocks_by_guides.get(guides, [])
         selected_matches = [

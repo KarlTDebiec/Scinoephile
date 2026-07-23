@@ -7,10 +7,8 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.analysis.audit.ocr_fusion import (
-    OcrFusionAuditFilter,
-    audit_ocr_fusion,
-)
+from scinoephile.analysis.audit.ocr_fusion import audit_ocr_fusion
+from scinoephile.analysis.audit.utils import ComparisonAuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -144,12 +142,12 @@ class AuditOcrFusionCli(AuditCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            default=OcrFusionAuditFilter.changes,
+            default=ComparisonAuditFilter.changes,
             dest="row_filter",
-            metavar=enum_metavar(OcrFusionAuditFilter),
-            type=enum_arg(OcrFusionAuditFilter),
+            metavar=enum_metavar(ComparisonAuditFilter),
+            type=enum_arg(ComparisonAuditFilter),
             help=(
-                f"rows to include: {enum_options_list_str(OcrFusionAuditFilter)} "
+                f"rows to include: {enum_options_list_str(ComparisonAuditFilter)} "
                 "(default: %(default)s)"
             ),
         )
@@ -173,7 +171,7 @@ class AuditOcrFusionCli(AuditCliBase):
         fused_path: Path,
         validated_path: Path | None,
         json_path: Path | None,
-        row_filter: OcrFusionAuditFilter,
+        row_filter: ComparisonAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -200,7 +198,7 @@ class AuditOcrFusionCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is OcrFusionAuditFilter.discrepancies and validated_path is None:
+        if row_filter is ComparisonAuditFilter.discrepancies and validated_path is None:
             parser.error("--filter discrepancies requires --validated")
 
         # Read inputs

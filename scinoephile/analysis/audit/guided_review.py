@@ -64,7 +64,7 @@ def audit_guided_review(
     guide: Series,
     test_cases: Sequence[GuidedReviewTestCase],
     *,
-    row_filter: AuditFilter = AuditFilter.all,
+    row_filter: AuditFilter = AuditFilter.changes,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,

@@ -10,8 +10,11 @@ from unittest.mock import patch
 
 from pytest import CaptureFixture, mark, raises
 
-from scinoephile.analysis.audit.review import ComparativeReviewAuditFilter
-from scinoephile.analysis.audit.utils import AuditFilter, VerificationAuditFilter
+from scinoephile.analysis.audit.utils import (
+    AuditFilter,
+    ComparisonAuditFilter,
+    VerificationAuditFilter,
+)
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_cli_base import AuditCliBase
 from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
@@ -280,7 +283,7 @@ def test_audit_review_cli_help_is_consistent():
             assert actions["original_path"].option_strings == ["--original"]
         filter_type = AuditFilter
         if cli_class is AuditReviewDualCli:
-            filter_type = ComparativeReviewAuditFilter
+            filter_type = ComparisonAuditFilter
         filter_action = actions["row_filter"]
         assert filter_action.choices is None
         assert filter_action.metavar == enum_metavar(filter_type)

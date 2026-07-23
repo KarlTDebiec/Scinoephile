@@ -9,7 +9,7 @@ from pathlib import Path
 
 from pytest import CaptureFixture, raises
 
-from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter
+from scinoephile.analysis.audit.utils import ComparisonAuditFilter
 from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
 from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.testing import run_cli_with_args
@@ -24,9 +24,9 @@ def test_audit_ocr_fusion_cli_filter_help_is_consistent():
     action = actions["row_filter"]
 
     assert action.choices is None
-    assert action.metavar == enum_metavar(OcrFusionAuditFilter)
+    assert action.metavar == enum_metavar(ComparisonAuditFilter)
     assert isinstance(action.help, str)
-    assert enum_options_list_str(OcrFusionAuditFilter) in action.help
+    assert enum_options_list_str(ComparisonAuditFilter) in action.help
     json_help = actions["json_path"].help
     assert isinstance(json_help, str)
     assert "notes and verification state" in json_help

@@ -15,6 +15,7 @@ __all__ = [
     "AuditColumn",
     "AuditFilter",
     "AuditResult",
+    "ComparisonAuditFilter",
     "VerificationAuditFilter",
     "format_audit_report",
     "format_verification_marker",
@@ -54,6 +55,22 @@ class AuditResult(StrEnum):
 
     unanswered = "unanswered"
     """The logged case has no answer."""
+
+
+class ComparisonAuditFilter(StrEnum):
+    """Row filters shared by audits with final comparisons."""
+
+    all = "all"
+    """Include every eligible row."""
+
+    changes = "changes"
+    """Include rows that the audit classifies as changed."""
+
+    discrepancies = "discrepancies"
+    """Include only final discrepancies."""
+
+    unverified = "unverified"
+    """Include only rows from unverified logged cases."""
 
 
 class VerificationAuditFilter(StrEnum):
