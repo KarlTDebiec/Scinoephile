@@ -269,7 +269,7 @@ class AuditReviewDualCli(AuditReviewCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
-        if row_filter is ReviewAuditFilter.unverified and all(
+        if row_filter is ReviewAuditFilter.unverified and any(
             json_path is None
             for json_path in (
                 simplified_json_path,
@@ -278,8 +278,8 @@ class AuditReviewDualCli(AuditReviewCliBase):
             )
         ):
             parser.error(
-                "--filter unverified requires one of --simplified-json, "
-                "--traditional-json, or --traditional-simplified-json"
+                "--filter unverified requires --simplified-json, "
+                "--traditional-json, and --traditional-simplified-json"
             )
         characters = get_zho_character_variants(characters)
 

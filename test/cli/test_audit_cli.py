@@ -84,9 +84,27 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
         ),
         encoding="utf-8",
     )
+    unchanged_review_json_path = tmp_path / "unchanged_review.json"
+    unchanged_review_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {"subtitles": [{"index": 1, "text": "正"}]},
+                    "answer": {"revisions": []},
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
     run_cli_with_args(
         AuditReviewDualCli,
-        (f"{arguments} --traditional-json {review_json_path} --filter unverified"),
+        (
+            f"{arguments} --simplified-json {unchanged_review_json_path} "
+            f"--traditional-json {review_json_path} "
+            f"--traditional-simplified-json {unchanged_review_json_path} "
+            "--filter unverified"
+        ),
     )
     stdout = capsys.readouterr().out
     assert "- row filter: unverified" in stdout
@@ -130,10 +148,14 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
     )
 
     with raises(SystemExit):
-        run_cli_with_args(AuditReviewDualCli, f"{arguments} --filter unverified")
-    assert "--filter unverified requires one of --simplified-json" in (
-        capsys.readouterr().err
-    )
+        run_cli_with_args(
+            AuditReviewDualCli,
+            (f"{arguments} --traditional-json {review_json_path} --filter unverified"),
+        )
+    assert (
+        "--filter unverified requires --simplified-json, --traditional-json, and "
+        "--traditional-simplified-json"
+    ) in (capsys.readouterr().err)
 
     reviewed_path.write_text(
         reviewed_path.read_text(encoding="utf-8")
