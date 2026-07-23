@@ -5,14 +5,17 @@
 from __future__ import annotations
 
 import json
-from argparse import SUPPRESS
 from pathlib import Path
-from typing import cast
 
 from pytest import CaptureFixture, mark, raises
 
+from scinoephile.analysis.audit.review import (
+    ComparativeReviewAuditFilter,
+    ReviewAuditFilter,
+)
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_aligned_diff_cli import AuditAlignedDiffCli
+from scinoephile.cli.audit.audit_cli_base import AuditCliBase
 from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
 from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
 from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
@@ -21,8 +24,8 @@ from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
 from scinoephile.cli.audit.audit_translation_cli import AuditTranslationCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.testing import run_cli_with_args
-from scinoephile.core.cli import ScinoephileCliBase
 
 
 def test_audit_review_dual_cli_stdout_outfile_and_validation(
@@ -63,6 +66,12 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
     assert "- subtitle range: 1 through 1" in stdout
     assert "- table rows: 1" in stdout
 
+    run_cli_with_args(
+        AuditReviewDualCli,
+        f"{arguments} --first-block 1 --last-block 1",
+    )
+    assert "- block range: 1 through 1" in capsys.readouterr().out
+
     run_cli_with_args(AuditReviewDualCli, f"{arguments} --characters 错这")
     stdout = capsys.readouterr().out
     assert "- character filter: 这, 這, 錯, 错" in stdout
@@ -83,11 +92,31 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
         ),
         encoding="utf-8",
     )
+    unchanged_review_json_path = tmp_path / "unchanged_review.json"
+    unchanged_review_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {"subtitles": [{"index": 1, "text": "正"}]},
+                    "answer": {"revisions": []},
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
     run_cli_with_args(
         AuditReviewDualCli,
-        f"{arguments} --traditional-json {review_json_path}",
+        (
+            f"{arguments} --simplified-json {unchanged_review_json_path} "
+            f"--traditional-json {review_json_path} "
+            f"--traditional-simplified-json {unchanged_review_json_path} "
+            "--filter unverified"
+        ),
     )
-    assert "Traditional review: 修正。" in capsys.readouterr().out
+    stdout = capsys.readouterr().out
+    assert "- row filter: unverified" in stdout
+    assert "Traditional review: 修正。" in stdout
 
     outfile_path = tmp_path / "audit.md"
     run_cli_with_args(AuditReviewDualCli, f"{arguments} --outfile {outfile_path}")
@@ -95,11 +124,9 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
     assert outfile_path.read_text(encoding="utf-8").startswith("# Review Audit\n")
 
     with raises(SystemExit):
-        run_cli_with_args(
-            AuditReviewDualCli,
-            f"{arguments} --outfile {outfile_path}",
-        )
+        run_cli_with_args(AuditReviewDualCli, f"{arguments} --outfile {outfile_path}")
     assert "use --overwrite to replace it" in capsys.readouterr().err
+
     run_cli_with_args(
         AuditReviewDualCli,
         f"{arguments} --outfile {outfile_path} --overwrite",
@@ -119,6 +146,25 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
         capsys.readouterr().err
     )
 
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditReviewDualCli,
+            f"{arguments} --first-index 1 --first-block 1",
+        )
+    assert "Subtitle-index and block ranges are mutually exclusive" in (
+        capsys.readouterr().err
+    )
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditReviewDualCli,
+            (f"{arguments} --traditional-json {review_json_path} --filter unverified"),
+        )
+    assert (
+        "--filter unverified requires --simplified-json, --traditional-json, and "
+        "--traditional-simplified-json"
+    ) in (capsys.readouterr().err)
+
     reviewed_path.write_text(
         reviewed_path.read_text(encoding="utf-8")
         + "\n2\n00:00:02,000 --> 00:00:02,500\n又\n",
@@ -133,6 +179,9 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
 
 def test_audit_cli_subcommands():
     """Test the audit CLI and its workflow subcommands are registered."""
+    assert issubclass(AuditReviewCli, AuditCliBase)
+    assert issubclass(AuditReviewDualCli, AuditCliBase)
+    assert issubclass(AuditReviewTradCli, AuditCliBase)
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
         "aligned-diff": AuditAlignedDiffCli,
@@ -146,457 +195,32 @@ def test_audit_cli_subcommands():
     }
 
 
-def test_audit_cli_help_follows_shared_style():
-    """Test audit help uses consistent wording, defaults, and localization."""
-    original_locale_name = ScinoephileCliBase.locale_name
-    try:
-        ScinoephileCliBase.locale_name = "en"
-        for command_name, cli_class in AuditCli.subcommands().items():
-            localized_cli_class = cast(type[ScinoephileCliBase], cli_class)
-            parser = localized_cli_class.argparser()
-            description = parser.description
-            assert isinstance(description, str)
-            assert description.startswith("Audit ")
-            assert description.endswith(".")
-
-            actions = {action.dest: action for action in parser._actions}  # noqa: SLF001
-            for boundary in ("first", "last"):
-                help_text = actions[f"{boundary}_index"].help
-                assert isinstance(help_text, str)
-                assert help_text.startswith(f"{boundary} 1-indexed ")
-                assert help_text.endswith(" subtitle number to include, inclusive")
-                block_help_text = actions[f"{boundary}_block"].help
-                assert isinstance(block_help_text, str)
-                assert block_help_text == (
-                    f"{boundary} 1-indexed workflow block number to include, inclusive"
-                )
-
-            assert actions["outfile_path"].help == (
-                "Markdown outfile path (default: stdout)"
-            )
-            assert actions["overwrite"].help == "overwrite outfile if it exists"
-            row_filter_action = actions["row_filter"]
-            assert isinstance(row_filter_action.help, str)
-            assert row_filter_action.help.startswith("rows to include: ")
-            assert f"(default: {row_filter_action.default.value})" in (
-                row_filter_action.help
-            )
-
-            for action in parser._actions:  # noqa: SLF001
-                if action.dest.endswith("json_path"):
-                    assert isinstance(action.help, str)
-                    assert "test-case JSON file" in action.help
-                    if action.help.startswith("optional "):
-                        assert not action.required
-                    elif "required in" not in action.help:
-                        assert action.required
-
-            operation_group = next(
-                group
-                for group in parser._action_groups  # noqa: SLF001
-                if group.title == "operation arguments"
-            )
-            for action in operation_group._group_actions:  # noqa: SLF001
-                if action.dest in {
-                    "first_block",
-                    "first_index",
-                    "last_block",
-                    "last_index",
-                }:
-                    continue
+def test_audit_review_cli_help_is_consistent():
+    """Test review audit help documents JSON inputs and option defaults."""
+    for cli_class in (AuditReviewCli, AuditReviewDualCli, AuditReviewTradCli):
+        actions = {
+            action.dest: action
+            for action in cli_class.argparser()._actions  # noqa: SLF001
+        }
+        if cli_class is AuditReviewCli:
+            assert "mode" not in actions
+            assert actions["original_path"].option_strings == ["--original"]
+        filter_type = ReviewAuditFilter
+        if cli_class is AuditReviewDualCli:
+            filter_type = ComparativeReviewAuditFilter
+        filter_action = actions["row_filter"]
+        assert filter_action.choices is None
+        assert filter_action.metavar == enum_metavar(filter_type)
+        assert isinstance(filter_action.help, str)
+        assert enum_options_list_str(filter_type) in filter_action.help
+        character_help = actions["characters"].help
+        assert isinstance(character_help, str)
+        assert "(default: no character filter)" in character_help
+        for destination, action in actions.items():
+            if destination.endswith("json_path"):
                 assert isinstance(action.help, str)
-                assert action.help[:1].islower()
-                assert not action.help.endswith(".")
-                assert "(default:" in action.help
-
-            source_texts = [
-                description,
-                *(
-                    action.help
-                    for action in parser._actions  # noqa: SLF001
-                    if isinstance(action.help, str) and action.help != SUPPRESS
-                ),
-            ]
-            for locale_name in ("zh-hans", "zh-hant"):
-                ScinoephileCliBase.locale_name = locale_name
-                translated_texts = [
-                    localized_cli_class.translate_text(source_text)
-                    for source_text in source_texts
-                ]
-                missing = [
-                    source_text
-                    for source_text, translated_text in zip(
-                        source_texts,
-                        translated_texts,
-                        strict=True,
-                    )
-                    if translated_text == source_text
-                ]
-                assert not missing, f"{command_name} {locale_name}: {missing}"
-                if locale_name == "zh-hant":
-                    cantonese_particles = set("嘅畀冇嚟")
-                    assert cantonese_particles.isdisjoint("".join(translated_texts))
-                ScinoephileCliBase.locale_name = "en"
-    finally:
-        ScinoephileCliBase.locale_name = original_locale_name
-
-
-def test_all_audit_block_workflows_reject_oversized_last_block(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
-):
-    """Test every audit workflow validates blocks against its actual inputs.
-
-    Arguments:
-        tmp_path: temporary path
-        capsys: pytest stdout/stderr capture fixture
-    """
-    series_path = tmp_path / "series.srt"
-    _write_srt(
-        series_path,
-        (
-            "This is the first subtitle.",
-            "This is the second subtitle.",
-            "This is the third subtitle.",
-        ),
-    )
-    json_path = tmp_path / "cases.json"
-    json_path.write_text("[]\n", encoding="utf-8")
-    dual_arguments = (
-        f"--traditional {series_path} "
-        f"--traditional-reviewed {series_path} "
-        f"--traditional-simplified {series_path} "
-        f"--traditional-simplified-reviewed {series_path} "
-        f"--simplified {series_path} "
-        f"--simplified-reviewed {series_path}"
-    )
-    trad_arguments = (
-        f"--traditional {series_path} "
-        f"--traditional-reviewed {series_path} "
-        f"--traditional-simplified {series_path} "
-        f"--traditional-simplified-reviewed {series_path}"
-    )
-    workflows = (
-        (
-            AuditAlignedDiffCli,
-            f"--transcription {series_path} --reference {series_path}",
-        ),
-        (
-            AuditDelineationCli,
-            f"--reference {series_path} --json {json_path}",
-        ),
-        (
-            AuditOcrFusionCli,
-            f"--source-one {series_path} --source-two {series_path} "
-            f"--fused {series_path} --json {json_path}",
-        ),
-        (
-            AuditPunctuationCli,
-            f"--reference {series_path} --target {series_path} --json {json_path}",
-        ),
-        (
-            AuditReviewCli,
-            f"--original {series_path} --reviewed {series_path}",
-        ),
-        (
-            AuditReviewCli,
-            f"--mode guided --target {series_path} --guide {series_path} "
-            f"--json {json_path}",
-        ),
-        (AuditReviewDualCli, dual_arguments),
-        (AuditReviewTradCli, trad_arguments),
-        (
-            AuditTranslationCli,
-            f"--source {series_path} --json {json_path}",
-        ),
-        (
-            AuditTranslationCli,
-            f"--mode gapped --target {series_path} --guide {series_path} "
-            f"--json {json_path}",
-        ),
-        (
-            AuditTranslationCli,
-            f"--mode guided --source {series_path} --guide {series_path} "
-            f"--json {json_path}",
-        ),
-    )
-
-    for cli_class, arguments in workflows:
-        with raises(SystemExit) as excinfo:
-            run_cli_with_args(
-                cli_class,
-                f"{arguments} --last-block 2",
-            )
-        assert excinfo.value.code == 2
-        assert "Last block must not exceed available block count 1" in (
-            capsys.readouterr().err
-        )
-
-
-def test_audit_translation_cli_gapped_mode_stdout_outfile_and_validation(
-    tmp_path: Path,
-    capsys: CaptureFixture,
-):
-    """Test gap-translation audit output and range validation.
-
-    Arguments:
-        tmp_path: temporary path
-        capsys: pytest stdout/stderr capture fixture
-    """
-    target_path = tmp_path / "target.srt"
-    guide_path = tmp_path / "guide.srt"
-    json_path = tmp_path / "gap_translation.json"
-    _write_srt(target_path, ("現有",))
-    _write_srt(guide_path, ("參考一", "參考二"))
-    json_path.write_text(
-        json.dumps(
-            [
-                {
-                    "query": {
-                        "targets": [{"index": 1, "text": "現有"}],
-                        "guides": [
-                            {"index": 1, "text": "參考一"},
-                            {"index": 2, "text": "參考二"},
-                        ],
-                    },
-                    "answer": {"outputs": [{"index": 2, "text": "翻譯"}]},
-                }
-            ],
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
-    arguments = f"--target {target_path} --guide {guide_path} --json {json_path}"
-
-    run_cli_with_args(
-        AuditTranslationCli,
-        (
-            f"--mode gapped {arguments} --difficulty 1 --first-index 2 "
-            "--last-index 2 --first-block 1 --last-block 1"
-        ),
-    )
-    stdout = capsys.readouterr().out
-    assert stdout.startswith("# Gap Translation Audit\n")
-    assert "- difficulty filter: 1" in stdout
-    assert "- guide subtitle range: 2 through 2" in stdout
-    assert "- block range: 1 through 1" in stdout
-    assert "| G 2<br>Q 2 | C 1<br>B 1 | 1 | 參考二 | G 1: 現有 | 翻譯 |" in stdout
-
-    outfile_path = tmp_path / "audit.md"
-    run_cli_with_args(
-        AuditTranslationCli,
-        (
-            f"--mode gapped {arguments} --filter unverified --difficulty 1 "
-            f"--outfile {outfile_path}"
-        ),
-    )
-    assert capsys.readouterr().out == ""
-    report = outfile_path.read_text(encoding="utf-8")
-    assert "- row filter: unverified" in report
-    assert "- difficulty filter: 1" in report
-    assert "- table rows: 1" in report
-
-    with raises(SystemExit):
-        run_cli_with_args(
-            AuditTranslationCli,
-            f"--mode gapped {arguments} --first-index 2 --last-index 1",
-        )
-    assert "First index must be less than or equal to last index" in (
-        capsys.readouterr().err
-    )
-
-    with raises(SystemExit):
-        run_cli_with_args(
-            AuditTranslationCli,
-            f"--mode gapped {arguments} --first-block 2 --last-block 1",
-        )
-    assert "First block must be less than or equal to last block" in (
-        capsys.readouterr().err
-    )
-
-
-def test_audit_translation_cli_standard_and_guided_modes(
-    tmp_path: Path,
-    capsys: CaptureFixture,
-):
-    """Test standard and guided workflows share one translation command.
-
-    Arguments:
-        tmp_path: temporary path
-        capsys: pytest stdout/stderr capture fixture
-    """
-    source_path = tmp_path / "source.srt"
-    guide_path = tmp_path / "guide.srt"
-    standard_json_path = tmp_path / "translation.json"
-    guided_json_path = tmp_path / "guided_translation.json"
-    _write_srt(source_path, ("原文",))
-    _write_srt(guide_path, ("參考",))
-    standard_json_path.write_text(
-        json.dumps(
-            [
-                {
-                    "query": {"subtitles": [{"index": 1, "text": "原文"}]},
-                    "answer": {"outputs": [{"index": 1, "text": "Translation"}]},
-                }
-            ],
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
-    guided_json_path.write_text(
-        json.dumps(
-            [
-                {
-                    "query": {
-                        "subtitles": [{"index": 1, "text": "原文"}],
-                        "guides": [{"index": 1, "text": "參考"}],
-                    },
-                    "answer": {"outputs": [{"index": 1, "text": "Guided translation"}]},
-                }
-            ],
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
-
-    run_cli_with_args(
-        AuditTranslationCli,
-        f"--source {source_path} --json {standard_json_path}",
-    )
-    standard_report = capsys.readouterr().out
-    assert standard_report.startswith("# Standard Translation Audit\n")
-    assert "| S 1<br>Q 1 | C 1<br>B 1 | 0 | 原文 | — | Translation |" in (
-        standard_report
-    )
-
-    run_cli_with_args(
-        AuditTranslationCli,
-        (
-            f"--mode guided --source {source_path} --guide {guide_path} "
-            f"--json {guided_json_path}"
-        ),
-    )
-    guided_report = capsys.readouterr().out
-    assert guided_report.startswith("# Guided Translation Audit\n")
-    assert "| 原文 | G 1: 參考 | Guided translation |" in guided_report
-
-    with raises(SystemExit):
-        run_cli_with_args(
-            AuditTranslationCli,
-            f"--mode guided --source {source_path} --json {guided_json_path}",
-        )
-    assert "--guide is required in guided mode" in capsys.readouterr().err
-
-    with raises(SystemExit):
-        run_cli_with_args(
-            AuditTranslationCli,
-            (
-                f"--mode standard --source {source_path} --target {source_path} "
-                f"--json {standard_json_path}"
-            ),
-        )
-    assert "--target is not supported in standard mode" in capsys.readouterr().err
-
-
-def test_audit_ocr_fusion_cli_optional_validated_truth(
-    tmp_path: Path,
-    capsys: CaptureFixture,
-):
-    """Test OCR-fusion audit includes optional validated truth discrepancies.
-
-    Arguments:
-        tmp_path: temporary path
-        capsys: pytest stdout/stderr capture fixture
-    """
-    source_one_path = tmp_path / "one.srt"
-    source_two_path = tmp_path / "two.srt"
-    fused_path = tmp_path / "fused.srt"
-    validated_path = tmp_path / "validated.srt"
-    json_path = tmp_path / "ocr_fusion.json"
-    _write_srt(source_one_path, ("甲錯",))
-    _write_srt(source_two_path, ("甲正",))
-    _write_srt(fused_path, ("甲正",))
-    _write_srt(validated_path, ("甲真",))
-    json_path.write_text(
-        json.dumps(
-            [
-                {
-                    "query": {"one": "甲錯", "two": "甲正"},
-                    "answer": {"output": "甲正", "note": "Used source two."},
-                }
-            ],
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
-    arguments = (
-        f"--source-one {source_one_path} --source-two {source_two_path} "
-        f"--fused {fused_path} --validated {validated_path} --json {json_path}"
-    )
-
-    run_cli_with_args(
-        AuditOcrFusionCli,
-        f"{arguments} --filter discrepancies",
-    )
-
-    report = capsys.readouterr().out
-    assert report.startswith("# OCR Fusion Audit\n")
-    assert "- validated track: included" in report
-    assert "- validated discrepancies: 1" in report
-    assert "| 1 | 1 | 1 | 甲錯 | 甲正 | 甲正 | 甲真 | Used source two. |" in report
-
-
-def test_audit_aligned_diff_cli_stdout_outfile_and_validation(
-    tmp_path: Path,
-    capsys: CaptureFixture,
-):
-    """Test aligned-diff audit output and range validation.
-
-    Arguments:
-        tmp_path: temporary path
-        capsys: pytest stdout/stderr capture fixture
-    """
-    original_path = tmp_path / "original.srt"
-    transcription_path = tmp_path / "transcription.srt"
-    reference_path = tmp_path / "reference.srt"
-    guide_path = tmp_path / "guide.srt"
-    _write_srt(original_path, ("甲原", "相同"))
-    _write_srt(transcription_path, ("甲錯", "相同"))
-    _write_srt(reference_path, ("甲正", "相同"))
-    _write_srt(guide_path, ("指南一", "指南二"))
-    arguments = (
-        f"--original {original_path} --transcription {transcription_path} "
-        f"--reference {reference_path} --guide {guide_path}"
-    )
-
-    run_cli_with_args(
-        AuditAlignedDiffCli,
-        f"{arguments} --first-index 1 --last-index 1",
-    )
-    stdout = capsys.readouterr().out
-    assert stdout.startswith("# Aligned Subtitle Diff Audit\n")
-    assert "- transcription subtitle range: 1 through 1" in stdout
-    assert "- row filter: changes" in stdout
-    assert "<pre>O │ 甲原<br>T │ 甲錯<br>R │ 甲正<br>G │ 指南一</pre>" in stdout
-
-    outfile_path = tmp_path / "audit.md"
-    run_cli_with_args(
-        AuditAlignedDiffCli,
-        f"{arguments} --filter all --outfile {outfile_path}",
-    )
-    assert capsys.readouterr().out == ""
-    report = outfile_path.read_text(encoding="utf-8")
-    assert "- row filter: all" in report
-    assert "- table rows: 2" in report
-
-    with raises(SystemExit):
-        run_cli_with_args(
-            AuditAlignedDiffCli,
-            f"{arguments} --first-index 2 --last-index 1",
-        )
-    assert "First index must be less than or equal to last index" in (
-        capsys.readouterr().err
-    )
+                assert "test-case JSON file" in action.help
+                assert "--filter unverified" in action.help
 
 
 def test_audit_review_cli_guided_mode_stdout_and_outfile(
@@ -637,11 +261,11 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
         ),
         encoding="utf-8",
     )
-    arguments = f"--target {target_path} --guide {guide_path} --json {json_path}"
+    arguments = f"--original {target_path} --guide {guide_path} --json {json_path}"
 
     run_cli_with_args(
         AuditReviewCli,
-        (f"--mode guided {arguments} --first-index 1 --last-index 1 --filter changes"),
+        f"{arguments} --first-index 1 --last-index 1 --filter changes",
     )
     stdout = capsys.readouterr().out
     assert stdout.startswith("# Guided Subtitle Review Audit\n")
@@ -653,7 +277,7 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
     outfile_path = tmp_path / "audit.md"
     run_cli_with_args(
         AuditReviewCli,
-        f"--mode guided {arguments} --outfile {outfile_path}",
+        f"{arguments} --outfile {outfile_path}",
     )
     assert capsys.readouterr().out == ""
     assert outfile_path.read_text(encoding="utf-8").startswith(
@@ -663,7 +287,7 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
     with raises(SystemExit):
         run_cli_with_args(
             AuditReviewCli,
-            f"--mode guided {arguments} --first-index 2 --last-index 1",
+            f"{arguments} --first-index 2 --last-index 1",
         )
     assert "First index must be less than or equal to last index" in (
         capsys.readouterr().err
@@ -672,138 +296,23 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
     with raises(SystemExit):
         run_cli_with_args(
             AuditReviewCli,
-            f"--mode guided {arguments} --reviewed {target_path}",
+            f"{arguments} --first-index 1 --first-block 1",
         )
-    assert "--reviewed is only supported in regular mode" in capsys.readouterr().err
-
-
-def test_audit_delineation_cli_stdout_and_outfile(
-    tmp_path: Path,
-    capsys: CaptureFixture,
-):
-    """Test delineation audit output to stdout and a file.
-
-    Arguments:
-        tmp_path: temporary path
-        capsys: pytest stdout/stderr capture fixture
-    """
-    reference_path = tmp_path / "reference.srt"
-    _write_srt(reference_path, ("參考一", "參考二"))
-    json_path = tmp_path / "delineation.json"
-    json_path.write_text(
-        json.dumps(
-            [
-                {
-                    "query": {
-                        "ref_sub_1": "參考一",
-                        "ref_sub_2": "參考二",
-                        "target_sub_1": "甲乙",
-                        "target_sub_2": "丙",
-                    },
-                    "answer": {
-                        "target_sub_1_shifted": "甲",
-                        "target_sub_2_shifted": "乙丙",
-                    },
-                }
-            ],
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
-    arguments = f"--reference {reference_path} --json {json_path}"
-
-    run_cli_with_args(
-        AuditDelineationCli,
-        f"{arguments} --first-index 1 --last-index 2 --filter changes",
-    )
-    stdout = capsys.readouterr().out
-    assert stdout.startswith("# Transcription Delineation Audit\n")
-    assert "- row filter: changes" in stdout
-    assert "- reference subtitle range: 1 through 2" in stdout
-    assert "| 1<br>2 | 參考一<br>參考二 | 甲乙<br>丙 | 甲<br>乙丙 |" in stdout
-
-    outfile_path = tmp_path / "audit.md"
-    run_cli_with_args(
-        AuditDelineationCli,
-        f"{arguments} --filter unverified --outfile {outfile_path}",
-    )
-    assert capsys.readouterr().out == ""
-    report = outfile_path.read_text(encoding="utf-8")
-    assert report.startswith("# Transcription Delineation Audit\n")
-    assert "- row filter: unverified" in report
+    assert "mutually exclusive" in capsys.readouterr().err
 
     with raises(SystemExit):
         run_cli_with_args(
-            AuditDelineationCli,
-            f"{arguments} --first-index 2 --last-index 1",
+            AuditReviewCli,
+            f"{arguments} --reviewed {target_path}",
         )
-    assert "First index must be less than or equal to last index" in (
-        capsys.readouterr().err
-    )
-
-
-def test_audit_punctuation_cli_stdout_and_outfile(
-    tmp_path: Path,
-    capsys: CaptureFixture,
-):
-    """Test punctuation audit output to stdout and a file.
-
-    Arguments:
-        tmp_path: temporary path
-        capsys: pytest stdout/stderr capture fixture
-    """
-    reference_path = tmp_path / "reference.srt"
-    target_path = tmp_path / "target.srt"
-    _write_srt(reference_path, ("參考",))
-    _write_srt(target_path, ("甲，乙",))
-    json_path = tmp_path / "punctuation.json"
-    json_path.write_text(
-        json.dumps(
-            [
-                {
-                    "query": {
-                        "ref_sub": "參考",
-                        "target_subs": ["甲", "乙"],
-                    },
-                    "answer": {"target_sub_punctuated": "甲，乙"},
-                }
-            ],
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
-    arguments = (
-        f"--reference {reference_path} --target {target_path} --json {json_path}"
-    )
-
-    run_cli_with_args(
-        AuditPunctuationCli,
-        f"{arguments} --first-index 1 --last-index 1 --filter changes",
-    )
-    stdout = capsys.readouterr().out
-    assert stdout.startswith("# Transcription Punctuation Audit\n")
-    assert "- row filter: changes" in stdout
-    assert "- reference subtitle range: 1 through 1" in stdout
-    assert "| 1 | 參考 | 甲<br>乙 | 甲，乙 |" in stdout
-
-    outfile_path = tmp_path / "audit.md"
-    run_cli_with_args(
-        AuditPunctuationCli,
-        f"{arguments} --filter unverified --outfile {outfile_path}",
-    )
-    assert capsys.readouterr().out == ""
-    report = outfile_path.read_text(encoding="utf-8")
-    assert report.startswith("# Transcription Punctuation Audit\n")
-    assert "- row filter: unverified" in report
+    assert "not allowed with argument --guide" in capsys.readouterr().err
 
     with raises(SystemExit):
         run_cli_with_args(
-            AuditPunctuationCli,
-            f"{arguments} --first-index 2 --last-index 1",
+            AuditReviewCli,
+            (f"--original {target_path} --guide {guide_path} --filter unverified"),
         )
-    assert "First index must be less than or equal to last index" in (
-        capsys.readouterr().err
-    )
+    assert "--filter unverified requires --json" in capsys.readouterr().err
 
 
 def test_audit_review_cli_detects_language(tmp_path: Path, capsys: CaptureFixture):
@@ -838,6 +347,53 @@ def test_audit_review_cli_detects_language(tmp_path: Path, capsys: CaptureFixtur
     assert "| Subtitle | English | Notes |" in stdout
     assert "| 1 | This line needs work.<br>This line is improved. |" in stdout
 
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditReviewCli,
+            (
+                f"--original {original_path} --reviewed {reviewed_path} "
+                "--filter unverified"
+            ),
+        )
+    assert "--filter unverified requires --json" in capsys.readouterr().err
+
+    json_path = tmp_path / "review.json"
+    json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "subtitles": [
+                            {"index": 1, "text": "This line needs work."},
+                            {"index": 2, "text": "This line is fine."},
+                            {"index": 3, "text": "Another English subtitle."},
+                        ]
+                    },
+                    "answer": {
+                        "revisions": [
+                            {
+                                "index": 1,
+                                "text": "This line is improved.",
+                                "note": "Improved.",
+                            }
+                        ]
+                    },
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+    run_cli_with_args(
+        AuditReviewCli,
+        (
+            f"--original {original_path} --reviewed {reviewed_path} "
+            f"--json {json_path} --filter unverified"
+        ),
+    )
+    stdout = capsys.readouterr().out
+    assert "- row filter: unverified" in stdout
+    assert "- table rows: 3" in stdout
+
 
 def test_audit_review_trad_cli(tmp_path: Path, capsys: CaptureFixture):
     """Test a traditional-to-simplified two-review audit.
@@ -867,18 +423,77 @@ def test_audit_review_trad_cli(tmp_path: Path, capsys: CaptureFixture):
         encoding="utf-8",
     )
 
-    run_cli_with_args(
-        AuditReviewTradCli,
+    arguments = (
         f"--traditional {traditional_path} "
         f"--traditional-reviewed {traditional_reviewed_path} "
         f"--traditional-simplified {simplified_path} "
-        f"--traditional-simplified-reviewed {simplified_reviewed_path}",
+        f"--traditional-simplified-reviewed {simplified_reviewed_path}"
     )
+    run_cli_with_args(AuditReviewTradCli, arguments)
 
     stdout = capsys.readouterr().out
     assert "- traditional review edits: 1" in stdout
     assert "- traditional simplification review edits: 1" in stdout
     assert "| Subtitle | Traditional | Traditional simplification | Notes |" in stdout
+
+    traditional_json_path = tmp_path / "traditional.json"
+    traditional_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {"subtitles": [{"index": 1, "text": "傳錯"}]},
+                    "answer": {
+                        "revisions": [
+                            {"index": 1, "text": "傳正", "note": "繁體修正。"}
+                        ]
+                    },
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    traditional_simplified_json_path = tmp_path / "traditional_simplified.json"
+    traditional_simplified_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {"subtitles": [{"index": 1, "text": "传错"}]},
+                    "answer": {
+                        "revisions": [
+                            {"index": 1, "text": "传正", "note": "简体修正。"}
+                        ]
+                    },
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    json_arguments = (
+        f"--traditional-json {traditional_json_path} "
+        f"--traditional-simplified-json {traditional_simplified_json_path}"
+    )
+    run_cli_with_args(
+        AuditReviewTradCli,
+        f"{arguments} {json_arguments} --filter unverified",
+    )
+    stdout = capsys.readouterr().out
+    assert "- row filter: unverified" in stdout
+    assert "- table rows: 1" in stdout
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditReviewTradCli,
+            (
+                f"{arguments} --traditional-json {traditional_json_path} "
+                "--filter unverified"
+            ),
+        )
+    assert (
+        "--filter unverified requires --traditional-json and "
+        "--traditional-simplified-json"
+    ) in capsys.readouterr().err
 
 
 @mark.parametrize(

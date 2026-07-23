@@ -6,10 +6,8 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.audit.guided_review import (
-    GuidedReviewAuditFilter,
-    audit_guided_review,
-)
+from scinoephile.analysis.audit.guided_review import audit_guided_review
+from scinoephile.analysis.audit.review import ReviewAuditFilter
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.guided_review import GuidedReviewTestCase
@@ -79,12 +77,66 @@ def test_audit_guided_review_formats_unanswered_case():
     assert "| 1 | 1 | 參考 | 原文<br>(unanswered) |  |  |" in report
 
 
+def test_audit_guided_review_supports_target_only_block_in_range():
+    """Test a target-only block remains auditable with an index range."""
+    target = Series(events=[Subtitle(start=0, end=1000, text="原文")])
+    guide = Series()
+    test_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "原文"}],
+                "guides": [],
+            },
+            "answer": {"revisions": []},
+        }
+    )
+
+    report = audit_guided_review(
+        target,
+        guide,
+        (test_case,),
+        first_index=1,
+        last_index=1,
+    )
+
+    assert "- subtitles: 1" in report
+    assert "- target subtitle range: 1 through 1" in report
+    assert "| 1 | 1 | — | 原文 |  |  |" in report
+
+
 def test_audit_guided_review_rejects_invalid_range():
-    """Test direct callers receive a domain error for an invalid range."""
+    """Test direct callers receive domain errors for invalid options."""
     target, guide = _get_series_pair()
 
     with raises(ScinoephileError, match="First index must be at least 1"):
         audit_guided_review(target, guide, (), first_index=0)
+
+    with raises(ScinoephileError, match="mutually exclusive"):
+        audit_guided_review(target, guide, (), first_index=1, first_block=1)
+
+
+def test_audit_guided_review_rejects_stale_target_only_case():
+    """Test a stale target-only case reports a domain error within a range."""
+    target = Series(events=[Subtitle(start=0, end=1000, text="目前")])
+    guide = Series(events=[Subtitle(start=0, end=1000, text="目前參考")])
+    stale_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "舊文"}],
+                "guides": [],
+            },
+            "answer": {"revisions": []},
+        }
+    )
+
+    with raises(ScinoephileError, match="test case 1 was not found"):
+        audit_guided_review(
+            target,
+            guide,
+            (stale_case,),
+            first_index=1,
+            last_index=1,
+        )
 
 
 def test_audit_guided_review_filters_rows_and_target_range():
@@ -121,13 +173,13 @@ def test_audit_guided_review_filters_rows_and_target_range():
         target,
         guide,
         test_cases,
-        row_filter=GuidedReviewAuditFilter.changes,
+        row_filter=ReviewAuditFilter.changes,
     )
     unverified_report = audit_guided_review(
         target,
         guide,
         test_cases,
-        row_filter=GuidedReviewAuditFilter.unverified,
+        row_filter=ReviewAuditFilter.unverified,
     )
     ranged_report = audit_guided_review(
         target,

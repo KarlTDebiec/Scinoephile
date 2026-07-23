@@ -17,6 +17,8 @@ __all__ = [
     "format_difficulty_filter",
     "format_index_range",
     "get_selected_event_indexes",
+    "is_block_in_range",
+    "validate_audit_range",
     "validate_block_range",
     "validate_index_range",
 ]
@@ -128,11 +130,17 @@ def get_selected_event_indexes(
     Raises:
         ScinoephileError: if selection ranges are invalid or mixed
     """
-    has_index_range = first_index is not None or last_index is not None
     has_block_range = first_block is not None or last_block is not None
-    if has_index_range and has_block_range:
-        raise ScinoephileError("Subtitle-index and block ranges are mutually exclusive")
-    validate_index_range(first_index, last_index)
+    block_indexes = (
+        Series.get_block_indexes_by_pause(series) if has_block_range else None
+    )
+    validate_audit_range(
+        first_index,
+        last_index,
+        first_block,
+        last_block,
+        block_count=len(block_indexes) if block_indexes is not None else None,
+    )
 
     if not has_block_range:
         start = 0
@@ -143,19 +151,63 @@ def get_selected_event_indexes(
             stop = min(last_index, stop)
         return frozenset(range(start, stop))
 
-    block_indexes = Series.get_block_indexes_by_pause(series)
-    validate_block_range(first_block, last_block, len(block_indexes))
+    assert block_indexes is not None
     selected_block_indexes = {
         event_index
         for block_number, (block_start, block_stop) in enumerate(
             block_indexes,
             1,
         )
-        if (first_block is None or block_number >= first_block)
-        and (last_block is None or block_number <= last_block)
+        if is_block_in_range(block_number, first_block, last_block)
         for event_index in range(block_start, block_stop)
     }
     return frozenset(selected_block_indexes)
+
+
+def is_block_in_range(
+    block_number: int,
+    first_block: int | None,
+    last_block: int | None,
+) -> bool:
+    """Check whether a one-based block number is selected.
+
+    Arguments:
+        block_number: one-based block number
+        first_block: first included block number
+        last_block: last included block number
+    Returns:
+        whether the block is selected
+    """
+    return (first_block is None or block_number >= first_block) and (
+        last_block is None or block_number <= last_block
+    )
+
+
+def validate_audit_range(
+    first_index: int | None,
+    last_index: int | None,
+    first_block: int | None,
+    last_block: int | None,
+    *,
+    block_count: int | None = None,
+):
+    """Validate mutually exclusive subtitle-index and block ranges.
+
+    Arguments:
+        first_index: first included one-based subtitle index
+        last_index: last included one-based subtitle index
+        first_block: first included one-based block number
+        last_block: last included one-based block number
+        block_count: optional total number of available blocks
+    Raises:
+        ScinoephileError: if either range is invalid or both range types are used
+    """
+    has_index_range = first_index is not None or last_index is not None
+    has_block_range = first_block is not None or last_block is not None
+    if has_index_range and has_block_range:
+        raise ScinoephileError("Subtitle-index and block ranges are mutually exclusive")
+    validate_index_range(first_index, last_index)
+    validate_block_range(first_block, last_block, block_count)
 
 
 def validate_block_range(

@@ -6,7 +6,7 @@ description: Audit Scinoephile regular or guided subtitle reviews, traditional-t
 # Audit Subtitle Reviews
 
 Run commands from the repository root. Discover the artifacts that produced the
-review before selecting a mode; language alone does not determine the workflow.
+review before selecting a workflow; language alone does not determine it.
 
 ## Required report file
 
@@ -35,8 +35,8 @@ and write each independent finding in its `Notes` cell.
 
 | Available inputs | Command |
 |---|---|
-| One original/reviewed pair | `audit review --mode regular` |
-| Target, guide, and guided-review JSON | `audit review --mode guided` |
+| One original/reviewed pair | `audit review --reviewed` |
+| Target, guide, and guided-review JSON | `audit review --guide` |
 | Hant review plus review of its simplified form | `audit review-trad` |
 | Parallel Hans and Hant-to-Hans paths | `audit review-dual` |
 
@@ -82,11 +82,11 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review \
   --overwrite
 ```
 
-The JSON is optional in regular mode. Guided review:
+The JSON is optional for regular review unless using `--filter unverified`.
+Guided review:
 
 ```shell
 UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review \
-  --mode guided \
   --original <target.srt> \
   --guide <guide.srt> \
   --json <guided-review.json> \
@@ -128,18 +128,18 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review-dual \
   --overwrite
 ```
 
-Regular review supports `all` and `changes`; guided review supports `all`,
-`changes`, and `unverified`. Both default to `changes`. `review-dual` also
-supports final-discrepancy filtering. Use inclusive
-`--first-index` and `--last-index`. `--characters` is available for regular,
-traditional, and dual review, with script variants added automatically; use it
-only for a requested or suspected conversion issue.
+Regular, guided, and traditional review support `all`, `changes`, and
+`unverified`; dual review additionally supports `discrepancies`. All default to
+`changes`. The `unverified` filter requires the corresponding JSON for every
+review path. Use inclusive `--first-index` and `--last-index`. `--characters`
+is available for regular, traditional, and dual review, with script variants
+added automatically; use it only for a requested or suspected conversion issue.
 
 Use `--first-block` and `--last-block` for an inclusive, one-based workflow
-block range. In guided mode these are paired target/guide blocks; in regular,
-traditional, and dual modes they are blocks from the first review input. Block
-and subtitle bounds may be combined, and their intersection determines the
-eligible rows. Omit either block bound for an open-ended range.
+block range. In guided review these are paired target/guide blocks; in regular,
+traditional, and dual review they are blocks from the first review input. Block
+and subtitle ranges are mutually exclusive. Omit either bound for an open-ended
+range.
 
 ## Audit regular and multi-path reviews
 
