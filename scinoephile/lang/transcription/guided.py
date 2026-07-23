@@ -4,12 +4,18 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from types import MappingProxyType
 
-from scinoephile.audio.transcription import get_segment_split_on_whitespace
+from scinoephile.audio.transcription import (
+    MIMO_MODEL_NAME,
+    MIMO_TOKENIZER_NAME,
+    MimoRuntime,
+    MimoTranscriber,
+    get_segment_split_on_whitespace,
+)
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.ml import get_torch_device
@@ -172,6 +178,19 @@ def get_guided_transcriber(
     model_name: str | None = None,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
+    mimo_fallback: bool = False,
+    mimo_model_name: str = MIMO_MODEL_NAME,
+    mimo_tokenizer_name: str = MIMO_TOKENIZER_NAME,
+    mimo_runtime: MimoRuntime = MimoRuntime.AUTO,
+    mimo_language: str = "yue",
+    mimo_max_tokens: int | None = None,
+    mimo_chunk_duration_seconds: float | None = None,
+    mimo_chunk_overlap_seconds: float = 1.0,
+    mimo_worker_command: Sequence[str] | None = None,
+    mimo_aligner_backend: str = "ctc",
+    mimo_aligner_language: str = "zh",
+    mimo_aligner_model_name: str | None = None,
+    mimo_aligner_worker_command: Sequence[str] | None = None,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     prune_test_cases: bool = False,
@@ -190,6 +209,19 @@ def get_guided_transcriber(
         model_name: Whisper model override
         demucs_mode: Demucs preprocessing mode
         vad_mode: Whisper VAD mode
+        mimo_fallback: whether to try MiMo after all Whisper attempts fail
+        mimo_model_name: MiMo ASR model name or local path
+        mimo_tokenizer_name: MiMo audio tokenizer name or local path
+        mimo_runtime: runtime implementation used for MiMo inference
+        mimo_language: language metadata passed to MiMo
+        mimo_max_tokens: optional maximum number of MiMo tokens to generate
+        mimo_chunk_duration_seconds: optional MiMo chunk duration in seconds
+        mimo_chunk_overlap_seconds: context overlap applied to each MiMo chunk
+        mimo_worker_command: optional subprocess command that runs MiMo
+        mimo_aligner_backend: timestamp alignment backend for MiMo
+        mimo_aligner_language: language code used by the MiMo aligner
+        mimo_aligner_model_name: optional MiMo timestamp aligner model name
+        mimo_aligner_worker_command: optional MiMo timestamp aligner worker command
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         prune_test_cases: whether to remove test cases not encountered in this run
@@ -270,6 +302,23 @@ def get_guided_transcriber(
         delineation_processor=delineation_processor,
         punctuation_processor=punctuation_processor,
     )
+    fallback_transcriber = None
+    if mimo_fallback:
+        fallback_transcriber = MimoTranscriber(
+            model_name=mimo_model_name,
+            tokenizer_name=mimo_tokenizer_name,
+            mimo_runtime=mimo_runtime,
+            language=mimo_language,
+            max_tokens=mimo_max_tokens,
+            chunk_duration_seconds=mimo_chunk_duration_seconds,
+            chunk_overlap_seconds=mimo_chunk_overlap_seconds,
+            cache_dir_path=get_runtime_cache_dir_path("mimo"),
+            aligner_backend=mimo_aligner_backend,
+            aligner_language=mimo_aligner_language,
+            aligner_model_name=mimo_aligner_model_name,
+            aligner_worker_command=mimo_aligner_worker_command,
+            worker_command=mimo_worker_command,
+        )
     return GuidedTranscriber(
         language=language,
         reference_language=reference_language,
@@ -278,5 +327,6 @@ def get_guided_transcriber(
         aligner=aligner,
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
+        fallback_transcriber=fallback_transcriber,
         segment_splitter=language_spec.segment_splitter,
     )

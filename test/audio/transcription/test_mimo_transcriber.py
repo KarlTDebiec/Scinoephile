@@ -24,6 +24,7 @@ from scinoephile.audio.transcription.mimo_transcriber import (
     MimoRuntimeUnsupportedError,
     MimoTranscriber,
     MimoTranscriptEmptyError,
+    MimoTranscriptionError,
     MimoWorkerError,
 )
 
@@ -386,6 +387,32 @@ def test_transcribe_aligns_mimo_text_and_writes_cache(
     assert cache_payload["backend"] == "mimo"
     assert cache_payload["model_name"] == MIMO_MLX_MODEL_NAME
     assert cache_payload["segments"][0]["text"] == "你好"
+
+
+def test_transcribe_rejects_low_information_vocalizations(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test isolated vocalizations do not become accepted fallback output.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    transcriber = MimoTranscriber(mimo_runtime=MimoRuntime.MLX)
+    monkeypatch.setattr(
+        transcriber,
+        "_run_mimo",
+        Mock(return_value={"text": "啊！啊！", "backend": "mimo"}),
+    )
+    patched_align = Mock()
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.mimo_transcriber.align_mimo_transcription",
+        patched_align,
+    )
+
+    with pytest.raises(MimoTranscriptionError, match="low-information"):
+        transcriber.transcribe(AudioSegment.silent(duration=1000))
+
+    patched_align.assert_not_called()
 
 
 def test_transcribe_wraps_in_process_mimo_errors(

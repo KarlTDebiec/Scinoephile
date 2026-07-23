@@ -10,6 +10,7 @@ from unittest.mock import Mock, patch
 from pydub import AudioSegment
 
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription import MimoRuntime
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.transcriber import (
@@ -44,6 +45,19 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
             prune_test_cases=True,
             delineation_json_path=delineation_json_path,
             punctuation_json_path=punctuation_json_path,
+            mimo_fallback=True,
+            mimo_model_name="custom/mimo",
+            mimo_tokenizer_name="custom/tokenizer",
+            mimo_runtime=MimoRuntime.MLX,
+            mimo_language="auto",
+            mimo_max_tokens=512,
+            mimo_chunk_duration_seconds=20.0,
+            mimo_chunk_overlap_seconds=1.5,
+            mimo_worker_command=("python", "mimo_worker.py"),
+            mimo_aligner_backend="whisperx",
+            mimo_aligner_language="zh",
+            mimo_aligner_model_name="custom/aligner",
+            mimo_aligner_worker_command=("python", "aligner_worker.py"),
             start_at_idx=1,
             stop_at_idx=2,
         )
@@ -55,6 +69,29 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
     )
     assert get_transcriber.call_args.kwargs["demucs_mode"] is DemucsMode.AUTO
     assert get_transcriber.call_args.kwargs["vad_mode"] is VADMode.AUTO
+    assert get_transcriber.call_args.kwargs["mimo_fallback"] is True
+    assert get_transcriber.call_args.kwargs["mimo_model_name"] == "custom/mimo"
+    assert get_transcriber.call_args.kwargs["mimo_tokenizer_name"] == (
+        "custom/tokenizer"
+    )
+    assert get_transcriber.call_args.kwargs["mimo_runtime"] is MimoRuntime.MLX
+    assert get_transcriber.call_args.kwargs["mimo_language"] == "auto"
+    assert get_transcriber.call_args.kwargs["mimo_max_tokens"] == 512
+    assert get_transcriber.call_args.kwargs["mimo_chunk_duration_seconds"] == 20.0
+    assert get_transcriber.call_args.kwargs["mimo_chunk_overlap_seconds"] == 1.5
+    assert get_transcriber.call_args.kwargs["mimo_worker_command"] == (
+        "python",
+        "mimo_worker.py",
+    )
+    assert get_transcriber.call_args.kwargs["mimo_aligner_backend"] == "whisperx"
+    assert get_transcriber.call_args.kwargs["mimo_aligner_language"] == "zh"
+    assert get_transcriber.call_args.kwargs["mimo_aligner_model_name"] == (
+        "custom/aligner"
+    )
+    assert get_transcriber.call_args.kwargs["mimo_aligner_worker_command"] == (
+        "python",
+        "aligner_worker.py",
+    )
     assert get_transcriber.call_args.kwargs["prune_test_cases"] is True
     assert (
         get_transcriber.call_args.kwargs["delineation_json_path"]

@@ -11,6 +11,7 @@ from unittest.mock import Mock, patch
 
 from pytest import raises
 
+from scinoephile.audio.transcription import MimoRuntime, MimoTranscriber
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.utils import save_test_cases_to_json
@@ -91,6 +92,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.reference_language is Language.zho_hans
     assert transcriber.demucs_mode is DemucsMode.AUTO
     assert transcriber.vad_mode is VADMode.AUTO
+    assert transcriber.fallback_transcriber is None
     assert transcriber.whisper_language == "yue"
     assert transcriber.segment_splitter is not None
     assert isinstance(transcriber.aligner.delineation_processor, DelineationProcessor)
@@ -114,6 +116,55 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     )
     assert not transcriber.aligner.delineation_processor.prune_test_cases
     assert not transcriber.aligner.punctuation_processor.prune_test_cases
+
+
+def test_get_guided_transcriber_configures_mimo_fallback(tmp_path: Path):
+    """Test factory configures MiMo as the final transcription fallback.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    with patch(
+        "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
+        return_value=tmp_path,
+    ):
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hans,
+            provider=Mock(spec=LLMProvider),
+            delineation_json_path=tmp_path / "delineation.json",
+            punctuation_json_path=tmp_path / "punctuation.json",
+            delineation_test_cases=[],
+            punctuation_test_cases=[],
+            mimo_fallback=True,
+            mimo_model_name="custom/mimo",
+            mimo_tokenizer_name="custom/tokenizer",
+            mimo_runtime=MimoRuntime.MLX,
+            mimo_language="auto",
+            mimo_max_tokens=512,
+            mimo_chunk_duration_seconds=20.0,
+            mimo_chunk_overlap_seconds=1.5,
+            mimo_worker_command=("python", "mimo_worker.py"),
+            mimo_aligner_backend="whisperx",
+            mimo_aligner_language="zh",
+            mimo_aligner_model_name="custom/aligner",
+            mimo_aligner_worker_command=("python", "aligner_worker.py"),
+        )
+
+    fallback = transcriber.fallback_transcriber
+    assert isinstance(fallback, MimoTranscriber)
+    assert fallback.model_name == "custom/mimo"
+    assert fallback.tokenizer_name == "custom/tokenizer"
+    assert fallback.mimo_runtime is MimoRuntime.MLX
+    assert fallback.language == "auto"
+    assert fallback.max_tokens == 512
+    assert fallback.chunk_duration_seconds == 20.0
+    assert fallback.chunk_overlap_seconds == 1.5
+    assert fallback.worker_command == ("python", "mimo_worker.py")
+    assert fallback.aligner_backend == "whisperx"
+    assert fallback.aligner_model_name == "custom/aligner"
+    assert fallback.aligner_worker_command == ("python", "aligner_worker.py")
+    assert fallback.cache_dir_path == tmp_path
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(

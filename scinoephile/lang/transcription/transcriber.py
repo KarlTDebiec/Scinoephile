@@ -13,8 +13,11 @@ from pydub.effects import normalize
 
 from scinoephile.audio.subtitles import AudioSeries, get_series_from_segments
 from scinoephile.audio.transcription import (
+    BaseTranscriber,
     DemucsSeparator,
+    MimoTranscriptionError,
     TranscribedSegment,
+    TranscriptionAlignmentError,
     WhisperTranscriber,
 )
 from scinoephile.common.validation import val_index_range
@@ -100,6 +103,7 @@ class GuidedTranscriber:
         aligner: TranscriptionAligner,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.AUTO,
+        fallback_transcriber: BaseTranscriber | None = None,
         segment_splitter: TranscribedSegmentSplitter | None = None,
     ):
         """Initialize.
@@ -112,6 +116,7 @@ class GuidedTranscriber:
             aligner: transcription aligner
             demucs_mode: Demucs preprocessing mode
             vad_mode: Whisper VAD mode
+            fallback_transcriber: optional backend used after all Whisper attempts fail
             segment_splitter: optional strategy for splitting Whisper segments
         """
         self.language = language
@@ -121,6 +126,7 @@ class GuidedTranscriber:
         self.aligner = aligner
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
+        self.fallback_transcriber = fallback_transcriber
         self.segment_splitter = segment_splitter
 
         self.demucs_separator = None
@@ -405,64 +411,25 @@ class GuidedTranscriber:
             audio_duration=audio_duration,
         )
         if segments is None:
-            primary_audio = self._get_primary_transcription_audio(audio)
-            if primary_audio is not None:
-                for transcriber in (
-                    candidate
-                    for candidate in self._get_standard_transcribers()
-                    if candidate not in rejected_transcribers
-                ):
-                    segments = self._transcribe_with_candidate(
-                        transcriber,
-                        primary_audio,
-                        cache_audio=cache_audio,
-                        audio_duration=audio_duration,
-                    )
-                    if segments is not None:
-                        break
-
-            if segments is None and self.demucs_mode == DemucsMode.AUTO:
-                if primary_audio is not None:
-                    logger.info(
-                        "Retrying block transcription with original audio after "
-                        "unusable Demucs result"
-                    )
-                for transcriber in (
-                    candidate
-                    for candidate in self._get_standard_transcribers(unseparated=True)
-                    if candidate not in rejected_transcribers
-                ):
-                    segments = self._transcribe_with_candidate(
-                        transcriber,
-                        audio,
-                        cache_audio=cache_audio,
-                        audio_duration=audio_duration,
-                    )
-                    if segments is not None:
-                        break
-
-            if (
-                segments is None
-                and self.recovery_transcriber not in rejected_transcribers
-            ):
-                logger.info(
-                    "Retrying block transcription with defensive Whisper decoding"
-                )
-                recovery_audio = audio
-                if self.demucs_mode == DemucsMode.ON:
-                    assert primary_audio is not None
-                    recovery_audio = primary_audio
-                segments = self._transcribe_with_candidate(
-                    self.recovery_transcriber,
-                    recovery_audio,
-                    cache_audio=cache_audio,
-                    audio_duration=audio_duration,
-                )
+            segments = self._transcribe_with_whisper_candidates(
+                audio,
+                cache_audio=cache_audio,
+                audio_duration=audio_duration,
+                rejected_transcribers=rejected_transcribers,
+            )
+        if segments is None and self.fallback_transcriber is not None:
+            logger.info("Trying configured fallback after all Whisper attempts failed")
+            segments = self._transcribe_with_fallback_candidate(
+                audio,
+                cache_audio=cache_audio,
+                audio_duration=audio_duration,
+            )
+            if segments is not None:
+                return segments
         if segments is None:
             logger.warning(
-                "Whisper produced no usable transcription after all configured "
-                "recovery attempts; leaving this block empty for downstream gap "
-                "translation"
+                "No configured transcription attempt produced usable output; leaving "
+                "this block empty for downstream gap translation"
             )
             return []
         return self._transcribe_with_focused_tail_recovery(
@@ -506,6 +473,45 @@ class GuidedTranscriber:
             audio_duration=audio_duration,
         ):
             return segments
+        return None
+
+    def _transcribe_with_fallback_candidate(
+        self,
+        audio: AudioSegment,
+        *,
+        cache_audio: AudioSegment,
+        audio_duration: float,
+    ) -> list[TranscribedSegment] | None:
+        """Run and validate the configured final transcription fallback.
+
+        Arguments:
+            audio: original block audio to transcribe
+            cache_audio: original audio used for cache-key generation
+            audio_duration: original block audio duration in seconds
+        Returns:
+            usable transcribed segments, if produced
+        """
+        assert self.fallback_transcriber is not None
+        fallback_name = type(self.fallback_transcriber).__name__
+        try:
+            segments = self.fallback_transcriber(
+                audio,
+                cache_audio=cache_audio,
+            )
+        except (
+            ImportError,
+            MimoTranscriptionError,
+            TranscriptionAlignmentError,
+        ) as exc:
+            logger.warning(f"{fallback_name} fallback failed: {exc}")
+            return None
+        if self._segments_are_usable(
+            segments,
+            audio_duration=audio_duration,
+        ):
+            logger.info(f"{fallback_name} fallback produced usable transcription")
+            return segments
+        logger.warning(f"{fallback_name} fallback produced unusable transcription")
         return None
 
     def _transcribe_with_focused_tail_recovery(
@@ -619,6 +625,74 @@ class GuidedTranscriber:
         )
         return [*segments, *recovered_segments]
 
+    def _transcribe_with_whisper_candidates(
+        self,
+        audio: AudioSegment,
+        *,
+        cache_audio: AudioSegment,
+        audio_duration: float,
+        rejected_transcribers: set[WhisperTranscriber],
+    ) -> list[TranscribedSegment] | None:
+        """Try each configured Whisper candidate in recovery order.
+
+        Arguments:
+            audio: original block audio to transcribe
+            cache_audio: original audio used for cache-key generation
+            audio_duration: original block audio duration in seconds
+            rejected_transcribers: transcribers with unusable cached output
+        Returns:
+            usable transcribed segments, if produced
+        """
+        primary_audio = self._get_primary_transcription_audio(audio)
+        if primary_audio is not None:
+            for transcriber in (
+                candidate
+                for candidate in self._get_standard_transcribers()
+                if candidate not in rejected_transcribers
+            ):
+                segments = self._transcribe_with_candidate(
+                    transcriber,
+                    primary_audio,
+                    cache_audio=cache_audio,
+                    audio_duration=audio_duration,
+                )
+                if segments is not None:
+                    return segments
+
+        if self.demucs_mode == DemucsMode.AUTO:
+            if primary_audio is not None:
+                logger.info(
+                    "Retrying block transcription with original audio after "
+                    "unusable Demucs result"
+                )
+            for transcriber in (
+                candidate
+                for candidate in self._get_standard_transcribers(unseparated=True)
+                if candidate not in rejected_transcribers
+            ):
+                segments = self._transcribe_with_candidate(
+                    transcriber,
+                    audio,
+                    cache_audio=cache_audio,
+                    audio_duration=audio_duration,
+                )
+                if segments is not None:
+                    return segments
+
+        if self.recovery_transcriber in rejected_transcribers:
+            return None
+        logger.info("Retrying block transcription with defensive Whisper decoding")
+        recovery_audio = audio
+        if self.demucs_mode == DemucsMode.ON:
+            assert primary_audio is not None
+            recovery_audio = primary_audio
+        return self._transcribe_with_candidate(
+            self.recovery_transcriber,
+            recovery_audio,
+            cache_audio=cache_audio,
+            audio_duration=audio_duration,
+        )
+
     @staticmethod
     def _get_credible_tail_segments(
         tail_segments: list[TranscribedSegment],
@@ -698,13 +772,13 @@ class GuidedTranscriber:
             has_text = True
             if not segment.words:
                 logger.warning(
-                    f"Rejecting Whisper segment {segment.id} without word timings"
+                    f"Rejecting transcription segment {segment.id} without word timings"
                 )
                 return False
             duration_error = None
             if int(segment.end * 1000) <= int(segment.start * 1000):
                 duration_error = (
-                    f"Rejecting Whisper segment {segment.id} with non-positive "
+                    f"Rejecting transcription segment {segment.id} with non-positive "
                     f"millisecond duration ({segment.start:.3f}s to "
                     f"{segment.end:.3f}s)"
                 )
@@ -714,7 +788,7 @@ class GuidedTranscriber:
                         continue
                     if int(word.end * 1000) <= int(word.start * 1000):
                         duration_error = (
-                            f"Rejecting Whisper segment {segment.id} with word "
+                            f"Rejecting transcription segment {segment.id} with word "
                             f"{word.text!r} having non-positive millisecond duration "
                             f"({word.start:.3f}s to {word.end:.3f}s)"
                         )
@@ -727,7 +801,7 @@ class GuidedTranscriber:
                 and segment.compression_ratio > _MAX_COMPRESSION_RATIO
             ):
                 logger.warning(
-                    f"Rejecting repetitive Whisper segment {segment.id} with "
+                    f"Rejecting repetitive transcription segment {segment.id} with "
                     f"compression ratio {segment.compression_ratio:.2f} "
                     f"(maximum {_MAX_COMPRESSION_RATIO:.2f})"
                 )
@@ -737,12 +811,12 @@ class GuidedTranscriber:
                 and segment.end > audio_duration + _AUDIO_END_TOLERANCE_SECONDS
             ):
                 logger.warning(
-                    f"Rejecting Whisper segment {segment.id} ending at "
+                    f"Rejecting transcription segment {segment.id} ending at "
                     f"{segment.end:.2f}s beyond {audio_duration:.2f}s source audio"
                 )
                 return False
 
         if not has_text:
-            logger.warning("Rejecting empty Whisper transcription")
+            logger.warning("Rejecting empty transcription")
             return False
         return True

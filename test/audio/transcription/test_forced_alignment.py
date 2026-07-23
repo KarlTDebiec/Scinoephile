@@ -113,6 +113,43 @@ def test_align_mimo_transcription_runs_whisperx_worker(
     assert [word.text for word in segments[0].words] == ["你", "好"]
 
 
+def test_align_mimo_transcription_preserves_trailing_unaligned_text(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test trailing punctuation omitted by WhisperX remains word-covered.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    fake_whisperx = SimpleNamespace(
+        align=lambda **_kwargs: {
+            "segments": [
+                {
+                    "start": 0.0,
+                    "end": 1.0,
+                    "text": "你好！",
+                    "words": [{"word": "你好", "start": 0.0, "end": 1.0, "score": 0.9}],
+                }
+            ]
+        },
+        load_align_model=lambda **_kwargs: ("model", {"language": "zh"}),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.forced_alignment._get_whisperx_module",
+        lambda: fake_whisperx,
+    )
+
+    segments = align_mimo_transcription(
+        Path("/tmp/audio.wav"),
+        "你好！",
+        duration_seconds=1.0,
+    )
+
+    assert segments[0].words is not None
+    assert [word.text for word in segments[0].words] == ["你好！"]
+    assert "".join(word.text for word in segments[0].words) == segments[0].text
+
+
 def test_align_mimo_transcription_aligns_with_ctc_backend(
     monkeypatch: pytest.MonkeyPatch,
 ):

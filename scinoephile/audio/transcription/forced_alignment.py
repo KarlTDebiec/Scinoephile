@@ -850,6 +850,12 @@ def _get_transcribed_words(
                 confidence=confidence,
             )
         )
+    if words and 0 < cursor < len(segment_text):
+        trailing_text = segment_text[cursor:]
+        last_word = words[-1]
+        words[-1] = last_word.model_copy(
+            update={"text": f"{last_word.text}{trailing_text}"}
+        )
     return words
 
 

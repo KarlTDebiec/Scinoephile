@@ -12,7 +12,11 @@ from pydub.generators import Sine
 from pytest import LogCaptureFixture, approx, raises
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
-from scinoephile.audio.transcription import TranscribedSegment, TranscribedWord
+from scinoephile.audio.transcription import (
+    MimoTranscriptionError,
+    TranscribedSegment,
+    TranscribedWord,
+)
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.aligner import TranscriptionAligner
@@ -384,6 +388,59 @@ def test_all_unusable_candidates_leave_gap_for_translation():
     transcriber.no_vad_transcriber.get_cached_transcription.return_value = None
     transcriber.recovery_transcriber = Mock(return_value=repetitive_segments)
     transcriber.recovery_transcriber.get_cached_transcription.return_value = None
+
+    output = transcriber._transcribe_block_audio(AudioSegment.silent(duration=1000))
+
+    assert output == []
+
+
+def test_all_whisper_candidates_use_configured_fallback():
+    """Test fallback runs only after every configured Whisper attempt fails."""
+    transcriber, _ = _get_transcriber(
+        demucs_mode=DemucsMode.AUTO,
+        vad_mode=VADMode.AUTO,
+    )
+    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
+    usable_segments = [_get_segment(text="fallback", with_words=True)]
+    whisper_transcribers = tuple(
+        Mock(return_value=repetitive_segments) for _ in range(5)
+    )
+    (
+        transcriber.vad_transcriber,
+        transcriber.no_vad_transcriber,
+        transcriber.unseparated_vad_transcriber,
+        transcriber.unseparated_no_vad_transcriber,
+        transcriber.recovery_transcriber,
+    ) = whisper_transcribers
+    for whisper_transcriber in whisper_transcribers:
+        whisper_transcriber.get_cached_transcription.return_value = None
+    transcriber.fallback_transcriber = Mock(return_value=usable_segments)
+    original_audio = AudioSegment.silent(duration=1000)
+    separated_audio = AudioSegment.silent(duration=900)
+    transcriber.demucs_separator = Mock(return_value=separated_audio)
+
+    output = transcriber._transcribe_block_audio(original_audio)
+
+    assert output == usable_segments
+    transcriber.fallback_transcriber.assert_called_once_with(
+        original_audio,
+        cache_audio=original_audio,
+    )
+    for whisper_transcriber in whisper_transcribers:
+        whisper_transcriber.assert_called_once()
+
+
+def test_failed_configured_fallback_leaves_gap_for_translation():
+    """Test a final MiMo failure preserves downstream gap translation behavior."""
+    transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
+    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
+    transcriber.no_vad_transcriber = Mock(return_value=repetitive_segments)
+    transcriber.no_vad_transcriber.get_cached_transcription.return_value = None
+    transcriber.recovery_transcriber = Mock(return_value=repetitive_segments)
+    transcriber.recovery_transcriber.get_cached_transcription.return_value = None
+    transcriber.fallback_transcriber = Mock(
+        side_effect=MimoTranscriptionError("MiMo failed")
+    )
 
     output = transcriber._transcribe_block_audio(AudioSegment.silent(duration=1000))
 

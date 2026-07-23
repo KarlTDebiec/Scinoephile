@@ -46,6 +46,9 @@ if TYPE_CHECKING:
 
 logger = getLogger(__name__)
 
+_LOW_INFORMATION_CHARACTERS = frozenset("啊呀吖哦噢嗯嘶")
+"""Standalone vocalizations rejected as unusable fallback transcripts."""
+
 
 class MimoTranscriptionError(RuntimeError):
     """Raised when MiMo transcription cannot produce timestamped output."""
@@ -455,6 +458,11 @@ class MimoTranscriber:
             text = worker_payload.get("text")
             if not isinstance(text, str) or not text.strip():
                 raise MimoTranscriptEmptyError("MiMo returned empty transcript.")
+            content_characters = {char for char in text if char.isalnum()}
+            if content_characters and content_characters <= _LOW_INFORMATION_CHARACTERS:
+                raise MimoTranscriptionError(
+                    f"MiMo returned only low-information vocalizations: {text!r}"
+                )
             duration_seconds = worker_payload.get("duration_seconds")
             if isinstance(duration_seconds, int | float):
                 duration = float(duration_seconds)

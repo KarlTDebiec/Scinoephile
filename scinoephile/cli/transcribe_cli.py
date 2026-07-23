@@ -9,15 +9,23 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
+from shlex import split as split_command
 
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription import (
+    MIMO_MODEL_NAME,
+    MIMO_TOKENIZER_NAME,
+    MimoRuntime,
+)
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
+    float_arg,
     get_arg_groups_by_name,
     input_file_arg,
     int_arg,
     output_file_arg,
+    str_arg,
 )
 from scinoephile.common.exceptions import NotAFileError
 from scinoephile.common.file import get_temp_file_path
@@ -72,6 +80,49 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         (
             "Whisper model identifier override (uses language-pair default if omitted)"
         ): "Whisper 模型标识符覆盖值（省略时使用语言对默认值）",
+        "use MiMo after all Whisper attempts fail": (
+            "所有 Whisper 尝试均失败后使用 MiMo"
+        ),
+        "MiMo runtime (options: auto, mlx; default: auto)": (
+            "MiMo 运行时（选项：auto、mlx；默认：auto）"
+        ),
+        "MiMo transcription language metadata (default: yue)": (
+            "MiMo 转写语言元数据（默认：yue）"
+        ),
+        "maximum MiMo generation tokens (default: runtime default)": (
+            "MiMo 生成 token 上限（默认：运行时默认值）"
+        ),
+        "MiMo chunk duration in seconds; disabled by default": (
+            "MiMo 分块时长（秒）；默认禁用"
+        ),
+        "MiMo chunk overlap in seconds (default: 1.0)": (
+            "MiMo 分块重叠时长（秒）（默认：1.0）"
+        ),
+        (
+            "MiMo model name or local model path "
+            "(default: mlx-community/MiMo-V2.5-ASR-MLX)"
+        ): "MiMo 模型名称或本地模型路径（默认：mlx-community/MiMo-V2.5-ASR-MLX）",
+        (
+            "MiMo audio tokenizer name or local path "
+            "(default: XiaomiMiMo/MiMo-Audio-Tokenizer)"
+        ): (
+            "MiMo 音频 tokenizer 名称或本地路径"
+            "（默认：XiaomiMiMo/MiMo-Audio-Tokenizer）"
+        ),
+        (
+            "optional command used to run MiMo in a subprocess, split like shell syntax"
+        ): "用于在子进程中运行 MiMo 的可选命令，按 shell 语法拆分",
+        "MiMo timestamp aligner backend (options: ctc, whisperx; default: ctc)": (
+            "MiMo 时间戳对齐后端（选项：ctc、whisperx；默认：ctc）"
+        ),
+        "MiMo timestamp aligner language code (default: zh)": (
+            "MiMo 时间戳对齐语言代码（默认：zh）"
+        ),
+        "MiMo timestamp aligner model name": "MiMo 时间戳对齐模型名称",
+        (
+            "command used to run the MiMo timestamp aligner worker, "
+            "split like shell syntax"
+        ): "运行 MiMo 时间戳对齐 worker 的命令，按 shell 语法拆分",
         "delineation test-case JSON file to load and update": (
             "要加载和更新的断句测试用例 JSON 文件"
         ),
@@ -110,6 +161,49 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         (
             "Whisper model identifier override (uses language-pair default if omitted)"
         ): "Whisper 模型識別碼覆寫值（省略時使用語言對預設值）",
+        "use MiMo after all Whisper attempts fail": (
+            "所有 Whisper 嘗試均失敗後使用 MiMo"
+        ),
+        "MiMo runtime (options: auto, mlx; default: auto)": (
+            "MiMo 執行環境（選項：auto、mlx；預設：auto）"
+        ),
+        "MiMo transcription language metadata (default: yue)": (
+            "MiMo 轉寫語言後設資料（預設：yue）"
+        ),
+        "maximum MiMo generation tokens (default: runtime default)": (
+            "MiMo 產生 token 上限（預設：執行環境預設值）"
+        ),
+        "MiMo chunk duration in seconds; disabled by default": (
+            "MiMo 分段長度（秒）；預設停用"
+        ),
+        "MiMo chunk overlap in seconds (default: 1.0)": (
+            "MiMo 分段重疊長度（秒）（預設：1.0）"
+        ),
+        (
+            "MiMo model name or local model path "
+            "(default: mlx-community/MiMo-V2.5-ASR-MLX)"
+        ): "MiMo 模型名稱或本機模型路徑（預設：mlx-community/MiMo-V2.5-ASR-MLX）",
+        (
+            "MiMo audio tokenizer name or local path "
+            "(default: XiaomiMiMo/MiMo-Audio-Tokenizer)"
+        ): (
+            "MiMo 音訊 tokenizer 名稱或本機路徑"
+            "（預設：XiaomiMiMo/MiMo-Audio-Tokenizer）"
+        ),
+        (
+            "optional command used to run MiMo in a subprocess, split like shell syntax"
+        ): "用於在子行程中執行 MiMo 的可選命令，依 shell 語法拆分",
+        "MiMo timestamp aligner backend (options: ctc, whisperx; default: ctc)": (
+            "MiMo 時間戳對齊後端（選項：ctc、whisperx；預設：ctc）"
+        ),
+        "MiMo timestamp aligner language code (default: zh)": (
+            "MiMo 時間戳對齊語言代碼（預設：zh）"
+        ),
+        "MiMo timestamp aligner model name": "MiMo 時間戳對齊模型名稱",
+        (
+            "command used to run the MiMo timestamp aligner worker, "
+            "split like shell syntax"
+        ): "執行 MiMo 時間戳對齊 worker 的命令，依 shell 語法拆分",
         "delineation test-case JSON file to load and update": (
             "要載入和更新的斷句測試案例 JSON 檔案"
         ),
@@ -217,6 +311,93 @@ class TranscribeCli(ScinoephileCliBase):
                 "(uses language-pair default if omitted)"
             ),
         )
+        arg_groups["operation arguments"].add_argument(
+            "--mimo-fallback",
+            action="store_true",
+            help="use MiMo after all Whisper attempts fail",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--mimo-runtime",
+            default=MimoRuntime.AUTO,
+            metavar="{auto,mlx}",
+            type=enum_arg(MimoRuntime),
+            help="MiMo runtime (options: auto, mlx; default: auto)",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--mimo-language",
+            default="yue",
+            help="MiMo transcription language metadata (default: yue)",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--mimo-max-tokens",
+            type=int_arg(min_value=1),
+            help="maximum MiMo generation tokens (default: runtime default)",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--mimo-chunk-duration",
+            dest="mimo_chunk_duration_seconds",
+            type=float_arg(min_value=0.001),
+            help="MiMo chunk duration in seconds; disabled by default",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--mimo-chunk-overlap",
+            default=1.0,
+            dest="mimo_chunk_overlap_seconds",
+            type=float_arg(min_value=0.0),
+            help="MiMo chunk overlap in seconds (default: 1.0)",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--mimo-model",
+            default=MIMO_MODEL_NAME,
+            dest="mimo_model_name",
+            help=(
+                "MiMo model name or local model path "
+                "(default: mlx-community/MiMo-V2.5-ASR-MLX)"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--mimo-tokenizer",
+            default=MIMO_TOKENIZER_NAME,
+            dest="mimo_tokenizer_name",
+            help=(
+                "MiMo audio tokenizer name or local path "
+                "(default: XiaomiMiMo/MiMo-Audio-Tokenizer)"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--mimo-worker-command",
+            help=(
+                "optional command used to run MiMo in a subprocess, "
+                "split like shell syntax"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--mimo-aligner",
+            default="ctc",
+            dest="mimo_aligner_backend",
+            metavar="{ctc,whisperx}",
+            type=str_arg(options=("ctc", "whisperx")),
+            help=(
+                "MiMo timestamp aligner backend (options: ctc, whisperx; default: ctc)"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--mimo-aligner-language",
+            default="zh",
+            help="MiMo timestamp aligner language code (default: zh)",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--mimo-aligner-model",
+            dest="mimo_aligner_model_name",
+            help="MiMo timestamp aligner model name",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--mimo-aligner-worker-command",
+            help=(
+                "command used to run the MiMo timestamp aligner worker, "
+                "split like shell syntax"
+            ),
+        )
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
@@ -263,6 +444,19 @@ class TranscribeCli(ScinoephileCliBase):
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
         model_name: str | None,
+        mimo_fallback: bool,
+        mimo_runtime: MimoRuntime,
+        mimo_language: str,
+        mimo_max_tokens: int | None,
+        mimo_chunk_duration_seconds: float | None,
+        mimo_chunk_overlap_seconds: float,
+        mimo_model_name: str,
+        mimo_tokenizer_name: str,
+        mimo_worker_command: str | None,
+        mimo_aligner_backend: str,
+        mimo_aligner_language: str,
+        mimo_aligner_model_name: str | None,
+        mimo_aligner_worker_command: str | None,
         llm_args: LlmArguments,
         delineation_json_path: Path | None,
         punctuation_json_path: Path | None,
@@ -310,6 +504,14 @@ class TranscribeCli(ScinoephileCliBase):
             parser.error(str(exc))
 
         # Perform operation
+        parsed_mimo_worker_command = None
+        if mimo_worker_command is not None:
+            parsed_mimo_worker_command = split_command(mimo_worker_command)
+        parsed_mimo_aligner_worker_command = None
+        if mimo_aligner_worker_command is not None:
+            parsed_mimo_aligner_worker_command = split_command(
+                mimo_aligner_worker_command
+            )
         try:
             output = transcribe_series_guided(
                 audio,
@@ -319,6 +521,19 @@ class TranscribeCli(ScinoephileCliBase):
                 model_name=model_name,
                 demucs_mode=demucs_mode,
                 vad_mode=vad_mode,
+                mimo_fallback=mimo_fallback,
+                mimo_model_name=mimo_model_name,
+                mimo_tokenizer_name=mimo_tokenizer_name,
+                mimo_runtime=mimo_runtime,
+                mimo_language=mimo_language,
+                mimo_max_tokens=mimo_max_tokens,
+                mimo_chunk_duration_seconds=mimo_chunk_duration_seconds,
+                mimo_chunk_overlap_seconds=mimo_chunk_overlap_seconds,
+                mimo_worker_command=parsed_mimo_worker_command,
+                mimo_aligner_backend=mimo_aligner_backend,
+                mimo_aligner_language=mimo_aligner_language,
+                mimo_aligner_model_name=mimo_aligner_model_name,
+                mimo_aligner_worker_command=(parsed_mimo_aligner_worker_command),
                 provider=get_provider(
                     llm_args.provider_name,
                     model=llm_args.model_name,
