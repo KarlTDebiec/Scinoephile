@@ -8,8 +8,10 @@ from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
 
-from scinoephile.analysis.audit.dual_review import audit_dual_review
-from scinoephile.analysis.audit.review import DualReviewAuditFilter
+from scinoephile.analysis.audit.dual_review import (
+    DualReviewAuditFilter,
+    audit_dual_review,
+)
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,

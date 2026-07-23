@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from enum import StrEnum
-from typing import cast
+from typing import Protocol, cast
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
@@ -21,29 +21,12 @@ from .utils import (
 )
 
 __all__ = [
-    "DualReviewAuditFilter",
     "ReviewAuditComparison",
     "ReviewAuditFilter",
     "ReviewAuditPair",
     "TraditionalReviewAuditFilter",
     "audit_review",
 ]
-
-
-class DualReviewAuditFilter(StrEnum):
-    """Row filters supported by a dual-review audit."""
-
-    all = "all"
-    """Include every eligible row."""
-
-    changes = "changes"
-    """Include rows with a review edit or final discrepancy."""
-
-    discrepancies = "discrepancies"
-    """Include only final discrepancies between review paths."""
-
-    unverified = "unverified"
-    """Include only rows from cases not marked as verified."""
 
 
 class ReviewAuditFilter(StrEnum):
@@ -72,10 +55,13 @@ class TraditionalReviewAuditFilter(StrEnum):
     """Include only rows from cases not marked as verified."""
 
 
-type _ReviewAuditFilter = (
-    DualReviewAuditFilter | ReviewAuditFilter | TraditionalReviewAuditFilter
-)
-"""Filter type accepted by the shared review audit engine."""
+class _ReviewAuditFilter(Protocol):
+    """Filter accepted by the shared review audit engine."""
+
+    @property
+    def value(self) -> str:
+        """Serialized filter value."""
+        ...
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -152,7 +138,7 @@ def audit_review(
     """
     if not reviews:
         raise ScinoephileError("Unable to audit subtitle reviews: no reviews provided")
-    if row_filter is DualReviewAuditFilter.discrepancies and not comparisons:
+    if row_filter.value == "discrepancies" and not comparisons:
         raise ScinoephileError(
             "Unable to audit subtitle reviews: discrepancy filtering requires at "
             "least one comparison"

@@ -164,7 +164,7 @@ def _align_guide(transcription: Series, guide: Series | None) -> Series | None:
     Returns:
         guide aligned one-to-one with the transcription, or None
     Raises:
-        ScinoephileError: if guide timings are duplicated or missing
+        ScinoephileError: if transcription or guide timings are duplicated or missing
     """
     if guide is None:
         return None
@@ -180,8 +180,15 @@ def _align_guide(transcription: Series, guide: Series | None) -> Series | None:
         guide_by_timing[timing] = subtitle
 
     aligned_events = []
+    matched_timings = set()
     for transcription_index, subtitle in enumerate(transcription.events, 1):
         timing = (subtitle.start, subtitle.end)
+        if timing in matched_timings:
+            raise ScinoephileError(
+                "Transcription subtitles have duplicate timing at index "
+                f"{transcription_index}: {subtitle.start}-{subtitle.end} ms"
+            )
+        matched_timings.add(timing)
         guide_subtitle = guide_by_timing.get(timing)
         if guide_subtitle is None:
             raise ScinoephileError(

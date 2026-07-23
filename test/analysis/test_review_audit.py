@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pytest import raises
 
+from scinoephile.analysis.audit.dual_review import DualReviewAuditFilter
 from scinoephile.analysis.audit.review import (
-    DualReviewAuditFilter,
     ReviewAuditFilter,
     ReviewAuditPair,
     audit_review,

@@ -8,8 +8,10 @@ import json
 from pathlib import Path
 from typing import TypedDict
 
-from scinoephile.analysis.audit.dual_review import audit_dual_review
-from scinoephile.analysis.audit.review import DualReviewAuditFilter
+from scinoephile.analysis.audit.dual_review import (
+    DualReviewAuditFilter,
+    audit_dual_review,
+)
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series, Subtitle

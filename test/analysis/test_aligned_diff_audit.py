@@ -109,6 +109,19 @@ def test_audit_aligned_diff_rejects_mixed_subtitle_and_block_ranges():
         )
 
 
+def test_audit_aligned_diff_rejects_reused_guide_match():
+    """Test one guide subtitle cannot match multiple transcription events."""
+    transcription = _get_series(
+        (0, 500, "甲"),
+        (0, 500, "乙"),
+    )
+    reference = _get_series((0, 500, "甲乙"))
+    guide = _get_series((0, 500, "指南"))
+
+    with raises(ScinoephileError, match="duplicate timing at index 2"):
+        audit_aligned_diff(transcription, reference, guide)
+
+
 def test_audit_aligned_diff_rejects_invalid_range_and_track_alignment():
     """Test invalid ranges and guide timings raise user-facing errors."""
     transcription = _get_series((0, 500, "甲"))

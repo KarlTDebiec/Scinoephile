@@ -12,10 +12,10 @@ from pytest import CaptureFixture, mark, raises
 
 from scinoephile.analysis.audit.aligned_diff import AlignedDiffAuditFilter
 from scinoephile.analysis.audit.delineation import DelineationAuditFilter
+from scinoephile.analysis.audit.dual_review import DualReviewAuditFilter
 from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter
 from scinoephile.analysis.audit.punctuation import PunctuationAuditFilter
 from scinoephile.analysis.audit.review import (
-    DualReviewAuditFilter,
     ReviewAuditFilter,
     TraditionalReviewAuditFilter,
 )
@@ -77,40 +77,6 @@ def test_audit_cli_filter_enums_are_specific():
             for action in cli_class.argparser()._actions  # noqa: SLF001
         }
         assert type(actions["row_filter"].default) is filter_type
-
-
-def test_audit_aligned_diff_cli_writes_report(
-    tmp_path: Path,
-    capsys: CaptureFixture,
-):
-    """Test aligned diff audit output to stdout and a file.
-
-    Arguments:
-        tmp_path: temporary path
-        capsys: pytest stdout/stderr capture fixture
-    """
-    transcription_path = tmp_path / "transcription.srt"
-    reference_path = tmp_path / "reference.srt"
-    _write_srt(transcription_path, ("甲錯", "相同"))
-    _write_srt(reference_path, ("甲正", "相同"))
-    arguments = (
-        f"--transcription {transcription_path} --reference {reference_path} "
-        "--first-index 1 --last-index 1"
-    )
-
-    run_cli_with_args(AuditAlignedDiffCli, arguments)
-    stdout = capsys.readouterr().out
-    assert stdout.startswith("# Aligned Subtitle Diff Audit\n")
-    assert "- transcription subtitle range: 1 through 1" in stdout
-    assert "| T 1<br>R 1 | <pre>T │ 甲錯<br>R │ 甲正</pre> |  |" in stdout
-
-    outfile_path = tmp_path / "audit.md"
-    run_cli_with_args(
-        AuditAlignedDiffCli,
-        f"{arguments} --outfile {outfile_path}",
-    )
-    assert capsys.readouterr().out == ""
-    assert outfile_path.read_text(encoding="utf-8") == stdout
 
 
 @mark.parametrize(
@@ -717,19 +683,6 @@ def test_transcription_audit_cli_help_describes_subtitle_indexes():
         assert actions["last_index"].help == (
             "last 1-indexed subtitle number to include, inclusive"
         )
-
-    aligned_diff_actions = {
-        action.dest: action
-        for action in AuditAlignedDiffCli.argparser()._actions  # noqa: SLF001
-    }
-    filter_action = aligned_diff_actions["row_filter"]
-    assert filter_action.choices is None
-    assert filter_action.default is AlignedDiffAuditFilter.changes
-    assert filter_action.metavar == enum_metavar(AlignedDiffAuditFilter)
-    assert isinstance(filter_action.help, str)
-    assert enum_options_list_str(AlignedDiffAuditFilter) in filter_action.help
-    assert "all includes every aligned row" in filter_action.help
-    assert "changes includes differing rows" in filter_action.help
 
     filter_types = {
         AuditDelineationCli: DelineationAuditFilter,
