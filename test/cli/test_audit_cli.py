@@ -15,7 +15,9 @@ from scinoephile.analysis.audit.review import (
 )
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_cli_base import AuditCliBase
+from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
 from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
+from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
@@ -175,12 +177,16 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
 
 def test_audit_cli_subcommands():
     """Test the audit CLI and its workflow subcommands are registered."""
+    assert issubclass(AuditDelineationCli, AuditCliBase)
+    assert issubclass(AuditPunctuationCli, AuditCliBase)
     assert issubclass(AuditReviewCli, AuditCliBase)
     assert issubclass(AuditReviewDualCli, AuditCliBase)
     assert issubclass(AuditReviewTradCli, AuditCliBase)
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
+        "delineation": AuditDelineationCli,
         "ocr-fusion": AuditOcrFusionCli,
+        "punctuation": AuditPunctuationCli,
         "review": AuditReviewCli,
         "review-dual": AuditReviewDualCli,
         "review-trad": AuditReviewTradCli,

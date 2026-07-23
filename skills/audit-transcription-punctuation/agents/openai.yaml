@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit Transcription Punctuation"
+  short_description: "Audit transcription punctuation decisions"
+  default_prompt: "Use $audit-transcription-punctuation to audit the logged transcription punctuation decisions for this dataset."

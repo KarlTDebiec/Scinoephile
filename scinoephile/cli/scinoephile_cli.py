@@ -29,7 +29,7 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "additional help": "附加帮助",
         "Available subcommands:": "可用子命令：",
-        "audit subtitle review workflows": "审核字幕校对工作流",
+        "audit subtitle workflows": "审核字幕工作流",
         "build or search Chinese dictionaries": "构建或查询中文词典",
         "calculate the Character Error Rate (CER) of one series relative to "
         "another": "计算一个序列相对于另一个序列的字符错误率（CER）",
@@ -62,7 +62,7 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hant": {
         "additional help": "附加說明",
         "Available subcommands:": "可用子命令：",
-        "audit subtitle review workflows": "稽核字幕校對工作流程",
+        "audit subtitle workflows": "稽核字幕工作流程",
         "build or search Chinese dictionaries": "建置或查詢中文詞典",
         "calculate the Character Error Rate (CER) of one series relative to "
         "another": "計算一個序列相對於另一個序列的字元錯誤率（CER）",

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit Transcription Delineation"
+  short_description: "Audit transcription boundary decisions"
+  default_prompt: "Use $audit-transcription-delineation to audit the logged transcription delineation decisions for this dataset."
