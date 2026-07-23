@@ -9,13 +9,13 @@ from pathlib import Path
 
 from pytest import CaptureFixture, mark, raises
 
-from scinoephile.analysis.audit.review import (
-    ComparativeReviewAuditFilter,
-    ReviewAuditFilter,
-)
+from scinoephile.analysis.audit.review import ComparativeReviewAuditFilter
+from scinoephile.analysis.audit.utils import AuditFilter
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_cli_base import AuditCliBase
+from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
 from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
+from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
@@ -175,16 +175,35 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
 
 def test_audit_cli_subcommands():
     """Test the audit CLI and its workflow subcommands are registered."""
+    assert issubclass(AuditDelineationCli, AuditCliBase)
+    assert issubclass(AuditPunctuationCli, AuditCliBase)
     assert issubclass(AuditReviewCli, AuditCliBase)
     assert issubclass(AuditReviewDualCli, AuditCliBase)
     assert issubclass(AuditReviewTradCli, AuditCliBase)
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
+        "delineation": AuditDelineationCli,
         "ocr-fusion": AuditOcrFusionCli,
+        "punctuation": AuditPunctuationCli,
         "review": AuditReviewCli,
         "review-dual": AuditReviewDualCli,
         "review-trad": AuditReviewTradCli,
     }
+
+
+def test_transcription_audit_cli_help_describes_subtitle_indexes():
+    """Test transcription audit range help describes subtitle indexes."""
+    for cli_class in (AuditDelineationCli, AuditPunctuationCli):
+        actions = {
+            action.dest: action
+            for action in cli_class.argparser()._actions  # noqa: SLF001
+        }
+        assert actions["first_index"].help == (
+            "first 1-indexed subtitle number to include, inclusive"
+        )
+        assert actions["last_index"].help == (
+            "last 1-indexed subtitle number to include, inclusive"
+        )
 
 
 def test_audit_review_cli_help_is_consistent():
@@ -197,7 +216,7 @@ def test_audit_review_cli_help_is_consistent():
         if cli_class is AuditReviewCli:
             assert "mode" not in actions
             assert actions["original_path"].option_strings == ["--original"]
-        filter_type = ReviewAuditFilter
+        filter_type = AuditFilter
         if cli_class is AuditReviewDualCli:
             filter_type = ComparativeReviewAuditFilter
         filter_action = actions["row_filter"]

@@ -10,10 +10,10 @@ from pathlib import Path
 
 from scinoephile.analysis.audit.guided_review import audit_guided_review
 from scinoephile.analysis.audit.review import (
-    ReviewAuditFilter,
     ReviewAuditPair,
     audit_review_workflow,
 )
+from scinoephile.analysis.audit.utils import AuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -145,12 +145,12 @@ class AuditReviewCli(AuditCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            default=ReviewAuditFilter.changes,
+            default=AuditFilter.changes,
             dest="row_filter",
-            metavar=enum_metavar(ReviewAuditFilter),
-            type=enum_arg(ReviewAuditFilter),
+            metavar=enum_metavar(AuditFilter),
+            type=enum_arg(AuditFilter),
             help=(
-                f"rows to include: {enum_options_list_str(ReviewAuditFilter)} "
+                f"rows to include: {enum_options_list_str(AuditFilter)} "
                 "(default: %(default)s)"
             ),
         )
@@ -183,7 +183,7 @@ class AuditReviewCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        row_filter: ReviewAuditFilter,
+        row_filter: AuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -234,7 +234,7 @@ class AuditReviewCli(AuditCliBase):
         reviewed_path: Path,
         json_path: Path | None,
         *,
-        row_filter: ReviewAuditFilter,
+        row_filter: AuditFilter,
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
@@ -304,7 +304,7 @@ class AuditReviewCli(AuditCliBase):
         reviewed_path: Path | None,
         guide_path: Path | None,
         json_path: Path | None,
-        row_filter: ReviewAuditFilter,
+        row_filter: AuditFilter,
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
@@ -332,7 +332,7 @@ class AuditReviewCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is ReviewAuditFilter.unverified and json_path is None:
+        if row_filter is AuditFilter.unverified and json_path is None:
             parser.error("--filter unverified requires --json")
         if guide_path is not None:
             if json_path is None:

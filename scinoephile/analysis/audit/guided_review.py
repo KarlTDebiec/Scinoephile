@@ -7,7 +7,6 @@ from __future__ import annotations
 from collections import defaultdict
 from collections.abc import Sequence
 from dataclasses import dataclass
-from enum import StrEnum
 from typing import Protocol
 
 from scinoephile.core.exceptions import ScinoephileError
@@ -16,29 +15,16 @@ from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups
 from scinoephile.core.text import remove_punc_and_whitespace
 
-from .review import ReviewAuditFilter
 from .utils import (
+    AuditFilter,
+    AuditResult,
     escape_table_cell,
-    format_block_range,
-    format_index_range,
+    format_audit_report,
     is_block_in_range,
     validate_audit_range,
 )
 
 __all__ = ["audit_guided_review"]
-
-
-class _AuditResult(StrEnum):
-    """Result of one logged guided-review answer."""
-
-    changed = "changed"
-    """The logged answer changed its input."""
-
-    unchanged = "unchanged"
-    """The logged answer explicitly retained its input."""
-
-    unanswered = "unanswered"
-    """The logged case has no answer."""
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -67,7 +53,7 @@ class _GuidedReviewRow:
     """One-based position of the source test case in the JSON."""
     markdown: str
     """Formatted Markdown table row."""
-    result: _AuditResult
+    result: AuditResult
     """Result of the logged answer for this subtitle."""
     verified: bool
     """Whether the source test case is verified."""
@@ -170,7 +156,7 @@ def audit_guided_review(
     guide: Series,
     test_cases: Sequence[_GuidedReviewTestCase],
     *,
-    row_filter: ReviewAuditFilter = ReviewAuditFilter.all,
+    row_filter: AuditFilter = AuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -240,12 +226,12 @@ def audit_guided_review(
             target_revision = query_target.text
             if answer is None:
                 target_revision = f"{query_target.text}\n(unanswered)"
-                result = _AuditResult.unanswered
+                result = AuditResult.unanswered
             elif revision is not None:
                 target_revision = f"{query_target.text}\n{revision.text}"
-                result = _AuditResult.changed
+                result = AuditResult.changed
             else:
-                result = _AuditResult.unchanged
+                result = AuditResult.unchanged
 
             guide_text = "\n".join(guide_texts)
             if not guide_texts:
@@ -272,58 +258,47 @@ def audit_guided_review(
         rows_by_subtitle_index.values(),
         key=lambda row: (row.subtitle_index, row.test_case_index),
     )
-    revised_subtitles = sum(row.result is _AuditResult.changed for row in all_rows)
-    unanswered_subtitles = sum(
-        row.result is _AuditResult.unanswered for row in all_rows
-    )
+    revised_subtitles = sum(row.result is AuditResult.changed for row in all_rows)
+    unanswered_subtitles = sum(row.result is AuditResult.unanswered for row in all_rows)
     verified_subtitles = sum(row.verified for row in all_rows)
     rows = [
         row
         for row in all_rows
         if not (
-            row_filter is ReviewAuditFilter.changes
-            and row.result is not _AuditResult.changed
+            row_filter is AuditFilter.changes and row.result is not AuditResult.changed
         )
-        and not (row_filter is ReviewAuditFilter.unverified and row.verified)
+        and not (row_filter is AuditFilter.unverified and row.verified)
     ]
     subtitles = len(all_rows)
     unchanged_subtitles = subtitles - revised_subtitles - unanswered_subtitles
     unverified_subtitles = subtitles - verified_subtitles
-    lines = [
-        "# Guided Subtitle Review Audit",
-        "",
-        "## Summary",
-        "",
-        f"- subtitles: {subtitles}",
-        f"- revised subtitles: {revised_subtitles}",
-        f"- unchanged subtitles: {unchanged_subtitles}",
-        f"- unanswered subtitles: {unanswered_subtitles}",
-        f"- verified subtitles: {verified_subtitles}",
-        f"- unverified subtitles: {unverified_subtitles}",
-        f"- row filter: {row_filter.value}",
-    ]
-    range_summary = format_index_range(
-        first_index,
-        last_index,
-        track_name="target",
+    return format_audit_report(
+        title="Guided Subtitle Review Audit",
+        summary_lines=(
+            f"- subtitles: {subtitles}",
+            f"- revised subtitles: {revised_subtitles}",
+            f"- unchanged subtitles: {unchanged_subtitles}",
+            f"- unanswered subtitles: {unanswered_subtitles}",
+            f"- verified subtitles: {verified_subtitles}",
+            f"- unverified subtitles: {unverified_subtitles}",
+            f"- row filter: {row_filter.value}",
+        ),
+        column_labels=(
+            "Index",
+            "Block",
+            "Guide",
+            "Target / revision",
+            "Notes",
+            "Verified",
+        ),
+        column_separators=("---:", "---:", "---", "---", "---", ":---:"),
+        rows=[row.markdown for row in rows],
+        first_index=first_index,
+        last_index=last_index,
+        index_track_name="target",
+        first_block=first_block,
+        last_block=last_block,
     )
-    if range_summary is not None:
-        lines.append(range_summary)
-    block_range_summary = format_block_range(first_block, last_block)
-    if block_range_summary is not None:
-        lines.append(block_range_summary)
-    lines.extend(
-        (
-            f"- table rows: {len(rows)}",
-            "",
-            "## Audit Table",
-            "",
-            "| Index | Block | Guide | Target / revision | Notes | Verified |",
-            "|---:|---:|---|---|---|:---:|",
-            *(row.markdown for row in rows),
-        )
-    )
-    return "\n".join(lines) + "\n"
 
 
 def _get_blocks_by_key(

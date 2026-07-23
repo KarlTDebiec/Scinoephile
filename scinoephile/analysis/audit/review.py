@@ -14,16 +14,15 @@ from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 
 from .utils import (
+    AuditFilter,
     escape_table_cell,
-    format_block_range,
-    format_index_range,
+    format_audit_report,
     get_selected_event_indexes,
 )
 
 __all__ = [
     "ComparativeReviewAuditFilter",
     "ReviewAuditComparison",
-    "ReviewAuditFilter",
     "ReviewAuditPair",
     "audit_review_workflow",
     "audit_reviews",
@@ -41,19 +40,6 @@ class ComparativeReviewAuditFilter(StrEnum):
 
     discrepancies = "discrepancies"
     """Include only final discrepancies."""
-
-    unverified = "unverified"
-    """Include only subtitles from unverified logged cases."""
-
-
-class ReviewAuditFilter(StrEnum):
-    """Row filters supported by review audits without final comparisons."""
-
-    all = "all"
-    """Include every subtitle row."""
-
-    changes = "changes"
-    """Include changed subtitle rows."""
 
     unverified = "unverified"
     """Include only subtitles from unverified logged cases."""
@@ -176,9 +162,7 @@ def audit_review_workflow(
     *,
     reviews: Sequence[ReviewAuditPair],
     comparisons: Sequence[ReviewAuditComparison] = (),
-    row_filter: ReviewAuditFilter | ComparativeReviewAuditFilter = (
-        ReviewAuditFilter.changes
-    ),
+    row_filter: AuditFilter | ComparativeReviewAuditFilter = AuditFilter.changes,
     characters: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
@@ -249,7 +233,7 @@ def audit_review_workflow(
             )
         )
         unverified_indexes = frozenset()
-        if row_filter.value == ReviewAuditFilter.unverified.value:
+        if row_filter.value == AuditFilter.unverified.value:
             unverified_indexes = frozenset(
                 index
                 for review, (original, reviewed) in zip(
@@ -320,7 +304,7 @@ def _format_markdown(
     comparison_series: Sequence[tuple[Sequence[str], Sequence[str]]],
     comparison_changes: Sequence[set[int]],
     indexes: Sequence[int],
-    row_filter: ReviewAuditFilter | ComparativeReviewAuditFilter,
+    row_filter: AuditFilter | ComparativeReviewAuditFilter,
     characters: Sequence[str],
     first_index: int | None,
     last_index: int | None,
@@ -374,17 +358,11 @@ def _format_markdown(
         cells.append("\n".join(note_lines))
         row_lines.append(f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |")
 
-    lines = [
-        "# Review Audit",
-        "",
-        "## Summary",
-        "",
-    ]
-    lines.extend(
+    summary_lines = [
         f"- {review.label.lower()} review edits: {len(changed_indexes)}"
         for review, changed_indexes in zip(reviews, review_changes, strict=True)
-    )
-    lines.extend(
+    ]
+    summary_lines.extend(
         f"- {comparison.summary_label.lower()} discrepancies: {len(changed_indexes)}"
         for comparison, changed_indexes in zip(
             comparisons,
@@ -392,32 +370,25 @@ def _format_markdown(
             strict=True,
         )
     )
-    lines.append(f"- row filter: {row_filter.value}")
+    summary_lines.append(f"- row filter: {row_filter.value}")
     if characters:
-        lines.append(f"- character filter: {', '.join(characters)}")
-    index_range = format_index_range(first_index, last_index)
-    if index_range is not None:
-        lines.append(index_range)
-    block_range = format_block_range(first_block, last_block)
-    if block_range is not None:
-        lines.append(block_range)
+        summary_lines.append(f"- character filter: {', '.join(characters)}")
 
     column_labels = ["Subtitle"]
     column_labels.extend(review.label for review in reviews)
     column_labels.extend(comparison.column_label for comparison in comparisons)
     column_labels.append("Notes")
-    lines.extend(
-        (
-            f"- table rows: {len(row_lines)}",
-            "",
-            "## Audit Table",
-            "",
-            f"| {' | '.join(column_labels)} |",
-            f"|---:|{'|'.join('---' for _ in column_labels[1:])}|",
-            *row_lines,
-        )
+    return format_audit_report(
+        title="Review Audit",
+        summary_lines=summary_lines,
+        column_labels=column_labels,
+        column_separators=["---:", *("---" for _ in column_labels[1:])],
+        rows=row_lines,
+        first_index=first_index,
+        last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
     )
-    return "\n".join(lines) + "\n"
 
 
 def _format_review_cell(
@@ -464,7 +435,7 @@ def _get_filtered_indexes(
     review_changes: Sequence[set[int]],
     comparison_changes: Sequence[set[int]],
     indexes: Iterable[int],
-    row_filter: ReviewAuditFilter | ComparativeReviewAuditFilter,
+    row_filter: AuditFilter | ComparativeReviewAuditFilter,
     unverified_indexes: frozenset[int],
     characters: Sequence[str],
 ) -> list[int]:
@@ -481,9 +452,9 @@ def _get_filtered_indexes(
     Returns:
         selected subtitle indexes
     """
-    if row_filter.value == ReviewAuditFilter.all.value:
+    if row_filter.value == AuditFilter.all.value:
         selected_indexes = set(indexes)
-    elif row_filter.value == ReviewAuditFilter.changes.value:
+    elif row_filter.value == AuditFilter.changes.value:
         selected_indexes = {
             index
             for changed_indexes in (*review_changes, *comparison_changes)

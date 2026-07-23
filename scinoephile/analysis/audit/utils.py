@@ -4,19 +4,54 @@
 
 from __future__ import annotations
 
+from collections.abc import Collection, Hashable, Mapping, MutableSequence, Sequence
+from enum import StrEnum
+
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 
 __all__ = [
+    "AuditFilter",
+    "AuditResult",
     "escape_table_cell",
+    "format_audit_report",
     "format_block_range",
     "format_index_range",
+    "get_contextual_index",
     "get_selected_event_indexes",
+    "get_superseded_keys",
     "is_block_in_range",
+    "resolve_contextual_index",
     "validate_audit_range",
     "validate_block_range",
     "validate_index_range",
 ]
+
+
+class AuditFilter(StrEnum):
+    """Row filters shared by audit reports without final comparisons."""
+
+    all = "all"
+    """Include every eligible row."""
+
+    changes = "changes"
+    """Include only changed rows."""
+
+    unverified = "unverified"
+    """Include only rows from unverified logged cases."""
+
+
+class AuditResult(StrEnum):
+    """Result types shared by decision-log audit rows."""
+
+    changed = "changed"
+    """The logged answer changed its input."""
+
+    unchanged = "unchanged"
+    """The logged answer explicitly retained its input."""
+
+    unanswered = "unanswered"
+    """The logged case has no answer."""
 
 
 def escape_table_cell(value: str) -> str:
@@ -28,6 +63,71 @@ def escape_table_cell(value: str) -> str:
         escaped cell text
     """
     return value.replace("\\N", "\n").replace("\n", "<br>").replace("|", "\\|")
+
+
+def format_audit_report(
+    *,
+    title: str,
+    summary_lines: Sequence[str],
+    column_labels: Sequence[str],
+    column_separators: Sequence[str],
+    rows: Sequence[str],
+    first_index: int | None = None,
+    last_index: int | None = None,
+    index_track_name: str | None = None,
+    first_block: int | None = None,
+    last_block: int | None = None,
+) -> str:
+    """Format the shared structure of a Markdown audit report.
+
+    Arguments:
+        title: report title without the Markdown heading marker
+        summary_lines: report-specific Markdown summary list items
+        column_labels: audit table column labels
+        column_separators: Markdown alignment separators for the columns
+        rows: formatted Markdown table rows
+        first_index: first included one-based subtitle index
+        last_index: last included one-based subtitle index
+        index_track_name: optional name of the indexed subtitle track
+        first_block: first included one-based block number
+        last_block: last included one-based block number
+    Returns:
+        formatted Markdown audit report
+    Raises:
+        ValueError: if the table labels and separators have different lengths
+    """
+    if len(column_labels) != len(column_separators):
+        raise ValueError("Table labels and separators must have the same length")
+
+    lines = [
+        f"# {title}",
+        "",
+        "## Summary",
+        "",
+        *summary_lines,
+    ]
+    index_range = format_index_range(
+        first_index,
+        last_index,
+        track_name=index_track_name,
+    )
+    if index_range is not None:
+        lines.append(index_range)
+    block_range = format_block_range(first_block, last_block)
+    if block_range is not None:
+        lines.append(block_range)
+    lines.extend(
+        (
+            f"- table rows: {len(rows)}",
+            "",
+            "## Audit Table",
+            "",
+            f"| {' | '.join(column_labels)} |",
+            f"|{'|'.join(column_separators)}|",
+            *rows,
+        )
+    )
+    return "\n".join(lines) + "\n"
 
 
 def format_block_range(
@@ -76,6 +176,77 @@ def format_index_range(
     if last_index is None:
         return f"- {range_name} range: from {first_index}"
     return f"- {range_name} range: {first_index} through {last_index}"
+
+
+def get_contextual_index(
+    candidate_indexes: Sequence[int],
+    direct_indexes: Sequence[int | None],
+    test_case_index: int,
+) -> int | None:
+    """Resolve a repeated source key from neighboring logged cases.
+
+    Arguments:
+        candidate_indexes: possible zero-indexed source positions
+        direct_indexes: directly resolved indexes for every logged case
+        test_case_index: zero-indexed test case position
+    Returns:
+        uniquely resolved source position, or None if ambiguity remains
+    """
+    previous_index = next(
+        (
+            index
+            for index in reversed(direct_indexes[:test_case_index])
+            if index is not None
+        ),
+        None,
+    )
+    next_index = next(
+        (index for index in direct_indexes[test_case_index + 1 :] if index is not None),
+        None,
+    )
+    if previous_index is None and next_index is None:
+        return None
+
+    narrowed_candidates = list(candidate_indexes)
+    if (
+        previous_index is not None
+        and next_index is not None
+        and previous_index <= next_index
+    ):
+        candidates_between_anchors = [
+            candidate
+            for candidate in candidate_indexes
+            if previous_index <= candidate <= next_index
+        ]
+        if len(candidates_between_anchors) == 1:
+            return candidates_between_anchors[0]
+        if candidates_between_anchors:
+            narrowed_candidates = candidates_between_anchors
+
+    scores: dict[int, tuple[int, int]] = {}
+    for candidate in narrowed_candidates:
+        distances = []
+        if previous_index is not None:
+            distances.append(abs(candidate - previous_index))
+        if next_index is not None:
+            distances.append(abs(candidate - next_index))
+        if previous_index is not None and next_index is not None:
+            primary_score = sum(distances)
+        else:
+            primary_score = distances[0]
+
+        previous_distance = 0
+        if previous_index is not None:
+            previous_distance = abs(candidate - previous_index)
+        scores[candidate] = (primary_score, previous_distance)
+
+    minimum_score = min(scores.values())
+    best_candidates = [
+        candidate for candidate, score in scores.items() if score == minimum_score
+    ]
+    if len(best_candidates) == 1:
+        return best_candidates[0]
+    return None
 
 
 def get_selected_event_indexes(
@@ -133,6 +304,32 @@ def get_selected_event_indexes(
     return frozenset(selected_block_indexes)
 
 
+def get_superseded_keys[KeyT: Hashable, ValueT: Hashable](
+    current_keys: Collection[KeyT],
+    values_by_key: Mapping[KeyT, Collection[ValueT]],
+) -> set[KeyT]:
+    """Get historical keys directly replaced by current logged cases.
+
+    A historical key is superseded only when one of its logged values also
+    appears under a current key. Avoid transitive propagation because a reused
+    historical key may otherwise connect unrelated cases.
+
+    Arguments:
+        current_keys: keys present in the current source data
+        values_by_key: logged target values grouped by source key
+    Returns:
+        absent keys directly connected to a current key by a shared value
+    """
+    current_values = {
+        value for key in current_keys for value in values_by_key.get(key, ())
+    }
+    return {
+        key
+        for key, values in values_by_key.items()
+        if key not in current_keys and not current_values.isdisjoint(values)
+    }
+
+
 def is_block_in_range(
     block_number: int,
     first_block: int | None,
@@ -150,6 +347,34 @@ def is_block_in_range(
     return (first_block is None or block_number >= first_block) and (
         last_block is None or block_number <= last_block
     )
+
+
+def resolve_contextual_index(
+    candidate_indexes: Sequence[int],
+    resolved_indexes: MutableSequence[int | None],
+    test_case_index: int,
+) -> int | None:
+    """Resolve and memoize one logged case's source index.
+
+    Arguments:
+        candidate_indexes: possible zero-indexed source positions
+        resolved_indexes: resolved indexes for every logged case
+        test_case_index: zero-indexed test case position
+    Returns:
+        resolved source position, or None if ambiguity remains
+    """
+    index = resolved_indexes[test_case_index]
+    if index is not None:
+        return index
+
+    index = get_contextual_index(
+        candidate_indexes,
+        resolved_indexes,
+        test_case_index,
+    )
+    if index is not None:
+        resolved_indexes[test_case_index] = index
+    return index
 
 
 def validate_audit_range(
