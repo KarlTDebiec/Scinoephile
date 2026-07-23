@@ -11,8 +11,7 @@ from unittest.mock import patch
 from pytest import CaptureFixture, mark, raises
 
 from scinoephile.analysis.audit.review import ComparativeReviewAuditFilter
-from scinoephile.analysis.audit.translation import TranslationAuditFilter
-from scinoephile.analysis.audit.utils import AuditFilter
+from scinoephile.analysis.audit.utils import AuditFilter, VerificationAuditFilter
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_cli_base import AuditCliBase
 from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
@@ -267,7 +266,12 @@ def test_audit_translation_cli_infers_workflow_from_inputs(
         for action in AuditTranslationCli.argparser()._actions  # noqa: SLF001
     }
     assert "mode" not in actions
-    assert actions["row_filter"].default is TranslationAuditFilter.all
+    filter_action = actions["row_filter"]
+    assert filter_action.choices is None
+    assert filter_action.default is VerificationAuditFilter.all
+    assert filter_action.metavar == enum_metavar(VerificationAuditFilter)
+    assert isinstance(filter_action.help, str)
+    assert enum_options_list_str(VerificationAuditFilter) in filter_action.help
 
 
 def test_transcription_audit_cli_help_describes_subtitle_indexes():
@@ -283,6 +287,11 @@ def test_transcription_audit_cli_help_describes_subtitle_indexes():
         assert actions["last_index"].help == (
             "last 1-indexed subtitle number to include, inclusive"
         )
+        filter_action = actions["row_filter"]
+        assert filter_action.choices is None
+        assert filter_action.metavar == enum_metavar(AuditFilter)
+        assert isinstance(filter_action.help, str)
+        assert enum_options_list_str(AuditFilter) in filter_action.help
 
 
 def test_audit_review_cli_help_is_consistent():

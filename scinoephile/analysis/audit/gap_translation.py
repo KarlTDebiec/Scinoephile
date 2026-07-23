@@ -7,26 +7,21 @@ from __future__ import annotations
 from collections import defaultdict
 from collections.abc import Sequence
 from dataclasses import dataclass
-from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_overlap_matrix
 from scinoephile.llms.gap_translation import GapTranslationTestCase
 
 from .utils import (
+    VerificationAuditFilter,
     escape_table_cell,
-    format_block_range,
-    format_index_range,
-    get_validated_block_pairs_by_pause,
-    validate_block_range,
-    validate_index_range,
+    format_audit_report,
+    validate_audit_range,
 )
 
-__all__ = [
-    "GapTranslationAuditFilter",
-    "audit_gap_translation",
-]
+__all__ = ["audit_gap_translation"]
 
 
 _GapTranslationKey = tuple[tuple[tuple[int, str], ...], tuple[str, ...]]
@@ -64,22 +59,12 @@ class _GapTranslationRow:
     """Whether the source test case is verified."""
 
 
-class GapTranslationAuditFilter(StrEnum):
-    """Row filters supported by a gap-translation audit."""
-
-    all = "all"
-    """Include every translated or unanswered target gap."""
-
-    unverified = "unverified"
-    """Include only gaps from cases not marked as verified."""
-
-
 def audit_gap_translation(
     target: Series,
     guide: Series,
     test_cases: Sequence[GapTranslationTestCase],
     *,
-    row_filter: GapTranslationAuditFilter = GapTranslationAuditFilter.all,
+    row_filter: VerificationAuditFilter = VerificationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -101,21 +86,25 @@ def audit_gap_translation(
     Raises:
         ScinoephileError: if a logged case cannot be matched uniquely to source data
     """
-    validate_index_range(first_index, last_index)
-    validate_block_range(first_block, last_block)
-
-    block_pairs = get_validated_block_pairs_by_pause(
-        target,
-        guide,
+    # Build paired workflow blocks and validate the selection
+    block_pairs = get_block_pairs_by_pause(target, guide)
+    validate_audit_range(
+        first_index,
+        last_index,
         first_block,
         last_block,
+        block_count=len(block_pairs),
     )
+
+    # Reconstruct current gap blocks and their global guide indexes
     blocks = _get_blocks(block_pairs)
     guide_block_numbers = tuple(
         block_number
         for block_number, (_, guide_block) in enumerate(block_pairs, 1)
         for _ in guide_block
     )
+
+    # Match logged cases to current selected gap blocks
     active_cases = _get_active_test_case_blocks(
         guide,
         guide_block_numbers,
@@ -126,13 +115,18 @@ def audit_gap_translation(
         first_block=first_block,
         last_block=last_block,
     )
+
+    # Format all selected gap rows before applying the row filter
     all_rows: list[_GapTranslationRow] = []
     for test_case_index, test_case, block in active_cases:
-        outputs_by_index = (
-            {output.index: output.text for output in test_case.answer.outputs}
-            if test_case.answer is not None
-            else {}
-        )
+        outputs_by_index = {}
+        if test_case.answer is not None:
+            outputs_by_index = {
+                output.index: output.text for output in test_case.answer.outputs
+            }
+        verified_marker = ""
+        if test_case.verified:
+            verified_marker = "✓"
         for local_index, (global_index, guide_text, target_text) in enumerate(
             zip(
                 block.guide_indexes,
@@ -164,7 +158,7 @@ def audit_gap_translation(
                 _format_target_context(block, local_index - 1),
                 output_text,
                 "",
-                "✓" if test_case.verified else "",
+                verified_marker,
             )
             all_rows.append(
                 _GapTranslationRow(
@@ -179,6 +173,7 @@ def audit_gap_translation(
                 )
             )
 
+    # Sort and filter rows while retaining complete selection statistics
     all_rows.sort(key=lambda row: (row.global_index, row.test_case_index))
     translated_gaps = sum(row.answered and not row.empty for row in all_rows)
     empty_translations = sum(row.empty for row in all_rows)
@@ -187,47 +182,40 @@ def audit_gap_translation(
     rows = [
         row
         for row in all_rows
-        if not (row_filter is GapTranslationAuditFilter.unverified and row.verified)
+        if not (row_filter is VerificationAuditFilter.unverified and row.verified)
     ]
-    lines = [
-        "# Gap Translation Audit",
-        "",
-        "## Summary",
-        "",
-        f"- logged cases: {len({row.test_case_index for row in all_rows})}",
-        f"- gaps: {len(all_rows)}",
-        f"- translated gaps: {translated_gaps}",
-        f"- empty translations: {empty_translations}",
-        f"- unanswered gaps: {unanswered_gaps}",
-        f"- verified gaps: {verified_gaps}",
-        f"- unverified gaps: {len(all_rows) - verified_gaps}",
-        f"- row filter: {row_filter.value}",
-    ]
-    range_summary = format_index_range(
-        first_index,
-        last_index,
-        track_name="guide",
+
+    # Format the report using the shared Markdown structure
+    return format_audit_report(
+        title="Gap Translation Audit",
+        summary_lines=(
+            f"- logged cases: {len({row.test_case_index for row in all_rows})}",
+            f"- gaps: {len(all_rows)}",
+            f"- translated gaps: {translated_gaps}",
+            f"- empty translations: {empty_translations}",
+            f"- unanswered gaps: {unanswered_gaps}",
+            f"- verified gaps: {verified_gaps}",
+            f"- unverified gaps: {len(all_rows) - verified_gaps}",
+            f"- row filter: {row_filter.value}",
+        ),
+        column_labels=(
+            "Indexes",
+            "Case / block",
+            "Difficulty",
+            "Guide",
+            "Target context",
+            "Translation",
+            "Notes",
+            "Verified",
+        ),
+        column_separators=("---:", "---:", "---:", "---", "---", "---", "---", ":---:"),
+        rows=[row.markdown for row in rows],
+        first_index=first_index,
+        last_index=last_index,
+        index_track_name="guide",
+        first_block=first_block,
+        last_block=last_block,
     )
-    if range_summary is not None:
-        lines.append(range_summary)
-    block_range_summary = format_block_range(first_block, last_block)
-    if block_range_summary is not None:
-        lines.append(block_range_summary)
-    lines.extend(
-        (
-            f"- table rows: {len(rows)}",
-            "",
-            "## Audit Table",
-            "",
-            (
-                "| Indexes | Case / block | Difficulty | Guide | Target context | "
-                "Translation | Notes | Verified |"
-            ),
-            "|---:|---:|---:|---|---|---|---|:---:|",
-            *(row.markdown for row in rows),
-        )
-    )
-    return "\n".join(lines) + "\n"
 
 
 def _block_intersects_range(
@@ -316,6 +304,7 @@ def _get_active_test_case_blocks(
     Raises:
         ScinoephileError: if a selected case is absent, stale, or ambiguous
     """
+    # Index current blocks by exact query content and guide-only content
     blocks_by_key: dict[_GapTranslationKey, list[_GapTranslationBlock]] = defaultdict(
         list
     )
@@ -331,6 +320,7 @@ def _get_active_test_case_blocks(
         blocks_by_key[(targets, block.guide_texts)].append(block)
         blocks_by_guides[block.guide_texts].append(block)
 
+    # Match exact current cases, retaining the latest case for each block
     active_by_block_number: dict[
         int,
         tuple[int, GapTranslationTestCase, _GapTranslationBlock],
@@ -382,6 +372,7 @@ def _get_active_test_case_blocks(
             block,
         )
 
+    # Reconcile unmatched historical cases against current guide blocks
     active_block_numbers = set(active_by_block_number)
     for test_case_index, test_case in unmatched_cases:
         guides = tuple(guide_subtitle.text for guide_subtitle in test_case.query.guides)
@@ -424,6 +415,27 @@ def _get_active_test_case_blocks(
             f"{selected_matches[0].block_number}"
         )
 
+    # Ensure every selected current gap block has a corresponding logged case
+    selected_block_numbers = {
+        block.block_number
+        for block in blocks
+        if _block_intersects_range(
+            block,
+            first_index,
+            last_index,
+            first_block,
+            last_block,
+        )
+    }
+    missing_block_numbers = sorted(selected_block_numbers - set(active_by_block_number))
+    if missing_block_numbers:
+        block_numbers = ", ".join(str(number) for number in missing_block_numbers)
+        raise ScinoephileError(
+            "Unable to audit gap translation: selected gap blocks have no matching "
+            f"logged test case: {block_numbers}"
+        )
+
+    # Return active cases in current workflow order
     return sorted(
         active_by_block_number.values(),
         key=lambda item: item[2].block_number,
@@ -440,6 +452,7 @@ def _get_blocks(
     Returns:
         blocks containing one or more missing target positions
     """
+    # Track global guide positions across every paired block
     blocks: list[_GapTranslationBlock] = []
     guide_offset = 0
     for block_number, (target_block, guide_block) in enumerate(block_pairs, 1):
@@ -450,6 +463,7 @@ def _get_blocks(
         if not guide_block:
             continue
 
+        # Reconstruct target gaps using the production alignment strategy
         overlap = get_sync_overlap_matrix(target_block, guide_block)
         occupied_positions = {int(row.argmax()) for row in overlap}
         if len(occupied_positions) == len(guide_block):
@@ -518,6 +532,8 @@ def _is_test_case_outside_range(
     ]
     if not matching_starts:
         return False
+
+    # Accept the stale case only when every possible span is outside the selection
     return all(
         all(
             (

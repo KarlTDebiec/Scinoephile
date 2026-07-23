@@ -19,8 +19,6 @@ from .utils import (
     get_selected_event_indexes,
     get_superseded_keys,
     resolve_contextual_index,
-    validate_block_range,
-    validate_index_range,
 )
 
 __all__ = ["audit_delineation"]
@@ -51,9 +49,6 @@ def audit_delineation(
     Raises:
         ScinoephileError: if a logged reference pair cannot be matched uniquely
     """
-    validate_index_range(first_index, last_index)
-    validate_block_range(first_block, last_block)
-
     pair_indexes: dict[tuple[str, str], list[int]] = defaultdict(list)
     for index in range(len(reference) - 1):
         pair = (reference[index].text, reference[index + 1].text)

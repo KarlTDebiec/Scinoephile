@@ -4,26 +4,24 @@
 
 from __future__ import annotations
 
+from collections import defaultdict
 from collections.abc import Sequence
 from dataclasses import dataclass
-from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.guided_translation import GuidedTranslationTestCase
 from scinoephile.llms.translation import TranslationTestCase
 
 from .utils import (
+    VerificationAuditFilter,
     escape_table_cell,
-    format_block_range,
-    format_index_range,
-    get_validated_block_pairs_by_pause,
-    validate_block_range,
-    validate_index_range,
+    format_audit_report,
+    validate_audit_range,
 )
 
 __all__ = [
-    "TranslationAuditFilter",
     "audit_guided_translation",
     "audit_translation",
 ]
@@ -61,22 +59,12 @@ class _TranslationRow:
     """Whether the source test case is verified."""
 
 
-class TranslationAuditFilter(StrEnum):
-    """Row filters supported by standard and guided translation audits."""
-
-    all = "all"
-    """Include every translated or unanswered source subtitle."""
-
-    unverified = "unverified"
-    """Include only subtitles from cases not marked as verified."""
-
-
 def audit_guided_translation(
     source: Series,
     guide: Series,
     test_cases: Sequence[GuidedTranslationTestCase],
     *,
-    row_filter: TranslationAuditFilter = TranslationAuditFilter.all,
+    row_filter: VerificationAuditFilter = VerificationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -98,13 +86,18 @@ def audit_guided_translation(
     Raises:
         ScinoephileError: if a range or logged case is invalid
     """
-    block_pairs = get_validated_block_pairs_by_pause(
-        source,
-        guide,
+    # Build paired workflow blocks and validate the selection
+    block_pairs = get_block_pairs_by_pause(source, guide)
+    validate_audit_range(
+        first_index,
+        last_index,
         first_block,
         last_block,
+        block_count=len(block_pairs),
     )
     blocks = _get_guided_blocks(block_pairs)
+
+    # Audit the current blocks against the logged cases
     return _audit_translation_blocks(
         blocks,
         test_cases,
@@ -121,7 +114,7 @@ def audit_translation(
     source: Series,
     test_cases: Sequence[TranslationTestCase],
     *,
-    row_filter: TranslationAuditFilter = TranslationAuditFilter.all,
+    row_filter: VerificationAuditFilter = VerificationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -142,8 +135,17 @@ def audit_translation(
     Raises:
         ScinoephileError: if a range or logged case is invalid
     """
+    # Build current workflow blocks and validate the selection
     blocks = _get_standard_blocks(source)
-    validate_block_range(first_block, last_block, len(blocks))
+    validate_audit_range(
+        first_index,
+        last_index,
+        first_block,
+        last_block,
+        block_count=len(blocks),
+    )
+
+    # Audit the current blocks against the logged cases
     return _audit_translation_blocks(
         blocks,
         test_cases,
@@ -161,7 +163,7 @@ def _audit_translation_blocks(
     test_cases: Sequence[_TranslationCase],
     *,
     title: str,
-    row_filter: TranslationAuditFilter,
+    row_filter: VerificationAuditFilter,
     first_index: int | None,
     last_index: int | None,
     first_block: int | None,
@@ -183,33 +185,27 @@ def _audit_translation_blocks(
     Raises:
         ScinoephileError: if a selected block lacks a logged test case
     """
-    validate_index_range(first_index, last_index)
-    validate_block_range(first_block, last_block)
-
+    # Retain the latest logged case for each query
     cases_by_key: dict[_TranslationKey, tuple[int, _TranslationCase]] = {}
     for case_index, test_case in enumerate(test_cases, 1):
         cases_by_key[_get_case_key(test_case)] = (case_index, test_case)
 
+    # Select current blocks and reject ambiguous repeated queries
+    selected_block_data = _get_selected_block_data(
+        blocks,
+        first_index=first_index,
+        last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
+    )
+
+    # Match selected blocks to cases and format their rows
     all_rows: list[_TranslationRow] = []
     selected_case_indexes: set[int] = set()
-    answered_subtitles = 0
+    translated_subtitles = 0
+    empty_translations = 0
     unanswered_subtitles = 0
-    selected_blocks = (
-        block
-        for block in blocks
-        if (first_block is None or block.block_number >= first_block)
-        and (last_block is None or block.block_number <= last_block)
-    )
-    for block in selected_blocks:
-        selected_positions = [
-            position
-            for position, source_index in enumerate(block.source_indexes)
-            if (first_index is None or source_index >= first_index)
-            and (last_index is None or source_index <= last_index)
-        ]
-        if not selected_positions:
-            continue
-
+    for block, selected_positions in selected_block_data:
         case_data = cases_by_key.get(block.key)
         if case_data is None:
             raise ScinoephileError(
@@ -225,12 +221,19 @@ def _audit_translation_blocks(
                 output.index: output.text for output in test_case.answer.outputs
             }
         guide_text = _format_guide_text(block.guide_texts)
+        verified_marker = ""
+        if test_case.verified:
+            verified_marker = "✓"
         for position in selected_positions:
             local_index = position + 1
             output_text = "(unanswered)"
             if test_case.answer is not None:
                 output_text = outputs_by_index[local_index]
-                answered_subtitles += 1
+                if output_text:
+                    translated_subtitles += 1
+                else:
+                    output_text = "(empty)"
+                    empty_translations += 1
             else:
                 unanswered_subtitles += 1
             cells = (
@@ -241,7 +244,7 @@ def _audit_translation_blocks(
                 guide_text,
                 output_text,
                 "",
-                "✓" if test_case.verified else "",
+                verified_marker,
             )
             all_rows.append(
                 _TranslationRow(
@@ -252,50 +255,43 @@ def _audit_translation_blocks(
                 )
             )
 
+    # Apply the row filter after calculating complete selection statistics
     rows = [
         row
         for row in all_rows
-        if not (row_filter is TranslationAuditFilter.unverified and row.verified)
+        if not (row_filter is VerificationAuditFilter.unverified and row.verified)
     ]
     verified_subtitles = sum(row.verified for row in all_rows)
-    lines = [
-        f"# {title}",
-        "",
-        "## Summary",
-        "",
-        f"- logged cases: {len(selected_case_indexes)}",
-        f"- subtitles: {len(all_rows)}",
-        f"- translated subtitles: {answered_subtitles}",
-        f"- unanswered subtitles: {unanswered_subtitles}",
-        f"- verified subtitles: {verified_subtitles}",
-        f"- unverified subtitles: {len(all_rows) - verified_subtitles}",
-        f"- row filter: {row_filter.value}",
-    ]
-    range_summary = format_index_range(
-        first_index,
-        last_index,
-        track_name="source",
+    return format_audit_report(
+        title=title,
+        summary_lines=(
+            f"- logged cases: {len(selected_case_indexes)}",
+            f"- subtitles: {len(all_rows)}",
+            f"- translated subtitles: {translated_subtitles}",
+            f"- empty translations: {empty_translations}",
+            f"- unanswered subtitles: {unanswered_subtitles}",
+            f"- verified subtitles: {verified_subtitles}",
+            f"- unverified subtitles: {len(all_rows) - verified_subtitles}",
+            f"- row filter: {row_filter.value}",
+        ),
+        column_labels=(
+            "Indexes",
+            "Case / block",
+            "Difficulty",
+            "Source",
+            "Guide",
+            "Translation",
+            "Notes",
+            "Verified",
+        ),
+        column_separators=("---:", "---:", "---:", "---", "---", "---", "---", ":---:"),
+        rows=[row.markdown for row in rows],
+        first_index=first_index,
+        last_index=last_index,
+        index_track_name="source",
+        first_block=first_block,
+        last_block=last_block,
     )
-    if range_summary is not None:
-        lines.append(range_summary)
-    block_range_summary = format_block_range(first_block, last_block)
-    if block_range_summary is not None:
-        lines.append(block_range_summary)
-    lines.extend(
-        (
-            f"- table rows: {len(rows)}",
-            "",
-            "## Audit Table",
-            "",
-            (
-                "| Indexes | Case / block | Difficulty | Source | Guide | "
-                "Translation | Notes | Verified |"
-            ),
-            "|---:|---:|---:|---|---|---|---|:---:|",
-            *(row.markdown for row in rows),
-        )
-    )
-    return "\n".join(lines) + "\n"
 
 
 def _format_guide_text(guide_texts: Sequence[str]) -> str:
@@ -358,6 +354,61 @@ def _get_guided_blocks(
             )
         )
     return blocks
+
+
+def _get_selected_block_data(
+    blocks: Sequence[_TranslationBlock],
+    *,
+    first_index: int | None,
+    last_index: int | None,
+    first_block: int | None,
+    last_block: int | None,
+) -> list[tuple[_TranslationBlock, list[int]]]:
+    """Select block positions and reject indistinguishable repeated blocks.
+
+    Arguments:
+        blocks: current source blocks
+        first_index: first included source subtitle number
+        last_index: last included source subtitle number
+        first_block: first included block number
+        last_block: last included block number
+    Returns:
+        selected blocks and their zero-based source positions
+    Raises:
+        ScinoephileError: if selected blocks have identical logged query keys
+    """
+    # Select current blocks and source positions within the requested range
+    selected_block_data: list[tuple[_TranslationBlock, list[int]]] = []
+    for block in blocks:
+        if first_block is not None and block.block_number < first_block:
+            continue
+        if last_block is not None and block.block_number > last_block:
+            continue
+        selected_positions = [
+            position
+            for position, source_index in enumerate(block.source_indexes)
+            if (first_index is None or source_index >= first_index)
+            and (last_index is None or source_index <= last_index)
+        ]
+        if selected_positions:
+            selected_block_data.append((block, selected_positions))
+
+    # Reject repeated current blocks that cannot be matched uniquely to log cases
+    selected_blocks_by_key: dict[_TranslationKey, list[_TranslationBlock]] = (
+        defaultdict(list)
+    )
+    for block, _ in selected_block_data:
+        selected_blocks_by_key[block.key].append(block)
+    for matching_blocks in selected_blocks_by_key.values():
+        if len(matching_blocks) < 2:
+            continue
+        block_numbers = ", ".join(str(block.block_number) for block in matching_blocks)
+        raise ScinoephileError(
+            "Unable to audit translation: "
+            f"blocks {block_numbers} have identical source and guide text and cannot "
+            "be matched uniquely to logged test cases"
+        )
+    return selected_block_data
 
 
 def _get_standard_blocks(source: Series) -> list[_TranslationBlock]:

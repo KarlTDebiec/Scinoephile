@@ -20,8 +20,6 @@ from .utils import (
     get_selected_event_indexes,
     get_superseded_keys,
     resolve_contextual_index,
-    validate_block_range,
-    validate_index_range,
 )
 
 __all__ = ["audit_punctuation"]
@@ -56,9 +54,6 @@ def audit_punctuation(
     Raises:
         ScinoephileError: if a logged case cannot be matched uniquely
     """
-    validate_index_range(first_index, last_index)
-    validate_block_range(first_block, last_block)
-
     reference_indexes_by_text: dict[str, list[int]] = defaultdict(list)
     for index, subtitle in enumerate(reference):
         reference_indexes_by_text[subtitle.text].append(index)

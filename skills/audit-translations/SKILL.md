@@ -107,8 +107,8 @@ indexes in standard and guided workflows, and global guide indexes in the gapped
 workflow.
 Use `--first-block` and `--last-block` for inclusive, one-based workflow block
 ranges: source blocks in the standard workflow and paired blocks in guided or
-gapped workflows. Block and subtitle bounds may be combined; their intersection
-determines the displayed rows. Omit either bound for an open-ended range.
+gapped workflows. Subtitle-index and block ranges are mutually exclusive. Omit
+either bound for an open-ended range.
 Use `--filter unverified` to resume verification; the default is `all`.
 
 `(unanswered)` means the case has no answer. In the gapped workflow, `(empty)`

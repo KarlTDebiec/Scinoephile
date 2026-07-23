@@ -8,12 +8,12 @@ from collections.abc import Collection, Hashable, Mapping, MutableSequence, Sequ
 from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 
 __all__ = [
     "AuditFilter",
     "AuditResult",
+    "VerificationAuditFilter",
     "escape_table_cell",
     "format_audit_report",
     "format_block_range",
@@ -21,7 +21,6 @@ __all__ = [
     "get_contextual_index",
     "get_selected_event_indexes",
     "get_superseded_keys",
-    "get_validated_block_pairs_by_pause",
     "is_block_in_range",
     "resolve_contextual_index",
     "validate_audit_range",
@@ -54,6 +53,16 @@ class AuditResult(StrEnum):
 
     unanswered = "unanswered"
     """The logged case has no answer."""
+
+
+class VerificationAuditFilter(StrEnum):
+    """Row filters for audits whose only row state is verification."""
+
+    all = "all"
+    """Include every eligible row."""
+
+    unverified = "unverified"
+    """Include only rows from cases not marked as verified."""
 
 
 def escape_table_cell(value: str) -> str:
@@ -330,29 +339,6 @@ def get_superseded_keys[KeyT: Hashable, ValueT: Hashable](
         for key, values in values_by_key.items()
         if key not in current_keys and not current_values.isdisjoint(values)
     }
-
-
-def get_validated_block_pairs_by_pause(
-    one: Series,
-    two: Series,
-    first_block: int | None,
-    last_block: int | None,
-) -> list[tuple[Series, Series]]:
-    """Get paired workflow blocks and validate a range against their count.
-
-    Arguments:
-        one: first subtitle series
-        two: second subtitle series
-        first_block: first included one-based block number
-        last_block: last included one-based block number
-    Returns:
-        paired workflow blocks
-    Raises:
-        ScinoephileError: if the requested range exceeds the available blocks
-    """
-    block_pairs = get_block_pairs_by_pause(one, two)
-    validate_block_range(first_block, last_block, len(block_pairs))
-    return block_pairs
 
 
 def is_block_in_range(

@@ -7,18 +7,17 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.analysis.audit.gap_translation import (
-    GapTranslationAuditFilter,
-    audit_gap_translation,
-)
+from scinoephile.analysis.audit.gap_translation import audit_gap_translation
 from scinoephile.analysis.audit.translation import (
-    TranslationAuditFilter,
     audit_guided_translation,
     audit_translation,
 )
+from scinoephile.analysis.audit.utils import VerificationAuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
+    enum_metavar,
+    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
 )
@@ -48,8 +47,8 @@ AUDIT_TRANSLATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "translation test-case JSON file for the selected workflow": (
             "所选工作流的翻译测试用例 JSON 文件"
         ),
-        "rows to include: all or unverified (default: all)": (
-            "要包含的行：all 表示全部，unverified 表示未验证（默认：all）"
+        "rows to include: all or unverified (default: %(default)s)": (
+            "要包含的行：all 表示全部，unverified 表示未验证（默认：%(default)s）"
         ),
     },
     "zh-hant": {
@@ -68,8 +67,8 @@ AUDIT_TRANSLATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "translation test-case JSON file for the selected workflow": (
             "所選工作流程的翻譯測試案例 JSON 檔"
         ),
-        "rows to include: all or unverified (default: all)": (
-            "要包含的列：all 表示全部，unverified 表示未驗證（預設：all）"
+        "rows to include: all or unverified (default: %(default)s)": (
+            "要包含的列：all 表示全部，unverified 表示未驗證（預設：%(default)s）"
         ),
     },
 }
@@ -130,12 +129,14 @@ class AuditTranslationCli(AuditCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            choices=tuple(TranslationAuditFilter),
-            default=TranslationAuditFilter.all,
+            default=VerificationAuditFilter.all,
             dest="row_filter",
-            metavar="{all,unverified}",
-            type=enum_arg(TranslationAuditFilter),
-            help="rows to include: all or unverified (default: all)",
+            metavar=enum_metavar(VerificationAuditFilter),
+            type=enum_arg(VerificationAuditFilter),
+            help=(
+                f"rows to include: {enum_options_list_str(VerificationAuditFilter)} "
+                "(default: %(default)s)"
+            ),
         )
 
     @classmethod
@@ -155,7 +156,7 @@ class AuditTranslationCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        row_filter: TranslationAuditFilter,
+        row_filter: VerificationAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -191,7 +192,7 @@ class AuditTranslationCli(AuditCliBase):
             target,
             guide,
             test_cases,
-            row_filter=GapTranslationAuditFilter(row_filter.value),
+            row_filter=row_filter,
             first_index=first_index,
             last_index=last_index,
             first_block=first_block,
@@ -206,7 +207,7 @@ class AuditTranslationCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        row_filter: TranslationAuditFilter,
+        row_filter: VerificationAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -256,7 +257,7 @@ class AuditTranslationCli(AuditCliBase):
         source_path: Path,
         json_path: Path,
         *,
-        row_filter: TranslationAuditFilter,
+        row_filter: VerificationAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -305,7 +306,7 @@ class AuditTranslationCli(AuditCliBase):
         target_path: Path | None,
         guide_path: Path | None,
         json_path: Path,
-        row_filter: TranslationAuditFilter,
+        row_filter: VerificationAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -331,10 +332,6 @@ class AuditTranslationCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if source_path is None and target_path is None:
-            parser.error("one of --source or --target is required")
-        if source_path is not None and target_path is not None:
-            parser.error("--source and --target are mutually exclusive")
         if target_path is not None and guide_path is None:
             parser.error("--guide is required with --target")
 

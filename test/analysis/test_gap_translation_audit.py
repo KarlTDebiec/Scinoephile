@@ -6,10 +6,8 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.audit.gap_translation import (
-    GapTranslationAuditFilter,
-    audit_gap_translation,
-)
+from scinoephile.analysis.audit.gap_translation import audit_gap_translation
+from scinoephile.analysis.audit.utils import VerificationAuditFilter
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.gap_translation import (
@@ -80,7 +78,7 @@ def test_audit_gap_translation_formats_empty_and_unanswered_gaps():
         target,
         guide,
         test_cases,
-        row_filter=GapTranslationAuditFilter.unverified,
+        row_filter=VerificationAuditFilter.unverified,
     )
     ranged_report = audit_gap_translation(
         target,
@@ -178,6 +176,37 @@ def test_audit_gap_translation_rejects_ambiguous_block():
     assert "| G 4<br>Q 2 | C 1<br>B 2 |" in block_report
 
 
+def test_audit_gap_translation_rejects_missing_current_case():
+    """Test every selected current gap block requires a logged case."""
+    target = _get_series(
+        (0, 1000, "現有一"),
+        (6000, 7000, "現有二"),
+    )
+    guide = _get_series(
+        (0, 1000, "參考一"),
+        (1000, 2000, "缺口一"),
+        (6000, 7000, "參考二"),
+        (7000, 8000, "缺口二"),
+    )
+    first_case = _get_test_case(
+        targets=((1, "現有一"),),
+        guides=((1, "參考一"), (2, "缺口一")),
+        outputs=((2, "翻譯一"),),
+    )
+
+    with raises(ScinoephileError, match="no matching logged test case: 2"):
+        audit_gap_translation(target, guide, (first_case,))
+
+    first_block_report = audit_gap_translation(
+        target,
+        guide,
+        (first_case,),
+        first_block=1,
+        last_block=1,
+    )
+    assert "| G 2<br>Q 2 | C 1<br>B 1 |" in first_block_report
+
+
 def test_audit_gap_translation_rejects_invalid_range():
     """Test direct callers receive a domain error for an invalid range."""
     with raises(ScinoephileError, match="First index must be at least 1"):
@@ -185,6 +214,18 @@ def test_audit_gap_translation_rejects_invalid_range():
 
     with raises(ScinoephileError, match="First block must be at least 1"):
         audit_gap_translation(Series(), Series(), (), first_block=0)
+
+    with raises(
+        ScinoephileError,
+        match="Subtitle-index and block ranges are mutually exclusive",
+    ):
+        audit_gap_translation(
+            Series(),
+            Series(),
+            (),
+            first_index=1,
+            first_block=1,
+        )
 
 
 def test_audit_gap_translation_rejects_unmatched_case():

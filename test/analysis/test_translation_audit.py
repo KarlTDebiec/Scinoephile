@@ -7,10 +7,10 @@ from __future__ import annotations
 from pytest import raises
 
 from scinoephile.analysis.audit.translation import (
-    TranslationAuditFilter,
     audit_guided_translation,
     audit_translation,
 )
+from scinoephile.analysis.audit.utils import VerificationAuditFilter
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.guided_translation import GuidedTranslationTestCase
@@ -47,7 +47,7 @@ def test_audit_translation_formats_standard_blocks_and_unanswered_case():
     unverified_report = audit_translation(
         source,
         test_cases,
-        row_filter=TranslationAuditFilter.unverified,
+        row_filter=VerificationAuditFilter.unverified,
     )
     block_report = audit_translation(
         source,
@@ -112,6 +112,46 @@ def test_audit_guided_translation_formats_guide_and_filters_range():
     ) in report
 
 
+def test_audit_translation_formats_empty_output():
+    """Test an empty answered output remains visible and separately counted."""
+    source = _get_series((0, "甲"))
+    test_case = TranslationTestCase.model_validate(
+        {
+            "query": {"subtitles": [{"index": 1, "text": "甲"}]},
+            "answer": {"outputs": [{"index": 1, "text": ""}]},
+        }
+    )
+
+    report = audit_translation(source, (test_case,))
+
+    assert "- translated subtitles: 0" in report
+    assert "- empty translations: 1" in report
+    assert "- unanswered subtitles: 0" in report
+    assert "| S 1<br>Q 1 | C 1<br>B 1 | 0 | 甲 | — | (empty) |" in report
+
+
+def test_audit_translation_rejects_ambiguous_repeated_block():
+    """Test repeated current blocks require a range that selects only one."""
+    source = _get_series((0, "重複"), (6000, "重複"))
+    test_case = TranslationTestCase.model_validate(
+        {
+            "query": {"subtitles": [{"index": 1, "text": "重複"}]},
+            "answer": {"outputs": [{"index": 1, "text": "Repeated"}]},
+        }
+    )
+
+    with raises(ScinoephileError, match="blocks 1, 2 have identical"):
+        audit_translation(source, (test_case,))
+
+    second_block_report = audit_translation(
+        source,
+        (test_case,),
+        first_block=2,
+        last_block=2,
+    )
+    assert "| S 2<br>Q 1 | C 1<br>B 2 |" in second_block_report
+
+
 def test_audit_translation_uses_latest_case_and_rejects_invalid_selection():
     """Test latest-case selection and direct API validation."""
     source = _get_series((0, "甲"))
@@ -139,6 +179,16 @@ def test_audit_translation_uses_latest_case_and_rejects_invalid_selection():
         audit_translation(source, (new_case,), first_index=0)
     with raises(ScinoephileError, match="no matching logged test case"):
         audit_translation(source, ())
+    with raises(
+        ScinoephileError,
+        match="Subtitle-index and block ranges are mutually exclusive",
+    ):
+        audit_translation(
+            source,
+            (new_case,),
+            first_index=1,
+            first_block=1,
+        )
 
 
 def _get_series(*events: tuple[int, str]) -> Series:
