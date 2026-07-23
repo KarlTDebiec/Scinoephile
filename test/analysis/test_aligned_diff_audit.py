@@ -35,6 +35,7 @@ def test_audit_aligned_diff_defaults_to_changes_with_optional_tracks():
     assert "- row filter: changes" in report
     assert "- table rows: 1" in report
     assert "| Indexes | Alignment | Notes |" in report
+    assert "|---:|---|---|" in report
     assert (
         "| T 1<br>R 1 | <pre>O │ 甲原<br>T │ 甲錯<br>R │ 甲正<br>G │ 指南一</pre> |  |"
         in report

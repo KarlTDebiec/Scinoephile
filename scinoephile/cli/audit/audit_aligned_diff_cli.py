@@ -13,12 +13,11 @@ from scinoephile.analysis.audit.aligned_diff import (
 )
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
-    enum_arg,
     float_arg,
     get_arg_groups_by_name,
     input_file_arg,
 )
-from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core import ScinoephileError
 
 from .audit_cli_base import AuditCliBase
 
@@ -37,17 +36,12 @@ AUDIT_ALIGNED_DIFF_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "optional guide subtitle SRT file aligned with the transcription": (
             "与转写字幕对齐的可选导引字幕 SRT 文件"
         ),
-        "first 1-indexed transcription subtitle number to include, inclusive": (
-            "要包含的第一个转写字幕编号（从 1 开始，包含该编号）"
-        ),
-        "last 1-indexed transcription subtitle number to include, inclusive": (
-            "要包含的最后一个转写字幕编号（从 1 开始，包含该编号）"
-        ),
-        "rows to include: all or changes (default: changes)": (
-            "要包含的行：all 表示全部，changes 表示差异（默认：changes）"
-        ),
-        "similarity threshold used to pair replacements (default: 0.6)": (
-            "用于配对替换项的相似度阈值（默认：0.6）"
+        (
+            "rows to include: all or changes; all includes every aligned row; "
+            "changes includes differing rows (default: %(default)s)"
+        ): ("要包含的行：all 表示每个对齐行，changes 表示差异行（默认：%(default)s）"),
+        "similarity threshold used to pair replacements (default: %(default)s)": (
+            "用于配对替换项的相似度阈值（默认：%(default)s）"
         ),
     },
     "zh-hant": {
@@ -62,17 +56,12 @@ AUDIT_ALIGNED_DIFF_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "optional guide subtitle SRT file aligned with the transcription": (
             "與轉寫字幕對齊的可選導引字幕 SRT 檔"
         ),
-        "first 1-indexed transcription subtitle number to include, inclusive": (
-            "要包含的第一個轉寫字幕編號（從 1 開始，包含該編號）"
-        ),
-        "last 1-indexed transcription subtitle number to include, inclusive": (
-            "要包含的最後一個轉寫字幕編號（從 1 開始，包含該編號）"
-        ),
-        "rows to include: all or changes (default: changes)": (
-            "要包含的列：all 表示全部，changes 表示差異（預設：changes）"
-        ),
-        "similarity threshold used to pair replacements (default: 0.6)": (
-            "用於配對替換項的相似度閾值（預設：0.6）"
+        (
+            "rows to include: all or changes; all includes every aligned row; "
+            "changes includes differing rows (default: %(default)s)"
+        ): ("要包含的列：all 表示每個對齊列，changes 表示差異列（預設：%(default)s）"),
+        "similarity threshold used to pair replacements (default: %(default)s)": (
+            "用於配對替換項的相似度閾值（預設：%(default)s）"
         ),
     },
 }
@@ -82,14 +71,6 @@ AUDIT_ALIGNED_DIFF_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class AuditAlignedDiffCli(AuditCliBase):
     """Audit character-aligned subtitle differences."""
 
-    first_index_help = (
-        "first 1-indexed transcription subtitle number to include, inclusive"
-    )
-    """Help text describing the first selected transcription index."""
-    last_index_help = (
-        "last 1-indexed transcription subtitle number to include, inclusive"
-    )
-    """Help text describing the last selected transcription index."""
     localizations = AUDIT_ALIGNED_DIFF_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
@@ -108,6 +89,8 @@ class AuditAlignedDiffCli(AuditCliBase):
             "output arguments",
             optional_arguments_name="additional arguments",
         )
+
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--original",
             dest="original_path",
@@ -134,25 +117,32 @@ class AuditAlignedDiffCli(AuditCliBase):
             type=input_file_arg(),
             help="optional guide subtitle SRT file aligned with the transcription",
         )
-        arg_groups["operation arguments"].add_argument(
-            "--filter",
-            choices=tuple(AlignedDiffAuditFilter),
-            default=AlignedDiffAuditFilter.changes,
-            dest="row_filter",
-            metavar="{all,changes}",
-            type=enum_arg(AlignedDiffAuditFilter),
-            help="rows to include: all or changes (default: changes)",
+
+        # Operation arguments
+        cls.add_row_filter_argument(
+            parser,
+            AlignedDiffAuditFilter,
+            AlignedDiffAuditFilter.changes,
+            description=(
+                "all includes every aligned row; changes includes differing rows"
+            ),
         )
         arg_groups["operation arguments"].add_argument(
             "--similarity-cutoff",
             default=0.6,
             type=float_arg(min_value=0.0, max_value=1.0),
-            help="similarity threshold used to pair replacements (default: 0.6)",
+            help=(
+                "similarity threshold used to pair replacements (default: %(default)s)"
+            ),
         )
 
     @classmethod
     def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser."""
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
         return "aligned-diff"
 
     @classmethod
@@ -173,9 +163,25 @@ class AuditAlignedDiffCli(AuditCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
-        parser = _parser or cls.argparser()
+        """Execute with provided keyword arguments.
 
+        Arguments:
+            _parser: parser used to report user-facing errors
+            original_path: optional original subtitle SRT path
+            transcription_path: transcribed subtitle SRT path
+            reference_path: comparison reference subtitle SRT path
+            guide_path: optional guide subtitle SRT path
+            first_index: first transcription subtitle number to include
+            last_index: last transcription subtitle number to include
+            first_block: first transcription block number to include
+            last_block: last transcription block number to include
+            row_filter: rows to include in the report
+            similarity_cutoff: similarity cutoff for pairing replacement blocks
+            outfile_path: optional Markdown output path
+            overwrite: whether to overwrite an existing output file
+        """
+        # Read inputs
+        parser = _parser or cls.argparser()
         original = None
         if original_path is not None:
             original = read_series(parser, original_path)
@@ -184,6 +190,8 @@ class AuditAlignedDiffCli(AuditCliBase):
         guide = None
         if guide_path is not None:
             guide = read_series(parser, guide_path)
+
+        # Perform operation
         try:
             report = audit_aligned_diff(
                 transcription,
@@ -200,6 +208,7 @@ class AuditAlignedDiffCli(AuditCliBase):
         except ScinoephileError as exc:
             parser.error(str(exc))
 
+        # Write output
         cls.write_report(parser, report, outfile_path, overwrite)
 
 

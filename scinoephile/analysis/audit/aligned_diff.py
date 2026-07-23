@@ -13,11 +13,8 @@ from scinoephile.core.subtitles import Series
 from scinoephile.core.text import is_full_width_char
 
 from .utils import (
-    format_block_range,
-    format_index_range,
+    format_audit_report,
     get_selected_event_indexes,
-    validate_block_range,
-    validate_index_range,
 )
 
 __all__ = [
@@ -67,17 +64,7 @@ def audit_aligned_diff(
     Raises:
         ScinoephileError: if the range or guide alignment is invalid
     """
-    validate_index_range(first_index, last_index)
-    validate_block_range(first_block, last_block)
-    aligned_guide = _align_guide(transcription, guide)
-
-    diff = SeriesDiff(
-        transcription,
-        reference,
-        one_lbl="transcription",
-        two_lbl="reference",
-        similarity_cutoff=similarity_cutoff,
-    )
+    # Validate and resolve the selected transcription range
     selected_transcription_idxs = get_selected_event_indexes(
         transcription,
         first_index=first_index,
@@ -87,6 +74,17 @@ def audit_aligned_diff(
     )
     time_window = _get_time_window(transcription, selected_transcription_idxs)
 
+    # Align the optional guide and build the character-level diff
+    aligned_guide = _align_guide(transcription, guide)
+    diff = SeriesDiff(
+        transcription,
+        reference,
+        one_lbl="transcription",
+        two_lbl="reference",
+        similarity_cutoff=similarity_cutoff,
+    )
+
+    # Select aligned rows in the requested transcription range
     selected_messages: list[tuple[LineDiff, tuple[int, ...], tuple[int, ...]]] = []
     for message in diff.get_messages(include_equal=True):
         transcription_idxs, reference_idxs = diff.get_event_indices(message)
@@ -104,6 +102,7 @@ def audit_aligned_diff(
             continue
         selected_messages.append((message, transcription_idxs, reference_idxs))
 
+    # Count all selected rows before applying the display filter
     differing_rows = sum(
         message.kind is not LineDiffKind.EQUAL for message, _, _ in selected_messages
     )
@@ -113,42 +112,31 @@ def audit_aligned_diff(
             row for row in selected_messages if row[0].kind is not LineDiffKind.EQUAL
         ]
 
-    lines = [
-        "# Aligned Subtitle Diff Audit",
-        "",
-        "## Summary",
-        "",
-        f"- transcription subtitles: {len(transcription)}",
-        f"- reference subtitles: {len(reference)}",
-        f"- original: {'included' if original is not None else 'omitted'}",
-        f"- guide: {'included' if aligned_guide is not None else 'omitted'}",
-        f"- aligned rows in selected range: {differing_rows + equal_rows}",
-        f"- differing rows: {differing_rows}",
-        f"- equal rows: {equal_rows}",
-        f"- row filter: {row_filter.value}",
-    ]
-    range_summary = format_index_range(
-        first_index,
-        last_index,
-        track_name="transcription",
-    )
-    if range_summary is not None:
-        lines.append(range_summary)
-    block_range_summary = format_block_range(first_block, last_block)
-    if block_range_summary is not None:
-        lines.append(block_range_summary)
-    lines.extend(
-        (
-            f"- table rows: {len(selected_messages)}",
-            "",
-            "## Audit Table",
-            "",
-            "| Indexes | Alignment | Notes |",
-            "|---|---|---|",
-        )
-    )
-    for message, transcription_idxs, reference_idxs in selected_messages:
-        lines.append(
+    # Format the report through the shared audit renderer
+    original_status = "omitted"
+    if original is not None:
+        original_status = "included"
+    guide_status = "omitted"
+    if aligned_guide is not None:
+        guide_status = "included"
+    return format_audit_report(
+        title="Aligned Subtitle Diff Audit",
+        summary_items=(
+            f"transcription subtitles: {len(transcription)}",
+            f"reference subtitles: {len(reference)}",
+            f"original: {original_status}",
+            f"guide: {guide_status}",
+            f"aligned rows in selected range: {differing_rows + equal_rows}",
+            f"differing rows: {differing_rows}",
+            f"equal rows: {equal_rows}",
+            f"row filter: {row_filter.value}",
+        ),
+        columns=(
+            ("Indexes", "right"),
+            ("Alignment", "left"),
+            ("Notes", "left"),
+        ),
+        rows=[
             _format_row(
                 message,
                 transcription_idxs,
@@ -157,8 +145,14 @@ def audit_aligned_diff(
                 original,
                 aligned_guide,
             )
-        )
-    return "\n".join(lines) + "\n"
+            for message, transcription_idxs, reference_idxs in selected_messages
+        ],
+        first_index=first_index,
+        last_index=last_index,
+        index_track_name="transcription",
+        first_block=first_block,
+        last_block=last_block,
+    )
 
 
 def _align_guide(transcription: Series, guide: Series | None) -> Series | None:
@@ -278,8 +272,8 @@ def _format_row(
     transcription: Series,
     original: Series | None,
     guide: Series | None,
-) -> str:
-    """Format one Markdown audit table row.
+) -> tuple[str, str, str]:
+    """Format one aligned diff as semantic table data.
 
     Arguments:
         message: aligned line diff message
@@ -289,9 +283,9 @@ def _format_row(
         original: optional original series
         guide: optional guide series
     Returns:
-        Markdown table row
+        index, alignment, and notes cells
     """
-    index_cell = "<br>".join(
+    index_cell = "\n".join(
         (
             _format_event_indices("T", transcription_idxs),
             _format_event_indices("R", reference_idxs),
@@ -315,8 +309,9 @@ def _format_row(
     if guide is not None:
         guide_text = _format_track_text(guide, transcription_idxs)
         aligned_lines.append(f"G │ {_escape_preformatted(guide_text)}")
-    alignment_cell = f"<pre>{'<br>'.join(aligned_lines)}</pre>"
-    return f"| {index_cell} | {alignment_cell} |  |"
+    aligned_text = "\n".join(aligned_lines)
+    alignment_cell = f"<pre>{aligned_text}</pre>"
+    return index_cell, alignment_cell, ""
 
 
 def _format_track_text(track: Series, event_idxs: tuple[int, ...]) -> str:
@@ -371,8 +366,12 @@ def _join_track_texts(texts: list[str]) -> str:
 
     chunks = [texts[0]]
     for text in texts[1:]:
-        previous_char = chunks[-1][-1] if chunks[-1] else None
-        next_char = text[0] if text else None
+        previous_char = None
+        if chunks[-1]:
+            previous_char = chunks[-1][-1]
+        next_char = None
+        if text:
+            next_char = text[0]
         if (
             previous_char is not None
             and is_full_width_char(previous_char)
