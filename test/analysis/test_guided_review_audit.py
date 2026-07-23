@@ -7,7 +7,7 @@ from __future__ import annotations
 from pytest import raises
 
 from scinoephile.analysis.audit.guided_review import audit_guided_review
-from scinoephile.analysis.audit.review import ReviewAuditFilter
+from scinoephile.analysis.audit.utils import AuditFilter
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.guided_review import GuidedReviewTestCase
@@ -173,13 +173,13 @@ def test_audit_guided_review_filters_rows_and_target_range():
         target,
         guide,
         test_cases,
-        row_filter=ReviewAuditFilter.changes,
+        row_filter=AuditFilter.changes,
     )
     unverified_report = audit_guided_review(
         target,
         guide,
         test_cases,
-        row_filter=ReviewAuditFilter.unverified,
+        row_filter=AuditFilter.unverified,
     )
     ranged_report = audit_guided_review(
         target,

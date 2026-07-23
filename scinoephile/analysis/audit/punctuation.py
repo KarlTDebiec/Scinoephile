@@ -24,14 +24,7 @@ from .utils import (
     validate_index_range,
 )
 
-__all__ = [
-    "PunctuationAuditFilter",
-    "audit_punctuation",
-]
-
-
-PunctuationAuditFilter = AuditFilter
-"""Row filters supported by a transcription punctuation audit."""
+__all__ = ["audit_punctuation"]
 
 
 def audit_punctuation(
@@ -39,7 +32,7 @@ def audit_punctuation(
     target: Series,
     test_cases: Sequence[PunctuationTestCase],
     *,
-    row_filter: PunctuationAuditFilter = PunctuationAuditFilter.all,
+    row_filter: AuditFilter = AuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -116,9 +109,8 @@ def audit_punctuation(
             changes += 1
 
         if (
-            row_filter is PunctuationAuditFilter.changes
-            and result is not AuditResult.changed
-        ) or (row_filter is PunctuationAuditFilter.unverified and test_case.verified):
+            row_filter is AuditFilter.changes and result is not AuditResult.changed
+        ) or (row_filter is AuditFilter.unverified and test_case.verified):
             continue
         rows.append((index, test_case_index, row))
 

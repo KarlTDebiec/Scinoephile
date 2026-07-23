@@ -12,11 +12,11 @@ from pytest import raises
 
 from scinoephile.analysis.audit.review import (
     ComparativeReviewAuditFilter,
-    ReviewAuditFilter,
     ReviewAuditPair,
     audit_review_workflow,
     audit_reviews,
 )
+from scinoephile.analysis.audit.utils import AuditFilter
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
@@ -143,7 +143,7 @@ def test_audit_review_workflow_filters_unverified_cases():
                 review_cases=(unverified_case, verified_case),
             ),
         ),
-        row_filter=ReviewAuditFilter.unverified,
+        row_filter=AuditFilter.unverified,
     )
 
     assert "- row filter: unverified" in report
@@ -220,7 +220,7 @@ def test_audit_review_workflow_selects_blocks():
 
     report = audit_review_workflow(
         reviews=reviews,
-        row_filter=ReviewAuditFilter.all,
+        row_filter=AuditFilter.all,
         first_block=2,
         last_block=2,
     )

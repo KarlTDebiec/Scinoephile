@@ -23,21 +23,14 @@ from .utils import (
     validate_index_range,
 )
 
-__all__ = [
-    "DelineationAuditFilter",
-    "audit_delineation",
-]
-
-
-DelineationAuditFilter = AuditFilter
-"""Row filters supported by a transcription delineation audit."""
+__all__ = ["audit_delineation"]
 
 
 def audit_delineation(
     reference: Series,
     test_cases: Sequence[DelineationTestCase],
     *,
-    row_filter: DelineationAuditFilter = DelineationAuditFilter.all,
+    row_filter: AuditFilter = AuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -114,9 +107,8 @@ def audit_delineation(
             result = AuditResult.unchanged
 
         if (
-            row_filter is DelineationAuditFilter.changes
-            and result is not AuditResult.changed
-        ) or (row_filter is DelineationAuditFilter.unverified and test_case.verified):
+            row_filter is AuditFilter.changes and result is not AuditResult.changed
+        ) or (row_filter is AuditFilter.unverified and test_case.verified):
             continue
 
         cells = (

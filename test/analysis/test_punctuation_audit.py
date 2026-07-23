@@ -6,10 +6,8 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.audit.punctuation import (
-    PunctuationAuditFilter,
-    audit_punctuation,
-)
+from scinoephile.analysis.audit.punctuation import audit_punctuation
+from scinoephile.analysis.audit.utils import AuditFilter
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.punctuation import (
@@ -85,13 +83,13 @@ def test_audit_punctuation_filters_rows_and_subtitle_range():
         reference,
         target,
         test_cases,
-        row_filter=PunctuationAuditFilter.changes,
+        row_filter=AuditFilter.changes,
     )
     unverified_report = audit_punctuation(
         reference,
         target,
         test_cases,
-        row_filter=PunctuationAuditFilter.unverified,
+        row_filter=AuditFilter.unverified,
     )
     ranged_report = audit_punctuation(
         reference,

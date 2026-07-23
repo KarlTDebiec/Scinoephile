@@ -6,9 +6,6 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.audit.delineation import DelineationAuditFilter
-from scinoephile.analysis.audit.punctuation import PunctuationAuditFilter
-from scinoephile.analysis.audit.review import ReviewAuditFilter
 from scinoephile.analysis.audit.utils import (
     AuditFilter,
     format_audit_report,
@@ -16,11 +13,13 @@ from scinoephile.analysis.audit.utils import (
 )
 
 
-def test_workflow_audit_filters_share_one_enum():
-    """Test compatible workflow filter exports reuse the shared enum."""
-    assert DelineationAuditFilter is AuditFilter
-    assert PunctuationAuditFilter is AuditFilter
-    assert ReviewAuditFilter is AuditFilter
+def test_audit_filter_has_common_options():
+    """Test the shared audit filter exposes the common row options."""
+    assert tuple(AuditFilter) == (
+        AuditFilter.all,
+        AuditFilter.changes,
+        AuditFilter.unverified,
+    )
 
 
 def test_format_audit_report_formats_ranges_and_table():

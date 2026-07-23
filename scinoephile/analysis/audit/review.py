@@ -23,7 +23,6 @@ from .utils import (
 __all__ = [
     "ComparativeReviewAuditFilter",
     "ReviewAuditComparison",
-    "ReviewAuditFilter",
     "ReviewAuditPair",
     "audit_review_workflow",
     "audit_reviews",
@@ -44,10 +43,6 @@ class ComparativeReviewAuditFilter(StrEnum):
 
     unverified = "unverified"
     """Include only subtitles from unverified logged cases."""
-
-
-ReviewAuditFilter = AuditFilter
-"""Row filters supported by review audits without final comparisons."""
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -167,9 +162,7 @@ def audit_review_workflow(
     *,
     reviews: Sequence[ReviewAuditPair],
     comparisons: Sequence[ReviewAuditComparison] = (),
-    row_filter: ReviewAuditFilter | ComparativeReviewAuditFilter = (
-        ReviewAuditFilter.changes
-    ),
+    row_filter: AuditFilter | ComparativeReviewAuditFilter = AuditFilter.changes,
     characters: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
@@ -240,7 +233,7 @@ def audit_review_workflow(
             )
         )
         unverified_indexes = frozenset()
-        if row_filter.value == ReviewAuditFilter.unverified.value:
+        if row_filter.value == AuditFilter.unverified.value:
             unverified_indexes = frozenset(
                 index
                 for review, (original, reviewed) in zip(
@@ -311,7 +304,7 @@ def _format_markdown(
     comparison_series: Sequence[tuple[Sequence[str], Sequence[str]]],
     comparison_changes: Sequence[set[int]],
     indexes: Sequence[int],
-    row_filter: ReviewAuditFilter | ComparativeReviewAuditFilter,
+    row_filter: AuditFilter | ComparativeReviewAuditFilter,
     characters: Sequence[str],
     first_index: int | None,
     last_index: int | None,
@@ -442,7 +435,7 @@ def _get_filtered_indexes(
     review_changes: Sequence[set[int]],
     comparison_changes: Sequence[set[int]],
     indexes: Iterable[int],
-    row_filter: ReviewAuditFilter | ComparativeReviewAuditFilter,
+    row_filter: AuditFilter | ComparativeReviewAuditFilter,
     unverified_indexes: frozenset[int],
     characters: Sequence[str],
 ) -> list[int]:
@@ -459,9 +452,9 @@ def _get_filtered_indexes(
     Returns:
         selected subtitle indexes
     """
-    if row_filter.value == ReviewAuditFilter.all.value:
+    if row_filter.value == AuditFilter.all.value:
         selected_indexes = set(indexes)
-    elif row_filter.value == ReviewAuditFilter.changes.value:
+    elif row_filter.value == AuditFilter.changes.value:
         selected_indexes = {
             index
             for changed_indexes in (*review_changes, *comparison_changes)
