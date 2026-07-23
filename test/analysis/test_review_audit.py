@@ -12,8 +12,8 @@ from pytest import raises
 
 from scinoephile.analysis.audit.review import (
     ReviewAuditPair,
+    audit_dual_review,
     audit_review,
-    audit_reviews,
 )
 from scinoephile.analysis.audit.utils import ChangeAuditFilter, ExtendedAuditFilter
 from scinoephile.core import ScinoephileError
@@ -52,6 +52,111 @@ class _AuditInputs(TypedDict):
 
     simplified_review_cases: list[TestCase]
     """Simplified review test cases."""
+
+
+def test_audit_dual_review_filters_and_includes_json_notes(tmp_path: Path):
+    """Test row filters, character filters, and JSON-backed notes.
+
+    Arguments:
+        tmp_path: temporary path
+    """
+    inputs = _get_audit_inputs(tmp_path)
+
+    report = audit_dual_review(
+        **inputs,
+        row_filter=ExtendedAuditFilter.changes,
+    )
+
+    assert "- simplified review edits: 1" in report
+    assert "- traditional review edits: 1" in report
+    assert "- traditional simplification review edits: 1" in report
+    assert "- final text discrepancies: 2" in report
+    assert "- table rows: 3" in report
+    assert "| Notes | Verified |" in report
+    assert "| 1 |" not in report
+    assert (
+        "| 2 | 简错<br>简正 | 傳錯<br>傳正 | 传正 | 简正<br>传正 | "
+        "Simplified review: 修正简体字。<br>Traditional review: 修正繁體字。 |  |"
+        in report
+    )
+    assert "| 3 | 着正 | 著 | 着错<br>着正 | 着正 |" in report
+    assert "Simplified review: 修正简体字。" in report
+    assert "Traditional review: 修正繁體字。" in report
+    assert "Traditional simplification review: 修正簡化結果。" in report
+
+    report = audit_dual_review(
+        **inputs,
+        row_filter=ExtendedAuditFilter.discrepancies,
+    )
+    assert "- table rows: 2" in report
+    assert "| 2 |" in report
+    assert "| 3 |" not in report
+    assert "| 4 |" in report
+
+    report = audit_dual_review(
+        **inputs,
+        row_filter=ExtendedAuditFilter.all,
+        characters=("著", "丙"),
+    )
+    assert "- character filter: 著, 丙" in report
+    assert "- table rows: 1" in report
+    assert "| 1 |" not in report
+    assert "| 3 |" in report
+
+    report = audit_dual_review(
+        **inputs,
+        row_filter=ExtendedAuditFilter.all,
+        first_index=2,
+        last_index=3,
+    )
+    assert "- final text discrepancies: 1" in report
+    assert "- subtitle range: 2 through 3" in report
+    assert "- table rows: 2" in report
+    assert "| 1 |" not in report
+    assert "| 2 |" in report
+    assert "| 3 |" in report
+    assert "| 4 |" not in report
+
+
+def test_audit_dual_review_ignores_timing_differences(tmp_path: Path):
+    """Test timing differences do not prevent count-aligned audits.
+
+    Arguments:
+        tmp_path: temporary path
+    """
+    inputs = _get_audit_inputs(tmp_path)
+    inputs["traditional_reviewed"].events[1].start = 62_000
+    inputs["traditional_reviewed"].events[1].end = 62_500
+
+    report = audit_dual_review(**inputs, row_filter=ExtendedAuditFilter.all)
+
+    assert "- table rows: 4" in report
+
+
+def test_audit_dual_review_reuses_deduplicated_json_note(tmp_path: Path):
+    """Test one cached JSON block can annotate repeated matching subtitle rows.
+
+    Arguments:
+        tmp_path: temporary path
+    """
+    original_texts = ("錯", "錯")
+    reviewed_texts = ("正", "正")
+    original = _get_series(original_texts)
+    reviewed = _get_series(reviewed_texts)
+    json_path = tmp_path / "review.json"
+    _write_review_json(json_path, ("錯",), {1: ("正", "修正。")})
+
+    report = audit_dual_review(
+        traditional=original,
+        traditional_reviewed=reviewed,
+        traditional_simplified=reviewed,
+        traditional_simplified_reviewed=reviewed,
+        simplified=reviewed,
+        simplified_reviewed=reviewed,
+        traditional_review_cases=_load_review_cases(json_path),
+    )
+
+    assert report.count("Traditional review: 修正。") == 2
 
 
 def test_audit_review_filters_unverified_cases():
@@ -250,111 +355,6 @@ def test_audit_review_uses_latest_duplicate_case():
     assert "Test review: Current note." in report
     assert "| 1 | Input<br>Output | Test review: Current note. | ✓ |" in report
     assert "- table rows: 0" in unverified_report
-
-
-def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
-    """Test row filters, character filters, and JSON-backed notes.
-
-    Arguments:
-        tmp_path: temporary path
-    """
-    inputs = _get_audit_inputs(tmp_path)
-
-    report = audit_reviews(
-        **inputs,
-        row_filter=ExtendedAuditFilter.changes,
-    )
-
-    assert "- simplified review edits: 1" in report
-    assert "- traditional review edits: 1" in report
-    assert "- traditional simplification review edits: 1" in report
-    assert "- final text discrepancies: 2" in report
-    assert "- table rows: 3" in report
-    assert "| Notes | Verified |" in report
-    assert "| 1 |" not in report
-    assert (
-        "| 2 | 简错<br>简正 | 傳錯<br>傳正 | 传正 | 简正<br>传正 | "
-        "Simplified review: 修正简体字。<br>Traditional review: 修正繁體字。 |  |"
-        in report
-    )
-    assert "| 3 | 着正 | 著 | 着错<br>着正 | 着正 |" in report
-    assert "Simplified review: 修正简体字。" in report
-    assert "Traditional review: 修正繁體字。" in report
-    assert "Traditional simplification review: 修正簡化結果。" in report
-
-    report = audit_reviews(
-        **inputs,
-        row_filter=ExtendedAuditFilter.discrepancies,
-    )
-    assert "- table rows: 2" in report
-    assert "| 2 |" in report
-    assert "| 3 |" not in report
-    assert "| 4 |" in report
-
-    report = audit_reviews(
-        **inputs,
-        row_filter=ExtendedAuditFilter.all,
-        characters=("著", "丙"),
-    )
-    assert "- character filter: 著, 丙" in report
-    assert "- table rows: 1" in report
-    assert "| 1 |" not in report
-    assert "| 3 |" in report
-
-    report = audit_reviews(
-        **inputs,
-        row_filter=ExtendedAuditFilter.all,
-        first_index=2,
-        last_index=3,
-    )
-    assert "- final text discrepancies: 1" in report
-    assert "- subtitle range: 2 through 3" in report
-    assert "- table rows: 2" in report
-    assert "| 1 |" not in report
-    assert "| 2 |" in report
-    assert "| 3 |" in report
-    assert "| 4 |" not in report
-
-
-def test_audit_reviews_ignores_timing_differences(tmp_path: Path):
-    """Test timing differences do not prevent count-aligned audits.
-
-    Arguments:
-        tmp_path: temporary path
-    """
-    inputs = _get_audit_inputs(tmp_path)
-    inputs["traditional_reviewed"].events[1].start = 62_000
-    inputs["traditional_reviewed"].events[1].end = 62_500
-
-    report = audit_reviews(**inputs, row_filter=ExtendedAuditFilter.all)
-
-    assert "- table rows: 4" in report
-
-
-def test_audit_reviews_reuses_deduplicated_json_note(tmp_path: Path):
-    """Test one cached JSON block can annotate repeated matching subtitle rows.
-
-    Arguments:
-        tmp_path: temporary path
-    """
-    original_texts = ("錯", "錯")
-    reviewed_texts = ("正", "正")
-    original = _get_series(original_texts)
-    reviewed = _get_series(reviewed_texts)
-    json_path = tmp_path / "review.json"
-    _write_review_json(json_path, ("錯",), {1: ("正", "修正。")})
-
-    report = audit_reviews(
-        traditional=original,
-        traditional_reviewed=reviewed,
-        traditional_simplified=reviewed,
-        traditional_simplified_reviewed=reviewed,
-        simplified=reviewed,
-        simplified_reviewed=reviewed,
-        traditional_review_cases=_load_review_cases(json_path),
-    )
-
-    assert report.count("Traditional review: 修正。") == 2
 
 
 def _get_audit_inputs(tmp_path: Path) -> _AuditInputs:

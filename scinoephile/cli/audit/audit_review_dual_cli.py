@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
 
-from scinoephile.analysis.audit.review import audit_reviews
+from scinoephile.analysis.audit.review import audit_dual_review
 from scinoephile.analysis.audit.utils import ExtendedAuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
@@ -369,7 +369,7 @@ class AuditReviewDualCli(AuditCliBase):
 
         # Perform operation
         try:
-            report = audit_reviews(
+            report = audit_dual_review(
                 simplified=simplified,
                 simplified_reviewed=simplified_reviewed,
                 traditional=traditional,
