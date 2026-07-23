@@ -1557,7 +1557,8 @@
       "target_sub_1": "佢曉寫自己個名呀",
       "target_sub_2": "爹呢一步非同小可"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1566,7 +1567,8 @@
       "target_sub_1": "爹呢一步非同小可",
       "target_sub_2": "今日曉寫字"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {

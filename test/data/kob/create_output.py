@@ -14,10 +14,7 @@ from scinoephile.core.subtitles import Series
 from test.data.ocr import process_ocr
 from test.data.srt import process_srt
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
-from test.data.transcription import (
-    get_reference_for_guide_blocks,
-    process_transcription,
-)
+from test.data.transcription import process_transcription
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -128,23 +125,11 @@ if "yue-Hant_transcribe" in actions:
     )
 if "yue-Hant_diff" in actions:
     zho_hant_guide = Series.load(zho_hant_guide_path)
-    yue_hant_transcribe = get_reference_for_guide_blocks(
-        Series.load(yue_hant_transcribe_path / "transcribe_clean_review_translate.srt"),
-        zho_hant_guide,
-        stop_at_idx=7,
+    yue_hant_transcribe = Series.load(
+        yue_hant_transcribe_path / "transcribe_clean_review_translate.srt"
     )
     yue_hant_reference = Series.load(
         yue_hant_path / "clean_review_flatten_timewarp.srt"
-    )
-    yue_hant_reference = get_reference_for_guide_blocks(
-        yue_hant_reference,
-        zho_hant_guide,
-        stop_at_idx=7,
-    )
-    zho_hant_guide = get_reference_for_guide_blocks(
-        zho_hant_guide,
-        zho_hant_guide,
-        stop_at_idx=7,
     )
     zho_hant_guide_by_timing = {
         (subtitle.start, subtitle.end): subtitle for subtitle in zho_hant_guide
