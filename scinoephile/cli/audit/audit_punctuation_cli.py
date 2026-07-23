@@ -90,6 +90,8 @@ class AuditPunctuationCli(AuditCliBase):
             "output arguments",
             optional_arguments_name="additional arguments",
         )
+
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--reference",
             dest="reference_path",
@@ -111,6 +113,8 @@ class AuditPunctuationCli(AuditCliBase):
             type=input_file_arg(),
             help="punctuation test-case JSON file",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
             choices=tuple(PunctuationAuditFilter),
@@ -143,6 +147,7 @@ class AuditPunctuationCli(AuditCliBase):
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
+        # Read inputs
         parser = _parser or cls.argparser()
         reference = read_series(parser, reference_path)
         target = read_series(parser, target_path)
@@ -153,6 +158,7 @@ class AuditPunctuationCli(AuditCliBase):
             workflow_name="punctuation",
         )
 
+        # Perform operation
         try:
             report = audit_punctuation(
                 reference,
@@ -167,6 +173,7 @@ class AuditPunctuationCli(AuditCliBase):
         except ScinoephileError as exc:
             parser.error(str(exc))
 
+        # Write output
         cls.write_report(parser, report, outfile_path, overwrite)
 
 
