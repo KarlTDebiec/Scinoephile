@@ -10,12 +10,14 @@ from unittest.mock import patch
 
 from pytest import CaptureFixture, mark, raises
 
+from scinoephile.analysis.audit.aligned_diff import AlignedDiffAuditFilter
 from scinoephile.analysis.audit.utils import (
     AuditFilter,
     ChangeAuditFilter,
     ExtendedAuditFilter,
 )
 from scinoephile.cli.audit import AuditCli
+from scinoephile.cli.audit.audit_aligned_diff_cli import AuditAlignedDiffCli
 from scinoephile.cli.audit.audit_cli_base import AuditCliBase
 from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
 from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
@@ -31,6 +33,7 @@ from scinoephile.common.testing import run_cli_with_args
 
 def test_audit_cli_subcommands():
     """Test the audit CLI and its workflow subcommands are registered."""
+    assert issubclass(AuditAlignedDiffCli, AuditCliBase)
     assert issubclass(AuditDelineationCli, AuditCliBase)
     assert issubclass(AuditPunctuationCli, AuditCliBase)
     assert issubclass(AuditReviewCli, AuditCliBase)
@@ -39,6 +42,7 @@ def test_audit_cli_subcommands():
     assert issubclass(AuditTranslationCli, AuditCliBase)
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
+        "aligned-diff": AuditAlignedDiffCli,
         "delineation": AuditDelineationCli,
         "ocr-fusion": AuditOcrFusionCli,
         "punctuation": AuditPunctuationCli,
@@ -47,6 +51,40 @@ def test_audit_cli_subcommands():
         "review-trad": AuditReviewTradCli,
         "translation": AuditTranslationCli,
     }
+
+
+def test_audit_aligned_diff_cli_writes_report(
+    tmp_path: Path,
+    capsys: CaptureFixture,
+):
+    """Test aligned diff audit output to stdout and a file.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    transcription_path = tmp_path / "transcription.srt"
+    reference_path = tmp_path / "reference.srt"
+    _write_srt(transcription_path, ("甲錯", "相同"))
+    _write_srt(reference_path, ("甲正", "相同"))
+    arguments = (
+        f"--transcription {transcription_path} --reference {reference_path} "
+        "--first-index 1 --last-index 1"
+    )
+
+    run_cli_with_args(AuditAlignedDiffCli, arguments)
+    stdout = capsys.readouterr().out
+    assert stdout.startswith("# Aligned Subtitle Diff Audit\n")
+    assert "- transcription subtitle range: 1 through 1" in stdout
+    assert "| T 1<br>R 1 | <pre>T │ 甲錯<br>R │ 甲正</pre> |  |" in stdout
+
+    outfile_path = tmp_path / "audit.md"
+    run_cli_with_args(
+        AuditAlignedDiffCli,
+        f"{arguments} --outfile {outfile_path}",
+    )
+    assert capsys.readouterr().out == ""
+    assert outfile_path.read_text(encoding="utf-8") == stdout
 
 
 @mark.parametrize(
@@ -635,7 +673,11 @@ def test_audit_translation_cli_infers_workflow_from_inputs(
 
 def test_transcription_audit_cli_help_describes_subtitle_indexes():
     """Test transcription audit range help describes subtitle indexes."""
-    for cli_class in (AuditDelineationCli, AuditPunctuationCli):
+    for cli_class in (
+        AuditAlignedDiffCli,
+        AuditDelineationCli,
+        AuditPunctuationCli,
+    ):
         actions = {
             action.dest: action
             for action in cli_class.argparser()._actions  # noqa: SLF001
@@ -646,6 +688,25 @@ def test_transcription_audit_cli_help_describes_subtitle_indexes():
         assert actions["last_index"].help == (
             "last 1-indexed subtitle number to include, inclusive"
         )
+
+    aligned_diff_actions = {
+        action.dest: action
+        for action in AuditAlignedDiffCli.argparser()._actions  # noqa: SLF001
+    }
+    filter_action = aligned_diff_actions["row_filter"]
+    assert filter_action.choices is None
+    assert filter_action.default is AlignedDiffAuditFilter.changes
+    assert filter_action.metavar == enum_metavar(AlignedDiffAuditFilter)
+    assert isinstance(filter_action.help, str)
+    assert enum_options_list_str(AlignedDiffAuditFilter) in filter_action.help
+    assert "all includes every aligned row" in filter_action.help
+    assert "changes includes differing rows" in filter_action.help
+
+    for cli_class in (AuditDelineationCli, AuditPunctuationCli):
+        actions = {
+            action.dest: action
+            for action in cli_class.argparser()._actions  # noqa: SLF001
+        }
         filter_action = actions["row_filter"]
         assert filter_action.choices is None
         assert filter_action.metavar == enum_metavar(ChangeAuditFilter)

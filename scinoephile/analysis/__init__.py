@@ -3,7 +3,7 @@
 """Analysis code for comparing subtitle series.
 
 Package hierarchy (modules may import from any above):
-* audit / line_alignment
+* line_alignment
 * diff
-* character_error_rate
+* audit / character_error_rate
 """
