@@ -7,10 +7,8 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.analysis.audit.punctuation import (
-    PunctuationAuditFilter,
-    audit_punctuation,
-)
+from scinoephile.analysis.audit.punctuation import audit_punctuation
+from scinoephile.analysis.audit.utils import AuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -101,11 +99,11 @@ class AuditPunctuationCli(AuditCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            choices=tuple(PunctuationAuditFilter),
-            default=PunctuationAuditFilter.all,
+            choices=tuple(AuditFilter),
+            default=AuditFilter.all,
             dest="row_filter",
             metavar="{all,changes,unverified}",
-            type=enum_arg(PunctuationAuditFilter),
+            type=enum_arg(AuditFilter),
             help="rows to include: all, changes, or unverified (default: all)",
         )
 
@@ -122,7 +120,7 @@ class AuditPunctuationCli(AuditCliBase):
         reference_path: Path,
         target_path: Path,
         json_path: Path,
-        row_filter: PunctuationAuditFilter,
+        row_filter: AuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,

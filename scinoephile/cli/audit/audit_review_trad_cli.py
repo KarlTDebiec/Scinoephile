@@ -9,10 +9,10 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from scinoephile.analysis.audit.review import (
-    ReviewAuditFilter,
     ReviewAuditPair,
     audit_review_workflow,
 )
+from scinoephile.analysis.audit.utils import AuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -176,12 +176,12 @@ class AuditReviewTradCli(AuditCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            default=ReviewAuditFilter.changes,
+            default=AuditFilter.changes,
             dest="row_filter",
-            metavar=enum_metavar(ReviewAuditFilter),
-            type=enum_arg(ReviewAuditFilter),
+            metavar=enum_metavar(AuditFilter),
+            type=enum_arg(AuditFilter),
             help=(
-                f"rows to include: {enum_options_list_str(ReviewAuditFilter)} "
+                f"rows to include: {enum_options_list_str(AuditFilter)} "
                 "(default: %(default)s)"
             ),
         )
@@ -218,7 +218,7 @@ class AuditReviewTradCli(AuditCliBase):
         traditional_simplified_reviewed_path: Path,
         traditional_json_path: Path | None,
         traditional_simplified_json_path: Path | None,
-        row_filter: ReviewAuditFilter,
+        row_filter: AuditFilter,
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
@@ -250,7 +250,7 @@ class AuditReviewTradCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is ReviewAuditFilter.unverified and (
+        if row_filter is AuditFilter.unverified and (
             traditional_json_path is None or traditional_simplified_json_path is None
         ):
             parser.error(

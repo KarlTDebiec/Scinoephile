@@ -7,10 +7,8 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.analysis.audit.delineation import (
-    DelineationAuditFilter,
-    audit_delineation,
-)
+from scinoephile.analysis.audit.delineation import audit_delineation
+from scinoephile.analysis.audit.utils import AuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -92,11 +90,11 @@ class AuditDelineationCli(AuditCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            choices=tuple(DelineationAuditFilter),
-            default=DelineationAuditFilter.all,
+            choices=tuple(AuditFilter),
+            default=AuditFilter.all,
             dest="row_filter",
             metavar="{all,changes,unverified}",
-            type=enum_arg(DelineationAuditFilter),
+            type=enum_arg(AuditFilter),
             help="rows to include: all, changes, or unverified (default: all)",
         )
 
@@ -112,7 +110,7 @@ class AuditDelineationCli(AuditCliBase):
         _parser: ArgumentParser | None = None,
         reference_path: Path,
         json_path: Path,
-        row_filter: DelineationAuditFilter,
+        row_filter: AuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
