@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from collections import defaultdict
 from collections.abc import Sequence
-from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -14,13 +13,13 @@ from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.punctuation import PunctuationTestCase
 
 from .utils import (
+    AuditFilter,
     AuditResult,
     escape_table_cell,
-    format_block_range,
-    format_index_range,
-    get_contextual_index,
+    format_audit_report,
     get_selected_event_indexes,
     get_superseded_keys,
+    resolve_contextual_index,
     validate_block_range,
     validate_index_range,
 )
@@ -31,17 +30,8 @@ __all__ = [
 ]
 
 
-class PunctuationAuditFilter(StrEnum):
-    """Row filters supported by a transcription punctuation audit."""
-
-    all = "all"
-    """Include every logged punctuation decision."""
-
-    changes = "changes"
-    """Include only decisions that changed punctuation or whitespace."""
-
-    unverified = "unverified"
-    """Include only decisions not marked as verified."""
+PunctuationAuditFilter = AuditFilter
+"""Row filters supported by a transcription punctuation audit."""
 
 
 def audit_punctuation(
@@ -133,39 +123,31 @@ def audit_punctuation(
         rows.append((index, test_case_index, row))
 
     rows.sort(key=lambda item: (item[0], item[1]))
-    lines = [
-        "# Transcription Punctuation Audit",
-        "",
-        "## Summary",
-        "",
-        f"- logged cases: {logged_cases}",
-        f"- punctuation changes: {changes}",
-        f"- unchanged answers: {unchanged}",
-        f"- unanswered cases: {unanswered}",
-        f"- row filter: {row_filter.value}",
-    ]
-    range_summary = format_index_range(
-        first_index,
-        last_index,
-        track_name="reference",
+    return format_audit_report(
+        title="Transcription Punctuation Audit",
+        summary_lines=(
+            f"- logged cases: {logged_cases}",
+            f"- punctuation changes: {changes}",
+            f"- unchanged answers: {unchanged}",
+            f"- unanswered cases: {unanswered}",
+            f"- row filter: {row_filter.value}",
+        ),
+        column_labels=(
+            "Index",
+            "Reference",
+            "Input",
+            "Output",
+            "Notes",
+            "Verified",
+        ),
+        column_separators=("---:", "---", "---", "---", "---", ":---:"),
+        rows=[row for _, _, row in rows],
+        first_index=first_index,
+        last_index=last_index,
+        index_track_name="reference",
+        first_block=first_block,
+        last_block=last_block,
     )
-    if range_summary is not None:
-        lines.append(range_summary)
-    block_range_summary = format_block_range(first_block, last_block)
-    if block_range_summary is not None:
-        lines.append(block_range_summary)
-    lines.extend(
-        (
-            f"- table rows: {len(rows)}",
-            "",
-            "## Audit Table",
-            "",
-            "| Index | Reference | Input | Output | Notes | Verified |",
-            "|---:|---|---|---|---|:---:|",
-            *(row for _, _, row in rows),
-        )
-    )
-    return "\n".join(lines) + "\n"
 
 
 def _format_case_row(
@@ -221,15 +203,11 @@ def _get_case_index(
     Raises:
         ScinoephileError: if the case remains ambiguous
     """
-    index = direct_indexes[test_case_index - 1]
-    if index is None:
-        index = get_contextual_index(
-            candidates,
-            direct_indexes,
-            test_case_index - 1,
-        )
-        if index is not None:
-            direct_indexes[test_case_index - 1] = index
+    index = resolve_contextual_index(
+        candidates,
+        direct_indexes,
+        test_case_index - 1,
+    )
     if index is not None:
         return index
 

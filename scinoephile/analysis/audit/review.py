@@ -14,9 +14,9 @@ from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 
 from .utils import (
+    AuditFilter,
     escape_table_cell,
-    format_block_range,
-    format_index_range,
+    format_audit_report,
     get_selected_event_indexes,
 )
 
@@ -46,17 +46,8 @@ class ComparativeReviewAuditFilter(StrEnum):
     """Include only subtitles from unverified logged cases."""
 
 
-class ReviewAuditFilter(StrEnum):
-    """Row filters supported by review audits without final comparisons."""
-
-    all = "all"
-    """Include every subtitle row."""
-
-    changes = "changes"
-    """Include changed subtitle rows."""
-
-    unverified = "unverified"
-    """Include only subtitles from unverified logged cases."""
+ReviewAuditFilter = AuditFilter
+"""Row filters supported by review audits without final comparisons."""
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -374,17 +365,11 @@ def _format_markdown(
         cells.append("\n".join(note_lines))
         row_lines.append(f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |")
 
-    lines = [
-        "# Review Audit",
-        "",
-        "## Summary",
-        "",
-    ]
-    lines.extend(
+    summary_lines = [
         f"- {review.label.lower()} review edits: {len(changed_indexes)}"
         for review, changed_indexes in zip(reviews, review_changes, strict=True)
-    )
-    lines.extend(
+    ]
+    summary_lines.extend(
         f"- {comparison.summary_label.lower()} discrepancies: {len(changed_indexes)}"
         for comparison, changed_indexes in zip(
             comparisons,
@@ -392,32 +377,25 @@ def _format_markdown(
             strict=True,
         )
     )
-    lines.append(f"- row filter: {row_filter.value}")
+    summary_lines.append(f"- row filter: {row_filter.value}")
     if characters:
-        lines.append(f"- character filter: {', '.join(characters)}")
-    index_range = format_index_range(first_index, last_index)
-    if index_range is not None:
-        lines.append(index_range)
-    block_range = format_block_range(first_block, last_block)
-    if block_range is not None:
-        lines.append(block_range)
+        summary_lines.append(f"- character filter: {', '.join(characters)}")
 
     column_labels = ["Subtitle"]
     column_labels.extend(review.label for review in reviews)
     column_labels.extend(comparison.column_label for comparison in comparisons)
     column_labels.append("Notes")
-    lines.extend(
-        (
-            f"- table rows: {len(row_lines)}",
-            "",
-            "## Audit Table",
-            "",
-            f"| {' | '.join(column_labels)} |",
-            f"|---:|{'|'.join('---' for _ in column_labels[1:])}|",
-            *row_lines,
-        )
+    return format_audit_report(
+        title="Review Audit",
+        summary_lines=summary_lines,
+        column_labels=column_labels,
+        column_separators=["---:", *("---" for _ in column_labels[1:])],
+        rows=row_lines,
+        first_index=first_index,
+        last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
     )
-    return "\n".join(lines) + "\n"
 
 
 def _format_review_cell(
