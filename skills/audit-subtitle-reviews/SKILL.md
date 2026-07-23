@@ -75,7 +75,6 @@ Regular review:
 
 ```shell
 UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review \
-  --mode regular \
   --original <original.srt> \
   --reviewed <reviewed.srt> \
   --json <review.json> \
