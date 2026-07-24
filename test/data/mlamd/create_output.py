@@ -91,7 +91,7 @@ if "yue-Hans_transcribe" in actions:
         yue_hans,
         zho_hans,
         language=Language.yue_hans,
-        reference_language=Language.zho_hans,
+        guide_language=Language.zho_hans,
         transcriber=transcriber,
     )
     outfile_path = output_path / "yue-Hans_transcribe" / "transcribe.srt"

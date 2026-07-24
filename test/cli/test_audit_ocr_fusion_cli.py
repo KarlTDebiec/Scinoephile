@@ -31,7 +31,7 @@ def test_audit_ocr_fusion_cli_filter_help_is_consistent():
     assert "discrepancies includes differences from the validated track" in action.help
     json_help = actions["json_path"].help
     assert isinstance(json_help, str)
-    assert "notes and verification state" in json_help
+    assert json_help == "JSON file containing test cases"
 
 
 def test_audit_ocr_fusion_cli_writes_validated_discrepancy_report(

@@ -40,14 +40,18 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "校对后由繁体字转换的简体字 SRT 文件"
         ),
         (
-            "optional test-case JSON file for the traditional review; required "
-            "with --filter unverified"
-        ): ("繁体字校对的可选测试用例 JSON 文件；使用 --filter unverified 时为必需"),
-        (
-            "optional test-case JSON file for the traditional simplification "
-            "review; required with --filter unverified"
+            "JSON file containing traditional review test cases (optional; "
+            "required with --filter unverified)"
         ): (
-            "繁体字简化校对的可选测试用例 JSON 文件；使用 --filter unverified 时为必需"
+            "包含繁体字校对测试用例的 JSON 文件（可选；使用 --filter "
+            "unverified 时为必需）"
+        ),
+        (
+            "JSON file containing traditional simplification review test cases "
+            "(optional; required with --filter unverified)"
+        ): (
+            "包含繁体字简化校对测试用例的 JSON 文件（可选；使用 --filter "
+            "unverified 时为必需）"
         ),
         (
             "rows to include: all, changes, or unverified; all includes every "
@@ -80,13 +84,19 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "校對後由繁體字轉換的簡體字 SRT 檔"
         ),
         (
-            "optional test-case JSON file for the traditional review; required "
-            "with --filter unverified"
-        ): ("繁體字校對的選用測試案例 JSON 檔；使用 --filter unverified 時為必需"),
+            "JSON file containing traditional review test cases (optional; "
+            "required with --filter unverified)"
+        ): (
+            "包含繁體字校對測試案例的 JSON 檔（選用；使用 --filter "
+            "unverified 時為必需）"
+        ),
         (
-            "optional test-case JSON file for the traditional simplification "
-            "review; required with --filter unverified"
-        ): ("繁體字簡化校對的選用測試案例 JSON 檔；使用 --filter unverified 時為必需"),
+            "JSON file containing traditional simplification review test cases "
+            "(optional; required with --filter unverified)"
+        ): (
+            "包含繁體字簡化校對測試案例的 JSON 檔（選用；使用 --filter "
+            "unverified 時為必需）"
+        ),
         (
             "rows to include: all, changes, or unverified; all includes every "
             "subtitle; changes includes review edits; unverified includes subtitles "
@@ -164,8 +174,8 @@ class AuditReviewTradCli(AuditCliBase):
             dest="traditional_json_path",
             type=input_file_arg(),
             help=(
-                "optional test-case JSON file for the traditional review; required "
-                "with --filter unverified"
+                "JSON file containing traditional review test cases (optional; "
+                "required with --filter unverified)"
             ),
         )
         arg_groups["input arguments"].add_argument(
@@ -173,8 +183,8 @@ class AuditReviewTradCli(AuditCliBase):
             dest="traditional_simplified_json_path",
             type=input_file_arg(),
             help=(
-                "optional test-case JSON file for the traditional simplification "
-                "review; required with --filter unverified"
+                "JSON file containing traditional simplification review test cases "
+                "(optional; required with --filter unverified)"
             ),
         )
 

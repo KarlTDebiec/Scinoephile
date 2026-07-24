@@ -38,9 +38,6 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "guide subtitle SRT file used for guided review": (
             "用于引导式校对的参考字幕 SRT 文件"
         ),
-        "test-case JSON file; required with --guide or --filter unverified": (
-            "测试用例 JSON 文件；与 --guide 或 --filter unverified 一同使用时为必需"
-        ),
         (
             "rows to include: all, changes, or unverified; all includes every "
             "subtitle; changes includes review edits; unverified includes subtitles "
@@ -64,9 +61,6 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "subtitle SRT file after regular review": "常規校對後的字幕 SRT 檔",
         "guide subtitle SRT file used for guided review": (
             "用於引導式校對的參考字幕 SRT 檔"
-        ),
-        "test-case JSON file; required with --guide or --filter unverified": (
-            "測試案例 JSON 檔；與 --guide 或 --filter unverified 一同使用時為必需"
         ),
         (
             "rows to include: all, changes, or unverified; all includes every "
@@ -146,7 +140,7 @@ class AuditReviewCli(AuditCliBase):
             "--json",
             dest="json_path",
             type=input_file_arg(),
-            help=("test-case JSON file; required with --guide or --filter unverified"),
+            help="JSON file containing test cases",
         )
 
         # Operation arguments

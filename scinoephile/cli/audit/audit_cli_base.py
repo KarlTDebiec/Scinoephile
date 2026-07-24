@@ -8,7 +8,8 @@ from argparse import ArgumentParser
 from enum import Enum
 from pathlib import Path
 
-from scinoephile.cli.helpers.blocks import add_block_range_args
+from scinoephile.cli.helpers.blocks import BLOCK_LOCALIZATIONS, add_block_range_args
+from scinoephile.cli.helpers.llms import LLM_LOCALIZATIONS
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
@@ -18,6 +19,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.llms import Manager, TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 
@@ -31,12 +33,6 @@ AUDIT_CLI_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "last 1-indexed subtitle number to include, inclusive": (
             "要包含的最后一个字幕编号（从 1 开始，包含该编号）"
         ),
-        "first 1-indexed workflow block number to include, inclusive": (
-            "要包含的第一个工作流区块编号（从 1 开始，包含该编号）"
-        ),
-        "last 1-indexed workflow block number to include, inclusive": (
-            "要包含的最后一个工作流区块编号（从 1 开始，包含该编号）"
-        ),
         "Markdown outfile path (default: stdout)": (
             "Markdown 输出文件路径（默认：标准输出）"
         ),
@@ -48,12 +44,6 @@ AUDIT_CLI_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "last 1-indexed subtitle number to include, inclusive": (
             "要包含的最後一個字幕編號（從 1 開始，包含該編號）"
-        ),
-        "first 1-indexed workflow block number to include, inclusive": (
-            "要包含的第一個工作流程區塊編號（從 1 開始，包含該區塊）"
-        ),
-        "last 1-indexed workflow block number to include, inclusive": (
-            "要包含的最後一個工作流程區塊編號（從 1 開始，包含該區塊）"
         ),
         "Markdown outfile path (default: stdout)": (
             "Markdown 輸出檔路徑（預設：標準輸出）"
@@ -67,7 +57,11 @@ AUDIT_CLI_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class AuditCliBase(ScinoephileCliBase):
     """Shared command-line support for subtitle audits."""
 
-    localizations = AUDIT_CLI_LOCALIZATIONS
+    localizations = merge_localizations(
+        BLOCK_LOCALIZATIONS,
+        LLM_LOCALIZATIONS,
+        AUDIT_CLI_LOCALIZATIONS,
+    )
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -95,11 +89,7 @@ class AuditCliBase(ScinoephileCliBase):
             type=int_arg(min_value=1),
             help="last 1-indexed subtitle number to include, inclusive",
         )
-        add_block_range_args(
-            arg_groups["operation arguments"],
-            first_help=("first 1-indexed workflow block number to include, inclusive"),
-            last_help="last 1-indexed workflow block number to include, inclusive",
-        )
+        add_block_range_args(arg_groups["operation arguments"])
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",

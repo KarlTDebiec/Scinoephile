@@ -44,19 +44,26 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "simplified-script review input SRT file": "简体字校对输入 SRT 文件",
         "simplified-script reviewed SRT file": "简体字校对后 SRT 文件",
         (
-            "optional test-case JSON file for the traditional review; required "
-            "with --filter unverified"
-        ): ("繁体字校对的可选测试用例 JSON 文件；使用 --filter unverified 时为必需"),
-        (
-            "optional test-case JSON file for the traditional simplification "
-            "review; required with --filter unverified"
+            "JSON file containing traditional review test cases (optional; "
+            "required with --filter unverified)"
         ): (
-            "繁体字简化校对的可选测试用例 JSON 文件；使用 --filter unverified 时为必需"
+            "包含繁体字校对测试用例的 JSON 文件（可选；使用 --filter "
+            "unverified 时为必需）"
         ),
         (
-            "optional test-case JSON file for the simplified review; required "
-            "with --filter unverified"
-        ): ("简体字校对的可选测试用例 JSON 文件；使用 --filter unverified 时为必需"),
+            "JSON file containing traditional simplification review test cases "
+            "(optional; required with --filter unverified)"
+        ): (
+            "包含繁体字简化校对测试用例的 JSON 文件（可选；使用 --filter "
+            "unverified 时为必需）"
+        ),
+        (
+            "JSON file containing simplified review test cases (optional; required "
+            "with --filter unverified)"
+        ): (
+            "包含简体字校对测试用例的 JSON 文件（可选；使用 --filter "
+            "unverified 时为必需）"
+        ),
         "first 1-indexed subtitle number to include, inclusive": (
             "要包含的第一个字幕编号（从 1 开始，包含该编号）"
         ),
@@ -107,17 +114,26 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "simplified-script review input SRT file": "簡體字校對輸入 SRT 檔",
         "simplified-script reviewed SRT file": "簡體字校對後 SRT 檔",
         (
-            "optional test-case JSON file for the traditional review; required "
-            "with --filter unverified"
-        ): ("繁體字校對的選用測試案例 JSON 檔；使用 --filter unverified 時為必需"),
+            "JSON file containing traditional review test cases (optional; "
+            "required with --filter unverified)"
+        ): (
+            "包含繁體字校對測試案例的 JSON 檔（選用；使用 --filter "
+            "unverified 時為必需）"
+        ),
         (
-            "optional test-case JSON file for the traditional simplification "
-            "review; required with --filter unverified"
-        ): ("繁體字簡化校對的選用測試案例 JSON 檔；使用 --filter unverified 時為必需"),
+            "JSON file containing traditional simplification review test cases "
+            "(optional; required with --filter unverified)"
+        ): (
+            "包含繁體字簡化校對測試案例的 JSON 檔（選用；使用 --filter "
+            "unverified 時為必需）"
+        ),
         (
-            "optional test-case JSON file for the simplified review; required "
-            "with --filter unverified"
-        ): ("簡體字校對的選用測試案例 JSON 檔；使用 --filter unverified 時為必需"),
+            "JSON file containing simplified review test cases (optional; required "
+            "with --filter unverified)"
+        ): (
+            "包含簡體字校對測試案例的 JSON 檔（選用；使用 --filter "
+            "unverified 時為必需）"
+        ),
         "first 1-indexed subtitle number to include, inclusive": (
             "要包含的第一個字幕編號（從 1 開始，包含該編號）"
         ),
@@ -223,8 +239,8 @@ class AuditReviewDualCli(AuditCliBase):
             dest="simplified_json_path",
             type=input_file_arg(),
             help=(
-                "optional test-case JSON file for the simplified review; required "
-                "with --filter unverified"
+                "JSON file containing simplified review test cases (optional; "
+                "required with --filter unverified)"
             ),
         )
         arg_groups["input arguments"].add_argument(
@@ -232,8 +248,8 @@ class AuditReviewDualCli(AuditCliBase):
             dest="traditional_json_path",
             type=input_file_arg(),
             help=(
-                "optional test-case JSON file for the traditional review; required "
-                "with --filter unverified"
+                "JSON file containing traditional review test cases (optional; "
+                "required with --filter unverified)"
             ),
         )
         arg_groups["input arguments"].add_argument(
@@ -241,8 +257,8 @@ class AuditReviewDualCli(AuditCliBase):
             dest="traditional_simplified_json_path",
             type=input_file_arg(),
             help=(
-                "optional test-case JSON file for the traditional simplification "
-                "review; required with --filter unverified"
+                "JSON file containing traditional simplification review test cases "
+                "(optional; required with --filter unverified)"
             ),
         )
 

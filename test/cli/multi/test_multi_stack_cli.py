@@ -10,10 +10,27 @@ from pathlib import Path
 
 from pytest import raises
 
-from scinoephile.cli.multi.multi_stack_cli import MultiStackCli
+from scinoephile.cli.multi.multi_stack_cli import MultiStackCli, StackSyncMode
+from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
 from test.helpers import assert_series_equal, parametrize
+
+
+def test_multi_stack_cli_sync_enum_argument_is_consistent():
+    """Test sync validation, metavar, help, and default derive from its enum."""
+    actions = {
+        action.dest: action
+        for action in MultiStackCli.argparser()._actions  # noqa: SLF001
+    }
+    action = actions["sync_mode"]
+
+    assert action.choices is None
+    assert action.default is StackSyncMode.OFF
+    assert action.metavar == enum_metavar(StackSyncMode)
+    assert isinstance(action.help, str)
+    assert enum_options_list_str(StackSyncMode) in action.help
+    assert "default: %(default)s" in action.help
 
 
 def test_multi_stack_cli_stacks_without_sync_by_default(tmp_path: Path):

@@ -27,11 +27,23 @@ def test_review_cli_is_top_level_command():
 
 def test_review_cli_uses_guide_terminology():
     """Test guided review arguments consistently use guide terminology."""
-    help_text = ReviewCli.argparser().format_help()
+    parser = ReviewCli.argparser()
+    help_text = parser.format_help()
+    actions = {
+        action.dest: action
+        for action in parser._actions  # noqa: SLF001
+    }
 
     assert "--guide-infile" in help_text
     assert "--guide-language" in help_text
     assert "--reference-language" not in help_text
+    assert actions["language"].help == (
+        "subtitle language (detected from infile if omitted)"
+    )
+    assert actions["guide_language"].help == (
+        "guide language (detected from infile if omitted)"
+    )
+    assert actions["json_path"].help == "JSON file containing test cases"
 
 
 @parametrize(

@@ -14,6 +14,7 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
+    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
     int_arg,
@@ -55,29 +56,26 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "media stream index of audio stream in media input "
             "(default: first audio stream)"
         ): "媒体输入中的音频媒体流索引（默认：第一个音频流）",
-        'reference subtitle infile, or "-" for stdin': (
-            '参考字幕输入文件，或使用 "-" 表示标准输入'
+        'guide subtitle infile, or "-" for stdin': (
+            '引导字幕输入文件，或使用 "-" 表示标准输入'
         ),
-        "transcription language tag": "转写语言标签",
-        "reference language tag (detected from infile if omitted)": (
-            "参考语言标签（省略时从输入文件检测）"
-        ),
-        "Demucs vocal-separation mode (options: auto, on, off; default: auto)": (
-            "Demucs 人声分离模式（选项：auto、on、off；默认：auto）"
+        "transcription language": "转写语言",
+        "guide language (detected from infile if omitted)": (
+            "引导字幕语言（省略时从输入文件检测）"
         ),
         (
-            "Whisper voice activity detection mode "
-            "(options: on, off, auto; default: auto)"
-        ): "Whisper 语音活动检测模式（选项：on、off、auto；默认：auto）",
+            f"Demucs vocal-separation mode (options: "
+            f"{enum_options_list_str(DemucsMode)}; default: %(default)s)"
+        ): "Demucs 人声分离模式（选项：auto、on 或 off；默认：%(default)s）",
         (
-            "Whisper model identifier override (uses language-pair default if omitted)"
-        ): "Whisper 模型标识符覆盖值（省略时使用语言对默认值）",
-        "delineation test-case JSON file to load and update": (
-            "要加载和更新的断句测试用例 JSON 文件"
+            f"voice activity detection mode (options: "
+            f"{enum_options_list_str(VADMode)}; default: %(default)s)"
+        ): "语音活动检测模式（选项：auto、on 或 off；默认：%(default)s）",
+        "transcription model (default: backend default)": (
+            "转写模型（默认：后端默认值）"
         ),
-        "punctuation test-case JSON file to load and update": (
-            "要加载和更新的标点测试用例 JSON 文件"
-        ),
+        "JSON file containing delineation test cases": ("包含断句测试用例的 JSON 文件"),
+        "JSON file containing punctuation test cases": ("包含标点测试用例的 JSON 文件"),
         "subtitle outfile path (default: stdout)": (
             "字幕输出文件路径（默认：标准输出）"
         ),
@@ -93,29 +91,26 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "media stream index of audio stream in media input "
             "(default: first audio stream)"
         ): "媒體輸入中的音訊媒體流索引（預設：第一個音訊流）",
-        'reference subtitle infile, or "-" for stdin': (
-            '參考字幕輸入檔，或使用 "-" 代表標準輸入'
+        'guide subtitle infile, or "-" for stdin': (
+            '引導字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
-        "transcription language tag": "轉寫語言標籤",
-        "reference language tag (detected from infile if omitted)": (
-            "參考語言標籤（省略時從輸入檔偵測）"
-        ),
-        "Demucs vocal-separation mode (options: auto, on, off; default: auto)": (
-            "Demucs 人聲分離模式（選項：auto、on、off；預設：auto）"
+        "transcription language": "轉寫語言",
+        "guide language (detected from infile if omitted)": (
+            "引導字幕語言（省略時從輸入檔偵測）"
         ),
         (
-            "Whisper voice activity detection mode "
-            "(options: on, off, auto; default: auto)"
-        ): "Whisper 語音活動偵測模式（選項：on、off、auto；預設：auto）",
+            f"Demucs vocal-separation mode (options: "
+            f"{enum_options_list_str(DemucsMode)}; default: %(default)s)"
+        ): "Demucs 人聲分離模式（選項：auto、on 或 off；預設：%(default)s）",
         (
-            "Whisper model identifier override (uses language-pair default if omitted)"
-        ): "Whisper 模型識別碼覆寫值（省略時使用語言對預設值）",
-        "delineation test-case JSON file to load and update": (
-            "要載入和更新的斷句測試案例 JSON 檔案"
+            f"voice activity detection mode (options: "
+            f"{enum_options_list_str(VADMode)}; default: %(default)s)"
+        ): "語音活動偵測模式（選項：auto、on 或 off；預設：%(default)s）",
+        "transcription model (default: backend default)": (
+            "轉寫模型（預設：後端預設值）"
         ),
-        "punctuation test-case JSON file to load and update": (
-            "要載入和更新的標點測試案例 JSON 檔案"
-        ),
+        "JSON file containing delineation test cases": ("包含斷句測試案例的 JSON 檔"),
+        "JSON file containing punctuation test cases": ("包含標點測試案例的 JSON 檔"),
         "subtitle outfile path (default: stdout)": ("字幕輸出檔路徑（預設：標準輸出）"),
         "transcribe audio using reference subtitles": "使用參考字幕轉寫音訊",
     },
@@ -153,16 +148,17 @@ class TranscribeCli(ScinoephileCliBase):
 
         # Input arguments
         arg_groups["input arguments"].add_argument(
-            "media_infile_path",
-            metavar="MEDIA_INFILE",
+            "--media-infile",
+            dest="media_infile_path",
+            required=True,
             help="media infile used for transcription",
         )
         arg_groups["input arguments"].add_argument(
-            "--reference-infile",
-            dest="reference_infile_path",
+            "--guide-infile",
+            dest="guide_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='reference subtitle infile, or "-" for stdin',
+            help='guide subtitle infile, or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--stream-index",
@@ -179,43 +175,41 @@ class TranscribeCli(ScinoephileCliBase):
             required=True,
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help="transcription language tag",
+            help="transcription language",
         )
         arg_groups["operation arguments"].add_argument(
-            "--reference-language",
+            "--guide-language",
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help="reference language tag (detected from infile if omitted)",
+            help="guide language (detected from infile if omitted)",
         )
         add_block_range_args(arg_groups["operation arguments"])
         arg_groups["operation arguments"].add_argument(
             "--demucs",
             default=DemucsMode.AUTO,
             dest="demucs_mode",
-            metavar="{auto,on,off}",
+            metavar=enum_metavar(DemucsMode),
             type=enum_arg(DemucsMode),
             help=(
-                "Demucs vocal-separation mode (options: auto, on, off; default: auto)"
+                f"Demucs vocal-separation mode (options: "
+                f"{enum_options_list_str(DemucsMode)}; default: %(default)s)"
             ),
         )
         arg_groups["operation arguments"].add_argument(
             "--vad",
             default=VADMode.AUTO,
             dest="vad_mode",
-            metavar="{auto,on,off}",
+            metavar=enum_metavar(VADMode),
             type=enum_arg(VADMode),
             help=(
-                "Whisper voice activity detection mode "
-                "(options: on, off, auto; default: auto)"
+                f"voice activity detection mode (options: "
+                f"{enum_options_list_str(VADMode)}; default: %(default)s)"
             ),
         )
         arg_groups["operation arguments"].add_argument(
-            "--whisper-model",
+            "--model",
             dest="model_name",
-            help=(
-                "Whisper model identifier override "
-                "(uses language-pair default if omitted)"
-            ),
+            help="transcription model (default: backend default)",
         )
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
@@ -224,13 +218,13 @@ class TranscribeCli(ScinoephileCliBase):
             arg_groups["llm arguments"],
             "--delineation-json",
             dest="delineation_json_path",
-            help_text="delineation test-case JSON file to load and update",
+            help_text="JSON file containing delineation test cases",
         )
         add_llm_test_case_json_arg(
             arg_groups["llm arguments"],
             "--punctuation-json",
             dest="punctuation_json_path",
-            help_text="punctuation test-case JSON file to load and update",
+            help_text="JSON file containing punctuation test cases",
         )
 
         # Output arguments
@@ -254,10 +248,10 @@ class TranscribeCli(ScinoephileCliBase):
         *,
         _parser: ArgumentParser | None = None,
         media_infile_path: str,
-        reference_infile_path: Path | str,
+        guide_infile_path: Path | str,
         stream_index: int | None,
         language: Language,
-        reference_language: Language | None,
+        guide_language: Language | None,
         first_block: int | None,
         last_block: int | None,
         demucs_mode: DemucsMode,
@@ -272,32 +266,32 @@ class TranscribeCli(ScinoephileCliBase):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
-        if media_infile_path == "-" and reference_infile_path == "-":
-            parser.error("MEDIA_INFILE and --reference-infile may not both be '-'")
+        if media_infile_path == "-" and guide_infile_path == "-":
+            parser.error("--media-infile and --guide-infile may not both be '-'")
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
 
         # Read inputs
-        reference = read_series(parser, reference_infile_path, allow_stdin=True)
+        guide = read_series(parser, guide_infile_path, allow_stdin=True)
         start_at_idx, stop_at_idx = get_block_range_indexes(
             parser,
             first_block,
             last_block,
-            len(reference.blocks),
+            len(guide.blocks),
         )
         try:
-            if reference_infile_path == "-":
-                with get_temp_file_path(suffix=".srt") as temp_reference_path:
-                    reference.save(temp_reference_path)
+            if guide_infile_path == "-":
+                with get_temp_file_path(suffix=".srt") as temp_guide_path:
+                    guide.save(temp_guide_path)
                     audio = AudioSeries.load_from_media(
                         media_path=media_infile_path,
-                        subtitle_path=temp_reference_path,
+                        subtitle_path=temp_guide_path,
                         stream_index=stream_index,
                     )
             else:
                 audio = AudioSeries.load_from_media(
                     media_path=media_infile_path,
-                    subtitle_path=reference_infile_path,
+                    subtitle_path=guide_infile_path,
                     stream_index=stream_index,
                 )
         except (
@@ -313,9 +307,9 @@ class TranscribeCli(ScinoephileCliBase):
         try:
             output = transcribe_series_guided(
                 audio,
-                reference,
+                guide,
                 language=language,
-                reference_language=reference_language,
+                guide_language=guide_language,
                 model_name=model_name,
                 demucs_mode=demucs_mode,
                 vad_mode=vad_mode,
