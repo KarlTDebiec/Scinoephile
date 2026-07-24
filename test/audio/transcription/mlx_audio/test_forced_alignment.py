@@ -94,6 +94,32 @@ def test_align_transcription_ctc_preserves_unaligned_punctuation(
     assert segments[0].words[2].confidence == 0.0
 
 
+def test_align_transcription_ctc_preserves_all_unknown_characters(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test a transcript outside the CTC vocabulary receives fallback timings."""
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.mlx_audio.forced_alignment._get_ctc_alignment_inputs",
+        lambda **_kwargs: (np.empty((1, 1)), [], [], 0),
+        raising=False,
+    )
+
+    segments = align_transcription(
+        Path("/tmp/audio.wav"),
+        "佢哋嘅",
+        duration_seconds=1.5,
+    )
+
+    assert segments[0].text == "佢哋嘅"
+    assert segments[0].start == pytest.approx(0.0)
+    assert segments[0].end == pytest.approx(1.5)
+    assert segments[0].words is not None
+    assert [word.text for word in segments[0].words] == ["佢", "哋", "嘅"]
+    assert [word.start for word in segments[0].words] == pytest.approx([0.0, 0.5, 1.0])
+    assert [word.end for word in segments[0].words] == pytest.approx([0.5, 1.0, 1.5])
+    assert all(word.confidence == 0.0 for word in segments[0].words)
+
+
 @pytest.mark.parametrize(
     ("text", "char_indices", "expected_words"),
     [

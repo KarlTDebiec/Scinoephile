@@ -60,12 +60,12 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "media stream index of audio stream in media input "
             "(default: first audio stream)"
         ): "媒体输入中的音频媒体流索引（默认：第一个音频流）",
-        'reference subtitle infile, or "-" for stdin': (
-            '参考字幕输入文件，或使用 "-" 表示标准输入'
+        'guide subtitle infile, or "-" for stdin': (
+            '引导字幕输入文件，或使用 "-" 表示标准输入'
         ),
         "transcription language tag": "转写语言标签",
-        "reference language tag (detected from infile if omitted)": (
-            "参考语言标签（省略时从输入文件检测）"
+        "guide language tag (detected from guide infile if omitted)": (
+            "引导字幕语言标签（省略时从引导输入文件检测）"
         ),
         (
             f"transcription backend (options: "
@@ -104,12 +104,12 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "media stream index of audio stream in media input "
             "(default: first audio stream)"
         ): "媒體輸入中的音訊媒體流索引（預設：第一個音訊流）",
-        'reference subtitle infile, or "-" for stdin': (
-            '參考字幕輸入檔，或使用 "-" 代表標準輸入'
+        'guide subtitle infile, or "-" for stdin': (
+            '引導字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
         "transcription language tag": "轉寫語言標籤",
-        "reference language tag (detected from infile if omitted)": (
-            "參考語言標籤（省略時從輸入檔偵測）"
+        "guide language tag (detected from guide infile if omitted)": (
+            "引導字幕語言標籤（省略時從引導輸入檔偵測）"
         ),
         (
             f"transcription backend (options: "
@@ -175,11 +175,11 @@ class TranscribeCli(ScinoephileCliBase):
             help="media infile used for transcription",
         )
         arg_groups["input arguments"].add_argument(
-            "--reference-infile",
-            dest="reference_infile_path",
+            "--guide-infile",
+            dest="guide_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='reference subtitle infile, or "-" for stdin',
+            help='guide subtitle infile, or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--stream-index",
@@ -199,10 +199,10 @@ class TranscribeCli(ScinoephileCliBase):
             help="transcription language tag",
         )
         arg_groups["operation arguments"].add_argument(
-            "--reference-language",
+            "--guide-language",
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help="reference language tag (detected from infile if omitted)",
+            help="guide language tag (detected from guide infile if omitted)",
         )
         add_block_range_args(arg_groups["operation arguments"])
         arg_groups["operation arguments"].add_argument(
@@ -283,10 +283,10 @@ class TranscribeCli(ScinoephileCliBase):
         *,
         _parser: ArgumentParser | None = None,
         media_infile_path: str,
-        reference_infile_path: Path | str,
+        guide_infile_path: Path | str,
         stream_index: int | None,
         language: Language,
-        reference_language: Language | None,
+        guide_language: Language | None,
         first_block: int | None,
         last_block: int | None,
         backend: TranscriptionBackend,
@@ -302,32 +302,32 @@ class TranscribeCli(ScinoephileCliBase):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
-        if media_infile_path == "-" and reference_infile_path == "-":
-            parser.error("MEDIA_INFILE and --reference-infile may not both be '-'")
+        if media_infile_path == "-" and guide_infile_path == "-":
+            parser.error("MEDIA_INFILE and --guide-infile may not both be '-'")
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
 
         # Read inputs
-        reference = read_series(parser, reference_infile_path, allow_stdin=True)
+        guide = read_series(parser, guide_infile_path, allow_stdin=True)
         start_at_idx, stop_at_idx = get_block_range_indexes(
             parser,
             first_block,
             last_block,
-            len(reference.blocks),
+            len(guide.blocks),
         )
         try:
-            if reference_infile_path == "-":
-                with get_temp_file_path(suffix=".srt") as temp_reference_path:
-                    reference.save(temp_reference_path)
+            if guide_infile_path == "-":
+                with get_temp_file_path(suffix=".srt") as temp_guide_path:
+                    guide.save(temp_guide_path)
                     audio = AudioSeries.load_from_media(
                         media_path=media_infile_path,
-                        subtitle_path=temp_reference_path,
+                        subtitle_path=temp_guide_path,
                         stream_index=stream_index,
                     )
             else:
                 audio = AudioSeries.load_from_media(
                     media_path=media_infile_path,
-                    subtitle_path=reference_infile_path,
+                    subtitle_path=guide_infile_path,
                     stream_index=stream_index,
                 )
         except (
@@ -343,9 +343,9 @@ class TranscribeCli(ScinoephileCliBase):
         try:
             output = transcribe_series_guided(
                 audio,
-                reference,
+                guide,
                 language=language,
-                reference_language=reference_language,
+                reference_language=guide_language,
                 model_name=model_name,
                 backend=backend,
                 demucs_mode=demucs_mode,

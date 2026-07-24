@@ -140,9 +140,9 @@ finished. On a nonzero exit, diagnose or report the failure before continuing.
 ```shell
 UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile transcribe \
   <output_dir>/audio/audio.wav \
-  --reference-infile <guide> \
+  --guide-infile <guide> \
   --language <target_language> \
-  --reference-language <guide_language> \
+  --guide-language <guide_language> \
   --last-block B \
   --delineation-json <delineation_json> \
   --punctuation-json <punctuation_json> \

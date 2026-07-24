@@ -88,20 +88,20 @@ def _align_with_ctc(
         text=text,
         device=device,
     )
-    if not token_ids:
-        raise TranscriptionAlignmentError("CTC alignment found no supported tokens.")
-
-    path = _get_ctc_best_path(
-        log_probs=log_probs,
-        token_ids=token_ids,
-        blank_token_id=blank_token_id,
-    )
-    timed_chars = _get_ctc_character_timings(
-        path=path,
-        char_indices=char_indices,
-        log_probs=log_probs,
-        duration_seconds=duration_seconds,
-    )
+    if token_ids:
+        path = _get_ctc_best_path(
+            log_probs=log_probs,
+            token_ids=token_ids,
+            blank_token_id=blank_token_id,
+        )
+        timed_chars = _get_ctc_character_timings(
+            path=path,
+            char_indices=char_indices,
+            log_probs=log_probs,
+            duration_seconds=duration_seconds,
+        )
+    else:
+        timed_chars = {}
     words = _get_ctc_transcribed_words(
         text=text,
         timed_chars=timed_chars,

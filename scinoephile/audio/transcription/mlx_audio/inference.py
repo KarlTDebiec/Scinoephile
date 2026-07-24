@@ -31,6 +31,9 @@ class MlxAudioInferenceResult:
     duration_seconds: float
     """Source audio duration in seconds."""
 
+    generation_tokens: int | None = None
+    """Number of generated text tokens, when reported by the model."""
+
 
 def transcribe_with_mlx_audio(
     audio_path: Path,
@@ -59,15 +62,30 @@ def transcribe_with_mlx_audio(
     result = model.generate(str(audio_path), **generate_kwargs)
 
     if isinstance(result, Mapping):
-        text = cast(Mapping[str, object], result).get("text")
+        result_mapping = cast(Mapping[str, object], result)
+        text = result_mapping.get("text")
+        generation_tokens = result_mapping.get("generation_tokens")
     else:
         text = getattr(result, "text", None)
+        generation_tokens = getattr(result, "generation_tokens", None)
     if not isinstance(text, str):
         raise ValueError("MLX-Audio inference result is missing transcript text.")
+    if generation_tokens is not None and (
+        not isinstance(generation_tokens, int)
+        or isinstance(generation_tokens, bool)
+        or generation_tokens < 0
+    ):
+        raise ValueError(
+            "MLX-Audio inference result has an invalid generation token count."
+        )
 
     with wave.open(str(audio_path), "rb") as file:
         duration_seconds = file.getnframes() / file.getframerate()
-    return MlxAudioInferenceResult(text=text, duration_seconds=duration_seconds)
+    return MlxAudioInferenceResult(
+        text=text,
+        duration_seconds=duration_seconds,
+        generation_tokens=generation_tokens,
+    )
 
 
 def _get_or_load_mlx_audio_model(model_name: str) -> Any:

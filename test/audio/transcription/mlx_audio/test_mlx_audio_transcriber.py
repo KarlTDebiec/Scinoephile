@@ -166,6 +166,31 @@ def test_get_mlx_audio_model_profile_accepts_local_model_path():
     assert profile.family_name == "qwen3-asr"
 
 
+@pytest.mark.parametrize(
+    ("metadata", "expected_family"),
+    [
+        ({"architectures": ["MiMoV2ASRForCausalLM"]}, "mimo"),
+        ({"model_type": "qwen3_asr"}, "qwen3-asr"),
+    ],
+)
+def test_get_mlx_audio_model_profile_reads_local_model_metadata(
+    tmp_path: Path,
+    metadata: dict[str, object],
+    expected_family: str,
+):
+    """Test arbitrary local directories are identified from model metadata."""
+    model_path = tmp_path / "asr"
+    model_path.mkdir()
+    (model_path / "config.json").write_text(
+        json.dumps(metadata),
+        encoding="utf-8",
+    )
+
+    profile = get_mlx_audio_model_profile(str(model_path))
+
+    assert profile.family_name == expected_family
+
+
 def test_get_mlx_audio_model_profile_rejects_untested_family():
     """Test unknown MLX-Audio model families fail clearly."""
     with pytest.raises(
@@ -303,7 +328,7 @@ def test_transcribe_uses_direct_mlx_audio_inference(
     assert segments == expected_segments
     assert captured["model_name"] == MIMO_MODEL_NAME
     assert captured["language"] == "zh"
-    assert captured["max_tokens"] is None
+    assert captured["max_tokens"] == 256
     assert isinstance(captured["audio_path"], Path)
 
 
@@ -416,6 +441,52 @@ def test_transcribe_chunks_audio_and_offsets_segments(
     assert segments[1].words is not None
     assert segments[1].words[0].start == pytest.approx(2.2)
     assert segments[1].words[0].end == pytest.approx(3.7)
+
+
+def test_transcribe_splits_audio_after_generation_token_exhaustion(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test truncated MLX-Audio output is retried over smaller windows."""
+    audio = AudioSegment.silent(duration=4000)
+    transcriber = MlxAudioTranscriber(chunk_overlap_seconds=0.0)
+    patched_run_mlx_audio = Mock(
+        side_effect=[
+            MlxAudioInferenceResult(
+                text="truncated",
+                duration_seconds=4.0,
+                generation_tokens=256,
+            ),
+            MlxAudioInferenceResult(
+                text="one",
+                duration_seconds=2.0,
+                generation_tokens=1,
+            ),
+            MlxAudioInferenceResult(
+                text="two",
+                duration_seconds=2.0,
+                generation_tokens=1,
+            ),
+        ]
+    )
+    patched_align = Mock(
+        side_effect=[
+            [_get_timed_segment("one", end=2.0)],
+            [_get_timed_segment("two", end=2.0)],
+        ]
+    )
+    monkeypatch.setattr(transcriber, "_run_mlx_audio", patched_run_mlx_audio)
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.mlx_audio.transcriber.align_transcription",
+        patched_align,
+    )
+
+    segments = transcriber.transcribe(audio)
+
+    assert patched_run_mlx_audio.call_count == 3
+    assert patched_align.call_count == 2
+    assert [segment.text for segment in segments] == ["one", "two"]
+    assert [segment.start for segment in segments] == pytest.approx([0.0, 2.0])
+    assert [segment.end for segment in segments] == pytest.approx([2.0, 4.0])
 
 
 def test_transcribe_chunks_audio_skips_empty_windows(

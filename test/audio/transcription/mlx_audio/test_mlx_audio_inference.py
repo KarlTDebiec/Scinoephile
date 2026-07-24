@@ -30,7 +30,10 @@ def test_transcribe_with_mlx_audio_loads_model(
     model_dir_path = tmp_path / "MiMo-V2.5-ASR-MLX"
     model_dir_path.mkdir()
     fake_model = Mock()
-    fake_model.generate.return_value = SimpleNamespace(text="今日天气好好。")
+    fake_model.generate.return_value = SimpleNamespace(
+        text="今日天气好好。",
+        generation_tokens=42,
+    )
     fake_load = Mock(return_value=fake_model)
     monkeypatch.setattr(
         mlx_audio_inference,
@@ -48,6 +51,7 @@ def test_transcribe_with_mlx_audio_loads_model(
     fake_model.generate.assert_called_once_with(str(audio_path), language="zh")
     assert result.text == "今日天气好好。"
     assert result.duration_seconds == pytest.approx(1.0)
+    assert result.generation_tokens == 42
 
 
 def test_transcribe_with_mlx_audio_passes_max_tokens(
@@ -143,6 +147,32 @@ def test_transcribe_with_mlx_audio_rejects_missing_text(
     )
 
     with pytest.raises(ValueError, match="missing transcript text"):
+        mlx_audio_inference.transcribe_with_mlx_audio(
+            audio_path,
+            "model",
+            "zh",
+        )
+
+
+def test_transcribe_with_mlx_audio_rejects_invalid_generation_token_count(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test malformed generation metadata is rejected at the runtime boundary."""
+    audio_path = tmp_path / "audio.wav"
+    AudioSegment.silent(duration=1000).export(audio_path, format="wav")
+    fake_model = Mock()
+    fake_model.generate.return_value = {
+        "text": "今日天气好好。",
+        "generation_tokens": "42",
+    }
+    monkeypatch.setattr(
+        mlx_audio_inference,
+        "_import_mlx_audio_stt_load",
+        Mock(return_value=Mock(return_value=fake_model)),
+    )
+
+    with pytest.raises(ValueError, match="invalid generation token count"):
         mlx_audio_inference.transcribe_with_mlx_audio(
             audio_path,
             "model",
