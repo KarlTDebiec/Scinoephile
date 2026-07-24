@@ -9,12 +9,6 @@ Scinoephile is a package for working with Chinese/English bilingual subtitles, w
 focus on combining separate Chinese and English subtitles into synchronized bilingual
 subtitles.
 
-## Transcription
-
-The optional MiMo ASR backend for Cantonese transcription is documented in
-`docs/MIMO.md`, including Apple Silicon MLX setup and WhisperX or in-house CTC
-timestamp alignment.
-
 ## Notices
 
 Third-party license and data-source acknowledgements are listed in
