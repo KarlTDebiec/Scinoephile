@@ -10,7 +10,33 @@ from unittest.mock import patch
 
 from pytest import raises
 
-from scinoephile.cli.helpers.cache import add_cache_dir_arg
+from scinoephile.cli.helpers.cache import (
+    CacheArguments,
+    add_cache_args,
+    add_cache_dir_arg,
+)
+
+
+def test_add_cache_args_bundles_root_and_overwrite(tmp_path: Path):
+    """Test shared cache arguments parse into one bundle.
+
+    Arguments:
+        tmp_path: pytest temporary path fixture
+    """
+    parser = ArgumentParser()
+    cache_arg_group = parser.add_argument_group("cache arguments")
+    cache_dir_path = tmp_path / "cache"
+
+    add_cache_args(cache_arg_group)
+    namespace = parser.parse_args(
+        ["--cache-dir", str(cache_dir_path), "--cache-overwrite"]
+    )
+
+    assert namespace.cache_args == CacheArguments(
+        dir_path=cache_dir_path.resolve(),
+        overwrite=True,
+    )
+    assert not cache_dir_path.exists()
 
 
 def test_add_cache_dir_arg_resolves_runtime_cache_subpath():

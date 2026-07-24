@@ -7,7 +7,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
+from scinoephile.cli.helpers.cache import (
+    CACHE_LOCALIZATIONS,
+    CacheArguments,
+    add_cache_args,
+)
 from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
@@ -40,8 +44,6 @@ __all__ = ["OcrProcessCli"]
 
 OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "cache directory for extracted media subtitle artifacts (default: "
-        "%(default)s)": "提取媒体字幕产物的缓存目录（默认：%(default)s）",
         "clean OCR subtitle outputs before fusing": "在融合前清理 OCR 字幕输出",
         "directory where OCR processing outputs will be written": (
             "写入 OCR 处理输出的目录"
@@ -62,8 +64,6 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "Processed OCR outputs:": "已处理的 OCR 输出：",
     },
     "zh-hant": {
-        "cache directory for extracted media subtitle artifacts (default: "
-        "%(default)s)": "提取媒體字幕產物的快取目錄（預設：%(default)s）",
         "clean OCR subtitle outputs before fusing": "在融合前清理 OCR 字幕輸出",
         "directory where OCR processing outputs will be written": (
             "寫入 OCR 處理輸出的目錄"
@@ -111,6 +111,7 @@ class OcrProcessCli(ScinoephileCliBase):
             "input arguments",
             "operation arguments",
             "llm arguments",
+            "cache arguments",
             "web arguments",
             "output arguments",
             "additional help",
@@ -149,18 +150,12 @@ class OcrProcessCli(ScinoephileCliBase):
             action="store_true",
             help="maintainer option: write validation data updates to repo data",
         )
-        add_cache_dir_arg(
-            arg_groups["operation arguments"],
-            "media",
-            "subtitles",
-            help_text=(
-                "cache directory for extracted media subtitle artifacts "
-                "(default: %(default)s)"
-            ),
-        )
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
+
+        # Cache arguments
+        add_cache_args(arg_groups["cache arguments"])
 
         # Web arguments
         arg_groups["web arguments"].add_argument(
@@ -207,8 +202,8 @@ class OcrProcessCli(ScinoephileCliBase):
         interactive: bool,
         web_args: WebServerArguments,
         dev: bool,
-        cache_dir_path: Path,
         llm_args: LlmArguments,
+        cache_args: CacheArguments,
         output_dir_path: Path,
         overwrite: bool,
     ):
@@ -227,13 +222,14 @@ class OcrProcessCli(ScinoephileCliBase):
                 output_dir_path,
                 language=language,
                 stream_index=stream_index,
-                cache_dir_path=cache_dir_path,
+                cache_dir_path=cache_args.dir_path,
                 clean=clean,
                 interactive=interactive,
                 host=web_args.host,
                 port=web_args.port,
                 dev=dev,
                 overwrite=overwrite,
+                overwrite_cache=cache_args.overwrite,
                 provider=provider,
                 additional_context=additional_context,
             )()

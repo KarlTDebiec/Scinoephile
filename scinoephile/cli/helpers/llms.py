@@ -131,7 +131,7 @@ def add_llm_provider_args(
         help="LLM model",
     )
     llm_arg_group.add_argument(
-        "--llm-additional-content-file",
+        "--llm-additional-context-file",
         action=ArgumentBundleFieldAction,
         bundle_type=LlmArguments,
         dest="llm_args",

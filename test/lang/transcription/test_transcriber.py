@@ -623,7 +623,10 @@ def test_auto_demucs_retries_unseparated_audio_after_unusable_result():
     output = transcriber._transcribe_block_audio(original_audio)
 
     assert output == usable_segments
-    transcriber.demucs_separator.assert_called_once_with(original_audio)
+    transcriber.demucs_separator.assert_called_once_with(
+        original_audio,
+        overwrite_cache=False,
+    )
     transcriber.no_vad_transcriber.assert_called_once_with(
         separated_audio,
         cache_audio=original_audio,
@@ -660,7 +663,10 @@ def test_auto_demucs_uses_original_audio_after_separation_failure():
     output = transcriber._transcribe_block_audio(original_audio)
 
     assert output == usable_segments
-    transcriber.demucs_separator.assert_called_once_with(original_audio)
+    transcriber.demucs_separator.assert_called_once_with(
+        original_audio,
+        overwrite_cache=False,
+    )
     transcriber.no_vad_transcriber.assert_not_called()
     transcriber.unseparated_no_vad_transcriber.assert_called_once_with(
         original_audio,
@@ -688,7 +694,10 @@ def test_forced_demucs_surfaces_separation_failure():
     with raises(ScinoephileError, match="Demucs separation failed"):
         transcriber._transcribe_block_audio(original_audio)
 
-    transcriber.demucs_separator.assert_called_once_with(original_audio)
+    transcriber.demucs_separator.assert_called_once_with(
+        original_audio,
+        overwrite_cache=False,
+    )
     transcriber.no_vad_transcriber.assert_not_called()
     transcriber.recovery_transcriber.assert_not_called()
 

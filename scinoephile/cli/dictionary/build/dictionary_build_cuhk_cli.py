@@ -8,7 +8,11 @@ from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
 
-from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
+from scinoephile.cli.helpers.cache import (
+    CACHE_LOCALIZATIONS,
+    CacheArguments,
+    add_cache_args,
+)
 from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
@@ -27,9 +31,6 @@ logger = getLogger(__name__)
 DICTIONARY_BUILD_CUHK_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "build CUHK dictionary cache": "构建 CUHK 词典缓存",
-        ("cache directory for scraped HTML and link data (default: %(default)s)"): (
-            "抓取 HTML 与链接数据的缓存目录（默认：%(default)s）"
-        ),
         (
             "Comparative Database of Modern Standard Chinese and Cantonese "
             "(Chinese University of Hong Kong)."
@@ -44,9 +45,6 @@ DICTIONARY_BUILD_CUHK_LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
     "zh-hant": {
         "build CUHK dictionary cache": "建立 CUHK 詞典快取",
-        ("cache directory for scraped HTML and link data (default: %(default)s)"): (
-            "擷取 HTML 與連結資料的快取目錄（預設：%(default)s）"
-        ),
         (
             "Comparative Database of Modern Standard Chinese and Cantonese "
             "(Chinese University of Hong Kong)."
@@ -83,22 +81,14 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
             parser: nascent argument parser
         """
         super().add_arguments_to_argparser(parser)
+        cls.add_common_output_arguments(parser)
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
             "operation arguments",
+            "cache arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
-        )
-
-        # Input arguments
-        add_cache_dir_arg(
-            arg_groups["input arguments"],
-            "dictionaries",
-            "cuhk",
-            help_text=(
-                "cache directory for scraped HTML and link data (default: %(default)s)"
-            ),
         )
 
         # Operation arguments
@@ -131,7 +121,9 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
             default=30.0,
             help="per-request timeout in seconds",
         )
-        cls.add_common_output_arguments(parser)
+
+        # Cache arguments
+        add_cache_args(arg_groups["cache arguments"])
 
     @classmethod
     def log_config(
@@ -168,7 +160,7 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
     def _main(
         cls,
         *,
-        cache_dir_path: Path | None,
+        cache_args: CacheArguments,
         database_path: Path | None,
         max_words: int | None,
         overwrite: bool,
@@ -181,10 +173,11 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
         service = CuhkDictionaryService(
             database_path=database_path,
             scraper_kwargs={
-                "cache_dir_path": cache_dir_path,
+                "cache_dir_path": cache_args.dir_path / "dictionaries" / "cuhk",
                 "min_delay_seconds": min_delay_seconds,
                 "max_delay_seconds": max_delay_seconds,
                 "max_retries": max_retries,
+                "overwrite_cache": cache_args.overwrite,
                 "request_timeout_seconds": request_timeout_seconds,
             },
         )

@@ -41,17 +41,30 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
                     subtitle_count=8,
                 ),
             ],
-        ),
+        ) as details_mock,
         patch(
             "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script",
             return_value=SimpleNamespace(script="zho-Hant"),
-        ),
+        ) as analysis_mock,
     ):
         streams = get_zho_subtitle_streams(
             infile_path,
             cache_dir_path=cache_dir_path,
         )
 
+    details_mock.assert_called_once_with(
+        infile_path,
+        cache_dir_path=cache_dir_path / "media" / "subtitles",
+        overwrite_cache=False,
+        streams=None,
+    )
+    analysis_mock.assert_called_once_with(
+        infile_path,
+        streams[0],
+        cache_dir_path=cache_dir_path,
+        overwrite_cache=False,
+        subtitle_cache_is_fresh=False,
+    )
     assert [stream.index for stream in streams] == [2, 3]
     assert streams[0].language == "zho-Hant"
     assert streams[0].subtitle_count == 12
@@ -88,6 +101,45 @@ def test_get_zho_subtitle_streams_preserves_yue_language(tmp_path: Path):
         streams = get_zho_subtitle_streams(infile_path)
 
     assert streams[0].language == "yue-Hant"
+
+
+def test_get_zho_subtitle_streams_does_not_overwrite_subtitle_cache_twice(
+    tmp_path: Path,
+):
+    """Test script analysis reuses subtitle cache refreshed during detail probing.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+    stream = SubtitleStream(index=2, codec_name="subrip", language="zho")
+
+    with (
+        patch(
+            "scinoephile.lang.zho.subtitles.streams.get_detailed_subtitle_streams",
+            return_value=[stream],
+        ) as details_mock,
+        patch(
+            "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script",
+            return_value=SimpleNamespace(script="zho-Hant"),
+        ) as analysis_mock,
+    ):
+        get_zho_subtitle_streams(infile_path, overwrite_cache=True)
+
+    details_mock.assert_called_once_with(
+        infile_path,
+        cache_dir_path=None,
+        overwrite_cache=True,
+        streams=None,
+    )
+    analysis_mock.assert_called_once_with(
+        infile_path,
+        stream,
+        cache_dir_path=None,
+        overwrite_cache=True,
+        subtitle_cache_is_fresh=True,
+    )
 
 
 def test_get_zho_subtitle_streams_normalizes_chi_language(tmp_path: Path):

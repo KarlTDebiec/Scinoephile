@@ -17,12 +17,16 @@ from test.helpers import assert_series_equal, parametrize, test_data_root
 
 def test_ocr_fuse_cli_uses_concise_json_help():
     """Test OCR-fusion JSON help describes its test-case contents."""
-    actions = {
-        action.dest: action
-        for action in OcrFuseCli.argparser()._actions  # noqa: SLF001
-    }
+    parser = OcrFuseCli.argparser()
+    actions = {action.dest: action for action in parser._actions}  # noqa: SLF001
 
     assert actions["json_path"].help == "JSON file containing test cases"
+    cache_overwrite_action = next(
+        action
+        for action in parser._actions  # noqa: SLF001
+        if "--cache-overwrite" in action.option_strings
+    )
+    assert cache_overwrite_action.help == "overwrite matching cache files"
 
 
 @parametrize(
@@ -139,6 +143,7 @@ def test_ocr_fuse_cli_passes_test_case_path(tmp_path: Path):
     tesseract_path = tmp_path / "tesseract.srt"
     json_path = tmp_path / "ocr_fusion.json"
     output_path = tmp_path / "fuse.srt"
+    cache_dir_path = tmp_path / "cache"
     lens_path.write_text("1\n00:00:00,000 --> 00:00:00,500\nLens\n", encoding="utf-8")
     tesseract_path.write_text(
         "1\n00:00:00,000 --> 00:00:00,500\nTesseract\n",
@@ -153,7 +158,10 @@ def test_ocr_fuse_cli_passes_test_case_path(tmp_path: Path):
         run_cli_with_args(
             OcrFuseCli,
             f"--lens-infile {lens_path} --tesseract-infile {tesseract_path} "
-            f"--language eng --json {json_path} --outfile {output_path}",
+            f"--language eng --json {json_path} --outfile {output_path} "
+            f"--cache-dir {cache_dir_path} --cache-overwrite",
         )
 
     assert fuse.call_args.kwargs["test_case_path"] == json_path.resolve()
+    assert fuse.call_args.kwargs["cache_dir_path"] == (cache_dir_path.resolve() / "llm")
+    assert fuse.call_args.kwargs["overwrite_cache"] is True

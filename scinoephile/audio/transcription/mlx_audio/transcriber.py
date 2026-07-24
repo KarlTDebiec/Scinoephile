@@ -221,6 +221,7 @@ class MlxAudioTranscriber:
         chunk_duration_seconds: float | None = None,
         chunk_overlap_seconds: float = 1.0,
         cache_dir_path: Path | None = None,
+        demucs_cache_dir_path: Path | None = None,
         use_demucs: bool = False,
         use_vad: bool = False,
         retry_without_demucs: bool = False,
@@ -235,6 +236,7 @@ class MlxAudioTranscriber:
             chunk_duration_seconds: optional chunk duration for inference
             chunk_overlap_seconds: context overlap applied to each chunk
             cache_dir_path: directory in which to cache
+            demucs_cache_dir_path: directory in which to cache Demucs output
             use_demucs: whether to apply Demucs vocal separation
             use_vad: whether to remove non-speech audio using Silero VAD
             retry_without_demucs: whether to retry original audio after Demucs
@@ -276,8 +278,10 @@ class MlxAudioTranscriber:
             raise ValueError("MLX-Audio cannot retry without VAD when VAD is disabled.")
         self.demucs_separator = None
         if self.use_demucs:
+            if demucs_cache_dir_path is None:
+                demucs_cache_dir_path = get_runtime_cache_dir_path("demucs")
             self.demucs_separator = DemucsSeparator(
-                cache_dir_path=get_runtime_cache_dir_path("demucs")
+                cache_dir_path=demucs_cache_dir_path
             )
         self.cache_dir_path = None
         if cache_dir_path is not None:
@@ -365,6 +369,7 @@ class MlxAudioTranscriber:
             attempts=attempts,
             rejected_attempts=rejected_attempts,
             is_usable=is_usable,
+            overwrite_cache=overwrite_cache,
         )
 
     @property
@@ -696,6 +701,7 @@ class MlxAudioTranscriber:
         attempts: Sequence[tuple[bool, bool]],
         rejected_attempts: set[tuple[bool, bool]],
         is_usable: Callable[[list[TranscribedSegment]], bool] | None,
+        overwrite_cache: bool,
     ) -> list[TranscribedSegment]:
         """Run uncached MLX-Audio attempts in preprocessing retry order.
 
@@ -705,6 +711,7 @@ class MlxAudioTranscriber:
             attempts: Demucs and VAD configurations in retry order
             rejected_attempts: configurations with unusable cached output
             is_usable: optional callback used to reject output and trigger retries
+            overwrite_cache: whether to replace matching preprocessing cache files
         Returns:
             first usable transcription, or an empty list when output was rejected
         """
@@ -722,7 +729,10 @@ class MlxAudioTranscriber:
                     assert self.demucs_separator is not None
                     logger.info("Applying Demucs vocal separation before MLX-Audio")
                     try:
-                        separated_audio = self.demucs_separator(audio)
+                        separated_audio = self.demucs_separator(
+                            audio,
+                            overwrite_cache=overwrite_cache,
+                        )
                     except ScinoephileError as exc:
                         if not self.retry_without_demucs:
                             raise

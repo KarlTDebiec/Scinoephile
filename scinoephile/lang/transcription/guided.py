@@ -200,6 +200,7 @@ def get_guided_transcriber(
     backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
+    cache_dir_path: Path | None = None,
     overwrite_cache: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
@@ -220,7 +221,8 @@ def get_guided_transcriber(
         backend: audio transcription backend
         demucs_mode: Demucs preprocessing mode
         vad_mode: voice activity detection mode
-        overwrite_cache: whether to replace matching transcription cache files
+        cache_dir_path: cache root directory path
+        overwrite_cache: whether to replace matching generated cache files
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         prune_test_cases: whether to remove test cases not encountered in this run
@@ -244,6 +246,8 @@ def get_guided_transcriber(
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec
 
+    if cache_dir_path is None:
+        cache_dir_path = get_runtime_cache_dir_path(create=False)
     if model_name is None:
         model_name = language_spec.get_model_name(backend)
     if delineation_prompt is None:
@@ -252,7 +256,7 @@ def get_guided_transcriber(
         punctuation_prompt = spec.punctuation_prompt
     if delineation_json_path is None or punctuation_json_path is None:
         runtime_test_case_dir_path = (
-            get_runtime_cache_dir_path("test_cases") / spec.test_case_dir_path
+            cache_dir_path / "test_cases" / spec.test_case_dir_path
         )
         device = get_torch_device()
         if delineation_json_path is None:
@@ -279,6 +283,8 @@ def get_guided_transcriber(
         test_case_path=delineation_json_path,
         provider=provider,
         additional_context=additional_context,
+        cache_dir_path=cache_dir_path / "llm",
+        overwrite_cache=overwrite_cache,
         prune_test_cases=prune_test_cases,
     )
     if punctuation_test_cases is None:
@@ -295,6 +301,8 @@ def get_guided_transcriber(
         test_case_path=punctuation_json_path,
         provider=provider,
         additional_context=additional_context,
+        cache_dir_path=cache_dir_path / "llm",
+        overwrite_cache=overwrite_cache,
         prune_test_cases=prune_test_cases,
     )
     aligner = TranscriptionAligner(
@@ -307,7 +315,8 @@ def get_guided_transcriber(
         mlx_audio_transcriber = MlxAudioTranscriber(
             model_name=model_name,
             language=language,
-            cache_dir_path=get_runtime_cache_dir_path("mlx_audio"),
+            cache_dir_path=cache_dir_path / "mlx_audio",
+            demucs_cache_dir_path=cache_dir_path / "demucs",
             use_demucs=demucs_mode in (DemucsMode.AUTO, DemucsMode.ON),
             use_vad=vad_mode in (VADMode.AUTO, VADMode.ON),
             retry_without_demucs=demucs_mode == DemucsMode.AUTO,
@@ -322,6 +331,7 @@ def get_guided_transcriber(
         backend=backend,
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
+        cache_dir_path=cache_dir_path,
         overwrite_cache=overwrite_cache,
         mlx_audio_transcriber=mlx_audio_transcriber,
         segment_splitter=language_spec.segment_splitter,

@@ -150,7 +150,7 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile transcribe \
   --overwrite
 ```
 
-Add `--llm-additional-content-file <context>` when context is present. Do not
+Add `--llm-additional-context-file <context>` when context is present. Do not
 pass the original media after the stable WAV exists.
 
 If every Whisper candidate for a block is unusable, accept the empty block and

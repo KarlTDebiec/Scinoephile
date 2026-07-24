@@ -430,6 +430,10 @@ def test_transcribe_overwrites_matching_cache(
     monkeypatch.setattr(transcriber, "_transcribe_uncached", transcribe_uncached)
 
     assert transcriber.transcribe(audio, overwrite_cache=True) == expected_segments
+    transcriber.demucs_separator.assert_called_once_with(
+        audio,
+        overwrite_cache=True,
+    )
     primary_cache_path = concrete_cache_paths[0]
     assert (
         json.loads(primary_cache_path.read_text(encoding="utf-8"))["segments"][0][

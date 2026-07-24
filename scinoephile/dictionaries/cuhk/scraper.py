@@ -72,6 +72,8 @@ class CuhkDictionaryScraperKwargs(TypedDict, total=False):
     """Per-request timeout in seconds."""
     max_retries: int
     """Maximum attempts for failed requests."""
+    overwrite_cache: bool
+    """Whether to replace matching cached HTTP responses."""
     session: requests.Session | None
     """Requests session for dependency injection."""
 
@@ -87,6 +89,7 @@ class CuhkDictionaryScraper:
         max_delay_seconds: float = 5.0,
         request_timeout_seconds: float = 30.0,
         max_retries: int = 5,
+        overwrite_cache: bool = False,
         session: requests.Session | None = None,
     ):
         """Initialize.
@@ -97,6 +100,7 @@ class CuhkDictionaryScraper:
             max_delay_seconds: maximum delay between HTTP requests
             request_timeout_seconds: per-request timeout
             max_retries: max attempts for failed requests
+            overwrite_cache: whether to replace matching cached HTTP responses
             session: requests session for dependency injection
         """
         if cache_dir_path is None:
@@ -111,6 +115,7 @@ class CuhkDictionaryScraper:
         self.max_delay_seconds = max_delay_seconds
         self.request_timeout_seconds = request_timeout_seconds
         self.max_retries = max_retries
+        self.overwrite_cache = overwrite_cache
 
         self.session = session or requests.Session()
         self.opencc_converter = opencc.OpenCC("hk2s")
@@ -355,7 +360,10 @@ class CuhkDictionaryScraper:
         logger.info(f"Discovered {len(word_links)} CUHK word link(s)")
 
         logger.info("Scraping CUHK word pages")
-        self.scrape_word_pages(word_links, skip_existing=True)
+        self.scrape_word_pages(
+            word_links,
+            skip_existing=not self.overwrite_cache,
+        )
         logger.info("Parsing scraped CUHK word pages")
         if max_words is None:
             entries = self.parse_scraped_pages()
@@ -388,6 +396,13 @@ class CuhkDictionaryScraper:
                 continue
 
             variant_file_paths = self._get_variant_file_paths(item)
+            if self.overwrite_cache:
+                for variant_file_path in variant_file_paths:
+                    if variant_file_path.exists():
+                        variant_file_path.unlink()
+                        logger.info(
+                            f"Removed CUHK word page cache: {variant_file_path}"
+                        )
             if skip_existing and all(path.exists() for path in variant_file_paths):
                 logger.info(f"Loaded word page from cache #{index}: {item}")
                 continue
@@ -421,6 +436,9 @@ class CuhkDictionaryScraper:
             requests.RequestException: if all retry attempts fail
         """
         cache_description = url if cache_label is None else f"{cache_label}: {url}"
+        if self.overwrite_cache and cache_path is not None and cache_path.exists():
+            cache_path.unlink()
+            logger.info(f"Removed from cache: {cache_description}")
         if use_cache and cache_path is not None and cache_path.exists():
             logger.info(f"Loaded from cache: {cache_description}")
             return cache_path.read_text(encoding="utf-8")

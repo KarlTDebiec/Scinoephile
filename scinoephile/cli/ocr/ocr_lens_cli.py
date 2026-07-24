@@ -7,6 +7,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.cli.helpers.cache import (
+    CACHE_LOCALIZATIONS,
+    CacheArguments,
+    add_cache_args,
+)
 from scinoephile.cli.helpers.io import read_image_series, write_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -18,6 +23,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.image.ocr.lens import ocr_image_series_with_lens
 
 __all__ = ["OcrLensCli"]
@@ -62,7 +68,7 @@ OCR_LENS_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class OcrLensCli(ScinoephileCliBase):
     """Recognize image subtitles with Google Lens."""
 
-    localizations = OCR_LENS_LOCALIZATIONS
+    localizations = merge_localizations(CACHE_LOCALIZATIONS, OCR_LENS_LOCALIZATIONS)
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -77,6 +83,7 @@ class OcrLensCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
+            "cache arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
         )
@@ -109,6 +116,9 @@ class OcrLensCli(ScinoephileCliBase):
                 "Google Lens request attempts per uncached image (default: %(default)s)"
             ),
         )
+
+        # Cache arguments
+        add_cache_args(arg_groups["cache arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -143,6 +153,7 @@ class OcrLensCli(ScinoephileCliBase):
         language: Language,
         outfile_path: Path,
         overwrite: bool,
+        cache_args: CacheArguments,
         retries: int,
     ):
         """Execute with provided keyword arguments."""
@@ -158,7 +169,9 @@ class OcrLensCli(ScinoephileCliBase):
         try:
             text_series = ocr_image_series_with_lens(
                 image_series,
+                cache_dir_path=cache_args.dir_path / "google-lens",
                 language=language,
+                overwrite_cache=cache_args.overwrite,
                 retries=retries,
             )
         except ScinoephileError as exc:

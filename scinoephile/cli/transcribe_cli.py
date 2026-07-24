@@ -38,6 +38,7 @@ from .helpers.blocks import (
     add_block_range_args,
     get_block_range_indexes,
 )
+from .helpers.cache import CACHE_LOCALIZATIONS, CacheArguments, add_cache_args
 from .helpers.io import read_series, write_series
 from .helpers.llms import (
     LLM_LOCALIZATIONS,
@@ -83,7 +84,6 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "transcription model (default: backend default)": (
             "转写模型（默认：后端默认值）"
         ),
-        "overwrite matching transcription cache files": "覆盖匹配的转写缓存文件",
         "JSON file containing delineation test cases": ("包含断句测试用例的 JSON 文件"),
         "JSON file containing punctuation test cases": ("包含标点测试用例的 JSON 文件"),
         "subtitle outfile path (default: stdout)": (
@@ -124,7 +124,6 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "transcription model (default: backend default)": (
             "轉寫模型（預設：後端預設值）"
         ),
-        "overwrite matching transcription cache files": "覆寫匹配的轉寫快取檔案",
         "JSON file containing delineation test cases": ("包含斷句測試案例的 JSON 檔"),
         "JSON file containing punctuation test cases": ("包含標點測試案例的 JSON 檔"),
         "subtitle outfile path (default: stdout)": ("字幕輸出檔路徑（預設：標準輸出）"),
@@ -139,6 +138,7 @@ class TranscribeCli(ScinoephileCliBase):
 
     localizations = merge_localizations(
         BLOCK_LOCALIZATIONS,
+        CACHE_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
         TRANSCRIBE_LOCALIZATIONS,
     )
@@ -157,6 +157,7 @@ class TranscribeCli(ScinoephileCliBase):
             "input arguments",
             "operation arguments",
             "llm arguments",
+            "cache arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -238,11 +239,6 @@ class TranscribeCli(ScinoephileCliBase):
             dest="model_name",
             help="transcription model (default: backend default)",
         )
-        arg_groups["operation arguments"].add_argument(
-            "--overwrite-cache",
-            action="store_true",
-            help="overwrite matching transcription cache files",
-        )
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
@@ -258,6 +254,9 @@ class TranscribeCli(ScinoephileCliBase):
             dest="punctuation_json_path",
             help_text="JSON file containing punctuation test cases",
         )
+
+        # Cache arguments
+        add_cache_args(arg_groups["cache arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -290,8 +289,8 @@ class TranscribeCli(ScinoephileCliBase):
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
         model_name: str | None,
-        overwrite_cache: bool,
         llm_args: LlmArguments,
+        cache_args: CacheArguments,
         delineation_json_path: Path | None,
         punctuation_json_path: Path | None,
         outfile_path: Path | None,
@@ -348,7 +347,8 @@ class TranscribeCli(ScinoephileCliBase):
                 backend=backend,
                 demucs_mode=demucs_mode,
                 vad_mode=vad_mode,
-                overwrite_cache=overwrite_cache,
+                cache_dir_path=cache_args.dir_path,
+                overwrite_cache=cache_args.overwrite,
                 provider=get_provider(
                     llm_args.provider_name,
                     model=llm_args.model_name,
