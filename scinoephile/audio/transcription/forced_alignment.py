@@ -37,7 +37,7 @@ def align_mimo_transcription(
     text: str,
     *,
     duration_seconds: float,
-    aligner_backend: str = "whisperx",
+    aligner_backend: str = "ctc",
     aligner_language: str = "zh",
     aligner_model_name: str | None = None,
     aligner_worker_command: Sequence[str] | None = None,

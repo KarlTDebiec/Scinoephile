@@ -12,7 +12,6 @@ from unittest.mock import Mock, patch
 from pytest import fixture, mark, raises
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import MimoRuntime
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.cli.transcribe_cli import TranscribeCli
 from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
@@ -80,12 +79,22 @@ def test_transcribe_help_lists_generic_options():
     assert "--vad {auto,on,off}" in help_text
     assert "--backend {whisper,mimo}" in help_text
     assert "--whisper-model MODEL_NAME" in help_text
-    assert "--mimo-fallback" not in help_text
-    assert "--mimo-tokenizer" not in help_text
-    assert "--mimo-runtime {auto,mlx}" in help_text
-    assert "--mimo-aligner {ctc,whisperx}" in help_text
-    assert "--mimo-language" not in help_text
-    assert "--mimo-aligner-language" not in help_text
+    for removed_option in (
+        "--mimo-aligner",
+        "--mimo-aligner-language",
+        "--mimo-aligner-model",
+        "--mimo-aligner-worker-command",
+        "--mimo-chunk-duration",
+        "--mimo-chunk-overlap",
+        "--mimo-fallback",
+        "--mimo-language",
+        "--mimo-max-tokens",
+        "--mimo-model",
+        "--mimo-runtime",
+        "--mimo-tokenizer",
+        "--mimo-worker-command",
+    ):
+        assert removed_option not in help_text
     assert "uses language-pair default if omitted" in normalized_help_text
 
 
@@ -111,7 +120,6 @@ def test_transcribe_cli_enum_arguments_are_consistent():
         "backend": (TranscriptionBackend, TranscriptionBackend.WHISPER),
         "demucs_mode": (DemucsMode, DemucsMode.AUTO),
         "vad_mode": (VADMode, VADMode.AUTO),
-        "mimo_runtime": (MimoRuntime, MimoRuntime.AUTO),
     }
 
     for action_name, (enum_type, default) in expected.items():
@@ -209,15 +217,6 @@ def test_transcribe_cli_passes_generic_configuration(
         backend: TranscriptionBackend,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
-        mimo_model_name: str,
-        mimo_runtime: MimoRuntime,
-        mimo_max_tokens: int | None,
-        mimo_chunk_duration_seconds: float | None,
-        mimo_chunk_overlap_seconds: float,
-        mimo_worker_command: list[str] | None,
-        mimo_aligner_backend: str,
-        mimo_aligner_model_name: str | None,
-        mimo_aligner_worker_command: list[str] | None,
         provider: object,
         additional_context: str | None,
         delineation_json_path: Path | None,
@@ -234,15 +233,6 @@ def test_transcribe_cli_passes_generic_configuration(
         assert backend is TranscriptionBackend.MIMO
         assert demucs_mode is DemucsMode.ON
         assert vad_mode is VADMode.OFF
-        assert mimo_model_name == "custom/mimo"
-        assert mimo_runtime is MimoRuntime.MLX
-        assert mimo_max_tokens == 512
-        assert mimo_chunk_duration_seconds == 20.0
-        assert mimo_chunk_overlap_seconds == 1.5
-        assert mimo_worker_command == ["python", "mimo_worker.py"]
-        assert mimo_aligner_backend == "whisperx"
-        assert mimo_aligner_model_name == "custom/aligner"
-        assert mimo_aligner_worker_command == ["python", "aligner_worker.py"]
         assert provider is not None
         assert additional_context is None
         assert delineation_json_path == tmp_path / "delineation.json"
@@ -265,13 +255,6 @@ def test_transcribe_cli_passes_generic_configuration(
                 f"--reference-infile {_REFERENCE_INFILE_PATH} "
                 "--language yue-Hant --reference-language zho-Hans "
                 "--whisper-model custom/whisper --backend mimo --demucs on --vad off "
-                "--mimo-runtime mlx "
-                "--mimo-max-tokens 512 --mimo-chunk-duration 20 "
-                "--mimo-chunk-overlap 1.5 --mimo-model custom/mimo "
-                "--mimo-worker-command 'python mimo_worker.py' "
-                "--mimo-aligner whisperx "
-                "--mimo-aligner-model custom/aligner "
-                "--mimo-aligner-worker-command 'python aligner_worker.py' "
                 f"--delineation-json {tmp_path / 'delineation.json'} "
                 f"--punctuation-json {tmp_path / 'punctuation.json'} "
                 "--first-block 2 --last-block 3",

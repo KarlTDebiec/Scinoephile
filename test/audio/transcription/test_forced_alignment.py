@@ -38,6 +38,7 @@ def test_align_mimo_transcription_converts_whisperx_words(
         Path("/tmp/audio.wav"),
         "hello world",
         duration_seconds=1.25,
+        aligner_backend="whisperx",
         aligner_language="zh",
     )
 
@@ -143,6 +144,7 @@ def test_align_mimo_transcription_preserves_trailing_unaligned_text(
         Path("/tmp/audio.wav"),
         "你好！",
         duration_seconds=1.0,
+        aligner_backend="whisperx",
     )
 
     assert segments[0].words is not None
@@ -150,10 +152,10 @@ def test_align_mimo_transcription_preserves_trailing_unaligned_text(
     assert "".join(word.text for word in segments[0].words) == segments[0].text
 
 
-def test_align_mimo_transcription_aligns_with_ctc_backend(
+def test_align_mimo_transcription_uses_ctc_backend_by_default(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test in-house CTC alignment expands token spans like WhisperX."""
+    """Test default CTC alignment expands token spans like WhisperX."""
     log_probs = np.log(
         np.array(
             [
@@ -174,7 +176,6 @@ def test_align_mimo_transcription_aligns_with_ctc_backend(
         Path("/tmp/audio.wav"),
         "你好",
         duration_seconds=1.0,
-        aligner_backend="ctc",
     )
 
     assert len(segments) == 1
@@ -420,6 +421,7 @@ def test_align_mimo_transcription_rejects_missing_word_timing(
             Path("/tmp/audio.wav"),
             "hello",
             duration_seconds=1.0,
+            aligner_backend="whisperx",
         )
 
 

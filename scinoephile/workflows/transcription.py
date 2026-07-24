@@ -4,14 +4,9 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
 from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import (
-    MIMO_MODEL_NAME,
-    MimoRuntime,
-)
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.subtitles import Series
@@ -40,15 +35,6 @@ def transcribe_series_guided(
     backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
-    mimo_model_name: str = MIMO_MODEL_NAME,
-    mimo_runtime: MimoRuntime = MimoRuntime.AUTO,
-    mimo_max_tokens: int | None = None,
-    mimo_chunk_duration_seconds: float | None = None,
-    mimo_chunk_overlap_seconds: float = 1.0,
-    mimo_worker_command: Sequence[str] | None = None,
-    mimo_aligner_backend: str = "ctc",
-    mimo_aligner_model_name: str | None = None,
-    mimo_aligner_worker_command: Sequence[str] | None = None,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     prune_test_cases: bool = False,
@@ -73,15 +59,6 @@ def transcribe_series_guided(
         backend: audio transcription backend
         demucs_mode: Demucs preprocessing mode
         vad_mode: voice activity detection mode
-        mimo_model_name: MiMo ASR model name or local path
-        mimo_runtime: runtime implementation used for MiMo inference
-        mimo_max_tokens: optional maximum number of MiMo tokens to generate
-        mimo_chunk_duration_seconds: optional MiMo chunk duration in seconds
-        mimo_chunk_overlap_seconds: context overlap applied to each MiMo chunk
-        mimo_worker_command: optional subprocess command that runs MiMo
-        mimo_aligner_backend: timestamp alignment backend for MiMo
-        mimo_aligner_model_name: optional MiMo timestamp aligner model name
-        mimo_aligner_worker_command: optional MiMo timestamp aligner worker command
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         prune_test_cases: whether to remove test cases not encountered in this run
@@ -112,15 +89,6 @@ def transcribe_series_guided(
             backend=backend,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
-            mimo_model_name=mimo_model_name,
-            mimo_runtime=mimo_runtime,
-            mimo_max_tokens=mimo_max_tokens,
-            mimo_chunk_duration_seconds=mimo_chunk_duration_seconds,
-            mimo_chunk_overlap_seconds=mimo_chunk_overlap_seconds,
-            mimo_worker_command=mimo_worker_command,
-            mimo_aligner_backend=mimo_aligner_backend,
-            mimo_aligner_model_name=mimo_aligner_model_name,
-            mimo_aligner_worker_command=mimo_aligner_worker_command,
             provider=provider,
             additional_context=additional_context,
             prune_test_cases=prune_test_cases,

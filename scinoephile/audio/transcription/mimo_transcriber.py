@@ -136,7 +136,7 @@ class MimoTranscriber:
         chunk_duration_seconds: float | None = None,
         chunk_overlap_seconds: float = 1.0,
         cache_dir_path: Path | None = None,
-        aligner_backend: str = "whisperx",
+        aligner_backend: str = "ctc",
         aligner_model_name: str | None = None,
         aligner_worker_command: Sequence[str] | None = None,
         aligner_worker_timeout_seconds: float | None = None,
