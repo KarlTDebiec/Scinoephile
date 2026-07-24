@@ -57,7 +57,7 @@ def test_ctc_aligner_expands_token_spans(
     assert 0.0 < segments[0].words[0].confidence <= 1.0
 
 
-def test_ctc_audio_samples_are_mono_16_khz_float32():
+def test_ctc_audio_samples_use_requested_rate_and_float32():
     """Test CTC audio conversion normalizes channel, rate, and sample format."""
     audio = (
         AudioSegment.silent(duration=100, frame_rate=8000)
@@ -65,18 +65,37 @@ def test_ctc_audio_samples_are_mono_16_khz_float32():
         .set_sample_width(1)
     )
 
-    samples = CtcAligner._get_audio_samples(audio)
+    samples = CtcAligner._get_audio_samples(audio, 12000)
 
     assert samples.ndim == 1
     assert samples.dtype == np.float32
-    assert len(samples) == pytest.approx(1600, abs=1)
+    assert len(samples) == pytest.approx(1200, abs=1)
     assert np.all(samples == 0.0)
 
 
 def test_ctc_audio_samples_reject_empty_audio():
     """Test CTC audio conversion rejects empty audio."""
     with pytest.raises(TranscriptionAlignmentError, match="empty audio"):
-        CtcAligner._get_audio_samples(AudioSegment.empty())
+        CtcAligner._get_audio_samples(AudioSegment.empty(), 16000)
+
+
+def test_ctc_alignment_uses_processor_sampling_rate(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test CTC alignment uses the configured processor's sampling rate."""
+    aligner = CtcAligner()
+    aligner._processor = SimpleNamespace(
+        feature_extractor=SimpleNamespace(sampling_rate=8000)
+    )
+    aligner._model = object()
+    get_audio_samples = Mock(side_effect=RuntimeError("stop after conversion"))
+    monkeypatch.setattr(aligner, "_get_audio_samples", get_audio_samples)
+    audio = AudioSegment.silent(duration=100)
+
+    with pytest.raises(RuntimeError, match="stop after conversion"):
+        aligner._get_alignment_inputs(audio, "你")
+
+    get_audio_samples.assert_called_once_with(audio, 8000)
 
 
 def test_ctc_best_path_requires_blank_between_repeated_labels():
@@ -201,6 +220,41 @@ def test_ctc_aligner_attaches_trailing_unaligned_punctuation(
     assert segments[0].words[1].start == pytest.approx(0.8)
     assert segments[0].words[1].end == pytest.approx(1.0)
     assert segments[0].words[1].confidence == pytest.approx(0.9)
+
+
+def test_ctc_aligner_times_trailing_unsupported_speech(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test trailing unsupported speech retains fallback timing."""
+    log_probs = np.log(
+        np.array(
+            [
+                [0.85, 0.15],
+                [0.05, 0.95],
+                [0.85, 0.15],
+                [0.85, 0.15],
+            ]
+        )
+    )
+    aligner = CtcAligner()
+    monkeypatch.setattr(
+        aligner,
+        "_get_alignment_inputs",
+        lambda _audio, _text: (log_probs, [1], [0], 0),
+    )
+
+    segments = aligner.align(
+        AudioSegment.silent(duration=1000),
+        "你嘅",
+    )
+
+    assert segments[0].words is not None
+    assert [word.text for word in segments[0].words] == ["你", "嘅"]
+    assert segments[0].words[0].end == pytest.approx(0.5)
+    assert segments[0].words[1].start == pytest.approx(0.5)
+    assert segments[0].words[1].end == pytest.approx(1.0)
+    assert segments[0].words[1].confidence == 0.0
+    assert segments[0].end == pytest.approx(1.0)
 
 
 def test_ctc_aligner_preserves_boundary_whitespace(

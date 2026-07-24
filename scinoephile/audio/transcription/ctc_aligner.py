@@ -178,9 +178,20 @@ class CtcAligner:
             TranscriptionAlignmentError: if transcript tokens cannot be prepared
         """
         # Prepare the audio and model inputs
-        samples = self._get_audio_samples(audio)
-        processor_callable = cast(Callable[..., Mapping[str, Any]], self.processor)
-        inputs = processor_callable(samples, sampling_rate=16000, return_tensors="pt")
+        processor = self.processor
+        feature_extractor = getattr(processor, "feature_extractor", None)
+        sampling_rate = getattr(feature_extractor, "sampling_rate", None)
+        if not isinstance(sampling_rate, int) or sampling_rate <= 0:
+            raise TranscriptionAlignmentError(
+                "CTC aligner processor did not expose a valid sampling rate."
+            )
+        samples = self._get_audio_samples(audio, sampling_rate)
+        processor_callable = cast(Callable[..., Mapping[str, Any]], processor)
+        inputs = processor_callable(
+            samples,
+            sampling_rate=sampling_rate,
+            return_tensors="pt",
+        )
         if self.device != "cpu":
             inputs = {key: value.to(self.device) for key, value in inputs.items()}
 
@@ -298,7 +309,7 @@ class CtcAligner:
         words: list[TranscribedWord],
         has_next_timing: bool,
     ) -> str | None:
-        """Attach unaligned boundary text to a timed character.
+        """Attach unaligned boundary punctuation or whitespace to a timed character.
 
         Arguments:
             run_text: unaligned text at a transcript boundary
@@ -307,7 +318,11 @@ class CtcAligner:
         Returns:
             pending prefix text when handled, otherwise None
         """
-        if words and not has_next_timing:
+        if (
+            words
+            and not has_next_timing
+            and not any(char.isalnum() for char in run_text)
+        ):
             words[-1].text += run_text
             return ""
         if not words and run_text.isspace():
@@ -315,19 +330,23 @@ class CtcAligner:
         return None
 
     @staticmethod
-    def _get_audio_samples(audio: AudioSegment) -> np.ndarray:
+    def _get_audio_samples(
+        audio: AudioSegment,
+        sampling_rate: int,
+    ) -> np.ndarray:
         """Get audio samples for CTC alignment.
 
         Arguments:
             audio: audio to convert
+            sampling_rate: sample rate expected by the CTC processor
         Returns:
-            mono 16 kHz float32 samples
+            mono float32 samples at the requested rate
         Raises:
             TranscriptionAlignmentError: if audio contains no samples
         """
         # Normalize audio to the format expected by the CTC processor
         normalized_audio = (
-            audio.set_channels(1).set_frame_rate(16000).set_sample_width(2)
+            audio.set_channels(1).set_frame_rate(sampling_rate).set_sample_width(2)
         )
         samples = (
             np.array(normalized_audio.get_array_of_samples(), dtype=np.float32)
