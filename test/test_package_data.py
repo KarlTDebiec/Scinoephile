@@ -71,6 +71,13 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
         env=command_env,
     )
 
+    notice_file_paths = sorted(
+        install_dir_path.glob(
+            "scinoephile-*.dist-info/licenses/**/THIRD_PARTY_NOTICES.md"
+        )
+    )
+    assert len(notice_file_paths) == 1
+
     smoke_env = command_env.copy()
     smoke_env["EXPECTED_DATA_FILES"] = json.dumps(expected_data_file_paths)
     smoke_env["EXPECTED_PACKAGE_FILES"] = json.dumps(expected_package_file_paths)
@@ -130,16 +137,19 @@ def _copy_build_source(project_root_path: Path, output_dir_path: Path) -> Path:
         output_dir_path / "scinoephile",
         ignore=shutil.ignore_patterns("__pycache__"),
     )
-    for file_name in (
-        "LICENSE",
-        "MANIFEST.in",
-        "README.md",
-        "pyproject.toml",
-        "uv.lock",
+    for relative_file_path in (
+        Path("LICENSE"),
+        Path("MANIFEST.in"),
+        Path("README.md"),
+        Path("docs/THIRD_PARTY_NOTICES.md"),
+        Path("pyproject.toml"),
+        Path("uv.lock"),
     ):
-        file_path = project_root_path / file_name
-        if file_path.exists():
-            shutil.copy2(file_path, output_dir_path / file_name)
+        source_file_path = project_root_path / relative_file_path
+        if source_file_path.exists():
+            output_file_path = output_dir_path / relative_file_path
+            output_file_path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source_file_path, output_file_path)
     return output_dir_path
 
 
