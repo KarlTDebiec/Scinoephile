@@ -11,6 +11,7 @@ from typing import Any
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
+from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.image.ocr.lens import (
     ocr_image_series_with_lens,
@@ -66,6 +67,7 @@ class OcrProcessingWorkflow:
         interactive: bool = False,
         dev: bool = False,
         overwrite: bool = False,
+        overwrite_cache: bool = False,
         provider: LLMProvider | None = None,
         additional_context: str | None = None,
         fuser_kw: dict[str, Any] | None = None,
@@ -79,12 +81,13 @@ class OcrProcessingWorkflow:
             output_dir_path: directory where OCR outputs are written
             language: OCR text language to process
             stream_index: media subtitle stream index when infile is media
-            cache_dir_path: media subtitle cache directory path
+            cache_dir_path: cache root directory path
             clean: whether to clean OCR subtitle outputs before fusing
             validate: whether to validate fused OCR subtitles against images
             interactive: whether to launch the OCR validation web UI
             dev: whether validation should write data updates to repo data
             overwrite: whether to overwrite existing workflow outputs
+            overwrite_cache: whether to replace matching generated cache files
             provider: provider to use for OCR fusion queries
             additional_context: additional context to include in OCR fusion prompts
             fuser_kw: keyword arguments for OCR fuser construction
@@ -95,18 +98,29 @@ class OcrProcessingWorkflow:
         self.output_dir_path = output_dir_path
         self.language = language
         self.stream_index = stream_index
+        if cache_dir_path is None:
+            cache_dir_path = get_runtime_cache_dir_path(create=False)
         self.cache_dir_path = cache_dir_path
+        self._lens_cache_dir_path = cache_dir_path / "google-lens"
+        self._llm_cache_dir_path = cache_dir_path / "llm"
+        self._media_cache_dir_path = cache_dir_path / "media" / "subtitles"
+        self._ocr_validation_cache_dir_path = cache_dir_path / "ocr_validation"
+        self._paddle_cache_dir_path = cache_dir_path / "paddleocr"
+        self._tesseract_cache_dir_path = cache_dir_path / "tesseract"
         self.clean = clean
         self.validate = validate
         self.interactive = interactive
         self.dev = dev
         self.overwrite = overwrite
+        self.overwrite_cache = overwrite_cache
         self.provider = provider
         if fuser_kw is None:
             self.fuser_kw: dict[str, Any] = {}
         else:
             self.fuser_kw = dict(fuser_kw)
         self.fuser_kw.setdefault("additional_context", additional_context)
+        self.fuser_kw.setdefault("cache_dir_path", self._llm_cache_dir_path)
+        self.fuser_kw.setdefault("overwrite_cache", overwrite_cache)
         self.fuser_kw.setdefault(
             "test_case_path",
             self.output_dir_path / "lang" / self.language.language / "ocr_fusion.json",
@@ -208,10 +222,15 @@ class OcrProcessingWorkflow:
 
             stream = get_media_subtitle_stream(self.infile_path, self.stream_index)
             cache_subtitles(
-                self.infile_path, [stream], cache_dir_path=self.cache_dir_path
+                self.infile_path,
+                [stream],
+                cache_dir_path=self._media_cache_dir_path,
+                overwrite_cache=self.overwrite_cache,
             )
             stream_path = get_subtitle_cache_path(
-                self.infile_path, stream, cache_dir_path=self.cache_dir_path
+                self.infile_path,
+                stream,
+                cache_dir_path=self._media_cache_dir_path,
             )
             return ImageSeries.load(stream_path)
         except (OSError, RuntimeError, ValueError) as exc:
@@ -233,7 +252,12 @@ class OcrProcessingWorkflow:
             logger.info(f"Lens OCR output exists: {lens_path}")
             lens = Series.load(lens_path)
         else:
-            lens = ocr_image_series_with_lens(image_series, language=self.language)
+            lens = ocr_image_series_with_lens(
+                image_series,
+                cache_dir_path=self._lens_cache_dir_path,
+                language=self.language,
+                overwrite_cache=self.overwrite_cache,
+            )
             lens.save(lens_path, format_="srt")
         self.output_paths["lens"] = lens_path
         if not self.clean:
@@ -264,7 +288,12 @@ class OcrProcessingWorkflow:
             logger.info(f"Paddle OCR output exists: {paddle_path}")
             paddle = Series.load(paddle_path)
         else:
-            paddle = ocr_image_series_with_paddle(image_series, language=self.language)
+            paddle = ocr_image_series_with_paddle(
+                image_series,
+                cache_dir_path=self._paddle_cache_dir_path,
+                language=self.language,
+                overwrite_cache=self.overwrite_cache,
+            )
             paddle.save(paddle_path, format_="srt")
         self.output_paths["paddle"] = paddle_path
         if not self.clean:
@@ -298,7 +327,11 @@ class OcrProcessingWorkflow:
             tesseract = Series.load(tesseract_path)
         else:
             tesseract = ocr_image_series_with_tesseract(
-                image_series, detect_italics=True, language=Language.eng
+                image_series,
+                cache_dir_path=self._tesseract_cache_dir_path,
+                detect_italics=True,
+                language=Language.eng,
+                overwrite_cache=self.overwrite_cache,
             )
             tesseract.save(tesseract_path, format_="srt")
         self.output_paths["tesseract"] = tesseract_path
@@ -352,6 +385,7 @@ class OcrProcessingWorkflow:
         validate_ocr(
             image_dir_path,
             validate_path,
+            cache_dir_path=self._ocr_validation_cache_dir_path,
             interactive=self.interactive,
             dev=self.dev,
             overwrite=self.overwrite,

@@ -89,6 +89,7 @@ class OcrValidateCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
+            "cache arguments",
             "web arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
@@ -114,7 +115,7 @@ class OcrValidateCli(ScinoephileCliBase):
             help="maintainer option: write validation data updates to repo data",
         )
         add_cache_dir_arg(
-            arg_groups["operation arguments"],
+            arg_groups["cache arguments"],
             "ocr_validation",
             help_text=(
                 "cache directory for local OCR validation data (default: %(default)s)"

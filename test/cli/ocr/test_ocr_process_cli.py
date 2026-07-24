@@ -62,6 +62,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
         port: int,
         dev: bool,
         overwrite: bool,
+        overwrite_cache: bool,
         provider: object,
         additional_context: str | None,
     ) -> _Workflow:
@@ -77,6 +78,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
         assert port == 5051
         assert dev is True
         assert overwrite is True
+        assert overwrite_cache is True
         assert provider is expected_provider
         assert additional_context is None
         return _Workflow()
@@ -96,7 +98,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
             f"--infile {infile_path} --stream-index 3 --language eng "
             f"-o {output_dir_path} --cache-dir {cache_dir_path} "
             "--clean --interactive --host 0.0.0.0 --port 5051 --dev "
-            "--overwrite",
+            "--overwrite --cache-overwrite",
         )
 
     assert workflow_calls == 1
