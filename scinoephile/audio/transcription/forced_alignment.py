@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-import json
-import subprocess
 from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
 from typing import Any, cast
@@ -16,16 +14,16 @@ from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 
 __all__ = [
+    "CTC_MODEL_NAME",
     "TranscriptionAlignmentError",
     "align_mimo_transcription",
 ]
 
-_WHISPERX_EXTRA_MESSAGE = (
-    "MiMo timestamp alignment requires optional WhisperX dependencies in the "
-    "selected runtime."
-)
+CTC_MODEL_NAME = "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn"
+"""Hugging Face model used for MiMo timestamp alignment."""
+
 _CTC_WILDCARD_TOKEN_ID = -1
-_CTC_COMPONENTS_BY_MODEL_AND_DEVICE: dict[tuple[str, str], tuple[object, object]] = {}
+_CTC_COMPONENTS_BY_DEVICE: dict[str, tuple[object, object]] = {}
 
 
 class TranscriptionAlignmentError(RuntimeError):
@@ -37,11 +35,6 @@ def align_mimo_transcription(
     text: str,
     *,
     duration_seconds: float,
-    aligner_backend: str = "ctc",
-    aligner_language: str = "zh",
-    aligner_model_name: str | None = None,
-    aligner_worker_command: Sequence[str] | None = None,
-    aligner_worker_timeout_seconds: float | None = None,
     device: str = "cpu",
 ) -> list[TranscribedSegment]:
     """Align MiMo transcript text to source audio.
@@ -50,12 +43,7 @@ def align_mimo_transcription(
         audio_path: source audio path to align against
         text: authoritative MiMo transcript text
         duration_seconds: source audio duration in seconds
-        aligner_backend: forced-alignment backend identifier
-        aligner_language: language code for the aligner
-        aligner_model_name: optional aligner model checkpoint name
-        aligner_worker_command: optional external aligner worker command
-        aligner_worker_timeout_seconds: optional aligner worker timeout
-        device: device identifier passed to the alignment backend
+        device: device identifier passed to the CTC model
     Returns:
         timestamped transcription segments
     Raises:
@@ -65,54 +53,12 @@ def align_mimo_transcription(
     if not transcript_text:
         raise TranscriptionAlignmentError("Cannot align empty transcript.")
 
-    if aligner_worker_command is not None:
-        result = _run_alignment_worker(
-            audio_path=audio_path,
-            text=transcript_text,
-            duration_seconds=duration_seconds,
-            aligner_backend=aligner_backend,
-            aligner_language=aligner_language,
-            aligner_model_name=aligner_model_name,
-            aligner_worker_command=aligner_worker_command,
-            aligner_worker_timeout_seconds=aligner_worker_timeout_seconds,
-            device=device,
-        )
-        return _get_transcribed_segments_from_alignment_result(result)
-
-    if aligner_backend == "ctc":
-        return _align_with_ctc(
-            audio_path=audio_path,
-            text=transcript_text,
-            duration_seconds=duration_seconds,
-            aligner_model_name=aligner_model_name,
-            device=device,
-        )
-    if aligner_backend != "whisperx":
-        raise TranscriptionAlignmentError(
-            f"Unsupported timestamp aligner backend: {aligner_backend}"
-        )
-
-    whisperx = _get_whisperx_module()
-    load_align_model_kwargs: dict[str, object] = {
-        "language_code": aligner_language,
-        "device": device,
-    }
-    if aligner_model_name is not None:
-        load_align_model_kwargs["model_name"] = aligner_model_name
-    align_model, align_metadata = whisperx.load_align_model(**load_align_model_kwargs)
-
-    transcript = [
-        {"start": 0.0, "end": float(duration_seconds), "text": transcript_text}
-    ]
-    result = whisperx.align(
-        transcript=transcript,
-        model=align_model,
-        align_model_metadata=align_metadata,
-        audio=str(audio_path),
+    return _align_with_ctc(
+        audio_path=audio_path,
+        text=transcript_text,
+        duration_seconds=duration_seconds,
         device=device,
-        return_char_alignments=False,
     )
-    return _get_transcribed_segments_from_alignment_result(result)
 
 
 def _align_with_ctc(
@@ -120,7 +66,6 @@ def _align_with_ctc(
     audio_path: Path,
     text: str,
     duration_seconds: float,
-    aligner_model_name: str | None,
     device: str,
 ) -> list[TranscribedSegment]:
     """Align transcript text with an in-house CTC trellis.
@@ -129,7 +74,6 @@ def _align_with_ctc(
         audio_path: source audio path to align against
         text: authoritative transcript text
         duration_seconds: source audio duration in seconds
-        aligner_model_name: optional CTC model checkpoint name
         device: device identifier passed to the model backend
     Returns:
         timestamped transcription segment
@@ -139,7 +83,6 @@ def _align_with_ctc(
     log_probs, token_ids, char_indices, blank_token_id = _get_ctc_alignment_inputs(
         audio_path=audio_path,
         text=text,
-        aligner_model_name=aligner_model_name,
         device=device,
     )
     if not token_ids:
@@ -180,7 +123,6 @@ def _get_ctc_alignment_inputs(
     *,
     audio_path: Path,
     text: str,
-    aligner_model_name: str | None,
     device: str,
 ) -> tuple[np.ndarray, list[int], list[int], int]:
     """Get CTC log probabilities and transcript token mapping.
@@ -188,7 +130,6 @@ def _get_ctc_alignment_inputs(
     Arguments:
         audio_path: source audio path to align against
         text: authoritative transcript text
-        aligner_model_name: optional CTC model checkpoint name
         device: device identifier passed to the model backend
     Returns:
         log probabilities, token IDs, text character indices, and blank token ID
@@ -196,10 +137,7 @@ def _get_ctc_alignment_inputs(
         ImportError: if CTC dependencies are unavailable
         TranscriptionAlignmentError: if transcript tokens cannot be prepared
     """
-    model_name = (
-        aligner_model_name or "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn"
-    )
-    processor, model = _get_ctc_components(model_name=model_name, device=device)
+    processor, model = _get_ctc_components(device=device)
     samples = _load_ctc_audio_samples(audio_path)
     processor_callable = cast(Callable[..., Mapping[str, Any]], processor)
     inputs = processor_callable(samples, sampling_rate=16000, return_tensors="pt")
@@ -411,19 +349,17 @@ def _get_ctc_character_timings(
     return timed_chars
 
 
-def _get_ctc_components(*, model_name: str, device: str) -> tuple[object, object]:
+def _get_ctc_components(*, device: str) -> tuple[object, object]:
     """Load or reuse a CTC processor and model from Hugging Face.
 
     Arguments:
-        model_name: model checkpoint name or local path
         device: device identifier passed to the model backend
     Returns:
         processor and model
     Raises:
         ImportError: if Hugging Face CTC dependencies are unavailable
     """
-    cache_key = (model_name, device)
-    cached_components = _CTC_COMPONENTS_BY_MODEL_AND_DEVICE.get(cache_key)
+    cached_components = _CTC_COMPONENTS_BY_DEVICE.get(device)
     if cached_components is not None:
         return cached_components
 
@@ -437,14 +373,14 @@ def _get_ctc_components(*, model_name: str, device: str) -> tuple[object, object
             "CTC timestamp alignment requires transformers and torch dependencies."
         ) from exc
 
-    processor = AutoProcessor.from_pretrained(model_name)
-    model = AutoModelForCTC.from_pretrained(model_name)
+    processor = AutoProcessor.from_pretrained(CTC_MODEL_NAME)
+    model = AutoModelForCTC.from_pretrained(CTC_MODEL_NAME)
     if hasattr(model, "to"):
         model = model.to(device)
     if hasattr(model, "eval"):
         model.eval()
     components = (processor, model)
-    _CTC_COMPONENTS_BY_MODEL_AND_DEVICE[cache_key] = components
+    _CTC_COMPONENTS_BY_DEVICE[device] = components
     return components
 
 
@@ -605,273 +541,3 @@ def _load_ctc_audio_samples(audio_path: Path) -> np.ndarray:
     if samples.size == 0:
         raise TranscriptionAlignmentError("CTC alignment received empty audio.")
     return samples
-
-
-def _parse_alignment_worker_stdout(stdout_text: str) -> Mapping[str, object]:
-    """Parse alignment worker stdout, accepting logging before JSON.
-
-    Arguments:
-        stdout_text: worker stdout
-    Returns:
-        parsed worker payload
-    Raises:
-        TranscriptionAlignmentError: if no JSON object is found
-    """
-    for line in reversed(stdout_text.splitlines()):
-        stripped_line = line.strip()
-        if not stripped_line:
-            continue
-        try:
-            payload = json.loads(stripped_line)
-        except json.JSONDecodeError:
-            continue
-        if isinstance(payload, Mapping):
-            return cast(Mapping[str, object], payload)
-    raise TranscriptionAlignmentError("Alignment worker did not return a JSON object.")
-
-
-def _run_alignment_worker(
-    *,
-    audio_path: Path,
-    text: str,
-    duration_seconds: float,
-    aligner_backend: str,
-    aligner_language: str,
-    aligner_model_name: str | None,
-    aligner_worker_command: Sequence[str],
-    aligner_worker_timeout_seconds: float | None,
-    device: str,
-) -> Mapping[str, object]:
-    """Run an external forced-alignment worker.
-
-    Arguments:
-        audio_path: source audio path to align against
-        text: authoritative transcript text
-        duration_seconds: source audio duration in seconds
-        aligner_backend: forced-alignment backend identifier
-        aligner_language: language code for the aligner
-        aligner_model_name: optional aligner model checkpoint name
-        aligner_worker_command: external aligner worker command
-        aligner_worker_timeout_seconds: optional aligner worker timeout
-        device: device identifier passed to the alignment backend
-    Returns:
-        parsed alignment payload
-    Raises:
-        TranscriptionAlignmentError: if the worker fails or returns malformed output
-    """
-    request = {
-        "audio_path": str(audio_path),
-        "backend": aligner_backend,
-        "text": text,
-        "duration_seconds": duration_seconds,
-        "language": aligner_language,
-        "model_name": aligner_model_name,
-        "device": device,
-    }
-    try:
-        result = subprocess.run(
-            list(aligner_worker_command),
-            input=json.dumps(request, ensure_ascii=False),
-            text=True,
-            capture_output=True,
-            check=False,
-            timeout=aligner_worker_timeout_seconds,
-        )
-    except (OSError, subprocess.TimeoutExpired) as exc:
-        raise TranscriptionAlignmentError(
-            f"Unable to run alignment worker: {exc}"
-        ) from exc
-    if result.returncode != 0:
-        raise TranscriptionAlignmentError(
-            f"Alignment worker exited with status {result.returncode}: "
-            f"{result.stderr.strip()}"
-        )
-    return _parse_alignment_worker_stdout(result.stdout)
-
-
-def _get_transcribed_segments_from_alignment_result(
-    result: Mapping[str, object],
-) -> list[TranscribedSegment]:
-    """Convert a WhisperX alignment result into transcribed segments.
-
-    Arguments:
-        result: WhisperX alignment result
-    Returns:
-        timestamped transcription segments
-    Raises:
-        TranscriptionAlignmentError: if segment or word timing data is unusable
-    """
-    raw_segments = result.get("segments")
-    if not isinstance(raw_segments, Sequence):
-        raise TranscriptionAlignmentError("Alignment result did not contain segments.")
-
-    segments: list[TranscribedSegment] = []
-    for segment_id, raw_segment_obj in enumerate(raw_segments):
-        if not isinstance(raw_segment_obj, Mapping):
-            raise TranscriptionAlignmentError("Alignment segment is malformed.")
-        raw_segment = cast(Mapping[str, object], raw_segment_obj)
-
-        segment_text = raw_segment.get("text")
-        if not isinstance(segment_text, str):
-            raise TranscriptionAlignmentError("Alignment field 'text' is missing.")
-        if not segment_text.strip():
-            continue
-
-        raw_words = raw_segment.get("words")
-        if not isinstance(raw_words, Sequence) or not raw_words:
-            raise TranscriptionAlignmentError(
-                f"Alignment segment {segment_id} missing word timings."
-            )
-        words = _get_transcribed_words(segment_text, raw_words, segment_id=segment_id)
-        if not words:
-            raise TranscriptionAlignmentError(
-                f"Alignment segment {segment_id} missing word timings."
-            )
-
-        segments.append(
-            TranscribedSegment(
-                id=segment_id,
-                seek=0,
-                start=_get_required_float(raw_segment, "start"),
-                end=_get_required_float(raw_segment, "end"),
-                text=segment_text,
-                words=words,
-            )
-        )
-
-    if not segments:
-        raise TranscriptionAlignmentError("Alignment did not produce timed segments.")
-    return segments
-
-
-def _get_optional_float(mapping: Mapping[str, object], key: str) -> float | None:
-    """Get an optional float-compatible value from a mapping.
-
-    Arguments:
-        mapping: mapping to read
-        key: key to read
-    Returns:
-        float value, if present
-    Raises:
-        TranscriptionAlignmentError: if the value is malformed
-    """
-    value = mapping.get(key)
-    if value is None:
-        return None
-    if isinstance(value, int | float):
-        return float(value)
-    raise TranscriptionAlignmentError(f"Alignment field {key!r} is malformed.")
-
-
-def _get_required_float(mapping: Mapping[str, object], key: str) -> float:
-    """Get a required float-compatible value from a mapping.
-
-    Arguments:
-        mapping: mapping to read
-        key: key to read
-    Returns:
-        float value
-    Raises:
-        TranscriptionAlignmentError: if the value is missing or malformed
-    """
-    value = _get_optional_float(mapping, key)
-    if value is None:
-        raise TranscriptionAlignmentError(f"Alignment field {key!r} is missing.")
-    return value
-
-
-def _get_transcribed_words(
-    segment_text: str,
-    raw_words: Sequence[object],
-    *,
-    segment_id: int,
-) -> list[TranscribedWord]:
-    """Convert WhisperX word dictionaries into transcribed words.
-
-    Arguments:
-        segment_text: full segment text used to recover inter-word whitespace
-        raw_words: WhisperX word payloads
-        segment_id: segment index for error messages
-    Returns:
-        transcribed words with timing data
-    Raises:
-        TranscriptionAlignmentError: if word timing data is missing
-    """
-    words: list[TranscribedWord] = []
-    cursor = 0
-    for word_idx, raw_word_obj in enumerate(raw_words):
-        if not isinstance(raw_word_obj, Mapping):
-            raise TranscriptionAlignmentError(
-                f"Alignment segment {segment_id} word {word_idx} is malformed."
-            )
-        raw_word = cast(Mapping[str, object], raw_word_obj)
-
-        word_text = _get_word_text(raw_word)
-        match_text = word_text.strip()
-        if not match_text:
-            continue
-        start = _get_optional_float(raw_word, "start")
-        end = _get_optional_float(raw_word, "end")
-        if start is None or end is None:
-            raise TranscriptionAlignmentError(
-                f"Alignment segment {segment_id} word {word_idx} missing word timings."
-            )
-
-        matched_idx = segment_text.find(match_text, cursor)
-        if matched_idx >= cursor:
-            word_text = f"{segment_text[cursor:matched_idx]}{match_text}"
-            cursor = matched_idx + len(match_text)
-
-        confidence = _get_optional_float(raw_word, "score")
-        if confidence is None:
-            confidence = _get_optional_float(raw_word, "confidence")
-        if confidence is None:
-            confidence = 0.0
-        words.append(
-            TranscribedWord(
-                text=word_text,
-                start=start,
-                end=end,
-                confidence=confidence,
-            )
-        )
-    if words and 0 < cursor < len(segment_text):
-        trailing_text = segment_text[cursor:]
-        last_word = words[-1]
-        words[-1] = last_word.model_copy(
-            update={"text": f"{last_word.text}{trailing_text}"}
-        )
-    return words
-
-
-def _get_whisperx_module() -> Any:
-    """Import WhisperX on demand.
-
-    Returns:
-        imported WhisperX module
-    Raises:
-        ImportError: if WhisperX is unavailable
-    """
-    try:
-        import whisperx  # ty: ignore[unresolved-import]  # noqa: PLC0415
-    except ImportError as exc:
-        raise ImportError(_WHISPERX_EXTRA_MESSAGE) from exc
-    return whisperx
-
-
-def _get_word_text(raw_word: Mapping[str, object]) -> str:
-    """Get word text from a WhisperX word payload.
-
-    Arguments:
-        raw_word: WhisperX word payload
-    Returns:
-        word text
-    Raises:
-        TranscriptionAlignmentError: if text is missing or malformed
-    """
-    value = raw_word.get("word")
-    if value is None:
-        value = raw_word.get("text")
-    if not isinstance(value, str):
-        raise TranscriptionAlignmentError("Alignment word text is missing.")
-    return value

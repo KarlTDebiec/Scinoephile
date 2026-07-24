@@ -3,8 +3,8 @@
 """Code related to audio transcription.
 
 Package hierarchy (modules may import from any above):
-* demucs_separator / forced_alignment_worker / mimo_runtime / transcribed_word
-* mimo_worker / transcribed_segment
+* demucs_separator / mimo_inference / transcribed_word
+* transcribed_segment
 * forced_alignment / whisper_transcriber
 * mimo_transcriber
 """
@@ -15,27 +15,22 @@ from logging import getLogger
 
 from .demucs_separator import DemucsSeparator
 from .forced_alignment import TranscriptionAlignmentError, align_mimo_transcription
-from .mimo_runtime import MIMO_MODEL_NAME, MimoRuntime
 from .mimo_transcriber import (
-    MimoRuntimeUnsupportedError,
+    MimoInferenceError,
     MimoTranscriber,
     MimoTranscriptEmptyError,
     MimoTranscriptionError,
-    MimoWorkerError,
 )
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 from .whisper_transcriber import WhisperTranscriber
 
 __all__ = [
-    "MIMO_MODEL_NAME",
     "DemucsSeparator",
-    "MimoRuntime",
-    "MimoRuntimeUnsupportedError",
+    "MimoInferenceError",
     "MimoTranscriptEmptyError",
     "MimoTranscriber",
     "MimoTranscriptionError",
-    "MimoWorkerError",
     "TranscribedSegment",
     "TranscribedWord",
     "TranscriptionAlignmentError",

@@ -6,14 +6,10 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import platform
-import subprocess
-from atexit import register
 from collections.abc import Mapping, Sequence
 from logging import getLogger
 from pathlib import Path
-from threading import Lock
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -22,21 +18,20 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import Language
 
-from .forced_alignment import TranscriptionAlignmentError, align_mimo_transcription
-from .mimo_runtime import (
-    MIMO_MODEL_NAME,
-    MimoRuntime,
+from .forced_alignment import (
+    CTC_MODEL_NAME,
+    TranscriptionAlignmentError,
+    align_mimo_transcription,
 )
-from .mimo_worker import transcribe_with_mimo
+from .mimo_inference import MimoInferenceResult, transcribe_with_mimo
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 
 __all__ = [
+    "MimoInferenceError",
     "MimoTranscriptEmptyError",
     "MimoTranscriber",
     "MimoTranscriptionError",
-    "MimoRuntimeUnsupportedError",
-    "MimoWorkerError",
 ]
 
 if TYPE_CHECKING:
@@ -59,53 +54,17 @@ _VAD_PADDING_SECONDS = 0.5
 _VAD_SAMPLE_RATE = 16000
 """Sample rate expected by the Silero VAD model."""
 
-_MIMO_WORKER_PROCESSES: dict[tuple[str, ...], subprocess.Popen[str]] = {}
-"""Persistent MiMo worker processes keyed by command."""
-
-_MIMO_WORKER_LOCK = Lock()
-"""Serializes access to persistent MiMo worker processes."""
+_MIMO_MODEL_NAME = "mlx-community/MiMo-V2.5-ASR-MLX"
+"""Default MLX MiMo model."""
 
 _MIMO_LANGUAGE_CODES = {
-    Language.eng: "en",
-    Language.yue_hans: "yue",
-    Language.yue_hant: "yue",
-    Language.zho_hans: "zh",
-    Language.zho_hant: "zh",
-}
-"""Maps Scinoephile languages to MiMo ASR language codes."""
-
-_MIMO_ALIGNER_LANGUAGE_CODES = {
     Language.eng: "en",
     Language.yue_hans: "zh",
     Language.yue_hant: "zh",
     Language.zho_hans: "zh",
     Language.zho_hant: "zh",
 }
-"""Maps Scinoephile languages to MiMo alignment language codes."""
-
-
-def _close_mimo_worker_processes():
-    """Close persistent MiMo worker processes at interpreter shutdown."""
-    with _MIMO_WORKER_LOCK:
-        processes = list(_MIMO_WORKER_PROCESSES.values())
-        _MIMO_WORKER_PROCESSES.clear()
-    for process in processes:
-        if process.poll() is not None:
-            continue
-        try:
-            if process.stdin is not None:
-                process.stdin.close()
-            process.terminate()
-            process.wait(timeout=5)
-        except (OSError, subprocess.TimeoutExpired):
-            try:
-                process.kill()
-                process.wait()
-            except OSError:
-                pass
-
-
-register(_close_mimo_worker_processes)
+"""Maps Scinoephile languages to MiMo ASR language codes."""
 
 
 class MimoTranscriptionError(RuntimeError):
@@ -116,12 +75,8 @@ class MimoTranscriptEmptyError(MimoTranscriptionError):
     """Raised when MiMo returns no transcript text."""
 
 
-class MimoRuntimeUnsupportedError(MimoTranscriptionError):
-    """Raised when the requested MiMo runtime is not supported."""
-
-
-class MimoWorkerError(MimoTranscriptionError):
-    """Raised when MiMo inference fails or returns malformed output."""
+class MimoInferenceError(MimoTranscriptionError):
+    """Raised when direct MiMo inference fails or returns malformed output."""
 
 
 class MimoTranscriber:
@@ -129,19 +84,12 @@ class MimoTranscriber:
 
     def __init__(
         self,
-        model_name: str = MIMO_MODEL_NAME,
-        mimo_runtime: MimoRuntime | str = MimoRuntime.AUTO,
+        model_name: str = _MIMO_MODEL_NAME,
         language: Language = Language.yue_hant,
         max_tokens: int | None = None,
         chunk_duration_seconds: float | None = None,
         chunk_overlap_seconds: float = 1.0,
         cache_dir_path: Path | None = None,
-        aligner_backend: str = "ctc",
-        aligner_model_name: str | None = None,
-        aligner_worker_command: Sequence[str] | None = None,
-        aligner_worker_timeout_seconds: float | None = None,
-        worker_command: Sequence[str] | None = None,
-        worker_timeout_seconds: float | None = None,
         use_demucs: bool = False,
         use_vad: bool = False,
         retry_without_vad: bool = False,
@@ -150,18 +98,11 @@ class MimoTranscriber:
 
         Arguments:
             model_name: MiMo ASR model name or local model path
-            mimo_runtime: runtime implementation used for MiMo inference
             language: language to transcribe
             max_tokens: optional maximum number of MiMo text tokens to generate
             chunk_duration_seconds: optional chunk duration for MiMo inference
             chunk_overlap_seconds: context overlap applied to each MiMo chunk
             cache_dir_path: directory in which to cache
-            aligner_backend: timestamp alignment backend
-            aligner_model_name: optional alignment model name
-            aligner_worker_command: optional command that runs timestamp alignment
-            aligner_worker_timeout_seconds: optional aligner timeout in seconds
-            worker_command: optional subprocess command that runs MiMo
-            worker_timeout_seconds: optional worker timeout in seconds
             use_demucs: whether Demucs preprocessing was applied
             use_vad: whether to remove non-speech audio using Silero VAD
             retry_without_vad: whether to retry unfiltered audio after VAD failure
@@ -169,11 +110,9 @@ class MimoTranscriber:
             ValueError: if the language or numeric configuration is invalid
         """
         self.model_name = model_name
-        self.mimo_runtime = MimoRuntime(mimo_runtime)
         self.language = language
         try:
             self.mimo_language_code = _MIMO_LANGUAGE_CODES[self.language]
-            self.aligner_language_code = _MIMO_ALIGNER_LANGUAGE_CODES[self.language]
         except (KeyError, ValueError) as exc:
             raise ValueError(
                 f"{language} is not supported by MiMo transcription"
@@ -187,18 +126,6 @@ class MimoTranscriber:
             raise ValueError("MiMo chunk duration must be positive.")
         if self.chunk_overlap_seconds < 0:
             raise ValueError("MiMo chunk overlap must be non-negative.")
-        self.aligner_backend = aligner_backend
-        self.aligner_model_name = aligner_model_name
-        self.aligner_worker_command = (
-            tuple(aligner_worker_command)
-            if aligner_worker_command is not None
-            else None
-        )
-        self.aligner_worker_timeout_seconds = aligner_worker_timeout_seconds
-        self.worker_command = (
-            tuple(worker_command) if worker_command is not None else None
-        )
-        self.worker_timeout_seconds = worker_timeout_seconds
         self.use_demucs = use_demucs
         self.use_vad = use_vad
         self.retry_without_vad = retry_without_vad
@@ -248,10 +175,10 @@ class MimoTranscriber:
         with cache_path.open("r", encoding="utf-8") as file:
             payload = json.load(file)
         if not isinstance(payload, Mapping):
-            raise MimoWorkerError(f"Malformed MiMo cache payload: {cache_path}")
+            raise MimoInferenceError(f"Malformed MiMo cache payload: {cache_path}")
         raw_segments = payload.get("segments")
         if not isinstance(raw_segments, list):
-            raise MimoWorkerError(f"Malformed MiMo cache payload: {cache_path}")
+            raise MimoInferenceError(f"Malformed MiMo cache payload: {cache_path}")
         segments = [TranscribedSegment.model_validate(s) for s in raw_segments]
         cache_path.touch()
         return segments
@@ -327,23 +254,21 @@ class MimoTranscriber:
         Returns:
             cache identity metadata
         """
+        self._validate_platform()
         vad_version = None
         if self.use_vad:
             vad_version = _VAD_CACHE_VERSION
         return {
             "backend": "mimo",
             "model_name": self.model_name,
-            "runtime": self._get_effective_mimo_runtime(),
+            "runtime": "mlx",
             "language": self.language.code,
             "mimo_language_code": self.mimo_language_code,
-            "aligner_language_code": self.aligner_language_code,
             "max_tokens": self.max_tokens,
             "chunk_duration_seconds": self.chunk_duration_seconds,
             "chunk_overlap_seconds": self.chunk_overlap_seconds,
-            "worker_command": self.worker_command,
-            "aligner_backend": self.aligner_backend,
-            "aligner_model_name": self.aligner_model_name,
-            "aligner_worker_command": self.aligner_worker_command,
+            "aligner": "ctc",
+            "aligner_model_name": CTC_MODEL_NAME,
             "use_demucs": self.use_demucs,
             "vad_version": vad_version,
             "retry_without_vad": self.retry_without_vad,
@@ -364,38 +289,15 @@ class MimoTranscriber:
             "segments": [segment.model_dump() for segment in segments],
         }
 
-    def _get_effective_mimo_runtime(self) -> MimoRuntime:
-        """Get the runtime used for this platform when auto mode is selected.
-
-        Returns:
-            concrete MiMo runtime
-        """
-        if self.mimo_runtime != MimoRuntime.AUTO:
-            return self.mimo_runtime
+    @staticmethod
+    def _validate_platform():
+        """Validate that direct MLX MiMo inference is supported."""
         if platform.system() == "Darwin" and platform.machine() in {"arm64", "aarch64"}:
-            return MimoRuntime.MLX
-        raise MimoRuntimeUnsupportedError(
+            return
+        raise MimoTranscriptionError(
             "MiMo support currently requires Apple Silicon MLX. "
             "CUDA support is not included in this initial implementation."
         )
-
-    def _get_mimo_request(self, audio_path: Path) -> dict[str, object]:
-        """Get a MiMo runtime request payload for an audio file.
-
-        Arguments:
-            audio_path: temporary WAV path to transcribe
-        Returns:
-            MiMo runtime request payload
-        """
-        request: dict[str, object] = {
-            "audio_path": str(audio_path),
-            "model_name": self.model_name,
-            "runtime": self._get_effective_mimo_runtime(),
-            "language": self.mimo_language_code,
-        }
-        if self.max_tokens is not None:
-            request["max_tokens"] = self.max_tokens
-        return request
 
     @staticmethod
     def _get_vad_speech_intervals(audio: AudioSegment) -> list[tuple[int, int]]:
@@ -453,215 +355,26 @@ class MimoTranscriber:
                 intervals.append((start_ms, end_ms))
         return intervals
 
-    def _get_worker_env(self) -> Mapping[str, str]:
-        """Get environment variables for worker subprocesses.
-
-        Returns:
-            subprocess environment with this source tree on PYTHONPATH
-        """
-        env = os.environ.copy()
-        source_root_path = Path(__file__).resolve().parents[3]
-        python_paths = [str(source_root_path)]
-        if current_pythonpath := env.get("PYTHONPATH"):
-            python_paths.extend(current_pythonpath.split(os.pathsep))
-        env["PYTHONPATH"] = os.pathsep.join(python_paths)
-        return env
-
-    def _get_worker_process(self) -> subprocess.Popen[str]:
-        """Get or start the persistent process for the configured worker command.
-
-        Returns:
-            running MiMo worker process
-        Raises:
-            MimoWorkerError: if the worker cannot be started
-        """
-        assert self.worker_command is not None
-        process = _MIMO_WORKER_PROCESSES.get(self.worker_command)
-        if process is not None and process.poll() is None:
-            return process
-
-        try:
-            process = subprocess.Popen(
-                self.worker_command,
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-                bufsize=1,
-                env=self._get_worker_env(),
-            )
-        except OSError as exc:
-            raise MimoWorkerError(f"Unable to start MiMo worker: {exc}") from exc
-        if process.stdin is None or process.stdout is None:
-            process.terminate()
-            raise MimoWorkerError("Unable to open MiMo worker pipes.")
-        _MIMO_WORKER_PROCESSES[self.worker_command] = process
-        return process
-
-    @staticmethod
-    def _get_worker_payload(response: object) -> dict[str, object]:
-        """Get a MiMo payload from a worker response envelope.
-
-        Arguments:
-            response: parsed worker response
-        Returns:
-            MiMo output payload
-        Raises:
-            MimoWorkerError: if the response reports an error or is malformed
-        """
-        if not isinstance(response, Mapping):
-            raise MimoWorkerError("MiMo worker returned malformed JSON.")
-        response_mapping = dict(response)
-        status = response_mapping.get("status")
-        if status is None:
-            if "text" in response_mapping:
-                return response_mapping
-            raise MimoWorkerError("MiMo worker response is missing its status.")
-        if status == "error":
-            error = response_mapping.get("error")
-            raise MimoWorkerError(f"MiMo worker failed: {error}")
-        if status != "ok":
-            raise MimoWorkerError(f"Unknown MiMo worker response status: {status!r}")
-        payload = response_mapping.get("payload")
-        if not isinstance(payload, Mapping):
-            raise MimoWorkerError("MiMo worker response is missing its payload.")
-        return dict(payload)
-
-    def _read_worker_payload(
-        self,
-        process: subprocess.Popen[str],
-    ) -> dict[str, object]:
-        """Read the next payload from a persistent MiMo worker.
-
-        Arguments:
-            process: running MiMo worker process
-        Returns:
-            MiMo output payload
-        Raises:
-            MimoWorkerError: if the worker exits or returns malformed output
-        """
-        assert process.stdout is not None
-        for response_line in process.stdout:
-            stripped_line = response_line.strip()
-            if not stripped_line:
-                continue
-            try:
-                response = json.loads(stripped_line)
-            except json.JSONDecodeError:
-                continue
-            if isinstance(response, Mapping) and (
-                "status" in response or "text" in response
-            ):
-                return self._get_worker_payload(response)
-        returncode = process.poll()
-        raise MimoWorkerError(
-            f"MiMo worker exited before returning a response (status {returncode})."
-        )
-
-    def _run_in_process(self, audio_path: Path) -> dict[str, object]:
-        """Run MiMo in the current Python process.
+    def _run_mimo(self, audio_path: Path) -> MimoInferenceResult:
+        """Run MiMo directly in the current process.
 
         Arguments:
             audio_path: temporary WAV path to transcribe
         Returns:
-            MiMo output payload
+            MiMo inference result
         Raises:
-            MimoWorkerError: if in-process MiMo fails
+            MimoInferenceError: if direct inference fails
         """
-        request = self._get_mimo_request(audio_path)
+        self._validate_platform()
         try:
-            return transcribe_with_mimo(request)
+            return transcribe_with_mimo(
+                audio_path,
+                model_name=self.model_name,
+                language=self.mimo_language_code,
+                max_tokens=self.max_tokens,
+            )
         except (ImportError, OSError, RuntimeError, ValueError) as exc:
-            raise MimoWorkerError(f"Unable to run MiMo in-process: {exc}") from exc
-
-    def _run_mimo(self, audio_path: Path) -> dict[str, object]:
-        """Run MiMo using the configured execution mode.
-
-        Arguments:
-            audio_path: temporary WAV path to transcribe
-        Returns:
-            MiMo output payload
-        """
-        if self.worker_command is not None:
-            return self._run_worker(audio_path)
-        return self._run_in_process(audio_path)
-
-    def _run_worker(self, audio_path: Path) -> dict[str, object]:
-        """Run the configured MiMo worker for one audio file.
-
-        Arguments:
-            audio_path: temporary WAV path to transcribe
-        Returns:
-            worker output payload
-        Raises:
-            MimoWorkerError: if the worker fails or returns malformed output
-        """
-        assert self.worker_command is not None
-        request = self._get_mimo_request(audio_path)
-        request_text = f"{json.dumps(request, ensure_ascii=False)}\n"
-
-        if self.worker_timeout_seconds is None:
-            with _MIMO_WORKER_LOCK:
-                process = self._get_worker_process()
-                assert process.stdin is not None
-                try:
-                    process.stdin.write(request_text)
-                    process.stdin.flush()
-                except (BrokenPipeError, OSError) as exc:
-                    _MIMO_WORKER_PROCESSES.pop(self.worker_command, None)
-                    raise MimoWorkerError(
-                        f"Unable to write to MiMo worker: {exc}"
-                    ) from exc
-                try:
-                    return self._read_worker_payload(process)
-                except MimoWorkerError:
-                    if process.poll() is not None:
-                        _MIMO_WORKER_PROCESSES.pop(self.worker_command, None)
-                    raise
-
-        try:
-            result = subprocess.run(
-                self.worker_command,
-                input=request_text,
-                text=True,
-                capture_output=True,
-                check=False,
-                timeout=self.worker_timeout_seconds,
-                env=self._get_worker_env(),
-            )
-        except (OSError, subprocess.TimeoutExpired) as exc:
-            raise MimoWorkerError(f"Unable to run MiMo worker: {exc}") from exc
-        if result.returncode != 0:
-            raise MimoWorkerError(
-                f"MiMo worker exited with status {result.returncode}: "
-                f"{result.stderr.strip()}"
-            )
-        return self._parse_worker_stdout(result.stdout)
-
-    @staticmethod
-    def _parse_worker_stdout(stdout_text: str) -> dict[str, object]:
-        """Parse worker stdout, accepting logging before the final JSON line.
-
-        Arguments:
-            stdout_text: worker stdout
-        Returns:
-            parsed worker payload
-        Raises:
-            MimoWorkerError: if no JSON object is found
-        """
-        for line in reversed(stdout_text.splitlines()):
-            stripped_line = line.strip()
-            if not stripped_line:
-                continue
-            try:
-                payload = json.loads(stripped_line)
-            except json.JSONDecodeError:
-                continue
-            if isinstance(payload, Mapping) and (
-                "status" in payload or "text" in payload
-            ):
-                return MimoTranscriber._get_worker_payload(payload)
-        raise MimoWorkerError("MiMo worker did not return a JSON object.")
+            raise MimoInferenceError(f"Unable to run MiMo inference: {exc}") from exc
 
     def _transcribe_audio_window(
         self,
@@ -679,29 +392,19 @@ class MimoTranscriber:
         """
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
-            worker_payload = self._run_mimo(temp_audio_path)
-            text = worker_payload.get("text")
-            if not isinstance(text, str) or not text.strip():
+            inference_result = self._run_mimo(temp_audio_path)
+            text = inference_result.text
+            if not text.strip():
                 raise MimoTranscriptEmptyError("MiMo returned empty transcript.")
             content_characters = {char for char in text if char.isalnum()}
             if content_characters and content_characters <= _LOW_INFORMATION_CHARACTERS:
                 raise MimoTranscriptionError(
                     f"MiMo returned only low-information vocalizations: {text!r}"
                 )
-            duration_seconds = worker_payload.get("duration_seconds")
-            if isinstance(duration_seconds, int | float):
-                duration = float(duration_seconds)
-            else:
-                duration = len(audio) / 1000
             return align_mimo_transcription(
                 temp_audio_path,
                 text,
-                duration_seconds=duration,
-                aligner_backend=self.aligner_backend,
-                aligner_language=self.aligner_language_code,
-                aligner_model_name=self.aligner_model_name,
-                aligner_worker_command=self.aligner_worker_command,
-                aligner_worker_timeout_seconds=self.aligner_worker_timeout_seconds,
+                duration_seconds=inference_result.duration_seconds,
             )
 
     def _transcribe_chunked_audio(

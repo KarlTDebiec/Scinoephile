@@ -11,11 +11,7 @@ from unittest.mock import Mock, patch
 
 from pytest import raises
 
-from scinoephile.audio.transcription import (
-    MIMO_MODEL_NAME,
-    MimoRuntime,
-    MimoTranscriber,
-)
+from scinoephile.audio.transcription import MimoTranscriber
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.utils import save_test_cases_to_json
@@ -154,18 +150,12 @@ def test_get_guided_transcriber_configures_mimo_backend(tmp_path: Path):
     assert transcriber.backend is TranscriptionBackend.MIMO
     primary = transcriber.mimo_transcriber
     assert isinstance(primary, MimoTranscriber)
-    assert primary.model_name == MIMO_MODEL_NAME
-    assert primary.mimo_runtime is MimoRuntime.AUTO
+    assert primary.model_name == "mlx-community/MiMo-V2.5-ASR-MLX"
     assert primary.language is Language.yue_hant
-    assert primary.mimo_language_code == "yue"
-    assert primary.aligner_language_code == "zh"
+    assert primary.mimo_language_code == "zh"
     assert primary.max_tokens is None
     assert primary.chunk_duration_seconds is None
     assert primary.chunk_overlap_seconds == 1.0
-    assert primary.worker_command is None
-    assert primary.aligner_backend == "ctc"
-    assert primary.aligner_model_name is None
-    assert primary.aligner_worker_command is None
     assert primary.cache_dir_path == tmp_path
     assert primary.use_demucs
     assert primary.use_vad
