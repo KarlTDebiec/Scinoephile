@@ -11,6 +11,7 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
+from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.exceptions import ScinoephileError
 
@@ -37,6 +38,7 @@ class Queryer[TTestCase: TestCase]:
         additional_context: str | None = None,
         max_attempts: int = 5,
         auto_verify: bool = False,
+        overwrite_cache: bool = False,
         tool_box: ToolBox | None = None,
     ):
         """Initialize.
@@ -50,6 +52,7 @@ class Queryer[TTestCase: TestCase]:
             additional_context: additional context to include in the system prompt
             max_attempts: maximum number of attempts
             auto_verify: automatically mark test cases as verified if no changes
+            overwrite_cache: whether to replace matching cache files
             tool_box: available tools and handlers
         """
         self.test_case_cls = test_case_cls
@@ -82,6 +85,8 @@ class Queryer[TTestCase: TestCase]:
         """Maximum number of query attempts."""
         self.auto_verify = auto_verify
         """Automatically verify test cases if they meet selected criteria."""
+        self.overwrite_cache = overwrite_cache
+        """Whether to replace matching cache files."""
         self.tool_box = tool_box or ToolBox()
         """Available tools and handlers."""
         self.system_prompt = self.prompt.base_system_prompt
@@ -214,7 +219,7 @@ class Queryer[TTestCase: TestCase]:
                 exclude_defaults=True,
                 indent=2,
             )
-            with open(cache_path, mode="w", encoding="utf-8") as cache_file:
+            with open_atomic_text_file(cache_path) as cache_file:
                 cache_file.write(contents)
             logger.debug(f"Saved to cache: {cache_path}")
 
@@ -300,6 +305,9 @@ class Queryer[TTestCase: TestCase]:
         """
         if cache_path is None:
             return None
+        if self.overwrite_cache and cache_path.exists():
+            cache_path.unlink()
+            logger.info(f"Removed LLM response cache: {cache_path}")
         if not cache_path.exists():
             return None
         with open(cache_path, encoding="utf-8") as cache_file:

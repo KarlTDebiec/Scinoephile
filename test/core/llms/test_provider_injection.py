@@ -506,6 +506,33 @@ def test_queryer_cache_stores_only_answer_and_preserves_current_metadata(tmp_pat
     assert len(provider.calls) == 1
 
 
+def test_queryer_overwrites_matching_cache(tmp_path):
+    """Test cache overwrite queries the provider and replaces the cached answer."""
+    cached_provider = _RecordingProvider('{"output":"cached"}')
+    test_case = _TestCase(query=_Query(text="input"))
+    Queryer(
+        _TestCase,
+        provider=cached_provider,
+        cache_dir_path=tmp_path,
+        max_attempts=1,
+    )(test_case)
+
+    fresh_provider = _RecordingProvider('{"output":"fresh"}')
+    result = Queryer(
+        _TestCase,
+        provider=fresh_provider,
+        cache_dir_path=tmp_path,
+        max_attempts=1,
+        overwrite_cache=True,
+    )(test_case)
+
+    cache_paths = list(tmp_path.glob("*.json"))
+    assert result.answer == _Answer(output="fresh")
+    assert len(fresh_provider.calls) == 1
+    assert len(cache_paths) == 1
+    assert json.loads(cache_paths[0].read_text(encoding="utf-8")) == {"output": "fresh"}
+
+
 def test_queryer_cache_is_namespaced_by_test_case_class(tmp_path):
     """Test compatible test-case classes do not share cached answers."""
     provider_one = _RecordingProvider('{"output":"one"}')

@@ -34,6 +34,7 @@ from .helpers.blocks import (
     add_block_range_args,
     get_block_range_indexes,
 )
+from .helpers.cache import CACHE_LOCALIZATIONS, CacheArguments, add_cache_args
 from .helpers.io import read_series, write_series
 from .helpers.llms import (
     LLM_LOCALIZATIONS,
@@ -123,6 +124,7 @@ class TranscribeCli(ScinoephileCliBase):
 
     localizations = merge_localizations(
         BLOCK_LOCALIZATIONS,
+        CACHE_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
         TRANSCRIBE_LOCALIZATIONS,
     )
@@ -141,6 +143,7 @@ class TranscribeCli(ScinoephileCliBase):
             "input arguments",
             "operation arguments",
             "llm arguments",
+            "cache arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -227,6 +230,9 @@ class TranscribeCli(ScinoephileCliBase):
             help_text="JSON file containing punctuation test cases",
         )
 
+        # Cache arguments
+        add_cache_args(arg_groups["cache arguments"])
+
         # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
@@ -258,6 +264,7 @@ class TranscribeCli(ScinoephileCliBase):
         vad_mode: VADMode,
         model_name: str | None,
         llm_args: LlmArguments,
+        cache_args: CacheArguments,
         delineation_json_path: Path | None,
         punctuation_json_path: Path | None,
         outfile_path: Path | None,
@@ -313,6 +320,8 @@ class TranscribeCli(ScinoephileCliBase):
                 model_name=model_name,
                 demucs_mode=demucs_mode,
                 vad_mode=vad_mode,
+                cache_dir_path=cache_args.dir_path,
+                overwrite_cache=cache_args.overwrite,
                 provider=get_provider(
                     llm_args.provider_name,
                     model=llm_args.model_name,
