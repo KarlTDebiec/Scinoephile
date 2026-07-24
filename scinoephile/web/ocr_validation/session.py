@@ -107,7 +107,7 @@ class OcrValidationSession:
         *,
         include_done_subtitles: bool = False,
         outfile_path: Path | None = None,
-        cache_dir_path: Path | str | None = None,
+        validation_data_dir_path: Path | str | None = None,
         dev: bool = False,
     ) -> Self:
         """Create a session from an OCR image directory.
@@ -116,7 +116,7 @@ class OcrValidationSession:
             dir_path: OCR image HTML directory path
             include_done_subtitles: whether to include subtitles with no concerns
             outfile_path: optional subtitle output file path
-            cache_dir_path: cache directory for local OCR validation data
+            validation_data_dir_path: local OCR validation data directory
             dev: whether validation data updates should write to repo data
         Returns:
             OCR validation session
@@ -130,7 +130,9 @@ class OcrValidationSession:
         try:
             entries = load_html_entries(dir_path)
             series = ImageSeries.load(dir_path)
-            manager = ValidationManager(cache_dir_path=cache_dir_path, dev=dev)
+            manager = ValidationManager(
+                validation_data_dir_path=validation_data_dir_path, dev=dev
+            )
             session = cls(
                 dir_path=dir_path,
                 entries=entries,
