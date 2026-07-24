@@ -453,9 +453,10 @@ def _get_ctc_transcribed_words(
         timed_chars: character index mapped to start, end, and confidence
         duration_seconds: source audio duration in seconds
     Returns:
-        one transcribed word per source character
+        transcribed words covering every source character
     """
     words: list[TranscribedWord] = []
+    pending_text = ""
     char_idx = 0
     while char_idx < len(text):
         timing = timed_chars.get(char_idx)
@@ -463,12 +464,13 @@ def _get_ctc_transcribed_words(
             start, end, confidence = timing
             words.append(
                 TranscribedWord(
-                    text=text[char_idx],
+                    text=f"{pending_text}{text[char_idx]}",
                     start=start,
                     end=end,
                     confidence=confidence,
                 )
             )
+            pending_text = ""
             char_idx += 1
             continue
 
@@ -484,6 +486,24 @@ def _get_ctc_transcribed_words(
                 next_start = next_timing[0]
         run_length = run_end_idx - run_start_idx
         gap_seconds = max(next_start - previous_end, 0.0)
+        if gap_seconds == 0.0:
+            run_text = text[run_start_idx:run_end_idx]
+            if words and char_idx < len(text):
+                whitespace_idxs = [
+                    idx for idx, char in enumerate(run_text) if char.isspace()
+                ]
+                if whitespace_idxs:
+                    prefix_start_idx = whitespace_idxs[-1]
+                    words[-1].text = f"{words[-1].text}{run_text[:prefix_start_idx]}"
+                    pending_text = run_text[prefix_start_idx:]
+                else:
+                    words[-1].text = f"{words[-1].text}{run_text}"
+            elif words:
+                words[-1].text = f"{words[-1].text}{run_text}"
+            else:
+                pending_text = run_text
+            continue
+
         char_duration = gap_seconds / run_length if run_length else 0.0
         for offset, unaligned_char_idx in enumerate(range(run_start_idx, run_end_idx)):
             start = previous_end + (offset * char_duration)

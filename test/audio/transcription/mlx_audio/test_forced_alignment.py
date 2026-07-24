@@ -94,6 +94,51 @@ def test_align_transcription_ctc_preserves_unaligned_punctuation(
     assert segments[0].words[2].confidence == 0.0
 
 
+@pytest.mark.parametrize(
+    ("text", "char_indices", "expected_words"),
+    [
+        ("你，好", [0, 2], ["你，", "好"]),
+        ("你嘅好", [0, 2], ["你嘅", "好"]),
+        ("你， 好", [0, 3], ["你，", " 好"]),
+    ],
+)
+def test_align_transcription_ctc_attaches_internal_unaligned_characters(
+    monkeypatch: pytest.MonkeyPatch,
+    text: str,
+    char_indices: list[int],
+    expected_words: list[str],
+):
+    """Test unsupported internal characters inherit an adjacent word timing."""
+    log_probs = np.log(
+        np.array(
+            [
+                [0.85, 0.10, 0.05],
+                [0.05, 0.90, 0.05],
+                [0.85, 0.10, 0.05],
+                [0.05, 0.05, 0.90],
+            ]
+        )
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.mlx_audio.forced_alignment._get_ctc_alignment_inputs",
+        lambda **_kwargs: (log_probs, [1, 2], char_indices, 0),
+        raising=False,
+    )
+
+    segments = align_transcription(
+        Path("/tmp/audio.wav"),
+        text,
+        duration_seconds=1.0,
+    )
+
+    assert segments[0].words is not None
+    assert [word.text for word in segments[0].words] == expected_words
+    assert "".join(word.text for word in segments[0].words) == text
+    assert all(
+        int(word.end * 1000) > int(word.start * 1000) for word in segments[0].words
+    )
+
+
 def test_ctc_token_ids_normalize_supported_chars_and_skip_unknown_chars():
     """Test CTC token preparation normalizes case and Chinese script."""
 

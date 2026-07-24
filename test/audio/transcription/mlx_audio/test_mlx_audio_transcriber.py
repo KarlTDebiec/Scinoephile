@@ -178,6 +178,12 @@ def test_init_rejects_non_positive_max_tokens():
         MlxAudioTranscriber(max_tokens=0)
 
 
+def test_init_rejects_chunk_duration_that_rounds_to_zero():
+    """Test chunk durations must advance by at least one millisecond."""
+    with pytest.raises(ValueError, match="round to at least one millisecond"):
+        MlxAudioTranscriber(chunk_duration_seconds=0.0004)
+
+
 def test_init_rejects_retry_without_vad_when_vad_is_disabled():
     """Test MLX-Audio rejects a contradictory VAD configuration."""
     with pytest.raises(ValueError, match="when VAD is disabled"):

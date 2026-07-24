@@ -217,6 +217,13 @@ class MlxAudioTranscriber:
             raise ValueError("MLX-Audio max tokens must be positive.")
         if self.chunk_duration_seconds is not None and self.chunk_duration_seconds <= 0:
             raise ValueError("MLX-Audio chunk duration must be positive.")
+        if (
+            self.chunk_duration_seconds is not None
+            and round(self.chunk_duration_seconds * 1000) == 0
+        ):
+            raise ValueError(
+                "MLX-Audio chunk duration must round to at least one millisecond."
+            )
         if self.chunk_overlap_seconds < 0:
             raise ValueError("MLX-Audio chunk overlap must be non-negative.")
         self.use_demucs = use_demucs
