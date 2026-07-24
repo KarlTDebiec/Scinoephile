@@ -56,11 +56,11 @@ def test_prompt_catalog_contains_registered_transcription_prompts():
     """Each guided transcription spec should contribute its prompts to the catalog."""
     for (
         language,
-        reference_language,
+        guide_language,
     ), spec in guided_transcription.DEFAULT_SPECS.items():
-        reference_code = reference_language.language.lower()
-        delineation_alias = f"delineation-{language.code.lower()}-vs-{reference_code}"
-        punctuation_alias = f"punctuation-{language.code.lower()}-vs-{reference_code}"
+        guide_code = guide_language.language.lower()
+        delineation_alias = f"delineation-{language.code.lower()}-vs-{guide_code}"
+        punctuation_alias = f"punctuation-{language.code.lower()}-vs-{guide_code}"
         assert PROMPT_SPECS[delineation_alias].prompt is spec.delineation_prompt
         assert PROMPT_SPECS[punctuation_alias].prompt is spec.punctuation_prompt
 

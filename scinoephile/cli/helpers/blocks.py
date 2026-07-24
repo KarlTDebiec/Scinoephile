@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Shared command-line helpers for one-based workflow block ranges."""
+"""Shared command-line helpers for one-based subtitle block ranges."""
 
 from __future__ import annotations
 
@@ -16,32 +16,32 @@ __all__ = [
 
 BLOCK_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "first 1-indexed workflow block to process, inclusive": (
-            "要处理的第一个工作流区块（从 1 开始，包含该区块）"
+        "first 1-indexed subtitle block to process, inclusive": (
+            "要处理的第一个字幕区块（从 1 开始，包含该区块）"
         ),
-        "last 1-indexed workflow block to process, inclusive": (
-            "要处理的最后一个工作流区块（从 1 开始，包含该区块）"
+        "last 1-indexed subtitle block to process, inclusive": (
+            "要处理的最后一个字幕区块（从 1 开始，包含该区块）"
         ),
     },
     "zh-hant": {
-        "first 1-indexed workflow block to process, inclusive": (
-            "要處理的第一個工作流程區塊（從 1 開始，包含該區塊）"
+        "first 1-indexed subtitle block to process, inclusive": (
+            "要處理的第一個字幕區塊（從 1 開始，包含該區塊）"
         ),
-        "last 1-indexed workflow block to process, inclusive": (
-            "要處理的最後一個工作流程區塊（從 1 開始，包含該區塊）"
+        "last 1-indexed subtitle block to process, inclusive": (
+            "要處理的最後一個字幕區塊（從 1 開始，包含該區塊）"
         ),
     },
 }
-"""Localized text shared by CLIs that select workflow blocks."""
+"""Localized text shared by CLIs that select subtitle blocks."""
 
 
 def add_block_range_args(
     operation_arg_group: _ArgumentGroup,
     *,
-    first_help: str = "first 1-indexed workflow block to process, inclusive",
-    last_help: str = "last 1-indexed workflow block to process, inclusive",
+    first_help: str = "first 1-indexed subtitle block to process, inclusive",
+    last_help: str = "last 1-indexed subtitle block to process, inclusive",
 ):
-    """Add optional inclusive workflow block boundaries.
+    """Add optional inclusive subtitle block boundaries.
 
     Arguments:
         operation_arg_group: argument group to which block boundaries are added
@@ -70,9 +70,9 @@ def get_block_range_indexes(
 
     Arguments:
         parser: active parser used to report invalid boundaries
-        first_block: first included one-based workflow block
-        last_block: last included one-based workflow block
-        block_count: number of available workflow blocks, if known
+        first_block: first included one-based subtitle block
+        last_block: last included one-based subtitle block
+        block_count: number of available subtitle blocks, if known
     Returns:
         inclusive zero-based start and exclusive zero-based stop indexes
     """

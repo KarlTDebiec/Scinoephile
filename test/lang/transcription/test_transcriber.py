@@ -46,7 +46,7 @@ def _get_transcriber(
     return (
         GuidedTranscriber(
             language=Language.eng,
-            reference_language=Language.zho_hans,
+            guide_language=Language.zho_hans,
             model_name="test/model",
             whisper_language="en",
             aligner=aligner,

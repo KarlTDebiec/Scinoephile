@@ -343,7 +343,7 @@ def _load_or_transcribe_series_guided(
         audio,
         guide,
         language=language,
-        reference_language=guide_language,
+        guide_language=guide_language,
         stop_at_idx=stop_at_idx,
         **transcription_kw,
     )

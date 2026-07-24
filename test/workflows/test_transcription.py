@@ -40,7 +40,7 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
             audio_series,
             reference_series,
             language=Language.yue_hant,
-            reference_language=Language.zho_hans,
+            guide_language=Language.zho_hans,
             prune_test_cases=True,
             delineation_json_path=delineation_json_path,
             punctuation_json_path=punctuation_json_path,

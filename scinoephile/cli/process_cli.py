@@ -57,8 +57,8 @@ PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         'subtitle infile path or "-" for stdin': (
             '字幕输入文件路径，或使用 "-" 表示标准输入'
         ),
-        "subtitle language tag (detected from infile if omitted)": (
-            "字幕语言标签（省略时从输入文件检测）"
+        "subtitle language (detected from infile if omitted)": (
+            "字幕语言（省略时从输入文件检测）"
         ),
         "subtitle outfile path (default: stdout)": (
             "字幕输出文件路径（默认：标准输出）"
@@ -81,8 +81,8 @@ PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         'subtitle infile path or "-" for stdin': (
             '字幕輸入檔路徑，或使用 "-" 代表標準輸入'
         ),
-        "subtitle language tag (detected from infile if omitted)": (
-            "字幕語言標籤（省略時從輸入檔偵測）"
+        "subtitle language (detected from infile if omitted)": (
+            "字幕語言（省略時從輸入檔偵測）"
         ),
         "subtitle outfile path (default: stdout)": "字幕輸出檔路徑（預設：標準輸出）",
     },
@@ -131,7 +131,7 @@ class ProcessCli(ScinoephileCliBase):
             "--language",
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help="subtitle language tag (detected from infile if omitted)",
+            help="subtitle language (detected from infile if omitted)",
         )
         arg_groups["operation arguments"].add_argument(
             "--clean",

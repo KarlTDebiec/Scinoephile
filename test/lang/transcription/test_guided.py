@@ -88,7 +88,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
         )
 
     assert transcriber.language is Language.yue_hant
-    assert transcriber.reference_language is Language.zho_hans
+    assert transcriber.guide_language is Language.zho_hans
     assert transcriber.demucs_mode is DemucsMode.AUTO
     assert transcriber.vad_mode is VADMode.AUTO
     assert transcriber.whisper_language == "yue"
