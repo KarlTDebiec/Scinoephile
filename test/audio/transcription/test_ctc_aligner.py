@@ -5,12 +5,12 @@
 from __future__ import annotations
 
 import sys
-from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
 
 import numpy as np
 import pytest
+from pydub import AudioSegment
 
 from scinoephile.audio.transcription import (
     CtcAligner,
@@ -36,13 +36,12 @@ def test_ctc_aligner_expands_token_spans(
     monkeypatch.setattr(
         aligner,
         "_get_alignment_inputs",
-        lambda _audio_path, _text: (log_probs, [1, 2], [0, 1], 0),
+        lambda _audio, _text: (log_probs, [1, 2], [0, 1], 0),
     )
 
     segments = aligner(
-        Path("/tmp/audio.wav"),
+        AudioSegment.silent(duration=1000),
         "你好",
-        1.0,
     )
 
     assert len(segments) == 1
@@ -56,6 +55,28 @@ def test_ctc_aligner_expands_token_spans(
     assert segments[0].words[1].start == pytest.approx(0.75)
     assert segments[0].words[1].end == pytest.approx(1.0)
     assert 0.0 < segments[0].words[0].confidence <= 1.0
+
+
+def test_ctc_audio_samples_are_mono_16_khz_float32():
+    """Test CTC audio conversion normalizes channel, rate, and sample format."""
+    audio = (
+        AudioSegment.silent(duration=100, frame_rate=8000)
+        .set_channels(2)
+        .set_sample_width(1)
+    )
+
+    samples = CtcAligner._get_audio_samples(audio)
+
+    assert samples.ndim == 1
+    assert samples.dtype == np.float32
+    assert len(samples) == pytest.approx(1600, abs=1)
+    assert np.all(samples == 0.0)
+
+
+def test_ctc_audio_samples_reject_empty_audio():
+    """Test CTC audio conversion rejects empty audio."""
+    with pytest.raises(TranscriptionAlignmentError, match="empty audio"):
+        CtcAligner._get_audio_samples(AudioSegment.empty())
 
 
 def test_ctc_best_path_requires_blank_between_repeated_labels():
@@ -117,13 +138,12 @@ def test_ctc_aligner_preserves_unaligned_punctuation(
     monkeypatch.setattr(
         aligner,
         "_get_alignment_inputs",
-        lambda _audio_path, _text: (log_probs, [1, 2], [0, 1], 0),
+        lambda _audio, _text: (log_probs, [1, 2], [0, 1], 0),
     )
 
     segments = aligner.align(
-        Path("/tmp/audio.wav"),
+        AudioSegment.silent(duration=1200),
         "你好。",
-        1.2,
     )
 
     assert segments[0].text == "你好。"
@@ -142,13 +162,12 @@ def test_ctc_aligner_preserves_all_unknown_characters(
     monkeypatch.setattr(
         aligner,
         "_get_alignment_inputs",
-        lambda _audio_path, _text: (np.empty((1, 1)), [], [], 0),
+        lambda _audio, _text: (np.empty((1, 1)), [], [], 0),
     )
 
     segments = aligner.align(
-        Path("/tmp/audio.wav"),
+        AudioSegment.silent(duration=1500),
         "佢哋嘅",
-        1.5,
     )
 
     assert segments[0].text == "佢哋嘅"
@@ -190,13 +209,12 @@ def test_ctc_aligner_attaches_internal_unaligned_characters(
     monkeypatch.setattr(
         aligner,
         "_get_alignment_inputs",
-        lambda _audio_path, _text: (log_probs, [1, 2], char_indices, 0),
+        lambda _audio, _text: (log_probs, [1, 2], char_indices, 0),
     )
 
     segments = aligner.align(
-        Path("/tmp/audio.wav"),
+        AudioSegment.silent(duration=1000),
         text,
-        1.0,
     )
 
     assert segments[0].words is not None
@@ -356,13 +374,12 @@ def test_ctc_aligner_rounds_timings(
     monkeypatch.setattr(
         aligner,
         "_get_alignment_inputs",
-        lambda _audio_path, _text: (log_probs, [1, 2], [0, 1], 0),
+        lambda _audio, _text: (log_probs, [1, 2], [0, 1], 0),
     )
 
     segments = aligner.align(
-        Path("/tmp/audio.wav"),
+        AudioSegment.silent(duration=1234),
         "你好",
-        1.234,
     )
 
     assert segments[0].words is not None
@@ -375,9 +392,8 @@ def test_ctc_aligner_rejects_empty_text():
     """Test empty text is not sent through forced alignment."""
     with pytest.raises(TranscriptionAlignmentError, match="empty transcript"):
         CtcAligner().align(
-            Path("/tmp/audio.wav"),
+            AudioSegment.empty(),
             "   ",
-            1.0,
         )
 
 
@@ -402,7 +418,6 @@ def test_ctc_aligner_wraps_backend_errors(
         match="Unable to run CTC transcription alignment",
     ):
         aligner.align(
-            Path("/tmp/audio.wav"),
+            AudioSegment.silent(duration=1000),
             "你好",
-            1.0,
         )

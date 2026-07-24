@@ -5,11 +5,11 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping, Sequence
-from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar, cast
 
 import numpy as np
 from opencc import OpenCC
+from pydub import AudioSegment
 
 from .exceptions import TranscriptionAlignmentError
 from .transcribed_segment import TranscribedSegment
@@ -54,20 +54,18 @@ class CtcAligner:
 
     def __call__(
         self,
-        audio_path: Path,
+        audio: AudioSegment,
         text: str,
-        duration_seconds: float,
     ) -> list[TranscribedSegment]:
         """Align transcript text to source audio.
 
         Arguments:
-            audio_path: source audio path to align against
+            audio: source audio to align against
             text: transcription text
-            duration_seconds: source audio duration in seconds
         Returns:
             timestamped transcription segments
         """
-        return self.align(audio_path, text, duration_seconds)
+        return self.align(audio, text)
 
     @property
     def model(self) -> PreTrainedModel:
@@ -93,16 +91,14 @@ class CtcAligner:
 
     def align(
         self,
-        audio_path: Path,
+        audio: AudioSegment,
         text: str,
-        duration_seconds: float,
     ) -> list[TranscribedSegment]:
         """Align transcript text to source audio.
 
         Arguments:
-            audio_path: source audio path to align against
+            audio: source audio to align against
             text: transcription text
-            duration_seconds: source audio duration in seconds
         Returns:
             timestamped transcription segments
         Raises:
@@ -113,10 +109,13 @@ class CtcAligner:
         if not transcript_text:
             raise TranscriptionAlignmentError("Cannot align empty transcript.")
 
+        # Derive timing scale from the audio being aligned
+        duration_seconds = len(audio) / 1000
+
         try:
             # Get model probabilities and tokens for supported transcript characters
             log_probs, token_ids, char_indices, blank_token_id = (
-                self._get_alignment_inputs(audio_path, transcript_text)
+                self._get_alignment_inputs(audio, transcript_text)
             )
 
             # Find frame timings for supported characters
@@ -164,13 +163,13 @@ class CtcAligner:
 
     def _get_alignment_inputs(
         self,
-        audio_path: Path,
+        audio: AudioSegment,
         text: str,
     ) -> tuple[np.ndarray, list[int], list[int], int]:
         """Get CTC log probabilities and transcript token mapping.
 
         Arguments:
-            audio_path: source audio path to align against
+            audio: source audio to align against
             text: transcription text
         Returns:
             log probabilities, token IDs, text character indices, and blank token ID
@@ -179,7 +178,7 @@ class CtcAligner:
             TranscriptionAlignmentError: if transcript tokens cannot be prepared
         """
         # Prepare the audio and model inputs
-        samples = self._load_audio_samples(audio_path)
+        samples = self._get_audio_samples(audio)
         processor_callable = cast(Callable[..., Mapping[str, Any]], self.processor)
         inputs = processor_callable(samples, sampling_rate=16000, return_tensors="pt")
         if self.device != "cpu":
@@ -284,6 +283,29 @@ class CtcAligner:
         self._processor = processor
         self._model = model
         self._components[component_key] = (processor, model)
+
+    @staticmethod
+    def _get_audio_samples(audio: AudioSegment) -> np.ndarray:
+        """Get audio samples for CTC alignment.
+
+        Arguments:
+            audio: audio to convert
+        Returns:
+            mono 16 kHz float32 samples
+        Raises:
+            TranscriptionAlignmentError: if audio contains no samples
+        """
+        # Normalize audio to the format expected by the CTC processor
+        normalized_audio = (
+            audio.set_channels(1).set_frame_rate(16000).set_sample_width(2)
+        )
+        samples = (
+            np.array(normalized_audio.get_array_of_samples(), dtype=np.float32)
+            / 32768.0
+        )
+        if samples.size == 0:
+            raise TranscriptionAlignmentError("CTC alignment received empty audio.")
+        return samples
 
     @staticmethod
     def _get_best_path(
@@ -573,31 +595,6 @@ class CtcAligner:
                 "CTC timestamp alignment requires transformers and torch dependencies."
             ) from exc
         return torch
-
-    @staticmethod
-    def _load_audio_samples(audio_path: Path) -> np.ndarray:
-        """Load audio samples for CTC alignment.
-
-        Arguments:
-            audio_path: audio file to load
-        Returns:
-            mono 16 kHz float32 samples
-        Raises:
-            TranscriptionAlignmentError: if audio contains no samples
-        """
-        from pydub import AudioSegment  # noqa: PLC0415
-
-        # Normalize audio to the format expected by the CTC processor
-        audio = (
-            AudioSegment.from_file(audio_path)
-            .set_channels(1)
-            .set_frame_rate(16000)
-            .set_sample_width(2)
-        )
-        samples = np.array(audio.get_array_of_samples(), dtype=np.float32) / 32768.0
-        if samples.size == 0:
-            raise TranscriptionAlignmentError("CTC alignment received empty audio.")
-        return samples
 
     @staticmethod
     def _validate_best_path_inputs(
