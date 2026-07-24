@@ -6,6 +6,9 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 
+from scinoephile.cli.dictionary.build.dictionary_build_cuhk_cli import (
+    DictionaryBuildCuhkCli,
+)
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.review_cli import ReviewCli
 from scinoephile.cli.transcribe_cli import TranscribeCli
@@ -17,6 +20,7 @@ from test.helpers import parametrize
 @parametrize(
     "cli",
     (
+        DictionaryBuildCuhkCli,
         OcrFuseCli,
         ReviewCli,
         TranscribeCli,

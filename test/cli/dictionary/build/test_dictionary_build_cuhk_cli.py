@@ -48,7 +48,7 @@ def test_dictionary_build_cuhk_cli_passes_cache_dir_to_service(
                     "scraper_kwargs": scraper_kwargs,
                 }
             )
-            self.cache_dir_path = cache_dir_path.resolve()
+            self.cache_dir_path = cache_dir_path.resolve() / "dictionaries" / "cuhk"
             self.database_path = database_path
 
         def build(
@@ -70,17 +70,18 @@ def test_dictionary_build_cuhk_cli_passes_cache_dir_to_service(
     run_cli_with_args(
         DictionaryBuildCuhkCli,
         f"--cache-dir {cache_dir_path} --database-path {database_path} "
-        "--max-words 3 --overwrite",
+        "--max-words 3 --overwrite --cache-overwrite",
     )
 
     assert init_calls == [
         {
             "database_path": database_path.resolve(),
             "scraper_kwargs": {
-                "cache_dir_path": cache_dir_path.resolve(),
+                "cache_dir_path": (cache_dir_path.resolve() / "dictionaries" / "cuhk"),
                 "min_delay_seconds": 1.0,
                 "max_delay_seconds": 5.0,
                 "max_retries": 5,
+                "overwrite_cache": True,
                 "request_timeout_seconds": 30.0,
             },
         }
