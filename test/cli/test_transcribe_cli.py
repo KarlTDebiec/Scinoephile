@@ -14,15 +14,20 @@ from pytest import fixture, mark, raises
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.cli.transcribe_cli import TranscribeCli
+from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.transcription.transcriber import DemucsMode, VADMode
+from scinoephile.lang.transcription.transcriber import (
+    DemucsMode,
+    TranscriptionBackend,
+    VADMode,
+)
 from test.helpers import assert_series_equal, test_data_root
 
 _MEDIA_INFILE_PATH = "/tmp/test_media.mp4"
-_REFERENCE_INFILE_PATH = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
+_GUIDE_INFILE_PATH = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
 
 
 @fixture
@@ -60,10 +65,16 @@ def test_transcribe_help_lists_generic_options():
     help_text = stdout.getvalue()
     normalized_help_text = " ".join(help_text.split())
     assert stderr.getvalue() == ""
-    assert "MEDIA_INFILE" in help_text
-    assert "--reference-infile REFERENCE_INFILE_PATH" in help_text
+    assert "--media-infile MEDIA_INFILE_PATH" in help_text
+    assert "--guide-infile GUIDE_INFILE_PATH" in help_text
+    assert "--reference-infile" not in help_text
     assert "--language" in help_text
-    assert "--reference-language" in help_text
+    assert "--guide-language" in help_text
+    assert "--reference-language" not in help_text
+    assert "transcription language" in normalized_help_text
+    assert "transcription language tag" not in normalized_help_text
+    assert "guide language (detected from infile if omitted)" in normalized_help_text
+    assert "guide language tag" not in normalized_help_text
     assert "--delineation-json DELINEATION_JSON_PATH" in help_text
     assert "--punctuation-json PUNCTUATION_JSON_PATH" in help_text
     assert "--first-block FIRST_BLOCK" in help_text
@@ -72,38 +83,83 @@ def test_transcribe_help_lists_generic_options():
     assert "--convert" not in normalized_help_text
     assert "--demucs {auto,on,off}" in help_text
     assert "--vad {auto,on,off}" in help_text
-    assert "--whisper-model MODEL_NAME" in help_text
-    assert "uses language-pair default if omitted" in normalized_help_text
+    assert "--backend {whisper,mlx-audio}" in help_text
+    assert "--model MODEL_NAME" in help_text
+    assert "transcription model (default: backend default)" in normalized_help_text
+    assert "--cache-overwrite" in help_text
+    assert "overwrite matching cache files" in normalized_help_text
+    media_action = next(
+        action
+        for action in TranscribeCli.argparser()._actions  # noqa: SLF001
+        if "--media-infile" in action.option_strings
+    )
+    assert media_action.required
+    provider_action = next(
+        action
+        for action in TranscribeCli.argparser()._actions  # noqa: SLF001
+        if "--llm-provider" in action.option_strings
+    )
+    assert provider_action.help == (
+        "LLM provider (default: openai). Use --list-llm-providers for more information."
+    )
+    assert "LLM model" in normalized_help_text
+    assert (
+        "text file from which to read additional LLM prompt context"
+        in normalized_help_text
+    )
+    assert "JSON file containing delineation test cases" in normalized_help_text
+    assert "JSON file containing punctuation test cases" in normalized_help_text
+    for removed_option in (
+        "--mimo-aligner",
+        "--mimo-aligner-language",
+        "--mimo-aligner-model",
+        "--mimo-aligner-worker-command",
+        "--mimo-chunk-duration",
+        "--mimo-chunk-overlap",
+        "--mimo-fallback",
+        "--mimo-language",
+        "--mimo-max-tokens",
+        "--mimo-model",
+        "--mimo-runtime",
+        "--mimo-tokenizer",
+        "--mimo-worker-command",
+    ):
+        assert removed_option not in help_text
 
 
-def test_transcribe_cli_defers_whisper_model_default_to_registry():
-    """Test the language-pair registry supplies the default Whisper model."""
+def test_transcribe_cli_defers_model_default_to_factory():
+    """Test the transcription factory supplies the backend's default model."""
     parser = TranscribeCli.argparser()
-    whisper_model_action = next(
+    model_action = next(
         action
         for action in parser._actions  # noqa: SLF001
-        if "--whisper-model" in action.option_strings
+        if "--model" in action.option_strings
     )
 
-    assert whisper_model_action.default is None
+    assert model_action.default is None
+    assert model_action.help == "transcription model (default: backend default)"
 
 
-def test_transcribe_cli_defaults_audio_preprocessing_to_auto():
-    """Test transcription CLI defaults Demucs and VAD to automatic modes."""
-    parser = TranscribeCli.argparser()
-    demucs_action = next(
-        action
-        for action in parser._actions  # noqa: SLF001
-        if "--demucs" in action.option_strings
-    )
-    vad_action = next(
-        action
-        for action in parser._actions  # noqa: SLF001
-        if "--vad" in action.option_strings
-    )
+def test_transcribe_cli_enum_arguments_are_consistent():
+    """Test enum validation, metavars, help, and defaults derive from enums."""
+    actions = {
+        action.dest: action
+        for action in TranscribeCli.argparser()._actions  # noqa: SLF001
+    }
+    expected = {
+        "backend": (TranscriptionBackend, TranscriptionBackend.WHISPER),
+        "demucs_mode": (DemucsMode, DemucsMode.AUTO),
+        "vad_mode": (VADMode, VADMode.AUTO),
+    }
 
-    assert demucs_action.default is DemucsMode.AUTO
-    assert vad_action.default is VADMode.AUTO
+    for action_name, (enum_type, default) in expected.items():
+        action = actions[action_name]
+        assert action.choices is None
+        assert action.default is default
+        assert action.metavar == enum_metavar(enum_type)
+        assert isinstance(action.help, str)
+        assert enum_options_list_str(enum_type) in action.help
+        assert "default: %(default)s" in action.help
 
 
 def test_transcribe_cli_writes_file(
@@ -127,8 +183,8 @@ def test_transcribe_cli_writes_file(
             ):
                 run_cli_with_args(
                     TranscribeCli,
-                    f"{_MEDIA_INFILE_PATH} "
-                    f"--reference-infile {_REFERENCE_INFILE_PATH} "
+                    f"--media-infile {_MEDIA_INFILE_PATH} "
+                    f"--guide-infile {_GUIDE_INFILE_PATH} "
                     f"--language yue-Hans --stream-index 1 -o {outfile_path}",
                 )
         output_series = Series.load(outfile_path)
@@ -159,8 +215,8 @@ def test_transcribe_cli_writes_stdout(
             with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
                 run_cli_with_args(
                     TranscribeCli,
-                    f"{_MEDIA_INFILE_PATH} "
-                    f"--reference-infile {_REFERENCE_INFILE_PATH} "
+                    f"--media-infile {_MEDIA_INFILE_PATH} "
+                    f"--guide-infile {_GUIDE_INFILE_PATH} "
                     "--language yue-Hans",
                 )
 
@@ -188,8 +244,11 @@ def test_transcribe_cli_passes_generic_configuration(
         language: Language,
         reference_language: Language | None,
         model_name: str | None,
+        backend: TranscriptionBackend,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
+        cache_dir_path: Path | None,
+        overwrite_cache: bool,
         provider: object,
         additional_context: str | None,
         delineation_json_path: Path | None,
@@ -202,9 +261,12 @@ def test_transcribe_cli_passes_generic_configuration(
         assert isinstance(reference_series, Series)
         assert language is Language.yue_hant
         assert reference_language is Language.zho_hans
-        assert model_name == "custom/whisper"
+        assert model_name == "mlx-community/Qwen3-ASR-0.6B-8bit"
+        assert backend is TranscriptionBackend.MLX_AUDIO
         assert demucs_mode is DemucsMode.ON
         assert vad_mode is VADMode.OFF
+        assert cache_dir_path == tmp_path / "cache"
+        assert overwrite_cache
         assert provider is not None
         assert additional_context is None
         assert delineation_json_path == tmp_path / "delineation.json"
@@ -223,10 +285,12 @@ def test_transcribe_cli_passes_generic_configuration(
         ):
             run_cli_with_args(
                 TranscribeCli,
-                f"{_MEDIA_INFILE_PATH} "
-                f"--reference-infile {_REFERENCE_INFILE_PATH} "
-                "--language yue-Hant --reference-language zho-Hans "
-                "--whisper-model custom/whisper --demucs on --vad off "
+                f"--media-infile {_MEDIA_INFILE_PATH} "
+                f"--guide-infile {_GUIDE_INFILE_PATH} "
+                "--language yue-Hant --guide-language zho-Hans "
+                "--model mlx-community/Qwen3-ASR-0.6B-8bit "
+                "--backend mlx-audio --demucs on --vad off "
+                f"--cache-dir {tmp_path / 'cache'} --cache-overwrite "
                 f"--delineation-json {tmp_path / 'delineation.json'} "
                 f"--punctuation-json {tmp_path / 'punctuation.json'} "
                 "--first-block 2 --last-block 3",
@@ -236,24 +300,31 @@ def test_transcribe_cli_passes_generic_configuration(
 @mark.parametrize(
     "args",
     (
-        f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+        f"--media-infile {_MEDIA_INFILE_PATH} "
+        f"--guide-infile {_GUIDE_INFILE_PATH} "
         "--language yue-Hans --stream-index -1",
-        f"{_MEDIA_INFILE_PATH} --reference-infile /tmp/missing.srt --language yue-Hans",
-        f"/tmp/missing.mp4 --reference-infile {_REFERENCE_INFILE_PATH} "
-        "--language yue-Hans",
-        "- --reference-infile - --language yue-Hans",
-        f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+        f"--media-infile {_MEDIA_INFILE_PATH} "
+        "--guide-infile /tmp/missing.srt --language yue-Hans",
+        f"--media-infile /tmp/missing.mp4 "
+        f"--guide-infile {_GUIDE_INFILE_PATH} --language yue-Hans",
+        "--media-infile - --guide-infile - --language yue-Hans",
+        f"--guide-infile {_GUIDE_INFILE_PATH} --language yue-Hans",
+        f"--media-infile {_MEDIA_INFILE_PATH} "
+        f"--guide-infile {_GUIDE_INFILE_PATH} "
         "--language yue-Hans --overwrite",
-        f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+        f"--media-infile {_MEDIA_INFILE_PATH} "
+        f"--guide-infile {_GUIDE_INFILE_PATH} "
         "--language yue-Hans --first-block 3 --last-block 2",
-        f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+        f"--media-infile {_MEDIA_INFILE_PATH} "
+        f"--guide-infile {_GUIDE_INFILE_PATH} "
         "--language yue-Hans --script traditional",
     ),
     ids=(
         "negative stream index",
-        "missing reference infile",
+        "missing guide infile",
         "missing media infile",
         "two stdin infiles",
+        "missing media option",
         "overwrite without outfile",
         "reversed block range",
         "language-specific option",
@@ -271,7 +342,7 @@ def test_transcribe_cli_rejects_invalid_arguments(args: str):
 
 def test_transcribe_cli_rejects_oversized_last_block_before_loading_audio():
     """Test an oversized last block fails before media audio is extracted."""
-    block_count = len(Series.load(_REFERENCE_INFILE_PATH).blocks)
+    block_count = len(Series.load(_GUIDE_INFILE_PATH).blocks)
 
     with patch(
         "scinoephile.cli.transcribe_cli.AudioSeries.load_from_media"
@@ -279,8 +350,8 @@ def test_transcribe_cli_rejects_oversized_last_block_before_loading_audio():
         with raises(SystemExit, match="2"):
             run_cli_with_args(
                 TranscribeCli,
-                f"{_MEDIA_INFILE_PATH} "
-                f"--reference-infile {_REFERENCE_INFILE_PATH} "
+                f"--media-infile {_MEDIA_INFILE_PATH} "
+                f"--guide-infile {_GUIDE_INFILE_PATH} "
                 f"--language yue-Hans --last-block {block_count + 1}",
             )
 
@@ -296,7 +367,8 @@ def test_transcribe_cli_stream_errors_are_user_facing():
         with raises(SystemExit, match="2"):
             run_cli_with_args(
                 TranscribeCli,
-                f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+                f"--media-infile {_MEDIA_INFILE_PATH} "
+                f"--guide-infile {_GUIDE_INFILE_PATH} "
                 "--language yue-Hans --stream-index 7",
             )
 
@@ -318,23 +390,23 @@ def test_transcribe_cli_workflow_errors_are_user_facing(audio_series: Mock):
             with raises(SystemExit, match="2"):
                 run_cli_with_args(
                     TranscribeCli,
-                    f"{_MEDIA_INFILE_PATH} "
-                    f"--reference-infile {_REFERENCE_INFILE_PATH} "
+                    f"--media-infile {_MEDIA_INFILE_PATH} "
+                    f"--guide-infile {_GUIDE_INFILE_PATH} "
                     "--language eng",
                 )
 
 
-def test_transcribe_cli_allows_stdin_reference_infile(
+def test_transcribe_cli_allows_stdin_guide_infile(
     audio_series: Mock,
     expected_series: Series,
 ):
-    """Test transcription CLI allows stdin reference subtitle input.
+    """Test transcription CLI allows stdin guide subtitle input.
 
     Arguments:
         audio_series: mock audio subtitle series
         expected_series: expected transcribed subtitle series
     """
-    stdin_stream = StringIO(_REFERENCE_INFILE_PATH.read_text(encoding="utf-8"))
+    stdin_stream = StringIO(_GUIDE_INFILE_PATH.read_text(encoding="utf-8"))
     stdout_stream = StringIO()
     subtitle_paths: list[object] = []
 
@@ -362,8 +434,8 @@ def test_transcribe_cli_allows_stdin_reference_infile(
                 with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
                     run_cli_with_args(
                         TranscribeCli,
-                        f"{_MEDIA_INFILE_PATH} "
-                        "--reference-infile - --language yue-Hans",
+                        f"--media-infile {_MEDIA_INFILE_PATH} "
+                        "--guide-infile - --language yue-Hans",
                     )
 
     assert subtitle_paths != ["-"]

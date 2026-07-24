@@ -124,7 +124,11 @@ def test_transcribe_forwards_recovery_decoding_options(monkeypatch: MonkeyPatch)
         condition_on_previous_text=False,
     )
     transcriber._model = Mock()
-    monkeypatch.setattr(transcriber, "_get_whisper_module", Mock(return_value=whisper))
+    monkeypatch.setattr(
+        transcriber,
+        "_import_whisper_timestamped",
+        Mock(return_value=whisper),
+    )
     audio = AudioSegment.silent(duration=1000)
 
     assert transcriber(audio) == []
@@ -166,7 +170,7 @@ def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch
     whisper.load_model.return_value = loaded_model
     monkeypatch.setattr(
         WhisperTranscriber,
-        "_get_whisper_module",
+        "_import_whisper_timestamped",
         Mock(return_value=whisper),
     )
     monkeypatch.setattr(
@@ -197,7 +201,11 @@ def test_transcribe_bypasses_cache_when_requested(monkeypatch: MonkeyPatch):
     whisper.transcribe.return_value = {"segments": []}
     transcriber = WhisperTranscriber(model_name="custom/model")
     transcriber._model = Mock()
-    monkeypatch.setattr(transcriber, "_get_whisper_module", Mock(return_value=whisper))
+    monkeypatch.setattr(
+        transcriber,
+        "_import_whisper_timestamped",
+        Mock(return_value=whisper),
+    )
     get_cached_transcription = Mock()
     monkeypatch.setattr(
         transcriber,
@@ -209,6 +217,113 @@ def test_transcribe_bypasses_cache_when_requested(monkeypatch: MonkeyPatch):
     assert transcriber(audio, use_cache=False) == []
     get_cached_transcription.assert_not_called()
     whisper.transcribe.assert_called_once()
+
+
+def test_transcribe_overwrites_matching_cache(
+    monkeypatch: MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test cache overwrite removes the matching file before transcription.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    audio = AudioSegment.silent(duration=1000)
+    transcriber = WhisperTranscriber(
+        cache_dir_path=tmp_path,
+        model_name="custom/model",
+    )
+    transcriber._model = Mock()
+    cache_path = transcriber._get_cache_path(audio)
+    assert cache_path is not None
+    cache_path.write_text("cached", encoding="utf-8")
+    whisper = Mock()
+
+    def transcribe(*_args: object, **_kwargs: object) -> dict[str, list[object]]:
+        """Return empty output after confirming the old cache was removed."""
+        assert not cache_path.exists()
+        return {"segments": []}
+
+    whisper.transcribe.side_effect = transcribe
+    monkeypatch.setattr(
+        transcriber,
+        "_import_whisper_timestamped",
+        Mock(return_value=whisper),
+    )
+
+    assert transcriber(audio, overwrite_cache=True) == []
+    assert cache_path.read_text(encoding="utf-8") == "[]"
+    whisper.transcribe.assert_called_once()
+
+
+def test_transcribe_recovers_from_malformed_cache(
+    monkeypatch: MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test malformed cached output is replaced by a fresh transcription.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    audio = AudioSegment.silent(duration=1000)
+    transcriber = WhisperTranscriber(
+        cache_dir_path=tmp_path,
+        model_name="custom/model",
+    )
+    transcriber._model = Mock()
+    cache_path = transcriber._get_cache_path(audio)
+    assert cache_path is not None
+    cache_path.write_text("{", encoding="utf-8")
+    whisper = Mock()
+    whisper.transcribe.return_value = {"segments": []}
+    monkeypatch.setattr(
+        transcriber,
+        "_import_whisper_timestamped",
+        Mock(return_value=whisper),
+    )
+
+    assert transcriber.transcribe(audio) == []
+    assert cache_path.read_text(encoding="utf-8") == "[]"
+    whisper.transcribe.assert_called_once()
+
+
+def test_transcribe_preserves_cache_when_atomic_write_fails(
+    monkeypatch: MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test failed cache serialization does not corrupt an existing cache file.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    audio = AudioSegment.silent(duration=1000)
+    transcriber = WhisperTranscriber(
+        cache_dir_path=tmp_path,
+        model_name="custom/model",
+    )
+    transcriber._model = Mock()
+    cache_path = transcriber._get_cache_path(audio)
+    assert cache_path is not None
+    cache_path.write_text("existing cache", encoding="utf-8")
+    whisper = Mock()
+    whisper.transcribe.return_value = {"segments": []}
+    monkeypatch.setattr(
+        transcriber,
+        "_import_whisper_timestamped",
+        Mock(return_value=whisper),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper_transcriber.json.dump",
+        Mock(side_effect=RuntimeError("write failed")),
+    )
+
+    with raises(RuntimeError, match="write failed"):
+        transcriber.transcribe(audio, use_cache=False)
+
+    assert cache_path.read_text(encoding="utf-8") == "existing cache"
 
 
 @parametrize(
@@ -295,7 +410,7 @@ def test_whisper_module_requires_transcription_extra(monkeypatch: MonkeyPatch):
     monkeypatch.setattr(builtins, "__import__", import_without_whisper)
 
     with raises(ImportError, match="'transcription' extra"):
-        WhisperTranscriber._get_whisper_module()
+        WhisperTranscriber._import_whisper_timestamped()
 
 
 def test_normalize_transcription_segments_coalesces_malformed_duplicate_pair():

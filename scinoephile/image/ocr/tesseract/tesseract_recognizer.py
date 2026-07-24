@@ -65,6 +65,9 @@ class TesseractRecognizerKwargs(TypedDict, total=False):
     oem: int | None
     """Tesseract OCR engine mode, or None to omit --oem."""
 
+    overwrite_cache: bool
+    """Whether to replace matching OCR cache files."""
+
     psm: int
     """Tesseract page segmentation mode."""
 
@@ -89,6 +92,7 @@ class TesseractRecognizer:
         detect_italics: bool = False,
         language: Language = Language.eng,
         oem: int | None = 3,
+        overwrite_cache: bool = False,
         psm: int = 6,
         scale: int = 2,
         skip_executable_validation: bool = False,
@@ -102,6 +106,7 @@ class TesseractRecognizer:
             detect_italics: whether to run a legacy-engine pass for italics
             language: Scinoephile language
             oem: Tesseract OCR engine mode, or None to omit --oem
+            overwrite_cache: whether to replace matching OCR cache files
             psm: Tesseract page segmentation mode
             scale: image preprocessing scale
             skip_executable_validation: whether to skip executable validation
@@ -121,6 +126,7 @@ class TesseractRecognizer:
 
         self.detect_italics = detect_italics
         self.oem = oem
+        self.overwrite_cache = overwrite_cache
         self.psm = psm
         self.scale = scale
 
@@ -147,6 +153,7 @@ class TesseractRecognizer:
             f"detect_italics={self.detect_italics!r}, "
             f"language={self.language!r}, "
             f"oem={self.oem!r}, "
+            f"overwrite_cache={self.overwrite_cache!r}, "
             f"psm={self.psm!r}, "
             f"scale={self.scale!r}, "
             f"tessdata_dir_path={self.tessdata_dir_path!r})"
@@ -161,6 +168,9 @@ class TesseractRecognizer:
             recognized text
         """
         if (cache_path := self._get_cache_path(image)) is not None:
+            if self.overwrite_cache and cache_path.exists():
+                cache_path.unlink()
+                logger.info(f"Removed Tesseract OCR cache: {cache_path}")
             if cache_path.exists():
                 text = self._load_result(cache_path)
                 cache_path.touch()

@@ -6,6 +6,10 @@ authors = [
     { name = "Karl Debiec", email = "karl.t.debiec@gmail.com" }
 ]
 license = "BSD-3-Clause"
+license-files = [
+    "LICENSE",
+    "docs/THIRD_PARTY_NOTICES.md",
+]
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
 dependencies = [
@@ -46,6 +50,7 @@ ocr-cuda = [
 transcription = [
     "demucs-infer>=4.2.2",
     "huggingface-hub>=1.23.0",
+    "mlx-audio @ git+https://github.com/ailuntx/mlx-audio@ff0197c0ae9f9fd02072904c696f2533e329c06e ; platform_machine == 'arm64' and sys_platform == 'darwin'",
     "onnxruntime>=1.27.0",
     "torch>=2.10.0",
     "torchaudio>=2.10.0,<2.11.0",
@@ -114,10 +119,21 @@ convention = 'google'
 allowed-unresolved-imports = [
     "chrome_lens_py",
     "chrome_lens_py.**",
+    "demucs_infer",
+    "demucs_infer.**",
     "huggingface_hub",
     "huggingface_hub.**",
+    "mlx_audio",
+    "mlx_audio.**",
     "paddleocr",
+    "torch",
+    "torch.**",
+    "torchaudio",
+    "torchaudio.**",
+    "transformers",
+    "transformers.**",
     "whisper_timestamped",
+    "whisper_timestamped.**",
 ]
 
 [tool.setuptools]
@@ -130,7 +146,6 @@ scinoephile = [
     "data/dictionaries/kaifangcidian/*.csv",
     "data/dictionaries/unihan/*.txt",
     "data/ocr/*.csv",
-    "data/ocr/*.txt",
     "web/static/*.js",
     "web/ocr_validation/templates/*.html",
 ]

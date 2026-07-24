@@ -11,6 +11,11 @@ from unittest.mock import Mock, patch
 
 from pytest import raises
 
+from scinoephile.audio.transcription import MlxAudioTranscriber
+from scinoephile.audio.transcription.mlx_audio.transcriber import (
+    MIMO_MODEL_NAME,
+    QWEN3_ASR_MODEL_NAME,
+)
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.utils import save_test_cases_to_json
@@ -18,7 +23,11 @@ from scinoephile.lang.transcription.guided import (
     DEFAULT_SPECS,
     get_guided_transcriber,
 )
-from scinoephile.lang.transcription.transcriber import DemucsMode, VADMode
+from scinoephile.lang.transcription.transcriber import (
+    DemucsMode,
+    TranscriptionBackend,
+    VADMode,
+)
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHant,
@@ -85,12 +94,16 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
             provider=Mock(spec=LLMProvider),
             delineation_test_cases=[],
             punctuation_test_cases=[],
+            overwrite_cache=True,
         )
 
     assert transcriber.language is Language.yue_hant
     assert transcriber.reference_language is Language.zho_hans
+    assert transcriber.backend is TranscriptionBackend.WHISPER
     assert transcriber.demucs_mode is DemucsMode.AUTO
     assert transcriber.vad_mode is VADMode.AUTO
+    assert transcriber.overwrite_cache
+    assert transcriber.mlx_audio_transcriber is None
     assert transcriber.whisper_language == "yue"
     assert transcriber.segment_splitter is not None
     assert isinstance(transcriber.aligner.delineation_processor, DelineationProcessor)
@@ -105,7 +118,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.vad_transcriber.language == "yue"
     assert transcriber.no_vad_transcriber is not None
     assert transcriber.no_vad_transcriber.language == "yue"
-    test_case_dir_path = tmp_path / "lang/yue_zho/transcription"
+    test_case_dir_path = tmp_path / "test_cases/lang/yue_zho/transcription"
     assert transcriber.aligner.delineation_processor.test_case_path == (
         test_case_dir_path / "delineation" / "test.json"
     )
@@ -114,6 +127,103 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     )
     assert not transcriber.aligner.delineation_processor.prune_test_cases
     assert not transcriber.aligner.punctuation_processor.prune_test_cases
+
+
+def test_get_guided_transcriber_configures_default_mlx_audio_backend(tmp_path: Path):
+    """Test factory configures MiMo as the default MLX-Audio model.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    with (
+        patch.object(MlxAudioTranscriber, "_validate_platform"),
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
+            return_value=tmp_path,
+        ),
+    ):
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hans,
+            provider=Mock(spec=LLMProvider),
+            delineation_json_path=tmp_path / "delineation.json",
+            punctuation_json_path=tmp_path / "punctuation.json",
+            delineation_test_cases=[],
+            punctuation_test_cases=[],
+            backend=TranscriptionBackend.MLX_AUDIO,
+        )
+
+    assert transcriber.backend is TranscriptionBackend.MLX_AUDIO
+    primary = transcriber.mlx_audio_transcriber
+    assert isinstance(primary, MlxAudioTranscriber)
+    assert primary.model_name == MIMO_MODEL_NAME
+    assert primary.language is Language.yue_hant
+    assert primary.mlx_audio_language == "zh"
+    assert primary.max_tokens is None
+    assert primary.chunk_duration_seconds is None
+    assert primary.chunk_overlap_seconds == 1.0
+    assert primary.cache_dir_path == tmp_path / "mlx_audio"
+    assert primary.demucs_separator is not None
+    assert primary.demucs_separator.cache_dir_path == tmp_path / "demucs"
+    assert primary.use_demucs
+    assert primary.use_vad
+    assert primary.retry_without_demucs
+    assert primary.retry_without_vad
+    assert transcriber.vad_transcriber is None
+    assert transcriber.no_vad_transcriber is None
+
+
+def test_get_guided_transcriber_configures_qwen3_asr_override(tmp_path: Path):
+    """Test factory configures a Qwen3-ASR model and Cantonese language label."""
+    with (
+        patch.object(MlxAudioTranscriber, "_validate_platform"),
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
+            return_value=tmp_path,
+        ),
+    ):
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hans,
+            model_name=QWEN3_ASR_MODEL_NAME,
+            provider=Mock(spec=LLMProvider),
+            delineation_json_path=tmp_path / "delineation.json",
+            punctuation_json_path=tmp_path / "punctuation.json",
+            delineation_test_cases=[],
+            punctuation_test_cases=[],
+            backend=TranscriptionBackend.MLX_AUDIO,
+            demucs_mode=DemucsMode.OFF,
+            vad_mode=VADMode.OFF,
+        )
+
+    primary = transcriber.mlx_audio_transcriber
+    assert isinstance(primary, MlxAudioTranscriber)
+    assert primary.model_name == QWEN3_ASR_MODEL_NAME
+    assert primary.model_profile.family_name == "qwen3-asr"
+    assert primary.mlx_audio_language == "Cantonese"
+
+
+def test_get_guided_transcriber_wraps_unsupported_mlx_audio_model(tmp_path: Path):
+    """Test invalid MLX-Audio model overrides become user-facing errors."""
+    with (
+        patch.object(MlxAudioTranscriber, "_validate_platform"),
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
+            return_value=tmp_path,
+        ),
+        raises(ScinoephileError, match="Unsupported MLX-Audio model"),
+    ):
+        get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hans,
+            model_name="unsupported/model",
+            provider=Mock(spec=LLMProvider),
+            delineation_json_path=tmp_path / "delineation.json",
+            punctuation_json_path=tmp_path / "punctuation.json",
+            delineation_test_cases=[],
+            punctuation_test_cases=[],
+            backend=TranscriptionBackend.MLX_AUDIO,
+        )
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(
@@ -200,7 +310,7 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(
             delineation_test_cases=[],
             punctuation_test_cases=[],
         )
-    test_case_dir_path = tmp_path / "lang/yue_zho/transcription"
+    test_case_dir_path = tmp_path / "test_cases/lang/yue_zho/transcription"
     delineation_json_path = test_case_dir_path / "delineation" / "test.json"
     punctuation_json_path = test_case_dir_path / "punctuation" / "test.json"
     delineation_test_case_data = [

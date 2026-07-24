@@ -38,7 +38,7 @@ CUHK_SOURCE = DictionarySource(
         "Comparative Database of Modern Standard Chinese and Cantonese "
         "(Chinese University of Hong Kong)."
     ),
-    legal="(c) 2014 保留版權 香港中文大學 中國語言及文學系",
+    legal="(c) 2014 保留版權",
     link="https://apps.itsc.cuhk.edu.hk/hanyu/Page/Cover.aspx",
     update_url="",
     other="words",

@@ -31,6 +31,7 @@ def cache_subtitles(
     streams: list[SubtitleStream],
     *,
     cache_dir_path: Path | None = None,
+    overwrite_cache: bool = False,
     render_images: bool = True,
 ):
     """Cache extracted subtitle streams.
@@ -39,6 +40,7 @@ def cache_subtitles(
         infile_path: media input file
         streams: subtitle streams to cache
         cache_dir_path: cache directory path
+        overwrite_cache: whether to replace matching cached subtitle artifacts
         render_images: whether to render SUP streams to image directories
     """
     # Validate arguments
@@ -53,6 +55,9 @@ def cache_subtitles(
             stream,
             cache_dir_path=cache_dir_path,
         )
+        if overwrite_cache and stream_path.exists():
+            stream_path.unlink()
+            logger.info(f"Removed subtitle stream cache: {stream_path}")
         if stream_path.exists():
             logger.info(f"Loaded subtitle stream from cache: {stream_path}")
         else:
@@ -111,6 +116,7 @@ def cache_subtitles(
             infile_path,
             streams,
             cache_dir_path=cache_dir_path,
+            overwrite_cache=overwrite_cache,
         )
 
 
@@ -152,6 +158,7 @@ def _cache_image_subtitle_series(
     streams: list[SubtitleStream],
     *,
     cache_dir_path: Path,
+    overwrite_cache: bool,
 ):
     """Render cached SUP subtitle streams to image directories.
 
@@ -159,6 +166,7 @@ def _cache_image_subtitle_series(
         infile_path: media input file
         streams: subtitle streams to cache
         cache_dir_path: cache directory path
+        overwrite_cache: whether to replace matching rendered image artifacts
     """
     for stream in streams:
         if stream.extension != "sup":
@@ -169,7 +177,7 @@ def _cache_image_subtitle_series(
             cache_dir_path=cache_dir_path,
         )
         image_dir_path = stream_path.parent / "image-series"
-        if (image_dir_path / "index.html").exists():
+        if (image_dir_path / "index.html").exists() and not overwrite_cache:
             logger.info(f"Loaded image subtitle series from cache: {image_dir_path}")
             continue
         image_series = ImageSeries.load(stream_path)

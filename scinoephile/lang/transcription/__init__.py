@@ -14,7 +14,12 @@ from __future__ import annotations
 from .aligner import TranscriptionAligner
 from .alignment import TranscriptionAlignment
 from .guided import GuidedTranscriptionSpec, TranscriptionLanguageSpec
-from .transcriber import DemucsMode, GuidedTranscriber, VADMode
+from .transcriber import (
+    DemucsMode,
+    GuidedTranscriber,
+    TranscriptionBackend,
+    VADMode,
+)
 
 __all__ = [
     "DemucsMode",
@@ -22,6 +27,7 @@ __all__ = [
     "GuidedTranscriptionSpec",
     "TranscriptionAligner",
     "TranscriptionAlignment",
+    "TranscriptionBackend",
     "TranscriptionLanguageSpec",
     "VADMode",
 ]

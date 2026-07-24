@@ -57,6 +57,9 @@ class PaddleRecognizerKwargs(TypedDict, total=False):
     min_confidence: float
     """Minimum confidence to include."""
 
+    overwrite_cache: bool
+    """Whether to replace matching OCR cache files."""
+
 
 class PaddleRecognizer:
     """PaddleOCR recognizer for image subtitles."""
@@ -67,6 +70,7 @@ class PaddleRecognizer:
         cache_dir_path: Path | None = None,
         language: Language = Language.eng,
         min_confidence: float = 0.0,
+        overwrite_cache: bool = False,
     ):
         """Initialize.
 
@@ -74,6 +78,7 @@ class PaddleRecognizer:
             cache_dir_path: directory in which to cache OCR results
             language: Scinoephile language
             min_confidence: minimum confidence to include
+            overwrite_cache: whether to replace matching OCR cache files
         Raises:
             ValueError: if language is unsupported
         """
@@ -85,11 +90,12 @@ class PaddleRecognizer:
         os.environ.setdefault("PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK", "True")
 
         self.min_confidence = min_confidence
+        self.overwrite_cache = overwrite_cache
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
-        paddle_ocr_cls = self._get_paddle_ocr_class()
+        paddle_ocr_cls = self._import_paddleocr_paddle_ocr()
         root_logger = getLogger()
         root_logger_level = root_logger.level
         try:
@@ -113,7 +119,8 @@ class PaddleRecognizer:
             f"{self.__class__.__name__}("
             f"cache_dir_path={self.cache_dir_path!r}, "
             f"language={self.language!r}, "
-            f"min_confidence={self.min_confidence!r})"
+            f"min_confidence={self.min_confidence!r}, "
+            f"overwrite_cache={self.overwrite_cache!r})"
         )
 
     def recognize_image(self, image: Image.Image) -> str:
@@ -126,6 +133,9 @@ class PaddleRecognizer:
         """
         array = np.array(image.convert("RGB"))
         if (cache_path := self._get_cache_path(image)) is not None:
+            if self.overwrite_cache and cache_path.exists():
+                cache_path.unlink()
+                logger.info(f"Removed PaddleOCR cache: {cache_path}")
             if cache_path.exists():
                 results = self._load_paddle_ocr_results(cache_path)
                 cache_path.touch()
@@ -169,7 +179,7 @@ class PaddleRecognizer:
         return self.cache_dir_path / f"{cache_sha256}.json"
 
     @staticmethod
-    def _get_paddle_ocr_class() -> Any:
+    def _import_paddleocr_paddle_ocr() -> Any:
         """Import PaddleOCR on demand."""
         try:
             from paddleocr import (  # noqa: PLC0415

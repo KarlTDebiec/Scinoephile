@@ -56,14 +56,14 @@ class CacheStatsCli(ScinoephileCliBase):
         super().add_arguments_to_argparser(parser)
         arg_groups = get_arg_groups_by_name(
             parser,
-            "input arguments",
             "operation arguments",
+            "cache arguments",
             optional_arguments_name="additional arguments",
         )
 
-        # Input arguments
+        # Cache arguments
         add_cache_dir_arg(
-            arg_groups["input arguments"],
+            arg_groups["cache arguments"],
             help_text="cache root directory to inspect (default: %(default)s)",
         )
 

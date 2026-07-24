@@ -14,6 +14,7 @@ from scinoephile.lang.transcription.guided import get_guided_transcriber
 from scinoephile.lang.transcription.transcriber import (
     DemucsMode,
     GuidedTranscriber,
+    TranscriptionBackend,
     VADMode,
 )
 from scinoephile.llms.delineation import DelineationPrompt
@@ -31,8 +32,11 @@ def transcribe_series_guided(
     language: Language,
     reference_language: Language | None = None,
     model_name: str | None = None,
+    backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
+    cache_dir_path: Path | None = None,
+    overwrite_cache: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     prune_test_cases: bool = False,
@@ -54,8 +58,11 @@ def transcribe_series_guided(
         language: transcription language
         reference_language: explicit reference language, or None to detect it
         model_name: Whisper model override
+        backend: audio transcription backend
         demucs_mode: Demucs preprocessing mode
-        vad_mode: Whisper VAD mode
+        vad_mode: voice activity detection mode
+        cache_dir_path: cache root directory path
+        overwrite_cache: whether to replace matching generated cache files
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         prune_test_cases: whether to remove test cases not encountered in this run
@@ -83,8 +90,11 @@ def transcribe_series_guided(
             language,
             resolved_reference_language,
             model_name=model_name,
+            backend=backend,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
+            cache_dir_path=cache_dir_path,
+            overwrite_cache=overwrite_cache,
             provider=provider,
             additional_context=additional_context,
             prune_test_cases=prune_test_cases,

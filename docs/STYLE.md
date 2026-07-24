@@ -28,6 +28,11 @@
   `from scinoephile.core.exceptions import ScinoephileError` within
   `scinoephile.core.llms`, not `from scinoephile.core import ScinoephileError`).
 * Use `if TYPE_CHECKING:` blocks only when necessary to avoid circular imports.
+* Name dedicated lazy-import helpers
+  `_import_<module>[_<symbol_or_purpose>]`, spelling nested module paths and
+  imported symbols with underscores (for example,
+  `_import_huggingface_hub_snapshot_download`). Reserve `_get_...` for helpers
+  that retrieve or cache values rather than merely importing them.
 * Allow `ruff` to manage import sorting.
 
 ## Exports
@@ -129,10 +134,11 @@
     2. `input arguments`
     3. `operation arguments`
     4. `llm arguments`
-    5. `web arguments`
-    6. `output arguments`
-    7. `additional arguments`
-    8. `additional help`
+    5. `cache arguments`
+    6. `web arguments`
+    7. `output arguments`
+    8. `additional arguments`
+    9. `additional help`
   * Omit groups that do not apply without changing the relative order of the
     remaining groups.
   * Rename the default optional group to `additional arguments` via
@@ -144,8 +150,8 @@
   such as `infile_path`, `outfile_path`, or `cache_dir_path`.
 * Use argument `type=` validators, including `enum_arg(...)`, so `_main`
   receives the type it expects instead of reparsing strings.
-  * Cache directory arguments should parse to `cache_dir_path` and include
-    `(default: %(default)s)` in the help text.
+  * Cache-producing CLIs should use the shared cache argument bundle. Cache
+    directory help should include `(default: %(default)s)`.
 * Base command CLIs that dispatch to subcommands should call the selected
   subcommand directly, such as
   `cls.subcommands()[subcommand_name]._main(**kwargs)`.

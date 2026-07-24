@@ -19,6 +19,7 @@ from typing import Any
 
 from scinoephile.common.argument_parsing import input_file_arg, output_file_arg
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import (
     DEFAULT_PROVIDER_NAME,
     get_provider_api_key_env_var_name,
@@ -31,6 +32,7 @@ from .argument_bundle_field_action import ArgumentBundleFieldAction
 
 __all__ = [
     "LLM_LOCALIZATIONS",
+    "LLM_TEST_CASE_JSON_LOCALIZATIONS",
     "LlmArguments",
     "add_llm_provider_args",
     "add_llm_test_case_json_arg",
@@ -38,42 +40,51 @@ __all__ = [
     "read_llm_additional_context",
 ]
 
-LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
+LLM_TEST_CASE_JSON_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "additional help": "附加帮助",
-        "Available LLM providers:": "可用 LLM 提供商：",
-        "file from which to read additional context for LLM prompts": (
-            "用于读取 LLM 提示词附加上下文的文件"
-        ),
-        "llm arguments": "LLM 参数",
-        "LLM model identifier override": "LLM 模型标识符覆盖值",
-        "test-case JSON file to load and update": "要加载和更新的测试用例 JSON 文件",
-        f"LLM provider to use (default: {DEFAULT_PROVIDER_NAME}). Use "
-        "--list-llm-providers to show providers, default models, and API-key "
-        "environment variables.": (
-            f"要使用的 LLM 提供商（默认：{DEFAULT_PROVIDER_NAME}）。使用 "
-            "--list-llm-providers 查看提供商、默认模型和 API 密钥环境变量。"
-        ),
-        "list available LLM providers and exit": "列出可用 LLM 提供商并退出",
+        "JSON file containing test cases": "包含测试用例的 JSON 文件",
     },
     "zh-hant": {
-        "additional help": "附加說明",
-        "Available LLM providers:": "可用 LLM 提供商：",
-        "file from which to read additional context for LLM prompts": (
-            "用於讀取 LLM 提示詞附加上下文的檔案"
-        ),
-        "llm arguments": "LLM 參數",
-        "LLM model identifier override": "LLM 模型識別碼覆寫值",
-        "test-case JSON file to load and update": "要載入和更新的測試案例 JSON 檔案",
-        f"LLM provider to use (default: {DEFAULT_PROVIDER_NAME}). Use "
-        "--list-llm-providers to show providers, default models, and API-key "
-        "environment variables.": (
-            f"要使用的 LLM 提供商（預設：{DEFAULT_PROVIDER_NAME}）。使用 "
-            "--list-llm-providers 查看提供商、預設模型和 API 金鑰環境變數。"
-        ),
-        "list available LLM providers and exit": "列出可用 LLM 提供商並結束",
+        "JSON file containing test cases": "包含測試案例的 JSON 檔",
     },
 }
+"""Localized text shared by CLIs that expose one LLM test-case JSON file."""
+
+LLM_LOCALIZATIONS: dict[str, dict[str, str]] = merge_localizations(
+    LLM_TEST_CASE_JSON_LOCALIZATIONS,
+    {
+        "zh-hans": {
+            "additional help": "附加帮助",
+            "Available LLM providers:": "可用 LLM 提供商：",
+            "text file from which to read additional LLM prompt context": (
+                "用于读取 LLM 提示词附加上下文的文本文件"
+            ),
+            "llm arguments": "LLM 参数",
+            "LLM model": "LLM 模型",
+            f"LLM provider (default: {DEFAULT_PROVIDER_NAME}). Use "
+            "--list-llm-providers for more information.": (
+                f"LLM 提供商（默认：{DEFAULT_PROVIDER_NAME}）。使用 "
+                "--list-llm-providers 获取更多信息。"
+            ),
+            "list available LLM providers and exit": "列出可用 LLM 提供商并退出",
+        },
+        "zh-hant": {
+            "additional help": "附加說明",
+            "Available LLM providers:": "可用 LLM 提供商：",
+            "text file from which to read additional LLM prompt context": (
+                "用於讀取 LLM 提示詞附加上下文的文字檔"
+            ),
+            "llm arguments": "LLM 參數",
+            "LLM model": "LLM 模型",
+            f"LLM provider (default: {DEFAULT_PROVIDER_NAME}). Use "
+            "--list-llm-providers for more information.": (
+                f"LLM 提供商（預設：{DEFAULT_PROVIDER_NAME}）。使用 "
+                "--list-llm-providers 取得更多資訊。"
+            ),
+            "list available LLM providers and exit": "列出可用 LLM 提供商並結束",
+        },
+    },
+)
 """Localized text shared by CLIs that expose LLM provider arguments."""
 
 
@@ -107,9 +118,8 @@ def add_llm_provider_args(
         field_name="provider_name",
         metavar="LLM_PROVIDER",
         type=llm_provider_name_arg,
-        help=f"LLM provider to use (default: {DEFAULT_PROVIDER_NAME}). Use "
-        "--list-llm-providers to show providers, default models, and API-key "
-        "environment variables.",
+        help=f"LLM provider (default: {DEFAULT_PROVIDER_NAME}). Use "
+        "--list-llm-providers for more information.",
     )
     llm_arg_group.add_argument(
         "--llm-model",
@@ -118,17 +128,17 @@ def add_llm_provider_args(
         dest="llm_args",
         field_name="model_name",
         metavar="LLM_MODEL",
-        help="LLM model identifier override",
+        help="LLM model",
     )
     llm_arg_group.add_argument(
-        "--llm-additional-content-file",
+        "--llm-additional-context-file",
         action=ArgumentBundleFieldAction,
         bundle_type=LlmArguments,
         dest="llm_args",
         field_name="additional_context_file_path",
         metavar="FILE",
         type=input_file_arg(),
-        help="file from which to read additional context for LLM prompts",
+        help="text file from which to read additional LLM prompt context",
     )
     additional_help_arg_group.add_argument(
         "--list-llm-providers",
@@ -143,7 +153,7 @@ def add_llm_test_case_json_arg(
     option_name: str = "--json",
     *,
     dest: str = "json_path",
-    help_text: str = "test-case JSON file to load and update",
+    help_text: str = "JSON file containing test cases",
 ):
     """Add a test-case JSON persistence argument.
 

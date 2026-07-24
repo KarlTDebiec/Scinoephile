@@ -47,6 +47,9 @@ class LensRecognizerKwargs(TypedDict, total=False):
     language: Language
     """Scinoephile language."""
 
+    overwrite_cache: bool
+    """Whether to replace matching OCR cache files."""
+
     retries: int
     """Google Lens OCR request attempts per uncached image."""
 
@@ -63,6 +66,7 @@ class LensRecognizer:
         *,
         cache_dir_path: Path | None = None,
         language: Language = Language.eng,
+        overwrite_cache: bool = False,
         retries: int = 3,
     ):
         """Initialize.
@@ -70,6 +74,7 @@ class LensRecognizer:
         Arguments:
             cache_dir_path: directory in which to cache OCR results
             language: Scinoephile language
+            overwrite_cache: whether to replace matching OCR cache files
             retries: Google Lens OCR request attempts per uncached image
         """
         self.cache_dir_path = None
@@ -80,9 +85,10 @@ class LensRecognizer:
             self.lens_language_code = _LENS_LANGUAGE_CODES[self.language]
         except (KeyError, ValueError) as exc:
             raise ValueError(f"{language} is not supported by Google Lens OCR") from exc
+        self.overwrite_cache = overwrite_cache
         self.retries = val_int(retries, min_value=1)
-        self._lens_api_error_class = self._get_lens_api_error_class()
-        self._api = self._get_lens_api_class()()
+        self._lens_api_error_class = self._import_chrome_lens_py_lens_api_error()
+        self._api = self._import_chrome_lens_py_lens_api()()
 
     @override
     def __repr__(self) -> str:
@@ -91,6 +97,7 @@ class LensRecognizer:
             f"{self.__class__.__name__}("
             f"cache_dir_path={self.cache_dir_path!r}, "
             f"language={self.language!r}, "
+            f"overwrite_cache={self.overwrite_cache!r}, "
             f"retries={self.retries!r})"
         )
 
@@ -103,6 +110,9 @@ class LensRecognizer:
             recognized text
         """
         if (cache_path := self._get_cache_path(image)) is not None:
+            if self.overwrite_cache and cache_path.exists():
+                cache_path.unlink()
+                logger.info(f"Removed Google Lens OCR cache: {cache_path}")
             if cache_path.exists():
                 lines = self._load_lens_lines(cache_path)
                 cache_path.touch()
@@ -207,7 +217,7 @@ class LensRecognizer:
         return LensRecognizer._clean_text("\n".join(lines))
 
     @staticmethod
-    def _get_lens_api_class() -> Any:
+    def _import_chrome_lens_py_lens_api() -> Any:
         """Import chrome-lens-py on demand.
 
         Returns:
@@ -224,7 +234,7 @@ class LensRecognizer:
         return LensAPI
 
     @staticmethod
-    def _get_lens_api_error_class() -> type[Exception]:
+    def _import_chrome_lens_py_lens_api_error() -> type[Exception]:
         """Import chrome-lens-py LensAPIError on demand.
 
         Returns:

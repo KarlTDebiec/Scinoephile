@@ -22,6 +22,7 @@ class LLMModel(BaseModel):
     """Base model for LLM queries, answers, and test cases."""
 
     model_config = ConfigDict(extra="forbid", validate_by_name=True)
+    """Pydantic model configuration."""
 
     @classmethod
     def __pydantic_init_subclass__(cls, **kwargs: Any):

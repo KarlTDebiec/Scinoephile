@@ -41,9 +41,6 @@ AUDIT_TRANSLATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "guide subtitle SRT file used for gapped or guided translation": (
             "用于缺口或引导式翻译的参考字幕 SRT 文件"
         ),
-        "translation test-case JSON file for the selected workflow": (
-            "所选工作流的翻译测试用例 JSON 文件"
-        ),
         (
             "rows to include: all or unverified; all includes every translation; "
             "unverified includes cases not marked verified (default: %(default)s)"
@@ -64,9 +61,6 @@ AUDIT_TRANSLATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "guide subtitle SRT file used for gapped or guided translation": (
             "用於缺口或引導式翻譯的參考字幕 SRT 檔"
-        ),
-        "translation test-case JSON file for the selected workflow": (
-            "所選工作流程的翻譯測試案例 JSON 檔"
         ),
         (
             "rows to include: all or unverified; all includes every translation; "
@@ -128,7 +122,7 @@ class AuditTranslationCli(AuditCliBase):
             dest="json_path",
             required=True,
             type=input_file_arg(),
-            help="translation test-case JSON file for the selected workflow",
+            help="JSON file containing test cases",
         )
 
         # Operation arguments

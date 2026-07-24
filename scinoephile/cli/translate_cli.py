@@ -34,6 +34,7 @@ from .helpers.blocks import (
     add_block_range_args,
     get_block_range_indexes,
 )
+from .helpers.cache import CACHE_LOCALIZATIONS, CacheArguments, add_cache_args
 from .helpers.io import read_series, write_series
 from .helpers.llms import (
     LLM_LOCALIZATIONS,
@@ -60,11 +61,11 @@ TRANSLATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "target-language subtitle infile with which to guide translation": (
             "用于指导翻译的目标语言字幕输入文件"
         ),
-        "source language tag (detected from infile if omitted)": (
-            "源语言标签（省略时从输入文件检测）"
+        "source language (detected from infile if omitted)": (
+            "源语言（省略时从输入文件检测）"
         ),
-        "target language tag (required unless guide or gapped input is detected)": (
-            "目标语言标签（除非可从参考或缺口输入检测，否则必填）"
+        "target language (required unless guide or gapped input is detected)": (
+            "目标语言（除非可从引导或缺口输入检测，否则必填）"
         ),
         "subtitle outfile path (default: stdout)": (
             "字幕输出文件路径（默认：标准输出）"
@@ -87,11 +88,11 @@ TRANSLATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "target-language subtitle infile with which to guide translation": (
             "用於指導翻譯的目標語言字幕輸入檔"
         ),
-        "source language tag (detected from infile if omitted)": (
-            "來源語言標籤（省略時從輸入檔偵測）"
+        "source language (detected from infile if omitted)": (
+            "來源語言（省略時從輸入檔偵測）"
         ),
-        "target language tag (required unless guide or gapped input is detected)": (
-            "目標語言標籤（除非可從參考或缺口輸入偵測，否則必填）"
+        "target language (required unless guide or gapped input is detected)": (
+            "目標語言（除非可從引導或缺口輸入偵測，否則必填）"
         ),
         "subtitle outfile path (default: stdout)": ("字幕輸出檔路徑（預設：標準輸出）"),
         "translate subtitles between supported languages": ("在支援的語言之間翻譯字幕"),
@@ -105,6 +106,7 @@ class TranslateCli(ScinoephileCliBase):
 
     localizations = merge_localizations(
         BLOCK_LOCALIZATIONS,
+        CACHE_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
         TRANSLATE_LOCALIZATIONS,
     )
@@ -123,6 +125,7 @@ class TranslateCli(ScinoephileCliBase):
             "input arguments",
             "operation arguments",
             "llm arguments",
+            "cache arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -156,15 +159,14 @@ class TranslateCli(ScinoephileCliBase):
             "--source-language",
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help="source language tag (detected from infile if omitted)",
+            help="source language (detected from infile if omitted)",
         )
         arg_groups["operation arguments"].add_argument(
             "--target-language",
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
             help=(
-                "target language tag (required unless guide or gapped input "
-                "is detected)"
+                "target language (required unless guide or gapped input is detected)"
             ),
         )
         add_block_range_args(arg_groups["operation arguments"])
@@ -172,6 +174,9 @@ class TranslateCli(ScinoephileCliBase):
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
         add_llm_test_case_json_arg(arg_groups["llm arguments"])
+
+        # Cache arguments
+        add_cache_args(arg_groups["cache arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -201,6 +206,7 @@ class TranslateCli(ScinoephileCliBase):
         first_block: int | None,
         last_block: int | None,
         llm_args: LlmArguments,
+        cache_args: CacheArguments,
         json_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
@@ -236,6 +242,8 @@ class TranslateCli(ScinoephileCliBase):
             "additional_context": read_llm_additional_context(
                 parser, llm_args.additional_context_file_path
             ),
+            "cache_dir_path": cache_args.dir_path / "llm",
+            "overwrite_cache": cache_args.overwrite,
             "test_case_path": json_path,
             "start_at_idx": start_at_idx,
             "stop_at_idx": stop_at_idx,

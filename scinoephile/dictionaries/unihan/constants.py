@@ -31,8 +31,8 @@ UNIHAN_SOURCE = DictionarySource(
         "dictionary-like metadata."
     ),
     legal=(
-        "Unicode data and software are subject to the Unicode Terms of Use and "
-        "License Agreement."
+        "Unicode data and software are subject to the Unicode License V3 and "
+        "Terms of Use."
     ),
     link=UNIHAN_SITE_URL,
     update_url=UNIHAN_ZIP_URL,

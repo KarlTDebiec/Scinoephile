@@ -27,11 +27,29 @@ def test_review_cli_is_top_level_command():
 
 def test_review_cli_uses_guide_terminology():
     """Test guided review arguments consistently use guide terminology."""
-    help_text = ReviewCli.argparser().format_help()
+    parser = ReviewCli.argparser()
+    help_text = parser.format_help()
+    actions = {
+        action.dest: action
+        for action in parser._actions  # noqa: SLF001
+    }
 
     assert "--guide-infile" in help_text
     assert "--guide-language" in help_text
     assert "--reference-language" not in help_text
+    assert actions["language"].help == (
+        "subtitle language (detected from infile if omitted)"
+    )
+    assert actions["guide_language"].help == (
+        "guide language (detected from infile if omitted)"
+    )
+    assert actions["json_path"].help == "JSON file containing test cases"
+    cache_overwrite_action = next(
+        action
+        for action in parser._actions  # noqa: SLF001
+        if "--cache-overwrite" in action.option_strings
+    )
+    assert cache_overwrite_action.help == "overwrite matching cache files"
 
 
 @parametrize(
@@ -124,6 +142,7 @@ def test_review_cli_passes_block_range(
     if guide_argument:
         guide_args = f"{guide_argument} {input_path} --guide-language eng"
     json_path = tmp_path / "review.json"
+    cache_dir_path = tmp_path / "cache"
 
     with patch(
         f"scinoephile.cli.review_cli.{workflow_name}",
@@ -133,12 +152,17 @@ def test_review_cli_passes_block_range(
             run_cli_with_args(
                 ReviewCli,
                 f"{input_path} {guide_args} --json {json_path} "
-                "--first-block 2 --last-block 3",
+                f"--first-block 2 --last-block 3 --cache-dir {cache_dir_path} "
+                "--cache-overwrite",
             )
 
     assert workflow.call_args.kwargs["test_case_path"] == json_path
     assert workflow.call_args.kwargs["start_at_idx"] == 1
     assert workflow.call_args.kwargs["stop_at_idx"] == 3
+    assert workflow.call_args.kwargs["cache_dir_path"] == (
+        cache_dir_path.resolve() / "llm"
+    )
+    assert workflow.call_args.kwargs["overwrite_cache"] is True
     if guide_argument:
         assert workflow.call_args.kwargs["guide_language"].code == "eng"
 

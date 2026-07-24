@@ -76,6 +76,53 @@ def test_cache_subtitle_streams_uses_existing_stream(tmp_path: Path):
     ffmpeg_input.assert_not_called()
 
 
+def test_cache_subtitle_streams_overwrites_existing_stream(tmp_path: Path):
+    """Test cache overwrite re-extracts and replaces a matching subtitle stream."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+    stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
+    stream_path = get_subtitle_cache_path(
+        infile_path,
+        stream,
+        cache_dir_path=tmp_path / "cache",
+    )
+    cache_subtitle_stream(
+        infile_path,
+        stream,
+        tmp_path / "cache",
+        b"stale",
+    )
+    input_stream = _RecordingFfmpegInput()
+    merged_streams: list[_RecordingMergedFfmpegStream] = []
+
+    def merge_outputs(*outputs: Path) -> _RecordingMergedFfmpegStream:
+        """Create a recording merged ffmpeg stream for staged outputs."""
+        merged_stream = _RecordingMergedFfmpegStream(list(outputs))
+        merged_streams.append(merged_stream)
+        return merged_stream
+
+    with (
+        patch(
+            "scinoephile.media.subtitles.cache.ffmpeg.input",
+            return_value=input_stream,
+        ),
+        patch(
+            "scinoephile.media.subtitles.cache.ffmpeg.merge_outputs",
+            side_effect=merge_outputs,
+        ),
+    ):
+        cache_subtitles(
+            infile_path,
+            [stream],
+            cache_dir_path=tmp_path / "cache",
+            overwrite_cache=True,
+        )
+
+    assert len(merged_streams) == 1
+    assert merged_streams[0].run_count == 1
+    assert stream_path.read_bytes() == b"cached"
+
+
 def test_cache_subtitles_wraps_ffmpeg_extraction_errors(tmp_path: Path):
     """Test subtitle caching surfaces ffmpeg failures as ScinoephileError.
 

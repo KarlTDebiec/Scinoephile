@@ -14,6 +14,18 @@ from scinoephile.core.subtitles import Series
 from test.helpers import assert_series_equal, parametrize, test_data_root
 
 
+def test_process_cli_uses_concise_language_help():
+    """Test processing language help omits redundant tag terminology."""
+    actions = {
+        action.dest: action
+        for action in ProcessCli.argparser()._actions  # noqa: SLF001
+    }
+
+    assert actions["language"].help == (
+        "subtitle language (detected from infile if omitted)"
+    )
+
+
 @parametrize(
     ("input_path", "args", "expected_path"),
     [

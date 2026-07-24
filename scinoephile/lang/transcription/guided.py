@@ -9,7 +9,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from types import MappingProxyType
 
-from scinoephile.audio.transcription import get_segment_split_on_whitespace
+from scinoephile.audio.transcription import (
+    MlxAudioTranscriber,
+    get_segment_split_on_whitespace,
+)
+from scinoephile.audio.transcription.mlx_audio.transcriber import MIMO_MODEL_NAME
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.ml import get_torch_device
@@ -38,6 +42,7 @@ from .transcriber import (
     DemucsMode,
     GuidedTranscriber,
     TranscribedSegmentSplitter,
+    TranscriptionBackend,
     VADMode,
 )
 
@@ -84,16 +89,38 @@ _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
 class TranscriptionLanguageSpec:
     """Configuration for one transcription language."""
 
-    model_name: str
-    """Default Whisper model name."""
+    model_names_by_backend: Mapping[TranscriptionBackend, str]
+    """Default model names keyed by transcription backend."""
     whisper_language: str
     """Language code passed to Whisper."""
     segment_splitter: TranscribedSegmentSplitter | None = None
-    """Strategy for splitting raw Whisper segments."""
+    """Strategy for splitting raw transcription segments."""
+
+    def get_model_name(self, backend: TranscriptionBackend) -> str:
+        """Get the default model name for a transcription backend.
+
+        Arguments:
+            backend: audio transcription backend
+        Returns:
+            default model name for the backend
+        Raises:
+            ScinoephileError: if the backend has no configured default model
+        """
+        try:
+            return self.model_names_by_backend[backend]
+        except KeyError as exc:
+            raise ScinoephileError(
+                f"No default model is configured for transcription backend {backend}."
+            ) from exc
 
 
 _YUE_LANGUAGE_SPEC = TranscriptionLanguageSpec(
-    model_name="khleeloo/whisper-large-v3-cantonese",
+    model_names_by_backend=MappingProxyType(
+        {
+            TranscriptionBackend.MLX_AUDIO: MIMO_MODEL_NAME,
+            TranscriptionBackend.WHISPER: "khleeloo/whisper-large-v3-cantonese",
+        }
+    ),
     whisper_language="yue",
     segment_splitter=get_segment_split_on_whitespace,
 )
@@ -170,8 +197,11 @@ def get_guided_transcriber(
     reference_language: Language,
     *,
     model_name: str | None = None,
+    backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
+    cache_dir_path: Path | None = None,
+    overwrite_cache: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     prune_test_cases: bool = False,
@@ -187,9 +217,12 @@ def get_guided_transcriber(
     Arguments:
         language: transcription language
         reference_language: reference subtitle language
-        model_name: Whisper model override
+        model_name: backend-specific model override
+        backend: audio transcription backend
         demucs_mode: Demucs preprocessing mode
-        vad_mode: Whisper VAD mode
+        vad_mode: voice activity detection mode
+        cache_dir_path: cache root directory path
+        overwrite_cache: whether to replace matching generated cache files
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         prune_test_cases: whether to remove test cases not encountered in this run
@@ -213,15 +246,17 @@ def get_guided_transcriber(
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec
 
+    if cache_dir_path is None:
+        cache_dir_path = get_runtime_cache_dir_path(create=False)
     if model_name is None:
-        model_name = language_spec.model_name
+        model_name = language_spec.get_model_name(backend)
     if delineation_prompt is None:
         delineation_prompt = spec.delineation_prompt
     if punctuation_prompt is None:
         punctuation_prompt = spec.punctuation_prompt
     if delineation_json_path is None or punctuation_json_path is None:
         runtime_test_case_dir_path = (
-            get_runtime_cache_dir_path("test_cases") / spec.test_case_dir_path
+            cache_dir_path / "test_cases" / spec.test_case_dir_path
         )
         device = get_torch_device()
         if delineation_json_path is None:
@@ -248,6 +283,8 @@ def get_guided_transcriber(
         test_case_path=delineation_json_path,
         provider=provider,
         additional_context=additional_context,
+        cache_dir_path=cache_dir_path / "llm",
+        overwrite_cache=overwrite_cache,
         prune_test_cases=prune_test_cases,
     )
     if punctuation_test_cases is None:
@@ -264,19 +301,38 @@ def get_guided_transcriber(
         test_case_path=punctuation_json_path,
         provider=provider,
         additional_context=additional_context,
+        cache_dir_path=cache_dir_path / "llm",
+        overwrite_cache=overwrite_cache,
         prune_test_cases=prune_test_cases,
     )
     aligner = TranscriptionAligner(
         delineation_processor=delineation_processor,
         punctuation_processor=punctuation_processor,
     )
+
+    mlx_audio_transcriber = None
+    if backend == TranscriptionBackend.MLX_AUDIO:
+        mlx_audio_transcriber = MlxAudioTranscriber(
+            model_name=model_name,
+            language=language,
+            cache_dir_path=cache_dir_path / "mlx_audio",
+            demucs_cache_dir_path=cache_dir_path / "demucs",
+            use_demucs=demucs_mode in (DemucsMode.AUTO, DemucsMode.ON),
+            use_vad=vad_mode in (VADMode.AUTO, VADMode.ON),
+            retry_without_demucs=demucs_mode == DemucsMode.AUTO,
+            retry_without_vad=vad_mode == VADMode.AUTO,
+        )
     return GuidedTranscriber(
         language=language,
         reference_language=reference_language,
         model_name=model_name,
         whisper_language=language_spec.whisper_language,
         aligner=aligner,
+        backend=backend,
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
+        cache_dir_path=cache_dir_path,
+        overwrite_cache=overwrite_cache,
+        mlx_audio_transcriber=mlx_audio_transcriber,
         segment_splitter=language_spec.segment_splitter,
     )

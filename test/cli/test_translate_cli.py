@@ -16,16 +16,32 @@ from test.helpers import test_data_root
 
 
 def test_translate_cli_help_includes_block_range():
-    """Test translation help exposes inclusive workflow block boundaries."""
+    """Test translation help exposes inclusive subtitle block boundaries."""
     parser = TranslateCli.argparser()
+    help_text = parser.format_help()
     actions = {action.dest: action for action in parser._actions}  # noqa: SLF001
 
     assert actions["first_block"].help == (
-        "first 1-indexed workflow block to process, inclusive"
+        "first 1-indexed subtitle block to process, inclusive"
     )
     assert actions["last_block"].help == (
-        "last 1-indexed workflow block to process, inclusive"
+        "last 1-indexed subtitle block to process, inclusive"
     )
+    assert actions["source_language"].help == (
+        "source language (detected from infile if omitted)"
+    )
+    assert actions["target_language"].help == (
+        "target language (required unless guide or gapped input is detected)"
+    )
+    assert actions["json_path"].help == "JSON file containing test cases"
+    cache_overwrite_action = next(
+        action
+        for action in parser._actions  # noqa: SLF001
+        if "--cache-overwrite" in action.option_strings
+    )
+    assert cache_overwrite_action.help == "overwrite matching cache files"
+    assert "--llm-additional-context-file" in help_text
+    assert "--llm-additional-content-file" not in help_text
 
 
 @mark.parametrize(
@@ -51,6 +67,7 @@ def test_translate_cli_passes_block_range(
     input_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     mode_arguments = mode_arguments.format(input_path=input_path)
     json_path = tmp_path / "translation.json"
+    cache_dir_path = tmp_path / "cache"
 
     with patch(
         f"scinoephile.cli.translate_cli.{workflow_name}",
@@ -60,12 +77,17 @@ def test_translate_cli_passes_block_range(
             run_cli_with_args(
                 TranslateCli,
                 f"{input_path} {mode_arguments} --json {json_path} "
-                "--first-block 2 --last-block 3",
+                f"--first-block 2 --last-block 3 --cache-dir {cache_dir_path} "
+                "--cache-overwrite",
             )
 
     assert workflow.call_args.kwargs["test_case_path"] == json_path
     assert workflow.call_args.kwargs["start_at_idx"] == 1
     assert workflow.call_args.kwargs["stop_at_idx"] == 3
+    assert workflow.call_args.kwargs["cache_dir_path"] == (
+        cache_dir_path.resolve() / "llm"
+    )
+    assert workflow.call_args.kwargs["overwrite_cache"] is True
 
 
 def test_translate_cli_rejects_reversed_block_range():

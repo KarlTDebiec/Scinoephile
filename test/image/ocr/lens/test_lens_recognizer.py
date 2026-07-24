@@ -32,6 +32,8 @@ class CountingLensRecognizer(LensRecognizer):
         cache_dir_path: Path | None = None,
         exceptions: list[Exception | None] | None = None,
         results: list[list[str]] | None = None,
+        *,
+        overwrite_cache: bool = False,
     ):
         """Initialize.
 
@@ -39,11 +41,13 @@ class CountingLensRecognizer(LensRecognizer):
             cache_dir_path: directory in which to cache OCR results
             exceptions: exceptions to raise from subsequent recognitions
             results: normalized OCR lines to return from subsequent recognitions
+            overwrite_cache: whether to replace matching OCR cache files
         """
         self.cache_dir_path = cache_dir_path
         self.language = Language.eng
         self.lens_language_code = "en"
         self.retries = 3
+        self.overwrite_cache = overwrite_cache
         self.predict_count = 0
         self.exceptions = exceptions
         if results is None:
@@ -183,12 +187,13 @@ def test_lens_recognizer_maps_supported_languages_to_engine_codes(
         """Fake chrome-lens-py LensAPI class."""
 
     monkeypatch.setattr(
-        "scinoephile.image.ocr.lens.lens_recognizer.LensRecognizer._get_lens_api_class",
+        "scinoephile.image.ocr.lens.lens_recognizer.LensRecognizer."
+        "_import_chrome_lens_py_lens_api",
         staticmethod(lambda: FakeLensApi),
     )
     monkeypatch.setattr(
         "scinoephile.image.ocr.lens.lens_recognizer.LensRecognizer."
-        "_get_lens_api_error_class",
+        "_import_chrome_lens_py_lens_api_error",
         staticmethod(lambda: FakeLensApiError),
     )
 
@@ -208,6 +213,21 @@ def test_lens_recognizer_caches_results_by_image(tmp_path: Path):
 
     assert recognizer.predict_count == 1
     assert len(list(tmp_path.glob("*.json"))) == 1
+
+
+def test_lens_recognizer_overwrites_matching_cache(tmp_path: Path):
+    """Test Google Lens cache overwrite recognizes matching images again."""
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+    cached = CountingLensRecognizer(cache_dir_path=tmp_path)
+    fresh = CountingLensRecognizer(
+        cache_dir_path=tmp_path,
+        overwrite_cache=True,
+        results=[["fresh"]],
+    )
+
+    assert cached.recognize_image(image) == "cached\ntext"
+    assert fresh.recognize_image(image) == "fresh"
+    assert fresh.predict_count == 1
 
 
 def test_lens_recognizer_formats_cached_results(tmp_path: Path):
@@ -457,7 +477,7 @@ def test_lens_recognizer_import_error_is_actionable(monkeypatch: MonkeyPatch):
     monkeypatch.setattr("builtins.__import__", fake_import)
 
     with raises(ImportError, match="'ocr' extra"):
-        LensRecognizer._get_lens_api_class()
+        LensRecognizer._import_chrome_lens_py_lens_api()
 
 
 def test_lens_recognizer_imports_chrome_lens_py_only_when_needed():

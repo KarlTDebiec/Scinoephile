@@ -12,10 +12,11 @@ from math import ceil
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar
 
-from scinoephile.common.file import get_temp_file_path
+from scinoephile.common.file import get_temp_file_path, open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.ml import get_torch_device
 
+from .exceptions import TranscriptionInferenceError
 from .transcribed_segment import TranscribedSegment
 
 __all__ = ["WhisperTranscriber"]
@@ -86,6 +87,7 @@ class WhisperTranscriber:
         *,
         cache_audio: AudioSegment | None = None,
         use_cache: bool = True,
+        overwrite_cache: bool = False,
     ) -> list[TranscribedSegment]:
         """Transcribe audio.
 
@@ -93,6 +95,7 @@ class WhisperTranscriber:
             audio: audio to transcribe
             cache_audio: optional audio used for cache-key generation
             use_cache: whether to return a cached transcription when available
+            overwrite_cache: whether to replace the matching cache file
         Returns:
             transcription, split into segments
         """
@@ -100,6 +103,7 @@ class WhisperTranscriber:
             audio,
             cache_audio=cache_audio,
             use_cache=use_cache,
+            overwrite_cache=overwrite_cache,
         )
 
     @property
@@ -116,7 +120,7 @@ class WhisperTranscriber:
                 self._model = self._models[model_key]
                 return self._model
 
-            whisper = self._get_whisper_module()
+            whisper = self._import_whisper_timestamped()
             try:
                 self._model = whisper.load_model(self.model_name, device=device)
             except FileNotFoundError:
@@ -126,29 +130,49 @@ class WhisperTranscriber:
                     "Whisper model load failed due to missing cache file; "
                     "re-downloading HuggingFace snapshot and retrying."
                 )
-                snapshot_download = self._get_snapshot_download()
+                snapshot_download = self._import_huggingface_hub_snapshot_download()
                 snapshot_download(repo_id=self.model_name)
                 self._model = whisper.load_model(self.model_name, device=device)
             self._models[model_key] = self._model
         return self._model
 
     def get_cached_transcription(
-        self, cache_audio: AudioSegment
+        self,
+        cache_audio: AudioSegment,
+        *,
+        overwrite_cache: bool = False,
     ) -> list[TranscribedSegment] | None:
         """Get cached transcription for audio if available.
 
         Arguments:
             cache_audio: audio used for cache-key generation
+            overwrite_cache: whether to remove the matching cache file
         Returns:
             cached transcription, if present
         """
         cache_path = self._get_cache_path(cache_audio)
         if cache_path is None or not cache_path.exists():
             return None
+        if overwrite_cache:
+            cache_path.unlink()
+            logger.info(f"Removed Whisper transcription cache: {cache_path}")
+            return None
 
-        logger.info(f"Loaded from cache: {cache_path}")
-        with cache_path.open("r", encoding="utf-8") as file:
-            segments = [TranscribedSegment.model_validate(s) for s in json.load(file)]
+        logger.info(f"Loaded Whisper transcription from cache: {cache_path}")
+        try:
+            with cache_path.open("r", encoding="utf-8") as file:
+                payload = json.load(file)
+            if not isinstance(payload, list):
+                raise TranscriptionInferenceError(
+                    f"Malformed Whisper cache payload: {cache_path}"
+                )
+            segments = [TranscribedSegment.model_validate(s) for s in payload]
+        except TranscriptionInferenceError:
+            raise
+        except (OSError, TypeError, ValueError) as exc:
+            raise TranscriptionInferenceError(
+                f"Unable to read Whisper transcription cache {cache_path}: {exc}"
+            ) from exc
         segments = self._normalize_transcription_segments(
             segments,
             source="cache",
@@ -163,6 +187,7 @@ class WhisperTranscriber:
         *,
         cache_audio: AudioSegment | None = None,
         use_cache: bool = True,
+        overwrite_cache: bool = False,
     ) -> list[TranscribedSegment]:
         """Transcribe audio.
 
@@ -170,19 +195,26 @@ class WhisperTranscriber:
             audio: audio to transcribe
             cache_audio: optional audio used for cache-key generation
             use_cache: whether to return a cached transcription when available
+            overwrite_cache: whether to replace the matching cache file
         Returns:
             transcription, split into segments
         """
         cache_audio = cache_audio or audio
-        if (
-            use_cache
-            and (segments := self.get_cached_transcription(cache_audio)) is not None
-        ):
-            return segments
+        cache_path = self._get_cache_path(cache_audio)
+        if use_cache or overwrite_cache:
+            try:
+                segments = self.get_cached_transcription(
+                    cache_audio,
+                    overwrite_cache=overwrite_cache,
+                )
+            except TranscriptionInferenceError as exc:
+                logger.warning(f"Unable to read Whisper transcription cache: {exc}")
+            else:
+                if segments is not None:
+                    return segments
 
         # Transcribe using Whisper
-        cache_path = self._get_cache_path(cache_audio)
-        whisper = self._get_whisper_module()
+        whisper = self._import_whisper_timestamped()
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
             sample_len = self._get_sample_len(audio)
@@ -208,11 +240,14 @@ class WhisperTranscriber:
 
         # Update cache
         if cache_path is not None:
-            with cache_path.open("w", encoding="utf-8") as f:
+            with open_atomic_text_file(cache_path) as file:
                 json.dump(
-                    [s.model_dump() for s in segments], f, ensure_ascii=False, indent=2
+                    [segment.model_dump() for segment in segments],
+                    file,
+                    ensure_ascii=False,
+                    indent=2,
                 )
-                logger.info(f"Saved transcription to cache: {cache_path}")
+            logger.info(f"Saved Whisper transcription to cache: {cache_path}")
 
         return segments
 
@@ -253,7 +288,7 @@ class WhisperTranscriber:
         ):
             return False
         hf_validation_error_cls, validate_repo_id = (
-            self._get_huggingface_repo_validation()
+            self._import_huggingface_hub_utils_repo_validation()
         )
         try:
             validate_repo_id(self.model_name)
@@ -375,7 +410,18 @@ class WhisperTranscriber:
         return segment_text_from_words
 
     @staticmethod
-    def _get_huggingface_repo_validation() -> tuple[type[Exception], Any]:
+    def _import_huggingface_hub_snapshot_download() -> Any:
+        """Import HuggingFace snapshot downloader on demand."""
+        try:
+            from huggingface_hub import (  # noqa: PLC0415
+                snapshot_download,
+            )
+        except ImportError as exc:
+            raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        return snapshot_download
+
+    @staticmethod
+    def _import_huggingface_hub_utils_repo_validation() -> tuple[type[Exception], Any]:
         """Import HuggingFace repo validation helpers on demand."""
         try:
             from huggingface_hub.utils import (  # noqa: E501, PLC0415
@@ -387,18 +433,7 @@ class WhisperTranscriber:
         return HFValidationError, validate_repo_id
 
     @staticmethod
-    def _get_snapshot_download() -> Any:
-        """Import HuggingFace snapshot downloader on demand."""
-        try:
-            from huggingface_hub import (  # noqa: PLC0415
-                snapshot_download,
-            )
-        except ImportError as exc:
-            raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-        return snapshot_download
-
-    @staticmethod
-    def _get_whisper_module() -> Any:
+    def _import_whisper_timestamped() -> Any:
         """Import whisper-timestamped on demand."""
         try:
             import whisper_timestamped as whisper  # noqa: E501, PLC0415

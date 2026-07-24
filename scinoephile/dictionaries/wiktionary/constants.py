@@ -14,7 +14,7 @@ WIKTIONARY_KAIKKI_URL = "https://kaikki.org/dictionary/Chinese/"
 WIKTIONARY_KAIKKI_JSONL_URL = (
     "https://kaikki.org/dictionary/Chinese/kaikki.org-dictionary-Chinese.jsonl"
 )
-WIKTIONARY_LICENSE_URL = "https://en.wiktionary.org/wiki/Wiktionary:Copyrights#Creative_Commons_Attribution-ShareAlike_4.0_International_License"
+WIKTIONARY_LICENSE_URL = "https://en.wiktionary.org/wiki/Wiktionary:Copyrights"
 
 WIKTIONARY_LOCAL_DATA_DIR_PATH = package_root / "data/dictionaries/wiktionary"
 WIKTIONARY_LOCAL_JSONL_PATH = WIKTIONARY_LOCAL_DATA_DIR_PATH / "entries.jsonl"
@@ -27,8 +27,8 @@ WIKTIONARY_SOURCE = DictionarySource(
         "Data derived from Kaikki JSONL exports of Chinese entries from Wiktionary."
     ),
     legal=(
-        "Wiktionary content is available under CC BY-SA; attribution and share-alike "
-        "requirements apply."
+        "Kaikki Wiktionary data is dual-licensed under CC BY-SA 4.0 and GFDL "
+        "1.1 or later."
     ),
     link=WIKTIONARY_SITE_URL,
     update_url=WIKTIONARY_KAIKKI_URL,

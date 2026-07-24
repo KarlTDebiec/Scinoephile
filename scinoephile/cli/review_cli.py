@@ -32,6 +32,7 @@ from .helpers.blocks import (
     add_block_range_args,
     get_block_range_indexes,
 )
+from .helpers.cache import CACHE_LOCALIZATIONS, CacheArguments, add_cache_args
 from .helpers.io import read_series, write_series
 from .helpers.llms import (
     LLM_LOCALIZATIONS,
@@ -48,11 +49,11 @@ REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "command-line interface for subtitle review": "字幕审校命令行界面",
         'subtitle infile or "-" for stdin': '字幕输入文件，或使用 "-" 表示标准输入',
         "guide subtitle infile for guided review": "用于引导校对的字幕输入文件",
-        "subtitle language tag (detected from infile if omitted)": (
-            "字幕语言标签（省略时从输入文件检测）"
+        "subtitle language (detected from infile if omitted)": (
+            "字幕语言（省略时从输入文件检测）"
         ),
-        "guide language tag (detected from guide infile if omitted)": (
-            "引导字幕语言标签（省略时从引导输入文件检测）"
+        "guide language (detected from infile if omitted)": (
+            "引导字幕语言（省略时从输入文件检测）"
         ),
         "subtitle outfile path (default: stdout)": (
             "字幕输出文件路径（默认：标准输出）"
@@ -64,11 +65,11 @@ REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "command-line interface for subtitle review": "字幕審校命令列介面",
         'subtitle infile or "-" for stdin': '字幕輸入檔，或使用 "-" 代表標準輸入',
         "guide subtitle infile for guided review": "用於引導校對的字幕輸入檔",
-        "subtitle language tag (detected from infile if omitted)": (
-            "字幕語言標籤（省略時從輸入檔偵測）"
+        "subtitle language (detected from infile if omitted)": (
+            "字幕語言（省略時從輸入檔偵測）"
         ),
-        "guide language tag (detected from guide infile if omitted)": (
-            "引導字幕語言標籤（省略時從引導輸入檔偵測）"
+        "guide language (detected from infile if omitted)": (
+            "引導字幕語言（省略時從輸入檔偵測）"
         ),
         "subtitle outfile path (default: stdout)": ("字幕輸出檔路徑（預設：標準輸出）"),
         "review subtitles using an LLM": "使用大型語言模型審校字幕",
@@ -83,6 +84,7 @@ class ReviewCli(ScinoephileCliBase):
 
     localizations = merge_localizations(
         BLOCK_LOCALIZATIONS,
+        CACHE_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
         REVIEW_LOCALIZATIONS,
     )
@@ -101,6 +103,7 @@ class ReviewCli(ScinoephileCliBase):
             "input arguments",
             "operation arguments",
             "llm arguments",
+            "cache arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -125,19 +128,22 @@ class ReviewCli(ScinoephileCliBase):
             "--language",
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help="subtitle language tag (detected from infile if omitted)",
+            help="subtitle language (detected from infile if omitted)",
         )
         arg_groups["operation arguments"].add_argument(
             "--guide-language",
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help="guide language tag (detected from guide infile if omitted)",
+            help="guide language (detected from infile if omitted)",
         )
         add_block_range_args(arg_groups["operation arguments"])
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
         add_llm_test_case_json_arg(arg_groups["llm arguments"])
+
+        # Cache arguments
+        add_cache_args(arg_groups["cache arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -166,6 +172,7 @@ class ReviewCli(ScinoephileCliBase):
         first_block: int | None,
         last_block: int | None,
         llm_args: LlmArguments,
+        cache_args: CacheArguments,
         json_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
@@ -207,6 +214,8 @@ class ReviewCli(ScinoephileCliBase):
                     guide_language=guide_language,
                     provider=provider,
                     additional_context=additional_context,
+                    cache_dir_path=cache_args.dir_path / "llm",
+                    overwrite_cache=cache_args.overwrite,
                     test_case_path=json_path,
                     start_at_idx=start_at_idx,
                     stop_at_idx=stop_at_idx,
@@ -217,6 +226,8 @@ class ReviewCli(ScinoephileCliBase):
                     language=language,
                     provider=provider,
                     additional_context=additional_context,
+                    cache_dir_path=cache_args.dir_path / "llm",
+                    overwrite_cache=cache_args.overwrite,
                     test_case_path=json_path,
                     start_at_idx=start_at_idx,
                     stop_at_idx=stop_at_idx,

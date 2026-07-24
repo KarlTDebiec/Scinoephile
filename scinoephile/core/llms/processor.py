@@ -33,6 +33,12 @@ class ProcessorKwargs(TypedDict, total=False):
     auto_verify: bool
     """Whether generated test cases should be marked verified."""
 
+    cache_dir_path: Path | None
+    """Directory in which to cache LLM responses."""
+
+    overwrite_cache: bool
+    """Whether matching LLM response cache files should be replaced."""
+
     prune_test_cases: bool
     """Whether to remove persisted test cases not encountered in the current run."""
 
@@ -63,6 +69,8 @@ class Processor(ABC):
         provider: LLMProvider,
         additional_context: str | None = None,
         auto_verify: bool = False,
+        cache_dir_path: Path | None = None,
+        overwrite_cache: bool = False,
         prune_test_cases: bool = False,
         tool_box: ToolBox | None = None,
     ):
@@ -75,6 +83,8 @@ class Processor(ABC):
             provider: provider to use for queries
             additional_context: additional context to include in the system prompt
             auto_verify: automatically verify test cases if they meet selected criteria
+            cache_dir_path: directory in which to cache LLM responses
+            overwrite_cache: whether to replace matching LLM response cache files
             prune_test_cases: remove persisted cases not encountered in this run
             tool_box: available tools and handlers
         """
@@ -94,13 +104,16 @@ class Processor(ABC):
         self.prune_test_cases = prune_test_cases
         """Whether to remove persisted cases not encountered in the current run."""
 
+        if cache_dir_path is None:
+            cache_dir_path = get_runtime_cache_dir_path("llm")
         self.queryer = Queryer(
             self.test_case_cls,
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             provider=provider,
-            cache_dir_path=get_runtime_cache_dir_path("llm"),
+            cache_dir_path=cache_dir_path,
             additional_context=additional_context,
             auto_verify=auto_verify,
+            overwrite_cache=overwrite_cache,
             tool_box=tool_box,
         )
         """LLM queryer."""

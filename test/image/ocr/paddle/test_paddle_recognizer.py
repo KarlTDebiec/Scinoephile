@@ -26,16 +26,23 @@ from test.helpers import parametrize
 class CountingPaddleRecognizer(PaddleRecognizer):
     """PaddleOCR recognizer that counts uncached predictions."""
 
-    def __init__(self, cache_dir_path: Path | None = None):
+    def __init__(
+        self,
+        cache_dir_path: Path | None = None,
+        *,
+        overwrite_cache: bool = False,
+    ):
         """Initialize.
 
         Arguments:
             cache_dir_path: directory in which to cache OCR results
+            overwrite_cache: whether to replace matching OCR cache files
         """
         self.language = Language.eng
         self.paddle_language_code = "en"
         self.min_confidence = 0.0
         self.cache_dir_path = cache_dir_path
+        self.overwrite_cache = overwrite_cache
         self.predict_count = 0
         self._ocr = self
 
@@ -67,6 +74,20 @@ def test_paddle_recognizer_caches_results_by_image(tmp_path: Path):
 
     assert recognizer.predict_count == 1
     assert len(list(tmp_path.glob("*.json"))) == 1
+
+
+def test_paddle_recognizer_overwrites_matching_cache(tmp_path: Path):
+    """Test PaddleOCR cache overwrite recognizes matching images again."""
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+    cached = CountingPaddleRecognizer(cache_dir_path=tmp_path)
+    fresh = CountingPaddleRecognizer(
+        cache_dir_path=tmp_path,
+        overwrite_cache=True,
+    )
+
+    assert cached.recognize_image(image) == "cached text"
+    assert fresh.recognize_image(image) == "cached text"
+    assert fresh.predict_count == 1
 
 
 def test_paddle_recognizer_uses_server_models_and_disables_mkldnn_on_windows(
@@ -161,7 +182,7 @@ def test_paddle_recognizer_preserves_root_logger_level(monkeypatch: MonkeyPatch)
     previous_level = root_logger.level
     monkeypatch.setattr(
         "scinoephile.image.ocr.paddle.paddle_recognizer.PaddleRecognizer."
-        "_get_paddle_ocr_class",
+        "_import_paddleocr_paddle_ocr",
         staticmethod(lambda: FakePaddleOCR),
     )
 
@@ -223,7 +244,7 @@ def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: MonkeyPatch):
     monkeypatch.setattr("builtins.__import__", fake_import)
 
     with raises(ImportError, match="'ocr' extra"):
-        PaddleRecognizer._get_paddle_ocr_class()
+        PaddleRecognizer._import_paddleocr_paddle_ocr()
 
 
 def test_paddle_recognizer_rejects_unsupported_languages():
@@ -269,7 +290,7 @@ def test_paddle_recognizer_maps_supported_languages_to_engine_codes(
 
     monkeypatch.setattr(
         "scinoephile.image.ocr.paddle.paddle_recognizer.PaddleRecognizer."
-        "_get_paddle_ocr_class",
+        "_import_paddleocr_paddle_ocr",
         staticmethod(lambda: FakePaddleOCR),
     )
 
