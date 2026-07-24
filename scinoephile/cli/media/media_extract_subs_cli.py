@@ -7,7 +7,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
+from scinoephile.cli.helpers.cache import (
+    CACHE_LOCALIZATIONS,
+    CacheArguments,
+    add_cache_args,
+)
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -33,8 +37,6 @@ MEDIA_EXTRACT_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "export extracted SUP subtitle streams as image directories": (
             "将提取的 SUP 字幕流导出为图像目录"
         ),
-        "cache directory for extracted or converted subtitle artifacts (default: "
-        "%(default)s)": ("提取或转换字幕产物的缓存目录（默认：%(default)s）"),
         "extract matching subtitle streams from a video file": (
             "从视频文件提取匹配的字幕流"
         ),
@@ -55,8 +57,6 @@ MEDIA_EXTRACT_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "export extracted SUP subtitle streams as image directories": (
             "將提取的 SUP 字幕流匯出為影像目錄"
         ),
-        "cache directory for extracted or converted subtitle artifacts (default: "
-        "%(default)s)": ("提取或轉換字幕產物的快取目錄（預設：%(default)s）"),
         "extract matching subtitle streams from a video file": (
             "從影片檔提取匹配的字幕流"
         ),
@@ -96,6 +96,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
+            "cache arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
         )
@@ -125,15 +126,9 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             action="store_true",
             help="include additional subtitle stream details",
         )
-        add_cache_dir_arg(
-            arg_groups["operation arguments"],
-            "media",
-            "subtitles",
-            help_text=(
-                "cache directory for extracted or converted subtitle artifacts "
-                "(default: %(default)s)"
-            ),
-        )
+
+        # Cache arguments
+        add_cache_args(arg_groups["cache arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -176,7 +171,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         infile_path: Path,
         languages: list[str],
         details: bool,
-        cache_dir_path: Path,
+        cache_args: CacheArguments,
         export_images: bool,
         overwrite: bool,
         output_dir_path: Path,
@@ -188,10 +183,11 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                 infile_path=infile_path,
                 languages=languages,
                 output_dir_path=output_dir_path,
-                cache_dir_path=cache_dir_path,
+                cache_dir_path=cache_args.dir_path,
                 details=details,
                 export_images=export_images,
                 overwrite=overwrite,
+                overwrite_cache=cache_args.overwrite,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

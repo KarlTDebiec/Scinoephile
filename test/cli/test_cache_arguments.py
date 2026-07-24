@@ -9,6 +9,8 @@ from argparse import ArgumentParser
 from scinoephile.cli.dictionary.build.dictionary_build_cuhk_cli import (
     DictionaryBuildCuhkCli,
 )
+from scinoephile.cli.media.media_extract_subs_cli import MediaExtractSubsCli
+from scinoephile.cli.media.media_probe_cli import MediaProbeCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.review_cli import ReviewCli
 from scinoephile.cli.transcribe_cli import TranscribeCli
@@ -21,6 +23,8 @@ from test.helpers import parametrize
     "cli",
     (
         DictionaryBuildCuhkCli,
+        MediaExtractSubsCli,
+        MediaProbeCli,
         OcrFuseCli,
         ReviewCli,
         TranscribeCli,

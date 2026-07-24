@@ -25,6 +25,7 @@ def get_detailed_subtitle_streams(
     infile_path: Path,
     *,
     cache_dir_path: Path | None = None,
+    overwrite_cache: bool = False,
     streams: Sequence[Stream] | None = None,
 ) -> list[SubtitleStream]:
     """Get subtitle stream metadata enriched with expensive subtitle details.
@@ -32,6 +33,7 @@ def get_detailed_subtitle_streams(
     Arguments:
         infile_path: media input file to inspect
         cache_dir_path: cache directory path
+        overwrite_cache: whether to replace matching cached subtitle artifacts
         streams: optional pre-probed media streams
     Returns:
         enriched subtitle stream metadata
@@ -43,7 +45,12 @@ def get_detailed_subtitle_streams(
             stream for stream in streams if isinstance(stream, SubtitleStream)
         ]
     if subtitle_streams:
-        cache_subtitles(infile_path, subtitle_streams, cache_dir_path=cache_dir_path)
+        cache_subtitles(
+            infile_path,
+            subtitle_streams,
+            cache_dir_path=cache_dir_path,
+            overwrite_cache=overwrite_cache,
+        )
 
     detailed_streams = []
     for stream in subtitle_streams:
