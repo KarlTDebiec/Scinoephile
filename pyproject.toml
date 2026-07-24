@@ -121,6 +121,8 @@ allowed-unresolved-imports = [
     "huggingface_hub",
     "huggingface_hub.**",
     "paddleocr",
+    "torch",
+    "transformers",
     "whisper_timestamped",
 ]
 

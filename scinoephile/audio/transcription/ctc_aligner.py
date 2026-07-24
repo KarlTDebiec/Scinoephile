@@ -259,7 +259,7 @@ class CtcAligner:
 
         # Load the processor and model lazily to preserve optional dependencies
         try:
-            from transformers import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+            from transformers import (  # noqa: PLC0415
                 AutoModelForCTC,
                 AutoProcessor,
             )
@@ -561,7 +561,7 @@ class CtcAligner:
             ImportError: if torch is unavailable
         """
         try:
-            import torch  # ty: ignore[unresolved-import]  # noqa: PLC0415
+            import torch  # noqa: PLC0415
         except ImportError as exc:
             raise ImportError(
                 "CTC timestamp alignment requires transformers and torch dependencies."
