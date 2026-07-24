@@ -114,10 +114,19 @@ convention = 'google'
 allowed-unresolved-imports = [
     "chrome_lens_py",
     "chrome_lens_py.**",
+    "demucs_infer",
+    "demucs_infer.**",
     "huggingface_hub",
     "huggingface_hub.**",
     "paddleocr",
+    "torch",
+    "torch.**",
+    "torchaudio",
+    "torchaudio.**",
+    "transformers",
+    "transformers.**",
     "whisper_timestamped",
+    "whisper_timestamped.**",
 ]
 
 [tool.setuptools]

@@ -242,7 +242,7 @@ class DemucsSeparator:
     def _get_apply_model() -> Any:
         """Import Demucs apply_model on demand."""
         try:
-            from demucs_infer.apply import (  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
+            from demucs_infer.apply import (  # noqa: E501, PLC0415
                 apply_model,
             )
         except ImportError as exc:
@@ -253,7 +253,7 @@ class DemucsSeparator:
     def _get_model_loader() -> Any:
         """Import Demucs model loader on demand."""
         try:
-            from demucs_infer.pretrained import (  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
+            from demucs_infer.pretrained import (  # noqa: E501, PLC0415
                 get_model,
             )
         except ImportError as exc:
@@ -264,7 +264,7 @@ class DemucsSeparator:
     def _get_torch_module() -> Any:
         """Import torch on demand."""
         try:
-            import torch  # ty: ignore[unresolved-import]  # noqa: PLC0415
+            import torch  # noqa: PLC0415
         except ImportError as exc:
             raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
         return torch
@@ -273,7 +273,7 @@ class DemucsSeparator:
     def _get_torchaudio_functional_module() -> Any:
         """Import torchaudio.functional on demand."""
         try:
-            from torchaudio import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+            from torchaudio import (  # noqa: PLC0415
                 functional,
             )
         except ImportError as exc:
