@@ -133,9 +133,12 @@ def test_get_guided_transcriber_configures_default_mlx_audio_backend(tmp_path: P
     Arguments:
         tmp_path: temporary directory path
     """
-    with patch(
-        "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
-        return_value=tmp_path,
+    with (
+        patch.object(MlxAudioTranscriber, "_validate_platform"),
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
+            return_value=tmp_path,
+        ),
     ):
         transcriber = get_guided_transcriber(
             Language.yue_hant,
@@ -168,9 +171,12 @@ def test_get_guided_transcriber_configures_default_mlx_audio_backend(tmp_path: P
 
 def test_get_guided_transcriber_configures_qwen3_asr_override(tmp_path: Path):
     """Test factory configures a Qwen3-ASR model and Cantonese language label."""
-    with patch(
-        "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
-        return_value=tmp_path,
+    with (
+        patch.object(MlxAudioTranscriber, "_validate_platform"),
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
+            return_value=tmp_path,
+        ),
     ):
         transcriber = get_guided_transcriber(
             Language.yue_hant,

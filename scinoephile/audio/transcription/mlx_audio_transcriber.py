@@ -7,6 +7,7 @@ from __future__ import annotations
 import hashlib
 import json
 import platform
+import sys
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from logging import getLogger
@@ -158,7 +159,7 @@ def get_mlx_audio_model_profile(model_name: str) -> MlxAudioModelProfile:
     )
 
 
-class MlxAudioTranscriptionError(RuntimeError):
+class MlxAudioTranscriptionError(ScinoephileError):
     """Raised when MLX-Audio cannot produce timestamped transcription output."""
 
 
@@ -200,8 +201,10 @@ class MlxAudioTranscriber:
             retry_without_demucs: whether to retry original audio after Demucs
             retry_without_vad: whether to retry unfiltered audio after VAD failure
         Raises:
+            MlxAudioTranscriptionError: if the platform does not support MLX-Audio
             ValueError: if the language or numeric configuration is invalid
         """
+        self._validate_platform()
         self.model_name = model_name
         self.model_profile = get_mlx_audio_model_profile(model_name)
         self.language = language
@@ -379,7 +382,6 @@ class MlxAudioTranscriber:
         Returns:
             cache identity metadata
         """
-        self._validate_platform()
         if use_demucs is None:
             use_demucs = self.use_demucs
         if use_vad is None:
@@ -515,11 +517,14 @@ class MlxAudioTranscriber:
     @staticmethod
     def _validate_platform():
         """Validate that direct MLX-Audio inference is supported."""
-        if platform.system() == "Darwin" and platform.machine() in {"arm64", "aarch64"}:
+        machine = platform.machine()
+        if sys.platform == "darwin" and machine == "arm64":
             return
         raise MlxAudioTranscriptionError(
-            "MLX-Audio support currently requires Apple Silicon MLX. "
-            "CUDA support is not included in this initial implementation."
+            "MLX-Audio support requires macOS on Apple Silicon "
+            f"(detected sys.platform={sys.platform!r}, "
+            f"platform.machine()={machine!r}). "
+            "CUDA support is not included."
         )
 
     @staticmethod
@@ -592,7 +597,6 @@ class MlxAudioTranscriber:
         Raises:
             MlxAudioInferenceError: if direct inference fails
         """
-        self._validate_platform()
         try:
             return transcribe_with_mlx_audio(
                 audio_path,
