@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import json
+from io import StringIO
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
@@ -18,6 +20,40 @@ from scinoephile.audio.transcription import mimo_worker
 def clear_mimo_worker_model_cache(monkeypatch: pytest.MonkeyPatch):
     """Clear the in-process MiMo model cache between tests."""
     monkeypatch.setattr(mimo_worker, "_MLX_MODEL_BY_REFERENCE", {})
+
+
+def test_main_processes_multiple_requests(
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+):
+    """Test the worker keeps serving JSON-lines requests until stdin closes."""
+    monkeypatch.setattr(
+        mimo_worker.sys,
+        "stdin",
+        StringIO(
+            '{"audio_path": "first.wav", "model_name": "model"}\n'
+            '{"audio_path": "second.wav", "model_name": "model"}\n'
+        ),
+    )
+    patched_transcribe = Mock(
+        side_effect=[
+            {"text": "第一"},
+            {"text": "第二"},
+        ]
+    )
+    monkeypatch.setattr(mimo_worker, "transcribe_with_mimo", patched_transcribe)
+
+    returncode = mimo_worker.main()
+
+    responses = [
+        json.loads(line) for line in capsys.readouterr().out.strip().splitlines()
+    ]
+    assert returncode == 0
+    assert patched_transcribe.call_count == 2
+    assert responses == [
+        {"status": "ok", "payload": {"text": "第一"}},
+        {"status": "ok", "payload": {"text": "第二"}},
+    ]
 
 
 def test_transcribe_with_mimo_mlx_loads_model_and_maps_yue_language(

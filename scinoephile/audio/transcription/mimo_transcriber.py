@@ -9,9 +9,11 @@ import json
 import os
 import platform
 import subprocess
+from atexit import register
 from collections.abc import Mapping, Sequence
 from logging import getLogger
 from pathlib import Path
+from threading import Lock
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -55,6 +57,36 @@ _VAD_PADDING_SECONDS = 0.5
 
 _VAD_SAMPLE_RATE = 16000
 """Sample rate expected by the Silero VAD model."""
+
+_MIMO_WORKER_PROCESSES: dict[tuple[str, ...], subprocess.Popen[str]] = {}
+"""Persistent MiMo worker processes keyed by command."""
+
+_MIMO_WORKER_LOCK = Lock()
+"""Serializes access to persistent MiMo worker processes."""
+
+
+def _close_mimo_worker_processes():
+    """Close persistent MiMo worker processes at interpreter shutdown."""
+    with _MIMO_WORKER_LOCK:
+        processes = list(_MIMO_WORKER_PROCESSES.values())
+        _MIMO_WORKER_PROCESSES.clear()
+    for process in processes:
+        if process.poll() is not None:
+            continue
+        try:
+            if process.stdin is not None:
+                process.stdin.close()
+            process.terminate()
+            process.wait(timeout=5)
+        except (OSError, subprocess.TimeoutExpired):
+            try:
+                process.kill()
+                process.wait()
+            except OSError:
+                pass
+
+
+register(_close_mimo_worker_processes)
 
 
 class MimoTranscriptionError(RuntimeError):
@@ -404,6 +436,97 @@ class MimoTranscriber:
         env["PYTHONPATH"] = os.pathsep.join(python_paths)
         return env
 
+    def _get_worker_process(self) -> subprocess.Popen[str]:
+        """Get or start the persistent process for the configured worker command.
+
+        Returns:
+            running MiMo worker process
+        Raises:
+            MimoWorkerError: if the worker cannot be started
+        """
+        assert self.worker_command is not None
+        process = _MIMO_WORKER_PROCESSES.get(self.worker_command)
+        if process is not None and process.poll() is None:
+            return process
+
+        try:
+            process = subprocess.Popen(
+                self.worker_command,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                bufsize=1,
+                env=self._get_worker_env(),
+            )
+        except OSError as exc:
+            raise MimoWorkerError(f"Unable to start MiMo worker: {exc}") from exc
+        if process.stdin is None or process.stdout is None:
+            process.terminate()
+            raise MimoWorkerError("Unable to open MiMo worker pipes.")
+        _MIMO_WORKER_PROCESSES[self.worker_command] = process
+        return process
+
+    @staticmethod
+    def _get_worker_payload(response: object) -> dict[str, object]:
+        """Get a MiMo payload from a worker response envelope.
+
+        Arguments:
+            response: parsed worker response
+        Returns:
+            MiMo output payload
+        Raises:
+            MimoWorkerError: if the response reports an error or is malformed
+        """
+        if not isinstance(response, Mapping):
+            raise MimoWorkerError("MiMo worker returned malformed JSON.")
+        response_mapping = dict(response)
+        status = response_mapping.get("status")
+        if status is None:
+            if "text" in response_mapping:
+                return response_mapping
+            raise MimoWorkerError("MiMo worker response is missing its status.")
+        if status == "error":
+            error = response_mapping.get("error")
+            raise MimoWorkerError(f"MiMo worker failed: {error}")
+        if status != "ok":
+            raise MimoWorkerError(f"Unknown MiMo worker response status: {status!r}")
+        payload = response_mapping.get("payload")
+        if not isinstance(payload, Mapping):
+            raise MimoWorkerError("MiMo worker response is missing its payload.")
+        return dict(payload)
+
+    def _read_worker_payload(
+        self,
+        process: subprocess.Popen[str],
+    ) -> dict[str, object]:
+        """Read the next payload from a persistent MiMo worker.
+
+        Arguments:
+            process: running MiMo worker process
+        Returns:
+            MiMo output payload
+        Raises:
+            MimoWorkerError: if the worker exits or returns malformed output
+        """
+        assert process.stdout is not None
+        for response_line in process.stdout:
+            stripped_line = response_line.strip()
+            if not stripped_line:
+                continue
+            try:
+                response = json.loads(stripped_line)
+            except json.JSONDecodeError:
+                continue
+            if isinstance(response, Mapping) and (
+                "status" in response or "text" in response
+            ):
+                return self._get_worker_payload(response)
+        returncode = process.poll()
+        raise MimoWorkerError(
+            f"MiMo worker exited before returning a response (status {returncode})."
+        )
+
     def _run_in_process(self, audio_path: Path) -> dict[str, object]:
         """Run MiMo in the current Python process.
 
@@ -433,7 +556,7 @@ class MimoTranscriber:
         return self._run_in_process(audio_path)
 
     def _run_worker(self, audio_path: Path) -> dict[str, object]:
-        """Run the MiMo worker process for one audio file.
+        """Run the configured MiMo worker for one audio file.
 
         Arguments:
             audio_path: temporary WAV path to transcribe
@@ -444,10 +567,31 @@ class MimoTranscriber:
         """
         assert self.worker_command is not None
         request = self._get_mimo_request(audio_path)
+        request_text = f"{json.dumps(request, ensure_ascii=False)}\n"
+
+        if self.worker_timeout_seconds is None:
+            with _MIMO_WORKER_LOCK:
+                process = self._get_worker_process()
+                assert process.stdin is not None
+                try:
+                    process.stdin.write(request_text)
+                    process.stdin.flush()
+                except (BrokenPipeError, OSError) as exc:
+                    _MIMO_WORKER_PROCESSES.pop(self.worker_command, None)
+                    raise MimoWorkerError(
+                        f"Unable to write to MiMo worker: {exc}"
+                    ) from exc
+                try:
+                    return self._read_worker_payload(process)
+                except MimoWorkerError:
+                    if process.poll() is not None:
+                        _MIMO_WORKER_PROCESSES.pop(self.worker_command, None)
+                    raise
+
         try:
             result = subprocess.run(
                 self.worker_command,
-                input=json.dumps(request, ensure_ascii=False),
+                input=request_text,
                 text=True,
                 capture_output=True,
                 check=False,
@@ -482,8 +626,10 @@ class MimoTranscriber:
                 payload = json.loads(stripped_line)
             except json.JSONDecodeError:
                 continue
-            if isinstance(payload, dict):
-                return payload
+            if isinstance(payload, Mapping) and (
+                "status" in payload or "text" in payload
+            ):
+                return MimoTranscriber._get_worker_payload(payload)
         raise MimoWorkerError("MiMo worker did not return a JSON object.")
 
     def _transcribe_audio_window(
@@ -753,33 +899,40 @@ class MimoTranscriber:
             core_end_seconds: exclusive end of non-overlap core
             start_id: first segment id to assign
         Returns:
-            offset segments whose midpoint falls inside the core window
+            offset segments containing only words assigned to the core window
+        Raises:
+            TranscriptionAlignmentError: if an aligned segment lacks word timings
         """
         offset_segments = []
         for segment in segments:
-            global_start = segment.start + offset_seconds
-            global_end = segment.end + offset_seconds
-            midpoint = (global_start + global_end) / 2
-            if midpoint < core_start_seconds or midpoint >= core_end_seconds:
-                continue
-
-            words = None
-            if segment.words is not None:
-                words = [
+            if not segment.words:
+                raise TranscriptionAlignmentError(
+                    "MiMo chunk cannot trim an aligned segment without word timings."
+                )
+            words = []
+            for word in segment.words:
+                global_start = word.start + offset_seconds
+                global_end = word.end + offset_seconds
+                midpoint = (global_start + global_end) / 2
+                if midpoint < core_start_seconds or midpoint >= core_end_seconds:
+                    continue
+                words.append(
                     word.model_copy(
                         update={
-                            "start": word.start + offset_seconds,
-                            "end": word.end + offset_seconds,
+                            "start": global_start,
+                            "end": global_end,
                         }
                     )
-                    for word in segment.words
-                ]
+                )
+            if not words:
+                continue
             offset_segments.append(
                 segment.model_copy(
                     update={
                         "id": start_id + len(offset_segments),
-                        "start": global_start,
-                        "end": global_end,
+                        "start": words[0].start,
+                        "end": words[-1].end,
+                        "text": "".join(word.text for word in words),
                         "words": words,
                     }
                 )

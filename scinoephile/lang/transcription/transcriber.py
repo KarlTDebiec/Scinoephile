@@ -115,7 +115,9 @@ class GuidedTranscriber:
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.AUTO,
         mimo_transcriber: MimoTranscriber | None = None,
+        no_vad_mimo_transcriber: MimoTranscriber | None = None,
         unseparated_mimo_transcriber: MimoTranscriber | None = None,
+        unseparated_no_vad_mimo_transcriber: MimoTranscriber | None = None,
         segment_splitter: TranscribedSegmentSplitter | None = None,
     ):
         """Initialize.
@@ -130,8 +132,11 @@ class GuidedTranscriber:
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
             mimo_transcriber: primary MiMo transcriber when MiMo is selected
+            no_vad_mimo_transcriber: primary non-VAD MiMo retry in automatic mode
             unseparated_mimo_transcriber: original-audio MiMo transcriber used when
                 Demucs is automatic
+            unseparated_no_vad_mimo_transcriber: original-audio non-VAD MiMo retry
+                used when Demucs and VAD are automatic
             segment_splitter: optional strategy for splitting transcribed segments
         """
         self.language = language
@@ -143,7 +148,9 @@ class GuidedTranscriber:
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
         self.mimo_transcriber = mimo_transcriber
+        self.no_vad_mimo_transcriber = no_vad_mimo_transcriber
         self.unseparated_mimo_transcriber = unseparated_mimo_transcriber
+        self.unseparated_no_vad_mimo_transcriber = unseparated_no_vad_mimo_transcriber
         self.segment_splitter = segment_splitter
 
         self.demucs_separator = None
@@ -160,10 +167,23 @@ class GuidedTranscriber:
         if backend == TranscriptionBackend.MIMO:
             if mimo_transcriber is None:
                 raise ValueError("MiMo backend requires a MiMo transcriber.")
+            if vad_mode == VADMode.AUTO and no_vad_mimo_transcriber is None:
+                raise ValueError(
+                    "Automatic VAD with MiMo requires a non-VAD MiMo transcriber."
+                )
             if demucs_mode == DemucsMode.AUTO and unseparated_mimo_transcriber is None:
                 raise ValueError(
                     "Automatic Demucs with MiMo requires an original-audio MiMo "
                     "transcriber."
+                )
+            if (
+                demucs_mode == DemucsMode.AUTO
+                and vad_mode == VADMode.AUTO
+                and unseparated_no_vad_mimo_transcriber is None
+            ):
+                raise ValueError(
+                    "Automatic Demucs and VAD with MiMo require an original-audio "
+                    "non-VAD MiMo transcriber."
                 )
             return
 
@@ -337,6 +357,32 @@ class GuidedTranscriber:
             if transcriber is not self.recovery_transcriber:
                 rejected_transcribers.add(transcriber)
         return None, rejected_transcribers
+
+    def _get_mimo_transcribers(
+        self,
+        *,
+        unseparated: bool = False,
+    ) -> tuple[MimoTranscriber, ...]:
+        """Get MiMo transcribers in configured VAD retry order.
+
+        Arguments:
+            unseparated: whether to return original-audio retry transcribers
+        Returns:
+            configured MiMo transcribers
+        """
+        if unseparated:
+            transcriber = self.unseparated_mimo_transcriber
+            no_vad_transcriber = self.unseparated_no_vad_mimo_transcriber
+        else:
+            transcriber = self.mimo_transcriber
+            no_vad_transcriber = self.no_vad_mimo_transcriber
+
+        transcribers = []
+        if transcriber is not None:
+            transcribers.append(transcriber)
+        if no_vad_transcriber is not None:
+            transcribers.append(no_vad_transcriber)
+        return tuple(transcribers)
 
     def _get_standard_transcribers(
         self,
@@ -518,12 +564,11 @@ class GuidedTranscriber:
         assert self.mimo_transcriber is not None
         cache_audio = audio
         audio_duration = len(audio) / 1000
-        transcribers = [self.mimo_transcriber]
-        if self.unseparated_mimo_transcriber is not None:
-            transcribers.append(self.unseparated_mimo_transcriber)
+        primary_transcribers = self._get_mimo_transcribers()
+        unseparated_transcribers = self._get_mimo_transcribers(unseparated=True)
 
         rejected_transcribers: set[MimoTranscriber] = set()
-        for transcriber in transcribers:
+        for transcriber in (*primary_transcribers, *unseparated_transcribers):
             try:
                 cached_segments = transcriber.get_cached_transcription(cache_audio)
             except (MimoTranscriptionError, TranscriptionAlignmentError) as exc:
@@ -539,30 +584,36 @@ class GuidedTranscriber:
             rejected_transcribers.add(transcriber)
 
         primary_audio = None
-        if self.mimo_transcriber not in rejected_transcribers:
+        primary_candidates = [
+            transcriber
+            for transcriber in primary_transcribers
+            if transcriber not in rejected_transcribers
+        ]
+        if primary_candidates:
             primary_audio = self._get_primary_transcription_audio(audio)
             if primary_audio is not None:
-                segments = self._transcribe_with_candidate(
-                    self.mimo_transcriber,
-                    primary_audio,
-                    cache_audio=cache_audio,
-                    audio_duration=audio_duration,
-                )
-                if segments is not None:
-                    return segments
+                for transcriber in primary_candidates:
+                    segments = self._transcribe_with_candidate(
+                        transcriber,
+                        primary_audio,
+                        cache_audio=cache_audio,
+                        audio_duration=audio_duration,
+                    )
+                    if segments is not None:
+                        return segments
 
         if self.demucs_mode == DemucsMode.AUTO:
-            assert self.unseparated_mimo_transcriber is not None
-            if (
-                primary_audio is not None
-                or self.mimo_transcriber in rejected_transcribers
-            ):
+            if primary_audio is not None or not primary_candidates:
                 logger.info(
                     "Retrying MiMo with original audio after unusable Demucs result"
                 )
-            if self.unseparated_mimo_transcriber not in rejected_transcribers:
+            for transcriber in (
+                candidate
+                for candidate in unseparated_transcribers
+                if candidate not in rejected_transcribers
+            ):
                 segments = self._transcribe_with_candidate(
-                    self.unseparated_mimo_transcriber,
+                    transcriber,
                     audio,
                     cache_audio=cache_audio,
                     audio_duration=audio_duration,

@@ -98,7 +98,9 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.demucs_mode is DemucsMode.AUTO
     assert transcriber.vad_mode is VADMode.AUTO
     assert transcriber.mimo_transcriber is None
+    assert transcriber.no_vad_mimo_transcriber is None
     assert transcriber.unseparated_mimo_transcriber is None
+    assert transcriber.unseparated_no_vad_mimo_transcriber is None
     assert transcriber.whisper_language == "yue"
     assert transcriber.segment_splitter is not None
     assert isinstance(transcriber.aligner.delineation_processor, DelineationProcessor)
@@ -172,10 +174,19 @@ def test_get_guided_transcriber_configures_mimo_backend(tmp_path: Path):
     assert primary.cache_dir_path == tmp_path
     assert primary.use_demucs
     assert primary.use_vad
-    assert primary.retry_without_vad
+    assert not primary.retry_without_vad
+    no_vad = transcriber.no_vad_mimo_transcriber
+    assert isinstance(no_vad, MimoTranscriber)
+    assert no_vad.use_demucs
+    assert not no_vad.use_vad
     unseparated = transcriber.unseparated_mimo_transcriber
     assert isinstance(unseparated, MimoTranscriber)
     assert not unseparated.use_demucs
+    assert unseparated.use_vad
+    unseparated_no_vad = transcriber.unseparated_no_vad_mimo_transcriber
+    assert isinstance(unseparated_no_vad, MimoTranscriber)
+    assert not unseparated_no_vad.use_demucs
+    assert not unseparated_no_vad.use_vad
     assert transcriber.vad_transcriber is None
     assert transcriber.no_vad_transcriber is None
 

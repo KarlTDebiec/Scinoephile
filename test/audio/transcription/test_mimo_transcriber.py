@@ -6,8 +6,8 @@ from __future__ import annotations
 
 import json
 import os
-import subprocess
 from collections.abc import Mapping, Sequence
+from io import StringIO
 from pathlib import Path
 from typing import cast
 from unittest.mock import Mock
@@ -185,37 +185,58 @@ def test_parse_worker_stdout_accepts_logging_before_json():
     assert parsed["backend"] == "mimo"
 
 
-def test_run_worker_passes_runtime_model_and_source_pythonpath(
+def test_run_worker_reuses_process_and_passes_runtime_configuration(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ):
-    """Test worker requests include runtime and import path for external venvs."""
+    """Test worker requests reuse a process and include runtime configuration."""
     captured: dict[str, object] = {}
 
-    def fake_run(
+    class FakeProcess:
+        """Minimal persistent worker process for testing."""
+
+        def __init__(self):
+            """Initialize worker pipes with two responses."""
+            self.stdin = StringIO()
+            self.stdout = StringIO(
+                '{"status": "ok", "payload": {"text": "你好"}}\n'
+                '{"status": "ok", "payload": {"text": "再見"}}\n'
+            )
+
+        @staticmethod
+        def poll() -> None:
+            """Report that the worker is still running."""
+
+    fake_process = FakeProcess()
+
+    def fake_popen(
         command: Sequence[str],
         *,
-        input: str,
+        stdin: int,
+        stdout: int,
+        stderr: int,
         text: bool,
-        capture_output: bool,
-        check: bool,
-        timeout: float | None,
+        bufsize: int,
         env: Mapping[str, str],
-    ) -> subprocess.CompletedProcess[str]:
-        """Capture subprocess invocation and return a minimal worker payload."""
+    ) -> FakeProcess:
+        """Capture process configuration and return a persistent fake worker."""
         captured["command"] = command
-        captured["input"] = input
+        captured["stdin"] = stdin
+        captured["stdout"] = stdout
+        captured["stderr"] = stderr
+        captured["text"] = text
+        captured["bufsize"] = bufsize
         captured["env"] = env
-        return subprocess.CompletedProcess(
-            command,
-            0,
-            stdout='{"text": "你好", "backend": "mimo"}\n',
-            stderr="",
-        )
+        return fake_process
 
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mimo_transcriber.subprocess.run",
-        fake_run,
+        "scinoephile.audio.transcription.mimo_transcriber._MIMO_WORKER_PROCESSES",
+        {},
+    )
+    patched_popen = Mock(side_effect=fake_popen)
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.mimo_transcriber.subprocess.Popen",
+        patched_popen,
     )
     transcriber = MimoTranscriber(
         model_name=MIMO_MODEL_NAME,
@@ -223,13 +244,20 @@ def test_run_worker_passes_runtime_model_and_source_pythonpath(
         worker_command=("python", "mimo_worker.py"),
     )
 
-    payload = transcriber._run_worker(tmp_path / "audio.wav")
+    first_payload = transcriber._run_worker(tmp_path / "first.wav")
+    second_payload = transcriber._run_worker(tmp_path / "second.wav")
 
-    request = json.loads(cast(str, captured["input"]))
+    requests = [json.loads(line) for line in fake_process.stdin.getvalue().splitlines()]
+    assert patched_popen.call_count == 1
     assert captured["command"] == ("python", "mimo_worker.py")
-    assert request["model_name"] == MIMO_MODEL_NAME
-    assert request["runtime"] == "mlx"
-    assert payload["text"] == "你好"
+    assert [Path(request["audio_path"]).name for request in requests] == [
+        "first.wav",
+        "second.wav",
+    ]
+    assert all(request["model_name"] == MIMO_MODEL_NAME for request in requests)
+    assert all(request["runtime"] == "mlx" for request in requests)
+    assert first_payload["text"] == "你好"
+    assert second_payload["text"] == "再見"
     python_paths = cast(Mapping[str, str], captured["env"])["PYTHONPATH"].split(
         os.pathsep
     )
@@ -334,8 +362,27 @@ def test_transcribe_chunks_audio_and_offsets_segments(
         side_effect=[
             [_get_timed_segment("one", start=0.1, end=0.9)],
             [
-                _get_timed_segment("duplicate", start=0.1, end=0.3),
-                _get_timed_segment("two", start=0.7, end=2.2),
+                TranscribedSegment(
+                    id=0,
+                    seek=0,
+                    start=0.1,
+                    end=2.2,
+                    text="duplicatetwo",
+                    words=[
+                        TranscribedWord(
+                            text="duplicate",
+                            start=0.1,
+                            end=0.3,
+                            confidence=0.9,
+                        ),
+                        TranscribedWord(
+                            text="two",
+                            start=0.7,
+                            end=2.2,
+                            confidence=0.9,
+                        ),
+                    ],
+                )
             ],
             [_get_timed_segment("three", start=0.6, end=1.0)],
         ]

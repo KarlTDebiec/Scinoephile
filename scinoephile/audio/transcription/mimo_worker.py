@@ -32,21 +32,28 @@ _MLX_MODEL_BY_REFERENCE: dict[str, Any] = {}
 
 
 def main() -> int:
-    """Run MiMo from JSON stdin to JSON stdout.
+    """Run persistent MiMo requests from JSON-lines stdin to JSON-lines stdout.
 
     Returns:
         process exit code
     """
-    try:
-        request = json.loads(sys.stdin.read())
-        if not isinstance(request, Mapping):
-            raise ValueError("MiMo request must be a JSON object.")
-        payload = transcribe_with_mimo(request)
-    except Exception as exc:  # noqa: BLE001
-        print(str(exc), file=sys.stderr)
-        return 1
-
-    print(json.dumps(payload, ensure_ascii=False))
+    for request_line in sys.stdin:
+        if not request_line.strip():
+            continue
+        try:
+            request = json.loads(request_line)
+            if not isinstance(request, Mapping):
+                raise ValueError("MiMo request must be a JSON object.")
+            response = {
+                "status": "ok",
+                "payload": transcribe_with_mimo(request),
+            }
+        except Exception as exc:  # noqa: BLE001
+            response = {
+                "status": "error",
+                "error": str(exc),
+            }
+        print(json.dumps(response, ensure_ascii=False), flush=True)
     return 0
 
 

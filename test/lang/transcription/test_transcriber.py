@@ -53,11 +53,17 @@ def _get_transcriber(
     aligner.punctuation_processor = Mock()
     aligner.punctuation_processor.prune_test_cases = False
     mimo_transcriber = None
+    no_vad_mimo_transcriber = None
     unseparated_mimo_transcriber = None
+    unseparated_no_vad_mimo_transcriber = None
     if backend == TranscriptionBackend.MIMO:
         mimo_transcriber = Mock(spec=MimoTranscriber)
+        if vad_mode == VADMode.AUTO:
+            no_vad_mimo_transcriber = Mock(spec=MimoTranscriber)
         if demucs_mode == DemucsMode.AUTO:
             unseparated_mimo_transcriber = Mock(spec=MimoTranscriber)
+            if vad_mode == VADMode.AUTO:
+                unseparated_no_vad_mimo_transcriber = Mock(spec=MimoTranscriber)
     return (
         GuidedTranscriber(
             language=Language.eng,
@@ -69,7 +75,9 @@ def _get_transcriber(
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
             mimo_transcriber=mimo_transcriber,
+            no_vad_mimo_transcriber=no_vad_mimo_transcriber,
             unseparated_mimo_transcriber=unseparated_mimo_transcriber,
+            unseparated_no_vad_mimo_transcriber=unseparated_no_vad_mimo_transcriber,
         ),
         aligner,
     )
@@ -413,7 +421,7 @@ def test_mimo_backend_retries_original_audio_after_unusable_demucs_result():
     transcriber, _ = _get_transcriber(
         backend=TranscriptionBackend.MIMO,
         demucs_mode=DemucsMode.AUTO,
-        vad_mode=VADMode.AUTO,
+        vad_mode=VADMode.OFF,
     )
     repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
     usable_segments = [_get_segment(text="mimo", with_words=True)]
@@ -446,6 +454,35 @@ def test_mimo_backend_retries_original_audio_after_unusable_demucs_result():
     }
     assert transcriber.vad_transcriber is None
     assert transcriber.recovery_transcriber is None
+
+
+def test_mimo_backend_retries_without_vad_after_unusable_vad_result():
+    """Test automatic VAD validates output before retrying unfiltered audio."""
+    transcriber, _ = _get_transcriber(
+        backend=TranscriptionBackend.MIMO,
+        vad_mode=VADMode.AUTO,
+    )
+    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
+    usable_segments = [_get_segment(text="mimo", with_words=True)]
+    assert transcriber.mimo_transcriber is not None
+    assert transcriber.no_vad_mimo_transcriber is not None
+    vad = cast(Mock, transcriber.mimo_transcriber)
+    no_vad = cast(Mock, transcriber.no_vad_mimo_transcriber)
+    vad.get_cached_transcription.return_value = None
+    vad.return_value = repetitive_segments
+    no_vad.get_cached_transcription.return_value = None
+    no_vad.return_value = usable_segments
+    audio = AudioSegment.silent(duration=1000)
+
+    output = transcriber._transcribe_block_audio(audio)
+
+    assert output == usable_segments
+    assert vad.call_count == 1
+    assert vad.call_args.args == (audio,)
+    assert vad.call_args.kwargs == {"cache_audio": audio, "use_cache": False}
+    assert no_vad.call_count == 1
+    assert no_vad.call_args.args == (audio,)
+    assert no_vad.call_args.kwargs == {"cache_audio": audio, "use_cache": False}
 
 
 def test_failed_mimo_backend_leaves_gap_for_translation():
