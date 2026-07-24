@@ -76,6 +76,8 @@ class MlxAudioModelProfile:
 
     family_name: str
     """Stable model-family name used in cache metadata."""
+    mlx_audio_model_type: str
+    """Model type passed to the MLX-Audio loader."""
     default_model_name: str
     """Default Hugging Face model identifier for the family."""
     default_max_tokens: int
@@ -107,6 +109,7 @@ class MlxAudioModelProfile:
 _MLX_AUDIO_MODEL_PROFILES = (
     MlxAudioModelProfile(
         family_name="mimo",
+        mlx_audio_model_type="mimo",
         default_model_name=MIMO_MODEL_NAME,
         default_max_tokens=256,
         model_name_markers=("mimo-v2.5-asr", "mimov2asr"),
@@ -122,6 +125,7 @@ _MLX_AUDIO_MODEL_PROFILES = (
     ),
     MlxAudioModelProfile(
         family_name="qwen3-asr",
+        mlx_audio_model_type="qwen3_asr",
         default_model_name=QWEN3_ASR_MODEL_NAME,
         default_max_tokens=8192,
         model_name_markers=("qwen3-asr", "qwen3_asr", "qwen3asr"),
@@ -688,6 +692,7 @@ class MlxAudioTranscriber:
             return transcribe_with_mlx_audio(
                 audio_path,
                 self.model_name,
+                self.model_profile.mlx_audio_model_type,
                 self.mlx_audio_language,
                 max_tokens=self._effective_max_tokens,
             )
@@ -720,6 +725,7 @@ class MlxAudioTranscriber:
         """
         separated_audio = None
         separation_attempted = False
+        successful_attempt = False
         last_error: Exception | None = None
         for use_demucs, use_vad in attempts:
             if (use_demucs, use_vad) in rejected_attempts:
@@ -762,6 +768,7 @@ class MlxAudioTranscriber:
                 logger.warning(f"MLX-Audio transcription attempt failed: {exc}")
                 last_error = exc
                 continue
+            successful_attempt = True
 
             cache_path = self._get_cache_path(
                 cache_audio,
@@ -784,7 +791,7 @@ class MlxAudioTranscriber:
             if is_usable is None or is_usable(segments):
                 return segments
 
-        if last_error is not None:
+        if not successful_attempt and last_error is not None:
             raise last_error
         return []
 

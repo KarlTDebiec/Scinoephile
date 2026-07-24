@@ -184,16 +184,17 @@ def test_get_mlx_audio_model_profile_accepts_local_model_path():
 
 
 @pytest.mark.parametrize(
-    ("metadata", "expected_family"),
+    ("metadata", "expected_family", "expected_model_type"),
     [
-        ({"architectures": ["MiMoV2ASRForCausalLM"]}, "mimo"),
-        ({"model_type": "qwen3_asr"}, "qwen3-asr"),
+        ({"architectures": ["MiMoV2ASRForCausalLM"]}, "mimo", "mimo"),
+        ({"model_type": "qwen3_asr"}, "qwen3-asr", "qwen3_asr"),
     ],
 )
 def test_get_mlx_audio_model_profile_reads_local_model_metadata(
     tmp_path: Path,
     metadata: dict[str, object],
     expected_family: str,
+    expected_model_type: str,
 ):
     """Test arbitrary local directories are identified from model metadata."""
     model_path = tmp_path / "asr"
@@ -206,6 +207,7 @@ def test_get_mlx_audio_model_profile_reads_local_model_metadata(
     profile = get_mlx_audio_model_profile(str(model_path))
 
     assert profile.family_name == expected_family
+    assert profile.mlx_audio_model_type == expected_model_type
 
 
 def test_get_mlx_audio_model_profile_rejects_untested_family():
@@ -474,6 +476,7 @@ def test_transcribe_uses_direct_mlx_audio_inference(
     def fake_transcribe_with_mlx_audio(
         audio_path: Path,
         model_name: str,
+        model_type: str,
         language: str,
         *,
         max_tokens: int | None,
@@ -482,6 +485,7 @@ def test_transcribe_uses_direct_mlx_audio_inference(
         captured.update(
             audio_path=audio_path,
             model_name=model_name,
+            model_type=model_type,
             language=language,
             max_tokens=max_tokens,
         )
@@ -495,6 +499,7 @@ def test_transcribe_uses_direct_mlx_audio_inference(
 
     assert segments == expected_segments
     assert captured["model_name"] == MIMO_MODEL_NAME
+    assert captured["model_type"] == "mimo"
     assert captured["language"] == "zh"
     assert captured["max_tokens"] == 256
     assert isinstance(captured["audio_path"], Path)
@@ -517,6 +522,7 @@ def test_transcribe_derives_language_and_passes_max_tokens(
     def fake_transcribe_with_mlx_audio(
         _audio_path: Path,
         model_name: str,
+        model_type: str,
         language: str,
         *,
         max_tokens: int | None,
@@ -524,6 +530,7 @@ def test_transcribe_derives_language_and_passes_max_tokens(
         """Capture direct MLX-Audio arguments and return transcript text."""
         captured.update(
             model_name=model_name,
+            model_type=model_type,
             language=language,
             max_tokens=max_tokens,
         )
@@ -537,6 +544,7 @@ def test_transcribe_derives_language_and_passes_max_tokens(
 
     assert segments == expected_segments
     assert captured["model_name"] == MIMO_MODEL_NAME
+    assert captured["model_type"] == "mimo"
     assert captured["language"] == "en"
     assert captured["max_tokens"] == 1024
 
@@ -786,6 +794,40 @@ def test_transcribe_retries_without_vad_after_unusable_output(
     )
 
     assert segments == expected_segments
+    assert [call.kwargs["use_vad"] for call in patched_transcribe.call_args_list] == [
+        True,
+        False,
+    ]
+
+
+@pytest.mark.parametrize("failure_first", [True, False])
+def test_transcribe_rejection_does_not_raise_other_attempt_error(
+    monkeypatch: pytest.MonkeyPatch,
+    failure_first: bool,
+):
+    """Test rejected output wins over an error from another retry attempt.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        failure_first: whether the failed attempt precedes the rejected output
+    """
+    rejected_segments = [_get_timed_segment("rejected")]
+    failed_attempt = TranscriptionEmptyError("failed attempt")
+    if failure_first:
+        side_effect = [failed_attempt, rejected_segments]
+    else:
+        side_effect = [rejected_segments, failed_attempt]
+    transcriber = MlxAudioTranscriber(use_vad=True, retry_without_vad=True)
+    patched_transcribe = Mock(side_effect=side_effect)
+    monkeypatch.setattr(transcriber, "_transcribe_uncached", patched_transcribe)
+
+    segments = transcriber.transcribe(
+        AudioSegment.silent(duration=1000),
+        is_usable=lambda _segments: False,
+        use_cache=False,
+    )
+
+    assert segments == []
     assert [call.kwargs["use_vad"] for call in patched_transcribe.call_args_list] == [
         True,
         False,

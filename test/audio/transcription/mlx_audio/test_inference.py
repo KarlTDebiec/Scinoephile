@@ -40,6 +40,7 @@ def test_transcribe_with_mlx_audio_reads_mapping_result(
     result = transcribe_with_mlx_audio(
         audio_path,
         "model/name",
+        "mimo",
         "zh",
         max_tokens=128,
     )
@@ -72,7 +73,7 @@ def test_transcribe_with_mlx_audio_reads_object_result(
         inference, "_get_or_load_mlx_audio_model", Mock(return_value=model)
     )
 
-    result = transcribe_with_mlx_audio(audio_path, "model/name", "en")
+    result = transcribe_with_mlx_audio(audio_path, "model/name", "mimo", "en")
 
     assert result.text == "hello"
     assert result.generation_tokens is None
@@ -97,7 +98,7 @@ def test_transcribe_with_mlx_audio_rejects_missing_text(
     )
 
     with pytest.raises(ValueError, match="missing transcript text"):
-        transcribe_with_mlx_audio(audio_path, "model/name", "zh")
+        transcribe_with_mlx_audio(audio_path, "model/name", "mimo", "zh")
 
 
 @pytest.mark.parametrize("generation_tokens", [True, -1, 1.5, "1"])
@@ -124,30 +125,36 @@ def test_transcribe_with_mlx_audio_rejects_invalid_generation_tokens(
     )
 
     with pytest.raises(ValueError, match="invalid generation token count"):
-        transcribe_with_mlx_audio(audio_path, "model/name", "zh")
+        transcribe_with_mlx_audio(audio_path, "model/name", "mimo", "zh")
 
 
-def test_get_or_load_mlx_audio_model_caches_by_reference(
+def test_get_or_load_mlx_audio_model_caches_by_reference_and_type(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test a model is loaded once per reference.
+    """Test a model is loaded once per reference and model type.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
     """
-    model = object()
-    load = Mock(return_value=model)
-    monkeypatch.setattr(inference, "_MLX_MODEL_BY_REFERENCE", {})
+    models = [object(), object()]
+    load = Mock(side_effect=models)
+    monkeypatch.setattr(inference, "_MLX_MODEL_BY_REFERENCE_AND_TYPE", {})
     monkeypatch.setattr(
         inference, "_import_mlx_audio_stt_load", Mock(return_value=load)
     )
 
-    first = inference._get_or_load_mlx_audio_model("model/name")
-    second = inference._get_or_load_mlx_audio_model("model/name")
+    first = inference._get_or_load_mlx_audio_model("model/name", "mimo")
+    second = inference._get_or_load_mlx_audio_model("model/name", "mimo")
+    third = inference._get_or_load_mlx_audio_model("model/name", "qwen3_asr")
 
-    assert first is model
-    assert second is model
-    load.assert_called_once_with("model/name")
+    assert first is models[0]
+    assert second is models[0]
+    assert third is models[1]
+    assert load.call_count == 2
+    assert load.call_args_list[0].args == ("model/name",)
+    assert load.call_args_list[0].kwargs == {"model_type": "mimo"}
+    assert load.call_args_list[1].args == ("model/name",)
+    assert load.call_args_list[1].kwargs == {"model_type": "qwen3_asr"}
 
 
 def test_get_or_load_mlx_audio_model_validates_local_path(
@@ -163,14 +170,14 @@ def test_get_or_load_mlx_audio_model_validates_local_path(
     model_path = tmp_path / "model"
     model_path.mkdir()
     load = Mock(return_value=object())
-    monkeypatch.setattr(inference, "_MLX_MODEL_BY_REFERENCE", {})
+    monkeypatch.setattr(inference, "_MLX_MODEL_BY_REFERENCE_AND_TYPE", {})
     monkeypatch.setattr(
         inference, "_import_mlx_audio_stt_load", Mock(return_value=load)
     )
 
-    inference._get_or_load_mlx_audio_model(str(model_path))
+    inference._get_or_load_mlx_audio_model(str(model_path), "mimo")
 
-    load.assert_called_once_with(model_path.resolve())
+    load.assert_called_once_with(model_path.resolve(), model_type="mimo")
 
 
 def test_mlx_audio_import_error_is_actionable(monkeypatch: pytest.MonkeyPatch):

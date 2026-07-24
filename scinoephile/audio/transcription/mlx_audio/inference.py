@@ -16,8 +16,8 @@ __all__ = [
     "transcribe_with_mlx_audio",
 ]
 
-_MLX_MODEL_BY_REFERENCE: dict[str, Any] = {}
-"""Loaded MLX-Audio models keyed by model reference."""
+_MLX_MODEL_BY_REFERENCE_AND_TYPE: dict[tuple[str, str], Any] = {}
+"""Loaded MLX-Audio models keyed by model reference and type."""
 
 
 @dataclass(frozen=True)
@@ -34,6 +34,7 @@ class MlxAudioInferenceResult:
 def transcribe_with_mlx_audio(
     audio_path: Path,
     model_name: str,
+    model_type: str,
     language: str,
     *,
     max_tokens: int | None = None,
@@ -43,6 +44,7 @@ def transcribe_with_mlx_audio(
     Arguments:
         audio_path: audio file to transcribe
         model_name: model name or local path
+        model_type: MLX-Audio loader model type
         language: model-specific language identifier
         max_tokens: optional maximum number of text tokens to generate
     Returns:
@@ -51,7 +53,7 @@ def transcribe_with_mlx_audio(
         ImportError: if MLX-Audio is unavailable
         ValueError: if the model returns malformed output
     """
-    model = _get_or_load_mlx_audio_model(model_name)
+    model = _get_or_load_mlx_audio_model(model_name, model_type)
     generate_kwargs: dict[str, object] = {"language": language}
     if max_tokens is not None:
         generate_kwargs["max_tokens"] = max_tokens
@@ -81,22 +83,26 @@ def transcribe_with_mlx_audio(
     )
 
 
-def _get_or_load_mlx_audio_model(model_name: str) -> Any:
+def _get_or_load_mlx_audio_model(model_name: str, model_type: str) -> Any:
     """Get a cached MLX-Audio model, loading it when necessary.
 
     Arguments:
         model_name: model name or local path
+        model_type: MLX-Audio loader model type
     Returns:
         loaded MLX-Audio model
     """
     model_reference: str | Path = model_name
     if model_name.startswith(("/", ".", "~")):
         model_reference = val_input_file_or_dir_path(model_name)
-    cache_key = str(model_reference)
-    if cache_key not in _MLX_MODEL_BY_REFERENCE:
+    cache_key = (str(model_reference), model_type)
+    if cache_key not in _MLX_MODEL_BY_REFERENCE_AND_TYPE:
         load = _import_mlx_audio_stt_load()
-        _MLX_MODEL_BY_REFERENCE[cache_key] = load(model_reference)
-    return _MLX_MODEL_BY_REFERENCE[cache_key]
+        _MLX_MODEL_BY_REFERENCE_AND_TYPE[cache_key] = load(
+            model_reference,
+            model_type=model_type,
+        )
+    return _MLX_MODEL_BY_REFERENCE_AND_TYPE[cache_key]
 
 
 def _import_mlx_audio_stt_load() -> Any:
