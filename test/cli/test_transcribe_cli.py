@@ -22,7 +22,7 @@ from scinoephile.lang.transcription.transcriber import DemucsMode, VADMode
 from test.helpers import assert_series_equal, test_data_root
 
 _MEDIA_INFILE_PATH = "/tmp/test_media.mp4"
-_REFERENCE_INFILE_PATH = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
+_GUIDE_INFILE_PATH = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
 
 
 @fixture
@@ -60,10 +60,10 @@ def test_transcribe_help_lists_generic_options():
     help_text = stdout.getvalue()
     normalized_help_text = " ".join(help_text.split())
     assert stderr.getvalue() == ""
-    assert "MEDIA_INFILE" in help_text
-    assert "--reference-infile REFERENCE_INFILE_PATH" in help_text
+    assert "--media-infile MEDIA_INFILE_PATH" in help_text
+    assert "--guide-infile GUIDE_INFILE_PATH" in help_text
     assert "--language" in help_text
-    assert "--reference-language" in help_text
+    assert "--guide-language" in help_text
     assert "--delineation-json DELINEATION_JSON_PATH" in help_text
     assert "--punctuation-json PUNCTUATION_JSON_PATH" in help_text
     assert "--first-block FIRST_BLOCK" in help_text
@@ -72,20 +72,30 @@ def test_transcribe_help_lists_generic_options():
     assert "--convert" not in normalized_help_text
     assert "--demucs {auto,on,off}" in help_text
     assert "--vad {auto,on,off}" in help_text
-    assert "--whisper-model MODEL_NAME" in help_text
-    assert "uses language-pair default if omitted" in normalized_help_text
+    assert "--model MODEL_NAME" in help_text
+    assert "transcription model (default: backend default)" in normalized_help_text
+    assert "transcription language tag" not in normalized_help_text
+    assert "guide language tag" not in normalized_help_text
+    assert (
+        "first 1-indexed subtitle block to process, inclusive" in normalized_help_text
+    )
+    assert "last 1-indexed subtitle block to process, inclusive" in normalized_help_text
+    assert "JSON file containing delineation test cases" in normalized_help_text
+    assert "JSON file containing punctuation test cases" in normalized_help_text
+    assert "--llm-additional-context-file" in help_text
+    assert "--llm-additional-content-file" not in help_text
 
 
 def test_transcribe_cli_defers_whisper_model_default_to_registry():
     """Test the language-pair registry supplies the default Whisper model."""
     parser = TranscribeCli.argparser()
-    whisper_model_action = next(
+    model_action = next(
         action
         for action in parser._actions  # noqa: SLF001
-        if "--whisper-model" in action.option_strings
+        if "--model" in action.option_strings
     )
 
-    assert whisper_model_action.default is None
+    assert model_action.default is None
 
 
 def test_transcribe_cli_defaults_audio_preprocessing_to_auto():
@@ -127,8 +137,8 @@ def test_transcribe_cli_writes_file(
             ):
                 run_cli_with_args(
                     TranscribeCli,
-                    f"{_MEDIA_INFILE_PATH} "
-                    f"--reference-infile {_REFERENCE_INFILE_PATH} "
+                    f"--media-infile {_MEDIA_INFILE_PATH} "
+                    f"--guide-infile {_GUIDE_INFILE_PATH} "
                     f"--language yue-Hans --stream-index 1 -o {outfile_path}",
                 )
         output_series = Series.load(outfile_path)
@@ -159,8 +169,8 @@ def test_transcribe_cli_writes_stdout(
             with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
                 run_cli_with_args(
                     TranscribeCli,
-                    f"{_MEDIA_INFILE_PATH} "
-                    f"--reference-infile {_REFERENCE_INFILE_PATH} "
+                    f"--media-infile {_MEDIA_INFILE_PATH} "
+                    f"--guide-infile {_GUIDE_INFILE_PATH} "
                     "--language yue-Hans",
                 )
 
@@ -223,10 +233,10 @@ def test_transcribe_cli_passes_generic_configuration(
         ):
             run_cli_with_args(
                 TranscribeCli,
-                f"{_MEDIA_INFILE_PATH} "
-                f"--reference-infile {_REFERENCE_INFILE_PATH} "
-                "--language yue-Hant --reference-language zho-Hans "
-                "--whisper-model custom/whisper --demucs on --vad off "
+                f"--media-infile {_MEDIA_INFILE_PATH} "
+                f"--guide-infile {_GUIDE_INFILE_PATH} "
+                "--language yue-Hant --guide-language zho-Hans "
+                "--model custom/whisper --demucs on --vad off "
                 f"--delineation-json {tmp_path / 'delineation.json'} "
                 f"--punctuation-json {tmp_path / 'punctuation.json'} "
                 "--first-block 2 --last-block 3",
@@ -236,22 +246,23 @@ def test_transcribe_cli_passes_generic_configuration(
 @mark.parametrize(
     "args",
     (
-        f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+        f"--media-infile {_MEDIA_INFILE_PATH} --guide-infile {_GUIDE_INFILE_PATH} "
         "--language yue-Hans --stream-index -1",
-        f"{_MEDIA_INFILE_PATH} --reference-infile /tmp/missing.srt --language yue-Hans",
-        f"/tmp/missing.mp4 --reference-infile {_REFERENCE_INFILE_PATH} "
+        f"--media-infile {_MEDIA_INFILE_PATH} --guide-infile /tmp/missing.srt "
         "--language yue-Hans",
-        "- --reference-infile - --language yue-Hans",
-        f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+        f"--media-infile /tmp/missing.mp4 --guide-infile {_GUIDE_INFILE_PATH} "
+        "--language yue-Hans",
+        "--media-infile - --guide-infile - --language yue-Hans",
+        f"--media-infile {_MEDIA_INFILE_PATH} --guide-infile {_GUIDE_INFILE_PATH} "
         "--language yue-Hans --overwrite",
-        f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+        f"--media-infile {_MEDIA_INFILE_PATH} --guide-infile {_GUIDE_INFILE_PATH} "
         "--language yue-Hans --first-block 3 --last-block 2",
-        f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+        f"--media-infile {_MEDIA_INFILE_PATH} --guide-infile {_GUIDE_INFILE_PATH} "
         "--language yue-Hans --script traditional",
     ),
     ids=(
         "negative stream index",
-        "missing reference infile",
+        "missing guide infile",
         "missing media infile",
         "two stdin infiles",
         "overwrite without outfile",
@@ -271,7 +282,7 @@ def test_transcribe_cli_rejects_invalid_arguments(args: str):
 
 def test_transcribe_cli_rejects_oversized_last_block_before_loading_audio():
     """Test an oversized last block fails before media audio is extracted."""
-    block_count = len(Series.load(_REFERENCE_INFILE_PATH).blocks)
+    block_count = len(Series.load(_GUIDE_INFILE_PATH).blocks)
 
     with patch(
         "scinoephile.cli.transcribe_cli.AudioSeries.load_from_media"
@@ -279,8 +290,8 @@ def test_transcribe_cli_rejects_oversized_last_block_before_loading_audio():
         with raises(SystemExit, match="2"):
             run_cli_with_args(
                 TranscribeCli,
-                f"{_MEDIA_INFILE_PATH} "
-                f"--reference-infile {_REFERENCE_INFILE_PATH} "
+                f"--media-infile {_MEDIA_INFILE_PATH} "
+                f"--guide-infile {_GUIDE_INFILE_PATH} "
                 f"--language yue-Hans --last-block {block_count + 1}",
             )
 
@@ -296,7 +307,8 @@ def test_transcribe_cli_stream_errors_are_user_facing():
         with raises(SystemExit, match="2"):
             run_cli_with_args(
                 TranscribeCli,
-                f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+                f"--media-infile {_MEDIA_INFILE_PATH} "
+                f"--guide-infile {_GUIDE_INFILE_PATH} "
                 "--language yue-Hans --stream-index 7",
             )
 
@@ -318,23 +330,23 @@ def test_transcribe_cli_workflow_errors_are_user_facing(audio_series: Mock):
             with raises(SystemExit, match="2"):
                 run_cli_with_args(
                     TranscribeCli,
-                    f"{_MEDIA_INFILE_PATH} "
-                    f"--reference-infile {_REFERENCE_INFILE_PATH} "
+                    f"--media-infile {_MEDIA_INFILE_PATH} "
+                    f"--guide-infile {_GUIDE_INFILE_PATH} "
                     "--language eng",
                 )
 
 
-def test_transcribe_cli_allows_stdin_reference_infile(
+def test_transcribe_cli_allows_stdin_guide_infile(
     audio_series: Mock,
     expected_series: Series,
 ):
-    """Test transcription CLI allows stdin reference subtitle input.
+    """Test transcription CLI allows stdin guide subtitle input.
 
     Arguments:
         audio_series: mock audio subtitle series
         expected_series: expected transcribed subtitle series
     """
-    stdin_stream = StringIO(_REFERENCE_INFILE_PATH.read_text(encoding="utf-8"))
+    stdin_stream = StringIO(_GUIDE_INFILE_PATH.read_text(encoding="utf-8"))
     stdout_stream = StringIO()
     subtitle_paths: list[object] = []
 
@@ -362,8 +374,8 @@ def test_transcribe_cli_allows_stdin_reference_infile(
                 with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
                     run_cli_with_args(
                         TranscribeCli,
-                        f"{_MEDIA_INFILE_PATH} "
-                        "--reference-infile - --language yue-Hans",
+                        f"--media-infile {_MEDIA_INFILE_PATH} "
+                        "--guide-infile - --language yue-Hans",
                     )
 
     assert subtitle_paths != ["-"]

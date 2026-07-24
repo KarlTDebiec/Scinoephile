@@ -29,7 +29,6 @@ AUDIT_DELINEATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "reference subtitle SRT file used to guide transcription": (
             "用于指导转写的参考字幕 SRT 文件"
         ),
-        "delineation test-case JSON file": "字幕边界测试用例 JSON 文件",
         (
             "rows to include: all, changes, or unverified; all includes every "
             "decision; changes includes boundary shifts; unverified includes cases "
@@ -44,7 +43,6 @@ AUDIT_DELINEATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "reference subtitle SRT file used to guide transcription": (
             "用於指導轉寫的參考字幕 SRT 檔"
         ),
-        "delineation test-case JSON file": "字幕邊界測試案例 JSON 檔",
         (
             "rows to include: all, changes, or unverified; all includes every "
             "decision; changes includes boundary shifts; unverified includes cases "
@@ -93,7 +91,7 @@ class AuditDelineationCli(AuditCliBase):
             dest="json_path",
             required=True,
             type=input_file_arg(),
-            help="delineation test-case JSON file",
+            help="JSON file containing test cases",
         )
 
         # Operation arguments
