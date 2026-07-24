@@ -70,17 +70,17 @@ class ValidationManager:
     def __init__(
         self,
         *,
-        cache_dir_path: Path | str | None = None,
+        validation_data_dir_path: Path | str | None = None,
         dev: bool = False,
     ):
         """Initialize.
 
         Arguments:
-            cache_dir_path: cache directory for local OCR validation data
+            validation_data_dir_path: local OCR validation data directory
             dev: whether validation data updates should write to repo data
         """
         try:
-            self._init_data(cache_dir_path, dev)
+            self._init_data(validation_data_dir_path, dev)
         except (OSError, ValueError) as exc:
             raise ScinoephileError(
                 f"Unable to initialize OCR validation data: {exc}"
@@ -112,13 +112,13 @@ class ValidationManager:
 
     def _init_data(  # noqa: PLR0912
         self,
-        cache_dir_path: Path | str | None,
+        validation_data_dir_path: Path | str | None,
         dev: bool,
     ):
         """Initialize OCR validation data.
 
         Arguments:
-            cache_dir_path: cache directory for local OCR validation data
+            validation_data_dir_path: local OCR validation data directory
             dev: whether validation data updates should write to repo data
         """
         repo_data_dir_path = val_input_dir_path(package_root / "data/ocr")
@@ -149,24 +149,27 @@ class ValidationManager:
         self.cache_char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
         self.cache_char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]] = {}
         if not self.dev:
-            if cache_dir_path is None:
-                self.cache_dir_path = get_runtime_cache_dir_path(
+            if validation_data_dir_path is None:
+                self.validation_data_dir_path = get_runtime_cache_dir_path(
                     "ocr_validation", create=False
                 )
             else:
-                self.cache_dir_path = val_output_dir_path(cache_dir_path, create=False)
+                self.validation_data_dir_path = val_output_dir_path(
+                    validation_data_dir_path,
+                    create=False,
+                )
 
             # Initialize char_dims_by_n
             for n in range(1, MAX_CHAR_DIM_BBOXES + 1):
                 self.cache_char_dims_by_n[n] = {}
-                file_path = self.cache_dir_path / f"char_dims_{n}.csv"
+                file_path = self.validation_data_dir_path / f"char_dims_{n}.csv"
                 if file_path.exists():
                     self.cache_char_dims_by_n[n] = load_char_dims(file_path)
                     for char, dims_set in self.cache_char_dims_by_n[n].items():
                         self.char_dims_by_n[n].setdefault(char, set()).update(dims_set)
 
             # Initialize char_grp_dims_by_n
-            file_path = self.cache_dir_path / "char_grp_dims.csv"
+            file_path = self.validation_data_dir_path / "char_grp_dims.csv"
             if file_path.exists():
                 self.cache_char_grp_dims_by_n = load_char_grp_dims(file_path)
                 for group_size, char_grp_dims in self.cache_char_grp_dims_by_n.items():
@@ -179,7 +182,7 @@ class ValidationManager:
                         )
 
             # Initialize char_pair_gaps
-            file_path = self.cache_dir_path / "char_pair_gaps.csv"
+            file_path = self.validation_data_dir_path / "char_pair_gaps.csv"
             if file_path.exists():
                 self.cache_char_pair_gaps = load_char_pair_gaps(file_path)
                 self.char_pair_gaps.update(self.cache_char_pair_gaps)
@@ -597,5 +600,5 @@ class ValidationManager:
             return val_input_dir_path(package_root / "data/ocr")
 
         # Otherwise write to cache
-        self.cache_dir_path.mkdir(parents=True, exist_ok=True)
-        return self.cache_dir_path
+        self.validation_data_dir_path.mkdir(parents=True, exist_ok=True)
+        return self.validation_data_dir_path

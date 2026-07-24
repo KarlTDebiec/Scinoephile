@@ -23,7 +23,7 @@ def validate_ocr(
     source: Path | ImageSeries,
     outfile_path: Path,
     *,
-    cache_dir_path: Path | str | None = None,
+    validation_data_dir_path: Path | str | None = None,
     interactive: bool = False,
     dev: bool = False,
     overwrite: bool = False,
@@ -35,7 +35,7 @@ def validate_ocr(
     Arguments:
         source: image subtitle input path or image series
         outfile_path: validated subtitle output path
-        cache_dir_path: cache directory for local OCR validation data
+        validation_data_dir_path: local OCR validation data directory
         interactive: whether to launch the OCR validation web UI
         dev: whether validation should write data updates to repo data
         overwrite: whether to overwrite existing validation output
@@ -58,7 +58,7 @@ def validate_ocr(
             session = OcrValidationSession.from_dir_path(
                 source,
                 outfile_path=outfile_path,
-                cache_dir_path=cache_dir_path,
+                validation_data_dir_path=validation_data_dir_path,
                 dev=dev,
             )
             run_app(session, host, port)
@@ -68,7 +68,10 @@ def validate_ocr(
             image_series = source
         else:
             image_series = ImageSeries.load(source)
-        validation_manager = ValidationManager(cache_dir_path=cache_dir_path, dev=dev)
+        validation_manager = ValidationManager(
+            validation_data_dir_path=validation_data_dir_path,
+            dev=dev,
+        )
         validated = validation_manager.validate(image_series)
         validated.save(outfile_path, format_="srt", exist_ok=True)
         return Series.load(outfile_path)

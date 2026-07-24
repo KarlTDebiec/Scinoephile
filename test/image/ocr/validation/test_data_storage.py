@@ -21,25 +21,29 @@ def test_validation_manager_layers_cache_data_over_repo_data(tmp_path, monkeypat
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    cache_dir_path = tmp_path / "cache" / "ocr_validation"
-    cache_dir_path.mkdir(parents=True)
+    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path.mkdir(parents=True)
 
     (repo_data_dir_path / "char_dims_1.csv").write_text(
         "A,10,20\nB,30,40\n", encoding="utf-8"
     )
-    (cache_dir_path / "char_dims_1.csv").write_text("A,11,21\n", encoding="utf-8")
+    (validation_data_dir_path / "char_dims_1.csv").write_text(
+        "A,11,21\n", encoding="utf-8"
+    )
     (repo_data_dir_path / "char_grp_dims.csv").write_text(
         "AB,50,20\n", encoding="utf-8"
     )
-    (cache_dir_path / "char_grp_dims.csv").write_text("CD,60,20\n", encoding="utf-8")
+    (validation_data_dir_path / "char_grp_dims.csv").write_text(
+        "CD,60,20\n", encoding="utf-8"
+    )
     (repo_data_dir_path / "char_pair_gaps.csv").write_text(
         "A,B,1,2,3,4\nB,C,5,6,7,8\n", encoding="utf-8"
     )
-    (cache_dir_path / "char_pair_gaps.csv").write_text(
+    (validation_data_dir_path / "char_pair_gaps.csv").write_text(
         "A,B,9,10,11,12\n", encoding="utf-8"
     )
 
-    manager = ValidationManager(cache_dir_path=cache_dir_path)
+    manager = ValidationManager(validation_data_dir_path=validation_data_dir_path)
 
     assert manager.char_dims_by_n[1] == {
         "A": {(10, 20), (11, 21)},
@@ -63,25 +67,31 @@ def test_validation_manager_uses_only_repo_data_in_dev_mode(tmp_path, monkeypatc
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    cache_dir_path = tmp_path / "cache" / "ocr_validation"
-    cache_dir_path.mkdir(parents=True)
+    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path.mkdir(parents=True)
 
     (repo_data_dir_path / "char_dims_1.csv").write_text(
         "A,10,20\nB,30,40\n", encoding="utf-8"
     )
-    (cache_dir_path / "char_dims_1.csv").write_text("A,11,21\n", encoding="utf-8")
+    (validation_data_dir_path / "char_dims_1.csv").write_text(
+        "A,11,21\n", encoding="utf-8"
+    )
     (repo_data_dir_path / "char_grp_dims.csv").write_text(
         "AB,50,20\n", encoding="utf-8"
     )
-    (cache_dir_path / "char_grp_dims.csv").write_text("CD,60,20\n", encoding="utf-8")
+    (validation_data_dir_path / "char_grp_dims.csv").write_text(
+        "CD,60,20\n", encoding="utf-8"
+    )
     (repo_data_dir_path / "char_pair_gaps.csv").write_text(
         "A,B,1,2,3,4\nB,C,5,6,7,8\n", encoding="utf-8"
     )
-    (cache_dir_path / "char_pair_gaps.csv").write_text(
+    (validation_data_dir_path / "char_pair_gaps.csv").write_text(
         "A,B,9,10,11,12\n", encoding="utf-8"
     )
 
-    manager = ValidationManager(cache_dir_path=cache_dir_path, dev=True)
+    manager = ValidationManager(
+        validation_data_dir_path=validation_data_dir_path, dev=True
+    )
 
     assert manager.char_dims_by_n[1] == {
         "A": {(10, 20)},
@@ -104,16 +114,16 @@ def test_validation_manager_writes_updates_to_cache_by_default(tmp_path, monkeyp
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    cache_dir_path = tmp_path / "cache" / "ocr_validation"
-    cache_dir_path.mkdir(parents=True)
+    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path.mkdir(parents=True)
 
-    manager = ValidationManager(cache_dir_path=cache_dir_path)
+    manager = ValidationManager(validation_data_dir_path=validation_data_dir_path)
 
     manager.update_char_dims("A", (10, 20))
 
-    assert (cache_dir_path / "char_dims_1.csv").read_text(encoding="utf-8") == (
-        "A,10,20\n"
-    )
+    assert (validation_data_dir_path / "char_dims_1.csv").read_text(
+        encoding="utf-8"
+    ) == ("A,10,20\n")
     assert not (repo_data_dir_path / "char_dims_1.csv").exists()
 
 
@@ -123,8 +133,8 @@ def test_validation_manager_writes_only_cache_updates_to_cache(tmp_path, monkeyp
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    cache_dir_path = tmp_path / "cache" / "ocr_validation"
-    cache_dir_path.mkdir(parents=True)
+    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path.mkdir(parents=True)
     (repo_data_dir_path / "char_dims_1.csv").write_text("A,10,20\n", encoding="utf-8")
     (repo_data_dir_path / "char_grp_dims.csv").write_text(
         "AB,50,20\n", encoding="utf-8"
@@ -133,21 +143,21 @@ def test_validation_manager_writes_only_cache_updates_to_cache(tmp_path, monkeyp
         "A,B,1,2,3,4\n", encoding="utf-8"
     )
 
-    manager = ValidationManager(cache_dir_path=cache_dir_path)
+    manager = ValidationManager(validation_data_dir_path=validation_data_dir_path)
 
     manager.update_char_dims("B", (30, 40))
     manager._update_char_grp_dims("CD", (60, 20))
     manager.update_pair_gaps(("B", "C"), (5, 6, 7, 8))
 
-    assert (cache_dir_path / "char_dims_1.csv").read_text(encoding="utf-8") == (
-        "B,30,40\n"
-    )
-    assert (cache_dir_path / "char_grp_dims.csv").read_text(encoding="utf-8") == (
-        "CD,60,20\n"
-    )
-    assert (cache_dir_path / "char_pair_gaps.csv").read_text(encoding="utf-8") == (
-        "B,C,5,6,7,8\n"
-    )
+    assert (validation_data_dir_path / "char_dims_1.csv").read_text(
+        encoding="utf-8"
+    ) == ("B,30,40\n")
+    assert (validation_data_dir_path / "char_grp_dims.csv").read_text(
+        encoding="utf-8"
+    ) == ("CD,60,20\n")
+    assert (validation_data_dir_path / "char_pair_gaps.csv").read_text(
+        encoding="utf-8"
+    ) == ("B,C,5,6,7,8\n")
 
 
 def test_validation_manager_does_not_persist_default_pair_gaps(tmp_path, monkeypatch):
@@ -156,14 +166,14 @@ def test_validation_manager_does_not_persist_default_pair_gaps(tmp_path, monkeyp
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    cache_dir_path = tmp_path / "cache" / "ocr_validation"
-    cache_dir_path.mkdir(parents=True)
-    manager = ValidationManager(cache_dir_path=cache_dir_path)
+    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path.mkdir(parents=True)
+    manager = ValidationManager(validation_data_dir_path=validation_data_dir_path)
 
     manager.update_pair_gaps(("你", "本"), (22, 89, 90, 200))
 
     assert manager.char_pair_gaps[("你", "本")] == (22, 89, 90, 200)
-    assert not (cache_dir_path / "char_pair_gaps.csv").exists()
+    assert not (validation_data_dir_path / "char_pair_gaps.csv").exists()
 
 
 def test_validation_manager_does_not_persist_new_default_pair_gaps_in_dev_mode(
@@ -176,7 +186,7 @@ def test_validation_manager_does_not_persist_new_default_pair_gaps_in_dev_mode(
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
     repo_pair_gaps_path = repo_data_dir_path / "char_pair_gaps.csv"
     repo_pair_gaps_path.write_text("A,B,1,2,3,4\n", encoding="utf-8")
-    manager = ValidationManager(cache_dir_path=tmp_path / "cache", dev=True)
+    manager = ValidationManager(validation_data_dir_path=tmp_path / "cache", dev=True)
 
     with patch(
         "scinoephile.image.ocr.validation.validation_manager.save_char_pair_gaps",
@@ -201,11 +211,11 @@ def test_validation_manager_removes_default_pair_gap_cache_override(
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    cache_dir_path = tmp_path / "cache" / "ocr_validation"
-    cache_dir_path.mkdir(parents=True)
-    cache_pair_gaps_path = cache_dir_path / "char_pair_gaps.csv"
+    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path.mkdir(parents=True)
+    cache_pair_gaps_path = validation_data_dir_path / "char_pair_gaps.csv"
     cache_pair_gaps_path.write_text("娘,一,23,89,90,200\n", encoding="utf-8")
-    manager = ValidationManager(cache_dir_path=cache_dir_path)
+    manager = ValidationManager(validation_data_dir_path=validation_data_dir_path)
 
     manager.update_pair_gaps(("娘", "一"), get_default_char_pair_cutoffs("娘", "一"))
 
@@ -225,7 +235,7 @@ def test_validation_manager_removes_default_pair_gap_repo_override_in_dev_mode(
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
     repo_pair_gaps_path = repo_data_dir_path / "char_pair_gaps.csv"
     repo_pair_gaps_path.write_text("娘,一,23,89,90,200\n", encoding="utf-8")
-    manager = ValidationManager(cache_dir_path=tmp_path / "cache", dev=True)
+    manager = ValidationManager(validation_data_dir_path=tmp_path / "cache", dev=True)
 
     manager.update_pair_gaps(("娘", "一"), get_default_char_pair_cutoffs("娘", "一"))
 
@@ -241,15 +251,15 @@ def test_validation_manager_allows_new_custom_cache_dir(tmp_path, monkeypatch):
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    cache_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
 
-    manager = ValidationManager(cache_dir_path=cache_dir_path)
+    manager = ValidationManager(validation_data_dir_path=validation_data_dir_path)
 
     manager.update_char_dims("A", (10, 20))
 
-    assert (cache_dir_path / "char_dims_1.csv").read_text(encoding="utf-8") == (
-        "A,10,20\n"
-    )
+    assert (validation_data_dir_path / "char_dims_1.csv").read_text(
+        encoding="utf-8"
+    ) == ("A,10,20\n")
 
 
 def test_validation_manager_wraps_cache_path_errors(tmp_path):
@@ -258,14 +268,14 @@ def test_validation_manager_wraps_cache_path_errors(tmp_path):
     Arguments:
         tmp_path: pytest temporary directory path
     """
-    cache_dir_path = tmp_path / "cache-file"
-    cache_dir_path.write_text("not a directory", encoding="utf-8")
+    validation_data_dir_path = tmp_path / "cache-file"
+    validation_data_dir_path.write_text("not a directory", encoding="utf-8")
 
     with raises(
         ScinoephileError,
         match="Unable to initialize OCR validation data",
     ) as excinfo:
-        ValidationManager(cache_dir_path=cache_dir_path)
+        ValidationManager(validation_data_dir_path=validation_data_dir_path)
 
     assert isinstance(excinfo.value.__cause__, OSError)
 
@@ -276,13 +286,15 @@ def test_validation_manager_writes_updates_to_repo_in_dev_mode(tmp_path, monkeyp
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    cache_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
 
-    manager = ValidationManager(cache_dir_path=cache_dir_path, dev=True)
+    manager = ValidationManager(
+        validation_data_dir_path=validation_data_dir_path, dev=True
+    )
 
     manager.update_char_dims("A", (10, 20))
 
     assert (repo_data_dir_path / "char_dims_1.csv").read_text(encoding="utf-8") == (
         "A,10,20\n"
     )
-    assert not (cache_dir_path / "char_dims_1.csv").exists()
+    assert not (validation_data_dir_path / "char_dims_1.csv").exists()

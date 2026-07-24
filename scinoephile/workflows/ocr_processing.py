@@ -104,7 +104,7 @@ class OcrProcessingWorkflow:
         self._lens_cache_dir_path = cache_dir_path / "google-lens"
         self._llm_cache_dir_path = cache_dir_path / "llm"
         self._media_cache_dir_path = cache_dir_path / "media" / "subtitles"
-        self._ocr_validation_cache_dir_path = cache_dir_path / "ocr_validation"
+        self._ocr_validation_data_dir_path = cache_dir_path / "ocr_validation"
         self._paddle_cache_dir_path = cache_dir_path / "paddleocr"
         self._tesseract_cache_dir_path = cache_dir_path / "tesseract"
         self.clean = clean
@@ -385,7 +385,7 @@ class OcrProcessingWorkflow:
         validate_ocr(
             image_dir_path,
             validate_path,
-            cache_dir_path=self._ocr_validation_cache_dir_path,
+            validation_data_dir_path=self._ocr_validation_data_dir_path,
             interactive=self.interactive,
             dev=self.dev,
             overwrite=self.overwrite,
