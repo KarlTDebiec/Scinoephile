@@ -277,58 +277,15 @@ def get_guided_transcriber(
         punctuation_processor=punctuation_processor,
     )
 
-    def _get_mimo_transcriber(
-        *,
-        use_demucs: bool,
-        use_vad: bool,
-    ) -> MimoTranscriber:
-        """Build a MiMo transcriber for one Demucs cache identity.
-
-        Arguments:
-            use_demucs: whether Demucs preprocessing is represented in the cache key
-            use_vad: whether to remove non-speech audio before MiMo inference
-        Returns:
-            configured MiMo transcriber
-        """
-        return MimoTranscriber(
+    mimo_transcriber = None
+    if backend == TranscriptionBackend.MIMO:
+        mimo_transcriber = MimoTranscriber(
             language=language,
             cache_dir_path=get_runtime_cache_dir_path("mimo"),
-            use_demucs=use_demucs,
-            use_vad=use_vad,
-        )
-
-    mimo_transcriber = None
-    no_vad_mimo_transcriber = None
-    unseparated_mimo_transcriber = None
-    unseparated_no_vad_mimo_transcriber = None
-    if backend == TranscriptionBackend.MIMO:
-        mimo_transcriber = _get_mimo_transcriber(
             use_demucs=demucs_mode in (DemucsMode.AUTO, DemucsMode.ON),
             use_vad=vad_mode in (VADMode.AUTO, VADMode.ON),
-        )
-        no_vad_mimo_transcriber = (
-            _get_mimo_transcriber(
-                use_demucs=demucs_mode in (DemucsMode.AUTO, DemucsMode.ON),
-                use_vad=False,
-            )
-            if vad_mode == VADMode.AUTO
-            else None
-        )
-        unseparated_mimo_transcriber = (
-            _get_mimo_transcriber(
-                use_demucs=False,
-                use_vad=vad_mode in (VADMode.AUTO, VADMode.ON),
-            )
-            if demucs_mode == DemucsMode.AUTO
-            else None
-        )
-        unseparated_no_vad_mimo_transcriber = (
-            _get_mimo_transcriber(
-                use_demucs=False,
-                use_vad=False,
-            )
-            if demucs_mode == DemucsMode.AUTO and vad_mode == VADMode.AUTO
-            else None
+            retry_without_demucs=demucs_mode == DemucsMode.AUTO,
+            retry_without_vad=vad_mode == VADMode.AUTO,
         )
     return GuidedTranscriber(
         language=language,
@@ -340,8 +297,5 @@ def get_guided_transcriber(
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
         mimo_transcriber=mimo_transcriber,
-        no_vad_mimo_transcriber=no_vad_mimo_transcriber,
-        unseparated_mimo_transcriber=unseparated_mimo_transcriber,
-        unseparated_no_vad_mimo_transcriber=unseparated_no_vad_mimo_transcriber,
         segment_splitter=language_spec.segment_splitter,
     )

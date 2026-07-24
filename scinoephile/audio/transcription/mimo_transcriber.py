@@ -7,7 +7,7 @@ from __future__ import annotations
 import hashlib
 import json
 import platform
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -17,7 +17,10 @@ import numpy as np
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import Language
+from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.paths import get_runtime_cache_dir_path
 
+from .demucs_separator import DemucsSeparator
 from .forced_alignment import (
     CTC_MODEL_NAME,
     TranscriptionAlignmentError,
@@ -92,6 +95,7 @@ class MimoTranscriber:
         cache_dir_path: Path | None = None,
         use_demucs: bool = False,
         use_vad: bool = False,
+        retry_without_demucs: bool = False,
         retry_without_vad: bool = False,
     ):
         """Initialize.
@@ -103,8 +107,9 @@ class MimoTranscriber:
             chunk_duration_seconds: optional chunk duration for MiMo inference
             chunk_overlap_seconds: context overlap applied to each MiMo chunk
             cache_dir_path: directory in which to cache
-            use_demucs: whether Demucs preprocessing was applied
+            use_demucs: whether to apply Demucs vocal separation
             use_vad: whether to remove non-speech audio using Silero VAD
+            retry_without_demucs: whether to retry original audio after Demucs
             retry_without_vad: whether to retry unfiltered audio after VAD failure
         Raises:
             ValueError: if the language or numeric configuration is invalid
@@ -128,9 +133,19 @@ class MimoTranscriber:
             raise ValueError("MiMo chunk overlap must be non-negative.")
         self.use_demucs = use_demucs
         self.use_vad = use_vad
+        self.retry_without_demucs = retry_without_demucs
         self.retry_without_vad = retry_without_vad
+        if self.retry_without_demucs and not self.use_demucs:
+            raise ValueError(
+                "MiMo cannot retry without Demucs when Demucs is disabled."
+            )
         if self.retry_without_vad and not self.use_vad:
             raise ValueError("MiMo cannot retry without VAD when VAD is disabled.")
+        self.demucs_separator = None
+        if self.use_demucs:
+            self.demucs_separator = DemucsSeparator(
+                cache_dir_path=get_runtime_cache_dir_path("demucs")
+            )
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
@@ -140,6 +155,7 @@ class MimoTranscriber:
         audio: AudioSegment,
         *,
         cache_audio: AudioSegment | None = None,
+        is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
         use_cache: bool = True,
     ) -> list[TranscribedSegment]:
         """Transcribe audio.
@@ -147,6 +163,7 @@ class MimoTranscriber:
         Arguments:
             audio: audio to transcribe
             cache_audio: optional audio used for cache-key generation
+            is_usable: optional callback used to reject output and trigger retries
             use_cache: whether to return a cached transcription when available
         Returns:
             transcription, split into timestamped segments
@@ -154,6 +171,7 @@ class MimoTranscriber:
         return self.transcribe(
             audio,
             cache_audio=cache_audio,
+            is_usable=is_usable,
             use_cache=use_cache,
         )
 
@@ -167,27 +185,18 @@ class MimoTranscriber:
         Returns:
             cached transcription, if present
         """
-        cache_path = self._get_cache_path(cache_audio)
-        if cache_path is None or not cache_path.exists():
-            return None
-
-        logger.info(f"Loaded MiMo transcription from cache: {cache_path}")
-        with cache_path.open("r", encoding="utf-8") as file:
-            payload = json.load(file)
-        if not isinstance(payload, Mapping):
-            raise MimoInferenceError(f"Malformed MiMo cache payload: {cache_path}")
-        raw_segments = payload.get("segments")
-        if not isinstance(raw_segments, list):
-            raise MimoInferenceError(f"Malformed MiMo cache payload: {cache_path}")
-        segments = [TranscribedSegment.model_validate(s) for s in raw_segments]
-        cache_path.touch()
-        return segments
+        return self._get_cached_transcription(
+            cache_audio,
+            use_demucs=self.use_demucs,
+            use_vad=self.use_vad,
+        )
 
     def transcribe(
         self,
         audio: AudioSegment,
         *,
         cache_audio: AudioSegment | None = None,
+        is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
         use_cache: bool = True,
     ) -> list[TranscribedSegment]:
         """Transcribe audio.
@@ -195,37 +204,58 @@ class MimoTranscriber:
         Arguments:
             audio: audio to transcribe
             cache_audio: optional audio used for cache-key generation
+            is_usable: optional callback used to reject output and trigger retries
             use_cache: whether to return a cached transcription when available
         Returns:
             transcription, split into timestamped segments
         """
         cache_audio = cache_audio or audio
-        if (
-            use_cache
-            and (segments := self.get_cached_transcription(cache_audio)) is not None
-        ):
-            return segments
+        attempts = self._get_attempt_configurations()
+        cached_segments, rejected_attempts, last_error = self._get_cached_attempt(
+            cache_audio,
+            attempts=attempts,
+            is_usable=is_usable,
+            use_cache=use_cache,
+        )
+        if cached_segments is not None:
+            return cached_segments
+        return self._transcribe_attempts(
+            audio,
+            cache_audio=cache_audio,
+            attempts=attempts,
+            rejected_attempts=rejected_attempts,
+            is_usable=is_usable,
+            last_error=last_error,
+        )
 
-        segments = self._transcribe_uncached(audio)
+    def _get_attempt_configurations(self) -> tuple[tuple[bool, bool], ...]:
+        """Get Demucs and VAD configurations in retry order.
 
-        cache_path = self._get_cache_path(cache_audio)
-        if cache_path is not None:
-            with cache_path.open("w", encoding="utf-8") as file:
-                json.dump(
-                    self._get_cache_payload(segments),
-                    file,
-                    ensure_ascii=False,
-                    indent=2,
-                )
-            logger.info(f"Saved MiMo transcription to cache: {cache_path}")
+        Returns:
+            tuples of whether to use Demucs and VAD for each attempt
+        """
+        attempts = [(self.use_demucs, self.use_vad)]
+        if self.retry_without_vad:
+            attempts.append((self.use_demucs, False))
+        if self.retry_without_demucs:
+            attempts.append((False, self.use_vad))
+            if self.retry_without_vad:
+                attempts.append((False, False))
+        return tuple(dict.fromkeys(attempts))
 
-        return segments
-
-    def _get_cache_path(self, audio: AudioSegment) -> Path | None:
+    def _get_cache_path(
+        self,
+        audio: AudioSegment,
+        *,
+        use_demucs: bool | None = None,
+        use_vad: bool | None = None,
+    ) -> Path | None:
         """Get cache path based on hash of audio data and MiMo configuration.
 
         Arguments:
             audio: audio used to derive the cache key
+            use_demucs: whether Demucs preprocessing identifies the cache entry
+            use_vad: whether VAD preprocessing identifies the cache entry
         Returns:
             path to cache file
         """
@@ -240,7 +270,10 @@ class MimoTranscriber:
                     "audio_channels": audio.channels,
                     "audio_frame_rate": audio.frame_rate,
                     "audio_sample_width": audio.sample_width,
-                    **self._get_cache_metadata(),
+                    **self._get_cache_metadata(
+                        use_demucs=use_demucs,
+                        use_vad=use_vad,
+                    ),
                 },
                 ensure_ascii=False,
                 sort_keys=True,
@@ -248,15 +281,27 @@ class MimoTranscriber:
         )
         return self.cache_dir_path / f"{cache_hash.hexdigest()}.json"
 
-    def _get_cache_metadata(self) -> dict[str, object]:
+    def _get_cache_metadata(
+        self,
+        *,
+        use_demucs: bool | None = None,
+        use_vad: bool | None = None,
+    ) -> dict[str, object]:
         """Get metadata that identifies cached MiMo output.
 
+        Arguments:
+            use_demucs: whether Demucs preprocessing identifies the cache entry
+            use_vad: whether VAD preprocessing identifies the cache entry
         Returns:
             cache identity metadata
         """
         self._validate_platform()
+        if use_demucs is None:
+            use_demucs = self.use_demucs
+        if use_vad is None:
+            use_vad = self.use_vad
         vad_version = None
-        if self.use_vad:
+        if use_vad:
             vad_version = _VAD_CACHE_VERSION
         return {
             "backend": "mimo",
@@ -269,25 +314,114 @@ class MimoTranscriber:
             "chunk_overlap_seconds": self.chunk_overlap_seconds,
             "aligner": "ctc",
             "aligner_model_name": CTC_MODEL_NAME,
-            "use_demucs": self.use_demucs,
+            "use_demucs": use_demucs,
             "vad_version": vad_version,
-            "retry_without_vad": self.retry_without_vad,
         }
 
     def _get_cache_payload(
-        self, segments: Sequence[TranscribedSegment]
+        self,
+        segments: Sequence[TranscribedSegment],
+        *,
+        use_demucs: bool | None = None,
+        use_vad: bool | None = None,
     ) -> dict[str, object]:
         """Get JSON-serializable MiMo cache payload.
 
         Arguments:
             segments: timestamped segments to cache
+            use_demucs: whether Demucs preprocessing identifies the cache entry
+            use_vad: whether VAD preprocessing identifies the cache entry
         Returns:
             cache payload
         """
         return {
-            **self._get_cache_metadata(),
+            **self._get_cache_metadata(
+                use_demucs=use_demucs,
+                use_vad=use_vad,
+            ),
             "segments": [segment.model_dump() for segment in segments],
         }
+
+    def _get_cached_attempt(
+        self,
+        cache_audio: AudioSegment,
+        *,
+        attempts: Sequence[tuple[bool, bool]],
+        is_usable: Callable[[list[TranscribedSegment]], bool] | None,
+        use_cache: bool,
+    ) -> tuple[
+        list[TranscribedSegment] | None,
+        set[tuple[bool, bool]],
+        Exception | None,
+    ]:
+        """Find a usable cached attempt and identify rejected configurations.
+
+        Arguments:
+            cache_audio: audio used for cache-key generation
+            attempts: Demucs and VAD configurations in retry order
+            is_usable: optional callback used to reject cached output
+            use_cache: whether to inspect cached transcriptions
+        Returns:
+            usable cached segments, rejected configurations, and last cache error
+        """
+        rejected_attempts: set[tuple[bool, bool]] = set()
+        last_error: Exception | None = None
+        if not use_cache:
+            return None, rejected_attempts, last_error
+
+        for use_demucs, use_vad in attempts:
+            try:
+                segments = self._get_cached_transcription(
+                    cache_audio,
+                    use_demucs=use_demucs,
+                    use_vad=use_vad,
+                )
+            except (MimoTranscriptionError, TranscriptionAlignmentError) as exc:
+                logger.warning(f"Unable to read MiMo transcription cache: {exc}")
+                last_error = exc
+                continue
+            if segments is None:
+                continue
+            if is_usable is None or is_usable(segments):
+                return segments, rejected_attempts, last_error
+            rejected_attempts.add((use_demucs, use_vad))
+        return None, rejected_attempts, last_error
+
+    def _get_cached_transcription(
+        self,
+        cache_audio: AudioSegment,
+        *,
+        use_demucs: bool,
+        use_vad: bool,
+    ) -> list[TranscribedSegment] | None:
+        """Get cached transcription for one preprocessing configuration.
+
+        Arguments:
+            cache_audio: audio used for cache-key generation
+            use_demucs: whether Demucs preprocessing identifies the cache entry
+            use_vad: whether VAD preprocessing identifies the cache entry
+        Returns:
+            cached transcription, if present
+        """
+        cache_path = self._get_cache_path(
+            cache_audio,
+            use_demucs=use_demucs,
+            use_vad=use_vad,
+        )
+        if cache_path is None or not cache_path.exists():
+            return None
+
+        logger.info(f"Loaded MiMo transcription from cache: {cache_path}")
+        with cache_path.open("r", encoding="utf-8") as file:
+            payload = json.load(file)
+        if not isinstance(payload, Mapping):
+            raise MimoInferenceError(f"Malformed MiMo cache payload: {cache_path}")
+        raw_segments = payload.get("segments")
+        if not isinstance(raw_segments, list):
+            raise MimoInferenceError(f"Malformed MiMo cache payload: {cache_path}")
+        segments = [TranscribedSegment.model_validate(s) for s in raw_segments]
+        cache_path.touch()
+        return segments
 
     @staticmethod
     def _validate_platform():
@@ -376,6 +510,95 @@ class MimoTranscriber:
         except (ImportError, OSError, RuntimeError, ValueError) as exc:
             raise MimoInferenceError(f"Unable to run MiMo inference: {exc}") from exc
 
+    def _transcribe_attempts(
+        self,
+        audio: AudioSegment,
+        *,
+        cache_audio: AudioSegment,
+        attempts: Sequence[tuple[bool, bool]],
+        rejected_attempts: set[tuple[bool, bool]],
+        is_usable: Callable[[list[TranscribedSegment]], bool] | None,
+        last_error: Exception | None,
+    ) -> list[TranscribedSegment]:
+        """Run uncached MiMo attempts in preprocessing retry order.
+
+        Arguments:
+            audio: original audio to transcribe
+            cache_audio: audio used for cache-key generation
+            attempts: Demucs and VAD configurations in retry order
+            rejected_attempts: configurations with unusable cached output
+            is_usable: optional callback used to reject output and trigger retries
+            last_error: last error encountered while reading cached attempts
+        Returns:
+            first usable transcription, or an empty list when output was rejected
+        """
+        separated_audio = None
+        separation_attempted = False
+        for use_demucs, use_vad in attempts:
+            if (use_demucs, use_vad) in rejected_attempts:
+                continue
+
+            transcription_audio = audio
+            if use_demucs:
+                if not separation_attempted:
+                    separation_attempted = True
+                    assert self.demucs_separator is not None
+                    logger.info("Applying Demucs vocal separation before MiMo")
+                    try:
+                        separated_audio = self.demucs_separator(audio)
+                    except ScinoephileError as exc:
+                        if not self.retry_without_demucs:
+                            raise
+                        logger.warning(
+                            f"Demucs separation failed; retrying MiMo with original "
+                            f"audio: {exc}"
+                        )
+                if separated_audio is None:
+                    continue
+                transcription_audio = separated_audio
+
+            if not use_vad and self.use_vad:
+                logger.info("Retrying MiMo without VAD")
+            try:
+                segments = self._transcribe_uncached(
+                    transcription_audio,
+                    use_vad=use_vad,
+                )
+            except (
+                AssertionError,
+                ImportError,
+                MimoTranscriptionError,
+                TranscriptionAlignmentError,
+            ) as exc:
+                logger.warning(f"MiMo transcription attempt failed: {exc}")
+                last_error = exc
+                continue
+
+            cache_path = self._get_cache_path(
+                cache_audio,
+                use_demucs=use_demucs,
+                use_vad=use_vad,
+            )
+            if cache_path is not None:
+                with cache_path.open("w", encoding="utf-8") as file:
+                    json.dump(
+                        self._get_cache_payload(
+                            segments,
+                            use_demucs=use_demucs,
+                            use_vad=use_vad,
+                        ),
+                        file,
+                        ensure_ascii=False,
+                        indent=2,
+                    )
+                logger.info(f"Saved MiMo transcription to cache: {cache_path}")
+            if is_usable is None or is_usable(segments):
+                return segments
+
+        if last_error is not None:
+            raise last_error
+        return []
+
     def _transcribe_audio_window(
         self,
         audio: AudioSegment,
@@ -455,26 +678,25 @@ class MimoTranscriber:
             )
         return segments
 
-    def _transcribe_uncached(self, audio: AudioSegment) -> list[TranscribedSegment]:
+    def _transcribe_uncached(
+        self,
+        audio: AudioSegment,
+        *,
+        use_vad: bool,
+    ) -> list[TranscribedSegment]:
         """Run MiMo transcription and timestamp alignment without cache lookup.
 
         Arguments:
             audio: audio to transcribe
+            use_vad: whether to remove non-speech audio before transcription
         Returns:
             timestamped transcription segments
         Raises:
             MimoTranscriptionError: if MiMo returns unusable text
             TranscriptionAlignmentError: if forced alignment fails
         """
-        if self.use_vad:
-            try:
-                return self._transcribe_vad_audio(audio)
-            except (MimoTranscriptionError, TranscriptionAlignmentError) as exc:
-                if not self.retry_without_vad:
-                    raise
-                logger.info(
-                    f"Retrying MiMo without VAD after the VAD attempt failed: {exc}"
-                )
+        if use_vad:
+            return self._transcribe_vad_audio(audio)
         return self._transcribe_unfiltered_audio(audio)
 
     def _transcribe_unfiltered_audio(

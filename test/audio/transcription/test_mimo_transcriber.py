@@ -160,6 +160,12 @@ def test_init_rejects_retry_without_vad_when_vad_is_disabled():
         MimoTranscriber(retry_without_vad=True)
 
 
+def test_init_rejects_retry_without_demucs_when_demucs_is_disabled():
+    """Test MiMo transcriber rejects a contradictory Demucs configuration."""
+    with pytest.raises(ValueError, match="when Demucs is disabled"):
+        MimoTranscriber(retry_without_demucs=True)
+
+
 def test_get_cached_transcription_reads_mimo_payload(tmp_path: Path):
     """Test MiMo cache reads segment payloads from metadata-bearing files."""
     transcriber = MimoTranscriber(cache_dir_path=tmp_path)
@@ -481,6 +487,62 @@ def test_transcribe_vad_auto_retries_unfiltered_audio(
     patched_transcribe.assert_called_once_with(audio)
 
 
+def test_transcribe_retries_without_vad_after_unusable_output(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test rejected VAD output triggers the configured non-VAD retry."""
+    rejected_segments = [_get_timed_segment("rejected")]
+    expected_segments = [_get_timed_segment("accepted")]
+    transcriber = MimoTranscriber(use_vad=True, retry_without_vad=True)
+    patched_transcribe = Mock(
+        side_effect=[rejected_segments, expected_segments],
+    )
+    monkeypatch.setattr(transcriber, "_transcribe_uncached", patched_transcribe)
+
+    segments = transcriber.transcribe(
+        AudioSegment.silent(duration=1000),
+        is_usable=lambda candidate: candidate == expected_segments,
+        use_cache=False,
+    )
+
+    assert segments == expected_segments
+    assert [call.kwargs["use_vad"] for call in patched_transcribe.call_args_list] == [
+        True,
+        False,
+    ]
+
+
+def test_transcribe_retries_original_audio_after_unusable_demucs_output(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test rejected Demucs output triggers the configured original-audio retry."""
+    rejected_segments = [_get_timed_segment("rejected")]
+    expected_segments = [_get_timed_segment("accepted")]
+    transcriber = MimoTranscriber(
+        use_demucs=True,
+        retry_without_demucs=True,
+    )
+    original_audio = AudioSegment.silent(duration=1000)
+    separated_audio = AudioSegment.silent(duration=900)
+    transcriber.demucs_separator = Mock(return_value=separated_audio)
+    patched_transcribe = Mock(
+        side_effect=[rejected_segments, expected_segments],
+    )
+    monkeypatch.setattr(transcriber, "_transcribe_uncached", patched_transcribe)
+
+    segments = transcriber.transcribe(
+        original_audio,
+        is_usable=lambda candidate: candidate == expected_segments,
+        use_cache=False,
+    )
+
+    assert segments == expected_segments
+    assert [call.args[0] for call in patched_transcribe.call_args_list] == [
+        separated_audio,
+        original_audio,
+    ]
+
+
 def test_transcribe_aligns_mimo_text_and_writes_cache(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
@@ -577,7 +639,9 @@ def _get_mimo_transcriber(
     transcriber.chunk_overlap_seconds = 1.0
     transcriber.use_demucs = False
     transcriber.use_vad = False
+    transcriber.retry_without_demucs = False
     transcriber.retry_without_vad = False
+    transcriber.demucs_separator = None
     return transcriber
 
 
