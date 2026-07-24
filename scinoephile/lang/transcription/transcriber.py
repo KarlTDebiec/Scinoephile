@@ -7,6 +7,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from enum import StrEnum
 from logging import getLogger
+from pathlib import Path
 
 from pydub import AudioSegment
 from pydub.effects import normalize
@@ -15,6 +16,7 @@ from scinoephile.audio.subtitles import AudioSeries, get_series_from_segments
 from scinoephile.audio.transcription import (
     DemucsSeparator,
     TranscribedSegment,
+    TranscriptionError,
     WhisperTranscriber,
 )
 from scinoephile.common.validation import val_index_range
@@ -100,6 +102,8 @@ class GuidedTranscriber:
         aligner: TranscriptionAligner,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.AUTO,
+        cache_dir_path: Path | None = None,
+        overwrite_cache: bool = False,
         segment_splitter: TranscribedSegmentSplitter | None = None,
     ):
         """Initialize.
@@ -112,6 +116,8 @@ class GuidedTranscriber:
             aligner: transcription aligner
             demucs_mode: Demucs preprocessing mode
             vad_mode: Whisper VAD mode
+            cache_dir_path: cache root directory path
+            overwrite_cache: whether to replace matching generated cache files
             segment_splitter: optional strategy for splitting Whisper segments
         """
         self.language = language
@@ -121,12 +127,16 @@ class GuidedTranscriber:
         self.aligner = aligner
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
+        if cache_dir_path is None:
+            cache_dir_path = get_runtime_cache_dir_path(create=False)
+        self.cache_dir_path = cache_dir_path
+        self.overwrite_cache = overwrite_cache
         self.segment_splitter = segment_splitter
 
         self.demucs_separator = None
         if demucs_mode in (DemucsMode.AUTO, DemucsMode.ON):
             self.demucs_separator = DemucsSeparator(
-                cache_dir_path=get_runtime_cache_dir_path("demucs")
+                cache_dir_path=self.cache_dir_path / "demucs"
             )
         primary_uses_demucs = demucs_mode in (DemucsMode.AUTO, DemucsMode.ON)
         self.vad_transcriber = None
@@ -290,7 +300,14 @@ class GuidedTranscriber:
             transcribers.extend(self._get_standard_transcribers(unseparated=True))
         transcribers.append(self.recovery_transcriber)
         for transcriber in transcribers:
-            cached_segments = transcriber.get_cached_transcription(cache_audio)
+            try:
+                cached_segments = transcriber.get_cached_transcription(
+                    cache_audio,
+                    overwrite_cache=self.overwrite_cache,
+                )
+            except TranscriptionError as exc:
+                logger.warning(f"Unable to read Whisper transcription cache: {exc}")
+                continue
             if cached_segments is None:
                 continue
             if self._segments_are_usable(
@@ -350,7 +367,7 @@ class GuidedTranscriber:
         return WhisperTranscriber(
             model_name=self.model_name,
             language=self.whisper_language,
-            cache_dir_path=get_runtime_cache_dir_path("whisper"),
+            cache_dir_path=self.cache_dir_path / "whisper",
             use_demucs=use_demucs,
             use_vad=use_vad,
             temperature=temperature,
@@ -374,7 +391,10 @@ class GuidedTranscriber:
         assert self.demucs_separator is not None
         logger.info("Applying Demucs vocal separation before transcription")
         try:
-            return self.demucs_separator(audio)
+            return self.demucs_separator(
+                audio,
+                overwrite_cache=self.overwrite_cache,
+            )
         except ScinoephileError as exc:
             if self.demucs_mode == DemucsMode.ON:
                 raise
@@ -556,9 +576,14 @@ class GuidedTranscriber:
             headroom=_TAIL_RECOVERY_HEADROOM_DB,
         )
         tail_audio_duration = len(normalized_tail_audio) / 1000
-        tail_segments = self.tail_recovery_transcriber.get_cached_transcription(
-            normalized_tail_audio
-        )
+        try:
+            tail_segments = self.tail_recovery_transcriber.get_cached_transcription(
+                normalized_tail_audio,
+                overwrite_cache=self.overwrite_cache,
+            )
+        except TranscriptionError as exc:
+            logger.warning(f"Unable to read Whisper transcription cache: {exc}")
+            tail_segments = None
         unusable_cached_tail = (
             tail_segments is not None
             and not self._segments_are_usable(
@@ -697,9 +722,7 @@ class GuidedTranscriber:
                 continue
             has_text = True
             if not segment.words:
-                logger.warning(
-                    f"Rejecting Whisper segment {segment.id} without word timings"
-                )
+                logger.warning(f"Rejecting segment {segment.id} without word timings")
                 return False
             duration_error = None
             if int(segment.end * 1000) <= int(segment.start * 1000):

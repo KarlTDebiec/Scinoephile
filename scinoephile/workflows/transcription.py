@@ -59,7 +59,7 @@ def transcribe_series_guided(
         demucs_mode: Demucs preprocessing mode
         vad_mode: Whisper VAD mode
         cache_dir_path: cache root directory path
-        overwrite_cache: whether to replace matching LLM response cache files
+        overwrite_cache: whether to replace matching generated cache files
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         prune_test_cases: whether to remove test cases not encountered in this run
