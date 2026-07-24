@@ -16,15 +16,21 @@ from test.helpers import test_data_root
 
 
 def test_translate_cli_help_includes_block_range():
-    """Test translation help exposes inclusive workflow block boundaries."""
+    """Test translation help exposes inclusive subtitle block boundaries."""
     parser = TranslateCli.argparser()
     actions = {action.dest: action for action in parser._actions}  # noqa: SLF001
 
     assert actions["first_block"].help == (
-        "first 1-indexed workflow block to process, inclusive"
+        "first 1-indexed subtitle block to process, inclusive"
     )
     assert actions["last_block"].help == (
-        "last 1-indexed workflow block to process, inclusive"
+        "last 1-indexed subtitle block to process, inclusive"
+    )
+    assert actions["source_language"].help == (
+        "source language (detected from infile if omitted)"
+    )
+    assert actions["target_language"].help == (
+        "target language (required unless guide or gapped input is detected)"
     )
 
 

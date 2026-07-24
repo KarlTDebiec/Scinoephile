@@ -63,9 +63,9 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         'guide subtitle infile, or "-" for stdin': (
             '引导字幕输入文件，或使用 "-" 表示标准输入'
         ),
-        "transcription language tag": "转写语言标签",
-        "guide language tag (detected from guide infile if omitted)": (
-            "引导字幕语言标签（省略时从引导输入文件检测）"
+        "transcription language": "转写语言",
+        "guide language (detected from infile if omitted)": (
+            "引导字幕语言（省略时从输入文件检测）"
         ),
         (
             f"transcription backend (options: "
@@ -107,9 +107,9 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         'guide subtitle infile, or "-" for stdin': (
             '引導字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
-        "transcription language tag": "轉寫語言標籤",
-        "guide language tag (detected from guide infile if omitted)": (
-            "引導字幕語言標籤（省略時從引導輸入檔偵測）"
+        "transcription language": "轉寫語言",
+        "guide language (detected from infile if omitted)": (
+            "引導字幕語言（省略時從輸入檔偵測）"
         ),
         (
             f"transcription backend (options: "
@@ -196,13 +196,13 @@ class TranscribeCli(ScinoephileCliBase):
             required=True,
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help="transcription language tag",
+            help="transcription language",
         )
         arg_groups["operation arguments"].add_argument(
             "--guide-language",
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help="guide language tag (detected from guide infile if omitted)",
+            help="guide language (detected from infile if omitted)",
         )
         add_block_range_args(arg_groups["operation arguments"])
         arg_groups["operation arguments"].add_argument(

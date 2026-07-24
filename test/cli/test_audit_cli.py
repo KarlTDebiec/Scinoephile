@@ -75,6 +75,21 @@ def test_audit_cli_filter_enums():
         assert type(actions["row_filter"].default) is filter_type
 
 
+def test_audit_cli_uses_subtitle_block_help():
+    """Test audit block-range help uses subtitle terminology."""
+    actions = {
+        action.dest: action
+        for action in AuditTranslationCli.argparser()._actions  # noqa: SLF001
+    }
+
+    assert actions["first_block"].help == (
+        "first 1-indexed subtitle block to process, inclusive"
+    )
+    assert actions["last_block"].help == (
+        "last 1-indexed subtitle block to process, inclusive"
+    )
+
+
 @mark.parametrize(
     ("texts", "label"),
     (

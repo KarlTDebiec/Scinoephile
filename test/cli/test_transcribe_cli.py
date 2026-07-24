@@ -71,6 +71,10 @@ def test_transcribe_help_lists_generic_options():
     assert "--language" in help_text
     assert "--guide-language" in help_text
     assert "--reference-language" not in help_text
+    assert "transcription language" in normalized_help_text
+    assert "transcription language tag" not in normalized_help_text
+    assert "guide language (detected from infile if omitted)" in normalized_help_text
+    assert "guide language tag" not in normalized_help_text
     assert "--delineation-json DELINEATION_JSON_PATH" in help_text
     assert "--punctuation-json PUNCTUATION_JSON_PATH" in help_text
     assert "--first-block FIRST_BLOCK" in help_text
