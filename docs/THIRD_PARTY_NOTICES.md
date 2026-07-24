@@ -130,11 +130,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## MLX-Audio (MiMo inference runtime)
+## MLX-Audio (speech-to-text inference runtime)
 
-Scinoephile's optional transcription dependencies install MLX-Audio's MiMo
-support from a pinned source revision. The dependency is enabled only on Apple
-Silicon, which is the platform supported by Scinoephile's MiMo runtime.
+Scinoephile's optional transcription dependencies install MLX-Audio from a pinned
+source revision. The dependency is enabled only on Apple Silicon, which is the
+platform supported by Scinoephile's MLX-Audio runtime.
 
 - Upstream project: https://github.com/Blaizzy/mlx-audio
 - MiMo source revision:

@@ -14,11 +14,11 @@ import pytest
 from scinoephile.audio.transcription import forced_alignment
 from scinoephile.audio.transcription.forced_alignment import (
     TranscriptionAlignmentError,
-    align_mimo_transcription,
+    align_transcription,
 )
 
 
-def test_align_mimo_transcription_uses_ctc_backend_by_default(
+def test_align_transcription_uses_ctc_backend_by_default(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test CTC alignment expands token spans."""
@@ -38,7 +38,7 @@ def test_align_mimo_transcription_uses_ctc_backend_by_default(
         raising=False,
     )
 
-    segments = align_mimo_transcription(
+    segments = align_transcription(
         Path("/tmp/audio.wav"),
         "你好",
         duration_seconds=1.0,
@@ -57,7 +57,7 @@ def test_align_mimo_transcription_uses_ctc_backend_by_default(
     assert 0.0 < segments[0].words[0].confidence <= 1.0
 
 
-def test_align_mimo_transcription_ctc_preserves_unaligned_punctuation(
+def test_align_transcription_ctc_preserves_unaligned_punctuation(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test CTC alignment preserves punctuation absent from the aligner vocab."""
@@ -79,7 +79,7 @@ def test_align_mimo_transcription_ctc_preserves_unaligned_punctuation(
         raising=False,
     )
 
-    segments = align_mimo_transcription(
+    segments = align_transcription(
         Path("/tmp/audio.wav"),
         "你好。",
         duration_seconds=1.2,
@@ -223,7 +223,7 @@ def test_ctc_components_are_cached_by_device(
     ]
 
 
-def test_align_mimo_transcription_ctc_rounds_timings(
+def test_align_transcription_ctc_rounds_timings(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test CTC alignment rounds character timings."""
@@ -243,7 +243,7 @@ def test_align_mimo_transcription_ctc_rounds_timings(
         raising=False,
     )
 
-    segments = align_mimo_transcription(
+    segments = align_transcription(
         Path("/tmp/audio.wav"),
         "你好",
         duration_seconds=1.234,
@@ -255,10 +255,10 @@ def test_align_mimo_transcription_ctc_rounds_timings(
     assert segments[0].words[0].confidence == round((0.9 + 0.85) / 2, 3)
 
 
-def test_align_mimo_transcription_rejects_empty_text():
-    """Test empty MiMo text is not sent through forced alignment."""
+def test_align_transcription_rejects_empty_text():
+    """Test empty text is not sent through forced alignment."""
     with pytest.raises(TranscriptionAlignmentError, match="empty transcript"):
-        align_mimo_transcription(
+        align_transcription(
             Path("/tmp/audio.wav"),
             "   ",
             duration_seconds=1.0,

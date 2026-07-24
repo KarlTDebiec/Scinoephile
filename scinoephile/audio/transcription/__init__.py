@@ -3,10 +3,10 @@
 """Code related to audio transcription.
 
 Package hierarchy (modules may import from any above):
-* demucs_separator / mimo_inference / transcribed_word
+* demucs_separator / mlx_audio_inference / transcribed_word
 * transcribed_segment
 * forced_alignment / whisper_transcriber
-* mimo_transcriber
+* mlx_audio_transcriber
 """
 
 from __future__ import annotations
@@ -14,12 +14,13 @@ from __future__ import annotations
 from logging import getLogger
 
 from .demucs_separator import DemucsSeparator
-from .forced_alignment import TranscriptionAlignmentError, align_mimo_transcription
-from .mimo_transcriber import (
-    MimoInferenceError,
-    MimoTranscriber,
-    MimoTranscriptEmptyError,
-    MimoTranscriptionError,
+from .forced_alignment import TranscriptionAlignmentError, align_transcription
+from .mlx_audio_transcriber import (
+    MlxAudioInferenceError,
+    MlxAudioModelProfile,
+    MlxAudioTranscriber,
+    MlxAudioTranscriptEmptyError,
+    MlxAudioTranscriptionError,
 )
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
@@ -27,15 +28,16 @@ from .whisper_transcriber import WhisperTranscriber
 
 __all__ = [
     "DemucsSeparator",
-    "MimoInferenceError",
-    "MimoTranscriptEmptyError",
-    "MimoTranscriber",
-    "MimoTranscriptionError",
+    "MlxAudioInferenceError",
+    "MlxAudioModelProfile",
+    "MlxAudioTranscriptEmptyError",
+    "MlxAudioTranscriber",
+    "MlxAudioTranscriptionError",
     "TranscribedSegment",
     "TranscribedWord",
     "TranscriptionAlignmentError",
     "WhisperTranscriber",
-    "align_mimo_transcription",
+    "align_transcription",
     "get_segment_merged",
     "get_segment_split_at_idx",
     "get_segment_split_on_whitespace",

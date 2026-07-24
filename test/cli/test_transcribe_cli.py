@@ -77,8 +77,8 @@ def test_transcribe_help_lists_generic_options():
     assert "--convert" not in normalized_help_text
     assert "--demucs {auto,on,off}" in help_text
     assert "--vad {auto,on,off}" in help_text
-    assert "--backend {whisper,mimo}" in help_text
-    assert "--whisper-model MODEL_NAME" in help_text
+    assert "--backend {whisper,mlx-audio}" in help_text
+    assert "--model MODEL_NAME" in help_text
     for removed_option in (
         "--mimo-aligner",
         "--mimo-aligner-language",
@@ -95,19 +95,19 @@ def test_transcribe_help_lists_generic_options():
         "--mimo-worker-command",
     ):
         assert removed_option not in help_text
-    assert "uses language-pair default if omitted" in normalized_help_text
+    assert "uses backend default if omitted" in normalized_help_text
 
 
-def test_transcribe_cli_defers_whisper_model_default_to_registry():
-    """Test the language-pair registry supplies the default Whisper model."""
+def test_transcribe_cli_defers_model_default_to_factory():
+    """Test the transcription factory supplies the backend's default model."""
     parser = TranscribeCli.argparser()
-    whisper_model_action = next(
+    model_action = next(
         action
         for action in parser._actions  # noqa: SLF001
-        if "--whisper-model" in action.option_strings
+        if "--model" in action.option_strings
     )
 
-    assert whisper_model_action.default is None
+    assert model_action.default is None
 
 
 def test_transcribe_cli_enum_arguments_are_consistent():
@@ -229,8 +229,8 @@ def test_transcribe_cli_passes_generic_configuration(
         assert isinstance(reference_series, Series)
         assert language is Language.yue_hant
         assert reference_language is Language.zho_hans
-        assert model_name == "custom/whisper"
-        assert backend is TranscriptionBackend.MIMO
+        assert model_name == "mlx-community/Qwen3-ASR-0.6B-8bit"
+        assert backend is TranscriptionBackend.MLX_AUDIO
         assert demucs_mode is DemucsMode.ON
         assert vad_mode is VADMode.OFF
         assert provider is not None
@@ -254,7 +254,8 @@ def test_transcribe_cli_passes_generic_configuration(
                 f"{_MEDIA_INFILE_PATH} "
                 f"--reference-infile {_REFERENCE_INFILE_PATH} "
                 "--language yue-Hant --reference-language zho-Hans "
-                "--whisper-model custom/whisper --backend mimo --demucs on --vad off "
+                "--model mlx-community/Qwen3-ASR-0.6B-8bit "
+                "--backend mlx-audio --demucs on --vad off "
                 f"--delineation-json {tmp_path / 'delineation.json'} "
                 f"--punctuation-json {tmp_path / 'punctuation.json'} "
                 "--first-block 2 --last-block 3",

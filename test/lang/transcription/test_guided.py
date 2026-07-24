@@ -11,7 +11,11 @@ from unittest.mock import Mock, patch
 
 from pytest import raises
 
-from scinoephile.audio.transcription import MimoTranscriber
+from scinoephile.audio.transcription import MlxAudioTranscriber
+from scinoephile.audio.transcription.mlx_audio_transcriber import (
+    MIMO_MODEL_NAME,
+    QWEN3_ASR_MODEL_NAME,
+)
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.utils import save_test_cases_to_json
@@ -97,7 +101,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.backend is TranscriptionBackend.WHISPER
     assert transcriber.demucs_mode is DemucsMode.AUTO
     assert transcriber.vad_mode is VADMode.AUTO
-    assert transcriber.mimo_transcriber is None
+    assert transcriber.mlx_audio_transcriber is None
     assert transcriber.whisper_language == "yue"
     assert transcriber.segment_splitter is not None
     assert isinstance(transcriber.aligner.delineation_processor, DelineationProcessor)
@@ -123,8 +127,8 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert not transcriber.aligner.punctuation_processor.prune_test_cases
 
 
-def test_get_guided_transcriber_configures_mimo_backend(tmp_path: Path):
-    """Test factory configures MiMo as the selected transcription backend.
+def test_get_guided_transcriber_configures_default_mlx_audio_backend(tmp_path: Path):
+    """Test factory configures MiMo as the default MLX-Audio model.
 
     Arguments:
         tmp_path: temporary directory path
@@ -141,15 +145,15 @@ def test_get_guided_transcriber_configures_mimo_backend(tmp_path: Path):
             punctuation_json_path=tmp_path / "punctuation.json",
             delineation_test_cases=[],
             punctuation_test_cases=[],
-            backend=TranscriptionBackend.MIMO,
+            backend=TranscriptionBackend.MLX_AUDIO,
         )
 
-    assert transcriber.backend is TranscriptionBackend.MIMO
-    primary = transcriber.mimo_transcriber
-    assert isinstance(primary, MimoTranscriber)
-    assert primary.model_name == "mlx-community/MiMo-V2.5-ASR-MLX"
+    assert transcriber.backend is TranscriptionBackend.MLX_AUDIO
+    primary = transcriber.mlx_audio_transcriber
+    assert isinstance(primary, MlxAudioTranscriber)
+    assert primary.model_name == MIMO_MODEL_NAME
     assert primary.language is Language.yue_hant
-    assert primary.mimo_language_code == "zh"
+    assert primary.mlx_audio_language == "zh"
     assert primary.max_tokens is None
     assert primary.chunk_duration_seconds is None
     assert primary.chunk_overlap_seconds == 1.0
@@ -160,6 +164,33 @@ def test_get_guided_transcriber_configures_mimo_backend(tmp_path: Path):
     assert primary.retry_without_vad
     assert transcriber.vad_transcriber is None
     assert transcriber.no_vad_transcriber is None
+
+
+def test_get_guided_transcriber_configures_qwen3_asr_override(tmp_path: Path):
+    """Test factory configures a Qwen3-ASR model and Cantonese language label."""
+    with patch(
+        "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
+        return_value=tmp_path,
+    ):
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hans,
+            model_name=QWEN3_ASR_MODEL_NAME,
+            provider=Mock(spec=LLMProvider),
+            delineation_json_path=tmp_path / "delineation.json",
+            punctuation_json_path=tmp_path / "punctuation.json",
+            delineation_test_cases=[],
+            punctuation_test_cases=[],
+            backend=TranscriptionBackend.MLX_AUDIO,
+            demucs_mode=DemucsMode.OFF,
+            vad_mode=VADMode.OFF,
+        )
+
+    primary = transcriber.mlx_audio_transcriber
+    assert isinstance(primary, MlxAudioTranscriber)
+    assert primary.model_name == QWEN3_ASR_MODEL_NAME
+    assert primary.model_profile.family_name == "qwen3-asr"
+    assert primary.mlx_audio_language == "Cantonese"
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(

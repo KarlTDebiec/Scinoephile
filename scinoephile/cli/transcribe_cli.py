@@ -71,7 +71,7 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             f"transcription backend (options: "
             f"{enum_options_list_str(TranscriptionBackend)}; "
             "default: %(default)s)"
-        ): "转写后端（选项：whisper 或 mimo；默认：%(default)s）",
+        ): "转写后端（选项：whisper 或 mlx-audio；默认：%(default)s）",
         (
             f"Demucs vocal-separation mode (options: "
             f"{enum_options_list_str(DemucsMode)}; default: %(default)s)"
@@ -80,9 +80,9 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             f"voice activity detection mode (options: "
             f"{enum_options_list_str(VADMode)}; default: %(default)s)"
         ): "语音活动检测模式（选项：auto、on 或 off；默认：%(default)s）",
-        (
-            "Whisper model identifier override (uses language-pair default if omitted)"
-        ): "Whisper 模型标识符覆盖值（省略时使用语言对默认值）",
+        "transcription model identifier override (uses backend default if omitted)": (
+            "转写模型标识符覆盖值（省略时使用后端默认值）"
+        ),
         "delineation test-case JSON file to load and update": (
             "要加载和更新的断句测试用例 JSON 文件"
         ),
@@ -115,7 +115,7 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             f"transcription backend (options: "
             f"{enum_options_list_str(TranscriptionBackend)}; "
             "default: %(default)s)"
-        ): "轉寫後端（選項：whisper 或 mimo；預設：%(default)s）",
+        ): "轉寫後端（選項：whisper 或 mlx-audio；預設：%(default)s）",
         (
             f"Demucs vocal-separation mode (options: "
             f"{enum_options_list_str(DemucsMode)}; default: %(default)s)"
@@ -124,9 +124,9 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             f"voice activity detection mode (options: "
             f"{enum_options_list_str(VADMode)}; default: %(default)s)"
         ): "語音活動偵測模式（選項：auto、on 或 off；預設：%(default)s）",
-        (
-            "Whisper model identifier override (uses language-pair default if omitted)"
-        ): "Whisper 模型識別碼覆寫值（省略時使用語言對預設值）",
+        "transcription model identifier override (uses backend default if omitted)": (
+            "轉寫模型識別碼覆寫值（省略時使用後端預設值）"
+        ),
         "delineation test-case JSON file to load and update": (
             "要載入和更新的斷句測試案例 JSON 檔案"
         ),
@@ -239,11 +239,11 @@ class TranscribeCli(ScinoephileCliBase):
             ),
         )
         arg_groups["operation arguments"].add_argument(
-            "--whisper-model",
+            "--model",
             dest="model_name",
             help=(
-                "Whisper model identifier override "
-                "(uses language-pair default if omitted)"
+                "transcription model identifier override "
+                "(uses backend default if omitted)"
             ),
         )
         add_llm_provider_args(

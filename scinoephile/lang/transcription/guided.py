@@ -10,9 +10,10 @@ from pathlib import Path
 from types import MappingProxyType
 
 from scinoephile.audio.transcription import (
-    MimoTranscriber,
+    MlxAudioTranscriber,
     get_segment_split_on_whitespace,
 )
+from scinoephile.audio.transcription.mlx_audio_transcriber import MIMO_MODEL_NAME
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.ml import get_torch_device
@@ -192,7 +193,7 @@ def get_guided_transcriber(
     Arguments:
         language: transcription language
         reference_language: reference subtitle language
-        model_name: Whisper model override
+        model_name: backend-specific model override
         backend: audio transcription backend
         demucs_mode: Demucs preprocessing mode
         vad_mode: voice activity detection mode
@@ -219,7 +220,9 @@ def get_guided_transcriber(
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec
 
-    if model_name is None:
+    if model_name is None and backend == TranscriptionBackend.MLX_AUDIO:
+        model_name = MIMO_MODEL_NAME
+    elif model_name is None:
         model_name = language_spec.model_name
     if delineation_prompt is None:
         delineation_prompt = spec.delineation_prompt
@@ -277,11 +280,12 @@ def get_guided_transcriber(
         punctuation_processor=punctuation_processor,
     )
 
-    mimo_transcriber = None
-    if backend == TranscriptionBackend.MIMO:
-        mimo_transcriber = MimoTranscriber(
+    mlx_audio_transcriber = None
+    if backend == TranscriptionBackend.MLX_AUDIO:
+        mlx_audio_transcriber = MlxAudioTranscriber(
+            model_name=model_name,
             language=language,
-            cache_dir_path=get_runtime_cache_dir_path("mimo"),
+            cache_dir_path=get_runtime_cache_dir_path("mlx_audio"),
             use_demucs=demucs_mode in (DemucsMode.AUTO, DemucsMode.ON),
             use_vad=vad_mode in (VADMode.AUTO, VADMode.ON),
             retry_without_demucs=demucs_mode == DemucsMode.AUTO,
@@ -296,6 +300,6 @@ def get_guided_transcriber(
         backend=backend,
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
-        mimo_transcriber=mimo_transcriber,
+        mlx_audio_transcriber=mlx_audio_transcriber,
         segment_splitter=language_spec.segment_splitter,
     )

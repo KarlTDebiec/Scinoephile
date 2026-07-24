@@ -14,8 +14,8 @@ from pydub.effects import normalize
 from scinoephile.audio.subtitles import AudioSeries, get_series_from_segments
 from scinoephile.audio.transcription import (
     DemucsSeparator,
-    MimoTranscriber,
-    MimoTranscriptionError,
+    MlxAudioTranscriber,
+    MlxAudioTranscriptionError,
     TranscribedSegment,
     TranscriptionAlignmentError,
     WhisperTranscriber,
@@ -85,8 +85,8 @@ class TranscriptionBackend(StrEnum):
 
     WHISPER = "whisper"
     """Transcribe using Whisper."""
-    MIMO = "mimo"
-    """Transcribe using MiMo."""
+    MLX_AUDIO = "mlx-audio"
+    """Transcribe using MLX-Audio."""
 
 
 class VADMode(StrEnum):
@@ -114,7 +114,7 @@ class GuidedTranscriber:
         backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.AUTO,
-        mimo_transcriber: MimoTranscriber | None = None,
+        mlx_audio_transcriber: MlxAudioTranscriber | None = None,
         segment_splitter: TranscribedSegmentSplitter | None = None,
     ):
         """Initialize.
@@ -122,13 +122,13 @@ class GuidedTranscriber:
         Arguments:
             language: transcription language
             reference_language: reference subtitle language
-            model_name: Whisper model name used for transcription
+            model_name: backend-specific model name used for transcription
             whisper_language: language code passed to Whisper
             aligner: transcription aligner
             backend: audio transcription backend
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
-            mimo_transcriber: MiMo transcriber when MiMo is selected
+            mlx_audio_transcriber: MLX-Audio transcriber when MLX-Audio is selected
             segment_splitter: optional strategy for splitting transcribed segments
         """
         self.language = language
@@ -139,11 +139,11 @@ class GuidedTranscriber:
         self.backend = backend
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
-        self.mimo_transcriber = mimo_transcriber
+        self.mlx_audio_transcriber = mlx_audio_transcriber
         self.segment_splitter = segment_splitter
 
         self.demucs_separator = None
-        if backend != TranscriptionBackend.MIMO and demucs_mode in (
+        if backend != TranscriptionBackend.MLX_AUDIO and demucs_mode in (
             DemucsMode.AUTO,
             DemucsMode.ON,
         ):
@@ -156,9 +156,9 @@ class GuidedTranscriber:
         self.unseparated_no_vad_transcriber = None
         self.recovery_transcriber = None
         self.tail_recovery_transcriber = None
-        if backend == TranscriptionBackend.MIMO:
-            if mimo_transcriber is None:
-                raise ValueError("MiMo backend requires a MiMo transcriber.")
+        if backend == TranscriptionBackend.MLX_AUDIO:
+            if mlx_audio_transcriber is None:
+                raise ValueError("MLX-Audio backend requires a MLX-Audio transcriber.")
             return
 
         primary_uses_demucs = demucs_mode in (DemucsMode.AUTO, DemucsMode.ON)
@@ -428,8 +428,8 @@ class GuidedTranscriber:
         Returns:
             transcribed segments
         """
-        if self.backend == TranscriptionBackend.MIMO:
-            return self._transcribe_block_audio_with_mimo(audio)
+        if self.backend == TranscriptionBackend.MLX_AUDIO:
+            return self._transcribe_block_audio_with_mlx_audio(audio)
 
         cache_audio = audio
         audio_duration = len(cache_audio) / 1000
@@ -493,29 +493,29 @@ class GuidedTranscriber:
             return segments
         return None
 
-    def _transcribe_block_audio_with_mimo(
+    def _transcribe_block_audio_with_mlx_audio(
         self,
         audio: AudioSegment,
     ) -> list[TranscribedSegment]:
-        """Transcribe one block using only MiMo.
+        """Transcribe one block using only MLX-Audio.
 
         Arguments:
             audio: block audio to transcribe
         Returns:
             usable transcribed segments, or an empty list when none are produced
         """
-        assert self.mimo_transcriber is not None
+        assert self.mlx_audio_transcriber is not None
         audio_duration = len(audio) / 1000
 
         def is_usable(segments: list[TranscribedSegment]) -> bool:
-            """Determine whether a MiMo attempt is usable for guided alignment."""
+            """Determine whether a MLX-Audio attempt is usable for guided alignment."""
             return self._segments_are_usable(
                 segments,
                 audio_duration=audio_duration,
             )
 
         try:
-            segments = self.mimo_transcriber(
+            segments = self.mlx_audio_transcriber(
                 audio,
                 cache_audio=audio,
                 is_usable=is_usable,
@@ -523,16 +523,16 @@ class GuidedTranscriber:
         except (
             AssertionError,
             ImportError,
-            MimoTranscriptionError,
+            MlxAudioTranscriptionError,
             TranscriptionAlignmentError,
         ) as exc:
-            logger.warning(f"MiMo transcription failed: {exc}")
+            logger.warning(f"MLX-Audio transcription failed: {exc}")
         else:
             if is_usable(segments):
                 return segments
 
         logger.warning(
-            "MiMo did not produce usable output; leaving this block empty for "
+            "MLX-Audio did not produce usable output; leaving this block empty for "
             "downstream gap translation"
         )
         return []

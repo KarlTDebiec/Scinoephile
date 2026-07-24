@@ -14,8 +14,8 @@ from pytest import LogCaptureFixture, approx, raises
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
 from scinoephile.audio.transcription import (
-    MimoTranscriber,
-    MimoTranscriptionError,
+    MlxAudioTranscriber,
+    MlxAudioTranscriptionError,
     TranscribedSegment,
     TranscribedWord,
 )
@@ -52,9 +52,9 @@ def _get_transcriber(
     aligner.delineation_processor.prune_test_cases = False
     aligner.punctuation_processor = Mock()
     aligner.punctuation_processor.prune_test_cases = False
-    mimo_transcriber = None
-    if backend == TranscriptionBackend.MIMO:
-        mimo_transcriber = Mock(spec=MimoTranscriber)
+    mlx_audio_transcriber = None
+    if backend == TranscriptionBackend.MLX_AUDIO:
+        mlx_audio_transcriber = Mock(spec=MlxAudioTranscriber)
     return (
         GuidedTranscriber(
             language=Language.eng,
@@ -65,7 +65,7 @@ def _get_transcriber(
             backend=backend,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
-            mimo_transcriber=mimo_transcriber,
+            mlx_audio_transcriber=mlx_audio_transcriber,
         ),
         aligner,
     )
@@ -404,27 +404,27 @@ def test_all_unusable_candidates_leave_gap_for_translation():
     assert output == []
 
 
-def test_mimo_backend_delegates_retries_to_single_transcriber():
-    """Test GuidedTranscriber delegates candidate validation to one MiMo instance."""
+def test_mlx_audio_backend_delegates_retries_to_single_transcriber():
+    """Test guided transcription delegates retries to one MLX-Audio instance."""
     transcriber, _ = _get_transcriber(
-        backend=TranscriptionBackend.MIMO,
+        backend=TranscriptionBackend.MLX_AUDIO,
         demucs_mode=DemucsMode.AUTO,
         vad_mode=VADMode.AUTO,
     )
     repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
-    usable_segments = [_get_segment(text="mimo", with_words=True)]
-    assert transcriber.mimo_transcriber is not None
-    mimo = cast(Mock, transcriber.mimo_transcriber)
-    mimo.return_value = usable_segments
+    usable_segments = [_get_segment(text="mlx-audio", with_words=True)]
+    assert transcriber.mlx_audio_transcriber is not None
+    mlx_audio = cast(Mock, transcriber.mlx_audio_transcriber)
+    mlx_audio.return_value = usable_segments
     audio = AudioSegment.silent(duration=1000)
 
     output = transcriber._transcribe_block_audio(audio)
 
     assert output == usable_segments
-    mimo.assert_called_once()
-    assert mimo.call_args.args == (audio,)
-    assert mimo.call_args.kwargs["cache_audio"] is audio
-    is_usable = mimo.call_args.kwargs["is_usable"]
+    mlx_audio.assert_called_once()
+    assert mlx_audio.call_args.args == (audio,)
+    assert mlx_audio.call_args.kwargs["cache_audio"] is audio
+    is_usable = mlx_audio.call_args.kwargs["is_usable"]
     assert not is_usable(repetitive_segments)
     assert is_usable(usable_segments)
     assert transcriber.demucs_separator is None
@@ -432,16 +432,16 @@ def test_mimo_backend_delegates_retries_to_single_transcriber():
     assert transcriber.recovery_transcriber is None
 
 
-def test_failed_mimo_backend_leaves_gap_for_translation():
-    """Test a MiMo failure preserves downstream gap translation behavior."""
+def test_failed_mlx_audio_backend_leaves_gap_for_translation():
+    """Test an MLX-Audio failure preserves downstream gap translation behavior."""
     transcriber, _ = _get_transcriber(
-        backend=TranscriptionBackend.MIMO,
+        backend=TranscriptionBackend.MLX_AUDIO,
         vad_mode=VADMode.OFF,
     )
-    assert transcriber.mimo_transcriber is not None
-    mimo = cast(Mock, transcriber.mimo_transcriber)
-    mimo.get_cached_transcription.return_value = None
-    mimo.side_effect = MimoTranscriptionError("MiMo failed")
+    assert transcriber.mlx_audio_transcriber is not None
+    mlx_audio = cast(Mock, transcriber.mlx_audio_transcriber)
+    mlx_audio.get_cached_transcription.return_value = None
+    mlx_audio.side_effect = MlxAudioTranscriptionError("MLX-Audio failed")
 
     output = transcriber._transcribe_block_audio(AudioSegment.silent(duration=1000))
 

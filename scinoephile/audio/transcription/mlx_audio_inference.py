@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Direct MLX inference for MiMo ASR."""
+"""Direct speech-to-text inference through MLX-Audio."""
 
 from __future__ import annotations
 
@@ -12,45 +12,45 @@ from pathlib import Path
 from typing import Any, cast
 
 __all__ = [
-    "MimoInferenceResult",
-    "transcribe_with_mimo",
+    "MlxAudioInferenceResult",
+    "transcribe_with_mlx_audio",
 ]
 
-_MIMO_MLX_EXTRA_MESSAGE = (
-    "MiMo MLX inference requires optional transcription dependencies. "
+_MLX_AUDIO_EXTRA_MESSAGE = (
+    "MLX-Audio inference requires optional transcription dependencies. "
     "Install scinoephile with the 'transcription' extra."
 )
 _MLX_MODEL_BY_REFERENCE: dict[str, Any] = {}
-"""Loaded MLX MiMo models keyed by model reference."""
+"""Loaded MLX-Audio models keyed by model reference."""
 
 
 @dataclass(frozen=True)
-class MimoInferenceResult:
-    """Result of direct MiMo inference."""
+class MlxAudioInferenceResult:
+    """Result of direct MLX-Audio inference."""
 
     text: str
     duration_seconds: float
 
 
-def transcribe_with_mimo(
+def transcribe_with_mlx_audio(
     audio_path: Path,
     *,
     model_name: str,
     language: str,
     max_tokens: int | None = None,
-) -> MimoInferenceResult:
-    """Transcribe one audio file using MLX MiMo.
+) -> MlxAudioInferenceResult:
+    """Transcribe one audio file using MLX-Audio.
 
     Arguments:
         audio_path: audio file to transcribe
         model_name: model name or local path
-        language: MLX MiMo language code
+        language: model-specific language identifier
         max_tokens: optional maximum number of text tokens to generate
     Returns:
         transcript text and source audio duration
     Raises:
         ImportError: if MLX-Audio is unavailable
-        ValueError: if MiMo returns malformed output
+        ValueError: if the model returns malformed output
     """
     model = _get_mlx_model(model_name)
     generate_kwargs: dict[str, object] = {"language": language}
@@ -63,11 +63,11 @@ def transcribe_with_mimo(
     else:
         text = getattr(result, "text", None)
     if not isinstance(text, str):
-        raise ValueError("MiMo inference result is missing transcript text.")
+        raise ValueError("MLX-Audio inference result is missing transcript text.")
 
     with wave.open(str(audio_path), "rb") as file:
         duration_seconds = file.getnframes() / file.getframerate()
-    return MimoInferenceResult(text=text, duration_seconds=duration_seconds)
+    return MlxAudioInferenceResult(text=text, duration_seconds=duration_seconds)
 
 
 def _get_mlx_load() -> Any:
@@ -81,17 +81,17 @@ def _get_mlx_load() -> Any:
     try:
         mlx_stt = import_module("mlx_audio.stt")
     except ImportError as exc:
-        raise ImportError(_MIMO_MLX_EXTRA_MESSAGE) from exc
+        raise ImportError(_MLX_AUDIO_EXTRA_MESSAGE) from exc
     return getattr(mlx_stt, "load")
 
 
 def _get_mlx_model(model_name: str) -> Any:
-    """Get a cached MLX MiMo model.
+    """Get a cached MLX-Audio model.
 
     Arguments:
         model_name: model name or local path
     Returns:
-        loaded MLX MiMo model
+        loaded MLX-Audio model
     """
     model_path = Path(model_name).expanduser()
     model_reference: str | Path = model_name

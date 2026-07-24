@@ -16,11 +16,11 @@ from .transcribed_word import TranscribedWord
 __all__ = [
     "CTC_MODEL_NAME",
     "TranscriptionAlignmentError",
-    "align_mimo_transcription",
+    "align_transcription",
 ]
 
 CTC_MODEL_NAME = "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn"
-"""Hugging Face model used for MiMo timestamp alignment."""
+"""Hugging Face model used for text-only transcription alignment."""
 
 _CTC_WILDCARD_TOKEN_ID = -1
 _CTC_COMPONENTS_BY_DEVICE: dict[str, tuple[object, object]] = {}
@@ -30,18 +30,18 @@ class TranscriptionAlignmentError(RuntimeError):
     """Raised when text-only transcription cannot be timestamp-aligned."""
 
 
-def align_mimo_transcription(
+def align_transcription(
     audio_path: Path,
     text: str,
     *,
     duration_seconds: float,
     device: str = "cpu",
 ) -> list[TranscribedSegment]:
-    """Align MiMo transcript text to source audio.
+    """Align transcript text to source audio.
 
     Arguments:
         audio_path: source audio path to align against
-        text: authoritative MiMo transcript text
+        text: authoritative transcript text
         duration_seconds: source audio duration in seconds
         device: device identifier passed to the CTC model
     Returns:
