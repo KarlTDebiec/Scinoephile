@@ -43,6 +43,7 @@ def test_review_cli_uses_guide_terminology():
     assert actions["guide_language"].help == (
         "guide language (detected from infile if omitted)"
     )
+    assert actions["json_path"].help == "JSON file containing test cases"
 
 
 @parametrize(

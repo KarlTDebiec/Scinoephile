@@ -36,10 +36,7 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "optional validated subtitle SRT file used as ground truth; required "
             "with --filter discrepancies"
         ): ("用作真值的可选已验证字幕 SRT 文件；使用 --filter discrepancies 时为必需"),
-        (
-            "optional OCR-fusion test-case JSON file supplying notes and "
-            "verification state"
-        ): ("提供备注和验证状态的可选 OCR 融合测试用例 JSON 文件"),
+        "JSON file containing test cases": "包含测试用例的 JSON 文件",
         (
             "rows to include: all, changes, discrepancies, or unverified; all "
             "includes every fused subtitle; changes includes source "
@@ -64,10 +61,7 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "optional validated subtitle SRT file used as ground truth; required "
             "with --filter discrepancies"
         ): ("用作真值的選用已驗證字幕 SRT 檔；使用 --filter discrepancies 時為必需"),
-        (
-            "optional OCR-fusion test-case JSON file supplying notes and "
-            "verification state"
-        ): ("提供備註和驗證狀態的選用 OCR 融合測試案例 JSON 檔"),
+        "JSON file containing test cases": "包含測試案例的 JSON 檔",
         (
             "rows to include: all, changes, discrepancies, or unverified; all "
             "includes every fused subtitle; changes includes source "
@@ -140,10 +134,7 @@ class AuditOcrFusionCli(AuditCliBase):
             "--json",
             dest="json_path",
             type=input_file_arg(),
-            help=(
-                "optional OCR-fusion test-case JSON file supplying notes and "
-                "verification state"
-            ),
+            help="JSON file containing test cases",
         )
 
         # Operation arguments

@@ -32,6 +32,7 @@ def test_translate_cli_help_includes_block_range():
     assert actions["target_language"].help == (
         "target language (required unless guide or gapped input is detected)"
     )
+    assert actions["json_path"].help == "JSON file containing test cases"
 
 
 @mark.parametrize(

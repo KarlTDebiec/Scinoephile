@@ -75,6 +75,25 @@ def test_audit_cli_filter_enums():
         assert type(actions["row_filter"].default) is filter_type
 
 
+def test_audit_cli_single_json_help_is_concise():
+    """Test audit CLIs with one LLM JSON use generic help text."""
+    cli_classes = (
+        AuditDelineationCli,
+        AuditOcrFusionCli,
+        AuditPunctuationCli,
+        AuditReviewCli,
+        AuditTranslationCli,
+    )
+
+    for cli_class in cli_classes:
+        actions = {
+            action.dest: action
+            for action in cli_class.argparser()._actions  # noqa: SLF001
+        }
+
+        assert actions["json_path"].help == "JSON file containing test cases"
+
+
 def test_audit_cli_uses_subtitle_block_help():
     """Test audit block-range help uses subtitle terminology."""
     actions = {
@@ -342,8 +361,11 @@ def test_audit_review_cli_help_is_consistent():
         for destination, action in actions.items():
             if destination.endswith("json_path"):
                 assert isinstance(action.help, str)
-                assert "test-case JSON file" in action.help
-                assert "--filter unverified" in action.help
+                if cli_class is AuditReviewCli:
+                    assert action.help == "JSON file containing test cases"
+                else:
+                    assert "JSON file containing" in action.help
+                    assert "--filter unverified" in action.help
 
 
 def test_audit_review_dual_cli_stdout_outfile_and_validation(

@@ -65,7 +65,7 @@ def test_transcribe_help_lists_generic_options():
     help_text = stdout.getvalue()
     normalized_help_text = " ".join(help_text.split())
     assert stderr.getvalue() == ""
-    assert "MEDIA_INFILE" in help_text
+    assert "--media-infile MEDIA_INFILE_PATH" in help_text
     assert "--guide-infile GUIDE_INFILE_PATH" in help_text
     assert "--reference-infile" not in help_text
     assert "--language" in help_text
@@ -85,6 +85,28 @@ def test_transcribe_help_lists_generic_options():
     assert "--vad {auto,on,off}" in help_text
     assert "--backend {whisper,mlx-audio}" in help_text
     assert "--model MODEL_NAME" in help_text
+    assert "transcription model (default: backend default)" in normalized_help_text
+    media_action = next(
+        action
+        for action in TranscribeCli.argparser()._actions  # noqa: SLF001
+        if "--media-infile" in action.option_strings
+    )
+    assert media_action.required
+    provider_action = next(
+        action
+        for action in TranscribeCli.argparser()._actions  # noqa: SLF001
+        if "--llm-provider" in action.option_strings
+    )
+    assert provider_action.help == (
+        "LLM provider (default: openai). Use --list-llm-providers for more information."
+    )
+    assert "LLM model" in normalized_help_text
+    assert (
+        "text file from which to read additional LLM prompt context"
+        in normalized_help_text
+    )
+    assert "JSON file containing delineation test cases" in normalized_help_text
+    assert "JSON file containing punctuation test cases" in normalized_help_text
     for removed_option in (
         "--mimo-aligner",
         "--mimo-aligner-language",
@@ -101,7 +123,6 @@ def test_transcribe_help_lists_generic_options():
         "--mimo-worker-command",
     ):
         assert removed_option not in help_text
-    assert "uses backend default if omitted" in normalized_help_text
 
 
 def test_transcribe_cli_defers_model_default_to_factory():
@@ -114,6 +135,7 @@ def test_transcribe_cli_defers_model_default_to_factory():
     )
 
     assert model_action.default is None
+    assert model_action.help == "transcription model (default: backend default)"
 
 
 def test_transcribe_cli_enum_arguments_are_consistent():
@@ -159,7 +181,7 @@ def test_transcribe_cli_writes_file(
             ):
                 run_cli_with_args(
                     TranscribeCli,
-                    f"{_MEDIA_INFILE_PATH} "
+                    f"--media-infile {_MEDIA_INFILE_PATH} "
                     f"--guide-infile {_GUIDE_INFILE_PATH} "
                     f"--language yue-Hans --stream-index 1 -o {outfile_path}",
                 )
@@ -191,7 +213,7 @@ def test_transcribe_cli_writes_stdout(
             with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
                 run_cli_with_args(
                     TranscribeCli,
-                    f"{_MEDIA_INFILE_PATH} "
+                    f"--media-infile {_MEDIA_INFILE_PATH} "
                     f"--guide-infile {_GUIDE_INFILE_PATH} "
                     "--language yue-Hans",
                 )
@@ -257,7 +279,7 @@ def test_transcribe_cli_passes_generic_configuration(
         ):
             run_cli_with_args(
                 TranscribeCli,
-                f"{_MEDIA_INFILE_PATH} "
+                f"--media-infile {_MEDIA_INFILE_PATH} "
                 f"--guide-infile {_GUIDE_INFILE_PATH} "
                 "--language yue-Hant --guide-language zho-Hans "
                 "--model mlx-community/Qwen3-ASR-0.6B-8bit "
@@ -271,16 +293,23 @@ def test_transcribe_cli_passes_generic_configuration(
 @mark.parametrize(
     "args",
     (
-        f"{_MEDIA_INFILE_PATH} --guide-infile {_GUIDE_INFILE_PATH} "
+        f"--media-infile {_MEDIA_INFILE_PATH} "
+        f"--guide-infile {_GUIDE_INFILE_PATH} "
         "--language yue-Hans --stream-index -1",
-        f"{_MEDIA_INFILE_PATH} --guide-infile /tmp/missing.srt --language yue-Hans",
-        f"/tmp/missing.mp4 --guide-infile {_GUIDE_INFILE_PATH} --language yue-Hans",
-        "- --guide-infile - --language yue-Hans",
-        f"{_MEDIA_INFILE_PATH} --guide-infile {_GUIDE_INFILE_PATH} "
+        f"--media-infile {_MEDIA_INFILE_PATH} "
+        "--guide-infile /tmp/missing.srt --language yue-Hans",
+        f"--media-infile /tmp/missing.mp4 "
+        f"--guide-infile {_GUIDE_INFILE_PATH} --language yue-Hans",
+        "--media-infile - --guide-infile - --language yue-Hans",
+        f"--guide-infile {_GUIDE_INFILE_PATH} --language yue-Hans",
+        f"--media-infile {_MEDIA_INFILE_PATH} "
+        f"--guide-infile {_GUIDE_INFILE_PATH} "
         "--language yue-Hans --overwrite",
-        f"{_MEDIA_INFILE_PATH} --guide-infile {_GUIDE_INFILE_PATH} "
+        f"--media-infile {_MEDIA_INFILE_PATH} "
+        f"--guide-infile {_GUIDE_INFILE_PATH} "
         "--language yue-Hans --first-block 3 --last-block 2",
-        f"{_MEDIA_INFILE_PATH} --guide-infile {_GUIDE_INFILE_PATH} "
+        f"--media-infile {_MEDIA_INFILE_PATH} "
+        f"--guide-infile {_GUIDE_INFILE_PATH} "
         "--language yue-Hans --script traditional",
     ),
     ids=(
@@ -288,6 +317,7 @@ def test_transcribe_cli_passes_generic_configuration(
         "missing guide infile",
         "missing media infile",
         "two stdin infiles",
+        "missing media option",
         "overwrite without outfile",
         "reversed block range",
         "language-specific option",
@@ -313,7 +343,7 @@ def test_transcribe_cli_rejects_oversized_last_block_before_loading_audio():
         with raises(SystemExit, match="2"):
             run_cli_with_args(
                 TranscribeCli,
-                f"{_MEDIA_INFILE_PATH} "
+                f"--media-infile {_MEDIA_INFILE_PATH} "
                 f"--guide-infile {_GUIDE_INFILE_PATH} "
                 f"--language yue-Hans --last-block {block_count + 1}",
             )
@@ -330,7 +360,8 @@ def test_transcribe_cli_stream_errors_are_user_facing():
         with raises(SystemExit, match="2"):
             run_cli_with_args(
                 TranscribeCli,
-                f"{_MEDIA_INFILE_PATH} --guide-infile {_GUIDE_INFILE_PATH} "
+                f"--media-infile {_MEDIA_INFILE_PATH} "
+                f"--guide-infile {_GUIDE_INFILE_PATH} "
                 "--language yue-Hans --stream-index 7",
             )
 
@@ -352,7 +383,7 @@ def test_transcribe_cli_workflow_errors_are_user_facing(audio_series: Mock):
             with raises(SystemExit, match="2"):
                 run_cli_with_args(
                     TranscribeCli,
-                    f"{_MEDIA_INFILE_PATH} "
+                    f"--media-infile {_MEDIA_INFILE_PATH} "
                     f"--guide-infile {_GUIDE_INFILE_PATH} "
                     "--language eng",
                 )
@@ -396,7 +427,8 @@ def test_transcribe_cli_allows_stdin_guide_infile(
                 with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
                     run_cli_with_args(
                         TranscribeCli,
-                        f"{_MEDIA_INFILE_PATH} --guide-infile - --language yue-Hans",
+                        f"--media-infile {_MEDIA_INFILE_PATH} "
+                        "--guide-infile - --language yue-Hans",
                     )
 
     assert subtitle_paths != ["-"]

@@ -139,7 +139,7 @@ finished. On a nonzero exit, diagnose or report the failure before continuing.
 
 ```shell
 UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile transcribe \
-  <output_dir>/audio/audio.wav \
+  --media-infile <output_dir>/audio/audio.wav \
   --guide-infile <guide> \
   --language <target_language> \
   --guide-language <guide_language> \

@@ -15,6 +15,16 @@ from scinoephile.core.subtitles import Series, Subtitle
 from test.helpers import assert_series_equal, parametrize, test_data_root
 
 
+def test_ocr_fuse_cli_uses_concise_json_help():
+    """Test OCR-fusion JSON help describes its test-case contents."""
+    actions = {
+        action.dest: action
+        for action in OcrFuseCli.argparser()._actions  # noqa: SLF001
+    }
+
+    assert actions["json_path"].help == "JSON file containing test cases"
+
+
 @parametrize(
     ("lens_path", "secondary_path", "args", "expected_path"),
     [

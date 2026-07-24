@@ -80,15 +80,11 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             f"voice activity detection mode (options: "
             f"{enum_options_list_str(VADMode)}; default: %(default)s)"
         ): "语音活动检测模式（选项：auto、on 或 off；默认：%(default)s）",
-        "transcription model identifier override (uses backend default if omitted)": (
-            "转写模型标识符覆盖值（省略时使用后端默认值）"
+        "transcription model (default: backend default)": (
+            "转写模型（默认：后端默认值）"
         ),
-        "delineation test-case JSON file to load and update": (
-            "要加载和更新的断句测试用例 JSON 文件"
-        ),
-        "punctuation test-case JSON file to load and update": (
-            "要加载和更新的标点测试用例 JSON 文件"
-        ),
+        "JSON file containing delineation test cases": ("包含断句测试用例的 JSON 文件"),
+        "JSON file containing punctuation test cases": ("包含标点测试用例的 JSON 文件"),
         "subtitle outfile path (default: stdout)": (
             "字幕输出文件路径（默认：标准输出）"
         ),
@@ -124,15 +120,11 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             f"voice activity detection mode (options: "
             f"{enum_options_list_str(VADMode)}; default: %(default)s)"
         ): "語音活動偵測模式（選項：auto、on 或 off；預設：%(default)s）",
-        "transcription model identifier override (uses backend default if omitted)": (
-            "轉寫模型識別碼覆寫值（省略時使用後端預設值）"
+        "transcription model (default: backend default)": (
+            "轉寫模型（預設：後端預設值）"
         ),
-        "delineation test-case JSON file to load and update": (
-            "要載入和更新的斷句測試案例 JSON 檔案"
-        ),
-        "punctuation test-case JSON file to load and update": (
-            "要載入和更新的標點測試案例 JSON 檔案"
-        ),
+        "JSON file containing delineation test cases": ("包含斷句測試案例的 JSON 檔"),
+        "JSON file containing punctuation test cases": ("包含標點測試案例的 JSON 檔"),
         "subtitle outfile path (default: stdout)": ("字幕輸出檔路徑（預設：標準輸出）"),
         "transcribe audio using reference subtitles": "使用參考字幕轉寫音訊",
     },
@@ -170,8 +162,9 @@ class TranscribeCli(ScinoephileCliBase):
 
         # Input arguments
         arg_groups["input arguments"].add_argument(
-            "media_infile_path",
-            metavar="MEDIA_INFILE",
+            "--media-infile",
+            dest="media_infile_path",
+            required=True,
             help="media infile used for transcription",
         )
         arg_groups["input arguments"].add_argument(
@@ -241,10 +234,7 @@ class TranscribeCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--model",
             dest="model_name",
-            help=(
-                "transcription model identifier override "
-                "(uses backend default if omitted)"
-            ),
+            help="transcription model (default: backend default)",
         )
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
@@ -253,13 +243,13 @@ class TranscribeCli(ScinoephileCliBase):
             arg_groups["llm arguments"],
             "--delineation-json",
             dest="delineation_json_path",
-            help_text="delineation test-case JSON file to load and update",
+            help_text="JSON file containing delineation test cases",
         )
         add_llm_test_case_json_arg(
             arg_groups["llm arguments"],
             "--punctuation-json",
             dest="punctuation_json_path",
-            help_text="punctuation test-case JSON file to load and update",
+            help_text="JSON file containing punctuation test cases",
         )
 
         # Output arguments
@@ -303,7 +293,7 @@ class TranscribeCli(ScinoephileCliBase):
         # Validate arguments
         parser = _parser or cls.argparser()
         if media_infile_path == "-" and guide_infile_path == "-":
-            parser.error("MEDIA_INFILE and --guide-infile may not both be '-'")
+            parser.error("--media-infile and --guide-infile may not both be '-'")
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
 
