@@ -45,7 +45,6 @@ def test_transcribe_with_mimo_mlx_loads_model_and_maps_yue_language(
         {
             "audio_path": str(audio_path),
             "model_name": "/models/MiMo-V2.5-ASR-MLX",
-            "tokenizer_name": "/models/MiMo-Audio-Tokenizer",
             "language": "yue",
             "runtime": "mlx",
         }

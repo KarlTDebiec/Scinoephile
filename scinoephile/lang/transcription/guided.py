@@ -11,7 +11,6 @@ from types import MappingProxyType
 
 from scinoephile.audio.transcription import (
     MIMO_MODEL_NAME,
-    MIMO_TOKENIZER_NAME,
     MimoRuntime,
     MimoTranscriber,
     get_segment_split_on_whitespace,
@@ -181,7 +180,6 @@ def get_guided_transcriber(
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
     mimo_model_name: str = MIMO_MODEL_NAME,
-    mimo_tokenizer_name: str = MIMO_TOKENIZER_NAME,
     mimo_runtime: MimoRuntime = MimoRuntime.AUTO,
     mimo_language: str = "yue",
     mimo_max_tokens: int | None = None,
@@ -212,7 +210,6 @@ def get_guided_transcriber(
         demucs_mode: Demucs preprocessing mode
         vad_mode: voice activity detection mode
         mimo_model_name: MiMo ASR model name or local path
-        mimo_tokenizer_name: MiMo audio tokenizer name or local path
         mimo_runtime: runtime implementation used for MiMo inference
         mimo_language: language metadata passed to MiMo
         mimo_max_tokens: optional maximum number of MiMo tokens to generate
@@ -304,7 +301,7 @@ def get_guided_transcriber(
         punctuation_processor=punctuation_processor,
     )
 
-    def get_mimo_transcriber(*, use_demucs: bool) -> MimoTranscriber:
+    def _get_mimo_transcriber(*, use_demucs: bool) -> MimoTranscriber:
         """Build a MiMo transcriber for one Demucs cache identity.
 
         Arguments:
@@ -314,7 +311,6 @@ def get_guided_transcriber(
         """
         return MimoTranscriber(
             model_name=mimo_model_name,
-            tokenizer_name=mimo_tokenizer_name,
             mimo_runtime=mimo_runtime,
             language=mimo_language,
             max_tokens=mimo_max_tokens,
@@ -334,11 +330,11 @@ def get_guided_transcriber(
     mimo_transcriber = None
     unseparated_mimo_transcriber = None
     if backend == TranscriptionBackend.MIMO:
-        mimo_transcriber = get_mimo_transcriber(
+        mimo_transcriber = _get_mimo_transcriber(
             use_demucs=demucs_mode in (DemucsMode.AUTO, DemucsMode.ON),
         )
         if demucs_mode == DemucsMode.AUTO:
-            unseparated_mimo_transcriber = get_mimo_transcriber(use_demucs=False)
+            unseparated_mimo_transcriber = _get_mimo_transcriber(use_demucs=False)
     return GuidedTranscriber(
         language=language,
         reference_language=reference_language,

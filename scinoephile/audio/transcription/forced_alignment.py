@@ -428,7 +428,7 @@ def _get_ctc_components(*, model_name: str, device: str) -> tuple[object, object
         return cached_components
 
     try:
-        from transformers import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+        from transformers import (  # noqa: PLC0415
             AutoModelForCTC,
             AutoProcessor,
         )
@@ -575,7 +575,7 @@ def _get_torch_module() -> Any:
         ImportError: if torch is unavailable
     """
     try:
-        import torch  # ty: ignore[unresolved-import]  # noqa: PLC0415
+        import torch  # noqa: PLC0415
     except ImportError as exc:
         raise ImportError(
             "CTC timestamp alignment requires transformers and torch dependencies."
@@ -711,7 +711,9 @@ def _get_transcribed_segments_from_alignment_result(
             raise TranscriptionAlignmentError("Alignment segment is malformed.")
         raw_segment = cast(Mapping[str, object], raw_segment_obj)
 
-        segment_text = _get_text(raw_segment, "text")
+        segment_text = raw_segment.get("text")
+        if not isinstance(segment_text, str):
+            raise TranscriptionAlignmentError("Alignment field 'text' is missing.")
         if not segment_text.strip():
             continue
 
@@ -740,23 +742,6 @@ def _get_transcribed_segments_from_alignment_result(
     if not segments:
         raise TranscriptionAlignmentError("Alignment did not produce timed segments.")
     return segments
-
-
-def _get_text(mapping: Mapping[str, object], key: str) -> str:
-    """Get a required text value from a mapping.
-
-    Arguments:
-        mapping: mapping to read
-        key: key to read
-    Returns:
-        text value
-    Raises:
-        TranscriptionAlignmentError: if the value is missing or malformed
-    """
-    value = mapping.get(key)
-    if not isinstance(value, str):
-        raise TranscriptionAlignmentError(f"Alignment field {key!r} is missing.")
-    return value
 
 
 def _get_optional_float(mapping: Mapping[str, object], key: str) -> float | None:

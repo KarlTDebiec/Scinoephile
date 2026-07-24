@@ -434,10 +434,16 @@ def test_mimo_backend_retries_original_audio_after_unusable_demucs_result():
     assert output == usable_segments
     assert primary.call_count == 1
     assert primary.call_args.args == (separated_audio,)
-    assert primary.call_args.kwargs == {"cache_audio": original_audio}
+    assert primary.call_args.kwargs == {
+        "cache_audio": original_audio,
+        "use_cache": False,
+    }
     assert unseparated.call_count == 1
     assert unseparated.call_args.args == (original_audio,)
-    assert unseparated.call_args.kwargs == {"cache_audio": original_audio}
+    assert unseparated.call_args.kwargs == {
+        "cache_audio": original_audio,
+        "use_cache": False,
+    }
     assert transcriber.vad_transcriber is None
     assert transcriber.recovery_transcriber is None
 

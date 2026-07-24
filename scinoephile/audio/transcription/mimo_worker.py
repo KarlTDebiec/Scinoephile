@@ -126,7 +126,10 @@ def _get_mlx_model(model_name: str) -> Any:
     Returns:
         loaded MLX MiMo model
     """
-    model_reference = _get_model_reference(model_name)
+    model_path = Path(model_name).expanduser()
+    model_reference: str | Path = model_name
+    if model_path.is_absolute() or model_name.startswith("~"):
+        model_reference = model_path
     cache_key = str(model_reference)
     if cache_key not in _MLX_MODEL_BY_REFERENCE:
         load = _get_mlx_load()
@@ -205,23 +208,6 @@ def _get_optional_string(request: Mapping[str, object], key: str) -> str | None:
     return value
 
 
-def _get_output_text(source: object) -> str:
-    """Get transcript text from an MLX output object.
-
-    Arguments:
-        source: MLX output object
-    Returns:
-        transcript text
-    """
-    if isinstance(source, Mapping):
-        value = cast(Mapping[str, object], source).get("text")
-    else:
-        value = getattr(source, "text", None)
-    if isinstance(value, str):
-        return value
-    return ""
-
-
 def _get_output_segments(source: object) -> list[object]:
     """Get transcript segment payloads from an MLX output object.
 
@@ -274,32 +260,6 @@ def _get_required_string(request: Mapping[str, object], key: str) -> str:
     return value
 
 
-def _get_model_reference(model_name: str) -> str | Path:
-    """Get the model reference object expected by MLX-Audio.
-
-    Arguments:
-        model_name: model name or local path
-    Returns:
-        local path for path-like inputs, otherwise model name
-    """
-    model_path = Path(model_name).expanduser()
-    if model_path.is_absolute() or model_name.startswith("~"):
-        return model_path
-    return model_name
-
-
-def _get_wav_duration_seconds(audio_path: Path) -> float:
-    """Get duration of a WAV file in seconds.
-
-    Arguments:
-        audio_path: WAV file path
-    Returns:
-        duration in seconds
-    """
-    with wave.open(str(audio_path), "rb") as file:
-        return file.getnframes() / file.getframerate()
-
-
 def _transcribe_with_mlx(request: Mapping[str, object]) -> dict[str, object]:
     """Transcribe one audio file using the MLX MiMo runtime.
 
@@ -313,7 +273,6 @@ def _transcribe_with_mlx(request: Mapping[str, object]) -> dict[str, object]:
     """
     audio_path = Path(_get_required_string(request, "audio_path"))
     model_name = _get_required_string(request, "model_name")
-    tokenizer_name = _get_optional_string(request, "tokenizer_name") or ""
     language = _get_optional_string(request, "language")
     max_tokens = _get_optional_positive_int(request, "max_tokens")
 
@@ -323,21 +282,20 @@ def _transcribe_with_mlx(request: Mapping[str, object]) -> dict[str, object]:
     if max_tokens is not None:
         generate_kwargs["max_tokens"] = max_tokens
     result = model.generate(str(audio_path), **generate_kwargs)
-    duration_seconds = _get_wav_duration_seconds(audio_path)
+    with wave.open(str(audio_path), "rb") as file:
+        duration_seconds = file.getnframes() / file.getframerate()
     elapsed_seconds = _get_optional_number(result, "total_time")
     if elapsed_seconds is None:
         elapsed_seconds = time.monotonic() - start_time
     result_language = _get_output_string(result, "language")
 
     return {
-        "text": _get_output_text(result),
+        "text": _get_output_string(result, "text") or "",
         "segments": _get_output_segments(result),
         "backend": "mimo",
         "runtime": MimoRuntime.MLX,
         "model_name": model_name,
-        "tokenizer_name": tokenizer_name,
         "language": result_language or _get_mlx_language(language) or "",
-        "audio_tag": "",
         "duration_seconds": duration_seconds,
         "elapsed_seconds": elapsed_seconds,
         "prompt_tokens": _get_optional_int(result, "prompt_tokens"),

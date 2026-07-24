@@ -7,20 +7,12 @@ from __future__ import annotations
 from enum import StrEnum
 
 __all__ = [
-    "MIMO_MLX_MODEL_NAME",
     "MIMO_MODEL_NAME",
-    "MIMO_TOKENIZER_NAME",
     "MimoRuntime",
 ]
 
-MIMO_MLX_MODEL_NAME = "mlx-community/MiMo-V2.5-ASR-MLX"
-"""Default Apple Silicon MLX MiMo ASR model name."""
-
-MIMO_MODEL_NAME = MIMO_MLX_MODEL_NAME
+MIMO_MODEL_NAME = "mlx-community/MiMo-V2.5-ASR-MLX"
 """Default MiMo ASR model name."""
-
-MIMO_TOKENIZER_NAME = "XiaomiMiMo/MiMo-Audio-Tokenizer"
-"""Default MiMo audio tokenizer model name."""
 
 
 class MimoRuntime(StrEnum):

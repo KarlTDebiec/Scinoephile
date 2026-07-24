@@ -48,7 +48,6 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
             punctuation_json_path=punctuation_json_path,
             backend=TranscriptionBackend.MIMO,
             mimo_model_name="custom/mimo",
-            mimo_tokenizer_name="custom/tokenizer",
             mimo_runtime=MimoRuntime.MLX,
             mimo_language="auto",
             mimo_max_tokens=512,
@@ -72,9 +71,6 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
     assert get_transcriber.call_args.kwargs["demucs_mode"] is DemucsMode.AUTO
     assert get_transcriber.call_args.kwargs["vad_mode"] is VADMode.AUTO
     assert get_transcriber.call_args.kwargs["mimo_model_name"] == "custom/mimo"
-    assert get_transcriber.call_args.kwargs["mimo_tokenizer_name"] == (
-        "custom/tokenizer"
-    )
     assert get_transcriber.call_args.kwargs["mimo_runtime"] is MimoRuntime.MLX
     assert get_transcriber.call_args.kwargs["mimo_language"] == "auto"
     assert get_transcriber.call_args.kwargs["mimo_max_tokens"] == 512

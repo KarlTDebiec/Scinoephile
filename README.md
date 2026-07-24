@@ -11,7 +11,7 @@ subtitles.
 
 ## Transcription
 
-Optional MiMo ASR fallback for Cantonese transcription is documented in
+The optional MiMo ASR backend for Cantonese transcription is documented in
 `docs/MIMO.md`, including Apple Silicon MLX setup and WhisperX or in-house CTC
 timestamp alignment.
 

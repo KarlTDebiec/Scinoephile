@@ -17,7 +17,6 @@ from pydub import AudioSegment
 
 from scinoephile.audio.transcription import TranscribedSegment, TranscribedWord
 from scinoephile.audio.transcription.mimo_transcriber import (
-    MIMO_MLX_MODEL_NAME,
     MIMO_MODEL_NAME,
     MimoRuntime,
     MimoRuntimeUnsupportedError,
@@ -46,7 +45,7 @@ def test_get_cache_path_separates_mimo_configuration():
     assert first_cache_path != second_cache_path
 
 
-def test_get_cache_path_auto_uses_mlx_model_on_apple_silicon(
+def test_get_cache_path_auto_uses_mlx_runtime_on_apple_silicon(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test auto runtime uses the MLX model on Apple Silicon."""
@@ -67,7 +66,7 @@ def test_get_cache_path_auto_uses_mlx_model_on_apple_silicon(
     cache_path = transcriber._get_cache_path(audio)
 
     assert cache_path is not None
-    assert transcriber._get_effective_model_name() == MIMO_MLX_MODEL_NAME
+    assert transcriber._get_cache_metadata()["runtime"] == MimoRuntime.MLX
 
 
 def test_get_cache_path_auto_rejects_non_apple_silicon(
@@ -186,7 +185,7 @@ def test_parse_worker_stdout_accepts_logging_before_json():
     assert parsed["backend"] == "mimo"
 
 
-def test_run_worker_passes_runtime_effective_model_and_source_pythonpath(
+def test_run_worker_passes_runtime_model_and_source_pythonpath(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ):
@@ -221,12 +220,14 @@ def test_run_worker_passes_runtime_effective_model_and_source_pythonpath(
     transcriber = MimoTranscriber(
         model_name=MIMO_MODEL_NAME,
         mimo_runtime=MimoRuntime.MLX,
+        worker_command=("python", "mimo_worker.py"),
     )
 
     payload = transcriber._run_worker(tmp_path / "audio.wav")
 
     request = json.loads(cast(str, captured["input"]))
-    assert request["model_name"] == MIMO_MLX_MODEL_NAME
+    assert captured["command"] == ("python", "mimo_worker.py")
+    assert request["model_name"] == MIMO_MODEL_NAME
     assert request["runtime"] == "mlx"
     assert payload["text"] == "你好"
     python_paths = cast(Mapping[str, str], captured["env"])["PYTHONPATH"].split(
@@ -270,7 +271,7 @@ def test_transcribe_uses_in_process_mimo_when_worker_command_absent(
 
     request = cast(Mapping[str, object], captured["request"])
     assert segments == expected_segments
-    assert request["model_name"] == MIMO_MLX_MODEL_NAME
+    assert request["model_name"] == MIMO_MODEL_NAME
     assert request["runtime"] == "mlx"
     assert request["language"] == "yue"
 
@@ -475,7 +476,7 @@ def test_transcribe_aligns_mimo_text_and_writes_cache(
     assert cache_path is not None
     cache_payload = json.loads(cache_path.read_text(encoding="utf-8"))
     assert cache_payload["backend"] == "mimo"
-    assert cache_payload["model_name"] == MIMO_MLX_MODEL_NAME
+    assert cache_payload["model_name"] == MIMO_MODEL_NAME
     assert cache_payload["segments"][0]["text"] == "你好"
 
 
@@ -524,7 +525,6 @@ def _get_mimo_transcriber(
     *,
     cache_dir_path: Path = Path("/tmp/mimo"),
     model_name: str = MIMO_MODEL_NAME,
-    tokenizer_name: str = "XiaomiMiMo/MiMo-Audio-Tokenizer",
     mimo_runtime: MimoRuntime = MimoRuntime.MLX,
     aligner_backend: str = "whisperx",
     aligner_language: str = "zh",
@@ -536,7 +536,6 @@ def _get_mimo_transcriber(
     Arguments:
         cache_dir_path: cache directory path
         model_name: MiMo model name
-        tokenizer_name: MiMo audio tokenizer name
         mimo_runtime: MiMo runtime implementation
         aligner_backend: timestamp alignment backend
         aligner_language: language code used by timestamp alignment
@@ -548,10 +547,8 @@ def _get_mimo_transcriber(
     transcriber = object.__new__(MimoTranscriber)
     transcriber.cache_dir_path = cache_dir_path
     transcriber.model_name = model_name
-    transcriber.tokenizer_name = tokenizer_name
     transcriber.mimo_runtime = mimo_runtime
     transcriber.language = "yue"
-    transcriber.audio_tag = ""
     transcriber.aligner_backend = aligner_backend
     transcriber.aligner_language = aligner_language
     transcriber.aligner_model_name = aligner_model_name

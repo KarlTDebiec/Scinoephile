@@ -10,7 +10,6 @@ from pathlib import Path
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.transcription import (
     MIMO_MODEL_NAME,
-    MIMO_TOKENIZER_NAME,
     MimoRuntime,
 )
 from scinoephile.core import Language
@@ -42,7 +41,6 @@ def transcribe_series_guided(
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
     mimo_model_name: str = MIMO_MODEL_NAME,
-    mimo_tokenizer_name: str = MIMO_TOKENIZER_NAME,
     mimo_runtime: MimoRuntime = MimoRuntime.AUTO,
     mimo_language: str = "yue",
     mimo_max_tokens: int | None = None,
@@ -78,7 +76,6 @@ def transcribe_series_guided(
         demucs_mode: Demucs preprocessing mode
         vad_mode: voice activity detection mode
         mimo_model_name: MiMo ASR model name or local path
-        mimo_tokenizer_name: MiMo audio tokenizer name or local path
         mimo_runtime: runtime implementation used for MiMo inference
         mimo_language: language metadata passed to MiMo
         mimo_max_tokens: optional maximum number of MiMo tokens to generate
@@ -120,7 +117,6 @@ def transcribe_series_guided(
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
             mimo_model_name=mimo_model_name,
-            mimo_tokenizer_name=mimo_tokenizer_name,
             mimo_runtime=mimo_runtime,
             mimo_language=mimo_language,
             mimo_max_tokens=mimo_max_tokens,

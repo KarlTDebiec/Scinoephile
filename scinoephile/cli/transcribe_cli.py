@@ -14,7 +14,6 @@ from shlex import split as split_command
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.transcription import (
     MIMO_MODEL_NAME,
-    MIMO_TOKENIZER_NAME,
     MimoRuntime,
 )
 from scinoephile.common.argument_parsing import (
@@ -106,13 +105,6 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "(default: mlx-community/MiMo-V2.5-ASR-MLX)"
         ): "MiMo 模型名称或本地模型路径（默认：mlx-community/MiMo-V2.5-ASR-MLX）",
         (
-            "MiMo audio tokenizer name or local path "
-            "(default: XiaomiMiMo/MiMo-Audio-Tokenizer)"
-        ): (
-            "MiMo 音频 tokenizer 名称或本地路径"
-            "（默认：XiaomiMiMo/MiMo-Audio-Tokenizer）"
-        ),
-        (
             "optional command used to run MiMo in a subprocess, split like shell syntax"
         ): "用于在子进程中运行 MiMo 的可选命令，按 shell 语法拆分",
         "MiMo timestamp aligner backend (options: ctc, whisperx; default: ctc)": (
@@ -185,13 +177,6 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "MiMo model name or local model path "
             "(default: mlx-community/MiMo-V2.5-ASR-MLX)"
         ): "MiMo 模型名稱或本機模型路徑（預設：mlx-community/MiMo-V2.5-ASR-MLX）",
-        (
-            "MiMo audio tokenizer name or local path "
-            "(default: XiaomiMiMo/MiMo-Audio-Tokenizer)"
-        ): (
-            "MiMo 音訊 tokenizer 名稱或本機路徑"
-            "（預設：XiaomiMiMo/MiMo-Audio-Tokenizer）"
-        ),
         (
             "optional command used to run MiMo in a subprocess, split like shell syntax"
         ): "用於在子行程中執行 MiMo 的可選命令，依 shell 語法拆分",
@@ -359,15 +344,6 @@ class TranscribeCli(ScinoephileCliBase):
             ),
         )
         arg_groups["operation arguments"].add_argument(
-            "--mimo-tokenizer",
-            default=MIMO_TOKENIZER_NAME,
-            dest="mimo_tokenizer_name",
-            help=(
-                "MiMo audio tokenizer name or local path "
-                "(default: XiaomiMiMo/MiMo-Audio-Tokenizer)"
-            ),
-        )
-        arg_groups["operation arguments"].add_argument(
             "--mimo-worker-command",
             help=(
                 "optional command used to run MiMo in a subprocess, "
@@ -454,7 +430,6 @@ class TranscribeCli(ScinoephileCliBase):
         mimo_chunk_duration_seconds: float | None,
         mimo_chunk_overlap_seconds: float,
         mimo_model_name: str,
-        mimo_tokenizer_name: str,
         mimo_worker_command: str | None,
         mimo_aligner_backend: str,
         mimo_aligner_language: str,
@@ -526,7 +501,6 @@ class TranscribeCli(ScinoephileCliBase):
                 demucs_mode=demucs_mode,
                 vad_mode=vad_mode,
                 mimo_model_name=mimo_model_name,
-                mimo_tokenizer_name=mimo_tokenizer_name,
                 mimo_runtime=mimo_runtime,
                 mimo_language=mimo_language,
                 mimo_max_tokens=mimo_max_tokens,

@@ -5,7 +5,7 @@
 Package hierarchy (modules may import from any above):
 * demucs_separator / forced_alignment_worker / mimo_runtime / transcribed_word
 * mimo_worker / transcribed_segment
-* base_transcriber / forced_alignment / whisper_transcriber
+* forced_alignment / whisper_transcriber
 * mimo_transcriber
 """
 
@@ -13,14 +13,10 @@ from __future__ import annotations
 
 from logging import getLogger
 
-from .base_transcriber import BaseTranscriber
 from .demucs_separator import DemucsSeparator
 from .forced_alignment import TranscriptionAlignmentError, align_mimo_transcription
+from .mimo_runtime import MIMO_MODEL_NAME, MimoRuntime
 from .mimo_transcriber import (
-    MIMO_MLX_MODEL_NAME,
-    MIMO_MODEL_NAME,
-    MIMO_TOKENIZER_NAME,
-    MimoRuntime,
     MimoRuntimeUnsupportedError,
     MimoTranscriber,
     MimoTranscriptEmptyError,
@@ -33,9 +29,6 @@ from .whisper_transcriber import WhisperTranscriber
 
 __all__ = [
     "MIMO_MODEL_NAME",
-    "MIMO_MLX_MODEL_NAME",
-    "MIMO_TOKENIZER_NAME",
-    "BaseTranscriber",
     "DemucsSeparator",
     "MimoRuntime",
     "MimoRuntimeUnsupportedError",

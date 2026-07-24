@@ -144,7 +144,6 @@ def test_get_guided_transcriber_configures_mimo_backend(tmp_path: Path):
             punctuation_test_cases=[],
             backend=TranscriptionBackend.MIMO,
             mimo_model_name="custom/mimo",
-            mimo_tokenizer_name="custom/tokenizer",
             mimo_runtime=MimoRuntime.MLX,
             mimo_language="auto",
             mimo_max_tokens=512,
@@ -161,7 +160,6 @@ def test_get_guided_transcriber_configures_mimo_backend(tmp_path: Path):
     primary = transcriber.mimo_transcriber
     assert isinstance(primary, MimoTranscriber)
     assert primary.model_name == "custom/mimo"
-    assert primary.tokenizer_name == "custom/tokenizer"
     assert primary.mimo_runtime is MimoRuntime.MLX
     assert primary.language == "auto"
     assert primary.max_tokens == 512

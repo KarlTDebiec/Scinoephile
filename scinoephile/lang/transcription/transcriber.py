@@ -464,16 +464,16 @@ class GuidedTranscriber:
 
     def _transcribe_with_candidate(
         self,
-        transcriber: WhisperTranscriber,
+        transcriber: MimoTranscriber | WhisperTranscriber,
         audio: AudioSegment,
         *,
         cache_audio: AudioSegment,
         audio_duration: float,
     ) -> list[TranscribedSegment] | None:
-        """Run and validate one Whisper transcription candidate.
+        """Run and validate one transcription candidate.
 
         Arguments:
-            transcriber: configured Whisper transcriber
+            transcriber: configured transcription backend
             audio: audio to transcribe
             cache_audio: original audio used for cache-key generation
             audio_duration: original block audio duration in seconds
@@ -487,9 +487,14 @@ class GuidedTranscriber:
                 cache_audio=cache_audio,
                 use_cache=False,
             )
-        except AssertionError as exc:
+        except (
+            AssertionError,
+            ImportError,
+            MimoTranscriptionError,
+            TranscriptionAlignmentError,
+        ) as exc:
             logger.warning(
-                f"Whisper transcription candidate failed with an assertion: {exc}"
+                f"{type(transcriber).__name__} transcription candidate failed: {exc}"
             )
             return None
         if self._segments_are_usable(
@@ -533,28 +538,30 @@ class GuidedTranscriber:
                 return cached_segments
             rejected_transcribers.add(transcriber)
 
-        primary_audio = self._get_primary_transcription_audio(audio)
-        if (
-            primary_audio is not None
-            and self.mimo_transcriber not in rejected_transcribers
-        ):
-            segments = self._transcribe_with_mimo_candidate(
-                self.mimo_transcriber,
-                primary_audio,
-                cache_audio=cache_audio,
-                audio_duration=audio_duration,
-            )
-            if segments is not None:
-                return segments
+        primary_audio = None
+        if self.mimo_transcriber not in rejected_transcribers:
+            primary_audio = self._get_primary_transcription_audio(audio)
+            if primary_audio is not None:
+                segments = self._transcribe_with_candidate(
+                    self.mimo_transcriber,
+                    primary_audio,
+                    cache_audio=cache_audio,
+                    audio_duration=audio_duration,
+                )
+                if segments is not None:
+                    return segments
 
         if self.demucs_mode == DemucsMode.AUTO:
             assert self.unseparated_mimo_transcriber is not None
-            if primary_audio is not None:
+            if (
+                primary_audio is not None
+                or self.mimo_transcriber in rejected_transcribers
+            ):
                 logger.info(
                     "Retrying MiMo with original audio after unusable Demucs result"
                 )
             if self.unseparated_mimo_transcriber not in rejected_transcribers:
-                segments = self._transcribe_with_mimo_candidate(
+                segments = self._transcribe_with_candidate(
                     self.unseparated_mimo_transcriber,
                     audio,
                     cache_audio=cache_audio,
@@ -568,41 +575,6 @@ class GuidedTranscriber:
             "downstream gap translation"
         )
         return []
-
-    def _transcribe_with_mimo_candidate(
-        self,
-        transcriber: MimoTranscriber,
-        audio: AudioSegment,
-        *,
-        cache_audio: AudioSegment,
-        audio_duration: float,
-    ) -> list[TranscribedSegment] | None:
-        """Run and validate one MiMo transcription candidate.
-
-        Arguments:
-            transcriber: configured MiMo transcriber
-            audio: audio to transcribe
-            cache_audio: original audio used for cache-key generation
-            audio_duration: original block audio duration in seconds
-        Returns:
-            usable transcribed segments, if produced
-        """
-        try:
-            segments = transcriber(audio, cache_audio=cache_audio)
-        except (
-            ImportError,
-            MimoTranscriptionError,
-            TranscriptionAlignmentError,
-        ) as exc:
-            logger.warning(f"MiMo transcription failed: {exc}")
-            return None
-        if self._segments_are_usable(
-            segments,
-            audio_duration=audio_duration,
-        ):
-            return segments
-        logger.warning("MiMo produced unusable transcription")
-        return None
 
     def _transcribe_with_focused_tail_recovery(
         self,

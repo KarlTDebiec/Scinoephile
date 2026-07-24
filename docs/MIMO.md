@@ -1,23 +1,23 @@
-# MiMo Transcription Fallback
+# MiMo Transcription Backend
 
-MiMo-V2.5-ASR is an optional final fallback for reference-guided
-transcription. Whisper remains the primary backend. Enable MiMo with
-`--mimo-fallback`; Scinoephile tries it only when every configured Whisper
-attempt for a block is unusable:
+MiMo-V2.5-ASR is an alternative backend for reference-guided transcription.
+Whisper remains the default. Select MiMo explicitly with `--backend mimo`;
+Whisper is not invoked during that run.
 
-1. configured VAD modes on Demucs-separated audio
-2. configured VAD modes on original audio when Demucs is automatic
-3. defensive Whisper decoding
-4. MiMo on the original buffered block audio
+Demucs and VAD apply to either backend. With MiMo, `--demucs auto` first tries
+Demucs-separated audio and then the original audio if needed. `--vad auto`
+first tries Silero VAD-filtered audio and then unfiltered audio if needed. The
+`on` and `off` modes strictly enable or disable each preprocessing step.
 
-If MiMo also fails or produces unusable timestamped output, the block remains
-empty for downstream gap translation.
+If MiMo fails or produces unusable timestamped output, the block remains empty
+for downstream gap translation.
 
 ## Runtime
 
 The current implementation supports the MLX runtime on Apple Silicon. The
-default model is `mlx-community/MiMo-V2.5-ASR-MLX`; the model and audio
-tokenizer may instead be local paths.
+default model is `mlx-community/MiMo-V2.5-ASR-MLX`; it may instead be a local
+path. MLX-Audio resolves the audio tokenizer from the model manifest or from a
+sibling directory named `MiMo-Audio-Tokenizer`.
 
 Install the MiMo-capable MLX-Audio branch:
 
@@ -45,8 +45,8 @@ quoting; Scinoephile adds its source root to the worker's `PYTHONPATH`.
 
 ## Timestamp Alignment
 
-MiMo returns transcript text without word timestamps. Scinoephile accepts a
-MiMo fallback only after forced alignment produces `TranscribedSegment` and
+MiMo returns transcript text without word timestamps. Scinoephile accepts MiMo
+output only after forced alignment produces `TranscribedSegment` and
 `TranscribedWord` objects with usable timings.
 
 The default `ctc` aligner runs in the Scinoephile process using Torch and
@@ -65,10 +65,9 @@ Run MiMo in the Scinoephile environment with the default CTC aligner:
 UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile transcribe INPUT.mp4 \
   --reference-infile REFERENCE.srt \
   --language yue-Hant \
-  --mimo-fallback \
+  --backend mimo \
   --mimo-runtime mlx \
   --mimo-model /path/to/models/MiMo-V2.5-ASR-MLX \
-  --mimo-tokenizer /path/to/models/MiMo-Audio-Tokenizer \
   --mimo-aligner ctc \
   -o OUTPUT.yue-Hant.srt
 ```
@@ -79,9 +78,8 @@ Run MiMo and WhisperX through isolated environments:
 UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile transcribe INPUT.mp4 \
   --reference-infile REFERENCE.srt \
   --language yue-Hant \
-  --mimo-fallback \
+  --backend mimo \
   --mimo-model /path/to/models/MiMo-V2.5-ASR-MLX \
-  --mimo-tokenizer /path/to/models/MiMo-Audio-Tokenizer \
   --mimo-worker-command \
     '/path/to/mimo/.venv/bin/python /path/to/Scinoephile/scinoephile/audio/transcription/mimo_worker.py' \
   --mimo-aligner whisperx \
@@ -98,4 +96,5 @@ Relevant controls include:
 - `--mimo-chunk-overlap`: context overlap between chunks
 - `--mimo-aligner-model`: alternate CTC or WhisperX alignment model
 
-MiMo is not used unless `--mimo-fallback` is present.
+MiMo is used only when `--backend mimo` is selected; `--backend whisper` is the
+default.

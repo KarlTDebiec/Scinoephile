@@ -80,6 +80,7 @@ def test_transcribe_help_lists_generic_options():
     assert "--backend {whisper,mimo}" in help_text
     assert "--whisper-model MODEL_NAME" in help_text
     assert "--mimo-fallback" not in help_text
+    assert "--mimo-tokenizer" not in help_text
     assert "--mimo-runtime {auto,mlx}" in help_text
     assert "--mimo-aligner {ctc,whisperx}" in help_text
     assert "uses language-pair default if omitted" in normalized_help_text
@@ -207,7 +208,6 @@ def test_transcribe_cli_passes_generic_configuration(
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
         mimo_model_name: str,
-        mimo_tokenizer_name: str,
         mimo_runtime: MimoRuntime,
         mimo_language: str,
         mimo_max_tokens: int | None,
@@ -235,7 +235,6 @@ def test_transcribe_cli_passes_generic_configuration(
         assert demucs_mode is DemucsMode.ON
         assert vad_mode is VADMode.OFF
         assert mimo_model_name == "custom/mimo"
-        assert mimo_tokenizer_name == "custom/tokenizer"
         assert mimo_runtime is MimoRuntime.MLX
         assert mimo_language == "auto"
         assert mimo_max_tokens == 512
@@ -271,7 +270,6 @@ def test_transcribe_cli_passes_generic_configuration(
                 "--mimo-runtime mlx --mimo-language auto "
                 "--mimo-max-tokens 512 --mimo-chunk-duration 20 "
                 "--mimo-chunk-overlap 1.5 --mimo-model custom/mimo "
-                "--mimo-tokenizer custom/tokenizer "
                 "--mimo-worker-command 'python mimo_worker.py' "
                 "--mimo-aligner whisperx --mimo-aligner-language zh "
                 "--mimo-aligner-model custom/aligner "

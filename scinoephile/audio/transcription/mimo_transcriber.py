@@ -9,7 +9,6 @@ import json
 import os
 import platform
 import subprocess
-import sys
 from collections.abc import Mapping, Sequence
 from logging import getLogger
 from pathlib import Path
@@ -22,9 +21,7 @@ from scinoephile.common.validation import val_output_dir_path
 
 from .forced_alignment import TranscriptionAlignmentError, align_mimo_transcription
 from .mimo_runtime import (
-    MIMO_MLX_MODEL_NAME,
     MIMO_MODEL_NAME,
-    MIMO_TOKENIZER_NAME,
     MimoRuntime,
 )
 from .mimo_worker import transcribe_with_mimo
@@ -32,13 +29,9 @@ from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 
 __all__ = [
-    "MIMO_MLX_MODEL_NAME",
-    "MIMO_MODEL_NAME",
-    "MIMO_TOKENIZER_NAME",
     "MimoTranscriptEmptyError",
     "MimoTranscriber",
     "MimoTranscriptionError",
-    "MimoRuntime",
     "MimoRuntimeUnsupportedError",
     "MimoWorkerError",
 ]
@@ -86,7 +79,6 @@ class MimoTranscriber:
     def __init__(
         self,
         model_name: str = MIMO_MODEL_NAME,
-        tokenizer_name: str = MIMO_TOKENIZER_NAME,
         mimo_runtime: MimoRuntime | str = MimoRuntime.AUTO,
         language: str = "yue",
         max_tokens: int | None = None,
@@ -103,13 +95,11 @@ class MimoTranscriber:
         use_demucs: bool = False,
         use_vad: bool = False,
         retry_without_vad: bool = False,
-        audio_tag: str = "",
     ):
         """Initialize.
 
         Arguments:
             model_name: MiMo ASR model name or local model path
-            tokenizer_name: MiMo audio tokenizer name or local tokenizer path
             mimo_runtime: runtime implementation used for MiMo inference
             language: requested transcription language metadata
             max_tokens: optional maximum number of MiMo text tokens to generate
@@ -126,10 +116,8 @@ class MimoTranscriber:
             use_demucs: whether Demucs preprocessing was applied
             use_vad: whether to remove non-speech audio using Silero VAD
             retry_without_vad: whether to retry unfiltered audio after VAD failure
-            audio_tag: optional MiMo audio tag such as <chinese> or <english>
         """
         self.model_name = model_name
-        self.tokenizer_name = tokenizer_name
         self.mimo_runtime = MimoRuntime(mimo_runtime)
         self.language = language
         self.max_tokens = max_tokens
@@ -159,23 +147,31 @@ class MimoTranscriber:
         self.retry_without_vad = retry_without_vad
         if self.retry_without_vad and not self.use_vad:
             raise ValueError("MiMo cannot retry without VAD when VAD is disabled.")
-        self.audio_tag = audio_tag
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
     def __call__(
-        self, audio: AudioSegment, *, cache_audio: AudioSegment | None = None
+        self,
+        audio: AudioSegment,
+        *,
+        cache_audio: AudioSegment | None = None,
+        use_cache: bool = True,
     ) -> list[TranscribedSegment]:
         """Transcribe audio.
 
         Arguments:
             audio: audio to transcribe
             cache_audio: optional audio used for cache-key generation
+            use_cache: whether to return a cached transcription when available
         Returns:
             transcription, split into timestamped segments
         """
-        return self.transcribe(audio, cache_audio=cache_audio)
+        return self.transcribe(
+            audio,
+            cache_audio=cache_audio,
+            use_cache=use_cache,
+        )
 
     def get_cached_transcription(
         self, cache_audio: AudioSegment
@@ -194,10 +190,9 @@ class MimoTranscriber:
         logger.info(f"Loaded MiMo transcription from cache: {cache_path}")
         with cache_path.open("r", encoding="utf-8") as file:
             payload = json.load(file)
-        if isinstance(payload, Mapping):
-            raw_segments = payload.get("segments")
-        else:
-            raw_segments = payload
+        if not isinstance(payload, Mapping):
+            raise MimoWorkerError(f"Malformed MiMo cache payload: {cache_path}")
+        raw_segments = payload.get("segments")
         if not isinstance(raw_segments, list):
             raise MimoWorkerError(f"Malformed MiMo cache payload: {cache_path}")
         segments = [TranscribedSegment.model_validate(s) for s in raw_segments]
@@ -205,18 +200,26 @@ class MimoTranscriber:
         return segments
 
     def transcribe(
-        self, audio: AudioSegment, *, cache_audio: AudioSegment | None = None
+        self,
+        audio: AudioSegment,
+        *,
+        cache_audio: AudioSegment | None = None,
+        use_cache: bool = True,
     ) -> list[TranscribedSegment]:
         """Transcribe audio.
 
         Arguments:
             audio: audio to transcribe
             cache_audio: optional audio used for cache-key generation
+            use_cache: whether to return a cached transcription when available
         Returns:
             transcription, split into timestamped segments
         """
         cache_audio = cache_audio or audio
-        if (segments := self.get_cached_transcription(cache_audio)) is not None:
+        if (
+            use_cache
+            and (segments := self.get_cached_transcription(cache_audio)) is not None
+        ):
             return segments
 
         segments = self._transcribe_uncached(audio)
@@ -245,28 +248,43 @@ class MimoTranscriber:
         if self.cache_dir_path is None:
             return None
 
-        audio_sha256 = hashlib.sha256(audio.raw_data).hexdigest()
-        effective_runtime = self._get_effective_mimo_runtime()
-        effective_model_name = self._get_effective_model_name()
-        vad_key = _VAD_CACHE_VERSION if self.use_vad else "off"
-        cache_key = (
-            f"{audio_sha256}_backend-mimo_"
-            f"runtime-{effective_runtime}_"
-            f"model-{effective_model_name}_tokenizer-{self.tokenizer_name}_"
-            f"language-{self.language}_audio-tag-{self.audio_tag}_"
-            f"max-tokens-{self.max_tokens or 'default'}_"
-            f"chunk-duration-{self.chunk_duration_seconds or 'off'}_"
-            f"chunk-overlap-{self.chunk_overlap_seconds}_"
-            f"aligner-{self.aligner_backend}_"
-            f"aligner-language-{self.aligner_language}_"
-            f"aligner-model-{self.aligner_model_name or 'default'}_"
-            f"aligner-worker-{self.aligner_worker_command or 'in-process'}_"
-            f"demucs-{'on' if self.use_demucs else 'off'}_"
-            f"vad-{vad_key}_"
-            f"retry-without-vad-{'on' if self.retry_without_vad else 'off'}"
+        cache_hash = hashlib.sha256(audio.raw_data)
+        cache_hash.update(b"\0")
+        cache_hash.update(
+            json.dumps(
+                self._get_cache_metadata(),
+                ensure_ascii=False,
+                sort_keys=True,
+            ).encode("utf-8")
         )
-        cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
-        return self.cache_dir_path / f"{cache_sha256}.json"
+        return self.cache_dir_path / f"{cache_hash.hexdigest()}.json"
+
+    def _get_cache_metadata(self) -> dict[str, object]:
+        """Get metadata that identifies cached MiMo output.
+
+        Returns:
+            cache identity metadata
+        """
+        vad_version = None
+        if self.use_vad:
+            vad_version = _VAD_CACHE_VERSION
+        return {
+            "backend": "mimo",
+            "model_name": self.model_name,
+            "runtime": self._get_effective_mimo_runtime(),
+            "language": self.language,
+            "max_tokens": self.max_tokens,
+            "chunk_duration_seconds": self.chunk_duration_seconds,
+            "chunk_overlap_seconds": self.chunk_overlap_seconds,
+            "worker_command": self.worker_command,
+            "aligner_backend": self.aligner_backend,
+            "aligner_language": self.aligner_language,
+            "aligner_model_name": self.aligner_model_name,
+            "aligner_worker_command": self.aligner_worker_command,
+            "use_demucs": self.use_demucs,
+            "vad_version": vad_version,
+            "retry_without_vad": self.retry_without_vad,
+        }
 
     def _get_cache_payload(
         self, segments: Sequence[TranscribedSegment]
@@ -279,36 +297,9 @@ class MimoTranscriber:
             cache payload
         """
         return {
-            "backend": "mimo",
-            "model_name": self._get_effective_model_name(),
-            "tokenizer_name": self.tokenizer_name,
-            "runtime": self._get_effective_mimo_runtime(),
-            "language": self.language,
-            "audio_tag": self.audio_tag,
-            "max_tokens": self.max_tokens,
-            "chunk_duration_seconds": self.chunk_duration_seconds,
-            "chunk_overlap_seconds": self.chunk_overlap_seconds,
-            "aligner_backend": self.aligner_backend,
-            "aligner_language": self.aligner_language,
-            "aligner_model_name": self.aligner_model_name,
-            "aligner_worker_command": self.aligner_worker_command,
-            "use_vad": self.use_vad,
-            "retry_without_vad": self.retry_without_vad,
+            **self._get_cache_metadata(),
             "segments": [segment.model_dump() for segment in segments],
         }
-
-    def _get_worker_command(self) -> Sequence[str]:
-        """Get command used to run the MiMo worker.
-
-        Returns:
-            worker command
-        """
-        if self.worker_command is not None:
-            return self.worker_command
-        return [
-            sys.executable,
-            str(Path(__file__).with_name("mimo_worker.py")),
-        ]
 
     def _get_effective_mimo_runtime(self) -> MimoRuntime:
         """Get the runtime used for this platform when auto mode is selected.
@@ -325,18 +316,6 @@ class MimoTranscriber:
             "CUDA support is not included in this initial implementation."
         )
 
-    def _get_effective_model_name(self) -> str:
-        """Get the model name resolved for the selected runtime.
-
-        Returns:
-            model name or local model path
-        """
-        if self.model_name != MIMO_MODEL_NAME:
-            return self.model_name
-        if self._get_effective_mimo_runtime() == MimoRuntime.MLX:
-            return MIMO_MLX_MODEL_NAME
-        return self.model_name
-
     def _get_mimo_request(self, audio_path: Path) -> dict[str, object]:
         """Get a MiMo runtime request payload for an audio file.
 
@@ -347,11 +326,9 @@ class MimoTranscriber:
         """
         request: dict[str, object] = {
             "audio_path": str(audio_path),
-            "model_name": self._get_effective_model_name(),
-            "tokenizer_name": self.tokenizer_name,
+            "model_name": self.model_name,
             "runtime": self._get_effective_mimo_runtime(),
             "language": self.language,
-            "audio_tag": self.audio_tag,
         }
         if self.max_tokens is not None:
             request["max_tokens"] = self.max_tokens
@@ -437,8 +414,9 @@ class MimoTranscriber:
         Raises:
             MimoWorkerError: if in-process MiMo fails
         """
+        request = self._get_mimo_request(audio_path)
         try:
-            return transcribe_with_mimo(self._get_mimo_request(audio_path))
+            return transcribe_with_mimo(request)
         except (ImportError, OSError, RuntimeError, ValueError) as exc:
             raise MimoWorkerError(f"Unable to run MiMo in-process: {exc}") from exc
 
@@ -464,10 +442,11 @@ class MimoTranscriber:
         Raises:
             MimoWorkerError: if the worker fails or returns malformed output
         """
+        assert self.worker_command is not None
         request = self._get_mimo_request(audio_path)
         try:
             result = subprocess.run(
-                self._get_worker_command(),
+                self.worker_command,
                 input=json.dumps(request, ensure_ascii=False),
                 text=True,
                 capture_output=True,
