@@ -23,17 +23,20 @@ class CountingTesseractRecognizer(TesseractRecognizer):
         cache_dir_path: Path | None = None,
         *,
         language: Language = Language.eng,
+        overwrite_cache: bool = False,
     ):
         """Initialize.
 
         Arguments:
             cache_dir_path: directory in which to cache OCR results
             language: Scinoephile language
+            overwrite_cache: whether to replace matching OCR cache files
         """
         super().__init__(
             cache_dir_path=cache_dir_path,
             executable_path=Path("tesseract"),
             language=language,
+            overwrite_cache=overwrite_cache,
             skip_executable_validation=True,
         )
         self.recognize_count = 0
@@ -61,6 +64,20 @@ def test_tesseract_recognizer_caches_results_by_image(tmp_path: Path):
 
     assert recognizer.recognize_count == 1
     assert len(list(tmp_path.glob("*.json"))) == 1
+
+
+def test_tesseract_recognizer_overwrites_matching_cache(tmp_path: Path):
+    """Test Tesseract cache overwrite recognizes matching images again."""
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+    cached = CountingTesseractRecognizer(cache_dir_path=tmp_path)
+    fresh = CountingTesseractRecognizer(
+        cache_dir_path=tmp_path,
+        overwrite_cache=True,
+    )
+
+    assert cached.recognize_image(image) == "cached text eng"
+    assert fresh.recognize_image(image) == "cached text eng"
+    assert fresh.recognize_count == 1
 
 
 @parametrize(

@@ -7,7 +7,6 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
 from scinoephile.cli.helpers.web import (
     WEB_LOCALIZATIONS,
     WebServerArguments,
@@ -15,19 +14,21 @@ from scinoephile.cli.helpers.web import (
 )
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
+    output_dir_arg,
     output_file_arg,
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.workflows.ocr_validation import validate_ocr
 
 __all__ = ["OcrValidateCli"]
 
 OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "cache directory for local OCR validation data (default: %(default)s)": (
-            "本地 OCR 校验数据的缓存目录（默认：%(default)s）"
+        "local OCR validation data directory path (default: %(default)s)": (
+            "本地 OCR 校验数据目录路径（默认：%(default)s）"
         ),
         "command-line interface for OCR subtitle validation": (
             "OCR 字幕校验命令行界面"
@@ -45,8 +46,8 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
     },
     "zh-hant": {
-        "cache directory for local OCR validation data (default: %(default)s)": (
-            "本機 OCR 驗證資料的快取目錄（預設：%(default)s）"
+        "local OCR validation data directory path (default: %(default)s)": (
+            "本機 OCR 驗證資料目錄路徑（預設：%(default)s）"
         ),
         "command-line interface for OCR subtitle validation": (
             "OCR 字幕驗證命令列介面"
@@ -71,7 +72,6 @@ class OcrValidateCli(ScinoephileCliBase):
     """Validate OCR text against subtitle images."""
 
     localizations = merge_localizations(
-        CACHE_LOCALIZATIONS,
         WEB_LOCALIZATIONS,
         OCR_VALIDATE_LOCALIZATIONS,
     )
@@ -113,12 +113,13 @@ class OcrValidateCli(ScinoephileCliBase):
             action="store_true",
             help="maintainer option: write validation data updates to repo data",
         )
-        add_cache_dir_arg(
-            arg_groups["operation arguments"],
-            "ocr_validation",
-            help_text=(
-                "cache directory for local OCR validation data (default: %(default)s)"
-            ),
+        arg_groups["operation arguments"].add_argument(
+            "--validation-data-dir",
+            default=get_runtime_cache_dir_path("ocr_validation", create=False),
+            dest="validation_data_dir_path",
+            metavar="VALIDATION_DATA_DIR",
+            type=output_dir_arg(create=False),
+            help="local OCR validation data directory path (default: %(default)s)",
         )
 
         # Web arguments
@@ -162,7 +163,7 @@ class OcrValidateCli(ScinoephileCliBase):
         infile_path: Path,
         interactive: bool,
         dev: bool,
-        cache_dir_path: Path,
+        validation_data_dir_path: Path,
         web_args: WebServerArguments,
         outfile_path: Path,
         overwrite: bool,
@@ -180,7 +181,7 @@ class OcrValidateCli(ScinoephileCliBase):
             validate_ocr(
                 infile_path,
                 outfile_path,
-                cache_dir_path=cache_dir_path,
+                validation_data_dir_path=validation_data_dir_path,
                 interactive=interactive,
                 dev=dev,
                 overwrite=overwrite,

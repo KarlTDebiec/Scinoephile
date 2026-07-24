@@ -86,7 +86,7 @@ def test_index_renders_char_concern_romanizations(
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
     app = create_app(session)
@@ -110,7 +110,7 @@ def test_index_omits_romanizations_for_unrecognized_symbol(
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
     app = create_app(session)
@@ -132,7 +132,7 @@ def test_index_reload_reassesses_cached_subtitles(
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
     app = create_app(session)
@@ -237,7 +237,7 @@ def test_char_concern_image_url_changes_after_accept(
     )
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
     app = create_app(session)
@@ -488,7 +488,7 @@ def _char_concern_app(tmp_path: Path, monkeypatch: MonkeyPatch) -> Flask:
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
     return create_app(session)
@@ -564,7 +564,7 @@ def _done_app(
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
         include_done_subtitles=include_done_subtitles,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1]["A"] = {(10, 20)}

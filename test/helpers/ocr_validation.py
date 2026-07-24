@@ -139,7 +139,7 @@ def prepared_gap_session(
     """
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "validation-data",
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1][char_1] = {(10, 20)}

@@ -7,6 +7,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.cli.helpers.cache import (
+    CACHE_LOCALIZATIONS,
+    CacheArguments,
+    add_cache_args,
+)
 from scinoephile.cli.helpers.io import read_image_series, write_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -17,6 +22,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.image.ocr.paddle import ocr_image_series_with_paddle
 
 __all__ = ["OcrPaddleCli"]
@@ -60,7 +66,7 @@ class OcrPaddleCli(ScinoephileCliBase):
     PaddleOCR requires the optional PaddleOCR runtime dependencies.
     """
 
-    localizations = OCR_PADDLE_LOCALIZATIONS
+    localizations = merge_localizations(CACHE_LOCALIZATIONS, OCR_PADDLE_LOCALIZATIONS)
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -75,6 +81,7 @@ class OcrPaddleCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
+            "cache arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
         )
@@ -99,6 +106,9 @@ class OcrPaddleCli(ScinoephileCliBase):
             type=enum_arg(Language),
             help="language of the OCR text to recognize (default: %(default)s)",
         )
+
+        # Cache arguments
+        add_cache_args(arg_groups["cache arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -133,6 +143,7 @@ class OcrPaddleCli(ScinoephileCliBase):
         outfile_path: Path,
         language: Language,
         overwrite: bool,
+        cache_args: CacheArguments,
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
@@ -147,7 +158,9 @@ class OcrPaddleCli(ScinoephileCliBase):
         try:
             text_series = ocr_image_series_with_paddle(
                 image_series,
+                cache_dir_path=cache_args.dir_path / "paddleocr",
                 language=language,
+                overwrite_cache=cache_args.overwrite,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

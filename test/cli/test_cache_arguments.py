@@ -12,6 +12,10 @@ from scinoephile.cli.dictionary.build.dictionary_build_cuhk_cli import (
 from scinoephile.cli.media.media_extract_subs_cli import MediaExtractSubsCli
 from scinoephile.cli.media.media_probe_cli import MediaProbeCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
+from scinoephile.cli.ocr.ocr_lens_cli import OcrLensCli
+from scinoephile.cli.ocr.ocr_paddle_cli import OcrPaddleCli
+from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
+from scinoephile.cli.ocr.ocr_tesseract_cli import OcrTesseractCli
 from scinoephile.cli.review_cli import ReviewCli
 from scinoephile.cli.transcribe_cli import TranscribeCli
 from scinoephile.cli.translate_cli import TranslateCli
@@ -26,6 +30,10 @@ from test.helpers import parametrize
         MediaExtractSubsCli,
         MediaProbeCli,
         OcrFuseCli,
+        OcrLensCli,
+        OcrPaddleCli,
+        OcrProcessCli,
+        OcrTesseractCli,
         ReviewCli,
         TranscribeCli,
         TranslateCli,

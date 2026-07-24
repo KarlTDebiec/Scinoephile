@@ -30,7 +30,7 @@ def test_ocr_validate_cli(monkeypatch: MonkeyPatch, tmp_path: Path):
         infile_path_arg: Path,
         outfile_path_arg: Path,
         *,
-        cache_dir_path: Path | str | None = None,
+        validation_data_dir_path: Path | str | None = None,
         interactive: bool = False,
         dev: bool = False,
         overwrite: bool = False,
@@ -42,7 +42,7 @@ def test_ocr_validate_cli(monkeypatch: MonkeyPatch, tmp_path: Path):
             {
                 "infile_path": infile_path_arg,
                 "outfile_path": outfile_path_arg,
-                "cache_dir_path": cache_dir_path,
+                "validation_data_dir_path": validation_data_dir_path,
                 "interactive": interactive,
                 "dev": dev,
                 "overwrite": overwrite,
@@ -58,17 +58,18 @@ def test_ocr_validate_cli(monkeypatch: MonkeyPatch, tmp_path: Path):
     )
 
     outfile_path = tmp_path / "validated.srt"
-    cache_dir_path = tmp_path / "cache"
+    validation_data_dir_path = tmp_path / "validation-data"
     run_cli_with_args(
         OcrValidateCli,
-        f"--infile {infile_path} --outfile {outfile_path} --cache-dir {cache_dir_path}",
+        f"--infile {infile_path} --outfile {outfile_path} "
+        f"--validation-data-dir {validation_data_dir_path}",
     )
 
     assert validate_calls == [
         {
             "infile_path": infile_path,
             "outfile_path": outfile_path,
-            "cache_dir_path": cache_dir_path.resolve(),
+            "validation_data_dir_path": validation_data_dir_path.resolve(),
             "interactive": False,
             "dev": False,
             "overwrite": False,
@@ -95,7 +96,7 @@ def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
         infile_path_arg: Path,
         outfile_path_arg: Path,
         *,
-        cache_dir_path: Path | str | None = None,
+        validation_data_dir_path: Path | str | None = None,
         interactive: bool = False,
         dev: bool = False,
         overwrite: bool = False,
@@ -107,7 +108,7 @@ def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
             {
                 "infile_path": infile_path_arg,
                 "outfile_path": outfile_path_arg,
-                "cache_dir_path": cache_dir_path,
+                "validation_data_dir_path": validation_data_dir_path,
                 "interactive": interactive,
                 "dev": dev,
                 "overwrite": overwrite,
@@ -122,18 +123,19 @@ def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
     )
 
     outfile_path = tmp_path / "validated.srt"
-    cache_dir_path = tmp_path / "cache"
+    validation_data_dir_path = tmp_path / "validation-data"
     run_cli_with_args(
         OcrValidateCli,
         f"--infile {infile_path} --dev --interactive --host 0.0.0.0 --port 5050 "
-        f"--cache-dir {cache_dir_path} --outfile {outfile_path}",
+        f"--validation-data-dir {validation_data_dir_path} "
+        f"--outfile {outfile_path}",
     )
 
     assert validate_calls == [
         {
             "infile_path": infile_path,
             "outfile_path": outfile_path,
-            "cache_dir_path": cache_dir_path.resolve(),
+            "validation_data_dir_path": validation_data_dir_path.resolve(),
             "interactive": True,
             "dev": True,
             "overwrite": False,
@@ -141,6 +143,16 @@ def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
             "port": 5050,
         }
     ]
+
+
+def test_ocr_validate_cli_names_persistent_data_separately_from_cache():
+    """Test validation data is not presented as a disposable cache."""
+    help_text = OcrValidateCli.argparser().format_help()
+
+    assert "--validation-data-dir VALIDATION_DATA_DIR" in help_text
+    assert "local OCR validation data directory path" in help_text
+    assert "--cache-dir" not in help_text
+    assert "--cache-overwrite" not in help_text
 
 
 def test_ocr_validate_cli_web_rejects_sup_input(

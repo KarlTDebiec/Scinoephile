@@ -40,7 +40,7 @@ def ocr_image_series_with_lens(
         text subtitle series
     """
     try:
-        if "cache_dir_path" not in kwargs:
+        if kwargs.get("cache_dir_path") is None:
             kwargs["cache_dir_path"] = get_runtime_cache_dir_path("google-lens")
         lens_recognizer = LensRecognizer(**kwargs)
 
