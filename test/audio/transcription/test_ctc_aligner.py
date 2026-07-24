@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of forced transcription alignment helpers."""
+"""Tests of CTC transcription alignment."""
 
 from __future__ import annotations
 
@@ -12,14 +12,13 @@ from unittest.mock import Mock
 import numpy as np
 import pytest
 
-from scinoephile.audio.transcription import TranscriptionAlignmentError
-from scinoephile.audio.transcription.mlx_audio import forced_alignment
-from scinoephile.audio.transcription.mlx_audio.forced_alignment import (
-    align_transcription,
+from scinoephile.audio.transcription import (
+    CtcAligner,
+    TranscriptionAlignmentError,
 )
 
 
-def test_align_transcription_uses_ctc_backend_by_default(
+def test_ctc_aligner_expands_token_spans(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test CTC alignment expands token spans."""
@@ -33,16 +32,17 @@ def test_align_transcription_uses_ctc_backend_by_default(
             ]
         )
     )
+    aligner = CtcAligner()
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.forced_alignment._get_ctc_alignment_inputs",
-        lambda **_kwargs: (log_probs, [1, 2], [0, 1], 0),
-        raising=False,
+        aligner,
+        "_get_alignment_inputs",
+        lambda _audio_path, _text: (log_probs, [1, 2], [0, 1], 0),
     )
 
-    segments = align_transcription(
+    segments = aligner(
         Path("/tmp/audio.wav"),
         "你好",
-        duration_seconds=1.0,
+        1.0,
     )
 
     assert len(segments) == 1
@@ -73,11 +73,7 @@ def test_ctc_best_path_requires_blank_between_repeated_labels():
         TranscriptionAlignmentError,
         match="did not reach all tokens",
     ):
-        forced_alignment._get_ctc_best_path(
-            log_probs=log_probs,
-            token_ids=[1, 1],
-            blank_token_id=0,
-        )
+        CtcAligner._get_best_path(log_probs, [1, 1], 0)
 
 
 def test_ctc_best_path_accepts_blank_between_repeated_labels():
@@ -92,11 +88,7 @@ def test_ctc_best_path_accepts_blank_between_repeated_labels():
         )
     )
 
-    path = forced_alignment._get_ctc_best_path(
-        log_probs=log_probs,
-        token_ids=[1, 1],
-        blank_token_id=0,
-    )
+    path = CtcAligner._get_best_path(log_probs, [1, 1], 0)
 
     assert [(token_idx, frame_idx) for token_idx, frame_idx, _ in path] == [
         (0, 0),
@@ -105,7 +97,7 @@ def test_ctc_best_path_accepts_blank_between_repeated_labels():
     ]
 
 
-def test_align_transcription_ctc_preserves_unaligned_punctuation(
+def test_ctc_aligner_preserves_unaligned_punctuation(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test CTC alignment preserves punctuation absent from the aligner vocab."""
@@ -121,16 +113,17 @@ def test_align_transcription_ctc_preserves_unaligned_punctuation(
             ]
         )
     )
+    aligner = CtcAligner()
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.forced_alignment._get_ctc_alignment_inputs",
-        lambda **_kwargs: (log_probs, [1, 2], [0, 1], 0),
-        raising=False,
+        aligner,
+        "_get_alignment_inputs",
+        lambda _audio_path, _text: (log_probs, [1, 2], [0, 1], 0),
     )
 
-    segments = align_transcription(
+    segments = aligner.align(
         Path("/tmp/audio.wav"),
         "你好。",
-        duration_seconds=1.2,
+        1.2,
     )
 
     assert segments[0].text == "你好。"
@@ -141,20 +134,21 @@ def test_align_transcription_ctc_preserves_unaligned_punctuation(
     assert segments[0].words[2].confidence == 0.0
 
 
-def test_align_transcription_ctc_preserves_all_unknown_characters(
+def test_ctc_aligner_preserves_all_unknown_characters(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test a transcript outside the CTC vocabulary receives fallback timings."""
+    aligner = CtcAligner()
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.forced_alignment._get_ctc_alignment_inputs",
-        lambda **_kwargs: (np.empty((1, 1)), [], [], 0),
-        raising=False,
+        aligner,
+        "_get_alignment_inputs",
+        lambda _audio_path, _text: (np.empty((1, 1)), [], [], 0),
     )
 
-    segments = align_transcription(
+    segments = aligner.align(
         Path("/tmp/audio.wav"),
         "佢哋嘅",
-        duration_seconds=1.5,
+        1.5,
     )
 
     assert segments[0].text == "佢哋嘅"
@@ -175,7 +169,7 @@ def test_align_transcription_ctc_preserves_all_unknown_characters(
         ("你， 好", [0, 3], ["你，", " 好"]),
     ],
 )
-def test_align_transcription_ctc_attaches_internal_unaligned_characters(
+def test_ctc_aligner_attaches_internal_unaligned_characters(
     monkeypatch: pytest.MonkeyPatch,
     text: str,
     char_indices: list[int],
@@ -192,16 +186,17 @@ def test_align_transcription_ctc_attaches_internal_unaligned_characters(
             ]
         )
     )
+    aligner = CtcAligner()
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.forced_alignment._get_ctc_alignment_inputs",
-        lambda **_kwargs: (log_probs, [1, 2], char_indices, 0),
-        raising=False,
+        aligner,
+        "_get_alignment_inputs",
+        lambda _audio_path, _text: (log_probs, [1, 2], char_indices, 0),
     )
 
-    segments = align_transcription(
+    segments = aligner.align(
         Path("/tmp/audio.wav"),
         text,
-        duration_seconds=1.0,
+        1.0,
     )
 
     assert segments[0].words is not None
@@ -236,21 +231,20 @@ def test_ctc_token_ids_normalize_supported_chars_and_skip_unknown_chars():
                 "A": 4,
             }.get(token, 3)
 
-    processor = SimpleNamespace(tokenizer=FakeTokenizer())
+    aligner = CtcAligner()
+    aligner._processor = SimpleNamespace(tokenizer=FakeTokenizer())
+    aligner._model = object()
 
-    token_ids, char_indices = forced_alignment._get_ctc_token_ids(
-        text="你說。a嘅",
-        processor=processor,
-    )
+    token_ids, char_indices = aligner._get_token_ids("你說。a嘅")
 
     assert token_ids == [1, 2, 4]
     assert char_indices == [0, 1, 3]
 
 
-def test_ctc_components_are_cached_by_device(
+def test_ctc_components_are_cached_by_model_and_device(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test CTC component loading is cached for repeated alignment calls."""
+    """Test CTC components are configurable and cached by model and device."""
 
     class FakeAutoProcessor:
         """Fake Hugging Face processor factory."""
@@ -311,12 +305,7 @@ def test_ctc_components_are_cached_by_device(
             cls.model_names.append(model_name)
             return FakeModel()
 
-    monkeypatch.setattr(
-        forced_alignment,
-        "_CTC_COMPONENTS_BY_DEVICE",
-        {},
-        raising=False,
-    )
+    monkeypatch.setattr(CtcAligner, "_components", {})
     monkeypatch.setitem(
         sys.modules,
         "transformers",
@@ -326,25 +315,30 @@ def test_ctc_components_are_cached_by_device(
         ),
     )
 
-    first_processor, first_model = forced_alignment._get_ctc_components(device="cpu")
-    second_processor, second_model = forced_alignment._get_ctc_components(device="cpu")
-    third_processor, third_model = forced_alignment._get_ctc_components(device="mps")
+    first_aligner = CtcAligner("organization/model-a")
+    second_aligner = CtcAligner("organization/model-a")
+    other_model_aligner = CtcAligner("organization/model-b")
+    other_device_aligner = CtcAligner("organization/model-a", device="mps")
 
-    assert second_processor is first_processor
-    assert second_model is first_model
-    assert third_processor is not first_processor
-    assert third_model is not first_model
+    assert second_aligner.processor is first_aligner.processor
+    assert second_aligner.model is first_aligner.model
+    assert other_model_aligner.processor is not first_aligner.processor
+    assert other_model_aligner.model is not first_aligner.model
+    assert other_device_aligner.processor is not first_aligner.processor
+    assert other_device_aligner.model is not first_aligner.model
     assert FakeAutoProcessor.model_names == [
-        forced_alignment.CTC_MODEL_NAME,
-        forced_alignment.CTC_MODEL_NAME,
+        "organization/model-a",
+        "organization/model-b",
+        "organization/model-a",
     ]
     assert FakeAutoModelForCTC.model_names == [
-        forced_alignment.CTC_MODEL_NAME,
-        forced_alignment.CTC_MODEL_NAME,
+        "organization/model-a",
+        "organization/model-b",
+        "organization/model-a",
     ]
 
 
-def test_align_transcription_ctc_rounds_timings(
+def test_ctc_aligner_rounds_timings(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test CTC alignment rounds character timings."""
@@ -358,16 +352,17 @@ def test_align_transcription_ctc_rounds_timings(
             ]
         )
     )
+    aligner = CtcAligner()
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.forced_alignment._get_ctc_alignment_inputs",
-        lambda **_kwargs: (log_probs, [1, 2], [0, 1], 0),
-        raising=False,
+        aligner,
+        "_get_alignment_inputs",
+        lambda _audio_path, _text: (log_probs, [1, 2], [0, 1], 0),
     )
 
-    segments = align_transcription(
+    segments = aligner.align(
         Path("/tmp/audio.wav"),
         "你好",
-        duration_seconds=1.234,
+        1.234,
     )
 
     assert segments[0].words is not None
@@ -376,13 +371,13 @@ def test_align_transcription_ctc_rounds_timings(
     assert segments[0].words[0].confidence == round((0.9 + 0.85) / 2, 3)
 
 
-def test_align_transcription_rejects_empty_text():
+def test_ctc_aligner_rejects_empty_text():
     """Test empty text is not sent through forced alignment."""
     with pytest.raises(TranscriptionAlignmentError, match="empty transcript"):
-        align_transcription(
+        CtcAligner().align(
             Path("/tmp/audio.wav"),
             "   ",
-            duration_seconds=1.0,
+            1.0,
         )
 
 
@@ -390,14 +385,15 @@ def test_align_transcription_rejects_empty_text():
     "backend_error",
     [OSError("model unavailable"), RuntimeError("backend failed")],
 )
-def test_align_transcription_wraps_backend_errors(
+def test_ctc_aligner_wraps_backend_errors(
     monkeypatch: pytest.MonkeyPatch,
     backend_error: Exception,
 ):
     """Test low-level CTC failures are exposed as alignment errors."""
+    aligner = CtcAligner()
     monkeypatch.setattr(
-        forced_alignment,
-        "_align_with_ctc",
+        aligner,
+        "_get_alignment_inputs",
         Mock(side_effect=backend_error),
     )
 
@@ -405,8 +401,8 @@ def test_align_transcription_wraps_backend_errors(
         TranscriptionAlignmentError,
         match="Unable to run CTC transcription alignment",
     ):
-        align_transcription(
+        aligner.align(
             Path("/tmp/audio.wav"),
             "你好",
-            duration_seconds=1.0,
+            1.0,
         )

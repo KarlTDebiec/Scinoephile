@@ -5,13 +5,14 @@
 Package hierarchy (modules may import from any above):
 * exceptions / demucs_separator / transcribed_word
 * transcribed_segment
-* mlx_audio / whisper_transcriber
+* ctc_aligner / whisper_transcriber
 """
 
 from __future__ import annotations
 
 from logging import getLogger
 
+from .ctc_aligner import CtcAligner
 from .demucs_separator import DemucsSeparator
 from .exceptions import (
     TranscriptionAlignmentError,
@@ -24,6 +25,7 @@ from .transcribed_word import TranscribedWord
 from .whisper_transcriber import WhisperTranscriber
 
 __all__ = [
+    "CtcAligner",
     "DemucsSeparator",
     "TranscribedSegment",
     "TranscribedWord",
