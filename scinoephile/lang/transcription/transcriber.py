@@ -94,7 +94,7 @@ class GuidedTranscriber:
         self,
         *,
         language: Language,
-        reference_language: Language,
+        guide_language: Language,
         model_name: str,
         whisper_language: str,
         aligner: TranscriptionAligner,
@@ -106,7 +106,7 @@ class GuidedTranscriber:
 
         Arguments:
             language: transcription language
-            reference_language: reference subtitle language
+            guide_language: guide subtitle language
             model_name: Whisper model name used for transcription
             whisper_language: language code passed to Whisper
             aligner: transcription aligner
@@ -115,7 +115,7 @@ class GuidedTranscriber:
             segment_splitter: optional strategy for splitting Whisper segments
         """
         self.language = language
-        self.reference_language = reference_language
+        self.guide_language = guide_language
         self.model_name = model_name
         self.whisper_language = whisper_language
         self.aligner = aligner
@@ -218,7 +218,7 @@ class GuidedTranscriber:
             output_block = self.process_block(audio_block, reference_block)
             logger.info(
                 f"BLOCK {block_idx + 1}:\n"
-                f"REFERENCE ({self.reference_language.code}):\n"
+                f"REFERENCE ({self.guide_language.code}):\n"
                 f"{reference_block.to_simple_string()}\n"
                 f"TRANSCRIPTION ({self.language.code}):\n"
                 f"{output_block.to_simple_string()}"

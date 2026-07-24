@@ -29,7 +29,7 @@ def transcribe_series_guided(
     reference_series: Series,
     *,
     language: Language,
-    reference_language: Language | None = None,
+    guide_language: Language | None = None,
     model_name: str | None = None,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
@@ -52,7 +52,7 @@ def transcribe_series_guided(
         audio_series: audio divided into subtitle-timed blocks
         reference_series: reference subtitles corresponding to audio blocks
         language: transcription language
-        reference_language: explicit reference language, or None to detect it
+        guide_language: explicit guide language, or None to detect it
         model_name: Whisper model override
         demucs_mode: Demucs preprocessing mode
         vad_mode: Whisper VAD mode
@@ -71,17 +71,17 @@ def transcribe_series_guided(
     Returns:
         transcribed and reference-aligned audio subtitle series
     Raises:
-        ScinoephileError: if the reference language cannot be resolved or the pair is
+        ScinoephileError: if the guide language cannot be resolved or the pair is
             unsupported
     """
-    resolved_reference_language = resolve_language(
+    resolved_guide_language = resolve_language(
         reference_series,
-        reference_language,
+        guide_language,
     )
     if transcriber is None:
         transcriber = get_guided_transcriber(
             language,
-            resolved_reference_language,
+            resolved_guide_language,
             model_name=model_name,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,

@@ -196,7 +196,7 @@ def test_transcribe_cli_passes_generic_configuration(
         reference_series: Series,
         *,
         language: Language,
-        reference_language: Language | None,
+        guide_language: Language | None,
         model_name: str | None,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
@@ -211,7 +211,7 @@ def test_transcribe_cli_passes_generic_configuration(
         assert input_audio_series is audio_series
         assert isinstance(reference_series, Series)
         assert language is Language.yue_hant
-        assert reference_language is Language.zho_hans
+        assert guide_language is Language.zho_hans
         assert model_name == "custom/whisper"
         assert demucs_mode is DemucsMode.ON
         assert vad_mode is VADMode.OFF

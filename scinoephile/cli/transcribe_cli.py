@@ -309,7 +309,7 @@ class TranscribeCli(ScinoephileCliBase):
                 audio,
                 guide,
                 language=language,
-                reference_language=guide_language,
+                guide_language=guide_language,
                 model_name=model_name,
                 demucs_mode=demucs_mode,
                 vad_mode=vad_mode,

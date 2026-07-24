@@ -102,7 +102,7 @@ _YUE_LANGUAGE_SPEC = TranscriptionLanguageSpec(
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class GuidedTranscriptionSpec:
-    """Configuration for one transcription/reference language pair."""
+    """Configuration for one transcription/guide language pair."""
 
     language_spec: TranscriptionLanguageSpec
     """Configuration for the transcription language."""
@@ -162,12 +162,12 @@ DEFAULT_SPECS: Mapping[
         ): _YUE_HANT_SPEC,
     }
 )
-"""Guided transcription specifications keyed by transcription and reference language."""
+"""Guided transcription specifications keyed by transcription and guide language."""
 
 
 def get_guided_transcriber(
     language: Language,
-    reference_language: Language,
+    guide_language: Language,
     *,
     model_name: str | None = None,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
@@ -186,7 +186,7 @@ def get_guided_transcriber(
 
     Arguments:
         language: transcription language
-        reference_language: reference subtitle language
+        guide_language: guide subtitle language
         model_name: Whisper model override
         demucs_mode: Demucs preprocessing mode
         vad_mode: Whisper VAD mode
@@ -204,11 +204,11 @@ def get_guided_transcriber(
     Raises:
         ScinoephileError: if guided transcription does not support the language pair
     """
-    key = (language, reference_language)
+    key = (language, guide_language)
     if key not in DEFAULT_SPECS:
         raise ScinoephileError(
             "Guided transcription does not support language pair "
-            f"{language.code} <- {reference_language.code}"
+            f"{language.code} <- {guide_language.code}"
         )
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec
@@ -272,7 +272,7 @@ def get_guided_transcriber(
     )
     return GuidedTranscriber(
         language=language,
-        reference_language=reference_language,
+        guide_language=guide_language,
         model_name=model_name,
         whisper_language=language_spec.whisper_language,
         aligner=aligner,
