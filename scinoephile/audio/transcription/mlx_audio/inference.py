@@ -26,14 +26,17 @@ class MlxAudioInferenceResult:
     """Result of direct MLX-Audio inference."""
 
     text: str
+    """Transcript text."""
+
     duration_seconds: float
+    """Source audio duration in seconds."""
 
 
 def transcribe_with_mlx_audio(
     audio_path: Path,
-    *,
     model_name: str,
     language: str,
+    *,
     max_tokens: int | None = None,
 ) -> MlxAudioInferenceResult:
     """Transcribe one audio file using MLX-Audio.
@@ -49,7 +52,7 @@ def transcribe_with_mlx_audio(
         ImportError: if MLX-Audio is unavailable
         ValueError: if the model returns malformed output
     """
-    model = _get_mlx_model(model_name)
+    model = _get_or_load_mlx_audio_model(model_name)
     generate_kwargs: dict[str, object] = {"language": language}
     if max_tokens is not None:
         generate_kwargs["max_tokens"] = max_tokens
@@ -67,7 +70,25 @@ def transcribe_with_mlx_audio(
     return MlxAudioInferenceResult(text=text, duration_seconds=duration_seconds)
 
 
-def _get_model_loader() -> Any:
+def _get_or_load_mlx_audio_model(model_name: str) -> Any:
+    """Get a cached MLX-Audio model, loading it when necessary.
+
+    Arguments:
+        model_name: model name or local path
+    Returns:
+        loaded MLX-Audio model
+    """
+    model_reference: str | Path = model_name
+    if model_name.startswith(("/", ".", "~")):
+        model_reference = val_input_file_or_dir_path(model_name)
+    cache_key = str(model_reference)
+    if cache_key not in _MLX_MODEL_BY_REFERENCE:
+        load = _import_mlx_audio_stt_load()
+        _MLX_MODEL_BY_REFERENCE[cache_key] = load(model_reference)
+    return _MLX_MODEL_BY_REFERENCE[cache_key]
+
+
+def _import_mlx_audio_stt_load() -> Any:
     """Import the MLX-Audio STT model loader on demand.
 
     Returns:
@@ -83,21 +104,3 @@ def _get_model_loader() -> Any:
             "Install scinoephile with the 'transcription' extra."
         ) from exc
     return load
-
-
-def _get_mlx_model(model_name: str) -> Any:
-    """Get a cached MLX-Audio model.
-
-    Arguments:
-        model_name: model name or local path
-    Returns:
-        loaded MLX-Audio model
-    """
-    model_reference: str | Path = model_name
-    if model_name.startswith(("/", ".", "~")):
-        model_reference = val_input_file_or_dir_path(model_name)
-    cache_key = str(model_reference)
-    if cache_key not in _MLX_MODEL_BY_REFERENCE:
-        model_loader = _get_model_loader()
-        _MLX_MODEL_BY_REFERENCE[cache_key] = model_loader(model_reference)
-    return _MLX_MODEL_BY_REFERENCE[cache_key]

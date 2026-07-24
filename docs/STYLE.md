@@ -28,6 +28,11 @@
   `from scinoephile.core.exceptions import ScinoephileError` within
   `scinoephile.core.llms`, not `from scinoephile.core import ScinoephileError`).
 * Use `if TYPE_CHECKING:` blocks only when necessary to avoid circular imports.
+* Name dedicated lazy-import helpers
+  `_import_<module>[_<symbol_or_purpose>]`, spelling nested module paths and
+  imported symbols with underscores (for example,
+  `_import_huggingface_hub_snapshot_download`). Reserve `_get_...` for helpers
+  that retrieve or cache values rather than merely importing them.
 * Allow `ruff` to manage import sorting.
 
 ## Exports

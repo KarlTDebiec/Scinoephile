@@ -123,6 +123,8 @@ allowed-unresolved-imports = [
     "demucs_infer.**",
     "huggingface_hub",
     "huggingface_hub.**",
+    "mlx_audio",
+    "mlx_audio.**",
     "paddleocr",
     "torch",
     "torch.**",

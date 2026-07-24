@@ -33,13 +33,15 @@ def test_transcribe_with_mlx_audio_loads_model(
     fake_model.generate.return_value = SimpleNamespace(text="今日天气好好。")
     fake_load = Mock(return_value=fake_model)
     monkeypatch.setattr(
-        mlx_audio_inference, "_get_model_loader", Mock(return_value=fake_load)
+        mlx_audio_inference,
+        "_import_mlx_audio_stt_load",
+        Mock(return_value=fake_load),
     )
 
     result = mlx_audio_inference.transcribe_with_mlx_audio(
         audio_path,
-        model_name=str(model_dir_path),
-        language="zh",
+        str(model_dir_path),
+        "zh",
     )
 
     fake_load.assert_called_once_with(model_dir_path.resolve())
@@ -59,13 +61,15 @@ def test_transcribe_with_mlx_audio_passes_max_tokens(
     fake_model.generate.return_value = {"text": "今日天气好好。"}
     fake_load = Mock(return_value=fake_model)
     monkeypatch.setattr(
-        mlx_audio_inference, "_get_model_loader", Mock(return_value=fake_load)
+        mlx_audio_inference,
+        "_import_mlx_audio_stt_load",
+        Mock(return_value=fake_load),
     )
 
     mlx_audio_inference.transcribe_with_mlx_audio(
         audio_path,
-        model_name="model",
-        language="en",
+        "model",
+        "en",
         max_tokens=1024,
     )
 
@@ -87,14 +91,16 @@ def test_transcribe_with_mlx_audio_reuses_loaded_model(
     fake_model.generate.return_value = SimpleNamespace(text="今日天气好好。")
     fake_load = Mock(return_value=fake_model)
     monkeypatch.setattr(
-        mlx_audio_inference, "_get_model_loader", Mock(return_value=fake_load)
+        mlx_audio_inference,
+        "_import_mlx_audio_stt_load",
+        Mock(return_value=fake_load),
     )
 
     for _ in range(2):
         mlx_audio_inference.transcribe_with_mlx_audio(
             audio_path,
-            model_name="model",
-            language="zh",
+            "model",
+            "zh",
         )
 
     fake_load.assert_called_once_with("model")
@@ -108,17 +114,17 @@ def test_transcribe_with_mlx_audio_validates_local_model_path(
     """Test a local model reference must identify an existing file or directory."""
     audio_path = tmp_path / "audio.wav"
     AudioSegment.silent(duration=1000).export(audio_path, format="wav")
-    model_loader = Mock()
-    monkeypatch.setattr(mlx_audio_inference, "_get_model_loader", model_loader)
+    load = Mock()
+    monkeypatch.setattr(mlx_audio_inference, "_import_mlx_audio_stt_load", load)
 
     with pytest.raises(FileNotFoundError, match="does not exist"):
         mlx_audio_inference.transcribe_with_mlx_audio(
             audio_path,
-            model_name=str(tmp_path / "missing-model"),
-            language="zh",
+            str(tmp_path / "missing-model"),
+            "zh",
         )
 
-    model_loader.assert_not_called()
+    load.assert_not_called()
 
 
 def test_transcribe_with_mlx_audio_rejects_missing_text(
@@ -132,13 +138,13 @@ def test_transcribe_with_mlx_audio_rejects_missing_text(
     fake_model.generate.return_value = SimpleNamespace()
     monkeypatch.setattr(
         mlx_audio_inference,
-        "_get_model_loader",
+        "_import_mlx_audio_stt_load",
         Mock(return_value=Mock(return_value=fake_model)),
     )
 
     with pytest.raises(ValueError, match="missing transcript text"):
         mlx_audio_inference.transcribe_with_mlx_audio(
             audio_path,
-            model_name="model",
-            language="zh",
+            "model",
+            "zh",
         )

@@ -5,8 +5,8 @@
 from __future__ import annotations
 
 from scinoephile.audio.transcription import (
-    EmptyTranscriptError,
     TranscriptionAlignmentError,
+    TranscriptionEmptyError,
     TranscriptionError,
     TranscriptionInferenceError,
 )
@@ -14,6 +14,6 @@ from scinoephile.audio.transcription import (
 
 def test_specialized_transcription_errors_share_base_class():
     """Test backend-neutral transcription errors share one catchable base class."""
-    assert issubclass(EmptyTranscriptError, TranscriptionError)
+    assert issubclass(TranscriptionEmptyError, TranscriptionError)
     assert issubclass(TranscriptionAlignmentError, TranscriptionError)
     assert issubclass(TranscriptionInferenceError, TranscriptionError)

@@ -147,7 +147,7 @@ def _get_ctc_alignment_inputs(
     if device != "cpu":
         inputs = {key: value.to(device) for key, value in inputs.items()}
 
-    torch = _get_torch_module()
+    torch = _import_torch()
     model_callable = cast(Callable[..., Any], model)
     with torch.no_grad():
         output = model_callable(**inputs)
@@ -525,7 +525,7 @@ def _get_ctc_transcribed_words(
     return words
 
 
-def _get_torch_module() -> Any:
+def _import_torch() -> Any:
     """Get the torch module.
 
     Returns:

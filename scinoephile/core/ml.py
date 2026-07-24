@@ -17,7 +17,7 @@ def get_torch_device() -> str:
     Returns:
         torch device identifier
     """
-    torch = _get_torch_module()
+    torch = _import_torch()
     if torch.mps.is_available():
         return "mps"
     if torch.cuda.is_available():
@@ -26,7 +26,7 @@ def get_torch_device() -> str:
 
 
 @cache
-def _get_torch_module() -> Any:
+def _import_torch() -> Any:
     """Import torch on demand."""
     try:
         import torch  # noqa: PLC0415

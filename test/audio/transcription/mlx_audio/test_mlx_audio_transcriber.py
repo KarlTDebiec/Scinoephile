@@ -12,9 +12,9 @@ import pytest
 from pydub import AudioSegment
 
 from scinoephile.audio.transcription import (
-    EmptyTranscriptError,
     TranscribedSegment,
     TranscribedWord,
+    TranscriptionEmptyError,
     TranscriptionError,
     TranscriptionInferenceError,
 )
@@ -275,9 +275,9 @@ def test_transcribe_uses_direct_mlx_audio_inference(
 
     def fake_transcribe_with_mlx_audio(
         audio_path: Path,
-        *,
         model_name: str,
         language: str,
+        *,
         max_tokens: int | None,
     ) -> MlxAudioInferenceResult:
         """Capture direct MLX-Audio arguments and return transcript text."""
@@ -323,9 +323,9 @@ def test_transcribe_derives_language_and_passes_max_tokens(
 
     def fake_transcribe_with_mlx_audio(
         _audio_path: Path,
-        *,
         model_name: str,
         language: str,
+        *,
         max_tokens: int | None,
     ) -> MlxAudioInferenceResult:
         """Capture direct MLX-Audio arguments and return transcript text."""
@@ -430,7 +430,7 @@ def test_transcribe_chunks_audio_skips_empty_windows(
     patched_transcribe = Mock(
         side_effect=[
             [_get_timed_segment("one", start=0.1, end=0.9)],
-            EmptyTranscriptError("MLX-Audio returned empty transcript."),
+            TranscriptionEmptyError("MLX-Audio returned empty transcript."),
             [_get_timed_segment("three", start=0.6, end=1.0)],
         ]
     )
@@ -455,10 +455,12 @@ def test_transcribe_chunks_audio_rejects_all_empty_windows(
     monkeypatch.setattr(
         transcriber,
         "_transcribe_audio_window",
-        Mock(side_effect=EmptyTranscriptError("MLX-Audio returned empty transcript.")),
+        Mock(
+            side_effect=TranscriptionEmptyError("MLX-Audio returned empty transcript.")
+        ),
     )
 
-    with pytest.raises(EmptyTranscriptError, match="across audio chunks"):
+    with pytest.raises(TranscriptionEmptyError, match="across audio chunks"):
         transcriber.transcribe(audio)
 
 
@@ -513,7 +515,7 @@ def test_transcribe_vad_rejects_audio_without_detected_speech(
     patched_transcribe = Mock()
     monkeypatch.setattr(transcriber, "_transcribe_unfiltered_audio", patched_transcribe)
 
-    with pytest.raises(EmptyTranscriptError, match="VAD found no speech"):
+    with pytest.raises(TranscriptionEmptyError, match="VAD found no speech"):
         transcriber.transcribe(AudioSegment.silent(duration=1000))
 
     patched_transcribe.assert_not_called()

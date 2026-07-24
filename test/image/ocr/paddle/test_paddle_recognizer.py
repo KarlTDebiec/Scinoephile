@@ -161,7 +161,7 @@ def test_paddle_recognizer_preserves_root_logger_level(monkeypatch: MonkeyPatch)
     previous_level = root_logger.level
     monkeypatch.setattr(
         "scinoephile.image.ocr.paddle.paddle_recognizer.PaddleRecognizer."
-        "_get_paddle_ocr_class",
+        "_import_paddleocr_paddle_ocr",
         staticmethod(lambda: FakePaddleOCR),
     )
 
@@ -223,7 +223,7 @@ def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: MonkeyPatch):
     monkeypatch.setattr("builtins.__import__", fake_import)
 
     with raises(ImportError, match="'ocr' extra"):
-        PaddleRecognizer._get_paddle_ocr_class()
+        PaddleRecognizer._import_paddleocr_paddle_ocr()
 
 
 def test_paddle_recognizer_rejects_unsupported_languages():
@@ -269,7 +269,7 @@ def test_paddle_recognizer_maps_supported_languages_to_engine_codes(
 
     monkeypatch.setattr(
         "scinoephile.image.ocr.paddle.paddle_recognizer.PaddleRecognizer."
-        "_get_paddle_ocr_class",
+        "_import_paddleocr_paddle_ocr",
         staticmethod(lambda: FakePaddleOCR),
     )
 

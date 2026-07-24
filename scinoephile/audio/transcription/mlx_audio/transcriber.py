@@ -19,8 +19,8 @@ import numpy as np
 
 from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
 from scinoephile.audio.transcription.exceptions import (
-    EmptyTranscriptError,
     TranscriptionAlignmentError,
+    TranscriptionEmptyError,
     TranscriptionError,
     TranscriptionInferenceError,
 )
@@ -601,8 +601,8 @@ class MlxAudioTranscriber:
         try:
             return transcribe_with_mlx_audio(
                 audio_path,
-                model_name=self.model_name,
-                language=self.mlx_audio_language,
+                self.model_name,
+                self.mlx_audio_language,
                 max_tokens=self.max_tokens,
             )
         except (ImportError, OSError, RuntimeError, ValueError) as exc:
@@ -717,7 +717,7 @@ class MlxAudioTranscriber:
             inference_result = self._run_mlx_audio(temp_audio_path)
             text = inference_result.text
             if not text.strip():
-                raise EmptyTranscriptError("MLX-Audio returned empty transcript.")
+                raise TranscriptionEmptyError("MLX-Audio returned empty transcript.")
             content_characters = {char for char in text if char.isalnum()}
             if content_characters and content_characters <= _LOW_INFORMATION_CHARACTERS:
                 raise TranscriptionError(
@@ -753,7 +753,7 @@ class MlxAudioTranscriber:
             window_audio = audio[window_start_ms:window_end_ms]
             try:
                 window_segments = self._transcribe_audio_window(window_audio)
-            except EmptyTranscriptError:
+            except TranscriptionEmptyError:
                 logger.info(
                     f"Skipping empty MLX-Audio audio window "
                     f"{window_start_ms / 1000:.2f}s-"
@@ -772,7 +772,7 @@ class MlxAudioTranscriber:
             core_start_ms = core_end_ms
 
         if not segments:
-            raise EmptyTranscriptError(
+            raise TranscriptionEmptyError(
                 "MLX-Audio returned no transcript across audio chunks."
             )
         return segments
@@ -826,11 +826,11 @@ class MlxAudioTranscriber:
         Returns:
             timestamped transcription segments on the original audio timeline
         Raises:
-            EmptyTranscriptError: if VAD finds no speech
+            TranscriptionEmptyError: if VAD finds no speech
         """
         speech_intervals = self._get_vad_speech_intervals(audio)
         if not speech_intervals:
-            raise EmptyTranscriptError("MLX-Audio VAD found no speech.")
+            raise TranscriptionEmptyError("MLX-Audio VAD found no speech.")
 
         logger.info(
             f"MLX-Audio VAD retained {len(speech_intervals)} speech interval(s) "

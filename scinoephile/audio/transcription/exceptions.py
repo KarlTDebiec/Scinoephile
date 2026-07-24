@@ -7,8 +7,8 @@ from __future__ import annotations
 from scinoephile.core.exceptions import ScinoephileError
 
 __all__ = [
-    "EmptyTranscriptError",
     "TranscriptionAlignmentError",
+    "TranscriptionEmptyError",
     "TranscriptionError",
     "TranscriptionInferenceError",
 ]
@@ -18,12 +18,12 @@ class TranscriptionError(ScinoephileError):
     """Raised when a transcription backend cannot produce usable output."""
 
 
-class EmptyTranscriptError(TranscriptionError):
-    """Raised when a transcription backend returns no transcript text."""
-
-
 class TranscriptionAlignmentError(TranscriptionError):
     """Raised when transcription output cannot be timestamp-aligned."""
+
+
+class TranscriptionEmptyError(TranscriptionError):
+    """Raised when a transcription backend returns no transcript text."""
 
 
 class TranscriptionInferenceError(TranscriptionError):

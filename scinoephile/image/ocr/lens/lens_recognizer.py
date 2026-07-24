@@ -81,8 +81,8 @@ class LensRecognizer:
         except (KeyError, ValueError) as exc:
             raise ValueError(f"{language} is not supported by Google Lens OCR") from exc
         self.retries = val_int(retries, min_value=1)
-        self._lens_api_error_class = self._get_lens_api_error_class()
-        self._api = self._get_lens_api_class()()
+        self._lens_api_error_class = self._import_chrome_lens_py_lens_api_error()
+        self._api = self._import_chrome_lens_py_lens_api()()
 
     @override
     def __repr__(self) -> str:
@@ -207,7 +207,7 @@ class LensRecognizer:
         return LensRecognizer._clean_text("\n".join(lines))
 
     @staticmethod
-    def _get_lens_api_class() -> Any:
+    def _import_chrome_lens_py_lens_api() -> Any:
         """Import chrome-lens-py on demand.
 
         Returns:
@@ -224,7 +224,7 @@ class LensRecognizer:
         return LensAPI
 
     @staticmethod
-    def _get_lens_api_error_class() -> type[Exception]:
+    def _import_chrome_lens_py_lens_api_error() -> type[Exception]:
         """Import chrome-lens-py LensAPIError on demand.
 
         Returns:

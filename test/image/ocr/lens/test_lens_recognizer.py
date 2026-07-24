@@ -183,12 +183,13 @@ def test_lens_recognizer_maps_supported_languages_to_engine_codes(
         """Fake chrome-lens-py LensAPI class."""
 
     monkeypatch.setattr(
-        "scinoephile.image.ocr.lens.lens_recognizer.LensRecognizer._get_lens_api_class",
+        "scinoephile.image.ocr.lens.lens_recognizer.LensRecognizer."
+        "_import_chrome_lens_py_lens_api",
         staticmethod(lambda: FakeLensApi),
     )
     monkeypatch.setattr(
         "scinoephile.image.ocr.lens.lens_recognizer.LensRecognizer."
-        "_get_lens_api_error_class",
+        "_import_chrome_lens_py_lens_api_error",
         staticmethod(lambda: FakeLensApiError),
     )
 
@@ -457,7 +458,7 @@ def test_lens_recognizer_import_error_is_actionable(monkeypatch: MonkeyPatch):
     monkeypatch.setattr("builtins.__import__", fake_import)
 
     with raises(ImportError, match="'ocr' extra"):
-        LensRecognizer._get_lens_api_class()
+        LensRecognizer._import_chrome_lens_py_lens_api()
 
 
 def test_lens_recognizer_imports_chrome_lens_py_only_when_needed():

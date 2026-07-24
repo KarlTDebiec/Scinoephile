@@ -33,6 +33,35 @@ PERCENT_INTERPOLATION_RE = re.compile(
 
 
 @dataclass(frozen=True)
+class ClassAttributeDocumentationViolation:
+    """Class attribute documentation style violation."""
+
+    file_path: Path
+    """Source file path."""
+
+    line_number: int
+    """Source line number."""
+
+    class_name: str
+    """Class containing the undocumented attribute."""
+
+    attribute_name: str
+    """Undocumented public attribute name."""
+
+    def __str__(self) -> str:
+        """Format the violation for assertion output.
+
+        Returns:
+            formatted violation
+        """
+        return (
+            f"{self.file_path.relative_to(package_root.parent)}:"
+            f"{self.line_number}: {self.class_name}.{self.attribute_name} "
+            "is missing an immediately following docstring"
+        )
+
+
+@dataclass(frozen=True)
 class StringInterpolationViolation:
     """String interpolation style violation."""
 
@@ -71,6 +100,26 @@ def test_percent_interpolation_arguments_are_detected():
     ]
 
 
+def test_public_class_attributes_are_documented():
+    """Test public production class attributes have inline docstrings."""
+    violations: list[ClassAttributeDocumentationViolation] = []
+    for file_path in get_python_files(package_root):
+        tree = ast.parse(
+            file_path.read_text(encoding="utf-8"), filename=file_path.as_posix()
+        )
+        violations.extend(
+            get_class_attribute_documentation_violations(
+                file_path=file_path,
+                tree=tree,
+            )
+        )
+
+    assert not violations, (
+        "Document public class attributes with immediately following docstrings:\n"
+        + "\n".join(str(violation) for violation in violations)
+    )
+
+
 def test_python_sources_do_not_use_percent_string_interpolation():
     """Test Python sources do not use percent-style string interpolation."""
     violations: list[StringInterpolationViolation] = []
@@ -86,6 +135,79 @@ def test_python_sources_do_not_use_percent_string_interpolation():
         "Use f-strings instead of percent-style interpolation:\n"
         + "\n".join(str(violation) for violation in violations)
     )
+
+
+def test_undocumented_public_class_attributes_are_detected():
+    """Test undocumented public class attributes are detected."""
+    tree = ast.parse("class Example:\n    value: str\n")
+
+    violations = get_class_attribute_documentation_violations(
+        file_path=package_root.parent / "sample.py",
+        tree=tree,
+    )
+
+    assert [
+        (violation.class_name, violation.attribute_name) for violation in violations
+    ] == [("Example", "value")]
+
+
+def get_class_attribute_documentation_violations(
+    file_path: Path,
+    tree: ast.Module,
+) -> list[ClassAttributeDocumentationViolation]:
+    """Get undocumented public class attributes in a parsed Python file.
+
+    Arguments:
+        file_path: source file path
+        tree: parsed Python module
+    Returns:
+        class attribute documentation violations
+    """
+    violations: list[ClassAttributeDocumentationViolation] = []
+    for class_node in (
+        node for node in ast.walk(tree) if isinstance(node, ast.ClassDef)
+    ):
+        for index, statement in enumerate(class_node.body):
+            if isinstance(statement, ast.Assign):
+                attribute_names = [
+                    target.id
+                    for target in statement.targets
+                    if isinstance(target, ast.Name) and not target.id.startswith("_")
+                ]
+            elif isinstance(statement, ast.AnnAssign):
+                if isinstance(
+                    statement.target, ast.Name
+                ) and not statement.target.id.startswith("_"):
+                    attribute_names = [statement.target.id]
+                else:
+                    attribute_names = []
+            else:
+                continue
+
+            if not attribute_names:
+                continue
+
+            next_statement = None
+            if index + 1 < len(class_node.body):
+                next_statement = class_node.body[index + 1]
+            has_docstring = (
+                isinstance(next_statement, ast.Expr)
+                and isinstance(next_statement.value, ast.Constant)
+                and isinstance(next_statement.value.value, str)
+            )
+            if has_docstring:
+                continue
+
+            violations.extend(
+                ClassAttributeDocumentationViolation(
+                    file_path=file_path,
+                    line_number=statement.lineno,
+                    class_name=class_node.name,
+                    attribute_name=attribute_name,
+                )
+                for attribute_name in attribute_names
+            )
+    return violations
 
 
 def get_python_files(target_dir_path: Path) -> list[Path]:

@@ -14,8 +14,8 @@ from logging import getLogger
 
 from .demucs_separator import DemucsSeparator
 from .exceptions import (
-    EmptyTranscriptError,
     TranscriptionAlignmentError,
+    TranscriptionEmptyError,
     TranscriptionError,
     TranscriptionInferenceError,
 )
@@ -29,12 +29,12 @@ from .whisper_transcriber import WhisperTranscriber
 
 __all__ = [
     "DemucsSeparator",
-    "EmptyTranscriptError",
     "MlxAudioModelProfile",
     "MlxAudioTranscriber",
     "TranscribedSegment",
     "TranscribedWord",
     "TranscriptionAlignmentError",
+    "TranscriptionEmptyError",
     "TranscriptionError",
     "TranscriptionInferenceError",
     "WhisperTranscriber",

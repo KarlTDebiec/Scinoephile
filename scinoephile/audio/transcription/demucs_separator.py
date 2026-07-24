@@ -80,9 +80,9 @@ class DemucsSeparator:
             loaded Demucs model
         """
         if self._model is None:
-            model_loader = self._get_model_loader()
+            get_model = self._import_demucs_infer_get_model()
             try:
-                self._model = model_loader(self.model_name).to(self.device).eval()
+                self._model = get_model(self.model_name).to(self.device).eval()
             except Exception as exc:
                 raise ScinoephileError(
                     f"Unable to load Demucs model '{self.model_name}'."
@@ -122,13 +122,13 @@ class DemucsSeparator:
             self.model, "samplerate", normalized_audio.frame_rate
         )
         if normalized_audio.frame_rate != target_frame_rate:
-            torchaudio_functional = self._get_torchaudio_functional_module()
+            torchaudio_functional = self._import_torchaudio_functional()
             waveform = torchaudio_functional.resample(
                 waveform, normalized_audio.frame_rate, target_frame_rate
             )
 
-        torch = self._get_torch_module()
-        apply_model = self._get_apply_model()
+        torch = self._import_torch()
+        apply_model = self._import_demucs_infer_apply_model()
         with torch.no_grad():
             try:
                 sources = apply_model(
@@ -149,7 +149,7 @@ class DemucsSeparator:
 
         vocals = sources[0, vocals_idx].cpu()
         if target_frame_rate != normalized_audio.frame_rate:
-            torchaudio_functional = self._get_torchaudio_functional_module()
+            torchaudio_functional = self._import_torchaudio_functional()
             vocals = torchaudio_functional.resample(
                 vocals, target_frame_rate, normalized_audio.frame_rate
             )
@@ -239,7 +239,7 @@ class DemucsSeparator:
         )
 
     @staticmethod
-    def _get_apply_model() -> Any:
+    def _import_demucs_infer_apply_model() -> Any:
         """Import Demucs apply_model on demand."""
         try:
             from demucs_infer.apply import (  # noqa: E501, PLC0415
@@ -250,7 +250,7 @@ class DemucsSeparator:
         return apply_model
 
     @staticmethod
-    def _get_model_loader() -> Any:
+    def _import_demucs_infer_get_model() -> Any:
         """Import Demucs model loader on demand."""
         try:
             from demucs_infer.pretrained import (  # noqa: E501, PLC0415
@@ -261,7 +261,7 @@ class DemucsSeparator:
         return get_model
 
     @staticmethod
-    def _get_torch_module() -> Any:
+    def _import_torch() -> Any:
         """Import torch on demand."""
         try:
             import torch  # noqa: PLC0415
@@ -270,7 +270,7 @@ class DemucsSeparator:
         return torch
 
     @staticmethod
-    def _get_torchaudio_functional_module() -> Any:
+    def _import_torchaudio_functional() -> Any:
         """Import torchaudio.functional on demand."""
         try:
             from torchaudio import (  # noqa: PLC0415
@@ -290,7 +290,7 @@ class DemucsSeparator:
             waveform tensor as [channels, time]
         """
         array = np.array(audio.get_array_of_samples(), dtype=np.int16)
-        torch = DemucsSeparator._get_torch_module()
+        torch = DemucsSeparator._import_torch()
         waveform = torch.from_numpy(
             array.reshape((-1, audio.channels)).T.astype(np.float32)
             / np.iinfo(np.int16).max

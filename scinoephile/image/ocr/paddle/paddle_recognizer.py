@@ -89,7 +89,7 @@ class PaddleRecognizer:
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
-        paddle_ocr_cls = self._get_paddle_ocr_class()
+        paddle_ocr_cls = self._import_paddleocr_paddle_ocr()
         root_logger = getLogger()
         root_logger_level = root_logger.level
         try:
@@ -169,7 +169,7 @@ class PaddleRecognizer:
         return self.cache_dir_path / f"{cache_sha256}.json"
 
     @staticmethod
-    def _get_paddle_ocr_class() -> Any:
+    def _import_paddleocr_paddle_ocr() -> Any:
         """Import PaddleOCR on demand."""
         try:
             from paddleocr import (  # noqa: PLC0415
