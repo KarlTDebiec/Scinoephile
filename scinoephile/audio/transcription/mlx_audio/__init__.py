@@ -4,10 +4,19 @@
 
 Package hierarchy (modules may import from any above):
 * forced_alignment / inference
+* transcriber
 """
 
 from __future__ import annotations
 
 from .inference import MlxAudioInferenceResult
+from .transcriber import (
+    MlxAudioModelProfile,
+    MlxAudioTranscriber,
+)
 
-__all__ = ["MlxAudioInferenceResult"]
+__all__ = [
+    "MlxAudioInferenceResult",
+    "MlxAudioModelProfile",
+    "MlxAudioTranscriber",
+]
