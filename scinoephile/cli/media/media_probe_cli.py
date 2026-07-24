@@ -7,7 +7,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
+from scinoephile.cli.helpers.cache import (
+    CACHE_LOCALIZATIONS,
+    CacheArguments,
+    add_cache_args,
+)
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -25,8 +29,6 @@ __all__ = ["MediaProbeCli"]
 MEDIA_PROBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "command-line interface for probing media streams": "探测媒体流的命令行界面",
-        "cache directory for reusable media stream inspection data (default: "
-        "%(default)s)": "可复用媒体流检查数据的缓存目录（默认：%(default)s）",
         "force Chinese script analysis for a standalone SUP infile": (
             "对独立 SUP 输入文件强制执行中文脚本分析"
         ),
@@ -36,8 +38,6 @@ MEDIA_PROBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
     "zh-hant": {
         "command-line interface for probing media streams": "探測媒體流的命令列介面",
-        "cache directory for reusable media stream inspection data (default: "
-        "%(default)s)": "可重用媒體流檢查資料的快取目錄（預設：%(default)s）",
         "force Chinese script analysis for a standalone SUP infile": (
             "對獨立 SUP 輸入檔強制執行中文腳本分析"
         ),
@@ -67,6 +67,7 @@ class MediaProbeCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
+            "cache arguments",
             optional_arguments_name="additional arguments",
         )
 
@@ -90,15 +91,9 @@ class MediaProbeCli(ScinoephileCliBase):
             action="store_true",
             help="force Chinese script analysis for a standalone SUP infile",
         )
-        add_cache_dir_arg(
-            arg_groups["operation arguments"],
-            "media",
-            "subtitles",
-            help_text=(
-                "cache directory for reusable media stream inspection data "
-                "(default: %(default)s)"
-            ),
-        )
+
+        # Cache arguments
+        add_cache_args(arg_groups["cache arguments"])
         parser.set_defaults(_parser=parser)
 
     @classmethod
@@ -118,7 +113,7 @@ class MediaProbeCli(ScinoephileCliBase):
         infile_path: Path,
         details: bool,
         force_check_script: bool,
-        cache_dir_path: Path,
+        cache_args: CacheArguments,
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
@@ -138,7 +133,8 @@ class MediaProbeCli(ScinoephileCliBase):
                 analysis = analyze_zho_subtitle_stream_script(
                     infile_path,
                     stream,
-                    cache_dir_path=cache_dir_path,
+                    cache_dir_path=cache_args.dir_path,
+                    overwrite_cache=cache_args.overwrite,
                 )
                 language = analysis.script
                 if language is None:
@@ -152,7 +148,8 @@ class MediaProbeCli(ScinoephileCliBase):
                         stream.index: stream
                         for stream in get_zho_subtitle_streams(
                             infile_path,
-                            cache_dir_path=cache_dir_path,
+                            cache_dir_path=cache_args.dir_path,
+                            overwrite_cache=cache_args.overwrite,
                             streams=streams,
                         )
                     }

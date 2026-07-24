@@ -248,7 +248,10 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
         assert stream.index == 0
         assert stream.codec_name == "hdmv_pgs_subtitle"
         assert stream.language == "zho"
-        assert kwargs == {"cache_dir_path": cache_dir_path}
+        assert kwargs == {
+            "cache_dir_path": cache_dir_path.resolve(),
+            "overwrite_cache": True,
+        }
         return ZhoSubtitleScriptAnalysis(script="zho-Hant")
 
     with (
@@ -265,7 +268,7 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
             MediaProbeCli,
             (
                 f"--infile {infile_path} --cache-dir {cache_dir_path} "
-                "--force-check-script"
+                "--force-check-script --cache-overwrite"
             ),
         )
 
