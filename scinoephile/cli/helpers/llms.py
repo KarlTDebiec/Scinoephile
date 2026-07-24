@@ -19,6 +19,7 @@ from typing import Any
 
 from scinoephile.common.argument_parsing import input_file_arg, output_file_arg
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import (
     DEFAULT_PROVIDER_NAME,
     get_provider_api_key_env_var_name,
@@ -31,6 +32,7 @@ from .argument_bundle_field_action import ArgumentBundleFieldAction
 
 __all__ = [
     "LLM_LOCALIZATIONS",
+    "LLM_TEST_CASE_JSON_LOCALIZATIONS",
     "LlmArguments",
     "add_llm_provider_args",
     "add_llm_test_case_json_arg",
@@ -38,40 +40,51 @@ __all__ = [
     "read_llm_additional_context",
 ]
 
-LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
+LLM_TEST_CASE_JSON_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "additional help": "附加帮助",
-        "Available LLM providers:": "可用 LLM 提供商：",
-        "text file from which to read additional LLM prompt context": (
-            "用于读取 LLM 提示词附加上下文的文本文件"
-        ),
-        "llm arguments": "LLM 参数",
-        "LLM model": "LLM 模型",
         "JSON file containing test cases": "包含测试用例的 JSON 文件",
-        f"LLM provider (default: {DEFAULT_PROVIDER_NAME}). Use "
-        "--list-llm-providers for more information.": (
-            f"LLM 提供商（默认：{DEFAULT_PROVIDER_NAME}）。使用 "
-            "--list-llm-providers 获取更多信息。"
-        ),
-        "list available LLM providers and exit": "列出可用 LLM 提供商并退出",
     },
     "zh-hant": {
-        "additional help": "附加說明",
-        "Available LLM providers:": "可用 LLM 提供商：",
-        "text file from which to read additional LLM prompt context": (
-            "用於讀取 LLM 提示詞附加上下文的文字檔"
-        ),
-        "llm arguments": "LLM 參數",
-        "LLM model": "LLM 模型",
         "JSON file containing test cases": "包含測試案例的 JSON 檔",
-        f"LLM provider (default: {DEFAULT_PROVIDER_NAME}). Use "
-        "--list-llm-providers for more information.": (
-            f"LLM 提供商（預設：{DEFAULT_PROVIDER_NAME}）。使用 "
-            "--list-llm-providers 取得更多資訊。"
-        ),
-        "list available LLM providers and exit": "列出可用 LLM 提供商並結束",
     },
 }
+"""Localized text shared by CLIs that expose one LLM test-case JSON file."""
+
+LLM_LOCALIZATIONS: dict[str, dict[str, str]] = merge_localizations(
+    LLM_TEST_CASE_JSON_LOCALIZATIONS,
+    {
+        "zh-hans": {
+            "additional help": "附加帮助",
+            "Available LLM providers:": "可用 LLM 提供商：",
+            "text file from which to read additional LLM prompt context": (
+                "用于读取 LLM 提示词附加上下文的文本文件"
+            ),
+            "llm arguments": "LLM 参数",
+            "LLM model": "LLM 模型",
+            f"LLM provider (default: {DEFAULT_PROVIDER_NAME}). Use "
+            "--list-llm-providers for more information.": (
+                f"LLM 提供商（默认：{DEFAULT_PROVIDER_NAME}）。使用 "
+                "--list-llm-providers 获取更多信息。"
+            ),
+            "list available LLM providers and exit": "列出可用 LLM 提供商并退出",
+        },
+        "zh-hant": {
+            "additional help": "附加說明",
+            "Available LLM providers:": "可用 LLM 提供商：",
+            "text file from which to read additional LLM prompt context": (
+                "用於讀取 LLM 提示詞附加上下文的文字檔"
+            ),
+            "llm arguments": "LLM 參數",
+            "LLM model": "LLM 模型",
+            f"LLM provider (default: {DEFAULT_PROVIDER_NAME}). Use "
+            "--list-llm-providers for more information.": (
+                f"LLM 提供商（預設：{DEFAULT_PROVIDER_NAME}）。使用 "
+                "--list-llm-providers 取得更多資訊。"
+            ),
+            "list available LLM providers and exit": "列出可用 LLM 提供商並結束",
+        },
+    },
+)
 """Localized text shared by CLIs that expose LLM provider arguments."""
 
 

@@ -288,6 +288,158 @@ def test_transcribe_recovers_from_malformed_cache(
     )
 
 
+def test_malformed_cache_does_not_override_fresh_rejection(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test a stale cache-read error does not replace fresh rejection behavior.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    audio = _get_cache_audio()
+    fresh_segments = [_get_timed_segment("fresh")]
+    transcriber = MlxAudioTranscriber(cache_dir_path=tmp_path)
+    cache_path = transcriber._get_cache_path(audio)
+    assert cache_path is not None
+    cache_path.write_text("{", encoding="utf-8")
+    monkeypatch.setattr(
+        transcriber,
+        "_transcribe_uncached",
+        Mock(return_value=fresh_segments),
+    )
+
+    segments = transcriber.transcribe(audio, is_usable=lambda _segments: False)
+
+    assert segments == []
+    assert (
+        json.loads(cache_path.read_text(encoding="utf-8"))["segments"][0]["text"]
+        == "fresh"
+    )
+
+
+def test_transcribe_uses_usable_fallback_cache_before_preprocessing(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test retry caches are inspected before expensive preprocessing.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    audio = _get_cache_audio()
+    rejected_segments = [_get_timed_segment("rejected")]
+    expected_segments = [_get_timed_segment("cached fallback")]
+    transcriber = _get_mlx_audio_transcriber(cache_dir_path=tmp_path)
+    transcriber.use_demucs = True
+    transcriber.use_vad = True
+    transcriber.retry_without_demucs = True
+    transcriber.retry_without_vad = True
+    transcriber.demucs_separator = Mock()
+    patched_transcribe = Mock()
+    monkeypatch.setattr(transcriber, "_transcribe_uncached", patched_transcribe)
+    primary_cache_path = transcriber._get_cache_path(
+        audio,
+        use_demucs=True,
+        use_vad=True,
+    )
+    fallback_cache_path = transcriber._get_cache_path(
+        audio,
+        use_demucs=False,
+        use_vad=False,
+    )
+    assert primary_cache_path is not None
+    assert fallback_cache_path is not None
+    primary_cache_path.write_text(
+        json.dumps(
+            transcriber._get_cache_payload(
+                rejected_segments,
+                use_demucs=True,
+                use_vad=True,
+            )
+        ),
+        encoding="utf-8",
+    )
+    fallback_cache_path.write_text(
+        json.dumps(
+            transcriber._get_cache_payload(
+                expected_segments,
+                use_demucs=False,
+                use_vad=False,
+            )
+        ),
+        encoding="utf-8",
+    )
+
+    segments = transcriber.transcribe(
+        audio,
+        is_usable=lambda candidate: candidate == expected_segments,
+    )
+
+    assert segments == expected_segments
+    transcriber.demucs_separator.assert_not_called()
+    patched_transcribe.assert_not_called()
+
+
+def test_transcribe_overwrites_matching_cache(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test cache overwrite removes all retry files before transcription.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    audio = _get_cache_audio()
+    expected_segments = [_get_timed_segment("fresh")]
+    transcriber = _get_mlx_audio_transcriber(cache_dir_path=tmp_path)
+    transcriber.use_demucs = True
+    transcriber.use_vad = True
+    transcriber.retry_without_demucs = True
+    transcriber.retry_without_vad = True
+    transcriber.demucs_separator = Mock(return_value=audio)
+    attempts = transcriber._get_attempt_configurations()
+    cache_paths = [
+        transcriber._get_cache_path(
+            audio,
+            use_demucs=use_demucs,
+            use_vad=use_vad,
+        )
+        for use_demucs, use_vad in attempts
+    ]
+    assert all(cache_path is not None for cache_path in cache_paths)
+    concrete_cache_paths = [
+        cache_path for cache_path in cache_paths if cache_path is not None
+    ]
+    for cache_path in concrete_cache_paths:
+        cache_path.write_text("cached", encoding="utf-8")
+
+    def transcribe_uncached(
+        _audio: AudioSegment,
+        *,
+        use_vad: bool,
+    ) -> list[TranscribedSegment]:
+        """Return fresh output after confirming every old cache was removed."""
+        assert use_vad
+        assert all(not cache_path.exists() for cache_path in concrete_cache_paths)
+        return expected_segments
+
+    monkeypatch.setattr(transcriber, "_transcribe_uncached", transcribe_uncached)
+
+    assert transcriber.transcribe(audio, overwrite_cache=True) == expected_segments
+    primary_cache_path = concrete_cache_paths[0]
+    assert (
+        json.loads(primary_cache_path.read_text(encoding="utf-8"))["segments"][0][
+            "text"
+        ]
+        == "fresh"
+    )
+    assert all(not cache_path.exists() for cache_path in concrete_cache_paths[1:])
+
+
 def test_transcribe_uses_direct_mlx_audio_inference(
     monkeypatch: pytest.MonkeyPatch,
 ):

@@ -113,6 +113,7 @@ class GuidedTranscriber:
         backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.AUTO,
+        overwrite_cache: bool = False,
         mlx_audio_transcriber: MlxAudioTranscriber | None = None,
         segment_splitter: TranscribedSegmentSplitter | None = None,
     ):
@@ -127,6 +128,7 @@ class GuidedTranscriber:
             backend: audio transcription backend
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
+            overwrite_cache: whether to replace matching transcription cache files
             mlx_audio_transcriber: MLX-Audio transcriber when MLX-Audio is selected
             segment_splitter: optional strategy for splitting transcribed segments
         """
@@ -138,6 +140,7 @@ class GuidedTranscriber:
         self.backend = backend
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
+        self.overwrite_cache = overwrite_cache
         self.mlx_audio_transcriber = mlx_audio_transcriber
         self.segment_splitter = segment_splitter
 
@@ -319,7 +322,14 @@ class GuidedTranscriber:
         assert self.recovery_transcriber is not None
         transcribers.append(self.recovery_transcriber)
         for transcriber in transcribers:
-            cached_segments = transcriber.get_cached_transcription(cache_audio)
+            try:
+                cached_segments = transcriber.get_cached_transcription(
+                    cache_audio,
+                    overwrite_cache=self.overwrite_cache,
+                )
+            except TranscriptionError as exc:
+                logger.warning(f"Unable to read Whisper transcription cache: {exc}")
+                continue
             if cached_segments is None:
                 continue
             if self._segments_are_usable(
@@ -518,6 +528,7 @@ class GuidedTranscriber:
                 audio,
                 cache_audio=audio,
                 is_usable=is_usable,
+                overwrite_cache=self.overwrite_cache,
             )
         except (
             AssertionError,
@@ -586,7 +597,8 @@ class GuidedTranscriber:
         )
         tail_audio_duration = len(normalized_tail_audio) / 1000
         tail_segments = self.tail_recovery_transcriber.get_cached_transcription(
-            normalized_tail_audio
+            normalized_tail_audio,
+            overwrite_cache=self.overwrite_cache,
         )
         unusable_cached_tail = (
             tail_segments is not None
@@ -795,9 +807,7 @@ class GuidedTranscriber:
                 continue
             has_text = True
             if not segment.words:
-                logger.warning(
-                    f"Rejecting transcription segment {segment.id} without word timings"
-                )
+                logger.warning(f"Rejecting segment {segment.id} without word timings")
                 return False
             duration_error = None
             if int(segment.end * 1000) <= int(segment.start * 1000):

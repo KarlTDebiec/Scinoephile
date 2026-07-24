@@ -35,6 +35,7 @@ def transcribe_series_guided(
     backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
+    overwrite_cache: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     prune_test_cases: bool = False,
@@ -59,6 +60,7 @@ def transcribe_series_guided(
         backend: audio transcription backend
         demucs_mode: Demucs preprocessing mode
         vad_mode: voice activity detection mode
+        overwrite_cache: whether to replace matching transcription cache files
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         prune_test_cases: whether to remove test cases not encountered in this run
@@ -89,6 +91,7 @@ def transcribe_series_guided(
             backend=backend,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
+            overwrite_cache=overwrite_cache,
             provider=provider,
             additional_context=additional_context,
             prune_test_cases=prune_test_cases,

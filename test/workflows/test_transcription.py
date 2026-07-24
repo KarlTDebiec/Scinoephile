@@ -46,6 +46,7 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
             delineation_json_path=delineation_json_path,
             punctuation_json_path=punctuation_json_path,
             backend=TranscriptionBackend.MLX_AUDIO,
+            overwrite_cache=True,
             start_at_idx=1,
             stop_at_idx=2,
         )
@@ -58,6 +59,7 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
     assert get_transcriber.call_args.kwargs["backend"] is TranscriptionBackend.MLX_AUDIO
     assert get_transcriber.call_args.kwargs["demucs_mode"] is DemucsMode.AUTO
     assert get_transcriber.call_args.kwargs["vad_mode"] is VADMode.AUTO
+    assert get_transcriber.call_args.kwargs["overwrite_cache"] is True
     assert not any(
         key.startswith("mlx_audio_") for key in get_transcriber.call_args.kwargs
     )

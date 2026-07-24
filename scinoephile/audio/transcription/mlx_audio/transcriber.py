@@ -290,6 +290,7 @@ class MlxAudioTranscriber:
         cache_audio: AudioSegment | None = None,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
         use_cache: bool = True,
+        overwrite_cache: bool = False,
     ) -> list[TranscribedSegment]:
         """Transcribe audio.
 
@@ -298,6 +299,7 @@ class MlxAudioTranscriber:
             cache_audio: optional audio used for cache-key generation
             is_usable: optional callback used to reject output and trigger retries
             use_cache: whether to return a cached transcription when available
+            overwrite_cache: whether to replace matching cache files
         Returns:
             transcription, split into timestamped segments
         """
@@ -306,6 +308,7 @@ class MlxAudioTranscriber:
             cache_audio=cache_audio,
             is_usable=is_usable,
             use_cache=use_cache,
+            overwrite_cache=overwrite_cache,
         )
 
     def get_cached_transcription(
@@ -331,6 +334,7 @@ class MlxAudioTranscriber:
         cache_audio: AudioSegment | None = None,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
         use_cache: bool = True,
+        overwrite_cache: bool = False,
     ) -> list[TranscribedSegment]:
         """Transcribe audio.
 
@@ -339,12 +343,15 @@ class MlxAudioTranscriber:
             cache_audio: optional audio used for cache-key generation
             is_usable: optional callback used to reject output and trigger retries
             use_cache: whether to return a cached transcription when available
+            overwrite_cache: whether to replace matching cache files
         Returns:
             transcription, split into timestamped segments
         """
         cache_audio = cache_audio or audio
         attempts = self._get_attempt_configurations()
-        cached_segments, rejected_attempts, last_error = self._get_cached_attempt(
+        if overwrite_cache:
+            self._remove_cached_attempts(cache_audio, attempts=attempts)
+        cached_segments, rejected_attempts = self._get_cached_attempt(
             cache_audio,
             attempts=attempts,
             is_usable=is_usable,
@@ -358,7 +365,6 @@ class MlxAudioTranscriber:
             attempts=attempts,
             rejected_attempts=rejected_attempts,
             is_usable=is_usable,
-            last_error=last_error,
         )
 
     @property
@@ -482,6 +488,29 @@ class MlxAudioTranscriber:
             "segments": [segment.model_dump() for segment in segments],
         }
 
+    def _remove_cached_attempts(
+        self,
+        cache_audio: AudioSegment,
+        *,
+        attempts: Sequence[tuple[bool, bool]],
+    ):
+        """Remove cache files for all configured transcription attempts.
+
+        Arguments:
+            cache_audio: audio used for cache-key generation
+            attempts: Demucs and VAD configurations whose caches should be removed
+        """
+        for use_demucs, use_vad in attempts:
+            cache_path = self._get_cache_path(
+                cache_audio,
+                use_demucs=use_demucs,
+                use_vad=use_vad,
+            )
+            if cache_path is None or not cache_path.exists():
+                continue
+            cache_path.unlink()
+            logger.info(f"Removed MLX-Audio transcription cache: {cache_path}")
+
     def _get_cached_attempt(
         self,
         cache_audio: AudioSegment,
@@ -489,11 +518,7 @@ class MlxAudioTranscriber:
         attempts: Sequence[tuple[bool, bool]],
         is_usable: Callable[[list[TranscribedSegment]], bool] | None,
         use_cache: bool,
-    ) -> tuple[
-        list[TranscribedSegment] | None,
-        set[tuple[bool, bool]],
-        Exception | None,
-    ]:
+    ) -> tuple[list[TranscribedSegment] | None, set[tuple[bool, bool]]]:
         """Find a usable cached attempt and identify rejected configurations.
 
         Arguments:
@@ -502,12 +527,11 @@ class MlxAudioTranscriber:
             is_usable: optional callback used to reject cached output
             use_cache: whether to inspect cached transcriptions
         Returns:
-            usable cached segments, rejected configurations, and last cache error
+            usable cached segments and rejected configurations
         """
         rejected_attempts: set[tuple[bool, bool]] = set()
-        last_error: Exception | None = None
         if not use_cache:
-            return None, rejected_attempts, last_error
+            return None, rejected_attempts
 
         for use_demucs, use_vad in attempts:
             try:
@@ -518,14 +542,13 @@ class MlxAudioTranscriber:
                 )
             except TranscriptionError as exc:
                 logger.warning(f"Unable to read MLX-Audio transcription cache: {exc}")
-                last_error = exc
                 continue
             if segments is None:
                 continue
             if is_usable is None or is_usable(segments):
-                return segments, rejected_attempts, last_error
+                return segments, rejected_attempts
             rejected_attempts.add((use_demucs, use_vad))
-        return None, rejected_attempts, last_error
+        return None, rejected_attempts
 
     def _get_cached_transcription(
         self,
@@ -673,7 +696,6 @@ class MlxAudioTranscriber:
         attempts: Sequence[tuple[bool, bool]],
         rejected_attempts: set[tuple[bool, bool]],
         is_usable: Callable[[list[TranscribedSegment]], bool] | None,
-        last_error: Exception | None,
     ) -> list[TranscribedSegment]:
         """Run uncached MLX-Audio attempts in preprocessing retry order.
 
@@ -683,12 +705,12 @@ class MlxAudioTranscriber:
             attempts: Demucs and VAD configurations in retry order
             rejected_attempts: configurations with unusable cached output
             is_usable: optional callback used to reject output and trigger retries
-            last_error: last error encountered while reading cached attempts
         Returns:
             first usable transcription, or an empty list when output was rejected
         """
         separated_audio = None
         separation_attempted = False
+        last_error: Exception | None = None
         for use_demucs, use_vad in attempts:
             if (use_demucs, use_vad) in rejected_attempts:
                 continue

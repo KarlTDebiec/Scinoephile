@@ -30,7 +30,6 @@ AUDIT_PUNCTUATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "用于指导标点的参考字幕 SRT 文件"
         ),
         "punctuated target subtitle SRT file": "已加标点的目标字幕 SRT 文件",
-        "JSON file containing test cases": "包含测试用例的 JSON 文件",
         (
             "rows to include: all, changes, or unverified; all includes every "
             "decision; changes includes punctuation or whitespace revisions; "
@@ -46,7 +45,6 @@ AUDIT_PUNCTUATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "用於指導標點的參考字幕 SRT 檔"
         ),
         "punctuated target subtitle SRT file": "已加標點的目標字幕 SRT 檔",
-        "JSON file containing test cases": "包含測試案例的 JSON 檔",
         (
             "rows to include: all, changes, or unverified; all includes every "
             "decision; changes includes punctuation or whitespace revisions; "

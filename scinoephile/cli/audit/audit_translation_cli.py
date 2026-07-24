@@ -41,7 +41,6 @@ AUDIT_TRANSLATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "guide subtitle SRT file used for gapped or guided translation": (
             "用于缺口或引导式翻译的参考字幕 SRT 文件"
         ),
-        "JSON file containing test cases": "包含测试用例的 JSON 文件",
         (
             "rows to include: all or unverified; all includes every translation; "
             "unverified includes cases not marked verified (default: %(default)s)"
@@ -63,7 +62,6 @@ AUDIT_TRANSLATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "guide subtitle SRT file used for gapped or guided translation": (
             "用於缺口或引導式翻譯的參考字幕 SRT 檔"
         ),
-        "JSON file containing test cases": "包含測試案例的 JSON 檔",
         (
             "rows to include: all or unverified; all includes every translation; "
             "unverified includes cases not marked verified (default: %(default)s)"

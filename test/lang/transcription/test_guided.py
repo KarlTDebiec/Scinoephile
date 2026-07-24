@@ -94,6 +94,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
             provider=Mock(spec=LLMProvider),
             delineation_test_cases=[],
             punctuation_test_cases=[],
+            overwrite_cache=True,
         )
 
     assert transcriber.language is Language.yue_hant
@@ -101,6 +102,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.backend is TranscriptionBackend.WHISPER
     assert transcriber.demucs_mode is DemucsMode.AUTO
     assert transcriber.vad_mode is VADMode.AUTO
+    assert transcriber.overwrite_cache
     assert transcriber.mlx_audio_transcriber is None
     assert transcriber.whisper_language == "yue"
     assert transcriber.segment_splitter is not None

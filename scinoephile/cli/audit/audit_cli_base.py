@@ -9,6 +9,7 @@ from enum import Enum
 from pathlib import Path
 
 from scinoephile.cli.helpers.blocks import BLOCK_LOCALIZATIONS, add_block_range_args
+from scinoephile.cli.helpers.llms import LLM_TEST_CASE_JSON_LOCALIZATIONS
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
@@ -58,6 +59,7 @@ class AuditCliBase(ScinoephileCliBase):
 
     localizations = merge_localizations(
         BLOCK_LOCALIZATIONS,
+        LLM_TEST_CASE_JSON_LOCALIZATIONS,
         AUDIT_CLI_LOCALIZATIONS,
     )
     """Localized help text keyed by locale and English source text."""
