@@ -5,7 +5,7 @@
 Package hierarchy (modules may import from any above):
 * exceptions / demucs_separator / transcribed_word
 * transcribed_segment
-* whisper_transcriber
+* mlx_audio / whisper_transcriber
 """
 
 from __future__ import annotations
