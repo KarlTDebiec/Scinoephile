@@ -15,6 +15,7 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.transcription import MimoRuntime
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.cli.transcribe_cli import TranscribeCli
+from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import Language, ScinoephileError
@@ -98,28 +99,27 @@ def test_transcribe_cli_defers_whisper_model_default_to_registry():
     assert whisper_model_action.default is None
 
 
-def test_transcribe_cli_defaults_audio_preprocessing_to_auto():
-    """Test transcription CLI defaults Demucs and VAD to automatic modes."""
-    parser = TranscribeCli.argparser()
-    backend_action = next(
-        action
-        for action in parser._actions  # noqa: SLF001
-        if "--backend" in action.option_strings
-    )
-    demucs_action = next(
-        action
-        for action in parser._actions  # noqa: SLF001
-        if "--demucs" in action.option_strings
-    )
-    vad_action = next(
-        action
-        for action in parser._actions  # noqa: SLF001
-        if "--vad" in action.option_strings
-    )
+def test_transcribe_cli_enum_arguments_are_consistent():
+    """Test enum validation, metavars, help, and defaults derive from enums."""
+    actions = {
+        action.dest: action
+        for action in TranscribeCli.argparser()._actions  # noqa: SLF001
+    }
+    expected = {
+        "backend": (TranscriptionBackend, TranscriptionBackend.WHISPER),
+        "demucs_mode": (DemucsMode, DemucsMode.AUTO),
+        "vad_mode": (VADMode, VADMode.AUTO),
+        "mimo_runtime": (MimoRuntime, MimoRuntime.AUTO),
+    }
 
-    assert backend_action.default is TranscriptionBackend.WHISPER
-    assert demucs_action.default is DemucsMode.AUTO
-    assert vad_action.default is VADMode.AUTO
+    for action_name, (enum_type, default) in expected.items():
+        action = actions[action_name]
+        assert action.choices is None
+        assert action.default is default
+        assert action.metavar == enum_metavar(enum_type)
+        assert isinstance(action.help, str)
+        assert enum_options_list_str(enum_type) in action.help
+        assert "default: %(default)s" in action.help
 
 
 def test_transcribe_cli_writes_file(

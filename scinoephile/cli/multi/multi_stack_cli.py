@@ -13,6 +13,8 @@ from pathlib import Path
 from scinoephile.cli.helpers.io import read_series, write_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
+    enum_metavar,
+    enum_options_list_str,
     float_arg,
     get_arg_groups_by_name,
     input_file_arg,
@@ -58,9 +60,12 @@ MULTI_STACK_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "用于分割字幕块的停顿时长，单位为毫秒（默认：3000）"
         ),
         (
-            "pre-stack sync mode (options: anchor-top, anchor-bottom, off; "
-            "default: off)"
-        ): ("堆叠前同步模式（选项：anchor-top、anchor-bottom、off；默认：off）"),
+            f"pre-stack sync mode (options: "
+            f"{enum_options_list_str(StackSyncMode)}; default: %(default)s)"
+        ): (
+            "堆叠前同步模式（选项：anchor-top、anchor-bottom 或 off；"
+            "默认：%(default)s）"
+        ),
         "stacked subtitle outfile path (default: stdout)": (
             "堆叠字幕输出文件路径（默认：标准输出）"
         ),
@@ -83,9 +88,12 @@ MULTI_STACK_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "用於分割字幕區塊的停頓時長，單位為毫秒（預設：3000）"
         ),
         (
-            "pre-stack sync mode (options: anchor-top, anchor-bottom, off; "
-            "default: off)"
-        ): ("堆疊前同步模式（選項：anchor-top、anchor-bottom、off；預設：off）"),
+            f"pre-stack sync mode (options: "
+            f"{enum_options_list_str(StackSyncMode)}; default: %(default)s)"
+        ): (
+            "堆疊前同步模式（選項：anchor-top、anchor-bottom 或 off；"
+            "預設：%(default)s）"
+        ),
         "stacked subtitle outfile path (default: stdout)": (
             "堆疊字幕輸出檔路徑（預設：標準輸出）"
         ),
@@ -161,11 +169,11 @@ class MultiStackCli(ScinoephileCliBase):
             "--sync",
             default=StackSyncMode.OFF,
             dest="sync_mode",
-            metavar="{anchor-top,anchor-bottom,off}",
+            metavar=enum_metavar(StackSyncMode),
             type=enum_arg(StackSyncMode),
             help=(
-                "pre-stack sync mode (options: anchor-top, anchor-bottom, off; "
-                "default: off)"
+                f"pre-stack sync mode (options: "
+                f"{enum_options_list_str(StackSyncMode)}; default: %(default)s)"
             ),
         )
 

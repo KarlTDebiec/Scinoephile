@@ -19,6 +19,7 @@ from scinoephile.audio.transcription import (
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
+    enum_options_list_str,
     float_arg,
     get_arg_groups_by_name,
     input_file_arg,
@@ -73,21 +74,26 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "reference language tag (detected from infile if omitted)": (
             "参考语言标签（省略时从输入文件检测）"
         ),
-        "transcription backend (options: whisper, mimo; default: whisper)": (
-            "转写后端（选项：whisper、mimo；默认：whisper）"
-        ),
-        "Demucs vocal-separation mode (options: auto, on, off; default: auto)": (
-            "Demucs 人声分离模式（选项：auto、on、off；默认：auto）"
-        ),
         (
-            "voice activity detection mode (options: on, off, auto; default: auto)"
-        ): "语音活动检测模式（选项：on、off、auto；默认：auto）",
+            f"transcription backend (options: "
+            f"{enum_options_list_str(TranscriptionBackend)}; "
+            "default: %(default)s)"
+        ): "转写后端（选项：whisper 或 mimo；默认：%(default)s）",
+        (
+            f"Demucs vocal-separation mode (options: "
+            f"{enum_options_list_str(DemucsMode)}; default: %(default)s)"
+        ): "Demucs 人声分离模式（选项：auto、on 或 off；默认：%(default)s）",
+        (
+            f"voice activity detection mode (options: "
+            f"{enum_options_list_str(VADMode)}; default: %(default)s)"
+        ): "语音活动检测模式（选项：auto、on 或 off；默认：%(default)s）",
         (
             "Whisper model identifier override (uses language-pair default if omitted)"
         ): "Whisper 模型标识符覆盖值（省略时使用语言对默认值）",
-        "MiMo runtime (options: auto, mlx; default: auto)": (
-            "MiMo 运行时（选项：auto、mlx；默认：auto）"
-        ),
+        (
+            f"MiMo runtime (options: {enum_options_list_str(MimoRuntime)}; "
+            "default: %(default)s)"
+        ): "MiMo 运行时（选项：auto 或 mlx；默认：%(default)s）",
         "MiMo transcription language metadata (default: yue)": (
             "MiMo 转写语言元数据（默认：yue）"
         ),
@@ -146,21 +152,26 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "reference language tag (detected from infile if omitted)": (
             "參考語言標籤（省略時從輸入檔偵測）"
         ),
-        "transcription backend (options: whisper, mimo; default: whisper)": (
-            "轉寫後端（選項：whisper、mimo；預設：whisper）"
-        ),
-        "Demucs vocal-separation mode (options: auto, on, off; default: auto)": (
-            "Demucs 人聲分離模式（選項：auto、on、off；預設：auto）"
-        ),
         (
-            "voice activity detection mode (options: on, off, auto; default: auto)"
-        ): "語音活動偵測模式（選項：on、off、auto；預設：auto）",
+            f"transcription backend (options: "
+            f"{enum_options_list_str(TranscriptionBackend)}; "
+            "default: %(default)s)"
+        ): "轉寫後端（選項：whisper 或 mimo；預設：%(default)s）",
+        (
+            f"Demucs vocal-separation mode (options: "
+            f"{enum_options_list_str(DemucsMode)}; default: %(default)s)"
+        ): "Demucs 人聲分離模式（選項：auto、on 或 off；預設：%(default)s）",
+        (
+            f"voice activity detection mode (options: "
+            f"{enum_options_list_str(VADMode)}; default: %(default)s)"
+        ): "語音活動偵測模式（選項：auto、on 或 off；預設：%(default)s）",
         (
             "Whisper model identifier override (uses language-pair default if omitted)"
         ): "Whisper 模型識別碼覆寫值（省略時使用語言對預設值）",
-        "MiMo runtime (options: auto, mlx; default: auto)": (
-            "MiMo 執行環境（選項：auto、mlx；預設：auto）"
-        ),
+        (
+            f"MiMo runtime (options: {enum_options_list_str(MimoRuntime)}; "
+            "default: %(default)s)"
+        ): "MiMo 執行環境（選項：auto 或 mlx；預設：%(default)s）",
         "MiMo transcription language metadata (default: yue)": (
             "MiMo 轉寫語言後設資料（預設：yue）"
         ),
@@ -272,28 +283,34 @@ class TranscribeCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--backend",
             default=TranscriptionBackend.WHISPER,
-            metavar="{whisper,mimo}",
+            metavar=enum_metavar(TranscriptionBackend),
             type=enum_arg(TranscriptionBackend),
-            help=("transcription backend (options: whisper, mimo; default: whisper)"),
+            help=(
+                f"transcription backend (options: "
+                f"{enum_options_list_str(TranscriptionBackend)}; "
+                "default: %(default)s)"
+            ),
         )
         arg_groups["operation arguments"].add_argument(
             "--demucs",
             default=DemucsMode.AUTO,
             dest="demucs_mode",
-            metavar="{auto,on,off}",
+            metavar=enum_metavar(DemucsMode),
             type=enum_arg(DemucsMode),
             help=(
-                "Demucs vocal-separation mode (options: auto, on, off; default: auto)"
+                f"Demucs vocal-separation mode (options: "
+                f"{enum_options_list_str(DemucsMode)}; default: %(default)s)"
             ),
         )
         arg_groups["operation arguments"].add_argument(
             "--vad",
             default=VADMode.AUTO,
             dest="vad_mode",
-            metavar="{auto,on,off}",
+            metavar=enum_metavar(VADMode),
             type=enum_arg(VADMode),
             help=(
-                "voice activity detection mode (options: on, off, auto; default: auto)"
+                f"voice activity detection mode (options: "
+                f"{enum_options_list_str(VADMode)}; default: %(default)s)"
             ),
         )
         arg_groups["operation arguments"].add_argument(
@@ -307,9 +324,12 @@ class TranscribeCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--mimo-runtime",
             default=MimoRuntime.AUTO,
-            metavar="{auto,mlx}",
+            metavar=enum_metavar(MimoRuntime),
             type=enum_arg(MimoRuntime),
-            help="MiMo runtime (options: auto, mlx; default: auto)",
+            help=(
+                f"MiMo runtime (options: {enum_options_list_str(MimoRuntime)}; "
+                "default: %(default)s)"
+            ),
         )
         arg_groups["operation arguments"].add_argument(
             "--mimo-language",
