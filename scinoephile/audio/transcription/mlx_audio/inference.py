@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import wave
 from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
@@ -28,9 +27,6 @@ class MlxAudioInferenceResult:
     text: str
     """Transcript text."""
 
-    duration_seconds: float
-    """Source audio duration in seconds."""
-
     generation_tokens: int | None = None
     """Number of generated text tokens, when reported by the model."""
 
@@ -50,7 +46,7 @@ def transcribe_with_mlx_audio(
         language: model-specific language identifier
         max_tokens: optional maximum number of text tokens to generate
     Returns:
-        transcript text and source audio duration
+        normalized inference result
     Raises:
         ImportError: if MLX-Audio is unavailable
         ValueError: if the model returns malformed output
@@ -79,11 +75,8 @@ def transcribe_with_mlx_audio(
             "MLX-Audio inference result has an invalid generation token count."
         )
 
-    with wave.open(str(audio_path), "rb") as file:
-        duration_seconds = file.getnframes() / file.getframerate()
     return MlxAudioInferenceResult(
         text=text,
-        duration_seconds=duration_seconds,
         generation_tokens=generation_tokens,
     )
 

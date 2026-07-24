@@ -124,6 +124,8 @@ allowed-unresolved-imports = [
     "mlx_audio",
     "mlx_audio.**",
     "paddleocr",
+    "torch",
+    "transformers",
     "whisper_timestamped",
 ]
 

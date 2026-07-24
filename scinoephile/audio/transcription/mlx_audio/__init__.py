@@ -3,7 +3,7 @@
 """MLX-Audio transcription and timestamp alignment.
 
 Package hierarchy (modules may import from any above):
-* forced_alignment / inference
+* inference
 * transcriber
 """
 

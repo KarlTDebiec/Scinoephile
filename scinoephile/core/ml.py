@@ -29,7 +29,7 @@ def get_torch_device() -> str:
 def _get_torch_module() -> Any:
     """Import torch on demand."""
     try:
-        import torch  # ty: ignore[unresolved-import]  # noqa: PLC0415
+        import torch  # noqa: PLC0415
     except ImportError as exc:
         raise ImportError(
             "Torch support requires optional transcription dependencies. "

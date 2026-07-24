@@ -12,6 +12,7 @@ import pytest
 from pydub import AudioSegment
 
 from scinoephile.audio.transcription import (
+    CtcAligner,
     TranscribedSegment,
     TranscribedWord,
     TranscriptionEmptyError,
@@ -56,6 +57,22 @@ def test_get_cache_path_separates_model_configuration():
     assert second_cache_path is not None
     assert first_cache_path.parent == Path("/tmp/mlx-audio")
     assert second_cache_path.parent == Path("/tmp/mlx-audio")
+    assert first_cache_path != second_cache_path
+
+
+def test_get_cache_path_separates_ctc_model_configuration():
+    """Test MLX-Audio cache paths differ by CTC model configuration."""
+    audio = _get_cache_audio()
+    first_transcriber = _get_mlx_audio_transcriber()
+    second_transcriber = _get_mlx_audio_transcriber()
+    first_transcriber.ctc_aligner = CtcAligner("ctc/one")
+    second_transcriber.ctc_aligner = CtcAligner("ctc/two")
+
+    first_cache_path = first_transcriber._get_cache_path(audio)
+    second_cache_path = second_transcriber._get_cache_path(audio)
+
+    assert first_cache_path is not None
+    assert second_cache_path is not None
     assert first_cache_path != second_cache_path
 
 
@@ -452,7 +469,7 @@ def test_transcribe_uses_direct_mlx_audio_inference(
     audio = AudioSegment.silent(duration=1000)
     expected_segments = [_get_timed_segment("你好")]
     transcriber = MlxAudioTranscriber(model_name=MIMO_MODEL_NAME)
-    patched_align = Mock(return_value=expected_segments)
+    transcriber.ctc_aligner = Mock(return_value=expected_segments)
 
     def fake_transcribe_with_mlx_audio(
         audio_path: Path,
@@ -468,17 +485,12 @@ def test_transcribe_uses_direct_mlx_audio_inference(
             language=language,
             max_tokens=max_tokens,
         )
-        return MlxAudioInferenceResult(text="你好", duration_seconds=1.0)
+        return MlxAudioInferenceResult(text="你好")
 
     monkeypatch.setattr(
         "scinoephile.audio.transcription.mlx_audio.transcriber.transcribe_with_mlx_audio",
         fake_transcribe_with_mlx_audio,
     )
-    monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.transcriber.align_transcription",
-        patched_align,
-    )
-
     segments = transcriber.transcribe(audio)
 
     assert segments == expected_segments
@@ -500,7 +512,7 @@ def test_transcribe_derives_language_and_passes_max_tokens(
         language=Language.eng,
         max_tokens=1024,
     )
-    patched_align = Mock(return_value=expected_segments)
+    transcriber.ctc_aligner = Mock(return_value=expected_segments)
 
     def fake_transcribe_with_mlx_audio(
         _audio_path: Path,
@@ -515,17 +527,12 @@ def test_transcribe_derives_language_and_passes_max_tokens(
             language=language,
             max_tokens=max_tokens,
         )
-        return MlxAudioInferenceResult(text="你好", duration_seconds=1.0)
+        return MlxAudioInferenceResult(text="你好")
 
     monkeypatch.setattr(
         "scinoephile.audio.transcription.mlx_audio.transcriber.transcribe_with_mlx_audio",
         fake_transcribe_with_mlx_audio,
     )
-    monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.transcriber.align_transcription",
-        patched_align,
-    )
-
     segments = transcriber.transcribe(audio)
 
     assert segments == expected_segments
@@ -546,12 +553,12 @@ def test_transcribe_chunks_audio_and_offsets_segments(
     )
     patched_run_mlx_audio = Mock(
         side_effect=[
-            MlxAudioInferenceResult(text="one", duration_seconds=2.5),
-            MlxAudioInferenceResult(text="two", duration_seconds=3.0),
-            MlxAudioInferenceResult(text="three", duration_seconds=1.0),
+            MlxAudioInferenceResult(text="one"),
+            MlxAudioInferenceResult(text="two"),
+            MlxAudioInferenceResult(text="three"),
         ]
     )
-    patched_align = Mock(
+    transcriber.ctc_aligner = Mock(
         side_effect=[
             [_get_timed_segment("one", start=0.1, end=0.9)],
             [
@@ -581,15 +588,10 @@ def test_transcribe_chunks_audio_and_offsets_segments(
         ]
     )
     monkeypatch.setattr(transcriber, "_run_mlx_audio", patched_run_mlx_audio)
-    monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.transcriber.align_transcription",
-        patched_align,
-    )
-
     segments = transcriber.transcribe(audio)
 
     assert patched_run_mlx_audio.call_count == 3
-    assert patched_align.call_count == 3
+    assert transcriber.ctc_aligner.call_count == 3
     assert [segment.text for segment in segments] == ["one", "two", "three"]
     assert [segment.id for segment in segments] == [0, 1, 2]
     assert [segment.start for segment in segments] == pytest.approx([0.1, 2.2, 4.1])
@@ -609,37 +611,29 @@ def test_transcribe_splits_audio_after_generation_token_exhaustion(
         side_effect=[
             MlxAudioInferenceResult(
                 text="truncated",
-                duration_seconds=4.0,
                 generation_tokens=256,
             ),
             MlxAudioInferenceResult(
                 text="one",
-                duration_seconds=2.0,
                 generation_tokens=1,
             ),
             MlxAudioInferenceResult(
                 text="two",
-                duration_seconds=2.0,
                 generation_tokens=1,
             ),
         ]
     )
-    patched_align = Mock(
+    transcriber.ctc_aligner = Mock(
         side_effect=[
             [_get_timed_segment("one", end=2.0)],
             [_get_timed_segment("two", end=2.0)],
         ]
     )
     monkeypatch.setattr(transcriber, "_run_mlx_audio", patched_run_mlx_audio)
-    monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.transcriber.align_transcription",
-        patched_align,
-    )
-
     segments = transcriber.transcribe(audio)
 
     assert patched_run_mlx_audio.call_count == 3
-    assert patched_align.call_count == 2
+    assert transcriber.ctc_aligner.call_count == 2
     assert [segment.text for segment in segments] == ["one", "two"]
     assert [segment.start for segment in segments] == pytest.approx([0.0, 2.0])
     assert [segment.end for segment in segments] == pytest.approx([2.0, 4.0])
@@ -840,19 +834,17 @@ def test_transcribe_aligns_text_and_writes_cache(
     monkeypatch.setattr(
         transcriber,
         "_run_mlx_audio",
-        lambda _audio_path: MlxAudioInferenceResult(text="你好", duration_seconds=1.0),
+        lambda _audio_path: MlxAudioInferenceResult(text="你好"),
     )
-    patched_align = Mock(return_value=expected_segments)
-    monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.transcriber.align_transcription",
-        patched_align,
+    transcriber.ctc_aligner = Mock(
+        model_name="ctc/test-model",
+        return_value=expected_segments,
     )
 
     segments = transcriber.transcribe(audio)
 
     assert segments == expected_segments
-    patched_align.assert_called_once()
-    assert patched_align.call_args.kwargs["duration_seconds"] == 1.0
+    transcriber.ctc_aligner.assert_called_once_with(audio, "你好")
     cache_path = transcriber._get_cache_path(audio)
     assert cache_path is not None
     cache_payload = json.loads(cache_path.read_text(encoding="utf-8"))
@@ -874,20 +866,14 @@ def test_transcribe_rejects_low_information_vocalizations(
     monkeypatch.setattr(
         transcriber,
         "_run_mlx_audio",
-        Mock(
-            return_value=MlxAudioInferenceResult(text="啊！啊！", duration_seconds=1.0)
-        ),
+        Mock(return_value=MlxAudioInferenceResult(text="啊！啊！")),
     )
-    patched_align = Mock()
-    monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.transcriber.align_transcription",
-        patched_align,
-    )
+    transcriber.ctc_aligner = Mock()
 
     with pytest.raises(TranscriptionError, match="low-information"):
         transcriber.transcribe(AudioSegment.silent(duration=1000))
 
-    patched_align.assert_not_called()
+    transcriber.ctc_aligner.assert_not_called()
 
 
 def test_transcribe_wraps_mlx_audio_inference_errors(
@@ -926,6 +912,7 @@ def _get_mlx_audio_transcriber(
     transcriber.model_profile = get_mlx_audio_model_profile(model_name)
     transcriber.language = Language.yue_hant
     transcriber.mlx_audio_language = "zh"
+    transcriber.ctc_aligner = CtcAligner()
     transcriber.max_tokens = None
     transcriber.chunk_duration_seconds = None
     transcriber.chunk_overlap_seconds = 1.0

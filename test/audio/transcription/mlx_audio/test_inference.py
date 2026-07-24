@@ -46,7 +46,6 @@ def test_transcribe_with_mlx_audio_reads_mapping_result(
 
     assert result == MlxAudioInferenceResult(
         text="你好",
-        duration_seconds=0.5,
         generation_tokens=7,
     )
     model.generate.assert_called_once_with(
@@ -76,7 +75,6 @@ def test_transcribe_with_mlx_audio_reads_object_result(
     result = transcribe_with_mlx_audio(audio_path, "model/name", "en")
 
     assert result.text == "hello"
-    assert result.duration_seconds == 0.25
     assert result.generation_tokens is None
     model.generate.assert_called_once_with(str(audio_path), language="en")
 

@@ -17,6 +17,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
+from scinoephile.audio.transcription.ctc_aligner import CtcAligner
 from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
 from scinoephile.audio.transcription.exceptions import (
     TranscriptionAlignmentError,
@@ -32,10 +33,6 @@ from scinoephile.core import Language
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
-from .forced_alignment import (
-    CTC_MODEL_NAME,
-    align_transcription,
-)
 from .inference import MlxAudioInferenceResult, transcribe_with_mlx_audio
 
 __all__ = [
@@ -217,6 +214,7 @@ class MlxAudioTranscriber:
         self,
         model_name: str = MIMO_MODEL_NAME,
         language: Language = Language.yue_hant,
+        ctc_model_name: str | None = None,
         max_tokens: int | None = None,
         chunk_duration_seconds: float | None = None,
         chunk_overlap_seconds: float = 1.0,
@@ -232,6 +230,7 @@ class MlxAudioTranscriber:
         Arguments:
             model_name: supported MLX-Audio model name or local model path
             language: language to transcribe
+            ctc_model_name: optional CTC model name or local model path
             max_tokens: optional maximum number of text tokens to generate
             chunk_duration_seconds: optional chunk duration for inference
             chunk_overlap_seconds: context overlap applied to each chunk
@@ -250,6 +249,10 @@ class MlxAudioTranscriber:
         self.model_profile = get_mlx_audio_model_profile(model_name)
         self.language = language
         self.mlx_audio_language = self.model_profile.get_language_identifier(language)
+        if ctc_model_name is None:
+            self.ctc_aligner = CtcAligner()
+        else:
+            self.ctc_aligner = CtcAligner(ctc_model_name)
         self.max_tokens = max_tokens
         self.chunk_duration_seconds = chunk_duration_seconds
         self.chunk_overlap_seconds = chunk_overlap_seconds
@@ -464,7 +467,7 @@ class MlxAudioTranscriber:
             "chunk_duration_seconds": self.chunk_duration_seconds,
             "chunk_overlap_seconds": self.chunk_overlap_seconds,
             "aligner": "ctc",
-            "aligner_model_name": CTC_MODEL_NAME,
+            "aligner_model_name": self.ctc_aligner.model_name,
             "use_demucs": use_demucs,
             "vad_version": vad_version,
         }
@@ -627,7 +630,7 @@ class MlxAudioTranscriber:
             TranscriptionError: if Silero VAD is unavailable or fails
         """
         try:
-            import torch  # ty: ignore[unresolved-import]  # noqa: PLC0415
+            import torch  # noqa: PLC0415
             from whisper_timestamped.transcribe import (  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
                 get_vad_segments,
             )
@@ -818,11 +821,7 @@ class MlxAudioTranscriber:
                 raise TranscriptionError(
                     f"MLX-Audio returned only low-information vocalizations: {text!r}"
                 )
-            return align_transcription(
-                temp_audio_path,
-                text,
-                duration_seconds=inference_result.duration_seconds,
-            )
+            return self.ctc_aligner(audio, text)
 
     def _transcribe_audio_window_with_token_retry(
         self,
