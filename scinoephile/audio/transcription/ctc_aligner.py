@@ -104,9 +104,9 @@ class CtcAligner:
         Raises:
             TranscriptionAlignmentError: if alignment cannot recover word timings
         """
-        # Validate and normalize the transcription text
-        transcript_text = text.strip()
-        if not transcript_text:
+        # Validate the transcription text
+        transcript_text = text
+        if not transcript_text.strip():
             raise TranscriptionAlignmentError("Cannot align empty transcript.")
 
         # Derive timing scale from the audio being aligned
@@ -238,7 +238,15 @@ class CtcAligner:
         token_ids: list[int] = []
         char_indices: list[int] = []
         script_converter = OpenCC("t2s")
+        alignment_text_end_idx = len(text.rstrip())
         for char_idx, char in enumerate(text):
+            # Align one delimiter per internal whitespace run
+            if char.isspace() and (
+                char_idx == 0
+                or text[char_idx - 1].isspace()
+                or char_idx >= alignment_text_end_idx
+            ):
+                continue
             token_id = self._get_token_id(char, script_converter, tokenizer)
             if token_id is None:
                 continue
@@ -283,6 +291,28 @@ class CtcAligner:
         self._processor = processor
         self._model = model
         self._components[component_key] = (processor, model)
+
+    @staticmethod
+    def _attach_boundary_text(
+        run_text: str,
+        words: list[TranscribedWord],
+        has_next_timing: bool,
+    ) -> str | None:
+        """Attach unaligned boundary text to a timed character.
+
+        Arguments:
+            run_text: unaligned text at a transcript boundary
+            words: transcribed words built so far
+            has_next_timing: whether an aligned character follows the run
+        Returns:
+            pending prefix text when handled, otherwise None
+        """
+        if words and not has_next_timing:
+            words[-1].text += run_text
+            return ""
+        if not words and run_text.isspace():
+            return run_text
+        return None
 
     @staticmethod
     def _get_audio_samples(audio: AudioSegment) -> np.ndarray:
@@ -465,11 +495,31 @@ class CtcAligner:
         Returns:
             token ID, or None when the character cannot be aligned directly
         """
+        # Resolve tokenizer metadata and token conversion
+        unk_token_id = getattr(tokenizer, "unk_token_id", None)
+        convert_tokens_to_ids = getattr(tokenizer, "convert_tokens_to_ids", None)
         if char.isspace():
+            word_delimiter_token_id = getattr(
+                tokenizer,
+                "word_delimiter_token_id",
+                None,
+            )
+            if (
+                isinstance(word_delimiter_token_id, int)
+                and word_delimiter_token_id != unk_token_id
+            ):
+                return word_delimiter_token_id
+
+            word_delimiter_token = getattr(tokenizer, "word_delimiter_token", None)
+            if isinstance(word_delimiter_token, str) and callable(
+                convert_tokens_to_ids
+            ):
+                token_id = convert_tokens_to_ids(word_delimiter_token)
+                if isinstance(token_id, int) and token_id != unk_token_id:
+                    return token_id
             return None
 
         # Build case and script variants in preference order
-        unk_token_id = getattr(tokenizer, "unk_token_id", None)
         candidates = list(dict.fromkeys((char, char.upper(), char.lower())))
         simplified = script_converter.convert(char)
         if len(simplified) == 1:
@@ -484,7 +534,6 @@ class CtcAligner:
             )
 
         # Return the first variant recognized by the tokenizer
-        convert_tokens_to_ids = getattr(tokenizer, "convert_tokens_to_ids", None)
         if not callable(convert_tokens_to_ids):
             return None
         for candidate in candidates:
@@ -533,6 +582,18 @@ class CtcAligner:
             while char_idx < len(text) and char_idx not in timed_chars:
                 char_idx += 1
             run_end_idx = char_idx
+            run_text = text[run_start_idx:run_end_idx]
+
+            # Attach boundary text to the nearest aligned character
+            boundary_pending_text = CtcAligner._attach_boundary_text(
+                run_text,
+                words,
+                char_idx < len(text),
+            )
+            if boundary_pending_text is not None:
+                pending_text = boundary_pending_text
+                continue
+
             previous_end = words[-1].end if words else 0.0
             next_start = duration_seconds
             if char_idx < len(text):
@@ -543,21 +604,19 @@ class CtcAligner:
             # Attach zero-duration internal text to an adjacent aligned character
             gap_seconds = max(next_start - previous_end, 0.0)
             if gap_seconds == 0.0:
-                run_text = text[run_start_idx:run_end_idx]
-                if words and char_idx < len(text):
-                    whitespace_idxs = [
-                        idx for idx, char in enumerate(run_text) if char.isspace()
-                    ]
-                    if whitespace_idxs:
-                        prefix_start_idx = whitespace_idxs[-1]
-                        words[-1].text += run_text[:prefix_start_idx]
-                        pending_text = run_text[prefix_start_idx:]
-                    else:
-                        words[-1].text += run_text
-                elif words:
-                    words[-1].text += run_text
-                else:
+                if not words:
                     pending_text = run_text
+                    continue
+                prefix_start_idx = next(
+                    (
+                        idx
+                        for idx in range(len(run_text) - 1, -1, -1)
+                        if run_text[idx].isspace()
+                    ),
+                    len(run_text),
+                )
+                words[-1].text += run_text[:prefix_start_idx]
+                pending_text = run_text[prefix_start_idx:]
                 continue
 
             # Distribute available time evenly across otherwise unaligned characters

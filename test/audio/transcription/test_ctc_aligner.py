@@ -118,10 +118,58 @@ def test_ctc_best_path_accepts_blank_between_repeated_labels():
     ]
 
 
-def test_ctc_aligner_preserves_unaligned_punctuation(
+def test_ctc_aligner_aligns_word_delimiter():
+    """Test a tokenizer word delimiter participates in the CTC path."""
+
+    class FakeTokenizer:
+        """Fake tokenizer with a word delimiter token."""
+
+        unk_token_id = 4
+        """Unknown token ID."""
+
+        word_delimiter_token_id = 2
+        """Word delimiter token ID."""
+
+        @staticmethod
+        def convert_tokens_to_ids(token: str) -> int:
+            """Convert a token to a fake token ID.
+
+            Arguments:
+                token: token text
+            Returns:
+                fake token ID
+            """
+            return {"你": 1, "好": 3}.get(token, 4)
+
+    log_probs = np.log(
+        np.array(
+            [
+                [0.004999, 0.990, 0.004, 0.001, 0.000001],
+                [0.0001, 0.0001, 0.998799, 0.0010, 0.000001],
+                [0.004999, 0.001, 0.004, 0.990, 0.000001],
+            ]
+        )
+    )
+    aligner = CtcAligner()
+    aligner._processor = SimpleNamespace(tokenizer=FakeTokenizer())
+    aligner._model = object()
+
+    token_ids, char_indices = aligner._get_token_ids("你 好")
+    path = aligner._get_best_path(log_probs, token_ids, 0)
+
+    assert token_ids == [1, 2, 3]
+    assert char_indices == [0, 1, 2]
+    assert [(token_idx, frame_idx) for token_idx, frame_idx, _ in path] == [
+        (0, 0),
+        (1, 1),
+        (2, 2),
+    ]
+
+
+def test_ctc_aligner_attaches_trailing_unaligned_punctuation(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test CTC alignment preserves punctuation absent from the aligner vocab."""
+    """Test trailing punctuation inherits the final aligned word timing."""
     log_probs = np.log(
         np.array(
             [
@@ -148,10 +196,45 @@ def test_ctc_aligner_preserves_unaligned_punctuation(
 
     assert segments[0].text == "你好。"
     assert segments[0].words is not None
-    assert [word.text for word in segments[0].words] == ["你", "好", "。"]
-    assert segments[0].words[2].start == pytest.approx(1.0)
-    assert segments[0].words[2].end == pytest.approx(1.2)
-    assert segments[0].words[2].confidence == 0.0
+    assert [word.text for word in segments[0].words] == ["你", "好。"]
+    assert segments[0].end == pytest.approx(1.0)
+    assert segments[0].words[1].start == pytest.approx(0.8)
+    assert segments[0].words[1].end == pytest.approx(1.0)
+    assert segments[0].words[1].confidence == pytest.approx(0.9)
+
+
+def test_ctc_aligner_preserves_boundary_whitespace(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test CTC alignment preserves whitespace around the transcript."""
+    log_probs = np.log(
+        np.array(
+            [
+                [0.85, 0.10, 0.05],
+                [0.05, 0.90, 0.05],
+                [0.85, 0.10, 0.05],
+                [0.05, 0.05, 0.90],
+            ]
+        )
+    )
+    aligner = CtcAligner()
+    monkeypatch.setattr(
+        aligner,
+        "_get_alignment_inputs",
+        lambda _audio, _text: (log_probs, [1, 2], [1, 2], 0),
+    )
+
+    segments = aligner.align(
+        AudioSegment.silent(duration=1000),
+        " 你好 ",
+    )
+
+    assert segments[0].text == " 你好 "
+    assert segments[0].words is not None
+    assert [word.text for word in segments[0].words] == [" 你", "好 "]
+    assert "".join(word.text for word in segments[0].words) == " 你好 "
+    assert segments[0].start == pytest.approx(0.25)
+    assert segments[0].end == pytest.approx(1.0)
 
 
 def test_ctc_aligner_preserves_all_unknown_characters(
@@ -234,6 +317,9 @@ def test_ctc_token_ids_normalize_supported_chars_and_skip_unknown_chars():
         unk_token_id = 3
         """Unknown token ID."""
 
+        word_delimiter_token_id = 5
+        """Word delimiter token ID."""
+
         @staticmethod
         def convert_tokens_to_ids(token: str) -> int:
             """Convert a token to a fake token ID.
@@ -253,10 +339,10 @@ def test_ctc_token_ids_normalize_supported_chars_and_skip_unknown_chars():
     aligner._processor = SimpleNamespace(tokenizer=FakeTokenizer())
     aligner._model = object()
 
-    token_ids, char_indices = aligner._get_token_ids("你說。a嘅")
+    token_ids, char_indices = aligner._get_token_ids(" 你 說。a嘅 ")
 
-    assert token_ids == [1, 2, 4]
-    assert char_indices == [0, 1, 3]
+    assert token_ids == [1, 5, 2, 4]
+    assert char_indices == [1, 2, 3, 5]
 
 
 def test_ctc_components_are_cached_by_model_and_device(
