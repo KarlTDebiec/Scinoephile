@@ -44,6 +44,7 @@ from .transcriber import (
     DemucsMode,
     GuidedTranscriber,
     TranscribedSegmentSplitter,
+    TranscriptionBackend,
     VADMode,
 )
 
@@ -176,9 +177,9 @@ def get_guided_transcriber(
     reference_language: Language,
     *,
     model_name: str | None = None,
+    backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
-    mimo_fallback: bool = False,
     mimo_model_name: str = MIMO_MODEL_NAME,
     mimo_tokenizer_name: str = MIMO_TOKENIZER_NAME,
     mimo_runtime: MimoRuntime = MimoRuntime.AUTO,
@@ -207,9 +208,9 @@ def get_guided_transcriber(
         language: transcription language
         reference_language: reference subtitle language
         model_name: Whisper model override
+        backend: audio transcription backend
         demucs_mode: Demucs preprocessing mode
         vad_mode: voice activity detection mode
-        mimo_fallback: whether to try MiMo after all Whisper attempts fail
         mimo_model_name: MiMo ASR model name or local path
         mimo_tokenizer_name: MiMo audio tokenizer name or local path
         mimo_runtime: runtime implementation used for MiMo inference
@@ -302,9 +303,16 @@ def get_guided_transcriber(
         delineation_processor=delineation_processor,
         punctuation_processor=punctuation_processor,
     )
-    fallback_transcriber = None
-    if mimo_fallback:
-        fallback_transcriber = MimoTranscriber(
+
+    def get_mimo_transcriber(*, use_demucs: bool) -> MimoTranscriber:
+        """Build a MiMo transcriber for one Demucs cache identity.
+
+        Arguments:
+            use_demucs: whether Demucs preprocessing is represented in the cache key
+        Returns:
+            configured MiMo transcriber
+        """
+        return MimoTranscriber(
             model_name=mimo_model_name,
             tokenizer_name=mimo_tokenizer_name,
             mimo_runtime=mimo_runtime,
@@ -318,17 +326,29 @@ def get_guided_transcriber(
             aligner_model_name=mimo_aligner_model_name,
             aligner_worker_command=mimo_aligner_worker_command,
             worker_command=mimo_worker_command,
+            use_demucs=use_demucs,
             use_vad=vad_mode is not VADMode.OFF,
-            fallback_without_vad=vad_mode is VADMode.AUTO,
+            retry_without_vad=vad_mode is VADMode.AUTO,
         )
+
+    mimo_transcriber = None
+    unseparated_mimo_transcriber = None
+    if backend == TranscriptionBackend.MIMO:
+        mimo_transcriber = get_mimo_transcriber(
+            use_demucs=demucs_mode in (DemucsMode.AUTO, DemucsMode.ON),
+        )
+        if demucs_mode == DemucsMode.AUTO:
+            unseparated_mimo_transcriber = get_mimo_transcriber(use_demucs=False)
     return GuidedTranscriber(
         language=language,
         reference_language=reference_language,
         model_name=model_name,
         whisper_language=language_spec.whisper_language,
         aligner=aligner,
+        backend=backend,
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
-        fallback_transcriber=fallback_transcriber,
+        mimo_transcriber=mimo_transcriber,
+        unseparated_mimo_transcriber=unseparated_mimo_transcriber,
         segment_splitter=language_spec.segment_splitter,
     )

@@ -13,8 +13,8 @@ from pydub.effects import normalize
 
 from scinoephile.audio.subtitles import AudioSeries, get_series_from_segments
 from scinoephile.audio.transcription import (
-    BaseTranscriber,
     DemucsSeparator,
+    MimoTranscriber,
     MimoTranscriptionError,
     TranscribedSegment,
     TranscriptionAlignmentError,
@@ -30,6 +30,7 @@ from .aligner import TranscriptionAligner
 __all__ = [
     "DemucsMode",
     "GuidedTranscriber",
+    "TranscriptionBackend",
     "TranscribedSegmentSplitter",
     "VADMode",
 ]
@@ -79,6 +80,15 @@ class DemucsMode(StrEnum):
     """Skip Demucs preprocessing."""
 
 
+class TranscriptionBackend(StrEnum):
+    """Audio transcription backends."""
+
+    WHISPER = "whisper"
+    """Transcribe using Whisper."""
+    MIMO = "mimo"
+    """Transcribe using MiMo."""
+
+
 class VADMode(StrEnum):
     """Voice activity detection modes for transcription."""
 
@@ -101,9 +111,11 @@ class GuidedTranscriber:
         model_name: str,
         whisper_language: str,
         aligner: TranscriptionAligner,
+        backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.AUTO,
-        fallback_transcriber: BaseTranscriber | None = None,
+        mimo_transcriber: MimoTranscriber | None = None,
+        unseparated_mimo_transcriber: MimoTranscriber | None = None,
         segment_splitter: TranscribedSegmentSplitter | None = None,
     ):
         """Initialize.
@@ -114,19 +126,24 @@ class GuidedTranscriber:
             model_name: Whisper model name used for transcription
             whisper_language: language code passed to Whisper
             aligner: transcription aligner
+            backend: audio transcription backend
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
-            fallback_transcriber: optional backend used after all Whisper attempts fail
-            segment_splitter: optional strategy for splitting Whisper segments
+            mimo_transcriber: primary MiMo transcriber when MiMo is selected
+            unseparated_mimo_transcriber: original-audio MiMo transcriber used when
+                Demucs is automatic
+            segment_splitter: optional strategy for splitting transcribed segments
         """
         self.language = language
         self.reference_language = reference_language
         self.model_name = model_name
         self.whisper_language = whisper_language
         self.aligner = aligner
+        self.backend = backend
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
-        self.fallback_transcriber = fallback_transcriber
+        self.mimo_transcriber = mimo_transcriber
+        self.unseparated_mimo_transcriber = unseparated_mimo_transcriber
         self.segment_splitter = segment_splitter
 
         self.demucs_separator = None
@@ -134,21 +151,34 @@ class GuidedTranscriber:
             self.demucs_separator = DemucsSeparator(
                 cache_dir_path=get_runtime_cache_dir_path("demucs")
             )
-        primary_uses_demucs = demucs_mode in (DemucsMode.AUTO, DemucsMode.ON)
         self.vad_transcriber = None
+        self.no_vad_transcriber = None
+        self.unseparated_vad_transcriber = None
+        self.unseparated_no_vad_transcriber = None
+        self.recovery_transcriber = None
+        self.tail_recovery_transcriber = None
+        if backend == TranscriptionBackend.MIMO:
+            if mimo_transcriber is None:
+                raise ValueError("MiMo backend requires a MiMo transcriber.")
+            if demucs_mode == DemucsMode.AUTO and unseparated_mimo_transcriber is None:
+                raise ValueError(
+                    "Automatic Demucs with MiMo requires an original-audio MiMo "
+                    "transcriber."
+                )
+            return
+
+        primary_uses_demucs = demucs_mode in (DemucsMode.AUTO, DemucsMode.ON)
         if vad_mode in (VADMode.AUTO, VADMode.ON):
             self.vad_transcriber = self._get_whisper_transcriber(
                 use_demucs=primary_uses_demucs,
                 use_vad=True,
             )
-        self.no_vad_transcriber = None
         if vad_mode in (VADMode.AUTO, VADMode.OFF):
             self.no_vad_transcriber = self._get_whisper_transcriber(
                 use_demucs=primary_uses_demucs,
                 use_vad=False,
             )
 
-        self.unseparated_vad_transcriber = None
         if demucs_mode == DemucsMode.AUTO and vad_mode in (
             VADMode.AUTO,
             VADMode.ON,
@@ -157,7 +187,6 @@ class GuidedTranscriber:
                 use_demucs=False,
                 use_vad=True,
             )
-        self.unseparated_no_vad_transcriber = None
         if demucs_mode == DemucsMode.AUTO and vad_mode in (
             VADMode.AUTO,
             VADMode.OFF,
@@ -294,6 +323,7 @@ class GuidedTranscriber:
         transcribers = list(self._get_standard_transcribers())
         if self.demucs_mode == DemucsMode.AUTO:
             transcribers.extend(self._get_standard_transcribers(unseparated=True))
+        assert self.recovery_transcriber is not None
         transcribers.append(self.recovery_transcriber)
         for transcriber in transcribers:
             cached_segments = transcriber.get_cached_transcription(cache_audio)
@@ -316,7 +346,7 @@ class GuidedTranscriber:
         """Get standard transcribers in configured retry order.
 
         Arguments:
-            unseparated: whether to return original-audio fallback transcribers
+            unseparated: whether to return original-audio retry transcribers
         Returns:
             configured standard transcribers
         """
@@ -385,8 +415,8 @@ class GuidedTranscriber:
             if self.demucs_mode == DemucsMode.ON:
                 raise
             logger.warning(
-                f"Demucs separation failed in automatic mode; falling back "
-                f"to original audio: {exc}"
+                f"Demucs separation failed in automatic mode; retrying with "
+                f"original audio: {exc}"
             )
             return None
 
@@ -404,6 +434,9 @@ class GuidedTranscriber:
         Returns:
             transcribed segments
         """
+        if self.backend == TranscriptionBackend.MIMO:
+            return self._transcribe_block_audio_with_mimo(audio)
+
         cache_audio = audio
         audio_duration = len(cache_audio) / 1000
         segments, rejected_transcribers = self._get_cached_block_transcription(
@@ -417,15 +450,6 @@ class GuidedTranscriber:
                 audio_duration=audio_duration,
                 rejected_transcribers=rejected_transcribers,
             )
-        if segments is None and self.fallback_transcriber is not None:
-            logger.info("Trying configured fallback after all Whisper attempts failed")
-            segments = self._transcribe_with_fallback_candidate(
-                audio,
-                cache_audio=cache_audio,
-                audio_duration=audio_duration,
-            )
-            if segments is not None:
-                return segments
         if segments is None:
             logger.warning(
                 "No configured transcription attempt produced usable output; leaving "
@@ -475,43 +499,109 @@ class GuidedTranscriber:
             return segments
         return None
 
-    def _transcribe_with_fallback_candidate(
+    def _transcribe_block_audio_with_mimo(
         self,
+        audio: AudioSegment,
+    ) -> list[TranscribedSegment]:
+        """Transcribe one block using only MiMo.
+
+        Arguments:
+            audio: block audio to transcribe
+        Returns:
+            usable transcribed segments, or an empty list when none are produced
+        """
+        assert self.mimo_transcriber is not None
+        cache_audio = audio
+        audio_duration = len(audio) / 1000
+        transcribers = [self.mimo_transcriber]
+        if self.unseparated_mimo_transcriber is not None:
+            transcribers.append(self.unseparated_mimo_transcriber)
+
+        rejected_transcribers: set[MimoTranscriber] = set()
+        for transcriber in transcribers:
+            try:
+                cached_segments = transcriber.get_cached_transcription(cache_audio)
+            except (MimoTranscriptionError, TranscriptionAlignmentError) as exc:
+                logger.warning(f"Unable to read MiMo transcription cache: {exc}")
+                continue
+            if cached_segments is None:
+                continue
+            if self._segments_are_usable(
+                cached_segments,
+                audio_duration=audio_duration,
+            ):
+                return cached_segments
+            rejected_transcribers.add(transcriber)
+
+        primary_audio = self._get_primary_transcription_audio(audio)
+        if (
+            primary_audio is not None
+            and self.mimo_transcriber not in rejected_transcribers
+        ):
+            segments = self._transcribe_with_mimo_candidate(
+                self.mimo_transcriber,
+                primary_audio,
+                cache_audio=cache_audio,
+                audio_duration=audio_duration,
+            )
+            if segments is not None:
+                return segments
+
+        if self.demucs_mode == DemucsMode.AUTO:
+            assert self.unseparated_mimo_transcriber is not None
+            if primary_audio is not None:
+                logger.info(
+                    "Retrying MiMo with original audio after unusable Demucs result"
+                )
+            if self.unseparated_mimo_transcriber not in rejected_transcribers:
+                segments = self._transcribe_with_mimo_candidate(
+                    self.unseparated_mimo_transcriber,
+                    audio,
+                    cache_audio=cache_audio,
+                    audio_duration=audio_duration,
+                )
+                if segments is not None:
+                    return segments
+
+        logger.warning(
+            "MiMo did not produce usable output; leaving this block empty for "
+            "downstream gap translation"
+        )
+        return []
+
+    def _transcribe_with_mimo_candidate(
+        self,
+        transcriber: MimoTranscriber,
         audio: AudioSegment,
         *,
         cache_audio: AudioSegment,
         audio_duration: float,
     ) -> list[TranscribedSegment] | None:
-        """Run and validate the configured final transcription fallback.
+        """Run and validate one MiMo transcription candidate.
 
         Arguments:
-            audio: original block audio to transcribe
+            transcriber: configured MiMo transcriber
+            audio: audio to transcribe
             cache_audio: original audio used for cache-key generation
             audio_duration: original block audio duration in seconds
         Returns:
             usable transcribed segments, if produced
         """
-        assert self.fallback_transcriber is not None
-        fallback_name = type(self.fallback_transcriber).__name__
         try:
-            segments = self.fallback_transcriber(
-                audio,
-                cache_audio=cache_audio,
-            )
+            segments = transcriber(audio, cache_audio=cache_audio)
         except (
             ImportError,
             MimoTranscriptionError,
             TranscriptionAlignmentError,
         ) as exc:
-            logger.warning(f"{fallback_name} fallback failed: {exc}")
+            logger.warning(f"MiMo transcription failed: {exc}")
             return None
         if self._segments_are_usable(
             segments,
             audio_duration=audio_duration,
         ):
-            logger.info(f"{fallback_name} fallback produced usable transcription")
             return segments
-        logger.warning(f"{fallback_name} fallback produced unusable transcription")
+        logger.warning("MiMo produced unusable transcription")
         return None
 
     def _transcribe_with_focused_tail_recovery(
@@ -532,6 +622,8 @@ class GuidedTranscriber:
         """
         if expected_last_start is None:
             return segments
+
+        assert self.tail_recovery_transcriber is not None
 
         last_word_end = max(
             word.end for segment in segments for word in (segment.words or [])
@@ -679,6 +771,7 @@ class GuidedTranscriber:
                 if segments is not None:
                     return segments
 
+        assert self.recovery_transcriber is not None
         if self.recovery_transcriber in rejected_transcribers:
             return None
         logger.info("Retrying block transcription with defensive Whisper decoding")

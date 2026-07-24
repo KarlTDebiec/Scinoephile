@@ -20,6 +20,7 @@ from scinoephile.lang.transcription.guided import get_guided_transcriber
 from scinoephile.lang.transcription.transcriber import (
     DemucsMode,
     GuidedTranscriber,
+    TranscriptionBackend,
     VADMode,
 )
 from scinoephile.llms.delineation import DelineationPrompt
@@ -37,9 +38,9 @@ def transcribe_series_guided(
     language: Language,
     reference_language: Language | None = None,
     model_name: str | None = None,
+    backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
-    mimo_fallback: bool = False,
     mimo_model_name: str = MIMO_MODEL_NAME,
     mimo_tokenizer_name: str = MIMO_TOKENIZER_NAME,
     mimo_runtime: MimoRuntime = MimoRuntime.AUTO,
@@ -73,9 +74,9 @@ def transcribe_series_guided(
         language: transcription language
         reference_language: explicit reference language, or None to detect it
         model_name: Whisper model override
+        backend: audio transcription backend
         demucs_mode: Demucs preprocessing mode
         vad_mode: voice activity detection mode
-        mimo_fallback: whether to try MiMo after all Whisper attempts fail
         mimo_model_name: MiMo ASR model name or local path
         mimo_tokenizer_name: MiMo audio tokenizer name or local path
         mimo_runtime: runtime implementation used for MiMo inference
@@ -115,9 +116,9 @@ def transcribe_series_guided(
             language,
             resolved_reference_language,
             model_name=model_name,
+            backend=backend,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
-            mimo_fallback=mimo_fallback,
             mimo_model_name=mimo_model_name,
             mimo_tokenizer_name=mimo_tokenizer_name,
             mimo_runtime=mimo_runtime,

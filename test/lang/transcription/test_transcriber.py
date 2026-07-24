@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from logging import INFO
+from typing import cast
 from unittest.mock import Mock, patch
 
 from pydub import AudioSegment
@@ -13,6 +14,7 @@ from pytest import LogCaptureFixture, approx, raises
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
 from scinoephile.audio.transcription import (
+    MimoTranscriber,
     MimoTranscriptionError,
     TranscribedSegment,
     TranscribedWord,
@@ -24,20 +26,23 @@ from scinoephile.lang.transcription.alignment import TranscriptionAlignment
 from scinoephile.lang.transcription.transcriber import (
     DemucsMode,
     GuidedTranscriber,
+    TranscriptionBackend,
     VADMode,
 )
 
 
 def _get_transcriber(
     *,
+    backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.OFF,
 ) -> tuple[GuidedTranscriber, Mock]:
     """Get a transcriber with a passthrough alignment mock.
 
     Arguments:
+        backend: audio transcription backend
         demucs_mode: Demucs preprocessing mode
-        vad_mode: Whisper VAD mode
+        vad_mode: voice activity detection mode
     Returns:
         transcriber and alignment mock
     """
@@ -47,6 +52,12 @@ def _get_transcriber(
     aligner.delineation_processor.prune_test_cases = False
     aligner.punctuation_processor = Mock()
     aligner.punctuation_processor.prune_test_cases = False
+    mimo_transcriber = None
+    unseparated_mimo_transcriber = None
+    if backend == TranscriptionBackend.MIMO:
+        mimo_transcriber = Mock(spec=MimoTranscriber)
+        if demucs_mode == DemucsMode.AUTO:
+            unseparated_mimo_transcriber = Mock(spec=MimoTranscriber)
     return (
         GuidedTranscriber(
             language=Language.eng,
@@ -54,8 +65,11 @@ def _get_transcriber(
             model_name="test/model",
             whisper_language="en",
             aligner=aligner,
+            backend=backend,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
+            mimo_transcriber=mimo_transcriber,
+            unseparated_mimo_transcriber=unseparated_mimo_transcriber,
         ),
         aligner,
     )
@@ -394,27 +408,23 @@ def test_all_unusable_candidates_leave_gap_for_translation():
     assert output == []
 
 
-def test_all_whisper_candidates_use_configured_fallback():
-    """Test fallback runs only after every configured Whisper attempt fails."""
+def test_mimo_backend_retries_original_audio_after_unusable_demucs_result():
+    """Test automatic Demucs retries original audio using MiMo only."""
     transcriber, _ = _get_transcriber(
+        backend=TranscriptionBackend.MIMO,
         demucs_mode=DemucsMode.AUTO,
         vad_mode=VADMode.AUTO,
     )
     repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
-    usable_segments = [_get_segment(text="fallback", with_words=True)]
-    whisper_transcribers = tuple(
-        Mock(return_value=repetitive_segments) for _ in range(5)
-    )
-    (
-        transcriber.vad_transcriber,
-        transcriber.no_vad_transcriber,
-        transcriber.unseparated_vad_transcriber,
-        transcriber.unseparated_no_vad_transcriber,
-        transcriber.recovery_transcriber,
-    ) = whisper_transcribers
-    for whisper_transcriber in whisper_transcribers:
-        whisper_transcriber.get_cached_transcription.return_value = None
-    transcriber.fallback_transcriber = Mock(return_value=usable_segments)
+    usable_segments = [_get_segment(text="mimo", with_words=True)]
+    assert transcriber.mimo_transcriber is not None
+    assert transcriber.unseparated_mimo_transcriber is not None
+    primary = cast(Mock, transcriber.mimo_transcriber)
+    unseparated = cast(Mock, transcriber.unseparated_mimo_transcriber)
+    primary.get_cached_transcription.return_value = None
+    primary.return_value = repetitive_segments
+    unseparated.get_cached_transcription.return_value = None
+    unseparated.return_value = usable_segments
     original_audio = AudioSegment.silent(duration=1000)
     separated_audio = AudioSegment.silent(duration=900)
     transcriber.demucs_separator = Mock(return_value=separated_audio)
@@ -422,29 +432,32 @@ def test_all_whisper_candidates_use_configured_fallback():
     output = transcriber._transcribe_block_audio(original_audio)
 
     assert output == usable_segments
-    transcriber.fallback_transcriber.assert_called_once_with(
-        original_audio,
-        cache_audio=original_audio,
-    )
-    for whisper_transcriber in whisper_transcribers:
-        whisper_transcriber.assert_called_once()
+    assert primary.call_count == 1
+    assert primary.call_args.args == (separated_audio,)
+    assert primary.call_args.kwargs == {"cache_audio": original_audio}
+    assert unseparated.call_count == 1
+    assert unseparated.call_args.args == (original_audio,)
+    assert unseparated.call_args.kwargs == {"cache_audio": original_audio}
+    assert transcriber.vad_transcriber is None
+    assert transcriber.recovery_transcriber is None
 
 
-def test_failed_configured_fallback_leaves_gap_for_translation():
-    """Test a final MiMo failure preserves downstream gap translation behavior."""
-    transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
-    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
-    transcriber.no_vad_transcriber = Mock(return_value=repetitive_segments)
-    transcriber.no_vad_transcriber.get_cached_transcription.return_value = None
-    transcriber.recovery_transcriber = Mock(return_value=repetitive_segments)
-    transcriber.recovery_transcriber.get_cached_transcription.return_value = None
-    transcriber.fallback_transcriber = Mock(
-        side_effect=MimoTranscriptionError("MiMo failed")
+def test_failed_mimo_backend_leaves_gap_for_translation():
+    """Test a MiMo failure preserves downstream gap translation behavior."""
+    transcriber, _ = _get_transcriber(
+        backend=TranscriptionBackend.MIMO,
+        vad_mode=VADMode.OFF,
     )
+    assert transcriber.mimo_transcriber is not None
+    mimo = cast(Mock, transcriber.mimo_transcriber)
+    mimo.get_cached_transcription.return_value = None
+    mimo.side_effect = MimoTranscriptionError("MiMo failed")
 
     output = transcriber._transcribe_block_audio(AudioSegment.silent(duration=1000))
 
     assert output == []
+    assert transcriber.no_vad_transcriber is None
+    assert transcriber.recovery_transcriber is None
 
 
 def test_auto_demucs_retries_unseparated_audio_after_unusable_result():

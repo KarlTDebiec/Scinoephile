@@ -20,7 +20,6 @@ import numpy as np
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
 
-from .base_transcriber import BaseTranscriber
 from .forced_alignment import TranscriptionAlignmentError, align_mimo_transcription
 from .mimo_runtime import (
     MIMO_MLX_MODEL_NAME,
@@ -50,7 +49,7 @@ if TYPE_CHECKING:
 logger = getLogger(__name__)
 
 _LOW_INFORMATION_CHARACTERS = frozenset("啊呀吖哦噢嗯嘶")
-"""Standalone vocalizations rejected as unusable fallback transcripts."""
+"""Standalone vocalizations rejected as unusable transcripts."""
 
 _VAD_CACHE_VERSION = "silero-v1"
 """Cache identity for the current MiMo VAD implementation."""
@@ -103,9 +102,8 @@ class MimoTranscriber:
         worker_timeout_seconds: float | None = None,
         use_demucs: bool = False,
         use_vad: bool = False,
-        fallback_without_vad: bool = False,
+        retry_without_vad: bool = False,
         audio_tag: str = "",
-        fallback_backend: BaseTranscriber | None = None,
     ):
         """Initialize.
 
@@ -127,9 +125,8 @@ class MimoTranscriber:
             worker_timeout_seconds: optional worker timeout in seconds
             use_demucs: whether Demucs preprocessing was applied
             use_vad: whether to remove non-speech audio using Silero VAD
-            fallback_without_vad: whether to retry unfiltered audio after VAD failure
+            retry_without_vad: whether to retry unfiltered audio after VAD failure
             audio_tag: optional MiMo audio tag such as <chinese> or <english>
-            fallback_backend: optional backend to call when MiMo or alignment fails
         """
         self.model_name = model_name
         self.tokenizer_name = tokenizer_name
@@ -159,11 +156,10 @@ class MimoTranscriber:
         self.worker_timeout_seconds = worker_timeout_seconds
         self.use_demucs = use_demucs
         self.use_vad = use_vad
-        self.fallback_without_vad = fallback_without_vad
-        if self.fallback_without_vad and not self.use_vad:
-            raise ValueError("MiMo cannot fall back from VAD when VAD is disabled.")
+        self.retry_without_vad = retry_without_vad
+        if self.retry_without_vad and not self.use_vad:
+            raise ValueError("MiMo cannot retry without VAD when VAD is disabled.")
         self.audio_tag = audio_tag
-        self.fallback_backend = fallback_backend
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
@@ -223,13 +219,7 @@ class MimoTranscriber:
         if (segments := self.get_cached_transcription(cache_audio)) is not None:
             return segments
 
-        try:
-            segments = self._transcribe_uncached(audio)
-        except (MimoTranscriptionError, TranscriptionAlignmentError) as exc:
-            if self.fallback_backend is None:
-                raise
-            logger.warning(f"Falling back after MiMo transcription failure: {exc}")
-            return self.fallback_backend(audio, cache_audio=cache_audio)
+        segments = self._transcribe_uncached(audio)
 
         cache_path = self._get_cache_path(cache_audio)
         if cache_path is not None:
@@ -273,9 +263,7 @@ class MimoTranscriber:
             f"aligner-worker-{self.aligner_worker_command or 'in-process'}_"
             f"demucs-{'on' if self.use_demucs else 'off'}_"
             f"vad-{vad_key}_"
-            f"fallback-without-vad-"
-            f"{'on' if self.fallback_without_vad else 'off'}_"
-            f"fallback-{'on' if self.fallback_backend is not None else 'off'}"
+            f"retry-without-vad-{'on' if self.retry_without_vad else 'off'}"
         )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
@@ -305,7 +293,7 @@ class MimoTranscriber:
             "aligner_model_name": self.aligner_model_name,
             "aligner_worker_command": self.aligner_worker_command,
             "use_vad": self.use_vad,
-            "fallback_without_vad": self.fallback_without_vad,
+            "retry_without_vad": self.retry_without_vad,
             "segments": [segment.model_dump() for segment in segments],
         }
 
@@ -611,7 +599,7 @@ class MimoTranscriber:
             try:
                 return self._transcribe_vad_audio(audio)
             except (MimoTranscriptionError, TranscriptionAlignmentError) as exc:
-                if not self.fallback_without_vad:
+                if not self.retry_without_vad:
                     raise
                 logger.info(
                     f"Retrying MiMo without VAD after the VAD attempt failed: {exc}"

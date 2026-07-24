@@ -16,7 +16,6 @@ import pytest
 from pydub import AudioSegment
 
 from scinoephile.audio.transcription import TranscribedSegment, TranscribedWord
-from scinoephile.audio.transcription.forced_alignment import TranscriptionAlignmentError
 from scinoephile.audio.transcription.mimo_transcriber import (
     MIMO_MLX_MODEL_NAME,
     MIMO_MODEL_NAME,
@@ -128,10 +127,10 @@ def test_init_rejects_non_positive_max_tokens():
         MimoTranscriber(max_tokens=0)
 
 
-def test_init_rejects_vad_fallback_when_vad_is_disabled():
+def test_init_rejects_retry_without_vad_when_vad_is_disabled():
     """Test MiMo transcriber rejects a contradictory VAD configuration."""
     with pytest.raises(ValueError, match="when VAD is disabled"):
-        MimoTranscriber(fallback_without_vad=True)
+        MimoTranscriber(retry_without_vad=True)
 
 
 def test_get_cached_transcription_reads_mimo_payload(tmp_path: Path):
@@ -422,12 +421,12 @@ def test_transcribe_vad_auto_retries_unfiltered_audio(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test automatic MiMo VAD retries unfiltered audio after VAD failure."""
-    expected_segments = [_get_timed_segment("fallback")]
+    expected_segments = [_get_timed_segment("retry")]
     transcriber = MimoTranscriber(
         model_name=MIMO_MODEL_NAME,
         mimo_runtime=MimoRuntime.MLX,
         use_vad=True,
-        fallback_without_vad=True,
+        retry_without_vad=True,
     )
     monkeypatch.setattr(
         transcriber,
@@ -483,7 +482,7 @@ def test_transcribe_aligns_mimo_text_and_writes_cache(
 def test_transcribe_rejects_low_information_vocalizations(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test isolated vocalizations do not become accepted fallback output.
+    """Test isolated vocalizations do not become accepted transcription output.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
@@ -519,30 +518,6 @@ def test_transcribe_wraps_in_process_mimo_errors(
 
     with pytest.raises(MimoWorkerError, match="Unable to run MiMo in-process"):
         transcriber.transcribe(audio)
-
-
-@pytest.mark.parametrize(
-    "failure",
-    [
-        MimoTranscriptEmptyError("empty transcript"),
-        TranscriptionAlignmentError("alignment failed"),
-    ],
-)
-def test_transcribe_uses_fallback_backend_when_mimo_fails(
-    monkeypatch: pytest.MonkeyPatch,
-    failure: Exception,
-):
-    """Test direct MiMo callers can opt into fallback backend behavior."""
-    audio = AudioSegment.silent(duration=1000)
-    fallback_segments = [_get_timed_segment("fallback")]
-    fallback_backend = Mock(return_value=fallback_segments)
-    transcriber = MimoTranscriber(fallback_backend=fallback_backend)
-    monkeypatch.setattr(transcriber, "_run_mimo", Mock(side_effect=failure))
-
-    segments = transcriber.transcribe(audio)
-
-    assert segments == fallback_segments
-    fallback_backend.assert_called_once_with(audio, cache_audio=audio)
 
 
 def _get_mimo_transcriber(
@@ -591,8 +566,7 @@ def _get_mimo_transcriber(
     transcriber.chunk_overlap_seconds = 1.0
     transcriber.use_demucs = False
     transcriber.use_vad = False
-    transcriber.fallback_without_vad = False
-    transcriber.fallback_backend = None
+    transcriber.retry_without_vad = False
     return transcriber
 
 

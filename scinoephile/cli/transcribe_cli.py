@@ -32,7 +32,11 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.lang.transcription.transcriber import DemucsMode, VADMode
+from scinoephile.lang.transcription.transcriber import (
+    DemucsMode,
+    TranscriptionBackend,
+    VADMode,
+)
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.transcription import transcribe_series_guided
 
@@ -70,6 +74,9 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "reference language tag (detected from infile if omitted)": (
             "参考语言标签（省略时从输入文件检测）"
         ),
+        "transcription backend (options: whisper, mimo; default: whisper)": (
+            "转写后端（选项：whisper、mimo；默认：whisper）"
+        ),
         "Demucs vocal-separation mode (options: auto, on, off; default: auto)": (
             "Demucs 人声分离模式（选项：auto、on、off；默认：auto）"
         ),
@@ -79,9 +86,6 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         (
             "Whisper model identifier override (uses language-pair default if omitted)"
         ): "Whisper 模型标识符覆盖值（省略时使用语言对默认值）",
-        "use MiMo after all Whisper attempts fail": (
-            "所有 Whisper 尝试均失败后使用 MiMo"
-        ),
         "MiMo runtime (options: auto, mlx; default: auto)": (
             "MiMo 运行时（选项：auto、mlx；默认：auto）"
         ),
@@ -150,6 +154,9 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "reference language tag (detected from infile if omitted)": (
             "參考語言標籤（省略時從輸入檔偵測）"
         ),
+        "transcription backend (options: whisper, mimo; default: whisper)": (
+            "轉寫後端（選項：whisper、mimo；預設：whisper）"
+        ),
         "Demucs vocal-separation mode (options: auto, on, off; default: auto)": (
             "Demucs 人聲分離模式（選項：auto、on、off；預設：auto）"
         ),
@@ -159,9 +166,6 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         (
             "Whisper model identifier override (uses language-pair default if omitted)"
         ): "Whisper 模型識別碼覆寫值（省略時使用語言對預設值）",
-        "use MiMo after all Whisper attempts fail": (
-            "所有 Whisper 嘗試均失敗後使用 MiMo"
-        ),
         "MiMo runtime (options: auto, mlx; default: auto)": (
             "MiMo 執行環境（選項：auto、mlx；預設：auto）"
         ),
@@ -281,6 +285,13 @@ class TranscribeCli(ScinoephileCliBase):
         )
         add_block_range_args(arg_groups["operation arguments"])
         arg_groups["operation arguments"].add_argument(
+            "--backend",
+            default=TranscriptionBackend.WHISPER,
+            metavar="{whisper,mimo}",
+            type=enum_arg(TranscriptionBackend),
+            help=("transcription backend (options: whisper, mimo; default: whisper)"),
+        )
+        arg_groups["operation arguments"].add_argument(
             "--demucs",
             default=DemucsMode.AUTO,
             dest="demucs_mode",
@@ -307,11 +318,6 @@ class TranscribeCli(ScinoephileCliBase):
                 "Whisper model identifier override "
                 "(uses language-pair default if omitted)"
             ),
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--mimo-fallback",
-            action="store_true",
-            help="use MiMo after all Whisper attempts fail",
         )
         arg_groups["operation arguments"].add_argument(
             "--mimo-runtime",
@@ -438,10 +444,10 @@ class TranscribeCli(ScinoephileCliBase):
         reference_language: Language | None,
         first_block: int | None,
         last_block: int | None,
+        backend: TranscriptionBackend,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
         model_name: str | None,
-        mimo_fallback: bool,
         mimo_runtime: MimoRuntime,
         mimo_language: str,
         mimo_max_tokens: int | None,
@@ -516,9 +522,9 @@ class TranscribeCli(ScinoephileCliBase):
                 language=language,
                 reference_language=reference_language,
                 model_name=model_name,
+                backend=backend,
                 demucs_mode=demucs_mode,
                 vad_mode=vad_mode,
-                mimo_fallback=mimo_fallback,
                 mimo_model_name=mimo_model_name,
                 mimo_tokenizer_name=mimo_tokenizer_name,
                 mimo_runtime=mimo_runtime,

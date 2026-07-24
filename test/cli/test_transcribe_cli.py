@@ -19,7 +19,11 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.transcription.transcriber import DemucsMode, VADMode
+from scinoephile.lang.transcription.transcriber import (
+    DemucsMode,
+    TranscriptionBackend,
+    VADMode,
+)
 from test.helpers import assert_series_equal, test_data_root
 
 _MEDIA_INFILE_PATH = "/tmp/test_media.mp4"
@@ -73,8 +77,9 @@ def test_transcribe_help_lists_generic_options():
     assert "--convert" not in normalized_help_text
     assert "--demucs {auto,on,off}" in help_text
     assert "--vad {auto,on,off}" in help_text
+    assert "--backend {whisper,mimo}" in help_text
     assert "--whisper-model MODEL_NAME" in help_text
-    assert "--mimo-fallback" in help_text
+    assert "--mimo-fallback" not in help_text
     assert "--mimo-runtime {auto,mlx}" in help_text
     assert "--mimo-aligner {ctc,whisperx}" in help_text
     assert "uses language-pair default if omitted" in normalized_help_text
@@ -95,6 +100,11 @@ def test_transcribe_cli_defers_whisper_model_default_to_registry():
 def test_transcribe_cli_defaults_audio_preprocessing_to_auto():
     """Test transcription CLI defaults Demucs and VAD to automatic modes."""
     parser = TranscribeCli.argparser()
+    backend_action = next(
+        action
+        for action in parser._actions  # noqa: SLF001
+        if "--backend" in action.option_strings
+    )
     demucs_action = next(
         action
         for action in parser._actions  # noqa: SLF001
@@ -106,6 +116,7 @@ def test_transcribe_cli_defaults_audio_preprocessing_to_auto():
         if "--vad" in action.option_strings
     )
 
+    assert backend_action.default is TranscriptionBackend.WHISPER
     assert demucs_action.default is DemucsMode.AUTO
     assert vad_action.default is VADMode.AUTO
 
@@ -192,9 +203,9 @@ def test_transcribe_cli_passes_generic_configuration(
         language: Language,
         reference_language: Language | None,
         model_name: str | None,
+        backend: TranscriptionBackend,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
-        mimo_fallback: bool,
         mimo_model_name: str,
         mimo_tokenizer_name: str,
         mimo_runtime: MimoRuntime,
@@ -220,9 +231,9 @@ def test_transcribe_cli_passes_generic_configuration(
         assert language is Language.yue_hant
         assert reference_language is Language.zho_hans
         assert model_name == "custom/whisper"
+        assert backend is TranscriptionBackend.MIMO
         assert demucs_mode is DemucsMode.ON
         assert vad_mode is VADMode.OFF
-        assert mimo_fallback is True
         assert mimo_model_name == "custom/mimo"
         assert mimo_tokenizer_name == "custom/tokenizer"
         assert mimo_runtime is MimoRuntime.MLX
@@ -256,8 +267,8 @@ def test_transcribe_cli_passes_generic_configuration(
                 f"{_MEDIA_INFILE_PATH} "
                 f"--reference-infile {_REFERENCE_INFILE_PATH} "
                 "--language yue-Hant --reference-language zho-Hans "
-                "--whisper-model custom/whisper --demucs on --vad off "
-                "--mimo-fallback --mimo-runtime mlx --mimo-language auto "
+                "--whisper-model custom/whisper --backend mimo --demucs on --vad off "
+                "--mimo-runtime mlx --mimo-language auto "
                 "--mimo-max-tokens 512 --mimo-chunk-duration 20 "
                 "--mimo-chunk-overlap 1.5 --mimo-model custom/mimo "
                 "--mimo-tokenizer custom/tokenizer "

@@ -16,6 +16,7 @@ from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.transcriber import (
     DemucsMode,
     GuidedTranscriber,
+    TranscriptionBackend,
     VADMode,
 )
 from scinoephile.workflows.transcription import transcribe_series_guided
@@ -45,7 +46,7 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
             prune_test_cases=True,
             delineation_json_path=delineation_json_path,
             punctuation_json_path=punctuation_json_path,
-            mimo_fallback=True,
+            backend=TranscriptionBackend.MIMO,
             mimo_model_name="custom/mimo",
             mimo_tokenizer_name="custom/tokenizer",
             mimo_runtime=MimoRuntime.MLX,
@@ -67,9 +68,9 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
         Language.yue_hant,
         Language.zho_hans,
     )
+    assert get_transcriber.call_args.kwargs["backend"] is TranscriptionBackend.MIMO
     assert get_transcriber.call_args.kwargs["demucs_mode"] is DemucsMode.AUTO
     assert get_transcriber.call_args.kwargs["vad_mode"] is VADMode.AUTO
-    assert get_transcriber.call_args.kwargs["mimo_fallback"] is True
     assert get_transcriber.call_args.kwargs["mimo_model_name"] == "custom/mimo"
     assert get_transcriber.call_args.kwargs["mimo_tokenizer_name"] == (
         "custom/tokenizer"

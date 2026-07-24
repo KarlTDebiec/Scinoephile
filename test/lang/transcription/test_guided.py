@@ -19,7 +19,11 @@ from scinoephile.lang.transcription.guided import (
     DEFAULT_SPECS,
     get_guided_transcriber,
 )
-from scinoephile.lang.transcription.transcriber import DemucsMode, VADMode
+from scinoephile.lang.transcription.transcriber import (
+    DemucsMode,
+    TranscriptionBackend,
+    VADMode,
+)
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHant,
@@ -90,9 +94,11 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
 
     assert transcriber.language is Language.yue_hant
     assert transcriber.reference_language is Language.zho_hans
+    assert transcriber.backend is TranscriptionBackend.WHISPER
     assert transcriber.demucs_mode is DemucsMode.AUTO
     assert transcriber.vad_mode is VADMode.AUTO
-    assert transcriber.fallback_transcriber is None
+    assert transcriber.mimo_transcriber is None
+    assert transcriber.unseparated_mimo_transcriber is None
     assert transcriber.whisper_language == "yue"
     assert transcriber.segment_splitter is not None
     assert isinstance(transcriber.aligner.delineation_processor, DelineationProcessor)
@@ -118,8 +124,8 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert not transcriber.aligner.punctuation_processor.prune_test_cases
 
 
-def test_get_guided_transcriber_configures_mimo_fallback(tmp_path: Path):
-    """Test factory configures MiMo as the final transcription fallback.
+def test_get_guided_transcriber_configures_mimo_backend(tmp_path: Path):
+    """Test factory configures MiMo as the selected transcription backend.
 
     Arguments:
         tmp_path: temporary directory path
@@ -136,7 +142,7 @@ def test_get_guided_transcriber_configures_mimo_fallback(tmp_path: Path):
             punctuation_json_path=tmp_path / "punctuation.json",
             delineation_test_cases=[],
             punctuation_test_cases=[],
-            mimo_fallback=True,
+            backend=TranscriptionBackend.MIMO,
             mimo_model_name="custom/mimo",
             mimo_tokenizer_name="custom/tokenizer",
             mimo_runtime=MimoRuntime.MLX,
@@ -151,22 +157,29 @@ def test_get_guided_transcriber_configures_mimo_fallback(tmp_path: Path):
             mimo_aligner_worker_command=("python", "aligner_worker.py"),
         )
 
-    fallback = transcriber.fallback_transcriber
-    assert isinstance(fallback, MimoTranscriber)
-    assert fallback.model_name == "custom/mimo"
-    assert fallback.tokenizer_name == "custom/tokenizer"
-    assert fallback.mimo_runtime is MimoRuntime.MLX
-    assert fallback.language == "auto"
-    assert fallback.max_tokens == 512
-    assert fallback.chunk_duration_seconds == 20.0
-    assert fallback.chunk_overlap_seconds == 1.5
-    assert fallback.worker_command == ("python", "mimo_worker.py")
-    assert fallback.aligner_backend == "whisperx"
-    assert fallback.aligner_model_name == "custom/aligner"
-    assert fallback.aligner_worker_command == ("python", "aligner_worker.py")
-    assert fallback.cache_dir_path == tmp_path
-    assert fallback.use_vad
-    assert fallback.fallback_without_vad
+    assert transcriber.backend is TranscriptionBackend.MIMO
+    primary = transcriber.mimo_transcriber
+    assert isinstance(primary, MimoTranscriber)
+    assert primary.model_name == "custom/mimo"
+    assert primary.tokenizer_name == "custom/tokenizer"
+    assert primary.mimo_runtime is MimoRuntime.MLX
+    assert primary.language == "auto"
+    assert primary.max_tokens == 512
+    assert primary.chunk_duration_seconds == 20.0
+    assert primary.chunk_overlap_seconds == 1.5
+    assert primary.worker_command == ("python", "mimo_worker.py")
+    assert primary.aligner_backend == "whisperx"
+    assert primary.aligner_model_name == "custom/aligner"
+    assert primary.aligner_worker_command == ("python", "aligner_worker.py")
+    assert primary.cache_dir_path == tmp_path
+    assert primary.use_demucs
+    assert primary.use_vad
+    assert primary.retry_without_vad
+    unseparated = transcriber.unseparated_mimo_transcriber
+    assert isinstance(unseparated, MimoTranscriber)
+    assert not unseparated.use_demucs
+    assert transcriber.vad_transcriber is None
+    assert transcriber.no_vad_transcriber is None
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(
