@@ -32,6 +32,7 @@ from .helpers.blocks import (
     add_block_range_args,
     get_block_range_indexes,
 )
+from .helpers.cache import CACHE_LOCALIZATIONS, CacheArguments, add_cache_args
 from .helpers.io import read_series, write_series
 from .helpers.llms import (
     LLM_LOCALIZATIONS,
@@ -83,6 +84,7 @@ class ReviewCli(ScinoephileCliBase):
 
     localizations = merge_localizations(
         BLOCK_LOCALIZATIONS,
+        CACHE_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
         REVIEW_LOCALIZATIONS,
     )
@@ -101,6 +103,7 @@ class ReviewCli(ScinoephileCliBase):
             "input arguments",
             "operation arguments",
             "llm arguments",
+            "cache arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -139,6 +142,9 @@ class ReviewCli(ScinoephileCliBase):
         )
         add_llm_test_case_json_arg(arg_groups["llm arguments"])
 
+        # Cache arguments
+        add_cache_args(arg_groups["cache arguments"])
+
         # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
@@ -166,6 +172,7 @@ class ReviewCli(ScinoephileCliBase):
         first_block: int | None,
         last_block: int | None,
         llm_args: LlmArguments,
+        cache_args: CacheArguments,
         json_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
@@ -207,6 +214,8 @@ class ReviewCli(ScinoephileCliBase):
                     guide_language=guide_language,
                     provider=provider,
                     additional_context=additional_context,
+                    cache_dir_path=cache_args.dir_path / "llm",
+                    overwrite_cache=cache_args.overwrite,
                     test_case_path=json_path,
                     start_at_idx=start_at_idx,
                     stop_at_idx=stop_at_idx,
@@ -217,6 +226,8 @@ class ReviewCli(ScinoephileCliBase):
                     language=language,
                     provider=provider,
                     additional_context=additional_context,
+                    cache_dir_path=cache_args.dir_path / "llm",
+                    overwrite_cache=cache_args.overwrite,
                     test_case_path=json_path,
                     start_at_idx=start_at_idx,
                     stop_at_idx=stop_at_idx,

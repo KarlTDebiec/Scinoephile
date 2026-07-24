@@ -74,6 +74,8 @@ def test_transcribe_help_lists_generic_options():
     assert "--vad {auto,on,off}" in help_text
     assert "--model MODEL_NAME" in help_text
     assert "transcription model (default: backend default)" in normalized_help_text
+    assert "--cache-overwrite" in help_text
+    assert "overwrite matching cache files" in normalized_help_text
     assert "transcription language tag" not in normalized_help_text
     assert "guide language tag" not in normalized_help_text
     assert (
@@ -200,6 +202,8 @@ def test_transcribe_cli_passes_generic_configuration(
         model_name: str | None,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
+        cache_dir_path: Path | None,
+        overwrite_cache: bool,
         provider: object,
         additional_context: str | None,
         delineation_json_path: Path | None,
@@ -215,6 +219,8 @@ def test_transcribe_cli_passes_generic_configuration(
         assert model_name == "custom/whisper"
         assert demucs_mode is DemucsMode.ON
         assert vad_mode is VADMode.OFF
+        assert cache_dir_path == tmp_path / "cache"
+        assert overwrite_cache
         assert provider is not None
         assert additional_context is None
         assert delineation_json_path == tmp_path / "delineation.json"
@@ -237,6 +243,7 @@ def test_transcribe_cli_passes_generic_configuration(
                 f"--guide-infile {_GUIDE_INFILE_PATH} "
                 "--language yue-Hant --guide-language zho-Hans "
                 "--model custom/whisper --demucs on --vad off "
+                f"--cache-dir {tmp_path / 'cache'} --cache-overwrite "
                 f"--delineation-json {tmp_path / 'delineation.json'} "
                 f"--punctuation-json {tmp_path / 'punctuation.json'} "
                 "--first-block 2 --last-block 3",

@@ -15,6 +15,7 @@ _GROUP_ORDER = (
     "input arguments",
     "operation arguments",
     "llm arguments",
+    "cache arguments",
     "web arguments",
     "output arguments",
     "additional arguments",

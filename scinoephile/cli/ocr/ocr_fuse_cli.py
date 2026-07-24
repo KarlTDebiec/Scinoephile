@@ -7,6 +7,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.cli.helpers.cache import (
+    CACHE_LOCALIZATIONS,
+    CacheArguments,
+    add_cache_args,
+)
 from scinoephile.cli.helpers.conversion import (
     CONVERSION_LOCALIZATIONS,
     add_opencc_convert_auto_argument,
@@ -87,6 +92,7 @@ class OcrFuseCli(ScinoephileCliBase):
 
     localizations = merge_localizations(
         CONVERSION_LOCALIZATIONS,
+        CACHE_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
         OCR_FUSE_LOCALIZATIONS,
     )
@@ -105,6 +111,7 @@ class OcrFuseCli(ScinoephileCliBase):
             "input arguments",
             "operation arguments",
             "llm arguments",
+            "cache arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -152,6 +159,9 @@ class OcrFuseCli(ScinoephileCliBase):
         )
         add_llm_test_case_json_arg(arg_groups["llm arguments"])
 
+        # Cache arguments
+        add_cache_args(arg_groups["cache arguments"])
+
         # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
@@ -188,6 +198,7 @@ class OcrFuseCli(ScinoephileCliBase):
         clean: bool,
         convert: OpenCCConfig | bool | None,
         llm_args: LlmArguments,
+        cache_args: CacheArguments,
         json_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
@@ -260,6 +271,8 @@ class OcrFuseCli(ScinoephileCliBase):
                     parser,
                     llm_args.additional_context_file_path,
                 ),
+                cache_dir_path=cache_args.dir_path / "llm",
+                overwrite_cache=cache_args.overwrite,
                 test_case_path=json_path,
             )
         except ScinoephileError as exc:

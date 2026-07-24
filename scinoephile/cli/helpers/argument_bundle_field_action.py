@@ -52,6 +52,8 @@ class ArgumentBundleFieldAction(Action):
             values: parsed argument value
             option_string: option string used
         """
+        if self.nargs == 0:
+            values = self.const
         bundle = getattr(namespace, self.dest, None)
         if not isinstance(bundle, self.bundle_type):
             bundle = self.bundle_type()

@@ -85,6 +85,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
             provider=Mock(spec=LLMProvider),
             delineation_test_cases=[],
             punctuation_test_cases=[],
+            overwrite_cache=True,
         )
 
     assert transcriber.language is Language.yue_hant
@@ -105,7 +106,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.vad_transcriber.language == "yue"
     assert transcriber.no_vad_transcriber is not None
     assert transcriber.no_vad_transcriber.language == "yue"
-    test_case_dir_path = tmp_path / "lang/yue_zho/transcription"
+    test_case_dir_path = tmp_path / "test_cases/lang/yue_zho/transcription"
     assert transcriber.aligner.delineation_processor.test_case_path == (
         test_case_dir_path / "delineation" / "test.json"
     )
@@ -114,6 +115,14 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     )
     assert not transcriber.aligner.delineation_processor.prune_test_cases
     assert not transcriber.aligner.punctuation_processor.prune_test_cases
+    assert transcriber.aligner.delineation_processor.queryer.cache_dir_path == (
+        tmp_path / "llm"
+    )
+    assert transcriber.aligner.delineation_processor.queryer.overwrite_cache
+    assert transcriber.aligner.punctuation_processor.queryer.cache_dir_path == (
+        tmp_path / "llm"
+    )
+    assert transcriber.aligner.punctuation_processor.queryer.overwrite_cache
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(
@@ -200,7 +209,7 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(
             delineation_test_cases=[],
             punctuation_test_cases=[],
         )
-    test_case_dir_path = tmp_path / "lang/yue_zho/transcription"
+    test_case_dir_path = tmp_path / "test_cases/lang/yue_zho/transcription"
     delineation_json_path = test_case_dir_path / "delineation" / "test.json"
     punctuation_json_path = test_case_dir_path / "punctuation" / "test.json"
     delineation_test_case_data = [
