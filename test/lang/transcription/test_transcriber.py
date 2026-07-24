@@ -15,9 +15,9 @@ from pytest import LogCaptureFixture, approx, raises
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
 from scinoephile.audio.transcription import (
     MlxAudioTranscriber,
-    MlxAudioTranscriptionError,
     TranscribedSegment,
     TranscribedWord,
+    TranscriptionError,
 )
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
@@ -404,6 +404,38 @@ def test_all_unusable_candidates_leave_gap_for_translation():
     assert output == []
 
 
+def test_auto_preprocessing_retry_order_matches_backends():
+    """Test Whisper and MLX-Audio use the same preprocessing retry order."""
+    whisper, _ = _get_transcriber(
+        demucs_mode=DemucsMode.AUTO,
+        vad_mode=VADMode.AUTO,
+    )
+    whisper_attempts = [
+        (candidate.use_demucs, candidate.use_vad)
+        for candidate in (
+            *whisper._get_standard_transcribers(),
+            *whisper._get_standard_transcribers(unseparated=True),
+        )
+    ]
+
+    mlx_audio = object.__new__(MlxAudioTranscriber)
+    mlx_audio.use_demucs = True
+    mlx_audio.use_vad = True
+    mlx_audio.retry_without_demucs = True
+    mlx_audio.retry_without_vad = True
+
+    assert (
+        whisper_attempts
+        == list(mlx_audio._get_attempt_configurations())
+        == [
+            (True, True),
+            (True, False),
+            (False, True),
+            (False, False),
+        ]
+    )
+
+
 def test_mlx_audio_backend_delegates_retries_to_single_transcriber():
     """Test guided transcription delegates retries to one MLX-Audio instance."""
     transcriber, _ = _get_transcriber(
@@ -441,7 +473,7 @@ def test_failed_mlx_audio_backend_leaves_gap_for_translation():
     assert transcriber.mlx_audio_transcriber is not None
     mlx_audio = cast(Mock, transcriber.mlx_audio_transcriber)
     mlx_audio.get_cached_transcription.return_value = None
-    mlx_audio.side_effect = MlxAudioTranscriptionError("MLX-Audio failed")
+    mlx_audio.side_effect = TranscriptionError("MLX-Audio failed")
 
     output = transcriber._transcribe_block_audio(AudioSegment.silent(duration=1000))
 

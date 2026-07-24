@@ -27,8 +27,9 @@ KAIFANGCIDIAN_SOURCE = DictionarySource(
         "Data derived from Kaifangcidian website dictionary JavaScript payloads."
     ),
     legal=(
-        "Kaifangcidian resources are published under CC BY 3.0 unless otherwise "
-        "noted; attribution and license link are required."
+        "© 2009–2024 開放詞典.com. Kaifangcidian resources are published "
+        "under CC BY 3.0 unless otherwise noted; attribution and license link "
+        "are required."
     ),
     link=KAIFANGCIDIAN_SITE_URL,
     update_url=KAIFANGCIDIAN_SITE_URL,

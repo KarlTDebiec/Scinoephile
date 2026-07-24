@@ -89,16 +89,38 @@ _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
 class TranscriptionLanguageSpec:
     """Configuration for one transcription language."""
 
-    model_name: str
-    """Default Whisper model name."""
+    model_names_by_backend: Mapping[TranscriptionBackend, str]
+    """Default model names keyed by transcription backend."""
     whisper_language: str
     """Language code passed to Whisper."""
     segment_splitter: TranscribedSegmentSplitter | None = None
-    """Strategy for splitting raw Whisper segments."""
+    """Strategy for splitting raw transcription segments."""
+
+    def get_model_name(self, backend: TranscriptionBackend) -> str:
+        """Get the default model name for a transcription backend.
+
+        Arguments:
+            backend: audio transcription backend
+        Returns:
+            default model name for the backend
+        Raises:
+            ScinoephileError: if the backend has no configured default model
+        """
+        try:
+            return self.model_names_by_backend[backend]
+        except KeyError as exc:
+            raise ScinoephileError(
+                f"No default model is configured for transcription backend {backend}."
+            ) from exc
 
 
 _YUE_LANGUAGE_SPEC = TranscriptionLanguageSpec(
-    model_name="khleeloo/whisper-large-v3-cantonese",
+    model_names_by_backend=MappingProxyType(
+        {
+            TranscriptionBackend.MLX_AUDIO: MIMO_MODEL_NAME,
+            TranscriptionBackend.WHISPER: "khleeloo/whisper-large-v3-cantonese",
+        }
+    ),
     whisper_language="yue",
     segment_splitter=get_segment_split_on_whitespace,
 )
@@ -220,10 +242,8 @@ def get_guided_transcriber(
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec
 
-    if model_name is None and backend == TranscriptionBackend.MLX_AUDIO:
-        model_name = MIMO_MODEL_NAME
-    elif model_name is None:
-        model_name = language_spec.model_name
+    if model_name is None:
+        model_name = language_spec.get_model_name(backend)
     if delineation_prompt is None:
         delineation_prompt = spec.delineation_prompt
     if punctuation_prompt is None:

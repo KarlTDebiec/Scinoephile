@@ -18,6 +18,12 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
+from scinoephile.audio.transcription.exceptions import (
+    EmptyTranscriptError,
+    TranscriptionAlignmentError,
+    TranscriptionError,
+    TranscriptionInferenceError,
+)
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.common.file import get_temp_file_path, open_atomic_text_file
@@ -28,18 +34,14 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 
 from .forced_alignment import (
     CTC_MODEL_NAME,
-    TranscriptionAlignmentError,
     align_transcription,
 )
 from .inference import MlxAudioInferenceResult, transcribe_with_mlx_audio
 
 __all__ = [
     "MIMO_MODEL_NAME",
-    "MlxAudioInferenceError",
     "MlxAudioModelProfile",
-    "MlxAudioTranscriptEmptyError",
     "MlxAudioTranscriber",
-    "MlxAudioTranscriptionError",
     "QWEN3_ASR_MODEL_NAME",
     "get_mlx_audio_model_profile",
 ]
@@ -144,7 +146,7 @@ def get_mlx_audio_model_profile(model_name: str) -> MlxAudioModelProfile:
     Returns:
         matching model profile
     Raises:
-        MlxAudioTranscriptionError: if the model family has not been integrated
+        TranscriptionError: if the model family has not been integrated
             and tested
     """
     lowered_model_name = model_name.lower()
@@ -154,22 +156,10 @@ def get_mlx_audio_model_profile(model_name: str) -> MlxAudioModelProfile:
     supported_families = ", ".join(
         profile.family_name for profile in _MLX_AUDIO_MODEL_PROFILES
     )
-    raise MlxAudioTranscriptionError(
+    raise TranscriptionError(
         f"Unsupported MLX-Audio model {model_name!r}; supported families: "
         f"{supported_families}."
     )
-
-
-class MlxAudioTranscriptionError(ScinoephileError):
-    """Raised when MLX-Audio cannot produce timestamped transcription output."""
-
-
-class MlxAudioTranscriptEmptyError(MlxAudioTranscriptionError):
-    """Raised when MLX-Audio returns no transcript text."""
-
-
-class MlxAudioInferenceError(MlxAudioTranscriptionError):
-    """Raised when direct MLX-Audio inference fails or returns malformed output."""
 
 
 class MlxAudioTranscriber:
@@ -202,7 +192,7 @@ class MlxAudioTranscriber:
             retry_without_demucs: whether to retry original audio after Demucs
             retry_without_vad: whether to retry unfiltered audio after VAD failure
         Raises:
-            MlxAudioTranscriptionError: if the platform does not support MLX-Audio
+            TranscriptionError: if the platform does not support MLX-Audio
             ValueError: if the language or numeric configuration is invalid
         """
         self._validate_platform()
@@ -471,7 +461,7 @@ class MlxAudioTranscriber:
                     use_demucs=use_demucs,
                     use_vad=use_vad,
                 )
-            except (MlxAudioTranscriptionError, TranscriptionAlignmentError) as exc:
+            except TranscriptionError as exc:
                 logger.warning(f"Unable to read MLX-Audio transcription cache: {exc}")
                 last_error = exc
                 continue
@@ -511,19 +501,19 @@ class MlxAudioTranscriber:
             with cache_path.open("r", encoding="utf-8") as file:
                 payload = json.load(file)
             if not isinstance(payload, Mapping):
-                raise MlxAudioInferenceError(
+                raise TranscriptionInferenceError(
                     f"Malformed MLX-Audio cache payload: {cache_path}"
                 )
             raw_segments = payload.get("segments")
             if not isinstance(raw_segments, list):
-                raise MlxAudioInferenceError(
+                raise TranscriptionInferenceError(
                     f"Malformed MLX-Audio cache payload: {cache_path}"
                 )
             segments = [TranscribedSegment.model_validate(s) for s in raw_segments]
-        except MlxAudioTranscriptionError:
+        except TranscriptionError:
             raise
         except (OSError, TypeError, ValueError) as exc:
-            raise MlxAudioInferenceError(
+            raise TranscriptionInferenceError(
                 f"Unable to read MLX-Audio transcription cache {cache_path}: {exc}"
             ) from exc
         cache_path.touch()
@@ -535,7 +525,7 @@ class MlxAudioTranscriber:
         machine = platform.machine()
         if sys.platform == "darwin" and machine == "arm64":
             return
-        raise MlxAudioTranscriptionError(
+        raise TranscriptionError(
             "MLX-Audio support requires macOS on Apple Silicon "
             f"(detected sys.platform={sys.platform!r}, "
             f"platform.machine()={machine!r}). "
@@ -551,7 +541,7 @@ class MlxAudioTranscriber:
         Returns:
             speech start and end offsets in milliseconds
         Raises:
-            MlxAudioTranscriptionError: if Silero VAD is unavailable or fails
+            TranscriptionError: if Silero VAD is unavailable or fails
         """
         try:
             import torch  # noqa: PLC0415
@@ -559,7 +549,7 @@ class MlxAudioTranscriber:
                 get_vad_segments,
             )
         except ImportError as exc:
-            raise MlxAudioTranscriptionError(
+            raise TranscriptionError(
                 "MLX-Audio VAD requires the optional transcription dependencies."
             ) from exc
 
@@ -584,18 +574,14 @@ class MlxAudioTranscriber:
                 method="silero",
             )
         except (AssertionError, OSError, RuntimeError, ValueError) as exc:
-            raise MlxAudioTranscriptionError(
-                f"Unable to run MLX-Audio VAD: {exc}"
-            ) from exc
+            raise TranscriptionError(f"Unable to run MLX-Audio VAD: {exc}") from exc
 
         intervals = []
         for raw_interval in raw_intervals:
             start = raw_interval.get("start")
             end = raw_interval.get("end")
             if not isinstance(start, int | float) or not isinstance(end, int | float):
-                raise MlxAudioTranscriptionError(
-                    "MLX-Audio VAD returned malformed timestamps."
-                )
+                raise TranscriptionError("MLX-Audio VAD returned malformed timestamps.")
             start_ms = max(0, round(float(start) * 1000))
             end_ms = min(len(audio), round(float(end) * 1000))
             if end_ms > start_ms:
@@ -610,7 +596,7 @@ class MlxAudioTranscriber:
         Returns:
             MLX-Audio inference result
         Raises:
-            MlxAudioInferenceError: if direct inference fails
+            TranscriptionInferenceError: if direct inference fails
         """
         try:
             return transcribe_with_mlx_audio(
@@ -620,7 +606,7 @@ class MlxAudioTranscriber:
                 max_tokens=self.max_tokens,
             )
         except (ImportError, OSError, RuntimeError, ValueError) as exc:
-            raise MlxAudioInferenceError(
+            raise TranscriptionInferenceError(
                 f"Unable to run MLX-Audio inference: {exc}"
             ) from exc
 
@@ -681,8 +667,7 @@ class MlxAudioTranscriber:
             except (
                 AssertionError,
                 ImportError,
-                MlxAudioTranscriptionError,
-                TranscriptionAlignmentError,
+                TranscriptionError,
             ) as exc:
                 logger.warning(f"MLX-Audio transcription attempt failed: {exc}")
                 last_error = exc
@@ -724,7 +709,7 @@ class MlxAudioTranscriber:
         Returns:
             timestamped transcription segments
         Raises:
-            MlxAudioTranscriptionError: if MLX-Audio returns unusable text
+            TranscriptionError: if MLX-Audio returns unusable text
             TranscriptionAlignmentError: if forced alignment fails
         """
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
@@ -732,12 +717,10 @@ class MlxAudioTranscriber:
             inference_result = self._run_mlx_audio(temp_audio_path)
             text = inference_result.text
             if not text.strip():
-                raise MlxAudioTranscriptEmptyError(
-                    "MLX-Audio returned empty transcript."
-                )
+                raise EmptyTranscriptError("MLX-Audio returned empty transcript.")
             content_characters = {char for char in text if char.isalnum()}
             if content_characters and content_characters <= _LOW_INFORMATION_CHARACTERS:
-                raise MlxAudioTranscriptionError(
+                raise TranscriptionError(
                     f"MLX-Audio returned only low-information vocalizations: {text!r}"
                 )
             return align_transcription(
@@ -770,7 +753,7 @@ class MlxAudioTranscriber:
             window_audio = audio[window_start_ms:window_end_ms]
             try:
                 window_segments = self._transcribe_audio_window(window_audio)
-            except MlxAudioTranscriptEmptyError:
+            except EmptyTranscriptError:
                 logger.info(
                     f"Skipping empty MLX-Audio audio window "
                     f"{window_start_ms / 1000:.2f}s-"
@@ -789,7 +772,7 @@ class MlxAudioTranscriber:
             core_start_ms = core_end_ms
 
         if not segments:
-            raise MlxAudioTranscriptEmptyError(
+            raise EmptyTranscriptError(
                 "MLX-Audio returned no transcript across audio chunks."
             )
         return segments
@@ -808,7 +791,7 @@ class MlxAudioTranscriber:
         Returns:
             timestamped transcription segments
         Raises:
-            MlxAudioTranscriptionError: if MLX-Audio returns unusable text
+            TranscriptionError: if MLX-Audio returns unusable text
             TranscriptionAlignmentError: if forced alignment fails
         """
         if use_vad:
@@ -843,11 +826,11 @@ class MlxAudioTranscriber:
         Returns:
             timestamped transcription segments on the original audio timeline
         Raises:
-            MlxAudioTranscriptEmptyError: if VAD finds no speech
+            EmptyTranscriptError: if VAD finds no speech
         """
         speech_intervals = self._get_vad_speech_intervals(audio)
         if not speech_intervals:
-            raise MlxAudioTranscriptEmptyError("MLX-Audio VAD found no speech.")
+            raise EmptyTranscriptError("MLX-Audio VAD found no speech.")
 
         logger.info(
             f"MLX-Audio VAD retained {len(speech_intervals)} speech interval(s) "

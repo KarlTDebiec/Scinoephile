@@ -6,6 +6,10 @@ authors = [
     { name = "Karl Debiec", email = "karl.t.debiec@gmail.com" }
 ]
 license = "BSD-3-Clause"
+license-files = [
+    "LICENSE",
+    "docs/THIRD_PARTY_NOTICES.md",
+]
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
 dependencies = [
@@ -140,7 +144,6 @@ scinoephile = [
     "data/dictionaries/kaifangcidian/*.csv",
     "data/dictionaries/unihan/*.txt",
     "data/ocr/*.csv",
-    "data/ocr/*.txt",
     "web/static/*.js",
     "web/ocr_validation/templates/*.html",
 ]

@@ -11,12 +11,12 @@ from typing import Any, cast
 import numpy as np
 from opencc import OpenCC
 
+from scinoephile.audio.transcription.exceptions import TranscriptionAlignmentError
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 
 __all__ = [
     "CTC_MODEL_NAME",
-    "TranscriptionAlignmentError",
     "align_transcription",
 ]
 
@@ -24,12 +24,6 @@ CTC_MODEL_NAME = "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn"
 """Hugging Face model used for text-only transcription alignment."""
 
 _CTC_COMPONENTS_BY_DEVICE: dict[str, tuple[object, object]] = {}
-_CTC_SIMPLIFIER = OpenCC("t2s")
-"""Converter from Traditional Chinese characters to the CTC model's script."""
-
-
-class TranscriptionAlignmentError(RuntimeError):
-    """Raised when text-only transcription cannot be timestamp-aligned."""
 
 
 def align_transcription(
@@ -378,11 +372,17 @@ def _get_ctc_components(*, device: str) -> tuple[object, object]:
     return components
 
 
-def _get_ctc_token_id(*, char: str, tokenizer: object) -> int | None:
+def _get_ctc_token_id(
+    *,
+    char: str,
+    script_converter: OpenCC,
+    tokenizer: object,
+) -> int | None:
     """Get an aligner token ID for one transcript character.
 
     Arguments:
         char: transcript character
+        script_converter: converter from Traditional Chinese to the CTC model's script
         tokenizer: Hugging Face tokenizer
     Returns:
         token ID, or None when the character cannot be aligned directly
@@ -392,7 +392,7 @@ def _get_ctc_token_id(*, char: str, tokenizer: object) -> int | None:
 
     unk_token_id = getattr(tokenizer, "unk_token_id", None)
     candidates = list(dict.fromkeys((char, char.upper(), char.lower())))
-    simplified = _CTC_SIMPLIFIER.convert(char)
+    simplified = script_converter.convert(char)
     if len(simplified) == 1:
         candidates.extend(
             candidate
@@ -431,8 +431,13 @@ def _get_ctc_token_ids(
 
     token_ids: list[int] = []
     char_indices: list[int] = []
+    script_converter = OpenCC("t2s")
     for char_idx, char in enumerate(text):
-        token_id = _get_ctc_token_id(char=char, tokenizer=tokenizer)
+        token_id = _get_ctc_token_id(
+            char=char,
+            script_converter=script_converter,
+            tokenizer=tokenizer,
+        )
         if token_id is None:
             continue
         token_ids.append(token_id)

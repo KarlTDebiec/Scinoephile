@@ -11,15 +11,18 @@ from unittest.mock import Mock
 import pytest
 from pydub import AudioSegment
 
-from scinoephile.audio.transcription import TranscribedSegment, TranscribedWord
+from scinoephile.audio.transcription import (
+    EmptyTranscriptError,
+    TranscribedSegment,
+    TranscribedWord,
+    TranscriptionError,
+    TranscriptionInferenceError,
+)
 from scinoephile.audio.transcription.mlx_audio.inference import MlxAudioInferenceResult
 from scinoephile.audio.transcription.mlx_audio.transcriber import (
     MIMO_MODEL_NAME,
     QWEN3_ASR_MODEL_NAME,
-    MlxAudioInferenceError,
     MlxAudioTranscriber,
-    MlxAudioTranscriptEmptyError,
-    MlxAudioTranscriptionError,
     get_mlx_audio_model_profile,
 )
 from scinoephile.core import Language
@@ -91,7 +94,7 @@ def test_init_rejects_unsupported_platform(
     )
 
     with pytest.raises(
-        MlxAudioTranscriptionError,
+        TranscriptionError,
         match="requires macOS on Apple Silicon",
     ):
         MlxAudioTranscriber()
@@ -166,7 +169,7 @@ def test_get_mlx_audio_model_profile_accepts_local_model_path():
 def test_get_mlx_audio_model_profile_rejects_untested_family():
     """Test unknown MLX-Audio model families fail clearly."""
     with pytest.raises(
-        MlxAudioTranscriptionError,
+        TranscriptionError,
         match="supported families: mimo, qwen3-asr",
     ):
         get_mlx_audio_model_profile("mlx-community/Whisper-Large-v3-MLX")
@@ -427,7 +430,7 @@ def test_transcribe_chunks_audio_skips_empty_windows(
     patched_transcribe = Mock(
         side_effect=[
             [_get_timed_segment("one", start=0.1, end=0.9)],
-            MlxAudioTranscriptEmptyError("MLX-Audio returned empty transcript."),
+            EmptyTranscriptError("MLX-Audio returned empty transcript."),
             [_get_timed_segment("three", start=0.6, end=1.0)],
         ]
     )
@@ -452,14 +455,10 @@ def test_transcribe_chunks_audio_rejects_all_empty_windows(
     monkeypatch.setattr(
         transcriber,
         "_transcribe_audio_window",
-        Mock(
-            side_effect=MlxAudioTranscriptEmptyError(
-                "MLX-Audio returned empty transcript."
-            )
-        ),
+        Mock(side_effect=EmptyTranscriptError("MLX-Audio returned empty transcript.")),
     )
 
-    with pytest.raises(MlxAudioTranscriptEmptyError, match="across audio chunks"):
+    with pytest.raises(EmptyTranscriptError, match="across audio chunks"):
         transcriber.transcribe(audio)
 
 
@@ -514,7 +513,7 @@ def test_transcribe_vad_rejects_audio_without_detected_speech(
     patched_transcribe = Mock()
     monkeypatch.setattr(transcriber, "_transcribe_unfiltered_audio", patched_transcribe)
 
-    with pytest.raises(MlxAudioTranscriptEmptyError, match="VAD found no speech"):
+    with pytest.raises(EmptyTranscriptError, match="VAD found no speech"):
         transcriber.transcribe(AudioSegment.silent(duration=1000))
 
     patched_transcribe.assert_not_called()
@@ -656,7 +655,7 @@ def test_transcribe_rejects_low_information_vocalizations(
         patched_align,
     )
 
-    with pytest.raises(MlxAudioTranscriptionError, match="low-information"):
+    with pytest.raises(TranscriptionError, match="low-information"):
         transcriber.transcribe(AudioSegment.silent(duration=1000))
 
     patched_align.assert_not_called()
@@ -674,7 +673,7 @@ def test_transcribe_wraps_mlx_audio_inference_errors(
     )
 
     with pytest.raises(
-        MlxAudioInferenceError, match="Unable to run MLX-Audio inference"
+        TranscriptionInferenceError, match="Unable to run MLX-Audio inference"
     ):
         transcriber.transcribe(audio)
 

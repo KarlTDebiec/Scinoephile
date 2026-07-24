@@ -12,9 +12,9 @@ from unittest.mock import Mock
 import numpy as np
 import pytest
 
+from scinoephile.audio.transcription import TranscriptionAlignmentError
 from scinoephile.audio.transcription.mlx_audio import forced_alignment
 from scinoephile.audio.transcription.mlx_audio.forced_alignment import (
-    TranscriptionAlignmentError,
     align_transcription,
 )
 

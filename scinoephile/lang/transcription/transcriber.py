@@ -15,9 +15,8 @@ from scinoephile.audio.subtitles import AudioSeries, get_series_from_segments
 from scinoephile.audio.transcription import (
     DemucsSeparator,
     MlxAudioTranscriber,
-    MlxAudioTranscriptionError,
     TranscribedSegment,
-    TranscriptionAlignmentError,
+    TranscriptionError,
     WhisperTranscriber,
 )
 from scinoephile.common.validation import val_index_range
@@ -523,8 +522,7 @@ class GuidedTranscriber:
         except (
             AssertionError,
             ImportError,
-            MlxAudioTranscriptionError,
-            TranscriptionAlignmentError,
+            TranscriptionError,
         ) as exc:
             logger.warning(f"MLX-Audio transcription failed: {exc}")
         else:

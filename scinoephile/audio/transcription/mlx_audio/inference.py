@@ -7,19 +7,16 @@ from __future__ import annotations
 import wave
 from collections.abc import Mapping
 from dataclasses import dataclass
-from importlib import import_module
 from pathlib import Path
 from typing import Any, cast
+
+from scinoephile.common.validation import val_input_file_or_dir_path
 
 __all__ = [
     "MlxAudioInferenceResult",
     "transcribe_with_mlx_audio",
 ]
 
-_MLX_AUDIO_EXTRA_MESSAGE = (
-    "MLX-Audio inference requires optional transcription dependencies. "
-    "Install scinoephile with the 'transcription' extra."
-)
 _MLX_MODEL_BY_REFERENCE: dict[str, Any] = {}
 """Loaded MLX-Audio models keyed by model reference."""
 
@@ -70,8 +67,8 @@ def transcribe_with_mlx_audio(
     return MlxAudioInferenceResult(text=text, duration_seconds=duration_seconds)
 
 
-def _get_mlx_load() -> Any:
-    """Get the MLX-Audio STT model loader.
+def _get_model_loader() -> Any:
+    """Import the MLX-Audio STT model loader on demand.
 
     Returns:
         MLX-Audio STT load function
@@ -79,10 +76,13 @@ def _get_mlx_load() -> Any:
         ImportError: if MLX-Audio is unavailable
     """
     try:
-        mlx_stt = import_module("mlx_audio.stt")
+        from mlx_audio.stt import load  # noqa: PLC0415
     except ImportError as exc:
-        raise ImportError(_MLX_AUDIO_EXTRA_MESSAGE) from exc
-    return getattr(mlx_stt, "load")
+        raise ImportError(
+            "MLX-Audio inference requires optional transcription dependencies. "
+            "Install scinoephile with the 'transcription' extra."
+        ) from exc
+    return load
 
 
 def _get_mlx_model(model_name: str) -> Any:
@@ -93,12 +93,11 @@ def _get_mlx_model(model_name: str) -> Any:
     Returns:
         loaded MLX-Audio model
     """
-    model_path = Path(model_name).expanduser()
     model_reference: str | Path = model_name
-    if model_path.is_absolute() or model_name.startswith("~"):
-        model_reference = model_path
+    if model_name.startswith(("/", ".", "~")):
+        model_reference = val_input_file_or_dir_path(model_name)
     cache_key = str(model_reference)
     if cache_key not in _MLX_MODEL_BY_REFERENCE:
-        load = _get_mlx_load()
-        _MLX_MODEL_BY_REFERENCE[cache_key] = load(model_reference)
+        model_loader = _get_model_loader()
+        _MLX_MODEL_BY_REFERENCE[cache_key] = model_loader(model_reference)
     return _MLX_MODEL_BY_REFERENCE[cache_key]
