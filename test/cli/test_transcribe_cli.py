@@ -84,6 +84,8 @@ def test_transcribe_help_lists_generic_options():
     assert "--mimo-tokenizer" not in help_text
     assert "--mimo-runtime {auto,mlx}" in help_text
     assert "--mimo-aligner {ctc,whisperx}" in help_text
+    assert "--mimo-language" not in help_text
+    assert "--mimo-aligner-language" not in help_text
     assert "uses language-pair default if omitted" in normalized_help_text
 
 
@@ -209,13 +211,11 @@ def test_transcribe_cli_passes_generic_configuration(
         vad_mode: VADMode,
         mimo_model_name: str,
         mimo_runtime: MimoRuntime,
-        mimo_language: str,
         mimo_max_tokens: int | None,
         mimo_chunk_duration_seconds: float | None,
         mimo_chunk_overlap_seconds: float,
         mimo_worker_command: list[str] | None,
         mimo_aligner_backend: str,
-        mimo_aligner_language: str,
         mimo_aligner_model_name: str | None,
         mimo_aligner_worker_command: list[str] | None,
         provider: object,
@@ -236,13 +236,11 @@ def test_transcribe_cli_passes_generic_configuration(
         assert vad_mode is VADMode.OFF
         assert mimo_model_name == "custom/mimo"
         assert mimo_runtime is MimoRuntime.MLX
-        assert mimo_language == "auto"
         assert mimo_max_tokens == 512
         assert mimo_chunk_duration_seconds == 20.0
         assert mimo_chunk_overlap_seconds == 1.5
         assert mimo_worker_command == ["python", "mimo_worker.py"]
         assert mimo_aligner_backend == "whisperx"
-        assert mimo_aligner_language == "zh"
         assert mimo_aligner_model_name == "custom/aligner"
         assert mimo_aligner_worker_command == ["python", "aligner_worker.py"]
         assert provider is not None
@@ -267,11 +265,11 @@ def test_transcribe_cli_passes_generic_configuration(
                 f"--reference-infile {_REFERENCE_INFILE_PATH} "
                 "--language yue-Hant --reference-language zho-Hans "
                 "--whisper-model custom/whisper --backend mimo --demucs on --vad off "
-                "--mimo-runtime mlx --mimo-language auto "
+                "--mimo-runtime mlx "
                 "--mimo-max-tokens 512 --mimo-chunk-duration 20 "
                 "--mimo-chunk-overlap 1.5 --mimo-model custom/mimo "
                 "--mimo-worker-command 'python mimo_worker.py' "
-                "--mimo-aligner whisperx --mimo-aligner-language zh "
+                "--mimo-aligner whisperx "
                 "--mimo-aligner-model custom/aligner "
                 "--mimo-aligner-worker-command 'python aligner_worker.py' "
                 f"--delineation-json {tmp_path / 'delineation.json'} "

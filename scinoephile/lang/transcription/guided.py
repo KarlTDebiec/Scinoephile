@@ -181,13 +181,11 @@ def get_guided_transcriber(
     vad_mode: VADMode = VADMode.AUTO,
     mimo_model_name: str = MIMO_MODEL_NAME,
     mimo_runtime: MimoRuntime = MimoRuntime.AUTO,
-    mimo_language: str = "yue",
     mimo_max_tokens: int | None = None,
     mimo_chunk_duration_seconds: float | None = None,
     mimo_chunk_overlap_seconds: float = 1.0,
     mimo_worker_command: Sequence[str] | None = None,
     mimo_aligner_backend: str = "ctc",
-    mimo_aligner_language: str = "zh",
     mimo_aligner_model_name: str | None = None,
     mimo_aligner_worker_command: Sequence[str] | None = None,
     provider: LLMProvider | None = None,
@@ -211,13 +209,11 @@ def get_guided_transcriber(
         vad_mode: voice activity detection mode
         mimo_model_name: MiMo ASR model name or local path
         mimo_runtime: runtime implementation used for MiMo inference
-        mimo_language: language metadata passed to MiMo
         mimo_max_tokens: optional maximum number of MiMo tokens to generate
         mimo_chunk_duration_seconds: optional MiMo chunk duration in seconds
         mimo_chunk_overlap_seconds: context overlap applied to each MiMo chunk
         mimo_worker_command: optional subprocess command that runs MiMo
         mimo_aligner_backend: timestamp alignment backend for MiMo
-        mimo_aligner_language: language code used by the MiMo aligner
         mimo_aligner_model_name: optional MiMo timestamp aligner model name
         mimo_aligner_worker_command: optional MiMo timestamp aligner worker command
         provider: provider to use for LLM queries
@@ -317,13 +313,12 @@ def get_guided_transcriber(
         return MimoTranscriber(
             model_name=mimo_model_name,
             mimo_runtime=mimo_runtime,
-            language=mimo_language,
+            language=language,
             max_tokens=mimo_max_tokens,
             chunk_duration_seconds=mimo_chunk_duration_seconds,
             chunk_overlap_seconds=mimo_chunk_overlap_seconds,
             cache_dir_path=get_runtime_cache_dir_path("mimo"),
             aligner_backend=mimo_aligner_backend,
-            aligner_language=mimo_aligner_language,
             aligner_model_name=mimo_aligner_model_name,
             aligner_worker_command=mimo_aligner_worker_command,
             worker_command=mimo_worker_command,

@@ -25,7 +25,8 @@ __all__ = [
 ]
 
 _MIMO_MLX_EXTRA_MESSAGE = (
-    "MiMo MLX runtime requires mlx-audio with MiMo-V2.5-ASR support installed."
+    "MiMo MLX runtime requires optional transcription dependencies. "
+    "Install scinoephile with the 'transcription' extra."
 )
 _MLX_MODEL_BY_REFERENCE: dict[str, Any] = {}
 """Loaded MLX MiMo models keyed by model reference."""

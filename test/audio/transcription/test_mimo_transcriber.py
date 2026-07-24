@@ -25,11 +25,12 @@ from scinoephile.audio.transcription.mimo_transcriber import (
     MimoTranscriptionError,
     MimoWorkerError,
 )
+from scinoephile.core import Language
 
 
 def test_get_cache_path_separates_mimo_configuration():
     """Test MiMo cache paths differ by cache-relevant configuration."""
-    audio = Mock(raw_data=b"audio")
+    audio = _get_cache_audio()
     first_transcriber = _get_mimo_transcriber()
     second_transcriber = _get_mimo_transcriber()
     first_transcriber.aligner_model_name = "aligner/one"
@@ -49,7 +50,7 @@ def test_get_cache_path_auto_uses_mlx_runtime_on_apple_silicon(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test auto runtime uses the MLX model on Apple Silicon."""
-    audio = Mock(raw_data=b"audio")
+    audio = _get_cache_audio()
     transcriber = _get_mimo_transcriber(
         model_name=MIMO_MODEL_NAME,
         mimo_runtime=MimoRuntime.AUTO,
@@ -73,7 +74,7 @@ def test_get_cache_path_auto_rejects_non_apple_silicon(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test auto runtime fails clearly when MLX is unavailable."""
-    audio = Mock(raw_data=b"audio")
+    audio = _get_cache_audio()
     transcriber = _get_mimo_transcriber(mimo_runtime=MimoRuntime.AUTO)
     monkeypatch.setattr(
         "scinoephile.audio.transcription.mimo_transcriber.platform.system",
@@ -90,7 +91,7 @@ def test_get_cache_path_auto_rejects_non_apple_silicon(
 
 def test_get_cache_path_separates_aligner_worker_command():
     """Test MiMo cache paths differ by isolated aligner worker command."""
-    audio = Mock(raw_data=b"audio")
+    audio = _get_cache_audio()
     first_transcriber = _get_mimo_transcriber()
     second_transcriber = _get_mimo_transcriber()
     first_transcriber.aligner_worker_command = ("python", "worker-one.py")
@@ -106,10 +107,9 @@ def test_get_cache_path_separates_aligner_worker_command():
 
 def test_get_cache_path_separates_mimo_generation_options():
     """Test MiMo cache paths differ by generation options."""
-    audio = Mock(raw_data=b"audio")
+    audio = _get_cache_audio()
     first_transcriber = _get_mimo_transcriber()
     second_transcriber = _get_mimo_transcriber()
-    second_transcriber.language = "auto"
     second_transcriber.max_tokens = 1024
 
     first_cache_path = first_transcriber._get_cache_path(audio)
@@ -118,6 +118,49 @@ def test_get_cache_path_separates_mimo_generation_options():
     assert first_cache_path is not None
     assert second_cache_path is not None
     assert first_cache_path != second_cache_path
+
+
+def test_get_cache_path_separates_audio_formats():
+    """Test MiMo cache paths include audio format metadata."""
+    raw_data = b"\0\1" * 100
+    audio_segments = [
+        AudioSegment(data=raw_data, sample_width=2, frame_rate=16000, channels=1),
+        AudioSegment(data=raw_data, sample_width=2, frame_rate=8000, channels=1),
+        AudioSegment(data=raw_data, sample_width=2, frame_rate=16000, channels=2),
+        AudioSegment(data=raw_data, sample_width=1, frame_rate=16000, channels=1),
+    ]
+    transcriber = _get_mimo_transcriber()
+
+    cache_paths = {
+        transcriber._get_cache_path(audio_segment) for audio_segment in audio_segments
+    }
+
+    assert len(cache_paths) == len(audio_segments)
+
+
+@pytest.mark.parametrize(
+    ("language", "mimo_language_code", "aligner_language_code"),
+    [
+        (Language.eng, "en", "en"),
+        (Language.yue_hans, "yue", "zh"),
+        (Language.yue_hant, "yue", "zh"),
+        (Language.zho_hans, "zh", "zh"),
+        (Language.zho_hant, "zh", "zh"),
+    ],
+)
+def test_init_derives_mimo_language_codes(
+    language: Language,
+    mimo_language_code: str,
+    aligner_language_code: str,
+):
+    """Test MiMo and alignment language codes are derived from Language."""
+    transcriber = MimoTranscriber(
+        language=language,
+        mimo_runtime=MimoRuntime.MLX,
+    )
+
+    assert transcriber.mimo_language_code == mimo_language_code
+    assert transcriber.aligner_language_code == aligner_language_code
 
 
 def test_init_rejects_non_positive_max_tokens():
@@ -138,7 +181,7 @@ def test_get_cached_transcription_reads_mimo_payload(tmp_path: Path):
         cache_dir_path=tmp_path,
         mimo_runtime=MimoRuntime.MLX,
     )
-    audio = Mock(raw_data=b"audio")
+    audio = _get_cache_audio()
     cache_path = transcriber._get_cache_path(audio)
     assert cache_path is not None
     cache_path.write_text(
@@ -304,19 +347,20 @@ def test_transcribe_uses_in_process_mimo_when_worker_command_absent(
     assert request["language"] == "yue"
 
 
-def test_transcribe_passes_mimo_language_and_max_tokens(
+def test_transcribe_derives_mimo_language_and_passes_max_tokens(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test MiMo transcription forwards generation options."""
+    """Test MiMo transcription derives language codes and forwards max tokens."""
     captured: dict[str, object] = {}
     audio = AudioSegment.silent(duration=1000)
     expected_segments = [_get_timed_segment("你好")]
     transcriber = MimoTranscriber(
         model_name=MIMO_MODEL_NAME,
         mimo_runtime=MimoRuntime.MLX,
-        language="auto",
+        language=Language.eng,
         max_tokens=1024,
     )
+    patched_align = Mock(return_value=expected_segments)
 
     def fake_transcribe_with_mimo(request: Mapping[str, object]) -> dict[str, object]:
         """Capture in-process MiMo request and return transcript text."""
@@ -329,15 +373,16 @@ def test_transcribe_passes_mimo_language_and_max_tokens(
     )
     monkeypatch.setattr(
         "scinoephile.audio.transcription.mimo_transcriber.align_mimo_transcription",
-        Mock(return_value=expected_segments),
+        patched_align,
     )
 
     segments = transcriber.transcribe(audio)
 
     request = cast(Mapping[str, object], captured["request"])
     assert segments == expected_segments
-    assert request["language"] == "auto"
+    assert request["language"] == "en"
     assert request["max_tokens"] == 1024
+    assert patched_align.call_args.kwargs["aligner_language"] == "en"
 
 
 def test_transcribe_chunks_audio_and_offsets_segments(
@@ -404,6 +449,52 @@ def test_transcribe_chunks_audio_and_offsets_segments(
     assert segments[1].words is not None
     assert segments[1].words[0].start == pytest.approx(2.2)
     assert segments[1].words[0].end == pytest.approx(3.7)
+
+
+def test_transcribe_chunks_audio_skips_empty_windows(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test an empty MiMo chunk does not discard speech from other chunks."""
+    audio = AudioSegment.silent(duration=4500)
+    transcriber = MimoTranscriber(
+        mimo_runtime=MimoRuntime.MLX,
+        chunk_duration_seconds=2.0,
+        chunk_overlap_seconds=0.5,
+    )
+    patched_transcribe = Mock(
+        side_effect=[
+            [_get_timed_segment("one", start=0.1, end=0.9)],
+            MimoTranscriptEmptyError("MiMo returned empty transcript."),
+            [_get_timed_segment("three", start=0.6, end=1.0)],
+        ]
+    )
+    monkeypatch.setattr(transcriber, "_transcribe_audio_window", patched_transcribe)
+
+    segments = transcriber.transcribe(audio)
+
+    assert patched_transcribe.call_count == 3
+    assert [segment.text for segment in segments] == ["one", "three"]
+    assert [segment.id for segment in segments] == [0, 1]
+    assert [segment.start for segment in segments] == pytest.approx([0.1, 4.1])
+
+
+def test_transcribe_chunks_audio_rejects_all_empty_windows(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test chunked MiMo transcription remains empty when every chunk is empty."""
+    audio = AudioSegment.silent(duration=4500)
+    transcriber = MimoTranscriber(
+        mimo_runtime=MimoRuntime.MLX,
+        chunk_duration_seconds=2.0,
+    )
+    monkeypatch.setattr(
+        transcriber,
+        "_transcribe_audio_window",
+        Mock(side_effect=MimoTranscriptEmptyError("MiMo returned empty transcript.")),
+    )
+
+    with pytest.raises(MimoTranscriptEmptyError, match="across audio chunks"):
+        transcriber.transcribe(audio)
 
 
 def test_transcribe_vad_restores_original_timestamps(
@@ -574,7 +665,6 @@ def _get_mimo_transcriber(
     model_name: str = MIMO_MODEL_NAME,
     mimo_runtime: MimoRuntime = MimoRuntime.MLX,
     aligner_backend: str = "whisperx",
-    aligner_language: str = "zh",
     aligner_model_name: str | None = None,
     aligner_worker_command: Sequence[str] | None = None,
 ) -> MimoTranscriber:
@@ -585,7 +675,6 @@ def _get_mimo_transcriber(
         model_name: MiMo model name
         mimo_runtime: MiMo runtime implementation
         aligner_backend: timestamp alignment backend
-        aligner_language: language code used by timestamp alignment
         aligner_model_name: optional timestamp alignment model name
         aligner_worker_command: optional timestamp aligner worker command
     Returns:
@@ -595,9 +684,10 @@ def _get_mimo_transcriber(
     transcriber.cache_dir_path = cache_dir_path
     transcriber.model_name = model_name
     transcriber.mimo_runtime = mimo_runtime
-    transcriber.language = "yue"
+    transcriber.language = Language.yue_hant
+    transcriber.mimo_language_code = "yue"
+    transcriber.aligner_language_code = "zh"
     transcriber.aligner_backend = aligner_backend
-    transcriber.aligner_language = aligner_language
     transcriber.aligner_model_name = aligner_model_name
     transcriber.aligner_worker_command = (
         tuple(aligner_worker_command) if aligner_worker_command is not None else None
@@ -612,6 +702,20 @@ def _get_mimo_transcriber(
     transcriber.use_vad = False
     transcriber.retry_without_vad = False
     return transcriber
+
+
+def _get_cache_audio() -> AudioSegment:
+    """Get a small audio segment suitable for MiMo cache tests.
+
+    Returns:
+        audio segment with concrete format metadata
+    """
+    return AudioSegment(
+        data=b"\0\1" * 100,
+        sample_width=2,
+        frame_rate=16000,
+        channels=1,
+    )
 
 
 def _get_timed_segment(

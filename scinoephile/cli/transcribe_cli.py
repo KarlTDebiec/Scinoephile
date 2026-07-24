@@ -94,9 +94,6 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             f"MiMo runtime (options: {enum_options_list_str(MimoRuntime)}; "
             "default: %(default)s)"
         ): "MiMo 运行时（选项：auto 或 mlx；默认：%(default)s）",
-        "MiMo transcription language metadata (default: yue)": (
-            "MiMo 转写语言元数据（默认：yue）"
-        ),
         "maximum MiMo generation tokens (default: runtime default)": (
             "MiMo 生成 token 上限（默认：运行时默认值）"
         ),
@@ -115,9 +112,6 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ): "用于在子进程中运行 MiMo 的可选命令，按 shell 语法拆分",
         "MiMo timestamp aligner backend (options: ctc, whisperx; default: ctc)": (
             "MiMo 时间戳对齐后端（选项：ctc、whisperx；默认：ctc）"
-        ),
-        "MiMo timestamp aligner language code (default: zh)": (
-            "MiMo 时间戳对齐语言代码（默认：zh）"
         ),
         "MiMo timestamp aligner model name": "MiMo 时间戳对齐模型名称",
         (
@@ -172,9 +166,6 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             f"MiMo runtime (options: {enum_options_list_str(MimoRuntime)}; "
             "default: %(default)s)"
         ): "MiMo 執行環境（選項：auto 或 mlx；預設：%(default)s）",
-        "MiMo transcription language metadata (default: yue)": (
-            "MiMo 轉寫語言後設資料（預設：yue）"
-        ),
         "maximum MiMo generation tokens (default: runtime default)": (
             "MiMo 產生 token 上限（預設：執行環境預設值）"
         ),
@@ -193,9 +184,6 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ): "用於在子行程中執行 MiMo 的可選命令，依 shell 語法拆分",
         "MiMo timestamp aligner backend (options: ctc, whisperx; default: ctc)": (
             "MiMo 時間戳對齊後端（選項：ctc、whisperx；預設：ctc）"
-        ),
-        "MiMo timestamp aligner language code (default: zh)": (
-            "MiMo 時間戳對齊語言代碼（預設：zh）"
         ),
         "MiMo timestamp aligner model name": "MiMo 時間戳對齊模型名稱",
         (
@@ -332,11 +320,6 @@ class TranscribeCli(ScinoephileCliBase):
             ),
         )
         arg_groups["operation arguments"].add_argument(
-            "--mimo-language",
-            default="yue",
-            help="MiMo transcription language metadata (default: yue)",
-        )
-        arg_groups["operation arguments"].add_argument(
             "--mimo-max-tokens",
             type=int_arg(min_value=1),
             help="maximum MiMo generation tokens (default: runtime default)",
@@ -379,11 +362,6 @@ class TranscribeCli(ScinoephileCliBase):
             help=(
                 "MiMo timestamp aligner backend (options: ctc, whisperx; default: ctc)"
             ),
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--mimo-aligner-language",
-            default="zh",
-            help="MiMo timestamp aligner language code (default: zh)",
         )
         arg_groups["operation arguments"].add_argument(
             "--mimo-aligner-model",
@@ -445,14 +423,12 @@ class TranscribeCli(ScinoephileCliBase):
         vad_mode: VADMode,
         model_name: str | None,
         mimo_runtime: MimoRuntime,
-        mimo_language: str,
         mimo_max_tokens: int | None,
         mimo_chunk_duration_seconds: float | None,
         mimo_chunk_overlap_seconds: float,
         mimo_model_name: str,
         mimo_worker_command: str | None,
         mimo_aligner_backend: str,
-        mimo_aligner_language: str,
         mimo_aligner_model_name: str | None,
         mimo_aligner_worker_command: str | None,
         llm_args: LlmArguments,
@@ -522,13 +498,11 @@ class TranscribeCli(ScinoephileCliBase):
                 vad_mode=vad_mode,
                 mimo_model_name=mimo_model_name,
                 mimo_runtime=mimo_runtime,
-                mimo_language=mimo_language,
                 mimo_max_tokens=mimo_max_tokens,
                 mimo_chunk_duration_seconds=mimo_chunk_duration_seconds,
                 mimo_chunk_overlap_seconds=mimo_chunk_overlap_seconds,
                 mimo_worker_command=parsed_mimo_worker_command,
                 mimo_aligner_backend=mimo_aligner_backend,
-                mimo_aligner_language=mimo_aligner_language,
                 mimo_aligner_model_name=mimo_aligner_model_name,
                 mimo_aligner_worker_command=(parsed_mimo_aligner_worker_command),
                 provider=get_provider(

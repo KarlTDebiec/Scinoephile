@@ -130,6 +130,52 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+## MLX-Audio (MiMo inference runtime)
+
+Scinoephile's optional transcription dependencies install MLX-Audio's MiMo
+support from a pinned source revision. The dependency is enabled only on Apple
+Silicon, which is the platform supported by Scinoephile's MiMo runtime.
+
+- Upstream project: https://github.com/Blaizzy/mlx-audio
+- MiMo source revision:
+  https://github.com/ailuntx/mlx-audio/tree/ff0197c0ae9f9fd02072904c696f2533e329c06e
+- License: MIT
+- Copyright: Copyright (c) 2024 Prince Canuma
+
+The `MLX-Audio` license permits use, modification, and distribution, provided
+the copyright and permission notice are included in copies or substantial
+portions of the software.
+
+For the complete license text used by the pinned `MLX-Audio` revision, see:
+
+- https://github.com/ailuntx/mlx-audio/blob/ff0197c0ae9f9fd02072904c696f2533e329c06e/LICENSE
+
+MIT license text (from `MLX-Audio`):
+
+```text
+MIT License
+
+Copyright (c) 2024 Prince Canuma
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
 ## WhisperX (forced-alignment reference interface and result handling)
 
 Scinoephile's MiMo forced-alignment adapter and optional alignment worker use

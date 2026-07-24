@@ -147,13 +147,11 @@ def test_get_guided_transcriber_configures_mimo_backend(tmp_path: Path):
             backend=TranscriptionBackend.MIMO,
             mimo_model_name="custom/mimo",
             mimo_runtime=MimoRuntime.MLX,
-            mimo_language="auto",
             mimo_max_tokens=512,
             mimo_chunk_duration_seconds=20.0,
             mimo_chunk_overlap_seconds=1.5,
             mimo_worker_command=("python", "mimo_worker.py"),
             mimo_aligner_backend="whisperx",
-            mimo_aligner_language="zh",
             mimo_aligner_model_name="custom/aligner",
             mimo_aligner_worker_command=("python", "aligner_worker.py"),
         )
@@ -163,7 +161,9 @@ def test_get_guided_transcriber_configures_mimo_backend(tmp_path: Path):
     assert isinstance(primary, MimoTranscriber)
     assert primary.model_name == "custom/mimo"
     assert primary.mimo_runtime is MimoRuntime.MLX
-    assert primary.language == "auto"
+    assert primary.language is Language.yue_hant
+    assert primary.mimo_language_code == "yue"
+    assert primary.aligner_language_code == "zh"
     assert primary.max_tokens == 512
     assert primary.chunk_duration_seconds == 20.0
     assert primary.chunk_overlap_seconds == 1.5

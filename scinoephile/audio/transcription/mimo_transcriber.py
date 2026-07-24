@@ -20,6 +20,7 @@ import numpy as np
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core import Language
 
 from .forced_alignment import TranscriptionAlignmentError, align_mimo_transcription
 from .mimo_runtime import (
@@ -63,6 +64,24 @@ _MIMO_WORKER_PROCESSES: dict[tuple[str, ...], subprocess.Popen[str]] = {}
 
 _MIMO_WORKER_LOCK = Lock()
 """Serializes access to persistent MiMo worker processes."""
+
+_MIMO_LANGUAGE_CODES = {
+    Language.eng: "en",
+    Language.yue_hans: "yue",
+    Language.yue_hant: "yue",
+    Language.zho_hans: "zh",
+    Language.zho_hant: "zh",
+}
+"""Maps Scinoephile languages to MiMo ASR language codes."""
+
+_MIMO_ALIGNER_LANGUAGE_CODES = {
+    Language.eng: "en",
+    Language.yue_hans: "zh",
+    Language.yue_hant: "zh",
+    Language.zho_hans: "zh",
+    Language.zho_hant: "zh",
+}
+"""Maps Scinoephile languages to MiMo alignment language codes."""
 
 
 def _close_mimo_worker_processes():
@@ -112,13 +131,12 @@ class MimoTranscriber:
         self,
         model_name: str = MIMO_MODEL_NAME,
         mimo_runtime: MimoRuntime | str = MimoRuntime.AUTO,
-        language: str = "yue",
+        language: Language = Language.yue_hant,
         max_tokens: int | None = None,
         chunk_duration_seconds: float | None = None,
         chunk_overlap_seconds: float = 1.0,
         cache_dir_path: Path | None = None,
         aligner_backend: str = "whisperx",
-        aligner_language: str = "zh",
         aligner_model_name: str | None = None,
         aligner_worker_command: Sequence[str] | None = None,
         aligner_worker_timeout_seconds: float | None = None,
@@ -133,13 +151,12 @@ class MimoTranscriber:
         Arguments:
             model_name: MiMo ASR model name or local model path
             mimo_runtime: runtime implementation used for MiMo inference
-            language: requested transcription language metadata
+            language: language to transcribe
             max_tokens: optional maximum number of MiMo text tokens to generate
             chunk_duration_seconds: optional chunk duration for MiMo inference
             chunk_overlap_seconds: context overlap applied to each MiMo chunk
             cache_dir_path: directory in which to cache
             aligner_backend: timestamp alignment backend
-            aligner_language: language code used by the alignment backend
             aligner_model_name: optional alignment model name
             aligner_worker_command: optional command that runs timestamp alignment
             aligner_worker_timeout_seconds: optional aligner timeout in seconds
@@ -148,10 +165,19 @@ class MimoTranscriber:
             use_demucs: whether Demucs preprocessing was applied
             use_vad: whether to remove non-speech audio using Silero VAD
             retry_without_vad: whether to retry unfiltered audio after VAD failure
+        Raises:
+            ValueError: if the language or numeric configuration is invalid
         """
         self.model_name = model_name
         self.mimo_runtime = MimoRuntime(mimo_runtime)
         self.language = language
+        try:
+            self.mimo_language_code = _MIMO_LANGUAGE_CODES[self.language]
+            self.aligner_language_code = _MIMO_ALIGNER_LANGUAGE_CODES[self.language]
+        except (KeyError, ValueError) as exc:
+            raise ValueError(
+                f"{language} is not supported by MiMo transcription"
+            ) from exc
         self.max_tokens = max_tokens
         self.chunk_duration_seconds = chunk_duration_seconds
         self.chunk_overlap_seconds = chunk_overlap_seconds
@@ -162,7 +188,6 @@ class MimoTranscriber:
         if self.chunk_overlap_seconds < 0:
             raise ValueError("MiMo chunk overlap must be non-negative.")
         self.aligner_backend = aligner_backend
-        self.aligner_language = aligner_language
         self.aligner_model_name = aligner_model_name
         self.aligner_worker_command = (
             tuple(aligner_worker_command)
@@ -284,7 +309,12 @@ class MimoTranscriber:
         cache_hash.update(b"\0")
         cache_hash.update(
             json.dumps(
-                self._get_cache_metadata(),
+                {
+                    "audio_channels": audio.channels,
+                    "audio_frame_rate": audio.frame_rate,
+                    "audio_sample_width": audio.sample_width,
+                    **self._get_cache_metadata(),
+                },
                 ensure_ascii=False,
                 sort_keys=True,
             ).encode("utf-8")
@@ -304,13 +334,14 @@ class MimoTranscriber:
             "backend": "mimo",
             "model_name": self.model_name,
             "runtime": self._get_effective_mimo_runtime(),
-            "language": self.language,
+            "language": self.language.code,
+            "mimo_language_code": self.mimo_language_code,
+            "aligner_language_code": self.aligner_language_code,
             "max_tokens": self.max_tokens,
             "chunk_duration_seconds": self.chunk_duration_seconds,
             "chunk_overlap_seconds": self.chunk_overlap_seconds,
             "worker_command": self.worker_command,
             "aligner_backend": self.aligner_backend,
-            "aligner_language": self.aligner_language,
             "aligner_model_name": self.aligner_model_name,
             "aligner_worker_command": self.aligner_worker_command,
             "use_demucs": self.use_demucs,
@@ -360,7 +391,7 @@ class MimoTranscriber:
             "audio_path": str(audio_path),
             "model_name": self.model_name,
             "runtime": self._get_effective_mimo_runtime(),
-            "language": self.language,
+            "language": self.mimo_language_code,
         }
         if self.max_tokens is not None:
             request["max_tokens"] = self.max_tokens
@@ -667,7 +698,7 @@ class MimoTranscriber:
                 text,
                 duration_seconds=duration,
                 aligner_backend=self.aligner_backend,
-                aligner_language=self.aligner_language,
+                aligner_language=self.aligner_language_code,
                 aligner_model_name=self.aligner_model_name,
                 aligner_worker_command=self.aligner_worker_command,
                 aligner_worker_timeout_seconds=self.aligner_worker_timeout_seconds,
@@ -695,18 +726,30 @@ class MimoTranscriber:
             window_start_ms = max(0, core_start_ms - chunk_overlap_ms)
             window_end_ms = min(len(audio), core_end_ms + chunk_overlap_ms)
             window_audio = audio[window_start_ms:window_end_ms]
-            window_segments = self._transcribe_audio_window(window_audio)
-            segments.extend(
-                self._get_offset_core_segments(
-                    window_segments,
-                    offset_seconds=window_start_ms / 1000,
-                    core_start_seconds=core_start_ms / 1000,
-                    core_end_seconds=core_end_ms / 1000,
-                    start_id=len(segments),
+            try:
+                window_segments = self._transcribe_audio_window(window_audio)
+            except MimoTranscriptEmptyError:
+                logger.info(
+                    f"Skipping empty MiMo audio window "
+                    f"{window_start_ms / 1000:.2f}s-"
+                    f"{window_end_ms / 1000:.2f}s"
                 )
-            )
+            else:
+                segments.extend(
+                    self._get_offset_core_segments(
+                        window_segments,
+                        offset_seconds=window_start_ms / 1000,
+                        core_start_seconds=core_start_ms / 1000,
+                        core_end_seconds=core_end_ms / 1000,
+                        start_id=len(segments),
+                    )
+                )
             core_start_ms = core_end_ms
 
+        if not segments:
+            raise MimoTranscriptEmptyError(
+                "MiMo returned no transcript across audio chunks."
+            )
         return segments
 
     def _transcribe_uncached(self, audio: AudioSegment) -> list[TranscribedSegment]:
