@@ -176,42 +176,52 @@ def _get_ctc_best_path(
     Raises:
         TranscriptionAlignmentError: if no complete path can be found
     """
-    frame_count, token_count = _validate_ctc_best_path_inputs(
+    frame_count, _ = _validate_ctc_best_path_inputs(
         log_probs=log_probs,
         token_ids=token_ids,
         blank_token_id=blank_token_id,
     )
 
-    trellis = np.empty((frame_count + 1, token_count + 1))
-    trellis[0, 0] = 0.0
-    trellis[1:, 0] = np.cumsum(log_probs[:, blank_token_id])
-    trellis[0, -token_count:] = -np.inf
-    trellis[-token_count:, 0] = np.inf
-
-    for token_id in token_ids:
+    alignment_token_ids: list[int] = []
+    path_token_indices: list[int] = []
+    for token_idx, token_id in enumerate(token_ids):
         if token_id < 0 or token_id >= log_probs.shape[1]:
             raise TranscriptionAlignmentError("CTC target token ID is out of range.")
+        # Repeated labels require an intervening blank under CTC collapse rules
+        if token_idx > 0 and token_id == token_ids[token_idx - 1]:
+            alignment_token_ids.append(blank_token_id)
+            path_token_indices.append(token_idx - 1)
+        alignment_token_ids.append(token_id)
+        path_token_indices.append(token_idx)
+
+    alignment_token_count = len(alignment_token_ids)
+    trellis = np.empty((frame_count + 1, alignment_token_count + 1))
+    trellis[0, 0] = 0.0
+    trellis[1:, 0] = np.cumsum(log_probs[:, blank_token_id])
+    trellis[0, -alignment_token_count:] = -np.inf
+    trellis[-alignment_token_count:, 0] = np.inf
 
     for frame_idx in range(frame_count):
         stay_scores = trellis[frame_idx, 1:] + log_probs[frame_idx, blank_token_id]
-        change_scores = trellis[frame_idx, :-1] + log_probs[frame_idx, token_ids]
+        token_log_probs = log_probs[frame_idx, alignment_token_ids]
+        change_scores = trellis[frame_idx, :-1] + token_log_probs
         trellis[frame_idx + 1, 1:] = np.maximum(stay_scores, change_scores)
 
-    final_column = trellis[:, token_count]
+    final_column = trellis[:, alignment_token_count]
     if np.all(np.isneginf(final_column)):
         raise TranscriptionAlignmentError("CTC alignment did not reach all tokens.")
 
     frame_idx = int(np.argmax(final_column))
-    token_idx = token_count
+    alignment_token_idx = alignment_token_count
     path: list[tuple[int, int, float]] = []
     for trellis_frame_idx in range(frame_idx, 0, -1):
-        token_id = token_ids[token_idx - 1]
+        token_id = alignment_token_ids[alignment_token_idx - 1]
         stay_score = (
-            trellis[trellis_frame_idx - 1, token_idx]
+            trellis[trellis_frame_idx - 1, alignment_token_idx]
             + log_probs[trellis_frame_idx - 1, blank_token_id]
         )
         change_score = (
-            trellis[trellis_frame_idx - 1, token_idx - 1]
+            trellis[trellis_frame_idx - 1, alignment_token_idx - 1]
             + log_probs[trellis_frame_idx - 1, token_id]
         )
         if change_score > stay_score:
@@ -220,14 +230,14 @@ def _get_ctc_best_path(
             score_token_id = blank_token_id
         path.append(
             (
-                token_idx - 1,
+                path_token_indices[alignment_token_idx - 1],
                 trellis_frame_idx - 1,
                 float(np.exp(log_probs[trellis_frame_idx - 1, score_token_id])),
             )
         )
         if change_score > stay_score:
-            token_idx -= 1
-            if token_idx == 0:
+            alignment_token_idx -= 1
+            if alignment_token_idx == 0:
                 break
     else:
         raise TranscriptionAlignmentError("CTC alignment backtrack failed.")

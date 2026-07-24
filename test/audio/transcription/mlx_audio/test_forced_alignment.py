@@ -58,6 +58,53 @@ def test_align_transcription_uses_ctc_backend_by_default(
     assert 0.0 < segments[0].words[0].confidence <= 1.0
 
 
+def test_ctc_best_path_requires_blank_between_repeated_labels():
+    """Test adjacent repeated labels cannot advance on consecutive frames."""
+    log_probs = np.log(
+        np.array(
+            [
+                [0.01, 0.99],
+                [0.01, 0.99],
+            ]
+        )
+    )
+
+    with pytest.raises(
+        TranscriptionAlignmentError,
+        match="did not reach all tokens",
+    ):
+        forced_alignment._get_ctc_best_path(
+            log_probs=log_probs,
+            token_ids=[1, 1],
+            blank_token_id=0,
+        )
+
+
+def test_ctc_best_path_accepts_blank_between_repeated_labels():
+    """Test a blank-separated path can align adjacent repeated labels."""
+    log_probs = np.log(
+        np.array(
+            [
+                [0.01, 0.99],
+                [0.99, 0.01],
+                [0.01, 0.99],
+            ]
+        )
+    )
+
+    path = forced_alignment._get_ctc_best_path(
+        log_probs=log_probs,
+        token_ids=[1, 1],
+        blank_token_id=0,
+    )
+
+    assert [(token_idx, frame_idx) for token_idx, frame_idx, _ in path] == [
+        (0, 0),
+        (0, 1),
+        (1, 2),
+    ]
+
+
 def test_align_transcription_ctc_preserves_unaligned_punctuation(
     monkeypatch: pytest.MonkeyPatch,
 ):
