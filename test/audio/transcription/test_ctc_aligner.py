@@ -318,7 +318,7 @@ def test_ctc_components_are_cached_by_model_and_device(
     first_aligner = CtcAligner("organization/model-a")
     second_aligner = CtcAligner("organization/model-a")
     other_model_aligner = CtcAligner("organization/model-b")
-    other_device_aligner = CtcAligner("organization/model-a", device="mps")
+    other_device_aligner = CtcAligner("organization/model-a", "mps")
 
     assert second_aligner.processor is first_aligner.processor
     assert second_aligner.model is first_aligner.model

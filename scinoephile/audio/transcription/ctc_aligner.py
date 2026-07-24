@@ -1,12 +1,12 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Aligns authoritative transcription text to audio using a CTC model."""
+"""Aligns transcription text to audio using a CTC model."""
 
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
-from typing import Any, ClassVar, cast
+from typing import TYPE_CHECKING, Any, ClassVar, cast
 
 import numpy as np
 from opencc import OpenCC
@@ -17,17 +17,21 @@ from .transcribed_word import TranscribedWord
 
 __all__ = ["CtcAligner"]
 
+if TYPE_CHECKING:
+    from transformers import PreTrainedModel, ProcessorMixin
+
 
 class CtcAligner:
-    """Aligns authoritative transcription text to audio using a CTC model."""
+    """Aligns transcription text to audio using a CTC model."""
 
-    _components: ClassVar[dict[tuple[str, str], tuple[object, object]]] = {}
+    _components: ClassVar[
+        dict[tuple[str, str], tuple[ProcessorMixin, PreTrainedModel]]
+    ] = {}
     """Loaded processors and models shared by model name and device."""
 
     def __init__(
         self,
         model_name: str = "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
-        *,
         device: str = "cpu",
     ):
         """Initialize.
@@ -42,10 +46,10 @@ class CtcAligner:
         self.device = device
         """Device identifier passed to the CTC model."""
 
-        self._model: object | None = None
+        self._model: PreTrainedModel | None = None
         """CTC model used for alignment."""
 
-        self._processor: object | None = None
+        self._processor: ProcessorMixin | None = None
         """Processor associated with the CTC model."""
 
     def __call__(
@@ -58,7 +62,7 @@ class CtcAligner:
 
         Arguments:
             audio_path: source audio path to align against
-            text: authoritative transcript text
+            text: transcription text
             duration_seconds: source audio duration in seconds
         Returns:
             timestamped transcription segments
@@ -66,23 +70,25 @@ class CtcAligner:
         return self.align(audio_path, text, duration_seconds)
 
     @property
-    def model(self) -> object:
+    def model(self) -> PreTrainedModel:
         """Get the cached CTC model, loading it if needed.
 
         Returns:
             loaded CTC model
         """
         self._load_components()
+        assert self._model is not None
         return self._model
 
     @property
-    def processor(self) -> object:
+    def processor(self) -> ProcessorMixin:
         """Get the cached CTC processor, loading it if needed.
 
         Returns:
             loaded CTC processor
         """
         self._load_components()
+        assert self._processor is not None
         return self._processor
 
     def align(
@@ -95,14 +101,14 @@ class CtcAligner:
 
         Arguments:
             audio_path: source audio path to align against
-            text: authoritative transcript text
+            text: transcription text
             duration_seconds: source audio duration in seconds
         Returns:
             timestamped transcription segments
         Raises:
             TranscriptionAlignmentError: if alignment cannot recover word timings
         """
-        # Validate and normalize the authoritative transcript
+        # Validate and normalize the transcription text
         transcript_text = text.strip()
         if not transcript_text:
             raise TranscriptionAlignmentError("Cannot align empty transcript.")
@@ -165,7 +171,7 @@ class CtcAligner:
 
         Arguments:
             audio_path: source audio path to align against
-            text: authoritative transcript text
+            text: transcription text
         Returns:
             log probabilities, token IDs, text character indices, and blank token ID
         Raises:
@@ -217,7 +223,7 @@ class CtcAligner:
         """Get CTC token IDs and source text indices for supported characters.
 
         Arguments:
-            text: authoritative transcript text
+            text: transcription text
         Returns:
             token IDs and original character indices
         Raises:
@@ -474,7 +480,7 @@ class CtcAligner:
         """Build transcribed words covering aligned and unaligned characters.
 
         Arguments:
-            text: authoritative transcript text
+            text: transcription text
             timed_chars: character index mapped to start, end, and confidence
             duration_seconds: source audio duration in seconds
         Returns:
