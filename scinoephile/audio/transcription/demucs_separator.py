@@ -55,15 +55,21 @@ class DemucsSeparator:
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
-    def __call__(self, audio: AudioSegment) -> AudioSegment:
+    def __call__(
+        self,
+        audio: AudioSegment,
+        *,
+        overwrite_cache: bool = False,
+    ) -> AudioSegment:
         """Separate vocals from audio.
 
         Arguments:
             audio: audio to separate
+            overwrite_cache: whether to replace a matching cached separation
         Returns:
             vocals-only audio
         """
-        return self.separate_vocals(audio)
+        return self.separate_vocals(audio, overwrite_cache=overwrite_cache)
 
     @property
     def device(self) -> str:
@@ -89,16 +95,26 @@ class DemucsSeparator:
                 ) from exc
         return self._model
 
-    def get_cached_vocals(self, cache_audio: AudioSegment) -> AudioSegment | None:
+    def get_cached_vocals(
+        self,
+        cache_audio: AudioSegment,
+        *,
+        overwrite_cache: bool = False,
+    ) -> AudioSegment | None:
         """Get cached vocals separation for audio if available.
 
         Arguments:
             cache_audio: audio used for cache-key generation
+            overwrite_cache: whether to remove a matching cached separation
         Returns:
             cached vocals-only audio, if present
         """
         cache_path = self._get_cache_path(cache_audio)
         if cache_path is None or not cache_path.exists():
+            return None
+        if overwrite_cache:
+            cache_path.unlink()
+            logger.info(f"Removed Demucs vocals cache: {cache_path}")
             return None
         logger.info(f"Loaded Demucs vocals from cache: {cache_path}")
         vocals = AudioSegment.from_file(cache_path)
@@ -160,15 +176,26 @@ class DemucsSeparator:
             channels=input_channels,
         )
 
-    def separate_vocals(self, audio: AudioSegment) -> AudioSegment:
+    def separate_vocals(
+        self,
+        audio: AudioSegment,
+        *,
+        overwrite_cache: bool = False,
+    ) -> AudioSegment:
         """Separate vocals from audio.
 
         Arguments:
             audio: audio to separate
+            overwrite_cache: whether to replace a matching cached separation
         Returns:
             vocals-only audio
         """
-        if (cached := self.get_cached_vocals(audio)) is not None:
+        if (
+            cached := self.get_cached_vocals(
+                audio,
+                overwrite_cache=overwrite_cache,
+            )
+        ) is not None:
             return cached
 
         vocals = self._separate_vocals_uncached(audio)

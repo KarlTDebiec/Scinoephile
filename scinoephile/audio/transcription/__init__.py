@@ -3,7 +3,7 @@
 """Code related to audio transcription.
 
 Package hierarchy (modules may import from any above):
-* demucs_separator / transcribed_word
+* exceptions / demucs_separator / transcribed_word
 * transcribed_segment
 * whisper_transcriber
 """
@@ -13,6 +13,12 @@ from __future__ import annotations
 from logging import getLogger
 
 from .demucs_separator import DemucsSeparator
+from .exceptions import (
+    TranscriptionAlignmentError,
+    TranscriptionEmptyError,
+    TranscriptionError,
+    TranscriptionInferenceError,
+)
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 from .whisper_transcriber import WhisperTranscriber
@@ -21,6 +27,10 @@ __all__ = [
     "DemucsSeparator",
     "TranscribedSegment",
     "TranscribedWord",
+    "TranscriptionAlignmentError",
+    "TranscriptionEmptyError",
+    "TranscriptionError",
+    "TranscriptionInferenceError",
     "WhisperTranscriber",
     "get_segment_merged",
     "get_segment_split_at_idx",
