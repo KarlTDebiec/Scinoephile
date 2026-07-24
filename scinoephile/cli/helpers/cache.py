@@ -15,29 +15,25 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 from .argument_bundle_field_action import ArgumentBundleFieldAction
 
 __all__ = [
-    "CACHE_DIR_HELP",
     "CACHE_LOCALIZATIONS",
-    "CACHE_OVERWRITE_HELP",
     "CacheArguments",
     "add_cache_args",
     "add_cache_dir_arg",
 ]
 
-CACHE_DIR_HELP = "cache directory path (default: %(default)s)"
-"""Generic help text for cache directory path arguments."""
-
-CACHE_OVERWRITE_HELP = "overwrite matching cache files"
-"""Generic help text for cache overwrite arguments."""
-
 CACHE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        CACHE_DIR_HELP: "缓存目录路径（默认：%(default)s）",
-        CACHE_OVERWRITE_HELP: "覆盖匹配的缓存文件",
+        "cache directory path (default: %(default)s)": (
+            "缓存目录路径（默认：%(default)s）"
+        ),
+        "overwrite matching cache files": "覆盖匹配的缓存文件",
         "cache arguments": "缓存参数",
     },
     "zh-hant": {
-        CACHE_DIR_HELP: "快取目錄路徑（預設：%(default)s）",
-        CACHE_OVERWRITE_HELP: "覆寫匹配的快取檔案",
+        "cache directory path (default: %(default)s)": (
+            "快取目錄路徑（預設：%(default)s）"
+        ),
+        "overwrite matching cache files": "覆寫匹配的快取檔案",
         "cache arguments": "快取參數",
     },
 }
@@ -72,7 +68,7 @@ def add_cache_args(cache_arg_group: _ArgumentGroup):
         field_name="dir_path",
         metavar="CACHE_DIR",
         type=output_dir_arg(create=False),
-        help=CACHE_DIR_HELP,
+        help="cache directory path (default: %(default)s)",
     )
     cache_arg_group.add_argument(
         "--cache-overwrite",
@@ -83,14 +79,14 @@ def add_cache_args(cache_arg_group: _ArgumentGroup):
         dest="cache_args",
         field_name="overwrite",
         nargs=0,
-        help=CACHE_OVERWRITE_HELP,
+        help="overwrite matching cache files",
     )
 
 
 def add_cache_dir_arg(
     cache_arg_group: _ArgumentGroup,
     *default_parts: str | None,
-    help_text: str = CACHE_DIR_HELP,
+    help_text: str = "cache directory path (default: %(default)s)",
 ):
     """Add a standard cache directory argument to an argument group.
 
