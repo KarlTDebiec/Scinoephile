@@ -1,5 +1,4 @@
 include docs/THIRD_PARTY_NOTICES.md
-include scinoephile/data/README.md
 include scinoephile/data/dictionaries/kaifangcidian/*.csv
 include scinoephile/data/dictionaries/unihan/*.txt
 include scinoephile/data/ocr/*.csv
