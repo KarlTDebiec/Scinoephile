@@ -17,21 +17,21 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from scinoephile.common.file import get_temp_file_path
+from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
+from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
+from scinoephile.audio.transcription.transcribed_word import TranscribedWord
+from scinoephile.common.file import get_temp_file_path, open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import Language
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
-from .demucs_separator import DemucsSeparator
 from .forced_alignment import (
     CTC_MODEL_NAME,
     TranscriptionAlignmentError,
     align_transcription,
 )
-from .mlx_audio_inference import MlxAudioInferenceResult, transcribe_with_mlx_audio
-from .transcribed_segment import TranscribedSegment
-from .transcribed_word import TranscribedWord
+from .inference import MlxAudioInferenceResult, transcribe_with_mlx_audio
 
 __all__ = [
     "MIMO_MODEL_NAME",
@@ -144,7 +144,8 @@ def get_mlx_audio_model_profile(model_name: str) -> MlxAudioModelProfile:
     Returns:
         matching model profile
     Raises:
-        ValueError: if the model family has not been integrated and tested
+        MlxAudioTranscriptionError: if the model family has not been integrated
+            and tested
     """
     lowered_model_name = model_name.lower()
     for profile in _MLX_AUDIO_MODEL_PROFILES:
@@ -153,7 +154,7 @@ def get_mlx_audio_model_profile(model_name: str) -> MlxAudioModelProfile:
     supported_families = ", ".join(
         profile.family_name for profile in _MLX_AUDIO_MODEL_PROFILES
     )
-    raise ValueError(
+    raise MlxAudioTranscriptionError(
         f"Unsupported MLX-Audio model {model_name!r}; supported families: "
         f"{supported_families}."
     )
@@ -499,18 +500,25 @@ class MlxAudioTranscriber:
             return None
 
         logger.info(f"Loaded MLX-Audio transcription from cache: {cache_path}")
-        with cache_path.open("r", encoding="utf-8") as file:
-            payload = json.load(file)
-        if not isinstance(payload, Mapping):
+        try:
+            with cache_path.open("r", encoding="utf-8") as file:
+                payload = json.load(file)
+            if not isinstance(payload, Mapping):
+                raise MlxAudioInferenceError(
+                    f"Malformed MLX-Audio cache payload: {cache_path}"
+                )
+            raw_segments = payload.get("segments")
+            if not isinstance(raw_segments, list):
+                raise MlxAudioInferenceError(
+                    f"Malformed MLX-Audio cache payload: {cache_path}"
+                )
+            segments = [TranscribedSegment.model_validate(s) for s in raw_segments]
+        except MlxAudioTranscriptionError:
+            raise
+        except (OSError, TypeError, ValueError) as exc:
             raise MlxAudioInferenceError(
-                f"Malformed MLX-Audio cache payload: {cache_path}"
-            )
-        raw_segments = payload.get("segments")
-        if not isinstance(raw_segments, list):
-            raise MlxAudioInferenceError(
-                f"Malformed MLX-Audio cache payload: {cache_path}"
-            )
-        segments = [TranscribedSegment.model_validate(s) for s in raw_segments]
+                f"Unable to read MLX-Audio transcription cache {cache_path}: {exc}"
+            ) from exc
         cache_path.touch()
         return segments
 
@@ -679,7 +687,7 @@ class MlxAudioTranscriber:
                 use_vad=use_vad,
             )
             if cache_path is not None:
-                with cache_path.open("w", encoding="utf-8") as file:
+                with open_atomic_text_file(cache_path) as file:
                     json.dump(
                         self._get_cache_payload(
                             segments,

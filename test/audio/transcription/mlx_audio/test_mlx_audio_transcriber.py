@@ -12,8 +12,8 @@ import pytest
 from pydub import AudioSegment
 
 from scinoephile.audio.transcription import TranscribedSegment, TranscribedWord
-from scinoephile.audio.transcription.mlx_audio_inference import MlxAudioInferenceResult
-from scinoephile.audio.transcription.mlx_audio_transcriber import (
+from scinoephile.audio.transcription.mlx_audio.inference import MlxAudioInferenceResult
+from scinoephile.audio.transcription.mlx_audio.transcriber import (
     MIMO_MODEL_NAME,
     QWEN3_ASR_MODEL_NAME,
     MlxAudioInferenceError,
@@ -29,11 +29,11 @@ from scinoephile.core import Language
 def use_apple_silicon_platform(monkeypatch: pytest.MonkeyPatch):
     """Run MLX-Audio transcriber tests as though on the supported platform."""
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio_transcriber.sys.platform",
+        "scinoephile.audio.transcription.mlx_audio.transcriber.sys.platform",
         "darwin",
     )
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio_transcriber.platform.machine",
+        "scinoephile.audio.transcription.mlx_audio.transcriber.platform.machine",
         Mock(return_value="arm64"),
     )
 
@@ -82,11 +82,11 @@ def test_init_rejects_unsupported_platform(
 ):
     """Test MLX-Audio fails during construction on unsupported platforms."""
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio_transcriber.sys.platform",
+        "scinoephile.audio.transcription.mlx_audio.transcriber.sys.platform",
         sys_platform,
     )
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio_transcriber.platform.machine",
+        "scinoephile.audio.transcription.mlx_audio.transcriber.platform.machine",
         Mock(return_value=machine),
     )
 
@@ -165,7 +165,10 @@ def test_get_mlx_audio_model_profile_accepts_local_model_path():
 
 def test_get_mlx_audio_model_profile_rejects_untested_family():
     """Test unknown MLX-Audio model families fail clearly."""
-    with pytest.raises(ValueError, match="supported families: mimo, qwen3-asr"):
+    with pytest.raises(
+        MlxAudioTranscriptionError,
+        match="supported families: mimo, qwen3-asr",
+    ):
         get_mlx_audio_model_profile("mlx-community/Whisper-Large-v3-MLX")
 
 
@@ -227,6 +230,30 @@ def test_get_cached_transcription_reads_mlx_audio_payload(tmp_path: Path):
     assert segments[0].words[0].text == "你"
 
 
+def test_transcribe_recovers_from_malformed_cache(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test malformed cached output is replaced by a fresh transcription."""
+    audio = _get_cache_audio()
+    expected_segments = [_get_timed_segment("你好")]
+    transcriber = MlxAudioTranscriber(cache_dir_path=tmp_path)
+    cache_path = transcriber._get_cache_path(audio)
+    assert cache_path is not None
+    cache_path.write_text("{", encoding="utf-8")
+    patched_transcribe = Mock(return_value=expected_segments)
+    monkeypatch.setattr(transcriber, "_transcribe_uncached", patched_transcribe)
+
+    segments = transcriber.transcribe(audio)
+
+    assert segments == expected_segments
+    patched_transcribe.assert_called_once_with(audio, use_vad=False)
+    assert (
+        json.loads(cache_path.read_text(encoding="utf-8"))["segments"][0]["text"]
+        == "你好"
+    )
+
+
 def test_transcribe_uses_direct_mlx_audio_inference(
     monkeypatch: pytest.MonkeyPatch,
 ):
@@ -254,11 +281,11 @@ def test_transcribe_uses_direct_mlx_audio_inference(
         return MlxAudioInferenceResult(text="你好", duration_seconds=1.0)
 
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio_transcriber.transcribe_with_mlx_audio",
+        "scinoephile.audio.transcription.mlx_audio.transcriber.transcribe_with_mlx_audio",
         fake_transcribe_with_mlx_audio,
     )
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio_transcriber.align_transcription",
+        "scinoephile.audio.transcription.mlx_audio.transcriber.align_transcription",
         patched_align,
     )
 
@@ -301,11 +328,11 @@ def test_transcribe_derives_language_and_passes_max_tokens(
         return MlxAudioInferenceResult(text="你好", duration_seconds=1.0)
 
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio_transcriber.transcribe_with_mlx_audio",
+        "scinoephile.audio.transcription.mlx_audio.transcriber.transcribe_with_mlx_audio",
         fake_transcribe_with_mlx_audio,
     )
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio_transcriber.align_transcription",
+        "scinoephile.audio.transcription.mlx_audio.transcriber.align_transcription",
         patched_align,
     )
 
@@ -365,7 +392,7 @@ def test_transcribe_chunks_audio_and_offsets_segments(
     )
     monkeypatch.setattr(transcriber, "_run_mlx_audio", patched_run_mlx_audio)
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio_transcriber.align_transcription",
+        "scinoephile.audio.transcription.mlx_audio.transcriber.align_transcription",
         patched_align,
     )
 
@@ -583,7 +610,7 @@ def test_transcribe_aligns_text_and_writes_cache(
     )
     patched_align = Mock(return_value=expected_segments)
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio_transcriber.align_transcription",
+        "scinoephile.audio.transcription.mlx_audio.transcriber.align_transcription",
         patched_align,
     )
 
@@ -619,7 +646,7 @@ def test_transcribe_rejects_low_information_vocalizations(
     )
     patched_align = Mock()
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio_transcriber.align_transcription",
+        "scinoephile.audio.transcription.mlx_audio.transcriber.align_transcription",
         patched_align,
     )
 
@@ -636,7 +663,7 @@ def test_transcribe_wraps_mlx_audio_inference_errors(
     audio = AudioSegment.silent(duration=1000)
     transcriber = MlxAudioTranscriber()
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio_transcriber.transcribe_with_mlx_audio",
+        "scinoephile.audio.transcription.mlx_audio.transcriber.transcribe_with_mlx_audio",
         Mock(side_effect=ImportError("missing mlx_audio")),
     )
 

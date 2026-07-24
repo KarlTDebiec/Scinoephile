@@ -7,12 +7,13 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import Mock
 
 import numpy as np
 import pytest
 
-from scinoephile.audio.transcription import forced_alignment
-from scinoephile.audio.transcription.forced_alignment import (
+from scinoephile.audio.transcription.mlx_audio import forced_alignment
+from scinoephile.audio.transcription.mlx_audio.forced_alignment import (
     TranscriptionAlignmentError,
     align_transcription,
 )
@@ -33,7 +34,7 @@ def test_align_transcription_uses_ctc_backend_by_default(
         )
     )
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.forced_alignment._get_ctc_alignment_inputs",
+        "scinoephile.audio.transcription.mlx_audio.forced_alignment._get_ctc_alignment_inputs",
         lambda **_kwargs: (log_probs, [1, 2], [0, 1], 0),
         raising=False,
     )
@@ -74,7 +75,7 @@ def test_align_transcription_ctc_preserves_unaligned_punctuation(
         )
     )
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.forced_alignment._get_ctc_alignment_inputs",
+        "scinoephile.audio.transcription.mlx_audio.forced_alignment._get_ctc_alignment_inputs",
         lambda **_kwargs: (log_probs, [1, 2], [0, 1], 0),
         raising=False,
     )
@@ -93,8 +94,8 @@ def test_align_transcription_ctc_preserves_unaligned_punctuation(
     assert segments[0].words[2].confidence == 0.0
 
 
-def test_ctc_token_ids_use_wildcard_for_unknown_non_space_chars():
-    """Test CTC token preparation keeps unknown punctuation."""
+def test_ctc_token_ids_normalize_supported_chars_and_skip_unknown_chars():
+    """Test CTC token preparation normalizes case and Chinese script."""
 
     class FakeTokenizer:
         """Fake tokenizer with one known transcript character."""
@@ -111,19 +112,21 @@ def test_ctc_token_ids_use_wildcard_for_unknown_non_space_chars():
             Returns:
                 fake token ID
             """
-            if token == "你":
-                return 1
-            return 3
+            return {
+                "你": 1,
+                "说": 2,
+                "A": 4,
+            }.get(token, 3)
 
     processor = SimpleNamespace(tokenizer=FakeTokenizer())
 
     token_ids, char_indices = forced_alignment._get_ctc_token_ids(
-        text="你。",
+        text="你說。a嘅",
         processor=processor,
     )
 
-    assert token_ids == [1, -1]
-    assert char_indices == [0, 1]
+    assert token_ids == [1, 2, 4]
+    assert char_indices == [0, 1, 3]
 
 
 def test_ctc_components_are_cached_by_device(
@@ -238,7 +241,7 @@ def test_align_transcription_ctc_rounds_timings(
         )
     )
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.forced_alignment._get_ctc_alignment_inputs",
+        "scinoephile.audio.transcription.mlx_audio.forced_alignment._get_ctc_alignment_inputs",
         lambda **_kwargs: (log_probs, [1, 2], [0, 1], 0),
         raising=False,
     )
@@ -261,5 +264,31 @@ def test_align_transcription_rejects_empty_text():
         align_transcription(
             Path("/tmp/audio.wav"),
             "   ",
+            duration_seconds=1.0,
+        )
+
+
+@pytest.mark.parametrize(
+    "backend_error",
+    [OSError("model unavailable"), RuntimeError("backend failed")],
+)
+def test_align_transcription_wraps_backend_errors(
+    monkeypatch: pytest.MonkeyPatch,
+    backend_error: Exception,
+):
+    """Test low-level CTC failures are exposed as alignment errors."""
+    monkeypatch.setattr(
+        forced_alignment,
+        "_align_with_ctc",
+        Mock(side_effect=backend_error),
+    )
+
+    with pytest.raises(
+        TranscriptionAlignmentError,
+        match="Unable to run CTC transcription alignment",
+    ):
+        align_transcription(
+            Path("/tmp/audio.wav"),
+            "你好",
             duration_seconds=1.0,
         )

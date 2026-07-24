@@ -12,7 +12,7 @@ from unittest.mock import Mock, patch
 from pytest import raises
 
 from scinoephile.audio.transcription import MlxAudioTranscriber
-from scinoephile.audio.transcription.mlx_audio_transcriber import (
+from scinoephile.audio.transcription.mlx_audio.transcriber import (
     MIMO_MODEL_NAME,
     QWEN3_ASR_MODEL_NAME,
 )
@@ -197,6 +197,29 @@ def test_get_guided_transcriber_configures_qwen3_asr_override(tmp_path: Path):
     assert primary.model_name == QWEN3_ASR_MODEL_NAME
     assert primary.model_profile.family_name == "qwen3-asr"
     assert primary.mlx_audio_language == "Cantonese"
+
+
+def test_get_guided_transcriber_wraps_unsupported_mlx_audio_model(tmp_path: Path):
+    """Test invalid MLX-Audio model overrides become user-facing errors."""
+    with (
+        patch.object(MlxAudioTranscriber, "_validate_platform"),
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
+            return_value=tmp_path,
+        ),
+        raises(ScinoephileError, match="Unsupported MLX-Audio model"),
+    ):
+        get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hans,
+            model_name="unsupported/model",
+            provider=Mock(spec=LLMProvider),
+            delineation_json_path=tmp_path / "delineation.json",
+            punctuation_json_path=tmp_path / "punctuation.json",
+            delineation_test_cases=[],
+            punctuation_test_cases=[],
+            backend=TranscriptionBackend.MLX_AUDIO,
+        )
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(

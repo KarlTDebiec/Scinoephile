@@ -3,10 +3,9 @@
 """Code related to audio transcription.
 
 Package hierarchy (modules may import from any above):
-* demucs_separator / mlx_audio_inference / transcribed_word
+* demucs_separator / transcribed_word
 * transcribed_segment
-* forced_alignment / whisper_transcriber
-* mlx_audio_transcriber
+* mlx_audio / whisper_transcriber
 """
 
 from __future__ import annotations
@@ -14,13 +13,13 @@ from __future__ import annotations
 from logging import getLogger
 
 from .demucs_separator import DemucsSeparator
-from .forced_alignment import TranscriptionAlignmentError, align_transcription
-from .mlx_audio_transcriber import (
+from .mlx_audio import (
     MlxAudioInferenceError,
     MlxAudioModelProfile,
     MlxAudioTranscriber,
     MlxAudioTranscriptEmptyError,
     MlxAudioTranscriptionError,
+    TranscriptionAlignmentError,
 )
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
@@ -37,7 +36,6 @@ __all__ = [
     "TranscribedWord",
     "TranscriptionAlignmentError",
     "WhisperTranscriber",
-    "align_transcription",
     "get_segment_merged",
     "get_segment_split_at_idx",
     "get_segment_split_on_whitespace",

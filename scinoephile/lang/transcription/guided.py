@@ -13,7 +13,7 @@ from scinoephile.audio.transcription import (
     MlxAudioTranscriber,
     get_segment_split_on_whitespace,
 )
-from scinoephile.audio.transcription.mlx_audio_transcriber import MIMO_MODEL_NAME
+from scinoephile.audio.transcription.mlx_audio.transcriber import MIMO_MODEL_NAME
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.ml import get_torch_device

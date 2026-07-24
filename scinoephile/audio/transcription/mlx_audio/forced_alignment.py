@@ -9,9 +9,10 @@ from pathlib import Path
 from typing import Any, cast
 
 import numpy as np
+from opencc import OpenCC
 
-from .transcribed_segment import TranscribedSegment
-from .transcribed_word import TranscribedWord
+from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
+from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 
 __all__ = [
     "CTC_MODEL_NAME",
@@ -22,8 +23,9 @@ __all__ = [
 CTC_MODEL_NAME = "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn"
 """Hugging Face model used for text-only transcription alignment."""
 
-_CTC_WILDCARD_TOKEN_ID = -1
 _CTC_COMPONENTS_BY_DEVICE: dict[str, tuple[object, object]] = {}
+_CTC_SIMPLIFIER = OpenCC("t2s")
+"""Converter from Traditional Chinese characters to the CTC model's script."""
 
 
 class TranscriptionAlignmentError(RuntimeError):
@@ -53,12 +55,19 @@ def align_transcription(
     if not transcript_text:
         raise TranscriptionAlignmentError("Cannot align empty transcript.")
 
-    return _align_with_ctc(
-        audio_path=audio_path,
-        text=transcript_text,
-        duration_seconds=duration_seconds,
-        device=device,
-    )
+    try:
+        return _align_with_ctc(
+            audio_path=audio_path,
+            text=transcript_text,
+            duration_seconds=duration_seconds,
+            device=device,
+        )
+    except TranscriptionAlignmentError:
+        raise
+    except (ImportError, OSError, RuntimeError, ValueError) as exc:
+        raise TranscriptionAlignmentError(
+            f"Unable to run CTC transcription alignment: {exc}"
+        ) from exc
 
 
 def _align_with_ctc(
@@ -153,21 +162,6 @@ def _get_ctc_alignment_inputs(
 
     blank_token_id = _get_ctc_blank_token_id(processor=processor, model=model)
     token_ids, char_indices = _get_ctc_token_ids(text=text, processor=processor)
-    if _CTC_WILDCARD_TOKEN_ID in token_ids:
-        non_blank_mask = np.ones(log_probs.shape[1], dtype=bool)
-        non_blank_mask[blank_token_id] = False
-        if not non_blank_mask.any():
-            raise TranscriptionAlignmentError("CTC wildcard needs non-blank tokens.")
-        wildcard_column = np.max(log_probs[:, non_blank_mask], axis=1)
-        wildcard_token_id = log_probs.shape[1]
-        log_probs = np.concatenate(
-            [log_probs, wildcard_column.reshape(-1, 1)],
-            axis=1,
-        )
-        token_ids = [
-            wildcard_token_id if token_id == _CTC_WILDCARD_TOKEN_ID else token_id
-            for token_id in token_ids
-        ]
     return log_probs, token_ids, char_indices, blank_token_id
 
 
@@ -391,16 +385,20 @@ def _get_ctc_token_id(*, char: str, tokenizer: object) -> int | None:
         char: transcript character
         tokenizer: Hugging Face tokenizer
     Returns:
-        token ID, a wildcard sentinel for unknown non-space characters, or None
+        token ID, or None when the character cannot be aligned directly
     """
     if char.isspace():
         return None
 
     unk_token_id = getattr(tokenizer, "unk_token_id", None)
-    candidates = [char]
-    lowered = char.lower()
-    if lowered != char:
-        candidates.append(lowered)
+    candidates = list(dict.fromkeys((char, char.upper(), char.lower())))
+    simplified = _CTC_SIMPLIFIER.convert(char)
+    if len(simplified) == 1:
+        candidates.extend(
+            candidate
+            for candidate in (simplified, simplified.upper(), simplified.lower())
+            if candidate not in candidates
+        )
 
     convert_tokens_to_ids = getattr(tokenizer, "convert_tokens_to_ids", None)
     if not callable(convert_tokens_to_ids):
@@ -409,7 +407,7 @@ def _get_ctc_token_id(*, char: str, tokenizer: object) -> int | None:
         token_id = convert_tokens_to_ids(candidate)
         if isinstance(token_id, int) and token_id != unk_token_id:
             return token_id
-    return _CTC_WILDCARD_TOKEN_ID
+    return None
 
 
 def _get_ctc_token_ids(

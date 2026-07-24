@@ -11,7 +11,7 @@ from unittest.mock import Mock
 import pytest
 from pydub import AudioSegment
 
-from scinoephile.audio.transcription import mlx_audio_inference
+from scinoephile.audio.transcription.mlx_audio import inference as mlx_audio_inference
 
 
 @pytest.fixture(autouse=True)
