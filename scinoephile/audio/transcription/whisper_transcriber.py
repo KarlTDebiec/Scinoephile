@@ -205,7 +205,7 @@ class WhisperTranscriber(Transcriber):
                         self._get_coalesced_segment(
                             segment,
                             next_segment,
-                            text=segment_text_from_words,
+                            segment_text_from_words,
                         )
                     )
                     segment_idx += 2
@@ -230,7 +230,6 @@ class WhisperTranscriber(Transcriber):
     def _get_coalesced_segment(
         segment_with_words: TranscribedSegment,
         duplicate_segment: TranscribedSegment,
-        *,
         text: str,
     ) -> TranscribedSegment:
         """Coalesce a malformed empty-text/timed and text-only duplicate pair.

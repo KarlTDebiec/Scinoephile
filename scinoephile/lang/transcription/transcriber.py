@@ -387,29 +387,27 @@ class GuidedTranscriber:
 
         recovered_segments = self._get_credible_tail_segments(
             tail_segments,
-            tail_start=tail_start,
-            first_segment_id=max(segment.id for segment in segments) + 1,
+            tail_start,
+            max(segment.id for segment in segments) + 1,
         )
 
-        output_segments = segments
         if not recovered_segments:
             logger.info(
                 f"Keeping valid base Whisper transcription ending at "
                 f"{last_word_end:.2f}s; focused tail recovery found no credible "
                 "speech"
             )
-        else:
-            logger.info(
-                f"Recovered {len(recovered_segments)} credible Whisper segment(s) "
-                "from the focused tail"
-            )
-            output_segments = [*segments, *recovered_segments]
-        return output_segments
+            return segments
+
+        logger.info(
+            f"Recovered {len(recovered_segments)} credible Whisper segment(s) "
+            "from the focused tail"
+        )
+        return [*segments, *recovered_segments]
 
     @staticmethod
     def _get_credible_tail_segments(
         tail_segments: list[TranscribedSegment],
-        *,
         tail_start: float,
         first_segment_id: int,
     ) -> list[TranscribedSegment]:
@@ -486,27 +484,23 @@ class GuidedTranscriber:
             if not segment.words:
                 logger.warning(f"Rejecting segment {segment.id} without word timings")
                 return False
-            duration_error = None
             if int(segment.end * 1000) <= int(segment.start * 1000):
-                duration_error = (
+                logger.warning(
                     f"Rejecting Whisper segment {segment.id} with non-positive "
                     f"millisecond duration ({segment.start:.3f}s to "
                     f"{segment.end:.3f}s)"
                 )
-            else:
-                for word in segment.words:
-                    if not word.text.strip():
-                        continue
-                    if int(word.end * 1000) <= int(word.start * 1000):
-                        duration_error = (
-                            f"Rejecting Whisper segment {segment.id} with word "
-                            f"{word.text!r} having non-positive millisecond duration "
-                            f"({word.start:.3f}s to {word.end:.3f}s)"
-                        )
-                        break
-            if duration_error is not None:
-                logger.warning(duration_error)
                 return False
+            for word in segment.words:
+                if not word.text.strip():
+                    continue
+                if int(word.end * 1000) <= int(word.start * 1000):
+                    logger.warning(
+                        f"Rejecting Whisper segment {segment.id} with word "
+                        f"{word.text!r} having non-positive millisecond duration "
+                        f"({word.start:.3f}s to {word.end:.3f}s)"
+                    )
+                    return False
             if (
                 segment.compression_ratio is not None
                 and segment.compression_ratio > _MAX_COMPRESSION_RATIO
@@ -529,5 +523,4 @@ class GuidedTranscriber:
 
         if not has_text:
             logger.warning("Rejecting empty Whisper transcription")
-            return False
-        return True
+        return has_text

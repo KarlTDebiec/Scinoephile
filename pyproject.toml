@@ -127,6 +127,7 @@ allowed-unresolved-imports = [
     "torch",
     "transformers",
     "whisper_timestamped",
+    "whisper_timestamped.**",
 ]
 
 [tool.setuptools]

@@ -198,7 +198,7 @@ class MlxAudioTranscriber(Transcriber):
         """
         try:
             import torch  # noqa: PLC0415
-            from whisper_timestamped.transcribe import (  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
+            from whisper_timestamped.transcribe import (  # noqa: PLC0415
                 get_vad_segments,
             )
         except ImportError as exc:
