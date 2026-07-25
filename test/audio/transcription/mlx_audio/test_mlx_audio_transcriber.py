@@ -34,8 +34,8 @@ from scinoephile.core import Language
 def use_apple_silicon_platform(monkeypatch: pytest.MonkeyPatch):
     """Run MLX-Audio transcriber tests as though on the supported platform."""
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.transcriber.sys.platform",
-        "darwin",
+        "scinoephile.audio.transcription.mlx_audio.transcriber.platform.system",
+        Mock(return_value="Darwin"),
     )
     monkeypatch.setattr(
         "scinoephile.audio.transcription.mlx_audio.transcriber.platform.machine",
@@ -109,22 +109,22 @@ def test_get_cache_path_uses_mlx_runtime_on_apple_silicon():
 
 
 @pytest.mark.parametrize(
-    ("sys_platform", "machine"),
+    ("system", "machine"),
     [
-        ("linux", "arm64"),
-        ("darwin", "x86_64"),
-        ("win32", "ARM64"),
+        ("Linux", "arm64"),
+        ("Darwin", "x86_64"),
+        ("Windows", "ARM64"),
     ],
 )
 def test_init_rejects_unsupported_platform(
     monkeypatch: pytest.MonkeyPatch,
-    sys_platform: str,
+    system: str,
     machine: str,
 ):
     """Test MLX-Audio fails during construction on unsupported platforms."""
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.transcriber.sys.platform",
-        sys_platform,
+        "scinoephile.audio.transcription.mlx_audio.transcriber.platform.system",
+        Mock(return_value=system),
     )
     monkeypatch.setattr(
         "scinoephile.audio.transcription.mlx_audio.transcriber.platform.machine",

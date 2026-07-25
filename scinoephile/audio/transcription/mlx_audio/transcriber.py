@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import platform
-import sys
 from collections.abc import Sequence
 from logging import getLogger
 from pathlib import Path
@@ -103,11 +102,12 @@ class MlxAudioTranscriber(Transcriber):
             ValueError: if the language or numeric configuration is invalid
         """
         # Reject runtimes that cannot execute MLX-Audio
+        system = platform.system()
         machine = platform.machine()
-        if sys.platform != "darwin" or machine != "arm64":
+        if system != "Darwin" or machine != "arm64":
             raise TranscriptionError(
                 "MLX-Audio support requires macOS on Apple Silicon "
-                f"(detected sys.platform={sys.platform!r}, "
+                f"(detected platform.system()={system!r}, "
                 f"platform.machine()={machine!r}). "
                 "CUDA support is not included."
             )
