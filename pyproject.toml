@@ -21,7 +21,7 @@ dependencies = [
     "jieba>=0.42.1",
     "numba>=0.66.0",
     "numpy>=2.4.6",
-    "openai>=2.46.0",
+    "openai>=2.48.0",
     "opencc>=1.4.1",
     "pillow>=12.3.0",
     "pycantonese>=5.0.0",
@@ -49,11 +49,11 @@ ocr-cuda = [
 ]
 transcription = [
     "demucs-infer>=4.2.2",
-    "huggingface-hub>=1.23.0",
+    "huggingface-hub>=1.24.0",
     "onnxruntime>=1.28.0",
     "torch>=2.10.0",
     "torchaudio>=2.10.0,<2.11.0",
-    "transformers>=5.13.1",
+    "transformers>=5.14.1",
     "whisper-timestamped>=1.15.9",
 ]
 web = [
