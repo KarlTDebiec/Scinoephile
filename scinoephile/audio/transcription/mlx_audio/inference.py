@@ -9,7 +9,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from types import MappingProxyType
-from typing import ClassVar, Protocol, cast
+from typing import Any, ClassVar, cast
 
 from scinoephile.audio.transcription.exceptions import TranscriptionError
 from scinoephile.common.validation import val_input_file_or_dir_path
@@ -28,27 +28,6 @@ MIMO_MODEL_NAME = "mlx-community/MiMo-V2.5-ASR-MLX"
 
 QWEN3_ASR_MODEL_NAME = "mlx-community/Qwen3-ASR-0.6B-8bit"
 """Default MLX Qwen3-ASR model."""
-
-
-class _MlxAudioModel(Protocol):
-    """MLX-Audio speech-to-text model interface used by Scinoephile."""
-
-    def generate(self, audio_path: str, **kwargs: object) -> object:
-        """Generate a transcription for an audio file."""
-        ...
-
-
-class _MlxAudioSttLoad(Protocol):
-    """MLX-Audio speech-to-text model loader interface."""
-
-    def __call__(
-        self,
-        model_reference: str | Path,
-        *,
-        model_type: str,
-    ) -> _MlxAudioModel:
-        """Load a speech-to-text model."""
-        ...
 
 
 @dataclass(frozen=True)
@@ -134,7 +113,7 @@ _MLX_AUDIO_MODEL_PROFILES = (
 class MlxAudioInference:
     """Runs direct speech-to-text inference through one MLX-Audio model."""
 
-    _models_by_reference: ClassVar[dict[str, _MlxAudioModel]] = {}
+    _models_by_reference: ClassVar[dict[str, Any]] = {}
     """Loaded models shared by resolved model reference."""
 
     def __init__(self, model_name: str = MIMO_MODEL_NAME):
@@ -157,7 +136,7 @@ class MlxAudioInference:
         self._model_reference = model_reference
         """Resolved local model path or remote Hugging Face reference."""
 
-        self._model: _MlxAudioModel | None = None
+        self._model: Any | None = None
         """Loaded MLX-Audio model."""
 
     def transcribe(
@@ -208,7 +187,7 @@ class MlxAudioInference:
         )
 
     @property
-    def _loaded_model(self) -> _MlxAudioModel:
+    def _loaded_model(self) -> Any:
         """Get the cached MLX-Audio model, loading it if needed.
 
         Returns:
@@ -296,7 +275,7 @@ def _get_mlx_audio_model_profile(model_name: str) -> MlxAudioModelProfile:
     )
 
 
-def _import_mlx_audio_stt_load() -> _MlxAudioSttLoad:
+def _import_mlx_audio_stt_load() -> Any:
     """Import the MLX-Audio STT model loader on demand.
 
     Returns:
@@ -313,4 +292,4 @@ def _import_mlx_audio_stt_load() -> _MlxAudioSttLoad:
             "MLX-Audio inference requires optional transcription dependencies. "
             "Install scinoephile with the 'transcription' extra."
         ) from exc
-    return cast(_MlxAudioSttLoad, load)
+    return load
