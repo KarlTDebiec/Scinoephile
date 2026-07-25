@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Direct speech-to-text inference through MLX-Audio."""
+"""MLX-Audio speech-to-text backend."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from scinoephile.core.language import Language
 
 __all__ = [
     "MIMO_MODEL_NAME",
-    "MlxAudioInference",
+    "MlxAudioBackend",
     "MlxAudioInferenceResult",
     "MlxAudioModelProfile",
     "QWEN3_ASR_MODEL_NAME",
@@ -97,7 +97,7 @@ _MLX_AUDIO_MODEL_PROFILES = (
 """Supported MLX-Audio model profiles."""
 
 
-class MlxAudioInference:
+class MlxAudioBackend:
     """Runs direct speech-to-text inference through one MLX-Audio model."""
 
     _models_by_reference: ClassVar[dict[str, MimoModel | Qwen3AsrModel]] = {}

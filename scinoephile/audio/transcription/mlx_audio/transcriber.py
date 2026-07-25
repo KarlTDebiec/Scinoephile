@@ -29,9 +29,9 @@ from scinoephile.core import Language
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
-from .inference import (
+from .backend import (
     MIMO_MODEL_NAME,
-    MlxAudioInference,
+    MlxAudioBackend,
     MlxAudioInferenceResult,
     MlxAudioModelProfile,
 )
@@ -101,7 +101,7 @@ class MlxAudioTranscriber:
             ValueError: if the language or numeric configuration is invalid
         """
         self._validate_platform()
-        self.inference = MlxAudioInference(model_name, language)
+        self.backend = MlxAudioBackend(model_name, language)
         """Direct MLX-Audio inference backend."""
 
         if ctc_model_name is None:
@@ -179,22 +179,22 @@ class MlxAudioTranscriber:
     @property
     def language(self) -> Language:
         """Get the transcription language."""
-        return self.inference.language
+        return self.backend.language
 
     @property
     def mlx_audio_language(self) -> str:
         """Get the model-specific MLX-Audio language value."""
-        return self.inference.mlx_audio_language
+        return self.backend.mlx_audio_language
 
     @property
     def model_name(self) -> str:
         """Get the MLX-Audio model name or local model path."""
-        return self.inference.model_name
+        return self.backend.model_name
 
     @property
     def model_profile(self) -> MlxAudioModelProfile:
         """Get configuration for the selected MLX-Audio model family."""
-        return self.inference.model_profile
+        return self.backend.model_profile
 
     def get_cached_transcription(
         self, cache_audio: AudioSegment
@@ -487,7 +487,7 @@ class MlxAudioTranscriber:
             TranscriptionInferenceError: if direct inference fails
         """
         try:
-            return self.inference.transcribe(
+            return self.backend.transcribe(
                 audio_path,
                 self._effective_max_tokens,
             )

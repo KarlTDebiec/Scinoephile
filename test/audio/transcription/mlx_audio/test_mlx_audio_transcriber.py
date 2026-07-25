@@ -20,10 +20,10 @@ from scinoephile.audio.transcription import (
     TranscriptionError,
     TranscriptionInferenceError,
 )
-from scinoephile.audio.transcription.mlx_audio.inference import (
+from scinoephile.audio.transcription.mlx_audio.backend import (
     MIMO_MODEL_NAME,
     QWEN3_ASR_MODEL_NAME,
-    MlxAudioInference,
+    MlxAudioBackend,
     MlxAudioInferenceResult,
 )
 from scinoephile.audio.transcription.mlx_audio.transcriber import MlxAudioTranscriber
@@ -217,11 +217,11 @@ def test_init_derives_mlx_audio_languages(
     assert transcriber.mlx_audio_language == mlx_audio_language
 
 
-def test_mlx_audio_inference_matches_model_name_case_insensitively():
+def test_mlx_audio_backend_matches_model_name_case_insensitively():
     """Test supported model profiles match model names case-insensitively."""
-    inference = MlxAudioInference("custom/QWEN3-ASR-0.6B-8bit")
+    backend = MlxAudioBackend("custom/QWEN3-ASR-0.6B-8bit")
 
-    assert inference.model_profile.family_name == "qwen3-asr"
+    assert backend.model_profile.family_name == "qwen3-asr"
 
 
 @pytest.mark.parametrize(
@@ -231,7 +231,7 @@ def test_mlx_audio_inference_matches_model_name_case_insensitively():
         ({"model_type": "qwen3_asr"}, "qwen3-asr", "qwen3_asr"),
     ],
 )
-def test_mlx_audio_inference_reads_local_model_metadata(
+def test_mlx_audio_backend_reads_local_model_metadata(
     tmp_path: Path,
     metadata: dict[str, object],
     expected_family: str,
@@ -245,19 +245,19 @@ def test_mlx_audio_inference_reads_local_model_metadata(
         encoding="utf-8",
     )
 
-    inference = MlxAudioInference(str(model_path))
+    backend = MlxAudioBackend(str(model_path))
 
-    assert inference.model_profile.family_name == expected_family
-    assert inference.model_profile.mlx_audio_model_type == expected_model_type
+    assert backend.model_profile.family_name == expected_family
+    assert backend.model_profile.mlx_audio_model_type == expected_model_type
 
 
-def test_mlx_audio_inference_rejects_untested_family():
+def test_mlx_audio_backend_rejects_untested_family():
     """Test unknown MLX-Audio model families fail clearly."""
     with pytest.raises(
         TranscriptionError,
         match="supported families: mimo, qwen3-asr",
     ):
-        MlxAudioInference("mlx-community/Whisper-Large-v3-MLX")
+        MlxAudioBackend("mlx-community/Whisper-Large-v3-MLX")
 
 
 def test_init_rejects_non_positive_max_tokens():
@@ -499,7 +499,7 @@ def test_transcribe_uses_direct_mlx_audio_inference(
         return MlxAudioInferenceResult(text="你好")
 
     monkeypatch.setattr(
-        transcriber.inference,
+        transcriber.backend,
         "transcribe",
         fake_transcribe,
     )
@@ -538,7 +538,7 @@ def test_transcribe_derives_language_and_passes_max_tokens(
         return MlxAudioInferenceResult(text="你好")
 
     monkeypatch.setattr(
-        transcriber.inference,
+        transcriber.backend,
         "transcribe",
         fake_transcribe,
     )
@@ -930,7 +930,7 @@ def test_transcribe_wraps_mlx_audio_inference_errors(
     audio = AudioSegment.silent(duration=1000)
     transcriber = MlxAudioTranscriber()
     monkeypatch.setattr(
-        transcriber.inference,
+        transcriber.backend,
         "transcribe",
         Mock(side_effect=ImportError("missing mlx_audio")),
     )
@@ -960,7 +960,7 @@ def _get_mlx_audio_transcriber(
         "mlx-audio",
         "MLX-Audio",
     )
-    transcriber.inference = MlxAudioInference(model_name, Language.yue_hant)
+    transcriber.backend = MlxAudioBackend(model_name, Language.yue_hant)
     transcriber.ctc_aligner = CtcAligner()
     transcriber.max_tokens = None
     transcriber.chunk_duration_seconds = None
