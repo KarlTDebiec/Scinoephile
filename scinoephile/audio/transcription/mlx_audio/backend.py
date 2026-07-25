@@ -18,7 +18,6 @@ __all__ = [
     "MIMO_MODEL_NAME",
     "MlxAudioBackend",
     "MlxAudioInferenceResult",
-    "MlxAudioModelProfile",
     "QWEN3_ASR_MODEL_NAME",
 ]
 
@@ -51,7 +50,7 @@ _QWEN3_ASR_LANGUAGE_CODES = {
 """Qwen3-ASR language codes keyed by Scinoephile language."""
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class MlxAudioInferenceResult:
     """Result of direct MLX-Audio inference."""
 
@@ -63,7 +62,7 @@ class MlxAudioInferenceResult:
 
 
 @dataclass(frozen=True, slots=True)
-class MlxAudioModelProfile:
+class _MlxAudioModelProfile:
     """Model-specific configuration for an MLX-Audio STT family."""
 
     family_name: str
@@ -79,14 +78,14 @@ class MlxAudioModelProfile:
 
 
 _MLX_AUDIO_MODEL_PROFILES = (
-    MlxAudioModelProfile(
+    _MlxAudioModelProfile(
         family_name="mimo",
         mlx_audio_model_type="mimo",
         default_max_tokens=256,
         model_name_markers=("mimo-v2.5-asr", "mimov2asr"),
         languages=_MIMO_LANGUAGE_CODES,
     ),
-    MlxAudioModelProfile(
+    _MlxAudioModelProfile(
         family_name="qwen3-asr",
         mlx_audio_model_type="qwen3_asr",
         default_max_tokens=8192,
@@ -229,7 +228,7 @@ def _get_mlx_audio_model_identity(model_name: str) -> str:
     identity_parts = [model_name]
     model_path = Path(model_name).expanduser()
     if not model_path.exists():
-        return " ".join(identity_parts).lower()
+        return model_name.lower()
 
     if model_path.is_dir():
         metadata_paths = (
@@ -258,7 +257,7 @@ def _get_mlx_audio_model_identity(model_name: str) -> str:
     return " ".join(identity_parts).lower()
 
 
-def _get_mlx_audio_model_profile(model_name: str) -> MlxAudioModelProfile:
+def _get_mlx_audio_model_profile(model_name: str) -> _MlxAudioModelProfile:
     """Get the supported model profile matching an MLX-Audio model name.
 
     Arguments:

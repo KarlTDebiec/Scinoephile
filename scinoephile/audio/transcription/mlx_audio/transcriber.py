@@ -34,8 +34,6 @@ from scinoephile.core import Language
 from .backend import (
     MIMO_MODEL_NAME,
     MlxAudioBackend,
-    MlxAudioInferenceResult,
-    MlxAudioModelProfile,
 )
 
 __all__ = ["MlxAudioTranscriber"]
@@ -117,11 +115,9 @@ class MlxAudioTranscriber(Transcriber):
         self.chunk_overlap_seconds = chunk_overlap_seconds
         if self.max_tokens is not None and self.max_tokens <= 0:
             raise ValueError("MLX-Audio max tokens must be positive.")
-        if self.chunk_duration_seconds is not None and self.chunk_duration_seconds <= 0:
-            raise ValueError("MLX-Audio chunk duration must be positive.")
         if (
             self.chunk_duration_seconds is not None
-            and round(self.chunk_duration_seconds * 1000) == 0
+            and round(self.chunk_duration_seconds * 1000) <= 0
         ):
             raise ValueError(
                 "MLX-Audio chunk duration must round to at least one millisecond."
@@ -141,26 +137,16 @@ class MlxAudioTranscriber(Transcriber):
         return self.backend.language
 
     @property
-    def mlx_audio_language(self) -> str:
-        """Get the model-specific MLX-Audio language value."""
-        return self.backend.mlx_audio_language
-
-    @property
     def model_name(self) -> str:
         """Get the MLX-Audio model name or local model path."""
         return self.backend.model_name
-
-    @property
-    def model_profile(self) -> MlxAudioModelProfile:
-        """Get configuration for the selected MLX-Audio model family."""
-        return self.backend.model_profile
 
     @property
     def _effective_max_tokens(self) -> int:
         """Get the explicit or model-family default generation token limit."""
         if self.max_tokens is not None:
             return self.max_tokens
-        return self.model_profile.default_max_tokens
+        return self.backend.model_profile.default_max_tokens
 
     def _get_backend_cache_metadata(
         self,
@@ -177,11 +163,11 @@ class MlxAudioTranscriber(Transcriber):
         if attempt.use_vad:
             vad_version = _VAD_CACHE_VERSION
         return {
-            "model_family": self.model_profile.family_name,
+            "model_family": self.backend.model_profile.family_name,
             "model_name": self.model_name,
             "runtime": "mlx",
             "language": self.language.code,
-            "mlx_audio_language": self.mlx_audio_language,
+            "mlx_audio_language": self.backend.mlx_audio_language,
             "max_tokens": self._effective_max_tokens,
             "chunk_duration_seconds": self.chunk_duration_seconds,
             "chunk_overlap_seconds": self.chunk_overlap_seconds,
@@ -259,26 +245,6 @@ class MlxAudioTranscriber(Transcriber):
                 intervals.append((start_ms, end_ms))
         return intervals
 
-    def _run_mlx_audio(self, audio_path: Path) -> MlxAudioInferenceResult:
-        """Run MLX-Audio directly in the current process.
-
-        Arguments:
-            audio_path: temporary WAV path to transcribe
-        Returns:
-            MLX-Audio inference result
-        Raises:
-            TranscriptionInferenceError: if direct inference fails
-        """
-        try:
-            return self.backend.transcribe(
-                audio_path,
-                self._effective_max_tokens,
-            )
-        except (ImportError, OSError, RuntimeError, ValueError) as exc:
-            raise TranscriptionInferenceError(
-                f"Unable to run MLX-Audio inference: {exc}"
-            ) from exc
-
     def _transcribe_attempt(
         self,
         audio: AudioSegment,
@@ -295,7 +261,9 @@ class MlxAudioTranscriber(Transcriber):
             TranscriptionInferenceError: if an optional dependency or assertion fails
         """
         try:
-            return self._transcribe_uncached(audio, attempt.use_vad)
+            if attempt.use_vad:
+                return self._transcribe_vad_audio(audio)
+            return self._transcribe_unfiltered_audio(audio)
         except (AssertionError, ImportError) as exc:
             raise TranscriptionInferenceError(
                 f"Unable to run MLX-Audio transcription: {exc}"
@@ -317,7 +285,15 @@ class MlxAudioTranscriber(Transcriber):
         """
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
-            inference_result = self._run_mlx_audio(temp_audio_path)
+            try:
+                inference_result = self.backend.transcribe(
+                    temp_audio_path,
+                    self._effective_max_tokens,
+                )
+            except (ImportError, OSError, RuntimeError, ValueError) as exc:
+                raise TranscriptionInferenceError(
+                    f"Unable to run MLX-Audio inference: {exc}"
+                ) from exc
             if (
                 inference_result.generation_tokens is not None
                 and inference_result.generation_tokens >= self._effective_max_tokens
@@ -420,26 +396,6 @@ class MlxAudioTranscriber(Transcriber):
                 "MLX-Audio returned no transcript across audio chunks."
             )
         return segments
-
-    def _transcribe_uncached(
-        self,
-        audio: AudioSegment,
-        use_vad: bool,
-    ) -> list[TranscribedSegment]:
-        """Run MLX-Audio transcription and timestamp alignment without cache lookup.
-
-        Arguments:
-            audio: audio to transcribe
-            use_vad: whether to remove non-speech audio before transcription
-        Returns:
-            timestamped transcription segments
-        Raises:
-            TranscriptionError: if MLX-Audio returns unusable text
-            TranscriptionAlignmentError: if forced alignment fails
-        """
-        if use_vad:
-            return self._transcribe_vad_audio(audio)
-        return self._transcribe_unfiltered_audio(audio)
 
     def _transcribe_unfiltered_audio(
         self,

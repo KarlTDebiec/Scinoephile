@@ -14,6 +14,7 @@ from unittest.mock import Mock
 
 import pytest
 
+from scinoephile.audio.transcription.exceptions import TranscriptionError
 from scinoephile.audio.transcription.mlx_audio import backend
 from scinoephile.audio.transcription.mlx_audio.backend import (
     MIMO_MODEL_NAME,
@@ -22,6 +23,75 @@ from scinoephile.audio.transcription.mlx_audio.backend import (
     MlxAudioInferenceResult,
 )
 from scinoephile.core import Language
+
+
+@pytest.mark.parametrize(
+    ("model_name", "language", "mlx_audio_language"),
+    [
+        (MIMO_MODEL_NAME, Language.eng, "en"),
+        (MIMO_MODEL_NAME, Language.yue_hans, "zh"),
+        (MIMO_MODEL_NAME, Language.yue_hant, "zh"),
+        (MIMO_MODEL_NAME, Language.zho_hans, "zh"),
+        (MIMO_MODEL_NAME, Language.zho_hant, "zh"),
+        (QWEN3_ASR_MODEL_NAME, Language.eng, "English"),
+        (QWEN3_ASR_MODEL_NAME, Language.yue_hans, "Cantonese"),
+        (QWEN3_ASR_MODEL_NAME, Language.yue_hant, "Cantonese"),
+        (QWEN3_ASR_MODEL_NAME, Language.zho_hans, "Chinese"),
+        (QWEN3_ASR_MODEL_NAME, Language.zho_hant, "Chinese"),
+    ],
+)
+def test_init_derives_mlx_audio_languages(
+    model_name: str,
+    language: Language,
+    mlx_audio_language: str,
+):
+    """Test each model profile derives its language identifier."""
+    mlx_audio_backend = MlxAudioBackend(model_name=model_name, language=language)
+
+    assert mlx_audio_backend.mlx_audio_language == mlx_audio_language
+
+
+def test_model_profile_matches_model_name_case_insensitively():
+    """Test supported model profiles match model names case-insensitively."""
+    mlx_audio_backend = MlxAudioBackend("custom/QWEN3-ASR-0.6B-8bit")
+
+    assert mlx_audio_backend.model_profile.family_name == "qwen3-asr"
+
+
+@pytest.mark.parametrize(
+    ("metadata", "expected_family", "expected_model_type"),
+    [
+        ({"architectures": ["MiMoV2ASRForCausalLM"]}, "mimo", "mimo"),
+        ({"model_type": "qwen3_asr"}, "qwen3-asr", "qwen3_asr"),
+    ],
+)
+def test_model_profile_reads_local_model_metadata(
+    tmp_path: Path,
+    metadata: dict[str, object],
+    expected_family: str,
+    expected_model_type: str,
+):
+    """Test arbitrary local directories are identified from model metadata."""
+    model_path = tmp_path / "asr"
+    model_path.mkdir()
+    (model_path / "config.json").write_text(
+        json.dumps(metadata),
+        encoding="utf-8",
+    )
+
+    mlx_audio_backend = MlxAudioBackend(str(model_path))
+
+    assert mlx_audio_backend.model_profile.family_name == expected_family
+    assert mlx_audio_backend.model_profile.mlx_audio_model_type == expected_model_type
+
+
+def test_model_profile_rejects_untested_family():
+    """Test unknown MLX-Audio model families fail clearly."""
+    with pytest.raises(
+        TranscriptionError,
+        match="supported families: mimo, qwen3-asr",
+    ):
+        MlxAudioBackend("mlx-community/Whisper-Large-v3-MLX")
 
 
 def test_transcribe_reads_mapping_result(

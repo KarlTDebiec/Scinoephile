@@ -229,42 +229,8 @@ def test_missing_guided_tail_keeps_base_after_unusable_cached_recovery():
     assert normalized_tail_audio.max_dBFS == approx(-1.0, abs=0.01)
     transcriber.tail_recovery_transcriber.get_cached_transcription.assert_called_once_with(
         normalized_tail_audio,
-        overwrite_cache=False,
     )
     transcriber.tail_recovery_transcriber.assert_not_called()
-
-
-def test_missing_guided_tail_recovers_from_malformed_cache():
-    """Test a malformed focused-tail cache triggers fresh recovery."""
-    transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
-    initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
-    recovered_segments = [
-        _get_segment(
-            start=0.2,
-            end=0.8,
-            text="tail",
-            compression_ratio=1.0,
-            with_words=True,
-        )
-    ]
-    recovered_segments[0].no_speech_prob = 0.1
-    transcriber.transcriber = Mock()
-    transcriber.transcriber.get_cached_transcription.return_value = initial_segments
-    transcriber.tail_recovery_transcriber = Mock(return_value=recovered_segments)
-    transcriber.tail_recovery_transcriber.get_cached_transcription.side_effect = (
-        TranscriptionError("malformed focused-tail cache")
-    )
-    audio = Sine(440).to_audio_segment(duration=10000).apply_gain(-20.0)
-
-    output = transcriber._transcribe_block_audio(audio, expected_last_start=8.0)
-
-    assert output[:1] == initial_segments
-    assert output[1].text == "tail"
-    normalized_tail_audio = transcriber.tail_recovery_transcriber.call_args.args[0]
-    transcriber.tail_recovery_transcriber.assert_called_once_with(
-        normalized_tail_audio,
-        use_cache=False,
-    )
 
 
 def test_missing_guided_tail_keeps_valid_base_without_credible_recovery():
@@ -347,7 +313,6 @@ def test_standard_transcriber_runs_shared_fallbacks():
     assert output == segments
     transcriber.transcriber.assert_called_once_with(
         audio,
-        cache_audio=audio,
         is_usable=ANY,
         use_cache=False,
         overwrite_cache=False,
@@ -370,7 +335,6 @@ def test_unusable_standard_output_uses_defensive_recovery():
     assert output == segments
     transcriber.recovery_transcriber.assert_called_once_with(
         audio,
-        cache_audio=audio,
         is_usable=ANY,
         use_cache=False,
     )
@@ -413,14 +377,12 @@ def test_overwrite_cache_is_forwarded_to_shared_transcriber():
     transcriber.recovery_transcriber.get_cached_transcription.return_value = None
 
     assert transcriber._transcribe_block_audio(audio) == segments
-    transcriber.transcriber.get_cached_transcription.assert_called_once_with(
+    transcriber.transcriber.get_cached_transcription.assert_not_called()
+    transcriber.recovery_transcriber.remove_cached_transcriptions.assert_called_once_with(
         audio,
-        is_usable=ANY,
-        overwrite_cache=True,
     )
     transcriber.transcriber.assert_called_once_with(
         audio,
-        cache_audio=audio,
         is_usable=ANY,
         use_cache=False,
         overwrite_cache=True,

@@ -77,7 +77,6 @@ class Transcriber(ABC):
         self,
         audio: AudioSegment,
         *,
-        cache_audio: AudioSegment | None = None,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
         use_cache: bool = True,
         overwrite_cache: bool = False,
@@ -86,7 +85,6 @@ class Transcriber(ABC):
 
         Arguments:
             audio: audio to transcribe
-            cache_audio: optional audio used for cache-key generation
             is_usable: optional callback used to reject output and trigger retries
             use_cache: whether to return a cached transcription when available
             overwrite_cache: whether to replace matching cache files
@@ -95,7 +93,6 @@ class Transcriber(ABC):
         """
         return self.transcribe(
             audio,
-            cache_audio=cache_audio,
             is_usable=is_usable,
             use_cache=use_cache,
             overwrite_cache=overwrite_cache,
@@ -108,33 +105,41 @@ class Transcriber(ABC):
 
     def get_cached_transcription(
         self,
-        cache_audio: AudioSegment,
+        audio: AudioSegment,
         *,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
-        overwrite_cache: bool = False,
     ) -> list[TranscribedSegment] | None:
         """Get the first usable cached transcription across configured attempts.
 
         Arguments:
-            cache_audio: audio used for cache-key generation
+            audio: audio used for cache-key generation
             is_usable: optional callback used to reject cached output
-            overwrite_cache: whether to remove matching cache files
         Returns:
             first usable cached transcription, if present
         """
         segments, _ = self._find_cached_transcription(
-            cache_audio,
+            audio,
             self._get_attempts(),
             is_usable,
-            overwrite_cache,
         )
         return segments
+
+    def remove_cached_transcriptions(self, audio: AudioSegment):
+        """Remove cached transcriptions for all configured attempts.
+
+        Arguments:
+            audio: audio used for cache-key generation
+        """
+        for attempt in self._get_attempts():
+            self._cache.remove(
+                audio,
+                self._get_cache_metadata(attempt),
+            )
 
     def transcribe(
         self,
         audio: AudioSegment,
         *,
-        cache_audio: AudioSegment | None = None,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
         use_cache: bool = True,
         overwrite_cache: bool = False,
@@ -143,32 +148,23 @@ class Transcriber(ABC):
 
         Arguments:
             audio: audio to transcribe
-            cache_audio: optional audio used for cache-key generation
             is_usable: optional callback used to reject output and trigger retries
             use_cache: whether to return a cached transcription when available
             overwrite_cache: whether to replace matching cache files
         Returns:
             first usable transcription, or an empty list when output was rejected
         """
-        if cache_audio is None:
-            cache_audio = audio
         attempts = self._get_attempts()
 
         # Inspect every cache before running expensive preprocessing
         rejected_attempts: set[TranscriptionAttempt] = set()
         if overwrite_cache:
-            self._find_cached_transcription(
-                cache_audio,
-                attempts,
-                is_usable,
-                overwrite_cache=True,
-            )
+            self.remove_cached_transcriptions(audio)
         elif use_cache:
             segments, rejected_attempts = self._find_cached_transcription(
-                cache_audio,
+                audio,
                 attempts,
                 is_usable,
-                overwrite_cache=False,
             )
             if segments is not None:
                 return segments
@@ -187,7 +183,6 @@ class Transcriber(ABC):
         # Run remaining transcription attempts
         return self._run_attempts(
             audio,
-            cache_audio,
             attempts,
             rejected_attempts,
             separated_audio,
@@ -196,29 +191,24 @@ class Transcriber(ABC):
 
     def _find_cached_transcription(
         self,
-        cache_audio: AudioSegment,
+        audio: AudioSegment,
         attempts: Sequence[TranscriptionAttempt],
         is_usable: Callable[[list[TranscribedSegment]], bool] | None,
-        overwrite_cache: bool,
     ) -> tuple[list[TranscribedSegment] | None, set[TranscriptionAttempt]]:
         """Find a usable cache and identify rejected attempts.
 
         Arguments:
-            cache_audio: audio used for cache-key generation
+            audio: audio used for cache-key generation
             attempts: preprocessing attempts in retry order
             is_usable: optional callback used to reject cached output
-            overwrite_cache: whether to remove matching cache files
         Returns:
             usable cached segments and rejected attempts
         """
         rejected_attempts: set[TranscriptionAttempt] = set()
         for attempt in attempts:
             metadata = self._get_cache_metadata(attempt)
-            if overwrite_cache:
-                self._cache.remove(cache_audio, metadata)
-                continue
             try:
-                cached_transcription = self._cache.load(cache_audio, metadata)
+                cached_transcription = self._cache.load(audio, metadata)
             except TranscriptionError as exc:
                 logger.warning(
                     f"Unable to read {self.backend_label} transcription cache: {exc}"
@@ -348,7 +338,6 @@ class Transcriber(ABC):
     def _run_attempts(
         self,
         audio: AudioSegment,
-        cache_audio: AudioSegment,
         attempts: Sequence[TranscriptionAttempt],
         rejected_attempts: set[TranscriptionAttempt],
         separated_audio: AudioSegment | None,
@@ -358,7 +347,6 @@ class Transcriber(ABC):
 
         Arguments:
             audio: original audio to transcribe
-            cache_audio: audio used for cache-key generation
             attempts: preprocessing attempts in retry order
             rejected_attempts: attempts with unusable cached output
             separated_audio: Demucs-separated audio, if available
@@ -392,7 +380,7 @@ class Transcriber(ABC):
             successful_attempt = True
 
             self._cache.save(
-                cache_audio,
+                audio,
                 self._get_cache_metadata(attempt),
                 segments,
             )

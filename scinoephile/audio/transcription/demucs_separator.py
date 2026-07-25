@@ -95,32 +95,6 @@ class DemucsSeparator:
                 ) from exc
         return self._model
 
-    def get_cached_vocals(
-        self,
-        cache_audio: AudioSegment,
-        *,
-        overwrite_cache: bool = False,
-    ) -> AudioSegment | None:
-        """Get cached vocals separation for audio if available.
-
-        Arguments:
-            cache_audio: audio used for cache-key generation
-            overwrite_cache: whether to remove a matching cached separation
-        Returns:
-            cached vocals-only audio, if present
-        """
-        cache_path = self._get_cache_path(cache_audio)
-        if cache_path is None or not cache_path.exists():
-            return None
-        if overwrite_cache:
-            cache_path.unlink()
-            logger.info(f"Removed Demucs vocals cache: {cache_path}")
-            return None
-        logger.info(f"Loaded Demucs vocals from cache: {cache_path}")
-        vocals = AudioSegment.from_file(cache_path)
-        cache_path.touch()
-        return vocals
-
     def _separate_vocals_uncached(self, audio: AudioSegment) -> AudioSegment:
         """Separate vocals without consulting or updating the cache.
 
@@ -190,16 +164,20 @@ class DemucsSeparator:
         Returns:
             vocals-only audio
         """
-        if (
-            cached := self.get_cached_vocals(
-                audio,
-                overwrite_cache=overwrite_cache,
-            )
-        ) is not None:
-            return cached
-
-        vocals = self._separate_vocals_uncached(audio)
+        # Load or clear matching cached vocals before running separation
         cache_path = self._get_cache_path(audio)
+        if cache_path is not None and cache_path.exists():
+            if overwrite_cache:
+                cache_path.unlink()
+                logger.info(f"Removed Demucs vocals cache: {cache_path}")
+            else:
+                logger.info(f"Loaded Demucs vocals from cache: {cache_path}")
+                vocals = AudioSegment.from_file(cache_path)
+                cache_path.touch()
+                return vocals
+
+        # Run separation and update the cache
+        vocals = self._separate_vocals_uncached(audio)
         if cache_path is not None:
             cache_path.parent.mkdir(parents=True, exist_ok=True)
             vocals.export(cache_path, format="wav")
