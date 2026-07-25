@@ -76,7 +76,7 @@ dev = [
     "pytest-cov>=7.1.0",
     "pytest-github-actions-annotate-failures>=0.4.2",
     "pytest-xdist>=3.8.0",
-    "ruff>=0.15.20",
+    "ruff>=0.16.0",
     "ty>=0.0.61",
 ]
 
