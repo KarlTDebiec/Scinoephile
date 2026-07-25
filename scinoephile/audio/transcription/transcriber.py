@@ -78,7 +78,6 @@ class Transcriber(ABC):
         audio: AudioSegment,
         *,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
-        use_cache: bool = True,
         overwrite_cache: bool = False,
     ) -> list[TranscribedSegment]:
         """Transcribe audio.
@@ -86,7 +85,6 @@ class Transcriber(ABC):
         Arguments:
             audio: audio to transcribe
             is_usable: optional callback used to reject output and trigger retries
-            use_cache: whether to return a cached transcription when available
             overwrite_cache: whether to replace matching cache files
         Returns:
             transcription split into timestamped segments
@@ -94,7 +92,6 @@ class Transcriber(ABC):
         return self.transcribe(
             audio,
             is_usable=is_usable,
-            use_cache=use_cache,
             overwrite_cache=overwrite_cache,
         )
 
@@ -141,7 +138,6 @@ class Transcriber(ABC):
         audio: AudioSegment,
         *,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
-        use_cache: bool = True,
         overwrite_cache: bool = False,
     ) -> list[TranscribedSegment]:
         """Transcribe audio across configured preprocessing attempts.
@@ -149,7 +145,6 @@ class Transcriber(ABC):
         Arguments:
             audio: audio to transcribe
             is_usable: optional callback used to reject output and trigger retries
-            use_cache: whether to return a cached transcription when available
             overwrite_cache: whether to replace matching cache files
         Returns:
             first usable transcription, or an empty list when output was rejected
@@ -160,7 +155,7 @@ class Transcriber(ABC):
         rejected_attempts: set[TranscriptionAttempt] = set()
         if overwrite_cache:
             self.remove_cached_transcriptions(audio)
-        elif use_cache:
+        else:
             segments, rejected_attempts = self._find_cached_transcription(
                 audio,
                 attempts,

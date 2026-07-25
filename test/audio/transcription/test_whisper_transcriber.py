@@ -242,30 +242,6 @@ def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch
         WhisperTranscriber._models.clear()
 
 
-def test_transcribe_bypasses_cache_when_requested(monkeypatch: MonkeyPatch):
-    """Test an explicit uncached transcription does not reload rejected output."""
-    whisper = Mock()
-    whisper.transcribe.return_value = {"segments": []}
-    transcriber = WhisperTranscriber(
-        model_name="custom/model",
-        demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.OFF,
-    )
-    transcriber._model = Mock()
-    monkeypatch.setattr(transcriber, "_get_whisper_module", Mock(return_value=whisper))
-    load_cache = Mock()
-    monkeypatch.setattr(
-        transcriber._cache,
-        "load",
-        load_cache,
-    )
-    audio = AudioSegment.silent(duration=1000)
-
-    assert transcriber(audio, use_cache=False) == []
-    load_cache.assert_not_called()
-    whisper.transcribe.assert_called_once()
-
-
 def test_transcribe_overwrites_matching_cache(
     monkeypatch: MonkeyPatch,
     tmp_path: Path,
@@ -371,7 +347,7 @@ def test_transcribe_preserves_cache_when_atomic_write_fails(
     )
 
     with raises(RuntimeError, match="write failed"):
-        transcriber.transcribe(audio, use_cache=False)
+        transcriber.transcribe(audio)
 
     assert cache_path.read_text(encoding="utf-8") == "existing cache"
 

@@ -299,7 +299,6 @@ def test_transcribe_uses_direct_mlx_audio_inference(
 
     assert segments == expected_segments
     assert transcriber.model_name == MIMO_MODEL_NAME
-    assert transcriber.backend.model_profile.mlx_audio_model_type == "mimo"
     assert transcriber.backend.mlx_audio_language == "zh"
     assert captured["max_tokens"] == 256
     assert isinstance(captured["audio_path"], Path)

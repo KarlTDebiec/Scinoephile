@@ -45,31 +45,30 @@ def test_init_derives_mlx_audio_languages(
     language: Language,
     mlx_audio_language: str,
 ):
-    """Test each model profile derives its language identifier."""
+    """Test each model family derives its language identifier."""
     mlx_audio_backend = MlxAudioBackend(model_name=model_name, language=language)
 
     assert mlx_audio_backend.mlx_audio_language == mlx_audio_language
 
 
-def test_model_profile_matches_model_name_case_insensitively():
+def test_init_matches_model_name_case_insensitively():
     """Test supported model profiles match model names case-insensitively."""
     mlx_audio_backend = MlxAudioBackend("custom/QWEN3-ASR-0.6B-8bit")
 
-    assert mlx_audio_backend.model_profile.family_name == "qwen3-asr"
+    assert mlx_audio_backend.model_family == "qwen3-asr"
 
 
 @pytest.mark.parametrize(
-    ("metadata", "expected_family", "expected_model_type"),
+    ("metadata", "expected_family"),
     [
-        ({"architectures": ["MiMoV2ASRForCausalLM"]}, "mimo", "mimo"),
-        ({"model_type": "qwen3_asr"}, "qwen3-asr", "qwen3_asr"),
+        ({"architectures": ["MiMoV2ASRForCausalLM"]}, "mimo"),
+        ({"model_type": "qwen3_asr"}, "qwen3-asr"),
     ],
 )
-def test_model_profile_reads_local_model_metadata(
+def test_init_reads_local_model_metadata(
     tmp_path: Path,
     metadata: dict[str, object],
     expected_family: str,
-    expected_model_type: str,
 ):
     """Test arbitrary local directories are identified from model metadata."""
     model_path = tmp_path / "asr"
@@ -81,11 +80,10 @@ def test_model_profile_reads_local_model_metadata(
 
     mlx_audio_backend = MlxAudioBackend(str(model_path))
 
-    assert mlx_audio_backend.model_profile.family_name == expected_family
-    assert mlx_audio_backend.model_profile.mlx_audio_model_type == expected_model_type
+    assert mlx_audio_backend.model_family == expected_family
 
 
-def test_model_profile_rejects_untested_family():
+def test_init_rejects_untested_family():
     """Test unknown MLX-Audio model families fail clearly."""
     with pytest.raises(
         TranscriptionError,

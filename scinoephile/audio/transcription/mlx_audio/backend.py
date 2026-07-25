@@ -118,17 +118,22 @@ class MlxAudioBackend:
         self.model_name = model_name
         """Supported MLX-Audio model name or local model path."""
 
-        self.model_profile = _get_mlx_audio_model_profile(model_name)
-        """Configuration for the selected MLX-Audio model family."""
+        model_profile = _get_mlx_audio_model_profile(model_name)
+        self.model_family = model_profile.family_name
+        """Stable model-family name used in cache metadata."""
+        self._model_type = model_profile.mlx_audio_model_type
+        """Model type passed to the MLX-Audio loader."""
+        self.default_max_tokens = model_profile.default_max_tokens
+        """Default maximum number of generated text tokens."""
 
         # Convert the Scinoephile language to the selected model's value
         try:
             self.language = language
-            self.mlx_audio_language = self.model_profile.languages[language]
+            self.mlx_audio_language = model_profile.languages[language]
         except KeyError as exc:
             raise ValueError(
                 f"{language} is not supported by MLX-Audio "
-                f"{self.model_profile.family_name} transcription"
+                f"{self.model_family} transcription"
             ) from exc
 
         # Resolve local paths while preserving remote Hugging Face references
@@ -210,7 +215,7 @@ class MlxAudioBackend:
             load = _import_mlx_audio_stt_load()
             cached_model = load(
                 self._model_reference,
-                model_type=self.model_profile.mlx_audio_model_type,
+                model_type=self._model_type,
             )
             self._models_by_reference[model_reference] = cached_model
         self._model = cached_model
@@ -268,9 +273,9 @@ def _get_mlx_audio_model_profile(model_name: str) -> _MlxAudioModelProfile:
         TranscriptionError: if the model family has not been integrated
             and tested
     """
-    lowered_model_name = _get_mlx_audio_model_identity(model_name)
+    model_identity = _get_mlx_audio_model_identity(model_name)
     for profile in _MLX_AUDIO_MODEL_PROFILES:
-        if any(marker in lowered_model_name for marker in profile.model_name_markers):
+        if any(marker in model_identity for marker in profile.model_name_markers):
             return profile
     supported_families = ", ".join(
         profile.family_name for profile in _MLX_AUDIO_MODEL_PROFILES

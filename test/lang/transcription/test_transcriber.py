@@ -9,7 +9,7 @@ from unittest.mock import ANY, Mock, patch
 
 from pydub import AudioSegment
 from pydub.generators import Sine
-from pytest import LogCaptureFixture, approx, raises
+from pytest import LogCaptureFixture, approx, mark, raises
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
 from scinoephile.audio.transcription import (
@@ -171,9 +171,17 @@ def test_segments_are_usable_accepts_partial_guided_tail():
     )
 
 
-def test_missing_guided_tail_runs_focused_recovery():
-    """Test a missing guided tail triggers normalized focused recovery."""
-    transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
+@mark.parametrize("overwrite_cache", [False, True])
+def test_missing_guided_tail_runs_focused_recovery(overwrite_cache: bool):
+    """Test a missing guided tail triggers normalized focused recovery.
+
+    Arguments:
+        overwrite_cache: whether to replace matching transcription cache files
+    """
+    transcriber, _ = _get_transcriber(
+        vad_mode=VADMode.OFF,
+        overwrite_cache=overwrite_cache,
+    )
     initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
     recovered_segments = [
         _get_segment(
@@ -185,10 +193,10 @@ def test_missing_guided_tail_runs_focused_recovery():
         )
     ]
     recovered_segments[0].no_speech_prob = 0.1
-    transcriber.transcriber = Mock()
+    transcriber.transcriber = Mock(return_value=initial_segments)
     transcriber.transcriber.get_cached_transcription.return_value = initial_segments
+    transcriber.recovery_transcriber = Mock()
     transcriber.tail_recovery_transcriber = Mock(return_value=recovered_segments)
-    transcriber.tail_recovery_transcriber.get_cached_transcription.return_value = None
     audio = Sine(440).to_audio_segment(duration=10000).apply_gain(-20.0)
 
     output = transcriber._transcribe_block_audio(audio, expected_last_start=8.0)
@@ -200,37 +208,40 @@ def test_missing_guided_tail_runs_focused_recovery():
     normalized_tail_audio = transcriber.tail_recovery_transcriber.call_args.args[0]
     transcriber.tail_recovery_transcriber.assert_called_once_with(
         normalized_tail_audio,
-        use_cache=False,
+        is_usable=ANY,
+        overwrite_cache=overwrite_cache,
+    )
+    assert transcriber.tail_recovery_transcriber.call_args.kwargs["is_usable"](
+        recovered_segments
     )
     assert len(normalized_tail_audio) == 5000
     assert normalized_tail_audio.max_dBFS == approx(-1.0, abs=0.01)
 
 
-def test_missing_guided_tail_keeps_base_after_unusable_cached_recovery():
-    """Test an unusable focused-tail cache prevents redundant recovery."""
+def test_missing_guided_tail_keeps_base_after_unusable_recovery():
+    """Test unusable focused-tail output leaves the base transcription intact."""
     transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
     initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
     repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
     transcriber.transcriber = Mock()
     transcriber.transcriber.get_cached_transcription.return_value = initial_segments
-    transcriber.tail_recovery_transcriber = Mock()
-    transcriber.tail_recovery_transcriber.get_cached_transcription.return_value = (
-        repetitive_segments
-    )
+    transcriber.tail_recovery_transcriber = Mock(return_value=[])
     audio = Sine(440).to_audio_segment(duration=10000).apply_gain(-20.0)
 
     output = transcriber._transcribe_block_audio(audio, expected_last_start=8.0)
 
     assert output == initial_segments
-    normalized_tail_audio = (
-        transcriber.tail_recovery_transcriber.get_cached_transcription.call_args.args[0]
-    )
+    normalized_tail_audio = transcriber.tail_recovery_transcriber.call_args.args[0]
     assert len(normalized_tail_audio) == 5000
     assert normalized_tail_audio.max_dBFS == approx(-1.0, abs=0.01)
-    transcriber.tail_recovery_transcriber.get_cached_transcription.assert_called_once_with(
+    transcriber.tail_recovery_transcriber.assert_called_once_with(
         normalized_tail_audio,
+        is_usable=ANY,
+        overwrite_cache=False,
     )
-    transcriber.tail_recovery_transcriber.assert_not_called()
+    assert not transcriber.tail_recovery_transcriber.call_args.kwargs["is_usable"](
+        repetitive_segments
+    )
 
 
 def test_missing_guided_tail_keeps_valid_base_without_credible_recovery():
@@ -258,7 +269,6 @@ def test_missing_guided_tail_keeps_valid_base_without_credible_recovery():
     transcriber.tail_recovery_transcriber = Mock(
         return_value=[stretched_segment, no_speech_segment]
     )
-    transcriber.tail_recovery_transcriber.get_cached_transcription.return_value = None
     audio = Sine(440).to_audio_segment(duration=10000).apply_gain(-20.0)
 
     output = transcriber._transcribe_block_audio(audio, expected_last_start=8.0)
@@ -314,7 +324,6 @@ def test_standard_transcriber_runs_shared_fallbacks():
     transcriber.transcriber.assert_called_once_with(
         audio,
         is_usable=ANY,
-        use_cache=False,
         overwrite_cache=False,
     )
     transcriber.recovery_transcriber.assert_not_called()
@@ -336,7 +345,6 @@ def test_unusable_standard_output_uses_defensive_recovery():
     transcriber.recovery_transcriber.assert_called_once_with(
         audio,
         is_usable=ANY,
-        use_cache=False,
     )
 
 
@@ -384,7 +392,6 @@ def test_overwrite_cache_is_forwarded_to_shared_transcriber():
     transcriber.transcriber.assert_called_once_with(
         audio,
         is_usable=ANY,
-        use_cache=False,
         overwrite_cache=True,
     )
 

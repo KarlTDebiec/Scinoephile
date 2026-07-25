@@ -287,7 +287,6 @@ class GuidedTranscriber:
                 segments = self.transcriber(
                     audio,
                     is_usable=is_usable,
-                    use_cache=False,
                     overwrite_cache=self.overwrite_cache,
                 )
             except TranscriptionError as exc:
@@ -299,7 +298,6 @@ class GuidedTranscriber:
                 segments = self.recovery_transcriber(
                     audio,
                     is_usable=is_usable,
-                    use_cache=False,
                 )
             except TranscriptionError as exc:
                 logger.warning(f"Defensive Whisper decoding failed: {exc}")
@@ -365,46 +363,27 @@ class GuidedTranscriber:
             headroom=_TAIL_RECOVERY_HEADROOM_DB,
         )
         tail_audio_duration = len(normalized_tail_audio) / 1000
-        if self.overwrite_cache:
-            self.tail_recovery_transcriber.remove_cached_transcriptions(
-                normalized_tail_audio
-            )
-            tail_segments = None
-        else:
-            tail_segments = self.tail_recovery_transcriber.get_cached_transcription(
+        try:
+            tail_segments = self.tail_recovery_transcriber(
                 normalized_tail_audio,
+                is_usable=lambda candidate: self._segments_are_usable(
+                    candidate,
+                    audio_duration=tail_audio_duration,
+                ),
+                overwrite_cache=self.overwrite_cache,
             )
-        if tail_segments is not None:
-            if not self._segments_are_usable(
-                tail_segments,
-                audio_duration=tail_audio_duration,
-            ):
-                logger.info(
-                    f"Keeping valid base Whisper transcription ending at "
-                    f"{last_word_end:.2f}s after unusable cached focused tail recovery"
-                )
-                return segments
-        else:
-            try:
-                tail_segments = self.tail_recovery_transcriber(
-                    normalized_tail_audio,
-                    use_cache=False,
-                )
-            except TranscriptionError as exc:
-                logger.warning(
-                    f"Keeping valid base Whisper transcription after focused tail "
-                    f"recovery failed: {exc}"
-                )
-                return segments
-            if not self._segments_are_usable(
-                tail_segments,
-                audio_duration=tail_audio_duration,
-            ):
-                logger.info(
-                    f"Keeping valid base Whisper transcription ending at "
-                    f"{last_word_end:.2f}s after unusable focused tail recovery"
-                )
-                return segments
+        except TranscriptionError as exc:
+            logger.warning(
+                f"Keeping valid base Whisper transcription after focused tail "
+                f"recovery failed: {exc}"
+            )
+            return segments
+        if not tail_segments:
+            logger.info(
+                f"Keeping valid base Whisper transcription ending at "
+                f"{last_word_end:.2f}s after unusable focused tail recovery"
+            )
+            return segments
 
         recovered_segments = self._get_credible_tail_segments(
             tail_segments,

@@ -102,7 +102,16 @@ class MlxAudioTranscriber(Transcriber):
             TranscriptionError: if the platform does not support MLX-Audio
             ValueError: if the language or numeric configuration is invalid
         """
-        self._validate_platform()
+        # Reject runtimes that cannot execute MLX-Audio
+        machine = platform.machine()
+        if sys.platform != "darwin" or machine != "arm64":
+            raise TranscriptionError(
+                "MLX-Audio support requires macOS on Apple Silicon "
+                f"(detected sys.platform={sys.platform!r}, "
+                f"platform.machine()={machine!r}). "
+                "CUDA support is not included."
+            )
+
         self.backend = MlxAudioBackend(model_name, language)
         """Direct MLX-Audio inference backend."""
 
@@ -146,7 +155,7 @@ class MlxAudioTranscriber(Transcriber):
         """Get the explicit or model-family default generation token limit."""
         if self.max_tokens is not None:
             return self.max_tokens
-        return self.backend.model_profile.default_max_tokens
+        return self.backend.default_max_tokens
 
     def _get_backend_cache_metadata(
         self,
@@ -163,7 +172,7 @@ class MlxAudioTranscriber(Transcriber):
         if attempt.use_vad:
             vad_version = _VAD_CACHE_VERSION
         return {
-            "model_family": self.backend.model_profile.family_name,
+            "model_family": self.backend.model_family,
             "model_name": self.model_name,
             "runtime": "mlx",
             "language": self.language.code,
@@ -175,19 +184,6 @@ class MlxAudioTranscriber(Transcriber):
             "aligner_model_name": self.ctc_aligner.model_name,
             "vad_version": vad_version,
         }
-
-    @staticmethod
-    def _validate_platform():
-        """Validate that direct MLX-Audio inference is supported."""
-        machine = platform.machine()
-        if sys.platform == "darwin" and machine == "arm64":
-            return
-        raise TranscriptionError(
-            "MLX-Audio support requires macOS on Apple Silicon "
-            f"(detected sys.platform={sys.platform!r}, "
-            f"platform.machine()={machine!r}). "
-            "CUDA support is not included."
-        )
 
     @staticmethod
     def _get_vad_speech_intervals(audio: AudioSegment) -> list[tuple[int, int]]:
@@ -285,10 +281,11 @@ class MlxAudioTranscriber(Transcriber):
         """
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
+            max_tokens = self._effective_max_tokens
             try:
                 inference_result = self.backend.transcribe(
                     temp_audio_path,
-                    self._effective_max_tokens,
+                    max_tokens,
                 )
             except (ImportError, OSError, RuntimeError, ValueError) as exc:
                 raise TranscriptionInferenceError(
@@ -296,11 +293,10 @@ class MlxAudioTranscriber(Transcriber):
                 ) from exc
             if (
                 inference_result.generation_tokens is not None
-                and inference_result.generation_tokens >= self._effective_max_tokens
+                and inference_result.generation_tokens >= max_tokens
             ):
                 raise _MlxAudioTokenLimitError(
-                    "MLX-Audio exhausted its generation token limit "
-                    f"of {self._effective_max_tokens}."
+                    f"MLX-Audio exhausted its generation token limit of {max_tokens}."
                 )
             text = inference_result.text
             if not text.strip():
@@ -363,8 +359,7 @@ class MlxAudioTranscriber(Transcriber):
         """
         segments: list[TranscribedSegment] = []
 
-        core_start_ms = 0
-        while core_start_ms < len(audio):
+        for core_start_ms in range(0, len(audio), chunk_duration_ms):
             core_end_ms = min(len(audio), core_start_ms + chunk_duration_ms)
             window_start_ms = max(0, core_start_ms - chunk_overlap_ms)
             window_end_ms = min(len(audio), core_end_ms + chunk_overlap_ms)
@@ -389,8 +384,6 @@ class MlxAudioTranscriber(Transcriber):
                         len(segments),
                     )
                 )
-            core_start_ms = core_end_ms
-
         if not segments:
             raise TranscriptionEmptyError(
                 "MLX-Audio returned no transcript across audio chunks."
@@ -463,7 +456,7 @@ class MlxAudioTranscriber(Transcriber):
         Raises:
             TranscriptionAlignmentError: if aligned output lacks word timings
         """
-        compressed_intervals = []
+        compressed_intervals: list[tuple[int, int, int]] = []
         compressed_start_ms = 0
         for original_start_ms, original_end_ms in speech_intervals:
             duration_ms = original_end_ms - original_start_ms
@@ -473,13 +466,12 @@ class MlxAudioTranscriber(Transcriber):
                     compressed_start_ms,
                     compressed_end_ms,
                     original_start_ms,
-                    original_end_ms,
                 )
             )
             compressed_start_ms = compressed_end_ms
 
         output_segments: list[TranscribedSegment] = []
-        current_interval_idx = -1
+        interval_idx = 0
         current_words: list[TranscribedWord] = []
 
         def append_current_segment():
@@ -508,39 +500,35 @@ class MlxAudioTranscriber(Transcriber):
                 word_start_ms = round(word.start * 1000)
                 word_end_ms = round(word.end * 1000)
                 word_midpoint_ms = (word_start_ms + word_end_ms) / 2
-                interval_idx = len(compressed_intervals) - 1
-                for candidate_idx, compressed_interval in enumerate(
-                    compressed_intervals
+                while (
+                    interval_idx < len(compressed_intervals) - 1
+                    and word_midpoint_ms > compressed_intervals[interval_idx][1]
                 ):
-                    if word_midpoint_ms <= compressed_interval[1]:
-                        interval_idx = candidate_idx
-                        break
-
-                if interval_idx != current_interval_idx:
                     append_current_segment()
-                    current_interval_idx = interval_idx
+                    interval_idx += 1
 
                 (
                     interval_compressed_start_ms,
                     interval_compressed_end_ms,
                     interval_original_start_ms,
-                    interval_original_end_ms,
                 ) = compressed_intervals[interval_idx]
+                interval_duration_ms = (
+                    interval_compressed_end_ms - interval_compressed_start_ms
+                )
                 mapped_start_ms = interval_original_start_ms + max(
                     0,
                     min(
                         word_start_ms - interval_compressed_start_ms,
-                        interval_compressed_end_ms - interval_compressed_start_ms,
+                        interval_duration_ms,
                     ),
                 )
                 mapped_end_ms = interval_original_start_ms + max(
                     0,
                     min(
                         word_end_ms - interval_compressed_start_ms,
-                        interval_compressed_end_ms - interval_compressed_start_ms,
+                        interval_duration_ms,
                     ),
                 )
-                mapped_end_ms = min(mapped_end_ms, interval_original_end_ms)
                 current_words.append(
                     word.model_copy(
                         update={
