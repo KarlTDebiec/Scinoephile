@@ -21,6 +21,7 @@ from scinoephile.audio.transcription.mlx_audio.inference import (
     MlxAudioInference,
     MlxAudioInferenceResult,
 )
+from scinoephile.core import Language
 
 
 def test_transcribe_reads_mapping_result(
@@ -39,7 +40,6 @@ def test_transcribe_reads_mapping_result(
 
     result = mlx_audio_inference.transcribe(
         audio_path,
-        "zh",
         128,
     )
 
@@ -65,10 +65,10 @@ def test_transcribe_reads_object_result(
     audio_path = _write_wav(tmp_path / "audio.wav", duration_seconds=0.25)
     model = Mock()
     model.generate.return_value = SimpleNamespace(text="hello")
-    mlx_audio_inference = MlxAudioInference()
+    mlx_audio_inference = MlxAudioInference(language=Language.eng)
     mlx_audio_inference._model = model
 
-    result = mlx_audio_inference.transcribe(audio_path, "en")
+    result = mlx_audio_inference.transcribe(audio_path)
 
     assert result.text == "hello"
     assert result.generation_tokens is None
@@ -90,7 +90,7 @@ def test_transcribe_rejects_missing_text(
     mlx_audio_inference._model = model
 
     with pytest.raises(ValueError, match="missing transcript text"):
-        mlx_audio_inference.transcribe(audio_path, "zh")
+        mlx_audio_inference.transcribe(audio_path)
 
 
 @pytest.mark.parametrize("generation_tokens", [True, -1, 1.5, "1"])
@@ -114,7 +114,7 @@ def test_transcribe_rejects_invalid_generation_tokens(
     mlx_audio_inference._model = model
 
     with pytest.raises(ValueError, match="invalid generation token count"):
-        mlx_audio_inference.transcribe(audio_path, "zh")
+        mlx_audio_inference.transcribe(audio_path)
 
 
 def test_model_is_shared_by_reference(

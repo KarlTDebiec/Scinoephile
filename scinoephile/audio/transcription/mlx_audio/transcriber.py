@@ -103,11 +103,9 @@ class MlxAudioTranscriber:
             ValueError: if the language or numeric configuration is invalid
         """
         self._validate_platform()
-        self.inference = MlxAudioInference(model_name)
+        self.inference = MlxAudioInference(model_name, language)
         """Direct MLX-Audio inference backend."""
 
-        self.language = language
-        self.mlx_audio_language = self.model_profile.get_language_identifier(language)
         if ctc_model_name is None:
             self.ctc_aligner = CtcAligner()
         else:
@@ -176,6 +174,16 @@ class MlxAudioTranscriber:
             use_cache=use_cache,
             overwrite_cache=overwrite_cache,
         )
+
+    @property
+    def language(self) -> Language:
+        """Get the transcription language."""
+        return self.inference.language
+
+    @property
+    def mlx_audio_language(self) -> str:
+        """Get the model-specific MLX-Audio language value."""
+        return self.inference.mlx_audio_language
 
     @property
     def model_name(self) -> str:
@@ -556,7 +564,6 @@ class MlxAudioTranscriber:
         try:
             return self.inference.transcribe(
                 audio_path,
-                self.mlx_audio_language,
                 self._effective_max_tokens,
             )
         except (ImportError, OSError, RuntimeError, ValueError) as exc:

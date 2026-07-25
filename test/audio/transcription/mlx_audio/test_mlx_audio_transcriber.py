@@ -477,13 +477,11 @@ def test_transcribe_uses_direct_mlx_audio_inference(
 
     def fake_transcribe(
         audio_path: Path,
-        language: str,
         max_tokens: int | None,
     ) -> MlxAudioInferenceResult:
         """Capture direct MLX-Audio arguments and return transcript text."""
         captured.update(
             audio_path=audio_path,
-            language=language,
             max_tokens=max_tokens,
         )
         return MlxAudioInferenceResult(text="你好")
@@ -498,7 +496,7 @@ def test_transcribe_uses_direct_mlx_audio_inference(
     assert segments == expected_segments
     assert transcriber.model_name == MIMO_MODEL_NAME
     assert transcriber.model_profile.mlx_audio_model_type == "mimo"
-    assert captured["language"] == "zh"
+    assert transcriber.mlx_audio_language == "zh"
     assert captured["max_tokens"] == 256
     assert isinstance(captured["audio_path"], Path)
 
@@ -519,12 +517,10 @@ def test_transcribe_derives_language_and_passes_max_tokens(
 
     def fake_transcribe(
         _audio_path: Path,
-        language: str,
         max_tokens: int | None,
     ) -> MlxAudioInferenceResult:
         """Capture direct MLX-Audio arguments and return transcript text."""
         captured.update(
-            language=language,
             max_tokens=max_tokens,
         )
         return MlxAudioInferenceResult(text="你好")
@@ -537,7 +533,7 @@ def test_transcribe_derives_language_and_passes_max_tokens(
     segments = transcriber.transcribe(audio)
 
     assert segments == expected_segments
-    assert captured["language"] == "en"
+    assert transcriber.mlx_audio_language == "en"
     assert captured["max_tokens"] == 1024
 
 
@@ -943,9 +939,7 @@ def _get_mlx_audio_transcriber(
     """
     transcriber = object.__new__(MlxAudioTranscriber)
     transcriber.cache_dir_path = cache_dir_path
-    transcriber.inference = MlxAudioInference(model_name)
-    transcriber.language = Language.yue_hant
-    transcriber.mlx_audio_language = "zh"
+    transcriber.inference = MlxAudioInference(model_name, Language.yue_hant)
     transcriber.ctc_aligner = CtcAligner()
     transcriber.max_tokens = None
     transcriber.chunk_duration_seconds = None
