@@ -32,23 +32,23 @@ MIMO_MODEL_NAME = "mlx-community/MiMo-V2.5-ASR-MLX"
 QWEN3_ASR_MODEL_NAME = "mlx-community/Qwen3-ASR-0.6B-8bit"
 """Default MLX Qwen3-ASR model."""
 
-_MIMO_LANGUAGES = {
+_MIMO_LANGUAGE_CODES = {
     Language.eng: "en",
     Language.yue_hans: "zh",
     Language.yue_hant: "zh",
     Language.zho_hans: "zh",
     Language.zho_hant: "zh",
 }
-"""MiMo language values keyed by Scinoephile language."""
+"""MiMo language codes keyed by Scinoephile language."""
 
-_QWEN3_ASR_LANGUAGES = {
+_QWEN3_ASR_LANGUAGE_CODES = {
     Language.eng: "English",
     Language.yue_hans: "Cantonese",
     Language.yue_hant: "Cantonese",
     Language.zho_hans: "Chinese",
     Language.zho_hant: "Chinese",
 }
-"""Qwen3-ASR language values keyed by Scinoephile language."""
+"""Qwen3-ASR language codes keyed by Scinoephile language."""
 
 
 @dataclass(frozen=True)
@@ -84,14 +84,14 @@ _MLX_AUDIO_MODEL_PROFILES = (
         mlx_audio_model_type="mimo",
         default_max_tokens=256,
         model_name_markers=("mimo-v2.5-asr", "mimov2asr"),
-        languages=_MIMO_LANGUAGES,
+        languages=_MIMO_LANGUAGE_CODES,
     ),
     MlxAudioModelProfile(
         family_name="qwen3-asr",
         mlx_audio_model_type="qwen3_asr",
         default_max_tokens=8192,
         model_name_markers=("qwen3-asr", "qwen3_asr", "qwen3asr"),
-        languages=_QWEN3_ASR_LANGUAGES,
+        languages=_QWEN3_ASR_LANGUAGE_CODES,
     ),
 )
 """Supported MLX-Audio model profiles."""
