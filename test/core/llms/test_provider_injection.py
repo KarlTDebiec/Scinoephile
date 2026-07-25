@@ -199,6 +199,19 @@ def test_queryer_uses_injected_provider():
     assert queryer.system_prompt == _PROMPT.base_system_prompt
 
 
+def test_queryer_preserves_empty_tool_box():
+    """Test an explicitly empty tool box is not replaced."""
+    tool_box = ToolBox()
+
+    queryer = Queryer(
+        _TestCase,
+        provider=_RecordingProvider(),
+        tool_box=tool_box,
+    )
+
+    assert queryer.tool_box is tool_box
+
+
 def test_queryer_retries_provider_errors():
     """Test transient provider errors use the configured attempt count."""
     provider = Mock(spec=LLMProvider)

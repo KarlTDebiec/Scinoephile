@@ -191,7 +191,9 @@ class ProcessCli(ScinoephileCliBase):
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = _parser or cls.argparser()
+        parser = _parser
+        if parser is None:
+            parser = cls.argparser()
         if not (clean or flatten or convert or romanize or offset):
             parser.error("At least one operation required")
         if overwrite and outfile_path is None:

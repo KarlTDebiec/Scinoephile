@@ -153,7 +153,9 @@ class MultiDiffCli(ScinoephileCliBase):
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = _parser or cls.argparser()
+        parser = _parser
+        if parser is None:
+            parser = cls.argparser()
         if reference_infile_path == "-" and candidate_infile_path == "-":
             parser.error(
                 "--reference-infile and --candidate-infile may not both be '-'"

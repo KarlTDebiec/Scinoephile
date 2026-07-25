@@ -209,7 +209,9 @@ class OcrProcessCli(ScinoephileCliBase):
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = _parser or cls.argparser()
+        parser = _parser
+        if parser is None:
+            parser = cls.argparser()
         additional_context = read_llm_additional_context(
             parser, llm_args.additional_context_file_path
         )

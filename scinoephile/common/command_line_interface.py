@@ -86,7 +86,7 @@ class CommandLineInterface(ABC):
         Returns:
             Argument parser
         """
-        if not subparsers:
+        if subparsers is None:
             parser = ArgumentParser(
                 description=str(cls.description()),
                 formatter_class=RawDescriptionHelpFormatter,

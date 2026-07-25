@@ -328,7 +328,9 @@ class AuditTranslationCli(AuditCliBase):
             overwrite: whether to overwrite an existing output file
         """
         # Validate arguments
-        parser = _parser or cls.argparser()
+        parser = _parser
+        if parser is None:
+            parser = cls.argparser()
         if target_path is not None and guide_path is None:
             parser.error("--guide is required with --target")
 

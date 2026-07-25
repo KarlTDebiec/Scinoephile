@@ -130,7 +130,8 @@ class OpenAIProviderBase(LLMProvider):
         try:
             # Organize arguments
             messages = [dict(message) for message in messages]
-            tool_box = tool_box or ToolBox()
+            if tool_box is None:
+                tool_box = ToolBox()
             openai_tools = self._build_openai_tools(tool_box) if tool_box else None
             request_kwargs = self._build_request_kwargs(
                 response_format, openai_tools, kwargs

@@ -193,7 +193,9 @@ class AuditOcrFusionCli(AuditCliBase):
             overwrite: whether to overwrite an existing output file
         """
         # Validate arguments
-        parser = _parser or cls.argparser()
+        parser = _parser
+        if parser is None:
+            parser = cls.argparser()
         if row_filter is OcrFusionAuditFilter.discrepancies and validated_path is None:
             parser.error("--filter discrepancies requires --validated")
 

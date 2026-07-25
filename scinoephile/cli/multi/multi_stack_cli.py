@@ -216,7 +216,9 @@ class MultiStackCli(ScinoephileCliBase):
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = _parser or cls.argparser()
+        parser = _parser
+        if parser is None:
+            parser = cls.argparser()
         if top_infile_path == "-" and bottom_infile_path == "-":
             parser.error("--top-infile and --bottom-infile may not both be '-'")
         if overwrite and outfile_path is None:

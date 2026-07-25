@@ -272,7 +272,9 @@ class TranscribeCli(ScinoephileCliBase):
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = _parser or cls.argparser()
+        parser = _parser
+        if parser is None:
+            parser = cls.argparser()
         if media_infile_path == "-" and guide_infile_path == "-":
             parser.error("--media-infile and --guide-infile may not both be '-'")
         if overwrite and outfile_path is None:

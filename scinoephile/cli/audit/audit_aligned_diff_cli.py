@@ -180,7 +180,9 @@ class AuditAlignedDiffCli(AuditCliBase):
             outfile_path: optional Markdown output path
             overwrite: whether to overwrite an existing output file
         """
-        parser = _parser or cls.argparser()
+        parser = _parser
+        if parser is None:
+            parser = cls.argparser()
 
         # Read inputs
         original = None

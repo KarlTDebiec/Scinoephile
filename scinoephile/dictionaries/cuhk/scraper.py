@@ -117,7 +117,9 @@ class CuhkDictionaryScraper:
         self.max_retries = max_retries
         self.overwrite_cache = overwrite_cache
 
-        self.session = session or requests.Session()
+        if session is None:
+            session = requests.Session()
+        self.session = session
         self.opencc_converter = opencc.OpenCC("hk2s")
 
     def discover_word_links(

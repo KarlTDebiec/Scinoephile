@@ -179,7 +179,9 @@ class DictionarySearchCli(ScinoephileCliBase):
         limit: int,
     ):
         """Execute with provided keyword arguments."""
-        parser = _parser or cls.argparser()
+        parser = _parser
+        if parser is None:
+            parser = cls.argparser()
         if dictionary_name == "all" and database_path is not None:
             parser.error(
                 "--database-path may only be used with a specific --dictionary-name"

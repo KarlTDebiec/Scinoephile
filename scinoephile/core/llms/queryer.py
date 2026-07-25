@@ -87,7 +87,9 @@ class Queryer[TTestCase: TestCase]:
         """Automatically verify test cases if they meet selected criteria."""
         self.overwrite_cache = overwrite_cache
         """Whether to replace matching cache files."""
-        self.tool_box = tool_box or ToolBox()
+        if tool_box is None:
+            tool_box = ToolBox()
+        self.tool_box = tool_box
         """Available tools and handlers."""
         self.system_prompt = self.prompt.base_system_prompt
         """System prompt shared by all queries executed by this instance."""

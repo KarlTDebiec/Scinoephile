@@ -122,7 +122,9 @@ class OptimizationSyncPromptsCli(ScinoephileCliBase):
         outfile_path: Path,
     ):
         """Execute with provided keyword arguments."""
-        parser = _parser or cls.argparser()
+        parser = _parser
+        if parser is None:
+            parser = cls.argparser()
 
         # Perform operations
         selected_prompt_specs = {

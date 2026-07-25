@@ -110,7 +110,9 @@ class MediaExtractAudioCli(ScinoephileCliBase):
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
-        parser = _parser or cls.argparser()
+        parser = _parser
+        if parser is None:
+            parser = cls.argparser()
         try:
             stream = extract_audio(
                 infile_path,

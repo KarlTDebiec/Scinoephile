@@ -262,7 +262,9 @@ class AuditReviewTradCli(AuditCliBase):
             overwrite: whether to overwrite an existing output file
         """
         # Validate arguments
-        parser = _parser or cls.argparser()
+        parser = _parser
+        if parser is None:
+            parser = cls.argparser()
         if row_filter is ReviewAuditFilter.unverified and (
             traditional_json_path is None or traditional_simplified_json_path is None
         ):
