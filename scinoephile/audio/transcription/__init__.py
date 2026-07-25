@@ -5,7 +5,8 @@
 Package hierarchy (modules may import from any above):
 * exceptions / demucs_separator / transcribed_word
 * transcribed_segment
-* ctc_aligner / whisper_transcriber
+* cache / ctc_aligner
+* whisper_transcriber
 * mlx_audio
 """
 
@@ -13,6 +14,7 @@ from __future__ import annotations
 
 from logging import getLogger
 
+from .cache import TranscriptionCache
 from .ctc_aligner import CtcAligner
 from .demucs_separator import DemucsSeparator
 from .exceptions import (
@@ -36,6 +38,7 @@ __all__ = [
     "MlxAudioTranscriber",
     "TranscribedSegment",
     "TranscribedWord",
+    "TranscriptionCache",
     "TranscriptionAlignmentError",
     "TranscriptionEmptyError",
     "TranscriptionError",

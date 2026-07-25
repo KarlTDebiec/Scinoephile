@@ -15,6 +15,7 @@ from scinoephile.audio.transcription import (
     CtcAligner,
     TranscribedSegment,
     TranscribedWord,
+    TranscriptionCache,
     TranscriptionEmptyError,
     TranscriptionError,
     TranscriptionInferenceError,
@@ -65,8 +66,8 @@ def test_get_cache_path_separates_model_configuration():
 
     assert first_cache_path is not None
     assert second_cache_path is not None
-    assert first_cache_path.parent == Path("/tmp/mlx-audio")
-    assert second_cache_path.parent == Path("/tmp/mlx-audio")
+    assert first_cache_path.parent == Path("/tmp/mlx-audio").resolve()
+    assert second_cache_path.parent == Path("/tmp/mlx-audio").resolve()
     assert first_cache_path != second_cache_path
 
 
@@ -287,44 +288,16 @@ def test_get_cached_transcription_reads_mlx_audio_payload(tmp_path: Path):
     """Test MLX-Audio cache reads segment payloads from metadata-bearing files."""
     transcriber = MlxAudioTranscriber(cache_dir_path=tmp_path)
     audio = _get_cache_audio()
-    cache_path = transcriber._get_cache_path(
+    expected_segments = [_get_timed_segment("你好")]
+    transcriber._cache.save(
         audio,
-        use_demucs=False,
-        use_vad=False,
-    )
-    assert cache_path is not None
-    cache_path.write_text(
-        json.dumps(
-            {
-                "backend": "mlx-audio",
-                "segments": [
-                    {
-                        "id": 0,
-                        "seek": 0,
-                        "start": 0.0,
-                        "end": 1.0,
-                        "text": "你好",
-                        "words": [
-                            {
-                                "text": "你",
-                                "start": 0.0,
-                                "end": 0.5,
-                                "confidence": 0.9,
-                            }
-                        ],
-                    }
-                ],
-            }
-        ),
-        encoding="utf-8",
+        transcriber._get_cache_metadata(False, False),
+        expected_segments,
     )
 
     segments = transcriber.get_cached_transcription(audio)
 
-    assert segments is not None
-    assert segments[0].text == "你好"
-    assert segments[0].words is not None
-    assert segments[0].words[0].text == "你"
+    assert segments == expected_segments
 
 
 def test_transcribe_recovers_from_malformed_cache(
@@ -423,25 +396,15 @@ def test_transcribe_uses_usable_fallback_cache_before_preprocessing(
     )
     assert primary_cache_path is not None
     assert fallback_cache_path is not None
-    primary_cache_path.write_text(
-        json.dumps(
-            transcriber._get_cache_payload(
-                rejected_segments,
-                use_demucs=True,
-                use_vad=True,
-            )
-        ),
-        encoding="utf-8",
+    transcriber._cache.save(
+        audio,
+        transcriber._get_cache_metadata(True, True),
+        rejected_segments,
     )
-    fallback_cache_path.write_text(
-        json.dumps(
-            transcriber._get_cache_payload(
-                expected_segments,
-                use_demucs=False,
-                use_vad=False,
-            )
-        ),
-        encoding="utf-8",
+    transcriber._cache.save(
+        audio,
+        transcriber._get_cache_metadata(False, False),
+        expected_segments,
     )
 
     segments = transcriber.transcribe(
@@ -931,9 +894,10 @@ def test_transcribe_aligns_text_and_writes_cache(
     )
     assert cache_path is not None
     cache_payload = json.loads(cache_path.read_text(encoding="utf-8"))
-    assert cache_payload["backend"] == "mlx-audio"
-    assert cache_payload["model_family"] == "mimo"
-    assert cache_payload["model_name"] == MIMO_MODEL_NAME
+    assert cache_payload["schema_version"] == 1
+    assert cache_payload["metadata"]["backend"] == "mlx-audio"
+    assert cache_payload["metadata"]["model_family"] == "mimo"
+    assert cache_payload["metadata"]["model_name"] == MIMO_MODEL_NAME
     assert cache_payload["segments"][0]["text"] == "你好"
 
 
@@ -991,7 +955,11 @@ def _get_mlx_audio_transcriber(
         minimally initialized transcriber
     """
     transcriber = object.__new__(MlxAudioTranscriber)
-    transcriber.cache_dir_path = cache_dir_path
+    transcriber._cache = TranscriptionCache(
+        cache_dir_path,
+        "mlx-audio",
+        "MLX-Audio",
+    )
     transcriber.inference = MlxAudioInference(model_name, Language.yue_hant)
     transcriber.ctc_aligner = CtcAligner()
     transcriber.max_tokens = None

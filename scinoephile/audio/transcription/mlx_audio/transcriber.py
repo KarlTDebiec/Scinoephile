@@ -4,17 +4,16 @@
 
 from __future__ import annotations
 
-import hashlib
-import json
 import platform
 import sys
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable, Sequence
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
 
+from scinoephile.audio.transcription.cache import TranscriptionCache
 from scinoephile.audio.transcription.ctc_aligner import CtcAligner
 from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
 from scinoephile.audio.transcription.exceptions import (
@@ -25,8 +24,7 @@ from scinoephile.audio.transcription.exceptions import (
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
-from scinoephile.common.file import get_temp_file_path, open_atomic_text_file
-from scinoephile.common.validation import val_output_dir_path
+from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
@@ -143,9 +141,7 @@ class MlxAudioTranscriber:
             self.demucs_separator = DemucsSeparator(
                 cache_dir_path=demucs_cache_dir_path
             )
-        self.cache_dir_path = None
-        if cache_dir_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_dir_path)
+        self._cache = TranscriptionCache(cache_dir_path, "mlx-audio", "MLX-Audio")
 
     def __call__(
         self,
@@ -174,6 +170,11 @@ class MlxAudioTranscriber:
             use_cache=use_cache,
             overwrite_cache=overwrite_cache,
         )
+
+    @property
+    def cache_dir_path(self) -> Path | None:
+        """Get the transcription cache directory path."""
+        return self._cache.cache_dir_path
 
     @property
     def language(self) -> Language:
@@ -293,27 +294,13 @@ class MlxAudioTranscriber:
         Returns:
             path to cache file
         """
-        if self.cache_dir_path is None:
-            return None
-
-        cache_hash = hashlib.sha256(audio.raw_data)
-        cache_hash.update(b"\0")
-        cache_hash.update(
-            json.dumps(
-                {
-                    "audio_channels": audio.channels,
-                    "audio_frame_rate": audio.frame_rate,
-                    "audio_sample_width": audio.sample_width,
-                    **self._get_cache_metadata(
-                        use_demucs,
-                        use_vad,
-                    ),
-                },
-                ensure_ascii=False,
-                sort_keys=True,
-            ).encode("utf-8")
+        return self._cache.get_path(
+            audio,
+            self._get_cache_metadata(
+                use_demucs,
+                use_vad,
+            ),
         )
-        return self.cache_dir_path / f"{cache_hash.hexdigest()}.json"
 
     def _get_cache_metadata(
         self,
@@ -332,7 +319,6 @@ class MlxAudioTranscriber:
         if use_vad:
             vad_version = _VAD_CACHE_VERSION
         return {
-            "backend": "mlx-audio",
             "model_family": self.model_profile.family_name,
             "model_name": self.model_name,
             "runtime": "mlx",
@@ -347,29 +333,6 @@ class MlxAudioTranscriber:
             "vad_version": vad_version,
         }
 
-    def _get_cache_payload(
-        self,
-        segments: Sequence[TranscribedSegment],
-        use_demucs: bool,
-        use_vad: bool,
-    ) -> dict[str, object]:
-        """Get JSON-serializable MLX-Audio cache payload.
-
-        Arguments:
-            segments: timestamped segments to cache
-            use_demucs: whether Demucs preprocessing identifies the cache entry
-            use_vad: whether VAD preprocessing identifies the cache entry
-        Returns:
-            cache payload
-        """
-        return {
-            **self._get_cache_metadata(
-                use_demucs,
-                use_vad,
-            ),
-            "segments": [segment.model_dump() for segment in segments],
-        }
-
     def _remove_cached_attempts(
         self,
         cache_audio: AudioSegment,
@@ -382,15 +345,10 @@ class MlxAudioTranscriber:
             attempts: Demucs and VAD configurations whose caches should be removed
         """
         for use_demucs, use_vad in attempts:
-            cache_path = self._get_cache_path(
+            self._cache.remove(
                 cache_audio,
-                use_demucs,
-                use_vad,
+                self._get_cache_metadata(use_demucs, use_vad),
             )
-            if cache_path is None or not cache_path.exists():
-                continue
-            cache_path.unlink()
-            logger.info(f"Removed MLX-Audio transcription cache: {cache_path}")
 
     def _get_cached_attempt(
         self,
@@ -440,35 +398,13 @@ class MlxAudioTranscriber:
         Returns:
             cached transcription, if present
         """
-        cache_path = self._get_cache_path(
+        cached_transcription = self._cache.load(
             cache_audio,
-            use_demucs,
-            use_vad,
+            self._get_cache_metadata(use_demucs, use_vad),
         )
-        if cache_path is None or not cache_path.exists():
+        if cached_transcription is None:
             return None
-
-        logger.info(f"Loaded MLX-Audio transcription from cache: {cache_path}")
-        try:
-            with cache_path.open("r", encoding="utf-8") as file:
-                payload = json.load(file)
-            if not isinstance(payload, Mapping):
-                raise TranscriptionInferenceError(
-                    f"Malformed MLX-Audio cache payload: {cache_path}"
-                )
-            raw_segments = payload.get("segments")
-            if not isinstance(raw_segments, list):
-                raise TranscriptionInferenceError(
-                    f"Malformed MLX-Audio cache payload: {cache_path}"
-                )
-            segments = [TranscribedSegment.model_validate(s) for s in raw_segments]
-        except TranscriptionError:
-            raise
-        except (OSError, TypeError, ValueError) as exc:
-            raise TranscriptionInferenceError(
-                f"Unable to read MLX-Audio transcription cache {cache_path}: {exc}"
-            ) from exc
-        cache_path.touch()
+        _, segments = cached_transcription
         return segments
 
     @staticmethod
@@ -626,24 +562,11 @@ class MlxAudioTranscriber:
                 continue
             successful_attempt = True
 
-            cache_path = self._get_cache_path(
+            self._cache.save(
                 cache_audio,
-                use_demucs,
-                use_vad,
+                self._get_cache_metadata(use_demucs, use_vad),
+                segments,
             )
-            if cache_path is not None:
-                with open_atomic_text_file(cache_path) as file:
-                    json.dump(
-                        self._get_cache_payload(
-                            segments,
-                            use_demucs,
-                            use_vad,
-                        ),
-                        file,
-                        ensure_ascii=False,
-                        indent=2,
-                    )
-                logger.info(f"Saved MLX-Audio transcription to cache: {cache_path}")
             if is_usable is None or is_usable(segments):
                 return segments
 

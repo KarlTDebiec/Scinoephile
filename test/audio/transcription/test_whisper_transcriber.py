@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import builtins
-import hashlib
+import json
 import os
 import sys
 from collections.abc import Mapping, Sequence
@@ -59,7 +59,12 @@ def test_get_cache_path_separates_configuration(
         first_value: first transcriber field value
         second_value: second transcriber field value
     """
-    audio = Mock(raw_data=b"audio")
+    audio = AudioSegment(
+        data=b"audio",
+        sample_width=1,
+        frame_rate=8000,
+        channels=1,
+    )
     first_transcriber = WhisperTranscriber(
         cache_dir_path=tmp_path,
         model_name="custom/model",
@@ -80,23 +85,39 @@ def test_get_cache_path_separates_configuration(
     assert first_cache_path != second_cache_path
 
 
-def test_get_cache_path_preserves_default_decoding_identity(tmp_path: Path):
-    """Test default decoding continues to use legacy Whisper cache keys."""
-    audio = Mock(raw_data=b"audio")
+def test_get_cache_path_separates_audio_formats(tmp_path: Path):
+    """Test Whisper cache paths include audio format metadata."""
+    raw_data = b"\0\1" * 100
+    first_audio = AudioSegment(
+        data=raw_data,
+        sample_width=2,
+        frame_rate=16000,
+        channels=1,
+    )
+    second_audio = AudioSegment(
+        data=raw_data,
+        sample_width=2,
+        frame_rate=8000,
+        channels=1,
+    )
     transcriber = WhisperTranscriber(
         cache_dir_path=tmp_path,
         model_name="custom/model",
     )
-    audio_sha256 = hashlib.sha256(audio.raw_data).hexdigest()
-    cache_key = f"{audio_sha256}_custom/model_yue_demucs-off_vad-on"
-    expected_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
 
-    assert transcriber._get_cache_path(audio) == tmp_path / f"{expected_sha256}.json"
+    assert transcriber._get_cache_path(first_audio) != transcriber._get_cache_path(
+        second_audio
+    )
 
 
 def test_get_cache_path_accepts_list_temperature_schedule(tmp_path: Path):
     """Test list and tuple temperature schedules use the same cache key."""
-    audio = Mock(raw_data=b"audio")
+    audio = AudioSegment(
+        data=b"audio",
+        sample_width=1,
+        frame_rate=8000,
+        channels=1,
+    )
     list_transcriber = WhisperTranscriber(
         cache_dir_path=tmp_path,
         model_name="custom/model",
@@ -245,7 +266,7 @@ def test_transcribe_overwrites_matching_cache(
     )
 
     assert transcriber(audio, overwrite_cache=True) == []
-    assert cache_path.read_text(encoding="utf-8") == "[]"
+    assert json.loads(cache_path.read_text(encoding="utf-8"))["segments"] == []
     whisper.transcribe.assert_called_once()
 
 
@@ -277,7 +298,7 @@ def test_transcribe_recovers_from_malformed_cache(
     )
 
     assert transcriber.transcribe(audio) == []
-    assert cache_path.read_text(encoding="utf-8") == "[]"
+    assert json.loads(cache_path.read_text(encoding="utf-8"))["segments"] == []
     whisper.transcribe.assert_called_once()
 
 
@@ -308,7 +329,7 @@ def test_transcribe_preserves_cache_when_atomic_write_fails(
         Mock(return_value=whisper),
     )
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper_transcriber.json.dump",
+        "scinoephile.audio.transcription.cache.json.dump",
         Mock(side_effect=RuntimeError("write failed")),
     )
 

@@ -4,18 +4,16 @@
 
 from __future__ import annotations
 
-import hashlib
-import json
 from collections.abc import Sequence
 from logging import getLogger
 from math import ceil
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar
 
-from scinoephile.common.file import get_temp_file_path, open_atomic_text_file
-from scinoephile.common.validation import val_output_dir_path
+from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.ml import get_torch_device
 
+from .cache import TranscriptionCache
 from .exceptions import TranscriptionInferenceError
 from .transcribed_segment import TranscribedSegment
 
@@ -75,11 +73,9 @@ class WhisperTranscriber:
         self.language = language
         self.use_demucs = use_demucs
         self.use_vad = use_vad
-        self.temperature = temperature
+        self.temperature: float | Sequence[float] = temperature
         self.condition_on_previous_text = condition_on_previous_text
-        self.cache_dir_path = None
-        if cache_dir_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_dir_path)
+        self._cache = TranscriptionCache(cache_dir_path, "whisper", "Whisper")
 
     def __call__(
         self,
@@ -105,6 +101,11 @@ class WhisperTranscriber:
             use_cache=use_cache,
             overwrite_cache=overwrite_cache,
         )
+
+    @property
+    def cache_dir_path(self) -> Path | None:
+        """Get the transcription cache directory path."""
+        return self._cache.cache_dir_path
 
     @property
     def model(self) -> Any:
@@ -150,35 +151,21 @@ class WhisperTranscriber:
         Returns:
             cached transcription, if present
         """
-        cache_path = self._get_cache_path(cache_audio)
-        if cache_path is None or not cache_path.exists():
-            return None
+        metadata = self._get_cache_metadata()
         if overwrite_cache:
-            cache_path.unlink()
-            logger.info(f"Removed Whisper transcription cache: {cache_path}")
+            self._cache.remove(cache_audio, metadata)
             return None
 
-        logger.info(f"Loaded Whisper transcription from cache: {cache_path}")
-        try:
-            with cache_path.open("r", encoding="utf-8") as file:
-                payload = json.load(file)
-            if not isinstance(payload, list):
-                raise TranscriptionInferenceError(
-                    f"Malformed Whisper cache payload: {cache_path}"
-                )
-            segments = [TranscribedSegment.model_validate(item) for item in payload]
-        except TranscriptionInferenceError:
-            raise
-        except (OSError, TypeError, ValueError) as exc:
-            raise TranscriptionInferenceError(
-                f"Unable to read Whisper transcription cache {cache_path}: {exc}"
-            ) from exc
+        cached_transcription = self._cache.load(cache_audio, metadata)
+        if cached_transcription is None:
+            return None
+
+        cache_path, segments = cached_transcription
         segments = self._normalize_transcription_segments(
             segments,
             source="cache",
             cache_path=cache_path,
         )
-        cache_path.touch()
         return segments
 
     def transcribe(
@@ -200,6 +187,7 @@ class WhisperTranscriber:
             transcription, split into segments
         """
         cache_audio = cache_audio or audio
+        cache_metadata = self._get_cache_metadata()
         cache_path = self._get_cache_path(cache_audio)
         if use_cache or overwrite_cache:
             try:
@@ -239,15 +227,7 @@ class WhisperTranscriber:
         )
 
         # Update cache
-        if cache_path is not None:
-            with open_atomic_text_file(cache_path) as file:
-                json.dump(
-                    [segment.model_dump() for segment in segments],
-                    file,
-                    ensure_ascii=False,
-                    indent=2,
-                )
-            logger.info(f"Saved Whisper transcription to cache: {cache_path}")
+        self._cache.save(cache_audio, cache_metadata, segments)
 
         return segments
 
@@ -441,6 +421,24 @@ class WhisperTranscriber:
             raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
         return whisper
 
+    def _get_cache_metadata(self) -> dict[str, object]:
+        """Get metadata identifying the configured Whisper output.
+
+        Returns:
+            backend configuration identifying the output
+        """
+        temperature: object = self.temperature
+        if not isinstance(self.temperature, int | float):
+            temperature = list(self.temperature)
+        return {
+            "condition_on_previous_text": self.condition_on_previous_text,
+            "language": self.language,
+            "model_name": self.model_name,
+            "temperature": temperature,
+            "use_demucs": self.use_demucs,
+            "use_vad": self.use_vad,
+        }
+
     def _get_cache_path(self, audio: AudioSegment) -> Path | None:
         """Get cache path based on hash of audio data.
 
@@ -449,26 +447,4 @@ class WhisperTranscriber:
         Returns:
             path to cache file
         """
-        if self.cache_dir_path is None:
-            return None
-
-        audio_sha256 = hashlib.sha256(audio.raw_data).hexdigest()
-        cache_key = (
-            f"{audio_sha256}_{self.model_name}_{self.language}_"
-            f"demucs-{'on' if self.use_demucs else 'off'}_"
-            f"vad-{'on' if self.use_vad else 'off'}"
-        )
-        if self.temperature != 0.0 or not self.condition_on_previous_text:
-            if isinstance(self.temperature, Sequence):
-                temperature_key = ",".join(
-                    f"{temperature:g}" for temperature in self.temperature
-                )
-            else:
-                temperature_key = f"{self.temperature:g}"
-            cache_key += (
-                f"_temperature-{temperature_key}_"
-                "condition-on-previous-text-"
-                f"{'on' if self.condition_on_previous_text else 'off'}"
-            )
-        cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
-        return self.cache_dir_path / f"{cache_sha256}.json"
+        return self._cache.get_path(audio, self._get_cache_metadata())
