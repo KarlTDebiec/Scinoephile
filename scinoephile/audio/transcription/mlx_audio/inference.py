@@ -5,11 +5,11 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from types import MappingProxyType
-from typing import Any, ClassVar, cast
+from typing import TYPE_CHECKING, ClassVar, cast
 
 from scinoephile.audio.transcription.exceptions import TranscriptionError
 from scinoephile.common.validation import val_input_file_or_dir_path
@@ -22,6 +22,10 @@ __all__ = [
     "MlxAudioModelProfile",
     "QWEN3_ASR_MODEL_NAME",
 ]
+
+if TYPE_CHECKING:
+    from mlx_audio.stt.models.mimo_v2_asr import Model as MimoModel
+    from mlx_audio.stt.models.qwen3_asr import Model as Qwen3AsrModel
 
 MIMO_MODEL_NAME = "mlx-community/MiMo-V2.5-ASR-MLX"
 """Default MLX MiMo model."""
@@ -113,7 +117,7 @@ _MLX_AUDIO_MODEL_PROFILES = (
 class MlxAudioInference:
     """Runs direct speech-to-text inference through one MLX-Audio model."""
 
-    _models_by_reference: ClassVar[dict[str, Any]] = {}
+    _models_by_reference: ClassVar[dict[str, MimoModel | Qwen3AsrModel]] = {}
     """Loaded models shared by resolved model reference."""
 
     def __init__(self, model_name: str = MIMO_MODEL_NAME):
@@ -136,7 +140,7 @@ class MlxAudioInference:
         self._model_reference = model_reference
         """Resolved local model path or remote Hugging Face reference."""
 
-        self._model: Any | None = None
+        self._model: MimoModel | Qwen3AsrModel | None = None
         """Loaded MLX-Audio model."""
 
     def transcribe(
@@ -160,7 +164,10 @@ class MlxAudioInference:
         generate_kwargs: dict[str, object] = {"language": language}
         if max_tokens is not None:
             generate_kwargs["max_tokens"] = max_tokens
-        result = self._loaded_model.generate(str(audio_path), **generate_kwargs)
+        result: object = self._loaded_model.generate(
+            str(audio_path),
+            **generate_kwargs,
+        )
 
         # Normalize mapping- and attribute-based results
         if isinstance(result, Mapping):
@@ -187,7 +194,7 @@ class MlxAudioInference:
         )
 
     @property
-    def _loaded_model(self) -> Any:
+    def _loaded_model(self) -> MimoModel | Qwen3AsrModel:
         """Get the cached MLX-Audio model, loading it if needed.
 
         Returns:
@@ -275,7 +282,7 @@ def _get_mlx_audio_model_profile(model_name: str) -> MlxAudioModelProfile:
     )
 
 
-def _import_mlx_audio_stt_load() -> Any:
+def _import_mlx_audio_stt_load() -> Callable[..., MimoModel | Qwen3AsrModel]:
     """Import the MLX-Audio STT model loader on demand.
 
     Returns:
