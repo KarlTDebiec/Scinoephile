@@ -23,10 +23,7 @@ from .exceptions import (
     TranscriptionError,
     TranscriptionInferenceError,
 )
-from .mlx_audio import (
-    MlxAudioModelProfile,
-    MlxAudioTranscriber,
-)
+from .mlx_audio import MlxAudioModelProfile, MlxAudioTranscriber
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 from .whisper_transcriber import WhisperTranscriber
