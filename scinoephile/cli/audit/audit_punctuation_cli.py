@@ -154,9 +154,7 @@ class AuditPunctuationCli(AuditCliBase):
             outfile_path: optional Markdown output path
             overwrite: whether to overwrite an existing output file
         """
-        parser = _parser
-        if parser is None:
-            parser = cls.argparser()
+        parser = _parser or cls.argparser()
 
         # Read inputs
         reference = read_series(parser, reference_path)

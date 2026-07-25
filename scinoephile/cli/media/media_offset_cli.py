@@ -183,9 +183,7 @@ class MediaOffsetCli(ScinoephileCliBase):
         sample_windows: int,
     ):
         """Execute with provided keyword arguments."""
-        parser = _parser
-        if parser is None:
-            parser = cls.argparser()
+        parser = _parser or cls.argparser()
         try:
             result = get_video_offset(
                 reference_infile_path=reference_infile_path,

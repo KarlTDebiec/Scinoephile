@@ -177,9 +177,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         output_dir_path: Path,
     ):
         """Execute with provided keyword arguments."""
-        parser = _parser
-        if parser is None:
-            parser = cls.argparser()
+        parser = _parser or cls.argparser()
         try:
             result = extract_subtitles(
                 infile_path=infile_path,

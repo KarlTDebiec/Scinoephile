@@ -231,8 +231,7 @@ class MlxAudioTranscriber:
         Returns:
             transcription, split into timestamped segments
         """
-        if cache_audio is None:
-            cache_audio = audio
+        cache_audio = cache_audio or audio
         attempts = self._get_attempt_configurations()
 
         # Remove or inspect configured attempt caches before preprocessing

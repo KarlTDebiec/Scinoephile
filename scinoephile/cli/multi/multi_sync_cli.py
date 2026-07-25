@@ -177,9 +177,7 @@ class MultiSyncCli(ScinoephileCliBase):
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = _parser
-        if parser is None:
-            parser = cls.argparser()
+        parser = _parser or cls.argparser()
         if anchor_infile_path == "-" and mobile_infile_path == "-":
             parser.error("--anchor-infile and --mobile-infile may not both be '-'")
         if overwrite and outfile_path is None:

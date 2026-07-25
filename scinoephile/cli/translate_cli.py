@@ -213,9 +213,7 @@ class TranslateCli(ScinoephileCliBase):
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = _parser
-        if parser is None:
-            parser = cls.argparser()
+        parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
 

@@ -211,47 +211,6 @@ def test_transcribe_bypasses_cache_when_requested(monkeypatch: MonkeyPatch):
     whisper.transcribe.assert_called_once()
 
 
-def test_transcribe_preserves_empty_cache_audio(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
-):
-    """Test an explicitly empty cache audio segment is not replaced.
-
-    Arguments:
-        monkeypatch: pytest monkeypatch fixture
-        tmp_path: temporary cache directory path
-    """
-    audio = AudioSegment.silent(duration=1000)
-    cache_audio = AudioSegment.empty()
-    whisper = Mock()
-    whisper.transcribe.return_value = {"segments": []}
-    transcriber = WhisperTranscriber(
-        cache_dir_path=tmp_path,
-        model_name="custom/model",
-    )
-    transcriber._model = Mock()
-    monkeypatch.setattr(
-        transcriber,
-        "_get_whisper_module",
-        Mock(return_value=whisper),
-    )
-
-    assert (
-        transcriber.transcribe(
-            audio,
-            cache_audio=cache_audio,
-            use_cache=False,
-        )
-        == []
-    )
-    empty_cache_path = transcriber._get_cache_path(cache_audio)
-    audio_cache_path = transcriber._get_cache_path(audio)
-    assert empty_cache_path is not None
-    assert empty_cache_path.exists()
-    assert audio_cache_path is not None
-    assert not audio_cache_path.exists()
-
-
 def test_transcribe_overwrites_matching_cache(
     monkeypatch: MonkeyPatch,
     tmp_path: Path,

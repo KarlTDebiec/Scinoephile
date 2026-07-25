@@ -117,9 +117,7 @@ class MediaProbeCli(ScinoephileCliBase):
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = _parser
-        if parser is None:
-            parser = cls.argparser()
+        parser = _parser or cls.argparser()
         if force_check_script and infile_path.suffix.lower() != ".sup":
             parser.error("--force-check-script requires a SUP infile")
 

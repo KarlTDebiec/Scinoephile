@@ -344,9 +344,7 @@ class AuditReviewDualCli(AuditCliBase):
             overwrite: whether to overwrite an existing output file
         """
         # Validate arguments
-        parser = _parser
-        if parser is None:
-            parser = cls.argparser()
+        parser = _parser or cls.argparser()
         if row_filter is DualReviewAuditFilter.unverified and any(
             json_path is None
             for json_path in (

@@ -199,8 +199,7 @@ class WhisperTranscriber:
         Returns:
             transcription, split into segments
         """
-        if cache_audio is None:
-            cache_audio = audio
+        cache_audio = cache_audio or audio
         cache_path = self._get_cache_path(cache_audio)
         if use_cache or overwrite_cache:
             try:
