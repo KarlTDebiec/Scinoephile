@@ -11,6 +11,7 @@ from unittest.mock import Mock, patch
 
 from pytest import raises
 
+from scinoephile.audio.transcription import DemucsMode, VADMode
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.utils import save_test_cases_to_json
@@ -18,7 +19,6 @@ from scinoephile.lang.transcription.guided import (
     DEFAULT_SPECS,
     get_guided_transcriber,
 )
-from scinoephile.lang.transcription.transcriber import DemucsMode, VADMode
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHant,
@@ -104,14 +104,14 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.aligner.punctuation_processor.prompt is (
         YueZhoPunctuationPromptYueHant
     )
-    assert transcriber.vad_transcriber is not None
-    assert transcriber.vad_transcriber.language == "yue"
-    assert transcriber.vad_transcriber.cache_dir_path == tmp_path / "whisper"
-    assert transcriber.no_vad_transcriber is not None
-    assert transcriber.no_vad_transcriber.language == "yue"
-    assert transcriber.no_vad_transcriber.cache_dir_path == tmp_path / "whisper"
-    assert transcriber.demucs_separator is not None
-    assert transcriber.demucs_separator.cache_dir_path == tmp_path / "demucs"
+    assert transcriber.transcriber.language == "yue"
+    assert transcriber.transcriber.demucs_mode is DemucsMode.AUTO
+    assert transcriber.transcriber.vad_mode is VADMode.AUTO
+    assert transcriber.transcriber.cache_dir_path == tmp_path / "whisper"
+    assert transcriber.transcriber.demucs_separator is not None
+    assert (
+        transcriber.transcriber.demucs_separator.cache_dir_path == tmp_path / "demucs"
+    )
     test_case_dir_path = tmp_path / "test_cases/lang/yue_zho/transcription"
     assert transcriber.aligner.delineation_processor.test_case_path == (
         test_case_dir_path / "delineation" / "test.json"

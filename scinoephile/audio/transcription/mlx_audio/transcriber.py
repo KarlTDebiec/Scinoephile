@@ -6,16 +6,19 @@ from __future__ import annotations
 
 import platform
 import sys
-from collections.abc import Callable, Sequence
+from collections.abc import Sequence
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
 
-from scinoephile.audio.transcription.cache import TranscriptionCache
+from scinoephile.audio.transcription.attempt import (
+    DemucsMode,
+    TranscriptionAttempt,
+    VADMode,
+)
 from scinoephile.audio.transcription.ctc_aligner import CtcAligner
-from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
 from scinoephile.audio.transcription.exceptions import (
     TranscriptionAlignmentError,
     TranscriptionEmptyError,
@@ -24,10 +27,9 @@ from scinoephile.audio.transcription.exceptions import (
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
+from scinoephile.audio.transcription.transcriber import Transcriber
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language
-from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.paths import get_runtime_cache_dir_path
 
 from .backend import (
     MIMO_MODEL_NAME,
@@ -63,8 +65,14 @@ class _MlxAudioTokenLimitError(TranscriptionInferenceError):
     """Raised when MLX-Audio exhausts its text-token generation budget."""
 
 
-class MlxAudioTranscriber:
+class MlxAudioTranscriber(Transcriber):
     """Transcribes audio using MLX-Audio and a timestamp alignment stage."""
+
+    backend_name = "mlx-audio"
+    """Stable backend name stored in cache metadata."""
+
+    backend_label = "MLX-Audio"
+    """Human-readable backend name used in log messages."""
 
     def __init__(
         self,
@@ -74,12 +82,10 @@ class MlxAudioTranscriber:
         max_tokens: int | None = None,
         chunk_duration_seconds: float | None = None,
         chunk_overlap_seconds: float = 1.0,
+        demucs_mode: DemucsMode = DemucsMode.AUTO,
+        vad_mode: VADMode = VADMode.AUTO,
         cache_dir_path: Path | None = None,
         demucs_cache_dir_path: Path | None = None,
-        use_demucs: bool = False,
-        use_vad: bool = False,
-        retry_without_demucs: bool = False,
-        retry_without_vad: bool = False,
     ):
         """Initialize.
 
@@ -90,12 +96,10 @@ class MlxAudioTranscriber:
             max_tokens: optional maximum number of text tokens to generate
             chunk_duration_seconds: optional chunk duration for inference
             chunk_overlap_seconds: context overlap applied to each chunk
+            demucs_mode: Demucs preprocessing mode
+            vad_mode: voice activity detection mode
             cache_dir_path: directory in which to cache
             demucs_cache_dir_path: directory in which to cache Demucs output
-            use_demucs: whether to apply Demucs vocal separation
-            use_vad: whether to remove non-speech audio using Silero VAD
-            retry_without_demucs: whether to retry original audio after Demucs
-            retry_without_vad: whether to retry unfiltered audio after VAD failure
         Raises:
             TranscriptionError: if the platform does not support MLX-Audio
             ValueError: if the language or numeric configuration is invalid
@@ -124,57 +128,12 @@ class MlxAudioTranscriber:
             )
         if self.chunk_overlap_seconds < 0:
             raise ValueError("MLX-Audio chunk overlap must be non-negative.")
-        self.use_demucs = use_demucs
-        self.use_vad = use_vad
-        self.retry_without_demucs = retry_without_demucs
-        self.retry_without_vad = retry_without_vad
-        if self.retry_without_demucs and not self.use_demucs:
-            raise ValueError(
-                "MLX-Audio cannot retry without Demucs when Demucs is disabled."
-            )
-        if self.retry_without_vad and not self.use_vad:
-            raise ValueError("MLX-Audio cannot retry without VAD when VAD is disabled.")
-        self.demucs_separator = None
-        if self.use_demucs:
-            if demucs_cache_dir_path is None:
-                demucs_cache_dir_path = get_runtime_cache_dir_path("demucs")
-            self.demucs_separator = DemucsSeparator(
-                cache_dir_path=demucs_cache_dir_path
-            )
-        self._cache = TranscriptionCache(cache_dir_path, "mlx-audio", "MLX-Audio")
-
-    def __call__(
-        self,
-        audio: AudioSegment,
-        *,
-        cache_audio: AudioSegment | None = None,
-        is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
-        use_cache: bool = True,
-        overwrite_cache: bool = False,
-    ) -> list[TranscribedSegment]:
-        """Transcribe audio.
-
-        Arguments:
-            audio: audio to transcribe
-            cache_audio: optional audio used for cache-key generation
-            is_usable: optional callback used to reject output and trigger retries
-            use_cache: whether to return a cached transcription when available
-            overwrite_cache: whether to replace matching cache files
-        Returns:
-            transcription, split into timestamped segments
-        """
-        return self.transcribe(
-            audio,
-            cache_audio=cache_audio,
-            is_usable=is_usable,
-            use_cache=use_cache,
-            overwrite_cache=overwrite_cache,
+        super().__init__(
+            cache_dir_path,
+            demucs_cache_dir_path,
+            demucs_mode,
+            vad_mode,
         )
-
-    @property
-    def cache_dir_path(self) -> Path | None:
-        """Get the transcription cache directory path."""
-        return self._cache.cache_dir_path
 
     @property
     def language(self) -> Language:
@@ -196,67 +155,6 @@ class MlxAudioTranscriber:
         """Get configuration for the selected MLX-Audio model family."""
         return self.backend.model_profile
 
-    def get_cached_transcription(
-        self, cache_audio: AudioSegment
-    ) -> list[TranscribedSegment] | None:
-        """Get cached transcription for audio if available.
-
-        Arguments:
-            cache_audio: audio used for cache-key generation
-        Returns:
-            cached transcription, if present
-        """
-        return self._get_cached_transcription(
-            cache_audio,
-            self.use_demucs,
-            self.use_vad,
-        )
-
-    def transcribe(
-        self,
-        audio: AudioSegment,
-        *,
-        cache_audio: AudioSegment | None = None,
-        is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
-        use_cache: bool = True,
-        overwrite_cache: bool = False,
-    ) -> list[TranscribedSegment]:
-        """Transcribe audio.
-
-        Arguments:
-            audio: audio to transcribe
-            cache_audio: optional audio used for cache-key generation
-            is_usable: optional callback used to reject output and trigger retries
-            use_cache: whether to return a cached transcription when available
-            overwrite_cache: whether to replace matching cache files
-        Returns:
-            transcription, split into timestamped segments
-        """
-        cache_audio = cache_audio or audio
-        attempts = self._get_attempt_configurations()
-
-        # Remove or inspect configured attempt caches before preprocessing
-        rejected_attempts: set[tuple[bool, bool]] = set()
-        if overwrite_cache:
-            self._remove_cached_attempts(cache_audio, attempts)
-        elif use_cache:
-            cached_segments, rejected_attempts = self._get_cached_attempt(
-                cache_audio,
-                attempts,
-                is_usable,
-            )
-            if cached_segments is not None:
-                return cached_segments
-
-        return self._transcribe_attempts(
-            audio,
-            cache_audio=cache_audio,
-            attempts=attempts,
-            rejected_attempts=rejected_attempts,
-            is_usable=is_usable,
-            overwrite_cache=overwrite_cache,
-        )
-
     @property
     def _effective_max_tokens(self) -> int:
         """Get the explicit or model-family default generation token limit."""
@@ -264,59 +162,19 @@ class MlxAudioTranscriber:
             return self.max_tokens
         return self.model_profile.default_max_tokens
 
-    def _get_attempt_configurations(self) -> tuple[tuple[bool, bool], ...]:
-        """Get Demucs and VAD configurations in retry order.
-
-        Returns:
-            tuples of whether to use Demucs and VAD for each attempt
-        """
-        attempts = [(self.use_demucs, self.use_vad)]
-        if self.retry_without_vad:
-            attempts.append((self.use_demucs, False))
-        if self.retry_without_demucs:
-            attempts.append((False, self.use_vad))
-            if self.retry_without_vad:
-                attempts.append((False, False))
-        return tuple(dict.fromkeys(attempts))
-
-    def _get_cache_path(
+    def _get_backend_cache_metadata(
         self,
-        audio: AudioSegment,
-        use_demucs: bool,
-        use_vad: bool,
-    ) -> Path | None:
-        """Get cache path based on hash of audio data and MLX-Audio configuration.
-
-        Arguments:
-            audio: audio used to derive the cache key
-            use_demucs: whether Demucs preprocessing identifies the cache entry
-            use_vad: whether VAD preprocessing identifies the cache entry
-        Returns:
-            path to cache file
-        """
-        return self._cache.get_path(
-            audio,
-            self._get_cache_metadata(
-                use_demucs,
-                use_vad,
-            ),
-        )
-
-    def _get_cache_metadata(
-        self,
-        use_demucs: bool,
-        use_vad: bool,
+        attempt: TranscriptionAttempt,
     ) -> dict[str, object]:
         """Get metadata that identifies cached MLX-Audio output.
 
         Arguments:
-            use_demucs: whether Demucs preprocessing identifies the cache entry
-            use_vad: whether VAD preprocessing identifies the cache entry
+            attempt: preprocessing attempt
         Returns:
             cache identity metadata
         """
         vad_version = None
-        if use_vad:
+        if attempt.use_vad:
             vad_version = _VAD_CACHE_VERSION
         return {
             "model_family": self.model_profile.family_name,
@@ -329,83 +187,8 @@ class MlxAudioTranscriber:
             "chunk_overlap_seconds": self.chunk_overlap_seconds,
             "aligner": "ctc",
             "aligner_model_name": self.ctc_aligner.model_name,
-            "use_demucs": use_demucs,
             "vad_version": vad_version,
         }
-
-    def _remove_cached_attempts(
-        self,
-        cache_audio: AudioSegment,
-        attempts: Sequence[tuple[bool, bool]],
-    ):
-        """Remove cache files for all configured transcription attempts.
-
-        Arguments:
-            cache_audio: audio used for cache-key generation
-            attempts: Demucs and VAD configurations whose caches should be removed
-        """
-        for use_demucs, use_vad in attempts:
-            self._cache.remove(
-                cache_audio,
-                self._get_cache_metadata(use_demucs, use_vad),
-            )
-
-    def _get_cached_attempt(
-        self,
-        cache_audio: AudioSegment,
-        attempts: Sequence[tuple[bool, bool]],
-        is_usable: Callable[[list[TranscribedSegment]], bool] | None,
-    ) -> tuple[list[TranscribedSegment] | None, set[tuple[bool, bool]]]:
-        """Find a usable cached attempt and identify rejected configurations.
-
-        Arguments:
-            cache_audio: audio used for cache-key generation
-            attempts: Demucs and VAD configurations in retry order
-            is_usable: optional callback used to reject cached output
-        Returns:
-            usable cached segments and rejected configurations
-        """
-        rejected_attempts: set[tuple[bool, bool]] = set()
-        for use_demucs, use_vad in attempts:
-            try:
-                segments = self._get_cached_transcription(
-                    cache_audio,
-                    use_demucs,
-                    use_vad,
-                )
-            except TranscriptionError as exc:
-                logger.warning(f"Unable to read MLX-Audio transcription cache: {exc}")
-                continue
-            if segments is None:
-                continue
-            if is_usable is None or is_usable(segments):
-                return segments, rejected_attempts
-            rejected_attempts.add((use_demucs, use_vad))
-        return None, rejected_attempts
-
-    def _get_cached_transcription(
-        self,
-        cache_audio: AudioSegment,
-        use_demucs: bool,
-        use_vad: bool,
-    ) -> list[TranscribedSegment] | None:
-        """Get cached transcription for one preprocessing configuration.
-
-        Arguments:
-            cache_audio: audio used for cache-key generation
-            use_demucs: whether Demucs preprocessing identifies the cache entry
-            use_vad: whether VAD preprocessing identifies the cache entry
-        Returns:
-            cached transcription, if present
-        """
-        cached_transcription = self._cache.load(
-            cache_audio,
-            self._get_cache_metadata(use_demucs, use_vad),
-        )
-        if cached_transcription is None:
-            return None
-        _, segments = cached_transcription
-        return segments
 
     @staticmethod
     def _validate_platform():
@@ -496,83 +279,27 @@ class MlxAudioTranscriber:
                 f"Unable to run MLX-Audio inference: {exc}"
             ) from exc
 
-    def _transcribe_attempts(
+    def _transcribe_attempt(
         self,
         audio: AudioSegment,
-        *,
-        cache_audio: AudioSegment,
-        attempts: Sequence[tuple[bool, bool]],
-        rejected_attempts: set[tuple[bool, bool]],
-        is_usable: Callable[[list[TranscribedSegment]], bool] | None,
-        overwrite_cache: bool,
+        attempt: TranscriptionAttempt,
     ) -> list[TranscribedSegment]:
-        """Run uncached MLX-Audio attempts in preprocessing retry order.
+        """Run one uncached MLX-Audio transcription attempt.
 
         Arguments:
-            audio: original audio to transcribe
-            cache_audio: audio used for cache-key generation
-            attempts: Demucs and VAD configurations in retry order
-            rejected_attempts: configurations with unusable cached output
-            is_usable: optional callback used to reject output and trigger retries
-            overwrite_cache: whether to replace matching preprocessing cache files
+            audio: original or Demucs-separated audio to transcribe
+            attempt: preprocessing attempt
         Returns:
-            first usable transcription, or an empty list when output was rejected
+            timestamped transcription segments
+        Raises:
+            TranscriptionInferenceError: if an optional dependency or assertion fails
         """
-        separated_audio = None
-        separation_attempted = False
-        successful_attempt = False
-        last_error: Exception | None = None
-        for use_demucs, use_vad in attempts:
-            if (use_demucs, use_vad) in rejected_attempts:
-                continue
-
-            transcription_audio = audio
-            if use_demucs:
-                if not separation_attempted:
-                    separation_attempted = True
-                    assert self.demucs_separator is not None
-                    logger.info("Applying Demucs vocal separation before MLX-Audio")
-                    try:
-                        separated_audio = self.demucs_separator(
-                            audio,
-                            overwrite_cache=overwrite_cache,
-                        )
-                    except ScinoephileError as exc:
-                        if not self.retry_without_demucs:
-                            raise
-                        logger.warning(
-                            "Demucs separation failed; retrying MLX-Audio with "
-                            f"original audio: {exc}"
-                        )
-                if separated_audio is None:
-                    continue
-                transcription_audio = separated_audio
-
-            if not use_vad and self.use_vad:
-                logger.info("Retrying MLX-Audio without VAD")
-            try:
-                segments = self._transcribe_uncached(transcription_audio, use_vad)
-            except (
-                AssertionError,
-                ImportError,
-                TranscriptionError,
-            ) as exc:
-                logger.warning(f"MLX-Audio transcription attempt failed: {exc}")
-                last_error = exc
-                continue
-            successful_attempt = True
-
-            self._cache.save(
-                cache_audio,
-                self._get_cache_metadata(use_demucs, use_vad),
-                segments,
-            )
-            if is_usable is None or is_usable(segments):
-                return segments
-
-        if not successful_attempt and last_error is not None:
-            raise last_error
-        return []
+        try:
+            return self._transcribe_uncached(audio, attempt.use_vad)
+        except (AssertionError, ImportError) as exc:
+            raise TranscriptionInferenceError(
+                f"Unable to run MLX-Audio transcription: {exc}"
+            ) from exc
 
     def _transcribe_audio_window(
         self,

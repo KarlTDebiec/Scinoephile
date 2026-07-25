@@ -14,14 +14,12 @@ from __future__ import annotations
 from .aligner import TranscriptionAligner
 from .alignment import TranscriptionAlignment
 from .guided import GuidedTranscriptionSpec, TranscriptionLanguageSpec
-from .transcriber import DemucsMode, GuidedTranscriber, VADMode
+from .transcriber import GuidedTranscriber
 
 __all__ = [
-    "DemucsMode",
     "GuidedTranscriber",
     "GuidedTranscriptionSpec",
     "TranscriptionAligner",
     "TranscriptionAlignment",
     "TranscriptionLanguageSpec",
-    "VADMode",
 ]

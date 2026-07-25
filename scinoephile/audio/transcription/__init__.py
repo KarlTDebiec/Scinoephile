@@ -3,9 +3,10 @@
 """Code related to audio transcription.
 
 Package hierarchy (modules may import from any above):
-* exceptions / demucs_separator / transcribed_word
+* attempt / exceptions / demucs_separator / transcribed_word
 * transcribed_segment
 * cache / ctc_aligner
+* transcriber
 * whisper_transcriber
 * mlx_audio
 """
@@ -14,6 +15,7 @@ from __future__ import annotations
 
 from logging import getLogger
 
+from .attempt import DemucsMode, TranscriptionAttempt, VADMode
 from .cache import TranscriptionCache
 from .ctc_aligner import CtcAligner
 from .demucs_separator import DemucsSeparator
@@ -26,20 +28,25 @@ from .exceptions import (
 from .mlx_audio import MlxAudioModelProfile, MlxAudioTranscriber
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
+from .transcriber import Transcriber
 from .whisper_transcriber import WhisperTranscriber
 
 __all__ = [
     "CtcAligner",
     "DemucsSeparator",
+    "DemucsMode",
     "MlxAudioModelProfile",
     "MlxAudioTranscriber",
     "TranscribedSegment",
     "TranscribedWord",
+    "Transcriber",
+    "TranscriptionAttempt",
     "TranscriptionCache",
     "TranscriptionAlignmentError",
     "TranscriptionEmptyError",
     "TranscriptionError",
     "TranscriptionInferenceError",
+    "VADMode",
     "WhisperTranscriber",
     "get_segment_merged",
     "get_segment_split_at_idx",

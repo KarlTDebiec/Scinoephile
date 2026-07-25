@@ -13,9 +13,10 @@ from typing import TYPE_CHECKING, Any, ClassVar
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.ml import get_torch_device
 
-from .cache import TranscriptionCache
+from .attempt import DemucsMode, TranscriptionAttempt, VADMode
 from .exceptions import TranscriptionInferenceError
 from .transcribed_segment import TranscribedSegment
+from .transcriber import Transcriber
 
 __all__ = ["WhisperTranscriber"]
 
@@ -40,8 +41,14 @@ if TYPE_CHECKING:
 logger = getLogger(__name__)
 
 
-class WhisperTranscriber:
+class WhisperTranscriber(Transcriber):
     """Transcribes audio using Whisper."""
+
+    backend_name = "whisper"
+    """Stable backend name stored in cache metadata."""
+
+    backend_label = "Whisper"
+    """Human-readable backend name used in log messages."""
 
     _models: ClassVar[dict[tuple[str, str], Any]] = {}
     """Loaded models shared by model name and device within the current process."""
@@ -50,9 +57,10 @@ class WhisperTranscriber:
         self,
         model_name: str = "khleeloo/whisper-large-v3-cantonese",
         language: str = "yue",
+        demucs_mode: DemucsMode = DemucsMode.AUTO,
+        vad_mode: VADMode = VADMode.AUTO,
         cache_dir_path: Path | None = None,
-        use_demucs: bool = False,
-        use_vad: bool = True,
+        demucs_cache_dir_path: Path | None = None,
         temperature: float | Sequence[float] = 0.0,
         condition_on_previous_text: bool = True,
     ):
@@ -61,9 +69,10 @@ class WhisperTranscriber:
         Arguments:
             model_name: name of Whisper model to use
             language: language code for transcription
+            demucs_mode: Demucs preprocessing mode
+            vad_mode: voice activity detection mode
             cache_dir_path: directory in which to cache
-            use_demucs: whether Demucs preprocessing was applied
-            use_vad: whether to enable Whisper VAD
+            demucs_cache_dir_path: directory in which to cache Demucs output
             temperature: decoding temperature or fallback schedule
             condition_on_previous_text: whether to condition each decoding window on
                 the preceding window
@@ -71,41 +80,14 @@ class WhisperTranscriber:
         self.model_name = model_name
         self._model: Any | None = None
         self.language = language
-        self.use_demucs = use_demucs
-        self.use_vad = use_vad
         self.temperature: float | Sequence[float] = temperature
         self.condition_on_previous_text = condition_on_previous_text
-        self._cache = TranscriptionCache(cache_dir_path, "whisper", "Whisper")
-
-    def __call__(
-        self,
-        audio: AudioSegment,
-        *,
-        cache_audio: AudioSegment | None = None,
-        use_cache: bool = True,
-        overwrite_cache: bool = False,
-    ) -> list[TranscribedSegment]:
-        """Transcribe audio.
-
-        Arguments:
-            audio: audio to transcribe
-            cache_audio: optional audio used for cache-key generation
-            use_cache: whether to return a cached transcription when available
-            overwrite_cache: whether to replace the matching cache file
-        Returns:
-            transcription, split into segments
-        """
-        return self.transcribe(
-            audio,
-            cache_audio=cache_audio,
-            use_cache=use_cache,
-            overwrite_cache=overwrite_cache,
+        super().__init__(
+            cache_dir_path,
+            demucs_cache_dir_path,
+            demucs_mode,
+            vad_mode,
         )
-
-    @property
-    def cache_dir_path(self) -> Path | None:
-        """Get the transcription cache directory path."""
-        return self._cache.cache_dir_path
 
     @property
     def model(self) -> Any:
@@ -136,100 +118,6 @@ class WhisperTranscriber:
                 self._model = whisper.load_model(self.model_name, device=device)
             self._models[model_key] = self._model
         return self._model
-
-    def get_cached_transcription(
-        self,
-        cache_audio: AudioSegment,
-        *,
-        overwrite_cache: bool = False,
-    ) -> list[TranscribedSegment] | None:
-        """Get cached transcription for audio if available.
-
-        Arguments:
-            cache_audio: audio used for cache-key generation
-            overwrite_cache: whether to remove the matching cache file
-        Returns:
-            cached transcription, if present
-        """
-        metadata = self._get_cache_metadata()
-        if overwrite_cache:
-            self._cache.remove(cache_audio, metadata)
-            return None
-
-        cached_transcription = self._cache.load(cache_audio, metadata)
-        if cached_transcription is None:
-            return None
-
-        cache_path, segments = cached_transcription
-        segments = self._normalize_transcription_segments(
-            segments,
-            source="cache",
-            cache_path=cache_path,
-        )
-        return segments
-
-    def transcribe(
-        self,
-        audio: AudioSegment,
-        *,
-        cache_audio: AudioSegment | None = None,
-        use_cache: bool = True,
-        overwrite_cache: bool = False,
-    ) -> list[TranscribedSegment]:
-        """Transcribe audio.
-
-        Arguments:
-            audio: audio to transcribe
-            cache_audio: optional audio used for cache-key generation
-            use_cache: whether to return a cached transcription when available
-            overwrite_cache: whether to replace the matching cache file
-        Returns:
-            transcription, split into segments
-        """
-        cache_audio = cache_audio or audio
-        cache_metadata = self._get_cache_metadata()
-        cache_path = self._get_cache_path(cache_audio)
-        if use_cache or overwrite_cache:
-            try:
-                segments = self.get_cached_transcription(
-                    cache_audio,
-                    overwrite_cache=overwrite_cache,
-                )
-            except TranscriptionInferenceError as exc:
-                logger.warning(f"Unable to read Whisper transcription cache: {exc}")
-            else:
-                if segments is not None:
-                    return segments
-
-        # Transcribe using Whisper
-        whisper = self._get_whisper_module()
-        with get_temp_file_path(suffix=".wav") as temp_audio_path:
-            audio.export(temp_audio_path, format="wav")
-            sample_len = self._get_sample_len(audio)
-            logger.info(
-                f"Limiting Whisper decoding to {sample_len} tokens for "
-                f"{len(audio) / 1000:.2f}s of audio"
-            )
-            result = whisper.transcribe(
-                self.model,
-                str(temp_audio_path),
-                language=self.language,
-                vad=self.use_vad,
-                temperature=self.temperature,
-                condition_on_previous_text=self.condition_on_previous_text,
-                sample_len=sample_len,
-            )
-        segments = [TranscribedSegment(**s) for s in result["segments"]]
-        segments = self._normalize_transcription_segments(
-            segments,
-            source="whisper",
-            cache_path=cache_path,
-        )
-
-        # Update cache
-        self._cache.save(cache_audio, cache_metadata, segments)
-
-        return segments
 
     @staticmethod
     def _get_sample_len(audio: AudioSegment) -> int:
@@ -282,6 +170,7 @@ class WhisperTranscriber:
         *,
         source: str,
         cache_path: Path | None,
+        use_vad: bool,
     ) -> list[TranscribedSegment]:
         """Normalize malformed transcription segments from Whisper output.
 
@@ -289,6 +178,7 @@ class WhisperTranscriber:
             segments: raw transcription segments
             source: source of the segments, for logging
             cache_path: cache path associated with the segments, if any
+            use_vad: whether Whisper VAD produced the segments
         Returns:
             normalized transcription segments
         """
@@ -305,7 +195,7 @@ class WhisperTranscriber:
                 ):
                     logger.warning(
                         f"Coalescing malformed Whisper segment pair for "
-                        f"model={self.model_name} vad={self.use_vad} "
+                        f"model={self.model_name} vad={use_vad} "
                         f"source={source} cache={cache_path} "
                         f"segment_idxs=({segment_idx},{segment_idx + 1}) "
                         f"ids=({segment.id},{next_segment.id}) "
@@ -324,7 +214,7 @@ class WhisperTranscriber:
             if segment.text.strip() and not segment.words:
                 logger.warning(
                     f"Whisper segment is missing word timings for "
-                    f"model={self.model_name} vad={self.use_vad} "
+                    f"model={self.model_name} vad={use_vad} "
                     f"source={source} cache={cache_path} "
                     f"segment_idx={segment_idx} id={segment.id} "
                     f"start={segment.start} end={segment.end} "
@@ -421,30 +311,95 @@ class WhisperTranscriber:
             raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
         return whisper
 
-    def _get_cache_metadata(self) -> dict[str, object]:
-        """Get metadata identifying the configured Whisper output.
+    def _get_backend_cache_metadata(
+        self,
+        attempt: TranscriptionAttempt,
+    ) -> dict[str, object]:
+        """Get cache metadata identifying configured Whisper output.
 
+        Arguments:
+            attempt: preprocessing attempt
         Returns:
             backend configuration identifying the output
         """
         temperature: object = self.temperature
         if not isinstance(self.temperature, int | float):
             temperature = list(self.temperature)
+        vad_implementation = None
+        if attempt.use_vad:
+            vad_implementation = "whisper-timestamped"
         return {
             "condition_on_previous_text": self.condition_on_previous_text,
             "language": self.language,
             "model_name": self.model_name,
             "temperature": temperature,
-            "use_demucs": self.use_demucs,
-            "use_vad": self.use_vad,
+            "vad_implementation": vad_implementation,
         }
 
-    def _get_cache_path(self, audio: AudioSegment) -> Path | None:
-        """Get cache path based on hash of audio data.
+    def _prepare_cached_segments(
+        self,
+        segments: list[TranscribedSegment],
+        cache_path: Path,
+        attempt: TranscriptionAttempt,
+    ) -> list[TranscribedSegment]:
+        """Normalize cached Whisper segments.
 
         Arguments:
-            audio: audio used to derive the cache key
+            segments: cached transcription segments
+            cache_path: path from which the segments were loaded
+            attempt: preprocessing attempt that produced the segments
         Returns:
-            path to cache file
+            normalized cached segments
         """
-        return self._cache.get_path(audio, self._get_cache_metadata())
+        return self._normalize_transcription_segments(
+            segments,
+            source="cache",
+            cache_path=cache_path,
+            use_vad=attempt.use_vad,
+        )
+
+    def _transcribe_attempt(
+        self,
+        audio: AudioSegment,
+        attempt: TranscriptionAttempt,
+    ) -> list[TranscribedSegment]:
+        """Run one uncached Whisper transcription attempt.
+
+        Arguments:
+            audio: original or Demucs-separated audio to transcribe
+            attempt: preprocessing attempt
+        Returns:
+            normalized transcription segments
+        Raises:
+            TranscriptionInferenceError: if Whisper fails with an assertion
+        """
+        whisper = self._get_whisper_module()
+        try:
+            with get_temp_file_path(suffix=".wav") as temp_audio_path:
+                audio.export(temp_audio_path, format="wav")
+                sample_len = self._get_sample_len(audio)
+                logger.info(
+                    f"Limiting Whisper decoding to {sample_len} tokens for "
+                    f"{len(audio) / 1000:.2f}s of audio"
+                )
+                result = whisper.transcribe(
+                    self.model,
+                    str(temp_audio_path),
+                    language=self.language,
+                    vad=attempt.use_vad,
+                    temperature=self.temperature,
+                    condition_on_previous_text=self.condition_on_previous_text,
+                    sample_len=sample_len,
+                )
+        except AssertionError as exc:
+            raise TranscriptionInferenceError(
+                f"Whisper inference failed with an assertion: {exc}"
+            ) from exc
+
+        segments = [TranscribedSegment(**segment) for segment in result["segments"]]
+        return self._normalize_transcription_segments(
+            segments,
+            source="whisper",
+            cache_path=None,
+            use_vad=attempt.use_vad,
+        )
