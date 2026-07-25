@@ -9,13 +9,15 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from .inference import MlxAudioInferenceResult
-from .transcriber import (
+from .inference import (
+    MlxAudioInference,
+    MlxAudioInferenceResult,
     MlxAudioModelProfile,
-    MlxAudioTranscriber,
 )
+from .transcriber import MlxAudioTranscriber
 
 __all__ = [
+    "MlxAudioInference",
     "MlxAudioInferenceResult",
     "MlxAudioModelProfile",
     "MlxAudioTranscriber",

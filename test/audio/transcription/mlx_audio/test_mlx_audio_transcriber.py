@@ -19,13 +19,13 @@ from scinoephile.audio.transcription import (
     TranscriptionError,
     TranscriptionInferenceError,
 )
-from scinoephile.audio.transcription.mlx_audio.inference import MlxAudioInferenceResult
-from scinoephile.audio.transcription.mlx_audio.transcriber import (
+from scinoephile.audio.transcription.mlx_audio.inference import (
     MIMO_MODEL_NAME,
     QWEN3_ASR_MODEL_NAME,
-    MlxAudioTranscriber,
-    get_mlx_audio_model_profile,
+    MlxAudioInference,
+    MlxAudioInferenceResult,
 )
+from scinoephile.audio.transcription.mlx_audio.transcriber import MlxAudioTranscriber
 from scinoephile.core import Language
 
 
@@ -45,10 +45,12 @@ def use_apple_silicon_platform(monkeypatch: pytest.MonkeyPatch):
 def test_get_cache_path_separates_model_configuration():
     """Test MLX-Audio cache paths differ by model configuration."""
     audio = _get_cache_audio()
-    first_transcriber = _get_mlx_audio_transcriber()
-    second_transcriber = _get_mlx_audio_transcriber()
-    first_transcriber.model_name = "mimo/one"
-    second_transcriber.model_name = "mimo/two"
+    first_transcriber = _get_mlx_audio_transcriber(
+        model_name="custom/MiMo-V2.5-ASR-one"
+    )
+    second_transcriber = _get_mlx_audio_transcriber(
+        model_name="custom/MiMo-V2.5-ASR-two"
+    )
 
     first_cache_path = first_transcriber._get_cache_path(audio)
     second_cache_path = second_transcriber._get_cache_path(audio)
@@ -176,11 +178,11 @@ def test_init_derives_mlx_audio_languages(
     assert transcriber.mlx_audio_language == mlx_audio_language
 
 
-def test_get_mlx_audio_model_profile_accepts_local_model_path():
-    """Test supported model profiles match local paths case-insensitively."""
-    profile = get_mlx_audio_model_profile("/models/QWEN3-ASR-0.6B-8bit")
+def test_mlx_audio_inference_matches_model_name_case_insensitively():
+    """Test supported model profiles match model names case-insensitively."""
+    inference = MlxAudioInference("custom/QWEN3-ASR-0.6B-8bit")
 
-    assert profile.family_name == "qwen3-asr"
+    assert inference.model_profile.family_name == "qwen3-asr"
 
 
 @pytest.mark.parametrize(
@@ -190,7 +192,7 @@ def test_get_mlx_audio_model_profile_accepts_local_model_path():
         ({"model_type": "qwen3_asr"}, "qwen3-asr", "qwen3_asr"),
     ],
 )
-def test_get_mlx_audio_model_profile_reads_local_model_metadata(
+def test_mlx_audio_inference_reads_local_model_metadata(
     tmp_path: Path,
     metadata: dict[str, object],
     expected_family: str,
@@ -204,19 +206,19 @@ def test_get_mlx_audio_model_profile_reads_local_model_metadata(
         encoding="utf-8",
     )
 
-    profile = get_mlx_audio_model_profile(str(model_path))
+    inference = MlxAudioInference(str(model_path))
 
-    assert profile.family_name == expected_family
-    assert profile.mlx_audio_model_type == expected_model_type
+    assert inference.model_profile.family_name == expected_family
+    assert inference.model_profile.mlx_audio_model_type == expected_model_type
 
 
-def test_get_mlx_audio_model_profile_rejects_untested_family():
+def test_mlx_audio_inference_rejects_untested_family():
     """Test unknown MLX-Audio model families fail clearly."""
     with pytest.raises(
         TranscriptionError,
         match="supported families: mimo, qwen3-asr",
     ):
-        get_mlx_audio_model_profile("mlx-community/Whisper-Large-v3-MLX")
+        MlxAudioInference("mlx-community/Whisper-Large-v3-MLX")
 
 
 def test_init_rejects_non_positive_max_tokens():
@@ -473,33 +475,29 @@ def test_transcribe_uses_direct_mlx_audio_inference(
     transcriber = MlxAudioTranscriber(model_name=MIMO_MODEL_NAME)
     transcriber.ctc_aligner = Mock(return_value=expected_segments)
 
-    def fake_transcribe_with_mlx_audio(
+    def fake_transcribe(
         audio_path: Path,
-        model_name: str,
-        model_type: str,
         language: str,
-        *,
         max_tokens: int | None,
     ) -> MlxAudioInferenceResult:
         """Capture direct MLX-Audio arguments and return transcript text."""
         captured.update(
             audio_path=audio_path,
-            model_name=model_name,
-            model_type=model_type,
             language=language,
             max_tokens=max_tokens,
         )
         return MlxAudioInferenceResult(text="你好")
 
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.transcriber.transcribe_with_mlx_audio",
-        fake_transcribe_with_mlx_audio,
+        transcriber.inference,
+        "transcribe",
+        fake_transcribe,
     )
     segments = transcriber.transcribe(audio)
 
     assert segments == expected_segments
-    assert captured["model_name"] == MIMO_MODEL_NAME
-    assert captured["model_type"] == "mimo"
+    assert transcriber.model_name == MIMO_MODEL_NAME
+    assert transcriber.model_profile.mlx_audio_model_type == "mimo"
     assert captured["language"] == "zh"
     assert captured["max_tokens"] == 256
     assert isinstance(captured["audio_path"], Path)
@@ -519,32 +517,26 @@ def test_transcribe_derives_language_and_passes_max_tokens(
     )
     transcriber.ctc_aligner = Mock(return_value=expected_segments)
 
-    def fake_transcribe_with_mlx_audio(
+    def fake_transcribe(
         _audio_path: Path,
-        model_name: str,
-        model_type: str,
         language: str,
-        *,
         max_tokens: int | None,
     ) -> MlxAudioInferenceResult:
         """Capture direct MLX-Audio arguments and return transcript text."""
         captured.update(
-            model_name=model_name,
-            model_type=model_type,
             language=language,
             max_tokens=max_tokens,
         )
         return MlxAudioInferenceResult(text="你好")
 
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.transcriber.transcribe_with_mlx_audio",
-        fake_transcribe_with_mlx_audio,
+        transcriber.inference,
+        "transcribe",
+        fake_transcribe,
     )
     segments = transcriber.transcribe(audio)
 
     assert segments == expected_segments
-    assert captured["model_name"] == MIMO_MODEL_NAME
-    assert captured["model_type"] == "mimo"
     assert captured["language"] == "en"
     assert captured["max_tokens"] == 1024
 
@@ -925,7 +917,8 @@ def test_transcribe_wraps_mlx_audio_inference_errors(
     audio = AudioSegment.silent(duration=1000)
     transcriber = MlxAudioTranscriber()
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.transcriber.transcribe_with_mlx_audio",
+        transcriber.inference,
+        "transcribe",
         Mock(side_effect=ImportError("missing mlx_audio")),
     )
 
@@ -950,8 +943,7 @@ def _get_mlx_audio_transcriber(
     """
     transcriber = object.__new__(MlxAudioTranscriber)
     transcriber.cache_dir_path = cache_dir_path
-    transcriber.model_name = model_name
-    transcriber.model_profile = get_mlx_audio_model_profile(model_name)
+    transcriber.inference = MlxAudioInference(model_name)
     transcriber.language = Language.yue_hant
     transcriber.mlx_audio_language = "zh"
     transcriber.ctc_aligner = CtcAligner()
