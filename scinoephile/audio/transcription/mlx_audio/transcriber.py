@@ -207,8 +207,8 @@ class MlxAudioTranscriber:
         """
         return self._get_cached_transcription(
             cache_audio,
-            use_demucs=self.use_demucs,
-            use_vad=self.use_vad,
+            self.use_demucs,
+            self.use_vad,
         )
 
     def transcribe(
@@ -237,12 +237,12 @@ class MlxAudioTranscriber:
         # Remove or inspect configured attempt caches before preprocessing
         rejected_attempts: set[tuple[bool, bool]] = set()
         if overwrite_cache:
-            self._remove_cached_attempts(cache_audio, attempts=attempts)
+            self._remove_cached_attempts(cache_audio, attempts)
         elif use_cache:
             cached_segments, rejected_attempts = self._get_cached_attempt(
                 cache_audio,
-                attempts=attempts,
-                is_usable=is_usable,
+                attempts,
+                is_usable,
             )
             if cached_segments is not None:
                 return cached_segments
@@ -281,7 +281,6 @@ class MlxAudioTranscriber:
     def _get_cache_path(
         self,
         audio: AudioSegment,
-        *,
         use_demucs: bool,
         use_vad: bool,
     ) -> Path | None:
@@ -306,8 +305,8 @@ class MlxAudioTranscriber:
                     "audio_frame_rate": audio.frame_rate,
                     "audio_sample_width": audio.sample_width,
                     **self._get_cache_metadata(
-                        use_demucs=use_demucs,
-                        use_vad=use_vad,
+                        use_demucs,
+                        use_vad,
                     ),
                 },
                 ensure_ascii=False,
@@ -318,7 +317,6 @@ class MlxAudioTranscriber:
 
     def _get_cache_metadata(
         self,
-        *,
         use_demucs: bool,
         use_vad: bool,
     ) -> dict[str, object]:
@@ -352,7 +350,6 @@ class MlxAudioTranscriber:
     def _get_cache_payload(
         self,
         segments: Sequence[TranscribedSegment],
-        *,
         use_demucs: bool,
         use_vad: bool,
     ) -> dict[str, object]:
@@ -367,8 +364,8 @@ class MlxAudioTranscriber:
         """
         return {
             **self._get_cache_metadata(
-                use_demucs=use_demucs,
-                use_vad=use_vad,
+                use_demucs,
+                use_vad,
             ),
             "segments": [segment.model_dump() for segment in segments],
         }
@@ -376,7 +373,6 @@ class MlxAudioTranscriber:
     def _remove_cached_attempts(
         self,
         cache_audio: AudioSegment,
-        *,
         attempts: Sequence[tuple[bool, bool]],
     ):
         """Remove cache files for all configured transcription attempts.
@@ -388,8 +384,8 @@ class MlxAudioTranscriber:
         for use_demucs, use_vad in attempts:
             cache_path = self._get_cache_path(
                 cache_audio,
-                use_demucs=use_demucs,
-                use_vad=use_vad,
+                use_demucs,
+                use_vad,
             )
             if cache_path is None or not cache_path.exists():
                 continue
@@ -399,7 +395,6 @@ class MlxAudioTranscriber:
     def _get_cached_attempt(
         self,
         cache_audio: AudioSegment,
-        *,
         attempts: Sequence[tuple[bool, bool]],
         is_usable: Callable[[list[TranscribedSegment]], bool] | None,
     ) -> tuple[list[TranscribedSegment] | None, set[tuple[bool, bool]]]:
@@ -417,8 +412,8 @@ class MlxAudioTranscriber:
             try:
                 segments = self._get_cached_transcription(
                     cache_audio,
-                    use_demucs=use_demucs,
-                    use_vad=use_vad,
+                    use_demucs,
+                    use_vad,
                 )
             except TranscriptionError as exc:
                 logger.warning(f"Unable to read MLX-Audio transcription cache: {exc}")
@@ -433,7 +428,6 @@ class MlxAudioTranscriber:
     def _get_cached_transcription(
         self,
         cache_audio: AudioSegment,
-        *,
         use_demucs: bool,
         use_vad: bool,
     ) -> list[TranscribedSegment] | None:
@@ -448,8 +442,8 @@ class MlxAudioTranscriber:
         """
         cache_path = self._get_cache_path(
             cache_audio,
-            use_demucs=use_demucs,
-            use_vad=use_vad,
+            use_demucs,
+            use_vad,
         )
         if cache_path is None or not cache_path.exists():
             return None
@@ -621,10 +615,7 @@ class MlxAudioTranscriber:
             if not use_vad and self.use_vad:
                 logger.info("Retrying MLX-Audio without VAD")
             try:
-                segments = self._transcribe_uncached(
-                    transcription_audio,
-                    use_vad=use_vad,
-                )
+                segments = self._transcribe_uncached(transcription_audio, use_vad)
             except (
                 AssertionError,
                 ImportError,
@@ -637,16 +628,16 @@ class MlxAudioTranscriber:
 
             cache_path = self._get_cache_path(
                 cache_audio,
-                use_demucs=use_demucs,
-                use_vad=use_vad,
+                use_demucs,
+                use_vad,
             )
             if cache_path is not None:
                 with open_atomic_text_file(cache_path) as file:
                     json.dump(
                         self._get_cache_payload(
                             segments,
-                            use_demucs=use_demucs,
-                            use_vad=use_vad,
+                            use_demucs,
+                            use_vad,
                         ),
                         file,
                         ensure_ascii=False,
@@ -725,14 +716,13 @@ class MlxAudioTranscriber:
         )
         return self._transcribe_chunked_audio(
             audio,
-            chunk_duration_ms=chunk_duration_ms,
-            chunk_overlap_ms=chunk_overlap_ms,
+            chunk_duration_ms,
+            chunk_overlap_ms,
         )
 
     def _transcribe_chunked_audio(
         self,
         audio: AudioSegment,
-        *,
         chunk_duration_ms: int,
         chunk_overlap_ms: int,
     ) -> list[TranscribedSegment]:
@@ -767,10 +757,10 @@ class MlxAudioTranscriber:
                 segments.extend(
                     self._get_offset_core_segments(
                         window_segments,
-                        offset_seconds=window_start_ms / 1000,
-                        core_start_seconds=core_start_ms / 1000,
-                        core_end_seconds=core_end_ms / 1000,
-                        start_id=len(segments),
+                        window_start_ms / 1000,
+                        core_start_ms / 1000,
+                        core_end_ms / 1000,
+                        len(segments),
                     )
                 )
             core_start_ms = core_end_ms
@@ -784,7 +774,6 @@ class MlxAudioTranscriber:
     def _transcribe_uncached(
         self,
         audio: AudioSegment,
-        *,
         use_vad: bool,
     ) -> list[TranscribedSegment]:
         """Run MLX-Audio transcription and timestamp alignment without cache lookup.
@@ -821,8 +810,8 @@ class MlxAudioTranscriber:
         chunk_overlap_ms = int(round(self.chunk_overlap_seconds * 1000))
         return self._transcribe_chunked_audio(
             audio,
-            chunk_duration_ms=chunk_duration_ms,
-            chunk_overlap_ms=chunk_overlap_ms,
+            chunk_duration_ms,
+            chunk_overlap_ms,
         )
 
     def _transcribe_vad_audio(
@@ -961,7 +950,6 @@ class MlxAudioTranscriber:
     @staticmethod
     def _get_offset_core_segments(
         segments: Sequence[TranscribedSegment],
-        *,
         offset_seconds: float,
         core_start_seconds: float,
         core_end_seconds: float,

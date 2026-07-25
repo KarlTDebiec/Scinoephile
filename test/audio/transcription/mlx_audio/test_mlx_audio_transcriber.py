@@ -348,7 +348,7 @@ def test_transcribe_recovers_from_malformed_cache(
     segments = transcriber.transcribe(audio)
 
     assert segments == expected_segments
-    patched_transcribe.assert_called_once_with(audio, use_vad=False)
+    patched_transcribe.assert_called_once_with(audio, False)
     assert (
         json.loads(cache_path.read_text(encoding="utf-8"))["segments"][0]["text"]
         == "你好"
@@ -490,7 +490,6 @@ def test_transcribe_overwrites_matching_cache(
 
     def transcribe_uncached(
         _audio: AudioSegment,
-        *,
         use_vad: bool,
     ) -> list[TranscribedSegment]:
         """Return fresh output after confirming every old cache was removed."""
@@ -832,7 +831,7 @@ def test_transcribe_retries_without_vad_after_unusable_output(
     )
 
     assert segments == expected_segments
-    assert [call.kwargs["use_vad"] for call in patched_transcribe.call_args_list] == [
+    assert [call.args[1] for call in patched_transcribe.call_args_list] == [
         True,
         False,
     ]
@@ -866,7 +865,7 @@ def test_transcribe_rejection_does_not_raise_other_attempt_error(
     )
 
     assert segments == []
-    assert [call.kwargs["use_vad"] for call in patched_transcribe.call_args_list] == [
+    assert [call.args[1] for call in patched_transcribe.call_args_list] == [
         True,
         False,
     ]
