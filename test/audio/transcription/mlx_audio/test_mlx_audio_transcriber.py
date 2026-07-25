@@ -52,8 +52,16 @@ def test_get_cache_path_separates_model_configuration():
         model_name="custom/MiMo-V2.5-ASR-two"
     )
 
-    first_cache_path = first_transcriber._get_cache_path(audio)
-    second_cache_path = second_transcriber._get_cache_path(audio)
+    first_cache_path = first_transcriber._get_cache_path(
+        audio,
+        use_demucs=False,
+        use_vad=False,
+    )
+    second_cache_path = second_transcriber._get_cache_path(
+        audio,
+        use_demucs=False,
+        use_vad=False,
+    )
 
     assert first_cache_path is not None
     assert second_cache_path is not None
@@ -70,8 +78,16 @@ def test_get_cache_path_separates_ctc_model_configuration():
     first_transcriber.ctc_aligner = CtcAligner("ctc/one")
     second_transcriber.ctc_aligner = CtcAligner("ctc/two")
 
-    first_cache_path = first_transcriber._get_cache_path(audio)
-    second_cache_path = second_transcriber._get_cache_path(audio)
+    first_cache_path = first_transcriber._get_cache_path(
+        audio,
+        use_demucs=False,
+        use_vad=False,
+    )
+    second_cache_path = second_transcriber._get_cache_path(
+        audio,
+        use_demucs=False,
+        use_vad=False,
+    )
 
     assert first_cache_path is not None
     assert second_cache_path is not None
@@ -83,10 +99,19 @@ def test_get_cache_path_uses_mlx_runtime_on_apple_silicon():
     audio = _get_cache_audio()
     transcriber = _get_mlx_audio_transcriber(model_name=MIMO_MODEL_NAME)
 
-    cache_path = transcriber._get_cache_path(audio)
+    cache_path = transcriber._get_cache_path(
+        audio,
+        use_demucs=False,
+        use_vad=False,
+    )
+
+    metadata = transcriber._get_cache_metadata(
+        use_demucs=False,
+        use_vad=False,
+    )
 
     assert cache_path is not None
-    assert transcriber._get_cache_metadata()["runtime"] == "mlx"
+    assert metadata["runtime"] == "mlx"
 
 
 @pytest.mark.parametrize(
@@ -126,8 +151,16 @@ def test_get_cache_path_separates_generation_options():
     second_transcriber = _get_mlx_audio_transcriber()
     second_transcriber.max_tokens = 1024
 
-    first_cache_path = first_transcriber._get_cache_path(audio)
-    second_cache_path = second_transcriber._get_cache_path(audio)
+    first_cache_path = first_transcriber._get_cache_path(
+        audio,
+        use_demucs=False,
+        use_vad=False,
+    )
+    second_cache_path = second_transcriber._get_cache_path(
+        audio,
+        use_demucs=False,
+        use_vad=False,
+    )
 
     assert first_cache_path is not None
     assert second_cache_path is not None
@@ -146,7 +179,12 @@ def test_get_cache_path_separates_audio_formats():
     transcriber = _get_mlx_audio_transcriber()
 
     cache_paths = {
-        transcriber._get_cache_path(audio_segment) for audio_segment in audio_segments
+        transcriber._get_cache_path(
+            audio_segment,
+            use_demucs=False,
+            use_vad=False,
+        )
+        for audio_segment in audio_segments
     }
 
     assert len(cache_paths) == len(audio_segments)
@@ -249,7 +287,11 @@ def test_get_cached_transcription_reads_mlx_audio_payload(tmp_path: Path):
     """Test MLX-Audio cache reads segment payloads from metadata-bearing files."""
     transcriber = MlxAudioTranscriber(cache_dir_path=tmp_path)
     audio = _get_cache_audio()
-    cache_path = transcriber._get_cache_path(audio)
+    cache_path = transcriber._get_cache_path(
+        audio,
+        use_demucs=False,
+        use_vad=False,
+    )
     assert cache_path is not None
     cache_path.write_text(
         json.dumps(
@@ -293,7 +335,11 @@ def test_transcribe_recovers_from_malformed_cache(
     audio = _get_cache_audio()
     expected_segments = [_get_timed_segment("你好")]
     transcriber = MlxAudioTranscriber(cache_dir_path=tmp_path)
-    cache_path = transcriber._get_cache_path(audio)
+    cache_path = transcriber._get_cache_path(
+        audio,
+        use_demucs=False,
+        use_vad=False,
+    )
     assert cache_path is not None
     cache_path.write_text("{", encoding="utf-8")
     patched_transcribe = Mock(return_value=expected_segments)
@@ -322,7 +368,11 @@ def test_malformed_cache_does_not_override_fresh_rejection(
     audio = _get_cache_audio()
     fresh_segments = [_get_timed_segment("fresh")]
     transcriber = MlxAudioTranscriber(cache_dir_path=tmp_path)
-    cache_path = transcriber._get_cache_path(audio)
+    cache_path = transcriber._get_cache_path(
+        audio,
+        use_demucs=False,
+        use_vad=False,
+    )
     assert cache_path is not None
     cache_path.write_text("{", encoding="utf-8")
     monkeypatch.setattr(
@@ -875,7 +925,11 @@ def test_transcribe_aligns_text_and_writes_cache(
 
     assert segments == expected_segments
     transcriber.ctc_aligner.assert_called_once_with(audio, "你好")
-    cache_path = transcriber._get_cache_path(audio)
+    cache_path = transcriber._get_cache_path(
+        audio,
+        use_demucs=False,
+        use_vad=False,
+    )
     assert cache_path is not None
     cache_payload = json.loads(cache_path.read_text(encoding="utf-8"))
     assert cache_payload["backend"] == "mlx-audio"
