@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from contextlib import AbstractContextManager
+from types import ModuleType
 from typing import TYPE_CHECKING, TypedDict
 
 __all__ = [
@@ -14,8 +15,8 @@ __all__ = [
     "import_demucs_infer_get_model",
     "import_huggingface_hub_snapshot_download",
     "import_huggingface_hub_utils_validate_repo_id",
+    "import_torch",
     "import_torch_cuda_is_available",
-    "import_torch_from_numpy",
     "import_torch_mps_is_available",
     "import_torch_no_grad",
     "import_torchaudio_functional_resample",
@@ -145,17 +146,17 @@ def import_torch_cuda_is_available() -> Callable[[], bool]:
     return is_available
 
 
-def import_torch_from_numpy() -> Callable[..., Tensor]:
-    """Import the Torch NumPy conversion function on demand.
+def import_torch() -> ModuleType:
+    """Import Torch on demand.
 
     Returns:
-        Torch NumPy conversion function
+        Torch module
     """
     try:
-        from torch import from_numpy
+        import torch
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return from_numpy
+    return torch
 
 
 def import_torch_no_grad() -> Callable[[], AbstractContextManager[None]]:

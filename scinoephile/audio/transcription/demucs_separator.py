@@ -14,7 +14,7 @@ from pydub import AudioSegment
 from scinoephile.core.dependencies.transcription import (
     import_demucs_infer_apply_model,
     import_demucs_infer_get_model,
-    import_torch_from_numpy,
+    import_torch,
     import_torch_no_grad,
     import_torchaudio_functional_resample,
 )
@@ -242,8 +242,8 @@ class DemucsSeparator:
             waveform tensor as [channels, time]
         """
         array = np.array(audio.get_array_of_samples(), dtype=np.int16)
-        from_numpy = import_torch_from_numpy()
-        waveform = from_numpy(
+        torch = import_torch()
+        waveform = torch.from_numpy(
             array.reshape((-1, audio.channels)).T.astype(np.float32)
             / np.iinfo(np.int16).max
         )
