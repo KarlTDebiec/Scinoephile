@@ -6,24 +6,34 @@ from __future__ import annotations
 
 from io import BytesIO
 from threading import Thread
+from typing import TYPE_CHECKING
 
-from flask import (
-    Flask,
-    Response,
-    abort,
-    current_app,
-    render_template,
-    request,
-)
 from PIL import Image
+
+from scinoephile.core.dependencies.web import (
+    import_flask_abort,
+    import_flask_current_app,
+    import_flask_render_template,
+    import_flask_request,
+    import_flask_response,
+)
 
 from .concerns import SubtitleRowView
 from .session import OcrValidationSession
 
 __all__ = ["register_routes"]
 
+if TYPE_CHECKING:
+    from scinoephile.core.dependencies.web import FlaskApp, FlaskResponse
 
-def register_routes(app: Flask):
+abort = import_flask_abort()
+current_app = import_flask_current_app()
+render_template = import_flask_render_template()
+request = import_flask_request()
+response_cls = import_flask_response()
+
+
+def register_routes(app: FlaskApp):
     """Register OCR validation routes with a Flask app.
 
     Arguments:
@@ -54,7 +64,7 @@ def register_routes(app: Flask):
         return _render_subtitle_row(session, row)
 
     @app.get("/subtitles/<int:sub_idx>/concern.png")
-    def concern_image(sub_idx: int) -> Response:
+    def concern_image(sub_idx: int) -> FlaskResponse:
         """Render one current concern image.
 
         Arguments:
@@ -67,7 +77,7 @@ def register_routes(app: Flask):
         return _png_response(image)
 
     @app.get("/subtitles/<int:sub_idx>/validation.png")
-    def validation_image(sub_idx: int) -> Response:
+    def validation_image(sub_idx: int) -> FlaskResponse:
         """Render one subtitle image with validation bboxes.
 
         Arguments:
@@ -160,7 +170,7 @@ def _handle_value_error(exc: ValueError) -> tuple[str, int]:
     return str(exc), 400
 
 
-def _png_response(image: Image.Image) -> Response:
+def _png_response(image: Image.Image) -> FlaskResponse:
     """Encode an image as a PNG Flask response.
 
     Arguments:
@@ -170,10 +180,10 @@ def _png_response(image: Image.Image) -> Response:
     """
     output = BytesIO()
     image.save(output, format="PNG")
-    return Response(output.getvalue(), mimetype="image/png")
+    return response_cls(output.getvalue(), mimetype="image/png")
 
 
-def _register_error_handlers(app: Flask):
+def _register_error_handlers(app: FlaskApp):
     """Register request-facing validation error handlers.
 
     Arguments:
@@ -183,7 +193,7 @@ def _register_error_handlers(app: Flask):
     app.register_error_handler(ValueError, _handle_value_error)
 
 
-def _register_exit_route(app: Flask):
+def _register_exit_route(app: FlaskApp):
     """Register the route that finishes validation and stops the web server.
 
     Arguments:
@@ -208,7 +218,7 @@ def _register_exit_route(app: Flask):
         return "Validation exited. You can close this tab."
 
 
-def _register_filter_routes(app: Flask):
+def _register_filter_routes(app: FlaskApp):
     """Register filter update routes.
 
     Arguments:

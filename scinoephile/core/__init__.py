@@ -3,8 +3,8 @@
 """Core code.
 
 Package hierarchy (modules may import from any above):
-* dictionaries / exceptions / ml / paths
-* cache / subtitles / text
+* dependencies / dictionaries / exceptions / paths
+* cache / ml / subtitles / text
 * language / pairs / romanization / timing
 * cli / llms / media / synchronization
 * stacking

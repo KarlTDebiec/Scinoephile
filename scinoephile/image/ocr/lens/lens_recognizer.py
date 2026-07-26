@@ -10,12 +10,16 @@ import json
 from collections.abc import Mapping
 from logging import getLogger
 from pathlib import Path
-from typing import Any, TypedDict, cast, override
+from typing import TypedDict, cast, override
 
 from PIL import Image
 
 from scinoephile.common.validation import val_int, val_output_dir_path
 from scinoephile.core import Language
+from scinoephile.core.dependencies.ocr import (
+    import_chrome_lens_py_lens_api,
+    import_chrome_lens_py_lens_api_error,
+)
 
 __all__ = [
     "LensRecognizer",
@@ -24,10 +28,6 @@ __all__ = [
 
 logger = getLogger(__name__)
 
-_OCR_EXTRA_MESSAGE = (
-    "Google Lens OCR support requires optional OCR dependencies. "
-    "Install scinoephile with the 'ocr' extra."
-)
 _LENS_RETRY_DELAY_SECONDS = 1.5
 _LENS_LANGUAGE_CODES = {
     Language.eng: "en",
@@ -87,8 +87,9 @@ class LensRecognizer:
             raise ValueError(f"{language} is not supported by Google Lens OCR") from exc
         self.overwrite_cache = overwrite_cache
         self.retries = val_int(retries, min_value=1)
-        self._lens_api_error_class = self._get_lens_api_error_class()
-        self._api = self._get_lens_api_class()()
+        lens_api_cls = import_chrome_lens_py_lens_api()
+        self._lens_api_error_cls = import_chrome_lens_py_lens_api_error()
+        self._api = lens_api_cls()
 
     @override
     def __repr__(self) -> str:
@@ -154,7 +155,7 @@ class LensRecognizer:
         Returns:
             transient exception classes
         """
-        return self._lens_api_error_class, _GoogleLensRequestError
+        return self._lens_api_error_cls, _GoogleLensRequestError
 
     @staticmethod
     def _clean_text(text: str) -> str:
@@ -215,50 +216,6 @@ class LensRecognizer:
             subtitle text
         """
         return LensRecognizer._clean_text("\n".join(lines))
-
-    @staticmethod
-    def _get_lens_api_class() -> Any:
-        """Import chrome-lens-py on demand.
-
-        Returns:
-            chrome-lens-py LensAPI class
-        Raises:
-            ImportError: if chrome-lens-py is not installed
-        """
-        try:
-            from chrome_lens_py import (  # noqa: PLC0415
-                LensAPI,
-            )
-        except ImportError as exc:
-            raise ImportError(_OCR_EXTRA_MESSAGE) from exc
-        return LensAPI
-
-    @staticmethod
-    def _get_lens_api_error_class() -> type[Exception]:
-        """Import chrome-lens-py LensAPIError on demand.
-
-        Returns:
-            chrome-lens-py LensAPIError class
-        Raises:
-            ImportError: if chrome-lens-py is not installed
-        """
-        try:
-            from chrome_lens_py.exceptions import (  # noqa: PLC0415
-                LensAPIError,
-            )
-        except ImportError as module_exc:
-            try:
-                from chrome_lens_py import (  # noqa: PLC0415
-                    LensAPIError,
-                )
-            except ImportError as package_exc:
-                raise ImportError(_OCR_EXTRA_MESSAGE) from package_exc
-            if module_exc.name != "chrome_lens_py.exceptions":
-                logger.debug(
-                    f"Imported LensAPIError from chrome_lens_py package after "
-                    f"submodule import failed: {module_exc}"
-                )
-        return cast(type[Exception], LensAPIError)
 
     @staticmethod
     def _load_lens_lines(cache_path: Path) -> list[str]:
