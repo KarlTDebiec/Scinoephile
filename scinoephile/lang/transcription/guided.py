@@ -9,7 +9,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from types import MappingProxyType
 
-from scinoephile.audio.transcription import get_segment_split_on_whitespace
+from scinoephile.audio.transcription import (
+    DemucsMode,
+    VADMode,
+    get_segment_split_on_whitespace,
+)
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.ml import get_torch_device
@@ -34,12 +38,7 @@ from scinoephile.llms.punctuation import (
 )
 
 from .aligner import TranscriptionAligner
-from .transcriber import (
-    DemucsMode,
-    GuidedTranscriber,
-    TranscribedSegmentSplitter,
-    VADMode,
-)
+from .transcriber import GuidedTranscriber, TranscribedSegmentSplitter
 
 __all__ = [
     "DEFAULT_SPECS",

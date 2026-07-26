@@ -8,13 +8,13 @@ from logging import info
 from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription import VADMode
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.lang.review.guided import get_guided_reviewer
 from scinoephile.lang.transcription.guided import get_guided_transcriber
-from scinoephile.lang.transcription.transcriber import VADMode
 from scinoephile.lang.translation.gap import get_gap_translator
 from scinoephile.workflows.review import review_series_guided
 from scinoephile.workflows.transcription import transcribe_series_guided

@@ -3,20 +3,12 @@
 """MLX-Audio transcription and timestamp alignment.
 
 Package hierarchy (modules may import from any above):
-* forced_alignment / inference
+* backend
 * transcriber
 """
 
 from __future__ import annotations
 
-from .inference import MlxAudioInferenceResult
-from .transcriber import (
-    MlxAudioModelProfile,
-    MlxAudioTranscriber,
-)
+from .transcriber import MlxAudioTranscriber
 
-__all__ = [
-    "MlxAudioInferenceResult",
-    "MlxAudioModelProfile",
-    "MlxAudioTranscriber",
-]
+__all__ = ["MlxAudioTranscriber"]
