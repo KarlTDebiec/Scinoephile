@@ -8,6 +8,7 @@ Package hierarchy (modules may import from any above):
 * cache / ctc_aligner / demucs_separator
 * transcriber
 * whisper_transcriber
+* mlx_audio
 """
 
 from __future__ import annotations
