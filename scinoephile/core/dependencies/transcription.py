@@ -10,42 +10,26 @@ from types import ModuleType
 from typing import TYPE_CHECKING, TypedDict
 
 __all__ = [
-    "import_demucs_infer_apply_model",
-    "import_demucs_infer_get_model",
-    "import_huggingface_hub_snapshot_download",
-    "import_huggingface_hub_utils_validate_repo_id",
+    "import_demucs_infer_apply",
+    "import_demucs_infer_pretrained",
+    "import_huggingface_hub",
+    "import_huggingface_hub_utils",
     "import_torch",
-    "import_torchaudio_functional_resample",
-    "import_transformers_auto_model_for_ctc",
-    "import_transformers_auto_processor",
-    "import_whisper_timestamped_load_model",
-    "import_whisper_timestamped_transcribe",
+    "import_torchaudio",
+    "import_transformers",
+    "import_whisper_timestamped",
     "import_whisper_timestamped_transcribe_get_vad_segments",
 ]
 
 if TYPE_CHECKING:
     from demucs_infer.apply import BagOfModels, Model
     from torch import Tensor
-    from transformers import (
-        AutoModelForCTC,
-        AutoProcessor,
-        PreTrainedModel,
-        ProcessorMixin,
-    )
-    from whisper import Whisper
+    from transformers import PreTrainedModel, ProcessorMixin
 
     type CtcModel = PreTrainedModel
     type CtcProcessor = ProcessorMixin
     type DemucsModel = BagOfModels | Model
     type TorchTensor = Tensor
-    type WhisperModel = Whisper
-
-
-class _WhisperTranscriptionResult(TypedDict):
-    """Whisper transcription result used by Scinoephile."""
-
-    segments: list[dict[str, object]]
-    """Transcription segment dictionaries."""
 
 
 class _WhisperVadSegment(TypedDict):
@@ -64,56 +48,56 @@ _TRANSCRIPTION_EXTRA_MESSAGE = (
 )
 
 
-def import_demucs_infer_apply_model() -> Callable[..., Tensor]:
-    """Import the Demucs model application function on demand.
+def import_demucs_infer_apply() -> ModuleType:
+    """Import the Demucs model application module on demand.
 
     Returns:
-        Demucs model application function
+        Demucs model application module
     """
     try:
-        from demucs_infer.apply import apply_model
+        import demucs_infer.apply as demucs_infer_apply
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return apply_model
+    return demucs_infer_apply
 
 
-def import_demucs_infer_get_model() -> Callable[[str], DemucsModel]:
-    """Import the Demucs model loader on demand.
+def import_demucs_infer_pretrained() -> ModuleType:
+    """Import the Demucs pretrained-model module on demand.
 
     Returns:
-        Demucs model loader
+        Demucs pretrained-model module
     """
     try:
-        from demucs_infer.pretrained import get_model
+        import demucs_infer.pretrained as demucs_infer_pretrained
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return get_model
+    return demucs_infer_pretrained
 
 
-def import_huggingface_hub_snapshot_download() -> Callable[..., str]:
-    """Import the Hugging Face snapshot downloader on demand.
+def import_huggingface_hub() -> ModuleType:
+    """Import Hugging Face Hub on demand.
 
     Returns:
-        snapshot download function
+        Hugging Face Hub module
     """
     try:
-        from huggingface_hub import snapshot_download
+        import huggingface_hub
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return snapshot_download
+    return huggingface_hub
 
 
-def import_huggingface_hub_utils_validate_repo_id() -> Callable[[str], None]:
-    """Import the Hugging Face repository ID validator on demand.
+def import_huggingface_hub_utils() -> ModuleType:
+    """Import Hugging Face Hub utilities on demand.
 
     Returns:
-        repository ID validator
+        Hugging Face Hub utilities module
     """
     try:
-        from huggingface_hub.utils import validate_repo_id
+        import huggingface_hub.utils as huggingface_hub_utils
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return validate_repo_id
+    return huggingface_hub_utils
 
 
 def import_torch() -> ModuleType:
@@ -129,71 +113,43 @@ def import_torch() -> ModuleType:
     return torch
 
 
-def import_torchaudio_functional_resample() -> Callable[[Tensor, int, int], Tensor]:
-    """Import the Torchaudio resampling function on demand.
+def import_torchaudio() -> ModuleType:
+    """Import Torchaudio on demand.
 
     Returns:
-        Torchaudio resampling function
+        Torchaudio module
     """
     try:
-        from torchaudio.functional import resample
+        import torchaudio
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return resample
+    return torchaudio
 
 
-def import_transformers_auto_model_for_ctc() -> type[AutoModelForCTC]:
-    """Import the Hugging Face CTC model factory on demand.
+def import_transformers() -> ModuleType:
+    """Import Transformers on demand.
 
     Returns:
-        CTC model factory
+        Transformers module
     """
     try:
-        from transformers import AutoModelForCTC
+        import transformers
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return AutoModelForCTC
+    return transformers
 
 
-def import_transformers_auto_processor() -> type[AutoProcessor]:
-    """Import the Hugging Face processor factory on demand.
+def import_whisper_timestamped() -> ModuleType:
+    """Import Whisper Timestamped on demand.
 
     Returns:
-        processor factory
+        Whisper Timestamped module
     """
     try:
-        from transformers import AutoProcessor
+        import whisper_timestamped
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return AutoProcessor
-
-
-def import_whisper_timestamped_load_model() -> Callable[..., WhisperModel]:
-    """Import the Whisper model loader on demand.
-
-    Returns:
-        Whisper model loader
-    """
-    try:
-        from whisper_timestamped import load_model
-    except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return load_model
-
-
-def import_whisper_timestamped_transcribe() -> Callable[
-    ..., _WhisperTranscriptionResult
-]:
-    """Import the Whisper transcription function on demand.
-
-    Returns:
-        Whisper transcription function
-    """
-    try:
-        from whisper_timestamped import transcribe
-    except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return transcribe
+    return whisper_timestamped
 
 
 def import_whisper_timestamped_transcribe_get_vad_segments() -> Callable[

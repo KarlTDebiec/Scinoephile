@@ -18,7 +18,7 @@ from PIL import Image
 
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import Language
-from scinoephile.core.dependencies.ocr import import_paddleocr_paddle_ocr
+from scinoephile.core.dependencies.ocr import import_paddleocr
 
 from .bounding_box import PaddleOcrBoundingBox
 from .text_result import PaddleOcrTextResult
@@ -92,11 +92,11 @@ class PaddleRecognizer:
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
-        paddle_ocr_cls = import_paddleocr_paddle_ocr()
+        paddleocr = import_paddleocr()
         root_logger = getLogger()
         root_logger_level = root_logger.level
         try:
-            self._ocr = paddle_ocr_cls(
+            self._ocr = paddleocr.PaddleOCR(
                 lang=self.paddle_language_code,
                 use_doc_orientation_classify=False,
                 use_doc_unwarping=False,

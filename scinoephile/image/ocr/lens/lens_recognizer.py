@@ -16,10 +16,7 @@ from PIL import Image
 
 from scinoephile.common.validation import val_int, val_output_dir_path
 from scinoephile.core import Language
-from scinoephile.core.dependencies.ocr import (
-    import_chrome_lens_py_lens_api,
-    import_chrome_lens_py_lens_api_error,
-)
+from scinoephile.core.dependencies.ocr import import_chrome_lens_py
 
 __all__ = [
     "LensRecognizer",
@@ -87,9 +84,9 @@ class LensRecognizer:
             raise ValueError(f"{language} is not supported by Google Lens OCR") from exc
         self.overwrite_cache = overwrite_cache
         self.retries = val_int(retries, min_value=1)
-        lens_api_cls = import_chrome_lens_py_lens_api()
-        self._lens_api_error_cls = import_chrome_lens_py_lens_api_error()
-        self._api = lens_api_cls()
+        chrome_lens_py = import_chrome_lens_py()
+        self._lens_api_error_cls = chrome_lens_py.LensAPIError
+        self._api = chrome_lens_py.LensAPI()
 
     @override
     def __repr__(self) -> str:

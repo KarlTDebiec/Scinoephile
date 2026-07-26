@@ -13,8 +13,7 @@ from pydub import AudioSegment
 
 from scinoephile.core.dependencies.transcription import (
     import_torch,
-    import_transformers_auto_model_for_ctc,
-    import_transformers_auto_processor,
+    import_transformers,
 )
 
 from .exceptions import TranscriptionAlignmentError
@@ -286,12 +285,9 @@ class CtcAligner:
             return
 
         # Load the processor and model lazily to preserve optional dependencies
-        processor = import_transformers_auto_processor().from_pretrained(
-            self.model_name
-        )
-        model = import_transformers_auto_model_for_ctc().from_pretrained(
-            self.model_name
-        )
+        transformers = import_transformers()
+        processor = transformers.AutoProcessor.from_pretrained(self.model_name)
+        model = transformers.AutoModelForCTC.from_pretrained(self.model_name)
 
         # Prepare the model for inference and retain both components
         if hasattr(model, "to"):
