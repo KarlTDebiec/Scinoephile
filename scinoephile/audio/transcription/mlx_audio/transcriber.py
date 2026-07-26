@@ -12,11 +12,6 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from scinoephile.audio.transcription.attempt import (
-    DemucsMode,
-    TranscriptionAttempt,
-    VADMode,
-)
 from scinoephile.audio.transcription.ctc_aligner import CtcAligner
 from scinoephile.audio.transcription.exceptions import (
     TranscriptionAlignmentError,
@@ -24,11 +19,17 @@ from scinoephile.audio.transcription.exceptions import (
     TranscriptionError,
     TranscriptionInferenceError,
 )
+from scinoephile.audio.transcription.preprocessing_settings import (
+    DemucsMode,
+    TranscriptionPreprocessingSettings,
+    VADMode,
+)
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.transcriber import Transcriber
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language
+from scinoephile.core.ml import get_torch_module
 
 from .backend import (
     MIMO_MODEL_NAME,
@@ -159,17 +160,17 @@ class MlxAudioTranscriber(Transcriber):
 
     def _get_backend_cache_metadata(
         self,
-        attempt: TranscriptionAttempt,
+        settings: TranscriptionPreprocessingSettings,
     ) -> dict[str, object]:
         """Get metadata that identifies cached MLX-Audio output.
 
         Arguments:
-            attempt: preprocessing attempt
+            settings: transcription preprocessing settings
         Returns:
             cache identity metadata
         """
         vad_version = None
-        if attempt.use_vad:
+        if settings.use_vad:
             vad_version = _VAD_CACHE_VERSION
         return {
             "model_family": self.backend.model_family,
@@ -197,7 +198,7 @@ class MlxAudioTranscriber(Transcriber):
             TranscriptionError: if Silero VAD is unavailable or fails
         """
         try:
-            import torch  # noqa: PLC0415
+            torch = get_torch_module()
             from whisper_timestamped.transcribe import (  # noqa: PLC0415
                 get_vad_segments,
             )
@@ -244,20 +245,20 @@ class MlxAudioTranscriber(Transcriber):
     def _transcribe_attempt(
         self,
         audio: AudioSegment,
-        attempt: TranscriptionAttempt,
+        settings: TranscriptionPreprocessingSettings,
     ) -> list[TranscribedSegment]:
-        """Run one uncached MLX-Audio transcription attempt.
+        """Run one uncached MLX-Audio transcription configuration.
 
         Arguments:
             audio: original or Demucs-separated audio to transcribe
-            attempt: preprocessing attempt
+            settings: transcription preprocessing settings
         Returns:
             timestamped transcription segments
         Raises:
             TranscriptionInferenceError: if an optional dependency or assertion fails
         """
         try:
-            if attempt.use_vad:
+            if settings.use_vad:
                 return self._transcribe_vad_audio(audio)
             return self._transcribe_unfiltered_audio(audio)
         except (AssertionError, ImportError) as exc:

@@ -16,10 +16,10 @@ from scinoephile.audio.transcription import (
     DemucsMode,
     TranscribedSegment,
     TranscribedWord,
-    TranscriptionAttempt,
     TranscriptionEmptyError,
     TranscriptionError,
     TranscriptionInferenceError,
+    TranscriptionPreprocessingSettings,
     VADMode,
 )
 from scinoephile.audio.transcription.mlx_audio.backend import (
@@ -50,10 +50,10 @@ def _get_cache_path(
     use_vad: bool = False,
 ) -> Path:
     """Get the cache path for one preprocessing configuration."""
-    attempt = TranscriptionAttempt(use_demucs, use_vad)
+    settings = TranscriptionPreprocessingSettings(use_demucs, use_vad)
     cache_path = transcriber._cache.get_path(
         audio,
-        transcriber._get_cache_metadata(attempt),
+        transcriber._get_cache_metadata(settings),
     )
     assert cache_path is not None
     return cache_path
@@ -103,7 +103,9 @@ def test_get_cache_path_uses_mlx_runtime_on_apple_silicon():
     """Test cache metadata identifies the fixed MLX runtime."""
     transcriber = _get_mlx_audio_transcriber(model_name=MIMO_MODEL_NAME)
 
-    metadata = transcriber._get_cache_metadata(TranscriptionAttempt(False, False))
+    metadata = transcriber._get_cache_metadata(
+        TranscriptionPreprocessingSettings(False, False)
+    )
 
     assert metadata["runtime"] == "mlx"
 
@@ -192,7 +194,9 @@ def test_get_cached_transcription_reads_mlx_audio_payload(tmp_path: Path):
     expected_segments = [_get_timed_segment("你好")]
     transcriber._cache.save(
         audio,
-        transcriber._get_cache_metadata(TranscriptionAttempt(False, False)),
+        transcriber._get_cache_metadata(
+            TranscriptionPreprocessingSettings(False, False)
+        ),
         expected_segments,
     )
 
@@ -223,7 +227,7 @@ def test_transcribe_recovers_from_malformed_cache(
     assert segments == expected_segments
     patched_transcribe.assert_called_once_with(
         audio,
-        TranscriptionAttempt(False, False),
+        TranscriptionPreprocessingSettings(False, False),
     )
     assert (
         json.loads(cache_path.read_text(encoding="utf-8"))["segments"][0]["text"]

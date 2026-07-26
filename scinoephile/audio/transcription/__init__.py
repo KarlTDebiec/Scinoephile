@@ -3,9 +3,10 @@
 """Code related to audio transcription.
 
 Package hierarchy (modules may import from any above):
-* attempt / exceptions / demucs_separator / transcribed_word
+* demucs / demucs_cache / exceptions / preprocessing_settings / transcribed_word
 * transcribed_segment
 * cache / ctc_aligner
+* demucs_separator
 * transcriber
 * whisper_transcriber
 * mlx_audio
@@ -15,9 +16,9 @@ from __future__ import annotations
 
 from logging import getLogger
 
-from .attempt import DemucsMode, TranscriptionAttempt, VADMode
 from .cache import TranscriptionCache
 from .ctc_aligner import CtcAligner
+from .demucs_cache import DemucsCache
 from .demucs_separator import DemucsSeparator
 from .exceptions import (
     TranscriptionAlignmentError,
@@ -26,6 +27,11 @@ from .exceptions import (
     TranscriptionInferenceError,
 )
 from .mlx_audio import MlxAudioTranscriber
+from .preprocessing_settings import (
+    DemucsMode,
+    TranscriptionPreprocessingSettings,
+    VADMode,
+)
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 from .transcriber import Transcriber
@@ -33,18 +39,19 @@ from .whisper_transcriber import WhisperTranscriber
 
 __all__ = [
     "CtcAligner",
+    "DemucsCache",
     "DemucsSeparator",
     "DemucsMode",
     "MlxAudioTranscriber",
     "TranscribedSegment",
     "TranscribedWord",
     "Transcriber",
-    "TranscriptionAttempt",
     "TranscriptionCache",
     "TranscriptionAlignmentError",
     "TranscriptionEmptyError",
     "TranscriptionError",
     "TranscriptionInferenceError",
+    "TranscriptionPreprocessingSettings",
     "VADMode",
     "WhisperTranscriber",
     "get_segment_merged",

@@ -51,11 +51,11 @@ def _get_cache_path(
     transcriber: WhisperTranscriber,
     audio: AudioSegment,
 ) -> Path:
-    """Get the cache path for the transcriber's first configured attempt."""
-    attempt = transcriber._get_attempts()[0]
+    """Get the cache path for the first preprocessing configuration."""
+    settings = transcriber._get_preprocessing_settings()[0]
     cache_path = transcriber._cache.get_path(
         audio,
-        transcriber._get_cache_metadata(attempt),
+        transcriber._get_cache_metadata(settings),
     )
     assert cache_path is not None
     return cache_path

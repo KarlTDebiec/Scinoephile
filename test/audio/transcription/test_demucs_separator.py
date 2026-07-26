@@ -12,6 +12,7 @@ import numpy as np
 from pydub import AudioSegment
 from pytest import MonkeyPatch, importorskip, raises
 
+from scinoephile.audio.transcription.demucs import get_demucs_model_loader
 from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
 
 
@@ -38,9 +39,9 @@ def test_get_audio_segment_restores_mono_output():
     )
 
     audio = DemucsSeparator._get_audio_segment(
-        vocals=vocals,
-        frame_rate=16000,
-        channels=1,
+        vocals,
+        16000,
+        1,
     )
 
     assert isinstance(audio, AudioSegment)
@@ -65,7 +66,32 @@ def test_demucs_model_loader_requires_transcription_extra(monkeypatch: MonkeyPat
     monkeypatch.setattr(builtins, "__import__", import_without_demucs)
 
     with raises(ImportError, match="'transcription' extra"):
-        DemucsSeparator._get_model_loader()
+        get_demucs_model_loader()
+
+
+def test_model_is_shared_across_separator_instances():
+    """Test separators reuse a loaded model with matching configuration."""
+    model = Mock()
+    model.to.return_value = model
+    model.eval.return_value = model
+    model_loader = Mock(return_value=model)
+    first_separator = DemucsSeparator("model")
+    first_separator._device = "cpu"
+    second_separator = DemucsSeparator("model")
+    second_separator._device = "cpu"
+    DemucsSeparator._models.clear()
+
+    with patch(
+        "scinoephile.audio.transcription.demucs_separator.get_demucs_model_loader",
+        return_value=model_loader,
+    ):
+        first_model = first_separator.model
+        second_model = second_separator.model
+
+    assert first_model is model
+    assert second_model is model
+    model_loader.assert_called_once_with("model")
+    DemucsSeparator._models.clear()
 
 
 def test_separate_vocals_uses_default_demucs_shifts():
@@ -85,7 +111,10 @@ def test_separate_vocals_uses_default_demucs_shifts():
         apply_model_kwargs.append(kwargs)
         return separated_sources
 
-    with patch.object(DemucsSeparator, "_get_apply_model", return_value=apply_model):
+    with patch(
+        "scinoephile.audio.transcription.demucs_separator.get_demucs_apply_model",
+        return_value=apply_model,
+    ):
         output_audio = separator.separate_vocals(input_audio)
 
     assert isinstance(output_audio, AudioSegment)
@@ -112,3 +141,24 @@ def test_separate_vocals_overwrites_matching_cache(
     assert len(result) == len(fresh_audio)
     assert separate.call_count == 2
     assert len(list(tmp_path.glob("*.wav"))) == 1
+
+
+def test_separate_vocals_recovers_from_corrupt_cache(
+    tmp_path,
+    monkeypatch: MonkeyPatch,
+):
+    """Test malformed cached vocals are replaced by fresh separation output."""
+    separator = DemucsSeparator(cache_dir_path=tmp_path)
+    input_audio = AudioSegment.silent(duration=1000, frame_rate=16000)
+    fresh_audio = AudioSegment.silent(duration=800, frame_rate=16000)
+    cache_path = separator._cache.get_path(input_audio)
+    assert cache_path is not None
+    cache_path.write_bytes(b"not audio")
+    separate = Mock(return_value=fresh_audio)
+    monkeypatch.setattr(separator, "_separate_vocals_uncached", separate)
+
+    result = separator.separate_vocals(input_audio)
+
+    assert len(result) == len(fresh_audio)
+    separate.assert_called_once_with(input_audio)
+    assert len(AudioSegment.from_file(cache_path)) == len(fresh_audio)

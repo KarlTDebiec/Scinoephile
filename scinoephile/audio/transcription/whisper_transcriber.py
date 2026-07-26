@@ -13,8 +13,12 @@ from typing import TYPE_CHECKING, Any, ClassVar
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.ml import get_torch_device
 
-from .attempt import DemucsMode, TranscriptionAttempt, VADMode
 from .exceptions import TranscriptionInferenceError
+from .preprocessing_settings import (
+    DemucsMode,
+    TranscriptionPreprocessingSettings,
+    VADMode,
+)
 from .transcribed_segment import TranscribedSegment
 from .transcriber import Transcriber
 
@@ -312,12 +316,12 @@ class WhisperTranscriber(Transcriber):
 
     def _get_backend_cache_metadata(
         self,
-        attempt: TranscriptionAttempt,
+        settings: TranscriptionPreprocessingSettings,
     ) -> dict[str, object]:
         """Get cache metadata identifying configured Whisper output.
 
         Arguments:
-            attempt: preprocessing attempt
+            settings: transcription preprocessing settings
         Returns:
             backend configuration identifying the output
         """
@@ -325,7 +329,7 @@ class WhisperTranscriber(Transcriber):
         if not isinstance(self.temperature, int | float):
             temperature = list(self.temperature)
         vad_implementation = None
-        if attempt.use_vad:
+        if settings.use_vad:
             vad_implementation = "whisper-timestamped"
         return {
             "condition_on_previous_text": self.condition_on_previous_text,
@@ -339,14 +343,14 @@ class WhisperTranscriber(Transcriber):
         self,
         segments: list[TranscribedSegment],
         cache_path: Path,
-        attempt: TranscriptionAttempt,
+        settings: TranscriptionPreprocessingSettings,
     ) -> list[TranscribedSegment]:
         """Normalize cached Whisper segments.
 
         Arguments:
             segments: cached transcription segments
             cache_path: path from which the segments were loaded
-            attempt: preprocessing attempt that produced the segments
+            settings: preprocessing settings that produced the segments
         Returns:
             normalized cached segments
         """
@@ -354,19 +358,19 @@ class WhisperTranscriber(Transcriber):
             segments,
             source="cache",
             cache_path=cache_path,
-            use_vad=attempt.use_vad,
+            use_vad=settings.use_vad,
         )
 
     def _transcribe_attempt(
         self,
         audio: AudioSegment,
-        attempt: TranscriptionAttempt,
+        settings: TranscriptionPreprocessingSettings,
     ) -> list[TranscribedSegment]:
-        """Run one uncached Whisper transcription attempt.
+        """Run one uncached Whisper transcription configuration.
 
         Arguments:
             audio: original or Demucs-separated audio to transcribe
-            attempt: preprocessing attempt
+            settings: transcription preprocessing settings
         Returns:
             normalized transcription segments
         Raises:
@@ -385,7 +389,7 @@ class WhisperTranscriber(Transcriber):
                     self.model,
                     str(temp_audio_path),
                     language=self.language,
-                    vad=attempt.use_vad,
+                    vad=settings.use_vad,
                     temperature=self.temperature,
                     condition_on_previous_text=self.condition_on_previous_text,
                     sample_len=sample_len,
@@ -400,5 +404,5 @@ class WhisperTranscriber(Transcriber):
             segments,
             source="whisper",
             cache_path=None,
-            use_vad=attempt.use_vad,
+            use_vad=settings.use_vad,
         )

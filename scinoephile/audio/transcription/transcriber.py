@@ -13,10 +13,14 @@ from typing import TYPE_CHECKING, ClassVar
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
-from .attempt import DemucsMode, TranscriptionAttempt, VADMode
 from .cache import TranscriptionCache
 from .demucs_separator import DemucsSeparator
 from .exceptions import TranscriptionError
+from .preprocessing_settings import (
+    DemucsMode,
+    TranscriptionPreprocessingSettings,
+    VADMode,
+)
 from .transcribed_segment import TranscribedSegment
 
 __all__ = ["Transcriber"]
@@ -58,7 +62,7 @@ class Transcriber(ABC):
         """Voice activity detection mode."""
 
         self.demucs_separator: DemucsSeparator | None = None
-        """Demucs vocal separator used by configured attempts."""
+        """Demucs vocal separator used by configured preprocessing settings."""
         if self.demucs_mode is not DemucsMode.OFF:
             if demucs_cache_dir_path is None:
                 demucs_cache_dir_path = get_runtime_cache_dir_path("demucs")
@@ -106,7 +110,7 @@ class Transcriber(ABC):
         *,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
     ) -> list[TranscribedSegment] | None:
-        """Get the first usable cached transcription across configured attempts.
+        """Get the first usable cached transcription across configured settings.
 
         Arguments:
             audio: audio used for cache-key generation
@@ -116,21 +120,21 @@ class Transcriber(ABC):
         """
         segments, _ = self._find_cached_transcription(
             audio,
-            self._get_attempts(),
+            self._get_preprocessing_settings(),
             is_usable,
         )
         return segments
 
     def remove_cached_transcriptions(self, audio: AudioSegment):
-        """Remove cached transcriptions for all configured attempts.
+        """Remove cached transcriptions for all configured settings.
 
         Arguments:
             audio: audio used for cache-key generation
         """
-        for attempt in self._get_attempts():
+        for settings in self._get_preprocessing_settings():
             self._cache.remove(
                 audio,
-                self._get_cache_metadata(attempt),
+                self._get_cache_metadata(settings),
             )
 
     def transcribe(
@@ -140,7 +144,7 @@ class Transcriber(ABC):
         is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
         overwrite_cache: bool = False,
     ) -> list[TranscribedSegment]:
-        """Transcribe audio across configured preprocessing attempts.
+        """Transcribe audio across configured preprocessing settings.
 
         Arguments:
             audio: audio to transcribe
@@ -149,37 +153,37 @@ class Transcriber(ABC):
         Returns:
             first usable transcription, or an empty list when output was rejected
         """
-        attempts = self._get_attempts()
+        preprocessing_settings = self._get_preprocessing_settings()
 
         # Inspect every cache before running expensive preprocessing
-        rejected_attempts: set[TranscriptionAttempt] = set()
+        rejected_settings: set[TranscriptionPreprocessingSettings] = set()
         if overwrite_cache:
             self.remove_cached_transcriptions(audio)
         else:
-            segments, rejected_attempts = self._find_cached_transcription(
+            segments, rejected_settings = self._find_cached_transcription(
                 audio,
-                attempts,
+                preprocessing_settings,
                 is_usable,
             )
             if segments is not None:
                 return segments
 
-        # Run Demucs once if any remaining attempt requires separated audio
+        # Run Demucs once if any remaining configuration requires separated audio
         separated_audio = None
         if any(
-            attempt.use_demucs and attempt not in rejected_attempts
-            for attempt in attempts
+            settings.use_demucs and settings not in rejected_settings
+            for settings in preprocessing_settings
         ):
             separated_audio = self._get_separated_audio(
                 audio,
                 overwrite_cache,
             )
 
-        # Run remaining transcription attempts
-        return self._run_attempts(
+        # Run remaining transcription configurations
+        return self._run_configurations(
             audio,
-            attempts,
-            rejected_attempts,
+            preprocessing_settings,
+            rejected_settings,
             separated_audio,
             is_usable,
         )
@@ -187,21 +191,24 @@ class Transcriber(ABC):
     def _find_cached_transcription(
         self,
         audio: AudioSegment,
-        attempts: Sequence[TranscriptionAttempt],
+        preprocessing_settings: Sequence[TranscriptionPreprocessingSettings],
         is_usable: Callable[[list[TranscribedSegment]], bool] | None,
-    ) -> tuple[list[TranscribedSegment] | None, set[TranscriptionAttempt]]:
-        """Find a usable cache and identify rejected attempts.
+    ) -> tuple[
+        list[TranscribedSegment] | None,
+        set[TranscriptionPreprocessingSettings],
+    ]:
+        """Find a usable cache and identify rejected preprocessing settings.
 
         Arguments:
             audio: audio used for cache-key generation
-            attempts: preprocessing attempts in retry order
+            preprocessing_settings: preprocessing settings in retry order
             is_usable: optional callback used to reject cached output
         Returns:
-            usable cached segments and rejected attempts
+            usable cached segments and rejected preprocessing settings
         """
-        rejected_attempts: set[TranscriptionAttempt] = set()
-        for attempt in attempts:
-            metadata = self._get_cache_metadata(attempt)
+        rejected_settings: set[TranscriptionPreprocessingSettings] = set()
+        for settings in preprocessing_settings:
+            metadata = self._get_cache_metadata(settings)
             try:
                 cached_transcription = self._cache.load(audio, metadata)
             except TranscriptionError as exc:
@@ -215,18 +222,20 @@ class Transcriber(ABC):
             segments = self._prepare_cached_segments(
                 segments,
                 cache_path,
-                attempt,
+                settings,
             )
             if is_usable is None or is_usable(segments):
-                return segments, rejected_attempts
-            rejected_attempts.add(attempt)
-        return None, rejected_attempts
+                return segments, rejected_settings
+            rejected_settings.add(settings)
+        return None, rejected_settings
 
-    def _get_attempts(self) -> tuple[TranscriptionAttempt, ...]:
-        """Get configured preprocessing attempts in retry order.
+    def _get_preprocessing_settings(
+        self,
+    ) -> tuple[TranscriptionPreprocessingSettings, ...]:
+        """Get configured preprocessing settings in retry order.
 
         Returns:
-            configured transcription attempts
+            configured transcription preprocessing settings
         """
         if self.demucs_mode is DemucsMode.ON:
             demucs_values = (True,)
@@ -243,7 +252,7 @@ class Transcriber(ABC):
             vad_values = (True, False)
 
         return tuple(
-            TranscriptionAttempt(use_demucs, use_vad)
+            TranscriptionPreprocessingSettings(use_demucs, use_vad)
             for use_demucs in demucs_values
             for use_vad in vad_values
         )
@@ -251,12 +260,12 @@ class Transcriber(ABC):
     @abstractmethod
     def _get_backend_cache_metadata(
         self,
-        attempt: TranscriptionAttempt,
+        settings: TranscriptionPreprocessingSettings,
     ) -> Mapping[str, object]:
-        """Get backend-specific cache metadata for one attempt.
+        """Get backend-specific cache metadata for one configuration.
 
         Arguments:
-            attempt: preprocessing attempt
+            settings: transcription preprocessing settings
         Returns:
             backend configuration identifying the output
         """
@@ -264,24 +273,24 @@ class Transcriber(ABC):
 
     def _get_cache_metadata(
         self,
-        attempt: TranscriptionAttempt,
+        settings: TranscriptionPreprocessingSettings,
     ) -> dict[str, object]:
         """Get complete backend and preprocessing cache metadata.
 
         Arguments:
-            attempt: preprocessing attempt
+            settings: transcription preprocessing settings
         Returns:
             configuration identifying the output
         """
         demucs_model_name = None
-        if attempt.use_demucs:
+        if settings.use_demucs:
             assert self.demucs_separator is not None
             demucs_model_name = self.demucs_separator.model_name
         return {
-            **self._get_backend_cache_metadata(attempt),
+            **self._get_backend_cache_metadata(settings),
             "demucs_model_name": demucs_model_name,
-            "use_demucs": attempt.use_demucs,
-            "use_vad": attempt.use_vad,
+            "use_demucs": settings.use_demucs,
+            "use_vad": settings.use_vad,
         }
 
     def _get_separated_audio(
@@ -289,7 +298,7 @@ class Transcriber(ABC):
         audio: AudioSegment,
         overwrite_cache: bool,
     ) -> AudioSegment | None:
-        """Get Demucs-separated audio for configured attempts.
+        """Get Demucs-separated audio for configured preprocessing settings.
 
         Arguments:
             audio: original audio to separate
@@ -317,33 +326,33 @@ class Transcriber(ABC):
         self,
         segments: list[TranscribedSegment],
         cache_path: Path,
-        attempt: TranscriptionAttempt,
+        settings: TranscriptionPreprocessingSettings,
     ) -> list[TranscribedSegment]:
         """Prepare cached segments for use.
 
         Arguments:
             segments: cached transcription segments
             cache_path: path from which the segments were loaded
-            attempt: preprocessing attempt that produced the segments
+            settings: preprocessing settings that produced the segments
         Returns:
             prepared cached segments
         """
         return segments
 
-    def _run_attempts(
+    def _run_configurations(
         self,
         audio: AudioSegment,
-        attempts: Sequence[TranscriptionAttempt],
-        rejected_attempts: set[TranscriptionAttempt],
+        preprocessing_settings: Sequence[TranscriptionPreprocessingSettings],
+        rejected_settings: set[TranscriptionPreprocessingSettings],
         separated_audio: AudioSegment | None,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None,
     ) -> list[TranscribedSegment]:
-        """Run uncached transcription attempts in preprocessing order.
+        """Run uncached transcription configurations in preprocessing order.
 
         Arguments:
             audio: original audio to transcribe
-            attempts: preprocessing attempts in retry order
-            rejected_attempts: attempts with unusable cached output
+            preprocessing_settings: preprocessing settings in retry order
+            rejected_settings: settings with unusable cached output
             separated_audio: Demucs-separated audio, if available
             is_usable: optional callback used to reject output and trigger retries
         Returns:
@@ -351,22 +360,22 @@ class Transcriber(ABC):
         """
         successful_attempt = False
         last_error: TranscriptionError | None = None
-        for attempt in attempts:
-            if attempt in rejected_attempts:
+        for settings in preprocessing_settings:
+            if settings in rejected_settings:
                 continue
 
             transcription_audio = audio
-            if attempt.use_demucs:
+            if settings.use_demucs:
                 if separated_audio is None:
                     continue
                 transcription_audio = separated_audio
 
-            if self.vad_mode is VADMode.AUTO and not attempt.use_vad:
+            if self.vad_mode is VADMode.AUTO and not settings.use_vad:
                 logger.info(f"Retrying {self.backend_label} without VAD")
             try:
                 segments = self._transcribe_attempt(
                     transcription_audio,
-                    attempt,
+                    settings,
                 )
             except TranscriptionError as exc:
                 logger.warning(f"{self.backend_label} attempt failed: {exc}")
@@ -376,7 +385,7 @@ class Transcriber(ABC):
 
             self._cache.save(
                 audio,
-                self._get_cache_metadata(attempt),
+                self._get_cache_metadata(settings),
                 segments,
             )
             if is_usable is None or is_usable(segments):
@@ -390,13 +399,13 @@ class Transcriber(ABC):
     def _transcribe_attempt(
         self,
         audio: AudioSegment,
-        attempt: TranscriptionAttempt,
+        settings: TranscriptionPreprocessingSettings,
     ) -> list[TranscribedSegment]:
         """Run one uncached transcription attempt.
 
         Arguments:
             audio: original or Demucs-separated audio to transcribe
-            attempt: preprocessing attempt
+            settings: transcription preprocessing settings
         Returns:
             timestamped transcription segments
         """

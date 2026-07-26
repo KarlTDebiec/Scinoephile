@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Transcription preprocessing attempt configuration."""
+"""Transcription preprocessing settings."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from enum import StrEnum
 
 __all__ = [
     "DemucsMode",
-    "TranscriptionAttempt",
+    "TranscriptionPreprocessingSettings",
     "VADMode",
 ]
 
@@ -37,8 +37,8 @@ class VADMode(StrEnum):
 
 
 @dataclass(frozen=True, slots=True)
-class TranscriptionAttempt:
-    """Demucs and VAD configuration for one transcription attempt."""
+class TranscriptionPreprocessingSettings:
+    """Demucs and VAD settings for one transcription configuration."""
 
     use_demucs: bool
     """Whether Demucs preprocessing is applied."""

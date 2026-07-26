@@ -11,6 +11,8 @@ import numpy as np
 from opencc import OpenCC
 from pydub import AudioSegment
 
+from scinoephile.core.ml import get_torch_module
+
 from .exceptions import TranscriptionAlignmentError
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
@@ -196,7 +198,7 @@ class CtcAligner:
             inputs = {key: value.to(self.device) for key, value in inputs.items()}
 
         # Run CTC inference and normalize output for the alignment algorithm
-        torch = self._import_torch()
+        torch = get_torch_module()
         model_callable = cast(Callable[..., Any], self.model)
         with torch.no_grad():
             output = model_callable(**inputs)
@@ -656,23 +658,6 @@ class CtcAligner:
                 )
 
         return words
-
-    @staticmethod
-    def _import_torch() -> Any:
-        """Get the torch module.
-
-        Returns:
-            imported torch module
-        Raises:
-            ImportError: if torch is unavailable
-        """
-        try:
-            import torch  # noqa: PLC0415
-        except ImportError as exc:
-            raise ImportError(
-                "CTC timestamp alignment requires transformers and torch dependencies."
-            ) from exc
-        return torch
 
     @staticmethod
     def _validate_best_path_inputs(

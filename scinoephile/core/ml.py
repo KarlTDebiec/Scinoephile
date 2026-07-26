@@ -4,10 +4,18 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from functools import cache
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-__all__ = ["get_torch_device"]
+__all__ = [
+    "get_torch_device",
+    "get_torch_module",
+    "get_torchaudio_resampler",
+]
+
+if TYPE_CHECKING:
+    from torch import Tensor
 
 
 @cache
@@ -17,7 +25,7 @@ def get_torch_device() -> str:
     Returns:
         torch device identifier
     """
-    torch = _import_torch()
+    torch = get_torch_module()
     if torch.mps.is_available():
         return "mps"
     if torch.cuda.is_available():
@@ -26,7 +34,7 @@ def get_torch_device() -> str:
 
 
 @cache
-def _import_torch() -> Any:
+def get_torch_module() -> Any:
     """Import torch on demand."""
     try:
         import torch  # noqa: PLC0415
@@ -36,3 +44,20 @@ def _import_torch() -> Any:
             "Install scinoephile with the 'transcription' extra."
         ) from exc
     return torch
+
+
+@cache
+def get_torchaudio_resampler() -> Callable[[Tensor, int, int], Tensor]:
+    """Import the Torchaudio resampling function on demand.
+
+    Returns:
+        Torchaudio resampling function
+    """
+    try:
+        from torchaudio.functional import resample  # noqa: PLC0415
+    except ImportError as exc:
+        raise ImportError(
+            "Torchaudio support requires optional transcription dependencies. "
+            "Install scinoephile with the 'transcription' extra."
+        ) from exc
+    return resample
