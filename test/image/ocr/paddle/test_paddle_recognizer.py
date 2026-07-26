@@ -17,6 +17,7 @@ from pytest import MonkeyPatch, raises
 
 from scinoephile.common.subprocess import run_command
 from scinoephile.core import Language
+from scinoephile.core.dependencies.ocr import import_paddleocr_paddle_ocr
 from scinoephile.image.ocr.paddle import PaddleRecognizer
 from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
 from scinoephile.image.ocr.paddle.text_result import PaddleOcrTextResult
@@ -181,9 +182,8 @@ def test_paddle_recognizer_preserves_root_logger_level(monkeypatch: MonkeyPatch)
     root_logger = logging.getLogger()
     previous_level = root_logger.level
     monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.paddle_recognizer.PaddleRecognizer."
-        "_get_paddle_ocr_class",
-        staticmethod(lambda: FakePaddleOCR),
+        "scinoephile.image.ocr.paddle.paddle_recognizer.import_paddleocr_paddle_ocr",
+        lambda: FakePaddleOCR,
     )
 
     try:
@@ -244,7 +244,7 @@ def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: MonkeyPatch):
     monkeypatch.setattr("builtins.__import__", fake_import)
 
     with raises(ImportError, match="'ocr' extra"):
-        PaddleRecognizer._get_paddle_ocr_class()
+        import_paddleocr_paddle_ocr()
 
 
 def test_paddle_recognizer_rejects_unsupported_languages():
@@ -289,9 +289,8 @@ def test_paddle_recognizer_maps_supported_languages_to_engine_codes(
             observed_kwargs.update(kwargs)
 
     monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.paddle_recognizer.PaddleRecognizer."
-        "_get_paddle_ocr_class",
-        staticmethod(lambda: FakePaddleOCR),
+        "scinoephile.image.ocr.paddle.paddle_recognizer.import_paddleocr_paddle_ocr",
+        lambda: FakePaddleOCR,
     )
 
     recognizer = PaddleRecognizer(language=language)

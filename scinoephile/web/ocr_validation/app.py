@@ -10,26 +10,25 @@ from typing import TYPE_CHECKING
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
+from scinoephile.core.dependencies.web import (
+    import_flask_flask,
+    import_werkzeug_serving_make_server,
+)
 
 from .session import OcrValidationSession
 
 if TYPE_CHECKING:
-    from flask import Flask
+    from scinoephile.core.dependencies.web import FlaskApp
 
 __all__ = [
     "create_app",
     "run_app",
 ]
 
-_WEB_EXTRA_MESSAGE = (
-    "OCR validation web UI support requires optional web dependencies. "
-    "Install scinoephile with the 'web' extra."
-)
-
 logger = getLogger(__name__)
 
 
-def create_app(session: OcrValidationSession) -> Flask:
+def create_app(session: OcrValidationSession) -> FlaskApp:
     """Create the OCR validation Flask app.
 
     Arguments:
@@ -40,14 +39,13 @@ def create_app(session: OcrValidationSession) -> Flask:
         ScinoephileError: if optional web dependencies are not installed
     """
     try:
-        from flask import Flask  # noqa: PLC0415
-
+        flask_cls = import_flask_flask()
         from .routes import register_routes  # noqa: PLC0415
     except ImportError as exc:
-        raise ScinoephileError(_WEB_EXTRA_MESSAGE) from exc
+        raise ScinoephileError(str(exc)) from exc
 
     static_dir_path = package_root / "web/static"
-    app = Flask(__name__, static_folder=str(static_dir_path))
+    app = flask_cls(__name__, static_folder=str(static_dir_path))
     app.config["OCR_VALIDATION_SESSION"] = session
     app.config["OCR_VALIDATION_SERVER"] = None
     register_routes(app)
@@ -65,12 +63,12 @@ def run_app(session: OcrValidationSession, host: str, port: int):
         ScinoephileError: if optional dependencies are missing or server startup fails
     """
     try:
-        try:
-            from werkzeug.serving import make_server  # noqa: PLC0415
-        except ImportError as exc:
-            raise ScinoephileError(_WEB_EXTRA_MESSAGE) from exc
+        make_server = import_werkzeug_serving_make_server()
+    except ImportError as exc:
+        raise ScinoephileError(str(exc)) from exc
 
-        app = create_app(session)
+    app = create_app(session)
+    try:
         server_port = port
         if _port_is_in_use(_connection_host(host), port):
             logger.warning(

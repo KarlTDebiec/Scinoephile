@@ -18,6 +18,7 @@ from PIL import Image
 
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import Language
+from scinoephile.core.dependencies.ocr import import_paddleocr_paddle_ocr
 
 from .bounding_box import PaddleOcrBoundingBox
 from .text_result import PaddleOcrTextResult
@@ -32,10 +33,6 @@ logger = getLogger(__name__)
 _TEXT_DETECTION_MODEL_NAME = "PP-OCRv5_server_det"
 _TEXT_RECOGNITION_MODEL_NAME = "PP-OCRv5_server_rec"
 _TEXTLINE_ORIENTATION_MODEL_NAME = "PP-LCNet_x1_0_textline_ori"
-_OCR_EXTRA_MESSAGE = (
-    "PaddleOCR support requires optional OCR dependencies. "
-    "Install scinoephile with the 'ocr' extra."
-)
 _PADDLE_LANGUAGE_CODES = {
     Language.eng: "en",
     Language.yue_hans: "ch",
@@ -95,7 +92,7 @@ class PaddleRecognizer:
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
-        paddle_ocr_cls = self._get_paddle_ocr_class()
+        paddle_ocr_cls = import_paddleocr_paddle_ocr()
         root_logger = getLogger()
         root_logger_level = root_logger.level
         try:
@@ -177,17 +174,6 @@ class PaddleRecognizer:
         )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
-
-    @staticmethod
-    def _get_paddle_ocr_class() -> Any:
-        """Import PaddleOCR on demand."""
-        try:
-            from paddleocr import (  # noqa: PLC0415
-                PaddleOCR,
-            )
-        except ImportError as exc:
-            raise ImportError(_OCR_EXTRA_MESSAGE) from exc
-        return PaddleOCR
 
     @staticmethod
     def _format_paddle_ocr_text(

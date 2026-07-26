@@ -28,11 +28,22 @@ class _VideoOffsetKwargs(TypedDict, total=False):
     """Keyword arguments for video offset detection."""
 
     max_offset: float
+    """Maximum offset to consider."""
+
     sample_rate: float
+    """Video frame sampling rate."""
+
     coarse_step: float
+    """Step size for the coarse offset search."""
+
     sample_windows: int
+    """Number of sample windows to compare."""
+
     width: int
+    """Width to which sampled frames are resized."""
+
     height: int
+    """Height to which sampled frames are resized."""
 
 
 def test_get_video_offset_prefers_known_shift():
