@@ -11,6 +11,12 @@ import numpy as np
 from opencc import OpenCC
 from pydub import AudioSegment
 
+from scinoephile.core.dependencies.transcription import (
+    import_torch_no_grad,
+    import_transformers_auto_model_for_ctc,
+    import_transformers_auto_processor,
+)
+
 from .exceptions import TranscriptionAlignmentError
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
@@ -18,15 +24,13 @@ from .transcribed_word import TranscribedWord
 __all__ = ["CtcAligner"]
 
 if TYPE_CHECKING:
-    from transformers import PreTrainedModel, ProcessorMixin
+    from scinoephile.core.dependencies.transcription import CtcModel, CtcProcessor
 
 
 class CtcAligner:
     """Aligns transcription text to audio using a CTC model."""
 
-    _components: ClassVar[
-        dict[tuple[str, str], tuple[ProcessorMixin, PreTrainedModel]]
-    ] = {}
+    _components: ClassVar[dict[tuple[str, str], tuple[CtcProcessor, CtcModel]]] = {}
     """Loaded processors and models shared by model name and device."""
 
     def __init__(
@@ -46,10 +50,10 @@ class CtcAligner:
         self.device = device
         """Device identifier passed to the CTC model."""
 
-        self._model: PreTrainedModel | None = None
+        self._model: CtcModel | None = None
         """CTC model used for alignment."""
 
-        self._processor: ProcessorMixin | None = None
+        self._processor: CtcProcessor | None = None
         """Processor associated with the CTC model."""
 
     def __call__(
@@ -68,7 +72,7 @@ class CtcAligner:
         return self.align(audio, text)
 
     @property
-    def model(self) -> PreTrainedModel:
+    def model(self) -> CtcModel:
         """Get the cached CTC model, loading it if needed.
 
         Returns:
@@ -79,7 +83,7 @@ class CtcAligner:
         return self._model
 
     @property
-    def processor(self) -> ProcessorMixin:
+    def processor(self) -> CtcProcessor:
         """Get the cached CTC processor, loading it if needed.
 
         Returns:
@@ -196,9 +200,9 @@ class CtcAligner:
             inputs = {key: value.to(self.device) for key, value in inputs.items()}
 
         # Run CTC inference and normalize output for the alignment algorithm
-        torch = self._import_torch()
+        no_grad = import_torch_no_grad()
         model_callable = cast(Callable[..., Any], self.model)
-        with torch.no_grad():
+        with no_grad():
             output = model_callable(**inputs)
             logits = output.logits[0]
             log_probs = logits.log_softmax(dim=-1).detach().cpu().numpy()
@@ -282,17 +286,12 @@ class CtcAligner:
             return
 
         # Load the processor and model lazily to preserve optional dependencies
-        try:
-            from transformers import (  # noqa: PLC0415
-                AutoModelForCTC,
-                AutoProcessor,
-            )
-        except ImportError as exc:
-            raise ImportError(
-                "CTC timestamp alignment requires transformers and torch dependencies."
-            ) from exc
-        processor = AutoProcessor.from_pretrained(self.model_name)
-        model = AutoModelForCTC.from_pretrained(self.model_name)
+        processor = import_transformers_auto_processor().from_pretrained(
+            self.model_name
+        )
+        model = import_transformers_auto_model_for_ctc().from_pretrained(
+            self.model_name
+        )
 
         # Prepare the model for inference and retain both components
         if hasattr(model, "to"):
@@ -656,23 +655,6 @@ class CtcAligner:
                 )
 
         return words
-
-    @staticmethod
-    def _import_torch() -> Any:
-        """Get the torch module.
-
-        Returns:
-            imported torch module
-        Raises:
-            ImportError: if torch is unavailable
-        """
-        try:
-            import torch  # noqa: PLC0415
-        except ImportError as exc:
-            raise ImportError(
-                "CTC timestamp alignment requires transformers and torch dependencies."
-            ) from exc
-        return torch
 
     @staticmethod
     def _validate_best_path_inputs(

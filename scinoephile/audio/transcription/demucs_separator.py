@@ -4,26 +4,31 @@
 
 from __future__ import annotations
 
-import hashlib
 from logging import getLogger
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING
 
 import numpy as np
 from pydub import AudioSegment
 
-from scinoephile.common.validation import val_output_dir_path
-from scinoephile.core import ScinoephileError
+from scinoephile.core.dependencies.transcription import (
+    import_demucs_infer_apply_model,
+    import_demucs_infer_get_model,
+    import_torch_from_numpy,
+    import_torch_no_grad,
+    import_torchaudio_functional_resample,
+)
+from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.ml import get_torch_device
+
+from .demucs_cache import DemucsCache
 
 __all__ = ["DemucsSeparator"]
 
-logger = getLogger(__name__)
+if TYPE_CHECKING:
+    from scinoephile.core.dependencies.transcription import DemucsModel, TorchTensor
 
-_TRANSCRIPTION_EXTRA_MESSAGE = (
-    "Demucs separation support requires optional transcription dependencies. "
-    "Install scinoephile with the 'transcription' extra."
-)
+logger = getLogger(__name__)
 
 
 class DemucsSeparator:
@@ -47,13 +52,11 @@ class DemucsSeparator:
         self._device: str | None = None
         """Torch device identifier used for inference."""
 
-        self._model: Any | None = None
+        self._model: DemucsModel | None = None
         """Cached Demucs model."""
 
-        self.cache_dir_path = None
-        """Optional directory in which to cache separated vocals."""
-        if cache_dir_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_dir_path)
+        self._cache = DemucsCache(cache_dir_path, model_name)
+        """Cache of vocals separated with the configured model."""
 
     def __call__(
         self,
@@ -72,6 +75,11 @@ class DemucsSeparator:
         return self.separate_vocals(audio, overwrite_cache=overwrite_cache)
 
     @property
+    def cache_dir_path(self) -> Path | None:
+        """Get the Demucs cache directory path."""
+        return self._cache.cache_dir_path
+
+    @property
     def device(self) -> str:
         """Get torch device identifier."""
         if self._device is None:
@@ -79,14 +87,14 @@ class DemucsSeparator:
         return self._device
 
     @property
-    def model(self) -> Any:
+    def model(self) -> DemucsModel:
         """Get the cached Demucs model, loading it if needed.
 
         Returns:
             loaded Demucs model
         """
         if self._model is None:
-            model_loader = self._get_model_loader()
+            model_loader = import_demucs_infer_get_model()
             try:
                 self._model = model_loader(self.model_name).to(self.device).eval()
             except Exception as exc:
@@ -94,87 +102,6 @@ class DemucsSeparator:
                     f"Unable to load Demucs model '{self.model_name}'."
                 ) from exc
         return self._model
-
-    def get_cached_vocals(
-        self,
-        cache_audio: AudioSegment,
-        *,
-        overwrite_cache: bool = False,
-    ) -> AudioSegment | None:
-        """Get cached vocals separation for audio if available.
-
-        Arguments:
-            cache_audio: audio used for cache-key generation
-            overwrite_cache: whether to remove a matching cached separation
-        Returns:
-            cached vocals-only audio, if present
-        """
-        cache_path = self._get_cache_path(cache_audio)
-        if cache_path is None or not cache_path.exists():
-            return None
-        if overwrite_cache:
-            cache_path.unlink()
-            logger.info(f"Removed Demucs vocals cache: {cache_path}")
-            return None
-        logger.info(f"Loaded Demucs vocals from cache: {cache_path}")
-        vocals = AudioSegment.from_file(cache_path)
-        cache_path.touch()
-        return vocals
-
-    def _separate_vocals_uncached(self, audio: AudioSegment) -> AudioSegment:
-        """Separate vocals without consulting or updating the cache.
-
-        Arguments:
-            audio: audio to separate
-        Returns:
-            vocals-only audio
-        """
-        normalized_audio = audio.set_sample_width(2)
-        input_channels = normalized_audio.channels
-        if input_channels == 1:
-            normalized_audio = normalized_audio.set_channels(2)
-        waveform = self._get_waveform(normalized_audio)
-        target_frame_rate = getattr(
-            self.model, "samplerate", normalized_audio.frame_rate
-        )
-        if normalized_audio.frame_rate != target_frame_rate:
-            torchaudio_functional = self._get_torchaudio_functional_module()
-            waveform = torchaudio_functional.resample(
-                waveform, normalized_audio.frame_rate, target_frame_rate
-            )
-
-        torch = self._get_torch_module()
-        apply_model = self._get_apply_model()
-        with torch.no_grad():
-            try:
-                sources = apply_model(
-                    self.model,
-                    waveform.unsqueeze(0).to(self.device),
-                    device=self.device,
-                )
-            except Exception as exc:
-                raise ScinoephileError("Demucs separation failed.") from exc
-
-        source_names = tuple(getattr(self.model, "sources", ()))
-        try:
-            vocals_idx = source_names.index("vocals")
-        except ValueError as exc:
-            raise ScinoephileError(
-                f"Demucs model '{self.model_name}' does not provide a vocals stem."
-            ) from exc
-
-        vocals = sources[0, vocals_idx].cpu()
-        if target_frame_rate != normalized_audio.frame_rate:
-            torchaudio_functional = self._get_torchaudio_functional_module()
-            vocals = torchaudio_functional.resample(
-                vocals, target_frame_rate, normalized_audio.frame_rate
-            )
-
-        return self._get_audio_segment(
-            vocals=vocals,
-            frame_rate=normalized_audio.frame_rate,
-            channels=input_channels,
-        )
 
     def separate_vocals(
         self,
@@ -190,46 +117,86 @@ class DemucsSeparator:
         Returns:
             vocals-only audio
         """
-        if (
-            cached := self.get_cached_vocals(
-                audio,
-                overwrite_cache=overwrite_cache,
-            )
-        ) is not None:
-            return cached
+        # Load or clear matching cached vocals before running separation
+        if overwrite_cache:
+            self._cache.remove(audio)
+        else:
+            try:
+                cached_vocals = self._cache.load(audio)
+            except ScinoephileError as exc:
+                logger.warning(
+                    f"Unable to use Demucs vocals cache; regenerating: {exc}"
+                )
+            else:
+                if cached_vocals is not None:
+                    return cached_vocals
 
-        vocals = self._separate_vocals_uncached(audio)
-        cache_path = self._get_cache_path(audio)
-        if cache_path is not None:
-            cache_path.parent.mkdir(parents=True, exist_ok=True)
-            vocals.export(cache_path, format="wav")
-            logger.info(f"Saved Demucs vocals to cache: {cache_path}")
+        # Run separation and atomically update the cache
+        vocals = self._separate_vocals(audio)
+        self._cache.save(audio, vocals)
         return vocals
 
-    def _get_cache_path(self, audio: AudioSegment) -> Path | None:
-        """Get cache path based on hash of audio data and model configuration.
+    def _separate_vocals(self, audio: AudioSegment) -> AudioSegment:
+        """Separate vocals using Demucs.
 
         Arguments:
-            audio: audio used to derive the cache key
+            audio: audio to separate
         Returns:
-            path to cache file
+            vocals-only audio
         """
-        if self.cache_dir_path is None:
-            return None
-        audio_sha256 = hashlib.sha256(audio.raw_data).hexdigest()
-        cache_key = (
-            f"{audio_sha256}_{self.model_name}_"
-            f"channels-{audio.channels}_"
-            f"frame_rate-{audio.frame_rate}_"
-            f"sample_width-{audio.sample_width}"
+        # Normalize input samples and channel layout for Demucs
+        normalized_audio = audio.set_sample_width(2)
+        input_channels = normalized_audio.channels
+        if input_channels == 1:
+            normalized_audio = normalized_audio.set_channels(2)
+        waveform = self._get_waveform(normalized_audio)
+
+        # Resample input to the model's sample rate
+        target_frame_rate = getattr(
+            self.model, "samplerate", normalized_audio.frame_rate
         )
-        cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
-        return self.cache_dir_path / f"{cache_sha256}.wav"
+        if normalized_audio.frame_rate != target_frame_rate:
+            resample = import_torchaudio_functional_resample()
+            waveform = resample(
+                waveform, normalized_audio.frame_rate, target_frame_rate
+            )
+
+        # Run source separation using the library's default shift behavior
+        no_grad = import_torch_no_grad()
+        apply_model = import_demucs_infer_apply_model()
+        with no_grad():
+            try:
+                sources = apply_model(
+                    self.model,
+                    waveform.unsqueeze(0).to(self.device),
+                    device=self.device,
+                )
+            except Exception as exc:
+                raise ScinoephileError("Demucs separation failed.") from exc
+
+        # Select the vocals stem and restore the input sample rate
+        source_names = tuple(getattr(self.model, "sources", ()))
+        try:
+            vocals_idx = source_names.index("vocals")
+        except ValueError as exc:
+            raise ScinoephileError(
+                f"Demucs model '{self.model_name}' does not provide a vocals stem."
+            ) from exc
+        vocals = sources[0, vocals_idx].cpu()
+        if target_frame_rate != normalized_audio.frame_rate:
+            resample = import_torchaudio_functional_resample()
+            vocals = resample(vocals, target_frame_rate, normalized_audio.frame_rate)
+
+        # Restore the original channel layout and convert back to pydub
+        return self._get_audio_segment(
+            vocals,
+            normalized_audio.frame_rate,
+            input_channels,
+        )
 
     @staticmethod
     def _get_audio_segment(
-        *,
-        vocals: Any,
+        vocals: TorchTensor,
         frame_rate: int,
         channels: int,
     ) -> AudioSegment:
@@ -266,49 +233,7 @@ class DemucsSeparator:
         )
 
     @staticmethod
-    def _get_apply_model() -> Any:
-        """Import Demucs apply_model on demand."""
-        try:
-            from demucs_infer.apply import (  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
-                apply_model,
-            )
-        except ImportError as exc:
-            raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-        return apply_model
-
-    @staticmethod
-    def _get_model_loader() -> Any:
-        """Import Demucs model loader on demand."""
-        try:
-            from demucs_infer.pretrained import (  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
-                get_model,
-            )
-        except ImportError as exc:
-            raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-        return get_model
-
-    @staticmethod
-    def _get_torch_module() -> Any:
-        """Import torch on demand."""
-        try:
-            import torch  # noqa: PLC0415
-        except ImportError as exc:
-            raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-        return torch
-
-    @staticmethod
-    def _get_torchaudio_functional_module() -> Any:
-        """Import torchaudio.functional on demand."""
-        try:
-            from torchaudio import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
-                functional,
-            )
-        except ImportError as exc:
-            raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-        return functional
-
-    @staticmethod
-    def _get_waveform(audio: AudioSegment) -> Any:
+    def _get_waveform(audio: AudioSegment) -> TorchTensor:
         """Convert a pydub AudioSegment into a waveform tensor.
 
         Arguments:
@@ -317,8 +242,8 @@ class DemucsSeparator:
             waveform tensor as [channels, time]
         """
         array = np.array(audio.get_array_of_samples(), dtype=np.int16)
-        torch = DemucsSeparator._get_torch_module()
-        waveform = torch.from_numpy(
+        from_numpy = import_torch_from_numpy()
+        waveform = from_numpy(
             array.reshape((-1, audio.channels)).T.astype(np.float32)
             / np.iinfo(np.int16).max
         )

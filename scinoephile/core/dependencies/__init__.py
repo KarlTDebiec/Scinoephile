@@ -3,5 +3,5 @@
 """Lazy access to optional dependencies.
 
 Package hierarchy (modules may import from any above):
-* ocr / web
+* ocr / transcription / web
 """

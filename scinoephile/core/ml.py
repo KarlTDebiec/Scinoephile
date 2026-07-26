@@ -5,7 +5,11 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any
+
+from .dependencies.transcription import (
+    import_torch_cuda_is_available,
+    import_torch_mps_is_available,
+)
 
 __all__ = ["get_torch_device"]
 
@@ -17,22 +21,10 @@ def get_torch_device() -> str:
     Returns:
         torch device identifier
     """
-    torch = _get_torch_module()
-    if torch.mps.is_available():
+    mps_is_available = import_torch_mps_is_available()
+    if mps_is_available():
         return "mps"
-    if torch.cuda.is_available():
+    cuda_is_available = import_torch_cuda_is_available()
+    if cuda_is_available():
         return "cuda"
     return "cpu"
-
-
-@cache
-def _get_torch_module() -> Any:
-    """Import torch on demand."""
-    try:
-        import torch  # noqa: PLC0415
-    except ImportError as exc:
-        raise ImportError(
-            "Torch support requires optional transcription dependencies. "
-            "Install scinoephile with the 'transcription' extra."
-        ) from exc
-    return torch
