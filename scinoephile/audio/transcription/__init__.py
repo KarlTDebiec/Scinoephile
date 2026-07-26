@@ -3,15 +3,18 @@
 """Code related to audio transcription.
 
 Package hierarchy (modules may import from any above):
-* demucs_cache / exceptions / transcribed_word
-* demucs_separator / transcribed_segment
-* ctc_aligner / whisper_transcriber
+* exceptions / preprocessing_settings / transcribed_word
+* demucs_cache / transcribed_segment
+* cache / ctc_aligner / demucs_separator
+* transcriber
+* whisper_transcriber
 """
 
 from __future__ import annotations
 
 from logging import getLogger
 
+from .cache import TranscriptionCache
 from .ctc_aligner import CtcAligner
 from .demucs_cache import DemucsCache
 from .demucs_separator import DemucsSeparator
@@ -21,20 +24,31 @@ from .exceptions import (
     TranscriptionError,
     TranscriptionInferenceError,
 )
+from .preprocessing_settings import (
+    DemucsMode,
+    TranscriptionPreprocessingSettings,
+    VADMode,
+)
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
+from .transcriber import Transcriber
 from .whisper_transcriber import WhisperTranscriber
 
 __all__ = [
     "CtcAligner",
     "DemucsCache",
+    "DemucsMode",
     "DemucsSeparator",
     "TranscribedSegment",
     "TranscribedWord",
+    "Transcriber",
     "TranscriptionAlignmentError",
+    "TranscriptionCache",
     "TranscriptionEmptyError",
     "TranscriptionError",
     "TranscriptionInferenceError",
+    "TranscriptionPreprocessingSettings",
+    "VADMode",
     "WhisperTranscriber",
     "get_segment_merged",
     "get_segment_split_at_idx",

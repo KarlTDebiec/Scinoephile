@@ -10,13 +10,10 @@ from unittest.mock import Mock, patch
 from pydub import AudioSegment
 
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription import DemucsMode, VADMode
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.lang.transcription.transcriber import (
-    DemucsMode,
-    GuidedTranscriber,
-    VADMode,
-)
+from scinoephile.lang.transcription.transcriber import GuidedTranscriber
 from scinoephile.workflows.transcription import transcribe_series_guided
 
 

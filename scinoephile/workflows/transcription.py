@@ -7,15 +7,12 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription import DemucsMode, VADMode
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.transcription.guided import get_guided_transcriber
-from scinoephile.lang.transcription.transcriber import (
-    DemucsMode,
-    GuidedTranscriber,
-    VADMode,
-)
+from scinoephile.lang.transcription.transcriber import GuidedTranscriber
 from scinoephile.llms.delineation import DelineationPrompt
 from scinoephile.llms.punctuation import PunctuationPrompt
 

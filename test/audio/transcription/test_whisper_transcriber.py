@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import builtins
-import hashlib
+import json
 import os
 import sys
 from collections.abc import Mapping, Sequence
@@ -14,14 +14,21 @@ from textwrap import dedent
 from unittest.mock import Mock
 
 from pydub import AudioSegment
-from pytest import MonkeyPatch, importorskip, raises
+from pytest import MonkeyPatch, raises
 
-from scinoephile.audio.transcription import get_segment_split_at_idx
+from scinoephile.audio.transcription import (
+    DemucsMode,
+    VADMode,
+    get_segment_split_at_idx,
+)
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.common import package_root
 from scinoephile.common.subprocess import run_command
+from scinoephile.core.dependencies.transcription import (
+    import_whisper_timestamped_load_model,
+)
 from test.helpers import parametrize
 
 _OPTIONAL_TRANSCRIPTION_MODULES = (
@@ -35,12 +42,34 @@ _OPTIONAL_TRANSCRIPTION_MODULES = (
 )
 
 
+def test_init_defaults_preprocessing_to_auto():
+    """Test Whisper defaults both preprocessing dimensions to automatic."""
+    transcriber = WhisperTranscriber()
+
+    assert transcriber.demucs_mode is DemucsMode.AUTO
+    assert transcriber.vad_mode is VADMode.AUTO
+
+
+def _get_cache_path(
+    transcriber: WhisperTranscriber,
+    audio: AudioSegment,
+) -> Path:
+    """Get the cache path for the transcriber's first preprocessing settings."""
+    settings = transcriber._get_preprocessing_settings()[0]
+    cache_path = transcriber._cache.get_path(
+        audio,
+        transcriber._get_cache_metadata(settings),
+    )
+    assert cache_path is not None
+    return cache_path
+
+
 @parametrize(
     ("field_name", "first_value", "second_value"),
     [
-        ("use_vad", True, False),
+        ("vad_mode", VADMode.ON, VADMode.OFF),
         ("model_name", "model/one", "model/two"),
-        ("use_demucs", True, False),
+        ("demucs_mode", DemucsMode.ON, DemucsMode.OFF),
         ("temperature", 0.0, (0.0, 0.2, 0.4)),
         ("condition_on_previous_text", True, False),
     ],
@@ -59,7 +88,12 @@ def test_get_cache_path_separates_configuration(
         first_value: first transcriber field value
         second_value: second transcriber field value
     """
-    audio = Mock(raw_data=b"audio")
+    audio = AudioSegment(
+        data=b"audio",
+        sample_width=1,
+        frame_rate=8000,
+        channels=1,
+    )
     first_transcriber = WhisperTranscriber(
         cache_dir_path=tmp_path,
         model_name="custom/model",
@@ -70,33 +104,48 @@ def test_get_cache_path_separates_configuration(
     )
     setattr(first_transcriber, field_name, first_value)
     setattr(second_transcriber, field_name, second_value)
-    first_cache_path = first_transcriber._get_cache_path(audio)
-    second_cache_path = second_transcriber._get_cache_path(audio)
+    first_cache_path = _get_cache_path(first_transcriber, audio)
+    second_cache_path = _get_cache_path(second_transcriber, audio)
 
-    assert first_cache_path is not None
-    assert second_cache_path is not None
     assert first_cache_path.parent == tmp_path
     assert second_cache_path.parent == tmp_path
     assert first_cache_path != second_cache_path
 
 
-def test_get_cache_path_preserves_default_decoding_identity(tmp_path: Path):
-    """Test default decoding continues to use legacy Whisper cache keys."""
-    audio = Mock(raw_data=b"audio")
+def test_get_cache_path_separates_audio_formats(tmp_path: Path):
+    """Test Whisper cache paths include audio format metadata."""
+    raw_data = b"\0\1" * 100
+    first_audio = AudioSegment(
+        data=raw_data,
+        sample_width=2,
+        frame_rate=16000,
+        channels=1,
+    )
+    second_audio = AudioSegment(
+        data=raw_data,
+        sample_width=2,
+        frame_rate=8000,
+        channels=1,
+    )
     transcriber = WhisperTranscriber(
         cache_dir_path=tmp_path,
         model_name="custom/model",
     )
-    audio_sha256 = hashlib.sha256(audio.raw_data).hexdigest()
-    cache_key = f"{audio_sha256}_custom/model_yue_demucs-off_vad-on"
-    expected_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
 
-    assert transcriber._get_cache_path(audio) == tmp_path / f"{expected_sha256}.json"
+    assert _get_cache_path(transcriber, first_audio) != _get_cache_path(
+        transcriber,
+        second_audio,
+    )
 
 
 def test_get_cache_path_accepts_list_temperature_schedule(tmp_path: Path):
     """Test list and tuple temperature schedules use the same cache key."""
-    audio = Mock(raw_data=b"audio")
+    audio = AudioSegment(
+        data=b"audio",
+        sample_width=1,
+        frame_rate=8000,
+        channels=1,
+    )
     list_transcriber = WhisperTranscriber(
         cache_dir_path=tmp_path,
         model_name="custom/model",
@@ -108,30 +157,36 @@ def test_get_cache_path_accepts_list_temperature_schedule(tmp_path: Path):
         temperature=(0.0, 0.2, 0.4),
     )
 
-    assert list_transcriber._get_cache_path(audio) == tuple_transcriber._get_cache_path(
-        audio
+    assert _get_cache_path(list_transcriber, audio) == _get_cache_path(
+        tuple_transcriber,
+        audio,
     )
 
 
 def test_transcribe_forwards_recovery_decoding_options(monkeypatch: MonkeyPatch):
     """Test Whisper receives configured defensive decoding options."""
-    whisper = Mock()
-    whisper.transcribe.return_value = {"segments": []}
+    transcribe = Mock(return_value={"segments": []})
     temperatures = (0.0, 0.2, 0.4)
     transcriber = WhisperTranscriber(
         model_name="custom/model",
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VADMode.OFF,
         temperature=temperatures,
         condition_on_previous_text=False,
     )
     transcriber._model = Mock()
-    monkeypatch.setattr(transcriber, "_get_whisper_module", Mock(return_value=whisper))
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped_transcribe",
+        Mock(return_value=transcribe),
+    )
     audio = AudioSegment.silent(duration=1000)
 
     assert transcriber(audio) == []
-    whisper.transcribe.assert_called_once()
-    assert whisper.transcribe.call_args.kwargs["temperature"] == temperatures
-    assert whisper.transcribe.call_args.kwargs["condition_on_previous_text"] is False
-    assert whisper.transcribe.call_args.kwargs["sample_len"] == 32
+    transcribe.assert_called_once()
+    assert transcribe.call_args.kwargs["temperature"] == temperatures
+    assert transcribe.call_args.kwargs["condition_on_previous_text"] is False
+    assert transcribe.call_args.kwargs["sample_len"] == 32
 
 
 @parametrize(
@@ -161,13 +216,12 @@ def test_get_sample_len_bounds_decode_by_audio_duration(
 
 def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch):
     """Reuse one loaded model across fallback transcription configurations."""
-    whisper = Mock()
     loaded_model = Mock()
-    whisper.load_model.return_value = loaded_model
+    load_model = Mock(return_value=loaded_model)
     monkeypatch.setattr(
-        WhisperTranscriber,
-        "_get_whisper_module",
-        Mock(return_value=whisper),
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped_load_model",
+        Mock(return_value=load_model),
     )
     monkeypatch.setattr(
         "scinoephile.audio.transcription.whisper_transcriber.get_torch_device",
@@ -176,39 +230,21 @@ def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch
     WhisperTranscriber._models.clear()
     vad_transcriber = WhisperTranscriber(
         model_name="custom/model",
-        use_vad=True,
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VADMode.ON,
     )
     no_vad_transcriber = WhisperTranscriber(
         model_name="custom/model",
-        use_vad=False,
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VADMode.OFF,
     )
 
     try:
         assert vad_transcriber.model is loaded_model
         assert no_vad_transcriber.model is loaded_model
-        whisper.load_model.assert_called_once()
+        load_model.assert_called_once()
     finally:
         WhisperTranscriber._models.clear()
-
-
-def test_transcribe_bypasses_cache_when_requested(monkeypatch: MonkeyPatch):
-    """Test an explicit uncached transcription does not reload rejected output."""
-    whisper = Mock()
-    whisper.transcribe.return_value = {"segments": []}
-    transcriber = WhisperTranscriber(model_name="custom/model")
-    transcriber._model = Mock()
-    monkeypatch.setattr(transcriber, "_get_whisper_module", Mock(return_value=whisper))
-    get_cached_transcription = Mock()
-    monkeypatch.setattr(
-        transcriber,
-        "get_cached_transcription",
-        get_cached_transcription,
-    )
-    audio = AudioSegment.silent(duration=1000)
-
-    assert transcriber(audio, use_cache=False) == []
-    get_cached_transcription.assert_not_called()
-    whisper.transcribe.assert_called_once()
 
 
 def test_transcribe_overwrites_matching_cache(
@@ -225,28 +261,28 @@ def test_transcribe_overwrites_matching_cache(
     transcriber = WhisperTranscriber(
         cache_dir_path=tmp_path,
         model_name="custom/model",
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VADMode.OFF,
     )
     transcriber._model = Mock()
-    cache_path = transcriber._get_cache_path(audio)
-    assert cache_path is not None
+    cache_path = _get_cache_path(transcriber, audio)
     cache_path.write_text("cached", encoding="utf-8")
-    whisper = Mock()
 
     def transcribe(*_args: object, **_kwargs: object) -> dict[str, list[object]]:
         """Return empty output after confirming the old cache was removed."""
         assert not cache_path.exists()
         return {"segments": []}
 
-    whisper.transcribe.side_effect = transcribe
+    transcribe_mock = Mock(side_effect=transcribe)
     monkeypatch.setattr(
-        transcriber,
-        "_get_whisper_module",
-        Mock(return_value=whisper),
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped_transcribe",
+        Mock(return_value=transcribe_mock),
     )
 
     assert transcriber(audio, overwrite_cache=True) == []
-    assert cache_path.read_text(encoding="utf-8") == "[]"
-    whisper.transcribe.assert_called_once()
+    assert json.loads(cache_path.read_text(encoding="utf-8"))["segments"] == []
+    transcribe_mock.assert_called_once()
 
 
 def test_transcribe_recovers_from_malformed_cache(
@@ -263,22 +299,22 @@ def test_transcribe_recovers_from_malformed_cache(
     transcriber = WhisperTranscriber(
         cache_dir_path=tmp_path,
         model_name="custom/model",
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VADMode.OFF,
     )
     transcriber._model = Mock()
-    cache_path = transcriber._get_cache_path(audio)
-    assert cache_path is not None
+    cache_path = _get_cache_path(transcriber, audio)
     cache_path.write_text("{", encoding="utf-8")
-    whisper = Mock()
-    whisper.transcribe.return_value = {"segments": []}
+    transcribe = Mock(return_value={"segments": []})
     monkeypatch.setattr(
-        transcriber,
-        "_get_whisper_module",
-        Mock(return_value=whisper),
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped_transcribe",
+        Mock(return_value=transcribe),
     )
 
     assert transcriber.transcribe(audio) == []
-    assert cache_path.read_text(encoding="utf-8") == "[]"
-    whisper.transcribe.assert_called_once()
+    assert json.loads(cache_path.read_text(encoding="utf-8"))["segments"] == []
+    transcribe.assert_called_once()
 
 
 def test_transcribe_preserves_cache_when_atomic_write_fails(
@@ -295,25 +331,25 @@ def test_transcribe_preserves_cache_when_atomic_write_fails(
     transcriber = WhisperTranscriber(
         cache_dir_path=tmp_path,
         model_name="custom/model",
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VADMode.OFF,
     )
     transcriber._model = Mock()
-    cache_path = transcriber._get_cache_path(audio)
-    assert cache_path is not None
+    cache_path = _get_cache_path(transcriber, audio)
     cache_path.write_text("existing cache", encoding="utf-8")
-    whisper = Mock()
-    whisper.transcribe.return_value = {"segments": []}
+    transcribe = Mock(return_value={"segments": []})
     monkeypatch.setattr(
-        transcriber,
-        "_get_whisper_module",
-        Mock(return_value=whisper),
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped_transcribe",
+        Mock(return_value=transcribe),
     )
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper_transcriber.json.dump",
+        "scinoephile.audio.transcription.cache.json.dump",
         Mock(side_effect=RuntimeError("write failed")),
     )
 
     with raises(RuntimeError, match="write failed"):
-        transcriber.transcribe(audio, use_cache=False)
+        transcriber.transcribe(audio)
 
     assert cache_path.read_text(encoding="utf-8") == "existing cache"
 
@@ -329,14 +365,52 @@ def test_transcribe_preserves_cache_when_atomic_write_fails(
     ],
 )
 def test_model_name_is_huggingface_repo_id_rejects_local_paths(
+    monkeypatch: MonkeyPatch,
     model_name: str,
     expected: bool,
 ):
-    """Test HuggingFace retry is skipped for local filesystem paths."""
-    importorskip("huggingface_hub")
+    """Test HuggingFace retry is skipped for local filesystem paths.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        model_name: model name to test
+        expected: whether model name is a Hugging Face repository ID
+    """
+
+    def validate_repo_id(_: str):
+        """Accept the repository ID."""
+
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_huggingface_hub_utils_validate_repo_id",
+        lambda: validate_repo_id,
+    )
     transcriber = WhisperTranscriber(model_name=model_name)
 
     assert transcriber._model_name_is_huggingface_repo_id() is expected
+
+
+def test_model_name_is_huggingface_repo_id_rejects_validation_errors(
+    monkeypatch: MonkeyPatch,
+):
+    """Test invalid Hugging Face repository IDs are rejected.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+
+    def validate_repo_id(_: str):
+        """Raise the validation error produced by Hugging Face Hub."""
+        raise ValueError("invalid repository ID")
+
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_huggingface_hub_utils_validate_repo_id",
+        lambda: validate_repo_id,
+    )
+    transcriber = WhisperTranscriber(model_name="invalid/repository/id")
+
+    assert not transcriber._model_name_is_huggingface_repo_id()
 
 
 def test_transcription_imports_without_optional_runtime_dependencies():
@@ -402,7 +476,7 @@ def test_whisper_module_requires_transcription_extra(monkeypatch: MonkeyPatch):
     monkeypatch.setattr(builtins, "__import__", import_without_whisper)
 
     with raises(ImportError, match="'transcription' extra"):
-        WhisperTranscriber._get_whisper_module()
+        import_whisper_timestamped_load_model()
 
 
 def test_normalize_transcription_segments_coalesces_malformed_duplicate_pair():
@@ -456,6 +530,7 @@ def test_normalize_transcription_segments_coalesces_malformed_duplicate_pair():
         segments,
         source="cache",
         cache_path=Path("/tmp/whisper.json"),
+        use_vad=True,
     )
 
     assert len(normalized_segments) == 1
