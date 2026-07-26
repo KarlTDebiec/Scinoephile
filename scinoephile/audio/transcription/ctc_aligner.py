@@ -12,7 +12,7 @@ from opencc import OpenCC
 from pydub import AudioSegment
 
 from scinoephile.core.dependencies.transcription import (
-    import_torch_no_grad,
+    import_torch,
     import_transformers_auto_model_for_ctc,
     import_transformers_auto_processor,
 )
@@ -200,9 +200,9 @@ class CtcAligner:
             inputs = {key: value.to(self.device) for key, value in inputs.items()}
 
         # Run CTC inference and normalize output for the alignment algorithm
-        no_grad = import_torch_no_grad()
+        torch = import_torch()
         model_callable = cast(Callable[..., Any], self.model)
-        with no_grad():
+        with torch.no_grad():
             output = model_callable(**inputs)
             logits = output.logits[0]
             log_probs = logits.log_softmax(dim=-1).detach().cpu().numpy()

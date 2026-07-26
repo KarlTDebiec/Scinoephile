@@ -15,7 +15,6 @@ from scinoephile.core.dependencies.transcription import (
     import_demucs_infer_apply_model,
     import_demucs_infer_get_model,
     import_torch,
-    import_torch_no_grad,
     import_torchaudio_functional_resample,
 )
 from scinoephile.core.exceptions import ScinoephileError
@@ -73,11 +72,6 @@ class DemucsSeparator:
             vocals-only audio
         """
         return self.separate_vocals(audio, overwrite_cache=overwrite_cache)
-
-    @property
-    def cache_dir_path(self) -> Path | None:
-        """Get the Demucs cache directory path."""
-        return self._cache.cache_dir_path
 
     @property
     def device(self) -> str:
@@ -162,9 +156,9 @@ class DemucsSeparator:
             )
 
         # Run source separation using the library's default shift behavior
-        no_grad = import_torch_no_grad()
+        torch = import_torch()
         apply_model = import_demucs_infer_apply_model()
-        with no_grad():
+        with torch.no_grad():
             try:
                 sources = apply_model(
                     self.model,

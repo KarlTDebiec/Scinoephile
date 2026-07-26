@@ -6,7 +6,6 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from contextlib import AbstractContextManager
 from types import ModuleType
 from typing import TYPE_CHECKING, TypedDict
 
@@ -16,9 +15,6 @@ __all__ = [
     "import_huggingface_hub_snapshot_download",
     "import_huggingface_hub_utils_validate_repo_id",
     "import_torch",
-    "import_torch_cuda_is_available",
-    "import_torch_mps_is_available",
-    "import_torch_no_grad",
     "import_torchaudio_functional_resample",
     "import_transformers_auto_model_for_ctc",
     "import_transformers_auto_processor",
@@ -120,32 +116,6 @@ def import_huggingface_hub_utils_validate_repo_id() -> Callable[[str], None]:
     return validate_repo_id
 
 
-def import_torch_mps_is_available() -> Callable[[], bool]:
-    """Import the Torch MPS availability check on demand.
-
-    Returns:
-        Torch MPS availability check
-    """
-    try:
-        from torch.mps import is_available
-    except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return is_available
-
-
-def import_torch_cuda_is_available() -> Callable[[], bool]:
-    """Import the Torch CUDA availability check on demand.
-
-    Returns:
-        Torch CUDA availability check
-    """
-    try:
-        from torch.cuda import is_available
-    except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return is_available
-
-
 def import_torch() -> ModuleType:
     """Import Torch on demand.
 
@@ -157,19 +127,6 @@ def import_torch() -> ModuleType:
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return torch
-
-
-def import_torch_no_grad() -> Callable[[], AbstractContextManager[None]]:
-    """Import the Torch gradient-disabling context manager on demand.
-
-    Returns:
-        Torch gradient-disabling context manager
-    """
-    try:
-        from torch import no_grad
-    except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return no_grad
 
 
 def import_torchaudio_functional_resample() -> Callable[[Tensor, int, int], Tensor]:
