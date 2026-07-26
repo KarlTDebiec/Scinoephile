@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from enum import StrEnum
 from logging import getLogger
 from pathlib import Path
 
@@ -14,6 +15,7 @@ from pydub.effects import normalize
 from scinoephile.audio.subtitles import AudioSeries, get_series_from_segments
 from scinoephile.audio.transcription import (
     DemucsMode,
+    MlxAudioTranscriber,
     TranscribedSegment,
     TranscriptionError,
     VADMode,
@@ -29,6 +31,7 @@ from .aligner import TranscriptionAligner
 __all__ = [
     "GuidedTranscriber",
     "TranscribedSegmentSplitter",
+    "TranscriptionBackend",
 ]
 
 
@@ -65,6 +68,15 @@ _TAIL_RECOVERY_MAX_SECONDS_PER_CHARACTER = 1.5
 """Maximum duration per character accepted from focused tail recovery."""
 
 
+class TranscriptionBackend(StrEnum):
+    """Audio transcription backends."""
+
+    WHISPER = "whisper"
+    """Transcribe using Whisper."""
+    MLX_AUDIO = "mlx-audio"
+    """Transcribe using MLX-Audio."""
+
+
 class GuidedTranscriber:
     """Transcribe audio and align it with reference subtitles."""
 
@@ -76,10 +88,12 @@ class GuidedTranscriber:
         model_name: str,
         whisper_language: str,
         aligner: TranscriptionAligner,
+        backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
         demucs_mode: DemucsMode = DemucsMode.AUTO,
         vad_mode: VADMode = VADMode.AUTO,
         cache_dir_path: Path | None = None,
         overwrite_cache: bool = False,
+        mlx_audio_transcriber: MlxAudioTranscriber | None = None,
         segment_splitter: TranscribedSegmentSplitter | None = None,
     ):
         """Initialize.
@@ -90,10 +104,12 @@ class GuidedTranscriber:
             model_name: Whisper model name used for transcription
             whisper_language: language code passed to Whisper
             aligner: transcription aligner
+            backend: audio transcription backend
             demucs_mode: Demucs preprocessing mode
             vad_mode: Whisper VAD mode
             cache_dir_path: cache root directory path
             overwrite_cache: whether to replace matching generated cache files
+            mlx_audio_transcriber: configured MLX-Audio transcriber, when selected
             segment_splitter: optional strategy for splitting Whisper segments
         """
         self.language = language
@@ -101,13 +117,24 @@ class GuidedTranscriber:
         self.model_name = model_name
         self.whisper_language = whisper_language
         self.aligner = aligner
+        self.backend = backend
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
         if cache_dir_path is None:
             cache_dir_path = get_runtime_cache_dir_path(create=False)
         self.cache_dir_path = cache_dir_path
         self.overwrite_cache = overwrite_cache
+        self.mlx_audio_transcriber = mlx_audio_transcriber
         self.segment_splitter = segment_splitter
+
+        # Use MLX-Audio's shared preprocessing fallbacks without Whisper recovery
+        if self.backend is TranscriptionBackend.MLX_AUDIO:
+            if self.mlx_audio_transcriber is None:
+                raise ValueError("MLX-Audio backend requires a MLX-Audio transcriber.")
+            self.transcriber = self.mlx_audio_transcriber
+            self.recovery_transcriber = None
+            self.tail_recovery_transcriber = None
+            return
 
         # Configure standard preprocessing fallbacks
         self.transcriber = WhisperTranscriber(
@@ -257,6 +284,9 @@ class GuidedTranscriber:
         Returns:
             transcribed segments
         """
+        if self.backend is TranscriptionBackend.MLX_AUDIO:
+            return self._transcribe_block_audio_with_mlx_audio(audio)
+
         audio_duration = len(audio) / 1000
 
         def is_usable(candidate: list[TranscribedSegment]) -> bool:
@@ -269,6 +299,7 @@ class GuidedTranscriber:
         # Inspect or clear recovery caches before invoking Demucs
         segments = None
         if self.overwrite_cache:
+            assert self.recovery_transcriber is not None
             self.recovery_transcriber.remove_cached_transcriptions(audio)
         else:
             segments = self.transcriber.get_cached_transcription(
@@ -276,6 +307,7 @@ class GuidedTranscriber:
                 is_usable=is_usable,
             )
             if segments is None:
+                assert self.recovery_transcriber is not None
                 segments = self.recovery_transcriber.get_cached_transcription(
                     audio,
                     is_usable=is_usable,
@@ -295,6 +327,7 @@ class GuidedTranscriber:
         if not segments:
             logger.info("Retrying block transcription with defensive Whisper decoding")
             try:
+                assert self.recovery_transcriber is not None
                 segments = self.recovery_transcriber(
                     audio,
                     is_usable=is_usable,
@@ -315,6 +348,45 @@ class GuidedTranscriber:
             expected_last_start=expected_last_start,
         )
 
+    def _transcribe_block_audio_with_mlx_audio(
+        self,
+        audio: AudioSegment,
+    ) -> list[TranscribedSegment]:
+        """Transcribe one block using MLX-Audio.
+
+        Arguments:
+            audio: block audio to transcribe
+        Returns:
+            usable transcribed segments, or an empty list when none are produced
+        """
+        assert self.mlx_audio_transcriber is not None
+        audio_duration = len(audio) / 1000
+
+        def is_usable(segments: list[TranscribedSegment]) -> bool:
+            """Determine whether an MLX-Audio attempt is usable."""
+            return self._segments_are_usable(
+                segments,
+                audio_duration=audio_duration,
+            )
+
+        try:
+            segments = self.mlx_audio_transcriber(
+                audio,
+                is_usable=is_usable,
+                overwrite_cache=self.overwrite_cache,
+            )
+        except TranscriptionError as exc:
+            logger.warning(f"MLX-Audio transcription failed: {exc}")
+        else:
+            if segments:
+                return segments
+
+        logger.warning(
+            "MLX-Audio did not produce usable output; leaving this block empty for "
+            "downstream gap translation"
+        )
+        return []
+
     def _transcribe_with_focused_tail_recovery(
         self,
         segments: list[TranscribedSegment],
@@ -331,6 +403,7 @@ class GuidedTranscriber:
         Returns:
             valid base transcription with any credible recovered tail appended
         """
+        assert self.tail_recovery_transcriber is not None
         last_word_end = max(
             word.end for segment in segments for word in (segment.words or [])
         )

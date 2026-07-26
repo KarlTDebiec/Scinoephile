@@ -19,6 +19,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
+from scinoephile.lang.transcription import TranscriptionBackend
 from test.helpers import assert_series_equal, test_data_root
 
 _MEDIA_INFILE_PATH = "/tmp/test_media.mp4"
@@ -72,6 +73,7 @@ def test_transcribe_help_lists_generic_options():
     assert "--convert" not in normalized_help_text
     assert "--demucs {auto,on,off}" in help_text
     assert "--vad {auto,on,off}" in help_text
+    assert "--backend {whisper,mlx-audio}" in help_text
     assert "--model MODEL_NAME" in help_text
     assert "transcription model (default: backend default)" in normalized_help_text
     assert "--cache-overwrite" in help_text
@@ -200,6 +202,7 @@ def test_transcribe_cli_passes_generic_configuration(
         language: Language,
         guide_language: Language | None,
         model_name: str | None,
+        backend: TranscriptionBackend,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
         cache_dir_path: Path | None,
@@ -216,7 +219,8 @@ def test_transcribe_cli_passes_generic_configuration(
         assert isinstance(reference_series, Series)
         assert language is Language.yue_hant
         assert guide_language is Language.zho_hans
-        assert model_name == "custom/whisper"
+        assert model_name == "custom/mlx-audio"
+        assert backend is TranscriptionBackend.MLX_AUDIO
         assert demucs_mode is DemucsMode.ON
         assert vad_mode is VADMode.OFF
         assert cache_dir_path == tmp_path / "cache"
@@ -242,7 +246,8 @@ def test_transcribe_cli_passes_generic_configuration(
                 f"--media-infile {_MEDIA_INFILE_PATH} "
                 f"--guide-infile {_GUIDE_INFILE_PATH} "
                 "--language yue-Hant --guide-language zho-Hans "
-                "--model custom/whisper --demucs on --vad off "
+                "--model custom/mlx-audio --backend mlx-audio "
+                "--demucs on --vad off "
                 f"--cache-dir {tmp_path / 'cache'} --cache-overwrite "
                 f"--delineation-json {tmp_path / 'delineation.json'} "
                 f"--punctuation-json {tmp_path / 'punctuation.json'} "
