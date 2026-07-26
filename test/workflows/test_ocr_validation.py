@@ -21,7 +21,7 @@ def test_validate_ocr_runs_noninteractive_validation(
     infile_path = tmp_path / "source.sup"
     infile_path.write_bytes(b"unused")
     outfile_path = tmp_path / "validated.srt"
-    cache_dir_path = tmp_path / "cache"
+    validation_data_dir_path = tmp_path / "validation-data"
     load_calls: list[Path] = []
     manager_instances: list[object] = []
     manager_calls: list[tuple[Path | str | None, bool]] = []
@@ -33,12 +33,12 @@ def test_validate_ocr_runs_noninteractive_validation(
         def __init__(
             self,
             *,
-            cache_dir_path: Path | str | None = None,
+            validation_data_dir_path: Path | str | None = None,
             dev: bool = False,
         ):
             """Initialize."""
             manager_instances.append(self)
-            manager_calls.append((cache_dir_path, dev))
+            manager_calls.append((validation_data_dir_path, dev))
 
         def validate(self, series: ImageSeries) -> Series:
             """Validate an image series."""
@@ -62,7 +62,7 @@ def test_validate_ocr_runs_noninteractive_validation(
     validated = validate_ocr(
         infile_path,
         outfile_path,
-        cache_dir_path=cache_dir_path,
+        validation_data_dir_path=validation_data_dir_path,
         interactive=False,
         dev=True,
         overwrite=False,
@@ -71,7 +71,7 @@ def test_validate_ocr_runs_noninteractive_validation(
     )
 
     assert load_calls == [infile_path]
-    assert manager_calls == [(cache_dir_path, True)]
+    assert manager_calls == [(validation_data_dir_path, True)]
     assert validate_calls == [(tiny_image_series, manager_instances[0])]
     assert [subtitle.text for subtitle in validated] == ["validated"]
     assert "validated" in outfile_path.read_text(encoding="utf-8")
@@ -85,7 +85,7 @@ def test_validate_ocr_runs_interactive_validation(
     infile_path = tmp_path / "image"
     infile_path.mkdir()
     outfile_path = tmp_path / "validated.srt"
-    cache_dir_path = tmp_path / "cache"
+    validation_data_dir_path = tmp_path / "validation-data"
     run_calls = []
     session = object()
 
@@ -93,11 +93,19 @@ def test_validate_ocr_runs_interactive_validation(
         dir_path: Path,
         *,
         outfile_path: Path | None = None,
-        cache_dir_path: Path | str | None = None,
+        validation_data_dir_path: Path | str | None = None,
         dev: bool = False,
     ) -> object:
         """Capture web session construction arguments."""
-        run_calls.append(("from_dir_path", dir_path, outfile_path, cache_dir_path, dev))
+        run_calls.append(
+            (
+                "from_dir_path",
+                dir_path,
+                outfile_path,
+                validation_data_dir_path,
+                dev,
+            )
+        )
         return session
 
     def fake_run_app(value: object, host: str, port: int):
@@ -117,7 +125,7 @@ def test_validate_ocr_runs_interactive_validation(
     validated = validate_ocr(
         infile_path,
         outfile_path,
-        cache_dir_path=cache_dir_path,
+        validation_data_dir_path=validation_data_dir_path,
         interactive=True,
         dev=True,
         overwrite=False,
@@ -126,7 +134,7 @@ def test_validate_ocr_runs_interactive_validation(
     )
 
     assert run_calls == [
-        ("from_dir_path", infile_path, outfile_path, cache_dir_path, True),
+        ("from_dir_path", infile_path, outfile_path, validation_data_dir_path, True),
         ("run_app", session, "0.0.0.0", 5050),
     ]
     assert [subtitle.text for subtitle in validated] == ["interactive validated"]

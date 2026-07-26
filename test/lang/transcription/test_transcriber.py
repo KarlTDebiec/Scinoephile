@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from logging import INFO, WARNING
-from typing import cast
 from unittest.mock import Mock, patch
 
 from pydub import AudioSegment
@@ -14,7 +13,6 @@ from pytest import LogCaptureFixture, approx, raises
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
 from scinoephile.audio.transcription import (
-    MlxAudioTranscriber,
     TranscribedSegment,
     TranscribedWord,
     TranscriptionError,
@@ -26,14 +24,12 @@ from scinoephile.lang.transcription.alignment import TranscriptionAlignment
 from scinoephile.lang.transcription.transcriber import (
     DemucsMode,
     GuidedTranscriber,
-    TranscriptionBackend,
     VADMode,
 )
 
 
 def _get_transcriber(
     *,
-    backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.OFF,
     overwrite_cache: bool = False,
@@ -41,9 +37,8 @@ def _get_transcriber(
     """Get a transcriber with a passthrough alignment mock.
 
     Arguments:
-        backend: audio transcription backend
         demucs_mode: Demucs preprocessing mode
-        vad_mode: voice activity detection mode
+        vad_mode: Whisper VAD mode
         overwrite_cache: whether to replace matching transcription cache files
     Returns:
         transcriber and alignment mock
@@ -54,21 +49,16 @@ def _get_transcriber(
     aligner.delineation_processor.prune_test_cases = False
     aligner.punctuation_processor = Mock()
     aligner.punctuation_processor.prune_test_cases = False
-    mlx_audio_transcriber = None
-    if backend == TranscriptionBackend.MLX_AUDIO:
-        mlx_audio_transcriber = Mock(spec=MlxAudioTranscriber)
     return (
         GuidedTranscriber(
             language=Language.eng,
-            reference_language=Language.zho_hans,
+            guide_language=Language.zho_hans,
             model_name="test/model",
             whisper_language="en",
             aligner=aligner,
-            backend=backend,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
             overwrite_cache=overwrite_cache,
-            mlx_audio_transcriber=mlx_audio_transcriber,
         ),
         aligner,
     )
@@ -248,6 +238,41 @@ def test_missing_guided_tail_keeps_base_after_unusable_cached_recovery():
         overwrite_cache=False,
     )
     transcriber.tail_recovery_transcriber.assert_not_called()
+
+
+def test_missing_guided_tail_recovers_from_malformed_cache():
+    """Test a malformed focused-tail cache triggers fresh recovery."""
+    transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
+    initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
+    recovered_segments = [
+        _get_segment(
+            start=0.2,
+            end=0.8,
+            text="tail",
+            compression_ratio=1.0,
+            with_words=True,
+        )
+    ]
+    recovered_segments[0].no_speech_prob = 0.1
+    transcriber.no_vad_transcriber = Mock()
+    transcriber.no_vad_transcriber.get_cached_transcription.return_value = (
+        initial_segments
+    )
+    transcriber.tail_recovery_transcriber = Mock(return_value=recovered_segments)
+    transcriber.tail_recovery_transcriber.get_cached_transcription.side_effect = (
+        TranscriptionError("malformed focused-tail cache")
+    )
+    audio = Sine(440).to_audio_segment(duration=10000).apply_gain(-20.0)
+
+    output = transcriber._transcribe_block_audio(audio, expected_last_start=8.0)
+
+    assert output[:1] == initial_segments
+    assert output[1].text == "tail"
+    normalized_tail_audio = transcriber.tail_recovery_transcriber.call_args.args[0]
+    transcriber.tail_recovery_transcriber.assert_called_once_with(
+        normalized_tail_audio,
+        use_cache=False,
+    )
 
 
 def test_missing_guided_tail_keeps_valid_base_without_credible_recovery():
@@ -502,102 +527,6 @@ def test_all_unusable_candidates_leave_gap_for_translation():
     output = transcriber._transcribe_block_audio(AudioSegment.silent(duration=1000))
 
     assert output == []
-
-
-def test_auto_preprocessing_retry_order_matches_backends():
-    """Test Whisper and MLX-Audio use the same preprocessing retry order."""
-    whisper, _ = _get_transcriber(
-        demucs_mode=DemucsMode.AUTO,
-        vad_mode=VADMode.AUTO,
-    )
-    whisper_attempts = [
-        (candidate.use_demucs, candidate.use_vad)
-        for candidate in (
-            *whisper._get_standard_transcribers(),
-            *whisper._get_standard_transcribers(unseparated=True),
-        )
-    ]
-
-    mlx_audio = object.__new__(MlxAudioTranscriber)
-    mlx_audio.use_demucs = True
-    mlx_audio.use_vad = True
-    mlx_audio.retry_without_demucs = True
-    mlx_audio.retry_without_vad = True
-
-    assert (
-        whisper_attempts
-        == list(mlx_audio._get_attempt_configurations())
-        == [
-            (True, True),
-            (True, False),
-            (False, True),
-            (False, False),
-        ]
-    )
-
-
-def test_mlx_audio_backend_delegates_retries_to_single_transcriber():
-    """Test guided transcription delegates retries to one MLX-Audio instance."""
-    transcriber, _ = _get_transcriber(
-        backend=TranscriptionBackend.MLX_AUDIO,
-        demucs_mode=DemucsMode.AUTO,
-        vad_mode=VADMode.AUTO,
-    )
-    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
-    usable_segments = [_get_segment(text="mlx-audio", with_words=True)]
-    assert transcriber.mlx_audio_transcriber is not None
-    mlx_audio = cast(Mock, transcriber.mlx_audio_transcriber)
-    mlx_audio.return_value = usable_segments
-    audio = AudioSegment.silent(duration=1000)
-
-    output = transcriber._transcribe_block_audio(audio)
-
-    assert output == usable_segments
-    mlx_audio.assert_called_once()
-    assert mlx_audio.call_args.args == (audio,)
-    assert mlx_audio.call_args.kwargs["cache_audio"] is audio
-    is_usable = mlx_audio.call_args.kwargs["is_usable"]
-    assert not is_usable(repetitive_segments)
-    assert is_usable(usable_segments)
-    assert transcriber.demucs_separator is None
-    assert transcriber.vad_transcriber is None
-    assert transcriber.recovery_transcriber is None
-
-
-def test_mlx_audio_backend_forwards_cache_overwrite():
-    """Test guided MLX-Audio transcription forwards cache replacement requests."""
-    transcriber, _ = _get_transcriber(
-        backend=TranscriptionBackend.MLX_AUDIO,
-        overwrite_cache=True,
-    )
-    usable_segments = [_get_segment(text="mlx-audio", with_words=True)]
-    assert transcriber.mlx_audio_transcriber is not None
-    mlx_audio = cast(Mock, transcriber.mlx_audio_transcriber)
-    mlx_audio.return_value = usable_segments
-    audio = AudioSegment.silent(duration=1000)
-
-    output = transcriber._transcribe_block_audio(audio)
-
-    assert output == usable_segments
-    assert mlx_audio.call_args.kwargs["overwrite_cache"] is True
-
-
-def test_failed_mlx_audio_backend_leaves_gap_for_translation():
-    """Test an MLX-Audio failure preserves downstream gap translation behavior."""
-    transcriber, _ = _get_transcriber(
-        backend=TranscriptionBackend.MLX_AUDIO,
-        vad_mode=VADMode.OFF,
-    )
-    assert transcriber.mlx_audio_transcriber is not None
-    mlx_audio = cast(Mock, transcriber.mlx_audio_transcriber)
-    mlx_audio.get_cached_transcription.return_value = None
-    mlx_audio.side_effect = TranscriptionError("MLX-Audio failed")
-
-    output = transcriber._transcribe_block_audio(AudioSegment.silent(duration=1000))
-
-    assert output == []
-    assert transcriber.no_vad_transcriber is None
-    assert transcriber.recovery_transcriber is None
 
 
 def test_auto_demucs_retries_unseparated_audio_after_unusable_result():

@@ -130,52 +130,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## MLX-Audio (speech-to-text inference runtime)
-
-Scinoephile's optional transcription dependencies install MLX-Audio from a pinned
-source revision. The dependency is enabled only on Apple Silicon, which is the
-platform supported by Scinoephile's MLX-Audio runtime.
-
-- Upstream project: https://github.com/Blaizzy/mlx-audio
-- MiMo source revision:
-  https://github.com/ailuntx/mlx-audio/tree/ff0197c0ae9f9fd02072904c696f2533e329c06e
-- License: MIT
-- Copyright: Copyright (c) 2024 Prince Canuma
-
-The `MLX-Audio` license permits use, modification, and distribution, provided
-the copyright and permission notice are included in copies or substantial
-portions of the software.
-
-For the complete license text used by the pinned `MLX-Audio` revision, see:
-
-- https://github.com/ailuntx/mlx-audio/blob/ff0197c0ae9f9fd02072904c696f2533e329c06e/LICENSE
-
-MIT license text (from `MLX-Audio`):
-
-```text
-MIT License
-
-Copyright (c) 2024 Prince Canuma
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
 ## TorchAudio forced-alignment tutorial (adapted CTC trellis logic)
 
 Scinoephile's in-house CTC aligner is informed by and partially adapted from the
@@ -236,7 +190,7 @@ Scinoephile vendors the HTMX runtime for the OCR validation web UI:
 
 - Project: https://github.com/bigskysoftware/htmx
 - Package: https://www.npmjs.com/package/htmx.org/v/2.0.4
-- Vendored file: `scinoephile/web/static/htmx.min.js`
+- Vendored file: `scinoephile/web/ocr_validation/static/htmx.min.js`
 - License: 0BSD
 
 The HTMX package metadata for version 2.0.4 identifies the package license as
@@ -271,10 +225,9 @@ The CUHK data source used by the scraper is:
 - 現代標準漢語與粵語對照資料庫
 - https://apps.itsc.cuhk.edu.hk/hanyu/Page/Cover.aspx
 
-The CUHK site footer states `(c) 2014 保留版權` (all rights reserved) but
-does not identify the copyright holder on the cited page. Scinoephile does not
-distribute CUHK dictionary data in-repository; users build local caches from the
-source site.
+The CUHK site states copyright ownership by the Chinese University of Hong Kong.
+Scinoephile does not distribute CUHK dictionary data in-repository; users build
+local caches from the source site.
 
 ## GZZJ dictionary data source
 
@@ -301,82 +254,29 @@ Kaifangcidian's copyright page states that site resources are licensed under
 Creative Commons Attribution 3.0 unless otherwise noted:
 
 - https://www.kaifangcidian.com/yue/cc/
-- Copyright: © 2009–2024 開放詞典.com
-- License: Creative Commons Attribution 3.0
-- License terms: https://creativecommons.org/licenses/by/3.0/
 
-Scinoephile distributes a normalized derivative of the upstream JavaScript
-payloads as
-`scinoephile/data/dictionaries/kaifangcidian/entries.csv`. Scinoephile can also
-download the current upstream website payloads during
-`dictionary build kaifangcidian`.
+Scinoephile can build from local canonical CSV snapshots under
+`scinoephile/data/dictionaries/kaifangcidian/`, or by downloading the upstream
+website payloads during `dictionary build kaifangcidian`.
 
 ## Unihan dictionary data source
 
-Scinoephile distributes the following Unicode 17.0.0 Unihan source files:
-
-- `scinoephile/data/dictionaries/unihan/Unihan_DictionaryLikeData.txt`
-- `scinoephile/data/dictionaries/unihan/Unihan_Readings.txt`
-- `scinoephile/data/dictionaries/unihan/Unihan_Variants.txt`
-
 The Unihan source used by the local parser is:
 
-- Unihan Database: https://www.unicode.org/charts/unihan.html
-- Bundled version archive:
-  https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip
-- Current archive endpoint:
-  https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip
-- License: Unicode License V3
-- License text: https://www.unicode.org/license.txt
-- Terms of Use: https://www.unicode.org/copyright.html
+- Unihan Database
+- https://www.unicode.org/charts/unihan.html
+- Archive endpoint:
+  - https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip
 
-Scinoephile can build from the bundled Unihan source snapshots, or by
-downloading and extracting the current `Unihan.zip` during
-`dictionary build unihan`.
+Unicode data and software are provided under the Unicode License Agreement and
+Terms of Use:
 
-Unicode License V3 text:
+- https://www.unicode.org/license.html
+- https://www.unicode.org/copyright.html
 
-```text
-UNICODE LICENSE V3
-
-COPYRIGHT AND PERMISSION NOTICE
-
-Copyright © 1991-2026 Unicode, Inc.
-
-NOTICE TO USER: Carefully read the following legal agreement. BY
-DOWNLOADING, INSTALLING, COPYING OR OTHERWISE USING DATA FILES, AND/OR
-SOFTWARE, YOU UNEQUIVOCALLY ACCEPT, AND AGREE TO BE BOUND BY, ALL OF THE
-TERMS AND CONDITIONS OF THIS AGREEMENT. IF YOU DO NOT AGREE, DO NOT
-DOWNLOAD, INSTALL, COPY, DISTRIBUTE OR USE THE DATA FILES OR SOFTWARE.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of data files and any associated documentation (the "Data Files") or
-software and any associated documentation (the "Software") to deal in the
-Data Files or Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, and/or sell
-copies of the Data Files or Software, and to permit persons to whom the
-Data Files or Software are furnished to do so, provided that either (a)
-this copyright and permission notice appear with all copies of the Data
-Files or Software, or (b) this copyright and permission notice appear in
-associated Documentation.
-
-THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
-KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF
-THIRD PARTY RIGHTS.
-
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE
-BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES,
-OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
-WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
-ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA
-FILES OR SOFTWARE.
-
-Except as contained in this notice, the name of a copyright holder shall
-not be used in advertising or otherwise to promote the sale, use or other
-dealings in these Data Files or Software without prior written
-authorization of the copyright holder.
-```
+Scinoephile can build from local Unihan source snapshots under
+`scinoephile/data/dictionaries/unihan/`, or by downloading and extracting
+`Unihan.zip` during `dictionary build unihan`.
 
 ## Wiktionary (Kaikki) dictionary data source
 
@@ -387,18 +287,11 @@ The Wiktionary source used by the local parser is:
 - Kaikki Chinese dump index:
   - https://kaikki.org/dictionary/Chinese/
 
-Kaikki states that its extracted data is available under the same dual licenses
-as Wiktionary:
+Wiktionary text is available under Creative Commons Attribution-ShareAlike
+licensing:
 
-- Creative Commons Attribution-ShareAlike 4.0 International
-- GNU Free Documentation License 1.1 or any later version, with no Invariant
-  Sections, Front-Cover Texts, or Back-Cover Texts
-- Kaikki license statement: https://kaikki.org/dictionary/
-- Wiktionary copyright and license details:
-  https://en.wiktionary.org/wiki/Wiktionary:Copyrights
+- https://en.wiktionary.org/wiki/Wiktionary:Copyrights#Creative_Commons_Attribution-ShareAlike_4.0_International_License
 
-Scinoephile does not distribute Kaikki or Wiktionary source data. Users can
-build a local cache from an untracked local JSONL snapshot, an explicit
-`--source-jsonl-path`, or a fresh Kaikki download requested with
-`--force-download` during `dictionary build wiktionary`. Redistribution of the
-source data or derived caches remains subject to the applicable license terms.
+Scinoephile can build from local Kaikki JSONL snapshots under
+`scinoephile/data/dictionaries/wiktionary/`, or from an explicit
+`--source-jsonl-path` during `dictionary build wiktionary`.

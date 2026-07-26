@@ -120,7 +120,7 @@ class WhisperTranscriber:
                 self._model = self._models[model_key]
                 return self._model
 
-            whisper = self._import_whisper_timestamped()
+            whisper = self._get_whisper_module()
             try:
                 self._model = whisper.load_model(self.model_name, device=device)
             except FileNotFoundError:
@@ -130,7 +130,7 @@ class WhisperTranscriber:
                     "Whisper model load failed due to missing cache file; "
                     "re-downloading HuggingFace snapshot and retrying."
                 )
-                snapshot_download = self._import_huggingface_hub_snapshot_download()
+                snapshot_download = self._get_snapshot_download()
                 snapshot_download(repo_id=self.model_name)
                 self._model = whisper.load_model(self.model_name, device=device)
             self._models[model_key] = self._model
@@ -166,7 +166,7 @@ class WhisperTranscriber:
                 raise TranscriptionInferenceError(
                     f"Malformed Whisper cache payload: {cache_path}"
                 )
-            segments = [TranscribedSegment.model_validate(s) for s in payload]
+            segments = [TranscribedSegment.model_validate(item) for item in payload]
         except TranscriptionInferenceError:
             raise
         except (OSError, TypeError, ValueError) as exc:
@@ -214,7 +214,7 @@ class WhisperTranscriber:
                     return segments
 
         # Transcribe using Whisper
-        whisper = self._import_whisper_timestamped()
+        whisper = self._get_whisper_module()
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
             sample_len = self._get_sample_len(audio)
@@ -288,7 +288,7 @@ class WhisperTranscriber:
         ):
             return False
         hf_validation_error_cls, validate_repo_id = (
-            self._import_huggingface_hub_utils_repo_validation()
+            self._get_huggingface_repo_validation()
         )
         try:
             validate_repo_id(self.model_name)
@@ -410,18 +410,7 @@ class WhisperTranscriber:
         return segment_text_from_words
 
     @staticmethod
-    def _import_huggingface_hub_snapshot_download() -> Any:
-        """Import HuggingFace snapshot downloader on demand."""
-        try:
-            from huggingface_hub import (  # noqa: PLC0415
-                snapshot_download,
-            )
-        except ImportError as exc:
-            raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-        return snapshot_download
-
-    @staticmethod
-    def _import_huggingface_hub_utils_repo_validation() -> tuple[type[Exception], Any]:
+    def _get_huggingface_repo_validation() -> tuple[type[Exception], Any]:
         """Import HuggingFace repo validation helpers on demand."""
         try:
             from huggingface_hub.utils import (  # noqa: E501, PLC0415
@@ -433,7 +422,18 @@ class WhisperTranscriber:
         return HFValidationError, validate_repo_id
 
     @staticmethod
-    def _import_whisper_timestamped() -> Any:
+    def _get_snapshot_download() -> Any:
+        """Import HuggingFace snapshot downloader on demand."""
+        try:
+            from huggingface_hub import (  # noqa: PLC0415
+                snapshot_download,
+            )
+        except ImportError as exc:
+            raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        return snapshot_download
+
+    @staticmethod
+    def _get_whisper_module() -> Any:
         """Import whisper-timestamped on demand."""
         try:
             import whisper_timestamped as whisper  # noqa: E501, PLC0415

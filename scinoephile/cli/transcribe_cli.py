@@ -25,11 +25,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.lang.transcription.transcriber import (
-    DemucsMode,
-    TranscriptionBackend,
-    VADMode,
-)
+from scinoephile.lang.transcription.transcriber import DemucsMode, VADMode
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.transcription import transcribe_series_guided
 
@@ -69,11 +65,6 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "引导字幕语言（省略时从输入文件检测）"
         ),
         (
-            f"transcription backend (options: "
-            f"{enum_options_list_str(TranscriptionBackend)}; "
-            "default: %(default)s)"
-        ): "转写后端（选项：whisper 或 mlx-audio；默认：%(default)s）",
-        (
             f"Demucs vocal-separation mode (options: "
             f"{enum_options_list_str(DemucsMode)}; default: %(default)s)"
         ): "Demucs 人声分离模式（选项：auto、on 或 off；默认：%(default)s）",
@@ -108,11 +99,6 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "guide language (detected from infile if omitted)": (
             "引導字幕語言（省略時從輸入檔偵測）"
         ),
-        (
-            f"transcription backend (options: "
-            f"{enum_options_list_str(TranscriptionBackend)}; "
-            "default: %(default)s)"
-        ): "轉寫後端（選項：whisper 或 mlx-audio；預設：%(default)s）",
         (
             f"Demucs vocal-separation mode (options: "
             f"{enum_options_list_str(DemucsMode)}; default: %(default)s)"
@@ -202,17 +188,6 @@ class TranscribeCli(ScinoephileCliBase):
         )
         add_block_range_args(arg_groups["operation arguments"])
         arg_groups["operation arguments"].add_argument(
-            "--backend",
-            default=TranscriptionBackend.WHISPER,
-            metavar=enum_metavar(TranscriptionBackend),
-            type=enum_arg(TranscriptionBackend),
-            help=(
-                f"transcription backend (options: "
-                f"{enum_options_list_str(TranscriptionBackend)}; "
-                "default: %(default)s)"
-            ),
-        )
-        arg_groups["operation arguments"].add_argument(
             "--demucs",
             default=DemucsMode.AUTO,
             dest="demucs_mode",
@@ -285,7 +260,6 @@ class TranscribeCli(ScinoephileCliBase):
         guide_language: Language | None,
         first_block: int | None,
         last_block: int | None,
-        backend: TranscriptionBackend,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
         model_name: str | None,
@@ -342,9 +316,8 @@ class TranscribeCli(ScinoephileCliBase):
                 audio,
                 guide,
                 language=language,
-                reference_language=guide_language,
+                guide_language=guide_language,
                 model_name=model_name,
-                backend=backend,
                 demucs_mode=demucs_mode,
                 vad_mode=vad_mode,
                 cache_dir_path=cache_args.dir_path,

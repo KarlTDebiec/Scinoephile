@@ -127,7 +127,7 @@ def _build_transcription_prompt_specs(
 ) -> dict[str, PromptSpec]:
     """Build prompt specifications for guided transcription.
 
-    Reference-script variants that share a prompt use one stable language-code alias.
+    Guide-script variants that share a prompt use one stable language-code alias.
 
     Arguments:
         specs: guided transcription specifications keyed by language pair
@@ -137,15 +137,13 @@ def _build_transcription_prompt_specs(
         ValueError: if one alias resolves to conflicting prompts
     """
     prompt_specs: dict[str, PromptSpec] = {}
-    for (language, reference_language), spec in specs.items():
-        reference_code = reference_language.language.lower()
+    for (language, guide_language), spec in specs.items():
+        guide_code = guide_language.language.lower()
         for manager_cls, prompt in (
             (DelineationManager, spec.delineation_prompt),
             (PunctuationManager, spec.punctuation_prompt),
         ):
-            alias = (
-                f"{manager_cls.operation}-{language.code.lower()}-vs-{reference_code}"
-            )
+            alias = f"{manager_cls.operation}-{language.code.lower()}-vs-{guide_code}"
             prompt_spec = PromptSpec(manager_cls=manager_cls, prompt=prompt)
             if alias in prompt_specs and prompt_specs[alias] != prompt_spec:
                 raise ValueError(

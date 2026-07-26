@@ -65,7 +65,7 @@ def test_demucs_model_loader_requires_transcription_extra(monkeypatch: MonkeyPat
     monkeypatch.setattr(builtins, "__import__", import_without_demucs)
 
     with raises(ImportError, match="'transcription' extra"):
-        DemucsSeparator._import_demucs_infer_get_model()
+        DemucsSeparator._get_model_loader()
 
 
 def test_separate_vocals_uses_default_demucs_shifts():
@@ -85,11 +85,7 @@ def test_separate_vocals_uses_default_demucs_shifts():
         apply_model_kwargs.append(kwargs)
         return separated_sources
 
-    with patch.object(
-        DemucsSeparator,
-        "_import_demucs_infer_apply_model",
-        return_value=apply_model,
-    ):
+    with patch.object(DemucsSeparator, "_get_apply_model", return_value=apply_model):
         output_audio = separator.separate_vocals(input_audio)
 
     assert isinstance(output_audio, AudioSegment)
@@ -98,7 +94,10 @@ def test_separate_vocals_uses_default_demucs_shifts():
     assert "shifts" not in apply_model_kwargs[0]
 
 
-def test_separate_vocals_overwrites_matching_cache(tmp_path, monkeypatch: MonkeyPatch):
+def test_separate_vocals_overwrites_matching_cache(
+    tmp_path,
+    monkeypatch: MonkeyPatch,
+):
     """Test cache overwrite regenerates a matching Demucs separation."""
     separator = DemucsSeparator(cache_dir_path=tmp_path)
     input_audio = AudioSegment.silent(duration=1000, frame_rate=16000)

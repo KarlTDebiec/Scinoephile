@@ -117,7 +117,7 @@ def test_session_uses_one_font_size_for_series(
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
         include_done_subtitles=True,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
 
@@ -135,7 +135,7 @@ def test_session_uses_cjk_letter_spacing(tmp_path: Path):
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
         include_done_subtitles=True,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
 
@@ -159,7 +159,7 @@ def test_session_rebuilds_raw_bboxes_for_validation_state(
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
         include_done_subtitles=True,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
     session.series.events[0].bboxes = [Bbox(0, 58, 0, 61)]
@@ -180,7 +180,7 @@ def test_session_omits_done_rows_from_list_by_default(
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
@@ -200,7 +200,7 @@ def test_session_includes_done_rows_in_list_when_enabled(
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
         include_done_subtitles=True,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
@@ -247,7 +247,7 @@ def test_session_reports_char_dims_concern(tmp_path: Path, monkeypatch: MonkeyPa
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
 
@@ -269,7 +269,7 @@ def test_session_reports_error_status_when_validation_cannot_continue(
     patch_ocr_validation_bboxes(monkeypatch, [])
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
 
@@ -288,7 +288,7 @@ def test_accept_char_dims_marks_single_char_done(
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
 
@@ -310,7 +310,7 @@ def test_contract_char_dims_reduces_selection(tmp_path: Path, monkeypatch: Monke
     )
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
 
@@ -398,7 +398,7 @@ def test_punctuation_ellipsis_gap_reports_existing_space_concern(
     )
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1]["！"] = {(10, 20)}
@@ -429,7 +429,7 @@ def test_known_adjacent_gap_mismatch_updates_text_without_concern(
     )
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1]["臭"] = {(10, 20)}
@@ -457,7 +457,7 @@ def test_fullwidth_latin_gap_uses_default_cutoffs(
     )
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1]["你"] = {(10, 20)}
@@ -479,7 +479,7 @@ def test_adjacent_gap_choice_updates_cutoff(tmp_path: Path, monkeypatch: MonkeyP
     )
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1]["白"] = {(10, 20)}
@@ -556,7 +556,7 @@ def test_known_space_gap_mismatch_updates_text_without_concern(
     )
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        validation_data_dir_path=tmp_path / "cache",
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1]["呀"] = {(10, 20)}
