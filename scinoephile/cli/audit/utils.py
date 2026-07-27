@@ -17,8 +17,7 @@ __all__ = ["load_review_test_cases"]
 
 
 def load_review_test_cases(
-    parser: ArgumentParser,
-    json_path: Path | None,
+    parser: ArgumentParser, json_path: Path | None
 ) -> Sequence[TestCase]:
     """Load optional review test cases from JSON.
 
@@ -31,8 +30,5 @@ def load_review_test_cases(
     if json_path is None:
         return ()
     return AuditCliBase.load_test_cases(
-        parser,
-        json_path,
-        ReviewManager,
-        workflow_name="review",
+        parser, json_path, ReviewManager, workflow_name="review"
     )

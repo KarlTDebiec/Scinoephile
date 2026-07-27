@@ -218,12 +218,7 @@ class Series(SSAFile):
         return string.rstrip()
 
     @override
-    def to_string(
-        self,
-        format_: str,
-        fps: float | None = None,
-        **kwargs: Any,
-    ) -> str:
+    def to_string(self, format_: str, fps: float | None = None, **kwargs: Any) -> str:
         """Serialize series to a string.
 
         Arguments:
@@ -261,8 +256,7 @@ class Series(SSAFile):
         """
         try:
             series = cast(
-                Self,
-                super().from_string(string, format_=format_, fps=fps, **kwargs),
+                Self, super().from_string(string, format_=format_, fps=fps, **kwargs)
             )
             series.events = [
                 cls.event_class(**ssaevent.as_dict()) for ssaevent in series
@@ -304,8 +298,7 @@ class Series(SSAFile):
                 str(validated_path), encoding=encoding, errors=errors
             ) as input_file:
                 series = cast(
-                    Self,
-                    cls.from_file(input_file, format_=format_, fps=fps, **kwargs),
+                    Self, cls.from_file(input_file, format_=format_, fps=fps, **kwargs)
                 )
                 series.events = [
                     cls.event_class(**ssaevent.as_dict()) for ssaevent in series

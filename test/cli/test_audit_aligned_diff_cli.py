@@ -48,10 +48,7 @@ def test_audit_aligned_diff_cli_track_help_describes_alignment():
     )
 
 
-def test_audit_aligned_diff_cli_writes_report(
-    tmp_path: Path,
-    capsys: CaptureFixture,
-):
+def test_audit_aligned_diff_cli_writes_report(tmp_path: Path, capsys: CaptureFixture):
     """Test aligned diff audit output to stdout and a file.
 
     Arguments:
@@ -74,10 +71,7 @@ def test_audit_aligned_diff_cli_writes_report(
     assert "| T 1<br>R 1 | <pre>T │ 甲錯<br>R │ 甲正</pre> |  |" in stdout
 
     outfile_path = tmp_path / "audit.md"
-    run_cli_with_args(
-        AuditAlignedDiffCli,
-        f"{arguments} --outfile {outfile_path}",
-    )
+    run_cli_with_args(AuditAlignedDiffCli, f"{arguments} --outfile {outfile_path}")
     assert capsys.readouterr().out == ""
     assert outfile_path.read_text(encoding="utf-8") == stdout
 

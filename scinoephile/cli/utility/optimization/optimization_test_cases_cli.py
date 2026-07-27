@@ -15,9 +15,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.llms import Manager
-from scinoephile.optimization.persistence.test_cases.sync import (
-    sync_test_cases,
-)
+from scinoephile.optimization.persistence.test_cases.sync import sync_test_cases
 
 from .argument_types import operation_arg
 
@@ -138,10 +136,7 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         # Perform operations
         try:
             report = sync_test_cases(
-                infile_paths,
-                outfile_path,
-                manager_cls,
-                dry_run=dry_run,
+                infile_paths, outfile_path, manager_cls, dry_run=dry_run
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

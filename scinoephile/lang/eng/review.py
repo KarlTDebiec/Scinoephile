@@ -11,10 +11,7 @@ from scinoephile.llms.review import ReviewPrompt
 
 from .prompts import ENG_PROMPT_FIELDS
 
-__all__ = [
-    "GuidedReviewPromptEng",
-    "ReviewPromptEng",
-]
+__all__ = ["GuidedReviewPromptEng", "ReviewPromptEng"]
 
 
 GuidedReviewPromptEng = GuidedReviewPrompt(

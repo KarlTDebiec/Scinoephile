@@ -6,9 +6,7 @@ from __future__ import annotations
 
 from PIL import Image
 
-from scinoephile.image.ocr.tesseract.preprocessing import (
-    preprocess_tesseract_ocr_image,
-)
+from scinoephile.image.ocr.tesseract.preprocessing import preprocess_tesseract_ocr_image
 
 
 def test_preprocess_tesseract_ocr_image_makes_opaque_white_background():

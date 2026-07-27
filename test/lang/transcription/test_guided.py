@@ -16,10 +16,7 @@ from scinoephile.audio.transcription.mlx_audio.backend import MIMO_MODEL_NAME
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.utils import save_test_cases_to_json
-from scinoephile.lang.transcription.guided import (
-    DEFAULT_SPECS,
-    get_guided_transcriber,
-)
+from scinoephile.lang.transcription.guided import DEFAULT_SPECS, get_guided_transcriber
 from scinoephile.lang.transcription.transcriber import TranscriptionBackend
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
@@ -73,8 +70,8 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     """Test factory configures language-specific prompts and Whisper language."""
     with (
         patch(
-            "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
-            return_value=tmp_path,
+            "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
+            return_value=tmp_path / "data",
         ),
         patch(
             "scinoephile.lang.transcription.guided.get_torch_device",
@@ -84,9 +81,10 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
         transcriber = get_guided_transcriber(
             Language.yue_hant,
             Language.zho_hans,
-            provider=Mock(spec=LLMProvider),
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
             delineation_test_cases=[],
             punctuation_test_cases=[],
+            cache_root_path=tmp_path,
             overwrite_cache=True,
         )
 
@@ -95,8 +93,8 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.backend is TranscriptionBackend.WHISPER
     assert transcriber.demucs_mode is DemucsMode.AUTO
     assert transcriber.vad_mode is VADMode.AUTO
-    assert transcriber.cache_dir_path == tmp_path
-    assert transcriber.overwrite_cache
+    assert not hasattr(transcriber, "overwrite_cache")
+    assert not hasattr(transcriber, "cache_root_path")
     assert transcriber.whisper_language == "yue"
     assert transcriber.segment_splitter is not None
     assert isinstance(transcriber.aligner.delineation_processor, DelineationProcessor)
@@ -110,12 +108,22 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.transcriber.language == "yue"
     assert transcriber.transcriber.demucs_mode is DemucsMode.AUTO
     assert transcriber.transcriber.vad_mode is VADMode.AUTO
-    assert transcriber.transcriber.cache_dir_path == tmp_path / "whisper"
-    assert transcriber.transcriber.demucs_separator is not None
-    assert (
-        transcriber.transcriber.demucs_separator.cache_dir_path == tmp_path / "demucs"
+    assert transcriber.recovery_transcriber is not None
+    assert transcriber.tail_recovery_transcriber is not None
+    assert not hasattr(transcriber.transcriber, "cache_root_path")
+    assert transcriber.transcriber._cache.cache_dir_path == tmp_path / "whisper"
+    assert transcriber.recovery_transcriber._cache.cache_dir_path == (
+        tmp_path / "whisper"
     )
-    test_case_dir_path = tmp_path / "test_cases/lang/yue_zho/transcription"
+    assert transcriber.tail_recovery_transcriber._cache.cache_dir_path == (
+        tmp_path / "whisper"
+    )
+    assert transcriber.transcriber._cache.overwrite
+    assert transcriber.recovery_transcriber._cache.overwrite
+    assert transcriber.tail_recovery_transcriber._cache.overwrite
+    assert transcriber.transcriber.demucs_separator is not None
+    assert transcriber.recovery_transcriber.demucs_separator is None
+    test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
     assert transcriber.aligner.delineation_processor.test_case_path == (
         test_case_dir_path / "delineation" / "test.json"
     )
@@ -124,14 +132,14 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     )
     assert not transcriber.aligner.delineation_processor.prune_test_cases
     assert not transcriber.aligner.punctuation_processor.prune_test_cases
-    assert transcriber.aligner.delineation_processor.queryer.cache_dir_path == (
-        tmp_path / "llm"
+    assert transcriber.aligner.delineation_processor.queryer._cache.cache_dir_path == (
+        tmp_path / "llm" / "delineation"
     )
-    assert transcriber.aligner.delineation_processor.queryer.overwrite_cache
-    assert transcriber.aligner.punctuation_processor.queryer.cache_dir_path == (
-        tmp_path / "llm"
+    assert transcriber.aligner.delineation_processor.queryer._cache.overwrite
+    assert transcriber.aligner.punctuation_processor.queryer._cache.cache_dir_path == (
+        tmp_path / "llm" / "punctuation"
     )
-    assert transcriber.aligner.punctuation_processor.queryer.overwrite_cache
+    assert transcriber.aligner.punctuation_processor.queryer._cache.overwrite
 
 
 def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
@@ -141,21 +149,16 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
         tmp_path: temporary directory path
     """
     mlx_audio_transcriber = Mock()
-    with (
-        patch(
-            "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
-            return_value=tmp_path,
-        ),
-        patch(
-            "scinoephile.lang.transcription.guided.MlxAudioTranscriber",
-            return_value=mlx_audio_transcriber,
-        ) as mlx_audio_transcriber_class,
-    ):
+    with patch(
+        "scinoephile.lang.transcription.guided.MlxAudioTranscriber",
+        return_value=mlx_audio_transcriber,
+    ) as mlx_audio_transcriber_class:
         transcriber = get_guided_transcriber(
             Language.yue_hant,
             Language.zho_hans,
             backend=TranscriptionBackend.MLX_AUDIO,
-            provider=Mock(spec=LLMProvider),
+            cache_root_path=tmp_path,
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
             delineation_json_path=tmp_path / "delineation.json",
             punctuation_json_path=tmp_path / "punctuation.json",
             delineation_test_cases=[],
@@ -172,21 +175,19 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
         language=Language.yue_hant,
         demucs_mode=DemucsMode.AUTO,
         vad_mode=VADMode.AUTO,
-        cache_dir_path=tmp_path / "mlx_audio",
-        demucs_cache_dir_path=tmp_path / "demucs",
+        cache_root_path=tmp_path,
+        overwrite_cache=False,
     )
 
 
-def test_get_guided_transcriber_prunes_stale_cases_when_requested(
-    tmp_path: Path,
-):
+def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path):
     """Test requested pruning retains only cases encountered by the current run."""
     delineation_json_path = tmp_path / "custom" / "delineation.json"
     punctuation_json_path = tmp_path / "other" / "punctuation.json"
     transcriber = get_guided_transcriber(
         Language.yue_hant,
         Language.zho_hans,
-        provider=Mock(spec=LLMProvider),
+        provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
         prune_test_cases=True,
         delineation_json_path=delineation_json_path,
         punctuation_json_path=punctuation_json_path,
@@ -223,10 +224,7 @@ def test_get_guided_transcriber_prunes_stale_cases_when_requested(
         json.dumps(
             [
                 {
-                    "query": {
-                        "ref_sub": "參考",
-                        "target_subs": ["目標"],
-                    },
+                    "query": {"ref_sub": "參考", "target_subs": ["目標"]},
                     "answer": {"target_sub_punctuated": "目標。"},
                 }
             ]
@@ -240,14 +238,12 @@ def test_get_guided_transcriber_prunes_stale_cases_when_requested(
     assert json.loads(punctuation_json_path.read_text(encoding="utf-8")) == []
 
 
-def test_get_guided_transcriber_preserves_cases_in_default_json_paths(
-    tmp_path: Path,
-):
+def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: Path):
     """Test default JSON test cases are preserved between runs."""
     with (
         patch(
-            "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
-            return_value=tmp_path,
+            "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
+            return_value=tmp_path / "data",
         ),
         patch(
             "scinoephile.lang.transcription.guided.get_torch_device",
@@ -257,11 +253,12 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(
         transcriber = get_guided_transcriber(
             Language.yue_hant,
             Language.zho_hans,
-            provider=Mock(spec=LLMProvider),
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
             delineation_test_cases=[],
             punctuation_test_cases=[],
+            cache_root_path=tmp_path,
         )
-    test_case_dir_path = tmp_path / "test_cases/lang/yue_zho/transcription"
+    test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
     delineation_json_path = test_case_dir_path / "delineation" / "test.json"
     punctuation_json_path = test_case_dir_path / "punctuation" / "test.json"
     delineation_test_case_data = [
@@ -277,21 +274,16 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(
     ]
     punctuation_test_case_data = [
         {
-            "query": {
-                "ref_sub": "參考",
-                "target_subs": ["目標"],
-            },
+            "query": {"ref_sub": "參考", "target_subs": ["目標"]},
             "answer": {"target_sub_punctuated": "目標。"},
             "difficulty": 2,
         }
     ]
     delineation_json_path.write_text(
-        json.dumps(delineation_test_case_data),
-        encoding="utf-8",
+        json.dumps(delineation_test_case_data), encoding="utf-8"
     )
     punctuation_json_path.write_text(
-        json.dumps(punctuation_test_case_data),
-        encoding="utf-8",
+        json.dumps(punctuation_test_case_data), encoding="utf-8"
     )
 
     transcriber.aligner.update_all_test_cases()
@@ -321,11 +313,9 @@ def test_get_guided_transcriber_loads_verified_cases_from_exact_json(tmp_path: P
     )
     delineation_json_path = tmp_path / "delineation.json"
     save_test_cases_to_json(
-        delineation_json_path,
-        [verified_test_case],
-        DelineationManager,
+        delineation_json_path, [verified_test_case], DelineationManager
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     transcriber = get_guided_transcriber(
         Language.yue_hant,
         Language.zho_hant,
@@ -358,9 +348,6 @@ def test_get_guided_transcriber_rejects_unsupported_language_pair():
 
 def test_transcription_prompts_use_yue_hant_correspondence_fields():
     """Test Yue-Hant transcription prompts use Yue-Hant shared text."""
-    for prompt in (
-        YueZhoDelineationPromptYueHant,
-        YueZhoPunctuationPromptYueHant,
-    ):
+    for prompt in (YueZhoDelineationPromptYueHant, YueZhoPunctuationPromptYueHant):
         for field_name, expected in YUE_HANT_PROMPT_FIELDS.items():
             assert getattr(prompt, field_name) == expected

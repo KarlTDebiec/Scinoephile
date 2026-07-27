@@ -14,11 +14,7 @@ from scinoephile.core.subtitles import Series
 
 from .overlap import get_overlap_string, get_sync_overlap_matrix
 
-__all__ = [
-    "SyncGroup",
-    "get_sync_groups",
-    "get_sync_groups_string",
-]
+__all__ = ["SyncGroup", "get_sync_groups", "get_sync_groups_string"]
 
 logger = getLogger(__name__)
 

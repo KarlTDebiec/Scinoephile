@@ -3,6 +3,7 @@
 """Google Lens OCR support for image subtitles.
 
 Package hierarchy (modules may import from any above):
+* cache
 * lens_recognizer
 """
 
@@ -12,13 +13,14 @@ from logging import getLogger
 from typing import Unpack, cast
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
+from .cache import LensCache
 from .lens_recognizer import LensRecognizer, LensRecognizerKwargs
 
 __all__ = [
+    "LensCache",
     "LensRecognizer",
     "LensRecognizerKwargs",
     "ocr_image_series_with_lens",
@@ -28,8 +30,7 @@ logger = getLogger(__name__)
 
 
 def ocr_image_series_with_lens(
-    image_series: ImageSeries,
-    **kwargs: Unpack[LensRecognizerKwargs],
+    image_series: ImageSeries, **kwargs: Unpack[LensRecognizerKwargs]
 ) -> Series:
     """OCR an image subtitle series with Google Lens.
 
@@ -40,8 +41,6 @@ def ocr_image_series_with_lens(
         text subtitle series
     """
     try:
-        if kwargs.get("cache_dir_path") is None:
-            kwargs["cache_dir_path"] = get_runtime_cache_dir_path("google-lens")
         lens_recognizer = LensRecognizer(**kwargs)
 
         events = []
@@ -53,21 +52,12 @@ def ocr_image_series_with_lens(
             image_subtitle = cast(ImageSubtitle, subtitle)
             text = lens_recognizer.recognize_image(image_subtitle.img)
             events.append(
-                Subtitle(
-                    start=image_subtitle.start,
-                    end=image_subtitle.end,
-                    text=text,
-                )
+                Subtitle(start=image_subtitle.start, end=image_subtitle.end, text=text)
             )
         return Series(events=events)
     except ScinoephileError:
         raise
-    except (
-        ImportError,
-        OSError,
-        RuntimeError,
-        ValueError,
-    ) as exc:
+    except (ImportError, OSError, RuntimeError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to OCR image series with Google Lens: {exc}"
         ) from exc

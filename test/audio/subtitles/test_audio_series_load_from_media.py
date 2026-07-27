@@ -74,8 +74,7 @@ def test_audio_series_load_from_media_defaults_to_first_audio_stream():
                     side_effect=_write_selected_audio,
                 ):
                     yuewen_series = AudioSeries.load_from_media(
-                        media_path=media_path,
-                        subtitle_path=subtitle_path,
+                        media_path=media_path, subtitle_path=subtitle_path
                     )
 
     assert isinstance(yuewen_series, AudioSeries)
@@ -90,12 +89,10 @@ def test_audio_series_load_from_media_wraps_input_path_errors(tmp_path: Path):
         tmp_path: pytest temporary directory path
     """
     with raises(
-        ScinoephileError,
-        match="Unable to load AudioSeries from media .*missing.mkv",
+        ScinoephileError, match="Unable to load AudioSeries from media .*missing.mkv"
     ) as excinfo:
         AudioSeries.load_from_media(
-            media_path=tmp_path / "missing.mkv",
-            subtitle_path=tmp_path / "missing.srt",
+            media_path=tmp_path / "missing.mkv", subtitle_path=tmp_path / "missing.srt"
         )
 
     assert isinstance(excinfo.value.__cause__, OSError)
@@ -125,8 +122,7 @@ def test_audio_series_load_from_media_wraps_decode_errors():
                             match="Unable to load AudioSeries from media",
                         ) as excinfo:
                             AudioSeries.load_from_media(
-                                media_path=media_path,
-                                subtitle_path=subtitle_path,
+                                media_path=media_path, subtitle_path=subtitle_path
                             )
 
     assert isinstance(excinfo.value.__cause__, CouldntDecodeError)
@@ -167,8 +163,7 @@ def test_audio_series_load_from_media_normalizes_wav_through_extraction():
                 side_effect=_write_selected_audio,
             ) as extract:
                 series = AudioSeries.load_from_media(
-                    media_path=media_path,
-                    subtitle_path=subtitle_path,
+                    media_path=media_path, subtitle_path=subtitle_path
                 )
 
     extract.assert_called_once()
@@ -225,6 +220,5 @@ def _write_selected_audio(
         stream_index = 1
     channels = 6 if stream_index == 12 else 2
     AudioSegment.silent(duration=3000 + stream_index * 10 + channels).export(
-        outfile_path,
-        format="wav",
+        outfile_path, format="wav"
     )

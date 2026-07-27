@@ -18,11 +18,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 
-__all__ = [
-    "read_image_series",
-    "read_series",
-    "write_series",
-]
+__all__ = ["read_image_series", "read_series", "write_series"]
 
 
 def read_image_series(parser: ArgumentParser, infile: str | Path) -> ImageSeries:
@@ -37,20 +33,12 @@ def read_image_series(parser: ArgumentParser, infile: str | Path) -> ImageSeries
     try:
         infile_path = val_input_file_or_dir_path(infile)
         return ImageSeries.load(infile_path)
-    except (
-        FileNotFoundError,
-        NotADirectoryError,
-        ScinoephileError,
-        ValueError,
-    ) as exc:
+    except (FileNotFoundError, NotADirectoryError, ScinoephileError, ValueError) as exc:
         parser.error(str(exc))
 
 
 def read_series(
-    parser: ArgumentParser,
-    infile: str | Path,
-    *,
-    allow_stdin: bool = False,
+    parser: ArgumentParser, infile: str | Path, *, allow_stdin: bool = False
 ) -> Series:
     """Load a subtitle series from stdin or a file.
 

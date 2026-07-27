@@ -53,8 +53,7 @@ def test_ocr_validate_cli(monkeypatch: MonkeyPatch, tmp_path: Path):
         outfile_path_arg.write_text("validated", encoding="utf-8")
 
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr",
-        fake_validate_ocr,
+        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr", fake_validate_ocr
     )
 
     outfile_path = tmp_path / "validated.srt"
@@ -118,8 +117,7 @@ def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
         )
 
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr",
-        fake_validate_ocr,
+        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr", fake_validate_ocr
     )
 
     outfile_path = tmp_path / "validated.srt"
@@ -156,8 +154,7 @@ def test_ocr_validate_cli_names_persistent_data_separately_from_cache():
 
 
 def test_ocr_validate_cli_web_rejects_sup_input(
-    capsys: CaptureFixture[str],
-    tmp_path: Path,
+    capsys: CaptureFixture[str], tmp_path: Path
 ):
     """Test OCR validate web mode requires a prepared OCR image directory.
 
@@ -180,9 +177,7 @@ def test_ocr_validate_cli_web_rejects_sup_input(
 
 
 def test_ocr_validate_cli_web_delegates_image_dir_validation(
-    capsys: CaptureFixture[str],
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
+    capsys: CaptureFixture[str], monkeypatch: MonkeyPatch, tmp_path: Path
 ):
     """Test web mode lets the session validate OCR image directory contents.
 
@@ -199,8 +194,7 @@ def test_ocr_validate_cli_web_delegates_image_dir_validation(
         raise ScinoephileError("session checked OCR image directory")
 
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr",
-        fake_validate_ocr,
+        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr", fake_validate_ocr
     )
 
     with raises(SystemExit, match="2"):

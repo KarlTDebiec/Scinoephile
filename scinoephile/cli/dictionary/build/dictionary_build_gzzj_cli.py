@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for building the GZZJ dictionary cache."""
+"""Command-line interface for building the GZZJ dictionary database."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ logger = getLogger(__name__)
 
 DICTIONARY_BUILD_GZZJ_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "build GZZJ dictionary cache": "构建 GZZJ 词典缓存",
+        "build GZZJ dictionary database": "构建 GZZJ 词典数据库",
         (
             "Digital data derived from the 2004 second edition of 《廣州話正音字典》."
         ): "由 2004 年第二版《广州话正音字典》整理而成的数字数据。",
@@ -30,7 +30,7 @@ DICTIONARY_BUILD_GZZJ_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
     },
     "zh-hant": {
-        "build GZZJ dictionary cache": "建立 GZZJ 詞典快取",
+        "build GZZJ dictionary database": "建立 GZZJ 詞典資料庫",
         (
             "Digital data derived from the 2004 second edition of 《廣州話正音字典》."
         ): "由 2004 年第二版《廣州話正音字典》整理而成的數碼資料。",
@@ -44,7 +44,7 @@ DICTIONARY_BUILD_GZZJ_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
-    """Build GZZJ dictionary cache."""
+    """Build GZZJ dictionary database."""
 
     source = GZZJ_SOURCE
     """Dictionary source built by this CLI."""
@@ -88,14 +88,13 @@ class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
     ):
         """Execute with provided keyword arguments."""
         service = GzzjDictionaryService(
-            database_path=database_path,
-            source_json_path=source_json_path,
+            database_path=database_path, source_json_path=source_json_path
         )
         cls.log_config(
-            cache_dir_path=None,
             database_path=service.database_path,
             max_words=None,
             overwrite=overwrite,
+            runtime_data_dir_path=None,
             source_json_path=source_json_path,
         )
         try:

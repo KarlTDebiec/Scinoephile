@@ -20,10 +20,7 @@ from .utils import (
     get_selected_event_indexes,
 )
 
-__all__ = [
-    "OcrFusionAuditFilter",
-    "audit_ocr_fusion",
-]
+__all__ = ["OcrFusionAuditFilter", "audit_ocr_fusion"]
 
 
 class OcrFusionAuditFilter(StrEnum):
@@ -168,10 +165,7 @@ def audit_ocr_fusion(
         )
     else:
         summary_items.extend(
-            (
-                f"LLM-required rows: {len(llm_rows)}",
-                "decision log: omitted",
-            )
+            (f"LLM-required rows: {len(llm_rows)}", "decision log: omitted")
         )
     columns: list[AuditColumn] = [
         ("Subtitle", "right"),
@@ -199,8 +193,7 @@ def audit_ocr_fusion(
 
 
 def _filter_rows(
-    rows: Sequence[_OcrFusionRow],
-    row_filter: OcrFusionAuditFilter,
+    rows: Sequence[_OcrFusionRow], row_filter: OcrFusionAuditFilter
 ) -> list[_OcrFusionRow]:
     """Filter OCR-fusion rows by their status.
 

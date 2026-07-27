@@ -39,24 +39,16 @@ def _build_prompt_specs() -> Mapping[str, PromptSpec]:
         _build_monolingual_prompt_specs(ReviewManager, review.DEFAULT_PROMPTS),
         _build_monolingual_prompt_specs(OcrFusionManager, ocr_fusion.DEFAULT_PROMPTS),
         _build_pair_prompt_specs(
-            GuidedReviewManager,
-            guided_review.DEFAULT_PROMPTS,
-            separator="vs",
+            GuidedReviewManager, guided_review.DEFAULT_PROMPTS, separator="vs"
         ),
         _build_pair_prompt_specs(
-            TranslationManager,
-            translation.DEFAULT_PROMPTS,
-            separator="to",
+            TranslationManager, translation.DEFAULT_PROMPTS, separator="to"
         ),
         _build_pair_prompt_specs(
-            GapTranslationManager,
-            gap_translation.DEFAULT_PROMPTS,
-            separator="to",
+            GapTranslationManager, gap_translation.DEFAULT_PROMPTS, separator="to"
         ),
         _build_pair_prompt_specs(
-            GuidedTranslationManager,
-            guided_translation.DEFAULT_PROMPTS,
-            separator="to",
+            GuidedTranslationManager, guided_translation.DEFAULT_PROMPTS, separator="to"
         ),
         _build_transcription_prompt_specs(guided_transcription.DEFAULT_SPECS),
     )
@@ -72,8 +64,7 @@ def _build_prompt_specs() -> Mapping[str, PromptSpec]:
 
 
 def _build_monolingual_prompt_specs(
-    manager_cls: type[Manager],
-    prompts: Mapping[Language, Prompt],
+    manager_cls: type[Manager], prompts: Mapping[Language, Prompt]
 ) -> dict[str, PromptSpec]:
     """Build prompt specifications for a monolingual operation.
 
@@ -85,8 +76,7 @@ def _build_monolingual_prompt_specs(
     """
     return {
         f"{manager_cls.operation}-{language.code.lower()}": PromptSpec(
-            manager_cls=manager_cls,
-            prompt=prompt,
+            manager_cls=manager_cls, prompt=prompt
         )
         for language, prompt in prompts.items()
     }
@@ -111,18 +101,14 @@ def _build_pair_prompt_specs(
         (
             f"{manager_cls.operation}-{first_language.code.lower()}-"
             f"{separator}-{second_language.code.lower()}"
-        ): PromptSpec(
-            manager_cls=manager_cls,
-            prompt=prompt,
-        )
+        ): PromptSpec(manager_cls=manager_cls, prompt=prompt)
         for (first_language, second_language), prompt in prompts.items()
     }
 
 
 def _build_transcription_prompt_specs(
     specs: Mapping[
-        tuple[Language, Language],
-        guided_transcription.GuidedTranscriptionSpec,
+        tuple[Language, Language], guided_transcription.GuidedTranscriptionSpec
     ],
 ) -> dict[str, PromptSpec]:
     """Build prompt specifications for guided transcription.

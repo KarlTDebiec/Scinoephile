@@ -10,11 +10,7 @@ from types import MappingProxyType
 from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.llms import (
-    LLMProvider,
-    ProcessorKwargs,
-    TestCase,
-)
+from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.lang.eng_yue.translation import EngYueGapTranslationPrompt
 from scinoephile.lang.eng_zho.translation import EngZhoGapTranslationPrompt
 from scinoephile.lang.yue_eng.translation import (
@@ -41,10 +37,7 @@ from scinoephile.llms.gap_translation import (
 )
 from scinoephile.llms.providers.registry import get_provider
 
-__all__ = [
-    "DEFAULT_PROMPTS",
-    "get_gap_translator",
-]
+__all__ = ["DEFAULT_PROMPTS", "get_gap_translator"]
 
 _ENG_YUE_GAP_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
 """Default written Cantonese-to-English gap translation JSON paths."""

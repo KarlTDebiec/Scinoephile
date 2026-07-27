@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from PIL import Image
 from pytest import LogCaptureFixture, MonkeyPatch, raises
 
@@ -27,21 +25,16 @@ def test_ocr_image_series_with_lens_preserves_timings_and_sets_text(
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
-                start=1000,
-                end=2000,
-                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
+                start=1000, end=2000, img=Image.new("RGBA", (10, 8), (255, 255, 255, 0))
             ),
             ImageSubtitle(
-                start=3000,
-                end=4000,
-                img=Image.new("RGBA", (12, 9), (255, 255, 255, 0)),
+                start=3000, end=4000, img=Image.new("RGBA", (12, 9), (255, 255, 255, 0))
             ),
         ]
     )
     RecordingOcrRecognizer.reset("first", "second")
     monkeypatch.setattr(
-        "scinoephile.image.ocr.lens.LensRecognizer",
-        RecordingOcrRecognizer,
+        "scinoephile.image.ocr.lens.LensRecognizer", RecordingOcrRecognizer
     )
 
     text_series = ocr_image_series_with_lens(image_series)
@@ -55,8 +48,7 @@ def test_ocr_image_series_with_lens_preserves_timings_and_sets_text(
 
 
 def test_ocr_image_series_with_lens_logs_progress(
-    caplog: LogCaptureFixture,
-    monkeypatch: MonkeyPatch,
+    caplog: LogCaptureFixture, monkeypatch: MonkeyPatch
 ):
     """Test Google Lens image series processing logs OCR progress.
 
@@ -67,21 +59,16 @@ def test_ocr_image_series_with_lens_logs_progress(
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
-                start=1000,
-                end=2000,
-                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
+                start=1000, end=2000, img=Image.new("RGBA", (10, 8), (255, 255, 255, 0))
             ),
             ImageSubtitle(
-                start=3000,
-                end=4000,
-                img=Image.new("RGBA", (12, 9), (255, 255, 255, 0)),
+                start=3000, end=4000, img=Image.new("RGBA", (12, 9), (255, 255, 255, 0))
             ),
         ]
     )
     RecordingOcrRecognizer.reset("first", "second")
     monkeypatch.setattr(
-        "scinoephile.image.ocr.lens.LensRecognizer",
-        RecordingOcrRecognizer,
+        "scinoephile.image.ocr.lens.LensRecognizer", RecordingOcrRecognizer
     )
 
     with caplog.at_level("INFO", logger="scinoephile.image.ocr.lens"):
@@ -97,46 +84,34 @@ def test_ocr_image_series_with_lens_logs_progress(
     ]
 
 
-def test_ocr_image_series_with_lens_uses_runtime_cache(
+def test_ocr_image_series_with_lens_defers_default_cache_resolution(
     monkeypatch: MonkeyPatch,
-    tmp_path: Path,
 ):
-    """Test Google Lens image series processing uses runtime cache by default.
+    """Test Google Lens image series processing defers default cache resolution.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
-        tmp_path: temporary path fixture
     """
-    cache_dir_path = tmp_path / "cache"
     RecordingOcrRecognizer.reset(Language.zho_hans.code)
 
     monkeypatch.setattr(
-        "scinoephile.image.ocr.lens.get_runtime_cache_dir_path",
-        lambda *parts: cache_dir_path,
-    )
-    monkeypatch.setattr(
-        "scinoephile.image.ocr.lens.LensRecognizer",
-        RecordingOcrRecognizer,
+        "scinoephile.image.ocr.lens.LensRecognizer", RecordingOcrRecognizer
     )
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
-                start=1000,
-                end=2000,
-                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
-            ),
+                start=1000, end=2000, img=Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+            )
         ]
     )
 
     text_series = ocr_image_series_with_lens(
-        image_series,
-        language=Language.zho_hans,
-        retries=5,
+        image_series, cache_root_path=None, language=Language.zho_hans, retries=5
     )
 
     assert [event.text for event in text_series] == ["zho-Hans"]
     recognizer = RecordingOcrRecognizer.instances[0]
-    assert recognizer.kwargs["cache_dir_path"] == cache_dir_path
+    assert recognizer.kwargs["cache_root_path"] is None
     assert recognizer.kwargs["language"] is Language.zho_hans
     assert recognizer.kwargs["retries"] == 5
 
@@ -152,8 +127,7 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
     ],
 )
 def test_ocr_image_series_with_lens_wraps_processing_errors(
-    monkeypatch: MonkeyPatch,
-    exception: Exception,
+    monkeypatch: MonkeyPatch, exception: Exception
 ):
     """Test Lens image series processing wraps implementation errors.
 
@@ -163,22 +137,18 @@ def test_ocr_image_series_with_lens_wraps_processing_errors(
     """
     FailingOcrRecognizer.exception = exception
     monkeypatch.setattr(
-        "scinoephile.image.ocr.lens.LensRecognizer",
-        FailingOcrRecognizer,
+        "scinoephile.image.ocr.lens.LensRecognizer", FailingOcrRecognizer
     )
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
-                start=1000,
-                end=2000,
-                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
-            ),
+                start=1000, end=2000, img=Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+            )
         ]
     )
 
     with raises(
-        ScinoephileError,
-        match="Unable to OCR image series with Google Lens",
+        ScinoephileError, match="Unable to OCR image series with Google Lens"
     ) as excinfo:
         ocr_image_series_with_lens(image_series)
 

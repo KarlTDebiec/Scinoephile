@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
 from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
+from scinoephile.media.subtitles.cache import SubtitleCache
 
 
 def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path):
@@ -20,7 +21,8 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
     """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
+    subtitle_cache = SubtitleCache(cache_root_path)
 
     with (
         patch(
@@ -35,10 +37,7 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
                     last_end_ms=3_725_250,
                 ),
                 SubtitleStream(
-                    index=3,
-                    codec_name="subrip",
-                    language="eng",
-                    subtitle_count=8,
+                    index=3, codec_name="subrip", language="eng", subtitle_count=8
                 ),
             ],
         ) as details_mock,
@@ -47,23 +46,13 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
             return_value=SimpleNamespace(script="zho-Hant"),
         ) as analysis_mock,
     ):
-        streams = get_zho_subtitle_streams(
-            infile_path,
-            cache_dir_path=cache_dir_path,
-        )
+        streams = get_zho_subtitle_streams(infile_path, subtitle_cache=subtitle_cache)
 
     details_mock.assert_called_once_with(
-        infile_path,
-        cache_dir_path=cache_dir_path / "media" / "subtitles",
-        overwrite_cache=False,
-        streams=None,
+        infile_path, streams=None, subtitle_cache=subtitle_cache
     )
     analysis_mock.assert_called_once_with(
-        infile_path,
-        streams[0],
-        cache_dir_path=cache_dir_path,
-        overwrite_cache=False,
-        subtitle_cache_is_fresh=False,
+        infile_path, streams[0], subtitle_cache=subtitle_cache
     )
     assert [stream.index for stream in streams] == [2, 3]
     assert streams[0].language == "zho-Hant"
@@ -85,13 +74,7 @@ def test_get_zho_subtitle_streams_preserves_yue_language(tmp_path: Path):
     with (
         patch(
             "scinoephile.lang.zho.subtitles.streams.get_detailed_subtitle_streams",
-            return_value=[
-                SubtitleStream(
-                    index=2,
-                    codec_name="subrip",
-                    language="yue",
-                ),
-            ],
+            return_value=[SubtitleStream(index=2, codec_name="subrip", language="yue")],
         ),
         patch(
             "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script",
@@ -114,6 +97,7 @@ def test_get_zho_subtitle_streams_does_not_overwrite_subtitle_cache_twice(
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, codec_name="subrip", language="zho")
+    subtitle_cache = SubtitleCache(tmp_path / "cache", overwrite=True)
 
     with (
         patch(
@@ -125,20 +109,14 @@ def test_get_zho_subtitle_streams_does_not_overwrite_subtitle_cache_twice(
             return_value=SimpleNamespace(script="zho-Hant"),
         ) as analysis_mock,
     ):
-        get_zho_subtitle_streams(infile_path, overwrite_cache=True)
+        get_zho_subtitle_streams(infile_path, subtitle_cache=subtitle_cache)
 
     details_mock.assert_called_once_with(
-        infile_path,
-        cache_dir_path=None,
-        overwrite_cache=True,
-        streams=None,
+        infile_path, streams=None, subtitle_cache=subtitle_cache
     )
+    assert subtitle_cache.overwrite
     analysis_mock.assert_called_once_with(
-        infile_path,
-        stream,
-        cache_dir_path=None,
-        overwrite_cache=True,
-        subtitle_cache_is_fresh=True,
+        infile_path, stream, subtitle_cache=subtitle_cache
     )
 
 
@@ -154,13 +132,7 @@ def test_get_zho_subtitle_streams_normalizes_chi_language(tmp_path: Path):
     with (
         patch(
             "scinoephile.lang.zho.subtitles.streams.get_detailed_subtitle_streams",
-            return_value=[
-                SubtitleStream(
-                    index=2,
-                    codec_name="subrip",
-                    language="chi",
-                ),
-            ],
+            return_value=[SubtitleStream(index=2, codec_name="subrip", language="chi")],
         ),
         patch(
             "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script",
@@ -184,10 +156,7 @@ def test_get_zho_subtitle_streams_uses_provided_streams(tmp_path: Path):
         VideoStream(index=0, codec_type="video", codec_name="h264"),
         AudioStream(index=1, codec_type="audio", codec_name="aac"),
         SubtitleStream(
-            index=2,
-            codec_type="subtitle",
-            codec_name="subrip",
-            language="zho",
+            index=2, codec_type="subtitle", codec_name="subrip", language="zho"
         ),
     ]
 

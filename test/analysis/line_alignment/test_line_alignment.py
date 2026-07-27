@@ -6,10 +6,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from scinoephile.analysis.line_alignment import (
-    LineAlignment,
-    LineAlignmentOperation,
-)
+from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOperation
 from test.helpers import parametrize
 
 

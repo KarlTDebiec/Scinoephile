@@ -134,13 +134,7 @@ def test_audit_review_ignores_retained_historical_cases():
 def test_audit_review_rejects_unsupported_filter():
     """Test unrelated filter enums cannot silently select unverified rows."""
     original = _get_series(("Input",))
-    reviews = (
-        ReviewAuditPair(
-            label="Test",
-            original=original,
-            reviewed=original,
-        ),
-    )
+    reviews = (ReviewAuditPair(label="Test", original=original, reviewed=original),)
 
     with raises(ScinoephileError, match="unsupported row filter 'unsupported'"):
         audit_review(
@@ -167,19 +161,10 @@ def test_audit_review_selects_blocks():
             Subtitle(start=5_000, end=5_500, text="Third revised"),
         ]
     )
-    reviews = (
-        ReviewAuditPair(
-            label="Test",
-            original=original,
-            reviewed=reviewed,
-        ),
-    )
+    reviews = (ReviewAuditPair(label="Test", original=original, reviewed=reviewed),)
 
     report = audit_review(
-        reviews=reviews,
-        row_filter=ReviewAuditFilter.all,
-        first_block=2,
-        last_block=2,
+        reviews=reviews, row_filter=ReviewAuditFilter.all, first_block=2, last_block=2
     )
 
     assert "- block range: 2 through 2" in report
@@ -188,17 +173,10 @@ def test_audit_review_selects_blocks():
     assert "| 3 | Third<br>Third revised |" in report
 
     with raises(ScinoephileError, match="mutually exclusive"):
-        audit_review(
-            reviews=reviews,
-            first_index=1,
-            first_block=2,
-        )
+        audit_review(reviews=reviews, first_index=1, first_block=2)
 
     with raises(ScinoephileError, match="requires at least one comparison"):
-        audit_review(
-            reviews=reviews,
-            row_filter=DualReviewAuditFilter.discrepancies,
-        )
+        audit_review(reviews=reviews, row_filter=DualReviewAuditFilter.discrepancies)
 
 
 def test_audit_review_uses_latest_duplicate_case():
@@ -235,8 +213,7 @@ def test_audit_review_uses_latest_duplicate_case():
 
     report = audit_review(reviews=reviews, row_filter=ReviewAuditFilter.all)
     unverified_report = audit_review(
-        reviews=reviews,
-        row_filter=ReviewAuditFilter.unverified,
+        reviews=reviews, row_filter=ReviewAuditFilter.unverified
     )
 
     assert "Historical note." not in report

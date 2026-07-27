@@ -16,8 +16,7 @@ from scinoephile.core.media.audio_stream import AudioStream
 
 
 def test_media_extract_audio_cli_extracts_selected_stream(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
+    tmp_path: Path, capsys: CaptureFixture[str]
 ):
     """Test extract-audio forwards its options and reports the output.
 
@@ -29,11 +28,7 @@ def test_media_extract_audio_cli_extracts_selected_stream(
     infile_path.touch()
     outfile_path = tmp_path / "audio.wav"
     stream = AudioStream(
-        index=3,
-        codec_type="audio",
-        codec_name="aac",
-        language="yue",
-        channels=6,
+        index=3, codec_type="audio", codec_name="aac", language="yue", channels=6
     )
 
     with patch(
@@ -47,10 +42,7 @@ def test_media_extract_audio_cli_extracts_selected_stream(
         )
 
     extract.assert_called_once_with(
-        infile_path.resolve(),
-        outfile_path.resolve(),
-        stream_index=3,
-        overwrite=True,
+        infile_path.resolve(), outfile_path.resolve(), stream_index=3, overwrite=True
     )
     assert capsys.readouterr().out.strip() == (
         f"Extracted audio: {stream.description} -> {outfile_path.resolve()}"
@@ -77,8 +69,7 @@ def test_media_extract_audio_cli_maps_extraction_errors_to_parser_errors(
         raises(SystemExit) as excinfo,
     ):
         run_cli_with_args(
-            MediaExtractAudioCli,
-            f"--infile {infile_path} --outfile {outfile_path}",
+            MediaExtractAudioCli, f"--infile {infile_path} --outfile {outfile_path}"
         )
 
     assert excinfo.value.code == 2

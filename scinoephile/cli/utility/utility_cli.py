@@ -44,9 +44,7 @@ class UtilityCli(ScinoephileCliBase):
         super().add_arguments_to_argparser(parser)
 
         subparsers = parser.add_subparsers(
-            dest="utility_subcommand_name",
-            help="subcommand",
-            required=True,
+            dest="utility_subcommand_name", help="subcommand", required=True
         )
         subcommands = cls.subcommands()
         for name in sorted(subcommands):
@@ -59,18 +57,10 @@ class UtilityCli(ScinoephileCliBase):
         Returns:
             mapping of subcommand names to CLI classes
         """
-        return {
-            CacheCli.name(): CacheCli,
-            OptimizationCli.name(): OptimizationCli,
-        }
+        return {CacheCli.name(): CacheCli, OptimizationCli.name(): OptimizationCli}
 
     @classmethod
-    def _main(
-        cls,
-        *,
-        utility_subcommand_name: str,
-        **kwargs: Any,
-    ):
+    def _main(cls, *, utility_subcommand_name: str, **kwargs: Any):
         """Execute with provided keyword arguments."""
         cls.subcommands()[utility_subcommand_name]._main(**kwargs)
 

@@ -39,9 +39,7 @@ from test.helpers import parametrize
         TranslateCli,
     ),
 )
-def test_cache_producing_cli_uses_shared_cache_arguments(
-    cli: type[ScinoephileCliBase],
-):
+def test_cache_producing_cli_uses_shared_cache_arguments(cli: type[ScinoephileCliBase]):
     """Test each cache-producing CLI exposes one shared cache section.
 
     Arguments:

@@ -13,10 +13,7 @@ from scinoephile.analysis.audit.dual_review import (
     audit_dual_review,
 )
 from scinoephile.cli.helpers.io import read_series
-from scinoephile.common.argument_parsing import (
-    get_arg_groups_by_name,
-    input_file_arg,
-)
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core import ScinoephileError
 from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
@@ -366,8 +363,7 @@ class AuditReviewDualCli(AuditCliBase):
         traditional_reviewed = read_series(parser, traditional_reviewed_path)
         traditional_simplified = read_series(parser, traditional_simplified_path)
         traditional_simplified_reviewed = read_series(
-            parser,
-            traditional_simplified_reviewed_path,
+            parser, traditional_simplified_reviewed_path
         )
         input_series = (
             simplified,

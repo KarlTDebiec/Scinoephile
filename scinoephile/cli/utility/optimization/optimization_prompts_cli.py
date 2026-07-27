@@ -7,10 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.common.argument_parsing import (
-    get_arg_groups_by_name,
-    output_file_arg,
-)
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, output_file_arg
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.optimization.persistence.prompts.sync import sync_prompts
@@ -133,11 +130,7 @@ class OptimizationSyncPromptsCli(ScinoephileCliBase):
         if not selected_prompt_specs:
             parser.error("One or more prompts must be selected.")
         try:
-            report = sync_prompts(
-                selected_prompt_specs,
-                outfile_path,
-                dry_run=dry_run,
-            )
+            report = sync_prompts(selected_prompt_specs, outfile_path, dry_run=dry_run)
         except ScinoephileError as exc:
             parser.error(str(exc))
 

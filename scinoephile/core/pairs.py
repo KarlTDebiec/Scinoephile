@@ -18,9 +18,7 @@ __all__ = [
 
 
 def get_block_pair_indexes_by_pause(
-    one: Series,
-    two: Series,
-    pause_length: int = 3000,
+    one: Series, two: Series, pause_length: int = 3000
 ) -> list[tuple[tuple[int, int], tuple[int, int]]]:
     """Get indexes of paired blocks split by pauses without text in either series.
 
@@ -76,9 +74,7 @@ def get_block_pair_indexes_by_pause(
 
 
 def get_block_pairs_by_pause(
-    one: Series,
-    two: Series,
-    pause_length: int = 3000,
+    one: Series, two: Series, pause_length: int = 3000
 ) -> list[tuple[Series, Series]]:
     """Split a pair of series into blocks using pauses without text in either.
 
@@ -91,9 +87,7 @@ def get_block_pairs_by_pause(
     """
     blocks = []
     for one_indexes, two_indexes in get_block_pair_indexes_by_pause(
-        one,
-        two,
-        pause_length,
+        one, two, pause_length
     ):
         block_one = one.__class__()
         block_two = two.__class__()

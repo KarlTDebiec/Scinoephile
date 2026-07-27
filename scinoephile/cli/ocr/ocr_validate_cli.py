@@ -20,7 +20,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_data_root_path
 from scinoephile.workflows.ocr_validation import validate_ocr
 
 __all__ = ["OcrValidateCli"]
@@ -71,10 +71,7 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class OcrValidateCli(ScinoephileCliBase):
     """Validate OCR text against subtitle images."""
 
-    localizations = merge_localizations(
-        WEB_LOCALIZATIONS,
-        OCR_VALIDATE_LOCALIZATIONS,
-    )
+    localizations = merge_localizations(WEB_LOCALIZATIONS, OCR_VALIDATE_LOCALIZATIONS)
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -115,7 +112,7 @@ class OcrValidateCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--validation-data-dir",
-            default=get_runtime_cache_dir_path("ocr_validation", create=False),
+            default=get_runtime_data_root_path(create=False) / "ocr_validation",
             dest="validation_data_dir_path",
             metavar="VALIDATION_DATA_DIR",
             type=output_dir_arg(create=False),
@@ -140,9 +137,7 @@ class OcrValidateCli(ScinoephileCliBase):
             help="validated subtitle outfile path",
         )
         arg_groups["output arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite outfile if it exists",
+            "--overwrite", action="store_true", help="overwrite outfile if it exists"
         )
         parser.set_defaults(_parser=parser)
 

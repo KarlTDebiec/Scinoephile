@@ -19,10 +19,7 @@ from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
 
-__all__ = [
-    "Manager",
-    "PromptModelField",
-]
+__all__ = ["Manager", "PromptModelField"]
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -149,4 +146,5 @@ class Manager[TTestCase: TestCase](ABC):
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
+        model.operation = cls.operation
         return cast("type[TTestCase]", model)

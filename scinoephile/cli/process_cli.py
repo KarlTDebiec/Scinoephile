@@ -21,10 +21,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.lang.zho.script.conversion import (
-    OpenCCConfig,
-    get_zho_converted,
-)
+from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.workflows.clean import clean_series
 from scinoephile.workflows.flatten import flatten_series
 from scinoephile.workflows.helpers import resolve_language
@@ -93,10 +90,7 @@ PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class ProcessCli(ScinoephileCliBase):
     """Process subtitles."""
 
-    localizations = merge_localizations(
-        CONVERSION_LOCALIZATIONS,
-        PROCESS_LOCALIZATIONS,
-    )
+    localizations = merge_localizations(CONVERSION_LOCALIZATIONS, PROCESS_LOCALIZATIONS)
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -139,8 +133,7 @@ class ProcessCli(ScinoephileCliBase):
             help="clean subtitles of closed-caption annotations and other anomalies",
         )
         add_opencc_convert_auto_argument(
-            arg_groups["operation arguments"],
-            arg_groups["additional help"],
+            arg_groups["operation arguments"], arg_groups["additional help"]
         )
         arg_groups["operation arguments"].add_argument(
             "--flatten",
@@ -168,9 +161,7 @@ class ProcessCli(ScinoephileCliBase):
             help="subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite outfile if it exists",
+            "--overwrite", action="store_true", help="overwrite outfile if it exists"
         )
         parser.set_defaults(_parser=parser)
 
@@ -224,11 +215,7 @@ class ProcessCli(ScinoephileCliBase):
         if flatten:
             series = flatten_series(series, language=resolved_language)
         if romanize:
-            series = romanize_series(
-                series,
-                language=resolved_language,
-                append=True,
-            )
+            series = romanize_series(series, language=resolved_language, append=True)
         if offset:
             series.shift(ms=offset)
 

@@ -179,8 +179,7 @@ def test_line_cer_string_uses_na_for_empty_reference():
     ],
 )
 def test_series_cer_ignores_separator_only_line_wrapping(
-    reference: Series,
-    candidate: Series,
+    reference: Series, candidate: Series
 ):
     """Test separator-only line wrapping does not affect series CER."""
     result = SeriesCER(reference, candidate)
@@ -222,15 +221,9 @@ def test_series_cer_string_uses_na_for_empty_reference():
 def test_series_cer_handles_one_sided_span_after_shorter_side_is_exhausted():
     """A trailing one-sided span should not overrun the shorter series."""
     reference = get_text_series(
-        "係嗰度呀⋯⋯",
-        "係嗰邊呀，快點去⋯⋯",
-        "呢度仲有一隻",
-        "呢隻細隻啲",
+        "係嗰度呀⋯⋯", "係嗰邊呀，快點去⋯⋯", "呢度仲有一隻", "呢隻細隻啲"
     )
-    candidate = get_text_series(
-        "係嗰邊呀，快點去⋯⋯",
-        "呢度仲有一隻",
-    )
+    candidate = get_text_series("係嗰邊呀，快點去⋯⋯", "呢度仲有一隻")
 
     result = SeriesCER(reference, candidate)
 

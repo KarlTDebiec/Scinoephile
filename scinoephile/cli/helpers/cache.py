@@ -10,7 +10,7 @@ from functools import partial
 from pathlib import Path
 
 from scinoephile.common.argument_parsing import output_dir_arg
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .argument_bundle_field_action import ArgumentBundleFieldAction
 
@@ -18,20 +18,20 @@ __all__ = [
     "CACHE_LOCALIZATIONS",
     "CacheArguments",
     "add_cache_args",
-    "add_cache_dir_arg",
+    "add_cache_root_arg",
 ]
 
 CACHE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "cache directory path (default: %(default)s)": (
-            "缓存目录路径（默认：%(default)s）"
+        "cache root directory path (default: %(default)s)": (
+            "缓存根目录路径（默认：%(default)s）"
         ),
         "overwrite matching cache files": "覆盖匹配的缓存文件",
         "cache arguments": "缓存参数",
     },
     "zh-hant": {
-        "cache directory path (default: %(default)s)": (
-            "快取目錄路徑（預設：%(default)s）"
+        "cache root directory path (default: %(default)s)": (
+            "快取根目錄路徑（預設：%(default)s）"
         ),
         "overwrite matching cache files": "覆寫匹配的快取檔案",
         "cache arguments": "快取參數",
@@ -44,8 +44,8 @@ CACHE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class CacheArguments:
     """Parsed cache CLI arguments."""
 
-    dir_path: Path = field(
-        default_factory=partial(get_runtime_cache_dir_path, create=False)
+    root_path: Path = field(
+        default_factory=partial(get_runtime_cache_root_path, create=False)
     )
     """Cache root directory path."""
     overwrite: bool = False
@@ -65,10 +65,10 @@ def add_cache_args(cache_arg_group: _ArgumentGroup):
         bundle_type=CacheArguments,
         default=default,
         dest="cache_args",
-        field_name="dir_path",
+        field_name="root_path",
         metavar="CACHE_DIR",
         type=output_dir_arg(create=False),
-        help="cache directory path (default: %(default)s)",
+        help="cache root directory path (default: %(default)s)",
     )
     cache_arg_group.add_argument(
         "--cache-overwrite",
@@ -83,38 +83,20 @@ def add_cache_args(cache_arg_group: _ArgumentGroup):
     )
 
 
-def add_cache_dir_arg(
+def add_cache_root_arg(
     cache_arg_group: _ArgumentGroup,
-    *default_parts: str | None,
-    help_text: str = "cache directory path (default: %(default)s)",
+    help_text: str = "cache root directory path (default: %(default)s)",
 ):
-    """Add a standard cache directory argument to an argument group.
+    """Add a standard cache root argument to an argument group.
 
     Arguments:
         cache_arg_group: group to which the cache directory argument is added
-        *default_parts: runtime cache subpath parts used for the default path
         help_text: help text for the cache directory argument
     """
     cache_arg_group.add_argument(
         "--cache-dir",
-        default=_cache_dir_default_path(*default_parts),
-        dest="cache_dir_path",
+        default=get_runtime_cache_root_path(create=False),
+        dest="cache_root_path",
         type=output_dir_arg(create=False),
         help=help_text,
     )
-
-
-def _cache_dir_default_path(*default_parts: str | None) -> Path:
-    """Resolve a default cache directory path.
-
-    Arguments:
-        *default_parts: runtime cache subpath parts
-    Returns:
-        resolved default cache directory path
-    """
-    if len(default_parts) == 0 or default_parts == (None,):
-        return get_runtime_cache_dir_path(create=False)
-    parts = [default_part for default_part in default_parts if default_part is not None]
-    if not parts:
-        return get_runtime_cache_dir_path(create=False)
-    return get_runtime_cache_dir_path(*parts, create=False)

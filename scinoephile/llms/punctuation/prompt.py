@@ -67,6 +67,5 @@ class PunctuationPrompt(Prompt):
             error message
         """
         return self.target_chars_changed_err_tpl.format(
-            expected=expected,
-            received=received,
+            expected=expected, received=received
         )

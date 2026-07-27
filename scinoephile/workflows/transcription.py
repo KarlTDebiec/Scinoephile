@@ -34,7 +34,7 @@ def transcribe_series_guided(
     backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
-    cache_dir_path: Path | None = None,
+    cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
@@ -60,7 +60,7 @@ def transcribe_series_guided(
         backend: audio transcription backend
         demucs_mode: Demucs preprocessing mode
         vad_mode: Whisper VAD mode
-        cache_dir_path: cache root directory path
+        cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching generated cache files
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
@@ -80,10 +80,7 @@ def transcribe_series_guided(
         ScinoephileError: if the guide language cannot be resolved or the pair is
             unsupported
     """
-    resolved_guide_language = resolve_language(
-        reference_series,
-        guide_language,
-    )
+    resolved_guide_language = resolve_language(reference_series, guide_language)
     if transcriber is None:
         transcriber = get_guided_transcriber(
             language,
@@ -92,7 +89,7 @@ def transcribe_series_guided(
             backend=backend,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
-            cache_dir_path=cache_dir_path,
+            cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
             provider=provider,
             additional_context=additional_context,

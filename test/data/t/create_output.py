@@ -16,12 +16,7 @@ title_root = test_data_root / Path(__file__).parent.name
 output_path = title_root / "output"
 set_logging_verbosity(2)
 
-actions = {
-    "eng_ocr",
-    "zho-Hans_ocr",
-    "zho-Hant_ocr",
-    "zho-Hans_eng",
-}
+actions = {"eng_ocr", "zho-Hans_ocr", "zho-Hant_ocr", "zho-Hans_eng"}
 
 if "eng_ocr" in actions:
     process_ocr(title_root, Language.eng, overwrite=False, interactive=True)

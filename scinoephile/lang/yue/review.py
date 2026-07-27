@@ -59,8 +59,7 @@ GuidedReviewPromptYueHant = GuidedReviewPrompt(
 """LLM correspondence text for guided review of traditional Cantonese."""
 
 GuidedReviewPromptYueHans = GuidedReviewPromptYueHant.transformed(
-    Language.yue_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+    Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
 )
 """LLM correspondence text for guided review of simplified Cantonese."""
 
@@ -96,7 +95,6 @@ ReviewPromptYueHant = ReviewPrompt(
 """LLM correspondence text for traditional written Cantonese review."""
 
 ReviewPromptYueHans = ReviewPromptYueHant.transformed(
-    Language.yue_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+    Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
 )
 """LLM correspondence text for simplified written Cantonese review."""

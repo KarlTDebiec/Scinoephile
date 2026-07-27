@@ -4,10 +4,7 @@
 
 from __future__ import annotations
 
-__all__ = [
-    "BASE_CLI_LOCALIZATIONS",
-    "merge_localizations",
-]
+__all__ = ["BASE_CLI_LOCALIZATIONS", "merge_localizations"]
 
 BASE_CLI_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {

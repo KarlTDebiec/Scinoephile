@@ -56,17 +56,11 @@ def test_prompt_aliases_are_used_for_llm_correspondence():
     )
 
     assert test_case.query.model_dump(by_alias=True) == {
-        "zimu": [
-            {"xuhao": 1, "wenben": "原文一"},
-            {"xuhao": 2, "wenben": "原文二"},
-        ]
+        "zimu": [{"xuhao": 1, "wenben": "原文一"}, {"xuhao": 2, "wenben": "原文二"}]
     }
     assert test_case.answer is not None
     assert test_case.answer.model_dump(by_alias=True) == {
-        "fanyi": [
-            {"xuhao": 1, "wenben": "譯文一"},
-            {"xuhao": 2, "wenben": "譯文二"},
-        ]
+        "fanyi": [{"xuhao": 1, "wenben": "譯文一"}, {"xuhao": 2, "wenben": "譯文二"}]
     }
     assert set(test_case_cls.query_cls.model_json_schema()["properties"]) == {"zimu"}
     assert set(test_case_cls.answer_cls.model_json_schema()["properties"]) == {"fanyi"}
@@ -78,7 +72,7 @@ def test_queryer_corresponds_using_prompt_aliases():
     test_case = test_case_cls.model_validate(
         {"query": {"subtitles": [{"index": 1, "text": "原文"}]}}
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = (
         '{"fanyi": [{"xuhao": 1, "wenben": "譯文"}]}'
     )
@@ -103,23 +97,13 @@ def test_query_and_answer_require_nonempty_consecutive_indexes():
         query_cls.model_validate({"subtitles": []})
     with raises(ValidationError, match="consecutive, ordered, and begin at 1"):
         query_cls.model_validate(
-            {
-                "subtitles": [
-                    {"index": 1, "text": "one"},
-                    {"index": 3, "text": "three"},
-                ]
-            }
+            {"subtitles": [{"index": 1, "text": "one"}, {"index": 3, "text": "three"}]}
         )
     with raises(ValidationError, match="at least 1 item"):
         answer_cls.model_validate({"outputs": []})
     with raises(ValidationError, match="consecutive, ordered, and begin at 1"):
         answer_cls.model_validate(
-            {
-                "outputs": [
-                    {"index": 2, "text": "two"},
-                    {"index": 1, "text": "one"},
-                ]
-            }
+            {"outputs": [{"index": 2, "text": "two"}, {"index": 1, "text": "one"}]}
         )
 
 
@@ -184,9 +168,7 @@ def test_json_uses_base_prompt_fields(tmp_path: Path):
         }
     ]
     loaded = load_test_cases_from_json(
-        output_path,
-        TranslationManager,
-        _LOCALIZED_PROMPT,
+        output_path, TranslationManager, _LOCALIZED_PROMPT
     )
     assert loaded[0].query.model_dump(by_alias=True) == {
         "zimu": [{"xuhao": 1, "wenben": "原文"}]
@@ -225,12 +207,8 @@ def test_processor_uses_indexed_subtitles_and_outputs():
     )
     series = Series(list(block.events))
     series.blocks = [block]
-    provider = Mock(spec=LLMProvider)
-    processor = TranslationProcessor(
-        _LOCALIZED_PROMPT,
-        [test_case],
-        provider=provider,
-    )
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    processor = TranslationProcessor(_LOCALIZED_PROMPT, [test_case], provider=provider)
 
     output = processor.process(series)
 
@@ -243,7 +221,7 @@ def test_processor_uses_indexed_subtitles_and_outputs():
 
 def test_processor_honors_zero_stop_index():
     """A zero stop index should process no translation blocks."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = TranslationProcessor(_LOCALIZED_PROMPT, provider=provider)
     block = Series([Subtitle(start=0, end=1000, text="original")])
     series = Series(list(block.events))
@@ -257,7 +235,7 @@ def test_processor_honors_zero_stop_index():
 
 def test_processor_allows_start_beyond_last_block():
     """An open-ended range beyond the input should produce empty output."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = TranslationProcessor(_LOCALIZED_PROMPT, provider=provider)
     series = Series(events=[Subtitle(start=0, end=1000, text="原文")])
 
@@ -269,13 +247,11 @@ def test_processor_allows_start_beyond_last_block():
 
 def test_processor_honors_start_index():
     """An inclusive start index should skip earlier translation blocks."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = json.dumps(
-        {"fanyi": [{"xuhao": 1, "wenben": "譯文二"}]},
-        ensure_ascii=False,
+        {"fanyi": [{"xuhao": 1, "wenben": "譯文二"}]}, ensure_ascii=False
     )
     processor = TranslationProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     series = Series(
         events=[
             Subtitle(start=0, end=1000, text="原文一"),
@@ -293,7 +269,7 @@ def test_processor_rejects_negative_stop_index():
     """A negative stop index should be rejected."""
     processor = TranslationProcessor(
         _LOCALIZED_PROMPT,
-        provider=Mock(spec=LLMProvider),
+        provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
     )
 
     with raises(ValueError, match="greater than or equal to 0"):
@@ -304,7 +280,7 @@ def test_processor_rejects_reversed_range():
     """An explicit start index after the stop index should be rejected."""
     processor = TranslationProcessor(
         _LOCALIZED_PROMPT,
-        provider=Mock(spec=LLMProvider),
+        provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
     )
 
     with raises(ValueError, match="less than or equal to stop_at_idx"):

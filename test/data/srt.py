@@ -20,9 +20,7 @@ from .helpers import (
     load_or_timewarp_series,
 )
 
-__all__ = [
-    "process_srt",
-]
+__all__ = ["process_srt"]
 
 
 def process_srt(
@@ -62,11 +60,7 @@ def process_srt(
     Raises:
         ScinoephileError: if the language is unsupported
     """
-    if language not in (
-        Language.eng,
-        Language.yue_hans,
-        Language.yue_hant,
-    ):
+    if language not in (Language.eng, Language.yue_hans, Language.yue_hant):
         raise ScinoephileError(
             "SRT processing only supports eng, yue-Hans, and yue-Hant"
         )
@@ -92,20 +86,11 @@ def process_srt(
 
     reviewed_path = output_dir_path / "clean_review.srt"
     reviewed = load_or_review_series(
-        cleaned,
-        reviewed_path,
-        language,
-        overwrite,
-        reviewer_kw,
+        cleaned, reviewed_path, language, overwrite, reviewer_kw
     )
 
     flattened_path = output_dir_path / "clean_review_flatten.srt"
-    flattened = load_or_flatten_series(
-        reviewed,
-        flattened_path,
-        language,
-        overwrite,
-    )
+    flattened = load_or_flatten_series(reviewed, flattened_path, language, overwrite)
 
     timewarped_path = output_dir_path / "clean_review_flatten_timewarp.srt"
     timewarped = load_or_timewarp_series(
@@ -150,10 +135,7 @@ def process_srt(
             / "clean_review_flatten_timewarp_simplify_review_romanize.srt"
         )
         load_or_romanize_series(
-            simplified_reviewed,
-            romanized_path,
-            Language.yue_hans,
-            overwrite,
+            simplified_reviewed, romanized_path, Language.yue_hans, overwrite
         )
 
     return timewarped

@@ -9,10 +9,7 @@ import numpy as np
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 
-__all__ = [
-    "get_overlap_string",
-    "get_sync_overlap_matrix",
-]
+__all__ = ["get_overlap_string", "get_sync_overlap_matrix"]
 
 
 def get_overlap_string(overlap: np.ndarray) -> str:

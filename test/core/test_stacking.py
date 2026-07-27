@@ -65,8 +65,7 @@ def test_get_stacked_series_does_not_overlap_union_timing():
     ],
 )
 def test_get_stacked_series_uses_requested_timing_mode(
-    timing_mode: StackTimingMode,
-    expected_times: list[tuple[int, int]],
+    timing_mode: StackTimingMode, expected_times: list[tuple[int, int]]
 ):
     """Test stack uses the requested timing mode for paired subtitles."""
     one = Series(
@@ -114,8 +113,7 @@ def test_get_stacked_series_timing_mode_uses_available_timing_for_unpaired_subti
     ],
 )
 def test_get_stacked_series_splits_selected_timing_for_one_to_many_groups(
-    timing_mode: StackTimingMode,
-    expected_times: list[tuple[int, int]],
+    timing_mode: StackTimingMode, expected_times: list[tuple[int, int]]
 ):
     """Test one-to-many stack splits the selected timing interval."""
     one = Series(events=[Subtitle(start=1000, end=2000, text="A")])
@@ -228,10 +226,7 @@ def test_get_stacked_series_overlap_error_includes_event_context():
     ],
 )
 def test_get_stacked_series(
-    request: FixtureRequest,
-    one_fixture: str,
-    two_fixture: str,
-    expected_fixture: str,
+    request: FixtureRequest, one_fixture: str, two_fixture: str, expected_fixture: str
 ):
     """Test get_stacked_series against expected stacked outputs.
 
@@ -242,7 +237,6 @@ def test_get_stacked_series(
         expected_fixture: fixture name for expected output series
     """
     output = get_stacked_series(
-        request.getfixturevalue(one_fixture),
-        request.getfixturevalue(two_fixture),
+        request.getfixturevalue(one_fixture), request.getfixturevalue(two_fixture)
     )
     assert_series_equal(output, request.getfixturevalue(expected_fixture))

@@ -16,18 +16,10 @@ from scinoephile.core.media.video_stream import VideoStream
 def test_stream_descriptions():
     """Test stream descriptions."""
     video = VideoStream(
-        index=0,
-        codec_type="video",
-        codec_name="hevc",
-        width=3840,
-        height=2160,
+        index=0, codec_type="video", codec_name="hevc", width=3840, height=2160
     )
     audio = AudioStream(
-        index=1,
-        codec_type="audio",
-        codec_name="flac",
-        channels=2,
-        language="jpn",
+        index=1, codec_type="audio", codec_name="flac", channels=2, language="jpn"
     )
     subtitle = SubtitleStream(index=2, language="eng", codec_name="subrip")
     generic = Stream(index=3, codec_type="data", codec_name="bin_data")

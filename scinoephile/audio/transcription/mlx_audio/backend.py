@@ -103,9 +103,7 @@ class MlxAudioBackend:
     """Loaded models shared by resolved model reference."""
 
     def __init__(
-        self,
-        model_name: str = MIMO_MODEL_NAME,
-        language: Language = Language.yue_hant,
+        self, model_name: str = MIMO_MODEL_NAME, language: Language = Language.yue_hant
     ):
         """Initialize.
 
@@ -148,9 +146,7 @@ class MlxAudioBackend:
         """Loaded MLX-Audio model."""
 
     def transcribe(
-        self,
-        audio_path: Path,
-        max_tokens: int | None = None,
+        self, audio_path: Path, max_tokens: int | None = None
     ) -> MlxAudioInferenceResult:
         """Transcribe one audio file using MLX-Audio.
 
@@ -163,15 +159,10 @@ class MlxAudioBackend:
             ImportError: if MLX-Audio is unavailable
             ValueError: if the model returns malformed output
         """
-        generate_kwargs: dict[str, object] = {
-            "language": self.mlx_audio_language,
-        }
+        generate_kwargs: dict[str, object] = {"language": self.mlx_audio_language}
         if max_tokens is not None:
             generate_kwargs["max_tokens"] = max_tokens
-        result: object = self._loaded_model.generate(
-            str(audio_path),
-            **generate_kwargs,
-        )
+        result: object = self._loaded_model.generate(str(audio_path), **generate_kwargs)
 
         # Normalize mapping- and attribute-based results
         if isinstance(result, Mapping):
@@ -192,10 +183,7 @@ class MlxAudioBackend:
                 "MLX-Audio inference result has an invalid generation token count."
             )
 
-        return MlxAudioInferenceResult(
-            text=text,
-            generation_tokens=generation_tokens,
-        )
+        return MlxAudioInferenceResult(text=text, generation_tokens=generation_tokens)
 
     @property
     def _loaded_model(self) -> MlxAudioModel:
@@ -215,10 +203,7 @@ class MlxAudioBackend:
             load = import_mlx_audio_stt_load()
             cached_model = cast(
                 "MlxAudioModel",
-                load(
-                    self._model_reference,
-                    model_type=self._model_type,
-                ),
+                load(self._model_reference, model_type=self._model_type),
             )
             self._models_by_reference[model_reference] = cached_model
         self._model = cached_model
@@ -239,10 +224,7 @@ def _get_mlx_audio_model_identity(model_name: str) -> str:
         return model_name.lower()
 
     if model_path.is_dir():
-        metadata_paths = (
-            model_path / "config.json",
-            model_path / "mlx_manifest.json",
-        )
+        metadata_paths = (model_path / "config.json", model_path / "mlx_manifest.json")
     elif model_path.suffix.lower() == ".json":
         metadata_paths = (model_path,)
     else:

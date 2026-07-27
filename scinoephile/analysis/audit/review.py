@@ -159,11 +159,7 @@ def audit_review(
     try:
         review_metadata = tuple(
             _get_review_metadata(review.review_cases, original, reviewed)
-            for review, (original, reviewed) in zip(
-                reviews,
-                review_series,
-                strict=True,
-            )
+            for review, (original, reviewed) in zip(reviews, review_series, strict=True)
         )
         notes = tuple(metadata.notes_by_index for metadata in review_metadata)
         covered_indexes = frozenset(
@@ -279,17 +275,13 @@ def _format_report(
         cells.extend(
             _format_review_cell(index, changed_indexes, original, reviewed)
             for changed_indexes, (original, reviewed) in zip(
-                review_changes,
-                review_series,
-                strict=True,
+                review_changes, review_series, strict=True
             )
         )
         cells.extend(
             _format_review_cell(index, changed_indexes, left, right)
             for changed_indexes, (left, right) in zip(
-                comparison_changes,
-                comparison_series,
-                strict=True,
+                comparison_changes, comparison_series, strict=True
             )
         )
         cells.append("\n".join(note_lines))
@@ -308,9 +300,7 @@ def _format_report(
     summary_items.extend(
         f"{comparison.summary_label.lower()} discrepancies: {len(changed_indexes)}"
         for comparison, changed_indexes in zip(
-            comparisons,
-            comparison_changes,
-            strict=True,
+            comparisons, comparison_changes, strict=True
         )
     )
     summary_items.append(f"row filter: {row_filter}")
@@ -357,9 +347,7 @@ def _format_review_cell(
 
 
 def _get_changed_indexes(
-    original: Sequence[str],
-    reviewed: Sequence[str],
-    indexes: Iterable[int],
+    original: Sequence[str], reviewed: Sequence[str], indexes: Iterable[int]
 ) -> set[int]:
     """Get subtitle indexes changed during review.
 
@@ -428,11 +416,7 @@ def _get_filtered_indexes(
 
 def _get_review_case_data(
     review_case: TestCase,
-) -> tuple[
-    tuple[str, ...],
-    tuple[str, ...],
-    dict[int, dict[str, int | str]],
-]:
+) -> tuple[tuple[str, ...], tuple[str, ...], dict[int, dict[str, int | str]]]:
     """Get query, reviewed, and revision data from a review test case.
 
     Arguments:
@@ -442,14 +426,12 @@ def _get_review_case_data(
     """
     answer = review_case.answer
     query_subtitles = cast(
-        list[dict[str, int | str]],
-        review_case.query.model_dump()["subtitles"],
+        list[dict[str, int | str]], review_case.query.model_dump()["subtitles"]
     )
     answer_revisions: list[dict[str, int | str]] = []
     if answer is not None:
         answer_revisions = cast(
-            list[dict[str, int | str]],
-            answer.model_dump()["revisions"],
+            list[dict[str, int | str]], answer.model_dump()["revisions"]
         )
     query_texts = tuple(cast(str, subtitle["text"]) for subtitle in query_subtitles)
     revision_by_index = {

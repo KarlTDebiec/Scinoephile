@@ -24,8 +24,7 @@ def test_audio_series_load_wraps_input_path_errors(tmp_path: Path):
     input_path = tmp_path / "missing"
 
     with raises(
-        ScinoephileError,
-        match="Unable to load AudioSeries from .*missing",
+        ScinoephileError, match="Unable to load AudioSeries from .*missing"
     ) as excinfo:
         AudioSeries.load(input_path)
 
@@ -69,8 +68,7 @@ def test_audio_series_save_wraps_output_path_errors(tmp_path: Path):
     series = AudioSeries(audio=AudioSegment.silent(duration=1000))
 
     with raises(
-        ScinoephileError,
-        match="Unable to save AudioSeries to .*audio_output",
+        ScinoephileError, match="Unable to save AudioSeries to .*audio_output"
     ) as excinfo:
         series.save(output_path)
 
@@ -82,14 +80,7 @@ def test_audio_series_slice_preserves_audio_subtitle_payloads():
     event_audio = AudioSegment.silent(duration=1000)
     series = AudioSeries(
         audio=AudioSegment.silent(duration=4000),
-        events=[
-            AudioSubtitle(
-                start=1000,
-                end=2000,
-                text="Text",
-                audio=event_audio,
-            )
-        ],
+        events=[AudioSubtitle(start=1000, end=2000, text="Text", audio=event_audio)],
     )
     series.info["Title"] = "Example"
 

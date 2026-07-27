@@ -93,9 +93,4 @@ def test_get_sync_groups_sorts_unpaired_groups_by_timing():
 
     sync_groups = get_sync_groups(one, two)
 
-    assert sync_groups == [
-        ([0], [0]),
-        ([], [1]),
-        ([1], []),
-        ([2], [2]),
-    ]
+    assert sync_groups == [([0], [0]), ([], [1]), ([1], []), ([2], [2])]

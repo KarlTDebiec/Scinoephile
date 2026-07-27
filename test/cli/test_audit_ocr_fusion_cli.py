@@ -35,8 +35,7 @@ def test_audit_ocr_fusion_cli_filter_help_is_consistent():
 
 
 def test_audit_ocr_fusion_cli_writes_validated_discrepancy_report(
-    tmp_path: Path,
-    capsys: CaptureFixture,
+    tmp_path: Path, capsys: CaptureFixture
 ):
     """Test OCR-fusion audits write reports to stdout and explicit files.
 
@@ -80,29 +79,21 @@ def test_audit_ocr_fusion_cli_writes_validated_discrepancy_report(
 
     with raises(SystemExit):
         run_cli_with_args(
-            AuditOcrFusionCli,
-            f"{arguments} --first-index 1 --first-block 1",
+            AuditOcrFusionCli, f"{arguments} --first-index 1 --first-block 1"
         )
     assert "mutually exclusive" in capsys.readouterr().err
 
     outfile_path = tmp_path / "audit.md"
-    run_cli_with_args(
-        AuditOcrFusionCli,
-        f"{arguments} --outfile {outfile_path}",
-    )
+    run_cli_with_args(AuditOcrFusionCli, f"{arguments} --outfile {outfile_path}")
     assert capsys.readouterr().out == ""
     assert outfile_path.read_text(encoding="utf-8").startswith("# OCR Fusion Audit\n")
 
     with raises(SystemExit):
-        run_cli_with_args(
-            AuditOcrFusionCli,
-            f"{arguments} --outfile {outfile_path}",
-        )
+        run_cli_with_args(AuditOcrFusionCli, f"{arguments} --outfile {outfile_path}")
     assert "File exists" in capsys.readouterr().err
 
     run_cli_with_args(
-        AuditOcrFusionCli,
-        f"{arguments} --outfile {outfile_path} --overwrite",
+        AuditOcrFusionCli, f"{arguments} --outfile {outfile_path} --overwrite"
     )
     assert capsys.readouterr().out == ""
 
@@ -110,10 +101,7 @@ def test_audit_ocr_fusion_cli_writes_validated_discrepancy_report(
         f"--source-one {source_one_path} --source-two {source_two_path} "
         f"--fused {fused_path}"
     )
-    run_cli_with_args(
-        AuditOcrFusionCli,
-        f"{no_json_arguments} --filter unverified",
-    )
+    run_cli_with_args(AuditOcrFusionCli, f"{no_json_arguments} --filter unverified")
     report = capsys.readouterr().out
     assert "- row filter: unverified" in report
     assert "- table rows: 1" in report
@@ -121,15 +109,11 @@ def test_audit_ocr_fusion_cli_writes_validated_discrepancy_report(
 
     with raises(SystemExit):
         run_cli_with_args(
-            AuditOcrFusionCli,
-            f"{no_json_arguments} --filter discrepancies",
+            AuditOcrFusionCli, f"{no_json_arguments} --filter discrepancies"
         )
     assert "--filter discrepancies requires --validated" in capsys.readouterr().err
 
-    run_cli_with_args(
-        AuditOcrFusionCli,
-        no_json_arguments,
-    )
+    run_cli_with_args(AuditOcrFusionCli, no_json_arguments)
     report = capsys.readouterr().out
     assert "- decision log: omitted" in report
     assert (
@@ -146,6 +130,5 @@ def _write_srt(file_path: Path, text: str):
         text: subtitle text
     """
     file_path.write_text(
-        f"1\n00:00:00,000 --> 00:00:00,500\n{text}\n",
-        encoding="utf-8",
+        f"1\n00:00:00,000 --> 00:00:00,500\n{text}\n", encoding="utf-8"
     )

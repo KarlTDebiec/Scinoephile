@@ -84,9 +84,7 @@ def test_format_command_row_wraps_long_command_description_readably():
     """Test long command names do not break description wrapping."""
     command_name = "command-name-that-is-longer-than-the-help-position"
     output = ListAllCommandsAction.format_command_row(
-        command_name,
-        "description text that should stay readable",
-        len(command_name),
+        command_name, "description text that should stay readable", len(command_name)
     )
 
     assert output.startswith(f"{command_name}\n")

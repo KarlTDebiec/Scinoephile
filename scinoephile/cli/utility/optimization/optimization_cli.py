@@ -48,9 +48,7 @@ class OptimizationCli(ScinoephileCliBase):
         super().add_arguments_to_argparser(parser)
 
         subparsers = parser.add_subparsers(
-            dest="optimization_subcommand_name",
-            help="subcommand",
-            required=True,
+            dest="optimization_subcommand_name", help="subcommand", required=True
         )
         subcommands = cls.subcommands()
         for name in sorted(subcommands):
@@ -69,12 +67,7 @@ class OptimizationCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(
-        cls,
-        *,
-        optimization_subcommand_name: str,
-        **kwargs: Any,
-    ):
+    def _main(cls, *, optimization_subcommand_name: str, **kwargs: Any):
         """Execute with provided keyword arguments."""
         cls.subcommands()[optimization_subcommand_name]._main(**kwargs)
 

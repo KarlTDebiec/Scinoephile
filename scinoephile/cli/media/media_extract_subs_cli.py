@@ -79,8 +79,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
     """Extract matching subtitle streams from a video file."""
 
     localizations = merge_localizations(
-        CACHE_LOCALIZATIONS,
-        MEDIA_EXTRACT_SUBS_LOCALIZATIONS,
+        CACHE_LOCALIZATIONS, MEDIA_EXTRACT_SUBS_LOCALIZATIONS
     )
     """Localized help text keyed by locale and English source text."""
 
@@ -183,7 +182,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                 infile_path=infile_path,
                 languages=languages,
                 output_dir_path=output_dir_path,
-                cache_dir_path=cache_args.dir_path,
+                cache_root_path=cache_args.root_path,
                 details=details,
                 export_images=export_images,
                 overwrite=overwrite,

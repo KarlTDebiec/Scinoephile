@@ -10,13 +10,7 @@ from typing import TYPE_CHECKING
 
 from PIL import Image
 
-from scinoephile.core.dependencies.web import (
-    import_flask_abort,
-    import_flask_current_app,
-    import_flask_render_template,
-    import_flask_request,
-    import_flask_response,
-)
+from scinoephile.core.dependencies.web import import_flask
 
 from .concerns import SubtitleRowView
 from .session import OcrValidationSession
@@ -26,11 +20,12 @@ __all__ = ["register_routes"]
 if TYPE_CHECKING:
     from scinoephile.core.dependencies.web import FlaskApp, FlaskResponse
 
-abort = import_flask_abort()
-current_app = import_flask_current_app()
-render_template = import_flask_render_template()
-request = import_flask_request()
-response_cls = import_flask_response()
+flask = import_flask()
+abort = flask.abort
+current_app = flask.current_app
+render_template = flask.render_template
+request = flask.request
+response_cls = flask.Response
 
 
 def register_routes(app: FlaskApp):
@@ -124,11 +119,7 @@ def register_routes(app: FlaskApp):
             abort(400, "Missing n_bboxes.")
         except ValueError:
             abort(400, "Invalid integer for n_bboxes.")
-        row = session.resolve_char_concern(
-            sub_idx,
-            action=action,
-            n_bboxes=n_bboxes,
-        )
+        row = session.resolve_char_concern(sub_idx, action=action, n_bboxes=n_bboxes)
         return _render_subtitle_row(session, row)
 
     @app.post("/subtitles/<int:sub_idx>/concern/gap")
@@ -273,8 +264,7 @@ def _render_index(session: OcrValidationSession) -> str:
 
 
 def _render_index_body(
-    session: OcrValidationSession,
-    rows: list[SubtitleRowView] | None = None,
+    session: OcrValidationSession, rows: list[SubtitleRowView] | None = None
 ) -> str:
     """Render the body content of the subtitle list.
 

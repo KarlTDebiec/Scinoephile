@@ -24,31 +24,21 @@ def test_audit_guided_translation_formats_guide_and_filters_range():
     test_case = GuidedTranslationTestCase.model_validate(
         {
             "query": {
-                "subtitles": [
-                    {"index": 1, "text": "甲"},
-                    {"index": 2, "text": "乙"},
-                ],
+                "subtitles": [{"index": 1, "text": "甲"}, {"index": 2, "text": "乙"}],
                 "guides": [
                     {"index": 1, "text": "Guide one"},
                     {"index": 2, "text": "Guide two"},
                 ],
             },
             "answer": {
-                "outputs": [
-                    {"index": 1, "text": "A"},
-                    {"index": 2, "text": "B"},
-                ]
+                "outputs": [{"index": 1, "text": "A"}, {"index": 2, "text": "B"}]
             },
             "difficulty": 2,
         }
     )
 
     report = audit_guided_translation(
-        source,
-        guide,
-        (test_case,),
-        first_index=2,
-        last_index=2,
+        source, guide, (test_case,), first_index=2, last_index=2
     )
 
     assert report.startswith("# Guided Translation Audit\n")
@@ -91,10 +81,7 @@ def test_audit_translation_formats_standard_blocks_and_unanswered_case():
                     ]
                 },
                 "answer": {
-                    "outputs": [
-                        {"index": 1, "text": "A"},
-                        {"index": 2, "text": "B"},
-                    ]
+                    "outputs": [{"index": 1, "text": "A"}, {"index": 2, "text": "B"}]
                 },
                 "verified": True,
             }
@@ -106,16 +93,9 @@ def test_audit_translation_formats_standard_blocks_and_unanswered_case():
 
     report = audit_translation(source, test_cases)
     unverified_report = audit_translation(
-        source,
-        test_cases,
-        row_filter=TranslationAuditFilter.unverified,
+        source, test_cases, row_filter=TranslationAuditFilter.unverified
     )
-    block_report = audit_translation(
-        source,
-        test_cases,
-        first_block=2,
-        last_block=2,
-    )
+    block_report = audit_translation(source, test_cases, first_block=2, last_block=2)
 
     assert report.startswith("# Standard Translation Audit\n")
     assert "- logged cases: 2" in report
@@ -143,10 +123,7 @@ def test_audit_translation_reuses_case_for_repeated_blocks():
     report = audit_translation(source, (test_case,))
 
     second_block_report = audit_translation(
-        source,
-        (test_case,),
-        first_block=2,
-        last_block=2,
+        source, (test_case,), first_block=2, last_block=2
     )
     assert "- logged cases: 1" in report
     assert "- subtitles: 2" in report
@@ -183,15 +160,9 @@ def test_audit_translation_uses_latest_case_and_rejects_invalid_selection():
     with raises(ScinoephileError, match="no matching logged test case"):
         audit_translation(source, ())
     with raises(
-        ScinoephileError,
-        match="Subtitle-index and block ranges are mutually exclusive",
+        ScinoephileError, match="Subtitle-index and block ranges are mutually exclusive"
     ):
-        audit_translation(
-            source,
-            (new_case,),
-            first_index=1,
-            first_block=1,
-        )
+        audit_translation(source, (new_case,), first_index=1, first_block=1)
 
 
 def _get_series(*events: tuple[int, str]) -> Series:

@@ -45,9 +45,7 @@ def test_prompt_aliases_are_used_for_llm_correspondence():
                 "zimu": [{"xuhao": 1, "wenben": "原文"}],
                 "cankao": [{"xuhao": 1, "wenben": "參考"}],
             },
-            "answer": {
-                "shuchu": [{"xuhao": 1, "wenben": "譯文"}],
-            },
+            "answer": {"shuchu": [{"xuhao": 1, "wenben": "譯文"}]},
         }
     )
 
@@ -57,7 +55,7 @@ def test_prompt_aliases_are_used_for_llm_correspondence():
     }
     assert test_case.answer is not None
     assert test_case.answer.model_dump(by_alias=True) == {
-        "shuchu": [{"xuhao": 1, "wenben": "譯文"}],
+        "shuchu": [{"xuhao": 1, "wenben": "譯文"}]
     }
     assert set(test_case_cls.query_cls.model_json_schema()["properties"]) == {
         "zimu",
@@ -136,7 +134,7 @@ def test_outputs_must_correspond_to_query_subtitles(
 
 def test_processor_maps_indexed_outputs_to_subtitle_timing():
     """Processor outputs should preserve source-subtitle ordering and timing."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = json.dumps(
         {
             "shuchu": [
@@ -147,7 +145,6 @@ def test_processor_maps_indexed_outputs_to_subtitle_timing():
         ensure_ascii=False,
     )
     processor = GuidedTranslationProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     source = Series(
         events=[
             Subtitle(start=0, end=1000, text="原文一"),
@@ -167,10 +164,7 @@ def test_processor_maps_indexed_outputs_to_subtitle_timing():
     messages, answer_cls, _ = provider.chat_completion.call_args.args
     assert answer_cls is processor.queryer.test_case_cls.answer_cls
     assert json.loads(messages[1]["content"]) == {
-        "zimu": [
-            {"xuhao": 1, "wenben": "原文一"},
-            {"xuhao": 2, "wenben": "原文二"},
-        ],
+        "zimu": [{"xuhao": 1, "wenben": "原文一"}, {"xuhao": 2, "wenben": "原文二"}],
         "cankao": [{"xuhao": 1, "wenben": "參考"}],
     }
 
@@ -180,34 +174,22 @@ def test_persistence_uses_base_prompt_field_names(tmp_path: Path):
     test_case_cls = GuidedTranslationManager.get_test_case_cls(_LOCALIZED_PROMPT)
     test_case = test_case_cls.model_validate(
         {
-            "query": {
-                "subtitles": [{"index": 1, "text": "原文"}],
-                "guides": [],
-            },
+            "query": {"subtitles": [{"index": 1, "text": "原文"}], "guides": []},
             "answer": {"outputs": [{"index": 1, "text": "譯文"}]},
         }
     )
     output_path = tmp_path / "guided_translation.json"
 
-    save_test_cases_to_json(
-        output_path,
-        [test_case],
-        GuidedTranslationManager,
-    )
+    save_test_cases_to_json(output_path, [test_case], GuidedTranslationManager)
 
     assert json.loads(output_path.read_text(encoding="utf-8")) == [
         {
-            "query": {
-                "subtitles": [{"index": 1, "text": "原文"}],
-                "guides": [],
-            },
+            "query": {"subtitles": [{"index": 1, "text": "原文"}], "guides": []},
             "answer": {"outputs": [{"index": 1, "text": "譯文"}]},
         }
     ]
     loaded = load_test_cases_from_json(
-        output_path,
-        GuidedTranslationManager,
-        _LOCALIZED_PROMPT,
+        output_path, GuidedTranslationManager, _LOCALIZED_PROMPT
     )
     assert loaded[0].query.model_dump(by_alias=True) == {
         "zimu": [{"xuhao": 1, "wenben": "原文"}],
@@ -217,13 +199,11 @@ def test_persistence_uses_base_prompt_field_names(tmp_path: Path):
 
 def test_processor_honors_start_index():
     """An inclusive start index should skip earlier guided-translation blocks."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = json.dumps(
-        {"shuchu": [{"xuhao": 1, "wenben": "譯文二"}]},
-        ensure_ascii=False,
+        {"shuchu": [{"xuhao": 1, "wenben": "譯文二"}]}, ensure_ascii=False
     )
     processor = GuidedTranslationProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     source = Series(
         events=[
             Subtitle(start=0, end=1000, text="原文一"),

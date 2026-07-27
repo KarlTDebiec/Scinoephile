@@ -35,8 +35,7 @@ class ImageSubtitle(Subtitle):
         """
         super_field_names = {f.name for f in fields(Subtitle)}
         super_kwargs = cast(
-            SubtitleKwargs,
-            {k: v for k, v in kwargs.items() if k in super_field_names},
+            SubtitleKwargs, {k: v for k, v in kwargs.items() if k in super_field_names}
         )
         super().__init__(**super_kwargs)
 

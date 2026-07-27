@@ -12,10 +12,7 @@ from scinoephile.analysis.audit.delineation import (
     audit_delineation,
 )
 from scinoephile.cli.helpers.io import read_series
-from scinoephile.common.argument_parsing import (
-    get_arg_groups_by_name,
-    input_file_arg,
-)
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core import ScinoephileError
 from scinoephile.llms.delineation import DelineationManager
 
@@ -148,10 +145,7 @@ class AuditDelineationCli(AuditCliBase):
         # Read inputs
         reference = read_series(parser, reference_path)
         test_cases = cls.load_test_cases(
-            parser,
-            json_path,
-            DelineationManager,
-            workflow_name="delineation",
+            parser, json_path, DelineationManager, workflow_name="delineation"
         )
 
         # Perform operation

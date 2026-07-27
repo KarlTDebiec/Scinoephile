@@ -10,18 +10,13 @@ from pathlib import Path
 
 from .csv import save_csv_rows
 
-__all__ = [
-    "load_char_grp_dims",
-    "save_char_grp_dims",
-]
+__all__ = ["load_char_grp_dims", "save_char_grp_dims"]
 
 
 logger = getLogger(__name__)
 
 
-def load_char_grp_dims(
-    file_path: Path,
-) -> dict[int, dict[str, set[tuple[int, ...]]]]:
+def load_char_grp_dims(file_path: Path) -> dict[int, dict[str, set[tuple[int, ...]]]]:
     """Load character group dimensions from file.
 
     Arguments:

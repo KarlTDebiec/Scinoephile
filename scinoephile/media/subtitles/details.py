@@ -13,7 +13,8 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.media import Stream, SubtitleStream
 from scinoephile.media.probe import get_subtitle_streams
 
-from .cache import cache_subtitles
+from .cache import SubtitleCache
+from .extractor import SubtitleExtractor
 from .stats import get_subtitle_stream_stats
 
 __all__ = ["get_detailed_subtitle_streams"]
@@ -24,20 +25,20 @@ logger = getLogger(__name__)
 def get_detailed_subtitle_streams(
     infile_path: Path,
     *,
-    cache_dir_path: Path | None = None,
-    overwrite_cache: bool = False,
     streams: Sequence[Stream] | None = None,
+    subtitle_cache: SubtitleCache | None = None,
 ) -> list[SubtitleStream]:
     """Get subtitle stream metadata enriched with expensive subtitle details.
 
     Arguments:
         infile_path: media input file to inspect
-        cache_dir_path: cache directory path
-        overwrite_cache: whether to replace matching cached subtitle artifacts
         streams: optional pre-probed media streams
+        subtitle_cache: subtitle stream cache shared with upstream operations
     Returns:
         enriched subtitle stream metadata
     """
+    if subtitle_cache is None:
+        subtitle_cache = SubtitleCache()
     if streams is None:
         subtitle_streams = get_subtitle_streams(infile_path)
     else:
@@ -45,20 +46,13 @@ def get_detailed_subtitle_streams(
             stream for stream in streams if isinstance(stream, SubtitleStream)
         ]
     if subtitle_streams:
-        cache_subtitles(
-            infile_path,
-            subtitle_streams,
-            cache_dir_path=cache_dir_path,
-            overwrite_cache=overwrite_cache,
-        )
+        SubtitleExtractor(subtitle_cache).extract(infile_path, subtitle_streams)
 
     detailed_streams = []
     for stream in subtitle_streams:
         try:
             stats = get_subtitle_stream_stats(
-                infile_path,
-                stream,
-                cache_dir_path=cache_dir_path,
+                infile_path, stream, subtitle_cache=subtitle_cache
             )
         except (ScinoephileError, ValueError, IndexError) as exc:
             logger.warning(

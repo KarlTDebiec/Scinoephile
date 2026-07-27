@@ -89,10 +89,7 @@ class PersistedModel:
 
         return cls(
             model_id=get_model_id(
-                provider_name,
-                model_name,
-                base_url,
-                normalized_settings,
+                provider_name, model_name, base_url, normalized_settings
             ),
             provider_name=provider_name,
             model_name=model_name,
@@ -115,14 +112,7 @@ def _is_credential_name(name: str) -> bool:
     if compact_name == "authorization":
         return True
     return compact_name.endswith(
-        (
-            "apikey",
-            "credential",
-            "credentials",
-            "password",
-            "secret",
-            "token",
-        )
+        ("apikey", "credential", "credentials", "password", "secret", "token")
     )
 
 

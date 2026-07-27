@@ -8,10 +8,7 @@ from typing import ClassVar
 
 from PIL import Image
 
-__all__ = [
-    "FailingOcrRecognizer",
-    "RecordingOcrRecognizer",
-]
+__all__ = ["FailingOcrRecognizer", "RecordingOcrRecognizer"]
 
 
 class FailingOcrRecognizer:

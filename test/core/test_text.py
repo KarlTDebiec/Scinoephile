@@ -76,23 +76,13 @@ def test_normalize_text(text: str, expected: str) -> None:
     assert normalize_text(text) == expected
 
 
-@parametrize(
-    ("text", "expected"),
-    [
-        ("Don't stop 佢", ["Don't", "stop"]),
-    ],
-)
+@parametrize(("text", "expected"), [("Don't stop 佢", ["Don't", "stop"])])
 def test_re_latin_word(text: str, expected: list[str]) -> None:
     """Latin word regex matches word-like tokens."""
     assert RE_LATIN_WORD.findall(text) == expected
 
 
-@parametrize(
-    ("text", "expected"),
-    [
-        ("one\ntwo\tthree\r", "one\ntwo\tthree\r"),
-    ],
-)
+@parametrize(("text", "expected"), [("one\ntwo\tthree\r", "one\ntwo\tthree\r")])
 def test_replace_control_characters_preserves_text_whitespace(
     text: str, expected: str
 ) -> None:

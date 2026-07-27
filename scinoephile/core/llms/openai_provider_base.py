@@ -81,10 +81,7 @@ class OpenAIProviderBase(LLMProvider):
         if base_url is None:
             base_url = self.base_url
         if base_url is None:
-            base_url = os.environ.get(
-                "OPENAI_BASE_URL",
-                "https://api.openai.com/v1",
-            )
+            base_url = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
         if base_url is not None:
             base_url = base_url.rstrip("/")
         identity.update(
@@ -213,9 +210,7 @@ class OpenAIProviderBase(LLMProvider):
         ]
 
     def _query(
-        self,
-        messages: list[dict[str, Any]],
-        request_kwargs: dict[str, Any],
+        self, messages: list[dict[str, Any]], request_kwargs: dict[str, Any]
     ) -> Any:
         """Query provider for completion.
 

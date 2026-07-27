@@ -61,9 +61,7 @@ def _write_fixture_csv(csv_path: Path):
 
 
 def test_build_uses_local_csv_data(
-    database_path: Path,
-    local_data_dir_path: Path,
-    runtime_data_dir_path: Path,
+    database_path: Path, local_data_dir_path: Path, runtime_data_dir_path: Path
 ):
     """Build Kaifangcidian DB from local canonical CSV when available.
 
@@ -126,9 +124,7 @@ def test_build_downloads_when_local_csv_missing(
 
 
 def test_build_updates_local_data_from_existing_runtime_csv(
-    database_path: Path,
-    local_data_dir_path: Path,
-    runtime_data_dir_path: Path,
+    database_path: Path, local_data_dir_path: Path, runtime_data_dir_path: Path
 ):
     """Update local canonical CSV from an existing runtime CSV.
 

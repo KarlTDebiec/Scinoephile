@@ -92,16 +92,8 @@ def test_generated_models_preserve_aliases_and_llm_schemas():
     assert query_schema == {
         "additionalProperties": False,
         "properties": {
-            "yilai": {
-                "description": "來源一字幕",
-                "title": "Yilai",
-                "type": "string",
-            },
-            "erlai": {
-                "description": "來源二字幕",
-                "title": "Erlai",
-                "type": "string",
-            },
+            "yilai": {"description": "來源一字幕", "title": "Yilai", "type": "string"},
+            "erlai": {"description": "來源二字幕", "title": "Erlai", "type": "string"},
         },
         "required": ["yilai", "erlai"],
         "title": get_model_name(Query.__name__, _LOCALIZED_PROMPT.name),
@@ -224,7 +216,7 @@ def test_queryer_corresponds_using_prompt_aliases():
     test_case = test_case_cls.model_validate(
         {"query": {"source_one": "來源一", "source_two": "來源二"}}
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = (
         '{"jieguo": "來源一", "shuoming": "採用來源一"}'
     )
@@ -233,26 +225,19 @@ def test_queryer_corresponds_using_prompt_aliases():
     result = queryer(test_case)
 
     assert result.answer is not None
-    assert result.answer.model_dump() == {
-        "output": "來源一",
-        "note": "採用來源一",
-    }
+    assert result.answer.model_dump() == {"output": "來源一", "note": "採用來源一"}
     messages, answer_cls, _ = provider.chat_completion.call_args.args
     assert answer_cls is test_case_cls.answer_cls
-    assert json.loads(messages[1]["content"]) == {
-        "yilai": "來源一",
-        "erlai": "來源二",
-    }
+    assert json.loads(messages[1]["content"]) == {"yilai": "來源一", "erlai": "來源二"}
 
 
 def test_processor_uses_semantic_fields_at_runtime():
     """Processor should build and consume the static semantic model shape."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = (
         '{"jieguo": "融合結果", "shuoming": "融合兩個來源"}'
     )
     processor = OcrFusionProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     source_one = Series([Subtitle(start=0, end=1000, text="來源一")])
     source_two = Series([Subtitle(start=0, end=1000, text="來源二")])
 
@@ -260,15 +245,12 @@ def test_processor_uses_semantic_fields_at_runtime():
 
     assert [subtitle.text for subtitle in result] == ["融合結果"]
     messages = provider.chat_completion.call_args.args[0]
-    assert json.loads(messages[1]["content"]) == {
-        "yilai": "來源一",
-        "erlai": "來源二",
-    }
+    assert json.loads(messages[1]["content"]) == {"yilai": "來源一", "erlai": "來源二"}
 
 
 def test_processor_honors_zero_stop_index():
     """A zero stop index should process no OCR-fusion subtitles."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = OcrFusionProcessor(_LOCALIZED_PROMPT, provider=provider)
     source_one = Series([Subtitle(start=0, end=1000, text="來源一")])
     source_two = Series([Subtitle(start=0, end=1000, text="來源二")])
@@ -283,7 +265,7 @@ def test_processor_rejects_negative_stop_index():
     """A negative stop index should be rejected."""
     processor = OcrFusionProcessor(
         _LOCALIZED_PROMPT,
-        provider=Mock(spec=LLMProvider),
+        provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
     )
     source = Series([Subtitle(start=0, end=1000, text="subtitle")])
 
@@ -313,11 +295,7 @@ def test_json_persistence_uses_base_prompt_aliases(tmp_path: Path):
             "verified": True,
         }
     ]
-    loaded = load_test_cases_from_json(
-        output_path,
-        OcrFusionManager,
-        _LOCALIZED_PROMPT,
-    )
+    loaded = load_test_cases_from_json(output_path, OcrFusionManager, _LOCALIZED_PROMPT)
     assert loaded[0].query.model_dump(by_alias=True) == {
         "yilai": "來源一",
         "erlai": "來源二",
@@ -346,9 +324,7 @@ def test_persisted_test_case_and_sqlite_use_base_prompt_aliases(tmp_path: Path):
 
     store = TestCaseSqliteStore(tmp_path / "test_cases.sqlite")
     store.sync_source_paths(
-        {"ocr_fusion.json": [persisted]},
-        manager_cls=OcrFusionManager,
-        dry_run=False,
+        {"ocr_fusion.json": [persisted]}, manager_cls=OcrFusionManager, dry_run=False
     )
     loaded = store.get_test_case(persisted.test_case_id)
     assert loaded is not None
@@ -367,26 +343,20 @@ def test_repository_json_fixtures_round_trip_without_rewrite():
     for input_path in input_paths:
         raw_test_cases = json.loads(input_path.read_text(encoding="utf-8"))
         localized_test_cases = load_test_cases_from_json(
-            input_path,
-            OcrFusionManager,
-            _LOCALIZED_PROMPT,
+            input_path, OcrFusionManager, _LOCALIZED_PROMPT
         )
         assert len(localized_test_cases) == len(raw_test_cases)
         total_test_cases += len(localized_test_cases)
 
         for raw_test_case, localized_test_case in zip(
-            raw_test_cases,
-            localized_test_cases,
-            strict=True,
+            raw_test_cases, localized_test_cases, strict=True
         ):
             base_test_case = base_test_case_cls.model_validate(
                 localized_test_case.model_dump(mode="json")
             )
             assert (
                 base_test_case.model_dump(
-                    mode="json",
-                    by_alias=True,
-                    exclude_defaults=True,
+                    mode="json", by_alias=True, exclude_defaults=True
                 )
                 == raw_test_case
             )

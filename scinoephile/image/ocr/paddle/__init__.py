@@ -5,6 +5,7 @@
 Package hierarchy (modules may import from any above):
 * bounding_box / preprocessing
 * text_result
+* cache
 * paddle_recognizer
 """
 
@@ -14,13 +15,14 @@ from logging import getLogger
 from typing import Unpack, cast
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
+from .cache import PaddleCache
 from .paddle_recognizer import PaddleRecognizer, PaddleRecognizerKwargs
 
 __all__ = [
+    "PaddleCache",
     "PaddleRecognizer",
     "PaddleRecognizerKwargs",
     "ocr_image_series_with_paddle",
@@ -30,8 +32,7 @@ logger = getLogger(__name__)
 
 
 def ocr_image_series_with_paddle(
-    image_series: ImageSeries,
-    **kwargs: Unpack[PaddleRecognizerKwargs],
+    image_series: ImageSeries, **kwargs: Unpack[PaddleRecognizerKwargs]
 ) -> Series:
     """OCR an image subtitle series with PaddleOCR.
 
@@ -44,8 +45,6 @@ def ocr_image_series_with_paddle(
     try:
         from .preprocessing import preprocess_paddle_ocr_image  # noqa: PLC0415
 
-        if kwargs.get("cache_dir_path") is None:
-            kwargs["cache_dir_path"] = get_runtime_cache_dir_path("paddleocr")
         paddle_recognizer = PaddleRecognizer(**kwargs)
 
         events = []
@@ -58,11 +57,7 @@ def ocr_image_series_with_paddle(
             preprocessed_image = preprocess_paddle_ocr_image(image_subtitle.img)
             text = paddle_recognizer.recognize_image(preprocessed_image)
             events.append(
-                Subtitle(
-                    start=image_subtitle.start,
-                    end=image_subtitle.end,
-                    text=text,
-                )
+                Subtitle(start=image_subtitle.start, end=image_subtitle.end, text=text)
             )
         return Series(events=events)
     except ScinoephileError:

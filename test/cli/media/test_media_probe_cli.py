@@ -12,7 +12,8 @@ from pytest import CaptureFixture, raises
 from scinoephile.cli.media.media_probe_cli import MediaProbeCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
-from scinoephile.lang.zho.subtitles.analysis import ZhoSubtitleScriptAnalysis
+from scinoephile.lang.zho.subtitles.analysis.result import ZhoScriptAnalysisResult
+from scinoephile.media.subtitles.cache import SubtitleCache
 from test.helpers import parametrize
 
 
@@ -50,7 +51,7 @@ def test_media_probe_cli_lists_all_streams(tmp_path: Path, capsys: CaptureFixtur
                     "codec_name": "subrip",
                     "tags": {"language": "eng", "title": "SDH"},
                 },
-            ],
+            ]
         },
     ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path}")
@@ -62,18 +63,9 @@ def test_media_probe_cli_lists_all_streams(tmp_path: Path, capsys: CaptureFixtur
     ]
 
 
-@parametrize(
-    ("script", "language"),
-    [
-        ("zho-Hant", "zho-Hant"),
-        (None, "zho-Unknown"),
-    ],
-)
+@parametrize(("script", "language"), [("zho-Hant", "zho-Hant"), (None, "zho-Unknown")])
 def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
-    script: str | None,
-    language: str,
+    tmp_path: Path, capsys: CaptureFixture[str], script: str | None, language: str
 ):
     """Test media probe CLI includes Chinese script analysis in stream ID.
 
@@ -96,15 +88,15 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
                         "codec_type": "subtitle",
                         "codec_name": "subrip",
                         "tags": {"language": "zho"},
-                    },
-                ],
+                    }
+                ]
             },
         ),
         patch(
             "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script"
         ) as analyze,
         patch("scinoephile.media.subtitles.details.get_subtitle_stream_stats") as stats,
-        patch("scinoephile.media.subtitles.details.cache_subtitles"),
+        patch("scinoephile.media.subtitles.details.SubtitleExtractor.extract"),
     ):
         analyze.return_value.script = script
         stats.return_value.event_count = 12
@@ -116,13 +108,12 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
         (
             f"Stream #0:2({language}): Subtitle: subrip "
             "(subtitles=12, span=00:01:02-01:02:05)"
-        ),
+        )
     ]
 
 
 def test_media_probe_cli_details_preserves_non_subtitle_streams(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
+    tmp_path: Path, capsys: CaptureFixture[str]
 ):
     """Test media probe CLI detail mode still lists non-subtitle streams.
 
@@ -152,10 +143,7 @@ def test_media_probe_cli_details_preserves_non_subtitle_streams(
                     channels=2,
                 ),
                 SubtitleStream(
-                    index=2,
-                    codec_type="subtitle",
-                    codec_name="subrip",
-                    language="zho",
+                    index=2, codec_type="subtitle", codec_name="subrip", language="zho"
                 ),
             ],
         ),
@@ -170,7 +158,7 @@ def test_media_probe_cli_details_preserves_non_subtitle_streams(
                     subtitle_count=12,
                     first_start_ms=62_500,
                     last_end_ms=3_725_250,
-                ),
+                )
             ],
         ),
     ):
@@ -187,8 +175,7 @@ def test_media_probe_cli_details_preserves_non_subtitle_streams(
 
 
 def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
+    tmp_path: Path, capsys: CaptureFixture[str]
 ):
     """Test media probe CLI survives unreadable subtitle stats.
 
@@ -209,26 +196,25 @@ def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
                         "codec_type": "subtitle",
                         "codec_name": "hdmv_pgs_subtitle",
                         "tags": {"language": "ita", "title": "SDH"},
-                    },
-                ],
+                    }
+                ]
             },
         ),
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             side_effect=ValueError("Malformed SUP data"),
         ),
-        patch("scinoephile.media.subtitles.details.cache_subtitles"),
+        patch("scinoephile.media.subtitles.details.SubtitleExtractor.extract"),
     ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path} --details")
 
     assert capsys.readouterr().out.splitlines() == [
-        "Stream #0:2(ita): Subtitle: hdmv_pgs_subtitle (title=SDH)",
+        "Stream #0:2(ita): Subtitle: hdmv_pgs_subtitle (title=SDH)"
     ]
 
 
 def test_media_probe_cli_force_check_script_checks_standalone_sup(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
+    tmp_path: Path, capsys: CaptureFixture[str]
 ):
     """Test forced script checking treats a standalone SUP file as Chinese.
 
@@ -238,9 +224,9 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
     """
     infile_path = tmp_path / "source.sup"
     infile_path.touch()
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
 
-    def analyze_script(*args: object, **kwargs: object) -> ZhoSubtitleScriptAnalysis:
+    def analyze_script(*args: object, **kwargs: object) -> ZhoScriptAnalysisResult:
         """Return script analysis after checking analyzer inputs."""
         assert args[0] == infile_path
         stream = args[1]
@@ -248,11 +234,12 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
         assert stream.index == 0
         assert stream.codec_name == "hdmv_pgs_subtitle"
         assert stream.language == "zho"
-        assert kwargs == {
-            "cache_dir_path": cache_dir_path.resolve(),
-            "overwrite_cache": True,
-        }
-        return ZhoSubtitleScriptAnalysis(script="zho-Hant")
+        assert set(kwargs) == {"subtitle_cache"}
+        subtitle_cache = kwargs["subtitle_cache"]
+        assert isinstance(subtitle_cache, SubtitleCache)
+        assert subtitle_cache.cache_root_path == cache_root_path.resolve()
+        assert subtitle_cache.overwrite
+        return ZhoScriptAnalysisResult(script="zho-Hant")
 
     with (
         patch(
@@ -267,20 +254,19 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
         run_cli_with_args(
             MediaProbeCli,
             (
-                f"--infile {infile_path} --cache-dir {cache_dir_path} "
+                f"--infile {infile_path} --cache-dir {cache_root_path} "
                 "--force-check-script --cache-overwrite"
             ),
         )
 
     assert capsys.readouterr().out.splitlines() == [
-        "Stream #0:0(zho-Hant): Subtitle: hdmv_pgs_subtitle",
+        "Stream #0:0(zho-Hant): Subtitle: hdmv_pgs_subtitle"
     ]
     analyze.assert_called_once()
 
 
 def test_media_probe_cli_force_check_script_rejects_non_sup(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
+    tmp_path: Path, capsys: CaptureFixture[str]
 ):
     """Test forced script checking rejects non-SUP inputs.
 
@@ -292,9 +278,6 @@ def test_media_probe_cli_force_check_script_rejects_non_sup(
     infile_path.touch()
 
     with raises(SystemExit, match="2"):
-        run_cli_with_args(
-            MediaProbeCli,
-            f"--infile {infile_path} --force-check-script",
-        )
+        run_cli_with_args(MediaProbeCli, f"--infile {infile_path} --force-check-script")
 
     assert "--force-check-script requires a SUP infile" in capsys.readouterr().err

@@ -35,10 +35,7 @@ def audio_series() -> Mock:
 @fixture
 def expected_series() -> Series:
     """Get the expected transcribed subtitle series."""
-    return Series.from_string(
-        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
-        format_="srt",
-    )
+    return Series.from_string("1\n00:00:00,000 --> 00:00:01,000\n你好\n", format_="srt")
 
 
 def test_transcribe_cli_is_top_level_command():
@@ -120,10 +117,7 @@ def test_transcribe_cli_defaults_audio_preprocessing_to_auto():
     assert vad_action.default is VADMode.AUTO
 
 
-def test_transcribe_cli_writes_file(
-    audio_series: Mock,
-    expected_series: Series,
-):
+def test_transcribe_cli_writes_file(audio_series: Mock, expected_series: Series):
     """Test generic transcription CLI writes file output.
 
     Arguments:
@@ -150,10 +144,7 @@ def test_transcribe_cli_writes_file(
     assert_series_equal(output_series, expected_series)
 
 
-def test_transcribe_cli_writes_stdout(
-    audio_series: Mock,
-    expected_series: Series,
-):
+def test_transcribe_cli_writes_stdout(audio_series: Mock, expected_series: Series):
     """Test generic transcription CLI writes stdout output.
 
     Arguments:
@@ -183,9 +174,7 @@ def test_transcribe_cli_writes_stdout(
 
 
 def test_transcribe_cli_passes_generic_configuration(
-    audio_series: Mock,
-    expected_series: Series,
-    tmp_path: Path,
+    audio_series: Mock, expected_series: Series, tmp_path: Path
 ):
     """Test transcription CLI passes generic language and model configuration.
 
@@ -205,7 +194,7 @@ def test_transcribe_cli_passes_generic_configuration(
         backend: TranscriptionBackend,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
-        cache_dir_path: Path | None,
+        cache_root_path: Path | None,
         overwrite_cache: bool,
         provider: object,
         additional_context: str | None,
@@ -223,7 +212,7 @@ def test_transcribe_cli_passes_generic_configuration(
         assert backend is TranscriptionBackend.MLX_AUDIO
         assert demucs_mode is DemucsMode.ON
         assert vad_mode is VADMode.OFF
-        assert cache_dir_path == tmp_path / "cache"
+        assert cache_root_path == tmp_path / "cache"
         assert overwrite_cache
         assert provider is not None
         assert additional_context is None
@@ -349,8 +338,7 @@ def test_transcribe_cli_workflow_errors_are_user_facing(audio_series: Mock):
 
 
 def test_transcribe_cli_allows_stdin_guide_infile(
-    audio_series: Mock,
-    expected_series: Series,
+    audio_series: Mock, expected_series: Series
 ):
     """Test transcription CLI allows stdin guide subtitle input.
 
@@ -363,10 +351,7 @@ def test_transcribe_cli_allows_stdin_guide_infile(
     subtitle_paths: list[object] = []
 
     def load_from_media(
-        *,
-        media_path: str,
-        subtitle_path: object,
-        stream_index: int | None,
+        *, media_path: str, subtitle_path: object, stream_index: int | None
     ) -> AudioSeries:
         """Record media loading inputs."""
         assert media_path == _MEDIA_INFILE_PATH

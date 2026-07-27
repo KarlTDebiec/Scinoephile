@@ -14,10 +14,7 @@ from unittest.mock import patch
 
 from .command_line_interface import CommandLineInterface
 
-__all__ = [
-    "echo_command",
-    "run_cli_with_args",
-]
+__all__ = ["echo_command", "run_cli_with_args"]
 
 
 def echo_command(*arguments: str) -> list[str]:

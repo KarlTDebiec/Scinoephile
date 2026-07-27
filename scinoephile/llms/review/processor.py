@@ -32,11 +32,7 @@ class ReviewProcessor(Processor):
     """Manager class used to construct test case models."""
 
     def process(
-        self,
-        series: Series,
-        stop_at_idx: int | None = None,
-        *,
-        start_at_idx: int = 0,
+        self, series: Series, stop_at_idx: int | None = None, *, start_at_idx: int = 0
     ) -> Series:
         """Process review LLM queries.
 
@@ -62,10 +58,7 @@ class ReviewProcessor(Processor):
             query = query_cls.model_validate(
                 {
                     "subtitles": [
-                        {
-                            "index": idx,
-                            "text": subtitle.text_with_newline.strip(),
-                        }
+                        {"index": idx, "text": subtitle.text_with_newline.strip()}
                         for idx, subtitle in enumerate(block.events, 1)
                     ]
                 }

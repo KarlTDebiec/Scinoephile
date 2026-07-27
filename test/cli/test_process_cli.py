@@ -29,11 +29,7 @@ def test_process_cli_uses_concise_language_help():
 @parametrize(
     ("input_path", "args", "expected_path"),
     [
-        (
-            "mnt/output/eng_ocr/fuse.srt",
-            "--clean",
-            "mnt/output/eng_ocr/fuse_clean.srt",
-        ),
+        ("mnt/output/eng_ocr/fuse.srt", "--clean", "mnt/output/eng_ocr/fuse_clean.srt"),
         (
             "mnt/output/zho-Hans_ocr/fuse.srt",
             "--clean",
@@ -64,8 +60,7 @@ def test_process_cli(input_path: str, args: str, expected_path: str):
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
-            ProcessCli,
-            f"--infile {full_input_path} {args} --outfile {output_path}",
+            ProcessCli, f"--infile {full_input_path} {args} --outfile {output_path}"
         )
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
@@ -80,7 +75,7 @@ def test_process_cli(input_path: str, args: str, expected_path: str):
             "mnt/output/zho-Hans_ocr/fuse.srt",
             "--clean",
             "mnt/output/zho-Hans_ocr/fuse_clean.srt",
-        ),
+        )
     ],
 )
 def test_process_cli_pipe(input_path: str, args: str, expected_path: str):

@@ -87,7 +87,7 @@ def test_queryer_corresponds_using_prompt_aliases():
     test_case = test_case_cls.model_validate(
         {"query": {"subtitles": ["原文"], "guide": "參考"}}
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = '{"jieguo": "原文"}'
     queryer = Queryer(test_case_cls, provider=provider, max_attempts=1)
 
@@ -97,10 +97,7 @@ def test_queryer_corresponds_using_prompt_aliases():
     assert result.answer.model_dump() == {"output": "原文"}
     messages, answer_cls, _ = provider.chat_completion.call_args.args
     assert answer_cls is test_case_cls.answer_cls
-    assert json.loads(messages[1]["content"]) == {
-        "cankao": "參考",
-        "zimu": ["原文"],
-    }
+    assert json.loads(messages[1]["content"]) == {"cankao": "參考", "zimu": ["原文"]}
 
 
 def test_queryer_localizes_test_case_validation_retry():
@@ -109,14 +106,9 @@ def test_queryer_localizes_test_case_validation_retry():
     test_case_cls = PunctuationManager.get_test_case_cls(prompt)
     subtitles = ["係", "洋文嚟嘅", "蝦即係有鬥心噉解"]
     test_case = test_case_cls.model_validate(
-        {
-            "query": {
-                "subtitles": subtitles,
-                "guide": "是洋文！即是有鬥心",
-            }
-        }
+        {"query": {"subtitles": subtitles, "guide": "是洋文！即是有鬥心"}}
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.side_effect = [
         '{"yuewen_punctuated": "係洋文嚟嘅！蝦即係有鬥心"}',
         '{"yuewen_punctuated": "係，洋文嚟嘅！蝦即係有鬥心噉解"}',
@@ -130,8 +122,7 @@ def test_queryer_localizes_test_case_validation_retry():
         (
             prompt.test_case_invalid_pre,
             prompt.target_chars_changed_err(
-                "".join(subtitles),
-                "係洋文嚟嘅蝦即係有鬥心",
+                "".join(subtitles), "係洋文嚟嘅蝦即係有鬥心"
             ),
             prompt.test_case_invalid_post,
         )
@@ -148,8 +139,7 @@ def test_query_and_answer_require_nonempty_fields():
     with raises(ValidationError, match=_LOCALIZED_PROMPT.ref_sub_missing_err):
         query_cls.model_validate({"subtitles": ["原文"], "guide": ""})
     with raises(
-        ValidationError,
-        match=_LOCALIZED_PROMPT.target_sub_punctuated_missing_err,
+        ValidationError, match=_LOCALIZED_PROMPT.target_sub_punctuated_missing_err
     ):
         answer_cls.model_validate({"output": ""})
 
@@ -221,9 +211,7 @@ def test_persistence_uses_base_prompt_aliases(tmp_path: Path):
     assert persisted.answer == {"target_sub_punctuated": "原文"}
 
     loaded = load_test_cases_from_json(
-        output_path,
-        PunctuationManager,
-        _LOCALIZED_PROMPT,
+        output_path, PunctuationManager, _LOCALIZED_PROMPT
     )
     assert loaded[0].query.model_dump(by_alias=True) == {
         "cankao": "參考",
@@ -253,22 +241,15 @@ def test_tracked_fixture_count():
     ],
 )
 def test_tracked_fixture_round_trips_without_migration(
-    input_path: Path,
-    tmp_path: Path,
+    input_path: Path, tmp_path: Path
 ):
     """Tracked punctuation JSON should round-trip without schema changes."""
     raw_data = json.loads(input_path.read_text(encoding="utf-8"))
     test_cases = load_test_cases_from_json(
-        input_path,
-        PunctuationManager,
-        YueZhoPunctuationPromptYueHans,
+        input_path, PunctuationManager, YueZhoPunctuationPromptYueHans
     )
     output_path = tmp_path / input_path.name
 
-    save_test_cases_to_json(
-        output_path,
-        test_cases,
-        PunctuationManager,
-    )
+    save_test_cases_to_json(output_path, test_cases, PunctuationManager)
 
     assert json.loads(output_path.read_text(encoding="utf-8")) == raw_data

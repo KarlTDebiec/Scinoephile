@@ -29,9 +29,7 @@ _LEGACY_TEST_CASE_PROMPT_FIELDS: Final = {
 """Prompt fields removed when test-case metadata became static."""
 
 
-def test_registered_prompt_model_and_cache_identities_change_once(
-    tmp_path: Path,
-):
+def test_registered_prompt_model_and_cache_identities_change_once(tmp_path: Path):
     """Removing metadata should change prompt, model, and cache identities."""
     provider = Mock(spec=LLMProvider)
     provider.cache_identity = {"implementation": "test.provider"}
@@ -51,26 +49,22 @@ def test_registered_prompt_model_and_cache_identities_change_once(
             != legacy_test_case_cls.answer_cls.__name__
         )
 
-        queryer = Queryer(test_case_cls, provider=provider)
-        legacy_queryer = Queryer(legacy_test_case_cls, provider=provider)
+        queryer = Queryer(test_case_cls, provider=provider, cache_root_path=tmp_path)
+        legacy_queryer = Queryer(
+            legacy_test_case_cls, provider=provider, cache_root_path=tmp_path
+        )
         system_prompt = queryer.system_prompt
         legacy_system_prompt = legacy_queryer.system_prompt
 
         assert system_prompt == legacy_system_prompt
 
-        queryer.cache_dir_path = tmp_path
-        legacy_queryer.cache_dir_path = tmp_path
         tools_json = queryer.tool_box.to_json()
         query_json = '{"same":"query"}'
         cache_path = queryer._get_cache_path(system_prompt, tools_json, query_json)
         legacy_cache_path = legacy_queryer._get_cache_path(
-            legacy_system_prompt,
-            tools_json,
-            query_json,
+            legacy_system_prompt, tools_json, query_json
         )
 
-        assert cache_path is not None
-        assert legacy_cache_path is not None
         assert cache_path != legacy_cache_path
 
 
@@ -113,18 +107,12 @@ def test_registered_review_prompts_specify_note_language():
         Language.zho_hans: "中文",
         Language.zho_hant: "中文",
     }
-    review_manager_classes = {
-        GuidedReviewManager,
-        ReviewManager,
-    }
+    review_manager_classes = {GuidedReviewManager, ReviewManager}
 
     for alias, prompt_spec in PROMPT_SPECS.items():
         if prompt_spec.manager_cls not in review_manager_classes:
             continue
-        review_prompt = cast(
-            "GuidedReviewPrompt | ReviewPrompt",
-            prompt_spec.prompt,
-        )
+        review_prompt = cast("GuidedReviewPrompt | ReviewPrompt", prompt_spec.prompt)
         note_language = note_language_markers[review_prompt.language]
         assert note_language in review_prompt.base_system_prompt, alias
         assert note_language in review_prompt.note_desc, alias
@@ -195,10 +183,7 @@ def _get_registered_prompts() -> list[tuple[type[Manager], Prompt]]:
         (prompt_spec.manager_cls, prompt_spec.prompt)
         for prompt_spec in PROMPT_SPECS.values()
     }
-    return sorted(
-        prompt_pairs,
-        key=lambda pair: (pair[0].operation, pair[1].name),
-    )
+    return sorted(prompt_pairs, key=lambda pair: (pair[0].operation, pair[1].name))
 
 
 def _normalize_schema_identifiers(schema: dict[str, Any]) -> dict[str, Any]:

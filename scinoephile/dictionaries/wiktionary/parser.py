@@ -70,8 +70,7 @@ class WiktionaryDictionaryParser:
                     continue
                 record = json.loads(line)
                 self._append_record_entries(
-                    record=record,
-                    definitions_by_key=definitions_by_key,
+                    record=record, definitions_by_key=definitions_by_key
                 )
 
         entries: list[DictionaryEntry] = []
@@ -288,10 +287,7 @@ class WiktionaryDictionaryParser:
         return (
             " ".join(
                 lazy_pinyin(
-                    text,
-                    style=Style.TONE3,
-                    neutral_tone_with_five=True,
-                    v_to_u=True,
+                    text, style=Style.TONE3, neutral_tone_with_five=True, v_to_u=True
                 )
             )
             .lower()

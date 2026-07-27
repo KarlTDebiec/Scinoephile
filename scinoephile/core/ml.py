@@ -6,10 +6,7 @@ from __future__ import annotations
 
 from functools import cache
 
-from .dependencies.transcription import (
-    import_torch_cuda_is_available,
-    import_torch_mps_is_available,
-)
+from .dependencies.transcription import import_torch
 
 __all__ = ["get_torch_device"]
 
@@ -21,10 +18,9 @@ def get_torch_device() -> str:
     Returns:
         torch device identifier
     """
-    mps_is_available = import_torch_mps_is_available()
-    if mps_is_available():
+    torch = import_torch()
+    if torch.mps.is_available():
         return "mps"
-    cuda_is_available = import_torch_cuda_is_available()
-    if cuda_is_available():
+    if torch.cuda.is_available():
         return "cuda"
     return "cpu"

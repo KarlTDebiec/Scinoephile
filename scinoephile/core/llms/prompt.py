@@ -12,10 +12,7 @@ from typing import Self, TypedDict
 
 from scinoephile.core.language import Language
 
-__all__ = [
-    "Prompt",
-    "SharedPromptLocalizationFields",
-]
+__all__ = ["Prompt", "SharedPromptLocalizationFields"]
 
 
 class SharedPromptLocalizationFields(TypedDict):

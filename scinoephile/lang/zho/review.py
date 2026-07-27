@@ -59,8 +59,7 @@ GuidedReviewPromptZhoHant = GuidedReviewPrompt(
 """LLM correspondence text for guided review of traditional Chinese."""
 
 GuidedReviewPromptZhoHans = GuidedReviewPromptZhoHant.transformed(
-    Language.zho_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+    Language.zho_hans, partial(get_zho_text_converted, config=OpenCCConfig.t2s)
 )
 """LLM correspondence text for guided review of simplified Chinese."""
 
@@ -96,7 +95,6 @@ ReviewPromptZhoHant = ReviewPrompt(
 """LLM correspondence text for traditional standard Chinese review."""
 
 ReviewPromptZhoHans = ReviewPromptZhoHant.transformed(
-    Language.zho_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+    Language.zho_hans, partial(get_zho_text_converted, config=OpenCCConfig.t2s)
 )
 """LLM correspondence text for simplified standard Chinese review."""

@@ -129,9 +129,7 @@ class OcrLensCli(ScinoephileCliBase):
             help="recognized subtitle outfile path",
         )
         arg_groups["output arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite outfile if it exists",
+            "--overwrite", action="store_true", help="overwrite outfile if it exists"
         )
         parser.set_defaults(_parser=parser)
 
@@ -169,7 +167,7 @@ class OcrLensCli(ScinoephileCliBase):
         try:
             text_series = ocr_image_series_with_lens(
                 image_series,
-                cache_dir_path=cache_args.dir_path / "google-lens",
+                cache_root_path=cache_args.root_path,
                 language=language,
                 overwrite_cache=cache_args.overwrite,
                 retries=retries,

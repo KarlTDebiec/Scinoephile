@@ -262,9 +262,7 @@ def _arg_nodes(node: ast.FunctionDef | ast.AsyncFunctionDef) -> list[ast.arg]:
 
 
 def _audit_class_attributes(
-    class_node: ast.ClassDef,
-    file_path: Path,
-    notes: dict[str, list[StyleNote]],
+    class_node: ast.ClassDef, file_path: Path, notes: dict[str, list[StyleNote]]
 ):
     """Audit documented class attribute declarations.
 
@@ -293,13 +291,7 @@ def _audit_class_attributes(
                 f"class attribute `{class_node.name}.{name}` lacks immediate "
                 "triple-quoted docstring"
             )
-            _add_note(
-                notes,
-                file_path,
-                "Documentation",
-                item.lineno,
-                message,
-            )
+            _add_note(notes, file_path, "Documentation", item.lineno, message)
 
 
 def _audit_function_annotations(
@@ -323,11 +315,7 @@ def _audit_function_annotations(
                 f"`{function_node.name}`"
             )
             _add_note(
-                notes,
-                file_path,
-                "Type Annotations",
-                function_node.lineno,
-                message,
+                notes, file_path, "Type Annotations", function_node.lineno, message
             )
     if function_node.returns is None:
         value_returns = [
@@ -425,19 +413,11 @@ def _audit_init_export(
                 "`__init__.py` imports non-class-looking public name "
                 f"`{public_name}`; verify class-only rule"
             )
-            _add_note(
-                notes,
-                file_path,
-                "Exports",
-                node.lineno,
-                message,
-            )
+            _add_note(notes, file_path, "Exports", node.lineno, message)
 
 
 def _audit_nomenclature(
-    node: ast.AST,
-    file_path: Path,
-    notes: dict[str, list[StyleNote]],
+    node: ast.AST, file_path: Path, notes: dict[str, list[StyleNote]]
 ):
     """Audit path-related variable and parameter names.
 
@@ -503,10 +483,7 @@ def _audit_nomenclature(
 
 
 def _audit_required_header(
-    text: str,
-    lines: Sequence[str],
-    file_path: Path,
-    notes: dict[str, list[StyleNote]],
+    text: str, lines: Sequence[str], file_path: Path, notes: dict[str, list[StyleNote]]
 ):
     """Audit file-level copyright and future import requirements.
 
@@ -531,9 +508,7 @@ def _audit_required_header(
 
 
 def _audit_string_interpolation(
-    node: ast.AST,
-    file_path: Path,
-    notes: dict[str, list[StyleNote]],
+    node: ast.AST, file_path: Path, notes: dict[str, list[StyleNote]]
 ):
     """Audit non-f-string interpolation.
 
@@ -578,9 +553,7 @@ def _audit_string_interpolation(
 
 
 def _audit_print_call(
-    node: ast.AST,
-    file_path: Path,
-    notes: dict[str, list[StyleNote]],
+    node: ast.AST, file_path: Path, notes: dict[str, list[StyleNote]]
 ):
     """Audit `print` calls outside CLI command output and pytest modules.
 
@@ -606,9 +579,7 @@ def _audit_print_call(
 
 
 def _audit_text_lines(
-    lines: Sequence[str],
-    file_path: Path,
-    notes: dict[str, list[StyleNote]],
+    lines: Sequence[str], file_path: Path, notes: dict[str, list[StyleNote]]
 ):
     """Audit line-oriented text style rules.
 
@@ -658,9 +629,7 @@ def _audit_tree(
 
 
 def _audit_tree_header(
-    tree: ast.Module,
-    file_path: Path,
-    notes: dict[str, list[StyleNote]],
+    tree: ast.Module, file_path: Path, notes: dict[str, list[StyleNote]]
 ):
     """Audit module docstring and export requirements.
 
@@ -723,9 +692,7 @@ def _audit_all_format(
 
 
 def _audit_class(
-    class_node: ast.ClassDef,
-    file_path: Path,
-    notes: dict[str, list[StyleNote]],
+    class_node: ast.ClassDef, file_path: Path, notes: dict[str, list[StyleNote]]
 ):
     """Audit a class definition.
 

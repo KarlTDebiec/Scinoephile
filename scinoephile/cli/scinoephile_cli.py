@@ -123,17 +123,13 @@ class ScinoephileCli(ScinoephileCliBase):
         )
 
         subparsers = parser.add_subparsers(
-            dest="subcommand_name",
-            help="subcommand",
-            required=True,
+            dest="subcommand_name", help="subcommand", required=True
         )
         subcommands = cls.subcommands()
         for name in sorted(subcommands):
             subcommands[name].argparser(subparsers=subparsers)
         get_arg_groups_by_name(
-            parser,
-            "additional help",
-            optional_arguments_name="additional arguments",
+            parser, "additional help", optional_arguments_name="additional arguments"
         )
 
     @classmethod
@@ -157,12 +153,7 @@ class ScinoephileCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(
-        cls,
-        *,
-        subcommand_name: str,
-        **kwargs: Any,
-    ):
+    def _main(cls, *, subcommand_name: str, **kwargs: Any):
         """Execute with provided keyword arguments."""
         cls.subcommands()[subcommand_name]._main(**kwargs)
 

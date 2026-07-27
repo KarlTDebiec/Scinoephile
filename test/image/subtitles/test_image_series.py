@@ -20,14 +20,7 @@ from test.helpers import parametrize
 
 @parametrize(
     "input_path_fixture, expected_event_count, expected_first_size",
-    [
-        param(
-            "mlamd_eng_ocr_sup_path",
-            942,
-            (953, 63),
-            id="mlamd-eng-sup",
-        ),
-    ],
+    [param("mlamd_eng_ocr_sup_path", 942, (953, 63), id="mlamd-eng-sup")],
 )
 def test_load_sup(
     input_path_fixture: str,
@@ -58,14 +51,7 @@ def test_load_sup(
 
 @parametrize(
     "input_path_fixture, expected_event_count, expected_first_size",
-    [
-        param(
-            "mlamd_eng_image_path",
-            942,
-            (953, 63),
-            id="mlamd-eng-html",
-        ),
-    ],
+    [param("mlamd_eng_image_path", 942, (953, 63), id="mlamd-eng-html")],
 )
 def test_load_html(
     input_path_fixture: str,
@@ -105,11 +91,7 @@ def test_load_html_does_not_modify_source_images(tmp_path: Path):
     Image.new("RGBA", (2, 2), (64, 64, 64, 128)).save(image_path)
     original_image_bytes = image_path.read_bytes()
     html_text = ImageSeries.format_html_entry(
-        index=1,
-        start=0,
-        end=1000,
-        image_name=image_path.name,
-        text="Text",
+        index=1, start=0, end=1000, image_name=image_path.name, text="Text"
     )
     (input_dir_path / "index.html").write_text(html_text, encoding="utf-8")
 
@@ -132,17 +114,12 @@ def test_load_html_rejects_image_path_outside_directory(tmp_path: Path):
     outside_path = tmp_path / "outside.png"
     Image.new("RGBA", (2, 2), (255, 255, 255, 255)).save(outside_path)
     html_text = ImageSeries.format_html_entry(
-        index=1,
-        start=0,
-        end=1000,
-        image_name="../outside.png",
-        text="",
+        index=1, start=0, end=1000, image_name="../outside.png", text=""
     )
     (input_dir_path / "index.html").write_text(html_text, encoding="utf-8")
 
     with raises(
-        ScinoephileError,
-        match="Unable to load ImageSeries.*single contained filename",
+        ScinoephileError, match="Unable to load ImageSeries.*single contained filename"
     ):
         ImageSeries.load(input_dir_path)
 
@@ -169,8 +146,7 @@ def test_image_series_load_wraps_input_path_errors(tmp_path: Path):
     input_path = tmp_path / "missing"
 
     with raises(
-        ScinoephileError,
-        match="Unable to load ImageSeries from .*missing",
+        ScinoephileError, match="Unable to load ImageSeries from .*missing"
     ) as excinfo:
         ImageSeries.load(input_path)
 
@@ -202,11 +178,7 @@ def test_copy_text_from_rejects_length_mismatch():
     """Test copying text rejects length mismatches."""
     image_series = ImageSeries(
         events=[
-            ImageSubtitle(
-                start=1000,
-                end=2000,
-                img=Image.new("LA", (2, 2), (0, 255)),
-            )
+            ImageSubtitle(start=1000, end=2000, img=Image.new("LA", (2, 2), (0, 255)))
         ]
     )
     text_series = Series(
@@ -282,8 +254,7 @@ def test_save_html(tiny_image_series: ImageSeries):
 
 
 def test_save_html_preserves_unrelated_directory_contents(
-    tiny_image_series: ImageSeries,
-    tmp_path: Path,
+    tiny_image_series: ImageSeries, tmp_path: Path
 ):
     """Test saving HTML preserves unrelated files and nested directories.
 
@@ -308,8 +279,7 @@ def test_save_html_preserves_unrelated_directory_contents(
 
 
 def test_save_html_preserves_existing_output_when_staging_fails(
-    tiny_image_series: ImageSeries,
-    tmp_path: Path,
+    tiny_image_series: ImageSeries, tmp_path: Path
 ):
     """Test a staging failure leaves existing managed output unchanged.
 
@@ -370,8 +340,7 @@ def test_image_series_save_wraps_output_path_errors(
     output_path.touch()
 
     with raises(
-        ScinoephileError,
-        match="Unable to save ImageSeries to .*image_output",
+        ScinoephileError, match="Unable to save ImageSeries to .*image_output"
     ) as excinfo:
         tiny_image_series.save(output_path)
 
@@ -393,10 +362,7 @@ def test_text_font_size_defaults_when_no_bboxes():
     series = ImageSeries(
         events=[
             ImageSubtitle(
-                start=0,
-                end=1000,
-                img=Image.new("LA", (4, 4), (255, 255)),
-                bboxes=[],
+                start=0, end=1000, img=Image.new("LA", (4, 4), (255, 255)), bboxes=[]
             )
         ]
     )
@@ -439,19 +405,13 @@ def test_text_font_size_uses_upper_weighted_useful_bbox_height():
                 start=0,
                 end=1000,
                 img=Image.new("LA", (2, 2), (255, 255)),
-                bboxes=[
-                    Bbox(0, 10, 0, 52),
-                    Bbox(0, 4, 0, 10),
-                ],
+                bboxes=[Bbox(0, 10, 0, 52), Bbox(0, 4, 0, 10)],
             ),
             ImageSubtitle(
                 start=1000,
                 end=2000,
                 img=Image.new("LA", (3, 3), (255, 255)),
-                bboxes=[
-                    Bbox(0, 10, 0, 60),
-                    Bbox(12, 22, 0, 60),
-                ],
+                bboxes=[Bbox(0, 10, 0, 60), Bbox(12, 22, 0, 60)],
             ),
         ]
     )
@@ -474,7 +434,7 @@ def test_text_font_size_uses_ascender_height_for_latin_bboxes():
                     Bbox(36, 46, 0, 39),
                     Bbox(48, 58, 0, 39),
                 ],
-            ),
+            )
         ]
     )
 

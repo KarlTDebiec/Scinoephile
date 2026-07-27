@@ -190,10 +190,7 @@ def get_cmn_text_romanized(text: str) -> str:
     return "\n".join(lines).strip()
 
 
-def _get_cmn_section_romanized(
-    section: str,
-    open_symmetric_quotes: set[str],
-) -> str:
+def _get_cmn_section_romanized(section: str, open_symmetric_quotes: set[str]) -> str:
     """Get Mandarin pinyin romanization for a whitespace-delimited section.
 
     Arguments:
@@ -267,10 +264,7 @@ def _get_cmn_word_romanization_tokens(
     return tokens
 
 
-def _romanize_cmn_token(
-    chars: list[str],
-    token_kind: str,
-) -> str:
+def _romanize_cmn_token(chars: list[str], token_kind: str) -> str:
     """Romanize a Mandarin token.
 
     Arguments:

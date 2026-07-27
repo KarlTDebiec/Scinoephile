@@ -58,8 +58,7 @@ def test_static_htmx_asset_is_served(tmp_path: Path):
 
 
 def test_index_renders_single_char_concern_image(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test character concerns render one focused image and table."""
     app = _char_concern_app(tmp_path, monkeypatch)
@@ -78,15 +77,13 @@ def test_index_renders_single_char_concern_image(
 
 
 def test_index_renders_char_concern_romanizations(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test character concern tables render romanizations below Hanzi."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="霆")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
     app = create_app(session)
@@ -102,15 +99,13 @@ def test_index_renders_char_concern_romanizations(
 
 
 def test_index_omits_romanizations_for_unrecognized_symbol(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test character concern tables skip romanization for non-Hanzi symbols."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="▼")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
     app = create_app(session)
@@ -124,15 +119,13 @@ def test_index_omits_romanizations_for_unrecognized_symbol(
 
 
 def test_index_reload_reassesses_cached_subtitles(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test index reloads rebuild cached validation states."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
     app = create_app(session)
@@ -151,8 +144,7 @@ def test_index_reload_reassesses_cached_subtitles(
 
 
 def test_done_filter_route_toggles_ok_subtitles(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test the OK subtitle filter toggle updates the rendered list."""
     app = _done_app(tmp_path, monkeypatch)
@@ -209,8 +201,7 @@ def test_exit_route_saves_output_and_shuts_down_server(tmp_path: Path):
     html_dir_path = make_ocr_html_dir(tmp_path, text="recognized")
     outfile_path = tmp_path / "validated.srt"
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        outfile_path=outfile_path,
+        html_dir_path, outfile_path=outfile_path
     )
     app = create_app(session)
     app.testing = True
@@ -226,18 +217,13 @@ def test_exit_route_saves_output_and_shuts_down_server(tmp_path: Path):
 
 
 def test_char_concern_image_url_changes_after_accept(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test accepting one character returns a fresh next concern image URL."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(20, 30, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(20, 30, 0, 20)])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
     app = create_app(session)
@@ -261,16 +247,9 @@ def test_char_concern_image_url_changes_after_accept(
 def test_index_renders_space_gap_choice_table(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test adjacent-or-space concerns render both choice actions."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="霆所")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(50, 60, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(50, 60, 0, 20)])
     session = prepared_gap_session(
-        html_dir_path,
-        tmp_path,
-        char_1="霆",
-        char_2="所",
-        cutoffs=(22, 89, 90, 200),
+        html_dir_path, tmp_path, char_1="霆", char_2="所", cutoffs=(22, 89, 90, 200)
     )
     app = create_app(session)
 
@@ -291,8 +270,7 @@ def test_index_renders_space_gap_choice_table(tmp_path: Path, monkeypatch: Monke
 
 
 def test_validation_image_route_serves_bbox_png(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test validation row images are rendered with bbox overlays."""
     app = _done_app(tmp_path, monkeypatch)
@@ -307,8 +285,7 @@ def test_validation_image_route_serves_bbox_png(
 
 
 def test_validation_image_route_rejects_missing_subtitle(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test validation image route rejects an out-of-range subtitle index."""
     app = _done_app(tmp_path, monkeypatch)
@@ -324,9 +301,7 @@ def test_text_update_route_rewrites_row(tmp_path: Path):
     app = create_app(OcrValidationSession.from_dir_path(html_dir_path))
 
     response = app.test_client().post(
-        "/subtitles/0/text",
-        data={"text-0": "new"},
-        headers={"HX-Request": "true"},
+        "/subtitles/0/text", data={"text-0": "new"}, headers={"HX-Request": "true"}
     )
 
     assert response.status_code == 200
@@ -340,9 +315,7 @@ def test_text_update_route_rejects_missing_subtitle(tmp_path: Path):
     app = create_app(OcrValidationSession.from_dir_path(html_dir_path))
 
     response = app.test_client().post(
-        "/subtitles/1/text",
-        data={"text": "new"},
-        headers={"HX-Request": "true"},
+        "/subtitles/1/text", data={"text": "new"}, headers={"HX-Request": "true"}
     )
 
     assert response.status_code == 404
@@ -359,8 +332,7 @@ def test_concern_image_route_serves_png(tmp_path: Path, monkeypatch: MonkeyPatch
 
 
 def test_concern_image_route_rejects_missing_subtitle(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test concern image route rejects an out-of-range subtitle index."""
     app = _char_concern_app(tmp_path, monkeypatch)
@@ -385,8 +357,7 @@ def test_char_concern_route_resolves_row(tmp_path: Path, monkeypatch: MonkeyPatc
 
 
 def test_char_concern_route_rejects_invalid_action(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test character concern route rejects invalid actions."""
     app = _char_concern_app(tmp_path, monkeypatch)
@@ -401,8 +372,7 @@ def test_char_concern_route_rejects_invalid_action(
 
 
 def test_char_concern_route_rejects_missing_subtitle(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test character concern route rejects an out-of-range subtitle index."""
     app = _char_concern_app(tmp_path, monkeypatch)
@@ -419,10 +389,7 @@ def test_char_concern_route_rejects_missing_subtitle(
 def test_gap_concern_route_resolves_row(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test resolving the final gap concern persists text and omits the row."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)])
     session = prepared_gap_session(html_dir_path, tmp_path)
     app = create_app(session)
 
@@ -438,15 +405,11 @@ def test_gap_concern_route_resolves_row(tmp_path: Path, monkeypatch: MonkeyPatch
 
 
 def test_gap_concern_route_rejects_invalid_action(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test gap concern route rejects invalid actions."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)])
     session = prepared_gap_session(html_dir_path, tmp_path)
     app = create_app(session)
 
@@ -460,8 +423,7 @@ def test_gap_concern_route_rejects_invalid_action(
 
 
 def test_gap_concern_route_rejects_missing_subtitle(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test gap concern route rejects an out-of-range subtitle index."""
     app = _char_concern_app(tmp_path, monkeypatch)
@@ -487,8 +449,7 @@ def _char_concern_app(tmp_path: Path, monkeypatch: MonkeyPatch) -> Flask:
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
     return create_app(session)
@@ -545,10 +506,7 @@ def _assert_index_textarea(html: bytes):
 
 
 def _done_app(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-    *,
-    include_done_subtitles: bool = False,
+    tmp_path: Path, monkeypatch: MonkeyPatch, *, include_done_subtitles: bool = False
 ) -> Flask:
     """Create an app with one subtitle that has no concerns.
 
@@ -572,10 +530,7 @@ def _done_app(
 
 
 def _session(
-    tmp_path: Path,
-    *,
-    text: str,
-    include_done_subtitles: bool = False,
+    tmp_path: Path, *, text: str, include_done_subtitles: bool = False
 ) -> OcrValidationSession:
     """Create a basic OCR validation session.
 

@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_root_arg
 from scinoephile.common.argument_parsing import (
     duration_arg,
     get_arg_groups_by_name,
@@ -84,7 +84,7 @@ class CachePruneCli(ScinoephileCliBase):
         )
 
         # Input arguments
-        add_cache_dir_arg(
+        add_cache_root_arg(
             arg_groups["input arguments"],
             help_text="cache root directory to inspect (default: %(default)s)",
         )
@@ -97,8 +97,7 @@ class CachePruneCli(ScinoephileCliBase):
             help="delete entries older than a duration such as 7d, 30d, or 12h",
         )
         arg_groups["operation arguments"].add_argument(
-            "--namespace",
-            help="cache namespace to inspect",
+            "--namespace", help="cache namespace to inspect"
         )
         arg_groups["operation arguments"].add_argument(
             "--dry-run",
@@ -112,9 +111,7 @@ class CachePruneCli(ScinoephileCliBase):
             help="maximum entries to print; use 0 to show all (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
-            "--yes",
-            action="store_true",
-            help="confirm destructive deletion",
+            "--yes", action="store_true", help="confirm destructive deletion"
         )
         parser.set_defaults(_parser=parser)
 
@@ -132,7 +129,7 @@ class CachePruneCli(ScinoephileCliBase):
         cls,
         *,
         _parser: ArgumentParser | None = None,
-        cache_dir_path: Path,
+        cache_root_path: Path,
         older_than: timedelta,
         namespace: str | None,
         dry_run: bool,
@@ -151,12 +148,12 @@ class CachePruneCli(ScinoephileCliBase):
                 cutoff = datetime.now().astimezone() - older_than
                 entries = [
                     entry
-                    for entry in get_cache_entries(cache_dir_path, namespace=namespace)
+                    for entry in get_cache_entries(cache_root_path, namespace=namespace)
                     if entry.modified_at < cutoff
                 ]
             else:
                 entries = prune_cache(
-                    cache_dir_path, older_than=older_than, namespace=namespace
+                    cache_root_path, older_than=older_than, namespace=namespace
                 )
         except (NotADirectoryError, ScinoephileError) as exc:
             parser.error(str(exc))

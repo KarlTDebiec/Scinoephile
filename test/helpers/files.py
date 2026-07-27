@@ -7,10 +7,7 @@ from __future__ import annotations
 from os import utime
 from pathlib import Path
 
-__all__ = [
-    "set_mtime",
-    "write_cache_file",
-]
+__all__ = ["set_mtime", "write_cache_file"]
 
 
 def set_mtime(path: Path, timestamp: float) -> None:

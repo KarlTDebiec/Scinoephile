@@ -21,27 +21,27 @@ logger = getLogger(__name__)
 
 DICTIONARY_BUILD_BASE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "base class for building a specific dictionary cache": (
-            "用于构建特定词典缓存的基类"
+        "base class for building a specific dictionary database": (
+            "用于构建特定词典数据库的基类"
         ),
         "replace an existing SQLite database; without this, an existing "
         "database is left untouched": (
             "替换已有 SQLite 数据库；未指定时保留已有数据库"
         ),
-        "SQLite database output path (default: source-specific runtime cache)": (
-            "SQLite 数据库输出路径（默认：对应来源的运行时缓存）"
+        "SQLite database output path (default: source-specific runtime data)": (
+            "SQLite 数据库输出路径（默认：对应来源的运行时数据）"
         ),
     },
     "zh-hant": {
-        "base class for building a specific dictionary cache": (
-            "用於建立特定詞典快取的基底類別"
+        "base class for building a specific dictionary database": (
+            "用於建立特定詞典資料庫的基底類別"
         ),
         "replace an existing SQLite database; without this, an existing "
         "database is left untouched": (
             "替換已有 SQLite 資料庫；未指定時保留已有資料庫"
         ),
-        "SQLite database output path (default: source-specific runtime cache)": (
-            "SQLite 資料庫輸出路徑（預設：對應來源的執行時快取）"
+        "SQLite database output path (default: source-specific runtime data)": (
+            "SQLite 資料庫輸出路徑（預設：對應來源的執行時資料）"
         ),
     },
 }
@@ -49,7 +49,7 @@ DICTIONARY_BUILD_BASE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class DictionaryBuildCliBase(ScinoephileCliBase, ABC):
-    """Base class for building a specific dictionary cache."""
+    """Base class for building a specific dictionary database."""
 
     source: ClassVar[DictionarySource | None] = None
     """Dictionary source built by this CLI."""
@@ -76,7 +76,7 @@ class DictionaryBuildCliBase(ScinoephileCliBase, ABC):
         arg_groups["output arguments"].add_argument(
             "--database-path",
             type=output_file_arg(exist_ok=True),
-            help="SQLite database output path (default: source-specific runtime cache)",
+            help="SQLite database output path (default: source-specific runtime data)",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -99,24 +99,24 @@ class DictionaryBuildCliBase(ScinoephileCliBase, ABC):
     def log_config(
         cls,
         *,
-        cache_dir_path: Path | None,
         database_path: Path,
         max_words: int | None,
         overwrite: bool,
+        runtime_data_dir_path: Path | None,
         source_json_path: Path | None,
     ):
         """Log the effective build configuration.
 
         Arguments:
-            cache_dir_path: cache directory path
             database_path: SQLite database path
             max_words: optional max words cap
             overwrite: whether database overwrite is enabled
+            runtime_data_dir_path: runtime source data directory path
             source_json_path: optional manually downloaded source JSON
         """
         logger.info(f"Building dictionary: {cls.name()}")
-        if cache_dir_path is not None:
-            logger.info(f"Using cache directory: {cache_dir_path}")
+        if runtime_data_dir_path is not None:
+            logger.info(f"Using runtime data directory: {runtime_data_dir_path}")
         if source_json_path is not None:
             logger.info(f"Using source JSON: {source_json_path}")
         logger.info(f"Using SQLite database: {database_path}")

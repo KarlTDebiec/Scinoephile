@@ -80,10 +80,7 @@ def test_parse_variants_readings_and_dictionary_like_data(source_dir_path: Path)
         definition.text
         for definition in one_entry.definitions
         if definition.label == "釋義"
-    ] == [
-        "one",
-        "single",
-    ]
+    ] == ["one", "single"]
 
     assert ("萬", "万", "wan4", "maan6") in entries_by_key
     variant_entry = entries_by_key[("萬", "万", "wan4", "maan6")]
@@ -107,8 +104,7 @@ def test_parse_readings_preserves_simplified_only_source_rows(source_dir_path: P
         source_dir_path: fixture source directory path
     """
     (source_dir_path / "Unihan_Variants.txt").write_text(
-        "U+4E07\tkTraditionalVariant\tU+842C\n",
-        encoding="utf-8",
+        "U+4E07\tkTraditionalVariant\tU+842C\n", encoding="utf-8"
     )
     (source_dir_path / "Unihan_Readings.txt").write_text(
         (
@@ -118,10 +114,7 @@ def test_parse_readings_preserves_simplified_only_source_rows(source_dir_path: P
         ),
         encoding="utf-8",
     )
-    (source_dir_path / "Unihan_DictionaryLikeData.txt").write_text(
-        "",
-        encoding="utf-8",
-    )
+    (source_dir_path / "Unihan_DictionaryLikeData.txt").write_text("", encoding="utf-8")
 
     _, entries = UnihanDictionaryParser().parse(
         dictionary_like_data_path=source_dir_path / "Unihan_DictionaryLikeData.txt",

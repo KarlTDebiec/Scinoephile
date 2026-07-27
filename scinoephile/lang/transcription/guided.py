@@ -19,7 +19,7 @@ from scinoephile.audio.transcription.mlx_audio.backend import MIMO_MODEL_NAME
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.ml import get_torch_device
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_data_root_path
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHans,
     YueZhoDelineationPromptYueHant,
@@ -94,7 +94,7 @@ class TranscriptionLanguageSpec:
     whisper_language: str
     """Language code passed to Whisper."""
     segment_splitter: TranscribedSegmentSplitter | None = None
-    """Strategy for splitting raw Whisper segments."""
+    """Strategy for splitting raw transcribed segments."""
 
     def get_model_name(self, backend: TranscriptionBackend) -> str:
         """Get the default model name for a transcription backend.
@@ -166,28 +166,15 @@ _YUE_HANT_SPEC = GuidedTranscriptionSpec(
 """Guided transcription specification for traditional written Cantonese."""
 
 
-DEFAULT_SPECS: Mapping[
-    tuple[Language, Language],
-    GuidedTranscriptionSpec,
-] = MappingProxyType(
-    {
-        (
-            Language.yue_hans,
-            Language.zho_hans,
-        ): _YUE_HANS_SPEC,
-        (
-            Language.yue_hans,
-            Language.zho_hant,
-        ): _YUE_HANS_SPEC,
-        (
-            Language.yue_hant,
-            Language.zho_hans,
-        ): _YUE_HANT_SPEC,
-        (
-            Language.yue_hant,
-            Language.zho_hant,
-        ): _YUE_HANT_SPEC,
-    }
+DEFAULT_SPECS: Mapping[tuple[Language, Language], GuidedTranscriptionSpec] = (
+    MappingProxyType(
+        {
+            (Language.yue_hans, Language.zho_hans): _YUE_HANS_SPEC,
+            (Language.yue_hans, Language.zho_hant): _YUE_HANS_SPEC,
+            (Language.yue_hant, Language.zho_hans): _YUE_HANT_SPEC,
+            (Language.yue_hant, Language.zho_hant): _YUE_HANT_SPEC,
+        }
+    )
 )
 """Guided transcription specifications keyed by transcription and guide language."""
 
@@ -200,7 +187,7 @@ def get_guided_transcriber(
     backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
-    cache_dir_path: Path | None = None,
+    cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
@@ -220,8 +207,8 @@ def get_guided_transcriber(
         model_name: backend-specific model override
         backend: audio transcription backend
         demucs_mode: Demucs preprocessing mode
-        vad_mode: Whisper VAD mode
-        cache_dir_path: cache root directory path
+        vad_mode: voice activity detection mode
+        cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching generated cache files
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
@@ -246,8 +233,6 @@ def get_guided_transcriber(
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec
 
-    if cache_dir_path is None:
-        cache_dir_path = get_runtime_cache_dir_path(create=False)
     if model_name is None:
         model_name = language_spec.get_model_name(backend)
     if delineation_prompt is None:
@@ -256,7 +241,9 @@ def get_guided_transcriber(
         punctuation_prompt = spec.punctuation_prompt
     if delineation_json_path is None or punctuation_json_path is None:
         runtime_test_case_dir_path = (
-            cache_dir_path / "test_cases" / spec.test_case_dir_path
+            get_runtime_data_root_path(create=False)
+            / "test_cases"
+            / spec.test_case_dir_path
         )
         device = get_torch_device()
         if delineation_json_path is None:
@@ -270,9 +257,7 @@ def get_guided_transcriber(
     if delineation_test_cases is None:
         delineation_test_cases = list(
             load_default_test_cases(
-                DelineationManager,
-                delineation_prompt,
-                spec.delineation_json_paths,
+                DelineationManager, delineation_prompt, spec.delineation_json_paths
             )
         )
     if provider is None:
@@ -283,16 +268,14 @@ def get_guided_transcriber(
         test_case_path=delineation_json_path,
         provider=provider,
         additional_context=additional_context,
-        cache_dir_path=cache_dir_path / "llm",
+        cache_root_path=cache_root_path,
         overwrite_cache=overwrite_cache,
         prune_test_cases=prune_test_cases,
     )
     if punctuation_test_cases is None:
         punctuation_test_cases = list(
             load_default_test_cases(
-                PunctuationManager,
-                punctuation_prompt,
-                spec.punctuation_json_paths,
+                PunctuationManager, punctuation_prompt, spec.punctuation_json_paths
             )
         )
     punctuation_processor = PunctuationProcessor(
@@ -301,7 +284,7 @@ def get_guided_transcriber(
         test_case_path=punctuation_json_path,
         provider=provider,
         additional_context=additional_context,
-        cache_dir_path=cache_dir_path / "llm",
+        cache_root_path=cache_root_path,
         overwrite_cache=overwrite_cache,
         prune_test_cases=prune_test_cases,
     )
@@ -318,8 +301,8 @@ def get_guided_transcriber(
             language=language,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
-            cache_dir_path=cache_dir_path / "mlx_audio",
-            demucs_cache_dir_path=cache_dir_path / "demucs",
+            cache_root_path=cache_root_path,
+            overwrite_cache=overwrite_cache,
         )
     return GuidedTranscriber(
         language=language,
@@ -330,7 +313,7 @@ def get_guided_transcriber(
         backend=backend,
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
-        cache_dir_path=cache_dir_path,
+        cache_root_path=cache_root_path,
         overwrite_cache=overwrite_cache,
         mlx_audio_transcriber=mlx_audio_transcriber,
         segment_splitter=language_spec.segment_splitter,

@@ -135,9 +135,7 @@ if "yue-Hans_transcribe" in actions:
         auto_verify=True,
     )
     yue_hans_translate_guided_review = review_series_guided(
-        yue_hans_translate,
-        zho_hans,
-        reviewer=reviewer,
+        yue_hans_translate, zho_hans, reviewer=reviewer
     )
     outfile_path = (
         output_path / "yue-Hans_transcribe" / "transcribe_translate_guided_review.srt"

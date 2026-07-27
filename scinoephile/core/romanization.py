@@ -91,9 +91,7 @@ def normalize_romanized_punctuation(text: str) -> str:
 
 
 def _get_symmetric_quote_roles(
-    tokens: list[str],
-    open_quotes: set[str],
-    token_kinds: list[RomanizedTokenKind],
+    tokens: list[str], open_quotes: set[str], token_kinds: list[RomanizedTokenKind]
 ) -> list[Literal["closing", "infix", "opening"] | None]:
     """Get spacing roles for straight quote tokens.
 
@@ -142,10 +140,7 @@ def _is_romanized_punctuation_char(char: str) -> bool:
     )
 
 
-def _is_infix_quote_context(
-    index: int,
-    token_kinds: list[RomanizedTokenKind],
-) -> bool:
+def _is_infix_quote_context(index: int, token_kinds: list[RomanizedTokenKind]) -> bool:
     """Check whether a single quote joins raw text tokens.
 
     Arguments:

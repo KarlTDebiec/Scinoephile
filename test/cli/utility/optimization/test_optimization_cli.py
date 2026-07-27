@@ -28,10 +28,7 @@ def test_optimization_subcommand_help():
         assert_cli_help((ScinoephileCli, UtilityCli, OptimizationCli, cli_class))
 
 
-def test_sync_prompts_cli_dry_run(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
-):
+def test_sync_prompts_cli_dry_run(tmp_path: Path, capsys: CaptureFixture[str]):
     """The prompt synchronization CLI should report a read-only dry run.
 
     Arguments:
@@ -51,8 +48,7 @@ def test_sync_prompts_cli_dry_run(
 
 
 def test_sync_prompts_cli_writes_selected_alias(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
+    tmp_path: Path, capsys: CaptureFixture[str]
 ):
     """The prompt synchronization CLI should persist an explicit alias.
 
@@ -63,8 +59,7 @@ def test_sync_prompts_cli_writes_selected_alias(
     database_path = tmp_path / "optimization.sqlite"
 
     run_cli_with_args(
-        OptimizationSyncPromptsCli,
-        f"--prompt review-eng --outfile {database_path}",
+        OptimizationSyncPromptsCli, f"--prompt review-eng --outfile {database_path}"
     )
 
     assert "'prompts': 1" in capsys.readouterr().out

@@ -68,17 +68,9 @@ from test.helpers import assert_series_equal, parametrize
             Language.eng,
             id="kob-eng-tesseract",
         ),
+        param("kob_eng", "kob_eng_clean", Language.eng, id="kob-eng-srt"),
         param(
-            "kob_eng",
-            "kob_eng_clean",
-            Language.eng,
-            id="kob-eng-srt",
-        ),
-        param(
-            "mlamd_eng_fuse",
-            "mlamd_eng_fuse_clean",
-            Language.eng,
-            id="mlamd-eng-fuse",
+            "mlamd_eng_fuse", "mlamd_eng_fuse_clean", Language.eng, id="mlamd-eng-fuse"
         ),
         param(
             "mlamd_eng_ocr_lens",
@@ -92,12 +84,7 @@ from test.helpers import assert_series_equal, parametrize
             Language.eng,
             id="mlamd-eng-tesseract",
         ),
-        param(
-            "mnt_eng_fuse",
-            "mnt_eng_fuse_clean",
-            Language.eng,
-            id="mnt-eng-fuse",
-        ),
+        param("mnt_eng_fuse", "mnt_eng_fuse_clean", Language.eng, id="mnt-eng-fuse"),
         param(
             "mnt_eng_ocr_lens",
             "mnt_eng_ocr_lens_clean",
@@ -110,18 +97,8 @@ from test.helpers import assert_series_equal, parametrize
             Language.eng,
             id="mnt-eng-tesseract",
         ),
-        param(
-            "t_eng_fuse",
-            "t_eng_fuse_clean",
-            Language.eng,
-            id="t-eng-fuse",
-        ),
-        param(
-            "t_eng_ocr_lens",
-            "t_eng_ocr_lens_clean",
-            Language.eng,
-            id="t-eng-lens",
-        ),
+        param("t_eng_fuse", "t_eng_fuse_clean", Language.eng, id="t-eng-fuse"),
+        param("t_eng_ocr_lens", "t_eng_ocr_lens_clean", Language.eng, id="t-eng-lens"),
         param(
             "t_eng_ocr_tesseract",
             "t_eng_ocr_tesseract_clean",
@@ -517,8 +494,6 @@ def test_clean_series(
         language: language to use for cleaning
     """
     output = clean_series(
-        request.getfixturevalue(series_fixture),
-        language=language,
-        remove_empty=False,
+        request.getfixturevalue(series_fixture), language=language, remove_empty=False
     )
     assert_series_equal(output, request.getfixturevalue(expected_fixture))

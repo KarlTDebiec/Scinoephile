@@ -24,11 +24,7 @@ from scinoephile.llms.translation import TranslationProcessor, TranslationPrompt
 
 from .helpers import resolve_language
 
-__all__ = [
-    "translate_series",
-    "translate_series_gaps",
-    "translate_series_guided",
-]
+__all__ = ["translate_series", "translate_series_gaps", "translate_series_guided"]
 
 
 def translate_series(
@@ -74,9 +70,7 @@ def translate_series(
             **kwargs,
         )
     return translator.process(
-        source,
-        stop_at_idx=stop_at_idx,
-        start_at_idx=start_at_idx,
+        source, stop_at_idx=stop_at_idx, start_at_idx=start_at_idx
     )
 
 
@@ -126,10 +120,7 @@ def translate_series_gaps(
             **kwargs,
         )
     return translator.process(
-        target,
-        source,
-        stop_at_idx=stop_at_idx,
-        start_at_idx=start_at_idx,
+        target, source, stop_at_idx=stop_at_idx, start_at_idx=start_at_idx
     )
 
 
@@ -179,8 +170,5 @@ def translate_series_guided(
             **kwargs,
         )
     return translator.process(
-        source,
-        guide,
-        stop_at_idx=stop_at_idx,
-        start_at_idx=start_at_idx,
+        source, guide, stop_at_idx=stop_at_idx, start_at_idx=start_at_idx
     )

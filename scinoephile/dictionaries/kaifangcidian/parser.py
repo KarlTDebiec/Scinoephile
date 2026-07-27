@@ -107,8 +107,7 @@ class KaifangcidianDictionaryParser:
             dictionary entries
         """
         definitions_by_key: dict[
-            tuple[str, str, str, str],
-            list[DictionaryDefinition],
+            tuple[str, str, str, str], list[DictionaryDefinition]
         ] = {}
         for row in rows:
             traditional = row.get("traditional", "").strip()
@@ -117,12 +116,7 @@ class KaifangcidianDictionaryParser:
             jyutping = row.get("jyutping", "").strip().lower()
             if not traditional:
                 continue
-            key = (
-                traditional,
-                simplified or traditional,
-                pinyin,
-                jyutping,
-            )
+            key = (traditional, simplified or traditional, pinyin, jyutping)
             definitions_by_key.setdefault(key, [])
             definitions_by_key[key].extend(
                 KaifangcidianDictionaryParser._row_definitions(row)

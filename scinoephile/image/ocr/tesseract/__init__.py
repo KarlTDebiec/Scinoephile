@@ -3,7 +3,7 @@
 """Tesseract OCR support for image subtitles.
 
 Package hierarchy (modules may import from any above):
-* hocr / preprocessing
+* cache / hocr / legacy_data_cache / preprocessing
 * tesseract_recognizer
 """
 
@@ -13,13 +13,16 @@ from logging import getLogger
 from typing import Unpack, cast
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
+from .cache import TesseractCache
+from .legacy_data_cache import TesseractLegacyDataCache
 from .tesseract_recognizer import TesseractRecognizer, TesseractRecognizerKwargs
 
 __all__ = [
+    "TesseractCache",
+    "TesseractLegacyDataCache",
     "TesseractRecognizer",
     "TesseractRecognizerKwargs",
     "ocr_image_series_with_tesseract",
@@ -29,8 +32,7 @@ logger = getLogger(__name__)
 
 
 def ocr_image_series_with_tesseract(
-    image_series: ImageSeries,
-    **kwargs: Unpack[TesseractRecognizerKwargs],
+    image_series: ImageSeries, **kwargs: Unpack[TesseractRecognizerKwargs]
 ) -> Series:
     """OCR an image subtitle series with Tesseract.
 
@@ -41,8 +43,6 @@ def ocr_image_series_with_tesseract(
         text subtitle series
     """
     try:
-        if kwargs.get("cache_dir_path") is None:
-            kwargs["cache_dir_path"] = get_runtime_cache_dir_path("tesseract")
         tesseract_recognizer = TesseractRecognizer(**kwargs)
 
         events = []
@@ -54,11 +54,7 @@ def ocr_image_series_with_tesseract(
             image_subtitle = cast(ImageSubtitle, subtitle)
             text = tesseract_recognizer.recognize_image(image_subtitle.img)
             events.append(
-                Subtitle(
-                    start=image_subtitle.start,
-                    end=image_subtitle.end,
-                    text=text,
-                )
+                Subtitle(start=image_subtitle.start, end=image_subtitle.end, text=text)
             )
         return Series(events=events)
     except ScinoephileError:

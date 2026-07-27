@@ -10,20 +10,14 @@ from typing import TYPE_CHECKING
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
-from scinoephile.core.dependencies.web import (
-    import_flask_flask,
-    import_werkzeug_serving_make_server,
-)
+from scinoephile.core.dependencies.web import import_flask, import_werkzeug_serving
 
 from .session import OcrValidationSession
 
 if TYPE_CHECKING:
     from scinoephile.core.dependencies.web import FlaskApp
 
-__all__ = [
-    "create_app",
-    "run_app",
-]
+__all__ = ["create_app", "run_app"]
 
 logger = getLogger(__name__)
 
@@ -39,13 +33,13 @@ def create_app(session: OcrValidationSession) -> FlaskApp:
         ScinoephileError: if optional web dependencies are not installed
     """
     try:
-        flask_cls = import_flask_flask()
+        flask = import_flask()
         from .routes import register_routes  # noqa: PLC0415
     except ImportError as exc:
         raise ScinoephileError(str(exc)) from exc
 
     static_dir_path = package_root / "web/static"
-    app = flask_cls(__name__, static_folder=str(static_dir_path))
+    app = flask.Flask(__name__, static_folder=str(static_dir_path))
     app.config["OCR_VALIDATION_SESSION"] = session
     app.config["OCR_VALIDATION_SERVER"] = None
     register_routes(app)
@@ -63,7 +57,7 @@ def run_app(session: OcrValidationSession, host: str, port: int):
         ScinoephileError: if optional dependencies are missing or server startup fails
     """
     try:
-        make_server = import_werkzeug_serving_make_server()
+        werkzeug_serving = import_werkzeug_serving()
     except ImportError as exc:
         raise ScinoephileError(str(exc)) from exc
 
@@ -76,7 +70,7 @@ def run_app(session: OcrValidationSession, host: str, port: int):
                 "using an available port instead"
             )
             server_port = 0
-        server = make_server(host, server_port, app)
+        server = werkzeug_serving.make_server(host, server_port, app)
         app.config["OCR_VALIDATION_SERVER"] = server
         url_host = _url_host(host)
         url_port = getattr(server, "server_port", server_port)

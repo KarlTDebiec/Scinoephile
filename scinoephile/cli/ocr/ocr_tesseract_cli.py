@@ -77,8 +77,7 @@ class OcrTesseractCli(ScinoephileCliBase):
     """
 
     localizations = merge_localizations(
-        CACHE_LOCALIZATIONS,
-        OCR_TESSERACT_LOCALIZATIONS,
+        CACHE_LOCALIZATIONS, OCR_TESSERACT_LOCALIZATIONS
     )
     """Localized help text keyed by locale and English source text."""
 
@@ -137,9 +136,7 @@ class OcrTesseractCli(ScinoephileCliBase):
             help="recognized subtitle outfile path",
         )
         arg_groups["output arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite outfile if it exists",
+            "--overwrite", action="store_true", help="overwrite outfile if it exists"
         )
         parser.set_defaults(_parser=parser)
 
@@ -179,7 +176,7 @@ class OcrTesseractCli(ScinoephileCliBase):
         try:
             text_series = ocr_image_series_with_tesseract(
                 image_series,
-                cache_dir_path=cache_args.dir_path / "tesseract",
+                cache_root_path=cache_args.root_path,
                 detect_italics=detect_italics,
                 language=language,
                 overwrite_cache=cache_args.overwrite,

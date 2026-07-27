@@ -43,8 +43,7 @@ def test_val_str_invalid_type():
     This doesn't match any of the provided options, so ValueError is raised.
     """
     with raises(
-        ValueError,
-        match="'none' is not one of the supported values: option1, option2",
+        ValueError, match="'none' is not one of the supported values: option1, option2"
     ):
         val_str(None, ["option1", "option2"])
 

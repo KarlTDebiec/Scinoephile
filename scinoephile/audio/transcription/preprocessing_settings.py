@@ -7,11 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import StrEnum
 
-__all__ = [
-    "DemucsMode",
-    "TranscriptionPreprocessingSettings",
-    "VADMode",
-]
+__all__ = ["DemucsMode", "TranscriptionPreprocessingSettings", "VADMode"]
 
 
 class DemucsMode(StrEnum):

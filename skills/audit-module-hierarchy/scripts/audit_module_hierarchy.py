@@ -120,9 +120,7 @@ def get_top_owner_name(package_dir_path: Path, file_path: Path) -> str | None:
 
 
 def get_sibling_import_edges(
-    package_dir_path: Path,
-    package_dotted: str,
-    child_names: list[str],
+    package_dir_path: Path, package_dotted: str, child_names: list[str]
 ) -> dict[str, set[str]]:
     """Build sibling import graph for one package.
 
@@ -159,20 +157,14 @@ def get_sibling_import_edges(
         for node in ast.walk(tree):
             if isinstance(node, ast.ImportFrom):
                 imported_name = get_imported_sibling_from_import_from(
-                    node,
-                    owner_name,
-                    child_names,
-                    package_prefix_parts,
+                    node, owner_name, child_names, package_prefix_parts
                 )
                 if imported_name is not None:
                     edges[owner_name].add(imported_name)
             elif isinstance(node, ast.Import):
                 for alias in node.names:
                     imported_name = get_imported_sibling_from_import(
-                        alias.name,
-                        owner_name,
-                        child_names,
-                        package_prefix_parts,
+                        alias.name, owner_name, child_names, package_prefix_parts
                     )
                     if imported_name is not None:
                         edges[owner_name].add(imported_name)
@@ -450,8 +442,7 @@ def main():
         )
 
     package_dir_paths = iter_package_dirs(
-        target_dir_path=target_dir_path,
-        min_children=args.min_children,
+        target_dir_path=target_dir_path, min_children=args.min_children
     )
     for package_dir_path in package_dir_paths:
         dotted_name = to_dotted_name(target_dir_path, package_dir_path)

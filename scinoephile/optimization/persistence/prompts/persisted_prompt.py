@@ -29,11 +29,7 @@ class PersistedPrompt:
     """Ordered effective string attributes."""
 
     @classmethod
-    def from_prompt(
-        cls,
-        prompt: Prompt,
-        manager_cls: type[Manager],
-    ) -> PersistedPrompt:
+    def from_prompt(cls, prompt: Prompt, manager_cls: type[Manager]) -> PersistedPrompt:
         """Convert a prompt to its persisted representation.
 
         Arguments:
@@ -58,11 +54,7 @@ class PersistedPrompt:
             )
         )
         return cls(
-            prompt_id=get_prompt_id(
-                attributes,
-                manager_cls.operation,
-                prompt.language,
-            ),
+            prompt_id=get_prompt_id(attributes, manager_cls.operation, prompt.language),
             operation=manager_cls.operation,
             language=prompt.language,
             attributes=attributes,

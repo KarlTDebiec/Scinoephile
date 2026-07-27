@@ -8,11 +8,7 @@ from scinoephile.common.described_enum import DescribedEnum
 
 from .text import ChineseScript
 
-__all__ = [
-    "Language",
-    "is_chinese_language_tag",
-    "normalize_language_tag",
-]
+__all__ = ["Language", "is_chinese_language_tag", "normalize_language_tag"]
 
 _CHINESE_LANGUAGE_CODES = {"chi", "zho", "yue"}
 """Language codes treated as Chinese."""

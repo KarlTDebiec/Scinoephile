@@ -10,11 +10,7 @@ from types import MappingProxyType
 from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.llms import (
-    LLMProvider,
-    ProcessorKwargs,
-    TestCase,
-)
+from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.lang.eng_yue.translation import EngYueGuidedTranslationPrompt
 from scinoephile.lang.eng_zho.translation import EngZhoGuidedTranslationPrompt
 from scinoephile.lang.yue_eng.translation import (
@@ -41,10 +37,7 @@ from scinoephile.llms.guided_translation import (
 )
 from scinoephile.llms.providers.registry import get_provider
 
-__all__ = [
-    "DEFAULT_PROMPTS",
-    "get_guided_translator",
-]
+__all__ = ["DEFAULT_PROMPTS", "get_guided_translator"]
 
 _ENG_YUE_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
 """Default written Cantonese-to-English guided translation JSON paths."""

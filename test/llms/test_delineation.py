@@ -17,9 +17,7 @@ from scinoephile.core.llms.utils import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
-from scinoephile.lang.yue_zho.transcription import (
-    YueZhoDelineationPromptYueHans,
-)
+from scinoephile.lang.yue_zho.transcription import YueZhoDelineationPromptYueHans
 from scinoephile.llms.delineation import (
     DelineationManager,
     DelineationPrompt,
@@ -86,10 +84,7 @@ def test_prompt_aliases_are_used_for_llm_correspondence():
         "mubiao_er": "乙",
     }
     assert test_case.answer is not None
-    assert test_case.answer.model_dump() == {
-        "output_one": "甲乙",
-        "output_two": "",
-    }
+    assert test_case.answer.model_dump() == {"output_one": "甲乙", "output_two": ""}
     assert test_case.answer.model_dump(by_alias=True) == {
         "shuchu_yi": "甲乙",
         "shuchu_er": "",
@@ -132,20 +127,16 @@ def test_queryer_corresponds_using_prompt_aliases():
             }
         }
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = json.dumps(
-        {"shuchu_yi": "甲乙"},
-        ensure_ascii=False,
+        {"shuchu_yi": "甲乙"}, ensure_ascii=False
     )
     queryer = Queryer(test_case_cls, provider=provider, max_attempts=1)
 
     result = queryer(test_case)
 
     assert result.answer is not None
-    assert result.answer.model_dump() == {
-        "output_one": "甲乙",
-        "output_two": "",
-    }
+    assert result.answer.model_dump() == {"output_one": "甲乙", "output_two": ""}
     messages, answer_cls, _ = provider.chat_completion.call_args.args
     assert answer_cls is test_case_cls.answer_cls
     assert json.loads(messages[1]["content"]) == {
@@ -158,10 +149,7 @@ def test_queryer_corresponds_using_prompt_aliases():
 
 @mark.parametrize(
     "answer",
-    [
-        {"output_one": "甲乙"},
-        {"shuchu_yii": "甲乙"},
-    ],
+    [{"output_one": "甲乙"}, {"shuchu_yii": "甲乙"}],
     ids=["semantic-name", "misspelled-alias"],
 )
 def test_queryer_rejects_noncanonical_answer_fields(answer: dict[str, str]):
@@ -177,7 +165,7 @@ def test_queryer_rejects_noncanonical_answer_fields(answer: dict[str, str]):
             }
         }
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = json.dumps(answer, ensure_ascii=False)
     queryer = Queryer(test_case_cls, provider=provider, max_attempts=1)
 
@@ -195,10 +183,7 @@ def test_static_models_validate_target_presence_and_boundary_shifts():
     }
     no_shift = DelineationTestCase.model_validate({"query": query, "answer": {}})
     shifted = DelineationTestCase.model_validate(
-        {
-            "query": query,
-            "answer": {"output_one": "abc", "output_two": "d"},
-        }
+        {"query": query, "answer": {"output_one": "abc", "output_two": "d"}}
     )
     explicitly_difficult = DelineationTestCase.model_validate(
         {"query": query, "difficulty": 3}
@@ -208,8 +193,7 @@ def test_static_models_validate_target_presence_and_boundary_shifts():
     assert shifted.difficulty == 1
     assert explicitly_difficult.difficulty == 3
     with raises(
-        ValidationError,
-        match=DelineationManager.base_prompt.target_subs_missing_err,
+        ValidationError, match=DelineationManager.base_prompt.target_subs_missing_err
     ):
         DelineationTestCase.model_validate(
             {
@@ -220,21 +204,14 @@ def test_static_models_validate_target_presence_and_boundary_shifts():
             }
         )
     with raises(
-        ValidationError,
-        match=DelineationManager.base_prompt.target_subs_unchanged_err,
+        ValidationError, match=DelineationManager.base_prompt.target_subs_unchanged_err
     ):
         DelineationTestCase.model_validate(
-            {
-                "query": query,
-                "answer": {"output_one": "ab", "output_two": "cd"},
-            }
+            {"query": query, "answer": {"output_one": "ab", "output_two": "cd"}}
         )
     with raises(ValidationError, match="Expected: abcd"):
         DelineationTestCase.model_validate(
-            {
-                "query": query,
-                "answer": {"output_one": "ab", "output_two": "changed"},
-            }
+            {"query": query, "answer": {"output_one": "ab", "output_two": "changed"}}
         )
 
 
@@ -248,34 +225,17 @@ def test_generated_models_use_prompt_specific_validation_errors():
         "target_two": "乙",
     }
 
-    with raises(
-        ValidationError,
-        match=_LOCALIZED_PROMPT.target_subs_missing_err,
-    ):
+    with raises(ValidationError, match=_LOCALIZED_PROMPT.target_subs_missing_err):
         test_case_cls.model_validate(
-            {
-                "query": {
-                    "reference_one": "參考一",
-                    "reference_two": "參考二",
-                }
-            }
+            {"query": {"reference_one": "參考一", "reference_two": "參考二"}}
         )
-    with raises(
-        ValidationError,
-        match=_LOCALIZED_PROMPT.target_subs_unchanged_err,
-    ):
+    with raises(ValidationError, match=_LOCALIZED_PROMPT.target_subs_unchanged_err):
         test_case_cls.model_validate(
-            {
-                "query": query,
-                "answer": {"output_one": "甲", "output_two": "乙"},
-            }
+            {"query": query, "answer": {"output_one": "甲", "output_two": "乙"}}
         )
     with raises(ValidationError, match="調整後目標字幕字元不一致"):
         test_case_cls.model_validate(
-            {
-                "query": query,
-                "answer": {"output_one": "甲", "output_two": "丙"},
-            }
+            {"query": query, "answer": {"output_one": "甲", "output_two": "丙"}}
         )
 
 
@@ -322,9 +282,7 @@ def test_persistence_uses_base_prompt_aliases_and_omits_defaults(tmp_path: Path)
     }
 
     loaded = load_test_cases_from_json(
-        output_path,
-        DelineationManager,
-        _LOCALIZED_PROMPT,
+        output_path, DelineationManager, _LOCALIZED_PROMPT
     )
     assert loaded[0].model_dump() == test_case.model_dump()
 
@@ -349,23 +307,18 @@ def test_tracked_fixture_count():
     ],
 )
 def test_tracked_fixture_round_trips_without_migration(
-    input_path: Path,
-    tmp_path: Path,
+    input_path: Path, tmp_path: Path
 ):
     """Tracked JSON should round-trip exactly and to equivalent static models."""
     raw_data = json.loads(input_path.read_text(encoding="utf-8"))
     test_cases = load_test_cases_from_json(
-        input_path,
-        DelineationManager,
-        YueZhoDelineationPromptYueHans,
+        input_path, DelineationManager, YueZhoDelineationPromptYueHans
     )
     output_path = tmp_path / input_path.name
 
     save_test_cases_to_json(output_path, test_cases, DelineationManager)
     reloaded = load_test_cases_from_json(
-        output_path,
-        DelineationManager,
-        YueZhoDelineationPromptYueHans,
+        output_path, DelineationManager, YueZhoDelineationPromptYueHans
     )
 
     assert json.loads(output_path.read_text(encoding="utf-8")) == raw_data

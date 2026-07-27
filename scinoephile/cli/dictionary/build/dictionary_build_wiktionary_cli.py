@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for building the Wiktionary dictionary cache."""
+"""Command-line interface for building the Wiktionary dictionary database."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ logger = getLogger(__name__)
 
 DICTIONARY_BUILD_WIKTIONARY_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "build Wiktionary dictionary cache": "构建 Wiktionary 词典缓存",
+        "build Wiktionary dictionary database": "构建 Wiktionary 词典数据库",
         (
             "Data derived from Kaikki JSONL exports of Chinese entries from Wiktionary."
         ): "由 Kaikki 导出的 Wiktionary 中文词条 JSONL 整理而成的数据。",
@@ -40,7 +40,7 @@ DICTIONARY_BUILD_WIKTIONARY_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
     },
     "zh-hant": {
-        "build Wiktionary dictionary cache": "建立 Wiktionary 詞典快取",
+        "build Wiktionary dictionary database": "建立 Wiktionary 詞典資料庫",
         (
             "Data derived from Kaikki JSONL exports of Chinese entries from Wiktionary."
         ): "由 Kaikki 匯出的 Wiktionary 中文詞條 JSONL 整理而成的資料。",
@@ -62,7 +62,7 @@ DICTIONARY_BUILD_WIKTIONARY_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
-    """Build Wiktionary dictionary cache."""
+    """Build Wiktionary dictionary database."""
 
     source = WIKTIONARY_SOURCE
     """Dictionary source built by this CLI."""
@@ -125,10 +125,10 @@ class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
         """Execute with provided keyword arguments."""
         service = WiktionaryDictionaryService(database_path=database_path)
         cls.log_config(
-            cache_dir_path=service.runtime_data_dir_path,
             database_path=service.database_path,
             max_words=None,
             overwrite=overwrite,
+            runtime_data_dir_path=service.runtime_data_dir_path,
             source_json_path=source_jsonl_path,
         )
         if force_download:

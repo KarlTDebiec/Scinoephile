@@ -187,9 +187,7 @@ class TranslateCli(ScinoephileCliBase):
             help="subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite outfile if it exists",
+            "--overwrite", action="store_true", help="overwrite outfile if it exists"
         )
         parser.set_defaults(_parser=parser)
 
@@ -230,10 +228,7 @@ class TranslateCli(ScinoephileCliBase):
         else:
             block_count = len(source.blocks)
         start_at_idx, stop_at_idx = get_block_range_indexes(
-            parser,
-            first_block,
-            last_block,
-            block_count,
+            parser, first_block, last_block, block_count
         )
         kwargs: dict[str, Any] = {
             "source_language": source_language,
@@ -242,7 +237,7 @@ class TranslateCli(ScinoephileCliBase):
             "additional_context": read_llm_additional_context(
                 parser, llm_args.additional_context_file_path
             ),
-            "cache_dir_path": cache_args.dir_path / "llm",
+            "cache_root_path": cache_args.root_path,
             "overwrite_cache": cache_args.overwrite,
             "test_case_path": json_path,
             "start_at_idx": start_at_idx,

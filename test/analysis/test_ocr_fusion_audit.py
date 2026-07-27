@@ -6,10 +6,7 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.audit.ocr_fusion import (
-    OcrFusionAuditFilter,
-    audit_ocr_fusion,
-)
+from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter, audit_ocr_fusion
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.ocr_fusion import OcrFusionTestCase
@@ -61,11 +58,7 @@ def test_audit_ocr_fusion_filters_unverified_and_automatic_rows():
     )
 
     report = audit_ocr_fusion(
-        source_one,
-        source_two,
-        fused,
-        (test_case,),
-        row_filter=OcrFusionAuditFilter.all,
+        source_one, source_two, fused, (test_case,), row_filter=OcrFusionAuditFilter.all
     )
     unverified_report = audit_ocr_fusion(
         source_one,
@@ -98,11 +91,7 @@ def test_audit_ocr_fusion_formats_llm_decision_and_validated_discrepancy():
     )
 
     report = audit_ocr_fusion(
-        source_one,
-        source_two,
-        fused,
-        (test_case,),
-        validated=validated,
+        source_one, source_two, fused, (test_case,), validated=validated
     )
     discrepancy_report = audit_ocr_fusion(
         source_one,
@@ -134,10 +123,7 @@ def test_audit_ocr_fusion_keeps_notes_without_test_cases():
     fused = _get_series("甲正")
 
     report = audit_ocr_fusion(
-        source_one,
-        source_two,
-        fused,
-        row_filter=OcrFusionAuditFilter.all,
+        source_one, source_two, fused, row_filter=OcrFusionAuditFilter.all
     )
 
     assert "- decision log: omitted" in report
@@ -166,21 +152,10 @@ def test_audit_ocr_fusion_rejects_invalid_inputs():
     with raises(ScinoephileError, match="First block must be at least 1"):
         audit_ocr_fusion(one, two, one, (test_case,), first_block=0)
     with raises(ScinoephileError, match="mutually exclusive"):
-        audit_ocr_fusion(
-            one,
-            two,
-            one,
-            (test_case,),
-            first_index=1,
-            first_block=1,
-        )
+        audit_ocr_fusion(one, two, one, (test_case,), first_index=1, first_block=1)
     with raises(ScinoephileError, match="requires a validated"):
         audit_ocr_fusion(
-            one,
-            two,
-            one,
-            (test_case,),
-            row_filter=OcrFusionAuditFilter.discrepancies,
+            one, two, one, (test_case,), row_filter=OcrFusionAuditFilter.discrepancies
         )
 
     misaligned = Series(events=[Subtitle(start=1000, end=1500, text="甲")])

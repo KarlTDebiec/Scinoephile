@@ -29,11 +29,7 @@ def test_parse_uses_pronunciation_fallback_when_sounds_missing(source_jsonl_path
     """
     source_jsonl_path.write_text(
         json.dumps(
-            {
-                "word": "學生",
-                "pos": "noun",
-                "senses": [{"glosses": ["student"]}],
-            },
+            {"word": "學生", "pos": "noun", "senses": [{"glosses": ["student"]}]},
             ensure_ascii=False,
         )
         + "\n",
@@ -62,10 +58,7 @@ def test_parse_deduplicates_duplicate_glosses(source_jsonl_path: Path):
                 "word": "芒",
                 "pos": "noun",
                 "sounds": [
-                    {
-                        "tags": ["Mandarin", "Pinyin", "standard"],
-                        "zh_pron": "máng",
-                    },
+                    {"tags": ["Mandarin", "Pinyin", "standard"], "zh_pron": "máng"},
                     {
                         "tags": ["Cantonese", "Guangzhou", "Jyutping"],
                         "zh_pron": "mong⁴",
@@ -115,10 +108,7 @@ def test_parse_supports_mixed_cantonese_and_mandarin_pronunciations(
                 "word": "行",
                 "pos": "verb",
                 "sounds": [
-                    {
-                        "tags": ["Mandarin", "Pinyin", "standard"],
-                        "zh_pron": "háng",
-                    },
+                    {"tags": ["Mandarin", "Pinyin", "standard"], "zh_pron": "háng"},
                     {
                         "tags": [
                             "Mandarin",

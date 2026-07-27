@@ -10,9 +10,7 @@ from pytest import raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.lang.eng.review import ReviewPromptEng
-from scinoephile.lang.yue_eng.translation import (
-    YueEngTranslationPromptYueHans,
-)
+from scinoephile.lang.yue_eng.translation import YueEngTranslationPromptYueHans
 from scinoephile.llms.review import ReviewManager
 from scinoephile.llms.translation import TranslationManager
 from scinoephile.optimization.persistence.prompts import PersistedPrompt
@@ -30,8 +28,7 @@ def test_conversion_includes_all_string_fields():
     """Every string field should contribute to persisted prompt identity."""
     baseline = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
     alternative = PersistedPrompt.from_prompt(
-        _ALTERNATIVE_FEW_SHOT_REVIEW_PROMPT,
-        ReviewManager,
+        _ALTERNATIVE_FEW_SHOT_REVIEW_PROMPT, ReviewManager
     )
 
     alternative_attributes = dict(alternative.attributes)
@@ -52,15 +49,11 @@ def test_conversion_includes_operation_and_tool_attributes():
     """Operation instructions and dictionary tool text should be persisted."""
     baseline = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
     alternative = PersistedPrompt.from_prompt(
-        replace(
-            ReviewPromptEng,
-            base_system_prompt="Review every subtitle carefully.",
-        ),
+        replace(ReviewPromptEng, base_system_prompt="Review every subtitle carefully."),
         ReviewManager,
     )
     translation = PersistedPrompt.from_prompt(
-        YueEngTranslationPromptYueHans,
-        TranslationManager,
+        YueEngTranslationPromptYueHans, TranslationManager
     )
     translation_attributes = dict(translation.attributes)
 

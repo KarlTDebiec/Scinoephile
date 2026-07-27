@@ -3,6 +3,7 @@
 """CUHK dictionary package.
 
 Package hierarchy (modules may import from any above):
+* cache
 * constants
 * scraper
 * service

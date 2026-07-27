@@ -35,9 +35,7 @@ def test_audit_delineation_formats_shift_and_no_shift_rows():
         ),
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="參考二",
-                reference_two="參考三",
-                target_one="丁",
+                reference_one="參考二", reference_two="參考三", target_one="丁"
             ),
             answer=DelineationAnswer(),
         ),
@@ -91,9 +89,7 @@ def test_audit_delineation_formats_unanswered_case():
     """Test an unanswered logged case is identified without inventing output."""
     test_case = DelineationTestCase(
         query=DelineationQuery(
-            reference_one="參考一",
-            reference_two="參考二",
-            target_one="甲",
+            reference_one="參考一", reference_two="參考二", target_one="甲"
         )
     )
 
@@ -118,9 +114,7 @@ def test_audit_delineation_filters_rows_and_subtitle_range():
         ),
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="參考二",
-                reference_two="參考三",
-                target_one="丁",
+                reference_one="參考二", reference_two="參考三", target_one="丁"
             ),
             answer=DelineationAnswer(),
             verified=True,
@@ -128,20 +122,13 @@ def test_audit_delineation_filters_rows_and_subtitle_range():
     )
 
     changed_report = audit_delineation(
-        reference,
-        test_cases,
-        row_filter=DelineationAuditFilter.changes,
+        reference, test_cases, row_filter=DelineationAuditFilter.changes
     )
     unverified_report = audit_delineation(
-        reference,
-        test_cases,
-        row_filter=DelineationAuditFilter.unverified,
+        reference, test_cases, row_filter=DelineationAuditFilter.unverified
     )
     ranged_report = audit_delineation(
-        reference,
-        test_cases,
-        first_index=1,
-        last_index=2,
+        reference, test_cases, first_index=1, last_index=2
     )
 
     assert "- logged cases: 2" in changed_report
@@ -173,28 +160,19 @@ def test_audit_delineation_filters_reference_blocks():
     test_cases = (
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="一",
-                reference_two="二",
-                target_one="甲",
+                reference_one="一", reference_two="二", target_one="甲"
             ),
             answer=DelineationAnswer(),
         ),
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="三",
-                reference_two="四",
-                target_one="乙",
+                reference_one="三", reference_two="四", target_one="乙"
             ),
             answer=DelineationAnswer(),
         ),
     )
 
-    report = audit_delineation(
-        reference,
-        test_cases,
-        first_block=2,
-        last_block=2,
-    )
+    report = audit_delineation(reference, test_cases, first_block=2, last_block=2)
 
     assert "- block range: 2 through 2" in report
     assert "| 1<br>2 |" not in report
@@ -209,10 +187,7 @@ def test_audit_delineation_rejects_invalid_range():
         audit_delineation(_get_series("參考一", "參考二"), (), first_block=0)
     with raises(ScinoephileError, match="ranges are mutually exclusive"):
         audit_delineation(
-            _get_series("參考一", "參考二"),
-            (),
-            first_index=1,
-            first_block=1,
+            _get_series("參考一", "參考二"), (), first_index=1, first_block=1
         )
 
 
@@ -220,9 +195,7 @@ def test_audit_delineation_rejects_unmatched_reference_pair():
     """Test a logged pair absent from the reference cannot be indexed."""
     test_case = DelineationTestCase(
         query=DelineationQuery(
-            reference_one="不同一",
-            reference_two="不同二",
-            target_one="甲",
+            reference_one="不同一", reference_two="不同二", target_one="甲"
         )
     )
 
@@ -264,10 +237,7 @@ def test_audit_delineation_ignores_superseded_reference_revision():
 
     report = audit_delineation(reference, test_cases)
     excluded_report = audit_delineation(
-        reference,
-        test_cases,
-        first_index=3,
-        last_index=3,
+        reference, test_cases, first_index=3, last_index=3
     )
 
     assert "- logged cases: 1" in report
@@ -321,49 +291,37 @@ def test_audit_delineation_progressively_resolves_repeated_sequence():
     test_cases = (
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="之前",
-                reference_two="乙",
-                target_one="前",
+                reference_one="之前", reference_two="乙", target_one="前"
             ),
             answer=DelineationAnswer(),
         ),
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="甲",
-                reference_two="乙",
-                target_one="一",
+                reference_one="甲", reference_two="乙", target_one="一"
             ),
             answer=DelineationAnswer(),
         ),
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="甲",
-                reference_two="乙",
-                target_one="二",
+                reference_one="甲", reference_two="乙", target_one="二"
             ),
             answer=DelineationAnswer(),
         ),
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="乙",
-                reference_two="甲",
-                target_one="三",
+                reference_one="乙", reference_two="甲", target_one="三"
             ),
             answer=DelineationAnswer(),
         ),
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="甲",
-                reference_two="乙",
-                target_one="四",
+                reference_one="甲", reference_two="乙", target_one="四"
             ),
             answer=DelineationAnswer(),
         ),
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="乙",
-                reference_two="之後",
-                target_one="後",
+                reference_one="乙", reference_two="之後", target_one="後"
             ),
             answer=DelineationAnswer(),
         ),
@@ -382,25 +340,19 @@ def test_audit_delineation_resolves_context_before_logged_restart():
     test_cases = (
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="之前",
-                reference_two="甲",
-                target_one="前",
+                reference_one="之前", reference_two="甲", target_one="前"
             ),
             answer=DelineationAnswer(),
         ),
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="甲",
-                reference_two="乙",
-                target_one="中",
+                reference_one="甲", reference_two="乙", target_one="中"
             ),
             answer=DelineationAnswer(),
         ),
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="之前",
-                reference_two="甲",
-                target_one="重啟",
+                reference_one="之前", reference_two="甲", target_one="重啟"
             ),
             answer=DelineationAnswer(),
         ),
@@ -418,33 +370,25 @@ def test_audit_delineation_resolves_reverse_traversal_before_restart():
     test_cases = (
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="之前",
-                reference_two="乙",
-                target_one="前",
+                reference_one="之前", reference_two="乙", target_one="前"
             ),
             answer=DelineationAnswer(),
         ),
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="甲",
-                reference_two="乙",
-                target_one="右",
+                reference_one="甲", reference_two="乙", target_one="右"
             ),
             answer=DelineationAnswer(),
         ),
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="乙",
-                reference_two="甲",
-                target_one="左",
+                reference_one="乙", reference_two="甲", target_one="左"
             ),
             answer=DelineationAnswer(),
         ),
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="之前",
-                reference_two="乙",
-                target_one="重啟",
+                reference_one="之前", reference_two="乙", target_one="重啟"
             ),
             answer=DelineationAnswer(),
         ),
@@ -460,19 +404,15 @@ def test_audit_delineation_rejects_ambiguous_reference_pair():
     """Test a repeated reference pair cannot be assigned misleading indexes."""
     test_case = DelineationTestCase(
         query=DelineationQuery(
-            reference_one="參考一",
-            reference_two="參考二",
-            target_one="甲",
+            reference_one="參考一", reference_two="參考二", target_one="甲"
         )
     )
 
     with raises(
-        ScinoephileError,
-        match="test case 1 reference pair is ambiguous.*1, 3",
+        ScinoephileError, match="test case 1 reference pair is ambiguous.*1, 3"
     ):
         audit_delineation(
-            _get_series("參考一", "參考二", "參考一", "參考二"),
-            (test_case,),
+            _get_series("參考一", "參考二", "參考一", "參考二"), (test_case,)
         )
 
 
@@ -481,25 +421,15 @@ def test_audit_delineation_rejects_range_based_disambiguation():
     reference = _get_series("參考一", "參考二", "參考一", "參考二")
     test_case = DelineationTestCase(
         query=DelineationQuery(
-            reference_one="參考一",
-            reference_two="參考二",
-            target_one="甲",
+            reference_one="參考一", reference_two="參考二", target_one="甲"
         ),
         answer=DelineationAnswer(),
     )
 
     with raises(ScinoephileError, match="reference pair is ambiguous.*1, 3"):
-        audit_delineation(
-            reference,
-            (test_case,),
-            first_index=1,
-            last_index=2,
-        )
+        audit_delineation(reference, (test_case,), first_index=1, last_index=2)
     excluded_report = audit_delineation(
-        reference,
-        (test_case,),
-        first_index=5,
-        last_index=6,
+        reference, (test_case,), first_index=5, last_index=6
     )
 
     assert "- logged cases: 0" in excluded_report
@@ -512,17 +442,13 @@ def test_audit_delineation_resolves_repeated_pair_before_range_filtering():
     test_cases = (
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="之前",
-                reference_two="重複一",
-                target_one="前",
+                reference_one="之前", reference_two="重複一", target_one="前"
             ),
             answer=DelineationAnswer(),
         ),
         DelineationTestCase(
             query=DelineationQuery(
-                reference_one="重複一",
-                reference_two="重複二",
-                target_one="中",
+                reference_one="重複一", reference_two="重複二", target_one="中"
             ),
             answer=DelineationAnswer(),
         ),
@@ -530,10 +456,7 @@ def test_audit_delineation_resolves_repeated_pair_before_range_filtering():
 
     report = audit_delineation(reference, test_cases)
     ranged_report = audit_delineation(
-        reference,
-        test_cases,
-        first_index=1,
-        last_index=2,
+        reference, test_cases, first_index=1, last_index=2
     )
 
     assert "| 4<br>5 | 重複一<br>重複二 | 中<br>— |" in report

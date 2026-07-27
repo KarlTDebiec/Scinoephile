@@ -31,9 +31,9 @@ from test.helpers import parametrize
 def dictionary_database_dir_path() -> Generator[Path]:
     """Build temporary databases for end-to-end search tests."""
     with get_temp_directory_path() as dir_path:
-        cache_dir_path = dir_path / "scinoephile/dictionaries"
-        cuhk_database_path = cache_dir_path / "cuhk/cuhk.db"
-        gzzj_database_path = cache_dir_path / "gzzj/gzzj.db"
+        data_dir_path = dir_path / "dictionaries"
+        cuhk_database_path = data_dir_path / "cuhk/cuhk.db"
+        gzzj_database_path = data_dir_path / "gzzj/gzzj.db"
 
         store = DictionarySqliteStore(database_path=cuhk_database_path)
         store.persist(
@@ -57,10 +57,7 @@ def dictionary_database_dir_path() -> Generator[Path]:
                         frequency=2.0,
                         definitions=[
                             DictionaryDefinition(text="gully"),
-                            DictionaryDefinition(
-                                text="mountain stream",
-                                label="noun",
-                            ),
+                            DictionaryDefinition(text="mountain stream", label="noun"),
                         ],
                     ),
                     DictionaryEntry(
@@ -129,11 +126,7 @@ def dictionary_database_dir_path() -> Generator[Path]:
         ("shān'kēng", "shān'kēng", nullcontext()),
         ("saan1haang1", "saan1haang1", nullcontext()),
         ("山坑水", "山坑水", nullcontext()),
-        (
-            "gully",
-            "Unsupported query 'gully'",
-            raises(SystemExit, match="1"),
-        ),
+        ("gully", "Unsupported query 'gully'", raises(SystemExit, match="1")),
     ],
 )
 def test_dictionary_search_cli(
@@ -150,13 +143,7 @@ def test_dictionary_search_cli(
         expected_output: text expected in log output
         expectation: expected context manager for success or failure
     """
-    database_path = (
-        dictionary_database_dir_path
-        / "scinoephile"
-        / "dictionaries"
-        / "cuhk"
-        / "cuhk.db"
-    )
+    database_path = dictionary_database_dir_path / "dictionaries" / "cuhk" / "cuhk.db"
     with get_temp_file_path(".log") as log_file_path:
         with expectation:
             run_cli_with_args(
@@ -183,7 +170,7 @@ def test_dictionary_search_cli_all_dictionaries(dictionary_database_dir_path: Pa
     """
     with get_temp_file_path(".log") as log_file_path:
         with patch.dict(
-            environ, {"SCINOEPHILE_CACHE_DIR": str(dictionary_database_dir_path)}
+            environ, {"SCINOEPHILE_DATA_DIR": str(dictionary_database_dir_path)}
         ):
             run_cli_with_args(
                 DictionarySearchCli,
@@ -204,7 +191,7 @@ def test_dictionary_search_cli_all_dictionaries_merges_definitions(
     """
     with get_temp_file_path(".log") as log_file_path:
         with patch.dict(
-            environ, {"SCINOEPHILE_CACHE_DIR": str(dictionary_database_dir_path)}
+            environ, {"SCINOEPHILE_DATA_DIR": str(dictionary_database_dir_path)}
         ):
             run_cli_with_args(
                 DictionarySearchCli,
@@ -229,8 +216,7 @@ def test_dictionary_search_cli_all_dictionaries_database_path_is_usage_error():
 
 
 def test_dictionary_search_cli_prints_no_matches(
-    dictionary_database_dir_path: Path,
-    capsys: CaptureFixture,
+    dictionary_database_dir_path: Path, capsys: CaptureFixture
 ):
     """Test dictionary search reports no matches on stdout.
 
@@ -238,13 +224,7 @@ def test_dictionary_search_cli_prints_no_matches(
         dictionary_database_dir_path: directory containing fixture dictionaries
         capsys: pytest capture fixture
     """
-    database_path = (
-        dictionary_database_dir_path
-        / "scinoephile"
-        / "dictionaries"
-        / "cuhk"
-        / "cuhk.db"
-    )
+    database_path = dictionary_database_dir_path / "dictionaries" / "cuhk" / "cuhk.db"
 
     run_cli_with_args(
         DictionarySearchCli,

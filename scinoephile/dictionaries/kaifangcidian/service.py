@@ -9,7 +9,7 @@ from pathlib import Path
 
 from scinoephile.common.validation import val_input_path, val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, DictionarySqliteStore
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_data_root_path
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
 from scinoephile.lang.id import LanguageId
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
@@ -22,7 +22,7 @@ __all__ = ["KaifangcidianDictionaryService"]
 
 
 class KaifangcidianDictionaryService:
-    """Runtime service for querying locally cached Kaifangcidian data."""
+    """Runtime service for querying local Kaifangcidian data."""
 
     def __init__(
         self,
@@ -42,7 +42,9 @@ class KaifangcidianDictionaryService:
         """
         if database_path is None:
             database_path = (
-                get_runtime_cache_dir_path("dictionaries", "kaifangcidian")
+                get_runtime_data_root_path()
+                / "dictionaries"
+                / "kaifangcidian"
                 / "kaifangcidian.db"
             )
         self.database_path = val_output_path(database_path, exist_ok=True)
@@ -59,7 +61,10 @@ class KaifangcidianDictionaryService:
         self.runtime_data_dir_path = (
             runtime_data_dir_path
             if runtime_data_dir_path is not None
-            else get_runtime_cache_dir_path("dictionaries", "kaifangcidian", "data")
+            else get_runtime_data_root_path()
+            / "dictionaries"
+            / "kaifangcidian"
+            / "data"
         )
 
     def build(
@@ -82,8 +87,7 @@ class KaifangcidianDictionaryService:
             return self.database_path
 
         source_csv_path = self._require_source_csv_path(
-            force_download=force_download,
-            update_local_data=update_local_data,
+            force_download=force_download, update_local_data=update_local_data
         )
         parsed_data = self.parser.parse(source_csv_path=source_csv_path)
         return self.database.persist(parsed_data)
@@ -151,10 +155,7 @@ class KaifangcidianDictionaryService:
         self.build(overwrite=False)
 
     def _require_source_csv_path(
-        self,
-        *,
-        force_download: bool,
-        update_local_data: bool,
+        self, *, force_download: bool, update_local_data: bool
     ) -> Path:
         """Get canonical source CSV, downloading and normalizing if needed.
 
@@ -172,8 +173,7 @@ class KaifangcidianDictionaryService:
         if not force_download and runtime_csv_path.exists():
             if update_local_data:
                 return self._copy_runtime_csv_to_local(
-                    runtime_csv_path=runtime_csv_path,
-                    local_csv_path=local_csv_path,
+                    runtime_csv_path=runtime_csv_path, local_csv_path=local_csv_path
                 )
             return val_input_path(runtime_csv_path)
 
@@ -182,15 +182,11 @@ class KaifangcidianDictionaryService:
             return runtime_csv_path
 
         return self._copy_runtime_csv_to_local(
-            runtime_csv_path=runtime_csv_path,
-            local_csv_path=local_csv_path,
+            runtime_csv_path=runtime_csv_path, local_csv_path=local_csv_path
         )
 
     def _copy_runtime_csv_to_local(
-        self,
-        *,
-        runtime_csv_path: Path,
-        local_csv_path: Path,
+        self, *, runtime_csv_path: Path, local_csv_path: Path
     ) -> Path:
         """Copy runtime canonical CSV into the repository-local snapshot.
 

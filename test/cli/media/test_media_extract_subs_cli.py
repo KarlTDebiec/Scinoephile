@@ -22,8 +22,7 @@ from scinoephile.workflows.subtitle_extraction import (
 
 
 def test_media_extract_subs_cli_renders_grouped_outputs(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
+    tmp_path: Path, capsys: CaptureFixture[str]
 ):
     """Test media extract-subs CLI renders workflow output groups.
 
@@ -34,7 +33,7 @@ def test_media_extract_subs_cli_renders_grouped_outputs(
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
     output_dir_path = tmp_path / "subtitles"
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
     stream = SubtitleStream(index=2, language="eng", codec_name="subrip")
     result = SubtitleExtractionResult(
         infile_path=infile_path.resolve(),
@@ -61,7 +60,7 @@ def test_media_extract_subs_cli_renders_grouped_outputs(
         run_cli_with_args(
             MediaExtractSubsCli,
             f"--infile {infile_path} --languages eng -o {output_dir_path} "
-            f"--cache-dir {cache_dir_path} --cache-overwrite",
+            f"--cache-dir {cache_root_path} --cache-overwrite",
         )
 
     subtitle_path = output_dir_path.resolve() / "eng-2.srt"
@@ -72,7 +71,7 @@ def test_media_extract_subs_cli_renders_grouped_outputs(
         "Already existed:",
         f"  image series: {stream.description} -> {image_series_path}",
     ]
-    assert extract.call_args.kwargs["cache_dir_path"] == cache_dir_path.resolve()
+    assert extract.call_args.kwargs["cache_root_path"] == cache_root_path.resolve()
     assert extract.call_args.kwargs["overwrite_cache"] is True
 
 

@@ -64,15 +64,7 @@ def _get_test_case(original: str, corrected: str):
     return test_case_cls.model_validate(
         {
             "query": {"subtitles": [{"index": 1, "text": original}]},
-            "answer": {
-                "revisions": [
-                    {
-                        "index": 1,
-                        "text": corrected,
-                        "note": "typo",
-                    }
-                ]
-            },
+            "answer": {"revisions": [{"index": 1, "text": corrected, "note": "typo"}]},
         }
     )
 
@@ -86,13 +78,7 @@ def test_json_uses_base_prompt_fields(tmp_path: Path):
         {
             "query": {"zimu": [{"xuhao": 1, "wenben": "original"}]},
             "answer": {
-                "xiugai": [
-                    {
-                        "xuhao": 1,
-                        "wenben": "corrected",
-                        "beizhu": "typo",
-                    }
-                ]
+                "xiugai": [{"xuhao": 1, "wenben": "corrected", "beizhu": "typo"}]
             },
             "verified": True,
         }
@@ -106,11 +92,7 @@ def test_json_uses_base_prompt_fields(tmp_path: Path):
             "query": {"base_subtitles": [{"base_index": 1, "base_text": "original"}]},
             "answer": {
                 "base_revisions": [
-                    {
-                        "base_index": 1,
-                        "base_text": "corrected",
-                        "base_note": "typo",
-                    }
+                    {"base_index": 1, "base_text": "corrected", "base_note": "typo"}
                 ]
             },
             "difficulty": 1,
@@ -118,9 +100,7 @@ def test_json_uses_base_prompt_fields(tmp_path: Path):
         }
     ]
     loaded = load_test_cases_from_json(
-        output_path,
-        _AliasedBaseReviewManager,
-        _LOCALIZED_REVIEW_PROMPT,
+        output_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
     )
     assert loaded[0].query.model_dump(by_alias=True) == {
         "zimu": [{"xuhao": 1, "wenben": "original"}]
@@ -136,11 +116,7 @@ def test_load_test_cases_prefers_json_cases(tmp_path: Path):
     supplied_test_case = _get_test_case("original", "supplied correction")
     json_test_case = _get_test_case("original", "JSON correction")
     test_case_path = tmp_path / "test_cases.json"
-    save_test_cases_to_json(
-        test_case_path,
-        [json_test_case],
-        _AliasedBaseReviewManager,
-    )
+    save_test_cases_to_json(test_case_path, [json_test_case], _AliasedBaseReviewManager)
 
     test_cases, normalized_test_case_path = load_test_cases(
         _AliasedBaseReviewManager,
@@ -176,11 +152,7 @@ def test_load_test_cases_normalizes_optional_arguments(tmp_path: Path):
         {
             "query": {
                 "base_subtitles": [
-                    {
-                        "base_index": 1,
-                        "base_text": "original",
-                        "unexpected": True,
-                    }
+                    {"base_index": 1, "base_text": "original", "unexpected": True}
                 ]
             }
         },
@@ -203,22 +175,16 @@ def test_load_test_cases_normalizes_optional_arguments(tmp_path: Path):
         "unknown-test-case-field",
     ],
 )
-def test_json_loading_rejects_non_base_fields(
-    tmp_path: Path,
-    test_case_data: dict,
-):
+def test_json_loading_rejects_non_base_fields(tmp_path: Path, test_case_data: dict):
     """Repository JSON should contain only base prompt aliases."""
     input_path = tmp_path / "test_cases.json"
     input_path.write_text(
-        json.dumps([test_case_data], ensure_ascii=False),
-        encoding="utf-8",
+        json.dumps([test_case_data], ensure_ascii=False), encoding="utf-8"
     )
 
     with raises(ValidationError):
         load_test_cases_from_json(
-            input_path,
-            _AliasedBaseReviewManager,
-            _LOCALIZED_REVIEW_PROMPT,
+            input_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
         )
 
 
@@ -238,9 +204,7 @@ def test_json_loading_is_strict(tmp_path: Path, test_case_data: dict):
 
     with raises(ValidationError):
         load_test_cases_from_json(
-            input_path,
-            _AliasedBaseReviewManager,
-            _LOCALIZED_REVIEW_PROMPT,
+            input_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
         )
 
 
@@ -252,9 +216,7 @@ def test_json_loading_requires_an_array_of_objects(tmp_path: Path, contents: obj
 
     with raises(ValidationError):
         load_test_cases_from_json(
-            input_path,
-            _AliasedBaseReviewManager,
-            _LOCALIZED_REVIEW_PROMPT,
+            input_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
         )
 
 
@@ -264,40 +226,26 @@ def test_save_preserves_existing_cases_unless_pruning(tmp_path: Path):
     existing_test_case = _get_test_case("existing", "existing corrected")
     encountered_test_case = _get_test_case("encountered", "encountered corrected")
     save_test_cases_to_json(
-        output_path,
-        [existing_test_case],
-        _AliasedBaseReviewManager,
+        output_path, [existing_test_case], _AliasedBaseReviewManager
     )
 
     save_test_cases_to_json(
-        output_path,
-        [encountered_test_case],
-        _AliasedBaseReviewManager,
+        output_path, [encountered_test_case], _AliasedBaseReviewManager
     )
 
     loaded = load_test_cases_from_json(
-        output_path,
-        _AliasedBaseReviewManager,
-        _LOCALIZED_REVIEW_PROMPT,
+        output_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
     )
     assert [
         test_case.query.model_dump()["subtitles"][0]["text"] for test_case in loaded
-    ] == [
-        "existing",
-        "encountered",
-    ]
+    ] == ["existing", "encountered"]
 
     save_test_cases_to_json(
-        output_path,
-        [encountered_test_case],
-        _AliasedBaseReviewManager,
-        prune=True,
+        output_path, [encountered_test_case], _AliasedBaseReviewManager, prune=True
     )
 
     loaded = load_test_cases_from_json(
-        output_path,
-        _AliasedBaseReviewManager,
-        _LOCALIZED_REVIEW_PROMPT,
+        output_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
     )
     assert [
         test_case.query.model_dump()["subtitles"][0]["text"] for test_case in loaded
@@ -316,8 +264,7 @@ def test_save_replaces_existing_file_atomically(tmp_path: Path):
 
     with (
         patch(
-            "scinoephile.core.llms.utils.json.dump",
-            side_effect=OSError("write failed"),
+            "scinoephile.core.llms.utils.json.dump", side_effect=OSError("write failed")
         ),
         raises(OSError, match="write failed"),
     ):

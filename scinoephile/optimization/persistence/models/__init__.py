@@ -13,7 +13,4 @@ from __future__ import annotations
 from .persisted_model import PersistedModel
 from .sqlite_store import ModelSqliteStore
 
-__all__ = [
-    "ModelSqliteStore",
-    "PersistedModel",
-]
+__all__ = ["ModelSqliteStore", "PersistedModel"]

@@ -18,11 +18,7 @@ from .colors import (
     get_grayscale_and_alpha_arrs,
 )
 
-__all__ = [
-    "convert_rgba_img_to_la",
-    "get_img_with_bboxes",
-    "get_img_with_white_bg",
-]
+__all__ = ["convert_rgba_img_to_la", "get_img_with_bboxes", "get_img_with_white_bg"]
 
 
 def convert_rgba_img_to_la(img: Image.Image) -> Image.Image:
@@ -64,8 +60,7 @@ def get_img_with_bboxes(
         base_img = img.convert("RGBA")
 
     img_with_bboxes = base_img.resize(
-        (img.width * 2, img.height * 2),
-        resample=Image.Resampling.NEAREST,
+        (img.width * 2, img.height * 2), resample=Image.Resampling.NEAREST
     )
     draw = ImageDraw.Draw(img_with_bboxes)
 

@@ -96,9 +96,7 @@ def test_get_arg_groups_by_name_preserves_unspecified_group_order():
     parser.add_argument_group("output arguments")
 
     get_arg_groups_by_name(
-        parser,
-        "input arguments",
-        optional_arguments_name="additional arguments",
+        parser, "input arguments", optional_arguments_name="additional arguments"
     )
 
     group_titles = [ag.title for ag in parser._action_groups]

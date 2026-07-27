@@ -63,8 +63,4 @@ def test_parse_js_vars_supports_optional_semicolon():
 
     parsed = downloader._parse_js_vars(js_text)
 
-    assert parsed == {
-        "zi": "han payload",
-        "ci": "ci payload",
-        "jpzi": "jp payload",
-    }
+    assert parsed == {"zi": "han payload", "ci": "ci payload", "jpzi": "jp payload"}

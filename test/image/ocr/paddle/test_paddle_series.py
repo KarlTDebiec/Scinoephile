@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from PIL import Image
 from pytest import LogCaptureFixture, MonkeyPatch, raises
 
@@ -27,21 +25,16 @@ def test_ocr_image_series_with_paddle_preserves_timings_and_sets_text(
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
-                start=1000,
-                end=2000,
-                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
+                start=1000, end=2000, img=Image.new("RGBA", (10, 8), (255, 255, 255, 0))
             ),
             ImageSubtitle(
-                start=3000,
-                end=4000,
-                img=Image.new("RGBA", (12, 9), (255, 255, 255, 0)),
+                start=3000, end=4000, img=Image.new("RGBA", (12, 9), (255, 255, 255, 0))
             ),
         ]
     )
     RecordingOcrRecognizer.reset("first", "second")
     monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.PaddleRecognizer",
-        RecordingOcrRecognizer,
+        "scinoephile.image.ocr.paddle.PaddleRecognizer", RecordingOcrRecognizer
     )
 
     text_series = ocr_image_series_with_paddle(image_series)
@@ -55,8 +48,7 @@ def test_ocr_image_series_with_paddle_preserves_timings_and_sets_text(
 
 
 def test_ocr_image_series_with_paddle_logs_progress(
-    caplog: LogCaptureFixture,
-    monkeypatch: MonkeyPatch,
+    caplog: LogCaptureFixture, monkeypatch: MonkeyPatch
 ):
     """Test PaddleOCR image series processing logs OCR progress.
 
@@ -67,21 +59,16 @@ def test_ocr_image_series_with_paddle_logs_progress(
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
-                start=1000,
-                end=2000,
-                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
+                start=1000, end=2000, img=Image.new("RGBA", (10, 8), (255, 255, 255, 0))
             ),
             ImageSubtitle(
-                start=3000,
-                end=4000,
-                img=Image.new("RGBA", (12, 9), (255, 255, 255, 0)),
+                start=3000, end=4000, img=Image.new("RGBA", (12, 9), (255, 255, 255, 0))
             ),
         ]
     )
     RecordingOcrRecognizer.reset("first", "second")
     monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.PaddleRecognizer",
-        RecordingOcrRecognizer,
+        "scinoephile.image.ocr.paddle.PaddleRecognizer", RecordingOcrRecognizer
     )
 
     with caplog.at_level("INFO", logger="scinoephile.image.ocr.paddle"):
@@ -91,52 +78,40 @@ def test_ocr_image_series_with_paddle_logs_progress(
         record.message
         for record in caplog.records
         if record.name == "scinoephile.image.ocr.paddle"
-    ] == [
-        "OCRing subtitle 1/2 with PaddleOCR",
-        "OCRing subtitle 2/2 with PaddleOCR",
-    ]
+    ] == ["OCRing subtitle 1/2 with PaddleOCR", "OCRing subtitle 2/2 with PaddleOCR"]
 
 
-def test_ocr_image_series_with_paddle_uses_runtime_cache(
+def test_ocr_image_series_with_paddle_defers_default_cache_resolution(
     monkeypatch: MonkeyPatch,
-    tmp_path: Path,
 ):
-    """Test PaddleOCR image series processing uses the runtime cache by default.
+    """Test PaddleOCR image series processing defers default cache resolution.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
-        tmp_path: temporary path fixture
     """
-    cache_dir_path = tmp_path / "cache"
     RecordingOcrRecognizer.reset(Language.zho_hans.code)
 
     monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.get_runtime_cache_dir_path",
-        lambda *parts: cache_dir_path,
-    )
-    monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.PaddleRecognizer",
-        RecordingOcrRecognizer,
+        "scinoephile.image.ocr.paddle.PaddleRecognizer", RecordingOcrRecognizer
     )
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
-                start=1000,
-                end=2000,
-                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
-            ),
+                start=1000, end=2000, img=Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+            )
         ]
     )
 
     text_series = ocr_image_series_with_paddle(
         image_series,
+        cache_root_path=None,
         language=Language.zho_hans,
         min_confidence=0.8,
     )
 
     assert [event.text for event in text_series] == ["zho-Hans"]
     recognizer = RecordingOcrRecognizer.instances[0]
-    assert recognizer.kwargs["cache_dir_path"] == cache_dir_path
+    assert recognizer.kwargs["cache_root_path"] is None
     assert recognizer.kwargs["language"] is Language.zho_hans
     assert recognizer.kwargs["min_confidence"] == 0.8
 
@@ -151,8 +126,7 @@ def test_ocr_image_series_with_paddle_uses_runtime_cache(
     ],
 )
 def test_ocr_image_series_with_paddle_wraps_processing_errors(
-    monkeypatch: MonkeyPatch,
-    exception: Exception,
+    monkeypatch: MonkeyPatch, exception: Exception
 ):
     """Test PaddleOCR image series processing wraps implementation errors.
 
@@ -162,22 +136,18 @@ def test_ocr_image_series_with_paddle_wraps_processing_errors(
     """
     FailingOcrRecognizer.exception = exception
     monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.PaddleRecognizer",
-        FailingOcrRecognizer,
+        "scinoephile.image.ocr.paddle.PaddleRecognizer", FailingOcrRecognizer
     )
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
-                start=1000,
-                end=2000,
-                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
-            ),
+                start=1000, end=2000, img=Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+            )
         ]
     )
 
     with raises(
-        ScinoephileError,
-        match="Unable to OCR image series with PaddleOCR",
+        ScinoephileError, match="Unable to OCR image series with PaddleOCR"
     ) as excinfo:
         ocr_image_series_with_paddle(image_series)
 
