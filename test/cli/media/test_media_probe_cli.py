@@ -12,7 +12,10 @@ from pytest import CaptureFixture, raises
 from scinoephile.cli.media.media_probe_cli import MediaProbeCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
-from scinoephile.lang.zho.subtitles.analysis import ZhoSubtitleScriptAnalysis
+from scinoephile.lang.zho.subtitles.analysis.result import (
+    ZhoScriptAnalysisResult,
+)
+from scinoephile.media.subtitles.cache import SubtitleCache
 from test.helpers import parametrize
 
 
@@ -104,7 +107,7 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
             "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script"
         ) as analyze,
         patch("scinoephile.media.subtitles.details.get_subtitle_stream_stats") as stats,
-        patch("scinoephile.media.subtitles.details.cache_subtitles"),
+        patch("scinoephile.media.subtitles.details.SubtitleExtractor.extract"),
     ):
         analyze.return_value.script = script
         stats.return_value.event_count = 12
@@ -217,7 +220,7 @@ def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             side_effect=ValueError("Malformed SUP data"),
         ),
-        patch("scinoephile.media.subtitles.details.cache_subtitles"),
+        patch("scinoephile.media.subtitles.details.SubtitleExtractor.extract"),
     ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path} --details")
 
@@ -238,9 +241,9 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
     """
     infile_path = tmp_path / "source.sup"
     infile_path.touch()
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
 
-    def analyze_script(*args: object, **kwargs: object) -> ZhoSubtitleScriptAnalysis:
+    def analyze_script(*args: object, **kwargs: object) -> ZhoScriptAnalysisResult:
         """Return script analysis after checking analyzer inputs."""
         assert args[0] == infile_path
         stream = args[1]
@@ -248,11 +251,12 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
         assert stream.index == 0
         assert stream.codec_name == "hdmv_pgs_subtitle"
         assert stream.language == "zho"
-        assert kwargs == {
-            "cache_dir_path": cache_dir_path.resolve(),
-            "overwrite_cache": True,
-        }
-        return ZhoSubtitleScriptAnalysis(script="zho-Hant")
+        assert set(kwargs) == {"subtitle_cache"}
+        subtitle_cache = kwargs["subtitle_cache"]
+        assert isinstance(subtitle_cache, SubtitleCache)
+        assert subtitle_cache.cache_root_path == cache_root_path.resolve()
+        assert subtitle_cache.overwrite
+        return ZhoScriptAnalysisResult(script="zho-Hant")
 
     with (
         patch(
@@ -267,7 +271,7 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
         run_cli_with_args(
             MediaProbeCli,
             (
-                f"--infile {infile_path} --cache-dir {cache_dir_path} "
+                f"--infile {infile_path} --cache-dir {cache_root_path} "
                 "--force-check-script --cache-overwrite"
             ),
         )

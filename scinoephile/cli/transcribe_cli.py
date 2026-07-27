@@ -11,6 +11,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription import DemucsMode, VADMode
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
@@ -25,7 +26,6 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.lang.transcription.transcriber import DemucsMode, VADMode
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.transcription import transcribe_series_guided
 
@@ -320,7 +320,7 @@ class TranscribeCli(ScinoephileCliBase):
                 model_name=model_name,
                 demucs_mode=demucs_mode,
                 vad_mode=vad_mode,
-                cache_dir_path=cache_args.dir_path,
+                cache_root_path=cache_args.root_path,
                 overwrite_cache=cache_args.overwrite,
                 provider=get_provider(
                     llm_args.provider_name,

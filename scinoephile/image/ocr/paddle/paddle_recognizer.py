@@ -4,10 +4,7 @@
 
 from __future__ import annotations
 
-import hashlib
-import json
 import os
-from dataclasses import asdict
 from logging import getLogger
 from pathlib import Path
 from platform import system
@@ -16,19 +13,17 @@ from typing import Any, TypedDict, override
 import numpy as np
 from PIL import Image
 
-from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import Language
 from scinoephile.core.dependencies.ocr import import_paddleocr
 
 from .bounding_box import PaddleOcrBoundingBox
+from .cache import PaddleCache
 from .text_result import PaddleOcrTextResult
 
 __all__ = [
     "PaddleRecognizer",
     "PaddleRecognizerKwargs",
 ]
-
-logger = getLogger(__name__)
 
 _TEXT_DETECTION_MODEL_NAME = "PP-OCRv5_server_det"
 _TEXT_RECOGNITION_MODEL_NAME = "PP-OCRv5_server_rec"
@@ -45,8 +40,8 @@ _PADDLE_LANGUAGE_CODES = {
 class PaddleRecognizerKwargs(TypedDict, total=False):
     """Additional keyword arguments forwarded to PaddleRecognizer."""
 
-    cache_dir_path: Path | None
-    """Directory in which to cache OCR results."""
+    cache_root_path: Path | None
+    """Root directory beneath which to cache OCR results, or None for default."""
 
     language: Language
     """Scinoephile language."""
@@ -64,7 +59,7 @@ class PaddleRecognizer:
     def __init__(
         self,
         *,
-        cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
         language: Language = Language.eng,
         min_confidence: float = 0.0,
         overwrite_cache: bool = False,
@@ -72,7 +67,7 @@ class PaddleRecognizer:
         """Initialize.
 
         Arguments:
-            cache_dir_path: directory in which to cache OCR results
+            cache_root_path: root directory beneath which to cache, or None for default
             language: Scinoephile language
             min_confidence: minimum confidence to include
             overwrite_cache: whether to replace matching OCR cache files
@@ -87,10 +82,7 @@ class PaddleRecognizer:
         os.environ.setdefault("PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK", "True")
 
         self.min_confidence = min_confidence
-        self.overwrite_cache = overwrite_cache
-        self.cache_dir_path = None
-        if cache_dir_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_dir_path)
+        self._cache = PaddleCache(cache_root_path, overwrite_cache)
 
         paddleocr = import_paddleocr()
         root_logger = getLogger()
@@ -114,10 +106,10 @@ class PaddleRecognizer:
         """String representation."""
         return (
             f"{self.__class__.__name__}("
-            f"cache_dir_path={self.cache_dir_path!r}, "
+            f"cache_root_path={self._cache.cache_root_path!r}, "
             f"language={self.language!r}, "
             f"min_confidence={self.min_confidence!r}, "
-            f"overwrite_cache={self.overwrite_cache!r})"
+            f"overwrite_cache={self._cache.overwrite!r})"
         )
 
     def recognize_image(self, image: Image.Image) -> str:
@@ -129,51 +121,21 @@ class PaddleRecognizer:
             recognized text
         """
         array = np.array(image.convert("RGB"))
-        if (cache_path := self._get_cache_path(image)) is not None:
-            if self.overwrite_cache and cache_path.exists():
-                cache_path.unlink()
-                logger.info(f"Removed PaddleOCR cache: {cache_path}")
-            if cache_path.exists():
-                results = self._load_paddle_ocr_results(cache_path)
-                cache_path.touch()
-                logger.info(f"Loaded PaddleOCR result from cache: {cache_path}")
-                return self._format_paddle_ocr_text(
-                    results, min_confidence=self.min_confidence
-                )
-
-            raw_results = self._ocr.predict(array)
-            results = self._normalize_paddle_ocr_results(raw_results)
-            self._save_paddle_ocr_results(results, cache_path)
-            logger.info(f"Saved PaddleOCR result to cache: {cache_path}")
+        cache_metadata = {
+            "language": self.paddle_language_code,
+            "text_detection_model": _TEXT_DETECTION_MODEL_NAME,
+            "text_recognition_model": _TEXT_RECOGNITION_MODEL_NAME,
+            "textline_orientation_model": _TEXTLINE_ORIENTATION_MODEL_NAME,
+        }
+        if (results := self._cache.load(image, cache_metadata)) is not None:
             return self._format_paddle_ocr_text(
                 results, min_confidence=self.min_confidence
             )
 
         raw_results = self._ocr.predict(array)
         results = self._normalize_paddle_ocr_results(raw_results)
+        self._cache.save(image, cache_metadata, results)
         return self._format_paddle_ocr_text(results, min_confidence=self.min_confidence)
-
-    def _get_cache_path(self, image: Image.Image) -> Path | None:
-        """Get cache path based on hash of image data and OCR configuration.
-
-        Arguments:
-            image: image used to derive the cache key
-        Returns:
-            path to cache file
-        """
-        if self.cache_dir_path is None:
-            return None
-
-        image_bytes = image.tobytes()
-        image_sha256 = hashlib.sha256(image_bytes).hexdigest()
-        cache_key = (
-            f"{image_sha256}_{image.mode}_{image.size}_{self.paddle_language_code}_"
-            f"{_TEXT_DETECTION_MODEL_NAME}_"
-            f"{_TEXT_RECOGNITION_MODEL_NAME}_"
-            f"{_TEXTLINE_ORIENTATION_MODEL_NAME}"
-        )
-        cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
-        return self.cache_dir_path / f"{cache_sha256}.json"
 
     @staticmethod
     def _format_paddle_ocr_text(
@@ -232,41 +194,6 @@ class PaddleRecognizer:
         return "\\N".join(" ".join(result.text for result in line) for line in lines)
 
     @staticmethod
-    def _load_paddle_ocr_results(cache_path: Path) -> list[PaddleOcrTextResult]:
-        """Load normalized PaddleOCR results from cache.
-
-        Arguments:
-            cache_path: cache file path
-        Returns:
-            normalized PaddleOCR results
-        """
-        with cache_path.open("r", encoding="utf-8") as file:
-            raw_results = json.load(file)
-        results = []
-        for result in raw_results:
-            bounding_box = result["bounding_box"]
-            points = {}
-            for key in ("top_left", "top_right", "bottom_right", "bottom_left"):
-                point = bounding_box[key]
-                if isinstance(point, dict):
-                    points[key] = (float(point["x"]), float(point["y"]))
-                else:
-                    points[key] = (float(point[0]), float(point[1]))
-            results.append(
-                PaddleOcrTextResult(
-                    text=result["text"],
-                    confidence=float(result["confidence"]),
-                    bounding_box=PaddleOcrBoundingBox(
-                        top_left=points["top_left"],
-                        top_right=points["top_right"],
-                        bottom_right=points["bottom_right"],
-                        bottom_left=points["bottom_left"],
-                    ),
-                )
-            )
-        return results
-
-    @staticmethod
     def _normalize_paddle_ocr_results(
         raw_results: Any,
     ) -> list[PaddleOcrTextResult]:
@@ -321,18 +248,3 @@ class PaddleRecognizer:
                     )
                 )
         return results
-
-    @staticmethod
-    def _save_paddle_ocr_results(
-        results: list[PaddleOcrTextResult],
-        cache_path: Path,
-    ):
-        """Save normalized PaddleOCR results to cache.
-
-        Arguments:
-            results: normalized PaddleOCR results
-            cache_path: cache file path
-        """
-        cache_path.parent.mkdir(parents=True, exist_ok=True)
-        with cache_path.open("w", encoding="utf-8") as file:
-            json.dump([asdict(result) for result in results], file, ensure_ascii=False)

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for building the CUHK dictionary cache."""
+"""Command-line interface for building the CUHK dictionary database."""
 
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ logger = getLogger(__name__)
 
 DICTIONARY_BUILD_CUHK_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "build CUHK dictionary cache": "构建 CUHK 词典缓存",
+        "build CUHK dictionary database": "构建 CUHK 词典数据库",
         (
             "Comparative Database of Modern Standard Chinese and Cantonese "
             "(Chinese University of Hong Kong)."
@@ -44,7 +44,7 @@ DICTIONARY_BUILD_CUHK_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
     },
     "zh-hant": {
-        "build CUHK dictionary cache": "建立 CUHK 詞典快取",
+        "build CUHK dictionary database": "建立 CUHK 詞典資料庫",
         (
             "Comparative Database of Modern Standard Chinese and Cantonese "
             "(Chinese University of Hong Kong)."
@@ -62,7 +62,7 @@ DICTIONARY_BUILD_CUHK_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
-    """Build CUHK dictionary cache."""
+    """Build CUHK dictionary database."""
 
     source = CUHK_SOURCE
     """Dictionary source built by this CLI."""
@@ -126,31 +126,35 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
         add_cache_args(arg_groups["cache arguments"])
 
     @classmethod
-    def log_config(
+    def log_cuhk_config(
         cls,
         *,
-        cache_dir_path: Path | None,
         database_path: Path,
+        discovery_cache_dir_path: Path,
         max_words: int | None,
         overwrite: bool,
+        scraped_cache_dir_path: Path,
         source_json_path: Path | None,
     ):
         """Log the effective CUHK build configuration.
 
         Arguments:
-            cache_dir_path: cache directory path
             database_path: SQLite database path
+            discovery_cache_dir_path: discovery cache directory path
             max_words: optional max words cap
             overwrite: whether database overwrite is enabled
+            scraped_cache_dir_path: scraped page cache directory path
             source_json_path: unused source JSON path
         """
         super().log_config(
-            cache_dir_path=cache_dir_path,
             database_path=database_path,
             max_words=None,
             overwrite=overwrite,
+            runtime_data_dir_path=None,
             source_json_path=source_json_path,
         )
+        logger.info(f"Using discovery cache directory: {discovery_cache_dir_path}")
+        logger.info(f"Using scraped page cache directory: {scraped_cache_dir_path}")
         if max_words is None:
             logger.info("Building all discovered CUHK words")
         else:
@@ -172,8 +176,8 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
         """Execute with provided keyword arguments."""
         service = CuhkDictionaryService(
             database_path=database_path,
+            cache_root_path=cache_args.root_path,
             scraper_kwargs={
-                "cache_dir_path": cache_args.dir_path / "dictionaries" / "cuhk",
                 "min_delay_seconds": min_delay_seconds,
                 "max_delay_seconds": max_delay_seconds,
                 "max_retries": max_retries,
@@ -181,11 +185,12 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
                 "request_timeout_seconds": request_timeout_seconds,
             },
         )
-        cls.log_config(
-            cache_dir_path=service.cache_dir_path,
+        cls.log_cuhk_config(
             database_path=service.database_path,
+            discovery_cache_dir_path=service.scraper.discovery_cache.cache_dir_path,
             max_words=max_words,
             overwrite=overwrite,
+            scraped_cache_dir_path=service.scraper.scraped_cache.cache_dir_path,
             source_json_path=None,
         )
         try:

@@ -20,7 +20,7 @@ from scinoephile.core.dependencies.transcription import (
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.ml import get_torch_device
 
-from .demucs_cache import DemucsCache
+from .cache import DemucsCache
 
 __all__ = ["DemucsSeparator"]
 
@@ -36,14 +36,15 @@ class DemucsSeparator:
     def __init__(
         self,
         model_name: str = "htdemucs_ft",
-        *,
-        cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
+        overwrite_cache: bool = False,
     ):
         """Initialize.
 
         Arguments:
             model_name: Demucs model name used for source separation
-            cache_dir_path: directory in which to cache separated vocals
+            cache_root_path: root directory beneath which to cache
+            overwrite_cache: whether to replace matching cache files
         """
         self.model_name = model_name
         """Demucs model name used for source separation."""
@@ -54,24 +55,18 @@ class DemucsSeparator:
         self._model: DemucsModel | None = None
         """Cached Demucs model."""
 
-        self._cache = DemucsCache(cache_dir_path, model_name)
+        self._cache = DemucsCache(cache_root_path, model_name, overwrite_cache)
         """Cache of vocals separated with the configured model."""
 
-    def __call__(
-        self,
-        audio: AudioSegment,
-        *,
-        overwrite_cache: bool = False,
-    ) -> AudioSegment:
+    def __call__(self, audio: AudioSegment) -> AudioSegment:
         """Separate vocals from audio.
 
         Arguments:
             audio: audio to separate
-            overwrite_cache: whether to replace a matching cached separation
         Returns:
             vocals-only audio
         """
-        return self.separate_vocals(audio, overwrite_cache=overwrite_cache)
+        return self.separate_vocals(audio)
 
     @property
     def device(self) -> str:
@@ -101,33 +96,18 @@ class DemucsSeparator:
                 ) from exc
         return self._model
 
-    def separate_vocals(
-        self,
-        audio: AudioSegment,
-        *,
-        overwrite_cache: bool = False,
-    ) -> AudioSegment:
+    def separate_vocals(self, audio: AudioSegment) -> AudioSegment:
         """Separate vocals from audio.
 
         Arguments:
             audio: audio to separate
-            overwrite_cache: whether to replace a matching cached separation
         Returns:
             vocals-only audio
         """
-        # Load or clear matching cached vocals before running separation
-        if overwrite_cache:
-            self._cache.remove(audio)
-        else:
-            try:
-                cached_vocals = self._cache.load(audio)
-            except ScinoephileError as exc:
-                logger.warning(
-                    f"Unable to use Demucs vocals cache; regenerating: {exc}"
-                )
-            else:
-                if cached_vocals is not None:
-                    return cached_vocals
+        # Load matching cached vocals before running separation
+        cached_vocals = self._cache.load(audio)
+        if cached_vocals is not None:
+            return cached_vocals
 
         # Run separation and atomically update the cache
         vocals = self._separate_vocals(audio)

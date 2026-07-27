@@ -23,11 +23,13 @@ if TYPE_CHECKING:
     from demucs_infer.apply import BagOfModels, Model
     from torch import Tensor
     from transformers import PreTrainedModel, ProcessorMixin
+    from whisper import Whisper
 
     type CtcModel = PreTrainedModel
     type CtcProcessor = ProcessorMixin
     type DemucsModel = BagOfModels | Model
     type TorchTensor = Tensor
+    type WhisperModel = Whisper
 
 _TRANSCRIPTION_EXTRA_MESSAGE = (
     "Transcription support requires optional transcription dependencies. "

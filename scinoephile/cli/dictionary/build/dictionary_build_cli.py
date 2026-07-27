@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for building dictionary caches."""
+"""Command-line interface for building dictionary databases."""
 
 from __future__ import annotations
 
@@ -19,11 +19,11 @@ __all__ = ["DictionaryBuildCli"]
 
 DICTIONARY_BUILD_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "build dictionary caches": "构建词典缓存",
+        "build dictionary databases": "构建词典数据库",
         "dictionary source": "词典来源",
     },
     "zh-hant": {
-        "build dictionary caches": "建立詞典快取",
+        "build dictionary databases": "建立詞典資料庫",
         "dictionary source": "詞典來源",
     },
 }
@@ -31,7 +31,7 @@ DICTIONARY_BUILD_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class DictionaryBuildCli(ScinoephileCliBase):
-    """Build dictionary caches."""
+    """Build dictionary databases."""
 
     localizations = DICTIONARY_BUILD_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""

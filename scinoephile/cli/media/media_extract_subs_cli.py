@@ -183,7 +183,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                 infile_path=infile_path,
                 languages=languages,
                 output_dir_path=output_dir_path,
-                cache_dir_path=cache_args.dir_path,
+                cache_root_path=cache_args.root_path,
                 details=details,
                 export_images=export_images,
                 overwrite=overwrite,

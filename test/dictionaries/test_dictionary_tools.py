@@ -50,12 +50,12 @@ _STUB_DICTIONARY_TOOL_PROMPT: DictionaryToolPrompt = _StubDictionaryToolPrompt()
 
 
 @fixture
-def dictionary_cache_dir_path() -> Generator[Path]:
-    """Provide deterministic CUHK and GZZJ cache databases."""
+def dictionary_data_dir_path() -> Generator[Path]:
+    """Provide deterministic CUHK and GZZJ runtime databases."""
     with get_temp_directory_path() as temp_dir_path:
-        cache_dir_path = temp_dir_path / "scinoephile/dictionaries"
-        cuhk_database_path = cache_dir_path / "cuhk/cuhk.db"
-        gzzj_database_path = cache_dir_path / "gzzj/gzzj.db"
+        data_dir_path = temp_dir_path / "dictionaries"
+        cuhk_database_path = data_dir_path / "cuhk/cuhk.db"
+        gzzj_database_path = data_dir_path / "gzzj/gzzj.db"
 
         DictionarySqliteStore(database_path=cuhk_database_path).persist(
             (
@@ -190,10 +190,10 @@ def test_get_dictionary_tools_uses_prompt_text():
 
 
 def test_lookup_dictionary_defaults_to_all_dictionaries(
-    dictionary_cache_dir_path: Path,
+    dictionary_data_dir_path: Path,
 ):
     """Search all available local dictionaries by default."""
-    with patch.dict(environ, {"SCINOEPHILE_CACHE_DIR": str(dictionary_cache_dir_path)}):
+    with patch.dict(environ, {"SCINOEPHILE_DATA_DIR": str(dictionary_data_dir_path)}):
         response = lookup_dictionary(query="共享")
 
     entry = cast(dict[str, Any], response["entries"][0])
@@ -207,16 +207,16 @@ def test_lookup_dictionary_defaults_to_all_dictionaries(
 
 
 def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
-    dictionary_cache_dir_path: Path,
+    dictionary_data_dir_path: Path,
 ):
     """Return an error when no local dictionaries are available."""
     for database_path in (
-        dictionary_cache_dir_path / "scinoephile/dictionaries/cuhk/cuhk.db",
-        dictionary_cache_dir_path / "scinoephile/dictionaries/gzzj/gzzj.db",
+        dictionary_data_dir_path / "dictionaries/cuhk/cuhk.db",
+        dictionary_data_dir_path / "dictionaries/gzzj/gzzj.db",
     ):
         database_path.unlink()
 
-    with patch.dict(environ, {"SCINOEPHILE_CACHE_DIR": str(dictionary_cache_dir_path)}):
+    with patch.dict(environ, {"SCINOEPHILE_DATA_DIR": str(dictionary_data_dir_path)}):
         response = lookup_dictionary(query="仇")
 
     assert response["result_count"] == 0

@@ -4,6 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * cache / selection
+* extractor
 * extraction / stats
 * details
 """

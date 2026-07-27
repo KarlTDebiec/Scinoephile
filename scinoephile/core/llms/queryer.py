@@ -4,17 +4,14 @@
 
 from __future__ import annotations
 
-import hashlib
-import json
 from logging import getLogger
 from pathlib import Path
 
 from pydantic import ValidationError
 
-from scinoephile.common.file import open_atomic_text_file
-from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.exceptions import ScinoephileError
 
+from .cache import LlmCache
 from .llm_provider import LLMProvider
 from .query import Query
 from .test_case import TestCase
@@ -34,7 +31,7 @@ class Queryer[TTestCase: TestCase]:
         verified_test_cases: list[TestCase] | None = None,
         *,
         provider: LLMProvider,
-        cache_dir_path: Path | str | None = None,
+        cache_root_path: Path | None = None,
         additional_context: str | None = None,
         max_attempts: int = 5,
         auto_verify: bool = False,
@@ -48,7 +45,7 @@ class Queryer[TTestCase: TestCase]:
             verified_test_cases: test cases whose answers are verified and for which
               LLM need not be queried
             provider: provider to use for queries
-            cache_dir_path: directory in which to cache
+            cache_root_path: root directory beneath which to cache
             additional_context: additional context to include in the system prompt
             max_attempts: maximum number of attempts
             auto_verify: automatically mark test cases as verified if no changes
@@ -74,10 +71,12 @@ class Queryer[TTestCase: TestCase]:
         self.encountered_test_cases: dict[tuple, TTestCase] = {}
         """Test cases actually encountered."""
 
-        self.cache_dir_path = None
-        """Directory in which to cache query results."""
-        if cache_dir_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_dir_path)
+        self._cache = LlmCache(
+            cache_root_path,
+            self.test_case_cls.operation,
+            overwrite_cache,
+        )
+        """LLM response cache."""
 
         self.additional_context = additional_context
         """Additional context to include in the system prompt."""
@@ -85,8 +84,6 @@ class Queryer[TTestCase: TestCase]:
         """Maximum number of query attempts."""
         self.auto_verify = auto_verify
         """Automatically verify test cases if they meet selected criteria."""
-        self.overwrite_cache = overwrite_cache
-        """Whether to replace matching cache files."""
         self.tool_box = tool_box or ToolBox()
         """Available tools and handlers."""
         self.system_prompt = self.prompt.base_system_prompt
@@ -214,14 +211,11 @@ class Queryer[TTestCase: TestCase]:
         self.log_encountered_test_case(test_case)
 
         # Update cache
-        if cache_path is not None:
-            contents = test_case.answer.model_dump_json(
-                exclude_defaults=True,
-                indent=2,
-            )
-            with open_atomic_text_file(cache_path) as cache_file:
-                cache_file.write(contents)
-            logger.debug(f"Saved to cache: {cache_path}")
+        contents = test_case.answer.model_dump_json(
+            exclude_defaults=True,
+            indent=2,
+        )
+        self._cache.save(cache_path, contents)
 
         return test_case
 
@@ -261,7 +255,7 @@ class Queryer[TTestCase: TestCase]:
 
     def _get_cache_path(
         self, system_prompt: str, tools_json: str, query_json: str
-    ) -> Path | None:
+    ) -> Path:
         """Get cache path based on hash of prompts.
 
         Arguments:
@@ -271,10 +265,7 @@ class Queryer[TTestCase: TestCase]:
         Returns:
             Path to cache file
         """
-        if self.cache_dir_path is None:
-            return None
-
-        cache_identity_json = json.dumps(
+        return self._cache.get_path(
             {
                 "provider": self.provider.cache_identity,
                 "test_case": {
@@ -282,36 +273,27 @@ class Queryer[TTestCase: TestCase]:
                     "qualname": self.test_case_cls.__qualname__,
                 },
             },
-            ensure_ascii=True,
-            separators=(",", ":"),
-            sort_keys=True,
+            system_prompt,
+            tools_json,
+            query_json,
         )
-        prompt_str = cache_identity_json + system_prompt + tools_json + query_json
-        sha256 = hashlib.sha256(prompt_str.encode("utf-8")).hexdigest()
-        return self.cache_dir_path / f"{sha256}.json"
 
     def _get_cached_test_case(
         self,
         test_case: TTestCase,
-        cache_path: Path | None,
+        cache_path: Path,
     ) -> TTestCase | None:
         """Get cached test case for the given query if available.
 
         Arguments:
             test_case: test case containing query for which to get cached version
-            cache_path: path to the cached answer, if caching is enabled
+            cache_path: path to the cached answer
         Returns:
             cached test case if available, else None
         """
-        if cache_path is None:
+        contents = self._cache.load(cache_path)
+        if contents is None:
             return None
-        if self.overwrite_cache and cache_path.exists():
-            cache_path.unlink()
-            logger.info(f"Removed LLM response cache: {cache_path}")
-        if not cache_path.exists():
-            return None
-        with open(cache_path, encoding="utf-8") as cache_file:
-            contents = cache_file.read()
         try:
             answer = self.test_case_cls.answer_cls.model_validate_json(contents)
             test_case = self.test_case_cls.model_validate(
@@ -326,14 +308,12 @@ class Queryer[TTestCase: TestCase]:
                 test_case.verified = True
             self.log_encountered_test_case(test_case)
             logger.info(f"Loaded from cache: {test_case.query.key_str}")
-            cache_path.touch()
             return test_case
         except ValidationError as exc:
             logger.error(
                 f"Cache content for query {test_case.query.key_str} is invalid: {exc}"
             )
-            cache_path.unlink()
-            logger.info(f"Deleted invalid cache file: {cache_path}")
+            self._cache.remove(cache_path)
         return None
 
     def _get_verified_test_case(self, query: Query) -> TTestCase | None:

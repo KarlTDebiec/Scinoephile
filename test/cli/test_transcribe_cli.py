@@ -12,13 +12,13 @@ from unittest.mock import Mock, patch
 from pytest import fixture, mark, raises
 
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription import DemucsMode, VADMode
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.cli.transcribe_cli import TranscribeCli
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.transcription.transcriber import DemucsMode, VADMode
 from test.helpers import assert_series_equal, test_data_root
 
 _MEDIA_INFILE_PATH = "/tmp/test_media.mp4"
@@ -202,7 +202,7 @@ def test_transcribe_cli_passes_generic_configuration(
         model_name: str | None,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
-        cache_dir_path: Path | None,
+        cache_root_path: Path | None,
         overwrite_cache: bool,
         provider: object,
         additional_context: str | None,
@@ -219,7 +219,7 @@ def test_transcribe_cli_passes_generic_configuration(
         assert model_name == "custom/whisper"
         assert demucs_mode is DemucsMode.ON
         assert vad_mode is VADMode.OFF
-        assert cache_dir_path == tmp_path / "cache"
+        assert cache_root_path == tmp_path / "cache"
         assert overwrite_cache
         assert provider is not None
         assert additional_context is None

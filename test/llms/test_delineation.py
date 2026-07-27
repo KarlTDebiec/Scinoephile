@@ -132,7 +132,7 @@ def test_queryer_corresponds_using_prompt_aliases():
             }
         }
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = json.dumps(
         {"shuchu_yi": "甲乙"},
         ensure_ascii=False,
@@ -177,7 +177,7 @@ def test_queryer_rejects_noncanonical_answer_fields(answer: dict[str, str]):
             }
         }
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = json.dumps(answer, ensure_ascii=False)
     queryer = Queryer(test_case_cls, provider=provider, max_attempts=1)
 

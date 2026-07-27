@@ -142,7 +142,7 @@ def test_review_cli_passes_block_range(
     if guide_argument:
         guide_args = f"{guide_argument} {input_path} --guide-language eng"
     json_path = tmp_path / "review.json"
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
 
     with patch(
         f"scinoephile.cli.review_cli.{workflow_name}",
@@ -152,16 +152,14 @@ def test_review_cli_passes_block_range(
             run_cli_with_args(
                 ReviewCli,
                 f"{input_path} {guide_args} --json {json_path} "
-                f"--first-block 2 --last-block 3 --cache-dir {cache_dir_path} "
+                f"--first-block 2 --last-block 3 --cache-dir {cache_root_path} "
                 "--cache-overwrite",
             )
 
     assert workflow.call_args.kwargs["test_case_path"] == json_path
     assert workflow.call_args.kwargs["start_at_idx"] == 1
     assert workflow.call_args.kwargs["stop_at_idx"] == 3
-    assert workflow.call_args.kwargs["cache_dir_path"] == (
-        cache_dir_path.resolve() / "llm"
-    )
+    assert workflow.call_args.kwargs["cache_root_path"] == cache_root_path.resolve()
     assert workflow.call_args.kwargs["overwrite_cache"] is True
     if guide_argument:
         assert workflow.call_args.kwargs["guide_language"].code == "eng"

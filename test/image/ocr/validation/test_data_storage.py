@@ -15,13 +15,13 @@ from scinoephile.image.ocr.validation.char_pair_gaps import (
 )
 
 
-def test_validation_manager_layers_cache_data_over_repo_data(tmp_path, monkeypatch):
-    """Test loading OCR validation data from repo and cache directories."""
+def test_validation_manager_layers_runtime_data_over_repo_data(tmp_path, monkeypatch):
+    """Test loading OCR validation data from repo and runtime directories."""
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path = tmp_path / "data" / "ocr_validation"
     validation_data_dir_path.mkdir(parents=True)
 
     (repo_data_dir_path / "char_dims_1.csv").write_text(
@@ -67,7 +67,7 @@ def test_validation_manager_uses_only_repo_data_in_dev_mode(tmp_path, monkeypatc
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path = tmp_path / "data" / "ocr_validation"
     validation_data_dir_path.mkdir(parents=True)
 
     (repo_data_dir_path / "char_dims_1.csv").write_text(
@@ -108,13 +108,15 @@ def test_validation_manager_uses_only_repo_data_in_dev_mode(tmp_path, monkeypatc
     }
 
 
-def test_validation_manager_writes_updates_to_cache_by_default(tmp_path, monkeypatch):
-    """Test OCR validation data updates write to the cache by default."""
+def test_validation_manager_writes_updates_to_runtime_data_by_default(
+    tmp_path, monkeypatch
+):
+    """Test OCR validation data updates write to runtime data by default."""
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path = tmp_path / "data" / "ocr_validation"
     validation_data_dir_path.mkdir(parents=True)
 
     manager = ValidationManager(validation_data_dir_path=validation_data_dir_path)
@@ -127,13 +129,13 @@ def test_validation_manager_writes_updates_to_cache_by_default(tmp_path, monkeyp
     assert not (repo_data_dir_path / "char_dims_1.csv").exists()
 
 
-def test_validation_manager_writes_only_cache_updates_to_cache(tmp_path, monkeypatch):
-    """Test cache writes do not snapshot repo validation data."""
+def test_validation_manager_writes_only_runtime_updates_to_data(tmp_path, monkeypatch):
+    """Test runtime writes do not snapshot repo validation data."""
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path = tmp_path / "data" / "ocr_validation"
     validation_data_dir_path.mkdir(parents=True)
     (repo_data_dir_path / "char_dims_1.csv").write_text("A,10,20\n", encoding="utf-8")
     (repo_data_dir_path / "char_grp_dims.csv").write_text(
@@ -161,12 +163,12 @@ def test_validation_manager_writes_only_cache_updates_to_cache(tmp_path, monkeyp
 
 
 def test_validation_manager_does_not_persist_default_pair_gaps(tmp_path, monkeypatch):
-    """Test default character pair gaps are remembered without cache writes."""
+    """Test default character pair gaps are remembered without runtime writes."""
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path = tmp_path / "data" / "ocr_validation"
     validation_data_dir_path.mkdir(parents=True)
     manager = ValidationManager(validation_data_dir_path=validation_data_dir_path)
 
@@ -186,7 +188,7 @@ def test_validation_manager_does_not_persist_new_default_pair_gaps_in_dev_mode(
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
     repo_pair_gaps_path = repo_data_dir_path / "char_pair_gaps.csv"
     repo_pair_gaps_path.write_text("A,B,1,2,3,4\n", encoding="utf-8")
-    manager = ValidationManager(validation_data_dir_path=tmp_path / "cache", dev=True)
+    manager = ValidationManager(validation_data_dir_path=tmp_path / "data", dev=True)
 
     with patch(
         "scinoephile.image.ocr.validation.validation_manager.save_char_pair_gaps",
@@ -203,18 +205,18 @@ def test_validation_manager_does_not_persist_new_default_pair_gaps_in_dev_mode(
     assert repo_pair_gaps_path.read_text(encoding="utf-8") == "A,B,1,2,3,4\n"
 
 
-def test_validation_manager_removes_default_pair_gap_cache_override(
+def test_validation_manager_removes_default_pair_gap_user_override(
     tmp_path, monkeypatch
 ):
-    """Test resetting a cache pair gap override to default removes it from disk."""
+    """Test resetting a user pair gap override to default removes it from disk."""
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path = tmp_path / "data" / "ocr_validation"
     validation_data_dir_path.mkdir(parents=True)
-    cache_pair_gaps_path = validation_data_dir_path / "char_pair_gaps.csv"
-    cache_pair_gaps_path.write_text("娘,一,23,89,90,200\n", encoding="utf-8")
+    user_pair_gaps_path = validation_data_dir_path / "char_pair_gaps.csv"
+    user_pair_gaps_path.write_text("娘,一,23,89,90,200\n", encoding="utf-8")
     manager = ValidationManager(validation_data_dir_path=validation_data_dir_path)
 
     manager.update_pair_gaps(("娘", "一"), get_default_char_pair_cutoffs("娘", "一"))
@@ -222,7 +224,7 @@ def test_validation_manager_removes_default_pair_gap_cache_override(
     assert manager.char_pair_gaps[("娘", "一")] == get_default_char_pair_cutoffs(
         "娘", "一"
     )
-    assert cache_pair_gaps_path.read_text(encoding="utf-8") == ""
+    assert user_pair_gaps_path.read_text(encoding="utf-8") == ""
 
 
 def test_validation_manager_removes_default_pair_gap_repo_override_in_dev_mode(
@@ -235,7 +237,7 @@ def test_validation_manager_removes_default_pair_gap_repo_override_in_dev_mode(
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
     repo_pair_gaps_path = repo_data_dir_path / "char_pair_gaps.csv"
     repo_pair_gaps_path.write_text("娘,一,23,89,90,200\n", encoding="utf-8")
-    manager = ValidationManager(validation_data_dir_path=tmp_path / "cache", dev=True)
+    manager = ValidationManager(validation_data_dir_path=tmp_path / "data", dev=True)
 
     manager.update_pair_gaps(("娘", "一"), get_default_char_pair_cutoffs("娘", "一"))
 
@@ -245,13 +247,13 @@ def test_validation_manager_removes_default_pair_gap_repo_override_in_dev_mode(
     assert repo_pair_gaps_path.read_text(encoding="utf-8") == ""
 
 
-def test_validation_manager_allows_new_custom_cache_dir(tmp_path, monkeypatch):
-    """Test missing custom cache directories are created on first write."""
+def test_validation_manager_allows_new_custom_data_dir(tmp_path, monkeypatch):
+    """Test missing custom data directories are created on first write."""
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path = tmp_path / "data" / "ocr_validation"
 
     manager = ValidationManager(validation_data_dir_path=validation_data_dir_path)
 
@@ -262,13 +264,13 @@ def test_validation_manager_allows_new_custom_cache_dir(tmp_path, monkeypatch):
     ) == ("A,10,20\n")
 
 
-def test_validation_manager_wraps_cache_path_errors(tmp_path):
-    """Test cache path validation errors are user-facing.
+def test_validation_manager_wraps_data_path_errors(tmp_path):
+    """Test data path validation errors are user-facing.
 
     Arguments:
         tmp_path: pytest temporary directory path
     """
-    validation_data_dir_path = tmp_path / "cache-file"
+    validation_data_dir_path = tmp_path / "data-file"
     validation_data_dir_path.write_text("not a directory", encoding="utf-8")
 
     with raises(
@@ -286,7 +288,7 @@ def test_validation_manager_writes_updates_to_repo_in_dev_mode(tmp_path, monkeyp
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    validation_data_dir_path = tmp_path / "cache" / "ocr_validation"
+    validation_data_dir_path = tmp_path / "data" / "ocr_validation"
 
     manager = ValidationManager(
         validation_data_dir_path=validation_data_dir_path, dev=True

@@ -91,10 +91,9 @@ def test_queryer_corresponds_using_prompt_aliases():
             }
         }
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = '{"xiugai": []}'
     queryer = Queryer(test_case_cls, provider=provider, max_attempts=1)
-    queryer.cache_dir_path = None
 
     result = queryer(test_case)
 
@@ -127,14 +126,13 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
         [old_test_case],
         GuidedReviewManager,
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = '{"xiugai": []}'
     processor = GuidedReviewProcessor(
         _LOCALIZED_PROMPT,
         test_case_path=test_case_path,
         provider=provider,
     )
-    processor.queryer.cache_dir_path = None
     target = Series(events=[Subtitle(start=0, end=100, text="新原文")])
     guide = Series(events=[Subtitle(start=0, end=100, text="參考")])
 
@@ -155,10 +153,9 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
 
 def test_processor_honors_start_index():
     """An inclusive start index should skip earlier guided-review blocks."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = '{"xiugai": []}'
     processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     target = Series(
         events=[
             Subtitle(start=0, end=1000, text="原文一"),
@@ -180,13 +177,12 @@ def test_processor_honors_start_index():
 
 def test_processor_deletes_target_with_replacement_character_revision():
     """The replacement-character revision should remove its target subtitle."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = json.dumps(
         {"xiugai": [{"xuhao": 1, "wenben": "�", "beizhu": "刪除多餘字幕"}]},
         ensure_ascii=False,
     )
     processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     target = Series(
         events=[
             Subtitle(start=0, end=1000, text="多餘"),
@@ -202,13 +198,12 @@ def test_processor_deletes_target_with_replacement_character_revision():
 
 def test_processor_reviews_target_only_blocks_for_deletion():
     """Target-only blocks should be reviewed with an empty guide list."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = json.dumps(
         {"xiugai": [{"xuhao": 1, "wenben": "�", "beizhu": "刪除多餘字幕"}]},
         ensure_ascii=False,
     )
     processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     target = Series(events=[Subtitle(start=0, end=1000, text="多餘")])
     guide = Series(events=[Subtitle(start=5000, end=6000, text="參考")])
 
@@ -421,13 +416,12 @@ def test_json_uses_base_prompt_fields_and_loads_localized_aliases(tmp_path: Path
 
 def test_processor_uses_indexed_lists_and_applies_sparse_revisions():
     """Processor should send indexed lists and apply revisions by target index."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = json.dumps(
         {"xiugai": [{"xuhao": 2, "wenben": "修改二", "beizhu": "修正錯字"}]},
         ensure_ascii=False,
     )
     processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     target = Series(
         events=[
             Subtitle(start=0, end=1000, text="原文一"),

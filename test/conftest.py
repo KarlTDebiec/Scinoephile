@@ -8,7 +8,7 @@ from collections.abc import Generator
 from pathlib import Path
 
 from PIL import Image
-from pytest import fixture
+from pytest import MonkeyPatch, fixture
 
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
@@ -21,6 +21,21 @@ from test.data.mlamd import *
 from test.data.mnt import *
 from test.data.t import *
 from test.data.tmm import *
+
+
+@fixture(autouse=True)
+def runtime_cache_root_path(tmp_path: Path, monkeypatch: MonkeyPatch) -> Path:
+    """Provide an isolated default runtime cache root.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+        monkeypatch: pytest monkeypatch fixture
+    Returns:
+        runtime cache root path
+    """
+    cache_root_path = tmp_path / "runtime-cache"
+    monkeypatch.setenv("SCINOEPHILE_CACHE_DIR", str(cache_root_path))
+    return cache_root_path
 
 
 @fixture

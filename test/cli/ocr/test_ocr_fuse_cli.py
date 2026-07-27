@@ -143,7 +143,7 @@ def test_ocr_fuse_cli_passes_test_case_path(tmp_path: Path):
     tesseract_path = tmp_path / "tesseract.srt"
     json_path = tmp_path / "ocr_fusion.json"
     output_path = tmp_path / "fuse.srt"
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
     lens_path.write_text("1\n00:00:00,000 --> 00:00:00,500\nLens\n", encoding="utf-8")
     tesseract_path.write_text(
         "1\n00:00:00,000 --> 00:00:00,500\nTesseract\n",
@@ -159,9 +159,9 @@ def test_ocr_fuse_cli_passes_test_case_path(tmp_path: Path):
             OcrFuseCli,
             f"--lens-infile {lens_path} --tesseract-infile {tesseract_path} "
             f"--language eng --json {json_path} --outfile {output_path} "
-            f"--cache-dir {cache_dir_path} --cache-overwrite",
+            f"--cache-dir {cache_root_path} --cache-overwrite",
         )
 
     assert fuse.call_args.kwargs["test_case_path"] == json_path.resolve()
-    assert fuse.call_args.kwargs["cache_dir_path"] == (cache_dir_path.resolve() / "llm")
+    assert fuse.call_args.kwargs["cache_root_path"] == cache_root_path.resolve()
     assert fuse.call_args.kwargs["overwrite_cache"] is True

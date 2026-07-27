@@ -139,17 +139,17 @@ def test_ocr_lens_cli_converts_image_subtitles_to_srt(
     )
 
     output_path = tmp_path / "ocr.srt"
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
     run_cli_with_args(
         OcrLensCli,
         f"--infile {input_path} --outfile {output_path} "
-        f"--language zho-Hans --retries 5 --cache-dir {cache_dir_path}",
+        f"--language zho-Hans --retries 5 --cache-dir {cache_root_path}",
     )
 
     assert input_paths == [input_path.resolve()]
     assert observed_kwargs == [
         {
-            "cache_dir_path": cache_dir_path.resolve() / "google-lens",
+            "cache_root_path": cache_root_path.resolve(),
             "language": Language.zho_hans,
             "overwrite_cache": False,
             "retries": 5,
@@ -232,18 +232,18 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
     )
 
     output_path = tmp_path / "ocr.srt"
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
     run_cli_with_args(
         OcrPaddleCli,
         f"--infile {input_path} --language zho-Hant --outfile {output_path} "
-        f"--cache-dir {cache_dir_path}",
+        f"--cache-dir {cache_root_path}",
     )
 
     assert input_paths == [input_path.resolve()]
     assert output_path.exists()
     assert observed_kwargs == [
         {
-            "cache_dir_path": cache_dir_path.resolve() / "paddleocr",
+            "cache_root_path": cache_root_path.resolve(),
             "language": Language.zho_hant,
             "overwrite_cache": False,
         }
@@ -283,7 +283,7 @@ def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
             text subtitle series
         """
         assert kwargs == {
-            "cache_dir_path": cache_dir_path.resolve() / "tesseract",
+            "cache_root_path": cache_root_path.resolve(),
             "detect_italics": False,
             "language": Language.eng,
             "overwrite_cache": False,
@@ -296,10 +296,10 @@ def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
     )
 
     output_path = tmp_path / "ocr.srt"
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
     run_cli_with_args(
         OcrTesseractCli,
-        f"--infile {input_path} --outfile {output_path} --cache-dir {cache_dir_path}",
+        f"--infile {input_path} --outfile {output_path} --cache-dir {cache_root_path}",
     )
 
     assert input_paths == [input_path.resolve()]
@@ -327,7 +327,7 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
         tiny_image_series,
     )
     input_path = _write_placeholder_sup_path(tmp_path)
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
 
     def fake_ocr_image_series_with_tesseract(*args: object, **kwargs: object) -> Series:
         """Fake Tesseract OCR image series processing.
@@ -339,7 +339,7 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
             text subtitle series
         """
         assert kwargs == {
-            "cache_dir_path": cache_dir_path.resolve() / "tesseract",
+            "cache_root_path": cache_root_path.resolve(),
             "detect_italics": True,
             "language": Language.eng,
             "overwrite_cache": False,
@@ -355,7 +355,7 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
     run_cli_with_args(
         OcrTesseractCli,
         f"--infile {input_path} --detect-italics --outfile {output_path} "
-        f"--cache-dir {cache_dir_path}",
+        f"--cache-dir {cache_root_path}",
     )
 
     assert input_paths == [input_path.resolve()]
@@ -510,23 +510,18 @@ def test_ocr_engine_clis_delegate_subtitle_outputs_to_writer(
     monkeypatch.setattr(writer_target, fake_write_series)
 
     output_path = tmp_path / "ocr.srt"
-    cache_dir_path = tmp_path / "cache"
-    cache_names: dict[type[CommandLineInterface], str] = {
-        OcrLensCli: "google-lens",
-        OcrPaddleCli: "paddleocr",
-        OcrTesseractCli: "tesseract",
-    }
+    cache_root_path = tmp_path / "cache"
     run_cli_with_args(
         cli,
         f"--infile {input_path} --outfile {output_path} {extra_args} "
-        f"--overwrite --cache-overwrite --cache-dir {cache_dir_path}",
+        f"--overwrite --cache-overwrite --cache-dir {cache_root_path}",
     )
 
     assert input_paths == [input_path.resolve()]
     assert len(ocr_calls) == 1
     assert len(ocr_calls[0][0]) == 1
     assert ocr_calls[0][0][0] is tiny_image_series
-    expected_ocr_kwargs["cache_dir_path"] = cache_dir_path.resolve() / cache_names[cli]
+    expected_ocr_kwargs["cache_root_path"] = cache_root_path.resolve()
     assert ocr_calls[0][1] == expected_ocr_kwargs
     assert len(writer_calls) == 1
     parser, output_series, outfile_path, overwrite = writer_calls[0]
