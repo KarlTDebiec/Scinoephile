@@ -65,14 +65,11 @@ class Transcriber(ABC):
         )
         """Timestamped transcription cache."""
 
-        self.cache_root_path = self._cache.cache_root_path
-        """Root directory beneath which transcription artifacts are cached."""
-
         self.demucs_separator: DemucsSeparator | None = None
         """Demucs vocal separator used by configured preprocessing settings."""
         if self.demucs_mode is not DemucsMode.OFF:
             self.demucs_separator = DemucsSeparator(
-                cache_root_path=self.cache_root_path
+                cache_root_path=self._cache.cache_root_path
             )
 
     def __call__(

@@ -19,6 +19,19 @@ from scinoephile.dictionaries.cuhk import CuhkDictionaryService
 from test.helpers import parametrize
 
 
+def test_cuhk_service_keeps_cache_paths_on_scraper(tmp_path: Path):
+    """Test resolved CUHK cache paths remain owned by the scraper."""
+    service = CuhkDictionaryService(
+        database_path=tmp_path / "cuhk.db",
+        cache_root_path=tmp_path / "cache",
+    )
+
+    assert service.scraper.discovery_cache_dir_path == tmp_path / "cache/cuhk-discovery"
+    assert service.scraper.scraped_cache_dir_path == tmp_path / "cache/cuhk-pages"
+    assert not hasattr(service, "discovery_cache_dir_path")
+    assert not hasattr(service, "scraped_cache_dir_path")
+
+
 @fixture
 def sample_entries() -> list[DictionaryEntry]:
     """Provide deterministic dictionary entries for CUHK service tests."""

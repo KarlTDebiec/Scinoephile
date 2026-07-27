@@ -117,7 +117,8 @@
   path. Increment it whenever existing entries are no longer safe to reuse.
 * Callers should pass configured roots through to cache classes instead of
   resolving runtime defaults themselves. When a cache instance is shared, use
-  its resolved root and overwrite policy for related cache artifacts.
+  its resolved root and overwrite policy for related cache artifacts; do not
+  copy this cache-owned state onto the caller.
 * If a future operation needs to disable persistence, use an explicit option or
   cache implementation rather than overloading a `None` root.
 

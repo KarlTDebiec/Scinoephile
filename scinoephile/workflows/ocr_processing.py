@@ -96,7 +96,6 @@ class OcrProcessingWorkflow:
         self.language = language
         self.stream_index = stream_index
         self._subtitle_cache = SubtitleCache(cache_root_path, overwrite_cache)
-        self.cache_root_path = self._subtitle_cache.cache_root_path
         self._ocr_validation_data_dir_path = (
             get_runtime_data_root_path(create=False) / "ocr_validation"
         )
@@ -105,15 +104,12 @@ class OcrProcessingWorkflow:
         self.interactive = interactive
         self.dev = dev
         self.overwrite = overwrite
-        self.overwrite_cache = overwrite_cache
         self.provider = provider
         if fuser_kw is None:
             self.fuser_kw: dict[str, Any] = {}
         else:
             self.fuser_kw = dict(fuser_kw)
         self.fuser_kw.setdefault("additional_context", additional_context)
-        self.fuser_kw.setdefault("cache_root_path", self.cache_root_path)
-        self.fuser_kw.setdefault("overwrite_cache", overwrite_cache)
         self.fuser_kw.setdefault(
             "test_case_path",
             self.output_dir_path / "lang" / self.language.language / "ocr_fusion.json",
@@ -182,12 +178,17 @@ class OcrProcessingWorkflow:
             logger.info(f"Fuse OCR output exists: {fuse_path}")
             fuse = Series.load(fuse_path)
         else:
+            fuser_kw: dict[str, Any] = {
+                "cache_root_path": self._subtitle_cache.cache_root_path,
+                "overwrite_cache": self._subtitle_cache.overwrite,
+                **self.fuser_kw,
+            }
             fuse = fuse_ocr_series(
                 lens,
                 secondary,
                 language=self.language,
                 provider=self.provider,
-                **self.fuser_kw,
+                **fuser_kw,
             )
             fuse.save(fuse_path, format_="srt")
         self.output_paths["fuse"] = fuse_path
@@ -241,9 +242,9 @@ class OcrProcessingWorkflow:
         else:
             lens = ocr_image_series_with_lens(
                 image_series,
-                cache_root_path=self.cache_root_path,
+                cache_root_path=self._subtitle_cache.cache_root_path,
                 language=self.language,
-                overwrite_cache=self.overwrite_cache,
+                overwrite_cache=self._subtitle_cache.overwrite,
             )
             lens.save(lens_path, format_="srt")
         self.output_paths["lens"] = lens_path
@@ -277,9 +278,9 @@ class OcrProcessingWorkflow:
         else:
             paddle = ocr_image_series_with_paddle(
                 image_series,
-                cache_root_path=self.cache_root_path,
+                cache_root_path=self._subtitle_cache.cache_root_path,
                 language=self.language,
-                overwrite_cache=self.overwrite_cache,
+                overwrite_cache=self._subtitle_cache.overwrite,
             )
             paddle.save(paddle_path, format_="srt")
         self.output_paths["paddle"] = paddle_path
@@ -315,10 +316,10 @@ class OcrProcessingWorkflow:
         else:
             tesseract = ocr_image_series_with_tesseract(
                 image_series,
-                cache_root_path=self.cache_root_path,
+                cache_root_path=self._subtitle_cache.cache_root_path,
                 detect_italics=True,
                 language=Language.eng,
-                overwrite_cache=self.overwrite_cache,
+                overwrite_cache=self._subtitle_cache.overwrite,
             )
             tesseract.save(tesseract_path, format_="srt")
         self.output_paths["tesseract"] = tesseract_path

@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from types import SimpleNamespace
 
 import requests
 from pytest import MonkeyPatch, skip
@@ -50,8 +51,10 @@ def test_dictionary_build_cuhk_cli_passes_cache_root_to_service(
                     "scraper_kwargs": scraper_kwargs,
                 }
             )
-            self.discovery_cache_dir_path = cache_dir_path.resolve() / "cuhk-discovery"
-            self.scraped_cache_dir_path = cache_dir_path.resolve() / "cuhk-pages"
+            self.scraper = SimpleNamespace(
+                discovery_cache_dir_path=(cache_dir_path.resolve() / "cuhk-discovery"),
+                scraped_cache_dir_path=cache_dir_path.resolve() / "cuhk-pages",
+            )
             self.database_path = database_path
 
         def build(

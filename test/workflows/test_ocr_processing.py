@@ -10,6 +10,23 @@ from scinoephile.core import Language
 from scinoephile.workflows.ocr_processing import OcrProcessingWorkflow
 
 
+def test_ocr_processing_workflow_keeps_cache_policy_on_cache(tmp_path: Path):
+    """Test resolved cache configuration remains owned by the subtitle cache."""
+    cache_root_path = tmp_path / "cache"
+    workflow = OcrProcessingWorkflow(
+        tmp_path / "source.sup",
+        tmp_path / "output",
+        language=Language.eng,
+        cache_root_path=cache_root_path,
+        overwrite_cache=True,
+    )
+
+    assert workflow._subtitle_cache.cache_root_path == cache_root_path
+    assert workflow._subtitle_cache.overwrite
+    assert not hasattr(workflow, "cache_root_path")
+    assert not hasattr(workflow, "overwrite_cache")
+
+
 def test_ocr_processing_workflow_sets_default_fusion_test_case_path(
     tmp_path: Path,
 ):

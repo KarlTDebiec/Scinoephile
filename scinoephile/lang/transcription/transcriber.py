@@ -113,7 +113,6 @@ class GuidedTranscriber:
             vad_mode=self.vad_mode,
             cache_root_path=cache_root_path,
         )
-        self.cache_root_path = self.transcriber.cache_root_path
 
         # Configure defensive decoding after standard attempts are exhausted
         recovery_demucs_mode = DemucsMode.OFF
@@ -127,7 +126,7 @@ class GuidedTranscriber:
             language=self.whisper_language,
             demucs_mode=recovery_demucs_mode,
             vad_mode=recovery_vad_mode,
-            cache_root_path=self.cache_root_path,
+            cache_root_path=cache_root_path,
             temperature=_RECOVERY_TEMPERATURES,
             condition_on_previous_text=False,
         )
@@ -138,7 +137,7 @@ class GuidedTranscriber:
             language=self.whisper_language,
             demucs_mode=DemucsMode.OFF,
             vad_mode=VADMode.OFF,
-            cache_root_path=self.cache_root_path,
+            cache_root_path=cache_root_path,
             condition_on_previous_text=False,
         )
 

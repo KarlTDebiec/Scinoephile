@@ -187,10 +187,10 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
         )
         cls.log_cuhk_config(
             database_path=service.database_path,
-            discovery_cache_dir_path=service.discovery_cache_dir_path,
+            discovery_cache_dir_path=service.scraper.discovery_cache_dir_path,
             max_words=max_words,
             overwrite=overwrite,
-            scraped_cache_dir_path=service.scraped_cache_dir_path,
+            scraped_cache_dir_path=service.scraper.scraped_cache_dir_path,
             source_json_path=None,
         )
         try:
