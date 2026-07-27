@@ -7,6 +7,7 @@ from __future__ import annotations
 import gc
 import json
 from functools import cache
+from pathlib import Path
 from typing import Any, Unpack
 from unittest.mock import Mock
 from weakref import ref
@@ -63,6 +64,10 @@ class _TestCase(TestCase):
     """Query fixture."""
     answer: _Answer | None = None
     """Optional answer fixture."""
+
+    def get_no_op_answer(self) -> _Answer:
+        """Get an answer that echoes the query text."""
+        return _Answer(output=self.query.text)
 
 
 class _IncompatibleAnswer(Answer):
@@ -200,6 +205,75 @@ def test_queryer_uses_injected_provider():
     assert len(provider.calls) == 1
     assert provider.response_formats == [_Answer]
     assert queryer.system_prompt == _PROMPT.base_system_prompt
+
+
+def test_queryer_no_op_bypasses_provider_and_response_cache(tmp_path: Path):
+    """No-op queries should use neutral answers without creating a cache.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    provider = _RecordingProvider(response='{"output":"provider"}')
+    cache_root_path = tmp_path / "cache"
+    queryer = Queryer(
+        _TestCase, provider=provider, cache_root_path=cache_root_path, no_op=True
+    )
+
+    result = queryer(_TestCase(query=_Query(text="input")))
+
+    assert result.answer == _Answer(output="input")
+    assert result.verified is False
+    assert not provider.calls
+    assert not cache_root_path.exists()
+
+
+def test_queryer_no_op_ignores_existing_response_cache(tmp_path: Path):
+    """No-op queries should not reuse an existing unverified cached answer.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    query = _Query(text="input")
+    cached_provider = _RecordingProvider(response='{"output":"cached"}')
+    Queryer(
+        _TestCase, provider=cached_provider, cache_root_path=tmp_path, max_attempts=1
+    )(_TestCase(query=query))
+    no_op_provider = _RecordingProvider(response='{"output":"provider"}')
+    queryer = Queryer(
+        _TestCase, provider=no_op_provider, cache_root_path=tmp_path, no_op=True
+    )
+
+    result = queryer(_TestCase(query=query))
+
+    assert result.answer == _Answer(output="input")
+    assert not no_op_provider.calls
+
+
+def test_queryer_no_op_prefers_verified_answer(tmp_path: Path):
+    """No-op queries should retain trusted verified answers.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    provider = _RecordingProvider(response='{"output":"provider"}')
+    verified = _TestCase(
+        query=_Query(text="input"), answer=_Answer(output="verified"), verified=True
+    )
+    cache_root_path = tmp_path / "cache"
+    queryer = Queryer(
+        _TestCase,
+        verified_test_cases=[verified],
+        provider=provider,
+        cache_root_path=cache_root_path,
+        no_op=True,
+    )
+
+    result = queryer(_TestCase(query=_Query(text="input")))
+
+    assert result.answer == _Answer(output="verified")
+    assert result.verified is True
+    assert not provider.calls
+    assert not cache_root_path.exists()
 
 
 def test_queryer_retries_provider_errors():

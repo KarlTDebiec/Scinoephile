@@ -78,6 +78,14 @@ class DelineationTestCase(TestCase):
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 
+    def get_no_op_answer(self) -> DelineationAnswer:
+        """Get an answer that leaves the target boundary unchanged.
+
+        Returns:
+            empty boundary-shift answer
+        """
+        return DelineationAnswer()
+
     @model_validator(mode="after")
     def validate_output_boundary(self) -> Self:
         """Ensure adjusted outputs represent a valid target boundary change."""

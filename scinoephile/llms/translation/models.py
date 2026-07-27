@@ -78,6 +78,19 @@ class TranslationTestCase(TestCase):
     answer: TranslationAnswer | None = None
     """Translated subtitles, if available."""
 
+    def get_no_op_answer(self) -> TranslationAnswer:
+        """Get an answer that copies each source subtitle unchanged.
+
+        Returns:
+            source subtitles represented as translation outputs
+        """
+        return TranslationAnswer(
+            outputs=[
+                TranslationOutput(index=subtitle.index, text=subtitle.text)
+                for subtitle in self.query.subtitles
+            ]
+        )
+
     @model_validator(mode="after")
     def validate_output_correspondence(self) -> Self:
         """Ensure answer outputs correspond exactly to query subtitles."""

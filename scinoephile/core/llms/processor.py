@@ -31,6 +31,9 @@ class ProcessorKwargs(TypedDict, total=False):
     cache_root_path: Path | None
     """Root directory beneath which to cache LLM responses."""
 
+    no_op: bool
+    """Whether to use neutral answers instead of querying an LLM."""
+
     overwrite_cache: bool
     """Whether matching LLM response cache files should be replaced."""
 
@@ -65,6 +68,7 @@ class Processor(ABC):
         additional_context: str | None = None,
         auto_verify: bool = False,
         cache_root_path: Path | None = None,
+        no_op: bool = False,
         overwrite_cache: bool = False,
         prune_test_cases: bool = False,
         tool_box: ToolBox | None = None,
@@ -79,6 +83,7 @@ class Processor(ABC):
             additional_context: additional context to include in the system prompt
             auto_verify: automatically verify test cases if they meet selected criteria
             cache_root_path: root directory beneath which to cache LLM responses
+            no_op: use neutral answers instead of querying the LLM
             overwrite_cache: whether to replace matching LLM response cache files
             prune_test_cases: remove persisted cases not encountered in this run
             tool_box: available tools and handlers
@@ -106,6 +111,7 @@ class Processor(ABC):
             cache_root_path=cache_root_path,
             additional_context=additional_context,
             auto_verify=auto_verify,
+            no_op=no_op,
             overwrite_cache=overwrite_cache,
             tool_box=tool_box,
         )

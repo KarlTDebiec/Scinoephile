@@ -90,6 +90,14 @@ class PunctuationTestCase(TestCase):
             min_difficulty = max(min_difficulty, 2)
         return min_difficulty
 
+    def get_no_op_answer(self) -> PunctuationAnswer:
+        """Get an answer that concatenates the input without adding punctuation.
+
+        Returns:
+            concatenated unmodified subtitle text
+        """
+        return PunctuationAnswer(output="".join(self.query.subtitles))
+
     @model_validator(mode="after")
     def validate_output_characters(self) -> Self:
         """Ensure punctuation does not change subtitle characters.

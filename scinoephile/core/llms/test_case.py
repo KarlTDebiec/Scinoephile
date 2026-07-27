@@ -100,3 +100,15 @@ class TestCase(LLMModel, ABC):
             minimum difficulty
         """
         return 0
+
+    def get_no_op_answer(self) -> Answer:
+        """Get an operation-specific answer that avoids changing the input.
+
+        Returns:
+            neutral answer for the test case query
+        Raises:
+            NotImplementedError: if the test-case type has no neutral answer
+        """
+        raise NotImplementedError(
+            f"{type(self).__name__} does not define a no-op answer."
+        )
