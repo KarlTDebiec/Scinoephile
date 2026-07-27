@@ -104,7 +104,7 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
             "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script"
         ) as analyze,
         patch("scinoephile.media.subtitles.details.get_subtitle_stream_stats") as stats,
-        patch("scinoephile.media.subtitles.details.cache_subtitles"),
+        patch("scinoephile.media.subtitles.details.SubtitleCache.cache"),
     ):
         analyze.return_value.script = script
         stats.return_value.event_count = 12
@@ -217,7 +217,7 @@ def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             side_effect=ValueError("Malformed SUP data"),
         ),
-        patch("scinoephile.media.subtitles.details.cache_subtitles"),
+        patch("scinoephile.media.subtitles.details.SubtitleCache.cache"),
     ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path} --details")
 
@@ -238,7 +238,7 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
     """
     infile_path = tmp_path / "source.sup"
     infile_path.touch()
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
 
     def analyze_script(*args: object, **kwargs: object) -> ZhoSubtitleScriptAnalysis:
         """Return script analysis after checking analyzer inputs."""
@@ -249,7 +249,7 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
         assert stream.codec_name == "hdmv_pgs_subtitle"
         assert stream.language == "zho"
         assert kwargs == {
-            "cache_dir_path": cache_dir_path.resolve(),
+            "cache_root_path": cache_root_path.resolve(),
             "overwrite_cache": True,
         }
         return ZhoSubtitleScriptAnalysis(script="zho-Hant")
@@ -267,7 +267,7 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
         run_cli_with_args(
             MediaProbeCli,
             (
-                f"--infile {infile_path} --cache-dir {cache_dir_path} "
+                f"--infile {infile_path} --cache-dir {cache_root_path} "
                 "--force-check-script --cache-overwrite"
             ),
         )

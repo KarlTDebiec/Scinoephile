@@ -26,12 +26,12 @@ __all__ = [
 
 
 def clear_cache(
-    cache_dir_path: Path, *, namespace: str | None = None, all_namespaces: bool = False
+    cache_root_path: Path, *, namespace: str | None = None, all_namespaces: bool = False
 ) -> list[CacheEntry]:
     """Clear one namespace or every discovered namespace.
 
     Arguments:
-        cache_dir_path: cache root directory path
+        cache_root_path: cache root directory path
         namespace: optional namespace to clear
         all_namespaces: whether to clear every discovered namespace
     Returns:
@@ -44,58 +44,58 @@ def clear_cache(
     if namespace is not None and all_namespaces:
         raise ScinoephileError("--namespace and --all may not be used together")
 
-    entries = get_cache_entries(cache_dir_path, namespace=namespace)
+    entries = get_cache_entries(cache_root_path, namespace=namespace)
     for entry in entries:
         _delete_entry(entry.path)
     for namespace_name in _namespaces_to_clear(
-        cache_dir_path, namespace=namespace, all_namespaces=all_namespaces
+        cache_root_path, namespace=namespace, all_namespaces=all_namespaces
     ):
-        namespace_dir_path = cache_dir_path / namespace_name
+        namespace_dir_path = cache_root_path / namespace_name
         if namespace_dir_path.exists():
             _delete_entry(namespace_dir_path)
     return entries
 
 
-def discover_cache_namespaces(cache_dir_path: Path) -> list[str]:
+def discover_cache_namespaces(cache_root_path: Path) -> list[str]:
     """Discover direct child directory names under a cache root.
 
     Arguments:
-        cache_dir_path: cache root directory path
+        cache_root_path: cache root directory path
     Returns:
         sorted namespace names
     """
-    if not cache_dir_path.exists():
+    if not cache_root_path.exists():
         return []
-    if not cache_dir_path.is_dir():
-        raise NotADirectoryError(f"{cache_dir_path} is not a directory")
+    if not cache_root_path.is_dir():
+        raise NotADirectoryError(f"{cache_root_path} is not a directory")
     namespaces = [
         child.name
-        for child in cache_dir_path.iterdir()
+        for child in cache_root_path.iterdir()
         if child.is_dir() and not child.is_symlink()
     ]
     return sorted(namespaces)
 
 
 def get_cache_entries(
-    cache_dir_path: Path, *, namespace: str | None = None
+    cache_root_path: Path, *, namespace: str | None = None
 ) -> list[CacheEntry]:
     """Get direct cache entries for one or more namespaces.
 
     Arguments:
-        cache_dir_path: cache root directory path
+        cache_root_path: cache root directory path
         namespace: optional namespace filter
     Returns:
         cache entries
     Raises:
         ScinoephileError: if an explicit namespace does not exist
     """
-    namespace_names = _get_namespace_names(cache_dir_path, namespace=namespace)
+    namespace_names = _get_namespace_names(cache_root_path, namespace=namespace)
     entries: list[CacheEntry] = []
     for namespace_name in namespace_names:
-        namespace_dir_path = cache_dir_path / namespace_name
+        namespace_dir_path = cache_root_path / namespace_name
         entries.extend(
             [
-                _build_cache_entry(cache_dir_path, namespace_name, child_path)
+                _build_cache_entry(cache_root_path, namespace_name, child_path)
                 for child_path in namespace_dir_path.iterdir()
             ]
         )
@@ -103,18 +103,18 @@ def get_cache_entries(
 
 
 def get_cache_stats(
-    cache_dir_path: Path, *, namespace: str | None = None
+    cache_root_path: Path, *, namespace: str | None = None
 ) -> list[CacheStats]:
     """Get per-namespace and total cache statistics.
 
     Arguments:
-        cache_dir_path: cache root directory path
+        cache_root_path: cache root directory path
         namespace: optional namespace filter
     Returns:
         aggregate cache statistics
     """
-    entries = get_cache_entries(cache_dir_path, namespace=namespace)
-    namespace_names = _get_namespace_names(cache_dir_path, namespace=namespace)
+    entries = get_cache_entries(cache_root_path, namespace=namespace)
+    namespace_names = _get_namespace_names(cache_root_path, namespace=namespace)
     stats = [
         _aggregate_cache_stats(
             namespace_name,
@@ -127,12 +127,12 @@ def get_cache_stats(
 
 
 def prune_cache(
-    cache_dir_path: Path, *, older_than: timedelta, namespace: str | None = None
+    cache_root_path: Path, *, older_than: timedelta, namespace: str | None = None
 ) -> list[CacheEntry]:
     """Prune cache entries older than a duration.
 
     Arguments:
-        cache_dir_path: cache root directory path
+        cache_root_path: cache root directory path
         older_than: entry age threshold
         namespace: optional namespace filter
     Returns:
@@ -141,7 +141,7 @@ def prune_cache(
     cutoff = datetime.now().astimezone() - older_than
     entries = [
         entry
-        for entry in get_cache_entries(cache_dir_path, namespace=namespace)
+        for entry in get_cache_entries(cache_root_path, namespace=namespace)
         if entry.modified_at < cutoff
     ]
     for entry in entries:
@@ -179,12 +179,12 @@ def _aggregate_cache_stats(namespace: str, entries: Iterable[CacheEntry]) -> Cac
 
 
 def _build_cache_entry(
-    cache_dir_path: Path, namespace: str, entry_path: Path
+    cache_root_path: Path, namespace: str, entry_path: Path
 ) -> CacheEntry:
     """Build a cache entry from a filesystem path.
 
     Arguments:
-        cache_dir_path: cache root directory path
+        cache_root_path: cache root directory path
         namespace: namespace containing the entry
         entry_path: cache entry path
     Returns:
@@ -194,7 +194,7 @@ def _build_cache_entry(
     return CacheEntry(
         namespace=namespace,
         path=entry_path,
-        relative_path=entry_path.relative_to(cache_dir_path),
+        relative_path=entry_path.relative_to(cache_root_path),
         size_bytes=size_bytes,
         file_count=file_count,
         modified_at=modified_at,
@@ -215,18 +215,18 @@ def _delete_entry(entry_path: Path):
         rmtree(entry_path)
 
 
-def _get_namespace_names(cache_dir_path: Path, *, namespace: str | None) -> list[str]:
+def _get_namespace_names(cache_root_path: Path, *, namespace: str | None) -> list[str]:
     """Get namespace names to inspect.
 
     Arguments:
-        cache_dir_path: cache root directory path
+        cache_root_path: cache root directory path
         namespace: optional namespace filter
     Returns:
         namespace names
     Raises:
         ScinoephileError: if an explicit namespace does not exist
     """
-    namespace_names = discover_cache_namespaces(cache_dir_path)
+    namespace_names = discover_cache_namespaces(cache_root_path)
     if namespace is None:
         return namespace_names
     if namespace not in namespace_names:
@@ -260,12 +260,12 @@ def _measure_path(entry_path: Path) -> tuple[int, int, datetime, datetime]:
 
 
 def _namespaces_to_clear(
-    cache_dir_path: Path, *, namespace: str | None, all_namespaces: bool
+    cache_root_path: Path, *, namespace: str | None, all_namespaces: bool
 ) -> list[str]:
     """Get namespaces whose directories should be removed.
 
     Arguments:
-        cache_dir_path: cache root directory path
+        cache_root_path: cache root directory path
         namespace: optional namespace to clear
         all_namespaces: whether every namespace should be cleared
     Returns:
@@ -274,5 +274,5 @@ def _namespaces_to_clear(
     if namespace is not None:
         return [namespace]
     if all_namespaces:
-        return discover_cache_namespaces(cache_dir_path)
+        return discover_cache_namespaces(cache_root_path)
     return []

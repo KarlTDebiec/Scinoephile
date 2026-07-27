@@ -17,11 +17,11 @@ from scinoephile.common.testing import run_cli_with_args
 from test.helpers import skip_if_ci
 
 
-def test_dictionary_build_cuhk_cli_passes_cache_dir_to_service(
+def test_dictionary_build_cuhk_cli_passes_cache_root_to_service(
     monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
-    """Test CUHK CLI forwards parsed cache dirs without parser-time creation.
+    """Test CUHK CLI forwards the parsed cache root without creating it.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
@@ -39,12 +39,14 @@ def test_dictionary_build_cuhk_cli_passes_cache_dir_to_service(
             self,
             database_path: Path | None = None,
             *,
+            cache_root_path: Path | None = None,
             scraper_kwargs: dict[str, object] | None = None,
         ):
             """Initialize."""
             init_calls.append(
                 {
                     "database_path": database_path,
+                    "cache_root_path": cache_root_path,
                     "scraper_kwargs": scraper_kwargs,
                 }
             )
@@ -76,8 +78,8 @@ def test_dictionary_build_cuhk_cli_passes_cache_dir_to_service(
     assert init_calls == [
         {
             "database_path": database_path.resolve(),
+            "cache_root_path": cache_dir_path.resolve(),
             "scraper_kwargs": {
-                "cache_dir_path": (cache_dir_path.resolve() / "dictionaries" / "cuhk"),
                 "min_delay_seconds": 1.0,
                 "max_delay_seconds": 5.0,
                 "max_retries": 5,

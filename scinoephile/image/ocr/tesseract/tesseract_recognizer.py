@@ -21,7 +21,7 @@ from scinoephile.common.validation import (
     val_output_dir_path,
 )
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .hocr import parse_tesseract_hocr, transfer_tesseract_hocr_italics
 from .preprocessing import preprocess_tesseract_ocr_image
@@ -50,8 +50,8 @@ _TESSERACT_LANGUAGE_CODES = {
 class TesseractRecognizerKwargs(TypedDict, total=False):
     """Additional keyword arguments forwarded to TesseractRecognizer."""
 
-    cache_dir_path: Path | None
-    """Directory in which to cache OCR results."""
+    cache_root_path: Path | None
+    """Root directory beneath which to cache OCR results."""
 
     detect_italics: bool
     """Whether to run a legacy-engine pass for italics."""
@@ -87,7 +87,7 @@ class TesseractRecognizer:
     def __init__(
         self,
         *,
-        cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
         executable_path: Path | str = "tesseract",
         detect_italics: bool = False,
         language: Language = Language.eng,
@@ -101,7 +101,7 @@ class TesseractRecognizer:
         """Initialize.
 
         Arguments:
-            cache_dir_path: directory in which to cache OCR results
+            cache_root_path: root directory beneath which to cache OCR results
             executable_path: Tesseract executable path or command name
             detect_italics: whether to run a legacy-engine pass for italics
             language: Scinoephile language
@@ -131,8 +131,8 @@ class TesseractRecognizer:
         self.scale = scale
 
         self.cache_dir_path: Path | None = None
-        if cache_dir_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_dir_path)
+        if cache_root_path is not None:
+            self.cache_dir_path = val_output_dir_path(cache_root_path / "tesseract")
 
         if skip_executable_validation:
             self.executable_path = Path(executable_path)
@@ -342,8 +342,8 @@ class TesseractRecognizer:
             legacy tessdata directory path
         """
         if self.cache_dir_path is None:
-            legacy_tessdata_dir_path = get_runtime_cache_dir_path(
-                "tesseract", "legacy-tessdata"
+            legacy_tessdata_dir_path = val_output_dir_path(
+                get_runtime_cache_root_path() / "tesseract" / "legacy-tessdata"
             )
         else:
             legacy_tessdata_dir_path = val_output_dir_path(

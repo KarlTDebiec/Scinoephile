@@ -11,40 +11,36 @@ from tempfile import gettempdir
 
 from scinoephile.common.validation import val_output_dir_path
 
-__all__ = ["get_runtime_cache_dir_path"]
+__all__ = ["get_runtime_cache_root_path"]
 
 
-def get_runtime_cache_dir_path(*parts: str, create: bool = True) -> Path:
-    """Get runtime cache directory path for Scinoephile.
+def get_runtime_cache_root_path(*, create: bool = True) -> Path:
+    """Get the Scinoephile runtime cache root path.
 
     Arguments:
-        *parts: optional path components beneath the cache root
         create: whether to create the directory if it does not exist
     Returns:
-        cache directory path
+        cache root path
     """
-    if configured_cache_dir_path := getenv("SCINOEPHILE_CACHE_DIR"):
-        cache_root_path = Path(configured_cache_dir_path)
+    if configured_cache_root_path := getenv("SCINOEPHILE_CACHE_DIR"):
+        cache_root_path = Path(configured_cache_root_path)
     elif system() == "Darwin":
-        cache_root_path = Path.home() / "Library/Caches"
+        cache_root_path = Path.home() / "Library/Caches" / "scinoephile"
     elif system() == "Windows":
-        cache_root_path = _get_windows_cache_root_path()
+        cache_root_path = _get_windows_cache_parent_path() / "scinoephile"
     elif xdg_cache_home := getenv("XDG_CACHE_HOME"):
-        cache_root_path = Path(xdg_cache_home)
+        cache_root_path = Path(xdg_cache_home) / "scinoephile"
     else:
-        cache_root_path = Path.home() / ".cache"
+        cache_root_path = Path.home() / ".cache" / "scinoephile"
 
-    return val_output_dir_path(
-        cache_root_path / "scinoephile" / Path(*parts),
-        create=create,
-    )
+    return val_output_dir_path(cache_root_path, create=create)
 
 
-def _get_windows_cache_root_path() -> Path:
-    """Get the Windows cache root path, falling back to temp if home is absent.
+def _get_windows_cache_parent_path() -> Path:
+    """Get the Windows cache parent path, falling back to temp if home is absent.
 
     Returns:
-        cache root path
+        cache parent path
     """
     if local_appdata := getenv("LOCALAPPDATA"):
         return Path(local_appdata)

@@ -9,11 +9,9 @@ from pathlib import Path
 from shutil import copy2
 
 from scinoephile.core.media import SubtitleStream
+from scinoephile.core.paths import get_runtime_cache_root_path
 
-from .cache import (
-    cache_subtitles,
-    get_subtitle_cache_path,
-)
+from .cache import SubtitleCache
 
 __all__ = ["extract_subtitle_stream"]
 
@@ -25,7 +23,7 @@ def extract_subtitle_stream(
     stream: SubtitleStream,
     outfile_path: Path,
     *,
-    cache_dir_path: Path | None = None,
+    cache_root_path: Path | None = None,
 ) -> Path:
     """Extract a subtitle stream using a runtime cache.
 
@@ -33,21 +31,19 @@ def extract_subtitle_stream(
         infile_path: media input file
         stream: subtitle stream to extract
         outfile_path: requested output path
-        cache_dir_path: cache directory path
+        cache_root_path: cache root directory path
     Returns:
         output path
     """
-    cache_subtitles(
+    if cache_root_path is None:
+        cache_root_path = get_runtime_cache_root_path()
+    cache = SubtitleCache(cache_root_path)
+    cache.cache(
         infile_path,
         [stream],
-        cache_dir_path=cache_dir_path,
         render_images=False,
     )
-    stream_path = get_subtitle_cache_path(
-        infile_path,
-        stream,
-        cache_dir_path=cache_dir_path,
-    )
+    stream_path = cache.get_path(infile_path, stream)
     if stream_path != outfile_path:
         if not outfile_path.parent.exists():
             outfile_path.parent.mkdir(parents=True)

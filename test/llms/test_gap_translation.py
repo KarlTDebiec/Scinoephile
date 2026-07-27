@@ -491,7 +491,6 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
         test_case_path=test_case_path,
         provider=provider,
     )
-    processor.queryer.cache_dir_path = None
     target = Series(events=[Subtitle(start=0, end=100, text="new target")])
     guide = Series(
         events=[

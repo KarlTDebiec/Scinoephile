@@ -38,8 +38,8 @@ _LENS_LANGUAGE_CODES = {
 class LensRecognizerKwargs(TypedDict, total=False):
     """Additional keyword arguments forwarded to LensRecognizer."""
 
-    cache_dir_path: Path | None
-    """Directory in which to cache OCR results."""
+    cache_root_path: Path | None
+    """Root directory beneath which to cache OCR results."""
 
     language: Language
     """Scinoephile language."""
@@ -61,7 +61,7 @@ class LensRecognizer:
     def __init__(
         self,
         *,
-        cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
         language: Language = Language.eng,
         overwrite_cache: bool = False,
         retries: int = 3,
@@ -69,14 +69,14 @@ class LensRecognizer:
         """Initialize.
 
         Arguments:
-            cache_dir_path: directory in which to cache OCR results
+            cache_root_path: root directory beneath which to cache OCR results
             language: Scinoephile language
             overwrite_cache: whether to replace matching OCR cache files
             retries: Google Lens OCR request attempts per uncached image
         """
         self.cache_dir_path = None
-        if cache_dir_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_dir_path)
+        if cache_root_path is not None:
+            self.cache_dir_path = val_output_dir_path(cache_root_path / "google-lens")
         try:
             self.language = language
             self.lens_language_code = _LENS_LANGUAGE_CODES[self.language]

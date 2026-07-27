@@ -252,7 +252,6 @@ def test_processor_uses_semantic_fields_at_runtime():
         '{"jieguo": "融合結果", "shuoming": "融合兩個來源"}'
     )
     processor = OcrFusionProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     source_one = Series([Subtitle(start=0, end=1000, text="來源一")])
     source_two = Series([Subtitle(start=0, end=1000, text="來源二")])
 

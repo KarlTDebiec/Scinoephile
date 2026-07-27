@@ -11,9 +11,10 @@ from pathlib import Path
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.media import Stream, SubtitleStream
+from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.media.probe import get_subtitle_streams
 
-from .cache import cache_subtitles
+from .cache import SubtitleCache
 from .stats import get_subtitle_stream_stats
 
 __all__ = ["get_detailed_subtitle_streams"]
@@ -24,7 +25,7 @@ logger = getLogger(__name__)
 def get_detailed_subtitle_streams(
     infile_path: Path,
     *,
-    cache_dir_path: Path | None = None,
+    cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     streams: Sequence[Stream] | None = None,
 ) -> list[SubtitleStream]:
@@ -32,12 +33,14 @@ def get_detailed_subtitle_streams(
 
     Arguments:
         infile_path: media input file to inspect
-        cache_dir_path: cache directory path
+        cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching cached subtitle artifacts
         streams: optional pre-probed media streams
     Returns:
         enriched subtitle stream metadata
     """
+    if cache_root_path is None:
+        cache_root_path = get_runtime_cache_root_path()
     if streams is None:
         subtitle_streams = get_subtitle_streams(infile_path)
     else:
@@ -45,11 +48,10 @@ def get_detailed_subtitle_streams(
             stream for stream in streams if isinstance(stream, SubtitleStream)
         ]
     if subtitle_streams:
-        cache_subtitles(
+        SubtitleCache(cache_root_path).cache(
             infile_path,
             subtitle_streams,
-            cache_dir_path=cache_dir_path,
-            overwrite_cache=overwrite_cache,
+            overwrite=overwrite_cache,
         )
 
     detailed_streams = []
@@ -58,7 +60,7 @@ def get_detailed_subtitle_streams(
             stats = get_subtitle_stream_stats(
                 infile_path,
                 stream,
-                cache_dir_path=cache_dir_path,
+                cache_root_path=cache_root_path,
             )
         except (ScinoephileError, ValueError, IndexError) as exc:
             logger.warning(

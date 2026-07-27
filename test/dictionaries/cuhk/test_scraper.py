@@ -12,19 +12,19 @@ from scinoephile.dictionaries.cuhk.scraper import CuhkDictionaryScraper
 
 def test_fetch_text_overwrites_matching_cache(tmp_path: Path):
     """Test cache overwrite fetches and replaces a matching CUHK response."""
-    cache_path = tmp_path / "discovery" / "terms.html"
-    cache_path.parent.mkdir()
-    cache_path.write_text("stale", encoding="utf-8")
     response = Mock(text="fresh")
     session = Mock()
     session.get.return_value = response
     scraper = CuhkDictionaryScraper(
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         min_delay_seconds=0.0,
         max_delay_seconds=0.0,
         overwrite_cache=True,
         session=session,
     )
+    cache_path = scraper.discovery_dir_path / "terms.html"
+    cache_path.parent.mkdir()
+    cache_path.write_text("stale", encoding="utf-8")
 
     result = scraper._fetch_text(
         "https://example.test/terms",

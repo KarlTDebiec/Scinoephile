@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_root_arg
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import clear_cache, get_cache_entries
@@ -75,7 +75,7 @@ class CacheClearCli(ScinoephileCliBase):
         )
 
         # Input arguments
-        add_cache_dir_arg(
+        add_cache_root_arg(
             arg_groups["input arguments"],
             help_text="cache root directory to inspect (default: %(default)s)",
         )
@@ -123,7 +123,7 @@ class CacheClearCli(ScinoephileCliBase):
         cls,
         *,
         _parser: ArgumentParser | None = None,
-        cache_dir_path: Path,
+        cache_root_path: Path,
         namespace: str | None,
         all_namespaces: bool,
         dry_run: bool,
@@ -142,16 +142,16 @@ class CacheClearCli(ScinoephileCliBase):
         try:
             if dry_run:
                 if all_namespaces:
-                    entries = get_cache_entries(cache_dir_path)
+                    entries = get_cache_entries(cache_root_path)
                 elif namespace is None:
                     raise ScinoephileError(
                         "--namespace is required unless --all is specified"
                     )
                 else:
-                    entries = get_cache_entries(cache_dir_path, namespace=namespace)
+                    entries = get_cache_entries(cache_root_path, namespace=namespace)
             else:
                 entries = clear_cache(
-                    cache_dir_path,
+                    cache_root_path,
                     namespace=namespace,
                     all_namespaces=all_namespaces,
                 )

@@ -31,7 +31,7 @@ from test.helpers import parametrize
 def dictionary_database_dir_path() -> Generator[Path]:
     """Build temporary databases for end-to-end search tests."""
     with get_temp_directory_path() as dir_path:
-        cache_dir_path = dir_path / "scinoephile/dictionaries"
+        cache_dir_path = dir_path / "dictionaries"
         cuhk_database_path = cache_dir_path / "cuhk/cuhk.db"
         gzzj_database_path = cache_dir_path / "gzzj/gzzj.db"
 
@@ -150,13 +150,7 @@ def test_dictionary_search_cli(
         expected_output: text expected in log output
         expectation: expected context manager for success or failure
     """
-    database_path = (
-        dictionary_database_dir_path
-        / "scinoephile"
-        / "dictionaries"
-        / "cuhk"
-        / "cuhk.db"
-    )
+    database_path = dictionary_database_dir_path / "dictionaries" / "cuhk" / "cuhk.db"
     with get_temp_file_path(".log") as log_file_path:
         with expectation:
             run_cli_with_args(
@@ -238,13 +232,7 @@ def test_dictionary_search_cli_prints_no_matches(
         dictionary_database_dir_path: directory containing fixture dictionaries
         capsys: pytest capture fixture
     """
-    database_path = (
-        dictionary_database_dir_path
-        / "scinoephile"
-        / "dictionaries"
-        / "cuhk"
-        / "cuhk.db"
-    )
+    database_path = dictionary_database_dir_path / "dictionaries" / "cuhk" / "cuhk.db"
 
     run_cli_with_args(
         DictionarySearchCli,

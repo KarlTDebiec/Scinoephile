@@ -94,7 +94,6 @@ def test_queryer_corresponds_using_prompt_aliases():
     provider = Mock(spec=LLMProvider)
     provider.chat_completion.return_value = '{"xiugai": []}'
     queryer = Queryer(test_case_cls, provider=provider, max_attempts=1)
-    queryer.cache_dir_path = None
 
     result = queryer(test_case)
 
@@ -134,7 +133,6 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
         test_case_path=test_case_path,
         provider=provider,
     )
-    processor.queryer.cache_dir_path = None
     target = Series(events=[Subtitle(start=0, end=100, text="新原文")])
     guide = Series(events=[Subtitle(start=0, end=100, text="參考")])
 
@@ -158,7 +156,6 @@ def test_processor_honors_start_index():
     provider = Mock(spec=LLMProvider)
     provider.chat_completion.return_value = '{"xiugai": []}'
     processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     target = Series(
         events=[
             Subtitle(start=0, end=1000, text="原文一"),
@@ -186,7 +183,6 @@ def test_processor_deletes_target_with_replacement_character_revision():
         ensure_ascii=False,
     )
     processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     target = Series(
         events=[
             Subtitle(start=0, end=1000, text="多餘"),
@@ -208,7 +204,6 @@ def test_processor_reviews_target_only_blocks_for_deletion():
         ensure_ascii=False,
     )
     processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     target = Series(events=[Subtitle(start=0, end=1000, text="多餘")])
     guide = Series(events=[Subtitle(start=5000, end=6000, text="參考")])
 
@@ -427,7 +422,6 @@ def test_processor_uses_indexed_lists_and_applies_sparse_revisions():
         ensure_ascii=False,
     )
     processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     target = Series(
         events=[
             Subtitle(start=0, end=1000, text="原文一"),

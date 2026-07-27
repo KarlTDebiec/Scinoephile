@@ -107,12 +107,12 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
         monkeypatch: pytest monkeypatch fixture
         tmp_path: temporary path fixture
     """
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
     RecordingOcrRecognizer.reset(Language.zho_hans.code)
 
     monkeypatch.setattr(
-        "scinoephile.image.ocr.lens.get_runtime_cache_dir_path",
-        lambda *parts: cache_dir_path,
+        "scinoephile.image.ocr.lens.get_runtime_cache_root_path",
+        lambda: cache_root_path,
     )
     monkeypatch.setattr(
         "scinoephile.image.ocr.lens.LensRecognizer",
@@ -136,7 +136,7 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
 
     assert [event.text for event in text_series] == ["zho-Hans"]
     recognizer = RecordingOcrRecognizer.instances[0]
-    assert recognizer.kwargs["cache_dir_path"] == cache_dir_path
+    assert recognizer.kwargs["cache_root_path"] == cache_root_path
     assert recognizer.kwargs["language"] is Language.zho_hans
     assert recognizer.kwargs["retries"] == 5
 

@@ -27,11 +27,11 @@ def test_analyze_text_subtitle_stream_uses_cached_stream(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
     cache_subtitle_stream(
         infile_path,
         stream,
-        cache_dir_path / "media" / "subtitles",
+        cache_root_path,
         "1\n00:00:00,000 --> 00:00:01,000\n简体中文汉字\n",
     )
 
@@ -39,7 +39,7 @@ def test_analyze_text_subtitle_stream_uses_cached_stream(tmp_path: Path):
         analysis = analyze_zho_subtitle_stream_script(
             infile_path,
             stream,
-            cache_dir_path=cache_dir_path,
+            cache_root_path=cache_root_path,
         )
 
     ffmpeg_input.assert_not_called()
@@ -55,29 +55,28 @@ def test_analyze_text_subtitle_stream_overwrites_cached_stream(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
     cache_subtitle_stream(
         infile_path,
         stream,
-        cache_dir_path / "media" / "subtitles",
+        cache_root_path,
         "1\n00:00:00,000 --> 00:00:01,000\n简体中文汉字\n",
     )
 
     with patch(
-        "scinoephile.lang.zho.subtitles.analysis.cache_subtitles"
-    ) as cache_subtitles_mock:
+        "scinoephile.lang.zho.subtitles.analysis.SubtitleCache.cache"
+    ) as cache_mock:
         analysis = analyze_zho_subtitle_stream_script(
             infile_path,
             stream,
-            cache_dir_path=cache_dir_path,
+            cache_root_path=cache_root_path,
             overwrite_cache=True,
         )
 
-    cache_subtitles_mock.assert_called_once_with(
+    cache_mock.assert_called_once_with(
         infile_path,
         [stream],
-        cache_dir_path=cache_dir_path / "media" / "subtitles",
-        overwrite_cache=True,
+        overwrite=True,
     )
     assert analysis.script == "zho-Hans"
 
@@ -95,11 +94,11 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
     cache_image_subtitles(
         infile_path,
         stream,
-        cache_dir_path / "media" / "subtitles",
+        cache_root_path,
         event_count=7,
     )
     ocr_sizes: list[list[tuple[int, int]]] = []
@@ -107,11 +106,11 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
     def fake_ocr_image_series_with_paddle(
         sampled_series: ImageSeries,
         *,
-        cache_dir_path: Path | None,
+        cache_root_path: Path | None,
         language: Language,
         overwrite_cache: bool,
     ) -> Series:
-        assert cache_dir_path == tmp_path / "cache" / "paddleocr"
+        assert cache_root_path == tmp_path / "cache"
         assert language in (Language.zho_hans, Language.zho_hant)
         assert overwrite_cache is False
         ocr_sizes.append(
@@ -131,7 +130,7 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
     analysis = analyze_zho_subtitle_stream_script(
         infile_path,
         stream,
-        cache_dir_path=cache_dir_path,
+        cache_root_path=cache_root_path,
     )
 
     assert analysis.script == "zho-Hant"

@@ -20,7 +20,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.workflows.ocr_validation import validate_ocr
 
 __all__ = ["OcrValidateCli"]
@@ -115,7 +115,7 @@ class OcrValidateCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--validation-data-dir",
-            default=get_runtime_cache_dir_path("ocr_validation", create=False),
+            default=get_runtime_cache_root_path(create=False) / "ocr_validation",
             dest="validation_data_dir_path",
             metavar="VALIDATION_DATA_DIR",
             type=output_dir_arg(create=False),

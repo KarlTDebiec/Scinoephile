@@ -16,7 +16,7 @@ def test_get_detailed_subtitle_streams_enriches_subtitle_stats(tmp_path: Path):
     """Test detailed subtitle stream probing includes neutral subtitle stats."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
     subtitle_streams = [
         SubtitleStream(index=2, codec_name="subrip", language="zho"),
     ]
@@ -26,7 +26,7 @@ def test_get_detailed_subtitle_streams_enriches_subtitle_stats(tmp_path: Path):
             "scinoephile.media.subtitles.details.get_subtitle_streams",
             return_value=subtitle_streams,
         ),
-        patch("scinoephile.media.subtitles.details.cache_subtitles"),
+        patch("scinoephile.media.subtitles.details.SubtitleCache.cache"),
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             return_value=SimpleNamespace(
@@ -38,7 +38,7 @@ def test_get_detailed_subtitle_streams_enriches_subtitle_stats(tmp_path: Path):
     ):
         detailed_streams = get_detailed_subtitle_streams(
             infile_path,
-            cache_dir_path=cache_dir_path,
+            cache_root_path=cache_root_path,
         )
 
     assert len(detailed_streams) == 1
@@ -57,7 +57,7 @@ def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
     """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
     streams = [
         VideoStream(index=0, codec_type="video", codec_name="h264"),
         AudioStream(index=1, codec_type="audio", codec_name="aac"),
@@ -68,7 +68,7 @@ def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_streams",
         ),
-        patch("scinoephile.media.subtitles.details.cache_subtitles"),
+        patch("scinoephile.media.subtitles.details.SubtitleCache.cache"),
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             return_value=SimpleNamespace(
@@ -80,7 +80,7 @@ def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
     ):
         detailed_streams = get_detailed_subtitle_streams(
             infile_path,
-            cache_dir_path=cache_dir_path,
+            cache_root_path=cache_root_path,
             streams=streams,
         )
 

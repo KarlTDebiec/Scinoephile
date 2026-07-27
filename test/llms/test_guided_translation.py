@@ -147,7 +147,6 @@ def test_processor_maps_indexed_outputs_to_subtitle_timing():
         ensure_ascii=False,
     )
     processor = GuidedTranslationProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     source = Series(
         events=[
             Subtitle(start=0, end=1000, text="原文一"),
@@ -223,7 +222,6 @@ def test_processor_honors_start_index():
         ensure_ascii=False,
     )
     processor = GuidedTranslationProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     source = Series(
         events=[
             Subtitle(start=0, end=1000, text="原文一"),

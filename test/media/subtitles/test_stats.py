@@ -35,7 +35,7 @@ def test_get_text_subtitle_stream_stats_from_cached_stream(tmp_path: Path):
         stats = get_subtitle_stream_stats(
             infile_path,
             stream,
-            cache_dir_path=tmp_path / "cache",
+            cache_root_path=tmp_path / "cache",
         )
 
     ffmpeg_input.assert_not_called()
@@ -65,7 +65,7 @@ def test_get_image_subtitle_stream_stats_from_cached_images(tmp_path: Path):
     stats = get_subtitle_stream_stats(
         infile_path,
         stream,
-        cache_dir_path=tmp_path / "cache",
+        cache_root_path=tmp_path / "cache",
     )
 
     assert stats.event_count == 7

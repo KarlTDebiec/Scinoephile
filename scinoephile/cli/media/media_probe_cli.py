@@ -133,7 +133,7 @@ class MediaProbeCli(ScinoephileCliBase):
                 analysis = analyze_zho_subtitle_stream_script(
                     infile_path,
                     stream,
-                    cache_dir_path=cache_args.dir_path,
+                    cache_root_path=cache_args.root_path,
                     overwrite_cache=cache_args.overwrite,
                 )
                 language = analysis.script
@@ -148,7 +148,7 @@ class MediaProbeCli(ScinoephileCliBase):
                         stream.index: stream
                         for stream in get_zho_subtitle_streams(
                             infile_path,
-                            cache_dir_path=cache_args.dir_path,
+                            cache_root_path=cache_args.root_path,
                             overwrite_cache=cache_args.overwrite,
                             streams=streams,
                         )

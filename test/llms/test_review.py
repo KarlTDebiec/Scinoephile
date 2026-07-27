@@ -254,7 +254,6 @@ def test_processor_honors_start_index():
     provider = Mock(spec=LLMProvider)
     provider.chat_completion.return_value = '{"xiugai": []}'
     processor = ReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
     series = Series(
         events=[
             Subtitle(start=0, end=1000, text="原文一"),

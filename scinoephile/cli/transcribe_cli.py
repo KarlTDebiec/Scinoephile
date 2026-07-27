@@ -320,7 +320,7 @@ class TranscribeCli(ScinoephileCliBase):
                 model_name=model_name,
                 demucs_mode=demucs_mode,
                 vad_mode=vad_mode,
-                cache_dir_path=cache_args.dir_path,
+                cache_root_path=cache_args.root_path,
                 overwrite_cache=cache_args.overwrite,
                 provider=get_provider(
                     llm_args.provider_name,

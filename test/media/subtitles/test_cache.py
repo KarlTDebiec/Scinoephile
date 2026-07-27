@@ -14,10 +14,7 @@ from pytest import raises
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
-from scinoephile.media.subtitles.cache import (
-    cache_subtitles,
-    get_subtitle_cache_path,
-)
+from scinoephile.media.subtitles.cache import SubtitleCache
 from test.helpers.media_subtitles import (
     cache_subtitle_stream,
     get_image_subtitle_dir_path,
@@ -32,21 +29,19 @@ def test_get_cached_subtitle_stream_path_changes_by_stream(tmp_path: Path):
     """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
+    cache = SubtitleCache(tmp_path / "cache")
 
-    first = get_subtitle_cache_path(
+    first = cache.get_path(
         infile_path,
         SubtitleStream(index=2, language="zho", codec_name="subrip"),
-        cache_dir_path=tmp_path / "cache",
     )
-    second = get_subtitle_cache_path(
+    second = cache.get_path(
         infile_path,
         SubtitleStream(index=3, language="zho", codec_name="subrip"),
-        cache_dir_path=tmp_path / "cache",
     )
-    same_stream_with_script = get_subtitle_cache_path(
+    same_stream_with_script = cache.get_path(
         infile_path,
         SubtitleStream(index=2, language="zho-Hant", codec_name="subrip"),
-        cache_dir_path=tmp_path / "cache",
     )
 
     assert first != second
@@ -64,14 +59,11 @@ def test_cache_subtitle_streams_uses_existing_stream(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
+    cache = SubtitleCache(tmp_path / "cache")
     cache_subtitle_stream(infile_path, stream, tmp_path / "cache", b"")
 
     with patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input:
-        cache_subtitles(
-            infile_path,
-            [stream],
-            cache_dir_path=tmp_path / "cache",
-        )
+        cache.cache(infile_path, [stream])
 
     ffmpeg_input.assert_not_called()
 
@@ -81,11 +73,8 @@ def test_cache_subtitle_streams_overwrites_existing_stream(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    stream_path = get_subtitle_cache_path(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
+    cache = SubtitleCache(tmp_path / "cache")
+    stream_path = cache.get_path(infile_path, stream)
     cache_subtitle_stream(
         infile_path,
         stream,
@@ -111,12 +100,7 @@ def test_cache_subtitle_streams_overwrites_existing_stream(tmp_path: Path):
             side_effect=merge_outputs,
         ),
     ):
-        cache_subtitles(
-            infile_path,
-            [stream],
-            cache_dir_path=tmp_path / "cache",
-            overwrite_cache=True,
-        )
+        cache.cache(infile_path, [stream], overwrite=True)
 
     assert len(merged_streams) == 1
     assert merged_streams[0].run_count == 1
@@ -132,6 +116,7 @@ def test_cache_subtitles_wraps_ffmpeg_extraction_errors(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
+    cache = SubtitleCache(tmp_path / "cache")
     input_stream = Mock()
 
     def write_partial_output(outfile_path: str, **_: object) -> Mock:
@@ -142,11 +127,7 @@ def test_cache_subtitles_wraps_ffmpeg_extraction_errors(tmp_path: Path):
     input_stream.output.side_effect = write_partial_output
     merged_stream = Mock()
     merged_stream.run.side_effect = ffmpeg.Error("ffmpeg", b"", b"failed")
-    stream_path = get_subtitle_cache_path(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
+    stream_path = cache.get_path(infile_path, stream)
 
     with (
         patch(
@@ -159,11 +140,7 @@ def test_cache_subtitles_wraps_ffmpeg_extraction_errors(tmp_path: Path):
         ),
         raises(ScinoephileError, match="Could not cache subtitle streams"),
     ):
-        cache_subtitles(
-            infile_path,
-            [stream],
-            cache_dir_path=tmp_path / "cache",
-        )
+        cache.cache(infile_path, [stream])
 
     assert not stream_path.exists()
     assert list(stream_path.parent.glob(f".{stream_path.name}-*")) == []
@@ -178,6 +155,7 @@ def test_cache_subtitles_builds_image_cache_for_sup_stream(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
+    cache = SubtitleCache(tmp_path / "cache")
     cache_subtitle_stream(infile_path, stream, tmp_path / "cache", b"not a real sup")
     image_series = ImageSeries(
         events=[
@@ -193,16 +171,12 @@ def test_cache_subtitles_builds_image_cache_for_sup_stream(tmp_path: Path):
         "scinoephile.media.subtitles.cache.ImageSeries.load",
         return_value=image_series,
     ):
-        cache_subtitles(
-            infile_path,
-            [stream],
-            cache_dir_path=tmp_path / "cache",
-        )
+        cache.cache(infile_path, [stream])
 
     image_dir_path = get_image_subtitle_dir_path(
         infile_path,
         stream,
-        cache_dir_path=tmp_path / "cache",
+        cache_root_path=tmp_path / "cache",
     )
     assert (image_dir_path / "index.html").exists()
 
@@ -216,18 +190,14 @@ def test_cache_subtitles_can_skip_image_cache_for_sup_stream(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
+    cache = SubtitleCache(tmp_path / "cache")
     cache_subtitle_stream(infile_path, stream, tmp_path / "cache", b"not a real sup")
 
     with patch(
         "scinoephile.media.subtitles.cache.ImageSeries.load",
         side_effect=ValueError("SUP segment data is truncated."),
     ) as load:
-        cache_subtitles(
-            infile_path,
-            [stream],
-            cache_dir_path=tmp_path / "cache",
-            render_images=False,
-        )
+        cache.cache(infile_path, [stream], render_images=False)
 
     load.assert_not_called()
 
@@ -244,6 +214,7 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path):
         SubtitleStream(index=2, language="eng", codec_name="subrip"),
         SubtitleStream(index=3, language="zho", codec_name="subrip"),
     ]
+    cache = SubtitleCache(tmp_path / "cache")
     input_stream = _RecordingFfmpegInput()
     merged_streams: list[_RecordingMergedFfmpegStream] = []
 
@@ -263,22 +234,10 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path):
             side_effect=merge_outputs,
         ),
     ):
-        cache_subtitles(
-            infile_path,
-            streams,
-            cache_dir_path=tmp_path / "cache",
-        )
+        cache.cache(infile_path, streams)
 
-    first_stream_path = get_subtitle_cache_path(
-        infile_path,
-        streams[0],
-        cache_dir_path=tmp_path / "cache",
-    )
-    second_stream_path = get_subtitle_cache_path(
-        infile_path,
-        streams[1],
-        cache_dir_path=tmp_path / "cache",
-    )
+    first_stream_path = cache.get_path(infile_path, streams[0])
+    second_stream_path = cache.get_path(infile_path, streams[1])
     assert {
         (Path(path).name, mapping, codec)
         for path, mapping, codec in input_stream.output_calls

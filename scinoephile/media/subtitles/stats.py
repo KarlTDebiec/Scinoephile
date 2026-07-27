@@ -8,10 +8,11 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from scinoephile.core.media import SubtitleStream
+from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 
-from .cache import cache_subtitles, get_subtitle_cache_path
+from .cache import SubtitleCache
 
 __all__ = [
     "SubtitleStreamStats",
@@ -35,23 +36,22 @@ def get_subtitle_stream_stats(
     infile_path: Path,
     stream: SubtitleStream,
     *,
-    cache_dir_path: Path | None = None,
+    cache_root_path: Path | None = None,
 ) -> SubtitleStreamStats:
     """Get subtitle stream event count and span from cached streams.
 
     Arguments:
         infile_path: media input file
         stream: subtitle stream to inspect
-        cache_dir_path: cache directory path
+        cache_root_path: cache root directory path
     Returns:
         subtitle stream statistics
     """
-    cache_subtitles(infile_path, [stream], cache_dir_path=cache_dir_path)
-    stream_path = get_subtitle_cache_path(
-        infile_path,
-        stream,
-        cache_dir_path=cache_dir_path,
-    )
+    if cache_root_path is None:
+        cache_root_path = get_runtime_cache_root_path()
+    cache = SubtitleCache(cache_root_path)
+    cache.cache(infile_path, [stream])
+    stream_path = cache.get_path(infile_path, stream)
     if stream.extension == "sup":
         image_dir_path = stream_path.parent / "image-series"
         series = ImageSeries.load(image_dir_path)

@@ -449,7 +449,7 @@ def test_queryer_cache_is_namespaced_by_provider_model(tmp_path):
     queryer_one = Queryer(
         _TestCase,
         provider=provider_one,
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         max_attempts=1,
     )
     test_case = _TestCase(query=_Query(text="input"))
@@ -460,7 +460,7 @@ def test_queryer_cache_is_namespaced_by_provider_model(tmp_path):
     queryer_two = Queryer(
         _TestCase,
         provider=provider_two,
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         max_attempts=1,
     )
     result_two = queryer_two(test_case)
@@ -477,13 +477,13 @@ def test_queryer_cache_stores_only_answer_and_preserves_current_metadata(tmp_pat
     queryer = Queryer(
         _TestCase,
         provider=provider,
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         max_attempts=1,
     )
 
     first = queryer(_TestCase(query=_Query(text="input")))
 
-    cache_paths = list(tmp_path.glob("*.json"))
+    cache_paths = list((tmp_path / "llm").glob("*.json"))
     assert len(cache_paths) == 1
     assert json.loads(cache_paths[0].read_text(encoding="utf-8")) == {
         "output": "cached"
@@ -513,7 +513,7 @@ def test_queryer_overwrites_matching_cache(tmp_path):
     Queryer(
         _TestCase,
         provider=cached_provider,
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         max_attempts=1,
     )(test_case)
 
@@ -521,12 +521,12 @@ def test_queryer_overwrites_matching_cache(tmp_path):
     result = Queryer(
         _TestCase,
         provider=fresh_provider,
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         max_attempts=1,
         overwrite_cache=True,
     )(test_case)
 
-    cache_paths = list(tmp_path.glob("*.json"))
+    cache_paths = list((tmp_path / "llm").glob("*.json"))
     assert result.answer == _Answer(output="fresh")
     assert len(fresh_provider.calls) == 1
     assert len(cache_paths) == 1
@@ -539,7 +539,7 @@ def test_queryer_cache_is_namespaced_by_test_case_class(tmp_path):
     queryer_one = Queryer(
         _TestCase,
         provider=provider_one,
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         max_attempts=1,
     )
     test_case = _TestCase(query=_Query(text="input"))
@@ -550,7 +550,7 @@ def test_queryer_cache_is_namespaced_by_test_case_class(tmp_path):
     queryer_two = Queryer(
         _CompatibleTestCase,
         provider=provider_two,
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         max_attempts=1,
     )
     result_two = queryer_two(test_case)
@@ -566,12 +566,12 @@ def test_queryer_cache_is_namespaced_by_provider_implementation(tmp_path):
     queryer_one = Queryer(
         _TestCase,
         provider=_RecordingProvider(),
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
     )
     queryer_two = Queryer(
         _TestCase,
         provider=_AlternateRecordingProvider(),
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
     )
 
     cache_path_one = queryer_one._get_cache_path("system", "tools", "query")
@@ -597,13 +597,13 @@ def test_queryer_cache_is_namespaced_by_provider_base_url(tmp_path):
     result_one = Queryer(
         _TestCase,
         provider=provider_one,
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         max_attempts=1,
     )(test_case)
     result_two = Queryer(
         _TestCase,
         provider=provider_two,
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         max_attempts=1,
     )(test_case)
 
@@ -618,7 +618,7 @@ def test_cache_path_does_not_retain_queryer(tmp_path):
     queryer = Queryer(
         _TestCase,
         provider=_RecordingProvider(),
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
     )
     queryer_ref = ref(queryer)
     assert queryer._get_cache_path("system", "tools", "query") is not None

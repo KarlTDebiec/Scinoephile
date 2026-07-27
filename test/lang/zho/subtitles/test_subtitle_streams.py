@@ -20,7 +20,7 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
     """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
 
     with (
         patch(
@@ -49,19 +49,19 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
     ):
         streams = get_zho_subtitle_streams(
             infile_path,
-            cache_dir_path=cache_dir_path,
+            cache_root_path=cache_root_path,
         )
 
     details_mock.assert_called_once_with(
         infile_path,
-        cache_dir_path=cache_dir_path / "media" / "subtitles",
+        cache_root_path=cache_root_path,
         overwrite_cache=False,
         streams=None,
     )
     analysis_mock.assert_called_once_with(
         infile_path,
         streams[0],
-        cache_dir_path=cache_dir_path,
+        cache_root_path=cache_root_path,
         overwrite_cache=False,
         subtitle_cache_is_fresh=False,
     )
@@ -129,14 +129,14 @@ def test_get_zho_subtitle_streams_does_not_overwrite_subtitle_cache_twice(
 
     details_mock.assert_called_once_with(
         infile_path,
-        cache_dir_path=None,
+        cache_root_path=None,
         overwrite_cache=True,
         streams=None,
     )
     analysis_mock.assert_called_once_with(
         infile_path,
         stream,
-        cache_dir_path=None,
+        cache_root_path=None,
         overwrite_cache=True,
         subtitle_cache_is_fresh=True,
     )

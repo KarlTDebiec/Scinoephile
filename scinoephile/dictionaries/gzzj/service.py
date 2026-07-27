@@ -8,7 +8,7 @@ from pathlib import Path
 
 from scinoephile.common.validation import val_input_path, val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, DictionarySqliteStore
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
 from scinoephile.lang.id import LanguageId
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
@@ -38,11 +38,14 @@ class GzzjDictionaryService:
         """
         if database_path is None:
             database_path = (
-                get_runtime_cache_dir_path("dictionaries", "gzzj") / "gzzj.db"
+                get_runtime_cache_root_path() / "dictionaries" / "gzzj" / "gzzj.db"
             )
         if source_json_path is None:
             source_json_path = (
-                get_runtime_cache_dir_path("dictionaries", "gzzj") / "B01_資料.json"
+                get_runtime_cache_root_path()
+                / "dictionaries"
+                / "gzzj"
+                / "B01_資料.json"
             )
         self.database_path = val_output_path(database_path, exist_ok=True)
         self.source_json_path = Path(source_json_path)

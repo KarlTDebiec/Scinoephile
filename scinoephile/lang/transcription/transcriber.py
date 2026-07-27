@@ -21,7 +21,7 @@ from scinoephile.audio.transcription import (
 )
 from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.core.subtitles import Series
 
 from .aligner import TranscriptionAligner
@@ -78,7 +78,7 @@ class GuidedTranscriber:
         aligner: TranscriptionAligner,
         demucs_mode: DemucsMode = DemucsMode.AUTO,
         vad_mode: VADMode = VADMode.AUTO,
-        cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
         segment_splitter: TranscribedSegmentSplitter | None = None,
     ):
@@ -92,7 +92,7 @@ class GuidedTranscriber:
             aligner: transcription aligner
             demucs_mode: Demucs preprocessing mode
             vad_mode: Whisper VAD mode
-            cache_dir_path: cache root directory path
+            cache_root_path: cache root directory path
             overwrite_cache: whether to replace matching generated cache files
             segment_splitter: optional strategy for splitting Whisper segments
         """
@@ -103,9 +103,9 @@ class GuidedTranscriber:
         self.aligner = aligner
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
-        if cache_dir_path is None:
-            cache_dir_path = get_runtime_cache_dir_path(create=False)
-        self.cache_dir_path = cache_dir_path
+        if cache_root_path is None:
+            cache_root_path = get_runtime_cache_root_path(create=False)
+        self.cache_root_path = cache_root_path
         self.overwrite_cache = overwrite_cache
         self.segment_splitter = segment_splitter
 
@@ -115,7 +115,7 @@ class GuidedTranscriber:
             language=self.whisper_language,
             demucs_mode=self.demucs_mode,
             vad_mode=self.vad_mode,
-            cache_root_path=self.cache_dir_path,
+            cache_root_path=self.cache_root_path,
         )
 
         # Configure defensive decoding after standard attempts are exhausted
@@ -130,7 +130,7 @@ class GuidedTranscriber:
             language=self.whisper_language,
             demucs_mode=recovery_demucs_mode,
             vad_mode=recovery_vad_mode,
-            cache_root_path=self.cache_dir_path,
+            cache_root_path=self.cache_root_path,
             temperature=_RECOVERY_TEMPERATURES,
             condition_on_previous_text=False,
         )
@@ -141,7 +141,7 @@ class GuidedTranscriber:
             language=self.whisper_language,
             demucs_mode=DemucsMode.OFF,
             vad_mode=VADMode.OFF,
-            cache_root_path=self.cache_dir_path,
+            cache_root_path=self.cache_root_path,
             condition_on_previous_text=False,
         )
 

@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Literal
 
-from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_root_arg
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import get_cache_entries
@@ -68,7 +68,7 @@ class CacheListCli(ScinoephileCliBase):
         )
 
         # Input arguments
-        add_cache_dir_arg(
+        add_cache_root_arg(
             arg_groups["input arguments"],
             help_text="cache root directory to inspect (default: %(default)s)",
         )
@@ -117,7 +117,7 @@ class CacheListCli(ScinoephileCliBase):
         cls,
         *,
         _parser: ArgumentParser | None = None,
-        cache_dir_path: Path,
+        cache_root_path: Path,
         namespace: str | None,
         output_format: Literal["text", "json", "jsonl"],
         limit: int | None,
@@ -130,7 +130,7 @@ class CacheListCli(ScinoephileCliBase):
 
         # Perform operations
         try:
-            entries = get_cache_entries(cache_dir_path, namespace=namespace)
+            entries = get_cache_entries(cache_root_path, namespace=namespace)
         except (NotADirectoryError, ScinoephileError) as exc:
             parser.error(str(exc))
         entries = sort_entries(entries, sort=sort, reverse=reverse)

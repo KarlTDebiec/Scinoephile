@@ -30,7 +30,7 @@ class CountingLensRecognizer(LensRecognizer):
 
     def __init__(
         self,
-        cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
         exceptions: list[Exception | None] | None = None,
         results: list[list[str]] | None = None,
         *,
@@ -39,12 +39,14 @@ class CountingLensRecognizer(LensRecognizer):
         """Initialize.
 
         Arguments:
-            cache_dir_path: directory in which to cache OCR results
+            cache_root_path: root directory beneath which to cache OCR results
             exceptions: exceptions to raise from subsequent recognitions
             results: normalized OCR lines to return from subsequent recognitions
             overwrite_cache: whether to replace matching OCR cache files
         """
-        self.cache_dir_path = cache_dir_path
+        self.cache_dir_path = None
+        if cache_root_path is not None:
+            self.cache_dir_path = cache_root_path / "google-lens"
         self.language = Language.eng
         self.lens_language_code = "en"
         self.retries = 3
@@ -211,7 +213,7 @@ def test_lens_recognizer_caches_results_by_image(
         monkeypatch: pytest monkeypatch fixture
         tmp_path: temporary path fixture
     """
-    recognizer = CountingLensRecognizer(cache_dir_path=tmp_path)
+    recognizer = CountingLensRecognizer(cache_root_path=tmp_path)
     patch_chrome_lens_py(monkeypatch, recognizer)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
@@ -219,7 +221,7 @@ def test_lens_recognizer_caches_results_by_image(
     assert recognizer.recognize_image(image) == "cached\ntext"
 
     assert recognizer.predict_count == 1
-    assert len(list(tmp_path.glob("*.json"))) == 1
+    assert len(list((tmp_path / "google-lens").glob("*.json"))) == 1
 
 
 def test_lens_recognizer_overwrites_matching_cache(
@@ -233,9 +235,9 @@ def test_lens_recognizer_overwrites_matching_cache(
         tmp_path: temporary path fixture
     """
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
-    cached = CountingLensRecognizer(cache_dir_path=tmp_path)
+    cached = CountingLensRecognizer(cache_root_path=tmp_path)
     fresh = CountingLensRecognizer(
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         overwrite_cache=True,
         results=[["fresh"]],
     )
@@ -257,13 +259,13 @@ def test_lens_recognizer_formats_cached_results(
         monkeypatch: pytest monkeypatch fixture
         tmp_path: temporary path fixture
     """
-    recognizer = CountingLensRecognizer(cache_dir_path=tmp_path)
+    recognizer = CountingLensRecognizer(cache_root_path=tmp_path)
     patch_chrome_lens_py(monkeypatch, recognizer)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
     assert recognizer.recognize_image(image) == "cached\ntext"
 
-    cache_path = next(tmp_path.glob("*.json"))
+    cache_path = next((tmp_path / "google-lens").glob("*.json"))
     cache_path.write_text(
         '{"lines": ["cached", "..."]}',
         encoding="utf-8",
@@ -285,7 +287,7 @@ def test_lens_recognizer_does_not_cache_request_errors(
     """
     patch_google_lens_sleep(monkeypatch)
     recognizer = CountingLensRecognizer(
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         results=[["Request error (possibly proxy-related)"]],
     )
     patch_chrome_lens_py(monkeypatch, recognizer)
@@ -295,7 +297,7 @@ def test_lens_recognizer_does_not_cache_request_errors(
         recognizer.recognize_image(image)
 
     assert recognizer.predict_count == 3
-    assert not list(tmp_path.glob("*.json"))
+    assert not list((tmp_path / "google-lens").glob("*.json"))
 
 
 def test_lens_recognizer_retries_request_errors_before_caching(
@@ -310,7 +312,7 @@ def test_lens_recognizer_retries_request_errors_before_caching(
     """
     patch_google_lens_sleep(monkeypatch)
     recognizer = CountingLensRecognizer(
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         results=[
             ["Request error (possibly proxy-related): 502 Bad Gateway"],
             ["Request error (possibly proxy-related): 502 Bad Gateway"],
@@ -324,7 +326,7 @@ def test_lens_recognizer_retries_request_errors_before_caching(
     assert recognizer.recognize_image(image) == "recognized"
 
     assert recognizer.predict_count == 3
-    assert len(list(tmp_path.glob("*.json"))) == 1
+    assert len(list((tmp_path / "google-lens").glob("*.json"))) == 1
 
 
 def test_lens_recognizer_raises_last_request_error_after_retries(
@@ -339,7 +341,7 @@ def test_lens_recognizer_raises_last_request_error_after_retries(
     """
     patch_google_lens_sleep(monkeypatch)
     recognizer = CountingLensRecognizer(
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         results=[
             ["Request error (possibly proxy-related): attempt 1"],
             ["Request error (possibly proxy-related): attempt 2"],
@@ -354,7 +356,7 @@ def test_lens_recognizer_raises_last_request_error_after_retries(
         recognizer.recognize_image(image)
 
     assert recognizer.predict_count == 3
-    assert not list(tmp_path.glob("*.json"))
+    assert not list((tmp_path / "google-lens").glob("*.json"))
 
 
 def test_lens_recognizer_retries_in_one_asyncio_run(monkeypatch: MonkeyPatch):
@@ -471,7 +473,7 @@ def test_lens_recognizer_rejects_uncached_calls_in_async_loop(tmp_path: Path):
     Arguments:
         tmp_path: temporary path fixture
     """
-    recognizer = CountingLensRecognizer(cache_dir_path=tmp_path)
+    recognizer = CountingLensRecognizer(cache_root_path=tmp_path)
 
     async def recognize() -> None:
         """Run synchronous recognition from an async context."""

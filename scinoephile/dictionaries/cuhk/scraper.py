@@ -24,7 +24,7 @@ from scinoephile.core.dictionaries import (
     DictionaryEntry,
     DictionarySource,
 )
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.lang.yue.conversion import get_yue_converted
 
 from .constants import (
@@ -62,8 +62,8 @@ CUHK_TONE_SANDHI_ALTERNATE_REGEX = re.compile(
 class CuhkDictionaryScraperKwargs(TypedDict, total=False):
     """Keyword arguments for CuhkDictionaryScraper initialization."""
 
-    cache_dir_path: Path | None
-    """Cache directory path for CUHK scrape artifacts."""
+    cache_root_path: Path | None
+    """Root directory beneath which to cache CUHK scrape artifacts."""
     min_delay_seconds: float
     """Minimum delay between HTTP requests."""
     max_delay_seconds: float
@@ -83,7 +83,7 @@ class CuhkDictionaryScraper:
 
     def __init__(
         self,
-        cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
         *,
         min_delay_seconds: float = 1.0,
         max_delay_seconds: float = 5.0,
@@ -95,7 +95,7 @@ class CuhkDictionaryScraper:
         """Initialize.
 
         Arguments:
-            cache_dir_path: cache directory path for CUHK scrape artifacts
+            cache_root_path: root directory beneath which to cache scrape artifacts
             min_delay_seconds: minimum delay between HTTP requests
             max_delay_seconds: maximum delay between HTTP requests
             request_timeout_seconds: per-request timeout
@@ -103,9 +103,11 @@ class CuhkDictionaryScraper:
             overwrite_cache: whether to replace matching cached HTTP responses
             session: requests session for dependency injection
         """
-        if cache_dir_path is None:
-            cache_dir_path = get_runtime_cache_dir_path("dictionaries", "cuhk")
-        self.cache_dir_path = val_output_dir_path(cache_dir_path)
+        if cache_root_path is None:
+            cache_root_path = get_runtime_cache_root_path()
+        self.cache_dir_path = val_output_dir_path(
+            cache_root_path / "dictionaries" / "cuhk"
+        )
         self.discovery_dir_path = self.cache_dir_path / "discovery"
         self.scraped_dir_path = self.cache_dir_path / "scraped"
 

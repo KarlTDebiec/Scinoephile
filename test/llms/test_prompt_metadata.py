@@ -51,15 +51,17 @@ def test_registered_prompt_model_and_cache_identities_change_once(
             != legacy_test_case_cls.answer_cls.__name__
         )
 
-        queryer = Queryer(test_case_cls, provider=provider)
-        legacy_queryer = Queryer(legacy_test_case_cls, provider=provider)
+        queryer = Queryer(test_case_cls, provider=provider, cache_root_path=tmp_path)
+        legacy_queryer = Queryer(
+            legacy_test_case_cls,
+            provider=provider,
+            cache_root_path=tmp_path,
+        )
         system_prompt = queryer.system_prompt
         legacy_system_prompt = legacy_queryer.system_prompt
 
         assert system_prompt == legacy_system_prompt
 
-        queryer.cache_dir_path = tmp_path
-        legacy_queryer.cache_dir_path = tmp_path
         tools_json = queryer.tool_box.to_json()
         query_json = '{"same":"query"}'
         cache_path = queryer._get_cache_path(system_prompt, tools_json, query_json)

@@ -172,8 +172,8 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
         """Execute with provided keyword arguments."""
         service = CuhkDictionaryService(
             database_path=database_path,
+            cache_root_path=cache_args.root_path,
             scraper_kwargs={
-                "cache_dir_path": cache_args.dir_path / "dictionaries" / "cuhk",
                 "min_delay_seconds": min_delay_seconds,
                 "max_delay_seconds": max_delay_seconds,
                 "max_retries": max_retries,

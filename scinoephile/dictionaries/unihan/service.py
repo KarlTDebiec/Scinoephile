@@ -12,7 +12,7 @@ import requests
 
 from scinoephile.common.validation import val_input_path, val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, DictionarySqliteStore
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
 from scinoephile.lang.id import LanguageId
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
@@ -49,7 +49,7 @@ class UnihanDictionaryService:
         """
         if database_path is None:
             database_path = (
-                get_runtime_cache_dir_path("dictionaries", "unihan") / "unihan.db"
+                get_runtime_cache_root_path() / "dictionaries" / "unihan" / "unihan.db"
             )
         self.database_path = val_output_path(database_path, exist_ok=True)
         self.auto_build_missing = auto_build_missing
@@ -64,7 +64,7 @@ class UnihanDictionaryService:
         self.runtime_data_dir_path = (
             runtime_data_dir_path
             if runtime_data_dir_path is not None
-            else get_runtime_cache_dir_path("dictionaries", "unihan", "data")
+            else get_runtime_cache_root_path() / "dictionaries" / "unihan" / "data"
         )
 
     def build(

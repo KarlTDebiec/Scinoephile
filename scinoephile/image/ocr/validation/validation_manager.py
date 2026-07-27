@@ -10,7 +10,7 @@ from pathlib import Path
 from scinoephile.common import package_root
 from scinoephile.common.validation import val_input_dir_path, val_output_dir_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.core.text import WHITESPACE_CHARS
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
@@ -150,8 +150,9 @@ class ValidationManager:
         self.cache_char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]] = {}
         if not self.dev:
             if validation_data_dir_path is None:
-                self.validation_data_dir_path = get_runtime_cache_dir_path(
-                    "ocr_validation", create=False
+                self.validation_data_dir_path = val_output_dir_path(
+                    get_runtime_cache_root_path(create=False) / "ocr_validation",
+                    create=False,
                 )
             else:
                 self.validation_data_dir_path = val_output_dir_path(

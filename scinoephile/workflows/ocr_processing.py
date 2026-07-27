@@ -11,7 +11,7 @@ from typing import Any
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.core.subtitles import Series
 from scinoephile.image.ocr.lens import (
     ocr_image_series_with_lens,
@@ -21,10 +21,7 @@ from scinoephile.image.ocr.tesseract import (
     ocr_image_series_with_tesseract,
 )
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.media.subtitles.cache import (
-    cache_subtitles,
-    get_subtitle_cache_path,
-)
+from scinoephile.media.subtitles.cache import SubtitleCache
 from scinoephile.media.subtitles.selection import get_media_subtitle_stream
 
 from .clean import clean_series
@@ -61,7 +58,7 @@ class OcrProcessingWorkflow:
         *,
         language: Language,
         stream_index: int | None = None,
-        cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
         clean: bool = False,
         validate: bool = True,
         interactive: bool = False,
@@ -81,7 +78,7 @@ class OcrProcessingWorkflow:
             output_dir_path: directory where OCR outputs are written
             language: OCR text language to process
             stream_index: media subtitle stream index when infile is media
-            cache_dir_path: cache root directory path
+            cache_root_path: cache root directory path
             clean: whether to clean OCR subtitle outputs before fusing
             validate: whether to validate fused OCR subtitles against images
             interactive: whether to launch the OCR validation web UI
@@ -98,15 +95,11 @@ class OcrProcessingWorkflow:
         self.output_dir_path = output_dir_path
         self.language = language
         self.stream_index = stream_index
-        if cache_dir_path is None:
-            cache_dir_path = get_runtime_cache_dir_path(create=False)
-        self.cache_dir_path = cache_dir_path
-        self._lens_cache_dir_path = cache_dir_path / "google-lens"
-        self._llm_cache_dir_path = cache_dir_path / "llm"
-        self._media_cache_dir_path = cache_dir_path / "media" / "subtitles"
-        self._ocr_validation_data_dir_path = cache_dir_path / "ocr_validation"
-        self._paddle_cache_dir_path = cache_dir_path / "paddleocr"
-        self._tesseract_cache_dir_path = cache_dir_path / "tesseract"
+        if cache_root_path is None:
+            cache_root_path = get_runtime_cache_root_path(create=False)
+        self.cache_root_path = cache_root_path
+        self._subtitle_cache = SubtitleCache(cache_root_path)
+        self._ocr_validation_data_dir_path = cache_root_path / "ocr_validation"
         self.clean = clean
         self.validate = validate
         self.interactive = interactive
@@ -119,7 +112,7 @@ class OcrProcessingWorkflow:
         else:
             self.fuser_kw = dict(fuser_kw)
         self.fuser_kw.setdefault("additional_context", additional_context)
-        self.fuser_kw.setdefault("cache_dir_path", self._llm_cache_dir_path)
+        self.fuser_kw.setdefault("cache_root_path", self.cache_root_path)
         self.fuser_kw.setdefault("overwrite_cache", overwrite_cache)
         self.fuser_kw.setdefault(
             "test_case_path",
@@ -221,17 +214,12 @@ class OcrProcessingWorkflow:
                 return ImageSeries.load(self.infile_path)
 
             stream = get_media_subtitle_stream(self.infile_path, self.stream_index)
-            cache_subtitles(
+            self._subtitle_cache.cache(
                 self.infile_path,
                 [stream],
-                cache_dir_path=self._media_cache_dir_path,
-                overwrite_cache=self.overwrite_cache,
+                overwrite=self.overwrite_cache,
             )
-            stream_path = get_subtitle_cache_path(
-                self.infile_path,
-                stream,
-                cache_dir_path=self._media_cache_dir_path,
-            )
+            stream_path = self._subtitle_cache.get_path(self.infile_path, stream)
             return ImageSeries.load(stream_path)
         except (OSError, RuntimeError, ValueError) as exc:
             raise ScinoephileError(
@@ -254,7 +242,7 @@ class OcrProcessingWorkflow:
         else:
             lens = ocr_image_series_with_lens(
                 image_series,
-                cache_dir_path=self._lens_cache_dir_path,
+                cache_root_path=self.cache_root_path,
                 language=self.language,
                 overwrite_cache=self.overwrite_cache,
             )
@@ -290,7 +278,7 @@ class OcrProcessingWorkflow:
         else:
             paddle = ocr_image_series_with_paddle(
                 image_series,
-                cache_dir_path=self._paddle_cache_dir_path,
+                cache_root_path=self.cache_root_path,
                 language=self.language,
                 overwrite_cache=self.overwrite_cache,
             )
@@ -328,7 +316,7 @@ class OcrProcessingWorkflow:
         else:
             tesseract = ocr_image_series_with_tesseract(
                 image_series,
-                cache_dir_path=self._tesseract_cache_dir_path,
+                cache_root_path=self.cache_root_path,
                 detect_italics=True,
                 language=Language.eng,
                 overwrite_cache=self.overwrite_cache,

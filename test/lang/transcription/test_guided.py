@@ -71,7 +71,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     """Test factory configures language-specific prompts and Whisper language."""
     with (
         patch(
-            "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
+            "scinoephile.lang.transcription.guided.get_runtime_cache_root_path",
             return_value=tmp_path,
         ),
         patch(
@@ -92,7 +92,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.guide_language is Language.zho_hans
     assert transcriber.demucs_mode is DemucsMode.AUTO
     assert transcriber.vad_mode is VADMode.AUTO
-    assert transcriber.cache_dir_path == tmp_path
+    assert transcriber.cache_root_path == tmp_path
     assert transcriber.overwrite_cache
     assert transcriber.whisper_language == "yue"
     assert transcriber.segment_splitter is not None
@@ -118,14 +118,14 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     )
     assert not transcriber.aligner.delineation_processor.prune_test_cases
     assert not transcriber.aligner.punctuation_processor.prune_test_cases
-    assert transcriber.aligner.delineation_processor.queryer.cache_dir_path == (
+    assert transcriber.aligner.delineation_processor.queryer._cache.cache_dir_path == (
         tmp_path / "llm"
     )
-    assert transcriber.aligner.delineation_processor.queryer.overwrite_cache
-    assert transcriber.aligner.punctuation_processor.queryer.cache_dir_path == (
+    assert transcriber.aligner.delineation_processor.queryer._cache.overwrite
+    assert transcriber.aligner.punctuation_processor.queryer._cache.cache_dir_path == (
         tmp_path / "llm"
     )
-    assert transcriber.aligner.punctuation_processor.queryer.overwrite_cache
+    assert transcriber.aligner.punctuation_processor.queryer._cache.overwrite
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(
@@ -197,7 +197,7 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(
     """Test default JSON test cases are preserved between runs."""
     with (
         patch(
-            "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
+            "scinoephile.lang.transcription.guided.get_runtime_cache_root_path",
             return_value=tmp_path,
         ),
         patch(

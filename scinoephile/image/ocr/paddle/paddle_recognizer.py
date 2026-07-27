@@ -45,8 +45,8 @@ _PADDLE_LANGUAGE_CODES = {
 class PaddleRecognizerKwargs(TypedDict, total=False):
     """Additional keyword arguments forwarded to PaddleRecognizer."""
 
-    cache_dir_path: Path | None
-    """Directory in which to cache OCR results."""
+    cache_root_path: Path | None
+    """Root directory beneath which to cache OCR results."""
 
     language: Language
     """Scinoephile language."""
@@ -64,7 +64,7 @@ class PaddleRecognizer:
     def __init__(
         self,
         *,
-        cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
         language: Language = Language.eng,
         min_confidence: float = 0.0,
         overwrite_cache: bool = False,
@@ -72,7 +72,7 @@ class PaddleRecognizer:
         """Initialize.
 
         Arguments:
-            cache_dir_path: directory in which to cache OCR results
+            cache_root_path: root directory beneath which to cache OCR results
             language: Scinoephile language
             min_confidence: minimum confidence to include
             overwrite_cache: whether to replace matching OCR cache files
@@ -89,8 +89,8 @@ class PaddleRecognizer:
         self.min_confidence = min_confidence
         self.overwrite_cache = overwrite_cache
         self.cache_dir_path = None
-        if cache_dir_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_dir_path)
+        if cache_root_path is not None:
+            self.cache_dir_path = val_output_dir_path(cache_root_path / "paddleocr")
 
         paddleocr = import_paddleocr()
         root_logger = getLogger()

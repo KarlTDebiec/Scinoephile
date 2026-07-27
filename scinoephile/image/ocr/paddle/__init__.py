@@ -14,7 +14,7 @@ from logging import getLogger
 from typing import Unpack, cast
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
@@ -44,8 +44,8 @@ def ocr_image_series_with_paddle(
     try:
         from .preprocessing import preprocess_paddle_ocr_image  # noqa: PLC0415
 
-        if kwargs.get("cache_dir_path") is None:
-            kwargs["cache_dir_path"] = get_runtime_cache_dir_path("paddleocr")
+        if kwargs.get("cache_root_path") is None:
+            kwargs["cache_root_path"] = get_runtime_cache_root_path()
         paddle_recognizer = PaddleRecognizer(**kwargs)
 
         events = []
