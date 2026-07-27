@@ -262,6 +262,7 @@ def test_transcribe_overwrites_matching_cache(
         model_name="custom/model",
         demucs_mode=DemucsMode.OFF,
         vad_mode=VADMode.OFF,
+        overwrite_cache=True,
     )
     transcriber._model = Mock()
     cache_path = _get_cache_path(transcriber, audio)
@@ -279,7 +280,7 @@ def test_transcribe_overwrites_matching_cache(
         Mock(return_value=SimpleNamespace(transcribe=transcribe_mock)),
     )
 
-    assert transcriber(audio, overwrite_cache=True) == []
+    assert transcriber(audio) == []
     assert json.loads(cache_path.read_text(encoding="utf-8"))["segments"] == []
     transcribe_mock.assert_called_once()
 

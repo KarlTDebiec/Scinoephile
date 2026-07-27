@@ -17,7 +17,7 @@ from scinoephile.core import Language
 from scinoephile.core.dependencies.ocr import import_paddleocr
 
 from .bounding_box import PaddleOcrBoundingBox
-from .cache import PaddleOcrCache
+from .cache import PaddleCache
 from .text_result import PaddleOcrTextResult
 
 __all__ = [
@@ -82,7 +82,7 @@ class PaddleRecognizer:
         os.environ.setdefault("PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK", "True")
 
         self.min_confidence = min_confidence
-        self._cache = PaddleOcrCache(cache_root_path, overwrite_cache)
+        self._cache = PaddleCache(cache_root_path, overwrite_cache)
 
         paddleocr = import_paddleocr()
         root_logger = getLogger()

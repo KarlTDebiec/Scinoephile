@@ -35,7 +35,7 @@ def extract_subtitle_stream(
         output path
     """
     cache = SubtitleCache(cache_root_path)
-    cache.cache(
+    cache.ensure_cached(
         infile_path,
         [stream],
         render_images=False,

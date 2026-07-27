@@ -26,8 +26,12 @@ def test_cuhk_service_keeps_cache_paths_on_scraper(tmp_path: Path):
         cache_root_path=tmp_path / "cache",
     )
 
-    assert service.scraper.discovery_cache_dir_path == tmp_path / "cache/cuhk-discovery"
-    assert service.scraper.scraped_cache_dir_path == tmp_path / "cache/cuhk-pages"
+    assert service.scraper.discovery_cache.cache_dir_path == (
+        tmp_path / "cache/cuhk-discovery"
+    )
+    assert service.scraper.scraped_cache.cache_dir_path == (
+        tmp_path / "cache/cuhk-pages"
+    )
     assert not hasattr(service, "discovery_cache_dir_path")
     assert not hasattr(service, "scraped_cache_dir_path")
 

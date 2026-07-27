@@ -152,7 +152,7 @@ def extract_subtitles(
 
     # Cache all subtitle files that need extraction in one ffmpeg run
     if streams_to_extract:
-        subtitle_cache.cache(
+        subtitle_cache.ensure_cached(
             infile_path,
             streams_to_extract,
             render_images=False,

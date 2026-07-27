@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Sequence
 from contextlib import ExitStack
 from logging import getLogger
 from pathlib import Path
@@ -55,16 +56,13 @@ class SubtitleCache:
         self.overwrite = overwrite
         """Whether matching cached subtitle artifacts should be replaced."""
 
-        self._refreshed_image_dir_paths: set[Path] = set()
-        """Rendered image directories refreshed by this cache instance."""
+        self._refreshed_paths: set[Path] = set()
+        """Cache paths refreshed by this cache instance."""
 
-        self._refreshed_stream_paths: set[Path] = set()
-        """Subtitle stream paths refreshed by this cache instance."""
-
-    def cache(
+    def ensure_cached(
         self,
         infile_path: Path,
-        streams: list[SubtitleStream],
+        streams: Sequence[SubtitleStream],
         *,
         render_images: bool = True,
     ):
@@ -79,8 +77,8 @@ class SubtitleCache:
         missing: list[tuple[SubtitleStream, Path]] = []
         for stream in streams:
             stream_path = self.get_path(infile_path, stream)
-            if self.overwrite and stream_path not in self._refreshed_stream_paths:
-                self._refreshed_stream_paths.add(stream_path)
+            if self.overwrite and stream_path not in self._refreshed_paths:
+                self._refreshed_paths.add(stream_path)
                 if stream_path.exists():
                     stream_path.unlink()
                     logger.info(f"Removed subtitle stream cache: {stream_path}")
@@ -139,7 +137,7 @@ class SubtitleCache:
 
         # Render cached SUP streams when requested
         if render_images:
-            self._cache_image_series(infile_path, streams)
+            self._ensure_image_series_cached(infile_path, streams)
 
     def get_path(self, infile_path: Path, stream: SubtitleStream) -> Path:
         """Get the cache path for an extracted subtitle stream.
@@ -163,10 +161,10 @@ class SubtitleCache:
         cache_key = hashlib.sha256(encoded_payload).hexdigest()
         return self.cache_dir_path / cache_key / f"{stream.index}.{stream.extension}"
 
-    def _cache_image_series(
+    def _ensure_image_series_cached(
         self,
         infile_path: Path,
-        streams: list[SubtitleStream],
+        streams: Sequence[SubtitleStream],
     ):
         """Render cached SUP subtitle streams to image directories.
 
@@ -180,8 +178,8 @@ class SubtitleCache:
             stream_path = self.get_path(infile_path, stream)
             image_dir_path = stream_path.parent / "image-series"
             index_path = image_dir_path / "index.html"
-            if self.overwrite and image_dir_path not in self._refreshed_image_dir_paths:
-                self._refreshed_image_dir_paths.add(image_dir_path)
+            if self.overwrite and image_dir_path not in self._refreshed_paths:
+                self._refreshed_paths.add(image_dir_path)
                 if image_dir_path.exists():
                     rmtree(image_dir_path)
                     logger.info(

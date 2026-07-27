@@ -32,7 +32,7 @@ def test_extract_subtitle_stream_copies_cached_stream(tmp_path: Path, caplog):
     stream_path.write_text("cached subtitles", encoding="utf-8")
 
     caplog.set_level("INFO", logger="scinoephile.media.subtitles.extraction")
-    with patch("scinoephile.media.subtitles.extraction.SubtitleCache.cache"):
+    with patch("scinoephile.media.subtitles.extraction.SubtitleCache.ensure_cached"):
         extracted_path = extract_subtitle_stream(
             infile_path=infile_path,
             stream=stream,
@@ -64,7 +64,7 @@ def test_extract_subtitle_stream_caches_missing_stream(tmp_path: Path):
         stream_path.write_text("new subtitles", encoding="utf-8")
 
     with patch(
-        "scinoephile.media.subtitles.extraction.SubtitleCache.cache",
+        "scinoephile.media.subtitles.extraction.SubtitleCache.ensure_cached",
         side_effect=cache_streams,
     ):
         extracted_path = extract_subtitle_stream(

@@ -32,12 +32,14 @@ class DemucsCache:
         self,
         cache_root_path: Path | None,
         model_name: str,
+        overwrite: bool = False,
     ):
         """Initialize.
 
         Arguments:
             cache_root_path: root directory beneath which to cache, or None for default
             model_name: Demucs model name used for source separation
+            overwrite: whether to replace matching cache files
         """
         if cache_root_path is None:
             cache_root_path = get_runtime_cache_root_path()
@@ -48,6 +50,12 @@ class DemucsCache:
 
         self.model_name = model_name
         """Demucs model name identifying cached vocals."""
+
+        self.overwrite = overwrite
+        """Whether matching cache files should be replaced."""
+
+        self._refreshed_paths: set[Path] = set()
+        """Cache paths refreshed by this cache instance."""
 
     def get_path(self, audio: AudioSegment) -> Path:
         """Get the cache path for audio and Demucs configuration.
@@ -81,10 +89,13 @@ class DemucsCache:
             audio: audio used to derive the cache key
         Returns:
             cached vocals, if present
-        Raises:
-            ScinoephileError: if the cached audio cannot be read
         """
         cache_path = self.get_path(audio)
+        if self.overwrite and cache_path not in self._refreshed_paths:
+            self._refreshed_paths.add(cache_path)
+            if cache_path.exists():
+                cache_path.unlink()
+                logger.info(f"Removed Demucs vocals cache: {cache_path}")
         if not cache_path.exists():
             return None
 
@@ -92,9 +103,9 @@ class DemucsCache:
             vocals = AudioSegment.from_file(cache_path)
             cache_path.touch()
         except (CouldntDecodeError, OSError) as exc:
-            raise ScinoephileError(
-                f"Unable to read Demucs vocals cache {cache_path}: {exc}"
-            ) from exc
+            cache_path.unlink(missing_ok=True)
+            logger.warning(f"Discarded invalid Demucs vocals cache {cache_path}: {exc}")
+            return None
         logger.info(f"Loaded Demucs vocals from cache: {cache_path}")
         return vocals
 
@@ -143,5 +154,6 @@ class DemucsCache:
             raise ScinoephileError(
                 f"Unable to write Demucs vocals cache {cache_path}: {exc}"
             ) from exc
+        self._refreshed_paths.add(cache_path)
         logger.info(f"Saved Demucs vocals to cache: {cache_path}")
         return cache_path

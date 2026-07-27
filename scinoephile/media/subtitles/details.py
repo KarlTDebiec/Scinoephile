@@ -45,7 +45,7 @@ def get_detailed_subtitle_streams(
             stream for stream in streams if isinstance(stream, SubtitleStream)
         ]
     if subtitle_streams:
-        subtitle_cache.cache(
+        subtitle_cache.ensure_cached(
             infile_path,
             subtitle_streams,
         )

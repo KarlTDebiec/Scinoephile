@@ -15,6 +15,7 @@ from scinoephile.audio.transcription import (
     DemucsMode,
     TranscribedSegment,
     Transcriber,
+    TranscriptionCache,
     TranscriptionError,
     TranscriptionInferenceError,
     TranscriptionPreprocessingSettings,
@@ -39,6 +40,7 @@ class _TestTranscriber(Transcriber):
         cache_root_path: Path,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
+        overwrite_cache: bool = False,
     ):
         """Initialize."""
         self.outcomes: dict[
@@ -50,6 +52,7 @@ class _TestTranscriber(Transcriber):
             cache_root_path,
             demucs_mode,
             vad_mode,
+            overwrite_cache,
         )
 
     def _get_backend_cache_metadata(
@@ -122,11 +125,17 @@ def test_overwrite_removes_all_configuration_caches_before_transcribing(
 ):
     """Test cache overwrite clears every fallback variant before inference."""
     audio = AudioSegment.silent(duration=100)
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.AUTO, VADMode.AUTO)
+    transcriber = _TestTranscriber(
+        tmp_path,
+        DemucsMode.AUTO,
+        VADMode.AUTO,
+        overwrite_cache=True,
+    )
     preprocessing_settings = transcriber._get_preprocessing_settings()
+    stale_cache = TranscriptionCache(tmp_path, "test", "Test")
     cache_paths = []
     for settings in preprocessing_settings:
-        cache_path = transcriber._cache.save(
+        cache_path = stale_cache.save(
             audio,
             transcriber._get_cache_metadata(settings),
             [_get_segment("old")],
@@ -138,12 +147,11 @@ def test_overwrite_removes_all_configuration_caches_before_transcribing(
         return_value=audio,
     )
 
-    assert transcriber(audio, overwrite_cache=True) == [_get_segment("new")]
+    assert transcriber(audio) == [_get_segment("new")]
     assert cache_paths[0].exists()
     assert not any(cache_path.exists() for cache_path in cache_paths[1:])
     transcriber.demucs_separator.assert_called_once_with(
         audio,
-        overwrite_cache=True,
     )
 
 
@@ -247,7 +255,6 @@ def test_rejected_cached_final_configuration_is_retried(tmp_path: Path):
     assert segments == [_get_segment("good")]
     transcriber.demucs_separator.assert_called_once_with(
         audio,
-        overwrite_cache=False,
     )
     assert transcriber.calls == [(audio, settings)]
 

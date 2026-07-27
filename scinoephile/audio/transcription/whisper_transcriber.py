@@ -18,6 +18,7 @@ from scinoephile.core.dependencies.transcription import (
 )
 from scinoephile.core.ml import get_torch_device
 
+from .demucs import DemucsSeparator
 from .exceptions import TranscriptionInferenceError
 from .preprocessing_settings import (
     DemucsMode,
@@ -66,8 +67,10 @@ class WhisperTranscriber(Transcriber):
         demucs_mode: DemucsMode = DemucsMode.AUTO,
         vad_mode: VADMode = VADMode.AUTO,
         cache_root_path: Path | None = None,
+        overwrite_cache: bool = False,
         temperature: float | Sequence[float] = 0.0,
         condition_on_previous_text: bool = True,
+        demucs_separator: DemucsSeparator | None = None,
     ):
         """Initialize.
 
@@ -77,9 +80,11 @@ class WhisperTranscriber(Transcriber):
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
             cache_root_path: root directory beneath which to cache
+            overwrite_cache: whether to replace matching cache files
             temperature: decoding temperature or fallback schedule
             condition_on_previous_text: whether to condition each decoding window on
                 the preceding window
+            demucs_separator: optional shared Demucs vocal separator
         """
         self.model_name = model_name
         self._model: WhisperModel | None = None
@@ -90,6 +95,8 @@ class WhisperTranscriber(Transcriber):
             cache_root_path,
             demucs_mode,
             vad_mode,
+            overwrite_cache,
+            demucs_separator,
         )
 
     @property

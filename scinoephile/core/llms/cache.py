@@ -26,7 +26,7 @@ class LlmCache:
 
     def __init__(
         self,
-        cache_root_path: Path | None,
+        cache_root_path: Path | None = None,
         overwrite: bool = False,
     ):
         """Initialize.
@@ -45,13 +45,16 @@ class LlmCache:
         self.overwrite = overwrite
         """Whether matching cache files should be replaced."""
 
+        self._refreshed_paths: set[Path] = set()
+        """Cache paths refreshed by this cache instance."""
+
     def discard(self, cache_path: Path):
         """Delete an invalid cache file.
 
         Arguments:
             cache_path: cache file to delete
         """
-        cache_path.unlink()
+        cache_path.unlink(missing_ok=True)
         logger.info(f"Deleted invalid cache file: {cache_path}")
 
     def get_path(
@@ -92,13 +95,20 @@ class LlmCache:
         Returns:
             cached response payload, or None when unavailable
         """
-        if self.overwrite and cache_path.exists():
-            cache_path.unlink()
-            logger.info(f"Removed LLM response cache: {cache_path}")
+        if self.overwrite and cache_path not in self._refreshed_paths:
+            self._refreshed_paths.add(cache_path)
+            if cache_path.exists():
+                cache_path.unlink()
+                logger.info(f"Removed LLM response cache: {cache_path}")
         if not cache_path.exists():
             return None
 
-        return cache_path.read_text(encoding="utf-8")
+        try:
+            return cache_path.read_text(encoding="utf-8")
+        except (OSError, UnicodeError) as exc:
+            cache_path.unlink(missing_ok=True)
+            logger.warning(f"Discarded invalid LLM response cache {cache_path}: {exc}")
+            return None
 
     def mark_used(self, cache_path: Path):
         """Update the access marker for a successfully loaded cache file.
@@ -108,13 +118,17 @@ class LlmCache:
         """
         cache_path.touch()
 
-    def save(self, cache_path: Path, contents: str):
+    def save(self, cache_path: Path, contents: str) -> Path:
         """Save an LLM response payload.
 
         Arguments:
             cache_path: cache file path
             contents: serialized response payload
+        Returns:
+            saved cache path
         """
         with open_atomic_text_file(cache_path) as cache_file:
             cache_file.write(contents)
+        self._refreshed_paths.add(cache_path)
         logger.debug(f"Saved to cache: {cache_path}")
+        return cache_path

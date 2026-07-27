@@ -53,6 +53,9 @@ class ZhoScriptAnalysisCache:
         self.overwrite = overwrite
         """Whether matching cache files should be replaced."""
 
+        self._refreshed_paths: set[Path] = set()
+        """Cache paths refreshed by this cache instance."""
+
     def get_path(
         self,
         infile_path: Path,
@@ -110,9 +113,11 @@ class ZhoScriptAnalysisCache:
             sample_size,
             ocr_languages,
         )
-        if self.overwrite and cache_path.exists():
-            cache_path.unlink()
-            logger.info(f"Removed subtitle script analysis cache: {cache_path}")
+        if self.overwrite and cache_path not in self._refreshed_paths:
+            self._refreshed_paths.add(cache_path)
+            if cache_path.exists():
+                cache_path.unlink()
+                logger.info(f"Removed subtitle script analysis cache: {cache_path}")
         if not cache_path.exists():
             return None
 
@@ -131,6 +136,35 @@ class ZhoScriptAnalysisCache:
         cache_path.touch()
         logger.info(f"Loaded subtitle script analysis from cache: {cache_path}")
         return analysis
+
+    def remove(
+        self,
+        infile_path: Path,
+        stream: SubtitleStream,
+        sample_size: int,
+        ocr_languages: Sequence[str],
+    ) -> Path | None:
+        """Remove a cached script analysis.
+
+        Arguments:
+            infile_path: media input file
+            stream: subtitle stream
+            sample_size: OCR sample size
+            ocr_languages: OCR language codes
+        Returns:
+            removed cache path, if present
+        """
+        cache_path = self.get_path(
+            infile_path,
+            stream,
+            sample_size,
+            ocr_languages,
+        )
+        if not cache_path.exists():
+            return None
+        cache_path.unlink()
+        logger.info(f"Removed subtitle script analysis cache: {cache_path}")
+        return cache_path
 
     def save(
         self,
@@ -167,6 +201,7 @@ class ZhoScriptAnalysisCache:
                 ensure_ascii=False,
                 sort_keys=True,
             )
+        self._refreshed_paths.add(cache_path)
         logger.info(f"Saved subtitle script analysis to cache: {cache_path}")
         return cache_path
 

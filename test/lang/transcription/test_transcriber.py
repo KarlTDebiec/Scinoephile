@@ -9,7 +9,7 @@ from unittest.mock import ANY, Mock, patch
 
 from pydub import AudioSegment
 from pydub.generators import Sine
-from pytest import LogCaptureFixture, approx, mark, raises
+from pytest import LogCaptureFixture, approx, raises
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
 from scinoephile.audio.transcription import (
@@ -171,17 +171,9 @@ def test_segments_are_usable_accepts_partial_guided_tail():
     )
 
 
-@mark.parametrize("overwrite_cache", [False, True])
-def test_missing_guided_tail_runs_focused_recovery(overwrite_cache: bool):
-    """Test a missing guided tail triggers normalized focused recovery.
-
-    Arguments:
-        overwrite_cache: whether to replace matching transcription cache files
-    """
-    transcriber, _ = _get_transcriber(
-        vad_mode=VADMode.OFF,
-        overwrite_cache=overwrite_cache,
-    )
+def test_missing_guided_tail_runs_focused_recovery():
+    """Test a missing guided tail triggers normalized focused recovery."""
+    transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
     initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
     recovered_segments = [
         _get_segment(
@@ -209,7 +201,6 @@ def test_missing_guided_tail_runs_focused_recovery(overwrite_cache: bool):
     transcriber.tail_recovery_transcriber.assert_called_once_with(
         normalized_tail_audio,
         is_usable=ANY,
-        overwrite_cache=overwrite_cache,
     )
     assert transcriber.tail_recovery_transcriber.call_args.kwargs["is_usable"](
         recovered_segments
@@ -237,7 +228,6 @@ def test_missing_guided_tail_keeps_base_after_unusable_recovery():
     transcriber.tail_recovery_transcriber.assert_called_once_with(
         normalized_tail_audio,
         is_usable=ANY,
-        overwrite_cache=False,
     )
     assert not transcriber.tail_recovery_transcriber.call_args.kwargs["is_usable"](
         repetitive_segments
@@ -324,7 +314,6 @@ def test_standard_transcriber_runs_shared_fallbacks():
     transcriber.transcriber.assert_called_once_with(
         audio,
         is_usable=ANY,
-        overwrite_cache=False,
     )
     transcriber.recovery_transcriber.assert_not_called()
 
@@ -374,9 +363,12 @@ def test_all_unusable_candidates_leave_gap_for_translation():
     assert output == []
 
 
-def test_overwrite_cache_is_forwarded_to_shared_transcriber():
-    """Test guided cache overwrite reaches shared cache and inference handling."""
+def test_overwrite_cache_is_owned_by_transcriber_caches():
+    """Test guided cache overwrite is owned by each configured cache."""
     transcriber, _ = _get_transcriber(overwrite_cache=True)
+    assert transcriber.transcriber._cache.overwrite
+    assert transcriber.recovery_transcriber._cache.overwrite
+    assert transcriber.tail_recovery_transcriber._cache.overwrite
     audio = AudioSegment.silent(duration=1000)
     segments = [_get_segment(compression_ratio=1.0, with_words=True)]
     transcriber.transcriber = Mock(return_value=segments)
@@ -385,14 +377,17 @@ def test_overwrite_cache_is_forwarded_to_shared_transcriber():
     transcriber.recovery_transcriber.get_cached_transcription.return_value = None
 
     assert transcriber._transcribe_block_audio(audio) == segments
-    transcriber.transcriber.get_cached_transcription.assert_not_called()
-    transcriber.recovery_transcriber.remove_cached_transcriptions.assert_called_once_with(
+    transcriber.transcriber.get_cached_transcription.assert_called_once_with(
         audio,
+        is_usable=ANY,
+    )
+    transcriber.recovery_transcriber.get_cached_transcription.assert_called_once_with(
+        audio,
+        is_usable=ANY,
     )
     transcriber.transcriber.assert_called_once_with(
         audio,
         is_usable=ANY,
-        overwrite_cache=True,
     )
 
 

@@ -151,3 +151,33 @@ def test_subtitle_script_analysis_cache_overwrite_removes_entry(tmp_path: Path):
         is None
     )
     assert not cache_path.exists()
+
+
+def test_subtitle_script_analysis_cache_overwrites_entry_once(tmp_path: Path):
+    """Test overwrite refreshes a matching analysis once per instance."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+    stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
+    cache_root_path = tmp_path / "cache"
+    languages = ("zho-Hans", "zho-Hant")
+    ZhoScriptAnalysisCache(cache_root_path).save(
+        infile_path,
+        stream,
+        4,
+        languages,
+        ZhoScriptAnalysisResult(script="zho-Hant"),
+    )
+    overwrite_cache = ZhoScriptAnalysisCache(cache_root_path, True)
+
+    assert overwrite_cache.load(infile_path, stream, 4, languages) is None
+    overwrite_cache.save(
+        infile_path,
+        stream,
+        4,
+        languages,
+        ZhoScriptAnalysisResult(script="zho-Hans"),
+    )
+
+    assert overwrite_cache.load(infile_path, stream, 4, languages) == (
+        ZhoScriptAnalysisResult(script="zho-Hans")
+    )

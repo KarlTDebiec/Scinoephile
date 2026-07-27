@@ -56,11 +56,11 @@ def test_get_path_includes_cache_version(
     assert cache.get_path(audio) != first_cache_path
 
 
-def test_load_wraps_decode_failure(
+def test_load_discards_decode_failure(
     tmp_path: Path,
     monkeypatch: MonkeyPatch,
 ):
-    """Test malformed cached vocals raise a Scinoephile domain error."""
+    """Test malformed cached vocals are discarded as a cache miss."""
     audio = AudioSegment.silent(duration=100)
     cache = DemucsCache(tmp_path, "model")
     cache_path = cache.get_path(audio)
@@ -70,8 +70,8 @@ def test_load_wraps_decode_failure(
         Mock(side_effect=CouldntDecodeError("invalid audio")),
     )
 
-    with raises(ScinoephileError, match="Unable to read Demucs vocals cache"):
-        cache.load(audio)
+    assert cache.load(audio) is None
+    assert not cache_path.exists()
 
 
 def test_remove_deletes_matching_cached_vocals(tmp_path: Path):
@@ -99,6 +99,18 @@ def test_save_and_load_cached_vocals(tmp_path: Path):
     assert loaded_vocals is not None
     assert len(loaded_vocals) == len(vocals)
     assert loaded_vocals.frame_rate == vocals.frame_rate
+
+
+def test_demucs_cache_overwrites_matching_entry_once(tmp_path: Path):
+    """Test overwrite refreshes matching separated vocals once per instance."""
+    audio = AudioSegment.silent(duration=100, frame_rate=16000)
+    DemucsCache(tmp_path, "model").save(audio, audio)
+    overwrite_cache = DemucsCache(tmp_path, "model", True)
+
+    assert overwrite_cache.load(audio) is None
+    overwrite_cache.save(audio, audio)
+
+    assert overwrite_cache.load(audio) is not None
 
 
 def test_save_failure_preserves_existing_cached_vocals(

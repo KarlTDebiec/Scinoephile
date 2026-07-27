@@ -18,11 +18,11 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
-from .cache import PaddleOcrCache
+from .cache import PaddleCache
 from .paddle_recognizer import PaddleRecognizer, PaddleRecognizerKwargs
 
 __all__ = [
-    "PaddleOcrCache",
+    "PaddleCache",
     "PaddleRecognizer",
     "PaddleRecognizerKwargs",
     "ocr_image_series_with_paddle",

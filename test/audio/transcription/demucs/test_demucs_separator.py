@@ -12,7 +12,6 @@ from pydub import AudioSegment
 from pytest import MonkeyPatch, importorskip
 
 from scinoephile.audio.transcription.demucs import DemucsSeparator
-from scinoephile.core.exceptions import ScinoephileError
 
 
 class _NumpyBackedTensor:
@@ -77,18 +76,27 @@ def test_separate_vocals_overwrites_matching_cache(
     monkeypatch: MonkeyPatch,
 ):
     """Test cache overwrite regenerates a matching Demucs separation."""
-    separator = DemucsSeparator(cache_root_path=tmp_path)
     input_audio = AudioSegment.silent(duration=1000, frame_rate=16000)
     cached_audio = AudioSegment.silent(duration=900, frame_rate=16000)
     fresh_audio = AudioSegment.silent(duration=800, frame_rate=16000)
-    separate = Mock(side_effect=[cached_audio, fresh_audio])
-    monkeypatch.setattr(separator, "_separate_vocals", separate)
+    cached_separator = DemucsSeparator(cache_root_path=tmp_path)
+    monkeypatch.setattr(
+        cached_separator,
+        "_separate_vocals",
+        Mock(return_value=cached_audio),
+    )
+    cached_separator.separate_vocals(input_audio)
 
-    separator.separate_vocals(input_audio)
-    result = separator.separate_vocals(input_audio, overwrite_cache=True)
+    separator = DemucsSeparator(
+        cache_root_path=tmp_path,
+        overwrite_cache=True,
+    )
+    separate = Mock(return_value=fresh_audio)
+    monkeypatch.setattr(separator, "_separate_vocals", separate)
+    result = separator.separate_vocals(input_audio)
 
     assert len(result) == len(fresh_audio)
-    assert separate.call_count == 2
+    separate.assert_called_once_with(input_audio)
     assert len(list((tmp_path / "demucs").glob("*.wav"))) == 1
 
 
@@ -100,7 +108,7 @@ def test_separate_vocals_recovers_from_corrupt_cache(
     separator = DemucsSeparator(cache_root_path=tmp_path)
     input_audio = AudioSegment.silent(duration=1000, frame_rate=16000)
     fresh_audio = AudioSegment.silent(duration=800, frame_rate=16000)
-    load = Mock(side_effect=ScinoephileError("invalid cache"))
+    load = Mock(return_value=None)
     save = Mock()
     separate = Mock(return_value=fresh_audio)
     monkeypatch.setattr(separator._cache, "load", load)

@@ -37,6 +37,7 @@ class TranscriptionCache:
         cache_root_path: Path | None,
         backend_name: str,
         backend_label: str,
+        overwrite: bool = False,
     ):
         """Initialize.
 
@@ -44,6 +45,7 @@ class TranscriptionCache:
             cache_root_path: root directory beneath which to cache, or None for default
             backend_name: stable backend name stored in cache metadata
             backend_label: human-readable backend name used in log messages
+            overwrite: whether to replace matching cache files
         """
         self.backend_name = backend_name
         """Stable backend name stored in cache metadata."""
@@ -55,6 +57,12 @@ class TranscriptionCache:
         """Root directory beneath which transcriptions are cached."""
         self.cache_dir_path = val_output_dir_path(self.cache_root_path / backend_name)
         """Directory in which cached transcriptions are stored."""
+
+        self.overwrite = overwrite
+        """Whether matching cache files should be replaced."""
+
+        self._refreshed_paths: set[Path] = set()
+        """Cache paths refreshed by this cache instance."""
 
     def get_path(
         self,
@@ -94,6 +102,13 @@ class TranscriptionCache:
             cache path and cached segments, if present
         """
         cache_path = self.get_path(audio, backend_metadata)
+        if self.overwrite and cache_path not in self._refreshed_paths:
+            self._refreshed_paths.add(cache_path)
+            if cache_path.exists():
+                cache_path.unlink()
+                logger.info(
+                    f"Removed {self.backend_label} transcription cache: {cache_path}"
+                )
         if not cache_path.exists():
             return None
 
@@ -187,6 +202,7 @@ class TranscriptionCache:
         }
         with open_atomic_text_file(cache_path) as file:
             json.dump(payload, file, ensure_ascii=False, indent=2)
+        self._refreshed_paths.add(cache_path)
         logger.info(f"Saved {self.backend_label} transcription to cache: {cache_path}")
         return cache_path
 

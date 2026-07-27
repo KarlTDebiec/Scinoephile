@@ -48,7 +48,7 @@ def get_subtitle_stream_stats(
     """
     if subtitle_cache is None:
         subtitle_cache = SubtitleCache()
-    subtitle_cache.cache(infile_path, [stream])
+    subtitle_cache.ensure_cached(infile_path, [stream])
     stream_path = subtitle_cache.get_path(infile_path, stream)
     if stream.extension == "sup":
         image_dir_path = stream_path.parent / "image-series"

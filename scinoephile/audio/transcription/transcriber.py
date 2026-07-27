@@ -44,6 +44,8 @@ class Transcriber(ABC):
         cache_root_path: Path | None,
         demucs_mode: DemucsMode = DemucsMode.AUTO,
         vad_mode: VADMode = VADMode.AUTO,
+        overwrite_cache: bool = False,
+        demucs_separator: DemucsSeparator | None = None,
     ):
         """Initialize.
 
@@ -51,6 +53,8 @@ class Transcriber(ABC):
             cache_root_path: root directory beneath which to cache
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
+            overwrite_cache: whether to replace matching cache files
+            demucs_separator: optional shared Demucs vocal separator
         """
         self.demucs_mode = demucs_mode
         """Demucs preprocessing mode."""
@@ -62,36 +66,37 @@ class Transcriber(ABC):
             cache_root_path,
             self.backend_name,
             self.backend_label,
+            overwrite_cache,
         )
         """Timestamped transcription cache."""
 
         self.demucs_separator: DemucsSeparator | None = None
         """Demucs vocal separator used by configured preprocessing settings."""
         if self.demucs_mode is not DemucsMode.OFF:
-            self.demucs_separator = DemucsSeparator(
-                cache_root_path=self._cache.cache_root_path
-            )
+            if demucs_separator is None:
+                demucs_separator = DemucsSeparator(
+                    cache_root_path=self._cache.cache_root_path,
+                    overwrite_cache=overwrite_cache,
+                )
+            self.demucs_separator = demucs_separator
 
     def __call__(
         self,
         audio: AudioSegment,
         *,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
-        overwrite_cache: bool = False,
     ) -> list[TranscribedSegment]:
         """Transcribe audio.
 
         Arguments:
             audio: audio to transcribe
             is_usable: optional callback used to reject output and trigger retries
-            overwrite_cache: whether to replace matching cache files
         Returns:
             transcription split into timestamped segments
         """
         return self.transcribe(
             audio,
             is_usable=is_usable,
-            overwrite_cache=overwrite_cache,
         )
 
     def get_cached_transcription(
@@ -132,31 +137,25 @@ class Transcriber(ABC):
         audio: AudioSegment,
         *,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
-        overwrite_cache: bool = False,
     ) -> list[TranscribedSegment]:
         """Transcribe audio across configured preprocessing settings.
 
         Arguments:
             audio: audio to transcribe
             is_usable: optional callback used to reject output and trigger retries
-            overwrite_cache: whether to replace matching cache files
         Returns:
             first usable transcription, or an empty list when output was rejected
         """
         preprocessing_settings = self._get_preprocessing_settings()
 
         # Inspect every cache before running expensive preprocessing
-        rejected_settings: set[TranscriptionPreprocessingSettings] = set()
-        if overwrite_cache:
-            self.remove_cached_transcriptions(audio)
-        else:
-            segments, rejected_settings = self._find_cached_transcription(
-                audio,
-                preprocessing_settings,
-                is_usable,
-            )
-            if segments is not None:
-                return segments
+        segments, rejected_settings = self._find_cached_transcription(
+            audio,
+            preprocessing_settings,
+            is_usable,
+        )
+        if segments is not None:
+            return segments
 
         # Skip rejected intermediate caches but rerun the final fallback
         settings_to_run = [
@@ -173,7 +172,6 @@ class Transcriber(ABC):
         if any(settings.use_demucs for settings in settings_to_run):
             separated_audio = self._get_separated_audio(
                 audio,
-                overwrite_cache,
             )
 
         # Run remaining transcription configurations
@@ -286,23 +284,18 @@ class Transcriber(ABC):
     def _get_separated_audio(
         self,
         audio: AudioSegment,
-        overwrite_cache: bool,
     ) -> AudioSegment | None:
         """Get Demucs-separated audio for configured preprocessing settings.
 
         Arguments:
             audio: original audio to separate
-            overwrite_cache: whether to replace matching Demucs cache files
         Returns:
             separated audio, or None after an automatic-mode failure
         """
         assert self.demucs_separator is not None
         logger.info(f"Applying Demucs vocal separation before {self.backend_label}")
         try:
-            return self.demucs_separator(
-                audio,
-                overwrite_cache=overwrite_cache,
-            )
+            return self.demucs_separator(audio)
         except ScinoephileError as exc:
             if self.demucs_mode is DemucsMode.ON:
                 raise

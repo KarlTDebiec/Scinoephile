@@ -72,6 +72,19 @@ def test_ocr_cache_overwrite_removes_matching_result(tmp_path: Path):
     assert not cache_path.exists()
 
 
+def test_ocr_cache_overwrites_matching_result_once(tmp_path: Path):
+    """Test overwrite refreshes a matching OCR result once per instance."""
+    image = Image.new("RGB", (2, 2), "white")
+    metadata = {"language": "eng"}
+    TesseractCache(tmp_path).save(image, metadata, "stale text")
+    overwrite_cache = TesseractCache(tmp_path, overwrite=True)
+
+    assert overwrite_cache.load(image, metadata) is None
+    overwrite_cache.save(image, metadata, "fresh text")
+
+    assert overwrite_cache.load(image, metadata) == "fresh text"
+
+
 def test_ocr_cache_uses_runtime_default(runtime_cache_root_path: Path):
     """Test a missing configured root selects the runtime cache root.
 

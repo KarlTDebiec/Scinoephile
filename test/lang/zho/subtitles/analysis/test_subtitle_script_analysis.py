@@ -75,7 +75,7 @@ def test_analyze_text_subtitle_stream_marks_cached_analysis_used(tmp_path: Path)
     set_mtime(cache_path, old_timestamp)
 
     with patch(
-        "scinoephile.lang.zho.subtitles.analysis.script.SubtitleCache.cache"
+        "scinoephile.lang.zho.subtitles.analysis.script.SubtitleCache.ensure_cached"
     ) as cache_mock:
         analysis = analyze_zho_subtitle_stream_script(
             infile_path,
@@ -141,7 +141,7 @@ def test_analyze_text_subtitle_stream_overwrites_cached_stream(tmp_path: Path):
     subtitle_cache = SubtitleCache(cache_root_path, overwrite=True)
 
     with patch(
-        "scinoephile.lang.zho.subtitles.analysis.script.SubtitleCache.cache"
+        "scinoephile.lang.zho.subtitles.analysis.script.SubtitleCache.ensure_cached"
     ) as cache_mock:
         analysis = analyze_zho_subtitle_stream_script(
             infile_path,

@@ -23,11 +23,16 @@ _CACHE_VERSION = 1
 class TesseractLegacyDataCache:
     """Caches legacy-capable Tesseract traineddata files."""
 
-    def __init__(self, cache_root_path: Path | None = None):
+    def __init__(
+        self,
+        cache_root_path: Path | None = None,
+        overwrite: bool = False,
+    ):
         """Initialize.
 
         Arguments:
             cache_root_path: root directory beneath which to cache, or None for default
+            overwrite: whether to replace matching cache files
         """
         if cache_root_path is None:
             cache_root_path = get_runtime_cache_root_path()
@@ -38,6 +43,30 @@ class TesseractLegacyDataCache:
         )
         """Directory in which legacy-capable traineddata files are stored."""
 
+        self.overwrite = overwrite
+        """Whether matching cache files should be replaced."""
+
+        self._refreshed_paths: set[Path] = set()
+        """Cache paths refreshed by this cache instance."""
+
+    def get_path(self, language_code: str) -> Path:
+        """Get the cache path for one Tesseract language.
+
+        Arguments:
+            language_code: Tesseract language code
+        Returns:
+            traineddata cache path
+        Raises:
+            ValueError: if the language code is not a simple filename stem
+        """
+        if not language_code or Path(language_code).name != language_code:
+            raise ValueError("Tesseract language code must be a simple filename stem")
+        return (
+            self.cache_dir_path
+            / f"{language_code}-v{_CACHE_VERSION}"
+            / f"{language_code}.traineddata"
+        )
+
     def load(self, language_code: str) -> Path | None:
         """Load a cached traineddata path.
 
@@ -46,7 +75,14 @@ class TesseractLegacyDataCache:
         Returns:
             cached traineddata path, if present
         """
-        traineddata_path = self._get_path(language_code)
+        traineddata_path = self.get_path(language_code)
+        if self.overwrite and traineddata_path not in self._refreshed_paths:
+            self._refreshed_paths.add(traineddata_path)
+            if traineddata_path.exists():
+                traineddata_path.unlink()
+                logger.info(
+                    f"Removed Tesseract legacy traineddata cache: {traineddata_path}"
+                )
         if not traineddata_path.is_file():
             return None
         traineddata_path.touch()
@@ -66,7 +102,7 @@ class TesseractLegacyDataCache:
         Raises:
             ScinoephileError: if the traineddata cache cannot be written
         """
-        traineddata_path = self._get_path(language_code)
+        traineddata_path = self.get_path(language_code)
         try:
             traineddata_path.parent.mkdir(parents=True, exist_ok=True)
             with TemporaryDirectory(
@@ -81,23 +117,6 @@ class TesseractLegacyDataCache:
                 f"Unable to write Tesseract legacy traineddata cache "
                 f"{traineddata_path}: {exc}"
             ) from exc
+        self._refreshed_paths.add(traineddata_path)
         logger.info(f"Saved Tesseract legacy traineddata to cache: {traineddata_path}")
         return traineddata_path
-
-    def _get_path(self, language_code: str) -> Path:
-        """Get the cache path for one Tesseract language.
-
-        Arguments:
-            language_code: Tesseract language code
-        Returns:
-            traineddata cache path
-        Raises:
-            ValueError: if the language code is not a simple filename stem
-        """
-        if not language_code or Path(language_code).name != language_code:
-            raise ValueError("Tesseract language code must be a simple filename stem")
-        return (
-            self.cache_dir_path
-            / f"{language_code}-v{_CACHE_VERSION}"
-            / f"{language_code}.traineddata"
-        )

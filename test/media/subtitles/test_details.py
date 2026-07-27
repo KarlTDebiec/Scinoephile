@@ -28,7 +28,7 @@ def test_get_detailed_subtitle_streams_enriches_subtitle_stats(tmp_path: Path):
             "scinoephile.media.subtitles.details.get_subtitle_streams",
             return_value=subtitle_streams,
         ),
-        patch("scinoephile.media.subtitles.details.SubtitleCache.cache"),
+        patch("scinoephile.media.subtitles.details.SubtitleCache.ensure_cached"),
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             return_value=SimpleNamespace(
@@ -71,7 +71,7 @@ def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_streams",
         ),
-        patch("scinoephile.media.subtitles.details.SubtitleCache.cache"),
+        patch("scinoephile.media.subtitles.details.SubtitleCache.ensure_cached"),
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             return_value=SimpleNamespace(

@@ -93,7 +93,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.guide_language is Language.zho_hans
     assert transcriber.demucs_mode is DemucsMode.AUTO
     assert transcriber.vad_mode is VADMode.AUTO
-    assert transcriber.overwrite_cache
+    assert not hasattr(transcriber, "overwrite_cache")
     assert not hasattr(transcriber, "cache_root_path")
     assert transcriber.whisper_language == "yue"
     assert transcriber.segment_splitter is not None
@@ -116,7 +116,11 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.tail_recovery_transcriber._cache.cache_dir_path == (
         tmp_path / "whisper"
     )
+    assert transcriber.transcriber._cache.overwrite
+    assert transcriber.recovery_transcriber._cache.overwrite
+    assert transcriber.tail_recovery_transcriber._cache.overwrite
     assert transcriber.transcriber.demucs_separator is not None
+    assert transcriber.recovery_transcriber.demucs_separator is None
     test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
     assert transcriber.aligner.delineation_processor.test_case_path == (
         test_case_dir_path / "delineation" / "test.json"

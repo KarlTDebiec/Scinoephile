@@ -74,7 +74,7 @@ def analyze_zho_subtitle_stream_script(
         return cached_analysis
 
     # Cache the source subtitle stream before inspecting its contents
-    subtitle_cache.cache(
+    subtitle_cache.ensure_cached(
         infile_path,
         [stream],
     )

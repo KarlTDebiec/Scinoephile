@@ -109,6 +109,9 @@
 ## Caching
 * Cache classes should accept `cache_root_path: Path | None`; `None` selects the
   runtime cache root and does not disable caching.
+  * Place `cache_root_path` first, followed by required and optional
+    cache-specific configuration, with `overwrite: bool = False` last when the
+    cache supports replacement.
 * Cache classes are responsible for resolving and validating their root,
   appending their cache namespace, and exposing concrete `cache_root_path` and
   `cache_dir_path` attributes.
@@ -124,6 +127,14 @@
   cache should accept only that cache instance, optionally creating a default
   instance when one is omitted, rather than also accepting its constructor
   arguments.
+* Overwrite mode should refresh each matching entry at most once per cache
+  instance, allowing entries generated later in the same operation to be
+  reused. A successful save counts as that entry's refresh, including when it
+  occurs before the first load.
+* A successfully loaded and validated entry should be marked as recently used
+  by updating its modification timestamp. Keep the filesystem operation inside
+  the cache; expose a semantic `mark_used` method only when validation must
+  occur in the caller.
 * If a future operation needs to disable persistence, use an explicit option or
   cache implementation rather than overloading a `None` root.
 

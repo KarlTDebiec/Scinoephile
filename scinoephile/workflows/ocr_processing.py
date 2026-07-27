@@ -215,7 +215,7 @@ class OcrProcessingWorkflow:
                 return ImageSeries.load(self.infile_path)
 
             stream = get_media_subtitle_stream(self.infile_path, self.stream_index)
-            self._subtitle_cache.cache(
+            self._subtitle_cache.ensure_cached(
                 self.infile_path,
                 [stream],
             )

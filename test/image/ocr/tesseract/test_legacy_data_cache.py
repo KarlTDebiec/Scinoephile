@@ -63,6 +63,20 @@ def test_tesseract_legacy_data_cache_path_includes_version(
     assert traineddata_path.exists()
 
 
+def test_tesseract_legacy_data_cache_overwrites_matching_entry_once(
+    tmp_path: Path,
+):
+    """Test overwrite refreshes matching traineddata once per instance."""
+    TesseractLegacyDataCache(tmp_path).save("eng", b"stale")
+    overwrite_cache = TesseractLegacyDataCache(tmp_path, True)
+
+    assert overwrite_cache.load("eng") is None
+    traineddata_path = overwrite_cache.save("eng", b"fresh")
+
+    assert overwrite_cache.load("eng") == traineddata_path
+    assert traineddata_path.read_bytes() == b"fresh"
+
+
 def test_tesseract_legacy_data_cache_rejects_unsafe_language(tmp_path: Path):
     """Test traineddata cache paths reject unsafe language codes.
 

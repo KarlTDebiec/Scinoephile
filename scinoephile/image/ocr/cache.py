@@ -57,6 +57,9 @@ class OcrCacheBase[TResult](ABC):
         self.overwrite = overwrite
         """Whether to replace matching cache files."""
 
+        self._refreshed_paths: set[Path] = set()
+        """Cache paths refreshed by this cache instance."""
+
     def get_path(
         self,
         image: Image.Image,
@@ -102,9 +105,11 @@ class OcrCacheBase[TResult](ABC):
         """
         cache_path = self.get_path(image, backend_metadata)
         # An overwrite request converts a matching entry into a cache miss
-        if self.overwrite and cache_path.exists():
-            cache_path.unlink()
-            logger.info(f"Removed {self.backend_label} cache: {cache_path}")
+        if self.overwrite and cache_path not in self._refreshed_paths:
+            self._refreshed_paths.add(cache_path)
+            if cache_path.exists():
+                cache_path.unlink()
+                logger.info(f"Removed {self.backend_label} cache: {cache_path}")
         if not cache_path.exists():
             return None
 
@@ -135,6 +140,26 @@ class OcrCacheBase[TResult](ABC):
         logger.info(f"Loaded {self.backend_label} result from cache: {cache_path}")
         return result
 
+    def remove(
+        self,
+        image: Image.Image,
+        backend_metadata: Mapping[str, object],
+    ) -> Path | None:
+        """Remove a cached OCR result.
+
+        Arguments:
+            image: image used to derive the cache key
+            backend_metadata: backend configuration identifying the result
+        Returns:
+            removed cache path, if present
+        """
+        cache_path = self.get_path(image, backend_metadata)
+        if not cache_path.exists():
+            return None
+        cache_path.unlink()
+        logger.info(f"Removed {self.backend_label} cache: {cache_path}")
+        return cache_path
+
     def save(
         self,
         image: Image.Image,
@@ -160,6 +185,7 @@ class OcrCacheBase[TResult](ABC):
                 file,
                 ensure_ascii=False,
             )
+        self._refreshed_paths.add(cache_path)
         logger.info(f"Saved {self.backend_label} result to cache: {cache_path}")
         return cache_path
 

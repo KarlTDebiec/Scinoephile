@@ -81,6 +81,20 @@ def test_transcription_cache_discards_mismatched_version(tmp_path: Path):
     assert not cache_path.exists()
 
 
+def test_transcription_cache_overwrites_matching_entry_once(tmp_path: Path):
+    """Test overwrite refreshes a matching transcription once per instance."""
+    audio = AudioSegment.silent(duration=100)
+    metadata = {"model_name": "test/model"}
+    cache = TranscriptionCache(tmp_path, "test", "Test")
+    cache.save(audio, metadata, [])
+    overwrite_cache = TranscriptionCache(tmp_path, "test", "Test", True)
+
+    assert overwrite_cache.load(audio, metadata) is None
+    cache_path = overwrite_cache.save(audio, metadata, [])
+
+    assert overwrite_cache.load(audio, metadata) == (cache_path, [])
+
+
 def test_transcription_cache_uses_runtime_default(
     runtime_cache_root_path: Path,
 ):

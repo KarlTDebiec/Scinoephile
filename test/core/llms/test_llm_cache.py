@@ -38,3 +38,16 @@ def test_llm_cache_path_includes_cache_version(
     monkeypatch.setattr("scinoephile.core.llms.cache._CACHE_VERSION", 2)
 
     assert cache.get_path("provider", "system", "tools", "query") != first_cache_path
+
+
+def test_llm_cache_overwrites_matching_entry_once(tmp_path: Path):
+    """Test overwrite refreshes a matching LLM response once per instance."""
+    cache = LlmCache(tmp_path)
+    cache_path = cache.get_path("identity", "system", "tools", "query")
+    cache.save(cache_path, "stale")
+    overwrite_cache = LlmCache(tmp_path, True)
+
+    assert overwrite_cache.load(cache_path) is None
+    overwrite_cache.save(cache_path, "fresh")
+
+    assert overwrite_cache.load(cache_path) == "fresh"

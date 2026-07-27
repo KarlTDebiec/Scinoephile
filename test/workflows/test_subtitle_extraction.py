@@ -47,7 +47,7 @@ def test_extract_subtitles_extracts_matching_streams(tmp_path: Path):
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=streams,
         ),
-        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.cache"),
+        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.ensure_cached"),
         patch(
             "scinoephile.workflows.subtitle_extraction.SubtitleCache.get_path",
             side_effect=[cache_eng_path, cache_zho_path],
@@ -103,7 +103,7 @@ def test_extract_subtitles_details_uses_detected_chinese_script(tmp_path: Path):
                 SubtitleStream(index=4, language="zho-Hant", codec_name="subrip"),
             ],
         ) as get_zho_subtitle_streams,
-        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.cache"),
+        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.ensure_cached"),
         patch(
             "scinoephile.workflows.subtitle_extraction.SubtitleCache.get_path",
             return_value=cache_path,
@@ -148,7 +148,7 @@ def test_extract_subtitles_matches_script_qualified_language_tag(tmp_path: Path)
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=[stream],
         ),
-        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.cache"),
+        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.ensure_cached"),
         patch(
             "scinoephile.workflows.subtitle_extraction.SubtitleCache.get_path",
             return_value=cache_path,
@@ -186,7 +186,9 @@ def test_extract_subtitles_reports_existing_outputs(tmp_path: Path):
                 SubtitleStream(index=2, language="eng", codec_name="subrip"),
             ],
         ),
-        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.cache") as cache,
+        patch(
+            "scinoephile.workflows.subtitle_extraction.SubtitleCache.ensure_cached"
+        ) as cache,
     ):
         result = extract_subtitles(
             infile_path=infile_path,
@@ -221,7 +223,7 @@ def test_extract_subtitles_reports_overwritten_outputs(tmp_path: Path):
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=[stream],
         ),
-        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.cache"),
+        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.ensure_cached"),
         patch(
             "scinoephile.workflows.subtitle_extraction.SubtitleCache.get_path",
             return_value=cache_path,
@@ -260,7 +262,9 @@ def test_extract_subtitles_rejects_unsafe_stream_language(tmp_path: Path):
                 ),
             ],
         ),
-        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.cache") as cache,
+        patch(
+            "scinoephile.workflows.subtitle_extraction.SubtitleCache.ensure_cached"
+        ) as cache,
         raises(ScinoephileError, match="Unsafe subtitle output filename"),
     ):
         extract_subtitles(
@@ -299,7 +303,7 @@ def test_extract_subtitles_extracts_sup_streams_to_image_dirs(tmp_path: Path):
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=streams,
         ),
-        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.cache"),
+        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.ensure_cached"),
         patch(
             "scinoephile.workflows.subtitle_extraction.SubtitleCache.get_path",
             side_effect=[cache_eng_path, cache_zho_path],
@@ -352,7 +356,7 @@ def test_extract_subtitles_skips_sup_parsing_when_not_exporting_images(tmp_path:
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=streams,
         ),
-        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.cache"),
+        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.ensure_cached"),
         patch(
             "scinoephile.workflows.subtitle_extraction.SubtitleCache.get_path",
             side_effect=[cache_srt_path, cache_sup_path],
@@ -411,7 +415,7 @@ def test_extract_subtitles_warns_when_sup_image_export_fails(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=streams,
         ),
-        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.cache"),
+        patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.ensure_cached"),
         patch(
             "scinoephile.workflows.subtitle_extraction.SubtitleCache.get_path",
             side_effect=[cache_srt_path, cache_sup_path],

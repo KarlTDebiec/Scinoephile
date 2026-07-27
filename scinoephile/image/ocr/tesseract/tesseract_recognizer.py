@@ -127,7 +127,10 @@ class TesseractRecognizer:
         self.psm = psm
         self.scale = scale
         self._cache = TesseractCache(cache_root_path, overwrite_cache)
-        self._legacy_data_cache = TesseractLegacyDataCache(cache_root_path)
+        self._legacy_data_cache = TesseractLegacyDataCache(
+            cache_root_path,
+            overwrite_cache,
+        )
 
         if skip_executable_validation:
             self.executable_path = Path(executable_path)

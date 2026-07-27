@@ -14,13 +14,13 @@ from scinoephile.image.ocr.cache import OcrCacheBase
 from .bounding_box import PaddleOcrBoundingBox
 from .text_result import PaddleOcrTextResult
 
-__all__ = ["PaddleOcrCache"]
+__all__ = ["PaddleCache"]
 
 _CACHE_VERSION = 1
 """Current PaddleOCR cache version."""
 
 
-class PaddleOcrCache(OcrCacheBase[list[PaddleOcrTextResult]]):
+class PaddleCache(OcrCacheBase[list[PaddleOcrTextResult]]):
     """Caches normalized PaddleOCR text results."""
 
     def __init__(
