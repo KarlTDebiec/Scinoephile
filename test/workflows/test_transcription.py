@@ -13,7 +13,10 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.transcription import DemucsMode, VADMode
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.lang.transcription.transcriber import GuidedTranscriber
+from scinoephile.lang.transcription.transcriber import (
+    GuidedTranscriber,
+    TranscriptionBackend,
+)
 from scinoephile.workflows.transcription import transcribe_series_guided
 
 
@@ -38,6 +41,7 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
             reference_series,
             language=Language.yue_hant,
             guide_language=Language.zho_hans,
+            backend=TranscriptionBackend.MLX_AUDIO,
             cache_root_path=tmp_path / "cache",
             overwrite_cache=True,
             prune_test_cases=True,
@@ -51,6 +55,9 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
     assert get_transcriber.call_args.args == (Language.yue_hant, Language.zho_hans)
     assert get_transcriber.call_args.kwargs["demucs_mode"] is DemucsMode.AUTO
     assert get_transcriber.call_args.kwargs["vad_mode"] is VADMode.AUTO
+    assert get_transcriber.call_args.kwargs["backend"] is (
+        TranscriptionBackend.MLX_AUDIO
+    )
     assert get_transcriber.call_args.kwargs["cache_root_path"] == tmp_path / "cache"
     assert get_transcriber.call_args.kwargs["overwrite_cache"] is True
     assert get_transcriber.call_args.kwargs["prune_test_cases"] is True

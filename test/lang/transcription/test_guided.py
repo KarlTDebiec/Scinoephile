@@ -12,10 +12,12 @@ from unittest.mock import Mock, patch
 from pytest import raises
 
 from scinoephile.audio.transcription import DemucsMode, VADMode
+from scinoephile.audio.transcription.mlx_audio.backend import MIMO_MODEL_NAME
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.lang.transcription.guided import DEFAULT_SPECS, get_guided_transcriber
+from scinoephile.lang.transcription.transcriber import TranscriptionBackend
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHant,
@@ -88,6 +90,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
 
     assert transcriber.language is Language.yue_hant
     assert transcriber.guide_language is Language.zho_hans
+    assert transcriber.backend is TranscriptionBackend.WHISPER
     assert transcriber.demucs_mode is DemucsMode.AUTO
     assert transcriber.vad_mode is VADMode.AUTO
     assert not hasattr(transcriber, "overwrite_cache")
@@ -105,6 +108,8 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.transcriber.language == "yue"
     assert transcriber.transcriber.demucs_mode is DemucsMode.AUTO
     assert transcriber.transcriber.vad_mode is VADMode.AUTO
+    assert transcriber.recovery_transcriber is not None
+    assert transcriber.tail_recovery_transcriber is not None
     assert not hasattr(transcriber.transcriber, "cache_root_path")
     assert transcriber.transcriber._cache.cache_dir_path == tmp_path / "whisper"
     assert transcriber.recovery_transcriber._cache.cache_dir_path == (
@@ -135,6 +140,44 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
         tmp_path / "llm" / "punctuation"
     )
     assert transcriber.aligner.punctuation_processor.queryer._cache.overwrite
+
+
+def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
+    """Test the factory selects the MLX-Audio default and preprocessing modes.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    mlx_audio_transcriber = Mock()
+    with patch(
+        "scinoephile.lang.transcription.guided.MlxAudioTranscriber",
+        return_value=mlx_audio_transcriber,
+    ) as mlx_audio_transcriber_class:
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hans,
+            backend=TranscriptionBackend.MLX_AUDIO,
+            cache_root_path=tmp_path,
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+            delineation_json_path=tmp_path / "delineation.json",
+            punctuation_json_path=tmp_path / "punctuation.json",
+            delineation_test_cases=[],
+            punctuation_test_cases=[],
+        )
+
+    assert transcriber.backend is TranscriptionBackend.MLX_AUDIO
+    assert transcriber.model_name == MIMO_MODEL_NAME
+    assert transcriber.transcriber is mlx_audio_transcriber
+    assert transcriber.recovery_transcriber is None
+    assert transcriber.tail_recovery_transcriber is None
+    mlx_audio_transcriber_class.assert_called_once_with(
+        model_name=MIMO_MODEL_NAME,
+        language=Language.yue_hant,
+        demucs_mode=DemucsMode.AUTO,
+        vad_mode=VADMode.AUTO,
+        cache_root_path=tmp_path,
+        overwrite_cache=False,
+    )
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path):

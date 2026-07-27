@@ -12,7 +12,10 @@ from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.transcription.guided import get_guided_transcriber
-from scinoephile.lang.transcription.transcriber import GuidedTranscriber
+from scinoephile.lang.transcription.transcriber import (
+    GuidedTranscriber,
+    TranscriptionBackend,
+)
 from scinoephile.llms.delineation import DelineationPrompt
 from scinoephile.llms.punctuation import PunctuationPrompt
 
@@ -28,6 +31,7 @@ def transcribe_series_guided(
     language: Language,
     guide_language: Language | None = None,
     model_name: str | None = None,
+    backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
     cache_root_path: Path | None = None,
@@ -52,7 +56,8 @@ def transcribe_series_guided(
         reference_series: reference subtitles corresponding to audio blocks
         language: transcription language
         guide_language: explicit guide language, or None to detect it
-        model_name: Whisper model override
+        model_name: backend-specific model override
+        backend: audio transcription backend
         demucs_mode: Demucs preprocessing mode
         vad_mode: Whisper VAD mode
         cache_root_path: cache root directory path
@@ -81,6 +86,7 @@ def transcribe_series_guided(
             language,
             resolved_guide_language,
             model_name=model_name,
+            backend=backend,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
             cache_root_path=cache_root_path,

@@ -14,12 +14,13 @@ from __future__ import annotations
 from .aligner import TranscriptionAligner
 from .alignment import TranscriptionAlignment
 from .guided import GuidedTranscriptionSpec, TranscriptionLanguageSpec
-from .transcriber import GuidedTranscriber
+from .transcriber import GuidedTranscriber, TranscriptionBackend
 
 __all__ = [
     "GuidedTranscriber",
     "GuidedTranscriptionSpec",
     "TranscriptionAligner",
     "TranscriptionAlignment",
+    "TranscriptionBackend",
     "TranscriptionLanguageSpec",
 ]
