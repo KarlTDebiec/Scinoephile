@@ -21,7 +21,6 @@ from scinoephile.audio.transcription import (
 )
 from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 
 from .aligner import TranscriptionAligner
@@ -78,7 +77,7 @@ class GuidedTranscriber:
         aligner: TranscriptionAligner,
         demucs_mode: DemucsMode = DemucsMode.AUTO,
         vad_mode: VADMode = VADMode.AUTO,
-        cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
         segment_splitter: TranscribedSegmentSplitter | None = None,
     ):
@@ -92,7 +91,7 @@ class GuidedTranscriber:
             aligner: transcription aligner
             demucs_mode: Demucs preprocessing mode
             vad_mode: Whisper VAD mode
-            cache_dir_path: cache root directory path
+            cache_root_path: cache root directory path
             overwrite_cache: whether to replace matching generated cache files
             segment_splitter: optional strategy for splitting Whisper segments
         """
@@ -103,10 +102,6 @@ class GuidedTranscriber:
         self.aligner = aligner
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
-        if cache_dir_path is None:
-            cache_dir_path = get_runtime_cache_dir_path(create=False)
-        self.cache_dir_path = cache_dir_path
-        self.overwrite_cache = overwrite_cache
         self.segment_splitter = segment_splitter
 
         # Configure standard preprocessing fallbacks
@@ -115,8 +110,8 @@ class GuidedTranscriber:
             language=self.whisper_language,
             demucs_mode=self.demucs_mode,
             vad_mode=self.vad_mode,
-            cache_dir_path=self.cache_dir_path / "whisper",
-            demucs_cache_dir_path=self.cache_dir_path / "demucs",
+            cache_root_path=cache_root_path,
+            overwrite_cache=overwrite_cache,
         )
 
         # Configure defensive decoding after standard attempts are exhausted
@@ -131,10 +126,11 @@ class GuidedTranscriber:
             language=self.whisper_language,
             demucs_mode=recovery_demucs_mode,
             vad_mode=recovery_vad_mode,
-            cache_dir_path=self.cache_dir_path / "whisper",
-            demucs_cache_dir_path=self.cache_dir_path / "demucs",
+            cache_root_path=cache_root_path,
+            overwrite_cache=overwrite_cache,
             temperature=_RECOVERY_TEMPERATURES,
             condition_on_previous_text=False,
+            demucs_separator=self.transcriber.demucs_separator,
         )
 
         # Configure focused recovery for missing speech near a guided tail
@@ -143,7 +139,8 @@ class GuidedTranscriber:
             language=self.whisper_language,
             demucs_mode=DemucsMode.OFF,
             vad_mode=VADMode.OFF,
-            cache_dir_path=self.cache_dir_path / "whisper",
+            cache_root_path=cache_root_path,
+            overwrite_cache=overwrite_cache,
             condition_on_previous_text=False,
         )
 
@@ -266,20 +263,16 @@ class GuidedTranscriber:
                 audio_duration=audio_duration,
             )
 
-        # Inspect or clear recovery caches before invoking Demucs
-        segments = None
-        if self.overwrite_cache:
-            self.recovery_transcriber.remove_cached_transcriptions(audio)
-        else:
-            segments = self.transcriber.get_cached_transcription(
+        # Inspect standard and recovery caches before invoking Demucs
+        segments = self.transcriber.get_cached_transcription(
+            audio,
+            is_usable=is_usable,
+        )
+        if segments is None:
+            segments = self.recovery_transcriber.get_cached_transcription(
                 audio,
                 is_usable=is_usable,
             )
-            if segments is None:
-                segments = self.recovery_transcriber.get_cached_transcription(
-                    audio,
-                    is_usable=is_usable,
-                )
 
         # Run standard fallbacks, followed by defensive decoding
         if segments is None:
@@ -287,7 +280,6 @@ class GuidedTranscriber:
                 segments = self.transcriber(
                     audio,
                     is_usable=is_usable,
-                    overwrite_cache=self.overwrite_cache,
                 )
             except TranscriptionError as exc:
                 logger.warning(f"Whisper transcription attempts failed: {exc}")
@@ -370,7 +362,6 @@ class GuidedTranscriber:
                     candidate,
                     audio_duration=tail_audio_duration,
                 ),
-                overwrite_cache=self.overwrite_cache,
             )
         except TranscriptionError as exc:
             logger.warning(

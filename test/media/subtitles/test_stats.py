@@ -8,6 +8,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scinoephile.core.media import SubtitleStream
+from scinoephile.media.subtitles.cache import SubtitleCache
 from scinoephile.media.subtitles.stats import get_subtitle_stream_stats
 from test.helpers.media_subtitles import cache_image_subtitles, cache_subtitle_stream
 
@@ -30,12 +31,13 @@ def test_get_text_subtitle_stream_stats_from_cached_stream(tmp_path: Path):
             "2\n00:01:02,000 --> 00:01:05,250\n第二行\n"
         ),
     )
+    subtitle_cache = SubtitleCache(tmp_path / "cache")
 
-    with patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input:
+    with patch("scinoephile.media.subtitles.extractor.ffmpeg.input") as ffmpeg_input:
         stats = get_subtitle_stream_stats(
             infile_path,
             stream,
-            cache_dir_path=tmp_path / "cache",
+            subtitle_cache=subtitle_cache,
         )
 
     ffmpeg_input.assert_not_called()
@@ -61,11 +63,12 @@ def test_get_image_subtitle_stream_stats_from_cached_images(tmp_path: Path):
         first_start_ms=2500,
         last_end_ms=65_250,
     )
+    subtitle_cache = SubtitleCache(tmp_path / "cache")
 
     stats = get_subtitle_stream_stats(
         infile_path,
         stream,
-        cache_dir_path=tmp_path / "cache",
+        subtitle_cache=subtitle_cache,
     )
 
     assert stats.event_count == 7

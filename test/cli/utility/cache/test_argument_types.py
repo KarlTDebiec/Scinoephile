@@ -10,36 +10,33 @@ from unittest.mock import patch
 
 from pytest import raises
 
-from scinoephile.cli.helpers.cache import add_cache_dir_arg
+from scinoephile.cli.helpers.cache import add_cache_root_arg
 
 
-def test_add_cache_dir_arg_resolves_runtime_cache_subpath():
-    """Test cache directory defaults may include runtime cache subpath parts."""
+def test_add_cache_root_arg_resolves_runtime_cache_root():
+    """Test cache directory defaults resolve the runtime cache root."""
     parser = ArgumentParser()
     cache_arg_group = parser.add_argument_group("operation arguments")
-    runtime_cache_parts: list[tuple[str, ...]] = []
     create_values: list[bool] = []
 
-    def get_runtime_cache_dir_path(*parts: str, create: bool) -> Path:
+    def get_runtime_cache_root_path(*, create: bool) -> Path:
         """Record runtime cache default arguments."""
-        runtime_cache_parts.append(parts)
         create_values.append(create)
-        return Path("/cache/media/subtitles")
+        return Path("/cache")
 
     with patch(
-        "scinoephile.cli.helpers.cache.get_runtime_cache_dir_path",
-        side_effect=get_runtime_cache_dir_path,
+        "scinoephile.cli.helpers.cache.get_runtime_cache_root_path",
+        side_effect=get_runtime_cache_root_path,
     ):
-        add_cache_dir_arg(cache_arg_group, "media", "subtitles")
+        add_cache_root_arg(cache_arg_group)
 
     namespace = parser.parse_args([])
 
-    assert namespace.cache_dir_path == Path("/cache/media/subtitles")
-    assert runtime_cache_parts == [("media", "subtitles")]
+    assert namespace.cache_root_path == Path("/cache")
     assert create_values == [False]
 
 
-def test_add_cache_dir_arg_resolves_user_path_without_creating(tmp_path: Path):
+def test_add_cache_root_arg_resolves_user_path_without_creating(tmp_path: Path):
     """Test cache directory CLI paths are resolved without parser-time creation.
 
     Arguments:
@@ -49,14 +46,14 @@ def test_add_cache_dir_arg_resolves_user_path_without_creating(tmp_path: Path):
     cache_arg_group = parser.add_argument_group("operation arguments")
     cache_dir_path = tmp_path / "cache"
 
-    add_cache_dir_arg(cache_arg_group)
+    add_cache_root_arg(cache_arg_group)
     namespace = parser.parse_args(["--cache-dir", str(cache_dir_path)])
 
-    assert namespace.cache_dir_path == cache_dir_path.resolve()
+    assert namespace.cache_root_path == cache_dir_path.resolve()
     assert not cache_dir_path.exists()
 
 
-def test_add_cache_dir_arg_rejects_existing_file(tmp_path: Path):
+def test_add_cache_root_arg_rejects_existing_file(tmp_path: Path):
     """Test cache directory CLI paths reject existing files.
 
     Arguments:
@@ -67,7 +64,7 @@ def test_add_cache_dir_arg_rejects_existing_file(tmp_path: Path):
     cache_file_path = tmp_path / "cache"
     cache_file_path.write_text("cache", encoding="utf-8")
 
-    add_cache_dir_arg(cache_arg_group)
+    add_cache_root_arg(cache_arg_group)
     with raises(SystemExit) as excinfo:
         parser.parse_args(["--cache-dir", str(cache_file_path)])
 

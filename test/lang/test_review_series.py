@@ -422,7 +422,7 @@ def test_review_series(
         language: language to review
         prompt: prompt for the review path
     """
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     reviewer = get_reviewer(
         language,
         prompt=prompt,

@@ -12,13 +12,13 @@ from typing import TYPE_CHECKING, ClassVar
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.dependencies.transcription import (
-    import_huggingface_hub_snapshot_download,
-    import_huggingface_hub_utils_validate_repo_id,
-    import_whisper_timestamped_load_model,
-    import_whisper_timestamped_transcribe,
+    import_huggingface_hub,
+    import_huggingface_hub_utils,
+    import_whisper_timestamped,
 )
 from scinoephile.core.ml import get_torch_device
 
+from .demucs import DemucsSeparator
 from .exceptions import TranscriptionInferenceError
 from .preprocessing_settings import (
     DemucsMode,
@@ -66,10 +66,11 @@ class WhisperTranscriber(Transcriber):
         language: str = "yue",
         demucs_mode: DemucsMode = DemucsMode.AUTO,
         vad_mode: VADMode = VADMode.AUTO,
-        cache_dir_path: Path | None = None,
-        demucs_cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
+        overwrite_cache: bool = False,
         temperature: float | Sequence[float] = 0.0,
         condition_on_previous_text: bool = True,
+        demucs_separator: DemucsSeparator | None = None,
     ):
         """Initialize.
 
@@ -78,11 +79,12 @@ class WhisperTranscriber(Transcriber):
             language: language code for transcription
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
-            cache_dir_path: directory in which to cache
-            demucs_cache_dir_path: directory in which to cache Demucs output
+            cache_root_path: root directory beneath which to cache
+            overwrite_cache: whether to replace matching cache files
             temperature: decoding temperature or fallback schedule
             condition_on_previous_text: whether to condition each decoding window on
                 the preceding window
+            demucs_separator: optional shared Demucs vocal separator
         """
         self.model_name = model_name
         self._model: WhisperModel | None = None
@@ -90,10 +92,11 @@ class WhisperTranscriber(Transcriber):
         self.temperature: float | Sequence[float] = temperature
         self.condition_on_previous_text = condition_on_previous_text
         super().__init__(
-            cache_dir_path,
-            demucs_cache_dir_path,
+            cache_root_path,
             demucs_mode,
             vad_mode,
+            overwrite_cache,
+            demucs_separator,
         )
 
     @property
@@ -110,9 +113,12 @@ class WhisperTranscriber(Transcriber):
                 self._model = self._models[model_key]
                 return self._model
 
-            load_model = import_whisper_timestamped_load_model()
+            whisper_timestamped = import_whisper_timestamped()
             try:
-                self._model = load_model(self.model_name, device=device)
+                self._model = whisper_timestamped.load_model(
+                    self.model_name,
+                    device=device,
+                )
             except FileNotFoundError:
                 if not self._model_name_is_huggingface_repo_id():
                     raise
@@ -120,9 +126,12 @@ class WhisperTranscriber(Transcriber):
                     "Whisper model load failed due to missing cache file; "
                     "re-downloading HuggingFace snapshot and retrying."
                 )
-                snapshot_download = import_huggingface_hub_snapshot_download()
-                snapshot_download(repo_id=self.model_name)
-                self._model = load_model(self.model_name, device=device)
+                huggingface_hub = import_huggingface_hub()
+                huggingface_hub.snapshot_download(repo_id=self.model_name)
+                self._model = whisper_timestamped.load_model(
+                    self.model_name,
+                    device=device,
+                )
             self._models[model_key] = self._model
         return self._model
 
@@ -162,10 +171,10 @@ class WhisperTranscriber(Transcriber):
             )
         ):
             return False
-        validate_repo_id = import_huggingface_hub_utils_validate_repo_id()
+        huggingface_hub_utils = import_huggingface_hub_utils()
         try:
-            validate_repo_id(self.model_name)
-        except ValueError:
+            huggingface_hub_utils.validate_repo_id(self.model_name)
+        except huggingface_hub_utils.HFValidationError:
             return False
         return "/" in self.model_name
 
@@ -345,7 +354,7 @@ class WhisperTranscriber(Transcriber):
         Raises:
             TranscriptionInferenceError: if Whisper fails with an assertion
         """
-        transcribe = import_whisper_timestamped_transcribe()
+        whisper_timestamped = import_whisper_timestamped()
         try:
             with get_temp_file_path(suffix=".wav") as temp_audio_path:
                 audio.export(temp_audio_path, format="wav")
@@ -354,7 +363,7 @@ class WhisperTranscriber(Transcriber):
                     f"Limiting Whisper decoding to {sample_len} tokens for "
                     f"{len(audio) / 1000:.2f}s of audio"
                 )
-                result = transcribe(
+                result = whisper_timestamped.transcribe(
                     self.model,
                     str(temp_audio_path),
                     language=self.language,

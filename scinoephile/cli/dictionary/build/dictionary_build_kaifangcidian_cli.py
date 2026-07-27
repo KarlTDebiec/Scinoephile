@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for building the Kaifangcidian dictionary cache."""
+"""Command-line interface for building the Kaifangcidian dictionary database."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ logger = getLogger(__name__)
 
 DICTIONARY_BUILD_KAIFANGCIDIAN_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "build Kaifangcidian dictionary cache": "构建 Kaifangcidian 词典缓存",
+        "build Kaifangcidian dictionary database": "构建 Kaifangcidian 词典数据库",
         (
             "Data derived from Kaifangcidian website dictionary JavaScript payloads."
         ): "由 Kaifangcidian 网站词典 JavaScript 载荷整理而成的数据。",
@@ -37,7 +37,7 @@ DICTIONARY_BUILD_KAIFANGCIDIAN_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
     },
     "zh-hant": {
-        "build Kaifangcidian dictionary cache": "建立 Kaifangcidian 詞典快取",
+        "build Kaifangcidian dictionary database": "建立 Kaifangcidian 詞典資料庫",
         (
             "Data derived from Kaifangcidian website dictionary JavaScript payloads."
         ): "由 Kaifangcidian 網站詞典 JavaScript 載荷整理而成的資料。",
@@ -56,7 +56,7 @@ DICTIONARY_BUILD_KAIFANGCIDIAN_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class DictionaryBuildKaifangcidianCli(DictionaryBuildCliBase):
-    """Build Kaifangcidian dictionary cache."""
+    """Build Kaifangcidian dictionary database."""
 
     source = KAIFANGCIDIAN_SOURCE
     """Dictionary source built by this CLI."""
@@ -107,10 +107,10 @@ class DictionaryBuildKaifangcidianCli(DictionaryBuildCliBase):
         """Execute with provided keyword arguments."""
         service = KaifangcidianDictionaryService(database_path=database_path)
         cls.log_config(
-            cache_dir_path=service.runtime_data_dir_path,
             database_path=service.database_path,
             max_words=None,
             overwrite=overwrite,
+            runtime_data_dir_path=service.runtime_data_dir_path,
             source_json_path=None,
         )
         if force_download:

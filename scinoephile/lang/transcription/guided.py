@@ -17,7 +17,7 @@ from scinoephile.audio.transcription import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.ml import get_torch_device
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_data_root_path
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHans,
     YueZhoDelineationPromptYueHant,
@@ -171,7 +171,7 @@ def get_guided_transcriber(
     model_name: str | None = None,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
-    cache_dir_path: Path | None = None,
+    cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
@@ -191,7 +191,7 @@ def get_guided_transcriber(
         model_name: Whisper model override
         demucs_mode: Demucs preprocessing mode
         vad_mode: Whisper VAD mode
-        cache_dir_path: cache root directory path
+        cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching generated cache files
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
@@ -216,8 +216,6 @@ def get_guided_transcriber(
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec
 
-    if cache_dir_path is None:
-        cache_dir_path = get_runtime_cache_dir_path(create=False)
     if model_name is None:
         model_name = language_spec.model_name
     if delineation_prompt is None:
@@ -226,7 +224,9 @@ def get_guided_transcriber(
         punctuation_prompt = spec.punctuation_prompt
     if delineation_json_path is None or punctuation_json_path is None:
         runtime_test_case_dir_path = (
-            cache_dir_path / "test_cases" / spec.test_case_dir_path
+            get_runtime_data_root_path(create=False)
+            / "test_cases"
+            / spec.test_case_dir_path
         )
         device = get_torch_device()
         if delineation_json_path is None:
@@ -253,7 +253,7 @@ def get_guided_transcriber(
         test_case_path=delineation_json_path,
         provider=provider,
         additional_context=additional_context,
-        cache_dir_path=cache_dir_path / "llm",
+        cache_root_path=cache_root_path,
         overwrite_cache=overwrite_cache,
         prune_test_cases=prune_test_cases,
     )
@@ -271,7 +271,7 @@ def get_guided_transcriber(
         test_case_path=punctuation_json_path,
         provider=provider,
         additional_context=additional_context,
-        cache_dir_path=cache_dir_path / "llm",
+        cache_root_path=cache_root_path,
         overwrite_cache=overwrite_cache,
         prune_test_cases=prune_test_cases,
     )
@@ -287,7 +287,7 @@ def get_guided_transcriber(
         aligner=aligner,
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
-        cache_dir_path=cache_dir_path,
+        cache_root_path=cache_root_path,
         overwrite_cache=overwrite_cache,
         segment_splitter=language_spec.segment_splitter,
     )

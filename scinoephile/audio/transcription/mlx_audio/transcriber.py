@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from scinoephile.audio.transcription.ctc_aligner import CtcAligner
+from scinoephile.audio.transcription.demucs import DemucsSeparator
 from scinoephile.audio.transcription.exceptions import (
     TranscriptionAlignmentError,
     TranscriptionEmptyError,
@@ -30,8 +31,8 @@ from scinoephile.audio.transcription.transcriber import Transcriber
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language
 from scinoephile.core.dependencies.transcription import (
-    import_torch_from_numpy,
-    import_whisper_timestamped_transcribe_get_vad_segments,
+    import_torch,
+    import_whisper_timestamped_transcribe,
 )
 
 from .backend import (
@@ -85,8 +86,9 @@ class MlxAudioTranscriber(Transcriber):
         chunk_overlap_seconds: float = 1.0,
         demucs_mode: DemucsMode = DemucsMode.AUTO,
         vad_mode: VADMode = VADMode.AUTO,
-        cache_dir_path: Path | None = None,
-        demucs_cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
+        overwrite_cache: bool = False,
+        demucs_separator: DemucsSeparator | None = None,
     ):
         """Initialize.
 
@@ -99,8 +101,9 @@ class MlxAudioTranscriber(Transcriber):
             chunk_overlap_seconds: context overlap applied to each chunk
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
-            cache_dir_path: directory in which to cache
-            demucs_cache_dir_path: directory in which to cache Demucs output
+            cache_root_path: root directory beneath which to cache
+            overwrite_cache: whether to replace matching cache files
+            demucs_separator: optional shared Demucs vocal separator
         Raises:
             TranscriptionError: if the platform does not support MLX-Audio
             ValueError: if the language or numeric configuration is invalid
@@ -119,10 +122,7 @@ class MlxAudioTranscriber(Transcriber):
         self.backend = MlxAudioBackend(model_name, language)
         """Direct MLX-Audio inference backend."""
 
-        if ctc_model_name is None:
-            self.ctc_aligner = CtcAligner()
-        else:
-            self.ctc_aligner = CtcAligner(ctc_model_name)
+        self.ctc_aligner = CtcAligner(language, ctc_model_name)
         self.max_tokens = max_tokens
         self.chunk_duration_seconds = chunk_duration_seconds
         self.chunk_overlap_seconds = chunk_overlap_seconds
@@ -138,10 +138,11 @@ class MlxAudioTranscriber(Transcriber):
         if self.chunk_overlap_seconds < 0:
             raise ValueError("MLX-Audio chunk overlap must be non-negative.")
         super().__init__(
-            cache_dir_path,
-            demucs_cache_dir_path,
+            cache_root_path,
             demucs_mode,
             vad_mode,
+            overwrite_cache,
+            demucs_separator,
         )
 
     @property
@@ -201,8 +202,8 @@ class MlxAudioTranscriber(Transcriber):
             TranscriptionError: if Silero VAD is unavailable or fails
         """
         try:
-            from_numpy = import_torch_from_numpy()
-            get_vad_segments = import_whisper_timestamped_transcribe_get_vad_segments()
+            torch = import_torch()
+            whisper_timestamped_transcribe = import_whisper_timestamped_transcribe()
         except ImportError as exc:
             raise TranscriptionError(
                 "MLX-Audio VAD requires the optional transcription dependencies."
@@ -218,9 +219,9 @@ class MlxAudioTranscriber(Transcriber):
             )
             / np.iinfo(np.int16).max
         )
-        audio_tensor = from_numpy(samples)
+        audio_tensor = torch.from_numpy(samples)
         try:
-            raw_intervals = get_vad_segments(
+            raw_intervals = whisper_timestamped_transcribe.get_vad_segments(
                 audio_tensor,
                 sample_rate=_VAD_SAMPLE_RATE,
                 output_sample=False,

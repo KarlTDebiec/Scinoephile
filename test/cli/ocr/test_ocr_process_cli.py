@@ -25,7 +25,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
     infile_path = tmp_path / "movie.mkv"
     infile_path.touch()
     output_dir_path = tmp_path / "ocr"
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
     expected_provider = object()
     result = OcrProcessingResult(
         infile_path=infile_path.resolve(),
@@ -55,7 +55,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
         *,
         language: Language,
         stream_index: int | None,
-        cache_dir_path: Path,
+        cache_root_path: Path,
         clean: bool,
         interactive: bool,
         host: str,
@@ -71,7 +71,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
         assert workflow_output_dir_path == output_dir_path.resolve()
         assert language is Language.eng
         assert stream_index == 3
-        assert cache_dir_path == (tmp_path / "cache").resolve()
+        assert cache_root_path == (tmp_path / "cache").resolve()
         assert clean is True
         assert interactive is True
         assert host == "0.0.0.0"
@@ -96,7 +96,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
         run_cli_with_args(
             OcrProcessCli,
             f"--infile {infile_path} --stream-index 3 --language eng "
-            f"-o {output_dir_path} --cache-dir {cache_dir_path} "
+            f"-o {output_dir_path} --cache-dir {cache_root_path} "
             "--clean --interactive --host 0.0.0.0 --port 5051 --dev "
             "--overwrite --cache-overwrite",
         )

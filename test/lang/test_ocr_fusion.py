@@ -299,7 +299,7 @@ def test_fuse_ocr_series(
     lens = clean_series(lens, language=language, remove_empty=False)
     secondary = clean_series(secondary, language=language, remove_empty=False)
 
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = get_ocr_fuser(
         language,
         test_cases=test_case_loader(),

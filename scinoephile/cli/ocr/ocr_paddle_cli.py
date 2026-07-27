@@ -158,7 +158,7 @@ class OcrPaddleCli(ScinoephileCliBase):
         try:
             text_series = ocr_image_series_with_paddle(
                 image_series,
-                cache_dir_path=cache_args.dir_path / "paddleocr",
+                cache_root_path=cache_args.root_path,
                 language=language,
                 overwrite_cache=cache_args.overwrite,
             )

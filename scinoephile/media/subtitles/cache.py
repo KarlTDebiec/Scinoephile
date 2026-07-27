@@ -6,180 +6,244 @@ from __future__ import annotations
 
 import hashlib
 import json
-from contextlib import ExitStack
 from logging import getLogger
 from pathlib import Path
-from tempfile import TemporaryDirectory
+from shutil import rmtree
 
-import ffmpeg
-
-from scinoephile.core import ScinoephileError
+from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.media import SubtitleStream
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.image.subtitles import ImageSeries
 
-__all__ = [
-    "cache_subtitles",
-    "get_subtitle_cache_path",
-]
+__all__ = ["SubtitleCache"]
 
 logger = getLogger(__name__)
 
+_CACHE_VERSION = 1
+"""Current subtitle stream cache version."""
 
-def cache_subtitles(
-    infile_path: Path,
-    streams: list[SubtitleStream],
-    *,
-    cache_dir_path: Path | None = None,
-    overwrite_cache: bool = False,
-    render_images: bool = True,
-):
-    """Cache extracted subtitle streams.
 
-    Arguments:
-        infile_path: media input file
-        streams: subtitle streams to cache
-        cache_dir_path: cache directory path
-        overwrite_cache: whether to replace matching cached subtitle artifacts
-        render_images: whether to render SUP streams to image directories
-    """
-    # Validate arguments
-    if cache_dir_path is None:
-        cache_dir_path = get_runtime_cache_dir_path("media", "subtitles")
+class SubtitleCache:
+    """Cache of subtitle streams extracted from media."""
 
-    # Determine which subtitle streams are missing from cache and need to be extracted
-    missing: list[tuple[SubtitleStream, Path]] = []
-    for stream in streams:
-        stream_path = get_subtitle_cache_path(
-            infile_path,
-            stream,
-            cache_dir_path=cache_dir_path,
+    def __init__(
+        self,
+        cache_root_path: Path | None = None,
+        overwrite: bool = False,
+    ):
+        """Initialize.
+
+        Arguments:
+            cache_root_path: root directory beneath which to cache, or None for default
+            overwrite: whether to replace matching cached subtitle artifacts
+        """
+        if cache_root_path is None:
+            cache_root_path = get_runtime_cache_root_path()
+        self.cache_root_path = val_output_dir_path(cache_root_path)
+        """Root directory beneath which subtitle artifacts are cached."""
+
+        self.cache_dir_path = val_output_dir_path(
+            self.cache_root_path / "media" / "subtitles"
         )
-        if overwrite_cache and stream_path.exists():
-            stream_path.unlink()
-            logger.info(f"Removed subtitle stream cache: {stream_path}")
-        if stream_path.exists():
+        """Directory in which cached subtitle streams are stored."""
+
+        self.overwrite = overwrite
+        """Whether matching cached subtitle artifacts should be replaced."""
+
+        self._refreshed_paths: set[Path] = set()
+        """Cache paths refreshed by this cache instance."""
+
+    def get_image_series_dir_path(
+        self,
+        infile_path: Path,
+        stream: SubtitleStream,
+    ) -> Path:
+        """Get the cache directory for a rendered image subtitle series.
+
+        Arguments:
+            infile_path: media input file
+            stream: subtitle stream
+        Returns:
+            image subtitle series cache directory
+        """
+        return self.get_path(infile_path, stream).parent / "image-series"
+
+    def get_path(self, infile_path: Path, stream: SubtitleStream) -> Path:
+        """Get the cache path for an extracted subtitle stream.
+
+        Arguments:
+            infile_path: media input file
+            stream: subtitle stream
+        Returns:
+            subtitle stream cache path
+        """
+        infile_path = infile_path.resolve()
+        stat = infile_path.stat()
+        payload = {
+            "cache_version": _CACHE_VERSION,
+            "path": str(infile_path),
+            "size": stat.st_size,
+            "mtime_ns": stat.st_mtime_ns,
+            "stream_index": stream.index,
+            "codec_name": stream.codec_name,
+        }
+        encoded_payload = json.dumps(payload, sort_keys=True).encode("utf-8")
+        cache_key = hashlib.sha256(encoded_payload).hexdigest()
+        return self.cache_dir_path / cache_key / f"{stream.index}.{stream.extension}"
+
+    def load(
+        self,
+        infile_path: Path,
+        stream: SubtitleStream,
+    ) -> Path | None:
+        """Load a cached subtitle stream path.
+
+        Arguments:
+            infile_path: media input file
+            stream: subtitle stream
+        Returns:
+            cached subtitle stream path, if present
+        """
+        stream_path = self.get_path(infile_path, stream)
+        self._remove_for_overwrite(stream_path, "subtitle stream")
+        if stream_path.is_file():
+            stream_path.touch()
             logger.info(f"Loaded subtitle stream from cache: {stream_path}")
-        else:
-            missing.append((stream, stream_path))
+            return stream_path
+        if stream_path.exists() or stream_path.is_symlink():
+            self._remove_artifact(stream_path)
+            logger.warning(f"Discarded invalid subtitle stream cache: {stream_path}")
+        return None
 
-    # Extract subtitle streams
-    if missing:
-        input_stream = ffmpeg.input(str(infile_path))
-        with ExitStack() as stack:
-            staged_paths: list[tuple[Path, Path]] = []
-            output_streams = []
-            for stream, stream_path in missing:
-                if not stream_path.parent.exists():
-                    stream_path.parent.mkdir(parents=True)
-                    logger.info(f"Created cache directory: {stream_path.parent}")
-                staging_dir_path = Path(
-                    stack.enter_context(
-                        TemporaryDirectory(
-                            dir=stream_path.parent,
-                            prefix=f".{stream_path.name}-",
-                        )
-                    )
-                )
-                staging_path = staging_dir_path / stream_path.name
-                staged_paths.append((staging_path, stream_path))
-                output_streams.append(
-                    input_stream.output(
-                        str(staging_path),
-                        **{
-                            "map": f"0:{stream.index}",
-                            "c:s": stream.output_codec,
-                        },
-                    )
-                )
-            try:
-                ffmpeg.merge_outputs(*output_streams).run(
-                    quiet=False,
-                    overwrite_output=True,
-                )
-            except ffmpeg.Error as exc:
-                raise ScinoephileError(
-                    f"Could not cache subtitle streams from {infile_path}"
-                ) from exc
+    def load_image_series(
+        self,
+        infile_path: Path,
+        stream: SubtitleStream,
+    ) -> Path | None:
+        """Load a cached image subtitle series directory.
 
-            if any(not staging_path.is_file() for staging_path, _ in staged_paths):
-                raise ScinoephileError(
-                    f"Could not cache subtitle streams from {infile_path}"
-                )
-            for staging_path, stream_path in staged_paths:
-                staging_path.replace(stream_path)
-                logger.info(f"Saved subtitle stream to cache: {stream_path}")
-
-    # Render cached SUP subtitle streams to image directories when requested
-    if render_images:
-        _cache_image_subtitle_series(
-            infile_path,
-            streams,
-            cache_dir_path=cache_dir_path,
-            overwrite_cache=overwrite_cache,
-        )
-
-
-def get_subtitle_cache_path(
-    infile_path: Path,
-    stream: SubtitleStream,
-    *,
-    cache_dir_path: Path | None = None,
-) -> Path:
-    """Get the cache path for an extracted subtitle stream.
-
-    Arguments:
-        infile_path: media input file
-        stream: subtitle stream
-        cache_dir_path: cache directory path
-    Returns:
-        subtitle stream cache path
-    """
-    # Validate arguments
-    if cache_dir_path is None:
-        cache_dir_path = get_runtime_cache_dir_path("media", "subtitles")
-
-    # Calculate stats, prepare key, and return path
-    stat = infile_path.stat()
-    payload = {
-        "path": str(infile_path),
-        "size": stat.st_size,
-        "mtime_ns": stat.st_mtime_ns,
-        "stream_index": stream.index,
-        "codec_name": stream.codec_name,
-    }
-    encoded_payload = json.dumps(payload, sort_keys=True).encode("utf-8")
-    cache_key = hashlib.sha256(encoded_payload).hexdigest()
-    return cache_dir_path / cache_key / f"{stream.index}.{stream.extension}"
-
-
-def _cache_image_subtitle_series(
-    infile_path: Path,
-    streams: list[SubtitleStream],
-    *,
-    cache_dir_path: Path,
-    overwrite_cache: bool,
-):
-    """Render cached SUP subtitle streams to image directories.
-
-    Arguments:
-        infile_path: media input file
-        streams: subtitle streams to cache
-        cache_dir_path: cache directory path
-        overwrite_cache: whether to replace matching rendered image artifacts
-    """
-    for stream in streams:
-        if stream.extension != "sup":
-            continue
-        stream_path = get_subtitle_cache_path(
-            infile_path,
-            stream,
-            cache_dir_path=cache_dir_path,
-        )
-        image_dir_path = stream_path.parent / "image-series"
-        if (image_dir_path / "index.html").exists() and not overwrite_cache:
+        Arguments:
+            infile_path: media input file
+            stream: subtitle stream
+        Returns:
+            cached image subtitle series directory, if present
+        """
+        image_dir_path = self.get_image_series_dir_path(infile_path, stream)
+        index_path = image_dir_path / "index.html"
+        self._remove_for_overwrite(image_dir_path, "image subtitle series")
+        if index_path.is_file():
+            index_path.touch()
             logger.info(f"Loaded image subtitle series from cache: {image_dir_path}")
-            continue
-        image_series = ImageSeries.load(stream_path)
+            return image_dir_path
+        if image_dir_path.exists() or image_dir_path.is_symlink():
+            self._remove_artifact(image_dir_path)
+            logger.warning(
+                f"Discarded invalid image subtitle series cache: {image_dir_path}"
+            )
+        return None
+
+    def remove(self, infile_path: Path, stream: SubtitleStream) -> Path | None:
+        """Remove a cached subtitle stream.
+
+        Arguments:
+            infile_path: media input file
+            stream: subtitle stream
+        Returns:
+            removed cache path, if present
+        """
+        stream_path = self.get_path(infile_path, stream)
+        if not stream_path.exists() and not stream_path.is_symlink():
+            return None
+        self._remove_artifact(stream_path)
+        logger.info(f"Removed subtitle stream cache: {stream_path}")
+        return stream_path
+
+    def remove_image_series(
+        self,
+        infile_path: Path,
+        stream: SubtitleStream,
+    ) -> Path | None:
+        """Remove a cached image subtitle series.
+
+        Arguments:
+            infile_path: media input file
+            stream: subtitle stream
+        Returns:
+            removed cache directory, if present
+        """
+        image_dir_path = self.get_image_series_dir_path(infile_path, stream)
+        if not image_dir_path.exists() and not image_dir_path.is_symlink():
+            return None
+        self._remove_artifact(image_dir_path)
+        logger.info(f"Removed image subtitle series cache: {image_dir_path}")
+        return image_dir_path
+
+    def save(
+        self,
+        infile_path: Path,
+        stream: SubtitleStream,
+        staging_path: Path,
+    ) -> Path:
+        """Save an extracted subtitle stream to the cache.
+
+        Arguments:
+            infile_path: media input file
+            stream: subtitle stream
+            staging_path: staged subtitle stream file
+        Returns:
+            saved cache path
+        """
+        stream_path = self.get_path(infile_path, stream)
+        stream_path.parent.mkdir(parents=True, exist_ok=True)
+        staging_path.replace(stream_path)
+        self._refreshed_paths.add(stream_path)
+        logger.info(f"Saved subtitle stream to cache: {stream_path}")
+        return stream_path
+
+    def save_image_series(
+        self,
+        infile_path: Path,
+        stream: SubtitleStream,
+        image_series: ImageSeries,
+    ) -> Path:
+        """Save a rendered image subtitle series to the cache.
+
+        Arguments:
+            infile_path: media input file
+            stream: subtitle stream
+            image_series: rendered image subtitle series
+        Returns:
+            saved cache directory
+        """
+        image_dir_path = self.get_image_series_dir_path(infile_path, stream)
         image_series.save(image_dir_path)
+        self._refreshed_paths.add(image_dir_path)
         logger.info(f"Saved image subtitle series to cache: {image_dir_path}")
+        return image_dir_path
+
+    def _remove_for_overwrite(self, artifact_path: Path, label: str):
+        """Remove a matching artifact once when overwrite is enabled.
+
+        Arguments:
+            artifact_path: cached artifact path
+            label: artifact label used in logging
+        """
+        if not self.overwrite or artifact_path in self._refreshed_paths:
+            return
+        self._refreshed_paths.add(artifact_path)
+        if not artifact_path.exists() and not artifact_path.is_symlink():
+            return
+        self._remove_artifact(artifact_path)
+        logger.info(f"Removed {label} cache: {artifact_path}")
+
+    @staticmethod
+    def _remove_artifact(artifact_path: Path):
+        """Remove a cached file, directory, or symbolic link.
+
+        Arguments:
+            artifact_path: cached artifact to remove
+        """
+        if artifact_path.is_dir() and not artifact_path.is_symlink():
+            rmtree(artifact_path)
+        else:
+            artifact_path.unlink(missing_ok=True)

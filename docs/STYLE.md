@@ -106,6 +106,10 @@
   passthrough values, and use a narrower type, protocol, `TypedDict`, or alias
   when the shape is known.
 
+## Caching
+* Follow the cache ownership, layout, lifecycle, and testing conventions in
+  [`CACHING.md`](CACHING.md).
+
 ## Exceptions
 * Raise `ScinoephileError` for Scinoephile domain failures that should be shown
   directly to CLI users.
@@ -151,8 +155,8 @@
   such as `infile_path`, `outfile_path`, or `cache_dir_path`.
 * Use argument `type=` validators, including `enum_arg(...)`, so `_main`
   receives the type it expects instead of reparsing strings.
-  * Cache-producing CLIs should use the shared cache argument bundle. Cache
-    directory help should include `(default: %(default)s)`.
+  * Cache-producing CLIs should follow the CLI conventions in
+    [`CACHING.md`](CACHING.md).
 * Base command CLIs that dispatch to subcommands should call the selected
   subcommand directly, such as
   `cls.subcommands()[subcommand_name]._main(**kwargs)`.

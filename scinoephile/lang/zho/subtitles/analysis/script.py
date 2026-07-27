@@ -4,26 +4,22 @@
 
 from __future__ import annotations
 
-import hashlib
-import json
-from dataclasses import asdict, dataclass
 from logging import getLogger
 from pathlib import Path
 
-from scinoephile.common.file import open_atomic_text_file
 from scinoephile.core import Language
 from scinoephile.core.language import is_chinese_language_tag
 from scinoephile.core.media import SubtitleStream
-from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.script.analysis import get_zho_script_analysis
-from scinoephile.media.subtitles.cache import cache_subtitles, get_subtitle_cache_path
+from scinoephile.media.subtitles.cache import SubtitleCache
+from scinoephile.media.subtitles.extractor import SubtitleExtractor
 
-__all__ = [
-    "ZhoSubtitleScriptAnalysis",
-    "analyze_zho_subtitle_stream_script",
-]
+from .cache import ZhoScriptAnalysisCache
+from .result import ZhoScriptAnalysisResult
+
+__all__ = ["analyze_zho_subtitle_stream_script"]
 
 _DEFAULT_ZHO_SUBTITLE_SAMPLE_SIZE = 4
 """Default number of image subtitle samples to OCR."""
@@ -33,91 +29,63 @@ _ZHO_SUBTITLE_OCR_LANGUAGES = (Language.zho_hans, Language.zho_hant)
 logger = getLogger(__name__)
 
 
-@dataclass(frozen=True)
-class ZhoSubtitleScriptAnalysis:
-    """Chinese subtitle stream script analysis result."""
-
-    script: str | None = None
-    """Detected script tag, when determined."""
-    simplified_count: int = 0
-    """Number of simplified-only Hanzi observed."""
-    traditional_count: int = 0
-    """Number of traditional-only Hanzi observed."""
-    shared_count: int = 0
-    """Number of non-decisive Hanzi observed."""
-    sample_indexes: tuple[int, ...] = ()
-    """Indexes sampled for OCR, if applicable."""
-    ocr_languages: tuple[str, ...] = ()
-    """OCR languages used, if applicable."""
-    failure_reason: str | None = None
-    """Reason script could not be determined."""
-
-
 def analyze_zho_subtitle_stream_script(
     infile_path: Path,
     stream: SubtitleStream,
     *,
-    cache_dir_path: Path | None = None,
-    overwrite_cache: bool = False,
     sample_size: int = _DEFAULT_ZHO_SUBTITLE_SAMPLE_SIZE,
-    subtitle_cache_is_fresh: bool = False,
-) -> ZhoSubtitleScriptAnalysis:
+    subtitle_cache: SubtitleCache | None = None,
+) -> ZhoScriptAnalysisResult:
     """Analyze the Chinese script used by a subtitle stream.
 
     Arguments:
         infile_path: media input file
         stream: subtitle stream to analyze
-        cache_dir_path: cache root directory path
-        overwrite_cache: whether to replace matching analysis and OCR cache files
         sample_size: maximum number of image subtitles to OCR
-        subtitle_cache_is_fresh: whether the caller already refreshed subtitle cache
+        subtitle_cache: subtitle stream cache shared with upstream operations
     Returns:
         subtitle script analysis
     """
     if not is_chinese_language_tag(stream.language):
-        return ZhoSubtitleScriptAnalysis(
+        return ZhoScriptAnalysisResult(
             failure_reason="not a Chinese subtitle stream",
         )
 
-    analysis_cache_dir_path = None
-    paddle_cache_dir_path = None
-    subtitle_cache_dir_path = None
-    if cache_dir_path is not None:
-        analysis_cache_dir_path = cache_dir_path / "media" / "subtitle-analysis"
-        paddle_cache_dir_path = cache_dir_path / "paddleocr"
-        subtitle_cache_dir_path = cache_dir_path / "media" / "subtitles"
-    analysis_cache_path = _get_subtitle_analysis_cache_path(
+    # Resolve one subtitle cache and use its policy for related cached artifacts
+    if subtitle_cache is None:
+        subtitle_cache = SubtitleCache()
+    cache_root_path = subtitle_cache.cache_root_path
+    overwrite_cache = subtitle_cache.overwrite
+
+    # Reuse a matching script analysis when available
+    ocr_language_codes = tuple(
+        language.code for language in _ZHO_SUBTITLE_OCR_LANGUAGES
+    )
+    analysis_cache = ZhoScriptAnalysisCache(
+        cache_root_path,
+        overwrite_cache,
+    )
+    cached_analysis = analysis_cache.load(
         infile_path,
         stream,
-        cache_dir_path=analysis_cache_dir_path,
-        sample_size=sample_size,
+        sample_size,
+        ocr_language_codes,
     )
-    if overwrite_cache and analysis_cache_path.exists():
-        analysis_cache_path.unlink()
-        logger.info(f"Removed subtitle script analysis cache: {analysis_cache_path}")
-    if analysis_cache_path.exists():
-        logger.info(
-            f"Loaded subtitle script analysis from cache: {analysis_cache_path}"
-        )
-        return _load_subtitle_script_analysis(analysis_cache_path)
+    if cached_analysis is not None:
+        return cached_analysis
 
-    cache_subtitles(
-        infile_path,
-        [stream],
-        cache_dir_path=subtitle_cache_dir_path,
-        overwrite_cache=overwrite_cache and not subtitle_cache_is_fresh,
-    )
-    stream_path = get_subtitle_cache_path(
-        infile_path,
-        stream,
-        cache_dir_path=subtitle_cache_dir_path,
-    )
+    # Cache the source subtitle stream before inspecting its contents
+    stream_path = SubtitleExtractor(subtitle_cache).extract(infile_path, [stream])[0]
 
+    # Analyze either rendered SUP images or text subtitle events
     if stream.extension == "sup":
-        image_dir_path = stream_path.parent / "image-series"
+        image_dir_path = subtitle_cache.get_image_series_dir_path(
+            infile_path,
+            stream,
+        )
         analysis = _get_zho_image_subtitle_script_analysis(
             image_dir_path,
-            cache_dir_path=paddle_cache_dir_path,
+            cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
             sample_size=sample_size,
         )
@@ -126,8 +94,14 @@ def analyze_zho_subtitle_stream_script(
         text = "\n".join(event.text for event in series)
         analysis = _get_zho_subtitle_script_analysis(text)
 
-    _save_subtitle_script_analysis(analysis, analysis_cache_path)
-    logger.info(f"Saved subtitle script analysis to cache: {analysis_cache_path}")
+    # Persist the analysis for reuse by later probes
+    analysis_cache.save(
+        infile_path,
+        stream,
+        sample_size,
+        ocr_language_codes,
+        analysis,
+    )
     return analysis
 
 
@@ -155,15 +129,15 @@ def _get_image_subtitle_sample_analysis(
     series: ImageSeries,
     sample_indexes: list[int],
     *,
-    cache_dir_path: Path | None = None,
+    cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
-) -> ZhoSubtitleScriptAnalysis:
+) -> ZhoScriptAnalysisResult:
     """Analyze selected cached image subtitles using PaddleOCR.
 
     Arguments:
         series: rendered image subtitle series
         sample_indexes: zero-based indexes of subtitles to OCR
-        cache_dir_path: PaddleOCR cache directory path
+        cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching PaddleOCR cache files
     Returns:
         Chinese subtitle script analysis
@@ -179,7 +153,7 @@ def _get_image_subtitle_sample_analysis(
     for language in _ZHO_SUBTITLE_OCR_LANGUAGES:
         text_series = ocr_image_series_with_paddle(
             sampled_series,
-            cache_dir_path=cache_dir_path,
+            cache_root_path=cache_root_path,
             language=language,
             overwrite_cache=overwrite_cache,
         )
@@ -195,7 +169,7 @@ def _get_image_subtitle_sample_analysis(
         script = None
         failure_reason = "OCR script analyses did not agree"
 
-    return ZhoSubtitleScriptAnalysis(
+    return ZhoScriptAnalysisResult(
         script=script,
         simplified_count=reference_analysis.simplified_count,
         traditional_count=reference_analysis.traditional_count,
@@ -206,55 +180,18 @@ def _get_image_subtitle_sample_analysis(
     )
 
 
-def _get_subtitle_analysis_cache_path(
-    infile_path: Path,
-    stream: SubtitleStream,
-    *,
-    cache_dir_path: Path | None,
-    sample_size: int,
-) -> Path:
-    """Get path to cached script analysis JSON.
-
-    Arguments:
-        infile_path: media input file
-        stream: subtitle stream
-        cache_dir_path: cache directory path
-        sample_size: OCR sample size
-    Returns:
-        analysis cache path
-    """
-    if cache_dir_path is None:
-        cache_dir_path = get_runtime_cache_dir_path("media", "subtitle-analysis")
-    resolved_path = infile_path.resolve()
-    stat = resolved_path.stat()
-    payload = {
-        "path": str(resolved_path),
-        "size": stat.st_size,
-        "mtime_ns": stat.st_mtime_ns,
-        "stream_index": stream.index,
-        "codec_name": stream.codec_name,
-        "sample_size": sample_size,
-        "ocr_languages": tuple(
-            language.code for language in _ZHO_SUBTITLE_OCR_LANGUAGES
-        ),
-    }
-    encoded_payload = json.dumps(payload, sort_keys=True).encode("utf-8")
-    cache_key = hashlib.sha256(encoded_payload).hexdigest()
-    return cache_dir_path / f"{cache_key}.json"
-
-
 def _get_zho_image_subtitle_script_analysis(
     image_dir_path: Path,
     *,
-    cache_dir_path: Path | None = None,
+    cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     sample_size: int = _DEFAULT_ZHO_SUBTITLE_SAMPLE_SIZE,
-) -> ZhoSubtitleScriptAnalysis:
+) -> ZhoScriptAnalysisResult:
     """Analyze Chinese script in rendered image subtitles using PaddleOCR.
 
     Arguments:
         image_dir_path: rendered image subtitle cache directory path
-        cache_dir_path: PaddleOCR cache directory path
+        cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching PaddleOCR cache files
         sample_size: maximum number of image subtitles to OCR
     Returns:
@@ -264,14 +201,14 @@ def _get_zho_image_subtitle_script_analysis(
     event_count = len(series)
     sample_indexes = _get_evenly_spaced_indexes(event_count, sample_size)
     if not sample_indexes:
-        return ZhoSubtitleScriptAnalysis(
+        return ZhoScriptAnalysisResult(
             failure_reason="no subtitle images to sample",
         )
 
     return _get_image_subtitle_sample_analysis(
         series,
         sample_indexes,
-        cache_dir_path=cache_dir_path,
+        cache_root_path=cache_root_path,
         overwrite_cache=overwrite_cache,
     )
 
@@ -280,7 +217,7 @@ def _get_zho_subtitle_script_analysis(
     text: str,
     *,
     failure_reason: str | None = None,
-) -> ZhoSubtitleScriptAnalysis:
+) -> ZhoScriptAnalysisResult:
     """Analyze Chinese script in subtitle text.
 
     Arguments:
@@ -292,46 +229,10 @@ def _get_zho_subtitle_script_analysis(
     analysis = get_zho_script_analysis(text)
     if failure_reason is None and analysis.script is None:
         failure_reason = "Chinese script could not be determined"
-    return ZhoSubtitleScriptAnalysis(
+    return ZhoScriptAnalysisResult(
         script=analysis.script,
         simplified_count=analysis.simplified_count,
         traditional_count=analysis.traditional_count,
         shared_count=analysis.shared_count,
         failure_reason=failure_reason,
     )
-
-
-def _load_subtitle_script_analysis(cache_path: Path) -> ZhoSubtitleScriptAnalysis:
-    """Load subtitle script analysis from cache.
-
-    Arguments:
-        cache_path: analysis cache path
-    Returns:
-        subtitle script analysis
-    """
-    with cache_path.open("r", encoding="utf-8") as file:
-        raw = json.load(file)
-    return ZhoSubtitleScriptAnalysis(
-        script=raw["script"],
-        simplified_count=int(raw["simplified_count"]),
-        traditional_count=int(raw["traditional_count"]),
-        shared_count=int(raw["shared_count"]),
-        sample_indexes=tuple(raw["sample_indexes"]),
-        ocr_languages=tuple(raw["ocr_languages"]),
-        failure_reason=raw["failure_reason"],
-    )
-
-
-def _save_subtitle_script_analysis(
-    analysis: ZhoSubtitleScriptAnalysis,
-    cache_path: Path,
-):
-    """Save subtitle script analysis to cache.
-
-    Arguments:
-        analysis: subtitle script analysis
-        cache_path: analysis cache path
-    """
-    cache_path.parent.mkdir(parents=True, exist_ok=True)
-    with open_atomic_text_file(cache_path) as file:
-        json.dump(asdict(analysis), file, ensure_ascii=False, sort_keys=True)

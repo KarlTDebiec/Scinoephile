@@ -271,7 +271,7 @@ class OcrFuseCli(ScinoephileCliBase):
                     parser,
                     llm_args.additional_context_file_path,
                 ),
-                cache_dir_path=cache_args.dir_path / "llm",
+                cache_root_path=cache_args.root_path,
                 overwrite_cache=cache_args.overwrite,
                 test_case_path=json_path,
             )

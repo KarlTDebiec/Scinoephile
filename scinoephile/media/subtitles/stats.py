@@ -11,7 +11,8 @@ from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 
-from .cache import cache_subtitles, get_subtitle_cache_path
+from .cache import SubtitleCache
+from .extractor import SubtitleExtractor
 
 __all__ = [
     "SubtitleStreamStats",
@@ -35,25 +36,25 @@ def get_subtitle_stream_stats(
     infile_path: Path,
     stream: SubtitleStream,
     *,
-    cache_dir_path: Path | None = None,
+    subtitle_cache: SubtitleCache | None = None,
 ) -> SubtitleStreamStats:
     """Get subtitle stream event count and span from cached streams.
 
     Arguments:
         infile_path: media input file
         stream: subtitle stream to inspect
-        cache_dir_path: cache directory path
+        subtitle_cache: subtitle stream cache shared with upstream operations
     Returns:
         subtitle stream statistics
     """
-    cache_subtitles(infile_path, [stream], cache_dir_path=cache_dir_path)
-    stream_path = get_subtitle_cache_path(
-        infile_path,
-        stream,
-        cache_dir_path=cache_dir_path,
-    )
+    if subtitle_cache is None:
+        subtitle_cache = SubtitleCache()
+    stream_path = SubtitleExtractor(subtitle_cache).extract(infile_path, [stream])[0]
     if stream.extension == "sup":
-        image_dir_path = stream_path.parent / "image-series"
+        image_dir_path = subtitle_cache.get_image_series_dir_path(
+            infile_path,
+            stream,
+        )
         series = ImageSeries.load(image_dir_path)
     else:
         series = Series.load(stream_path)
