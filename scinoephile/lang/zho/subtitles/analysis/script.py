@@ -32,8 +32,6 @@ def analyze_zho_subtitle_stream_script(
     infile_path: Path,
     stream: SubtitleStream,
     *,
-    cache_root_path: Path | None = None,
-    overwrite_cache: bool = False,
     sample_size: int = _DEFAULT_ZHO_SUBTITLE_SAMPLE_SIZE,
     subtitle_cache: SubtitleCache | None = None,
 ) -> ZhoScriptAnalysisResult:
@@ -42,8 +40,6 @@ def analyze_zho_subtitle_stream_script(
     Arguments:
         infile_path: media input file
         stream: subtitle stream to analyze
-        cache_root_path: cache root directory path
-        overwrite_cache: whether to replace matching analysis and OCR cache files
         sample_size: maximum number of image subtitles to OCR
         subtitle_cache: subtitle stream cache shared with upstream operations
     Returns:
@@ -56,7 +52,7 @@ def analyze_zho_subtitle_stream_script(
 
     # Resolve one subtitle cache and use its policy for related cached artifacts
     if subtitle_cache is None:
-        subtitle_cache = SubtitleCache(cache_root_path, overwrite_cache)
+        subtitle_cache = SubtitleCache()
     cache_root_path = subtitle_cache.cache_root_path
     overwrite_cache = subtitle_cache.overwrite
 

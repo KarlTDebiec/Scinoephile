@@ -9,6 +9,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
+from scinoephile.media.subtitles.cache import SubtitleCache
 from scinoephile.media.subtitles.details import get_detailed_subtitle_streams
 
 
@@ -17,6 +18,7 @@ def test_get_detailed_subtitle_streams_enriches_subtitle_stats(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
     cache_root_path = tmp_path / "cache"
+    subtitle_cache = SubtitleCache(cache_root_path)
     subtitle_streams = [
         SubtitleStream(index=2, codec_name="subrip", language="zho"),
     ]
@@ -38,7 +40,7 @@ def test_get_detailed_subtitle_streams_enriches_subtitle_stats(tmp_path: Path):
     ):
         detailed_streams = get_detailed_subtitle_streams(
             infile_path,
-            cache_root_path=cache_root_path,
+            subtitle_cache=subtitle_cache,
         )
 
     assert len(detailed_streams) == 1
@@ -58,6 +60,7 @@ def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
     cache_root_path = tmp_path / "cache"
+    subtitle_cache = SubtitleCache(cache_root_path)
     streams = [
         VideoStream(index=0, codec_type="video", codec_name="h264"),
         AudioStream(index=1, codec_type="audio", codec_name="aac"),
@@ -80,8 +83,8 @@ def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
     ):
         detailed_streams = get_detailed_subtitle_streams(
             infile_path,
-            cache_root_path=cache_root_path,
             streams=streams,
+            subtitle_cache=subtitle_cache,
         )
 
     assert [stream.index for stream in detailed_streams] == [2]

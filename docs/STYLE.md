@@ -119,6 +119,11 @@
   resolving runtime defaults themselves. When a cache instance is shared, use
   its resolved root and overwrite policy for related cache artifacts; do not
   copy this cache-owned state onto the caller.
+* Operations that own a cache's lifetime may accept cache configuration and
+  should construct one cache instance. Functions that accept a caller-supplied
+  cache should accept only that cache instance, optionally creating a default
+  instance when one is omitted, rather than also accepting its constructor
+  arguments.
 * If a future operation needs to disable persistence, use an explicit option or
   cache implementation rather than overloading a `None` root.
 

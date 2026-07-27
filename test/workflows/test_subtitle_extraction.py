@@ -13,6 +13,7 @@ from pytest import LogCaptureFixture, raises
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
+from scinoephile.media.subtitles.cache import SubtitleCache
 from scinoephile.workflows.subtitle_extraction import (
     SubtitleExtractionOutputKind,
     SubtitleExtractionOutputStatus,
@@ -101,7 +102,7 @@ def test_extract_subtitles_details_uses_detected_chinese_script(tmp_path: Path):
             return_value=[
                 SubtitleStream(index=4, language="zho-Hant", codec_name="subrip"),
             ],
-        ),
+        ) as get_zho_subtitle_streams,
         patch("scinoephile.workflows.subtitle_extraction.SubtitleCache.cache"),
         patch(
             "scinoephile.workflows.subtitle_extraction.SubtitleCache.get_path",
@@ -118,6 +119,13 @@ def test_extract_subtitles_details_uses_detected_chinese_script(tmp_path: Path):
 
     assert result.outputs[0].path == output_dir_path / "zho-Hant-4.srt"
     assert result.outputs[0].path.read_text(encoding="utf-8") == "traditional"
+    get_zho_subtitle_streams.assert_called_once()
+    assert get_zho_subtitle_streams.call_args.args == (infile_path,)
+    assert set(get_zho_subtitle_streams.call_args.kwargs) == {"subtitle_cache"}
+    subtitle_cache = get_zho_subtitle_streams.call_args.kwargs["subtitle_cache"]
+    assert isinstance(subtitle_cache, SubtitleCache)
+    assert subtitle_cache.cache_root_path == cache_root_path.resolve()
+    assert not subtitle_cache.overwrite
 
 
 def test_extract_subtitles_matches_script_qualified_language_tag(tmp_path: Path):

@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
 from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
+from scinoephile.media.subtitles.cache import SubtitleCache
 
 
 def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path):
@@ -21,6 +22,7 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     cache_root_path = tmp_path / "cache"
+    subtitle_cache = SubtitleCache(cache_root_path)
 
     with (
         patch(
@@ -49,10 +51,9 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
     ):
         streams = get_zho_subtitle_streams(
             infile_path,
-            cache_root_path=cache_root_path,
+            subtitle_cache=subtitle_cache,
         )
 
-    subtitle_cache = details_mock.call_args.kwargs["subtitle_cache"]
     details_mock.assert_called_once_with(
         infile_path,
         streams=None,
@@ -61,8 +62,6 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
     analysis_mock.assert_called_once_with(
         infile_path,
         streams[0],
-        cache_root_path=cache_root_path,
-        overwrite_cache=False,
         subtitle_cache=subtitle_cache,
     )
     assert [stream.index for stream in streams] == [2, 3]
@@ -114,6 +113,7 @@ def test_get_zho_subtitle_streams_does_not_overwrite_subtitle_cache_twice(
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, codec_name="subrip", language="zho")
+    subtitle_cache = SubtitleCache(tmp_path / "cache", overwrite=True)
 
     with (
         patch(
@@ -127,11 +127,9 @@ def test_get_zho_subtitle_streams_does_not_overwrite_subtitle_cache_twice(
     ):
         get_zho_subtitle_streams(
             infile_path,
-            cache_root_path=tmp_path / "cache",
-            overwrite_cache=True,
+            subtitle_cache=subtitle_cache,
         )
 
-    subtitle_cache = details_mock.call_args.kwargs["subtitle_cache"]
     details_mock.assert_called_once_with(
         infile_path,
         streams=None,
@@ -141,8 +139,6 @@ def test_get_zho_subtitle_streams_does_not_overwrite_subtitle_cache_twice(
     analysis_mock.assert_called_once_with(
         infile_path,
         stream,
-        cache_root_path=tmp_path / "cache",
-        overwrite_cache=True,
         subtitle_cache=subtitle_cache,
     )
 

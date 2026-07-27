@@ -16,6 +16,7 @@ from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.lang.zho.subtitles.analysis.script import (
     analyze_zho_subtitle_stream_script,
 )
+from scinoephile.media.subtitles.cache import SubtitleCache
 from test.helpers.files import set_mtime
 from test.helpers.media_subtitles import cache_image_subtitles, cache_subtitle_stream
 
@@ -36,12 +37,13 @@ def test_analyze_text_subtitle_stream_uses_cached_stream(tmp_path: Path):
         cache_root_path,
         "1\n00:00:00,000 --> 00:00:01,000\n简体中文汉字\n",
     )
+    subtitle_cache = SubtitleCache(cache_root_path)
 
     with patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input:
         analysis = analyze_zho_subtitle_stream_script(
             infile_path,
             stream,
-            cache_root_path=cache_root_path,
+            subtitle_cache=subtitle_cache,
         )
 
     ffmpeg_input.assert_not_called()
@@ -60,10 +62,11 @@ def test_analyze_text_subtitle_stream_marks_cached_analysis_used(tmp_path: Path)
         cache_root_path,
         "1\n00:00:00,000 --> 00:00:01,000\n简体中文汉字\n",
     )
+    subtitle_cache = SubtitleCache(cache_root_path)
     analyze_zho_subtitle_stream_script(
         infile_path,
         stream,
-        cache_root_path=cache_root_path,
+        subtitle_cache=subtitle_cache,
     )
     cache_path = next(
         (cache_root_path / "media" / "subtitles" / "analysis").glob("*.json")
@@ -77,7 +80,7 @@ def test_analyze_text_subtitle_stream_marks_cached_analysis_used(tmp_path: Path)
         analysis = analyze_zho_subtitle_stream_script(
             infile_path,
             stream,
-            cache_root_path=cache_root_path,
+            subtitle_cache=subtitle_cache,
         )
 
     cache_mock.assert_not_called()
@@ -99,10 +102,11 @@ def test_analyze_text_subtitle_stream_regenerates_invalid_analysis_cache(
         cache_root_path,
         "1\n00:00:00,000 --> 00:00:01,000\n简体中文汉字\n",
     )
+    subtitle_cache = SubtitleCache(cache_root_path)
     analyze_zho_subtitle_stream_script(
         infile_path,
         stream,
-        cache_root_path=cache_root_path,
+        subtitle_cache=subtitle_cache,
     )
     cache_path = next(
         (cache_root_path / "media" / "subtitles" / "analysis").glob("*.json")
@@ -112,7 +116,7 @@ def test_analyze_text_subtitle_stream_regenerates_invalid_analysis_cache(
     analysis = analyze_zho_subtitle_stream_script(
         infile_path,
         stream,
-        cache_root_path=cache_root_path,
+        subtitle_cache=subtitle_cache,
     )
 
     assert analysis.script == "zho-Hans"
@@ -134,6 +138,7 @@ def test_analyze_text_subtitle_stream_overwrites_cached_stream(tmp_path: Path):
         cache_root_path,
         "1\n00:00:00,000 --> 00:00:01,000\n简体中文汉字\n",
     )
+    subtitle_cache = SubtitleCache(cache_root_path, overwrite=True)
 
     with patch(
         "scinoephile.lang.zho.subtitles.analysis.script.SubtitleCache.cache"
@@ -141,8 +146,7 @@ def test_analyze_text_subtitle_stream_overwrites_cached_stream(tmp_path: Path):
         analysis = analyze_zho_subtitle_stream_script(
             infile_path,
             stream,
-            cache_root_path=cache_root_path,
-            overwrite_cache=True,
+            subtitle_cache=subtitle_cache,
         )
 
     cache_mock.assert_called_once_with(
@@ -172,6 +176,7 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
         cache_root_path,
         event_count=7,
     )
+    subtitle_cache = SubtitleCache(cache_root_path)
     ocr_sizes: list[list[tuple[int, int]]] = []
 
     def fake_ocr_image_series_with_paddle(
@@ -201,7 +206,7 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
     analysis = analyze_zho_subtitle_stream_script(
         infile_path,
         stream,
-        cache_root_path=cache_root_path,
+        subtitle_cache=subtitle_cache,
     )
 
     assert analysis.script == "zho-Hant"

@@ -24,8 +24,6 @@ logger = getLogger(__name__)
 def get_detailed_subtitle_streams(
     infile_path: Path,
     *,
-    cache_root_path: Path | None = None,
-    overwrite_cache: bool = False,
     streams: Sequence[Stream] | None = None,
     subtitle_cache: SubtitleCache | None = None,
 ) -> list[SubtitleStream]:
@@ -33,15 +31,13 @@ def get_detailed_subtitle_streams(
 
     Arguments:
         infile_path: media input file to inspect
-        cache_root_path: cache root directory path
-        overwrite_cache: whether to replace matching cached subtitle artifacts
         streams: optional pre-probed media streams
         subtitle_cache: subtitle stream cache shared with upstream operations
     Returns:
         enriched subtitle stream metadata
     """
     if subtitle_cache is None:
-        subtitle_cache = SubtitleCache(cache_root_path, overwrite_cache)
+        subtitle_cache = SubtitleCache()
     if streams is None:
         subtitle_streams = get_subtitle_streams(infile_path)
     else:

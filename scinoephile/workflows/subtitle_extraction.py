@@ -104,7 +104,6 @@ def extract_subtitles(
         output_dir_path.mkdir(parents=True)
         logger.info(f"Created subtitle output directory: {output_dir_path}")
     subtitle_cache = SubtitleCache(cache_root_path, overwrite_cache)
-    cache_root_path = subtitle_cache.cache_root_path
 
     # Handle standalone SUP files separately from containerized media
     if infile_path.suffix.lower() == ".sup":
@@ -115,8 +114,6 @@ def extract_subtitles(
             details=details,
             export_images=export_images,
             overwrite=overwrite,
-            overwrite_cache=overwrite_cache,
-            cache_root_path=cache_root_path,
             subtitle_cache=subtitle_cache,
         )
         return SubtitleExtractionResult(infile_path=infile_path, outputs=outputs)
@@ -127,9 +124,7 @@ def extract_subtitles(
         stream
         for stream in _get_workflow_subtitle_streams(
             infile_path,
-            cache_root_path=cache_root_path,
             details=details,
-            overwrite_cache=overwrite_cache,
             subtitle_cache=subtitle_cache,
         )
         if _language_matches(stream.language, requested_language_tags)
@@ -219,18 +214,14 @@ def _copy_cached_stream_file(
 def _get_workflow_subtitle_streams(
     infile_path: Path,
     *,
-    cache_root_path: Path,
     details: bool,
-    overwrite_cache: bool,
     subtitle_cache: SubtitleCache,
 ) -> list[SubtitleStream]:
     """Get subtitle streams with optional workflow-level detail enrichment.
 
     Arguments:
         infile_path: media input file
-        cache_root_path: cache root directory path
         details: whether to include expensive stream details
-        overwrite_cache: whether to replace matching cached subtitle artifacts
         subtitle_cache: subtitle stream cache shared across the workflow
     Returns:
         subtitle streams
@@ -239,8 +230,6 @@ def _get_workflow_subtitle_streams(
     if details:
         return get_zho_subtitle_streams(
             infile_path,
-            cache_root_path=cache_root_path,
-            overwrite_cache=overwrite_cache,
             subtitle_cache=subtitle_cache,
         )
     return get_subtitle_streams(infile_path)
@@ -290,11 +279,9 @@ def _extract_sup_file(
     languages: Sequence[str],
     output_dir_path: Path,
     *,
-    cache_root_path: Path,
     details: bool,
     export_images: bool,
     overwrite: bool,
-    overwrite_cache: bool,
     subtitle_cache: SubtitleCache,
 ) -> list[SubtitleExtractionOutput]:
     """Extract or copy a SUP subtitle input file.
@@ -303,11 +290,9 @@ def _extract_sup_file(
         infile_path: SUP input file
         languages: language tags to extract
         output_dir_path: output directory
-        cache_root_path: cache root directory path
         details: whether to include expensive stream details
         export_images: whether to export SUP subtitles as image directories
         overwrite: whether to overwrite existing outputs
-        overwrite_cache: whether to replace matching cached subtitle artifacts
         subtitle_cache: subtitle stream cache shared across the workflow
     Returns:
         outputs handled for the SUP file
@@ -315,9 +300,7 @@ def _extract_sup_file(
     # Probe the standalone SUP file and optionally enrich stream details
     streams = _get_workflow_subtitle_streams(
         infile_path,
-        cache_root_path=cache_root_path,
         details=details,
-        overwrite_cache=overwrite_cache,
         subtitle_cache=subtitle_cache,
     )
     if not streams:

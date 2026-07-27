@@ -15,6 +15,7 @@ from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
 from scinoephile.lang.zho.subtitles.analysis.result import (
     ZhoScriptAnalysisResult,
 )
+from scinoephile.media.subtitles.cache import SubtitleCache
 from test.helpers import parametrize
 
 
@@ -250,10 +251,11 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
         assert stream.index == 0
         assert stream.codec_name == "hdmv_pgs_subtitle"
         assert stream.language == "zho"
-        assert kwargs == {
-            "cache_root_path": cache_root_path.resolve(),
-            "overwrite_cache": True,
-        }
+        assert set(kwargs) == {"subtitle_cache"}
+        subtitle_cache = kwargs["subtitle_cache"]
+        assert isinstance(subtitle_cache, SubtitleCache)
+        assert subtitle_cache.cache_root_path == cache_root_path.resolve()
+        assert subtitle_cache.overwrite
         return ZhoScriptAnalysisResult(script="zho-Hant")
 
     with (
