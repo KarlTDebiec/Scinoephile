@@ -145,11 +145,9 @@ class ValidationManager:
 
         # If not in dev mode, updates are written to runtime data instead of the repo
         self.dev = dev
-        self.runtime_char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
-        self.runtime_char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
-        self.runtime_char_pair_gaps: dict[
-            tuple[str, str], tuple[int, int, int, int]
-        ] = {}
+        self.user_char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
+        self.user_char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
+        self.user_char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]] = {}
         if not self.dev:
             if validation_data_dir_path is None:
                 self.validation_data_dir_path = val_output_dir_path(
@@ -164,21 +162,21 @@ class ValidationManager:
 
             # Initialize char_dims_by_n
             for n in range(1, MAX_CHAR_DIM_BBOXES + 1):
-                self.runtime_char_dims_by_n[n] = {}
+                self.user_char_dims_by_n[n] = {}
                 file_path = self.validation_data_dir_path / f"char_dims_{n}.csv"
                 if file_path.exists():
-                    self.runtime_char_dims_by_n[n] = load_char_dims(file_path)
-                    for char, dims_set in self.runtime_char_dims_by_n[n].items():
+                    self.user_char_dims_by_n[n] = load_char_dims(file_path)
+                    for char, dims_set in self.user_char_dims_by_n[n].items():
                         self.char_dims_by_n[n].setdefault(char, set()).update(dims_set)
 
             # Initialize char_grp_dims_by_n
             file_path = self.validation_data_dir_path / "char_grp_dims.csv"
             if file_path.exists():
-                self.runtime_char_grp_dims_by_n = load_char_grp_dims(file_path)
+                self.user_char_grp_dims_by_n = load_char_grp_dims(file_path)
                 for (
                     group_size,
                     char_grp_dims,
-                ) in self.runtime_char_grp_dims_by_n.items():
+                ) in self.user_char_grp_dims_by_n.items():
                     target_char_grp_dims = self.char_grp_dims_by_n.setdefault(
                         group_size, {}
                     )
@@ -190,8 +188,8 @@ class ValidationManager:
             # Initialize char_pair_gaps
             file_path = self.validation_data_dir_path / "char_pair_gaps.csv"
             if file_path.exists():
-                self.runtime_char_pair_gaps = load_char_pair_gaps(file_path)
-                self.char_pair_gaps.update(self.runtime_char_pair_gaps)
+                self.user_char_pair_gaps = load_char_pair_gaps(file_path)
+                self.char_pair_gaps.update(self.user_char_pair_gaps)
 
     def _validate_sub(self, sub: ImageSubtitle, sub_idx: int) -> list[str]:
         """Validate per-character bboxes for a subtitle.
@@ -525,7 +523,7 @@ class ValidationManager:
         if self.dev:
             output_char_dims = self.char_dims_by_n[n]
         else:
-            output_char_dims = self.runtime_char_dims_by_n.setdefault(n, {})
+            output_char_dims = self.user_char_dims_by_n.setdefault(n, {})
             output_char_dims.setdefault(char, set()).add(dims)
         save_char_dims(output_char_dims, self._char_dims_path(n))
 
@@ -545,7 +543,7 @@ class ValidationManager:
         if self.dev:
             output_char_grp_dims = self.char_grp_dims_by_n
         else:
-            output_char_grp_dims = self.runtime_char_grp_dims_by_n
+            output_char_grp_dims = self.user_char_grp_dims_by_n
             output_char_grp_dims.setdefault(n, {}).setdefault(group, set()).add(dims)
         save_char_grp_dims(output_char_grp_dims, self._char_grp_dims_path())
 
@@ -567,9 +565,9 @@ class ValidationManager:
                 return
             if self.dev:
                 output_char_pair_gaps = self.char_pair_gaps
-            elif char_pair in self.runtime_char_pair_gaps:
-                self.runtime_char_pair_gaps.pop(char_pair, None)
-                output_char_pair_gaps = self.runtime_char_pair_gaps
+            elif char_pair in self.user_char_pair_gaps:
+                self.user_char_pair_gaps.pop(char_pair, None)
+                output_char_pair_gaps = self.user_char_pair_gaps
             else:
                 return
             save_char_pair_gaps(output_char_pair_gaps, self._char_pair_gaps_path())
@@ -579,8 +577,8 @@ class ValidationManager:
         if self.dev:
             output_char_pair_gaps = self.char_pair_gaps
         else:
-            self.runtime_char_pair_gaps[char_pair] = cutoffs
-            output_char_pair_gaps = self.runtime_char_pair_gaps
+            self.user_char_pair_gaps[char_pair] = cutoffs
+            output_char_pair_gaps = self.user_char_pair_gaps
         save_char_pair_gaps(output_char_pair_gaps, self._char_pair_gaps_path())
 
     def _char_dims_path(self, n: int) -> Path:

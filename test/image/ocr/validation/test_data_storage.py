@@ -205,18 +205,18 @@ def test_validation_manager_does_not_persist_new_default_pair_gaps_in_dev_mode(
     assert repo_pair_gaps_path.read_text(encoding="utf-8") == "A,B,1,2,3,4\n"
 
 
-def test_validation_manager_removes_default_pair_gap_runtime_override(
+def test_validation_manager_removes_default_pair_gap_user_override(
     tmp_path, monkeypatch
 ):
-    """Test resetting a runtime pair gap override to default removes it from disk."""
+    """Test resetting a user pair gap override to default removes it from disk."""
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
     validation_data_dir_path = tmp_path / "data" / "ocr_validation"
     validation_data_dir_path.mkdir(parents=True)
-    runtime_pair_gaps_path = validation_data_dir_path / "char_pair_gaps.csv"
-    runtime_pair_gaps_path.write_text("娘,一,23,89,90,200\n", encoding="utf-8")
+    user_pair_gaps_path = validation_data_dir_path / "char_pair_gaps.csv"
+    user_pair_gaps_path.write_text("娘,一,23,89,90,200\n", encoding="utf-8")
     manager = ValidationManager(validation_data_dir_path=validation_data_dir_path)
 
     manager.update_pair_gaps(("娘", "一"), get_default_char_pair_cutoffs("娘", "一"))
@@ -224,7 +224,7 @@ def test_validation_manager_removes_default_pair_gap_runtime_override(
     assert manager.char_pair_gaps[("娘", "一")] == get_default_char_pair_cutoffs(
         "娘", "一"
     )
-    assert runtime_pair_gaps_path.read_text(encoding="utf-8") == ""
+    assert user_pair_gaps_path.read_text(encoding="utf-8") == ""
 
 
 def test_validation_manager_removes_default_pair_gap_repo_override_in_dev_mode(
