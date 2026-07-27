@@ -50,7 +50,7 @@ class TesseractRecognizerKwargs(TypedDict, total=False):
     """Additional keyword arguments forwarded to TesseractRecognizer."""
 
     cache_root_path: Path | None
-    """Root directory beneath which to cache OCR results."""
+    """Root directory beneath which to cache OCR results, or None to disable."""
 
     detect_italics: bool
     """Whether to run a legacy-engine pass for italics."""
@@ -100,7 +100,7 @@ class TesseractRecognizer:
         """Initialize.
 
         Arguments:
-            cache_root_path: root directory beneath which to cache OCR results
+            cache_root_path: root directory beneath which to cache, or None to disable
             executable_path: Tesseract executable path or command name
             detect_italics: whether to run a legacy-engine pass for italics
             language: Scinoephile language

@@ -99,25 +99,19 @@ def test_ocr_image_series_with_tesseract_logs_progress(
     ]
 
 
-def test_ocr_image_series_with_tesseract_uses_runtime_cache(
+def test_ocr_image_series_with_tesseract_preserves_disabled_cache(
     monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
-    """Test Tesseract image series processing uses runtime cache by default.
+    """Test Tesseract image series processing preserves disabled caching.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
         tmp_path: temporary path fixture
     """
-    cache_root_path = tmp_path / "cache"
     tessdata_dir_path = tmp_path / "tessdata"
-    observed_cache_root_paths = []
     RecordingOcrRecognizer.reset(Language.eng.code)
 
-    monkeypatch.setattr(
-        "scinoephile.image.ocr.tesseract.get_runtime_cache_root_path",
-        lambda: cache_root_path,
-    )
     monkeypatch.setattr(
         "scinoephile.image.ocr.tesseract.TesseractRecognizer",
         RecordingOcrRecognizer,
@@ -134,6 +128,7 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
 
     text_series = ocr_image_series_with_tesseract(
         image_series,
+        cache_root_path=None,
         executable_path="custom-tesseract",
         detect_italics=True,
         language=Language.eng,
@@ -146,8 +141,7 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
 
     assert [event.text for event in text_series] == ["eng"]
     recognizer = RecordingOcrRecognizer.instances[0]
-    observed_cache_root_paths.append(recognizer.kwargs["cache_root_path"])
-    assert observed_cache_root_paths == [cache_root_path]
+    assert recognizer.kwargs["cache_root_path"] is None
     assert recognizer.kwargs["executable_path"] == "custom-tesseract"
     assert recognizer.kwargs["detect_italics"] is True
     assert recognizer.kwargs["language"] is Language.eng

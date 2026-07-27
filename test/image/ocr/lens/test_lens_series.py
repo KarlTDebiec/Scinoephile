@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from PIL import Image
 from pytest import LogCaptureFixture, MonkeyPatch, raises
 
@@ -97,23 +95,16 @@ def test_ocr_image_series_with_lens_logs_progress(
     ]
 
 
-def test_ocr_image_series_with_lens_uses_runtime_cache(
+def test_ocr_image_series_with_lens_preserves_disabled_cache(
     monkeypatch: MonkeyPatch,
-    tmp_path: Path,
 ):
-    """Test Google Lens image series processing uses runtime cache by default.
+    """Test Google Lens image series processing preserves disabled caching.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
-        tmp_path: temporary path fixture
     """
-    cache_root_path = tmp_path / "cache"
     RecordingOcrRecognizer.reset(Language.zho_hans.code)
 
-    monkeypatch.setattr(
-        "scinoephile.image.ocr.lens.get_runtime_cache_root_path",
-        lambda: cache_root_path,
-    )
     monkeypatch.setattr(
         "scinoephile.image.ocr.lens.LensRecognizer",
         RecordingOcrRecognizer,
@@ -130,13 +121,14 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
 
     text_series = ocr_image_series_with_lens(
         image_series,
+        cache_root_path=None,
         language=Language.zho_hans,
         retries=5,
     )
 
     assert [event.text for event in text_series] == ["zho-Hans"]
     recognizer = RecordingOcrRecognizer.instances[0]
-    assert recognizer.kwargs["cache_root_path"] == cache_root_path
+    assert recognizer.kwargs["cache_root_path"] is None
     assert recognizer.kwargs["language"] is Language.zho_hans
     assert recognizer.kwargs["retries"] == 5
 

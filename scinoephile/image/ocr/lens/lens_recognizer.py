@@ -39,7 +39,7 @@ class LensRecognizerKwargs(TypedDict, total=False):
     """Additional keyword arguments forwarded to LensRecognizer."""
 
     cache_root_path: Path | None
-    """Root directory beneath which to cache OCR results."""
+    """Root directory beneath which to cache OCR results, or None to disable."""
 
     language: Language
     """Scinoephile language."""
@@ -69,7 +69,7 @@ class LensRecognizer:
         """Initialize.
 
         Arguments:
-            cache_root_path: root directory beneath which to cache OCR results
+            cache_root_path: root directory beneath which to cache, or None to disable
             language: Scinoephile language
             overwrite_cache: whether to replace matching OCR cache files
             retries: Google Lens OCR request attempts per uncached image
