@@ -5,9 +5,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from types import ModuleType
-from typing import TYPE_CHECKING, TypedDict
+from typing import TYPE_CHECKING
 
 __all__ = [
     "import_demucs_infer_apply",
@@ -18,7 +17,6 @@ __all__ = [
     "import_torchaudio",
     "import_transformers",
     "import_whisper_timestamped",
-    "import_whisper_timestamped_transcribe_get_vad_segments",
 ]
 
 if TYPE_CHECKING:
@@ -30,17 +28,6 @@ if TYPE_CHECKING:
     type CtcProcessor = ProcessorMixin
     type DemucsModel = BagOfModels | Model
     type TorchTensor = Tensor
-
-
-class _WhisperVadSegment(TypedDict):
-    """Whisper VAD speech interval."""
-
-    start: int | float
-    """Speech start time in seconds or samples, depending on output mode."""
-
-    end: int | float
-    """Speech end time in seconds or samples, depending on output mode."""
-
 
 _TRANSCRIPTION_EXTRA_MESSAGE = (
     "Transcription support requires optional transcription dependencies. "
@@ -150,18 +137,3 @@ def import_whisper_timestamped() -> ModuleType:
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return whisper_timestamped
-
-
-def import_whisper_timestamped_transcribe_get_vad_segments() -> Callable[
-    ..., list[_WhisperVadSegment]
-]:
-    """Import the Whisper Silero VAD segmenter on demand.
-
-    Returns:
-        voice activity detection function
-    """
-    try:
-        from whisper_timestamped.transcribe import get_vad_segments
-    except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return get_vad_segments
