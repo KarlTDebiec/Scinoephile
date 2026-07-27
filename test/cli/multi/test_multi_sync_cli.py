@@ -17,8 +17,7 @@ from test.helpers import assert_series_equal, parametrize
 
 
 def test_multi_sync_cli_shifts_mobile_to_anchor_and_writes_file(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
+    tmp_path: Path, capsys: CaptureFixture[str]
 ):
     """Test multi sync estimates offset, shifts mobile subtitles, and writes output.
 
@@ -39,8 +38,7 @@ def test_multi_sync_cli_shifts_mobile_to_anchor_and_writes_file(
     )
 
     expected = Series.from_string(
-        "1\n00:00:01,000 --> 00:00:02,000\nB\n",
-        format_="srt",
+        "1\n00:00:01,000 --> 00:00:02,000\nB\n", format_="srt"
     )
     assert_series_equal(Series.load(output_path), expected)
     captured = capsys.readouterr()
@@ -63,13 +61,11 @@ def test_multi_sync_cli_pipe(tmp_path: Path):
     with MonkeyPatch.context() as monkeypatch:
         monkeypatch.setattr("scinoephile.cli.helpers.io.stdout", stdout_stream)
         run_cli_with_args(
-            MultiSyncCli,
-            f"--anchor-infile {anchor_path} --mobile-infile {mobile_path}",
+            MultiSyncCli, f"--anchor-infile {anchor_path} --mobile-infile {mobile_path}"
         )
 
     expected = Series.from_string(
-        "1\n00:00:01,000 --> 00:00:02,000\nB\n",
-        format_="srt",
+        "1\n00:00:01,000 --> 00:00:02,000\nB\n", format_="srt"
     )
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
     assert_series_equal(output, expected)
@@ -84,9 +80,7 @@ def test_multi_sync_cli_pipe(tmp_path: Path):
     ],
 )
 def test_multi_sync_cli_rejects_invalid_tuning_options(
-    args: str,
-    expected_error: str,
-    tmp_path: Path,
+    args: str, expected_error: str, tmp_path: Path
 ):
     """Test multi sync CLI rejects invalid synchronization tuning options.
 

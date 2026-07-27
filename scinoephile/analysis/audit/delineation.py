@@ -21,10 +21,7 @@ from .utils import (
     resolve_contextual_index,
 )
 
-__all__ = [
-    "DelineationAuditFilter",
-    "audit_delineation",
-]
+__all__ = ["DelineationAuditFilter", "audit_delineation"]
 
 
 class DelineationAuditFilter(StrEnum):
@@ -78,8 +75,7 @@ def audit_delineation(
         last_block=last_block,
     )
     candidate_indexes_by_case, direct_indexes = _get_case_indexes(
-        pair_indexes,
-        test_cases,
+        pair_indexes, test_cases
     )
 
     rows: list[tuple[int, tuple[str, ...]]] = []
@@ -192,9 +188,7 @@ def _get_case_index(
         ScinoephileError: if a case remains ambiguous
     """
     index = resolve_contextual_index(
-        candidate_indexes,
-        direct_indexes,
-        test_case_index - 1,
+        candidate_indexes, direct_indexes, test_case_index - 1
     )
     if index is not None:
         return index
@@ -221,19 +215,15 @@ def _get_case_indexes(
     Raises:
         ScinoephileError: if a logged reference pair is absent
     """
-    target_pairs_by_reference_pair: dict[
-        tuple[str, str],
-        set[tuple[str, str]],
-    ] = defaultdict(set)
+    target_pairs_by_reference_pair: dict[tuple[str, str], set[tuple[str, str]]] = (
+        defaultdict(set)
+    )
     for test_case in test_cases:
         query = test_case.query
         reference_pair = (query.reference_one, query.reference_two)
         target_pair = (query.target_one, query.target_two)
         target_pairs_by_reference_pair[reference_pair].add(target_pair)
-    superseded_pairs = get_superseded_keys(
-        pair_indexes,
-        target_pairs_by_reference_pair,
-    )
+    superseded_pairs = get_superseded_keys(pair_indexes, target_pairs_by_reference_pair)
     candidate_indexes_by_case: list[list[int]] = []
     direct_indexes: list[int | None] = []
     for test_case_index, test_case in enumerate(test_cases, 1):
@@ -287,9 +277,7 @@ def _get_selected_case_index(
         return None
 
     index = _get_case_index(
-        candidate_indexes,
-        direct_indexes,
-        test_case_index=test_case_index,
+        candidate_indexes, direct_indexes, test_case_index=test_case_index
     )
     if index not in selected_candidate_indexes:
         return None

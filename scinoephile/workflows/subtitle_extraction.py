@@ -124,9 +124,7 @@ def extract_subtitles(
     streams = [
         stream
         for stream in _get_workflow_subtitle_streams(
-            infile_path,
-            details=details,
-            subtitle_cache=subtitle_cache,
+            infile_path, details=details, subtitle_cache=subtitle_cache
         )
         if _language_matches(stream.language, requested_language_tags)
     ]
@@ -136,8 +134,7 @@ def extract_subtitles(
     streams_to_extract = []
     for stream in streams:
         outfile_path = _get_subtitle_output_path(
-            output_dir_path,
-            stream.outfile_filename,
+            output_dir_path, stream.outfile_filename
         )
         status = _get_stream_file_status(outfile_path, overwrite=overwrite)
         outputs.append(
@@ -155,16 +152,12 @@ def extract_subtitles(
     stream_paths_by_index: dict[int, Path] = {}
     if streams_to_extract:
         stream_paths = SubtitleExtractor(subtitle_cache).extract(
-            infile_path,
-            streams_to_extract,
-            render_images=False,
+            infile_path, streams_to_extract, render_images=False
         )
         stream_paths_by_index = {
             stream.index: stream_path
             for stream, stream_path in zip(
-                streams_to_extract,
-                stream_paths,
-                strict=True,
+                streams_to_extract, stream_paths, strict=True
             )
         }
 
@@ -173,8 +166,7 @@ def extract_subtitles(
     for output in outputs:
         if output.status != SubtitleExtractionOutputStatus.EXISTED:
             _copy_cached_stream_file(
-                stream_paths_by_index[output.stream.index],
-                output.path,
+                stream_paths_by_index[output.stream.index], output.path
             )
         handled_outputs.append(output)
         if output.stream.extension == "sup" and export_images:
@@ -189,10 +181,7 @@ def extract_subtitles(
     return SubtitleExtractionResult(infile_path=infile_path, outputs=handled_outputs)
 
 
-def _copy_cached_stream_file(
-    stream_path: Path,
-    outfile_path: Path,
-) -> Path:
+def _copy_cached_stream_file(stream_path: Path, outfile_path: Path) -> Path:
     """Copy a cached subtitle stream file into place.
 
     Arguments:
@@ -212,10 +201,7 @@ def _copy_cached_stream_file(
 
 
 def _get_workflow_subtitle_streams(
-    infile_path: Path,
-    *,
-    details: bool,
-    subtitle_cache: SubtitleCache,
+    infile_path: Path, *, details: bool, subtitle_cache: SubtitleCache
 ) -> list[SubtitleStream]:
     """Get subtitle streams with optional workflow-level detail enrichment.
 
@@ -228,10 +214,7 @@ def _get_workflow_subtitle_streams(
     """
     # Use downstream Chinese script analysis only when details are requested
     if details:
-        return get_zho_subtitle_streams(
-            infile_path,
-            subtitle_cache=subtitle_cache,
-        )
+        return get_zho_subtitle_streams(infile_path, subtitle_cache=subtitle_cache)
     return get_subtitle_streams(infile_path)
 
 
@@ -252,9 +235,7 @@ def _language_matches(language: str | None, requested_language_tags: set[str]) -
 
 
 def _get_stream_file_status(
-    outfile_path: Path,
-    *,
-    overwrite: bool,
+    outfile_path: Path, *, overwrite: bool
 ) -> SubtitleExtractionOutputStatus:
     """Get the status to report for a subtitle stream file.
 
@@ -299,9 +280,7 @@ def _extract_sup_file(
     """
     # Probe the standalone SUP file and optionally enrich stream details
     streams = _get_workflow_subtitle_streams(
-        infile_path,
-        details=details,
-        subtitle_cache=subtitle_cache,
+        infile_path, details=details, subtitle_cache=subtitle_cache
     )
     if not streams:
         raise ScinoephileError(f"No subtitle streams found in {infile_path}")
@@ -310,8 +289,7 @@ def _extract_sup_file(
     requested_language_tags = set(languages)
     stream = streams[0]
     if stream.language is not None and not _language_matches(
-        stream.language,
-        requested_language_tags,
+        stream.language, requested_language_tags
     ):
         return []
     outfile_name = infile_path.name
@@ -320,11 +298,7 @@ def _extract_sup_file(
     outfile_path = _get_subtitle_output_path(output_dir_path, outfile_name)
 
     # Copy the SUP file and report its output status
-    status = _copy_sup_file(
-        infile_path,
-        outfile_path,
-        overwrite=overwrite,
-    )
+    status = _copy_sup_file(infile_path, outfile_path, overwrite=overwrite)
     outputs = [
         SubtitleExtractionOutput(
             kind=SubtitleExtractionOutputKind.SUBTITLE,
@@ -348,10 +322,7 @@ def _extract_sup_file(
 
 
 def _copy_sup_file(
-    infile_path: Path,
-    outfile_path: Path,
-    *,
-    overwrite: bool,
+    infile_path: Path, outfile_path: Path, *, overwrite: bool
 ) -> SubtitleExtractionOutputStatus:
     """Copy a SUP input file into place and return its output status.
 
@@ -397,11 +368,7 @@ def _get_subtitle_output_path(output_dir_path: Path, outfile_name: str) -> Path:
 
 
 def _extract_sup_image_series(
-    stream: SubtitleStream,
-    infile_path: Path,
-    output_dir_path: Path,
-    *,
-    overwrite: bool,
+    stream: SubtitleStream, infile_path: Path, output_dir_path: Path, *, overwrite: bool
 ) -> SubtitleExtractionOutput:
     """Convert a SUP subtitle file to an image directory.
 
@@ -433,11 +400,7 @@ def _extract_sup_image_series(
 
 
 def _try_extract_sup_image_series(
-    stream: SubtitleStream,
-    infile_path: Path,
-    output_dir_path: Path,
-    *,
-    overwrite: bool,
+    stream: SubtitleStream, infile_path: Path, output_dir_path: Path, *, overwrite: bool
 ) -> SubtitleExtractionOutput | None:
     """Convert a SUP subtitle file to images, warning on parse failures.
 
@@ -451,10 +414,7 @@ def _try_extract_sup_image_series(
     """
     try:
         return _extract_sup_image_series(
-            stream,
-            infile_path,
-            output_dir_path,
-            overwrite=overwrite,
+            stream, infile_path, output_dir_path, overwrite=overwrite
         )
     except (OSError, RuntimeError, ScinoephileError, ValueError) as exc:
         logger.warning(

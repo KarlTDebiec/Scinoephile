@@ -19,9 +19,7 @@ from .helpers import (
     load_or_simplify_series,
 )
 
-__all__ = [
-    "process_ocr",
-]
+__all__ = ["process_ocr"]
 
 
 def process_ocr(
@@ -71,21 +69,12 @@ def process_ocr(
     # Review series
     reviewed_path = output_dir_path / "fuse_clean_validate_review.srt"
     reviewed = load_or_review_series(
-        validated,
-        reviewed_path,
-        language,
-        overwrite,
-        reviewer_kw,
+        validated, reviewed_path, language, overwrite, reviewer_kw
     )
 
     # Flatten series
     flattened_path = output_dir_path / "fuse_clean_validate_review_flatten.srt"
-    flattened = load_or_flatten_series(
-        reviewed,
-        flattened_path,
-        language,
-        overwrite,
-    )
+    flattened = load_or_flatten_series(reviewed, flattened_path, language, overwrite)
 
     if language.script == "Hans":
         romanized_path = (
@@ -123,10 +112,7 @@ def process_ocr(
             / "fuse_clean_validate_review_flatten_simplify_review_romanize.srt"
         )
         load_or_romanize_series(
-            simplified_reviewed,
-            romanized_path,
-            simplified_language,
-            overwrite,
+            simplified_reviewed, romanized_path, simplified_language, overwrite
         )
 
     return flattened

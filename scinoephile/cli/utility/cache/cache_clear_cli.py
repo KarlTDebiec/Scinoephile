@@ -82,8 +82,7 @@ class CacheClearCli(ScinoephileCliBase):
 
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
-            "--namespace",
-            help="cache namespace to clear",
+            "--namespace", help="cache namespace to clear"
         )
         arg_groups["operation arguments"].add_argument(
             "--all",
@@ -103,9 +102,7 @@ class CacheClearCli(ScinoephileCliBase):
             help="maximum entries to print; use 0 to show all (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
-            "--yes",
-            action="store_true",
-            help="confirm destructive deletion",
+            "--yes", action="store_true", help="confirm destructive deletion"
         )
         parser.set_defaults(_parser=parser)
 
@@ -151,9 +148,7 @@ class CacheClearCli(ScinoephileCliBase):
                     entries = get_cache_entries(cache_root_path, namespace=namespace)
             else:
                 entries = clear_cache(
-                    cache_root_path,
-                    namespace=namespace,
-                    all_namespaces=all_namespaces,
+                    cache_root_path, namespace=namespace, all_namespaces=all_namespaces
                 )
         except (NotADirectoryError, ScinoephileError) as exc:
             parser.error(str(exc))

@@ -47,9 +47,7 @@ def analyze_zho_subtitle_stream_script(
         subtitle script analysis
     """
     if not is_chinese_language_tag(stream.language):
-        return ZhoScriptAnalysisResult(
-            failure_reason="not a Chinese subtitle stream",
-        )
+        return ZhoScriptAnalysisResult(failure_reason="not a Chinese subtitle stream")
 
     # Resolve one subtitle cache and use its policy for related cached artifacts
     if subtitle_cache is None:
@@ -61,15 +59,9 @@ def analyze_zho_subtitle_stream_script(
     ocr_language_codes = tuple(
         language.code for language in _ZHO_SUBTITLE_OCR_LANGUAGES
     )
-    analysis_cache = ZhoScriptAnalysisCache(
-        cache_root_path,
-        overwrite_cache,
-    )
+    analysis_cache = ZhoScriptAnalysisCache(cache_root_path, overwrite_cache)
     cached_analysis = analysis_cache.load(
-        infile_path,
-        stream,
-        sample_size,
-        ocr_language_codes,
+        infile_path, stream, sample_size, ocr_language_codes
     )
     if cached_analysis is not None:
         return cached_analysis
@@ -79,10 +71,7 @@ def analyze_zho_subtitle_stream_script(
 
     # Analyze either rendered SUP images or text subtitle events
     if stream.extension == "sup":
-        image_dir_path = subtitle_cache.get_image_series_dir_path(
-            infile_path,
-            stream,
-        )
+        image_dir_path = subtitle_cache.get_image_series_dir_path(infile_path, stream)
         analysis = _get_zho_image_subtitle_script_analysis(
             image_dir_path,
             cache_root_path=cache_root_path,
@@ -95,13 +84,7 @@ def analyze_zho_subtitle_stream_script(
         analysis = _get_zho_subtitle_script_analysis(text)
 
     # Persist the analysis for reuse by later probes
-    analysis_cache.save(
-        infile_path,
-        stream,
-        sample_size,
-        ocr_language_codes,
-        analysis,
-    )
+    analysis_cache.save(infile_path, stream, sample_size, ocr_language_codes, analysis)
     return analysis
 
 
@@ -201,9 +184,7 @@ def _get_zho_image_subtitle_script_analysis(
     event_count = len(series)
     sample_indexes = _get_evenly_spaced_indexes(event_count, sample_size)
     if not sample_indexes:
-        return ZhoScriptAnalysisResult(
-            failure_reason="no subtitle images to sample",
-        )
+        return ZhoScriptAnalysisResult(failure_reason="no subtitle images to sample")
 
     return _get_image_subtitle_sample_analysis(
         series,
@@ -214,9 +195,7 @@ def _get_zho_image_subtitle_script_analysis(
 
 
 def _get_zho_subtitle_script_analysis(
-    text: str,
-    *,
-    failure_reason: str | None = None,
+    text: str, *, failure_reason: str | None = None
 ) -> ZhoScriptAnalysisResult:
     """Analyze Chinese script in subtitle text.
 

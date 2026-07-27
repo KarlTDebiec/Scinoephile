@@ -26,10 +26,7 @@ def preprocess_paddle_ocr_image(image: Image.Image, border: int = 10) -> Image.I
     total_border = border * 2
     preprocessed = Image.new(
         "RGBA",
-        (
-            rgba_image.width + 2 * total_border,
-            rgba_image.height + 2 * total_border,
-        ),
+        (rgba_image.width + 2 * total_border, rgba_image.height + 2 * total_border),
         (0, 0, 0, 0),
     )
     inner_border = Image.new(

@@ -131,8 +131,7 @@ def acoptc_zho_hant() -> Series:
 
 @cache
 def get_acoptc_eng_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptEng,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptEng, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPTC English OCR fusion test cases.
 
@@ -164,8 +163,7 @@ def get_acoptc_eng_review_test_cases(
 
 @cache
 def get_acoptc_yue_hans_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptYueHans,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptYueHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPTC yue-Hans OCR fusion test cases.
 
@@ -197,8 +195,7 @@ def get_acoptc_yue_hans_review_test_cases(
 
 @cache
 def get_acoptc_yue_hant_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptYueHant,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptYueHant, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPTC yue-Hant OCR fusion test cases.
 
@@ -246,8 +243,7 @@ def get_acoptc_yue_hant_simplify_review_test_cases(
 
 @cache
 def get_acoptc_zho_hans_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptZhoHans,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptZhoHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPTC zho-Hans OCR fusion test cases.
 
@@ -279,8 +275,7 @@ def get_acoptc_zho_hans_review_test_cases(
 
 @cache
 def get_acoptc_zho_hant_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptZhoHant,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptZhoHant, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPTC zho-Hant OCR fusion test cases.
 

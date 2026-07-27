@@ -12,10 +12,7 @@ import ffmpeg
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.media import AudioStream, Stream, SubtitleStream, VideoStream
 
-__all__ = [
-    "get_streams",
-    "get_subtitle_streams",
-]
+__all__ = ["get_streams", "get_subtitle_streams"]
 
 
 def get_streams(infile_path: Path) -> list[Stream]:

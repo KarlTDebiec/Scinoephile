@@ -233,9 +233,7 @@ def _apply_italic_mask(text: str, italic_mask: list[bool]) -> str:
 
 
 def _format_tesseract_hocr_words(
-    lines: list[list[TesseractHocrWord]],
-    *,
-    word_separator: str = " ",
+    lines: list[list[TesseractHocrWord]], *, word_separator: str = " "
 ) -> str:
     """Format parsed hOCR words as subtitle text.
 
@@ -258,9 +256,7 @@ def _format_tesseract_hocr_words(
 
 
 def _get_text_and_word_spans(
-    lines: list[list[TesseractHocrWord]],
-    *,
-    word_separator: str = " ",
+    lines: list[list[TesseractHocrWord]], *, word_separator: str = " "
 ) -> tuple[str, list[_TesseractHocrWordSpan]]:
     """Get formatted plain text and word spans.
 

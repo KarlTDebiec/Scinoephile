@@ -29,7 +29,7 @@ def test_get_subtitle_streams(tmp_path: Path):
                     "disposition": {"forced": 0, "hearing_impaired": 1},
                     "nb_read_packets": "123",
                 },
-            ],
+            ]
         },
     ):
         streams = get_subtitle_streams(infile_path)
@@ -62,8 +62,8 @@ def test_get_subtitle_streams_accepts_unknown_packet_count(tmp_path: Path):
                     "codec_type": "subtitle",
                     "codec_name": "subrip",
                     "nb_read_packets": "N/A",
-                },
-            ],
+                }
+            ]
         },
     ):
         streams = get_subtitle_streams(infile_path)
@@ -103,7 +103,7 @@ def test_get_streams_returns_all_typed_streams(tmp_path: Path):
                 },
                 {"index": 3, "codec_type": "data", "codec_name": "bin_data"},
                 "not a stream",
-            ],
+            ]
         },
     ):
         streams = get_streams(infile_path)
@@ -135,7 +135,7 @@ def test_get_streams_skips_streams_without_nonnegative_index(tmp_path: Path):
                 {"index": -1, "codec_type": "audio", "channels": 2},
                 {"index": "bad", "codec_type": "audio", "channels": 2},
                 {"index": 1, "codec_type": "audio", "channels": 2},
-            ],
+            ]
         },
     ):
         streams = get_streams(infile_path)
@@ -151,12 +151,7 @@ def test_get_streams_normalizes_missing_codecs(tmp_path: Path):
 
     with patch(
         "scinoephile.media.probe.ffmpeg.probe",
-        return_value={
-            "streams": [
-                {"index": 0},
-                {"index": 1, "codec_type": "data"},
-            ],
-        },
+        return_value={"streams": [{"index": 0}, {"index": 1, "codec_type": "data"}]},
     ):
         streams = get_streams(infile_path)
 

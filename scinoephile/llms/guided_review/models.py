@@ -18,11 +18,7 @@ from scinoephile.core.llms import (
 
 from .prompt import GuidedReviewPrompt
 
-__all__ = [
-    "GuidedReviewAnswer",
-    "GuidedReviewQuery",
-    "GuidedReviewTestCase",
-]
+__all__ = ["GuidedReviewAnswer", "GuidedReviewQuery", "GuidedReviewTestCase"]
 
 
 _BASE_PROMPT = GuidedReviewPrompt()

@@ -15,10 +15,7 @@ from scinoephile.analysis.audit.review import (
     audit_review,
 )
 from scinoephile.cli.helpers.io import read_series
-from scinoephile.common.argument_parsing import (
-    get_arg_groups_by_name,
-    input_file_arg,
-)
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core import Language
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.id import get_series_language
@@ -207,10 +204,7 @@ class AuditReviewCli(AuditCliBase):
         target = read_series(parser, target_path)
         guide = read_series(parser, guide_path)
         test_cases = cls.load_test_cases(
-            parser,
-            json_path,
-            GuidedReviewManager,
-            workflow_name="guided review",
+            parser, json_path, GuidedReviewManager, workflow_name="guided review"
         )
 
         # Perform operation

@@ -18,10 +18,7 @@ from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.llms.review import ReviewManager, ReviewProcessor, ReviewPrompt
 
-__all__ = [
-    "DEFAULT_PROMPTS",
-    "get_reviewer",
-]
+__all__ = ["DEFAULT_PROMPTS", "get_reviewer"]
 
 _ENG_REVIEW_JSON_PATHS = (
     Path("kob/output/eng_ocr/lang/eng/review.json"),

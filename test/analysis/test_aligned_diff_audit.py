@@ -20,9 +20,7 @@ def test_audit_aligned_diff_defaults_to_changes_with_optional_tracks():
     transcription = _get_series((0, 500, "甲錯"), (1000, 1500, "相同"))
     reference = _get_series((0, 500, "甲正"), (1000, 1500, "相同"))
     guide = _get_series(
-        (0, 500, "指南一"),
-        (700, 800, "額外指南"),
-        (1000, 1500, "指南二"),
+        (0, 500, "指南一"), (700, 800, "額外指南"), (1000, 1500, "指南二")
     )
 
     report = audit_aligned_diff(transcription, reference, guide, original=original)
@@ -49,9 +47,7 @@ def test_audit_aligned_diff_all_includes_equal_multiline_event():
     reference = _get_series((0, 500, "甲\\N丙"), (1000, 1500, "相同"))
 
     report = audit_aligned_diff(
-        transcription,
-        reference,
-        row_filter=AlignedDiffAuditFilter.all,
+        transcription, reference, row_filter=AlignedDiffAuditFilter.all
     )
 
     assert "- table rows: 3" in report
@@ -62,14 +58,9 @@ def test_audit_aligned_diff_all_includes_equal_multiline_event():
 def test_audit_aligned_diff_range_includes_reference_only_insertions():
     """Test reference insertions overlapping the transcription range are included."""
     original = _get_series((1200, 1300, "漏譯原文"))
-    transcription = _get_series(
-        (0, 500, "相同一"),
-        (1000, 2000, "相同二"),
-    )
+    transcription = _get_series((0, 500, "相同一"), (1000, 2000, "相同二"))
     reference = _get_series(
-        (0, 500, "相同一"),
-        (1200, 1300, "新增"),
-        (1500, 2000, "相同二"),
+        (0, 500, "相同一"), (1200, 1300, "新增"), (1500, 2000, "相同二")
     )
 
     report = audit_aligned_diff(
@@ -94,32 +85,21 @@ def test_audit_aligned_diff_range_includes_reference_only_insertions():
 def test_audit_aligned_diff_rejects_mixed_subtitle_and_block_ranges():
     """Test subtitle-index and block ranges are mutually exclusive."""
     transcription = _get_series(
-        (0, 500, "第一"),
-        (1000, 1500, "第二"),
-        (6000, 6500, "第三錯"),
+        (0, 500, "第一"), (1000, 1500, "第二"), (6000, 6500, "第三錯")
     )
     reference = _get_series(
-        (0, 500, "第一"),
-        (1000, 1500, "第二"),
-        (6000, 6500, "第三正"),
+        (0, 500, "第一"), (1000, 1500, "第二"), (6000, 6500, "第三正")
     )
 
     with raises(ScinoephileError, match="mutually exclusive"):
         audit_aligned_diff(
-            transcription,
-            reference,
-            first_index=2,
-            first_block=2,
-            last_block=2,
+            transcription, reference, first_index=2, first_block=2, last_block=2
         )
 
 
 def test_audit_aligned_diff_rejects_reused_guide_match():
     """Test one guide subtitle cannot match multiple transcription events."""
-    transcription = _get_series(
-        (0, 500, "甲"),
-        (0, 500, "乙"),
-    )
+    transcription = _get_series((0, 500, "甲"), (0, 500, "乙"))
     reference = _get_series((0, 500, "甲乙"))
     guide = _get_series((0, 500, "指南"))
 
@@ -134,21 +114,12 @@ def test_audit_aligned_diff_rejects_invalid_range_and_track_alignment():
     guide = _get_series((501, 1000, "指南"))
 
     with raises(ScinoephileError, match="less than or equal"):
-        audit_aligned_diff(
-            transcription,
-            reference,
-            first_index=2,
-            last_index=1,
-        )
+        audit_aligned_diff(transcription, reference, first_index=2, last_index=1)
     with raises(ScinoephileError, match="First block must be at least 1"):
         audit_aligned_diff(transcription, reference, first_block=0)
     with raises(ScinoephileError, match="no exact timing match"):
         audit_aligned_diff(transcription, reference, guide)
-    original_report = audit_aligned_diff(
-        transcription,
-        reference,
-        original=guide,
-    )
+    original_report = audit_aligned_diff(transcription, reference, original=guide)
     assert "<pre>O │ <br>T │ 甲<br>R │ 乙</pre>" in original_report
 
 

@@ -11,10 +11,7 @@ from tempfile import gettempdir
 
 from scinoephile.common.validation import val_output_dir_path
 
-__all__ = [
-    "get_runtime_cache_root_path",
-    "get_runtime_data_root_path",
-]
+__all__ = ["get_runtime_cache_root_path", "get_runtime_data_root_path"]
 
 
 def get_runtime_cache_root_path(*, create: bool = True) -> Path:

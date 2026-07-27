@@ -8,11 +8,7 @@ from argparse import ArgumentParser, _ArgumentGroup  # noqa: PLC2701
 
 from scinoephile.common.argument_parsing import int_arg
 
-__all__ = [
-    "BLOCK_LOCALIZATIONS",
-    "add_block_range_args",
-    "get_block_range_indexes",
-]
+__all__ = ["BLOCK_LOCALIZATIONS", "add_block_range_args", "get_block_range_indexes"]
 
 BLOCK_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
@@ -49,14 +45,10 @@ def add_block_range_args(
         last_help: help text for the last-block argument
     """
     operation_arg_group.add_argument(
-        "--first-block",
-        type=int_arg(min_value=1),
-        help=first_help,
+        "--first-block", type=int_arg(min_value=1), help=first_help
     )
     operation_arg_group.add_argument(
-        "--last-block",
-        type=int_arg(min_value=1),
-        help=last_help,
+        "--last-block", type=int_arg(min_value=1), help=last_help
     )
 
 

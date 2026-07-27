@@ -37,18 +37,15 @@ class TestCase(LLMModel, ABC):
     answer: Answer | None = None
     """Answer data for the test case."""
     difficulty: int = Field(
-        0,
-        description="Difficulty level of the test case, used for filtering.",
+        0, description="Difficulty level of the test case, used for filtering."
     )
     """Difficulty level for filtering and prioritization."""
     few_shot: bool = Field(
-        False,
-        description="Whether to include test case in few-shot examples.",
+        False, description="Whether to include test case in few-shot examples."
     )
     """Whether the test case is included as a few-shot example."""
     verified: bool = Field(
-        False,
-        description="Whether to include test case in the verified answers cache.",
+        False, description="Whether to include test case in the verified answers cache."
     )
     """Whether the test case answer has been verified."""
 

@@ -19,9 +19,7 @@ def test_get_detailed_subtitle_streams_enriches_subtitle_stats(tmp_path: Path):
     infile_path.touch()
     cache_root_path = tmp_path / "cache"
     subtitle_cache = SubtitleCache(cache_root_path)
-    subtitle_streams = [
-        SubtitleStream(index=2, codec_name="subrip", language="zho"),
-    ]
+    subtitle_streams = [SubtitleStream(index=2, codec_name="subrip", language="zho")]
 
     with (
         patch(
@@ -35,15 +33,12 @@ def test_get_detailed_subtitle_streams_enriches_subtitle_stats(tmp_path: Path):
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             return_value=SimpleNamespace(
-                event_count=12,
-                first_start_ms=62_500,
-                last_end_ms=3_725_250,
+                event_count=12, first_start_ms=62_500, last_end_ms=3_725_250
             ),
         ),
     ):
         detailed_streams = get_detailed_subtitle_streams(
-            infile_path,
-            subtitle_cache=subtitle_cache,
+            infile_path, subtitle_cache=subtitle_cache
         )
 
     assert len(detailed_streams) == 1
@@ -52,9 +47,7 @@ def test_get_detailed_subtitle_streams_enriches_subtitle_stats(tmp_path: Path):
     assert detailed_streams[0].span == "00:01:02-01:02:05"
 
 
-def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
-    tmp_path: Path,
-):
+def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(tmp_path: Path):
     """Test detailed subtitle enrichment can reuse provided mixed streams.
 
     Arguments:
@@ -65,9 +58,7 @@ def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
     cache_root_path = tmp_path / "cache"
     subtitle_cache = SubtitleCache(cache_root_path)
     subtitle_stream = SubtitleStream(
-        index=2,
-        codec_type="subtitle",
-        codec_name="subrip",
+        index=2, codec_type="subtitle", codec_name="subrip"
     )
     streams = [
         VideoStream(index=0, codec_type="video", codec_name="h264"),
@@ -76,9 +67,7 @@ def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
     ]
 
     with (
-        patch(
-            "scinoephile.media.subtitles.details.get_subtitle_streams",
-        ),
+        patch("scinoephile.media.subtitles.details.get_subtitle_streams"),
         patch(
             "scinoephile.media.subtitles.details.SubtitleExtractor.extract",
             return_value=[subtitle_cache.get_path(infile_path, subtitle_stream)],
@@ -86,16 +75,12 @@ def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             return_value=SimpleNamespace(
-                event_count=12,
-                first_start_ms=62_500,
-                last_end_ms=3_725_250,
+                event_count=12, first_start_ms=62_500, last_end_ms=3_725_250
             ),
         ),
     ):
         detailed_streams = get_detailed_subtitle_streams(
-            infile_path,
-            streams=streams,
-            subtitle_cache=subtitle_cache,
+            infile_path, streams=streams, subtitle_cache=subtitle_cache
         )
 
     assert [stream.index for stream in detailed_streams] == [2]

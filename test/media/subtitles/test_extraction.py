@@ -58,10 +58,7 @@ def test_extract_subtitle_stream_caches_missing_stream(tmp_path: Path):
     stream_path = SubtitleCache(cache_root_path).get_path(infile_path, stream)
 
     def cache_streams(
-        infile_path: Path,
-        streams: list[SubtitleStream],
-        *,
-        render_images: bool = True,
+        infile_path: Path, streams: list[SubtitleStream], *, render_images: bool = True
     ) -> list[Path]:
         """Create and return a cached subtitle stream."""
         _ = infile_path, streams, render_images

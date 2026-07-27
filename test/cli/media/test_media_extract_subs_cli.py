@@ -22,8 +22,7 @@ from scinoephile.workflows.subtitle_extraction import (
 
 
 def test_media_extract_subs_cli_renders_grouped_outputs(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
+    tmp_path: Path, capsys: CaptureFixture[str]
 ):
     """Test media extract-subs CLI renders workflow output groups.
 

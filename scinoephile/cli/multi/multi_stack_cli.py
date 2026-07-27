@@ -24,14 +24,9 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.stacking import StackTimingMode, get_stacked_series
-from scinoephile.core.synchronization import (
-    get_sync_offset_stats,
-)
+from scinoephile.core.synchronization import get_sync_offset_stats
 
-__all__ = [
-    "MultiStackCli",
-    "StackSyncMode",
-]
+__all__ = ["MultiStackCli", "StackSyncMode"]
 
 logger = getLogger(__name__)
 
@@ -186,9 +181,7 @@ class MultiStackCli(ScinoephileCliBase):
             help="stacked subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite outfile if it exists",
+            "--overwrite", action="store_true", help="overwrite outfile if it exists"
         )
         parser.set_defaults(_parser=parser)
 
@@ -231,10 +224,7 @@ class MultiStackCli(ScinoephileCliBase):
             timing_mode = StackTimingMode.OUTER
             if sync_mode == StackSyncMode.ANCHOR_TOP:
                 stats = get_sync_offset_stats(
-                    top,
-                    bottom,
-                    sync_cutoff=sync_cutoff,
-                    pause_length=pause_length,
+                    top, bottom, sync_cutoff=sync_cutoff, pause_length=pause_length
                 )
                 bottom = deepcopy(bottom)
                 bottom.shift(ms=int(round(-stats.mean_ms)))
@@ -242,10 +232,7 @@ class MultiStackCli(ScinoephileCliBase):
                 logger.info(f"Mean offset: {stats.mean_ms / 1000:+.3f} s")
             elif sync_mode == StackSyncMode.ANCHOR_BOTTOM:
                 stats = get_sync_offset_stats(
-                    bottom,
-                    top,
-                    sync_cutoff=sync_cutoff,
-                    pause_length=pause_length,
+                    bottom, top, sync_cutoff=sync_cutoff, pause_length=pause_length
                 )
                 top = deepcopy(top)
                 top.shift(ms=int(round(-stats.mean_ms)))

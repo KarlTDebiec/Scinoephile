@@ -122,8 +122,7 @@ def kob_yue_hant() -> Series:
 
 @cache
 def get_kob_eng_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptEng,
-    **kwargs: Unpack[_KobTestCaseKwargs],
+    prompt: OcrFusionPrompt = OcrFusionPromptEng, **kwargs: Unpack[_KobTestCaseKwargs]
 ) -> list[TestCase]:
     """Get KOB English OCR fusion test cases.
 
@@ -139,8 +138,7 @@ def get_kob_eng_ocr_fusion_test_cases(
 
 @cache
 def get_kob_eng_review_test_cases(
-    prompt: ReviewPrompt = ReviewPromptEng,
-    **kwargs: Unpack[_KobTestCaseKwargs],
+    prompt: ReviewPrompt = ReviewPromptEng, **kwargs: Unpack[_KobTestCaseKwargs]
 ) -> list[TestCase]:
     """Get KOB English review test cases.
 
@@ -212,8 +210,7 @@ def get_kob_yue_hant_guided_review_test_cases(
 
 @cache
 def get_kob_yue_hans_review_test_cases(
-    prompt: ReviewPrompt = ReviewPromptYueHans,
-    **kwargs: Unpack[_KobTestCaseKwargs],
+    prompt: ReviewPrompt = ReviewPromptYueHans, **kwargs: Unpack[_KobTestCaseKwargs]
 ) -> list[TestCase]:
     """Get KOB yue-Hans review test cases.
 
@@ -232,8 +229,7 @@ def get_kob_yue_hans_review_test_cases(
 
 @cache
 def get_kob_yue_hant_review_test_cases(
-    prompt: ReviewPrompt = ReviewPromptYueHant,
-    **kwargs: Unpack[_KobTestCaseKwargs],
+    prompt: ReviewPrompt = ReviewPromptYueHant, **kwargs: Unpack[_KobTestCaseKwargs]
 ) -> list[TestCase]:
     """Get KOB yue-Hant review test cases.
 
@@ -252,8 +248,7 @@ def get_kob_yue_hant_review_test_cases(
 
 @cache
 def get_kob_yue_hant_simplify_review_test_cases(
-    prompt: ReviewPrompt = ReviewPromptYueHans,
-    **kwargs: Unpack[_KobTestCaseKwargs],
+    prompt: ReviewPrompt = ReviewPromptYueHans, **kwargs: Unpack[_KobTestCaseKwargs]
 ) -> list[TestCase]:
     """Get KOB yue-Hant simplification review test cases.
 
@@ -314,8 +309,7 @@ def get_kob_zho_hant_ocr_fusion_test_cases(
 
 @cache
 def get_kob_zho_hant_review_test_cases(
-    prompt: ReviewPrompt = ReviewPromptZhoHant,
-    **kwargs: Unpack[_KobTestCaseKwargs],
+    prompt: ReviewPrompt = ReviewPromptZhoHant, **kwargs: Unpack[_KobTestCaseKwargs]
 ) -> list[TestCase]:
     """Get KOB zho-Hant review test cases.
 
@@ -331,8 +325,7 @@ def get_kob_zho_hant_review_test_cases(
 
 @cache
 def get_kob_zho_hant_simplify_review_test_cases(
-    prompt: ReviewPrompt = ReviewPromptZhoHans,
-    **kwargs: Unpack[_KobTestCaseKwargs],
+    prompt: ReviewPrompt = ReviewPromptZhoHans, **kwargs: Unpack[_KobTestCaseKwargs]
 ) -> list[TestCase]:
     """Get KOB zho-Hant simplification review test cases.
 
@@ -674,7 +667,7 @@ def kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize() -> Ser
 def kob_yue_simplify_expected_series_diff() -> list[str]:
     """Expected differences for KOB Yue Simplified vs Traditional subtitles."""
     return [
-        "edit: SIMP[1229] -> TRAD[1229]: '但系第十八式〝杀龙有悔〞' -> '但系第十八式「杀龙有悔」'",
+        "edit: SIMP[1229] -> TRAD[1229]: '但系第十八式〝杀龙有悔〞' -> '但系第十八式「杀龙有悔」'"
     ]
 
 

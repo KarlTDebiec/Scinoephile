@@ -63,17 +63,11 @@ class GuidedTranslationProcessor(Processor):
             query = query_cls.model_validate(
                 {
                     "subtitles": [
-                        {
-                            "index": idx,
-                            "text": subtitle.text_with_newline.strip(),
-                        }
+                        {"index": idx, "text": subtitle.text_with_newline.strip()}
                         for idx, subtitle in enumerate(one_blk.events, 1)
                     ],
                     "guides": [
-                        {
-                            "index": idx,
-                            "text": guide.text_with_newline.strip(),
-                        }
+                        {"index": idx, "text": guide.text_with_newline.strip()}
                         for idx, guide in enumerate(two_blk.events, 1)
                     ],
                 }

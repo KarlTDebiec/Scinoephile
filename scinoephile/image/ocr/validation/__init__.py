@@ -13,7 +13,4 @@ from __future__ import annotations
 
 from .validation_manager import MAX_CHAR_DIM_BBOXES, ValidationManager
 
-__all__ = [
-    "MAX_CHAR_DIM_BBOXES",
-    "ValidationManager",
-]
+__all__ = ["MAX_CHAR_DIM_BBOXES", "ValidationManager"]

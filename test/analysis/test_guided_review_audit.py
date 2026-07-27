@@ -106,16 +106,9 @@ def test_audit_guided_review_filters_rows_and_target_range():
         ),
     )
 
-    changed_report = audit_guided_review(
-        target,
-        guide,
-        test_cases,
-    )
+    changed_report = audit_guided_review(target, guide, test_cases)
     unverified_report = audit_guided_review(
-        target,
-        guide,
-        test_cases,
-        row_filter=ReviewAuditFilter.unverified,
+        target, guide, test_cases, row_filter=ReviewAuditFilter.unverified
     )
     ranged_report = audit_guided_review(
         target,
@@ -168,10 +161,7 @@ def test_audit_guided_review_formats_and_sorts_subtitles():
     first_case = GuidedReviewTestCase.model_validate(
         {
             "query": {
-                "targets": [
-                    {"index": 1, "text": "甲|乙"},
-                    {"index": 2, "text": "丙"},
-                ],
+                "targets": [{"index": 1, "text": "甲|乙"}, {"index": 2, "text": "丙"}],
                 "guides": [{"index": 1, "text": "參考一"}],
             },
             "answer": {
@@ -191,10 +181,7 @@ def test_audit_guided_review_formats_and_sorts_subtitles():
     )
 
     report = audit_guided_review(
-        target,
-        guide,
-        (second_case, first_case),
-        row_filter=ReviewAuditFilter.all,
+        target, guide, (second_case, first_case), row_filter=ReviewAuditFilter.all
     )
 
     assert "- subtitles: 3" in report
@@ -224,10 +211,7 @@ def test_audit_guided_review_formats_unanswered_case():
     )
 
     report = audit_guided_review(
-        target,
-        guide,
-        (test_case,),
-        row_filter=ReviewAuditFilter.all,
+        target, guide, (test_case,), row_filter=ReviewAuditFilter.all
     )
 
     assert "- revised subtitles: 0" in report
@@ -262,10 +246,7 @@ def test_audit_guided_review_ignores_superseded_guide_revision():
     )
 
     report = audit_guided_review(
-        target,
-        guide,
-        (stale_case, current_case),
-        row_filter=ReviewAuditFilter.all,
+        target, guide, (stale_case, current_case), row_filter=ReviewAuditFilter.all
     )
 
     assert "舊修訂" not in report
@@ -297,10 +278,7 @@ def test_audit_guided_review_ignores_superseded_segmentation_case():
     current_case = GuidedReviewTestCase.model_validate(
         {
             "query": {
-                "targets": [
-                    {"index": 1, "text": "甲"},
-                    {"index": 2, "text": "乙丙"},
-                ],
+                "targets": [{"index": 1, "text": "甲"}, {"index": 2, "text": "乙丙"}],
                 "guides": [{"index": 1, "text": "參考"}],
             },
             "answer": {
@@ -310,10 +288,7 @@ def test_audit_guided_review_ignores_superseded_segmentation_case():
     )
 
     report = audit_guided_review(
-        target,
-        guide,
-        (stale_case, current_case),
-        row_filter=ReviewAuditFilter.all,
+        target, guide, (stale_case, current_case), row_filter=ReviewAuditFilter.all
     )
 
     assert "| 1 | 1 | 參考 | 甲 |  |  |" in report
@@ -383,10 +358,7 @@ def test_audit_guided_review_matches_after_punctuation_changes():
     )
 
     report = audit_guided_review(
-        target,
-        guide,
-        (test_case,),
-        row_filter=ReviewAuditFilter.all,
+        target, guide, (test_case,), row_filter=ReviewAuditFilter.all
     )
 
     assert "| 1 | 1 | 參考 | 原文。 |  |  |" in report
@@ -486,13 +458,7 @@ def test_audit_guided_review_rejects_selected_changed_segmentation():
     with raises(
         ScinoephileError, match="segmentation no longer matches subtitle index 2"
     ):
-        audit_guided_review(
-            target,
-            guide,
-            (test_case,),
-            first_index=2,
-            last_index=2,
-        )
+        audit_guided_review(target, guide, (test_case,), first_index=2, last_index=2)
 
 
 def test_audit_guided_review_rejects_stale_target_only_case():
@@ -501,22 +467,13 @@ def test_audit_guided_review_rejects_stale_target_only_case():
     guide = Series(events=[Subtitle(start=0, end=1000, text="目前參考")])
     stale_case = GuidedReviewTestCase.model_validate(
         {
-            "query": {
-                "targets": [{"index": 1, "text": "舊文"}],
-                "guides": [],
-            },
+            "query": {"targets": [{"index": 1, "text": "舊文"}], "guides": []},
             "answer": {"revisions": []},
         }
     )
 
     with raises(ScinoephileError, match="test case 1 was not found"):
-        audit_guided_review(
-            target,
-            guide,
-            (stale_case,),
-            first_index=1,
-            last_index=1,
-        )
+        audit_guided_review(target, guide, (stale_case,), first_index=1, last_index=1)
 
 
 def test_audit_guided_review_reuses_case_for_repeated_blocks():
@@ -543,10 +500,7 @@ def test_audit_guided_review_reuses_case_for_repeated_blocks():
     )
 
     all_report = audit_guided_review(
-        target,
-        guide,
-        (test_case,),
-        row_filter=ReviewAuditFilter.all,
+        target, guide, (test_case,), row_filter=ReviewAuditFilter.all
     )
 
     report = audit_guided_review(
@@ -569,10 +523,7 @@ def test_audit_guided_review_supports_target_only_block_in_range():
     guide = Series()
     test_case = GuidedReviewTestCase.model_validate(
         {
-            "query": {
-                "targets": [{"index": 1, "text": "原文"}],
-                "guides": [],
-            },
+            "query": {"targets": [{"index": 1, "text": "原文"}], "guides": []},
             "answer": {"revisions": []},
         }
     )
@@ -615,10 +566,7 @@ def test_audit_guided_review_uses_latest_case_per_subtitle():
     )
 
     report = audit_guided_review(
-        target,
-        guide,
-        (revised_case, unchanged_case),
-        row_filter=ReviewAuditFilter.all,
+        target, guide, (revised_case, unchanged_case), row_filter=ReviewAuditFilter.all
     )
 
     assert "- subtitles: 1" in report

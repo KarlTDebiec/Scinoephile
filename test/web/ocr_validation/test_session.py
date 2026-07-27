@@ -34,9 +34,7 @@ def test_session_loads_rows_from_html_index(tmp_path: Path):
     html_dir_path = make_ocr_html_dir(tmp_path, text="recognized")
 
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        include_done_subtitles=True,
-        dev=False,
+        html_dir_path, include_done_subtitles=True, dev=False
     )
 
     rows = session.subtitle_rows()
@@ -60,8 +58,7 @@ def test_session_requires_index_html_file(tmp_path: Path):
 
 
 def test_session_wraps_image_series_load_errors(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
+    monkeypatch: MonkeyPatch, tmp_path: Path
 ):
     """Test session construction wraps image series loading errors.
 
@@ -76,8 +73,7 @@ def test_session_wraps_image_series_load_errors(
         raise ValueError(f"{path} could not be loaded")
 
     monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.session.ImageSeries.load",
-        fake_load,
+        "scinoephile.web.ocr_validation.session.ImageSeries.load", fake_load
     )
 
     with raises(
@@ -95,8 +91,7 @@ def test_concern_kind_excludes_done_state():
 
 
 def test_session_uses_one_font_size_for_series(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test editable font size is detected once for the whole series."""
     html_dir_path = make_two_image_ocr_html_dir(tmp_path, text_1="A", text_2="B")
@@ -105,14 +100,10 @@ def test_session_uses_one_font_size_for_series(
         """Return bboxes that vary by image width."""
         if img.width == 2:
             return [Bbox(0, 10, 0, 52)]
-        return [
-            Bbox(0, 10, 0, 60),
-            Bbox(12, 22, 0, 60),
-        ]
+        return [Bbox(0, 10, 0, 60), Bbox(12, 22, 0, 60)]
 
     monkeypatch.setattr(
-        "scinoephile.image.subtitles.series.get_bboxes",
-        mock_get_bboxes,
+        "scinoephile.image.subtitles.series.get_bboxes", mock_get_bboxes
     )
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
@@ -145,16 +136,11 @@ def test_session_uses_cjk_letter_spacing(tmp_path: Path):
 
 
 def test_session_rebuilds_raw_bboxes_for_validation_state(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test web validation state ignores stale pre-merged bboxes."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
-    raw_bboxes = [
-        Bbox(0, 23, 0, 61),
-        Bbox(35, 40, 1, 61),
-        Bbox(43, 58, 18, 38),
-    ]
+    raw_bboxes = [Bbox(0, 23, 0, 61), Bbox(35, 40, 1, 61), Bbox(43, 58, 18, 38)]
     patch_ocr_validation_bboxes(monkeypatch, raw_bboxes)
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
@@ -172,15 +158,13 @@ def test_session_rebuilds_raw_bboxes_for_validation_state(
 
 
 def test_session_omits_done_rows_from_list_by_default(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test session row lists omit subtitles with no concerns by default."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
@@ -191,8 +175,7 @@ def test_session_omits_done_rows_from_list_by_default(
 
 
 def test_session_includes_done_rows_in_list_when_enabled(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test the internal toggle can include subtitles with no concerns."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
@@ -217,8 +200,7 @@ def test_session_update_text_rewrites_index(tmp_path: Path):
     html_dir_path = make_ocr_html_dir(tmp_path, text="recognized")
     outfile_path = tmp_path / "validated.srt"
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        outfile_path=outfile_path,
+        html_dir_path, outfile_path=outfile_path
     )
 
     row = session.update_text(0, "validated\\Nline")
@@ -246,8 +228,7 @@ def test_session_reports_char_dims_concern(tmp_path: Path, monkeypatch: MonkeyPa
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
 
@@ -261,15 +242,13 @@ def test_session_reports_char_dims_concern(tmp_path: Path, monkeypatch: MonkeyPa
 
 
 def test_session_reports_error_status_when_validation_cannot_continue(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test unrecoverable validation concerns produce an error row status."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
     patch_ocr_validation_bboxes(monkeypatch, [])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
 
@@ -280,15 +259,13 @@ def test_session_reports_error_status_when_validation_cannot_continue(
 
 
 def test_accept_char_dims_marks_single_char_done(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test accepting character dimensions resolves a single-character subtitle."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
 
@@ -304,13 +281,9 @@ def test_accept_char_dims_marks_single_char_done(
 def test_contract_char_dims_reduces_selection(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test contracting character dimensions reduces the selected bbox count."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(10, 20, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(10, 20, 0, 20)])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
 
@@ -330,10 +303,7 @@ def test_contract_char_dims_reduces_selection(tmp_path: Path, monkeypatch: Monke
 def test_session_reports_space_gap_concern(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test ambiguous adjacent-or-space gaps produce a space concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)])
     session = prepared_gap_session(html_dir_path, tmp_path)
 
     row = session.subtitle_row(0)
@@ -351,10 +321,7 @@ def test_session_reports_space_gap_concern(tmp_path: Path, monkeypatch: MonkeyPa
 def test_space_gap_choice_updates_index_text(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test resolving a space gap writes the expected space into index.html."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)])
     session = prepared_gap_session(html_dir_path, tmp_path)
 
     row = session.resolve_gap_concern(0, action="space")
@@ -367,15 +334,11 @@ def test_space_gap_choice_updates_index_text(tmp_path: Path, monkeypatch: Monkey
 
 
 def test_existing_space_gap_does_not_update_cutoffs(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test stale whitespace does not train ambiguous gap cutoffs."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A B")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)])
     session = prepared_gap_session(html_dir_path, tmp_path)
 
     row = session.subtitle_row(0)
@@ -387,18 +350,13 @@ def test_existing_space_gap_does_not_update_cutoffs(
 
 
 def test_punctuation_ellipsis_gap_reports_existing_space_concern(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test punctuation before ellipsis keeps stale whitespace as a concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="！ ⋯")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(67, 77, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(67, 77, 0, 20)])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1]["！"] = {(10, 20)}
@@ -418,18 +376,13 @@ def test_punctuation_ellipsis_gap_reports_existing_space_concern(
 
 
 def test_known_adjacent_gap_mismatch_updates_text_without_concern(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test known adjacent gaps with wrong text update without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="臭　　和")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(21, 31, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(21, 31, 0, 20)])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1]["臭"] = {(10, 20)}
@@ -446,18 +399,13 @@ def test_known_adjacent_gap_mismatch_updates_text_without_concern(
 
 
 def test_fullwidth_latin_gap_uses_default_cutoffs(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test fullwidth Latin characters use default full-width gap cutoffs."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="你Ｋ")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(18, 28, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(18, 28, 0, 20)])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1]["你"] = {(10, 20)}
@@ -473,13 +421,9 @@ def test_fullwidth_latin_gap_uses_default_cutoffs(
 def test_adjacent_gap_choice_updates_cutoff(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test adjacent choice for an ambiguous gap updates the gap cutoffs."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="白了")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1]["白"] = {(10, 20)}
@@ -503,15 +447,11 @@ def test_adjacent_gap_choice_updates_cutoff(tmp_path: Path, monkeypatch: MonkeyP
 
 
 def test_boundary_space_gap_updates_cutoff_without_concern(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test boundary space text updates cutoffs without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A B")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(15, 25, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(15, 25, 0, 20)])
     session = prepared_gap_session(html_dir_path, tmp_path)
 
     row = session.subtitle_row(0)
@@ -524,15 +464,11 @@ def test_boundary_space_gap_updates_cutoff_without_concern(
 
 
 def test_boundary_tab_gap_updates_cutoff_without_concern(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test boundary tab text updates cutoffs without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A    B")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(29, 39, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(29, 39, 0, 20)])
     session = prepared_gap_session(html_dir_path, tmp_path)
 
     row = session.subtitle_row(0)
@@ -545,18 +481,13 @@ def test_boundary_tab_gap_updates_cutoff_without_concern(
 
 
 def test_known_space_gap_mismatch_updates_text_without_concern(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test known space gaps with wrong text update without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="呀 你")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(51, 61, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(51, 61, 0, 20)])
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1]["呀"] = {(10, 20)}
@@ -573,15 +504,11 @@ def test_known_space_gap_mismatch_updates_text_without_concern(
 
 
 def test_known_tab_gap_mismatch_updates_text_without_concern(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test known tab gaps with wrong text update without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(32, 42, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(32, 42, 0, 20)])
     session = prepared_gap_session(html_dir_path, tmp_path)
 
     row = session.subtitle_row(0)
@@ -594,15 +521,11 @@ def test_known_tab_gap_mismatch_updates_text_without_concern(
 
 
 def test_known_tab_gap_replaces_newline_without_concern(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test known tab gaps with newline text update without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A<br />B")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(32, 42, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(32, 42, 0, 20)])
     session = prepared_gap_session(html_dir_path, tmp_path)
 
     row = session.subtitle_row(0)
@@ -617,10 +540,7 @@ def test_known_tab_gap_replaces_newline_without_concern(
 def test_tab_gap_choice_updates_index_text(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test resolving a tab gap writes expected wide spacing into index.html."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(25, 35, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(25, 35, 0, 20)])
     session = prepared_gap_session(html_dir_path, tmp_path)
 
     row = session.resolve_gap_concern(0, action="tab")

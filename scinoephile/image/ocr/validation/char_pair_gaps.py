@@ -133,12 +133,7 @@ def load_char_pair_gaps(
                 continue
             char_1, char_2, cutoff_1, cutoff_2, cutoff_3, cutoff_4 = row
             char_pair = (char_1, char_2)
-            cutoffs = (
-                int(cutoff_1),
-                int(cutoff_2),
-                int(cutoff_3),
-                int(cutoff_4),
-            )
+            cutoffs = (int(cutoff_1), int(cutoff_2), int(cutoff_3), int(cutoff_4))
             _validate_char_pair_gap_cutoffs(
                 char_pair, cutoffs, file_path=file_path, line_no=line_no
             )

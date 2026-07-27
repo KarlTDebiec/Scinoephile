@@ -88,8 +88,7 @@ class LlmArguments:
 
 
 def add_llm_provider_args(
-    llm_arg_group: _ArgumentGroup,
-    additional_help_arg_group: _ArgumentGroup,
+    llm_arg_group: _ArgumentGroup, additional_help_arg_group: _ArgumentGroup
 ):
     """Add standard LLM provider arguments to argument groups.
 
@@ -151,10 +150,7 @@ def add_llm_test_case_json_arg(
         help_text: argument help text
     """
     llm_arg_group.add_argument(
-        option_name,
-        dest=dest,
-        type=output_file_arg(exist_ok=True),
-        help=help_text,
+        option_name, dest=dest, type=output_file_arg(exist_ok=True), help=help_text
     )
 
 
@@ -178,8 +174,7 @@ def llm_provider_name_arg(value: str) -> str:
 
 
 def read_llm_additional_context(
-    parser: ArgumentParser,
-    llm_additional_context_file_path: Path | None,
+    parser: ArgumentParser, llm_additional_context_file_path: Path | None
 ) -> str | None:
     """Read additional context for LLM prompts.
 
@@ -228,8 +223,7 @@ class _ListLLMProvidersAction(Action):
         """
         locale_name = ScinoephileCliBase.locale_name
         heading = LLM_LOCALIZATIONS.get(locale_name, {}).get(
-            "Available LLM providers:",
-            "Available LLM providers:",
+            "Available LLM providers:", "Available LLM providers:"
         )
         lines = [heading]
         for provider_name in get_provider_names():

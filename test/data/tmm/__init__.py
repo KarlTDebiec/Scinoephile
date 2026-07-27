@@ -109,8 +109,7 @@ output_dir = title_root / "output"
 
 @cache
 def get_tmm_eng_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptEng,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptEng, **kwargs: Any
 ) -> list[TestCase]:
     """Get TMM English OCR fusion test cases.
 
@@ -142,8 +141,7 @@ def get_tmm_eng_review_test_cases(
 
 @cache
 def get_tmm_yue_hans_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptYueHans,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptYueHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get TMM yue-Hans OCR fusion test cases.
 
@@ -175,8 +173,7 @@ def get_tmm_yue_hans_review_test_cases(
 
 @cache
 def get_tmm_yue_hant_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptYueHant,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptYueHant, **kwargs: Any
 ) -> list[TestCase]:
     """Get TMM yue-Hant OCR fusion test cases.
 
@@ -224,8 +221,7 @@ def get_tmm_yue_hant_simplify_review_test_cases(
 
 @cache
 def get_tmm_zho_hans_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptZhoHans,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptZhoHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get TMM zho-Hans OCR fusion test cases.
 
@@ -257,8 +253,7 @@ def get_tmm_zho_hans_review_test_cases(
 
 @cache
 def get_tmm_zho_hant_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptZhoHant,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptZhoHant, **kwargs: Any
 ) -> list[TestCase]:
     """Get TMM zho-Hant OCR fusion test cases.
 

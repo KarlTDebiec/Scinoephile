@@ -23,11 +23,7 @@ _CACHE_VERSION = 1
 class TesseractLegacyDataCache:
     """Caches legacy-capable Tesseract traineddata files."""
 
-    def __init__(
-        self,
-        cache_root_path: Path | None = None,
-        overwrite: bool = False,
-    ):
+    def __init__(self, cache_root_path: Path | None = None, overwrite: bool = False):
         """Initialize.
 
         Arguments:
@@ -106,8 +102,7 @@ class TesseractLegacyDataCache:
         try:
             traineddata_path.parent.mkdir(parents=True, exist_ok=True)
             with TemporaryDirectory(
-                dir=traineddata_path.parent,
-                prefix=f".{traineddata_path.name}-",
+                dir=traineddata_path.parent, prefix=f".{traineddata_path.name}-"
             ) as temp_dir:
                 staging_path = Path(temp_dir) / traineddata_path.name
                 staging_path.write_bytes(contents)

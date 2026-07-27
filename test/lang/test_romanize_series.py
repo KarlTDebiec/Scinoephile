@@ -158,9 +158,7 @@ def test_romanize_series(
         language: language whose romanization system to use
     """
     output = romanize_series(
-        request.getfixturevalue(series_fixture),
-        language=language,
-        append=True,
+        request.getfixturevalue(series_fixture), language=language, append=True
     )
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
 
@@ -169,11 +167,7 @@ def test_romanize_series_replaces_text():
     """Test romanize_series replaces source text when append is false."""
     source = get_text_series("你好")
 
-    output = romanize_series(
-        source,
-        language=Language.zho_hans,
-        append=False,
-    )
+    output = romanize_series(source, language=Language.zho_hans, append=False)
 
     assert output.events[0].text == "nǐhǎo"
     assert source.events[0].text == "你好"
@@ -181,8 +175,5 @@ def test_romanize_series_replaces_text():
 
 def test_romanize_series_rejects_unsupported_language():
     """Test romanize_series rejects unsupported languages."""
-    with raises(
-        ScinoephileError,
-        match="Romanization does not support language eng",
-    ):
+    with raises(ScinoephileError, match="Romanization does not support language eng"):
         romanize_series(get_text_series("Hello"), language=Language.eng)

@@ -57,10 +57,7 @@ def dictionary_database_dir_path() -> Generator[Path]:
                         frequency=2.0,
                         definitions=[
                             DictionaryDefinition(text="gully"),
-                            DictionaryDefinition(
-                                text="mountain stream",
-                                label="noun",
-                            ),
+                            DictionaryDefinition(text="mountain stream", label="noun"),
                         ],
                     ),
                     DictionaryEntry(
@@ -129,11 +126,7 @@ def dictionary_database_dir_path() -> Generator[Path]:
         ("shān'kēng", "shān'kēng", nullcontext()),
         ("saan1haang1", "saan1haang1", nullcontext()),
         ("山坑水", "山坑水", nullcontext()),
-        (
-            "gully",
-            "Unsupported query 'gully'",
-            raises(SystemExit, match="1"),
-        ),
+        ("gully", "Unsupported query 'gully'", raises(SystemExit, match="1")),
     ],
 )
 def test_dictionary_search_cli(
@@ -223,8 +216,7 @@ def test_dictionary_search_cli_all_dictionaries_database_path_is_usage_error():
 
 
 def test_dictionary_search_cli_prints_no_matches(
-    dictionary_database_dir_path: Path,
-    capsys: CaptureFixture,
+    dictionary_database_dir_path: Path, capsys: CaptureFixture
 ):
     """Test dictionary search reports no matches on stdout.
 

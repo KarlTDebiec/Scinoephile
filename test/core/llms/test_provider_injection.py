@@ -322,9 +322,7 @@ def test_queryer_normalizes_input_into_configured_test_case_class():
     """Test compatible inputs are returned using the configured test-case class."""
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     verified = _TestCase(
-        query=_Query(text="input"),
-        answer=_Answer(output="done"),
-        verified=True,
+        query=_Query(text="input"), answer=_Answer(output="done"), verified=True
     )
     queryer = Queryer(_TestCase, verified_test_cases=[verified], provider=provider)
 
@@ -339,9 +337,7 @@ def test_queryer_requires_answers_for_verified_test_cases():
     """Test verified inputs cannot omit their answers."""
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     incomplete = _TestCase.model_construct(
-        query=_Query(text="input"),
-        answer=None,
-        verified=True,
+        query=_Query(text="input"), answer=None, verified=True
     )
 
     with raises(ValidationError):
@@ -351,10 +347,7 @@ def test_queryer_requires_answers_for_verified_test_cases():
 def test_queryer_requires_test_cases_to_be_verified():
     """Test Queryer rejects unverified test cases."""
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
-    unverified = _TestCase(
-        query=_Query(text="input"),
-        answer=_Answer(output="done"),
-    )
+    unverified = _TestCase(query=_Query(text="input"), answer=_Answer(output="done"))
 
     with raises(ValueError, match="must be verified"):
         Queryer(_TestCase, verified_test_cases=[unverified], provider=provider)
@@ -370,9 +363,7 @@ def test_test_case_requires_few_shot_to_be_verified():
     """Test few-shot metadata requires verified metadata."""
     with raises(ValidationError, match="must be verified"):
         _TestCase(
-            query=_Query(text="input"),
-            answer=_Answer(output="done"),
-            few_shot=True,
+            query=_Query(text="input"), answer=_Answer(output="done"), few_shot=True
         )
 
 
@@ -394,9 +385,7 @@ def test_queryer_merges_identical_verified_duplicates():
     )
 
     queryer = Queryer(
-        _TestCase,
-        verified_test_cases=[few_shot, verified],
-        provider=provider,
+        _TestCase, verified_test_cases=[few_shot, verified], provider=provider
     )
 
     merged = queryer.verified_test_cases[verified.query.key]
@@ -410,31 +399,21 @@ def test_queryer_rejects_conflicting_verified_duplicates():
     """Test duplicate queries cannot silently choose one of two answers."""
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     first = _TestCase(
-        query=_Query(text="input"),
-        answer=_Answer(output="first"),
-        verified=True,
+        query=_Query(text="input"), answer=_Answer(output="first"), verified=True
     )
     second = _TestCase(
-        query=_Query(text="input"),
-        answer=_Answer(output="second"),
-        verified=True,
+        query=_Query(text="input"), answer=_Answer(output="second"), verified=True
     )
 
     with raises(ValueError, match="Conflicting verified answers"):
-        Queryer(
-            _TestCase,
-            verified_test_cases=[first, second],
-            provider=provider,
-        )
+        Queryer(_TestCase, verified_test_cases=[first, second], provider=provider)
 
 
 def test_queryer_snapshots_verified_test_cases():
     """Test later mutation of caller-owned cases does not alter queryer state."""
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     verified = _TestCase(
-        query=_Query(text="input"),
-        answer=_Answer(output="original"),
-        verified=True,
+        query=_Query(text="input"), answer=_Answer(output="original"), verified=True
     )
     queryer = Queryer(_TestCase, verified_test_cases=[verified], provider=provider)
 
@@ -450,10 +429,7 @@ def test_queryer_cache_is_namespaced_by_provider_model(tmp_path):
     """Test one provider model cannot load another model's cached answer."""
     provider_one = _RecordingProvider('{"output":"one"}', model="model-one")
     queryer_one = Queryer(
-        _TestCase,
-        provider=provider_one,
-        cache_root_path=tmp_path,
-        max_attempts=1,
+        _TestCase, provider=provider_one, cache_root_path=tmp_path, max_attempts=1
     )
     test_case = _TestCase(query=_Query(text="input"))
 
@@ -461,10 +437,7 @@ def test_queryer_cache_is_namespaced_by_provider_model(tmp_path):
 
     provider_two = _RecordingProvider('{"output":"two"}', model="model-two")
     queryer_two = Queryer(
-        _TestCase,
-        provider=provider_two,
-        cache_root_path=tmp_path,
-        max_attempts=1,
+        _TestCase, provider=provider_two, cache_root_path=tmp_path, max_attempts=1
     )
     result_two = queryer_two(test_case)
 
@@ -478,10 +451,7 @@ def test_queryer_cache_stores_only_answer_and_preserves_current_metadata(tmp_pat
     """Test cached answers are attached to the current normalized test case."""
     provider = _RecordingProvider('{"output":"cached"}')
     queryer = Queryer(
-        _TestCase,
-        provider=provider,
-        cache_root_path=tmp_path,
-        max_attempts=1,
+        _TestCase, provider=provider, cache_root_path=tmp_path, max_attempts=1
     )
 
     first = queryer(_TestCase(query=_Query(text="input")))
@@ -514,10 +484,7 @@ def test_queryer_overwrites_matching_cache(tmp_path):
     cached_provider = _RecordingProvider('{"output":"cached"}')
     test_case = _TestCase(query=_Query(text="input"))
     Queryer(
-        _TestCase,
-        provider=cached_provider,
-        cache_root_path=tmp_path,
-        max_attempts=1,
+        _TestCase, provider=cached_provider, cache_root_path=tmp_path, max_attempts=1
     )(test_case)
 
     fresh_provider = _RecordingProvider('{"output":"fresh"}')
@@ -540,10 +507,7 @@ def test_queryer_cache_is_namespaced_by_test_case_class(tmp_path):
     """Test compatible test-case classes do not share cached answers."""
     provider_one = _RecordingProvider('{"output":"one"}')
     queryer_one = Queryer(
-        _TestCase,
-        provider=provider_one,
-        cache_root_path=tmp_path,
-        max_attempts=1,
+        _TestCase, provider=provider_one, cache_root_path=tmp_path, max_attempts=1
     )
     test_case = _TestCase(query=_Query(text="input"))
 
@@ -567,14 +531,10 @@ def test_queryer_cache_is_namespaced_by_test_case_class(tmp_path):
 def test_queryer_cache_is_namespaced_by_provider_implementation(tmp_path):
     """Test different provider implementations have different cache paths."""
     queryer_one = Queryer(
-        _TestCase,
-        provider=_RecordingProvider(),
-        cache_root_path=tmp_path,
+        _TestCase, provider=_RecordingProvider(), cache_root_path=tmp_path
     )
     queryer_two = Queryer(
-        _TestCase,
-        provider=_AlternateRecordingProvider(),
-        cache_root_path=tmp_path,
+        _TestCase, provider=_AlternateRecordingProvider(), cache_root_path=tmp_path
     )
 
     cache_path_one = queryer_one._get_cache_path("system", "tools", "query")
@@ -588,26 +548,18 @@ def test_queryer_cache_is_namespaced_by_provider_implementation(tmp_path):
 def test_queryer_cache_is_namespaced_by_provider_base_url(tmp_path):
     """Test OpenAI-compatible endpoints do not share cached answers."""
     provider_one = _RecordingProvider(
-        '{"output":"one"}',
-        base_url="https://one.example/v1",
+        '{"output":"one"}', base_url="https://one.example/v1"
     )
     provider_two = _RecordingProvider(
-        '{"output":"two"}',
-        base_url="https://two.example/v1",
+        '{"output":"two"}', base_url="https://two.example/v1"
     )
     test_case = _TestCase(query=_Query(text="input"))
 
     result_one = Queryer(
-        _TestCase,
-        provider=provider_one,
-        cache_root_path=tmp_path,
-        max_attempts=1,
+        _TestCase, provider=provider_one, cache_root_path=tmp_path, max_attempts=1
     )(test_case)
     result_two = Queryer(
-        _TestCase,
-        provider=provider_two,
-        cache_root_path=tmp_path,
-        max_attempts=1,
+        _TestCase, provider=provider_two, cache_root_path=tmp_path, max_attempts=1
     )(test_case)
 
     assert result_one.answer == _Answer(output="one")
@@ -619,9 +571,7 @@ def test_queryer_cache_is_namespaced_by_provider_base_url(tmp_path):
 def test_cache_path_does_not_retain_queryer(tmp_path):
     """Test calculating a cache path does not retain the Queryer instance."""
     queryer = Queryer(
-        _TestCase,
-        provider=_RecordingProvider(),
-        cache_root_path=tmp_path,
+        _TestCase, provider=_RecordingProvider(), cache_root_path=tmp_path
     )
     queryer_ref = ref(queryer)
     assert queryer._get_cache_path("system", "tools", "query") is not None

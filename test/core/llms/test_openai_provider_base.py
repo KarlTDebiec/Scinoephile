@@ -106,10 +106,7 @@ class _DummyClient:
         self._round = 0
 
         def create(
-            *,
-            messages: list[dict[str, object]],
-            model: str,
-            **kwargs: Any,
+            *, messages: list[dict[str, object]], model: str, **kwargs: Any
         ) -> _Completion:
             """Create one dummy chat completion.
 
@@ -133,10 +130,7 @@ class _DummyClient:
             return _Completion(_Message(content="done", tool_calls=[]))
 
         def parse(
-            *,
-            messages: list[dict[str, object]],
-            model: str,
-            **kwargs: Any,
+            *, messages: list[dict[str, object]], model: str, **kwargs: Any
         ) -> _Completion:
             """Parse one structured dummy chat completion.
 
@@ -231,8 +225,7 @@ def test_structured_response_validation_error_is_wrapped():
 
     with raises(ScinoephileError, match="failed structured response validation"):
         provider.chat_completion(
-            messages=[{"role": "user", "content": "hi"}],
-            response_format=_Answer,
+            messages=[{"role": "user", "content": "hi"}], response_format=_Answer
         )
 
 
@@ -286,20 +279,14 @@ def test_build_openai_tools_enables_strict_tools_by_default():
 
 def test_tool_box_run_returns_error_for_unsupported_tool():
     """Test unknown tool names produce an error payload."""
-    result = ToolBox().run(
-        tool_name="missing",
-        raw_arguments="{}",
-    )
+    result = ToolBox().run(tool_name="missing", raw_arguments="{}")
 
     assert result == {"error": "Unsupported tool 'missing'."}
 
 
 def test_tool_box_run_returns_error_for_invalid_json_arguments():
     """Test invalid tool-call JSON produces an error payload."""
-    result = _get_tool_box(lambda args: args).run(
-        tool_name="do",
-        raw_arguments="{",
-    )
+    result = _get_tool_box(lambda args: args).run(tool_name="do", raw_arguments="{")
 
     assert result == {"error": "Tool 'do' arguments are not valid JSON."}
 
@@ -318,7 +305,4 @@ def test_tool_box_run_allows_handler_exceptions_to_propagate():
         raise RuntimeError(f"bad args: {args}")
 
     with raises(RuntimeError, match=r"bad args: \{'x': 1\}"):
-        _get_tool_box(handler).run(
-            tool_name="do",
-            raw_arguments='{"x": 1}',
-        )
+        _get_tool_box(handler).run(tool_name="do", raw_arguments='{"x": 1}')

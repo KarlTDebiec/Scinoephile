@@ -26,11 +26,7 @@ _CACHE_VERSION = 1
 class SubtitleCache:
     """Cache of subtitle streams extracted from media."""
 
-    def __init__(
-        self,
-        cache_root_path: Path | None = None,
-        overwrite: bool = False,
-    ):
+    def __init__(self, cache_root_path: Path | None = None, overwrite: bool = False):
         """Initialize.
 
         Arguments:
@@ -54,9 +50,7 @@ class SubtitleCache:
         """Cache paths refreshed by this cache instance."""
 
     def get_image_series_dir_path(
-        self,
-        infile_path: Path,
-        stream: SubtitleStream,
+        self, infile_path: Path, stream: SubtitleStream
     ) -> Path:
         """Get the cache directory for a rendered image subtitle series.
 
@@ -91,11 +85,7 @@ class SubtitleCache:
         cache_key = hashlib.sha256(encoded_payload).hexdigest()
         return self.cache_dir_path / cache_key / f"{stream.index}.{stream.extension}"
 
-    def load(
-        self,
-        infile_path: Path,
-        stream: SubtitleStream,
-    ) -> Path | None:
+    def load(self, infile_path: Path, stream: SubtitleStream) -> Path | None:
         """Load a cached subtitle stream path.
 
         Arguments:
@@ -116,9 +106,7 @@ class SubtitleCache:
         return None
 
     def load_image_series(
-        self,
-        infile_path: Path,
-        stream: SubtitleStream,
+        self, infile_path: Path, stream: SubtitleStream
     ) -> Path | None:
         """Load a cached image subtitle series directory.
 
@@ -159,9 +147,7 @@ class SubtitleCache:
         return stream_path
 
     def remove_image_series(
-        self,
-        infile_path: Path,
-        stream: SubtitleStream,
+        self, infile_path: Path, stream: SubtitleStream
     ) -> Path | None:
         """Remove a cached image subtitle series.
 
@@ -179,10 +165,7 @@ class SubtitleCache:
         return image_dir_path
 
     def save(
-        self,
-        infile_path: Path,
-        stream: SubtitleStream,
-        staging_path: Path,
+        self, infile_path: Path, stream: SubtitleStream, staging_path: Path
     ) -> Path:
         """Save an extracted subtitle stream to the cache.
 
@@ -201,10 +184,7 @@ class SubtitleCache:
         return stream_path
 
     def save_image_series(
-        self,
-        infile_path: Path,
-        stream: SubtitleStream,
-        image_series: ImageSeries,
+        self, infile_path: Path, stream: SubtitleStream, image_series: ImageSeries
     ) -> Path:
         """Save a rendered image subtitle series to the cache.
 

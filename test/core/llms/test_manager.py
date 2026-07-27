@@ -24,11 +24,7 @@ from scinoephile.llms.review import ReviewManager, ReviewPrompt, ReviewTestCase
 from scinoephile.llms.translation import TranslationManager, TranslationPrompt
 
 _LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
-    subtitles="zimu",
-    revisions="xiugai",
-    index="xuhao",
-    text="wenben",
-    note="beizhu",
+    subtitles="zimu", revisions="xiugai", index="xuhao", text="wenben", note="beizhu"
 )
 """Review prompt using localized correspondence field names."""
 
@@ -42,9 +38,7 @@ _ALTERNATIVE_REVIEW_PROMPT = ReviewPrompt(
 """Review prompt using alternative correspondence field names."""
 
 _LOCALIZED_PUNCTUATION_PROMPT = PunctuationPrompt(
-    ref_sub="source_two",
-    target_subs="source_one",
-    target_sub_punctuated="result",
+    ref_sub="source_two", target_subs="source_one", target_sub_punctuated="result"
 )
 """Punctuation prompt using non-default correspondence field names."""
 
@@ -70,8 +64,7 @@ def test_manager_reuses_static_test_case_prompt(manager_cls: type[Manager]):
 def test_manager_rejects_incompatible_prompt_type():
     """Managers should reject prompts belonging to another operation."""
     with raises(
-        TypeError,
-        match="ReviewManager requires ReviewPrompt; got TranslationPrompt",
+        TypeError, match="ReviewManager requires ReviewPrompt; got TranslationPrompt"
     ):
         ReviewManager.get_test_case_cls(TranslationPrompt())
 
@@ -112,13 +105,7 @@ def test_prompt_specific_classes_revalidate_by_semantic_field_name():
         {
             "query": {"zimu": [{"xuhao": 1, "wenben": "original"}]},
             "answer": {
-                "xiugai": [
-                    {
-                        "xuhao": 1,
-                        "wenben": "corrected",
-                        "beizhu": "typo",
-                    }
-                ]
+                "xiugai": [{"xuhao": 1, "wenben": "corrected", "beizhu": "typo"}]
             },
         }
     )
@@ -131,13 +118,7 @@ def test_prompt_specific_classes_revalidate_by_semantic_field_name():
     }
     assert alternative.answer is not None
     assert alternative.answer.model_dump(by_alias=True) == {
-        "corrections": [
-            {
-                "position": 1,
-                "content": "corrected",
-                "explanation": "typo",
-            }
-        ]
+        "corrections": [{"position": 1, "content": "corrected", "explanation": "typo"}]
     }
 
 
@@ -162,10 +143,7 @@ def test_punctuation_factory_uses_static_fields_with_prompt_aliases():
             "answer": {"output": "Hello"},
         }
     )
-    assert test_case.query.model_dump() == {
-        "subtitles": ["Hello"],
-        "guide": "Hello",
-    }
+    assert test_case.query.model_dump() == {"subtitles": ["Hello"], "guide": "Hello"}
     assert test_case.answer is not None
     assert test_case.answer.model_dump() == {"output": "Hello"}
     assert test_case.query.model_dump(by_alias=True) == {

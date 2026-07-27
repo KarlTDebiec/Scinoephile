@@ -37,9 +37,7 @@ def extract_subtitle_stream(
     """
     cache = SubtitleCache(cache_root_path)
     stream_path = SubtitleExtractor(cache).extract(
-        infile_path,
-        [stream],
-        render_images=False,
+        infile_path, [stream], render_images=False
     )[0]
     if stream_path != outfile_path:
         if not outfile_path.parent.exists():

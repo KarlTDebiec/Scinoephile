@@ -68,8 +68,7 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
     """Dictionary source built by this CLI."""
 
     localizations = merge_localizations(
-        CACHE_LOCALIZATIONS,
-        DICTIONARY_BUILD_CUHK_LOCALIZATIONS,
+        CACHE_LOCALIZATIONS, DICTIONARY_BUILD_CUHK_LOCALIZATIONS
     )
     """Localized help text keyed by locale and English source text."""
 
@@ -194,10 +193,7 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
             source_json_path=None,
         )
         try:
-            database_path = service.build(
-                overwrite=overwrite,
-                max_words=max_words,
-            )
+            database_path = service.build(overwrite=overwrite, max_words=max_words)
         except FileNotFoundError as exc:
             logger.error(str(exc))
             raise SystemExit(1) from exc

@@ -38,6 +38,5 @@ def preprocess_tesseract_ocr_image(
         return rgb_image
 
     return rgb_image.resize(
-        (rgb_image.width * scale, rgb_image.height * scale),
-        Image.Resampling.NEAREST,
+        (rgb_image.width * scale, rgb_image.height * scale), Image.Resampling.NEAREST
     )

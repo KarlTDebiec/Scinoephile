@@ -92,11 +92,7 @@ class WhisperTranscriber(Transcriber):
         self.temperature: float | Sequence[float] = temperature
         self.condition_on_previous_text = condition_on_previous_text
         super().__init__(
-            cache_root_path,
-            demucs_mode,
-            vad_mode,
-            overwrite_cache,
-            demucs_separator,
+            cache_root_path, demucs_mode, vad_mode, overwrite_cache, demucs_separator
         )
 
     @property
@@ -116,8 +112,7 @@ class WhisperTranscriber(Transcriber):
             whisper_timestamped = import_whisper_timestamped()
             try:
                 self._model = whisper_timestamped.load_model(
-                    self.model_name,
-                    device=device,
+                    self.model_name, device=device
                 )
             except FileNotFoundError:
                 if not self._model_name_is_huggingface_repo_id():
@@ -129,8 +124,7 @@ class WhisperTranscriber(Transcriber):
                 huggingface_hub = import_huggingface_hub()
                 huggingface_hub.snapshot_download(repo_id=self.model_name)
                 self._model = whisper_timestamped.load_model(
-                    self.model_name,
-                    device=device,
+                    self.model_name, device=device
                 )
             self._models[model_key] = self._model
         return self._model
@@ -204,8 +198,7 @@ class WhisperTranscriber(Transcriber):
             if segment_idx + 1 < len(segments):
                 next_segment = segments[segment_idx + 1]
                 if segment_text_from_words := self._get_duplicate_segment_pair_text(
-                    segment,
-                    next_segment,
+                    segment, next_segment
                 ):
                     logger.warning(
                         f"Coalescing malformed Whisper segment pair for "
@@ -217,9 +210,7 @@ class WhisperTranscriber(Transcriber):
                     )
                     normalized_segments.append(
                         self._get_coalesced_segment(
-                            segment,
-                            next_segment,
-                            segment_text_from_words,
+                            segment, next_segment, segment_text_from_words
                         )
                     )
                     segment_idx += 2
@@ -266,8 +257,7 @@ class WhisperTranscriber(Transcriber):
 
     @staticmethod
     def _get_duplicate_segment_pair_text(
-        segment: TranscribedSegment,
-        next_segment: TranscribedSegment,
+        segment: TranscribedSegment, next_segment: TranscribedSegment
     ) -> str | None:
         """Get repaired text for a known malformed duplicate-segment pair.
 
@@ -293,8 +283,7 @@ class WhisperTranscriber(Transcriber):
         return segment_text_from_words
 
     def _get_backend_cache_metadata(
-        self,
-        settings: TranscriptionPreprocessingSettings,
+        self, settings: TranscriptionPreprocessingSettings
     ) -> dict[str, object]:
         """Get cache metadata identifying configured Whisper output.
 
@@ -333,16 +322,11 @@ class WhisperTranscriber(Transcriber):
             normalized cached segments
         """
         return self._normalize_transcription_segments(
-            segments,
-            source="cache",
-            cache_path=cache_path,
-            use_vad=settings.use_vad,
+            segments, source="cache", cache_path=cache_path, use_vad=settings.use_vad
         )
 
     def _transcribe_attempt(
-        self,
-        audio: AudioSegment,
-        settings: TranscriptionPreprocessingSettings,
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> list[TranscribedSegment]:
         """Run one uncached Whisper transcription attempt.
 
@@ -381,8 +365,5 @@ class WhisperTranscriber(Transcriber):
             TranscribedSegment.model_validate(segment) for segment in result["segments"]
         ]
         return self._normalize_transcription_segments(
-            segments,
-            source="whisper",
-            cache_path=None,
-            use_vad=settings.use_vad,
+            segments, source="whisper", cache_path=None, use_vad=settings.use_vad
         )

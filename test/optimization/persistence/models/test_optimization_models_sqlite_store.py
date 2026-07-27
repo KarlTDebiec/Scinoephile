@@ -14,10 +14,7 @@ from pytest import raises
 from scinoephile.core import ScinoephileError
 from scinoephile.lang.eng.review import ReviewPromptEng
 from scinoephile.llms.review import ReviewManager
-from scinoephile.optimization.persistence.models import (
-    ModelSqliteStore,
-    PersistedModel,
-)
+from scinoephile.optimization.persistence.models import ModelSqliteStore, PersistedModel
 from scinoephile.optimization.persistence.prompts import (
     PersistedPrompt,
     PromptSqliteStore,
@@ -48,13 +45,7 @@ def test_store_round_trips_and_is_idempotent(tmp_path: Path):
         columns = {
             str(row[1]) for row in connection.execute("PRAGMA table_info(models)")
         }
-    assert columns == {
-        "base_url",
-        "model",
-        "model_id",
-        "provider",
-        "settings_json",
-    }
+    assert columns == {"base_url", "model", "model_id", "provider", "settings_json"}
 
 
 def test_store_rejects_invalid_content_addressed_id(tmp_path: Path):

@@ -12,24 +12,18 @@ import numpy as np
 import pytest
 from pydub import AudioSegment
 
-from scinoephile.audio.transcription import (
-    CtcAligner,
-    TranscriptionAlignmentError,
-)
+from scinoephile.audio.transcription import CtcAligner, TranscriptionAlignmentError
 from scinoephile.core import Language
 
 
-def test_ctc_aligner_allows_model_override(
-    monkeypatch: pytest.MonkeyPatch,
-):
+def test_ctc_aligner_allows_model_override(monkeypatch: pytest.MonkeyPatch):
     """Test an explicit CTC model does not require a language default.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
     """
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.ctc_aligner._DEFAULT_MODEL_NAMES",
-        {},
+        "scinoephile.audio.transcription.ctc_aligner._DEFAULT_MODEL_NAMES", {}
     )
     aligner = CtcAligner(Language.eng, "organization/model", "mps")
 
@@ -47,9 +41,7 @@ def test_ctc_aligner_groups_english_character_timings_into_words():
     }
 
     words = CtcAligner(Language.eng)._get_transcribed_words(
-        text,
-        timed_chars,
-        len(text) / 10,
+        text, timed_chars, len(text) / 10
     )
 
     assert [word.text for word in words] == ["HI", " THERE"]
@@ -59,9 +51,7 @@ def test_ctc_aligner_groups_english_character_timings_into_words():
     assert [word.confidence for word in words] == pytest.approx([0.8, 0.8])
 
 
-def test_ctc_aligner_expands_token_spans(
-    monkeypatch: pytest.MonkeyPatch,
-):
+def test_ctc_aligner_expands_token_spans(monkeypatch: pytest.MonkeyPatch):
     """Test CTC alignment expands token spans."""
     log_probs = np.log(
         np.array(
@@ -80,10 +70,7 @@ def test_ctc_aligner_expands_token_spans(
         lambda _audio, _text: (log_probs, [1, 2], [0, 1], 0),
     )
 
-    segments = aligner(
-        AudioSegment.silent(duration=1000),
-        "你好",
-    )
+    segments = aligner(AudioSegment.silent(duration=1000), "你好")
 
     assert len(segments) == 1
     assert segments[0].text == "你好"
@@ -104,19 +91,12 @@ def test_ctc_aligner_expands_token_spans(
         (Language.eng, "facebook/wav2vec2-base-960h"),
         (Language.yue_hans, "ctl/wav2vec2-large-xlsr-cantonese"),
         (Language.yue_hant, "ctl/wav2vec2-large-xlsr-cantonese"),
-        (
-            Language.zho_hans,
-            "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
-        ),
-        (
-            Language.zho_hant,
-            "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
-        ),
+        (Language.zho_hans, "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn"),
+        (Language.zho_hant, "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn"),
     ],
 )
 def test_ctc_aligner_selects_language_default_model(
-    language: Language,
-    expected_model_name: str,
+    language: Language, expected_model_name: str
 ):
     """Test each transcription language selects its default CTC model.
 
@@ -152,9 +132,7 @@ def test_ctc_audio_samples_reject_empty_audio():
         CtcAligner._get_audio_samples(AudioSegment.empty(), 16000)
 
 
-def test_ctc_alignment_uses_processor_sampling_rate(
-    monkeypatch: pytest.MonkeyPatch,
-):
+def test_ctc_alignment_uses_processor_sampling_rate(monkeypatch: pytest.MonkeyPatch):
     """Test CTC alignment uses the configured processor's sampling rate."""
     aligner = CtcAligner(Language.yue_hant)
     aligner._processor = SimpleNamespace(
@@ -173,33 +151,15 @@ def test_ctc_alignment_uses_processor_sampling_rate(
 
 def test_ctc_best_path_requires_blank_between_repeated_labels():
     """Test adjacent repeated labels cannot advance on consecutive frames."""
-    log_probs = np.log(
-        np.array(
-            [
-                [0.01, 0.99],
-                [0.01, 0.99],
-            ]
-        )
-    )
+    log_probs = np.log(np.array([[0.01, 0.99], [0.01, 0.99]]))
 
-    with pytest.raises(
-        TranscriptionAlignmentError,
-        match="did not reach all tokens",
-    ):
+    with pytest.raises(TranscriptionAlignmentError, match="did not reach all tokens"):
         CtcAligner._get_best_path(log_probs, [1, 1], 0)
 
 
 def test_ctc_best_path_accepts_blank_between_repeated_labels():
     """Test a blank-separated path can align adjacent repeated labels."""
-    log_probs = np.log(
-        np.array(
-            [
-                [0.01, 0.99],
-                [0.99, 0.01],
-                [0.01, 0.99],
-            ]
-        )
-    )
+    log_probs = np.log(np.array([[0.01, 0.99], [0.99, 0.01], [0.01, 0.99]]))
 
     path = CtcAligner._get_best_path(log_probs, [1, 1], 0)
 
@@ -281,10 +241,7 @@ def test_ctc_aligner_attaches_trailing_unaligned_punctuation(
         lambda _audio, _text: (log_probs, [1, 2], [0, 1], 0),
     )
 
-    segments = aligner.align(
-        AudioSegment.silent(duration=1200),
-        "你好。",
-    )
+    segments = aligner.align(AudioSegment.silent(duration=1200), "你好。")
 
     assert segments[0].text == "你好。"
     assert segments[0].words is not None
@@ -295,31 +252,17 @@ def test_ctc_aligner_attaches_trailing_unaligned_punctuation(
     assert segments[0].words[1].confidence == pytest.approx(0.9)
 
 
-def test_ctc_aligner_times_trailing_unsupported_speech(
-    monkeypatch: pytest.MonkeyPatch,
-):
+def test_ctc_aligner_times_trailing_unsupported_speech(monkeypatch: pytest.MonkeyPatch):
     """Test trailing unsupported speech retains fallback timing."""
     log_probs = np.log(
-        np.array(
-            [
-                [0.85, 0.15],
-                [0.05, 0.95],
-                [0.85, 0.15],
-                [0.85, 0.15],
-            ]
-        )
+        np.array([[0.85, 0.15], [0.05, 0.95], [0.85, 0.15], [0.85, 0.15]])
     )
     aligner = CtcAligner(Language.yue_hant)
     monkeypatch.setattr(
-        aligner,
-        "_get_alignment_inputs",
-        lambda _audio, _text: (log_probs, [1], [0], 0),
+        aligner, "_get_alignment_inputs", lambda _audio, _text: (log_probs, [1], [0], 0)
     )
 
-    segments = aligner.align(
-        AudioSegment.silent(duration=1000),
-        "你嘅",
-    )
+    segments = aligner.align(AudioSegment.silent(duration=1000), "你嘅")
 
     assert segments[0].words is not None
     assert [word.text for word in segments[0].words] == ["你", "嘅"]
@@ -330,9 +273,7 @@ def test_ctc_aligner_times_trailing_unsupported_speech(
     assert segments[0].end == pytest.approx(1.0)
 
 
-def test_ctc_aligner_preserves_boundary_whitespace(
-    monkeypatch: pytest.MonkeyPatch,
-):
+def test_ctc_aligner_preserves_boundary_whitespace(monkeypatch: pytest.MonkeyPatch):
     """Test CTC alignment preserves whitespace around the transcript."""
     log_probs = np.log(
         np.array(
@@ -351,10 +292,7 @@ def test_ctc_aligner_preserves_boundary_whitespace(
         lambda _audio, _text: (log_probs, [1, 2], [1, 2], 0),
     )
 
-    segments = aligner.align(
-        AudioSegment.silent(duration=1000),
-        " 你好 ",
-    )
+    segments = aligner.align(AudioSegment.silent(duration=1000), " 你好 ")
 
     assert segments[0].text == " 你好 "
     assert segments[0].words is not None
@@ -364,9 +302,7 @@ def test_ctc_aligner_preserves_boundary_whitespace(
     assert segments[0].end == pytest.approx(1.0)
 
 
-def test_ctc_aligner_preserves_all_unknown_characters(
-    monkeypatch: pytest.MonkeyPatch,
-):
+def test_ctc_aligner_preserves_all_unknown_characters(monkeypatch: pytest.MonkeyPatch):
     """Test a transcript outside the CTC vocabulary receives fallback timings."""
     aligner = CtcAligner(Language.yue_hant)
     monkeypatch.setattr(
@@ -375,10 +311,7 @@ def test_ctc_aligner_preserves_all_unknown_characters(
         lambda _audio, _text: (np.empty((1, 1)), [], [], 0),
     )
 
-    segments = aligner.align(
-        AudioSegment.silent(duration=1500),
-        "佢哋嘅",
-    )
+    segments = aligner.align(AudioSegment.silent(duration=1500), "佢哋嘅")
 
     assert segments[0].text == "佢哋嘅"
     assert segments[0].start == pytest.approx(0.0)
@@ -422,10 +355,7 @@ def test_ctc_aligner_attaches_internal_unaligned_characters(
         lambda _audio, _text: (log_probs, [1, 2], char_indices, 0),
     )
 
-    segments = aligner.align(
-        AudioSegment.silent(duration=1000),
-        text,
-    )
+    segments = aligner.align(AudioSegment.silent(duration=1000), text)
 
     assert segments[0].words is not None
     assert [word.text for word in segments[0].words] == expected_words
@@ -456,11 +386,7 @@ def test_ctc_token_ids_normalize_case_and_skip_unknown_chars():
             Returns:
                 fake token ID
             """
-            return {
-                "你": 1,
-                "說": 2,
-                "A": 4,
-            }.get(token, 3)
+            return {"你": 1, "說": 2, "A": 4}.get(token, 3)
 
     aligner = CtcAligner(Language.yue_hant)
     aligner._processor = SimpleNamespace(tokenizer=FakeTokenizer())
@@ -482,10 +408,7 @@ def test_ctc_token_ids_normalize_case_and_skip_unknown_chars():
     ],
 )
 def test_ctc_token_ids_use_default_model_script_conversion(
-    language: Language,
-    text: str,
-    recognized_token: str,
-    expected_token_ids: list[int],
+    language: Language, text: str, recognized_token: str, expected_token_ids: list[int]
 ):
     """Test token lookup converts only toward the default model's script.
 
@@ -625,19 +548,14 @@ def test_ctc_models_and_processors_are_cached_independently(
         sys.modules,
         "transformers",
         SimpleNamespace(
-            AutoModelForCTC=FakeAutoModelForCTC,
-            AutoProcessor=FakeAutoProcessor,
+            AutoModelForCTC=FakeAutoModelForCTC, AutoProcessor=FakeAutoProcessor
         ),
     )
 
     first_aligner = CtcAligner(Language.eng, "organization/model-a")
     second_aligner = CtcAligner(Language.eng, "organization/model-a")
     other_model_aligner = CtcAligner(Language.eng, "organization/model-b")
-    other_device_aligner = CtcAligner(
-        Language.eng,
-        "organization/model-a",
-        "mps",
-    )
+    other_device_aligner = CtcAligner(Language.eng, "organization/model-a", "mps")
 
     assert second_aligner.processor is first_aligner.processor
     assert second_aligner.model is first_aligner.model
@@ -656,9 +574,7 @@ def test_ctc_models_and_processors_are_cached_independently(
     ]
 
 
-def test_ctc_aligner_rounds_timings(
-    monkeypatch: pytest.MonkeyPatch,
-):
+def test_ctc_aligner_rounds_timings(monkeypatch: pytest.MonkeyPatch):
     """Test CTC alignment rounds character timings."""
     log_probs = np.log(
         np.array(
@@ -677,10 +593,7 @@ def test_ctc_aligner_rounds_timings(
         lambda _audio, _text: (log_probs, [1, 2], [0, 1], 0),
     )
 
-    segments = aligner.align(
-        AudioSegment.silent(duration=1234),
-        "你好",
-    )
+    segments = aligner.align(AudioSegment.silent(duration=1234), "你好")
 
     assert segments[0].words is not None
     assert segments[0].words[0].start == round(1.234 / 4, 3)
@@ -691,33 +604,22 @@ def test_ctc_aligner_rounds_timings(
 def test_ctc_aligner_rejects_empty_text():
     """Test empty text is not sent through forced alignment."""
     with pytest.raises(TranscriptionAlignmentError, match="empty transcript"):
-        CtcAligner(Language.yue_hant).align(
-            AudioSegment.empty(),
-            "   ",
-        )
+        CtcAligner(Language.yue_hant).align(AudioSegment.empty(), "   ")
 
 
 @pytest.mark.parametrize(
-    "backend_error",
-    [OSError("model unavailable"), RuntimeError("backend failed")],
+    "backend_error", [OSError("model unavailable"), RuntimeError("backend failed")]
 )
 def test_ctc_aligner_wraps_backend_errors(
-    monkeypatch: pytest.MonkeyPatch,
-    backend_error: Exception,
+    monkeypatch: pytest.MonkeyPatch, backend_error: Exception
 ):
     """Test low-level CTC failures are exposed as alignment errors."""
     aligner = CtcAligner(Language.yue_hant)
     monkeypatch.setattr(
-        aligner,
-        "_get_alignment_inputs",
-        Mock(side_effect=backend_error),
+        aligner, "_get_alignment_inputs", Mock(side_effect=backend_error)
     )
 
     with pytest.raises(
-        TranscriptionAlignmentError,
-        match="Unable to run CTC transcription alignment",
+        TranscriptionAlignmentError, match="Unable to run CTC transcription alignment"
     ):
-        aligner.align(
-            AudioSegment.silent(duration=1000),
-            "你好",
-        )
+        aligner.align(AudioSegment.silent(duration=1000), "你好")

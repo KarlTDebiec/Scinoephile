@@ -51,9 +51,7 @@ class OcrCli(ScinoephileCliBase):
         super().add_arguments_to_argparser(parser)
 
         subparsers = parser.add_subparsers(
-            dest="ocr_subcommand_name",
-            help="subcommand",
-            required=True,
+            dest="ocr_subcommand_name", help="subcommand", required=True
         )
         subcommands = cls.subcommands()
         for name in sorted(subcommands):
@@ -83,12 +81,7 @@ class OcrCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(
-        cls,
-        *,
-        ocr_subcommand_name: str,
-        **kwargs: Any,
-    ):
+    def _main(cls, *, ocr_subcommand_name: str, **kwargs: Any):
         """Execute with provided keyword arguments."""
         cls.subcommands()[ocr_subcommand_name]._main(**kwargs)
 

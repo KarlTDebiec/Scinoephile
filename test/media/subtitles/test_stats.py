@@ -35,9 +35,7 @@ def test_get_text_subtitle_stream_stats_from_cached_stream(tmp_path: Path):
 
     with patch("scinoephile.media.subtitles.extractor.ffmpeg.input") as ffmpeg_input:
         stats = get_subtitle_stream_stats(
-            infile_path,
-            stream,
-            subtitle_cache=subtitle_cache,
+            infile_path, stream, subtitle_cache=subtitle_cache
         )
 
     ffmpeg_input.assert_not_called()
@@ -66,9 +64,7 @@ def test_get_image_subtitle_stream_stats_from_cached_images(tmp_path: Path):
     subtitle_cache = SubtitleCache(tmp_path / "cache")
 
     stats = get_subtitle_stream_stats(
-        infile_path,
-        stream,
-        subtitle_cache=subtitle_cache,
+        infile_path, stream, subtitle_cache=subtitle_cache
     )
 
     assert stats.event_count == 7

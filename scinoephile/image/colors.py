@@ -44,9 +44,7 @@ def get_grayscale_and_alpha_arrs(img: Image.Image) -> tuple[np.ndarray, np.ndarr
 
 
 def get_fill_color_mask_arr(
-    grayscale: np.ndarray,
-    alpha: np.ndarray,
-    fill_color: int,
+    grayscale: np.ndarray, alpha: np.ndarray, fill_color: int
 ) -> np.ndarray:
     """Get a boolean mask array that is true for pixels close to a provided fill color.
 
@@ -64,8 +62,7 @@ def get_fill_color_mask_arr(
 
 
 def get_fill_and_outline_colors(
-    grayscale: np.ndarray,
-    alpha: np.ndarray,
+    grayscale: np.ndarray, alpha: np.ndarray
 ) -> tuple[int, int]:
     """Get fill and outline grayscale values from grayscale/alpha arrays.
 

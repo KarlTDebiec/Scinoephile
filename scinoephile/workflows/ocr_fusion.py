@@ -10,10 +10,7 @@ from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.ocr_fusion import get_ocr_fuser
-from scinoephile.llms.ocr_fusion import (
-    OcrFusionProcessor,
-    OcrFusionPrompt,
-)
+from scinoephile.llms.ocr_fusion import OcrFusionProcessor, OcrFusionPrompt
 
 __all__ = ["fuse_ocr_series"]
 

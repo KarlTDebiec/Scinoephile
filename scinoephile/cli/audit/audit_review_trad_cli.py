@@ -14,10 +14,7 @@ from scinoephile.analysis.audit.review import (
     audit_review,
 )
 from scinoephile.cli.helpers.io import read_series
-from scinoephile.common.argument_parsing import (
-    get_arg_groups_by_name,
-    input_file_arg,
-)
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core import ScinoephileError
 from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
@@ -276,8 +273,7 @@ class AuditReviewTradCli(AuditCliBase):
         traditional_reviewed = read_series(parser, traditional_reviewed_path)
         traditional_simplified = read_series(parser, traditional_simplified_path)
         traditional_simplified_reviewed = read_series(
-            parser,
-            traditional_simplified_reviewed_path,
+            parser, traditional_simplified_reviewed_path
         )
         traditional_review_cases = load_review_test_cases(parser, traditional_json_path)
         traditional_simplified_review_cases = load_review_test_cases(

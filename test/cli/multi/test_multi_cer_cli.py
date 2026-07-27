@@ -22,12 +22,10 @@ def test_multi_cer_cli(tmp_path: Path, capsys: CaptureFixture[str]):
     reference_infile_path = tmp_path / "reference.srt"
     candidate_infile_path = tmp_path / "candidate.srt"
     reference_infile_path.write_text(
-        "1\n00:00:00,000 --> 00:00:01,000\nabc\n",
-        encoding="utf-8",
+        "1\n00:00:00,000 --> 00:00:01,000\nabc\n", encoding="utf-8"
     )
     candidate_infile_path.write_text(
-        "1\n00:00:00,000 --> 00:00:01,000\naxc\n",
-        encoding="utf-8",
+        "1\n00:00:00,000 --> 00:00:01,000\naxc\n", encoding="utf-8"
     )
 
     run_cli_with_args(

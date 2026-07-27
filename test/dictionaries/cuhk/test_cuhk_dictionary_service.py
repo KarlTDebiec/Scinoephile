@@ -22,8 +22,7 @@ from test.helpers import parametrize
 def test_cuhk_service_keeps_cache_paths_on_scraper(tmp_path: Path):
     """Test resolved CUHK cache paths remain owned by the scraper."""
     service = CuhkDictionaryService(
-        database_path=tmp_path / "cuhk.db",
-        cache_root_path=tmp_path / "cache",
+        database_path=tmp_path / "cuhk.db", cache_root_path=tmp_path / "cache"
     )
 
     assert service.scraper.discovery_cache.cache_dir_path == (
@@ -115,10 +114,7 @@ def service(
         (
             "gully",
             None,
-            raises(
-                ValueError,
-                match="Could not infer a supported lookup format",
-            ),
+            raises(ValueError, match="Could not infer a supported lookup format"),
         ),
     ],
 )

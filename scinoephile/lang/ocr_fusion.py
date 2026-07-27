@@ -23,10 +23,7 @@ from .eng.ocr_fusion import OcrFusionPromptEng
 from .yue.ocr_fusion import OcrFusionPromptYueHans, OcrFusionPromptYueHant
 from .zho.ocr_fusion import OcrFusionPromptZhoHans, OcrFusionPromptZhoHant
 
-__all__ = [
-    "DEFAULT_PROMPTS",
-    "get_ocr_fuser",
-]
+__all__ = ["DEFAULT_PROMPTS", "get_ocr_fuser"]
 
 _ENG_OCR_FUSION_JSON_PATHS = (
     Path("kob/output/eng_ocr/lang/eng/ocr_fusion.json"),

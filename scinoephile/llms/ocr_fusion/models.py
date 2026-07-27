@@ -13,11 +13,7 @@ from scinoephile.core.llms import Answer, Query, TestCase
 
 from .prompt import OcrFusionPrompt
 
-__all__ = [
-    "OcrFusionAnswer",
-    "OcrFusionQuery",
-    "OcrFusionTestCase",
-]
+__all__ = ["OcrFusionAnswer", "OcrFusionQuery", "OcrFusionTestCase"]
 
 
 _BASE_PROMPT = OcrFusionPrompt()

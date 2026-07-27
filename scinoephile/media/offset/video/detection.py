@@ -79,24 +79,16 @@ def get_video_offset(
 
     # Probe metadata needed for frame-grid search and automatic windows
     reference_metadata = _probe_video_metadata(
-        reference_infile_path,
-        label="reference",
-        require_frame_rate=True,
+        reference_infile_path, label="reference", require_frame_rate=True
     )
     target_metadata = _probe_video_metadata(
-        target_infile_path,
-        label="target",
-        require_frame_rate=False,
+        target_infile_path, label="target", require_frame_rate=False
     )
     frame_rate = reference_metadata.frame_rate
     if frame_rate is None:
         raise ScinoephileError("Could not probe reference video frame rate")
     frame_duration = float(Fraction(1, 1) / frame_rate)
-    duration = min(
-        duration,
-        reference_metadata.duration,
-        target_metadata.duration,
-    )
+    duration = min(duration, reference_metadata.duration, target_metadata.duration)
     start_times = _get_sample_window_starts(
         duration=duration,
         sample_windows=sample_windows,
@@ -131,10 +123,7 @@ def get_video_offset(
             offset_frames=window.offset_frames,
         )
 
-    aggregate = _aggregate_window_results(
-        window_results,
-        frame_duration=frame_duration,
-    )
+    aggregate = _aggregate_window_results(window_results, frame_duration=frame_duration)
     best_window = min(
         window_results,
         key=lambda window: (
@@ -154,9 +143,7 @@ def get_video_offset(
 
 
 def _aggregate_window_results(
-    windows: tuple[VideoOffsetWindowResult, ...],
-    *,
-    frame_duration: float,
+    windows: tuple[VideoOffsetWindowResult, ...], *, frame_duration: float
 ) -> VideoOffsetAggregate:
     """Aggregate window results in reference frame units.
 
@@ -187,8 +174,7 @@ def _aggregate_window_results(
 
 
 def _get_aggregate_confidence(
-    windows: tuple[VideoOffsetWindowResult, ...],
-    aggregate: VideoOffsetAggregate,
+    windows: tuple[VideoOffsetWindowResult, ...], aggregate: VideoOffsetAggregate
 ) -> str:
     """Return aggregate confidence from window agreement.
 
@@ -208,9 +194,7 @@ def _get_aggregate_confidence(
 
 
 def _get_candidate_confidence(
-    *,
-    best: VideoOffsetCandidate,
-    second_best: VideoOffsetCandidate | None,
+    *, best: VideoOffsetCandidate, second_best: VideoOffsetCandidate | None
 ) -> str:
     """Classify confidence from match support and score separation.
 
@@ -413,10 +397,7 @@ def _get_offsets(start: float, end: float, step: float) -> list[float]:
 
 
 def _probe_video_metadata(
-    infile_path: Path,
-    *,
-    label: str,
-    require_frame_rate: bool,
+    infile_path: Path, *, label: str, require_frame_rate: bool
 ) -> VideoMetadata:
     """Probe video metadata needed for offset detection.
 

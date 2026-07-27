@@ -52,7 +52,7 @@ class GuidedReviewManager(Manager[GuidedReviewTestCase]):
                     alias=prompt.revisions,
                     annotation=list[revision_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.revisions_desc,
-                ),
+                )
             },
         )
 
@@ -71,12 +71,10 @@ class GuidedReviewManager(Manager[GuidedReviewTestCase]):
             prompt,
             {
                 "index": PromptModelField(
-                    alias=prompt.index,
-                    description=prompt.index_desc,
+                    alias=prompt.index, description=prompt.index_desc
                 ),
                 "text": PromptModelField(
-                    alias=prompt.text,
-                    description=prompt.guide_text_desc,
+                    alias=prompt.text, description=prompt.guide_text_desc
                 ),
             },
             module=GuidedReviewQuery.__module__,
@@ -115,8 +113,7 @@ class GuidedReviewManager(Manager[GuidedReviewTestCase]):
     @classmethod
     @cache
     def get_revision_cls(
-        cls,
-        prompt: GuidedReviewPrompt,
+        cls, prompt: GuidedReviewPrompt
     ) -> type[AnnotatedTestCaseSubtitle]:
         """Get revision class with prompt-specific JSON field aliases.
 
@@ -130,16 +127,13 @@ class GuidedReviewManager(Manager[GuidedReviewTestCase]):
             prompt,
             {
                 "index": PromptModelField(
-                    alias=prompt.index,
-                    description=prompt.index_desc,
+                    alias=prompt.index, description=prompt.index_desc
                 ),
                 "text": PromptModelField(
-                    alias=prompt.text,
-                    description=prompt.revision_text_desc,
+                    alias=prompt.text, description=prompt.revision_text_desc
                 ),
                 "note": PromptModelField(
-                    alias=prompt.note,
-                    description=prompt.note_desc,
+                    alias=prompt.note, description=prompt.note_desc
                 ),
             },
             module=GuidedReviewAnswer.__module__,
@@ -161,12 +155,10 @@ class GuidedReviewManager(Manager[GuidedReviewTestCase]):
             prompt,
             {
                 "index": PromptModelField(
-                    alias=prompt.index,
-                    description=prompt.index_desc,
+                    alias=prompt.index, description=prompt.index_desc
                 ),
                 "text": PromptModelField(
-                    alias=prompt.text,
-                    description=prompt.target_text_desc,
+                    alias=prompt.text, description=prompt.target_text_desc
                 ),
             },
             module=GuidedReviewQuery.__module__,

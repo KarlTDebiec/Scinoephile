@@ -18,11 +18,7 @@ _CACHE_VERSION = 1
 class LensCache(OcrCacheBase[list[str]]):
     """Caches normalized Google Lens OCR lines."""
 
-    def __init__(
-        self,
-        cache_root_path: Path | None = None,
-        overwrite: bool = False,
-    ):
+    def __init__(self, cache_root_path: Path | None = None, overwrite: bool = False):
         """Initialize.
 
         Arguments:
@@ -30,11 +26,7 @@ class LensCache(OcrCacheBase[list[str]]):
             overwrite: whether to replace matching cache files
         """
         super().__init__(
-            cache_root_path,
-            "google-lens",
-            "Google Lens OCR",
-            _CACHE_VERSION,
-            overwrite,
+            cache_root_path, "google-lens", "Google Lens OCR", _CACHE_VERSION, overwrite
         )
 
     def _deserialize(self, payload: object) -> list[str]:

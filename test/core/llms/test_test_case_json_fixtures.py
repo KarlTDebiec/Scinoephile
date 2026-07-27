@@ -27,22 +27,10 @@ _TEST_CASE_FAMILIES: tuple[tuple[str, type[Manager]], ...] = (
     ("*/output/*/lang/*/ocr_fusion.json", OcrFusionManager),
     ("*/output/*/lang/*/review.json", ReviewManager),
     ("*/output/*/lang/*/simplify_review.json", ReviewManager),
-    (
-        "*/output/*/lang/yue_zho/gap_translation/*.json",
-        GapTranslationManager,
-    ),
-    (
-        "*/output/*/lang/yue_zho/guided_review/*.json",
-        GuidedReviewManager,
-    ),
-    (
-        "*/output/*/lang/yue_zho/transcription/delineation/*.json",
-        DelineationManager,
-    ),
-    (
-        "*/output/*/lang/yue_zho/transcription/punctuation/*.json",
-        PunctuationManager,
-    ),
+    ("*/output/*/lang/yue_zho/gap_translation/*.json", GapTranslationManager),
+    ("*/output/*/lang/yue_zho/guided_review/*.json", GuidedReviewManager),
+    ("*/output/*/lang/yue_zho/transcription/delineation/*.json", DelineationManager),
+    ("*/output/*/lang/yue_zho/transcription/punctuation/*.json", PunctuationManager),
 )
 
 
@@ -84,9 +72,7 @@ def _localize_prompt_text(text: str) -> str:
     ],
 )
 def test_tracked_test_case_json_round_trips_canonically(
-    input_path: Path,
-    manager_cls: type[Manager],
-    tmp_path: Path,
+    input_path: Path, manager_cls: type[Manager], tmp_path: Path
 ):
     """Tracked JSON should round-trip canonically through localized models.
 
@@ -97,22 +83,17 @@ def test_tracked_test_case_json_round_trips_canonically(
     """
     raw_test_cases = json.loads(input_path.read_text(encoding="utf-8"))
     localized_prompt = manager_cls.base_prompt.transformed(
-        Language.zho_hans,
-        _localize_prompt_text,
+        Language.zho_hans, _localize_prompt_text
     )
     localized_test_cases = load_test_cases_from_json(
-        input_path,
-        manager_cls,
-        prompt=localized_prompt,
+        input_path, manager_cls, prompt=localized_prompt
     )
     assert localized_test_cases
 
     base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
     base_test_cases = []
     for raw_test_case, localized_test_case in zip(
-        raw_test_cases,
-        localized_test_cases,
-        strict=True,
+        raw_test_cases, localized_test_cases, strict=True
     ):
         base_test_case = base_test_case_cls.model_validate(raw_test_case)
         base_test_cases.append(base_test_case)
@@ -122,26 +103,16 @@ def test_tracked_test_case_json_round_trips_canonically(
         assert round_tripped_test_case == base_test_case
 
     output_path = tmp_path / input_path.name
-    save_test_cases_to_json(
-        output_path,
-        localized_test_cases,
-        manager_cls,
-    )
+    save_test_cases_to_json(output_path, localized_test_cases, manager_cls)
     saved_data = json.loads(output_path.read_text(encoding="utf-8"))
     canonical_data = [
-        test_case.model_dump(
-            mode="json",
-            by_alias=True,
-            exclude_defaults=True,
-        )
+        test_case.model_dump(mode="json", by_alias=True, exclude_defaults=True)
         for test_case in base_test_cases
     ]
     assert saved_data == canonical_data
 
     reloaded_test_cases = load_test_cases_from_json(
-        output_path,
-        manager_cls,
-        prompt=manager_cls.base_prompt,
+        output_path, manager_cls, prompt=manager_cls.base_prompt
     )
     assert [test_case.model_dump(mode="json") for test_case in reloaded_test_cases] == [
         test_case.model_dump(mode="json") for test_case in base_test_cases

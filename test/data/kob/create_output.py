@@ -70,7 +70,7 @@ actions = {
     # "zho-Hans_eng",
     # "yue-Hans_eng",
     # "yue-Hant_transcribe",
-    "yue-Hant_diff",
+    "yue-Hant_diff"
 }
 
 if "eng_ocr" in actions:
@@ -146,10 +146,5 @@ if "yue-Hant_diff" in actions:
         one_lbl="GAP TRANSLATION",
         two_lbl="REFERENCE",
     )
-    print(
-        diff.get_stacked_str(
-            three=aligned_zho_hant_guide,
-            include_equal=True,
-        )
-    )
+    print(diff.get_stacked_str(three=aligned_zho_hant_guide, include_equal=True))
     print(SeriesCER(yue_hant_reference, yue_hant_transcribe))

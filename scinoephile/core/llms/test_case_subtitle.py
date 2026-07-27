@@ -8,10 +8,7 @@ from pydantic import Field
 
 from .models import LLMModel
 
-__all__ = [
-    "AnnotatedTestCaseSubtitle",
-    "TestCaseSubtitle",
-]
+__all__ = ["AnnotatedTestCaseSubtitle", "TestCaseSubtitle"]
 
 
 class TestCaseSubtitle(LLMModel):

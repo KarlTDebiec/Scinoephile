@@ -37,9 +37,7 @@ logger = logging.getLogger(__name__)
 
 @functools.cache
 def load_default_test_cases(
-    manager_cls: type[Manager],
-    prompt: Prompt,
-    relative_paths: tuple[Path, ...],
+    manager_cls: type[Manager], prompt: Prompt, relative_paths: tuple[Path, ...]
 ) -> tuple[TestCase, ...]:
     """Load default test cases from repository JSON files and cache the result.
 

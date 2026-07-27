@@ -15,11 +15,7 @@ from scinoephile.core.synchronization import get_sync_overlap_matrix
 from scinoephile.llms.gap_translation import GapTranslationTestCase
 
 from .translation import TranslationAuditFilter, resolve_translation_audit_output
-from .utils import (
-    format_audit_report,
-    format_verification_marker,
-    validate_audit_range,
-)
+from .utils import format_audit_report, format_verification_marker, validate_audit_range
 
 __all__ = ["audit_gap_translation"]
 
@@ -89,11 +85,7 @@ def audit_gap_translation(
     # Build paired workflow blocks and validate the selection
     block_pairs = get_block_pairs_by_pause(target, guide)
     validate_audit_range(
-        first_index,
-        last_index,
-        first_block,
-        last_block,
-        block_count=len(block_pairs),
+        first_index, last_index, first_block, last_block, block_count=len(block_pairs)
     )
 
     # Reconstruct current gap blocks and their global guide indexes
@@ -127,10 +119,7 @@ def audit_gap_translation(
         verified_marker = format_verification_marker(test_case.verified)
         for local_index, (global_index, guide_text, target_text) in enumerate(
             zip(
-                block.guide_indexes,
-                block.guide_texts,
-                block.target_texts,
-                strict=True,
+                block.guide_indexes, block.guide_texts, block.target_texts, strict=True
             ),
             1,
         ):
@@ -142,8 +131,7 @@ def audit_gap_translation(
                 continue
 
             output_text, answered, empty = resolve_translation_audit_output(
-                outputs_by_index,
-                local_index,
+                outputs_by_index, local_index
             )
             cells = (
                 f"G {global_index}\nQ {local_index}",
@@ -236,9 +224,7 @@ def _block_intersects_range(
             and (first_index is None or guide_index >= first_index)
             and (last_index is None or guide_index <= last_index)
             for guide_index, target_text in zip(
-                block.guide_indexes,
-                block.target_texts,
-                strict=True,
+                block.guide_indexes, block.target_texts, strict=True
             )
         )
     )
@@ -318,8 +304,7 @@ def _get_active_test_case_blocks(
 
     # Match exact current cases, retaining the latest case for each block
     active_by_block_number: dict[
-        int,
-        tuple[int, GapTranslationTestCase, _GapTranslationBlock],
+        int, tuple[int, GapTranslationTestCase, _GapTranslationBlock]
     ] = {}
     unmatched_cases: list[tuple[int, GapTranslationTestCase]] = []
     for test_case_index, test_case in enumerate(test_cases, 1):
@@ -332,11 +317,7 @@ def _get_active_test_case_blocks(
             block
             for block in matches
             if _block_intersects_range(
-                block,
-                first_index,
-                last_index,
-                first_block,
-                last_block,
+                block, first_index, last_index, first_block, last_block
             )
         ]
         if not selected_matches:
@@ -379,11 +360,7 @@ def _get_active_test_case_blocks(
             block
             for block in matches
             if _block_intersects_range(
-                block,
-                first_index,
-                last_index,
-                first_block,
-                last_block,
+                block, first_index, last_index, first_block, last_block
             )
         ]
         if not selected_matches:
@@ -418,11 +395,7 @@ def _get_active_test_case_blocks(
         block.block_number
         for block in blocks
         if _block_intersects_range(
-            block,
-            first_index,
-            last_index,
-            first_block,
-            last_block,
+            block, first_index, last_index, first_block, last_block
         )
     }
     missing_block_numbers = sorted(selected_block_numbers - set(active_by_block_number))
@@ -435,8 +408,7 @@ def _get_active_test_case_blocks(
 
     # Return active cases in current workflow order
     return sorted(
-        active_by_block_number.values(),
-        key=lambda item: item[2].block_number,
+        active_by_block_number.values(), key=lambda item: item[2].block_number
     )
 
 

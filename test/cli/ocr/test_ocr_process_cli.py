@@ -85,8 +85,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
 
     with (
         patch(
-            "scinoephile.cli.ocr.ocr_process_cli.get_provider",
-            side_effect=get_provider,
+            "scinoephile.cli.ocr.ocr_process_cli.get_provider", side_effect=get_provider
         ),
         patch(
             "scinoephile.cli.ocr.ocr_process_cli.OcrProcessingWorkflow",

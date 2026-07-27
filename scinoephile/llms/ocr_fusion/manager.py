@@ -7,13 +7,7 @@ from __future__ import annotations
 from functools import cache
 from typing import ClassVar
 
-from scinoephile.core.llms import (
-    Answer,
-    Manager,
-    PromptModelField,
-    Query,
-    TestCase,
-)
+from scinoephile.core.llms import Answer, Manager, PromptModelField, Query, TestCase
 
 from .models import OcrFusionAnswer, OcrFusionQuery, OcrFusionTestCase
 from .prompt import OcrFusionPrompt
@@ -46,12 +40,10 @@ class OcrFusionManager(Manager[OcrFusionTestCase]):
             prompt,
             {
                 "output": PromptModelField(
-                    alias=prompt.output,
-                    description=prompt.output_desc,
+                    alias=prompt.output, description=prompt.output_desc
                 ),
                 "note": PromptModelField(
-                    alias=prompt.note,
-                    description=prompt.note_desc,
+                    alias=prompt.note, description=prompt.note_desc
                 ),
             },
             module=Answer.__module__,
@@ -73,12 +65,10 @@ class OcrFusionManager(Manager[OcrFusionTestCase]):
             prompt,
             {
                 "source_one": PromptModelField(
-                    alias=prompt.src_1,
-                    description=prompt.src_1_desc,
+                    alias=prompt.src_1, description=prompt.src_1_desc
                 ),
                 "source_two": PromptModelField(
-                    alias=prompt.src_2,
-                    description=prompt.src_2_desc,
+                    alias=prompt.src_2, description=prompt.src_2_desc
                 ),
             },
             module=Query.__module__,

@@ -36,7 +36,7 @@ def _get_alignment() -> TranscriptionAlignment:
         events=[
             Subtitle(start=0, end=1000, text="參考一"),
             Subtitle(start=1000, end=2000, text="參考二"),
-        ],
+        ]
     )
     transcription = AudioSeries(
         audio=AudioSegment.silent(duration=2000),
@@ -84,10 +84,7 @@ def test_aligner_uses_queryer_prompt_and_semantic_shift_output():
     def add_answer(test_case: DelineationTestCase) -> DelineationTestCase:
         """Move the second target subtitle into the first sync group."""
         return type(test_case).model_validate(
-            {
-                **test_case.model_dump(),
-                "answer": {"output_one": "甲乙"},
-            }
+            {**test_case.model_dump(), "answer": {"output_one": "甲乙"}}
         )
 
     delineation_queryer.side_effect = add_answer
@@ -111,7 +108,7 @@ def test_aligner_restarts_to_propagate_text_across_multiple_boundaries():
             Subtitle(start=0, end=1000, text="參考一"),
             Subtitle(start=1000, end=2000, text="參考二"),
             Subtitle(start=2000, end=3000, text="參考三"),
-        ],
+        ]
     )
     transcription = AudioSeries(
         audio=AudioSegment.silent(duration=3000),
@@ -136,10 +133,7 @@ def test_aligner_restarts_to_propagate_text_across_multiple_boundaries():
         elif test_case.query.target_two == "乙丙":
             answer = {"output_one": "甲乙丙"}
         return type(test_case).model_validate(
-            {
-                **test_case.model_dump(),
-                "answer": answer,
-            }
+            {**test_case.model_dump(), "answer": answer}
         )
 
     delineation_queryer.side_effect = shift_left
@@ -168,10 +162,7 @@ def test_aligner_stops_when_delineation_states_repeat():
         if not test_case.query.target_two:
             answer = {"output_one": "甲", "output_two": "乙"}
         return type(test_case).model_validate(
-            {
-                **test_case.model_dump(),
-                "answer": answer,
-            }
+            {**test_case.model_dump(), "answer": answer}
         )
 
     delineation_queryer.side_effect = oscillate

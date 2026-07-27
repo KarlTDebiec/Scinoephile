@@ -21,8 +21,7 @@ def _write_fixture_sources(base_dir_path: Path):
     """
     base_dir_path.mkdir(parents=True, exist_ok=True)
     (base_dir_path / "Unihan_Variants.txt").write_text(
-        "U+4E07\tkTraditionalVariant\tU+842C\n",
-        encoding="utf-8",
+        "U+4E07\tkTraditionalVariant\tU+842C\n", encoding="utf-8"
     )
     (base_dir_path / "Unihan_Readings.txt").write_text(
         (
@@ -36,15 +35,12 @@ def _write_fixture_sources(base_dir_path: Path):
         encoding="utf-8",
     )
     (base_dir_path / "Unihan_DictionaryLikeData.txt").write_text(
-        ("U+4E00\tkCangjie\tM\nU+842C\tkCangjie\tDQ\n"),
-        encoding="utf-8",
+        ("U+4E00\tkCangjie\tM\nU+842C\tkCangjie\tDQ\n"), encoding="utf-8"
     )
 
 
 def test_build_uses_local_source_data(
-    database_path: Path,
-    local_data_dir_path: Path,
-    runtime_data_dir_path: Path,
+    database_path: Path, local_data_dir_path: Path, runtime_data_dir_path: Path
 ):
     """Build Unihan DB from local source files when available.
 
@@ -101,9 +97,7 @@ def test_build_downloads_when_local_sources_missing(
         }
 
     monkeypatch.setattr(
-        service,
-        "_download_and_extract_to_runtime",
-        _download_and_extract_to_runtime,
+        service, "_download_and_extract_to_runtime", _download_and_extract_to_runtime
     )
 
     service.build(overwrite=True)
@@ -113,9 +107,7 @@ def test_build_downloads_when_local_sources_missing(
 
 
 def test_build_updates_local_data_from_existing_runtime_files(
-    database_path: Path,
-    local_data_dir_path: Path,
-    runtime_data_dir_path: Path,
+    database_path: Path, local_data_dir_path: Path, runtime_data_dir_path: Path
 ):
     """Update local source files from existing runtime source files.
 
@@ -146,8 +138,7 @@ def test_build_updates_local_data_from_existing_runtime_files(
 
 
 def test_download_and_extract_raises_file_not_found_for_missing_archive_member(
-    runtime_data_dir_path: Path,
-    monkeypatch: MonkeyPatch,
+    runtime_data_dir_path: Path, monkeypatch: MonkeyPatch
 ):
     """Raise FileNotFoundError when Unihan.zip is missing a required source file.
 

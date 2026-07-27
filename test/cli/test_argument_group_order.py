@@ -26,10 +26,7 @@ _GROUP_ORDER = (
 
 def test_cli_argument_groups_follow_canonical_order():
     """Test every command's populated argument groups use canonical order."""
-    for path, parser in _iter_parsers(
-        ScinoephileCli.argparser(),
-        ("scinoephile",),
-    ):
+    for path, parser in _iter_parsers(ScinoephileCli.argparser(), ("scinoephile",)):
         titles = [
             group.title
             for group in parser._action_groups  # noqa: SLF001
@@ -40,8 +37,7 @@ def test_cli_argument_groups_follow_canonical_order():
 
 
 def _iter_parsers(
-    parser: ArgumentParser,
-    path: tuple[str, ...],
+    parser: ArgumentParser, path: tuple[str, ...]
 ) -> Iterator[tuple[tuple[str, ...], ArgumentParser]]:
     """Iterate over a parser and all of its subcommand parsers.
 
@@ -56,7 +52,4 @@ def _iter_parsers(
         if not isinstance(action, _SubParsersAction):
             continue
         for name, subparser in sorted(action.choices.items()):
-            yield from _iter_parsers(
-                cast(ArgumentParser, subparser),
-                (*path, name),
-            )
+            yield from _iter_parsers(cast(ArgumentParser, subparser), (*path, name))

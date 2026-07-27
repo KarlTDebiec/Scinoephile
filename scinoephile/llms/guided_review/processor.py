@@ -67,17 +67,11 @@ class GuidedReviewProcessor(Processor):
             query = query_cls.model_validate(
                 {
                     "targets": [
-                        {
-                            "index": idx,
-                            "text": subtitle.text_with_newline.strip(),
-                        }
+                        {"index": idx, "text": subtitle.text_with_newline.strip()}
                         for idx, subtitle in enumerate(target_block, 1)
                     ],
                     "guides": [
-                        {
-                            "index": idx,
-                            "text": subtitle.text_with_newline.strip(),
-                        }
+                        {"index": idx, "text": subtitle.text_with_newline.strip()}
                         for idx, subtitle in enumerate(guide_block, 1)
                     ],
                 }

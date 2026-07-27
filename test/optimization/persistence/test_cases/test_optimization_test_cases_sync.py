@@ -21,9 +21,7 @@ from scinoephile.optimization.persistence.test_cases import (
     TestCaseSqliteStore,
 )
 from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
-from scinoephile.optimization.persistence.test_cases.sync import (
-    sync_test_cases,
-)
+from scinoephile.optimization.persistence.test_cases.sync import sync_test_cases
 
 _BASE_REVIEW_PROMPT = ReviewPrompt(
     subtitles="base_subtitles",
@@ -35,11 +33,7 @@ _BASE_REVIEW_PROMPT = ReviewPrompt(
 """Review prompt whose aliases intentionally differ from semantic field names."""
 
 _LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
-    subtitles="zimu",
-    revisions="xiugai",
-    index="xuhao",
-    text="wenben",
-    note="beizhu",
+    subtitles="zimu", revisions="xiugai", index="xuhao", text="wenben", note="beizhu"
 )
 """Review prompt using localized correspondence field names."""
 
@@ -84,13 +78,7 @@ def test_normalization_makes_prompt_field_aliases_share_identity(tmp_path: Path)
         {
             "query": {"zimu": [{"xuhao": 1, "wenben": "original"}]},
             "answer": {
-                "xiugai": [
-                    {
-                        "xuhao": 1,
-                        "wenben": "corrected",
-                        "beizhu": "typo",
-                    }
-                ]
+                "xiugai": [{"xuhao": 1, "wenben": "corrected", "beizhu": "typo"}]
             },
         }
     )
@@ -99,22 +87,16 @@ def test_normalization_makes_prompt_field_aliases_share_identity(tmp_path: Path)
             "query": {"sources": [{"position": 1, "content": "original"}]},
             "answer": {
                 "corrections": [
-                    {
-                        "position": 1,
-                        "content": "corrected",
-                        "explanation": "typo",
-                    }
+                    {"position": 1, "content": "corrected", "explanation": "typo"}
                 ]
             },
         }
     )
     localized_persisted = PersistedTestCase.from_test_case(
-        localized,
-        _AliasedBaseReviewManager,
+        localized, _AliasedBaseReviewManager
     )
     alternative_persisted = PersistedTestCase.from_test_case(
-        alternative,
-        _AliasedBaseReviewManager,
+        alternative, _AliasedBaseReviewManager
     )
 
     assert localized_persisted.query == {
@@ -122,11 +104,7 @@ def test_normalization_makes_prompt_field_aliases_share_identity(tmp_path: Path)
     }
     assert localized_persisted.answer == {
         "base_revisions": [
-            {
-                "base_index": 1,
-                "base_text": "corrected",
-                "base_note": "typo",
-            }
+            {"base_index": 1, "base_text": "corrected", "base_note": "typo"}
         ]
     }
     assert localized_persisted.test_case_id == alternative_persisted.test_case_id
@@ -153,10 +131,7 @@ def test_sync_rejects_fields_outside_test_case_schema(tmp_path: Path):
             "unexpected": True,
         },
         {
-            "query": {
-                **_get_translation_query("a"),
-                "unexpected": True,
-            },
+            "query": {**_get_translation_query("a"), "unexpected": True},
             "answer": _get_translation_answer("b"),
         },
     ]
@@ -198,8 +173,7 @@ def test_sync_requires_base_prompt_aliases(tmp_path: Path):
 
 
 def test_sync_inserts_and_removes_provenance_by_source_path(
-    tmp_path: Path,
-    monkeypatch,
+    tmp_path: Path, monkeypatch
 ):
     """Sync should insert and remove provenance links per source JSON."""
     monkeypatch.chdir(tmp_path)
@@ -213,32 +187,19 @@ def test_sync_inserts_and_removes_provenance_by_source_path(
             "answer": _get_translation_answer("b"),
             "verified": True,
         },
-        {
-            "query": deleted_query,
-            "answer": deleted_answer,
-        },
+        {"query": deleted_query, "answer": deleted_answer},
     ]
     source_path.write_text(json.dumps(first_data), encoding="utf-8")
 
     first_report = sync_test_cases(
-        [source_path],
-        database_path,
-        TranslationManager,
-        dry_run=False,
+        [source_path], database_path, TranslationManager, dry_run=False
     )
     assert len(first_report.insert_ids) == 2
-    deleted_id = get_test_case_id(
-        deleted_query,
-        deleted_answer,
-        TranslationManager,
-    )
+    deleted_id = get_test_case_id(deleted_query, deleted_answer, TranslationManager)
 
     source_path.write_text(json.dumps(first_data[:1]), encoding="utf-8")
     second_report = sync_test_cases(
-        [source_path],
-        database_path,
-        TranslationManager,
-        dry_run=False,
+        [source_path], database_path, TranslationManager, dry_run=False
     )
 
     assert second_report.delete_ids == (deleted_id,)
@@ -264,18 +225,12 @@ def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
         encoding="utf-8",
     )
     first_report = sync_test_cases(
-        [source_path],
-        database_path,
-        TranslationManager,
-        dry_run=False,
+        [source_path], database_path, TranslationManager, dry_run=False
     )
 
     source_path.write_text("[]\n", encoding="utf-8")
     second_report = sync_test_cases(
-        [source_path.resolve()],
-        database_path,
-        TranslationManager,
-        dry_run=False,
+        [source_path.resolve()], database_path, TranslationManager, dry_run=False
     )
 
     assert second_report.delete_ids == first_report.insert_ids
@@ -294,10 +249,7 @@ def test_sync_does_not_overwrite_sql_owned_metadata(tmp_path: Path):
     ]
     source_path.write_text(json.dumps(data), encoding="utf-8")
     first_report = sync_test_cases(
-        [source_path],
-        database_path,
-        TranslationManager,
-        dry_run=False,
+        [source_path], database_path, TranslationManager, dry_run=False
     )
 
     data[0]["difficulty"] = 2
@@ -305,10 +257,7 @@ def test_sync_does_not_overwrite_sql_owned_metadata(tmp_path: Path):
     data[0]["verified"] = True
     source_path.write_text(json.dumps(data), encoding="utf-8")
     dry_run_report = sync_test_cases(
-        [source_path],
-        database_path,
-        TranslationManager,
-        dry_run=True,
+        [source_path], database_path, TranslationManager, dry_run=True
     )
 
     assert dry_run_report.insert_ids == ()
@@ -319,12 +268,7 @@ def test_sync_does_not_overwrite_sql_owned_metadata(tmp_path: Path):
     assert loaded_before_write is not None
     assert loaded_before_write.difficulty == 1
 
-    sync_test_cases(
-        [source_path],
-        database_path,
-        TranslationManager,
-        dry_run=False,
-    )
+    sync_test_cases([source_path], database_path, TranslationManager, dry_run=False)
     loaded = TestCaseSqliteStore(database_path).get_test_case(
         first_report.insert_ids[0]
     )
@@ -365,10 +309,7 @@ def test_sync_validates_all_inputs_before_writing(tmp_path: Path):
 
     with raises(ScinoephileError, match="valid integer"):
         sync_test_cases(
-            [valid_path, invalid_path],
-            database_path,
-            TranslationManager,
-            dry_run=False,
+            [valid_path, invalid_path], database_path, TranslationManager, dry_run=False
         )
 
     assert not database_path.exists()
@@ -383,15 +324,9 @@ def test_sync_loads_canonical_repository_data(tmp_path: Path):
     raw_data = json.loads(source_path.read_text(encoding="utf-8"))
     database_path = tmp_path / "test_cases.sqlite"
 
-    sync_test_cases(
-        [source_path],
-        database_path,
-        ReviewManager,
-        dry_run=False,
-    )
+    sync_test_cases([source_path], database_path, ReviewManager, dry_run=False)
     loaded = TestCaseSqliteStore(database_path).get_test_cases_by_source_path(
-        str(source_path.resolve()),
-        manager_cls=ReviewManager,
+        str(source_path.resolve()), manager_cls=ReviewManager
     )
 
     assert len(loaded) == len(raw_data)
@@ -418,10 +353,7 @@ def test_sync_round_trips_unbounded_lists(tmp_path: Path):
         json.dumps(
             [
                 {
-                    "query": {
-                        "ref_sub": "reference",
-                        "target_subs": lines,
-                    },
+                    "query": {"ref_sub": "reference", "target_subs": lines},
                     "answer": {"target_sub_punctuated": "".join(lines)},
                 }
             ]
@@ -430,12 +362,7 @@ def test_sync_round_trips_unbounded_lists(tmp_path: Path):
     )
     database_path = tmp_path / "test_cases.sqlite"
 
-    sync_test_cases(
-        [source_path],
-        database_path,
-        PunctuationManager,
-        dry_run=False,
-    )
+    sync_test_cases([source_path], database_path, PunctuationManager, dry_run=False)
     loaded = TestCaseSqliteStore(database_path).get_test_cases_by_source_path(
         str(source_path.resolve())
     )

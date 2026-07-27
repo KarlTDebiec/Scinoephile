@@ -191,10 +191,7 @@ def skip_if_ci() -> Any:
     Returns:
         pytest mark decorator
     """
-    return skipif(
-        bool(getenv("CI")),
-        reason="Skip when running in CI",
-    )
+    return skipif(bool(getenv("CI")), reason="Skip when running in CI")
 
 
 def skip_if_codex() -> Any:

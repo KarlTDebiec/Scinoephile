@@ -18,10 +18,7 @@ __all__ = ["romanize_series"]
 
 
 def romanize_series(
-    series: Series,
-    *,
-    language: Language | None = None,
-    append: bool = True,
+    series: Series, *, language: Language | None = None, append: bool = True
 ) -> Series:
     """Romanize a subtitle series using the appropriate language-specific system.
 

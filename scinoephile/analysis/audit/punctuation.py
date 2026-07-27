@@ -22,10 +22,7 @@ from .utils import (
     resolve_contextual_index,
 )
 
-__all__ = [
-    "PunctuationAuditFilter",
-    "audit_punctuation",
-]
+__all__ = ["PunctuationAuditFilter", "audit_punctuation"]
 
 
 class PunctuationAuditFilter(StrEnum):
@@ -75,13 +72,10 @@ def audit_punctuation(
         reference_indexes_by_text[subtitle.text].append(index)
 
     target_text_by_reference_index = _get_target_text_by_reference_index(
-        reference,
-        target,
+        reference, target
     )
     candidate_indexes_by_case, direct_indexes = _get_case_indexes(
-        reference_indexes_by_text,
-        target_text_by_reference_index,
-        test_cases,
+        reference_indexes_by_text, target_text_by_reference_index, test_cases
     )
     selected_reference_indexes = get_selected_event_indexes(
         reference,
@@ -103,9 +97,7 @@ def audit_punctuation(
         if selected_reference_indexes.isdisjoint(candidates):
             continue
         index = _get_case_index(
-            candidates,
-            direct_indexes,
-            test_case_index=test_case_index,
+            candidates, direct_indexes, test_case_index=test_case_index
         )
         if index not in selected_reference_indexes:
             continue
@@ -154,8 +146,7 @@ def audit_punctuation(
 
 
 def _format_case_row(
-    test_case: PunctuationTestCase,
-    index: int,
+    test_case: PunctuationTestCase, index: int
 ) -> tuple[tuple[str, ...], AuditResult]:
     """Format one punctuation case as semantic table data.
 
@@ -190,10 +181,7 @@ def _format_case_row(
 
 
 def _get_case_index(
-    candidates: Sequence[int],
-    direct_indexes: list[int | None],
-    *,
-    test_case_index: int,
+    candidates: Sequence[int], direct_indexes: list[int | None], *, test_case_index: int
 ) -> int:
     """Resolve the reference index for one punctuation test case.
 
@@ -206,11 +194,7 @@ def _get_case_index(
     Raises:
         ScinoephileError: if the case remains ambiguous
     """
-    index = resolve_contextual_index(
-        candidates,
-        direct_indexes,
-        test_case_index - 1,
-    )
+    index = resolve_contextual_index(candidates, direct_indexes, test_case_index - 1)
     if index is not None:
         return index
 
@@ -241,10 +225,7 @@ def _get_case_indexes(
     inputs_by_guide: dict[str, set[tuple[str, ...]]] = defaultdict(set)
     for test_case in test_cases:
         inputs_by_guide[test_case.query.guide].add(tuple(test_case.query.subtitles))
-    superseded_guides = get_superseded_keys(
-        reference_indexes_by_text,
-        inputs_by_guide,
-    )
+    superseded_guides = get_superseded_keys(reference_indexes_by_text, inputs_by_guide)
     candidate_indexes_by_case: list[list[int]] = []
     direct_indexes: list[int | None] = []
     for test_case_index, test_case in enumerate(test_cases, 1):
@@ -299,8 +280,7 @@ def _get_case_indexes(
 
 
 def _get_target_text_by_reference_index(
-    reference: Series,
-    target: Series,
+    reference: Series, target: Series
 ) -> dict[int, str]:
     """Align target text to reference indexes by exact timing.
 

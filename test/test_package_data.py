@@ -45,13 +45,7 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
     command_env["UV_CACHE_DIR"] = command_env.get("UV_CACHE_DIR", "/tmp/uv-cache")
 
     run_command(
-        [
-            uv_path,
-            "build",
-            "--wheel",
-            "--out-dir",
-            str(wheel_dir_path),
-        ],
+        [uv_path, "build", "--wheel", "--out-dir", str(wheel_dir_path)],
         cwd_path=build_source_dir_path,
         env=command_env,
     )

@@ -26,14 +26,8 @@ def test_get_test_case_id_stable_for_same_payload():
     query = _get_translation_query("a")
     answer = _get_translation_answer("b")
 
-    assert get_test_case_id(
-        query,
-        answer,
-        TranslationManager,
-    ) == get_test_case_id(
-        query,
-        answer,
-        TranslationManager,
+    assert get_test_case_id(query, answer, TranslationManager) == get_test_case_id(
+        query, answer, TranslationManager
     )
 
 
@@ -42,14 +36,8 @@ def test_get_test_case_id_changes_with_answer():
     query = _get_translation_query("a")
 
     assert get_test_case_id(
-        query,
-        _get_translation_answer("b"),
-        TranslationManager,
-    ) != get_test_case_id(
-        query,
-        _get_translation_answer("c"),
-        TranslationManager,
-    )
+        query, _get_translation_answer("b"), TranslationManager
+    ) != get_test_case_id(query, _get_translation_answer("c"), TranslationManager)
 
 
 def test_get_test_case_id_changes_with_operation():
@@ -57,12 +45,6 @@ def test_get_test_case_id_changes_with_operation():
     query = _get_translation_query("a")
     answer = _get_translation_answer("b")
 
-    assert get_test_case_id(
-        query,
-        answer,
-        TranslationManager,
-    ) != get_test_case_id(
-        query,
-        answer,
-        ReviewManager,
+    assert get_test_case_id(query, answer, TranslationManager) != get_test_case_id(
+        query, answer, ReviewManager
     )

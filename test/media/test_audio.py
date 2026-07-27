@@ -65,18 +65,11 @@ def test_extract_audio_selects_stream_and_extracts_track(tmp_path: Path):
         patch("scinoephile.media.audio.get_streams", return_value=[stream]),
         patch("scinoephile.media.audio._extract_audio_track") as extract_track,
     ):
-        selected = extract_audio(
-            infile_path,
-            outfile_path,
-            stream_index=3,
-        )
+        selected = extract_audio(infile_path, outfile_path, stream_index=3)
 
     assert selected is stream
     extract_track.assert_called_once_with(
-        infile_path.resolve(),
-        outfile_path.resolve(),
-        3,
-        6,
+        infile_path.resolve(), outfile_path.resolve(), 3, 6
     )
 
 
@@ -95,10 +88,7 @@ def test_extract_audio_track_filters_overall_stream_index(tmp_path: Path):
             "scinoephile.media.audio.get_streams",
             return_value=[AudioStream(index=12, codec_type="audio", channels=6)],
         ),
-        patch(
-            "scinoephile.media.audio.ffmpeg.input",
-            return_value=fake_ffmpeg_input,
-        ),
+        patch("scinoephile.media.audio.ffmpeg.input", return_value=fake_ffmpeg_input),
     ):
         extract_audio(infile_path, tmp_path / "audio.wav")
 
@@ -123,10 +113,7 @@ def test_extract_audio_track_maps_overall_stream_index(tmp_path: Path):
             "scinoephile.media.audio.get_streams",
             return_value=[AudioStream(index=12, codec_type="audio", channels=2)],
         ),
-        patch(
-            "scinoephile.media.audio.ffmpeg.input",
-            return_value=fake_ffmpeg_input,
-        ),
+        patch("scinoephile.media.audio.ffmpeg.input", return_value=fake_ffmpeg_input),
     ):
         extract_audio(infile_path, tmp_path / "audio.wav")
 
@@ -142,23 +129,15 @@ def test_extract_audio_track_wraps_ffmpeg_errors(tmp_path: Path):
     """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
-    fake_ffmpeg_input = FakeFfmpegInput(
-        ffmpeg.Error("ffmpeg", b"", b"failed"),
-    )
+    fake_ffmpeg_input = FakeFfmpegInput(ffmpeg.Error("ffmpeg", b"", b"failed"))
 
     with (
         patch(
             "scinoephile.media.audio.get_streams",
             return_value=[AudioStream(index=12, codec_type="audio", channels=2)],
         ),
-        patch(
-            "scinoephile.media.audio.ffmpeg.input",
-            return_value=fake_ffmpeg_input,
-        ),
-        raises(
-            ScinoephileError,
-            match="Could not extract audio stream 12",
-        ) as excinfo,
+        patch("scinoephile.media.audio.ffmpeg.input", return_value=fake_ffmpeg_input),
+        raises(ScinoephileError, match="Could not extract audio stream 12") as excinfo,
     ):
         extract_audio(infile_path, tmp_path / "audio.wav")
 

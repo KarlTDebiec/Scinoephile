@@ -22,10 +22,7 @@ from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.pairs import get_block_pair_indexes_by_pause
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.workflows.review import (
-    review_series,
-    review_series_guided,
-)
+from scinoephile.workflows.review import review_series, review_series_guided
 
 from .helpers.blocks import (
     BLOCK_LOCALIZATIONS,
@@ -154,9 +151,7 @@ class ReviewCli(ScinoephileCliBase):
             help="subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite outfile if it exists",
+            "--overwrite", action="store_true", help="overwrite outfile if it exists"
         )
         parser.set_defaults(_parser=parser)
 
@@ -194,10 +189,7 @@ class ReviewCli(ScinoephileCliBase):
         else:
             block_count = len(series.blocks)
         start_at_idx, stop_at_idx = get_block_range_indexes(
-            parser,
-            first_block,
-            last_block,
-            block_count,
+            parser, first_block, last_block, block_count
         )
         provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
         additional_context = read_llm_additional_context(

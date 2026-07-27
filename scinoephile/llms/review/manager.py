@@ -52,7 +52,7 @@ class ReviewManager(Manager[ReviewTestCase]):
                     alias=prompt.revisions,
                     annotation=list[revision_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.revisions_desc,
-                ),
+                )
             },
         )
 
@@ -75,16 +75,13 @@ class ReviewManager(Manager[ReviewTestCase]):
                     alias=prompt.subtitles,
                     annotation=list[subtitle_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.subtitles_desc,
-                ),
+                )
             },
         )
 
     @classmethod
     @cache
-    def get_revision_cls(
-        cls,
-        prompt: ReviewPrompt,
-    ) -> type[AnnotatedTestCaseSubtitle]:
+    def get_revision_cls(cls, prompt: ReviewPrompt) -> type[AnnotatedTestCaseSubtitle]:
         """Get revision class with prompt-specific JSON field aliases.
 
         Arguments:
@@ -97,16 +94,13 @@ class ReviewManager(Manager[ReviewTestCase]):
             prompt,
             {
                 "index": PromptModelField(
-                    alias=prompt.index,
-                    description=prompt.index_desc,
+                    alias=prompt.index, description=prompt.index_desc
                 ),
                 "text": PromptModelField(
-                    alias=prompt.text,
-                    description=prompt.revision_text_desc,
+                    alias=prompt.text, description=prompt.revision_text_desc
                 ),
                 "note": PromptModelField(
-                    alias=prompt.note,
-                    description=prompt.note_desc,
+                    alias=prompt.note, description=prompt.note_desc
                 ),
             },
             module=ReviewAnswer.__module__,
@@ -128,12 +122,10 @@ class ReviewManager(Manager[ReviewTestCase]):
             prompt,
             {
                 "index": PromptModelField(
-                    alias=prompt.index,
-                    description=prompt.index_desc,
+                    alias=prompt.index, description=prompt.index_desc
                 ),
                 "text": PromptModelField(
-                    alias=prompt.text,
-                    description=prompt.subtitle_text_desc,
+                    alias=prompt.text, description=prompt.subtitle_text_desc
                 ),
             },
             module=ReviewQuery.__module__,

@@ -26,10 +26,7 @@ from test.helpers import parametrize
         ("rock'n'roll你好", "rock'n'roll néih hóu"),
         ('"t i"你好', '"t i" néih hóu'),
         ("你好　世界", "néih hóu  saigaai"),
-        (
-            "乱讲，啫啫一 fling fling 吖嘛",
-            "lyuhn góng, jē jē yāt fling fling ā ma",
-        ),
+        ("乱讲，啫啫一 fling fling 吖嘛", "lyuhn góng, jē jē yāt fling fling ā ma"),
         (
             "骑呢怪，做咩搞到咁乌 where ？",
             "kèh nē gwaai, jouh mē gáau dou gam wū where ?",
@@ -48,14 +45,7 @@ def test_get_yue_text_romanized(text: str, expected: str):
     assert get_yue_text_romanized(text) == expected
 
 
-@parametrize(
-    ("text", "expected"),
-    [
-        ("你", "néih"),
-        ("，", ""),
-        ("？", ""),
-    ],
-)
+@parametrize(("text", "expected"), [("你", "néih"), ("，", ""), ("？", "")])
 def test_get_yue_char_romanized(text: str, expected: str):
     """Test get_yue_char_romanized.
 

@@ -58,8 +58,7 @@ class SubtitleExtractor:
         if missing:
             input_stream = ffmpeg.input(str(infile_path))
             with TemporaryDirectory(
-                dir=self._cache.cache_dir_path,
-                prefix=".subtitle-extraction-",
+                dir=self._cache.cache_dir_path, prefix=".subtitle-extraction-"
             ) as temp_dir:
                 staged_paths: list[tuple[SubtitleStream, Path]] = []
                 output_streams = []
@@ -69,16 +68,12 @@ class SubtitleExtractor:
                     output_streams.append(
                         input_stream.output(
                             str(staging_path),
-                            **{
-                                "map": f"0:{stream.index}",
-                                "c:s": stream.output_codec,
-                            },
+                            **{"map": f"0:{stream.index}", "c:s": stream.output_codec},
                         )
                     )
                 try:
                     ffmpeg.merge_outputs(*output_streams).run(
-                        quiet=False,
-                        overwrite_output=True,
+                        quiet=False, overwrite_output=True
                     )
                 except ffmpeg.Error as exc:
                     raise ScinoephileError(

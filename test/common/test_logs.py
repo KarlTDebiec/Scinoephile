@@ -12,13 +12,7 @@ from test.helpers import parametrize
 
 @parametrize(
     ("verbosity", "expected_level"),
-    [
-        (0, ERROR),
-        (1, WARNING),
-        (2, INFO),
-        (3, DEBUG),
-        (10, DEBUG),
-    ],
+    [(0, ERROR), (1, WARNING), (2, INFO), (3, DEBUG), (10, DEBUG)],
 )
 def test_set_logging_verbosity(verbosity: int, expected_level: int):
     """Test logging level for verbosity values.

@@ -48,13 +48,9 @@ class ModelSqliteStore(OptimizationSqliteStore):
         Column("model", Text, nullable=False),
         Column("base_url", Text),
         Column("settings_json", Text, nullable=False),
+        CheckConstraint("json_valid(settings_json)", name="models_settings_json_valid"),
         CheckConstraint(
-            "json_valid(settings_json)",
-            name="models_settings_json_valid",
-        ),
-        CheckConstraint(
-            "json_type(settings_json) = 'object'",
-            name="models_settings_json_object",
+            "json_type(settings_json) = 'object'", name="models_settings_json_object"
         ),
         Index("models_provider_model", "provider", "model"),
     )
@@ -158,15 +154,11 @@ class ModelSqliteStore(OptimizationSqliteStore):
             str(row["model"]),
             base_url=base_url,
             settings=deserialize_json(
-                row["settings_json"],
-                f"Persisted model {model_id} settings",
+                row["settings_json"], f"Persisted model {model_id} settings"
             ),
         )
         expected_id = get_model_id(
-            model.provider_name,
-            model.model_name,
-            model.base_url,
-            model.settings,
+            model.provider_name, model.model_name, model.base_url, model.settings
         )
         if model_id != expected_id:
             raise ScinoephileError(

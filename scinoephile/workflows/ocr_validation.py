@@ -69,8 +69,7 @@ def validate_ocr(
         else:
             image_series = ImageSeries.load(source)
         validation_manager = ValidationManager(
-            validation_data_dir_path=validation_data_dir_path,
-            dev=dev,
+            validation_data_dir_path=validation_data_dir_path, dev=dev
         )
         validated = validation_manager.validate(image_series)
         validated.save(outfile_path, format_="srt", exist_ok=True)

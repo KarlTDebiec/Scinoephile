@@ -151,23 +151,16 @@ def test_series_diff_get_event_indices():
     cases = [
         (
             SeriesDiff(
-                get_text_series("first second"),
-                get_text_series("first\\Nsecond"),
+                get_text_series("first second"), get_text_series("first\\Nsecond")
             ),
             ((0,), (0,)),
         ),
         (
-            SeriesDiff(
-                get_text_series("same"),
-                get_text_series("same", "insert"),
-            ),
+            SeriesDiff(get_text_series("same"), get_text_series("same", "insert")),
             ((), (1,)),
         ),
         (
-            SeriesDiff(
-                get_text_series("same", "delete"),
-                get_text_series("same"),
-            ),
+            SeriesDiff(get_text_series("same", "delete"), get_text_series("same")),
             ((1,), ()),
         ),
     ]
@@ -228,9 +221,7 @@ def test_series_diff_get_stacked_str_can_include_equal_lines():
     three = get_text_series("source same", "source before", "source changed")
 
     rendered = SeriesDiff(one, two).get_stacked_str(
-        color=False,
-        three=three,
-        include_equal=True,
+        color=False, three=three, include_equal=True
     )
 
     assert rendered.splitlines() == [
@@ -267,9 +258,7 @@ def test_series_diff_get_stacked_str_can_include_equal_lines():
     ],
 )
 def test_series_diff_get_stacked_str_keeps_equal_lines_around_one_sided_changes(
-    one_texts: tuple[str, ...],
-    two_texts: tuple[str, ...],
-    expected_lines: list[str],
+    one_texts: tuple[str, ...], two_texts: tuple[str, ...], expected_lines: list[str]
 ):
     """Test equal stacked lines stay aligned around inserts and deletes.
 
@@ -279,8 +268,7 @@ def test_series_diff_get_stacked_str_keeps_equal_lines_around_one_sided_changes(
         expected_lines: expected stacked output lines
     """
     rendered = SeriesDiff(
-        get_text_series(*one_texts),
-        get_text_series(*two_texts),
+        get_text_series(*one_texts), get_text_series(*two_texts)
     ).get_stacked_str(color=False, include_equal=True)
 
     assert rendered.splitlines() == expected_lines
@@ -309,10 +297,7 @@ def test_series_diff_keeps_uncovered_insert_separate():
 def test_series_diff_represents_line_before_one_sided_span():
     """Test every line is represented after splitting one-to-many changes."""
     one = get_text_series(
-        "師爺，少爺寫乜嘢呀？",
-        "名呀",
-        "嘩，好叻呀！原來少爺識寫自己個名喎！",
-        "係呀。",
+        "師爺，少爺寫乜嘢呀？", "名呀", "嘩，好叻呀！原來少爺識寫自己個名喎！", "係呀。"
     )
     two = get_text_series(
         "師爺，少爺寫乜嘢呀？",
@@ -346,34 +331,19 @@ def test_series_diff_represents_line_before_one_sided_span():
 def test_series_diff_represents_line_before_shifted_changed_span():
     """Test lines before a shifted changed span are not dropped."""
     messages = SeriesDiff(
-        get_text_series("a", "b"),
-        get_text_series("a", "ab"),
+        get_text_series("a", "b"), get_text_series("a", "ab")
     ).get_messages(include_equal=True)
 
     assert [
         (message.kind, message.one_idxs, message.two_idxs) for message in messages
-    ] == [
-        (LineDiffKind.INSERT, None, (0,)),
-        (LineDiffKind.MERGE_EDIT, (0, 1), (1,)),
-    ]
+    ] == [(LineDiffKind.INSERT, None, (0,)), (LineDiffKind.MERGE_EDIT, (0, 1), (1,))]
 
 
 def test_series_diff_represents_deleted_repeated_line_before_equal_lines():
     """Test repeated lines do not offset subsequent equal-line matches."""
     messages = SeriesDiff(
-        get_text_series(
-            "pre",
-            "打賞⋯打賞",
-            "打賞⋯打賞",
-            "恭喜蘇翁生辰快樂",
-            "post",
-        ),
-        get_text_series(
-            "pre",
-            "打賞⋯打賞",
-            "恭喜蘇翁生辰快樂",
-            "post",
-        ),
+        get_text_series("pre", "打賞⋯打賞", "打賞⋯打賞", "恭喜蘇翁生辰快樂", "post"),
+        get_text_series("pre", "打賞⋯打賞", "恭喜蘇翁生辰快樂", "post"),
     ).get_messages(include_equal=True)
 
     assert [
@@ -426,8 +396,7 @@ def test_series_diff_discards_out_of_order_span_indices(
         expected_message_indices: expected diff message kinds and line indices
     """
     messages = SeriesDiff(
-        get_text_series(*one_texts),
-        get_text_series(*two_texts),
+        get_text_series(*one_texts), get_text_series(*two_texts)
     ).get_messages(include_equal=True)
 
     assert [

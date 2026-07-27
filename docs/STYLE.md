@@ -39,10 +39,6 @@
 ## Exports
 * Include `__all__` in Python modules that export public names.
 * Do not include empty `__all__` assignments.
-* If `__all__` contains one entry, keep it on one line, such as
-  `__all__ = ["foo"]`.
-* If `__all__` contains multiple entries, include a trailing comma after the
-  last entry so `ruff` formats it as one item per line.
 * `__all__` should list the intended public API for the module.
 * Do not include internal helpers, which are names prefixed with an underscore.
 * In `__init__.py` files, only import classes from the module, not functions or

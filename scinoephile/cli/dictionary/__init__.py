@@ -12,7 +12,4 @@ from __future__ import annotations
 from .dictionary_cli import DictionaryCli
 from .dictionary_search_cli import DictionarySearchCli
 
-__all__ = [
-    "DictionaryCli",
-    "DictionarySearchCli",
-]
+__all__ = ["DictionaryCli", "DictionarySearchCli"]

@@ -11,11 +11,7 @@ from scinoephile.common.argument_parsing import int_arg
 
 from .argument_bundle_field_action import ArgumentBundleFieldAction
 
-__all__ = [
-    "WEB_LOCALIZATIONS",
-    "WebServerArguments",
-    "add_web_server_args",
-]
+__all__ = ["WEB_LOCALIZATIONS", "WebServerArguments", "add_web_server_args"]
 
 WEB_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {

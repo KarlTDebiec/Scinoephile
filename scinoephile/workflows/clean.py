@@ -17,10 +17,7 @@ __all__ = ["clean_series"]
 
 
 def clean_series(
-    series: Series,
-    *,
-    language: Language | None = None,
-    remove_empty: bool = True,
+    series: Series, *, language: Language | None = None, remove_empty: bool = True
 ) -> Series:
     """Clean a subtitle series.
 

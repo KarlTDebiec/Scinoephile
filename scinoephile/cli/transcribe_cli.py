@@ -242,9 +242,7 @@ class TranscribeCli(ScinoephileCliBase):
             help="subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite outfile if it exists",
+            "--overwrite", action="store_true", help="overwrite outfile if it exists"
         )
         parser.set_defaults(_parser=parser)
 
@@ -281,10 +279,7 @@ class TranscribeCli(ScinoephileCliBase):
         # Read inputs
         guide = read_series(parser, guide_infile_path, allow_stdin=True)
         start_at_idx, stop_at_idx = get_block_range_indexes(
-            parser,
-            first_block,
-            last_block,
-            len(guide.blocks),
+            parser, first_block, last_block, len(guide.blocks)
         )
         try:
             if guide_infile_path == "-":
@@ -323,12 +318,10 @@ class TranscribeCli(ScinoephileCliBase):
                 cache_root_path=cache_args.root_path,
                 overwrite_cache=cache_args.overwrite,
                 provider=get_provider(
-                    llm_args.provider_name,
-                    model=llm_args.model_name,
+                    llm_args.provider_name, model=llm_args.model_name
                 ),
                 additional_context=read_llm_additional_context(
-                    parser,
-                    llm_args.additional_context_file_path,
+                    parser, llm_args.additional_context_file_path
                 ),
                 delineation_json_path=delineation_json_path,
                 punctuation_json_path=punctuation_json_path,

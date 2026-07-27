@@ -61,10 +61,7 @@ def test_prompt_aliases_are_used_for_llm_correspondence():
     )
 
     assert test_case.query.model_dump(by_alias=True) == {
-        "mubiao": [
-            {"xuhao": 1, "wenben": "現有一"},
-            {"xuhao": 3, "wenben": "現有三"},
-        ],
+        "mubiao": [{"xuhao": 1, "wenben": "現有一"}, {"xuhao": 3, "wenben": "現有三"}],
         "cankao": [
             {"xuhao": 1, "wenben": "參考一"},
             {"xuhao": 2, "wenben": "參考二"},
@@ -109,10 +106,7 @@ def test_queryer_corresponds_using_prompt_aliases():
     assert answer_cls is test_case_cls.answer_cls
     assert json.loads(messages[1]["content"]) == {
         "mubiao": [{"xuhao": 1, "wenben": "現有"}],
-        "cankao": [
-            {"xuhao": 1, "wenben": "參考一"},
-            {"xuhao": 2, "wenben": "參考二"},
-        ],
+        "cankao": [{"xuhao": 1, "wenben": "參考一"}, {"xuhao": 2, "wenben": "參考二"}],
     }
 
 
@@ -126,10 +120,7 @@ def test_query_requires_nonempty_consecutive_guides():
         query_cls.model_validate(
             {
                 "targets": [],
-                "guides": [
-                    {"index": 1, "text": "one"},
-                    {"index": 3, "text": "three"},
-                ],
+                "guides": [{"index": 1, "text": "one"}, {"index": 3, "text": "three"}],
             }
         )
 
@@ -141,10 +132,7 @@ def test_query_requires_ordered_unique_target_indexes():
     with raises(ValidationError, match="unique and in ascending order"):
         query_cls.model_validate(
             {
-                "targets": [
-                    {"index": 2, "text": "two"},
-                    {"index": 1, "text": "one"},
-                ],
+                "targets": [{"index": 2, "text": "two"}, {"index": 1, "text": "one"}],
                 "guides": [
                     {"index": 1, "text": "one"},
                     {"index": 2, "text": "two"},
@@ -157,25 +145,16 @@ def test_query_requires_ordered_unique_target_indexes():
 def test_query_requires_targets_to_be_sparse_guide_subset():
     """Targets should be a proper subset of guide indexes."""
     query_cls = GapTranslationManager.get_query_cls(GapTranslationManager.base_prompt)
-    guides = [
-        {"index": 1, "text": "one"},
-        {"index": 2, "text": "two"},
-    ]
+    guides = [{"index": 1, "text": "one"}, {"index": 2, "text": "two"}]
 
     with raises(ValidationError, match="correspond to a guide index"):
         query_cls.model_validate(
-            {
-                "targets": [{"index": 3, "text": "three"}],
-                "guides": guides,
-            }
+            {"targets": [{"index": 3, "text": "three"}], "guides": guides}
         )
     with raises(ValidationError, match="omit at least one guide index"):
         query_cls.model_validate(
             {
-                "targets": [
-                    {"index": 1, "text": "one"},
-                    {"index": 2, "text": "two"},
-                ],
+                "targets": [{"index": 1, "text": "one"}, {"index": 2, "text": "two"}],
                 "guides": guides,
             }
         )
@@ -187,12 +166,7 @@ def test_answer_requires_ordered_unique_outputs():
 
     with raises(ValidationError, match="unique and in ascending order"):
         answer_cls.model_validate(
-            {
-                "outputs": [
-                    {"index": 2, "text": "two"},
-                    {"index": 1, "text": "one"},
-                ]
-            }
+            {"outputs": [{"index": 2, "text": "two"}, {"index": 1, "text": "one"}]}
         )
 
 
@@ -346,16 +320,11 @@ def test_json_persistence_uses_base_prompt_fields(tmp_path: Path):
         }
     ]
     loaded = load_test_cases_from_json(
-        output_path,
-        GapTranslationManager,
-        _LOCALIZED_PROMPT,
+        output_path, GapTranslationManager, _LOCALIZED_PROMPT
     )
     assert loaded[0].query.model_dump(by_alias=True) == {
         "mubiao": [{"xuhao": 1, "wenben": "現有"}],
-        "cankao": [
-            {"xuhao": 1, "wenben": "參考一"},
-            {"xuhao": 2, "wenben": "參考二"},
-        ],
+        "cankao": [{"xuhao": 1, "wenben": "參考一"}, {"xuhao": 2, "wenben": "參考二"}],
     }
     assert loaded[0].answer is not None
     assert loaded[0].answer.model_dump(by_alias=True) == {
@@ -406,9 +375,7 @@ def test_processor_maps_targets_and_outputs_by_index():
     )
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = GapTranslationProcessor(
-        prompt,
-        test_cases=[test_case],
-        provider=provider,
+        prompt, test_cases=[test_case], provider=provider
     )
 
     output = processor.process(source_one, source_two)
@@ -421,8 +388,7 @@ def test_processor_honors_zero_stop_index():
     """A zero stop index should process no gap-translation blocks."""
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = GapTranslationProcessor(
-        GapTranslationManager.base_prompt,
-        provider=provider,
+        GapTranslationManager.base_prompt, provider=provider
     )
     source_one = Series(events=[Subtitle(start=0, end=100, text="existing one")])
     source_two = Series(
@@ -442,8 +408,7 @@ def test_processor_honors_start_index():
     """An inclusive start index should skip earlier gap-translation blocks."""
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = GapTranslationProcessor(
-        GapTranslationManager.base_prompt,
-        provider=provider,
+        GapTranslationManager.base_prompt, provider=provider
     )
     source = Series(
         events=[
@@ -477,19 +442,13 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
         }
     )
     test_case_path = tmp_path / "gap_translation.json"
-    save_test_cases_to_json(
-        test_case_path,
-        [old_test_case],
-        GapTranslationManager,
-    )
+    save_test_cases_to_json(test_case_path, [old_test_case], GapTranslationManager)
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = json.dumps(
         {"outputs": [{"index": 2, "text": "new translation"}]}
     )
     processor = GapTranslationProcessor(
-        prompt,
-        test_case_path=test_case_path,
-        provider=provider,
+        prompt, test_case_path=test_case_path, provider=provider
     )
     target = Series(events=[Subtitle(start=0, end=100, text="new target")])
     guide = Series(
@@ -501,11 +460,7 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
 
     processor.process(target, guide)
 
-    persisted = load_test_cases_from_json(
-        test_case_path,
-        GapTranslationManager,
-        prompt,
-    )
+    persisted = load_test_cases_from_json(test_case_path, GapTranslationManager, prompt)
     assert len(persisted) == 2
     persisted_cases = cast("list[GapTranslationTestCase]", persisted)
     assert [item.query.targets[0].text for item in persisted_cases] == [
@@ -538,9 +493,7 @@ def test_repository_json_fixtures_load():
         test_case
         for fixture_path in fixture_paths
         for test_case in load_test_cases_from_json(
-            fixture_path,
-            GapTranslationManager,
-            GapTranslationManager.base_prompt,
+            fixture_path, GapTranslationManager, GapTranslationManager.base_prompt
         )
     ]
 

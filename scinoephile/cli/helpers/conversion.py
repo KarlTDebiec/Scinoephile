@@ -100,8 +100,7 @@ OPENCC_CONFIG_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 def add_opencc_convert_argument(
-    operation_arg_group: _ArgumentGroup,
-    additional_help_arg_group: _ArgumentGroup,
+    operation_arg_group: _ArgumentGroup, additional_help_arg_group: _ArgumentGroup
 ):
     """Add standard OpenCC conversion and help arguments to argument groups.
 
@@ -126,8 +125,7 @@ def add_opencc_convert_argument(
 
 
 def add_opencc_convert_auto_argument(
-    operation_arg_group: _ArgumentGroup,
-    additional_help_arg_group: _ArgumentGroup,
+    operation_arg_group: _ArgumentGroup, additional_help_arg_group: _ArgumentGroup
 ):
     """Add OpenCC conversion arguments allowing automatic config selection.
 
@@ -196,8 +194,7 @@ class _ListOpenCCConfigsAction(Action):
         """
         locale_name = ScinoephileCliBase.locale_name
         heading = CONVERSION_LOCALIZATIONS.get(locale_name, {}).get(
-            "Available OpenCC configurations:",
-            "Available OpenCC configurations:",
+            "Available OpenCC configurations:", "Available OpenCC configurations:"
         )
         config_localizations = OPENCC_CONFIG_LOCALIZATIONS.get(locale_name, {})
         lines = [heading]

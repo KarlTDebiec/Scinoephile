@@ -86,19 +86,13 @@ def extract_audio(
             "channel count"
         )
     _extract_audio_track(
-        validated_infile_path,
-        validated_outfile_path,
-        stream.index,
-        stream.channels,
+        validated_infile_path, validated_outfile_path, stream.index, stream.channels
     )
     return stream
 
 
 def _extract_audio_track(
-    infile_path: Path,
-    outfile_path: Path,
-    stream_index: int,
-    channels: int,
+    infile_path: Path, outfile_path: Path, stream_index: int, channels: int
 ):
     """Extract a known media audio stream as a mono 16 kHz WAV file.
 
@@ -131,11 +125,7 @@ def _extract_audio_track(
                 f"{outfile_path}"
             )
             ffmpeg.input(str(infile_path)).output(
-                str(outfile_path),
-                format="wav",
-                ar=16000,
-                map=f"0:{stream_index}",
-                ac=1,
+                str(outfile_path), format="wav", ar=16000, map=f"0:{stream_index}", ac=1
             ).run(quiet=False, overwrite_output=True)
     except (ffmpeg.Error, OSError) as exc:
         raise ScinoephileError(

@@ -16,39 +16,22 @@ def test_model_id_is_content_addressed():
         "temperature": 0.2,
     }
     model_id = get_model_id(
-        "openai",
-        "gpt-5.4-mini",
-        "https://api.openai.com/v1",
-        settings,
+        "openai", "gpt-5.4-mini", "https://api.openai.com/v1", settings
     )
 
     assert model_id == get_model_id(
         "openai",
         "gpt-5.4-mini",
         "https://api.openai.com/v1",
-        {
-            "temperature": 0.2,
-            "reasoning": {"effort": "medium"},
-        },
+        {"temperature": 0.2, "reasoning": {"effort": "medium"}},
     )
     assert model_id != get_model_id(
-        "deepseek",
-        "gpt-5.4-mini",
-        "https://api.openai.com/v1",
-        settings,
+        "deepseek", "gpt-5.4-mini", "https://api.openai.com/v1", settings
     )
     assert model_id != get_model_id(
-        "openai",
-        "gpt-5.4",
-        "https://api.openai.com/v1",
-        settings,
+        "openai", "gpt-5.4", "https://api.openai.com/v1", settings
     )
-    assert model_id != get_model_id(
-        "openai",
-        "gpt-5.4-mini",
-        None,
-        settings,
-    )
+    assert model_id != get_model_id("openai", "gpt-5.4-mini", None, settings)
     assert model_id != get_model_id(
         "openai",
         "gpt-5.4-mini",

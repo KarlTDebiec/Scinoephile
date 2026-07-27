@@ -11,11 +11,7 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, ValidationInfo, model_validator
 from pydantic_core import PydanticCustomError
 
-__all__ = [
-    "LLMModel",
-    "get_model_name",
-    "make_hashable",
-]
+__all__ = ["LLMModel", "get_model_name", "make_hashable"]
 
 
 class LLMModel(BaseModel):
@@ -58,9 +54,7 @@ class LLMModel(BaseModel):
     @model_validator(mode="before")
     @classmethod
     def require_aliases_at_json_boundaries(
-        cls,
-        value: object,
-        info: ValidationInfo,
+        cls, value: object, info: ValidationInfo
     ) -> object:
         """Reject semantic field names at alias-only JSON boundaries.
 

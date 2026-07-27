@@ -12,10 +12,7 @@ from scinoephile.cli.helpers.cache import (
     CacheArguments,
     add_cache_args,
 )
-from scinoephile.common.argument_parsing import (
-    get_arg_groups_by_name,
-    input_file_arg,
-)
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
@@ -85,9 +82,7 @@ class MediaProbeCli(ScinoephileCliBase):
 
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
-            "--details",
-            action="store_true",
-            help="include additional stream details",
+            "--details", action="store_true", help="include additional stream details"
         )
         arg_groups["operation arguments"].add_argument(
             "--force-check-script",
@@ -128,8 +123,7 @@ class MediaProbeCli(ScinoephileCliBase):
         try:
             if force_check_script:
                 subtitle_cache = SubtitleCache(
-                    cache_args.root_path,
-                    cache_args.overwrite,
+                    cache_args.root_path, cache_args.overwrite
                 )
                 stream = SubtitleStream(
                     index=0,
@@ -138,9 +132,7 @@ class MediaProbeCli(ScinoephileCliBase):
                     language="zho",
                 )
                 analysis = analyze_zho_subtitle_stream_script(
-                    infile_path,
-                    stream,
-                    subtitle_cache=subtitle_cache,
+                    infile_path, stream, subtitle_cache=subtitle_cache
                 )
                 language = analysis.script
                 if language is None:
@@ -151,22 +143,18 @@ class MediaProbeCli(ScinoephileCliBase):
                 streams = get_streams(infile_path)
                 if details:
                     subtitle_cache = SubtitleCache(
-                        cache_args.root_path,
-                        cache_args.overwrite,
+                        cache_args.root_path, cache_args.overwrite
                     )
                     detailed_subtitle_streams_by_index = {
                         stream.index: stream
                         for stream in get_zho_subtitle_streams(
-                            infile_path,
-                            streams=streams,
-                            subtitle_cache=subtitle_cache,
+                            infile_path, streams=streams, subtitle_cache=subtitle_cache
                         )
                     }
                     for index, stream in enumerate(streams):
                         if isinstance(stream, SubtitleStream):
                             streams[index] = detailed_subtitle_streams_by_index.get(
-                                stream.index,
-                                stream,
+                                stream.index, stream
                             )
         except ScinoephileError as exc:
             parser.error(str(exc))

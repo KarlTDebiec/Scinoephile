@@ -25,10 +25,7 @@ def test_audit_punctuation_formats_changed_and_unchanged_rows():
     target = _get_series("甲，乙丙", "丁")
     test_cases = (
         PunctuationTestCase(
-            query=PunctuationQuery(
-                guide="參|考一",
-                subtitles=["甲", "乙丙"],
-            ),
+            query=PunctuationQuery(guide="參|考一", subtitles=["甲", "乙丙"]),
             answer=PunctuationAnswer(output="甲，乙丙"),
             verified=True,
         ),
@@ -55,11 +52,7 @@ def test_audit_punctuation_formats_unanswered_case():
         query=PunctuationQuery(guide="參考", subtitles=["原文"])
     )
 
-    report = audit_punctuation(
-        _get_series("參考"),
-        _get_series("原文"),
-        (test_case,),
-    )
+    report = audit_punctuation(_get_series("參考"), _get_series("原文"), (test_case,))
 
     assert "- unanswered cases: 1" in report
     assert "| 1 | 參考 | 原文 | (unanswered) |  |  |" in report
@@ -82,23 +75,13 @@ def test_audit_punctuation_filters_rows_and_subtitle_range():
     )
 
     changed_report = audit_punctuation(
-        reference,
-        target,
-        test_cases,
-        row_filter=PunctuationAuditFilter.changes,
+        reference, target, test_cases, row_filter=PunctuationAuditFilter.changes
     )
     unverified_report = audit_punctuation(
-        reference,
-        target,
-        test_cases,
-        row_filter=PunctuationAuditFilter.unverified,
+        reference, target, test_cases, row_filter=PunctuationAuditFilter.unverified
     )
     ranged_report = audit_punctuation(
-        reference,
-        target,
-        test_cases,
-        first_index=2,
-        last_index=3,
+        reference, target, test_cases, first_index=2, last_index=3
     )
 
     assert "- logged cases: 2" in changed_report
@@ -143,11 +126,7 @@ def test_audit_punctuation_filters_reference_blocks():
     )
 
     report = audit_punctuation(
-        reference,
-        target,
-        test_cases,
-        first_block=2,
-        last_block=2,
+        reference, target, test_cases, first_block=2, last_block=2
     )
 
     assert "- block range: 2 through 2" in report
@@ -158,26 +137,12 @@ def test_audit_punctuation_filters_reference_blocks():
 def test_audit_punctuation_rejects_invalid_range():
     """Test direct callers receive a domain error for an invalid range."""
     with raises(ScinoephileError, match="First index must be at least 1"):
-        audit_punctuation(
-            _get_series("參考"),
-            _get_series("甲"),
-            (),
-            first_index=0,
-        )
+        audit_punctuation(_get_series("參考"), _get_series("甲"), (), first_index=0)
     with raises(ScinoephileError, match="First block must be at least 1"):
-        audit_punctuation(
-            _get_series("參考"),
-            _get_series("甲"),
-            (),
-            first_block=0,
-        )
+        audit_punctuation(_get_series("參考"), _get_series("甲"), (), first_block=0)
     with raises(ScinoephileError, match="ranges are mutually exclusive"):
         audit_punctuation(
-            _get_series("參考"),
-            _get_series("甲"),
-            (),
-            first_index=1,
-            first_block=1,
+            _get_series("參考"), _get_series("甲"), (), first_index=1, first_block=1
         )
 
 
@@ -254,11 +219,7 @@ def test_audit_punctuation_resolves_repeated_reference_before_range_filtering():
     )
 
     report = audit_punctuation(
-        reference,
-        target,
-        test_cases,
-        first_index=1,
-        last_index=2,
+        reference, target, test_cases, first_index=1, last_index=2
     )
 
     assert "- logged cases: 0" in report
@@ -276,11 +237,7 @@ def test_audit_punctuation_ignores_ambiguity_outside_range():
     )
 
     report = audit_punctuation(
-        reference,
-        target,
-        (test_case,),
-        first_index=1,
-        last_index=1,
+        reference, target, (test_case,), first_index=1, last_index=1
     )
 
     assert "- logged cases: 0" in report
@@ -294,11 +251,7 @@ def test_audit_punctuation_rejects_unmatched_reference():
     )
 
     with raises(ScinoephileError, match="test case 1 reference subtitle was not found"):
-        audit_punctuation(
-            _get_series("參考"),
-            _get_series("甲"),
-            (test_case,),
-        )
+        audit_punctuation(_get_series("參考"), _get_series("甲"), (test_case,))
 
 
 def test_audit_punctuation_ignores_superseded_reference_revision():
@@ -317,11 +270,7 @@ def test_audit_punctuation_ignores_superseded_reference_revision():
 
     report = audit_punctuation(reference, target, test_cases)
     excluded_report = audit_punctuation(
-        reference,
-        target,
-        test_cases,
-        first_index=2,
-        last_index=2,
+        reference, target, test_cases, first_index=2, last_index=2
     )
 
     assert "- logged cases: 1" in report
@@ -351,15 +300,8 @@ def test_audit_punctuation_does_not_transitively_ignore_unmatched_reference():
         ),
     )
 
-    with raises(
-        ScinoephileError,
-        match="test case 4 reference subtitle was not found",
-    ):
-        audit_punctuation(
-            _get_series("目前參考"),
-            _get_series("共用"),
-            test_cases,
-        )
+    with raises(ScinoephileError, match="test case 4 reference subtitle was not found"):
+        audit_punctuation(_get_series("目前參考"), _get_series("共用"), test_cases)
 
 
 def test_audit_punctuation_rejects_ambiguous_reference():
@@ -369,10 +311,7 @@ def test_audit_punctuation_rejects_ambiguous_reference():
         answer=PunctuationAnswer(output="甲"),
     )
 
-    with raises(
-        ScinoephileError,
-        match="test case 1 is ambiguous.*1, 3",
-    ):
+    with raises(ScinoephileError, match="test case 1 is ambiguous.*1, 3"):
         audit_punctuation(
             _get_series("重複", "其他", "重複"),
             _get_series("甲", "中", "甲"),

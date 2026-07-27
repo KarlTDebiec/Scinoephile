@@ -69,8 +69,7 @@ class CacheStatsCli(ScinoephileCliBase):
 
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
-            "--namespace",
-            help="cache namespace to inspect",
+            "--namespace", help="cache namespace to inspect"
         )
         arg_groups["operation arguments"].add_argument(
             "--format",

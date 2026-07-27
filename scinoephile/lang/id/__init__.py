@@ -15,10 +15,7 @@ from scinoephile.core.subtitles import Series
 
 from .language_id import LanguageId
 
-__all__ = [
-    "LanguageId",
-    "get_series_language",
-]
+__all__ = ["LanguageId", "get_series_language"]
 
 SERIES_LANGUAGE_AGREEMENT_THRESHOLD = 3
 """Number of conclusive subtitles that must agree on a series language."""

@@ -15,8 +15,7 @@ def test_dependency_exports_use_lazy_import_naming():
     module_names = sorted(
         module_info.name
         for module_info in iter_modules(
-            dependencies.__path__,
-            f"{dependencies.__name__}.",
+            dependencies.__path__, f"{dependencies.__name__}."
         )
         if not module_info.name.rsplit(".", 1)[-1].startswith("_")
     )

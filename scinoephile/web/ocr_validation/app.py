@@ -17,10 +17,7 @@ from .session import OcrValidationSession
 if TYPE_CHECKING:
     from scinoephile.core.dependencies.web import FlaskApp
 
-__all__ = [
-    "create_app",
-    "run_app",
-]
+__all__ = ["create_app", "run_app"]
 
 logger = getLogger(__name__)
 

@@ -154,10 +154,7 @@ def get_yue_text_romanized(text: str) -> str:
     return "\n".join(lines).strip()
 
 
-def _get_yue_section_romanized(
-    section: str,
-    open_symmetric_quotes: set[str],
-) -> str:
+def _get_yue_section_romanized(section: str, open_symmetric_quotes: set[str]) -> str:
     """Get the Yale Cantonese romanization of a whitespace-delimited section.
 
     Arguments:

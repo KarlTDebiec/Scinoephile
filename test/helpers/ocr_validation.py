@@ -36,10 +36,7 @@ def clear_validation_data(session: OcrValidationSession):
 
 
 def make_ocr_html_dir(
-    tmp_path: Path,
-    *,
-    text: str,
-    image_pixels: list[tuple[int, int]] | None = None,
+    tmp_path: Path, *, text: str, image_pixels: list[tuple[int, int]] | None = None
 ) -> Path:
     """Create an OCR image HTML directory with one subtitle image.
 
@@ -57,18 +54,7 @@ def make_ocr_html_dir(
         image_pixels = [(255, 255), (0, 255), (255, 255), (0, 255)]
     image.putdata(image_pixels)
     image.save(html_dir_path / "0001.png")
-    _write_html_index(
-        html_dir_path,
-        [
-            (
-                1,
-                "1,000",
-                "2,000",
-                "0001.png",
-                text,
-            )
-        ],
-    )
+    _write_html_index(html_dir_path, [(1, "1,000", "2,000", "0001.png", text)])
     return html_dir_path
 
 
@@ -138,8 +124,7 @@ def prepared_gap_session(
         prepared OCR validation session
     """
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        validation_data_dir_path=tmp_path / "validation-data",
+        html_dir_path, validation_data_dir_path=tmp_path / "validation-data"
     )
     clear_validation_data(session)
     session.manager.char_dims_by_n[1][char_1] = {(10, 20)}

@@ -62,8 +62,7 @@ def test_percent_interpolation_arguments_are_detected():
     tree = ast.parse('logger.warning("hello %s", name)')
 
     violations = get_string_interpolation_violations(
-        file_path=package_root.parent / "sample.py",
-        tree=tree,
+        file_path=package_root.parent / "sample.py", tree=tree
     )
 
     assert [violation.message for violation in violations] == [
@@ -103,8 +102,7 @@ class Example(TypedDict):
     )
 
     violations = get_typed_dict_field_documentation_violations(
-        file_path=Path("sample.py"),
-        tree=tree,
+        file_path=Path("sample.py"), tree=tree
     )
 
     assert violations == [
@@ -121,8 +119,7 @@ def test_typed_dict_fields_are_documented():
         )
         violations.extend(
             get_typed_dict_field_documentation_violations(
-                file_path=file_path.relative_to(package_root.parent),
-                tree=tree,
+                file_path=file_path.relative_to(package_root.parent), tree=tree
             )
         )
 
@@ -145,8 +142,7 @@ def get_python_files(target_dir_path: Path) -> list[Path]:
 
 
 def get_string_interpolation_violations(
-    file_path: Path,
-    tree: ast.Module,
+    file_path: Path, tree: ast.Module
 ) -> list[StringInterpolationViolation]:
     """Get string interpolation style violations in a parsed Python file.
 
@@ -178,8 +174,7 @@ def get_string_interpolation_violations(
 
 
 def get_typed_dict_field_documentation_violations(
-    file_path: Path,
-    tree: ast.Module,
+    file_path: Path, tree: ast.Module
 ) -> list[str]:
     """Get undocumented TypedDict fields from a parsed Python file.
 

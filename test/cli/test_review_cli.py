@@ -59,7 +59,7 @@ def test_review_cli_uses_guide_terminology():
             "kob/output/yue-Hant/clean.srt",
             "--language yue-Hant",
             "kob/output/yue-Hant/clean_review.srt",
-        ),
+        )
     ],
 )
 def test_review_cli(input_path: str, args: str, expected_path: str):
@@ -75,8 +75,7 @@ def test_review_cli(input_path: str, args: str, expected_path: str):
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
-            ReviewCli,
-            f"{full_input_path} {args} --outfile {output_path}",
+            ReviewCli, f"{full_input_path} {args} --outfile {output_path}"
         )
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
@@ -91,7 +90,7 @@ def test_review_cli(input_path: str, args: str, expected_path: str):
             "mnt/output/eng_ocr/fuse_clean_validate.srt",
             "",
             "mnt/output/eng_ocr/fuse_clean_validate_review.srt",
-        ),
+        )
     ],
 )
 def test_review_cli_pipe(input_path: str, args: str, expected_path: str):
@@ -120,15 +119,10 @@ def test_review_cli_pipe(input_path: str, args: str, expected_path: str):
 
 @parametrize(
     ("workflow_name", "guide_argument"),
-    [
-        ("review_series", ""),
-        ("review_series_guided", "--guide-infile"),
-    ],
+    [("review_series", ""), ("review_series_guided", "--guide-infile")],
 )
 def test_review_cli_passes_block_range(
-    workflow_name: str,
-    guide_argument: str,
-    tmp_path: Path,
+    workflow_name: str, guide_argument: str, tmp_path: Path
 ):
     """Test block ranges and JSON paths are forwarded through every review mode.
 
@@ -145,8 +139,7 @@ def test_review_cli_passes_block_range(
     cache_root_path = tmp_path / "cache"
 
     with patch(
-        f"scinoephile.cli.review_cli.{workflow_name}",
-        return_value=Series(),
+        f"scinoephile.cli.review_cli.{workflow_name}", return_value=Series()
     ) as workflow:
         with patch("scinoephile.cli.review_cli.write_series"):
             run_cli_with_args(
@@ -170,19 +163,10 @@ def test_review_cli_rejects_reversed_block_range():
     input_path = test_data_root / "mnt/output/eng_ocr/fuse_clean_validate.srt"
 
     with raises(SystemExit, match="2"):
-        run_cli_with_args(
-            ReviewCli,
-            f"{input_path} --first-block 3 --last-block 2",
-        )
+        run_cli_with_args(ReviewCli, f"{input_path} --first-block 3 --last-block 2")
 
 
-@parametrize(
-    "guide_args",
-    (
-        "",
-        "--guide-infile {input_path}",
-    ),
-)
+@parametrize("guide_args", ("", "--guide-infile {input_path}"))
 def test_review_cli_rejects_oversized_last_block(guide_args: str):
     """Test the last selected block cannot exceed the available block count.
 
@@ -195,6 +179,5 @@ def test_review_cli_rejects_oversized_last_block(guide_args: str):
 
     with raises(SystemExit, match="2"):
         run_cli_with_args(
-            ReviewCli,
-            f"{input_path} {guide_args} --last-block {block_count + 1}",
+            ReviewCli, f"{input_path} {guide_args} --last-block {block_count + 1}"
         )

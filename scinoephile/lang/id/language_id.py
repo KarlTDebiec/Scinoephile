@@ -153,10 +153,7 @@ class LanguageId:
 
     @staticmethod
     def _get_chinese_language(
-        text: str,
-        *,
-        is_simplified: bool,
-        is_traditional: bool,
+        text: str, *, is_simplified: bool, is_traditional: bool
     ) -> Language | None:
         """Get the Chinese language represented by text.
 
@@ -230,7 +227,5 @@ class LanguageId:
             return None
 
         return LanguageId._get_chinese_language(
-            text,
-            is_simplified=is_simplified,
-            is_traditional=is_traditional,
+            text, is_simplified=is_simplified, is_traditional=is_traditional
         )

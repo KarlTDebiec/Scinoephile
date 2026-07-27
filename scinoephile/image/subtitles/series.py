@@ -211,9 +211,7 @@ class ImageSeries(Series):
             if format_ == "html" or (not format_ and path.suffix == ""):
                 validated_output_dir_path = val_output_dir_path(path)
                 self._save_html(
-                    validated_output_dir_path,
-                    encoding=encoding,
-                    errors=errors,
+                    validated_output_dir_path, encoding=encoding, errors=errors
                 )
                 logger.info(f"Saved series to {validated_output_dir_path}")
                 return
@@ -261,11 +259,7 @@ class ImageSeries(Series):
         try:
             validated_path = val_input_file_or_dir_path(path)
             if validated_path.is_dir():
-                return cls._load_html(
-                    validated_path,
-                    encoding=encoding,
-                    errors=errors,
-                )
+                return cls._load_html(validated_path, encoding=encoding, errors=errors)
             if format_ == "sup" or validated_path.suffix == ".sup":
                 return cls._load_sup(validated_path)
         except (OSError, UnicodeError, ValueError) as exc:
@@ -346,10 +340,7 @@ class ImageSeries(Series):
         self._text_font_size = max(size_counts)
 
     def _save_html(
-        self,
-        dir_path: Path,
-        encoding: str = "utf-8",
-        errors: str | None = None,
+        self, dir_path: Path, encoding: str = "utf-8", errors: str | None = None
     ):
         """Save series to directory with HTML index and png files.
 
@@ -360,8 +351,7 @@ class ImageSeries(Series):
         """
         # Stage the complete managed output before changing the destination
         with TemporaryDirectory(
-            dir=dir_path.parent,
-            prefix=f".{dir_path.name}.",
+            dir=dir_path.parent, prefix=f".{dir_path.name}."
         ) as staging_dir_name:
             staging_dir_path = Path(staging_dir_name)
             image_paths = []
@@ -369,11 +359,7 @@ class ImageSeries(Series):
                 image_path = staging_dir_path / f"{i:04d}.png"
                 event.img.save(image_path)
                 image_paths.append(image_path)
-            self.save_html_index(
-                staging_dir_path,
-                encoding=encoding,
-                errors=errors,
-            )
+            self.save_html_index(staging_dir_path, encoding=encoding, errors=errors)
 
             # Reject conflicting directories before replacing any managed files
             staged_paths = [*image_paths, staging_dir_path / "index.html"]
@@ -390,10 +376,7 @@ class ImageSeries(Series):
 
     @classmethod
     def _load_html(
-        cls,
-        dir_path: Path,
-        encoding: str = "utf-8",
-        errors: str | None = None,
+        cls, dir_path: Path, encoding: str = "utf-8", errors: str | None = None
     ) -> Self:
         """Load series from a directory of png files and HTML index.
 
@@ -451,9 +434,7 @@ class ImageSeries(Series):
             img = convert_rgba_img_to_la(img)
             events.append(
                 cls.event_class(
-                    start=int(round(start * 1000)),
-                    end=int(round(end * 1000)),
-                    img=img,
+                    start=int(round(start * 1000)), end=int(round(end * 1000)), img=img
                 )
             )
         series = cls(events=events)
@@ -461,11 +442,7 @@ class ImageSeries(Series):
         return series
 
     @classmethod
-    def parse_html_events(
-        cls,
-        html_text: str,
-        dir_path: Path,
-    ) -> list[dict[str, Any]]:
+    def parse_html_events(cls, html_text: str, dir_path: Path) -> list[dict[str, Any]]:
         """Parse HTML events for image subtitles.
 
         Arguments:
@@ -522,12 +499,7 @@ class ImageSeries(Series):
 
     @staticmethod
     def format_html_entry(
-        *,
-        index: int,
-        start: int,
-        end: int,
-        image_name: str,
-        text: str,
+        *, index: int, start: int, end: int, image_name: str, text: str
     ) -> str:
         """Format one HTML subtitle entry.
 

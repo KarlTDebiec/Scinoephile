@@ -164,23 +164,17 @@ class DemucsSeparator:
         if target_frame_rate != normalized_audio.frame_rate:
             torchaudio = import_torchaudio()
             vocals = torchaudio.functional.resample(
-                vocals,
-                target_frame_rate,
-                normalized_audio.frame_rate,
+                vocals, target_frame_rate, normalized_audio.frame_rate
             )
 
         # Restore the original channel layout and convert back to pydub
         return self._get_audio_segment(
-            vocals,
-            normalized_audio.frame_rate,
-            input_channels,
+            vocals, normalized_audio.frame_rate, input_channels
         )
 
     @staticmethod
     def _get_audio_segment(
-        vocals: TorchTensor,
-        frame_rate: int,
-        channels: int,
+        vocals: TorchTensor, frame_rate: int, channels: int
     ) -> AudioSegment:
         """Convert separated vocals waveform into a pydub AudioSegment.
 

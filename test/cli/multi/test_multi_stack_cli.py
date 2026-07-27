@@ -52,8 +52,7 @@ def test_multi_stack_cli_stacks_without_sync_by_default(tmp_path: Path):
     )
 
     expected = Series.from_string(
-        "1\n00:00:01,000 --> 00:00:02,250\nA\\NB\n",
-        format_="srt",
+        "1\n00:00:01,000 --> 00:00:02,250\nA\\NB\n", format_="srt"
     )
     assert_series_equal(Series.load(output_path), expected)
 
@@ -77,8 +76,7 @@ def test_multi_stack_cli_can_sync_bottom_to_top_anchor(tmp_path: Path):
     )
 
     expected = Series.from_string(
-        "1\n00:00:01,000 --> 00:00:02,000\nA\\NB\n",
-        format_="srt",
+        "1\n00:00:01,000 --> 00:00:02,000\nA\\NB\n", format_="srt"
     )
     assert_series_equal(Series.load(output_path), expected)
 
@@ -97,9 +95,7 @@ def test_multi_stack_cli_can_sync_bottom_to_top_anchor(tmp_path: Path):
     ],
 )
 def test_multi_stack_cli_rejects_invalid_tuning_options(
-    args: str,
-    expected_error: str,
-    tmp_path: Path,
+    args: str, expected_error: str, tmp_path: Path
 ):
     """Test multi stack CLI rejects invalid synchronization tuning options.
 

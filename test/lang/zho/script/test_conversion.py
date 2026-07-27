@@ -141,9 +141,7 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
     ],
 )
 def test_get_zho_converted(
-    request: FixtureRequest,
-    series_fixture: str,
-    expected_fixture: str,
+    request: FixtureRequest, series_fixture: str, expected_fixture: str
 ):
     """Test get_zho_converted with traditional standard Chinese subtitles.
 
@@ -154,15 +152,9 @@ def test_get_zho_converted(
     """
     series = request.getfixturevalue(series_fixture)
     expected = request.getfixturevalue(expected_fixture)
-    output = get_zho_converted(
-        series,
-        OpenCCConfig.t2s,
-    )
+    output = get_zho_converted(series, OpenCCConfig.t2s)
     assert len(series) == len(output)
-    assert_series_equal(
-        output,
-        expected,
-    )
+    assert_series_equal(output, expected)
 
 
 @parametrize(

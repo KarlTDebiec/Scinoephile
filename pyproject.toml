@@ -92,6 +92,9 @@ filterwarnings = [
 [tool.ruff]
 line-length = 88
 
+[tool.ruff.format]
+skip-magic-trailing-comma = true
+
 [tool.ruff.lint]
 select = [
     "D", # pydocstyle
@@ -112,6 +115,9 @@ ignore = [
     "PLR0917", # Too many positional arguments
     "PLR2004" # Magic value used in comparison
 ]
+
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false
 
 [tool.ruff.lint.pydocstyle]
 convention = 'google'

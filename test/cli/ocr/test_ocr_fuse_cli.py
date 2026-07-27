@@ -53,10 +53,7 @@ def test_ocr_fuse_cli_uses_concise_json_help():
     ],
 )
 def test_ocr_fuse_cli(
-    lens_path: str,
-    secondary_path: str,
-    args: str,
-    expected_path: str,
+    lens_path: str, secondary_path: str, args: str, expected_path: str
 ):
     """Test OCR fusion CLI with file arguments.
 
@@ -101,10 +98,7 @@ def test_ocr_fuse_cli(
     ],
 )
 def test_ocr_fuse_cli_pipe(
-    lens_path: str,
-    secondary_path: str,
-    args: str,
-    expected_path: str,
+    lens_path: str, secondary_path: str, args: str, expected_path: str
 ):
     """Test OCR fusion CLI via stdin and stdout.
 
@@ -146,14 +140,12 @@ def test_ocr_fuse_cli_passes_test_case_path(tmp_path: Path):
     cache_root_path = tmp_path / "cache"
     lens_path.write_text("1\n00:00:00,000 --> 00:00:00,500\nLens\n", encoding="utf-8")
     tesseract_path.write_text(
-        "1\n00:00:00,000 --> 00:00:00,500\nTesseract\n",
-        encoding="utf-8",
+        "1\n00:00:00,000 --> 00:00:00,500\nTesseract\n", encoding="utf-8"
     )
     fused = Series(events=[Subtitle(start=0, end=500, text="Fused")])
 
     with patch(
-        "scinoephile.cli.ocr.ocr_fuse_cli.fuse_ocr_series",
-        return_value=fused,
+        "scinoephile.cli.ocr.ocr_fuse_cli.fuse_ocr_series", return_value=fused
     ) as fuse:
         run_cli_with_args(
             OcrFuseCli,
