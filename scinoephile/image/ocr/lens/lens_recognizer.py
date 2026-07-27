@@ -16,10 +16,7 @@ from PIL import Image
 
 from scinoephile.common.validation import val_int, val_output_dir_path
 from scinoephile.core import Language
-from scinoephile.core.dependencies.ocr import (
-    import_chrome_lens_py_lens_api,
-    import_chrome_lens_py_lens_api_error,
-)
+from scinoephile.core.dependencies.ocr import import_chrome_lens_py
 
 __all__ = [
     "LensRecognizer",
@@ -87,9 +84,6 @@ class LensRecognizer:
             raise ValueError(f"{language} is not supported by Google Lens OCR") from exc
         self.overwrite_cache = overwrite_cache
         self.retries = val_int(retries, min_value=1)
-        lens_api_cls = import_chrome_lens_py_lens_api()
-        self._lens_api_error_cls = import_chrome_lens_py_lens_api_error()
-        self._api = lens_api_cls()
 
     @override
     def __repr__(self) -> str:
@@ -148,14 +142,6 @@ class LensRecognizer:
         )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
-
-    def _get_transient_error_classes(self) -> tuple[type[Exception], ...]:
-        """Get exception classes that should trigger a Google Lens retry.
-
-        Returns:
-            transient exception classes
-        """
-        return self._lens_api_error_cls, _GoogleLensRequestError
 
     @staticmethod
     def _clean_text(text: str) -> str:
@@ -299,13 +285,14 @@ class LensRecognizer:
         Raises:
             RuntimeError: if Google Lens returns request-error text
         """
-        transient_error_classes = self._get_transient_error_classes()
+        chrome_lens_py = import_chrome_lens_py()
+        api = chrome_lens_py.LensAPI()
 
         async def recognize() -> list[str]:
             """Run Google Lens OCR retries in one event loop."""
             for attempt in range(1, self.retries + 1):
                 try:
-                    result = await self._api.process_image(
+                    result = await api.process_image(
                         image_path=image,
                         ocr_language=self.lens_language_code,
                         ocr_preserve_line_breaks=True,
@@ -313,7 +300,7 @@ class LensRecognizer:
                     )
                     lines = self._normalize_lens_result(result)
                     self._raise_if_request_error(lines)
-                except transient_error_classes as exc:
+                except (chrome_lens_py.LensAPIError, _GoogleLensRequestError) as exc:
                     if attempt == self.retries:
                         raise
                     logger.warning(

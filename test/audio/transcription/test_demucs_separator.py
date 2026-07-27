@@ -61,9 +61,8 @@ def test_separate_vocals_uses_default_demucs_shifts():
         return separated_sources
 
     with patch(
-        "scinoephile.audio.transcription.demucs_separator."
-        "import_demucs_infer_apply_model",
-        return_value=apply_model,
+        "scinoephile.audio.transcription.demucs_separator.import_demucs_infer_apply",
+        return_value=Mock(apply_model=apply_model),
     ):
         output_audio = separator.separate_vocals(input_audio)
 

@@ -12,11 +12,10 @@ import numpy as np
 from pydub import AudioSegment
 
 from scinoephile.core.dependencies.transcription import (
-    import_demucs_infer_apply_model,
-    import_demucs_infer_get_model,
-    import_torch_from_numpy,
-    import_torch_no_grad,
-    import_torchaudio_functional_resample,
+    import_demucs_infer_apply,
+    import_demucs_infer_pretrained,
+    import_torch,
+    import_torchaudio,
 )
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.ml import get_torch_device
@@ -75,11 +74,6 @@ class DemucsSeparator:
         return self.separate_vocals(audio, overwrite_cache=overwrite_cache)
 
     @property
-    def cache_dir_path(self) -> Path | None:
-        """Get the Demucs cache directory path."""
-        return self._cache.cache_dir_path
-
-    @property
     def device(self) -> str:
         """Get torch device identifier."""
         if self._device is None:
@@ -94,9 +88,13 @@ class DemucsSeparator:
             loaded Demucs model
         """
         if self._model is None:
-            model_loader = import_demucs_infer_get_model()
+            demucs_infer_pretrained = import_demucs_infer_pretrained()
             try:
-                self._model = model_loader(self.model_name).to(self.device).eval()
+                self._model = (
+                    demucs_infer_pretrained.get_model(self.model_name)
+                    .to(self.device)
+                    .eval()
+                )
             except Exception as exc:
                 raise ScinoephileError(
                     f"Unable to load Demucs model '{self.model_name}'."
@@ -156,17 +154,17 @@ class DemucsSeparator:
             self.model, "samplerate", normalized_audio.frame_rate
         )
         if normalized_audio.frame_rate != target_frame_rate:
-            resample = import_torchaudio_functional_resample()
-            waveform = resample(
+            torchaudio = import_torchaudio()
+            waveform = torchaudio.functional.resample(
                 waveform, normalized_audio.frame_rate, target_frame_rate
             )
 
         # Run source separation using the library's default shift behavior
-        no_grad = import_torch_no_grad()
-        apply_model = import_demucs_infer_apply_model()
-        with no_grad():
+        torch = import_torch()
+        demucs_infer_apply = import_demucs_infer_apply()
+        with torch.no_grad():
             try:
-                sources = apply_model(
+                sources = demucs_infer_apply.apply_model(
                     self.model,
                     waveform.unsqueeze(0).to(self.device),
                     device=self.device,
@@ -184,8 +182,12 @@ class DemucsSeparator:
             ) from exc
         vocals = sources[0, vocals_idx].cpu()
         if target_frame_rate != normalized_audio.frame_rate:
-            resample = import_torchaudio_functional_resample()
-            vocals = resample(vocals, target_frame_rate, normalized_audio.frame_rate)
+            torchaudio = import_torchaudio()
+            vocals = torchaudio.functional.resample(
+                vocals,
+                target_frame_rate,
+                normalized_audio.frame_rate,
+            )
 
         # Restore the original channel layout and convert back to pydub
         return self._get_audio_segment(
@@ -242,8 +244,8 @@ class DemucsSeparator:
             waveform tensor as [channels, time]
         """
         array = np.array(audio.get_array_of_samples(), dtype=np.int16)
-        from_numpy = import_torch_from_numpy()
-        waveform = from_numpy(
+        torch = import_torch()
+        waveform = torch.from_numpy(
             array.reshape((-1, audio.channels)).T.astype(np.float32)
             / np.iinfo(np.int16).max
         )

@@ -109,9 +109,6 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.transcriber.vad_mode is VADMode.AUTO
     assert transcriber.transcriber.cache_dir_path == tmp_path / "whisper"
     assert transcriber.transcriber.demucs_separator is not None
-    assert (
-        transcriber.transcriber.demucs_separator.cache_dir_path == tmp_path / "demucs"
-    )
     test_case_dir_path = tmp_path / "test_cases/lang/yue_zho/transcription"
     assert transcriber.aligner.delineation_processor.test_case_path == (
         test_case_dir_path / "delineation" / "test.json"
