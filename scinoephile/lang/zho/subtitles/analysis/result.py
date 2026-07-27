@@ -6,11 +6,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-__all__ = ["ZhoSubtitleScriptAnalysisResult"]
+__all__ = ["ZhoScriptAnalysisResult"]
 
 
 @dataclass(frozen=True)
-class ZhoSubtitleScriptAnalysisResult:
+class ZhoScriptAnalysisResult:
     """Chinese subtitle stream script analysis result."""
 
     script: str | None = None

@@ -8,12 +8,8 @@ import json
 from pathlib import Path
 
 from scinoephile.core.media import SubtitleStream
-from scinoephile.lang.zho.subtitles.analysis.cache import (
-    ZhoSubtitleScriptAnalysisCache,
-)
-from scinoephile.lang.zho.subtitles.analysis.result import (
-    ZhoSubtitleScriptAnalysisResult,
-)
+from scinoephile.lang.zho.subtitles.analysis.cache import ZhoScriptAnalysisCache
+from scinoephile.lang.zho.subtitles.analysis.result import ZhoScriptAnalysisResult
 
 
 def test_subtitle_script_analysis_cache_uses_runtime_default(
@@ -24,7 +20,7 @@ def test_subtitle_script_analysis_cache_uses_runtime_default(
     Arguments:
         runtime_cache_root_path: isolated default runtime cache root
     """
-    cache = ZhoSubtitleScriptAnalysisCache()
+    cache = ZhoScriptAnalysisCache()
 
     assert cache.cache_root_path == runtime_cache_root_path
     assert cache.cache_dir_path == (
@@ -41,12 +37,12 @@ def test_subtitle_script_analysis_cache_round_trip(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    analysis = ZhoSubtitleScriptAnalysisResult(
+    analysis = ZhoScriptAnalysisResult(
         script="zho-Hant",
         traditional_count=4,
         shared_count=2,
     )
-    cache = ZhoSubtitleScriptAnalysisCache(tmp_path / "cache")
+    cache = ZhoScriptAnalysisCache(tmp_path / "cache")
 
     cache_path = cache.save(
         infile_path,
@@ -80,7 +76,7 @@ def test_subtitle_script_analysis_cache_discards_invalid_entry(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    cache = ZhoSubtitleScriptAnalysisCache(tmp_path / "cache")
+    cache = ZhoScriptAnalysisCache(tmp_path / "cache")
     cache_path = cache.get_path(
         infile_path,
         stream,
@@ -108,13 +104,13 @@ def test_subtitle_script_analysis_cache_discards_mismatched_version(
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    cache = ZhoSubtitleScriptAnalysisCache(tmp_path / "cache")
+    cache = ZhoScriptAnalysisCache(tmp_path / "cache")
     cache_path = cache.save(
         infile_path,
         stream,
         4,
         ("zho-Hans", "zho-Hant"),
-        ZhoSubtitleScriptAnalysisResult(script="zho-Hant"),
+        ZhoScriptAnalysisResult(script="zho-Hant"),
     )
     payload = json.loads(cache_path.read_text(encoding="utf-8"))
     payload["cache_version"] = 0
@@ -134,16 +130,16 @@ def test_subtitle_script_analysis_cache_overwrite_removes_entry(tmp_path: Path):
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
     cache_root_path = tmp_path / "cache"
-    cache = ZhoSubtitleScriptAnalysisCache(cache_root_path)
+    cache = ZhoScriptAnalysisCache(cache_root_path)
     cache_path = cache.save(
         infile_path,
         stream,
         4,
         ("zho-Hans", "zho-Hant"),
-        ZhoSubtitleScriptAnalysisResult(script="zho-Hant"),
+        ZhoScriptAnalysisResult(script="zho-Hant"),
     )
 
-    overwrite_cache = ZhoSubtitleScriptAnalysisCache(cache_root_path, overwrite=True)
+    overwrite_cache = ZhoScriptAnalysisCache(cache_root_path, overwrite=True)
 
     assert (
         overwrite_cache.load(

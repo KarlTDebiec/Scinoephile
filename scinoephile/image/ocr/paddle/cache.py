@@ -9,7 +9,7 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import cast
 
-from scinoephile.image.ocr.cache import OcrCache
+from scinoephile.image.ocr.cache import OcrCacheBase
 
 from .bounding_box import PaddleOcrBoundingBox
 from .text_result import PaddleOcrTextResult
@@ -20,7 +20,7 @@ _CACHE_VERSION = 1
 """Current PaddleOCR cache version."""
 
 
-class PaddleOcrCache(OcrCache[list[PaddleOcrTextResult]]):
+class PaddleOcrCache(OcrCacheBase[list[PaddleOcrTextResult]]):
     """Caches normalized PaddleOCR text results."""
 
     def __init__(

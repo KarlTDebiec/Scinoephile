@@ -17,12 +17,12 @@ from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.paths import get_runtime_cache_root_path
 
-__all__ = ["OcrCache"]
+__all__ = ["OcrCacheBase"]
 
 logger = getLogger(__name__)
 
 
-class OcrCache[TResult](ABC):
+class OcrCacheBase[TResult](ABC):
     """Caches OCR results by image and recognizer configuration."""
 
     def __init__(

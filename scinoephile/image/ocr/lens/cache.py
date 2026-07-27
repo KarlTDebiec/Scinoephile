@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import cast
 
-from scinoephile.image.ocr.cache import OcrCache
+from scinoephile.image.ocr.cache import OcrCacheBase
 
 __all__ = ["LensCache"]
 
@@ -15,7 +15,7 @@ _CACHE_VERSION = 1
 """Current Google Lens OCR cache version."""
 
 
-class LensCache(OcrCache[list[str]]):
+class LensCache(OcrCacheBase[list[str]]):
     """Caches normalized Google Lens OCR lines."""
 
     def __init__(

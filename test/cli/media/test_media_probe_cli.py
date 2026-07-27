@@ -13,7 +13,7 @@ from scinoephile.cli.media.media_probe_cli import MediaProbeCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
 from scinoephile.lang.zho.subtitles.analysis.result import (
-    ZhoSubtitleScriptAnalysisResult,
+    ZhoScriptAnalysisResult,
 )
 from test.helpers import parametrize
 
@@ -242,9 +242,7 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
     infile_path.touch()
     cache_root_path = tmp_path / "cache"
 
-    def analyze_script(
-        *args: object, **kwargs: object
-    ) -> ZhoSubtitleScriptAnalysisResult:
+    def analyze_script(*args: object, **kwargs: object) -> ZhoScriptAnalysisResult:
         """Return script analysis after checking analyzer inputs."""
         assert args[0] == infile_path
         stream = args[1]
@@ -256,7 +254,7 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
             "cache_root_path": cache_root_path.resolve(),
             "overwrite_cache": True,
         }
-        return ZhoSubtitleScriptAnalysisResult(script="zho-Hant")
+        return ZhoScriptAnalysisResult(script="zho-Hant")
 
     with (
         patch(

@@ -17,9 +17,9 @@ from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.paths import get_runtime_cache_root_path
 
-from .result import ZhoSubtitleScriptAnalysisResult
+from .result import ZhoScriptAnalysisResult
 
-__all__ = ["ZhoSubtitleScriptAnalysisCache"]
+__all__ = ["ZhoScriptAnalysisCache"]
 
 logger = getLogger(__name__)
 
@@ -27,7 +27,7 @@ _CACHE_VERSION = 1
 """Current Chinese subtitle script analysis cache version."""
 
 
-class ZhoSubtitleScriptAnalysisCache:
+class ZhoScriptAnalysisCache:
     """Caches Chinese subtitle script analysis results."""
 
     def __init__(
@@ -91,7 +91,7 @@ class ZhoSubtitleScriptAnalysisCache:
         stream: SubtitleStream,
         sample_size: int,
         ocr_languages: Sequence[str],
-    ) -> ZhoSubtitleScriptAnalysisResult | None:
+    ) -> ZhoScriptAnalysisResult | None:
         """Load a cached script analysis.
 
         Invalid cache files are discarded and treated as cache misses.
@@ -138,7 +138,7 @@ class ZhoSubtitleScriptAnalysisCache:
         stream: SubtitleStream,
         sample_size: int,
         ocr_languages: Sequence[str],
-        analysis: ZhoSubtitleScriptAnalysisResult,
+        analysis: ZhoScriptAnalysisResult,
     ) -> Path:
         """Save a script analysis to the cache.
 
@@ -171,7 +171,7 @@ class ZhoSubtitleScriptAnalysisCache:
         return cache_path
 
     @staticmethod
-    def _deserialize(payload: object) -> ZhoSubtitleScriptAnalysisResult:
+    def _deserialize(payload: object) -> ZhoScriptAnalysisResult:
         """Deserialize and validate a cached script analysis.
 
         Arguments:
@@ -227,7 +227,7 @@ class ZhoSubtitleScriptAnalysisCache:
         simplified_count, traditional_count, shared_count = cast(list[int], counts)
         validated_sample_indexes = cast(list[int], sample_indexes)
         validated_ocr_languages = cast(list[str], ocr_languages)
-        return ZhoSubtitleScriptAnalysisResult(
+        return ZhoScriptAnalysisResult(
             script=script,
             simplified_count=simplified_count,
             traditional_count=traditional_count,

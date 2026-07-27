@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.image.ocr.cache import OcrCache
+from scinoephile.image.ocr.cache import OcrCacheBase
 
 __all__ = ["TesseractCache"]
 
@@ -14,7 +14,7 @@ _CACHE_VERSION = 1
 """Current Tesseract OCR cache version."""
 
 
-class TesseractCache(OcrCache[str]):
+class TesseractCache(OcrCacheBase[str]):
     """Caches normalized Tesseract OCR text."""
 
     def __init__(
