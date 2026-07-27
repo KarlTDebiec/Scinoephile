@@ -66,6 +66,23 @@ def test_get_cached_subtitle_stream_path_changes_by_stream(tmp_path: Path):
     assert second.suffix == ".srt"
 
 
+def test_get_cached_subtitle_stream_path_resolves_infile(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+):
+    """Test relative and absolute input paths share one cache identity."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+    stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
+    cache = SubtitleCache(tmp_path / "cache")
+    monkeypatch.chdir(tmp_path)
+
+    relative_cache_path = cache.get_path(Path("video.mkv"), stream)
+    absolute_cache_path = cache.get_path(infile_path, stream)
+
+    assert relative_cache_path == absolute_cache_path
+
+
 def test_get_cached_subtitle_stream_path_includes_cache_version(
     tmp_path: Path,
     monkeypatch: MonkeyPatch,
@@ -159,6 +176,32 @@ def test_cache_subtitle_streams_overwrites_existing_stream(tmp_path: Path):
 
     assert len(merged_streams) == 1
     assert merged_streams[0].run_count == 1
+    assert stream_path.read_bytes() == b"cached"
+
+
+def test_cache_subtitle_streams_replaces_malformed_stream_artifact(tmp_path: Path):
+    """Test a non-file stream artifact is discarded and re-extracted."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+    stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
+    cache = SubtitleCache(tmp_path / "cache")
+    stream_path = cache.get_path(infile_path, stream)
+    stream_path.mkdir(parents=True)
+    input_stream = _RecordingFfmpegInput()
+
+    with (
+        patch(
+            "scinoephile.media.subtitles.cache.ffmpeg.input",
+            return_value=input_stream,
+        ),
+        patch(
+            "scinoephile.media.subtitles.cache.ffmpeg.merge_outputs",
+            side_effect=lambda *outputs: _RecordingMergedFfmpegStream(list(outputs)),
+        ),
+    ):
+        cache.ensure_cached(infile_path, [stream])
+
+    assert stream_path.is_file()
     assert stream_path.read_bytes() == b"cached"
 
 
@@ -259,6 +302,39 @@ def test_cache_subtitles_marks_existing_image_series_used(tmp_path: Path):
 
     load.assert_not_called()
     assert index_path.stat().st_mtime > old_timestamp
+
+
+def test_cache_subtitles_replaces_malformed_image_index(tmp_path: Path):
+    """Test a non-file image index is discarded and rendered again."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+    stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
+    cache = SubtitleCache(tmp_path / "cache")
+    cache_subtitle_stream(infile_path, stream, tmp_path / "cache", b"cached")
+    image_dir_path = get_image_subtitle_dir_path(
+        infile_path,
+        stream,
+        cache_root_path=tmp_path / "cache",
+    )
+    (image_dir_path / "index.html").mkdir(parents=True)
+    image_series = ImageSeries(
+        events=[
+            ImageSubtitle(
+                start=1000,
+                end=2000,
+                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
+            ),
+        ]
+    )
+
+    with patch(
+        "scinoephile.media.subtitles.cache.ImageSeries.load",
+        return_value=image_series,
+    ) as load:
+        cache.ensure_cached(infile_path, [stream])
+
+    load.assert_called_once()
+    assert (image_dir_path / "index.html").is_file()
 
 
 def test_cache_subtitles_can_skip_image_cache_for_sup_stream(tmp_path: Path):

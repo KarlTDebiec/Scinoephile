@@ -71,7 +71,11 @@ class Queryer[TTestCase: TestCase]:
         self.encountered_test_cases: dict[tuple, TTestCase] = {}
         """Test cases actually encountered."""
 
-        self._cache = LlmCache(cache_root_path, overwrite_cache)
+        self._cache = LlmCache(
+            cache_root_path,
+            self.test_case_cls.operation,
+            overwrite_cache,
+        )
         """LLM response cache."""
 
         self.additional_context = additional_context

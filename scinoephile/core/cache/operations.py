@@ -24,7 +24,7 @@ __all__ = [
     "prune_cache",
 ]
 
-_CACHE_NAMESPACE_GROUP_NAMES = ("media",)
+_CACHE_NAMESPACE_GROUP_NAMES = ("llm", "media")
 """Root directory names whose direct children are cache namespaces."""
 _LEGACY_CACHE_NAMESPACE_MARKER_FILENAME = ".scinoephile-cache-namespace"
 """Obsolete namespace marker filename ignored during cache inspection."""
@@ -122,6 +122,11 @@ def discover_cache_namespaces(cache_root_path: Path) -> list[str]:
         if child_path.name not in _CACHE_NAMESPACE_GROUP_NAMES:
             namespace_names.append(child_path.name)
             continue
+        if any(
+            grouped_child_path.is_file() or grouped_child_path.is_symlink()
+            for grouped_child_path in child_path.iterdir()
+        ):
+            namespace_names.append(child_path.name)
         namespace_names.extend(
             f"{child_path.name}/{grouped_child_path.name}"
             for grouped_child_path in child_path.iterdir()

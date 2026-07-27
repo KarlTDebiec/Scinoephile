@@ -28,6 +28,8 @@ class TestCase(LLMModel, ABC):
     """Query model class."""
     answer_cls: ClassVar[type[Answer]]
     """Answer model class."""
+    operation: ClassVar[str]
+    """Stable LLM operation identifier."""
     prompt: ClassVar[Prompt]
     """Text for LLM correspondence."""
     query: Query

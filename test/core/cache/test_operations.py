@@ -86,6 +86,19 @@ def test_get_cache_entries_supports_nested_media_namespaces(tmp_path: Path):
     ]
 
 
+def test_get_cache_entries_supports_grouped_llm_namespaces(tmp_path: Path):
+    """Test each LLM operation is exposed as an independent namespace."""
+    write_cache_file(tmp_path / "llm/translation/one.json", "one")
+    write_cache_file(tmp_path / "llm/review/two.json", "two")
+
+    assert discover_cache_namespaces(tmp_path) == ["llm/review", "llm/translation"]
+    entries = get_cache_entries(tmp_path, namespace="llm/translation")
+
+    assert [entry.relative_path for entry in entries] == [
+        Path("llm/translation/one.json")
+    ]
+
+
 def test_get_cache_entries_supports_legacy_media_namespace(tmp_path: Path):
     """Test old media cache namespaces remain available for maintenance.
 

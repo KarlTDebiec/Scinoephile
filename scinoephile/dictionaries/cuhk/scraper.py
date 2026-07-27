@@ -201,18 +201,29 @@ class CuhkDictionaryScraper:
 
         return word_links
 
-    def parse_scraped_pages(self) -> list[DictionaryEntry]:
+    def parse_scraped_pages(
+        self,
+        stems: list[str] | None = None,
+    ) -> list[DictionaryEntry]:
         """Parse scraped CUHK pages into normalized entries.
 
+        Arguments:
+            stems: response stems to parse, or None to parse all cached responses
         Returns:
             parsed dictionary entries
         """
+        if stems is None:
+            stems = self.scraped_cache.get_stems()
         entries: list[DictionaryEntry] = []
-        for index, html_path in enumerate(self.scraped_cache.get_paths()):
+        for index, stem in enumerate(stems):
             if index and index % 100 == 0:
                 logger.info(f"Parsed {index} CUHK entries")
 
-            entry = self.parse_word_file(html_path)
+            html = self.scraped_cache.load(stem)
+            if html is None:
+                continue
+            html_path = self.scraped_cache.get_path(stem)
+            entry = self.parse_word_html(html, html_path)
             if entry is not None:
                 entries.append(entry)
 
@@ -226,7 +237,39 @@ class CuhkDictionaryScraper:
         Returns:
             parsed entry, if valid
         """
-        soup = BeautifulSoup(html_path.read_text(encoding="utf-8"), "html.parser")
+        html = html_path.read_text(encoding="utf-8")
+        return self.parse_word_html(html, html_path)
+
+    def parse_word_files(self, html_paths: list[Path]) -> list[DictionaryEntry]:
+        """Parse selected scraped CUHK pages into normalized entries.
+
+        Arguments:
+            html_paths: scraped HTML paths to parse
+        Returns:
+            parsed dictionary entries
+        """
+        entries: list[DictionaryEntry] = []
+        for html_path in html_paths:
+            entry = self.parse_word_file(html_path)
+            if entry is not None:
+                entries.append(entry)
+
+        return entries
+
+    def parse_word_html(
+        self,
+        html: str,
+        html_path: Path,
+    ) -> DictionaryEntry | None:
+        """Parse the contents of one CUHK word page.
+
+        Arguments:
+            html: CUHK word page HTML
+            html_path: source path used for identity and logging
+        Returns:
+            parsed entry, if valid
+        """
+        soup = BeautifulSoup(html, "html.parser")
 
         text_span = soup.find("span", class_="ChiCharFix")
         if not isinstance(text_span, Tag):
@@ -331,22 +374,6 @@ class CuhkDictionaryScraper:
             definitions=definitions,
         )
 
-    def parse_word_files(self, html_paths: list[Path]) -> list[DictionaryEntry]:
-        """Parse selected scraped CUHK pages into normalized entries.
-
-        Arguments:
-            html_paths: scraped HTML paths to parse
-        Returns:
-            parsed dictionary entries
-        """
-        entries: list[DictionaryEntry] = []
-        for html_path in html_paths:
-            entry = self.parse_word_file(html_path)
-            if entry is not None:
-                entries.append(entry)
-
-        return entries
-
     def scrape(
         self,
         max_words: int | None = None,
@@ -365,15 +392,14 @@ class CuhkDictionaryScraper:
         logger.info("Scraping CUHK word pages")
         self.scrape_word_pages(word_links)
         logger.info("Parsing scraped CUHK word pages")
-        if max_words is None:
-            entries = self.parse_scraped_pages()
-        else:
-            html_paths: list[Path] = []
+        stems: list[str] | None = None
+        if max_words is not None:
+            stems = []
             for item, _ in word_links:
-                for html_path in self._get_variant_file_paths(item):
-                    if html_path.exists() and html_path not in html_paths:
-                        html_paths.append(html_path)
-            entries = self.parse_word_files(html_paths)
+                for stem in self._get_variant_stems(item):
+                    if stem not in stems:
+                        stems.append(stem)
+        entries = self.parse_scraped_pages(stems)
         logger.info(f"Parsed {len(entries)} CUHK entry(ies)")
         return CUHK_SOURCE, entries
 
@@ -480,18 +506,6 @@ class CuhkDictionaryScraper:
         target_name = parse_qs(parsed_url.query).get("target", [""])[0]
         stem = self._get_safe_filename_stem(target_name or "terms")
         return stem
-
-    def _get_variant_file_paths(self, item: str) -> list[Path]:
-        """Get output file paths for one CUHK word item.
-
-        Arguments:
-            item: item string, potentially with slash-separated variants
-        Returns:
-            variant file paths
-        """
-        return [
-            self.scraped_cache.get_path(stem) for stem in self._get_variant_stems(item)
-        ]
 
     def _get_variant_stems(self, item: str) -> list[str]:
         """Get cache stems for one CUHK word item.

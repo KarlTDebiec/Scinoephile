@@ -6,8 +6,9 @@ from __future__ import annotations
 
 from pathlib import Path
 from time import time
+from unittest.mock import Mock
 
-from pytest import MonkeyPatch
+from pytest import MonkeyPatch, raises
 
 from scinoephile.dictionaries.cuhk.cache import CuhkResponseCache
 from scinoephile.dictionaries.cuhk.scraper import CuhkDictionaryScraper
@@ -69,3 +70,36 @@ def test_response_cache_paths_include_version(
     monkeypatch.setattr("scinoephile.dictionaries.cuhk.cache._CACHE_VERSION", 2)
 
     assert cache.get_path("terms") != first_cache_path
+
+
+def test_response_cache_rejects_unsafe_stem(tmp_path: Path):
+    """Test CUHK response stems may not escape the cache directory."""
+    cache = CuhkResponseCache(tmp_path, "cuhk-discovery")
+
+    with raises(ValueError, match="single contained filename"):
+        cache.get_path("../terms")
+
+
+def test_parse_scraped_pages_loads_through_cache(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+):
+    """Test cached CUHK pages are validated and marked used before parsing."""
+    scraper = CuhkDictionaryScraper(cache_root_path=tmp_path)
+    valid_path = scraper.scraped_cache.save("valid", "valid")
+    invalid_path = scraper.scraped_cache.get_path("invalid")
+    invalid_path.parent.mkdir()
+    invalid_path.write_bytes(b"\xff")
+    old_timestamp = time() - 60 * 60 * 24 * 40
+    set_mtime(valid_path, old_timestamp)
+    parse_word_html = Mock(return_value=None)
+    monkeypatch.setattr(
+        scraper,
+        "parse_word_html",
+        parse_word_html,
+    )
+
+    assert scraper.parse_scraped_pages() == []
+    assert valid_path.stat().st_mtime > old_timestamp
+    assert not invalid_path.exists()
+    parse_word_html.assert_called_once_with("valid", valid_path)

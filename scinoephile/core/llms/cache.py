@@ -10,7 +10,7 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common.file import open_atomic_text_file
-from scinoephile.common.validation import val_output_dir_path
+from scinoephile.common.validation import val_child_path, val_output_dir_path
 from scinoephile.core.paths import get_runtime_cache_root_path
 
 __all__ = ["LlmCache"]
@@ -26,20 +26,27 @@ class LlmCache:
 
     def __init__(
         self,
-        cache_root_path: Path | None = None,
+        cache_root_path: Path | None,
+        operation: str,
         overwrite: bool = False,
     ):
         """Initialize.
 
         Arguments:
             cache_root_path: root directory beneath which to cache, or None for default
+            operation: stable LLM operation identifier
             overwrite: whether to replace matching cache files
         """
         if cache_root_path is None:
             cache_root_path = get_runtime_cache_root_path()
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which LLM responses are cached."""
-        self.cache_dir_path = val_output_dir_path(self.cache_root_path / "llm")
+        self.operation = operation
+        """Stable LLM operation identifier."""
+        llm_cache_dir_path = self.cache_root_path / "llm"
+        self.cache_dir_path = val_output_dir_path(
+            val_child_path(llm_cache_dir_path, self.operation)
+        )
         """Directory in which cached LLM responses are stored."""
 
         self.overwrite = overwrite

@@ -142,14 +142,14 @@ class TranscriptionCache:
                 TranscribedSegment.model_validate(segment) for segment in raw_segments
             ]
         except TranscriptionError as exc:
-            self._discard(cache_path, exc)
+            self._discard_invalid_entry(cache_path, exc)
             return None
         except (OSError, TypeError, ValueError) as exc:
             cache_error = TranscriptionInferenceError(
                 f"Unable to read {self.backend_label} transcription cache "
                 f"{cache_path}: {exc}"
             )
-            self._discard(cache_path, cache_error)
+            self._discard_invalid_entry(cache_path, cache_error)
             return None
 
         cache_path.touch()
@@ -206,7 +206,7 @@ class TranscriptionCache:
         logger.info(f"Saved {self.backend_label} transcription to cache: {cache_path}")
         return cache_path
 
-    def _discard(self, cache_path: Path, error: Exception):
+    def _discard_invalid_entry(self, cache_path: Path, error: Exception):
         """Discard an invalid transcription cache entry.
 
         Arguments:

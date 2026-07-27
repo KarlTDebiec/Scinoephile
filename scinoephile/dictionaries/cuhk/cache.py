@@ -8,7 +8,7 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common.file import open_atomic_text_file
-from scinoephile.common.validation import val_output_dir_path
+from scinoephile.common.validation import val_child_path, val_output_dir_path
 from scinoephile.core.paths import get_runtime_cache_root_path
 
 __all__ = ["CuhkResponseCache"]
@@ -39,9 +39,7 @@ class CuhkResponseCache:
             cache_root_path = get_runtime_cache_root_path()
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which CUHK responses are cached."""
-        self.cache_dir_path = val_output_dir_path(
-            self.cache_root_path / cache_dir_name
-        )
+        self.cache_dir_path = val_output_dir_path(self.cache_root_path / cache_dir_name)
         """Directory in which cached CUHK responses are stored."""
 
         self.overwrite = overwrite
@@ -58,15 +56,25 @@ class CuhkResponseCache:
         Returns:
             response cache path
         """
-        return self.cache_dir_path / f"{stem}-v{_CACHE_VERSION}" / f"{stem}.html"
+        validated_stem = val_child_path(self.cache_dir_path, stem).name
+        return (
+            self.cache_dir_path
+            / f"{validated_stem}-v{_CACHE_VERSION}"
+            / f"{validated_stem}.html"
+        )
 
-    def get_paths(self) -> list[Path]:
-        """Get all response paths for the current cache version.
+    def get_stems(self) -> list[str]:
+        """Get all response stems for the current cache version.
 
         Returns:
-            sorted response cache paths
+            sorted response cache stems
         """
-        return sorted(self.cache_dir_path.glob(f"*-v{_CACHE_VERSION}/*.html"))
+        return [
+            cache_path.stem
+            for cache_path in sorted(
+                self.cache_dir_path.glob(f"*-v{_CACHE_VERSION}/*.html")
+            )
+        ]
 
     def load(self, stem: str) -> str | None:
         """Load a cached response body.
@@ -91,9 +99,7 @@ class CuhkResponseCache:
             contents = cache_path.read_text(encoding="utf-8")
         except (OSError, UnicodeError) as exc:
             cache_path.unlink(missing_ok=True)
-            logger.warning(
-                f"Discarded invalid CUHK response cache {cache_path}: {exc}"
-            )
+            logger.warning(f"Discarded invalid CUHK response cache {cache_path}: {exc}")
             return None
 
         cache_path.touch()

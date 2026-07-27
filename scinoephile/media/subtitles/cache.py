@@ -77,15 +77,16 @@ class SubtitleCache:
         missing: list[tuple[SubtitleStream, Path]] = []
         for stream in streams:
             stream_path = self.get_path(infile_path, stream)
-            if self.overwrite and stream_path not in self._refreshed_paths:
-                self._refreshed_paths.add(stream_path)
-                if stream_path.exists():
-                    stream_path.unlink()
-                    logger.info(f"Removed subtitle stream cache: {stream_path}")
-            if stream_path.exists():
+            self._remove_for_overwrite(stream_path, "subtitle stream")
+            if stream_path.is_file():
                 stream_path.touch()
                 logger.info(f"Loaded subtitle stream from cache: {stream_path}")
             else:
+                if stream_path.exists() or stream_path.is_symlink():
+                    self._remove_artifact(stream_path)
+                    logger.warning(
+                        f"Discarded invalid subtitle stream cache: {stream_path}"
+                    )
                 missing.append((stream, stream_path))
 
         # Extract missing streams in one ffmpeg run
@@ -148,6 +149,7 @@ class SubtitleCache:
         Returns:
             subtitle stream cache path
         """
+        infile_path = infile_path.resolve()
         stat = infile_path.stat()
         payload = {
             "cache_version": _CACHE_VERSION,
@@ -178,19 +180,45 @@ class SubtitleCache:
             stream_path = self.get_path(infile_path, stream)
             image_dir_path = stream_path.parent / "image-series"
             index_path = image_dir_path / "index.html"
-            if self.overwrite and image_dir_path not in self._refreshed_paths:
-                self._refreshed_paths.add(image_dir_path)
-                if image_dir_path.exists():
-                    rmtree(image_dir_path)
-                    logger.info(
-                        f"Removed image subtitle series cache: {image_dir_path}"
-                    )
-            if index_path.exists():
+            self._remove_for_overwrite(image_dir_path, "image subtitle series")
+            if index_path.is_file():
                 index_path.touch()
                 logger.info(
                     f"Loaded image subtitle series from cache: {image_dir_path}"
                 )
                 continue
+            if image_dir_path.exists() or image_dir_path.is_symlink():
+                self._remove_artifact(image_dir_path)
+                logger.warning(
+                    f"Discarded invalid image subtitle series cache: {image_dir_path}"
+                )
             image_series = ImageSeries.load(stream_path)
             image_series.save(image_dir_path)
             logger.info(f"Saved image subtitle series to cache: {image_dir_path}")
+
+    def _remove_for_overwrite(self, artifact_path: Path, label: str):
+        """Remove a matching artifact once when overwrite is enabled.
+
+        Arguments:
+            artifact_path: cached artifact path
+            label: artifact label used in logging
+        """
+        if not self.overwrite or artifact_path in self._refreshed_paths:
+            return
+        self._refreshed_paths.add(artifact_path)
+        if not artifact_path.exists() and not artifact_path.is_symlink():
+            return
+        self._remove_artifact(artifact_path)
+        logger.info(f"Removed {label} cache: {artifact_path}")
+
+    @staticmethod
+    def _remove_artifact(artifact_path: Path):
+        """Remove a cached file, directory, or symbolic link.
+
+        Arguments:
+            artifact_path: cached artifact to remove
+        """
+        if artifact_path.is_dir() and not artifact_path.is_symlink():
+            rmtree(artifact_path)
+        else:
+            artifact_path.unlink(missing_ok=True)

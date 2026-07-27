@@ -94,13 +94,16 @@ _Query.prompt = _PROMPT
 _Answer.prompt = _PROMPT
 _TestCase.query_cls = _Query
 _TestCase.answer_cls = _Answer
+_TestCase.operation = "test"
 _TestCase.prompt = _PROMPT
 _CompatibleTestCase.query_cls = _Query
 _CompatibleTestCase.answer_cls = _Answer
+_CompatibleTestCase.operation = "test"
 _CompatibleTestCase.prompt = _PROMPT
 _IncompatibleAnswer.prompt = _PROMPT
 _IncompatibleTestCase.query_cls = _Query
 _IncompatibleTestCase.answer_cls = _IncompatibleAnswer
+_IncompatibleTestCase.operation = "test"
 _IncompatibleTestCase.prompt = _PROMPT
 
 
@@ -483,7 +486,7 @@ def test_queryer_cache_stores_only_answer_and_preserves_current_metadata(tmp_pat
 
     first = queryer(_TestCase(query=_Query(text="input")))
 
-    cache_paths = list((tmp_path / "llm").glob("*.json"))
+    cache_paths = list((tmp_path / "llm" / "test").glob("*.json"))
     assert len(cache_paths) == 1
     assert json.loads(cache_paths[0].read_text(encoding="utf-8")) == {
         "output": "cached"
@@ -526,7 +529,7 @@ def test_queryer_overwrites_matching_cache(tmp_path):
         overwrite_cache=True,
     )(test_case)
 
-    cache_paths = list((tmp_path / "llm").glob("*.json"))
+    cache_paths = list((tmp_path / "llm" / "test").glob("*.json"))
     assert result.answer == _Answer(output="fresh")
     assert len(fresh_provider.calls) == 1
     assert len(cache_paths) == 1
