@@ -11,6 +11,7 @@ import numpy as np
 from opencc import OpenCC
 from pydub import AudioSegment
 
+from scinoephile.core import Language
 from scinoephile.core.dependencies.transcription import (
     import_torch,
     import_transformers,
@@ -25,6 +26,15 @@ __all__ = ["CtcAligner"]
 if TYPE_CHECKING:
     from scinoephile.core.dependencies.transcription import CtcModel, CtcProcessor
 
+_DEFAULT_MODEL_NAMES = {
+    Language.eng: "facebook/wav2vec2-base-960h",
+    Language.yue_hans: "ctl/wav2vec2-large-xlsr-cantonese",
+    Language.yue_hant: "ctl/wav2vec2-large-xlsr-cantonese",
+    Language.zho_hans: "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+    Language.zho_hant: "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+}
+"""Default CTC model names keyed by transcription language."""
+
 
 class CtcAligner:
     """Aligns transcription text to audio using a CTC model."""
@@ -37,15 +47,29 @@ class CtcAligner:
 
     def __init__(
         self,
-        model_name: str = "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+        language: Language,
+        model_name: str | None = None,
         device: str = "cpu",
     ):
         """Initialize.
 
         Arguments:
-            model_name: Hugging Face CTC model name or local model path
+            language: transcription language
+            model_name: optional Hugging Face CTC model name or local model path
             device: device identifier passed to the CTC model
+        Raises:
+            ValueError: if the transcription language is unsupported
         """
+        try:
+            default_model_name = _DEFAULT_MODEL_NAMES[language]
+        except KeyError as exc:
+            raise ValueError(f"{language} is not supported by CTC alignment") from exc
+
+        self.language = language
+        """Transcription language."""
+
+        if model_name is None:
+            model_name = default_model_name
         self.model_name = model_name
         """Hugging Face CTC model name or local model path."""
 
@@ -275,7 +299,9 @@ class CtcAligner:
         # Map supported characters to model tokens while retaining source positions
         token_ids: list[int] = []
         char_indices: list[int] = []
-        script_converter = OpenCC("t2s")
+        script_converters: tuple[OpenCC, ...] = ()
+        if self.language.is_chinese:
+            script_converters = (OpenCC("s2t"), OpenCC("t2s"))
         alignment_text_end_idx = len(text.rstrip())
         for char_idx, char in enumerate(text):
             # Align one delimiter per internal whitespace run
@@ -285,7 +311,7 @@ class CtcAligner:
                 or char_idx >= alignment_text_end_idx
             ):
                 continue
-            token_id = self._get_token_id(char, script_converter, tokenizer)
+            token_id = self._get_token_id(char, script_converters, tokenizer)
             if token_id is None:
                 continue
             token_ids.append(token_id)
@@ -491,14 +517,14 @@ class CtcAligner:
     @staticmethod
     def _get_token_id(
         char: str,
-        script_converter: OpenCC,
+        script_converters: Sequence[OpenCC],
         tokenizer: object,
     ) -> int | None:
         """Get an aligner token ID for one transcript character.
 
         Arguments:
             char: transcript character
-            script_converter: converter from Traditional Chinese to the model's script
+            script_converters: converters between Chinese scripts
             tokenizer: Hugging Face tokenizer
         Returns:
             token ID, or None when the character cannot be aligned directly
@@ -527,16 +553,20 @@ class CtcAligner:
                     return token_id
             return None
 
-        # Build case and script variants in preference order
+        # Build case variants in preference order
         candidates = list(dict.fromkeys((char, char.upper(), char.lower())))
-        simplified = script_converter.convert(char)
-        if len(simplified) == 1:
+
+        # Add alternate Chinese-script variants without changing the output text
+        for script_converter in script_converters:
+            converted = script_converter.convert(char)
+            if len(converted) != 1:
+                continue
             candidates.extend(
                 candidate
                 for candidate in (
-                    simplified,
-                    simplified.upper(),
-                    simplified.lower(),
+                    converted,
+                    converted.upper(),
+                    converted.lower(),
                 )
                 if candidate not in candidates
             )
