@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from types import ModuleType
 from typing import TYPE_CHECKING
 
@@ -13,6 +14,7 @@ __all__ = [
     "import_demucs_infer_pretrained",
     "import_huggingface_hub",
     "import_huggingface_hub_utils",
+    "import_mlx_audio_stt_load",
     "import_torch",
     "import_torchaudio",
     "import_transformers",
@@ -21,6 +23,8 @@ __all__ = [
 
 if TYPE_CHECKING:
     from demucs_infer.apply import BagOfModels, Model
+    from mlx_audio.stt.models.mimo_v2_asr import Model as MimoModel
+    from mlx_audio.stt.models.qwen3_asr import Model as Qwen3AsrModel
     from torch import Tensor
     from transformers import PreTrainedModel, ProcessorMixin
     from whisper import Whisper
@@ -28,6 +32,7 @@ if TYPE_CHECKING:
     type CtcModel = PreTrainedModel
     type CtcProcessor = ProcessorMixin
     type DemucsModel = BagOfModels | Model
+    type MlxAudioModel = MimoModel | Qwen3AsrModel
     type TorchTensor = Tensor
     type WhisperModel = Whisper
 
@@ -87,6 +92,19 @@ def import_huggingface_hub_utils() -> ModuleType:
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return huggingface_hub_utils
+
+
+def import_mlx_audio_stt_load() -> Callable[..., object]:
+    """Import the MLX-Audio STT model loader on demand.
+
+    Returns:
+        MLX-Audio model loader
+    """
+    try:
+        from mlx_audio.stt import load
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return load
 
 
 def import_torch() -> ModuleType:
