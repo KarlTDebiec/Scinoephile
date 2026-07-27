@@ -97,8 +97,7 @@ def t_zho_hant() -> Series:
 
 @cache
 def get_t_eng_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptEng,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptEng, **kwargs: Any
 ) -> list[TestCase]:
     """Get T English OCR fusion test cases.
 
@@ -130,8 +129,7 @@ def get_t_eng_review_test_cases(
 
 @cache
 def get_t_zho_hans_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptZhoHans,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptZhoHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get T zho-Hans OCR fusion test cases.
 
@@ -163,8 +161,7 @@ def get_t_zho_hans_review_test_cases(
 
 @cache
 def get_t_zho_hant_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptZhoHant,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptZhoHant, **kwargs: Any
 ) -> list[TestCase]:
     """Get T zho-Hant OCR fusion test cases.
 

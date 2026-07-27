@@ -51,22 +51,13 @@ def test_prompt_aliases_are_used_for_llm_correspondence():
                 "zhinan": [{"xuhao": 1, "wenben": "參考"}],
             },
             "answer": {
-                "xiugai": [
-                    {
-                        "xuhao": 2,
-                        "wenben": "修改二",
-                        "beizhu": "修正錯字",
-                    }
-                ]
+                "xiugai": [{"xuhao": 2, "wenben": "修改二", "beizhu": "修正錯字"}]
             },
         }
     )
 
     assert test_case.query.model_dump(by_alias=True) == {
-        "mubiao": [
-            {"xuhao": 1, "wenben": "原文一"},
-            {"xuhao": 2, "wenben": "原文二"},
-        ],
+        "mubiao": [{"xuhao": 1, "wenben": "原文一"}, {"xuhao": 2, "wenben": "原文二"}],
         "zhinan": [{"xuhao": 1, "wenben": "參考"}],
     }
     assert test_case.answer is not None
@@ -121,17 +112,11 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
         }
     )
     test_case_path = tmp_path / "guided_review.json"
-    save_test_cases_to_json(
-        test_case_path,
-        [old_test_case],
-        GuidedReviewManager,
-    )
+    save_test_cases_to_json(test_case_path, [old_test_case], GuidedReviewManager)
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = '{"xiugai": []}'
     processor = GuidedReviewProcessor(
-        _LOCALIZED_PROMPT,
-        test_case_path=test_case_path,
-        provider=provider,
+        _LOCALIZED_PROMPT, test_case_path=test_case_path, provider=provider
     )
     target = Series(events=[Subtitle(start=0, end=100, text="新原文")])
     guide = Series(events=[Subtitle(start=0, end=100, text="參考")])
@@ -139,9 +124,7 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
     processor.process(target, guide)
 
     persisted = load_test_cases_from_json(
-        test_case_path,
-        GuidedReviewManager,
-        _LOCALIZED_PROMPT,
+        test_case_path, GuidedReviewManager, _LOCALIZED_PROMPT
     )
     assert len(persisted) == 2
     persisted_cases = cast("list[GuidedReviewTestCase]", persisted)
@@ -232,10 +215,7 @@ def test_query_lists_require_items_and_consecutive_ordered_indexes():
     with raises(ValidationError, match="target indexes must be consecutive"):
         query_cls.model_validate(
             {
-                "targets": [
-                    {"index": 1, "text": "one"},
-                    {"index": 3, "text": "three"},
-                ],
+                "targets": [{"index": 1, "text": "one"}, {"index": 3, "text": "three"}],
                 "guides": [{"index": 1, "text": "guide"}],
             }
         )
@@ -243,10 +223,7 @@ def test_query_lists_require_items_and_consecutive_ordered_indexes():
         query_cls.model_validate(
             {
                 "targets": [{"index": 1, "text": "target"}],
-                "guides": [
-                    {"index": 2, "text": "two"},
-                    {"index": 1, "text": "one"},
-                ],
+                "guides": [{"index": 2, "text": "two"}, {"index": 1, "text": "one"}],
             }
         )
 
@@ -316,16 +293,11 @@ def test_test_case_rejects_missing_and_unmodified_revision_indexes(
     ],
     ids=["static", "generated"],
 )
-def test_revisions_raise_minimum_difficulty(
-    test_case_cls: type[GuidedReviewTestCase],
-):
+def test_revisions_raise_minimum_difficulty(test_case_cls: type[GuidedReviewTestCase]):
     """A nonempty revisions list should require difficulty one."""
     test_case = test_case_cls.model_validate(
         {
-            "query": {
-                "targets": [{"index": 1, "text": "original"}],
-                "guides": [],
-            },
+            "query": {"targets": [{"index": 1, "text": "original"}], "guides": []},
             "answer": {"revisions": [{"index": 1, "text": "revised", "note": "typo"}]},
         }
     )
@@ -400,9 +372,7 @@ def test_json_uses_base_prompt_fields_and_loads_localized_aliases(tmp_path: Path
         }
     ]
     loaded = load_test_cases_from_json(
-        output_path,
-        GuidedReviewManager,
-        _LOCALIZED_PROMPT,
+        output_path, GuidedReviewManager, _LOCALIZED_PROMPT
     )
     assert loaded[0].query.model_dump(by_alias=True) == {
         "mubiao": [{"xuhao": 1, "wenben": "原文"}],
@@ -435,9 +405,6 @@ def test_processor_uses_indexed_lists_and_applies_sparse_revisions():
     assert [subtitle.text for subtitle in output] == ["原文一", "修改二"]
     messages = provider.chat_completion.call_args.args[0]
     assert json.loads(messages[1]["content"]) == {
-        "mubiao": [
-            {"xuhao": 1, "wenben": "原文一"},
-            {"xuhao": 2, "wenben": "原文二"},
-        ],
+        "mubiao": [{"xuhao": 1, "wenben": "原文一"}, {"xuhao": 2, "wenben": "原文二"}],
         "zhinan": [{"xuhao": 1, "wenben": "參考"}],
     }

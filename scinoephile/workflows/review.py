@@ -16,10 +16,7 @@ from scinoephile.llms.review import ReviewProcessor, ReviewPrompt
 
 from .helpers import resolve_language
 
-__all__ = [
-    "review_series",
-    "review_series_guided",
-]
+__all__ = ["review_series", "review_series_guided"]
 
 
 def review_series(
@@ -55,17 +52,9 @@ def review_series(
 
     if reviewer is None:
         reviewer = get_reviewer(
-            resolved_language,
-            prompt,
-            test_cases,
-            provider,
-            **kwargs,
+            resolved_language, prompt, test_cases, provider, **kwargs
         )
-    return reviewer.process(
-        series,
-        stop_at_idx=stop_at_idx,
-        start_at_idx=start_at_idx,
-    )
+    return reviewer.process(series, stop_at_idx=stop_at_idx, start_at_idx=start_at_idx)
 
 
 def review_series_guided(
@@ -113,8 +102,5 @@ def review_series_guided(
             **kwargs,
         )
     return reviewer.process(
-        target,
-        guide,
-        stop_at_idx=stop_at_idx,
-        start_at_idx=start_at_idx,
+        target, guide, stop_at_idx=stop_at_idx, start_at_idx=start_at_idx
     )

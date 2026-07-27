@@ -9,10 +9,7 @@ from scinoephile.lang.zho.review import (
     GuidedReviewPromptZhoHant,
 )
 
-__all__ = [
-    "ZhoEngGuidedReviewPromptZhoHans",
-    "ZhoEngGuidedReviewPromptZhoHant",
-]
+__all__ = ["ZhoEngGuidedReviewPromptZhoHans", "ZhoEngGuidedReviewPromptZhoHant"]
 
 
 ZhoEngGuidedReviewPromptZhoHant = GuidedReviewPromptZhoHant

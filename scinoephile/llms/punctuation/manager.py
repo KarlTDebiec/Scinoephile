@@ -7,13 +7,7 @@ from __future__ import annotations
 from functools import cache
 from typing import ClassVar
 
-from scinoephile.core.llms import (
-    Answer,
-    Manager,
-    PromptModelField,
-    Query,
-    TestCase,
-)
+from scinoephile.core.llms import Answer, Manager, PromptModelField, Query, TestCase
 
 from .models import PunctuationAnswer, PunctuationQuery, PunctuationTestCase
 from .prompt import PunctuationPrompt
@@ -33,10 +27,7 @@ class PunctuationManager(Manager[PunctuationTestCase]):
 
     @classmethod
     @cache
-    def get_answer_cls(
-        cls,
-        prompt: PunctuationPrompt,
-    ) -> type[Answer]:
+    def get_answer_cls(cls, prompt: PunctuationPrompt) -> type[Answer]:
         """Get concrete answer class with prompt-specific JSON field aliases.
 
         Arguments:
@@ -51,16 +42,13 @@ class PunctuationManager(Manager[PunctuationTestCase]):
                 "output": PromptModelField(
                     alias=prompt.target_sub_punctuated,
                     description=prompt.target_sub_punctuated_desc,
-                ),
+                )
             },
         )
 
     @classmethod
     @cache
-    def get_query_cls(
-        cls,
-        prompt: PunctuationPrompt,
-    ) -> type[Query]:
+    def get_query_cls(cls, prompt: PunctuationPrompt) -> type[Query]:
         """Get concrete query class with prompt-specific JSON field aliases.
 
         Arguments:
@@ -73,12 +61,10 @@ class PunctuationManager(Manager[PunctuationTestCase]):
             prompt,
             {
                 "guide": PromptModelField(
-                    alias=prompt.ref_sub,
-                    description=prompt.ref_sub_desc,
+                    alias=prompt.ref_sub, description=prompt.ref_sub_desc
                 ),
                 "subtitles": PromptModelField(
-                    alias=prompt.target_subs,
-                    description=prompt.target_subs_desc,
+                    alias=prompt.target_subs, description=prompt.target_subs_desc
                 ),
             },
         )

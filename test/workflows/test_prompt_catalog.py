@@ -46,18 +46,14 @@ def test_prompt_catalog_is_stable_and_manager_compatible():
         assert OPERATIONS[prompt_spec.manager_cls.operation] is prompt_spec.manager_cls
         assert isinstance(prompt_spec.prompt, type(prompt_spec.manager_cls.base_prompt))
         persisted = PersistedPrompt.from_prompt(
-            prompt_spec.prompt,
-            prompt_spec.manager_cls,
+            prompt_spec.prompt, prompt_spec.manager_cls
         )
         assert isinstance(persisted.language, Language)
 
 
 def test_prompt_catalog_contains_registered_transcription_prompts():
     """Each guided transcription spec should contribute its prompts to the catalog."""
-    for (
-        language,
-        guide_language,
-    ), spec in guided_transcription.DEFAULT_SPECS.items():
+    for (language, guide_language), spec in guided_transcription.DEFAULT_SPECS.items():
         guide_code = guide_language.language.lower()
         delineation_alias = f"delineation-{language.code.lower()}-vs-{guide_code}"
         punctuation_alias = f"punctuation-{language.code.lower()}-vs-{guide_code}"

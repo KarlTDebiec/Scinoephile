@@ -13,10 +13,7 @@ from scinoephile.llms.ocr_fusion import OcrFusionPrompt
 from .prompts import ZHO_HANT_PROMPT_FIELDS
 from .script.conversion import OpenCCConfig, get_zho_text_converted
 
-__all__ = [
-    "OcrFusionPromptZhoHans",
-    "OcrFusionPromptZhoHant",
-]
+__all__ = ["OcrFusionPromptZhoHans", "OcrFusionPromptZhoHant"]
 
 
 OcrFusionPromptZhoHant = OcrFusionPrompt(
@@ -45,7 +42,6 @@ OcrFusionPromptZhoHant = OcrFusionPrompt(
 """Text for LLM correspondence for traditional standard Chinese OCR fusion."""
 
 OcrFusionPromptZhoHans = OcrFusionPromptZhoHant.transformed(
-    Language.zho_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+    Language.zho_hans, partial(get_zho_text_converted, config=OpenCCConfig.t2s)
 )
 """Text for LLM correspondence for simplified standard Chinese OCR fusion."""

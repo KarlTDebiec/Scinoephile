@@ -15,10 +15,7 @@ from scinoephile.audio.transcription import DemucsMode, VADMode
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.utils import save_test_cases_to_json
-from scinoephile.lang.transcription.guided import (
-    DEFAULT_SPECS,
-    get_guided_transcriber,
-)
+from scinoephile.lang.transcription.guided import DEFAULT_SPECS, get_guided_transcriber
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHant,
@@ -140,9 +137,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.aligner.punctuation_processor.queryer._cache.overwrite
 
 
-def test_get_guided_transcriber_prunes_stale_cases_when_requested(
-    tmp_path: Path,
-):
+def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path):
     """Test requested pruning retains only cases encountered by the current run."""
     delineation_json_path = tmp_path / "custom" / "delineation.json"
     punctuation_json_path = tmp_path / "other" / "punctuation.json"
@@ -186,10 +181,7 @@ def test_get_guided_transcriber_prunes_stale_cases_when_requested(
         json.dumps(
             [
                 {
-                    "query": {
-                        "ref_sub": "參考",
-                        "target_subs": ["目標"],
-                    },
+                    "query": {"ref_sub": "參考", "target_subs": ["目標"]},
                     "answer": {"target_sub_punctuated": "目標。"},
                 }
             ]
@@ -203,9 +195,7 @@ def test_get_guided_transcriber_prunes_stale_cases_when_requested(
     assert json.loads(punctuation_json_path.read_text(encoding="utf-8")) == []
 
 
-def test_get_guided_transcriber_preserves_cases_in_default_json_paths(
-    tmp_path: Path,
-):
+def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: Path):
     """Test default JSON test cases are preserved between runs."""
     with (
         patch(
@@ -241,21 +231,16 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(
     ]
     punctuation_test_case_data = [
         {
-            "query": {
-                "ref_sub": "參考",
-                "target_subs": ["目標"],
-            },
+            "query": {"ref_sub": "參考", "target_subs": ["目標"]},
             "answer": {"target_sub_punctuated": "目標。"},
             "difficulty": 2,
         }
     ]
     delineation_json_path.write_text(
-        json.dumps(delineation_test_case_data),
-        encoding="utf-8",
+        json.dumps(delineation_test_case_data), encoding="utf-8"
     )
     punctuation_json_path.write_text(
-        json.dumps(punctuation_test_case_data),
-        encoding="utf-8",
+        json.dumps(punctuation_test_case_data), encoding="utf-8"
     )
 
     transcriber.aligner.update_all_test_cases()
@@ -285,9 +270,7 @@ def test_get_guided_transcriber_loads_verified_cases_from_exact_json(tmp_path: P
     )
     delineation_json_path = tmp_path / "delineation.json"
     save_test_cases_to_json(
-        delineation_json_path,
-        [verified_test_case],
-        DelineationManager,
+        delineation_json_path, [verified_test_case], DelineationManager
     )
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     transcriber = get_guided_transcriber(
@@ -322,9 +305,6 @@ def test_get_guided_transcriber_rejects_unsupported_language_pair():
 
 def test_transcription_prompts_use_yue_hant_correspondence_fields():
     """Test Yue-Hant transcription prompts use Yue-Hant shared text."""
-    for prompt in (
-        YueZhoDelineationPromptYueHant,
-        YueZhoPunctuationPromptYueHant,
-    ):
+    for prompt in (YueZhoDelineationPromptYueHant, YueZhoPunctuationPromptYueHant):
         for field_name, expected in YUE_HANT_PROMPT_FIELDS.items():
             assert getattr(prompt, field_name) == expected

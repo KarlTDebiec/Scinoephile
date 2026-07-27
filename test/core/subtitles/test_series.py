@@ -36,10 +36,7 @@ def test_series_blocks_refresh_after_event_list_mutation():
 
     assert refreshed_blocks is not initial_blocks
     assert len(refreshed_blocks) == 2
-    assert [block.events[0].text for block in refreshed_blocks] == [
-        "First",
-        "Second",
-    ]
+    assert [block.events[0].text for block in refreshed_blocks] == ["First", "Second"]
 
 
 def test_series_blocks_refresh_after_direct_event_mutation():
@@ -71,8 +68,7 @@ def test_series_load_wraps_input_path_errors(tmp_path: Path):
     path = tmp_path / "missing.srt"
 
     with raises(
-        ScinoephileError,
-        match="Unable to load Series from .*missing.srt",
+        ScinoephileError, match="Unable to load Series from .*missing.srt"
     ) as excinfo:
         Series.load(path)
 
@@ -81,10 +77,7 @@ def test_series_load_wraps_input_path_errors(tmp_path: Path):
 
 def test_series_from_string_wraps_parser_errors():
     """Test subtitle parsing errors are user-facing."""
-    with raises(
-        ScinoephileError,
-        match="Unable to parse Series from string",
-    ):
+    with raises(ScinoephileError, match="Unable to parse Series from string"):
         Series.from_string("text", format_="unsupported")
 
 
@@ -96,10 +89,7 @@ def test_series_save_wraps_output_path_errors(tmp_path: Path):
     """
     series = Series(events=[Subtitle(start=1000, end=2000, text="Text")])
 
-    with raises(
-        ScinoephileError,
-        match="Unable to save Series to ",
-    ) as excinfo:
+    with raises(ScinoephileError, match="Unable to save Series to ") as excinfo:
         series.save(tmp_path)
 
     assert isinstance(excinfo.value.__cause__, OSError)
@@ -140,8 +130,5 @@ def test_series_to_string_wraps_serializer_errors():
     """Test subtitle string serialization errors are user-facing."""
     series = Series(events=[Subtitle(start=1000, end=2000, text="Text")])
 
-    with raises(
-        ScinoephileError,
-        match="Unable to serialize Series to string",
-    ):
+    with raises(ScinoephileError, match="Unable to serialize Series to string"):
         series.to_string(format_="unsupported")

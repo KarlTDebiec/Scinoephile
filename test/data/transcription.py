@@ -24,10 +24,7 @@ from scinoephile.workflows.translation import translate_series_gaps
 
 from .helpers import load_or_clean_series
 
-__all__ = [
-    "get_reference_for_guide_blocks",
-    "process_transcription",
-]
+__all__ = ["get_reference_for_guide_blocks", "process_transcription"]
 
 logger = getLogger(__name__)
 
@@ -59,9 +56,7 @@ class _RelogLanguageMismatchFilter(Filter):
 
 
 def get_reference_for_guide_blocks(
-    reference: Series,
-    guide: Series,
-    stop_at_idx: int | None,
+    reference: Series, guide: Series, stop_at_idx: int | None
 ) -> Series:
     """Limit an evaluation reference to a prefix of guide blocks.
 
@@ -156,11 +151,7 @@ def process_transcription(
         output_dir_path = title_root_path / "output" / f"{language.code}_transcribe"
     output_dir_path.mkdir(parents=True, exist_ok=True)
 
-    evaluation_reference = get_reference_for_guide_blocks(
-        reference,
-        guide,
-        stop_at_idx,
-    )
+    evaluation_reference = get_reference_for_guide_blocks(reference, guide, stop_at_idx)
 
     # Stage guide subtitles and audio under the transcription output
     audio = _stage_audio_series(
@@ -195,12 +186,7 @@ def process_transcription(
     # Clean transcription
     clean_path = output_dir_path / "transcribe_clean.srt"
     with _relog_cantonese_transcription_mismatch(language):
-        cleaned = load_or_clean_series(
-            transcribe,
-            clean_path,
-            language,
-            overwrite,
-        )
+        cleaned = load_or_clean_series(transcribe, clean_path, language, overwrite)
     logger.info(
         f"{language.code} transcription CER after cleaning:\n"
         f"{SeriesCER(evaluation_reference, cleaned)}"
@@ -405,9 +391,7 @@ def _load_or_translate_series_gaps(
 
 
 @contextmanager
-def _relog_cantonese_transcription_mismatch(
-    language: Language,
-) -> Iterator[None]:
+def _relog_cantonese_transcription_mismatch(language: Language) -> Iterator[None]:
     """Relog expected same-script Cantonese-to-Mandarin detection at info.
 
     Arguments:

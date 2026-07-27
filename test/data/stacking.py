@@ -12,10 +12,7 @@ from scinoephile.core.subtitles import Series
 from scinoephile.workflows.clean import clean_series
 from scinoephile.workflows.flatten import flatten_series
 
-__all__ = [
-    "process_yue_hans_eng",
-    "process_zho_hans_eng",
-]
+__all__ = ["process_yue_hans_eng", "process_zho_hans_eng"]
 
 
 def process_yue_hans_eng(

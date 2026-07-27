@@ -13,9 +13,7 @@ from test.helpers.series_files import get_ocr_text_series
 
 
 def test_validate_ocr_runs_noninteractive_validation(
-    monkeypatch,
-    tmp_path: Path,
-    tiny_image_series: ImageSeries,
+    monkeypatch, tmp_path: Path, tiny_image_series: ImageSeries
 ):
     """Test path-based OCR validation loads, validates, and writes output."""
     infile_path = tmp_path / "source.sup"
@@ -51,12 +49,10 @@ def test_validate_ocr_runs_noninteractive_validation(
         return tiny_image_series
 
     monkeypatch.setattr(
-        "scinoephile.workflows.ocr_validation.ImageSeries.load",
-        fake_load,
+        "scinoephile.workflows.ocr_validation.ImageSeries.load", fake_load
     )
     monkeypatch.setattr(
-        "scinoephile.workflows.ocr_validation.ValidationManager",
-        FakeValidationManager,
+        "scinoephile.workflows.ocr_validation.ValidationManager", FakeValidationManager
     )
 
     validated = validate_ocr(
@@ -77,10 +73,7 @@ def test_validate_ocr_runs_noninteractive_validation(
     assert "validated" in outfile_path.read_text(encoding="utf-8")
 
 
-def test_validate_ocr_runs_interactive_validation(
-    monkeypatch,
-    tmp_path: Path,
-):
+def test_validate_ocr_runs_interactive_validation(monkeypatch, tmp_path: Path):
     """Test path-based OCR validation launches interactive validation."""
     infile_path = tmp_path / "image"
     infile_path.mkdir()
@@ -98,13 +91,7 @@ def test_validate_ocr_runs_interactive_validation(
     ) -> object:
         """Capture web session construction arguments."""
         run_calls.append(
-            (
-                "from_dir_path",
-                dir_path,
-                outfile_path,
-                validation_data_dir_path,
-                dev,
-            )
+            ("from_dir_path", dir_path, outfile_path, validation_data_dir_path, dev)
         )
         return session
 
@@ -117,10 +104,7 @@ def test_validate_ocr_runs_interactive_validation(
         "scinoephile.workflows.ocr_validation.OcrValidationSession.from_dir_path",
         fake_session_from_dir_path,
     )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_validation.run_app",
-        fake_run_app,
-    )
+    monkeypatch.setattr("scinoephile.workflows.ocr_validation.run_app", fake_run_app)
 
     validated = validate_ocr(
         infile_path,

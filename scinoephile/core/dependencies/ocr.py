@@ -7,10 +7,7 @@ from __future__ import annotations
 
 from types import ModuleType
 
-__all__ = [
-    "import_chrome_lens_py",
-    "import_paddleocr",
-]
+__all__ = ["import_chrome_lens_py", "import_paddleocr"]
 
 _OCR_EXTRA_MESSAGE = (
     "OCR support requires optional OCR dependencies. Install scinoephile with the "

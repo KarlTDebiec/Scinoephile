@@ -13,10 +13,7 @@ from scinoephile.core.llms.tool_box import ToolBox
 
 from .lookup import lookup_dictionary_entries
 
-__all__ = [
-    "get_dictionary_tools",
-    "lookup_dictionary",
-]
+__all__ = ["get_dictionary_tools", "lookup_dictionary"]
 logger = getLogger(__name__)
 """Module logger."""
 
@@ -70,7 +67,7 @@ def get_dictionary_tools(prompt: DictionaryToolPrompt) -> ToolBox:
                                 "description": (
                                     prompt.dictionary_tool_query_description
                                 ),
-                            },
+                            }
                         },
                     },
                 },
@@ -81,9 +78,7 @@ def get_dictionary_tools(prompt: DictionaryToolPrompt) -> ToolBox:
 
 
 def lookup_dictionary(
-    query: str,
-    *,
-    auto_build_missing: bool = False,
+    query: str, *, auto_build_missing: bool = False
 ) -> DictionaryLookupResponse:
     """Lookup entries in local dictionary data.
 
@@ -104,9 +99,7 @@ def lookup_dictionary(
 
     try:
         entries = lookup_dictionary_entries(
-            query=normalized_query,
-            limit=10,
-            auto_build_missing=auto_build_missing,
+            query=normalized_query, limit=10, auto_build_missing=auto_build_missing
         )
     except (FileNotFoundError, ValueError) as exc:
         logger.warning(f"Dictionary lookup failed: {exc}")

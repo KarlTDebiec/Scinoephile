@@ -12,15 +12,9 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import join_text_lines
 
-from .utils import (
-    format_audit_report,
-    get_selected_event_indexes,
-)
+from .utils import format_audit_report, get_selected_event_indexes
 
-__all__ = [
-    "AlignedDiffAuditFilter",
-    "audit_aligned_diff",
-]
+__all__ = ["AlignedDiffAuditFilter", "audit_aligned_diff"]
 
 
 class AlignedDiffAuditFilter(StrEnum):
@@ -142,11 +136,7 @@ def audit_aligned_diff(
             f"equal rows: {equal_rows}",
             f"row filter: {row_filter.value}",
         ),
-        columns=(
-            ("Indexes", "right"),
-            ("Alignment", "left"),
-            ("Notes", "left"),
-        ),
+        columns=(("Indexes", "right"), ("Alignment", "left"), ("Notes", "left")),
         rows=[
             _format_row(
                 message,
@@ -256,9 +246,7 @@ def _format_event_indices(prefix: str, event_idxs: tuple[int, ...]) -> str:
 
 
 def _format_original_text(
-    original: Series,
-    timing_track: Series,
-    event_idxs: tuple[int, ...],
+    original: Series, timing_track: Series, event_idxs: tuple[int, ...]
 ) -> str:
     """Join original text that overlaps the indexed events' time range.
 
@@ -321,9 +309,7 @@ def _format_row(
             original_timing_track = reference
             original_event_idxs = reference_idxs
         original_text = _format_original_text(
-            original,
-            original_timing_track,
-            original_event_idxs,
+            original, original_timing_track, original_event_idxs
         )
         aligned_lines.append(f"O │ {_escape_preformatted(original_text)}")
     aligned_lines.extend(

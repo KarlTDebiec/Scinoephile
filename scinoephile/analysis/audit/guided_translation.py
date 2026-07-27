@@ -51,11 +51,7 @@ def audit_guided_translation(
     # Build paired workflow blocks and validate the selection
     block_pairs = get_block_pairs_by_pause(source, guide)
     validate_audit_range(
-        first_index,
-        last_index,
-        first_block,
-        last_block,
-        block_count=len(block_pairs),
+        first_index, last_index, first_block, last_block, block_count=len(block_pairs)
     )
     blocks = _get_blocks(block_pairs)
 

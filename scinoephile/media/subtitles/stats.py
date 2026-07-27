@@ -14,10 +14,7 @@ from scinoephile.image.subtitles import ImageSeries
 from .cache import SubtitleCache
 from .extractor import SubtitleExtractor
 
-__all__ = [
-    "SubtitleStreamStats",
-    "get_subtitle_stream_stats",
-]
+__all__ = ["SubtitleStreamStats", "get_subtitle_stream_stats"]
 
 
 @dataclass(frozen=True)
@@ -51,10 +48,7 @@ def get_subtitle_stream_stats(
         subtitle_cache = SubtitleCache()
     stream_path = SubtitleExtractor(subtitle_cache).extract(infile_path, [stream])[0]
     if stream.extension == "sup":
-        image_dir_path = subtitle_cache.get_image_series_dir_path(
-            infile_path,
-            stream,
-        )
+        image_dir_path = subtitle_cache.get_image_series_dir_path(infile_path, stream)
         series = ImageSeries.load(image_dir_path)
     else:
         series = Series.load(stream_path)
@@ -66,7 +60,5 @@ def get_subtitle_stream_stats(
         first_start_ms = None
         last_end_ms = None
     return SubtitleStreamStats(
-        event_count=len(series),
-        first_start_ms=first_start_ms,
-        last_end_ms=last_end_ms,
+        event_count=len(series), first_start_ms=first_start_ms, last_end_ms=last_end_ms
     )

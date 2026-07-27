@@ -56,7 +56,7 @@ class TranslationManager(Manager[TranslationTestCase]):
                     alias=prompt.outputs,
                     annotation=list[output_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.outputs_desc,
-                ),
+                )
             },
         )
 
@@ -75,12 +75,10 @@ class TranslationManager(Manager[TranslationTestCase]):
             prompt,
             {
                 "index": PromptModelField(
-                    alias=prompt.index,
-                    description=prompt.index_desc,
+                    alias=prompt.index, description=prompt.index_desc
                 ),
                 "text": PromptModelField(
-                    alias=prompt.text,
-                    description=prompt.output_text_desc,
+                    alias=prompt.text, description=prompt.output_text_desc
                 ),
             },
         )
@@ -104,7 +102,7 @@ class TranslationManager(Manager[TranslationTestCase]):
                     alias=prompt.subtitles,
                     annotation=list[subtitle_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.subtitles_desc,
-                ),
+                )
             },
         )
 
@@ -123,12 +121,10 @@ class TranslationManager(Manager[TranslationTestCase]):
             prompt,
             {
                 "index": PromptModelField(
-                    alias=prompt.index,
-                    description=prompt.index_desc,
+                    alias=prompt.index, description=prompt.index_desc
                 ),
                 "text": PromptModelField(
-                    alias=prompt.text,
-                    description=prompt.subtitle_text_desc,
+                    alias=prompt.text, description=prompt.subtitle_text_desc
                 ),
             },
             module=TranslationQuery.__module__,

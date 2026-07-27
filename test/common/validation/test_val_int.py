@@ -14,15 +14,7 @@ from scinoephile.common.validation import val_int
 from test.helpers import parametrize
 
 
-@parametrize(
-    ("value", "expected"),
-    [
-        (5, 5),
-        (5.0, 5),
-        ("5", 5),
-        (-3, -3),
-    ],
-)
+@parametrize(("value", "expected"), [(5, 5), (5.0, 5), ("5", 5), (-3, -3)])
 def test_val_int_accepts_scalar_values(value: float | int | str, expected: int):
     """Test int validation accepts scalar values."""
     assert val_int(value) == expected

@@ -47,9 +47,7 @@ class ToolBox:
             for tool in sorted(
                 self._tools_by_name.values(),
                 key=lambda tool: json.dumps(
-                    tool.spec,
-                    ensure_ascii=False,
-                    sort_keys=True,
+                    tool.spec, ensure_ascii=False, sort_keys=True
                 ),
             )
         ]
@@ -93,8 +91,7 @@ class ToolBox:
             return {"error": f"Unsupported tool '{tool_name}'."}
 
         parsed_arguments = self._parse_arguments(
-            tool_name=tool_name,
-            raw_arguments=raw_arguments,
+            tool_name=tool_name, raw_arguments=raw_arguments
         )
         if isinstance(parsed_arguments, dict) and "error" in parsed_arguments:
             return parsed_arguments
@@ -106,10 +103,7 @@ class ToolBox:
         if not self:
             return ""
         return json.dumps(
-            {
-                "handler_names": self.handler_names,
-                "tools": self.specs,
-            },
+            {"handler_names": self.handler_names, "tools": self.specs},
             ensure_ascii=False,
             sort_keys=True,
         )

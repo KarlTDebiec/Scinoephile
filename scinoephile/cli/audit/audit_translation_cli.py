@@ -14,10 +14,7 @@ from scinoephile.analysis.audit.translation import (
     audit_translation,
 )
 from scinoephile.cli.helpers.io import read_series
-from scinoephile.common.argument_parsing import (
-    get_arg_groups_by_name,
-    input_file_arg,
-)
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_translation import GuidedTranslationManager
@@ -178,10 +175,7 @@ class AuditTranslationCli(AuditCliBase):
         target = read_series(parser, target_path)
         guide = read_series(parser, guide_path)
         test_cases = cls.load_test_cases(
-            parser,
-            json_path,
-            GapTranslationManager,
-            workflow_name="gapped translation",
+            parser, json_path, GapTranslationManager, workflow_name="gapped translation"
         )
 
         # Perform operation
@@ -277,10 +271,7 @@ class AuditTranslationCli(AuditCliBase):
         # Read inputs
         source = read_series(parser, source_path)
         test_cases = cls.load_test_cases(
-            parser,
-            json_path,
-            TranslationManager,
-            workflow_name="standard translation",
+            parser, json_path, TranslationManager, workflow_name="standard translation"
         )
 
         # Perform operation

@@ -32,8 +32,7 @@ logger = getLogger(__name__)
 
 
 def ocr_image_series_with_tesseract(
-    image_series: ImageSeries,
-    **kwargs: Unpack[TesseractRecognizerKwargs],
+    image_series: ImageSeries, **kwargs: Unpack[TesseractRecognizerKwargs]
 ) -> Series:
     """OCR an image subtitle series with Tesseract.
 
@@ -55,11 +54,7 @@ def ocr_image_series_with_tesseract(
             image_subtitle = cast(ImageSubtitle, subtitle)
             text = tesseract_recognizer.recognize_image(image_subtitle.img)
             events.append(
-                Subtitle(
-                    start=image_subtitle.start,
-                    end=image_subtitle.end,
-                    text=text,
-                )
+                Subtitle(start=image_subtitle.start, end=image_subtitle.end, text=text)
             )
         return Series(events=events)
     except ScinoephileError:

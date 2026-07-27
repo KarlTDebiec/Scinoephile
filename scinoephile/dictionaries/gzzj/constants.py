@@ -29,8 +29,4 @@ GZZJ_SOURCE = DictionarySource(
     other="words",
 )
 
-__all__ = [
-    "GZZJ_DOWNLOAD_URL",
-    "GZZJ_SOURCE",
-    "MAX_LOOKUP_LIMIT",
-]
+__all__ = ["GZZJ_DOWNLOAD_URL", "GZZJ_SOURCE", "MAX_LOOKUP_LIMIT"]

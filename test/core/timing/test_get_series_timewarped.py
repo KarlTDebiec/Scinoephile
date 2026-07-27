@@ -88,10 +88,7 @@ def test_get_series_timewarped(
         param({"two_end_idx": 0}, "source two end", id="source-two-end"),
     ],
 )
-def test_get_series_timewarped_rejects_zero_indexes(
-    kwargs: dict[str, int],
-    label: str,
-):
+def test_get_series_timewarped_rejects_zero_indexes(kwargs: dict[str, int], label: str):
     """Test explicit zero indexes are rejected instead of defaulted.
 
     Arguments:
@@ -101,31 +98,19 @@ def test_get_series_timewarped_rejects_zero_indexes(
     source_one = _get_series()
     source_two = _get_series()
 
-    with raises(
-        ScinoephileError,
-        match=f"Invalid {label} index 0",
-    ):
+    with raises(ScinoephileError, match=f"Invalid {label} index 0"):
         get_series_timewarped(source_one, source_two, **kwargs)
 
 
 @parametrize(
     "kwargs, label",
     [
-        param(
-            {"one_start_idx": 2, "one_end_idx": 1},
-            "source one",
-            id="source-one",
-        ),
-        param(
-            {"two_start_idx": 2, "two_end_idx": 1},
-            "source two",
-            id="source-two",
-        ),
+        param({"one_start_idx": 2, "one_end_idx": 1}, "source one", id="source-one"),
+        param({"two_start_idx": 2, "two_end_idx": 1}, "source two", id="source-two"),
     ],
 )
 def test_get_series_timewarped_rejects_reversed_ranges(
-    kwargs: dict[str, int],
-    label: str,
+    kwargs: dict[str, int], label: str
 ):
     """Test timewarp anchor ranges must be ordered from start to end.
 
@@ -136,10 +121,7 @@ def test_get_series_timewarped_rejects_reversed_ranges(
     source_one = _get_series()
     source_two = _get_series()
 
-    with raises(
-        ScinoephileError,
-        match=f"Invalid {label} range 2-1",
-    ):
+    with raises(ScinoephileError, match=f"Invalid {label} range 2-1"):
         get_series_timewarped(source_one, source_two, **kwargs)
 
 

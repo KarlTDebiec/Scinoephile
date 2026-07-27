@@ -19,8 +19,7 @@ from test.helpers import skip_if_ci
 
 
 def test_dictionary_build_cuhk_cli_passes_cache_root_to_service(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
+    monkeypatch: MonkeyPatch, tmp_path: Path
 ):
     """Test CUHK CLI forwards the parsed cache root without creating it.
 
@@ -62,10 +61,7 @@ def test_dictionary_build_cuhk_cli_passes_cache_root_to_service(
             self.database_path = database_path
 
         def build(
-            self,
-            *,
-            overwrite: bool = False,
-            max_words: int | None = None,
+            self, *, overwrite: bool = False, max_words: int | None = None
         ) -> Path:
             """Build the dictionary."""
             build_calls.append({"overwrite": overwrite, "max_words": max_words})

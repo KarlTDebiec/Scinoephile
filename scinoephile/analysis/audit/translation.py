@@ -12,11 +12,7 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.translation import TranslationTestCase
 
-from .utils import (
-    format_audit_report,
-    format_verification_marker,
-    validate_audit_range,
-)
+from .utils import format_audit_report, format_verification_marker, validate_audit_range
 
 __all__ = [
     "TranslationAuditBlock",
@@ -118,11 +114,7 @@ def audit_translation(
     # Build current workflow blocks and validate the selection
     blocks = _get_standard_blocks(source)
     validate_audit_range(
-        first_index,
-        last_index,
-        first_block,
-        last_block,
-        block_count=len(blocks),
+        first_index, last_index, first_block, last_block, block_count=len(blocks)
     )
 
     # Adapt concrete test cases to shared semantic data
@@ -198,8 +190,7 @@ def audit_translation_blocks(
         for position in selected_positions:
             local_index = position + 1
             output_text, answered, empty = resolve_translation_audit_output(
-                case.outputs_by_index,
-                local_index,
+                case.outputs_by_index, local_index
             )
             if not answered:
                 unanswered_subtitles += 1
@@ -217,12 +208,7 @@ def audit_translation_blocks(
                 "",
                 verified_marker,
             )
-            all_rows.append(
-                _TranslationAuditRow(
-                    cells=cells,
-                    verified=case.verified,
-                )
-            )
+            all_rows.append(_TranslationAuditRow(cells=cells, verified=case.verified))
 
     # Apply the row filter after calculating complete selection statistics
     rows = [
@@ -263,8 +249,7 @@ def audit_translation_blocks(
 
 
 def resolve_translation_audit_output(
-    outputs_by_index: Mapping[int, str] | None,
-    local_index: int,
+    outputs_by_index: Mapping[int, str] | None, local_index: int
 ) -> tuple[str, bool, bool]:
     """Resolve one logged translation output for audit display.
 

@@ -15,11 +15,7 @@ from .pairs import get_block_pairs_by_pause, get_pair_strings
 from .subtitles import Series, Subtitle, get_concatenated_series
 from .synchronization import SyncGroup, get_sync_groups
 
-__all__ = [
-    "StackTimingMode",
-    "get_stacked_series",
-    "get_stacked_series_from_groups",
-]
+__all__ = ["StackTimingMode", "get_stacked_series", "get_stacked_series_from_groups"]
 
 logger = getLogger(__name__)
 
@@ -226,9 +222,7 @@ def _get_series_without_overlaps(series: Series) -> Series:
 
 
 def _get_stack_group_interval(
-    one_subs: list[Subtitle],
-    two_subs: list[Subtitle],
-    timing_mode: StackTimingMode,
+    one_subs: list[Subtitle], two_subs: list[Subtitle], timing_mode: StackTimingMode
 ) -> tuple[int, int]:
     """Get the selected timing interval for a stack group.
 

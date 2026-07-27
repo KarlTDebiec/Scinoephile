@@ -149,9 +149,7 @@ class TranscriptionAlignment:
         return sorted(set(range(len(self.transcription))) - transcription_idxs)
 
     def get_delineation_test_case(
-        self,
-        sync_group_one_idx: int,
-        prompt: DelineationPrompt,
+        self, sync_group_one_idx: int, prompt: DelineationPrompt
     ) -> DelineationTestCase | None:
         """Get a delineation test case for adjacent sync groups.
 
@@ -220,9 +218,7 @@ class TranscriptionAlignment:
         return cast(DelineationTestCase, test_case_cls(query=query))
 
     def get_punctuation_test_case(
-        self,
-        sync_group_idx: int,
-        prompt: PunctuationPrompt,
+        self, sync_group_idx: int, prompt: PunctuationPrompt
     ) -> PunctuationTestCase | None:
         """Get a punctuation test case for a sync group.
 
@@ -254,9 +250,6 @@ class TranscriptionAlignment:
 
         test_case_cls = PunctuationManager.get_test_case_cls(prompt=prompt)
         query = test_case_cls.query_cls.model_validate(
-            {
-                "subtitles": transcriptions,
-                "guide": reference,
-            }
+            {"subtitles": transcriptions, "guide": reference}
         )
         return cast(PunctuationTestCase, test_case_cls(query=query))

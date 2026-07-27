@@ -29,10 +29,7 @@ class DemucsCache:
     """Caches separated vocals by audio and Demucs model configuration."""
 
     def __init__(
-        self,
-        cache_root_path: Path | None,
-        model_name: str,
-        overwrite: bool = False,
+        self, cache_root_path: Path | None, model_name: str, overwrite: bool = False
     ):
         """Initialize.
 
@@ -125,11 +122,7 @@ class DemucsCache:
         logger.info(f"Removed Demucs vocals cache: {cache_path}")
         return cache_path
 
-    def save(
-        self,
-        audio: AudioSegment,
-        vocals: AudioSegment,
-    ) -> Path:
+    def save(self, audio: AudioSegment, vocals: AudioSegment) -> Path:
         """Save Demucs-separated vocals to the cache.
 
         Arguments:
@@ -144,8 +137,7 @@ class DemucsCache:
         # Export beside the target so replacement is atomic on the same filesystem
         try:
             with TemporaryDirectory(
-                dir=cache_path.parent,
-                prefix=f".{cache_path.stem}-",
+                dir=cache_path.parent, prefix=f".{cache_path.stem}-"
             ) as temp_dir:
                 staging_path = Path(temp_dir) / cache_path.name
                 vocals.export(staging_path, format="wav")

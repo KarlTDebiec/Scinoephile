@@ -12,10 +12,7 @@ from pydantic import JsonValue
 from .answer import Answer
 from .tool_box import ToolBox
 
-__all__ = [
-    "ChatCompletionKwargs",
-    "LLMProvider",
-]
+__all__ = ["ChatCompletionKwargs", "LLMProvider"]
 
 
 class ChatCompletionKwargs(TypedDict, total=False):

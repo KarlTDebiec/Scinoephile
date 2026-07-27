@@ -12,7 +12,4 @@ from __future__ import annotations
 from .series import ImageSeries
 from .subtitle import ImageSubtitle
 
-__all__ = [
-    "ImageSeries",
-    "ImageSubtitle",
-]
+__all__ = ["ImageSeries", "ImageSubtitle"]

@@ -17,11 +17,7 @@ _CACHE_VERSION = 1
 class TesseractCache(OcrCacheBase[str]):
     """Caches normalized Tesseract OCR text."""
 
-    def __init__(
-        self,
-        cache_root_path: Path | None = None,
-        overwrite: bool = False,
-    ):
+    def __init__(self, cache_root_path: Path | None = None, overwrite: bool = False):
         """Initialize.
 
         Arguments:
@@ -29,11 +25,7 @@ class TesseractCache(OcrCacheBase[str]):
             overwrite: whether to replace matching cache files
         """
         super().__init__(
-            cache_root_path,
-            "tesseract",
-            "Tesseract OCR",
-            _CACHE_VERSION,
-            overwrite,
+            cache_root_path, "tesseract", "Tesseract OCR", _CACHE_VERSION, overwrite
         )
 
     def _deserialize(self, payload: object) -> str:

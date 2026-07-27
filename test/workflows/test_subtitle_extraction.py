@@ -92,14 +92,12 @@ def test_extract_subtitles_details_uses_detected_chinese_script(tmp_path: Path):
     with (
         patch(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
-            return_value=[
-                SubtitleStream(index=4, language="zho", codec_name="subrip"),
-            ],
+            return_value=[SubtitleStream(index=4, language="zho", codec_name="subrip")],
         ),
         patch(
             "scinoephile.workflows.subtitle_extraction.get_zho_subtitle_streams",
             return_value=[
-                SubtitleStream(index=4, language="zho-Hant", codec_name="subrip"),
+                SubtitleStream(index=4, language="zho-Hant", codec_name="subrip")
             ],
         ) as get_zho_subtitle_streams,
         patch(
@@ -179,18 +177,14 @@ def test_extract_subtitles_reports_existing_outputs(tmp_path: Path):
     with (
         patch(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
-            return_value=[
-                SubtitleStream(index=2, language="eng", codec_name="subrip"),
-            ],
+            return_value=[SubtitleStream(index=2, language="eng", codec_name="subrip")],
         ),
         patch(
             "scinoephile.workflows.subtitle_extraction.SubtitleExtractor.extract"
         ) as extract,
     ):
         result = extract_subtitles(
-            infile_path=infile_path,
-            languages=["eng"],
-            output_dir_path=output_dir_path,
+            infile_path=infile_path, languages=["eng"], output_dir_path=output_dir_path
         )
 
     extract.assert_not_called()
@@ -252,10 +246,8 @@ def test_extract_subtitles_rejects_unsafe_stream_language(tmp_path: Path):
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=[
                 SubtitleStream(
-                    index=2,
-                    language="eng-../../../escaped",
-                    codec_name="subrip",
-                ),
+                    index=2, language="eng-../../../escaped", codec_name="subrip"
+                )
             ],
         ),
         patch(
@@ -264,9 +256,7 @@ def test_extract_subtitles_rejects_unsafe_stream_language(tmp_path: Path):
         raises(ScinoephileError, match="Unsafe subtitle output filename"),
     ):
         extract_subtitles(
-            infile_path=infile_path,
-            languages=["eng"],
-            output_dir_path=output_dir_path,
+            infile_path=infile_path, languages=["eng"], output_dir_path=output_dir_path
         )
 
     extract.assert_not_called()
@@ -377,8 +367,7 @@ def test_extract_subtitles_skips_sup_parsing_when_not_exporting_images(tmp_path:
 
 
 def test_extract_subtitles_warns_when_sup_image_export_fails(
-    tmp_path: Path,
-    caplog: LogCaptureFixture,
+    tmp_path: Path, caplog: LogCaptureFixture
 ):
     """Test extraction keeps subtitle files when SUP image export fails.
 
@@ -400,10 +389,7 @@ def test_extract_subtitles_warns_when_sup_image_export_fails(
         SubtitleStream(index=10, language="eng", codec_name="hdmv_pgs_subtitle"),
     ]
 
-    caplog.set_level(
-        "WARNING",
-        logger="scinoephile.workflows.subtitle_extraction",
-    )
+    caplog.set_level("WARNING", logger="scinoephile.workflows.subtitle_extraction")
     with (
         patch(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
@@ -456,11 +442,7 @@ def test_extract_subtitles_extracts_sup_file_to_image_dir_in_place(tmp_path: Pat
         patch(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=[
-                SubtitleStream(
-                    index=0,
-                    language=None,
-                    codec_name="hdmv_pgs_subtitle",
-                ),
+                SubtitleStream(index=0, language=None, codec_name="hdmv_pgs_subtitle")
             ],
         ),
     ):
@@ -488,17 +470,11 @@ def test_extract_subtitles_skips_sup_file_with_nonmatching_language(tmp_path: Pa
     infile_path = tmp_path / "source.sup"
     infile_path.touch()
 
-    with (
-        patch(
-            "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
-            return_value=[
-                SubtitleStream(
-                    index=0,
-                    language="eng",
-                    codec_name="hdmv_pgs_subtitle",
-                ),
-            ],
-        ),
+    with patch(
+        "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
+        return_value=[
+            SubtitleStream(index=0, language="eng", codec_name="hdmv_pgs_subtitle")
+        ],
     ):
         result = extract_subtitles(
             infile_path=infile_path,
@@ -528,15 +504,13 @@ def test_extract_subtitles_rejects_unsafe_sup_language(tmp_path: Path):
                     index=0,
                     language="eng-../../../escaped",
                     codec_name="hdmv_pgs_subtitle",
-                ),
+                )
             ],
         ),
         raises(ScinoephileError, match="Unsafe subtitle output filename"),
     ):
         extract_subtitles(
-            infile_path=infile_path,
-            languages=["eng"],
-            output_dir_path=output_dir_path,
+            infile_path=infile_path, languages=["eng"], output_dir_path=output_dir_path
         )
 
     assert not (tmp_path / "escaped.sup").exists()
@@ -559,9 +533,7 @@ def test_extract_subtitles_rejects_sup_file_without_subtitle_streams(tmp_path: P
         raises(ScinoephileError, match="No subtitle streams found"),
     ):
         extract_subtitles(
-            infile_path=infile_path,
-            languages=["zho"],
-            output_dir_path=tmp_path,
+            infile_path=infile_path, languages=["zho"], output_dir_path=tmp_path
         )
 
 
@@ -574,9 +546,7 @@ def _image_series() -> ImageSeries:
     return ImageSeries(
         events=[
             ImageSubtitle(
-                start=1000,
-                end=2000,
-                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
+                start=1000, end=2000, img=Image.new("RGBA", (10, 8), (255, 255, 255, 0))
             )
         ]
     )

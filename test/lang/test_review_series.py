@@ -74,13 +74,7 @@ from test.helpers import assert_series_equal, parametrize
 
 
 @parametrize(
-    (
-        "series_fixture",
-        "expected_fixture",
-        "test_case_loader",
-        "language",
-        "prompt",
-    ),
+    ("series_fixture", "expected_fixture", "test_case_loader", "language", "prompt"),
     [
         param(
             "acopopb_eng_ocr_fuse_clean_validate",
@@ -424,16 +418,11 @@ def test_review_series(
     """
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     reviewer = get_reviewer(
-        language,
-        prompt=prompt,
-        test_cases=test_case_loader(),
-        provider=provider,
+        language, prompt=prompt, test_cases=test_case_loader(), provider=provider
     )
     expected = request.getfixturevalue(expected_fixture)
     output = review_series(
-        request.getfixturevalue(series_fixture),
-        language=language,
-        reviewer=reviewer,
+        request.getfixturevalue(series_fixture), language=language, reviewer=reviewer
     )
 
     assert len(output) == len(expected)

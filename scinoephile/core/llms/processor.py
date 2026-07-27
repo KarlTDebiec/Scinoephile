@@ -16,10 +16,7 @@ from .test_case import TestCase
 from .tool_box import ToolBox
 from .utils import load_test_cases, save_test_cases_to_json
 
-__all__ = [
-    "Processor",
-    "ProcessorKwargs",
-]
+__all__ = ["Processor", "ProcessorKwargs"]
 
 
 class ProcessorKwargs(TypedDict, total=False):

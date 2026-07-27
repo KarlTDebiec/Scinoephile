@@ -128,10 +128,7 @@ def test_dictionary_definition_to_dict():
     """Serialize one dictionary definition payload."""
     assert dictionary_definition_to_dict(
         DictionaryDefinition(label="noun", text="stream water")
-    ) == {
-        "label": "noun",
-        "text": "stream water",
-    }
+    ) == {"label": "noun", "text": "stream water"}
 
 
 def test_dictionary_entry_to_dict():
@@ -155,14 +152,8 @@ def test_dictionary_entry_to_dict():
         "jyutping": "saan1 haang1",
         "frequency": 2.0,
         "definitions": [
-            {
-                "label": "",
-                "text": "gully",
-            },
-            {
-                "label": "noun",
-                "text": "mountain stream",
-            },
+            {"label": "", "text": "gully"},
+            {"label": "noun", "text": "mountain stream"},
         ],
     }
 
@@ -189,9 +180,7 @@ def test_get_dictionary_tools_uses_prompt_text():
     )
 
 
-def test_lookup_dictionary_defaults_to_all_dictionaries(
-    dictionary_data_dir_path: Path,
-):
+def test_lookup_dictionary_defaults_to_all_dictionaries(dictionary_data_dir_path: Path):
     """Search all available local dictionaries by default."""
     with patch.dict(environ, {"SCINOEPHILE_DATA_DIR": str(dictionary_data_dir_path)}):
         response = lookup_dictionary(query="共享")

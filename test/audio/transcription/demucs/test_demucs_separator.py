@@ -72,8 +72,7 @@ def test_separate_vocals_uses_default_demucs_shifts():
 
 
 def test_separate_vocals_overwrites_matching_cache(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test cache overwrite regenerates a matching Demucs separation."""
     input_audio = AudioSegment.silent(duration=1000, frame_rate=16000)
@@ -81,16 +80,11 @@ def test_separate_vocals_overwrites_matching_cache(
     fresh_audio = AudioSegment.silent(duration=800, frame_rate=16000)
     cached_separator = DemucsSeparator(cache_root_path=tmp_path)
     monkeypatch.setattr(
-        cached_separator,
-        "_separate_vocals",
-        Mock(return_value=cached_audio),
+        cached_separator, "_separate_vocals", Mock(return_value=cached_audio)
     )
     cached_separator.separate_vocals(input_audio)
 
-    separator = DemucsSeparator(
-        cache_root_path=tmp_path,
-        overwrite_cache=True,
-    )
+    separator = DemucsSeparator(cache_root_path=tmp_path, overwrite_cache=True)
     separate = Mock(return_value=fresh_audio)
     monkeypatch.setattr(separator, "_separate_vocals", separate)
     result = separator.separate_vocals(input_audio)
@@ -101,8 +95,7 @@ def test_separate_vocals_overwrites_matching_cache(
 
 
 def test_separate_vocals_recovers_from_corrupt_cache(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test malformed cached vocals are replaced by fresh separation output."""
     separator = DemucsSeparator(cache_root_path=tmp_path)

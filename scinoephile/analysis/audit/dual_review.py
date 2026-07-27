@@ -10,16 +10,9 @@ from enum import StrEnum
 from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 
-from .review import (
-    ReviewAuditComparison,
-    ReviewAuditPair,
-    audit_review,
-)
+from .review import ReviewAuditComparison, ReviewAuditPair, audit_review
 
-__all__ = [
-    "DualReviewAuditFilter",
-    "audit_dual_review",
-]
+__all__ = ["DualReviewAuditFilter", "audit_dual_review"]
 
 
 class DualReviewAuditFilter(StrEnum):

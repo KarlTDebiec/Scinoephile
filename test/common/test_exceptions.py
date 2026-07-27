@@ -33,8 +33,7 @@ from test.helpers import parametrize
     ],
 )
 def test_exception_inheritance(
-    exception_cls: type[Exception],
-    base_cls: type[Exception],
+    exception_cls: type[Exception], base_cls: type[Exception]
 ):
     """Test custom exception inheritance.
 

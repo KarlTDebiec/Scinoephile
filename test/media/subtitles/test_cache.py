@@ -49,16 +49,13 @@ def test_get_cached_subtitle_stream_path_changes_by_stream(tmp_path: Path):
     assert cache.cache_dir_path == (tmp_path / "cache" / "media" / "subtitles")
 
     first = cache.get_path(
-        infile_path,
-        SubtitleStream(index=2, language="zho", codec_name="subrip"),
+        infile_path, SubtitleStream(index=2, language="zho", codec_name="subrip")
     )
     second = cache.get_path(
-        infile_path,
-        SubtitleStream(index=3, language="zho", codec_name="subrip"),
+        infile_path, SubtitleStream(index=3, language="zho", codec_name="subrip")
     )
     same_stream_with_script = cache.get_path(
-        infile_path,
-        SubtitleStream(index=2, language="zho-Hant", codec_name="subrip"),
+        infile_path, SubtitleStream(index=2, language="zho-Hant", codec_name="subrip")
     )
 
     assert first != second
@@ -68,8 +65,7 @@ def test_get_cached_subtitle_stream_path_changes_by_stream(tmp_path: Path):
 
 
 def test_get_cached_subtitle_stream_path_resolves_infile(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test relative and absolute input paths share one cache identity."""
     infile_path = tmp_path / "video.mkv"
@@ -85,8 +81,7 @@ def test_get_cached_subtitle_stream_path_resolves_infile(
 
 
 def test_get_cached_subtitle_stream_path_includes_cache_version(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test subtitle stream cache paths differ between cache versions."""
     infile_path = tmp_path / "video.mkv"
@@ -125,10 +120,7 @@ def test_cache_subtitle_streams_marks_existing_stream_used(tmp_path: Path):
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
     cache = SubtitleCache(tmp_path / "cache")
     stream_path = cache_subtitle_stream(
-        infile_path,
-        stream,
-        tmp_path / "cache",
-        b"cached",
+        infile_path, stream, tmp_path / "cache", b"cached"
     )
     old_timestamp = time() - 60 * 60 * 24 * 40
     set_mtime(stream_path, old_timestamp)
@@ -147,12 +139,7 @@ def test_cache_subtitle_streams_overwrites_existing_stream(tmp_path: Path):
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
     cache = SubtitleCache(tmp_path / "cache", overwrite=True)
     stream_path = cache.get_path(infile_path, stream)
-    cache_subtitle_stream(
-        infile_path,
-        stream,
-        tmp_path / "cache",
-        b"stale",
-    )
+    cache_subtitle_stream(infile_path, stream, tmp_path / "cache", b"stale")
     input_stream = _RecordingFfmpegInput()
     merged_streams: list[_RecordingMergedFfmpegStream] = []
 
@@ -259,10 +246,8 @@ def test_cache_subtitles_builds_image_cache_for_sup_stream(tmp_path: Path):
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
-                start=1000,
-                end=2000,
-                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
-            ),
+                start=1000, end=2000, img=Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+            )
         ]
     )
 
@@ -273,9 +258,7 @@ def test_cache_subtitles_builds_image_cache_for_sup_stream(tmp_path: Path):
         SubtitleExtractor(cache).extract(infile_path, [stream])
 
     image_dir_path = get_image_subtitle_dir_path(
-        infile_path,
-        stream,
-        cache_root_path=tmp_path / "cache",
+        infile_path, stream, cache_root_path=tmp_path / "cache"
     )
     assert (image_dir_path / "index.html").exists()
 
@@ -288,9 +271,7 @@ def test_cache_subtitles_marks_existing_image_series_used(tmp_path: Path):
     cache = SubtitleCache(tmp_path / "cache")
     cache_subtitle_stream(infile_path, stream, tmp_path / "cache", b"cached")
     image_dir_path = get_image_subtitle_dir_path(
-        infile_path,
-        stream,
-        cache_root_path=tmp_path / "cache",
+        infile_path, stream, cache_root_path=tmp_path / "cache"
     )
     image_dir_path.mkdir()
     index_path = image_dir_path / "index.html"
@@ -313,18 +294,14 @@ def test_cache_subtitles_replaces_malformed_image_index(tmp_path: Path):
     cache = SubtitleCache(tmp_path / "cache")
     cache_subtitle_stream(infile_path, stream, tmp_path / "cache", b"cached")
     image_dir_path = get_image_subtitle_dir_path(
-        infile_path,
-        stream,
-        cache_root_path=tmp_path / "cache",
+        infile_path, stream, cache_root_path=tmp_path / "cache"
     )
     (image_dir_path / "index.html").mkdir(parents=True)
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
-                start=1000,
-                end=2000,
-                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
-            ),
+                start=1000, end=2000, img=Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+            )
         ]
     )
 
@@ -403,7 +380,7 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path):
         (second_stream_path.name, "0:3", "subrip"),
     }
     assert {Path(path).parent.parent for path, _, _ in input_stream.output_calls} == {
-        cache.cache_dir_path,
+        cache.cache_dir_path
     }
     assert len(merged_streams) == 1
     assert len(merged_streams[0].outputs) == 2

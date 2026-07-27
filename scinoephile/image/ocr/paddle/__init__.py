@@ -32,8 +32,7 @@ logger = getLogger(__name__)
 
 
 def ocr_image_series_with_paddle(
-    image_series: ImageSeries,
-    **kwargs: Unpack[PaddleRecognizerKwargs],
+    image_series: ImageSeries, **kwargs: Unpack[PaddleRecognizerKwargs]
 ) -> Series:
     """OCR an image subtitle series with PaddleOCR.
 
@@ -58,11 +57,7 @@ def ocr_image_series_with_paddle(
             preprocessed_image = preprocess_paddle_ocr_image(image_subtitle.img)
             text = paddle_recognizer.recognize_image(preprocessed_image)
             events.append(
-                Subtitle(
-                    start=image_subtitle.start,
-                    end=image_subtitle.end,
-                    text=text,
-                )
+                Subtitle(start=image_subtitle.start, end=image_subtitle.end, text=text)
             )
         return Series(events=events)
     except ScinoephileError:

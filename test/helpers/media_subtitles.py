@@ -36,9 +36,7 @@ def cache_image_subtitles(
     """
     cache_subtitle_stream(infile_path, stream, cache_root_path, b"not a real sup")
     image_dir_path = get_image_subtitle_dir_path(
-        infile_path,
-        stream,
-        cache_root_path=cache_root_path,
+        infile_path, stream, cache_root_path=cache_root_path
     )
     events: list[ImageSubtitle] = []
     for index in range(event_count):
@@ -60,10 +58,7 @@ def cache_image_subtitles(
 
 
 def cache_subtitle_stream(
-    infile_path: Path,
-    stream: SubtitleStream,
-    cache_root_path: Path,
-    data: bytes | str,
+    infile_path: Path, stream: SubtitleStream, cache_root_path: Path, data: bytes | str
 ) -> Path:
     """Write a cached extracted subtitle stream.
 
@@ -85,10 +80,7 @@ def cache_subtitle_stream(
 
 
 def get_image_subtitle_dir_path(
-    infile_path: Path,
-    stream: SubtitleStream,
-    *,
-    cache_root_path: Path,
+    infile_path: Path, stream: SubtitleStream, *, cache_root_path: Path
 ) -> Path:
     """Get the image subtitle cache directory path used by the media cache.
 

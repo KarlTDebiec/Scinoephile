@@ -15,13 +15,7 @@ from test.helpers import parametrize
 
 
 @parametrize(
-    ("value", "expected"),
-    [
-        (3.14, 3.14),
-        (5, 5.0),
-        ("3.14", 3.14),
-        (-1.5, -1.5),
-    ],
+    ("value", "expected"), [(3.14, 3.14), (5, 5.0), ("3.14", 3.14), (-1.5, -1.5)]
 )
 def test_val_float_accepts_scalar_values(value: float | int | str, expected: float):
     """Test float validation accepts scalar values."""
@@ -30,10 +24,7 @@ def test_val_float_accepts_scalar_values(value: float | int | str, expected: flo
 
 @parametrize(
     ("constraint", "value", "expected_error"),
-    [
-        ("min", -1.0, "less than minimum"),
-        ("max", 11.0, "greater than maximum"),
-    ],
+    [("min", -1.0, "less than minimum"), ("max", 11.0, "greater than maximum")],
 )
 def test_val_float_rejects_scalar_constraint_violations(
     constraint: str, value: float, expected_error: str

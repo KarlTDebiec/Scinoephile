@@ -59,10 +59,7 @@ def test_response_cache_namespaces_are_flat(tmp_path: Path):
     assert scraper.scraped_cache.cache_dir_path == tmp_path / "cuhk-pages"
 
 
-def test_response_cache_paths_include_version(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-):
+def test_response_cache_paths_include_version(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test CUHK response cache paths differ between cache versions."""
     cache = CuhkResponseCache(tmp_path, "cuhk-discovery")
     first_cache_path = cache.get_path("terms")
@@ -81,8 +78,7 @@ def test_response_cache_rejects_unsafe_stem(tmp_path: Path):
 
 
 def test_parse_scraped_pages_loads_through_cache(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test cached CUHK pages are validated and marked used before parsing."""
     scraper = CuhkDictionaryScraper(cache_root_path=tmp_path)
@@ -93,11 +89,7 @@ def test_parse_scraped_pages_loads_through_cache(
     old_timestamp = time() - 60 * 60 * 24 * 40
     set_mtime(valid_path, old_timestamp)
     parse_word_html = Mock(return_value=None)
-    monkeypatch.setattr(
-        scraper,
-        "parse_word_html",
-        parse_word_html,
-    )
+    monkeypatch.setattr(scraper, "parse_word_html", parse_word_html)
 
     assert scraper.parse_scraped_pages() == []
     assert valid_path.stat().st_mtime > old_timestamp

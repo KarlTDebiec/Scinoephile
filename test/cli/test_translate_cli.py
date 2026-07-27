@@ -53,9 +53,7 @@ def test_translate_cli_help_includes_block_range():
     ),
 )
 def test_translate_cli_passes_block_range(
-    workflow_name: str,
-    mode_arguments: str,
-    tmp_path: Path,
+    workflow_name: str, mode_arguments: str, tmp_path: Path
 ):
     """Test block ranges and JSON paths reach every translation mode.
 
@@ -70,8 +68,7 @@ def test_translate_cli_passes_block_range(
     cache_root_path = tmp_path / "cache"
 
     with patch(
-        f"scinoephile.cli.translate_cli.{workflow_name}",
-        return_value=Series(),
+        f"scinoephile.cli.translate_cli.{workflow_name}", return_value=Series()
     ) as workflow:
         with patch("scinoephile.cli.translate_cli.write_series"):
             run_cli_with_args(

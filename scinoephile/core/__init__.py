@@ -15,8 +15,4 @@ from __future__ import annotations
 from .exceptions import ScinoephileError, UnsupportedCharacterError
 from .language import Language
 
-__all__ = [
-    "Language",
-    "ScinoephileError",
-    "UnsupportedCharacterError",
-]
+__all__ = ["Language", "ScinoephileError", "UnsupportedCharacterError"]

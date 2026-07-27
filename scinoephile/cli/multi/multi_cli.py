@@ -54,9 +54,7 @@ class MultiCli(ScinoephileCliBase):
         super().add_arguments_to_argparser(parser)
 
         subparsers = parser.add_subparsers(
-            dest="multi_subcommand_name",
-            help="subcommand",
-            required=True,
+            dest="multi_subcommand_name", help="subcommand", required=True
         )
         subcommands = cls.subcommands()
         for name in sorted(subcommands):
@@ -78,12 +76,7 @@ class MultiCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(
-        cls,
-        *,
-        multi_subcommand_name: str,
-        **kwargs: Any,
-    ):
+    def _main(cls, *, multi_subcommand_name: str, **kwargs: Any):
         """Execute with provided keyword arguments."""
         cls.subcommands()[multi_subcommand_name]._main(**kwargs)
 

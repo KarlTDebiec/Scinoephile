@@ -18,11 +18,7 @@ from sqlalchemy.pool import ConnectionPoolEntry, NullPool
 from scinoephile.common.validation import val_output_path
 from scinoephile.core.exceptions import ScinoephileError
 
-__all__ = [
-    "OptimizationSqliteStore",
-    "deserialize_json",
-    "serialize_json",
-]
+__all__ = ["OptimizationSqliteStore", "deserialize_json", "serialize_json"]
 
 
 def deserialize_json(value: object, subject: str) -> dict[str, JsonValue]:
@@ -55,12 +51,7 @@ def serialize_json(value: dict[str, JsonValue]) -> str:
     Returns:
         canonical JSON text
     """
-    return json.dumps(
-        value,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-    )
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
 
 class OptimizationSqliteStore:
@@ -75,11 +66,7 @@ class OptimizationSqliteStore:
         Arguments:
             database_path: SQLite database path
         """
-        self.database_path = val_output_path(
-            database_path,
-            exist_ok=True,
-            create=False,
-        )
+        self.database_path = val_output_path(database_path, exist_ok=True, create=False)
         self.engine = create_engine(
             URL.create("sqlite", database=str(self.database_path)),
             future=True,
@@ -95,8 +82,7 @@ class OptimizationSqliteStore:
 
     @staticmethod
     def _enable_sqlite_foreign_keys(
-        dbapi_connection: DBAPIConnection,
-        _connection_record: ConnectionPoolEntry,
+        dbapi_connection: DBAPIConnection, _connection_record: ConnectionPoolEntry
     ):
         """Enable SQLite foreign-key enforcement on a new DB-API connection.
 

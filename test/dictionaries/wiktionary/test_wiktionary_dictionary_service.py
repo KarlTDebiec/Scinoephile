@@ -25,10 +25,7 @@ def _write_fixture_jsonl(jsonl_path: Path):
             "word": "學生",
             "pos": "noun",
             "sounds": [
-                {
-                    "tags": ["Mandarin", "Pinyin", "standard"],
-                    "zh_pron": "xuéshēng",
-                },
+                {"tags": ["Mandarin", "Pinyin", "standard"], "zh_pron": "xuéshēng"},
                 {
                     "tags": ["Cantonese", "Guangzhou", "Jyutping"],
                     "zh_pron": "hok⁶ saang¹",
@@ -40,14 +37,8 @@ def _write_fixture_jsonl(jsonl_path: Path):
             "word": "行",
             "pos": "verb",
             "sounds": [
-                {
-                    "tags": ["Mandarin", "Pinyin", "standard"],
-                    "zh_pron": "háng",
-                },
-                {
-                    "tags": ["Cantonese", "Guangzhou", "Jyutping"],
-                    "zh_pron": "ha⁴ng",
-                },
+                {"tags": ["Mandarin", "Pinyin", "standard"], "zh_pron": "háng"},
+                {"tags": ["Cantonese", "Guangzhou", "Jyutping"], "zh_pron": "ha⁴ng"},
             ],
             "senses": [{"glosses": ["to go"]}],
         },
@@ -59,9 +50,7 @@ def _write_fixture_jsonl(jsonl_path: Path):
 
 
 def test_build_uses_local_jsonl_data(
-    database_path: Path,
-    local_data_dir_path: Path,
-    runtime_data_dir_path: Path,
+    database_path: Path, local_data_dir_path: Path, runtime_data_dir_path: Path
 ):
     """Build Wiktionary DB from local canonical JSONL when available.
 
@@ -84,9 +73,7 @@ def test_build_uses_local_jsonl_data(
 
 
 def test_build_updates_local_data_from_existing_local_jsonl(
-    database_path: Path,
-    local_data_dir_path: Path,
-    runtime_data_dir_path: Path,
+    database_path: Path, local_data_dir_path: Path, runtime_data_dir_path: Path
 ):
     """Avoid copying a local JSONL file onto itself during build.
 
@@ -112,9 +99,7 @@ def test_build_updates_local_data_from_existing_local_jsonl(
 
 
 def test_build_uses_explicit_source_jsonl_path(
-    database_path: Path,
-    local_data_dir_path: Path,
-    runtime_data_dir_path: Path,
+    database_path: Path, local_data_dir_path: Path, runtime_data_dir_path: Path
 ):
     """Build Wiktionary DB from an explicit Kaikki JSONL source path.
 
@@ -138,9 +123,7 @@ def test_build_uses_explicit_source_jsonl_path(
 
 
 def test_build_updates_local_data_from_existing_runtime_jsonl(
-    database_path: Path,
-    local_data_dir_path: Path,
-    runtime_data_dir_path: Path,
+    database_path: Path, local_data_dir_path: Path, runtime_data_dir_path: Path
 ):
     """Update local canonical JSONL from an existing runtime canonical JSONL.
 
@@ -208,9 +191,7 @@ def test_build_downloads_when_no_source_jsonl_available(
 
 
 def test_lookup_finds_entries_using_fallback_jyutping(
-    database_path: Path,
-    local_data_dir_path: Path,
-    runtime_data_dir_path: Path,
+    database_path: Path, local_data_dir_path: Path, runtime_data_dir_path: Path
 ):
     """Find entries built from fallback Jyutping with normalized queries.
 
@@ -222,11 +203,7 @@ def test_lookup_finds_entries_using_fallback_jyutping(
     source_jsonl_path = local_data_dir_path / "entries.jsonl"
     source_jsonl_path.write_text(
         json.dumps(
-            {
-                "word": "學生",
-                "pos": "noun",
-                "senses": [{"glosses": ["student"]}],
-            },
+            {"word": "學生", "pos": "noun", "senses": [{"glosses": ["student"]}]},
             ensure_ascii=False,
         )
         + "\n",

@@ -301,17 +301,10 @@ def test_fuse_ocr_series(
 
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = get_ocr_fuser(
-        language,
-        test_cases=test_case_loader(),
-        provider=provider,
+        language, test_cases=test_case_loader(), provider=provider
     )
     expected = request.getfixturevalue(expected_fixture)
-    output = fuse_ocr_series(
-        lens,
-        secondary,
-        language=language,
-        fuser=processor,
-    )
+    output = fuse_ocr_series(lens, secondary, language=language, fuser=processor)
 
     assert len(output) == len(expected)
     assert_series_equal(output, expected)

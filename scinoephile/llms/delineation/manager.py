@@ -7,13 +7,7 @@ from __future__ import annotations
 from functools import cache
 from typing import ClassVar
 
-from scinoephile.core.llms import (
-    Answer,
-    Manager,
-    PromptModelField,
-    Query,
-    TestCase,
-)
+from scinoephile.core.llms import Answer, Manager, PromptModelField, Query, TestCase
 
 from .models import DelineationAnswer, DelineationQuery, DelineationTestCase
 from .prompt import DelineationPrompt
@@ -33,10 +27,7 @@ class DelineationManager(Manager[DelineationTestCase]):
 
     @classmethod
     @cache
-    def get_answer_cls(
-        cls,
-        prompt: DelineationPrompt,
-    ) -> type[Answer]:
+    def get_answer_cls(cls, prompt: DelineationPrompt) -> type[Answer]:
         """Get concrete answer class with prompt-specific JSON field aliases.
 
         Arguments:
@@ -61,10 +52,7 @@ class DelineationManager(Manager[DelineationTestCase]):
 
     @classmethod
     @cache
-    def get_query_cls(
-        cls,
-        prompt: DelineationPrompt,
-    ) -> type[Query]:
+    def get_query_cls(cls, prompt: DelineationPrompt) -> type[Query]:
         """Get concrete query class with prompt-specific JSON field aliases.
 
         Arguments:
@@ -77,20 +65,16 @@ class DelineationManager(Manager[DelineationTestCase]):
             prompt,
             {
                 "reference_one": PromptModelField(
-                    alias=prompt.ref_sub_1,
-                    description=prompt.ref_sub_1_desc,
+                    alias=prompt.ref_sub_1, description=prompt.ref_sub_1_desc
                 ),
                 "reference_two": PromptModelField(
-                    alias=prompt.ref_sub_2,
-                    description=prompt.ref_sub_2_desc,
+                    alias=prompt.ref_sub_2, description=prompt.ref_sub_2_desc
                 ),
                 "target_one": PromptModelField(
-                    alias=prompt.target_sub_1,
-                    description=prompt.target_sub_1_desc,
+                    alias=prompt.target_sub_1, description=prompt.target_sub_1_desc
                 ),
                 "target_two": PromptModelField(
-                    alias=prompt.target_sub_2,
-                    description=prompt.target_sub_2_desc,
+                    alias=prompt.target_sub_2, description=prompt.target_sub_2_desc
                 ),
             },
         )

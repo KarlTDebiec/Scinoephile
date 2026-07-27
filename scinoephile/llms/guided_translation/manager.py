@@ -7,13 +7,7 @@ from __future__ import annotations
 from functools import cache
 from typing import ClassVar
 
-from scinoephile.core.llms import (
-    Answer,
-    Manager,
-    PromptModelField,
-    Query,
-    TestCase,
-)
+from scinoephile.core.llms import Answer, Manager, PromptModelField, Query, TestCase
 
 from .models import (
     GuidedTranslationAnswer,
@@ -55,15 +49,14 @@ class GuidedTranslationManager(Manager[GuidedTranslationTestCase]):
                     alias=prompt.outputs,
                     annotation=list[output_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.outputs_desc,
-                ),
+                )
             },
         )
 
     @classmethod
     @cache
     def get_guide_cls(
-        cls,
-        prompt: GuidedTranslationPrompt,
+        cls, prompt: GuidedTranslationPrompt
     ) -> type[GuidedTranslationSubtitle]:
         """Get guide-item class with prompt-specific JSON field aliases.
 
@@ -77,12 +70,10 @@ class GuidedTranslationManager(Manager[GuidedTranslationTestCase]):
             prompt,
             {
                 "index": PromptModelField(
-                    alias=prompt.index,
-                    description=prompt.index_desc,
+                    alias=prompt.index, description=prompt.index_desc
                 ),
                 "text": PromptModelField(
-                    alias=prompt.text,
-                    description=prompt.guide_text_desc,
+                    alias=prompt.text, description=prompt.guide_text_desc
                 ),
             },
             name="GuidedTranslationGuide",
@@ -91,8 +82,7 @@ class GuidedTranslationManager(Manager[GuidedTranslationTestCase]):
     @classmethod
     @cache
     def get_output_cls(
-        cls,
-        prompt: GuidedTranslationPrompt,
+        cls, prompt: GuidedTranslationPrompt
     ) -> type[GuidedTranslationSubtitle]:
         """Get output-item class with prompt-specific JSON field aliases.
 
@@ -106,12 +96,10 @@ class GuidedTranslationManager(Manager[GuidedTranslationTestCase]):
             prompt,
             {
                 "index": PromptModelField(
-                    alias=prompt.index,
-                    description=prompt.index_desc,
+                    alias=prompt.index, description=prompt.index_desc
                 ),
                 "text": PromptModelField(
-                    alias=prompt.text,
-                    description=prompt.output_text_desc,
+                    alias=prompt.text, description=prompt.output_text_desc
                 ),
             },
             name="GuidedTranslationOutput",
@@ -149,8 +137,7 @@ class GuidedTranslationManager(Manager[GuidedTranslationTestCase]):
     @classmethod
     @cache
     def get_subtitle_cls(
-        cls,
-        prompt: GuidedTranslationPrompt,
+        cls, prompt: GuidedTranslationPrompt
     ) -> type[GuidedTranslationSubtitle]:
         """Get subtitle-item class with prompt-specific JSON field aliases.
 
@@ -164,12 +151,10 @@ class GuidedTranslationManager(Manager[GuidedTranslationTestCase]):
             prompt,
             {
                 "index": PromptModelField(
-                    alias=prompt.index,
-                    description=prompt.index_desc,
+                    alias=prompt.index, description=prompt.index_desc
                 ),
                 "text": PromptModelField(
-                    alias=prompt.text,
-                    description=prompt.subtitle_text_desc,
+                    alias=prompt.text, description=prompt.subtitle_text_desc
                 ),
             },
         )

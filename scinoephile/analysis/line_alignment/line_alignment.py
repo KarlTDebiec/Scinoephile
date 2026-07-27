@@ -67,10 +67,7 @@ class LineAlignment:
         two = _get_codepoints(self.two)
         return _get_alignment_operation_table(one, two)
 
-    def _populate_alignment_pairs(
-        self,
-        operation_table: np.ndarray,
-    ):
+    def _populate_alignment_pairs(self, operation_table: np.ndarray):
         """Populate alignment pairs by backtracing DP operations.
 
         Arguments:
@@ -94,27 +91,17 @@ class LineAlignment:
                 LineAlignmentOperation.SUBSTITUTE,
             ):
                 pair = LineAlignmentPair(
-                    self.one[one_idx - 1],
-                    self.two[two_idx - 1],
-                    operation,
+                    self.one[one_idx - 1], self.two[two_idx - 1], operation
                 )
                 one_idx -= 1
                 two_idx -= 1
             # Resolve insertions horizontally
             elif operation == LineAlignmentOperation.INSERT:
-                pair = LineAlignmentPair(
-                    None,
-                    self.two[two_idx - 1],
-                    operation,
-                )
+                pair = LineAlignmentPair(None, self.two[two_idx - 1], operation)
                 two_idx -= 1
             # Resolve deletions vertically
             else:
-                pair = LineAlignmentPair(
-                    self.one[one_idx - 1],
-                    None,
-                    operation,
-                )
+                pair = LineAlignmentPair(self.one[one_idx - 1], None, operation)
                 one_idx -= 1
             self.alignment_pairs.append(pair)
 
@@ -124,8 +111,7 @@ class LineAlignment:
 
 @nb.jit(nopython=True, nogil=True, cache=True)
 def _get_alignment_operation_table(  # noqa: PLR0915
-    one: np.ndarray,
-    two: np.ndarray,
+    one: np.ndarray, two: np.ndarray
 ) -> np.ndarray:
     """Get the compact dynamic-programming operation table.
 
@@ -139,9 +125,7 @@ def _get_alignment_operation_table(  # noqa: PLR0915
     one_length = len(one)
     two_length = len(two)
     operation_table = np.full(
-        (one_length + 1, two_length + 1),
-        _OPERATION_NONE,
-        dtype=np.uint8,
+        (one_length + 1, two_length + 1), _OPERATION_NONE, dtype=np.uint8
     )
     if two_length > 0:
         operation_table[0, 1:] = _OPERATION_INSERT
@@ -260,13 +244,7 @@ def _get_alignment_operation_table(  # noqa: PLR0915
 
             # Store the chosen candidate and operation
             _set_metric(
-                current_metrics,
-                two_idx,
-                best_0,
-                best_1,
-                best_2,
-                best_3,
-                best_4,
+                current_metrics, two_idx, best_0, best_1, best_2, best_3, best_4
             )
             current_gaps[two_idx] = best_gap
             operation_table[one_idx, two_idx] = best_operation

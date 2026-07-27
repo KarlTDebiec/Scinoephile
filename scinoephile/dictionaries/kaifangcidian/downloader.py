@@ -14,10 +14,7 @@ import opencc
 import requests
 from pypinyin import Style, lazy_pinyin
 
-from .constants import (
-    KAIFANGCIDIAN_HZSG_URL,
-    KAIFANGCIDIAN_JPSG_URL,
-)
+from .constants import KAIFANGCIDIAN_HZSG_URL, KAIFANGCIDIAN_JPSG_URL
 
 __all__ = ["KaifangcidianDownloader"]
 
@@ -119,10 +116,7 @@ class KaifangcidianDownloader:
         Returns:
             javascript payload text by source key
         """
-        urls = {
-            "hzsg": KAIFANGCIDIAN_HZSG_URL,
-            "jpsg": KAIFANGCIDIAN_JPSG_URL,
-        }
+        urls = {"hzsg": KAIFANGCIDIAN_HZSG_URL, "jpsg": KAIFANGCIDIAN_JPSG_URL}
         payloads: dict[str, str] = {}
         for payload_name, url in urls.items():
             logger.info(f"Downloading Kaifangcidian payload: {url}")
@@ -198,11 +192,7 @@ class KaifangcidianDownloader:
         return rows
 
     def _parse_paired_row(
-        self,
-        *,
-        kind: str,
-        han_row: str,
-        jyutping_row: str,
+        self, *, kind: str, han_row: str, jyutping_row: str
     ) -> list[_CanonicalRow]:
         """Parse one paired Han/Jyutping row.
 
@@ -266,10 +256,7 @@ class KaifangcidianDownloader:
         return (
             " ".join(
                 lazy_pinyin(
-                    text,
-                    style=Style.TONE3,
-                    neutral_tone_with_five=True,
-                    v_to_u=True,
+                    text, style=Style.TONE3, neutral_tone_with_five=True, v_to_u=True
                 )
             )
             .lower()

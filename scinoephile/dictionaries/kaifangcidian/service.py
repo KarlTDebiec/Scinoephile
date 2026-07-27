@@ -87,8 +87,7 @@ class KaifangcidianDictionaryService:
             return self.database_path
 
         source_csv_path = self._require_source_csv_path(
-            force_download=force_download,
-            update_local_data=update_local_data,
+            force_download=force_download, update_local_data=update_local_data
         )
         parsed_data = self.parser.parse(source_csv_path=source_csv_path)
         return self.database.persist(parsed_data)
@@ -156,10 +155,7 @@ class KaifangcidianDictionaryService:
         self.build(overwrite=False)
 
     def _require_source_csv_path(
-        self,
-        *,
-        force_download: bool,
-        update_local_data: bool,
+        self, *, force_download: bool, update_local_data: bool
     ) -> Path:
         """Get canonical source CSV, downloading and normalizing if needed.
 
@@ -177,8 +173,7 @@ class KaifangcidianDictionaryService:
         if not force_download and runtime_csv_path.exists():
             if update_local_data:
                 return self._copy_runtime_csv_to_local(
-                    runtime_csv_path=runtime_csv_path,
-                    local_csv_path=local_csv_path,
+                    runtime_csv_path=runtime_csv_path, local_csv_path=local_csv_path
                 )
             return val_input_path(runtime_csv_path)
 
@@ -187,15 +182,11 @@ class KaifangcidianDictionaryService:
             return runtime_csv_path
 
         return self._copy_runtime_csv_to_local(
-            runtime_csv_path=runtime_csv_path,
-            local_csv_path=local_csv_path,
+            runtime_csv_path=runtime_csv_path, local_csv_path=local_csv_path
         )
 
     def _copy_runtime_csv_to_local(
-        self,
-        *,
-        runtime_csv_path: Path,
-        local_csv_path: Path,
+        self, *, runtime_csv_path: Path, local_csv_path: Path
     ) -> Path:
         """Copy runtime canonical CSV into the repository-local snapshot.
 

@@ -42,10 +42,7 @@ from .constants import (
     TERMS_URL,
 )
 
-__all__ = [
-    "CuhkDictionaryScraper",
-    "CuhkDictionaryScraperKwargs",
-]
+__all__ = ["CuhkDictionaryScraper", "CuhkDictionaryScraperKwargs"]
 
 logger = getLogger(__name__)
 
@@ -103,15 +100,11 @@ class CuhkDictionaryScraper:
             session: requests session for dependency injection
         """
         self.discovery_cache = CuhkResponseCache(
-            cache_root_path,
-            "cuhk-discovery",
-            overwrite_cache,
+            cache_root_path, "cuhk-discovery", overwrite_cache
         )
         """Cache of CUHK discovery pages."""
         self.scraped_cache = CuhkResponseCache(
-            self.discovery_cache.cache_root_path,
-            "cuhk-pages",
-            overwrite_cache,
+            self.discovery_cache.cache_root_path, "cuhk-pages", overwrite_cache
         )
         """Cache of CUHK word pages."""
 
@@ -138,10 +131,7 @@ class CuhkDictionaryScraper:
             return []
 
         html = self._get_or_fetch_text(
-            TERMS_URL,
-            self.discovery_cache,
-            "terms",
-            cache_label="CUHK terms index",
+            TERMS_URL, self.discovery_cache, "terms", cache_label="CUHK terms index"
         )
         soup = BeautifulSoup(html, "html.parser")
         main_panel = soup.find("div", id="MainContent_panelTermsIndex")
@@ -202,8 +192,7 @@ class CuhkDictionaryScraper:
         return word_links
 
     def parse_scraped_pages(
-        self,
-        stems: list[str] | None = None,
+        self, stems: list[str] | None = None
     ) -> list[DictionaryEntry]:
         """Parse scraped CUHK pages into normalized entries.
 
@@ -256,11 +245,7 @@ class CuhkDictionaryScraper:
 
         return entries
 
-    def parse_word_html(
-        self,
-        html: str,
-        html_path: Path,
-    ) -> DictionaryEntry | None:
+    def parse_word_html(self, html: str, html_path: Path) -> DictionaryEntry | None:
         """Parse the contents of one CUHK word page.
 
         Arguments:
@@ -375,8 +360,7 @@ class CuhkDictionaryScraper:
         )
 
     def scrape(
-        self,
-        max_words: int | None = None,
+        self, max_words: int | None = None
     ) -> tuple[DictionarySource, list[DictionaryEntry]]:
         """Scrape CUHK data into source metadata and dictionary entries.
 
@@ -403,10 +387,7 @@ class CuhkDictionaryScraper:
         logger.info(f"Parsed {len(entries)} CUHK entry(ies)")
         return CUHK_SOURCE, entries
 
-    def scrape_word_pages(
-        self,
-        word_links: list[tuple[str, str]],
-    ):
+    def scrape_word_pages(self, word_links: list[tuple[str, str]]):
         """Scrape CUHK word pages into cached HTML files.
 
         Arguments:
@@ -458,11 +439,7 @@ class CuhkDictionaryScraper:
         cache.save(cache_stem, contents)
         return contents
 
-    def _fetch_text(
-        self,
-        url: str,
-        cache_label: str | None = None,
-    ) -> str:
+    def _fetch_text(self, url: str, cache_label: str | None = None) -> str:
         """Fetch text with retry and timeout.
 
         Arguments:

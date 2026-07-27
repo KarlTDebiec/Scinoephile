@@ -25,10 +25,7 @@ from .char_pair_gaps import (
 )
 from .gap_cursor import GapCursor
 
-__all__ = [
-    "MAX_CHAR_DIM_BBOXES",
-    "ValidationManager",
-]
+__all__ = ["MAX_CHAR_DIM_BBOXES", "ValidationManager"]
 
 
 logger = getLogger(__name__)
@@ -68,10 +65,7 @@ class ValidationManager:
     """
 
     def __init__(
-        self,
-        *,
-        validation_data_dir_path: Path | str | None = None,
-        dev: bool = False,
+        self, *, validation_data_dir_path: Path | str | None = None, dev: bool = False
     ):
         """Initialize.
 
@@ -86,10 +80,7 @@ class ValidationManager:
                 f"Unable to initialize OCR validation data: {exc}"
             ) from exc
 
-    def validate(
-        self,
-        series: ImageSeries,
-    ) -> ImageSeries:
+    def validate(self, series: ImageSeries) -> ImageSeries:
         """Validate all subtitles in an image series.
 
         Arguments:
@@ -111,9 +102,7 @@ class ValidationManager:
         return output_series
 
     def _init_data(  # noqa: PLR0912
-        self,
-        validation_data_dir_path: Path | str | None,
-        dev: bool,
+        self, validation_data_dir_path: Path | str | None, dev: bool
     ):
         """Initialize OCR validation data.
 
@@ -156,8 +145,7 @@ class ValidationManager:
                 )
             else:
                 self.validation_data_dir_path = val_output_dir_path(
-                    validation_data_dir_path,
-                    create=False,
+                    validation_data_dir_path, create=False
                 )
 
             # Initialize char_dims_by_n
@@ -173,10 +161,7 @@ class ValidationManager:
             file_path = self.validation_data_dir_path / "char_grp_dims.csv"
             if file_path.exists():
                 self.user_char_grp_dims_by_n = load_char_grp_dims(file_path)
-                for (
-                    group_size,
-                    char_grp_dims,
-                ) in self.user_char_grp_dims_by_n.items():
+                for group_size, char_grp_dims in self.user_char_grp_dims_by_n.items():
                     target_char_grp_dims = self.char_grp_dims_by_n.setdefault(
                         group_size, {}
                     )
@@ -213,11 +198,7 @@ class ValidationManager:
 
         return char_messages + gap_messages
 
-    def _validate_chars(
-        self,
-        sub: ImageSubtitle,
-        sub_idx: int,
-    ) -> list[str]:
+    def _validate_chars(self, sub: ImageSubtitle, sub_idx: int) -> list[str]:
         """Merge bboxes per character and collect validation messages.
 
         Arguments:
@@ -338,9 +319,7 @@ class ValidationManager:
         return False
 
     def _validate_gaps(  # noqa: PLR0912, PLR0915
-        self,
-        sub: ImageSubtitle,
-        sub_idx: int,
+        self, sub: ImageSubtitle, sub_idx: int
     ) -> list[str]:
         """Validate gaps between bboxes and collect validation messages.
 

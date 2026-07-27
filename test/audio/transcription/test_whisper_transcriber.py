@@ -49,15 +49,11 @@ def test_init_defaults_preprocessing_to_auto():
     assert transcriber.vad_mode is VADMode.AUTO
 
 
-def _get_cache_path(
-    transcriber: WhisperTranscriber,
-    audio: AudioSegment,
-) -> Path:
+def _get_cache_path(transcriber: WhisperTranscriber, audio: AudioSegment) -> Path:
     """Get the cache path for the transcriber's first preprocessing settings."""
     settings = transcriber._get_preprocessing_settings()[0]
     cache_path = transcriber._cache.get_path(
-        audio,
-        transcriber._get_cache_metadata(settings),
+        audio, transcriber._get_cache_metadata(settings)
     )
     return cache_path
 
@@ -73,10 +69,7 @@ def _get_cache_path(
     ],
 )
 def test_get_cache_path_separates_configuration(
-    tmp_path: Path,
-    field_name: str,
-    first_value: object,
-    second_value: object,
+    tmp_path: Path, field_name: str, first_value: object, second_value: object
 ):
     """Test Whisper cache paths differ by cache-relevant configuration.
 
@@ -86,19 +79,12 @@ def test_get_cache_path_separates_configuration(
         first_value: first transcriber field value
         second_value: second transcriber field value
     """
-    audio = AudioSegment(
-        data=b"audio",
-        sample_width=1,
-        frame_rate=8000,
-        channels=1,
-    )
+    audio = AudioSegment(data=b"audio", sample_width=1, frame_rate=8000, channels=1)
     first_transcriber = WhisperTranscriber(
-        cache_root_path=tmp_path,
-        model_name="custom/model",
+        cache_root_path=tmp_path, model_name="custom/model"
     )
     second_transcriber = WhisperTranscriber(
-        cache_root_path=tmp_path,
-        model_name="custom/model",
+        cache_root_path=tmp_path, model_name="custom/model"
     )
     setattr(first_transcriber, field_name, first_value)
     setattr(second_transcriber, field_name, second_value)
@@ -114,50 +100,32 @@ def test_get_cache_path_separates_audio_formats(tmp_path: Path):
     """Test Whisper cache paths include audio format metadata."""
     raw_data = b"\0\1" * 100
     first_audio = AudioSegment(
-        data=raw_data,
-        sample_width=2,
-        frame_rate=16000,
-        channels=1,
+        data=raw_data, sample_width=2, frame_rate=16000, channels=1
     )
     second_audio = AudioSegment(
-        data=raw_data,
-        sample_width=2,
-        frame_rate=8000,
-        channels=1,
+        data=raw_data, sample_width=2, frame_rate=8000, channels=1
     )
     transcriber = WhisperTranscriber(
-        cache_root_path=tmp_path,
-        model_name="custom/model",
+        cache_root_path=tmp_path, model_name="custom/model"
     )
 
     assert _get_cache_path(transcriber, first_audio) != _get_cache_path(
-        transcriber,
-        second_audio,
+        transcriber, second_audio
     )
 
 
 def test_get_cache_path_accepts_list_temperature_schedule(tmp_path: Path):
     """Test list and tuple temperature schedules use the same cache key."""
-    audio = AudioSegment(
-        data=b"audio",
-        sample_width=1,
-        frame_rate=8000,
-        channels=1,
-    )
+    audio = AudioSegment(data=b"audio", sample_width=1, frame_rate=8000, channels=1)
     list_transcriber = WhisperTranscriber(
-        cache_root_path=tmp_path,
-        model_name="custom/model",
-        temperature=[0.0, 0.2, 0.4],
+        cache_root_path=tmp_path, model_name="custom/model", temperature=[0.0, 0.2, 0.4]
     )
     tuple_transcriber = WhisperTranscriber(
-        cache_root_path=tmp_path,
-        model_name="custom/model",
-        temperature=(0.0, 0.2, 0.4),
+        cache_root_path=tmp_path, model_name="custom/model", temperature=(0.0, 0.2, 0.4)
     )
 
     assert _get_cache_path(list_transcriber, audio) == _get_cache_path(
-        tuple_transcriber,
-        audio,
+        tuple_transcriber, audio
     )
 
 
@@ -189,17 +157,10 @@ def test_transcribe_forwards_recovery_decoding_options(monkeypatch: MonkeyPatch)
 
 @parametrize(
     ("duration_ms", "expected"),
-    [
-        (100, 32),
-        (1000, 32),
-        (6530, 105),
-        (14000, 224),
-        (30000, 224),
-    ],
+    [(100, 32), (1000, 32), (6530, 105), (14000, 224), (30000, 224)],
 )
 def test_get_sample_len_bounds_decode_by_audio_duration(
-    duration_ms: int,
-    expected: int,
+    duration_ms: int, expected: int
 ):
     """Bound the decode token budget while leaving room for dense speech.
 
@@ -228,14 +189,10 @@ def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch
     )
     WhisperTranscriber._models.clear()
     vad_transcriber = WhisperTranscriber(
-        model_name="custom/model",
-        demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.ON,
+        model_name="custom/model", demucs_mode=DemucsMode.OFF, vad_mode=VADMode.ON
     )
     no_vad_transcriber = WhisperTranscriber(
-        model_name="custom/model",
-        demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.OFF,
+        model_name="custom/model", demucs_mode=DemucsMode.OFF, vad_mode=VADMode.OFF
     )
 
     try:
@@ -246,10 +203,7 @@ def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch
         WhisperTranscriber._models.clear()
 
 
-def test_transcribe_overwrites_matching_cache(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
-):
+def test_transcribe_overwrites_matching_cache(monkeypatch: MonkeyPatch, tmp_path: Path):
     """Test cache overwrite removes the matching file before transcription.
 
     Arguments:
@@ -286,8 +240,7 @@ def test_transcribe_overwrites_matching_cache(
 
 
 def test_transcribe_recovers_from_malformed_cache(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
+    monkeypatch: MonkeyPatch, tmp_path: Path
 ):
     """Test malformed cached output is replaced by a fresh transcription.
 
@@ -318,8 +271,7 @@ def test_transcribe_recovers_from_malformed_cache(
 
 
 def test_transcribe_discards_invalid_cache_when_atomic_write_fails(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
+    monkeypatch: MonkeyPatch, tmp_path: Path
 ):
     """Test an invalid cache remains discarded when serialization fails.
 
@@ -365,9 +317,7 @@ def test_transcribe_discards_invalid_cache_when_atomic_write_fails(
     ],
 )
 def test_model_name_is_huggingface_repo_id_rejects_local_paths(
-    monkeypatch: MonkeyPatch,
-    model_name: str,
-    expected: bool,
+    monkeypatch: MonkeyPatch, model_name: str, expected: bool
 ):
     """Test HuggingFace retry is skipped for local filesystem paths.
 
@@ -384,8 +334,7 @@ def test_model_name_is_huggingface_repo_id_rejects_local_paths(
         "scinoephile.audio.transcription.whisper_transcriber."
         "import_huggingface_hub_utils",
         lambda: SimpleNamespace(
-            HFValidationError=ValueError,
-            validate_repo_id=validate_repo_id,
+            HFValidationError=ValueError, validate_repo_id=validate_repo_id
         ),
     )
     transcriber = WhisperTranscriber(model_name=model_name)
@@ -410,8 +359,7 @@ def test_model_name_is_huggingface_repo_id_rejects_validation_errors(
         "scinoephile.audio.transcription.whisper_transcriber."
         "import_huggingface_hub_utils",
         lambda: SimpleNamespace(
-            HFValidationError=ValueError,
-            validate_repo_id=validate_repo_id,
+            HFValidationError=ValueError, validate_repo_id=validate_repo_id
         ),
     )
     transcriber = WhisperTranscriber(model_name="invalid/repository/id")
@@ -456,9 +404,7 @@ def test_transcription_imports_without_optional_runtime_dependencies():
         [str(package_root.parent), env.get("PYTHONPATH", "")]
     )
     exitcode, _, _ = run_command(
-        [sys.executable, "-c", script],
-        cwd_path=package_root.parent,
-        env=env,
+        [sys.executable, "-c", script], cwd_path=package_root.parent, env=env
     )
 
     assert exitcode == 0
@@ -503,17 +449,9 @@ def test_normalize_transcription_segments_coalesces_malformed_duplicate_pair():
             no_speech_prob=1.11e-6,
             words=[
                 TranscribedWord(text="照", start=156.4, end=156.85, confidence=0.385),
+                TranscribedWord(text="先生", start=156.85, end=157.19, confidence=0.99),
                 TranscribedWord(
-                    text="先生",
-                    start=156.85,
-                    end=157.19,
-                    confidence=0.99,
-                ),
-                TranscribedWord(
-                    text="你就",
-                    start=157.19,
-                    end=158.31,
-                    confidence=0.686,
+                    text="你就", start=157.19, end=158.31, confidence=0.686
                 ),
             ],
         ),
@@ -533,10 +471,7 @@ def test_normalize_transcription_segments_coalesces_malformed_duplicate_pair():
     ]
 
     normalized_segments = transcriber._normalize_transcription_segments(
-        segments,
-        source="cache",
-        cache_path=Path("/tmp/whisper.json"),
-        use_vad=True,
+        segments, source="cache", cache_path=Path("/tmp/whisper.json"), use_vad=True
     )
 
     assert len(normalized_segments) == 1

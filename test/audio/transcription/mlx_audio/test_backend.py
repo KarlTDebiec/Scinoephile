@@ -42,9 +42,7 @@ from scinoephile.core.dependencies import transcription as transcription_depende
     ],
 )
 def test_init_derives_mlx_audio_languages(
-    model_name: str,
-    language: Language,
-    mlx_audio_language: str,
+    model_name: str, language: Language, mlx_audio_language: str
 ):
     """Test each model family derives its language identifier."""
     mlx_audio_backend = MlxAudioBackend(model_name=model_name, language=language)
@@ -67,17 +65,12 @@ def test_init_matches_model_name_case_insensitively():
     ],
 )
 def test_init_reads_local_model_metadata(
-    tmp_path: Path,
-    metadata: dict[str, object],
-    expected_family: str,
+    tmp_path: Path, metadata: dict[str, object], expected_family: str
 ):
     """Test arbitrary local directories are identified from model metadata."""
     model_path = tmp_path / "asr"
     model_path.mkdir()
-    (model_path / "config.json").write_text(
-        json.dumps(metadata),
-        encoding="utf-8",
-    )
+    (model_path / "config.json").write_text(json.dumps(metadata), encoding="utf-8")
 
     mlx_audio_backend = MlxAudioBackend(str(model_path))
 
@@ -86,16 +79,11 @@ def test_init_reads_local_model_metadata(
 
 def test_init_rejects_untested_family():
     """Test unknown MLX-Audio model families fail clearly."""
-    with pytest.raises(
-        TranscriptionError,
-        match="supported families: mimo, qwen3-asr",
-    ):
+    with pytest.raises(TranscriptionError, match="supported families: mimo, qwen3-asr"):
         MlxAudioBackend("mlx-community/Whisper-Large-v3-MLX")
 
 
-def test_transcribe_reads_mapping_result(
-    tmp_path: Path,
-):
+def test_transcribe_reads_mapping_result(tmp_path: Path):
     """Test mapping output and generation arguments are normalized.
 
     Arguments:
@@ -107,25 +95,15 @@ def test_transcribe_reads_mapping_result(
     mlx_audio_backend = MlxAudioBackend()
     mlx_audio_backend._model = model
 
-    result = mlx_audio_backend.transcribe(
-        audio_path,
-        128,
-    )
+    result = mlx_audio_backend.transcribe(audio_path, 128)
 
-    assert result == MlxAudioInferenceResult(
-        text="你好",
-        generation_tokens=7,
-    )
+    assert result == MlxAudioInferenceResult(text="你好", generation_tokens=7)
     model.generate.assert_called_once_with(
-        str(audio_path),
-        language="zh",
-        max_tokens=128,
+        str(audio_path), language="zh", max_tokens=128
     )
 
 
-def test_transcribe_reads_object_result(
-    tmp_path: Path,
-):
+def test_transcribe_reads_object_result(tmp_path: Path):
     """Test attribute-based output and omitted token limits are normalized.
 
     Arguments:
@@ -144,9 +122,7 @@ def test_transcribe_reads_object_result(
     model.generate.assert_called_once_with(str(audio_path), language="en")
 
 
-def test_transcribe_rejects_missing_text(
-    tmp_path: Path,
-):
+def test_transcribe_rejects_missing_text(tmp_path: Path):
     """Test output without transcript text is rejected.
 
     Arguments:
@@ -164,8 +140,7 @@ def test_transcribe_rejects_missing_text(
 
 @pytest.mark.parametrize("generation_tokens", [True, -1, 1.5, "1"])
 def test_transcribe_rejects_invalid_generation_tokens(
-    tmp_path: Path,
-    generation_tokens: object,
+    tmp_path: Path, generation_tokens: object
 ):
     """Test malformed generation token counts are rejected.
 
@@ -186,9 +161,7 @@ def test_transcribe_rejects_invalid_generation_tokens(
         mlx_audio_backend.transcribe(audio_path)
 
 
-def test_model_is_shared_by_reference(
-    monkeypatch: pytest.MonkeyPatch,
-):
+def test_model_is_shared_by_reference(monkeypatch: pytest.MonkeyPatch):
     """Test a model is loaded once per resolved reference.
 
     Arguments:
@@ -213,10 +186,7 @@ def test_model_is_shared_by_reference(
     assert load.call_args_list[1].kwargs == {"model_type": "qwen3_asr"}
 
 
-def test_model_validates_local_path(
-    monkeypatch: pytest.MonkeyPatch,
-    tmp_path: Path,
-):
+def test_model_validates_local_path(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
     """Test local model paths are resolved before loading.
 
     Arguments:
@@ -226,8 +196,7 @@ def test_model_validates_local_path(
     model_path = tmp_path / "model"
     model_path.mkdir()
     (model_path / "config.json").write_text(
-        json.dumps({"architectures": ["MiMoV2ASRForCausalLM"]}),
-        encoding="utf-8",
+        json.dumps({"architectures": ["MiMoV2ASRForCausalLM"]}), encoding="utf-8"
     )
     load = Mock(return_value=object())
     monkeypatch.setattr(MlxAudioBackend, "_models_by_reference", {})

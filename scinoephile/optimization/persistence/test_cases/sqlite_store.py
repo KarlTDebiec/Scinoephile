@@ -106,10 +106,7 @@ class TestCaseSqliteStore(OptimizationSqliteStore):
             return self._row_to_test_case(connection, row)
 
     def get_test_cases_by_source_path(
-        self,
-        source_path: str,
-        *,
-        manager_cls: type[Manager] | None = None,
+        self, source_path: str, *, manager_cls: type[Manager] | None = None
     ) -> list[PersistedTestCase]:
         """Fetch test cases associated with a source path.
 
@@ -172,9 +169,7 @@ class TestCaseSqliteStore(OptimizationSqliteStore):
                         f"synchronized operation {manager_cls.operation}."
                     )
                 expected_id = get_test_case_id(
-                    test_case.query,
-                    test_case.answer,
-                    manager_cls,
+                    test_case.query, test_case.answer, manager_cls
                 )
                 if test_case.test_case_id != expected_id:
                     raise ScinoephileError(
@@ -228,9 +223,7 @@ class TestCaseSqliteStore(OptimizationSqliteStore):
         return changes
 
     def _get_source_paths(
-        self,
-        connection: Connection,
-        test_case_id: str,
+        self, connection: Connection, test_case_id: str
     ) -> tuple[str, ...]:
         """Get source paths for a test case.
 
@@ -250,9 +243,7 @@ class TestCaseSqliteStore(OptimizationSqliteStore):
         )
 
     def _row_to_test_case(
-        self,
-        connection: Connection,
-        row: RowMapping,
+        self, connection: Connection, row: RowMapping
     ) -> PersistedTestCase:
         """Convert a test-case row to a model.
 

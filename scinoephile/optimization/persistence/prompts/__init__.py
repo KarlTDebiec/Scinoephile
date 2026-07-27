@@ -15,8 +15,4 @@ from .persisted_prompt import PersistedPrompt
 from .sqlite_store import PromptSqliteStore
 from .sync import PromptSyncReport
 
-__all__ = [
-    "PersistedPrompt",
-    "PromptSqliteStore",
-    "PromptSyncReport",
-]
+__all__ = ["PersistedPrompt", "PromptSqliteStore", "PromptSyncReport"]

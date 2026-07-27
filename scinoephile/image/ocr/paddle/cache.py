@@ -23,11 +23,7 @@ _CACHE_VERSION = 1
 class PaddleCache(OcrCacheBase[list[PaddleOcrTextResult]]):
     """Caches normalized PaddleOCR text results."""
 
-    def __init__(
-        self,
-        cache_root_path: Path | None = None,
-        overwrite: bool = False,
-    ):
+    def __init__(self, cache_root_path: Path | None = None, overwrite: bool = False):
         """Initialize.
 
         Arguments:
@@ -35,11 +31,7 @@ class PaddleCache(OcrCacheBase[list[PaddleOcrTextResult]]):
             overwrite: whether to replace matching cache files
         """
         super().__init__(
-            cache_root_path,
-            "paddleocr",
-            "PaddleOCR",
-            _CACHE_VERSION,
-            overwrite,
+            cache_root_path, "paddleocr", "PaddleOCR", _CACHE_VERSION, overwrite
         )
 
     def _deserialize(self, payload: object) -> list[PaddleOcrTextResult]:

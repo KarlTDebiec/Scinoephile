@@ -4,9 +4,7 @@
 
 from __future__ import annotations
 
-__all__ = [
-    "DEFAULT_SUBTITLE_LANGUAGES",
-]
+__all__ = ["DEFAULT_SUBTITLE_LANGUAGES"]
 
 DEFAULT_SUBTITLE_LANGUAGES = ("chi", "eng", "yue", "zho")
 """Default ISO 639 language codes for subtitle extraction."""

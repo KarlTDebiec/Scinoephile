@@ -39,9 +39,7 @@ class PersistedTestCase:
 
     @classmethod
     def from_test_case(
-        cls,
-        test_case: TestCase,
-        manager_cls: type[Manager],
+        cls, test_case: TestCase, manager_cls: type[Manager]
     ) -> PersistedTestCase:
         """Convert a loaded test case to its persisted representation.
 
@@ -53,9 +51,7 @@ class PersistedTestCase:
         """
         if test_case.answer is None:
             raise ScinoephileError("Optimization test cases must include an answer.")
-        base_test_case_cls = manager_cls.get_test_case_cls(
-            manager_cls.base_prompt,
-        )
+        base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
         base_test_case = base_test_case_cls.model_validate(
             test_case.model_dump(mode="json")
         )

@@ -34,17 +34,11 @@ def test_line_diff_get_aligned_texts_for_non_edit_kinds():
             ("same lines", "same lines"),
         ),
         (
-            LineDiff(
-                kind=LineDiffKind.INSERT,
-                two_texts=("new", "line"),
-            ),
+            LineDiff(kind=LineDiffKind.INSERT, two_texts=("new", "line")),
             ("", "new line"),
         ),
         (
-            LineDiff(
-                kind=LineDiffKind.DELETE,
-                one_texts=("廣東", "話"),
-            ),
+            LineDiff(kind=LineDiffKind.DELETE, one_texts=("廣東", "話")),
             ("廣東　話", ""),
         ),
     ]

@@ -53,13 +53,10 @@ def clear_cache(
 
     discovered_namespace_names = discover_cache_namespaces(cache_root_path)
     namespace_names = _get_namespace_names(
-        discovered_namespace_names,
-        namespace=namespace,
+        discovered_namespace_names, namespace=namespace
     )
     entries = _get_cache_entries(
-        cache_root_path,
-        namespace_names,
-        discovered_namespace_names,
+        cache_root_path, namespace_names, discovered_namespace_names
     )
     for entry in entries:
         _delete_entry(entry.path)
@@ -81,10 +78,7 @@ def clear_cache(
             for protected_namespace_path in protected_namespace_paths
         ):
             continue
-        namespace_dir_path = _get_namespace_dir_path(
-            cache_root_path,
-            namespace_name,
-        )
+        namespace_dir_path = _get_namespace_dir_path(cache_root_path, namespace_name)
         if namespace_dir_path.exists():
             _delete_entry(namespace_dir_path)
 
@@ -135,15 +129,13 @@ def discover_cache_namespaces(cache_root_path: Path) -> list[str]:
 
     # Add recognized namespaces nested beneath another namespace
     for nested_namespace_name in sorted(
-        _NESTED_CACHE_NAMESPACE_NAMES,
-        key=lambda name: len(PurePosixPath(name).parts),
+        _NESTED_CACHE_NAMESPACE_NAMES, key=lambda name: len(PurePosixPath(name).parts)
     ):
         nested_namespace_path = PurePosixPath(nested_namespace_name)
         if nested_namespace_path.parent.as_posix() not in namespace_names:
             continue
         nested_namespace_dir_path = _get_namespace_dir_path(
-            cache_root_path,
-            nested_namespace_name,
+            cache_root_path, nested_namespace_name
         )
         if (
             nested_namespace_dir_path.is_dir()
@@ -168,13 +160,10 @@ def get_cache_entries(
     """
     discovered_namespace_names = discover_cache_namespaces(cache_root_path)
     namespace_names = _get_namespace_names(
-        discovered_namespace_names,
-        namespace=namespace,
+        discovered_namespace_names, namespace=namespace
     )
     return _get_cache_entries(
-        cache_root_path,
-        namespace_names,
-        discovered_namespace_names,
+        cache_root_path, namespace_names, discovered_namespace_names
     )
 
 
@@ -191,13 +180,10 @@ def get_cache_stats(
     """
     discovered_namespace_names = discover_cache_namespaces(cache_root_path)
     namespace_names = _get_namespace_names(
-        discovered_namespace_names,
-        namespace=namespace,
+        discovered_namespace_names, namespace=namespace
     )
     entries = _get_cache_entries(
-        cache_root_path,
-        namespace_names,
-        discovered_namespace_names,
+        cache_root_path, namespace_names, discovered_namespace_names
     )
     stats = [
         _aggregate_cache_stats(
@@ -225,15 +211,12 @@ def prune_cache(
     cutoff = datetime.now().astimezone() - older_than
     discovered_namespace_names = discover_cache_namespaces(cache_root_path)
     namespace_names = _get_namespace_names(
-        discovered_namespace_names,
-        namespace=namespace,
+        discovered_namespace_names, namespace=namespace
     )
     entries = [
         entry
         for entry in _get_cache_entries(
-            cache_root_path,
-            namespace_names,
-            discovered_namespace_names,
+            cache_root_path, namespace_names, discovered_namespace_names
         )
         if entry.modified_at < cutoff
     ]
@@ -328,10 +311,7 @@ def _get_cache_entries(
     entries = []
     for namespace_name in namespace_names:
         namespace_path = PurePosixPath(namespace_name)
-        namespace_dir_path = _get_namespace_dir_path(
-            cache_root_path,
-            namespace_name,
-        )
+        namespace_dir_path = _get_namespace_dir_path(cache_root_path, namespace_name)
         nested_namespace_dir_names = {
             discovered_namespace_path.name
             for discovered_namespace_path in discovered_namespace_paths
@@ -346,10 +326,7 @@ def _get_cache_entries(
     return entries
 
 
-def _get_namespace_dir_path(
-    cache_root_path: Path,
-    namespace_name: str,
-) -> Path:
+def _get_namespace_dir_path(cache_root_path: Path, namespace_name: str) -> Path:
     """Get a namespace directory path from its portable name.
 
     Arguments:
@@ -362,9 +339,7 @@ def _get_namespace_dir_path(
 
 
 def _get_namespace_names(
-    discovered_namespace_names: list[str],
-    *,
-    namespace: str | None,
+    discovered_namespace_names: list[str], *, namespace: str | None
 ) -> list[str]:
     """Filter discovered namespace names.
 

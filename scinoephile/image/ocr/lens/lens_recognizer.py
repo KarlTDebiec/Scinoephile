@@ -18,10 +18,7 @@ from scinoephile.core.dependencies.ocr import import_chrome_lens_py
 
 from .cache import LensCache
 
-__all__ = [
-    "LensRecognizer",
-    "LensRecognizerKwargs",
-]
+__all__ = ["LensRecognizer", "LensRecognizerKwargs"]
 
 logger = getLogger(__name__)
 

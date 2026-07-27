@@ -15,11 +15,7 @@ from .kaifangcidian import KaifangcidianDictionaryService
 from .unihan import UnihanDictionaryService
 from .wiktionary import WiktionaryDictionaryService
 
-__all__ = [
-    "AVAILABLE_DICTIONARY_NAMES",
-    "DictionaryName",
-    "lookup_dictionary_entries",
-]
+__all__ = ["AVAILABLE_DICTIONARY_NAMES", "DictionaryName", "lookup_dictionary_entries"]
 
 type DictionaryName = Literal["cuhk", "gzzj", "kaifangcidian", "unihan", "wiktionary"]
 
@@ -73,12 +69,7 @@ def _merge_entries(entries: list[DictionaryEntry]) -> list[DictionaryEntry]:
     """
     merged_entries: dict[tuple[str, str, str, str], DictionaryEntry] = {}
     for entry in entries:
-        key = (
-            entry.traditional,
-            entry.simplified,
-            entry.pinyin,
-            entry.jyutping,
-        )
+        key = (entry.traditional, entry.simplified, entry.pinyin, entry.jyutping)
         if key not in merged_entries:
             merged_entries[key] = entry
             continue
@@ -162,8 +153,7 @@ def lookup_dictionary_entries(
     available_dictionary_count = 0
     for dictionary_name in dictionary_names:
         service = _DICTIONARY_SERVICES[dictionary_name](
-            database_path=database_path,
-            auto_build_missing=auto_build_missing,
+            database_path=database_path, auto_build_missing=auto_build_missing
         )
         try:
             entries.extend(service.lookup(query=query, limit=limit))

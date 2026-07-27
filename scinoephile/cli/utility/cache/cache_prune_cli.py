@@ -97,8 +97,7 @@ class CachePruneCli(ScinoephileCliBase):
             help="delete entries older than a duration such as 7d, 30d, or 12h",
         )
         arg_groups["operation arguments"].add_argument(
-            "--namespace",
-            help="cache namespace to inspect",
+            "--namespace", help="cache namespace to inspect"
         )
         arg_groups["operation arguments"].add_argument(
             "--dry-run",
@@ -112,9 +111,7 @@ class CachePruneCli(ScinoephileCliBase):
             help="maximum entries to print; use 0 to show all (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
-            "--yes",
-            action="store_true",
-            help="confirm destructive deletion",
+            "--yes", action="store_true", help="confirm destructive deletion"
         )
         parser.set_defaults(_parser=parser)
 

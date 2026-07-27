@@ -39,10 +39,7 @@ __all__ = [
 logger = getLogger(__name__)
 
 
-def val_child_path(
-    parent_dir_path: str | PathLike[str],
-    child_name: str,
-) -> Path:
+def val_child_path(parent_dir_path: str | PathLike[str], child_name: str) -> Path:
     """Validate that a child name resolves within a parent directory.
 
     Arguments:
@@ -197,9 +194,7 @@ def val_float(
 
 
 def val_index_range(
-    item_count: int,
-    start_at_idx: int = 0,
-    stop_at_idx: int | None = None,
+    item_count: int, start_at_idx: int = 0, stop_at_idx: int | None = None
 ) -> range:
     """Validate and construct a zero-based processing range.
 
@@ -295,9 +290,7 @@ def val_input_file_or_dir_path(value: str | PathLike[str]) -> Path: ...
 
 
 @overload
-def val_input_file_or_dir_path(
-    value: Iterable[str | PathLike[str]],
-) -> list[Path]: ...
+def val_input_file_or_dir_path(value: Iterable[str | PathLike[str]]) -> list[Path]: ...
 
 
 def val_input_file_or_dir_path(
@@ -315,9 +308,7 @@ def val_input_file_or_dir_path(
         ValueError: If any path is neither a file nor a directory
     """
 
-    def _val_input_file_or_dir_path(
-        value_to_validate: str | PathLike[str],
-    ) -> Path:
+    def _val_input_file_or_dir_path(value_to_validate: str | PathLike[str]) -> Path:
         """Validate a path.
 
         Arguments:
@@ -514,8 +505,7 @@ def val_output_dir_path(
 
 
 def val_output_dir_path(
-    value: str | PathLike[str] | Iterable[str | PathLike[str]],
-    create: bool = True,
+    value: str | PathLike[str] | Iterable[str | PathLike[str]], create: bool = True
 ) -> Path | list[Path]:
     """Validate output directory path(s), make them absolute, and create them if needed.
 
@@ -595,17 +585,13 @@ def val_output_dir_path(
 
 @overload
 def val_output_path(
-    value: str | PathLike[str],
-    exist_ok: bool = False,
-    create: bool = True,
+    value: str | PathLike[str], exist_ok: bool = False, create: bool = True
 ) -> Path: ...
 
 
 @overload
 def val_output_path(
-    value: Iterable[str | PathLike[str]],
-    exist_ok: bool = False,
-    create: bool = True,
+    value: Iterable[str | PathLike[str]], exist_ok: bool = False, create: bool = True
 ) -> list[Path]: ...
 
 

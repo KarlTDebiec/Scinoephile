@@ -85,13 +85,7 @@ class UnihanDictionaryParser:
         return UNIHAN_SOURCE, entries
 
     @classmethod
-    def _append_cangjie(
-        cls,
-        *,
-        entry_data: _EntryData,
-        label: str,
-        content: str,
-    ):
+    def _append_cangjie(cls, *, entry_data: _EntryData, label: str, content: str):
         """Append Cangjie metadata with merge logic for trad/simp duplicates.
 
         Arguments:
@@ -119,8 +113,7 @@ class UnihanDictionaryParser:
 
     @classmethod
     def _entries_data_to_entries(
-        cls,
-        entries_data: dict[tuple[str, str], _EntryData],
+        cls, entries_data: dict[tuple[str, str], _EntryData]
     ) -> list[DictionaryEntry]:
         """Convert mutable accumulators into normalized dictionary entries.
 

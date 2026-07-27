@@ -35,10 +35,7 @@ from scinoephile.core.dependencies.transcription import (
     import_whisper_timestamped_transcribe,
 )
 
-from .backend import (
-    MIMO_MODEL_NAME,
-    MlxAudioBackend,
-)
+from .backend import MIMO_MODEL_NAME, MlxAudioBackend
 
 __all__ = ["MlxAudioTranscriber"]
 
@@ -138,11 +135,7 @@ class MlxAudioTranscriber(Transcriber):
         if self.chunk_overlap_seconds < 0:
             raise ValueError("MLX-Audio chunk overlap must be non-negative.")
         super().__init__(
-            cache_root_path,
-            demucs_mode,
-            vad_mode,
-            overwrite_cache,
-            demucs_separator,
+            cache_root_path, demucs_mode, vad_mode, overwrite_cache, demucs_separator
         )
 
     @property
@@ -163,8 +156,7 @@ class MlxAudioTranscriber(Transcriber):
         return self.backend.default_max_tokens
 
     def _get_backend_cache_metadata(
-        self,
-        settings: TranscriptionPreprocessingSettings,
+        self, settings: TranscriptionPreprocessingSettings
     ) -> dict[str, object]:
         """Get metadata that identifies cached MLX-Audio output.
 
@@ -213,10 +205,7 @@ class MlxAudioTranscriber(Transcriber):
             audio.set_channels(1).set_frame_rate(_VAD_SAMPLE_RATE).set_sample_width(2)
         )
         samples = (
-            np.array(
-                normalized_audio.get_array_of_samples(),
-                dtype=np.float32,
-            )
+            np.array(normalized_audio.get_array_of_samples(), dtype=np.float32)
             / np.iinfo(np.int16).max
         )
         audio_tensor = torch.from_numpy(samples)
@@ -245,9 +234,7 @@ class MlxAudioTranscriber(Transcriber):
         return intervals
 
     def _transcribe_attempt(
-        self,
-        audio: AudioSegment,
-        settings: TranscriptionPreprocessingSettings,
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> list[TranscribedSegment]:
         """Run one uncached MLX-Audio transcription attempt.
 
@@ -268,10 +255,7 @@ class MlxAudioTranscriber(Transcriber):
                 f"Unable to run MLX-Audio transcription: {exc}"
             ) from exc
 
-    def _transcribe_audio_window(
-        self,
-        audio: AudioSegment,
-    ) -> list[TranscribedSegment]:
+    def _transcribe_audio_window(self, audio: AudioSegment) -> list[TranscribedSegment]:
         """Run MLX-Audio transcription and timestamp alignment for one audio window.
 
         Arguments:
@@ -286,10 +270,7 @@ class MlxAudioTranscriber(Transcriber):
             audio.export(temp_audio_path, format="wav")
             max_tokens = self._effective_max_tokens
             try:
-                inference_result = self.backend.transcribe(
-                    temp_audio_path,
-                    max_tokens,
-                )
+                inference_result = self.backend.transcribe(temp_audio_path, max_tokens)
             except (ImportError, OSError, RuntimeError, ValueError) as exc:
                 raise TranscriptionInferenceError(
                     f"Unable to run MLX-Audio inference: {exc}"
@@ -312,8 +293,7 @@ class MlxAudioTranscriber(Transcriber):
             return self.ctc_aligner(audio, text)
 
     def _transcribe_audio_window_with_token_retry(
-        self,
-        audio: AudioSegment,
+        self, audio: AudioSegment
     ) -> list[TranscribedSegment]:
         """Transcribe a window, splitting it when generation exhausts its token limit.
 
@@ -340,16 +320,11 @@ class MlxAudioTranscriber(Transcriber):
             f"{chunk_duration_ms / 1000:.3f}s chunks"
         )
         return self._transcribe_chunked_audio(
-            audio,
-            chunk_duration_ms,
-            chunk_overlap_ms,
+            audio, chunk_duration_ms, chunk_overlap_ms
         )
 
     def _transcribe_chunked_audio(
-        self,
-        audio: AudioSegment,
-        chunk_duration_ms: int,
-        chunk_overlap_ms: int,
+        self, audio: AudioSegment, chunk_duration_ms: int, chunk_overlap_ms: int
     ) -> list[TranscribedSegment]:
         """Run MLX-Audio transcription over shorter overlapping chunks.
 
@@ -394,8 +369,7 @@ class MlxAudioTranscriber(Transcriber):
         return segments
 
     def _transcribe_unfiltered_audio(
-        self,
-        audio: AudioSegment,
+        self, audio: AudioSegment
     ) -> list[TranscribedSegment]:
         """Transcribe audio without applying VAD.
 
@@ -411,15 +385,10 @@ class MlxAudioTranscriber(Transcriber):
             return self._transcribe_audio_window_with_token_retry(audio)
         chunk_overlap_ms = int(round(self.chunk_overlap_seconds * 1000))
         return self._transcribe_chunked_audio(
-            audio,
-            chunk_duration_ms,
-            chunk_overlap_ms,
+            audio, chunk_duration_ms, chunk_overlap_ms
         )
 
-    def _transcribe_vad_audio(
-        self,
-        audio: AudioSegment,
-    ) -> list[TranscribedSegment]:
+    def _transcribe_vad_audio(self, audio: AudioSegment) -> list[TranscribedSegment]:
         """Transcribe detected speech and restore original-audio timestamps.
 
         Arguments:
@@ -465,11 +434,7 @@ class MlxAudioTranscriber(Transcriber):
             duration_ms = original_end_ms - original_start_ms
             compressed_end_ms = compressed_start_ms + duration_ms
             compressed_intervals.append(
-                (
-                    compressed_start_ms,
-                    compressed_end_ms,
-                    original_start_ms,
-                )
+                (compressed_start_ms, compressed_end_ms, original_start_ms)
             )
             compressed_start_ms = compressed_end_ms
 
@@ -528,8 +493,7 @@ class MlxAudioTranscriber(Transcriber):
                 mapped_end_ms = interval_original_start_ms + max(
                     0,
                     min(
-                        word_end_ms - interval_compressed_start_ms,
-                        interval_duration_ms,
+                        word_end_ms - interval_compressed_start_ms, interval_duration_ms
                     ),
                 )
                 current_words.append(
@@ -580,12 +544,7 @@ class MlxAudioTranscriber(Transcriber):
                 if midpoint < core_start_seconds or midpoint >= core_end_seconds:
                     continue
                 words.append(
-                    word.model_copy(
-                        update={
-                            "start": global_start,
-                            "end": global_end,
-                        }
-                    )
+                    word.model_copy(update={"start": global_start, "end": global_end})
                 )
             if not words:
                 continue

@@ -60,8 +60,7 @@ def test_get_cache_entries_supports_nested_media_namespaces(tmp_path: Path):
     write_cache_file(tmp_path / "media/subtitles/first/2.srt", "one")
     write_cache_file(tmp_path / "media/subtitles/second/3.sup", "two")
     write_cache_file(
-        tmp_path / "media/subtitles/second/image-series/index.html",
-        "index",
+        tmp_path / "media/subtitles/second/image-series/index.html", "index"
     )
     write_cache_file(tmp_path / "media/subtitles/analysis/first.json", "analysis")
 
@@ -71,10 +70,7 @@ def test_get_cache_entries_supports_nested_media_namespaces(tmp_path: Path):
     ]
 
     subtitle_entries = get_cache_entries(tmp_path, namespace="media/subtitles")
-    analysis_entries = get_cache_entries(
-        tmp_path,
-        namespace="media/subtitles/analysis",
-    )
+    analysis_entries = get_cache_entries(tmp_path, namespace="media/subtitles/analysis")
 
     assert [entry.relative_path for entry in subtitle_entries] == [
         Path("media/subtitles/first"),
@@ -130,9 +126,7 @@ def test_prune_cache_prunes_individual_nested_namespace_entries(tmp_path: Path):
     set_mtime(old_path.parent, old_timestamp)
 
     deleted_entries = prune_cache(
-        tmp_path,
-        older_than=timedelta(days=30),
-        namespace="media/subtitles",
+        tmp_path, older_than=timedelta(days=30), namespace="media/subtitles"
     )
 
     assert [entry.relative_path for entry in deleted_entries] == [

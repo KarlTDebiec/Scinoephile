@@ -8,11 +8,7 @@ from argparse import Action, ArgumentParser
 
 from scinoephile.common import CommandLineInterface
 
-__all__ = [
-    "get_cli_action",
-    "get_cli_action_group_title",
-    "get_parser_action",
-]
+__all__ = ["get_cli_action", "get_cli_action_group_title", "get_parser_action"]
 
 
 def get_cli_action(cli: type[CommandLineInterface], option: str) -> Action:

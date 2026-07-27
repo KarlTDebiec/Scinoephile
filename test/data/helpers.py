@@ -27,10 +27,7 @@ __all__ = [
 
 
 def load_or_clean_series(
-    series: Series,
-    output_path: Path,
-    language: Language,
-    overwrite: bool = False,
+    series: Series, output_path: Path, language: Language, overwrite: bool = False
 ) -> Series:
     """Load or create a cleaned subtitle series.
 
@@ -51,10 +48,7 @@ def load_or_clean_series(
 
 
 def load_or_flatten_series(
-    series: Series,
-    output_path: Path,
-    language: Language,
-    overwrite: bool = False,
+    series: Series, output_path: Path, language: Language, overwrite: bool = False
 ) -> Series:
     """Load or create a flattened subtitle series.
 
@@ -108,10 +102,7 @@ def load_or_review_series(
 
 
 def load_or_romanize_series(
-    series: Series,
-    output_path: Path,
-    language: Language,
-    overwrite: bool = False,
+    series: Series, output_path: Path, language: Language, overwrite: bool = False
 ) -> Series:
     """Load or create a romanized subtitle series.
 
@@ -132,9 +123,7 @@ def load_or_romanize_series(
 
 
 def load_or_simplify_series(
-    series: Series,
-    output_path: Path,
-    overwrite: bool = False,
+    series: Series, output_path: Path, overwrite: bool = False
 ) -> Series:
     """Load or create a simplified Chinese-script subtitle series.
 

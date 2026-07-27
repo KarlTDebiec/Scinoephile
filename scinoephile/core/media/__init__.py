@@ -14,9 +14,4 @@ from .stream import Stream
 from .subtitle_stream import SubtitleStream
 from .video_stream import VideoStream
 
-__all__ = [
-    "AudioStream",
-    "Stream",
-    "SubtitleStream",
-    "VideoStream",
-]
+__all__ = ["AudioStream", "Stream", "SubtitleStream", "VideoStream"]

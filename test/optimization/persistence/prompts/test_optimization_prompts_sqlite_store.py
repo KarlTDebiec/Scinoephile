@@ -25,8 +25,7 @@ from scinoephile.optimization.persistence.test_cases import (
 from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 
 _UPDATED_REVIEW_PROMPT = replace(
-    ReviewPromptEng,
-    base_system_prompt="Review subtitles with exceptional care.",
+    ReviewPromptEng, base_system_prompt="Review subtitles with exceptional care."
 )
 """English review prompt with updated instructions."""
 
@@ -75,9 +74,7 @@ def test_store_shares_database_with_test_cases(tmp_path: Path):
 
     prompt_store.sync_aliases({"review-eng": prompt}, dry_run=False)
     test_case_store.sync_source_paths(
-        {"cases.json": [test_case]},
-        manager_cls=TranslationManager,
-        dry_run=False,
+        {"cases.json": [test_case]}, manager_cls=TranslationManager, dry_run=False
     )
 
     assert prompt_store.get_prompt_by_alias("review-eng") == prompt
@@ -112,8 +109,7 @@ def test_store_rejects_invalid_content_addressed_id(tmp_path: Path):
 
     with raises(ScinoephileError, match="content-addressed ID"):
         store.sync_aliases(
-            {"review-eng": replace(prompt, prompt_id="incorrect")},
-            dry_run=False,
+            {"review-eng": replace(prompt, prompt_id="incorrect")}, dry_run=False
         )
     assert not database_path.exists()
 

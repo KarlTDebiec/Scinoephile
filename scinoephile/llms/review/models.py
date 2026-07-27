@@ -18,11 +18,7 @@ from scinoephile.core.llms import (
 
 from .prompt import ReviewPrompt
 
-__all__ = [
-    "ReviewAnswer",
-    "ReviewQuery",
-    "ReviewTestCase",
-]
+__all__ = ["ReviewAnswer", "ReviewQuery", "ReviewTestCase"]
 
 
 _BASE_PROMPT = ReviewPrompt()

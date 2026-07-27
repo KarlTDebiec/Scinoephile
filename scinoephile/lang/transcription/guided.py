@@ -138,28 +138,15 @@ _YUE_HANT_SPEC = GuidedTranscriptionSpec(
 """Guided transcription specification for traditional written Cantonese."""
 
 
-DEFAULT_SPECS: Mapping[
-    tuple[Language, Language],
-    GuidedTranscriptionSpec,
-] = MappingProxyType(
-    {
-        (
-            Language.yue_hans,
-            Language.zho_hans,
-        ): _YUE_HANS_SPEC,
-        (
-            Language.yue_hans,
-            Language.zho_hant,
-        ): _YUE_HANS_SPEC,
-        (
-            Language.yue_hant,
-            Language.zho_hans,
-        ): _YUE_HANT_SPEC,
-        (
-            Language.yue_hant,
-            Language.zho_hant,
-        ): _YUE_HANT_SPEC,
-    }
+DEFAULT_SPECS: Mapping[tuple[Language, Language], GuidedTranscriptionSpec] = (
+    MappingProxyType(
+        {
+            (Language.yue_hans, Language.zho_hans): _YUE_HANS_SPEC,
+            (Language.yue_hans, Language.zho_hant): _YUE_HANS_SPEC,
+            (Language.yue_hant, Language.zho_hans): _YUE_HANT_SPEC,
+            (Language.yue_hant, Language.zho_hant): _YUE_HANT_SPEC,
+        }
+    )
 )
 """Guided transcription specifications keyed by transcription and guide language."""
 
@@ -240,9 +227,7 @@ def get_guided_transcriber(
     if delineation_test_cases is None:
         delineation_test_cases = list(
             load_default_test_cases(
-                DelineationManager,
-                delineation_prompt,
-                spec.delineation_json_paths,
+                DelineationManager, delineation_prompt, spec.delineation_json_paths
             )
         )
     if provider is None:
@@ -260,9 +245,7 @@ def get_guided_transcriber(
     if punctuation_test_cases is None:
         punctuation_test_cases = list(
             load_default_test_cases(
-                PunctuationManager,
-                punctuation_prompt,
-                spec.punctuation_json_paths,
+                PunctuationManager, punctuation_prompt, spec.punctuation_json_paths
             )
         )
     punctuation_processor = PunctuationProcessor(

@@ -22,12 +22,10 @@ def test_multi_diff_cli(tmp_path: Path, capsys: CaptureFixture):
     reference_infile_path = tmp_path / "reference.srt"
     candidate_infile_path = tmp_path / "candidate.srt"
     reference_infile_path.write_text(
-        "1\n00:00:00,000 --> 00:00:01,000\n靠你了\n",
-        encoding="utf-8",
+        "1\n00:00:00,000 --> 00:00:01,000\n靠你了\n", encoding="utf-8"
     )
     candidate_infile_path.write_text(
-        "1\n00:00:00,000 --> 00:00:01,000\n靠你喇！\n",
-        encoding="utf-8",
+        "1\n00:00:00,000 --> 00:00:01,000\n靠你喇！\n", encoding="utf-8"
     )
 
     run_cli_with_args(
@@ -51,8 +49,7 @@ def test_multi_diff_cli_multiline_split_edit(tmp_path: Path, capsys: CaptureFixt
     reference_infile_path = tmp_path / "reference.srt"
     candidate_infile_path = tmp_path / "candidate.srt"
     reference_infile_path.write_text(
-        "1\n00:00:00,000 --> 00:00:02,000\nalpha beta\n",
-        encoding="utf-8",
+        "1\n00:00:00,000 --> 00:00:02,000\nalpha beta\n", encoding="utf-8"
     )
     candidate_infile_path.write_text(
         "1\n00:00:00,000 --> 00:00:01,000\nalpha\n\n"
@@ -75,8 +72,7 @@ def test_multi_diff_cli_multiline_split_edit(tmp_path: Path, capsys: CaptureFixt
 
 
 def test_multi_diff_cli_identical_series_prints_no_differences(
-    tmp_path: Path,
-    capsys: CaptureFixture,
+    tmp_path: Path, capsys: CaptureFixture
 ):
     """Test multi diff reports when there are no differences.
 

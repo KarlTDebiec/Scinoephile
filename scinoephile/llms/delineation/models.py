@@ -12,11 +12,7 @@ from scinoephile.core.llms import Answer, Query, TestCase
 
 from .prompt import DelineationPrompt
 
-__all__ = [
-    "DelineationAnswer",
-    "DelineationQuery",
-    "DelineationTestCase",
-]
+__all__ = ["DelineationAnswer", "DelineationQuery", "DelineationTestCase"]
 
 
 _BASE_PROMPT = DelineationPrompt()

@@ -78,14 +78,10 @@ def test_series_diff_pairs_same_position_delete_insert():
     """Test same-position delete and insert spans merge into one edit."""
     diff = SeriesDiff(
         get_text_series(
-            "阿灿,你没事　吧?",
-            "你睇我姿势，你话我有冇事？",
-            "你的姿势　很有型　",
+            "阿灿,你没事　吧?", "你睇我姿势，你话我有冇事？", "你的姿势　很有型　"
         ),
         get_text_series(
-            "阿灿，你冇事呀嘛？",
-            "你睇我姿势你话有冇事呀？",
-            "你个姿势仲好有型！",
+            "阿灿，你冇事呀嘛？", "你睇我姿势你话有冇事呀？", "你个姿势仲好有型！"
         ),
     )
     messages = list(diff)
@@ -102,14 +98,10 @@ def test_series_diff_pairs_adjacent_similar_insert_delete():
     """Test adjacent similar insert and delete spans merge into one edit."""
     diff = SeriesDiff(
         get_text_series(
-            "靠你了",
-            "莫大叔！莲花落阵你都冇有把握",
-            "以我现在打狗棒法的功力",
+            "靠你了", "莫大叔！莲花落阵你都冇有把握", "以我现在打狗棒法的功力"
         ),
         get_text_series(
-            "靠你喇！",
-            "莫大叔呀！莲花落阵你都冇把握",
-            "以我而家打狗棍法嘅功力",
+            "靠你喇！", "莫大叔呀！莲花落阵你都冇把握", "以我而家打狗棍法嘅功力"
         ),
     )
     messages = list(diff)
@@ -231,19 +223,11 @@ def test_series_diff_does_not_pair_dissimilar_bracketed_span():
     one = get_text_series("editA", "qqqq", "editB")
     two = get_text_series("editZ", "real insert", "editY")
     diff = SeriesDiff(one, two)
-    one_side = diff._get_block_side(
-        (0, 1, 2),
-        diff._get_series_event_line_records(one),
-    )
-    two_side = diff._get_block_side(
-        (0, 1, 2),
-        diff._get_series_event_line_records(two),
-    )
+    one_side = diff._get_block_side((0, 1, 2), diff._get_series_event_line_records(one))
+    two_side = diff._get_block_side((0, 1, 2), diff._get_series_event_line_records(two))
 
     paired = diff._pair_one_sided_spans_with_implicit_lines(
-        [((0,), (0,)), ((), (1,)), ((2,), (2,))],
-        one_side,
-        two_side,
+        [((0,), (0,)), ((), (1,)), ((2,), (2,))], one_side, two_side
     )
 
     assert paired == [((0,), (0,)), ((), (1,)), ((2,), (2,))]
@@ -255,21 +239,14 @@ def test_series_diff_does_not_merge_sparse_one_sided_spans():
     two = get_text_series("start", "same1", "same2", "alpha!", "end")
     diff = SeriesDiff(one, two)
     one_side = diff._get_block_side(
-        (0, 1, 2, 3, 4),
-        diff._get_series_event_line_records(one),
+        (0, 1, 2, 3, 4), diff._get_series_event_line_records(one)
     )
     two_side = diff._get_block_side(
-        (0, 1, 2, 3, 4),
-        diff._get_series_event_line_records(two),
+        (0, 1, 2, 3, 4), diff._get_series_event_line_records(two)
     )
 
     should_merge = diff._should_merge_adjacent_one_sided_spans(
-        one_side,
-        two_side,
-        (1,),
-        (),
-        (),
-        (3,),
+        one_side, two_side, (1,), (), (), (3,)
     )
 
     assert should_merge is False
@@ -280,22 +257,11 @@ def test_series_diff_merges_adjacent_one_sided_spans():
     one = get_text_series("靠你了", "莫大叔！莲花落阵你都冇有把握")
     two = get_text_series("靠你喇！", "莫大叔呀！莲花落阵你都冇把握")
     diff = SeriesDiff(one, two)
-    one_side = diff._get_block_side(
-        (0, 1),
-        diff._get_series_event_line_records(one),
-    )
-    two_side = diff._get_block_side(
-        (0, 1),
-        diff._get_series_event_line_records(two),
-    )
+    one_side = diff._get_block_side((0, 1), diff._get_series_event_line_records(one))
+    two_side = diff._get_block_side((0, 1), diff._get_series_event_line_records(two))
 
     should_merge = diff._should_merge_adjacent_one_sided_spans(
-        one_side,
-        two_side,
-        (1,),
-        (),
-        (),
-        (1,),
+        one_side, two_side, (1,), (), (), (1,)
     )
 
     assert should_merge is True

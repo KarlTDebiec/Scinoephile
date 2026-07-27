@@ -11,11 +11,7 @@ from pathlib import Path
 
 from pytest import MonkeyPatch, raises
 
-from scinoephile.cli.ocr import (
-    OcrLensCli,
-    OcrPaddleCli,
-    OcrTesseractCli,
-)
+from scinoephile.cli.ocr import OcrLensCli, OcrPaddleCli, OcrTesseractCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
@@ -34,9 +30,7 @@ OCR_LANGUAGE_METAVAR = "{eng,yue-Hans,yue-Hant,zho-Hans,zho-Hant}"
 
 
 def _patch_image_series_load(
-    monkeypatch: MonkeyPatch,
-    target: str,
-    image_series: ImageSeries,
+    monkeypatch: MonkeyPatch, target: str, image_series: ImageSeries
 ) -> list[Path]:
     """Patch image subtitle loading and return captured input paths.
 
@@ -102,9 +96,7 @@ def test_ocr_lens_cli_help_lists_language_and_retry_options_only():
 
 
 def test_ocr_lens_cli_converts_image_subtitles_to_srt(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
-    tiny_image_series: ImageSeries,
+    monkeypatch: MonkeyPatch, tmp_path: Path, tiny_image_series: ImageSeries
 ):
     """Test Google Lens CLI writes OCR output to SRT.
 
@@ -114,9 +106,7 @@ def test_ocr_lens_cli_converts_image_subtitles_to_srt(
         tiny_image_series: small image subtitle series
     """
     input_paths = _patch_image_series_load(
-        monkeypatch,
-        "scinoephile.cli.helpers.io.ImageSeries.load",
-        tiny_image_series,
+        monkeypatch, "scinoephile.cli.helpers.io.ImageSeries.load", tiny_image_series
     )
     input_path = _write_placeholder_sup_path(tmp_path)
     observed_kwargs = []
@@ -195,9 +185,7 @@ def test_ocr_tesseract_cli_help_lists_language_options():
 
 
 def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
-    tiny_image_series: ImageSeries,
+    monkeypatch: MonkeyPatch, tmp_path: Path, tiny_image_series: ImageSeries
 ):
     """Test PaddleOCR CLI writes OCR output to SRT.
 
@@ -207,9 +195,7 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
         tiny_image_series: small image subtitle series
     """
     input_paths = _patch_image_series_load(
-        monkeypatch,
-        "scinoephile.cli.helpers.io.ImageSeries.load",
-        tiny_image_series,
+        monkeypatch, "scinoephile.cli.helpers.io.ImageSeries.load", tiny_image_series
     )
     input_path = _write_placeholder_sup_path(tmp_path)
     observed_kwargs = []
@@ -255,9 +241,7 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
 
 
 def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
-    tiny_image_series: ImageSeries,
+    monkeypatch: MonkeyPatch, tmp_path: Path, tiny_image_series: ImageSeries
 ):
     """Test Tesseract OCR CLI writes OCR output to SRT.
 
@@ -267,9 +251,7 @@ def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
         tiny_image_series: small image subtitle series
     """
     input_paths = _patch_image_series_load(
-        monkeypatch,
-        "scinoephile.cli.helpers.io.ImageSeries.load",
-        tiny_image_series,
+        monkeypatch, "scinoephile.cli.helpers.io.ImageSeries.load", tiny_image_series
     )
     input_path = _write_placeholder_sup_path(tmp_path)
 
@@ -310,9 +292,7 @@ def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
 
 
 def test_ocr_tesseract_cli_passes_italic_detection_options(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
-    tiny_image_series: ImageSeries,
+    monkeypatch: MonkeyPatch, tmp_path: Path, tiny_image_series: ImageSeries
 ):
     """Test Tesseract OCR CLI passes italic detection options.
 
@@ -322,9 +302,7 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
         tiny_image_series: small image subtitle series
     """
     input_paths = _patch_image_series_load(
-        monkeypatch,
-        "scinoephile.cli.helpers.io.ImageSeries.load",
-        tiny_image_series,
+        monkeypatch, "scinoephile.cli.helpers.io.ImageSeries.load", tiny_image_series
     )
     input_path = _write_placeholder_sup_path(tmp_path)
     cache_root_path = tmp_path / "cache"
@@ -366,8 +344,7 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
 
 
 def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
+    monkeypatch: MonkeyPatch, tmp_path: Path
 ):
     """Test Tesseract OCR CLI rejects italic detection for non-English OCR."""
     input_path = test_data_root / "mlamd/input/zho-Hans_ocr/source.sup"
@@ -414,11 +391,7 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
             "scinoephile.cli.ocr.ocr_lens_cli.ocr_image_series_with_lens",
             "scinoephile.cli.ocr.ocr_lens_cli.write_series",
             "--language zho-Hans --retries 5",
-            {
-                "language": Language.zho_hans,
-                "overwrite_cache": True,
-                "retries": 5,
-            },
+            {"language": Language.zho_hans, "overwrite_cache": True, "retries": 5},
         ),
         (
             OcrPaddleCli,
@@ -434,11 +407,7 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
             "scinoephile.cli.ocr.ocr_tesseract_cli.ocr_image_series_with_tesseract",
             "scinoephile.cli.ocr.ocr_tesseract_cli.write_series",
             "--detect-italics",
-            {
-                "detect_italics": True,
-                "language": Language.eng,
-                "overwrite_cache": True,
-            },
+            {"detect_italics": True, "language": Language.eng, "overwrite_cache": True},
         ),
     ],
 )
@@ -466,11 +435,7 @@ def test_ocr_engine_clis_delegate_subtitle_outputs_to_writer(
         extra_args: operation arguments for the CLI under test
         expected_ocr_kwargs: expected keyword arguments passed to OCR operation
     """
-    input_paths = _patch_image_series_load(
-        monkeypatch,
-        load_target,
-        tiny_image_series,
-    )
+    input_paths = _patch_image_series_load(monkeypatch, load_target, tiny_image_series)
     input_path = _write_placeholder_sup_path(tmp_path)
     recognized_series = Series(
         events=[Subtitle(start=1000, end=2000, text="recognized")]
@@ -491,10 +456,7 @@ def test_ocr_engine_clis_delegate_subtitle_outputs_to_writer(
         return recognized_series
 
     def fake_write_series(
-        parser: object,
-        series: Series,
-        outfile: str | Path,
-        overwrite: bool,
+        parser: object, series: Series, outfile: str | Path, overwrite: bool
     ):
         """Fake subtitle output writing.
 
@@ -539,8 +501,7 @@ def test_ocr_engine_clis_delegate_subtitle_outputs_to_writer(
     ),
 )
 def test_ocr_lens_cli_matches_mlamd_sup_ocr_fixture(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
+    monkeypatch: MonkeyPatch, tmp_path: Path
 ):
     """Test Google Lens CLI against a full MLAMD SUP subtitle fixture.
 
@@ -572,11 +533,7 @@ def test_ocr_lens_cli_matches_mlamd_sup_ocr_fixture(
     reason="Set SCINOEPHILE_RUN_MLAMD_PADDLE_OCR=1 to run full MLAMD PaddleOCR tests",
 )
 @parametrize(
-    (
-        "sup_path",
-        "language",
-        "expected_path",
-    ),
+    ("sup_path", "language", "expected_path"),
     [
         (
             "mlamd/input/zho-Hans_ocr/source.sup",

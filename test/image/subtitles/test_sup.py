@@ -50,21 +50,7 @@ def test_read_sup_image_array_rejects_row_overflow():
 def test_read_sup_series_rejects_truncated_segment_data():
     """Test SUP segments cannot declare more bytes than are available."""
     data = np.array(
-        [
-            0x50,
-            0x47,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x99,
-            0x00,
-            0x04,
-        ],
+        [0x50, 0x47, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x99, 0x00, 0x04],
         dtype=np.uint8,
     )
 

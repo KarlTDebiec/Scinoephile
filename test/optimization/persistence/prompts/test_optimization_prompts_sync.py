@@ -15,8 +15,7 @@ from scinoephile.optimization.prompt_spec import PromptSpec
 
 _PROMPT_SPECS = {
     "review-eng": PromptSpec(
-        manager_cls=ReviewManager,
-        prompt=DEFAULT_PROMPTS[Language.eng],
+        manager_cls=ReviewManager, prompt=DEFAULT_PROMPTS[Language.eng]
     )
 }
 """Minimal prompt specifications for persistence unit tests."""

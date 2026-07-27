@@ -68,9 +68,7 @@ def get_temp_file_path(suffix: str | None = None) -> Generator[Path]:
 
 @contextmanager
 def open_atomic_text_file(
-    output_path: Path,
-    *,
-    encoding: str = "utf-8",
+    output_path: Path, *, encoding: str = "utf-8"
 ) -> Generator[TextIO]:
     """Open a temporary text file that atomically replaces an output on success.
 

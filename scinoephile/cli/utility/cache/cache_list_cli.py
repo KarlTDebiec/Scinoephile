@@ -75,8 +75,7 @@ class CacheListCli(ScinoephileCliBase):
 
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
-            "--namespace",
-            help="cache namespace to inspect",
+            "--namespace", help="cache namespace to inspect"
         )
         arg_groups["operation arguments"].add_argument(
             "--format",
@@ -97,9 +96,7 @@ class CacheListCli(ScinoephileCliBase):
             help="sort field",
         )
         arg_groups["operation arguments"].add_argument(
-            "--reverse",
-            action="store_true",
-            help="reverse sort order",
+            "--reverse", action="store_true", help="reverse sort order"
         )
         parser.set_defaults(_parser=parser)
 

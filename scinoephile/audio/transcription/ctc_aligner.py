@@ -52,10 +52,7 @@ class CtcAligner:
     """Loaded processors shared by model name."""
 
     def __init__(
-        self,
-        language: Language,
-        model_name: str | None = None,
-        device: str = "cpu",
+        self, language: Language, model_name: str | None = None, device: str = "cpu"
     ):
         """Initialize.
 
@@ -93,11 +90,7 @@ class CtcAligner:
         self._processor: CtcProcessor | None = None
         """Processor associated with the CTC model."""
 
-    def __call__(
-        self,
-        audio: AudioSegment,
-        text: str,
-    ) -> list[TranscribedSegment]:
+    def __call__(self, audio: AudioSegment, text: str) -> list[TranscribedSegment]:
         """Align transcript text to source audio.
 
         Arguments:
@@ -151,11 +144,7 @@ class CtcAligner:
             self._processors[self.model_name] = processor
         return self._processor
 
-    def align(
-        self,
-        audio: AudioSegment,
-        text: str,
-    ) -> list[TranscribedSegment]:
+    def align(self, audio: AudioSegment, text: str) -> list[TranscribedSegment]:
         """Align transcript text to source audio.
 
         Arguments:
@@ -182,25 +171,16 @@ class CtcAligner:
 
             # Find frame timings for supported characters
             if token_ids:
-                path = self._get_best_path(
-                    log_probs,
-                    token_ids,
-                    blank_token_id,
-                )
+                path = self._get_best_path(log_probs, token_ids, blank_token_id)
                 timed_chars = self._get_character_timings(
-                    path,
-                    char_indices,
-                    log_probs.shape[0],
-                    duration_seconds,
+                    path, char_indices, log_probs.shape[0], duration_seconds
                 )
             else:
                 timed_chars = {}
 
             # Fill gaps for unsupported characters and build the aligned segment
             words = self._get_transcribed_words(
-                transcript_text,
-                timed_chars,
-                duration_seconds,
+                transcript_text, timed_chars, duration_seconds
             )
             if not words:
                 raise TranscriptionAlignmentError(
@@ -224,9 +204,7 @@ class CtcAligner:
             ) from exc
 
     def _get_alignment_inputs(
-        self,
-        audio: AudioSegment,
-        text: str,
+        self, audio: AudioSegment, text: str
     ) -> tuple[np.ndarray, list[int], list[int], int]:
         """Get CTC log probabilities and transcript token mapping.
 
@@ -250,9 +228,7 @@ class CtcAligner:
         samples = self._get_audio_samples(audio, sampling_rate)
         processor_callable = cast(Callable[..., Mapping[str, Any]], processor)
         inputs = processor_callable(
-            samples,
-            sampling_rate=sampling_rate,
-            return_tensors="pt",
+            samples, sampling_rate=sampling_rate, return_tensors="pt"
         )
         if self.device != "cpu":
             inputs = {key: value.to(self.device) for key, value in inputs.items()}
@@ -336,9 +312,7 @@ class CtcAligner:
 
     @staticmethod
     def _attach_boundary_text(
-        run_text: str,
-        words: list[TranscribedWord],
-        has_next_timing: bool,
+        run_text: str, words: list[TranscribedWord], has_next_timing: bool
     ) -> str | None:
         """Attach unaligned boundary punctuation or whitespace to a timed character.
 
@@ -361,10 +335,7 @@ class CtcAligner:
         return None
 
     @staticmethod
-    def _get_audio_samples(
-        audio: AudioSegment,
-        sampling_rate: int,
-    ) -> np.ndarray:
+    def _get_audio_samples(audio: AudioSegment, sampling_rate: int) -> np.ndarray:
         """Get audio samples for CTC alignment.
 
         Arguments:
@@ -389,9 +360,7 @@ class CtcAligner:
 
     @staticmethod
     def _get_best_path(
-        log_probs: np.ndarray,
-        token_ids: Sequence[int],
-        blank_token_id: int,
+        log_probs: np.ndarray, token_ids: Sequence[int], blank_token_id: int
     ) -> list[tuple[int, int, float]]:
         """Get the best CTC path through a transcript-token trellis.
 
@@ -405,9 +374,7 @@ class CtcAligner:
             TranscriptionAlignmentError: if no complete path can be found
         """
         frame_count = CtcAligner._validate_best_path_inputs(
-            log_probs,
-            token_ids,
-            blank_token_id,
+            log_probs, token_ids, blank_token_id
         )
 
         # Insert required blanks between adjacent repeated labels
@@ -532,9 +499,7 @@ class CtcAligner:
 
     @staticmethod
     def _get_token_id(
-        char: str,
-        converted_char: str | None,
-        tokenizer: object,
+        char: str, converted_char: str | None, tokenizer: object
     ) -> int | None:
         """Get an aligner token ID for one transcript character.
 
@@ -550,9 +515,7 @@ class CtcAligner:
         convert_tokens_to_ids = getattr(tokenizer, "convert_tokens_to_ids", None)
         if char.isspace():
             word_delimiter_token_id = getattr(
-                tokenizer,
-                "word_delimiter_token_id",
-                None,
+                tokenizer, "word_delimiter_token_id", None
             )
             if (
                 isinstance(word_delimiter_token_id, int)
@@ -637,9 +600,7 @@ class CtcAligner:
 
             # Attach boundary text to the nearest aligned character
             boundary_pending_text = CtcAligner._attach_boundary_text(
-                run_text,
-                words,
-                char_idx < len(text),
+                run_text, words, char_idx < len(text)
             )
             if boundary_pending_text is not None:
                 pending_text = boundary_pending_text
@@ -750,9 +711,7 @@ class CtcAligner:
 
     @staticmethod
     def _validate_best_path_inputs(
-        log_probs: np.ndarray,
-        token_ids: Sequence[int],
-        blank_token_id: int,
+        log_probs: np.ndarray, token_ids: Sequence[int], blank_token_id: int
     ) -> int:
         """Validate CTC path inputs.
 

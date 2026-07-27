@@ -15,10 +15,7 @@ from scinoephile.core.llms.utils import load_test_cases_from_json
 from .persisted_test_case import PersistedTestCase
 from .sqlite_store import TestCaseSqliteStore
 
-__all__ = [
-    "SyncReport",
-    "sync_test_cases",
-]
+__all__ = ["SyncReport", "sync_test_cases"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -56,18 +53,13 @@ def sync_test_cases(
     """
     input_paths_tuple = tuple(input_path.resolve() for input_path in input_paths)
     source_test_cases = {
-        str(input_path): _load_test_cases(
-            input_path,
-            manager_cls,
-        )
+        str(input_path): _load_test_cases(input_path, manager_cls)
         for input_path in input_paths_tuple
     }
 
     store = TestCaseSqliteStore(output_path)
     insert_ids, delete_ids = store.sync_source_paths(
-        source_test_cases,
-        manager_cls=manager_cls,
-        dry_run=dry_run,
+        source_test_cases, manager_cls=manager_cls, dry_run=dry_run
     )
     return SyncReport(
         operation=manager_cls.operation,
@@ -78,8 +70,7 @@ def sync_test_cases(
 
 
 def _load_test_cases(
-    input_path: Path,
-    manager_cls: type[Manager],
+    input_path: Path, manager_cls: type[Manager]
 ) -> list[PersistedTestCase]:
     """Load, validate, and normalize persisted test cases from JSON.
 
@@ -93,9 +84,7 @@ def _load_test_cases(
     """
     try:
         test_cases = load_test_cases_from_json(
-            input_path,
-            manager_cls,
-            manager_cls.base_prompt,
+            input_path, manager_cls, manager_cls.base_prompt
         )
         return [
             PersistedTestCase.from_test_case(test_case, manager_cls)

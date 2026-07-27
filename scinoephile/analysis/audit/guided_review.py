@@ -88,11 +88,7 @@ def audit_guided_review(
     """
     block_pairs = get_block_pairs_by_pause(target, guide)
     validate_audit_range(
-        first_index,
-        last_index,
-        first_block,
-        last_block,
-        block_count=len(block_pairs),
+        first_index, last_index, first_block, last_block, block_count=len(block_pairs)
     )
     blocks_by_key = _get_blocks_by_key(block_pairs)
     rows_by_subtitle_index: dict[int, _GuidedReviewRow] = {}
@@ -296,11 +292,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
             block
             for block in matches
             if _block_intersects_range(
-                block,
-                first_index,
-                last_index,
-                first_block,
-                last_block,
+                block, first_index, last_index, first_block, last_block
             )
         ]
         if selected_matches:
@@ -354,11 +346,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
             block
             for block in matches
             if _block_intersects_range(
-                block,
-                first_index,
-                last_index,
-                first_block,
-                last_block,
+                block, first_index, last_index, first_block, last_block
             )
         ]
         if not selected_matches or all(
@@ -389,11 +377,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
         for blocks in blocks_by_key.values()
         for block in blocks
         if _block_intersects_range(
-            block,
-            first_index,
-            last_index,
-            first_block,
-            last_block,
+            block, first_index, last_index, first_block, last_block
         )
     }
     active_block_numbers = {block.block_number for _, _, block in active_cases}
@@ -419,8 +403,7 @@ def _get_blocks_by_key(
         guided-review blocks keyed by target and guide text
     """
     blocks_by_key: dict[
-        tuple[tuple[str, ...], tuple[str, ...]],
-        list[_GuidedReviewBlock],
+        tuple[tuple[str, ...], tuple[str, ...]], list[_GuidedReviewBlock]
     ] = defaultdict(list)
     target_offset = 0
     for block_number, (target_block, guide_block) in enumerate(block_pairs, 1):
