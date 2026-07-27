@@ -287,10 +287,6 @@ class LensRecognizer:
         """
         chrome_lens_py = import_chrome_lens_py()
         api = chrome_lens_py.LensAPI()
-        transient_error_classes = (
-            chrome_lens_py.LensAPIError,
-            _GoogleLensRequestError,
-        )
 
         async def recognize() -> list[str]:
             """Run Google Lens OCR retries in one event loop."""
@@ -304,7 +300,7 @@ class LensRecognizer:
                     )
                     lines = self._normalize_lens_result(result)
                     self._raise_if_request_error(lines)
-                except transient_error_classes as exc:
+                except (chrome_lens_py.LensAPIError, _GoogleLensRequestError) as exc:
                     if attempt == self.retries:
                         raise
                     logger.warning(
