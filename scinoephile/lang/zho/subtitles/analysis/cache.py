@@ -16,7 +16,7 @@ from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.media import SubtitleStream
 
-from .analysis_result import ZhoSubtitleScriptAnalysis
+from .result import ZhoSubtitleScriptAnalysis
 
 __all__ = ["ZhoSubtitleScriptAnalysisCache"]
 

@@ -13,7 +13,7 @@ from scinoephile.core import Language
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
-from scinoephile.lang.zho.subtitles.analysis import (
+from scinoephile.lang.zho.subtitles.analysis.script import (
     analyze_zho_subtitle_stream_script,
 )
 from test.helpers.files import set_mtime
@@ -72,7 +72,7 @@ def test_analyze_text_subtitle_stream_marks_cached_analysis_used(tmp_path: Path)
     set_mtime(cache_path, old_timestamp)
 
     with patch(
-        "scinoephile.lang.zho.subtitles.analysis.SubtitleCache.cache"
+        "scinoephile.lang.zho.subtitles.analysis.script.SubtitleCache.cache"
     ) as cache_mock:
         analysis = analyze_zho_subtitle_stream_script(
             infile_path,
@@ -136,7 +136,7 @@ def test_analyze_text_subtitle_stream_overwrites_cached_stream(tmp_path: Path):
     )
 
     with patch(
-        "scinoephile.lang.zho.subtitles.analysis.SubtitleCache.cache"
+        "scinoephile.lang.zho.subtitles.analysis.script.SubtitleCache.cache"
     ) as cache_mock:
         analysis = analyze_zho_subtitle_stream_script(
             infile_path,

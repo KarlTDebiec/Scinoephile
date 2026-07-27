@@ -16,8 +16,8 @@ from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.script.analysis import get_zho_script_analysis
 from scinoephile.media.subtitles.cache import SubtitleCache
 
-from .analysis_result import ZhoSubtitleScriptAnalysis
 from .cache import ZhoSubtitleScriptAnalysisCache
+from .result import ZhoSubtitleScriptAnalysis
 
 __all__ = ["analyze_zho_subtitle_stream_script"]
 

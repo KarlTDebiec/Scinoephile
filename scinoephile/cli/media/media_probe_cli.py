@@ -20,7 +20,9 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.media import SubtitleStream
-from scinoephile.lang.zho.subtitles.analysis import analyze_zho_subtitle_stream_script
+from scinoephile.lang.zho.subtitles.analysis.script import (
+    analyze_zho_subtitle_stream_script,
+)
 from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
 from scinoephile.media.probe import get_streams
 

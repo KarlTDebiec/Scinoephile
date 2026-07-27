@@ -7,10 +7,12 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.core.media import SubtitleStream
-from scinoephile.lang.zho.subtitles.analysis_result import (
+from scinoephile.lang.zho.subtitles.analysis.cache import (
+    ZhoSubtitleScriptAnalysisCache,
+)
+from scinoephile.lang.zho.subtitles.analysis.result import (
     ZhoSubtitleScriptAnalysis,
 )
-from scinoephile.lang.zho.subtitles.cache import ZhoSubtitleScriptAnalysisCache
 
 
 def test_subtitle_script_analysis_cache_round_trip(tmp_path: Path):

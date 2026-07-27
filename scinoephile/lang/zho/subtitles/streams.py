@@ -13,7 +13,7 @@ from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.media.subtitles.cache import SubtitleCache
 from scinoephile.media.subtitles.details import get_detailed_subtitle_streams
 
-from .analysis import analyze_zho_subtitle_stream_script
+from .analysis.script import analyze_zho_subtitle_stream_script
 
 __all__ = ["get_zho_subtitle_streams"]
 
