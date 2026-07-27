@@ -11,10 +11,10 @@ import numpy as np
 from opencc import OpenCC
 from pydub import AudioSegment
 
+from scinoephile.core import Language
 from scinoephile.core.dependencies.transcription import (
-    import_torch_no_grad,
-    import_transformers_auto_model_for_ctc,
-    import_transformers_auto_processor,
+    import_torch,
+    import_transformers,
 )
 
 from .exceptions import TranscriptionAlignmentError
@@ -26,26 +26,63 @@ __all__ = ["CtcAligner"]
 if TYPE_CHECKING:
     from scinoephile.core.dependencies.transcription import CtcModel, CtcProcessor
 
+_DEFAULT_MODEL_NAMES = {
+    Language.eng: "facebook/wav2vec2-base-960h",
+    Language.yue_hans: "ctl/wav2vec2-large-xlsr-cantonese",
+    Language.yue_hant: "ctl/wav2vec2-large-xlsr-cantonese",
+    Language.zho_hans: "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+    Language.zho_hant: "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+}
+"""Default CTC model names keyed by transcription language."""
+
+_SCRIPT_CONVERSION_CONFIGS = {
+    (Language.yue_hans, _DEFAULT_MODEL_NAMES[Language.yue_hans]): "s2t",
+    (Language.zho_hant, _DEFAULT_MODEL_NAMES[Language.zho_hant]): "t2s",
+}
+"""OpenCC configurations keyed by transcription language and CTC model name."""
+
 
 class CtcAligner:
     """Aligns transcription text to audio using a CTC model."""
 
-    _components: ClassVar[dict[tuple[str, str], tuple[CtcProcessor, CtcModel]]] = {}
-    """Loaded processors and models shared by model name and device."""
+    _models: ClassVar[dict[tuple[str, str], CtcModel]] = {}
+    """Loaded models shared by model name and device."""
+
+    _processors: ClassVar[dict[str, CtcProcessor]] = {}
+    """Loaded processors shared by model name."""
 
     def __init__(
         self,
-        model_name: str = "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+        language: Language,
+        model_name: str | None = None,
         device: str = "cpu",
     ):
         """Initialize.
 
         Arguments:
-            model_name: Hugging Face CTC model name or local model path
+            language: transcription language
+            model_name: optional Hugging Face CTC model name or local model path
             device: device identifier passed to the CTC model
+        Raises:
+            ValueError: if no default model is available for the language
         """
+        self.language = language
+        """Transcription language."""
+
+        if model_name is None:
+            try:
+                model_name = _DEFAULT_MODEL_NAMES[language]
+            except KeyError as exc:
+                raise ValueError(
+                    f"{language} is not supported by CTC alignment"
+                ) from exc
         self.model_name = model_name
         """Hugging Face CTC model name or local model path."""
+
+        self._script_conversion_config = _SCRIPT_CONVERSION_CONFIGS.get(
+            (language, model_name)
+        )
+        """OpenCC configuration for adapting text to the CTC model."""
 
         self.device = device
         """Device identifier passed to the CTC model."""
@@ -78,8 +115,21 @@ class CtcAligner:
         Returns:
             loaded CTC model
         """
-        self._load_components()
-        assert self._model is not None
+        if self._model is None:
+            model_key = (self.model_name, self.device)
+            cached_model = self._models.get(model_key)
+            if cached_model is not None:
+                self._model = cached_model
+                return self._model
+
+            transformers = import_transformers()
+            model = transformers.AutoModelForCTC.from_pretrained(self.model_name)
+            if hasattr(model, "to"):
+                model = model.to(self.device)
+            if hasattr(model, "eval"):
+                model.eval()
+            self._model = model
+            self._models[model_key] = model
         return self._model
 
     @property
@@ -89,8 +139,16 @@ class CtcAligner:
         Returns:
             loaded CTC processor
         """
-        self._load_components()
-        assert self._processor is not None
+        if self._processor is None:
+            cached_processor = self._processors.get(self.model_name)
+            if cached_processor is not None:
+                self._processor = cached_processor
+                return self._processor
+
+            transformers = import_transformers()
+            processor = transformers.AutoProcessor.from_pretrained(self.model_name)
+            self._processor = processor
+            self._processors[self.model_name] = processor
         return self._processor
 
     def align(
@@ -200,9 +258,9 @@ class CtcAligner:
             inputs = {key: value.to(self.device) for key, value in inputs.items()}
 
         # Run CTC inference and normalize output for the alignment algorithm
-        no_grad = import_torch_no_grad()
+        torch = import_torch()
         model_callable = cast(Callable[..., Any], self.model)
-        with no_grad():
+        with torch.no_grad():
             output = model_callable(**inputs)
             logits = output.logits[0]
             log_probs = logits.log_softmax(dim=-1).detach().cpu().numpy()
@@ -252,7 +310,11 @@ class CtcAligner:
         # Map supported characters to model tokens while retaining source positions
         token_ids: list[int] = []
         char_indices: list[int] = []
-        script_converter = OpenCC("t2s")
+        converted_text = None
+        if self._script_conversion_config is not None:
+            candidate_text = OpenCC(self._script_conversion_config).convert(text)
+            if len(candidate_text) == len(text):
+                converted_text = candidate_text
         alignment_text_end_idx = len(text.rstrip())
         for char_idx, char in enumerate(text):
             # Align one delimiter per internal whitespace run
@@ -262,45 +324,15 @@ class CtcAligner:
                 or char_idx >= alignment_text_end_idx
             ):
                 continue
-            token_id = self._get_token_id(char, script_converter, tokenizer)
+            converted_char = None
+            if converted_text is not None:
+                converted_char = converted_text[char_idx]
+            token_id = self._get_token_id(char, converted_char, tokenizer)
             if token_id is None:
                 continue
             token_ids.append(token_id)
             char_indices.append(char_idx)
         return token_ids, char_indices
-
-    def _load_components(self):
-        """Load or reuse the configured CTC processor and model.
-
-        Raises:
-            ImportError: if Hugging Face CTC dependencies are unavailable
-        """
-        if self._processor is not None and self._model is not None:
-            return
-
-        # Reuse components loaded by another aligner instance
-        component_key = (self.model_name, self.device)
-        cached_components = self._components.get(component_key)
-        if cached_components is not None:
-            self._processor, self._model = cached_components
-            return
-
-        # Load the processor and model lazily to preserve optional dependencies
-        processor = import_transformers_auto_processor().from_pretrained(
-            self.model_name
-        )
-        model = import_transformers_auto_model_for_ctc().from_pretrained(
-            self.model_name
-        )
-
-        # Prepare the model for inference and retain both components
-        if hasattr(model, "to"):
-            model = model.to(self.device)
-        if hasattr(model, "eval"):
-            model.eval()
-        self._processor = processor
-        self._model = model
-        self._components[component_key] = (processor, model)
 
     @staticmethod
     def _attach_boundary_text(
@@ -501,14 +533,14 @@ class CtcAligner:
     @staticmethod
     def _get_token_id(
         char: str,
-        script_converter: OpenCC,
+        converted_char: str | None,
         tokenizer: object,
     ) -> int | None:
         """Get an aligner token ID for one transcript character.
 
         Arguments:
             char: transcript character
-            script_converter: converter from Traditional Chinese to the model's script
+            converted_char: model-script character corresponding to the transcript
             tokenizer: Hugging Face tokenizer
         Returns:
             token ID, or None when the character cannot be aligned directly
@@ -537,16 +569,17 @@ class CtcAligner:
                     return token_id
             return None
 
-        # Build case and script variants in preference order
+        # Build case variants in preference order
         candidates = list(dict.fromkeys((char, char.upper(), char.lower())))
-        simplified = script_converter.convert(char)
-        if len(simplified) == 1:
+
+        # Add the model-specific script variant without changing the output text
+        if converted_char is not None:
             candidates.extend(
                 candidate
                 for candidate in (
-                    simplified,
-                    simplified.upper(),
-                    simplified.lower(),
+                    converted_char,
+                    converted_char.upper(),
+                    converted_char.lower(),
                 )
                 if candidate not in candidates
             )
@@ -560,8 +593,8 @@ class CtcAligner:
                 return token_id
         return None
 
-    @staticmethod
     def _get_transcribed_words(
+        self,
         text: str,
         timed_chars: Mapping[int, tuple[float, float, float]],
         duration_seconds: float,
@@ -654,6 +687,65 @@ class CtcAligner:
                     )
                 )
 
+        if self.language is Language.eng:
+            return self._group_english_words(words)
+        return words
+
+    @staticmethod
+    def _group_english_words(
+        character_words: Sequence[TranscribedWord],
+    ) -> list[TranscribedWord]:
+        """Group English character timings into whitespace-delimited words.
+
+        Arguments:
+            character_words: individually timed characters
+        Returns:
+            whitespace-delimited words with aggregate timings and confidence
+        """
+        # Group whitespace with the word that follows it
+        word_parts: list[list[TranscribedWord]] = []
+        for character_word in character_words:
+            if (
+                character_word.text[0].isspace()
+                and word_parts
+                and not all(part.text.isspace() for part in word_parts[-1])
+            ):
+                word_parts.append([])
+            elif not word_parts:
+                word_parts.append([])
+            word_parts[-1].append(character_word)
+
+        # Preserve trailing whitespace on the preceding word
+        if (
+            len(word_parts) > 1
+            and word_parts[-1]
+            and all(part.text.isspace() for part in word_parts[-1])
+        ):
+            word_parts[-2].extend(word_parts.pop())
+
+        # Combine each group using duration-weighted character confidence
+        words: list[TranscribedWord] = []
+        for parts in word_parts:
+            durations = [max(part.end - part.start, 0.0) for part in parts]
+            total_duration = sum(durations)
+            if total_duration > 0.0:
+                confidence = (
+                    sum(
+                        part.confidence * duration
+                        for part, duration in zip(parts, durations, strict=True)
+                    )
+                    / total_duration
+                )
+            else:
+                confidence = sum(part.confidence for part in parts) / len(parts)
+            words.append(
+                TranscribedWord(
+                    text="".join(part.text for part in parts),
+                    start=parts[0].start,
+                    end=parts[-1].end,
+                    confidence=round(confidence, 3),
+                )
+            )
         return words
 
     @staticmethod

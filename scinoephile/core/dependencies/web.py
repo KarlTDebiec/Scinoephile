@@ -5,22 +5,16 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
-from typing import TYPE_CHECKING, NoReturn
+from types import ModuleType
+from typing import TYPE_CHECKING
 
 __all__ = [
-    "import_flask_abort",
-    "import_flask_current_app",
-    "import_flask_flask",
-    "import_flask_render_template",
-    "import_flask_request",
-    "import_flask_response",
-    "import_werkzeug_serving_make_server",
+    "import_flask",
+    "import_werkzeug_serving",
 ]
 
 if TYPE_CHECKING:
-    from flask import Flask, Request, Response
-    from werkzeug.serving import BaseWSGIServer
+    from flask import Flask, Response
 
     type FlaskApp = Flask
     type FlaskResponse = Response
@@ -31,92 +25,27 @@ _WEB_EXTRA_MESSAGE = (
 )
 
 
-def import_flask_abort() -> Callable[..., NoReturn]:
-    """Import the Flask request-abort function on demand.
+def import_flask() -> ModuleType:
+    """Import Flask on demand.
 
     Returns:
-        Flask request-abort function
+        Flask module
     """
     try:
-        from flask import abort
+        import flask
     except ImportError as exc:
         raise ImportError(_WEB_EXTRA_MESSAGE) from exc
-    return abort
+    return flask
 
 
-def import_flask_current_app() -> Flask:
-    """Import the Flask current-app proxy on demand.
+def import_werkzeug_serving() -> ModuleType:
+    """Import Werkzeug serving utilities on demand.
 
     Returns:
-        Flask current-app proxy
+        Werkzeug serving module
     """
     try:
-        from flask import current_app
+        import werkzeug.serving as werkzeug_serving
     except ImportError as exc:
         raise ImportError(_WEB_EXTRA_MESSAGE) from exc
-    return current_app
-
-
-def import_flask_flask() -> type[Flask]:
-    """Import the Flask app class on demand.
-
-    Returns:
-        Flask app class
-    """
-    try:
-        from flask import Flask
-    except ImportError as exc:
-        raise ImportError(_WEB_EXTRA_MESSAGE) from exc
-    return Flask
-
-
-def import_flask_render_template() -> Callable[..., str]:
-    """Import the Flask template-rendering function on demand.
-
-    Returns:
-        Flask template-rendering function
-    """
-    try:
-        from flask import render_template
-    except ImportError as exc:
-        raise ImportError(_WEB_EXTRA_MESSAGE) from exc
-    return render_template
-
-
-def import_flask_request() -> Request:
-    """Import the Flask request proxy on demand.
-
-    Returns:
-        Flask request proxy
-    """
-    try:
-        from flask import request
-    except ImportError as exc:
-        raise ImportError(_WEB_EXTRA_MESSAGE) from exc
-    return request
-
-
-def import_flask_response() -> type[Response]:
-    """Import the Flask response class on demand.
-
-    Returns:
-        Flask response class
-    """
-    try:
-        from flask import Response
-    except ImportError as exc:
-        raise ImportError(_WEB_EXTRA_MESSAGE) from exc
-    return Response
-
-
-def import_werkzeug_serving_make_server() -> Callable[..., BaseWSGIServer]:
-    """Import the Werkzeug server factory on demand.
-
-    Returns:
-        Werkzeug server factory
-    """
-    try:
-        from werkzeug.serving import make_server
-    except ImportError as exc:
-        raise ImportError(_WEB_EXTRA_MESSAGE) from exc
-    return make_server
+    return werkzeug_serving

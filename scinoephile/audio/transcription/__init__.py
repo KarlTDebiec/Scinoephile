@@ -3,9 +3,9 @@
 """Code related to audio transcription.
 
 Package hierarchy (modules may import from any above):
-* exceptions / preprocessing_settings / transcribed_word
-* demucs_cache / transcribed_segment
-* cache / ctc_aligner / demucs_separator
+* demucs / exceptions / preprocessing_settings / transcribed_word
+* transcribed_segment
+* cache / ctc_aligner
 * transcriber
 * whisper_transcriber
 * mlx_audio
@@ -17,8 +17,7 @@ from logging import getLogger
 
 from .cache import TranscriptionCache
 from .ctc_aligner import CtcAligner
-from .demucs_cache import DemucsCache
-from .demucs_separator import DemucsSeparator
+from .demucs import DemucsSeparator
 from .exceptions import (
     TranscriptionAlignmentError,
     TranscriptionEmptyError,
@@ -37,7 +36,6 @@ from .whisper_transcriber import WhisperTranscriber
 
 __all__ = [
     "CtcAligner",
-    "DemucsCache",
     "DemucsMode",
     "DemucsSeparator",
     "TranscribedSegment",

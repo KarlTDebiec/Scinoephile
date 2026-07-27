@@ -20,9 +20,12 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.media import SubtitleStream
-from scinoephile.lang.zho.subtitles.analysis import analyze_zho_subtitle_stream_script
+from scinoephile.lang.zho.subtitles.analysis.script import (
+    analyze_zho_subtitle_stream_script,
+)
 from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
 from scinoephile.media.probe import get_streams
+from scinoephile.media.subtitles.cache import SubtitleCache
 
 __all__ = ["MediaProbeCli"]
 
@@ -124,6 +127,10 @@ class MediaProbeCli(ScinoephileCliBase):
         # Perform operations
         try:
             if force_check_script:
+                subtitle_cache = SubtitleCache(
+                    cache_args.root_path,
+                    cache_args.overwrite,
+                )
                 stream = SubtitleStream(
                     index=0,
                     codec_type="subtitle",
@@ -133,8 +140,7 @@ class MediaProbeCli(ScinoephileCliBase):
                 analysis = analyze_zho_subtitle_stream_script(
                     infile_path,
                     stream,
-                    cache_dir_path=cache_args.dir_path,
-                    overwrite_cache=cache_args.overwrite,
+                    subtitle_cache=subtitle_cache,
                 )
                 language = analysis.script
                 if language is None:
@@ -144,13 +150,16 @@ class MediaProbeCli(ScinoephileCliBase):
             else:
                 streams = get_streams(infile_path)
                 if details:
+                    subtitle_cache = SubtitleCache(
+                        cache_args.root_path,
+                        cache_args.overwrite,
+                    )
                     detailed_subtitle_streams_by_index = {
                         stream.index: stream
                         for stream in get_zho_subtitle_streams(
                             infile_path,
-                            cache_dir_path=cache_args.dir_path,
-                            overwrite_cache=cache_args.overwrite,
                             streams=streams,
+                            subtitle_cache=subtitle_cache,
                         )
                     }
                     for index, stream in enumerate(streams):

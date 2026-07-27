@@ -5,8 +5,6 @@
 from __future__ import annotations
 
 import asyncio
-import hashlib
-import json
 from collections.abc import Mapping
 from logging import getLogger
 from pathlib import Path
@@ -14,12 +12,11 @@ from typing import TypedDict, cast, override
 
 from PIL import Image
 
-from scinoephile.common.validation import val_int, val_output_dir_path
+from scinoephile.common.validation import val_int
 from scinoephile.core import Language
-from scinoephile.core.dependencies.ocr import (
-    import_chrome_lens_py_lens_api,
-    import_chrome_lens_py_lens_api_error,
-)
+from scinoephile.core.dependencies.ocr import import_chrome_lens_py
+
+from .cache import LensCache
 
 __all__ = [
     "LensRecognizer",
@@ -41,8 +38,8 @@ _LENS_LANGUAGE_CODES = {
 class LensRecognizerKwargs(TypedDict, total=False):
     """Additional keyword arguments forwarded to LensRecognizer."""
 
-    cache_dir_path: Path | None
-    """Directory in which to cache OCR results."""
+    cache_root_path: Path | None
+    """Root directory beneath which to cache OCR results, or None for default."""
 
     language: Language
     """Scinoephile language."""
@@ -64,7 +61,7 @@ class LensRecognizer:
     def __init__(
         self,
         *,
-        cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
         language: Language = Language.eng,
         overwrite_cache: bool = False,
         retries: int = 3,
@@ -72,33 +69,27 @@ class LensRecognizer:
         """Initialize.
 
         Arguments:
-            cache_dir_path: directory in which to cache OCR results
+            cache_root_path: root directory beneath which to cache, or None for default
             language: Scinoephile language
             overwrite_cache: whether to replace matching OCR cache files
             retries: Google Lens OCR request attempts per uncached image
         """
-        self.cache_dir_path = None
-        if cache_dir_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_dir_path)
+        self._cache = LensCache(cache_root_path, overwrite_cache)
         try:
             self.language = language
             self.lens_language_code = _LENS_LANGUAGE_CODES[self.language]
         except (KeyError, ValueError) as exc:
             raise ValueError(f"{language} is not supported by Google Lens OCR") from exc
-        self.overwrite_cache = overwrite_cache
         self.retries = val_int(retries, min_value=1)
-        lens_api_cls = import_chrome_lens_py_lens_api()
-        self._lens_api_error_cls = import_chrome_lens_py_lens_api_error()
-        self._api = lens_api_cls()
 
     @override
     def __repr__(self) -> str:
         """String representation."""
         return (
             f"{self.__class__.__name__}("
-            f"cache_dir_path={self.cache_dir_path!r}, "
+            f"cache_root_path={self._cache.cache_root_path!r}, "
             f"language={self.language!r}, "
-            f"overwrite_cache={self.overwrite_cache!r}, "
+            f"overwrite_cache={self._cache.overwrite!r}, "
             f"retries={self.retries!r})"
         )
 
@@ -110,52 +101,14 @@ class LensRecognizer:
         Returns:
             recognized text
         """
-        if (cache_path := self._get_cache_path(image)) is not None:
-            if self.overwrite_cache and cache_path.exists():
-                cache_path.unlink()
-                logger.info(f"Removed Google Lens OCR cache: {cache_path}")
-            if cache_path.exists():
-                lines = self._load_lens_lines(cache_path)
-                cache_path.touch()
-                logger.info(f"Loaded Google Lens OCR result from cache: {cache_path}")
-                return self._format_lens_lines(lines)
-
-            self._raise_if_running_loop()
-            lines = self._recognize_image_uncached(image)
-            self._save_lens_lines(lines, cache_path)
-            logger.info(f"Saved Google Lens OCR result to cache: {cache_path}")
+        cache_metadata = {"language": self.lens_language_code}
+        if (lines := self._cache.load(image, cache_metadata)) is not None:
             return self._format_lens_lines(lines)
 
         self._raise_if_running_loop()
         lines = self._recognize_image_uncached(image)
+        self._cache.save(image, cache_metadata, lines)
         return self._format_lens_lines(lines)
-
-    def _get_cache_path(self, image: Image.Image) -> Path | None:
-        """Get cache path based on image data and OCR configuration.
-
-        Arguments:
-            image: image used to derive the cache key
-        Returns:
-            path to cache file
-        """
-        if self.cache_dir_path is None:
-            return None
-
-        image_bytes = image.tobytes()
-        image_sha256 = hashlib.sha256(image_bytes).hexdigest()
-        cache_key = (
-            f"{image_sha256}_{image.mode}_{image.size}_{self.lens_language_code}"
-        )
-        cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
-        return self.cache_dir_path / f"{cache_sha256}.json"
-
-    def _get_transient_error_classes(self) -> tuple[type[Exception], ...]:
-        """Get exception classes that should trigger a Google Lens retry.
-
-        Returns:
-            transient exception classes
-        """
-        return self._lens_api_error_cls, _GoogleLensRequestError
 
     @staticmethod
     def _clean_text(text: str) -> str:
@@ -216,24 +169,6 @@ class LensRecognizer:
             subtitle text
         """
         return LensRecognizer._clean_text("\n".join(lines))
-
-    @staticmethod
-    def _load_lens_lines(cache_path: Path) -> list[str]:
-        """Load normalized Google Lens OCR lines from cache.
-
-        Arguments:
-            cache_path: cache file path
-        Returns:
-            normalized OCR lines
-        """
-        with cache_path.open("r", encoding="utf-8") as file:
-            data = json.load(file)
-        if not isinstance(data, dict):
-            return []
-        lines = data.get("lines")
-        if not isinstance(lines, list):
-            return []
-        return [line for line in lines if isinstance(line, str)]
 
     @staticmethod
     def _normalize_lens_result(result: object) -> list[str]:
@@ -299,13 +234,14 @@ class LensRecognizer:
         Raises:
             RuntimeError: if Google Lens returns request-error text
         """
-        transient_error_classes = self._get_transient_error_classes()
+        chrome_lens_py = import_chrome_lens_py()
+        api = chrome_lens_py.LensAPI()
 
         async def recognize() -> list[str]:
             """Run Google Lens OCR retries in one event loop."""
             for attempt in range(1, self.retries + 1):
                 try:
-                    result = await self._api.process_image(
+                    result = await api.process_image(
                         image_path=image,
                         ocr_language=self.lens_language_code,
                         ocr_preserve_line_breaks=True,
@@ -313,7 +249,7 @@ class LensRecognizer:
                     )
                     lines = self._normalize_lens_result(result)
                     self._raise_if_request_error(lines)
-                except transient_error_classes as exc:
+                except (chrome_lens_py.LensAPIError, _GoogleLensRequestError) as exc:
                     if attempt == self.retries:
                         raise
                     logger.warning(
@@ -340,16 +276,3 @@ class LensRecognizer:
         for line in lines:
             if "Request error (possibly proxy-related)".casefold() in line.casefold():
                 raise _GoogleLensRequestError(f"Google Lens request error: {line}")
-
-    @staticmethod
-    def _save_lens_lines(lines: list[str], cache_path: Path):
-        """Save normalized Google Lens OCR lines to cache.
-
-        Arguments:
-            lines: normalized Google Lens OCR lines
-            cache_path: cache file path
-        """
-        cache_path.parent.mkdir(parents=True, exist_ok=True)
-        data = {"lines": lines}
-        with cache_path.open("w", encoding="utf-8") as file:
-            json.dump(data, file, ensure_ascii=False)

@@ -222,7 +222,7 @@ class OcrProcessCli(ScinoephileCliBase):
                 output_dir_path,
                 language=language,
                 stream_index=stream_index,
-                cache_dir_path=cache_args.dir_path,
+                cache_root_path=cache_args.root_path,
                 clean=clean,
                 interactive=interactive,
                 host=web_args.host,

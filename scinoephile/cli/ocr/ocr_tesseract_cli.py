@@ -179,7 +179,7 @@ class OcrTesseractCli(ScinoephileCliBase):
         try:
             text_series = ocr_image_series_with_tesseract(
                 image_series,
-                cache_dir_path=cache_args.dir_path / "tesseract",
+                cache_root_path=cache_args.root_path,
                 detect_italics=detect_italics,
                 language=language,
                 overwrite_cache=cache_args.overwrite,

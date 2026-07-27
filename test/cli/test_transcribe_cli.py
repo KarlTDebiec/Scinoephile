@@ -202,7 +202,7 @@ def test_transcribe_cli_passes_generic_configuration(
         model_name: str | None,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
-        cache_dir_path: Path | None,
+        cache_root_path: Path | None,
         overwrite_cache: bool,
         provider: object,
         additional_context: str | None,
@@ -219,7 +219,7 @@ def test_transcribe_cli_passes_generic_configuration(
         assert model_name == "custom/whisper"
         assert demucs_mode is DemucsMode.ON
         assert vad_mode is VADMode.OFF
-        assert cache_dir_path == tmp_path / "cache"
+        assert cache_root_path == tmp_path / "cache"
         assert overwrite_cache
         assert provider is not None
         assert additional_context is None

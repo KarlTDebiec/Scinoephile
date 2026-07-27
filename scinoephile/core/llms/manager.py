@@ -149,4 +149,5 @@ class Manager[TTestCase: TestCase](ABC):
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
+        model.operation = cls.operation
         return cast("type[TTestCase]", model)

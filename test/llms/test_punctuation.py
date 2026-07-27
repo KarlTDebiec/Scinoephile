@@ -87,7 +87,7 @@ def test_queryer_corresponds_using_prompt_aliases():
     test_case = test_case_cls.model_validate(
         {"query": {"subtitles": ["原文"], "guide": "參考"}}
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = '{"jieguo": "原文"}'
     queryer = Queryer(test_case_cls, provider=provider, max_attempts=1)
 
@@ -116,7 +116,7 @@ def test_queryer_localizes_test_case_validation_retry():
             }
         }
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.side_effect = [
         '{"yuewen_punctuated": "係洋文嚟嘅！蝦即係有鬥心"}',
         '{"yuewen_punctuated": "係，洋文嚟嘅！蝦即係有鬥心噉解"}',

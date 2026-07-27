@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
 from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
+from scinoephile.media.subtitles.cache import SubtitleCache
 
 
 def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path):
@@ -20,7 +21,8 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
     """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
-    cache_dir_path = tmp_path / "cache"
+    cache_root_path = tmp_path / "cache"
+    subtitle_cache = SubtitleCache(cache_root_path)
 
     with (
         patch(
@@ -49,21 +51,18 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
     ):
         streams = get_zho_subtitle_streams(
             infile_path,
-            cache_dir_path=cache_dir_path,
+            subtitle_cache=subtitle_cache,
         )
 
     details_mock.assert_called_once_with(
         infile_path,
-        cache_dir_path=cache_dir_path / "media" / "subtitles",
-        overwrite_cache=False,
         streams=None,
+        subtitle_cache=subtitle_cache,
     )
     analysis_mock.assert_called_once_with(
         infile_path,
         streams[0],
-        cache_dir_path=cache_dir_path,
-        overwrite_cache=False,
-        subtitle_cache_is_fresh=False,
+        subtitle_cache=subtitle_cache,
     )
     assert [stream.index for stream in streams] == [2, 3]
     assert streams[0].language == "zho-Hant"
@@ -114,6 +113,7 @@ def test_get_zho_subtitle_streams_does_not_overwrite_subtitle_cache_twice(
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, codec_name="subrip", language="zho")
+    subtitle_cache = SubtitleCache(tmp_path / "cache", overwrite=True)
 
     with (
         patch(
@@ -125,20 +125,21 @@ def test_get_zho_subtitle_streams_does_not_overwrite_subtitle_cache_twice(
             return_value=SimpleNamespace(script="zho-Hant"),
         ) as analysis_mock,
     ):
-        get_zho_subtitle_streams(infile_path, overwrite_cache=True)
+        get_zho_subtitle_streams(
+            infile_path,
+            subtitle_cache=subtitle_cache,
+        )
 
     details_mock.assert_called_once_with(
         infile_path,
-        cache_dir_path=None,
-        overwrite_cache=True,
         streams=None,
+        subtitle_cache=subtitle_cache,
     )
+    assert subtitle_cache.overwrite
     analysis_mock.assert_called_once_with(
         infile_path,
         stream,
-        cache_dir_path=None,
-        overwrite_cache=True,
-        subtitle_cache_is_fresh=True,
+        subtitle_cache=subtitle_cache,
     )
 
 

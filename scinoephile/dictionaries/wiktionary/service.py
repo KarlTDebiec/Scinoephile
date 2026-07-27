@@ -11,7 +11,7 @@ import requests
 
 from scinoephile.common.validation import val_input_path, val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, DictionarySqliteStore
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import get_runtime_data_root_path
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
 from scinoephile.lang.id import LanguageId
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
@@ -27,7 +27,7 @@ __all__ = ["WiktionaryDictionaryService"]
 
 
 class WiktionaryDictionaryService:
-    """Runtime service for querying locally cached Wiktionary dictionary data."""
+    """Runtime service for querying local Wiktionary dictionary data."""
 
     def __init__(
         self,
@@ -47,7 +47,9 @@ class WiktionaryDictionaryService:
         """
         if database_path is None:
             database_path = (
-                get_runtime_cache_dir_path("dictionaries", "wiktionary")
+                get_runtime_data_root_path()
+                / "dictionaries"
+                / "wiktionary"
                 / "wiktionary.db"
             )
         self.database_path = val_output_path(database_path, exist_ok=True)
@@ -68,9 +70,9 @@ class WiktionaryDictionaryService:
         self.runtime_data_dir_path = (
             runtime_data_dir_path
             if runtime_data_dir_path is not None
-            else get_runtime_cache_dir_path("dictionaries", "wiktionary", "data")
+            else get_runtime_data_root_path() / "dictionaries" / "wiktionary" / "data"
         )
-        """Runtime cache directory for downloaded or copied JSONL data."""
+        """Runtime data directory for downloaded or copied JSONL data."""
 
     def build(
         self,
@@ -170,7 +172,7 @@ class WiktionaryDictionaryService:
         return val_input_path(local_jsonl_path)
 
     def _copy_jsonl_to_runtime(self, *, source_jsonl_path: Path) -> Path:
-        """Copy one canonical JSONL source into runtime cache.
+        """Copy one canonical JSONL source into runtime data.
 
         Arguments:
             source_jsonl_path: source JSONL path
