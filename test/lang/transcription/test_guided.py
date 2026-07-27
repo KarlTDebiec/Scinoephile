@@ -132,14 +132,14 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     )
     assert not transcriber.aligner.delineation_processor.prune_test_cases
     assert not transcriber.aligner.punctuation_processor.prune_test_cases
-    assert transcriber.aligner.delineation_processor.queryer._cache.cache_dir_path == (
-        tmp_path / "llm" / "delineation"
-    )
-    assert transcriber.aligner.delineation_processor.queryer._cache.overwrite
-    assert transcriber.aligner.punctuation_processor.queryer._cache.cache_dir_path == (
-        tmp_path / "llm" / "punctuation"
-    )
-    assert transcriber.aligner.punctuation_processor.queryer._cache.overwrite
+    delineation_cache = transcriber.aligner.delineation_processor.queryer._cache
+    assert delineation_cache is not None
+    assert delineation_cache.cache_dir_path == tmp_path / "llm" / "delineation"
+    assert delineation_cache.overwrite
+    punctuation_cache = transcriber.aligner.punctuation_processor.queryer._cache
+    assert punctuation_cache is not None
+    assert punctuation_cache.cache_dir_path == tmp_path / "llm" / "punctuation"
+    assert punctuation_cache.overwrite
 
 
 def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
