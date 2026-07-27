@@ -79,6 +79,19 @@ def test_paddle_recognizer_caches_results_by_image(tmp_path: Path):
     assert len(list((tmp_path / "paddleocr").glob("*.json"))) == 1
 
 
+def test_paddle_recognizer_regenerates_invalid_cache(tmp_path: Path):
+    """Test invalid PaddleOCR cache data is treated as a miss."""
+    recognizer = CountingPaddleRecognizer(cache_root_path=tmp_path)
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+    assert recognizer.recognize_image(image) == "cached text"
+    cache_path = next((tmp_path / "paddleocr").glob("*.json"))
+    cache_path.write_text("{}", encoding="utf-8")
+
+    assert recognizer.recognize_image(image) == "cached text"
+
+    assert recognizer.predict_count == 2
+
+
 def test_paddle_recognizer_overwrites_matching_cache(tmp_path: Path):
     """Test PaddleOCR cache overwrite recognizes matching images again."""
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))

@@ -224,6 +224,23 @@ def test_lens_recognizer_caches_results_by_image(
     assert len(list((tmp_path / "google-lens").glob("*.json"))) == 1
 
 
+def test_lens_recognizer_regenerates_invalid_cache(
+    monkeypatch: MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test structurally invalid Google Lens cache data is treated as a miss."""
+    recognizer = CountingLensRecognizer(cache_root_path=tmp_path)
+    patch_chrome_lens_py(monkeypatch, recognizer)
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+    assert recognizer.recognize_image(image) == "cached\ntext"
+    cache_path = next((tmp_path / "google-lens").glob("*.json"))
+    cache_path.write_text("{}", encoding="utf-8")
+
+    assert recognizer.recognize_image(image) == "cached\ntext"
+
+    assert recognizer.predict_count == 2
+
+
 def test_lens_recognizer_overwrites_matching_cache(
     monkeypatch: MonkeyPatch,
     tmp_path: Path,

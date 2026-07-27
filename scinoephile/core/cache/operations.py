@@ -96,7 +96,7 @@ def get_cache_entries(
         entries.extend(
             [
                 _build_cache_entry(cache_root_path, namespace_name, child_path)
-                for child_path in namespace_dir_path.iterdir()
+                for child_path in sorted(namespace_dir_path.iterdir())
             ]
         )
     return entries
@@ -243,15 +243,17 @@ def _measure_path(entry_path: Path) -> tuple[int, int, datetime, datetime]:
         size, file count, newest modification time, and newest access time
     """
     stat = entry_path.lstat()
-    size_bytes = stat.st_size
-    file_count = 1
+    is_directory = entry_path.is_dir() and not entry_path.is_symlink()
+    size_bytes = 0 if is_directory else stat.st_size
+    file_count = 0 if is_directory else 1
     modified_at = datetime.fromtimestamp(stat.st_mtime).astimezone()
     accessed_at = datetime.fromtimestamp(stat.st_atime).astimezone()
-    if entry_path.is_dir() and not entry_path.is_symlink():
+    if is_directory:
         for child_path in entry_path.rglob("*"):
             child_stat = child_path.lstat()
-            size_bytes += child_stat.st_size
-            file_count += 1
+            if not child_path.is_dir() or child_path.is_symlink():
+                size_bytes += child_stat.st_size
+                file_count += 1
             child_modified_at = datetime.fromtimestamp(child_stat.st_mtime).astimezone()
             child_accessed_at = datetime.fromtimestamp(child_stat.st_atime).astimezone()
             modified_at = max(modified_at, child_modified_at)

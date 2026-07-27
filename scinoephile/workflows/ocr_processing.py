@@ -11,7 +11,10 @@ from typing import Any
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
-from scinoephile.core.paths import get_runtime_cache_root_path
+from scinoephile.core.paths import (
+    get_runtime_cache_root_path,
+    get_runtime_data_root_path,
+)
 from scinoephile.core.subtitles import Series
 from scinoephile.image.ocr.lens import (
     ocr_image_series_with_lens,
@@ -99,7 +102,9 @@ class OcrProcessingWorkflow:
             cache_root_path = get_runtime_cache_root_path(create=False)
         self.cache_root_path = cache_root_path
         self._subtitle_cache = SubtitleCache(cache_root_path)
-        self._ocr_validation_data_dir_path = cache_root_path / "ocr_validation"
+        self._ocr_validation_data_dir_path = (
+            get_runtime_data_root_path(create=False) / "ocr_validation"
+        )
         self.clean = clean
         self.validate = validate
         self.interactive = interactive

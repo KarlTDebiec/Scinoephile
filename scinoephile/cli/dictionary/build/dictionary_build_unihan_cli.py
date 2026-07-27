@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for building the Unihan dictionary cache."""
+"""Command-line interface for building the Unihan dictionary database."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ logger = getLogger(__name__)
 
 DICTIONARY_BUILD_UNIHAN_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "build Unihan dictionary cache": "构建 Unihan 词典缓存",
+        "build Unihan dictionary database": "构建 Unihan 词典数据库",
         (
             "Data derived from Unicode Unihan files for variants, readings, and "
             "dictionary-like metadata."
@@ -44,7 +44,7 @@ DICTIONARY_BUILD_UNIHAN_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
     },
     "zh-hant": {
-        "build Unihan dictionary cache": "建立 Unihan 詞典快取",
+        "build Unihan dictionary database": "建立 Unihan 詞典資料庫",
         (
             "Data derived from Unicode Unihan files for variants, readings, and "
             "dictionary-like metadata."
@@ -69,7 +69,7 @@ DICTIONARY_BUILD_UNIHAN_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class DictionaryBuildUnihanCli(DictionaryBuildCliBase):
-    """Build Unihan dictionary cache."""
+    """Build Unihan dictionary database."""
 
     source = UNIHAN_SOURCE
     """Dictionary source built by this CLI."""
@@ -141,10 +141,10 @@ class DictionaryBuildUnihanCli(DictionaryBuildCliBase):
         """Execute with provided keyword arguments."""
         service = UnihanDictionaryService(database_path=database_path)
         cls.log_config(
-            cache_dir_path=service.runtime_data_dir_path,
             database_path=service.database_path,
             max_words=None,
             overwrite=overwrite,
+            runtime_data_dir_path=service.runtime_data_dir_path,
             source_json_path=None,
         )
         if force_download:

@@ -32,9 +32,7 @@ class SubtitleCache:
         Arguments:
             cache_root_path: root directory beneath which to cache
         """
-        self.cache_dir_path = val_output_dir_path(
-            cache_root_path / "media" / "subtitles"
-        )
+        self.cache_dir_path = val_output_dir_path(cache_root_path / "media-subtitles")
         """Directory in which cached subtitle streams are stored."""
 
     def cache(
@@ -61,6 +59,7 @@ class SubtitleCache:
                 stream_path.unlink()
                 logger.info(f"Removed subtitle stream cache: {stream_path}")
             if stream_path.exists():
+                stream_path.touch()
                 logger.info(f"Loaded subtitle stream from cache: {stream_path}")
             else:
                 missing.append((stream, stream_path))
@@ -156,7 +155,9 @@ class SubtitleCache:
                 continue
             stream_path = self.get_path(infile_path, stream)
             image_dir_path = stream_path.parent / "image-series"
-            if (image_dir_path / "index.html").exists() and not overwrite:
+            index_path = image_dir_path / "index.html"
+            if index_path.exists() and not overwrite:
+                index_path.touch()
                 logger.info(
                     f"Loaded image subtitle series from cache: {image_dir_path}"
                 )

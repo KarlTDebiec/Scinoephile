@@ -75,6 +75,10 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
             return_value=tmp_path,
         ),
         patch(
+            "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
+            return_value=tmp_path / "data",
+        ),
+        patch(
             "scinoephile.lang.transcription.guided.get_torch_device",
             return_value="test",
         ),
@@ -109,7 +113,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.transcriber.vad_mode is VADMode.AUTO
     assert transcriber.transcriber.cache_dir_path == tmp_path / "whisper"
     assert transcriber.transcriber.demucs_separator is not None
-    test_case_dir_path = tmp_path / "test_cases/lang/yue_zho/transcription"
+    test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
     assert transcriber.aligner.delineation_processor.test_case_path == (
         test_case_dir_path / "delineation" / "test.json"
     )
@@ -201,6 +205,10 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(
             return_value=tmp_path,
         ),
         patch(
+            "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
+            return_value=tmp_path / "data",
+        ),
+        patch(
             "scinoephile.lang.transcription.guided.get_torch_device",
             return_value="test",
         ),
@@ -212,7 +220,7 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(
             delineation_test_cases=[],
             punctuation_test_cases=[],
         )
-    test_case_dir_path = tmp_path / "test_cases/lang/yue_zho/transcription"
+    test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
     delineation_json_path = test_case_dir_path / "delineation" / "test.json"
     punctuation_json_path = test_case_dir_path / "punctuation" / "test.json"
     delineation_test_case_data = [

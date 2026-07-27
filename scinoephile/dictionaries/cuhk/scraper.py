@@ -17,6 +17,7 @@ import requests
 from bs4 import BeautifulSoup, Tag
 from pypinyin import Style, lazy_pinyin
 
+from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import UnsupportedCharacterError
 from scinoephile.core.dictionaries import (
@@ -105,11 +106,12 @@ class CuhkDictionaryScraper:
         """
         if cache_root_path is None:
             cache_root_path = get_runtime_cache_root_path()
-        self.cache_dir_path = val_output_dir_path(
-            cache_root_path / "dictionaries" / "cuhk"
+        self.discovery_cache_dir_path = val_output_dir_path(
+            cache_root_path / "cuhk-discovery"
         )
-        self.discovery_dir_path = self.cache_dir_path / "discovery"
-        self.scraped_dir_path = self.cache_dir_path / "scraped"
+        self.scraped_cache_dir_path = val_output_dir_path(
+            cache_root_path / "cuhk-pages"
+        )
 
         if max_delay_seconds < min_delay_seconds:
             raise ValueError("max_delay_seconds must be >= min_delay_seconds")
@@ -137,7 +139,7 @@ class CuhkDictionaryScraper:
 
         html = self._fetch_text(
             TERMS_URL,
-            cache_path=self.discovery_dir_path / "terms.html",
+            cache_path=self.discovery_cache_dir_path / "terms.html",
             use_cache=True,
             cache_label="CUHK terms index",
         )
@@ -207,7 +209,9 @@ class CuhkDictionaryScraper:
             parsed dictionary entries
         """
         entries: list[DictionaryEntry] = []
-        for index, html_path in enumerate(sorted(self.scraped_dir_path.glob("*.html"))):
+        for index, html_path in enumerate(
+            sorted(self.scraped_cache_dir_path.glob("*.html"))
+        ):
             if index and index % 100 == 0:
                 logger.info(f"Parsed {index} CUHK entries")
 
@@ -391,7 +395,7 @@ class CuhkDictionaryScraper:
             word_links: list of (word, url)
             skip_existing: whether to skip files already present
         """
-        self.scraped_dir_path.mkdir(parents=True, exist_ok=True)
+        self.scraped_cache_dir_path.mkdir(parents=True, exist_ok=True)
         for index, (item, url) in enumerate(word_links, start=1):
             if url == "?":
                 logger.info(f"Skipping item {index} ({item}): invalid URL")
@@ -406,12 +410,15 @@ class CuhkDictionaryScraper:
                             f"Removed CUHK word page cache: {variant_file_path}"
                         )
             if skip_existing and all(path.exists() for path in variant_file_paths):
+                for variant_file_path in variant_file_paths:
+                    variant_file_path.touch()
                 logger.info(f"Loaded word page from cache #{index}: {item}")
                 continue
 
             html = self._fetch_text(url)
             for variant_file_path in variant_file_paths:
-                variant_file_path.write_text(html, encoding="utf-8")
+                with open_atomic_text_file(variant_file_path) as file:
+                    file.write(html)
             logger.info(f"Scraped #{index}: {item}")
 
             if self.max_delay_seconds > 0:
@@ -442,8 +449,17 @@ class CuhkDictionaryScraper:
             cache_path.unlink()
             logger.info(f"Removed from cache: {cache_description}")
         if use_cache and cache_path is not None and cache_path.exists():
-            logger.info(f"Loaded from cache: {cache_description}")
-            return cache_path.read_text(encoding="utf-8")
+            try:
+                text = cache_path.read_text(encoding="utf-8")
+            except (OSError, UnicodeError) as exc:
+                cache_path.unlink(missing_ok=True)
+                logger.warning(
+                    f"Discarded invalid CUHK response cache {cache_path}: {exc}"
+                )
+            else:
+                cache_path.touch()
+                logger.info(f"Loaded from cache: {cache_description}")
+                return text
 
         last_exception: requests.RequestException | None = None
         for attempt in range(1, self.max_retries + 1):
@@ -455,7 +471,8 @@ class CuhkDictionaryScraper:
                 text = response.text
                 if cache_path is not None:
                     cache_path.parent.mkdir(parents=True, exist_ok=True)
-                    cache_path.write_text(text, encoding="utf-8")
+                    with open_atomic_text_file(cache_path) as file:
+                        file.write(text)
                 return text
             except requests.RequestException as exc:
                 last_exception = exc
@@ -480,7 +497,7 @@ class CuhkDictionaryScraper:
         parsed_url = urlparse(category_url)
         target_name = parse_qs(parsed_url.query).get("target", [""])[0]
         stem = self._get_safe_filename_stem(target_name or "terms")
-        return self.discovery_dir_path / f"{stem}.html"
+        return self.discovery_cache_dir_path / f"{stem}.html"
 
     def _get_variant_file_paths(self, item: str) -> list[Path]:
         """Get output file paths for one CUHK word item.
@@ -495,7 +512,7 @@ class CuhkDictionaryScraper:
             stem = self._get_safe_filename_stem(variant.strip())
             if stem:
                 stems.add(stem)
-        return [self.scraped_dir_path / f"{stem}.html" for stem in sorted(stems)]
+        return [self.scraped_cache_dir_path / f"{stem}.html" for stem in sorted(stems)]
 
     @classmethod
     def _parse_jyutping_numbers(cls, raw_numbers: str) -> list[str]:

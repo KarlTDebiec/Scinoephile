@@ -91,10 +91,20 @@ def analyze_zho_subtitle_stream_script(
         analysis_cache_path.unlink()
         logger.info(f"Removed subtitle script analysis cache: {analysis_cache_path}")
     if analysis_cache_path.exists():
-        logger.info(
-            f"Loaded subtitle script analysis from cache: {analysis_cache_path}"
-        )
-        return _load_subtitle_script_analysis(analysis_cache_path)
+        try:
+            analysis = _load_subtitle_script_analysis(analysis_cache_path)
+        except (OSError, KeyError, TypeError, UnicodeError, ValueError) as exc:
+            analysis_cache_path.unlink(missing_ok=True)
+            logger.warning(
+                f"Discarded invalid subtitle script analysis cache "
+                f"{analysis_cache_path}: {exc}"
+            )
+        else:
+            analysis_cache_path.touch()
+            logger.info(
+                f"Loaded subtitle script analysis from cache: {analysis_cache_path}"
+            )
+            return analysis
 
     subtitle_cache = SubtitleCache(cache_root_path)
     subtitle_cache.cache(
@@ -229,7 +239,7 @@ def _get_subtitle_analysis_cache_path(
     }
     encoded_payload = json.dumps(payload, sort_keys=True).encode("utf-8")
     cache_key = hashlib.sha256(encoded_payload).hexdigest()
-    analysis_cache_dir_path = cache_root_path / "media" / "subtitle-analysis"
+    analysis_cache_dir_path = cache_root_path / "media-subtitle-analysis"
     return analysis_cache_dir_path / f"{cache_key}.json"
 
 

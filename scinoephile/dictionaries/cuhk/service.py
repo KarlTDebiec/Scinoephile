@@ -8,7 +8,10 @@ from pathlib import Path
 
 from scinoephile.common.validation import val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, DictionarySqliteStore
-from scinoephile.core.paths import get_runtime_cache_root_path
+from scinoephile.core.paths import (
+    get_runtime_cache_root_path,
+    get_runtime_data_root_path,
+)
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
 from scinoephile.lang.id import LanguageId
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
@@ -20,7 +23,7 @@ __all__ = ["CuhkDictionaryService"]
 
 
 class CuhkDictionaryService:
-    """Runtime service for querying locally cached CUHK dictionary data."""
+    """Runtime service for querying local CUHK dictionary data."""
 
     def __init__(
         self,
@@ -35,13 +38,15 @@ class CuhkDictionaryService:
         Arguments:
             database_path: SQLite database path
             auto_build_missing: build CUHK data automatically if missing
-            cache_root_path: root directory beneath which to cache runtime data
+            cache_root_path: root directory beneath which to cache scrape artifacts
             scraper_kwargs: keyword arguments forwarded to CuhkDictionaryScraper
         """
+        if database_path is None:
+            database_path = (
+                get_runtime_data_root_path() / "dictionaries" / "cuhk" / "cuhk.db"
+            )
         if cache_root_path is None:
             cache_root_path = get_runtime_cache_root_path()
-        if database_path is None:
-            database_path = cache_root_path / "dictionaries" / "cuhk" / "cuhk.db"
         self.database_path = val_output_path(database_path, exist_ok=True)
         self.auto_build_missing = auto_build_missing
         self.database = DictionarySqliteStore(database_path=self.database_path)
@@ -50,7 +55,8 @@ class CuhkDictionaryService:
             resolved_scraper_kwargs.update(scraper_kwargs)
         resolved_scraper_kwargs.setdefault("cache_root_path", cache_root_path)
         self.scraper = CuhkDictionaryScraper(**resolved_scraper_kwargs)
-        self.cache_dir_path = self.scraper.cache_dir_path
+        self.discovery_cache_dir_path = self.scraper.discovery_cache_dir_path
+        self.scraped_cache_dir_path = self.scraper.scraped_cache_dir_path
 
     def build(self, overwrite: bool = False, max_words: int | None = None) -> Path:
         """Build or rebuild the local CUHK SQLite dictionary.

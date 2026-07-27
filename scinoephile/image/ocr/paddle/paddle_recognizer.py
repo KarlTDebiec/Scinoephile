@@ -16,6 +16,7 @@ from typing import Any, TypedDict, override
 import numpy as np
 from PIL import Image
 
+from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import Language
 from scinoephile.core.dependencies.ocr import import_paddleocr
@@ -134,12 +135,26 @@ class PaddleRecognizer:
                 cache_path.unlink()
                 logger.info(f"Removed PaddleOCR cache: {cache_path}")
             if cache_path.exists():
-                results = self._load_paddle_ocr_results(cache_path)
-                cache_path.touch()
-                logger.info(f"Loaded PaddleOCR result from cache: {cache_path}")
-                return self._format_paddle_ocr_text(
-                    results, min_confidence=self.min_confidence
-                )
+                try:
+                    results = self._load_paddle_ocr_results(cache_path)
+                except (
+                    IndexError,
+                    KeyError,
+                    OSError,
+                    TypeError,
+                    UnicodeError,
+                    ValueError,
+                ) as exc:
+                    cache_path.unlink(missing_ok=True)
+                    logger.warning(
+                        f"Discarded invalid PaddleOCR cache {cache_path}: {exc}"
+                    )
+                else:
+                    cache_path.touch()
+                    logger.info(f"Loaded PaddleOCR result from cache: {cache_path}")
+                    return self._format_paddle_ocr_text(
+                        results, min_confidence=self.min_confidence
+                    )
 
             raw_results = self._ocr.predict(array)
             results = self._normalize_paddle_ocr_results(raw_results)
@@ -242,9 +257,19 @@ class PaddleRecognizer:
         """
         with cache_path.open("r", encoding="utf-8") as file:
             raw_results = json.load(file)
-        results = []
+        if not isinstance(raw_results, list):
+            raise ValueError("PaddleOCR cache must contain a list")
+
+        results: list[PaddleOcrTextResult] = []
         for result in raw_results:
+            if not isinstance(result, dict):
+                raise ValueError("PaddleOCR cache entries must be objects")
+            text = result.get("text")
+            if not isinstance(text, str):
+                raise ValueError("PaddleOCR cache text must be a string")
             bounding_box = result["bounding_box"]
+            if not isinstance(bounding_box, dict):
+                raise ValueError("PaddleOCR cache bounding box must be an object")
             points = {}
             for key in ("top_left", "top_right", "bottom_right", "bottom_left"):
                 point = bounding_box[key]
@@ -254,7 +279,7 @@ class PaddleRecognizer:
                     points[key] = (float(point[0]), float(point[1]))
             results.append(
                 PaddleOcrTextResult(
-                    text=result["text"],
+                    text=text,
                     confidence=float(result["confidence"]),
                     bounding_box=PaddleOcrBoundingBox(
                         top_left=points["top_left"],
@@ -334,5 +359,5 @@ class PaddleRecognizer:
             cache_path: cache file path
         """
         cache_path.parent.mkdir(parents=True, exist_ok=True)
-        with cache_path.open("w", encoding="utf-8") as file:
+        with open_atomic_text_file(cache_path) as file:
             json.dump([asdict(result) for result in results], file, ensure_ascii=False)

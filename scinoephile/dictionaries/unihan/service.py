@@ -12,7 +12,7 @@ import requests
 
 from scinoephile.common.validation import val_input_path, val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, DictionarySqliteStore
-from scinoephile.core.paths import get_runtime_cache_root_path
+from scinoephile.core.paths import get_runtime_data_root_path
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
 from scinoephile.lang.id import LanguageId
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
@@ -29,7 +29,7 @@ __all__ = ["UnihanDictionaryService"]
 
 
 class UnihanDictionaryService:
-    """Runtime service for querying locally cached Unihan dictionary data."""
+    """Runtime service for querying local Unihan dictionary data."""
 
     def __init__(
         self,
@@ -49,7 +49,7 @@ class UnihanDictionaryService:
         """
         if database_path is None:
             database_path = (
-                get_runtime_cache_root_path() / "dictionaries" / "unihan" / "unihan.db"
+                get_runtime_data_root_path() / "dictionaries" / "unihan" / "unihan.db"
             )
         self.database_path = val_output_path(database_path, exist_ok=True)
         self.auto_build_missing = auto_build_missing
@@ -64,7 +64,7 @@ class UnihanDictionaryService:
         self.runtime_data_dir_path = (
             runtime_data_dir_path
             if runtime_data_dir_path is not None
-            else get_runtime_cache_root_path() / "dictionaries" / "unihan" / "data"
+            else get_runtime_data_root_path() / "dictionaries" / "unihan" / "data"
         )
 
     def build(
@@ -183,7 +183,7 @@ class UnihanDictionaryService:
         return self._validate_paths(local_paths)
 
     def _download_and_extract_to_runtime(self) -> dict[str, Path]:
-        """Download Unihan.zip and extract required files to runtime cache.
+        """Download Unihan.zip and extract required files to runtime data.
 
         Returns:
             validated extracted file paths keyed by filename

@@ -14,6 +14,7 @@ from typing import TypedDict, override
 import requests
 from PIL import Image
 
+from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.subprocess import run_command
 from scinoephile.common.validation import (
     val_executable,
@@ -172,10 +173,17 @@ class TesseractRecognizer:
                 cache_path.unlink()
                 logger.info(f"Removed Tesseract OCR cache: {cache_path}")
             if cache_path.exists():
-                text = self._load_result(cache_path)
-                cache_path.touch()
-                logger.info(f"Loaded Tesseract OCR result from cache: {cache_path}")
-                return text
+                try:
+                    text = self._load_result(cache_path)
+                except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
+                    cache_path.unlink(missing_ok=True)
+                    logger.warning(
+                        f"Discarded invalid Tesseract OCR cache {cache_path}: {exc}"
+                    )
+                else:
+                    cache_path.touch()
+                    logger.info(f"Loaded Tesseract OCR result from cache: {cache_path}")
+                    return text
 
             text = self._recognize_uncached_image(image)
             self._save_result(text, cache_path)
@@ -343,11 +351,11 @@ class TesseractRecognizer:
         """
         if self.cache_dir_path is None:
             legacy_tessdata_dir_path = val_output_dir_path(
-                get_runtime_cache_root_path() / "tesseract" / "legacy-tessdata"
+                get_runtime_cache_root_path() / "tesseract-legacy-tessdata"
             )
         else:
             legacy_tessdata_dir_path = val_output_dir_path(
-                self.cache_dir_path / "legacy-tessdata"
+                self.cache_dir_path.parent / "tesseract-legacy-tessdata"
             )
 
         traineddata_path = (
@@ -355,6 +363,8 @@ class TesseractRecognizer:
         )
         if not traineddata_path.exists():
             self._download_legacy_traineddata(traineddata_path)
+        else:
+            traineddata_path.touch()
         return legacy_tessdata_dir_path
 
     def _recognize_uncached_image(self, image: Image.Image) -> str:
@@ -482,7 +492,10 @@ class TesseractRecognizer:
         """
         with cache_path.open("r", encoding="utf-8") as file:
             result = json.load(file)
-        return str(result["text"])
+        text = result["text"]
+        if not isinstance(text, str):
+            raise ValueError("Tesseract OCR cache text must be a string")
+        return text
 
     @staticmethod
     def _read_hocr_output(output_base_path: Path) -> str:
@@ -514,5 +527,5 @@ class TesseractRecognizer:
             cache_path: cache file path
         """
         cache_path.parent.mkdir(parents=True, exist_ok=True)
-        with cache_path.open("w", encoding="utf-8") as file:
+        with open_atomic_text_file(cache_path) as file:
             json.dump({"text": text}, file, ensure_ascii=False)

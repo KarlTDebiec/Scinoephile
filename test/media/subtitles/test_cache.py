@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from time import time
 from unittest.mock import Mock, patch
 
 import ffmpeg
@@ -15,6 +16,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.media.subtitles.cache import SubtitleCache
+from test.helpers.files import set_mtime
 from test.helpers.media_subtitles import (
     cache_subtitle_stream,
     get_image_subtitle_dir_path,
@@ -66,6 +68,28 @@ def test_cache_subtitle_streams_uses_existing_stream(tmp_path: Path):
         cache.cache(infile_path, [stream])
 
     ffmpeg_input.assert_not_called()
+
+
+def test_cache_subtitle_streams_marks_existing_stream_used(tmp_path: Path):
+    """Test a subtitle stream cache hit refreshes its pruning timestamp."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+    stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
+    cache = SubtitleCache(tmp_path / "cache")
+    stream_path = cache_subtitle_stream(
+        infile_path,
+        stream,
+        tmp_path / "cache",
+        b"cached",
+    )
+    old_timestamp = time() - 60 * 60 * 24 * 40
+    set_mtime(stream_path, old_timestamp)
+
+    with patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input:
+        cache.cache(infile_path, [stream])
+
+    ffmpeg_input.assert_not_called()
+    assert stream_path.stat().st_mtime > old_timestamp
 
 
 def test_cache_subtitle_streams_overwrites_existing_stream(tmp_path: Path):
@@ -179,6 +203,31 @@ def test_cache_subtitles_builds_image_cache_for_sup_stream(tmp_path: Path):
         cache_root_path=tmp_path / "cache",
     )
     assert (image_dir_path / "index.html").exists()
+
+
+def test_cache_subtitles_marks_existing_image_series_used(tmp_path: Path):
+    """Test an image-series cache hit refreshes its pruning timestamp."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+    stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
+    cache = SubtitleCache(tmp_path / "cache")
+    cache_subtitle_stream(infile_path, stream, tmp_path / "cache", b"cached")
+    image_dir_path = get_image_subtitle_dir_path(
+        infile_path,
+        stream,
+        cache_root_path=tmp_path / "cache",
+    )
+    image_dir_path.mkdir()
+    index_path = image_dir_path / "index.html"
+    index_path.write_text("index", encoding="utf-8")
+    old_timestamp = time() - 60 * 60 * 24 * 40
+    set_mtime(index_path, old_timestamp)
+
+    with patch("scinoephile.media.subtitles.cache.ImageSeries.load") as load:
+        cache.cache(infile_path, [stream])
+
+    load.assert_not_called()
+    assert index_path.stat().st_mtime > old_timestamp
 
 
 def test_cache_subtitles_can_skip_image_cache_for_sup_stream(tmp_path: Path):

@@ -12,18 +12,21 @@ from scinoephile.cli.dictionary.dictionary_cli import DictionaryCli
 from test.helpers import assert_cli_usage
 
 
-def test_dictionary_usage_does_not_create_default_cache_dir(
+def test_dictionary_usage_does_not_create_default_runtime_dirs(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test dictionary usage output does not create default cache directories.
+    """Test dictionary usage output does not create default runtime directories.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
         monkeypatch: pytest monkeypatch fixture
     """
     cache_dir_path = tmp_path / "cache"
+    data_dir_path = tmp_path / "data"
     monkeypatch.setenv("SCINOEPHILE_CACHE_DIR", str(cache_dir_path))
+    monkeypatch.setenv("SCINOEPHILE_DATA_DIR", str(data_dir_path))
 
     assert_cli_usage((DictionaryCli,))
 
     assert not cache_dir_path.exists()
+    assert not data_dir_path.exists()

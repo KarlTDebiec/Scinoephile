@@ -17,7 +17,10 @@ from scinoephile.audio.transcription import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.ml import get_torch_device
-from scinoephile.core.paths import get_runtime_cache_root_path
+from scinoephile.core.paths import (
+    get_runtime_cache_root_path,
+    get_runtime_data_root_path,
+)
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHans,
     YueZhoDelineationPromptYueHant,
@@ -226,7 +229,9 @@ def get_guided_transcriber(
         punctuation_prompt = spec.punctuation_prompt
     if delineation_json_path is None or punctuation_json_path is None:
         runtime_test_case_dir_path = (
-            cache_root_path / "test_cases" / spec.test_case_dir_path
+            get_runtime_data_root_path(create=False)
+            / "test_cases"
+            / spec.test_case_dir_path
         )
         device = get_torch_device()
         if delineation_json_path is None:

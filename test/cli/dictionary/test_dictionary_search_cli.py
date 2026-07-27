@@ -31,9 +31,9 @@ from test.helpers import parametrize
 def dictionary_database_dir_path() -> Generator[Path]:
     """Build temporary databases for end-to-end search tests."""
     with get_temp_directory_path() as dir_path:
-        cache_dir_path = dir_path / "dictionaries"
-        cuhk_database_path = cache_dir_path / "cuhk/cuhk.db"
-        gzzj_database_path = cache_dir_path / "gzzj/gzzj.db"
+        data_dir_path = dir_path / "dictionaries"
+        cuhk_database_path = data_dir_path / "cuhk/cuhk.db"
+        gzzj_database_path = data_dir_path / "gzzj/gzzj.db"
 
         store = DictionarySqliteStore(database_path=cuhk_database_path)
         store.persist(
@@ -177,7 +177,7 @@ def test_dictionary_search_cli_all_dictionaries(dictionary_database_dir_path: Pa
     """
     with get_temp_file_path(".log") as log_file_path:
         with patch.dict(
-            environ, {"SCINOEPHILE_CACHE_DIR": str(dictionary_database_dir_path)}
+            environ, {"SCINOEPHILE_DATA_DIR": str(dictionary_database_dir_path)}
         ):
             run_cli_with_args(
                 DictionarySearchCli,
@@ -198,7 +198,7 @@ def test_dictionary_search_cli_all_dictionaries_merges_definitions(
     """
     with get_temp_file_path(".log") as log_file_path:
         with patch.dict(
-            environ, {"SCINOEPHILE_CACHE_DIR": str(dictionary_database_dir_path)}
+            environ, {"SCINOEPHILE_DATA_DIR": str(dictionary_database_dir_path)}
         ):
             run_cli_with_args(
                 DictionarySearchCli,

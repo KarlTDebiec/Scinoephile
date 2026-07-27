@@ -24,8 +24,8 @@ __all__ = ["DictionarySearchCli"]
 
 DICTIONARY_SEARCH_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "dictionary to search, or all available dictionary caches": (
-            "要查询的词典，或选择全部可用词典缓存"
+        "dictionary to search, or all installed dictionaries": (
+            "要查询的词典，或选择全部已安装词典"
         ),
         "Mandarin or Cantonese Hanzi, pinyin, or Jyutping query text": (
             "普通话或粤语汉字、拼音或粤拼查询文本"
@@ -34,13 +34,13 @@ DICTIONARY_SEARCH_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "每个词典显示的最大匹配数"
         ),
         "search dictionaries": "查询词典",
-        "SQLite database input path for one dictionary; omit to use runtime cache": (
-            "单个词典的 SQLite 数据库输入路径；省略时使用运行时缓存"
+        "SQLite database input path for one dictionary; omit to use runtime data": (
+            "单个词典的 SQLite 数据库输入路径；省略时使用运行时数据"
         ),
     },
     "zh-hant": {
-        "dictionary to search, or all available dictionary caches": (
-            "要查詢的詞典，或選擇全部可用詞典快取"
+        "dictionary to search, or all installed dictionaries": (
+            "要查詢的詞典，或選擇全部已安裝詞典"
         ),
         "Mandarin or Cantonese Hanzi, pinyin, or Jyutping query text": (
             "普通話或粵語漢字、拼音或粵拼查詢文字"
@@ -49,8 +49,8 @@ DICTIONARY_SEARCH_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "每個詞典顯示的最大符合數"
         ),
         "search dictionaries": "查詢詞典",
-        "SQLite database input path for one dictionary; omit to use runtime cache": (
-            "單個詞典的 SQLite 資料庫輸入路徑；省略時使用執行時快取"
+        "SQLite database input path for one dictionary; omit to use runtime data": (
+            "單個詞典的 SQLite 資料庫輸入路徑；省略時使用執行時資料"
         ),
     },
 }
@@ -87,14 +87,14 @@ class DictionarySearchCli(ScinoephileCliBase):
             type=input_file_arg(),
             help=(
                 "SQLite database input path for one dictionary; omit to use runtime "
-                "cache"
+                "data"
             ),
         )
         arg_groups["input arguments"].add_argument(
             "--dictionary-name",
             default="all",
             choices=["all", *AVAILABLE_DICTIONARY_NAMES],
-            help="dictionary to search, or all available dictionary caches",
+            help="dictionary to search, or all installed dictionaries",
         )
 
         # Operation arguments

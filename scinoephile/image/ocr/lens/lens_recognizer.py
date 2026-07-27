@@ -14,6 +14,7 @@ from typing import TypedDict, cast, override
 
 from PIL import Image
 
+from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_int, val_output_dir_path
 from scinoephile.core import Language
 from scinoephile.core.dependencies.ocr import import_chrome_lens_py
@@ -109,10 +110,19 @@ class LensRecognizer:
                 cache_path.unlink()
                 logger.info(f"Removed Google Lens OCR cache: {cache_path}")
             if cache_path.exists():
-                lines = self._load_lens_lines(cache_path)
-                cache_path.touch()
-                logger.info(f"Loaded Google Lens OCR result from cache: {cache_path}")
-                return self._format_lens_lines(lines)
+                try:
+                    lines = self._load_lens_lines(cache_path)
+                except (OSError, TypeError, UnicodeError, ValueError) as exc:
+                    cache_path.unlink(missing_ok=True)
+                    logger.warning(
+                        f"Discarded invalid Google Lens OCR cache {cache_path}: {exc}"
+                    )
+                else:
+                    cache_path.touch()
+                    logger.info(
+                        f"Loaded Google Lens OCR result from cache: {cache_path}"
+                    )
+                    return self._format_lens_lines(lines)
 
             self._raise_if_running_loop()
             lines = self._recognize_image_uncached(image)
@@ -215,11 +225,13 @@ class LensRecognizer:
         with cache_path.open("r", encoding="utf-8") as file:
             data = json.load(file)
         if not isinstance(data, dict):
-            return []
+            raise ValueError("Google Lens OCR cache must contain an object")
         lines = data.get("lines")
         if not isinstance(lines, list):
-            return []
-        return [line for line in lines if isinstance(line, str)]
+            raise ValueError("Google Lens OCR cache must contain a lines list")
+        if not all(isinstance(line, str) for line in lines):
+            raise ValueError("Google Lens OCR cache lines must be strings")
+        return cast(list[str], lines)
 
     @staticmethod
     def _normalize_lens_result(result: object) -> list[str]:
@@ -338,5 +350,5 @@ class LensRecognizer:
         """
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         data = {"lines": lines}
-        with cache_path.open("w", encoding="utf-8") as file:
+        with open_atomic_text_file(cache_path) as file:
             json.dump(data, file, ensure_ascii=False)

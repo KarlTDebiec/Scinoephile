@@ -9,7 +9,7 @@ from pathlib import Path
 
 from scinoephile.common.validation import val_input_path, val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, DictionarySqliteStore
-from scinoephile.core.paths import get_runtime_cache_root_path
+from scinoephile.core.paths import get_runtime_data_root_path
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
 from scinoephile.lang.id import LanguageId
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
@@ -22,7 +22,7 @@ __all__ = ["KaifangcidianDictionaryService"]
 
 
 class KaifangcidianDictionaryService:
-    """Runtime service for querying locally cached Kaifangcidian data."""
+    """Runtime service for querying local Kaifangcidian data."""
 
     def __init__(
         self,
@@ -42,7 +42,7 @@ class KaifangcidianDictionaryService:
         """
         if database_path is None:
             database_path = (
-                get_runtime_cache_root_path()
+                get_runtime_data_root_path()
                 / "dictionaries"
                 / "kaifangcidian"
                 / "kaifangcidian.db"
@@ -61,7 +61,7 @@ class KaifangcidianDictionaryService:
         self.runtime_data_dir_path = (
             runtime_data_dir_path
             if runtime_data_dir_path is not None
-            else get_runtime_cache_root_path()
+            else get_runtime_data_root_path()
             / "dictionaries"
             / "kaifangcidian"
             / "data"

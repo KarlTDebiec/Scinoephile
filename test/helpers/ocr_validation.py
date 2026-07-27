@@ -28,11 +28,11 @@ def clear_validation_data(session: OcrValidationSession):
         session: OCR validation session
     """
     session.manager.char_dims_by_n = {n: {} for n in range(1, 6)}
-    session.manager.cache_char_dims_by_n = {n: {} for n in range(1, 6)}
+    session.manager.runtime_char_dims_by_n = {n: {} for n in range(1, 6)}
     session.manager.char_grp_dims_by_n = {}
-    session.manager.cache_char_grp_dims_by_n = {}
+    session.manager.runtime_char_grp_dims_by_n = {}
     session.manager.char_pair_gaps = {}
-    session.manager.cache_char_pair_gaps = {}
+    session.manager.runtime_char_pair_gaps = {}
 
 
 def make_ocr_html_dir(
