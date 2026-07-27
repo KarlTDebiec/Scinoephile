@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from importlib import import_module
 from types import ModuleType
 from typing import TYPE_CHECKING
 
@@ -167,7 +168,7 @@ def import_whisper_timestamped_transcribe() -> ModuleType:
         Whisper Timestamped transcription module
     """
     try:
-        import whisper_timestamped.transcribe as whisper_timestamped_transcribe
+        whisper_timestamped_transcribe = import_module("whisper_timestamped.transcribe")
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return whisper_timestamped_transcribe

@@ -16,7 +16,6 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.lang.transcription.guided import DEFAULT_SPECS
 from scinoephile.workflows.helpers import resolve_language
 from scinoephile.workflows.review import review_series_guided
 from scinoephile.workflows.transcription import transcribe_series_guided
@@ -91,6 +90,7 @@ def process_transcription(
     language: Language | None = None,
     guide_language: Language | None = None,
     output_dir_path: Path | None = None,
+    audio_dir_path: Path | None = None,
     audio_source_path: Path | None = None,
     media_path: Path | None = None,
     stream_index: int | None = None,
@@ -114,6 +114,8 @@ def process_transcription(
         guide_language: explicit guide subtitle language, or None to detect it
         output_dir_path: directory where pipeline outputs are written; defaults to
           `title_root_path/output/{language.code}_transcribe`
+        audio_dir_path: directory containing staged guide subtitles and audio;
+          defaults to `output_dir_path/audio`
         audio_source_path: optional existing wav file to copy into the output
         media_path: optional media path used to generate staged audio if missing
         stream_index: media stream index used when generating staged audio, or None
@@ -150,13 +152,15 @@ def process_transcription(
     if output_dir_path is None:
         output_dir_path = title_root_path / "output" / f"{language.code}_transcribe"
     output_dir_path.mkdir(parents=True, exist_ok=True)
+    if audio_dir_path is None:
+        audio_dir_path = output_dir_path / "audio"
 
     evaluation_reference = get_reference_for_guide_blocks(reference, guide, stop_at_idx)
 
     # Stage guide subtitles and audio under the transcription output
     audio = _stage_audio_series(
         guide,
-        output_dir_path,
+        audio_dir_path,
         audio_source_path=audio_source_path,
         media_path=media_path,
         stream_index=stream_index,
@@ -262,14 +266,9 @@ def _load_or_review_series_guided(
         return Series.load(output_path)
 
     reviewer_kw = dict(reviewer_kw or {})
-    language_pair_name = f"{language.language}_{guide_language.language}"
     reviewer_kw.setdefault(
         "test_case_path",
-        output_path.parent
-        / "lang"
-        / language_pair_name
-        / "guided_review"
-        / f"{get_torch_device()}.json",
+        output_path.parent / "json" / f"guided_review-{get_torch_device()}.json",
     )
     reviewed = review_series_guided(
         target,
@@ -313,18 +312,14 @@ def _load_or_transcribe_series_guided(
         return Series.load(output_path)
 
     transcription_kw = dict(transcription_kw or {})
-    spec = DEFAULT_SPECS.get((language, guide_language))
-    if spec is not None:
-        test_case_dir_path = output_path.parent / spec.test_case_dir_path
-        device = get_torch_device()
-        transcription_kw.setdefault(
-            "delineation_json_path",
-            test_case_dir_path / "delineation" / f"{device}.json",
-        )
-        transcription_kw.setdefault(
-            "punctuation_json_path",
-            test_case_dir_path / "punctuation" / f"{device}.json",
-        )
+    json_dir_path = output_path.parent / "json"
+    device = get_torch_device()
+    transcription_kw.setdefault(
+        "delineation_json_path", json_dir_path / f"delineation-{device}.json"
+    )
+    transcription_kw.setdefault(
+        "punctuation_json_path", json_dir_path / f"punctuation-{device}.json"
+    )
     audio_transcription = transcribe_series_guided(
         audio,
         guide,
@@ -369,14 +364,9 @@ def _load_or_translate_series_gaps(
         return Series.load(output_path)
 
     translator_kw = dict(translator_kw or {})
-    language_pair_name = f"{target_language.language}_{source_language.language}"
     translator_kw.setdefault(
         "test_case_path",
-        output_path.parent
-        / "lang"
-        / language_pair_name
-        / "gap_translation"
-        / f"{get_torch_device()}.json",
+        output_path.parent / "json" / f"gap_translation-{get_torch_device()}.json",
     )
     translated = translate_series_gaps(
         source,
@@ -424,7 +414,7 @@ def _relog_cantonese_transcription_mismatch(language: Language) -> Iterator[None
 
 def _stage_audio_series(
     guide: Series,
-    output_dir_path: Path,
+    audio_dir_path: Path,
     *,
     audio_source_path: Path | None,
     media_path: Path | None,
@@ -435,7 +425,7 @@ def _stage_audio_series(
 
     Arguments:
         guide: guide subtitles used to segment audio
-        output_dir_path: transcription output directory
+        audio_dir_path: directory containing staged guide subtitles and audio
         audio_source_path: optional existing wav file to stage
         media_path: optional media path from which to extract audio
         stream_index: audio stream index, or None to use the first stream
@@ -445,7 +435,6 @@ def _stage_audio_series(
     Raises:
         ScinoephileError: if staged audio is missing and cannot be generated
     """
-    audio_dir_path = output_dir_path / "audio"
     audio_dir_path.mkdir(parents=True, exist_ok=True)
     staged_audio_path = audio_dir_path / "audio.wav"
     if audio_source_path is not None and audio_source_path != staged_audio_path:

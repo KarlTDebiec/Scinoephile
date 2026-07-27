@@ -31,6 +31,10 @@ _TEST_CASE_FAMILIES: tuple[tuple[str, type[Manager]], ...] = (
     ("*/output/*/lang/yue_zho/guided_review/*.json", GuidedReviewManager),
     ("*/output/*/lang/yue_zho/transcription/delineation/*.json", DelineationManager),
     ("*/output/*/lang/yue_zho/transcription/punctuation/*.json", PunctuationManager),
+    ("*/output/*_transcribe/**/json/delineation-*.json", DelineationManager),
+    ("*/output/*_transcribe/**/json/gap_translation-*.json", GapTranslationManager),
+    ("*/output/*_transcribe/**/json/guided_review-*.json", GuidedReviewManager),
+    ("*/output/*_transcribe/**/json/punctuation-*.json", PunctuationManager),
 )
 
 

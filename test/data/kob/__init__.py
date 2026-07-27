@@ -175,11 +175,9 @@ def get_kob_yue_hant_delineation_test_cases(
     path = (
         output_dir
         / "yue-Hant_transcribe"
-        / "lang"
-        / "yue_zho"
-        / "transcription"
-        / "delineation"
-        / f"{get_torch_device()}.json"
+        / "whisper"
+        / "json"
+        / f"delineation-{get_torch_device()}.json"
     )
     return load_test_cases_from_json(path, DelineationManager, prompt=prompt, **kwargs)
 
@@ -200,10 +198,9 @@ def get_kob_yue_hant_guided_review_test_cases(
     path = (
         output_dir
         / "yue-Hant_transcribe"
-        / "lang"
-        / "yue_zho"
-        / "guided_review"
-        / f"{get_torch_device()}.json"
+        / "whisper"
+        / "json"
+        / f"guided_review-{get_torch_device()}.json"
     )
     return load_test_cases_from_json(path, GuidedReviewManager, prompt=prompt, **kwargs)
 
@@ -281,11 +278,9 @@ def get_kob_yue_hant_punctuation_test_cases(
     path = (
         output_dir
         / "yue-Hant_transcribe"
-        / "lang"
-        / "yue_zho"
-        / "transcription"
-        / "punctuation"
-        / f"{get_torch_device()}.json"
+        / "whisper"
+        / "json"
+        / f"punctuation-{get_torch_device()}.json"
     )
     return load_test_cases_from_json(path, PunctuationManager, prompt=prompt, **kwargs)
 

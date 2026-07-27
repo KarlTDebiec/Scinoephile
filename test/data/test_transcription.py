@@ -11,6 +11,7 @@ from unittest.mock import Mock
 from pytest import LogCaptureFixture, MonkeyPatch, mark, param
 
 import test.data.transcription as transcription_data
+from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
 
@@ -138,17 +139,20 @@ def test_process_transcription_orders_stages_and_relogs_expected_mismatch(
     monkeypatch.setattr(transcription_data, "_load_or_translate_series_gaps", translate)
 
     with caplog.at_level(INFO):
+        audio_dir_path = tmp_path / "shared-audio"
         output = transcription_data.process_transcription(
             tmp_path,
             guide_path,
             reference_path=reference_path,
             language=language,
             guide_language=guide_language,
+            audio_dir_path=audio_dir_path,
             additional_context="Movie-specific context",
         )
 
     assert output is reference
     assert stage_order == ["audio", "transcribe", "clean", "review", "translate"]
+    assert stage_audio.call_args.args[1] == audio_dir_path
     assert transcribe.call_args.kwargs["transcription_kw"] == {
         "additional_context": "Movie-specific context"
     }
@@ -163,6 +167,68 @@ def test_process_transcription_orders_stages_and_relogs_expected_mismatch(
     ]
     assert len(mismatch_records) == 1
     assert mismatch_records[0].levelno == expected_log_level
+
+
+def test_transcription_stages_use_flat_json_directory(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Store all transcription-stage JSON in one model-local directory.
+
+    Arguments:
+        tmp_path: temporary pipeline directory
+        monkeypatch: pytest monkeypatch fixture
+    """
+    series = Series(events=[Subtitle(start=0, end=1_000, text="佢喺度")])
+    audio = Mock(spec=AudioSeries)
+    model_dir_path = tmp_path / "mimo"
+    transcribe = Mock(return_value=series)
+    review = Mock(return_value=series)
+    translate = Mock(return_value=series)
+    monkeypatch.setattr(
+        transcription_data, "get_torch_device", Mock(return_value="mps")
+    )
+    monkeypatch.setattr(transcription_data, "transcribe_series_guided", transcribe)
+    monkeypatch.setattr(transcription_data, "review_series_guided", review)
+    monkeypatch.setattr(transcription_data, "translate_series_gaps", translate)
+
+    transcription_data._load_or_transcribe_series_guided(
+        audio,
+        series,
+        model_dir_path / "transcribe.srt",
+        Language.yue_hant,
+        Language.zho_hant,
+        overwrite=True,
+    )
+    transcription_data._load_or_review_series_guided(
+        series,
+        series,
+        model_dir_path / "transcribe_clean_review.srt",
+        Language.yue_hant,
+        Language.zho_hant,
+        overwrite=True,
+    )
+    transcription_data._load_or_translate_series_gaps(
+        series,
+        series,
+        model_dir_path / "transcribe_clean_review_translate.srt",
+        Language.zho_hant,
+        Language.yue_hant,
+        overwrite=True,
+    )
+
+    json_dir_path = model_dir_path / "json"
+    assert transcribe.call_args.kwargs["delineation_json_path"] == (
+        json_dir_path / "delineation-mps.json"
+    )
+    assert transcribe.call_args.kwargs["punctuation_json_path"] == (
+        json_dir_path / "punctuation-mps.json"
+    )
+    assert review.call_args.kwargs["test_case_path"] == (
+        json_dir_path / "guided_review-mps.json"
+    )
+    assert translate.call_args.kwargs["test_case_path"] == (
+        json_dir_path / "gap_translation-mps.json"
+    )
 
 
 def test_process_transcription_can_stop_after_cleaning(

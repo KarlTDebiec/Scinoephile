@@ -50,7 +50,12 @@ _LOCALIZED_PROMPT = DelineationPrompt(
 
 _DELINEATION_PATHS = tuple(
     sorted(
-        test_data_root.glob("*/output/*/lang/yue_zho/transcription/delineation/*.json")
+        (
+            *test_data_root.glob(
+                "*/output/*/lang/yue_zho/transcription/delineation/*.json"
+            ),
+            *test_data_root.glob("*/output/*_transcribe/**/json/delineation-*.json"),
+        )
     )
 )
 """Tracked delineation test-case JSON paths."""

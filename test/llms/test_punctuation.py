@@ -42,7 +42,12 @@ _LOCALIZED_PROMPT = PunctuationPrompt(
 
 _PUNCTUATION_PATHS = tuple(
     sorted(
-        test_data_root.glob("*/output/*/lang/yue_zho/transcription/punctuation/*.json")
+        (
+            *test_data_root.glob(
+                "*/output/*/lang/yue_zho/transcription/punctuation/*.json"
+            ),
+            *test_data_root.glob("*/output/*_transcribe/**/json/punctuation-*.json"),
+        )
     )
 )
 """Tracked punctuation test-case JSON paths."""

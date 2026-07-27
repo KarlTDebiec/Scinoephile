@@ -5,12 +5,18 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.analysis.diff import SeriesDiff
+from scinoephile.audio.transcription.mlx_audio.backend import (
+    MIMO_MODEL_NAME,
+    QWEN3_ASR_MODEL_NAME,
+)
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
+from scinoephile.lang.transcription.transcriber import TranscriptionBackend
 from test.data.ocr import process_ocr
 from test.data.srt import process_srt
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
@@ -69,8 +75,10 @@ actions = {
     # "yue-Hant",
     # "zho-Hans_eng",
     # "yue-Hans_eng",
-    # "yue-Hant_transcribe",
-    "yue-Hant_diff"
+    # "yue-Hant_transcribe-whisper",
+    "yue-Hant_transcribe-mimo",
+    "yue-Hant_transcribe-qwen",
+    # "yue-Hant_diff",
 }
 
 if "eng_ocr" in actions:
@@ -113,20 +121,47 @@ if "yue-Hans_eng" in actions:
     yue_hans_srt_path = yue_hans_path / "clean_review_flatten_timewarp.srt"
     eng_srt_path = eng_path / "clean_review_flatten_timewarp.srt"
     process_yue_hans_eng(title_root, yue_hans_srt_path, eng_srt_path, overwrite=True)
-if "yue-Hant_transcribe" in actions:
+transcription_runs: dict[str, tuple[dict[str, Any], bool]] = {
+    "whisper": ({}, True),
+    "mimo": (
+        {
+            "backend": TranscriptionBackend.MLX_AUDIO,
+            "model_name": MIMO_MODEL_NAME,
+            "no_op": True,
+        },
+        False,
+    ),
+    "qwen": (
+        {
+            "backend": TranscriptionBackend.MLX_AUDIO,
+            "model_name": QWEN3_ASR_MODEL_NAME,
+            "no_op": True,
+        },
+        False,
+    ),
+}
+for transcription_name, (
+    transcription_kw,
+    run_review_and_translation,
+) in transcription_runs.items():
+    if f"yue-Hant_transcribe-{transcription_name}" not in actions:
+        continue
     process_transcription(
         title_root,
         zho_hant_guide_path,
         reference_path=yue_hant_path / "clean_review_flatten_timewarp.srt",
-        output_dir_path=yue_hant_transcribe_path,
+        output_dir_path=yue_hant_transcribe_path / transcription_name,
+        audio_dir_path=yue_hant_transcribe_path / "audio",
         # stop_at_idx=8,
         additional_context=transcription_additional_context,
+        transcription_kw=transcription_kw,
+        run_review_and_translation=run_review_and_translation,
         overwrite=True,
     )
 if "yue-Hant_diff" in actions:
     zho_hant_guide = Series.load(zho_hant_guide_path)
     yue_hant_transcribe = Series.load(
-        yue_hant_transcribe_path / "transcribe_clean_review_translate.srt"
+        yue_hant_transcribe_path / "whisper" / "transcribe_clean_review_translate.srt"
     )
     yue_hant_reference = Series.load(
         yue_hant_path / "clean_review_flatten_timewarp.srt"
