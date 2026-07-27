@@ -19,6 +19,7 @@ __all__ = [
     "import_torchaudio",
     "import_transformers",
     "import_whisper_timestamped",
+    "import_whisper_timestamped_transcribe",
 ]
 
 if TYPE_CHECKING:
@@ -157,3 +158,16 @@ def import_whisper_timestamped() -> ModuleType:
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return whisper_timestamped
+
+
+def import_whisper_timestamped_transcribe() -> ModuleType:
+    """Import the Whisper Timestamped transcription module on demand.
+
+    Returns:
+        Whisper Timestamped transcription module
+    """
+    try:
+        import whisper_timestamped.transcribe as whisper_timestamped_transcribe
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return whisper_timestamped_transcribe

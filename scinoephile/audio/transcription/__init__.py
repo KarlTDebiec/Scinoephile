@@ -24,6 +24,7 @@ from .exceptions import (
     TranscriptionError,
     TranscriptionInferenceError,
 )
+from .mlx_audio import MlxAudioTranscriber
 from .preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
@@ -38,6 +39,7 @@ __all__ = [
     "CtcAligner",
     "DemucsMode",
     "DemucsSeparator",
+    "MlxAudioTranscriber",
     "TranscribedSegment",
     "TranscribedWord",
     "Transcriber",
