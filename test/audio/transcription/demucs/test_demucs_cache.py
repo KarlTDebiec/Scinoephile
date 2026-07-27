@@ -11,7 +11,7 @@ from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
 from pytest import MonkeyPatch, raises
 
-from scinoephile.audio.transcription.demucs_cache import DemucsCache
+from scinoephile.audio.transcription.demucs.cache import DemucsCache
 from scinoephile.core.exceptions import ScinoephileError
 
 
@@ -40,7 +40,7 @@ def test_load_wraps_decode_failure(
     assert cache_path is not None
     cache_path.write_bytes(b"not audio")
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.demucs_cache.AudioSegment.from_file",
+        "scinoephile.audio.transcription.demucs.cache.AudioSegment.from_file",
         Mock(side_effect=CouldntDecodeError("invalid audio")),
     )
 

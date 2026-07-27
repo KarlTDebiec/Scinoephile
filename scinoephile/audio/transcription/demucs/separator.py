@@ -20,7 +20,7 @@ from scinoephile.core.dependencies.transcription import (
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.ml import get_torch_device
 
-from .demucs_cache import DemucsCache
+from .cache import DemucsCache
 
 __all__ = ["DemucsSeparator"]
 

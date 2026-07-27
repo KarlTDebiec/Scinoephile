@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING, ClassVar
 from scinoephile.core.exceptions import ScinoephileError
 
 from .cache import TranscriptionCache
-from .demucs_separator import DemucsSeparator
+from .demucs import DemucsSeparator
 from .exceptions import TranscriptionError
 from .preprocessing_settings import (
     DemucsMode,

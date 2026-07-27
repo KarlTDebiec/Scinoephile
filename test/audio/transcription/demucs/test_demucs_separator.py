@@ -11,7 +11,7 @@ import numpy as np
 from pydub import AudioSegment
 from pytest import MonkeyPatch, importorskip
 
-from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
+from scinoephile.audio.transcription.demucs import DemucsSeparator
 from scinoephile.core.exceptions import ScinoephileError
 
 
@@ -61,7 +61,7 @@ def test_separate_vocals_uses_default_demucs_shifts():
         return separated_sources
 
     with patch(
-        "scinoephile.audio.transcription.demucs_separator.import_demucs_infer_apply",
+        "scinoephile.audio.transcription.demucs.separator.import_demucs_infer_apply",
         return_value=Mock(apply_model=apply_model),
     ):
         output_audio = separator.separate_vocals(input_audio)
