@@ -41,7 +41,7 @@ class PaddleRecognizerKwargs(TypedDict, total=False):
     """Additional keyword arguments forwarded to PaddleRecognizer."""
 
     cache_root_path: Path | None
-    """Root directory beneath which to cache OCR results, or None to disable."""
+    """Root directory beneath which to cache OCR results, or None for default."""
 
     language: Language
     """Scinoephile language."""
@@ -67,7 +67,7 @@ class PaddleRecognizer:
         """Initialize.
 
         Arguments:
-            cache_root_path: root directory beneath which to cache, or None to disable
+            cache_root_path: root directory beneath which to cache, or None for default
             language: Scinoephile language
             min_confidence: minimum confidence to include
             overwrite_cache: whether to replace matching OCR cache files

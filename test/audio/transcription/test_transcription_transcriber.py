@@ -131,7 +131,6 @@ def test_overwrite_removes_all_configuration_caches_before_transcribing(
             transcriber._get_cache_metadata(settings),
             [_get_segment("old")],
         )
-        assert cache_path is not None
         cache_paths.append(cache_path)
         transcriber.outcomes[settings] = [_get_segment("new")]
     transcriber.demucs_separator = Mock(

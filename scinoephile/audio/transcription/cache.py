@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING
 
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .exceptions import TranscriptionError, TranscriptionInferenceError
 from .transcribed_segment import TranscribedSegment
@@ -40,7 +41,7 @@ class TranscriptionCache:
         """Initialize.
 
         Arguments:
-            cache_root_path: root directory beneath which to cache, or None to disable
+            cache_root_path: root directory beneath which to cache, or None for default
             backend_name: stable backend name stored in cache metadata
             backend_label: human-readable backend name used in log messages
         """
@@ -48,27 +49,26 @@ class TranscriptionCache:
         """Stable backend name stored in cache metadata."""
         self.backend_label = backend_label
         """Human-readable backend name used in log messages."""
-        self.cache_dir_path = None
+        if cache_root_path is None:
+            cache_root_path = get_runtime_cache_root_path()
+        self.cache_root_path = val_output_dir_path(cache_root_path)
+        """Root directory beneath which transcriptions are cached."""
+        self.cache_dir_path = val_output_dir_path(self.cache_root_path / backend_name)
         """Directory in which cached transcriptions are stored."""
-        if cache_root_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_root_path / backend_name)
 
     def get_path(
         self,
         audio: AudioSegment,
         backend_metadata: Mapping[str, object],
-    ) -> Path | None:
+    ) -> Path:
         """Get the cache path for audio and backend configuration.
 
         Arguments:
             audio: audio used to derive the cache key
             backend_metadata: backend configuration identifying the output
         Returns:
-            cache path, or None when caching is disabled
+            cache path
         """
-        if self.cache_dir_path is None:
-            return None
-
         cache_hash = hashlib.sha256(audio.raw_data)
         cache_hash.update(b"\0")
         cache_hash.update(
@@ -94,7 +94,7 @@ class TranscriptionCache:
             cache path and cached segments, if present
         """
         cache_path = self.get_path(audio, backend_metadata)
-        if cache_path is None or not cache_path.exists():
+        if not cache_path.exists():
             return None
 
         # Validate the matching entry, discarding invalid data as a cache miss
@@ -157,7 +157,7 @@ class TranscriptionCache:
             removed cache path, if present
         """
         cache_path = self.get_path(audio, backend_metadata)
-        if cache_path is None or not cache_path.exists():
+        if not cache_path.exists():
             return None
 
         cache_path.unlink()
@@ -169,7 +169,7 @@ class TranscriptionCache:
         audio: AudioSegment,
         backend_metadata: Mapping[str, object],
         segments: Sequence[TranscribedSegment],
-    ) -> Path | None:
+    ) -> Path:
         """Save a transcription to the cache.
 
         Arguments:
@@ -177,12 +177,9 @@ class TranscriptionCache:
             backend_metadata: backend configuration identifying the output
             segments: timestamped transcription segments to cache
         Returns:
-            saved cache path, or None when caching is disabled
+            saved cache path
         """
         cache_path = self.get_path(audio, backend_metadata)
-        if cache_path is None:
-            return None
-
         payload = {
             "schema_version": _CACHE_SCHEMA_VERSION,
             "metadata": self._get_metadata(audio, backend_metadata),

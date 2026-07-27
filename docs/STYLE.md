@@ -106,6 +106,18 @@
   passthrough values, and use a narrower type, protocol, `TypedDict`, or alias
   when the shape is known.
 
+## Caching
+* Cache classes should accept `cache_root_path: Path | None`; `None` selects the
+  runtime cache root and does not disable caching.
+* Cache classes are responsible for resolving and validating their root,
+  appending their cache namespace, and exposing concrete `cache_root_path` and
+  `cache_dir_path` attributes.
+* Callers should pass configured roots through to cache classes instead of
+  resolving runtime defaults themselves. When a cache instance is shared, use
+  its resolved root and overwrite policy for related cache artifacts.
+* If a future operation needs to disable persistence, use an explicit option or
+  cache implementation rather than overloading a `None` root.
+
 ## Exceptions
 * Raise `ScinoephileError` for Scinoephile domain failures that should be shown
   directly to CLI users.

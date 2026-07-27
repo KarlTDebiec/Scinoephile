@@ -15,6 +15,22 @@ from scinoephile.image.ocr.tesseract.traineddata_cache import (
 from test.helpers.files import set_mtime
 
 
+def test_tesseract_legacy_tessdata_cache_uses_runtime_default(
+    runtime_cache_root_path: Path,
+):
+    """Test a missing configured root selects the runtime cache root.
+
+    Arguments:
+        runtime_cache_root_path: isolated default runtime cache root
+    """
+    cache = TesseractLegacyTessdataCache()
+
+    assert cache.cache_root_path == runtime_cache_root_path
+    assert cache.cache_dir_path == (
+        runtime_cache_root_path / "tesseract-legacy-tessdata"
+    )
+
+
 def test_tesseract_legacy_tessdata_cache_round_trip(tmp_path: Path):
     """Test legacy traineddata round-trips through its cache.
 

@@ -59,7 +59,6 @@ def _get_cache_path(
         audio,
         transcriber._get_cache_metadata(settings),
     )
-    assert cache_path is not None
     return cache_path
 
 

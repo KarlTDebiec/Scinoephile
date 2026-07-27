@@ -201,7 +201,7 @@ def test_queryer_uses_injected_provider():
 
 def test_queryer_retries_provider_errors():
     """Test transient provider errors use the configured attempt count."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.side_effect = [
         ScinoephileError("invalid structured content"),
         '{"output":"done"}',
@@ -253,7 +253,7 @@ def test_queryer_includes_additional_context_before_few_shot_prompt():
 
 def test_queryer_preserves_existing_encountered_test_case_metadata():
     """Test queryer preserves existing few-shot and verified metadata."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     queryer = Queryer(_TestCase, provider=provider)
     test_case = _TestCase(
         query=_Query(text="input"),
@@ -271,7 +271,7 @@ def test_queryer_preserves_existing_encountered_test_case_metadata():
 
 def test_queryer_clears_stale_verified_metadata_after_generating_answer():
     """Test queryer clears stale verified metadata after generating an answer."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = '{"output":"new"}'
     queryer = Queryer(_TestCase, provider=provider, max_attempts=1)
     test_case = _TestCase(
@@ -291,7 +291,7 @@ def test_queryer_clears_stale_verified_metadata_after_generating_answer():
 
 def test_queryer_preserves_auto_verified_encountered_test_case(monkeypatch):
     """Test queryer preserves auto-verified encountered test cases."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = '{"output":"done"}'
     monkeypatch.setattr(_TestCase, "get_auto_verified", lambda self: True)
     queryer = Queryer(_TestCase, provider=provider, max_attempts=1, auto_verify=True)
@@ -304,7 +304,7 @@ def test_queryer_preserves_auto_verified_encountered_test_case(monkeypatch):
 
 def test_queryer_rejects_verified_test_case_from_incompatible_class():
     """Test verified answers must conform to the configured test-case class."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     incompatible = _IncompatibleTestCase(
         query=_Query(text="input"),
         answer=_IncompatibleAnswer(note="reviewed"),
@@ -317,7 +317,7 @@ def test_queryer_rejects_verified_test_case_from_incompatible_class():
 
 def test_queryer_normalizes_input_into_configured_test_case_class():
     """Test compatible inputs are returned using the configured test-case class."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     verified = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="done"),
@@ -334,7 +334,7 @@ def test_queryer_normalizes_input_into_configured_test_case_class():
 
 def test_queryer_requires_answers_for_verified_test_cases():
     """Test verified inputs cannot omit their answers."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     incomplete = _TestCase.model_construct(
         query=_Query(text="input"),
         answer=None,
@@ -347,7 +347,7 @@ def test_queryer_requires_answers_for_verified_test_cases():
 
 def test_queryer_requires_test_cases_to_be_verified():
     """Test Queryer rejects unverified test cases."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     unverified = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="done"),
@@ -375,7 +375,7 @@ def test_test_case_requires_few_shot_to_be_verified():
 
 def test_queryer_merges_identical_verified_duplicates():
     """Test identical duplicate answers merge their metadata."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     few_shot = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="done"),
@@ -405,7 +405,7 @@ def test_queryer_merges_identical_verified_duplicates():
 
 def test_queryer_rejects_conflicting_verified_duplicates():
     """Test duplicate queries cannot silently choose one of two answers."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     first = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="first"),
@@ -427,7 +427,7 @@ def test_queryer_rejects_conflicting_verified_duplicates():
 
 def test_queryer_snapshots_verified_test_cases():
     """Test later mutation of caller-owned cases does not alter queryer state."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     verified = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="original"),
@@ -631,7 +631,7 @@ def test_cache_path_does_not_retain_queryer(tmp_path):
 
 def test_processor_passes_injected_provider_to_queryer():
     """Test processor wires injected providers into its queryer."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = _Processor(prompt=_PROMPT, provider=provider)
 
     assert processor.queryer.provider is provider

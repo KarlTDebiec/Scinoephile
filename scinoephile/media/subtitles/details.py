@@ -11,7 +11,6 @@ from pathlib import Path
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.media import Stream, SubtitleStream
-from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.media.probe import get_subtitle_streams
 
 from .cache import SubtitleCache
@@ -42,8 +41,6 @@ def get_detailed_subtitle_streams(
         enriched subtitle stream metadata
     """
     if subtitle_cache is None:
-        if cache_root_path is None:
-            cache_root_path = get_runtime_cache_root_path()
         subtitle_cache = SubtitleCache(cache_root_path, overwrite_cache)
     if streams is None:
         subtitle_streams = get_subtitle_streams(infile_path)

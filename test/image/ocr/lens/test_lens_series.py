@@ -95,10 +95,10 @@ def test_ocr_image_series_with_lens_logs_progress(
     ]
 
 
-def test_ocr_image_series_with_lens_preserves_disabled_cache(
+def test_ocr_image_series_with_lens_defers_default_cache_resolution(
     monkeypatch: MonkeyPatch,
 ):
-    """Test Google Lens image series processing preserves disabled caching.
+    """Test Google Lens image series processing defers default cache resolution.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture

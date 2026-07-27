@@ -95,10 +95,10 @@ def test_ocr_image_series_with_paddle_logs_progress(
     ]
 
 
-def test_ocr_image_series_with_paddle_preserves_disabled_cache(
+def test_ocr_image_series_with_paddle_defers_default_cache_resolution(
     monkeypatch: MonkeyPatch,
 ):
-    """Test PaddleOCR image series processing preserves disabled caching.
+    """Test PaddleOCR image series processing defers default cache resolution.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture

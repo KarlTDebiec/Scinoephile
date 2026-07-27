@@ -71,8 +71,6 @@ def test_registered_prompt_model_and_cache_identities_change_once(
             query_json,
         )
 
-        assert cache_path is not None
-        assert legacy_cache_path is not None
         assert cache_path != legacy_cache_path
 
 

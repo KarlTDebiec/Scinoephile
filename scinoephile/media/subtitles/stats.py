@@ -8,7 +8,6 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from scinoephile.core.media import SubtitleStream
-from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 
@@ -50,8 +49,6 @@ def get_subtitle_stream_stats(
         subtitle stream statistics
     """
     if subtitle_cache is None:
-        if cache_root_path is None:
-            cache_root_path = get_runtime_cache_root_path()
         subtitle_cache = SubtitleCache(cache_root_path)
     subtitle_cache.cache(infile_path, [stream])
     stream_path = subtitle_cache.get_path(infile_path, stream)

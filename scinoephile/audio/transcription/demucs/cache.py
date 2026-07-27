@@ -15,6 +15,7 @@ from pydub.exceptions import CouldntDecodeError, CouldntEncodeError
 
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.paths import get_runtime_cache_root_path
 
 __all__ = ["DemucsCache"]
 
@@ -35,28 +36,27 @@ class DemucsCache:
         """Initialize.
 
         Arguments:
-            cache_root_path: root directory beneath which to cache, or None to disable
+            cache_root_path: root directory beneath which to cache, or None for default
             model_name: Demucs model name used for source separation
         """
-        self.cache_dir_path = None
+        if cache_root_path is None:
+            cache_root_path = get_runtime_cache_root_path()
+        self.cache_root_path = val_output_dir_path(cache_root_path)
+        """Root directory beneath which separated vocals are cached."""
+        self.cache_dir_path = val_output_dir_path(self.cache_root_path / "demucs")
         """Directory in which cached vocals are stored."""
-        if cache_root_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_root_path / "demucs")
 
         self.model_name = model_name
         """Demucs model name identifying cached vocals."""
 
-    def get_path(self, audio: AudioSegment) -> Path | None:
+    def get_path(self, audio: AudioSegment) -> Path:
         """Get the cache path for audio and Demucs configuration.
 
         Arguments:
             audio: audio used to derive the cache key
         Returns:
-            cache path, or None when caching is disabled
+            cache path
         """
-        if self.cache_dir_path is None:
-            return None
-
         cache_hash = hashlib.sha256(audio.raw_data)
         cache_hash.update(b"\0")
         cache_hash.update(
@@ -85,7 +85,7 @@ class DemucsCache:
             ScinoephileError: if the cached audio cannot be read
         """
         cache_path = self.get_path(audio)
-        if cache_path is None or not cache_path.exists():
+        if not cache_path.exists():
             return None
 
         try:
@@ -107,7 +107,7 @@ class DemucsCache:
             removed cache path, if present
         """
         cache_path = self.get_path(audio)
-        if cache_path is None or not cache_path.exists():
+        if not cache_path.exists():
             return None
 
         cache_path.unlink()
@@ -118,21 +118,18 @@ class DemucsCache:
         self,
         audio: AudioSegment,
         vocals: AudioSegment,
-    ) -> Path | None:
+    ) -> Path:
         """Save Demucs-separated vocals to the cache.
 
         Arguments:
             audio: audio used to derive the cache key
             vocals: separated vocals to cache
         Returns:
-            saved cache path, or None when caching is disabled
+            saved cache path
         Raises:
             ScinoephileError: if the cached audio cannot be written
         """
         cache_path = self.get_path(audio)
-        if cache_path is None:
-            return None
-
         # Export beside the target so replacement is atomic on the same filesystem
         try:
             with TemporaryDirectory(

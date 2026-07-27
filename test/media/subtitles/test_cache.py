@@ -23,6 +23,18 @@ from test.helpers.media_subtitles import (
 )
 
 
+def test_subtitle_cache_uses_runtime_default(runtime_cache_root_path: Path):
+    """Test a missing configured root selects the runtime cache root.
+
+    Arguments:
+        runtime_cache_root_path: isolated default runtime cache root
+    """
+    cache = SubtitleCache()
+
+    assert cache.cache_root_path == runtime_cache_root_path
+    assert cache.cache_dir_path == runtime_cache_root_path / "media" / "subtitles"
+
+
 def test_get_cached_subtitle_stream_path_changes_by_stream(tmp_path: Path):
     """Test subtitle stream cache paths include stream identity.
 

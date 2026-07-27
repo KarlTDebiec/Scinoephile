@@ -9,7 +9,6 @@ from pathlib import Path
 from shutil import copy2
 
 from scinoephile.core.media import SubtitleStream
-from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .cache import SubtitleCache
 
@@ -35,8 +34,6 @@ def extract_subtitle_stream(
     Returns:
         output path
     """
-    if cache_root_path is None:
-        cache_root_path = get_runtime_cache_root_path()
     cache = SubtitleCache(cache_root_path)
     cache.cache(
         infile_path,

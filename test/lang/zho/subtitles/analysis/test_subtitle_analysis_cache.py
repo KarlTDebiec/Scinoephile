@@ -15,6 +15,22 @@ from scinoephile.lang.zho.subtitles.analysis.result import (
 )
 
 
+def test_subtitle_script_analysis_cache_uses_runtime_default(
+    runtime_cache_root_path: Path,
+):
+    """Test a missing configured root selects the runtime cache root.
+
+    Arguments:
+        runtime_cache_root_path: isolated default runtime cache root
+    """
+    cache = ZhoSubtitleScriptAnalysisCache()
+
+    assert cache.cache_root_path == runtime_cache_root_path
+    assert cache.cache_dir_path == (
+        runtime_cache_root_path / "media" / "subtitles" / "analysis"
+    )
+
+
 def test_subtitle_script_analysis_cache_round_trip(tmp_path: Path):
     """Test script analysis results round-trip through their cache.
 

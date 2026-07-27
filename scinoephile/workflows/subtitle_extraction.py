@@ -14,7 +14,6 @@ from scinoephile.common.described_enum import DescribedEnum
 from scinoephile.common.validation import val_child_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
-from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
 from scinoephile.media.probe import get_subtitle_streams
@@ -104,9 +103,8 @@ def extract_subtitles(
     if not output_dir_path.exists():
         output_dir_path.mkdir(parents=True)
         logger.info(f"Created subtitle output directory: {output_dir_path}")
-    if cache_root_path is None:
-        cache_root_path = get_runtime_cache_root_path()
     subtitle_cache = SubtitleCache(cache_root_path, overwrite_cache)
+    cache_root_path = subtitle_cache.cache_root_path
 
     # Handle standalone SUP files separately from containerized media
     if infile_path.suffix.lower() == ".sup":

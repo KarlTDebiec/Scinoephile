@@ -17,6 +17,7 @@ import ffmpeg
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
+from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["SubtitleCache"]
@@ -27,18 +28,24 @@ logger = getLogger(__name__)
 class SubtitleCache:
     """Cache of subtitle streams extracted from media."""
 
-    def __init__(self, cache_root_path: Path, overwrite: bool = False):
+    def __init__(
+        self,
+        cache_root_path: Path | None = None,
+        overwrite: bool = False,
+    ):
         """Initialize.
 
         Arguments:
-            cache_root_path: root directory beneath which to cache
+            cache_root_path: root directory beneath which to cache, or None for default
             overwrite: whether to replace matching cached subtitle artifacts
         """
-        self.cache_root_path = cache_root_path
+        if cache_root_path is None:
+            cache_root_path = get_runtime_cache_root_path()
+        self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which subtitle artifacts are cached."""
 
         self.cache_dir_path = val_output_dir_path(
-            cache_root_path / "media" / "subtitles"
+            self.cache_root_path / "media" / "subtitles"
         )
         """Directory in which cached subtitle streams are stored."""
 

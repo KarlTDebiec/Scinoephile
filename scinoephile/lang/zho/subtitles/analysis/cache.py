@@ -15,6 +15,7 @@ from typing import cast
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.media import SubtitleStream
+from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .result import ZhoSubtitleScriptAnalysis
 
@@ -26,15 +27,23 @@ logger = getLogger(__name__)
 class ZhoSubtitleScriptAnalysisCache:
     """Caches Chinese subtitle script analysis results."""
 
-    def __init__(self, cache_root_path: Path, overwrite: bool = False):
+    def __init__(
+        self,
+        cache_root_path: Path | None = None,
+        overwrite: bool = False,
+    ):
         """Initialize.
 
         Arguments:
-            cache_root_path: root directory beneath which to cache
+            cache_root_path: root directory beneath which to cache, or None for default
             overwrite: whether to replace matching cache files
         """
+        if cache_root_path is None:
+            cache_root_path = get_runtime_cache_root_path()
+        self.cache_root_path = val_output_dir_path(cache_root_path)
+        """Root directory beneath which script analyses are cached."""
         self.cache_dir_path = val_output_dir_path(
-            cache_root_path / "media" / "subtitles" / "analysis"
+            self.cache_root_path / "media" / "subtitles" / "analysis"
         )
         """Directory in which cached script analyses are stored."""
 

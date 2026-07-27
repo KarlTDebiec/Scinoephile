@@ -14,11 +14,15 @@ __all__ = ["TesseractCache"]
 class TesseractCache(OcrCache[str]):
     """Caches normalized Tesseract OCR text."""
 
-    def __init__(self, cache_root_path: Path | None, overwrite: bool = False):
+    def __init__(
+        self,
+        cache_root_path: Path | None = None,
+        overwrite: bool = False,
+    ):
         """Initialize.
 
         Arguments:
-            cache_root_path: root directory beneath which to cache, or None to disable
+            cache_root_path: root directory beneath which to cache, or None for default
             overwrite: whether to replace matching cache files
         """
         super().__init__(cache_root_path, "tesseract", "Tesseract OCR", overwrite)

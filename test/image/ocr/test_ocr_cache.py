@@ -22,7 +22,6 @@ def test_ocr_cache_uses_backend_directory_and_configuration(tmp_path: Path):
     chinese_path = cache.get_path(image, {"language": "chi_sim"})
 
     assert cache.cache_root_path == tmp_path.resolve()
-    assert english_path is not None
     assert english_path.parent == tmp_path.resolve() / "tesseract"
     assert english_path != chinese_path
 
@@ -33,7 +32,6 @@ def test_ocr_cache_loads_results_and_updates_modification_time(tmp_path: Path):
     image = Image.new("RGB", (2, 2), "white")
     metadata = {"language": "eng"}
     cache_path = cache.save(image, metadata, "cached text")
-    assert cache_path is not None
     old_timestamp = time() - 60
     set_mtime(cache_path, old_timestamp)
 
@@ -48,7 +46,6 @@ def test_ocr_cache_overwrite_removes_matching_result(tmp_path: Path):
     image = Image.new("RGB", (2, 2), "white")
     metadata = {"language": "eng"}
     cache_path = TesseractCache(tmp_path).save(image, metadata, "stale text")
-    assert cache_path is not None
 
     result = TesseractCache(tmp_path, overwrite=True).load(image, metadata)
 
@@ -56,13 +53,18 @@ def test_ocr_cache_overwrite_removes_matching_result(tmp_path: Path):
     assert not cache_path.exists()
 
 
-def test_ocr_cache_can_be_disabled():
-    """Test OCR cache performs no file operations when disabled."""
+def test_ocr_cache_uses_runtime_default(runtime_cache_root_path: Path):
+    """Test a missing configured root selects the runtime cache root.
+
+    Arguments:
+        runtime_cache_root_path: isolated default runtime cache root
+    """
     cache = TesseractCache(None)
     image = Image.new("RGB", (2, 2), "white")
     metadata = {"language": "eng"}
 
-    assert cache.cache_root_path is None
-    assert cache.get_path(image, metadata) is None
-    assert cache.load(image, metadata) is None
-    assert cache.save(image, metadata, "uncached text") is None
+    cache_path = cache.save(image, metadata, "cached text")
+
+    assert cache.cache_root_path == runtime_cache_root_path
+    assert cache_path.parent == runtime_cache_root_path / "tesseract"
+    assert cache.load(image, metadata) == "cached text"

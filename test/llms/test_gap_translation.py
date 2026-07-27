@@ -96,7 +96,7 @@ def test_queryer_corresponds_using_prompt_aliases():
             }
         }
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = (
         '{"shuchu": [{"xuhao": 2, "wenben": "翻譯"}]}'
     )
@@ -404,7 +404,7 @@ def test_processor_maps_targets_and_outputs_by_index():
             Subtitle(start=200, end=300, text="existing three"),
         ]
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = GapTranslationProcessor(
         prompt,
         test_cases=[test_case],
@@ -419,7 +419,7 @@ def test_processor_maps_targets_and_outputs_by_index():
 
 def test_processor_honors_zero_stop_index():
     """A zero stop index should process no gap-translation blocks."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = GapTranslationProcessor(
         GapTranslationManager.base_prompt,
         provider=provider,
@@ -440,7 +440,7 @@ def test_processor_honors_zero_stop_index():
 
 def test_processor_honors_start_index():
     """An inclusive start index should skip earlier gap-translation blocks."""
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = GapTranslationProcessor(
         GapTranslationManager.base_prompt,
         provider=provider,
@@ -482,7 +482,7 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
         [old_test_case],
         GapTranslationManager,
     )
-    provider = Mock(spec=LLMProvider)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = json.dumps(
         {"outputs": [{"index": 2, "text": "new translation"}]}
     )
@@ -518,7 +518,7 @@ def test_processor_rejects_negative_stop_index():
     """A negative stop index should be rejected."""
     processor = GapTranslationProcessor(
         GapTranslationManager.base_prompt,
-        provider=Mock(spec=LLMProvider),
+        provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
     )
     source = Series(events=[Subtitle(start=0, end=100, text="subtitle")])
 

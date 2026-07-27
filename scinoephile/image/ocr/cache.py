@@ -15,6 +15,7 @@ from PIL import Image
 
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core.paths import get_runtime_cache_root_path
 
 __all__ = ["OcrCache"]
 
@@ -34,7 +35,7 @@ class OcrCache[TResult](ABC):
         """Initialize.
 
         Arguments:
-            cache_root_path: root directory beneath which to cache, or None to disable
+            cache_root_path: root directory beneath which to cache, or None for default
             cache_dir_name: cache subdirectory name
             backend_label: human-readable backend name used in log messages
             overwrite: whether to replace matching cache files
@@ -42,37 +43,29 @@ class OcrCache[TResult](ABC):
         self.backend_label = backend_label
         """Human-readable backend name used in log messages."""
 
-        self.cache_dir_path = None
+        if cache_root_path is None:
+            cache_root_path = get_runtime_cache_root_path()
+        self.cache_root_path = val_output_dir_path(cache_root_path)
+        """Root directory beneath which OCR results are cached."""
+        self.cache_dir_path = val_output_dir_path(self.cache_root_path / cache_dir_name)
         """Directory in which cached OCR results are stored."""
-        if cache_root_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_root_path / cache_dir_name)
 
         self.overwrite = overwrite
         """Whether to replace matching cache files."""
-
-    @property
-    def cache_root_path(self) -> Path | None:
-        """Root directory beneath which OCR results are cached, or None if disabled."""
-        if self.cache_dir_path is None:
-            return None
-        return self.cache_dir_path.parent
 
     def get_path(
         self,
         image: Image.Image,
         backend_metadata: Mapping[str, object],
-    ) -> Path | None:
+    ) -> Path:
         """Get the cache path for an image and recognizer configuration.
 
         Arguments:
             image: image used to derive the cache key
             backend_metadata: backend configuration identifying the result
         Returns:
-            cache path, or None when caching is disabled
+            cache path
         """
-        if self.cache_dir_path is None:
-            return None
-
         cache_hash = hashlib.sha256(image.tobytes())
         cache_hash.update(b"\0")
         cache_hash.update(
@@ -104,9 +97,6 @@ class OcrCache[TResult](ABC):
             cached result, if present and valid
         """
         cache_path = self.get_path(image, backend_metadata)
-        if cache_path is None:
-            return None
-
         # An overwrite request converts a matching entry into a cache miss
         if self.overwrite and cache_path.exists():
             cache_path.unlink()
@@ -142,7 +132,7 @@ class OcrCache[TResult](ABC):
         image: Image.Image,
         backend_metadata: Mapping[str, object],
         result: TResult,
-    ) -> Path | None:
+    ) -> Path:
         """Save an OCR result to the cache.
 
         Arguments:
@@ -150,12 +140,9 @@ class OcrCache[TResult](ABC):
             backend_metadata: backend configuration identifying the result
             result: normalized OCR result to cache
         Returns:
-            saved cache path, or None when caching is disabled
+            saved cache path
         """
         cache_path = self.get_path(image, backend_metadata)
-        if cache_path is None:
-            return None
-
         with open_atomic_text_file(cache_path) as file:
             json.dump(
                 self._serialize(result),

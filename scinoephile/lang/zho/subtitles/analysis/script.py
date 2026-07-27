@@ -10,7 +10,6 @@ from pathlib import Path
 from scinoephile.core import Language
 from scinoephile.core.language import is_chinese_language_tag
 from scinoephile.core.media import SubtitleStream
-from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.script.analysis import get_zho_script_analysis
@@ -57,12 +56,9 @@ def analyze_zho_subtitle_stream_script(
 
     # Resolve one subtitle cache and use its policy for related cached artifacts
     if subtitle_cache is None:
-        if cache_root_path is None:
-            cache_root_path = get_runtime_cache_root_path()
         subtitle_cache = SubtitleCache(cache_root_path, overwrite_cache)
-    else:
-        cache_root_path = subtitle_cache.cache_root_path
-        overwrite_cache = subtitle_cache.overwrite
+    cache_root_path = subtitle_cache.cache_root_path
+    overwrite_cache = subtitle_cache.overwrite
 
     # Reuse a matching script analysis when available
     ocr_language_codes = tuple(

@@ -21,7 +21,6 @@ from scinoephile.audio.transcription import (
 )
 from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.core.subtitles import Series
 
 from .aligner import TranscriptionAligner
@@ -103,9 +102,6 @@ class GuidedTranscriber:
         self.aligner = aligner
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
-        if cache_root_path is None:
-            cache_root_path = get_runtime_cache_root_path(create=False)
-        self.cache_root_path = cache_root_path
         self.overwrite_cache = overwrite_cache
         self.segment_splitter = segment_splitter
 
@@ -115,8 +111,9 @@ class GuidedTranscriber:
             language=self.whisper_language,
             demucs_mode=self.demucs_mode,
             vad_mode=self.vad_mode,
-            cache_root_path=self.cache_root_path,
+            cache_root_path=cache_root_path,
         )
+        self.cache_root_path = self.transcriber.cache_root_path
 
         # Configure defensive decoding after standard attempts are exhausted
         recovery_demucs_mode = DemucsMode.OFF

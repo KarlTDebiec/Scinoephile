@@ -20,29 +20,20 @@ logger = getLogger(__name__)
 class TesseractLegacyTessdataCache:
     """Caches legacy-capable Tesseract traineddata files."""
 
-    def __init__(self, cache_root_path: Path | None):
+    def __init__(self, cache_root_path: Path | None = None):
         """Initialize.
 
         Arguments:
             cache_root_path: root directory beneath which to cache, or None for default
         """
-        self._configured_cache_root_path = cache_root_path
-        """Configured cache root path, or None to resolve the runtime default lazily."""
-
-        self._cache_dir_path: Path | None = None
-        """Resolved traineddata cache directory path."""
-
-    @property
-    def cache_dir_path(self) -> Path:
-        """Get the traineddata cache directory path."""
-        if self._cache_dir_path is None:
-            cache_root_path = self._configured_cache_root_path
-            if cache_root_path is None:
-                cache_root_path = get_runtime_cache_root_path()
-            self._cache_dir_path = val_output_dir_path(
-                cache_root_path / "tesseract-legacy-tessdata"
-            )
-        return self._cache_dir_path
+        if cache_root_path is None:
+            cache_root_path = get_runtime_cache_root_path()
+        self.cache_root_path = val_output_dir_path(cache_root_path)
+        """Root directory beneath which traineddata files are cached."""
+        self.cache_dir_path = val_output_dir_path(
+            self.cache_root_path / "tesseract-legacy-tessdata"
+        )
+        """Directory in which legacy-capable traineddata files are stored."""
 
     def load(self, language_code: str) -> Path | None:
         """Load a cached traineddata path.

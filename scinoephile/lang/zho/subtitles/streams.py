@@ -9,7 +9,6 @@ from pathlib import Path
 
 from scinoephile.core.language import is_chinese_language_tag
 from scinoephile.core.media import Stream, SubtitleStream
-from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.media.subtitles.cache import SubtitleCache
 from scinoephile.media.subtitles.details import get_detailed_subtitle_streams
 
@@ -38,12 +37,9 @@ def get_zho_subtitle_streams(
         enriched subtitle stream metadata
     """
     if subtitle_cache is None:
-        if cache_root_path is None:
-            cache_root_path = get_runtime_cache_root_path()
         subtitle_cache = SubtitleCache(cache_root_path, overwrite_cache)
-    else:
-        cache_root_path = subtitle_cache.cache_root_path
-        overwrite_cache = subtitle_cache.overwrite
+    cache_root_path = subtitle_cache.cache_root_path
+    overwrite_cache = subtitle_cache.overwrite
 
     zho_streams = []
     for stream in get_detailed_subtitle_streams(

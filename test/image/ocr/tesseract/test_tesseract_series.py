@@ -99,11 +99,11 @@ def test_ocr_image_series_with_tesseract_logs_progress(
     ]
 
 
-def test_ocr_image_series_with_tesseract_preserves_disabled_cache(
+def test_ocr_image_series_with_tesseract_defers_default_cache_resolution(
     monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
-    """Test Tesseract image series processing preserves disabled caching.
+    """Test Tesseract image series processing defers default cache resolution.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture

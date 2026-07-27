@@ -11,6 +11,7 @@ from pathlib import Path
 
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core.paths import get_runtime_cache_root_path
 
 __all__ = ["LlmCache"]
 
@@ -22,19 +23,21 @@ class LlmCache:
 
     def __init__(
         self,
-        cache_root_path: Path | str | None,
+        cache_root_path: Path | None,
         overwrite: bool = False,
     ):
         """Initialize.
 
         Arguments:
-            cache_root_path: root directory beneath which to cache, or None to disable
+            cache_root_path: root directory beneath which to cache, or None for default
             overwrite: whether to replace matching cache files
         """
-        self.cache_dir_path = None
+        if cache_root_path is None:
+            cache_root_path = get_runtime_cache_root_path()
+        self.cache_root_path = val_output_dir_path(cache_root_path)
+        """Root directory beneath which LLM responses are cached."""
+        self.cache_dir_path = val_output_dir_path(self.cache_root_path / "llm")
         """Directory in which cached LLM responses are stored."""
-        if cache_root_path is not None:
-            self.cache_dir_path = val_output_dir_path(Path(cache_root_path) / "llm")
 
         self.overwrite = overwrite
         """Whether matching cache files should be replaced."""
@@ -54,7 +57,7 @@ class LlmCache:
         system_prompt: str,
         tools_json: str,
         query_json: str,
-    ) -> Path | None:
+    ) -> Path:
         """Get a cache path based on query identity and prompts.
 
         Arguments:
@@ -63,11 +66,8 @@ class LlmCache:
             tools_json: JSON representation of configured tools
             query_json: JSON representation of the query
         Returns:
-            path to cache file, or None when caching is disabled
+            path to cache file
         """
-        if self.cache_dir_path is None:
-            return None
-
         identity_json = json.dumps(
             identity,
             ensure_ascii=True,
@@ -78,16 +78,14 @@ class LlmCache:
         sha256 = hashlib.sha256(content.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{sha256}.json"
 
-    def load(self, cache_path: Path | None) -> str | None:
+    def load(self, cache_path: Path) -> str | None:
         """Load a cached response payload.
 
         Arguments:
-            cache_path: cache file path, or None when caching is disabled
+            cache_path: cache file path
         Returns:
             cached response payload, or None when unavailable
         """
-        if cache_path is None:
-            return None
         if self.overwrite and cache_path.exists():
             cache_path.unlink()
             logger.info(f"Removed LLM response cache: {cache_path}")
@@ -104,15 +102,13 @@ class LlmCache:
         """
         cache_path.touch()
 
-    def save(self, cache_path: Path | None, contents: str):
+    def save(self, cache_path: Path, contents: str):
         """Save an LLM response payload.
 
         Arguments:
-            cache_path: cache file path, or None when caching is disabled
+            cache_path: cache file path
             contents: serialized response payload
         """
-        if cache_path is None:
-            return
         with open_atomic_text_file(cache_path) as cache_file:
             cache_file.write(contents)
         logger.debug(f"Saved to cache: {cache_path}")

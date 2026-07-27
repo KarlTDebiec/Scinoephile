@@ -17,10 +17,7 @@ from scinoephile.audio.transcription import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.ml import get_torch_device
-from scinoephile.core.paths import (
-    get_runtime_cache_root_path,
-    get_runtime_data_root_path,
-)
+from scinoephile.core.paths import get_runtime_data_root_path
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHans,
     YueZhoDelineationPromptYueHant,
@@ -219,8 +216,6 @@ def get_guided_transcriber(
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec
 
-    if cache_root_path is None:
-        cache_root_path = get_runtime_cache_root_path(create=False)
     if model_name is None:
         model_name = language_spec.model_name
     if delineation_prompt is None:

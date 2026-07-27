@@ -31,7 +31,7 @@ class Queryer[TTestCase: TestCase]:
         verified_test_cases: list[TestCase] | None = None,
         *,
         provider: LLMProvider,
-        cache_root_path: Path | str | None = None,
+        cache_root_path: Path | None = None,
         additional_context: str | None = None,
         max_attempts: int = 5,
         auto_verify: bool = False,
@@ -251,7 +251,7 @@ class Queryer[TTestCase: TestCase]:
 
     def _get_cache_path(
         self, system_prompt: str, tools_json: str, query_json: str
-    ) -> Path | None:
+    ) -> Path:
         """Get cache path based on hash of prompts.
 
         Arguments:
@@ -277,13 +277,13 @@ class Queryer[TTestCase: TestCase]:
     def _get_cached_test_case(
         self,
         test_case: TTestCase,
-        cache_path: Path | None,
+        cache_path: Path,
     ) -> TTestCase | None:
         """Get cached test case for the given query if available.
 
         Arguments:
             test_case: test case containing query for which to get cached version
-            cache_path: path to the cached answer, if caching is enabled
+            cache_path: path to the cached answer
         Returns:
             cached test case if available, else None
         """
@@ -304,14 +304,12 @@ class Queryer[TTestCase: TestCase]:
                 test_case.verified = True
             self.log_encountered_test_case(test_case)
             logger.info(f"Loaded from cache: {test_case.query.key_str}")
-            assert cache_path is not None
             self._cache.mark_used(cache_path)
             return test_case
         except ValidationError as exc:
             logger.error(
                 f"Cache content for query {test_case.query.key_str} is invalid: {exc}"
             )
-            assert cache_path is not None
             self._cache.discard(cache_path)
         return None
 
