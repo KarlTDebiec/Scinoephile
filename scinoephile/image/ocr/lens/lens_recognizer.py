@@ -84,9 +84,6 @@ class LensRecognizer:
             raise ValueError(f"{language} is not supported by Google Lens OCR") from exc
         self.overwrite_cache = overwrite_cache
         self.retries = val_int(retries, min_value=1)
-        chrome_lens_py = import_chrome_lens_py()
-        self._lens_api_error_cls = chrome_lens_py.LensAPIError
-        self._api = chrome_lens_py.LensAPI()
 
     @override
     def __repr__(self) -> str:
@@ -145,14 +142,6 @@ class LensRecognizer:
         )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
-
-    def _get_transient_error_classes(self) -> tuple[type[Exception], ...]:
-        """Get exception classes that should trigger a Google Lens retry.
-
-        Returns:
-            transient exception classes
-        """
-        return self._lens_api_error_cls, _GoogleLensRequestError
 
     @staticmethod
     def _clean_text(text: str) -> str:
@@ -296,13 +285,18 @@ class LensRecognizer:
         Raises:
             RuntimeError: if Google Lens returns request-error text
         """
-        transient_error_classes = self._get_transient_error_classes()
+        chrome_lens_py = import_chrome_lens_py()
+        api = chrome_lens_py.LensAPI()
+        transient_error_classes = (
+            chrome_lens_py.LensAPIError,
+            _GoogleLensRequestError,
+        )
 
         async def recognize() -> list[str]:
             """Run Google Lens OCR retries in one event loop."""
             for attempt in range(1, self.retries + 1):
                 try:
-                    result = await self._api.process_image(
+                    result = await api.process_image(
                         image_path=image,
                         ocr_language=self.lens_language_code,
                         ocr_preserve_line_breaks=True,
