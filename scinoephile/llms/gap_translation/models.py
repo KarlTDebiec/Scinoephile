@@ -107,6 +107,21 @@ class GapTranslationTestCase(TestCase):
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 
+    def get_no_op_answer(self) -> GapTranslationAnswer:
+        """Get an answer that leaves each target gap empty.
+
+        Returns:
+            empty text for every missing target index
+        """
+        target_indexes = {target.index for target in self.query.targets}
+        return GapTranslationAnswer(
+            outputs=[
+                GapTranslationSubtitle(index=guide.index, text="")
+                for guide in self.query.guides
+                if guide.index not in target_indexes
+            ]
+        )
+
     @model_validator(mode="after")
     def validate_output_correspondence(self) -> Self:
         """Ensure outputs exactly fill the guide indexes absent from targets.

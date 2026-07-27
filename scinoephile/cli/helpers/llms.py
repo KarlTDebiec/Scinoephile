@@ -48,6 +48,9 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "llm arguments": "LLM 参数",
         "LLM model": "LLM 模型",
+        "use neutral answers without calling an LLM or accessing its response cache": (
+            "使用中性答案，不调用大语言模型或访问其响应缓存"
+        ),
         f"LLM provider (default: {DEFAULT_PROVIDER_NAME}). Use "
         "--list-llm-providers for more information.": (
             f"LLM 提供商（默认：{DEFAULT_PROVIDER_NAME}）。使用 "
@@ -64,6 +67,9 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "llm arguments": "LLM 參數",
         "LLM model": "LLM 模型",
+        "use neutral answers without calling an LLM or accessing its response cache": (
+            "使用中性答案，不呼叫大型語言模型或存取其回應快取"
+        ),
         f"LLM provider (default: {DEFAULT_PROVIDER_NAME}). Use "
         "--list-llm-providers for more information.": (
             f"LLM 提供商（預設：{DEFAULT_PROVIDER_NAME}）。使用 "
@@ -85,6 +91,8 @@ class LlmArguments:
     """Optional LLM model name override."""
     additional_context_file_path: Path | None = None
     """Optional path to additional LLM prompt context."""
+    no_op: bool = False
+    """Whether to use neutral answers without calling an LLM."""
 
 
 def add_llm_provider_args(
@@ -125,6 +133,18 @@ def add_llm_provider_args(
         metavar="FILE",
         type=input_file_arg(),
         help="text file from which to read additional LLM prompt context",
+    )
+    llm_arg_group.add_argument(
+        "--llm-no-op",
+        action=ArgumentBundleFieldAction,
+        bundle_type=LlmArguments,
+        const=True,
+        dest="llm_args",
+        field_name="no_op",
+        nargs=0,
+        help=(
+            "use neutral answers without calling an LLM or accessing its response cache"
+        ),
     )
     additional_help_arg_group.add_argument(
         "--list-llm-providers",

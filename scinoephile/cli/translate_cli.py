@@ -238,6 +238,7 @@ class TranslateCli(ScinoephileCliBase):
                 parser, llm_args.additional_context_file_path
             ),
             "cache_root_path": cache_args.root_path,
+            "no_op": llm_args.no_op,
             "overwrite_cache": cache_args.overwrite,
             "test_case_path": json_path,
             "start_at_idx": start_at_idx,

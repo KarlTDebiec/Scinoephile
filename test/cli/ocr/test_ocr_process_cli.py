@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 from unittest.mock import patch
 
 from pytest import raises
@@ -65,6 +66,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
         overwrite_cache: bool,
         provider: object,
         additional_context: str | None,
+        fuser_kw: dict[str, Any],
     ) -> _Workflow:
         """Validate workflow arguments."""
         assert workflow_infile_path == infile_path.resolve()
@@ -81,6 +83,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
         assert overwrite_cache is True
         assert provider is expected_provider
         assert additional_context is None
+        assert fuser_kw == {"no_op": True}
         return _Workflow()
 
     with (
@@ -97,7 +100,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
             f"--infile {infile_path} --stream-index 3 --language eng "
             f"-o {output_dir_path} --cache-dir {cache_root_path} "
             "--clean --interactive --host 0.0.0.0 --port 5051 --dev "
-            "--overwrite --cache-overwrite",
+            "--overwrite --cache-overwrite --llm-no-op",
         )
 
     assert workflow_calls == 1

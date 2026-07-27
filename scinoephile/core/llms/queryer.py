@@ -35,6 +35,7 @@ class Queryer[TTestCase: TestCase]:
         additional_context: str | None = None,
         max_attempts: int = 5,
         auto_verify: bool = False,
+        no_op: bool = False,
         overwrite_cache: bool = False,
         tool_box: ToolBox | None = None,
     ):
@@ -49,6 +50,7 @@ class Queryer[TTestCase: TestCase]:
             additional_context: additional context to include in the system prompt
             max_attempts: maximum number of attempts
             auto_verify: automatically mark test cases as verified if no changes
+            no_op: use neutral answers without reading or writing response caches
             overwrite_cache: whether to replace matching cache files
             tool_box: available tools and handlers
         """
@@ -71,10 +73,14 @@ class Queryer[TTestCase: TestCase]:
         self.encountered_test_cases: dict[tuple, TTestCase] = {}
         """Test cases actually encountered."""
 
-        self._cache = LlmCache(
-            cache_root_path, self.test_case_cls.operation, overwrite_cache
-        )
-        """LLM response cache."""
+        self.no_op = no_op
+        """Whether neutral answers replace cache access and LLM queries."""
+        self._cache: LlmCache | None = None
+        if not self.no_op:
+            self._cache = LlmCache(
+                cache_root_path, self.test_case_cls.operation, overwrite_cache
+            )
+        """LLM response cache, disabled in no-op mode."""
 
         self.additional_context = additional_context
         """Additional context to include in the system prompt."""
@@ -103,6 +109,21 @@ class Queryer[TTestCase: TestCase]:
         # Load from verified if available
         if verified_test_case := self._get_verified_test_case(test_case.query):
             return verified_test_case
+
+        # Produce and log a neutral answer without accessing the response cache
+        if self.no_op:
+            answer = test_case.get_no_op_answer()
+            test_case = self.test_case_cls.model_validate(
+                {
+                    **test_case.model_dump(mode="json"),
+                    "answer": answer.model_dump(mode="json"),
+                    "few_shot": False,
+                    "verified": False,
+                }
+            )
+            self.log_encountered_test_case(test_case)
+            logger.info(f"Used no-op answer: {test_case.query.key_str}")
+            return test_case
 
         # Load from cache if available
         query_json = test_case.query.model_dump_json(by_alias=True, indent=4)
@@ -206,6 +227,7 @@ class Queryer[TTestCase: TestCase]:
 
         # Update cache
         contents = test_case.answer.model_dump_json(exclude_defaults=True, indent=2)
+        assert self._cache is not None
         self._cache.save(cache_path, contents)
 
         return test_case
@@ -250,6 +272,7 @@ class Queryer[TTestCase: TestCase]:
         Returns:
             Path to cache file
         """
+        assert self._cache is not None
         return self._cache.get_path(
             {
                 "provider": self.provider.cache_identity,
@@ -274,6 +297,7 @@ class Queryer[TTestCase: TestCase]:
         Returns:
             cached test case if available, else None
         """
+        assert self._cache is not None
         contents = self._cache.load(cache_path)
         if contents is None:
             return None

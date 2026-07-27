@@ -165,3 +165,11 @@ class OcrFusionTestCase(TestCase):
         ):
             min_difficulty = max(min_difficulty, 2)
         return min_difficulty
+
+    def get_no_op_answer(self) -> OcrFusionAnswer:
+        """Get an answer that selects the first OCR source unchanged.
+
+        Returns:
+            first source with a no-op note
+        """
+        return OcrFusionAnswer(output=self.query.source_one, note="No-op.")

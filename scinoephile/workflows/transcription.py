@@ -38,6 +38,7 @@ def transcribe_series_guided(
     overwrite_cache: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
+    no_op: bool = False,
     prune_test_cases: bool = False,
     delineation_prompt: DelineationPrompt | None = None,
     punctuation_prompt: PunctuationPrompt | None = None,
@@ -64,6 +65,7 @@ def transcribe_series_guided(
         overwrite_cache: whether to replace matching generated cache files
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
+        no_op: use neutral answers instead of querying an LLM
         prune_test_cases: whether to remove test cases not encountered in this run
         delineation_prompt: delineation prompt override
         punctuation_prompt: punctuation prompt override
@@ -93,6 +95,7 @@ def transcribe_series_guided(
             overwrite_cache=overwrite_cache,
             provider=provider,
             additional_context=additional_context,
+            no_op=no_op,
             prune_test_cases=prune_test_cases,
             delineation_prompt=delineation_prompt,
             punctuation_prompt=punctuation_prompt,

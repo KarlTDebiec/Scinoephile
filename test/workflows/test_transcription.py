@@ -44,6 +44,7 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
             backend=TranscriptionBackend.MLX_AUDIO,
             cache_root_path=tmp_path / "cache",
             overwrite_cache=True,
+            no_op=True,
             prune_test_cases=True,
             delineation_json_path=delineation_json_path,
             punctuation_json_path=punctuation_json_path,
@@ -60,6 +61,7 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
     )
     assert get_transcriber.call_args.kwargs["cache_root_path"] == tmp_path / "cache"
     assert get_transcriber.call_args.kwargs["overwrite_cache"] is True
+    assert get_transcriber.call_args.kwargs["no_op"] is True
     assert get_transcriber.call_args.kwargs["prune_test_cases"] is True
     assert (
         get_transcriber.call_args.kwargs["delineation_json_path"]

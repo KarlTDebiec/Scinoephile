@@ -4,9 +4,10 @@
 
 from __future__ import annotations
 
+import json
 from io import StringIO
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from pytest import raises
 
@@ -44,6 +45,7 @@ def test_review_cli_uses_guide_terminology():
         "guide language (detected from infile if omitted)"
     )
     assert actions["json_path"].help == "JSON file containing test cases"
+    assert "--llm-no-op" in help_text
     cache_overwrite_action = next(
         action
         for action in parser._actions  # noqa: SLF001
@@ -117,6 +119,39 @@ def test_review_cli_pipe(input_path: str, args: str, expected_path: str):
     assert_series_equal(output, expected)
 
 
+def test_review_cli_no_op_persists_json_without_response_cache(tmp_path: Path):
+    """No-op review should persist neutral JSON without creating an LLM cache.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    input_path = tmp_path / "input.srt"
+    output_path = tmp_path / "output.srt"
+    json_path = tmp_path / "review.json"
+    cache_root_path = tmp_path / "cache"
+    input_path.write_text(
+        "1\n00:00:00,000 --> 00:00:01,000\nUnique no-op subtitle.\n", encoding="utf-8"
+    )
+    provider = Mock()
+
+    with patch("scinoephile.cli.review_cli.get_provider", return_value=provider):
+        run_cli_with_args(
+            ReviewCli,
+            f"{input_path} --language eng --llm-no-op --json {json_path} "
+            f"--cache-dir {cache_root_path} --outfile {output_path}",
+        )
+
+    assert_series_equal(Series.load(output_path), Series.load(input_path))
+    assert json.loads(json_path.read_text(encoding="utf-8")) == [
+        {
+            "query": {"subtitles": [{"index": 1, "text": "Unique no-op subtitle."}]},
+            "answer": {"revisions": []},
+        }
+    ]
+    provider.chat_completion.assert_not_called()
+    assert not cache_root_path.exists()
+
+
 @parametrize(
     ("workflow_name", "guide_argument"),
     [("review_series", ""), ("review_series_guided", "--guide-infile")],
@@ -146,7 +181,7 @@ def test_review_cli_passes_block_range(
                 ReviewCli,
                 f"{input_path} {guide_args} --json {json_path} "
                 f"--first-block 2 --last-block 3 --cache-dir {cache_root_path} "
-                "--cache-overwrite",
+                "--cache-overwrite --llm-no-op",
             )
 
     assert workflow.call_args.kwargs["test_case_path"] == json_path
@@ -154,6 +189,7 @@ def test_review_cli_passes_block_range(
     assert workflow.call_args.kwargs["stop_at_idx"] == 3
     assert workflow.call_args.kwargs["cache_root_path"] == cache_root_path.resolve()
     assert workflow.call_args.kwargs["overwrite_cache"] is True
+    assert workflow.call_args.kwargs["no_op"] is True
     if guide_argument:
         assert workflow.call_args.kwargs["guide_language"].code == "eng"
 

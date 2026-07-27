@@ -85,6 +85,7 @@ def test_transcribe_help_lists_generic_options():
     assert "JSON file containing punctuation test cases" in normalized_help_text
     assert "--llm-additional-context-file" in help_text
     assert "--llm-additional-content-file" not in help_text
+    assert "--llm-no-op" in help_text
 
 
 def test_transcribe_cli_defers_whisper_model_default_to_registry():
@@ -198,6 +199,7 @@ def test_transcribe_cli_passes_generic_configuration(
         overwrite_cache: bool,
         provider: object,
         additional_context: str | None,
+        no_op: bool,
         delineation_json_path: Path | None,
         punctuation_json_path: Path | None,
         start_at_idx: int,
@@ -216,6 +218,7 @@ def test_transcribe_cli_passes_generic_configuration(
         assert overwrite_cache
         assert provider is not None
         assert additional_context is None
+        assert no_op is True
         assert delineation_json_path == tmp_path / "delineation.json"
         assert punctuation_json_path == tmp_path / "punctuation.json"
         assert start_at_idx == 1
@@ -240,7 +243,7 @@ def test_transcribe_cli_passes_generic_configuration(
                 f"--cache-dir {tmp_path / 'cache'} --cache-overwrite "
                 f"--delineation-json {tmp_path / 'delineation.json'} "
                 f"--punctuation-json {tmp_path / 'punctuation.json'} "
-                "--first-block 2 --last-block 3",
+                "--first-block 2 --last-block 3 --llm-no-op",
             )
 
 

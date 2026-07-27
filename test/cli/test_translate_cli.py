@@ -42,6 +42,7 @@ def test_translate_cli_help_includes_block_range():
     assert cache_overwrite_action.help == "overwrite matching cache files"
     assert "--llm-additional-context-file" in help_text
     assert "--llm-additional-content-file" not in help_text
+    assert "--llm-no-op" in help_text
 
 
 @mark.parametrize(
@@ -75,7 +76,7 @@ def test_translate_cli_passes_block_range(
                 TranslateCli,
                 f"{input_path} {mode_arguments} --json {json_path} "
                 f"--first-block 2 --last-block 3 --cache-dir {cache_root_path} "
-                "--cache-overwrite",
+                "--cache-overwrite --llm-no-op",
             )
 
     assert workflow.call_args.kwargs["test_case_path"] == json_path
@@ -83,6 +84,7 @@ def test_translate_cli_passes_block_range(
     assert workflow.call_args.kwargs["stop_at_idx"] == 3
     assert workflow.call_args.kwargs["cache_root_path"] == cache_root_path.resolve()
     assert workflow.call_args.kwargs["overwrite_cache"] is True
+    assert workflow.call_args.kwargs["no_op"] is True
 
 
 def test_translate_cli_rejects_reversed_block_range():

@@ -347,6 +347,7 @@ class TranscribeCli(ScinoephileCliBase):
                 additional_context=read_llm_additional_context(
                     parser, llm_args.additional_context_file_path
                 ),
+                no_op=llm_args.no_op,
                 delineation_json_path=delineation_json_path,
                 punctuation_json_path=punctuation_json_path,
                 start_at_idx=start_at_idx,

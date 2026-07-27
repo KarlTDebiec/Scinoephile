@@ -83,6 +83,14 @@ class ReviewTestCase(TestCase):
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 
+    def get_no_op_answer(self) -> ReviewAnswer:
+        """Get an answer with no subtitle revisions.
+
+        Returns:
+            empty revision answer
+        """
+        return ReviewAnswer(revisions=[])
+
     @model_validator(mode="after")
     def validate_revision_correspondence(self) -> Self:
         """Ensure every answer revision changes a query subtitle.

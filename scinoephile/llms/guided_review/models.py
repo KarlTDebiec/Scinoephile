@@ -93,6 +93,14 @@ class GuidedReviewTestCase(TestCase):
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 
+    def get_no_op_answer(self) -> GuidedReviewAnswer:
+        """Get an answer with no target revisions.
+
+        Returns:
+            empty revision answer
+        """
+        return GuidedReviewAnswer(revisions=[])
+
     @model_validator(mode="after")
     def validate_revision_correspondence(self) -> Self:
         """Ensure every answer revision changes a query target.

@@ -232,6 +232,7 @@ class OcrProcessCli(ScinoephileCliBase):
                 overwrite_cache=cache_args.overwrite,
                 provider=provider,
                 additional_context=additional_context,
+                fuser_kw={"no_op": llm_args.no_op},
             )()
         except ScinoephileError as exc:
             parser.error(str(exc))

@@ -18,9 +18,11 @@ from test.helpers import assert_series_equal, parametrize, test_data_root
 def test_ocr_fuse_cli_uses_concise_json_help():
     """Test OCR-fusion JSON help describes its test-case contents."""
     parser = OcrFuseCli.argparser()
+    help_text = parser.format_help()
     actions = {action.dest: action for action in parser._actions}  # noqa: SLF001
 
     assert actions["json_path"].help == "JSON file containing test cases"
+    assert "--llm-no-op" in help_text
     cache_overwrite_action = next(
         action
         for action in parser._actions  # noqa: SLF001
@@ -151,9 +153,10 @@ def test_ocr_fuse_cli_passes_test_case_path(tmp_path: Path):
             OcrFuseCli,
             f"--lens-infile {lens_path} --tesseract-infile {tesseract_path} "
             f"--language eng --json {json_path} --outfile {output_path} "
-            f"--cache-dir {cache_root_path} --cache-overwrite",
+            f"--cache-dir {cache_root_path} --cache-overwrite --llm-no-op",
         )
 
     assert fuse.call_args.kwargs["test_case_path"] == json_path.resolve()
     assert fuse.call_args.kwargs["cache_root_path"] == cache_root_path.resolve()
     assert fuse.call_args.kwargs["overwrite_cache"] is True
+    assert fuse.call_args.kwargs["no_op"] is True
