@@ -35,6 +35,12 @@ _DEFAULT_MODEL_NAMES = {
 }
 """Default CTC model names keyed by transcription language."""
 
+_SCRIPT_CONVERSION_CONFIGS = {
+    (Language.yue_hans, _DEFAULT_MODEL_NAMES[Language.yue_hans]): "s2t",
+    (Language.zho_hant, _DEFAULT_MODEL_NAMES[Language.zho_hant]): "t2s",
+}
+"""OpenCC configurations keyed by transcription language and CTC model name."""
+
 
 class CtcAligner:
     """Aligns transcription text to audio using a CTC model."""
@@ -72,6 +78,11 @@ class CtcAligner:
             model_name = default_model_name
         self.model_name = model_name
         """Hugging Face CTC model name or local model path."""
+
+        self._script_conversion_config = _SCRIPT_CONVERSION_CONFIGS.get(
+            (language, model_name)
+        )
+        """OpenCC configuration for adapting text to the CTC model."""
 
         self.device = device
         """Device identifier passed to the CTC model."""
@@ -299,9 +310,11 @@ class CtcAligner:
         # Map supported characters to model tokens while retaining source positions
         token_ids: list[int] = []
         char_indices: list[int] = []
-        script_converters: tuple[OpenCC, ...] = ()
-        if self.language.is_chinese:
-            script_converters = (OpenCC("s2t"), OpenCC("t2s"))
+        converted_text = None
+        if self._script_conversion_config is not None:
+            candidate_text = OpenCC(self._script_conversion_config).convert(text)
+            if len(candidate_text) == len(text):
+                converted_text = candidate_text
         alignment_text_end_idx = len(text.rstrip())
         for char_idx, char in enumerate(text):
             # Align one delimiter per internal whitespace run
@@ -311,7 +324,10 @@ class CtcAligner:
                 or char_idx >= alignment_text_end_idx
             ):
                 continue
-            token_id = self._get_token_id(char, script_converters, tokenizer)
+            converted_char = None
+            if converted_text is not None:
+                converted_char = converted_text[char_idx]
+            token_id = self._get_token_id(char, converted_char, tokenizer)
             if token_id is None:
                 continue
             token_ids.append(token_id)
@@ -517,14 +533,14 @@ class CtcAligner:
     @staticmethod
     def _get_token_id(
         char: str,
-        script_converters: Sequence[OpenCC],
+        converted_char: str | None,
         tokenizer: object,
     ) -> int | None:
         """Get an aligner token ID for one transcript character.
 
         Arguments:
             char: transcript character
-            script_converters: converters between Chinese scripts
+            converted_char: model-script character corresponding to the transcript
             tokenizer: Hugging Face tokenizer
         Returns:
             token ID, or None when the character cannot be aligned directly
@@ -556,17 +572,14 @@ class CtcAligner:
         # Build case variants in preference order
         candidates = list(dict.fromkeys((char, char.upper(), char.lower())))
 
-        # Add alternate Chinese-script variants without changing the output text
-        for script_converter in script_converters:
-            converted = script_converter.convert(char)
-            if len(converted) != 1:
-                continue
+        # Add the model-specific script variant without changing the output text
+        if converted_char is not None:
             candidates.extend(
                 candidate
                 for candidate in (
-                    converted,
-                    converted.upper(),
-                    converted.lower(),
+                    converted_char,
+                    converted_char.upper(),
+                    converted_char.lower(),
                 )
                 if candidate not in candidates
             )

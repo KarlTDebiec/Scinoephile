@@ -446,16 +446,17 @@ def test_ctc_token_ids_normalize_case_and_skip_unknown_chars():
     [
         (Language.yue_hans, "说", "說", [2]),
         (Language.zho_hant, "說", "说", [2]),
-        (Language.eng, "说", "說", []),
+        (Language.yue_hant, "說", "说", []),
+        (Language.zho_hans, "说", "說", []),
     ],
 )
-def test_ctc_token_ids_try_alternate_chinese_scripts(
+def test_ctc_token_ids_use_default_model_script_conversion(
     language: Language,
     text: str,
     recognized_token: str,
     expected_token_ids: list[int],
 ):
-    """Test Chinese token lookup tries both script forms without changing text.
+    """Test token lookup converts only toward the default model's script.
 
     Arguments:
         language: transcription language
@@ -490,6 +491,37 @@ def test_ctc_token_ids_try_alternate_chinese_scripts(
 
     assert token_ids == expected_token_ids
     assert char_indices == list(range(len(expected_token_ids)))
+
+
+def test_ctc_token_ids_do_not_convert_script_for_model_override():
+    """Test custom CTC models do not receive inferred script conversion."""
+
+    class FakeTokenizer:
+        """Fake tokenizer recognizing one traditional character."""
+
+        unk_token_id = 3
+        """Unknown token ID."""
+
+        @staticmethod
+        def convert_tokens_to_ids(token: str) -> int:
+            """Convert a token to a fake token ID.
+
+            Arguments:
+                token: token text
+            Returns:
+                fake token ID
+            """
+            if token == "說":
+                return 2
+            return 3
+
+    aligner = CtcAligner(Language.yue_hans, "organization/model")
+    aligner._processor = SimpleNamespace(tokenizer=FakeTokenizer())
+
+    token_ids, char_indices = aligner._get_token_ids("说")
+
+    assert token_ids == []
+    assert char_indices == []
 
 
 def test_ctc_models_and_processors_are_cached_independently(
