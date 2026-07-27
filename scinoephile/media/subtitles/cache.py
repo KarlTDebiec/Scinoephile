@@ -14,8 +14,8 @@ from tempfile import TemporaryDirectory
 
 import ffmpeg
 
+from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cache.namespace import get_cache_namespace_dir_path
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries
 
@@ -37,10 +37,8 @@ class SubtitleCache:
         self.cache_root_path = cache_root_path
         """Root directory beneath which subtitle artifacts are cached."""
 
-        self.cache_dir_path = get_cache_namespace_dir_path(
-            cache_root_path,
-            "media",
-            "subtitles",
+        self.cache_dir_path = val_output_dir_path(
+            cache_root_path / "media" / "subtitles"
         )
         """Directory in which cached subtitle streams are stored."""
 

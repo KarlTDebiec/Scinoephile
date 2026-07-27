@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import cast
 
 from scinoephile.common.file import open_atomic_text_file
-from scinoephile.core.cache.namespace import get_cache_namespace_dir_path
+from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.media import SubtitleStream
 
 from .analysis_result import ZhoSubtitleScriptAnalysis
@@ -33,10 +33,8 @@ class ZhoSubtitleScriptAnalysisCache:
             cache_root_path: root directory beneath which to cache
             overwrite: whether to replace matching cache files
         """
-        self.cache_dir_path = get_cache_namespace_dir_path(
-            cache_root_path,
-            "media",
-            "subtitle-analysis",
+        self.cache_dir_path = val_output_dir_path(
+            cache_root_path / "media" / "subtitles" / "analysis"
         )
         """Directory in which cached script analyses are stored."""
 

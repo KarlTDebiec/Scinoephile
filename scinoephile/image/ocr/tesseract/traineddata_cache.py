@@ -8,7 +8,7 @@ from logging import getLogger
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from scinoephile.core.cache.namespace import get_cache_namespace_dir_path
+from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_root_path
 
@@ -39,9 +39,8 @@ class TesseractLegacyTessdataCache:
             cache_root_path = self._configured_cache_root_path
             if cache_root_path is None:
                 cache_root_path = get_runtime_cache_root_path()
-            self._cache_dir_path = get_cache_namespace_dir_path(
-                cache_root_path,
-                "tesseract-legacy-tessdata",
+            self._cache_dir_path = val_output_dir_path(
+                cache_root_path / "tesseract-legacy-tessdata"
             )
         return self._cache_dir_path
 

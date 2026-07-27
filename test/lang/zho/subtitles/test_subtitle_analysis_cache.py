@@ -37,7 +37,7 @@ def test_subtitle_script_analysis_cache_round_trip(tmp_path: Path):
         analysis,
     )
 
-    assert cache_path.parent == tmp_path / "cache/media/subtitle-analysis"
+    assert cache_path.parent == tmp_path / "cache/media/subtitles/analysis"
     assert (
         cache.load(
             infile_path,
