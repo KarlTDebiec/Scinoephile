@@ -4,15 +4,15 @@
 
 from __future__ import annotations
 
-import builtins
-from collections.abc import Mapping, Sequence
+from pathlib import Path
 from unittest.mock import Mock, patch
 
 import numpy as np
 from pydub import AudioSegment
-from pytest import MonkeyPatch, importorskip, raises
+from pytest import MonkeyPatch, importorskip
 
 from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
+from scinoephile.core.exceptions import ScinoephileError
 
 
 class _NumpyBackedTensor:
@@ -37,35 +37,10 @@ def test_get_audio_segment_restores_mono_output():
         np.array([[0.25, -0.25], [0.25, -0.25]], dtype=np.float32)
     )
 
-    audio = DemucsSeparator._get_audio_segment(
-        vocals=vocals,
-        frame_rate=16000,
-        channels=1,
-    )
+    audio = DemucsSeparator._get_audio_segment(vocals, 16000, 1)
 
     assert isinstance(audio, AudioSegment)
     assert audio.channels == 1
-
-
-def test_demucs_model_loader_requires_transcription_extra(monkeypatch: MonkeyPatch):
-    """Test Demucs import errors mention the transcription extra."""
-    original_import = builtins.__import__
-
-    def import_without_demucs(
-        name: str,
-        globals: Mapping[str, object] | None = None,
-        locals: Mapping[str, object] | None = None,
-        fromlist: Sequence[str] | None = (),
-        level: int = 0,
-    ) -> object:
-        if name.split(".", 1)[0] == "demucs_infer":
-            raise ImportError("blocked optional dependency")
-        return original_import(name, globals, locals, fromlist, level)
-
-    monkeypatch.setattr(builtins, "__import__", import_without_demucs)
-
-    with raises(ImportError, match="'transcription' extra"):
-        DemucsSeparator._get_model_loader()
 
 
 def test_separate_vocals_uses_default_demucs_shifts():
@@ -85,7 +60,10 @@ def test_separate_vocals_uses_default_demucs_shifts():
         apply_model_kwargs.append(kwargs)
         return separated_sources
 
-    with patch.object(DemucsSeparator, "_get_apply_model", return_value=apply_model):
+    with patch(
+        "scinoephile.audio.transcription.demucs_separator.import_demucs_infer_apply",
+        return_value=Mock(apply_model=apply_model),
+    ):
         output_audio = separator.separate_vocals(input_audio)
 
     assert isinstance(output_audio, AudioSegment)
@@ -95,7 +73,7 @@ def test_separate_vocals_uses_default_demucs_shifts():
 
 
 def test_separate_vocals_overwrites_matching_cache(
-    tmp_path,
+    tmp_path: Path,
     monkeypatch: MonkeyPatch,
 ):
     """Test cache overwrite regenerates a matching Demucs separation."""
@@ -104,7 +82,7 @@ def test_separate_vocals_overwrites_matching_cache(
     cached_audio = AudioSegment.silent(duration=900, frame_rate=16000)
     fresh_audio = AudioSegment.silent(duration=800, frame_rate=16000)
     separate = Mock(side_effect=[cached_audio, fresh_audio])
-    monkeypatch.setattr(separator, "_separate_vocals_uncached", separate)
+    monkeypatch.setattr(separator, "_separate_vocals", separate)
 
     separator.separate_vocals(input_audio)
     result = separator.separate_vocals(input_audio, overwrite_cache=True)
@@ -112,3 +90,26 @@ def test_separate_vocals_overwrites_matching_cache(
     assert len(result) == len(fresh_audio)
     assert separate.call_count == 2
     assert len(list(tmp_path.glob("*.wav"))) == 1
+
+
+def test_separate_vocals_recovers_from_corrupt_cache(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+):
+    """Test malformed cached vocals are replaced by fresh separation output."""
+    separator = DemucsSeparator(cache_dir_path=tmp_path)
+    input_audio = AudioSegment.silent(duration=1000, frame_rate=16000)
+    fresh_audio = AudioSegment.silent(duration=800, frame_rate=16000)
+    load = Mock(side_effect=ScinoephileError("invalid cache"))
+    save = Mock()
+    separate = Mock(return_value=fresh_audio)
+    monkeypatch.setattr(separator._cache, "load", load)
+    monkeypatch.setattr(separator._cache, "save", save)
+    monkeypatch.setattr(separator, "_separate_vocals", separate)
+
+    result = separator.separate_vocals(input_audio)
+
+    assert result is fresh_audio
+    load.assert_called_once_with(input_audio)
+    separate.assert_called_once_with(input_audio)
+    save.assert_called_once_with(input_audio, fresh_audio)

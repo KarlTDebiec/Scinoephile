@@ -22,6 +22,7 @@ from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.common import package_root
 from scinoephile.common.subprocess import run_command
+from scinoephile.core.dependencies.transcription import import_whisper_timestamped
 from test.helpers import parametrize
 
 _OPTIONAL_TRANSCRIPTION_MODULES = (
@@ -124,7 +125,11 @@ def test_transcribe_forwards_recovery_decoding_options(monkeypatch: MonkeyPatch)
         condition_on_previous_text=False,
     )
     transcriber._model = Mock()
-    monkeypatch.setattr(transcriber, "_get_whisper_module", Mock(return_value=whisper))
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped",
+        Mock(return_value=whisper),
+    )
     audio = AudioSegment.silent(duration=1000)
 
     assert transcriber(audio) == []
@@ -165,8 +170,8 @@ def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch
     loaded_model = Mock()
     whisper.load_model.return_value = loaded_model
     monkeypatch.setattr(
-        WhisperTranscriber,
-        "_get_whisper_module",
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped",
         Mock(return_value=whisper),
     )
     monkeypatch.setattr(
@@ -197,7 +202,11 @@ def test_transcribe_bypasses_cache_when_requested(monkeypatch: MonkeyPatch):
     whisper.transcribe.return_value = {"segments": []}
     transcriber = WhisperTranscriber(model_name="custom/model")
     transcriber._model = Mock()
-    monkeypatch.setattr(transcriber, "_get_whisper_module", Mock(return_value=whisper))
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped",
+        Mock(return_value=whisper),
+    )
     get_cached_transcription = Mock()
     monkeypatch.setattr(
         transcriber,
@@ -239,8 +248,8 @@ def test_transcribe_overwrites_matching_cache(
 
     whisper.transcribe.side_effect = transcribe
     monkeypatch.setattr(
-        transcriber,
-        "_get_whisper_module",
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped",
         Mock(return_value=whisper),
     )
 
@@ -271,8 +280,8 @@ def test_transcribe_recovers_from_malformed_cache(
     whisper = Mock()
     whisper.transcribe.return_value = {"segments": []}
     monkeypatch.setattr(
-        transcriber,
-        "_get_whisper_module",
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped",
         Mock(return_value=whisper),
     )
 
@@ -303,8 +312,8 @@ def test_transcribe_preserves_cache_when_atomic_write_fails(
     whisper = Mock()
     whisper.transcribe.return_value = {"segments": []}
     monkeypatch.setattr(
-        transcriber,
-        "_get_whisper_module",
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped",
         Mock(return_value=whisper),
     )
     monkeypatch.setattr(
@@ -402,7 +411,7 @@ def test_whisper_module_requires_transcription_extra(monkeypatch: MonkeyPatch):
     monkeypatch.setattr(builtins, "__import__", import_without_whisper)
 
     with raises(ImportError, match="'transcription' extra"):
-        WhisperTranscriber._get_whisper_module()
+        import_whisper_timestamped()
 
 
 def test_normalize_transcription_segments_coalesces_malformed_duplicate_pair():

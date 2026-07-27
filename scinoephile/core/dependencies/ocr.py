@@ -5,17 +5,12 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from types import ModuleType
 
 __all__ = [
-    "import_chrome_lens_py_lens_api",
-    "import_chrome_lens_py_lens_api_error",
-    "import_paddleocr_paddle_ocr",
+    "import_chrome_lens_py",
+    "import_paddleocr",
 ]
-
-if TYPE_CHECKING:
-    from chrome_lens_py import LensAPI, LensAPIError
-    from paddleocr import PaddleOCR
 
 _OCR_EXTRA_MESSAGE = (
     "OCR support requires optional OCR dependencies. Install scinoephile with the "
@@ -23,40 +18,27 @@ _OCR_EXTRA_MESSAGE = (
 )
 
 
-def import_chrome_lens_py_lens_api() -> type[LensAPI]:
-    """Import the Google Lens API class on demand.
+def import_chrome_lens_py() -> ModuleType:
+    """Import chrome-lens-py on demand.
 
     Returns:
-        Google Lens API class
+        chrome-lens-py module
     """
     try:
-        from chrome_lens_py import LensAPI
+        import chrome_lens_py
     except ImportError as exc:
         raise ImportError(_OCR_EXTRA_MESSAGE) from exc
-    return LensAPI
+    return chrome_lens_py
 
 
-def import_chrome_lens_py_lens_api_error() -> type[LensAPIError]:
-    """Import the Google Lens API error class on demand.
+def import_paddleocr() -> ModuleType:
+    """Import PaddleOCR on demand.
 
     Returns:
-        Google Lens API error class
+        PaddleOCR module
     """
     try:
-        from chrome_lens_py import LensAPIError
+        import paddleocr
     except ImportError as exc:
         raise ImportError(_OCR_EXTRA_MESSAGE) from exc
-    return LensAPIError
-
-
-def import_paddleocr_paddle_ocr() -> type[PaddleOCR]:
-    """Import the PaddleOCR class on demand.
-
-    Returns:
-        PaddleOCR class
-    """
-    try:
-        from paddleocr import PaddleOCR
-    except ImportError as exc:
-        raise ImportError(_OCR_EXTRA_MESSAGE) from exc
-    return PaddleOCR
+    return paddleocr
