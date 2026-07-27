@@ -32,11 +32,7 @@ def test_get_reference_for_guide_blocks_limits_reference_prefix():
         ]
     )
 
-    limited = transcription_data.get_reference_for_guide_blocks(
-        reference,
-        guide,
-        1,
-    )
+    limited = transcription_data.get_reference_for_guide_blocks(reference, guide, 1)
 
     assert [subtitle.text for subtitle in limited] == ["甲", "乙"]
 
@@ -135,21 +131,11 @@ def test_process_transcription_orders_stages_and_relogs_expected_mismatch(
     )
     monkeypatch.setattr(transcription_data, "_stage_audio_series", stage_audio)
     monkeypatch.setattr(
-        transcription_data,
-        "_load_or_transcribe_series_guided",
-        transcribe,
+        transcription_data, "_load_or_transcribe_series_guided", transcribe
     )
     monkeypatch.setattr(transcription_data, "load_or_clean_series", clean)
-    monkeypatch.setattr(
-        transcription_data,
-        "_load_or_review_series_guided",
-        review,
-    )
-    monkeypatch.setattr(
-        transcription_data,
-        "_load_or_translate_series_gaps",
-        translate,
-    )
+    monkeypatch.setattr(transcription_data, "_load_or_review_series_guided", review)
+    monkeypatch.setattr(transcription_data, "_load_or_translate_series_gaps", translate)
 
     with caplog.at_level(INFO):
         output = transcription_data.process_transcription(
@@ -180,8 +166,7 @@ def test_process_transcription_orders_stages_and_relogs_expected_mismatch(
 
 
 def test_process_transcription_can_stop_after_cleaning(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Skip guided review and gap translation when they are disabled.
 
@@ -202,9 +187,7 @@ def test_process_transcription_can_stop_after_cleaning(
         Mock(side_effect=lambda series, explicit_language: explicit_language),
     )
     monkeypatch.setattr(
-        transcription_data,
-        "_stage_audio_series",
-        Mock(return_value=reference),
+        transcription_data, "_stage_audio_series", Mock(return_value=reference)
     )
     monkeypatch.setattr(
         transcription_data,
@@ -212,20 +195,10 @@ def test_process_transcription_can_stop_after_cleaning(
         Mock(return_value=reference),
     )
     monkeypatch.setattr(
-        transcription_data,
-        "load_or_clean_series",
-        Mock(return_value=reference),
+        transcription_data, "load_or_clean_series", Mock(return_value=reference)
     )
-    monkeypatch.setattr(
-        transcription_data,
-        "_load_or_review_series_guided",
-        review,
-    )
-    monkeypatch.setattr(
-        transcription_data,
-        "_load_or_translate_series_gaps",
-        translate,
-    )
+    monkeypatch.setattr(transcription_data, "_load_or_review_series_guided", review)
+    monkeypatch.setattr(transcription_data, "_load_or_translate_series_gaps", translate)
 
     output = transcription_data.process_transcription(
         tmp_path,
@@ -242,8 +215,7 @@ def test_process_transcription_can_stop_after_cleaning(
 
 
 def test_process_transcription_can_stop_before_cleaning(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Return the transcription without running later stages.
 
@@ -265,9 +237,7 @@ def test_process_transcription_can_stop_before_cleaning(
         Mock(side_effect=lambda series, explicit_language: explicit_language),
     )
     monkeypatch.setattr(
-        transcription_data,
-        "_stage_audio_series",
-        Mock(return_value=reference),
+        transcription_data, "_stage_audio_series", Mock(return_value=reference)
     )
     monkeypatch.setattr(
         transcription_data,
@@ -275,16 +245,8 @@ def test_process_transcription_can_stop_before_cleaning(
         Mock(return_value=reference),
     )
     monkeypatch.setattr(transcription_data, "load_or_clean_series", clean)
-    monkeypatch.setattr(
-        transcription_data,
-        "_load_or_review_series_guided",
-        review,
-    )
-    monkeypatch.setattr(
-        transcription_data,
-        "_load_or_translate_series_gaps",
-        translate,
-    )
+    monkeypatch.setattr(transcription_data, "_load_or_review_series_guided", review)
+    monkeypatch.setattr(transcription_data, "_load_or_translate_series_gaps", translate)
 
     output = transcription_data.process_transcription(
         tmp_path,

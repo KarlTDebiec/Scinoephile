@@ -31,8 +31,7 @@ def test_llm_cache_uses_runtime_default(runtime_cache_root_path: Path):
 
 
 def test_llm_cache_path_includes_cache_version(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test LLM cache paths differ between cache versions."""
     cache = LlmCache(tmp_path, "translation")

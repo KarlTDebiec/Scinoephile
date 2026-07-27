@@ -14,8 +14,7 @@ __all__ = ["get_media_subtitle_stream"]
 
 
 def get_media_subtitle_stream(
-    infile_path: Path,
-    stream_index: int | None,
+    infile_path: Path, stream_index: int | None
 ) -> SubtitleStream:
     """Get selected image-based subtitle stream from a media input.
 

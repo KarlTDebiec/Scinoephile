@@ -257,11 +257,7 @@ class OcrValidationSession:
         return get_img_with_bboxes(sub.img, sub.bboxes)
 
     def resolve_char_concern(
-        self,
-        sub_idx: int,
-        *,
-        action: str,
-        n_bboxes: int,
+        self, sub_idx: int, *, action: str, n_bboxes: int
     ) -> SubtitleRowView:
         """Resolve the current character bbox concern for one subtitle.
 
@@ -447,8 +443,7 @@ class OcrValidationSession:
             sub = self.series.events[sub_idx]
             sub.bboxes = get_bboxes(sub.img)
             state = _SubtitleValidationState(
-                sub_idx=sub_idx,
-                char_cursor=CharCursor(sub=sub, sub_idx=sub_idx),
+                sub_idx=sub_idx, char_cursor=CharCursor(sub=sub, sub_idx=sub_idx)
             )
             self._states[sub_idx] = state
             self._scan_state(state)
@@ -587,9 +582,7 @@ class OcrValidationSession:
         self._save_outfile()
 
     def _scan_gap_with_cutoffs(  # noqa: PLR0911
-        self,
-        cursor: GapCursor,
-        cutoffs: tuple[int, int, int, int],
+        self, cursor: GapCursor, cutoffs: tuple[int, int, int, int]
     ) -> OcrConcern | None:
         """Scan one prepared gap using its cutoff tuple.
 
@@ -607,8 +600,7 @@ class OcrValidationSession:
         if cutoffs[0] < cursor.gap < cutoffs[1]:
             if cursor.gap == cutoffs[0] + 1 and cursor.gap_chars == "":
                 self.manager.update_pair_gaps(
-                    cursor.char_pair,
-                    (cursor.gap, cutoffs[1], cutoffs[2], cutoffs[3]),
+                    cursor.char_pair, (cursor.gap, cutoffs[1], cutoffs[2], cutoffs[3])
                 )
                 return None
             if (
@@ -616,8 +608,7 @@ class OcrValidationSession:
                 and cursor.gap_chars == cursor.expected_space
             ):
                 self.manager.update_pair_gaps(
-                    cursor.char_pair,
-                    (cutoffs[0], cursor.gap, cutoffs[2], cutoffs[3]),
+                    cursor.char_pair, (cutoffs[0], cursor.gap, cutoffs[2], cutoffs[3])
                 )
                 return None
             return self._gap_concern(cursor, cutoffs, kind=ConcernKind.SPACE_GAP)
@@ -633,14 +624,12 @@ class OcrValidationSession:
                 and cursor.gap_chars == cursor.expected_space
             ):
                 self.manager.update_pair_gaps(
-                    cursor.char_pair,
-                    (cutoffs[0], cutoffs[1], cursor.gap, cutoffs[3]),
+                    cursor.char_pair, (cutoffs[0], cutoffs[1], cursor.gap, cutoffs[3])
                 )
                 return None
             if cursor.gap == cutoffs[3] - 1 and cursor.gap_chars == cursor.expected_tab:
                 self.manager.update_pair_gaps(
-                    cursor.char_pair,
-                    (cutoffs[0], cutoffs[1], cutoffs[2], cursor.gap),
+                    cursor.char_pair, (cutoffs[0], cutoffs[1], cutoffs[2], cursor.gap)
                 )
                 return None
             return self._gap_concern(cursor, cutoffs, kind=ConcernKind.TAB_GAP)
@@ -650,11 +639,7 @@ class OcrValidationSession:
         return None
 
     def _replace_gap_text(
-        self,
-        cursor: GapCursor,
-        replacement: str,
-        *,
-        reset_state: bool = False,
+        self, cursor: GapCursor, replacement: str, *, reset_state: bool = False
     ):
         """Replace the current gap text.
 
@@ -673,9 +658,7 @@ class OcrValidationSession:
         self._set_text(cursor.sub_idx, cursor.sub.text, reset_state=reset_state)
 
     def _resolve_adjacent_gap_action(
-        self,
-        cursor: GapCursor,
-        cutoffs: tuple[int, int, int, int],
+        self, cursor: GapCursor, cutoffs: tuple[int, int, int, int]
     ):
         """Update cutoffs after choosing adjacent spacing.
 
@@ -692,10 +675,7 @@ class OcrValidationSession:
         self.manager.update_pair_gaps(cursor.char_pair, updated_cutoffs)
 
     def _resolve_space_gap_action(
-        self,
-        cursor: GapCursor,
-        cutoffs: tuple[int, int, int, int],
-        action: str,
+        self, cursor: GapCursor, cutoffs: tuple[int, int, int, int], action: str
     ) -> str:
         """Resolve one adjacent-or-space gap action.
 
@@ -709,8 +689,7 @@ class OcrValidationSession:
         if action == "space":
             if cutoffs[0] < cursor.gap < cutoffs[1]:
                 self.manager.update_pair_gaps(
-                    cursor.char_pair,
-                    (cutoffs[0], cursor.gap, cutoffs[2], cutoffs[3]),
+                    cursor.char_pair, (cutoffs[0], cursor.gap, cutoffs[2], cutoffs[3])
                 )
             return cursor.expected_space
         if action == "adjacent":
@@ -719,10 +698,7 @@ class OcrValidationSession:
         raise ValueError(f"Unrecognized space gap action: {action}")
 
     def _resolve_tab_gap_action(
-        self,
-        cursor: GapCursor,
-        cutoffs: tuple[int, int, int, int],
-        action: str,
+        self, cursor: GapCursor, cutoffs: tuple[int, int, int, int], action: str
     ) -> str:
         """Resolve one space-or-tab gap action.
 
@@ -736,23 +712,19 @@ class OcrValidationSession:
         if action == "tab":
             if cutoffs[2] < cursor.gap < cutoffs[3]:
                 self.manager.update_pair_gaps(
-                    cursor.char_pair,
-                    (cutoffs[0], cutoffs[1], cutoffs[2], cursor.gap),
+                    cursor.char_pair, (cutoffs[0], cutoffs[1], cutoffs[2], cursor.gap)
                 )
             return cursor.expected_tab
         if action == "space":
             if cutoffs[2] < cursor.gap < cutoffs[3]:
                 self.manager.update_pair_gaps(
-                    cursor.char_pair,
-                    (cutoffs[0], cutoffs[1], cursor.gap, cutoffs[3]),
+                    cursor.char_pair, (cutoffs[0], cutoffs[1], cursor.gap, cutoffs[3])
                 )
             return cursor.expected_space
         raise ValueError(f"Unrecognized tab gap action: {action}")
 
     def _validated_n_bboxes(
-        self,
-        state: _SubtitleValidationState,
-        n_bboxes: int,
+        self, state: _SubtitleValidationState, n_bboxes: int
     ) -> int:
         """Validate and clamp a bbox selection count.
 

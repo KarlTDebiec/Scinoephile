@@ -92,8 +92,7 @@ class SeriesCER:
                 chunk_result = LineCER("", "".join(message.two_texts or []))
             else:
                 chunk_result = LineCER(
-                    "".join(message.one_texts or []),
-                    "".join(message.two_texts or []),
+                    "".join(message.one_texts or []), "".join(message.two_texts or [])
                 )
             self.substitutions += chunk_result.substitutions
             self.insertions += chunk_result.insertions

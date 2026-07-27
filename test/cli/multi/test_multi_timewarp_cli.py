@@ -30,8 +30,7 @@ def test_multi_timewarp_cli_passes_arguments_and_writes_file(tmp_path: Path):
     anchor_series = Series.from_string(anchor_path.read_text(encoding="utf-8"))
     mobile_series = Series.from_string(mobile_path.read_text(encoding="utf-8"))
     timewarped_series = Series.from_string(
-        "1\n00:00:00,000 --> 00:00:01,000\nB\n",
-        format_="srt",
+        "1\n00:00:00,000 --> 00:00:01,000\nB\n", format_="srt"
     )
     timewarp_calls = 0
 
@@ -55,11 +54,9 @@ def test_multi_timewarp_cli_passes_arguments_and_writes_file(tmp_path: Path):
         assert two_end_idx == 4
         return timewarped_series
 
-    with (
-        patch(
-            "scinoephile.cli.multi.multi_timewarp_cli.get_series_timewarped",
-            side_effect=get_timewarped,
-        ),
+    with patch(
+        "scinoephile.cli.multi.multi_timewarp_cli.get_series_timewarped",
+        side_effect=get_timewarped,
     ):
         run_cli_with_args(
             MultiTimewarpCli,
@@ -84,8 +81,7 @@ def test_multi_timewarp_cli_pipe(tmp_path: Path):
     anchor_path.write_text("1\n00:00:00,000 --> 00:00:01,000\nA\n", encoding="utf-8")
     mobile_path.write_text("1\n00:00:02,000 --> 00:00:03,000\nB\n", encoding="utf-8")
     timewarped_series = Series.from_string(
-        "1\n00:00:00,000 --> 00:00:01,000\nB\n",
-        format_="srt",
+        "1\n00:00:00,000 --> 00:00:01,000\nB\n", format_="srt"
     )
 
     stdout_stream = StringIO()

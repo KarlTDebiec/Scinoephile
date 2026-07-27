@@ -10,10 +10,7 @@ from dataclasses import dataclass
 from difflib import SequenceMatcher
 from pathlib import Path
 
-from scinoephile.lang.zho.script.conversion import (
-    OpenCCConfig,
-    get_zho_text_converted,
-)
+from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 
 type _KnownExceptionKey = tuple[str, str, str]
 

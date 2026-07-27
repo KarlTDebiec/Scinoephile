@@ -12,11 +12,7 @@ from scinoephile.image.bbox import Bbox
 
 from .csv import save_csv_rows
 
-__all__ = [
-    "get_dims_tuple",
-    "load_char_dims",
-    "save_char_dims",
-]
+__all__ = ["get_dims_tuple", "load_char_dims", "save_char_dims"]
 
 
 logger = getLogger(__name__)

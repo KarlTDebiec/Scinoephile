@@ -37,10 +37,7 @@ from scinoephile.llms.translation import (
     TranslationPrompt,
 )
 
-__all__ = [
-    "DEFAULT_PROMPTS",
-    "get_translator",
-]
+__all__ = ["DEFAULT_PROMPTS", "get_translator"]
 
 _ENG_YUE_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
 """Default written Cantonese-to-English regular translation JSON paths."""

@@ -61,8 +61,7 @@ class ListAllCommandsAction(Action):
             option_string: option string used
         """
         parser._print_message(  # noqa: SLF001
-            f"{self.format_all_commands(self.root_cli_class)}\n",
-            sys.stdout,
+            f"{self.format_all_commands(self.root_cli_class)}\n", sys.stdout
         )
         parser.exit(0)
 
@@ -141,8 +140,7 @@ class ListAllCommandsAction(Action):
 
     @staticmethod
     def iter_command_rows(
-        cli: type[CommandLineInterface],
-        level: int = 0,
+        cli: type[CommandLineInterface], level: int = 0
     ) -> list[tuple[str, str]]:
         """Get all command names and descriptions below a CLI.
 

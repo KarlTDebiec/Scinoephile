@@ -11,9 +11,7 @@ from unittest.mock import patch
 
 from pytest import MonkeyPatch, raises
 
-from scinoephile.common.command_line_interface import (
-    CommandLineInterface,
-)
+from scinoephile.common.command_line_interface import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 from test import helpers
 from test.helpers import parametrize
@@ -101,11 +99,7 @@ class ReportTool(CommandLineInterface):
 
 @parametrize(
     ("cli_cls", "expected_name"),
-    [
-        (TestCli, "test"),
-        (AnotherTestCli, "anothertest"),
-        (ReportTool, "reporttool"),
-    ],
+    [(TestCli, "test"), (AnotherTestCli, "anothertest"), (ReportTool, "reporttool")],
 )
 def test_name(cli_cls: type[CommandLineInterface], expected_name: str):
     """Test CLI name derivation.
@@ -259,9 +253,7 @@ def test_assert_cli_usage_failure_reports_streams(monkeypatch: MonkeyPatch):
         monkeypatch: pytest monkeypatch fixture
     """
     monkeypatch.setattr(
-        helpers,
-        "get_usage_prefix",
-        lambda cli: "usage: intentionally-wrong.py",
+        helpers, "get_usage_prefix", lambda cli: "usage: intentionally-wrong.py"
     )
 
     with raises(AssertionError) as excinfo:

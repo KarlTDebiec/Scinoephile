@@ -11,11 +11,7 @@ from typing import TextIO
 DEFAULT_LOG_FORMAT = "%(levelname)s: %(name)s: %(message)s"
 """Default format for log messages."""
 
-__all__ = [
-    "DEFAULT_LOG_FORMAT",
-    "configure_logging",
-    "set_logging_verbosity",
-]
+__all__ = ["DEFAULT_LOG_FORMAT", "configure_logging", "set_logging_verbosity"]
 
 
 def configure_logging(verbosity: int = 1, log_format: str | None = None):

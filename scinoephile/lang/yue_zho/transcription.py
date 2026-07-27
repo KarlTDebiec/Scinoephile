@@ -60,8 +60,7 @@ YueZhoDelineationPromptYueHant = DelineationPrompt(
 """Text for LLM correspondence for traditional written Cantonese delineation."""
 
 YueZhoDelineationPromptYueHans = YueZhoDelineationPromptYueHant.transformed(
-    Language.yue_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+    Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
 )
 """Text for LLM correspondence for simplified written Cantonese delineation."""
 
@@ -97,7 +96,6 @@ YueZhoPunctuationPromptYueHant = PunctuationPrompt(
 """Text for traditional written Cantonese/standard Chinese punctuation."""
 
 YueZhoPunctuationPromptYueHans = YueZhoPunctuationPromptYueHant.transformed(
-    Language.yue_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+    Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
 )
 """Text for simplified written Cantonese/standard Chinese punctuation."""

@@ -12,7 +12,4 @@ from __future__ import annotations
 from .cache_entry import CacheEntry
 from .cache_stats import CacheStats
 
-__all__ = [
-    "CacheEntry",
-    "CacheStats",
-]
+__all__ = ["CacheEntry", "CacheStats"]

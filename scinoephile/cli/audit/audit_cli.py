@@ -22,12 +22,8 @@ from .audit_translation_cli import AuditTranslationCli
 __all__ = ["AuditCli"]
 
 AUDIT_LOCALIZATIONS: dict[str, dict[str, str]] = {
-    "zh-hans": {
-        "audit subtitle workflows": "审核字幕工作流",
-    },
-    "zh-hant": {
-        "audit subtitle workflows": "稽核字幕工作流程",
-    },
+    "zh-hans": {"audit subtitle workflows": "审核字幕工作流"},
+    "zh-hant": {"audit subtitle workflows": "稽核字幕工作流程"},
 }
 """Localized help text keyed by locale and English source text."""
 
@@ -47,9 +43,7 @@ class AuditCli(ScinoephileCliBase):
         """
         super().add_arguments_to_argparser(parser)
         subparsers = parser.add_subparsers(
-            dest="audit_subcommand_name",
-            help="subcommand",
-            required=True,
+            dest="audit_subcommand_name", help="subcommand", required=True
         )
         subcommands = cls.subcommands()
         for name in sorted(subcommands):
@@ -74,12 +68,7 @@ class AuditCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(
-        cls,
-        *,
-        audit_subcommand_name: str,
-        **kwargs: Any,
-    ):
+    def _main(cls, *, audit_subcommand_name: str, **kwargs: Any):
         """Execute with provided keyword arguments.
 
         Arguments:

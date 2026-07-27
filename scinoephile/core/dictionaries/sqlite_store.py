@@ -91,14 +91,10 @@ class DictionarySqliteStore:
         Column("definition", Text),
         Column("label", Text),
         Column(
-            "fk_entry_id",
-            Integer,
-            ForeignKey("entries.entry_id", onupdate="CASCADE"),
+            "fk_entry_id", Integer, ForeignKey("entries.entry_id", onupdate="CASCADE")
         ),
         Column(
-            "fk_source_id",
-            Integer,
-            ForeignKey("sources.source_id", ondelete="CASCADE"),
+            "fk_source_id", Integer, ForeignKey("sources.source_id", ondelete="CASCADE")
         ),
         UniqueConstraint(
             "definition",
@@ -147,9 +143,7 @@ class DictionarySqliteStore:
         Column("sentence", Text),
         Column("language", Text),
         UniqueConstraint(
-            "non_chinese_sentence_id",
-            "sentence",
-            sqlite_on_conflict="IGNORE",
+            "non_chinese_sentence_id", "sentence", sqlite_on_conflict="IGNORE"
         ),
     )
     """Non-Chinese sentence compatibility table."""
@@ -168,9 +162,7 @@ class DictionarySqliteStore:
             ForeignKey("nonchinese_sentences.non_chinese_sentence_id"),
         ),
         Column(
-            "fk_source_id",
-            Integer,
-            ForeignKey("sources.source_id", ondelete="CASCADE"),
+            "fk_source_id", Integer, ForeignKey("sources.source_id", ondelete="CASCADE")
         ),
         Column("direct", Boolean),
         UniqueConstraint(
@@ -195,9 +187,7 @@ class DictionarySqliteStore:
             ForeignKey("chinese_sentences.chinese_sentence_id"),
         ),
         UniqueConstraint(
-            "fk_definition_id",
-            "fk_chinese_sentence_id",
-            sqlite_on_conflict="IGNORE",
+            "fk_definition_id", "fk_chinese_sentence_id", sqlite_on_conflict="IGNORE"
         ),
     )
     """Definition-to-sentence compatibility table."""
@@ -308,8 +298,7 @@ class DictionarySqliteStore:
         return self._fetch_entries(entry_ids)
 
     def persist(
-        self,
-        source_data: tuple[DictionarySource, list[DictionaryEntry]],
+        self, source_data: tuple[DictionarySource, list[DictionaryEntry]]
     ) -> Path:
         """Persist dictionary data to SQLite.
 
@@ -321,8 +310,7 @@ class DictionarySqliteStore:
         source, entries = source_data
         self.database_path.parent.mkdir(parents=True, exist_ok=True)
         with TemporaryDirectory(
-            dir=self.database_path.parent,
-            prefix=f".{self.database_path.name}.",
+            dir=self.database_path.parent, prefix=f".{self.database_path.name}."
         ) as temporary_dir_name:
             temporary_database_path = Path(temporary_dir_name) / self.database_path.name
             temporary_engine = self._create_engine(temporary_database_path)
@@ -336,10 +324,7 @@ class DictionarySqliteStore:
                         entry_id = self._insert_entry(connection, entry)
                         for definition in entry.definitions:
                             self._insert_definition(
-                                connection,
-                                definition,
-                                entry_id,
-                                source_id,
+                                connection, definition, entry_id, source_id
                             )
 
                     self._generate_indices(connection)
@@ -382,8 +367,7 @@ class DictionarySqliteStore:
             if definition is not None:
                 definitions_map[entry_id].append(
                     DictionaryDefinition(
-                        text=str(definition),
-                        label="" if label is None else str(label),
+                        text=str(definition), label="" if label is None else str(label)
                     )
                 )
 
@@ -463,10 +447,7 @@ class DictionarySqliteStore:
             poolclass=NullPool,
         )
 
-    def _fetch_entries(
-        self,
-        entry_ids: list[int],
-    ) -> list[DictionaryEntry]:
+    def _fetch_entries(self, entry_ids: list[int]) -> list[DictionaryEntry]:
         """Fetch entry rows and definitions for selected entry IDs.
 
         Arguments:
@@ -649,7 +630,7 @@ class DictionarySqliteStore:
                 link=source.link,
                 update_url=source.update_url,
                 other=source.other,
-            ),
+            )
         )
         inserted_primary_key = result.inserted_primary_key
         if not inserted_primary_key:

@@ -52,14 +52,10 @@ def get_zho_script_analysis(text: str) -> ZhoScriptAnalysis:
     for match in RE_HANZI.finditer(text):
         char = match.group(0)
         simplified_char = get_zho_text_converted(
-            char,
-            OpenCCConfig.t2s,
-            apply_exclusions=False,
+            char, OpenCCConfig.t2s, apply_exclusions=False
         )
         traditional_char = get_zho_text_converted(
-            char,
-            OpenCCConfig.s2t,
-            apply_exclusions=False,
+            char, OpenCCConfig.s2t, apply_exclusions=False
         )
         if char != simplified_char:
             traditional_count += 1
@@ -92,11 +88,7 @@ def is_simplified(text: str) -> bool:
     """
     if RE_HANZI.search(text) is None:
         return False
-    simplified = get_zho_text_converted(
-        text,
-        OpenCCConfig.t2s,
-        apply_exclusions=False,
-    )
+    simplified = get_zho_text_converted(text, OpenCCConfig.t2s, apply_exclusions=False)
     return text == simplified
 
 
@@ -110,11 +102,7 @@ def is_traditional(text: str) -> bool:
     """
     if RE_HANZI.search(text) is None:
         return False
-    traditional = get_zho_text_converted(
-        text,
-        OpenCCConfig.s2t,
-        apply_exclusions=False,
-    )
+    traditional = get_zho_text_converted(text, OpenCCConfig.s2t, apply_exclusions=False)
     return text == traditional
 
 

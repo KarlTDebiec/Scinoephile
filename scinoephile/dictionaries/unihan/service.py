@@ -252,8 +252,7 @@ class UnihanDictionaryService:
         return downloaded_paths
 
     def _resolve_explicit_source_paths(
-        self,
-        explicit_paths: dict[str, Path | None],
+        self, explicit_paths: dict[str, Path | None]
     ) -> dict[str, Path]:
         """Resolve optional explicit source path overrides.
 

@@ -43,8 +43,7 @@ class PromptSqliteStore(OptimizationSqliteStore):
         Column("language", Text, nullable=False),
         Column("attributes_json", Text, nullable=False),
         CheckConstraint(
-            "json_valid(attributes_json)",
-            name="prompts_attributes_json_valid",
+            "json_valid(attributes_json)", name="prompts_attributes_json_valid"
         ),
         CheckConstraint(
             "json_type(attributes_json) = 'object'",
@@ -78,10 +77,7 @@ class PromptSqliteStore(OptimizationSqliteStore):
             return self._row_to_prompt(row)
 
     def sync_aliases(
-        self,
-        alias_prompts: Mapping[str, PersistedPrompt],
-        *,
-        dry_run: bool,
+        self, alias_prompts: Mapping[str, PersistedPrompt], *, dry_run: bool
     ) -> tuple[set[str], set[str]]:
         """Synchronize current prompt content by stable alias.
 
@@ -95,9 +91,7 @@ class PromptSqliteStore(OptimizationSqliteStore):
         """
         for prompt in alias_prompts.values():
             expected_id = get_prompt_id(
-                prompt.attributes,
-                prompt.operation,
-                prompt.language,
+                prompt.attributes, prompt.operation, prompt.language
             )
             if prompt.prompt_id != expected_id:
                 raise ScinoephileError(
@@ -140,9 +134,7 @@ class PromptSqliteStore(OptimizationSqliteStore):
         return changes
 
     def _get_changes(
-        self,
-        connection: Connection,
-        alias_prompts: Mapping[str, PersistedPrompt],
+        self, connection: Connection, alias_prompts: Mapping[str, PersistedPrompt]
     ) -> tuple[set[str], set[str]]:
         """Get changes required to synchronize prompt aliases.
 
@@ -181,8 +173,7 @@ class PromptSqliteStore(OptimizationSqliteStore):
         """
         prompt_id = str(row["prompt_id"])
         loaded_attributes = deserialize_json(
-            row["attributes_json"],
-            "Persisted prompt attributes",
+            row["attributes_json"], "Persisted prompt attributes"
         )
         if not all(isinstance(value, str) for value in loaded_attributes.values()):
             raise ScinoephileError(
@@ -203,9 +194,7 @@ class PromptSqliteStore(OptimizationSqliteStore):
             attributes=attributes,
         )
         if prompt.prompt_id != get_prompt_id(
-            prompt.attributes,
-            prompt.operation,
-            prompt.language,
+            prompt.attributes, prompt.operation, prompt.language
         ):
             raise ScinoephileError(
                 f"Persisted prompt {prompt_id} does not match its content-addressed ID."

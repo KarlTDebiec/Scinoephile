@@ -14,8 +14,4 @@ from .line_diff import LineDiff
 from .line_diff_kind import LineDiffKind
 from .series_diff import SeriesDiff
 
-__all__ = [
-    "LineDiff",
-    "LineDiffKind",
-    "SeriesDiff",
-]
+__all__ = ["LineDiff", "LineDiffKind", "SeriesDiff"]

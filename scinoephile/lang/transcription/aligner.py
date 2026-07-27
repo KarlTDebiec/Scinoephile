@@ -61,9 +61,7 @@ class TranscriptionAligner:
         """Punctuate transcription text using corresponding reference subtitles."""
 
     def align(
-        self,
-        reference_subs: Series,
-        transcription_subs: AudioSeries,
+        self, reference_subs: Series, transcription_subs: AudioSeries
     ) -> TranscriptionAlignment:
         """Align transcribed subtitles with reference subtitles.
 
@@ -111,8 +109,7 @@ class TranscriptionAligner:
         delineation_prompt = cast(DelineationPrompt, delineation_queryer.prompt)
         for sync_group_one_idx in range(len(alignment.sync_groups) - 1):
             test_case = alignment.get_delineation_test_case(
-                sync_group_one_idx,
-                delineation_prompt,
+                sync_group_one_idx, delineation_prompt
             )
             if test_case is None:
                 logger.info(
@@ -120,10 +117,7 @@ class TranscriptionAligner:
                     f"{sync_group_one_idx + 1} with no transcription"
                 )
                 continue
-            test_case = cast(
-                DelineationTestCase,
-                delineation_queryer(test_case),
-            )
+            test_case = cast(DelineationTestCase, delineation_queryer(test_case))
 
             query = test_case.query
             answer = test_case.answer
@@ -133,12 +127,7 @@ class TranscriptionAligner:
                 raise ScinoephileError(message)
             if not answer.output_one and not answer.output_two:
                 continue
-            if self._delineate_one(
-                alignment,
-                sync_group_one_idx,
-                query,
-                answer,
-            ):
+            if self._delineate_one(alignment, sync_group_one_idx, query, answer):
                 return True
         return False
 
@@ -189,9 +178,7 @@ class TranscriptionAligner:
                 subtitle = alignment.transcription[transcription_two_idx]
                 if len(subtitle.text) > remaining_chars:
                     alignment.transcription = get_series_with_sub_split_at_idx(
-                        alignment.transcription,
-                        transcription_two_idx,
-                        remaining_chars,
+                        alignment.transcription, transcription_two_idx, remaining_chars
                     )
                     alignment._sync_groups_override = None
                     return True
@@ -272,8 +259,7 @@ class TranscriptionAligner:
                 continue
 
             test_case = alignment.get_punctuation_test_case(
-                sync_group_idx,
-                punctuation_prompt,
+                sync_group_idx, punctuation_prompt
             )
             if test_case is None:
                 logger.info(
@@ -283,10 +269,7 @@ class TranscriptionAligner:
                 nascent_sync_groups.append(([reference_idx], []))
                 continue
             try:
-                test_case = cast(
-                    PunctuationTestCase,
-                    punctuation_queryer(test_case),
-                )
+                test_case = cast(PunctuationTestCase, punctuation_queryer(test_case))
             except ValidationError as exc:
                 logger.error(
                     f"Error punctuating sync group {sync_group_idx}; "
@@ -295,10 +278,7 @@ class TranscriptionAligner:
             punctuated_text = None
             if test_case.answer is not None:
                 punctuated_text = test_case.answer.output
-            subtitle = get_sub_merged(
-                transcription_subtitles,
-                text=punctuated_text,
-            )
+            subtitle = get_sub_merged(transcription_subtitles, text=punctuated_text)
             subtitle.start = reference.start
             subtitle.end = reference.end
 

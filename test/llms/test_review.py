@@ -49,22 +49,13 @@ def test_prompt_aliases_are_used_for_llm_correspondence():
                 ]
             },
             "answer": {
-                "xiugai": [
-                    {
-                        "xuhao": 2,
-                        "wenben": "修改二",
-                        "beizhu": "修正錯字",
-                    }
-                ]
+                "xiugai": [{"xuhao": 2, "wenben": "修改二", "beizhu": "修正錯字"}]
             },
         }
     )
 
     assert test_case.query.model_dump(by_alias=True) == {
-        "zimu": [
-            {"xuhao": 1, "wenben": "原文一"},
-            {"xuhao": 2, "wenben": "原文二"},
-        ]
+        "zimu": [{"xuhao": 1, "wenben": "原文一"}, {"xuhao": 2, "wenben": "原文二"}]
     }
     assert test_case.answer is not None
     assert test_case.answer.model_dump(by_alias=True) == {
@@ -273,12 +264,7 @@ def test_query_requires_consecutive_ordered_indexes():
 
     with raises(ValidationError, match="consecutive, ordered, and begin at 1"):
         query_cls.model_validate(
-            {
-                "subtitles": [
-                    {"index": 1, "text": "one"},
-                    {"index": 3, "text": "three"},
-                ]
-            }
+            {"subtitles": [{"index": 1, "text": "one"}, {"index": 3, "text": "three"}]}
         )
 
 
@@ -299,10 +285,7 @@ def test_answer_requires_unique_ordered_revision_indexes():
 
 @mark.parametrize(
     "test_case_cls",
-    [
-        ReviewTestCase,
-        ReviewManager.get_test_case_cls(ReviewManager.base_prompt),
-    ],
+    [ReviewTestCase, ReviewManager.get_test_case_cls(ReviewManager.base_prompt)],
     ids=["static", "generated"],
 )
 def test_test_case_rejects_missing_and_unmodified_revision_indexes(
@@ -333,15 +316,10 @@ def test_test_case_rejects_missing_and_unmodified_revision_indexes(
 
 @mark.parametrize(
     "test_case_cls",
-    [
-        ReviewTestCase,
-        ReviewManager.get_test_case_cls(ReviewManager.base_prompt),
-    ],
+    [ReviewTestCase, ReviewManager.get_test_case_cls(ReviewManager.base_prompt)],
     ids=["static", "generated"],
 )
-def test_revisions_raise_minimum_difficulty(
-    test_case_cls: type[ReviewTestCase],
-):
+def test_revisions_raise_minimum_difficulty(test_case_cls: type[ReviewTestCase]):
     """A nonempty revisions list should require difficulty one."""
     unchanged = test_case_cls.model_validate(
         {

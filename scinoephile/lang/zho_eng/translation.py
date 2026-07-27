@@ -54,8 +54,7 @@ ZhoEngTranslationPromptZhoHant = TranslationPrompt(
 """Text for traditional standard Chinese translation from English."""
 
 ZhoEngTranslationPromptZhoHans = ZhoEngTranslationPromptZhoHant.transformed(
-    Language.zho_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+    Language.zho_hans, partial(get_zho_text_converted, config=OpenCCConfig.t2s)
 )
 """Text for simplified standard Chinese translation from English."""
 
@@ -94,8 +93,7 @@ ZhoEngGapTranslationPromptZhoHant = GapTranslationPrompt(
 """Text for traditional standard Chinese gap translation using English."""
 
 ZhoEngGapTranslationPromptZhoHans = ZhoEngGapTranslationPromptZhoHant.transformed(
-    Language.zho_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+    Language.zho_hans, partial(get_zho_text_converted, config=OpenCCConfig.t2s)
 )
 """Text for simplified standard Chinese gap translation using English."""
 
@@ -135,7 +133,6 @@ ZhoEngGuidedTranslationPromptZhoHant = GuidedTranslationPrompt(
 """Text for traditional guided standard Chinese translation from English."""
 
 ZhoEngGuidedTranslationPromptZhoHans = ZhoEngGuidedTranslationPromptZhoHant.transformed(
-    Language.zho_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+    Language.zho_hans, partial(get_zho_text_converted, config=OpenCCConfig.t2s)
 )
 """Text for simplified guided standard Chinese translation from English."""

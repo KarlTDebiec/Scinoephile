@@ -25,10 +25,7 @@ class LlmCache:
     """Cache of LLM response payloads."""
 
     def __init__(
-        self,
-        cache_root_path: Path | None,
-        operation: str,
-        overwrite: bool = False,
+        self, cache_root_path: Path | None, operation: str, overwrite: bool = False
     ):
         """Initialize.
 
@@ -56,11 +53,7 @@ class LlmCache:
         """Cache paths refreshed by this cache instance."""
 
     def get_path(
-        self,
-        identity: object,
-        system_prompt: str,
-        tools_json: str,
-        query_json: str,
+        self, identity: object, system_prompt: str, tools_json: str, query_json: str
     ) -> Path:
         """Get a cache path based on query identity and prompts.
 
@@ -73,10 +66,7 @@ class LlmCache:
             path to cache file
         """
         identity_json = json.dumps(
-            {
-                "cache_version": _CACHE_VERSION,
-                "identity": identity,
-            },
+            {"cache_version": _CACHE_VERSION, "identity": identity},
             ensure_ascii=True,
             separators=(",", ":"),
             sort_keys=True,

@@ -46,18 +46,13 @@ def get_detailed_subtitle_streams(
             stream for stream in streams if isinstance(stream, SubtitleStream)
         ]
     if subtitle_streams:
-        SubtitleExtractor(subtitle_cache).extract(
-            infile_path,
-            subtitle_streams,
-        )
+        SubtitleExtractor(subtitle_cache).extract(infile_path, subtitle_streams)
 
     detailed_streams = []
     for stream in subtitle_streams:
         try:
             stats = get_subtitle_stream_stats(
-                infile_path,
-                stream,
-                subtitle_cache=subtitle_cache,
+                infile_path, stream, subtitle_cache=subtitle_cache
             )
         except (ScinoephileError, ValueError, IndexError) as exc:
             logger.warning(

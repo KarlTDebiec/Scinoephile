@@ -57,10 +57,7 @@ def test_audit_dual_review_filters_and_includes_json_notes(tmp_path: Path):
     """
     inputs = _get_audit_inputs(tmp_path)
 
-    report = audit_dual_review(
-        **inputs,
-        row_filter=DualReviewAuditFilter.changes,
-    )
+    report = audit_dual_review(**inputs, row_filter=DualReviewAuditFilter.changes)
 
     assert "- simplified review edits: 1" in report
     assert "- traditional review edits: 1" in report
@@ -79,19 +76,14 @@ def test_audit_dual_review_filters_and_includes_json_notes(tmp_path: Path):
     assert "Traditional review: 修正繁體字。" in report
     assert "Traditional simplification review: 修正簡化結果。" in report
 
-    report = audit_dual_review(
-        **inputs,
-        row_filter=DualReviewAuditFilter.discrepancies,
-    )
+    report = audit_dual_review(**inputs, row_filter=DualReviewAuditFilter.discrepancies)
     assert "- table rows: 2" in report
     assert "| 2 |" in report
     assert "| 3 |" not in report
     assert "| 4 |" in report
 
     report = audit_dual_review(
-        **inputs,
-        row_filter=DualReviewAuditFilter.all,
-        characters=("著", "丙"),
+        **inputs, row_filter=DualReviewAuditFilter.all, characters=("著", "丙")
     )
     assert "- character filter: 著, 丙" in report
     assert "- table rows: 1" in report
@@ -99,10 +91,7 @@ def test_audit_dual_review_filters_and_includes_json_notes(tmp_path: Path):
     assert "| 3 |" in report
 
     report = audit_dual_review(
-        **inputs,
-        row_filter=DualReviewAuditFilter.all,
-        first_index=2,
-        last_index=3,
+        **inputs, row_filter=DualReviewAuditFilter.all, first_index=2, last_index=3
     )
     assert "- final text discrepancies: 1" in report
     assert "- subtitle range: 2 through 3" in report
@@ -186,9 +175,7 @@ def _get_audit_inputs(tmp_path: Path) -> _AuditInputs:
     )
     simplified_json_path = tmp_path / "simplified.json"
     _write_review_json(
-        simplified_json_path,
-        texts_by_name["simplified"],
-        {2: ("简正", "修正简体字。")},
+        simplified_json_path, texts_by_name["simplified"], {2: ("简正", "修正简体字。")}
     )
     return _AuditInputs(
         traditional=series["traditional"],
@@ -225,16 +212,12 @@ def _load_review_cases(json_path: Path) -> list[TestCase]:
         deserialized review test cases
     """
     return load_test_cases_from_json(
-        json_path,
-        ReviewManager,
-        ReviewManager.base_prompt,
+        json_path, ReviewManager, ReviewManager.base_prompt
     )
 
 
 def _write_review_json(
-    json_path: Path,
-    texts: tuple[str, ...],
-    revisions: dict[int, tuple[str, str]],
+    json_path: Path, texts: tuple[str, ...], revisions: dict[int, tuple[str, str]]
 ):
     """Write one block-based review JSON fixture.
 

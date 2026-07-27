@@ -61,9 +61,7 @@ class OcrCacheBase[TResult](ABC):
         """Cache paths refreshed by this cache instance."""
 
     def get_path(
-        self,
-        image: Image.Image,
-        backend_metadata: Mapping[str, object],
+        self, image: Image.Image, backend_metadata: Mapping[str, object]
     ) -> Path:
         """Get the cache path for an image and recognizer configuration.
 
@@ -89,9 +87,7 @@ class OcrCacheBase[TResult](ABC):
         return self.cache_dir_path / f"{cache_hash.hexdigest()}.json"
 
     def load(
-        self,
-        image: Image.Image,
-        backend_metadata: Mapping[str, object],
+        self, image: Image.Image, backend_metadata: Mapping[str, object]
     ) -> TResult | None:
         """Load a cached OCR result.
 
@@ -141,9 +137,7 @@ class OcrCacheBase[TResult](ABC):
         return result
 
     def remove(
-        self,
-        image: Image.Image,
-        backend_metadata: Mapping[str, object],
+        self, image: Image.Image, backend_metadata: Mapping[str, object]
     ) -> Path | None:
         """Remove a cached OCR result.
 
@@ -178,10 +172,7 @@ class OcrCacheBase[TResult](ABC):
         cache_path = self.get_path(image, backend_metadata)
         with open_atomic_text_file(cache_path) as file:
             json.dump(
-                {
-                    "cache_version": self._version,
-                    "result": self._serialize(result),
-                },
+                {"cache_version": self._version, "result": self._serialize(result)},
                 file,
                 ensure_ascii=False,
             )

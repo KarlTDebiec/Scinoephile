@@ -42,8 +42,7 @@ def test_val_child_path_accepts_contained_filename(tmp_path: Path):
     ],
 )
 def test_val_child_path_rejects_non_filename_components(
-    child_name: str,
-    tmp_path: Path,
+    child_name: str, tmp_path: Path
 ):
     """Test child path validation rejects paths and special components.
 

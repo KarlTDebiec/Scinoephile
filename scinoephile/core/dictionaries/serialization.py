@@ -7,10 +7,7 @@ from __future__ import annotations
 from .dictionary_definition import DictionaryDefinition
 from .dictionary_entry import DictionaryEntry
 
-__all__ = [
-    "dictionary_definition_to_dict",
-    "dictionary_entry_to_dict",
-]
+__all__ = ["dictionary_definition_to_dict", "dictionary_entry_to_dict"]
 
 
 def dictionary_definition_to_dict(definition: DictionaryDefinition) -> dict[str, str]:
@@ -21,10 +18,7 @@ def dictionary_definition_to_dict(definition: DictionaryDefinition) -> dict[str,
     Returns:
         serialized dictionary definition
     """
-    return {
-        "label": definition.label,
-        "text": definition.text,
-    }
+    return {"label": definition.label, "text": definition.text}
 
 
 def dictionary_entry_to_dict(

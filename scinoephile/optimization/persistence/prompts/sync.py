@@ -13,10 +13,7 @@ from scinoephile.optimization.prompt_spec import PromptSpec
 from .persisted_prompt import PersistedPrompt
 from .sqlite_store import PromptSqliteStore
 
-__all__ = [
-    "PromptSyncReport",
-    "sync_prompts",
-]
+__all__ = ["PromptSyncReport", "sync_prompts"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -32,10 +29,7 @@ class PromptSyncReport:
 
 
 def sync_prompts(
-    prompt_specs: Mapping[str, PromptSpec],
-    output_path: Path,
-    *,
-    dry_run: bool,
+    prompt_specs: Mapping[str, PromptSpec], output_path: Path, *, dry_run: bool
 ) -> PromptSyncReport:
     """Synchronize registered prompts into SQLite.
 
@@ -49,18 +43,12 @@ def sync_prompts(
         ScinoephileError: if a prompt is incompatible with its manager
     """
     alias_prompts = {
-        alias: PersistedPrompt.from_prompt(
-            prompt_spec.prompt,
-            prompt_spec.manager_cls,
-        )
+        alias: PersistedPrompt.from_prompt(prompt_spec.prompt, prompt_spec.manager_cls)
         for alias, prompt_spec in prompt_specs.items()
     }
 
     store = PromptSqliteStore(output_path)
-    insert_aliases, update_aliases = store.sync_aliases(
-        alias_prompts,
-        dry_run=dry_run,
-    )
+    insert_aliases, update_aliases = store.sync_aliases(alias_prompts, dry_run=dry_run)
     return PromptSyncReport(
         prompt_count=len(alias_prompts),
         insert_aliases=tuple(sorted(insert_aliases)),

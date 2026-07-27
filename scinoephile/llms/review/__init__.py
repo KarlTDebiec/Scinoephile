@@ -12,11 +12,7 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .manager import ReviewManager
-from .models import (
-    ReviewAnswer,
-    ReviewQuery,
-    ReviewTestCase,
-)
+from .models import ReviewAnswer, ReviewQuery, ReviewTestCase
 from .processor import ReviewProcessor
 from .prompt import ReviewPrompt
 

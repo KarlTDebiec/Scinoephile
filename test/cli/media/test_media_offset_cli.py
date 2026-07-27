@@ -30,16 +30,10 @@ def test_media_offset_cli_reports_offset(tmp_path: Path, capsys: CaptureFixture[
         offset=1.25,
         confidence="high",
         best=SimpleNamespace(
-            offset=1.25,
-            matched_count=24,
-            score=0.5,
-            offset_frames=30,
+            offset=1.25, matched_count=24, score=0.5, offset_frames=30
         ),
         second_best=SimpleNamespace(
-            offset=1.0,
-            matched_count=24,
-            score=4.0,
-            offset_frames=24,
+            offset=1.0, matched_count=24, score=4.0, offset_frames=24
         ),
         offset_frames=30,
         windows=(),
@@ -47,8 +41,7 @@ def test_media_offset_cli_reports_offset(tmp_path: Path, capsys: CaptureFixture[
     )
 
     with patch(
-        "scinoephile.cli.media.media_offset_cli.get_video_offset",
-        return_value=result,
+        "scinoephile.cli.media.media_offset_cli.get_video_offset", return_value=result
     ):
         run_cli_with_args(
             MediaOffsetCli,
@@ -69,8 +62,7 @@ def test_media_offset_cli_reports_offset(tmp_path: Path, capsys: CaptureFixture[
 
 
 def test_media_offset_cli_reports_window_aggregate(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
+    tmp_path: Path, capsys: CaptureFixture[str]
 ):
     """Test media offset CLI reports multi-window aggregate results.
 
@@ -83,16 +75,10 @@ def test_media_offset_cli_reports_window_aggregate(
     reference_infile_path.touch()
     target_infile_path.touch()
     window_best = SimpleNamespace(
-        offset=-0.8341666666666666,
-        matched_count=48,
-        score=0.1,
-        offset_frames=-20,
+        offset=-0.8341666666666666, matched_count=48, score=0.1, offset_frames=-20
     )
     window_next = SimpleNamespace(
-        offset=-0.7924583333333333,
-        matched_count=48,
-        score=0.5,
-        offset_frames=-19,
+        offset=-0.7924583333333333, matched_count=48, score=0.5, offset_frames=-19
     )
     result = SimpleNamespace(
         offset=-0.8341666666666666,
@@ -132,8 +118,7 @@ def test_media_offset_cli_reports_window_aggregate(
     )
 
     with patch(
-        "scinoephile.cli.media.media_offset_cli.get_video_offset",
-        return_value=result,
+        "scinoephile.cli.media.media_offset_cli.get_video_offset", return_value=result
     ):
         run_cli_with_args(
             MediaOffsetCli,
@@ -160,8 +145,7 @@ def test_media_offset_cli_reports_window_aggregate(
 
 
 def test_media_offset_cli_rejects_start_time_argument(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
+    tmp_path: Path, capsys: CaptureFixture[str]
 ):
     """Test media offset CLI no longer accepts a start time argument.
 
@@ -196,9 +180,7 @@ def test_media_offset_cli_rejects_start_time_argument(
     ],
 )
 def test_media_offset_cli_rejects_zero_positive_arguments(
-    argument: str,
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
+    argument: str, tmp_path: Path, capsys: CaptureFixture[str]
 ):
     """Test media offset CLI rejects zero for positive arguments.
 

@@ -30,16 +30,11 @@ def test_declared_module_hierarchy_may_be_stricter_than_import_graph(tmp_path: P
         encoding="utf-8",
     )
     (package_dir_path / "foundation.py").write_text(
-        '"""Foundation module."""\n',
-        encoding="utf-8",
+        '"""Foundation module."""\n', encoding="utf-8"
     )
 
     assert (
-        get_module_hierarchy_violations(
-            init_path,
-            package_parent_path=tmp_path,
-        )
-        == []
+        get_module_hierarchy_violations(init_path, package_parent_path=tmp_path) == []
     )
 
 
@@ -49,18 +44,15 @@ def test_hierarchy_declarations_require_standard_heading(tmp_path: Path):
     package_dir_path.mkdir()
     init_path = package_dir_path / "__init__.py"
     init_path.write_text(
-        '"""Example package.\n\nHierarchy notes:\n* child\n"""\n',
-        encoding="utf-8",
+        '"""Example package.\n\nHierarchy notes:\n* child\n"""\n', encoding="utf-8"
     )
     (package_dir_path / "child.py").write_text(
-        '"""Child module."""\n',
-        encoding="utf-8",
+        '"""Child module."""\n', encoding="utf-8"
     )
 
-    assert get_module_hierarchy_violations(
-        init_path,
-        package_parent_path=tmp_path,
-    ) == ["example/__init__.py: missing hierarchy block"]
+    assert get_module_hierarchy_violations(init_path, package_parent_path=tmp_path) == [
+        "example/__init__.py: missing hierarchy block"
+    ]
 
 
 def test_module_hierarchy_docs_are_authoritative():
@@ -128,11 +120,7 @@ def test_module_import_style_rules(tmp_path: Path):
             "from example.feature.sibling import Sibling\n",
             "imports rooted in the current package must be relative",
         ),
-        (
-            "feature/sibling_relative.py",
-            "from .sibling import Sibling\n",
-            None,
-        ),
+        ("feature/sibling_relative.py", "from .sibling import Sibling\n", None),
         (
             "feature/sibling_module_relative.py",
             "from .sibling.models import MODEL\n",
@@ -148,21 +136,13 @@ def test_module_import_style_rules(tmp_path: Path):
             "from .sibling import HiddenSibling\n",
             "package facade imports must name exports listed in __all__",
         ),
-        (
-            "feature/child_alias_relative.py",
-            "from . import sibling\n",
-            None,
-        ),
+        ("feature/child_alias_relative.py", "from . import sibling\n", None),
         (
             "feature/child_alias_absolute.py",
             "from example.feature import sibling\n",
             "imports rooted in the current package must be relative",
         ),
-        (
-            "feature/public_facade.py",
-            "from example.core import PublicError\n",
-            None,
-        ),
+        ("feature/public_facade.py", "from example.core import PublicError\n", None),
         (
             "feature/private_facade.py",
             "from example.core import HiddenError\n",
@@ -188,8 +168,7 @@ def test_module_import_style_rules(tmp_path: Path):
         file_path = package_dir_path / relative_path
         file_path.write_text(source, encoding="utf-8")
         violations = get_import_style_violations(
-            file_path,
-            package_parent_path=tmp_path,
+            file_path, package_parent_path=tmp_path
         )
         if expected_reason is None:
             assert violations == []
@@ -249,14 +228,12 @@ def test_single_child_package_requires_hierarchy(tmp_path: Path):
     init_path = package_dir_path / "__init__.py"
     init_path.write_text('"""Example package."""\n', encoding="utf-8")
     (package_dir_path / "child.py").write_text(
-        '"""Child module."""\n',
-        encoding="utf-8",
+        '"""Child module."""\n', encoding="utf-8"
     )
 
-    assert get_module_hierarchy_violations(
-        init_path,
-        package_parent_path=tmp_path,
-    ) == ["example/__init__.py: missing hierarchy block"]
+    assert get_module_hierarchy_violations(init_path, package_parent_path=tmp_path) == [
+        "example/__init__.py: missing hierarchy block"
+    ]
 
 
 def get_child_names(package_dir_path: Path) -> list[str]:
@@ -279,9 +256,7 @@ def get_child_names(package_dir_path: Path) -> list[str]:
 
 
 def get_package_dotted(
-    package_dir_path: Path,
-    *,
-    package_parent_path: Path = package_root.parent,
+    package_dir_path: Path, *, package_parent_path: Path = package_root.parent
 ) -> str:
     """Get dotted package name for a package directory.
 
@@ -347,9 +322,7 @@ def parse_hierarchy_line(line: str) -> list[str]:
 
 
 def get_documented_level_violations(
-    init_path: Path,
-    child_names: list[str],
-    documented_levels: dict[int, list[str]],
+    init_path: Path, child_names: list[str], documented_levels: dict[int, list[str]]
 ) -> list[str]:
     """Get violations in the documented hierarchy block itself.
 
@@ -400,9 +373,7 @@ def get_documented_level_violations(
 
 
 def get_sibling_import_edges(
-    package_dir_path: Path,
-    package_dotted: str,
-    child_names: list[str],
+    package_dir_path: Path, package_dotted: str, child_names: list[str]
 ) -> dict[str, set[str]]:
     """Build sibling import edges for a package.
 
@@ -528,8 +499,7 @@ def get_absolute_import_from_style_violations(
         ]
 
     target_path = get_module_source_path(
-        module_name,
-        package_parent_path=package_parent_path,
+        module_name, package_parent_path=package_parent_path
     )
     if target_path is None:
         return []
@@ -544,8 +514,7 @@ def get_absolute_import_from_style_violations(
     violations: list[str] = []
     for alias in node.names:
         child_target_path = get_module_source_path(
-            f"{module_name}.{alias.name}",
-            package_parent_path=package_parent_path,
+            f"{module_name}.{alias.name}", package_parent_path=package_parent_path
         )
         if child_target_path is not None:
             if module_name == current_package_name:
@@ -619,8 +588,7 @@ def get_absolute_import_style_violations(
             continue
 
         target_path = get_module_source_path(
-            alias.name,
-            package_parent_path=package_parent_path,
+            alias.name, package_parent_path=package_parent_path
         )
         if target_path is None:
             continue
@@ -643,9 +611,7 @@ def get_absolute_import_style_violations(
 
 
 def get_import_style_violations(
-    file_path: Path,
-    *,
-    package_parent_path: Path = package_root.parent,
+    file_path: Path, *, package_parent_path: Path = package_root.parent
 ) -> list[str]:
     """Get violations of package import style rules in one Python file.
 
@@ -729,8 +695,7 @@ def get_relative_import_style_violations(
     if node.module:
         target_module_name = f"{target_module_name}.{node.module}"
     target_path = get_module_source_path(
-        target_module_name,
-        package_parent_path=package_parent_path,
+        target_module_name, package_parent_path=package_parent_path
     )
     package_exports: set[str] | None = None
     if target_path is not None and target_path.name == "__init__.py":
@@ -759,9 +724,7 @@ def get_relative_import_style_violations(
 
 
 def get_module_source_path(
-    module_name: str,
-    *,
-    package_parent_path: Path = package_root.parent,
+    module_name: str, *, package_parent_path: Path = package_root.parent
 ) -> Path | None:
     """Get the source path for an importable module or package.
 
@@ -813,9 +776,7 @@ def get_package_exports(init_path: Path) -> set[str] | None:
 
 
 def get_module_hierarchy_violations(
-    init_path: Path,
-    *,
-    package_parent_path: Path = package_root.parent,
+    init_path: Path, *, package_parent_path: Path = package_root.parent
 ) -> list[str]:
     """Get violations of one package's declared module hierarchy.
 
@@ -847,8 +808,7 @@ def get_module_hierarchy_violations(
     edges = get_sibling_import_edges(
         package_dir_path=package_dir_path,
         package_dotted=get_package_dotted(
-            package_dir_path,
-            package_parent_path=package_parent_path,
+            package_dir_path, package_parent_path=package_parent_path
         ),
         child_names=child_names,
     )
@@ -869,9 +829,7 @@ def get_module_hierarchy_violations(
 
 
 def resolve_import_from_modules(
-    file_path: Path,
-    node: ast.ImportFrom,
-    root_package_parts: list[str],
+    file_path: Path, node: ast.ImportFrom, root_package_parts: list[str]
 ) -> list[str]:
     """Resolve an `ImportFrom` node to absolute module name candidates.
 

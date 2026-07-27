@@ -99,12 +99,7 @@ def _get_segment(
 
 def test_segments_are_usable_rejects_repetitive_whisper_output():
     """Test highly compressible Whisper loops are unusable for alignment."""
-    segments = [
-        _get_segment(
-            compression_ratio=16.24,
-            with_words=True,
-        )
-    ]
+    segments = [_get_segment(compression_ratio=16.24, with_words=True)]
 
     assert not GuidedTranscriber._segments_are_usable(segments)
 
@@ -125,12 +120,7 @@ def test_segments_are_usable_reports_missing_word_timings_concisely(
 
 def test_segments_are_usable_rejects_nonpositive_word_duration():
     """Test text-bearing words must remain positive after ms conversion."""
-    segment = _get_segment(
-        start=4.02,
-        end=4.04,
-        text=" 啊",
-        compression_ratio=1.0,
-    )
+    segment = _get_segment(start=4.02, end=4.04, text=" 啊", compression_ratio=1.0)
     segment.words = [
         TranscribedWord(text=" ", start=4.02, end=4.04, confidence=1.0),
         TranscribedWord(text="啊", start=4.04, end=4.04, confidence=1.0),
@@ -141,34 +131,16 @@ def test_segments_are_usable_rejects_nonpositive_word_duration():
 
 def test_segments_are_usable_rejects_timestamp_beyond_audio():
     """Test Whisper timestamps extending beyond source audio are unusable."""
-    segments = [
-        _get_segment(
-            end=12.0,
-            compression_ratio=1.0,
-            with_words=True,
-        )
-    ]
+    segments = [_get_segment(end=12.0, compression_ratio=1.0, with_words=True)]
 
-    assert not GuidedTranscriber._segments_are_usable(
-        segments,
-        audio_duration=10.0,
-    )
+    assert not GuidedTranscriber._segments_are_usable(segments, audio_duration=10.0)
 
 
 def test_segments_are_usable_accepts_partial_guided_tail():
     """Test guide coverage does not determine transcription validity."""
-    segments = [
-        _get_segment(
-            end=4.0,
-            compression_ratio=1.0,
-            with_words=True,
-        )
-    ]
+    segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
 
-    assert GuidedTranscriber._segments_are_usable(
-        segments,
-        audio_duration=10.0,
-    )
+    assert GuidedTranscriber._segments_are_usable(segments, audio_duration=10.0)
 
 
 def test_missing_guided_tail_runs_focused_recovery():
@@ -177,11 +149,7 @@ def test_missing_guided_tail_runs_focused_recovery():
     initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
     recovered_segments = [
         _get_segment(
-            start=0.2,
-            end=0.8,
-            text="tail",
-            compression_ratio=1.0,
-            with_words=True,
+            start=0.2, end=0.8, text="tail", compression_ratio=1.0, with_words=True
         )
     ]
     recovered_segments[0].no_speech_prob = 0.1
@@ -199,8 +167,7 @@ def test_missing_guided_tail_runs_focused_recovery():
     assert output[1].end == 5.8
     normalized_tail_audio = transcriber.tail_recovery_transcriber.call_args.args[0]
     transcriber.tail_recovery_transcriber.assert_called_once_with(
-        normalized_tail_audio,
-        is_usable=ANY,
+        normalized_tail_audio, is_usable=ANY
     )
     assert transcriber.tail_recovery_transcriber.call_args.kwargs["is_usable"](
         recovered_segments
@@ -226,8 +193,7 @@ def test_missing_guided_tail_keeps_base_after_unusable_recovery():
     assert len(normalized_tail_audio) == 5000
     assert normalized_tail_audio.max_dBFS == approx(-1.0, abs=0.01)
     transcriber.tail_recovery_transcriber.assert_called_once_with(
-        normalized_tail_audio,
-        is_usable=ANY,
+        normalized_tail_audio, is_usable=ANY
     )
     assert not transcriber.tail_recovery_transcriber.call_args.kwargs["is_usable"](
         repetitive_segments
@@ -239,10 +205,7 @@ def test_missing_guided_tail_keeps_valid_base_without_credible_recovery():
     transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
     initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
     stretched_segment = _get_segment(
-        end=5.0,
-        text="x",
-        compression_ratio=1.0,
-        with_words=True,
+        end=5.0, text="x", compression_ratio=1.0, with_words=True
     )
     stretched_segment.no_speech_prob = 0.1
     no_speech_segment = _get_segment(
@@ -311,10 +274,7 @@ def test_standard_transcriber_runs_shared_fallbacks():
     output = transcriber._transcribe_block_audio(audio)
 
     assert output == segments
-    transcriber.transcriber.assert_called_once_with(
-        audio,
-        is_usable=ANY,
-    )
+    transcriber.transcriber.assert_called_once_with(audio, is_usable=ANY)
     transcriber.recovery_transcriber.assert_not_called()
 
 
@@ -331,10 +291,7 @@ def test_unusable_standard_output_uses_defensive_recovery():
     output = transcriber._transcribe_block_audio(audio)
 
     assert output == segments
-    transcriber.recovery_transcriber.assert_called_once_with(
-        audio,
-        is_usable=ANY,
-    )
+    transcriber.recovery_transcriber.assert_called_once_with(audio, is_usable=ANY)
 
 
 def test_standard_error_uses_defensive_recovery():
@@ -378,17 +335,12 @@ def test_overwrite_cache_is_owned_by_transcriber_caches():
 
     assert transcriber._transcribe_block_audio(audio) == segments
     transcriber.transcriber.get_cached_transcription.assert_called_once_with(
-        audio,
-        is_usable=ANY,
+        audio, is_usable=ANY
     )
     transcriber.recovery_transcriber.get_cached_transcription.assert_called_once_with(
-        audio,
-        is_usable=ANY,
+        audio, is_usable=ANY
     )
-    transcriber.transcriber.assert_called_once_with(
-        audio,
-        is_usable=ANY,
-    )
+    transcriber.transcriber.assert_called_once_with(audio, is_usable=ANY)
 
 
 def test_process_block_preserves_raw_segments_and_uses_buffered_offset():
@@ -403,9 +355,7 @@ def test_process_block_preserves_raw_segments_and_uses_buffered_offset():
     segment = _get_segment()
 
     with patch.object(
-        transcriber,
-        "_transcribe_block_audio",
-        return_value=[segment],
+        transcriber, "_transcribe_block_audio", return_value=[segment]
     ) as transcribe_block_audio:
         output = transcriber.process_block(audio_block, reference_block)
 
@@ -414,8 +364,7 @@ def test_process_block_preserves_raw_segments_and_uses_buffered_offset():
     assert output[0].start == 350
     assert output[0].end == 450
     transcribe_block_audio.assert_called_once_with(
-        audio_block.audio,
-        expected_last_start=0.75,
+        audio_block.audio, expected_last_start=0.75
     )
     aligner.update_all_test_cases.assert_not_called()
 
@@ -437,11 +386,7 @@ def test_process_block_applies_configured_segment_splitter():
     reference_block = Series(events=[Subtitle(start=0, end=1000, text="reference")])
     segment = _get_segment()
 
-    with patch.object(
-        transcriber,
-        "_transcribe_block_audio",
-        return_value=[segment],
-    ):
+    with patch.object(transcriber, "_transcribe_block_audio", return_value=[segment]):
         transcriber.process_block(audio_block, reference_block)
 
     transcriber.segment_splitter.assert_called_once_with(segment)
@@ -513,11 +458,7 @@ def test_process_uses_inclusive_start_index(caplog: LogCaptureFixture):
         "process_block",
         side_effect=lambda audio_block, reference_block: audio_block,
     ) as process_block:
-        output = transcriber.process(
-            audio_series,
-            reference_series,
-            start_at_idx=1,
-        )
+        output = transcriber.process(audio_series, reference_series, start_at_idx=1)
 
     assert process_block.call_count == 1
     assert len(output) == 1

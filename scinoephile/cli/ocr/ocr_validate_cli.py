@@ -71,10 +71,7 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class OcrValidateCli(ScinoephileCliBase):
     """Validate OCR text against subtitle images."""
 
-    localizations = merge_localizations(
-        WEB_LOCALIZATIONS,
-        OCR_VALIDATE_LOCALIZATIONS,
-    )
+    localizations = merge_localizations(WEB_LOCALIZATIONS, OCR_VALIDATE_LOCALIZATIONS)
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -140,9 +137,7 @@ class OcrValidateCli(ScinoephileCliBase):
             help="validated subtitle outfile path",
         )
         arg_groups["output arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite outfile if it exists",
+            "--overwrite", action="store_true", help="overwrite outfile if it exists"
         )
         parser.set_defaults(_parser=parser)
 

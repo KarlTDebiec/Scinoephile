@@ -35,7 +35,7 @@ from test.helpers import assert_series_equal, parametrize
             "test.data.mlamd.get_torch_device",
             "cuda",
             id="mlamd",
-        ),
+        )
     ],
 )
 def test_review_series_guided_yue_zho(

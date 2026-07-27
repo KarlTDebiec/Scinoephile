@@ -9,10 +9,7 @@ from pathlib import Path
 
 from pydub import AudioSegment
 
-from scinoephile.audio.transcription import (
-    TranscribedSegment,
-    TranscriptionCache,
-)
+from scinoephile.audio.transcription import TranscribedSegment, TranscriptionCache
 
 
 def test_transcription_cache_round_trip(tmp_path: Path):
@@ -24,15 +21,7 @@ def test_transcription_cache_round_trip(tmp_path: Path):
     cache = TranscriptionCache(tmp_path, "test", "Test")
     audio = AudioSegment.silent(duration=100)
     metadata = {"model_name": "test/model"}
-    segments = [
-        TranscribedSegment(
-            id=0,
-            seek=0,
-            start=0.0,
-            end=0.1,
-            text="test",
-        )
-    ]
+    segments = [TranscribedSegment(id=0, seek=0, start=0.0, end=0.1, text="test")]
 
     cache_path = cache.save(audio, metadata, segments)
     cached_transcription = cache.load(audio, metadata)
@@ -95,9 +84,7 @@ def test_transcription_cache_overwrites_matching_entry_once(tmp_path: Path):
     assert overwrite_cache.load(audio, metadata) == (cache_path, [])
 
 
-def test_transcription_cache_uses_runtime_default(
-    runtime_cache_root_path: Path,
-):
+def test_transcription_cache_uses_runtime_default(runtime_cache_root_path: Path):
     """Test a missing configured root selects the runtime cache root.
 
     Arguments:

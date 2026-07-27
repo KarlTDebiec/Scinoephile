@@ -9,9 +9,7 @@ from time import time
 
 from pytest import MonkeyPatch, raises
 
-from scinoephile.image.ocr.tesseract.legacy_data_cache import (
-    TesseractLegacyDataCache,
-)
+from scinoephile.image.ocr.tesseract.legacy_data_cache import TesseractLegacyDataCache
 from test.helpers.files import set_mtime
 
 
@@ -47,25 +45,21 @@ def test_tesseract_legacy_data_cache_round_trip(tmp_path: Path):
 
 
 def test_tesseract_legacy_data_cache_path_includes_version(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test legacy data from another cache version is not reused."""
     cache = TesseractLegacyDataCache(tmp_path)
     traineddata_path = cache.save("eng", b"traineddata")
 
     monkeypatch.setattr(
-        "scinoephile.image.ocr.tesseract.legacy_data_cache._CACHE_VERSION",
-        2,
+        "scinoephile.image.ocr.tesseract.legacy_data_cache._CACHE_VERSION", 2
     )
 
     assert cache.load("eng") is None
     assert traineddata_path.exists()
 
 
-def test_tesseract_legacy_data_cache_overwrites_matching_entry_once(
-    tmp_path: Path,
-):
+def test_tesseract_legacy_data_cache_overwrites_matching_entry_once(tmp_path: Path):
     """Test overwrite refreshes matching traineddata once per instance."""
     TesseractLegacyDataCache(tmp_path).save("eng", b"stale")
     overwrite_cache = TesseractLegacyDataCache(tmp_path, True)

@@ -30,8 +30,7 @@ logger = getLogger(__name__)
 
 
 def ocr_image_series_with_lens(
-    image_series: ImageSeries,
-    **kwargs: Unpack[LensRecognizerKwargs],
+    image_series: ImageSeries, **kwargs: Unpack[LensRecognizerKwargs]
 ) -> Series:
     """OCR an image subtitle series with Google Lens.
 
@@ -53,21 +52,12 @@ def ocr_image_series_with_lens(
             image_subtitle = cast(ImageSubtitle, subtitle)
             text = lens_recognizer.recognize_image(image_subtitle.img)
             events.append(
-                Subtitle(
-                    start=image_subtitle.start,
-                    end=image_subtitle.end,
-                    text=text,
-                )
+                Subtitle(start=image_subtitle.start, end=image_subtitle.end, text=text)
             )
         return Series(events=events)
     except ScinoephileError:
         raise
-    except (
-        ImportError,
-        OSError,
-        RuntimeError,
-        ValueError,
-    ) as exc:
+    except (ImportError, OSError, RuntimeError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to OCR image series with Google Lens: {exc}"
         ) from exc

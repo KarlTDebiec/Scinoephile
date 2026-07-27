@@ -58,10 +58,7 @@ def format_cache_stats(stats: CacheStats) -> dict[str, Any]:
 
 
 def print_entries(
-    entries: list[CacheEntry],
-    output_format: str,
-    *,
-    limit: int | None = None,
+    entries: list[CacheEntry], output_format: str, *, limit: int | None = None
 ):
     """Print cache entries.
 

@@ -45,16 +45,8 @@ def test_validation_manager_layers_runtime_data_over_repo_data(tmp_path, monkeyp
 
     manager = ValidationManager(validation_data_dir_path=validation_data_dir_path)
 
-    assert manager.char_dims_by_n[1] == {
-        "A": {(10, 20), (11, 21)},
-        "B": {(30, 40)},
-    }
-    assert manager.char_grp_dims_by_n == {
-        2: {
-            "AB": {(50, 20)},
-            "CD": {(60, 20)},
-        }
-    }
+    assert manager.char_dims_by_n[1] == {"A": {(10, 20), (11, 21)}, "B": {(30, 40)}}
+    assert manager.char_grp_dims_by_n == {2: {"AB": {(50, 20)}, "CD": {(60, 20)}}}
     assert manager.char_pair_gaps == {
         ("A", "B"): (9, 10, 11, 12),
         ("B", "C"): (5, 6, 7, 8),
@@ -93,15 +85,8 @@ def test_validation_manager_uses_only_repo_data_in_dev_mode(tmp_path, monkeypatc
         validation_data_dir_path=validation_data_dir_path, dev=True
     )
 
-    assert manager.char_dims_by_n[1] == {
-        "A": {(10, 20)},
-        "B": {(30, 40)},
-    }
-    assert manager.char_grp_dims_by_n == {
-        2: {
-            "AB": {(50, 20)},
-        }
-    }
+    assert manager.char_dims_by_n[1] == {"A": {(10, 20)}, "B": {(30, 40)}}
+    assert manager.char_grp_dims_by_n == {2: {"AB": {(50, 20)}}}
     assert manager.char_pair_gaps == {
         ("A", "B"): (1, 2, 3, 4),
         ("B", "C"): (5, 6, 7, 8),
@@ -195,8 +180,7 @@ def test_validation_manager_does_not_persist_new_default_pair_gaps_in_dev_mode(
         side_effect=AssertionError("default pair gap should not be saved"),
     ):
         manager.update_pair_gaps(
-            ("你", "本"),
-            get_default_char_pair_cutoffs("你", "本"),
+            ("你", "本"), get_default_char_pair_cutoffs("你", "本")
         )
 
     assert manager.char_pair_gaps[("你", "本")] == get_default_char_pair_cutoffs(
@@ -274,8 +258,7 @@ def test_validation_manager_wraps_data_path_errors(tmp_path):
     validation_data_dir_path.write_text("not a directory", encoding="utf-8")
 
     with raises(
-        ScinoephileError,
-        match="Unable to initialize OCR validation data",
+        ScinoephileError, match="Unable to initialize OCR validation data"
     ) as excinfo:
         ValidationManager(validation_data_dir_path=validation_data_dir_path)
 

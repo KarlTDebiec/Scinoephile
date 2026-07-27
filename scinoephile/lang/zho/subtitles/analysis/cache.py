@@ -30,11 +30,7 @@ _CACHE_VERSION = 1
 class ZhoScriptAnalysisCache:
     """Caches Chinese subtitle script analysis results."""
 
-    def __init__(
-        self,
-        cache_root_path: Path | None = None,
-        overwrite: bool = False,
-    ):
+    def __init__(self, cache_root_path: Path | None = None, overwrite: bool = False):
         """Initialize.
 
         Arguments:
@@ -107,12 +103,7 @@ class ZhoScriptAnalysisCache:
         Returns:
             cached script analysis, if present and valid
         """
-        cache_path = self.get_path(
-            infile_path,
-            stream,
-            sample_size,
-            ocr_languages,
-        )
+        cache_path = self.get_path(infile_path, stream, sample_size, ocr_languages)
         if self.overwrite and cache_path not in self._refreshed_paths:
             self._refreshed_paths.add(cache_path)
             if cache_path.exists():
@@ -154,12 +145,7 @@ class ZhoScriptAnalysisCache:
         Returns:
             removed cache path, if present
         """
-        cache_path = self.get_path(
-            infile_path,
-            stream,
-            sample_size,
-            ocr_languages,
-        )
+        cache_path = self.get_path(infile_path, stream, sample_size, ocr_languages)
         if not cache_path.exists():
             return None
         cache_path.unlink()
@@ -185,18 +171,10 @@ class ZhoScriptAnalysisCache:
         Returns:
             saved cache path
         """
-        cache_path = self.get_path(
-            infile_path,
-            stream,
-            sample_size,
-            ocr_languages,
-        )
+        cache_path = self.get_path(infile_path, stream, sample_size, ocr_languages)
         with open_atomic_text_file(cache_path) as file:
             json.dump(
-                {
-                    "cache_version": _CACHE_VERSION,
-                    "analysis": asdict(analysis),
-                },
+                {"cache_version": _CACHE_VERSION, "analysis": asdict(analysis)},
                 file,
                 ensure_ascii=False,
                 sort_keys=True,

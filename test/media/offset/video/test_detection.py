@@ -79,12 +79,10 @@ def test_get_video_offset_uses_reference_frame_grid_for_fine_search():
     """Test fine video offset search uses reference frame-grid candidates."""
     frame_duration = float(Fraction(1001, 24000))
     reference_samples = _get_samples(
-        [frame * frame_duration for frame in range(100, 160)],
-        list(range(60)),
+        [frame * frame_duration for frame in range(100, 160)], list(range(60))
     )
     target_samples = _get_samples(
-        [(frame - 20) * frame_duration for frame in range(100, 160)],
-        list(range(60)),
+        [(frame - 20) * frame_duration for frame in range(100, 160)], list(range(60))
     )
 
     with (
@@ -118,24 +116,12 @@ def test_get_video_offset_uses_reference_frame_grid_for_fine_search():
 def test_get_video_offset_tolerates_brightness_shift():
     """Test video offset search normalizes brightness differences."""
     reference_samples = [
-        _get_sample(
-            time=0.0,
-            frame=np.array([[0, 1], [2, 3]], dtype=np.float32),
-        ),
-        _get_sample(
-            time=1.0,
-            frame=np.array([[4, 5], [6, 7]], dtype=np.float32),
-        ),
+        _get_sample(time=0.0, frame=np.array([[0, 1], [2, 3]], dtype=np.float32)),
+        _get_sample(time=1.0, frame=np.array([[4, 5], [6, 7]], dtype=np.float32)),
     ]
     target_samples = [
-        _get_sample(
-            time=1.0,
-            frame=np.array([[10, 12], [14, 16]], dtype=np.float32),
-        ),
-        _get_sample(
-            time=2.0,
-            frame=np.array([[18, 20], [22, 24]], dtype=np.float32),
-        ),
+        _get_sample(time=1.0, frame=np.array([[10, 12], [14, 16]], dtype=np.float32)),
+        _get_sample(time=2.0, frame=np.array([[18, 20], [22, 24]], dtype=np.float32)),
     ]
 
     with (
@@ -223,8 +209,7 @@ def test_get_video_offset_samples_multiple_windows_and_aggregates_frames():
     side_effect = []
     for offset_frames in [-20, -20, -21]:
         reference_samples, target_samples = _get_shifted_sample_pair(
-            offset_frames=offset_frames,
-            frame_duration=frame_duration,
+            offset_frames=offset_frames, frame_duration=frame_duration
         )
         side_effect.extend([reference_samples, target_samples])
 
@@ -238,8 +223,7 @@ def test_get_video_offset_samples_multiple_windows_and_aggregates_frames():
             ],
         ),
         patch(
-            "scinoephile.media.offset.video.detection._sample_video_frames",
-            new=sampler,
+            "scinoephile.media.offset.video.detection._sample_video_frames", new=sampler
         ),
     ):
         result = get_video_offset(
@@ -280,14 +264,10 @@ def test_get_video_offset_clamps_duration_to_shared_runtime():
     with (
         patch(
             "scinoephile.media.offset.video.detection.ffmpeg.probe",
-            side_effect=[
-                _get_probe(duration=20.0),
-                _get_probe(duration=20.0),
-            ],
+            side_effect=[_get_probe(duration=20.0), _get_probe(duration=20.0)],
         ),
         patch(
-            "scinoephile.media.offset.video.detection._sample_video_frames",
-            new=sampler,
+            "scinoephile.media.offset.video.detection._sample_video_frames", new=sampler
         ),
     ):
         result = get_video_offset(
@@ -298,14 +278,8 @@ def test_get_video_offset_clamps_duration_to_shared_runtime():
         )
 
     assert result.offset_frames == 0
-    assert [call["start_time"] for call in sampler.calls] == [
-        0.0,
-        0.0,
-    ]
-    assert [call["duration"] for call in sampler.calls] == [
-        20.0,
-        20.0,
-    ]
+    assert [call["start_time"] for call in sampler.calls] == [0.0, 0.0]
+    assert [call["duration"] for call in sampler.calls] == [20.0, 20.0]
 
 
 def test_get_video_offset_handles_aggregate_without_exact_window_match():
@@ -314,8 +288,7 @@ def test_get_video_offset_handles_aggregate_without_exact_window_match():
     side_effect = []
     for offset_frames in [0, 1, 3, 4]:
         reference_samples, target_samples = _get_shifted_sample_pair(
-            offset_frames=offset_frames,
-            frame_duration=frame_duration,
+            offset_frames=offset_frames, frame_duration=frame_duration
         )
         side_effect.extend([reference_samples, target_samples])
 
@@ -391,11 +364,7 @@ def test_get_offsets_clamps_to_requested_end():
 def test_sample_video_frames_normalizes_brightness():
     """Test sampled video frames normalize brightness during sampling."""
     output = np.array(
-        [
-            [[0, 1], [2, 3]],
-            [[10, 12], [14, 16]],
-        ],
-        dtype=np.uint8,
+        [[[0, 1], [2, 3]], [[10, 12], [14, 16]]], dtype=np.uint8
     ).tobytes()
 
     with patch(
@@ -420,35 +389,16 @@ def test_sample_video_frames_normalizes_brightness():
 @parametrize(
     ("kwargs", "message"),
     [
-        (
-            {"max_offset": 0.0},
-            "0.0 is less than minimum value",
-        ),
-        (
-            {"sample_rate": 0.0},
-            "0.0 is less than minimum value",
-        ),
-        (
-            {"coarse_step": 0.0},
-            "0.0 is less than minimum value",
-        ),
-        (
-            {"sample_windows": 0},
-            "0 is less than minimum value of 1",
-        ),
-        (
-            {"width": 0},
-            "0 is less than minimum value of 1",
-        ),
-        (
-            {"height": 0},
-            "0 is less than minimum value of 1",
-        ),
+        ({"max_offset": 0.0}, "0.0 is less than minimum value"),
+        ({"sample_rate": 0.0}, "0.0 is less than minimum value"),
+        ({"coarse_step": 0.0}, "0.0 is less than minimum value"),
+        ({"sample_windows": 0}, "0 is less than minimum value of 1"),
+        ({"width": 0}, "0 is less than minimum value of 1"),
+        ({"height": 0}, "0 is less than minimum value of 1"),
     ],
 )
 def test_get_video_offset_rejects_invalid_numeric_parameters(
-    kwargs: _VideoOffsetKwargs,
-    message: str,
+    kwargs: _VideoOffsetKwargs, message: str
 ):
     """Test video offset rejects invalid numeric parameters.
 
@@ -497,7 +447,7 @@ def test_video_offset_package_imports_detection_only_when_needed():
                 "raise SystemExit("
                 "'scinoephile.media.offset.video.detection' in sys.modules)"
             ),
-        ],
+        ]
     )
 
     assert exitcode == 0
@@ -563,9 +513,7 @@ class _FakeFfmpegInput:
 
 
 def _get_probe(
-    *,
-    duration: float = 100.0,
-    frame_rate: str = "1/1",
+    *, duration: float = 100.0, frame_rate: str = "1/1"
 ) -> dict[str, object]:
     """Return synthetic ffprobe output.
 
@@ -644,18 +592,13 @@ def _get_samples(times: list[float], values: list[int]) -> list[SimpleNamespace]
         synthetic frame samples
     """
     return [
-        _get_sample(
-            time=time,
-            frame=np.full((2, 2), value, dtype=np.float32),
-        )
+        _get_sample(time=time, frame=np.full((2, 2), value, dtype=np.float32))
         for time, value in zip(times, values, strict=True)
     ]
 
 
 def _get_shifted_sample_pair(
-    *,
-    offset_frames: int,
-    frame_duration: float,
+    *, offset_frames: int, frame_duration: float
 ) -> tuple[list[SimpleNamespace], list[SimpleNamespace]]:
     """Return synthetic reference and shifted target samples.
 
@@ -668,11 +611,9 @@ def _get_shifted_sample_pair(
     frame_numbers = list(range(100, 160))
     values = list(range(60))
     reference_samples = _get_samples(
-        [frame * frame_duration for frame in frame_numbers],
-        values,
+        [frame * frame_duration for frame in frame_numbers], values
     )
     target_samples = _get_samples(
-        [(frame + offset_frames) * frame_duration for frame in frame_numbers],
-        values,
+        [(frame + offset_frames) * frame_duration for frame in frame_numbers], values
     )
     return reference_samples, target_samples

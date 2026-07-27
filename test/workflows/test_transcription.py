@@ -48,10 +48,7 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
         )
 
     assert output is expected
-    assert get_transcriber.call_args.args == (
-        Language.yue_hant,
-        Language.zho_hans,
-    )
+    assert get_transcriber.call_args.args == (Language.yue_hant, Language.zho_hans)
     assert get_transcriber.call_args.kwargs["demucs_mode"] is DemucsMode.AUTO
     assert get_transcriber.call_args.kwargs["vad_mode"] is VADMode.AUTO
     assert get_transcriber.call_args.kwargs["cache_root_path"] == tmp_path / "cache"
@@ -66,8 +63,5 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
         == punctuation_json_path
     )
     transcriber.process.assert_called_once_with(
-        audio_series,
-        reference_series,
-        stop_at_idx=2,
-        start_at_idx=1,
+        audio_series, reference_series, stop_at_idx=2, start_at_idx=1
     )

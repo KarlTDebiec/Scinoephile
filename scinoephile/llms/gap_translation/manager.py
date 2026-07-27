@@ -7,13 +7,7 @@ from __future__ import annotations
 from functools import cache
 from typing import ClassVar
 
-from scinoephile.core.llms import (
-    Answer,
-    Manager,
-    PromptModelField,
-    Query,
-    TestCase,
-)
+from scinoephile.core.llms import Answer, Manager, PromptModelField, Query, TestCase
 
 from .models import (
     GapTranslationAnswer,
@@ -55,15 +49,14 @@ class GapTranslationManager(Manager[GapTranslationTestCase]):
                     alias=prompt.outputs,
                     annotation=list[output_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.outputs_desc,
-                ),
+                )
             },
         )
 
     @classmethod
     @cache
     def get_guide_cls(
-        cls,
-        prompt: GapTranslationPrompt,
+        cls, prompt: GapTranslationPrompt
     ) -> type[GapTranslationSubtitle]:
         """Get guide class with prompt-specific JSON field aliases.
 
@@ -77,12 +70,10 @@ class GapTranslationManager(Manager[GapTranslationTestCase]):
             prompt,
             {
                 "index": PromptModelField(
-                    alias=prompt.index,
-                    description=prompt.index_desc,
+                    alias=prompt.index, description=prompt.index_desc
                 ),
                 "text": PromptModelField(
-                    alias=prompt.text,
-                    description=prompt.guide_text_desc,
+                    alias=prompt.text, description=prompt.guide_text_desc
                 ),
             },
             name="GapTranslationGuide",
@@ -91,8 +82,7 @@ class GapTranslationManager(Manager[GapTranslationTestCase]):
     @classmethod
     @cache
     def get_output_cls(
-        cls,
-        prompt: GapTranslationPrompt,
+        cls, prompt: GapTranslationPrompt
     ) -> type[GapTranslationSubtitle]:
         """Get output class with prompt-specific JSON field aliases.
 
@@ -106,12 +96,10 @@ class GapTranslationManager(Manager[GapTranslationTestCase]):
             prompt,
             {
                 "index": PromptModelField(
-                    alias=prompt.index,
-                    description=prompt.index_desc,
+                    alias=prompt.index, description=prompt.index_desc
                 ),
                 "text": PromptModelField(
-                    alias=prompt.text,
-                    description=prompt.output_text_desc,
+                    alias=prompt.text, description=prompt.output_text_desc
                 ),
             },
             name="GapTranslationOutput",
@@ -149,8 +137,7 @@ class GapTranslationManager(Manager[GapTranslationTestCase]):
     @classmethod
     @cache
     def get_target_cls(
-        cls,
-        prompt: GapTranslationPrompt,
+        cls, prompt: GapTranslationPrompt
     ) -> type[GapTranslationSubtitle]:
         """Get target class with prompt-specific JSON field aliases.
 
@@ -164,12 +151,10 @@ class GapTranslationManager(Manager[GapTranslationTestCase]):
             prompt,
             {
                 "index": PromptModelField(
-                    alias=prompt.index,
-                    description=prompt.index_desc,
+                    alias=prompt.index, description=prompt.index_desc
                 ),
                 "text": PromptModelField(
-                    alias=prompt.text,
-                    description=prompt.target_text_desc,
+                    alias=prompt.text, description=prompt.target_text_desc
                 ),
             },
             name="GapTranslationTarget",

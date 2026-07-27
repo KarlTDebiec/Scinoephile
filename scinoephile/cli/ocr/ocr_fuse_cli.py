@@ -171,9 +171,7 @@ class OcrFuseCli(ScinoephileCliBase):
             help="fused subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite outfile if it exists",
+            "--overwrite", action="store_true", help="overwrite outfile if it exists"
         )
         parser.set_defaults(_parser=parser)
 
@@ -264,12 +262,10 @@ class OcrFuseCli(ScinoephileCliBase):
                 secondary,
                 language=fusion_language,
                 provider=get_provider(
-                    llm_args.provider_name,
-                    model=llm_args.model_name,
+                    llm_args.provider_name, model=llm_args.model_name
                 ),
                 additional_context=read_llm_additional_context(
-                    parser,
-                    llm_args.additional_context_file_path,
+                    parser, llm_args.additional_context_file_path
                 ),
                 cache_root_path=cache_args.root_path,
                 overwrite_cache=cache_args.overwrite,

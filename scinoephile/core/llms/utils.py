@@ -18,11 +18,7 @@ from .manager import Manager
 from .prompt import Prompt
 from .test_case import TestCase
 
-__all__ = [
-    "load_test_cases",
-    "load_test_cases_from_json",
-    "save_test_cases_to_json",
-]
+__all__ = ["load_test_cases", "load_test_cases_from_json", "save_test_cases_to_json"]
 
 
 def load_test_cases[TTestCase: TestCase](
@@ -52,19 +48,13 @@ def load_test_cases[TTestCase: TestCase](
         test_case.query.key: test_case for test_case in test_cases
     }
     if test_case_path is not None and test_case_path.exists():
-        for test_case in load_test_cases_from_json(
-            test_case_path,
-            manager_cls,
-            prompt,
-        ):
+        for test_case in load_test_cases_from_json(test_case_path, manager_cls, prompt):
             test_cases_by_query_key[test_case.query.key] = test_case
     return list(test_cases_by_query_key.values()), test_case_path
 
 
 def load_test_cases_from_json[TTestCase: TestCase](
-    input_path: Path,
-    manager_cls: type[Manager[TTestCase]],
-    prompt: Prompt,
+    input_path: Path, manager_cls: type[Manager[TTestCase]], prompt: Prompt
 ) -> list[TTestCase]:
     """Load test cases from JSON file.
 
@@ -124,9 +114,7 @@ def save_test_cases_to_json[TTestCase: TestCase](
     test_cases_to_save = list(test_cases)
     if output_path.exists() and not prune:
         existing_test_cases = load_test_cases_from_json(
-            output_path,
-            manager_cls,
-            manager_cls.base_prompt,
+            output_path, manager_cls, manager_cls.base_prompt
         )
         encountered_query_keys = {
             test_case.query.key for test_case in test_cases_to_save
@@ -144,11 +132,7 @@ def save_test_cases_to_json[TTestCase: TestCase](
             test_case.model_dump(mode="json")
         )
         data.append(
-            base_test_case.model_dump(
-                mode="json",
-                by_alias=True,
-                exclude_defaults=True,
-            )
+            base_test_case.model_dump(mode="json", by_alias=True, exclude_defaults=True)
         )
     output_path.parent.mkdir(parents=True, exist_ok=True)
 

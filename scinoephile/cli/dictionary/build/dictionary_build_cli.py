@@ -78,12 +78,7 @@ class DictionaryBuildCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(
-        cls,
-        *,
-        dictionary_build_subcommand_name: str,
-        **kwargs: Any,
-    ):
+    def _main(cls, *, dictionary_build_subcommand_name: str, **kwargs: Any):
         """Execute with provided keyword arguments."""
         cls.subcommands()[dictionary_build_subcommand_name]._main(**kwargs)
 

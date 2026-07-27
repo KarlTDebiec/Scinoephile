@@ -13,10 +13,7 @@ import requests
 from PIL import Image
 
 from scinoephile.common.subprocess import run_command
-from scinoephile.common.validation import (
-    val_executable,
-    val_input_dir_path,
-)
+from scinoephile.common.validation import val_executable, val_input_dir_path
 from scinoephile.core import Language, ScinoephileError
 
 from .cache import TesseractCache
@@ -24,10 +21,7 @@ from .hocr import parse_tesseract_hocr, transfer_tesseract_hocr_italics
 from .legacy_data_cache import TesseractLegacyDataCache
 from .preprocessing import preprocess_tesseract_ocr_image
 
-__all__ = [
-    "TesseractRecognizer",
-    "TesseractRecognizerKwargs",
-]
+__all__ = ["TesseractRecognizer", "TesseractRecognizerKwargs"]
 
 logger = getLogger(__name__)
 
@@ -128,8 +122,7 @@ class TesseractRecognizer:
         self.scale = scale
         self._cache = TesseractCache(cache_root_path, overwrite_cache)
         self._legacy_data_cache = TesseractLegacyDataCache(
-            cache_root_path,
-            overwrite_cache,
+            cache_root_path, overwrite_cache
         )
 
         if skip_executable_validation:
@@ -254,9 +247,7 @@ class TesseractRecognizer:
         return command
 
     def _build_legacy_fallback_command(
-        self,
-        image_path: Path,
-        output_base_path: Path,
+        self, image_path: Path, output_base_path: Path
     ) -> list[str]:
         """Build Tesseract legacy-engine hOCR command for blank fallback.
 
@@ -269,9 +260,7 @@ class TesseractRecognizer:
         return self._build_legacy_command(image_path, output_base_path, psm=7)
 
     def _build_legacy_italics_command(
-        self,
-        image_path: Path,
-        output_base_path: Path,
+        self, image_path: Path, output_base_path: Path
     ) -> list[str]:
         """Build Tesseract legacy-engine hOCR command for italic detection.
 
@@ -282,10 +271,7 @@ class TesseractRecognizer:
             command arguments
         """
         return self._build_legacy_command(
-            image_path,
-            output_base_path,
-            psm=self.psm,
-            include_font_info=True,
+            image_path, output_base_path, psm=self.psm, include_font_info=True
         )
 
     def _download_legacy_traineddata(self) -> bytes:
@@ -320,8 +306,7 @@ class TesseractRecognizer:
         traineddata_path = self._legacy_data_cache.load(self.tesseract_language_code)
         if traineddata_path is None:
             traineddata_path = self._legacy_data_cache.save(
-                self.tesseract_language_code,
-                self._download_legacy_traineddata(),
+                self.tesseract_language_code, self._download_legacy_traineddata()
             )
         return traineddata_path.parent
 
@@ -348,8 +333,7 @@ class TesseractRecognizer:
             fallback_image = preprocess_tesseract_ocr_image(image, scale=1)
             fallback_image.save(fallback_image_path)
             fallback_text = self._run_legacy_blank_fallback(
-                fallback_image_path,
-                fallback_output_base_path,
+                fallback_image_path, fallback_output_base_path
             )
             if self._is_usable_legacy_blank_fallback_text(fallback_text):
                 logger.info(
@@ -370,9 +354,7 @@ class TesseractRecognizer:
         return run_command(command)
 
     def _run_legacy_blank_fallback(
-        self,
-        image_path: Path,
-        output_base_path: Path,
+        self, image_path: Path, output_base_path: Path
     ) -> str:
         """Run Tesseract legacy-engine fallback and parse hOCR output.
 
@@ -413,10 +395,7 @@ class TesseractRecognizer:
         )
         try:
             self._run_command(
-                self._build_legacy_italics_command(
-                    image_path,
-                    legacy_output_base_path,
-                )
+                self._build_legacy_italics_command(image_path, legacy_output_base_path)
             )
             legacy_hocr = self._read_hocr_output(legacy_output_base_path)
         except (OSError, ValueError) as exc:

@@ -12,10 +12,7 @@ from scinoephile.analysis.audit.punctuation import (
     audit_punctuation,
 )
 from scinoephile.cli.helpers.io import read_series
-from scinoephile.common.argument_parsing import (
-    get_arg_groups_by_name,
-    input_file_arg,
-)
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core import ScinoephileError
 from scinoephile.llms.punctuation import PunctuationManager
 
@@ -160,10 +157,7 @@ class AuditPunctuationCli(AuditCliBase):
         reference = read_series(parser, reference_path)
         target = read_series(parser, target_path)
         test_cases = cls.load_test_cases(
-            parser,
-            json_path,
-            PunctuationManager,
-            workflow_name="punctuation",
+            parser, json_path, PunctuationManager, workflow_name="punctuation"
         )
 
         # Perform operation

@@ -25,19 +25,14 @@ from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHans,
     YueZhoPunctuationPromptYueHans,
 )
-from scinoephile.lang.yue_zho.translation import (
-    YueZhoGapTranslationPromptYueHans,
-)
+from scinoephile.lang.yue_zho.translation import YueZhoGapTranslationPromptYueHans
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
 from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
 from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
-from scinoephile.llms.gap_translation import (
-    GapTranslationManager,
-    GapTranslationPrompt,
-)
+from scinoephile.llms.gap_translation import GapTranslationManager, GapTranslationPrompt
 from scinoephile.llms.guided_review import GuidedReviewManager, GuidedReviewPrompt
 from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
 from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
@@ -133,8 +128,7 @@ def mlamd_zho_hant_ocr_sup_path() -> Path:
 
 @cache
 def get_mlamd_eng_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptEng,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptEng, **kwargs: Any
 ) -> list[TestCase]:
     """Get MLAMD English OCR fusion test cases.
 
@@ -166,8 +160,7 @@ def get_mlamd_eng_review_test_cases(
 
 @cache
 def get_mlamd_yue_delineation_test_cases(
-    prompt: DelineationPrompt = YueZhoDelineationPromptYueHans,
-    **kwargs: Any,
+    prompt: DelineationPrompt = YueZhoDelineationPromptYueHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get MLAMD yue-Hans delineation test cases.
 
@@ -191,8 +184,7 @@ def get_mlamd_yue_delineation_test_cases(
 
 @cache
 def get_mlamd_yue_from_zho_gap_translation_test_cases(
-    prompt: GapTranslationPrompt = YueZhoGapTranslationPromptYueHans,
-    **kwargs: Any,
+    prompt: GapTranslationPrompt = YueZhoGapTranslationPromptYueHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get MLAMD yue-Hans from zho-Hans gap translation test cases.
 
@@ -217,8 +209,7 @@ def get_mlamd_yue_from_zho_gap_translation_test_cases(
 
 @cache
 def get_mlamd_yue_punctuation_test_cases(
-    prompt: PunctuationPrompt = YueZhoPunctuationPromptYueHans,
-    **kwargs: Any,
+    prompt: PunctuationPrompt = YueZhoPunctuationPromptYueHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get MLAMD yue-Hans punctuation test cases.
 
@@ -242,8 +233,7 @@ def get_mlamd_yue_punctuation_test_cases(
 
 @cache
 def get_mlamd_yue_vs_zho_guided_review_test_cases(
-    prompt: GuidedReviewPrompt = YueZhoGuidedReviewPromptYueHans,
-    **kwargs: Any,
+    prompt: GuidedReviewPrompt = YueZhoGuidedReviewPromptYueHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get MLAMD yue-Hans vs zho-Hans guided review test cases.
 
@@ -266,8 +256,7 @@ def get_mlamd_yue_vs_zho_guided_review_test_cases(
 
 @cache
 def get_mlamd_zho_hans_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptZhoHans,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptZhoHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get MLAMD zho-Hans OCR fusion test cases.
 
@@ -299,8 +288,7 @@ def get_mlamd_zho_hans_review_test_cases(
 
 @cache
 def get_mlamd_zho_hant_ocr_fusion_test_cases(
-    prompt: OcrFusionPrompt = OcrFusionPromptZhoHant,
-    **kwargs: Any,
+    prompt: OcrFusionPrompt = OcrFusionPromptZhoHant, **kwargs: Any
 ) -> list[TestCase]:
     """Get MLAMD zho-Hant OCR fusion test cases.
 
@@ -502,8 +490,7 @@ def mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539(
 ) -> Series:
     """MLAMD zho-Hans flattened subtitles with subtitle 539 merged."""
     return get_series_with_subs_merged(
-        mlamd_zho_hans_fuse_clean_validate_review_flatten,
-        539,
+        mlamd_zho_hans_fuse_clean_validate_review_flatten, 539
     )
 
 

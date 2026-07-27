@@ -8,10 +8,7 @@ from __future__ import annotations
 from types import ModuleType
 from typing import TYPE_CHECKING
 
-__all__ = [
-    "import_flask",
-    "import_werkzeug_serving",
-]
+__all__ = ["import_flask", "import_werkzeug_serving"]
 
 if TYPE_CHECKING:
     from flask import Flask, Response

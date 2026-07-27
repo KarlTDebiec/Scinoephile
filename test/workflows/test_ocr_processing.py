@@ -27,18 +27,14 @@ def test_ocr_processing_workflow_keeps_cache_policy_on_cache(tmp_path: Path):
     assert not hasattr(workflow, "overwrite_cache")
 
 
-def test_ocr_processing_workflow_sets_default_fusion_test_case_path(
-    tmp_path: Path,
-):
+def test_ocr_processing_workflow_sets_default_fusion_test_case_path(tmp_path: Path):
     """Test OCR processing persists fusion decisions at its conventional path.
 
     Arguments:
         tmp_path: pytest temporary path fixture
     """
     workflow = OcrProcessingWorkflow(
-        tmp_path / "source.sup",
-        tmp_path / "output",
-        language=Language.yue_hant,
+        tmp_path / "source.sup", tmp_path / "output", language=Language.yue_hant
     )
 
     assert workflow.fuser_kw["test_case_path"] == (
@@ -46,9 +42,7 @@ def test_ocr_processing_workflow_sets_default_fusion_test_case_path(
     )
 
 
-def test_ocr_processing_workflow_preserves_fusion_test_case_path(
-    tmp_path: Path,
-):
+def test_ocr_processing_workflow_preserves_fusion_test_case_path(tmp_path: Path):
     """Test supplied OCR-fusion test-case paths take precedence.
 
     Arguments:

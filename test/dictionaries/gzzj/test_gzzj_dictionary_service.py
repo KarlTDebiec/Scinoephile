@@ -39,8 +39,7 @@ def source_json_path() -> Generator[Path]:
 def service(database_path: Path, source_json_path: Path) -> GzzjDictionaryService:
     """Provide a GZZJ service backed by deterministic JSON fixture data."""
     service = GzzjDictionaryService(
-        database_path=database_path,
-        source_json_path=source_json_path,
+        database_path=database_path, source_json_path=source_json_path
     )
     service.build(overwrite=True)
     return service
@@ -56,10 +55,7 @@ def service(database_path: Path, source_json_path: Path) -> GzzjDictionaryServic
         (
             "gully",
             None,
-            raises(
-                ValueError,
-                match="Could not infer a supported lookup format",
-            ),
+            raises(ValueError, match="Could not infer a supported lookup format"),
         ),
     ],
 )

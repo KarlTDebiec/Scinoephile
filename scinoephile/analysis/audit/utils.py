@@ -75,11 +75,7 @@ def format_audit_report(
     validate_audit_range(first_index, last_index, first_block, last_block)
 
     # Format and validate the table schema
-    separators_by_alignment = {
-        "left": "---",
-        "right": "---:",
-        "center": ":---:",
-    }
+    separators_by_alignment = {"left": "---", "right": "---:", "center": ":---:"}
     column_labels = []
     column_separators = []
     for label, alignment in columns:
@@ -107,9 +103,7 @@ def format_audit_report(
         *(f"- {item}" for item in summary_items),
     ]
     index_range = _format_index_range(
-        first_index,
-        last_index,
-        track_name=index_track_name,
+        first_index, last_index, track_name=index_track_name
     )
     if index_range is not None:
         lines.append(f"- {index_range}")
@@ -245,11 +239,7 @@ def get_selected_event_indexes(
     if block_indexes is not None:
         block_count = len(block_indexes)
     validate_audit_range(
-        first_index,
-        last_index,
-        first_block,
-        last_block,
-        block_count=block_count,
+        first_index, last_index, first_block, last_block, block_count=block_count
     )
 
     if not has_block_range:
@@ -264,10 +254,7 @@ def get_selected_event_indexes(
     assert block_indexes is not None
     selected_block_indexes = {
         event_index
-        for block_number, (block_start, block_stop) in enumerate(
-            block_indexes,
-            1,
-        )
+        for block_number, (block_start, block_stop) in enumerate(block_indexes, 1)
         if is_block_in_range(block_number, first_block, last_block)
         for event_index in range(block_start, block_stop)
     }
@@ -275,8 +262,7 @@ def get_selected_event_indexes(
 
 
 def get_superseded_keys[KeyT: Hashable, ValueT: Hashable](
-    current_keys: Collection[KeyT],
-    values_by_key: Mapping[KeyT, Collection[ValueT]],
+    current_keys: Collection[KeyT], values_by_key: Mapping[KeyT, Collection[ValueT]]
 ) -> set[KeyT]:
     """Get historical keys directly replaced by current logged cases.
 
@@ -301,9 +287,7 @@ def get_superseded_keys[KeyT: Hashable, ValueT: Hashable](
 
 
 def is_block_in_range(
-    block_number: int,
-    first_block: int | None,
-    last_block: int | None,
+    block_number: int, first_block: int | None, last_block: int | None
 ) -> bool:
     """Check whether a one-based block number is selected.
 
@@ -337,11 +321,7 @@ def resolve_contextual_index(
     if index is not None:
         return index
 
-    index = get_contextual_index(
-        candidate_indexes,
-        resolved_indexes,
-        test_case_index,
-    )
+    index = get_contextual_index(candidate_indexes, resolved_indexes, test_case_index)
     if index is not None:
         resolved_indexes[test_case_index] = index
     return index
@@ -385,10 +365,7 @@ def _escape_table_cell(value: str) -> str:
     return value.replace("\\N", "\n").replace("\n", "<br>").replace("|", "\\|")
 
 
-def _format_block_range(
-    first_block: int | None,
-    last_block: int | None,
-) -> str | None:
+def _format_block_range(first_block: int | None, last_block: int | None) -> str | None:
     """Format an optional block range for a report summary.
 
     Arguments:
@@ -407,10 +384,7 @@ def _format_block_range(
 
 
 def _format_index_range(
-    first_index: int | None,
-    last_index: int | None,
-    *,
-    track_name: str | None = None,
+    first_index: int | None, last_index: int | None, *, track_name: str | None = None
 ) -> str | None:
     """Format an optional subtitle range for a report summary.
 
@@ -434,9 +408,7 @@ def _format_index_range(
 
 
 def _validate_block_range(
-    first_block: int | None,
-    last_block: int | None,
-    block_count: int | None = None,
+    first_block: int | None, last_block: int | None, block_count: int | None = None
 ):
     """Validate optional one-based block boundaries.
 

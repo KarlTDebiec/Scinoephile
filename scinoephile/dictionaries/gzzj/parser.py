@@ -37,8 +37,7 @@ class GzzjDictionaryParser:
         self.opencc_converter = opencc.OpenCC("hk2s")
 
     def parse(
-        self,
-        source_json_path: Path,
+        self, source_json_path: Path
     ) -> tuple[DictionarySource, list[DictionaryEntry]]:
         """Parse a manually downloaded GZZJ source file.
 
@@ -124,10 +123,7 @@ class GzzjDictionaryParser:
         return (
             " ".join(
                 lazy_pinyin(
-                    text,
-                    style=Style.TONE3,
-                    neutral_tone_with_five=True,
-                    v_to_u=True,
+                    text, style=Style.TONE3, neutral_tone_with_five=True, v_to_u=True
                 )
             )
             .lower()

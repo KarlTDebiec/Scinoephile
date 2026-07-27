@@ -129,9 +129,7 @@ class OcrLensCli(ScinoephileCliBase):
             help="recognized subtitle outfile path",
         )
         arg_groups["output arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite outfile if it exists",
+            "--overwrite", action="store_true", help="overwrite outfile if it exists"
         )
         parser.set_defaults(_parser=parser)
 

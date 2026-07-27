@@ -37,9 +37,7 @@ def get_zho_subtitle_streams(
 
     zho_streams = []
     for stream in get_detailed_subtitle_streams(
-        infile_path,
-        streams=streams,
-        subtitle_cache=subtitle_cache,
+        infile_path, streams=streams, subtitle_cache=subtitle_cache
     ):
         language = stream.language
         if language is None or not is_chinese_language_tag(language):
@@ -47,9 +45,7 @@ def get_zho_subtitle_streams(
             continue
 
         analysis = analyze_zho_subtitle_stream_script(
-            infile_path,
-            stream,
-            subtitle_cache=subtitle_cache,
+            infile_path, stream, subtitle_cache=subtitle_cache
         )
         language = language.split("-", 1)[0]
         if language == "chi":

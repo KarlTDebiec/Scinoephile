@@ -8,11 +8,7 @@ from pathlib import Path
 
 from scinoephile.core.subtitles import Series, Subtitle
 
-__all__ = [
-    "get_ocr_text_series",
-    "get_text_series",
-    "write_srt_series",
-]
+__all__ = ["get_ocr_text_series", "get_text_series", "write_srt_series"]
 
 
 def get_ocr_text_series(*texts: str) -> Series:
@@ -23,19 +19,11 @@ def get_ocr_text_series(*texts: str) -> Series:
     Returns:
         subtitle series with one event per text
     """
-    return get_text_series(
-        *texts,
-        start_ms=1000,
-        duration_ms=1000,
-        step_ms=2000,
-    )
+    return get_text_series(*texts, start_ms=1000, duration_ms=1000, step_ms=2000)
 
 
 def get_text_series(
-    *texts: str,
-    start_ms: int = 0,
-    duration_ms: int = 500,
-    step_ms: int = 1000,
+    *texts: str, start_ms: int = 0, duration_ms: int = 500, step_ms: int = 1000
 ) -> Series:
     """Build a compact subtitle series from text events.
 

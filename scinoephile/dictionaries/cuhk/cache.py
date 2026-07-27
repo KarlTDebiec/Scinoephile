@@ -23,10 +23,7 @@ class CuhkResponseCache:
     """Caches CUHK HTTP response bodies."""
 
     def __init__(
-        self,
-        cache_root_path: Path | None,
-        cache_dir_name: str,
-        overwrite: bool = False,
+        self, cache_root_path: Path | None, cache_dir_name: str, overwrite: bool = False
     ):
         """Initialize.
 

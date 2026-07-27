@@ -22,18 +22,14 @@ from scinoephile.llms.punctuation import (
 )
 
 _LOCALIZED_PROMPT = PunctuationPrompt(
-    ref_sub="cankao",
-    target_subs="zimu",
-    target_sub_punctuated="jieguo",
+    ref_sub="cankao", target_subs="zimu", target_sub_punctuated="jieguo"
 )
 """Punctuation prompt using non-default correspondence field names."""
 
 
 def _get_alignment() -> TranscriptionAlignment:
     """Get a one-group alignment that requires punctuation."""
-    reference = Series(
-        events=[Subtitle(start=0, end=1000, text="你好！")],
-    )
+    reference = Series(events=[Subtitle(start=0, end=1000, text="你好！")])
     transcription = AudioSeries(
         audio=AudioSegment.silent(duration=1000),
         events=[AudioSubtitle(start=0, end=1000, text="你好")],
@@ -44,18 +40,12 @@ def _get_alignment() -> TranscriptionAlignment:
 
 
 def _get_merged_subtitle(
-    subtitles: list[AudioSubtitle],
-    *,
-    text: str | None = None,
+    subtitles: list[AudioSubtitle], *, text: str | None = None
 ) -> AudioSubtitle:
     """Get a merged subtitle without requiring transcription segment fixtures."""
     if text is None:
         text = "".join(subtitle.text for subtitle in subtitles)
-    return AudioSubtitle(
-        start=subtitles[0].start,
-        end=subtitles[-1].end,
-        text=text,
-    )
+    return AudioSubtitle(start=subtitles[0].start, end=subtitles[-1].end, text=text)
 
 
 def test_alignment_constructs_semantic_fields_with_configured_prompt():
@@ -67,10 +57,7 @@ def test_alignment_constructs_semantic_fields_with_configured_prompt():
     assert test_case is not None
     assert isinstance(test_case, PunctuationTestCase)
     assert test_case.prompt is _LOCALIZED_PROMPT
-    assert test_case.query.model_dump() == {
-        "guide": "你好！",
-        "subtitles": ["你好"],
-    }
+    assert test_case.query.model_dump() == {"guide": "你好！", "subtitles": ["你好"]}
     assert test_case.query.model_dump(by_alias=True) == {
         "cankao": "你好！",
         "zimu": ["你好"],
@@ -85,15 +72,10 @@ def test_aligner_uses_queryer_prompt_and_semantic_output(monkeypatch: MonkeyPatc
     punctuation_processor = Mock(spec=PunctuationProcessor)
     punctuation_processor.queryer = punctuation_queryer
 
-    def add_answer(
-        test_case: PunctuationTestCase,
-    ) -> PunctuationTestCase:
+    def add_answer(test_case: PunctuationTestCase) -> PunctuationTestCase:
         """Add a valid punctuation answer to a test case."""
         result = type(test_case).model_validate(
-            {
-                **test_case.model_dump(),
-                "answer": {"output": "你好！"},
-            }
+            {**test_case.model_dump(), "answer": {"output": "你好！"}}
         )
         return result
 
@@ -121,15 +103,10 @@ def test_aligner_falls_back_to_concatenation_after_invalid_answer(
     punctuation_processor = Mock(spec=PunctuationProcessor)
     punctuation_processor.queryer = punctuation_queryer
 
-    def reject_answer(
-        test_case: PunctuationTestCase,
-    ) -> PunctuationTestCase:
+    def reject_answer(test_case: PunctuationTestCase) -> PunctuationTestCase:
         """Attempt to add an answer that changes subtitle characters."""
         result = type(test_case).model_validate(
-            {
-                **test_case.model_dump(),
-                "answer": {"output": "你壞"},
-            }
+            {**test_case.model_dump(), "answer": {"output": "你壞"}}
         )
         return result
 

@@ -18,22 +18,12 @@ from test.helpers import parametrize
     [
         ("舂暈\ue527", "舂暈鷄", nullcontext()),
         ("蜞\ueb06", "蜞乸", nullcontext()),
-        (
-            "過樹\uefbe",
-            None,
-            raises(UnsupportedCharacterError),
-        ),
-        (
-            "蝦\ueec9",
-            None,
-            raises(UnsupportedCharacterError),
-        ),
+        ("過樹\uefbe", None, raises(UnsupportedCharacterError)),
+        ("蝦\ueec9", None, raises(UnsupportedCharacterError)),
     ],
 )
 def test_get_yue_converted(
-    text: str,
-    expected: str | None,
-    expectation: AbstractContextManager[object],
+    text: str, expected: str | None, expectation: AbstractContextManager[object]
 ):
     """Test get_yue_converted converts or rejects HKSCS characters.
 

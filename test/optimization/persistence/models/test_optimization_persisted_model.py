@@ -24,10 +24,7 @@ def test_creation_normalizes_effective_configuration():
     assert model.provider_name == "openai"
     assert model.model_name == "gpt-5.4-mini"
     assert model.base_url == "https://api.openai.com/v1"
-    assert model.settings == {
-        "reasoning": {"effort": "medium"},
-        "seed": 1,
-    }
+    assert model.settings == {"reasoning": {"effort": "medium"}, "seed": 1}
 
 
 def test_creation_rejects_credentials_in_base_url():
@@ -53,10 +50,7 @@ def test_creation_rejects_credentials_in_base_url():
 )
 def test_creation_rejects_credentials_in_nested_settings(credential_name: str):
     """Settings should not persist credential-bearing fields."""
-    with raises(
-        ScinoephileError,
-        match=rf"settings.headers.{credential_name}",
-    ):
+    with raises(ScinoephileError, match=rf"settings.headers.{credential_name}"):
         PersistedModel.from_config(
             "openai-compatible",
             "model",
@@ -68,7 +62,5 @@ def test_creation_rejects_non_json_settings():
     """Settings should be finite JSON values."""
     with raises(ScinoephileError, match="valid JSON"):
         PersistedModel.from_config(
-            "openai",
-            "gpt-5.4-mini",
-            settings={"temperature": nan},
+            "openai", "gpt-5.4-mini", settings={"temperature": nan}
         )

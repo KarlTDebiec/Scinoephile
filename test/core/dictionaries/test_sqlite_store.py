@@ -40,9 +40,7 @@ def sample_entries() -> list[DictionaryEntry]:
             pinyin="shan1 keng1 shui3",
             jyutping="saan1 haang1 seoi2",
             frequency=1.0,
-            definitions=[
-                DictionaryDefinition(text="stream water"),
-            ],
+            definitions=[DictionaryDefinition(text="stream water")],
         ),
     ]
 
@@ -116,8 +114,7 @@ def test_sqlite_store_preserves_expected_schema(
 
 
 def test_sqlite_store_literal_like_lookups(
-    database_path: Path,
-    sample_source: DictionarySource,
+    database_path: Path, sample_source: DictionarySource
 ):
     """Test literal matching of LIKE wildcard characters in romanization."""
     entries = [
@@ -180,8 +177,7 @@ def test_sqlite_store_preserves_existing_database_when_rebuild_fails(
 
 
 def test_sqlite_store_collapses_duplicate_entries_and_definitions(
-    database_path: Path,
-    sample_source: DictionarySource,
+    database_path: Path, sample_source: DictionarySource
 ):
     """Test duplicate entries and definitions collapse through uniqueness rules."""
     definition = DictionaryDefinition(text="duplicate definition", label="noun")

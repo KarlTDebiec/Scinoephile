@@ -17,7 +17,5 @@ def test_prompt_id_is_content_addressed():
     assert prompt_id != get_prompt_id(attributes, "translation", Language.eng)
     assert prompt_id != get_prompt_id(attributes, "review", Language.zho_hant)
     assert prompt_id != get_prompt_id(
-        {"base_system_prompt": "Carefully review subtitles."},
-        "review",
-        Language.eng,
+        {"base_system_prompt": "Carefully review subtitles."}, "review", Language.eng
     )

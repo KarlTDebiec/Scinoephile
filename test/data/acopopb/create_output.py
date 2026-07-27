@@ -60,7 +60,7 @@ actions = {
     # "zho-Hant_ocr",
     # "yue-Hans_eng",
     # "zho-Hans_eng",
-    "yue-Hant_transcribe",
+    "yue-Hant_transcribe"
 }
 
 if "eng_ocr" in actions:

@@ -66,12 +66,10 @@ def test_create_app_import_error_is_actionable(monkeypatch: MonkeyPatch):
 def test_run_app_wraps_server_errors(monkeypatch: MonkeyPatch):
     """Test web app server errors are user-facing."""
     monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.app._port_is_in_use",
-        lambda host, port: False,
+        "scinoephile.web.ocr_validation.app._port_is_in_use", lambda host, port: False
     )
     monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.app.create_app",
-        lambda session: object(),
+        "scinoephile.web.ocr_validation.app.create_app", lambda session: object()
     )
     monkeypatch.setattr(
         "werkzeug.serving.make_server",
@@ -129,8 +127,7 @@ def test_run_app_import_error_is_actionable(monkeypatch: MonkeyPatch):
 
 
 def test_run_app_uses_available_port_when_requested_port_is_in_use(
-    caplog: LogCaptureFixture,
-    monkeypatch: MonkeyPatch,
+    caplog: LogCaptureFixture, monkeypatch: MonkeyPatch
 ):
     """Test web app falls back when the requested port is already occupied."""
 
@@ -166,12 +163,10 @@ def test_run_app_uses_available_port_when_requested_port_is_in_use(
 
     caplog.set_level(logging.INFO, logger="scinoephile.web.ocr_validation.app")
     monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.app._port_is_in_use",
-        lambda host, port: True,
+        "scinoephile.web.ocr_validation.app._port_is_in_use", lambda host, port: True
     )
     monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.app.create_app",
-        lambda session: FakeApp(),
+        "scinoephile.web.ocr_validation.app.create_app", lambda session: FakeApp()
     )
     monkeypatch.setattr("werkzeug.serving.make_server", fake_make_server)
 
@@ -193,7 +188,7 @@ def test_web_package_imports_flask_only_when_needed():
                 "import scinoephile.web.ocr_validation;"
                 "raise SystemExit('flask' in sys.modules)"
             ),
-        ],
+        ]
     )
 
     assert exitcode == 0

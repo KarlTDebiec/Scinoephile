@@ -34,10 +34,7 @@ def test_get_media_subtitle_stream_requires_stream_index(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
-    with raises(
-        ScinoephileError,
-        match="stream index is required for media OCR input",
-    ):
+    with raises(ScinoephileError, match="stream index is required for media OCR input"):
         get_media_subtitle_stream(infile_path, None)
 
 
@@ -52,8 +49,7 @@ def test_get_media_subtitle_stream_rejects_non_sup_stream(tmp_path: Path):
             return_value=[SubtitleStream(index=5, codec_name="subrip")],
         ),
         raises(
-            ScinoephileError,
-            match="Subtitle stream 5 is not an image-based SUP stream",
+            ScinoephileError, match="Subtitle stream 5 is not an image-based SUP stream"
         ),
     ):
         get_media_subtitle_stream(infile_path, 5)

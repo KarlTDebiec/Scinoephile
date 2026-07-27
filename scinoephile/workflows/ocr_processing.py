@@ -13,13 +13,9 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.paths import get_runtime_data_root_path
 from scinoephile.core.subtitles import Series
-from scinoephile.image.ocr.lens import (
-    ocr_image_series_with_lens,
-)
+from scinoephile.image.ocr.lens import ocr_image_series_with_lens
 from scinoephile.image.ocr.paddle import ocr_image_series_with_paddle
-from scinoephile.image.ocr.tesseract import (
-    ocr_image_series_with_tesseract,
-)
+from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.media.subtitles.cache import SubtitleCache
 from scinoephile.media.subtitles.extractor import SubtitleExtractor
@@ -29,10 +25,7 @@ from .clean import clean_series
 from .ocr_fusion import fuse_ocr_series
 from .ocr_validation import validate_ocr
 
-__all__ = [
-    "OcrProcessingResult",
-    "OcrProcessingWorkflow",
-]
+__all__ = ["OcrProcessingResult", "OcrProcessingWorkflow"]
 
 logger = getLogger(__name__)
 
@@ -217,8 +210,7 @@ class OcrProcessingWorkflow:
 
             stream = get_media_subtitle_stream(self.infile_path, self.stream_index)
             stream_path = SubtitleExtractor(self._subtitle_cache).extract(
-                self.infile_path,
-                [stream],
+                self.infile_path, [stream]
             )[0]
             return ImageSeries.load(stream_path)
         except (OSError, RuntimeError, ValueError) as exc:

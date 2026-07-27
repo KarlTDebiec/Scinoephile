@@ -85,10 +85,7 @@ def test_tesseract_recognizer_overwrites_matching_cache(tmp_path: Path):
     """Test Tesseract cache overwrite recognizes matching images again."""
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
     cached = CountingTesseractRecognizer(cache_root_path=tmp_path)
-    fresh = CountingTesseractRecognizer(
-        cache_root_path=tmp_path,
-        overwrite_cache=True,
-    )
+    fresh = CountingTesseractRecognizer(cache_root_path=tmp_path, overwrite_cache=True)
 
     assert cached.recognize_image(image) == "cached text eng"
     assert fresh.recognize_image(image) == "cached text eng"
@@ -106,8 +103,7 @@ def test_tesseract_recognizer_overwrites_matching_cache(tmp_path: Path):
     ],
 )
 def test_tesseract_recognizer_maps_supported_languages_to_engine_codes(
-    language: Language,
-    expected_code: str,
+    language: Language, expected_code: str
 ):
     """Test Tesseract recognizer maps supported languages to engine codes.
 
@@ -128,12 +124,10 @@ def test_tesseract_recognizer_maps_supported_languages_to_engine_codes(
 def test_tesseract_recognizer_caches_by_configuration(tmp_path: Path):
     """Test Tesseract recognizer includes configuration in cache keys."""
     english_recognizer = CountingTesseractRecognizer(
-        cache_root_path=tmp_path,
-        language=Language.eng,
+        cache_root_path=tmp_path, language=Language.eng
     )
     chinese_recognizer = CountingTesseractRecognizer(
-        cache_root_path=tmp_path,
-        language=Language.zho_hans,
+        cache_root_path=tmp_path, language=Language.zho_hans
     )
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
@@ -328,8 +322,7 @@ def test_tesseract_detect_italics_rejects_non_english_language():
 
 
 def test_tesseract_detect_italics_downloads_missing_legacy_tessdata(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
+    monkeypatch: MonkeyPatch, tmp_path: Path
 ):
     """Test italic detection downloads missing legacy traineddata lazily.
 
@@ -399,8 +392,7 @@ def test_tesseract_detect_italics_downloads_missing_legacy_tessdata(
 
 
 def test_tesseract_detect_italics_reuses_existing_legacy_tessdata(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
+    monkeypatch: MonkeyPatch, tmp_path: Path
 ):
     """Test italic detection reuses cached legacy traineddata.
 

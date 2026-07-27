@@ -7,15 +7,9 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.analysis.audit.ocr_fusion import (
-    OcrFusionAuditFilter,
-    audit_ocr_fusion,
-)
+from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter, audit_ocr_fusion
 from scinoephile.cli.helpers.io import read_series
-from scinoephile.common.argument_parsing import (
-    get_arg_groups_by_name,
-    input_file_arg,
-)
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.llms.ocr_fusion import OcrFusionManager
 
@@ -207,10 +201,7 @@ class AuditOcrFusionCli(AuditCliBase):
         test_cases = None
         if json_path is not None:
             test_cases = cls.load_test_cases(
-                parser,
-                json_path,
-                OcrFusionManager,
-                workflow_name="OCR-fusion",
+                parser, json_path, OcrFusionManager, workflow_name="OCR-fusion"
             )
 
         # Perform operation

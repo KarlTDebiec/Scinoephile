@@ -63,10 +63,7 @@ class Transcriber(ABC):
         """Voice activity detection mode."""
 
         self._cache = TranscriptionCache(
-            cache_root_path,
-            self.backend_name,
-            self.backend_label,
-            overwrite_cache,
+            cache_root_path, self.backend_name, self.backend_label, overwrite_cache
         )
         """Timestamped transcription cache."""
 
@@ -94,10 +91,7 @@ class Transcriber(ABC):
         Returns:
             transcription split into timestamped segments
         """
-        return self.transcribe(
-            audio,
-            is_usable=is_usable,
-        )
+        return self.transcribe(audio, is_usable=is_usable)
 
     def get_cached_transcription(
         self,
@@ -114,9 +108,7 @@ class Transcriber(ABC):
             first usable cached transcription, if present
         """
         segments, _ = self._find_cached_transcription(
-            audio,
-            self._get_preprocessing_settings(),
-            is_usable,
+            audio, self._get_preprocessing_settings(), is_usable
         )
         return segments
 
@@ -127,10 +119,7 @@ class Transcriber(ABC):
             audio: audio used for cache-key generation
         """
         for settings in self._get_preprocessing_settings():
-            self._cache.remove(
-                audio,
-                self._get_cache_metadata(settings),
-            )
+            self._cache.remove(audio, self._get_cache_metadata(settings))
 
     def transcribe(
         self,
@@ -150,9 +139,7 @@ class Transcriber(ABC):
 
         # Inspect every cache before running expensive preprocessing
         segments, rejected_settings = self._find_cached_transcription(
-            audio,
-            preprocessing_settings,
-            is_usable,
+            audio, preprocessing_settings, is_usable
         )
         if segments is not None:
             return segments
@@ -170,17 +157,11 @@ class Transcriber(ABC):
         # Run Demucs once if any remaining configuration requires separated audio
         separated_audio = None
         if any(settings.use_demucs for settings in settings_to_run):
-            separated_audio = self._get_separated_audio(
-                audio,
-            )
+            separated_audio = self._get_separated_audio(audio)
 
         # Run remaining transcription configurations
         return self._run_configurations(
-            audio,
-            settings_to_run,
-            rejected_settings,
-            separated_audio,
-            is_usable,
+            audio, settings_to_run, rejected_settings, separated_audio, is_usable
         )
 
     def _find_cached_transcription(
@@ -207,11 +188,7 @@ class Transcriber(ABC):
             if cached_transcription is None:
                 continue
             cache_path, segments = cached_transcription
-            segments = self._prepare_cached_segments(
-                segments,
-                cache_path,
-                settings,
-            )
+            segments = self._prepare_cached_segments(segments, cache_path, settings)
             if is_usable is None or is_usable(segments):
                 return segments, rejected_settings
             rejected_settings.add(settings)
@@ -247,8 +224,7 @@ class Transcriber(ABC):
 
     @abstractmethod
     def _get_backend_cache_metadata(
-        self,
-        settings: TranscriptionPreprocessingSettings,
+        self, settings: TranscriptionPreprocessingSettings
     ) -> Mapping[str, object]:
         """Get backend-specific cache metadata for one configuration.
 
@@ -260,8 +236,7 @@ class Transcriber(ABC):
         raise NotImplementedError()
 
     def _get_cache_metadata(
-        self,
-        settings: TranscriptionPreprocessingSettings,
+        self, settings: TranscriptionPreprocessingSettings
     ) -> dict[str, object]:
         """Get complete backend and preprocessing cache metadata.
 
@@ -281,10 +256,7 @@ class Transcriber(ABC):
             "use_vad": settings.use_vad,
         }
 
-    def _get_separated_audio(
-        self,
-        audio: AudioSegment,
-    ) -> AudioSegment | None:
+    def _get_separated_audio(self, audio: AudioSegment) -> AudioSegment | None:
         """Get Demucs-separated audio for configured preprocessing settings.
 
         Arguments:
@@ -353,21 +325,14 @@ class Transcriber(ABC):
             if self.vad_mode is VADMode.AUTO and not settings.use_vad:
                 logger.info(f"Retrying {self.backend_label} without VAD")
             try:
-                segments = self._transcribe_attempt(
-                    transcription_audio,
-                    settings,
-                )
+                segments = self._transcribe_attempt(transcription_audio, settings)
             except TranscriptionError as exc:
                 logger.warning(f"{self.backend_label} attempt failed: {exc}")
                 last_error = exc
                 continue
             successful_result = True
 
-            self._cache.save(
-                audio,
-                self._get_cache_metadata(settings),
-                segments,
-            )
+            self._cache.save(audio, self._get_cache_metadata(settings), segments)
             if is_usable is None or is_usable(segments):
                 return segments
 
@@ -377,9 +342,7 @@ class Transcriber(ABC):
 
     @abstractmethod
     def _transcribe_attempt(
-        self,
-        audio: AudioSegment,
-        settings: TranscriptionPreprocessingSettings,
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> list[TranscribedSegment]:
         """Run one uncached transcription attempt.
 

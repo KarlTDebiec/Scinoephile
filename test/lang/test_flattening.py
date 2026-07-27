@@ -234,8 +234,5 @@ def test_flatten_series_excludes_indexes():
 
 def test_flatten_series_rejects_nonpositive_exclusions():
     """Test series flattening rejects nonpositive exclusion indexes."""
-    with raises(
-        ScinoephileError,
-        match="Exclusion indexes must be positive",
-    ):
+    with raises(ScinoephileError, match="Exclusion indexes must be positive"):
         flatten_series(get_text_series("text"), language=Language.eng, exclusions=[0])

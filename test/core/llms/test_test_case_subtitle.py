@@ -7,12 +7,8 @@ from __future__ import annotations
 from pydantic import ValidationError
 from pytest import raises
 
-from scinoephile.core.llms import (
-    AnnotatedTestCaseSubtitle as AnnotatedSubtitle,
-)
-from scinoephile.core.llms import (
-    TestCaseSubtitle as Subtitle,
-)
+from scinoephile.core.llms import AnnotatedTestCaseSubtitle as AnnotatedSubtitle
+from scinoephile.core.llms import TestCaseSubtitle as Subtitle
 
 
 def test_test_case_subtitle_requires_positive_index():
@@ -30,10 +26,6 @@ def test_annotated_test_case_subtitle_includes_note():
     """Annotated test-case subtitles should include explanatory notes."""
     subtitle = AnnotatedSubtitle(index=1, text="revision", note="typo")
 
-    assert subtitle.model_dump() == {
-        "index": 1,
-        "text": "revision",
-        "note": "typo",
-    }
+    assert subtitle.model_dump() == {"index": 1, "text": "revision", "note": "typo"}
     with raises(ValidationError, match="at least 1 character"):
         AnnotatedSubtitle(index=1, text="revision", note="")

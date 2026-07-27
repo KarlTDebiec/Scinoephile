@@ -18,10 +18,7 @@ from scinoephile.core.synchronization import are_series_one_to_one
 from .line_diff import LineDiff
 from .line_diff_kind import LineDiffKind
 
-__all__ = [
-    "SeriesDiff",
-    "SeriesDiffKwargs",
-]
+__all__ = ["SeriesDiff", "SeriesDiffKwargs"]
 
 
 class SeriesDiffKwargs(TypedDict, total=False):
@@ -134,8 +131,7 @@ class SeriesDiff:
         return f"[\n{formatted_messages}\n]"
 
     def get_event_indices(
-        self,
-        message: LineDiff,
+        self, message: LineDiff
     ) -> tuple[tuple[int, ...], tuple[int, ...]]:
         """Get subtitle event indices represented by a line diff message.
 
@@ -145,12 +141,10 @@ class SeriesDiff:
             first- and second-side zero-based subtitle event indices
         """
         one_event_idxs = self._get_message_event_indices(
-            message.one_idxs,
-            self._one_line_event_idxs,
+            message.one_idxs, self._one_line_event_idxs
         )
         two_event_idxs = self._get_message_event_indices(
-            message.two_idxs,
-            self._two_line_event_idxs,
+            message.two_idxs, self._two_line_event_idxs
         )
         return one_event_idxs, two_event_idxs
 
@@ -198,8 +192,7 @@ class SeriesDiff:
 
         return "\n".join(
             message.get_stacked_str(
-                color=color,
-                three_texts=self._get_third_texts(message, three),
+                color=color, three_texts=self._get_third_texts(message, three)
             )
             for message in messages
         )
@@ -242,18 +235,9 @@ class SeriesDiff:
                 return
 
         kind = self._get_changed_span_kind(
-            one_side,
-            two_side,
-            one_local_idxs,
-            two_local_idxs,
+            one_side, two_side, one_local_idxs, two_local_idxs
         )
-        self._add_message(
-            kind,
-            one_side,
-            two_side,
-            one_local_idxs,
-            two_local_idxs,
-        )
+        self._add_message(kind, one_side, two_side, one_local_idxs, two_local_idxs)
 
     def _add_equal_message(
         self,
@@ -319,9 +303,7 @@ class SeriesDiff:
             matched_two_local_idxs = two_local_idxs[two_start:two_end]
             if tag == "equal":
                 for one_local_idx, two_local_idx in zip(
-                    matched_one_local_idxs,
-                    matched_two_local_idxs,
-                    strict=True,
+                    matched_one_local_idxs, matched_two_local_idxs, strict=True
                 ):
                     self._add_equal_message(
                         one_side=one_side,
@@ -331,17 +313,12 @@ class SeriesDiff:
                     )
                 continue
             self._add_changed_span(
-                one_side,
-                two_side,
-                matched_one_local_idxs,
-                matched_two_local_idxs,
+                one_side, two_side, matched_one_local_idxs, matched_two_local_idxs
             )
         return one_line_stop, two_line_stop
 
     def _add_delete_messages(
-        self,
-        one_side: _SeriesDiffBlockSide,
-        one_local_idxs: tuple[int, ...],
+        self, one_side: _SeriesDiffBlockSide, one_local_idxs: tuple[int, ...]
     ):
         """Add delete messages for first-side-only changed lines.
 
@@ -361,9 +338,7 @@ class SeriesDiff:
             self._stacked_messages.append(message)
 
     def _add_insert_messages(
-        self,
-        two_side: _SeriesDiffBlockSide,
-        two_local_idxs: tuple[int, ...],
+        self, two_side: _SeriesDiffBlockSide, two_local_idxs: tuple[int, ...]
     ):
         """Add insert messages for second-side-only changed lines.
 
@@ -442,9 +417,7 @@ class SeriesDiff:
         return self.messages
 
     def _diff_block(
-        self,
-        one_side: _SeriesDiffBlockSide,
-        two_side: _SeriesDiffBlockSide,
+        self, one_side: _SeriesDiffBlockSide, two_side: _SeriesDiffBlockSide
     ):
         """Compare a subtitle block using character alignment.
 
@@ -474,9 +447,7 @@ class SeriesDiff:
             if not one_changed and not two_changed:
                 return
             separator_span = self._get_separator_only_changed_span(
-                one_side,
-                two_side,
-                changed_columns,
+                one_side, two_side, changed_columns
             )
             if separator_span is None:
                 one_local_idxs = tuple(sorted(one_changed))
@@ -495,19 +466,11 @@ class SeriesDiff:
                 changed_columns.append((column.operation, one_pos, two_pos))
                 if column.one is not None:
                     one_changed.update(
-                        self._get_changed_line_idxs(
-                            one_side,
-                            one_pos,
-                            column.operation,
-                        )
+                        self._get_changed_line_idxs(one_side, one_pos, column.operation)
                     )
                 if column.two is not None:
                     two_changed.update(
-                        self._get_changed_line_idxs(
-                            two_side,
-                            two_pos,
-                            column.operation,
-                        )
+                        self._get_changed_line_idxs(two_side, two_pos, column.operation)
                     )
                 if column.operation == LineAlignmentOperation.DELETE:
                     two_changed.update(
@@ -535,16 +498,10 @@ class SeriesDiff:
 
         flush_changed()
         spans = self._merge_changed_spans(spans)
-        spans = self._merge_adjacent_one_sided_spans(
-            spans,
-            one_side,
-            two_side,
-        )
+        spans = self._merge_adjacent_one_sided_spans(spans, one_side, two_side)
         spans = self._split_uncovered_multiline_spans(spans, one_side, two_side)
         spans = self._pair_one_sided_spans_with_implicit_lines(
-            spans,
-            one_side,
-            two_side,
+            spans, one_side, two_side
         )
         self._add_block_messages(one_side, two_side, spans)
 
@@ -588,12 +545,7 @@ class SeriesDiff:
                 one_line_stop=one_line_stop,
                 two_line_stop=two_line_stop,
             )
-            self._add_changed_span(
-                one_side,
-                two_side,
-                one_local_idxs,
-                two_local_idxs,
-            )
+            self._add_changed_span(one_side, two_side, one_local_idxs, two_local_idxs)
             if one_local_idxs:
                 one_line_pos = one_local_idxs[-1] + 1
             if two_local_idxs:
@@ -607,18 +559,14 @@ class SeriesDiff:
             two_line_stop=len(two_side.lines),
         )
         self._add_delete_messages(
-            one_side,
-            tuple(range(one_line_pos, len(one_side.lines))),
+            one_side, tuple(range(one_line_pos, len(one_side.lines)))
         )
         self._add_insert_messages(
-            two_side,
-            tuple(range(two_line_pos, len(two_side.lines))),
+            two_side, tuple(range(two_line_pos, len(two_side.lines)))
         )
 
     def _diff_block_by_lines(
-        self,
-        one_side: _SeriesDiffBlockSide,
-        two_side: _SeriesDiffBlockSide,
+        self, one_side: _SeriesDiffBlockSide, two_side: _SeriesDiffBlockSide
     ):
         """Compare a large subtitle block using line-level fallback alignment.
 
@@ -628,19 +576,13 @@ class SeriesDiff:
         """
         spans: list[tuple[tuple[int, ...], tuple[int, ...]]] = []
         matcher = difflib.SequenceMatcher(
-            None,
-            one_side.normlines,
-            two_side.normlines,
-            autojunk=False,
+            None, one_side.normlines, two_side.normlines, autojunk=False
         )
         for tag, one_start, one_end, two_start, two_end in matcher.get_opcodes():
             if tag == "equal":
                 continue
             spans.append(
-                (
-                    tuple(range(one_start, one_end)),
-                    tuple(range(two_start, two_end)),
-                )
+                (tuple(range(one_start, one_end)), tuple(range(two_start, two_end)))
             )
 
         self._add_block_messages(one_side, two_side, spans)
@@ -679,10 +621,7 @@ class SeriesDiff:
                 kind = LineDiffKind.MERGE_EDIT
         else:
             ratio = difflib.SequenceMatcher(
-                None,
-                one_joined,
-                two_joined,
-                autojunk=False,
+                None, one_joined, two_joined, autojunk=False
             ).ratio()
             if ratio >= self.similarity_cutoff:
                 kind = LineDiffKind.SHIFT
@@ -727,10 +666,7 @@ class SeriesDiff:
                 continue
             candidate_text = target_side.normlines[candidate_idx]
             ratio = difflib.SequenceMatcher(
-                None,
-                source_text,
-                candidate_text,
-                autojunk=False,
+                None, source_text, candidate_text, autojunk=False
             ).ratio()
             if ratio >= self.similarity_cutoff:
                 context_idxs.append(candidate_idx)
@@ -739,9 +675,7 @@ class SeriesDiff:
 
     @staticmethod
     def _get_changed_line_idxs(
-        side: _SeriesDiffBlockSide,
-        char_pos: int,
-        operation: LineAlignmentOperation,
+        side: _SeriesDiffBlockSide, char_pos: int, operation: LineAlignmentOperation
     ) -> tuple[int, ...]:
         """Get local line indices touched by a changed character.
 
@@ -784,10 +718,7 @@ class SeriesDiff:
             return None
         one_local_idxs, two_local_idxs = span
         if not self._is_separator_span_valid(
-            one_side,
-            two_side,
-            one_local_idxs,
-            two_local_idxs,
+            one_side, two_side, one_local_idxs, two_local_idxs
         ):
             return None
 
@@ -813,26 +744,19 @@ class SeriesDiff:
         if not one_local_idxs or not two_local_idxs:
             return False
         if not self._are_lines_similar(
-            one_side,
-            two_side,
-            one_local_idxs,
-            two_local_idxs,
+            one_side, two_side, one_local_idxs, two_local_idxs
         ):
             return False
         if len(one_local_idxs) > len(two_local_idxs):
             target_text = SeriesDiff._join_normlines(two_side, two_local_idxs)
             if not self._are_separator_lines_covered(
-                one_side,
-                one_local_idxs,
-                target_text,
+                one_side, one_local_idxs, target_text
             ):
                 return False
         elif len(two_local_idxs) > len(one_local_idxs):
             target_text = SeriesDiff._join_normlines(one_side, one_local_idxs)
             if not self._are_separator_lines_covered(
-                two_side,
-                two_local_idxs,
-                target_text,
+                two_side, two_local_idxs, target_text
             ):
                 return False
 
@@ -856,17 +780,11 @@ class SeriesDiff:
         operation, one_pos, two_pos = changed_column
         if operation == LineAlignmentOperation.DELETE:
             return SeriesDiff._get_separator_delete_span(
-                one_side,
-                two_side,
-                one_pos,
-                two_pos,
+                one_side, two_side, one_pos, two_pos
             )
         if operation == LineAlignmentOperation.INSERT:
             return SeriesDiff._get_separator_insert_span(
-                one_side,
-                two_side,
-                one_pos,
-                two_pos,
+                one_side, two_side, one_pos, two_pos
             )
         return None
 
@@ -892,10 +810,7 @@ class SeriesDiff:
         one_local_idxs = one_side.char_line_idxs[one_pos]
         if len(one_local_idxs) != 2:
             return None
-        two_local_idxs = SeriesDiff._get_separator_target_line_idxs(
-            two_side,
-            two_pos,
-        )
+        two_local_idxs = SeriesDiff._get_separator_target_line_idxs(two_side, two_pos)
         return (one_local_idxs, two_local_idxs)
 
     @staticmethod
@@ -917,10 +832,7 @@ class SeriesDiff:
         """
         if two_side.text[two_pos] != "\n":
             return None
-        one_local_idxs = SeriesDiff._get_separator_target_line_idxs(
-            one_side,
-            one_pos,
-        )
+        one_local_idxs = SeriesDiff._get_separator_target_line_idxs(one_side, one_pos)
         two_local_idxs = two_side.char_line_idxs[two_pos]
         if len(two_local_idxs) != 2:
             return None
@@ -928,8 +840,7 @@ class SeriesDiff:
 
     @staticmethod
     def _get_separator_target_line_idxs(
-        side: _SeriesDiffBlockSide,
-        target_pos: int,
+        side: _SeriesDiffBlockSide, target_pos: int
     ) -> tuple[int, ...]:
         """Get the target line bridged by a removed or inserted separator.
 
@@ -952,10 +863,7 @@ class SeriesDiff:
         return bridged_line_idxs
 
     def _are_separator_lines_covered(
-        self,
-        side: _SeriesDiffBlockSide,
-        local_idxs: tuple[int, ...],
-        target_text: str,
+        self, side: _SeriesDiffBlockSide, local_idxs: tuple[int, ...], target_text: str
     ) -> bool:
         """Check whether each separator-side line is covered by target text.
 
@@ -973,8 +881,7 @@ class SeriesDiff:
             if not line_compact:
                 continue
             best_ratio = self._get_best_substring_similarity(
-                line_compact,
-                target_compact,
+                line_compact, target_compact
             )
             if best_ratio < coverage_cutoff:
                 return False
@@ -996,20 +903,14 @@ class SeriesDiff:
 
         if len(haystack) <= len(needle):
             return difflib.SequenceMatcher(
-                None,
-                needle,
-                haystack,
-                autojunk=False,
+                None, needle, haystack, autojunk=False
             ).ratio()
 
         best_ratio = 0.0
         for start_idx in range(len(haystack) - len(needle) + 1):
             candidate = haystack[start_idx : start_idx + len(needle)]
             ratio = difflib.SequenceMatcher(
-                None,
-                needle,
-                candidate,
-                autojunk=False,
+                None, needle, candidate, autojunk=False
             ).ratio()
             best_ratio = max(best_ratio, ratio)
 
@@ -1026,10 +927,7 @@ class SeriesDiff:
             best full-line or substring similarity
         """
         full_ratio = difflib.SequenceMatcher(
-            None,
-            one_text,
-            two_text,
-            autojunk=False,
+            None, one_text, two_text, autojunk=False
         ).ratio()
         one_compact = re.sub(r"\s+", "", one_text)
         two_compact = re.sub(r"\s+", "", two_text)
@@ -1059,19 +957,13 @@ class SeriesDiff:
             if len(one_idxs) == 1 and len(two_idxs) > 1:
                 split_spans.extend(
                     self._split_uncovered_one_to_many_span(
-                        one_side,
-                        two_side,
-                        one_idxs[0],
-                        two_idxs,
+                        one_side, two_side, one_idxs[0], two_idxs
                     )
                 )
             elif len(two_idxs) == 1 and len(one_idxs) > 1:
                 split_spans.extend(
                     self._split_uncovered_many_to_one_span(
-                        one_side,
-                        two_side,
-                        one_idxs,
-                        two_idxs[0],
+                        one_side, two_side, one_idxs, two_idxs[0]
                     )
                 )
             else:
@@ -1100,12 +992,7 @@ class SeriesDiff:
         first_one_idx = one_idxs[0]
         remaining_one_idxs = one_idxs[1:]
         if self._should_split_uncovered_multiline_span(
-            one_side,
-            two_side,
-            first_one_idx,
-            two_idx,
-            remaining_one_idxs,
-            target_text,
+            one_side, two_side, first_one_idx, two_idx, remaining_one_idxs, target_text
         ):
             return self._get_split_many_to_one_spans(
                 one_side,
@@ -1119,12 +1006,7 @@ class SeriesDiff:
         last_one_idx = one_idxs[-1]
         remaining_one_idxs = one_idxs[:-1]
         if self._should_split_uncovered_multiline_span(
-            one_side,
-            two_side,
-            last_one_idx,
-            two_idx,
-            remaining_one_idxs,
-            target_text,
+            one_side, two_side, last_one_idx, two_idx, remaining_one_idxs, target_text
         ):
             return self._get_split_many_to_one_spans(
                 one_side,
@@ -1158,12 +1040,7 @@ class SeriesDiff:
         first_two_idx = two_idxs[0]
         remaining_two_idxs = two_idxs[1:]
         if self._should_split_uncovered_multiline_span(
-            two_side,
-            one_side,
-            first_two_idx,
-            one_idx,
-            remaining_two_idxs,
-            target_text,
+            two_side, one_side, first_two_idx, one_idx, remaining_two_idxs, target_text
         ):
             return self._get_split_one_to_many_spans(
                 one_side,
@@ -1177,12 +1054,7 @@ class SeriesDiff:
         last_two_idx = two_idxs[-1]
         remaining_two_idxs = two_idxs[:-1]
         if self._should_split_uncovered_multiline_span(
-            two_side,
-            one_side,
-            last_two_idx,
-            one_idx,
-            remaining_two_idxs,
-            target_text,
+            two_side, one_side, last_two_idx, one_idx, remaining_two_idxs, target_text
         ):
             return self._get_split_one_to_many_spans(
                 one_side,
@@ -1219,30 +1091,18 @@ class SeriesDiff:
         if not remaining_multi_idxs:
             return False
         if not self._are_lines_similar(
-            single_side,
-            multi_side,
-            (single_idx,),
-            (paired_multi_idx,),
+            single_side, multi_side, (single_idx,), (paired_multi_idx,)
         ):
-            paired_text = re.sub(
-                r"\s+",
-                "",
-                multi_side.normlines[paired_multi_idx],
-            )
+            paired_text = re.sub(r"\s+", "", multi_side.normlines[paired_multi_idx])
             target_compact = re.sub(r"\s+", "", target_text)
             coverage_cutoff = max(self.similarity_cutoff, 0.75)
             if (
-                self._get_best_substring_similarity(
-                    paired_text,
-                    target_compact,
-                )
+                self._get_best_substring_similarity(paired_text, target_compact)
                 < coverage_cutoff
             ):
                 return False
         return not self._are_separator_lines_covered(
-            multi_side,
-            remaining_multi_idxs,
-            target_text,
+            multi_side, remaining_multi_idxs, target_text
         )
 
     @staticmethod
@@ -1335,12 +1195,7 @@ class SeriesDiff:
             one_idxs, two_idxs = spans[idx]
             next_one_idxs, next_two_idxs = spans[idx + 1]
             if self._should_merge_adjacent_one_sided_spans(
-                one_side,
-                two_side,
-                one_idxs,
-                two_idxs,
-                next_one_idxs,
-                next_two_idxs,
+                one_side, two_side, one_idxs, two_idxs, next_one_idxs, next_two_idxs
             ):
                 merged.append(
                     (
@@ -1390,19 +1245,14 @@ class SeriesDiff:
                 merged_two_idxs = tuple(sorted({*two_idxs, *next_two_idxs}))
                 if abs(merged_one_idxs[0] - merged_two_idxs[0]) <= 1:
                     should_merge = self._are_lines_similar(
-                        one_side,
-                        two_side,
-                        merged_one_idxs,
-                        merged_two_idxs,
+                        one_side, two_side, merged_one_idxs, merged_two_idxs
                     )
 
         return should_merge
 
     @staticmethod
     def _get_block_event_index_pairs_by_pause(
-        one: Series,
-        two: Series,
-        pause_length: int = 3000,
+        one: Series, two: Series, pause_length: int = 3000
     ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
         """Split a pair of series into event-index blocks using pauses.
 
@@ -1539,8 +1389,7 @@ class SeriesDiff:
             third-side subtitle texts in first-side event order
         """
         event_idxs = self._get_message_event_indices(
-            message.one_idxs,
-            self._one_line_event_idxs,
+            message.one_idxs, self._one_line_event_idxs
         )
 
         texts = []
@@ -1559,8 +1408,7 @@ class SeriesDiff:
 
     @staticmethod
     def _get_message_event_indices(
-        line_idxs: tuple[int, ...] | None,
-        line_event_idxs: tuple[int, ...],
+        line_idxs: tuple[int, ...] | None, line_event_idxs: tuple[int, ...]
     ) -> tuple[int, ...]:
         """Map line indices to unique subtitle event indices in order.
 
@@ -1579,10 +1427,7 @@ class SeriesDiff:
         return tuple(event_idxs)
 
     @staticmethod
-    def _join_normlines(
-        side: _SeriesDiffBlockSide,
-        local_idxs: tuple[int, ...],
-    ) -> str:
+    def _join_normlines(side: _SeriesDiffBlockSide, local_idxs: tuple[int, ...]) -> str:
         """Join normalized lines for classification.
 
         Arguments:
@@ -1612,10 +1457,7 @@ class SeriesDiff:
 
             prev_one, prev_two = merged[-1]
             if SeriesDiff._should_merge_changed_spans(
-                prev_one,
-                prev_two,
-                next_one,
-                next_two,
+                prev_one, prev_two, next_one, next_two
             ):
                 one_idxs = tuple(sorted({*prev_one, *next_one}))
                 two_idxs = tuple(sorted({*prev_two, *next_two}))
@@ -1759,12 +1601,7 @@ class SeriesDiff:
                 continue
             if two_idxs:
                 candidate_one_idxs = self._get_implicit_candidate_indices(
-                    spans,
-                    idx,
-                    0,
-                    claimed_one_idxs,
-                    len(one_side.lines),
-                    two_idxs[0],
+                    spans, idx, 0, claimed_one_idxs, len(one_side.lines), two_idxs[0]
                 )
                 paired.extend(
                     self._pair_implicit_lines(
@@ -1778,12 +1615,7 @@ class SeriesDiff:
                 )
                 continue
             candidate_two_idxs = self._get_implicit_candidate_indices(
-                spans,
-                idx,
-                1,
-                claimed_two_idxs,
-                len(two_side.lines),
-                one_idxs[0],
+                spans, idx, 1, claimed_two_idxs, len(two_side.lines), one_idxs[0]
             )
             paired.extend(
                 self._pair_implicit_lines(
@@ -1817,10 +1649,7 @@ class SeriesDiff:
         one_text = self._join_normlines(one_side, one_local_idxs)
         two_text = self._join_normlines(two_side, two_local_idxs)
         ratio = difflib.SequenceMatcher(
-            None,
-            one_text,
-            two_text,
-            autojunk=False,
+            None, one_text, two_text, autojunk=False
         ).ratio()
         return ratio >= self.similarity_cutoff
 

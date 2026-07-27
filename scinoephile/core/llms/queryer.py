@@ -72,9 +72,7 @@ class Queryer[TTestCase: TestCase]:
         """Test cases actually encountered."""
 
         self._cache = LlmCache(
-            cache_root_path,
-            self.test_case_cls.operation,
-            overwrite_cache,
+            cache_root_path, self.test_case_cls.operation, overwrite_cache
         )
         """LLM response cache."""
 
@@ -109,11 +107,7 @@ class Queryer[TTestCase: TestCase]:
         # Load from cache if available
         query_json = test_case.query.model_dump_json(by_alias=True, indent=4)
         tools_json = self.tool_box.to_json()
-        cache_path = self._get_cache_path(
-            self.system_prompt,
-            tools_json,
-            query_json,
-        )
+        cache_path = self._get_cache_path(self.system_prompt, tools_json, query_json)
         if cached_test_case := self._get_cached_test_case(test_case, cache_path):
             return cached_test_case
 
@@ -211,10 +205,7 @@ class Queryer[TTestCase: TestCase]:
         self.log_encountered_test_case(test_case)
 
         # Update cache
-        contents = test_case.answer.model_dump_json(
-            exclude_defaults=True,
-            indent=2,
-        )
+        contents = test_case.answer.model_dump_json(exclude_defaults=True, indent=2)
         self._cache.save(cache_path, contents)
 
         return test_case
@@ -227,15 +218,9 @@ class Queryer[TTestCase: TestCase]:
         for test_case in self.few_shot_test_cases.values():
             assert test_case.answer is not None
             few_shot += f"\n\n{self.prompt.few_shot_query_intro}\n"
-            few_shot += test_case.query.model_dump_json(
-                by_alias=True,
-                indent=4,
-            )
+            few_shot += test_case.query.model_dump_json(by_alias=True, indent=4)
             few_shot += f"\n{self.prompt.few_shot_answer_intro}\n"
-            few_shot += test_case.answer.model_dump_json(
-                by_alias=True,
-                indent=4,
-            )
+            few_shot += test_case.answer.model_dump_json(by_alias=True, indent=4)
         return few_shot
 
     def log_encountered_test_case(self, test_case: TestCase):
@@ -279,9 +264,7 @@ class Queryer[TTestCase: TestCase]:
         )
 
     def _get_cached_test_case(
-        self,
-        test_case: TTestCase,
-        cache_path: Path,
+        self, test_case: TTestCase, cache_path: Path
     ) -> TTestCase | None:
         """Get cached test case for the given query if available.
 
@@ -332,8 +315,7 @@ class Queryer[TTestCase: TestCase]:
         return None
 
     def _get_verified_test_cases(
-        self,
-        test_cases: list[TestCase],
+        self, test_cases: list[TestCase]
     ) -> dict[tuple, TTestCase]:
         """Snapshot, validate, and merge verified test cases.
 

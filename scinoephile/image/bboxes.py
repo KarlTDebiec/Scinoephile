@@ -14,10 +14,7 @@ from .colors import (
     get_grayscale_and_alpha_arrs,
 )
 
-__all__ = [
-    "get_bboxes",
-    "get_merged_bbox",
-]
+__all__ = ["get_bboxes", "get_merged_bbox"]
 
 
 def get_bboxes(img: Image.Image) -> list[Bbox]:  # noqa: PLR0912, PLR0915
@@ -146,14 +143,7 @@ def get_bboxes(img: Image.Image) -> list[Bbox]:  # noqa: PLR0912, PLR0915
             section_y2 = (
                 int(len(white_pixels) - np.argmax(white_pixels[::-1] > 0) - 1) + 1
             )
-            bboxes.append(
-                Bbox(
-                    x1=x1,
-                    x2=x2,
-                    y1=y1 + section_y1,
-                    y2=y1 + section_y2,
-                )
-            )
+            bboxes.append(Bbox(x1=x1, x2=x2, y1=y1 + section_y1, y2=y1 + section_y2))
 
     return bboxes
 

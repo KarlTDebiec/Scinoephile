@@ -20,10 +20,7 @@ from .bounding_box import PaddleOcrBoundingBox
 from .cache import PaddleCache
 from .text_result import PaddleOcrTextResult
 
-__all__ = [
-    "PaddleRecognizer",
-    "PaddleRecognizerKwargs",
-]
+__all__ = ["PaddleRecognizer", "PaddleRecognizerKwargs"]
 
 _TEXT_DETECTION_MODEL_NAME = "PP-OCRv5_server_det"
 _TEXT_RECOGNITION_MODEL_NAME = "PP-OCRv5_server_rec"
@@ -139,9 +136,7 @@ class PaddleRecognizer:
 
     @staticmethod
     def _format_paddle_ocr_text(
-        results: list[PaddleOcrTextResult],
-        *,
-        min_confidence: float = 0.0,
+        results: list[PaddleOcrTextResult], *, min_confidence: float = 0.0
     ) -> str:
         """Format PaddleOCR results as subtitle text.
 
@@ -161,8 +156,7 @@ class PaddleRecognizer:
             result.bounding_box.height for result in filtered_results
         ) / len(filtered_results)
         sorted_results = sorted(
-            filtered_results,
-            key=lambda result: result.bounding_box.center[1],
+            filtered_results, key=lambda result: result.bounding_box.center[1]
         )
         lines: list[list[PaddleOcrTextResult]] = []
         line: list[PaddleOcrTextResult] = []
@@ -186,17 +180,14 @@ class PaddleRecognizer:
         if line:
             lines.append(
                 sorted(
-                    line,
-                    key=lambda line_result: line_result.bounding_box.top_left[0],
+                    line, key=lambda line_result: line_result.bounding_box.top_left[0]
                 )
             )
 
         return "\\N".join(" ".join(result.text for result in line) for line in lines)
 
     @staticmethod
-    def _normalize_paddle_ocr_results(
-        raw_results: Any,
-    ) -> list[PaddleOcrTextResult]:
+    def _normalize_paddle_ocr_results(raw_results: Any) -> list[PaddleOcrTextResult]:
         """Normalize raw PaddleOCR results.
 
         Arguments:

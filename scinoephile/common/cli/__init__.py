@@ -12,7 +12,4 @@ from __future__ import annotations
 from .command_line_interface import CommandLineInterface
 from .list_all_commands_action import ListAllCommandsAction
 
-__all__ = [
-    "CommandLineInterface",
-    "ListAllCommandsAction",
-]
+__all__ = ["CommandLineInterface", "ListAllCommandsAction"]

@@ -12,10 +12,7 @@ from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 from scinoephile.llms.guided_review import GuidedReviewPrompt
 
-__all__ = [
-    "YueZhoGuidedReviewPromptYueHans",
-    "YueZhoGuidedReviewPromptYueHant",
-]
+__all__ = ["YueZhoGuidedReviewPromptYueHans", "YueZhoGuidedReviewPromptYueHant"]
 
 
 YueZhoGuidedReviewPromptYueHant = GuidedReviewPrompt(
@@ -58,7 +55,6 @@ YueZhoGuidedReviewPromptYueHant = GuidedReviewPrompt(
 """Prompt for guided review of traditional written Cantonese using Chinese."""
 
 YueZhoGuidedReviewPromptYueHans = YueZhoGuidedReviewPromptYueHant.transformed(
-    Language.yue_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+    Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
 )
 """Prompt for guided review of simplified written Cantonese using Chinese."""

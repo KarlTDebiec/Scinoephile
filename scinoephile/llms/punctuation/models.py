@@ -16,11 +16,7 @@ from scinoephile.core.text import (
 
 from .prompt import PunctuationPrompt
 
-__all__ = [
-    "PunctuationAnswer",
-    "PunctuationQuery",
-    "PunctuationTestCase",
-]
+__all__ = ["PunctuationAnswer", "PunctuationQuery", "PunctuationTestCase"]
 
 
 _BASE_PROMPT = PunctuationPrompt()

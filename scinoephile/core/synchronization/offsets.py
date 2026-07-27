@@ -13,11 +13,7 @@ from scinoephile.core.subtitles import Series, Subtitle
 
 from .groups import get_sync_groups
 
-__all__ = [
-    "SyncOffsetDatum",
-    "SyncOffsetStats",
-    "get_sync_offset_stats",
-]
+__all__ = ["SyncOffsetDatum", "SyncOffsetStats", "get_sync_offset_stats"]
 
 
 @dataclass(frozen=True)
@@ -70,10 +66,7 @@ class SyncOffsetStats:
 
 
 def get_sync_offset_stats(
-    anchor: Series,
-    mobile: Series,
-    sync_cutoff: float = 0.16,
-    pause_length: int = 3000,
+    anchor: Series, mobile: Series, sync_cutoff: float = 0.16, pause_length: int = 3000
 ) -> SyncOffsetStats:
     """Estimate subtitle offset statistics between already-close series.
 

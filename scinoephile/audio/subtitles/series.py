@@ -28,10 +28,7 @@ from scinoephile.media.audio import extract_audio
 
 from .subtitle import AudioSubtitle
 
-__all__ = [
-    "AudioSeries",
-    "AudioSeriesLoadKwargs",
-]
+__all__ = ["AudioSeries", "AudioSeriesLoadKwargs"]
 
 logger = getLogger(__name__)
 
@@ -247,9 +244,7 @@ class AudioSeries(Series):
             with get_temp_directory_path() as temp_dir_path:
                 full_audio_path = temp_dir_path / "full_audio.wav"
                 extract_audio(
-                    validated_media_path,
-                    full_audio_path,
-                    stream_index=stream_index,
+                    validated_media_path, full_audio_path, stream_index=stream_index
                 )
                 logger.info(f"Loading full audio from {full_audio_path}")
                 full_audio = AudioSegment.from_wav(full_audio_path)
@@ -262,10 +257,7 @@ class AudioSeries(Series):
 
     @classmethod
     def build_series(
-        cls,
-        text_series: Series,
-        full_audio: AudioSegment,
-        buffer: int,
+        cls, text_series: Series, full_audio: AudioSegment, buffer: int
     ) -> Self:
         """Construct a series from text and full audio.
 
@@ -308,10 +300,7 @@ class AudioSeries(Series):
             clip = full_audio[start_time:end_time]
             events.append(
                 cls.event_class(
-                    start=original_start,
-                    end=original_end,
-                    audio=clip,
-                    text=event.text,
+                    start=original_start, end=original_end, audio=clip, text=event.text
                 )
             )
         series.events = events

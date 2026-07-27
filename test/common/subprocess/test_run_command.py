@@ -22,8 +22,7 @@ from test.helpers.subprocess_cases import SUBPROCESS_SUCCESS_CASES
     ids=[name for name, _, _ in SUBPROCESS_SUCCESS_CASES],
 )
 def test_run_command_success_cases(
-    command: list[str],
-    expected_stdout_fragments: tuple[str, ...],
+    command: list[str], expected_stdout_fragments: tuple[str, ...]
 ):
     """Test running successful commands.
 
@@ -62,8 +61,7 @@ def test_run_command_failure_default():
 def test_run_command_failure_custom_acceptable():
     """Test running a command with custom acceptable exitcodes."""
     exitcode, stdout, stderr = run_command(
-        [sys.executable, "-c", "import sys; sys.exit(42)"],
-        acceptable_exitcodes=[42],
+        [sys.executable, "-c", "import sys; sys.exit(42)"], acceptable_exitcodes=[42]
     )
 
     assert exitcode == 42
@@ -76,11 +74,7 @@ def test_run_command_with_cwd_path(tmp_path: Path):
         tmp_path: temporary directory provided by pytest
     """
     exitcode, stdout, stderr = run_command(
-        [
-            sys.executable,
-            "-c",
-            "from pathlib import Path; print(Path.cwd())",
-        ],
+        [sys.executable, "-c", "from pathlib import Path; print(Path.cwd())"],
         cwd_path=tmp_path,
     )
 
@@ -128,8 +122,7 @@ def test_run_command_unicode_output():
     env["PYTHONIOENCODING"] = "utf-8"
 
     exitcode, stdout, stderr = run_command(
-        [sys.executable, "-c", "print('Hello 世界')"],
-        env=env,
+        [sys.executable, "-c", "print('Hello 世界')"], env=env
     )
 
     assert exitcode == 0

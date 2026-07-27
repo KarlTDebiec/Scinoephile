@@ -58,9 +58,7 @@ class AuditCliBase(ScinoephileCliBase):
     """Shared command-line support for subtitle audits."""
 
     localizations = merge_localizations(
-        BLOCK_LOCALIZATIONS,
-        LLM_LOCALIZATIONS,
-        AUDIT_CLI_LOCALIZATIONS,
+        BLOCK_LOCALIZATIONS, LLM_LOCALIZATIONS, AUDIT_CLI_LOCALIZATIONS
     )
     """Localized help text keyed by locale and English source text."""
 
@@ -98,9 +96,7 @@ class AuditCliBase(ScinoephileCliBase):
             help="Markdown outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite outfile if it exists",
+            "--overwrite", action="store_true", help="overwrite outfile if it exists"
         )
         parser.set_defaults(_parser=parser)
 
@@ -162,19 +158,14 @@ class AuditCliBase(ScinoephileCliBase):
         """
         try:
             return load_test_cases_from_json(
-                json_path,
-                manager_cls,
-                manager_cls.base_prompt,
+                json_path, manager_cls, manager_cls.base_prompt
             )
         except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
             parser.error(f"Unable to load {workflow_name} JSON: {exc}")
 
     @staticmethod
     def write_report(
-        parser: ArgumentParser,
-        report: str,
-        outfile_path: Path | None,
-        overwrite: bool,
+        parser: ArgumentParser, report: str, outfile_path: Path | None, overwrite: bool
     ):
         """Write a report to stdout or a file.
 

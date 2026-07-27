@@ -9,10 +9,7 @@ from scinoephile.lang.yue.review import (
     GuidedReviewPromptYueHant,
 )
 
-__all__ = [
-    "YueEngGuidedReviewPromptYueHans",
-    "YueEngGuidedReviewPromptYueHant",
-]
+__all__ = ["YueEngGuidedReviewPromptYueHans", "YueEngGuidedReviewPromptYueHant"]
 
 
 YueEngGuidedReviewPromptYueHant = GuidedReviewPromptYueHant

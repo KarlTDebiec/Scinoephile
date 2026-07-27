@@ -148,9 +148,7 @@ class MultiSyncCli(ScinoephileCliBase):
             help="synced mobile subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite outfile if it exists",
+            "--overwrite", action="store_true", help="overwrite outfile if it exists"
         )
         parser.set_defaults(_parser=parser)
 
@@ -190,10 +188,7 @@ class MultiSyncCli(ScinoephileCliBase):
         # Perform operations
         try:
             stats = get_sync_offset_stats(
-                anchor,
-                mobile,
-                sync_cutoff=sync_cutoff,
-                pause_length=pause_length,
+                anchor, mobile, sync_cutoff=sync_cutoff, pause_length=pause_length
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
@@ -204,10 +199,7 @@ class MultiSyncCli(ScinoephileCliBase):
 
         # Write outputs
         write_series(
-            parser,
-            synced,
-            outfile_path if outfile_path is not None else "-",
-            overwrite,
+            parser, synced, outfile_path if outfile_path is not None else "-", overwrite
         )
 
 

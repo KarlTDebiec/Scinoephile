@@ -38,30 +38,14 @@ def test_subtitle_script_analysis_cache_round_trip(tmp_path: Path):
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
     analysis = ZhoScriptAnalysisResult(
-        script="zho-Hant",
-        traditional_count=4,
-        shared_count=2,
+        script="zho-Hant", traditional_count=4, shared_count=2
     )
     cache = ZhoScriptAnalysisCache(tmp_path / "cache")
 
-    cache_path = cache.save(
-        infile_path,
-        stream,
-        4,
-        ("zho-Hans", "zho-Hant"),
-        analysis,
-    )
+    cache_path = cache.save(infile_path, stream, 4, ("zho-Hans", "zho-Hant"), analysis)
 
     assert cache_path.parent == tmp_path / "cache/media/subtitles/analysis"
-    assert (
-        cache.load(
-            infile_path,
-            stream,
-            4,
-            ("zho-Hans", "zho-Hant"),
-        )
-        == analysis
-    )
+    assert cache.load(infile_path, stream, 4, ("zho-Hans", "zho-Hant")) == analysis
     payload = json.loads(cache_path.read_text(encoding="utf-8"))
     assert payload["cache_version"] == 1
     assert payload["analysis"]["script"] == "zho-Hant"
@@ -77,29 +61,14 @@ def test_subtitle_script_analysis_cache_discards_invalid_entry(tmp_path: Path):
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
     cache = ZhoScriptAnalysisCache(tmp_path / "cache")
-    cache_path = cache.get_path(
-        infile_path,
-        stream,
-        4,
-        ("zho-Hans", "zho-Hant"),
-    )
+    cache_path = cache.get_path(infile_path, stream, 4, ("zho-Hans", "zho-Hant"))
     cache_path.write_text("{", encoding="utf-8")
 
-    assert (
-        cache.load(
-            infile_path,
-            stream,
-            4,
-            ("zho-Hans", "zho-Hant"),
-        )
-        is None
-    )
+    assert cache.load(infile_path, stream, 4, ("zho-Hans", "zho-Hant")) is None
     assert not cache_path.exists()
 
 
-def test_subtitle_script_analysis_cache_discards_mismatched_version(
-    tmp_path: Path,
-):
+def test_subtitle_script_analysis_cache_discards_mismatched_version(tmp_path: Path):
     """Test script analysis cache version mismatches are discarded."""
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
@@ -142,13 +111,7 @@ def test_subtitle_script_analysis_cache_overwrite_removes_entry(tmp_path: Path):
     overwrite_cache = ZhoScriptAnalysisCache(cache_root_path, overwrite=True)
 
     assert (
-        overwrite_cache.load(
-            infile_path,
-            stream,
-            4,
-            ("zho-Hans", "zho-Hant"),
-        )
-        is None
+        overwrite_cache.load(infile_path, stream, 4, ("zho-Hans", "zho-Hant")) is None
     )
     assert not cache_path.exists()
 
@@ -161,21 +124,13 @@ def test_subtitle_script_analysis_cache_overwrites_entry_once(tmp_path: Path):
     cache_root_path = tmp_path / "cache"
     languages = ("zho-Hans", "zho-Hant")
     ZhoScriptAnalysisCache(cache_root_path).save(
-        infile_path,
-        stream,
-        4,
-        languages,
-        ZhoScriptAnalysisResult(script="zho-Hant"),
+        infile_path, stream, 4, languages, ZhoScriptAnalysisResult(script="zho-Hant")
     )
     overwrite_cache = ZhoScriptAnalysisCache(cache_root_path, True)
 
     assert overwrite_cache.load(infile_path, stream, 4, languages) is None
     overwrite_cache.save(
-        infile_path,
-        stream,
-        4,
-        languages,
-        ZhoScriptAnalysisResult(script="zho-Hans"),
+        infile_path, stream, 4, languages, ZhoScriptAnalysisResult(script="zho-Hans")
     )
 
     assert overwrite_cache.load(infile_path, stream, 4, languages) == (

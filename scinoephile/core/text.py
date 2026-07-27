@@ -158,10 +158,7 @@ FULL_PUNC = {
 }
 """Selected full-width punctuation characters."""
 
-WHITESPACE = {
-    "IDEOGRAPHIC SPACE": "　",
-    "SPACE": " ",
-}
+WHITESPACE = {"IDEOGRAPHIC SPACE": "　", "SPACE": " "}
 """Selected whitespace characters."""
 
 HALF_PUNC_CHARS = set(HALF_PUNC.values())
@@ -202,14 +199,7 @@ _FULLWIDTH_ALPHANUMERICS_TO_ASCII = str.maketrans(
 )
 """Mapping from fullwidth ASCII letters and digits to regular ASCII."""
 
-_OCR_CONFUSABLES_TO_ASCII = str.maketrans(
-    {
-        "Κ": "K",
-        "Ο": "O",
-        "κ": "k",
-        "ο": "o",
-    }
-)
+_OCR_CONFUSABLES_TO_ASCII = str.maketrans({"Κ": "K", "Ο": "O", "κ": "k", "ο": "o"})
 """Mapping from OCR-confusable characters to regular ASCII."""
 
 RE_HANZI = re.compile(

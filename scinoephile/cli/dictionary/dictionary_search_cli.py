@@ -122,10 +122,7 @@ class DictionarySearchCli(ScinoephileCliBase):
 
     @classmethod
     def _format_search_results(
-        cls,
-        query: str,
-        entries: list[DictionaryEntry],
-        dictionary_name: str,
+        cls, query: str, entries: list[DictionaryEntry], dictionary_name: str
     ) -> list[str]:
         """Format search results.
 
@@ -152,10 +149,7 @@ class DictionarySearchCli(ScinoephileCliBase):
 
     @classmethod
     def _write_search_results(
-        cls,
-        query: str,
-        entries: list[DictionaryEntry],
-        dictionary_name: str,
+        cls, query: str, entries: list[DictionaryEntry], dictionary_name: str
     ):
         """Write formatted search results to stdout and logs.
 
@@ -202,12 +196,7 @@ class DictionarySearchCli(ScinoephileCliBase):
 
     @classmethod
     def _search_dictionaries(
-        cls,
-        *,
-        query: str,
-        limit: int,
-        dictionary_name: str,
-        database_path: Path | None,
+        cls, *, query: str, limit: int, dictionary_name: str, database_path: Path | None
     ) -> list[DictionaryEntry]:
         """Search one or more configured dictionaries.
 

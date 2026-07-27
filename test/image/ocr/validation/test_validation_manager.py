@@ -16,9 +16,7 @@ from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
 def test_validate_confident_space_gap_updates_text(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-    caplog: LogCaptureFixture,
+    tmp_path: Path, monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
 ):
     """Test confident space gap mismatches are corrected without warning."""
     monkeypatch.setattr(
@@ -36,9 +34,7 @@ def test_validate_confident_space_gap_updates_text(
 
 
 def test_validate_confident_adjacent_gap_updates_text(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-    caplog: LogCaptureFixture,
+    tmp_path: Path, monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
 ):
     """Test confident adjacent gap mismatches are corrected without warning."""
     monkeypatch.setattr(
@@ -56,9 +52,7 @@ def test_validate_confident_adjacent_gap_updates_text(
 
 
 def test_validate_confident_tab_gap_updates_newline_to_tab(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-    caplog: LogCaptureFixture,
+    tmp_path: Path, monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
 ):
     """Test confident tab gap replaces an OCR newline without warning."""
     monkeypatch.setattr(
@@ -76,9 +70,7 @@ def test_validate_confident_tab_gap_updates_newline_to_tab(
 
 
 def test_validate_ambiguous_gap_warns_without_updating_text(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-    caplog: LogCaptureFixture,
+    tmp_path: Path, monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
 ):
     """Test ambiguous gaps warn and leave the subtitle text unchanged."""
     monkeypatch.setattr(

@@ -88,8 +88,7 @@ class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
     ):
         """Execute with provided keyword arguments."""
         service = GzzjDictionaryService(
-            database_path=database_path,
-            source_json_path=source_json_path,
+            database_path=database_path, source_json_path=source_json_path
         )
         cls.log_config(
             database_path=service.database_path,

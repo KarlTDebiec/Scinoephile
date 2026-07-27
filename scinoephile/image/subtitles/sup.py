@@ -7,19 +7,12 @@ from __future__ import annotations
 import numba as nb
 import numpy as np
 
-__all__ = [
-    "read_sup_image_array",
-    "read_sup_palette",
-    "read_sup_series",
-]
+__all__ = ["read_sup_image_array", "read_sup_palette", "read_sup_series"]
 
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
 def _render_sup_image(
-    compressed_image: np.ndarray,
-    height: int,
-    width: int,
-    palette: np.ndarray,
+    compressed_image: np.ndarray, height: int, width: int, palette: np.ndarray
 ) -> np.ndarray:
     """Render an RGBA subtitle image from palette and compressed image data.
 
@@ -40,9 +33,7 @@ def _render_sup_image(
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
 def read_sup_image_array(  # noqa: PLR0912, PLR0915
-    bytes_: np.ndarray,
-    height: int,
-    width: int,
+    bytes_: np.ndarray, height: int, width: int
 ) -> np.ndarray:
     """Read a palette-compressed image from a block of bytes.
 
@@ -256,9 +247,7 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
                 if len(pending_image_data) != pending_image_data_length:
                     raise ValueError("SUP image segment data is truncated.")
                 current_image = read_sup_image_array(
-                    pending_image_data,
-                    pending_image_height,
-                    pending_image_width,
+                    pending_image_data, pending_image_height, pending_image_width
                 )
                 has_current_image = True
                 pending_image_data = np.zeros(0, np.uint8)

@@ -28,10 +28,7 @@ class CountingPaddleRecognizer(PaddleRecognizer):
     """PaddleOCR recognizer that counts uncached predictions."""
 
     def __init__(
-        self,
-        cache_root_path: Path | None = None,
-        *,
-        overwrite_cache: bool = False,
+        self, cache_root_path: Path | None = None, *, overwrite_cache: bool = False
     ):
         """Initialize.
 
@@ -93,10 +90,7 @@ def test_paddle_recognizer_overwrites_matching_cache(tmp_path: Path):
     """Test PaddleOCR cache overwrite recognizes matching images again."""
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
     cached = CountingPaddleRecognizer(cache_root_path=tmp_path)
-    fresh = CountingPaddleRecognizer(
-        cache_root_path=tmp_path,
-        overwrite_cache=True,
-    )
+    fresh = CountingPaddleRecognizer(cache_root_path=tmp_path, overwrite_cache=True)
 
     assert cached.recognize_image(image) == "cached text"
     assert fresh.recognize_image(image) == "cached text"
@@ -128,8 +122,7 @@ def test_paddle_recognizer_uses_server_models_and_disables_mkldnn_on_windows(
     setattr(paddleocr, "PaddleOCR", FakePaddleOCR)
     monkeypatch.setitem(sys.modules, "paddleocr", paddleocr)
     monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.paddle_recognizer.system",
-        lambda: "Windows",
+        "scinoephile.image.ocr.paddle.paddle_recognizer.system", lambda: "Windows"
     )
 
     PaddleRecognizer(language=Language.zho_hans)
@@ -163,8 +156,7 @@ def test_paddle_recognizer_keeps_mkldnn_enabled_off_windows(monkeypatch: MonkeyP
     setattr(paddleocr, "PaddleOCR", FakePaddleOCR)
     monkeypatch.setitem(sys.modules, "paddleocr", paddleocr)
     monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.paddle_recognizer.system",
-        lambda: "Linux",
+        "scinoephile.image.ocr.paddle.paddle_recognizer.system", lambda: "Linux"
     )
 
     PaddleRecognizer(language=Language.zho_hans)
@@ -221,7 +213,7 @@ def test_paddle_recognizer_imports_paddleocr_only_when_needed():
                 "import scinoephile.image.ocr.paddle.paddle_recognizer;"
                 "raise SystemExit('paddleocr' in sys.modules)"
             ),
-        ],
+        ]
     )
 
     assert exitcode == 0
@@ -278,9 +270,7 @@ def test_paddle_recognizer_rejects_unsupported_languages():
     ],
 )
 def test_paddle_recognizer_maps_supported_languages_to_engine_codes(
-    monkeypatch: MonkeyPatch,
-    language: Language,
-    expected_code: str,
+    monkeypatch: MonkeyPatch, language: Language, expected_code: str
 ):
     """Test PaddleOCR recognizer maps supported languages to engine codes.
 

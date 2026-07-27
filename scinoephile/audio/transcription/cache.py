@@ -65,9 +65,7 @@ class TranscriptionCache:
         """Cache paths refreshed by this cache instance."""
 
     def get_path(
-        self,
-        audio: AudioSegment,
-        backend_metadata: Mapping[str, object],
+        self, audio: AudioSegment, backend_metadata: Mapping[str, object]
     ) -> Path:
         """Get the cache path for audio and backend configuration.
 
@@ -89,9 +87,7 @@ class TranscriptionCache:
         return self.cache_dir_path / f"{cache_hash.hexdigest()}.json"
 
     def load(
-        self,
-        audio: AudioSegment,
-        backend_metadata: Mapping[str, object],
+        self, audio: AudioSegment, backend_metadata: Mapping[str, object]
     ) -> tuple[Path, list[TranscribedSegment]] | None:
         """Load a cached transcription.
 
@@ -159,9 +155,7 @@ class TranscriptionCache:
         return cache_path, segments
 
     def remove(
-        self,
-        audio: AudioSegment,
-        backend_metadata: Mapping[str, object],
+        self, audio: AudioSegment, backend_metadata: Mapping[str, object]
     ) -> Path | None:
         """Remove a cached transcription.
 
@@ -220,9 +214,7 @@ class TranscriptionCache:
         )
 
     def _get_metadata(
-        self,
-        audio: AudioSegment,
-        backend_metadata: Mapping[str, object],
+        self, audio: AudioSegment, backend_metadata: Mapping[str, object]
     ) -> dict[str, object]:
         """Get complete cache identity metadata.
 

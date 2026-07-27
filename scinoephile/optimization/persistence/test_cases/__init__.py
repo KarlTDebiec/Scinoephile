@@ -15,8 +15,4 @@ from .persisted_test_case import PersistedTestCase
 from .sqlite_store import TestCaseSqliteStore
 from .sync import SyncReport
 
-__all__ = [
-    "PersistedTestCase",
-    "SyncReport",
-    "TestCaseSqliteStore",
-]
+__all__ = ["PersistedTestCase", "SyncReport", "TestCaseSqliteStore"]

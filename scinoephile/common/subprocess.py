@@ -116,12 +116,7 @@ def run_command_live(
     stderr_chunks = []
 
     with Popen(
-        command,
-        stdout=PIPE,
-        stderr=PIPE,
-        cwd=cwd_path,
-        env=env,
-        bufsize=0,
+        command, stdout=PIPE, stderr=PIPE, cwd=cwd_path, env=env, bufsize=0
     ) as child:
         assert child.stdout is not None
         assert child.stderr is not None
@@ -287,7 +282,4 @@ def _wait_for_live_process(
     return exitcode
 
 
-__all__ = [
-    "run_command",
-    "run_command_live",
-]
+__all__ = ["run_command", "run_command_live"]

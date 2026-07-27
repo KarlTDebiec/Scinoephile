@@ -57,8 +57,7 @@ YueZhoTranslationPromptYueHant = TranslationPrompt(
 """Text for traditional written Cantonese translation from Chinese."""
 
 YueZhoTranslationPromptYueHans = YueZhoTranslationPromptYueHant.transformed(
-    Language.yue_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+    Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
 )
 """Text for simplified written Cantonese translation from Chinese."""
 
@@ -102,8 +101,7 @@ YueZhoGapTranslationPromptYueHant = GapTranslationPrompt(
 """Text for traditional written Cantonese gap translation using Chinese."""
 
 YueZhoGapTranslationPromptYueHans = YueZhoGapTranslationPromptYueHant.transformed(
-    Language.yue_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+    Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
 )
 """Text for simplified written Cantonese gap translation using Chinese."""
 
@@ -146,7 +144,6 @@ YueZhoGuidedTranslationPromptYueHant = GuidedTranslationPrompt(
 """Text for traditional guided written Cantonese translation from Chinese."""
 
 YueZhoGuidedTranslationPromptYueHans = YueZhoGuidedTranslationPromptYueHant.transformed(
-    Language.yue_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+    Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
 )
 """Text for simplified guided written Cantonese translation from Chinese."""
