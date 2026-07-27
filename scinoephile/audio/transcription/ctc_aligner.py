@@ -29,8 +29,11 @@ if TYPE_CHECKING:
 class CtcAligner:
     """Aligns transcription text to audio using a CTC model."""
 
-    _components: ClassVar[dict[tuple[str, str], tuple[CtcProcessor, CtcModel]]] = {}
-    """Loaded processors and models shared by model name and device."""
+    _models: ClassVar[dict[tuple[str, str], CtcModel]] = {}
+    """Loaded models shared by model name and device."""
+
+    _processors: ClassVar[dict[str, CtcProcessor]] = {}
+    """Loaded processors shared by model name."""
 
     def __init__(
         self,
@@ -77,8 +80,21 @@ class CtcAligner:
         Returns:
             loaded CTC model
         """
-        self._load_components()
-        assert self._model is not None
+        if self._model is None:
+            model_key = (self.model_name, self.device)
+            cached_model = self._models.get(model_key)
+            if cached_model is not None:
+                self._model = cached_model
+                return self._model
+
+            transformers = import_transformers()
+            model = transformers.AutoModelForCTC.from_pretrained(self.model_name)
+            if hasattr(model, "to"):
+                model = model.to(self.device)
+            if hasattr(model, "eval"):
+                model.eval()
+            self._model = model
+            self._models[model_key] = model
         return self._model
 
     @property
@@ -88,8 +104,16 @@ class CtcAligner:
         Returns:
             loaded CTC processor
         """
-        self._load_components()
-        assert self._processor is not None
+        if self._processor is None:
+            cached_processor = self._processors.get(self.model_name)
+            if cached_processor is not None:
+                self._processor = cached_processor
+                return self._processor
+
+            transformers = import_transformers()
+            processor = transformers.AutoProcessor.from_pretrained(self.model_name)
+            self._processor = processor
+            self._processors[self.model_name] = processor
         return self._processor
 
     def align(
@@ -267,36 +291,6 @@ class CtcAligner:
             token_ids.append(token_id)
             char_indices.append(char_idx)
         return token_ids, char_indices
-
-    def _load_components(self):
-        """Load or reuse the configured CTC processor and model.
-
-        Raises:
-            ImportError: if Hugging Face CTC dependencies are unavailable
-        """
-        if self._processor is not None and self._model is not None:
-            return
-
-        # Reuse components loaded by another aligner instance
-        component_key = (self.model_name, self.device)
-        cached_components = self._components.get(component_key)
-        if cached_components is not None:
-            self._processor, self._model = cached_components
-            return
-
-        # Load the processor and model lazily to preserve optional dependencies
-        transformers = import_transformers()
-        processor = transformers.AutoProcessor.from_pretrained(self.model_name)
-        model = transformers.AutoModelForCTC.from_pretrained(self.model_name)
-
-        # Prepare the model for inference and retain both components
-        if hasattr(model, "to"):
-            model = model.to(self.device)
-        if hasattr(model, "eval"):
-            model.eval()
-        self._processor = processor
-        self._model = model
-        self._components[component_key] = (processor, model)
 
     @staticmethod
     def _attach_boundary_text(

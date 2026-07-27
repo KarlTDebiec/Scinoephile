@@ -399,10 +399,10 @@ def test_ctc_token_ids_normalize_supported_chars_and_skip_unknown_chars():
     assert char_indices == [1, 2, 3, 5]
 
 
-def test_ctc_components_are_cached_by_model_and_device(
+def test_ctc_models_and_processors_are_cached_independently(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test CTC components are configurable and cached by model and device."""
+    """Test CTC models and processors use their appropriate cache keys."""
 
     class FakeAutoProcessor:
         """Fake Hugging Face processor factory."""
@@ -463,7 +463,8 @@ def test_ctc_components_are_cached_by_model_and_device(
             cls.model_names.append(model_name)
             return FakeModel()
 
-    monkeypatch.setattr(CtcAligner, "_components", {})
+    monkeypatch.setattr(CtcAligner, "_models", {})
+    monkeypatch.setattr(CtcAligner, "_processors", {})
     monkeypatch.setitem(
         sys.modules,
         "transformers",
@@ -482,12 +483,11 @@ def test_ctc_components_are_cached_by_model_and_device(
     assert second_aligner.model is first_aligner.model
     assert other_model_aligner.processor is not first_aligner.processor
     assert other_model_aligner.model is not first_aligner.model
-    assert other_device_aligner.processor is not first_aligner.processor
+    assert other_device_aligner.processor is first_aligner.processor
     assert other_device_aligner.model is not first_aligner.model
     assert FakeAutoProcessor.model_names == [
         "organization/model-a",
         "organization/model-b",
-        "organization/model-a",
     ]
     assert FakeAutoModelForCTC.model_names == [
         "organization/model-a",
