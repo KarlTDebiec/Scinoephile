@@ -156,12 +156,19 @@ class Transcriber(ABC):
             if segments is not None:
                 return segments
 
+        # Skip rejected intermediate caches but rerun the final fallback
+        settings_to_run = [
+            settings
+            for settings in preprocessing_settings
+            if settings not in rejected_settings
+        ]
+        final_settings = preprocessing_settings[-1]
+        if final_settings not in settings_to_run:
+            settings_to_run.append(final_settings)
+
         # Run Demucs once if any remaining configuration requires separated audio
         separated_audio = None
-        if any(
-            settings.use_demucs and settings not in rejected_settings
-            for settings in preprocessing_settings
-        ):
+        if any(settings.use_demucs for settings in settings_to_run):
             separated_audio = self._get_separated_audio(
                 audio,
                 overwrite_cache,
@@ -170,7 +177,7 @@ class Transcriber(ABC):
         # Run remaining transcription configurations
         return self._run_configurations(
             audio,
-            preprocessing_settings,
+            settings_to_run,
             rejected_settings,
             separated_audio,
             is_usable,
@@ -188,7 +195,7 @@ class Transcriber(ABC):
 
         Arguments:
             audio: audio used for cache-key generation
-            preprocessing_settings: preprocessing settings in retry order
+            preprocessing_settings: preprocessing settings in cache lookup order
             is_usable: optional callback used to reject cached output
         Returns:
             usable cached segments and rejected preprocessing settings
@@ -323,7 +330,7 @@ class Transcriber(ABC):
     def _run_configurations(
         self,
         audio: AudioSegment,
-        preprocessing_settings: Sequence[TranscriptionPreprocessingSettings],
+        settings_to_run: Sequence[TranscriptionPreprocessingSettings],
         rejected_settings: set[TranscriptionPreprocessingSettings],
         separated_audio: AudioSegment | None,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None,
@@ -332,7 +339,7 @@ class Transcriber(ABC):
 
         Arguments:
             audio: original audio to transcribe
-            preprocessing_settings: preprocessing settings in retry order
+            settings_to_run: preprocessing settings to run in retry order
             rejected_settings: settings with unusable cached output
             separated_audio: Demucs-separated audio, if available
             is_usable: optional callback used to reject output and trigger retries
@@ -341,10 +348,7 @@ class Transcriber(ABC):
         """
         successful_result = bool(rejected_settings)
         last_error: TranscriptionError | None = None
-        for settings in preprocessing_settings:
-            if settings in rejected_settings:
-                continue
-
+        for settings in settings_to_run:
             transcription_audio = audio
             if settings.use_demucs:
                 if separated_audio is None:

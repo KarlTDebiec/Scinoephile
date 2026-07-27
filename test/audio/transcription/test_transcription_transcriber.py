@@ -220,6 +220,39 @@ def test_rejected_cached_configuration_is_not_repeated(tmp_path: Path):
     assert transcriber.calls == [(audio, no_vad_settings)]
 
 
+def test_rejected_cached_final_configuration_is_retried(tmp_path: Path):
+    """Test rejected final cache output receives a fresh transcription attempt.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    audio = AudioSegment.silent(duration=100)
+    settings = TranscriptionPreprocessingSettings(True, False)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.ON, VADMode.OFF)
+    transcriber.demucs_separator = Mock(
+        model_name="htdemucs_ft",
+        return_value=audio,
+    )
+    transcriber._cache.save(
+        audio,
+        transcriber._get_cache_metadata(settings),
+        [_get_segment("bad")],
+    )
+    transcriber.outcomes[settings] = [_get_segment("good")]
+
+    segments = transcriber(
+        audio,
+        is_usable=lambda value: value[0].text == "good",
+    )
+
+    assert segments == [_get_segment("good")]
+    transcriber.demucs_separator.assert_called_once_with(
+        audio,
+        overwrite_cache=False,
+    )
+    assert transcriber.calls == [(audio, settings)]
+
+
 def test_rejected_cached_configuration_takes_precedence_over_other_error(
     tmp_path: Path,
 ):
