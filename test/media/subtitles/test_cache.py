@@ -10,7 +10,7 @@ from unittest.mock import Mock, patch
 
 import ffmpeg
 from PIL import Image
-from pytest import raises
+from pytest import MonkeyPatch, raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
@@ -64,6 +64,22 @@ def test_get_cached_subtitle_stream_path_changes_by_stream(tmp_path: Path):
     assert first == same_stream_with_script
     assert first.suffix == ".srt"
     assert second.suffix == ".srt"
+
+
+def test_get_cached_subtitle_stream_path_includes_cache_version(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+):
+    """Test subtitle stream cache paths differ between cache versions."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+    stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
+    cache = SubtitleCache(tmp_path / "cache")
+    first_cache_path = cache.get_path(infile_path, stream)
+
+    monkeypatch.setattr("scinoephile.media.subtitles.cache._CACHE_VERSION", 2)
+
+    assert cache.get_path(infile_path, stream) != first_cache_path
 
 
 def test_cache_subtitle_streams_uses_existing_stream(tmp_path: Path):

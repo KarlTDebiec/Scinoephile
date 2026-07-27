@@ -25,8 +25,8 @@ if TYPE_CHECKING:
 
 logger = getLogger(__name__)
 
-_CACHE_SCHEMA_VERSION = 1
-"""Current transcription cache payload schema version."""
+_CACHE_VERSION = 1
+"""Current transcription cache version."""
 
 
 class TranscriptionCache:
@@ -107,9 +107,9 @@ class TranscriptionCache:
                     f"Malformed {self.backend_label} transcription cache payload: "
                     f"{cache_path}"
                 )
-            if payload.get("schema_version") != _CACHE_SCHEMA_VERSION:
+            if payload.get("cache_version") != _CACHE_VERSION:
                 raise TranscriptionInferenceError(
-                    f"Unsupported {self.backend_label} transcription cache schema: "
+                    f"Unsupported {self.backend_label} transcription cache version: "
                     f"{cache_path}"
                 )
             if payload.get("metadata") != expected_metadata:
@@ -181,7 +181,7 @@ class TranscriptionCache:
         """
         cache_path = self.get_path(audio, backend_metadata)
         payload = {
-            "schema_version": _CACHE_SCHEMA_VERSION,
+            "cache_version": _CACHE_VERSION,
             "metadata": self._get_metadata(audio, backend_metadata),
             "segments": [segment.model_dump() for segment in segments],
         }

@@ -23,6 +23,9 @@ __all__ = ["ZhoSubtitleScriptAnalysisCache"]
 
 logger = getLogger(__name__)
 
+_CACHE_VERSION = 1
+"""Current Chinese subtitle script analysis cache version."""
+
 
 class ZhoSubtitleScriptAnalysisCache:
     """Caches Chinese subtitle script analysis results."""
@@ -155,7 +158,15 @@ class ZhoSubtitleScriptAnalysisCache:
             ocr_languages,
         )
         with open_atomic_text_file(cache_path) as file:
-            json.dump(asdict(analysis), file, ensure_ascii=False, sort_keys=True)
+            json.dump(
+                {
+                    "cache_version": _CACHE_VERSION,
+                    "analysis": asdict(analysis),
+                },
+                file,
+                ensure_ascii=False,
+                sort_keys=True,
+            )
         logger.info(f"Saved subtitle script analysis to cache: {cache_path}")
         return cache_path
 
@@ -170,7 +181,14 @@ class ZhoSubtitleScriptAnalysisCache:
         """
         if not isinstance(payload, Mapping):
             raise ValueError("Subtitle script analysis cache must contain an object")
-        values = cast(Mapping[str, object], payload)
+        if payload.get("cache_version") != _CACHE_VERSION:
+            raise ValueError("Unsupported subtitle script analysis cache version")
+        raw_analysis = payload.get("analysis")
+        if not isinstance(raw_analysis, Mapping):
+            raise ValueError(
+                "Subtitle script analysis cache must contain an analysis object"
+            )
+        values = cast(Mapping[str, object], raw_analysis)
 
         # Validate optional textual fields
         script = values.get("script")

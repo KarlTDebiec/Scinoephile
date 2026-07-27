@@ -10,6 +10,9 @@ from scinoephile.image.ocr.cache import OcrCache
 
 __all__ = ["TesseractCache"]
 
+_CACHE_VERSION = 1
+"""Current Tesseract OCR cache version."""
+
 
 class TesseractCache(OcrCache[str]):
     """Caches normalized Tesseract OCR text."""
@@ -25,7 +28,13 @@ class TesseractCache(OcrCache[str]):
             cache_root_path: root directory beneath which to cache, or None for default
             overwrite: whether to replace matching cache files
         """
-        super().__init__(cache_root_path, "tesseract", "Tesseract OCR", overwrite)
+        super().__init__(
+            cache_root_path,
+            "tesseract",
+            "Tesseract OCR",
+            _CACHE_VERSION,
+            overwrite,
+        )
 
     def _deserialize(self, payload: object) -> str:
         """Deserialize and validate recognized text.

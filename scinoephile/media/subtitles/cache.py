@@ -24,6 +24,9 @@ __all__ = ["SubtitleCache"]
 
 logger = getLogger(__name__)
 
+_CACHE_VERSION = 1
+"""Current subtitle stream cache version."""
+
 
 class SubtitleCache:
     """Cache of subtitle streams extracted from media."""
@@ -149,6 +152,7 @@ class SubtitleCache:
         """
         stat = infile_path.stat()
         payload = {
+            "cache_version": _CACHE_VERSION,
             "path": str(infile_path),
             "size": stat.st_size,
             "mtime_ns": stat.st_mtime_ns,

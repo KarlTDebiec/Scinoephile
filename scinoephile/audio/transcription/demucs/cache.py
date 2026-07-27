@@ -22,7 +22,7 @@ __all__ = ["DemucsCache"]
 logger = getLogger(__name__)
 
 _CACHE_VERSION = 1
-"""Current Demucs cache identity version."""
+"""Current Demucs cache version."""
 
 
 class DemucsCache:

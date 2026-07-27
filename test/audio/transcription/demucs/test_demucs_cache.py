@@ -39,6 +39,23 @@ def test_get_path_separates_model_configuration(tmp_path: Path):
     assert first_cache_path != second_cache_path
 
 
+def test_get_path_includes_cache_version(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+):
+    """Test Demucs cache paths differ between cache versions."""
+    audio = AudioSegment.silent(duration=100)
+    cache = DemucsCache(tmp_path, "model")
+    first_cache_path = cache.get_path(audio)
+
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.demucs.cache._CACHE_VERSION",
+        2,
+    )
+
+    assert cache.get_path(audio) != first_cache_path
+
+
 def test_load_wraps_decode_failure(
     tmp_path: Path,
     monkeypatch: MonkeyPatch,

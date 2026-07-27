@@ -40,7 +40,7 @@ def test_transcription_cache_round_trip(tmp_path: Path):
     assert cache_path.parent == tmp_path / "test"
     assert cached_transcription == (cache_path, segments)
     payload = json.loads(cache_path.read_text(encoding="utf-8"))
-    assert payload["schema_version"] == 1
+    assert payload["cache_version"] == 1
     assert payload["metadata"]["backend"] == "test"
     assert payload["metadata"]["audio_frame_rate"] == audio.frame_rate
 
@@ -57,6 +57,24 @@ def test_transcription_cache_discards_mismatched_metadata(tmp_path: Path):
     cache_path = cache.save(audio, metadata, [])
     payload = json.loads(cache_path.read_text(encoding="utf-8"))
     payload["metadata"]["model_name"] = "other/model"
+    cache_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    assert cache.load(audio, metadata) is None
+    assert not cache_path.exists()
+
+
+def test_transcription_cache_discards_mismatched_version(tmp_path: Path):
+    """Test cached payload version mismatch is discarded as a cache miss.
+
+    Arguments:
+        tmp_path: temporary cache directory path
+    """
+    cache = TranscriptionCache(tmp_path, "test", "Test")
+    audio = AudioSegment.silent(duration=100)
+    metadata = {"model_name": "test/model"}
+    cache_path = cache.save(audio, metadata, [])
+    payload = json.loads(cache_path.read_text(encoding="utf-8"))
+    payload["cache_version"] = 0
     cache_path.write_text(json.dumps(payload), encoding="utf-8")
 
     assert cache.load(audio, metadata) is None

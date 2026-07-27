@@ -11,6 +11,9 @@ from scinoephile.image.ocr.cache import OcrCache
 
 __all__ = ["LensCache"]
 
+_CACHE_VERSION = 1
+"""Current Google Lens OCR cache version."""
+
 
 class LensCache(OcrCache[list[str]]):
     """Caches normalized Google Lens OCR lines."""
@@ -30,6 +33,7 @@ class LensCache(OcrCache[list[str]]):
             cache_root_path,
             "google-lens",
             "Google Lens OCR",
+            _CACHE_VERSION,
             overwrite,
         )
 

@@ -16,6 +16,9 @@ from .text_result import PaddleOcrTextResult
 
 __all__ = ["PaddleOcrCache"]
 
+_CACHE_VERSION = 1
+"""Current PaddleOCR cache version."""
+
 
 class PaddleOcrCache(OcrCache[list[PaddleOcrTextResult]]):
     """Caches normalized PaddleOCR text results."""
@@ -31,7 +34,13 @@ class PaddleOcrCache(OcrCache[list[PaddleOcrTextResult]]):
             cache_root_path: root directory beneath which to cache, or None for default
             overwrite: whether to replace matching cache files
         """
-        super().__init__(cache_root_path, "paddleocr", "PaddleOCR", overwrite)
+        super().__init__(
+            cache_root_path,
+            "paddleocr",
+            "PaddleOCR",
+            _CACHE_VERSION,
+            overwrite,
+        )
 
     def _deserialize(self, payload: object) -> list[PaddleOcrTextResult]:
         """Deserialize and validate normalized PaddleOCR results.

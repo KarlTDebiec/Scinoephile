@@ -16,6 +16,9 @@ __all__ = ["TesseractLegacyDataCache"]
 
 logger = getLogger(__name__)
 
+_CACHE_VERSION = 1
+"""Current Tesseract legacy data cache version."""
+
 
 class TesseractLegacyDataCache:
     """Caches legacy-capable Tesseract traineddata files."""
@@ -65,6 +68,7 @@ class TesseractLegacyDataCache:
         """
         traineddata_path = self._get_path(language_code)
         try:
+            traineddata_path.parent.mkdir(parents=True, exist_ok=True)
             with TemporaryDirectory(
                 dir=traineddata_path.parent,
                 prefix=f".{traineddata_path.name}-",
@@ -92,4 +96,8 @@ class TesseractLegacyDataCache:
         """
         if not language_code or Path(language_code).name != language_code:
             raise ValueError("Tesseract language code must be a simple filename stem")
-        return self.cache_dir_path / f"{language_code}.traineddata"
+        return (
+            self.cache_dir_path
+            / f"{language_code}-v{_CACHE_VERSION}"
+            / f"{language_code}.traineddata"
+        )

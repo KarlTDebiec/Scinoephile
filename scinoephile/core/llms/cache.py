@@ -17,6 +17,9 @@ __all__ = ["LlmCache"]
 
 logger = getLogger(__name__)
 
+_CACHE_VERSION = 1
+"""Current LLM response cache version."""
+
 
 class LlmCache:
     """Cache of LLM response payloads."""
@@ -69,7 +72,10 @@ class LlmCache:
             path to cache file
         """
         identity_json = json.dumps(
-            identity,
+            {
+                "cache_version": _CACHE_VERSION,
+                "identity": identity,
+            },
             ensure_ascii=True,
             separators=(",", ":"),
             sort_keys=True,

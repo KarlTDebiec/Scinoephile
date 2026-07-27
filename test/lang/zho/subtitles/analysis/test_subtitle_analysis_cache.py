@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from scinoephile.core.media import SubtitleStream
@@ -65,6 +66,9 @@ def test_subtitle_script_analysis_cache_round_trip(tmp_path: Path):
         )
         == analysis
     )
+    payload = json.loads(cache_path.read_text(encoding="utf-8"))
+    assert payload["cache_version"] == 1
+    assert payload["analysis"]["script"] == "zho-Hant"
 
 
 def test_subtitle_script_analysis_cache_discards_invalid_entry(tmp_path: Path):
@@ -94,6 +98,29 @@ def test_subtitle_script_analysis_cache_discards_invalid_entry(tmp_path: Path):
         )
         is None
     )
+    assert not cache_path.exists()
+
+
+def test_subtitle_script_analysis_cache_discards_mismatched_version(
+    tmp_path: Path,
+):
+    """Test script analysis cache version mismatches are discarded."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+    stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
+    cache = ZhoSubtitleScriptAnalysisCache(tmp_path / "cache")
+    cache_path = cache.save(
+        infile_path,
+        stream,
+        4,
+        ("zho-Hans", "zho-Hant"),
+        ZhoSubtitleScriptAnalysisResult(script="zho-Hant"),
+    )
+    payload = json.loads(cache_path.read_text(encoding="utf-8"))
+    payload["cache_version"] = 0
+    cache_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    assert cache.load(infile_path, stream, 4, ("zho-Hans", "zho-Hant")) is None
     assert not cache_path.exists()
 
 

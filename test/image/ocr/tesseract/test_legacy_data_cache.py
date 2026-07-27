@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from time import time
 
-from pytest import raises
+from pytest import MonkeyPatch, raises
 
 from scinoephile.image.ocr.tesseract.legacy_data_cache import (
     TesseractLegacyDataCache,
@@ -40,10 +40,27 @@ def test_tesseract_legacy_data_cache_round_trip(tmp_path: Path):
     old_timestamp = time() - 60 * 60 * 24 * 40
     set_mtime(traineddata_path, old_timestamp)
 
-    assert traineddata_path.parent == tmp_path / "tesseract-legacy-data"
+    assert traineddata_path.parent == tmp_path / "tesseract-legacy-data" / "eng-v1"
     assert cache.load("eng") == traineddata_path
     assert traineddata_path.read_bytes() == b"traineddata"
     assert traineddata_path.stat().st_mtime > old_timestamp
+
+
+def test_tesseract_legacy_data_cache_path_includes_version(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+):
+    """Test legacy data from another cache version is not reused."""
+    cache = TesseractLegacyDataCache(tmp_path)
+    traineddata_path = cache.save("eng", b"traineddata")
+
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.tesseract.legacy_data_cache._CACHE_VERSION",
+        2,
+    )
+
+    assert cache.load("eng") is None
+    assert traineddata_path.exists()
 
 
 def test_tesseract_legacy_data_cache_rejects_unsafe_language(tmp_path: Path):

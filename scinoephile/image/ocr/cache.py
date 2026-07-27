@@ -30,6 +30,7 @@ class OcrCache[TResult](ABC):
         cache_root_path: Path | None,
         cache_dir_name: str,
         backend_label: str,
+        cache_version: int,
         overwrite: bool = False,
     ):
         """Initialize.
@@ -38,10 +39,13 @@ class OcrCache[TResult](ABC):
             cache_root_path: root directory beneath which to cache, or None for default
             cache_dir_name: cache subdirectory name
             backend_label: human-readable backend name used in log messages
+            cache_version: current backend cache version
             overwrite: whether to replace matching cache files
         """
         self.backend_label = backend_label
         """Human-readable backend name used in log messages."""
+        self._version = cache_version
+        """Current backend cache version."""
 
         if cache_root_path is None:
             cache_root_path = get_runtime_cache_root_path()
@@ -108,7 +112,11 @@ class OcrCache[TResult](ABC):
         try:
             with cache_path.open("r", encoding="utf-8") as file:
                 payload: object = json.load(file)
-            result = self._deserialize(payload)
+            if not isinstance(payload, Mapping):
+                raise ValueError(f"{self.backend_label} cache must contain an object")
+            if payload.get("cache_version") != self._version:
+                raise ValueError(f"Unsupported {self.backend_label} cache version")
+            result = self._deserialize(payload.get("result"))
         except (
             IndexError,
             KeyError,
@@ -145,7 +153,10 @@ class OcrCache[TResult](ABC):
         cache_path = self.get_path(image, backend_metadata)
         with open_atomic_text_file(cache_path) as file:
             json.dump(
-                self._serialize(result),
+                {
+                    "cache_version": self._version,
+                    "result": self._serialize(result),
+                },
                 file,
                 ensure_ascii=False,
             )

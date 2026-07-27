@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from time import time
 
@@ -38,7 +39,25 @@ def test_ocr_cache_loads_results_and_updates_modification_time(tmp_path: Path):
     result = cache.load(image, metadata)
 
     assert result == "cached text"
+    assert json.loads(cache_path.read_text(encoding="utf-8")) == {
+        "cache_version": 1,
+        "result": {"text": "cached text"},
+    }
     assert cache_path.stat().st_mtime > old_timestamp
+
+
+def test_ocr_cache_discards_mismatched_version(tmp_path: Path):
+    """Test an OCR cache version mismatch is discarded as a cache miss."""
+    cache = TesseractCache(tmp_path)
+    image = Image.new("RGB", (2, 2), "white")
+    metadata = {"language": "eng"}
+    cache_path = cache.save(image, metadata, "cached text")
+    payload = json.loads(cache_path.read_text(encoding="utf-8"))
+    payload["cache_version"] = 0
+    cache_path.write_text(json.dumps(payload), encoding="utf-8")
+
+    assert cache.load(image, metadata) is None
+    assert not cache_path.exists()
 
 
 def test_ocr_cache_overwrite_removes_matching_result(tmp_path: Path):

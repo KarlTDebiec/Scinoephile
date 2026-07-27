@@ -112,6 +112,9 @@
 * Cache classes are responsible for resolving and validating their root,
   appending their cache namespace, and exposing concrete `cache_root_path` and
   `cache_dir_path` attributes.
+* Persistent cache implementations should define a private `_CACHE_VERSION`
+  constant and include it in each entry's serialized payload, identity hash, or
+  path. Increment it whenever existing entries are no longer safe to reuse.
 * Callers should pass configured roots through to cache classes instead of
   resolving runtime defaults themselves. When a cache instance is shared, use
   its resolved root and overwrite policy for related cache artifacts.

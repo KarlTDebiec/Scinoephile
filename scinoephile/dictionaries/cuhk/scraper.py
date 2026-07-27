@@ -51,6 +51,9 @@ __all__ = [
 
 logger = getLogger(__name__)
 
+_CACHE_VERSION = 1
+"""Current CUHK response cache version."""
+
 CUHK_HEADWORD_ALTERNATE_REGEX = re.compile(r"\([^()]+\)")
 CUHK_TONE_TOKEN_REGEX = re.compile(r"\d(?:\(\d(?:\*\d)?\)|\*\d)?")
 CUHK_TONE_ALTERNATE_REGEX = re.compile(r"^(?P<primary>\d)\((?P<alternate>\d)\)$")
@@ -139,7 +142,10 @@ class CuhkDictionaryScraper:
 
         html = self._fetch_text(
             TERMS_URL,
-            cache_path=self.discovery_cache_dir_path / "terms.html",
+            cache_path=self._get_cache_path(
+                self.discovery_cache_dir_path,
+                "terms",
+            ),
             use_cache=True,
             cache_label="CUHK terms index",
         )
@@ -210,7 +216,7 @@ class CuhkDictionaryScraper:
         """
         entries: list[DictionaryEntry] = []
         for index, html_path in enumerate(
-            sorted(self.scraped_cache_dir_path.glob("*.html"))
+            sorted(self.scraped_cache_dir_path.glob(f"*-v{_CACHE_VERSION}/*.html"))
         ):
             if index and index % 100 == 0:
                 logger.info(f"Parsed {index} CUHK entries")
@@ -417,6 +423,7 @@ class CuhkDictionaryScraper:
 
             html = self._fetch_text(url)
             for variant_file_path in variant_file_paths:
+                variant_file_path.parent.mkdir(parents=True, exist_ok=True)
                 with open_atomic_text_file(variant_file_path) as file:
                     file.write(html)
             logger.info(f"Scraped #{index}: {item}")
@@ -486,6 +493,18 @@ class CuhkDictionaryScraper:
             raise RuntimeError("Request failed without an exception")
         raise last_exception
 
+    @staticmethod
+    def _get_cache_path(cache_dir_path: Path, stem: str) -> Path:
+        """Get a versioned CUHK response cache path.
+
+        Arguments:
+            cache_dir_path: directory containing cached responses
+            stem: safe filename stem identifying the response
+        Returns:
+            versioned response cache path
+        """
+        return cache_dir_path / f"{stem}-v{_CACHE_VERSION}" / f"{stem}.html"
+
     def _get_category_cache_path(self, category_url: str) -> Path:
         """Get cache path for one CUHK category page.
 
@@ -497,7 +516,7 @@ class CuhkDictionaryScraper:
         parsed_url = urlparse(category_url)
         target_name = parse_qs(parsed_url.query).get("target", [""])[0]
         stem = self._get_safe_filename_stem(target_name or "terms")
-        return self.discovery_cache_dir_path / f"{stem}.html"
+        return self._get_cache_path(self.discovery_cache_dir_path, stem)
 
     def _get_variant_file_paths(self, item: str) -> list[Path]:
         """Get output file paths for one CUHK word item.
@@ -512,7 +531,10 @@ class CuhkDictionaryScraper:
             stem = self._get_safe_filename_stem(variant.strip())
             if stem:
                 stems.add(stem)
-        return [self.scraped_cache_dir_path / f"{stem}.html" for stem in sorted(stems)]
+        return [
+            self._get_cache_path(self.scraped_cache_dir_path, stem)
+            for stem in sorted(stems)
+        ]
 
     @classmethod
     def _parse_jyutping_numbers(cls, raw_numbers: str) -> list[str]:

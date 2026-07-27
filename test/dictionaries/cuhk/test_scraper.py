@@ -8,6 +8,8 @@ from pathlib import Path
 from time import time
 from unittest.mock import Mock
 
+from pytest import MonkeyPatch
+
 from scinoephile.dictionaries.cuhk.scraper import CuhkDictionaryScraper
 from test.helpers.files import set_mtime
 
@@ -24,7 +26,8 @@ def test_fetch_text_overwrites_matching_cache(tmp_path: Path):
         overwrite_cache=True,
         session=session,
     )
-    cache_path = scraper.discovery_cache_dir_path / "terms.html"
+    cache_path = scraper.discovery_cache_dir_path / "terms-v1" / "terms.html"
+    cache_path.parent.mkdir()
     cache_path.write_text("stale", encoding="utf-8")
 
     result = scraper._fetch_text(
@@ -45,7 +48,8 @@ def test_fetch_text_marks_matching_cache_used(tmp_path: Path):
     """Test a CUHK response cache hit refreshes its pruning timestamp."""
     session = Mock()
     scraper = CuhkDictionaryScraper(cache_root_path=tmp_path, session=session)
-    cache_path = scraper.discovery_cache_dir_path / "terms.html"
+    cache_path = scraper.discovery_cache_dir_path / "terms-v1" / "terms.html"
+    cache_path.parent.mkdir()
     cache_path.write_text("cached", encoding="utf-8")
     old_timestamp = time() - 60 * 60 * 24 * 40
     set_mtime(cache_path, old_timestamp)
@@ -72,7 +76,8 @@ def test_fetch_text_regenerates_invalid_cache(tmp_path: Path):
         max_delay_seconds=0.0,
         session=session,
     )
-    cache_path = scraper.discovery_cache_dir_path / "terms.html"
+    cache_path = scraper.discovery_cache_dir_path / "terms-v1" / "terms.html"
+    cache_path.parent.mkdir()
     cache_path.write_bytes(b"\xff")
 
     result = scraper._fetch_text(
@@ -91,3 +96,22 @@ def test_cache_namespaces_are_flat(tmp_path: Path):
 
     assert scraper.discovery_cache_dir_path == tmp_path / "cuhk-discovery"
     assert scraper.scraped_cache_dir_path == tmp_path / "cuhk-pages"
+
+
+def test_cache_paths_include_version(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+):
+    """Test CUHK response cache paths differ between cache versions."""
+    scraper = CuhkDictionaryScraper(cache_root_path=tmp_path)
+    first_cache_path = scraper._get_cache_path(
+        scraper.discovery_cache_dir_path,
+        "terms",
+    )
+
+    monkeypatch.setattr("scinoephile.dictionaries.cuhk.scraper._CACHE_VERSION", 2)
+
+    assert (
+        scraper._get_cache_path(scraper.discovery_cache_dir_path, "terms")
+        != first_cache_path
+    )
