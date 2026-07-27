@@ -10,15 +10,13 @@ from abc import ABC, abstractmethod
 from collections.abc import Mapping
 from logging import getLogger
 from pathlib import Path
-from typing import TYPE_CHECKING
+
+from PIL import Image
 
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 
 __all__ = ["OcrCache"]
-
-if TYPE_CHECKING:
-    from PIL import Image
 
 logger = getLogger(__name__)
 
