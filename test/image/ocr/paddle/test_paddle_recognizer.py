@@ -18,7 +18,7 @@ from pytest import MonkeyPatch, raises
 from scinoephile.common.subprocess import run_command
 from scinoephile.core import Language
 from scinoephile.core.dependencies.ocr import import_paddleocr
-from scinoephile.image.ocr.paddle import PaddleRecognizer
+from scinoephile.image.ocr.paddle import PaddleOcrCache, PaddleRecognizer
 from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
 from scinoephile.image.ocr.paddle.text_result import PaddleOcrTextResult
 from test.helpers import parametrize
@@ -42,10 +42,7 @@ class CountingPaddleRecognizer(PaddleRecognizer):
         self.language = Language.eng
         self.paddle_language_code = "en"
         self.min_confidence = 0.0
-        self.cache_dir_path = None
-        if cache_root_path is not None:
-            self.cache_dir_path = cache_root_path / "paddleocr"
-        self.overwrite_cache = overwrite_cache
+        self._cache = PaddleOcrCache(cache_root_path, overwrite_cache)
         self.predict_count = 0
         self._ocr = self
 

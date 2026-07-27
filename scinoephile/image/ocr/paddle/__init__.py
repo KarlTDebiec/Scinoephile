@@ -5,6 +5,7 @@
 Package hierarchy (modules may import from any above):
 * bounding_box / preprocessing
 * text_result
+* cache
 * paddle_recognizer
 """
 
@@ -18,9 +19,11 @@ from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
+from .cache import PaddleOcrCache
 from .paddle_recognizer import PaddleRecognizer, PaddleRecognizerKwargs
 
 __all__ = [
+    "PaddleOcrCache",
     "PaddleRecognizer",
     "PaddleRecognizerKwargs",
     "ocr_image_series_with_paddle",

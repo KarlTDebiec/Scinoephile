@@ -3,6 +3,7 @@
 """Google Lens OCR support for image subtitles.
 
 Package hierarchy (modules may import from any above):
+* cache
 * lens_recognizer
 """
 
@@ -16,9 +17,11 @@ from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
+from .cache import LensCache
 from .lens_recognizer import LensRecognizer, LensRecognizerKwargs
 
 __all__ = [
+    "LensCache",
     "LensRecognizer",
     "LensRecognizerKwargs",
     "ocr_image_series_with_lens",

@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-import hashlib
-import json
 from logging import getLogger
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -14,7 +12,6 @@ from typing import TypedDict, override
 import requests
 from PIL import Image
 
-from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.subprocess import run_command
 from scinoephile.common.validation import (
     val_executable,
@@ -24,6 +21,7 @@ from scinoephile.common.validation import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_root_path
 
+from .cache import TesseractCache
 from .hocr import parse_tesseract_hocr, transfer_tesseract_hocr_italics
 from .preprocessing import preprocess_tesseract_ocr_image
 
@@ -127,13 +125,9 @@ class TesseractRecognizer:
 
         self.detect_italics = detect_italics
         self.oem = oem
-        self.overwrite_cache = overwrite_cache
         self.psm = psm
         self.scale = scale
-
-        self.cache_dir_path: Path | None = None
-        if cache_root_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_root_path / "tesseract")
+        self._cache = TesseractCache(cache_root_path, overwrite_cache)
 
         if skip_executable_validation:
             self.executable_path = Path(executable_path)
@@ -149,12 +143,12 @@ class TesseractRecognizer:
         """String representation."""
         return (
             f"{self.__class__.__name__}("
-            f"cache_dir_path={self.cache_dir_path!r}, "
+            f"cache_root_path={self._cache.cache_root_path!r}, "
             f"executable_path={self.executable_path!r}, "
             f"detect_italics={self.detect_italics!r}, "
             f"language={self.language!r}, "
             f"oem={self.oem!r}, "
-            f"overwrite_cache={self.overwrite_cache!r}, "
+            f"overwrite_cache={self._cache.overwrite!r}, "
             f"psm={self.psm!r}, "
             f"scale={self.scale!r}, "
             f"tessdata_dir_path={self.tessdata_dir_path!r})"
@@ -168,29 +162,25 @@ class TesseractRecognizer:
         Returns:
             recognized text
         """
-        if (cache_path := self._get_cache_path(image)) is not None:
-            if self.overwrite_cache and cache_path.exists():
-                cache_path.unlink()
-                logger.info(f"Removed Tesseract OCR cache: {cache_path}")
-            if cache_path.exists():
-                try:
-                    text = self._load_result(cache_path)
-                except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
-                    cache_path.unlink(missing_ok=True)
-                    logger.warning(
-                        f"Discarded invalid Tesseract OCR cache {cache_path}: {exc}"
-                    )
-                else:
-                    cache_path.touch()
-                    logger.info(f"Loaded Tesseract OCR result from cache: {cache_path}")
-                    return text
-
-            text = self._recognize_uncached_image(image)
-            self._save_result(text, cache_path)
-            logger.info(f"Saved Tesseract OCR result to cache: {cache_path}")
+        cache_metadata = {
+            "detect_italics": self.detect_italics,
+            "executable": str(self.executable_path),
+            "language": self.tesseract_language_code,
+            "oem": self.oem,
+            "psm": self.psm,
+            "scale": self.scale,
+            "tessdata_dir": (
+                str(self.tessdata_dir_path)
+                if self.tessdata_dir_path is not None
+                else None
+            ),
+        }
+        if (text := self._cache.load(image, cache_metadata)) is not None:
             return text
 
-        return self._recognize_uncached_image(image)
+        text = self._recognize_uncached_image(image)
+        self._cache.save(image, cache_metadata, text)
+        return text
 
     @property
     def _hocr_word_separator(self) -> str:
@@ -295,27 +285,6 @@ class TesseractRecognizer:
             include_font_info=True,
         )
 
-    def _get_cache_path(self, image: Image.Image) -> Path | None:
-        """Get cache path based on image data and OCR configuration.
-
-        Arguments:
-            image: image used to derive the cache key
-        Returns:
-            path to cache file
-        """
-        if self.cache_dir_path is None:
-            return None
-
-        image_sha256 = hashlib.sha256(image.tobytes()).hexdigest()
-        cache_key = (
-            f"{image_sha256}_{image.mode}_{image.size}_{self.executable_path}_"
-            f"{self.detect_italics}_{self.tesseract_language_code}_{self.oem}_"
-            f"{self.psm}_"
-            f"{self.scale}_{self.tessdata_dir_path}"
-        )
-        cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
-        return self.cache_dir_path / f"{cache_sha256}.json"
-
     def _download_legacy_traineddata(self, traineddata_path: Path):
         """Download legacy-capable Tesseract traineddata.
 
@@ -349,14 +318,12 @@ class TesseractRecognizer:
         Returns:
             legacy tessdata directory path
         """
-        if self.cache_dir_path is None:
-            legacy_tessdata_dir_path = val_output_dir_path(
-                get_runtime_cache_root_path() / "tesseract-legacy-tessdata"
-            )
-        else:
-            legacy_tessdata_dir_path = val_output_dir_path(
-                self.cache_dir_path.parent / "tesseract-legacy-tessdata"
-            )
+        cache_root_path = self._cache.cache_root_path
+        if cache_root_path is None:
+            cache_root_path = get_runtime_cache_root_path()
+        legacy_tessdata_dir_path = val_output_dir_path(
+            cache_root_path / "tesseract-legacy-tessdata"
+        )
 
         traineddata_path = (
             legacy_tessdata_dir_path / f"{self.tesseract_language_code}.traineddata"
@@ -482,22 +449,6 @@ class TesseractRecognizer:
         return any(char.isalpha() or "\u4e00" <= char <= "\u9fff" for char in text)
 
     @staticmethod
-    def _load_result(cache_path: Path) -> str:
-        """Load recognized text from cache.
-
-        Arguments:
-            cache_path: cache file path
-        Returns:
-            recognized text
-        """
-        with cache_path.open("r", encoding="utf-8") as file:
-            result = json.load(file)
-        text = result["text"]
-        if not isinstance(text, str):
-            raise ValueError("Tesseract OCR cache text must be a string")
-        return text
-
-    @staticmethod
     def _read_hocr_output(output_base_path: Path) -> str:
         """Read Tesseract hOCR output.
 
@@ -517,15 +468,3 @@ class TesseractRecognizer:
             f"at {output_base_path.with_suffix('.hocr')} or "
             f"{output_base_path.with_suffix('.html')}"
         )
-
-    @staticmethod
-    def _save_result(text: str, cache_path: Path):
-        """Save recognized text to cache.
-
-        Arguments:
-            text: recognized text
-            cache_path: cache file path
-        """
-        cache_path.parent.mkdir(parents=True, exist_ok=True)
-        with open_atomic_text_file(cache_path) as file:
-            json.dump({"text": text}, file, ensure_ascii=False)

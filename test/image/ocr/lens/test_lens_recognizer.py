@@ -44,13 +44,10 @@ class CountingLensRecognizer(LensRecognizer):
             results: normalized OCR lines to return from subsequent recognitions
             overwrite_cache: whether to replace matching OCR cache files
         """
-        self.cache_dir_path = None
-        if cache_root_path is not None:
-            self.cache_dir_path = cache_root_path / "google-lens"
-        self.language = Language.eng
-        self.lens_language_code = "en"
-        self.retries = 3
-        self.overwrite_cache = overwrite_cache
+        super().__init__(
+            cache_root_path=cache_root_path,
+            overwrite_cache=overwrite_cache,
+        )
         self.predict_count = 0
         self.exceptions = exceptions
         if results is None:
