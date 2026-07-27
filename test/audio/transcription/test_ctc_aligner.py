@@ -19,13 +19,44 @@ from scinoephile.audio.transcription import (
 from scinoephile.core import Language
 
 
-def test_ctc_aligner_allows_model_override():
-    """Test an explicit CTC model overrides the language default."""
+def test_ctc_aligner_allows_model_override(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test an explicit CTC model does not require a language default.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc_aligner._DEFAULT_MODEL_NAMES",
+        {},
+    )
     aligner = CtcAligner(Language.eng, "organization/model", "mps")
 
     assert aligner.language is Language.eng
     assert aligner.model_name == "organization/model"
     assert aligner.device == "mps"
+
+
+def test_ctc_aligner_groups_english_character_timings_into_words():
+    """Test English CTC character timings are grouped into words."""
+    text = "HI THERE"
+    timed_chars = {
+        char_idx: (char_idx / 10, (char_idx + 1) / 10, 0.8)
+        for char_idx in range(len(text))
+    }
+
+    words = CtcAligner(Language.eng)._get_transcribed_words(
+        text,
+        timed_chars,
+        len(text) / 10,
+    )
+
+    assert [word.text for word in words] == ["HI", " THERE"]
+    assert "".join(word.text for word in words) == text
+    assert [word.start for word in words] == pytest.approx([0.0, 0.2])
+    assert [word.end for word in words] == pytest.approx([0.2, 0.8])
+    assert [word.confidence for word in words] == pytest.approx([0.8, 0.8])
 
 
 def test_ctc_aligner_expands_token_spans(

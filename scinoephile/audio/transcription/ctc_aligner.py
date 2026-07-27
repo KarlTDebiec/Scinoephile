@@ -64,18 +64,18 @@ class CtcAligner:
             model_name: optional Hugging Face CTC model name or local model path
             device: device identifier passed to the CTC model
         Raises:
-            ValueError: if the transcription language is unsupported
+            ValueError: if no default model is available for the language
         """
-        try:
-            default_model_name = _DEFAULT_MODEL_NAMES[language]
-        except KeyError as exc:
-            raise ValueError(f"{language} is not supported by CTC alignment") from exc
-
         self.language = language
         """Transcription language."""
 
         if model_name is None:
-            model_name = default_model_name
+            try:
+                model_name = _DEFAULT_MODEL_NAMES[language]
+            except KeyError as exc:
+                raise ValueError(
+                    f"{language} is not supported by CTC alignment"
+                ) from exc
         self.model_name = model_name
         """Hugging Face CTC model name or local model path."""
 
@@ -593,8 +593,8 @@ class CtcAligner:
                 return token_id
         return None
 
-    @staticmethod
     def _get_transcribed_words(
+        self,
         text: str,
         timed_chars: Mapping[int, tuple[float, float, float]],
         duration_seconds: float,
@@ -687,6 +687,65 @@ class CtcAligner:
                     )
                 )
 
+        if self.language is Language.eng:
+            return self._group_english_words(words)
+        return words
+
+    @staticmethod
+    def _group_english_words(
+        character_words: Sequence[TranscribedWord],
+    ) -> list[TranscribedWord]:
+        """Group English character timings into whitespace-delimited words.
+
+        Arguments:
+            character_words: individually timed characters
+        Returns:
+            whitespace-delimited words with aggregate timings and confidence
+        """
+        # Group whitespace with the word that follows it
+        word_parts: list[list[TranscribedWord]] = []
+        for character_word in character_words:
+            if (
+                character_word.text[0].isspace()
+                and word_parts
+                and not all(part.text.isspace() for part in word_parts[-1])
+            ):
+                word_parts.append([])
+            elif not word_parts:
+                word_parts.append([])
+            word_parts[-1].append(character_word)
+
+        # Preserve trailing whitespace on the preceding word
+        if (
+            len(word_parts) > 1
+            and word_parts[-1]
+            and all(part.text.isspace() for part in word_parts[-1])
+        ):
+            word_parts[-2].extend(word_parts.pop())
+
+        # Combine each group using duration-weighted character confidence
+        words: list[TranscribedWord] = []
+        for parts in word_parts:
+            durations = [max(part.end - part.start, 0.0) for part in parts]
+            total_duration = sum(durations)
+            if total_duration > 0.0:
+                confidence = (
+                    sum(
+                        part.confidence * duration
+                        for part, duration in zip(parts, durations, strict=True)
+                    )
+                    / total_duration
+                )
+            else:
+                confidence = sum(part.confidence for part in parts) / len(parts)
+            words.append(
+                TranscribedWord(
+                    text="".join(part.text for part in parts),
+                    start=parts[0].start,
+                    end=parts[-1].end,
+                    confidence=round(confidence, 3),
+                )
+            )
         return words
 
     @staticmethod
