@@ -9,8 +9,6 @@
 
 ## Formatting
 * Allow `ruff format` to manage code formatting details.
-* Keep expressions on one line when they fit within the configured line length;
-  trailing commas should not force an expanded multiline layout.
 
 ## Imports
 * Include `from __future__ import annotations` in Python modules that contain
@@ -41,8 +39,6 @@
 ## Exports
 * Include `__all__` in Python modules that export public names.
 * Do not include empty `__all__` assignments.
-* Allow `ruff format` to keep short `__all__` assignments on one line and expand
-  longer assignments across multiple lines.
 * `__all__` should list the intended public API for the module.
 * Do not include internal helpers, which are names prefixed with an underscore.
 * In `__init__.py` files, only import classes from the module, not functions or
