@@ -8,12 +8,10 @@ import json
 from pathlib import Path
 
 from pydub import AudioSegment
-from pytest import raises
 
 from scinoephile.audio.transcription import (
     TranscribedSegment,
     TranscriptionCache,
-    TranscriptionInferenceError,
 )
 
 
@@ -48,8 +46,8 @@ def test_transcription_cache_round_trip(tmp_path: Path):
     assert payload["metadata"]["audio_frame_rate"] == audio.frame_rate
 
 
-def test_transcription_cache_rejects_mismatched_metadata(tmp_path: Path):
-    """Test cached payload metadata must match the cache identity.
+def test_transcription_cache_discards_mismatched_metadata(tmp_path: Path):
+    """Test cached payload metadata mismatch is discarded as a cache miss.
 
     Arguments:
         tmp_path: temporary cache directory path
@@ -63,8 +61,8 @@ def test_transcription_cache_rejects_mismatched_metadata(tmp_path: Path):
     payload["metadata"]["model_name"] = "other/model"
     cache_path.write_text(json.dumps(payload), encoding="utf-8")
 
-    with raises(TranscriptionInferenceError, match="Mismatched Test"):
-        cache.load(audio, metadata)
+    assert cache.load(audio, metadata) is None
+    assert not cache_path.exists()
 
 
 def test_transcription_cache_can_be_disabled():

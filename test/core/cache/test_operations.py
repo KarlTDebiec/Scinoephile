@@ -11,6 +11,7 @@ from time import time
 from pytest import raises
 
 from scinoephile.core import ScinoephileError
+from scinoephile.core.cache.namespace import get_cache_namespace_dir_path
 from scinoephile.core.cache.operations import (
     clear_cache,
     discover_cache_namespaces,
@@ -51,8 +52,14 @@ def test_get_cache_entries_filters_namespace(tmp_path: Path):
     assert entries[0].size_bytes == 3
 
 
-def test_get_cache_entries_groups_media_cache_directories(tmp_path: Path):
-    """Test the media namespace exposes its cache directories as entries."""
+def test_get_cache_entries_supports_nested_media_namespaces(tmp_path: Path):
+    """Test nested media namespaces retain individual cache entries.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    get_cache_namespace_dir_path(tmp_path, "media", "subtitles")
+    get_cache_namespace_dir_path(tmp_path, "media", "subtitle-analysis")
     write_cache_file(tmp_path / "media/subtitles/first/2.srt", "one")
     write_cache_file(tmp_path / "media/subtitles/second/3.sup", "two")
     write_cache_file(
@@ -61,13 +68,58 @@ def test_get_cache_entries_groups_media_cache_directories(tmp_path: Path):
     )
     write_cache_file(tmp_path / "media/subtitle-analysis/first.json", "analysis")
 
-    entries = get_cache_entries(tmp_path, namespace="media")
+    assert discover_cache_namespaces(tmp_path) == [
+        "media/subtitle-analysis",
+        "media/subtitles",
+    ]
+
+    entries = get_cache_entries(tmp_path, namespace="media/subtitles")
 
     assert [entry.relative_path for entry in entries] == [
-        Path("media/subtitle-analysis"),
-        Path("media/subtitles"),
+        Path("media/subtitles/first"),
+        Path("media/subtitles/second"),
     ]
-    assert [entry.file_count for entry in entries] == [1, 3]
+    assert [entry.file_count for entry in entries] == [1, 2]
+
+
+def test_prune_cache_prunes_individual_nested_namespace_entries(tmp_path: Path):
+    """Test nested cache namespaces preserve entry-level pruning.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    get_cache_namespace_dir_path(tmp_path, "media", "subtitles")
+    old_path = write_cache_file(tmp_path / "media/subtitles/old/2.srt")
+    new_path = write_cache_file(tmp_path / "media/subtitles/new/3.srt")
+    old_timestamp = time() - 60 * 60 * 24 * 40
+    set_mtime(old_path, old_timestamp)
+    set_mtime(old_path.parent, old_timestamp)
+
+    deleted_entries = prune_cache(
+        tmp_path,
+        older_than=timedelta(days=30),
+        namespace="media/subtitles",
+    )
+
+    assert [entry.relative_path for entry in deleted_entries] == [
+        Path("media/subtitles/old")
+    ]
+    assert not old_path.exists()
+    assert new_path.exists()
+
+
+def test_clear_cache_removes_empty_nested_namespace_parents(tmp_path: Path):
+    """Test clearing the last nested namespace removes its grouping directory.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    get_cache_namespace_dir_path(tmp_path, "media", "subtitles")
+    write_cache_file(tmp_path / "media/subtitles/first/2.srt")
+
+    clear_cache(tmp_path, namespace="media/subtitles")
+
+    assert not (tmp_path / "media").exists()
 
 
 def test_get_cache_entries_missing_root_is_empty(tmp_path: Path):

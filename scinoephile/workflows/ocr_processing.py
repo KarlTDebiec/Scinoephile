@@ -101,7 +101,7 @@ class OcrProcessingWorkflow:
         if cache_root_path is None:
             cache_root_path = get_runtime_cache_root_path(create=False)
         self.cache_root_path = cache_root_path
-        self._subtitle_cache = SubtitleCache(cache_root_path)
+        self._subtitle_cache = SubtitleCache(cache_root_path, overwrite_cache)
         self._ocr_validation_data_dir_path = (
             get_runtime_data_root_path(create=False) / "ocr_validation"
         )
@@ -222,7 +222,6 @@ class OcrProcessingWorkflow:
             self._subtitle_cache.cache(
                 self.infile_path,
                 [stream],
-                overwrite=self.overwrite_cache,
             )
             stream_path = self._subtitle_cache.get_path(self.infile_path, stream)
             return ImageSeries.load(stream_path)

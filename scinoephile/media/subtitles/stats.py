@@ -37,6 +37,7 @@ def get_subtitle_stream_stats(
     stream: SubtitleStream,
     *,
     cache_root_path: Path | None = None,
+    subtitle_cache: SubtitleCache | None = None,
 ) -> SubtitleStreamStats:
     """Get subtitle stream event count and span from cached streams.
 
@@ -44,14 +45,16 @@ def get_subtitle_stream_stats(
         infile_path: media input file
         stream: subtitle stream to inspect
         cache_root_path: cache root directory path
+        subtitle_cache: subtitle stream cache shared with upstream operations
     Returns:
         subtitle stream statistics
     """
-    if cache_root_path is None:
-        cache_root_path = get_runtime_cache_root_path()
-    cache = SubtitleCache(cache_root_path)
-    cache.cache(infile_path, [stream])
-    stream_path = cache.get_path(infile_path, stream)
+    if subtitle_cache is None:
+        if cache_root_path is None:
+            cache_root_path = get_runtime_cache_root_path()
+        subtitle_cache = SubtitleCache(cache_root_path)
+    subtitle_cache.cache(infile_path, [stream])
+    stream_path = subtitle_cache.get_path(infile_path, stream)
     if stream.extension == "sup":
         image_dir_path = stream_path.parent / "image-series"
         series = ImageSeries.load(image_dir_path)

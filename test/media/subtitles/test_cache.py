@@ -99,7 +99,7 @@ def test_cache_subtitle_streams_overwrites_existing_stream(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    cache = SubtitleCache(tmp_path / "cache")
+    cache = SubtitleCache(tmp_path / "cache", overwrite=True)
     stream_path = cache.get_path(infile_path, stream)
     cache_subtitle_stream(
         infile_path,
@@ -126,7 +126,8 @@ def test_cache_subtitle_streams_overwrites_existing_stream(tmp_path: Path):
             side_effect=merge_outputs,
         ),
     ):
-        cache.cache(infile_path, [stream], overwrite=True)
+        cache.cache(infile_path, [stream])
+        cache.cache(infile_path, [stream])
 
     assert len(merged_streams) == 1
     assert merged_streams[0].run_count == 1

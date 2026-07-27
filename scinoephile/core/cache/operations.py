@@ -6,13 +6,14 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from datetime import datetime, timedelta
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from shutil import rmtree
 
 from scinoephile.core.exceptions import ScinoephileError
 
 from .cache_entry import CacheEntry
 from .cache_stats import CacheStats
+from .namespace import CACHE_NAMESPACE_MARKER_FILENAME
 
 __all__ = [
     "CacheEntry",
@@ -50,14 +51,18 @@ def clear_cache(
     for namespace_name in _namespaces_to_clear(
         cache_root_path, namespace=namespace, all_namespaces=all_namespaces
     ):
-        namespace_dir_path = cache_root_path / namespace_name
+        namespace_dir_path = _get_namespace_dir_path(
+            cache_root_path,
+            namespace_name,
+        )
         if namespace_dir_path.exists():
             _delete_entry(namespace_dir_path)
+            _remove_empty_namespace_parents(cache_root_path, namespace_dir_path.parent)
     return entries
 
 
 def discover_cache_namespaces(cache_root_path: Path) -> list[str]:
-    """Discover direct child directory names under a cache root.
+    """Discover cache namespaces under a cache root.
 
     Arguments:
         cache_root_path: cache root directory path
@@ -68,12 +73,21 @@ def discover_cache_namespaces(cache_root_path: Path) -> list[str]:
         return []
     if not cache_root_path.is_dir():
         raise NotADirectoryError(f"{cache_root_path} is not a directory")
-    namespaces = [
+    direct_namespace_dir_paths = [
         child.name
         for child in cache_root_path.iterdir()
         if child.is_dir() and not child.is_symlink()
     ]
-    return sorted(namespaces)
+
+    # Prefer explicitly marked nested namespaces over their grouping directories
+    marked_namespaces = _get_marked_namespace_names(cache_root_path)
+    marked_root_names = {
+        PurePosixPath(namespace).parts[0] for namespace in marked_namespaces
+    }
+    legacy_namespaces = [
+        name for name in direct_namespace_dir_paths if name not in marked_root_names
+    ]
+    return sorted([*legacy_namespaces, *marked_namespaces])
 
 
 def get_cache_entries(
@@ -92,11 +106,15 @@ def get_cache_entries(
     namespace_names = _get_namespace_names(cache_root_path, namespace=namespace)
     entries: list[CacheEntry] = []
     for namespace_name in namespace_names:
-        namespace_dir_path = cache_root_path / namespace_name
+        namespace_dir_path = _get_namespace_dir_path(
+            cache_root_path,
+            namespace_name,
+        )
         entries.extend(
             [
                 _build_cache_entry(cache_root_path, namespace_name, child_path)
                 for child_path in sorted(namespace_dir_path.iterdir())
+                if child_path.name != CACHE_NAMESPACE_MARKER_FILENAME
             ]
         )
     return entries
@@ -234,6 +252,48 @@ def _get_namespace_names(cache_root_path: Path, *, namespace: str | None) -> lis
     return [namespace]
 
 
+def _get_marked_namespace_names(cache_root_path: Path) -> list[str]:
+    """Get cache namespace names identified by marker files.
+
+    Arguments:
+        cache_root_path: cache root directory path
+    Returns:
+        marked cache namespace names relative to the cache root
+    """
+    namespace_names = []
+    for marker_path in cache_root_path.rglob(CACHE_NAMESPACE_MARKER_FILENAME):
+        namespace_dir_path = marker_path.parent
+        relative_path = namespace_dir_path.relative_to(cache_root_path)
+
+        # Ignore namespace markers reached through symlinked directories
+        current_path = cache_root_path
+        contains_symlink = False
+        for part in relative_path.parts:
+            current_path /= part
+            if current_path.is_symlink():
+                contains_symlink = True
+                break
+        if contains_symlink:
+            continue
+        namespace_names.append(PurePosixPath(*relative_path.parts).as_posix())
+    return namespace_names
+
+
+def _get_namespace_dir_path(
+    cache_root_path: Path,
+    namespace_name: str,
+) -> Path:
+    """Get a namespace directory path from its portable name.
+
+    Arguments:
+        cache_root_path: cache root directory path
+        namespace_name: portable cache namespace name
+    Returns:
+        cache namespace directory path
+    """
+    return cache_root_path.joinpath(*PurePosixPath(namespace_name).parts)
+
+
 def _measure_path(entry_path: Path) -> tuple[int, int, datetime, datetime]:
     """Measure a cache entry without following symlinked directories.
 
@@ -259,6 +319,23 @@ def _measure_path(entry_path: Path) -> tuple[int, int, datetime, datetime]:
             modified_at = max(modified_at, child_modified_at)
             accessed_at = max(accessed_at, child_accessed_at)
     return size_bytes, file_count, modified_at, accessed_at
+
+
+def _remove_empty_namespace_parents(
+    cache_root_path: Path,
+    parent_dir_path: Path,
+):
+    """Remove empty namespace grouping directories beneath the cache root.
+
+    Arguments:
+        cache_root_path: cache root directory path
+        parent_dir_path: first parent directory to inspect
+    """
+    while parent_dir_path != cache_root_path:
+        if not parent_dir_path.exists() or any(parent_dir_path.iterdir()):
+            return
+        parent_dir_path.rmdir()
+        parent_dir_path = parent_dir_path.parent
 
 
 def _namespaces_to_clear(

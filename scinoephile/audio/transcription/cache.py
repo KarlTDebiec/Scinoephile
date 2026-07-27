@@ -92,13 +92,12 @@ class TranscriptionCache:
             backend_metadata: backend configuration identifying the output
         Returns:
             cache path and cached segments, if present
-        Raises:
-            TranscriptionInferenceError: if the cache payload is malformed
         """
         cache_path = self.get_path(audio, backend_metadata)
         if cache_path is None or not cache_path.exists():
             return None
 
+        # Validate the matching entry, discarding invalid data as a cache miss
         expected_metadata = self._get_metadata(audio, backend_metadata)
         try:
             with cache_path.open("r", encoding="utf-8") as file:
@@ -127,13 +126,16 @@ class TranscriptionCache:
             segments = [
                 TranscribedSegment.model_validate(segment) for segment in raw_segments
             ]
-        except TranscriptionError:
-            raise
+        except TranscriptionError as exc:
+            self._discard(cache_path, exc)
+            return None
         except (OSError, TypeError, ValueError) as exc:
-            raise TranscriptionInferenceError(
+            cache_error = TranscriptionInferenceError(
                 f"Unable to read {self.backend_label} transcription cache "
                 f"{cache_path}: {exc}"
-            ) from exc
+            )
+            self._discard(cache_path, cache_error)
+            return None
 
         cache_path.touch()
         logger.info(
@@ -190,6 +192,19 @@ class TranscriptionCache:
             json.dump(payload, file, ensure_ascii=False, indent=2)
         logger.info(f"Saved {self.backend_label} transcription to cache: {cache_path}")
         return cache_path
+
+    def _discard(self, cache_path: Path, error: Exception):
+        """Discard an invalid transcription cache entry.
+
+        Arguments:
+            cache_path: invalid transcription cache path
+            error: validation or loading error
+        """
+        cache_path.unlink(missing_ok=True)
+        logger.warning(
+            f"Discarded invalid {self.backend_label} transcription cache "
+            f"{cache_path}: {error}"
+        )
 
     def _get_metadata(
         self,

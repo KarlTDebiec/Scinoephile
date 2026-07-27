@@ -78,7 +78,7 @@ def test_get_preprocessing_settings_orders_preferred_configurations_first(
     """Test automatic modes try Demucs and VAD before their fallbacks."""
     transcriber = _TestTranscriber(tmp_path, DemucsMode.AUTO, VADMode.AUTO)
 
-    assert transcriber.cache_dir_path == tmp_path / "test"
+    assert transcriber._cache.cache_dir_path == tmp_path / "test"
     assert transcriber.demucs_separator is not None
     assert transcriber.demucs_separator._cache.cache_dir_path == tmp_path / "demucs"
     assert transcriber._get_preprocessing_settings() == (

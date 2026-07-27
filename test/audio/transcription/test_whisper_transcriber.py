@@ -317,11 +317,11 @@ def test_transcribe_recovers_from_malformed_cache(
     transcribe.assert_called_once()
 
 
-def test_transcribe_preserves_cache_when_atomic_write_fails(
+def test_transcribe_discards_invalid_cache_when_atomic_write_fails(
     monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
-    """Test failed cache serialization does not corrupt an existing cache file.
+    """Test an invalid cache remains discarded when serialization fails.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
@@ -351,7 +351,7 @@ def test_transcribe_preserves_cache_when_atomic_write_fails(
     with raises(RuntimeError, match="write failed"):
         transcriber.transcribe(audio)
 
-    assert cache_path.read_text(encoding="utf-8") == "existing cache"
+    assert not cache_path.exists()
 
 
 @parametrize(

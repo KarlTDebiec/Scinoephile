@@ -9,12 +9,13 @@ import json
 from contextlib import ExitStack
 from logging import getLogger
 from pathlib import Path
+from shutil import rmtree
 from tempfile import TemporaryDirectory
 
 import ffmpeg
 
-from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import ScinoephileError
+from scinoephile.core.cache.namespace import get_cache_namespace_dir_path
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries
 
@@ -26,23 +27,37 @@ logger = getLogger(__name__)
 class SubtitleCache:
     """Cache of subtitle streams extracted from media."""
 
-    def __init__(self, cache_root_path: Path):
+    def __init__(self, cache_root_path: Path, overwrite: bool = False):
         """Initialize.
 
         Arguments:
             cache_root_path: root directory beneath which to cache
+            overwrite: whether to replace matching cached subtitle artifacts
         """
-        self.cache_dir_path = val_output_dir_path(
-            cache_root_path / "media" / "subtitles"
+        self.cache_root_path = cache_root_path
+        """Root directory beneath which subtitle artifacts are cached."""
+
+        self.cache_dir_path = get_cache_namespace_dir_path(
+            cache_root_path,
+            "media",
+            "subtitles",
         )
         """Directory in which cached subtitle streams are stored."""
+
+        self.overwrite = overwrite
+        """Whether matching cached subtitle artifacts should be replaced."""
+
+        self._refreshed_image_dir_paths: set[Path] = set()
+        """Rendered image directories refreshed by this cache instance."""
+
+        self._refreshed_stream_paths: set[Path] = set()
+        """Subtitle stream paths refreshed by this cache instance."""
 
     def cache(
         self,
         infile_path: Path,
         streams: list[SubtitleStream],
         *,
-        overwrite: bool = False,
         render_images: bool = True,
     ):
         """Cache extracted subtitle streams.
@@ -50,16 +65,17 @@ class SubtitleCache:
         Arguments:
             infile_path: media input file
             streams: subtitle streams to cache
-            overwrite: whether to replace matching cached subtitle artifacts
             render_images: whether to render SUP streams to image directories
         """
         # Determine which subtitle streams must be extracted
         missing: list[tuple[SubtitleStream, Path]] = []
         for stream in streams:
             stream_path = self.get_path(infile_path, stream)
-            if overwrite and stream_path.exists():
-                stream_path.unlink()
-                logger.info(f"Removed subtitle stream cache: {stream_path}")
+            if self.overwrite and stream_path not in self._refreshed_stream_paths:
+                self._refreshed_stream_paths.add(stream_path)
+                if stream_path.exists():
+                    stream_path.unlink()
+                    logger.info(f"Removed subtitle stream cache: {stream_path}")
             if stream_path.exists():
                 stream_path.touch()
                 logger.info(f"Loaded subtitle stream from cache: {stream_path}")
@@ -115,7 +131,7 @@ class SubtitleCache:
 
         # Render cached SUP streams when requested
         if render_images:
-            self._cache_image_series(infile_path, streams, overwrite=overwrite)
+            self._cache_image_series(infile_path, streams)
 
     def get_path(self, infile_path: Path, stream: SubtitleStream) -> Path:
         """Get the cache path for an extracted subtitle stream.
@@ -142,15 +158,12 @@ class SubtitleCache:
         self,
         infile_path: Path,
         streams: list[SubtitleStream],
-        *,
-        overwrite: bool,
     ):
         """Render cached SUP subtitle streams to image directories.
 
         Arguments:
             infile_path: media input file
             streams: subtitle streams to cache
-            overwrite: whether to replace matching rendered image artifacts
         """
         for stream in streams:
             if stream.extension != "sup":
@@ -158,7 +171,14 @@ class SubtitleCache:
             stream_path = self.get_path(infile_path, stream)
             image_dir_path = stream_path.parent / "image-series"
             index_path = image_dir_path / "index.html"
-            if index_path.exists() and not overwrite:
+            if self.overwrite and image_dir_path not in self._refreshed_image_dir_paths:
+                self._refreshed_image_dir_paths.add(image_dir_path)
+                if image_dir_path.exists():
+                    rmtree(image_dir_path)
+                    logger.info(
+                        f"Removed image subtitle series cache: {image_dir_path}"
+                    )
+            if index_path.exists():
                 index_path.touch()
                 logger.info(
                     f"Loaded image subtitle series from cache: {image_dir_path}"

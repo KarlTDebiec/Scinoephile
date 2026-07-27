@@ -52,18 +52,18 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
             cache_root_path=cache_root_path,
         )
 
+    subtitle_cache = details_mock.call_args.kwargs["subtitle_cache"]
     details_mock.assert_called_once_with(
         infile_path,
-        cache_root_path=cache_root_path,
-        overwrite_cache=False,
         streams=None,
+        subtitle_cache=subtitle_cache,
     )
     analysis_mock.assert_called_once_with(
         infile_path,
         streams[0],
         cache_root_path=cache_root_path,
         overwrite_cache=False,
-        subtitle_cache_is_fresh=False,
+        subtitle_cache=subtitle_cache,
     )
     assert [stream.index for stream in streams] == [2, 3]
     assert streams[0].language == "zho-Hant"
@@ -125,20 +125,25 @@ def test_get_zho_subtitle_streams_does_not_overwrite_subtitle_cache_twice(
             return_value=SimpleNamespace(script="zho-Hant"),
         ) as analysis_mock,
     ):
-        get_zho_subtitle_streams(infile_path, overwrite_cache=True)
+        get_zho_subtitle_streams(
+            infile_path,
+            cache_root_path=tmp_path / "cache",
+            overwrite_cache=True,
+        )
 
+    subtitle_cache = details_mock.call_args.kwargs["subtitle_cache"]
     details_mock.assert_called_once_with(
         infile_path,
-        cache_root_path=None,
-        overwrite_cache=True,
         streams=None,
+        subtitle_cache=subtitle_cache,
     )
+    assert subtitle_cache.overwrite
     analysis_mock.assert_called_once_with(
         infile_path,
         stream,
-        cache_root_path=None,
+        cache_root_path=tmp_path / "cache",
         overwrite_cache=True,
-        subtitle_cache_is_fresh=True,
+        subtitle_cache=subtitle_cache,
     )
 
 

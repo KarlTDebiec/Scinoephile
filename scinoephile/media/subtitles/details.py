@@ -28,6 +28,7 @@ def get_detailed_subtitle_streams(
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     streams: Sequence[Stream] | None = None,
+    subtitle_cache: SubtitleCache | None = None,
 ) -> list[SubtitleStream]:
     """Get subtitle stream metadata enriched with expensive subtitle details.
 
@@ -36,11 +37,14 @@ def get_detailed_subtitle_streams(
         cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching cached subtitle artifacts
         streams: optional pre-probed media streams
+        subtitle_cache: subtitle stream cache shared with upstream operations
     Returns:
         enriched subtitle stream metadata
     """
-    if cache_root_path is None:
-        cache_root_path = get_runtime_cache_root_path()
+    if subtitle_cache is None:
+        if cache_root_path is None:
+            cache_root_path = get_runtime_cache_root_path()
+        subtitle_cache = SubtitleCache(cache_root_path, overwrite_cache)
     if streams is None:
         subtitle_streams = get_subtitle_streams(infile_path)
     else:
@@ -48,10 +52,9 @@ def get_detailed_subtitle_streams(
             stream for stream in streams if isinstance(stream, SubtitleStream)
         ]
     if subtitle_streams:
-        SubtitleCache(cache_root_path).cache(
+        subtitle_cache.cache(
             infile_path,
             subtitle_streams,
-            overwrite=overwrite_cache,
         )
 
     detailed_streams = []
@@ -60,7 +63,7 @@ def get_detailed_subtitle_streams(
             stats = get_subtitle_stream_stats(
                 infile_path,
                 stream,
-                cache_root_path=cache_root_path,
+                subtitle_cache=subtitle_cache,
             )
         except (ScinoephileError, ValueError, IndexError) as exc:
             logger.warning(

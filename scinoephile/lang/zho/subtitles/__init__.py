@@ -3,12 +3,14 @@
 """Code related to standard Chinese subtitles.
 
 Package hierarchy (modules may import from any above):
+* analysis_result
+* cache
 * analysis
 * streams
 """
 
 from __future__ import annotations
 
-from .analysis import ZhoSubtitleScriptAnalysis
+from .analysis_result import ZhoSubtitleScriptAnalysis
 
 __all__ = ["ZhoSubtitleScriptAnalysis"]

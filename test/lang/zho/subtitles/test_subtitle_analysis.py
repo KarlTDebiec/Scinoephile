@@ -144,7 +144,6 @@ def test_analyze_text_subtitle_stream_overwrites_cached_stream(tmp_path: Path):
     cache_mock.assert_called_once_with(
         infile_path,
         [stream],
-        overwrite=True,
     )
     assert analysis.script == "zho-Hans"
 

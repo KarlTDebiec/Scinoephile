@@ -16,14 +16,13 @@ from scinoephile.common.subprocess import run_command
 from scinoephile.common.validation import (
     val_executable,
     val_input_dir_path,
-    val_output_dir_path,
 )
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .cache import TesseractCache
 from .hocr import parse_tesseract_hocr, transfer_tesseract_hocr_italics
 from .preprocessing import preprocess_tesseract_ocr_image
+from .traineddata_cache import TesseractLegacyTessdataCache
 
 __all__ = [
     "TesseractRecognizer",
@@ -128,6 +127,7 @@ class TesseractRecognizer:
         self.psm = psm
         self.scale = scale
         self._cache = TesseractCache(cache_root_path, overwrite_cache)
+        self._legacy_tessdata_cache = TesseractLegacyTessdataCache(cache_root_path)
 
         if skip_executable_validation:
             self.executable_path = Path(executable_path)
@@ -285,32 +285,28 @@ class TesseractRecognizer:
             include_font_info=True,
         )
 
-    def _download_legacy_traineddata(self, traineddata_path: Path):
+    def _download_legacy_traineddata(self) -> bytes:
         """Download legacy-capable Tesseract traineddata.
 
-        Arguments:
-            traineddata_path: destination traineddata path
+        Returns:
+            downloaded traineddata contents
         Raises:
             ScinoephileError: if the download fails
         """
         url = TESSERACT_LEGACY_TESSDATA_URL_TEMPLATE.format(
             language=self.tesseract_language_code
         )
-        temp_traineddata_path = traineddata_path.with_suffix(".traineddata.tmp")
         logger.info(f"Downloading Tesseract legacy traineddata: {url}")
         try:
             response = requests.get(url, timeout=60.0)
             response.raise_for_status()
-            temp_traineddata_path.write_bytes(response.content)
-            temp_traineddata_path.replace(traineddata_path)
-        except (OSError, requests.RequestException) as exc:
-            temp_traineddata_path.unlink(missing_ok=True)
+        except requests.RequestException as exc:
             raise ScinoephileError(
                 "Tesseract legacy OCR requires legacy-capable traineddata. "
                 "Failed to download "
                 f"{self.tesseract_language_code}.traineddata from {url}."
             ) from exc
-        logger.info(f"Downloaded Tesseract legacy traineddata: {traineddata_path}")
+        return response.content
 
     def _get_legacy_tessdata_dir_path(self) -> Path:
         """Get legacy-capable Tesseract tessdata directory path.
@@ -318,21 +314,15 @@ class TesseractRecognizer:
         Returns:
             legacy tessdata directory path
         """
-        cache_root_path = self._cache.cache_root_path
-        if cache_root_path is None:
-            cache_root_path = get_runtime_cache_root_path()
-        legacy_tessdata_dir_path = val_output_dir_path(
-            cache_root_path / "tesseract-legacy-tessdata"
+        traineddata_path = self._legacy_tessdata_cache.load(
+            self.tesseract_language_code
         )
-
-        traineddata_path = (
-            legacy_tessdata_dir_path / f"{self.tesseract_language_code}.traineddata"
-        )
-        if not traineddata_path.exists():
-            self._download_legacy_traineddata(traineddata_path)
-        else:
-            traineddata_path.touch()
-        return legacy_tessdata_dir_path
+        if traineddata_path is None:
+            traineddata_path = self._legacy_tessdata_cache.save(
+                self.tesseract_language_code,
+                self._download_legacy_traineddata(),
+            )
+        return traineddata_path.parent
 
     def _recognize_uncached_image(self, image: Image.Image) -> str:
         """Preprocess and recognize text from an image.

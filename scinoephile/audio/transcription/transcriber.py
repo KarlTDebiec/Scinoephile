@@ -92,11 +92,6 @@ class Transcriber(ABC):
             overwrite_cache=overwrite_cache,
         )
 
-    @property
-    def cache_dir_path(self) -> Path | None:
-        """Get the transcription cache directory path."""
-        return self._cache.cache_dir_path
-
     def get_cached_transcription(
         self,
         audio: AudioSegment,
@@ -201,13 +196,7 @@ class Transcriber(ABC):
         rejected_settings: set[TranscriptionPreprocessingSettings] = set()
         for settings in preprocessing_settings:
             metadata = self._get_cache_metadata(settings)
-            try:
-                cached_transcription = self._cache.load(audio, metadata)
-            except TranscriptionError as exc:
-                logger.warning(
-                    f"Unable to read {self.backend_label} transcription cache: {exc}"
-                )
-                continue
+            cached_transcription = self._cache.load(audio, metadata)
             if cached_transcription is None:
                 continue
             cache_path, segments = cached_transcription

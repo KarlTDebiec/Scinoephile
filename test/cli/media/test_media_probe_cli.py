@@ -12,7 +12,7 @@ from pytest import CaptureFixture, raises
 from scinoephile.cli.media.media_probe_cli import MediaProbeCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
-from scinoephile.lang.zho.subtitles.analysis import ZhoSubtitleScriptAnalysis
+from scinoephile.lang.zho.subtitles.analysis_result import ZhoSubtitleScriptAnalysis
 from test.helpers import parametrize
 
 
