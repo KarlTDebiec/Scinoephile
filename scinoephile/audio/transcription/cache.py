@@ -33,14 +33,14 @@ class TranscriptionCache:
 
     def __init__(
         self,
-        cache_dir_path: Path | None,
+        cache_root_path: Path | None,
         backend_name: str,
         backend_label: str,
     ):
         """Initialize.
 
         Arguments:
-            cache_dir_path: directory in which to cache, or None to disable caching
+            cache_root_path: root directory beneath which to cache, or None to disable
             backend_name: stable backend name stored in cache metadata
             backend_label: human-readable backend name used in log messages
         """
@@ -50,8 +50,8 @@ class TranscriptionCache:
         """Human-readable backend name used in log messages."""
         self.cache_dir_path = None
         """Directory in which cached transcriptions are stored."""
-        if cache_dir_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_dir_path)
+        if cache_root_path is not None:
+            self.cache_dir_path = val_output_dir_path(cache_root_path / backend_name)
 
     def get_path(
         self,

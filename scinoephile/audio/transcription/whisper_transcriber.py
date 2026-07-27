@@ -65,8 +65,7 @@ class WhisperTranscriber(Transcriber):
         language: str = "yue",
         demucs_mode: DemucsMode = DemucsMode.AUTO,
         vad_mode: VADMode = VADMode.AUTO,
-        cache_dir_path: Path | None = None,
-        demucs_cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
         temperature: float | Sequence[float] = 0.0,
         condition_on_previous_text: bool = True,
     ):
@@ -77,8 +76,7 @@ class WhisperTranscriber(Transcriber):
             language: language code for transcription
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
-            cache_dir_path: directory in which to cache
-            demucs_cache_dir_path: directory in which to cache Demucs output
+            cache_root_path: root directory beneath which to cache
             temperature: decoding temperature or fallback schedule
             condition_on_previous_text: whether to condition each decoding window on
                 the preceding window
@@ -89,8 +87,7 @@ class WhisperTranscriber(Transcriber):
         self.temperature: float | Sequence[float] = temperature
         self.condition_on_previous_text = condition_on_previous_text
         super().__init__(
-            cache_dir_path,
-            demucs_cache_dir_path,
+            cache_root_path,
             demucs_mode,
             vad_mode,
         )

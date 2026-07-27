@@ -94,11 +94,11 @@ def test_get_cache_path_separates_configuration(
         channels=1,
     )
     first_transcriber = WhisperTranscriber(
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         model_name="custom/model",
     )
     second_transcriber = WhisperTranscriber(
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         model_name="custom/model",
     )
     setattr(first_transcriber, field_name, first_value)
@@ -106,8 +106,8 @@ def test_get_cache_path_separates_configuration(
     first_cache_path = _get_cache_path(first_transcriber, audio)
     second_cache_path = _get_cache_path(second_transcriber, audio)
 
-    assert first_cache_path.parent == tmp_path
-    assert second_cache_path.parent == tmp_path
+    assert first_cache_path.parent == tmp_path / "whisper"
+    assert second_cache_path.parent == tmp_path / "whisper"
     assert first_cache_path != second_cache_path
 
 
@@ -127,7 +127,7 @@ def test_get_cache_path_separates_audio_formats(tmp_path: Path):
         channels=1,
     )
     transcriber = WhisperTranscriber(
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         model_name="custom/model",
     )
 
@@ -146,12 +146,12 @@ def test_get_cache_path_accepts_list_temperature_schedule(tmp_path: Path):
         channels=1,
     )
     list_transcriber = WhisperTranscriber(
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         model_name="custom/model",
         temperature=[0.0, 0.2, 0.4],
     )
     tuple_transcriber = WhisperTranscriber(
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         model_name="custom/model",
         temperature=(0.0, 0.2, 0.4),
     )
@@ -259,7 +259,7 @@ def test_transcribe_overwrites_matching_cache(
     """
     audio = AudioSegment.silent(duration=1000)
     transcriber = WhisperTranscriber(
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         model_name="custom/model",
         demucs_mode=DemucsMode.OFF,
         vad_mode=VADMode.OFF,
@@ -297,7 +297,7 @@ def test_transcribe_recovers_from_malformed_cache(
     """
     audio = AudioSegment.silent(duration=1000)
     transcriber = WhisperTranscriber(
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         model_name="custom/model",
         demucs_mode=DemucsMode.OFF,
         vad_mode=VADMode.OFF,
@@ -329,7 +329,7 @@ def test_transcribe_preserves_cache_when_atomic_write_fails(
     """
     audio = AudioSegment.silent(duration=1000)
     transcriber = WhisperTranscriber(
-        cache_dir_path=tmp_path,
+        cache_root_path=tmp_path,
         model_name="custom/model",
         demucs_mode=DemucsMode.OFF,
         vad_mode=VADMode.OFF,

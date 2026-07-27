@@ -40,6 +40,7 @@ def test_transcription_cache_round_trip(tmp_path: Path):
     cached_transcription = cache.load(audio, metadata)
 
     assert cache_path is not None
+    assert cache_path.parent == tmp_path / "test"
     assert cached_transcription == (cache_path, segments)
     payload = json.loads(cache_path.read_text(encoding="utf-8"))
     assert payload["schema_version"] == 1

@@ -11,7 +11,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING, ClassVar
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.paths import get_runtime_cache_dir_path
 
 from .cache import TranscriptionCache
 from .demucs_separator import DemucsSeparator
@@ -42,16 +41,14 @@ class Transcriber(ABC):
 
     def __init__(
         self,
-        cache_dir_path: Path | None,
-        demucs_cache_dir_path: Path | None = None,
+        cache_root_path: Path | None,
         demucs_mode: DemucsMode = DemucsMode.AUTO,
         vad_mode: VADMode = VADMode.AUTO,
     ):
         """Initialize.
 
         Arguments:
-            cache_dir_path: directory in which to cache transcriptions
-            demucs_cache_dir_path: directory in which to cache Demucs output
+            cache_root_path: root directory beneath which to cache
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
         """
@@ -64,14 +61,10 @@ class Transcriber(ABC):
         self.demucs_separator: DemucsSeparator | None = None
         """Demucs vocal separator used by configured preprocessing settings."""
         if self.demucs_mode is not DemucsMode.OFF:
-            if demucs_cache_dir_path is None:
-                demucs_cache_dir_path = get_runtime_cache_dir_path("demucs")
-            self.demucs_separator = DemucsSeparator(
-                cache_dir_path=demucs_cache_dir_path
-            )
+            self.demucs_separator = DemucsSeparator(cache_root_path=cache_root_path)
 
         self._cache = TranscriptionCache(
-            cache_dir_path,
+            cache_root_path,
             self.backend_name,
             self.backend_label,
         )

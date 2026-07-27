@@ -37,13 +37,13 @@ class DemucsSeparator:
         self,
         model_name: str = "htdemucs_ft",
         *,
-        cache_dir_path: Path | None = None,
+        cache_root_path: Path | None = None,
     ):
         """Initialize.
 
         Arguments:
             model_name: Demucs model name used for source separation
-            cache_dir_path: directory in which to cache separated vocals
+            cache_root_path: root directory beneath which to cache
         """
         self.model_name = model_name
         """Demucs model name used for source separation."""
@@ -54,7 +54,7 @@ class DemucsSeparator:
         self._model: DemucsModel | None = None
         """Cached Demucs model."""
 
-        self._cache = DemucsCache(cache_dir_path, model_name)
+        self._cache = DemucsCache(cache_root_path, model_name)
         """Cache of vocals separated with the configured model."""
 
     def __call__(

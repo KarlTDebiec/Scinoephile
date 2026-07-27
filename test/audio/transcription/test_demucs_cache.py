@@ -24,6 +24,8 @@ def test_get_path_separates_model_configuration(tmp_path: Path):
 
     assert first_cache_path is not None
     assert second_cache_path is not None
+    assert first_cache_path.parent == tmp_path / "demucs"
+    assert second_cache_path.parent == tmp_path / "demucs"
     assert first_cache_path != second_cache_path
 
 

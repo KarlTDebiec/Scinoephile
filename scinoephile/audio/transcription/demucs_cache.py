@@ -29,19 +29,19 @@ class DemucsCache:
 
     def __init__(
         self,
-        cache_dir_path: Path | None,
+        cache_root_path: Path | None,
         model_name: str,
     ):
         """Initialize.
 
         Arguments:
-            cache_dir_path: directory in which to cache, or None to disable caching
+            cache_root_path: root directory beneath which to cache, or None to disable
             model_name: Demucs model name used for source separation
         """
         self.cache_dir_path = None
         """Directory in which cached vocals are stored."""
-        if cache_dir_path is not None:
-            self.cache_dir_path = val_output_dir_path(cache_dir_path)
+        if cache_root_path is not None:
+            self.cache_dir_path = val_output_dir_path(cache_root_path / "demucs")
 
         self.model_name = model_name
         """Demucs model name identifying cached vocals."""
