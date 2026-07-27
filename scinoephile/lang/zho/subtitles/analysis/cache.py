@@ -17,7 +17,7 @@ from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.paths import get_runtime_cache_root_path
 
-from .result import ZhoSubtitleScriptAnalysis
+from .result import ZhoSubtitleScriptAnalysisResult
 
 __all__ = ["ZhoSubtitleScriptAnalysisCache"]
 
@@ -88,7 +88,7 @@ class ZhoSubtitleScriptAnalysisCache:
         stream: SubtitleStream,
         sample_size: int,
         ocr_languages: Sequence[str],
-    ) -> ZhoSubtitleScriptAnalysis | None:
+    ) -> ZhoSubtitleScriptAnalysisResult | None:
         """Load a cached script analysis.
 
         Invalid cache files are discarded and treated as cache misses.
@@ -135,7 +135,7 @@ class ZhoSubtitleScriptAnalysisCache:
         stream: SubtitleStream,
         sample_size: int,
         ocr_languages: Sequence[str],
-        analysis: ZhoSubtitleScriptAnalysis,
+        analysis: ZhoSubtitleScriptAnalysisResult,
     ) -> Path:
         """Save a script analysis to the cache.
 
@@ -160,7 +160,7 @@ class ZhoSubtitleScriptAnalysisCache:
         return cache_path
 
     @staticmethod
-    def _deserialize(payload: object) -> ZhoSubtitleScriptAnalysis:
+    def _deserialize(payload: object) -> ZhoSubtitleScriptAnalysisResult:
         """Deserialize and validate a cached script analysis.
 
         Arguments:
@@ -209,7 +209,7 @@ class ZhoSubtitleScriptAnalysisCache:
         simplified_count, traditional_count, shared_count = cast(list[int], counts)
         validated_sample_indexes = cast(list[int], sample_indexes)
         validated_ocr_languages = cast(list[str], ocr_languages)
-        return ZhoSubtitleScriptAnalysis(
+        return ZhoSubtitleScriptAnalysisResult(
             script=script,
             simplified_count=simplified_count,
             traditional_count=traditional_count,

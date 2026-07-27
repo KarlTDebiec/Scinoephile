@@ -16,7 +16,7 @@ from scinoephile.lang.zho.script.analysis import get_zho_script_analysis
 from scinoephile.media.subtitles.cache import SubtitleCache
 
 from .cache import ZhoSubtitleScriptAnalysisCache
-from .result import ZhoSubtitleScriptAnalysis
+from .result import ZhoSubtitleScriptAnalysisResult
 
 __all__ = ["analyze_zho_subtitle_stream_script"]
 
@@ -36,7 +36,7 @@ def analyze_zho_subtitle_stream_script(
     overwrite_cache: bool = False,
     sample_size: int = _DEFAULT_ZHO_SUBTITLE_SAMPLE_SIZE,
     subtitle_cache: SubtitleCache | None = None,
-) -> ZhoSubtitleScriptAnalysis:
+) -> ZhoSubtitleScriptAnalysisResult:
     """Analyze the Chinese script used by a subtitle stream.
 
     Arguments:
@@ -50,7 +50,7 @@ def analyze_zho_subtitle_stream_script(
         subtitle script analysis
     """
     if not is_chinese_language_tag(stream.language):
-        return ZhoSubtitleScriptAnalysis(
+        return ZhoSubtitleScriptAnalysisResult(
             failure_reason="not a Chinese subtitle stream",
         )
 
@@ -135,7 +135,7 @@ def _get_image_subtitle_sample_analysis(
     *,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
-) -> ZhoSubtitleScriptAnalysis:
+) -> ZhoSubtitleScriptAnalysisResult:
     """Analyze selected cached image subtitles using PaddleOCR.
 
     Arguments:
@@ -173,7 +173,7 @@ def _get_image_subtitle_sample_analysis(
         script = None
         failure_reason = "OCR script analyses did not agree"
 
-    return ZhoSubtitleScriptAnalysis(
+    return ZhoSubtitleScriptAnalysisResult(
         script=script,
         simplified_count=reference_analysis.simplified_count,
         traditional_count=reference_analysis.traditional_count,
@@ -190,7 +190,7 @@ def _get_zho_image_subtitle_script_analysis(
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     sample_size: int = _DEFAULT_ZHO_SUBTITLE_SAMPLE_SIZE,
-) -> ZhoSubtitleScriptAnalysis:
+) -> ZhoSubtitleScriptAnalysisResult:
     """Analyze Chinese script in rendered image subtitles using PaddleOCR.
 
     Arguments:
@@ -205,7 +205,7 @@ def _get_zho_image_subtitle_script_analysis(
     event_count = len(series)
     sample_indexes = _get_evenly_spaced_indexes(event_count, sample_size)
     if not sample_indexes:
-        return ZhoSubtitleScriptAnalysis(
+        return ZhoSubtitleScriptAnalysisResult(
             failure_reason="no subtitle images to sample",
         )
 
@@ -221,7 +221,7 @@ def _get_zho_subtitle_script_analysis(
     text: str,
     *,
     failure_reason: str | None = None,
-) -> ZhoSubtitleScriptAnalysis:
+) -> ZhoSubtitleScriptAnalysisResult:
     """Analyze Chinese script in subtitle text.
 
     Arguments:
@@ -233,7 +233,7 @@ def _get_zho_subtitle_script_analysis(
     analysis = get_zho_script_analysis(text)
     if failure_reason is None and analysis.script is None:
         failure_reason = "Chinese script could not be determined"
-    return ZhoSubtitleScriptAnalysis(
+    return ZhoSubtitleScriptAnalysisResult(
         script=analysis.script,
         simplified_count=analysis.simplified_count,
         traditional_count=analysis.traditional_count,

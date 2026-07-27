@@ -11,7 +11,7 @@ from scinoephile.lang.zho.subtitles.analysis.cache import (
     ZhoSubtitleScriptAnalysisCache,
 )
 from scinoephile.lang.zho.subtitles.analysis.result import (
-    ZhoSubtitleScriptAnalysis,
+    ZhoSubtitleScriptAnalysisResult,
 )
 
 
@@ -40,7 +40,7 @@ def test_subtitle_script_analysis_cache_round_trip(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    analysis = ZhoSubtitleScriptAnalysis(
+    analysis = ZhoSubtitleScriptAnalysisResult(
         script="zho-Hant",
         traditional_count=4,
         shared_count=2,
@@ -113,7 +113,7 @@ def test_subtitle_script_analysis_cache_overwrite_removes_entry(tmp_path: Path):
         stream,
         4,
         ("zho-Hans", "zho-Hant"),
-        ZhoSubtitleScriptAnalysis(script="zho-Hant"),
+        ZhoSubtitleScriptAnalysisResult(script="zho-Hant"),
     )
 
     overwrite_cache = ZhoSubtitleScriptAnalysisCache(cache_root_path, overwrite=True)

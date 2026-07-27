@@ -3,7 +3,7 @@
 """Tesseract OCR support for image subtitles.
 
 Package hierarchy (modules may import from any above):
-* cache / hocr / preprocessing / traineddata_cache
+* cache / hocr / legacy_data_cache / preprocessing
 * tesseract_recognizer
 """
 
@@ -17,12 +17,12 @@ from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 from .cache import TesseractCache
+from .legacy_data_cache import TesseractLegacyDataCache
 from .tesseract_recognizer import TesseractRecognizer, TesseractRecognizerKwargs
-from .traineddata_cache import TesseractLegacyTessdataCache
 
 __all__ = [
     "TesseractCache",
-    "TesseractLegacyTessdataCache",
+    "TesseractLegacyDataCache",
     "TesseractRecognizer",
     "TesseractRecognizerKwargs",
     "ocr_image_series_with_tesseract",

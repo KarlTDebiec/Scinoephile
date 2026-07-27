@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tesseract legacy traineddata cache."""
+"""Tesseract legacy data cache."""
 
 from __future__ import annotations
 
@@ -12,12 +12,12 @@ from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_root_path
 
-__all__ = ["TesseractLegacyTessdataCache"]
+__all__ = ["TesseractLegacyDataCache"]
 
 logger = getLogger(__name__)
 
 
-class TesseractLegacyTessdataCache:
+class TesseractLegacyDataCache:
     """Caches legacy-capable Tesseract traineddata files."""
 
     def __init__(self, cache_root_path: Path | None = None):
@@ -31,7 +31,7 @@ class TesseractLegacyTessdataCache:
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which traineddata files are cached."""
         self.cache_dir_path = val_output_dir_path(
-            self.cache_root_path / "tesseract-legacy-tessdata"
+            self.cache_root_path / "tesseract-legacy-data"
         )
         """Directory in which legacy-capable traineddata files are stored."""
 

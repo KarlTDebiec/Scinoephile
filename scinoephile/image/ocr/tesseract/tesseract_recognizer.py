@@ -21,8 +21,8 @@ from scinoephile.core import Language, ScinoephileError
 
 from .cache import TesseractCache
 from .hocr import parse_tesseract_hocr, transfer_tesseract_hocr_italics
+from .legacy_data_cache import TesseractLegacyDataCache
 from .preprocessing import preprocess_tesseract_ocr_image
-from .traineddata_cache import TesseractLegacyTessdataCache
 
 __all__ = [
     "TesseractRecognizer",
@@ -127,7 +127,7 @@ class TesseractRecognizer:
         self.psm = psm
         self.scale = scale
         self._cache = TesseractCache(cache_root_path, overwrite_cache)
-        self._legacy_tessdata_cache = TesseractLegacyTessdataCache(cache_root_path)
+        self._legacy_data_cache = TesseractLegacyDataCache(cache_root_path)
 
         if skip_executable_validation:
             self.executable_path = Path(executable_path)
@@ -314,11 +314,9 @@ class TesseractRecognizer:
         Returns:
             legacy tessdata directory path
         """
-        traineddata_path = self._legacy_tessdata_cache.load(
-            self.tesseract_language_code
-        )
+        traineddata_path = self._legacy_data_cache.load(self.tesseract_language_code)
         if traineddata_path is None:
-            traineddata_path = self._legacy_tessdata_cache.save(
+            traineddata_path = self._legacy_data_cache.save(
                 self.tesseract_language_code,
                 self._download_legacy_traineddata(),
             )
