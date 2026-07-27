@@ -5,10 +5,12 @@
 from __future__ import annotations
 
 from pathlib import Path
+from time import time
 
 from pytest import MonkeyPatch, raises
 
 from scinoephile.core.llms.cache import LlmCache
+from test.helpers.files import set_mtime
 
 
 def test_llm_cache_uses_runtime_default(runtime_cache_root_path: Path):
@@ -73,3 +75,26 @@ def test_llm_cache_overwrites_matching_entry_once(tmp_path: Path):
     overwrite_cache.save(cache_path, "fresh")
 
     assert overwrite_cache.load(cache_path) == "fresh"
+
+
+def test_llm_cache_load_marks_entry_used(tmp_path: Path):
+    """Test loading a cached response refreshes its pruning timestamp."""
+    cache = LlmCache(tmp_path, "translation")
+    cache_path = cache.get_path("identity", "system", "tools", "query")
+    cache.save(cache_path, "response")
+    old_timestamp = time() - 60 * 60 * 24 * 40
+    set_mtime(cache_path, old_timestamp)
+
+    assert cache.load(cache_path) == "response"
+    assert cache_path.stat().st_mtime > old_timestamp
+
+
+def test_llm_cache_removes_matching_entry(tmp_path: Path):
+    """Test removing a cached response returns its path when present."""
+    cache = LlmCache(tmp_path, "translation")
+    cache_path = cache.get_path("identity", "system", "tools", "query")
+    cache.save(cache_path, "response")
+
+    assert cache.remove(cache_path) == cache_path
+    assert cache.remove(cache_path) is None
+    assert not cache_path.exists()

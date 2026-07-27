@@ -16,6 +16,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.media.subtitles.cache import SubtitleCache
+from scinoephile.media.subtitles.extractor import SubtitleExtractor
 from test.helpers.files import set_mtime
 from test.helpers.media_subtitles import (
     cache_subtitle_stream,
@@ -111,8 +112,8 @@ def test_cache_subtitle_streams_uses_existing_stream(tmp_path: Path):
     cache = SubtitleCache(tmp_path / "cache")
     cache_subtitle_stream(infile_path, stream, tmp_path / "cache", b"")
 
-    with patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input:
-        cache.ensure_cached(infile_path, [stream])
+    with patch("scinoephile.media.subtitles.extractor.ffmpeg.input") as ffmpeg_input:
+        SubtitleExtractor(cache).extract(infile_path, [stream])
 
     ffmpeg_input.assert_not_called()
 
@@ -132,8 +133,8 @@ def test_cache_subtitle_streams_marks_existing_stream_used(tmp_path: Path):
     old_timestamp = time() - 60 * 60 * 24 * 40
     set_mtime(stream_path, old_timestamp)
 
-    with patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input:
-        cache.ensure_cached(infile_path, [stream])
+    with patch("scinoephile.media.subtitles.extractor.ffmpeg.input") as ffmpeg_input:
+        SubtitleExtractor(cache).extract(infile_path, [stream])
 
     ffmpeg_input.assert_not_called()
     assert stream_path.stat().st_mtime > old_timestamp
@@ -163,16 +164,16 @@ def test_cache_subtitle_streams_overwrites_existing_stream(tmp_path: Path):
 
     with (
         patch(
-            "scinoephile.media.subtitles.cache.ffmpeg.input",
+            "scinoephile.media.subtitles.extractor.ffmpeg.input",
             return_value=input_stream,
         ),
         patch(
-            "scinoephile.media.subtitles.cache.ffmpeg.merge_outputs",
+            "scinoephile.media.subtitles.extractor.ffmpeg.merge_outputs",
             side_effect=merge_outputs,
         ),
     ):
-        cache.ensure_cached(infile_path, [stream])
-        cache.ensure_cached(infile_path, [stream])
+        SubtitleExtractor(cache).extract(infile_path, [stream])
+        SubtitleExtractor(cache).extract(infile_path, [stream])
 
     assert len(merged_streams) == 1
     assert merged_streams[0].run_count == 1
@@ -191,15 +192,15 @@ def test_cache_subtitle_streams_replaces_malformed_stream_artifact(tmp_path: Pat
 
     with (
         patch(
-            "scinoephile.media.subtitles.cache.ffmpeg.input",
+            "scinoephile.media.subtitles.extractor.ffmpeg.input",
             return_value=input_stream,
         ),
         patch(
-            "scinoephile.media.subtitles.cache.ffmpeg.merge_outputs",
+            "scinoephile.media.subtitles.extractor.ffmpeg.merge_outputs",
             side_effect=lambda *outputs: _RecordingMergedFfmpegStream(list(outputs)),
         ),
     ):
-        cache.ensure_cached(infile_path, [stream])
+        SubtitleExtractor(cache).extract(infile_path, [stream])
 
     assert stream_path.is_file()
     assert stream_path.read_bytes() == b"cached"
@@ -229,16 +230,16 @@ def test_cache_subtitles_wraps_ffmpeg_extraction_errors(tmp_path: Path):
 
     with (
         patch(
-            "scinoephile.media.subtitles.cache.ffmpeg.input",
+            "scinoephile.media.subtitles.extractor.ffmpeg.input",
             return_value=input_stream,
         ),
         patch(
-            "scinoephile.media.subtitles.cache.ffmpeg.merge_outputs",
+            "scinoephile.media.subtitles.extractor.ffmpeg.merge_outputs",
             return_value=merged_stream,
         ),
         raises(ScinoephileError, match="Could not cache subtitle streams"),
     ):
-        cache.ensure_cached(infile_path, [stream])
+        SubtitleExtractor(cache).extract(infile_path, [stream])
 
     assert not stream_path.exists()
     assert list(stream_path.parent.glob(f".{stream_path.name}-*")) == []
@@ -266,10 +267,10 @@ def test_cache_subtitles_builds_image_cache_for_sup_stream(tmp_path: Path):
     )
 
     with patch(
-        "scinoephile.media.subtitles.cache.ImageSeries.load",
+        "scinoephile.media.subtitles.extractor.ImageSeries.load",
         return_value=image_series,
     ):
-        cache.ensure_cached(infile_path, [stream])
+        SubtitleExtractor(cache).extract(infile_path, [stream])
 
     image_dir_path = get_image_subtitle_dir_path(
         infile_path,
@@ -297,8 +298,8 @@ def test_cache_subtitles_marks_existing_image_series_used(tmp_path: Path):
     old_timestamp = time() - 60 * 60 * 24 * 40
     set_mtime(index_path, old_timestamp)
 
-    with patch("scinoephile.media.subtitles.cache.ImageSeries.load") as load:
-        cache.ensure_cached(infile_path, [stream])
+    with patch("scinoephile.media.subtitles.extractor.ImageSeries.load") as load:
+        SubtitleExtractor(cache).extract(infile_path, [stream])
 
     load.assert_not_called()
     assert index_path.stat().st_mtime > old_timestamp
@@ -328,10 +329,10 @@ def test_cache_subtitles_replaces_malformed_image_index(tmp_path: Path):
     )
 
     with patch(
-        "scinoephile.media.subtitles.cache.ImageSeries.load",
+        "scinoephile.media.subtitles.extractor.ImageSeries.load",
         return_value=image_series,
     ) as load:
-        cache.ensure_cached(infile_path, [stream])
+        SubtitleExtractor(cache).extract(infile_path, [stream])
 
     load.assert_called_once()
     assert (image_dir_path / "index.html").is_file()
@@ -350,10 +351,10 @@ def test_cache_subtitles_can_skip_image_cache_for_sup_stream(tmp_path: Path):
     cache_subtitle_stream(infile_path, stream, tmp_path / "cache", b"not a real sup")
 
     with patch(
-        "scinoephile.media.subtitles.cache.ImageSeries.load",
+        "scinoephile.media.subtitles.extractor.ImageSeries.load",
         side_effect=ValueError("SUP segment data is truncated."),
     ) as load:
-        cache.ensure_cached(infile_path, [stream], render_images=False)
+        SubtitleExtractor(cache).extract(infile_path, [stream], render_images=False)
 
     load.assert_not_called()
 
@@ -382,15 +383,15 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path):
 
     with (
         patch(
-            "scinoephile.media.subtitles.cache.ffmpeg.input",
+            "scinoephile.media.subtitles.extractor.ffmpeg.input",
             return_value=input_stream,
         ),
         patch(
-            "scinoephile.media.subtitles.cache.ffmpeg.merge_outputs",
+            "scinoephile.media.subtitles.extractor.ffmpeg.merge_outputs",
             side_effect=merge_outputs,
         ),
     ):
-        cache.ensure_cached(infile_path, streams)
+        SubtitleExtractor(cache).extract(infile_path, streams)
 
     first_stream_path = cache.get_path(infile_path, streams[0])
     second_stream_path = cache.get_path(infile_path, streams[1])
@@ -402,8 +403,7 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path):
         (second_stream_path.name, "0:3", "subrip"),
     }
     assert {Path(path).parent.parent for path, _, _ in input_stream.output_calls} == {
-        first_stream_path.parent,
-        second_stream_path.parent,
+        cache.cache_dir_path,
     }
     assert len(merged_streams) == 1
     assert len(merged_streams[0].outputs) == 2

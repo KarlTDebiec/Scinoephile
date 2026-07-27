@@ -18,6 +18,7 @@ from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
 from scinoephile.media.probe import get_subtitle_streams
 from scinoephile.media.subtitles.cache import SubtitleCache
+from scinoephile.media.subtitles.extractor import SubtitleExtractor
 
 __all__ = [
     "SubtitleExtractionOutput",
@@ -151,22 +152,29 @@ def extract_subtitles(
             streams_to_extract.append(stream)
 
     # Cache all subtitle files that need extraction in one ffmpeg run
+    stream_paths_by_index: dict[int, Path] = {}
     if streams_to_extract:
-        subtitle_cache.ensure_cached(
+        stream_paths = SubtitleExtractor(subtitle_cache).extract(
             infile_path,
             streams_to_extract,
             render_images=False,
         )
+        stream_paths_by_index = {
+            stream.index: stream_path
+            for stream, stream_path in zip(
+                streams_to_extract,
+                stream_paths,
+                strict=True,
+            )
+        }
 
     # Copy cached subtitle files into place and optionally render SUP image directories
     handled_outputs = []
     for output in outputs:
         if output.status != SubtitleExtractionOutputStatus.EXISTED:
             _copy_cached_stream_file(
-                infile_path,
-                output.stream,
+                stream_paths_by_index[output.stream.index],
                 output.path,
-                cache=subtitle_cache,
             )
         handled_outputs.append(output)
         if output.stream.extension == "sup" and export_images:
@@ -182,25 +190,17 @@ def extract_subtitles(
 
 
 def _copy_cached_stream_file(
-    infile_path: Path,
-    stream: SubtitleStream,
+    stream_path: Path,
     outfile_path: Path,
-    *,
-    cache: SubtitleCache,
 ) -> Path:
     """Copy a cached subtitle stream file into place.
 
     Arguments:
-        infile_path: media input file
-        stream: subtitle stream to copy
+        stream_path: cached subtitle stream file
         outfile_path: output subtitle path
-        cache: subtitle stream cache
     Returns:
         output subtitle path
     """
-    # Resolve the cached subtitle path for the extracted stream
-    stream_path = cache.get_path(infile_path, stream)
-
     # Copy from cache unless the requested output already is the cached file
     if stream_path != outfile_path:
         if not outfile_path.parent.exists():

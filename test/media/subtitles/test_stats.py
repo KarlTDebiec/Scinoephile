@@ -33,7 +33,7 @@ def test_get_text_subtitle_stream_stats_from_cached_stream(tmp_path: Path):
     )
     subtitle_cache = SubtitleCache(tmp_path / "cache")
 
-    with patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input:
+    with patch("scinoephile.media.subtitles.extractor.ffmpeg.input") as ffmpeg_input:
         stats = get_subtitle_stream_stats(
             infile_path,
             stream,

@@ -28,7 +28,10 @@ def test_get_detailed_subtitle_streams_enriches_subtitle_stats(tmp_path: Path):
             "scinoephile.media.subtitles.details.get_subtitle_streams",
             return_value=subtitle_streams,
         ),
-        patch("scinoephile.media.subtitles.details.SubtitleCache.ensure_cached"),
+        patch(
+            "scinoephile.media.subtitles.details.SubtitleExtractor.extract",
+            return_value=[subtitle_cache.get_path(infile_path, subtitle_streams[0])],
+        ),
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             return_value=SimpleNamespace(
@@ -61,17 +64,25 @@ def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
     infile_path.touch()
     cache_root_path = tmp_path / "cache"
     subtitle_cache = SubtitleCache(cache_root_path)
+    subtitle_stream = SubtitleStream(
+        index=2,
+        codec_type="subtitle",
+        codec_name="subrip",
+    )
     streams = [
         VideoStream(index=0, codec_type="video", codec_name="h264"),
         AudioStream(index=1, codec_type="audio", codec_name="aac"),
-        SubtitleStream(index=2, codec_type="subtitle", codec_name="subrip"),
+        subtitle_stream,
     ]
 
     with (
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_streams",
         ),
-        patch("scinoephile.media.subtitles.details.SubtitleCache.ensure_cached"),
+        patch(
+            "scinoephile.media.subtitles.details.SubtitleExtractor.extract",
+            return_value=[subtitle_cache.get_path(infile_path, subtitle_stream)],
+        ),
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             return_value=SimpleNamespace(

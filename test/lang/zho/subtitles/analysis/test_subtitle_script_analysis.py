@@ -39,7 +39,7 @@ def test_analyze_text_subtitle_stream_uses_cached_stream(tmp_path: Path):
     )
     subtitle_cache = SubtitleCache(cache_root_path)
 
-    with patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input:
+    with patch("scinoephile.media.subtitles.extractor.ffmpeg.input") as ffmpeg_input:
         analysis = analyze_zho_subtitle_stream_script(
             infile_path,
             stream,
@@ -75,15 +75,15 @@ def test_analyze_text_subtitle_stream_marks_cached_analysis_used(tmp_path: Path)
     set_mtime(cache_path, old_timestamp)
 
     with patch(
-        "scinoephile.lang.zho.subtitles.analysis.script.SubtitleCache.ensure_cached"
-    ) as cache_mock:
+        "scinoephile.lang.zho.subtitles.analysis.script.SubtitleExtractor.extract"
+    ) as extract:
         analysis = analyze_zho_subtitle_stream_script(
             infile_path,
             stream,
             subtitle_cache=subtitle_cache,
         )
 
-    cache_mock.assert_not_called()
+    extract.assert_not_called()
     assert analysis.script == "zho-Hans"
     assert cache_path.stat().st_mtime > old_timestamp
 
@@ -139,17 +139,19 @@ def test_analyze_text_subtitle_stream_overwrites_cached_stream(tmp_path: Path):
         "1\n00:00:00,000 --> 00:00:01,000\n简体中文汉字\n",
     )
     subtitle_cache = SubtitleCache(cache_root_path, overwrite=True)
+    stream_path = subtitle_cache.get_path(infile_path, stream)
 
     with patch(
-        "scinoephile.lang.zho.subtitles.analysis.script.SubtitleCache.ensure_cached"
-    ) as cache_mock:
+        "scinoephile.lang.zho.subtitles.analysis.script.SubtitleExtractor.extract",
+        return_value=[stream_path],
+    ) as extract:
         analysis = analyze_zho_subtitle_stream_script(
             infile_path,
             stream,
             subtitle_cache=subtitle_cache,
         )
 
-    cache_mock.assert_called_once_with(
+    extract.assert_called_once_with(
         infile_path,
         [stream],
     )

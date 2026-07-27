@@ -14,6 +14,7 @@ from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.script.analysis import get_zho_script_analysis
 from scinoephile.media.subtitles.cache import SubtitleCache
+from scinoephile.media.subtitles.extractor import SubtitleExtractor
 
 from .cache import ZhoScriptAnalysisCache
 from .result import ZhoScriptAnalysisResult
@@ -74,15 +75,14 @@ def analyze_zho_subtitle_stream_script(
         return cached_analysis
 
     # Cache the source subtitle stream before inspecting its contents
-    subtitle_cache.ensure_cached(
-        infile_path,
-        [stream],
-    )
-    stream_path = subtitle_cache.get_path(infile_path, stream)
+    stream_path = SubtitleExtractor(subtitle_cache).extract(infile_path, [stream])[0]
 
     # Analyze either rendered SUP images or text subtitle events
     if stream.extension == "sup":
-        image_dir_path = stream_path.parent / "image-series"
+        image_dir_path = subtitle_cache.get_image_series_dir_path(
+            infile_path,
+            stream,
+        )
         analysis = _get_zho_image_subtitle_script_analysis(
             image_dir_path,
             cache_root_path=cache_root_path,

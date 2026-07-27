@@ -22,6 +22,7 @@ from scinoephile.image.ocr.tesseract import (
 )
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.media.subtitles.cache import SubtitleCache
+from scinoephile.media.subtitles.extractor import SubtitleExtractor
 from scinoephile.media.subtitles.selection import get_media_subtitle_stream
 
 from .clean import clean_series
@@ -215,11 +216,10 @@ class OcrProcessingWorkflow:
                 return ImageSeries.load(self.infile_path)
 
             stream = get_media_subtitle_stream(self.infile_path, self.stream_index)
-            self._subtitle_cache.ensure_cached(
+            stream_path = SubtitleExtractor(self._subtitle_cache).extract(
                 self.infile_path,
                 [stream],
-            )
-            stream_path = self._subtitle_cache.get_path(self.infile_path, stream)
+            )[0]
             return ImageSeries.load(stream_path)
         except (OSError, RuntimeError, ValueError) as exc:
             raise ScinoephileError(

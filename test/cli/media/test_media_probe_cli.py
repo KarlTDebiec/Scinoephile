@@ -107,7 +107,7 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
             "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script"
         ) as analyze,
         patch("scinoephile.media.subtitles.details.get_subtitle_stream_stats") as stats,
-        patch("scinoephile.media.subtitles.details.SubtitleCache.ensure_cached"),
+        patch("scinoephile.media.subtitles.details.SubtitleExtractor.extract"),
     ):
         analyze.return_value.script = script
         stats.return_value.event_count = 12
@@ -220,7 +220,7 @@ def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             side_effect=ValueError("Malformed SUP data"),
         ),
-        patch("scinoephile.media.subtitles.details.SubtitleCache.ensure_cached"),
+        patch("scinoephile.media.subtitles.details.SubtitleExtractor.extract"),
     ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path} --details")
 

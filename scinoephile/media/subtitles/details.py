@@ -14,6 +14,7 @@ from scinoephile.core.media import Stream, SubtitleStream
 from scinoephile.media.probe import get_subtitle_streams
 
 from .cache import SubtitleCache
+from .extractor import SubtitleExtractor
 from .stats import get_subtitle_stream_stats
 
 __all__ = ["get_detailed_subtitle_streams"]
@@ -45,7 +46,7 @@ def get_detailed_subtitle_streams(
             stream for stream in streams if isinstance(stream, SubtitleStream)
         ]
     if subtitle_streams:
-        subtitle_cache.ensure_cached(
+        SubtitleExtractor(subtitle_cache).extract(
             infile_path,
             subtitle_streams,
         )

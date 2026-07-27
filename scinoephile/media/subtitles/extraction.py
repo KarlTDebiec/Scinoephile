@@ -11,6 +11,7 @@ from shutil import copy2
 from scinoephile.core.media import SubtitleStream
 
 from .cache import SubtitleCache
+from .extractor import SubtitleExtractor
 
 __all__ = ["extract_subtitle_stream"]
 
@@ -35,12 +36,11 @@ def extract_subtitle_stream(
         output path
     """
     cache = SubtitleCache(cache_root_path)
-    cache.ensure_cached(
+    stream_path = SubtitleExtractor(cache).extract(
         infile_path,
         [stream],
         render_images=False,
-    )
-    stream_path = cache.get_path(infile_path, stream)
+    )[0]
     if stream_path != outfile_path:
         if not outfile_path.parent.exists():
             outfile_path.parent.mkdir(parents=True)

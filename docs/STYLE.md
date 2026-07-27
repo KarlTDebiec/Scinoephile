@@ -107,36 +107,8 @@
   when the shape is known.
 
 ## Caching
-* Cache classes should accept `cache_root_path: Path | None`; `None` selects the
-  runtime cache root and does not disable caching.
-  * Place `cache_root_path` first, followed by required and optional
-    cache-specific configuration, with `overwrite: bool = False` last when the
-    cache supports replacement.
-* Cache classes are responsible for resolving and validating their root,
-  appending their cache namespace, and exposing concrete `cache_root_path` and
-  `cache_dir_path` attributes.
-* Persistent cache implementations should define a private `_CACHE_VERSION`
-  constant and include it in each entry's serialized payload, identity hash, or
-  path. Increment it whenever existing entries are no longer safe to reuse.
-* Callers should pass configured roots through to cache classes instead of
-  resolving runtime defaults themselves. When a cache instance is shared, use
-  its resolved root and overwrite policy for related cache artifacts; do not
-  copy this cache-owned state onto the caller.
-* Operations that own a cache's lifetime may accept cache configuration and
-  should construct one cache instance. Functions that accept a caller-supplied
-  cache should accept only that cache instance, optionally creating a default
-  instance when one is omitted, rather than also accepting its constructor
-  arguments.
-* Overwrite mode should refresh each matching entry at most once per cache
-  instance, allowing entries generated later in the same operation to be
-  reused. A successful save counts as that entry's refresh, including when it
-  occurs before the first load.
-* A successfully loaded and validated entry should be marked as recently used
-  by updating its modification timestamp. Keep the filesystem operation inside
-  the cache; expose a semantic `mark_used` method only when validation must
-  occur in the caller.
-* If a future operation needs to disable persistence, use an explicit option or
-  cache implementation rather than overloading a `None` root.
+* Follow the cache ownership, layout, lifecycle, and testing conventions in
+  [`CACHING.md`](CACHING.md).
 
 ## Exceptions
 * Raise `ScinoephileError` for Scinoephile domain failures that should be shown
@@ -183,8 +155,8 @@
   such as `infile_path`, `outfile_path`, or `cache_dir_path`.
 * Use argument `type=` validators, including `enum_arg(...)`, so `_main`
   receives the type it expects instead of reparsing strings.
-  * Cache-producing CLIs should use the shared cache argument bundle. Cache
-    directory help should include `(default: %(default)s)`.
+  * Cache-producing CLIs should follow the CLI conventions in
+    [`CACHING.md`](CACHING.md).
 * Base command CLIs that dispatch to subcommands should call the selected
   subcommand directly, such as
   `cls.subcommands()[subcommand_name]._main(**kwargs)`.

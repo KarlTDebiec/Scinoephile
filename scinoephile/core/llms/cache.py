@@ -55,15 +55,6 @@ class LlmCache:
         self._refreshed_paths: set[Path] = set()
         """Cache paths refreshed by this cache instance."""
 
-    def discard(self, cache_path: Path):
-        """Delete an invalid cache file.
-
-        Arguments:
-            cache_path: cache file to delete
-        """
-        cache_path.unlink(missing_ok=True)
-        logger.info(f"Deleted invalid cache file: {cache_path}")
-
     def get_path(
         self,
         identity: object,
@@ -111,19 +102,28 @@ class LlmCache:
             return None
 
         try:
-            return cache_path.read_text(encoding="utf-8")
+            contents = cache_path.read_text(encoding="utf-8")
         except (OSError, UnicodeError) as exc:
             cache_path.unlink(missing_ok=True)
             logger.warning(f"Discarded invalid LLM response cache {cache_path}: {exc}")
             return None
 
-    def mark_used(self, cache_path: Path):
-        """Update the access marker for a successfully loaded cache file.
+        cache_path.touch()
+        return contents
+
+    def remove(self, cache_path: Path) -> Path | None:
+        """Remove a cached LLM response.
 
         Arguments:
-            cache_path: cache file that was successfully loaded
+            cache_path: cache file path
+        Returns:
+            removed cache path, if present
         """
-        cache_path.touch()
+        if not cache_path.exists():
+            return None
+        cache_path.unlink()
+        logger.info(f"Removed LLM response cache: {cache_path}")
+        return cache_path
 
     def save(self, cache_path: Path, contents: str) -> Path:
         """Save an LLM response payload.

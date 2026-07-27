@@ -308,13 +308,12 @@ class Queryer[TTestCase: TestCase]:
                 test_case.verified = True
             self.log_encountered_test_case(test_case)
             logger.info(f"Loaded from cache: {test_case.query.key_str}")
-            self._cache.mark_used(cache_path)
             return test_case
         except ValidationError as exc:
             logger.error(
                 f"Cache content for query {test_case.query.key_str} is invalid: {exc}"
             )
-            self._cache.discard(cache_path)
+            self._cache.remove(cache_path)
         return None
 
     def _get_verified_test_case(self, query: Query) -> TTestCase | None:
