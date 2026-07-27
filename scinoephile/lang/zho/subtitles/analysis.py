@@ -239,7 +239,7 @@ def _get_subtitle_analysis_cache_path(
     }
     encoded_payload = json.dumps(payload, sort_keys=True).encode("utf-8")
     cache_key = hashlib.sha256(encoded_payload).hexdigest()
-    analysis_cache_dir_path = cache_root_path / "media-subtitle-analysis"
+    analysis_cache_dir_path = cache_root_path / "media" / "subtitle-analysis"
     return analysis_cache_dir_path / f"{cache_key}.json"
 
 

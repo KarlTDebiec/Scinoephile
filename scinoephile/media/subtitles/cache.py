@@ -32,7 +32,9 @@ class SubtitleCache:
         Arguments:
             cache_root_path: root directory beneath which to cache
         """
-        self.cache_dir_path = val_output_dir_path(cache_root_path / "media-subtitles")
+        self.cache_dir_path = val_output_dir_path(
+            cache_root_path / "media" / "subtitles"
+        )
         """Directory in which cached subtitle streams are stored."""
 
     def cache(

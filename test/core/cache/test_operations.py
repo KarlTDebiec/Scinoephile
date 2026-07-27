@@ -51,22 +51,23 @@ def test_get_cache_entries_filters_namespace(tmp_path: Path):
     assert entries[0].size_bytes == 3
 
 
-def test_get_cache_entries_treats_media_hash_directories_as_entries(tmp_path: Path):
-    """Test a flattened media namespace exposes one entry per media hash."""
-    write_cache_file(tmp_path / "media-subtitles/first/2.srt", "one")
-    write_cache_file(tmp_path / "media-subtitles/second/3.sup", "two")
+def test_get_cache_entries_groups_media_cache_directories(tmp_path: Path):
+    """Test the media namespace exposes its cache directories as entries."""
+    write_cache_file(tmp_path / "media/subtitles/first/2.srt", "one")
+    write_cache_file(tmp_path / "media/subtitles/second/3.sup", "two")
     write_cache_file(
-        tmp_path / "media-subtitles/second/image-series/index.html",
+        tmp_path / "media/subtitles/second/image-series/index.html",
         "index",
     )
+    write_cache_file(tmp_path / "media/subtitle-analysis/first.json", "analysis")
 
-    entries = get_cache_entries(tmp_path, namespace="media-subtitles")
+    entries = get_cache_entries(tmp_path, namespace="media")
 
     assert [entry.relative_path for entry in entries] == [
-        Path("media-subtitles/first"),
-        Path("media-subtitles/second"),
+        Path("media/subtitle-analysis"),
+        Path("media/subtitles"),
     ]
-    assert [entry.file_count for entry in entries] == [1, 2]
+    assert [entry.file_count for entry in entries] == [1, 3]
 
 
 def test_get_cache_entries_missing_root_is_empty(tmp_path: Path):

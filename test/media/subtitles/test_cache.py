@@ -33,6 +33,8 @@ def test_get_cached_subtitle_stream_path_changes_by_stream(tmp_path: Path):
     infile_path.write_bytes(b"video")
     cache = SubtitleCache(tmp_path / "cache")
 
+    assert cache.cache_dir_path == (tmp_path / "cache" / "media" / "subtitles")
+
     first = cache.get_path(
         infile_path,
         SubtitleStream(index=2, language="zho", codec_name="subrip"),
