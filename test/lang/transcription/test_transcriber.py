@@ -450,6 +450,46 @@ def test_process_block_applies_configured_segment_splitter():
     assert [subtitle.text for subtitle in transcription] == ["one", "two"]
 
 
+def test_process_block_splits_mlx_audio_segments_on_word_timings():
+    """Test MLX-Audio CTC timing units reach reference-guided alignment."""
+    transcriber, aligner = _get_transcriber(backend=TranscriptionBackend.MLX_AUDIO)
+    audio_block = AudioSeries(
+        audio=AudioSegment.silent(duration=1000),
+        events=[AudioSubtitle(start=0, end=1000, text="reference")],
+    )
+    audio_block.buffered_start = 0
+    reference_block = Series(
+        events=[
+            Subtitle(start=0, end=500, text="參考一"),
+            Subtitle(start=500, end=1000, text="參考二"),
+        ]
+    )
+    segment = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.1,
+        end=0.8,
+        text="甲乙",
+        words=[
+            TranscribedWord(text="甲", start=0.1, end=0.2, confidence=1.0),
+            TranscribedWord(text="乙", start=0.7, end=0.8, confidence=1.0),
+        ],
+    )
+
+    with patch.object(transcriber, "_transcribe_block_audio", return_value=[segment]):
+        transcriber.process_block(audio_block, reference_block)
+
+    transcription = aligner.align.call_args.args[1]
+    assert [subtitle.text for subtitle in transcription] == ["甲", "乙"]
+    assert [(subtitle.start, subtitle.end) for subtitle in transcription] == [
+        (100, 200),
+        (700, 800),
+    ]
+    assert [subtitle.segment.id for subtitle in transcription] == [0, 1]
+    alignment = TranscriptionAlignment(reference_block, transcription)
+    assert alignment.sync_groups == [([0], [0]), ([1], [1])]
+
+
 def test_process_uses_exclusive_stop_index(caplog: LogCaptureFixture):
     """Test stop_at_idx excludes that block while logs use one-based numbers.
 

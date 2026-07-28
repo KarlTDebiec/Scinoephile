@@ -16,6 +16,7 @@ from scinoephile.audio.transcription.ctc_aligner import CtcAligner
 from scinoephile.audio.transcription.demucs import DemucsSeparator
 from scinoephile.audio.transcription.exceptions import (
     TranscriptionAlignmentError,
+    TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,
     TranscriptionError,
     TranscriptionInferenceError,
@@ -292,31 +293,34 @@ class MlxAudioTranscriber(Transcriber):
                 )
             return self.ctc_aligner(audio, text)
 
-    def _transcribe_audio_window_with_token_retry(
+    def _transcribe_audio_window_with_retry(
         self, audio: AudioSegment
     ) -> list[TranscribedSegment]:
-        """Transcribe a window, splitting it when generation exhausts its token limit.
+        """Transcribe a window, splitting it after recoverable length failures.
 
         Arguments:
             audio: audio window to transcribe
         Returns:
             timestamped transcription segments
         Raises:
-            TranscriptionInferenceError: if a one-millisecond window still exhausts
-                the generation token limit
+            TranscriptionError: if a one-millisecond window still fails
         """
         try:
             return self._transcribe_audio_window(audio)
-        except _MlxAudioTokenLimitError:
+        except (_MlxAudioTokenLimitError, TranscriptionAlignmentIncompleteError) as exc:
             if len(audio) <= 1:
                 raise
+            if isinstance(exc, _MlxAudioTokenLimitError):
+                retry_reason = "generation token exhaustion"
+            else:
+                retry_reason = "incomplete CTC alignment"
 
         chunk_duration_ms = max(1, len(audio) // 2)
         maximum_overlap_ms = max(0, (chunk_duration_ms - 1) // 2)
         configured_overlap_ms = int(round(self.chunk_overlap_seconds * 1000))
         chunk_overlap_ms = min(configured_overlap_ms, maximum_overlap_ms)
         logger.info(
-            "Retrying MLX-Audio after generation token exhaustion with "
+            f"Retrying MLX-Audio after {retry_reason} with "
             f"{chunk_duration_ms / 1000:.3f}s chunks"
         )
         return self._transcribe_chunked_audio(
@@ -343,9 +347,7 @@ class MlxAudioTranscriber(Transcriber):
             window_end_ms = min(len(audio), core_end_ms + chunk_overlap_ms)
             window_audio = audio[window_start_ms:window_end_ms]
             try:
-                window_segments = self._transcribe_audio_window_with_token_retry(
-                    window_audio
-                )
+                window_segments = self._transcribe_audio_window_with_retry(window_audio)
             except TranscriptionEmptyError:
                 logger.info(
                     f"Skipping empty MLX-Audio audio window "
@@ -379,10 +381,10 @@ class MlxAudioTranscriber(Transcriber):
             timestamped transcription segments
         """
         if self.chunk_duration_seconds is None:
-            return self._transcribe_audio_window_with_token_retry(audio)
+            return self._transcribe_audio_window_with_retry(audio)
         chunk_duration_ms = int(round(self.chunk_duration_seconds * 1000))
         if len(audio) <= chunk_duration_ms:
-            return self._transcribe_audio_window_with_token_retry(audio)
+            return self._transcribe_audio_window_with_retry(audio)
         chunk_overlap_ms = int(round(self.chunk_overlap_seconds * 1000))
         return self._transcribe_chunked_audio(
             audio, chunk_duration_ms, chunk_overlap_ms

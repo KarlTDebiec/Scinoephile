@@ -16,6 +16,8 @@ from scinoephile.audio.transcription import (
     DemucsMode,
     TranscribedSegment,
     TranscribedWord,
+    TranscriptionAlignmentError,
+    TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,
     TranscriptionError,
     TranscriptionInferenceError,
@@ -393,6 +395,62 @@ def test_transcribe_splits_audio_after_generation_token_exhaustion(
     assert [segment.text for segment in segments] == ["one", "two"]
     assert [segment.start for segment in segments] == pytest.approx([0.0, 2.0])
     assert [segment.end for segment in segments] == pytest.approx([2.0, 4.0])
+
+
+def test_transcribe_splits_audio_after_incomplete_ctc_alignment(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test incomplete CTC paths are retried over smaller audio windows."""
+    audio = AudioSegment.silent(duration=4000)
+    transcriber = MlxAudioTranscriber(
+        demucs_mode=DemucsMode.OFF, vad_mode=VADMode.OFF, chunk_overlap_seconds=0.0
+    )
+    backend_transcribe = Mock(
+        side_effect=[
+            MlxAudioInferenceResult(text="whole"),
+            MlxAudioInferenceResult(text="one"),
+            MlxAudioInferenceResult(text="two"),
+        ]
+    )
+    transcriber.ctc_aligner = Mock(
+        model_name="ctc/test-model",
+        side_effect=[
+            TranscriptionAlignmentIncompleteError(
+                "CTC alignment did not reach all tokens."
+            ),
+            [_get_timed_segment("one", end=2.0)],
+            [_get_timed_segment("two", end=2.0)],
+        ],
+    )
+    monkeypatch.setattr(transcriber.backend, "transcribe", backend_transcribe)
+
+    segments = transcriber.transcribe(audio)
+
+    assert backend_transcribe.call_count == 3
+    assert transcriber.ctc_aligner.call_count == 3
+    assert [segment.text for segment in segments] == ["one", "two"]
+    assert [segment.start for segment in segments] == pytest.approx([0.0, 2.0])
+    assert [segment.end for segment in segments] == pytest.approx([2.0, 4.0])
+
+
+def test_transcribe_does_not_split_audio_after_other_ctc_errors(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test non-length CTC failures propagate without recursive retries."""
+    audio = AudioSegment.silent(duration=4000)
+    transcriber = MlxAudioTranscriber(demucs_mode=DemucsMode.OFF, vad_mode=VADMode.OFF)
+    backend_transcribe = Mock(return_value=MlxAudioInferenceResult(text="whole"))
+    transcriber.ctc_aligner = Mock(
+        model_name="ctc/test-model",
+        side_effect=TranscriptionAlignmentError("CTC backend unavailable."),
+    )
+    monkeypatch.setattr(transcriber.backend, "transcribe", backend_transcribe)
+
+    with pytest.raises(TranscriptionAlignmentError, match="backend unavailable"):
+        transcriber.transcribe(audio)
+
+    backend_transcribe.assert_called_once()
+    transcriber.ctc_aligner.assert_called_once()
 
 
 def test_transcribe_chunks_audio_skips_empty_windows(monkeypatch: pytest.MonkeyPatch):

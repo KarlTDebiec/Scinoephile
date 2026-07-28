@@ -5,9 +5,15 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
+from scinoephile.audio.transcription.mlx_audio.backend import (
+    MIMO_MODEL_NAME,
+    QWEN3_ASR_MODEL_NAME,
+)
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
+from scinoephile.lang.transcription.transcriber import TranscriptionBackend
 from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.data.transcription import process_transcription
@@ -60,7 +66,9 @@ actions = {
     # "zho-Hant_ocr",
     # "yue-Hans_eng",
     # "zho-Hans_eng",
-    "yue-Hant_transcribe"
+    # "yue-Hant_transcribe-whisper",
+    "yue-Hant_transcribe-mimo",
+    "yue-Hant_transcribe-qwen",
 }
 
 if "eng_ocr" in actions:
@@ -81,15 +89,34 @@ if "zho-Hans_eng" in actions:
     zho_hans_path = zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
     eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
     process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
-if "yue-Hant_transcribe" in actions:
+transcription_runs: dict[str, dict[str, Any]] = {
+    "whisper": {},
+    "mimo": {
+        "backend": TranscriptionBackend.MLX_AUDIO,
+        "model_name": MIMO_MODEL_NAME,
+        "no_op": True,
+        "prune_test_cases": True,
+    },
+    "qwen": {
+        "backend": TranscriptionBackend.MLX_AUDIO,
+        "model_name": QWEN3_ASR_MODEL_NAME,
+        "no_op": True,
+        "prune_test_cases": True,
+    },
+}
+for transcription_name, transcription_kw in transcription_runs.items():
+    if f"yue-Hant_transcribe-{transcription_name}" not in actions:
+        continue
     process_transcription(
         title_root,
         zho_hant_guide_path,
         reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
         language=Language.yue_hant,
         guide_language=Language.zho_hant,
-        output_dir_path=yue_hant_transcribe_path,
+        output_dir_path=yue_hant_transcribe_path / transcription_name,
+        audio_dir_path=yue_hant_transcribe_path / "audio",
         additional_context=transcription_additional_context,
+        transcription_kw=transcription_kw,
         run_review_and_translation=False,
         overwrite=True,
     )

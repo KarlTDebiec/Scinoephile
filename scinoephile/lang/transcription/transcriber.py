@@ -20,6 +20,7 @@ from scinoephile.audio.transcription import (
     TranscriptionError,
     VADMode,
     WhisperTranscriber,
+    get_segment_split_on_word_timings,
 )
 from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
@@ -245,6 +246,16 @@ class GuidedTranscriber:
             split_segments = []
             for segment in segments:
                 split_segments.extend(self.segment_splitter(segment))
+
+        # Expose MLX-Audio's CTC timing units to reference-guided alignment
+        if self.backend is TranscriptionBackend.MLX_AUDIO:
+            timed_segments = []
+            for segment in split_segments:
+                timed_segments.extend(get_segment_split_on_word_timings(segment))
+            split_segments = [
+                segment.model_copy(update={"id": segment_idx})
+                for segment_idx, segment in enumerate(timed_segments)
+            ]
 
         transcription_block = get_series_from_segments(
             split_segments, audio=audio_block.audio, offset=offset
