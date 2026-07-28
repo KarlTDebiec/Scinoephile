@@ -231,10 +231,10 @@ def test_transcription_stages_use_flat_json_directory(
     )
 
 
-def test_process_transcription_traditionalizes_cleaned_output_without_reusing_it(
+def test_process_transcription_uses_traditionalized_output_downstream(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Save the Traditional derivation without changing downstream stage inputs."""
+    """Use the Traditional derivation for downstream stages."""
     reference = Series(events=[Subtitle(start=0, end=1_000, text="佢喺度")])
     traditionalized = Series(events=[Subtitle(start=0, end=1_000, text="佢喺度")])
     reference_path = tmp_path / "reference.srt"
@@ -312,7 +312,19 @@ def test_process_transcription_traditionalizes_cleaned_output_without_reusing_it
         / "yue-Hant_transcribe"
         / "transcribe_clean_traditionalize.srt"
     )
-    assert review.call_args.args[0] is reference
+    assert review.call_args.args[0] is traditionalized
+    assert review.call_args.args[2] == (
+        tmp_path
+        / "output"
+        / "yue-Hant_transcribe"
+        / "transcribe_clean_traditionalize_review.srt"
+    )
+    assert translate.call_args.args[2] == (
+        tmp_path
+        / "output"
+        / "yue-Hant_transcribe"
+        / "transcribe_clean_traditionalize_review_translate.srt"
+    )
 
 
 def test_process_transcription_can_stop_after_cleaning(

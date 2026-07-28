@@ -164,7 +164,9 @@ for transcription_name, (
 if "yue-Hant_diff" in actions:
     zho_hant_guide = Series.load(zho_hant_guide_path)
     yue_hant_transcribe = Series.load(
-        yue_hant_transcribe_path / "whisper" / "transcribe_clean_review_translate.srt"
+        yue_hant_transcribe_path
+        / "whisper"
+        / "transcribe_clean_traditionalize_review_translate.srt"
     )
     yue_hant_reference = Series.load(
         yue_hant_path / "clean_review_flatten_timewarp.srt"

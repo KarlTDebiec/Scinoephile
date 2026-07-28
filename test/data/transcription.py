@@ -199,6 +199,8 @@ def process_transcription(
         f"{SeriesCER(evaluation_reference, cleaned)}"
     )
 
+    postprocessed = cleaned
+    postprocessed_stem = "transcribe_clean"
     if run_traditionalize:
         traditionalize_path = output_dir_path / "transcribe_clean_traditionalize.srt"
         traditionalized = load_or_traditionalize_series(
@@ -208,15 +210,17 @@ def process_transcription(
             f"{language.code} transcription CER after traditionalization:\n"
             f"{SeriesCER(evaluation_reference, traditionalized)}"
         )
+        postprocessed = traditionalized
+        postprocessed_stem = "transcribe_clean_traditionalize"
 
     if not run_review_and_translation:
         logger.info(f"Saved transcription output under {output_dir_path}")
-        return cleaned
+        return postprocessed
 
-    # Review cleaned transcription using guide subtitles
-    review_path = output_dir_path / "transcribe_clean_review.srt"
+    # Review postprocessed transcription using guide subtitles
+    review_path = output_dir_path / f"{postprocessed_stem}_review.srt"
     reviewed = _load_or_review_series_guided(
-        cleaned,
+        postprocessed,
         guide,
         review_path,
         language,
@@ -231,7 +235,7 @@ def process_transcription(
     )
 
     # Fill gaps in reviewed transcription using guide subtitles
-    translate_path = output_dir_path / "transcribe_clean_review_translate.srt"
+    translate_path = output_dir_path / f"{postprocessed_stem}_review_translate.srt"
     translated = _load_or_translate_series_gaps(
         guide,
         reviewed,
