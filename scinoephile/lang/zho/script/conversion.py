@@ -26,24 +26,24 @@ __all__ = [
 ]
 
 S2T_EXCLUSIONS: set[str] = {
+    "吓",  # 嚇
+    "响",  # 響
     "床",  # 牀
+    "扑",  # 撲
     "搵",  # 揾
+    "晒",  # 曬
     "群",  # 羣
     "萬里長城",  # 萬裏長城
     "說",  # 説
-    "吓",  # 嚇
-    "响",  # 響
-    "扑",  # 撲
-    "晒",  # 曬
     "郁",  # 鬱
 }
 """Cantonese text spans to preserve when converting toward traditional."""
 
 T2S_EXCLUSIONS: set[str] = {
-    "嗰",  # 𠮶
     "劏",  # 㓥
-    "餸",  # 𩠌
     "唓",  # 𪠳
+    "嗰",  # 𠮶
+    "餸",  # 𩠌
 }
 """Text spans to preserve when converting traditional Chinese toward simplified."""
 

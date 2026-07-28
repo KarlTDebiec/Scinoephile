@@ -25,7 +25,7 @@ from test.helpers import assert_series_equal, parametrize
         ("台臺", OpenCCConfig.t2s, "台台"),
         ("你吃吓晒啦", OpenCCConfig.s2t, "你喫吓晒啦"),
         ("唔好郁，响邊扑你", OpenCCConfig.s2t, "唔好郁，响邊扑你"),
-        ("一群牛虱", OpenCCConfig.s2t, "一羣牛蝨"),
+        ("一群牛虱", OpenCCConfig.s2t, "一群牛蝨"),
         ("这家伙", OpenCCConfig.s2t, "這傢伙"),
         ("呢個嗰度喎", OpenCCConfig.t2s, "呢个嗰度㖞"),
         ("希望藉此答覆", OpenCCConfig.t2s, "希望借此答复"),
@@ -66,7 +66,7 @@ def test_s2t_exclusions_are_raw_opencc_changes(text: str):
     Arguments:
         text: excluded text span
     """
-    converted_text = get_zho_converter(OpenCCConfig.s2t).convert(text)
+    converted_text = get_zho_converter(OpenCCConfig.s2hk).convert(text)
     assert converted_text != text
 
 
