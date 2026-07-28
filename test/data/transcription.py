@@ -21,7 +21,7 @@ from scinoephile.workflows.review import review_series_guided
 from scinoephile.workflows.transcription import transcribe_series_guided
 from scinoephile.workflows.translation import translate_series_gaps
 
-from .helpers import load_or_clean_series
+from .helpers import load_or_clean_series, load_or_traditionalize_series
 
 __all__ = ["get_reference_for_guide_blocks", "process_transcription"]
 
@@ -100,6 +100,7 @@ def process_transcription(
     reviewer_kw: dict[str, Any] | None = None,
     translator_kw: dict[str, Any] | None = None,
     run_cleaning: bool = True,
+    run_traditionalize: bool = False,
     run_review_and_translation: bool = True,
     overwrite: bool = False,
 ) -> Series:
@@ -128,6 +129,8 @@ def process_transcription(
         reviewer_kw: additional keyword arguments for `review_series_guided`
         translator_kw: additional keyword arguments for `translate_series_gaps`
         run_cleaning: whether to clean the generated transcription
+        run_traditionalize: whether to save a Hong Kong Traditional derivation of
+          the cleaned transcription
         run_review_and_translation: whether to run guided review and gap translation
           after cleaning
         overwrite: whether to overwrite existing stage outputs
@@ -195,6 +198,16 @@ def process_transcription(
         f"{language.code} transcription CER after cleaning:\n"
         f"{SeriesCER(evaluation_reference, cleaned)}"
     )
+
+    if run_traditionalize:
+        traditionalize_path = output_dir_path / "transcribe_clean_traditionalize.srt"
+        traditionalized = load_or_traditionalize_series(
+            cleaned, traditionalize_path, overwrite
+        )
+        logger.info(
+            f"{language.code} transcription CER after traditionalization:\n"
+            f"{SeriesCER(evaluation_reference, traditionalized)}"
+        )
 
     if not run_review_and_translation:
         logger.info(f"Saved transcription output under {output_dir_path}")

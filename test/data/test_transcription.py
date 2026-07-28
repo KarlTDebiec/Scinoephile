@@ -231,6 +231,90 @@ def test_transcription_stages_use_flat_json_directory(
     )
 
 
+def test_process_transcription_traditionalizes_cleaned_output_without_reusing_it(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Save the Traditional derivation without changing downstream stage inputs."""
+    reference = Series(events=[Subtitle(start=0, end=1_000, text="佢喺度")])
+    traditionalized = Series(events=[Subtitle(start=0, end=1_000, text="佢喺度")])
+    reference_path = tmp_path / "reference.srt"
+    guide_path = tmp_path / "guide.srt"
+    reference.save(reference_path)
+    reference.save(guide_path)
+    stage_order: list[str] = []
+    traditionalize = Mock(
+        side_effect=lambda *args, **kwargs: (
+            stage_order.append("traditionalize") or traditionalized
+        )
+    )
+    review = Mock(
+        side_effect=lambda *args, **kwargs: stage_order.append("review") or reference
+    )
+    translate = Mock(
+        side_effect=lambda *args, **kwargs: stage_order.append("translate") or reference
+    )
+    monkeypatch.setattr(
+        transcription_data,
+        "resolve_language",
+        Mock(side_effect=lambda series, explicit_language: explicit_language),
+    )
+    monkeypatch.setattr(
+        transcription_data,
+        "_stage_audio_series",
+        Mock(
+            side_effect=lambda *args, **kwargs: stage_order.append("audio") or reference
+        ),
+    )
+    monkeypatch.setattr(
+        transcription_data,
+        "_load_or_transcribe_series_guided",
+        Mock(
+            side_effect=lambda *args, **kwargs: (
+                stage_order.append("transcribe") or reference
+            )
+        ),
+    )
+    monkeypatch.setattr(
+        transcription_data,
+        "load_or_clean_series",
+        Mock(
+            side_effect=lambda *args, **kwargs: stage_order.append("clean") or reference
+        ),
+    )
+    monkeypatch.setattr(
+        transcription_data, "load_or_traditionalize_series", traditionalize
+    )
+    monkeypatch.setattr(transcription_data, "_load_or_review_series_guided", review)
+    monkeypatch.setattr(transcription_data, "_load_or_translate_series_gaps", translate)
+
+    output = transcription_data.process_transcription(
+        tmp_path,
+        guide_path,
+        reference_path=reference_path,
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        run_traditionalize=True,
+    )
+
+    assert output is reference
+    assert stage_order == [
+        "audio",
+        "transcribe",
+        "clean",
+        "traditionalize",
+        "review",
+        "translate",
+    ]
+    assert traditionalize.call_args.args[0] is reference
+    assert traditionalize.call_args.args[1] == (
+        tmp_path
+        / "output"
+        / "yue-Hant_transcribe"
+        / "transcribe_clean_traditionalize.srt"
+    )
+    assert review.call_args.args[0] is reference
+
+
 def test_process_transcription_can_stop_after_cleaning(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):

@@ -22,6 +22,7 @@ __all__ = [
     "load_or_review_series",
     "load_or_romanize_series",
     "load_or_simplify_series",
+    "load_or_traditionalize_series",
     "load_or_timewarp_series",
 ]
 
@@ -140,6 +141,26 @@ def load_or_simplify_series(
     simplified = get_zho_converted(series, OpenCCConfig.t2s)
     simplified.save(output_path)
     return simplified
+
+
+def load_or_traditionalize_series(
+    series: Series, output_path: Path, overwrite: bool = False
+) -> Series:
+    """Load or create a Hong Kong Traditional Chinese-script subtitle series.
+
+    Arguments:
+        series: series to traditionalize
+        output_path: traditionalized subtitle output path
+        overwrite: whether to overwrite an existing output
+    Returns:
+        traditionalized series
+    """
+    if output_path.exists() and not overwrite:
+        return Series.load(output_path)
+
+    traditionalized = get_zho_converted(series, OpenCCConfig.s2hk)
+    traditionalized.save(output_path)
+    return traditionalized
 
 
 def load_or_timewarp_series(

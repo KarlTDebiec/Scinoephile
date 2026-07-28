@@ -157,6 +157,7 @@ for transcription_name, (
         # stop_at_idx=8,
         additional_context=transcription_additional_context,
         transcription_kw=transcription_kw,
+        run_traditionalize=True,
         run_review_and_translation=run_review_and_translation,
         overwrite=True,
     )
