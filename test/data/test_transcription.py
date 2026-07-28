@@ -54,7 +54,7 @@ def test_process_transcription_multi_review_uses_root_json_cache(
     }
     guide_path = tmp_path / "guide.srt"
     reference_path = tmp_path / "reference.srt"
-    output_path = tmp_path / "yue-Hant_transcribe" / "multi_review.srt"
+    output_path = tmp_path / "yue-Hant_transcribe" / "merge.srt"
     for source_idx, source_path in enumerate(source_paths.values(), 1):
         Series(events=[Subtitle(start=0, end=1_000, text=f"來源{source_idx}")]).save(
             source_path
@@ -89,6 +89,146 @@ def test_process_transcription_multi_review_uses_root_json_cache(
         "test_case_path": output_path.parent / "json" / "multi_review.json",
         "additional_context": "Film context",
     }
+
+
+def test_process_transcription_pipeline_runs_all_stages(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Transcribe with all models before merging, translating, and simplifying.
+
+    Arguments:
+        tmp_path: temporary pipeline directory
+        monkeypatch: pytest monkeypatch fixture
+    """
+    reference = Series(
+        events=[
+            Subtitle(start=0, end=1_000, text="佢喺度"),
+            Subtitle(start=2_000, end=3_000, text="返嚟啦"),
+        ]
+    )
+    guide = Series(
+        events=[
+            Subtitle(start=0, end=1_000, text="他在這裡"),
+            Subtitle(start=2_000, end=3_000, text="回來吧"),
+        ]
+    )
+    reference_path = tmp_path / "reference.srt"
+    guide_path = tmp_path / "guide.srt"
+    reference.save(reference_path)
+    guide.save(guide_path)
+    output_dir_path = tmp_path / "yue-Hant_transcribe"
+    audio_dir_path = output_dir_path / "audio"
+
+    merged = Series(
+        events=[
+            Subtitle(start=0, end=1_000, text="佢喺度"),
+            Subtitle(start=2_000, end=3_000, text=""),
+        ]
+    )
+    translated = Series(
+        events=[
+            Subtitle(start=0, end=1_000, text="佢喺度"),
+            Subtitle(start=2_000, end=3_000, text="返嚟啦"),
+        ]
+    )
+    simplified = Series(events=list(translated.events))
+    stage_order: list[str] = []
+    transcribe = Mock(
+        side_effect=lambda *args, **kwargs: (
+            stage_order.append(f"transcribe-{kwargs['output_dir_path'].name}")
+            or reference
+        )
+    )
+    merge = Mock(
+        side_effect=lambda *args, **kwargs: stage_order.append("merge") or merged
+    )
+    translate = Mock(
+        side_effect=lambda *args, **kwargs: (
+            stage_order.append("translate") or translated
+        )
+    )
+    simplify = Mock(
+        side_effect=lambda *args, **kwargs: stage_order.append("simplify") or simplified
+    )
+    monkeypatch.setattr(transcription_data, "process_transcription", transcribe)
+    monkeypatch.setattr(transcription_data, "process_transcription_multi_review", merge)
+    monkeypatch.setattr(transcription_data, "_load_or_translate_series_gaps", translate)
+    monkeypatch.setattr(transcription_data, "load_or_simplify_series", simplify)
+
+    output = transcription_data.process_transcription_pipeline(
+        tmp_path,
+        guide_path,
+        reference_path=reference_path,
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        output_dir_path=output_dir_path,
+        audio_dir_path=audio_dir_path,
+        stop_at_idx=5,
+        additional_context="Film context",
+        reviewer_kw={"prune_test_cases": True},
+        translator_kw={"prune_test_cases": True},
+        overwrite=True,
+    )
+
+    assert output is simplified
+    assert stage_order == [
+        "transcribe-whisper",
+        "transcribe-mimo",
+        "transcribe-qwen",
+        "merge",
+        "translate",
+        "simplify",
+    ]
+    assert [call.kwargs["audio_dir_path"] for call in transcribe.call_args_list] == [
+        audio_dir_path,
+        audio_dir_path,
+        audio_dir_path,
+    ]
+    transcription_kw_by_name = {
+        call.kwargs["output_dir_path"].name: call.kwargs["transcription_kw"]
+        for call in transcribe.call_args_list
+    }
+    assert transcription_kw_by_name["whisper"] == {
+        "no_op": True,
+        "prune_test_cases": True,
+    }
+    assert transcription_kw_by_name["mimo"] == {
+        "backend": transcription_data.TranscriptionBackend.MLX_AUDIO,
+        "model_name": transcription_data.MIMO_MODEL_NAME,
+        "no_op": True,
+        "prune_test_cases": True,
+    }
+    assert transcription_kw_by_name["qwen"] == {
+        "backend": transcription_data.TranscriptionBackend.MLX_AUDIO,
+        "model_name": transcription_data.QWEN3_ASR_MODEL_NAME,
+        "no_op": True,
+        "prune_test_cases": True,
+    }
+    assert all(
+        call.kwargs["run_traditionalize"] is True
+        and call.kwargs["run_review_and_translation"] is False
+        for call in transcribe.call_args_list
+    )
+    assert merge.call_args.args[0] == {
+        name: output_dir_path / name / "transcribe_clean_traditionalize.srt"
+        for name in ("whisper", "mimo", "qwen")
+    }
+    assert merge.call_args.args[2] == output_dir_path / "merge.srt"
+    assert merge.call_args.kwargs["reviewer_kw"] == {"prune_test_cases": True}
+    assert translate.call_args.args[:3] == (
+        guide,
+        Series(events=[merged.events[0]]),
+        output_dir_path / "merge_translate.srt",
+    )
+    assert translate.call_args.kwargs["translator_kw"] == {
+        "prune_test_cases": True,
+        "additional_context": "Film context",
+    }
+    assert simplify.call_args.args == (
+        translated,
+        output_dir_path / "merge_translate_simplify.srt",
+        True,
+    )
 
 
 @mark.parametrize(

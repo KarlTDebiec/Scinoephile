@@ -13,20 +13,30 @@ from typing import Any
 
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription.mlx_audio.backend import (
+    MIMO_MODEL_NAME,
+    QWEN3_ASR_MODEL_NAME,
+)
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.lang.transcription.transcriber import TranscriptionBackend
 from scinoephile.workflows.helpers import resolve_language
 from scinoephile.workflows.review import review_series_guided, review_series_multi
 from scinoephile.workflows.transcription import transcribe_series_guided
 from scinoephile.workflows.translation import translate_series_gaps
 
-from .helpers import load_or_clean_series, load_or_traditionalize_series
+from .helpers import (
+    load_or_clean_series,
+    load_or_simplify_series,
+    load_or_traditionalize_series,
+)
 
 __all__ = [
     "get_reference_for_guide_blocks",
     "process_transcription",
     "process_transcription_multi_review",
+    "process_transcription_pipeline",
 ]
 
 logger = getLogger(__name__)
@@ -320,6 +330,145 @@ def process_transcription_multi_review(
     )
     logger.info(f"Saved multi-reviewed transcription to {output_path}")
     return reviewed
+
+
+def process_transcription_pipeline(
+    title_root_path: Path,
+    guide_path: Path,
+    *,
+    reference_path: Path,
+    language: Language | None = None,
+    guide_language: Language | None = None,
+    output_dir_path: Path | None = None,
+    audio_dir_path: Path | None = None,
+    audio_source_path: Path | None = None,
+    media_path: Path | None = None,
+    stream_index: int | None = None,
+    stop_at_idx: int | None = None,
+    additional_context: str | None = None,
+    reviewer_kw: dict[str, Any] | None = None,
+    translator_kw: dict[str, Any] | None = None,
+    overwrite: bool = False,
+) -> Series:
+    """Transcribe with three models, merge, gap-translate, and simplify.
+
+    Arguments:
+        title_root_path: title root directory
+        guide_path: guide subtitle path used for alignment, merge, and translation
+        reference_path: expected transcription used only to compute CER
+        language: explicit transcription language, or None to detect it from the
+          evaluation reference
+        guide_language: explicit guide subtitle language, or None to detect it
+        output_dir_path: directory containing model outputs and merged stages;
+          defaults to `title_root_path/output/{language.code}_transcribe`
+        audio_dir_path: shared directory containing staged guide subtitles and
+          audio; defaults to `output_dir_path/audio`
+        audio_source_path: optional existing wav file to copy into the output
+        media_path: optional media path used to generate staged audio if missing
+        stream_index: media stream index used when generating staged audio, or None
+          to use the first audio stream
+        stop_at_idx: exclusive guide block index at which to stop processing
+        additional_context: additional context shared by transcription, merge, and
+          gap-translation LLM prompts
+        reviewer_kw: additional keyword arguments for the multi-source merge
+        translator_kw: additional keyword arguments for gap translation
+        overwrite: whether to overwrite existing stage outputs
+    Returns:
+        simplified merged and gap-translated subtitle series
+    """
+    reference = Series.load(reference_path)
+    guide = Series.load(guide_path)
+    language = resolve_language(reference, language)
+    guide_language = resolve_language(guide, guide_language)
+    evaluation_reference = get_reference_for_guide_blocks(reference, guide, stop_at_idx)
+
+    if output_dir_path is None:
+        output_dir_path = title_root_path / "output" / f"{language.code}_transcribe"
+    output_dir_path.mkdir(parents=True, exist_ok=True)
+    if audio_dir_path is None:
+        audio_dir_path = output_dir_path / "audio"
+
+    transcription_runs: dict[str, dict[str, Any]] = {
+        "whisper": {"no_op": True, "prune_test_cases": True},
+        "mimo": {
+            "backend": TranscriptionBackend.MLX_AUDIO,
+            "model_name": MIMO_MODEL_NAME,
+            "no_op": True,
+            "prune_test_cases": True,
+        },
+        "qwen": {
+            "backend": TranscriptionBackend.MLX_AUDIO,
+            "model_name": QWEN3_ASR_MODEL_NAME,
+            "no_op": True,
+            "prune_test_cases": True,
+        },
+    }
+    source_paths: dict[str, Path] = {}
+    for transcription_name, transcription_kw in transcription_runs.items():
+        model_dir_path = output_dir_path / transcription_name
+        process_transcription(
+            title_root_path,
+            guide_path,
+            reference_path=reference_path,
+            language=language,
+            guide_language=guide_language,
+            output_dir_path=model_dir_path,
+            audio_dir_path=audio_dir_path,
+            audio_source_path=audio_source_path,
+            media_path=media_path,
+            stream_index=stream_index,
+            stop_at_idx=stop_at_idx,
+            additional_context=additional_context,
+            transcription_kw=transcription_kw,
+            run_traditionalize=True,
+            run_review_and_translation=False,
+            overwrite=overwrite,
+        )
+        source_paths[transcription_name] = (
+            model_dir_path / "transcribe_clean_traditionalize.srt"
+        )
+
+    merge_path = output_dir_path / "merge.srt"
+    merged = process_transcription_multi_review(
+        source_paths,
+        guide_path,
+        merge_path,
+        reference_path=reference_path,
+        language=language,
+        guide_language=guide_language,
+        stop_at_idx=stop_at_idx,
+        additional_context=additional_context,
+        reviewer_kw=reviewer_kw,
+        overwrite=overwrite,
+    )
+
+    translator_kw = dict(translator_kw or {})
+    if additional_context is not None:
+        translator_kw.setdefault("additional_context", additional_context)
+    # Gap translation detects absent timed events, so omit explicit blank merge cues
+    translation_target = type(merged)(
+        events=[event for event in merged if event.text.strip()]
+    )
+    translate_path = output_dir_path / "merge_translate.srt"
+    translated = _load_or_translate_series_gaps(
+        guide,
+        translation_target,
+        translate_path,
+        guide_language,
+        language,
+        stop_at_idx=stop_at_idx,
+        translator_kw=translator_kw,
+        overwrite=overwrite,
+    )
+    logger.info(
+        f"{language.code} transcription CER after merged gap translation:\n"
+        f"{SeriesCER(evaluation_reference, translated)}"
+    )
+
+    simplify_path = output_dir_path / "merge_translate_simplify.srt"
+    simplified = load_or_simplify_series(translated, simplify_path, overwrite)
+    logger.info(f"Saved merged transcription outputs under {output_dir_path}")
+    return simplified
 
 
 def _load_or_review_series_guided(
