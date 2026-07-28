@@ -26,100 +26,13 @@ __all__ = [
 ]
 
 S2T_EXCLUSIONS: set[str] = {
-    "吃",  # keep modern 吃; avoid literary 喫
-    "吓",  # keep Cantonese 吓 particle/verb; avoid 嚇 "frighten"
-    "晒",  # keep Cantonese 晒 result particle; avoid 曬 "sun-dry"
-    "群",  # keep modern 群; avoid older variant 羣
-    "床",  # keep modern 床; avoid older variant 牀
-    "台",  # keep platform/stage/address 台; avoid 臺
-    "痴",  # keep common 白痴 form 痴; avoid 癡
-    "秘",  # keep modern 秘; avoid older variant 祕
-    "虱",  # keep modern/Hong Kong 虱; avoid 蝨
-    "峰",  # keep modern 峰; avoid older variant 峯
-    "粽",  # keep modern/Hong Kong 粽; avoid 糉
-    "卺",  # keep 合卺 form 卺; avoid rare variant 巹
-    "皂",  # keep 青紅皂白 form 皂; avoid 皁
-    "灶",  # keep modern 灶; avoid older variant 竈
-    "唇",  # keep modern 唇; avoid 脣
-    "岩",  # keep rock/Cantonese 岩; avoid blanket 巖
-    "不准",  # permission sense in subtitles; avoid blanket 準
-    "丑了",  # preserve subtitle idiom 丑大/丑了; avoid 醜陋 sense
-    "丑大",  # preserve subtitle idiom 丑大/丑了; avoid 醜陋 sense
-    "了解",  # modern 了解; avoid older 瞭解 in subtitles
-    "才不",  # modern adverbial 才; avoid older 纔
-    "才可",  # modern adverbial 才; avoid older 纔
-    "才回",  # modern adverbial 才; avoid older 纔
-    "才好",  # modern adverbial 才; avoid older 纔
-    "才怪",  # modern adverbial 才; avoid older 纔
-    "才跟",  # modern adverbial 才; avoid older 纔
-    "才是",  # modern adverbial 才; avoid older 纔
-    "才行",  # modern adverbial 才; avoid older 纔
-    "才要",  # modern adverbial 才; avoid older 纔
-    "才有",  # modern adverbial 才; avoid older 纔
-    "合卺",  # fixed wedding term; avoid rare variant 巹
-    "呢云",  # Cantonese OCR phrase; avoid weather/cloud 雲
-    "克制",  # 克 is "restrain"; avoid 剋 "overcome/defeat"
-    "准你",  # permission sense; avoid blanket 準
-    "准用",  # permission sense; avoid blanket 準
-    "准講",  # permission sense; avoid blanket 準
-    "准打",  # permission sense; avoid blanket 準
-    "准擅自",  # permission sense; avoid blanket 準
-    "准再",  # permission sense; avoid blanket 準
-    "准進入",  # permission sense; avoid blanket 準
-    "准進",  # permission sense; avoid blanket 準
-    "准許",  # permission sense; avoid blanket 準
-    "准我",  # permission sense; avoid blanket 準
-    "借助",  # 借 means "borrow/use"; avoid 藉 "by means of"
-    "刮了",  # shaving/scraping sense; avoid 颳 "wind blows"
-    "刮得",  # shaving/scraping sense; avoid 颳 "wind blows"
-    "升仙",  # "ascend to immortality"; avoid 昇 "rise"
-    "又升仙",  # "ascend to immortality"; avoid 昇 "rise"
-    "响出邊",  # Cantonese locative 响; avoid 響 "sound"
-    "响邊",  # Cantonese locative 响; avoid 響 "sound"
-    "响凡間",  # Cantonese locative 响; avoid 響 "sound"
-    "咸煎餅",  # Cantonese food spelling; avoid 鹹 normalization
-    "咸的",  # subtitle uses colloquial 咸; avoid 鹹 normalization
-    "食咸定甜",  # Cantonese food contrast; avoid 鹹 normalization
-    "唔准",  # Cantonese permission sense; avoid blanket 準
-    "唔好郁",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
-    "唔郁",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
-    "亂郁",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
-    "咪郁",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
-    "想郁",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
-    "郁佢",  # Cantonese 郁 "move/attack"; avoid 鬱 "depressed"
-    "郁來郁去",  # Cantonese repeated movement; avoid 鬱
-    "郁得",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
-    "郁手",  # Cantonese phrase "start fighting"; avoid 鬱
-    "郁親",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
-    "郁就",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
-    "郁嘅",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
-    "扑嘛",  # Cantonese 扑 "hit"; avoid 撲 "pounce"
-    "嚟扑",  # Cantonese 扑 "hit"; avoid 撲 "pounce"
-    "燒到扑",  # Cantonese result phrase; avoid 撲 "pounce"
-    "家伙",  # subtitle lexeme 家伙; avoid 傢伙 furniture radical
-    "幹你娘的",  # profanity phrase keeps 娘; avoid 孃
-    "干擾",  # legal/source text uses 干擾; avoid 幹擾
-    "拜托",  # fixture spelling for "please"; avoid 拜託
-    "散伙",  # group-dispersal phrase; avoid 夥 variant
-    "無厘頭",  # Hong Kong phrase keeps 厘, not 釐
-    "杰啦",  # Cantonese adjective in fixture; avoid 傑 "outstanding"
-    "注定",  # fate sense; avoid 註 "annotation"
-    "洒你",  # fixture keeps 瀟洒-style 洒; avoid 灑
-    "瀟洒",  # accepted variant of 瀟灑 in fixtures
-    "薄幸",  # fixed term; avoid 倖 "fortunate by chance"
-    "萬里",  # distance unit 里; avoid 裏 "inside"
-    "聰明了",  # aspect/result 了; avoid 瞭
-    "剛才看",  # modern 剛才; avoid older 剛纔
-    "還有只蟑螂",  # fixture classifier phrase uses 只; avoid 隻
-    "那只九官鳥",  # fixture uses 只; avoid classifier 隻
-    "仆你",  # Cantonese profanity 仆街 family; avoid 僕 "servant"
-    "伙記",  # Cantonese waiter/worker term; avoid 夥 variant
-    "碗面",  # Cantonese/HK noodle spelling; avoid 麵/麪
-    "喂你",  # interjection/address 喂; avoid 餵 "feed"
-    "蒙蒙",  # character name/baby-talk; avoid 濛濛 "misty"
-    "香港制定",  # 制定 means "formulate"; avoid 製 "manufacture"
+    "吓",  # 嚇
+    "响",  # 響
+    "扑",  # 撲
+    "晒",  # 曬
+    "郁",  # 鬱
 }
-"""Text spans to preserve when converting simplified Chinese toward traditional."""
+"""Cantonese text spans to preserve when converting toward traditional."""
 
 T2S_EXCLUSIONS: set[str] = {
     "嗰",  # 𠮶
