@@ -130,7 +130,7 @@ transcription_runs: dict[str, tuple[dict[str, Any], bool]] = {
             "no_op": True,
             "prune_test_cases": True,
         },
-        False,
+        True,
     ),
     "qwen": (
         {
@@ -139,7 +139,7 @@ transcription_runs: dict[str, tuple[dict[str, Any], bool]] = {
             "no_op": True,
             "prune_test_cases": True,
         },
-        False,
+        True,
     ),
 }
 for transcription_name, (
