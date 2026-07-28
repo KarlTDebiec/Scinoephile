@@ -59,25 +59,25 @@
         "小",
         "人写",
         "乜",
-        "嘢"
+        "嘢",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "诗爷，小人写乜嘢"
+      "target_sub_punctuated": "诗爷，小人写乜嘢啊？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "名字",
       "target_subs": [
-        "啊？",
         "名",
         "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？名啊！"
+      "target_sub_punctuated": "名啊！"
     },
     "difficulty": 2
   },
@@ -130,21 +130,9 @@
   },
   {
     "query": {
-      "ref_sub": "走開",
-      "target_subs": [
-        "哎，",
-        "好"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "哎，好"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
       "ref_sub": "好字！龍飛鳳舞，蘇察哈爾燦",
       "target_subs": [
+        "好",
         "字",
         "啊！龙飞凤",
         "舞，苏",
@@ -154,7 +142,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "字啊！龙飞凤舞，苏刷哈儿刷。"
+      "target_sub_punctuated": "好字啊！龙飞凤舞，苏刷哈儿刷。"
     },
     "difficulty": 2
   },
@@ -164,12 +152,11 @@
       "target_subs": [
         "掉转",
         "咗，",
-        "老爷。",
-        "刷儿"
+        "老爷。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "掉转咗，老爷。刷儿"
+      "target_sub_punctuated": "掉转咗，老爷。"
     },
     "difficulty": 2
   },
@@ -177,13 +164,13 @@
     "query": {
       "ref_sub": "燦爾哈察蘇",
       "target_subs": [
+        "刷儿",
         "哈",
-        "刷苏。",
-        "啊，"
+        "刷苏。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哈刷苏。啊，"
+      "target_sub_punctuated": "刷儿哈刷苏。"
     },
     "difficulty": 2
   },
@@ -191,6 +178,7 @@
     "query": {
       "ref_sub": "好小子，但是別驕傲，知道嗎？",
       "target_subs": [
+        "啊，",
         "叻",
         "仔！",
         "但",
@@ -198,11 +186,12 @@
         "唔",
         "好",
         "叫，",
-        "知"
+        "知",
+        "嘛？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "叻仔！但是唔好叫，知"
+      "target_sub_punctuated": "啊，叻仔！但是唔好叫，知嘛？"
     },
     "difficulty": 2
   },
@@ -210,7 +199,6 @@
     "query": {
       "ref_sub": "爹，我們蘇察哈爾家",
       "target_subs": [
-        "嘛？",
         "爹",
         "啊",
         "爹，",
@@ -222,7 +210,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嘛？爹啊爹，我哋苏刷哈儿家，"
+      "target_sub_punctuated": "爹啊爹，我哋苏刷哈儿家，"
     },
     "difficulty": 2
   },
@@ -235,18 +223,19 @@
         "祖",
         "皇",
         "帝",
-        "到"
+        "到",
+        "家阵"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "自太祖皇帝到"
+      "target_sub_punctuated": "自太祖皇帝到家阵"
     }
   },
   {
     "query": {
       "ref_sub": "都沒有幾個會寫字的",
       "target_subs": [
-        "家阵几",
+        "几",
         "代",
         "都",
         "冇个晓写",
@@ -255,7 +244,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "家阵几代都冇个晓写字嘅，"
+      "target_sub_punctuated": "几代都冇个晓写字嘅，"
     },
     "difficulty": 2
   },
@@ -398,14 +387,11 @@
         "要",
         "好",
         "啲学写",
-        "字。",
-        "我",
-        "刷，",
-        "刷"
+        "字。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "少爷，你真系要好啲学写字。我刷，刷"
+      "target_sub_punctuated": "少爷，你真系要好啲学写字。"
     },
     "difficulty": 2
   },
@@ -413,6 +399,9 @@
     "query": {
       "ref_sub": "阿燦，先把它裱起來",
       "target_subs": [
+        "我",
+        "刷，",
+        "刷",
         "啊",
         "刷。",
         "我",
@@ -424,7 +413,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊刷。我睇表起佢好㖞。"
+      "target_sub_punctuated": "我刷，刷啊刷。我睇表起佢好㖞。"
     },
     "difficulty": 2
   },
@@ -433,18 +422,20 @@
       "ref_sub": "裱起它",
       "target_subs": [
         "俾",
-        "咗"
+        "咗",
+        "佢。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "俾咗"
-    }
+      "target_sub_punctuated": "俾咗佢。"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "師爺，把它掛在最當眼的地方",
       "target_subs": [
-        "佢。师爷，",
+        "师爷，",
         "你",
         "攞",
         "去，",
@@ -452,13 +443,11 @@
         "咁",
         "多银挂",
         "咁",
-        "多银。",
-        "咁",
-        "啊，"
+        "多银。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "佢。师爷，你攞去，有咁多银挂咁多银。咁啊，"
+      "target_sub_punctuated": "师爷，你攞去，有咁多银挂咁多银。"
     },
     "difficulty": 2
   },
@@ -466,12 +455,14 @@
     "query": {
       "ref_sub": "這樣吧，師爺",
       "target_subs": [
+        "咁",
+        "啊，",
         "唔",
         "系，师爷，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔系，师爷，"
+      "target_sub_punctuated": "咁啊，唔系，师爷，"
     },
     "difficulty": 2
   },
@@ -518,11 +509,11 @@
         "阿灿，",
         "坐",
         "坐",
-        "坐。见"
+        "坐。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "阿灿，阿灿，坐坐坐。见"
+      "target_sub_punctuated": "阿灿，阿灿，坐坐坐。"
     },
     "difficulty": 2
   },
@@ -530,6 +521,7 @@
     "query": {
       "ref_sub": "你這麼爭氣，我也很安慰",
       "target_subs": [
+        "见",
         "你",
         "咁",
         "生",
@@ -538,19 +530,19 @@
         "都",
         "好",
         "安",
-        "慰"
+        "慰",
+        "啊。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你咁生性，我都好安慰"
+      "target_sub_punctuated": "见你咁生性，我都好安慰啊。"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "你聽我說，爹是有名的敗家兒",
       "target_subs": [
-        "啊。",
         "嗱，听",
         "我讲，",
         "阿",
@@ -565,7 +557,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊。嗱，听我讲，阿爹咧，算命系二世祖，"
+      "target_sub_punctuated": "嗱，听我讲，阿爹咧，算命系二世祖，"
     },
     "difficulty": 2
   },
@@ -606,12 +598,11 @@
         "爹两",
         "腿",
         "一扬",
-        "咧，",
-        "唉，"
+        "咧，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好话唔好听，第日阿爹两腿一扬咧，唉，"
+      "target_sub_punctuated": "好话唔好听，第日阿爹两腿一扬咧，"
     },
     "difficulty": 2
   },
@@ -619,6 +610,7 @@
     "query": {
       "ref_sub": "你個王八蛋，怎麼到這裡來討飯？",
       "target_subs": [
+        "唉，",
         "你",
         "就",
         "冚",
@@ -631,7 +623,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你就冚唪唥靠自己啦。"
+      "target_sub_punctuated": "唉，你就冚唪唥靠自己啦。"
     },
     "difficulty": 2
   },
@@ -726,12 +718,11 @@
       "target_subs": [
         "你贵",
         "庚",
-        "啊？",
-        "二"
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你贵庚啊？二"
+      "target_sub_punctuated": "你贵庚啊？"
     },
     "difficulty": 1
   },
@@ -739,6 +730,7 @@
     "query": {
       "ref_sub": "廿五歲大壽，早點到",
       "target_subs": [
+        "二",
         "十",
         "五岁",
         "大寿",
@@ -751,7 +743,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "十五岁大寿啊嘛，早啲到啊！"
+      "target_sub_punctuated": "二十五岁大寿啊嘛，早啲到啊！"
     },
     "difficulty": 2
   },
@@ -800,11 +792,12 @@
         "我",
         "都",
         "想",
-        "做"
+        "做",
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "乞儿会咁有钱，我都想做"
+      "target_sub_punctuated": "乞儿会咁有钱，我都想做啊！"
     },
     "difficulty": 2
   },
@@ -812,18 +805,18 @@
     "query": {
       "ref_sub": "那壽頭真是⋯",
       "target_subs": [
-        "啊！",
         "啊，个",
         "手",
         "都",
         "硬，",
         "自",
         "己",
-        "食"
+        "食",
+        "啦！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊！啊，个手都硬，自己食"
+      "target_sub_punctuated": "啊，个手都硬，自己食啦！"
     },
     "difficulty": 2
   },
@@ -831,16 +824,14 @@
     "query": {
       "ref_sub": "過來，過來",
       "target_subs": [
-        "啦！过",
+        "过",
         "嚟，过",
         "嚟，过",
-        "嚟。",
-        "做",
-        "咩"
+        "嚟。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啦！过嚟，过嚟，过嚟。做咩"
+      "target_sub_punctuated": "过嚟，过嚟，过嚟。"
     },
     "difficulty": 2
   },
@@ -848,12 +839,14 @@
     "query": {
       "ref_sub": "老爺，甚麼事？",
       "target_subs": [
+        "做",
+        "咩",
         "啊，",
         "老爷？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊，老爷？"
+      "target_sub_punctuated": "做咩啊，老爷？"
     },
     "difficulty": 1
   },
@@ -976,12 +969,11 @@
         "翁",
         "生",
         "辰",
-        "快乐！",
-        "仆"
+        "快乐！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "恭喜苏翁生辰快乐！仆"
+      "target_sub_punctuated": "恭喜苏翁生辰快乐！"
     },
     "difficulty": 2
   },
@@ -989,6 +981,7 @@
     "query": {
       "ref_sub": "我家破人亡、貧病老弱",
       "target_subs": [
+        "仆",
         "街",
         "散",
         "人，贫",
@@ -998,7 +991,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "街散人，贫病老弱，"
+      "target_sub_punctuated": "仆街散人，贫病老弱，"
     },
     "difficulty": 2
   },
@@ -1029,11 +1022,12 @@
         "少",
         "少",
         "嘅",
-        "吊丧钱"
+        "吊丧钱",
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "少少嘅吊丧钱"
+      "target_sub_punctuated": "少少嘅吊丧钱啊！"
     },
     "difficulty": 2
   },
@@ -1041,7 +1035,6 @@
     "query": {
       "ref_sub": "你個王八蛋，怎麼到這裏來討飯？",
       "target_subs": [
-        "啊！",
         "你个",
         "仆",
         "街，",
@@ -1057,7 +1050,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊！你个仆街，又夹就乞食，乞到嚟呢度，"
+      "target_sub_punctuated": "你个仆街，又夹就乞食，乞到嚟呢度，"
     },
     "difficulty": 2
   },
@@ -1100,11 +1093,11 @@
         "冇钱",
         "就",
         "走",
-        "啦！诶，"
+        "啦！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "有冇搞错啊？冇钱就走啦！诶，"
+      "target_sub_punctuated": "有冇搞错啊？冇钱就走啦！"
     },
     "difficulty": 2
   },
@@ -1112,6 +1105,7 @@
     "query": {
       "ref_sub": "乞丐也是人",
       "target_subs": [
+        "诶，",
         "乞",
         "衣",
         "都",
@@ -1120,7 +1114,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "乞衣都系人，"
+      "target_sub_punctuated": "诶，乞衣都系人，"
     },
     "difficulty": 2
   },
@@ -1213,23 +1207,12 @@
         "唔",
         "吹，",
         "吹，",
-        "唔"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "哦，唔吹，吹，唔"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "大爺進我間房吧⋯　　請你跟我來",
-      "target_subs": [
+        "唔",
         "吹。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "吹。"
+      "target_sub_punctuated": "哦，唔吹，吹，唔吹。"
     },
     "difficulty": 2
   },
@@ -1261,12 +1244,11 @@
         "叫",
         "叫龟",
         "婆",
-        "啊？",
-        "咁"
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好衰噶，你冇名你叫叫龟婆啊？咁"
+      "target_sub_punctuated": "好衰噶，你冇名你叫叫龟婆啊？"
     },
     "difficulty": 2
   },
@@ -1274,6 +1256,7 @@
     "query": {
       "ref_sub": "大家坦白一點不好嗎？",
       "target_subs": [
+        "咁",
         "大",
         "家",
         "坦",
@@ -1285,7 +1268,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "大家坦白啲唔好咩？"
+      "target_sub_punctuated": "咁大家坦白啲唔好咩？"
     },
     "difficulty": 1
   },
@@ -1455,11 +1438,12 @@
         "苏",
         "翁",
         "嚟",
-        "咗"
+        "咗",
+        "啦！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "苏翁嚟咗"
+      "target_sub_punctuated": "苏翁嚟咗啦！"
     },
     "difficulty": 2
   },
@@ -1467,7 +1451,6 @@
     "query": {
       "ref_sub": "蘇翁，恭喜發財",
       "target_subs": [
-        "啦！",
         "哦，苏",
         "翁，",
         "恭",
@@ -1475,7 +1458,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啦！哦，苏翁，恭喜发财！"
+      "target_sub_punctuated": "哦，苏翁，恭喜发财！"
     },
     "difficulty": 2
   },
@@ -1486,11 +1469,11 @@
         "呢边",
         "啦，",
         "呢边",
-        "啦。苏"
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "呢边啦，呢边啦。苏"
+      "target_sub_punctuated": "呢边啦，呢边啦。"
     },
     "difficulty": 2
   },
@@ -1498,6 +1481,7 @@
     "query": {
       "ref_sub": "蘇翁，今天是你的好日子，很高興吧",
       "target_subs": [
+        "苏",
         "翁，",
         "今",
         "日",
@@ -1512,7 +1496,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "翁，今日你好日子，开心死你啦！"
+      "target_sub_punctuated": "苏翁，今日你好日子，开心死你啦！"
     },
     "difficulty": 2
   },
@@ -1581,31 +1565,20 @@
         "金鱼",
         "就",
         "系爱",
-        "嚟"
+        "嚟",
+        "睇，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "傻仔，金鱼就系爱嚟"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "木魚則可以碰嘛",
-      "target_subs": [
-        "睇，",
-        "木鱼爱"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "睇，木鱼爱"
+      "target_sub_punctuated": "傻仔，金鱼就系爱嚟睇，"
     },
     "difficulty": 2
   },
   {
     "query": {
-      "ref_sub": "那當然要木魚",
+      "ref_sub": "木魚則可以碰嘛",
       "target_subs": [
+        "木鱼爱",
         "嚟",
         "搏",
         "噶",
@@ -1613,7 +1586,22 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嚟搏噶嘛。"
+      "target_sub_punctuated": "木鱼爱嚟搏噶嘛。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "那當然要木魚",
+      "target_subs": [
+        "哇，",
+        "金鱼",
+        "木鱼",
+        "咧？"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "哇，金鱼木鱼咧？"
     },
     "difficulty": 2
   },
@@ -1621,10 +1609,7 @@
     "query": {
       "ref_sub": "你們還不過來待候客人⋯",
       "target_subs": [
-        "哇，",
-        "金鱼",
-        "木鱼",
-        "咧？几个",
+        "几个",
         "木鱼",
         "就",
         "唔过",
@@ -1632,11 +1617,11 @@
         "招",
         "呼",
         "客",
-        "人。苏"
+        "人。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哇，金鱼木鱼咧？几个木鱼就唔过嚟招呼客人。苏"
+      "target_sub_punctuated": "几个木鱼就唔过嚟招呼客人。"
     },
     "difficulty": 2
   },
@@ -1644,6 +1629,7 @@
     "query": {
       "ref_sub": "蘇翁，今天是你的大日子",
       "target_subs": [
+        "苏",
         "翁",
         "啊，",
         "今",
@@ -1657,7 +1643,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "翁啊，今日你系自大噶啦，"
+      "target_sub_punctuated": "苏翁啊，今日你系自大噶啦，"
     },
     "difficulty": 2
   },
@@ -1693,12 +1679,11 @@
         "人个个",
         "都",
         "系",
-        "一样，",
-        "有"
+        "一样，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "冇所谓，女人个个都系一样，有"
+      "target_sub_punctuated": "冇所谓，女人个个都系一样，"
     },
     "difficulty": 2
   },
@@ -1706,13 +1691,14 @@
     "query": {
       "ref_sub": "沒甚麼特別",
       "target_subs": [
+        "有",
         "乜",
         "特别",
         "咧？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "乜特别咧？"
+      "target_sub_punctuated": "有乜特别咧？"
     },
     "difficulty": 2
   },
@@ -1751,11 +1737,12 @@
     "query": {
       "ref_sub": "甚麼？",
       "target_subs": [
-        "啊！"
+        "啊！",
+        "咩话？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊！"
+      "target_sub_punctuated": "啊！咩话？"
     },
     "difficulty": 2
   },
@@ -1763,7 +1750,7 @@
     "query": {
       "ref_sub": "誰膽敢挑你？讓我打她的咀",
       "target_subs": [
-        "咩话？边个",
+        "边个",
         "咁",
         "大胆",
         "挑",
@@ -1772,12 +1759,11 @@
         "我",
         "掌",
         "佢个",
-        "嘴！",
-        "唔"
+        "嘴！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咩话？边个咁大胆挑你？等我掌佢个嘴！唔"
+      "target_sub_punctuated": "边个咁大胆挑你？等我掌佢个嘴！"
     },
     "difficulty": 2
   },
@@ -1785,13 +1771,14 @@
     "query": {
       "ref_sub": "不是用咀",
       "target_subs": [
+        "唔",
         "系",
         "用",
         "嘴，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系用嘴，"
+      "target_sub_punctuated": "唔系用嘴，"
     },
     "difficulty": 2
   },
@@ -1800,11 +1787,11 @@
       "ref_sub": "是用眼睛",
       "target_subs": [
         "用对",
-        "眼，诱"
+        "眼，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "用对眼，诱"
+      "target_sub_punctuated": "用对眼，"
     },
     "difficulty": 2
   },
@@ -1812,6 +1799,7 @@
     "query": {
       "ref_sub": "誘惑中帶有煞氣，這種眼神我沒見過",
       "target_subs": [
+        "诱",
         "惑",
         "仲带",
         "有杀气。",
@@ -1821,12 +1809,11 @@
         "眼",
         "神",
         "我",
-        "未见过，",
-        "究"
+        "未见过，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "惑仲带有杀气。哇！呢只眼神我未见过，究"
+      "target_sub_punctuated": "诱惑仲带有杀气。哇！呢只眼神我未见过，"
     },
     "difficulty": 2
   },
@@ -1834,6 +1821,7 @@
     "query": {
       "ref_sub": "究竟是何方神聖？",
       "target_subs": [
+        "究",
         "竟",
         "系",
         "何",
@@ -1843,7 +1831,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "竟系何方神圣啊？"
+      "target_sub_punctuated": "究竟系何方神圣啊？"
     },
     "difficulty": 1
   },
@@ -1899,26 +1887,28 @@
         "下",
         "王爷",
         "先",
-        "啊"
+        "啊",
+        "嘛。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你应该问下王爷先啊"
-    }
+      "target_sub_punctuated": "你应该问下王爷先啊嘛。"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "怎麼樣，皇爺？",
       "target_subs": [
-        "嘛。点",
+        "点",
         "啊，",
         "王爷？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嘛。点啊，王爷？"
+      "target_sub_punctuated": "点啊，王爷？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -1932,26 +1922,27 @@
         "又",
         "何",
         "必",
-        "客气"
+        "客气",
+        "呢？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "大家自己人，又何必客气"
+      "target_sub_punctuated": "大家自己人，又何必客气呢？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "趙先生，請隨便",
       "target_subs": [
-        "呢？赵",
+        "赵",
         "先",
         "生，请随",
         "便。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "呢？赵先生，请随便。"
+      "target_sub_punctuated": "赵先生，请随便。"
     },
     "difficulty": 2
   },
@@ -1964,23 +1955,12 @@
         "就却",
         "之",
         "不",
-        "恭"
+        "恭",
+        "啦，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咁我就却之不恭"
-    }
-  },
-  {
-    "query": {
-      "ref_sub": "擺房",
-      "target_subs": [
-        "啦，",
-        "拜访。"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "啦，拜访。"
+      "target_sub_punctuated": "咁我就却之不恭啦，"
     },
     "difficulty": 2
   },
@@ -2014,11 +1994,11 @@
         "佢，",
         "你",
         "家",
-        "姐，杀"
+        "姐，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系佢，你家姐，杀"
+      "target_sub_punctuated": "系佢，你家姐，"
     },
     "difficulty": 2
   },
@@ -2026,6 +2006,7 @@
     "query": {
       "ref_sub": "殺阿爹的人就是他",
       "target_subs": [
+        "杀",
         "阿",
         "爹𠮶个",
         "就",
@@ -2035,7 +2016,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "阿爹𠮶个就系佢啊！"
+      "target_sub_punctuated": "杀阿爹𠮶个就系佢啊！"
     },
     "difficulty": 2
   },
@@ -2096,26 +2077,28 @@
       "target_subs": [
         "果",
         "然",
-        "美"
+        "美",
+        "人。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "果然美"
-    }
+      "target_sub_punctuated": "果然美人。"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "趙大人，那今晚⋯",
       "target_subs": [
-        "人。赵",
+        "赵",
         "大",
         "人",
         "啊，",
-        "咁……银"
+        "咁……"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "人。赵大人啊，咁……银"
+      "target_sub_punctuated": "赵大人啊，咁……"
     },
     "difficulty": 2
   },
@@ -2123,13 +2106,14 @@
     "query": {
       "ref_sub": "銀票十萬兩",
       "target_subs": [
+        "银",
         "票",
         "三",
         "十万两。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "票三十万两。"
+      "target_sub_punctuated": "银票三十万两。"
     },
     "difficulty": 2
   },
@@ -2313,12 +2297,11 @@
         "都",
         "好",
         "肯",
-        "使钱。",
-        "哼，银"
+        "使钱。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "呢位朋友都好肯使钱。哼，银"
+      "target_sub_punctuated": "呢位朋友都好肯使钱。"
     },
     "difficulty": 2
   },
@@ -2326,22 +2309,24 @@
     "query": {
       "ref_sub": "銀票實在太普通",
       "target_subs": [
+        "哼，银",
         "票实",
         "在",
         "太",
         "普",
-        "通"
+        "通",
+        "啦，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "票实在太普通"
-    }
+      "target_sub_punctuated": "哼，银票实在太普通啦，"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "我有一顆朝廷大內的定風珠，無價寶",
       "target_subs": [
-        "啦，",
         "我",
         "有",
         "啦，",
@@ -2355,7 +2340,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啦，我有啦，朝廷带来嘅定风珠，无价嘅。"
+      "target_sub_punctuated": "我有啦，朝廷带来嘅定风珠，无价嘅。"
     },
     "difficulty": 2
   },
@@ -2371,11 +2356,11 @@
         "珍",
         "珠",
         "多",
-        "啲。赵"
+        "啲。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我都系中意珍珠多啲。赵"
+      "target_sub_punctuated": "我都系中意珍珠多啲。"
     },
     "difficulty": 2
   },
@@ -2383,6 +2368,7 @@
     "query": {
       "ref_sub": "趙大人，我回房間等你",
       "target_subs": [
+        "赵",
         "大",
         "人",
         "啊，",
@@ -2395,7 +2381,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "大人啊，我翻房等你啦。"
+      "target_sub_punctuated": "赵大人啊，我翻房等你啦。"
     },
     "difficulty": 2
   },
@@ -2473,12 +2459,11 @@
         "喜欢",
         "到",
         "非",
-        "常。",
-        "相"
+        "常。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "够坦白，我真系喜欢到非常。相"
+      "target_sub_punctuated": "够坦白，我真系喜欢到非常。"
     },
     "difficulty": 2
   },
@@ -2486,12 +2471,13 @@
     "query": {
       "ref_sub": "蘇翁⋯",
       "target_subs": [
+        "相",
         "公",
         "啊，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "公啊，"
+      "target_sub_punctuated": "相公啊，"
     },
     "difficulty": 2
   },
@@ -2524,12 +2510,11 @@
         "多",
         "正",
         "嘅发",
-        "型，",
-        "唔"
+        "型，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "一定系我今日顶帽唔多正嘅发型，唔"
+      "target_sub_punctuated": "一定系我今日顶帽唔多正嘅发型，"
     },
     "difficulty": 2
   },
@@ -2537,6 +2522,7 @@
     "query": {
       "ref_sub": "如霜姑娘看不上我，是我該死",
       "target_subs": [
+        "唔",
         "想",
         "姑",
         "娘",
@@ -2549,12 +2535,11 @@
         "睇",
         "死",
         "啫",
-        "嘛。",
-        "你"
+        "嘛。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "想姑娘睇我，唔想万一我睇死啫嘛。你"
+      "target_sub_punctuated": "唔想姑娘睇我，唔想万一我睇死啫嘛。"
     },
     "difficulty": 2
   },
@@ -2562,6 +2547,7 @@
     "query": {
       "ref_sub": "你明白就好了",
       "target_subs": [
+        "你",
         "明",
         "白",
         "咁",
@@ -2571,7 +2557,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "明白咁就好啦，"
+      "target_sub_punctuated": "你明白咁就好啦，"
     },
     "difficulty": 2
   },
@@ -2591,19 +2577,19 @@
         "好谈",
         "嘅",
         "姑",
-        "娘"
+        "娘",
+        "噶。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你放心啊，佢仲好好理好谈嘅姑娘"
+      "target_sub_punctuated": "你放心啊，佢仲好好理好谈嘅姑娘噶。"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "鴇母，那今晚就倚仗你了",
       "target_subs": [
-        "噶。",
         "喂，",
         "咁",
         "今",
@@ -2618,7 +2604,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "噶。喂，咁今晚我就靠晒你啦。风师，喂。"
+      "target_sub_punctuated": "喂，咁今晚我就靠晒你啦。风师，喂。"
     },
     "difficulty": 2
   },
@@ -2868,11 +2854,12 @@
         "黑过",
         "我？",
         "借个胆",
-        "俾"
+        "俾",
+        "我。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "澳，边个手头黑过我？借个胆俾"
+      "target_sub_punctuated": "澳，边个手头黑过我？借个胆俾我。"
     },
     "difficulty": 2
   },
@@ -2885,12 +2872,11 @@
         "阿",
         "生，边个",
         "黑",
-        "你？",
-        "系"
+        "你？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔使惊阿生，边个黑你？系"
+      "target_sub_punctuated": "唔使惊阿生，边个黑你？"
     },
     "difficulty": 2
   },
@@ -2898,6 +2884,7 @@
     "query": {
       "ref_sub": "是我欺負別人",
       "target_subs": [
+        "系",
         "我",
         "黑紧",
         "人",
@@ -2905,7 +2892,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我黑紧人啫。"
+      "target_sub_punctuated": "系我黑紧人啫。"
     },
     "difficulty": 2
   },
@@ -2936,11 +2923,12 @@
         "格？",
         "佢够",
         "唔够资",
-        "格"
+        "格",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "喂，佢有几硬身格？佢够唔够资格"
+      "target_sub_punctuated": "喂，佢有几硬身格？佢够唔够资格啊？"
     },
     "difficulty": 2
   },
@@ -2948,14 +2936,14 @@
     "query": {
       "ref_sub": "老爺！是他們",
       "target_subs": [
-        "啊？",
         "系",
         "佢",
-        "嚟"
+        "嚟",
+        "噶。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？系佢嚟"
+      "target_sub_punctuated": "系佢嚟噶。"
     },
     "difficulty": 2
   },
@@ -2963,13 +2951,13 @@
     "query": {
       "ref_sub": "誰？",
       "target_subs": [
-        "噶。边个？"
+        "边个？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "噶。边个？"
+      "target_sub_punctuated": "边个？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -2980,12 +2968,11 @@
         "你",
         "咪",
         "知",
-        "啦。",
-        "哎"
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "睇下你咪知啦。哎"
+      "target_sub_punctuated": "睇下你咪知啦。"
     },
     "difficulty": 2
   },
@@ -2993,6 +2980,7 @@
     "query": {
       "ref_sub": "鐵帽子王？",
       "target_subs": [
+        "哎",
         "呀，铁",
         "帽",
         "子",
@@ -3000,7 +2988,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "呀，铁帽子王。"
+      "target_sub_punctuated": "哎呀，铁帽子王。"
     },
     "difficulty": 2
   },
@@ -3066,12 +3054,11 @@
         "打赏",
         "俾条",
         "女",
-        "啦。个",
-        "暖"
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嚟，攞去打赏俾条女啦。个暖"
+      "target_sub_punctuated": "嚟，攞去打赏俾条女啦。"
     },
     "difficulty": 2
   },
@@ -3079,6 +3066,8 @@
     "query": {
       "ref_sub": "令牌上寫著「鐵帽子王僧格林參」",
       "target_subs": [
+        "个",
+        "暖",
         "牌",
         "上",
         "面写",
@@ -3093,7 +3082,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "牌上面写住铁帽子王张卡林三蚊。"
+      "target_sub_punctuated": "个暖牌上面写住铁帽子王张卡林三蚊。"
     },
     "difficulty": 2
   },
@@ -3107,12 +3096,11 @@
         "牌",
         "你",
         "都",
-        "敢抢，",
-        "捉"
+        "敢抢，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "王爷嘅令牌你都敢抢，捉"
+      "target_sub_punctuated": "王爷嘅令牌你都敢抢，"
     },
     "difficulty": 2
   },
@@ -3120,12 +3108,13 @@
     "query": {
       "ref_sub": "把他鎖起來",
       "target_subs": [
+        "捉",
         "起",
         "佢！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "起佢！"
+      "target_sub_punctuated": "捉起佢！"
     },
     "difficulty": 2
   },
@@ -3209,12 +3198,11 @@
       "target_subs": [
         "咁",
         "你",
-        "咧？",
-        "系"
+        "咧？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咁你咧？系"
+      "target_sub_punctuated": "咁你咧？"
     },
     "difficulty": 1
   },
@@ -3222,6 +3210,7 @@
     "query": {
       "ref_sub": "你說我？　　是",
       "target_subs": [
+        "系",
         "咪话",
         "我",
         "啊？",
@@ -3229,7 +3218,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咪话我啊？系"
+      "target_sub_punctuated": "系咪话我啊？系"
     },
     "difficulty": 2
   },
@@ -3261,11 +3250,12 @@
       "target_subs": [
         "你",
         "拉",
-        "拉"
+        "拉",
+        "你，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你拉拉"
+      "target_sub_punctuated": "你拉拉你，"
     },
     "difficulty": 2
   },
@@ -3273,7 +3263,6 @@
     "query": {
       "ref_sub": "他！　　拉他",
       "target_subs": [
-        "你，",
         "可",
         "以",
         "啊，",
@@ -3283,7 +3272,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你，可以啊，拉佢啦！"
+      "target_sub_punctuated": "可以啊，拉佢啦！"
     },
     "difficulty": 2
   },
@@ -3330,12 +3319,11 @@
         "仲",
         "有",
         "仲",
-        "有，",
-        "做"
+        "有，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "仲有仲有，做"
+      "target_sub_punctuated": "仲有仲有，"
     },
     "difficulty": 2
   },
@@ -3343,13 +3331,14 @@
     "query": {
       "ref_sub": "還有甚麼？說吧",
       "target_subs": [
+        "做",
         "咩？",
         "仲讲",
         "啦！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咩？仲讲啦！"
+      "target_sub_punctuated": "做咩？仲讲啦！"
     },
     "difficulty": 2
   },
@@ -3517,26 +3506,17 @@
   },
   {
     "query": {
-      "ref_sub": "不用再說，斬他",
-      "target_subs": [
-        "哎，",
-        "唔"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "哎，唔"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
       "ref_sub": "好了好了，玩完了",
       "target_subs": [
-        "好"
+        "哎，",
+        "唔",
+        "好",
+        "意",
+        "思。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好"
+      "target_sub_punctuated": "哎，唔好意思。"
     },
     "difficulty": 2
   },
@@ -3544,8 +3524,7 @@
     "query": {
       "ref_sub": "蘇將軍，大家玩得那麼開心就算了吧",
       "target_subs": [
-        "意",
-        "思。苏将军",
+        "苏将军",
         "啊，带",
         "翻",
         "你",
@@ -3554,12 +3533,11 @@
         "嘅",
         "面",
         "先",
-        "咯。",
-        "喂，"
+        "咯。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "意思。苏将军啊，带翻你咁开心嘅面先咯。喂，"
+      "target_sub_punctuated": "苏将军啊，带翻你咁开心嘅面先咯。"
     },
     "difficulty": 2
   },
@@ -3567,6 +3545,7 @@
     "query": {
       "ref_sub": "我今晚還沒玩過",
       "target_subs": [
+        "喂，",
         "我",
         "今",
         "日",
@@ -3576,7 +3555,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我今日未玩过啊。"
+      "target_sub_punctuated": "喂，我今日未玩过啊。"
     },
     "difficulty": 2
   },
@@ -3666,11 +3645,12 @@
         "味",
         "啊，几",
         "好",
-        "收"
+        "收",
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哎呀呀呀呀呀呀呀！王爷，你呢个玩味啊，几好收"
+      "target_sub_punctuated": "哎呀呀呀呀呀呀呀！王爷，你呢个玩味啊，几好收啦。"
     },
     "difficulty": 2
   },
@@ -3678,13 +3658,12 @@
     "query": {
       "ref_sub": "收吧",
       "target_subs": [
-        "啦。",
         "走",
         "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啦。走啦。"
+      "target_sub_punctuated": "走啦。"
     },
     "difficulty": 2
   },
@@ -3803,13 +3782,11 @@
         "嫁祸",
         "俾",
         "我",
-        "哋丐帮，",
-        "搞",
-        "到"
+        "哋丐帮，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "仲嫁祸俾我哋丐帮，搞到"
+      "target_sub_punctuated": "仲嫁祸俾我哋丐帮，"
     },
     "difficulty": 2
   },
@@ -3817,32 +3794,35 @@
     "query": {
       "ref_sub": "弄得江湖上的兄弟",
       "target_subs": [
+        "搞",
+        "到",
         "江",
         "湖",
         "上边",
         "嘅",
         "兄",
-        "弟个个"
+        "弟"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "江湖上边嘅兄弟个个"
+      "target_sub_punctuated": "搞到江湖上边嘅兄弟"
     }
   },
   {
     "query": {
       "ref_sub": "人人也瞧不起我們",
       "target_subs": [
+        "个个",
         "都",
         "睇",
         "我",
         "哋",
         "唔",
-        "起，话"
+        "起，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "都睇我哋唔起，话"
+      "target_sub_punctuated": "个个都睇我哋唔起，"
     },
     "difficulty": 2
   },
@@ -3850,6 +3830,7 @@
     "query": {
       "ref_sub": "說我們投靠了朝廷",
       "target_subs": [
+        "话",
         "我",
         "哋",
         "投",
@@ -3860,7 +3841,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我哋投靠咗朝廷。"
+      "target_sub_punctuated": "话我哋投靠咗朝廷。"
     },
     "difficulty": 2
   },
@@ -3874,11 +3855,11 @@
         "日",
         "可",
         "以报",
-        "啦。嗯，"
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "呢个仇今日可以报啦。嗯，"
+      "target_sub_punctuated": "呢个仇今日可以报啦。"
     },
     "difficulty": 2
   },
@@ -3886,6 +3867,7 @@
     "query": {
       "ref_sub": "他們的先天罡氣很厲害",
       "target_subs": [
+        "嗯，",
         "佢",
         "嘅",
         "先",
@@ -3895,7 +3877,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "佢嘅先天罡气好厉害，"
+      "target_sub_punctuated": "嗯，佢嘅先天罡气好厉害，"
     },
     "difficulty": 2
   },
@@ -3955,11 +3937,11 @@
         "埋",
         "床",
         "噶",
-        "啦。长"
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我会尽量引佢埋床噶啦。长"
+      "target_sub_punctuated": "我会尽量引佢埋床噶啦。"
     },
     "difficulty": 2
   },
@@ -3967,11 +3949,12 @@
     "query": {
       "ref_sub": "長老，有人來",
       "target_subs": [
+        "长",
         "老，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "老，"
+      "target_sub_punctuated": "长老，"
     },
     "difficulty": 1
   },
@@ -4092,11 +4075,11 @@
         "啲扫",
         "把",
         "咁",
-        "啊，实"
+        "啊，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唉，你咪你梳埋头发好似啲扫把咁啊，实"
+      "target_sub_punctuated": "唉，你咪你梳埋头发好似啲扫把咁啊，"
     },
     "difficulty": 2
   },
@@ -4104,6 +4087,7 @@
     "query": {
       "ref_sub": "其實他為人很有情趣",
       "target_subs": [
+        "实",
         "在",
         "令",
         "人",
@@ -4115,7 +4099,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "在令人好有情趣噶。"
+      "target_sub_punctuated": "实在令人好有情趣噶。"
     },
     "difficulty": 2
   },
@@ -4166,11 +4150,11 @@
         "嚟",
         "就",
         "好难",
-        "啦。讲"
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "想攞翻出嚟就好难啦。讲"
+      "target_sub_punctuated": "想攞翻出嚟就好难啦。"
     },
     "difficulty": 2
   },
@@ -4178,15 +4162,16 @@
     "query": {
       "ref_sub": "說到蘇翁的為人⋯",
       "target_subs": [
+        "讲",
         "到梳",
         "呢",
         "份",
         "人",
-        "呢，废话"
+        "呢，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "到梳呢份人呢，废话"
+      "target_sub_punctuated": "讲到梳呢份人呢，"
     },
     "difficulty": 2
   },
@@ -4194,6 +4179,7 @@
     "query": {
       "ref_sub": "廢話少說，鴇母",
       "target_subs": [
+        "废话",
         "可",
         "以",
         "少",
@@ -4203,7 +4189,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "可以少啲讲啦，龟婆，"
+      "target_sub_punctuated": "废话可以少啲讲啦，龟婆，"
     },
     "difficulty": 2
   },
@@ -4277,18 +4263,19 @@
       "target_subs": [
         "我",
         "唔",
-        "知"
+        "知",
+        "啊。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我唔知"
-    }
+      "target_sub_punctuated": "我唔知啊。"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "姑娘，首先有個好消息",
       "target_subs": [
-        "啊。",
         "姑",
         "娘，",
         "首",
@@ -4300,7 +4287,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊。姑娘，首先有个好消息，"
+      "target_sub_punctuated": "姑娘，首先有个好消息，"
     },
     "difficulty": 2
   },
@@ -4347,11 +4334,11 @@
         "早",
         "知",
         "你会",
-        "咁讲。闲话"
+        "咁讲。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我早知你会咁讲。闲话"
+      "target_sub_punctuated": "我早知你会咁讲。"
     },
     "difficulty": 2
   },
@@ -4359,12 +4346,13 @@
     "query": {
       "ref_sub": "閒話休提",
       "target_subs": [
+        "闲话",
         "休",
         "提，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "休提，"
+      "target_sub_punctuated": "闲话休提，"
     },
     "difficulty": 2
   },
@@ -4420,11 +4408,11 @@
         "想",
         "同",
         "你",
-        "多讲，请"
+        "多讲，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我唔想同你多讲，请"
+      "target_sub_punctuated": "我唔想同你多讲，"
     },
     "difficulty": 2
   },
@@ -4432,19 +4420,21 @@
     "query": {
       "ref_sub": "請你出去",
       "target_subs": [
+        "请",
         "你",
-        "出"
+        "出",
+        "去。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你出"
-    }
+      "target_sub_punctuated": "请你出去。"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "我果然沒選錯人",
       "target_subs": [
-        "去。",
         "我",
         "果",
         "然",
@@ -4453,7 +4443,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "去。我果然冇拣错人，"
+      "target_sub_punctuated": "我果然冇拣错人，"
     },
     "difficulty": 2
   },
@@ -4465,14 +4455,25 @@
         "我",
         "就",
         "先饮为",
-        "敬。",
+        "敬。"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "好，我就先饮为敬。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "不要喝⋯",
+      "target_subs": [
         "唔",
         "好饮",
         "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好，我就先饮为敬。唔好饮啊！"
+      "target_sub_punctuated": "唔好饮啊！"
     },
     "difficulty": 2
   },
@@ -4590,30 +4591,31 @@
         "来",
         "冇",
         "人",
-        "咁对"
+        "咁对",
+        "我",
+        "嘅，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "余霜，从来冇人咁对"
+      "target_sub_punctuated": "余霜，从来冇人咁对我嘅，"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "我發覺我已經愛上了你",
       "target_subs": [
-        "我",
-        "嘅，",
         "我发觉",
         "我",
         "竟",
         "然爱",
         "上",
-        "咗"
+        "咗",
+        "你。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我嘅，我发觉我竟然爱上咗"
+      "target_sub_punctuated": "我发觉我竟然爱上咗你。"
     },
     "difficulty": 2
   },
@@ -4621,14 +4623,13 @@
     "query": {
       "ref_sub": "你說甚麼？",
       "target_subs": [
-        "你。",
         "咩话？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你。咩话？"
+      "target_sub_punctuated": "咩话？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -4655,19 +4656,20 @@
         "你",
         "有",
         "冇",
-        "搞错"
+        "搞错",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你有冇搞错"
+      "target_sub_punctuated": "你有冇搞错啊？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "絕對沒有！我決定要娶你",
       "target_subs": [
-        "啊？绝对",
+        "绝对",
         "冇，",
         "我决",
         "定",
@@ -4677,7 +4679,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？绝对冇，我决定要娶你。"
+      "target_sub_punctuated": "绝对冇，我决定要娶你。"
     },
     "difficulty": 2
   },
@@ -4745,12 +4747,11 @@
         "正",
         "想",
         "揾个证",
-        "人。证",
-        "人？"
+        "人。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊，啱啦！我正想揾个证人。证人？"
+      "target_sub_punctuated": "啊，啱啦！我正想揾个证人。"
     },
     "difficulty": 2
   },
@@ -4758,11 +4759,13 @@
     "query": {
       "ref_sub": "證人？　　對",
       "target_subs": [
+        "证",
+        "人？",
         "系，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系，"
+      "target_sub_punctuated": "证人？系，"
     },
     "difficulty": 2
   },
@@ -4775,12 +4778,11 @@
         "住",
         "呢",
         "把宝剑发",
-        "誓，",
-        "我"
+        "誓，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我就当住呢把宝剑发誓，我"
+      "target_sub_punctuated": "我就当住呢把宝剑发誓，"
     },
     "difficulty": 2
   },
@@ -4788,6 +4790,7 @@
     "query": {
       "ref_sub": "我是真心要娶如霜姑娘為妻",
       "target_subs": [
+        "我",
         "系",
         "真",
         "心",
@@ -4801,7 +4804,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系真心要娶如霜姑娘为妻。"
+      "target_sub_punctuated": "我系真心要娶如霜姑娘为妻。"
     },
     "difficulty": 2
   },
@@ -4976,23 +4979,12 @@
       "ref_sub": "做得到",
       "target_subs": [
         "做",
-        "得"
+        "得",
+        "到。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "做得"
-    }
-  },
-  {
-    "query": {
-      "ref_sub": "好",
-      "target_subs": [
-        "到。",
-        "好，"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "到。好，"
+      "target_sub_punctuated": "做得到。"
     },
     "difficulty": 2
   },
@@ -5011,19 +5003,20 @@
         "翻",
         "嚟",
         "揾",
-        "我"
+        "我",
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咁等你做得到𠮶阵，先至翻嚟揾我"
+      "target_sub_punctuated": "咁等你做得到𠮶阵，先至翻嚟揾我啦。"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "既然如此，我想我們要先定婚期",
       "target_subs": [
-        "啦。诶，",
+        "诶，",
         "既",
         "然",
         "系",
@@ -5039,7 +5032,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啦。诶，既然系咁，我谂我哋要先定分期，"
+      "target_sub_punctuated": "诶，既然系咁，我谂我哋要先定分期，"
     },
     "difficulty": 2
   },
@@ -5275,19 +5268,20 @@
       "ref_sub": "甚麼事？",
       "target_subs": [
         "咩",
-        "事"
+        "事",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咩事"
+      "target_sub_punctuated": "咩事啊？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "那個神經病還在",
       "target_subs": [
-        "啊？个",
+        "个",
         "黐线",
         "佬",
         "仲",
@@ -5296,7 +5290,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？个黐线佬仲喺度，"
+      "target_sub_punctuated": "个黐线佬仲喺度，"
     },
     "difficulty": 2
   },
@@ -5307,11 +5301,11 @@
         "不",
         "如杀",
         "咗",
-        "佢。诶，"
+        "佢。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "不如杀咗佢。诶，"
+      "target_sub_punctuated": "不如杀咗佢。"
     },
     "difficulty": 2
   },
@@ -5319,6 +5313,7 @@
     "query": {
       "ref_sub": "算吧！他不是有心阻礙我們",
       "target_subs": [
+        "诶，",
         "算",
         "啦，",
         "佢",
@@ -5333,7 +5328,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "算啦，佢唔系有心阻我哋嘅，"
+      "target_sub_punctuated": "诶，算啦，佢唔系有心阻我哋嘅，"
     },
     "difficulty": 2
   },
@@ -5377,11 +5372,11 @@
         "你讲",
         "乜",
         "嘢",
-        "啊？赵无"
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你讲乜嘢啊？赵无"
+      "target_sub_punctuated": "你讲乜嘢啊？"
     },
     "difficulty": 1
   },
@@ -5389,6 +5384,7 @@
     "query": {
       "ref_sub": "趙無極一日不死",
       "target_subs": [
+        "赵无",
         "忌",
         "一",
         "日",
@@ -5397,7 +5393,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "忌一日未死，"
+      "target_sub_punctuated": "赵无忌一日未死，"
     },
     "difficulty": 2
   },
@@ -5426,11 +5422,11 @@
       "target_subs": [
         "何况",
         "系",
-        "佢？赵无"
+        "佢？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "何况系佢？赵无"
+      "target_sub_punctuated": "何况系佢？"
     },
     "difficulty": 2
   },
@@ -5438,21 +5434,24 @@
     "query": {
       "ref_sub": "趙無極武功很高",
       "target_subs": [
+        "赵无",
         "忌",
         "好",
         "好",
-        "打"
+        "打",
+        "噶，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "忌好好打"
-    }
+      "target_sub_punctuated": "赵无忌好好打噶，"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "莫大叔說不會降龍十八掌便打不過他",
       "target_subs": [
-        "噶，穆",
+        "穆",
         "大",
         "叔话",
         "唔识",
@@ -5468,7 +5467,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "噶，穆大叔话唔识降龙十八掌都打佢唔赢嘅。"
+      "target_sub_punctuated": "穆大叔话唔识降龙十八掌都打佢唔赢嘅。"
     },
     "difficulty": 2
   },
@@ -5623,19 +5622,19 @@
         "四围",
         "行",
         "啊，",
-        "知"
+        "知",
+        "嘛？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "以后未化妆唔好四围行啊，知"
+      "target_sub_punctuated": "以后未化妆唔好四围行啊，知嘛？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "不會了，不會了",
       "target_subs": [
-        "嘛？",
         "唔会",
         "啦，",
         "唔会",
@@ -5643,7 +5642,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嘛？唔会啦，唔会啦。"
+      "target_sub_punctuated": "唔会啦，唔会啦。"
     },
     "difficulty": 2
   },
@@ -5697,11 +5696,11 @@
         "姑",
         "娘",
         "去",
-        "咗边？听讲话"
+        "咗边？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咁究竟如霜姑娘去咗边？听讲话"
+      "target_sub_punctuated": "咁究竟如霜姑娘去咗边？"
     },
     "difficulty": 1
   },
@@ -5709,6 +5708,7 @@
     "query": {
       "ref_sub": "聽說，她⋯她去了京城",
       "target_subs": [
+        "听讲话",
         "佢、",
         "佢",
         "去",
@@ -5719,7 +5719,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "佢、佢去咗京城啊。"
+      "target_sub_punctuated": "听讲话佢、佢去咗京城啊。"
     },
     "difficulty": 2
   },
@@ -5742,11 +5742,11 @@
       "target_subs": [
         "男儿",
         "要为国",
-        "家，条"
+        "家，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "男儿要为国家，条"
+      "target_sub_punctuated": "男儿要为国家，"
     },
     "difficulty": 2
   },
@@ -5754,6 +5754,7 @@
     "query": {
       "ref_sub": "⋯辮子怎樣戴⋯",
       "target_subs": [
+        "条",
         "鞭",
         "啊",
         "冇话",
@@ -5761,7 +5762,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "鞭啊冇话掟挂，"
+      "target_sub_punctuated": "条鞭啊冇话掟挂，"
     },
     "difficulty": 2
   },
@@ -5787,11 +5788,12 @@
         "我",
         "蚊肠",
         "有弹",
-        "下"
+        "下",
+        "添。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我蚊肠有弹下"
+      "target_sub_punctuated": "我蚊肠有弹下添。"
     },
     "difficulty": 2
   },
@@ -5840,20 +5842,21 @@
         "等",
         "咗",
         "二",
-        "十"
+        "十",
+        "五",
+        "年，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "阿爹等你讲呢句说话等咗二十"
+      "target_sub_punctuated": "阿爹等你讲呢句说话等咗二十五年，"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "為了蘇察哈爾家，你應該這樣做",
       "target_subs": [
-        "五",
-        "年，为",
+        "为",
         "咗苏",
         "察",
         "哈尔，",
@@ -5866,7 +5869,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "五年，为咗苏察哈尔，而家你应该系咁做。"
+      "target_sub_punctuated": "为咗苏察哈尔，而家你应该系咁做。"
     },
     "difficulty": 2
   },
@@ -5882,11 +5885,12 @@
         "系为",
         "咗",
         "任",
-        "何"
+        "何",
+        "人，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔去！咁做唔系为咗任何"
+      "target_sub_punctuated": "唔去！咁做唔系为咗任何人，"
     },
     "difficulty": 2
   },
@@ -5894,7 +5898,6 @@
     "query": {
       "ref_sub": "只是為了一個女人",
       "target_subs": [
-        "人，",
         "只",
         "系为",
         "咗个",
@@ -5903,7 +5906,20 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "人，只系为咗个女仔。"
+      "target_sub_punctuated": "只系为咗个女仔。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "英雄",
+      "target_subs": [
+        "英",
+        "雄，"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "英雄，"
     },
     "difficulty": 2
   },
@@ -5911,34 +5927,34 @@
     "query": {
       "ref_sub": "為妞死，為妞亡，為妞上京考狀元",
       "target_subs": [
-        "雄，为",
+        "为",
         "女",
         "死，为",
         "女",
         "亡，为",
         "女",
         "上",
-        "京",
-        "取"
+        "京"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "雄，为女死，为女亡，为女上京取"
+      "target_sub_punctuated": "为女死，为女亡，为女上京"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "何家女子？",
       "target_subs": [
+        "取",
         "豪",
         "家",
         "女",
-        "子，扬"
+        "子，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "豪家女子，扬"
+      "target_sub_punctuated": "取豪家女子，"
     },
     "difficulty": 2
   },
@@ -5946,6 +5962,7 @@
     "query": {
       "ref_sub": "怡紅院金牌清倌人如霜姑娘",
       "target_subs": [
+        "扬",
         "言",
         "金",
         "牌",
@@ -5958,7 +5975,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "言金牌清官人如双姑娘。"
+      "target_sub_punctuated": "扬言金牌清官人如双姑娘。"
     },
     "difficulty": 2
   },
@@ -6018,13 +6035,11 @@
       "ref_sub": "阿爹欽佩你",
       "target_subs": [
         "阿",
-        "爹，",
-        "我",
-        "陪"
+        "爹，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "阿爹，我陪"
+      "target_sub_punctuated": "阿爹，"
     },
     "difficulty": 2
   },
@@ -6032,13 +6047,15 @@
     "query": {
       "ref_sub": "我陪你上京",
       "target_subs": [
+        "我",
+        "陪",
         "你",
         "上",
         "京。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你上京。"
+      "target_sub_punctuated": "我陪你上京。"
     },
     "difficulty": 2
   },
@@ -6048,23 +6065,12 @@
       "target_subs": [
         "二",
         "三",
-        "四"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "二三四"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "來了，老爺",
-      "target_subs": [
+        "四",
         "六。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "六。"
+      "target_sub_punctuated": "二三四六。"
     },
     "difficulty": 2
   },
@@ -6104,21 +6110,11 @@
   },
   {
     "query": {
-      "ref_sub": "你這個笨蛋小心點",
+      "ref_sub": "弄花了我的東西，我不會放過你",
       "target_subs": [
         "你",
         "揩",
-        "翻"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "你揩翻"
-    }
-  },
-  {
-    "query": {
-      "ref_sub": "弄花了我的東西，我不會放過你",
-      "target_subs": [
+        "翻",
         "我",
         "啲",
         "嘢，",
@@ -6132,7 +6128,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我啲嘢，我打到皮毛开花啊！"
+      "target_sub_punctuated": "你揩翻我啲嘢，我打到皮毛开花啊！"
     },
     "difficulty": 2
   },
@@ -6257,18 +6253,19 @@
         "唔",
         "使",
         "噶",
-        "啦"
+        "啦",
+        "嘛，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔使噶啦"
-    }
+      "target_sub_punctuated": "唔使噶啦嘛，"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "呸！比我大嗎？",
       "target_subs": [
-        "嘛，",
         "！",
         "大",
         "得过",
@@ -6279,9 +6276,9 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嘛，！大得过我咩家下？"
+      "target_sub_punctuated": "！大得过我咩家下？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -6289,11 +6286,12 @@
       "target_subs": [
         "睇",
         "少",
-        "我"
+        "我",
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "睇少我"
+      "target_sub_punctuated": "睇少我啊！"
     },
     "difficulty": 2
   },
@@ -6301,18 +6299,17 @@
     "query": {
       "ref_sub": "總有一天比你大",
       "target_subs": [
-        "啊！迟",
+        "迟",
         "早",
         "一",
         "日",
         "大过",
         "你",
-        "嘅。",
-        "喂，"
+        "嘅。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊！迟早一日大过你嘅。喂，"
+      "target_sub_punctuated": "迟早一日大过你嘅。"
     },
     "difficulty": 2
   },
@@ -6320,6 +6317,7 @@
     "query": {
       "ref_sub": "有誰願意脫下衣服來給我穿一下",
       "target_subs": [
+        "喂，",
         "后边边个摆",
         "啲锄头风",
         "落",
@@ -6328,12 +6326,25 @@
         "住",
         "啊！",
         "喂，",
-        "哎，",
-        "呢"
+        "哎，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "后边边个摆啲锄头风落嚟揞住啊！喂，哎，呢"
+      "target_sub_punctuated": "喂，后边边个摆啲锄头风落嚟揞住啊！喂，哎，"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "沒眼看",
+      "target_subs": [
+        "呢",
+        "班",
+        "人锄头风。"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "呢班人锄头风。"
     },
     "difficulty": 2
   },
@@ -6341,7 +6352,6 @@
     "query": {
       "ref_sub": "你們站著幹嘛？還不把它搬走",
       "target_subs": [
-        "人锄头风。",
         "你",
         "哋",
         "企",
@@ -6358,7 +6368,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "人锄头风。你哋企晒喺度做咩？你仲唔搬走？嘿，"
+      "target_sub_punctuated": "你哋企晒喺度做咩？你仲唔搬走？嘿，"
     },
     "difficulty": 2
   },
@@ -6395,19 +6405,20 @@
         "啦，",
         "好",
         "唔",
-        "好"
+        "好",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔该大家落力啲啦，好唔好"
+      "target_sub_punctuated": "唔该大家落力啲啦，好唔好啊？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "數三聲！一，二，三，推",
       "target_subs": [
-        "啊？诶，数",
+        "诶，数",
         "三声",
         "啦，",
         "一、",
@@ -6416,7 +6427,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？诶，数三声啦，一、二、三，"
+      "target_sub_punctuated": "诶，数三声啦，一、二、三，"
     },
     "difficulty": 2
   },
@@ -6507,31 +6518,30 @@
         "枝",
         "食",
         "啊",
-        "家阵？",
-        "吓，",
-        "嚟",
-        "嚟，",
-        "推"
+        "家阵？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔系我上到京城边有荔枝食啊家阵？吓，嚟嚟，推"
+      "target_sub_punctuated": "唔系我上到京城边有荔枝食啊家阵？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "推到那邊⋯推到那邊",
       "target_subs": [
+        "吓，",
+        "嚟",
+        "嚟，",
+        "推",
         "啊，",
         "推",
         "推",
-        "佢。",
-        "好声"
+        "佢。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊，推推佢。好声"
+      "target_sub_punctuated": "吓，嚟嚟，推啊，推推佢。"
     },
     "difficulty": 2
   },
@@ -6539,6 +6549,7 @@
     "query": {
       "ref_sub": "小心點⋯小心我的荔枝",
       "target_subs": [
+        "好声",
         "啊，",
         "好声",
         "啊，",
@@ -6554,7 +6565,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊，好声啊，睇住我啲荔枝荔枝啊！"
+      "target_sub_punctuated": "好声啊，好声啊，睇住我啲荔枝荔枝啊！"
     },
     "difficulty": 2
   },
@@ -6566,11 +6577,14 @@
         "住",
         "我",
         "啲",
-        "荔"
+        "荔",
+        "枝",
+        "啊！",
+        "收头。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "睇住我啲荔"
+      "target_sub_punctuated": "睇住我啲荔枝啊！收头。"
     },
     "difficulty": 2
   },
@@ -6578,9 +6592,7 @@
     "query": {
       "ref_sub": "趙無極這趟協助微臣",
       "target_subs": [
-        "枝",
-        "啊！",
-        "收头。赵无极",
+        "赵无极",
         "今",
         "次协",
         "助",
@@ -6589,9 +6601,8 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "枝啊！收头。赵无极今次协助微臣"
-    },
-    "difficulty": 2
+      "target_sub_punctuated": "赵无极今次协助微臣"
+    }
   },
   {
     "query": {
@@ -6669,25 +6680,27 @@
         "好",
         "好为",
         "大",
-        "清尽"
+        "清尽",
+        "力。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "希望你日后好好为大清尽"
-    }
+      "target_sub_punctuated": "希望你日后好好为大清尽力。"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "謝主龍恩",
       "target_subs": [
-        "力。谢",
+        "谢",
         "主",
         "隆",
         "恩。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "力。谢主隆恩。"
+      "target_sub_punctuated": "谢主隆恩。"
     },
     "difficulty": 2
   },
@@ -6724,30 +6737,32 @@
         "皇",
         "上开",
         "下",
-        "眼"
+        "眼",
+        "界。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "不如请佢展示下，俾皇上开下眼"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "異術？",
-      "target_subs": [
-        "界。异术？赵"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "界。异术？赵"
+      "target_sub_punctuated": "不如请佢展示下，俾皇上开下眼界。"
     },
     "difficulty": 2
   },
   {
     "query": {
+      "ref_sub": "異術？",
+      "target_subs": [
+        "异术？"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "异术？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
       "ref_sub": "趙先生，你就示範給朕看",
       "target_subs": [
+        "赵",
         "先",
         "生，",
         "你",
@@ -6761,7 +6776,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "先生，你就展示俾朕睇下。"
+      "target_sub_punctuated": "赵先生，你就展示俾朕睇下。"
     },
     "difficulty": 2
   },
@@ -6838,11 +6853,12 @@
       "ref_sub": "甚麼事？",
       "target_subs": [
         "厉",
-        "害厉"
+        "害厉",
+        "害，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "厉害厉"
+      "target_sub_punctuated": "厉害厉害，"
     },
     "difficulty": 2
   },
@@ -6889,14 +6905,11 @@
         "咁",
         "香，",
         "你",
-        "系飘红。",
-        "哎",
-        "呀，",
-        "好靓"
+        "系飘红。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咁香，你系飘红。哎呀，好靓"
+      "target_sub_punctuated": "咁香，你系飘红。"
     },
     "difficulty": 2
   },
@@ -6904,6 +6917,9 @@
     "query": {
       "ref_sub": "少爺你很棒，我喜歡",
       "target_subs": [
+        "哎",
+        "呀，",
+        "好靓",
         "啊，",
         "我",
         "中",
@@ -6912,7 +6928,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊，我中意啊！"
+      "target_sub_punctuated": "哎呀，好靓啊，我中意啊！"
     },
     "difficulty": 2
   },
@@ -6952,13 +6968,14 @@
       "ref_sub": "少爺你很壞，這樣說人家",
       "target_subs": [
         "啊，",
-        "死"
+        "死",
+        "啦，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊，死"
+      "target_sub_punctuated": "啊，死啦，"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -6969,11 +6986,12 @@
         "噶，",
         "咁",
         "都",
-        "俾"
+        "俾",
+        "你"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好衰噶，咁都俾"
+      "target_sub_punctuated": "好衰噶，咁都俾你"
     },
     "difficulty": 2
   },
@@ -6982,12 +7000,11 @@
       "ref_sub": "你很壞！這樣也給你猜中",
       "target_subs": [
         "估",
-        "到。",
-        "叻"
+        "到。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "估到。叻"
+      "target_sub_punctuated": "估到。"
     },
     "difficulty": 2
   },
@@ -6995,13 +7012,14 @@
     "query": {
       "ref_sub": "聰明，聰明",
       "target_subs": [
+        "叻",
         "仔，",
         "叻",
         "仔，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "仔，叻仔，"
+      "target_sub_punctuated": "叻仔，叻仔，"
     },
     "difficulty": 2
   },
@@ -7016,11 +7034,12 @@
         "你",
         "添。",
         "有",
-        "有"
+        "有",
+        "有。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "阿爹仲谂整蛊你添。有有"
+      "target_sub_punctuated": "阿爹仲谂整蛊你添。有有有。"
     },
     "difficulty": 2
   },
@@ -7028,7 +7047,6 @@
     "query": {
       "ref_sub": "好了好了，少爺明早要考試",
       "target_subs": [
-        "有。",
         "好",
         "啦",
         "好",
@@ -7036,12 +7054,11 @@
         "少爷听",
         "朝",
         "要",
-        "考试，",
-        "唔"
+        "考试，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "有。好啦好啦，少爷听朝要考试，唔"
+      "target_sub_punctuated": "好啦好啦，少爷听朝要考试，"
     },
     "difficulty": 2
   },
@@ -7049,6 +7066,7 @@
     "query": {
       "ref_sub": "別玩得太瘋",
       "target_subs": [
+        "唔",
         "好",
         "玩",
         "到",
@@ -7056,7 +7074,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好玩到咁癫，"
+      "target_sub_punctuated": "唔好玩到咁癫，"
     },
     "difficulty": 2
   },
@@ -7087,12 +7105,11 @@
         "你听",
         "日",
         "考试",
-        "咯，",
-        "啲"
+        "咯，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "阿仔啊，你听日考试咯，啲"
+      "target_sub_punctuated": "阿仔啊，你听日考试咯，"
     },
     "difficulty": 2
   },
@@ -7100,14 +7117,15 @@
     "query": {
       "ref_sub": "準備好了沒有？",
       "target_subs": [
+        "啲",
         "嘢预备",
         "好",
         "晒",
-        "未？预备"
+        "未？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嘢预备好晒未？预备"
+      "target_sub_punctuated": "啲嘢预备好晒未？"
     },
     "difficulty": 1
   },
@@ -7115,6 +7133,7 @@
     "query": {
       "ref_sub": "準備甚麼？我贏定了，你不知道嗎",
       "target_subs": [
+        "预备",
         "咩？嗯，赢",
         "梗",
         "噶",
@@ -7127,7 +7146,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咩？嗯，赢梗噶嘛，乜你唔知咩？"
+      "target_sub_punctuated": "预备咩？嗯，赢梗噶嘛，乜你唔知咩？"
     },
     "difficulty": 2
   },
@@ -7137,14 +7156,11 @@
       "target_subs": [
         "啊，",
         "知",
-        "啊，",
-        "你",
-        "咁态",
-        "度"
+        "啊，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊，知啊，你咁态度"
+      "target_sub_punctuated": "啊，知啊，"
     },
     "difficulty": 2
   },
@@ -7152,6 +7168,9 @@
     "query": {
       "ref_sub": "你這樣的態度，我就有信心",
       "target_subs": [
+        "你",
+        "咁态",
+        "度",
         "咧，",
         "我",
         "就。",
@@ -7169,7 +7188,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咧，我就。哈！呢种态度咧，我就有晒信心啦。"
+      "target_sub_punctuated": "你咁态度咧，我就。哈！呢种态度咧，我就有晒信心啦。"
     },
     "difficulty": 2
   },
@@ -7186,11 +7205,11 @@
         "咧",
         "就郑",
         "世",
-        "伯，听"
+        "伯，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "阿七啊，嗱呢位咧就郑世伯，听"
+      "target_sub_punctuated": "阿七啊，嗱呢位咧就郑世伯，"
     },
     "difficulty": 2
   },
@@ -7198,6 +7217,7 @@
     "query": {
       "ref_sub": "明天鄭世伯做主考",
       "target_subs": [
+        "听",
         "日郑",
         "世",
         "伯",
@@ -7206,7 +7226,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "日郑世伯主考，"
+      "target_sub_punctuated": "听日郑世伯主考，"
     },
     "difficulty": 2
   },
@@ -7217,11 +7237,11 @@
         "嚟",
         "打个",
         "招",
-        "呼。郑"
+        "呼。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嚟打个招呼。郑"
+      "target_sub_punctuated": "嚟打个招呼。"
     },
     "difficulty": 2
   },
@@ -7229,6 +7249,7 @@
     "query": {
       "ref_sub": "鄭世伯，招呼不週",
       "target_subs": [
+        "郑",
         "世",
         "伯，",
         "招风",
@@ -7236,7 +7257,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "世伯，招风到。诶诶诶诶诶诶！"
+      "target_sub_punctuated": "郑世伯，招风到。诶诶诶诶诶诶！"
     },
     "difficulty": 2
   },
@@ -7306,12 +7327,11 @@
         "我",
         "啲试",
         "卷",
-        "咧，",
-        "我"
+        "咧，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "喂，老郑，你俾我啲试卷咧，我"
+      "target_sub_punctuated": "喂，老郑，你俾我啲试卷咧，"
     },
     "difficulty": 2
   },
@@ -7319,6 +7339,7 @@
     "query": {
       "ref_sub": "我已經找人在做",
       "target_subs": [
+        "我",
         "就",
         "已经",
         "揾",
@@ -7329,7 +7350,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "就已经揾人做紧噶啦，"
+      "target_sub_punctuated": "我就已经揾人做紧噶啦，"
     },
     "difficulty": 2
   },
@@ -7340,11 +7361,11 @@
         "唔会",
         "改",
         "啦",
-        "嘛？试"
+        "嘛？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔会改啦嘛？试"
+      "target_sub_punctuated": "唔会改啦嘛？"
     },
     "difficulty": 1
   },
@@ -7352,6 +7373,7 @@
     "query": {
       "ref_sub": "考卷方面是沒問題了",
       "target_subs": [
+        "试",
         "卷",
         "可",
         "以",
@@ -7362,7 +7384,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "卷可以同佢换嘅啫。"
+      "target_sub_punctuated": "试卷可以同佢换嘅啫。"
     },
     "difficulty": 2
   },
@@ -7375,11 +7397,11 @@
         "到时",
         "考",
         "弓",
-        "箭、骑马、举"
+        "箭、骑马、"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "至于到时考弓箭、骑马、举"
+      "target_sub_punctuated": "至于到时考弓箭、骑马、"
     },
     "difficulty": 2
   },
@@ -7387,6 +7409,7 @@
     "query": {
       "ref_sub": "舉石、搏擊、兵器",
       "target_subs": [
+        "举",
         "石、",
         "搏击",
         "同",
@@ -7396,7 +7419,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "石、搏击同兵器咧，"
+      "target_sub_punctuated": "举石、搏击同兵器咧，"
     },
     "difficulty": 2
   },
@@ -7410,18 +7433,19 @@
         "要",
         "靠",
         "自",
-        "己"
+        "己",
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "就自己要靠自己"
-    }
+      "target_sub_punctuated": "就自己要靠自己啦。"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "這一點你放心",
       "target_subs": [
-        "啦。",
         "呢层",
         "你",
         "放",
@@ -7429,7 +7453,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啦。呢层你放心，"
+      "target_sub_punctuated": "呢层你放心，"
     },
     "difficulty": 2
   },
@@ -7466,11 +7490,12 @@
         "以",
         "酌",
         "量减",
-        "啲"
+        "啲",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "喂，个二百万两系咪可以酌量减啲"
+      "target_sub_punctuated": "喂，个二百万两系咪可以酌量减啲啊？"
     },
     "difficulty": 2
   },
@@ -7478,7 +7503,7 @@
     "query": {
       "ref_sub": "人情歸人情，數目一定要分明",
       "target_subs": [
-        "啊？诶，",
+        "诶，",
         "人",
         "情还",
         "人",
@@ -7490,7 +7515,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？诶，人情还人情，均真啲好。"
+      "target_sub_punctuated": "诶，人情还人情，均真啲好。"
     },
     "difficulty": 2
   },
@@ -7555,11 +7580,11 @@
         "哼，",
         "努",
         "力",
-        "啫，无耻"
+        "啫，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哼，努力啫，无耻"
+      "target_sub_punctuated": "哼，努力啫，"
     },
     "difficulty": 2
   },
@@ -7567,6 +7592,7 @@
     "query": {
       "ref_sub": "無恥？無恥你娘",
       "target_subs": [
+        "无耻",
         "啊，",
         "似",
         "你",
@@ -7575,7 +7601,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊，似你老母。"
+      "target_sub_punctuated": "无耻啊，似你老母。"
     },
     "difficulty": 2
   },
@@ -7632,11 +7658,14 @@
         "系",
         "由",
         "蒙",
-        "古"
+        "古",
+        "嘅",
+        "博达尔",
+        "多"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系由蒙古"
+      "target_sub_punctuated": "系由蒙古嘅博达尔多"
     },
     "difficulty": 2
   },
@@ -7644,16 +7673,14 @@
     "query": {
       "ref_sub": "⋯對廣東的蘇察哈爾燦",
       "target_subs": [
-        "嘅",
-        "博达尔",
-        "多对广东",
+        "对广东",
         "嘅苏",
         "察",
         "哈尔灿。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嘅博达尔多对广东嘅苏察哈尔灿。"
+      "target_sub_punctuated": "对广东嘅苏察哈尔灿。"
     },
     "difficulty": 2
   },
@@ -7664,11 +7691,11 @@
         "最",
         "后",
         "三",
-        "分钟，苏"
+        "分钟，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "最后三分钟，苏"
+      "target_sub_punctuated": "最后三分钟，"
     },
     "difficulty": 2
   },
@@ -7676,6 +7703,7 @@
     "query": {
       "ref_sub": "蘇察哈爾燦一賠十，博達爾多一賠一",
       "target_subs": [
+        "苏",
         "察",
         "哈尔灿",
         "一赔",
@@ -7687,7 +7715,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "察哈尔灿一赔十，博达尔多一赔一。"
+      "target_sub_punctuated": "苏察哈尔灿一赔十，博达尔多一赔一。"
     },
     "difficulty": 2
   },
@@ -7796,12 +7824,11 @@
         "分",
         "啊，晋级",
         "嘅，点",
-        "同？",
-        "喂，"
+        "同？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "全部满分啊，晋级嘅，点同？喂，"
+      "target_sub_punctuated": "全部满分啊，晋级嘅，点同？"
     },
     "difficulty": 2
   },
@@ -7809,6 +7836,7 @@
     "query": {
       "ref_sub": "現在是考狀元，又不是當苦力",
       "target_subs": [
+        "喂，",
         "家阵",
         "考状",
         "元",
@@ -7817,19 +7845,20 @@
         "估",
         "做",
         "咕",
-        "喱"
+        "喱",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "家阵考状元噃，你估做咕喱"
+      "target_sub_punctuated": "喂，家阵考状元噃，你估做咕喱啊？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "舉重了得又有何用！",
       "target_subs": [
-        "啊？举",
+        "举",
         "重",
         "咁",
         "你",
@@ -7838,7 +7867,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？举重咁你托撑咩？"
+      "target_sub_punctuated": "举重咁你托撑咩？"
     },
     "difficulty": 2
   },
@@ -7885,11 +7914,11 @@
         "完这场赛",
         "事",
         "好",
-        "啦，觉"
+        "啦，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我注完这场赛事好啦，觉"
+      "target_sub_punctuated": "我注完这场赛事好啦，"
     },
     "difficulty": 2
   },
@@ -7897,6 +7926,7 @@
     "query": {
       "ref_sub": "也覺得個賠率有點古怪",
       "target_subs": [
+        "觉",
         "得个赔",
         "率",
         "有",
@@ -7904,11 +7934,11 @@
         "古",
         "怪。",
         "系",
-        "咩？个"
+        "咩？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "得个赔率有啲古怪。系咩？个"
+      "target_sub_punctuated": "觉得个赔率有啲古怪。系咩？"
     },
     "difficulty": 2
   },
@@ -7916,6 +7946,7 @@
     "query": {
       "ref_sub": "這個博達爾多外型俊朗，渾身有力",
       "target_subs": [
+        "个",
         "博达尔",
         "多",
         "外",
@@ -7928,7 +7959,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "博达尔多外形俊朗，浑身上力，"
+      "target_sub_punctuated": "个博达尔多外形俊朗，浑身上力，"
     },
     "difficulty": 2
   },
@@ -7995,11 +8026,11 @@
         "察",
         "就",
         "唔",
-        "同。点"
+        "同。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "但系呢个苏察哈尔察就唔同。点"
+      "target_sub_punctuated": "但系呢个苏察哈尔察就唔同。"
     },
     "difficulty": 2
   },
@@ -8007,13 +8038,14 @@
     "query": {
       "ref_sub": "怎樣？怎樣？",
       "target_subs": [
+        "点",
         "啊点",
         "啊点",
-        "啊？虽"
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊点啊点啊？虽"
+      "target_sub_punctuated": "点啊点啊点啊？"
     },
     "difficulty": 2
   },
@@ -8021,6 +8053,7 @@
     "query": {
       "ref_sub": "雖然沿途低著頭",
       "target_subs": [
+        "虽",
         "然",
         "沿",
         "途头",
@@ -8029,7 +8062,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "然沿途头耷耷，"
+      "target_sub_punctuated": "虽然沿途头耷耷，"
     },
     "difficulty": 2
   },
@@ -8153,11 +8186,11 @@
         "二",
         "百万两",
         "啊",
-        "嘛。诶，点"
+        "嘛。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "八十万两咁少，买够二百万两啊嘛。诶，点"
+      "target_sub_punctuated": "八十万两咁少，买够二百万两啊嘛。"
     },
     "difficulty": 2
   },
@@ -8165,6 +8198,7 @@
     "query": {
       "ref_sub": "怎麼？為甚麼你突然間看好他",
       "target_subs": [
+        "诶，点",
         "解",
         "啊？点",
         "解",
@@ -8174,12 +8208,11 @@
         "睇",
         "得",
         "咁",
-        "好？",
-        "我见"
+        "好？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "解啊？点解你突然间睇得咁好？我见"
+      "target_sub_punctuated": "诶，点解啊？点解你突然间睇得咁好？"
     },
     "difficulty": 2
   },
@@ -8187,6 +8220,7 @@
     "query": {
       "ref_sub": "我看你分析得那麼清楚",
       "target_subs": [
+        "我见",
         "你",
         "分",
         "析",
@@ -8194,18 +8228,7 @@
         "咁",
         "清",
         "楚，",
-        "俾"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "你分析得咁清楚，俾"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "給你說說",
-      "target_subs": [
+        "俾",
         "你",
         "呃",
         "埋",
@@ -8214,7 +8237,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你呃埋噶嘛。"
+      "target_sub_punctuated": "我见你分析得咁清楚，俾你呃埋噶嘛。"
     },
     "difficulty": 2
   },
@@ -8227,12 +8250,11 @@
         "好",
         "似赢紧",
         "咁",
-        "啊！诶，过",
-        "嚟过"
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我觉得苏泽好似赢紧咁啊！诶，过嚟过"
+      "target_sub_punctuated": "我觉得苏泽好似赢紧咁啊！"
     },
     "difficulty": 2
   },
@@ -8240,12 +8262,13 @@
     "query": {
       "ref_sub": "過來過來",
       "target_subs": [
-        "嚟，",
-        "我"
+        "诶，过",
+        "嚟过",
+        "嚟，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嚟，我"
+      "target_sub_punctuated": "诶，过嚟过嚟，"
     },
     "difficulty": 2
   },
@@ -8253,12 +8276,13 @@
     "query": {
       "ref_sub": "我第二次全押",
       "target_subs": [
+        "我",
         "分两",
         "次"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "分两次"
+      "target_sub_punctuated": "我分两次"
     }
   },
   {
@@ -8291,11 +8315,13 @@
       "target_subs": [
         "啊，",
         "好",
-        "起"
+        "起",
+        "好",
+        "起。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊，好起"
+      "target_sub_punctuated": "啊，好起好起。"
     },
     "difficulty": 2
   },
@@ -8303,8 +8329,7 @@
     "query": {
       "ref_sub": "為甚麼你不下注？",
       "target_subs": [
-        "好",
-        "起。诶，点",
+        "诶，点",
         "解",
         "你",
         "唔",
@@ -8313,7 +8338,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好起。诶，点解你唔落注？"
+      "target_sub_punctuated": "诶，点解你唔落注？"
     },
     "difficulty": 2
   },
@@ -8396,11 +8421,12 @@
       "target_subs": [
         "喂，",
         "主",
-        "考"
+        "考",
+        "到，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "喂，主考"
+      "target_sub_punctuated": "喂，主考到，"
     },
     "difficulty": 2
   },
@@ -8408,7 +8434,6 @@
     "query": {
       "ref_sub": "不是老鄭主考嗎？",
       "target_subs": [
-        "到，",
         "乜",
         "唔",
         "系",
@@ -8420,7 +8445,20 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "到，乜唔系老井主考咩？"
+      "target_sub_punctuated": "乜唔系老井主考咩？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "請坐",
+      "target_subs": [
+        "请",
+        "坐。"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "请坐。"
     },
     "difficulty": 2
   },
@@ -8428,7 +8466,7 @@
     "query": {
       "ref_sub": "僧格林沁？",
       "target_subs": [
-        "坐。张",
+        "张",
         "家",
         "林",
         "生",
@@ -8437,7 +8475,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "坐。张家林生啊嘛，"
+      "target_sub_punctuated": "张家林生啊嘛，"
     },
     "difficulty": 2
   },
@@ -8446,18 +8484,11 @@
       "ref_sub": "有甚麼問題？",
       "target_subs": [
         "有",
-        "咩问题？",
-        "可",
-        "以帮达尔",
-        "多",
-        "嘅",
-        "阿苏",
-        "嚟",
-        "噶"
+        "咩问题？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "有咩问题？可以帮达尔多嘅阿苏嚟噶"
+      "target_sub_punctuated": "有咩问题？"
     },
     "difficulty": 1
   },
@@ -8465,14 +8496,32 @@
     "query": {
       "ref_sub": "他是博達爾多的叔叔",
       "target_subs": [
-        "嘛？",
+        "可",
+        "以帮达尔",
+        "多",
+        "嘅",
+        "阿苏",
+        "嚟",
+        "噶",
+        "嘛？"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "可以帮达尔多嘅阿苏嚟噶嘛？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "開始",
+      "target_subs": [
         "啊，开",
         "始",
         "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嘛？啊，开始啊！"
+      "target_sub_punctuated": "啊，开始啊！"
     },
     "difficulty": 2
   },
@@ -8522,11 +8571,11 @@
         "照计",
         "嘅，",
         "照计",
-        "嘅，苏灿"
+        "嘅，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "照计嘅，照计嘅，苏灿"
+      "target_sub_punctuated": "照计嘅，照计嘅，"
     },
     "difficulty": 2
   },
@@ -8534,6 +8583,7 @@
     "query": {
       "ref_sub": "蘇燦靶上沒有箭！博達爾多勝",
       "target_subs": [
+        "苏灿",
         "靶",
         "上",
         "冇",
@@ -8545,7 +8595,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "靶上冇箭，已多胜。"
+      "target_sub_punctuated": "苏灿靶上冇箭，已多胜。"
     },
     "difficulty": 2
   },
@@ -8578,11 +8628,11 @@
         "下",
         "一",
         "回",
-        "合。嗯，赵"
+        "合。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好，上上马，准备下一回合。嗯，赵"
+      "target_sub_punctuated": "好，上上马，准备下一回合。"
     },
     "difficulty": 2
   },
@@ -8590,6 +8640,7 @@
     "query": {
       "ref_sub": "趙先生",
       "target_subs": [
+        "嗯，赵",
         "先",
         "生，赵",
         "先",
@@ -8597,7 +8648,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "先生，赵先生。"
+      "target_sub_punctuated": "嗯，赵先生，赵先生。"
     },
     "difficulty": 2
   },
@@ -8803,24 +8854,11 @@
         "醒",
         "未",
         "啊，靓",
-        "仔？",
-        "A"
+        "仔？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "瞓醒未啊，靓仔？A"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "喝茶！喝茶",
-      "target_subs": [
-        "l"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "l"
+      "target_sub_punctuated": "瞓醒未啊，靓仔？"
     },
     "difficulty": 2
   },
@@ -8828,24 +8866,27 @@
     "query": {
       "ref_sub": "祝你好運",
       "target_subs": [
+        "A",
+        "l",
         "l",
         "t",
         "h",
         "e",
         "b",
-        "e"
+        "e",
+        "s",
+        "t！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "lthebe"
-    }
+      "target_sub_punctuated": "Allthebest！"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "這當然要用臀啦！還有別處可用嗎？",
       "target_subs": [
-        "s",
-        "t！",
         "哦，阵间",
         "用个劈",
         "嘅",
@@ -8855,12 +8896,11 @@
         "第",
         "二",
         "招",
-        "咩？",
-        "唔"
+        "咩？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "st！哦，阵间用个劈嘅啦，仲有第二招咩？唔"
+      "target_sub_punctuated": "哦，阵间用个劈嘅啦，仲有第二招咩？"
     },
     "difficulty": 2
   },
@@ -8868,28 +8908,18 @@
     "query": {
       "ref_sub": "是洋文",
       "target_subs": [
+        "唔",
         "系",
         "啊，杨万",
         "里",
-        "啊，杨万"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "系啊，杨万里啊，杨万"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "洋文",
-      "target_subs": [
+        "啊，杨万",
         "里",
         "啊",
         "嘛。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "里啊嘛。"
+      "target_sub_punctuated": "唔系啊，杨万里啊，杨万里啊嘛。"
     },
     "difficulty": 2
   },
@@ -9003,11 +9033,12 @@
         "都见",
         "唔",
         "到",
-        "佢"
+        "佢",
+        "啊。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔使啦，你以后都见唔到佢"
+      "target_sub_punctuated": "唔使啦，你以后都见唔到佢啊。"
     },
     "difficulty": 2
   },
@@ -9015,15 +9046,15 @@
     "query": {
       "ref_sub": "為甚麼？",
       "target_subs": [
-        "啊。点",
+        "点",
         "解",
         "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊。点解啊？"
+      "target_sub_punctuated": "点解啊？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -9051,25 +9082,25 @@
         "有",
         "二",
         "百万输",
-        "啊？",
-        "嗱，讲"
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我边有二百万输啊？嗱，讲"
+      "target_sub_punctuated": "我边有二百万输啊？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "只是說說而已",
       "target_subs": [
+        "嗱，讲",
         "下",
         "啫，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "下啫，"
+      "target_sub_punctuated": "嗱，讲下啫，"
     },
     "difficulty": 2
   },
@@ -9113,11 +9144,12 @@
       "target_subs": [
         "哦，",
         "做",
-        "咩"
+        "咩",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哦，做咩"
+      "target_sub_punctuated": "哦，做咩啊？"
     },
     "difficulty": 2
   },
@@ -9125,14 +9157,14 @@
     "query": {
       "ref_sub": "鏢有毒",
       "target_subs": [
-        "啊？",
         "支镖",
         "有",
-        "毒"
+        "毒",
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？支镖有毒"
+      "target_sub_punctuated": "支镖有毒啊！"
     },
     "difficulty": 2
   },
@@ -9140,7 +9172,6 @@
     "query": {
       "ref_sub": "報應來了！死得好",
       "target_subs": [
-        "啊！",
         "哦，报应",
         "啊，",
         "抵",
@@ -9149,7 +9180,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊！哦，报应啊，抵死啊！"
+      "target_sub_punctuated": "哦，报应啊，抵死啊！"
     },
     "difficulty": 2
   },
@@ -9250,11 +9281,13 @@
       "target_subs": [
         "有",
         "眼",
-        "光，"
+        "光，",
+        "精",
+        "明。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "有眼光，"
+      "target_sub_punctuated": "有眼光，精明。"
     },
     "difficulty": 2
   },
@@ -9262,8 +9295,6 @@
     "query": {
       "ref_sub": "大人，皇上說要親自欽點",
       "target_subs": [
-        "精",
-        "明。",
         "大",
         "人，",
         "皇",
@@ -9276,7 +9307,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "精明。大人，皇上话要亲自钦点。"
+      "target_sub_punctuated": "大人，皇上话要亲自钦点。"
     },
     "difficulty": 2
   },
@@ -9376,6 +9407,19 @@
   },
   {
     "query": {
+      "ref_sub": "平身",
+      "target_subs": [
+        "平",
+        "身。"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "平身。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
       "ref_sub": "僧格林沁，今科武狀元是誰？",
       "target_subs": [
         "朕",
@@ -9385,29 +9429,31 @@
         "今",
         "科",
         "武状",
-        "元"
+        "元",
+        "系边个？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "朕嘅林心，今科武状元"
+      "target_sub_punctuated": "朕嘅林心，今科武状元系边个？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "稟告皇上，是廣東的蘇察哈爾燦",
       "target_subs": [
-        "系边个？禀",
+        "禀",
         "告",
         "皇",
         "上，",
         "系广东",
         "嘅苏",
-        "察"
+        "察",
+        "哈尔灿。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系边个？禀告皇上，系广东嘅苏察"
+      "target_sub_punctuated": "禀告皇上，系广东嘅苏察哈尔灿。"
     },
     "difficulty": 2
   },
@@ -9415,7 +9461,7 @@
     "query": {
       "ref_sub": "蘇察哈爾燦！參見皇上",
       "target_subs": [
-        "哈尔灿。苏",
+        "苏",
         "察",
         "哈尔灿参见",
         "皇",
@@ -9423,7 +9469,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哈尔灿。苏察哈尔灿参见皇上。"
+      "target_sub_punctuated": "苏察哈尔灿参见皇上。"
     },
     "difficulty": 2
   },
@@ -9471,11 +9517,11 @@
         "系",
         "唔识",
         "字",
-        "嘅，点"
+        "嘅，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "微臣查到苏察哈尔灿系唔识字嘅，点"
+      "target_sub_punctuated": "微臣查到苏察哈尔灿系唔识字嘅，"
     },
     "difficulty": 2
   },
@@ -9483,6 +9529,7 @@
     "query": {
       "ref_sub": "怎可以答到考戰略的題目呢？",
       "target_subs": [
+        "点",
         "可",
         "以",
         "答",
@@ -9495,7 +9542,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "可以答到考箭录嘅题目呢？"
+      "target_sub_punctuated": "点可以答到考箭录嘅题目呢？"
     },
     "difficulty": 1
   },
@@ -9567,11 +9614,11 @@
         "彩，净",
         "系写个",
         "名",
-        "啫，写"
+        "啫，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好彩好彩，净系写个名啫，写"
+      "target_sub_punctuated": "好彩好彩，净系写个名啫，"
     },
     "difficulty": 2
   },
@@ -9579,6 +9626,7 @@
     "query": {
       "ref_sub": "懂寫名字！懂寫名字",
       "target_subs": [
+        "写",
         "名",
         "就",
         "得，写",
@@ -9588,7 +9636,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "名就得，写名就得。"
+      "target_sub_punctuated": "写名就得，写名就得。"
     },
     "difficulty": 2
   },
@@ -9597,12 +9645,11 @@
       "ref_sub": "我不會寫",
       "target_subs": [
         "我",
-        "唔识写。",
-        "哼，"
+        "唔识写。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我唔识写。哼，"
+      "target_sub_punctuated": "我唔识写。"
     },
     "difficulty": 2
   },
@@ -9610,6 +9657,7 @@
     "query": {
       "ref_sub": "你分明作弊",
       "target_subs": [
+        "哼，",
         "你",
         "分",
         "明",
@@ -9618,7 +9666,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你分明作弊，"
+      "target_sub_punctuated": "哼，你分明作弊，"
     },
     "difficulty": 2
   },
@@ -9628,12 +9676,11 @@
       "target_subs": [
         "拉",
         "出",
-        "去斩！",
-        "啊，"
+        "去斩！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "拉出去斩！啊，"
+      "target_sub_punctuated": "拉出去斩！"
     },
     "difficulty": 2
   },
@@ -9641,6 +9688,7 @@
     "query": {
       "ref_sub": "不要！不要",
       "target_subs": [
+        "啊，",
         "唔",
         "好",
         "啊，",
@@ -9650,7 +9698,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔好啊，唔好啊！"
+      "target_sub_punctuated": "啊，唔好啊，唔好啊！"
     },
     "difficulty": 2
   },
@@ -9693,25 +9741,26 @@
       "target_subs": [
         "要斩",
         "就斩",
-        "我"
+        "我",
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "要斩就斩我"
-    }
+      "target_sub_punctuated": "要斩就斩我啦。"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "不對！應該斬我",
       "target_subs": [
-        "啦。",
         "唔",
         "系，应该斩",
-        "我。对"
+        "我。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啦。唔系，应该斩我。对"
+      "target_sub_punctuated": "唔系，应该斩我。"
     },
     "difficulty": 2
   },
@@ -9719,6 +9768,7 @@
     "query": {
       "ref_sub": "對不起，阿爹",
       "target_subs": [
+        "对",
         "唔",
         "住",
         "阿",
@@ -9726,7 +9776,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔住阿爹，"
+      "target_sub_punctuated": "对唔住阿爹，"
     },
     "difficulty": 1
   },
@@ -9774,11 +9824,12 @@
         "上",
         "要斩",
         "就斩",
-        "我"
+        "我",
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "皇上要斩就斩我"
+      "target_sub_punctuated": "皇上要斩就斩我啦。"
     },
     "difficulty": 2
   },
@@ -9786,16 +9837,17 @@
     "query": {
       "ref_sub": "斬我吧　　斬我吧",
       "target_subs": [
-        "啦。斩",
+        "斩",
         "我",
         "咧？",
         "唔",
         "系，",
-        "你斩"
+        "你斩",
+        "我。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啦。斩我咧？唔系，你斩"
+      "target_sub_punctuated": "斩我咧？唔系，你斩我。"
     },
     "difficulty": 2
   },
@@ -9803,21 +9855,10 @@
     "query": {
       "ref_sub": "斬我吧　　皇上！你還是斬我吧",
       "target_subs": [
-        "我。斩",
+        "斩",
         "我",
         "咧？",
-        "唔"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "我。斩我咧？唔"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "混帳！你們說要斬誰就斬誰嗎",
-      "target_subs": [
+        "唔",
         "系，",
         "你斩",
         "我。",
@@ -9826,7 +9867,18 @@
         "我",
         "好斩",
         "啲",
-        "啊！",
+        "啊！"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "斩我咧？唔系，你斩我。皇上，我好斩啲啊！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "混帳！你們說要斬誰就斬誰嗎",
+      "target_subs": [
         "混账！",
         "你话斩边个",
         "就斩边个",
@@ -9834,7 +9886,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系，你斩我。皇上，我好斩啲啊！混账！你话斩边个就斩边个咩？"
+      "target_sub_punctuated": "混账！你话斩边个就斩边个咩？"
     },
     "difficulty": 2
   },
@@ -9845,11 +9897,11 @@
         "你两",
         "父",
         "子",
-        "同谋，吏"
+        "同谋，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你两父子同谋，吏"
+      "target_sub_punctuated": "你两父子同谋，"
     },
     "difficulty": 2
   },
@@ -9857,16 +9909,17 @@
     "query": {
       "ref_sub": "吏部尚書按例判刑",
       "target_subs": [
+        "吏",
         "部",
         "尚书",
         "安",
         "利",
         "判",
-        "刑。吏"
+        "刑。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "部尚书安利判刑。吏"
+      "target_sub_punctuated": "吏部尚书安利判刑。"
     },
     "difficulty": 2
   },
@@ -9874,6 +9927,7 @@
     "query": {
       "ref_sub": "吏部尚書，快點出來！出來",
       "target_subs": [
+        "吏",
         "部",
         "尚书，",
         "快",
@@ -9886,7 +9940,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "部尚书，快啲出嚟！出嚟啊！"
+      "target_sub_punctuated": "吏部尚书，快啲出嚟！出嚟啊！"
     },
     "difficulty": 2
   },
@@ -9915,11 +9969,11 @@
         "佢",
         "又",
         "嚟报",
-        "上书，苏"
+        "上书，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "佢又嚟报上书，苏"
+      "target_sub_punctuated": "佢又嚟报上书，"
     },
     "difficulty": 2
   },
@@ -9927,6 +9981,7 @@
     "query": {
       "ref_sub": "蘇察哈爾燦兩父子罪犯欺君理應問斬",
       "target_subs": [
+        "苏",
         "察",
         "哈尔产两",
         "父",
@@ -9939,7 +9994,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "察哈尔产两父子罪犯欺君，理应问斩。"
+      "target_sub_punctuated": "苏察哈尔产两父子罪犯欺君，理应问斩。"
     },
     "difficulty": 2
   },
@@ -10208,11 +10263,11 @@
         "真",
         "噶？",
         "林",
-        "生，点"
+        "生，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "真噶？林生，点"
+      "target_sub_punctuated": "真噶？林生，"
     },
     "difficulty": 2
   },
@@ -10220,6 +10275,7 @@
     "query": {
       "ref_sub": "為甚麼他作弊你沒有查出來",
       "target_subs": [
+        "点",
         "解",
         "佢",
         "作笔",
@@ -10231,7 +10287,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "解佢作笔你都测唔出噶？"
+      "target_sub_punctuated": "点解佢作笔你都测唔出噶？"
     },
     "difficulty": 2
   },
@@ -10243,18 +10299,20 @@
         "彩",
         "今",
         "次",
-        "系赵无极"
+        "系赵无极",
+        "啫，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好彩今次系赵无极"
-    }
+      "target_sub_punctuated": "好彩今次系赵无极啫，"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "趙無極，你揭發有功！朕會好好賞你",
       "target_subs": [
-        "啫，赵无极，",
+        "赵无极，",
         "你",
         "揭发",
         "你",
@@ -10262,28 +10320,12 @@
         "功，",
         "朕会",
         "好",
-        "好赏"
+        "好赏",
+        "你。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啫，赵无极，你揭发你有功，朕会好好赏"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "身如柳絮⋯",
-      "target_subs": [
-        "你。",
-        "小",
-        "燕，",
-        "由",
-        "今",
-        "日开"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "你。小燕，由今日开"
+      "target_sub_punctuated": "赵无极，你揭发你有功，朕会好好赏你。"
     },
     "difficulty": 2
   },
@@ -10291,6 +10333,11 @@
     "query": {
       "ref_sub": "這是我爹的神主牌位，你也要沒收",
       "target_subs": [
+        "小",
+        "燕，",
+        "由",
+        "今",
+        "日开",
         "始，",
         "我谂",
         "你",
@@ -10302,7 +10349,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "始，我谂你要认真啲学写字嗱。"
+      "target_sub_punctuated": "小燕，由今日开始，我谂你要认真啲学写字嗱。"
     },
     "difficulty": 2
   },
@@ -10346,18 +10393,20 @@
       "target_subs": [
         "阿",
         "S",
-        "i"
+        "i",
+        "r，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "阿Si"
-    }
+      "target_sub_punctuated": "阿Sir，"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "悔不該，惹下⋯",
       "target_subs": [
-        "r，嗯，",
+        "嗯，",
         "我会学",
         "嘅。会，诶，",
         "不，诶，该，",
@@ -10365,7 +10414,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "r，嗯，我会学嘅。会，诶，不，诶，该，耶。"
+      "target_sub_punctuated": "嗯，我会学嘅。会，诶，不，诶，该，耶。"
     },
     "difficulty": 2
   },
@@ -10380,11 +10429,11 @@
         "咁养",
         "大细龟",
         "噶",
-        "啦。对"
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "老爷，我会好好咁养大细龟噶啦。对"
+      "target_sub_punctuated": "老爷，我会好好咁养大细龟噶啦。"
     },
     "difficulty": 2
   },
@@ -10392,6 +10441,7 @@
     "query": {
       "ref_sub": "對不起，老爺",
       "target_subs": [
+        "对",
         "唔",
         "住",
         "啊，",
@@ -10399,7 +10449,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔住啊，老爷，"
+      "target_sub_punctuated": "对唔住啊，老爷，"
     },
     "difficulty": 2
   },
@@ -10538,19 +10588,19 @@
         "啊，",
         "我",
         "哋",
-        "走"
+        "走",
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "老爷啊，我哋走"
+      "target_sub_punctuated": "老爷啊，我哋走啦。"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "我們走了，老爺",
       "target_subs": [
-        "啦。",
         "我",
         "哋",
         "走",
@@ -10559,7 +10609,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啦。我哋走啦，老爷。"
+      "target_sub_punctuated": "我哋走啦，老爷。"
     },
     "difficulty": 2
   },
@@ -10569,26 +10619,12 @@
       "target_subs": [
         "走",
         "啦，",
-        "走"
+        "走",
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "走啦，走"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "安樂了",
-      "target_subs": [
-        "啦。",
-        "啊，刘",
-        "S",
-        "i"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "啦。啊，刘Si"
+      "target_sub_punctuated": "走啦，走啦。"
     },
     "difficulty": 2
   },
@@ -10596,12 +10632,15 @@
     "query": {
       "ref_sub": "真開心",
       "target_subs": [
+        "刘",
+        "S",
+        "i",
         "r，",
         "好兴奋，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "r，好兴奋，"
+      "target_sub_punctuated": "刘Sir，好兴奋，"
     },
     "difficulty": 2
   },
@@ -10636,12 +10675,11 @@
     "query": {
       "ref_sub": "為甚麼他們給人家抄家還這樣開心？",
       "target_subs": [
-        "喂！",
-        "哎"
+        "喂！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "喂！哎"
+      "target_sub_punctuated": "喂！"
     },
     "difficulty": 2
   },
@@ -10649,14 +10687,16 @@
     "query": {
       "ref_sub": "笑死人了⋯",
       "target_subs": [
+        "哎",
         "呀，",
         "快",
         "啲",
-        "翻"
+        "翻",
+        "去！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "呀，快啲翻"
+      "target_sub_punctuated": "哎呀，快啲翻去！"
     },
     "difficulty": 2
   },
@@ -10664,14 +10704,13 @@
     "query": {
       "ref_sub": "請進，請進⋯",
       "target_subs": [
-        "去！",
         "啊！",
         "喂",
         "喂"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "去！啊！喂喂"
+      "target_sub_punctuated": "啊！喂喂"
     },
     "difficulty": 2
   },
@@ -10683,11 +10722,14 @@
         "喂",
         "喂！请",
         "入",
-        "去，请"
+        "去，请",
+        "入",
+        "去",
+        "先。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "喂喂喂！请入去，请"
+      "target_sub_punctuated": "喂喂喂！请入去，请入去先。"
     },
     "difficulty": 2
   },
@@ -10695,14 +10737,11 @@
     "query": {
       "ref_sub": "孩兒，我們被抄家，我很想哭",
       "target_subs": [
-        "入",
-        "去",
-        "先。",
         "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "入去先。啊！"
+      "target_sub_punctuated": "啊！"
     },
     "difficulty": 2
   },
@@ -10719,25 +10758,11 @@
         "喺",
         "度",
         "失礼",
-        "人，继续试。"
+        "人，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你啊，千祈唔好喺度失礼人，继续试。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "繼續笑",
-      "target_subs": [
-        "喂，",
-        "仔",
-        "啊，"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "喂，仔啊，"
+      "target_sub_punctuated": "你啊，千祈唔好喺度失礼人，"
     },
     "difficulty": 2
   },
@@ -10745,6 +10770,9 @@
     "query": {
       "ref_sub": "孩兒，你剛才有沒有留點銀票傍身",
       "target_subs": [
+        "喂，",
+        "仔",
+        "啊，",
         "正话",
         "你",
         "可",
@@ -10760,7 +10788,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "正话你可唔可以留翻你一张半张去"
+      "target_sub_punctuated": "喂，仔啊，正话你可唔可以留翻你一张半张去"
     },
     "difficulty": 2
   },
@@ -10819,11 +10847,14 @@
       "ref_sub": "不是，是給錢的那個",
       "target_subs": [
         "成",
-        "日"
+        "日",
+        "呃",
+        "我",
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "成日"
+      "target_sub_punctuated": "成日呃我啊！"
     },
     "difficulty": 2
   },
@@ -10831,17 +10862,13 @@
     "query": {
       "ref_sub": "他比唱歌那個更沒良心",
       "target_subs": [
-        "呃",
-        "我",
-        "啊！",
         "喂，继续",
         "唱",
-        "歌𠮶个。",
-        "唔"
+        "歌𠮶个。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "呃我啊！喂，继续唱歌𠮶个。唔"
+      "target_sub_punctuated": "喂，继续唱歌𠮶个。"
     },
     "difficulty": 2
   },
@@ -10849,6 +10876,7 @@
     "query": {
       "ref_sub": "不是吧！多瀟灑，各人眼光不同吧",
       "target_subs": [
+        "唔",
         "系",
         "啊，",
         "地铁",
@@ -10860,7 +10888,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系啊，地铁堂啊，国花国眼啫。"
+      "target_sub_punctuated": "唔系啊，地铁堂啊，国花国眼啫。"
     },
     "difficulty": 2
   },
@@ -11011,11 +11039,12 @@
         "天",
         "都",
         "唔",
-        "俾"
+        "俾",
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我要做乞衣，我天都唔俾"
+      "target_sub_punctuated": "我要做乞衣，我天都唔俾啊！"
     },
     "difficulty": 2
   },
@@ -11030,11 +11059,12 @@
         "忽",
         "似",
         "乞",
-        "衣"
+        "衣",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咁系，我有边忽似乞衣"
+      "target_sub_punctuated": "咁系，我有边忽似乞衣啊？"
     },
     "difficulty": 2
   },
@@ -11042,14 +11072,12 @@
     "query": {
       "ref_sub": "不像",
       "target_subs": [
-        "啊？",
         "冇",
-        "啊！",
-        "乞"
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？冇啊！乞"
+      "target_sub_punctuated": "冇啊！"
     },
     "difficulty": 2
   },
@@ -11057,6 +11085,7 @@
     "query": {
       "ref_sub": "小乞丐老乞丐，拿去買東西吧",
       "target_subs": [
+        "乞",
         "衣",
         "仔、",
         "乞",
@@ -11070,7 +11099,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "衣仔、乞衣公，我去买嘢食啦。"
+      "target_sub_punctuated": "乞衣仔、乞衣公，我去买嘢食啦。"
     },
     "difficulty": 2
   },
@@ -11102,12 +11131,11 @@
         "啊，简",
         "直，呵，离",
         "晒谱",
-        "啊！",
-        "食饭"
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "瘟你个账啊，简直，呵，离晒谱啊！食饭"
+      "target_sub_punctuated": "瘟你个账啊，简直，呵，离晒谱啊！"
     },
     "difficulty": 2
   },
@@ -11115,13 +11143,14 @@
     "query": {
       "ref_sub": "太過分了！吃飯吃飯",
       "target_subs": [
+        "食饭",
         "先，",
         "食饭",
         "先。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "先，食饭先。"
+      "target_sub_punctuated": "食饭先，食饭先。"
     },
     "difficulty": 2
   },
@@ -11139,11 +11168,13 @@
         "冇",
         "嘢",
         "做，",
-        "唔"
+        "唔",
+        "啱",
+        "啊，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "快餐啊！黄小姐，唔好话冇嘢做，唔"
+      "target_sub_punctuated": "快餐啊！黄小姐，唔好话冇嘢做，唔啱啊，"
     },
     "difficulty": 2
   },
@@ -11151,8 +11182,6 @@
     "query": {
       "ref_sub": "讓我在那邊坐一會，說不定有晚飯吃",
       "target_subs": [
-        "啱",
-        "啊，",
         "爹",
         "哋𠮶边",
         "坐",
@@ -11169,7 +11198,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啱啊，爹哋𠮶边坐下，话唔定今晚嘅餐有着落。"
+      "target_sub_punctuated": "爹哋𠮶边坐下，话唔定今晚嘅餐有着落。"
     },
     "difficulty": 2
   },
@@ -11268,11 +11297,11 @@
         "兄",
         "弟，点称",
         "呼",
-        "啊？卢"
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "兄弟，点称呼啊？卢"
+      "target_sub_punctuated": "兄弟，点称呼啊？"
     },
     "difficulty": 1
   },
@@ -11280,12 +11309,13 @@
     "query": {
       "ref_sub": "牛大春",
       "target_subs": [
+        "卢",
         "大",
         "春。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "大春。"
+      "target_sub_punctuated": "卢大春。"
     },
     "difficulty": 2
   },
@@ -11339,21 +11369,9 @@
   },
   {
     "query": {
-      "ref_sub": "多謝",
-      "target_subs": [
-        "多谢。",
-        "咦"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "多谢。咦"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
       "ref_sub": "我為甚麼要給你錢？",
       "target_subs": [
+        "咦",
         "喂，",
         "我",
         "做",
@@ -11365,7 +11383,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "喂，我做咩要俾钱你啊？"
+      "target_sub_punctuated": "咦喂，我做咩要俾钱你啊？"
     },
     "difficulty": 2
   },
@@ -11459,24 +11477,27 @@
         "啦，问",
         "咁",
         "多",
-        "做"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "俾就俾啦，问咁多做"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "放手",
-      "target_subs": [
+        "做",
         "咩",
         "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咩啊？"
+      "target_sub_punctuated": "俾就俾啦，问咁多做咩啊？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "你這樣即是搶",
+      "target_subs": [
+        "咁",
+        "你识抢",
+        "嘅？"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "咁你识抢嘅？"
     },
     "difficulty": 2
   },
@@ -11484,8 +11505,7 @@
     "query": {
       "ref_sub": "強盜⋯",
       "target_subs": [
-        "你识抢",
-        "嘅？抢",
+        "抢",
         "嘢",
         "啊！抢",
         "嘢！抢",
@@ -11493,7 +11513,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你识抢嘅？抢嘢啊！抢嘢！抢嘢！"
+      "target_sub_punctuated": "抢嘢啊！抢嘢！抢嘢！"
     },
     "difficulty": 2
   },
@@ -11528,11 +11548,12 @@
         "乞，",
         "一",
         "日",
-        "呃"
+        "呃",
+        "我，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "乞？哇！你个大种乞，一日呃"
+      "target_sub_punctuated": "乞？哇！你个大种乞，一日呃我，"
     },
     "difficulty": 2
   },
@@ -11540,7 +11561,7 @@
     "query": {
       "ref_sub": "別當我呆子！我很聰明的！",
       "target_subs": [
-        "我，当",
+        "当",
         "我猪",
         "兜",
         "啊？",
@@ -11553,7 +11574,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我，当我猪兜啊？我都唔知几正啊！"
+      "target_sub_punctuated": "当我猪兜啊？我都唔知几正啊！"
     },
     "difficulty": 2
   },
@@ -11662,12 +11683,11 @@
         "露话",
         "好",
         "欣赏",
-        "你。",
-        "吓，"
+        "你。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "佢不嬲都同我透露话好欣赏你。吓，"
+      "target_sub_punctuated": "佢不嬲都同我透露话好欣赏你。"
     },
     "difficulty": 2
   },
@@ -11675,6 +11695,7 @@
     "query": {
       "ref_sub": "會有這回事？",
       "target_subs": [
+        "吓，",
         "有",
         "啲",
         "咁",
@@ -11683,9 +11704,9 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "有啲咁嘅事？"
+      "target_sub_punctuated": "吓，有啲咁嘅事？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -11760,11 +11781,11 @@
         "人",
         "家",
         "意",
-        "思。为"
+        "思。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔知你老人家意思。为"
+      "target_sub_punctuated": "唔知你老人家意思。"
     },
     "difficulty": 2
   },
@@ -11772,6 +11793,7 @@
     "query": {
       "ref_sub": "為了這個家，我甚麼都可以做",
       "target_subs": [
+        "为",
         "咗头",
         "家，",
         "你话点",
@@ -11780,7 +11802,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咗头家，你话点就点啦。"
+      "target_sub_punctuated": "为咗头家，你话点就点啦。"
     },
     "difficulty": 2
   },
@@ -11812,11 +11834,12 @@
         "多，",
         "你",
         "去见",
-        "佢"
+        "佢",
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你唔好讲咁多，你去见佢"
+      "target_sub_punctuated": "你唔好讲咁多，你去见佢啦。"
     },
     "difficulty": 2
   },
@@ -11824,7 +11847,6 @@
     "query": {
       "ref_sub": "我早就跟你安排好了",
       "target_subs": [
-        "啦。",
         "一",
         "早",
         "同",
@@ -11836,7 +11858,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啦。一早同你安排好啦，"
+      "target_sub_punctuated": "一早同你安排好啦，"
     },
     "difficulty": 2
   },
@@ -11936,13 +11958,11 @@
         "小",
         "心",
         "啲",
-        "啊！",
-        "咁",
-        "你"
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你小心啲啊！咁你"
+      "target_sub_punctuated": "你小心啲啊！"
     },
     "difficulty": 2
   },
@@ -11950,18 +11970,19 @@
     "query": {
       "ref_sub": "不用怕，我會很小心",
       "target_subs": [
+        "咁",
+        "你",
         "嚟",
         "啊！",
         "我",
         "走",
         "住",
         "嚟",
-        "搏，",
-        "包"
+        "搏，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嚟啊！我走住嚟搏，包"
+      "target_sub_punctuated": "咁你嚟啊！我走住嚟搏，"
     },
     "difficulty": 2
   },
@@ -11969,6 +11990,7 @@
     "query": {
       "ref_sub": "確保你沒有事",
       "target_subs": [
+        "包",
         "你",
         "乜",
         "事",
@@ -11977,7 +11999,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你乜事都冇。"
+      "target_sub_punctuated": "包你乜事都冇。"
     },
     "difficulty": 2
   },
@@ -11993,11 +12015,12 @@
         "食",
         "碗",
         "翅",
-        "先"
+        "先",
+        "嘅。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你都系想揾个钱，食碗翅先"
+      "target_sub_punctuated": "你都系想揾个钱，食碗翅先嘅。"
     },
     "difficulty": 2
   },
@@ -12005,14 +12028,12 @@
     "query": {
       "ref_sub": "對⋯",
       "target_subs": [
-        "嘅。",
         "好",
-        "啊！",
-        "嚟"
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嘅。好啊！嚟"
+      "target_sub_punctuated": "好啊！"
     },
     "difficulty": 2
   },
@@ -12020,6 +12041,7 @@
     "query": {
       "ref_sub": "走開⋯走開",
       "target_subs": [
+        "嚟",
         "啊！",
         "喂",
         "喂",
@@ -12031,7 +12053,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊！喂喂喂喂喂喂喂，"
+      "target_sub_punctuated": "嚟啊！喂喂喂喂喂喂喂，"
     },
     "difficulty": 2
   },
@@ -12109,18 +12131,20 @@
       "ref_sub": "皇上御旨",
       "target_subs": [
         "皇",
-        "上谕"
+        "上谕",
+        "旨，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "皇上谕"
-    }
+      "target_sub_punctuated": "皇上谕旨，"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "蘇察哈爾燦兩父子終身行乞",
       "target_subs": [
-        "旨，苏",
+        "苏",
         "察",
         "哈尔",
         "察",
@@ -12133,7 +12157,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "旨，苏察哈尔察你两父子终身行乞，"
+      "target_sub_punctuated": "苏察哈尔察你两父子终身行乞，"
     },
     "difficulty": 2
   },
@@ -12165,11 +12189,12 @@
         "本",
         "旨办",
         "事。",
-        "人"
+        "人",
+        "嚟！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我只系奉本旨办事。人"
+      "target_sub_punctuated": "我只系奉本旨办事。人嚟！"
     },
     "difficulty": 2
   },
@@ -12177,7 +12202,7 @@
     "query": {
       "ref_sub": "有　　將所有東西搬走",
       "target_subs": [
-        "嚟！将",
+        "将",
         "所",
         "有",
         "嘢",
@@ -12186,7 +12211,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嚟！将所有嘢搬走。"
+      "target_sub_punctuated": "将所有嘢搬走。"
     },
     "difficulty": 2
   },
@@ -12195,11 +12220,14 @@
       "ref_sub": "救命",
       "target_subs": [
         "啊！",
-        "捉"
+        "捉",
+        "到",
+        "人",
+        "啦！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊！捉"
+      "target_sub_punctuated": "啊！捉到人啦！"
     },
     "difficulty": 2
   },
@@ -12207,9 +12235,6 @@
     "query": {
       "ref_sub": "趙大人！一個人搬不動",
       "target_subs": [
-        "到",
-        "人",
-        "啦！",
         "呢个",
         "人",
         "搬",
@@ -12218,7 +12243,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "到人啦！呢个人搬唔起㖞，"
+      "target_sub_punctuated": "呢个人搬唔起㖞，"
     },
     "difficulty": 2
   },
@@ -12230,12 +12255,14 @@
         "唔够",
         "咪",
         "上",
-        "多几个"
+        "多几个",
+        "咯。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "一个唔够咪上多几个"
-    }
+      "target_sub_punctuated": "一个唔够咪上多几个咯。"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -12252,20 +12279,9 @@
   },
   {
     "query": {
-      "ref_sub": "不行，都搬不動　　讓我來吧",
-      "target_subs": [
-        "即"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "即"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
       "ref_sub": "那你是想打架吧？",
       "target_subs": [
+        "即",
         "系",
         "分",
         "分钟",
@@ -12275,7 +12291,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系分分钟扭打啫。"
+      "target_sub_punctuated": "即系分分钟扭打啫。"
     },
     "difficulty": 2
   },
@@ -12442,11 +12458,12 @@
         "好",
         "似",
         "死",
-        "蛇烂鳝"
+        "蛇烂鳝",
+        "咁。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你呢世都好似死蛇烂鳝"
+      "target_sub_punctuated": "你呢世都好似死蛇烂鳝咁。"
     },
     "difficulty": 2
   },
@@ -12454,7 +12471,6 @@
     "query": {
       "ref_sub": "想用武功？沒你份兒！",
       "target_subs": [
-        "咁。",
         "想",
         "打",
         "功",
@@ -12465,7 +12481,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咁。想打功夫，冇你份。"
+      "target_sub_punctuated": "想打功夫，冇你份。"
     },
     "difficulty": 2
   },
@@ -12501,18 +12517,19 @@
         "心机",
         "做",
         "乞",
-        "衣"
+        "衣",
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "俾心机做乞衣"
-    }
+      "target_sub_punctuated": "俾心机做乞衣啦。"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "走⋯沒事⋯走開",
       "target_subs": [
-        "啦。",
         "好，",
         "大",
         "家",
@@ -12520,7 +12537,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啦。好，大家走。"
+      "target_sub_punctuated": "好，大家走。"
     },
     "difficulty": 2
   },
@@ -12565,12 +12582,11 @@
         "使惊，",
         "阿",
         "茶",
-        "啦，",
-        "唔"
+        "啦，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔使惊，唔使惊，冇事啊，冇事，唔使惊，阿茶啦，唔"
+      "target_sub_punctuated": "唔使惊，唔使惊，冇事啊，冇事，唔使惊，阿茶啦，"
     },
     "difficulty": 2
   },
@@ -12578,13 +12594,15 @@
     "query": {
       "ref_sub": "不用怕",
       "target_subs": [
+        "唔",
         "使惊，",
         "唔",
-        "使惊"
+        "使惊",
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "使惊，唔使惊"
+      "target_sub_punctuated": "唔使惊，唔使惊啊！"
     },
     "difficulty": 2
   },
@@ -12592,7 +12610,7 @@
     "query": {
       "ref_sub": "那天我跟我兒子踏入試場",
       "target_subs": [
-        "啊！当",
+        "当",
         "日",
         "我",
         "同",
@@ -12601,11 +12619,11 @@
         "一脚",
         "踩",
         "入个",
-        "市场，担"
+        "市场，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊！当日我同我仔一脚踩入个市场，担"
+      "target_sub_punctuated": "当日我同我仔一脚踩入个市场，"
     },
     "difficulty": 2
   },
@@ -12613,6 +12631,7 @@
     "query": {
       "ref_sub": "再抬頭一看那個試官",
       "target_subs": [
+        "担",
         "高个头",
         "望",
         "下个",
@@ -12621,7 +12640,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "高个头望下个屎官，"
+      "target_sub_punctuated": "担高个头望下个屎官，"
     },
     "difficulty": 2
   },
@@ -12633,12 +12652,11 @@
         "你",
         "哋",
         "估",
-        "系边个？",
-        "就"
+        "系边个？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哇！你哋估系边个？就"
+      "target_sub_punctuated": "哇！你哋估系边个？"
     },
     "difficulty": 2
   },
@@ -12646,6 +12664,7 @@
     "query": {
       "ref_sub": "就是僧格林參這個龜兒子",
       "target_subs": [
+        "就",
         "系",
         "曾",
         "格",
@@ -12657,7 +12676,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系曾格林森呢个契弟。"
+      "target_sub_punctuated": "就系曾格林森呢个契弟。"
     },
     "difficulty": 2
   },
@@ -12677,12 +12696,11 @@
         "恩",
         "怨",
         "噶",
-        "嘛。",
-        "啊，"
+        "嘛。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "呢个契弟同我哋两仔系有恩怨噶嘛。啊，"
+      "target_sub_punctuated": "呢个契弟同我哋两仔系有恩怨噶嘛。"
     },
     "difficulty": 2
   },
@@ -12690,17 +12708,17 @@
     "query": {
       "ref_sub": "一說到他我就氣死了⋯",
       "target_subs": [
+        "啊，",
         "一讲",
         "到",
         "恩",
         "怨",
         "呢层，",
-        "哎，",
-        "唔"
+        "哎，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "一讲到恩怨呢层，哎，唔"
+      "target_sub_punctuated": "啊，一讲到恩怨呢层，哎，"
     },
     "difficulty": 2
   },
@@ -12708,6 +12726,7 @@
     "query": {
       "ref_sub": "不要說了，先吸口煙",
       "target_subs": [
+        "唔",
         "好讲",
         "啦，",
         "整",
@@ -12717,7 +12736,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好讲啦，整啖烟先。"
+      "target_sub_punctuated": "唔好讲啦，整啖烟先。"
     },
     "difficulty": 2
   },
@@ -12807,18 +12826,19 @@
         "到",
         "佢",
         "恩将",
-        "仇报"
+        "仇报",
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "估唔到佢恩将仇报"
-    }
+      "target_sub_punctuated": "估唔到佢恩将仇报啊！"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "陷害我的兒子",
       "target_subs": [
-        "啊！",
         "竟",
         "然设",
         "法",
@@ -12829,7 +12849,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊！竟然设法陷害我仔，"
+      "target_sub_punctuated": "竟然设法陷害我仔，"
     },
     "difficulty": 2
   },
@@ -12864,13 +12884,11 @@
         "有",
         "真",
         "才实",
-        "料。",
-        "我",
-        "要"
+        "料。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好在啊，我个仔有真才实料。我要"
+      "target_sub_punctuated": "好在啊，我个仔有真才实料。"
     },
     "difficulty": 2
   },
@@ -12878,6 +12896,8 @@
     "query": {
       "ref_sub": "我要他武功蓋世，狀元之才",
       "target_subs": [
+        "我",
+        "要",
         "佢",
         "系",
         "四",
@@ -12888,7 +12908,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "佢系四武功，天下无敌，"
+      "target_sub_punctuated": "我要佢系四武功，天下无敌，"
     },
     "difficulty": 2
   },
@@ -12913,20 +12933,6 @@
   },
   {
     "query": {
-      "ref_sub": "做得到",
-      "target_subs": [
-        "做",
-        "得",
-        "到。"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "做得到。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
       "ref_sub": "待你做得到的時候就回來找我",
       "target_subs": [
         "咁",
@@ -12939,11 +12945,11 @@
         "至",
         "嚟",
         "揾",
-        "我。诶，"
+        "我。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咁等你做得到𠮶阵，先至嚟揾我。诶，"
+      "target_sub_punctuated": "咁等你做得到𠮶阵，先至嚟揾我。"
     },
     "difficulty": 2
   },
@@ -12951,6 +12957,7 @@
     "query": {
       "ref_sub": "既然如此，我想我們要先定婚期",
       "target_subs": [
+        "诶，",
         "我谂",
         "我",
         "哋",
@@ -12961,9 +12968,9 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我谂我哋要先订婚嘅，"
+      "target_sub_punctuated": "诶，我谂我哋要先订婚嘅，"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -13039,12 +13046,11 @@
       "ref_sub": "又作惡夢？",
       "target_subs": [
         "又发恶梦",
-        "啊，",
-        "唔"
+        "啊，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "又发恶梦啊，唔"
+      "target_sub_punctuated": "又发恶梦啊，"
     },
     "difficulty": 2
   },
@@ -13052,6 +13058,7 @@
     "query": {
       "ref_sub": "別想這麼多",
       "target_subs": [
+        "唔",
         "好谂",
         "咁",
         "多",
@@ -13059,7 +13066,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好谂咁多啦。"
+      "target_sub_punctuated": "唔好谂咁多啦。"
     },
     "difficulty": 2
   },
@@ -13096,19 +13103,20 @@
         "全",
         "好",
         "得",
-        "翻"
+        "翻",
+        "晒",
+        "噶。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "但系未完全好得翻"
-    }
+      "target_sub_punctuated": "但系未完全好得翻晒噶。"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "哈爾叔　　來⋯",
       "target_subs": [
-        "晒",
-        "噶。",
         "啊，",
         "嚟",
         "嚟",
@@ -13118,7 +13126,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "晒噶。啊，嚟嚟嚟嚟，嗱，"
+      "target_sub_punctuated": "啊，嚟嚟嚟嚟，嗱，"
     },
     "difficulty": 2
   },
@@ -13140,11 +13148,11 @@
         "大",
         "家",
         "食",
-        "啊，顺"
+        "啊，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "阿爹出去揾啲嘢翻嚟今晚大家食啊，顺"
+      "target_sub_punctuated": "阿爹出去揾啲嘢翻嚟今晚大家食啊，"
     },
     "difficulty": 2
   },
@@ -13152,6 +13160,7 @@
     "query": {
       "ref_sub": "然後煮最後一趟藥給你喝",
       "target_subs": [
+        "顺",
         "便",
         "翻",
         "嚟",
@@ -13167,7 +13176,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "便翻嚟就煲埋最后呢剂药俾你饮下。"
+      "target_sub_punctuated": "顺便翻嚟就煲埋最后呢剂药俾你饮下。"
     },
     "difficulty": 2
   },
@@ -13202,12 +13211,11 @@
         "廿岁",
         "做",
         "噶",
-        "啦，",
-        "唔"
+        "啦，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唉，呢啲梗系我哋几廿岁做噶啦，唔"
+      "target_sub_punctuated": "唉，呢啲梗系我哋几廿岁做噶啦，"
     },
     "difficulty": 2
   },
@@ -13215,6 +13223,7 @@
     "query": {
       "ref_sub": "難道要你堂堂武狀元⋯",
       "target_subs": [
+        "唔",
         "通",
         "你",
         "堂",
@@ -13224,7 +13233,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "通你堂堂武状元？"
+      "target_sub_punctuated": "唔通你堂堂武状元？"
     },
     "difficulty": 2
   },
@@ -13281,11 +13290,12 @@
         "可",
         "以",
         "乞",
-        "到"
+        "到",
+        "噶，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊，唔系话伸只手出嚟就可以乞到"
+      "target_sub_punctuated": "啊，唔系话伸只手出嚟就可以乞到噶，"
     },
     "difficulty": 2
   },
@@ -13293,7 +13303,6 @@
     "query": {
       "ref_sub": "至少要拿個砵子！這樣才有身份",
       "target_subs": [
-        "噶，",
         "起码",
         "要",
         "攞个钵",
@@ -13306,7 +13315,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "噶，起码要攞个钵咁样先至有身份，"
+      "target_sub_punctuated": "起码要攞个钵咁样先至有身份，"
     },
     "difficulty": 2
   },
@@ -13353,12 +13362,11 @@
       "target_subs": [
         "个",
         "先",
-        "嚟？",
-        "哎"
+        "嚟？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "个先嚟？哎"
+      "target_sub_punctuated": "个先嚟？"
     },
     "difficulty": 2
   },
@@ -13366,6 +13374,7 @@
     "query": {
       "ref_sub": "沒有沒有，走吧",
       "target_subs": [
+        "哎",
         "边",
         "呀，",
         "冇",
@@ -13379,7 +13388,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "边呀，冇啊，冇啊，走啊，走啊，"
+      "target_sub_punctuated": "哎边呀，冇啊，冇啊，走啊，走啊，"
     },
     "difficulty": 2
   },
@@ -13461,12 +13470,11 @@
         "啊",
         "嘛，",
         "大",
-        "佬，",
-        "系"
+        "佬，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔系咁讲啊嘛，大佬，系"
+      "target_sub_punctuated": "唔系咁讲啊嘛，大佬，"
     },
     "difficulty": 2
   },
@@ -13474,16 +13482,16 @@
     "query": {
       "ref_sub": "你不會自己寫？",
       "target_subs": [
+        "系",
         "我",
         "自",
         "己写",
         "啊",
-        "嘛，",
-        "喺"
+        "嘛，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我自己写啊嘛，喺"
+      "target_sub_punctuated": "系我自己写啊嘛，"
     },
     "difficulty": 2
   },
@@ -13491,6 +13499,7 @@
     "query": {
       "ref_sub": "我見你下班了，借你地方用一下吧",
       "target_subs": [
+        "喺",
         "我",
         "店",
         "下",
@@ -13503,12 +13512,11 @@
         "啫，",
         "吓，",
         "真",
-        "系，",
-        "喂，"
+        "系，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我店下翻两页随便借嚟用用啫，吓，真系，喂，"
+      "target_sub_punctuated": "喺我店下翻两页随便借嚟用用啫，吓，真系，"
     },
     "difficulty": 2
   },
@@ -13516,6 +13524,7 @@
     "query": {
       "ref_sub": "你當我呆子嗎？",
       "target_subs": [
+        "喂，",
         "你当",
         "我",
         "傻",
@@ -13523,9 +13532,9 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你当我傻噶？"
+      "target_sub_punctuated": "喂，你当我傻噶？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -13669,13 +13678,11 @@
         "次",
         "等",
         "我",
-        "去。",
-        "吓？",
-        "你"
+        "去。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "快啲瞓翻低先，今次等我去。吓？你"
+      "target_sub_punctuated": "快啲瞓翻低先，今次等我去。"
     },
     "difficulty": 2
   },
@@ -13683,15 +13690,17 @@
     "query": {
       "ref_sub": "你去討飯？",
       "target_subs": [
+        "吓？",
+        "你",
         "要",
         "去",
         "乞？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "要去乞？"
+      "target_sub_punctuated": "吓？你要去乞？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -13704,19 +13713,19 @@
         "我",
         "有办",
         "法",
-        "噶"
+        "噶",
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "得噶啦，总之我有办法噶"
+      "target_sub_punctuated": "得噶啦，总之我有办法噶啦。"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "你休息一下",
       "target_subs": [
-        "啦。",
         "你",
         "唞",
         "下",
@@ -13724,7 +13733,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啦。你唞下先，"
+      "target_sub_punctuated": "你唞下先，"
     },
     "difficulty": 2
   },
@@ -13762,13 +13771,11 @@
         "唔",
         "食",
         "嘢",
-        "噶，",
-        "你",
-        "唔"
+        "噶，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊！你个衰仔硬系唔食嘢噶，你唔"
+      "target_sub_punctuated": "啊！你个衰仔硬系唔食嘢噶，"
     },
     "difficulty": 2
   },
@@ -13776,6 +13783,8 @@
     "query": {
       "ref_sub": "你不吃又怎能像阿爹般強壯",
       "target_subs": [
+        "你",
+        "唔",
         "食",
         "嘢",
         "啊，边",
@@ -13792,7 +13801,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "食嘢啊，边度可以有阿爹咁大只啊？"
+      "target_sub_punctuated": "你唔食嘢啊，边度可以有阿爹咁大只啊？"
     },
     "difficulty": 2
   },
@@ -13816,11 +13825,13 @@
     "query": {
       "ref_sub": "吃不下了，我飽了",
       "target_subs": [
-        "食"
+        "食",
+        "咯，饱",
+        "咯，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "食"
+      "target_sub_punctuated": "食咯，饱咯，"
     },
     "difficulty": 2
   },
@@ -13828,8 +13839,7 @@
     "query": {
       "ref_sub": "飽⋯飽也要吃，快點吃",
       "target_subs": [
-        "咯，饱",
-        "咯，饱饱饱饱",
+        "饱饱饱饱",
         "都",
         "要",
         "食",
@@ -13838,11 +13848,12 @@
         "啲",
         "食",
         "埋",
-        "佢"
+        "佢",
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咯，饱咯，饱饱饱饱都要食啊！快啲食埋佢"
+      "target_sub_punctuated": "饱饱饱饱都要食啊！快啲食埋佢啊！"
     },
     "difficulty": 2
   },
@@ -13850,7 +13861,6 @@
     "query": {
       "ref_sub": "不吃嗎！不吃就回家",
       "target_subs": [
-        "啊！",
         "唔",
         "食",
         "就",
@@ -13864,7 +13874,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊！唔食就算啦。啊，翻屋企啊！"
+      "target_sub_punctuated": "唔食就算啦。啊，翻屋企啊！"
     },
     "difficulty": 2
   },
@@ -13907,14 +13917,11 @@
       "ref_sub": "甚麼？",
       "target_subs": [
         "咩",
-        "啊？",
-        "可",
-        "唔",
-        "可"
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咩啊？可唔可"
+      "target_sub_punctuated": "咩啊？"
     },
     "difficulty": 1
   },
@@ -13922,6 +13929,9 @@
     "query": {
       "ref_sub": "可不可以⋯　　不可以",
       "target_subs": [
+        "可",
+        "唔",
+        "可",
         "以？",
         "唔",
         "可",
@@ -13929,7 +13939,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "以？唔可以。"
+      "target_sub_punctuated": "可唔可以？唔可以。"
     },
     "difficulty": 2
   },
@@ -14133,19 +14143,20 @@
         "小",
         "姐，",
         "你",
-        "找谁"
+        "找谁",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "小姐，你找谁"
+      "target_sub_punctuated": "小姐，你找谁啊？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "對不起，我認錯人！",
       "target_subs": [
-        "啊？对",
+        "对",
         "唔",
         "住，",
         "我认错",
@@ -14153,7 +14164,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？对唔住，我认错人。"
+      "target_sub_punctuated": "对唔住，我认错人。"
     },
     "difficulty": 2
   },
@@ -14247,24 +14258,25 @@
         "少，",
         "食",
         "唔",
-        "晒"
+        "晒",
+        "嘅。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我屋企人少，食唔晒"
+      "target_sub_punctuated": "我屋企人少，食唔晒嘅。"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "饅頭來了",
       "target_subs": [
-        "嘅。馒头",
+        "馒头",
         "啊，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嘅。馒头啊，"
+      "target_sub_punctuated": "馒头啊，"
     },
     "difficulty": 2
   },
@@ -14289,11 +14301,12 @@
         "谢",
         "，",
         "谢",
-        "谢"
+        "谢",
+        "。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "谢谢，谢谢"
+      "target_sub_punctuated": "谢谢，谢谢。"
     },
     "difficulty": 2
   },
@@ -14301,14 +14314,13 @@
     "query": {
       "ref_sub": "姐姐",
       "target_subs": [
-        "。",
         "家",
         "姐",
         "啊，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "。家姐啊，"
+      "target_sub_punctuated": "家姐啊，"
     },
     "difficulty": 2
   },
@@ -14339,11 +14351,14 @@
     "query": {
       "ref_sub": "阿爹！怎麼呢",
       "target_subs": [
-        "阿"
+        "阿",
+        "德，",
+        "做",
+        "咩？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "阿"
+      "target_sub_punctuated": "阿德，做咩？"
     },
     "difficulty": 2
   },
@@ -14351,15 +14366,12 @@
     "query": {
       "ref_sub": "阿燦！我剛剛餓壞了",
       "target_subs": [
-        "德，",
-        "做",
-        "咩？",
         "我个头顶",
-        "唔顺，见"
+        "唔顺，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "德，做咩？我个头顶唔顺，见"
+      "target_sub_punctuated": "我个头顶唔顺，"
     },
     "difficulty": 2
   },
@@ -14367,6 +14379,7 @@
     "query": {
       "ref_sub": "看見小孩子吃饅頭，我借來咬一口",
       "target_subs": [
+        "见",
         "到靓",
         "仔",
         "食紧馒头，",
@@ -14380,7 +14393,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "到靓仔食紧馒头，借嚟咬咗啖啫嘛。"
+      "target_sub_punctuated": "见到靓仔食紧馒头，借嚟咬咗啖啫嘛。"
     },
     "difficulty": 2
   },
@@ -14395,12 +14408,11 @@
         "我还",
         "翻",
         "俾",
-        "你。",
-        "咁"
+        "你。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我呢度有馒头，我还翻俾你。咁"
+      "target_sub_punctuated": "我呢度有馒头，我还翻俾你。"
     },
     "difficulty": 2
   },
@@ -14408,15 +14420,15 @@
     "query": {
       "ref_sub": "這樣也可以嗎？",
       "target_subs": [
+        "咁",
         "都",
         "得",
         "嘅",
-        "咩？",
-        "我斩"
+        "咩？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "都得嘅咩？我斩"
+      "target_sub_punctuated": "咁都得嘅咩？"
     },
     "difficulty": 1
   },
@@ -14424,6 +14436,7 @@
     "query": {
       "ref_sub": "我斬了你個頭再還給你可不可以？",
       "target_subs": [
+        "我斩",
         "咗",
         "你个头，",
         "再还",
@@ -14432,13 +14445,11 @@
         "你，",
         "得",
         "唔",
-        "得？",
-        "喂",
-        "喂，"
+        "得？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咗你个头，再还翻俾你，得唔得？喂喂，"
+      "target_sub_punctuated": "我斩咗你个头，再还翻俾你，得唔得？"
     },
     "difficulty": 2
   },
@@ -14446,6 +14457,8 @@
     "query": {
       "ref_sub": "你是狀元爺嗎？",
       "target_subs": [
+        "喂",
+        "喂，",
         "咦？",
         "你",
         "咪状",
@@ -14453,7 +14466,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咦？你咪状元爷？"
+      "target_sub_punctuated": "喂喂，咦？你咪状元爷？"
     },
     "difficulty": 2
   },
@@ -14500,11 +14513,11 @@
         "嚟",
         "噶！",
         "哦，状",
-        "元爷，状"
+        "元爷，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "真系啊！状元爷嚟噶！哦，状元爷，状"
+      "target_sub_punctuated": "真系啊！状元爷嚟噶！哦，状元爷，"
     },
     "difficulty": 2
   },
@@ -14512,6 +14525,7 @@
     "query": {
       "ref_sub": "一定給面子狀元爺",
       "target_subs": [
+        "状",
         "元爷",
         "一",
         "定",
@@ -14522,7 +14536,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "元爷一定要俾面啊！"
+      "target_sub_punctuated": "状元爷一定要俾面啊！"
     },
     "difficulty": 2
   },
@@ -14531,11 +14545,12 @@
       "ref_sub": "多謝⋯多謝",
       "target_subs": [
         "哦，",
-        "多谢"
+        "多谢",
+        "多谢。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哦，多谢"
+      "target_sub_punctuated": "哦，多谢多谢。"
     },
     "difficulty": 2
   },
@@ -14543,24 +14558,23 @@
     "query": {
       "ref_sub": "等一等！相請不如偶遇",
       "target_subs": [
-        "多谢。",
         "相请",
         "不",
         "如",
         "偶",
-        "遇"
+        "遇",
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "多谢。相请不如偶遇"
+      "target_sub_punctuated": "相请不如偶遇啊！"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "相請不如偶遇，是否想請我們喝酒呢",
       "target_subs": [
-        "啊！",
         "相请",
         "不",
         "如",
@@ -14580,7 +14594,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊！相请不如偶遇，即系咪想请我哋饮埋烧酒先咧吓？"
+      "target_sub_punctuated": "相请不如偶遇，即系咪想请我哋饮埋烧酒先咧吓？"
     },
     "difficulty": 2
   },
@@ -14589,11 +14603,11 @@
       "ref_sub": "給狗吃的飯到",
       "target_subs": [
         "九饭",
-        "到，状"
+        "到，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "九饭到，状"
+      "target_sub_punctuated": "九饭到，"
     },
     "difficulty": 2
   },
@@ -14601,6 +14615,7 @@
     "query": {
       "ref_sub": "狀元爺，吃完這飯就放你的爹",
       "target_subs": [
+        "状",
         "元爷，",
         "食",
         "咗",
@@ -14616,7 +14631,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "元爷，食咗呢碗饭，咪放咗你阿爹咯。"
+      "target_sub_punctuated": "状元爷，食咗呢碗饭，咪放咗你阿爹咯。"
     },
     "difficulty": 2
   },
@@ -14626,12 +14641,11 @@
       "target_subs": [
         "来",
         "啊",
-        "，",
-        "这"
+        "，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "来啊，这"
+      "target_sub_punctuated": "来啊，"
     },
     "difficulty": 2
   },
@@ -14639,12 +14653,13 @@
     "query": {
       "ref_sub": "吃吧",
       "target_subs": [
+        "这",
         "个",
         "。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "个。"
+      "target_sub_punctuated": "这个。"
     },
     "difficulty": 2
   },
@@ -14727,11 +14742,12 @@
       "target_subs": [
         "喂，",
         "唔",
-        "想点"
+        "想点",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "喂，唔想点"
+      "target_sub_punctuated": "喂，唔想点啊？"
     },
     "difficulty": 2
   },
@@ -14739,7 +14755,6 @@
     "query": {
       "ref_sub": "不要打",
       "target_subs": [
-        "啊？",
         "我",
         "打，",
         "想",
@@ -14748,7 +14763,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？我打，想死啊！"
+      "target_sub_punctuated": "我打，想死啊！"
     },
     "difficulty": 2
   },
@@ -14764,11 +14779,12 @@
         "哈，",
         "做",
         "完",
-        "嘢"
+        "嘢",
+        "食饱饭㖞。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哈哈哈哈哈哈，做完嘢"
+      "target_sub_punctuated": "哈哈哈哈哈哈，做完嘢食饱饭㖞。"
     },
     "difficulty": 2
   },
@@ -14776,7 +14792,6 @@
     "query": {
       "ref_sub": "爹，味道不錯",
       "target_subs": [
-        "食饱饭㖞。",
         "啊，对",
         "啊，几",
         "惹",
@@ -14785,7 +14800,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "食饱饭㖞。啊，对啊，几惹味㖞。系，"
+      "target_sub_punctuated": "啊，对啊，几惹味㖞。系，"
     },
     "difficulty": 2
   },
@@ -14892,11 +14907,11 @@
         "琴过",
         "只癞痢",
         "狗",
-        "啊，实"
+        "啊，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哇！你两个仲口琴过只癞痢狗啊，实"
+      "target_sub_punctuated": "哇！你两个仲口琴过只癞痢狗啊，"
     },
     "difficulty": 2
   },
@@ -14904,16 +14919,17 @@
     "query": {
       "ref_sub": "注定這輩子都吃狗的飯",
       "target_subs": [
+        "实",
         "行",
         "成",
         "世",
         "食",
         "狗饭",
-        "啦！诶，"
+        "啦！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "行成世食狗饭啦！诶，"
+      "target_sub_punctuated": "实行成世食狗饭啦！"
     },
     "difficulty": 2
   },
@@ -14921,6 +14937,7 @@
     "query": {
       "ref_sub": "吃吧！快點吧！",
       "target_subs": [
+        "诶，",
         "食",
         "埋",
         "佢，",
@@ -14930,7 +14947,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "食埋佢，快啲啊！"
+      "target_sub_punctuated": "诶，食埋佢，快啲啊！"
     },
     "difficulty": 2
   },
@@ -15000,12 +15017,11 @@
         "做",
         "乞",
         "衣",
-        "嘅，状",
-        "元爷"
+        "嘅，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "抵你哋两个成世做乞衣嘅，状元爷"
+      "target_sub_punctuated": "抵你哋两个成世做乞衣嘅，"
     },
     "difficulty": 2
   },
@@ -15013,6 +15029,8 @@
     "query": {
       "ref_sub": "狀元爺都要吃狗的飯",
       "target_subs": [
+        "状",
+        "元爷",
         "都",
         "要",
         "食",
@@ -15021,7 +15039,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "都要食狗饭啦！"
+      "target_sub_punctuated": "状元爷都要食狗饭啦！"
     },
     "difficulty": 2
   },
@@ -15124,13 +15142,14 @@
         "叔，",
         "好",
         "唔",
-        "好"
+        "好",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "毛大叔，好唔好"
+      "target_sub_punctuated": "毛大叔，好唔好啊？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -15278,11 +15297,12 @@
         "雨伞，",
         "哎，",
         "恭",
-        "喜"
+        "喜",
+        "晒，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哎，雨伞，哎，恭喜"
+      "target_sub_punctuated": "哎，雨伞，哎，恭喜晒，"
     },
     "difficulty": 2
   },
@@ -15290,7 +15310,6 @@
     "query": {
       "ref_sub": "莫大叔！恭喜發財",
       "target_subs": [
-        "晒，",
         "恭",
         "喜",
         "晒，",
@@ -15303,7 +15322,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "晒，恭喜晒，恭喜晒，恭喜晒！"
+      "target_sub_punctuated": "恭喜晒，恭喜晒，恭喜晒！"
     },
     "difficulty": 2
   },
@@ -15330,12 +15349,11 @@
       "target_subs": [
         "哦，",
         "多谢",
-        "多谢。",
-        "雨伞"
+        "多谢。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哦，多谢多谢。雨伞"
+      "target_sub_punctuated": "哦，多谢多谢。"
     },
     "difficulty": 2
   },
@@ -15343,6 +15361,7 @@
     "query": {
       "ref_sub": "這兩件衣服，一件給你，一件給阿燦",
       "target_subs": [
+        "雨伞",
         "呢，",
         "就",
         "送",
@@ -15351,12 +15370,11 @@
         "平时",
         "都",
         "系撑",
-        "啫。",
-        "系，"
+        "啫。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "呢，就送俾你平时都系撑啫。系，"
+      "target_sub_punctuated": "雨伞呢，就送俾你平时都系撑啫。"
     },
     "difficulty": 2
   },
@@ -15364,6 +15382,7 @@
     "query": {
       "ref_sub": "先把東西放下，先把東西放下",
       "target_subs": [
+        "系，",
         "我",
         "放",
         "低",
@@ -15376,7 +15395,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我放低佢先，放低佢先。"
+      "target_sub_punctuated": "系，我放低佢先，放低佢先。"
     },
     "difficulty": 2
   },
@@ -15466,24 +15485,25 @@
         "身壮",
         "力",
         "健",
-        "啦"
+        "啦",
+        "吓，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嗱，祝你身壮力健啦"
+      "target_sub_punctuated": "嗱，祝你身壮力健啦吓，"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "恭喜發財",
       "target_subs": [
-        "吓，",
-        "恭"
+        "恭",
+        "喜！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "吓，恭"
+      "target_sub_punctuated": "恭喜！"
     },
     "difficulty": 2
   },
@@ -15491,7 +15511,7 @@
     "query": {
       "ref_sub": "你就青春美麗　　謝謝",
       "target_subs": [
-        "喜！诶，",
+        "诶，",
         "青",
         "春",
         "美丽",
@@ -15499,7 +15519,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "喜！诶，青春美丽啊！"
+      "target_sub_punctuated": "诶，青春美丽啊！"
     },
     "difficulty": 2
   },
@@ -15557,12 +15577,11 @@
         "到",
         "年",
         "初",
-        "一",
-        "都"
+        "一"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "阿灿啊？阿灿啊？哎呀，佢由年三十晚啊，瞓到年初一都"
+      "target_sub_punctuated": "阿灿啊？阿灿啊？哎呀，佢由年三十晚啊，瞓到年初一"
     },
     "difficulty": 2
   },
@@ -15570,6 +15589,7 @@
     "query": {
       "ref_sub": "還沒睡醒",
       "target_subs": [
+        "都",
         "仲",
         "未",
         "瞓",
@@ -15578,7 +15598,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "仲未瞓醒噶，"
+      "target_sub_punctuated": "都仲未瞓醒噶，"
     },
     "difficulty": 2
   },
@@ -15682,28 +15702,28 @@
         "大",
         "家",
         "到齐",
-        "啦"
+        "啦",
+        "嘛？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "大家到齐啦"
+      "target_sub_punctuated": "大家到齐啦嘛？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "對付趙無極一定要團結丐幫",
       "target_subs": [
-        "嘛？对",
+        "对",
         "付赵无极，",
         "一",
         "定",
-        "要团结丐帮。",
-        "我"
+        "要团结丐帮。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嘛？对付赵无极，一定要团结丐帮。我"
+      "target_sub_punctuated": "对付赵无极，一定要团结丐帮。"
     },
     "difficulty": 2
   },
@@ -15711,6 +15731,7 @@
     "query": {
       "ref_sub": "我們要選出新幫主來主持大局",
       "target_subs": [
+        "我",
         "哋",
         "即",
         "刻选",
@@ -15726,7 +15747,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哋即刻选位新帮主出嚟主持大局。"
+      "target_sub_punctuated": "我哋即刻选位新帮主出嚟主持大局。"
     },
     "difficulty": 2
   },
@@ -15736,11 +15757,12 @@
       "target_subs": [
         "如",
         "霜，",
-        "如"
+        "如",
+        "霜，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "如霜，如"
+      "target_sub_punctuated": "如霜，如霜，"
     },
     "difficulty": 2
   },
@@ -15748,7 +15770,7 @@
     "query": {
       "ref_sub": "對付三位長老的蓮花落陣",
       "target_subs": [
-        "霜，对",
+        "对",
         "付",
         "三",
         "位长",
@@ -15759,7 +15781,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "霜，对付三位长老嘅莲花落阵，"
+      "target_sub_punctuated": "对付三位长老嘅莲花落阵，"
     },
     "difficulty": 2
   },
@@ -15768,18 +15790,20 @@
       "ref_sub": "全靠你了",
       "target_subs": [
         "靠",
-        "你"
+        "你",
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "靠你"
-    }
+      "target_sub_punctuated": "靠你啦。"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "莫大叔！蓮花落陣你也沒把握",
       "target_subs": [
-        "啦。穆",
+        "穆",
         "大",
         "叔",
         "啊，莲",
@@ -15794,7 +15818,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啦。穆大叔啊，莲花落阵你都冇把握啊，"
+      "target_sub_punctuated": "穆大叔啊，莲花落阵你都冇把握啊，"
     },
     "difficulty": 2
   },
@@ -15954,23 +15978,24 @@
         "都",
         "系",
         "武状",
-        "元"
+        "元",
+        "啦，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我仔假假地都系武状元"
-    }
+      "target_sub_punctuated": "我仔假假地都系武状元啦，"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "現在⋯",
       "target_subs": [
-        "啦，",
         "家阵，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啦，家阵，"
+      "target_sub_punctuated": "家阵，"
     },
     "difficulty": 2
   },
@@ -15996,18 +16021,20 @@
         "睇",
         "佢",
         "死",
-        "蛇烂鳝"
+        "蛇烂鳝",
+        "咁，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你睇佢死蛇烂鳝"
-    }
+      "target_sub_punctuated": "你睇佢死蛇烂鳝咁，"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "只會睡覺，怎能打架呢？",
       "target_subs": [
-        "咁，净",
+        "净",
         "系识",
         "得",
         "瞓点",
@@ -16017,9 +16044,9 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咁，净系识得瞓点打交啊？"
+      "target_sub_punctuated": "净系识得瞓点打交啊？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -16111,11 +16138,11 @@
         "好",
         "有",
         "信",
-        "心。虽"
+        "心。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "阿爹对你好有信心。虽"
+      "target_sub_punctuated": "阿爹对你好有信心。"
     },
     "difficulty": 2
   },
@@ -16123,6 +16150,7 @@
     "query": {
       "ref_sub": "雖然現在你沒有武功",
       "target_subs": [
+        "虽",
         "然",
         "而",
         "家",
@@ -16135,7 +16163,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "然而家你又冇咗武功，"
+      "target_sub_punctuated": "虽然而家你又冇咗武功，"
     },
     "difficulty": 2
   },
@@ -16210,19 +16238,20 @@
         "都",
         "唔",
         "想",
-        "再"
+        "再",
+        "用。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我而家已经冇晒力，亦都唔想再"
+      "target_sub_punctuated": "我而家已经冇晒力，亦都唔想再用。"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "怎麼會沒有力呢？",
       "target_subs": [
-        "用。点会",
+        "点会",
         "冇",
         "晒",
         "力",
@@ -16230,9 +16259,9 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "用。点会冇晒力啫？"
+      "target_sub_punctuated": "点会冇晒力啫？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -16296,12 +16325,11 @@
         "唔",
         "好",
         "再",
-        "嘥时间，",
-        "不"
+        "嘥时间，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "算啦，唔好再嘥时间，不"
+      "target_sub_punctuated": "算啦，唔好再嘥时间，"
     },
     "difficulty": 2
   },
@@ -16309,6 +16337,7 @@
     "query": {
       "ref_sub": "還是讓我多睡一會兒吧",
       "target_subs": [
+        "不",
         "如",
         "俾",
         "我",
@@ -16320,7 +16349,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "如俾我瞓下觉仲好啦。"
+      "target_sub_punctuated": "不如俾我瞓下觉仲好啦。"
     },
     "difficulty": 2
   },
@@ -16538,11 +16567,11 @@
         "海无",
         "解，",
         "你写",
-        "噶？写"
+        "噶？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "苦海无解，你写噶？写"
+      "target_sub_punctuated": "苦海无解，你写噶？"
     },
     "difficulty": 2
   },
@@ -16550,6 +16579,7 @@
     "query": {
       "ref_sub": "寫得這麼醜，把它擦掉也對",
       "target_subs": [
+        "写",
         "得",
         "咁",
         "丑样，",
@@ -16562,7 +16592,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "得咁丑样，抹咗佢都啱嘅。"
+      "target_sub_punctuated": "写得咁丑样，抹咗佢都啱嘅。"
     },
     "difficulty": 2
   },
@@ -16662,11 +16692,11 @@
         "情",
         "啊？",
         "嘥",
-        "啲㖞，关"
+        "啲㖞，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "喂，你咁嘅造型唔会系乞食博同情啊？嘥啲㖞，关"
+      "target_sub_punctuated": "喂，你咁嘅造型唔会系乞食博同情啊？嘥啲㖞，"
     },
     "difficulty": 2
   },
@@ -16674,13 +16704,14 @@
     "query": {
       "ref_sub": "這與你無關！",
       "target_subs": [
+        "关",
         "你",
         "春",
         "事。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你春事。"
+      "target_sub_punctuated": "关你春事。"
     },
     "difficulty": 2
   },
@@ -16737,18 +16768,19 @@
         "俾",
         "人",
         "睇",
-        "得"
+        "得",
+        "起，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我以前去到度度都俾人睇得"
-    }
+      "target_sub_punctuated": "我以前去到度度都俾人睇得起，"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "還不是落得這個下場",
       "target_subs": [
-        "起，",
         "而",
         "家",
         "咪",
@@ -16758,7 +16790,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "起，而家咪一样变成咁。"
+      "target_sub_punctuated": "而家咪一样变成咁。"
     },
     "difficulty": 2
   },
@@ -16815,11 +16847,11 @@
         "住",
         "啊，听",
         "我讲",
-        "啊。记"
+        "啊。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "喂喂，听我讲啊，唔好行住啊，听我讲啊。记"
+      "target_sub_punctuated": "喂喂，听我讲啊，唔好行住啊，听我讲啊。"
     },
     "difficulty": 2
   },
@@ -16827,16 +16859,16 @@
     "query": {
       "ref_sub": "記得有一次，在廣東",
       "target_subs": [
+        "记",
         "得",
         "有",
         "一",
         "次",
-        "喺广东，",
-        "有个"
+        "喺广东，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "得有一次喺广东，有个"
+      "target_sub_punctuated": "记得有一次喺广东，"
     },
     "difficulty": 1
   },
@@ -16844,6 +16876,7 @@
     "query": {
       "ref_sub": "請我吃飯喝酒嫖妓過夜",
       "target_subs": [
+        "有个",
         "傻",
         "佬",
         "佢",
@@ -16856,7 +16889,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "傻佬佢包食饭饮酒叫鸡直落，"
+      "target_sub_punctuated": "有个傻佬佢包食饭饮酒叫鸡直落，"
     },
     "difficulty": 2
   },
@@ -16869,11 +16902,11 @@
         "人",
         "都",
         "有",
-        "嘅。靓"
+        "嘅。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咁嘅人都有嘅。靓"
+      "target_sub_punctuated": "咁嘅人都有嘅。"
     },
     "difficulty": 2
   },
@@ -16881,15 +16914,16 @@
     "query": {
       "ref_sub": "帥哥，我記得你",
       "target_subs": [
+        "靓",
         "仔，",
         "我记",
         "得",
         "你",
-        "啊。靓"
+        "啊。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "仔，我记得你啊。靓"
+      "target_sub_punctuated": "靓仔，我记得你啊。"
     },
     "difficulty": 2
   },
@@ -16897,6 +16931,7 @@
     "query": {
       "ref_sub": "臭小子，我也記得你",
       "target_subs": [
+        "靓",
         "仔，",
         "我",
         "都记",
@@ -16906,7 +16941,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "仔，我都记得你。喂，"
+      "target_sub_punctuated": "靓仔，我都记得你。喂，"
     },
     "difficulty": 2
   },
@@ -16914,17 +16949,17 @@
     "query": {
       "ref_sub": "還我錢讓我頂一下",
       "target_subs": [
+        "嗱",
         "嗱声，还",
         "翻",
         "啲钱过",
         "我顶",
         "住档",
-        "先。",
-        "如"
+        "先。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嗱声，还翻啲钱过我顶住档先。如"
+      "target_sub_punctuated": "嗱嗱声，还翻啲钱过我顶住档先。"
     },
     "difficulty": 2
   },
@@ -16932,6 +16967,7 @@
     "query": {
       "ref_sub": "如果我有錢",
       "target_subs": [
+        "如",
         "果",
         "我",
         "有钱",
@@ -16939,7 +16975,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "果我有钱啊，"
+      "target_sub_punctuated": "如果我有钱啊，"
     },
     "difficulty": 2
   },
@@ -17319,19 +17355,20 @@
         "常",
         "好，",
         "非",
-        "常"
+        "常",
+        "好。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "非常好，非常"
+      "target_sub_punctuated": "非常好，非常好。"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "實不相瞞，我看閣下從頭到腳趾頭",
       "target_subs": [
-        "好。实",
+        "实",
         "不",
         "相瞒，",
         "我",
@@ -17343,9 +17380,9 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好。实不相瞒，我睇阁下从头顶到脚趾尾"
+      "target_sub_punctuated": "实不相瞒，我睇阁下从头顶到脚趾尾"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -17535,12 +17572,11 @@
         "想",
         "再",
         "同",
-        "你讲，",
-        "而"
+        "你讲，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我唔理你系边个，我唔想再同你讲，而"
+      "target_sub_punctuated": "我唔理你系边个，我唔想再同你讲，"
     },
     "difficulty": 2
   },
@@ -17548,6 +17584,7 @@
     "query": {
       "ref_sub": "請你讓開，不要礙著我睡覺",
       "target_subs": [
+        "而",
         "家请",
         "你",
         "去边马",
@@ -17557,11 +17594,11 @@
         "阻",
         "住",
         "我",
-        "瞓觉。顶"
+        "瞓觉。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "家请你去边马一边，唔好阻住我瞓觉。顶"
+      "target_sub_punctuated": "而家请你去边马一边，唔好阻住我瞓觉。"
     },
     "difficulty": 2
   },
@@ -17569,14 +17606,14 @@
     "query": {
       "ref_sub": "你找死吧？",
       "target_subs": [
+        "顶",
         "你个",
         "肺",
-        "啦，",
-        "家阵"
+        "啦，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你个肺啦，家阵"
+      "target_sub_punctuated": "顶你个肺啦，"
     },
     "difficulty": 2
   },
@@ -17584,15 +17621,15 @@
     "query": {
       "ref_sub": "不是⋯你說要睡覺",
       "target_subs": [
+        "家阵",
         "系",
         "咪？",
         "你话",
-        "瞓觉，",
-        "我"
+        "瞓觉，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系咪？你话瞓觉，我"
+      "target_sub_punctuated": "家阵系咪？你话瞓觉，"
     },
     "difficulty": 2
   },
@@ -17600,6 +17637,7 @@
     "query": {
       "ref_sub": "我只想跟你一塊兒",
       "target_subs": [
+        "我",
         "想",
         "同",
         "你",
@@ -17609,7 +17647,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "想同你一齐啫嘛。"
+      "target_sub_punctuated": "我想同你一齐啫嘛。"
     },
     "difficulty": 2
   },
@@ -17654,14 +17692,25 @@
         "前",
         "金",
         "座，罗汉归",
-        "位，",
+        "位，"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "佛前金座，罗汉归位，"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "降龍，伏虎",
+      "target_subs": [
         "降龙",
         "伏",
         "虎。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "佛前金座，罗汉归位，降龙伏虎。"
+      "target_sub_punctuated": "降龙伏虎。"
     },
     "difficulty": 2
   },
@@ -17834,19 +17883,19 @@
         "！",
         "万",
         "万",
-        "岁"
+        "岁",
+        "！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "万岁！万岁！万万岁"
+      "target_sub_punctuated": "万岁！万岁！万万岁！"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "白羊降世，天理循環",
       "target_subs": [
-        "！",
         "白阳",
         "降",
         "世，",
@@ -17856,7 +17905,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "！白阳降世，天理循环，"
+      "target_sub_punctuated": "白阳降世，天理循环，"
     },
     "difficulty": 2
   },
@@ -17981,11 +18030,11 @@
         "就",
         "喺",
         "我",
-        "手，荣华"
+        "手，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "天下就喺我手，荣华"
+      "target_sub_punctuated": "天下就喺我手，"
     },
     "difficulty": 2
   },
@@ -17993,6 +18042,7 @@
     "query": {
       "ref_sub": "榮華富貴絕對少不了你們",
       "target_subs": [
+        "荣华",
         "富贵绝对",
         "唔会",
         "少",
@@ -18003,29 +18053,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "富贵绝对唔会少咗你哋嘅。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "萬歲！萬歲！萬萬歲",
-      "target_subs": [
-        "万",
-        "岁",
-        "！",
-        "万",
-        "岁",
-        "！",
-        "万",
-        "万",
-        "岁",
-        "！",
-        "张"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "万岁！万岁！万万岁！张"
+      "target_sub_punctuated": "荣华富贵绝对唔会少咗你哋嘅。"
     },
     "difficulty": 2
   },
@@ -18033,12 +18061,13 @@
     "query": {
       "ref_sub": "長老",
       "target_subs": [
+        "张",
         "龙",
         "。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "龙。"
+      "target_sub_punctuated": "张龙。"
     },
     "difficulty": 2
   },
@@ -18189,25 +18218,26 @@
         "姐",
         "到",
         "底",
-        "去边"
+        "去边",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "麦大叔同你家姐到底去边"
+      "target_sub_punctuated": "麦大叔同你家姐到底去边啊？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "我怎麼知道",
       "target_subs": [
-        "啊？点",
+        "点",
         "知",
-        "啫？头"
+        "啫？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？点知啫？头"
+      "target_sub_punctuated": "点知啫？"
     },
     "difficulty": 2
   },
@@ -18215,6 +18245,7 @@
     "query": {
       "ref_sub": "剛才我聽見莫大叔跟姐姐說了幾句話",
       "target_subs": [
+        "头",
         "先见",
         "到麦",
         "大",
@@ -18227,7 +18258,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "先见到麦大叔同家姐讲咗几句说话，"
+      "target_sub_punctuated": "头先见到麦大叔同家姐讲咗几句说话，"
     },
     "difficulty": 2
   },
@@ -18238,18 +18269,20 @@
         "就",
         "出",
         "咗",
-        "去"
+        "去",
+        "咯。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "就出咗去"
-    }
+      "target_sub_punctuated": "就出咗去咯。"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "難道他倆有曖昧關係？",
       "target_subs": [
-        "咯。嗯，",
+        "嗯，",
         "唔",
         "通",
         "佢两",
@@ -18260,7 +18293,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咯。嗯，唔通佢两者已有路？"
+      "target_sub_punctuated": "嗯，唔通佢两者已有路？"
     },
     "difficulty": 2
   },
@@ -18307,14 +18340,11 @@
         "俾张无",
         "忌",
         "捉",
-        "咗，",
-        "我",
-        "哋",
-        "要"
+        "咗，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "俾张无忌捉咗，我哋要"
+      "target_sub_punctuated": "俾张无忌捉咗，"
     },
     "difficulty": 2
   },
@@ -18322,26 +18352,19 @@
     "query": {
       "ref_sub": "還以為你不會來了",
       "target_subs": [
+        "我",
+        "哋",
+        "要",
         "揾个",
         "人",
-        "上头劝帮"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "揾个人上头劝帮"
-    }
-  },
-  {
-    "query": {
-      "ref_sub": "沒事嗎？　　姐姐呢？",
-      "target_subs": [
+        "上头劝帮",
         "主",
         "先",
         "得。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "主先得。"
+      "target_sub_punctuated": "我哋要揾个人上头劝帮主先得。"
     },
     "difficulty": 2
   },
@@ -18367,11 +18390,11 @@
       "target_subs": [
         "等",
         "我",
-        "嚟。诶，"
+        "嚟。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "等我嚟。诶，"
+      "target_sub_punctuated": "等我嚟。"
     },
     "difficulty": 2
   },
@@ -18379,13 +18402,14 @@
     "query": {
       "ref_sub": "莫大叔",
       "target_subs": [
+        "诶，",
         "我",
         "只",
         "手，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我只手，"
+      "target_sub_punctuated": "诶，我只手，"
     },
     "difficulty": 2
   },
@@ -18498,27 +18522,28 @@
         "一",
         "路",
         "都当",
-        "冇"
+        "冇",
+        "噶",
+        "咯。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔相干嘅，我哋咪一路都当冇"
+      "target_sub_punctuated": "唔相干嘅，我哋咪一路都当冇噶咯。"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "廢話！丟他",
       "target_subs": [
-        "噶",
-        "咯。废话，夹",
+        "废话，夹",
         "佢！",
         "系",
         "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "噶咯。废话，夹佢！系啦。"
+      "target_sub_punctuated": "废话，夹佢！系啦。"
     },
     "difficulty": 2
   },
@@ -18733,13 +18758,11 @@
         "都",
         "打",
         "狗",
-        "啊！",
-        "打",
-        "狗"
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哼，惯唔惯都打狗啊！打狗"
+      "target_sub_punctuated": "哼，惯唔惯都打狗啊！"
     },
     "difficulty": 2
   },
@@ -18747,6 +18770,8 @@
     "query": {
       "ref_sub": "誰說我不會打狗棒法？",
       "target_subs": [
+        "打",
+        "狗",
         "棍，",
         "呢",
         "支",
@@ -18757,32 +18782,22 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "棍，呢支打狗棍都"
+      "target_sub_punctuated": "打狗棍，呢支打狗棍都"
     },
     "difficulty": 2
   },
   {
     "query": {
-      "ref_sub": "不像打狗棒法",
-      "target_subs": [
-        "几",
-        "劲"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "几劲"
-    }
-  },
-  {
-    "query": {
       "ref_sub": "也蠻厲害！",
       "target_subs": [
+        "几",
+        "劲",
         "㖞",
         "。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "㖞。"
+      "target_sub_punctuated": "几劲㖞。"
     },
     "difficulty": 2
   },
@@ -18886,11 +18901,11 @@
         "咪",
         "唔记",
         "得",
-        "咗？丐帮"
+        "咗？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你哋系咪唔记得咗？丐帮"
+      "target_sub_punctuated": "你哋系咪唔记得咗？"
     },
     "difficulty": 1
   },
@@ -18898,6 +18913,7 @@
     "query": {
       "ref_sub": "丐幫之所以成為天下第一大幫",
       "target_subs": [
+        "丐帮",
         "之",
         "所",
         "以",
@@ -18910,7 +18926,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "之所以成为天下第一大帮，"
+      "target_sub_punctuated": "丐帮之所以成为天下第一大帮，"
     },
     "difficulty": 2
   },
@@ -18983,12 +18999,11 @@
         "表",
         "啲",
         "咩",
-        "嘢，",
-        "但"
+        "嘢，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "碌棍本身并唔代表啲咩嘢，但"
+      "target_sub_punctuated": "碌棍本身并唔代表啲咩嘢，"
     },
     "difficulty": 2
   },
@@ -18996,6 +19011,7 @@
     "query": {
       "ref_sub": "但是你這些蠢蛋居然當寶",
       "target_subs": [
+        "但",
         "系",
         "你",
         "班",
@@ -19006,7 +19022,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系你班蠢材居然当宝，"
+      "target_sub_punctuated": "但系你班蠢材居然当宝，"
     },
     "difficulty": 2
   },
@@ -19059,28 +19075,29 @@
         "加",
         "打断",
         "碌",
-        "棍",
-        "以"
+        "棍"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "都参加打断碌棍以"
+      "target_sub_punctuated": "都参加打断碌棍"
     }
   },
   {
     "query": {
       "ref_sub": "以後大家沒得爭",
       "target_subs": [
+        "以",
         "后，",
         "大",
         "家",
         "就",
         "冇",
-        "得争"
+        "得争",
+        "住，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "后，大家就冇得争"
+      "target_sub_punctuated": "以后，大家就冇得争住，"
     },
     "difficulty": 2
   },
@@ -19088,7 +19105,6 @@
     "query": {
       "ref_sub": "絕對是有功沒有過",
       "target_subs": [
-        "住，",
         "所",
         "以",
         "有",
@@ -19097,7 +19113,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "住，所以有功冇过。"
+      "target_sub_punctuated": "所以有功冇过。"
     },
     "difficulty": 2
   },
@@ -19147,18 +19163,20 @@
         "洪",
         "日",
         "新亲",
-        "手题"
+        "手题",
+        "句，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "在下洪某嘅传人洪日新亲手题"
-    }
+      "target_sub_punctuated": "在下洪某嘅传人洪日新亲手题句，"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "誰要對付他就是對付我",
       "target_subs": [
-        "句，边个",
+        "边个",
         "唔",
         "妥",
         "佢",
@@ -19170,7 +19188,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "句，边个唔妥佢即系唔妥我。"
+      "target_sub_punctuated": "边个唔妥佢即系唔妥我。"
     },
     "difficulty": 2
   },
@@ -19273,11 +19291,12 @@
       "target_subs": [
         "喂，",
         "真",
-        "定"
+        "定",
+        "假？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "喂，真定"
+      "target_sub_punctuated": "喂，真定假？"
     },
     "difficulty": 2
   },
@@ -19285,7 +19304,7 @@
     "query": {
       "ref_sub": "寧可信其有不可信其無",
       "target_subs": [
-        "假？宁",
+        "宁",
         "可",
         "信",
         "其",
@@ -19293,12 +19312,11 @@
         "不",
         "可",
         "信",
-        "其无。",
-        "唉，"
+        "其无。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "假？宁可信其有，不可信其无。唉，"
+      "target_sub_punctuated": "宁可信其有，不可信其无。"
     },
     "difficulty": 2
   },
@@ -19306,6 +19324,7 @@
     "query": {
       "ref_sub": "洪七公顯靈",
       "target_subs": [
+        "唉，",
         "唔",
         "怪",
         "得",
@@ -19314,7 +19333,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔怪得之啦，"
+      "target_sub_punctuated": "唉，唔怪得之啦，"
     },
     "difficulty": 2
   },
@@ -19328,19 +19347,20 @@
         "我",
         "哋",
         "有",
-        "福"
+        "福",
+        "咯。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "天有眼，我哋有福"
+      "target_sub_punctuated": "天有眼，我哋有福咯。"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "就這樣瞞天過海，我果真是天才！",
       "target_subs": [
-        "咯。讲",
+        "讲",
         "都讲",
         "到",
         "啩，",
@@ -19349,37 +19369,40 @@
         "然",
         "系",
         "天",
-        "才。发"
+        "才。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咯。讲都讲到啩，我果然系天才。发"
+      "target_sub_punctuated": "讲都讲到啩，我果然系天才。"
     },
     "difficulty": 2
   },
   {
     "query": {
-      "ref_sub": "大家有飯吃了",
+      "ref_sub": "發生甚麼事？",
       "target_subs": [
+        "发",
         "生",
-        "咩"
+        "咩",
+        "事",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "生咩"
-    }
+      "target_sub_punctuated": "发生咩事啊？"
+    },
+    "difficulty": 1
   },
   {
     "query": {
-      "ref_sub": "發生甚麼事？",
+      "ref_sub": "參見幫主",
       "target_subs": [
-        "事",
-        "啊？参见帮",
+        "参见帮",
         "主。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "事啊？参见帮主。"
+      "target_sub_punctuated": "参见帮主。"
     },
     "difficulty": 2
   },
@@ -19470,12 +19493,11 @@
         "大还",
         "丹",
         "都够",
-        "嘅。",
-        "希"
+        "嘅。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "仲有大还丹都够嘅。希"
+      "target_sub_punctuated": "仲有大还丹都够嘅。"
     },
     "difficulty": 2
   },
@@ -19483,6 +19505,7 @@
     "query": {
       "ref_sub": "希望你好好領導丐幫",
       "target_subs": [
+        "希",
         "望",
         "你",
         "好",
@@ -19491,7 +19514,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "望你好好地领导丐帮，"
+      "target_sub_punctuated": "希望你好好地领导丐帮，"
     },
     "difficulty": 2
   },
@@ -19566,11 +19589,11 @@
         "大",
         "叔，",
         "你听",
-        "嘛，罗"
+        "嘛，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "罗大叔，罗大叔，你听嘛，罗"
+      "target_sub_punctuated": "罗大叔，罗大叔，你听嘛，"
     },
     "difficulty": 2
   },
@@ -19578,25 +19601,15 @@
     "query": {
       "ref_sub": "莫大叔，莫大叔",
       "target_subs": [
+        "罗",
         "大",
-        "叔，罗"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "大叔，罗"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "莫大叔⋯莫大叔",
-      "target_subs": [
+        "叔，罗",
         "大",
         "叔。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "大叔。"
+      "target_sub_punctuated": "罗大叔，罗大叔。"
     },
     "difficulty": 2
   },
@@ -19638,18 +19651,19 @@
       "target_subs": [
         "似",
         "我觅",
-        "真"
+        "真",
+        "情，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "似我觅真"
-    }
+      "target_sub_punctuated": "似我觅真情，"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "停步處視作家鄉",
       "target_subs": [
-        "情，",
         "停",
         "步处",
         "是",
@@ -19657,7 +19671,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "情，停步处是家乡。"
+      "target_sub_punctuated": "停步处是家乡。"
     },
     "difficulty": 2
   },
@@ -19668,12 +19682,11 @@
         "投",
         "入",
         "命运万劫",
-        "波，",
-        "打"
+        "波，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "投入命运万劫波，打"
+      "target_sub_punctuated": "投入命运万劫波，"
     },
     "difficulty": 2
   },
@@ -19681,14 +19694,17 @@
     "query": {
       "ref_sub": "那得失怎麼去量",
       "target_subs": [
+        "打",
         "得",
         "失",
-        "怎么"
+        "怎么",
+        "去？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "得失怎么"
-    }
+      "target_sub_punctuated": "打得失怎么去？"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -19889,11 +19905,12 @@
       "target_subs": [
         "冇",
         "得点",
-        "算"
+        "算",
+        "嘅，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "冇得点算"
+      "target_sub_punctuated": "冇得点算嘅，"
     },
     "difficulty": 2
   },
@@ -19901,7 +19918,7 @@
     "query": {
       "ref_sub": "無論如何我也先出發去救如霜",
       "target_subs": [
-        "嘅，无论",
+        "无论",
         "如",
         "何",
         "我",
@@ -19918,7 +19935,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嘅，无论如何我都要即刻出发去救如霜先。"
+      "target_sub_punctuated": "无论如何我都要即刻出发去救如霜先。"
     },
     "difficulty": 2
   },
@@ -19934,14 +19951,13 @@
         "下",
         "准备",
         "好",
-        "未？",
-        "系。"
+        "未？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你哋喺大营睇下准备好未？系。"
+      "target_sub_punctuated": "你哋喺大营睇下准备好未？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -20042,16 +20058,11 @@
         "冇",
         "召见，",
         "你无谓惊动",
-        "佢。",
-        "人",
-        "嚟，带",
-        "呢个",
-        "女",
-        "人"
+        "佢。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "皇上并冇召见，你无谓惊动佢。人嚟，带呢个女人"
+      "target_sub_punctuated": "皇上并冇召见，你无谓惊动佢。"
     },
     "difficulty": 2
   },
@@ -20059,13 +20070,29 @@
     "query": {
       "ref_sub": "人來，帶這個女人入營",
       "target_subs": [
-        "入营。",
+        "人",
+        "嚟，带",
+        "呢个",
+        "女",
+        "人",
+        "入营。"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "人嚟，带呢个女人入营。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "是",
+      "target_subs": [
         "系。",
         "好。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "入营。系。好。"
+      "target_sub_punctuated": "系。好。"
     },
     "difficulty": 2
   },
@@ -20114,12 +20141,11 @@
         "好",
         "再",
         "擅离职",
-        "守。",
-        "系。"
+        "守。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔好再擅离职守。系。"
+      "target_sub_punctuated": "唔好再擅离职守。"
     },
     "difficulty": 2
   },
@@ -20130,11 +20156,11 @@
         "启",
         "禀",
         "皇",
-        "上，赵"
+        "上，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "启禀皇上，赵"
+      "target_sub_punctuated": "启禀皇上，"
     },
     "difficulty": 2
   },
@@ -20142,6 +20168,7 @@
     "query": {
       "ref_sub": "趙大人帶了個女人來獻給皇上",
       "target_subs": [
+        "赵",
         "大",
         "人带",
         "咗个",
@@ -20154,7 +20181,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "大人带咗个女人嚟献俾皇上。"
+      "target_sub_punctuated": "赵大人带咗个女人嚟献俾皇上。"
     },
     "difficulty": 2
   },
@@ -20162,26 +20189,26 @@
     "query": {
       "ref_sub": "女人？",
       "target_subs": [
-        "女"
+        "女",
+        "人？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "女"
+      "target_sub_punctuated": "女人？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "趙無極這個人",
       "target_subs": [
-        "人？",
         "哼，赵无极",
         "呢个",
         "人，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "人？哼，赵无极呢个人，"
+      "target_sub_punctuated": "哼，赵无极呢个人，"
     },
     "difficulty": 2
   },
@@ -20197,12 +20224,11 @@
         "易，转头带",
         "佢",
         "嚟见",
-        "我。",
-        "系。"
+        "我。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我先至冇咁易，转头带佢嚟见我。系。"
+      "target_sub_punctuated": "我先至冇咁易，转头带佢嚟见我。"
     },
     "difficulty": 2
   },
@@ -20401,11 +20427,11 @@
         "你",
         "施",
         "舍个发财钱",
-        "啫。岂"
+        "啫。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "冇，想问你施舍个发财钱啫。岂"
+      "target_sub_punctuated": "冇，想问你施舍个发财钱啫。"
     },
     "difficulty": 2
   },
@@ -20413,6 +20439,7 @@
     "query": {
       "ref_sub": "豈有此理！你是不是不想活？",
       "target_subs": [
+        "岂",
         "有",
         "此",
         "理！",
@@ -20425,7 +20452,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "有此理！你系咪嫌命长啊？"
+      "target_sub_punctuated": "岂有此理！你系咪嫌命长啊？"
     },
     "difficulty": 1
   },
@@ -20435,26 +20462,27 @@
       "target_subs": [
         "嫌",
         "命长𠮶个",
-        "系"
+        "系",
+        "你。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嫌命长𠮶个系"
-    }
+      "target_sub_punctuated": "嫌命长𠮶个系你。"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "趙無極陰謀造反",
       "target_subs": [
-        "你。赵无",
+        "赵无",
         "忌阴谋",
         "造",
-        "反，",
-        "而"
+        "反，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你。赵无忌阴谋造反，而"
+      "target_sub_punctuated": "赵无忌阴谋造反，"
     },
     "difficulty": 2
   },
@@ -20462,6 +20490,7 @@
     "query": {
       "ref_sub": "現在還帶人殺皇帝去",
       "target_subs": [
+        "而",
         "家带紧",
         "人",
         "嚟杀",
@@ -20470,7 +20499,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "家带紧人嚟杀皇帝，"
+      "target_sub_punctuated": "而家带紧人嚟杀皇帝，"
     },
     "difficulty": 2
   },
@@ -20497,11 +20526,11 @@
         "你",
         "以为",
         "你",
-        "系边个？胆"
+        "系边个？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你以为你系边个？胆"
+      "target_sub_punctuated": "你以为你系边个？"
     },
     "difficulty": 2
   },
@@ -20509,6 +20538,7 @@
     "query": {
       "ref_sub": "膽大包天！竟敢誣告官員？",
       "target_subs": [
+        "胆",
         "大",
         "包",
         "天，",
@@ -20519,7 +20549,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "大包天，竟敢诬告官员！"
+      "target_sub_punctuated": "胆大包天，竟敢诬告官员！"
     },
     "difficulty": 2
   },
@@ -20555,11 +20585,11 @@
         "人马，",
         "我",
         "哋边够",
-        "打？蒋"
+        "打？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "伟强，对付咁多人马，我哋边够打？蒋"
+      "target_sub_punctuated": "伟强，对付咁多人马，我哋边够打？"
     },
     "difficulty": 2
   },
@@ -20567,11 +20597,12 @@
     "query": {
       "ref_sub": "長老　　在",
       "target_subs": [
+        "蒋",
         "雷，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "雷，"
+      "target_sub_punctuated": "蒋雷，"
     },
     "difficulty": 2
   },
@@ -20704,11 +20735,11 @@
         "啊，",
         "放",
         "心",
-        "去。讲"
+        "去。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "家下我死梗啊，放心去。讲"
+      "target_sub_punctuated": "家下我死梗啊，放心去。"
     },
     "difficulty": 2
   },
@@ -20716,6 +20747,7 @@
     "query": {
       "ref_sub": "說句吉利話行不行？",
       "target_subs": [
+        "讲",
         "句",
         "老礼",
         "啲",
@@ -20729,7 +20761,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "句老礼啲嘅嚟听下得唔得呢？"
+      "target_sub_punctuated": "讲句老礼啲嘅嚟听下得唔得呢？"
     },
     "difficulty": 1
   },
@@ -20742,11 +20774,11 @@
         "祝",
         "你",
         "福寿与",
-        "天齐，庆贺"
+        "天齐，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "得，恭祝你福寿与天齐，庆贺"
+      "target_sub_punctuated": "得，恭祝你福寿与天齐，"
     },
     "difficulty": 2
   },
@@ -20754,6 +20786,7 @@
     "query": {
       "ref_sub": "慶賀你生辰快樂",
       "target_subs": [
+        "庆贺",
         "你",
         "生",
         "辰",
@@ -20761,7 +20794,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你生辰快乐，"
+      "target_sub_punctuated": "庆贺你生辰快乐，"
     },
     "difficulty": 2
   },
@@ -20773,11 +20806,12 @@
         "年",
         "都",
         "有",
-        "今"
+        "今",
+        "日。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "年年都有今"
+      "target_sub_punctuated": "年年都有今日。"
     },
     "difficulty": 2
   },
@@ -20785,14 +20819,13 @@
     "query": {
       "ref_sub": "夠了夠了",
       "target_subs": [
-        "日。",
         "啊，够",
         "啦够",
         "啦，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "日。啊，够啦够啦，"
+      "target_sub_punctuated": "啊，够啦够啦，"
     },
     "difficulty": 2
   },
@@ -20862,12 +20895,11 @@
         "企",
         "落",
         "烟，",
-        "系，",
-        "我"
+        "系，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "准备企落烟，系，我"
+      "target_sub_punctuated": "准备企落烟，系，"
     },
     "difficulty": 2
   },
@@ -20875,6 +20907,7 @@
     "query": {
       "ref_sub": "攻入大營",
       "target_subs": [
+        "我",
         "哋",
         "攻",
         "入",
@@ -20884,7 +20917,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "哋攻入大营。"
+      "target_sub_punctuated": "我哋攻入大营。"
     },
     "difficulty": 2
   },
@@ -20956,12 +20989,11 @@
         "入",
         "皇",
         "上",
-        "大营，",
-        "呢"
+        "大营，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "喂，毒烟吹入皇上大营，呢"
+      "target_sub_punctuated": "喂，毒烟吹入皇上大营，"
     },
     "difficulty": 2
   },
@@ -20969,6 +21001,7 @@
     "query": {
       "ref_sub": "這次真的完了",
       "target_subs": [
+        "呢",
         "次",
         "大",
         "件",
@@ -20977,7 +21010,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "次大件事啦！"
+      "target_sub_punctuated": "呢次大件事啦！"
     },
     "difficulty": 2
   },
@@ -21003,20 +21036,21 @@
       "target_subs": [
         "系",
         "等",
-        "埋"
+        "埋",
+        "我",
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系等埋"
+      "target_sub_punctuated": "系等埋我啊！"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "丐幫再不撤退，格殺勿論",
       "target_subs": [
-        "我",
-        "啊！丐帮",
+        "丐帮",
         "再",
         "唔",
         "撤",
@@ -21028,7 +21062,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我啊！丐帮再唔撤退，格杀勿论。"
+      "target_sub_punctuated": "丐帮再唔撤退，格杀勿论。"
     },
     "difficulty": 2
   },
@@ -21111,11 +21145,14 @@
       "ref_sub": "那我該怎麼辦？",
       "target_subs": [
         "喂",
-        "呀，"
+        "呀，",
+        "咁",
+        "啊点",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "喂呀，"
+      "target_sub_punctuated": "喂呀，咁啊点啊？"
     },
     "difficulty": 2
   },
@@ -21123,22 +21160,18 @@
     "query": {
       "ref_sub": "不怕！我的尿多，分一點給你",
       "target_subs": [
-        "咁",
-        "啊点",
-        "啊？妈妈，",
+        "妈妈，",
         "我",
         "都",
         "有带，",
         "分",
         "啲",
         "俾",
-        "你，",
-        "嚟",
-        "嚟，"
+        "你，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咁啊点啊？妈妈，我都有带，分啲俾你，嚟嚟，"
+      "target_sub_punctuated": "妈妈，我都有带，分啲俾你，"
     },
     "difficulty": 2
   },
@@ -21146,13 +21179,15 @@
     "query": {
       "ref_sub": "來⋯拿著它",
       "target_subs": [
+        "嚟",
+        "嚟，",
         "遮",
         "住",
         "佢。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "遮住佢。"
+      "target_sub_punctuated": "嚟嚟，遮住佢。"
     },
     "difficulty": 2
   },
@@ -21272,37 +21307,11 @@
       "target_subs": [
         "行开，",
         "行开，",
-        "行开，",
-        "你"
+        "行开，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "行开，行开，行开，你"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "不要阻我，走開",
-      "target_subs": [
-        "坐",
-        "喺"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "坐喺"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "皇上，很危險的！不要走",
-      "target_subs": [
-        "度"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "度"
+      "target_sub_punctuated": "行开，行开，行开，"
     },
     "difficulty": 2
   },
@@ -21310,6 +21319,10 @@
     "query": {
       "ref_sub": "不去！難道坐在這裡等死嗎？走開",
       "target_subs": [
+        "你",
+        "坐",
+        "喺",
+        "度",
         "等",
         "死",
         "啊！",
@@ -21317,7 +21330,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "等死啊！行开，"
+      "target_sub_punctuated": "你坐喺度等死啊！行开，"
     },
     "difficulty": 2
   },
@@ -21386,11 +21399,11 @@
         "到",
         "呢",
         "度",
-        "噶？点"
+        "噶？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你点嚟到呢度噶？点"
+      "target_sub_punctuated": "你点嚟到呢度噶？"
     },
     "difficulty": 1
   },
@@ -21398,6 +21411,7 @@
     "query": {
       "ref_sub": "怎麼來？就說來話長",
       "target_subs": [
+        "点",
         "嚟？讲",
         "起长",
         "篇",
@@ -21405,7 +21419,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嚟？讲起长篇啊！"
+      "target_sub_punctuated": "点嚟？讲起长篇啊！"
     },
     "difficulty": 2
   },
@@ -21527,11 +21541,11 @@
         "嚿",
         "番",
         "薯",
-        "食，点"
+        "食，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "然后我想攞嚿番薯食，点"
+      "target_sub_punctuated": "然后我想攞嚿番薯食，"
     },
     "difficulty": 2
   },
@@ -21539,13 +21553,14 @@
     "query": {
       "ref_sub": "誰知道只是饅頭",
       "target_subs": [
+        "点",
         "知净",
         "系",
         "得馒头。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "知净系得馒头。"
+      "target_sub_punctuated": "点知净系得馒头。"
     },
     "difficulty": 2
   },
@@ -21655,25 +21670,26 @@
         "你个",
         "身",
         "交",
-        "俾"
+        "俾",
+        "我。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "臭仔，将你个身交俾"
+      "target_sub_punctuated": "臭仔，将你个身交俾我。"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "你說甚麼？",
       "target_subs": [
-        "我。讲",
+        "讲",
         "嘢",
         "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我。讲嘢啊！"
+      "target_sub_punctuated": "讲嘢啊！"
     },
     "difficulty": 2
   },
@@ -21696,11 +21712,12 @@
       "target_subs": [
         "系",
         "啊，苏",
-        "乞儿"
+        "乞儿",
+        "啊，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系啊，苏乞儿"
+      "target_sub_punctuated": "系啊，苏乞儿啊，"
     },
     "difficulty": 2
   },
@@ -21708,7 +21725,7 @@
     "query": {
       "ref_sub": "蘇乞兒？你不是在乞丐窩裡睡覺嗎",
       "target_subs": [
-        "啊，苏",
+        "苏",
         "乞儿，",
         "你",
         "唔",
@@ -21723,7 +21740,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊，苏乞儿，你唔系喺乞衣窦度瞓觉嘅咩？"
+      "target_sub_punctuated": "苏乞儿，你唔系喺乞衣窦度瞓觉嘅咩？"
     },
     "difficulty": 2
   },
@@ -21783,19 +21800,19 @@
         "加",
         "入",
         "我",
-        "哋丐帮？",
-        "哼，"
+        "哋丐帮？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "有冇兴趣加入我哋丐帮？哼，"
+      "target_sub_punctuated": "有冇兴趣加入我哋丐帮？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "想不到你這條臭死魚都可以復活",
       "target_subs": [
+        "哼，",
         "估",
         "唔",
         "到",
@@ -21808,7 +21825,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "估唔到呢条死蛇烂鳝都会翻生，"
+      "target_sub_punctuated": "哼，估唔到呢条死蛇烂鳝都会翻生，"
     },
     "difficulty": 2
   },
@@ -21909,11 +21926,11 @@
         "掌",
         "第",
         "七",
-        "式，飞龙"
+        "式，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "降龙十八掌第七式，飞龙"
+      "target_sub_punctuated": "降龙十八掌第七式，"
     },
     "difficulty": 2
   },
@@ -21921,12 +21938,13 @@
     "query": {
       "ref_sub": "飛龍在天",
       "target_subs": [
+        "飞龙",
         "在",
         "天，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "在天，"
+      "target_sub_punctuated": "飞龙在天，"
     },
     "difficulty": 2
   },
@@ -21949,11 +21967,11 @@
       "target_subs": [
         "黑龙",
         "偷",
-        "心，双龙"
+        "心，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "黑龙偷心，双龙"
+      "target_sub_punctuated": "黑龙偷心，"
     },
     "difficulty": 2
   },
@@ -21961,27 +21979,31 @@
     "query": {
       "ref_sub": "雙龍出海，戰龍在田",
       "target_subs": [
+        "双龙",
         "出",
         "海，见龙",
-        "在"
+        "在",
+        "田，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "出海，见龙在"
+      "target_sub_punctuated": "双龙出海，见龙在田，"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "龍飛鳳舞，伏虎降龍⋯",
       "target_subs": [
-        "田，龙飞凤",
+        "龙飞凤",
         "舞，",
-        "伏"
+        "伏",
+        "波",
+        "卧龙，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "田，龙飞凤舞，伏"
+      "target_sub_punctuated": "龙飞凤舞，伏波卧龙，"
     },
     "difficulty": 2
   },
@@ -21989,15 +22011,15 @@
     "query": {
       "ref_sub": "⋯縮龍成寸，龍蛇混雜",
       "target_subs": [
-        "波",
-        "卧龙，缩龙",
+        "缩龙",
         "成",
         "寸，龙",
-        "蛇"
+        "蛇",
+        "混杂，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "波卧龙，缩龙成寸，龙蛇"
+      "target_sub_punctuated": "缩龙成寸，龙蛇混杂，"
     },
     "difficulty": 2
   },
@@ -22005,14 +22027,15 @@
     "query": {
       "ref_sub": "龍的傳人龍鳳呈祥⋯",
       "target_subs": [
-        "混杂，龙",
+        "龙",
         "的传",
         "人，龙凤",
-        "呈"
+        "呈",
+        "祥，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "混杂，龙的传人，龙凤呈"
+      "target_sub_punctuated": "龙的传人，龙凤呈祥，"
     },
     "difficulty": 2
   },
@@ -22020,7 +22043,7 @@
     "query": {
       "ref_sub": "⋯龍馬精神，望夫成龍⋯",
       "target_subs": [
-        "祥，龙马",
+        "龙马",
         "精",
         "神，",
         "望",
@@ -22029,7 +22052,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "祥，龙马精神，望夫成龙，"
+      "target_sub_punctuated": "龙马精神，望夫成龙，"
     },
     "difficulty": 2
   },
@@ -22079,12 +22102,11 @@
         "第",
         "十",
         "八",
-        "掌，",
-        "一"
+        "掌，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "如果你学埋第十八掌，一"
+      "target_sub_punctuated": "如果你学埋第十八掌，"
     },
     "difficulty": 2
   },
@@ -22092,6 +22114,7 @@
     "query": {
       "ref_sub": "就一定可以打贏我",
       "target_subs": [
+        "一",
         "定",
         "可",
         "以",
@@ -22100,7 +22123,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "定可以打赢我。"
+      "target_sub_punctuated": "一定可以打赢我。"
     },
     "difficulty": 2
   },
@@ -22149,12 +22172,11 @@
         "融",
         "合",
         "埋",
-        "一齐",
-        "就"
+        "一齐"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我谂到啦，原来头十七掌融合埋一齐就"
+      "target_sub_punctuated": "我谂到啦，原来头十七掌融合埋一齐"
     },
     "difficulty": 1
   },
@@ -22162,6 +22184,7 @@
     "query": {
       "ref_sub": "就是第十八掌",
       "target_subs": [
+        "就",
         "系",
         "第",
         "十",
@@ -22170,7 +22193,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系第十八掌，"
+      "target_sub_punctuated": "就系第十八掌，"
     },
     "difficulty": 2
   },
@@ -22216,19 +22239,19 @@
         "你",
         "冇",
         "事",
-        "啊"
+        "啊",
+        "嘛？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "阿七，你冇事啊"
+      "target_sub_punctuated": "阿七，你冇事啊嘛？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "你看我的姿勢，說有事沒有？",
       "target_subs": [
-        "嘛？",
         "你",
         "睇",
         "我",
@@ -22241,9 +22264,9 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嘛？你睇我姿势，你话我有冇事？"
+      "target_sub_punctuated": "你睇我姿势，你话我有冇事？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -22292,12 +22315,11 @@
         "乜",
         "事",
         "都",
-        "冇，",
-        "今"
+        "冇，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "好啦，乜事都冇，今"
+      "target_sub_punctuated": "好啦，乜事都冇，"
     },
     "difficulty": 2
   },
@@ -22305,6 +22327,7 @@
     "query": {
       "ref_sub": "今天晚上洞房都沒問題",
       "target_subs": [
+        "今",
         "晚",
         "洞",
         "房",
@@ -22315,7 +22338,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "晚洞房都仲得啊！"
+      "target_sub_punctuated": "今晚洞房都仲得啊！"
     },
     "difficulty": 2
   },
@@ -22328,11 +22351,12 @@
         "你",
         "冇",
         "嘢",
-        "啊"
+        "啊",
+        "嘛？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嗨，你冇嘢啊"
+      "target_sub_punctuated": "嗨，你冇嘢啊嘛？"
     },
     "difficulty": 2
   },
@@ -22340,12 +22364,12 @@
     "query": {
       "ref_sub": "趙無極呢",
       "target_subs": [
-        "嘛？赵无极",
+        "赵无极",
         "咧？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嘛？赵无极咧？"
+      "target_sub_punctuated": "赵无极咧？"
     },
     "difficulty": 2
   },
@@ -22406,32 +22430,23 @@
         "烟尘，",
         "咁",
         "沙尘，",
-        "c"
+        "c",
+        "h",
+        "i",
+        "l",
+        "l！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊，化为烟尘，咁沙尘，c"
+      "target_sub_punctuated": "啊，化为烟尘，咁沙尘，chill！"
     },
     "difficulty": 2
   },
   {
     "query": {
-      "ref_sub": "報告幫主",
-      "target_subs": [
-        "h",
-        "i"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "hi"
-    }
-  },
-  {
-    "query": {
       "ref_sub": "趙無極的人馬都給我們捉住",
       "target_subs": [
-        "l",
-        "l！报",
+        "报",
         "告帮",
         "主，赵无极𠮶",
         "只马",
@@ -22445,7 +22460,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "ll！报告帮主，赵无极𠮶只马都俾我哋捉住啦。"
+      "target_sub_punctuated": "报告帮主，赵无极𠮶只马都俾我哋捉住啦。"
     },
     "difficulty": 2
   },
@@ -22479,11 +22494,12 @@
         "哋",
         "之间",
         "仲",
-        "有个协议"
+        "有个协议",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "小霞，你记唔记得我哋之间仲有个协议"
+      "target_sub_punctuated": "小霞，你记唔记得我哋之间仲有个协议啊？"
     },
     "difficulty": 2
   },
@@ -22491,7 +22507,7 @@
     "query": {
       "ref_sub": "記得！一人之下！萬人之上",
       "target_subs": [
-        "啊？记",
+        "记",
         "得，",
         "一",
         "人",
@@ -22499,11 +22515,11 @@
         "下，万",
         "人",
         "之",
-        "上，盖"
+        "上，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？记得，一人之下，万人之上，盖"
+      "target_sub_punctuated": "记得，一人之下，万人之上，"
     },
     "difficulty": 2
   },
@@ -22511,6 +22527,7 @@
     "query": {
       "ref_sub": "蓋世武功！狀元之才",
       "target_subs": [
+        "盖",
         "世",
         "武",
         "功，状",
@@ -22520,7 +22537,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "世武功，状元之才。"
+      "target_sub_punctuated": "盖世武功，状元之才。"
     },
     "difficulty": 2
   },
@@ -22668,11 +22685,11 @@
         "似",
         "唔",
         "得",
-        "嘅。听"
+        "嘅。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你做黑衣好，睇你个样好似唔得嘅。听"
+      "target_sub_punctuated": "你做黑衣好，睇你个样好似唔得嘅。"
     },
     "difficulty": 2
   },
@@ -22680,14 +22697,15 @@
     "query": {
       "ref_sub": "明天到城隍廟報到",
       "target_subs": [
+        "听",
         "日",
         "去",
         "城隍庙报",
-        "道。嗯，"
+        "道。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "日去城隍庙报道。嗯，"
+      "target_sub_punctuated": "听日去城隍庙报道。"
     },
     "difficulty": 2
   },
@@ -22695,6 +22713,7 @@
     "query": {
       "ref_sub": "有事報我的名字就行",
       "target_subs": [
+        "嗯，",
         "有",
         "咩",
         "事",
@@ -22704,7 +22723,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "有咩事打我档啦。"
+      "target_sub_punctuated": "嗯，有咩事打我档啦。"
     },
     "difficulty": 2
   },
@@ -22715,19 +22734,20 @@
         "多谢帮",
         "主，",
         "多谢帮",
-        "主关"
+        "主关",
+        "照。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "多谢帮主，多谢帮主关"
+      "target_sub_punctuated": "多谢帮主，多谢帮主关照。"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "蘇燦，你有甚麼要求？",
       "target_subs": [
-        "照。苏灿，",
+        "苏灿，",
         "你",
         "有",
         "啲",
@@ -22737,9 +22757,9 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "照。苏灿，你有啲咩要求？"
+      "target_sub_punctuated": "苏灿，你有啲咩要求？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -22781,18 +22801,20 @@
       "target_subs": [
         "扶",
         "起",
-        "我"
+        "我",
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "扶起我"
-    }
+      "target_sub_punctuated": "扶起我啊！"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "蘇英雄！蘇英雄",
       "target_subs": [
-        "啊！诶，苏",
+        "诶，苏",
         "英",
         "雄，苏",
         "英",
@@ -22800,7 +22822,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊！诶，苏英雄，苏英雄，"
+      "target_sub_punctuated": "诶，苏英雄，苏英雄，"
     },
     "difficulty": 2
   },
@@ -22892,19 +22914,20 @@
         "唔",
         "系",
         "仲养",
-        "眼"
+        "眼",
+        "啊。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "踎就唔好乱喐啦，唔系仲养眼"
+      "target_sub_punctuated": "踎就唔好乱喐啦，唔系仲养眼啊。"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "ref_sub": "其實我跟你沒醪沒轕",
       "target_subs": [
-        "啊。嗯，",
+        "嗯，",
         "其实",
         "我",
         "同",
@@ -22916,7 +22939,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊。嗯，其实我同你冇啦冇掕，"
+      "target_sub_punctuated": "嗯，其实我同你冇啦冇掕，"
     },
     "difficulty": 2
   },
@@ -22966,19 +22989,20 @@
         "叫",
         "我点",
         "安",
-        "心"
+        "心",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你一人唔解散，叫我点安心"
+      "target_sub_punctuated": "你一人唔解散，叫我点安心啊？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "丐幫有多少弟子不是由我決定",
       "target_subs": [
-        "啊？丐帮",
+        "丐帮",
         "有几",
         "多",
         "乞",
@@ -22991,7 +23015,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？丐帮有几多乞衣，唔系由我决定，"
+      "target_sub_punctuated": "丐帮有几多乞衣，唔系由我决定，"
     },
     "difficulty": 2
   },
@@ -23057,30 +23081,31 @@
         "人",
         "做",
         "乞",
-        "衣"
+        "衣",
+        "咩？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "揾鬼得人做乞衣"
+      "target_sub_punctuated": "揾鬼得人做乞衣咩？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "有道理，有道理　　好自為之吧",
       "target_subs": [
-        "咩？",
         "有",
         "道",
         "理，",
         "有",
         "道",
         "理，执",
-        "生"
+        "生",
+        "啊。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咩？有道理，有道理，执生"
+      "target_sub_punctuated": "有道理，有道理，执生啊。"
     },
     "difficulty": 2
   },
@@ -23088,14 +23113,14 @@
     "query": {
       "ref_sub": "不過",
       "target_subs": [
-        "啊。诶，",
+        "诶，",
         "不过",
         "咁",
         "啊，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊。诶，不过咁啊，"
+      "target_sub_punctuated": "诶，不过咁啊，"
     },
     "difficulty": 2
   },
@@ -23143,13 +23168,25 @@
         "皇",
         "上",
         "吉",
-        "祥，万岁万万岁。",
+        "祥，"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "皇上吉祥，"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "萬歲萬萬歲　　平身",
+      "target_subs": [
+        "万岁万万岁。",
         "唔",
         "使。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "皇上吉祥，万岁万万岁。唔使。"
+      "target_sub_punctuated": "万岁万万岁。唔使。"
     },
     "difficulty": 2
   },
@@ -23199,11 +23236,12 @@
         "嚟",
         "博",
         "同",
-        "情"
+        "情",
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "孭埋个女嚟博同情"
+      "target_sub_punctuated": "孭埋个女嚟博同情啊！"
     },
     "difficulty": 2
   },
@@ -23211,18 +23249,16 @@
     "query": {
       "ref_sub": "是！施捨點吧",
       "target_subs": [
-        "啊！",
         "系",
         "啦，",
         "施",
         "舍",
         "下",
-        "啦。",
-        "做"
+        "啦。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊！系啦，施舍下啦。做"
+      "target_sub_punctuated": "系啦，施舍下啦。"
     },
     "difficulty": 2
   },
@@ -23230,6 +23266,7 @@
     "query": {
       "ref_sub": "乞丐就是不給！快滾",
       "target_subs": [
+        "做",
         "乞",
         "衣",
         "唔",
@@ -23240,7 +23277,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "乞衣唔俾噶，过主啊！"
+      "target_sub_punctuated": "做乞衣唔俾噶，过主啊！"
     },
     "difficulty": 2
   },
@@ -23302,12 +23339,11 @@
         "走",
         "你",
         "走",
-        "啊！",
-        "唉，"
+        "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔好搞，走你走啊！唉，"
+      "target_sub_punctuated": "唔好搞，走你走啊！"
     },
     "difficulty": 2
   },
@@ -23315,13 +23351,14 @@
     "query": {
       "ref_sub": "怕了你",
       "target_subs": [
+        "唉，",
         "怕",
         "你",
         "啊！"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "怕你啊！"
+      "target_sub_punctuated": "唉，怕你啊！"
     },
     "difficulty": 2
   },
@@ -23345,14 +23382,25 @@
       "target_subs": [
         "今",
         "次点",
-        "啊？",
+        "啊？"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "今次点啊？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "還有一家大小的！給多點",
+      "target_subs": [
         "我"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "今次点啊？我"
+      "target_sub_punctuated": "我"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -23379,11 +23427,12 @@
         "哋",
         "仲",
         "唔",
-        "多谢"
+        "多谢",
+        "啊？"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "系咯，你哋仲唔多谢"
+      "target_sub_punctuated": "系咯，你哋仲唔多谢啊？"
     },
     "difficulty": 2
   },
@@ -23391,17 +23440,12 @@
     "query": {
       "ref_sub": "謝謝",
       "target_subs": [
-        "啊？",
         "多谢",
-        "晒，",
-        "快",
-        "啲",
-        "食",
-        "啦，"
+        "晒，"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "啊？多谢晒，快啲食啦，"
+      "target_sub_punctuated": "多谢晒，"
     },
     "difficulty": 2
   },
@@ -23412,12 +23456,16 @@
         "快",
         "啲",
         "食",
+        "啦，",
+        "快",
+        "啲",
+        "食",
         "啦",
         "吓。"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "快啲食啦吓。"
+      "target_sub_punctuated": "快啲食啦，快啲食啦吓。"
     },
     "difficulty": 2
   }
