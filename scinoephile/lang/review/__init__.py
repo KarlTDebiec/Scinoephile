@@ -3,5 +3,5 @@
 """Code for reviewing subtitles with or without guide subtitles.
 
 Package hierarchy (modules may import from any above):
-* guided / standard
+* guided / multi / standard
 """

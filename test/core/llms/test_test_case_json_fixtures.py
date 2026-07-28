@@ -18,6 +18,7 @@ from scinoephile.core.llms.utils import (
 from scinoephile.llms.delineation import DelineationManager
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
+from scinoephile.llms.multi_review import MultiReviewManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
 from scinoephile.llms.punctuation import PunctuationManager
 from scinoephile.llms.review import ReviewManager
@@ -34,6 +35,7 @@ _TEST_CASE_FAMILIES: tuple[tuple[str, type[Manager]], ...] = (
     ("*/output/*_transcribe/**/json/delineation-*.json", DelineationManager),
     ("*/output/*_transcribe/**/json/gap_translation-*.json", GapTranslationManager),
     ("*/output/*_transcribe/**/json/guided_review-*.json", GuidedReviewManager),
+    ("*/output/*_transcribe/json/multi_review.json", MultiReviewManager),
     ("*/output/*_transcribe/**/json/punctuation-*.json", PunctuationManager),
 )
 
@@ -130,5 +132,5 @@ def test_tracked_test_case_json_inventory_is_complete():
         for input_path, _ in _TEST_CASE_FILES
     )
 
-    assert len(_TEST_CASE_FILES) == 100
-    assert test_case_count == 52_674
+    assert len(_TEST_CASE_FILES) == 105
+    assert test_case_count == 54_653

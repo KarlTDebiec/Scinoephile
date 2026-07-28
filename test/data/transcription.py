@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Iterator, Mapping
 from contextlib import contextmanager
 from logging import WARNING, Filter, LogRecord, getLogger
 from pathlib import Path
@@ -17,13 +17,17 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.workflows.helpers import resolve_language
-from scinoephile.workflows.review import review_series_guided
+from scinoephile.workflows.review import review_series_guided, review_series_multi
 from scinoephile.workflows.transcription import transcribe_series_guided
 from scinoephile.workflows.translation import translate_series_gaps
 
 from .helpers import load_or_clean_series, load_or_traditionalize_series
 
-__all__ = ["get_reference_for_guide_blocks", "process_transcription"]
+__all__ = [
+    "get_reference_for_guide_blocks",
+    "process_transcription",
+    "process_transcription_multi_review",
+]
 
 logger = getLogger(__name__)
 
@@ -252,6 +256,70 @@ def process_transcription(
     )
     logger.info(f"Saved transcription output under {output_dir_path}")
     return translated
+
+
+def process_transcription_multi_review(
+    source_paths: Mapping[str, Path],
+    guide_path: Path,
+    output_path: Path,
+    *,
+    reference_path: Path,
+    language: Language,
+    guide_language: Language,
+    stop_at_idx: int | None = None,
+    additional_context: str | None = None,
+    reviewer_kw: dict[str, Any] | None = None,
+    overwrite: bool = False,
+) -> Series:
+    """Review multiple transcription outputs into one guide-timed series.
+
+    Arguments:
+        source_paths: named paths to equal-status transcription sources
+        guide_path: complete guide subtitle path
+        output_path: path where the multi-reviewed series is written
+        reference_path: expected transcription used only to compute CER
+        language: language of transcription sources and output
+        guide_language: language of guide subtitles
+        stop_at_idx: exclusive guide block index at which to stop processing
+        additional_context: additional context included in the LLM prompt
+        reviewer_kw: additional keyword arguments for `review_series_multi`
+        overwrite: whether to overwrite an existing output
+    Returns:
+        multi-reviewed subtitle series
+    """
+    if output_path.exists() and not overwrite:
+        return Series.load(output_path)
+
+    sources = {
+        source_name: Series.load(source_path)
+        for source_name, source_path in source_paths.items()
+    }
+    guide = Series.load(guide_path)
+    reference = Series.load(reference_path)
+    evaluation_reference = get_reference_for_guide_blocks(reference, guide, stop_at_idx)
+
+    reviewer_kw = dict(reviewer_kw or {})
+    reviewer_kw.setdefault(
+        "test_case_path", output_path.parent / "json" / "multi_review.json"
+    )
+    if additional_context is not None:
+        reviewer_kw.setdefault("additional_context", additional_context)
+    reviewed = review_series_multi(
+        sources,
+        guide,
+        language=language,
+        guide_language=guide_language,
+        stop_at_idx=stop_at_idx,
+        **reviewer_kw,
+    )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    reviewed.save(output_path)
+    logger.info(
+        f"{language.code} transcription CER after multi-review:\n"
+        f"{SeriesCER(evaluation_reference, reviewed)}"
+    )
+    logger.info(f"Saved multi-reviewed transcription to {output_path}")
+    return reviewed
 
 
 def _load_or_review_series_guided(

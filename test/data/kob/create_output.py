@@ -20,7 +20,10 @@ from scinoephile.lang.transcription.transcriber import TranscriptionBackend
 from test.data.ocr import process_ocr
 from test.data.srt import process_srt
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
-from test.data.transcription import process_transcription
+from test.data.transcription import (
+    process_transcription,
+    process_transcription_multi_review,
+)
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -76,8 +79,9 @@ actions = {
     # "zho-Hans_eng",
     # "yue-Hans_eng",
     # "yue-Hant_transcribe-whisper",
-    "yue-Hant_transcribe-mimo",
-    "yue-Hant_transcribe-qwen",
+    # "yue-Hant_transcribe-mimo",
+    # "yue-Hant_transcribe-qwen",
+    "yue-Hant_transcribe-multi-review"
     # "yue-Hant_diff",
 }
 
@@ -159,6 +163,24 @@ for transcription_name, (
         transcription_kw=transcription_kw,
         run_traditionalize=True,
         run_review_and_translation=run_review_and_translation,
+        overwrite=True,
+    )
+if "yue-Hant_transcribe-multi-review" in actions:
+    process_transcription_multi_review(
+        {
+            transcription_name: yue_hant_transcribe_path
+            / transcription_name
+            / "transcribe_clean_traditionalize.srt"
+            for transcription_name in ("whisper", "mimo", "qwen")
+        },
+        zho_hant_guide_path,
+        yue_hant_transcribe_path / "multi_review.srt",
+        reference_path=yue_hant_path / "clean_review_flatten_timewarp.srt",
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        stop_at_idx=10,
+        additional_context=transcription_additional_context,
+        reviewer_kw={"prune_test_cases": True},
         overwrite=True,
     )
 if "yue-Hant_diff" in actions:

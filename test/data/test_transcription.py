@@ -38,6 +38,59 @@ def test_get_reference_for_guide_blocks_limits_reference_prefix():
     assert [subtitle.text for subtitle in limited] == ["甲", "乙"]
 
 
+def test_process_transcription_multi_review_uses_root_json_cache(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Load named sources and store the aggregate cache beside model directories.
+
+    Arguments:
+        tmp_path: temporary pipeline directory
+        monkeypatch: pytest monkeypatch fixture
+    """
+    source_paths = {
+        "whisper": tmp_path / "whisper.srt",
+        "mimo": tmp_path / "mimo.srt",
+        "qwen": tmp_path / "qwen.srt",
+    }
+    guide_path = tmp_path / "guide.srt"
+    reference_path = tmp_path / "reference.srt"
+    output_path = tmp_path / "yue-Hant_transcribe" / "multi_review.srt"
+    for source_idx, source_path in enumerate(source_paths.values(), 1):
+        Series(events=[Subtitle(start=0, end=1_000, text=f"來源{source_idx}")]).save(
+            source_path
+        )
+    guide = Series(events=[Subtitle(start=0, end=1_000, text="指引")])
+    guide.save(guide_path)
+    guide.save(reference_path)
+    reviewed = Series(events=[Subtitle(start=0, end=1_000, text="綜合")])
+    review = Mock(return_value=reviewed)
+    monkeypatch.setattr(transcription_data, "review_series_multi", review)
+
+    output = transcription_data.process_transcription_multi_review(
+        source_paths,
+        guide_path,
+        output_path,
+        reference_path=reference_path,
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        stop_at_idx=5,
+        additional_context="Film context",
+        overwrite=True,
+    )
+
+    assert output is reviewed
+    assert Series.load(output_path) == reviewed
+    assert set(review.call_args.args[0]) == {"whisper", "mimo", "qwen"}
+    assert review.call_args.args[1] == guide
+    assert review.call_args.kwargs == {
+        "language": Language.yue_hant,
+        "guide_language": Language.zho_hant,
+        "stop_at_idx": 5,
+        "test_case_path": output_path.parent / "json" / "multi_review.json",
+        "additional_context": "Film context",
+    }
+
+
 @mark.parametrize(
     ("language", "guide_language", "detected_language", "expected_log_level"),
     [
