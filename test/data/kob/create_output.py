@@ -178,7 +178,6 @@ if "yue-Hant_transcribe-multi-review" in actions:
         reference_path=yue_hant_path / "clean_review_flatten_timewarp.srt",
         language=Language.yue_hant,
         guide_language=Language.zho_hant,
-        stop_at_idx=10,
         additional_context=transcription_additional_context,
         reviewer_kw={"prune_test_cases": True},
         overwrite=True,
