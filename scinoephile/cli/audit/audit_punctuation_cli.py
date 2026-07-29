@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
+from typing import cast
 
 from scinoephile.analysis.audit.punctuation import (
     PunctuationAuditFilter,
@@ -14,7 +15,11 @@ from scinoephile.analysis.audit.punctuation import (
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core import ScinoephileError
-from scinoephile.llms.punctuation import PunctuationManager
+from scinoephile.llms.block_punctuation import (
+    BlockPunctuationManager,
+    BlockPunctuationTestCase,
+)
+from scinoephile.llms.punctuation import PunctuationManager, PunctuationTestCase
 
 from .audit_cli_base import AuditCliBase
 
@@ -156,8 +161,14 @@ class AuditPunctuationCli(AuditCliBase):
         # Read inputs
         reference = read_series(parser, reference_path)
         target = read_series(parser, target_path)
-        test_cases = cls.load_test_cases(
-            parser, json_path, PunctuationManager, workflow_name="punctuation"
+        test_cases = cast(
+            "list[PunctuationTestCase | BlockPunctuationTestCase]",
+            cls.load_test_cases_for_managers(
+                parser,
+                json_path,
+                (PunctuationManager, BlockPunctuationManager),
+                workflow_name="punctuation",
+            ),
         )
 
         # Perform operation

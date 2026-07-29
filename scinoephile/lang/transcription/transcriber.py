@@ -27,8 +27,14 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
 
 from .aligner import TranscriptionAligner
+from .block_aligner import BlockTranscriptionAligner
 
-__all__ = ["GuidedTranscriber", "TranscribedSegmentSplitter", "TranscriptionBackend"]
+__all__ = [
+    "GuidedTranscriber",
+    "TranscribedSegmentSplitter",
+    "TranscriptionAlignmentMode",
+    "TranscriptionBackend",
+]
 
 
 TranscribedSegmentSplitter = Callable[[TranscribedSegment], list[TranscribedSegment]]
@@ -70,6 +76,15 @@ class TranscriptionBackend(StrEnum):
     """Transcribe using MLX-Audio."""
 
 
+class TranscriptionAlignmentMode(StrEnum):
+    """LLM query granularity used to align and punctuate transcription."""
+
+    PAIRWISE = "pairwise"
+    """Use adjacent-pair delineation and per-subtitle punctuation queries."""
+    BLOCK = "block"
+    """Use one delineation and one punctuation query per populated audio block."""
+
+
 class GuidedTranscriber:
     """Transcribe audio and align it with reference subtitles."""
 
@@ -80,7 +95,7 @@ class GuidedTranscriber:
         guide_language: Language,
         model_name: str,
         whisper_language: str,
-        aligner: TranscriptionAligner,
+        aligner: TranscriptionAligner | BlockTranscriptionAligner,
         backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
         demucs_mode: DemucsMode = DemucsMode.AUTO,
         vad_mode: VADMode = VADMode.AUTO,

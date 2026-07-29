@@ -12,11 +12,62 @@ from scinoephile.analysis.audit.delineation import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.llms.block_delineation import (
+    BlockDelineationAnswer,
+    BlockDelineationQuery,
+    BlockDelineationSubtitle,
+    BlockDelineationTestCase,
+)
 from scinoephile.llms.delineation import (
     DelineationAnswer,
     DelineationQuery,
     DelineationTestCase,
 )
+
+
+def test_audit_delineation_expands_sparse_block_changes():
+    """Test sparse block changes expand into familiar adjacent-boundary rows."""
+    reference = _get_series("參考一", "參考二", "參考三")
+    test_case = BlockDelineationTestCase(
+        query=BlockDelineationQuery(
+            guides=[
+                BlockDelineationSubtitle(index=1, text="參考一"),
+                BlockDelineationSubtitle(index=2, text="參考二"),
+                BlockDelineationSubtitle(index=3, text="參考三"),
+            ],
+            targets=[
+                BlockDelineationSubtitle(index=1, text="甲乙"),
+                BlockDelineationSubtitle(index=2, text="丙"),
+                BlockDelineationSubtitle(index=3, text="丁"),
+            ],
+        ),
+        answer=BlockDelineationAnswer(
+            changes=[
+                BlockDelineationSubtitle(index=1, text="甲"),
+                BlockDelineationSubtitle(index=2, text="乙丙"),
+            ]
+        ),
+        verified=True,
+    )
+
+    report = audit_delineation(reference, (test_case,))
+    ranged_report = audit_delineation(
+        reference,
+        (test_case,),
+        row_filter=DelineationAuditFilter.changes,
+        first_index=2,
+        last_index=3,
+    )
+
+    assert "- logged cases: 2" in report
+    assert "- boundary shifts: 2" in report
+    assert "- no-shift answers: 0" in report
+    assert "| 1<br>2 | 參考一<br>參考二 | 甲乙<br>丙 | 甲<br>乙丙 |  | ✓ |" in report
+    assert "| 2<br>3 | 參考二<br>參考三 | 丙<br>丁 | 乙丙<br>丁 |  | ✓ |" in report
+    assert "- reference subtitle range: 2 through 3" in ranged_report
+    assert "- table rows: 1" in ranged_report
+    assert "| 1<br>2 |" not in ranged_report
+    assert "| 2<br>3 |" in ranged_report
 
 
 def test_audit_delineation_formats_shift_and_no_shift_rows():

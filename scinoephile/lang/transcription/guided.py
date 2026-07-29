@@ -21,12 +21,26 @@ from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.paths import get_runtime_data_root_path
 from scinoephile.lang.yue_zho.transcription import (
+    YueZhoBlockDelineationPromptYueHans,
+    YueZhoBlockDelineationPromptYueHant,
+    YueZhoBlockPunctuationPromptYueHans,
+    YueZhoBlockPunctuationPromptYueHant,
     YueZhoDelineationPromptYueHans,
     YueZhoDelineationPromptYueHant,
     YueZhoPunctuationPromptYueHans,
     YueZhoPunctuationPromptYueHant,
 )
 from scinoephile.llms import load_default_test_cases
+from scinoephile.llms.block_delineation import (
+    BlockDelineationManager,
+    BlockDelineationProcessor,
+    BlockDelineationPrompt,
+)
+from scinoephile.llms.block_punctuation import (
+    BlockPunctuationManager,
+    BlockPunctuationProcessor,
+    BlockPunctuationPrompt,
+)
 from scinoephile.llms.delineation import (
     DelineationManager,
     DelineationProcessor,
@@ -40,9 +54,11 @@ from scinoephile.llms.punctuation import (
 )
 
 from .aligner import TranscriptionAligner
+from .block_aligner import BlockTranscriptionAligner
 from .transcriber import (
     GuidedTranscriber,
     TranscribedSegmentSplitter,
+    TranscriptionAlignmentMode,
     TranscriptionBackend,
 )
 
@@ -133,6 +149,10 @@ class GuidedTranscriptionSpec:
 
     language_spec: TranscriptionLanguageSpec
     """Configuration for the transcription language."""
+    block_delineation_prompt: BlockDelineationPrompt
+    """Prompt for moving target text across a complete guide block."""
+    block_punctuation_prompt: BlockPunctuationPrompt
+    """Prompt for punctuating target text across a complete guide block."""
     delineation_prompt: DelineationPrompt
     """Prompt for moving transcription text between reference subtitles."""
     punctuation_prompt: PunctuationPrompt
@@ -143,10 +163,16 @@ class GuidedTranscriptionSpec:
     """Bundled delineation test-case JSON paths."""
     punctuation_json_paths: tuple[Path, ...] = ()
     """Bundled punctuation test-case JSON paths."""
+    block_delineation_json_paths: tuple[Path, ...] = ()
+    """Bundled block-delineation test-case JSON paths."""
+    block_punctuation_json_paths: tuple[Path, ...] = ()
+    """Bundled block-punctuation test-case JSON paths."""
 
 
 _YUE_HANS_SPEC = GuidedTranscriptionSpec(
     language_spec=_YUE_LANGUAGE_SPEC,
+    block_delineation_prompt=YueZhoBlockDelineationPromptYueHans,
+    block_punctuation_prompt=YueZhoBlockPunctuationPromptYueHans,
     delineation_prompt=YueZhoDelineationPromptYueHans,
     punctuation_prompt=YueZhoPunctuationPromptYueHans,
     test_case_dir_path=Path("lang/yue_zho/transcription"),
@@ -157,6 +183,8 @@ _YUE_HANS_SPEC = GuidedTranscriptionSpec(
 
 _YUE_HANT_SPEC = GuidedTranscriptionSpec(
     language_spec=_YUE_LANGUAGE_SPEC,
+    block_delineation_prompt=YueZhoBlockDelineationPromptYueHant,
+    block_punctuation_prompt=YueZhoBlockPunctuationPromptYueHant,
     delineation_prompt=YueZhoDelineationPromptYueHant,
     punctuation_prompt=YueZhoPunctuationPromptYueHant,
     test_case_dir_path=Path("lang/yue_zho/transcription"),
@@ -192,11 +220,19 @@ def get_guided_transcriber(
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     no_op: bool = False,
+    alignment_mode: TranscriptionAlignmentMode = TranscriptionAlignmentMode.PAIRWISE,
+    fallback_to_no_op: bool = False,
     prune_test_cases: bool = False,
+    block_delineation_prompt: BlockDelineationPrompt | None = None,
+    block_punctuation_prompt: BlockPunctuationPrompt | None = None,
     delineation_prompt: DelineationPrompt | None = None,
     punctuation_prompt: PunctuationPrompt | None = None,
+    block_delineation_json_path: Path | None = None,
+    block_punctuation_json_path: Path | None = None,
     delineation_json_path: Path | None = None,
     punctuation_json_path: Path | None = None,
+    block_delineation_test_cases: list[TestCase] | None = None,
+    block_punctuation_test_cases: list[TestCase] | None = None,
     delineation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
 ) -> GuidedTranscriber:
@@ -214,11 +250,19 @@ def get_guided_transcriber(
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         no_op: use neutral answers instead of querying an LLM
+        alignment_mode: LLM query granularity for alignment and punctuation
+        fallback_to_no_op: whether invalid block answers fall back to sparse no-op
         prune_test_cases: whether to remove test cases not encountered in this run
+        block_delineation_prompt: block delineation prompt override
+        block_punctuation_prompt: block punctuation prompt override
         delineation_prompt: delineation prompt override
         punctuation_prompt: punctuation prompt override
+        block_delineation_json_path: block-delineation test-case JSON file
+        block_punctuation_json_path: block-punctuation test-case JSON file
         delineation_json_path: delineation test-case JSON file to load and update
         punctuation_json_path: punctuation test-case JSON file to load and update
+        block_delineation_test_cases: preloaded block-delineation test cases
+        block_punctuation_test_cases: preloaded block-punctuation test cases
         delineation_test_cases: preloaded delineation test cases
         punctuation_test_cases: preloaded punctuation test cases
     Returns:
@@ -237,65 +281,46 @@ def get_guided_transcriber(
 
     if model_name is None:
         model_name = language_spec.get_model_name(backend)
-    if delineation_prompt is None:
-        delineation_prompt = spec.delineation_prompt
-    if punctuation_prompt is None:
-        punctuation_prompt = spec.punctuation_prompt
-    if delineation_json_path is None or punctuation_json_path is None:
-        runtime_test_case_dir_path = (
-            get_runtime_data_root_path(create=False)
-            / "test_cases"
-            / spec.test_case_dir_path
-        )
-        device = get_torch_device()
-        if delineation_json_path is None:
-            delineation_json_path = (
-                runtime_test_case_dir_path / "delineation" / f"{device}.json"
-            )
-        if punctuation_json_path is None:
-            punctuation_json_path = (
-                runtime_test_case_dir_path / "punctuation" / f"{device}.json"
-            )
-    if delineation_test_cases is None:
-        delineation_test_cases = list(
-            load_default_test_cases(
-                DelineationManager, delineation_prompt, spec.delineation_json_paths
-            )
-        )
     if provider is None:
         provider = get_provider()
-    delineation_processor = DelineationProcessor(
-        delineation_prompt,
-        test_cases=delineation_test_cases,
-        test_case_path=delineation_json_path,
-        provider=provider,
-        additional_context=additional_context,
-        cache_root_path=cache_root_path,
-        no_op=no_op,
-        overwrite_cache=overwrite_cache,
-        prune_test_cases=prune_test_cases,
-    )
-    if punctuation_test_cases is None:
-        punctuation_test_cases = list(
-            load_default_test_cases(
-                PunctuationManager, punctuation_prompt, spec.punctuation_json_paths
-            )
+
+    if alignment_mode is TranscriptionAlignmentMode.BLOCK:
+        aligner = _get_block_aligner(
+            spec,
+            provider,
+            additional_context=additional_context,
+            cache_root_path=cache_root_path,
+            fallback_to_no_op=fallback_to_no_op,
+            no_op=no_op,
+            overwrite_cache=overwrite_cache,
+            prune_test_cases=prune_test_cases,
+            delineation_prompt=block_delineation_prompt,
+            punctuation_prompt=block_punctuation_prompt,
+            delineation_json_path=block_delineation_json_path,
+            punctuation_json_path=block_punctuation_json_path,
+            delineation_test_cases=block_delineation_test_cases,
+            punctuation_test_cases=block_punctuation_test_cases,
         )
-    punctuation_processor = PunctuationProcessor(
-        punctuation_prompt,
-        test_cases=punctuation_test_cases,
-        test_case_path=punctuation_json_path,
-        provider=provider,
-        additional_context=additional_context,
-        cache_root_path=cache_root_path,
-        no_op=no_op,
-        overwrite_cache=overwrite_cache,
-        prune_test_cases=prune_test_cases,
-    )
-    aligner = TranscriptionAligner(
-        delineation_processor=delineation_processor,
-        punctuation_processor=punctuation_processor,
-    )
+    else:
+        if fallback_to_no_op:
+            raise ValueError(
+                "fallback_to_no_op is supported only with block alignment."
+            )
+        aligner = _get_pairwise_aligner(
+            spec,
+            provider,
+            additional_context=additional_context,
+            cache_root_path=cache_root_path,
+            no_op=no_op,
+            overwrite_cache=overwrite_cache,
+            prune_test_cases=prune_test_cases,
+            delineation_prompt=delineation_prompt,
+            punctuation_prompt=punctuation_prompt,
+            delineation_json_path=delineation_json_path,
+            punctuation_json_path=punctuation_json_path,
+            delineation_test_cases=delineation_test_cases,
+            punctuation_test_cases=punctuation_test_cases,
+        )
 
     # Configure the selected audio transcription backend
     mlx_audio_transcriber = None
@@ -321,4 +346,199 @@ def get_guided_transcriber(
         overwrite_cache=overwrite_cache,
         mlx_audio_transcriber=mlx_audio_transcriber,
         segment_splitter=language_spec.segment_splitter,
+    )
+
+
+def _get_block_aligner(
+    spec: GuidedTranscriptionSpec,
+    provider: LLMProvider,
+    *,
+    additional_context: str | None,
+    cache_root_path: Path | None,
+    fallback_to_no_op: bool,
+    no_op: bool,
+    overwrite_cache: bool,
+    prune_test_cases: bool,
+    delineation_prompt: BlockDelineationPrompt | None,
+    punctuation_prompt: BlockPunctuationPrompt | None,
+    delineation_json_path: Path | None,
+    punctuation_json_path: Path | None,
+    delineation_test_cases: list[TestCase] | None,
+    punctuation_test_cases: list[TestCase] | None,
+) -> BlockTranscriptionAligner:
+    """Configure a block transcription aligner.
+
+    Arguments:
+        spec: guided transcription specification
+        provider: provider to use for LLM queries
+        additional_context: additional context to include in LLM prompts
+        cache_root_path: cache root directory path
+        fallback_to_no_op: whether invalid answers fall back to sparse no-op
+        no_op: use neutral answers instead of querying an LLM
+        overwrite_cache: whether to replace matching generated cache files
+        prune_test_cases: whether to remove unencountered test cases
+        delineation_prompt: block delineation prompt override
+        punctuation_prompt: block punctuation prompt override
+        delineation_json_path: block-delineation test-case JSON file
+        punctuation_json_path: block-punctuation test-case JSON file
+        delineation_test_cases: preloaded block-delineation test cases
+        punctuation_test_cases: preloaded block-punctuation test cases
+    Returns:
+        configured block transcription aligner
+    """
+    if delineation_prompt is None:
+        delineation_prompt = spec.block_delineation_prompt
+    if punctuation_prompt is None:
+        punctuation_prompt = spec.block_punctuation_prompt
+    if delineation_json_path is None or punctuation_json_path is None:
+        runtime_test_case_dir_path = (
+            get_runtime_data_root_path(create=False)
+            / "test_cases"
+            / spec.test_case_dir_path
+        )
+        device = get_torch_device()
+        if delineation_json_path is None:
+            delineation_json_path = (
+                runtime_test_case_dir_path / "block_delineation" / f"{device}.json"
+            )
+        if punctuation_json_path is None:
+            punctuation_json_path = (
+                runtime_test_case_dir_path / "block_punctuation" / f"{device}.json"
+            )
+    if delineation_test_cases is None:
+        delineation_test_cases = list(
+            load_default_test_cases(
+                BlockDelineationManager,
+                delineation_prompt,
+                spec.block_delineation_json_paths,
+            )
+        )
+    if punctuation_test_cases is None:
+        punctuation_test_cases = list(
+            load_default_test_cases(
+                BlockPunctuationManager,
+                punctuation_prompt,
+                spec.block_punctuation_json_paths,
+            )
+        )
+    delineation_processor = BlockDelineationProcessor(
+        delineation_prompt,
+        test_cases=delineation_test_cases,
+        test_case_path=delineation_json_path,
+        provider=provider,
+        additional_context=additional_context,
+        cache_root_path=cache_root_path,
+        no_op=no_op,
+        overwrite_cache=overwrite_cache,
+        prune_test_cases=prune_test_cases,
+    )
+    punctuation_processor = BlockPunctuationProcessor(
+        punctuation_prompt,
+        test_cases=punctuation_test_cases,
+        test_case_path=punctuation_json_path,
+        provider=provider,
+        additional_context=additional_context,
+        cache_root_path=cache_root_path,
+        no_op=no_op,
+        overwrite_cache=overwrite_cache,
+        prune_test_cases=prune_test_cases,
+    )
+    return BlockTranscriptionAligner(
+        delineation_processor,
+        punctuation_processor,
+        fallback_to_no_op=fallback_to_no_op,
+    )
+
+
+def _get_pairwise_aligner(
+    spec: GuidedTranscriptionSpec,
+    provider: LLMProvider,
+    *,
+    additional_context: str | None,
+    cache_root_path: Path | None,
+    no_op: bool,
+    overwrite_cache: bool,
+    prune_test_cases: bool,
+    delineation_prompt: DelineationPrompt | None,
+    punctuation_prompt: PunctuationPrompt | None,
+    delineation_json_path: Path | None,
+    punctuation_json_path: Path | None,
+    delineation_test_cases: list[TestCase] | None,
+    punctuation_test_cases: list[TestCase] | None,
+) -> TranscriptionAligner:
+    """Configure a pairwise transcription aligner.
+
+    Arguments:
+        spec: guided transcription specification
+        provider: provider to use for LLM queries
+        additional_context: additional context to include in LLM prompts
+        cache_root_path: cache root directory path
+        no_op: use neutral answers instead of querying an LLM
+        overwrite_cache: whether to replace matching generated cache files
+        prune_test_cases: whether to remove unencountered test cases
+        delineation_prompt: delineation prompt override
+        punctuation_prompt: punctuation prompt override
+        delineation_json_path: delineation test-case JSON file
+        punctuation_json_path: punctuation test-case JSON file
+        delineation_test_cases: preloaded delineation test cases
+        punctuation_test_cases: preloaded punctuation test cases
+    Returns:
+        configured pairwise transcription aligner
+    """
+    if delineation_prompt is None:
+        delineation_prompt = spec.delineation_prompt
+    if punctuation_prompt is None:
+        punctuation_prompt = spec.punctuation_prompt
+    if delineation_json_path is None or punctuation_json_path is None:
+        runtime_test_case_dir_path = (
+            get_runtime_data_root_path(create=False)
+            / "test_cases"
+            / spec.test_case_dir_path
+        )
+        device = get_torch_device()
+        if delineation_json_path is None:
+            delineation_json_path = (
+                runtime_test_case_dir_path / "delineation" / f"{device}.json"
+            )
+        if punctuation_json_path is None:
+            punctuation_json_path = (
+                runtime_test_case_dir_path / "punctuation" / f"{device}.json"
+            )
+    if delineation_test_cases is None:
+        delineation_test_cases = list(
+            load_default_test_cases(
+                DelineationManager, delineation_prompt, spec.delineation_json_paths
+            )
+        )
+    if punctuation_test_cases is None:
+        punctuation_test_cases = list(
+            load_default_test_cases(
+                PunctuationManager, punctuation_prompt, spec.punctuation_json_paths
+            )
+        )
+    delineation_processor = DelineationProcessor(
+        delineation_prompt,
+        test_cases=delineation_test_cases,
+        test_case_path=delineation_json_path,
+        provider=provider,
+        additional_context=additional_context,
+        cache_root_path=cache_root_path,
+        no_op=no_op,
+        overwrite_cache=overwrite_cache,
+        prune_test_cases=prune_test_cases,
+    )
+    punctuation_processor = PunctuationProcessor(
+        punctuation_prompt,
+        test_cases=punctuation_test_cases,
+        test_case_path=punctuation_json_path,
+        provider=provider,
+        additional_context=additional_context,
+        cache_root_path=cache_root_path,
+        no_op=no_op,
+        overwrite_cache=overwrite_cache,
+        prune_test_cases=prune_test_cases,
+    )
+    return TranscriptionAligner(
+        delineation_processor=delineation_processor,
+        punctuation_processor=punctuation_processor,
     )

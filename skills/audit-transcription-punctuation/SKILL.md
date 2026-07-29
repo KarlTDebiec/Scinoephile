@@ -1,13 +1,14 @@
 ---
 name: audit-transcription-punctuation
-description: Audit Scinoephile transcription punctuation logs by matching JSON guide text and target fragments to reference and punctuated target SRTs, then judging whether punctuation and whitespace are appropriate without assessing transcription accuracy. Use when inspecting punctuation mps.json or cuda.json files, identifying punctuation errors, or verifying corrected punctuation test cases.
+description: Audit Scinoephile pairwise or sparse block transcription punctuation JSON by matching its guides and fixed target text to reference and punctuated target SRTs. Use when inspecting punctuation-*.json, block_punctuation-*.json, legacy mps.json or cuda.json, correcting punctuation, or verifying cases. Do not assess transcription accuracy.
 ---
 
 # Audit Transcription Punctuation
 
-Audit the punctuation and whitespace added to fixed transcription text. Produce a
-Markdown report, inspect every requested row, and record a concise judgment in
-each `Notes` cell.
+Audit the punctuation and whitespace added to fixed transcription text. The
+same CLI automatically recognizes legacy pairwise JSON and sparse block JSON.
+Produce a Markdown report, inspect every requested row, and record a concise
+judgment in each `Notes` cell.
 
 ## Scope
 
@@ -32,10 +33,15 @@ Find these three inputs for the requested dataset:
 
 - the reference or guide SRT used during punctuation
 - the punctuated target SRT, normally `transcribe.srt`
-- the punctuation test-case JSON, normally `mps.json` or `cuda.json`
+- the punctuation test-case JSON, currently often
+  `punctuation-<provider>.json` or `block_punctuation-<provider>.json`, and in
+  older workflows `punctuation/mps.json` or `punctuation/cuda.json`
 
 The target SRT is used only to distinguish repeated reference subtitles. Do not
 use it as evidence that the transcription is accurate.
+
+The CLI auto-detects the JSON shape; do not pass an implementation-mode option
+or use a separate command for block JSON.
 
 ## Generate the report
 
@@ -67,10 +73,13 @@ block bound for an open-ended range.
 | Index | Reference | Input | Output | Notes | Verified |
 |---:|---|---|---|---|:---:|
 
-The Input column stacks the query fragments with `<br>`. Output is blank when
-the answer made no punctuation or whitespace change and `(unanswered)` when no
-answer is present. Verified contains `✓` for verified JSON cases and is otherwise
-blank. Rows are sorted by subtitle index; repeated logged cases remain separate.
+For pairwise JSON, the Input column stacks the query fragments with `<br>`. For
+block JSON, the CLI expands the complete block into one familiar row per guide
+subtitle. Output is blank when the answer made no punctuation or whitespace
+change and `(unanswered)` when no answer is present. Verified contains `✓` for
+verified JSON cases and is otherwise blank. In a block audit, the same
+case-level marker repeats on every expanded row. Rows are sorted by subtitle
+index; repeated logged cases remain separate.
 
 ## Audit every row
 
@@ -105,8 +114,13 @@ than the generated target SRT:
 
 - Correct the punctuation or whitespace output before marking the case
   verified.
-- Mark a case `verified: true` only after auditing the entire punctuation case
-  and correcting its answer where necessary.
+- For pairwise JSON, edit the complete `output` string.
+- For block JSON, keep `answer.changes` sparse: include only changed indexes,
+  store each index's complete replacement text, and remove entries that no
+  longer change anything. After punctuation and whitespace are removed, every
+  replacement must preserve the original characters at that same index.
+- Mark a case `verified: true` only after auditing the entire pairwise case or
+  every row expanded from the block and correcting its answer where necessary.
 - Leave unanswered, unaudited, or partially audited cases unverified.
 
 After corrections, regenerate the punctuated target SRT and downstream

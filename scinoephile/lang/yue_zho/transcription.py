@@ -4,21 +4,157 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
 from functools import partial
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
+from scinoephile.llms.block_delineation import BlockDelineationPrompt
+from scinoephile.llms.block_punctuation import BlockPunctuationPrompt
 from scinoephile.llms.delineation import DelineationPrompt
 from scinoephile.llms.punctuation import PunctuationPrompt
 
 __all__ = [
+    "YueZhoBlockDelineationPromptYueHans",
+    "YueZhoBlockDelineationPromptYueHant",
+    "YueZhoBlockPunctuationPromptYueHans",
+    "YueZhoBlockPunctuationPromptYueHant",
     "YueZhoDelineationPromptYueHans",
     "YueZhoDelineationPromptYueHant",
     "YueZhoPunctuationPromptYueHans",
     "YueZhoPunctuationPromptYueHant",
 ]
+
+
+def _get_prompt_with_pinyin_change_alias[
+    TPrompt: BlockDelineationPrompt | BlockPunctuationPrompt
+](legacy_prompt: TPrompt) -> TPrompt:
+    """Replace the mixed-language sparse-change alias while retaining its cache.
+
+    Arguments:
+        legacy_prompt: predecessor prompt using the mixed-language alias
+    Returns:
+        current prompt using a fully pinyin alias
+    """
+    return replace(
+        legacy_prompt,
+        base_system_prompt=legacy_prompt.base_system_prompt.replace(
+            "yuewen_changes", "yuewen_xiugai"
+        ),
+        changes="yuewen_xiugai",
+        change_indices_err=legacy_prompt.change_indices_err.replace(
+            "yuewen_changes", "yuewen_xiugai"
+        ),
+        change_index_missing_err=legacy_prompt.change_index_missing_err.replace(
+            "yuewen_changes", "yuewen_xiugai"
+        ),
+        target_chars_changed_err_tpl=legacy_prompt.target_chars_changed_err_tpl.replace(
+            "yuewen_changes", "yuewen_xiugai"
+        ),
+        legacy_cache_prompts=(legacy_prompt,),
+    )
+
+
+_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_LEGACY = BlockDelineationPrompt(
+    language=Language.yue_hant,
+    **YUE_HANT_PROMPT_FIELDS,
+    base_system_prompt=dedent_and_compact("""
+        你負責將一整段廣東話口語嘅粵文轉寫，同同一段嘅中文字幕逐條對齊。
+        你會收到完整而有序嘅中文字幕 (zhongwen)，以及根據時間初步分配、
+        索引完全相同嘅粵文字幕 (yuewen_initial)。
+        請參考整段內容，修正粵文字幕之間嘅分界。
+        只喺 yuewen_changes 返回文字需要改動嘅索引；唔需要改嘅索引唔好返回。
+        如果一條字幕改成空白，仍然要明確返回嗰個索引同空字串。
+        一次分界修正通常需要返回分界兩邊所有受影響嘅索引。
+        重組後嘅粵文必須包含 yuewen_initial 全部字符，字符次序亦必須完全相同。
+        唔可以加入、刪除、替換或者重新排序任何字符，包括原有標點同空格。
+        唔好從中文字幕拷貝漢字。
+        如果所有分界都正確，yuewen_changes 返回空列表。"""),
+    guides="zhongwen",
+    guides_desc="同一段完整而有序嘅中文字幕",
+    targets="yuewen_initial",
+    targets_desc="按時間初步分配、索引同中文字幕一致嘅粵文字幕",
+    changes="yuewen_changes",
+    changes_desc="只包含文字需要改動嘅粵文字幕",
+    index="xuhao",
+    index_desc="由1開始嘅中文字幕索引",
+    text="wenben",
+    guide_text_desc="中文字幕文字",
+    target_text_desc="初步分配嘅粵文字幕文字",
+    change_text_desc="呢個索引調整分界後嘅完整粵文字幕文字",
+    guide_indices_err="zhongwen 索引必須由1開始、連續而且依次排列。",
+    target_indices_err="yuewen_initial 索引必須同 zhongwen 索引完全一致。",
+    change_indices_err="yuewen_changes 索引必須唯一而且由細到大排列。",
+    change_index_missing_err=(
+        "yuewen_changes 每個索引都必須對應 zhongwen 入面嘅索引。"
+    ),
+    target_chars_changed_err_tpl=(
+        "套用 yuewen_changes 後嘅整段粵文冇依次保留 yuewen_initial 全部字符：\n"
+        "期望: {expected}\n收到: {received}"
+    ),
+)
+"""Predecessor prompt using the mixed-language sparse-answer alias."""
+
+YueZhoBlockDelineationPromptYueHant = _get_prompt_with_pinyin_change_alias(
+    _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_LEGACY
+)
+"""Text for Traditional Cantonese/Chinese block delineation."""
+
+YueZhoBlockDelineationPromptYueHans = YueZhoBlockDelineationPromptYueHant.transformed(
+    Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
+)
+"""Text for Simplified Cantonese/Chinese block delineation."""
+
+_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_LEGACY = BlockPunctuationPrompt(
+    language=Language.yue_hant,
+    **YUE_HANT_PROMPT_FIELDS,
+    base_system_prompt=dedent_and_compact("""
+        你負責參考一整段中文字幕，為已經逐條對齊嘅粵文字幕補上標點同空格。
+        你會收到完整而有序嘅中文字幕 (zhongwen)，以及索引完全相同、
+        已經確定分界嘅粵文字幕 (yuewen_to_punctuate)。
+        只喺 yuewen_changes 返回標點或者空格需要改動嘅索引；
+        唔需要改嘅索引唔好返回。
+        每個返回項目必須包含嗰個索引完整而加好標點嘅粵文字幕。
+        只可以調整同一個索引入面嘅標點同空格；唔可以喺索引之間移動文字。
+        除咗標點同空格之外，唔可以加入、刪除、替換或者重新排序任何粵文字符。
+        唔好從中文字幕拷貝漢字。
+        如果所有粵文標點都正確，yuewen_changes 返回空列表。"""),
+    guides="zhongwen",
+    guides_desc="同一段完整而有序嘅中文字幕",
+    targets="yuewen_to_punctuate",
+    targets_desc="分界已經確定、索引同中文字幕一致嘅粵文字幕",
+    changes="yuewen_changes",
+    changes_desc="只包含標點或者空格需要改動嘅粵文字幕",
+    index="xuhao",
+    index_desc="由1開始嘅中文字幕索引",
+    text="wenben",
+    guide_text_desc="中文字幕文字",
+    target_text_desc="要檢查標點嘅粵文字幕文字",
+    change_text_desc="呢個索引調整標點後嘅完整粵文字幕文字",
+    guide_indices_err="zhongwen 索引必須由1開始、連續而且依次排列。",
+    target_indices_err="yuewen_to_punctuate 索引必須同 zhongwen 索引完全一致。",
+    change_indices_err="yuewen_changes 索引必須唯一而且由細到大排列。",
+    change_index_missing_err=(
+        "yuewen_changes 每個索引都必須對應 zhongwen 入面嘅索引。"
+    ),
+    target_chars_changed_err_tpl=(
+        "索引 {index} 嘅標點修改移除標點同空格後，冇保留原有粵文字符：\n"
+        "期望: {expected}\n收到: {received}"
+    ),
+)
+"""Predecessor prompt using the mixed-language sparse-answer alias."""
+
+YueZhoBlockPunctuationPromptYueHant = _get_prompt_with_pinyin_change_alias(
+    _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_LEGACY
+)
+"""Text for Traditional Cantonese/Chinese block punctuation."""
+
+YueZhoBlockPunctuationPromptYueHans = YueZhoBlockPunctuationPromptYueHant.transformed(
+    Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
+)
+"""Text for Simplified Cantonese/Chinese block punctuation."""
 
 YueZhoDelineationPromptYueHant = DelineationPrompt(
     language=Language.yue_hant,

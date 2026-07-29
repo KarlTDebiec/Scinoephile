@@ -9,6 +9,7 @@ from pathlib import Path
 from scinoephile.audio.transcription import VADMode
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
+from scinoephile.lang.transcription import TranscriptionAlignmentMode
 from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.data.transcription import process_transcription_pipeline
@@ -93,7 +94,9 @@ if "yue-Hant_transcribe" in actions:
         output_dir_path=yue_hant_transcribe_vad_off_path,
         audio_dir_path=yue_hant_transcribe_path / "audio",
         additional_context=transcription_additional_context,
-        transcription_no_op=True,
+        transcription_no_op=False,
+        transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
+        transcription_fallback_to_no_op=True,
         vad_mode=VADMode.OFF,
         run_merge_and_translation=False,
         overwrite=True,

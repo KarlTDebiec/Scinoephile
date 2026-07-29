@@ -191,19 +191,25 @@ def test_process_transcription_pipeline_runs_all_stages(
         for call in transcribe.call_args_list
     }
     assert transcription_kw_by_name["whisper"] == {
+        "alignment_mode": transcription_data.TranscriptionAlignmentMode.PAIRWISE,
+        "fallback_to_no_op": False,
         "no_op": False,
         "prune_test_cases": True,
         "vad_mode": VADMode.OFF,
     }
     assert transcription_kw_by_name["mimo"] == {
+        "alignment_mode": transcription_data.TranscriptionAlignmentMode.PAIRWISE,
         "backend": transcription_data.TranscriptionBackend.MLX_AUDIO,
+        "fallback_to_no_op": False,
         "model_name": transcription_data.MIMO_MODEL_NAME,
         "no_op": False,
         "prune_test_cases": True,
         "vad_mode": VADMode.OFF,
     }
     assert transcription_kw_by_name["qwen"] == {
+        "alignment_mode": transcription_data.TranscriptionAlignmentMode.PAIRWISE,
         "backend": transcription_data.TranscriptionBackend.MLX_AUDIO,
+        "fallback_to_no_op": False,
         "model_name": transcription_data.QWEN3_ASR_MODEL_NAME,
         "no_op": False,
         "prune_test_cases": True,
@@ -457,6 +463,27 @@ def test_transcription_stages_use_flat_json_directory(
     assert transcribe.call_args.kwargs["punctuation_json_path"] == (
         json_dir_path / "punctuation-mps.json"
     )
+
+    transcribe.reset_mock()
+    transcription_data._load_or_transcribe_series_guided(
+        audio,
+        series,
+        model_dir_path / "transcribe-block.srt",
+        Language.yue_hant,
+        Language.zho_hant,
+        transcription_kw={
+            "alignment_mode": transcription_data.TranscriptionAlignmentMode.BLOCK
+        },
+        overwrite=True,
+    )
+    assert transcribe.call_args.kwargs["block_delineation_json_path"] == (
+        json_dir_path / "block_delineation-mps.json"
+    )
+    assert transcribe.call_args.kwargs["block_punctuation_json_path"] == (
+        json_dir_path / "block_punctuation-mps.json"
+    )
+    assert "delineation_json_path" not in transcribe.call_args.kwargs
+    assert "punctuation_json_path" not in transcribe.call_args.kwargs
     assert review.call_args.kwargs["test_case_path"] == (
         json_dir_path / "guided_review-mps.json"
     )

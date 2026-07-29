@@ -642,6 +642,84 @@ def test_audit_translation_cli_infers_workflow_from_inputs(
     assert "unverified includes" in filter_action.help
 
 
+def test_transcription_audit_clis_auto_detect_block_json(
+    tmp_path: Path, capsys: CaptureFixture
+):
+    """Test existing transcription audit commands accept block JSON unchanged.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    reference_path = tmp_path / "reference.srt"
+    target_path = tmp_path / "target.srt"
+    delineation_json_path = tmp_path / "block_delineation.json"
+    punctuation_json_path = tmp_path / "block_punctuation.json"
+    _write_srt(reference_path, ("參考一", "參考二"))
+    _write_srt(target_path, ("甲", "乙！"))
+    guides = [{"index": 1, "text": "參考一"}, {"index": 2, "text": "參考二"}]
+    delineation_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "guides": guides,
+                        "targets": [
+                            {"index": 1, "text": "甲乙"},
+                            {"index": 2, "text": ""},
+                        ],
+                    },
+                    "answer": {
+                        "changes": [
+                            {"index": 1, "text": "甲"},
+                            {"index": 2, "text": "乙"},
+                        ]
+                    },
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    punctuation_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "guides": guides,
+                        "targets": [
+                            {"index": 1, "text": "甲"},
+                            {"index": 2, "text": "乙"},
+                        ],
+                    },
+                    "answer": {"changes": [{"index": 2, "text": "乙！"}]},
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    run_cli_with_args(
+        AuditDelineationCli,
+        f"--reference {reference_path} --json {delineation_json_path}",
+    )
+    delineation_output = capsys.readouterr().out
+    run_cli_with_args(
+        AuditPunctuationCli,
+        (
+            f"--reference {reference_path} --target {target_path} "
+            f"--json {punctuation_json_path}"
+        ),
+    )
+    punctuation_output = capsys.readouterr().out
+
+    assert "| 1<br>2 | 參考一<br>參考二 | 甲乙<br>— | 甲<br>乙 |" in (
+        delineation_output
+    )
+    assert "| 2 | 參考二 | 乙 | 乙！ |" in punctuation_output
+
+
 def test_transcription_audit_cli_help_describes_subtitle_indexes():
     """Test transcription audit range help describes subtitle indexes."""
     for cli_class in (AuditAlignedDiffCli, AuditDelineationCli, AuditPunctuationCli):

@@ -1,15 +1,16 @@
 ---
 name: audit-transcription-delineation
-description: Audit Scinoephile transcription delineation logs by matching JSON reference pairs to their guide SRT subtitle indexes and judging whether target boundary shifts or no-shift answers align fixed target text appropriately. Use when inspecting transcription delineation mps.json or cuda.json files or identifying incorrect boundary decisions. Do not assess transcription accuracy.
+description: Audit Scinoephile pairwise or sparse block transcription delineation JSON by matching its guides to SRT indexes and judging whether fixed target text is assigned to the right subtitles. Use when inspecting delineation-*.json, block_delineation-*.json, legacy mps.json or cuda.json, correcting boundary decisions, or verifying cases. Do not assess transcription accuracy.
 ---
 
 # Audit Transcription Delineation
 
 Run commands from the repository root. A delineation audit assesses whether
-target text was divided appropriately across each pair of adjacent guide
-subtitles. Treat the provided target text as fixed input, even when it appears
-incorrect. Do not assess or comment on transcription accuracy, punctuation,
-wording, or character choice; those are reviewed later in a separate workflow.
+target text was divided appropriately across adjacent guide subtitles. The same
+CLI automatically recognizes legacy pairwise JSON and sparse block JSON. Treat
+the provided target text as fixed input, even when it appears incorrect. Do not
+assess or comment on transcription accuracy, punctuation, wording, or character
+choice; those are reviewed later in a separate workflow.
 
 ## Required report file
 
@@ -25,7 +26,8 @@ response.
   cell with your own independent judgment; never append to or merely endorse
   generated note content.
 - Preserve the generated `Verified` cell: `✓` means the JSON test case is
-  verified, and an empty cell means it is not verified.
+  verified, and an empty cell means it is not verified. In a block audit, the
+  same case-level marker repeats on every boundary expanded from that block.
 - Do not add a separate findings section; keep each observation beside the row
   it describes.
 - Validate the saved report after adding notes, then provide a clickable link
@@ -45,14 +47,16 @@ response.
 ## Locate artifacts
 
 Find the exact guide SRT used during transcription and the logged delineation
-JSON. Do not substitute a similarly named subtitle track. Transcription outputs
-normally place delineation logs below a directory named `delineation`, with
-provider-specific names such as `mps.json` or `cuda.json`.
+JSON. Do not substitute a similarly named subtitle track. Current workflows may
+use flat names such as `delineation-<provider>.json` or
+`block_delineation-<provider>.json`; older workflows may use provider names such
+as `delineation/mps.json` or `delineation/cuda.json`.
 
-The guide SRT is required because delineation JSON stores reference text but not
-subtitle numbers. The CLI matches each logged reference pair to consecutive
-guide subtitles and rejects absent or ambiguous matches rather than displaying
-misleading indexes.
+The guide SRT is required because delineation JSON stores guide text but not
+global subtitle numbers. The CLI matches each pair or complete guide sequence
+to consecutive guide subtitles and rejects absent or ambiguous matches rather
+than displaying misleading indexes. It auto-detects the JSON shape; do not pass
+an implementation-mode option or use a separate command for block JSON.
 
 An official target-language subtitle track may be consulted only to determine
 which utterance owns text near a boundary. It is not an input to the CLI and
@@ -93,9 +97,16 @@ Omit either block bound for an open-ended range.
 Each table cell stacks the first and second subtitle with `<br>`. A blank line
 is displayed as `—`. Sort rows by their matched subtitle indexes. Preserve the
 original log order among repeated cases for the same boundary because they may
-record successive decisions. An empty JSON answer (`{}`) means no boundary
-shift was made; leave the output cell blank instead of repeating the input
-pair. The CLI leaves `Notes` cells blank for interpretation during the audit.
+record successive decisions. In pairwise JSON, an empty answer (`{}`) means no
+boundary shift. In block JSON, an empty `changes` list means the complete
+preliminary assignment was retained. In either case, unchanged rows have a
+blank Output cell.
+
+The CLI expands each block case into one row for every adjacent guide boundary,
+so the report keeps the familiar pairwise shape. A sparse replacement at one
+subtitle can affect the rows on both sides of that subtitle; this is expected,
+not a duplicated model answer. Review every expanded row before treating the
+block case as verified.
 
 ## Audit every row
 
@@ -145,8 +156,15 @@ When the user requests corrections, update the delineation JSON answer rather
 than a generated SRT:
 
 - Correct the boundary output before marking the case verified.
-- Mark a case `verified: true` only after auditing the entire boundary case and
-  correcting its answer where necessary.
+- For pairwise JSON, edit `output_one` and `output_two` as needed.
+- For block JSON, keep `answer.changes` sparse: include only indexes whose text
+  differs from the query target, use the full replacement text for each listed
+  index, and remove entries that no longer change anything. The concatenation
+  of all reconstructed block outputs must preserve every original target
+  character in exactly the same order.
+- Mark a case `verified: true` only after auditing the entire pairwise case or
+  every expanded boundary from the block and correcting its answer where
+  necessary.
 - Leave unanswered, unaudited, or partially audited cases unverified. Do not
   treat an empty no-shift answer as unanswered; only a missing answer is
   unanswered.

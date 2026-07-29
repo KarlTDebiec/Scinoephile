@@ -16,13 +16,21 @@ from scinoephile.audio.transcription.mlx_audio.backend import MIMO_MODEL_NAME
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.utils import save_test_cases_to_json
+from scinoephile.lang.transcription.block_aligner import BlockTranscriptionAligner
 from scinoephile.lang.transcription.guided import DEFAULT_SPECS, get_guided_transcriber
-from scinoephile.lang.transcription.transcriber import TranscriptionBackend
+from scinoephile.lang.transcription.transcriber import (
+    TranscriptionAlignmentMode,
+    TranscriptionBackend,
+)
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
+    YueZhoBlockDelineationPromptYueHant,
+    YueZhoBlockPunctuationPromptYueHant,
     YueZhoDelineationPromptYueHant,
     YueZhoPunctuationPromptYueHant,
 )
+from scinoephile.llms.block_delineation import BlockDelineationProcessor
+from scinoephile.llms.block_punctuation import BlockPunctuationProcessor
 from scinoephile.llms.delineation import DelineationManager, DelineationProcessor
 from scinoephile.llms.punctuation import PunctuationProcessor
 
@@ -178,6 +186,67 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
         cache_root_path=tmp_path,
         overwrite_cache=False,
     )
+
+
+def test_get_guided_transcriber_configures_block_alignment(tmp_path: Path):
+    """Test block mode uses independent prompts, paths, and fallback configuration.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    with (
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
+            return_value=tmp_path / "data",
+        ),
+        patch(
+            "scinoephile.lang.transcription.guided.get_torch_device",
+            return_value="test",
+        ),
+    ):
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hant,
+            alignment_mode=TranscriptionAlignmentMode.BLOCK,
+            fallback_to_no_op=True,
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+            block_delineation_test_cases=[],
+            block_punctuation_test_cases=[],
+            cache_root_path=tmp_path,
+        )
+
+    assert isinstance(transcriber.aligner, BlockTranscriptionAligner)
+    assert isinstance(
+        transcriber.aligner.delineation_processor, BlockDelineationProcessor
+    )
+    assert isinstance(
+        transcriber.aligner.punctuation_processor, BlockPunctuationProcessor
+    )
+    assert transcriber.aligner.delineation_processor.prompt is (
+        YueZhoBlockDelineationPromptYueHant
+    )
+    assert transcriber.aligner.punctuation_processor.prompt is (
+        YueZhoBlockPunctuationPromptYueHant
+    )
+    assert transcriber.aligner.fallback_to_no_op
+    test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
+    assert transcriber.aligner.delineation_processor.test_case_path == (
+        test_case_dir_path / "block_delineation" / "test.json"
+    )
+    assert transcriber.aligner.punctuation_processor.test_case_path == (
+        test_case_dir_path / "block_punctuation" / "test.json"
+    )
+
+
+def test_get_guided_transcriber_rejects_pairwise_fallback():
+    """Test sparse no-op fallback cannot be enabled for legacy pairwise mode."""
+    with raises(ValueError, match="only with block alignment"):
+        get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hant,
+            fallback_to_no_op=True,
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+        )
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path):
@@ -348,6 +417,11 @@ def test_get_guided_transcriber_rejects_unsupported_language_pair():
 
 def test_transcription_prompts_use_yue_hant_correspondence_fields():
     """Test Yue-Hant transcription prompts use Yue-Hant shared text."""
-    for prompt in (YueZhoDelineationPromptYueHant, YueZhoPunctuationPromptYueHant):
+    for prompt in (
+        YueZhoBlockDelineationPromptYueHant,
+        YueZhoBlockPunctuationPromptYueHant,
+        YueZhoDelineationPromptYueHant,
+        YueZhoPunctuationPromptYueHant,
+    ):
         for field_name, expected in YUE_HANT_PROMPT_FIELDS.items():
             assert getattr(prompt, field_name) == expected

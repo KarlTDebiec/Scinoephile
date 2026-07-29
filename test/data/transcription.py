@@ -21,7 +21,10 @@ from scinoephile.audio.transcription.mlx_audio.backend import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.lang.transcription.transcriber import TranscriptionBackend
+from scinoephile.lang.transcription.transcriber import (
+    TranscriptionAlignmentMode,
+    TranscriptionBackend,
+)
 from scinoephile.workflows.helpers import resolve_language
 from scinoephile.workflows.review import review_series_guided, review_series_multi
 from scinoephile.workflows.transcription import transcribe_series_guided
@@ -350,6 +353,10 @@ def process_transcription_pipeline(
     reviewer_kw: dict[str, Any] | None = None,
     translator_kw: dict[str, Any] | None = None,
     transcription_no_op: bool = False,
+    transcription_alignment_mode: TranscriptionAlignmentMode = (
+        TranscriptionAlignmentMode.PAIRWISE
+    ),
+    transcription_fallback_to_no_op: bool = False,
     vad_mode: VADMode = VADMode.AUTO,
     run_merge_and_translation: bool = True,
     overwrite: bool = False,
@@ -378,6 +385,10 @@ def process_transcription_pipeline(
         translator_kw: additional keyword arguments for gap translation
         transcription_no_op: whether delineation and punctuation should use neutral
           answers instead of querying an LLM
+        transcription_alignment_mode: LLM query granularity for transcription
+          alignment and punctuation
+        transcription_fallback_to_no_op: whether invalid block answers fall back to
+          sparse no-op answers
         vad_mode: voice activity detection mode shared by all transcription backends
         run_merge_and_translation: whether to merge the transcription sources, fill
           translation gaps, and simplify the result
@@ -400,19 +411,25 @@ def process_transcription_pipeline(
 
     transcription_runs: dict[str, dict[str, Any]] = {
         "whisper": {
+            "alignment_mode": transcription_alignment_mode,
+            "fallback_to_no_op": transcription_fallback_to_no_op,
             "no_op": transcription_no_op,
             "prune_test_cases": True,
             "vad_mode": vad_mode,
         },
         "mimo": {
+            "alignment_mode": transcription_alignment_mode,
             "backend": TranscriptionBackend.MLX_AUDIO,
+            "fallback_to_no_op": transcription_fallback_to_no_op,
             "model_name": MIMO_MODEL_NAME,
             "no_op": transcription_no_op,
             "prune_test_cases": True,
             "vad_mode": vad_mode,
         },
         "qwen": {
+            "alignment_mode": transcription_alignment_mode,
             "backend": TranscriptionBackend.MLX_AUDIO,
+            "fallback_to_no_op": transcription_fallback_to_no_op,
             "model_name": QWEN3_ASR_MODEL_NAME,
             "no_op": transcription_no_op,
             "prune_test_cases": True,
@@ -570,12 +587,25 @@ def _load_or_transcribe_series_guided(
     transcription_kw = dict(transcription_kw or {})
     json_dir_path = output_path.parent / "json"
     device = get_torch_device()
-    transcription_kw.setdefault(
-        "delineation_json_path", json_dir_path / f"delineation-{device}.json"
+    alignment_mode = transcription_kw.get(
+        "alignment_mode", TranscriptionAlignmentMode.PAIRWISE
     )
-    transcription_kw.setdefault(
-        "punctuation_json_path", json_dir_path / f"punctuation-{device}.json"
-    )
+    if alignment_mode is TranscriptionAlignmentMode.BLOCK:
+        transcription_kw.setdefault(
+            "block_delineation_json_path",
+            json_dir_path / f"block_delineation-{device}.json",
+        )
+        transcription_kw.setdefault(
+            "block_punctuation_json_path",
+            json_dir_path / f"block_punctuation-{device}.json",
+        )
+    else:
+        transcription_kw.setdefault(
+            "delineation_json_path", json_dir_path / f"delineation-{device}.json"
+        )
+        transcription_kw.setdefault(
+            "punctuation_json_path", json_dir_path / f"punctuation-{device}.json"
+        )
     audio_transcription = transcribe_series_guided(
         audio,
         guide,

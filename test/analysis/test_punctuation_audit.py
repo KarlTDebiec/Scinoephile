@@ -12,11 +12,82 @@ from scinoephile.analysis.audit.punctuation import (
 )
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.llms.block_punctuation import (
+    BlockPunctuationAnswer,
+    BlockPunctuationQuery,
+    BlockPunctuationSubtitle,
+    BlockPunctuationTestCase,
+)
 from scinoephile.llms.punctuation import (
     PunctuationAnswer,
     PunctuationQuery,
     PunctuationTestCase,
 )
+
+
+def test_audit_punctuation_expands_sparse_block_changes():
+    """Test sparse block changes expand into familiar per-subtitle rows."""
+    reference = _get_series("參考一", "參考二", "參考三")
+    target = _get_series("甲", "乙！", "丙")
+    test_case = BlockPunctuationTestCase(
+        query=BlockPunctuationQuery(
+            guides=[
+                BlockPunctuationSubtitle(index=1, text="參考一"),
+                BlockPunctuationSubtitle(index=2, text="參考二"),
+                BlockPunctuationSubtitle(index=3, text="參考三"),
+            ],
+            targets=[
+                BlockPunctuationSubtitle(index=1, text="甲"),
+                BlockPunctuationSubtitle(index=2, text="乙"),
+                BlockPunctuationSubtitle(index=3, text="丙"),
+            ],
+        ),
+        answer=BlockPunctuationAnswer(
+            changes=[BlockPunctuationSubtitle(index=2, text="乙！")]
+        ),
+    )
+
+    report = audit_punctuation(reference, target, (test_case,))
+    changed_report = audit_punctuation(
+        reference, target, (test_case,), row_filter=PunctuationAuditFilter.changes
+    )
+
+    assert "- logged cases: 3" in report
+    assert "- punctuation changes: 1" in report
+    assert "- unchanged answers: 2" in report
+    assert "| 1 | 參考一 | 甲 |  |  |  |" in report
+    assert "| 2 | 參考二 | 乙 | 乙！ |  |  |" in report
+    assert "| 3 | 參考三 | 丙 |  |  |  |" in report
+    assert "- table rows: 1" in changed_report
+    assert "| 1 | 參考一 |" not in changed_report
+    assert "| 2 | 參考二 |" in changed_report
+    assert "| 3 | 參考三 |" not in changed_report
+
+
+def test_audit_punctuation_resolves_repeated_block_from_target():
+    """Test target characters disambiguate a repeated block guide sequence."""
+    reference = _get_series("重複", "尾", "重複", "尾")
+    target = _get_series("甲", "一", "乙！", "二")
+    test_case = BlockPunctuationTestCase(
+        query=BlockPunctuationQuery(
+            guides=[
+                BlockPunctuationSubtitle(index=1, text="重複"),
+                BlockPunctuationSubtitle(index=2, text="尾"),
+            ],
+            targets=[
+                BlockPunctuationSubtitle(index=1, text="乙"),
+                BlockPunctuationSubtitle(index=2, text="二"),
+            ],
+        ),
+        answer=BlockPunctuationAnswer(
+            changes=[BlockPunctuationSubtitle(index=1, text="乙！")]
+        ),
+    )
+
+    report = audit_punctuation(reference, target, (test_case,))
+
+    assert "| 3 | 重複 | 乙 | 乙！ |" in report
+    assert "| 1 | 重複 | 乙 | 乙！ |" not in report
 
 
 def test_audit_punctuation_formats_changed_and_unchanged_rows():

@@ -14,8 +14,11 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.transcription.guided import get_guided_transcriber
 from scinoephile.lang.transcription.transcriber import (
     GuidedTranscriber,
+    TranscriptionAlignmentMode,
     TranscriptionBackend,
 )
+from scinoephile.llms.block_delineation import BlockDelineationPrompt
+from scinoephile.llms.block_punctuation import BlockPunctuationPrompt
 from scinoephile.llms.delineation import DelineationPrompt
 from scinoephile.llms.punctuation import PunctuationPrompt
 
@@ -39,11 +42,19 @@ def transcribe_series_guided(
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     no_op: bool = False,
+    alignment_mode: TranscriptionAlignmentMode = TranscriptionAlignmentMode.PAIRWISE,
+    fallback_to_no_op: bool = False,
     prune_test_cases: bool = False,
+    block_delineation_prompt: BlockDelineationPrompt | None = None,
+    block_punctuation_prompt: BlockPunctuationPrompt | None = None,
     delineation_prompt: DelineationPrompt | None = None,
     punctuation_prompt: PunctuationPrompt | None = None,
+    block_delineation_json_path: Path | None = None,
+    block_punctuation_json_path: Path | None = None,
     delineation_json_path: Path | None = None,
     punctuation_json_path: Path | None = None,
+    block_delineation_test_cases: list[TestCase] | None = None,
+    block_punctuation_test_cases: list[TestCase] | None = None,
     delineation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
     transcriber: GuidedTranscriber | None = None,
@@ -66,11 +77,19 @@ def transcribe_series_guided(
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         no_op: use neutral answers instead of querying an LLM
+        alignment_mode: LLM query granularity for alignment and punctuation
+        fallback_to_no_op: whether invalid block answers fall back to sparse no-op
         prune_test_cases: whether to remove test cases not encountered in this run
+        block_delineation_prompt: block delineation prompt override
+        block_punctuation_prompt: block punctuation prompt override
         delineation_prompt: delineation prompt override
         punctuation_prompt: punctuation prompt override
+        block_delineation_json_path: block-delineation test-case JSON file
+        block_punctuation_json_path: block-punctuation test-case JSON file
         delineation_json_path: delineation test-case JSON file to load and update
         punctuation_json_path: punctuation test-case JSON file to load and update
+        block_delineation_test_cases: preloaded block-delineation test cases
+        block_punctuation_test_cases: preloaded block-punctuation test cases
         delineation_test_cases: preloaded delineation test cases
         punctuation_test_cases: preloaded punctuation test cases
         transcriber: guided transcriber, or None to construct one
@@ -96,11 +115,19 @@ def transcribe_series_guided(
             provider=provider,
             additional_context=additional_context,
             no_op=no_op,
+            alignment_mode=alignment_mode,
+            fallback_to_no_op=fallback_to_no_op,
             prune_test_cases=prune_test_cases,
+            block_delineation_prompt=block_delineation_prompt,
+            block_punctuation_prompt=block_punctuation_prompt,
             delineation_prompt=delineation_prompt,
             punctuation_prompt=punctuation_prompt,
+            block_delineation_json_path=block_delineation_json_path,
+            block_punctuation_json_path=block_punctuation_json_path,
             delineation_json_path=delineation_json_path,
             punctuation_json_path=punctuation_json_path,
+            block_delineation_test_cases=block_delineation_test_cases,
+            block_punctuation_test_cases=block_punctuation_test_cases,
             delineation_test_cases=delineation_test_cases,
             punctuation_test_cases=punctuation_test_cases,
         )

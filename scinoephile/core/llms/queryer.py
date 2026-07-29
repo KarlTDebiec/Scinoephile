@@ -31,6 +31,7 @@ class Queryer[TTestCase: TestCase]:
         verified_test_cases: list[TestCase] | None = None,
         *,
         provider: LLMProvider,
+        legacy_cache_test_case_classes: list[type[TestCase]] | None = None,
         cache_root_path: Path | None = None,
         additional_context: str | None = None,
         max_attempts: int = 5,
@@ -46,6 +47,8 @@ class Queryer[TTestCase: TestCase]:
             verified_test_cases: test cases whose answers are verified and for which
               LLM need not be queried
             provider: provider to use for queries
+            legacy_cache_test_case_classes: earlier compatible classes whose cached
+              answers may be migrated
             cache_root_path: root directory beneath which to cache
             additional_context: additional context to include in the system prompt
             max_attempts: maximum number of attempts
@@ -59,6 +62,17 @@ class Queryer[TTestCase: TestCase]:
         self.prompt = test_case_cls.prompt
         """Text for LLM correspondence."""
         self.provider = provider
+        self.legacy_cache_test_case_classes = [
+            legacy_test_case_cls
+            for legacy_test_case_cls in legacy_cache_test_case_classes or []
+            if legacy_test_case_cls is not test_case_cls
+        ]
+        """Earlier compatible test-case classes used to locate response caches."""
+        for legacy_test_case_cls in self.legacy_cache_test_case_classes:
+            if legacy_test_case_cls.operation != self.test_case_cls.operation:
+                raise ValueError(
+                    "Legacy cache test-case classes must use the current operation."
+                )
 
         self.verified_test_cases = self._get_verified_test_cases(
             verified_test_cases or []
@@ -90,11 +104,13 @@ class Queryer[TTestCase: TestCase]:
         """Automatically verify test cases if they meet selected criteria."""
         self.tool_box = tool_box or ToolBox()
         """Available tools and handlers."""
-        self.system_prompt = self.prompt.base_system_prompt
+        self.system_prompt = self._get_system_prompt(self.test_case_cls)
         """System prompt shared by all queries executed by this instance."""
-        if self.additional_context:
-            self.system_prompt += f"\n\n{self.additional_context}"
-        self.system_prompt += self.get_few_shot_test_cases_str()
+        self._legacy_system_prompts = {
+            legacy_test_case_cls: self._get_system_prompt(legacy_test_case_cls)
+            for legacy_test_case_cls in self.legacy_cache_test_case_classes
+        }
+        """System prompts used to locate compatible predecessor cache entries."""
 
     def __call__(self, test_case: TestCase) -> TTestCase:
         """Query LLM.
@@ -129,7 +145,9 @@ class Queryer[TTestCase: TestCase]:
         query_json = test_case.query.model_dump_json(by_alias=True, indent=4)
         tools_json = self.tool_box.to_json()
         cache_path = self._get_cache_path(self.system_prompt, tools_json, query_json)
-        if cached_test_case := self._get_cached_test_case(test_case, cache_path):
+        if cached_test_case := self._get_any_cached_test_case(
+            test_case, cache_path, tools_json
+        ):
             return cached_test_case
 
         # Query provider
@@ -232,17 +250,31 @@ class Queryer[TTestCase: TestCase]:
 
         return test_case
 
-    def get_few_shot_test_cases_str(self) -> str:
-        """String representation of all test cases in the log."""
+    def get_few_shot_test_cases_str(
+        self, test_case_cls: type[TestCase] | None = None
+    ) -> str:
+        """Get few-shot examples serialized for a prompt-specific class.
+
+        Arguments:
+            test_case_cls: prompt-specific class, or None for the current class
+        Returns:
+            formatted few-shot examples
+        """
         if not self.few_shot_test_cases:
             return ""
-        few_shot = f"\n\n{self.prompt.few_shot_intro}"
+        if test_case_cls is None:
+            test_case_cls = self.test_case_cls
+        prompt = test_case_cls.prompt
+        few_shot = f"\n\n{prompt.few_shot_intro}"
         for test_case in self.few_shot_test_cases.values():
-            assert test_case.answer is not None
-            few_shot += f"\n\n{self.prompt.few_shot_query_intro}\n"
-            few_shot += test_case.query.model_dump_json(by_alias=True, indent=4)
-            few_shot += f"\n{self.prompt.few_shot_answer_intro}\n"
-            few_shot += test_case.answer.model_dump_json(by_alias=True, indent=4)
+            prompt_test_case = test_case_cls.model_validate(
+                test_case.model_dump(mode="json")
+            )
+            assert prompt_test_case.answer is not None
+            few_shot += f"\n\n{prompt.few_shot_query_intro}\n"
+            few_shot += prompt_test_case.query.model_dump_json(by_alias=True, indent=4)
+            few_shot += f"\n{prompt.few_shot_answer_intro}\n"
+            few_shot += prompt_test_case.answer.model_dump_json(by_alias=True, indent=4)
         return few_shot
 
     def log_encountered_test_case(self, test_case: TestCase):
@@ -260,8 +292,30 @@ class Queryer[TTestCase: TestCase]:
         self.encountered_test_cases[key] = normalized
         logger.debug(f"Logged test case: {normalized.query.key_str}")
 
+    def _get_any_cached_test_case(
+        self, test_case: TTestCase, cache_path: Path, tools_json: str
+    ) -> TTestCase | None:
+        """Load a current or compatible predecessor response cache.
+
+        Arguments:
+            test_case: test case containing the semantic query
+            cache_path: current prompt's cache path
+            tools_json: JSON representation of configured tools
+        Returns:
+            cached test case if a compatible entry exists
+        """
+        cached_test_case = self._get_cached_test_case(test_case, cache_path)
+        if cached_test_case is not None:
+            return cached_test_case
+        return self._get_legacy_cached_test_case(test_case, cache_path, tools_json)
+
     def _get_cache_path(
-        self, system_prompt: str, tools_json: str, query_json: str
+        self,
+        system_prompt: str,
+        tools_json: str,
+        query_json: str,
+        *,
+        test_case_cls: type[TestCase] | None = None,
     ) -> Path:
         """Get cache path based on hash of prompts.
 
@@ -269,16 +323,19 @@ class Queryer[TTestCase: TestCase]:
             system_prompt: system prompt used for the query
             tools_json: JSON representation of configured tools
             query_json: JSON representation of the query
+            test_case_cls: prompt-specific class in the cache identity
         Returns:
             Path to cache file
         """
         assert self._cache is not None
+        if test_case_cls is None:
+            test_case_cls = self.test_case_cls
         return self._cache.get_path(
             {
                 "provider": self.provider.cache_identity,
                 "test_case": {
-                    "module": self.test_case_cls.__module__,
-                    "qualname": self.test_case_cls.__qualname__,
+                    "module": test_case_cls.__module__,
+                    "qualname": test_case_cls.__qualname__,
                 },
             },
             system_prompt,
@@ -322,6 +379,63 @@ class Queryer[TTestCase: TestCase]:
             )
             self._cache.remove(cache_path)
         return None
+
+    def _get_legacy_cached_test_case(
+        self, test_case: TTestCase, cache_path: Path, tools_json: str
+    ) -> TTestCase | None:
+        """Load and migrate an answer cached under a predecessor prompt.
+
+        Arguments:
+            test_case: current test case containing the semantic query
+            cache_path: current prompt's cache path
+            tools_json: JSON representation of configured tools
+        Returns:
+            cached test case if a compatible predecessor entry exists
+        """
+        assert self._cache is not None
+        if self._cache.overwrite:
+            return None
+
+        for legacy_test_case_cls in self.legacy_cache_test_case_classes:
+            legacy_query = legacy_test_case_cls.query_cls.model_validate(
+                test_case.query.model_dump(mode="json")
+            )
+            legacy_query_json = legacy_query.model_dump_json(by_alias=True, indent=4)
+            legacy_cache_path = self._get_cache_path(
+                self._legacy_system_prompts[legacy_test_case_cls],
+                tools_json,
+                legacy_query_json,
+                test_case_cls=legacy_test_case_cls,
+            )
+            cached_test_case = self._get_cached_test_case(test_case, legacy_cache_path)
+            if cached_test_case is None:
+                continue
+
+            assert cached_test_case.answer is not None
+            contents = cached_test_case.answer.model_dump_json(
+                exclude_defaults=True, indent=2
+            )
+            self._cache.save(cache_path, contents)
+            logger.info(
+                "Migrated legacy LLM response cache: "
+                f"{legacy_cache_path} -> {cache_path}"
+            )
+            return cached_test_case
+        return None
+
+    def _get_system_prompt(self, test_case_cls: type[TestCase]) -> str:
+        """Build the complete system prompt for a prompt-specific class.
+
+        Arguments:
+            test_case_cls: prompt-specific test-case class
+        Returns:
+            system prompt including context and few-shot examples
+        """
+        system_prompt = test_case_cls.prompt.base_system_prompt
+        if self.additional_context:
+            system_prompt += f"\n\n{self.additional_context}"
+        system_prompt += self.get_few_shot_test_cases_str(test_case_cls)
+        return system_prompt
 
     def _get_verified_test_case(self, query: Query) -> TTestCase | None:
         """Get verified test case for the given query if available.

@@ -7,15 +7,18 @@ from __future__ import annotations
 from collections import defaultdict
 from collections.abc import Collection, Sequence
 from enum import StrEnum
+from typing import cast
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
+from scinoephile.llms.block_delineation import BlockDelineationTestCase
 from scinoephile.llms.delineation import DelineationTestCase
 
 from .utils import (
     AuditResult,
     format_audit_report,
     format_verification_marker,
+    get_reference_sequence_start_indexes,
     get_selected_event_indexes,
     get_superseded_keys,
     resolve_contextual_index,
@@ -39,7 +42,7 @@ class DelineationAuditFilter(StrEnum):
 
 def audit_delineation(
     reference: Series,
-    test_cases: Sequence[DelineationTestCase],
+    test_cases: Sequence[DelineationTestCase | BlockDelineationTestCase],
     *,
     row_filter: DelineationAuditFilter = DelineationAuditFilter.all,
     first_index: int | None = None,
@@ -51,7 +54,7 @@ def audit_delineation(
 
     Arguments:
         reference: reference subtitle series used to guide transcription
-        test_cases: logged delineation test cases
+        test_cases: logged pairwise or block-level delineation test cases
         row_filter: row status filter
         first_index: first 1-indexed reference subtitle number to include
         last_index: last 1-indexed reference subtitle number to include
@@ -62,6 +65,28 @@ def audit_delineation(
     Raises:
         ScinoephileError: if a logged reference pair cannot be matched uniquely
     """
+    block_test_cases = [
+        test_case
+        for test_case in test_cases
+        if isinstance(test_case, BlockDelineationTestCase)
+    ]
+    if block_test_cases:
+        if len(block_test_cases) != len(test_cases):
+            raise ScinoephileError(
+                "Unable to audit transcription delineation: JSON mixes pairwise "
+                "and block-level test cases"
+            )
+        return _audit_block_delineation(
+            reference,
+            block_test_cases,
+            row_filter=row_filter,
+            first_index=first_index,
+            last_index=last_index,
+            first_block=first_block,
+            last_block=last_block,
+        )
+
+    pairwise_test_cases = cast("Sequence[DelineationTestCase]", test_cases)
     pair_indexes: dict[tuple[str, str], list[int]] = defaultdict(list)
     for index in range(len(reference) - 1):
         pair = (reference[index].text, reference[index + 1].text)
@@ -75,7 +100,7 @@ def audit_delineation(
         last_block=last_block,
     )
     candidate_indexes_by_case, direct_indexes = _get_case_indexes(
-        pair_indexes, test_cases
+        pair_indexes, pairwise_test_cases
     )
 
     rows: list[tuple[int, tuple[str, ...]]] = []
@@ -83,7 +108,7 @@ def audit_delineation(
     no_shifts = 0
     unanswered = 0
     logged_cases = 0
-    for test_case_index, test_case in enumerate(test_cases, 1):
+    for test_case_index, test_case in enumerate(pairwise_test_cases, 1):
         # Resolve against all occurrences before filtering to the requested range
         index = _get_selected_case_index(
             candidate_indexes_by_case[test_case_index - 1],
@@ -158,6 +183,101 @@ def audit_delineation(
     )
 
 
+def _audit_block_delineation(
+    reference: Series,
+    test_cases: Sequence[BlockDelineationTestCase],
+    *,
+    row_filter: DelineationAuditFilter,
+    first_index: int | None,
+    last_index: int | None,
+    first_block: int | None,
+    last_block: int | None,
+) -> str:
+    """Audit complete block-level delineation cases as adjacent boundaries.
+
+    Arguments:
+        reference: reference subtitle series used to guide transcription
+        test_cases: logged block-level delineation test cases
+        row_filter: row status filter
+        first_index: first 1-indexed reference subtitle number to include
+        last_index: last 1-indexed reference subtitle number to include
+        first_block: first 1-indexed reference block number to include
+        last_block: last 1-indexed reference block number to include
+    Returns:
+        Markdown audit report using the pairwise delineation table shape
+    Raises:
+        ScinoephileError: if a logged guide block cannot be matched uniquely
+    """
+    start_indexes_by_case, direct_start_indexes = _get_block_delineation_start_indexes(
+        reference, test_cases
+    )
+    selected_reference_indexes = get_selected_event_indexes(
+        reference,
+        first_index=first_index,
+        last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
+    )
+    rows, logged_cases, shifts, no_shifts, unanswered = _get_block_delineation_rows(
+        test_cases,
+        start_indexes_by_case,
+        direct_start_indexes,
+        selected_reference_indexes,
+        row_filter,
+    )
+    rows.sort(key=lambda item: (item[0], item[1]))
+    return format_audit_report(
+        title="Transcription Delineation Audit",
+        summary_items=(
+            f"logged cases: {logged_cases}",
+            f"boundary shifts: {shifts}",
+            f"no-shift answers: {no_shifts}",
+            f"unanswered cases: {unanswered}",
+            f"row filter: {row_filter.value}",
+        ),
+        columns=(
+            ("Indexes", "right"),
+            ("Reference", "left"),
+            ("Input", "left"),
+            ("Output", "left"),
+            ("Notes", "left"),
+            ("Verified", "center"),
+        ),
+        rows=[row for _, _, row in rows],
+        first_index=first_index,
+        last_index=last_index,
+        index_track_name="reference",
+        first_block=first_block,
+        last_block=last_block,
+    )
+
+
+def _format_block_delineation_decision(
+    test_case: BlockDelineationTestCase,
+    offset: int,
+    input_texts: Sequence[str],
+    output_texts: Sequence[str],
+) -> tuple[str, AuditResult]:
+    """Format one expanded block delineation decision.
+
+    Arguments:
+        test_case: block-level delineation case
+        offset: zero-indexed boundary position within the block
+        input_texts: preliminary target texts
+        output_texts: target texts after applying sparse changes
+    Returns:
+        output cell text and semantic result
+    """
+    if test_case.answer is None:
+        return "(unanswered)", AuditResult.unanswered
+
+    input_pair = (input_texts[offset], input_texts[offset + 1])
+    output_pair = (output_texts[offset], output_texts[offset + 1])
+    if output_pair != input_pair:
+        return _format_pair(*output_pair), AuditResult.changed
+    return "", AuditResult.unchanged
+
+
 def _format_pair(one: str, two: str) -> str:
     """Stack a pair of subtitle texts for one table cell.
 
@@ -168,6 +288,164 @@ def _format_pair(one: str, two: str) -> str:
         subtitle texts separated by a newline
     """
     return f"{one or '—'}\n{two or '—'}"
+
+
+def _get_block_case_start_index(
+    candidate_start_indexes: Sequence[int],
+    direct_start_indexes: list[int | None],
+    *,
+    test_case_index: int,
+) -> int:
+    """Resolve one block case's reference start index.
+
+    Arguments:
+        candidate_start_indexes: possible zero-indexed reference start positions
+        direct_start_indexes: directly resolved starts for every logged case
+        test_case_index: one-indexed test case position
+    Returns:
+        uniquely resolved zero-indexed reference start position
+    Raises:
+        ScinoephileError: if a block case remains ambiguous
+    """
+    start_index = resolve_contextual_index(
+        candidate_start_indexes, direct_start_indexes, test_case_index - 1
+    )
+    if start_index is not None:
+        return start_index
+
+    indexes = ", ".join(str(index + 1) for index in candidate_start_indexes)
+    raise ScinoephileError(
+        "Unable to audit transcription delineation: "
+        f"test case {test_case_index} guide block is ambiguous; "
+        f"it begins at subtitle indexes {indexes}"
+    )
+
+
+def _get_block_delineation_rows(
+    test_cases: Sequence[BlockDelineationTestCase],
+    start_indexes_by_case: Sequence[Sequence[int]],
+    direct_start_indexes: list[int | None],
+    selected_reference_indexes: Collection[int],
+    row_filter: DelineationAuditFilter,
+) -> tuple[list[tuple[int, int, tuple[str, ...]]], int, int, int, int]:
+    """Expand block cases into pairwise delineation audit rows.
+
+    Arguments:
+        test_cases: logged block-level delineation cases
+        start_indexes_by_case: possible reference start positions for each case
+        direct_start_indexes: directly resolved starts for every case
+        selected_reference_indexes: reference positions selected for the report
+        row_filter: row status filter
+    Returns:
+        rows and logged, shifted, unchanged, and unanswered decision counts
+    """
+    rows: list[tuple[int, int, tuple[str, ...]]] = []
+    shifts = 0
+    no_shifts = 0
+    unanswered = 0
+    logged_cases = 0
+    for test_case_index, test_case in enumerate(test_cases, 1):
+        guide_count = len(test_case.query.guides)
+        selected_start_indexes = {
+            start_index
+            for start_index in start_indexes_by_case[test_case_index - 1]
+            if any(
+                start_index + offset in selected_reference_indexes
+                and start_index + offset + 1 in selected_reference_indexes
+                for offset in range(guide_count - 1)
+            )
+        }
+        if not selected_start_indexes:
+            continue
+        start_index = _get_block_case_start_index(
+            start_indexes_by_case[test_case_index - 1],
+            direct_start_indexes,
+            test_case_index=test_case_index,
+        )
+        if start_index not in selected_start_indexes:
+            continue
+
+        input_texts = [target.text for target in test_case.query.targets]
+        output_texts = list(input_texts)
+        if test_case.answer is not None:
+            for change in test_case.answer.changes:
+                output_texts[change.index - 1] = change.text
+
+        for offset in range(guide_count - 1):
+            first_reference_index = start_index + offset
+            second_reference_index = first_reference_index + 1
+            if (
+                first_reference_index not in selected_reference_indexes
+                or second_reference_index not in selected_reference_indexes
+            ):
+                continue
+            logged_cases += 1
+            input_pair = (input_texts[offset], input_texts[offset + 1])
+            output, result = _format_block_delineation_decision(
+                test_case, offset, input_texts, output_texts
+            )
+            if result is AuditResult.unanswered:
+                unanswered += 1
+            elif result is AuditResult.changed:
+                shifts += 1
+            else:
+                no_shifts += 1
+
+            if (
+                row_filter is DelineationAuditFilter.changes
+                and result is not AuditResult.changed
+            ) or (
+                row_filter is DelineationAuditFilter.unverified and test_case.verified
+            ):
+                continue
+            cells = (
+                f"{first_reference_index + 1}\n{second_reference_index + 1}",
+                _format_pair(
+                    test_case.query.guides[offset].text,
+                    test_case.query.guides[offset + 1].text,
+                ),
+                _format_pair(*input_pair),
+                output,
+                "",
+                format_verification_marker(test_case.verified),
+            )
+            rows.append((first_reference_index, test_case_index, cells))
+
+    return rows, logged_cases, shifts, no_shifts, unanswered
+
+
+def _get_block_delineation_start_indexes(
+    reference: Series, test_cases: Sequence[BlockDelineationTestCase]
+) -> tuple[list[list[int]], list[int | None]]:
+    """Locate block delineation cases within the reference series.
+
+    Arguments:
+        reference: reference subtitle series used to guide transcription
+        test_cases: logged block-level delineation cases
+    Returns:
+        candidate and directly resolved start indexes for every case
+    Raises:
+        ScinoephileError: if a logged guide block is absent
+    """
+    guide_sequences = [
+        [guide.text for guide in test_case.query.guides] for test_case in test_cases
+    ]
+    start_indexes_by_case = get_reference_sequence_start_indexes(
+        reference, guide_sequences
+    )
+    direct_start_indexes: list[int | None] = []
+    for test_case_index, start_indexes in enumerate(start_indexes_by_case, 1):
+        if not start_indexes:
+            raise ScinoephileError(
+                "Unable to audit transcription delineation: "
+                f"test case {test_case_index} guide block was not found in "
+                "reference subtitles"
+            )
+        direct_start_index = None
+        if len(start_indexes) == 1:
+            direct_start_index = start_indexes[0]
+        direct_start_indexes.append(direct_start_index)
+    return start_indexes_by_case, direct_start_indexes
 
 
 def _get_case_index(

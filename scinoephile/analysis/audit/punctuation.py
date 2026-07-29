@@ -5,18 +5,21 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from collections.abc import Sequence
+from collections.abc import Collection, Sequence
 from enum import StrEnum
+from typing import cast
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import remove_punc_and_whitespace
+from scinoephile.llms.block_punctuation import BlockPunctuationTestCase
 from scinoephile.llms.punctuation import PunctuationTestCase
 
 from .utils import (
     AuditResult,
     format_audit_report,
     format_verification_marker,
+    get_reference_sequence_start_indexes,
     get_selected_event_indexes,
     get_superseded_keys,
     resolve_contextual_index,
@@ -41,7 +44,7 @@ class PunctuationAuditFilter(StrEnum):
 def audit_punctuation(
     reference: Series,
     target: Series,
-    test_cases: Sequence[PunctuationTestCase],
+    test_cases: Sequence[PunctuationTestCase | BlockPunctuationTestCase],
     *,
     row_filter: PunctuationAuditFilter = PunctuationAuditFilter.all,
     first_index: int | None = None,
@@ -56,7 +59,7 @@ def audit_punctuation(
     Arguments:
         reference: reference subtitle series used to guide punctuation
         target: punctuated target series aligned to the reference by timing
-        test_cases: logged punctuation test cases
+        test_cases: logged pairwise or block-level punctuation test cases
         row_filter: row status filter
         first_index: first 1-indexed reference subtitle number to include
         last_index: last 1-indexed reference subtitle number to include
@@ -67,6 +70,29 @@ def audit_punctuation(
     Raises:
         ScinoephileError: if a logged case cannot be matched uniquely
     """
+    block_test_cases = [
+        test_case
+        for test_case in test_cases
+        if isinstance(test_case, BlockPunctuationTestCase)
+    ]
+    if block_test_cases:
+        if len(block_test_cases) != len(test_cases):
+            raise ScinoephileError(
+                "Unable to audit transcription punctuation: JSON mixes pairwise "
+                "and block-level test cases"
+            )
+        return _audit_block_punctuation(
+            reference,
+            target,
+            block_test_cases,
+            row_filter=row_filter,
+            first_index=first_index,
+            last_index=last_index,
+            first_block=first_block,
+            last_block=last_block,
+        )
+
+    pairwise_test_cases = cast("Sequence[PunctuationTestCase]", test_cases)
     reference_indexes_by_text: dict[str, list[int]] = defaultdict(list)
     for index, subtitle in enumerate(reference):
         reference_indexes_by_text[subtitle.text].append(index)
@@ -75,7 +101,7 @@ def audit_punctuation(
         reference, target
     )
     candidate_indexes_by_case, direct_indexes = _get_case_indexes(
-        reference_indexes_by_text, target_text_by_reference_index, test_cases
+        reference_indexes_by_text, target_text_by_reference_index, pairwise_test_cases
     )
     selected_reference_indexes = get_selected_event_indexes(
         reference,
@@ -90,7 +116,7 @@ def audit_punctuation(
     unchanged = 0
     unanswered = 0
     logged_cases = 0
-    for test_case_index, test_case in enumerate(test_cases, 1):
+    for test_case_index, test_case in enumerate(pairwise_test_cases, 1):
         candidates = candidate_indexes_by_case[test_case_index - 1]
         if not candidates:
             continue
@@ -145,6 +171,101 @@ def audit_punctuation(
     )
 
 
+def _audit_block_punctuation(
+    reference: Series,
+    target: Series,
+    test_cases: Sequence[BlockPunctuationTestCase],
+    *,
+    row_filter: PunctuationAuditFilter,
+    first_index: int | None,
+    last_index: int | None,
+    first_block: int | None,
+    last_block: int | None,
+) -> str:
+    """Audit complete block-level punctuation cases as subtitle rows.
+
+    Arguments:
+        reference: reference subtitle series used to guide punctuation
+        target: punctuated target series aligned to the reference by timing
+        test_cases: logged block-level punctuation test cases
+        row_filter: row status filter
+        first_index: first 1-indexed reference subtitle number to include
+        last_index: last 1-indexed reference subtitle number to include
+        first_block: first 1-indexed reference block number to include
+        last_block: last 1-indexed reference block number to include
+    Returns:
+        Markdown audit report using the pairwise punctuation table shape
+    Raises:
+        ScinoephileError: if a logged guide block cannot be matched uniquely
+    """
+    start_indexes_by_case, direct_start_indexes = _get_block_punctuation_start_indexes(
+        reference, target, test_cases
+    )
+    selected_reference_indexes = get_selected_event_indexes(
+        reference,
+        first_index=first_index,
+        last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
+    )
+    rows, logged_cases, changes, unchanged, unanswered = _get_block_punctuation_rows(
+        test_cases,
+        start_indexes_by_case,
+        direct_start_indexes,
+        selected_reference_indexes,
+        row_filter,
+    )
+    rows.sort(key=lambda item: (item[0], item[1]))
+    return format_audit_report(
+        title="Transcription Punctuation Audit",
+        summary_items=(
+            f"logged cases: {logged_cases}",
+            f"punctuation changes: {changes}",
+            f"unchanged answers: {unchanged}",
+            f"unanswered cases: {unanswered}",
+            f"row filter: {row_filter.value}",
+        ),
+        columns=(
+            ("Index", "right"),
+            ("Reference", "left"),
+            ("Input", "left"),
+            ("Output", "left"),
+            ("Notes", "left"),
+            ("Verified", "center"),
+        ),
+        rows=[row for _, _, row in rows],
+        first_index=first_index,
+        last_index=last_index,
+        index_track_name="reference",
+        first_block=first_block,
+        last_block=last_block,
+    )
+
+
+def _format_block_punctuation_decision(
+    test_case: BlockPunctuationTestCase,
+    offset: int,
+    output_text_by_local_index: dict[int, str],
+) -> tuple[str, AuditResult]:
+    """Format one expanded block punctuation decision.
+
+    Arguments:
+        test_case: block-level punctuation case
+        offset: zero-indexed subtitle position within the block
+        output_text_by_local_index: sparse changed outputs keyed by local index
+    Returns:
+        output cell text and semantic result
+    """
+    if test_case.answer is None:
+        return "(unanswered)", AuditResult.unanswered
+
+    input_text = test_case.query.targets[offset].text
+    output_text = output_text_by_local_index.get(offset, input_text)
+    if output_text != input_text:
+        return output_text, AuditResult.changed
+    return "", AuditResult.unchanged
+
+
 def _format_case_row(
     test_case: PunctuationTestCase, index: int
 ) -> tuple[tuple[str, ...], AuditResult]:
@@ -178,6 +299,183 @@ def _format_case_row(
         verified_marker,
     )
     return cells, result
+
+
+def _get_block_case_start_index(
+    candidate_start_indexes: Sequence[int],
+    direct_start_indexes: list[int | None],
+    *,
+    test_case_index: int,
+) -> int:
+    """Resolve one block case's reference start index.
+
+    Arguments:
+        candidate_start_indexes: possible zero-indexed reference start positions
+        direct_start_indexes: directly resolved starts for every logged case
+        test_case_index: one-indexed test case position
+    Returns:
+        uniquely resolved zero-indexed reference start position
+    Raises:
+        ScinoephileError: if a block case remains ambiguous
+    """
+    start_index = resolve_contextual_index(
+        candidate_start_indexes, direct_start_indexes, test_case_index - 1
+    )
+    if start_index is not None:
+        return start_index
+
+    indexes = ", ".join(str(index + 1) for index in candidate_start_indexes)
+    raise ScinoephileError(
+        "Unable to audit transcription punctuation: "
+        f"test case {test_case_index} guide block is ambiguous; "
+        f"it begins at subtitle indexes {indexes}"
+    )
+
+
+def _get_block_punctuation_rows(
+    test_cases: Sequence[BlockPunctuationTestCase],
+    start_indexes_by_case: Sequence[Sequence[int]],
+    direct_start_indexes: list[int | None],
+    selected_reference_indexes: Collection[int],
+    row_filter: PunctuationAuditFilter,
+) -> tuple[list[tuple[int, int, tuple[str, ...]]], int, int, int, int]:
+    """Expand block cases into per-subtitle punctuation audit rows.
+
+    Arguments:
+        test_cases: logged block-level punctuation cases
+        start_indexes_by_case: possible reference start positions for each case
+        direct_start_indexes: directly resolved starts for every case
+        selected_reference_indexes: reference positions selected for the report
+        row_filter: row status filter
+    Returns:
+        rows and logged, changed, unchanged, and unanswered decision counts
+    """
+    rows: list[tuple[int, int, tuple[str, ...]]] = []
+    changes = 0
+    unchanged = 0
+    unanswered = 0
+    logged_cases = 0
+    for test_case_index, test_case in enumerate(test_cases, 1):
+        guide_count = len(test_case.query.guides)
+        selected_start_indexes = {
+            start_index
+            for start_index in start_indexes_by_case[test_case_index - 1]
+            if any(
+                start_index + offset in selected_reference_indexes
+                for offset in range(guide_count)
+            )
+        }
+        if not selected_start_indexes:
+            continue
+        start_index = _get_block_case_start_index(
+            start_indexes_by_case[test_case_index - 1],
+            direct_start_indexes,
+            test_case_index=test_case_index,
+        )
+        if start_index not in selected_start_indexes:
+            continue
+
+        output_text_by_local_index: dict[int, str] = {}
+        if test_case.answer is not None:
+            output_text_by_local_index = {
+                change.index - 1: change.text for change in test_case.answer.changes
+            }
+        for offset, (guide, input_target) in enumerate(
+            zip(test_case.query.guides, test_case.query.targets, strict=True)
+        ):
+            reference_index = start_index + offset
+            if reference_index not in selected_reference_indexes:
+                continue
+            logged_cases += 1
+            output, result = _format_block_punctuation_decision(
+                test_case, offset, output_text_by_local_index
+            )
+            if result is AuditResult.unanswered:
+                unanswered += 1
+            elif result is AuditResult.changed:
+                changes += 1
+            else:
+                unchanged += 1
+
+            if (
+                row_filter is PunctuationAuditFilter.changes
+                and result is not AuditResult.changed
+            ) or (
+                row_filter is PunctuationAuditFilter.unverified and test_case.verified
+            ):
+                continue
+            cells = (
+                str(reference_index + 1),
+                guide.text,
+                input_target.text,
+                output,
+                "",
+                format_verification_marker(test_case.verified),
+            )
+            rows.append((reference_index, test_case_index, cells))
+
+    return rows, logged_cases, changes, unchanged, unanswered
+
+
+def _get_block_punctuation_start_indexes(
+    reference: Series, target: Series, test_cases: Sequence[BlockPunctuationTestCase]
+) -> tuple[list[list[int]], list[int | None]]:
+    """Locate block punctuation cases within the reference series.
+
+    The target text disambiguates repeated guide sequences when possible.
+
+    Arguments:
+        reference: reference subtitle series used to guide punctuation
+        target: punctuated target series aligned to the reference by timing
+        test_cases: logged block-level punctuation cases
+    Returns:
+        candidate and directly resolved start indexes for every case
+    Raises:
+        ScinoephileError: if a logged guide block is absent
+    """
+    guide_sequences = [
+        [guide.text for guide in test_case.query.guides] for test_case in test_cases
+    ]
+    start_indexes_by_case = get_reference_sequence_start_indexes(
+        reference, guide_sequences
+    )
+    target_text_by_reference_index = _get_target_text_by_reference_index(
+        reference, target
+    )
+    direct_start_indexes: list[int | None] = []
+    for test_case_index, (test_case, start_indexes) in enumerate(
+        zip(test_cases, start_indexes_by_case, strict=True), 1
+    ):
+        if not start_indexes:
+            raise ScinoephileError(
+                "Unable to audit transcription punctuation: "
+                f"test case {test_case_index} guide block was not found in "
+                "reference subtitles"
+            )
+        direct_start_index = None
+        if len(start_indexes) == 1:
+            direct_start_index = start_indexes[0]
+        else:
+            input_chars = [
+                remove_punc_and_whitespace(target.text)
+                for target in test_case.query.targets
+            ]
+            target_matches = [
+                start_index
+                for start_index in start_indexes
+                if all(
+                    remove_punc_and_whitespace(
+                        target_text_by_reference_index.get(start_index + offset, "")
+                    )
+                    == expected_chars
+                    for offset, expected_chars in enumerate(input_chars)
+                )
+            ]
+            if len(target_matches) == 1:
+                direct_start_index = target_matches[0]
+        direct_start_indexes.append(direct_start_index)
+
+    return start_indexes_by_case, direct_start_indexes
 
 
 def _get_case_index(

@@ -4,7 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * alignment
-* aligner
+* aligner / block_aligner
 * transcriber
 * guided
 """
@@ -13,14 +13,21 @@ from __future__ import annotations
 
 from .aligner import TranscriptionAligner
 from .alignment import TranscriptionAlignment
+from .block_aligner import BlockTranscriptionAligner
 from .guided import GuidedTranscriptionSpec, TranscriptionLanguageSpec
-from .transcriber import GuidedTranscriber, TranscriptionBackend
+from .transcriber import (
+    GuidedTranscriber,
+    TranscriptionAlignmentMode,
+    TranscriptionBackend,
+)
 
 __all__ = [
+    "BlockTranscriptionAligner",
     "GuidedTranscriber",
     "GuidedTranscriptionSpec",
     "TranscriptionAligner",
     "TranscriptionAlignment",
+    "TranscriptionAlignmentMode",
     "TranscriptionBackend",
     "TranscriptionLanguageSpec",
 ]
