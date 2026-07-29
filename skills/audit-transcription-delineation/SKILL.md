@@ -26,8 +26,8 @@ response.
   cell with your own independent judgment; never append to or merely endorse
   generated note content.
 - Preserve the generated `Verified` cell: `✓` means the JSON test case is
-  verified, and an empty cell means it is not verified. In a block audit, the
-  same case-level marker repeats on every boundary expanded from that block.
+  verified, and an empty cell means it is not verified. Each block-audit row is
+  one complete case, so its marker maps directly to that JSON case.
 - Do not add a separate findings section; keep each observation beside the row
   it describes.
 - Validate the saved report after adding notes, then provide a clickable link
@@ -81,40 +81,41 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit delineation \
 On PowerShell, configure UTF-8 as directed by the repository `AGENTS.md` before
 printing subtitles.
 
-The index bounds are inclusive and retain only pairs wholly contained in the
-requested range. Omit either bound for an open-ended range. The default
-`--filter all` includes shifts, no-shift answers, and unanswered cases; use
-`--filter changes` to show only decisions that moved the target boundary, or
-`--filter unverified` when continuing verification of a partly audited file. A
-complete audit must use `all`, because `changes` cannot reveal missed shifts.
-The report summary labels these bounds as the reference subtitle range.
+The index bounds are inclusive. Pairwise cases are retained only when both
+subtitles are contained in the requested range; block cases are retained only
+when their complete guide sequence is contained in the range. Omit either bound
+for an open-ended range. The default `--filter all` includes changed,
+unchanged, and unanswered cases; use `--filter changes` to show only answers
+that moved text, or `--filter unverified` when continuing verification of a
+partly audited file. A complete audit must use `all`, because `changes` cannot
+reveal missed shifts. The report summary labels these bounds as the reference
+subtitle range.
 
 Use `--first-block` and `--last-block` for an inclusive, one-based range of
 reference blocks. A boundary is included only when both reference subtitles
 belong to selected blocks. Block and subtitle bounds are mutually exclusive.
 Omit either block bound for an open-ended range.
 
-Each table cell stacks the first and second subtitle with `<br>`. A blank line
-is displayed as `—`. Sort rows by their matched subtitle indexes. Preserve the
-original log order among repeated cases for the same boundary because they may
-record successive decisions. In pairwise JSON, an empty answer (`{}`) means no
-boundary shift. In block JSON, an empty `changes` list means the complete
-preliminary assignment was retained. In either case, unchanged rows have a
-blank Output cell.
-
-The CLI expands each block case into one row for every adjacent guide boundary,
-so the report keeps the familiar pairwise shape. A sparse replacement at one
-subtitle can affect the rows on both sides of that subtitle; this is expected,
-not a duplicated model answer. Review every expanded row before treating the
-block case as verified.
+Pairwise rows stack the first and second subtitle with `<br>`. Block rows show
+the JSON case number and global reference range in `Indexes`, then show every
+guide and preliminary target with its one-based local JSON index. A block
+Output cell lists only the sparse replacement indexes; mentally overlay those
+replacements on Input to assess the reconstructed block. A blank line is
+displayed as `—`. Rows are sorted by matched reference indexes. Preserve the
+original log order among repeated pairwise cases because they may record
+successive decisions. In pairwise JSON, an empty answer (`{}`) means no boundary
+shift. In block JSON, an empty `changes` list means the complete preliminary
+assignment was retained. In either case, unchanged rows have a blank Output
+cell.
 
 ## Audit every row
 
 Read the saved report from beginning to end and judge every row independently.
-The target characters may move across the boundary, but their concatenation
-must remain unchanged. Assess whether the output divides the target speech more
-faithfully between the meanings and utterances represented by the two guide
-subtitles.
+For pairwise rows, target characters may move across the displayed boundary.
+For block rows, target characters may move among any indexed subtitles in the
+case. Their complete concatenation must remain unchanged. Assess whether the
+output divides the target speech more faithfully among the meanings and
+utterances represented by the guide subtitles.
 
 Judge only alignment. Ignore misspellings, mistranscriptions, Mandarinisms,
 punctuation, omissions, repetitions, and other defects in the target text except
@@ -133,7 +134,7 @@ Use semantic and discourse alignment rather than literal word matching:
   alignment; a change is not required merely because the two languages segment
   an idea differently.
 - Flag a shift that makes alignment worse, and flag a no-shift answer when a
-  clear phrase belongs on the other side of the boundary.
+  clear phrase belongs in another guide subtitle.
 
 Classify alignment notes precisely:
 
@@ -163,8 +164,7 @@ than a generated SRT:
   of all reconstructed block outputs must preserve every original target
   character in exactly the same order.
 - Mark a case `verified: true` only after auditing the entire pairwise case or
-  every expanded boundary from the block and correcting its answer where
-  necessary.
+  complete block row and correcting its answer where necessary.
 - Leave unanswered, unaudited, or partially audited cases unverified. Do not
   treat an empty no-shift answer as unanswered; only a missing answer is
   unanswered.

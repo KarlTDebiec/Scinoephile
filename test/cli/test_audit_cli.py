@@ -714,9 +714,10 @@ def test_transcription_audit_clis_auto_detect_block_json(
     )
     punctuation_output = capsys.readouterr().out
 
-    assert "| 1<br>2 | 參考一<br>參考二 | 甲乙<br>— | 甲<br>乙 |" in (
-        delineation_output
-    )
+    assert (
+        "| Case 1<br>Refs 1–2 | 1. 參考一<br>2. 參考二 | "
+        "1. 甲乙<br>2. — | 1. 甲<br>2. 乙 |"
+    ) in delineation_output
     assert "| 2 | 參考二 | 乙 | 乙！ |" in punctuation_output
 
 
@@ -748,7 +749,7 @@ def test_transcription_audit_cli_help_describes_subtitle_indexes():
         assert filter_action.metavar == enum_metavar(filter_type)
         assert isinstance(filter_action.help, str)
         assert enum_options_list_str(filter_type) in filter_action.help
-        assert "all includes every decision" in filter_action.help
+        assert "all includes every" in filter_action.help
         assert "changes includes" in filter_action.help
         assert "unverified includes" in filter_action.help
 

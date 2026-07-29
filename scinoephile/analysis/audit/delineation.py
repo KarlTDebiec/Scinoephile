@@ -193,7 +193,7 @@ def _audit_block_delineation(
     first_block: int | None,
     last_block: int | None,
 ) -> str:
-    """Audit complete block-level delineation cases as adjacent boundaries.
+    """Audit complete block-level delineation cases as sparse block decisions.
 
     Arguments:
         reference: reference subtitle series used to guide transcription
@@ -204,7 +204,7 @@ def _audit_block_delineation(
         first_block: first 1-indexed reference block number to include
         last_block: last 1-indexed reference block number to include
     Returns:
-        Markdown audit report using the pairwise delineation table shape
+        Markdown audit report with one row per block case
     Raises:
         ScinoephileError: if a logged guide block cannot be matched uniquely
     """
@@ -225,14 +225,15 @@ def _audit_block_delineation(
         selected_reference_indexes,
         row_filter,
     )
-    rows.sort(key=lambda item: (item[0], item[1]))
+    rows.sort(key=lambda item: item[0])
     return format_audit_report(
         title="Transcription Delineation Audit",
         summary_items=(
             f"logged cases: {logged_cases}",
-            f"boundary shifts: {shifts}",
-            f"no-shift answers: {no_shifts}",
+            f"changed answers: {shifts}",
+            f"no-change answers: {no_shifts}",
             f"unanswered cases: {unanswered}",
+            "block view: one row per case; Output lists sparse replacements",
             f"row filter: {row_filter.value}",
         ),
         columns=(
@@ -243,39 +244,13 @@ def _audit_block_delineation(
             ("Notes", "left"),
             ("Verified", "center"),
         ),
-        rows=[row for _, _, row in rows],
+        rows=[row for _, row in rows],
         first_index=first_index,
         last_index=last_index,
         index_track_name="reference",
         first_block=first_block,
         last_block=last_block,
     )
-
-
-def _format_block_delineation_decision(
-    test_case: BlockDelineationTestCase,
-    offset: int,
-    input_texts: Sequence[str],
-    output_texts: Sequence[str],
-) -> tuple[str, AuditResult]:
-    """Format one expanded block delineation decision.
-
-    Arguments:
-        test_case: block-level delineation case
-        offset: zero-indexed boundary position within the block
-        input_texts: preliminary target texts
-        output_texts: target texts after applying sparse changes
-    Returns:
-        output cell text and semantic result
-    """
-    if test_case.answer is None:
-        return "(unanswered)", AuditResult.unanswered
-
-    input_pair = (input_texts[offset], input_texts[offset + 1])
-    output_pair = (output_texts[offset], output_texts[offset + 1])
-    if output_pair != input_pair:
-        return _format_pair(*output_pair), AuditResult.changed
-    return "", AuditResult.unchanged
 
 
 def _format_pair(one: str, two: str) -> str:
@@ -288,6 +263,17 @@ def _format_pair(one: str, two: str) -> str:
         subtitle texts separated by a newline
     """
     return f"{one or '—'}\n{two or '—'}"
+
+
+def _format_indexed_texts(texts: Sequence[str]) -> str:
+    """Format block texts with one-based local indexes.
+
+    Arguments:
+        texts: block texts in index order
+    Returns:
+        newline-separated indexed texts
+    """
+    return "\n".join(f"{index}. {text or '—'}" for index, text in enumerate(texts, 1))
 
 
 def _get_block_case_start_index(
@@ -327,8 +313,8 @@ def _get_block_delineation_rows(
     direct_start_indexes: list[int | None],
     selected_reference_indexes: Collection[int],
     row_filter: DelineationAuditFilter,
-) -> tuple[list[tuple[int, int, tuple[str, ...]]], int, int, int, int]:
-    """Expand block cases into pairwise delineation audit rows.
+) -> tuple[list[tuple[int, tuple[str, ...]]], int, int, int, int]:
+    """Format block cases as sparse delineation audit rows.
 
     Arguments:
         test_cases: logged block-level delineation cases
@@ -337,9 +323,9 @@ def _get_block_delineation_rows(
         selected_reference_indexes: reference positions selected for the report
         row_filter: row status filter
     Returns:
-        rows and logged, shifted, unchanged, and unanswered decision counts
+        rows and logged, changed, unchanged, and unanswered case counts
     """
-    rows: list[tuple[int, int, tuple[str, ...]]] = []
+    rows: list[tuple[int, tuple[str, ...]]] = []
     shifts = 0
     no_shifts = 0
     unanswered = 0
@@ -349,10 +335,9 @@ def _get_block_delineation_rows(
         selected_start_indexes = {
             start_index
             for start_index in start_indexes_by_case[test_case_index - 1]
-            if any(
-                start_index + offset in selected_reference_indexes
-                and start_index + offset + 1 in selected_reference_indexes
-                for offset in range(guide_count - 1)
+            if all(
+                reference_index in selected_reference_indexes
+                for reference_index in range(start_index, start_index + guide_count)
             )
         }
         if not selected_start_indexes:
@@ -365,51 +350,42 @@ def _get_block_delineation_rows(
         if start_index not in selected_start_indexes:
             continue
 
-        input_texts = [target.text for target in test_case.query.targets]
-        output_texts = list(input_texts)
-        if test_case.answer is not None:
-            for change in test_case.answer.changes:
-                output_texts[change.index - 1] = change.text
-
-        for offset in range(guide_count - 1):
-            first_reference_index = start_index + offset
-            second_reference_index = first_reference_index + 1
-            if (
-                first_reference_index not in selected_reference_indexes
-                or second_reference_index not in selected_reference_indexes
-            ):
-                continue
-            logged_cases += 1
-            input_pair = (input_texts[offset], input_texts[offset + 1])
-            output, result = _format_block_delineation_decision(
-                test_case, offset, input_texts, output_texts
+        logged_cases += 1
+        answer = test_case.answer
+        if answer is None:
+            output = "(unanswered)"
+            unanswered += 1
+            result = AuditResult.unanswered
+        elif answer.changes:
+            output = "\n".join(
+                f"{change.index}. {change.text or '—'}" for change in answer.changes
             )
-            if result is AuditResult.unanswered:
-                unanswered += 1
-            elif result is AuditResult.changed:
-                shifts += 1
-            else:
-                no_shifts += 1
+            shifts += 1
+            result = AuditResult.changed
+        else:
+            output = ""
+            no_shifts += 1
+            result = AuditResult.unchanged
 
-            if (
-                row_filter is DelineationAuditFilter.changes
-                and result is not AuditResult.changed
-            ) or (
-                row_filter is DelineationAuditFilter.unverified and test_case.verified
-            ):
-                continue
-            cells = (
-                f"{first_reference_index + 1}\n{second_reference_index + 1}",
-                _format_pair(
-                    test_case.query.guides[offset].text,
-                    test_case.query.guides[offset + 1].text,
-                ),
-                _format_pair(*input_pair),
-                output,
-                "",
-                format_verification_marker(test_case.verified),
-            )
-            rows.append((first_reference_index, test_case_index, cells))
+        if (
+            row_filter is DelineationAuditFilter.changes
+            and result is not AuditResult.changed
+        ) or (row_filter is DelineationAuditFilter.unverified and test_case.verified):
+            continue
+
+        last_reference_index = start_index + guide_count - 1
+        reference_range = str(start_index + 1)
+        if last_reference_index != start_index:
+            reference_range = f"{start_index + 1}–{last_reference_index + 1}"
+        cells = (
+            f"Case {test_case_index}\nRefs {reference_range}",
+            _format_indexed_texts([guide.text for guide in test_case.query.guides]),
+            _format_indexed_texts([target.text for target in test_case.query.targets]),
+            output,
+            "",
+            format_verification_marker(test_case.verified),
+        )
+        rows.append((start_index, cells))
 
     return rows, logged_cases, shifts, no_shifts, unanswered
 

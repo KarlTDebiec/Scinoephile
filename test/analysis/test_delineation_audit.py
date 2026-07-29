@@ -25,8 +25,8 @@ from scinoephile.llms.delineation import (
 )
 
 
-def test_audit_delineation_expands_sparse_block_changes():
-    """Test sparse block changes expand into familiar adjacent-boundary rows."""
+def test_audit_delineation_formats_sparse_block_changes_by_case():
+    """Test sparse block changes render as one indexed row per case."""
     reference = _get_series("參考一", "參考二", "參考三")
     test_case = BlockDelineationTestCase(
         query=BlockDelineationQuery(
@@ -51,23 +51,32 @@ def test_audit_delineation_expands_sparse_block_changes():
     )
 
     report = audit_delineation(reference, (test_case,))
-    ranged_report = audit_delineation(
+    partial_range_report = audit_delineation(
         reference,
         (test_case,),
         row_filter=DelineationAuditFilter.changes,
         first_index=2,
         last_index=3,
     )
+    complete_range_report = audit_delineation(
+        reference,
+        (test_case,),
+        row_filter=DelineationAuditFilter.changes,
+        first_index=1,
+        last_index=3,
+    )
 
-    assert "- logged cases: 2" in report
-    assert "- boundary shifts: 2" in report
-    assert "- no-shift answers: 0" in report
-    assert "| 1<br>2 | 參考一<br>參考二 | 甲乙<br>丙 | 甲<br>乙丙 |  | ✓ |" in report
-    assert "| 2<br>3 | 參考二<br>參考三 | 丙<br>丁 | 乙丙<br>丁 |  | ✓ |" in report
-    assert "- reference subtitle range: 2 through 3" in ranged_report
-    assert "- table rows: 1" in ranged_report
-    assert "| 1<br>2 |" not in ranged_report
-    assert "| 2<br>3 |" in ranged_report
+    assert "- logged cases: 1" in report
+    assert "- changed answers: 1" in report
+    assert "- no-change answers: 0" in report
+    assert (
+        "| Case 1<br>Refs 1–3 | 1. 參考一<br>2. 參考二<br>3. 參考三 | "
+        "1. 甲乙<br>2. 丙<br>3. 丁 | 1. 甲<br>2. 乙丙 |  | ✓ |"
+    ) in report
+    assert "- reference subtitle range: 2 through 3" in partial_range_report
+    assert "- logged cases: 0" in partial_range_report
+    assert "- table rows: 0" in partial_range_report
+    assert "- table rows: 1" in complete_range_report
 
 
 def test_audit_delineation_formats_shift_and_no_shift_rows():

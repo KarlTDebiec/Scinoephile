@@ -33,11 +33,13 @@ AUDIT_DELINEATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         (
             "rows to include: all, changes, or unverified; all includes every "
-            "decision; changes includes boundary shifts; unverified includes cases "
-            "not marked verified (default: %(default)s)"
+            "pairwise decision or block case; changes includes answers that move "
+            "text; unverified includes cases not marked verified (default: "
+            "%(default)s)"
         ): (
-            "要包含的行：all 表示每个决策，changes 表示边界调整，unverified "
-            "表示未标记为已验证的案例（默认：%(default)s）"
+            "要包含的行：all 表示每个成对决策或分块案例，changes 表示"
+            "移动文本的答案，unverified 表示未标记为已验证的案例"
+            "（默认：%(default)s）"
         ),
     },
     "zh-hant": {
@@ -47,11 +49,13 @@ AUDIT_DELINEATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         (
             "rows to include: all, changes, or unverified; all includes every "
-            "decision; changes includes boundary shifts; unverified includes cases "
-            "not marked verified (default: %(default)s)"
+            "pairwise decision or block case; changes includes answers that move "
+            "text; unverified includes cases not marked verified (default: "
+            "%(default)s)"
         ): (
-            "要包含的列：all 表示每個決策，changes 表示邊界調整，unverified "
-            "表示未標記為已驗證的案例（預設：%(default)s）"
+            "要包含的列：all 表示每個成對決策或分塊案例，changes 表示"
+            "移動文本的答案，unverified 表示未標記為已驗證的案例"
+            "（預設：%(default)s）"
         ),
     },
 }
@@ -102,8 +106,9 @@ class AuditDelineationCli(AuditCliBase):
             DelineationAuditFilter,
             DelineationAuditFilter.all,
             description=(
-                "all includes every decision; changes includes boundary shifts; "
-                "unverified includes cases not marked verified"
+                "all includes every pairwise decision or block case; changes "
+                "includes answers that move text; unverified includes cases not "
+                "marked verified"
             ),
         )
 
