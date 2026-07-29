@@ -12,6 +12,7 @@ from pytest import LogCaptureFixture, MonkeyPatch, mark, param
 
 import test.data.transcription as transcription_data
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription import VADMode
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
 
@@ -167,6 +168,7 @@ def test_process_transcription_pipeline_runs_all_stages(
         additional_context="Film context",
         reviewer_kw={"prune_test_cases": True},
         translator_kw={"prune_test_cases": True},
+        vad_mode=VADMode.OFF,
         overwrite=True,
     )
 
@@ -191,18 +193,21 @@ def test_process_transcription_pipeline_runs_all_stages(
     assert transcription_kw_by_name["whisper"] == {
         "no_op": False,
         "prune_test_cases": True,
+        "vad_mode": VADMode.OFF,
     }
     assert transcription_kw_by_name["mimo"] == {
         "backend": transcription_data.TranscriptionBackend.MLX_AUDIO,
         "model_name": transcription_data.MIMO_MODEL_NAME,
         "no_op": False,
         "prune_test_cases": True,
+        "vad_mode": VADMode.OFF,
     }
     assert transcription_kw_by_name["qwen"] == {
         "backend": transcription_data.TranscriptionBackend.MLX_AUDIO,
         "model_name": transcription_data.QWEN3_ASR_MODEL_NAME,
         "no_op": False,
         "prune_test_cases": True,
+        "vad_mode": VADMode.OFF,
     }
     assert all(
         call.kwargs["run_traditionalize"] is True

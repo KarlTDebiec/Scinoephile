@@ -34,7 +34,7 @@ _TEST_CASE_FAMILIES: tuple[tuple[str, type[Manager]], ...] = (
     ("*/output/*/lang/yue_zho/transcription/punctuation/*.json", PunctuationManager),
     ("*/output/*_transcribe/**/json/delineation-*.json", DelineationManager),
     ("*/output/*_transcribe/**/json/gap_translation-*.json", GapTranslationManager),
-    ("*/output/*_transcribe/json/multi_review.json", MultiReviewManager),
+    ("*/output/*_transcribe/**/json/multi_review.json", MultiReviewManager),
     ("*/output/*_transcribe/**/json/punctuation-*.json", PunctuationManager),
 )
 

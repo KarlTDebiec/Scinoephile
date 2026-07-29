@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from scinoephile.audio.transcription import VADMode
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from test.data.ocr import process_ocr
@@ -19,6 +20,7 @@ eng_ocr_path = output_path / "eng_ocr"
 yue_hans_ocr_path = output_path / "yue-Hans_ocr"
 yue_hant_ocr_path = output_path / "yue-Hant_ocr"
 yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
+yue_hant_transcribe_vad_off_path = yue_hant_transcribe_path / "vad-off"
 zho_hans_ocr_path = output_path / "zho-Hans_ocr"
 zho_hant_ocr_path = output_path / "zho-Hant_ocr"
 zho_hant_guide_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
@@ -88,10 +90,11 @@ if "yue-Hant_transcribe" in actions:
         reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
         language=Language.yue_hant,
         guide_language=Language.zho_hant,
-        output_dir_path=yue_hant_transcribe_path,
+        output_dir_path=yue_hant_transcribe_vad_off_path,
         audio_dir_path=yue_hant_transcribe_path / "audio",
         additional_context=transcription_additional_context,
         transcription_no_op=False,
+        vad_mode=VADMode.OFF,
         run_merge_and_translation=False,
         overwrite=True,
     )

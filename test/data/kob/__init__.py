@@ -180,6 +180,7 @@ def get_kob_yue_hant_delineation_test_cases(
     path = (
         output_dir
         / "yue-Hant_transcribe"
+        / "vad-auto"
         / "whisper"
         / "json"
         / f"delineation-{get_torch_device()}.json"
@@ -203,6 +204,7 @@ def get_kob_yue_hant_guided_review_test_cases(
     path = (
         output_dir
         / "yue-Hant_transcribe"
+        / "vad-auto"
         / "whisper"
         / "json"
         / f"guided_review-{get_torch_device()}.json"
@@ -223,7 +225,7 @@ def get_kob_yue_hant_multi_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "yue-Hant_transcribe/json/multi_review.json"
+    path = output_dir / "yue-Hant_transcribe/vad-auto/json/multi_review.json"
     return load_test_cases_from_json(path, MultiReviewManager, prompt=prompt, **kwargs)
 
 
@@ -300,6 +302,7 @@ def get_kob_yue_hant_punctuation_test_cases(
     path = (
         output_dir
         / "yue-Hant_transcribe"
+        / "vad-auto"
         / "whisper"
         / "json"
         / f"punctuation-{get_torch_device()}.json"

@@ -13,6 +13,7 @@ from typing import Any
 
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription import VADMode
 from scinoephile.audio.transcription.mlx_audio.backend import (
     MIMO_MODEL_NAME,
     QWEN3_ASR_MODEL_NAME,
@@ -349,6 +350,7 @@ def process_transcription_pipeline(
     reviewer_kw: dict[str, Any] | None = None,
     translator_kw: dict[str, Any] | None = None,
     transcription_no_op: bool = False,
+    vad_mode: VADMode = VADMode.AUTO,
     run_merge_and_translation: bool = True,
     overwrite: bool = False,
 ) -> Series | None:
@@ -376,6 +378,7 @@ def process_transcription_pipeline(
         translator_kw: additional keyword arguments for gap translation
         transcription_no_op: whether delineation and punctuation should use neutral
           answers instead of querying an LLM
+        vad_mode: voice activity detection mode shared by all transcription backends
         run_merge_and_translation: whether to merge the transcription sources, fill
           translation gaps, and simplify the result
         overwrite: whether to overwrite existing stage outputs
@@ -396,18 +399,24 @@ def process_transcription_pipeline(
         audio_dir_path = output_dir_path / "audio"
 
     transcription_runs: dict[str, dict[str, Any]] = {
-        "whisper": {"no_op": transcription_no_op, "prune_test_cases": True},
+        "whisper": {
+            "no_op": transcription_no_op,
+            "prune_test_cases": True,
+            "vad_mode": vad_mode,
+        },
         "mimo": {
             "backend": TranscriptionBackend.MLX_AUDIO,
             "model_name": MIMO_MODEL_NAME,
             "no_op": transcription_no_op,
             "prune_test_cases": True,
+            "vad_mode": vad_mode,
         },
         "qwen": {
             "backend": TranscriptionBackend.MLX_AUDIO,
             "model_name": QWEN3_ASR_MODEL_NAME,
             "no_op": transcription_no_op,
             "prune_test_cases": True,
+            "vad_mode": vad_mode,
         },
     }
     source_paths: dict[str, Path] = {}

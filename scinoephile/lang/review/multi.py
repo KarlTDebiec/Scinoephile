@@ -22,7 +22,9 @@ from scinoephile.llms.providers.registry import get_provider
 
 __all__ = ["DEFAULT_PROMPTS", "get_multi_reviewer"]
 
-_YUE_ZHO_JSON_PATHS = (Path("kob/output/yue-Hant_transcribe/json/multi_review.json"),)
+_YUE_ZHO_JSON_PATHS = (
+    Path("kob/output/yue-Hant_transcribe/vad-auto/json/multi_review.json"),
+)
 """Default written Cantonese/Chinese multi-review JSON paths."""
 
 DEFAULT_PROMPTS: Mapping[tuple[Language, Language], MultiReviewPrompt] = (
