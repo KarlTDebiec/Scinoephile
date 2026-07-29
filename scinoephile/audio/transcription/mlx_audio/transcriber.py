@@ -288,7 +288,7 @@ class MlxAudioTranscriber(Transcriber):
                 raise TranscriptionEmptyError("MLX-Audio returned empty transcript.")
             content_characters = {char for char in text if char.isalnum()}
             if content_characters and content_characters <= _LOW_INFORMATION_CHARACTERS:
-                raise TranscriptionError(
+                raise TranscriptionEmptyError(
                     f"MLX-Audio returned only low-information vocalizations: {text!r}"
                 )
             return self.ctc_aligner(audio, text)

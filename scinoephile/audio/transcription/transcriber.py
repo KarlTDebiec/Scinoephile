@@ -14,7 +14,7 @@ from scinoephile.core.exceptions import ScinoephileError
 
 from .cache import TranscriptionCache
 from .demucs import DemucsSeparator
-from .exceptions import TranscriptionError
+from .exceptions import TranscriptionEmptyError, TranscriptionError
 from .preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
@@ -323,6 +323,11 @@ class Transcriber(ABC):
                 logger.info(f"Retrying {self.backend_label} without VAD")
             try:
                 segments = self._transcribe_attempt(transcription_audio, settings)
+            except TranscriptionEmptyError as exc:
+                logger.warning(f"{self.backend_label} attempt failed: {exc}")
+                self._cache.save(audio, self._get_cache_metadata(settings), [])
+                last_error = exc
+                continue
             except TranscriptionError as exc:
                 logger.warning(f"{self.backend_label} attempt failed: {exc}")
                 last_error = exc

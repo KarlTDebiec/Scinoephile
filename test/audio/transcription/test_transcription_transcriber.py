@@ -16,6 +16,7 @@ from scinoephile.audio.transcription import (
     TranscribedSegment,
     Transcriber,
     TranscriptionCache,
+    TranscriptionEmptyError,
     TranscriptionError,
     TranscriptionInferenceError,
     TranscriptionPreprocessingSettings,
@@ -219,6 +220,28 @@ def test_rejected_cached_final_configuration_is_not_repeated(tmp_path: Path):
     assert transcriber.calls == []
 
 
+def test_empty_failures_are_cached(tmp_path: Path):
+    """Test completed attempts without usable speech are not repeated.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    audio = AudioSegment.silent(duration=100)
+    vad_settings = TranscriptionPreprocessingSettings(False, True)
+    no_vad_settings = TranscriptionPreprocessingSettings(False, False)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VADMode.AUTO)
+    transcriber.outcomes[vad_settings] = TranscriptionEmptyError("no VAD speech")
+    transcriber.outcomes[no_vad_settings] = TranscriptionEmptyError("empty transcript")
+
+    with raises(TranscriptionEmptyError, match="empty transcript"):
+        transcriber(audio, is_usable=bool)
+
+    expected_calls = [(audio, vad_settings), (audio, no_vad_settings)]
+    assert transcriber.calls == expected_calls
+    assert transcriber(audio, is_usable=bool) == []
+    assert transcriber.calls == expected_calls
+
+
 def test_rejected_cached_configuration_takes_precedence_over_other_error(
     tmp_path: Path,
 ):
@@ -261,3 +284,9 @@ def test_last_error_propagates_when_every_configuration_fails(tmp_path: Path):
 
     with raises(TranscriptionInferenceError, match="last"):
         transcriber(audio)
+
+    for settings in (vad_settings, no_vad_settings):
+        cache_path = transcriber._cache.get_path(
+            audio, transcriber._get_cache_metadata(settings)
+        )
+        assert not cache_path.exists()
