@@ -633,6 +633,32 @@ def test_series_diff_reports_transitively_overlapping_shift():
     assert messages[0].two_idxs == (0, 1)
 
 
+def test_series_diff_includes_unchanged_line_inside_shift():
+    """Test an implicit match inside a changed span remains represented."""
+    diff = SeriesDiff(
+        get_text_series(
+            "晶晶係我娘子",
+            "仲有一個名叫紫霞嘅",
+            "你叫咗七百八十四次",
+            "七百八十四次",
+            "阿紫霞僅係掙你好多錢",
+        ),
+        get_text_series(
+            "正正系我",
+            "娘子，仲有一个名叫做紫霞",
+            "嘅，你叫咗七百八十四次。喂，",
+            "七百八十四",
+            "次，阿紫霞梗系争你好",
+        ),
+    )
+
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.SHIFT
+    assert messages[0].one_idxs == (0, 1, 2, 3, 4)
+    assert messages[0].two_idxs == (0, 1, 2, 3, 4)
+
+
 def test_series_diff_reports_split():
     """Test an exact one-to-many split from alignment-derived diffing."""
     diff = SeriesDiff(get_text_series("alpha beta"), get_text_series("alpha", "beta"))

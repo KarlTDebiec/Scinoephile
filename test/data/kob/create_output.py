@@ -125,6 +125,7 @@ if "yue-Hant_transcribe" in actions:
         additional_context=transcription_additional_context,
         reviewer_kw={"prune_test_cases": True},
         translator_kw={"prune_test_cases": True},
+        transcription_no_op=False,
         overwrite=False,
     )
 if "yue-Hant_diff" in actions:

@@ -189,19 +189,19 @@ def test_process_transcription_pipeline_runs_all_stages(
         for call in transcribe.call_args_list
     }
     assert transcription_kw_by_name["whisper"] == {
-        "no_op": True,
+        "no_op": False,
         "prune_test_cases": True,
     }
     assert transcription_kw_by_name["mimo"] == {
         "backend": transcription_data.TranscriptionBackend.MLX_AUDIO,
         "model_name": transcription_data.MIMO_MODEL_NAME,
-        "no_op": True,
+        "no_op": False,
         "prune_test_cases": True,
     }
     assert transcription_kw_by_name["qwen"] == {
         "backend": transcription_data.TranscriptionBackend.MLX_AUDIO,
         "model_name": transcription_data.QWEN3_ASR_MODEL_NAME,
-        "no_op": True,
+        "no_op": False,
         "prune_test_cases": True,
     }
     assert all(

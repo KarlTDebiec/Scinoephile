@@ -348,6 +348,7 @@ def process_transcription_pipeline(
     additional_context: str | None = None,
     reviewer_kw: dict[str, Any] | None = None,
     translator_kw: dict[str, Any] | None = None,
+    transcription_no_op: bool = False,
     overwrite: bool = False,
 ) -> Series:
     """Transcribe with three models, merge, gap-translate, and simplify.
@@ -372,9 +373,11 @@ def process_transcription_pipeline(
           gap-translation LLM prompts
         reviewer_kw: additional keyword arguments for the multi-source merge
         translator_kw: additional keyword arguments for gap translation
+        transcription_no_op: whether delineation and punctuation should use neutral
+          answers instead of querying an LLM
         overwrite: whether to overwrite existing stage outputs
     Returns:
-        simplified merged and gap-translated subtitle series
+        simplified merged and gap-translated subtitles
     """
     reference = Series.load(reference_path)
     guide = Series.load(guide_path)
@@ -389,17 +392,17 @@ def process_transcription_pipeline(
         audio_dir_path = output_dir_path / "audio"
 
     transcription_runs: dict[str, dict[str, Any]] = {
-        "whisper": {"no_op": True, "prune_test_cases": True},
+        "whisper": {"no_op": transcription_no_op, "prune_test_cases": True},
         "mimo": {
             "backend": TranscriptionBackend.MLX_AUDIO,
             "model_name": MIMO_MODEL_NAME,
-            "no_op": True,
+            "no_op": transcription_no_op,
             "prune_test_cases": True,
         },
         "qwen": {
             "backend": TranscriptionBackend.MLX_AUDIO,
             "model_name": QWEN3_ASR_MODEL_NAME,
-            "no_op": True,
+            "no_op": transcription_no_op,
             "prune_test_cases": True,
         },
     }
