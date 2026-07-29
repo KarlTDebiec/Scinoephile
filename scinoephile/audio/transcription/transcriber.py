@@ -144,15 +144,12 @@ class Transcriber(ABC):
         if segments is not None:
             return segments
 
-        # Skip rejected intermediate caches but rerun the final fallback
+        # Run only configurations that do not already have a rejected cache
         settings_to_run = [
             settings
             for settings in preprocessing_settings
             if settings not in rejected_settings
         ]
-        final_settings = preprocessing_settings[-1]
-        if final_settings not in settings_to_run:
-            settings_to_run.append(final_settings)
 
         # Run Demucs once if any remaining configuration requires separated audio
         separated_audio = None

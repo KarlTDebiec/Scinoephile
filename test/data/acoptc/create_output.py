@@ -89,8 +89,7 @@ if "yue-Hant_transcribe" in actions:
         output_dir_path=yue_hant_transcribe_path,
         audio_dir_path=yue_hant_transcribe_path / "audio",
         additional_context=transcription_additional_context,
-        reviewer_kw={"prune_test_cases": True},
-        translator_kw={"prune_test_cases": True},
         transcription_no_op=False,
+        run_merge_and_translation=False,
         overwrite=True,
     )

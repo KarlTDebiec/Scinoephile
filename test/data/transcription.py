@@ -349,8 +349,9 @@ def process_transcription_pipeline(
     reviewer_kw: dict[str, Any] | None = None,
     translator_kw: dict[str, Any] | None = None,
     transcription_no_op: bool = False,
+    run_merge_and_translation: bool = True,
     overwrite: bool = False,
-) -> Series:
+) -> Series | None:
     """Transcribe with three models, merge, gap-translate, and simplify.
 
     Arguments:
@@ -375,9 +376,12 @@ def process_transcription_pipeline(
         translator_kw: additional keyword arguments for gap translation
         transcription_no_op: whether delineation and punctuation should use neutral
           answers instead of querying an LLM
+        run_merge_and_translation: whether to merge the transcription sources, fill
+          translation gaps, and simplify the result
         overwrite: whether to overwrite existing stage outputs
     Returns:
-        simplified merged and gap-translated subtitles
+        simplified merged and gap-translated subtitles, or None when stopping after
+        transcription
     """
     reference = Series.load(reference_path)
     guide = Series.load(guide_path)
@@ -430,6 +434,12 @@ def process_transcription_pipeline(
         source_paths[transcription_name] = (
             model_dir_path / "transcribe_clean_traditionalize.srt"
         )
+
+    if not run_merge_and_translation:
+        logger.info(
+            f"Stopped transcription pipeline before merge under {output_dir_path}"
+        )
+        return None
 
     merge_path = output_dir_path / "merge.srt"
     merged = process_transcription_multi_review(
