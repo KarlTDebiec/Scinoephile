@@ -93,7 +93,7 @@ if "yue-Hant_transcribe" in actions:
         output_dir_path=yue_hant_transcribe_vad_off_path,
         audio_dir_path=yue_hant_transcribe_path / "audio",
         additional_context=transcription_additional_context,
-        transcription_no_op=False,
+        transcription_no_op=True,
         vad_mode=VADMode.OFF,
         run_merge_and_translation=False,
         overwrite=True,
