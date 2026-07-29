@@ -356,10 +356,7 @@ class GuidedTranscriber:
             if segments:
                 return segments
 
-        logger.warning(
-            "MLX-Audio did not produce usable output; leaving this block empty for "
-            "downstream gap translation"
-        )
+        logger.warning("MLX-Audio did not produce usable output; leaving block empty")
         return []
 
     def _transcribe_with_focused_tail_recovery(
