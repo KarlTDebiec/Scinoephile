@@ -15,7 +15,7 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 from pydub import AudioSegment
-from pytest import MonkeyPatch, raises
+from pytest import LogCaptureFixture, MonkeyPatch, raises
 
 from scinoephile.audio.transcription import (
     DemucsMode,
@@ -129,8 +129,13 @@ def test_get_cache_path_accepts_list_temperature_schedule(tmp_path: Path):
     )
 
 
-def test_transcribe_forwards_recovery_decoding_options(monkeypatch: MonkeyPatch):
+def test_transcribe_forwards_recovery_decoding_options(
+    monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
+):
     """Test Whisper receives configured defensive decoding options."""
+    caplog.set_level(
+        "DEBUG", logger="scinoephile.audio.transcription.whisper_transcriber"
+    )
     transcribe = Mock(return_value={"segments": []})
     temperatures = (0.0, 0.2, 0.4)
     transcriber = WhisperTranscriber(
@@ -153,6 +158,55 @@ def test_transcribe_forwards_recovery_decoding_options(monkeypatch: MonkeyPatch)
     assert transcribe.call_args.kwargs["temperature"] == temperatures
     assert transcribe.call_args.kwargs["condition_on_previous_text"] is False
     assert transcribe.call_args.kwargs["sample_len"] == 32
+    budget_record = next(
+        record
+        for record in caplog.records
+        if "Whisper decoding budget per window" in record.message
+    )
+    assert budget_record.levelname == "DEBUG"
+
+
+def test_transcribe_logs_when_decoding_reaches_token_limit(
+    monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
+):
+    """Log when a Whisper decoding window consumes its full token budget."""
+    caplog.set_level(
+        "INFO", logger="scinoephile.audio.transcription.whisper_transcriber"
+    )
+    transcribe = Mock(
+        return_value={
+            "segments": [
+                {
+                    "id": 0,
+                    "seek": 0,
+                    "start": 0.0,
+                    "end": 1.0,
+                    "text": "test",
+                    "tokens": list(range(32)),
+                }
+            ]
+        }
+    )
+    transcriber = WhisperTranscriber(
+        model_name="custom/model", demucs_mode=DemucsMode.OFF, vad_mode=VADMode.OFF
+    )
+    transcriber._model = Mock()
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped",
+        Mock(return_value=SimpleNamespace(transcribe=transcribe)),
+    )
+    audio = AudioSegment.silent(duration=1000)
+
+    transcriber(audio)
+
+    limit_record = next(
+        record
+        for record in caplog.records
+        if "Whisper reached its 32-token decoding limit" in record.message
+    )
+    assert limit_record.levelname == "INFO"
+    assert "affected windows: 1" in limit_record.message
 
 
 @parametrize(
