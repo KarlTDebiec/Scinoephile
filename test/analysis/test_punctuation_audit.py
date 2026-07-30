@@ -25,8 +25,8 @@ from scinoephile.llms.punctuation import (
 )
 
 
-def test_audit_punctuation_expands_sparse_block_changes():
-    """Test sparse block changes expand into familiar per-subtitle rows."""
+def test_audit_punctuation_formats_sparse_block_changes_by_case():
+    """Test sparse block changes format as one row per block case."""
     reference = _get_series("參考一", "參考二", "參考三")
     target = _get_series("甲", "乙！", "丙")
     test_case = BlockPunctuationTestCase(
@@ -45,23 +45,34 @@ def test_audit_punctuation_expands_sparse_block_changes():
         answer=BlockPunctuationAnswer(
             changes=[BlockPunctuationSubtitle(index=2, text="乙！")]
         ),
+        verified=True,
     )
 
     report = audit_punctuation(reference, target, (test_case,))
     changed_report = audit_punctuation(
         reference, target, (test_case,), row_filter=PunctuationAuditFilter.changes
     )
+    partial_report = audit_punctuation(
+        reference, target, (test_case,), first_index=2, last_index=3
+    )
+    complete_report = audit_punctuation(
+        reference, target, (test_case,), first_index=1, last_index=3
+    )
 
-    assert "- logged cases: 3" in report
-    assert "- punctuation changes: 1" in report
-    assert "- unchanged answers: 2" in report
-    assert "| 1 | 參考一 | 甲 |  |  |  |" in report
-    assert "| 2 | 參考二 | 乙 | 乙！ |  |  |" in report
-    assert "| 3 | 參考三 | 丙 |  |  |  |" in report
+    assert "- logged cases: 1" in report
+    assert "- changed answers: 1" in report
+    assert "- no-change answers: 0" in report
+    assert "- block view: one row per case; Output lists sparse replacements" in report
+    assert "| Indexes | Reference | Input | Output | Notes | Verified |" in report
+    assert (
+        "| Case 1<br>Refs 1–3 | 1. 參考一<br>2. 參考二<br>3. 參考三 "
+        "| 1. 甲<br>2. 乙<br>3. 丙 | 2. 乙！ |  | ✓ |"
+    ) in report
     assert "- table rows: 1" in changed_report
-    assert "| 1 | 參考一 |" not in changed_report
-    assert "| 2 | 參考二 |" in changed_report
-    assert "| 3 | 參考三 |" not in changed_report
+    assert "- logged cases: 0" in partial_report
+    assert "- table rows: 0" in partial_report
+    assert "- logged cases: 1" in complete_report
+    assert "- table rows: 1" in complete_report
 
 
 def test_audit_punctuation_resolves_repeated_block_from_target():
@@ -86,8 +97,10 @@ def test_audit_punctuation_resolves_repeated_block_from_target():
 
     report = audit_punctuation(reference, target, (test_case,))
 
-    assert "| 3 | 重複 | 乙 | 乙！ |" in report
-    assert "| 1 | 重複 | 乙 | 乙！ |" not in report
+    assert (
+        "| Case 1<br>Refs 3–4 | 1. 重複<br>2. 尾 | 1. 乙<br>2. 二 | 1. 乙！ |"
+    ) in report
+    assert "Refs 1–2" not in report
 
 
 def test_audit_punctuation_formats_changed_and_unchanged_rows():

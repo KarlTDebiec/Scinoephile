@@ -422,15 +422,15 @@
         },
         {
           "index": 3,
-          "text": "护送你师父唐三藏去"
+          "text": "护送你师父唐三藏去取西经嘅，"
         },
         {
           "index": 4,
-          "text": "取西经嘅，而家你竟然想夹"
+          "text": "而家你竟然想夹埋牛魔王嚟食咗你师父？"
         },
         {
           "index": 5,
-          "text": "埋牛魔王嚟食咗你师父？"
+          "text": ""
         },
         {
           "index": 7,
@@ -454,11 +454,19 @@
         },
         {
           "index": 14,
-          "text": "你知唔知你犯咗弥天大罪"
+          "text": "你知唔知你犯咗弥天大罪啊？"
         },
         {
           "index": 15,
-          "text": "啊？你仲抢咗紫霞仙"
+          "text": ""
+        },
+        {
+          "index": 16,
+          "text": "你仲抢咗紫霞仙子嘅月光宝盒，"
+        },
+        {
+          "index": 17,
+          "text": "分明就系想避开我啦。"
         },
         {
           "index": 20,
@@ -518,23 +526,19 @@
         },
         {
           "index": 37,
-          "text": "做咩唔出声啫？你望"
+          "text": "做咩唔出声啫？"
         },
         {
           "index": 38,
-          "text": "住我做咩啫？虽"
+          "text": "你望住我做咩啫？虽然你咁有诚意咁望住我，"
         },
         {
           "index": 39,
-          "text": "然你咁有诚意咁望住我，我"
-        },
-        {
-          "index": 40,
-          "text": "系好高兴，"
+          "text": "我系好高兴，你都要讲噶，"
         },
         {
           "index": 41,
-          "text": "你都要讲噶，攞去啦！"
+          "text": "攞去啦！"
         },
         {
           "index": 42,
@@ -550,11 +554,16 @@
         },
         {
           "index": 45,
-          "text": "孙悟空，你又点啊？"
+          "text": "孙悟空，"
+        },
+        {
+          "index": 46,
+          "text": "你又点啊？"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -591,7 +600,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -744,7 +754,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -769,7 +780,8 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -838,7 +850,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -955,7 +968,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -992,7 +1006,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1185,7 +1200,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1230,7 +1246,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1275,7 +1292,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1648,15 +1666,19 @@
         },
         {
           "index": 4,
-          "text": "唔得啊，金主，我哋有头，帮主"
+          "text": "唔得啊，金主，我哋有头，帮主。"
         },
         {
           "index": 5,
-          "text": "。当家！"
+          "text": ""
+        },
+        {
+          "index": 6,
+          "text": "当家！"
         },
         {
           "index": 7,
-          "text": "冇胆点做啊，二当家？"
+          "text": "你咁冇胆点做啊，二当家？"
         },
         {
           "index": 8,
@@ -1668,11 +1690,11 @@
         },
         {
           "index": 10,
-          "text": "我"
+          "text": "我唔知咩，"
         },
         {
           "index": 11,
-          "text": "唔知咩，我闹阿飞啊，要你惭愧。"
+          "text": "我闹阿飞啊，要你惭愧。"
         },
         {
           "index": 12,
@@ -1700,15 +1722,19 @@
         },
         {
           "index": 18,
-          "text": "蒲头啦！帮"
+          "text": "蒲头啦！"
         },
         {
           "index": 19,
-          "text": "主，你中咗昆仑三圣嘅"
+          "text": "帮主，你中咗昆仑三圣嘅七伤拳，"
+        },
+        {
+          "index": 20,
+          "text": "而家伤势开始发作啦。"
         },
         {
           "index": 21,
-          "text": "啦。你同我讲啊，"
+          "text": "你同我讲啊，"
         },
         {
           "index": 22,
@@ -1756,11 +1782,11 @@
         },
         {
           "index": 35,
-          "text": "，改变我要睇嘢方法啫。咩"
+          "text": "，改变我要睇嘢方法啫。咩啊？"
         },
         {
           "index": 36,
-          "text": "啊？专登话我唔掂想坐位啊？"
+          "text": "专登话我唔掂想坐位啊？"
         },
         {
           "index": 37,
@@ -1773,10 +1799,19 @@
         {
           "index": 39,
           "text": "死啦！"
+        },
+        {
+          "index": 43,
+          "text": ""
+        },
+        {
+          "index": 44,
+          "text": "系啊，反噬我。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1885,19 +1920,19 @@
       "changes": [
         {
           "index": 1,
-          "text": "在下斧头帮帮主"
+          "text": "在下斧头帮帮主，"
         },
         {
           "index": 2,
-          "text": "，绰号玉面飞龙至尊宝。"
+          "text": "绰号玉面飞龙至尊宝。"
         },
         {
           "index": 3,
-          "text": "久闻春沙娘大名如雷贯耳"
+          "text": "久闻春沙娘大名如雷贯耳，"
         },
         {
           "index": 4,
-          "text": "，唔知沙娘帮临系帮"
+          "text": "唔知沙娘帮临系帮"
         },
         {
           "index": 5,
@@ -1910,10 +1945,19 @@
         {
           "index": 7,
           "text": "唔知片刻即系几耐呢？"
+        },
+        {
+          "index": 9,
+          "text": "啊，亦可能系三五七年。"
+        },
+        {
+          "index": 10,
+          "text": "总之等到我要等嘅人出现，"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1990,7 +2034,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2027,7 +2072,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2172,11 +2218,11 @@
         },
         {
           "index": 8,
-          "text": "咩？我拼条命都同你"
+          "text": "咩？我拼条命都同你死过。"
         },
         {
           "index": 9,
-          "text": "死过。"
+          "text": ""
         },
         {
           "index": 10,
@@ -2184,7 +2230,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2213,15 +2260,16 @@
       "changes": [
         {
           "index": 1,
-          "text": "孺子可教"
+          "text": "孺子可教，"
         },
         {
           "index": 2,
-          "text": "，叫大家洗干净，叫佢喺出边等我。"
+          "text": "叫大家洗干净，叫佢喺出边等我。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2386,11 +2434,11 @@
         },
         {
           "index": 3,
-          "text": "即刻洗干净"
+          "text": "即刻洗干净佢，"
         },
         {
           "index": 4,
-          "text": "佢，唔系我成只脚斩落嚟。"
+          "text": "唔系我成只脚斩落嚟。"
         },
         {
           "index": 5,
@@ -2450,7 +2498,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2591,11 +2640,11 @@
         },
         {
           "index": 5,
-          "text": "系咪睇到你热血奔腾"
+          "text": "系咪睇到你热血奔腾咧？"
         },
         {
           "index": 6,
-          "text": "咧？你话边度长得仲茂盛话？"
+          "text": "你话边度长得仲茂盛话？"
         },
         {
           "index": 7,
@@ -2603,19 +2652,19 @@
         },
         {
           "index": 8,
-          "text": "其实我净系得个头同脚板有"
+          "text": "其实我净系得个头同脚板有嘅啫，"
         },
         {
           "index": 9,
-          "text": "嘅啫，唔知系咪生错地方咧。"
+          "text": "唔知系咪生错地方咧。"
         },
         {
           "index": 10,
-          "text": "由今日起，不分日夜"
+          "text": "由今日起，不分日夜，"
         },
         {
           "index": 11,
-          "text": "，截查所有经过呢度嘅人。"
+          "text": "截查所有经过呢度嘅人。"
         },
         {
           "index": 12,
@@ -2631,7 +2680,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2824,7 +2874,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2849,7 +2900,8 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2934,7 +2986,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2959,7 +3012,8 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3020,7 +3074,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3057,19 +3112,20 @@
       "changes": [
         {
           "index": 1,
-          "text": "哇！叫咗你班友仔平时勤啲打扫下"
+          "text": "哇！叫咗你班友仔平时勤啲打扫下噶啦，"
         },
         {
           "index": 2,
-          "text": "噶啦，一阵见到啲蜘蛛仲大只过我"
+          "text": "一阵见到啲蜘蛛仲大只过我，"
         },
         {
           "index": 3,
-          "text": "，点射啦！"
+          "text": "点射啦！"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3094,7 +3150,8 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3163,7 +3220,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3284,23 +3342,27 @@
         },
         {
           "index": 2,
-          "text": "哎呀，人嚟啊！佢喺呢度"
+          "text": "哎呀，人嚟啊！佢喺呢度啊！"
+        },
+        {
+          "index": 3,
+          "text": ""
         },
         {
           "index": 4,
-          "text": "救"
+          "text": ""
         },
         {
           "index": 5,
-          "text": "命"
+          "text": "救命啊！救命！"
         },
         {
           "index": 6,
-          "text": "啊！"
+          "text": ""
         },
         {
           "index": 7,
-          "text": "救命！前面乜都冇，大家翻转头。"
+          "text": "前面乜都冇，大家翻转头。"
         },
         {
           "index": 8,
@@ -3320,11 +3382,16 @@
         },
         {
           "index": 12,
-          "text": "哇，你班契弟"
+          "text": "哇，你班契弟啊！"
+        },
+        {
+          "index": 13,
+          "text": "放心，我嚟救你。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3385,7 +3452,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3498,7 +3566,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3555,7 +3624,8 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3580,7 +3650,8 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3617,7 +3688,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3666,7 +3738,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3699,7 +3772,20 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {
+      "changes": [
+        {
+          "index": 1,
+          "text": "啊！哦，你唔好走啊！"
+        },
+        {
+          "index": 2,
+          "text": ""
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3903,8 +3989,40 @@
     "answer": {
       "changes": [
         {
+          "index": 1,
+          "text": "行开，等我嚟烧佢。"
+        },
+        {
+          "index": 2,
+          "text": ""
+        },
+        {
+          "index": 4,
+          "text": "哇！"
+        },
+        {
+          "index": 5,
+          "text": "帮主，你睇下呢个帮主。"
+        },
+        {
+          "index": 6,
+          "text": "啊！啊！救命啊！"
+        },
+        {
+          "index": 7,
+          "text": ""
+        },
+        {
+          "index": 8,
+          "text": ""
+        },
+        {
+          "index": 9,
+          "text": ""
+        },
+        {
           "index": 10,
-          "text": "救火！"
+          "text": "帮主太功作过。救火！"
         },
         {
           "index": 11,
@@ -3915,8 +4033,24 @@
           "text": "快啲！"
         },
         {
+          "index": 13,
+          "text": "救火！"
+        },
+        {
+          "index": 14,
+          "text": "救火！救火！"
+        },
+        {
+          "index": 15,
+          "text": "唔得，"
+        },
+        {
+          "index": 16,
+          "text": "快啲！快啲！"
+        },
+        {
           "index": 17,
-          "text": "啲！快啲！哎呀，蒲哥，你边个老婆啫？"
+          "text": "哎呀，蒲哥，你边个老婆啫？"
         },
         {
           "index": 18,
@@ -3925,10 +4059,23 @@
         {
           "index": 19,
           "text": "瞓低。"
+        },
+        {
+          "index": 22,
+          "text": "踩爆仲得。"
+        },
+        {
+          "index": 23,
+          "text": "踩爆佢。爆佢。"
+        },
+        {
+          "index": 24,
+          "text": "一、二、三、四、一、二。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4281,15 +4428,15 @@
         },
         {
           "index": 5,
-          "text": "估到系"
+          "text": ""
         },
         {
           "index": 6,
-          "text": "你噶啦！"
+          "text": ""
         },
         {
           "index": 7,
-          "text": "我一早啊睇穿"
+          "text": "估到系你噶啦！我一早啊睇穿"
         },
         {
           "index": 8,
@@ -4297,131 +4444,123 @@
         },
         {
           "index": 9,
-          "text": "系想坐我"
+          "text": "系想坐我位嘅。"
         },
         {
           "index": 10,
-          "text": "位嘅。帮主，"
+          "text": "帮主，"
         },
         {
           "index": 11,
-          "text": "对眼冇斗鸡"
-        },
-        {
-          "index": 12,
-          "text": "嘅。"
+          "text": "对眼冇斗鸡嘅。"
         },
         {
           "index": 13,
-          "text": "帮主，你嘅七伤拳好翻"
+          "text": "帮主，你嘅七伤拳好翻晒啦？"
         },
         {
           "index": 14,
-          "text": "晒啦？"
+          "text": "系。点解啊？"
         },
         {
           "index": 15,
-          "text": "系。点解"
+          "text": "我明啦，"
         },
         {
           "index": 16,
-          "text": "啊？我明啦，医七伤拳嘅方"
+          "text": "医七伤拳嘅方法系要以毒攻毒，"
         },
         {
           "index": 17,
-          "text": "法系要以毒攻"
+          "text": "伤上加伤。"
         },
         {
           "index": 18,
-          "text": "毒，伤上加伤。"
+          "text": "有道理，有道理，有道理。"
         },
         {
           "index": 19,
-          "text": "有道理，有道理，有道理。子儿当家咯，"
+          "text": "子儿当家咯，佢系无心之失嘅啫。"
         },
         {
           "index": 20,
-          "text": "佢系无心之失嘅啫。"
+          "text": "如果唔系佢打你祠堂𠮶下，"
         },
         {
           "index": 21,
-          "text": "如果唔系佢打你祠堂𠮶下，啲病"
+          "text": "啲病都唔会医得好咁快啦。"
         },
         {
           "index": 22,
-          "text": "都唔会医得好咁快啦。"
+          "text": "你咁维护佢，莫非你同佢有路？"
         },
         {
           "index": 23,
-          "text": "你咁维护佢，莫非你同"
+          "text": "人哋对你一条心噶。"
         },
         {
           "index": 24,
-          "text": "佢有路？人哋对你一条心噶。"
-        },
-        {
-          "index": 25,
           "text": "你老啊！"
         },
         {
-          "index": 26,
-          "text": "我系"
+          "index": 25,
+          "text": ""
         },
         {
           "index": 27,
-          "text": "一个咁理性嘅人，你叫我点能够接受啲咁无稽"
+          "text": ""
         },
         {
           "index": 28,
-          "text": "嘅嘢咧？"
+          "text": ""
         },
         {
           "index": 29,
-          "text": "啊，晒佢！"
+          "text": "我系一个咁理性嘅人，"
         },
         {
           "index": 30,
-          "text": "诶，帮主，你就咁去啊？唔怕"
+          "text": "你叫我点能够接受啲咁无稽嘅嘢咧？"
         },
         {
           "index": 31,
-          "text": "咩？我伤好"
+          "text": "啊，晒佢！"
         },
         {
           "index": 32,
-          "text": "翻晒，惊唔够佢打？"
+          "text": "诶，帮主，你就咁去啊？唔怕咩？"
         },
         {
           "index": 33,
-          "text": "好，有种！你"
+          "text": "我伤好翻晒，"
         },
         {
           "index": 34,
-          "text": "都觉得好啦，当住你当"
+          "text": "惊唔够佢打？"
         },
         {
           "index": 35,
-          "text": "我冇讲过"
+          "text": "好，有种！"
         },
         {
           "index": 36,
-          "text": "咯。好啊，嗱，你是但拿把嘢冲入"
+          "text": "你都觉得好啦，"
         },
         {
           "index": 37,
-          "text": "佢房就劈，我哋喺你后边掩护你。"
+          "text": "当住你当我冇讲过咯。"
         },
         {
           "index": 38,
-          "text": ""
+          "text": "好啊，"
         },
         {
           "index": 39,
-          "text": ""
+          "text": "嗱，你是但拿把嘢冲入佢房就劈，"
         },
         {
           "index": 40,
-          "text": ""
+          "text": "我哋喺你后边掩护你。"
         },
         {
           "index": 41,
@@ -4429,7 +4568,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4526,7 +4666,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4619,7 +4760,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4672,7 +4814,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4729,23 +4872,24 @@
         },
         {
           "index": 2,
-          "text": "啊，二当家，唔系漏水，系你流血"
+          "text": "啊，二当家，唔系漏水，系你流血啊！"
         },
         {
           "index": 3,
-          "text": ""
+          "text": "神医，神医！"
         },
         {
           "index": 4,
-          "text": "啊！神医，神医！"
+          "text": "只要我用功法提高两个穴位，"
         },
         {
           "index": 5,
-          "text": "只要我用功法提高两个穴位，即时冇血流。"
+          "text": "即时冇血流。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4790,11 +4934,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "呢度唔算系山明水秀"
+          "text": "呢度唔算系山明水秀，"
         },
         {
           "index": 2,
-          "text": "，但系都别有一番风貌嘅。"
+          "text": "但系都别有一番风貌嘅。"
         },
         {
           "index": 3,
@@ -4806,7 +4950,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4866,8 +5011,12 @@
     "answer": {
       "changes": [
         {
+          "index": 1,
+          "text": "点啊？"
+        },
+        {
           "index": 2,
-          "text": "啊？系咪妖怪啊？"
+          "text": "系咪妖怪啊？"
         },
         {
           "index": 3,
@@ -4887,7 +5036,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4996,7 +5146,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5033,7 +5184,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5282,11 +5434,11 @@
         },
         {
           "index": 4,
-          "text": "用迷药整到你露出原形咁"
+          "text": "用迷药整到你露出原形咁失策啊！"
         },
         {
           "index": 5,
-          "text": "失策啊！你嚟做咩啊？"
+          "text": "你嚟做咩啊？"
         },
         {
           "index": 6,
@@ -5298,11 +5450,11 @@
         },
         {
           "index": 8,
-          "text": "你想喺度等唐三藏出现"
+          "text": "你想喺度等唐三藏出现，"
         },
         {
           "index": 9,
-          "text": "，要尝佢长生不老之肉啫啩？"
+          "text": "要尝佢长生不老之肉啫啩？"
         },
         {
           "index": 10,
@@ -5362,11 +5514,11 @@
         },
         {
           "index": 24,
-          "text": "而今次就会死喺我手上。总之"
+          "text": "而今次就会死喺我手上。"
         },
         {
           "index": 25,
-          "text": "一个和尚担水食，"
+          "text": "总之一个和尚担水食，"
         },
         {
           "index": 26,
@@ -5382,7 +5534,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5455,7 +5608,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5516,31 +5670,32 @@
       "changes": [
         {
           "index": 1,
-          "text": "如果唐僧呢个消息"
+          "text": "如果唐僧呢个消息传咗出去，"
         },
         {
           "index": 2,
-          "text": "传咗出去，我第一个就杀咗你。"
+          "text": "我第一个就杀咗你。"
         },
         {
           "index": 3,
-          "text": ""
-        },
-        {
-          "index": 4,
           "text": "到时咪群妖会行至山"
         },
         {
-          "index": 5,
+          "index": 4,
           "text": "向师姐讨伐唐僧肉食啦。"
         },
         {
+          "index": 5,
+          "text": "唐三藏呢个消息，如果俾大王知，"
+        },
+        {
           "index": 6,
-          "text": "唐三藏呢个消息，如果俾大王知，一定重重赏。"
+          "text": "一定重重赏。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5677,11 +5832,11 @@
         },
         {
           "index": 6,
-          "text": "哇，原来我哋呢度五岳山"
+          "text": "哇，原来我哋呢度五岳山啊，"
         },
         {
           "index": 7,
-          "text": "啊，即系以前嘅五指山，"
+          "text": "即系以前嘅五指山，"
         },
         {
           "index": 8,
@@ -5701,15 +5856,16 @@
         },
         {
           "index": 12,
-          "text": "啊，我系咩头"
+          "text": "啊，我系咩头嘅？"
         },
         {
           "index": 13,
-          "text": "嘅？讲咩？"
+          "text": "讲咩？"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5882,11 +6038,11 @@
         },
         {
           "index": 5,
-          "text": "帮主，我哋今次发咗"
+          "text": "帮主，我哋今次发咗猪油饼嚟，"
         },
         {
           "index": 6,
-          "text": "猪油饼嚟，以后唔好做山贼啦。"
+          "text": "以后唔好做山贼啦。"
         },
         {
           "index": 7,
@@ -5934,7 +6090,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5995,7 +6152,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6056,7 +6214,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6105,7 +6264,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6210,19 +6370,24 @@
         },
         {
           "index": 6,
-          "text": "哇！哎呀呀"
+          "text": "哇！哎呀呀呀！"
+        },
+        {
+          "index": 7,
+          "text": "哎，我我阿婆啊。咁我个头系咪咁样噶？"
         },
         {
           "index": 8,
-          "text": "咁样噶？系啊"
+          "text": "系啊系啊，"
         },
         {
           "index": 9,
-          "text": "系啊，系咩啫？佢都未必。"
+          "text": "系咩啫？佢都未必。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6287,11 +6452,16 @@
         },
         {
           "index": 4,
-          "text": "我要用移魂大法"
+          "text": "我要用移魂大法迷咗佢，"
+        },
+        {
+          "index": 5,
+          "text": "留翻嚟做我嘅卧底。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6416,7 +6586,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6477,7 +6648,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6910,7 +7082,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7031,7 +7204,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7060,15 +7234,16 @@
       "changes": [
         {
           "index": 1,
-          "text": "五百年啦，"
+          "text": "五百年啦，五百年啦，"
         },
         {
           "index": 2,
-          "text": "五百年啦，卒之揾到唐三藏嘅。"
+          "text": "卒之揾到唐三藏嘅。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7105,7 +7280,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7154,7 +7330,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7287,7 +7464,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7372,7 +7550,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7433,7 +7612,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7526,7 +7706,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7571,15 +7752,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "帮主，菩提子洗干净啦"
+          "text": "帮主，菩提子洗干净啦，"
         },
         {
           "index": 2,
-          "text": "，出发啦"
+          "text": "出发啦，"
         },
         {
           "index": 3,
-          "text": "，晚饭。"
+          "text": "晚饭。"
         },
         {
           "index": 4,
@@ -7587,7 +7768,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7924,19 +8106,19 @@
         },
         {
           "index": 2,
-          "text": "你系菩提子？唔"
+          "text": "你系菩提子？"
         },
         {
           "index": 3,
-          "text": "系，我系菩提老祖啊。"
+          "text": "唔系，我系菩提老祖啊。"
         },
         {
           "index": 4,
-          "text": "乜咁大老母"
+          "text": "乜咁大老母啊？"
         },
         {
           "index": 5,
-          "text": "啊？你讲粗口！"
+          "text": "你讲粗口！"
         },
         {
           "index": 6,
@@ -7964,23 +8146,23 @@
         },
         {
           "index": 12,
-          "text": "照你都唔好，"
+          "text": "照你都唔好，块镜"
         },
         {
           "index": 13,
-          "text": "块镜你话你系"
+          "text": ""
         },
         {
           "index": 14,
-          "text": "咪？"
+          "text": "你话你系咪？哇！挞咗我收菩提子！"
         },
         {
           "index": 15,
-          "text": "哇！挞咗我收菩提子！冇啊，我冇"
+          "text": "冇啊，我冇啊。"
         },
         {
           "index": 16,
-          "text": "啊。咁我收菩提子喺边？"
+          "text": "咁我收菩提子喺边？"
         },
         {
           "index": 17,
@@ -7996,11 +8178,11 @@
         },
         {
           "index": 20,
-          "text": "你唔信你咪听歌啫，"
+          "text": "你唔信你咪听歌啫，菩提子。"
         },
         {
           "index": 21,
-          "text": "菩提子。"
+          "text": ""
         },
         {
           "index": 22,
@@ -8020,19 +8202,19 @@
         },
         {
           "index": 26,
-          "text": "哇，帮主把手"
+          "text": ""
         },
         {
           "index": 27,
-          "text": "好粗犷啊！"
+          "text": "哇，帮主把手好粗犷啊！"
         },
         {
           "index": 28,
-          "text": "得唔得啊？得。"
+          "text": "得唔得啊？"
         },
         {
           "index": 29,
-          "text": "点解头先明明白板嘅？"
+          "text": "得。点解头先明明白板嘅？"
         },
         {
           "index": 30,
@@ -8040,47 +8222,44 @@
         },
         {
           "index": 31,
-          "text": "知啊嘛。"
+          "text": "知啊嘛。黑风第二，都有嘅。"
         },
         {
           "index": 32,
-          "text": "黑风第二，都有嘅。"
-        },
-        {
-          "index": 33,
-          "text": "食饭啦。"
+          "text": ""
         },
         {
           "index": 34,
-          "text": "吓？"
+          "text": "吓？食饭啊？"
         },
         {
           "index": 35,
-          "text": "食饭啊？"
-        },
-        {
-          "index": 36,
           "text": "食饭好啊。好咧。"
         },
         {
-          "index": 37,
+          "index": 36,
           "text": "今日𠮶个月光咁靓，不如……"
         },
         {
+          "index": 37,
+          "text": "月光？冇啊。"
+        },
+        {
           "index": 38,
-          "text": "月光？冇啊。哇，咁大个月光你睇"
+          "text": "哇，咁大个月光你睇唔到啊？睇真少少啊。"
         },
         {
           "index": 39,
-          "text": "唔到啊？睇真少少啊。咦，天都咁"
+          "text": "咦，天都咁黑，点会有月光㖞？"
         },
         {
           "index": 40,
-          "text": "黑，点会有月光㖞？"
+          "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -8564,24 +8743,20 @@
     "answer": {
       "changes": [
         {
-          "index": 1,
-          "text": "啊！边个？"
-        },
-        {
           "index": 2,
-          "text": "啊！边个老母？"
+          "text": "啊！边个老母？边个老母？"
         },
         {
           "index": 3,
-          "text": "边个老母？我变"
+          "text": "我变咗提子啊！"
         },
         {
           "index": 4,
-          "text": "咗提子啊！"
+          "text": "喺边啊？"
         },
         {
           "index": 5,
-          "text": "喺边啊？喺你裤浪啊！"
+          "text": "喺你裤浪啊！"
         },
         {
           "index": 6,
@@ -8597,11 +8772,11 @@
         },
         {
           "index": 9,
-          "text": "你而家信"
+          "text": "你而家信啦？"
         },
         {
           "index": 10,
-          "text": "啦？我信啦，我信啦。"
+          "text": "我信啦，我信啦。"
         },
         {
           "index": 11,
@@ -8613,163 +8788,183 @@
         },
         {
           "index": 13,
-          "text": "呢班妖精咧就喺度等唐三藏"
+          "text": "呢班妖精咧就喺度等唐三藏重现人间嘅。"
         },
         {
           "index": 14,
-          "text": "重现人间嘅。唐三"
+          "text": "唐三藏重现人间？嗯，"
         },
         {
           "index": 15,
-          "text": "藏重现人间？嗯，五百年前孙悟"
+          "text": "五百年前孙悟空俾观音大士所消灭，"
         },
         {
           "index": 16,
-          "text": "空俾观音大士所消灭，"
-        },
-        {
-          "index": 17,
           "text": "佢师傅"
         },
         {
+          "index": 17,
+          "text": ""
+        },
+        {
           "index": 18,
-          "text": "唐三藏为咗普度众生，不惜千辛万苦去取"
+          "text": ""
         },
         {
           "index": 19,
-          "text": "西经，希望借此经书嚟感化世人，满天神佛都俾佢呢种精神所感动嘅。"
+          "text": ""
         },
         {
           "index": 20,
-          "text": "玉皇大帝有见及此，就俾个机会孙悟空转世，安排"
+          "text": ""
         },
         {
           "index": 21,
-          "text": "佢两师徒今世。"
+          "text": ""
+        },
+        {
+          "index": 22,
+          "text": "唐三藏为咗普度众生，"
+        },
+        {
+          "index": 23,
+          "text": "不惜千辛万苦去取西经，"
+        },
+        {
+          "index": 24,
+          "text": "希望借此经书嚟感化世人，"
+        },
+        {
+          "index": 25,
+          "text": "满天神佛都俾佢呢种精神所感动嘅。"
+        },
+        {
+          "index": 26,
+          "text": "玉皇大帝有见及此，"
+        },
+        {
+          "index": 27,
+          "text": "就俾个机会孙悟空转世，"
         },
         {
           "index": 28,
-          "text": "排"
+          "text": "安排佢两师徒今世。排佢两师徒今世喺呢度重逢，"
         },
         {
           "index": 29,
-          "text": "佢两师徒今世喺呢度重逢，继续完成"
+          "text": "继续完成取西经嘅使命。"
         },
         {
           "index": 30,
-          "text": "取西经嘅使命。"
+          "text": ""
         },
         {
           "index": 31,
-          "text": "嗯，你而家明白点解咁多妖"
+          "text": "嗯，你而家明白点解咁多妖精喺呢度出现呢？"
         },
         {
           "index": 32,
-          "text": "精喺呢度出现呢？"
+          "text": "哦，唔怪得一路以嚟我都发住同一个"
         },
         {
           "index": 33,
-          "text": "哦，唔怪得一路以嚟我都发"
+          "text": "噩梦啦。"
         },
         {
           "index": 34,
-          "text": "住同一个噩梦啦。喺一片漆黑"
+          "text": "喺一片漆黑孤独嘅环境里头，"
         },
         {
           "index": 35,
-          "text": "孤独嘅环境里头，有一对"
+          "text": "有一对一对非常之咸湿嘅眼睛"
         },
         {
           "index": 36,
-          "text": "一对非常之咸湿嘅眼"
+          "text": "系咁望住我，"
         },
         {
           "index": 37,
-          "text": "睛系咁望住我，令"
+          "text": "令到我鬼死咁唔好意思。"
         },
         {
           "index": 38,
-          "text": "到我鬼死咁唔好意"
+          "text": "就系你呢挺眼神，"
         },
         {
           "index": 39,
-          "text": "思。就系你呢挺眼神，有几"
+          "text": "有几次仲望到我有啲面红添。"
         },
         {
           "index": 40,
-          "text": "次仲望到我有啲面红添。"
-        },
-        {
-          "index": 41,
           "text": "原来注定我今日撞妖。"
         },
         {
-          "index": 42,
+          "index": 41,
           "text": "系啊，你今日真系撞妖啊！"
         },
         {
+          "index": 42,
+          "text": "嗱，呢度有两个乾坤袋，一沓隐身符，"
+        },
+        {
           "index": 43,
-          "text": "嗱，呢度有两个乾坤袋，一沓隐身"
+          "text": "你一贴咗道符喺身咧，佢就睇唔到你噶啦。"
         },
         {
           "index": 44,
-          "text": "符，你一贴咗道符喺身咧，佢就睇唔到你噶"
+          "text": "趁佢唔觉意咧，你就一粒落去佢个头𠮶度。"
         },
         {
           "index": 45,
-          "text": "啦。趁佢唔觉意咧，你就一粒落去"
+          "text": "嗱，我喺后边掩护你。"
         },
         {
           "index": 46,
-          "text": "佢个头𠮶度。嗱，我喺后边掩护"
+          "text": "哇！你句句白话，我讲噶㖞。"
         },
         {
           "index": 47,
-          "text": "你。哇！你句句"
+          "text": "你同边个讲啊？"
         },
         {
           "index": 48,
-          "text": "白话，我讲噶㖞。"
+          "text": "同佢啊。"
         },
         {
           "index": 49,
-          "text": "你同边个讲啊？同佢啊。我啊，"
+          "text": "我啊，我会帮你啊。"
         },
         {
           "index": 50,
-          "text": "我会帮你啊。冇得顶"
+          "text": "冇得顶啊！你不愧为我好兄弟。"
         },
         {
           "index": 51,
-          "text": "啊！你不愧为我好兄"
+          "text": "嗱，你而家出去叫晒啲手足入嚟，"
         },
         {
           "index": 52,
-          "text": "弟。嗱，你而家出去"
+          "text": "每人俾道符佢。"
         },
         {
           "index": 53,
-          "text": "叫晒啲手足入嚟，每人俾道符"
+          "text": "我翻去菩提老祖度攞埋个乾坤袋，"
         },
         {
           "index": 54,
-          "text": "佢。我翻去菩提老祖"
+          "text": "夹手夹脚捉妖精。"
         },
         {
           "index": 55,
-          "text": "度攞埋个乾坤"
+          "text": "冇问题。"
         },
         {
           "index": 56,
-          "text": "袋，夹手夹脚捉妖精。冇问题。"
+          "text": "好兄弟。"
         },
         {
           "index": 57,
-          "text": "好兄弟。哦，今日你啲眼神好似咁。"
-        },
-        {
-          "index": 58,
-          "text": ""
+          "text": "哦，今日你啲眼神好似咁。"
         },
         {
           "index": 59,
@@ -8777,7 +8972,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -8830,7 +9026,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "诶，两位请慢用"
+          "text": "诶，两位请慢用啊！"
         },
         {
           "index": 2,
@@ -8838,7 +9034,7 @@
         },
         {
           "index": 3,
-          "text": "啊！好，大家帮主翻嚟啦，快啲食啦！"
+          "text": "好，大家帮主翻嚟啦，快啲食啦！"
         },
         {
           "index": 4,
@@ -8850,7 +9046,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -8879,15 +9076,16 @@
       "changes": [
         {
           "index": 1,
-          "text": "通知其他人，"
+          "text": "通知其他人，帮住揾。"
         },
         {
           "index": 2,
-          "text": "帮住揾。"
+          "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -8920,7 +9118,24 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {
+      "changes": [
+        {
+          "index": 1,
+          "text": ""
+        },
+        {
+          "index": 2,
+          "text": "嗯，"
+        },
+        {
+          "index": 3,
+          "text": "我哋不同星座。"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -8981,7 +9196,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9030,7 +9246,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9079,7 +9296,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9116,7 +9334,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9225,19 +9444,19 @@
         },
         {
           "index": 5,
-          "text": "你争我钱啊"
+          "text": "你争我钱啊真？"
         },
         {
           "index": 6,
-          "text": "真？我争？"
+          "text": "我争？"
         },
         {
           "index": 7,
-          "text": "记得"
+          "text": "记得咧，"
         },
         {
           "index": 8,
-          "text": "咧，"
+          "text": ""
         },
         {
           "index": 9,
@@ -9245,7 +9464,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9354,11 +9574,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "靓仔，到你嘅环节啦"
+          "text": "靓仔，到你嘅环节啦，"
         },
         {
           "index": 2,
-          "text": "，使唔使发咁大烂渣啊？"
+          "text": "使唔使发咁大烂渣啊？"
         },
         {
           "index": 3,
@@ -9382,11 +9602,11 @@
         },
         {
           "index": 8,
-          "text": "呢个都老唔实，肯咬啲啫"
+          "text": "呢个都老唔实，"
         },
         {
           "index": 9,
-          "text": "，总好过冇嘅。"
+          "text": "肯咬啲啫，总好过冇嘅。"
         },
         {
           "index": 10,
@@ -9402,7 +9622,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9463,7 +9684,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9508,15 +9730,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "哼，不过今日出卖得我"
+          "text": "哼，不过今日出卖得我，"
         },
         {
           "index": 2,
-          "text": "，听日一样我要出卖翻你"
+          "text": "听日一样我要出卖翻你，"
         },
         {
           "index": 3,
-          "text": "，系咩？"
+          "text": "系咩？"
         },
         {
           "index": 4,
@@ -9524,7 +9746,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9553,15 +9776,16 @@
       "changes": [
         {
           "index": 1,
-          "text": "我菩提老祖为咗伏妖除魔"
+          "text": "我菩提老祖为咗伏妖除魔除魅。"
         },
         {
           "index": 2,
-          "text": "除魅。"
+          "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9978,15 +10202,15 @@
         },
         {
           "index": 10,
-          "text": "你条木契，"
+          "text": ""
         },
         {
           "index": 11,
-          "text": "今晚我就㓥咗你当烧猪"
+          "text": "你条木契，今晚我就㓥咗你当烧猪食！"
         },
         {
           "index": 12,
-          "text": "食！"
+          "text": ""
         },
         {
           "index": 13,
@@ -9994,39 +10218,35 @@
         },
         {
           "index": 14,
-          "text": "佢又不过受咗两个妖女嘅移魂大"
+          "text": "佢又不过受咗两个妖女嘅移魂大法啫。"
         },
         {
           "index": 15,
-          "text": "法啫。"
-        },
-        {
-          "index": 16,
           "text": "放咗我！"
         },
         {
-          "index": 17,
+          "index": 16,
           "text": "如果唔系我叫个主人杀咗你！"
         },
         {
-          "index": 18,
+          "index": 17,
           "text": "真系啊你！仲讲二"
         },
         {
-          "index": 19,
+          "index": 18,
           "text": "旺财，"
         },
         {
-          "index": 20,
+          "index": 19,
           "text": "乜你咬住条绳好似个面线咁嘅？"
         },
         {
-          "index": 21,
-          "text": "咪"
+          "index": 20,
+          "text": ""
         },
         {
-          "index": 22,
-          "text": "我绑乾坤袋条绳嚟咯。"
+          "index": 21,
+          "text": "咪我绑乾坤袋条绳嚟咯。"
         },
         {
           "index": 23,
@@ -10078,19 +10298,19 @@
         },
         {
           "index": 35,
-          "text": "咁就天机你都泄露出嚟"
+          "text": "咁就天机你都泄露出嚟嘅，"
         },
         {
           "index": 36,
-          "text": "嘅，系嘛？"
+          "text": "系嘛？"
         },
         {
           "index": 37,
-          "text": "啊，呢边"
+          "text": "啊，呢边啊，"
         },
         {
           "index": 38,
-          "text": "啊，你仲唔算系神仙嚟嘅你？"
+          "text": "你仲唔算系神仙嚟嘅你？"
         },
         {
           "index": 39,
@@ -10098,11 +10318,11 @@
         },
         {
           "index": 40,
-          "text": "过分啦你！哎"
+          "text": "过分啦你！哎呀，"
         },
         {
           "index": 41,
-          "text": "呀，你话我真系怕你三"
+          "text": "你话我真系怕你三"
         },
         {
           "index": 42,
@@ -10126,7 +10346,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10175,7 +10396,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10440,7 +10662,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10500,32 +10723,29 @@
     "answer": {
       "changes": [
         {
-          "index": 1,
-          "text": "不如就咁话啦，"
-        },
-        {
           "index": 2,
-          "text": "计错数，"
+          "text": "不如就咁话啦，计错数，行少一步，"
         },
         {
           "index": 3,
-          "text": "行少一步，你唔会怪我啊嘛？"
+          "text": "你唔会怪我啊嘛？"
         },
         {
           "index": 4,
-          "text": "我一生"
+          "text": "我一生人都"
         },
         {
           "index": 5,
-          "text": "人都盲，女女"
+          "text": "盲，"
         },
         {
           "index": 6,
-          "text": "最惊，最有眼光就系跟住帮主。"
+          "text": "女女最惊，最有眼光就系跟住帮主。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10594,7 +10814,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10739,7 +10960,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10804,7 +11026,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10841,7 +11064,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10881,16 +11105,13 @@
           "text": "人都炸死呀！"
         },
         {
-          "index": 2,
-          "text": ""
-        },
-        {
           "index": 3,
           "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11095,7 +11316,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11181,10 +11403,19 @@
         {
           "index": 5,
           "text": "两个都唔知喺边度啊，"
+        },
+        {
+          "index": 6,
+          "text": "咁竟然得一个。"
+        },
+        {
+          "index": 7,
+          "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11221,19 +11452,20 @@
       "changes": [
         {
           "index": 1,
-          "text": "边个够胆挡路嘅"
+          "text": "边个够胆挡路嘅，"
         },
         {
           "index": 2,
-          "text": "，就杀边个"
+          "text": "就杀边个！"
         },
         {
           "index": 3,
-          "text": "！"
+          "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11258,7 +11490,8 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11283,7 +11516,8 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11368,7 +11602,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11405,7 +11640,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11585,32 +11821,93 @@
     "answer": {
       "changes": [
         {
+          "index": 1,
+          "text": "做咩啊你？"
+        },
+        {
+          "index": 2,
+          "text": "我主人要见你。"
+        },
+        {
+          "index": 3,
+          "text": "咩地方嚟噶？"
+        },
+        {
+          "index": 4,
+          "text": "盘丝洞。"
+        },
+        {
+          "index": 5,
+          "text": "盘丝洞？"
+        },
+        {
+          "index": 6,
+          "text": "系，"
+        },
+        {
+          "index": 7,
+          "text": "我主人系盘丝大仙座下大弟子蜘蛛精，"
+        },
+        {
+          "index": 8,
+          "text": "呢度唔系盘丝洞系咩啊？"
+        },
+        {
+          "index": 9,
+          "text": "盘丝洞。"
+        },
+        {
+          "index": 10,
+          "text": "行啦，死马骝！"
+        },
+        {
+          "index": 11,
+          "text": "喂，傻咗啊你？"
+        },
+        {
+          "index": 12,
+          "text": "我哋帮主啊！死马骝，"
+        },
+        {
+          "index": 13,
+          "text": "我真系傻咗。"
+        },
+        {
+          "index": 14,
+          "text": "你仲渣仔？"
+        },
+        {
+          "index": 15,
+          "text": "你生仔已经成咗"
+        },
+        {
           "index": 16,
-          "text": "咗。你仲渣"
-        },
-        {
-          "index": 17,
-          "text": "仔？你生仔已经成咗"
-        },
-        {
-          "index": 18,
           "text": "自己系齐天大圣啦嘛？"
         },
         {
+          "index": 17,
+          "text": "吓，"
+        },
+        {
+          "index": 18,
+          "text": "你揾次醒啲啦，"
+        },
+        {
           "index": 19,
-          "text": "吓，你揾次醒啲啦，"
+          "text": "我焗住认嘅啫嘛。"
         },
         {
           "index": 20,
-          "text": "我焗住认嘅啫"
+          "text": "唔信你用个照镜睇下我系咪？"
         },
         {
           "index": 21,
-          "text": "嘛。唔信你用个照镜睇下我系咪？"
+          "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11951,19 +12248,19 @@
       "changes": [
         {
           "index": 1,
-          "text": "嗱，睇到啦嘛？睇到"
+          "text": "嗱，睇到啦嘛？"
         },
         {
           "index": 2,
-          "text": "啦，啊，清楚"
+          "text": "睇到啦，"
         },
         {
           "index": 3,
-          "text": "冇？哼，"
+          "text": "啊，清楚冇？"
         },
         {
           "index": 4,
-          "text": "你呃我，"
+          "text": "哼，你呃我，"
         },
         {
           "index": 5,
@@ -12003,119 +12300,120 @@
         },
         {
           "index": 14,
-          "text": "唐三藏究竟"
+          "text": "唐三藏究竟响边啊？马骝精！"
         },
         {
           "index": 15,
-          "text": "响边啊？马骝精！唉，"
+          "text": "唉，好大嘅误会啊各位！"
         },
         {
           "index": 16,
-          "text": "好大"
+          "text": "呢个误会大到点啊？"
         },
         {
           "index": 17,
-          "text": "嘅误会啊各"
+          "text": "嗱，我哋应该讲啦，"
         },
         {
           "index": 18,
-          "text": "位！呢个误会"
+          "text": "我确系属猴嘅，不过查实就唔系马骝系马骝整嚟嘅，"
         },
         {
           "index": 19,
-          "text": "大到点啊？嗱，我"
+          "text": "讲都费事啊！"
         },
         {
           "index": 20,
-          "text": "哋应该讲啦，我确系属猴"
+          "text": "我只要佢有咩都有，"
         },
         {
           "index": 21,
-          "text": "嘅，不过查实就唔系马骝"
+          "text": "你攞嚟照下。"
         },
         {
           "index": 22,
-          "text": "系马骝整嚟嘅，讲都费事啊！"
+          "text": "搞错，搞错，"
         },
         {
           "index": 23,
-          "text": "我只要佢有咩都有"
+          "text": "搞错！"
         },
         {
           "index": 24,
-          "text": "，你攞嚟照下。"
-        },
-        {
-          "index": 25,
-          "text": "搞错，搞错，搞错！"
-        },
-        {
-          "index": 26,
           "text": "嗱，唔好再闹嘢。"
         },
         {
+          "index": 25,
+          "text": "如果我真系孙悟空，"
+        },
+        {
+          "index": 26,
+          "text": "我使企喺度俾你咬住只手咩？"
+        },
+        {
           "index": 27,
-          "text": "如果我"
-        },
-        {
-          "index": 28,
-          "text": "真系孙悟空，我使企喺度俾你咬住只手咩？"
-        },
-        {
-          "index": 29,
           "text": "一个筋斗打上天，"
         },
         {
-          "index": 30,
+          "index": 28,
           "text": "一个倒挂落嚟天灵盖啦！"
         },
         {
-          "index": 31,
+          "index": 29,
           "text": "你而家未变真身啫，"
         },
         {
-          "index": 32,
+          "index": 30,
           "text": "到时你翻嚟唔安。"
         },
         {
-          "index": 33,
+          "index": 31,
           "text": "点啊，师妹，"
         },
         {
-          "index": 34,
+          "index": 32,
           "text": "心痛啊？"
         },
         {
-          "index": 35,
+          "index": 33,
           "text": "唔系啊。"
         },
         {
-          "index": 36,
+          "index": 34,
           "text": "唔系？"
         },
         {
+          "index": 35,
+          "text": "我唔会再为呢个男人心痛。"
+        },
+        {
+          "index": 36,
+          "text": "你呃我啊？"
+        },
+        {
           "index": 37,
-          "text": "我唔会再为呢个男人心"
+          "text": "师姐，我冇呃你。"
         },
         {
           "index": 38,
-          "text": "痛。你呃我啊？"
+          "text": "冇呃我嘅，咁你点杀咗佢？吓？"
         },
         {
           "index": 39,
-          "text": "师姐，我冇呃你。冇呃我嘅，咁"
+          "text": "喂，杀咗佢？"
         },
         {
           "index": 40,
-          "text": "你点杀咗佢？吓？喂，杀咗"
+          "text": "咁你唔想揾唐三藏？"
         },
         {
           "index": 41,
-          "text": "佢？咁你唔想揾唐三藏？想揾。"
+          "text": "想揾。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12204,31 +12502,40 @@
         },
         {
           "index": 2,
-          "text": "好醉。"
+          "text": "好醉。俾翻钱佢。"
         },
         {
           "index": 3,
-          "text": "俾翻钱佢。"
+          "text": ""
         },
         {
           "index": 4,
-          "text": "嗯，哦，"
+          "text": "嗯，哦，去啊！"
         },
         {
           "index": 5,
-          "text": "去啊！"
+          "text": "阿九，哎呀，你骗咗我大饼嘢啊！"
+        },
+        {
+          "index": 6,
+          "text": "我有心嘅。"
+        },
+        {
+          "index": 7,
+          "text": "哦，咁你好走，但系我俾翻钱你啊！"
         },
         {
           "index": 8,
-          "text": "大饼嘢啊！我有心嘅。"
+          "text": ""
         },
         {
           "index": 9,
-          "text": "哦，咁你好走，但系我俾翻钱你啊！"
+          "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12265,7 +12572,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12302,7 +12610,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12347,7 +12656,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12516,7 +12826,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12573,11 +12884,11 @@
         },
         {
           "index": 2,
-          "text": "大王，呢度有几千个山头，山洞又多"
+          "text": "大王，呢度有几千个山头，山洞又多，"
         },
         {
           "index": 3,
-          "text": "，唔知边个系盘丝洞入口㖞。"
+          "text": "唔知边个系盘丝洞入口㖞。"
         },
         {
           "index": 4,
@@ -12589,7 +12900,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12698,7 +13010,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12839,11 +13152,11 @@
         },
         {
           "index": 5,
-          "text": "嘴对嘴，过啲氧气俾"
+          "text": "嘴对嘴，过啲氧气俾佢，"
         },
         {
           "index": 6,
-          "text": "佢，咁可以阻止到佢发威噶。"
+          "text": "咁可以阻止到佢发威噶。"
         },
         {
           "index": 7,
@@ -12879,7 +13192,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12928,7 +13242,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12965,7 +13280,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12990,7 +13306,8 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -13039,7 +13356,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13100,31 +13418,32 @@
       "changes": [
         {
           "index": 1,
-          "text": ""
-        },
-        {
-          "index": 2,
           "text": "你做咩啊？"
         },
         {
-          "index": 3,
+          "index": 2,
           "text": "我打咗个冷震，"
         },
         {
-          "index": 4,
+          "index": 3,
           "text": "好过瘾啊！"
         },
         {
-          "index": 5,
+          "index": 4,
           "text": "你喺我身上打个冷震？"
         },
         {
-          "index": 6,
+          "index": 5,
           "text": "系啊。"
+        },
+        {
+          "index": 6,
+          "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13297,11 +13616,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "你中嘅毒越嚟越深"
+          "text": "你中嘅毒越嚟越深，"
         },
         {
           "index": 2,
-          "text": "，再唔解死噶啦。"
+          "text": "再唔解死噶啦。"
         },
         {
           "index": 3,
@@ -13357,11 +13676,11 @@
         },
         {
           "index": 16,
-          "text": "因为我唔想你望住我，但"
+          "text": "因为我唔想你望住我，"
         },
         {
           "index": 17,
-          "text": "系谂住另外一个。"
+          "text": "但系谂住另外一个。"
         },
         {
           "index": 18,
@@ -13377,7 +13696,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13414,7 +13734,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13439,7 +13760,8 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -13536,7 +13858,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13597,7 +13920,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13630,7 +13954,8 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -13679,7 +14004,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13828,35 +14154,36 @@
         },
         {
           "index": 8,
-          "text": "你唔好认系佢"
+          "text": "你唔好认系佢嘅阿妈。"
         },
         {
           "index": 9,
-          "text": "嘅阿妈。"
-        },
-        {
-          "index": 10,
           "text": "咁我认系咩啊？"
         },
         {
-          "index": 11,
+          "index": 10,
           "text": "奶妈咯。"
         },
         {
+          "index": 11,
+          "text": "哦，男人佬九点做奶妈？"
+        },
+        {
           "index": 12,
-          "text": "哦，男人佬九点做奶妈？我哋带奶妈男人？"
+          "text": "我哋带奶妈男人？大佢噶嘛，"
         },
         {
           "index": 13,
-          "text": "大佢噶嘛，"
+          "text": "你唔讲佢点知"
         },
         {
           "index": 14,
-          "text": "你唔讲佢点知"
+          "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13909,7 +14236,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13982,11 +14310,11 @@
         },
         {
           "index": 4,
-          "text": "我就话你知唐僧"
+          "text": "我就话你知唐僧喺边。"
         },
         {
           "index": 5,
-          "text": "喺边。又系为咗贱人。"
+          "text": "又系为咗贱人。"
         },
         {
           "index": 6,
@@ -13994,7 +14322,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14031,7 +14360,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14068,7 +14398,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14093,7 +14424,8 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -14130,11 +14462,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "谢逊"
+          "text": "谢逊宝，"
         },
         {
           "index": 2,
-          "text": "宝，你再唔快啲，师傅唔掂噶啦！"
+          "text": "你再唔快啲，师傅唔掂噶啦！"
         },
         {
           "index": 3,
@@ -14142,7 +14474,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14203,7 +14536,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14344,11 +14678,11 @@
         },
         {
           "index": 9,
-          "text": "我跟到咪仲大把"
+          "text": "我跟到咪仲大把好多块噶嘛！"
         },
         {
           "index": 10,
-          "text": "好多块噶嘛！你唔使知我讲唐三藏，"
+          "text": "你唔使知我讲唐三藏，"
         },
         {
           "index": 11,
@@ -14360,7 +14694,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14446,18 +14781,11 @@
         {
           "index": 5,
           "text": "饮啊！"
-        },
-        {
-          "index": 6,
-          "text": ""
-        },
-        {
-          "index": 7,
-          "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14518,23 +14846,23 @@
       "changes": [
         {
           "index": 1,
-          "text": "今次冇死啊！改写魔王神功护体"
+          "text": "今次冇死啊！改写魔王神功护体，"
         },
         {
           "index": 2,
-          "text": "，我而家医翻好你嘅伤"
+          "text": "我而家医翻好你嘅伤，"
         },
         {
           "index": 3,
-          "text": "，你要跑入司徒府揾只马骝精头先，"
+          "text": "你要跑入司徒府揾只马骝精头先，"
         },
         {
           "index": 4,
-          "text": "我迟早揾到唐三藏"
+          "text": "我迟早揾到唐三藏，"
         },
         {
           "index": 5,
-          "text": "，到时食唐僧就唔少得你𠮶份。"
+          "text": "到时食唐僧就唔少得你𠮶份。"
         },
         {
           "index": 6,
@@ -14542,7 +14870,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14591,7 +14920,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14640,7 +14970,8 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -14757,19 +15088,19 @@
       "changes": [
         {
           "index": 1,
-          "text": "啊！撞鬼"
+          "text": "啊！撞鬼啊你！"
         },
         {
           "index": 2,
-          "text": "啊你！你扮鬼扮马咁嘅样做咩啫？"
+          "text": "你扮鬼扮马咁嘅样做咩啫？"
         },
         {
           "index": 3,
-          "text": "冇，我见你成日郁下心口，我特登扮佢"
+          "text": "冇，"
         },
         {
           "index": 4,
-          "text": "嚟氹你开心咯。"
+          "text": "我见你成日郁下心口，我特登扮佢嚟氹你开心咯。"
         },
         {
           "index": 5,
@@ -14777,11 +15108,11 @@
         },
         {
           "index": 6,
-          "text": "你生仔啊嘛，我帮你接生"
+          "text": "你生仔啊嘛，我帮你接生咯。"
         },
         {
           "index": 7,
-          "text": "咯。啊，个头出咗嚟咯。"
+          "text": "啊，个头出咗嚟咯。"
         },
         {
           "index": 8,
@@ -14809,7 +15140,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14858,7 +15190,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15143,11 +15476,11 @@
       "changes": [
         {
           "index": 2,
-          "text": "孙悟空，你当年罪恶滔天"
+          "text": "孙悟空，你当年罪恶滔天，"
         },
         {
           "index": 3,
-          "text": "，希望你今生会大彻大悟，痛改前非。"
+          "text": "希望你今生会大彻大悟，痛改前非。"
         },
         {
           "index": 4,
@@ -15155,11 +15488,11 @@
         },
         {
           "index": 5,
-          "text": "五百年前，你师父唐三藏为咗赎你一命"
+          "text": "五百年前，你师父唐三藏为咗赎你一命，"
         },
         {
           "index": 6,
-          "text": "，牺牲咗佢自己。"
+          "text": "牺牲咗佢自己。"
         },
         {
           "index": 7,
@@ -15167,67 +15500,67 @@
         },
         {
           "index": 8,
-          "text": "五百年后你重投人间"
+          "text": "五百年后你重投人间，"
         },
         {
           "index": 9,
-          "text": "，希望你学得你师父一样"
+          "text": "希望你学得你师父一样"
         },
         {
           "index": 10,
-          "text": "能够舍己为人"
+          "text": "能够舍己为人，"
         },
         {
           "index": 11,
-          "text": "，将你过往嘅一切"
+          "text": "将你过往嘅一切罪孽洗清。"
         },
         {
           "index": 12,
-          "text": "罪孽洗清。只要你肯自愿戴上"
+          "text": "只要你肯自愿戴上金光圈，"
         },
         {
           "index": 13,
-          "text": "金光圈，即系肯改过自新，咁就可以成为"
+          "text": "即系肯改过自新，"
         },
         {
           "index": 14,
-          "text": "法力无边嘅齐"
+          "text": "咁就可以成为法力无边嘅齐天大圣。"
         },
         {
           "index": 15,
-          "text": "天大圣。到时你就要负起取"
+          "text": "到时你就要负起取西经嘅重任，"
         },
         {
           "index": 16,
-          "text": "西经嘅重任，将历史改变。"
+          "text": "将历史改变。"
         },
         {
           "index": 17,
-          "text": "不过从此人间一切与你无关"
+          "text": "不过从此人间一切与你无关，"
         },
         {
           "index": 18,
-          "text": "，再唔可以有半点情欲，半点留恋"
+          "text": "再唔可以有半点情欲，半点留恋，"
         },
         {
           "index": 19,
-          "text": "，一生要皈依我佛。"
+          "text": "一生要皈依我佛。"
         },
         {
           "index": 20,
-          "text": "你未变成真正嘅孙悟空托世"
+          "text": "你未变成真正嘅孙悟空托世，"
         },
         {
           "index": 21,
-          "text": "，只系因为你未遇上"
+          "text": "只系因为你未遇上"
         },
         {
           "index": 22,
-          "text": "𠮶个俾三粒痣你"
+          "text": "𠮶个俾三粒痣你嘅人。"
         },
         {
           "index": 23,
-          "text": "嘅人。当你遇到佢之后，"
+          "text": "当你遇到佢之后，"
         },
         {
           "index": 24,
@@ -15247,11 +15580,11 @@
         },
         {
           "index": 28,
-          "text": "猪八戒！喂，"
+          "text": "猪八戒！"
         },
         {
           "index": 29,
-          "text": "你搞成咁，我"
+          "text": "喂，你搞成咁，我"
         },
         {
           "index": 30,
@@ -15259,15 +15592,15 @@
         },
         {
           "index": 31,
-          "text": "哎，你咁真系，你冷静啲好唔"
+          "text": "哎，你咁真系，你冷静啲好唔好啊？"
         },
         {
           "index": 32,
-          "text": "好啊？冷静，淡"
+          "text": "冷静，淡定，冷静啊！"
         },
         {
           "index": 33,
-          "text": "定，冷静啊！"
+          "text": ""
         },
         {
           "index": 34,
@@ -15275,7 +15608,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15347,16 +15681,12 @@
           "text": "小心，"
         },
         {
-          "index": 2,
-          "text": "快"
-        },
-        {
           "index": 3,
-          "text": "啲过嚟！"
+          "text": ""
         },
         {
           "index": 4,
-          "text": "啊！快啲过嚟捉住我啊！"
+          "text": "快啲过嚟！啊！快啲过嚟捉住我啊！"
         },
         {
           "index": 5,
@@ -15372,7 +15702,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15512,24 +15843,73 @@
     "answer": {
       "changes": [
         {
-          "index": 10,
-          "text": "就叫个仔做三藏啦。"
+          "index": 1,
+          "text": "似都好似我。我觉得"
         },
         {
-          "index": 11,
+          "index": 2,
+          "text": "做唔做神仙，"
+        },
+        {
+          "index": 3,
+          "text": "食唔食到唐僧肉都唔系咁紧要，"
+        },
+        {
+          "index": 4,
+          "text": "最重要嘅就系以后我哋能够好好哋咁生活，"
+        },
+        {
+          "index": 5,
+          "text": "凑大个仔，"
+        },
+        {
+          "index": 6,
+          "text": "唔好好似我咁做山贼。"
+        },
+        {
+          "index": 7,
+          "text": "你咁想要唐僧，"
+        },
+        {
+          "index": 8,
+          "text": "不如就叫个仔做三藏啦。"
+        },
+        {
+          "index": 9,
           "text": "边个？"
         },
         {
+          "index": 10,
+          "text": "今次都算冤家路窄啦，"
+        },
+        {
+          "index": 11,
+          "text": "你想点？"
+        },
+        {
           "index": 12,
-          "text": "今次都算冤家路窄啦，你想点？"
+          "text": "个细路女噶？"
         },
         {
           "index": 13,
-          "text": "个细路女噶？"
+          "text": "系啊，系我同至尊宝生嘅。"
+        },
+        {
+          "index": 14,
+          "text": "你讲咩？"
+        },
+        {
+          "index": 15,
+          "text": "拉妈。"
+        },
+        {
+          "index": 16,
+          "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15566,7 +15946,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15634,20 +16015,33 @@
     "answer": {
       "changes": [
         {
-          "index": 5,
-          "text": "俾你走啦，阿冰！"
+          "index": 2,
+          "text": "嚟！俾你走啦，阿冰！"
         },
         {
-          "index": 6,
+          "index": 3,
           "text": "唔使惊，我保护你。"
         },
         {
+          "index": 4,
+          "text": "你呢个死尸萝卜皮，"
+        },
+        {
+          "index": 5,
+          "text": "几时轮到你去？"
+        },
+        {
+          "index": 6,
+          "text": ""
+        },
+        {
           "index": 7,
-          "text": "你呢个死尸萝卜皮，几时轮到你去？"
+          "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15748,7 +16142,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15789,7 +16184,8 @@
         }
       ]
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -15842,7 +16238,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15879,7 +16276,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15916,7 +16314,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16013,7 +16412,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16074,7 +16474,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16110,10 +16511,6 @@
     "answer": {
       "changes": [
         {
-          "index": 1,
-          "text": ""
-        },
-        {
           "index": 2,
           "text": "找我啦！"
         },
@@ -16123,7 +16520,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16320,19 +16718,19 @@
       "changes": [
         {
           "index": 1,
-          "text": "文姬！"
+          "text": "文姬！文姬！"
         },
         {
           "index": 2,
-          "text": "文姬！"
-        },
-        {
-          "index": 3,
           "text": "三哥！"
         },
         {
-          "index": 4,
+          "index": 3,
           "text": "阿宝，快啲出嚟啊！"
+        },
+        {
+          "index": 4,
+          "text": ""
         },
         {
           "index": 5,
@@ -16340,39 +16738,47 @@
         },
         {
           "index": 6,
-          "text": "波依菠萝蜜，波依菠萝蜜。"
+          "text": ""
         },
         {
           "index": 7,
-          "text": "哇，新鲜啊！"
+          "text": "波依菠萝蜜，波依菠萝蜜。"
         },
         {
           "index": 8,
-          "text": "你"
+          "text": "哇，新鲜啊！"
+        },
+        {
+          "index": 9,
+          "text": "你冇事啊？真系时光倒流啊！"
+        },
+        {
+          "index": 10,
+          "text": "喂喂，等埋，等埋。"
         },
         {
           "index": 11,
-          "text": "啊！喂喂，等埋，等埋。"
-        },
-        {
-          "index": 12,
           "text": "凶手走得咁快？再嚟。"
         },
         {
+          "index": 12,
+          "text": "老婆！老婆！喂，我老婆，"
+        },
+        {
           "index": 13,
-          "text": "老婆！老婆！"
+          "text": "你老婆走咗出嚟噶啦，"
         },
         {
           "index": 14,
-          "text": "喂，我老婆，你老婆走咗出嚟噶啦，"
+          "text": "俾唔切啊！我都未讲完，你点知咧？"
         },
         {
           "index": 15,
-          "text": "俾唔切啊！我都未讲完，你点"
+          "text": "真系犀利㖞。"
         },
         {
           "index": 16,
-          "text": "知咧？真系犀利㖞。"
+          "text": ""
         },
         {
           "index": 17,
@@ -16380,23 +16786,23 @@
         },
         {
           "index": 18,
-          "text": "哇，又新鲜"
+          "text": "哇，又新鲜啊！"
         },
         {
           "index": 19,
-          "text": "啊！跟我讲就，"
+          "text": "跟我讲就，"
         },
         {
           "index": 20,
-          "text": "阿宝，再嚟。"
+          "text": "阿宝，"
         },
         {
           "index": 21,
-          "text": "老婆！"
+          "text": "再嚟。"
         },
         {
           "index": 22,
-          "text": "老婆！"
+          "text": "老婆！老婆！"
         },
         {
           "index": 23,
@@ -16404,7 +16810,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16513,11 +16920,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "讲到你咪烦我啦！喂喂喂喂喂喂，做咩要叫我咪烦你，仲要警告我"
+          "text": "讲到你咪烦我啦！喂喂喂喂喂喂，做咩要叫我咪烦你，仲要警告我啊？"
         },
         {
           "index": 2,
-          "text": "啊？你好惨啊，仆街！"
+          "text": "你好惨啊，仆街！"
         },
         {
           "index": 3,
@@ -16525,11 +16932,11 @@
         },
         {
           "index": 4,
-          "text": "点解？"
+          "text": "点解？好惊啊！"
         },
         {
           "index": 5,
-          "text": "好惊啊！出嚟啊！"
+          "text": "出嚟啊！"
         },
         {
           "index": 6,
@@ -16537,31 +16944,32 @@
         },
         {
           "index": 7,
-          "text": "立"
+          "text": "立子！立子！立子！"
         },
         {
           "index": 8,
-          "text": "子！"
-        },
-        {
-          "index": 9,
           "text": "立子！立子！"
         },
         {
+          "index": 9,
+          "text": "死！你有咁惨？"
+        },
+        {
           "index": 10,
-          "text": "立子！"
+          "text": "唔好啦，"
         },
         {
           "index": 11,
-          "text": "立子！"
+          "text": "好攰啊！"
         },
         {
           "index": 12,
-          "text": "死！你有咁惨？唔好啦，好攰啊！"
+          "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16627,14 +17035,11 @@
         {
           "index": 4,
           "text": "老铁，老铁"
-        },
-        {
-          "index": 5,
-          "text": "。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16683,7 +17088,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16816,11 +17222,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "夜红，你"
+          "text": "夜红，"
         },
         {
           "index": 2,
-          "text": "放过我啊！"
+          "text": "你放过我啊！"
         },
         {
           "index": 3,
@@ -16828,47 +17234,47 @@
         },
         {
           "index": 4,
-          "text": "你俾一个我唔杀你嘅理由"
+          "text": "你俾一个我唔杀你嘅理由啊！"
         },
         {
           "index": 5,
-          "text": "啊！啱咁"
+          "text": "啱咁啊，你俾个杀我嘅理由我先。"
         },
         {
           "index": 6,
-          "text": "啊，你俾个杀我"
+          "text": "好啊，你粒声唔出抌低我"
         },
         {
           "index": 7,
-          "text": "嘅理由我先。好"
+          "text": "唔理，仲同我师姐生马仔。"
         },
         {
           "index": 8,
-          "text": "啊，你粒声唔出抌低我"
+          "text": "咁你唔会抌低我？"
         },
         {
           "index": 9,
-          "text": "唔理，仲同我师姐生马仔。咁"
+          "text": "英雄，"
         },
         {
           "index": 10,
-          "text": "你唔会抌低我？"
+          "text": "其实我𠮶日走咗去，想翻嚟问你师姐攞解药去救你，"
         },
         {
           "index": 11,
-          "text": "英雄，其实我𠮶日走咗去，想翻"
+          "text": "点知迟咗一步"
         },
         {
           "index": 12,
-          "text": "嚟问你师姐攞解药去"
+          "text": "翻到已经揾你唔到啦。"
         },
         {
           "index": 13,
-          "text": "救你，点知迟咗一步翻到已经"
+          "text": "你呃我？"
         },
         {
           "index": 14,
-          "text": "揾你唔到啦。你呃我？"
+          "text": ""
         },
         {
           "index": 15,
@@ -16876,7 +17282,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16937,7 +17344,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16998,15 +17406,20 @@
       "changes": [
         {
           "index": 1,
-          "text": "金师傅"
+          "text": ""
         },
         {
           "index": 2,
-          "text": "，我哋再见啦。"
+          "text": ""
+        },
+        {
+          "index": 3,
+          "text": "金师傅，我哋再见啦。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17043,7 +17456,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17092,7 +17506,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17137,23 +17552,20 @@
       "changes": [
         {
           "index": 1,
-          "text": "唔该。"
+          "text": "唔该。哎，盘丝洞冇乱闯，"
         },
         {
           "index": 2,
-          "text": "哎，盘丝洞"
+          "text": "盘丝洞。"
         },
         {
           "index": 3,
-          "text": "冇乱闯，"
-        },
-        {
-          "index": 4,
-          "text": "盘丝洞。"
+          "text": ""
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17193,16 +17605,13 @@
           "text": ""
         },
         {
-          "index": 2,
-          "text": ""
-        },
-        {
           "index": 3,
           "text": "睬我。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17263,15 +17672,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "嘿！我而家郑重宣布"
+          "text": "嘿！我而家郑重宣布，"
         },
         {
           "index": 2,
-          "text": "，喺呢个山头所有嘢都系我嘅"
+          "text": "喺呢个山头所有嘢都系我嘅，"
         },
         {
           "index": 3,
-          "text": "，包括你在内。"
+          "text": "包括你在内。"
         },
         {
           "index": 4,
@@ -17287,7 +17696,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17360,7 +17770,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17397,6 +17808,7 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   }
 ]

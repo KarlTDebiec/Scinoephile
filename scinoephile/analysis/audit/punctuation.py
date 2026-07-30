@@ -182,7 +182,7 @@ def _audit_block_punctuation(
     first_block: int | None,
     last_block: int | None,
 ) -> str:
-    """Audit complete block-level punctuation cases as subtitle rows.
+    """Audit complete block-level punctuation cases as sparse block decisions.
 
     Arguments:
         reference: reference subtitle series used to guide punctuation
@@ -194,7 +194,7 @@ def _audit_block_punctuation(
         first_block: first 1-indexed reference block number to include
         last_block: last 1-indexed reference block number to include
     Returns:
-        Markdown audit report using the pairwise punctuation table shape
+        Markdown audit report with one row per block case
     Raises:
         ScinoephileError: if a logged guide block cannot be matched uniquely
     """
@@ -215,25 +215,26 @@ def _audit_block_punctuation(
         selected_reference_indexes,
         row_filter,
     )
-    rows.sort(key=lambda item: (item[0], item[1]))
+    rows.sort(key=lambda item: item[0])
     return format_audit_report(
         title="Transcription Punctuation Audit",
         summary_items=(
             f"logged cases: {logged_cases}",
-            f"punctuation changes: {changes}",
-            f"unchanged answers: {unchanged}",
+            f"changed answers: {changes}",
+            f"no-change answers: {unchanged}",
             f"unanswered cases: {unanswered}",
+            "block view: one row per case; Output lists sparse replacements",
             f"row filter: {row_filter.value}",
         ),
         columns=(
-            ("Index", "right"),
+            ("Indexes", "right"),
             ("Reference", "left"),
             ("Input", "left"),
             ("Output", "left"),
             ("Notes", "left"),
             ("Verified", "center"),
         ),
-        rows=[row for _, _, row in rows],
+        rows=[row for _, row in rows],
         first_index=first_index,
         last_index=last_index,
         index_track_name="reference",
@@ -242,28 +243,15 @@ def _audit_block_punctuation(
     )
 
 
-def _format_block_punctuation_decision(
-    test_case: BlockPunctuationTestCase,
-    offset: int,
-    output_text_by_local_index: dict[int, str],
-) -> tuple[str, AuditResult]:
-    """Format one expanded block punctuation decision.
+def _format_indexed_texts(texts: Sequence[str]) -> str:
+    """Format block texts with one-based local indexes.
 
     Arguments:
-        test_case: block-level punctuation case
-        offset: zero-indexed subtitle position within the block
-        output_text_by_local_index: sparse changed outputs keyed by local index
+        texts: block texts in index order
     Returns:
-        output cell text and semantic result
+        newline-separated indexed texts
     """
-    if test_case.answer is None:
-        return "(unanswered)", AuditResult.unanswered
-
-    input_text = test_case.query.targets[offset].text
-    output_text = output_text_by_local_index.get(offset, input_text)
-    if output_text != input_text:
-        return output_text, AuditResult.changed
-    return "", AuditResult.unchanged
+    return "\n".join(f"{index}. {text or '—'}" for index, text in enumerate(texts, 1))
 
 
 def _format_case_row(
@@ -338,8 +326,8 @@ def _get_block_punctuation_rows(
     direct_start_indexes: list[int | None],
     selected_reference_indexes: Collection[int],
     row_filter: PunctuationAuditFilter,
-) -> tuple[list[tuple[int, int, tuple[str, ...]]], int, int, int, int]:
-    """Expand block cases into per-subtitle punctuation audit rows.
+) -> tuple[list[tuple[int, tuple[str, ...]]], int, int, int, int]:
+    """Format block cases as sparse punctuation audit rows.
 
     Arguments:
         test_cases: logged block-level punctuation cases
@@ -348,9 +336,9 @@ def _get_block_punctuation_rows(
         selected_reference_indexes: reference positions selected for the report
         row_filter: row status filter
     Returns:
-        rows and logged, changed, unchanged, and unanswered decision counts
+        rows and logged, changed, unchanged, and unanswered case counts
     """
-    rows: list[tuple[int, int, tuple[str, ...]]] = []
+    rows: list[tuple[int, tuple[str, ...]]] = []
     changes = 0
     unchanged = 0
     unanswered = 0
@@ -360,9 +348,9 @@ def _get_block_punctuation_rows(
         selected_start_indexes = {
             start_index
             for start_index in start_indexes_by_case[test_case_index - 1]
-            if any(
-                start_index + offset in selected_reference_indexes
-                for offset in range(guide_count)
+            if all(
+                reference_index in selected_reference_indexes
+                for reference_index in range(start_index, start_index + guide_count)
             )
         }
         if not selected_start_indexes:
@@ -375,44 +363,42 @@ def _get_block_punctuation_rows(
         if start_index not in selected_start_indexes:
             continue
 
-        output_text_by_local_index: dict[int, str] = {}
-        if test_case.answer is not None:
-            output_text_by_local_index = {
-                change.index - 1: change.text for change in test_case.answer.changes
-            }
-        for offset, (guide, input_target) in enumerate(
-            zip(test_case.query.guides, test_case.query.targets, strict=True)
-        ):
-            reference_index = start_index + offset
-            if reference_index not in selected_reference_indexes:
-                continue
-            logged_cases += 1
-            output, result = _format_block_punctuation_decision(
-                test_case, offset, output_text_by_local_index
+        logged_cases += 1
+        answer = test_case.answer
+        if answer is None:
+            output = "(unanswered)"
+            unanswered += 1
+            result = AuditResult.unanswered
+        elif answer.changes:
+            output = "\n".join(
+                f"{change.index}. {change.text or '—'}" for change in answer.changes
             )
-            if result is AuditResult.unanswered:
-                unanswered += 1
-            elif result is AuditResult.changed:
-                changes += 1
-            else:
-                unchanged += 1
+            changes += 1
+            result = AuditResult.changed
+        else:
+            output = ""
+            unchanged += 1
+            result = AuditResult.unchanged
 
-            if (
-                row_filter is PunctuationAuditFilter.changes
-                and result is not AuditResult.changed
-            ) or (
-                row_filter is PunctuationAuditFilter.unverified and test_case.verified
-            ):
-                continue
-            cells = (
-                str(reference_index + 1),
-                guide.text,
-                input_target.text,
-                output,
-                "",
-                format_verification_marker(test_case.verified),
-            )
-            rows.append((reference_index, test_case_index, cells))
+        if (
+            row_filter is PunctuationAuditFilter.changes
+            and result is not AuditResult.changed
+        ) or (row_filter is PunctuationAuditFilter.unverified and test_case.verified):
+            continue
+
+        last_reference_index = start_index + guide_count - 1
+        reference_range = str(start_index + 1)
+        if last_reference_index != start_index:
+            reference_range = f"{start_index + 1}–{last_reference_index + 1}"
+        cells = (
+            f"Case {test_case_index}\nRefs {reference_range}",
+            _format_indexed_texts([guide.text for guide in test_case.query.guides]),
+            _format_indexed_texts([target.text for target in test_case.query.targets]),
+            output,
+            "",
+            format_verification_marker(test_case.verified),
+        )
+        rows.append((start_index, cells))
 
     return rows, logged_cases, changes, unchanged, unanswered
 

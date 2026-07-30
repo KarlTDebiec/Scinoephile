@@ -61,25 +61,34 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit punctuation \
   --overwrite
 ```
 
-Use `--filter changes` only when the user explicitly wants cases whose answers
-changed punctuation or whitespace. Use `--filter unverified` when continuing
-verification of a partly audited file. The report summary labels the requested
-bounds as the reference subtitle range. The report has exactly these columns:
-
 Use `--first-block` and `--last-block` for an inclusive, one-based range of
 reference blocks. Block and subtitle bounds are mutually exclusive. Omit either
 block bound for an open-ended range.
 
+Use `--filter changes` only when the user explicitly wants cases whose answers
+changed punctuation or whitespace. Use `--filter unverified` when continuing
+verification of a partly audited file. The report summary labels requested
+bounds as the reference subtitle or block range.
+
+The report has exactly six columns. Pairwise JSON uses:
+
 | Index | Reference | Input | Output | Notes | Verified |
-|---:|---|---|---|---|:---:|
+| ---: | --- | --- | --- | --- | :---: |
+
+Block JSON uses:
+
+| Indexes | Reference | Input | Output | Notes | Verified |
+| ---: | --- | --- | --- | --- | :---: |
 
 For pairwise JSON, the Input column stacks the query fragments with `<br>`. For
-block JSON, the CLI expands the complete block into one familiar row per guide
-subtitle. Output is blank when the answer made no punctuation or whitespace
-change and `(unanswered)` when no answer is present. Verified contains `✓` for
-verified JSON cases and is otherwise blank. In a block audit, the same
-case-level marker repeats on every expanded row. Rows are sorted by subtitle
-index; repeated logged cases remain separate.
+block JSON, each row is one complete logged case. `Indexes` identifies the case
+number and resolved reference range. Reference and Input list every local
+subtitle with its one-based query index. Output lists only the answer's sparse
+replacement indexes. Output is blank when the case made no punctuation or
+whitespace change and `(unanswered)` when no answer is present. Verified
+contains `✓` for a verified JSON case and is otherwise blank. A subtitle range
+includes a block case only when the complete guide range is selected. Rows are
+sorted by resolved reference start; repeated logged cases remain separate.
 
 ## Audit every row
 
@@ -119,8 +128,8 @@ than the generated target SRT:
   store each index's complete replacement text, and remove entries that no
   longer change anything. After punctuation and whitespace are removed, every
   replacement must preserve the original characters at that same index.
-- Mark a case `verified: true` only after auditing the entire pairwise case or
-  every row expanded from the block and correcting its answer where necessary.
+- Mark a case `verified: true` only after auditing the entire pairwise or block
+  row and correcting its answer where necessary.
 - Leave unanswered, unaudited, or partially audited cases unverified.
 
 After corrections, regenerate the punctuated target SRT and downstream
