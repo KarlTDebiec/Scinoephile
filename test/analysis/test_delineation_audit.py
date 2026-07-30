@@ -79,6 +79,37 @@ def test_audit_delineation_formats_sparse_block_changes_by_case():
     assert "- table rows: 1" in complete_range_report
 
 
+def test_audit_delineation_window_marks_context_and_filters_by_owned_indexes():
+    """Window reports should identify context and range-filter by ownership."""
+    reference = _get_series("前文", "負責一", "負責二", "後文")
+    test_case = BlockDelineationTestCase(
+        query=BlockDelineationQuery(
+            guides=[
+                BlockDelineationSubtitle(index=1, text="前文"),
+                BlockDelineationSubtitle(index=2, text="負責一"),
+                BlockDelineationSubtitle(index=3, text="負責二"),
+                BlockDelineationSubtitle(index=4, text="後文"),
+            ],
+            targets=[
+                BlockDelineationSubtitle(index=1, text="甲"),
+                BlockDelineationSubtitle(index=2, text="乙"),
+                BlockDelineationSubtitle(index=3, text="丙"),
+                BlockDelineationSubtitle(index=4, text="丁"),
+            ],
+            first_owned_index=2,
+            last_owned_index=3,
+        ),
+        answer=BlockDelineationAnswer(),
+    )
+
+    report = audit_delineation(reference, (test_case,), first_index=2, last_index=3)
+
+    assert "Owns boundaries after refs 2–3" in report
+    assert "1. [context] 前文" in report
+    assert "2. [owns next boundary] 負責一" in report
+    assert "- logged cases: 1" in report
+
+
 def test_audit_delineation_formats_shift_and_no_shift_rows():
     """Test shifted and unchanged boundaries are rendered as stacked pairs."""
     reference = _get_series("參|考一", "參考二", "參考三")

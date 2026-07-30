@@ -1,13 +1,14 @@
 ---
 name: audit-transcription-delineation
-description: Audit Scinoephile pairwise or sparse block transcription delineation JSON by matching its guides to SRT indexes and judging whether fixed target text is assigned to the right subtitles. Use when inspecting delineation-*.json, block_delineation-*.json, legacy mps.json or cuda.json, correcting boundary decisions, or verifying cases. Do not assess transcription accuracy.
+description: Audit Scinoephile pairwise or sparse windowed block transcription delineation JSON by matching its guides to SRT indexes and judging whether fixed target text is assigned to the right subtitles. Use when inspecting delineation-*.json, block_delineation-*.json, legacy mps.json or cuda.json, correcting boundary decisions, or verifying cases. Do not assess transcription accuracy.
 ---
 
 # Audit Transcription Delineation
 
 Run commands from the repository root. A delineation audit assesses whether
 target text was divided appropriately across adjacent guide subtitles. The same
-CLI automatically recognizes legacy pairwise JSON and sparse block JSON. Treat
+CLI automatically recognizes legacy pairwise JSON, complete sparse block JSON,
+and overlapping sparse block windows. Treat
 the provided target text as fixed input, even when it appears incorrect. Do not
 assess or comment on transcription accuracy, punctuation, wording, or character
 choice; those are reviewed later in a separate workflow.
@@ -26,8 +27,8 @@ response.
   cell with your own independent judgment; never append to or merely endorse
   generated note content.
 - Preserve the generated `Verified` cell: `✓` means the JSON test case is
-  verified, and an empty cell means it is not verified. Each block-audit row is
-  one complete case, so its marker maps directly to that JSON case.
+  verified, and an empty cell means it is not verified. Each block-window row
+  is one complete JSON case, so its marker maps directly to that case.
 - Do not add a separate findings section; keep each observation beside the row
   it describes.
 - Validate the saved report after adding notes, then provide a clickable link
@@ -53,7 +54,7 @@ use flat names such as `delineation-<provider>.json` or
 as `delineation/mps.json` or `delineation/cuda.json`.
 
 The guide SRT is required because delineation JSON stores guide text but not
-global subtitle numbers. The CLI matches each pair or complete guide sequence
+global subtitle numbers. The CLI matches each pair or complete window sequence
 to consecutive guide subtitles and rejects absent or ambiguous matches rather
 than displaying misleading indexes. It auto-detects the JSON shape; do not pass
 an implementation-mode option or use a separate command for block JSON.
@@ -82,9 +83,11 @@ On PowerShell, configure UTF-8 as directed by the repository `AGENTS.md` before
 printing subtitles.
 
 The index bounds are inclusive. Pairwise cases are retained only when both
-subtitles are contained in the requested range; block cases are retained only
-when their complete guide sequence is contained in the range. Omit either bound
-for an open-ended range. The default `--filter all` includes changed,
+subtitles are contained in the requested range. Legacy complete-block cases are
+retained only when their complete guide sequence is contained in the range.
+Windowed cases are retained when their complete owned range is contained; their
+displayed context may extend outside the requested range. Omit either bound for
+an open-ended range. The default `--filter all` includes changed,
 unchanged, and unanswered cases; use `--filter changes` to show only answers
 that moved text, or `--filter unverified` when continuing verification of a
 partly audited file. A complete audit must use `all`, because `changes` cannot
@@ -98,9 +101,12 @@ Omit either block bound for an open-ended range.
 
 Pairwise rows stack the first and second subtitle with `<br>`. Block rows show
 the JSON case number and global reference range in `Indexes`, then show every
-guide and preliminary target with its one-based local JSON index. A block
+guide and preliminary target with its one-based local JSON index. Window rows
+also show `Owns boundaries after refs ...`; local lines are marked
+`[owns next boundary]` or `[context]`. The ownership fields persisted in JSON
+are inclusive local `first_owned_index` and `last_owned_index` values. A block
 Output cell lists only the sparse replacement indexes; mentally overlay those
-replacements on Input to assess the reconstructed block. A blank line is
+replacements on Input to assess the reconstructed window. A blank line is
 displayed as `—`. Rows are sorted by matched reference indexes. Preserve the
 original log order among repeated pairwise cases because they may record
 successive decisions. In pairwise JSON, an empty answer (`{}`) means no boundary
@@ -112,9 +118,14 @@ cell.
 
 Read the saved report from beginning to end and judge every row independently.
 For pairwise rows, target characters may move across the displayed boundary.
-For block rows, target characters may move among any indexed subtitles in the
-case. Their complete concatenation must remain unchanged. Assess whether the
-output divides the target speech more faithfully among the meanings and
+For complete-block rows, target characters may move among any indexed subtitles
+in the case. For window rows, judge every boundary following an owned index;
+context exists only to make those edge decisions intelligible. Sparse changes
+may include a context index when moving the final owned boundary requires
+changing both sides. Their complete window concatenation must remain unchanged.
+Do not flag a context boundary that the window does not own; another overlapping
+case owns it. Assess whether the output divides the target speech more faithfully
+among the meanings and
 utterances represented by the guide subtitles.
 
 Judge only alignment. Ignore misspellings, mistranscriptions, Mandarinisms,
@@ -160,11 +171,13 @@ than a generated SRT:
 - For pairwise JSON, edit `output_one` and `output_two` as needed.
 - For block JSON, keep `answer.changes` sparse: include only indexes whose text
   differs from the query target, use the full replacement text for each listed
-  index, and remove entries that no longer change anything. The concatenation
-  of all reconstructed block outputs must preserve every original target
-  character in exactly the same order.
-- Mark a case `verified: true` only after auditing the entire pairwise case or
-  complete block row and correcting its answer where necessary.
+  index, and remove entries that no longer change anything. A window correction
+  may include context only when needed to express an owned edge boundary. The
+  concatenation of all reconstructed window outputs must preserve every original
+  target character in exactly the same order.
+- Mark a case `verified: true` only after auditing the entire pairwise case,
+  complete block, or every owned boundary in a window and correcting its answer
+  where necessary.
 - Leave unanswered, unaudited, or partially audited cases unverified. Do not
   treat an empty no-shift answer as unanswered; only a missing answer is
   unanswered.

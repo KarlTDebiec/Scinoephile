@@ -14,7 +14,13 @@ from scinoephile.llms.block_delineation import (
 )
 
 _LOCALIZED_PROMPT = BlockDelineationPrompt(
-    guides="cankao", targets="chushi", changes="xiugai", index="xuhao", text="wenben"
+    guides="cankao",
+    targets="chushi",
+    first_owned_index="fuze_kaishi",
+    last_owned_index="fuze_jieshu",
+    changes="xiugai",
+    index="xuhao",
+    text="wenben",
 )
 """Block-delineation prompt with localized correspondence field names."""
 
@@ -33,6 +39,8 @@ def test_prompt_aliases_apply_to_lists_and_nested_subtitles():
                     {"xuhao": 1, "wenben": "甲乙"},
                     {"xuhao": 2, "wenben": "丙"},
                 ],
+                "fuze_kaishi": 1,
+                "fuze_jieshu": 2,
             },
             "answer": {
                 "xiugai": [{"xuhao": 1, "wenben": "甲"}, {"xuhao": 2, "wenben": "乙丙"}]
@@ -43,6 +51,8 @@ def test_prompt_aliases_apply_to_lists_and_nested_subtitles():
     assert test_case.query.model_dump(by_alias=True) == {
         "cankao": [{"xuhao": 1, "wenben": "參考一"}, {"xuhao": 2, "wenben": "參考二"}],
         "chushi": [{"xuhao": 1, "wenben": "甲乙"}, {"xuhao": 2, "wenben": "丙"}],
+        "fuze_kaishi": 1,
+        "fuze_jieshu": 2,
     }
     assert test_case.answer is not None
     assert test_case.answer.model_dump(by_alias=True) == {
@@ -79,7 +89,7 @@ def test_sparse_changes_validate_indices_and_complete_character_order():
                 },
             }
         )
-    with raises(ValidationError, match="Expected: 甲乙丙"):
+    with raises(ValidationError, match=r"(?s)index 1.*U\+4E59.*Expected: 甲乙丙"):
         BlockDelineationTestCase.model_validate(
             {"query": query, "answer": {"changes": [{"index": 1, "text": "甲壞"}]}}
         )
@@ -109,6 +119,16 @@ def test_query_requires_complete_corresponding_indexes():
                         {"index": 2, "text": "參考二"},
                     ],
                     "targets": [{"index": 1, "text": "目標"}],
+                }
+            }
+        )
+    with raises(ValidationError, match="owned indexes"):
+        BlockDelineationTestCase.model_validate(
+            {
+                "query": {
+                    "guides": [{"index": 1, "text": "參考"}],
+                    "targets": [{"index": 1, "text": "目標"}],
+                    "first_owned_index": 1,
                 }
             }
         )

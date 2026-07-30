@@ -75,6 +75,42 @@ def test_audit_punctuation_formats_sparse_block_changes_by_case():
     assert "- table rows: 1" in complete_report
 
 
+def test_audit_punctuation_window_marks_context_and_filters_by_owned_indexes():
+    """Window reports should identify context and range-filter by ownership."""
+    reference = _get_series("前文", "負責一", "負責二", "後文")
+    target = _get_series("甲", "乙！", "丙", "丁")
+    test_case = BlockPunctuationTestCase(
+        query=BlockPunctuationQuery(
+            guides=[
+                BlockPunctuationSubtitle(index=1, text="前文"),
+                BlockPunctuationSubtitle(index=2, text="負責一"),
+                BlockPunctuationSubtitle(index=3, text="負責二"),
+                BlockPunctuationSubtitle(index=4, text="後文"),
+            ],
+            targets=[
+                BlockPunctuationSubtitle(index=1, text="甲"),
+                BlockPunctuationSubtitle(index=2, text="乙"),
+                BlockPunctuationSubtitle(index=3, text="丙"),
+                BlockPunctuationSubtitle(index=4, text="丁"),
+            ],
+            first_owned_index=2,
+            last_owned_index=3,
+        ),
+        answer=BlockPunctuationAnswer(
+            changes=[BlockPunctuationSubtitle(index=2, text="乙！")]
+        ),
+    )
+
+    report = audit_punctuation(
+        reference, target, (test_case,), first_index=2, last_index=3
+    )
+
+    assert "Owns refs 2–3" in report
+    assert "1. [context] 前文" in report
+    assert "2. [owned] 負責一" in report
+    assert "- logged cases: 1" in report
+
+
 def test_audit_punctuation_resolves_repeated_block_from_target():
     """Test target characters disambiguate a repeated block guide sequence."""
     reference = _get_series("重複", "尾", "重複", "尾")

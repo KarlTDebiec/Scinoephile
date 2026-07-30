@@ -31,7 +31,7 @@ class BlockDelineationSubtitle(TestCaseSubtitle):
 
 
 class BlockDelineationQuery(Query):
-    """Complete guides and timing-based initial targets for one block."""
+    """Complete guides and timing-based initial targets for one query window."""
 
     prompt: ClassVar[BlockDelineationPrompt] = _BASE_PROMPT
     """Text and field aliases for block-level delineation."""
@@ -39,6 +39,17 @@ class BlockDelineationQuery(Query):
     """Complete guide subtitles in index order."""
     targets: list[BlockDelineationSubtitle] = Field(min_length=1)
     """Complete initial target assignment in guide-index order."""
+    first_owned_index: int | None = Field(default=None, ge=1)
+    """First local target index whose following boundary this window owns."""
+    last_owned_index: int | None = Field(default=None, ge=1)
+    """Last local target index whose following boundary this window owns."""
+
+    @property
+    def owned_index_range(self) -> range:
+        """Get the inclusive local target-index range owned by this query."""
+        first_index = self.first_owned_index or 1
+        last_index = self.last_owned_index or len(self.targets)
+        return range(first_index, last_index + 1)
 
     @model_validator(mode="after")
     def validate_indices(self) -> Self:
@@ -49,11 +60,19 @@ class BlockDelineationQuery(Query):
         target_indexes = [target.index for target in self.targets]
         if target_indexes != guide_indexes:
             raise ValueError(self.prompt.target_indices_err)
+        if (self.first_owned_index is None) != (self.last_owned_index is None):
+            raise ValueError(self.prompt.owned_indices_err)
+        if self.first_owned_index is not None and (
+            self.last_owned_index is None
+            or self.first_owned_index > self.last_owned_index
+            or self.last_owned_index > len(guide_indexes)
+        ):
+            raise ValueError(self.prompt.owned_indices_err)
         return self
 
 
 class BlockDelineationAnswer(Answer):
-    """Sparse target replacements for one block."""
+    """Sparse target replacements for one query window."""
 
     prompt: ClassVar[BlockDelineationPrompt] = _BASE_PROMPT
     """Text and field aliases for block-level delineation."""
@@ -122,5 +141,24 @@ class BlockDelineationTestCase(TestCase):
         expected = "".join(target_text_by_index.values())
         received = "".join(output_text_by_index.values())
         if expected != received:
-            raise ValueError(self.prompt.target_chars_changed_err(expected, received))
+            mismatch_offset = next(
+                (
+                    offset
+                    for offset, (expected_char, received_char) in enumerate(
+                        zip(expected, received, strict=False)
+                    )
+                    if expected_char != received_char
+                ),
+                min(len(expected), len(received)),
+            )
+            cumulative_length = 0
+            mismatch_index = len(output_text_by_index)
+            for index, text in output_text_by_index.items():
+                cumulative_length += len(text)
+                if mismatch_offset < cumulative_length:
+                    mismatch_index = index
+                    break
+            raise ValueError(
+                self.prompt.target_chars_changed_err(mismatch_index, expected, received)
+            )
         return self

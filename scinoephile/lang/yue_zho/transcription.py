@@ -38,6 +38,13 @@ def _get_prompt_with_pinyin_change_alias[
     Returns:
         current prompt using a fully pinyin alias
     """
+    extra_replacements: dict[str, str] = {}
+    if isinstance(legacy_prompt, BlockPunctuationPrompt):
+        extra_replacements["change_index_not_owned_err"] = (
+            legacy_prompt.change_index_not_owned_err.replace(
+                "yuewen_changes", "yuewen_xiugai"
+            )
+        )
     return replace(
         legacy_prompt,
         base_system_prompt=legacy_prompt.base_system_prompt.replace(
@@ -54,6 +61,7 @@ def _get_prompt_with_pinyin_change_alias[
             "yuewen_changes", "yuewen_xiugai"
         ),
         legacy_cache_prompts=(legacy_prompt,),
+        **extra_replacements,
     )
 
 
@@ -61,21 +69,33 @@ _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_LEGACY = BlockDelineationPrompt(
     language=Language.yue_hant,
     **YUE_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
-        你負責將一整段廣東話口語嘅粵文轉寫，同同一段嘅中文字幕逐條對齊。
-        你會收到完整而有序嘅中文字幕 (zhongwen)，以及根據時間初步分配、
+        你負責將一個廣東話口語粵文轉寫視窗，同中文字幕逐條對齊。
+        你會收到有序嘅中文字幕 (zhongwen)，以及根據時間初步分配、
         索引完全相同嘅粵文字幕 (yuewen_initial)。
-        請參考整段內容，修正粵文字幕之間嘅分界。
+        fuze_qishi_xuhao 同 fuze_jieshu_xuhao 表示呢個視窗負責嘅本地索引範圍，
+        兩端都包括；範圍外嘅字幕只係重疊上下文。
+        呢個視窗負責範圍內每個索引之後嘅分界；如果嗰個索引已經係視窗最後一條，
+        就冇下一個分界需要處理。請逐個檢查所有負責嘅分界，唔好因為答案係稀疏格式
+        就只檢查少數索引；如果每個索引都要改，yuewen_changes 可以包含每個索引。
+        將所有 yuewen_initial 依次串連成一條不可變嘅字符帶；答案只可以用原有次序
+        將呢條字符帶切成連續片段，重新分配畀各索引。
         只喺 yuewen_changes 返回文字需要改動嘅索引；唔需要改嘅索引唔好返回。
         如果一條字幕改成空白，仍然要明確返回嗰個索引同空字串。
         一次分界修正通常需要返回分界兩邊所有受影響嘅索引。
+        只有為咗表達跨過負責範圍邊緣嘅分界調整，先可以返回上下文索引；
+        唔好改動同負責分界無關嘅上下文。
         重組後嘅粵文必須包含 yuewen_initial 全部字符，字符次序亦必須完全相同。
         唔可以加入、刪除、替換或者重新排序任何字符，包括原有標點同空格。
         唔好從中文字幕拷貝漢字。
         如果所有分界都正確，yuewen_changes 返回空列表。"""),
     guides="zhongwen",
-    guides_desc="同一段完整而有序嘅中文字幕",
+    guides_desc="同一查詢視窗完整而有序嘅中文字幕",
     targets="yuewen_initial",
-    targets_desc="按時間初步分配、索引同中文字幕一致嘅粵文字幕",
+    targets_desc="查詢視窗內按時間初步分配、索引同中文字幕一致嘅粵文字幕",
+    first_owned_index="fuze_qishi_xuhao",
+    first_owned_index_desc="呢個視窗負責嘅第一個本地粵文索引（包含）",
+    last_owned_index="fuze_jieshu_xuhao",
+    last_owned_index_desc="呢個視窗負責嘅最後一個本地粵文索引（包含）",
     changes="yuewen_changes",
     changes_desc="只包含文字需要改動嘅粵文字幕",
     index="xuhao",
@@ -86,12 +106,19 @@ _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_LEGACY = BlockDelineationPrompt(
     change_text_desc="呢個索引調整分界後嘅完整粵文字幕文字",
     guide_indices_err="zhongwen 索引必須由1開始、連續而且依次排列。",
     target_indices_err="yuewen_initial 索引必須同 zhongwen 索引完全一致。",
+    owned_indices_err=(
+        "fuze_qishi_xuhao 同 fuze_jieshu_xuhao 必須一齊省略，或者喺查詢索引內"
+        "組成由細到大、包括兩端嘅範圍。"
+    ),
     change_indices_err="yuewen_changes 索引必須唯一而且由細到大排列。",
     change_index_missing_err=(
         "yuewen_changes 每個索引都必須對應 zhongwen 入面嘅索引。"
     ),
     target_chars_changed_err_tpl=(
-        "套用 yuewen_changes 後嘅整段粵文冇依次保留 yuewen_initial 全部字符：\n"
+        "套用 yuewen_changes 後嘅整段粵文冇依次保留 yuewen_initial 全部字符。"
+        "第一個差異喺重組後索引 {index}、由零開始嘅字符位置 {offset}："
+        "期望 {expected_character}，收到 {received_character}。\n"
+        "期望附近: {expected_context}\n收到附近: {received_context}\n"
         "期望: {expected}\n收到: {received}"
     ),
 )
@@ -111,9 +138,13 @@ _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_LEGACY = BlockPunctuationPrompt(
     language=Language.yue_hant,
     **YUE_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
-        你負責參考一整段中文字幕，為已經逐條對齊嘅粵文字幕補上標點同空格。
-        你會收到完整而有序嘅中文字幕 (zhongwen)，以及索引完全相同、
+        你負責參考一個中文字幕視窗，為已經逐條對齊嘅粵文字幕補上標點同空格。
+        你會收到有序嘅中文字幕 (zhongwen)，以及索引完全相同、
         已經確定分界嘅粵文字幕 (yuewen_to_punctuate)。
+        fuze_qishi_xuhao 同 fuze_jieshu_xuhao 表示呢個視窗負責嘅本地索引範圍，
+        兩端都包括；範圍外嘅字幕只係重疊上下文，唔可以喺答案返回。
+        請逐個檢查負責範圍內每一條字幕，唔好因為答案係稀疏格式就只檢查少數索引；
+        如果每條都要改，yuewen_changes 可以包含負責範圍內每個索引。
         只喺 yuewen_changes 返回標點或者空格需要改動嘅索引；
         唔需要改嘅索引唔好返回。
         每個返回項目必須包含嗰個索引完整而加好標點嘅粵文字幕。
@@ -122,9 +153,13 @@ _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_LEGACY = BlockPunctuationPrompt(
         唔好從中文字幕拷貝漢字。
         如果所有粵文標點都正確，yuewen_changes 返回空列表。"""),
     guides="zhongwen",
-    guides_desc="同一段完整而有序嘅中文字幕",
+    guides_desc="同一查詢視窗完整而有序嘅中文字幕",
     targets="yuewen_to_punctuate",
-    targets_desc="分界已經確定、索引同中文字幕一致嘅粵文字幕",
+    targets_desc="查詢視窗內分界已經確定、索引同中文字幕一致嘅粵文字幕",
+    first_owned_index="fuze_qishi_xuhao",
+    first_owned_index_desc="呢個視窗負責嘅第一個本地粵文索引（包含）",
+    last_owned_index="fuze_jieshu_xuhao",
+    last_owned_index_desc="呢個視窗負責嘅最後一個本地粵文索引（包含）",
     changes="yuewen_changes",
     changes_desc="只包含標點或者空格需要改動嘅粵文字幕",
     index="xuhao",
@@ -135,13 +170,23 @@ _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_LEGACY = BlockPunctuationPrompt(
     change_text_desc="呢個索引調整標點後嘅完整粵文字幕文字",
     guide_indices_err="zhongwen 索引必須由1開始、連續而且依次排列。",
     target_indices_err="yuewen_to_punctuate 索引必須同 zhongwen 索引完全一致。",
+    owned_indices_err=(
+        "fuze_qishi_xuhao 同 fuze_jieshu_xuhao 必須一齊省略，或者喺查詢索引內"
+        "組成由細到大、包括兩端嘅範圍。"
+    ),
     change_indices_err="yuewen_changes 索引必須唯一而且由細到大排列。",
     change_index_missing_err=(
         "yuewen_changes 每個索引都必須對應 zhongwen 入面嘅索引。"
     ),
+    change_index_not_owned_err=(
+        "yuewen_changes 每個索引都必須喺 fuze_qishi_xuhao 至 "
+        "fuze_jieshu_xuhao 嘅負責範圍內。"
+    ),
     target_chars_changed_err_tpl=(
-        "索引 {index} 嘅標點修改移除標點同空格後，冇保留原有粵文字符：\n"
-        "期望: {expected}\n收到: {received}"
+        "索引 {index} 嘅標點修改移除標點同空格後，冇保留原有粵文字符。"
+        "第一個差異喺由零開始嘅字符位置 {offset}：期望 {expected_character}，"
+        "收到 {received_character}。\n期望附近: {expected_context}\n"
+        "收到附近: {received_context}\n期望: {expected}\n收到: {received}"
     ),
 )
 """Predecessor prompt using the mixed-language sparse-answer alias."""

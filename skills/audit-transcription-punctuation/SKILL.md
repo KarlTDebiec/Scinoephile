@@ -1,12 +1,13 @@
 ---
 name: audit-transcription-punctuation
-description: Audit Scinoephile pairwise or sparse block transcription punctuation JSON by matching its guides and fixed target text to reference and punctuated target SRTs. Use when inspecting punctuation-*.json, block_punctuation-*.json, legacy mps.json or cuda.json, correcting punctuation, or verifying cases. Do not assess transcription accuracy.
+description: Audit Scinoephile pairwise or sparse windowed block transcription punctuation JSON by matching its guides and fixed target text to reference and punctuated target SRTs. Use when inspecting punctuation-*.json, block_punctuation-*.json, legacy mps.json or cuda.json, correcting punctuation, or verifying cases. Do not assess transcription accuracy.
 ---
 
 # Audit Transcription Punctuation
 
 Audit the punctuation and whitespace added to fixed transcription text. The
-same CLI automatically recognizes legacy pairwise JSON and sparse block JSON.
+same CLI automatically recognizes legacy pairwise JSON, complete sparse block
+JSON, and overlapping sparse block windows.
 Produce a Markdown report, inspect every requested row, and record a concise
 judgment in each `Notes` cell.
 
@@ -82,17 +83,24 @@ Block JSON uses:
 
 For pairwise JSON, the Input column stacks the query fragments with `<br>`. For
 block JSON, each row is one complete logged case. `Indexes` identifies the case
-number and resolved reference range. Reference and Input list every local
-subtitle with its one-based query index. Output lists only the answer's sparse
-replacement indexes. Output is blank when the case made no punctuation or
+number and resolved reference range. Window rows also identify `Owns refs ...`;
+Reference and Input mark each local index as `[owned]` or `[context]`. The
+ownership fields persisted in JSON are inclusive `first_owned_index` and
+`last_owned_index` values. Output lists only the answer's sparse replacement
+indexes. Output is blank when the case made no punctuation or
 whitespace change and `(unanswered)` when no answer is present. Verified
 contains `✓` for a verified JSON case and is otherwise blank. A subtitle range
-includes a block case only when the complete guide range is selected. Rows are
+includes a complete legacy block only when its full guide range is selected; it
+includes a window when its full owned range is selected, even if displayed
+context extends outside the range. Rows are
 sorted by resolved reference start; repeated logged cases remain separate.
 
 ## Audit every row
 
-Open the Markdown file and inspect every requested row. The reference
+Open the Markdown file and inspect every requested row. In a window row, inspect
+every owned subtitle and use context only to understand it. Never demand or add
+a punctuation change for a context index; another overlapping window owns that
+output. The reference
 punctuation is useful context, but it does not dictate the target punctuation:
 Cantonese phrasing and sentence boundaries may differ from the guide.
 
@@ -124,12 +132,15 @@ than the generated target SRT:
 - Correct the punctuation or whitespace output before marking the case
   verified.
 - For pairwise JSON, edit the complete `output` string.
-- For block JSON, keep `answer.changes` sparse: include only changed indexes,
-  store each index's complete replacement text, and remove entries that no
-  longer change anything. After punctuation and whitespace are removed, every
-  replacement must preserve the original characters at that same index.
-- Mark a case `verified: true` only after auditing the entire pairwise or block
-  row and correcting its answer where necessary.
+- For block JSON, keep `answer.changes` sparse: include only changed owned
+  indexes, store each index's complete replacement text, and remove entries that
+  no longer change anything. Sparse means unchanged indexes are omitted, not
+  that only a few owned indexes should be inspected. After punctuation and
+  whitespace are removed, every replacement must preserve the original
+  characters at that same index.
+- Mark a case `verified: true` only after auditing the entire pairwise or
+  complete-block row, or every owned subtitle in a window, and correcting its
+  answer where necessary.
 - Leave unanswered, unaudited, or partially audited cases unverified.
 
 After corrections, regenerate the punctuated target SRT and downstream

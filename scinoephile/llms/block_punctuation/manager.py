@@ -131,6 +131,14 @@ class BlockPunctuationManager(Manager[BlockPunctuationTestCase]):
                     annotation=list[target_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.targets_desc,
                 ),
+                "first_owned_index": PromptModelField(
+                    alias=prompt.first_owned_index,
+                    description=prompt.first_owned_index_desc,
+                ),
+                "last_owned_index": PromptModelField(
+                    alias=prompt.last_owned_index,
+                    description=prompt.last_owned_index_desc,
+                ),
             },
         )
 

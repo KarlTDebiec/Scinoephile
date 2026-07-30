@@ -598,7 +598,9 @@
           "index": 2,
           "text": "救命啊！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {},
     "verified": true
@@ -712,7 +714,9 @@
           "index": 13,
           "text": "咁多咁样。啊。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
@@ -778,7 +782,9 @@
           "index": 2,
           "text": "神，十个官星都唔怕。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -848,7 +854,9 @@
           "index": 6,
           "text": "一命赔一命。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 5
     },
     "answer": {
       "changes": [
@@ -958,7 +966,9 @@
           "index": 11,
           "text": "解咩啊？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 10
     },
     "answer": {
       "changes": [
@@ -1004,7 +1014,9 @@
           "index": 2,
           "text": "咩人？难道各位睇唔出我系一个女人咩？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -1244,7 +1256,9 @@
           "index": 3,
           "text": "生；金钱落地，人头不保。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -1294,7 +1308,9 @@
           "index": 3,
           "text": "落。嗯，通呢度会有大买卖。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -1926,7 +1942,9 @@
           "index": 12,
           "text": "我把你冇咁长命啊！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 11
     },
     "answer": {
       "changes": [
@@ -2024,7 +2042,9 @@
           "index": 6,
           "text": "我话你冇咁长命，等到你要见嘅人啊！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 5
     },
     "answer": {
       "changes": [
@@ -2070,7 +2090,9 @@
           "index": 2,
           "text": "嘢，问我班兄弟先。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -2196,7 +2218,9 @@
           "index": 13,
           "text": "至于你啦，哦，咁有骨气啊！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
@@ -2266,7 +2290,9 @@
           "index": 2,
           "text": "教！叫大家洗干净只柜板，去出边等我。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -2630,7 +2656,9 @@
           "index": 14,
           "text": "板，如果发现有三粒痣嘅，即刻通知我。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 13
     },
     "answer": {
       "changes": [
@@ -2820,7 +2848,9 @@
           "index": 15,
           "text": "手，我唔会屈服嘅。哈哈哈哈。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 14
     },
     "answer": {
       "changes": [
@@ -2910,7 +2940,9 @@
           "index": 2,
           "text": "喎，屙屎喎。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -2980,7 +3012,9 @@
           "index": 6,
           "text": "度啊？边个？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 5
     },
     "answer": {
       "changes": [
@@ -3034,7 +3068,9 @@
           "index": 2,
           "text": "！你两个，对人唔足够，真系啊！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -3088,7 +3124,9 @@
           "index": 4,
           "text": "好大隻啊！有啲大隻啊！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -3142,7 +3180,9 @@
           "index": 3,
           "text": "咁好，点算咧？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -3184,7 +3224,9 @@
           "index": 2,
           "text": "方我唔系又衰靓。系啊！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {},
     "verified": true
@@ -3234,7 +3276,9 @@
           "index": 5,
           "text": "我呢边啊，呢边有著数啊。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 4
     },
     "answer": {
       "changes": [
@@ -3368,7 +3412,9 @@
           "index": 13,
           "text": "救你。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
@@ -3462,7 +3508,9 @@
           "index": 4,
           "text": "咩走咧？啊，帮主咪唔系抱走你咩？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -3564,7 +3612,9 @@
           "index": 9,
           "text": ""
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 8
     },
     "answer": {
       "changes": [
@@ -3658,7 +3708,9 @@
           "index": 6,
           "text": ""
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 5
     },
     "answer": {},
     "verified": true
@@ -3684,7 +3736,9 @@
           "index": 2,
           "text": "你做咩啊？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {},
     "verified": true
@@ -3710,7 +3764,9 @@
           "index": 2,
           "text": "你死一隻。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {},
     "verified": true
@@ -3744,7 +3800,9 @@
           "index": 3,
           "text": "喺嗰边啊！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -3794,7 +3852,9 @@
           "index": 3,
           "text": "睇呢个啊，打开，打开，打开。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -4680,7 +4740,9 @@
           "index": 7,
           "text": "傻，知道咪重伤，边有死得咁易。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
@@ -4778,7 +4840,9 @@
           "index": 7,
           "text": "大牛二虎啊，承办都废齐，我自己嚟。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
@@ -4848,7 +4912,9 @@
           "index": 4,
           "text": "叫做隐肉偷生，差唔多，大笔算得咩？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -4914,7 +4980,9 @@
           "index": 5,
           "text": "曲池，杂高两个鱼尾，即时冇血流。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 4
     },
     "answer": {
       "changes": [
@@ -4980,7 +5048,9 @@
           "index": 4,
           "text": "嘅。走呢头。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -5058,7 +5128,9 @@
           "index": 6,
           "text": "博主，请留步。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 5
     },
     "answer": {
       "changes": [
@@ -5152,7 +5224,9 @@
           "index": 8,
           "text": "主，普通料嚟啫，各花各眼。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 7
     },
     "answer": {
       "changes": [
@@ -5214,7 +5288,9 @@
           "index": 2,
           "text": "手上都窿，乜嘢嘢？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -5626,7 +5702,9 @@
           "index": 5,
           "text": "咁，你踎喺度做咩？我开条鞋带。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 4
     },
     "answer": {
       "changes": [
@@ -5708,7 +5786,9 @@
           "index": 6,
           "text": "俾大王，知一定重重打赏。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 5
     },
     "answer": {
       "changes": [
@@ -5850,7 +5930,9 @@
           "index": 13,
           "text": "嘅，讲。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
@@ -6178,7 +6260,9 @@
           "index": 4,
           "text": "嘅？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -6240,7 +6324,9 @@
           "index": 4,
           "text": "咁中意玩啊？系啊，就玩下啦。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -6294,7 +6380,9 @@
           "index": 3,
           "text": "啊！好，好就玩得。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -6392,7 +6480,9 @@
           "index": 9,
           "text": "。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 8
     },
     "answer": {
       "changes": [
@@ -6482,7 +6572,9 @@
           "index": 5,
           "text": "迷咗佢，留翻嚟做我嘅卧底。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 4
     },
     "answer": {
       "changes": [
@@ -6596,7 +6688,9 @@
           "index": 10,
           "text": "忍啊？嘛，望住我，疑云大。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 9
     },
     "answer": {
       "changes": [
@@ -6682,7 +6776,9 @@
           "index": 4,
           "text": "我以为我一个瞓唔着啫，原来晶晶姑娘，你都瞓唔着啊！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -7218,7 +7314,9 @@
           "index": 9,
           "text": "多谢八姑娘嘅一番美意。佢又无福消。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 8
     },
     "answer": {
       "changes": [
@@ -7284,7 +7382,9 @@
           "index": 2,
           "text": "百年啊！五百年啊！将志文到唐三藏嘅中。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -7322,7 +7422,9 @@
           "index": 2,
           "text": "唉，连脚板毛都剃埋，都唔知几时先生得番添嘅。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -7368,7 +7470,9 @@
           "index": 3,
           "text": "祖都要谂个方法，通知呢班无辜嘅。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -7474,7 +7578,9 @@
           "index": 10,
           "text": "你搞错咗，我听到嘛？又唔好再烦我啦，唔该。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 9
     },
     "answer": {
       "changes": [
@@ -7576,7 +7682,9 @@
           "index": 6,
           "text": "嚟打劫啊？打劫人哋呀。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 5
     },
     "answer": {
       "changes": [
@@ -7646,7 +7754,9 @@
           "index": 4,
           "text": "大佢未完。呢個八萬樓嘅，我唔知。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -7732,7 +7842,9 @@
           "index": 7,
           "text": ""
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
@@ -7802,7 +7914,9 @@
           "index": 4,
           "text": "洗干净啦。出发啦。晚饭。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -9084,7 +9198,9 @@
           "index": 5,
           "text": "快啲嚟食晒啦。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 4
     },
     "answer": {
       "changes": [
@@ -9134,7 +9250,9 @@
           "index": 2,
           "text": "通知其他人，帮主搵我。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -9172,7 +9290,9 @@
           "index": 2,
           "text": "係。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {},
     "verified": true
@@ -9206,7 +9326,9 @@
           "index": 3,
           "text": "小姐，我哋不动星星。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -9260,7 +9382,9 @@
           "index": 4,
           "text": "唔使惊，睇唔到噶。唔饮得，唔好让人饮啦。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -9314,7 +9438,9 @@
           "index": 3,
           "text": "係睇唔到。你不嬲都睇唔到。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -9364,7 +9490,9 @@
           "index": 3,
           "text": "主咁耐都未嚟呢？唔知啊。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -9406,7 +9534,9 @@
           "index": 2,
           "text": "住唱歌啊！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {},
     "verified": true
@@ -9496,7 +9626,9 @@
           "index": 10,
           "text": ""
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 9
     },
     "answer": {
       "changes": [
@@ -9646,7 +9778,9 @@
           "index": 12,
           "text": "刀名枪同佢连个，连身。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 11
     },
     "answer": {
       "changes": [
@@ -9740,7 +9874,9 @@
           "index": 4,
           "text": "人，佢哋想陷害你啊，反骨仔。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -9802,7 +9938,9 @@
           "index": 4,
           "text": "要出卖翻嚟。系咩？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -9848,7 +9986,9 @@
           "index": 2,
           "text": "我菩提老祖为咗伏妖除魔，除埋。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -10460,7 +10600,9 @@
           "index": 3,
           "text": "唔怕。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -10796,7 +10938,9 @@
           "index": 6,
           "text": "垂，最有眼光就系跟住帮主意啦。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 5
     },
     "answer": {
       "changes": [
@@ -10874,7 +11018,9 @@
           "index": 5,
           "text": "仲帮住佢，仲要靠佢揾唐僧。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 4
     },
     "answer": {
       "changes": [
@@ -10996,7 +11142,9 @@
           "index": 11,
           "text": "死。师姐，我要唔。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 10
     },
     "answer": {
       "changes": [
@@ -11094,7 +11242,9 @@
           "index": 5,
           "text": "喂喂。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 4
     },
     "answer": {
       "changes": [
@@ -11144,7 +11294,9 @@
           "index": 2,
           "text": "魔王都嚟咗。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -11190,7 +11342,9 @@
           "index": 3,
           "text": "你度炸死呀！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -11474,7 +11628,9 @@
           "index": 7,
           "text": "啊？咁竟然咁。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
@@ -11540,7 +11696,9 @@
           "index": 3,
           "text": "。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -11582,7 +11740,9 @@
           "index": 2,
           "text": "嘿。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {},
     "verified": true
@@ -11608,7 +11768,9 @@
           "index": 2,
           "text": "啊！你点做牌？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -11678,7 +11840,9 @@
           "index": 6,
           "text": "睇下你哋做乜嘢发布。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 5
     },
     "answer": {
       "changes": [
@@ -11732,7 +11896,9 @@
           "index": 2,
           "text": "呢个警察就唔係㗎。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {},
     "verified": true
@@ -12586,7 +12752,9 @@
           "index": 9,
           "text": "嘅。哦，咁你开咗单嚟，我俾翻钱你啊。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 8
     },
     "answer": {
       "changes": [
@@ -12652,7 +12820,9 @@
           "index": 2,
           "text": "天啊，总之你对只死马都完全理了啦。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {},
     "verified": true
@@ -12678,7 +12848,9 @@
           "index": 2,
           "text": "系咁紧张嘅时刻，你仲咁关心我，冇办法啦。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -12724,7 +12896,9 @@
           "index": 3,
           "text": "哇！喺出边，道门顶顶得住噶。道门。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -12854,7 +13028,9 @@
           "index": 13,
           "text": "得赤业匿埋喺里面，好安全。今晚十五月。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
@@ -12960,7 +13136,9 @@
           "index": 5,
           "text": "又多，唔知边个系盘师洞嘅入口。攞多得我。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 4
     },
     "answer": {
       "changes": [
@@ -13058,7 +13236,9 @@
           "index": 8,
           "text": "仔就不得了。我哋不知几靓仔靓女。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 7
     },
     "answer": {
       "changes": [
@@ -13216,7 +13396,9 @@
           "index": 14,
           "text": "痕入去，系咪？痕到啦你。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 13
     },
     "answer": {
       "changes": [
@@ -13310,7 +13492,9 @@
           "index": 3,
           "text": "或者我建议咁样啦。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -13352,7 +13536,9 @@
           "index": 2,
           "text": "度都唔好打暗区。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -13390,7 +13576,9 @@
           "index": 2,
           "text": "做咩？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {},
     "verified": true
@@ -13424,7 +13612,9 @@
           "index": 3,
           "text": "好，你仲唔开门啊嘛？咁就一拍两散。我将佢。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -13498,7 +13688,9 @@
           "index": 6,
           "text": "冷震，系啊。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 5
     },
     "answer": {
       "changes": [
@@ -13806,7 +13998,9 @@
           "index": 2,
           "text": "小喇叭边个？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -13884,7 +14078,9 @@
           "index": 7,
           "text": "啊。亦光亦包，唔关。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
@@ -13958,7 +14154,9 @@
           "index": 4,
           "text": "要，随时辛苦。由今日开始。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -14012,7 +14210,9 @@
           "index": 3,
           "text": "係。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {},
     "verified": true
@@ -14046,7 +14246,9 @@
           "index": 3,
           "text": "我春衫两貌未完花，居然同一个金玉输嘅冷。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -14184,7 +14386,9 @@
           "index": 14,
           "text": "大佢噶嘛，你唔讲佢点知"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 13
     },
     "answer": {
       "changes": [
@@ -14282,7 +14486,9 @@
           "index": 4,
           "text": "作变动手。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -14360,7 +14566,9 @@
           "index": 6,
           "text": "喺边。又系为咗贱人。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 5
     },
     "answer": {
       "changes": [
@@ -14414,7 +14622,9 @@
           "index": 2,
           "text": "来嘛！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {},
     "verified": true
@@ -14440,7 +14650,9 @@
           "index": 2,
           "text": "我又会情，就是你真系为我用。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -14478,7 +14690,9 @@
           "index": 2,
           "text": "八。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {},
     "verified": true
@@ -14512,7 +14726,9 @@
           "index": 3,
           "text": "至尊宝，你再唔快啲，先会唔掂噶啦！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -14570,7 +14786,9 @@
           "index": 4,
           "text": "！静静。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -14696,7 +14914,9 @@
           "index": 12,
           "text": "走得快嘅嘛。你唔使知我讲唐三藏啲嘢俾得，我咩都唔知啊。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 11
     },
     "answer": {
       "changes": [
@@ -14814,7 +15034,9 @@
           "index": 7,
           "text": ""
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
@@ -14896,7 +15118,9 @@
           "index": 6,
           "text": "咁自早搵到唐三藏，到时食唐酒，少得你嗰份。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 5
     },
     "answer": {
       "changes": [
@@ -14958,7 +15182,9 @@
           "index": 3,
           "text": ""
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -15020,7 +15246,9 @@
           "index": 5,
           "text": ""
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 4
     },
     "answer": {},
     "verified": true
@@ -15134,7 +15362,9 @@
           "index": 13,
           "text": "唔系啊，嗰个湿头嚟嘅。关之甫头发咧。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
@@ -15224,7 +15454,9 @@
           "index": 3,
           "text": "都好痛啊！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -15724,7 +15956,9 @@
           "index": 7,
           "text": "生啦。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
@@ -15988,7 +16222,9 @@
           "index": 2,
           "text": "係。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -16066,7 +16302,9 @@
           "index": 7,
           "text": "你。你咩心思，萝卜皮？几时轮到你啊？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
@@ -16172,7 +16410,9 @@
           "index": 8,
           "text": "救命啊！救命啊！救命啊！"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 7
     },
     "answer": {
       "changes": [
@@ -16250,7 +16490,9 @@
           "index": 4,
           "text": "我仔走先。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -16308,7 +16550,9 @@
           "index": 4,
           "text": ""
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -16346,7 +16590,9 @@
           "index": 2,
           "text": "讲？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -16384,7 +16630,9 @@
           "index": 2,
           "text": "。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -16462,7 +16710,9 @@
           "index": 7,
           "text": "唔该啊。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
@@ -16536,7 +16786,9 @@
           "index": 4,
           "text": "啦，走。我唔走，要走一程走。听。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -16590,7 +16842,9 @@
           "index": 3,
           "text": "嘅仔，六子。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -17002,7 +17256,9 @@
           "index": 12,
           "text": "啊啊！好无聊，好无聊。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 11
     },
     "answer": {
       "changes": [
@@ -17104,7 +17360,9 @@
           "index": 5,
           "text": "只。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 4
     },
     "answer": {
       "changes": [
@@ -17162,7 +17420,9 @@
           "index": 3,
           "text": "你来自杀啦！为咩事你要自杀啦？"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -17308,7 +17568,9 @@
           "index": 15,
           "text": "揾你唔到啦。你而家我。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 14
     },
     "answer": {
       "changes": [
@@ -17414,7 +17676,9 @@
           "index": 4,
           "text": "做咩？啊，海边呢？你走唔甩佢。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -17492,7 +17756,9 @@
           "index": 6,
           "text": ""
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 5
     },
     "answer": {
       "changes": [
@@ -17534,7 +17800,9 @@
           "index": 2,
           "text": "人去海边。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [
@@ -17580,7 +17848,9 @@
           "index": 3,
           "text": "啊，如果。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -17638,7 +17908,9 @@
           "index": 4,
           "text": "潘师董。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 3
     },
     "answer": {
       "changes": [
@@ -17692,7 +17964,9 @@
           "index": 3,
           "text": ""
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 2
     },
     "answer": {
       "changes": [
@@ -17762,7 +18036,9 @@
           "index": 6,
           "text": "所有嘢都系我嘅，包括你在内。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 5
     },
     "answer": {
       "changes": [
@@ -17840,7 +18116,9 @@
           "index": 5,
           "text": "大仙。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 4
     },
     "answer": {
       "changes": [
@@ -17890,7 +18168,9 @@
           "index": 2,
           "text": "你未变成孙悟空，夺世。"
         }
-      ]
+      ],
+      "first_owned_index": 1,
+      "last_owned_index": 1
     },
     "answer": {
       "changes": [

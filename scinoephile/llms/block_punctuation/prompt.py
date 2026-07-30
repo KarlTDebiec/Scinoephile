@@ -7,6 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from scinoephile.core.llms import Prompt
+from scinoephile.llms._text_validation import get_text_mismatch_details
 
 __all__ = ["BlockPunctuationPrompt"]
 
@@ -17,12 +18,20 @@ class BlockPunctuationPrompt(Prompt):
 
     guides: str = "guides"
     """Name of guide subtitles field in query."""
-    guides_desc: str = "Complete indexed guide subtitles for one block."
+    guides_desc: str = "Complete indexed guide subtitles for one query window."
     """Description of guide subtitles field in query."""
     targets: str = "targets"
     """Name of delineated target subtitles field in query."""
-    targets_desc: str = "Complete indexed delineated targets for one block."
+    targets_desc: str = "Complete indexed delineated targets for one query window."
     """Description of delineated target subtitles field in query."""
+    first_owned_index: str = "first_owned_index"
+    """Name of first owned local index field in query."""
+    first_owned_index_desc: str = "First local target index owned by this window."
+    """Description of first owned local index field in query."""
+    last_owned_index: str = "last_owned_index"
+    """Name of last owned local index field in query."""
+    last_owned_index_desc: str = "Last local target index owned by this window."
+    """Description of last owned local index field in query."""
     changes: str = "changes"
     """Name of sparse punctuation changes field in answer."""
     changes_desc: str = "Only target subtitles whose punctuation must change."
@@ -47,6 +56,11 @@ class BlockPunctuationPrompt(Prompt):
         "Query target indexes must correspond exactly to query guide indexes."
     )
     """Error when query target indexes do not match guides."""
+    owned_indices_err: str = (
+        "Query owned indexes must either both be omitted or define an ordered "
+        "inclusive range within the query indexes."
+    )
+    """Error when query owned indexes are invalid."""
     change_indices_err: str = (
         "Answer change indexes must be unique and in ascending order."
     )
@@ -55,10 +69,17 @@ class BlockPunctuationPrompt(Prompt):
         "Every answer change index must correspond to a query guide index."
     )
     """Error when an answer change index is absent from the guide."""
+    change_index_not_owned_err: str = (
+        "Every answer change index must be within the query's owned index range."
+    )
+    """Error when an answer changes a context-only index."""
     target_chars_changed_err_tpl: str = (
         "Punctuation change at index {index} does not preserve its target "
-        "characters after removing punctuation and whitespace:\n"
-        "Expected: {expected}\nReceived: {received}"
+        "characters after removing punctuation and whitespace. The first mismatch "
+        "is at zero-based character offset {offset}: expected {expected_character}, "
+        "received {received_character}.\nExpected context: {expected_context}\n"
+        "Received context: {received_context}\nExpected: {expected}\n"
+        "Received: {received}"
     )
     """Error template when a punctuation change alters target characters."""
 
@@ -73,5 +94,8 @@ class BlockPunctuationPrompt(Prompt):
             formatted error message
         """
         return self.target_chars_changed_err_tpl.format(
-            index=index, expected=expected, received=received
+            index=index,
+            expected=expected,
+            received=received,
+            **get_text_mismatch_details(expected, received),
         )

@@ -254,6 +254,75 @@ def _format_indexed_texts(texts: Sequence[str]) -> str:
     return "\n".join(f"{index}. {text or '—'}" for index, text in enumerate(texts, 1))
 
 
+def _format_window_indexed_texts(
+    texts: Sequence[str], owned_index_range: Collection[int]
+) -> str:
+    """Format window texts and distinguish owned indexes from context.
+
+    Arguments:
+        texts: window texts in local index order
+        owned_index_range: one-based local indexes owned by the window
+    Returns:
+        newline-separated indexed texts with ownership markers
+    """
+    return "\n".join(
+        f"{index}. {'[owned] ' if index in owned_index_range else '[context] '}"
+        f"{text or '—'}"
+        for index, text in enumerate(texts, 1)
+    )
+
+
+def _format_block_window_cells(
+    test_case: BlockPunctuationTestCase,
+    test_case_index: int,
+    start_index: int,
+    output: str,
+) -> tuple[str, ...]:
+    """Format one complete block or overlapping window row.
+
+    Arguments:
+        test_case: block punctuation case
+        test_case_index: one-based case number
+        start_index: zero-based global reference start
+        output: formatted sparse output
+    Returns:
+        six semantic audit table cells
+    """
+    query = test_case.query
+    last_reference_index = start_index + len(query.guides) - 1
+    reference_range = str(start_index + 1)
+    if last_reference_index != start_index:
+        reference_range = f"{start_index + 1}–{last_reference_index + 1}"
+
+    owned_local_indexes = query.owned_index_range
+    owned_start_index = start_index + owned_local_indexes.start - 1
+    owned_end_index = start_index + owned_local_indexes.stop - 2
+    owned_range = str(owned_start_index + 1)
+    if owned_end_index != owned_start_index:
+        owned_range = f"{owned_start_index + 1}–{owned_end_index + 1}"
+
+    index_cell = f"Case {test_case_index}\nRefs {reference_range}"
+    reference_texts = [guide.text for guide in query.guides]
+    input_texts = [target.text for target in query.targets]
+    if query.first_owned_index is not None:
+        index_cell += f"\nOwns refs {owned_range}"
+        reference_cell = _format_window_indexed_texts(
+            reference_texts, owned_local_indexes
+        )
+        input_cell = _format_window_indexed_texts(input_texts, owned_local_indexes)
+    else:
+        reference_cell = _format_indexed_texts(reference_texts)
+        input_cell = _format_indexed_texts(input_texts)
+    return (
+        index_cell,
+        reference_cell,
+        input_cell,
+        output,
+        "",
+        format_verification_marker(test_case.verified),
+    )
+
+
 def _format_case_row(
     test_case: PunctuationTestCase, index: int
 ) -> tuple[tuple[str, ...], AuditResult]:
@@ -344,13 +413,18 @@ def _get_block_punctuation_rows(
     unanswered = 0
     logged_cases = 0
     for test_case_index, test_case in enumerate(test_cases, 1):
-        guide_count = len(test_case.query.guides)
+        owned_local_indexes = test_case.query.owned_index_range
+        first_owned_offset = owned_local_indexes.start - 1
+        last_owned_offset = owned_local_indexes.stop - 2
         selected_start_indexes = {
             start_index
             for start_index in start_indexes_by_case[test_case_index - 1]
             if all(
                 reference_index in selected_reference_indexes
-                for reference_index in range(start_index, start_index + guide_count)
+                for reference_index in range(
+                    start_index + first_owned_offset,
+                    start_index + last_owned_offset + 1,
+                )
             )
         }
         if not selected_start_indexes:
@@ -386,17 +460,8 @@ def _get_block_punctuation_rows(
         ) or (row_filter is PunctuationAuditFilter.unverified and test_case.verified):
             continue
 
-        last_reference_index = start_index + guide_count - 1
-        reference_range = str(start_index + 1)
-        if last_reference_index != start_index:
-            reference_range = f"{start_index + 1}–{last_reference_index + 1}"
-        cells = (
-            f"Case {test_case_index}\nRefs {reference_range}",
-            _format_indexed_texts([guide.text for guide in test_case.query.guides]),
-            _format_indexed_texts([target.text for target in test_case.query.targets]),
-            output,
-            "",
-            format_verification_marker(test_case.verified),
+        cells = _format_block_window_cells(
+            test_case, test_case_index, start_index, output
         )
         rows.append((start_index, cells))
 
@@ -442,19 +507,23 @@ def _get_block_punctuation_start_indexes(
         if len(start_indexes) == 1:
             direct_start_index = start_indexes[0]
         else:
-            input_chars = [
-                remove_punc_and_whitespace(target.text)
+            owned_index_range = test_case.query.owned_index_range
+            input_chars = {
+                target.index: remove_punc_and_whitespace(target.text)
                 for target in test_case.query.targets
-            ]
+                if target.index in owned_index_range
+            }
             target_matches = [
                 start_index
                 for start_index in start_indexes
                 if all(
                     remove_punc_and_whitespace(
-                        target_text_by_reference_index.get(start_index + offset, "")
+                        target_text_by_reference_index.get(
+                            start_index + local_index - 1, ""
+                        )
                     )
                     == expected_chars
-                    for offset, expected_chars in enumerate(input_chars)
+                    for local_index, expected_chars in input_chars.items()
                 )
             ]
             if len(target_matches) == 1:

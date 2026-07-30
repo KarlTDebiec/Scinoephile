@@ -5,14 +5,17 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+from dataclasses import dataclass
 from logging import getLogger
+from math import ceil, floor
 from typing import cast
 
 from pydantic import ValidationError
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
+from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Processor, TestCase, TestCaseSubtitle
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.synchronization import SyncGroup
 from scinoephile.core.text import replace_control_characters
 from scinoephile.llms.block_delineation import (
@@ -33,9 +36,46 @@ __all__ = ["BlockTranscriptionAligner"]
 
 logger = getLogger(__name__)
 
+_MAX_UNSPLIT_SUBTITLES = 15
+"""Largest block aligned in one LLM query."""
+_EDGE_OWNED_SUBTITLES = 12
+"""Nominal number of subtitles owned by first and last windows."""
+_INTERIOR_OWNED_SUBTITLES = 9
+"""Nominal number of subtitles owned by interior windows."""
+_CONTEXT_SUBTITLES = 3
+"""Number of neighboring subtitles supplied as context on each available side."""
+_BOUNDARY_FLEXIBILITY = 3
+"""Maximum nominal ownership-boundary movement when preferring timing gaps."""
+_MIN_OWNED_SUBTITLES = 6
+"""Minimum ownership retained after timing-gap boundary selection."""
+
+
+@dataclass(frozen=True, slots=True)
+class _AlignmentWindow:
+    """One overlapping LLM query window and its exclusively owned outputs."""
+
+    start: int
+    """Zero-based inclusive query start index."""
+    end: int
+    """Zero-based exclusive query end index."""
+    owned_start: int
+    """Zero-based inclusive owned output start index."""
+    owned_end: int
+    """Zero-based exclusive owned output end index."""
+
+    @property
+    def first_owned_index(self) -> int:
+        """Get the one-based local index of the first owned output."""
+        return self.owned_start - self.start + 1
+
+    @property
+    def last_owned_index(self) -> int:
+        """Get the one-based local index of the last owned output."""
+        return self.owned_end - self.start
+
 
 class BlockTranscriptionAligner:
-    """Align and punctuate a transcription using two queries per populated block."""
+    """Align and punctuate a transcription using overlapping block windows."""
 
     def __init__(
         self,
@@ -81,11 +121,11 @@ class BlockTranscriptionAligner:
             self._set_output(alignment, targets)
             return alignment
 
-        guides = [subtitle.text for subtitle in alignment.reference]
+        references = list(alignment.reference)
         delineated = targets
-        if len(guides) > 1:
-            delineated = self._delineate(guides, targets)
-        punctuated = self._punctuate(guides, delineated)
+        if len(references) > 1:
+            delineated = self._delineate(references, targets)
+        punctuated = self._punctuate(references, delineated)
         self._set_output(alignment, punctuated)
         return alignment
 
@@ -94,57 +134,277 @@ class BlockTranscriptionAligner:
         self.delineation_processor.save_test_cases()
         self.punctuation_processor.save_test_cases()
 
-    def _delineate(self, guides: list[str], targets: list[str]) -> list[str]:
-        """Delineate one complete block using sparse replacements.
+    def _delineate(
+        self, references: Sequence[Subtitle], targets: list[str]
+    ) -> list[str]:
+        """Delineate overlapping windows and reconcile their owned boundaries.
 
         Arguments:
-            guides: complete guide text by index
+            references: complete timed guide subtitles
             targets: timing-based initial target assignment by index
         Returns:
             delineated target text by index
+        """
+        windows = self._get_windows(references)
+        target_offsets = self._get_text_offsets(targets)
+        boundary_offsets: list[int | None] = [None] * (len(targets) - 1)
+        for window_index, window in enumerate(windows, 1):
+            local_targets = targets[window.start : window.end]
+            output = self._delineate_window(
+                [reference.text for reference in references[window.start : window.end]],
+                local_targets,
+                first_owned_index=window.first_owned_index,
+                last_owned_index=(
+                    min(window.owned_end, len(targets) - 1) - window.start
+                ),
+                window_index=window_index,
+            )
+            local_offsets = self._get_text_offsets(output)
+            window_offset = target_offsets[window.start]
+            for boundary_index in range(
+                window.owned_start, min(window.owned_end, len(targets) - 1)
+            ):
+                local_boundary_index = boundary_index - window.start
+                boundary_offsets[boundary_index] = (
+                    window_offset + local_offsets[local_boundary_index + 1]
+                )
+
+        if any(offset is None for offset in boundary_offsets):
+            raise ScinoephileError(
+                "Unable to reconcile block delineation: a subtitle boundary was "
+                "not owned by any query window."
+            )
+        resolved_offsets = cast("list[int]", boundary_offsets)
+        if resolved_offsets != sorted(resolved_offsets):
+            message = (
+                "Overlapping block-delineation windows produced crossing subtitle "
+                "boundaries."
+            )
+            if not self.fallback_to_no_op:
+                raise ScinoephileError(message)
+            logger.warning(f"{message} Falling back to the timing-based assignment.")
+            return list(targets)
+
+        character_tape = "".join(targets)
+        slice_starts = [0, *resolved_offsets]
+        slice_ends = [*resolved_offsets, len(character_tape)]
+        return [
+            character_tape[start:end]
+            for start, end in zip(slice_starts, slice_ends, strict=True)
+        ]
+
+    def _delineate_window(
+        self,
+        guides: list[str],
+        targets: list[str],
+        first_owned_index: int,
+        last_owned_index: int,
+        window_index: int,
+    ) -> list[str]:
+        """Delineate one query window using sparse replacements.
+
+        Arguments:
+            guides: local guide text by index
+            targets: local preliminary target text by index
+            first_owned_index: first local index whose following boundary is owned
+            last_owned_index: last local index whose following boundary is owned
+            window_index: one-based window number for diagnostics
+        Returns:
+            complete locally delineated target text
         """
         test_case_cls = self.delineation_processor.test_case_cls
         query = test_case_cls.query_cls.model_validate(
             {
                 "guides": self._get_indexed_items(guides),
                 "targets": self._get_indexed_items(targets),
+                "first_owned_index": first_owned_index,
+                "last_owned_index": last_owned_index,
             }
         )
         test_case = test_case_cls(query=query)
         test_case = cast(
             BlockDelineationTestCase,
             self._query_with_fallback(
-                self.delineation_processor, test_case, "block delineation"
+                self.delineation_processor,
+                test_case,
+                f"block delineation window {window_index}",
             ),
         )
         answer = cast(BlockDelineationAnswer, test_case.answer)
         return self._apply_changes(targets, answer.changes)
 
-    def _punctuate(self, guides: list[str], targets: list[str]) -> list[str]:
-        """Punctuate one complete block using sparse replacements.
+    def _punctuate(
+        self, references: Sequence[Subtitle], targets: list[str]
+    ) -> list[str]:
+        """Punctuate overlapping windows and retain only their owned outputs.
 
         Arguments:
-            guides: complete guide text by index
+            references: complete timed guide subtitles
             targets: delineated target text by index
         Returns:
             punctuated target text by index
+        """
+        output = list(targets)
+        for window_index, window in enumerate(self._get_windows(references), 1):
+            local_output = self._punctuate_window(
+                [reference.text for reference in references[window.start : window.end]],
+                targets[window.start : window.end],
+                window,
+                window_index,
+            )
+            for output_index in range(window.owned_start, window.owned_end):
+                output[output_index] = local_output[output_index - window.start]
+        return output
+
+    def _punctuate_window(
+        self,
+        guides: list[str],
+        targets: list[str],
+        window: _AlignmentWindow,
+        window_index: int,
+    ) -> list[str]:
+        """Punctuate one query window using sparse replacements.
+
+        Arguments:
+            guides: local guide text by index
+            targets: local delineated target text by index
+            window: query and ownership bounds
+            window_index: one-based window number for diagnostics
+        Returns:
+            complete locally punctuated target text
         """
         test_case_cls = self.punctuation_processor.test_case_cls
         query = test_case_cls.query_cls.model_validate(
             {
                 "guides": self._get_indexed_items(guides),
                 "targets": self._get_indexed_items(targets),
+                "first_owned_index": window.first_owned_index,
+                "last_owned_index": window.last_owned_index,
             }
         )
         test_case = test_case_cls(query=query)
         test_case = cast(
             BlockPunctuationTestCase,
             self._query_with_fallback(
-                self.punctuation_processor, test_case, "block punctuation"
+                self.punctuation_processor,
+                test_case,
+                f"block punctuation window {window_index}",
             ),
         )
         answer = cast(BlockPunctuationAnswer, test_case.answer)
         return self._apply_changes(targets, answer.changes)
+
+    @classmethod
+    def _get_windows(cls, references: Sequence[Subtitle]) -> list[_AlignmentWindow]:
+        """Plan overlapping ownership windows around strong nearby timing gaps.
+
+        Arguments:
+            references: complete timed guide subtitles
+        Returns:
+            ordered query windows covering every output exactly once
+        """
+        subtitle_count = len(references)
+        if subtitle_count <= _MAX_UNSPLIT_SUBTITLES:
+            return [_AlignmentWindow(0, subtitle_count, 0, subtitle_count)]
+
+        window_count = max(
+            2,
+            (subtitle_count - 6 + _INTERIOR_OWNED_SUBTITLES // 2)
+            // _INTERIOR_OWNED_SUBTITLES,
+        )
+        ideal_sizes = [
+            _EDGE_OWNED_SUBTITLES,
+            *([_INTERIOR_OWNED_SUBTITLES] * (window_count - 2)),
+            _EDGE_OWNED_SUBTITLES,
+        ]
+        size_delta = subtitle_count - sum(ideal_sizes)
+        if window_count == 2 and size_delta < 0:
+            ideal_sizes = [subtitle_count // 2, subtitle_count - subtitle_count // 2]
+        elif size_delta > 0:
+            interior_indexes = list(range(1, window_count - 1))
+            while size_delta and any(
+                ideal_sizes[index] < _MAX_UNSPLIT_SUBTITLES
+                for index in interior_indexes
+            ):
+                for index in interior_indexes:
+                    if ideal_sizes[index] >= _MAX_UNSPLIT_SUBTITLES:
+                        continue
+                    ideal_sizes[index] += 1
+                    size_delta -= 1
+                    if not size_delta:
+                        break
+            for index in (window_count - 1, 0):
+                expansion = min(size_delta, _MAX_UNSPLIT_SUBTITLES - ideal_sizes[index])
+                ideal_sizes[index] += expansion
+                size_delta -= expansion
+        elif size_delta < 0:
+            shrinkable_indexes = [window_count - 1, *range(window_count - 2, 0, -1), 0]
+            for index in shrinkable_indexes:
+                reduction = min(-size_delta, ideal_sizes[index] - _MIN_OWNED_SUBTITLES)
+                ideal_sizes[index] -= reduction
+                size_delta += reduction
+                if not size_delta:
+                    break
+        gaps = [
+            references[index].start - references[index - 1].end
+            for index in range(1, subtitle_count)
+        ]
+
+        cuts: list[int] = []
+        cumulative_ideal = 0
+        for cut_number, ideal_size in enumerate(ideal_sizes[:-1], 1):
+            cumulative_ideal += ideal_size
+            ideal_cut = cumulative_ideal
+            remaining_groups = window_count - cut_number
+            previous_cut = cuts[-1] if cuts else 0
+            minimum_cut = max(
+                previous_cut + _MIN_OWNED_SUBTITLES,
+                subtitle_count - remaining_groups * _MAX_UNSPLIT_SUBTITLES,
+                ceil(ideal_cut - _BOUNDARY_FLEXIBILITY),
+            )
+            maximum_cut = min(
+                previous_cut + _MAX_UNSPLIT_SUBTITLES,
+                subtitle_count - remaining_groups * _MIN_OWNED_SUBTITLES,
+                floor(ideal_cut + _BOUNDARY_FLEXIBILITY),
+            )
+            candidates = range(minimum_cut, maximum_cut + 1)
+            cut = max(
+                candidates,
+                key=lambda candidate: (
+                    gaps[candidate - 1],
+                    -abs(candidate - ideal_cut),
+                    -candidate,
+                ),
+            )
+            cuts.append(cut)
+
+        ownership_starts = [0, *cuts]
+        ownership_ends = [*cuts, subtitle_count]
+        return [
+            _AlignmentWindow(
+                start=max(0, owned_start - _CONTEXT_SUBTITLES),
+                end=min(subtitle_count, owned_end + _CONTEXT_SUBTITLES),
+                owned_start=owned_start,
+                owned_end=owned_end,
+            )
+            for owned_start, owned_end in zip(
+                ownership_starts, ownership_ends, strict=True
+            )
+        ]
+
+    @staticmethod
+    def _get_text_offsets(texts: Sequence[str]) -> list[int]:
+        """Get cumulative character offsets including both outer boundaries.
+
+        Arguments:
+            texts: text segments in order
+        Returns:
+            zero followed by cumulative character counts
+        """
+        offsets = [0]
+        for text in texts:
+            offsets.append(offsets[-1] + len(text))
+        return offsets
 
     def _query_with_fallback(
         self, processor: Processor, test_case: TestCase, operation: str

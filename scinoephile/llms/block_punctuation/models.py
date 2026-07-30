@@ -32,7 +32,7 @@ class BlockPunctuationSubtitle(TestCaseSubtitle):
 
 
 class BlockPunctuationQuery(Query):
-    """Complete guides and delineated targets for one block."""
+    """Complete guides and delineated targets for one query window."""
 
     prompt: ClassVar[BlockPunctuationPrompt] = _BASE_PROMPT
     """Text and field aliases for block-level punctuation."""
@@ -40,6 +40,17 @@ class BlockPunctuationQuery(Query):
     """Complete guide subtitles in index order."""
     targets: list[BlockPunctuationSubtitle] = Field(min_length=1)
     """Complete delineated target subtitles in guide-index order."""
+    first_owned_index: int | None = Field(default=None, ge=1)
+    """First local target index owned by this query window."""
+    last_owned_index: int | None = Field(default=None, ge=1)
+    """Last local target index owned by this query window."""
+
+    @property
+    def owned_index_range(self) -> range:
+        """Get the inclusive local target-index range owned by this query."""
+        first_index = self.first_owned_index or 1
+        last_index = self.last_owned_index or len(self.targets)
+        return range(first_index, last_index + 1)
 
     @model_validator(mode="after")
     def validate_indices(self) -> Self:
@@ -50,11 +61,19 @@ class BlockPunctuationQuery(Query):
         target_indexes = [target.index for target in self.targets]
         if target_indexes != guide_indexes:
             raise ValueError(self.prompt.target_indices_err)
+        if (self.first_owned_index is None) != (self.last_owned_index is None):
+            raise ValueError(self.prompt.owned_indices_err)
+        if self.first_owned_index is not None and (
+            self.last_owned_index is None
+            or self.first_owned_index > self.last_owned_index
+            or self.last_owned_index > len(guide_indexes)
+        ):
+            raise ValueError(self.prompt.owned_indices_err)
         return self
 
 
 class BlockPunctuationAnswer(Answer):
-    """Sparse punctuation replacements for one block."""
+    """Sparse punctuation replacements for one query window."""
 
     prompt: ClassVar[BlockPunctuationPrompt] = _BASE_PROMPT
     """Text and field aliases for block-level punctuation."""
@@ -115,6 +134,8 @@ class BlockPunctuationTestCase(TestCase):
         change_indexes = {change.index for change in self.answer.changes}
         if not change_indexes <= set(target_text_by_index):
             raise ValueError(self.prompt.change_index_missing_err)
+        if not change_indexes <= set(self.query.owned_index_range):
+            raise ValueError(self.prompt.change_index_not_owned_err)
 
         for change in self.answer.changes:
             expected = remove_punc_and_whitespace(target_text_by_index[change.index])

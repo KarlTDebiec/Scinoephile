@@ -3,6 +3,7 @@
 """Code related to interactions with LLMs.
 
 Package hierarchy (modules may import from any above):
+* _text_validation
 * block_delineation / block_punctuation / delineation / gap_translation
   / guided_review / guided_translation / multi_review / ocr_fusion / providers
   / punctuation / review / translation

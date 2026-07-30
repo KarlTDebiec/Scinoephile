@@ -34,7 +34,11 @@ def test_block_answer_change_alias_is_pinyin():
         properties = answer_cls.model_json_schema(by_alias=True)["properties"]
 
         assert prompt.changes == "yuewen_xiugai"
+        assert prompt.first_owned_index == "fuze_qishi_xuhao"
+        assert prompt.last_owned_index == "fuze_jieshu_xuhao"
         assert "yuewen_changes" not in prompt.base_system_prompt
+        assert "fuze_qishi_xuhao" in prompt.base_system_prompt
+        assert "fuze_jieshu_xuhao" in prompt.base_system_prompt
         assert set(properties) == {"yuewen_xiugai"}
         assert len(prompt.legacy_cache_prompts) == 1
         legacy_prompt = prompt.legacy_cache_prompts[0]

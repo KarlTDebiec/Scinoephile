@@ -14,7 +14,13 @@ from scinoephile.llms.block_punctuation import (
 )
 
 _LOCALIZED_PROMPT = BlockPunctuationPrompt(
-    guides="cankao", targets="daibiao", changes="xiugai", index="xuhao", text="wenben"
+    guides="cankao",
+    targets="daibiao",
+    first_owned_index="fuze_kaishi",
+    last_owned_index="fuze_jieshu",
+    changes="xiugai",
+    index="xuhao",
+    text="wenben",
 )
 """Block-punctuation prompt with localized correspondence field names."""
 
@@ -27,6 +33,8 @@ def test_prompt_aliases_apply_to_lists_and_nested_subtitles():
             "query": {
                 "cankao": [{"xuhao": 1, "wenben": "參考"}],
                 "daibiao": [{"xuhao": 1, "wenben": "你好"}],
+                "fuze_kaishi": 1,
+                "fuze_jieshu": 1,
             },
             "answer": {"xiugai": [{"xuhao": 1, "wenben": "你好！"}]},
         }
@@ -35,6 +43,8 @@ def test_prompt_aliases_apply_to_lists_and_nested_subtitles():
     assert test_case.query.model_dump(by_alias=True) == {
         "cankao": [{"xuhao": 1, "wenben": "參考"}],
         "daibiao": [{"xuhao": 1, "wenben": "你好"}],
+        "fuze_kaishi": 1,
+        "fuze_jieshu": 1,
     }
     assert test_case.answer is not None
     assert test_case.answer.model_dump(by_alias=True) == {
@@ -62,7 +72,7 @@ def test_sparse_changes_may_only_adjust_punctuation_within_each_index():
 
     assert changed.difficulty == 1
     assert changed.get_no_op_answer().changes == []
-    with raises(ValidationError, match="index 1"):
+    with raises(ValidationError, match=r"(?s)index 1.*U\+518D"):
         BlockPunctuationTestCase.model_validate(
             {
                 "query": query,
@@ -89,4 +99,27 @@ def test_sparse_changes_may_only_adjust_punctuation_within_each_index():
     with raises(ValidationError, match="correspond to a query guide index"):
         BlockPunctuationTestCase.model_validate(
             {"query": query, "answer": {"changes": [{"index": 3, "text": "！"}]}}
+        )
+
+
+def test_sparse_changes_may_only_modify_owned_window_indexes():
+    """Punctuation should reject sparse changes to context-only indexes."""
+    query = {
+        "guides": [
+            {"index": 1, "text": "前文"},
+            {"index": 2, "text": "負責"},
+            {"index": 3, "text": "後文"},
+        ],
+        "targets": [
+            {"index": 1, "text": "甲"},
+            {"index": 2, "text": "乙"},
+            {"index": 3, "text": "丙"},
+        ],
+        "first_owned_index": 2,
+        "last_owned_index": 2,
+    }
+
+    with raises(ValidationError, match="owned index range"):
+        BlockPunctuationTestCase.model_validate(
+            {"query": query, "answer": {"changes": [{"index": 1, "text": "甲！"}]}}
         )
