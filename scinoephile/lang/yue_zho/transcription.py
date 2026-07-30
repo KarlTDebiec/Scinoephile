@@ -74,19 +74,33 @@ _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_LEGACY = BlockDelineationPrompt(
         索引完全相同嘅粵文字幕 (yuewen_initial)。
         fuze_qishi_xuhao 同 fuze_jieshu_xuhao 表示呢個視窗負責嘅本地索引範圍，
         兩端都包括；範圍外嘅字幕只係重疊上下文。
+        所有 xuhao 都係呢個視窗入面由 1 開始嘅本地索引；只可以使用 zhongwen
+        實際顯示嘅索引，唔好推算或者使用全片索引。
         呢個視窗負責範圍內每個索引之後嘅分界；如果嗰個索引已經係視窗最後一條，
         就冇下一個分界需要處理。請逐個檢查所有負責嘅分界，唔好因為答案係稀疏格式
         就只檢查少數索引；如果每個索引都要改，yuewen_changes 可以包含每個索引。
         將所有 yuewen_initial 依次串連成一條不可變嘅字符帶；答案只可以用原有次序
-        將呢條字符帶切成連續片段，重新分配畀各索引。
+        將呢條字符帶切成連續片段，重新分配畀各索引。每個原有字符只可以出現一次；
+        唔好複製、重複或者補寫任何片段。
+        將每個新分界當成不可變字符帶上面一個切割位置：先決定全部切割位置，
+        然後先根據這些位置取出不重疊、無缺口、首尾相接的連續切片，
+        最後才寫答案。唔好先根據字幕意思重新作句。
+        決定新分界之後，必須直接由不可變字符帶複製每段連續原文去 wenben，
+        包括原有標點同空格；唔好憑記憶重新輸入、改寫或者整理句子。
         只喺 yuewen_changes 返回文字需要改動嘅索引；唔需要改嘅索引唔好返回。
         如果一條字幕改成空白，仍然要明確返回嗰個索引同空字串。
         一次分界修正通常需要返回分界兩邊所有受影響嘅索引。
-        只有為咗表達跨過負責範圍邊緣嘅分界調整，先可以返回上下文索引；
-        唔好改動同負責分界無關嘅上下文。
+        負責範圍左邊嘅上下文只供閱讀，絕對唔可以喺答案返回。
+        負責範圍右邊嘅上下文亦只供閱讀；只有調整 fuze_jieshu_xuhao 之後嗰個
+        最後負責分界時，先可以連同緊接嘅下一個索引返回。再後嘅上下文唔可以返回。
         重組後嘅粵文必須包含 yuewen_initial 全部字符，字符次序亦必須完全相同。
         唔可以加入、刪除、替換或者重新排序任何字符，包括原有標點同空格。
         唔好從中文字幕拷貝漢字。
+        回答之前必須做最後核對：先將 yuewen_changes 覆蓋相應索引，冇返回嘅索引
+        已經保留 yuewen_initial 原文，唔好將佢哋再次抄入其他索引；再依次串連視窗內
+        全部索引，包括上下文。串連結果必須同原本 yuewen_initial 字符帶逐字完全
+        相同，否則先修正答案，唔好提交。
+        如果你唔能確保上述逐字核對通過，寧願返回空列表，唔好猜測或重打原文。
         如果所有分界都正確，yuewen_changes 返回空列表。"""),
     guides="zhongwen",
     guides_desc="同一查詢視窗完整而有序嘅中文字幕",
@@ -119,7 +133,10 @@ _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_LEGACY = BlockDelineationPrompt(
         "第一個差異喺重組後索引 {index}、由零開始嘅字符位置 {offset}："
         "期望 {expected_character}，收到 {received_character}。\n"
         "期望附近: {expected_context}\n收到附近: {received_context}\n"
-        "期望: {expected}\n收到: {received}"
+        "期望: {expected}\n收到: {received}\n"
+        "下一次唔好沿用呢個錯誤答案；由原本 yuewen_initial 字符帶"
+        "重新切分。每個新片段必須係字符帶一段連續切片，相鄰切片"
+        "首尾相接、唔重疊、無缺口。如果唔能確保，yuewen_changes 返回空列表。"
     ),
 )
 """Predecessor prompt using the mixed-language sparse-answer alias."""
@@ -143,14 +160,25 @@ _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_LEGACY = BlockPunctuationPrompt(
         已經確定分界嘅粵文字幕 (yuewen_to_punctuate)。
         fuze_qishi_xuhao 同 fuze_jieshu_xuhao 表示呢個視窗負責嘅本地索引範圍，
         兩端都包括；範圍外嘅字幕只係重疊上下文，唔可以喺答案返回。
+        所有 xuhao 都係呢個視窗入面由 1 開始嘅本地索引；只可以使用 zhongwen
+        實際顯示嘅索引，唔好推算或者使用全片索引。
         請逐個檢查負責範圍內每一條字幕，唔好因為答案係稀疏格式就只檢查少數索引；
         如果每條都要改，yuewen_changes 可以包含負責範圍內每個索引。
         只喺 yuewen_changes 返回標點或者空格需要改動嘅索引；
         唔需要改嘅索引唔好返回。
         每個返回項目必須包含嗰個索引完整而加好標點嘅粵文字幕。
         只可以調整同一個索引入面嘅標點同空格；唔可以喺索引之間移動文字。
+        即使你認為初步分界錯、簡繁體唔一致、有錯別字或者口語唔通，
+        都必須將每個非標點字符原樣留喺原本索引；呢個步驟唔負責改文字、
+        轉換字形或者修正分界。
+        唔可以將相鄰索引或者中文字幕嘅字詞複製入返回項目。
         除咗標點同空格之外，唔可以加入、刪除、替換或者重新排序任何粵文字符。
         唔好從中文字幕拷貝漢字。
+        回答之前必須逐個核對每個返回項目：將佢同 yuewen_to_punctuate 同一索引
+        各自移除全部標點同空格之後，粵文字符同次序必須逐字完全相同；否則先修正
+        答案，唔好提交。
+        再核對所有返回索引都喺 fuze_qishi_xuhao 至 fuze_jieshu_xuhao
+        兩端包括嘅範圍內；如果唔喺範圍內，必須從答案刪除。
         如果所有粵文標點都正確，yuewen_changes 返回空列表。"""),
     guides="zhongwen",
     guides_desc="同一查詢視窗完整而有序嘅中文字幕",
@@ -180,13 +208,15 @@ _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_LEGACY = BlockPunctuationPrompt(
     ),
     change_index_not_owned_err=(
         "yuewen_changes 每個索引都必須喺 fuze_qishi_xuhao 至 "
-        "fuze_jieshu_xuhao 嘅負責範圍內。"
+        "fuze_jieshu_xuhao 嘅負責範圍內。下一次回答要刪除全部範圍外索引。"
     ),
     target_chars_changed_err_tpl=(
         "索引 {index} 嘅標點修改移除標點同空格後，冇保留原有粵文字符。"
         "第一個差異喺由零開始嘅字符位置 {offset}：期望 {expected_character}，"
         "收到 {received_character}。\n期望附近: {expected_context}\n"
-        "收到附近: {received_context}\n期望: {expected}\n收到: {received}"
+        "收到附近: {received_context}\n期望: {expected}\n收到: {received}\n"
+        "下一次必須完全保留呢個索引原本嘅非標點字符，包括原有簡繁字形"
+        "同錯別字；只可以改標點同空格，唔可以順便修正分界。"
     ),
 )
 """Predecessor prompt using the mixed-language sparse-answer alias."""

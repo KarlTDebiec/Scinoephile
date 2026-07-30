@@ -346,7 +346,9 @@ class GuidedTranscriber:
 
         def is_usable(segments: list[TranscribedSegment]) -> bool:
             """Determine whether an MLX-Audio attempt is usable."""
-            return self._segments_are_usable(segments, audio_duration=audio_duration)
+            return self._segments_are_usable(
+                segments, audio_duration=audio_duration, transcriber_name="MLX-Audio"
+            )
 
         try:
             segments = self.mlx_audio_transcriber(audio, is_usable=is_usable)
@@ -503,13 +505,17 @@ class GuidedTranscriber:
 
     @staticmethod
     def _segments_are_usable(
-        segments: list[TranscribedSegment], *, audio_duration: float | None = None
+        segments: list[TranscribedSegment],
+        *,
+        audio_duration: float | None = None,
+        transcriber_name: str = "Whisper",
     ) -> bool:
         """Determine whether transcribed segments are usable for alignment.
 
         Arguments:
             segments: transcribed segments to inspect
             audio_duration: original block audio duration in seconds
+            transcriber_name: transcriber name used in validation logs
         Returns:
             whether the segments contain plausible nonempty text with word timings
         """
@@ -523,7 +529,8 @@ class GuidedTranscriber:
                 return False
             if int(segment.end * 1000) <= int(segment.start * 1000):
                 logger.warning(
-                    f"Rejecting Whisper segment {segment.id} with non-positive "
+                    f"Rejecting {transcriber_name} segment {segment.id} with "
+                    f"non-positive "
                     f"millisecond duration ({segment.start:.3f}s to "
                     f"{segment.end:.3f}s)"
                 )
@@ -533,7 +540,7 @@ class GuidedTranscriber:
                     continue
                 if int(word.end * 1000) <= int(word.start * 1000):
                     logger.warning(
-                        f"Rejecting Whisper segment {segment.id} with word "
+                        f"Rejecting {transcriber_name} segment {segment.id} with word "
                         f"{word.text!r} having non-positive millisecond duration "
                         f"({word.start:.3f}s to {word.end:.3f}s)"
                     )
@@ -543,7 +550,8 @@ class GuidedTranscriber:
                 and segment.compression_ratio > _MAX_COMPRESSION_RATIO
             ):
                 logger.warning(
-                    f"Rejecting repetitive Whisper segment {segment.id} with "
+                    f"Rejecting repetitive {transcriber_name} segment {segment.id} "
+                    f"with "
                     f"compression ratio {segment.compression_ratio:.2f} "
                     f"(maximum {_MAX_COMPRESSION_RATIO:.2f})"
                 )
@@ -553,11 +561,11 @@ class GuidedTranscriber:
                 and segment.end > audio_duration + _AUDIO_END_TOLERANCE_SECONDS
             ):
                 logger.warning(
-                    f"Rejecting Whisper segment {segment.id} ending at "
+                    f"Rejecting {transcriber_name} segment {segment.id} ending at "
                     f"{segment.end:.2f}s beyond {audio_duration:.2f}s source audio"
                 )
                 return False
 
         if not has_text:
-            logger.warning("Rejecting empty Whisper transcription")
+            logger.warning(f"Rejecting empty {transcriber_name} transcription")
         return has_text

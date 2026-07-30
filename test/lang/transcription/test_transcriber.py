@@ -130,6 +130,18 @@ def test_segments_are_usable_reports_missing_word_timings_concisely(
     assert caplog.messages == ["Rejecting segment 7 without word timings"]
 
 
+def test_segments_are_usable_uses_mlx_audio_name(caplog: LogCaptureFixture):
+    """Test MLX-Audio validation warnings do not identify Whisper.
+
+    Arguments:
+        caplog: captured log records
+    """
+    caplog.set_level(WARNING, logger="scinoephile.lang.transcription.transcriber")
+
+    assert not GuidedTranscriber._segments_are_usable([], transcriber_name="MLX-Audio")
+    assert caplog.messages == ["Rejecting empty MLX-Audio transcription"]
+
+
 def test_segments_are_usable_rejects_nonpositive_word_duration():
     """Test text-bearing words must remain positive after ms conversion."""
     segment = _get_segment(start=4.02, end=4.04, text=" 啊", compression_ratio=1.0)

@@ -46,3 +46,32 @@ def test_block_answer_change_alias_is_pinyin():
             legacy_prompt, BlockDelineationPrompt | BlockPunctuationPrompt
         )
         assert legacy_prompt.changes == "yuewen_changes"
+
+
+def test_block_prompts_require_local_index_and_character_conservation_checks():
+    """Block prompts should make sparse-window invariants explicit."""
+    delineation_prompt = YueZhoBlockDelineationPromptYueHant.base_system_prompt
+    punctuation_prompt = YueZhoBlockPunctuationPromptYueHant.base_system_prompt
+
+    assert "本地索引" in delineation_prompt
+    assert "左邊嘅上下文只供閱讀" in delineation_prompt
+    assert "緊接嘅下一個索引" in delineation_prompt
+    assert "每個原有字符只可以出現一次" in delineation_prompt
+    assert "切割位置" in delineation_prompt
+    assert "不重疊、無缺口、首尾相接" in delineation_prompt
+    assert "直接由不可變字符帶複製" in delineation_prompt
+    assert "唔好憑記憶重新輸入" in delineation_prompt
+    assert "回答之前必須做最後核對" in delineation_prompt
+    assert "寧願返回空列表" in delineation_prompt
+    assert "下一次唔好沿用呢個錯誤答案" in (
+        YueZhoBlockDelineationPromptYueHant.target_chars_changed_err_tpl
+    )
+    assert "本地索引" in punctuation_prompt
+    assert "相鄰索引" in punctuation_prompt
+    assert "簡繁體唔一致" in punctuation_prompt
+    assert "呢個步驟唔負責改文字" in punctuation_prompt
+    assert "回答之前必須逐個核對" in punctuation_prompt
+    assert "必須從答案刪除" in punctuation_prompt
+    assert "原有簡繁字形" in (
+        YueZhoBlockPunctuationPromptYueHant.target_chars_changed_err_tpl
+    )

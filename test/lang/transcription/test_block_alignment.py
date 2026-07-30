@@ -312,6 +312,46 @@ def test_long_blocks_use_timing_gap_windows_and_reconcile_owned_outputs():
     assert punctuated[13].endswith("！")
 
 
+def test_later_windows_inherit_prior_cuts_without_crossing():
+    """Later windows should receive prior cuts as immutable left context."""
+    references = Series(
+        events=[
+            Subtitle(
+                start=index * 1_000, end=index * 1_000 + 500, text=f"參考{index + 1}"
+            )
+            for index in range(25)
+        ]
+    )
+    targets = [chr(0x4E00 + index) for index in range(25)]
+    delineation_processor, punctuation_processor = _get_mock_processors()
+
+    def delineate_window(test_case: BlockDelineationTestCase):
+        """Move the first cut beyond the next preliminary cut."""
+        answer: dict[str, list[dict[str, int | str]]] = {"changes": []}
+        if test_case.query.first_owned_index == 1:
+            answer = {
+                "changes": [
+                    {"index": 12, "text": targets[11] + targets[12] + targets[13]},
+                    {"index": 13, "text": ""},
+                    {"index": 14, "text": ""},
+                ]
+            }
+        return type(test_case).model_validate(
+            {**test_case.model_dump(mode="json"), "answer": answer}
+        )
+
+    delineation_processor.queryer.side_effect = delineate_window
+    aligner = BlockTranscriptionAligner(delineation_processor, punctuation_processor)
+
+    delineated = aligner._delineate(list(references), targets)  # noqa: SLF001
+
+    second_query = delineation_processor.queryer.call_args_list[1].args[0].query
+    assert second_query.targets[3].text == ""
+    assert delineated[11] == targets[11] + targets[12] + targets[13]
+    assert delineated[12:14] == ["", ""]
+    assert "".join(delineated) == "".join(targets)
+
+
 def test_window_boundaries_prefer_strong_nearby_timing_gaps():
     """Ownership cuts should flex toward timing gaps near nominal sizes."""
     gaps = {14: 4_000, 22: 3_000}

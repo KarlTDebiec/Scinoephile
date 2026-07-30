@@ -13,7 +13,6 @@ from typing import cast
 from pydantic import ValidationError
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
-from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Processor, TestCase, TestCaseSubtitle
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.synchronization import SyncGroup
@@ -137,7 +136,7 @@ class BlockTranscriptionAligner:
     def _delineate(
         self, references: Sequence[Subtitle], targets: list[str]
     ) -> list[str]:
-        """Delineate overlapping windows and reconcile their owned boundaries.
+        """Delineate windows sequentially and retain their owned boundaries.
 
         Arguments:
             references: complete timed guide subtitles
@@ -146,10 +145,22 @@ class BlockTranscriptionAligner:
             delineated target text by index
         """
         windows = self._get_windows(references)
-        target_offsets = self._get_text_offsets(targets)
-        boundary_offsets: list[int | None] = [None] * (len(targets) - 1)
+        character_tape = "".join(targets)
+        boundary_offsets = self._get_text_offsets(targets)
         for window_index, window in enumerate(windows, 1):
-            local_targets = targets[window.start : window.end]
+            # Carry prior owned cuts into context and advance unresolved crossings
+            for offset_index in range(1, len(boundary_offsets)):
+                boundary_offsets[offset_index] = max(
+                    boundary_offsets[offset_index], boundary_offsets[offset_index - 1]
+                )
+            local_targets = [
+                character_tape[start:end]
+                for start, end in zip(
+                    boundary_offsets[window.start : window.end],
+                    boundary_offsets[window.start + 1 : window.end + 1],
+                    strict=True,
+                )
+            ]
             output = self._delineate_window(
                 [reference.text for reference in references[window.start : window.end]],
                 local_targets,
@@ -160,37 +171,23 @@ class BlockTranscriptionAligner:
                 window_index=window_index,
             )
             local_offsets = self._get_text_offsets(output)
-            window_offset = target_offsets[window.start]
+            window_offset = boundary_offsets[window.start]
             for boundary_index in range(
                 window.owned_start, min(window.owned_end, len(targets) - 1)
             ):
                 local_boundary_index = boundary_index - window.start
-                boundary_offsets[boundary_index] = (
+                proposed_offset = (
                     window_offset + local_offsets[local_boundary_index + 1]
                 )
+                boundary_offsets[boundary_index + 1] = max(
+                    proposed_offset, boundary_offsets[boundary_index]
+                )
 
-        if any(offset is None for offset in boundary_offsets):
-            raise ScinoephileError(
-                "Unable to reconcile block delineation: a subtitle boundary was "
-                "not owned by any query window."
-            )
-        resolved_offsets = cast("list[int]", boundary_offsets)
-        if resolved_offsets != sorted(resolved_offsets):
-            message = (
-                "Overlapping block-delineation windows produced crossing subtitle "
-                "boundaries."
-            )
-            if not self.fallback_to_no_op:
-                raise ScinoephileError(message)
-            logger.warning(f"{message} Falling back to the timing-based assignment.")
-            return list(targets)
-
-        character_tape = "".join(targets)
-        slice_starts = [0, *resolved_offsets]
-        slice_ends = [*resolved_offsets, len(character_tape)]
         return [
             character_tape[start:end]
-            for start, end in zip(slice_starts, slice_ends, strict=True)
+            for start, end in zip(
+                boundary_offsets[:-1], boundary_offsets[1:], strict=True
+            )
         ]
 
     def _delineate_window(
