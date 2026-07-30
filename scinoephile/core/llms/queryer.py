@@ -11,6 +11,7 @@ from pydantic import ValidationError
 
 from scinoephile.core.exceptions import ScinoephileError
 
+from .answer import Answer
 from .cache import LlmCache
 from .llm_provider import LLMProvider
 from .query import Query
@@ -344,13 +345,18 @@ class Queryer[TTestCase: TestCase]:
         )
 
     def _get_cached_test_case(
-        self, test_case: TTestCase, cache_path: Path
+        self,
+        test_case: TTestCase,
+        cache_path: Path,
+        *,
+        cached_answer_cls: type[Answer] | None = None,
     ) -> TTestCase | None:
         """Get cached test case for the given query if available.
 
         Arguments:
             test_case: test case containing query for which to get cached version
             cache_path: path to the cached answer
+            cached_answer_cls: answer model used to parse the cached content
         Returns:
             cached test case if available, else None
         """
@@ -359,11 +365,13 @@ class Queryer[TTestCase: TestCase]:
         if contents is None:
             return None
         try:
-            answer = self.test_case_cls.answer_cls.model_validate_json(contents)
+            if cached_answer_cls is None:
+                cached_answer_cls = self.test_case_cls.answer_cls
+            answer = cached_answer_cls.model_validate_json(contents)
             test_case = self.test_case_cls.model_validate(
                 {
                     **test_case.model_dump(mode="json"),
-                    "answer": answer,
+                    "answer": answer.model_dump(mode="json"),
                     "few_shot": False,
                     "verified": False,
                 }
@@ -407,7 +415,11 @@ class Queryer[TTestCase: TestCase]:
                 legacy_query_json,
                 test_case_cls=legacy_test_case_cls,
             )
-            cached_test_case = self._get_cached_test_case(test_case, legacy_cache_path)
+            cached_test_case = self._get_cached_test_case(
+                test_case,
+                legacy_cache_path,
+                cached_answer_cls=legacy_test_case_cls.answer_cls,
+            )
             if cached_test_case is None:
                 continue
 

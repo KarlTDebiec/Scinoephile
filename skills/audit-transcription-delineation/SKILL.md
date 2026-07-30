@@ -105,14 +105,15 @@ guide and preliminary target with its one-based local JSON index. Window rows
 also show `Owns boundaries after refs ...`; local lines are marked
 `[owns next boundary]` or `[context]`. The ownership fields persisted in JSON
 are inclusive local `first_owned_index` and `last_owned_index` values. A block
-Output cell lists only the sparse replacement indexes; mentally overlay those
-replacements on Input to assess the reconstructed window. A blank line is
-displayed as `—`. Rows are sorted by matched reference indexes. Preserve the
-original log order among repeated pairwise cases because they may record
-successive decisions. In pairwise JSON, an empty answer (`{}`) means no boundary
-shift. In block JSON, an empty `changes` list means the complete preliminary
-assignment was retained. In either case, unchanged rows have a blank Output
-cell.
+Output cell lists only reconstructed subtitles that differ from Input. The CLI
+derives these texts from sparse boundary shifts; they are not literal copies of
+the JSON answer. Mentally overlay them on Input to assess the complete window. A
+blank line is displayed as `—`. Rows are sorted by matched reference indexes.
+Preserve the original log order among repeated pairwise cases because they may
+record successive decisions. In pairwise JSON, an empty answer (`{}`) means no
+boundary shift. In block JSON, an empty `changes` list means the complete
+preliminary assignment was retained. In either case, unchanged rows have a
+blank Output cell.
 
 ## Audit every row
 
@@ -120,13 +121,12 @@ Read the saved report from beginning to end and judge every row independently.
 For pairwise rows, target characters may move across the displayed boundary.
 For complete-block rows, target characters may move among any indexed subtitles
 in the case. For window rows, judge every boundary following an owned index;
-context exists only to make those edge decisions intelligible. Sparse changes
-may include a context index when moving the final owned boundary requires
-changing both sides. Their complete window concatenation must remain unchanged.
-Do not flag a context boundary that the window does not own; another overlapping
-case owns it. Assess whether the output divides the target speech more faithfully
-among the meanings and
-utterances represented by the guide subtitles.
+context exists only to make those edge decisions intelligible. A large owned
+shift may cross preliminary context cuts and leave intervening subtitles empty;
+the runtime collapses those crossed cuts deterministically. Do not flag a
+context boundary that the window does not own; another overlapping case owns
+it. Assess whether the output divides the target speech more faithfully among
+the meanings and utterances represented by the guide subtitles.
 
 Judge only alignment. Ignore misspellings, mistranscriptions, Mandarinisms,
 punctuation, omissions, repetitions, and other defects in the target text except
@@ -169,12 +169,25 @@ than a generated SRT:
 
 - Correct the boundary output before marking the case verified.
 - For pairwise JSON, edit `output_one` and `output_two` as needed.
-- For block JSON, keep `answer.changes` sparse: include only indexes whose text
-  differs from the query target, use the full replacement text for each listed
-  index, and remove entries that no longer change anything. A window correction
-  may include context only when needed to express an owned edge boundary. The
-  concatenation of all reconstructed window outputs must preserve every original
-  target character in exactly the same order.
+- For current block JSON, keep `answer.changes` sparse. Each item has `index`,
+  the local subtitle immediately before an owned boundary, and `shift`, a signed
+  Unicode-character count relative to that boundary's original Input position.
+  Positive moves the boundary right, taking that many characters from following
+  subtitles into the indexed subtitle. Negative moves it left, moving that many
+  trailing characters out of the indexed subtitle. Count punctuation and spaces
+  as characters. Do not return zero shifts, context boundary indexes, duplicate
+  indexes, or unsorted indexes.
+- Compute each shift against the original Input, not after applying another
+  shift. Equivalently, concatenate Input into one immutable character tape,
+  calculate the original and desired cumulative offsets after each changed
+  index, and store `shift = desired_offset - original_offset`. The runtime
+  applies all listed shifts simultaneously. If an owned shift crosses unchanged
+  preliminary cuts, the runtime collapses those intervening cuts; do not add
+  context changes merely to make their subtitles empty.
+- Legacy block JSON containing full replacement `text` entries remains readable
+  and is migrated on the next normal save. When correcting a case, use the
+  current `index`/`shift` form. Confirm the reconstructed Output preserves every
+  original target character in exactly the same order.
 - Mark a case `verified: true` only after auditing the entire pairwise case,
   complete block, or every owned boundary in a window and correcting its answer
   where necessary.

@@ -233,7 +233,7 @@ def _audit_block_delineation(
             f"changed answers: {shifts}",
             f"no-change answers: {no_shifts}",
             f"unanswered cases: {unanswered}",
-            "block view: one row per case; Output lists sparse replacements",
+            "block view: one row per case; Output lists reconstructed changes",
             f"row filter: {row_filter.value}",
         ),
         columns=(
@@ -432,8 +432,14 @@ def _get_block_delineation_rows(
             unanswered += 1
             result = AuditResult.unanswered
         elif answer.changes:
+            input_texts = [target.text for target in test_case.query.targets]
+            output_texts = test_case.get_output_texts()
             output = "\n".join(
-                f"{change.index}. {change.text or '—'}" for change in answer.changes
+                f"{index}. {output_text or '—'}"
+                for index, (input_text, output_text) in enumerate(
+                    zip(input_texts, output_texts, strict=True), 1
+                )
+                if output_text != input_text
             )
             shifts += 1
             result = AuditResult.changed

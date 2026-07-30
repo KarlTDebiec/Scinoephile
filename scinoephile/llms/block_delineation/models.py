@@ -4,16 +4,19 @@
 
 from __future__ import annotations
 
-from typing import ClassVar, Self
+from collections.abc import Mapping
+from typing import ClassVar, Self, cast
 
 from pydantic import Field, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase, TestCaseSubtitle
+from scinoephile.core.llms.models import LLMModel
 
 from .prompt import BlockDelineationPrompt
 
 __all__ = [
     "BlockDelineationAnswer",
+    "BlockDelineationBoundaryChange",
     "BlockDelineationQuery",
     "BlockDelineationSubtitle",
     "BlockDelineationTestCase",
@@ -28,6 +31,15 @@ class BlockDelineationSubtitle(TestCaseSubtitle):
 
     text: str
     """Subtitle text."""
+
+
+class BlockDelineationBoundaryChange(LLMModel):
+    """Signed movement of one boundary on the immutable target character tape."""
+
+    index: int = Field(ge=1)
+    """One-based target index immediately before the boundary."""
+    shift: int
+    """Signed character count by which to move the boundary."""
 
 
 class BlockDelineationQuery(Query):
@@ -51,6 +63,13 @@ class BlockDelineationQuery(Query):
         last_index = self.last_owned_index or len(self.targets)
         return range(first_index, last_index + 1)
 
+    @property
+    def owned_boundary_index_range(self) -> range:
+        """Get local boundary indexes that this query may change."""
+        first_index = self.first_owned_index or 1
+        last_index = self.last_owned_index or len(self.targets)
+        return range(first_index, min(last_index, len(self.targets) - 1) + 1)
+
     @model_validator(mode="after")
     def validate_indices(self) -> Self:
         """Ensure guide and target indexes correspond exactly."""
@@ -71,20 +90,31 @@ class BlockDelineationQuery(Query):
         return self
 
 
+type _LegacyTextAnswerData = tuple[
+    BlockDelineationQuery, Mapping[str, object], str, list[str], list[str]
+]
+"""Parsed legacy replacement-text answer data used during migration."""
+
+
 class BlockDelineationAnswer(Answer):
-    """Sparse target replacements for one query window."""
+    """Sparse boundary movements for one query window."""
 
     prompt: ClassVar[BlockDelineationPrompt] = _BASE_PROMPT
     """Text and field aliases for block-level delineation."""
-    changes: list[BlockDelineationSubtitle] = Field(default_factory=list)
-    """Only target subtitles whose text must change."""
+    changes: list[BlockDelineationBoundaryChange] = Field(default_factory=list)
+    """Only target boundaries whose position must change."""
 
     @model_validator(mode="after")
     def validate_change_indices(self) -> Self:
-        """Ensure sparse change indexes are ordered and unique."""
+        """Ensure sparse change indexes are ordered, unique, and nonzero."""
         indexes = [change.index for change in self.changes]
         if indexes != sorted(set(indexes)):
             raise ValueError(self.prompt.change_indices_err)
+        if any(
+            isinstance(change, BlockDelineationBoundaryChange) and not change.shift
+            for change in self.changes
+        ):
+            raise ValueError(self.prompt.change_shift_zero_err)
         return self
 
 
@@ -119,46 +149,218 @@ class BlockDelineationTestCase(TestCase):
         Returns:
             empty sparse-change answer
         """
-        return BlockDelineationAnswer()
+        return self.answer_cls()
+
+    def get_output_texts(self) -> list[str]:
+        """Apply the answer to the immutable target character tape.
+
+        Returns:
+            complete target text after boundary changes
+        """
+        output = [target.text for target in self.query.targets]
+        if self.answer is None or not self.answer.changes:
+            return output
+
+        first_change = self.answer.changes[0]
+        if isinstance(first_change, BlockDelineationSubtitle):
+            for change in cast("list[BlockDelineationSubtitle]", self.answer.changes):
+                output[change.index - 1] = change.text
+            return output
+
+        character_tape = "".join(output)
+        boundary_offsets = self._get_shifted_boundary_offsets(
+            output, cast("list[BlockDelineationBoundaryChange]", self.answer.changes)
+        )
+        return [
+            character_tape[start:end]
+            for start, end in zip(
+                boundary_offsets[:-1], boundary_offsets[1:], strict=True
+            )
+        ]
+
+    @model_validator(mode="before")
+    @classmethod
+    def migrate_legacy_text_changes(cls, value: object) -> object:
+        """Convert legacy replacement-text answers into boundary movements.
+
+        Arguments:
+            value: raw test-case data
+        Returns:
+            data using the current boundary-movement answer schema
+        """
+        legacy_data = cls._get_legacy_text_answer_data(value)
+        if legacy_data is None:
+            return value
+        query, answer_value, changes_key, initial_texts, output_texts = legacy_data
+
+        expected = "".join(initial_texts)
+        received = "".join(output_texts)
+        if expected != received:
+            raise ValueError(cls.prompt.target_chars_changed_err(1, expected, received))
+
+        initial_offsets = cls._get_text_offsets(initial_texts)
+        output_offsets = cls._get_text_offsets(output_texts)
+        converted_changes = []
+        for index in query.owned_boundary_index_range:
+            shift = output_offsets[index] - initial_offsets[index]
+            if shift:
+                converted_changes.append(
+                    {cls.prompt.index: index, cls.prompt.shift: shift}
+                )
+
+        converted_answer = dict(answer_value)
+        converted_answer.pop(changes_key, None)
+        converted_answer[cls.prompt.changes] = converted_changes
+        converted_value = dict(cast("Mapping[str, object]", value))
+        converted_value["answer"] = converted_answer
+        return converted_value
 
     @model_validator(mode="after")
     def validate_reconstructed_block(self) -> Self:
-        """Ensure sparse changes preserve all target characters in order."""
+        """Ensure sparse changes define valid noncrossing target boundaries."""
         if self.answer is None:
             return self
 
-        target_text_by_index = {
-            target.index: target.text for target in self.query.targets
-        }
         change_indexes = {change.index for change in self.answer.changes}
-        if not change_indexes <= set(target_text_by_index):
+        if self.prompt.shift is None:
+            if not change_indexes <= {target.index for target in self.query.targets}:
+                raise ValueError(self.prompt.change_index_missing_err)
+            target_text_by_index = {
+                target.index: target.text for target in self.query.targets
+            }
+            output_text_by_index = dict(target_text_by_index)
+            output_text_by_index.update(
+                {
+                    change.index: change.text
+                    for change in cast(
+                        "list[BlockDelineationSubtitle]", self.answer.changes
+                    )
+                }
+            )
+            expected = "".join(target_text_by_index.values())
+            received = "".join(output_text_by_index.values())
+            if expected != received:
+                raise ValueError(
+                    self.prompt.target_chars_changed_err(1, expected, received)
+                )
+            return self
+
+        if not change_indexes <= set(self.query.owned_boundary_index_range):
             raise ValueError(self.prompt.change_index_missing_err)
 
-        output_text_by_index = dict(target_text_by_index)
-        output_text_by_index.update(
-            {change.index: change.text for change in self.answer.changes}
-        )
-        expected = "".join(target_text_by_index.values())
-        received = "".join(output_text_by_index.values())
-        if expected != received:
-            mismatch_offset = next(
-                (
-                    offset
-                    for offset, (expected_char, received_char) in enumerate(
-                        zip(expected, received, strict=False)
-                    )
-                    if expected_char != received_char
-                ),
-                min(len(expected), len(received)),
-            )
-            cumulative_length = 0
-            mismatch_index = len(output_text_by_index)
-            for index, text in output_text_by_index.items():
-                cumulative_length += len(text)
-                if mismatch_offset < cumulative_length:
-                    mismatch_index = index
-                    break
-            raise ValueError(
-                self.prompt.target_chars_changed_err(mismatch_index, expected, received)
-            )
+        target_texts = [target.text for target in self.query.targets]
+        self._get_shifted_boundary_offsets(target_texts, self.answer.changes)
         return self
+
+    @classmethod
+    def _get_legacy_text_answer_data(
+        cls, value: object
+    ) -> _LegacyTextAnswerData | None:
+        """Parse replacement-text answer data when it uses the legacy schema.
+
+        Arguments:
+            value: raw test-case data
+        Returns:
+            parsed migration inputs, or None when the answer is not legacy text
+        """
+        shift_field = cls.prompt.shift
+        if shift_field is None or not isinstance(value, Mapping):
+            return None
+        value_mapping = cast("Mapping[str, object]", value)
+        answer_value = value_mapping.get("answer")
+        query_value = value_mapping.get("query")
+        if not isinstance(answer_value, Mapping) or query_value is None:
+            return None
+        answer_mapping = cast("Mapping[str, object]", answer_value)
+
+        changes_key = cls.prompt.changes
+        if changes_key not in answer_mapping and "changes" in answer_mapping:
+            changes_key = "changes"
+        changes_value = answer_mapping.get(changes_key)
+        if (
+            not isinstance(changes_value, list)
+            or not changes_value
+            or not all(isinstance(change, Mapping) for change in changes_value)
+        ):
+            return None
+        shift_keys = {"shift", shift_field}
+        if any(
+            any(shift_key in change for shift_key in shift_keys)
+            for change in cast("list[Mapping[str, object]]", changes_value)
+        ):
+            return None
+
+        query = cls.query_cls.model_validate(query_value)
+        initial_texts = [target.text for target in query.targets]
+        output_texts = list(initial_texts)
+        for change_value in cast("list[Mapping[str, object]]", changes_value):
+            index_value = change_value.get(cls.prompt.index)
+            if index_value is None:
+                index_value = change_value.get("index")
+            text_value = change_value.get(cls.prompt.text)
+            if text_value is None:
+                text_value = change_value.get("text")
+            if not isinstance(index_value, int) or not isinstance(text_value, str):
+                return None
+            if index_value < 1 or index_value > len(output_texts):
+                raise ValueError(cls.prompt.change_index_missing_err)
+            output_texts[index_value - 1] = text_value
+        return query, answer_mapping, changes_key, initial_texts, output_texts
+
+    def _get_shifted_boundary_offsets(
+        self, texts: list[str], changes: list[BlockDelineationBoundaryChange]
+    ) -> list[int]:
+        """Apply explicit shifts and collapse preliminary cuts they cross.
+
+        Returned shifts are simultaneous anchors relative to the preliminary
+        boundaries. Unchanged boundaries between two anchors retain their original
+        offsets when possible and collapse onto an anchor when it crosses them.
+
+        Arguments:
+            texts: preliminary target texts in index order
+            changes: sparse explicit boundary shifts
+        Returns:
+            complete nondecreasing boundary offsets
+        Raises:
+            ValueError: if explicit shifted boundaries cross one another or the tape
+        """
+        boundary_offsets = self._get_text_offsets(texts)
+        for change in changes:
+            boundary_offsets[change.index] += change.shift
+
+        anchor_indexes = [0, *(change.index for change in changes), len(texts)]
+        for position in range(1, len(anchor_indexes) - 1):
+            index = anchor_indexes[position]
+            offset = boundary_offsets[index]
+            previous_offset = boundary_offsets[anchor_indexes[position - 1]]
+            next_offset = boundary_offsets[anchor_indexes[position + 1]]
+            if not previous_offset <= offset <= next_offset:
+                raise ValueError(
+                    self.prompt.boundary_shift_invalid_err(
+                        index, offset, previous_offset, next_offset
+                    )
+                )
+        for previous_index, next_index in zip(
+            anchor_indexes[:-1], anchor_indexes[1:], strict=True
+        ):
+            previous_offset = boundary_offsets[previous_index]
+            next_offset = boundary_offsets[next_index]
+            for index in range(previous_index + 1, next_index):
+                boundary_offsets[index] = min(
+                    max(boundary_offsets[index], previous_offset), next_offset
+                )
+        return boundary_offsets
+
+    @staticmethod
+    def _get_text_offsets(texts: list[str]) -> list[int]:
+        """Get cumulative character offsets for target text segments.
+
+        Arguments:
+            texts: target texts in index order
+        Returns:
+            zero followed by cumulative character offsets
+        """
+        offsets = [0]
+        for text in texts:
+            offsets.append(offsets[-1] + len(text))
+        return offsets

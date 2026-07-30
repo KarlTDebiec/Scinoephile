@@ -358,6 +358,7 @@ def process_transcription_pipeline(
     ),
     transcription_fallback_to_no_op: bool = False,
     vad_mode: VADMode = VADMode.AUTO,
+    transcription_names: tuple[str, ...] | None = None,
     run_merge_and_translation: bool = True,
     overwrite: bool = False,
 ) -> Series | None:
@@ -390,6 +391,8 @@ def process_transcription_pipeline(
         transcription_fallback_to_no_op: whether invalid block answers fall back to
           sparse no-op answers
         vad_mode: voice activity detection mode shared by all transcription backends
+        transcription_names: transcription sources to prepare in order, or None for
+          all three sources
         run_merge_and_translation: whether to merge the transcription sources, fill
           translation gaps, and simplify the result
         overwrite: whether to overwrite existing stage outputs
@@ -436,8 +439,16 @@ def process_transcription_pipeline(
             "vad_mode": vad_mode,
         },
     }
+    if transcription_names is None:
+        transcription_names = tuple(transcription_runs)
+    unsupported_names = set(transcription_names).difference(transcription_runs)
+    if unsupported_names:
+        unsupported_names_text = ", ".join(sorted(unsupported_names))
+        raise ValueError(f"Unsupported transcription sources: {unsupported_names_text}")
+
     source_paths: dict[str, Path] = {}
-    for transcription_name, transcription_kw in transcription_runs.items():
+    for transcription_name in transcription_names:
+        transcription_kw = transcription_runs[transcription_name]
         model_dir_path = output_dir_path / transcription_name
         process_transcription(
             title_root_path,
@@ -466,6 +477,13 @@ def process_transcription_pipeline(
             f"Stopped transcription pipeline before merge under {output_dir_path}"
         )
         return None
+
+    missing_names = set(transcription_runs).difference(source_paths)
+    if missing_names:
+        missing_names_text = ", ".join(sorted(missing_names))
+        raise ValueError(
+            f"Merge requires all transcription sources; missing: {missing_names_text}"
+        )
 
     merge_path = output_dir_path / "merge.srt"
     merged = process_transcription_multi_review(

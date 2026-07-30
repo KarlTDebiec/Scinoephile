@@ -51,6 +51,9 @@ _EXPECTED_TAIL_TOLERANCE_SECONDS = 1.0
 _MAX_COMPRESSION_RATIO = 2.4
 """Maximum Whisper compression ratio accepted for guided alignment."""
 
+_SUBTITLE_CREDIT_HALLUCINATION_MARKERS = ("amara.org", "字幕由", "字幕提供者")
+"""Markers indicating an ASR-generated subtitle-credit hallucination."""
+
 _RECOVERY_TEMPERATURES = (0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
 """Whisper temperature schedule used after standard decoding fails."""
 
@@ -524,6 +527,20 @@ class GuidedTranscriber:
             if not segment.text.strip():
                 continue
             has_text = True
+            normalized_text = segment.text.casefold()
+            if marker := next(
+                (
+                    marker
+                    for marker in _SUBTITLE_CREDIT_HALLUCINATION_MARKERS
+                    if marker in normalized_text
+                ),
+                None,
+            ):
+                logger.warning(
+                    f"Rejecting {transcriber_name} segment {segment.id} containing "
+                    f"subtitle-credit hallucination marker {marker!r}"
+                )
+                return False
             if not segment.words:
                 logger.warning(f"Rejecting segment {segment.id} without word timings")
                 return False

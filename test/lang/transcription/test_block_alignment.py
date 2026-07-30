@@ -84,10 +84,7 @@ def test_aligner_queries_each_operation_once_with_complete_indexed_block(
     guide, transcription = _get_block()
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.side_effect = [
-        json.dumps(
-            {"changes": [{"index": 1, "text": "甲"}, {"index": 2, "text": "乙丙"}]},
-            ensure_ascii=False,
-        ),
+        json.dumps({"changes": [{"index": 1, "shift": -1}]}, ensure_ascii=False),
         json.dumps(
             {"changes": [{"index": 2, "text": "乙，丙"}, {"index": 3, "text": "丁！"}]},
             ensure_ascii=False,
@@ -150,7 +147,7 @@ def test_invalid_delineation_falls_back_and_punctuation_uses_timing_baseline():
         return type(test_case).model_validate(
             {
                 **test_case.model_dump(mode="json"),
-                "answer": {"changes": [{"index": 1, "text": "壞"}]},
+                "answer": {"changes": [{"index": 1, "shift": 99}]},
             }
         )
 
@@ -194,12 +191,7 @@ def test_invalid_punctuation_falls_back_to_delineated_text():
         return type(test_case).model_validate(
             {
                 **test_case.model_dump(mode="json"),
-                "answer": {
-                    "changes": [
-                        {"index": 1, "text": "甲"},
-                        {"index": 2, "text": "乙丙"},
-                    ]
-                },
+                "answer": {"changes": [{"index": 1, "shift": -1}]},
             }
         )
 
@@ -264,14 +256,9 @@ def test_long_blocks_use_timing_gap_windows_and_reconcile_owned_outputs():
 
     def delineate_window(test_case: BlockDelineationTestCase):
         """Move one character across the first window's final owned boundary."""
-        answer: dict[str, list[dict[str, int | str]]] = {"changes": []}
+        answer: dict[str, list[dict[str, int]]] = {"changes": []}
         if test_case.query.first_owned_index == 1:
-            answer = {
-                "changes": [
-                    {"index": 12, "text": targets[11] + targets[12]},
-                    {"index": 13, "text": ""},
-                ]
-            }
+            answer = {"changes": [{"index": 12, "shift": 1}]}
         return type(test_case).model_validate(
             {**test_case.model_dump(mode="json"), "answer": answer}
         )
@@ -327,15 +314,9 @@ def test_later_windows_inherit_prior_cuts_without_crossing():
 
     def delineate_window(test_case: BlockDelineationTestCase):
         """Move the first cut beyond the next preliminary cut."""
-        answer: dict[str, list[dict[str, int | str]]] = {"changes": []}
+        answer: dict[str, list[dict[str, int]]] = {"changes": []}
         if test_case.query.first_owned_index == 1:
-            answer = {
-                "changes": [
-                    {"index": 12, "text": targets[11] + targets[12] + targets[13]},
-                    {"index": 13, "text": ""},
-                    {"index": 14, "text": ""},
-                ]
-            }
+            answer = {"changes": [{"index": 12, "shift": 2}]}
         return type(test_case).model_validate(
             {**test_case.model_dump(mode="json"), "answer": answer}
         )

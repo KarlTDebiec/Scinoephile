@@ -8,9 +8,11 @@ from functools import cache
 from typing import ClassVar
 
 from scinoephile.core.llms import Answer, Manager, PromptModelField, Query, TestCase
+from scinoephile.core.llms.models import LLMModel
 
 from .models import (
     BlockDelineationAnswer,
+    BlockDelineationBoundaryChange,
     BlockDelineationQuery,
     BlockDelineationSubtitle,
     BlockDelineationTestCase,
@@ -55,9 +57,7 @@ class BlockDelineationManager(Manager[BlockDelineationTestCase]):
 
     @classmethod
     @cache
-    def get_change_cls(
-        cls, prompt: BlockDelineationPrompt
-    ) -> type[BlockDelineationSubtitle]:
+    def get_change_cls(cls, prompt: BlockDelineationPrompt) -> type[LLMModel]:
         """Get sparse-change item class with prompt-specific aliases.
 
         Arguments:
@@ -65,19 +65,22 @@ class BlockDelineationManager(Manager[BlockDelineationTestCase]):
         Returns:
             sparse-change item model class
         """
-        return cls.create_prompt_model(
-            BlockDelineationSubtitle,
-            prompt,
-            {
-                "index": PromptModelField(
-                    alias=prompt.index, description=prompt.index_desc
-                ),
-                "text": PromptModelField(
-                    alias=prompt.text, description=prompt.change_text_desc
-                ),
-            },
-            name="BlockDelineationChange",
-        )
+        fields = {
+            "index": PromptModelField(alias=prompt.index, description=prompt.index_desc)
+        }
+        if prompt.shift is None:
+            fields["text"] = PromptModelField(
+                alias=prompt.text, description=prompt.change_text_desc
+            )
+            base_cls: type[LLMModel] = BlockDelineationSubtitle
+            name = "BlockDelineationTextChange"
+        else:
+            fields["shift"] = PromptModelField(
+                alias=prompt.shift, description=prompt.shift_desc
+            )
+            base_cls = BlockDelineationBoundaryChange
+            name = "BlockDelineationBoundaryChange"
+        return cls.create_prompt_model(base_cls, prompt, fields, name=name)
 
     @classmethod
     @cache

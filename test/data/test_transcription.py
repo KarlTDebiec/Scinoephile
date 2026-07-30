@@ -278,6 +278,39 @@ def test_process_transcription_pipeline_can_stop_before_merge(
     merge.assert_not_called()
 
 
+def test_process_transcription_pipeline_can_prepare_selected_sources(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Prepare only explicitly selected transcription sources.
+
+    Arguments:
+        tmp_path: temporary pipeline directory
+        monkeypatch: pytest monkeypatch fixture
+    """
+    reference = Series(events=[Subtitle(start=0, end=1_000, text="佢喺度")])
+    guide = Series(events=[Subtitle(start=0, end=1_000, text="他在這裡")])
+    reference_path = tmp_path / "reference.srt"
+    guide_path = tmp_path / "guide.srt"
+    reference.save(reference_path)
+    guide.save(guide_path)
+    transcribe = Mock(return_value=reference)
+    monkeypatch.setattr(transcription_data, "process_transcription", transcribe)
+
+    output = transcription_data.process_transcription_pipeline(
+        tmp_path,
+        guide_path,
+        reference_path=reference_path,
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        transcription_names=("mimo",),
+        run_merge_and_translation=False,
+    )
+
+    assert output is None
+    assert len(transcribe.call_args_list) == 1
+    assert transcribe.call_args.kwargs["output_dir_path"].name == "mimo"
+
+
 @mark.parametrize(
     ("language", "guide_language", "detected_language", "expected_log_level"),
     [

@@ -118,6 +118,7 @@ _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_LEGACY = BlockDelineationPrompt(
     guide_text_desc="中文字幕文字",
     target_text_desc="初步分配嘅粵文字幕文字",
     change_text_desc="呢個索引調整分界後嘅完整粵文字幕文字",
+    shift=None,
     guide_indices_err="zhongwen 索引必須由1開始、連續而且依次排列。",
     target_indices_err="yuewen_initial 索引必須同 zhongwen 索引完全一致。",
     owned_indices_err=(
@@ -141,8 +142,86 @@ _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_LEGACY = BlockDelineationPrompt(
 )
 """Predecessor prompt using the mixed-language sparse-answer alias."""
 
-YueZhoBlockDelineationPromptYueHant = _get_prompt_with_pinyin_change_alias(
+_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_TEXT = _get_prompt_with_pinyin_change_alias(
     _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_LEGACY
+)
+"""Predecessor prompt returning complete replacement subtitle text."""
+
+_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V1 = replace(
+    _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_TEXT,
+    base_system_prompt=dedent_and_compact("""
+        你負責將一個廣東話口語粵文轉寫視窗，同中文字幕逐條對齊。
+        你會收到有序嘅中文字幕 (zhongwen)，以及根據時間初步分配、
+        索引完全相同嘅粵文字幕 (yuewen_initial)。
+        fuze_qishi_xuhao 同 fuze_jieshu_xuhao 表示呢個視窗負責嘅本地索引範圍，
+        兩端都包括；範圍外嘅字幕只係重疊上下文。
+        所有 xuhao 都係呢個視窗入面由 1 開始嘅本地索引；只可以使用 zhongwen
+        實際顯示嘅索引，唔好推算或者使用全片索引。
+        呢個視窗負責範圍內每個索引之後嘅分界；如果嗰個索引已經係視窗最後一條，
+        就冇下一個分界需要處理。請逐個檢查所有負責嘅分界。
+        將所有 yuewen_initial 依次串連成一條不可變嘅字符帶。你唔需要、亦唔可以
+        重新輸入任何粵文；答案只需要報告要移動嘅分界同移動字符數。
+        bianjie_xiugai 每項嘅 xuhao 係分界前面嗰條字幕嘅本地索引；
+        yidong_zifu_shu 係相對 yuewen_initial 原本分界嘅有正負號字符數：
+        正數將分界向右移，亦即將下一條開頭嗰幾個字符撥入呢條；
+        負數將分界向左移，亦即將呢條結尾嗰幾個字符撥入下一條。
+        字符數按 Unicode 字符計，包括標點同空格。所有分界移動都以原本分界為基準、
+        同時套用，唔係逐項順序套用。
+        只返回真正需要移動嘅分界，唔好返回 0；項目必須按 xuhao 由細到大排列。
+        只可以返回視窗負責嘅分界，左、右重疊上下文嘅分界都唔可以返回。
+        一個移動可以越過冇返回嘅初步分界；程式會將被跨過嘅分界摺疊到同一位置，
+        所以唔需要另外返回佢哋，期間嘅字幕亦可以變成空白。
+        如果返回多個分界，佢哋移動後嘅位置必須仍然依次排列；返回嘅分界唔可以
+        互相越過或者超出字符帶首尾。
+        只根據粵語語意同中文字幕提示決定分界；唔好修正錯字、簡繁體、標點或者內容。
+        如果所有負責分界都正確，bianjie_xiugai 返回空列表。"""),
+    changes="bianjie_xiugai",
+    changes_desc="只包含真正需要移動嘅粵文字幕分界",
+    index_desc="要移動嘅分界前面嗰條字幕，由1開始嘅本地索引",
+    shift="yidong_zifu_shu",
+    shift_desc=(
+        "分界相對 yuewen_initial 原位移動嘅有正負號 Unicode 字符數；正數向右，"
+        "負數向左；被跨過而冇返回嘅初步分界會摺疊到同一位置"
+    ),
+    change_indices_err="bianjie_xiugai 索引必須唯一而且由細到大排列。",
+    change_index_missing_err=("bianjie_xiugai 每個索引都必須對應呢個視窗負責嘅分界。"),
+    change_shift_zero_err=(
+        "yidong_zifu_shu 唔可以係 0；冇移動嘅分界唔好放入 bianjie_xiugai。"
+    ),
+    boundary_shift_invalid_err_tpl=(
+        "索引 {index} 之後嘅分界移動到字符位置 {offset}，越過相鄰嘅已返回分界"
+        " {previous_offset} 或 {next_offset}。下一次要以每個 yuewen_initial 原本"
+        "分界為基準，同時套用所有移動；唔好逐項順序套用。"
+    ),
+    legacy_cache_prompts=(
+        _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_TEXT,
+        *_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_TEXT.legacy_cache_prompts,
+    ),
+)
+"""Predecessor prompt using sparse boundary shifts."""
+
+YueZhoBlockDelineationPromptYueHant = replace(
+    _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V1,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V1.base_system_prompt}
+        回答之前，先按每條 yuewen_initial 嘅 Unicode 字符數，計出由字符帶開頭
+        起計嘅全部原本分界絕對位置。對每個準備返回嘅項目，只可以用「原本絕對
+        位置加 yidong_zifu_shu」計新位置。然後將返回同冇返回嘅全部分界新位置
+        一齊由左至右核對：每個位置必須大過或等於前一個，而且細過或等於下一個，
+        第一個唔可以小過 0，最後一個唔可以大過字符帶總長度。空白字幕可以令相鄰
+        分界位置相同，但後面嘅分界絕對唔可以走到前面。任何一項唔符合，就要修正
+        移動數或者刪除嗰項；唔好提交會互相越過嘅分界。"""),
+    boundary_shift_invalid_err_tpl=(
+        "索引 {index} 之後嘅分界移動到字符位置 {offset}，越過相鄰嘅最終分界"
+        " {previous_offset} 或 {next_offset}。下一次先計出全部 yuewen_initial 原本"
+        "分界嘅絕對字符位置，再分別加上各自嘅 yidong_zifu_shu；將返回同冇返回"
+        "嘅全部最終位置一齊核對，必須由左至右大過或等於前一個。唔好逐項順序"
+        "套用，亦唔好提交會互相越過嘅分界。"
+    ),
+    legacy_cache_prompts=(
+        _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V1,
+        *_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V1.legacy_cache_prompts,
+    ),
 )
 """Text for Traditional Cantonese/Chinese block delineation."""
 
@@ -221,8 +300,33 @@ _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_LEGACY = BlockPunctuationPrompt(
 )
 """Predecessor prompt using the mixed-language sparse-answer alias."""
 
-YueZhoBlockPunctuationPromptYueHant = _get_prompt_with_pinyin_change_alias(
-    _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_LEGACY
+_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V1 = (
+    _get_prompt_with_pinyin_change_alias(
+        _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_LEGACY
+    )
+)
+"""Predecessor prompt enforcing target-character immutability."""
+
+YueZhoBlockPunctuationPromptYueHant = replace(
+    _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V1,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V1.base_system_prompt}
+        呢個係機械式標點任務，唔係改寫、校對或者補全任務。每個要返回嘅 wenben，
+        必須先由同一個 yuewen_to_punctuate.wenben 逐字複製，再只插入、刪除或者
+        更換標點同空格；唔好憑中文字幕或者語意重新寫成一句。中文字幕只可以幫你
+        判斷標點位置，絕對唔可以用嚟補回粵文冇出現嘅字詞、語氣助詞、稱呼或者
+        句尾字。亦唔可以刪走重複、唔通順或者你認為多餘嘅粵文字符，或者將任何字
+        改成較正確、較常用、唔同簡繁體或者同音嘅字。提交之前再次移除新舊兩邊
+        全部標點同空格；如果剩低嘅 Unicode 字符唔逐字相同，嗰項唔可以返回。"""),
+    target_chars_changed_err_tpl=(
+        _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V1.target_chars_changed_err_tpl
+        + " 下一次由原本 yuewen_to_punctuate.wenben 機械複製，唔好憑中文字幕"
+        "或者語意重寫；唔可以增減語氣助詞、補全句子或者更正任何字形。"
+    ),
+    legacy_cache_prompts=(
+        _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V1,
+        *_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V1.legacy_cache_prompts,
+    ),
 )
 """Text for Traditional Cantonese/Chinese block punctuation."""
 

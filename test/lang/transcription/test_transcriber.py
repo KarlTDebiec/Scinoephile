@@ -116,6 +116,18 @@ def test_segments_are_usable_rejects_repetitive_whisper_output():
     assert not GuidedTranscriber._segments_are_usable(segments)
 
 
+def test_segments_are_usable_rejects_subtitle_credit_hallucinations():
+    """Test generated subtitle-credit text is unusable for alignment."""
+    for text in (
+        "字幕由 Amara.org 社群提供",
+        "字幕提供者：李宗盛",
+        "亦都係全世界的字幕由某社群提供",
+    ):
+        segments = [_get_segment(text=text, compression_ratio=1.0, with_words=True)]
+
+        assert not GuidedTranscriber._segments_are_usable(segments)
+
+
 def test_segments_are_usable_reports_missing_word_timings_concisely(
     caplog: LogCaptureFixture,
 ):

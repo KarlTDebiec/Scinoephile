@@ -18,7 +18,6 @@ from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.synchronization import SyncGroup
 from scinoephile.core.text import replace_control_characters
 from scinoephile.llms.block_delineation import (
-    BlockDelineationAnswer,
     BlockDelineationProcessor,
     BlockDelineationTestCase,
 )
@@ -198,7 +197,7 @@ class BlockTranscriptionAligner:
         last_owned_index: int,
         window_index: int,
     ) -> list[str]:
-        """Delineate one query window using sparse replacements.
+        """Delineate one query window using sparse boundary movements.
 
         Arguments:
             guides: local guide text by index
@@ -227,8 +226,7 @@ class BlockTranscriptionAligner:
                 f"block delineation window {window_index}",
             ),
         )
-        answer = cast(BlockDelineationAnswer, test_case.answer)
-        return self._apply_changes(targets, answer.changes)
+        return test_case.get_output_texts()
 
     def _punctuate(
         self, references: Sequence[Subtitle], targets: list[str]

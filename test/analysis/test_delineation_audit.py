@@ -14,6 +14,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.block_delineation import (
     BlockDelineationAnswer,
+    BlockDelineationBoundaryChange,
     BlockDelineationQuery,
     BlockDelineationSubtitle,
     BlockDelineationTestCase,
@@ -42,10 +43,7 @@ def test_audit_delineation_formats_sparse_block_changes_by_case():
             ],
         ),
         answer=BlockDelineationAnswer(
-            changes=[
-                BlockDelineationSubtitle(index=1, text="甲"),
-                BlockDelineationSubtitle(index=2, text="乙丙"),
-            ]
+            changes=[BlockDelineationBoundaryChange(index=1, shift=-1)]
         ),
         verified=True,
     )

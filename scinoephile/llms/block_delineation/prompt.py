@@ -40,7 +40,7 @@ class BlockDelineationPrompt(Prompt):
     """Description of last owned local index field in query."""
     changes: str = "changes"
     """Name of sparse target changes field in answer."""
-    changes_desc: str = "Only target subtitles whose text must change."
+    changes_desc: str = "Only target boundaries whose position must change."
     """Description of sparse target changes field in answer."""
     index: str = "index"
     """Name of index field in subtitle items."""
@@ -48,12 +48,20 @@ class BlockDelineationPrompt(Prompt):
     """Description of subtitle item indexes."""
     text: str = "text"
     """Name of text field in subtitle items."""
+    shift: str | None = "shift"
+    """Name of signed boundary-shift field, or None for legacy text answers."""
     guide_text_desc: str = "Guide subtitle text."
     """Description of guide subtitle text."""
     target_text_desc: str = "Initially assigned target subtitle text."
     """Description of initial target subtitle text."""
     change_text_desc: str = "Replacement target text for this changed index."
     """Description of changed target subtitle text."""
+    shift_desc: str = (
+        "Signed Unicode-character count by which to move the boundary after this "
+        "index. Positive moves it right; negative moves it left. Preliminary "
+        "boundaries crossed by the move collapse onto it."
+    )
+    """Description of signed boundary shifts."""
     guide_indices_err: str = (
         "Query guide indexes must be consecutive, ordered, and begin at 1."
     )
@@ -72,9 +80,17 @@ class BlockDelineationPrompt(Prompt):
     )
     """Error when answer change indexes are invalid."""
     change_index_missing_err: str = (
-        "Every answer change index must correspond to a query guide index."
+        "Every answer change index must correspond to a boundary owned by the query."
     )
     """Error when an answer change index is absent from the guide."""
+    change_shift_zero_err: str = "Answer boundary shifts must not be zero."
+    """Error when an answer includes a zero boundary shift."""
+    boundary_shift_invalid_err_tpl: str = (
+        "The shift for boundary after index {index} produces invalid character "
+        "offset {offset}; it must remain between neighboring explicit offsets "
+        "{previous_offset} and {next_offset}."
+    )
+    """Error template when shifted boundaries cross or leave the character tape."""
     target_chars_changed_err_tpl: str = (
         "Reconstructed block target text does not preserve the query target "
         "characters in order. The first mismatch is in reconstructed index "
@@ -100,4 +116,24 @@ class BlockDelineationPrompt(Prompt):
             expected=expected,
             received=received,
             **get_text_mismatch_details(expected, received),
+        )
+
+    def boundary_shift_invalid_err(
+        self, index: int, offset: int, previous_offset: int, next_offset: int
+    ) -> str:
+        """Get an error for a boundary that crosses an adjacent boundary.
+
+        Arguments:
+            index: one-based target index immediately before the boundary
+            offset: shifted boundary character offset
+            previous_offset: preceding boundary character offset
+            next_offset: following boundary character offset
+        Returns:
+            formatted error message
+        """
+        return self.boundary_shift_invalid_err_tpl.format(
+            index=index,
+            offset=offset,
+            previous_offset=previous_offset,
+            next_offset=next_offset,
         )
