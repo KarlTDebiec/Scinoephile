@@ -45,7 +45,7 @@ def test_block_answer_change_alias_is_pinyin():
         assert "fuze_qishi_xuhao" in prompt.base_system_prompt
         assert "fuze_jieshu_xuhao" in prompt.base_system_prompt
         assert set(properties) == {expected_changes}
-        expected_legacy_count = 6 if isinstance(prompt, BlockDelineationPrompt) else 4
+        expected_legacy_count = 6 if isinstance(prompt, BlockDelineationPrompt) else 5
         assert len(prompt.legacy_cache_prompts) == expected_legacy_count
         legacy_prompt = prompt.legacy_cache_prompts[-1]
         assert isinstance(
@@ -98,6 +98,7 @@ def test_block_prompts_require_local_index_and_character_conservation_checks():
     assert "wenben 完全空白" in punctuation_prompt
     assert "第一個字符" in punctuation_prompt
     assert "最後一個字符" in punctuation_prompt
+    assert "開頭或者結尾只得標點" in punctuation_prompt
     assert "原有簡繁字形" in (
         YueZhoBlockPunctuationPromptYueHant.target_chars_changed_err_tpl
     )

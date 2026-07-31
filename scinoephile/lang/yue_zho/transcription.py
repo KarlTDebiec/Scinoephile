@@ -408,7 +408,7 @@ _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V3 = replace(
 )
 """Predecessor prompt preserving mixed-script and empty target text."""
 
-YueZhoBlockPunctuationPromptYueHant = replace(
+_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V4 = replace(
     _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V3,
     base_system_prompt=dedent_and_compact(f"""
         {_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V3.base_system_prompt}
@@ -426,6 +426,21 @@ YueZhoBlockPunctuationPromptYueHant = replace(
     legacy_cache_prompts=(
         _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V3,
         *_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V3.legacy_cache_prompts,
+    ),
+)
+"""Predecessor prompt checking complete target-character identity."""
+
+YueZhoBlockPunctuationPromptYueHant = replace(
+    _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V4,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V4.base_system_prompt}
+        即使 yuewen_to_punctuate.wenben 開頭或者結尾只得標點、睇落似係欠咗字，
+        都只可以保留或者更換嗰個標點，絕對唔可以由 zhongwen、相鄰字幕或者語意
+        猜測並補入任何漢字、語氣詞或者稱呼。句子唔完整係分界或者轉寫問題，唔係
+        呢個標點步驟可以修正嘅問題。"""),
+    legacy_cache_prompts=(
+        _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V4,
+        *_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V4.legacy_cache_prompts,
     ),
 )
 """Text for Traditional Cantonese/Chinese block punctuation."""
