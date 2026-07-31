@@ -253,7 +253,7 @@ _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V3 = replace(
 )
 """Predecessor prompt clarifying cumulative boundary shifts."""
 
-YueZhoBlockDelineationPromptYueHant = replace(
+_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V4 = replace(
     _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V3,
     boundary_neighbors_crossed_err_tpl=(
         "相鄰嘅已返回分界最終位置 {previous_offset} 同 {next_offset} 本身已經"
@@ -264,6 +264,26 @@ YueZhoBlockDelineationPromptYueHant = replace(
     legacy_cache_prompts=(
         _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V3,
         *_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V3.legacy_cache_prompts,
+    ),
+)
+"""Predecessor prompt distinguishing already-crossed neighboring boundaries."""
+
+YueZhoBlockDelineationPromptYueHant = replace(
+    _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V4,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V4.base_system_prompt}
+        如果一組準備返回嘅分界移動互相衝突，而你唔能夠一次過計出由左至右有序嘅
+        全部最終位置，必須刪除嗰組有衝突嘅 bianjie_xiugai，保留初步分界。
+        返回較少項目或者空列表，永遠好過提交互相越過嘅分界。唔好喺舊嘅錯誤答案
+        上面逐項修補；每次都由原本 yuewen_initial 嘅累積分界重新計算。"""),
+    boundary_neighbors_crossed_err_tpl=(
+        _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V4.boundary_neighbors_crossed_err_tpl
+        + " 如果未能立即算出整組有效移動，最安全嘅修正係刪除造成衝突嘅整組 "
+        "bianjie_xiugai，保留原本分界；唔好沿用上一個錯誤答案逐項再試。"
+    ),
+    legacy_cache_prompts=(
+        _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V4,
+        *_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V4.legacy_cache_prompts,
     ),
 )
 """Text for Traditional Cantonese/Chinese block delineation."""
@@ -373,7 +393,7 @@ _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V2 = replace(
 )
 """Predecessor prompt emphasizing mechanical character copying."""
 
-YueZhoBlockPunctuationPromptYueHant = replace(
+_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V3 = replace(
     _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V2,
     base_system_prompt=dedent_and_compact(f"""
         {_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V2.base_system_prompt}
@@ -384,6 +404,28 @@ YueZhoBlockPunctuationPromptYueHant = replace(
     legacy_cache_prompts=(
         _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V2,
         *_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V2.legacy_cache_prompts,
+    ),
+)
+"""Predecessor prompt preserving mixed-script and empty target text."""
+
+YueZhoBlockPunctuationPromptYueHant = replace(
+    _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V3,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V3.base_system_prompt}
+        每個準備返回嘅 wenben 移除標點同空格之後，非標點字符數量、第一個字符、
+        最後一個字符同完整次序，都必須同原本同一索引完全相同。唔可以喺開頭或者
+        結尾加入語氣詞、稱呼或者其他字符，亦唔可以漏咗原文開頭或者結尾。
+        如果核對失敗，唔好修改目前候選答案；必須由原本 yuewen_to_punctuate.wenben
+        重新逐字複製，再只加入標點。"""),
+    target_chars_changed_err_tpl=(
+        _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V3.target_chars_changed_err_tpl
+        + " 如果收到多咗非標點字符，刪除全部額外嘅開頭或結尾字符；如果收到少咗，"
+        "由原文補返完全相同嘅字符。唔好用另一個語氣詞或者字去代替。放棄目前錯誤"
+        "答案，由原本 yuewen_to_punctuate.wenben 重新逐字複製。"
+    ),
+    legacy_cache_prompts=(
+        _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V3,
+        *_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V3.legacy_cache_prompts,
     ),
 )
 """Text for Traditional Cantonese/Chinese block punctuation."""
