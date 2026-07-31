@@ -45,7 +45,7 @@ def test_block_answer_change_alias_is_pinyin():
         assert "fuze_qishi_xuhao" in prompt.base_system_prompt
         assert "fuze_jieshu_xuhao" in prompt.base_system_prompt
         assert set(properties) == {expected_changes}
-        expected_legacy_count = 3 if isinstance(prompt, BlockDelineationPrompt) else 2
+        expected_legacy_count = 5 if isinstance(prompt, BlockDelineationPrompt) else 3
         assert len(prompt.legacy_cache_prompts) == expected_legacy_count
         legacy_prompt = prompt.legacy_cache_prompts[-1]
         assert isinstance(
@@ -81,6 +81,10 @@ def test_block_prompts_require_local_index_and_character_conservation_checks():
     assert "互相越過或者超出字符帶首尾" in delineation_prompt
     assert "原本分界絕對位置" in delineation_prompt
     assert "返回同冇返回嘅全部分界新位置" in delineation_prompt
+    assert "唔係某條輸出字幕" in delineation_prompt
+    assert "冇任何有效嘅 yidong_zifu_shu 範圍" in (
+        YueZhoBlockDelineationPromptYueHant.boundary_neighbors_crossed_err_tpl
+    )
     assert "本地索引" in punctuation_prompt
     assert "相鄰索引" in punctuation_prompt
     assert "簡繁體唔一致" in punctuation_prompt
@@ -89,6 +93,8 @@ def test_block_prompts_require_local_index_and_character_conservation_checks():
     assert "必須從答案刪除" in punctuation_prompt
     assert "機械式標點任務" in punctuation_prompt
     assert "絕對唔可以用嚟補回" in punctuation_prompt
+    assert "繁體化係之後另一個步驟" in punctuation_prompt
+    assert "wenben 完全空白" in punctuation_prompt
     assert "原有簡繁字形" in (
         YueZhoBlockPunctuationPromptYueHant.target_chars_changed_err_tpl
     )

@@ -359,6 +359,7 @@ def process_transcription_pipeline(
     transcription_fallback_to_no_op: bool = False,
     vad_mode: VADMode = VADMode.AUTO,
     transcription_names: tuple[str, ...] | None = None,
+    transcription_overwrite: bool | None = None,
     run_merge_and_translation: bool = True,
     overwrite: bool = False,
 ) -> Series | None:
@@ -393,6 +394,8 @@ def process_transcription_pipeline(
         vad_mode: voice activity detection mode shared by all transcription backends
         transcription_names: transcription sources to prepare in order, or None for
           all three sources
+        transcription_overwrite: whether to overwrite transcription-source stages;
+          defaults to the pipeline-level `overwrite` value
         run_merge_and_translation: whether to merge the transcription sources, fill
           translation gaps, and simplify the result
         overwrite: whether to overwrite existing stage outputs
@@ -441,6 +444,8 @@ def process_transcription_pipeline(
     }
     if transcription_names is None:
         transcription_names = tuple(transcription_runs)
+    if transcription_overwrite is None:
+        transcription_overwrite = overwrite
     unsupported_names = set(transcription_names).difference(transcription_runs)
     if unsupported_names:
         unsupported_names_text = ", ".join(sorted(unsupported_names))
@@ -466,7 +471,7 @@ def process_transcription_pipeline(
             transcription_kw=transcription_kw,
             run_traditionalize=True,
             run_review_and_translation=False,
-            overwrite=overwrite,
+            overwrite=transcription_overwrite,
         )
         source_paths[transcription_name] = (
             model_dir_path / "transcribe_clean_traditionalize.srt"

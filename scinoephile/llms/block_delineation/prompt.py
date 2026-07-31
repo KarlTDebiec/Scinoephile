@@ -88,9 +88,18 @@ class BlockDelineationPrompt(Prompt):
     boundary_shift_invalid_err_tpl: str = (
         "The shift for boundary after index {index} produces invalid character "
         "offset {offset}; it must remain between neighboring explicit offsets "
-        "{previous_offset} and {next_offset}."
+        "{previous_offset} and {next_offset}. Relative to its original offset "
+        "{original_offset}, the shift must be between {minimum_shift} and "
+        "{maximum_shift}, inclusive."
     )
     """Error template when shifted boundaries cross or leave the character tape."""
+    boundary_neighbors_crossed_err_tpl: str = (
+        "The returned neighboring boundary offsets {previous_offset} and "
+        "{next_offset} already cross, so boundary after index {index} has no valid "
+        "shift range. Recompute, revise, or remove one or more surrounding changes "
+        "before retrying."
+    )
+    """Error template when neighboring explicit shifted boundaries cross."""
     target_chars_changed_err_tpl: str = (
         "Reconstructed block target text does not preserve the query target "
         "characters in order. The first mismatch is in reconstructed index "
@@ -119,21 +128,38 @@ class BlockDelineationPrompt(Prompt):
         )
 
     def boundary_shift_invalid_err(
-        self, index: int, offset: int, previous_offset: int, next_offset: int
+        self,
+        index: int,
+        offset: int,
+        original_offset: int,
+        previous_offset: int,
+        next_offset: int,
     ) -> str:
         """Get an error for a boundary that crosses an adjacent boundary.
 
         Arguments:
             index: one-based target index immediately before the boundary
             offset: shifted boundary character offset
+            original_offset: preliminary boundary character offset
             previous_offset: preceding boundary character offset
             next_offset: following boundary character offset
         Returns:
             formatted error message
         """
+        if previous_offset > next_offset:
+            return self.boundary_neighbors_crossed_err_tpl.format(
+                index=index,
+                offset=offset,
+                original_offset=original_offset,
+                previous_offset=previous_offset,
+                next_offset=next_offset,
+            )
         return self.boundary_shift_invalid_err_tpl.format(
             index=index,
             offset=offset,
+            original_offset=original_offset,
             previous_offset=previous_offset,
             next_offset=next_offset,
+            minimum_shift=previous_offset - original_offset,
+            maximum_shift=next_offset - original_offset,
         )

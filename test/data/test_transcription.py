@@ -311,6 +311,46 @@ def test_process_transcription_pipeline_can_prepare_selected_sources(
     assert transcribe.call_args.kwargs["output_dir_path"].name == "mimo"
 
 
+def test_process_transcription_pipeline_can_preserve_sources_while_overwriting_merge(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Allow merge outputs to be refreshed without regenerating source stages.
+
+    Arguments:
+        tmp_path: temporary pipeline directory
+        monkeypatch: pytest monkeypatch fixture
+    """
+    reference = Series(events=[Subtitle(start=0, end=1_000, text="佢喺度")])
+    guide = Series(events=[Subtitle(start=0, end=1_000, text="他在這裡")])
+    reference_path = tmp_path / "reference.srt"
+    guide_path = tmp_path / "guide.srt"
+    reference.save(reference_path)
+    guide.save(guide_path)
+    transcribe = Mock(return_value=reference)
+    merge = Mock(return_value=reference)
+    translate = Mock(return_value=reference)
+    simplify = Mock(return_value=reference)
+    monkeypatch.setattr(transcription_data, "process_transcription", transcribe)
+    monkeypatch.setattr(transcription_data, "process_transcription_multi_review", merge)
+    monkeypatch.setattr(transcription_data, "_load_or_translate_series_gaps", translate)
+    monkeypatch.setattr(transcription_data, "load_or_simplify_series", simplify)
+
+    transcription_data.process_transcription_pipeline(
+        tmp_path,
+        guide_path,
+        reference_path=reference_path,
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        transcription_overwrite=False,
+        overwrite=True,
+    )
+
+    assert all(call.kwargs["overwrite"] is False for call in transcribe.call_args_list)
+    assert merge.call_args.kwargs["overwrite"] is True
+    assert translate.call_args.kwargs["overwrite"] is True
+    assert simplify.call_args.args[-1] is True
+
+
 @mark.parametrize(
     ("language", "guide_language", "detected_language", "expected_log_level"),
     [

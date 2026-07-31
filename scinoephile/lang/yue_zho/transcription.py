@@ -200,7 +200,7 @@ _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V1 = replace(
 )
 """Predecessor prompt using sparse boundary shifts."""
 
-YueZhoBlockDelineationPromptYueHant = replace(
+_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V2 = replace(
     _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V1,
     base_system_prompt=dedent_and_compact(f"""
         {_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V1.base_system_prompt}
@@ -221,6 +221,49 @@ YueZhoBlockDelineationPromptYueHant = replace(
     legacy_cache_prompts=(
         _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V1,
         *_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V1.legacy_cache_prompts,
+    ),
+)
+"""Predecessor prompt checking absolute positions before returning shifts."""
+
+_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V3 = replace(
+    _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V2,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V2.base_system_prompt}
+        特別注意：yidong_zifu_shu 係「同一個累積分界」新舊絕對位置之差，
+        唔係某條輸出字幕同 yuewen_initial 同一條字幕嘅長度差。前面分界嘅移動
+        唔會改變後面分界計 yidong_zifu_shu 嘅基準；每項永遠只用自己原本嘅
+        累積分界位置計算。"""),
+    shift_desc=(
+        "同一個累積分界相對 yuewen_initial 原位移動嘅有正負號 Unicode 字符數；"
+        "唔係單條字幕嘅長度差；正數向右，負數向左；被跨過而冇返回嘅初步分界"
+        "會摺疊到同一位置"
+    ),
+    boundary_shift_invalid_err_tpl=(
+        "索引 {index} 之後嘅分界原本喺字符位置 {original_offset}，移動到 "
+        "{offset}，越過相鄰嘅最終分界 {previous_offset} 或 {next_offset}。"
+        "下一次呢個索引嘅 yidong_zifu_shu 必須喺 {minimum_shift} 至 "
+        "{maximum_shift} 之間（包括兩端）；如果語意需要超出呢個範圍，就要一併"
+        "修正被越過嘅已返回分界，或者刪除唔必要嘅項目。每項以自己原本累積"
+        "分界為基準，唔好用單條字幕長度差，亦唔好逐項順序套用。"
+    ),
+    legacy_cache_prompts=(
+        _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V2,
+        *_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V2.legacy_cache_prompts,
+    ),
+)
+"""Predecessor prompt clarifying cumulative boundary shifts."""
+
+YueZhoBlockDelineationPromptYueHant = replace(
+    _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V3,
+    boundary_neighbors_crossed_err_tpl=(
+        "相鄰嘅已返回分界最終位置 {previous_offset} 同 {next_offset} 本身已經"
+        "前後倒轉，所以索引 {index} 冇任何有效嘅 yidong_zifu_shu 範圍。下一次"
+        "唔好只改目前報錯嗰一項；由呢幾個相鄰分界成組重新計算，修正或者刪除"
+        "一項或多項 bianjie_xiugai，直到全部最終位置由左至右排列。"
+    ),
+    legacy_cache_prompts=(
+        _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V3,
+        *_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V3.legacy_cache_prompts,
     ),
 )
 """Text for Traditional Cantonese/Chinese block delineation."""
@@ -307,7 +350,7 @@ _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V1 = (
 )
 """Predecessor prompt enforcing target-character immutability."""
 
-YueZhoBlockPunctuationPromptYueHant = replace(
+_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V2 = replace(
     _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V1,
     base_system_prompt=dedent_and_compact(f"""
         {_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V1.base_system_prompt}
@@ -326,6 +369,21 @@ YueZhoBlockPunctuationPromptYueHant = replace(
     legacy_cache_prompts=(
         _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V1,
         *_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V1.legacy_cache_prompts,
+    ),
+)
+"""Predecessor prompt emphasizing mechanical character copying."""
+
+YueZhoBlockPunctuationPromptYueHant = replace(
+    _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V2,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V2.base_system_prompt}
+        yuewen_to_punctuate 可能係簡體、繁體或者兩者混合；繁體化係之後另一個步驟，
+        呢度絕對唔可以轉換字形。如果某個 yuewen_to_punctuate.wenben 完全空白，
+        佢冇任何標點可以修改，絕對唔可以喺 yuewen_xiugai 返回嗰個索引，亦唔可以
+        用 zhongwen 補入內容。"""),
+    legacy_cache_prompts=(
+        _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V2,
+        *_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V2.legacy_cache_prompts,
     ),
 )
 """Text for Traditional Cantonese/Chinese block punctuation."""

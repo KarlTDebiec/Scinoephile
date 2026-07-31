@@ -9,7 +9,12 @@ from typing import ClassVar, Self
 from pydantic import Field, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase, TestCaseSubtitle
-from scinoephile.core.text import remove_punc_and_whitespace
+from scinoephile.core.text import (
+    FULL_PUNC_CHARS,
+    HALF_PUNC_CHARS,
+    WHITESPACE_CHARS,
+    remove_punc_and_whitespace,
+)
 
 from .prompt import BlockPunctuationPrompt
 
@@ -131,15 +136,25 @@ class BlockPunctuationTestCase(TestCase):
         target_text_by_index = {
             target.index: target.text for target in self.query.targets
         }
-        change_indexes = {change.index for change in self.answer.changes}
-        if not change_indexes <= set(target_text_by_index):
-            raise ValueError(self.prompt.change_index_missing_err)
-        if not change_indexes <= set(self.query.owned_index_range):
-            raise ValueError(self.prompt.change_index_not_owned_err)
-
+        owned_indexes = set(self.query.owned_index_range)
+        self.answer.changes = [
+            change
+            for change in self.answer.changes
+            if change.index in target_text_by_index and change.index in owned_indexes
+        ]
         for change in self.answer.changes:
             expected = remove_punc_and_whitespace(target_text_by_index[change.index])
             received = remove_punc_and_whitespace(change.text)
+            if expected != received and len(expected) == len(received):
+                source_characters = iter(expected)
+                punctuation = FULL_PUNC_CHARS | HALF_PUNC_CHARS | WHITESPACE_CHARS
+                change.text = "".join(
+                    character
+                    if character.isspace() or character in punctuation
+                    else next(source_characters)
+                    for character in change.text
+                )
+                received = remove_punc_and_whitespace(change.text)
             if expected != received:
                 raise ValueError(
                     self.prompt.target_chars_changed_err(

@@ -96,14 +96,31 @@ def test_sparse_changes_may_only_adjust_punctuation_within_each_index():
                 },
             }
         )
-    with raises(ValidationError, match="correspond to a query guide index"):
-        BlockPunctuationTestCase.model_validate(
-            {"query": query, "answer": {"changes": [{"index": 3, "text": "！"}]}}
-        )
+    unknown = BlockPunctuationTestCase.model_validate(
+        {"query": query, "answer": {"changes": [{"index": 3, "text": "！"}]}}
+    )
+    assert unknown.answer is not None
+    assert unknown.answer.changes == []
+
+
+def test_sparse_changes_restore_source_characters_with_matching_length():
+    """Punctuation layout should survive harmless script normalization."""
+    test_case = BlockPunctuationTestCase.model_validate(
+        {
+            "query": {
+                "guides": [{"index": 1, "text": "我們成親"}],
+                "targets": [{"index": 1, "text": "我哋成亲"}],
+            },
+            "answer": {"changes": [{"index": 1, "text": "我哋成親！"}]},
+        }
+    )
+
+    assert test_case.answer is not None
+    assert test_case.answer.changes[0].text == "我哋成亲！"
 
 
 def test_sparse_changes_may_only_modify_owned_window_indexes():
-    """Punctuation should reject sparse changes to context-only indexes."""
+    """Punctuation should ignore sparse changes to context-only indexes."""
     query = {
         "guides": [
             {"index": 1, "text": "前文"},
@@ -119,7 +136,9 @@ def test_sparse_changes_may_only_modify_owned_window_indexes():
         "last_owned_index": 2,
     }
 
-    with raises(ValidationError, match="owned index range"):
-        BlockPunctuationTestCase.model_validate(
-            {"query": query, "answer": {"changes": [{"index": 1, "text": "甲！"}]}}
-        )
+    test_case = BlockPunctuationTestCase.model_validate(
+        {"query": query, "answer": {"changes": [{"index": 1, "text": "甲！"}]}}
+    )
+
+    assert test_case.answer is not None
+    assert test_case.answer.changes == []

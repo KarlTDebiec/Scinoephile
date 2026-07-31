@@ -92,13 +92,40 @@ def test_sparse_boundary_shifts_validate_indices_and_non_crossing_offsets():
         BlockDelineationTestCase.model_validate(
             {"query": query, "answer": {"changes": [{"index": 1, "shift": 0}]}}
         )
-    with raises(ValidationError, match="boundary owned by the query"):
-        BlockDelineationTestCase.model_validate(
-            {"query": query, "answer": {"changes": [{"index": 2, "shift": 1}]}}
-        )
-    with raises(ValidationError, match="invalid character offset"):
+    context_only = BlockDelineationTestCase.model_validate(
+        {"query": query, "answer": {"changes": [{"index": 2, "shift": 1}]}}
+    )
+    assert context_only.answer is not None
+    assert context_only.answer.changes == []
+    with raises(ValidationError, match="between -2 and 1"):
         BlockDelineationTestCase.model_validate(
             {"query": query, "answer": {"changes": [{"index": 1, "shift": 2}]}}
+        )
+
+
+def test_crossed_neighbor_boundaries_report_no_valid_shift_range():
+    """Delineation should distinguish crossed anchors from one bad shift."""
+    with raises(ValidationError, match="offsets 3 and 1 already cross"):
+        BlockDelineationTestCase.model_validate(
+            {
+                "query": {
+                    "guides": [
+                        {"index": index, "text": f"參考{index}"}
+                        for index in range(1, 5)
+                    ],
+                    "targets": [
+                        {"index": index, "text": text}
+                        for index, text in enumerate("ABCD", 1)
+                    ],
+                },
+                "answer": {
+                    "changes": [
+                        {"index": 1, "shift": 2},
+                        {"index": 2, "shift": 2},
+                        {"index": 3, "shift": -2},
+                    ]
+                },
+            }
         )
 
 

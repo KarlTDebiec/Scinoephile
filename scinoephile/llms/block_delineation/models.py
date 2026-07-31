@@ -245,9 +245,12 @@ class BlockDelineationTestCase(TestCase):
                 )
             return self
 
-        if not change_indexes <= set(self.query.owned_boundary_index_range):
-            raise ValueError(self.prompt.change_index_missing_err)
-
+        owned_boundary_indexes = set(self.query.owned_boundary_index_range)
+        self.answer.changes = [
+            change
+            for change in self.answer.changes
+            if change.index in owned_boundary_indexes
+        ]
         target_texts = [target.text for target in self.query.targets]
         self._get_shifted_boundary_offsets(target_texts, self.answer.changes)
         return self
@@ -324,7 +327,8 @@ class BlockDelineationTestCase(TestCase):
         Raises:
             ValueError: if explicit shifted boundaries cross one another or the tape
         """
-        boundary_offsets = self._get_text_offsets(texts)
+        original_boundary_offsets = self._get_text_offsets(texts)
+        boundary_offsets = list(original_boundary_offsets)
         for change in changes:
             boundary_offsets[change.index] += change.shift
 
@@ -337,7 +341,11 @@ class BlockDelineationTestCase(TestCase):
             if not previous_offset <= offset <= next_offset:
                 raise ValueError(
                     self.prompt.boundary_shift_invalid_err(
-                        index, offset, previous_offset, next_offset
+                        index,
+                        offset,
+                        original_boundary_offsets[index],
+                        previous_offset,
+                        next_offset,
                     )
                 )
         for previous_index, next_index in zip(
