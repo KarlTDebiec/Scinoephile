@@ -115,6 +115,12 @@ boundary shift. In block JSON, an empty `changes` list means the complete
 preliminary assignment was retained. In either case, unchanged rows have a
 blank Output cell.
 
+Current block planning caps a query at 15 displayed guide/target subtitles:
+edge windows may own up to 12 plus three context subtitles, and interior
+windows may own up to nine plus three context subtitles on each side. Older
+persisted cases may legitimately be larger. Audit the actual ownership markers
+in the report rather than assuming either schema from case size.
+
 ## Audit every row
 
 Read the saved report from beginning to end and judge every row independently.

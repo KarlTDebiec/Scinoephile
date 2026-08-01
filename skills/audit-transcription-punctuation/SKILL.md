@@ -104,6 +104,15 @@ output. The reference
 punctuation is useful context, but it does not dictate the target punctuation:
 Cantonese phrasing and sentence boundaries may differ from the guide.
 
+Current Cantonese block punctuation rejects three deterministic output defects
+and retries them before saving: owned subtitles beginning with closing sentence
+punctuation, nonempty owned subtitles containing only punctuation or whitespace,
+and half-width sentence punctuation adjacent to Hanzi. Decimal points and other
+punctuation internal to Western numbers or terms remain valid. Continue checking
+these rules during an audit because older verified or no-op data may predate the
+validator. The validator does not detect semantically missing question marks,
+wrong punctuation choices, or discourse errors; audit those manually.
+
 Consider:
 
 - question marks, exclamation marks, full stops, commas, colons, ellipses, and
