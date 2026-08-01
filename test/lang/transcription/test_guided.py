@@ -67,15 +67,25 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
             (Language.yue_hant, Language.zho_hant)
         ].punctuation_json_paths
     )
-    assert DEFAULT_SPECS[
-        (Language.yue_hant, Language.zho_hant)
-    ].block_delineation_json_paths == (
-        Path("*/output/yue-Hant_transcribe/vad-*/*/json/block_delineation-*.json"),
+    expected_block_json_dir_paths = tuple(
+        Path(dataset_name)
+        / "output"
+        / "yue-Hant_transcribe"
+        / vad_name
+        / transcription_name
+        / "json"
+        for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
+        for vad_name in ("vad-auto", "vad-off")
+        for transcription_name in ("whisper", "mimo", "qwen")
     )
-    assert DEFAULT_SPECS[
-        (Language.yue_hant, Language.zho_hant)
-    ].block_punctuation_json_paths == (
-        Path("*/output/yue-Hant_transcribe/vad-*/*/json/block_punctuation-*.json"),
+    spec = DEFAULT_SPECS[(Language.yue_hant, Language.zho_hant)]
+    assert spec.block_delineation_json_paths == tuple(
+        dir_path / "block_delineation-mps.json"
+        for dir_path in expected_block_json_dir_paths
+    )
+    assert spec.block_punctuation_json_paths == tuple(
+        dir_path / "block_punctuation-mps.json"
+        for dir_path in expected_block_json_dir_paths
     )
     mutable_specs = cast(dict, DEFAULT_SPECS)
     with raises(TypeError):

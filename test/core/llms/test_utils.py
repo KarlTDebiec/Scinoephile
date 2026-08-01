@@ -18,7 +18,6 @@ from scinoephile.core.llms.utils import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
-from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
 
 _BASE_REVIEW_PROMPT = ReviewPrompt(
@@ -128,85 +127,6 @@ def test_load_test_cases_prefers_json_cases(tmp_path: Path):
 
     assert test_cases == [json_test_case]
     assert normalized_test_case_path == test_case_path.resolve()
-
-
-def test_load_test_cases_prefers_verified_supplied_case(tmp_path: Path):
-    """An unverified local case should not hide a supplied verified answer."""
-    supplied_test_case = _get_test_case("original", "verified correction")
-    supplied_test_case.verified = True
-    json_test_case = _get_test_case("original", "unverified correction")
-    test_case_path = tmp_path / "test_cases.json"
-    save_test_cases_to_json(test_case_path, [json_test_case], _AliasedBaseReviewManager)
-
-    test_cases, _ = load_test_cases(
-        _AliasedBaseReviewManager,
-        _LOCALIZED_REVIEW_PROMPT,
-        merge_verified=True,
-        test_cases=[supplied_test_case],
-        test_case_path=test_case_path,
-    )
-
-    assert test_cases == [supplied_test_case]
-
-
-def test_load_test_cases_prefers_verified_json_case(tmp_path: Path):
-    """A verified local case should replace a supplied unverified answer."""
-    supplied_test_case = _get_test_case("original", "unverified correction")
-    json_test_case = _get_test_case("original", "verified correction")
-    json_test_case.verified = True
-    test_case_path = tmp_path / "test_cases.json"
-    save_test_cases_to_json(test_case_path, [json_test_case], _AliasedBaseReviewManager)
-
-    test_cases, _ = load_test_cases(
-        _AliasedBaseReviewManager,
-        _LOCALIZED_REVIEW_PROMPT,
-        merge_verified=True,
-        test_cases=[supplied_test_case],
-        test_case_path=test_case_path,
-    )
-
-    assert test_cases == [json_test_case]
-
-
-def test_load_test_cases_rejects_conflicting_verified_answers(tmp_path: Path):
-    """Conflicting verified answers should not be resolved by file precedence."""
-    supplied_test_case = _get_test_case("original", "supplied correction")
-    supplied_test_case.verified = True
-    json_test_case = _get_test_case("original", "JSON correction")
-    json_test_case.verified = True
-    test_case_path = tmp_path / "test_cases.json"
-    save_test_cases_to_json(test_case_path, [json_test_case], _AliasedBaseReviewManager)
-
-    with raises(ValueError, match="Conflicting verified answers"):
-        load_test_cases(
-            _AliasedBaseReviewManager,
-            _LOCALIZED_REVIEW_PROMPT,
-            merge_verified=True,
-            test_cases=[supplied_test_case],
-            test_case_path=test_case_path,
-        )
-
-
-def test_load_default_test_cases_expands_relative_globs(tmp_path: Path):
-    """Repository default test-case paths should support glob patterns."""
-    package_root = tmp_path / "repo/scinoephile"
-    first_path = tmp_path / "repo/test/data/first/cases/review.json"
-    second_path = tmp_path / "repo/test/data/second/cases/review.json"
-    first_test_case = _get_test_case("first", "first correction")
-    second_test_case = _get_test_case("second", "second correction")
-    save_test_cases_to_json(first_path, [first_test_case], _AliasedBaseReviewManager)
-    save_test_cases_to_json(second_path, [second_test_case], _AliasedBaseReviewManager)
-
-    load_default_test_cases.cache_clear()
-    with patch("scinoephile.llms.common.package_root", package_root):
-        test_cases = load_default_test_cases(
-            _AliasedBaseReviewManager,
-            _LOCALIZED_REVIEW_PROMPT,
-            (Path("*/cases/review.json"),),
-        )
-    load_default_test_cases.cache_clear()
-
-    assert test_cases == (first_test_case, second_test_case)
 
 
 def test_load_test_cases_normalizes_optional_arguments(tmp_path: Path):

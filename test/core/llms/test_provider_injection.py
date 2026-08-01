@@ -28,6 +28,7 @@ from scinoephile.core.llms import (
 )
 from scinoephile.core.llms.llm_provider import ChatCompletionKwargs
 from scinoephile.core.llms.tool_box import ToolBox
+from scinoephile.core.llms.utils import save_test_cases_to_json
 
 _PROMPT = Prompt(
     language=Language.eng,
@@ -479,7 +480,13 @@ def test_queryer_rejects_conflicting_verified_duplicates():
         query=_Query(text="input"), answer=_Answer(output="second"), verified=True
     )
 
-    with raises(ValueError, match="Conflicting verified answers"):
+    with raises(
+        ValueError,
+        match=(
+            "(?s)Conflicting verified answers.*Existing answer.*first.*"
+            "Conflicting answer.*second"
+        ),
+    ):
         Queryer(_TestCase, verified_test_cases=[first, second], provider=provider)
 
 
@@ -688,6 +695,50 @@ def test_cache_path_does_not_retain_queryer(tmp_path):
     gc.collect()
 
     assert queryer_ref() is None
+
+
+def test_processor_preserves_supplied_verified_cases_from_local_override(
+    tmp_path: Path,
+):
+    """All supplied verified cases should reach the nascent Queryer."""
+    verified = _TestCase(
+        query=_Query(text="input"), answer=_Answer(output="verified"), verified=True
+    )
+    local_unverified = _TestCase(
+        query=_Query(text="input"), answer=_Answer(output="unverified")
+    )
+    test_case_path = tmp_path / "test_cases.json"
+    save_test_cases_to_json(test_case_path, [local_unverified], _Manager)
+
+    processor = _Processor(
+        prompt=_PROMPT,
+        test_cases=[verified],
+        test_case_path=test_case_path,
+        provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+    )
+
+    loaded = processor.queryer.verified_test_cases[verified.query.key]
+    assert loaded.answer == verified.answer
+
+
+def test_processor_passes_conflicting_verified_cases_to_queryer(tmp_path: Path):
+    """Conflicting supplied and local verified answers should abort construction."""
+    supplied = _TestCase(
+        query=_Query(text="input"), answer=_Answer(output="supplied"), verified=True
+    )
+    local = _TestCase(
+        query=_Query(text="input"), answer=_Answer(output="local"), verified=True
+    )
+    test_case_path = tmp_path / "test_cases.json"
+    save_test_cases_to_json(test_case_path, [local], _Manager)
+
+    with raises(ValueError, match="(?s)Existing answer.*supplied.*Conflicting.*local"):
+        _Processor(
+            prompt=_PROMPT,
+            test_cases=[supplied],
+            test_case_path=test_case_path,
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+        )
 
 
 def test_processor_passes_injected_provider_to_queryer():

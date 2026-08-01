@@ -15637,7 +15637,11 @@
       "ref_sub_2": "降龍，伏虎",
       "target_sub_1": "佛前金座，罗汉归位，降龙伏虎。"
     },
-    "answer": {},
+    "answer": {
+      "target_sub_1_shifted": "佛前金座，罗汉归位，",
+      "target_sub_2_shifted": "降龙伏虎。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
