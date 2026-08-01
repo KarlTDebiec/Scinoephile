@@ -142,3 +142,60 @@ def test_sparse_changes_may_only_modify_owned_window_indexes():
 
     assert test_case.answer is not None
     assert test_case.answer.changes == []
+
+
+def test_output_quality_validation_rejects_deterministic_layout_defects():
+    """Configured prompts should reject obvious final punctuation defects."""
+    prompt = BlockPunctuationPrompt(validate_output_quality=True)
+    test_case_cls = BlockPunctuationManager.get_test_case_cls(prompt)
+    query = {
+        "guides": [
+            {"index": 1, "text": "參考一"},
+            {"index": 2, "text": "參考二"},
+            {"index": 3, "text": "參考三"},
+        ],
+        "targets": [
+            {"index": 1, "text": "甲"},
+            {"index": 2, "text": "，乙!"},
+            {"index": 3, "text": "。"},
+        ],
+        "first_owned_index": 2,
+        "last_owned_index": 3,
+    }
+
+    with raises(
+        ValidationError,
+        match=r"(?s)indexes 2 begin.*indexes 3 contain.*indexes 2 contain Hanzi",
+    ):
+        test_case_cls.model_validate({"query": query, "answer": {"changes": []}})
+
+    corrected = test_case_cls.model_validate(
+        {
+            "query": query,
+            "answer": {
+                "changes": [{"index": 2, "text": "乙！"}, {"index": 3, "text": ""}]
+            },
+        }
+    )
+    assert corrected.answer is not None
+    assert [change.text for change in corrected.answer.changes] == ["乙！", ""]
+
+
+def test_output_quality_validation_can_be_skipped_for_persisted_or_no_op_answers():
+    """Loading and explicit no-op behavior should preserve old answer data."""
+    prompt = BlockPunctuationPrompt(validate_output_quality=True)
+    test_case_cls = BlockPunctuationManager.get_test_case_cls(prompt)
+
+    test_case = test_case_cls.model_validate(
+        {
+            "query": {
+                "guides": [{"index": 1, "text": "參考"}],
+                "targets": [{"index": 1, "text": "，目標!"}],
+            },
+            "answer": {"changes": []},
+        },
+        context={"skip_output_quality_validation": True},
+    )
+
+    assert test_case.answer is not None
+    assert test_case.answer.changes == []

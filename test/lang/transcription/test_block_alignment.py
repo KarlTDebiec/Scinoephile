@@ -321,18 +321,22 @@ def test_long_blocks_use_timing_gap_windows_and_reconcile_owned_outputs():
         list(references), delineated
     )
 
-    assert delineation_processor.queryer.call_count == 2
+    assert delineation_processor.queryer.call_count == 3
     first_query = delineation_processor.queryer.call_args_list[0].args[0].query
     second_query = delineation_processor.queryer.call_args_list[1].args[0].query
+    third_query = delineation_processor.queryer.call_args_list[2].args[0].query
     assert len(first_query.guides) == 15
     assert (first_query.first_owned_index, first_query.last_owned_index) == (1, 12)
-    assert len(second_query.guides) == 16
-    assert (second_query.first_owned_index, second_query.last_owned_index) == (4, 15)
+    assert len(second_query.guides) == 12
+    assert (second_query.first_owned_index, second_query.last_owned_index) == (4, 9)
+    assert len(third_query.guides) == 10
+    assert (third_query.first_owned_index, third_query.last_owned_index) == (4, 9)
     assert delineated[11] == targets[11] + targets[12]
     assert delineated[12] == ""
     assert "".join(delineated) == "".join(targets)
     assert punctuated[0].endswith("！")
     assert punctuated[13].endswith("！")
+    assert punctuated[18].endswith("！")
 
 
 def test_later_windows_inherit_prior_cuts_without_crossing():
@@ -352,7 +356,7 @@ def test_later_windows_inherit_prior_cuts_without_crossing():
         """Move the first cut beyond the next preliminary cut."""
         answer: dict[str, list[dict[str, int]]] = {"changes": []}
         if test_case.query.first_owned_index == 1:
-            answer = {"changes": [{"index": 12, "shift": 2}]}
+            answer = {"changes": [{"index": 9, "shift": 2}]}
         return type(test_case).model_validate(
             {**test_case.model_dump(mode="json"), "answer": answer}
         )
@@ -364,14 +368,14 @@ def test_later_windows_inherit_prior_cuts_without_crossing():
 
     second_query = delineation_processor.queryer.call_args_list[1].args[0].query
     assert second_query.targets[3].text == ""
-    assert delineated[11] == targets[11] + targets[12] + targets[13]
-    assert delineated[12:14] == ["", ""]
+    assert delineated[8] == targets[8] + targets[9] + targets[10]
+    assert delineated[9:11] == ["", ""]
     assert "".join(delineated) == "".join(targets)
 
 
 def test_window_boundaries_prefer_strong_nearby_timing_gaps():
     """Ownership cuts should flex toward timing gaps near nominal sizes."""
-    gaps = {14: 4_000, 22: 3_000}
+    gaps = {12: 4_000, 20: 3_000}
     current_start = 0
     references: list[Subtitle] = []
     for index in range(30):
@@ -385,12 +389,36 @@ def test_window_boundaries_prefer_strong_nearby_timing_gaps():
     windows = BlockTranscriptionAligner._get_windows(references)  # noqa: SLF001
 
     assert [(window.owned_start, window.owned_end) for window in windows] == [
-        (0, 14),
-        (14, 22),
-        (22, 30),
+        (0, 12),
+        (12, 20),
+        (20, 30),
     ]
     assert [(window.start, window.end) for window in windows] == [
-        (0, 17),
-        (11, 25),
-        (19, 30),
+        (0, 15),
+        (9, 23),
+        (17, 30),
     ]
+    assert all(window.end - window.start <= 15 for window in windows)
+
+
+def test_window_planning_caps_query_and_owned_sizes():
+    """All long block sizes should produce complete bounded ownership."""
+    for subtitle_count in range(13, 101):
+        references = [
+            Subtitle(start=index * 1_000, end=index * 1_000 + 500, text=str(index))
+            for index in range(subtitle_count)
+        ]
+
+        windows = BlockTranscriptionAligner._get_windows(references)  # noqa: SLF001
+        owned_ranges = [
+            range(window.owned_start, window.owned_end) for window in windows
+        ]
+        owned_indexes = [index for owned_range in owned_ranges for index in owned_range]
+
+        assert owned_indexes == list(range(subtitle_count))
+        assert all(window.end - window.start <= 15 for window in windows)
+        assert windows[0].owned_end - windows[0].owned_start <= 12
+        assert windows[-1].owned_end - windows[-1].owned_start <= 12
+        assert all(
+            window.owned_end - window.owned_start <= 9 for window in windows[1:-1]
+        )

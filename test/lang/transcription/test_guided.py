@@ -67,6 +67,16 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
             (Language.yue_hant, Language.zho_hant)
         ].punctuation_json_paths
     )
+    assert DEFAULT_SPECS[
+        (Language.yue_hant, Language.zho_hant)
+    ].block_delineation_json_paths == (
+        Path("*/output/yue-Hant_transcribe/vad-*/*/json/block_delineation-*.json"),
+    )
+    assert DEFAULT_SPECS[
+        (Language.yue_hant, Language.zho_hant)
+    ].block_punctuation_json_paths == (
+        Path("*/output/yue-Hant_transcribe/vad-*/*/json/block_punctuation-*.json"),
+    )
     mutable_specs = cast(dict, DEFAULT_SPECS)
     with raises(TypeError):
         mutable_specs[(Language.eng, Language.zho_hans)] = DEFAULT_SPECS[

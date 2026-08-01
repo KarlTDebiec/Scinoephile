@@ -61,10 +61,6 @@
         {
           "index": 15,
           "text": "又為甚麼要打傷紫霞仙子？"
-        },
-        {
-          "index": 16,
-          "text": "搶了她的月光寶盒呢？"
         }
       ],
       "targets": [
@@ -127,150 +123,150 @@
         {
           "index": 15,
           "text": "你仲搶咗紫霞仙子嘅月光寶盒"
-        },
-        {
-          "index": 16,
-          "text": "分明就係想避開我啦"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 13
+      "last_owned_index": 12
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 3,
-          "shift": -1
-        },
-        {
-          "index": 4,
-          "shift": 17
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
       "guides": [
         {
           "index": 1,
-          "text": "你怎麼可以這樣跟觀音姐姐講話呢？"
+          "text": "悟空"
         },
         {
           "index": 2,
-          "text": "不要吵"
+          "text": "你怎麼可以這樣跟觀音姐姐講話呢？"
         },
         {
           "index": 3,
-          "text": "你又在嚇我"
+          "text": "不要吵"
         },
         {
           "index": 4,
-          "text": "你不是怕我"
+          "text": "你又在嚇我"
         },
         {
           "index": 5,
-          "text": "又為甚麼要打傷紫霞仙子？"
+          "text": "你不是怕我"
         },
         {
           "index": 6,
-          "text": "搶了她的月光寶盒呢？"
+          "text": "又為甚麼要打傷紫霞仙子？"
         },
         {
           "index": 7,
-          "text": "你不就是想躲開我嘛"
+          "text": "搶了她的月光寶盒呢？"
         },
         {
           "index": 8,
-          "text": "唉！既然躲不了"
+          "text": "你不就是想躲開我嘛"
         },
         {
           "index": 9,
-          "text": "老孫只有跟你決一死戰"
+          "text": "唉！既然躲不了"
         },
         {
           "index": 10,
-          "text": "要幹甚麼？"
+          "text": "老孫只有跟你決一死戰"
         },
         {
           "index": 11,
-          "text": "大家不要生氣"
+          "text": "要幹甚麼？"
         },
         {
           "index": 12,
-          "text": "生氣會犯了嗔戒的"
+          "text": "大家不要生氣"
         },
         {
           "index": 13,
+          "text": "生氣會犯了嗔戒的"
+        },
+        {
+          "index": 14,
           "text": "悟空，你也太調皮了"
+        },
+        {
+          "index": 15,
+          "text": "我跟你說過"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "你點可以同觀音姐姐咁暗喻你呢呃"
+          "text": "悟空"
         },
         {
           "index": 2,
-          "text": "別做別做"
+          "text": "你點可以同觀音姐姐咁暗喻你呢呃"
         },
         {
           "index": 3,
-          "text": "你又嚇唔我啦"
+          "text": "別做別做"
         },
         {
           "index": 4,
-          "text": "你知唔知你犯咗彌天大罪呀"
+          "text": "你又嚇唔我啦"
         },
         {
           "index": 5,
-          "text": "你仲搶咗紫霞仙子嘅月光寶盒"
+          "text": "你知唔知你犯咗彌天大罪呀"
         },
         {
           "index": 6,
-          "text": "分明就係想避開我啦"
+          "text": "你仲搶咗紫霞仙子嘅月光寶盒"
         },
         {
           "index": 7,
-          "text": ""
+          "text": "分明就係想避開我啦"
         },
         {
           "index": 8,
-          "text": "既然避無可避"
+          "text": ""
         },
         {
           "index": 9,
-          "text": "老孫就同你決一死戰"
+          "text": "既然避無可避"
         },
         {
           "index": 10,
-          "text": "做咩呀"
+          "text": "老孫就同你決一死戰"
         },
         {
           "index": 11,
-          "text": "大家唔好嬲啦咁會犯咗真戒㗎"
+          "text": "做咩呀"
         },
         {
           "index": 12,
-          "text": "悟空你真係嘞嘞啦"
+          "text": "大家唔好嬲啦咁會犯咗真戒㗎"
         },
         {
           "index": 13,
+          "text": "悟空你真係嘞嘞啦"
+        },
+        {
+          "index": 14,
           "text": ""
+        },
+        {
+          "index": 15,
+          "text": "我叫咗你唔好亂咁掟嘢㗎啦"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 10
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
         {
-          "index": 5,
-          "shift": -5
+          "index": 6,
+          "shift": -4
         },
         {
-          "index": 6,
+          "index": 7,
           "shift": -9
         }
       ]
@@ -282,167 +278,143 @@
       "guides": [
         {
           "index": 1,
-          "text": "唉！既然躲不了"
-        },
-        {
-          "index": 2,
           "text": "老孫只有跟你決一死戰"
         },
         {
-          "index": 3,
+          "index": 2,
           "text": "要幹甚麼？"
         },
         {
-          "index": 4,
+          "index": 3,
           "text": "大家不要生氣"
         },
         {
-          "index": 5,
+          "index": 4,
           "text": "生氣會犯了嗔戒的"
         },
         {
-          "index": 6,
+          "index": 5,
           "text": "悟空，你也太調皮了"
         },
         {
-          "index": 7,
+          "index": 6,
           "text": "我跟你說過"
         },
         {
-          "index": 8,
+          "index": 7,
           "text": "叫你不要亂扔東西這麼髒"
         },
         {
-          "index": 9,
+          "index": 8,
           "text": "你看！"
         },
         {
-          "index": 10,
+          "index": 9,
           "text": "我還未說完，你把棍子又給扔掉了"
         },
         {
-          "index": 11,
+          "index": 10,
           "text": "月光寶盒是寶物"
         },
         {
-          "index": 12,
+          "index": 11,
           "text": "你把它扔掉會染污環境"
         },
         {
-          "index": 13,
+          "index": 12,
           "text": "要是砸著小朋友那怎麼辦？"
         },
         {
-          "index": 14,
+          "index": 13,
           "text": "就算沒有砸著小朋友"
         },
         {
-          "index": 15,
+          "index": 14,
           "text": "砸著那些花花草草也是不對的"
         },
         {
-          "index": 16,
+          "index": 15,
           "text": "幹甚麼？"
-        },
-        {
-          "index": 17,
-          "text": "放手？"
-        },
-        {
-          "index": 18,
-          "text": "你想要？"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "既然避無可避"
-        },
-        {
-          "index": 2,
           "text": "老孫就同你決一死戰"
         },
         {
-          "index": 3,
+          "index": 2,
           "text": "做咩呀"
         },
         {
-          "index": 4,
+          "index": 3,
           "text": "大家唔好嬲啦咁會犯咗真戒㗎"
         },
         {
-          "index": 5,
+          "index": 4,
           "text": "悟空你真係嘞嘞啦"
         },
         {
-          "index": 6,
+          "index": 5,
           "text": ""
         },
         {
-          "index": 7,
+          "index": 6,
           "text": "我叫咗你唔好亂咁掟嘢㗎啦"
         },
         {
-          "index": 8,
+          "index": 7,
           "text": "你咁樣亂咁掟嘢係唔好"
         },
         {
-          "index": 9,
+          "index": 8,
           "text": "話我未完就掟佢支棍啦"
         },
         {
-          "index": 10,
+          "index": 9,
           "text": "月光寶盒係寶物嚟㗎嘛"
         },
         {
-          "index": 11,
+          "index": 10,
           "text": "你咁亂咁掟"
         },
         {
-          "index": 12,
+          "index": 11,
           "text": "會染污環境㗎"
         },
         {
-          "index": 13,
+          "index": 12,
           "text": "又會掟親啲小朋友"
         },
         {
-          "index": 14,
+          "index": 13,
           "text": "就算冇小朋友"
         },
         {
-          "index": 15,
+          "index": 14,
           "text": "掟親啲花花草草都係唔好嘅"
         },
         {
-          "index": 16,
+          "index": 15,
           "text": "做咩呀"
-        },
-        {
-          "index": 17,
-          "text": "放手呀"
-        },
-        {
-          "index": 18,
-          "text": "你愛呀悟空"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 15
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
         {
-          "index": 4,
-          "shift": -7
-        },
-        {
-          "index": 5,
+          "index": 6,
           "shift": -8
         },
         {
           "index": 7,
-          "shift": -8
+          "shift": -10
+        },
+        {
+          "index": 8,
+          "shift": -10
         },
         {
           "index": 9,
@@ -450,10 +422,6 @@
         },
         {
           "index": 10,
-          "shift": -10
-        },
-        {
-          "index": 11,
           "shift": -5
         }
       ]
@@ -465,125 +433,125 @@
       "guides": [
         {
           "index": 1,
-          "text": "要是砸著小朋友那怎麼辦？"
+          "text": "月光寶盒是寶物"
         },
         {
           "index": 2,
-          "text": "就算沒有砸著小朋友"
+          "text": "你把它扔掉會染污環境"
         },
         {
           "index": 3,
-          "text": "砸著那些花花草草也是不對的"
+          "text": "要是砸著小朋友那怎麼辦？"
         },
         {
           "index": 4,
-          "text": "幹甚麼？"
+          "text": "就算沒有砸著小朋友"
         },
         {
           "index": 5,
-          "text": "放手？"
+          "text": "砸著那些花花草草也是不對的"
         },
         {
           "index": 6,
-          "text": "你想要？"
+          "text": "幹甚麼？"
         },
         {
           "index": 7,
-          "text": "悟空，你想要就說話嘛！"
+          "text": "放手？"
         },
         {
           "index": 8,
-          "text": "你不說我怎麼知道你想要呢？"
+          "text": "你想要？"
         },
         {
           "index": 9,
-          "text": "雖然你很有誠意的看著我"
+          "text": "悟空，你想要就說話嘛！"
         },
         {
           "index": 10,
-          "text": "可是你還是要跟我說你想要的"
+          "text": "你不說我怎麼知道你想要呢？"
         },
         {
           "index": 11,
-          "text": "你真的想要嗎？"
+          "text": "雖然你很有誠意的看著我"
         },
         {
           "index": 12,
-          "text": "那你拿去吧"
+          "text": "可是你還是要跟我說你想要的"
         },
         {
           "index": 13,
-          "text": "你不是真的想要吧？"
+          "text": "你真的想要嗎？"
         },
         {
           "index": 14,
-          "text": "難道你真是想要嗎？"
+          "text": "那你拿去吧"
         },
         {
           "index": 15,
-          "text": "我拷！"
+          "text": "你不是真的想要吧？"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "又會掟親啲小朋友"
+          "text": "月光寶盒係寶物嚟㗎嘛"
         },
         {
           "index": 2,
-          "text": "就算冇小朋友"
+          "text": "你咁亂咁掟會染污環境㗎"
         },
         {
           "index": 3,
-          "text": "掟親啲花花草草都係唔好嘅"
+          "text": "又會掟親啲小朋友"
         },
         {
           "index": 4,
-          "text": "做咩呀"
+          "text": "就算冇小朋友"
         },
         {
           "index": 5,
-          "text": "放手呀"
+          "text": "掟親啲花花草草都係唔好嘅"
         },
         {
           "index": 6,
-          "text": "你愛呀悟空"
+          "text": "做咩呀"
         },
         {
           "index": 7,
-          "text": "你愛就要講啦"
+          "text": "放手呀"
         },
         {
           "index": 8,
-          "text": "做咩唔出聲啫"
+          "text": "你愛呀悟空"
         },
         {
           "index": 9,
-          "text": "你望住我做咩啫"
+          "text": "你愛就要講啦"
         },
         {
           "index": 10,
-          "text": "雖然你咁有誠意咁望住我"
+          "text": "做咩唔出聲啫"
         },
         {
           "index": 11,
-          "text": "我係好高興你都要講㗎"
+          "text": "你望住我做咩啫"
         },
         {
           "index": 12,
-          "text": "攞去啦"
+          "text": "雖然你咁有誠意咁望住我"
         },
         {
           "index": 13,
-          "text": "你唔係真係愛吖嘛"
+          "text": "我係好高興你都要講㗎"
         },
         {
           "index": 14,
-          "text": "你真係愛咩我走"
+          "text": "攞去啦"
         },
         {
           "index": 15,
-          "text": ""
+          "text": "你唔係真係愛吖嘛"
         }
       ],
       "first_owned_index": 4,
@@ -592,11 +560,11 @@
     "answer": {
       "changes": [
         {
-          "index": 6,
+          "index": 8,
           "shift": -2
         },
         {
-          "index": 8,
+          "index": 10,
           "shift": 7
         }
       ]
@@ -608,123 +576,131 @@
       "guides": [
         {
           "index": 1,
-          "text": "可是你還是要跟我說你想要的"
+          "text": "你不說我怎麼知道你想要呢？"
         },
         {
           "index": 2,
-          "text": "你真的想要嗎？"
+          "text": "雖然你很有誠意的看著我"
         },
         {
           "index": 3,
-          "text": "那你拿去吧"
+          "text": "可是你還是要跟我說你想要的"
         },
         {
           "index": 4,
-          "text": "你不是真的想要吧？"
+          "text": "你真的想要嗎？"
         },
         {
           "index": 5,
-          "text": "難道你真是想要嗎？"
+          "text": "那你拿去吧"
         },
         {
           "index": 6,
-          "text": "我拷！"
+          "text": "你不是真的想要吧？"
         },
         {
           "index": 7,
-          "text": "孫悟空⋯"
+          "text": "難道你真是想要嗎？"
         },
         {
           "index": 8,
-          "text": "大家看到啦"
+          "text": "我拷！"
         },
         {
           "index": 9,
-          "text": "這個傢伙沒事就長篇大論"
+          "text": "孫悟空⋯"
         },
         {
           "index": 10,
-          "text": "婆婆媽媽，嘰嘰歪歪"
+          "text": "大家看到啦"
         },
         {
           "index": 11,
-          "text": "就好像整天有一隻蒼蠅"
+          "text": "這個傢伙沒事就長篇大論"
         },
         {
           "index": 12,
-          "text": "對不起，不是一隻"
+          "text": "婆婆媽媽，嘰嘰歪歪"
         },
         {
           "index": 13,
+          "text": "就好像整天有一隻蒼蠅"
+        },
+        {
+          "index": 14,
+          "text": "對不起，不是一隻"
+        },
+        {
+          "index": 15,
           "text": "是一堆蒼蠅圍著你"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "雖然你咁有誠意咁望住我"
+          "text": "做咩唔出聲啫你望住我做咩啫"
         },
         {
           "index": 2,
-          "text": "我係好高興你都要講㗎"
-        },
-        {
-          "index": 3,
-          "text": "攞去啦"
-        },
-        {
-          "index": 4,
-          "text": "你唔係真係愛吖嘛"
-        },
-        {
-          "index": 5,
-          "text": "你真係愛咩我走"
-        },
-        {
-          "index": 6,
           "text": ""
         },
         {
+          "index": 3,
+          "text": "雖然你咁有誠意咁望住我"
+        },
+        {
+          "index": 4,
+          "text": "我係好高興你都要講㗎"
+        },
+        {
+          "index": 5,
+          "text": "攞去啦"
+        },
+        {
+          "index": 6,
+          "text": "你唔係真係愛吖嘛"
+        },
+        {
           "index": 7,
-          "text": "孫悟空"
+          "text": "你真係愛咩我走"
         },
         {
           "index": 8,
-          "text": "你嗰件呀"
+          "text": ""
         },
         {
           "index": 9,
-          "text": "佢友講嘢長篇大論九唔得八嘢"
+          "text": "孫悟空"
         },
         {
           "index": 10,
-          "text": "欺惡我"
+          "text": "你嗰件呀"
         },
         {
           "index": 11,
-          "text": "就成日好似有隻蒼蠅撈住"
+          "text": "佢友講嘢長篇大論九唔得八嘢"
         },
         {
           "index": 12,
-          "text": "對唔住唔係一隻"
+          "text": "欺惡我"
         },
         {
           "index": 13,
+          "text": "就成日好似有隻蒼蠅撈住"
+        },
+        {
+          "index": 14,
+          "text": "對唔住唔係一隻"
+        },
+        {
+          "index": 15,
           "text": "係一堆蒼蠅喺你耳仔邊"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 12
+      "last_owned_index": 14
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 5,
-          "shift": -2
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -792,22 +768,6 @@
         {
           "index": 9,
           "text": "整個世界清靜了"
-        },
-        {
-          "index": 10,
-          "text": "現在大家明白為甚麼我要殺它啦"
-        },
-        {
-          "index": 11,
-          "text": "悟空，你諸多藉口"
-        },
-        {
-          "index": 12,
-          "text": "你根本不想去取西經"
-        },
-        {
-          "index": 13,
-          "text": "說那麼多幹甚麼，打吧！"
         }
       ],
       "targets": [
@@ -846,26 +806,10 @@
         {
           "index": 9,
           "text": "成個世界清靜晒"
-        },
-        {
-          "index": 10,
-          "text": "咁你而家啊點解我要殺咗佢"
-        },
-        {
-          "index": 11,
-          "text": "悟空你豬多直口"
-        },
-        {
-          "index": 12,
-          "text": "你根本唔想去取西經"
-        },
-        {
-          "index": 13,
-          "text": "咁多直經呀嗱啦"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 12
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
@@ -879,8 +823,98 @@
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "再用它的腸子勒著它的脖子"
+        },
+        {
+          "index": 2,
+          "text": "用力一拉"
+        },
+        {
+          "index": 3,
+          "text": "各位，整條舌頭都伸出來了"
+        },
+        {
+          "index": 4,
+          "text": "我再手起刀落"
+        },
+        {
+          "index": 5,
+          "text": "嘩！"
+        },
+        {
+          "index": 6,
+          "text": "整個世界清靜了"
+        },
+        {
+          "index": 7,
+          "text": "現在大家明白為甚麼我要殺它啦"
+        },
+        {
+          "index": 8,
+          "text": "悟空，你諸多藉口"
+        },
+        {
+          "index": 9,
+          "text": "你根本不想去取西經"
+        },
+        {
+          "index": 10,
+          "text": "說那麼多幹甚麼，打吧！"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "再將條牆箍返去佢條頸"
+        },
+        {
+          "index": 2,
+          "text": "跟住用力一切"
+        },
+        {
+          "index": 3,
+          "text": "各位成條利根出出嚟"
+        },
+        {
+          "index": 4,
+          "text": "再手起到樓"
+        },
+        {
+          "index": 5,
+          "text": "嘩"
+        },
+        {
+          "index": 6,
+          "text": "成個世界清靜晒"
+        },
+        {
+          "index": 7,
+          "text": "咁你而家啊點解我要殺咗佢"
+        },
+        {
+          "index": 8,
+          "text": "悟空你豬多直口"
+        },
+        {
+          "index": 9,
+          "text": "你根本唔想去取西經"
+        },
+        {
+          "index": 10,
+          "text": "咁多直經呀嗱啦"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 9
+    },
+    "answer": {}
   },
   {
     "query": {
@@ -1203,7 +1237,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1310,7 +1345,8 @@
       "first_owned_index": 4,
       "last_owned_index": 11
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1517,7 +1553,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1577,30 +1614,6 @@
         {
           "index": 14,
           "text": "你還敢說"
-        },
-        {
-          "index": 15,
-          "text": "那天不是你把脖子縮了一下"
-        },
-        {
-          "index": 16,
-          "text": "我會被人家打中鼻子嗎？"
-        },
-        {
-          "index": 17,
-          "text": "這邊啊，幫主"
-        },
-        {
-          "index": 18,
-          "text": "七傷拳把幫主害得真慘"
-        },
-        {
-          "index": 19,
-          "text": "幫主，我當時是嚇得跪下來嘛"
-        },
-        {
-          "index": 20,
-          "text": "我聽說中了七傷拳"
         }
       ],
       "targets": [
@@ -1659,34 +1672,117 @@
         {
           "index": 14,
           "text": "你中咗講呀"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 11
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "幫主，我在這裡啊！"
         },
         {
-          "index": 15,
+          "index": 2,
+          "text": "還不現身？"
+        },
+        {
+          "index": 3,
+          "text": "現身了，幫主"
+        },
+        {
+          "index": 4,
+          "text": "你中了崑崙三聖的七傷拳"
+        },
+        {
+          "index": 5,
+          "text": "現在傷勢開始發作"
+        },
+        {
+          "index": 6,
+          "text": "你還敢說"
+        },
+        {
+          "index": 7,
+          "text": "那天不是你把脖子縮了一下"
+        },
+        {
+          "index": 8,
+          "text": "我會被人家打中鼻子嗎？"
+        },
+        {
+          "index": 9,
+          "text": "這邊啊，幫主"
+        },
+        {
+          "index": 10,
+          "text": "七傷拳把幫主害得真慘"
+        },
+        {
+          "index": 11,
+          "text": "幫主，我當時是嚇得跪下來嘛"
+        },
+        {
+          "index": 12,
+          "text": "我聽說中了七傷拳"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "幫主我係呢度喎"
+        },
+        {
+          "index": 2,
+          "text": "中葡頭"
+        },
+        {
+          "index": 3,
+          "text": "葡頭啦"
+        },
+        {
+          "index": 4,
+          "text": "幫主你中咗崑崙三聖嘅七雙拳"
+        },
+        {
+          "index": 5,
+          "text": "而家傷勢好似發作啦"
+        },
+        {
+          "index": 6,
+          "text": "你中咗講呀"
+        },
+        {
+          "index": 7,
           "text": "嗰日唔係得你叔弟嘅頭"
         },
         {
-          "index": 16,
+          "index": 8,
           "text": "我使畀人打咗個鼻"
         },
         {
-          "index": 17,
+          "index": 9,
           "text": "呢邊啦幫主"
         },
         {
-          "index": 18,
+          "index": 10,
           "text": "七雙拳害得幫主真係慘啊"
         },
         {
-          "index": 19,
+          "index": 11,
           "text": "幫主我當日嚇到自己跪低㗎啫"
         },
         {
-          "index": 20,
+          "index": 12,
           "text": "聽我話中咗七雙拳呢"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 17
+      "last_owned_index": 9
     },
     "answer": {}
   },
@@ -1752,10 +1848,6 @@
         {
           "index": 15,
           "text": "造謠我不行了，想搶我的位子呀？"
-        },
-        {
-          "index": 16,
-          "text": "不敢幫主，不敢呀"
         }
       ],
       "targets": [
@@ -1818,14 +1910,10 @@
         {
           "index": 15,
           "text": "專登話我唔掂想坐我位嘅"
-        },
-        {
-          "index": 16,
-          "text": "唔敢啊幫主唔敢啊幫主"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 13
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
@@ -1842,115 +1930,139 @@
       "guides": [
         {
           "index": 1,
-          "text": "幫主，你鬥雞眼很嚴重啊！"
+          "text": "最後五臟六腑爆炸，然後就死定了！"
         },
         {
           "index": 2,
-          "text": "誰說我鬥雞眼啊？"
+          "text": "幫主，你鬥雞眼很嚴重啊！"
         },
         {
           "index": 3,
-          "text": "我只是把視力集中在一點"
+          "text": "誰說我鬥雞眼啊？"
         },
         {
           "index": 4,
-          "text": "以改變我以往對事物的看法！幹嘛？"
+          "text": "我只是把視力集中在一點"
         },
         {
           "index": 5,
-          "text": "造謠我不行了，想搶我的位子呀？"
+          "text": "以改變我以往對事物的看法！幹嘛？"
         },
         {
           "index": 6,
-          "text": "不敢幫主，不敢呀"
+          "text": "造謠我不行了，想搶我的位子呀？"
         },
         {
           "index": 7,
-          "text": "我踩死你，不敢"
+          "text": "不敢幫主，不敢呀"
         },
         {
           "index": 8,
-          "text": "我踩！"
+          "text": "我踩死你，不敢"
         },
         {
           "index": 9,
-          "text": "我踩那麼久，就算不痛也呻吟兩聲嘛"
+          "text": "我踩！"
         },
         {
           "index": 10,
-          "text": "收到⋯啊！⋯"
+          "text": "我踩那麼久，就算不痛也呻吟兩聲嘛"
         },
         {
           "index": 11,
-          "text": "好！大家準備帶著傢伙去找⋯"
+          "text": "收到⋯啊！⋯"
         },
         {
           "index": 12,
-          "text": "春三十娘"
+          "text": "好！大家準備帶著傢伙去找⋯"
         },
         {
           "index": 13,
+          "text": "春三十娘"
+        },
+        {
+          "index": 14,
           "text": "怕甚麼！萬事有我！"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "幫主你而家鬥雞都好緊要喎"
+          "text": "最後就心臟五官爆炸咁就死啦"
         },
         {
           "index": 2,
-          "text": "邊個話我鬥雞"
+          "text": "幫主你而家鬥雞都好緊要喎"
         },
         {
           "index": 3,
-          "text": "我只係將我視線集中嘅一點"
+          "text": "邊個話我鬥雞"
         },
         {
           "index": 4,
-          "text": "改變我以往睇嘢嘅方法啫咩呀"
+          "text": "我只係將我視線集中嘅一點"
         },
         {
           "index": 5,
-          "text": "專登話我唔掂想坐我位嘅"
+          "text": "改變我以往睇嘢嘅方法啫咩呀"
         },
         {
           "index": 6,
-          "text": "唔敢啊幫主唔敢啊幫主"
+          "text": "專登話我唔掂想坐我位嘅"
         },
         {
           "index": 7,
-          "text": "唔敢我踩死你我唔敢"
+          "text": "唔敢啊幫主唔敢啊幫主"
         },
         {
           "index": 8,
-          "text": "死咩"
+          "text": "唔敢我踩死你我唔敢"
         },
         {
           "index": 9,
-          "text": "喂我踩咁多腳應酬我都嗌兩聲好喎"
+          "text": "死咩"
         },
         {
           "index": 10,
-          "text": "靜靜啲啊"
+          "text": "喂我踩咁多腳應酬我都嗌兩聲好喎"
         },
         {
           "index": 11,
-          "text": "好大家上齊架山"
+          "text": "靜靜啲啊"
         },
         {
           "index": 12,
-          "text": "去殺蠢殺啦"
+          "text": "好大家上齊架山"
         },
         {
           "index": 13,
+          "text": "去殺蠢殺啦"
+        },
+        {
+          "index": 14,
           "text": "排呀反射我"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 12
+      "last_owned_index": 13
     },
-    "answer": {}
+    "answer": {
+      "changes": [
+        {
+          "index": 7,
+          "shift": 2
+        },
+        {
+          "index": 8,
+          "shift": 3
+        },
+        {
+          "index": 9,
+          "shift": 5
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -2198,18 +2310,6 @@
         {
           "index": 10,
           "text": "男兒膝下有黃金！既然他們肯求我"
-        },
-        {
-          "index": 11,
-          "text": "那麼性命暫時寄存在我這裡"
-        },
-        {
-          "index": 12,
-          "text": "謝謝女英雄！"
-        },
-        {
-          "index": 13,
-          "text": "至於你嘛⋯你可真有骨氣"
         }
       ],
       "targets": [
@@ -2252,25 +2352,17 @@
         {
           "index": 10,
           "text": "藍兒室下有黃金既然佢哋肯求我㗎"
-        },
-        {
-          "index": 11,
-          "text": "噉條命就暫記喺我度囉"
-        },
-        {
-          "index": 12,
-          "text": "多謝呂雄多謝呂雄"
-        },
-        {
-          "index": 13,
-          "text": "至於你囉咁有骨氣呀"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 12
+      "last_owned_index": 7
     },
     "answer": {
       "changes": [
+        {
+          "index": 1,
+          "shift": -4
+        },
         {
           "index": 2,
           "shift": -2
@@ -2278,15 +2370,101 @@
         {
           "index": 7,
           "shift": 8
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "饒命呀⋯"
+        },
+        {
+          "index": 2,
+          "text": "饒命呀，女英雄"
+        },
+        {
+          "index": 3,
+          "text": "白痴！你以為她就會放過你嗎？"
+        },
+        {
+          "index": 4,
+          "text": "無論說甚麼也要跟她拼了"
+        },
+        {
+          "index": 5,
+          "text": "聽到了沒有？"
+        },
+        {
+          "index": 6,
+          "text": "男兒膝下有黃金！既然他們肯求我"
+        },
+        {
+          "index": 7,
+          "text": "那麼性命暫時寄存在我這裡"
         },
         {
           "index": 8,
+          "text": "謝謝女英雄！"
+        },
+        {
+          "index": 9,
+          "text": "至於你嘛⋯你可真有骨氣"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "吓姚明呀呂雄"
+        },
+        {
+          "index": 2,
+          "text": "姚明呀呂雄春泰"
+        },
+        {
+          "index": 3,
+          "text": "你估求佢就會放過你㗎咯咩"
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
+          "index": 5,
+          "text": "我唔盤條命都同你死過"
+        },
+        {
+          "index": 6,
+          "text": "藍兒室下有黃金既然佢哋肯求我㗎"
+        },
+        {
+          "index": 7,
+          "text": "噉條命就暫記喺我度囉"
+        },
+        {
+          "index": 8,
+          "text": "多謝呂雄多謝呂雄"
+        },
+        {
+          "index": 9,
+          "text": "至於你囉咁有骨氣呀"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 8
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
           "shift": 10
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2405,7 +2583,8 @@
       "first_owned_index": 1,
       "last_owned_index": 7
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2528,7 +2707,8 @@
       "first_owned_index": 4,
       "last_owned_index": 13
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2568,26 +2748,6 @@
         {
           "index": 9,
           "text": "大概是長錯地方了"
-        },
-        {
-          "index": 10,
-          "text": "從今天起，我要你不分晝夜"
-        },
-        {
-          "index": 11,
-          "text": "查看所有經過這裡的人"
-        },
-        {
-          "index": 12,
-          "text": "查甚麼？"
-        },
-        {
-          "index": 13,
-          "text": "查他們腳底板"
-        },
-        {
-          "index": 14,
-          "text": "如果發現有三顆痣的，立即通知我"
         }
       ],
       "targets": [
@@ -2626,33 +2786,111 @@
         {
           "index": 9,
           "text": "唔知係咪生錯地方呢"
-        },
-        {
-          "index": 10,
-          "text": "由今日起不分日夜"
-        },
-        {
-          "index": 11,
-          "text": "截查所有經過呢度嘅人"
-        },
-        {
-          "index": 12,
-          "text": "查查咩呀"
-        },
-        {
-          "index": 13,
-          "text": "查佢哋腳板"
-        },
-        {
-          "index": 14,
-          "text": "如果發現有三粒字嘅即刻通知我"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 13
+      "last_owned_index": 6
     },
-    "answer": {},
-    "verified": true
+    "answer": {}
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "怎麼樣？"
+        },
+        {
+          "index": 2,
+          "text": "是不是看得你心癢癢？"
+        },
+        {
+          "index": 3,
+          "text": "哼！你說那裡長得更茂盛啊？"
+        },
+        {
+          "index": 4,
+          "text": "不是呀！"
+        },
+        {
+          "index": 5,
+          "text": "其實我只是頭上跟腳底板有毛"
+        },
+        {
+          "index": 6,
+          "text": "大概是長錯地方了"
+        },
+        {
+          "index": 7,
+          "text": "從今天起，我要你不分晝夜"
+        },
+        {
+          "index": 8,
+          "text": "查看所有經過這裡的人"
+        },
+        {
+          "index": 9,
+          "text": "查甚麼？"
+        },
+        {
+          "index": 10,
+          "text": "查他們腳底板"
+        },
+        {
+          "index": 11,
+          "text": "如果發現有三顆痣的，立即通知我"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "點呀"
+        },
+        {
+          "index": 2,
+          "text": "係咪睇到你熱血噴騰呢"
+        },
+        {
+          "index": 3,
+          "text": "你話邊度長得仲茂盛話"
+        },
+        {
+          "index": 4,
+          "text": "唔係呀"
+        },
+        {
+          "index": 5,
+          "text": "其實我只有個頭同腳板有嘅啫"
+        },
+        {
+          "index": 6,
+          "text": "唔知係咪生錯地方呢"
+        },
+        {
+          "index": 7,
+          "text": "由今日起不分日夜"
+        },
+        {
+          "index": 8,
+          "text": "截查所有經過呢度嘅人"
+        },
+        {
+          "index": 9,
+          "text": "查查咩呀"
+        },
+        {
+          "index": 10,
+          "text": "查佢哋腳板"
+        },
+        {
+          "index": 11,
+          "text": "如果發現有三粒字嘅即刻通知我"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 10
+    },
+    "answer": {}
   },
   {
     "query": {
@@ -2704,18 +2942,6 @@
         {
           "index": 12,
           "text": "你以為我想跪啊！是我的腿不聽使喚"
-        },
-        {
-          "index": 13,
-          "text": "幫主，你七傷拳的傷勢越來越嚴重了"
-        },
-        {
-          "index": 14,
-          "text": "我還有雙手"
-        },
-        {
-          "index": 15,
-          "text": "我不會屈服的"
         }
       ],
       "targets": [
@@ -2766,22 +2992,10 @@
         {
           "index": 12,
           "text": "幫主你估我傻㗎咩死人咁唔聽細咋"
-        },
-        {
-          "index": 13,
-          "text": "幫主你七雙拳嘅傷勢開始擴大啦"
-        },
-        {
-          "index": 14,
-          "text": "我仲有對手"
-        },
-        {
-          "index": 15,
-          "text": "我唔會屈服嘅"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 14
+      "last_owned_index": 9
     },
     "answer": {
       "changes": [
@@ -2792,15 +3006,93 @@
         {
           "index": 5,
           "shift": 7
-        },
-        {
-          "index": 11,
-          "shift": 2
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "好計謀！"
+        },
+        {
+          "index": 2,
+          "text": "你也覺得好吧"
+        },
+        {
+          "index": 3,
+          "text": "這個任務就交給你去執行"
+        },
+        {
+          "index": 4,
+          "text": "這麼看得起我，算了吧！"
+        },
+        {
+          "index": 5,
+          "text": "不用了，幫主，不用下跪了"
+        },
+        {
+          "index": 6,
+          "text": "你以為我想跪啊！是我的腿不聽使喚"
+        },
+        {
+          "index": 7,
+          "text": "幫主，你七傷拳的傷勢越來越嚴重了"
+        },
+        {
+          "index": 8,
+          "text": "我還有雙手"
+        },
+        {
+          "index": 9,
+          "text": "我不會屈服的"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "好計謀啊"
+        },
+        {
+          "index": 2,
+          "text": "你都覺得好靈啊"
+        },
+        {
+          "index": 3,
+          "text": "呢招就由你去執行"
+        },
+        {
+          "index": 4,
+          "text": "吓咁睇得起我唔好掛"
+        },
+        {
+          "index": 5,
+          "text": "哎呀去喺啦唔使怪啊"
+        },
+        {
+          "index": 6,
+          "text": "幫主你估我傻㗎咩死人咁唔聽細咋"
+        },
+        {
+          "index": 7,
+          "text": "幫主你七雙拳嘅傷勢開始擴大啦"
+        },
+        {
+          "index": 8,
+          "text": "我仲有對手"
+        },
+        {
+          "index": 9,
+          "text": "我唔會屈服嘅"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 8
+    },
+    "answer": {}
   },
   {
     "query": {
@@ -3132,22 +3424,6 @@
         {
           "index": 9,
           "text": "是嗎？不是蟑螂嗎？"
-        },
-        {
-          "index": 10,
-          "text": "前面是幫主呀"
-        },
-        {
-          "index": 11,
-          "text": "好！上"
-        },
-        {
-          "index": 12,
-          "text": "你們這些王八蛋，騙我的"
-        },
-        {
-          "index": 13,
-          "text": "幫主，我來救你"
         }
       ],
       "targets": [
@@ -3186,26 +3462,10 @@
         {
           "index": 9,
           "text": ""
-        },
-        {
-          "index": 10,
-          "text": "咪甲雜嚟咩"
-        },
-        {
-          "index": 11,
-          "text": "係呀,係幫主嚟㗎唔好呀,上"
-        },
-        {
-          "index": 12,
-          "text": "去呀嘩,你笨契弟呀"
-        },
-        {
-          "index": 13,
-          "text": "幫主,我來救你"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 12
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
@@ -3216,23 +3476,113 @@
         {
           "index": 4,
           "shift": -3
-        },
-        {
-          "index": 9,
-          "shift": 5
-        },
-        {
-          "index": 10,
-          "shift": 8
-        },
-        {
-          "index": 11,
-          "shift": 2
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "我在這裡！"
+        },
+        {
+          "index": 2,
+          "text": "救命呀！"
+        },
+        {
+          "index": 3,
+          "text": "瞎子！"
+        },
+        {
+          "index": 4,
+          "text": "前面甚麼都沒有，大家快回頭！"
+        },
+        {
+          "index": 5,
+          "text": "誰說的！前面是幫主啊"
+        },
+        {
+          "index": 6,
+          "text": "是嗎？不是蟑螂嗎？"
+        },
+        {
+          "index": 7,
+          "text": "前面是幫主呀"
+        },
+        {
+          "index": 8,
+          "text": "好！上"
+        },
+        {
+          "index": 9,
+          "text": "你們這些王八蛋，騙我的"
+        },
+        {
+          "index": 10,
+          "text": "幫主，我來救你"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": ""
+        },
+        {
+          "index": 2,
+          "text": "救命呀"
+        },
+        {
+          "index": 3,
+          "text": "麥美"
+        },
+        {
+          "index": 4,
+          "text": "前面乜都冇,大家返去後面"
+        },
+        {
+          "index": 5,
+          "text": "唔係呀,係幫主嚟㗎"
+        },
+        {
+          "index": 6,
+          "text": ""
+        },
+        {
+          "index": 7,
+          "text": "咪甲雜嚟咩"
+        },
+        {
+          "index": 8,
+          "text": "係呀,係幫主嚟㗎唔好呀,上"
+        },
+        {
+          "index": 9,
+          "text": "去呀嘩,你笨契弟呀"
+        },
+        {
+          "index": 10,
+          "text": "幫主,我來救你"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 9
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 6,
+          "shift": 5
+        },
+        {
+          "index": 7,
+          "shift": 8
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -3640,6 +3990,18 @@
         {
           "index": 12,
           "text": "快點拿水來"
+        },
+        {
+          "index": 13,
+          "text": "救火⋯"
+        },
+        {
+          "index": 14,
+          "text": "快救火了！"
+        },
+        {
+          "index": 15,
+          "text": "完蛋了"
         }
       ],
       "targets": [
@@ -3690,16 +4052,56 @@
         {
           "index": 12,
           "text": ""
+        },
+        {
+          "index": 13,
+          "text": "救火呀,攞水呀,有緊要"
+        },
+        {
+          "index": 14,
+          "text": ""
+        },
+        {
+          "index": 15,
+          "text": "救火呀,救火呀"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 9
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
         {
           "index": 3,
           "shift": 4
+        },
+        {
+          "index": 5,
+          "shift": 13
+        },
+        {
+          "index": 6,
+          "shift": 4
+        },
+        {
+          "index": 7,
+          "shift": 6
+        },
+        {
+          "index": 9,
+          "shift": 3
+        },
+        {
+          "index": 10,
+          "shift": 8
+        },
+        {
+          "index": 11,
+          "shift": 4
+        },
+        {
+          "index": 12,
+          "shift": 8
         }
       ]
     },
@@ -3710,175 +4112,159 @@
       "guides": [
         {
           "index": 1,
-          "text": "快救幫主"
-        },
-        {
-          "index": 2,
-          "text": "真的是幫主！"
-        },
-        {
-          "index": 3,
-          "text": "救命！"
-        },
-        {
-          "index": 4,
           "text": "救火，幫主你小弟著火了！"
         },
         {
-          "index": 5,
+          "index": 2,
           "text": "快⋯"
         },
         {
-          "index": 6,
+          "index": 3,
           "text": "快點拿水來"
         },
         {
-          "index": 7,
+          "index": 4,
           "text": "救火⋯"
         },
         {
-          "index": 8,
+          "index": 5,
           "text": "快救火了！"
         },
         {
-          "index": 9,
+          "index": 6,
           "text": "完蛋了"
         },
         {
-          "index": 10,
+          "index": 7,
           "text": "快點呀！"
         },
         {
-          "index": 11,
+          "index": 8,
           "text": "大家都來救火，怎麼可少了我呢？"
         },
         {
-          "index": 12,
+          "index": 9,
           "text": "你們讓開，讓我來"
         },
         {
-          "index": 13,
+          "index": 10,
           "text": "幫主，踩熄了"
         },
         {
-          "index": 14,
+          "index": 11,
           "text": "你別怕，我踩熄了！"
         },
         {
-          "index": 15,
+          "index": 12,
           "text": "踩熄了，踩⋯"
         },
         {
-          "index": 16,
+          "index": 13,
           "text": "踩得你死撓撓！"
         },
         {
-          "index": 17,
+          "index": 14,
           "text": "踩死你！"
         },
         {
-          "index": 18,
+          "index": 15,
           "text": "不行了⋯"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "打不住呀"
-        },
-        {
-          "index": 2,
-          "text": "佢係幫主嚟㗎,快啲救幫主"
-        },
-        {
-          "index": 3,
-          "text": ""
-        },
-        {
-          "index": 4,
-          "text": "救命呀"
-        },
-        {
-          "index": 5,
           "text": "幫主你太攻著火呀"
         },
         {
+          "index": 2,
+          "text": "救火呀,"
+        },
+        {
+          "index": 3,
+          "text": "攞水呀,"
+        },
+        {
+          "index": 4,
+          "text": "有緊要"
+        },
+        {
+          "index": 5,
+          "text": ""
+        },
+        {
           "index": 6,
-          "text": ""
-        },
-        {
-          "index": 7,
-          "text": "救火呀,攞水呀,有緊要"
-        },
-        {
-          "index": 8,
-          "text": ""
-        },
-        {
-          "index": 9,
           "text": "救火呀,救火呀"
         },
         {
-          "index": 10,
+          "index": 7,
           "text": "唔得啦,快啲呀"
         },
         {
-          "index": 11,
+          "index": 8,
           "text": "救火呀,河港嗰邊救到火呀"
         },
         {
-          "index": 12,
+          "index": 9,
           "text": "走開,你哋真係"
         },
         {
-          "index": 13,
+          "index": 10,
           "text": "揪住,等我嚟,瞓啫"
         },
         {
-          "index": 14,
+          "index": 11,
           "text": "冇用呀,我幫你踩死佢"
         },
         {
-          "index": 15,
+          "index": 12,
           "text": "識咩,識咩撞死呀,撞死呀"
         },
         {
-          "index": 16,
+          "index": 13,
           "text": "踩爆佢仲得呀,踩爆佢行得呀,行得呀"
         },
         {
-          "index": 17,
+          "index": 14,
           "text": ""
         },
         {
-          "index": 18,
+          "index": 15,
           "text": "一、二、三、四、五、六、七、八"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 17
+      "last_owned_index": 14
     },
     "answer": {
       "changes": [
         {
           "index": 4,
+          "shift": 4
+        },
+        {
+          "index": 5,
           "shift": 8
         },
         {
           "index": 6,
-          "shift": 11
-        },
-        {
-          "index": 7,
-          "shift": 7
-        },
-        {
-          "index": 8,
-          "shift": 7
+          "shift": 4
         },
         {
           "index": 9,
-          "shift": 3
+          "shift": 7
+        },
+        {
+          "index": 10,
+          "shift": 10
+        },
+        {
+          "index": 13,
+          "shift": -9
+        },
+        {
+          "index": 14,
+          "shift": -3
         }
       ]
     },
@@ -3942,18 +4328,6 @@
         {
           "index": 14,
           "text": "對啊！為甚麼呢？"
-        },
-        {
-          "index": 15,
-          "text": "我明白了！"
-        },
-        {
-          "index": 16,
-          "text": "治七傷拳的方法是要以毒攻毒"
-        },
-        {
-          "index": 17,
-          "text": "傷上加傷"
         }
       ],
       "targets": [
@@ -4012,22 +4386,10 @@
         {
           "index": 14,
           "text": "係喎"
-        },
-        {
-          "index": 15,
-          "text": "點解喇我明喇"
-        },
-        {
-          "index": 16,
-          "text": ""
-        },
-        {
-          "index": 17,
-          "text": "依七雙拳嘅方法係要以毒攻毒"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 14
+      "last_owned_index": 11
     },
     "answer": {
       "changes": [
@@ -4057,27 +4419,11 @@
         },
         {
           "index": 9,
-          "shift": 7
+          "shift": 6
         },
         {
           "index": 10,
           "shift": 4
-        },
-        {
-          "index": 11,
-          "shift": 4
-        },
-        {
-          "index": 12,
-          "shift": 15
-        },
-        {
-          "index": 13,
-          "shift": 5
-        },
-        {
-          "index": 14,
-          "shift": 6
         }
       ]
     },
@@ -4088,81 +4434,77 @@
       "guides": [
         {
           "index": 1,
+          "text": "是想坐我的位子，對不對？"
+        },
+        {
+          "index": 2,
+          "text": "沒有啊，幫主"
+        },
+        {
+          "index": 3,
+          "text": "幫主沒有鬥雞眼了！"
+        },
+        {
+          "index": 4,
           "text": "我真的沒有呀"
         },
         {
-          "index": 2,
+          "index": 5,
           "text": "幫主，你七傷拳全好了"
         },
         {
-          "index": 3,
+          "index": 6,
           "text": "對啊！為甚麼呢？"
         },
         {
-          "index": 4,
+          "index": 7,
           "text": "我明白了！"
         },
         {
-          "index": 5,
+          "index": 8,
           "text": "治七傷拳的方法是要以毒攻毒"
         },
         {
-          "index": 6,
+          "index": 9,
           "text": "傷上加傷"
         },
         {
-          "index": 7,
+          "index": 10,
           "text": "有道理！"
         },
         {
-          "index": 8,
+          "index": 11,
           "text": "至於二當家呢，他是無心之失嘛"
         },
         {
-          "index": 9,
+          "index": 12,
           "text": "如果不是他踢你小弟弟兩腳"
         },
         {
-          "index": 10,
+          "index": 13,
           "text": "這傷也不會這麼快就治好啊！"
         },
         {
-          "index": 11,
+          "index": 14,
           "text": "你這麼維護他，是不是跟他有一腿？"
         },
         {
-          "index": 12,
-          "text": "人家對你一條痴心嘛"
-        },
-        {
-          "index": 13,
-          "text": "去你媽的！發春呀？"
-        },
-        {
-          "index": 14,
-          "text": "二當家，叫你殺春三十娘"
-        },
-        {
           "index": 15,
-          "text": "你攪定了沒有？"
-        },
-        {
-          "index": 16,
-          "text": "春三十娘係妖怪啊"
+          "text": "人家對你一條痴心嘛"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "幫主你嘅七雙拳好返晒喇"
+          "text": "係想坐我位㗎"
         },
         {
           "index": 2,
-          "text": "係喎點解喇"
+          "text": "冇呀幫主"
         },
         {
           "index": 3,
-          "text": "我明喇"
+          "text": "幫主對眼冇鬥雞嘅"
         },
         {
           "index": 4,
@@ -4170,206 +4512,47 @@
         },
         {
           "index": 5,
-          "text": ""
+          "text": "真係冇喇幫主你嘅七雙拳好返晒喇"
         },
         {
           "index": 6,
+          "text": "係喎"
+        },
+        {
+          "index": 7,
+          "text": "點解喇我明喇"
+        },
+        {
+          "index": 8,
+          "text": ""
+        },
+        {
+          "index": 9,
           "text": "依七雙拳嘅方法係要以毒攻毒"
         },
         {
-          "index": 7,
+          "index": 10,
           "text": "雙上加雙有道理…"
         },
         {
-          "index": 8,
+          "index": 11,
           "text": "至於二當家囉喎"
         },
         {
-          "index": 9,
+          "index": 12,
           "text": "佢無心知識嘅啫"
         },
         {
-          "index": 10,
+          "index": 13,
           "text": "如果唔係佢打你祠堂嗰下"
         },
         {
-          "index": 11,
+          "index": 14,
           "text": "啲病都唔會醫得好咁快啦你咁維護佢莫非你同佢有腦"
         },
         {
-          "index": 12,
+          "index": 15,
           "text": "人哋對你一條心㗎"
-        },
-        {
-          "index": 13,
-          "text": "嘩…家人神啊你"
-        },
-        {
-          "index": 14,
-          "text": "家人神二當家"
-        },
-        {
-          "index": 15,
-          "text": "叫你殺春莎娘你搞掂未"
-        },
-        {
-          "index": 16,
-          "text": ""
-        }
-      ],
-      "first_owned_index": 4,
-      "last_owned_index": 13
-    },
-    "answer": {
-      "changes": [
-        {
-          "index": 5,
-          "shift": 13
-        },
-        {
-          "index": 6,
-          "shift": 17
-        },
-        {
-          "index": 8,
-          "shift": 7
-        },
-        {
-          "index": 9,
-          "shift": 11
-        },
-        {
-          "index": 10,
-          "shift": 11
-        }
-      ]
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "guides": [
-        {
-          "index": 1,
-          "text": "你這麼維護他，是不是跟他有一腿？"
-        },
-        {
-          "index": 2,
-          "text": "人家對你一條痴心嘛"
-        },
-        {
-          "index": 3,
-          "text": "去你媽的！發春呀？"
-        },
-        {
-          "index": 4,
-          "text": "二當家，叫你殺春三十娘"
-        },
-        {
-          "index": 5,
-          "text": "你攪定了沒有？"
-        },
-        {
-          "index": 6,
-          "text": "春三十娘係妖怪啊"
-        },
-        {
-          "index": 7,
-          "text": "蜘蛛精呀！"
-        },
-        {
-          "index": 8,
-          "text": "老弟啊，這麼有理性的人"
-        },
-        {
-          "index": 9,
-          "text": "怎麼能夠接受這麼無稽的事情呢！"
-        },
-        {
-          "index": 10,
-          "text": "殺了她"
-        },
-        {
-          "index": 11,
-          "text": "幫主，你就這麼去？你不怕？"
-        },
-        {
-          "index": 12,
-          "text": "怕甚麼？我的傷都全好了"
-        },
-        {
-          "index": 13,
-          "text": "還怕砍不過她？"
-        },
-        {
-          "index": 14,
-          "text": "好！有種！"
-        },
-        {
-          "index": 15,
-          "text": "你說有種，是不是？"
-        }
-      ],
-      "targets": [
-        {
-          "index": 1,
-          "text": "你咁維護佢莫非你同佢有腦"
-        },
-        {
-          "index": 2,
-          "text": "人哋對你一條心㗎"
-        },
-        {
-          "index": 3,
-          "text": "嘩…家人神啊你"
-        },
-        {
-          "index": 4,
-          "text": "家人神二當家"
-        },
-        {
-          "index": 5,
-          "text": "叫你殺春莎娘你搞掂未"
-        },
-        {
-          "index": 6,
-          "text": ""
-        },
-        {
-          "index": 7,
-          "text": "個春莎娘係妖怪嚟㗎蜘蛛精呀"
-        },
-        {
-          "index": 8,
-          "text": "係喇老話"
-        },
-        {
-          "index": 9,
-          "text": "我係一個咁理性嘅人你叫我點能夠接受啲咁無稽嘅嘢得㗎"
-        },
-        {
-          "index": 10,
-          "text": ""
-        },
-        {
-          "index": 11,
-          "text": "殺佢幫主"
-        },
-        {
-          "index": 12,
-          "text": "你就咁去呀唔怕嗰咩呀"
-        },
-        {
-          "index": 13,
-          "text": "我傷好返晒"
-        },
-        {
-          "index": 14,
-          "text": "驚唔夠佢打咩好"
-        },
-        {
-          "index": 15,
-          "text": "有種"
         }
       ],
       "first_owned_index": 4,
@@ -4379,19 +4562,27 @@
       "changes": [
         {
           "index": 4,
-          "shift": 6
+          "shift": 4
+        },
+        {
+          "index": 5,
+          "shift": -4
         },
         {
           "index": 6,
-          "shift": 9
+          "shift": 3
+        },
+        {
+          "index": 7,
+          "shift": -3
         },
         {
           "index": 8,
-          "shift": 9
+          "shift": 13
         },
         {
-          "index": 10,
-          "shift": 2
+          "index": 9,
+          "shift": 4
         },
         {
           "index": 11,
@@ -4399,7 +4590,7 @@
         },
         {
           "index": 12,
-          "shift": 6
+          "shift": 11
         }
       ]
     },
@@ -4410,118 +4601,317 @@
       "guides": [
         {
           "index": 1,
-          "text": "殺了她"
+          "text": "有道理！"
         },
         {
           "index": 2,
-          "text": "幫主，你就這麼去？你不怕？"
+          "text": "至於二當家呢，他是無心之失嘛"
         },
         {
           "index": 3,
-          "text": "怕甚麼？我的傷都全好了"
+          "text": "如果不是他踢你小弟弟兩腳"
         },
         {
           "index": 4,
-          "text": "還怕砍不過她？"
+          "text": "這傷也不會這麼快就治好啊！"
         },
         {
           "index": 5,
-          "text": "好！有種！"
+          "text": "你這麼維護他，是不是跟他有一腿？"
         },
         {
           "index": 6,
-          "text": "你說有種，是不是？"
+          "text": "人家對你一條痴心嘛"
         },
         {
           "index": 7,
-          "text": "是啊，就當我沒說好了"
+          "text": "去你媽的！發春呀？"
         },
         {
           "index": 8,
-          "text": "幫主"
+          "text": "二當家，叫你殺春三十娘"
         },
         {
           "index": 9,
-          "text": "那你就隨便拿件傢伙衝進她房間裡亂砍"
+          "text": "你攪定了沒有？"
         },
         {
           "index": 10,
-          "text": "我們後面掩護你"
+          "text": "春三十娘係妖怪啊"
         },
         {
           "index": 11,
+          "text": "蜘蛛精呀！"
+        },
+        {
+          "index": 12,
+          "text": "老弟啊，這麼有理性的人"
+        },
+        {
+          "index": 13,
+          "text": "怎麼能夠接受這麼無稽的事情呢！"
+        },
+        {
+          "index": 14,
+          "text": "殺了她"
+        },
+        {
+          "index": 15,
+          "text": "幫主，你就這麼去？你不怕？"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "有道理…"
+        },
+        {
+          "index": 2,
+          "text": "至於二當家囉喎佢無心知識嘅啫"
+        },
+        {
+          "index": 3,
+          "text": "如果唔係佢打你祠堂嗰下"
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
+          "index": 5,
+          "text": "啲病都唔會醫得好咁快啦你咁維護佢莫非你同佢有腦"
+        },
+        {
+          "index": 6,
+          "text": "人哋對你一條心㗎"
+        },
+        {
+          "index": 7,
+          "text": "嘩…家人神啊你"
+        },
+        {
+          "index": 8,
+          "text": "家人神二當家"
+        },
+        {
+          "index": 9,
+          "text": "叫你殺春莎娘你搞掂未"
+        },
+        {
+          "index": 10,
+          "text": ""
+        },
+        {
+          "index": 11,
+          "text": "個春莎娘係妖怪嚟㗎蜘蛛精呀"
+        },
+        {
+          "index": 12,
+          "text": "係喇老話"
+        },
+        {
+          "index": 13,
+          "text": "我係一個咁理性嘅人你叫我點能夠接受啲咁無稽嘅嘢得㗎"
+        },
+        {
+          "index": 14,
+          "text": ""
+        },
+        {
+          "index": 15,
+          "text": "殺佢幫主"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 12
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "shift": 11
+        },
+        {
+          "index": 8,
+          "shift": 6
+        },
+        {
+          "index": 10,
+          "shift": 9
+        },
+        {
+          "index": 12,
+          "shift": 9
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "春三十娘係妖怪啊"
+        },
+        {
+          "index": 2,
+          "text": "蜘蛛精呀！"
+        },
+        {
+          "index": 3,
+          "text": "老弟啊，這麼有理性的人"
+        },
+        {
+          "index": 4,
+          "text": "怎麼能夠接受這麼無稽的事情呢！"
+        },
+        {
+          "index": 5,
+          "text": "殺了她"
+        },
+        {
+          "index": 6,
+          "text": "幫主，你就這麼去？你不怕？"
+        },
+        {
+          "index": 7,
+          "text": "怕甚麼？我的傷都全好了"
+        },
+        {
+          "index": 8,
+          "text": "還怕砍不過她？"
+        },
+        {
+          "index": 9,
+          "text": "好！有種！"
+        },
+        {
+          "index": 10,
+          "text": "你說有種，是不是？"
+        },
+        {
+          "index": 11,
+          "text": "是啊，就當我沒說好了"
+        },
+        {
+          "index": 12,
+          "text": "幫主"
+        },
+        {
+          "index": 13,
+          "text": "那你就隨便拿件傢伙衝進她房間裡亂砍"
+        },
+        {
+          "index": 14,
+          "text": "我們後面掩護你"
+        },
+        {
+          "index": 15,
           "text": "為甚麼每次都是我先⋯"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "殺佢"
+          "text": "個春莎娘係妖怪嚟㗎"
         },
         {
           "index": 2,
-          "text": "幫主你就咁去呀唔怕"
+          "text": "蜘蛛精呀"
         },
         {
           "index": 3,
-          "text": "嗰咩呀我傷好返晒驚"
+          "text": "係喇老話我係一個咁理性嘅人"
         },
         {
           "index": 4,
-          "text": ""
+          "text": "你叫我點能夠接受啲咁無稽嘅嘢得㗎"
         },
         {
           "index": 5,
-          "text": "唔夠佢打咩好"
-        },
-        {
-          "index": 6,
-          "text": "有種"
-        },
-        {
-          "index": 7,
-          "text": "你都覺得好呢老大唔知"
-        },
-        {
-          "index": 8,
-          "text": "幫主你當我冇講過囉"
-        },
-        {
-          "index": 9,
-          "text": "幫主好呀你時難嗰把嘢沖入佢房就劈"
-        },
-        {
-          "index": 10,
           "text": ""
         },
         {
+          "index": 6,
+          "text": "殺佢幫主"
+        },
+        {
+          "index": 7,
+          "text": "你就咁去呀唔怕嗰咩呀"
+        },
+        {
+          "index": 8,
+          "text": "我傷好返晒"
+        },
+        {
+          "index": 9,
+          "text": "驚唔夠佢打咩好"
+        },
+        {
+          "index": 10,
+          "text": "有種"
+        },
+        {
           "index": 11,
+          "text": "你都覺得好呢老大唔知"
+        },
+        {
+          "index": 12,
+          "text": "幫主你當我冇講過囉"
+        },
+        {
+          "index": 13,
+          "text": "幫主好呀你時難嗰把嘢沖入佢房就劈"
+        },
+        {
+          "index": 14,
+          "text": ""
+        },
+        {
+          "index": 15,
           "text": "我哋喺你後面掩護你喺我後面唔得"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 10
+      "last_owned_index": 14
     },
     "answer": {
       "changes": [
         {
-          "index": 4,
-          "shift": 5
+          "index": 5,
+          "shift": 2
         },
         {
           "index": 6,
-          "shift": 10
+          "shift": 7
         },
         {
           "index": 7,
-          "shift": 9
+          "shift": 5
         },
         {
           "index": 8,
+          "shift": 6
+        },
+        {
+          "index": 9,
           "shift": 2
         },
         {
           "index": 10,
+          "shift": 6
+        },
+        {
+          "index": 11,
+          "shift": 9
+        },
+        {
+          "index": 12,
+          "shift": 2
+        },
+        {
+          "index": 14,
           "shift": 9
         }
       ]
@@ -5126,26 +5516,6 @@
         {
           "index": 12,
           "text": "難道我就不能嗎？"
-        },
-        {
-          "index": 13,
-          "text": "胡說！"
-        },
-        {
-          "index": 14,
-          "text": "胡說？那麼你跑到五嶽山來幹甚麼？"
-        },
-        {
-          "index": 15,
-          "text": "這裡以前叫做五指山"
-        },
-        {
-          "index": 16,
-          "text": "是那隻死猴子當年被困之地"
-        },
-        {
-          "index": 17,
-          "text": "天機洩漏他會轉世為人"
         }
       ],
       "targets": [
@@ -5196,41 +5566,13 @@
         {
           "index": 12,
           "text": "你可以喺菩提老祖口中哄佢講出呢個天機"
-        },
-        {
-          "index": 13,
-          "text": "難到我唔可以咩"
-        },
-        {
-          "index": 14,
-          "text": "亂嘅亂嘞"
-        },
-        {
-          "index": 15,
-          "text": "咁你走嚟五岳山做咩"
-        },
-        {
-          "index": 16,
-          "text": "呢度以前就叫做五子山"
-        },
-        {
-          "index": 17,
-          "text": "係隻死馬騮當年困禁之地"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 14
+      "last_owned_index": 9
     },
     "answer": {
       "changes": [
-        {
-          "index": 1,
-          "shift": 9
-        },
-        {
-          "index": 2,
-          "shift": 8
-        },
         {
           "index": 3,
           "shift": 7
@@ -5241,7 +5583,7 @@
         },
         {
           "index": 5,
-          "shift": 5
+          "shift": 4
         },
         {
           "index": 6,
@@ -5250,26 +5592,6 @@
         {
           "index": 8,
           "shift": 10
-        },
-        {
-          "index": 10,
-          "shift": 10
-        },
-        {
-          "index": 11,
-          "shift": 18
-        },
-        {
-          "index": 12,
-          "shift": 7
-        },
-        {
-          "index": 13,
-          "shift": 2
-        },
-        {
-          "index": 14,
-          "shift": 9
         }
       ]
     },
@@ -5280,85 +5602,77 @@
       "guides": [
         {
           "index": 1,
-          "text": "難道我就不能嗎？"
+          "text": "我想出來散散心"
         },
         {
           "index": 2,
-          "text": "胡說！"
+          "text": "你想在這裡等唐三藏出現"
         },
         {
           "index": 3,
-          "text": "胡說？那麼你跑到五嶽山來幹甚麼？"
+          "text": "嚐佢長生不老之肉"
         },
         {
           "index": 4,
-          "text": "這裡以前叫做五指山"
+          "text": "你能從菩提老祖口中"
         },
         {
           "index": 5,
-          "text": "是那隻死猴子當年被困之地"
+          "text": "騙他說出這個天機"
         },
         {
           "index": 6,
-          "text": "天機洩漏他會轉世為人"
+          "text": "難道我就不能嗎？"
         },
         {
           "index": 7,
-          "text": "在投胎之後腳底板會有三顆痣"
+          "text": "胡說！"
         },
         {
           "index": 8,
-          "text": "只要找到他就可以找到唐三藏"
+          "text": "胡說？那麼你跑到五嶽山來幹甚麼？"
         },
         {
           "index": 9,
-          "text": "師姐，我這麼說不知道算在胡說嗎？"
+          "text": "這裡以前叫做五指山"
         },
         {
           "index": 10,
-          "text": "是你想再看那隻臭猴子吧"
+          "text": "是那隻死猴子當年被困之地"
         },
         {
           "index": 11,
-          "text": "再看到那無情無義的人怎麼樣"
+          "text": "天機洩漏他會轉世為人"
         },
         {
           "index": 12,
-          "text": "不同的是他上次死在觀世音手上"
+          "text": "在投胎之後腳底板會有三顆痣"
         },
         {
           "index": 13,
-          "text": "這一次卻會死在我手上"
+          "text": "只要找到他就可以找到唐三藏"
         },
         {
           "index": 14,
-          "text": "一個和尚有水喝"
+          "text": "師姐，我這麼說不知道算在胡說嗎？"
         },
         {
           "index": 15,
-          "text": "兩個和尚沒水喝"
-        },
-        {
-          "index": 16,
-          "text": "這個道理你都不懂？"
-        },
-        {
-          "index": 17,
-          "text": "想跟我爭"
+          "text": "是你想再看那隻臭猴子吧"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "難到我唔可以咩"
+          "text": "我想行開日散心啫"
         },
         {
           "index": 2,
-          "text": "亂嘅"
+          "text": "你想喺度等唐三藏出現"
         },
         {
           "index": 3,
-          "text": "亂嘞咁你走嚟五岳山做咩"
+          "text": "一上佢長生不老之慾啫"
         },
         {
           "index": 4,
@@ -5366,59 +5680,51 @@
         },
         {
           "index": 5,
-          "text": "呢度以前就叫做五子山"
-        },
-        {
-          "index": 6,
-          "text": "係隻死馬騮當年困禁之地"
-        },
-        {
-          "index": 7,
-          "text": "天機洩漏咗佢會轉世成人投咗胎之後腳板底會有三粒字"
-        },
-        {
-          "index": 8,
-          "text": "只要揾到佢就可以揾到唐三藏"
-        },
-        {
-          "index": 9,
-          "text": "師姐我咁樣講"
-        },
-        {
-          "index": 10,
-          "text": "唔知算唔算亂噏呢你自己想見返隻死馬騮咋掛"
-        },
-        {
-          "index": 11,
-          "text": "見返呢個寡情薄餉嘅原因又點呀"
-        },
-        {
-          "index": 12,
-          "text": "分別只不過上次佢寫官世音手上"
-        },
-        {
-          "index": 13,
-          "text": "而今次就會寫我手上"
-        },
-        {
-          "index": 14,
           "text": ""
         },
         {
+          "index": 6,
+          "text": "你可以喺菩提老祖口中哄佢講出呢個天機"
+        },
+        {
+          "index": 7,
+          "text": "難到我唔可以咩"
+        },
+        {
+          "index": 8,
+          "text": "亂嘅亂嘞"
+        },
+        {
+          "index": 9,
+          "text": "咁你走嚟五岳山做咩"
+        },
+        {
+          "index": 10,
+          "text": "呢度以前就叫做五子山"
+        },
+        {
+          "index": 11,
+          "text": "係隻死馬騮當年困禁之地"
+        },
+        {
+          "index": 12,
+          "text": "天機洩漏咗佢會轉世成人投咗胎之後腳板底會有三粒字"
+        },
+        {
+          "index": 13,
+          "text": "只要揾到佢就可以揾到唐三藏"
+        },
+        {
+          "index": 14,
+          "text": "師姐我咁樣講"
+        },
+        {
           "index": 15,
-          "text": "總之一個和尚擔水城"
-        },
-        {
-          "index": 16,
-          "text": "兩個和尚冇水城呢個道理你明㗎"
-        },
-        {
-          "index": 17,
-          "text": "想同我爭"
+          "text": "唔知算唔算亂噏呢你自己想見返隻死馬騮咋掛"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 16
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
@@ -5428,22 +5734,161 @@
         },
         {
           "index": 5,
-          "shift": 11
+          "shift": 18
         },
         {
           "index": 6,
-          "shift": 11
+          "shift": 7
         },
         {
-          "index": 9,
-          "shift": 8
+          "index": 7,
+          "shift": 4
         },
         {
-          "index": 14,
+          "index": 8,
           "shift": 9
         },
         {
-          "index": 15,
+          "index": 9,
+          "shift": 10
+        },
+        {
+          "index": 10,
+          "shift": 11
+        },
+        {
+          "index": 11,
+          "shift": 11
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "是那隻死猴子當年被困之地"
+        },
+        {
+          "index": 2,
+          "text": "天機洩漏他會轉世為人"
+        },
+        {
+          "index": 3,
+          "text": "在投胎之後腳底板會有三顆痣"
+        },
+        {
+          "index": 4,
+          "text": "只要找到他就可以找到唐三藏"
+        },
+        {
+          "index": 5,
+          "text": "師姐，我這麼說不知道算在胡說嗎？"
+        },
+        {
+          "index": 6,
+          "text": "是你想再看那隻臭猴子吧"
+        },
+        {
+          "index": 7,
+          "text": "再看到那無情無義的人怎麼樣"
+        },
+        {
+          "index": 8,
+          "text": "不同的是他上次死在觀世音手上"
+        },
+        {
+          "index": 9,
+          "text": "這一次卻會死在我手上"
+        },
+        {
+          "index": 10,
+          "text": "一個和尚有水喝"
+        },
+        {
+          "index": 11,
+          "text": "兩個和尚沒水喝"
+        },
+        {
+          "index": 12,
+          "text": "這個道理你都不懂？"
+        },
+        {
+          "index": 13,
+          "text": "想跟我爭"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "係隻死馬騮當年困禁之地"
+        },
+        {
+          "index": 2,
+          "text": "天機洩漏咗佢會轉世成人"
+        },
+        {
+          "index": 3,
+          "text": "投咗胎之後腳板底會有三粒字"
+        },
+        {
+          "index": 4,
+          "text": "只要揾到佢就可以揾到唐三藏"
+        },
+        {
+          "index": 5,
+          "text": "師姐我咁樣講"
+        },
+        {
+          "index": 6,
+          "text": "唔知算唔算亂噏呢你自己想見返隻死馬騮咋掛"
+        },
+        {
+          "index": 7,
+          "text": "見返呢個寡情薄餉嘅原因又點呀"
+        },
+        {
+          "index": 8,
+          "text": "分別只不過上次佢寫官世音手上"
+        },
+        {
+          "index": 9,
+          "text": "而今次就會寫我手上"
+        },
+        {
+          "index": 10,
+          "text": ""
+        },
+        {
+          "index": 11,
+          "text": "總之一個和尚擔水城"
+        },
+        {
+          "index": 12,
+          "text": "兩個和尚冇水城呢個道理你明㗎"
+        },
+        {
+          "index": 13,
+          "text": "想同我爭"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 12
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 5,
+          "shift": 8
+        },
+        {
+          "index": 10,
+          "shift": 9
+        },
+        {
+          "index": 11,
           "shift": 7
         }
       ]
@@ -5632,22 +6077,6 @@
         {
           "index": 9,
           "text": "我們牛欄的牛居然開口說話了"
-        },
-        {
-          "index": 10,
-          "text": "這兩個傢伙"
-        },
-        {
-          "index": 11,
-          "text": "一個有八隻手，一個的頭頭頭⋯"
-        },
-        {
-          "index": 12,
-          "text": "兩位還沒睡啊？"
-        },
-        {
-          "index": 13,
-          "text": "你在說甚麼？"
         }
       ],
       "targets": [
@@ -5686,26 +6115,10 @@
         {
           "index": 9,
           "text": "唐真和孫悟空呢就會喺處會入㗎"
-        },
-        {
-          "index": 10,
-          "text": "哎呀,我哋牛爛隻牛啊"
-        },
-        {
-          "index": 11,
-          "text": "竟然開口講嘢啊個兩隻嘢一個有八隻腳嘅一個個頭頭頭頭"
-        },
-        {
-          "index": 12,
-          "text": "嘩,又係尾頭嘅"
-        },
-        {
-          "index": 13,
-          "text": "講咩"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 12
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
@@ -5728,27 +6141,121 @@
         {
           "index": 6,
           "shift": 12
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "對！報告幫主"
+        },
+        {
+          "index": 2,
+          "text": "幫主"
+        },
+        {
+          "index": 3,
+          "text": "原來我們這裡五嶽山"
+        },
+        {
+          "index": 4,
+          "text": "就是以前的五指山"
+        },
+        {
+          "index": 5,
+          "text": "唐僧跟孫悟空在這兒會合"
+        },
+        {
+          "index": 6,
+          "text": "我們牛欄的牛居然開口說話了"
         },
         {
           "index": 7,
-          "shift": 8
+          "text": "這兩個傢伙"
         },
         {
           "index": 8,
-          "shift": 14
+          "text": "一個有八隻手，一個的頭頭頭⋯"
         },
         {
           "index": 9,
-          "shift": 17
+          "text": "兩位還沒睡啊？"
         },
         {
           "index": 10,
+          "text": "你在說甚麼？"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "唔得,報告幫主"
+        },
+        {
+          "index": 2,
+          "text": "哎呀,幫主啊"
+        },
+        {
+          "index": 3,
+          "text": "嘩,係原來我哋呢五岳山呢"
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
+          "index": 5,
+          "text": "即係以前嘅五子山"
+        },
+        {
+          "index": 6,
+          "text": "唐真和孫悟空呢就會喺處會入㗎"
+        },
+        {
+          "index": 7,
+          "text": "哎呀,我哋牛爛隻牛啊"
+        },
+        {
+          "index": 8,
+          "text": "竟然開口講嘢啊個兩隻嘢一個有八隻腳嘅一個個頭頭頭頭"
+        },
+        {
+          "index": 9,
+          "text": "嘩,又係尾頭嘅"
+        },
+        {
+          "index": 10,
+          "text": "講咩"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 9
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "shift": 8
+        },
+        {
+          "index": 5,
+          "shift": 14
+        },
+        {
+          "index": 6,
+          "shift": 17
+        },
+        {
+          "index": 7,
           "shift": 11
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5907,7 +6414,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6026,7 +6534,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6574,34 +7083,6 @@
         {
           "index": 11,
           "text": "孫悟空"
-        },
-        {
-          "index": 12,
-          "text": "孫悟空？"
-        },
-        {
-          "index": 13,
-          "text": "你變成人樣就行了嗎？"
-        },
-        {
-          "index": 14,
-          "text": "人樣？"
-        },
-        {
-          "index": 15,
-          "text": "看來我用三味白骨火，你是不會承認"
-        },
-        {
-          "index": 16,
-          "text": "嘩！還用得著！又燒！"
-        },
-        {
-          "index": 17,
-          "text": "何必呢？"
-        },
-        {
-          "index": 18,
-          "text": "難道我搞錯了？"
         }
       ],
       "targets": [
@@ -6648,38 +7129,10 @@
         {
           "index": 11,
           "text": "猴精"
-        },
-        {
-          "index": 12,
-          "text": "孫悟空囉"
-        },
-        {
-          "index": 13,
-          "text": "孫悟空"
-        },
-        {
-          "index": 14,
-          "text": "你變咗人樣就得喇"
-        },
-        {
-          "index": 15,
-          "text": "人樣睇嚟我唔用三味白骨火你都唔會認㗎喇"
-        },
-        {
-          "index": 16,
-          "text": "花洗唔洗呀"
-        },
-        {
-          "index": 17,
-          "text": "又燒何必呢"
-        },
-        {
-          "index": 18,
-          "text": ""
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 15
+      "last_owned_index": 8
     },
     "answer": {
       "changes": [
@@ -6688,35 +7141,150 @@
           "shift": 2
         },
         {
+          "index": 8,
+          "shift": 3
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "為了表示對姑娘你的誠意"
+        },
+        {
+          "index": 2,
+          "text": "我不要再看見以前的我"
+        },
+        {
+          "index": 3,
+          "text": "好看嗎？"
+        },
+        {
           "index": 4,
-          "shift": 8
+          "text": "是你這臭猴子？"
+        },
+        {
+          "index": 5,
+          "text": "臭猴子？"
+        },
+        {
+          "index": 6,
+          "text": "孫悟空"
+        },
+        {
+          "index": 7,
+          "text": "孫悟空？"
         },
         {
           "index": 8,
-          "shift": 3
+          "text": "你變成人樣就行了嗎？"
         },
         {
           "index": 9,
-          "shift": 5
+          "text": "人樣？"
         },
         {
           "index": 10,
-          "shift": 2
+          "text": "看來我用三味白骨火，你是不會承認"
         },
         {
           "index": 11,
-          "shift": 4
+          "text": "嘩！還用得著！又燒！"
         },
         {
           "index": 12,
-          "shift": 3
+          "text": "何必呢？"
         },
         {
           "index": 13,
+          "text": "難道我搞錯了？"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "為咗表示對姑娘你嘅誠意"
+        },
+        {
+          "index": 2,
+          "text": "我唔要再見到以前嘅我"
+        },
+        {
+          "index": 3,
+          "text": "啱睇嘛"
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
+          "index": 5,
+          "text": "係你隻猴精"
+        },
+        {
+          "index": 6,
+          "text": "猴精"
+        },
+        {
+          "index": 7,
+          "text": "孫悟空囉"
+        },
+        {
+          "index": 8,
+          "text": "孫悟空"
+        },
+        {
+          "index": 9,
+          "text": "你變咗人樣就得喇"
+        },
+        {
+          "index": 10,
+          "text": "人樣睇嚟我唔用三味白骨火你都唔會認㗎喇"
+        },
+        {
+          "index": 11,
+          "text": "花洗唔洗呀"
+        },
+        {
+          "index": 12,
+          "text": "又燒何必呢"
+        },
+        {
+          "index": 13,
+          "text": ""
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 10
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "shift": 5
+        },
+        {
+          "index": 5,
+          "shift": 2
+        },
+        {
+          "index": 6,
+          "shift": 4
+        },
+        {
+          "index": 7,
+          "shift": 3
+        },
+        {
+          "index": 8,
           "shift": 8
         },
         {
-          "index": 14,
+          "index": 9,
           "shift": 2
         }
       ]
@@ -6884,7 +7452,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7047,7 +7616,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7691,6 +8261,14 @@
         {
           "index": 12,
           "text": "我照你老母的妖鏡"
+        },
+        {
+          "index": 13,
+          "text": "說　　你聽我說"
+        },
+        {
+          "index": 14,
+          "text": "你是不是偷了我葡萄？"
         }
       ],
       "targets": [
@@ -7741,10 +8319,18 @@
         {
           "index": 12,
           "text": "你明白晒㗎我照"
+        },
+        {
+          "index": 13,
+          "text": "你老唔好快"
+        },
+        {
+          "index": 14,
+          "text": ""
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 9
+      "last_owned_index": 11
     },
     "answer": {
       "changes": [
@@ -7758,7 +8344,7 @@
         },
         {
           "index": 4,
-          "shift": 6
+          "shift": 7
         },
         {
           "index": 5,
@@ -7774,209 +8360,18 @@
         },
         {
           "index": 8,
-          "shift": 6
+          "shift": 7
         },
         {
           "index": 9,
-          "shift": 6
-        }
-      ]
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "guides": [
-        {
-          "index": 1,
-          "text": "我化為葡萄來救你的"
-        },
-        {
-          "index": 2,
-          "text": "你偷了我的葡萄，還菩我老母？"
-        },
-        {
-          "index": 3,
-          "text": "那兩個女人是妖怪"
-        },
-        {
-          "index": 4,
-          "text": "如果你不相信"
-        },
-        {
-          "index": 5,
-          "text": "我的照妖鏡一照，你就會明白了"
-        },
-        {
-          "index": 6,
-          "text": "我照你老母的妖鏡"
-        },
-        {
-          "index": 7,
-          "text": "說　　你聽我說"
-        },
-        {
-          "index": 8,
-          "text": "你是不是偷了我葡萄？"
-        },
-        {
-          "index": 9,
-          "text": "我沒有啊！"
+          "shift": 5
         },
         {
           "index": 10,
-          "text": "沒有？那我的葡萄到那兒去了？"
-        },
-        {
-          "index": 11,
-          "text": "我就是葡萄了！"
-        },
-        {
-          "index": 12,
-          "text": "大聲點"
-        },
-        {
-          "index": 13,
-          "text": "我就是你的葡萄"
-        },
-        {
-          "index": 14,
-          "text": "為甚麼不做蘋果？要做葡萄"
-        },
-        {
-          "index": 15,
-          "text": "你跟我說"
-        },
-        {
-          "index": 16,
-          "text": "你別以為我打不過你"
-        },
-        {
-          "index": 17,
-          "text": "我只是不想傷及無辜"
-        },
-        {
-          "index": 18,
-          "text": "來呀！"
-        }
-      ],
-      "targets": [
-        {
-          "index": 1,
-          "text": "我發做提子嚟救你㗎"
-        },
-        {
-          "index": 2,
-          "text": "你撻咗我收蒲提子仲唔提佬唔好"
-        },
-        {
-          "index": 3,
-          "text": "我兩個女人呢"
-        },
-        {
-          "index": 4,
-          "text": ""
-        },
-        {
-          "index": 5,
-          "text": "係妖怪嚟嘅如果你唔信你搵我個照妖劇一照呢"
-        },
-        {
-          "index": 6,
-          "text": "你明白晒㗎我照"
-        },
-        {
-          "index": 7,
-          "text": "你老唔好快"
-        },
-        {
-          "index": 8,
-          "text": ""
-        },
-        {
-          "index": 9,
-          "text": "你話你係咪撻咗我收蒲提子"
-        },
-        {
-          "index": 10,
-          "text": "我冇呀"
-        },
-        {
-          "index": 11,
-          "text": "咁我收蒲提子喺邊"
-        },
-        {
-          "index": 12,
-          "text": ""
-        },
-        {
-          "index": 13,
-          "text": "我問你嗰收蒲提子啦"
-        },
-        {
-          "index": 14,
-          "text": "打嘅聲啲我問你嗰收蒲提子啦你點解你唔係蘋果"
-        },
-        {
-          "index": 15,
-          "text": "只係蒲提子"
-        },
-        {
-          "index": 16,
-          "text": ""
-        },
-        {
-          "index": 17,
-          "text": "你唔好以為我唔覺你打我"
-        },
-        {
-          "index": 18,
-          "text": "我唔想傷及無辜咋話"
-        }
-      ],
-      "first_owned_index": 4,
-      "last_owned_index": 15
-    },
-    "answer": {
-      "changes": [
-        {
-          "index": 4,
           "shift": 10
         },
         {
-          "index": 5,
-          "shift": 5
-        },
-        {
-          "index": 6,
-          "shift": 5
-        },
-        {
-          "index": 8,
-          "shift": 12
-        },
-        {
-          "index": 9,
-          "shift": 3
-        },
-        {
-          "index": 10,
-          "shift": 8
-        },
-        {
           "index": 11,
-          "shift": 4
-        },
-        {
-          "index": 12,
-          "shift": 4
-        },
-        {
-          "index": 13,
-          "shift": 13
-        },
-        {
-          "index": 14,
           "shift": 5
         }
       ]
@@ -7988,125 +8383,125 @@
       "guides": [
         {
           "index": 1,
-          "text": "我就是你的葡萄"
+          "text": "那兩個女人是妖怪"
         },
         {
           "index": 2,
-          "text": "為甚麼不做蘋果？要做葡萄"
+          "text": "如果你不相信"
         },
         {
           "index": 3,
-          "text": "你跟我說"
+          "text": "我的照妖鏡一照，你就會明白了"
         },
         {
           "index": 4,
-          "text": "你別以為我打不過你"
+          "text": "我照你老母的妖鏡"
         },
         {
           "index": 5,
-          "text": "我只是不想傷及無辜"
+          "text": "說　　你聽我說"
         },
         {
           "index": 6,
-          "text": "來呀！"
+          "text": "你是不是偷了我葡萄？"
         },
         {
           "index": 7,
-          "text": "我打你這個老糊塗"
+          "text": "我沒有啊！"
         },
         {
           "index": 8,
-          "text": "晶晶姑娘"
+          "text": "沒有？那我的葡萄到那兒去了？"
         },
         {
           "index": 9,
-          "text": "你的鬍子好粗獷呀"
+          "text": "我就是葡萄了！"
         },
         {
           "index": 10,
-          "text": "是嗎？"
+          "text": "大聲點"
         },
         {
           "index": 11,
-          "text": "乒拎乓啷的是甚麼聲音？"
+          "text": "我就是你的葡萄"
         },
         {
           "index": 12,
-          "text": "我剛剛在打一串葡萄"
+          "text": "為甚麼不做蘋果？要做葡萄"
         },
         {
           "index": 13,
-          "text": "那裡會有人打葡萄的？"
+          "text": "你跟我說"
         },
         {
           "index": 14,
-          "text": "吃飯吧"
+          "text": "你別以為我打不過你"
         },
         {
           "index": 15,
-          "text": "吃飯了"
+          "text": "我只是不想傷及無辜"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "收蒲提子啦打嘅聲啲我問你嗰收蒲提子啦"
+          "text": "兩個女人"
         },
         {
           "index": 2,
-          "text": "你點解你唔係蘋果只係蒲提子"
+          "text": "呢係妖怪嚟嘅如果你唔信"
         },
         {
           "index": 3,
-          "text": ""
+          "text": "你搵我個照妖劇一照呢你明白晒㗎"
         },
         {
           "index": 4,
-          "text": ""
+          "text": "我照"
         },
         {
           "index": 5,
-          "text": "你唔好以為我唔覺你打我"
+          "text": "你老唔好快"
         },
         {
           "index": 6,
-          "text": "我唔想傷及無辜咋話"
-        },
-        {
-          "index": 7,
-          "text": "嚟呀有排你傷呀"
-        },
-        {
-          "index": 8,
           "text": ""
         },
         {
+          "index": 7,
+          "text": "你話你係咪撻咗我收蒲提子"
+        },
+        {
+          "index": 8,
+          "text": "我冇呀"
+        },
+        {
           "index": 9,
-          "text": "菁菁姑娘"
+          "text": "咁我收蒲提子喺邊"
         },
         {
           "index": 10,
-          "text": "幫住不收好粗獷呀"
+          "text": ""
         },
         {
           "index": 11,
-          "text": "得唔得呀得呀"
+          "text": "我問你嗰收蒲提子啦"
         },
         {
           "index": 12,
-          "text": "點解我頭先明明白白你啱啱打緊收蒲提子呀"
+          "text": "打嘅聲啲我問你嗰收蒲提子啦你點解你唔係蘋果"
         },
         {
           "index": 13,
-          "text": "哈哈哈哈"
+          "text": "只係蒲提子"
         },
         {
           "index": 14,
-          "text": "打蒲提子都有嘅"
+          "text": ""
         },
         {
           "index": 15,
-          "text": "食飯囉"
+          "text": "你唔好以為我唔覺你打我"
         }
       ],
       "first_owned_index": 4,
@@ -8116,27 +8511,39 @@
       "changes": [
         {
           "index": 4,
-          "shift": 11
+          "shift": 5
         },
         {
           "index": 5,
-          "shift": 9
-        },
-        {
-          "index": 6,
           "shift": 2
         },
         {
-          "index": 8,
-          "shift": 4
+          "index": 6,
+          "shift": 12
         },
         {
-          "index": 9,
+          "index": 7,
+          "shift": 3
+        },
+        {
+          "index": 8,
           "shift": 8
         },
         {
+          "index": 9,
+          "shift": 9
+        },
+        {
           "index": 10,
-          "shift": 6
+          "shift": 13
+        },
+        {
+          "index": 11,
+          "shift": 13
+        },
+        {
+          "index": 12,
+          "shift": 5
         }
       ]
     },
@@ -8147,139 +8554,326 @@
       "guides": [
         {
           "index": 1,
-          "text": "是嗎？"
+          "text": "大聲點"
         },
         {
           "index": 2,
-          "text": "乒拎乓啷的是甚麼聲音？"
+          "text": "我就是你的葡萄"
         },
         {
           "index": 3,
-          "text": "我剛剛在打一串葡萄"
+          "text": "為甚麼不做蘋果？要做葡萄"
         },
         {
           "index": 4,
-          "text": "那裡會有人打葡萄的？"
+          "text": "你跟我說"
         },
         {
           "index": 5,
-          "text": "吃飯吧"
+          "text": "你別以為我打不過你"
         },
         {
           "index": 6,
-          "text": "吃飯了"
+          "text": "我只是不想傷及無辜"
         },
         {
           "index": 7,
-          "text": "吃飯好啊"
+          "text": "來呀！"
         },
         {
           "index": 8,
-          "text": "好是嗎？"
+          "text": "我打你這個老糊塗"
         },
         {
           "index": 9,
-          "text": "我看今天月亮這麼美，不如⋯"
+          "text": "晶晶姑娘"
         },
         {
           "index": 10,
-          "text": "月光？沒有啊？"
+          "text": "你的鬍子好粗獷呀"
         },
         {
           "index": 11,
-          "text": "那麼大的月亮你沒看到嗎？看清楚點"
+          "text": "是嗎？"
         },
         {
           "index": 12,
-          "text": "天還沒有黑，那來的月光"
+          "text": "乒拎乓啷的是甚麼聲音？"
         },
         {
           "index": 13,
+          "text": "我剛剛在打一串葡萄"
+        },
+        {
+          "index": 14,
+          "text": "那裡會有人打葡萄的？"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "打嘅聲啲"
+        },
+        {
+          "index": 2,
+          "text": "我問你嗰收蒲提子啦"
+        },
+        {
+          "index": 3,
+          "text": "你點解你唔係蘋果只係蒲提子"
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
+          "index": 5,
+          "text": ""
+        },
+        {
+          "index": 6,
+          "text": "你唔好以為我唔覺你打我"
+        },
+        {
+          "index": 7,
+          "text": "我唔想傷及無辜咋話"
+        },
+        {
+          "index": 8,
+          "text": "嚟呀有排你傷呀"
+        },
+        {
+          "index": 9,
+          "text": ""
+        },
+        {
+          "index": 10,
+          "text": "菁菁姑娘"
+        },
+        {
+          "index": 11,
+          "text": "幫住不收好粗獷呀"
+        },
+        {
+          "index": 12,
+          "text": "得唔得呀得呀"
+        },
+        {
+          "index": 13,
+          "text": "點解我頭先明明白白你啱啱打緊收蒲提子呀"
+        },
+        {
+          "index": 14,
+          "text": "哈哈哈哈"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 11
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 5,
+          "shift": 11
+        },
+        {
+          "index": 6,
+          "shift": 20
+        },
+        {
+          "index": 7,
+          "shift": 11
+        },
+        {
+          "index": 8,
+          "shift": 4
+        },
+        {
+          "index": 9,
+          "shift": 4
+        },
+        {
+          "index": 10,
+          "shift": 8
+        },
+        {
+          "index": 11,
+          "shift": 8
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "晶晶姑娘"
+        },
+        {
+          "index": 2,
+          "text": "你的鬍子好粗獷呀"
+        },
+        {
+          "index": 3,
+          "text": "是嗎？"
+        },
+        {
+          "index": 4,
+          "text": "乒拎乓啷的是甚麼聲音？"
+        },
+        {
+          "index": 5,
+          "text": "我剛剛在打一串葡萄"
+        },
+        {
+          "index": 6,
+          "text": "那裡會有人打葡萄的？"
+        },
+        {
+          "index": 7,
+          "text": "吃飯吧"
+        },
+        {
+          "index": 8,
+          "text": "吃飯了"
+        },
+        {
+          "index": 9,
+          "text": "吃飯好啊"
+        },
+        {
+          "index": 10,
+          "text": "好是嗎？"
+        },
+        {
+          "index": 11,
+          "text": "我看今天月亮這麼美，不如⋯"
+        },
+        {
+          "index": 12,
+          "text": "月光？沒有啊？"
+        },
+        {
+          "index": 13,
+          "text": "那麼大的月亮你沒看到嗎？看清楚點"
+        },
+        {
+          "index": 14,
+          "text": "天還沒有黑，那來的月光"
+        },
+        {
+          "index": 15,
           "text": "你說啊⋯"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "得唔得呀得呀"
+          "text": ""
         },
         {
           "index": 2,
-          "text": ""
+          "text": "幫住不收好粗獷呀"
         },
         {
           "index": 3,
-          "text": "點解我頭先明明白白你啱啱打緊收蒲提子呀"
+          "text": "得唔得呀得呀點解"
         },
         {
           "index": 4,
-          "text": "哈哈哈哈"
-        },
-        {
-          "index": 5,
-          "text": "打蒲提子都有嘅"
-        },
-        {
-          "index": 6,
-          "text": "食飯囉"
-        },
-        {
-          "index": 7,
-          "text": "食飯呀"
-        },
-        {
-          "index": 8,
           "text": ""
         },
         {
+          "index": 5,
+          "text": "我頭先明明白白你啱啱打緊收蒲提子呀"
+        },
+        {
+          "index": 6,
+          "text": "哈哈哈哈"
+        },
+        {
+          "index": 7,
+          "text": "打蒲提子都有嘅"
+        },
+        {
+          "index": 8,
+          "text": "食飯囉"
+        },
+        {
           "index": 9,
-          "text": "食飯好呀好靚"
+          "text": "食飯呀"
         },
         {
           "index": 10,
-          "text": "今日嗰個月光咁靚不如月光冇呀"
+          "text": ""
         },
         {
           "index": 11,
-          "text": "嘩咁大個月光你都睇唔到"
+          "text": "食飯好呀好靚"
         },
         {
           "index": 12,
-          "text": "睇真少少呀天都未黑"
+          "text": "今日嗰個月光咁靚不如月光冇呀"
         },
         {
           "index": 13,
+          "text": "嘩咁大個月光你都睇唔到"
+        },
+        {
+          "index": 14,
+          "text": "睇真少少呀天都未黑"
+        },
+        {
+          "index": 15,
           "text": "點會有月光喎"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 12
+      "last_owned_index": 14
     },
     "answer": {
       "changes": [
         {
-          "index": 4,
-          "shift": 7
-        },
-        {
           "index": 5,
-          "shift": 3
-        },
-        {
-          "index": 6,
-          "shift": 3
-        },
-        {
-          "index": 7,
           "shift": 4
         },
         {
-          "index": 8,
+          "index": 6,
           "shift": 7
         },
         {
+          "index": 7,
+          "shift": 3
+        },
+        {
+          "index": 8,
+          "shift": 3
+        },
+        {
           "index": 9,
+          "shift": 4
+        },
+        {
+          "index": 10,
+          "shift": 6
+        },
+        {
+          "index": 11,
+          "shift": 14
+        },
+        {
+          "index": 12,
+          "shift": 16
+        },
+        {
+          "index": 13,
           "shift": 10
+        },
+        {
+          "index": 14,
+          "shift": 6
         }
       ]
     },
@@ -8343,18 +8937,6 @@
         {
           "index": 14,
           "text": "唐三藏重現人間？"
-        },
-        {
-          "index": 15,
-          "text": "五百年前孫悟空被觀音大士所消滅"
-        },
-        {
-          "index": 16,
-          "text": "他師父唐三藏為了救他"
-        },
-        {
-          "index": 17,
-          "text": "用自己的性命"
         }
       ],
       "targets": [
@@ -8413,28 +8995,32 @@
         {
           "index": 14,
           "text": "唐三藏重現人間"
-        },
-        {
-          "index": 15,
-          "text": "五百年前孫悟空畀觀音大士所消滅"
-        },
-        {
-          "index": 16,
-          "text": ""
-        },
-        {
-          "index": 17,
-          "text": "佢師父唐三藏為咗救佢呢"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 14
+      "last_owned_index": 11
     },
     "answer": {
       "changes": [
         {
+          "index": 1,
+          "shift": 6
+        },
+        {
           "index": 2,
-          "shift": 4
+          "shift": 5
+        },
+        {
+          "index": 3,
+          "shift": 7
+        },
+        {
+          "index": 4,
+          "shift": 5
+        },
+        {
+          "index": 5,
+          "shift": 7
         },
         {
           "index": 6,
@@ -8445,150 +9031,19 @@
           "shift": 5
         },
         {
-          "index": 9,
-          "shift": 6
-        },
-        {
-          "index": 12,
-          "shift": 8
-        }
-      ]
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "guides": [
-        {
-          "index": 1,
-          "text": "笨蛋啊，我告訴你吧！"
-        },
-        {
-          "index": 2,
-          "text": "這群妖怪呢是等唐三藏重現人間"
-        },
-        {
-          "index": 3,
-          "text": "唐三藏重現人間？"
-        },
-        {
-          "index": 4,
-          "text": "五百年前孫悟空被觀音大士所消滅"
-        },
-        {
-          "index": 5,
-          "text": "他師父唐三藏為了救他"
-        },
-        {
-          "index": 6,
-          "text": "用自己的性命"
-        },
-        {
-          "index": 7,
-          "text": "換取孫悟空一次重生的機會"
-        },
-        {
           "index": 8,
-          "text": "希望這隻猴子能改邪歸正"
+          "shift": 9
         },
         {
           "index": 9,
-          "text": "唐三藏為甚麼在這裡出現"
+          "shift": 7
         },
         {
           "index": 10,
-          "text": "你還沒告訴我？"
+          "shift": 9
         },
         {
           "index": 11,
-          "text": "不錯！唐三藏當年為了普渡眾生"
-        },
-        {
-          "index": 12,
-          "text": "不怕千辛萬苦去取西經"
-        },
-        {
-          "index": 13,
-          "text": "希望藉此經書來感化世人"
-        }
-      ],
-      "targets": [
-        {
-          "index": 1,
-          "text": "點解呢度會有妖精呀蠢材呀我話你知啦呢班妖"
-        },
-        {
-          "index": 2,
-          "text": "精呢就喺度等唐三藏重現人間嘅"
-        },
-        {
-          "index": 3,
-          "text": "唐三藏重現人間"
-        },
-        {
-          "index": 4,
-          "text": "五百年前孫悟空畀觀音大士所消滅"
-        },
-        {
-          "index": 5,
-          "text": ""
-        },
-        {
-          "index": 6,
-          "text": "佢師父唐三藏為咗救佢呢"
-        },
-        {
-          "index": 7,
-          "text": ""
-        },
-        {
-          "index": 8,
-          "text": "用自己嘅性命回取孫悟空一次重生嘅機會"
-        },
-        {
-          "index": 9,
-          "text": "希望呢隻猴仔改邪歸正"
-        },
-        {
-          "index": 10,
-          "text": "唐三藏點解呢度出現你仲未答我喎"
-        },
-        {
-          "index": 11,
-          "text": "唔冇錯"
-        },
-        {
-          "index": 12,
-          "text": "唐三藏當年為咗補導眾生"
-        },
-        {
-          "index": 13,
-          "text": "不怕千辛萬苦去取世經"
-        }
-      ],
-      "first_owned_index": 4,
-      "last_owned_index": 10
-    },
-    "answer": {
-      "changes": [
-        {
-          "index": 5,
-          "shift": 11
-        },
-        {
-          "index": 6,
-          "shift": 6
-        },
-        {
-          "index": 7,
-          "shift": 18
-        },
-        {
-          "index": 8,
-          "shift": 10
-        },
-        {
-          "index": 9,
           "shift": 9
         }
       ]
@@ -8600,447 +9055,125 @@
       "guides": [
         {
           "index": 1,
+          "text": "你現在相信啦！"
+        },
+        {
+          "index": 2,
+          "text": "我相信了，相信了"
+        },
+        {
+          "index": 3,
+          "text": "我這裡怎麼會有妖怪出現啊？"
+        },
+        {
+          "index": 4,
+          "text": "笨蛋啊，我告訴你吧！"
+        },
+        {
+          "index": 5,
+          "text": "這群妖怪呢是等唐三藏重現人間"
+        },
+        {
+          "index": 6,
+          "text": "唐三藏重現人間？"
+        },
+        {
+          "index": 7,
+          "text": "五百年前孫悟空被觀音大士所消滅"
+        },
+        {
+          "index": 8,
+          "text": "他師父唐三藏為了救他"
+        },
+        {
+          "index": 9,
+          "text": "用自己的性命"
+        },
+        {
+          "index": 10,
+          "text": "換取孫悟空一次重生的機會"
+        },
+        {
+          "index": 11,
           "text": "希望這隻猴子能改邪歸正"
         },
         {
-          "index": 2,
+          "index": 12,
           "text": "唐三藏為甚麼在這裡出現"
         },
         {
-          "index": 3,
+          "index": 13,
           "text": "你還沒告訴我？"
         },
         {
-          "index": 4,
+          "index": 14,
           "text": "不錯！唐三藏當年為了普渡眾生"
         },
         {
-          "index": 5,
-          "text": "不怕千辛萬苦去取西經"
-        },
-        {
-          "index": 6,
-          "text": "希望藉此經書來感化世人"
-        },
-        {
-          "index": 7,
-          "text": "滿天神佛都被他這種精神所感動"
-        },
-        {
-          "index": 8,
-          "text": "玉皇大帝眼見如此"
-        },
-        {
-          "index": 9,
-          "text": "因此給孫悟空一個機會轉世"
-        },
-        {
-          "index": 10,
-          "text": "安排他們師徒今世在這裡重逢"
-        },
-        {
-          "index": 11,
-          "text": "繼續去完成取西經的使命"
-        },
-        {
-          "index": 12,
-          "text": "為甚麼那麼多妖在這兒出現"
-        },
-        {
-          "index": 13,
-          "text": "你明白了"
-        },
-        {
-          "index": 14,
-          "text": "怪不得我長久以來都在做同樣的"
-        },
-        {
           "index": 15,
-          "text": "一個惡夢"
-        },
-        {
-          "index": 16,
-          "text": "在一片漆黑孤獨的環境裡頭"
+          "text": "不怕千辛萬苦去取西經"
         }
       ],
       "targets": [
         {
           "index": 1,
+          "text": ""
+        },
+        {
+          "index": 2,
+          "text": "你而家信啦我信啦我信啦喂點解"
+        },
+        {
+          "index": 3,
+          "text": "呢度會有妖精呀"
+        },
+        {
+          "index": 4,
+          "text": "蠢材呀"
+        },
+        {
+          "index": 5,
+          "text": "我話你知啦呢班妖精呢就喺度等唐三藏重現人間嘅"
+        },
+        {
+          "index": 6,
+          "text": "唐三藏重現人間"
+        },
+        {
+          "index": 7,
+          "text": "五百年前孫悟空畀觀音大士所消滅"
+        },
+        {
+          "index": 8,
+          "text": ""
+        },
+        {
+          "index": 9,
+          "text": "佢師父唐三藏為咗救佢呢"
+        },
+        {
+          "index": 10,
+          "text": ""
+        },
+        {
+          "index": 11,
+          "text": "用自己嘅性命回取孫悟空一次重生嘅機會"
+        },
+        {
+          "index": 12,
           "text": "希望呢隻猴仔改邪歸正"
         },
         {
-          "index": 2,
-          "text": "唐三藏點解呢度出現"
+          "index": 13,
+          "text": "唐三藏點解呢度出現你仲未答我喎"
         },
         {
-          "index": 3,
-          "text": "你仲未答我喎"
-        },
-        {
-          "index": 4,
+          "index": 14,
           "text": "唔冇錯"
         },
         {
-          "index": 5,
+          "index": 15,
           "text": "唐三藏當年為咗補導眾生"
-        },
-        {
-          "index": 6,
-          "text": "不怕千辛萬苦去取世經"
-        },
-        {
-          "index": 7,
-          "text": "希望藉此經書嚟感化世人滿天神佛都畀佢呢種"
-        },
-        {
-          "index": 8,
-          "text": "精神所感動嘅"
-        },
-        {
-          "index": 9,
-          "text": "玉皇大帝有見及似就畀個機會孫悟空轉世"
-        },
-        {
-          "index": 10,
-          "text": ""
-        },
-        {
-          "index": 11,
-          "text": "安排佢兩師徒今世喺呢度重逢繼續完成取世經嘅使命"
-        },
-        {
-          "index": 12,
-          "text": ""
-        },
-        {
-          "index": 13,
-          "text": "你而家明白點解咁多妖精喺呢度出現呢"
-        },
-        {
-          "index": 14,
-          "text": "哦"
-        },
-        {
-          "index": 15,
-          "text": "唔怪得一路以嚟我都發住同佢一個惡夢啦"
-        },
-        {
-          "index": 16,
-          "text": ""
-        }
-      ],
-      "first_owned_index": 4,
-      "last_owned_index": 13
-    },
-    "answer": {
-      "changes": [
-        {
-          "index": 4,
-          "shift": 11
-        },
-        {
-          "index": 5,
-          "shift": 10
-        },
-        {
-          "index": 6,
-          "shift": 11
-        },
-        {
-          "index": 7,
-          "shift": 6
-        },
-        {
-          "index": 8,
-          "shift": 8
-        },
-        {
-          "index": 10,
-          "shift": 13
-        },
-        {
-          "index": 12,
-          "shift": 17
-        },
-        {
-          "index": 13,
-          "shift": 1
-        }
-      ]
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "guides": [
-        {
-          "index": 1,
-          "text": "繼續去完成取西經的使命"
-        },
-        {
-          "index": 2,
-          "text": "為甚麼那麼多妖在這兒出現"
-        },
-        {
-          "index": 3,
-          "text": "你明白了"
-        },
-        {
-          "index": 4,
-          "text": "怪不得我長久以來都在做同樣的"
-        },
-        {
-          "index": 5,
-          "text": "一個惡夢"
-        },
-        {
-          "index": 6,
-          "text": "在一片漆黑孤獨的環境裡頭"
-        },
-        {
-          "index": 7,
-          "text": "一對一對非常迷迷的眼睛"
-        },
-        {
-          "index": 8,
-          "text": "一直盯著我看"
-        },
-        {
-          "index": 9,
-          "text": "看得我都非常不好意思"
-        },
-        {
-          "index": 10,
-          "text": "就是你這種眼神"
-        },
-        {
-          "index": 11,
-          "text": "有好幾次盯得我臉都紅了"
-        },
-        {
-          "index": 12,
-          "text": "原來註定我今天撞妖！"
-        },
-        {
-          "index": 13,
-          "text": "對呀！你今天真是撞妖了"
-        },
-        {
-          "index": 14,
-          "text": "這兩個乾坤袋，一疊隱身符"
-        }
-      ],
-      "targets": [
-        {
-          "index": 1,
-          "text": "繼續完成取世經嘅使命"
-        },
-        {
-          "index": 2,
-          "text": "你而家明白點解咁多妖精喺呢度出現呢"
-        },
-        {
-          "index": 3,
-          "text": "哦"
-        },
-        {
-          "index": 4,
-          "text": ""
-        },
-        {
-          "index": 5,
-          "text": "唔怪得一路以嚟我都發住同佢一個惡夢啦"
-        },
-        {
-          "index": 6,
-          "text": ""
-        },
-        {
-          "index": 7,
-          "text": "喺一片七黑孤獨嘅環境裡頭"
-        },
-        {
-          "index": 8,
-          "text": "有一對一對非常之鹹濕嘅眼睛係噉望住我"
-        },
-        {
-          "index": 9,
-          "text": ""
-        },
-        {
-          "index": 10,
-          "text": "令到我鬼死嘅唔好意思"
-        },
-        {
-          "index": 11,
-          "text": "就係你呢頂眼神"
-        },
-        {
-          "index": 12,
-          "text": "有幾次仲望到我有啲面紅添"
-        },
-        {
-          "index": 13,
-          "text": "原來注定我今日撞妖係啊"
-        },
-        {
-          "index": 14,
-          "text": "你今日真係撞妖啊嗱"
-        }
-      ],
-      "first_owned_index": 4,
-      "last_owned_index": 11
-    },
-    "answer": {
-      "changes": [
-        {
-          "index": 4,
-          "shift": 13
-        },
-        {
-          "index": 7,
-          "shift": 13
-        },
-        {
-          "index": 9,
-          "shift": 10
-        },
-        {
-          "index": 10,
-          "shift": 7
-        },
-        {
-          "index": 11,
-          "shift": 12
-        }
-      ]
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "guides": [
-        {
-          "index": 1,
-          "text": "看得我都非常不好意思"
-        },
-        {
-          "index": 2,
-          "text": "就是你這種眼神"
-        },
-        {
-          "index": 3,
-          "text": "有好幾次盯得我臉都紅了"
-        },
-        {
-          "index": 4,
-          "text": "原來註定我今天撞妖！"
-        },
-        {
-          "index": 5,
-          "text": "對呀！你今天真是撞妖了"
-        },
-        {
-          "index": 6,
-          "text": "這兩個乾坤袋，一疊隱身符"
-        },
-        {
-          "index": 7,
-          "text": "你把符貼在身上，她們就看不到你了"
-        },
-        {
-          "index": 8,
-          "text": "趁她們不注意，你就套在他們頭上"
-        },
-        {
-          "index": 9,
-          "text": "去吧！我在後面掩護你"
-        },
-        {
-          "index": 10,
-          "text": "你這句對白一直都是我說的"
-        },
-        {
-          "index": 11,
-          "text": "你跟誰說的？"
-        },
-        {
-          "index": 12,
-          "text": "跟他"
-        },
-        {
-          "index": 13,
-          "text": "對啊！我當然幫你"
-        },
-        {
-          "index": 14,
-          "text": "了不起！不愧是我的好哥們"
-        },
-        {
-          "index": 15,
-          "text": "你現在出去叫所有兄弟進來"
-        }
-      ],
-      "targets": [
-        {
-          "index": 1,
-          "text": "令到我鬼死嘅唔好意思"
-        },
-        {
-          "index": 2,
-          "text": "就係你呢頂眼神"
-        },
-        {
-          "index": 3,
-          "text": "有幾次仲望到我有啲面紅添"
-        },
-        {
-          "index": 4,
-          "text": ""
-        },
-        {
-          "index": 5,
-          "text": "原來注定我今日撞妖係啊"
-        },
-        {
-          "index": 6,
-          "text": "你今日真係撞妖啊嗱"
-        },
-        {
-          "index": 7,
-          "text": "呢度有兩個乾坤袋一疊隱身符"
-        },
-        {
-          "index": 8,
-          "text": "你一貼咗度符喺身呢佢就睇唔到你㗎喇"
-        },
-        {
-          "index": 9,
-          "text": "後來唔覺意呢你就一粒都落佢個頭嗰度"
-        },
-        {
-          "index": 10,
-          "text": "我喺後面掩護你"
-        },
-        {
-          "index": 11,
-          "text": "嘩"
-        },
-        {
-          "index": 12,
-          "text": "你句對白不留我講㗎喎你同邊個講啊"
-        },
-        {
-          "index": 13,
-          "text": "同佢啦好話"
-        },
-        {
-          "index": 14,
-          "text": "我幫你啊"
-        },
-        {
-          "index": 15,
-          "text": "冇得頂啊你不愧為我好兄弟"
         }
       ],
       "first_owned_index": 4,
@@ -9050,39 +9183,15 @@
       "changes": [
         {
           "index": 4,
-          "shift": 9
+          "shift": 5
         },
         {
           "index": 5,
-          "shift": 9
-        },
-        {
-          "index": 6,
-          "shift": 13
-        },
-        {
-          "index": 7,
-          "shift": 17
-        },
-        {
-          "index": 8,
-          "shift": 17
-        },
-        {
-          "index": 9,
-          "shift": 7
+          "shift": -5
         },
         {
           "index": 10,
-          "shift": 11
-        },
-        {
-          "index": 11,
-          "shift": 16
-        },
-        {
-          "index": 12,
-          "shift": 3
+          "shift": 6
         }
       ]
     },
@@ -9093,135 +9202,449 @@
       "guides": [
         {
           "index": 1,
-          "text": "你這句對白一直都是我說的"
+          "text": "換取孫悟空一次重生的機會"
         },
         {
           "index": 2,
-          "text": "你跟誰說的？"
+          "text": "希望這隻猴子能改邪歸正"
         },
         {
           "index": 3,
-          "text": "跟他"
+          "text": "唐三藏為甚麼在這裡出現"
         },
         {
           "index": 4,
-          "text": "對啊！我當然幫你"
+          "text": "你還沒告訴我？"
         },
         {
           "index": 5,
-          "text": "了不起！不愧是我的好哥們"
+          "text": "不錯！唐三藏當年為了普渡眾生"
         },
         {
           "index": 6,
-          "text": "你現在出去叫所有兄弟進來"
+          "text": "不怕千辛萬苦去取西經"
         },
         {
           "index": 7,
-          "text": "每個人給一道符"
+          "text": "希望藉此經書來感化世人"
         },
         {
           "index": 8,
-          "text": "我回菩提老祖那兒拿乾坤袋來"
+          "text": "滿天神佛都被他這種精神所感動"
         },
         {
           "index": 9,
-          "text": "我們一起抓妖怪"
+          "text": "玉皇大帝眼見如此"
         },
         {
           "index": 10,
-          "text": "沒問題"
+          "text": "因此給孫悟空一個機會轉世"
         },
         {
           "index": 11,
-          "text": "好哥們"
+          "text": "安排他們師徒今世在這裡重逢"
         },
         {
           "index": 12,
-          "text": "你今天的眼神這麼⋯"
+          "text": "繼續去完成取西經的使命"
         },
         {
           "index": 13,
-          "text": "淫蕩嗎？"
+          "text": "為甚麼那麼多妖在這兒出現"
         },
         {
           "index": 14,
-          "text": "對啊"
+          "text": "你明白了"
+        },
+        {
+          "index": 15,
+          "text": "怪不得我長久以來都在做同樣的"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "嘩你句對白不留我講㗎喎"
+          "text": "用自己嘅性命"
         },
         {
           "index": 2,
-          "text": "你同邊個講啊"
+          "text": "回取孫悟空一次重生嘅機會"
         },
         {
           "index": 3,
-          "text": "同佢啦"
+          "text": "希望呢隻猴仔改邪歸正"
         },
         {
           "index": 4,
-          "text": "好話"
+          "text": "唐三藏點解呢度出現你仲未答我喎"
         },
         {
           "index": 5,
-          "text": "我幫你啊"
+          "text": "唔冇錯"
         },
         {
           "index": 6,
-          "text": "冇得頂啊你不愧為我好兄弟"
+          "text": "唐三藏當年為咗補導眾生"
         },
         {
           "index": 7,
-          "text": "吖你而家出去叫咗我"
+          "text": "不怕千辛萬苦去取世經"
         },
         {
           "index": 8,
-          "text": "叫晒啲手足入嚟每人畀到扶佢"
+          "text": "希望藉此經書嚟感化世人滿天神佛都畀佢呢種"
         },
         {
           "index": 9,
-          "text": "我返去蒲堤老祖度攞埋個乾坤袋"
+          "text": "精神所感動嘅"
         },
         {
           "index": 10,
-          "text": ""
+          "text": "玉皇大帝有見及似就畀個機會孫悟空轉世"
         },
         {
           "index": 11,
-          "text": "夾手夾腳捉妖精冇問題"
+          "text": ""
         },
         {
           "index": 12,
-          "text": "好兄弟"
+          "text": "安排佢兩師徒今世喺呢度重逢繼續完成取世經嘅使命"
         },
         {
           "index": 13,
-          "text": "吖"
+          "text": ""
         },
         {
           "index": 14,
-          "text": "今日你啲眼神好似咁淫"
+          "text": "你而家明白點解咁多妖精喺呢度出現呢"
+        },
+        {
+          "index": 15,
+          "text": "哦"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 13
+      "last_owned_index": 12
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 8,
+          "shift": -9
+        },
+        {
+          "index": 11,
+          "shift": 13
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "因此給孫悟空一個機會轉世"
+        },
+        {
+          "index": 2,
+          "text": "安排他們師徒今世在這裡重逢"
+        },
+        {
+          "index": 3,
+          "text": "繼續去完成取西經的使命"
+        },
+        {
+          "index": 4,
+          "text": "為甚麼那麼多妖在這兒出現"
+        },
+        {
+          "index": 5,
+          "text": "你明白了"
+        },
+        {
+          "index": 6,
+          "text": "怪不得我長久以來都在做同樣的"
+        },
+        {
+          "index": 7,
+          "text": "一個惡夢"
+        },
+        {
+          "index": 8,
+          "text": "在一片漆黑孤獨的環境裡頭"
+        },
+        {
+          "index": 9,
+          "text": "一對一對非常迷迷的眼睛"
+        },
+        {
+          "index": 10,
+          "text": "一直盯著我看"
+        },
+        {
+          "index": 11,
+          "text": "看得我都非常不好意思"
+        },
+        {
+          "index": 12,
+          "text": "就是你這種眼神"
+        },
+        {
+          "index": 13,
+          "text": "有好幾次盯得我臉都紅了"
+        },
+        {
+          "index": 14,
+          "text": "原來註定我今天撞妖！"
+        },
+        {
+          "index": 15,
+          "text": "對呀！你今天真是撞妖了"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "玉皇大帝有見及似就畀個機會孫悟空轉世"
+        },
+        {
+          "index": 2,
+          "text": "安排佢兩師徒今世喺呢度重逢"
+        },
+        {
+          "index": 3,
+          "text": "繼續完成取世經嘅使命"
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
+          "index": 5,
+          "text": "你而家明白點解咁多妖精喺呢度出現呢"
+        },
+        {
+          "index": 6,
+          "text": "哦"
+        },
+        {
+          "index": 7,
+          "text": "唔怪得一路以嚟我都發住同佢一個惡夢啦"
+        },
+        {
+          "index": 8,
+          "text": ""
+        },
+        {
+          "index": 9,
+          "text": "喺一片七黑孤獨嘅環境裡頭"
+        },
+        {
+          "index": 10,
+          "text": "有一對一對非常之鹹濕嘅眼睛係噉望住我"
+        },
+        {
+          "index": 11,
+          "text": ""
+        },
+        {
+          "index": 12,
+          "text": "令到我鬼死嘅唔好意思"
+        },
+        {
+          "index": 13,
+          "text": "就係你呢頂眼神"
+        },
+        {
+          "index": 14,
+          "text": "有幾次仲望到我有啲面紅添"
+        },
+        {
+          "index": 15,
+          "text": "原來注定我今日撞妖係啊"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
         {
           "index": 4,
-          "shift": 4
+          "shift": 17
         },
         {
           "index": 5,
-          "shift": 12
+          "shift": 1
         },
         {
           "index": 6,
-          "shift": 16
+          "shift": 13
+        },
+        {
+          "index": 8,
+          "shift": 12
+        },
+        {
+          "index": 9,
+          "shift": 13
+        },
+        {
+          "index": 11,
+          "shift": 10
+        },
+        {
+          "index": 12,
+          "shift": 7
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "一直盯著我看"
+        },
+        {
+          "index": 2,
+          "text": "看得我都非常不好意思"
+        },
+        {
+          "index": 3,
+          "text": "就是你這種眼神"
+        },
+        {
+          "index": 4,
+          "text": "有好幾次盯得我臉都紅了"
+        },
+        {
+          "index": 5,
+          "text": "原來註定我今天撞妖！"
+        },
+        {
+          "index": 6,
+          "text": "對呀！你今天真是撞妖了"
+        },
+        {
+          "index": 7,
+          "text": "這兩個乾坤袋，一疊隱身符"
+        },
+        {
+          "index": 8,
+          "text": "你把符貼在身上，她們就看不到你了"
+        },
+        {
+          "index": 9,
+          "text": "趁她們不注意，你就套在他們頭上"
+        },
+        {
+          "index": 10,
+          "text": "去吧！我在後面掩護你"
+        },
+        {
+          "index": 11,
+          "text": "你這句對白一直都是我說的"
+        },
+        {
+          "index": 12,
+          "text": "你跟誰說的？"
+        },
+        {
+          "index": 13,
+          "text": "跟他"
+        },
+        {
+          "index": 14,
+          "text": "對啊！我當然幫你"
+        },
+        {
+          "index": 15,
+          "text": "了不起！不愧是我的好哥們"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "係噉望住我"
+        },
+        {
+          "index": 2,
+          "text": "令到我鬼死嘅唔好意思"
+        },
+        {
+          "index": 3,
+          "text": "就係你呢頂眼神"
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
+          "index": 5,
+          "text": "有幾次仲望到我有啲面紅添"
+        },
+        {
+          "index": 6,
+          "text": "原來注定我今日撞妖係啊"
+        },
+        {
+          "index": 7,
+          "text": "你今日真係撞妖啊嗱"
+        },
+        {
+          "index": 8,
+          "text": "呢度有兩個乾坤袋一疊隱身符"
+        },
+        {
+          "index": 9,
+          "text": "你一貼咗度符喺身呢佢就睇唔到你㗎喇"
+        },
+        {
+          "index": 10,
+          "text": "後來唔覺意呢你就一粒都落佢個頭嗰度"
+        },
+        {
+          "index": 11,
+          "text": "我喺後面掩護你"
+        },
+        {
+          "index": 12,
+          "text": "嘩"
+        },
+        {
+          "index": 13,
+          "text": "你句對白不留我講㗎喎你同邊個講啊"
+        },
+        {
+          "index": 14,
+          "text": "同佢啦好話"
+        },
+        {
+          "index": 15,
+          "text": "我幫你啊"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 12
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "shift": 12
+        },
+        {
+          "index": 5,
+          "shift": 11
+        },
+        {
+          "index": 6,
+          "shift": 9
         },
         {
           "index": 7,
@@ -9229,26 +9652,201 @@
         },
         {
           "index": 8,
-          "shift": 14
+          "shift": 17
         },
         {
           "index": 9,
-          "shift": 7
+          "shift": 17
         },
         {
           "index": 10,
-          "shift": 10
+          "shift": 6
         },
         {
           "index": 11,
-          "shift": 3
+          "shift": 11
         },
         {
           "index": 12,
-          "shift": 10
+          "shift": 17
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "去吧！我在後面掩護你"
+        },
+        {
+          "index": 2,
+          "text": "你這句對白一直都是我說的"
+        },
+        {
+          "index": 3,
+          "text": "你跟誰說的？"
+        },
+        {
+          "index": 4,
+          "text": "跟他"
+        },
+        {
+          "index": 5,
+          "text": "對啊！我當然幫你"
+        },
+        {
+          "index": 6,
+          "text": "了不起！不愧是我的好哥們"
+        },
+        {
+          "index": 7,
+          "text": "你現在出去叫所有兄弟進來"
+        },
+        {
+          "index": 8,
+          "text": "每個人給一道符"
+        },
+        {
+          "index": 9,
+          "text": "我回菩提老祖那兒拿乾坤袋來"
+        },
+        {
+          "index": 10,
+          "text": "我們一起抓妖怪"
+        },
+        {
+          "index": 11,
+          "text": "沒問題"
+        },
+        {
+          "index": 12,
+          "text": "好哥們"
         },
         {
           "index": 13,
+          "text": "你今天的眼神這麼⋯"
+        },
+        {
+          "index": 14,
+          "text": "淫蕩嗎？"
+        },
+        {
+          "index": 15,
+          "text": "對啊"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "我喺後面掩護"
+        },
+        {
+          "index": 2,
+          "text": "你嘩你句對白不留我講㗎喎"
+        },
+        {
+          "index": 3,
+          "text": "你同邊個講啊同"
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
+          "index": 5,
+          "text": "佢啦好話"
+        },
+        {
+          "index": 6,
+          "text": "我幫你啊"
+        },
+        {
+          "index": 7,
+          "text": "冇得頂啊你不愧為我好兄弟"
+        },
+        {
+          "index": 8,
+          "text": "吖你而家出去叫咗我"
+        },
+        {
+          "index": 9,
+          "text": "叫晒啲手足入嚟每人畀到扶佢"
+        },
+        {
+          "index": 10,
+          "text": "我返去蒲堤老祖度攞埋個乾坤袋"
+        },
+        {
+          "index": 11,
+          "text": ""
+        },
+        {
+          "index": 12,
+          "text": "夾手夾腳捉妖精冇問題"
+        },
+        {
+          "index": 13,
+          "text": "好兄弟"
+        },
+        {
+          "index": 14,
+          "text": "吖"
+        },
+        {
+          "index": 15,
+          "text": "今日你啲眼神好似咁淫"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 14
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "shift": 2
+        },
+        {
+          "index": 5,
+          "shift": 4
+        },
+        {
+          "index": 6,
+          "shift": 12
+        },
+        {
+          "index": 7,
+          "shift": 16
+        },
+        {
+          "index": 8,
+          "shift": 13
+        },
+        {
+          "index": 9,
+          "shift": 14
+        },
+        {
+          "index": 10,
+          "shift": 7
+        },
+        {
+          "index": 11,
+          "shift": 10
+        },
+        {
+          "index": 12,
+          "shift": 4
+        },
+        {
+          "index": 13,
+          "shift": 10
+        },
+        {
+          "index": 14,
           "shift": 10
         }
       ]
@@ -10082,18 +10680,6 @@
         {
           "index": 14,
           "text": "他只不過是中了兩個妖女的移魂大法"
-        },
-        {
-          "index": 15,
-          "text": "放了我！"
-        },
-        {
-          "index": 16,
-          "text": "不然我叫我主人殺了你們"
-        },
-        {
-          "index": 17,
-          "text": "你還敢多！"
         }
       ],
       "targets": [
@@ -10152,22 +10738,10 @@
         {
           "index": 14,
           "text": "咁又唔怪得佢嘅"
-        },
-        {
-          "index": 15,
-          "text": "佢又不過受咗兩個妖女嘅疑魂大發啫"
-        },
-        {
-          "index": 16,
-          "text": ""
-        },
-        {
-          "index": 17,
-          "text": "放咗我如果唔係我叫我主人殺死你"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 14
+      "last_owned_index": 11
     },
     "answer": {
       "changes": [
@@ -10200,6 +10774,10 @@
           "shift": 2
         },
         {
+          "index": 8,
+          "shift": 2
+        },
+        {
           "index": 11,
           "shift": 11
         }
@@ -10212,55 +10790,51 @@
       "guides": [
         {
           "index": 1,
-          "text": "好！"
+          "text": "放開我⋯"
         },
         {
           "index": 2,
-          "text": "這個也不能怪他"
+          "text": "跪下"
         },
         {
           "index": 3,
-          "text": "他只不過是中了兩個妖女的移魂大法"
+          "text": "你這叛徒，今天晚上把你殺了烤來吃"
         },
         {
           "index": 4,
-          "text": "放了我！"
+          "text": "好！"
         },
         {
           "index": 5,
-          "text": "不然我叫我主人殺了你們"
+          "text": "這個也不能怪他"
         },
         {
           "index": 6,
-          "text": "你還敢多！"
+          "text": "他只不過是中了兩個妖女的移魂大法"
         },
         {
           "index": 7,
-          "text": "旺財"
+          "text": "放了我！"
         },
         {
           "index": 8,
-          "text": "你咬著的繩子我怎麼覺得好面熟啊？"
+          "text": "不然我叫我主人殺了你們"
         },
         {
           "index": 9,
-          "text": "奇怪"
+          "text": "你還敢多！"
         },
         {
           "index": 10,
-          "text": "就是我綁乾坤袋條的繩子"
+          "text": "旺財"
         },
         {
           "index": 11,
-          "text": "死老頭"
+          "text": "你咬著的繩子我怎麼覺得好面熟啊？"
         },
         {
           "index": 12,
-          "text": "天堂有路你不走，地獄無門你闖進來"
-        },
-        {
-          "index": 13,
-          "text": "來吧！"
+          "text": "奇怪"
         }
       ],
       "targets": [
@@ -10270,15 +10844,15 @@
         },
         {
           "index": 2,
-          "text": ""
+          "text": "快啲"
         },
         {
           "index": 3,
-          "text": "咁又唔怪得佢嘅"
+          "text": "快啲你條木契今晚我就劏咗你當燒豬食"
         },
         {
           "index": 4,
-          "text": "佢又不過受咗兩個妖女嘅疑魂大發啫"
+          "text": ""
         },
         {
           "index": 5,
@@ -10286,45 +10860,57 @@
         },
         {
           "index": 6,
-          "text": "放咗我如果唔係我叫我主人殺死你"
+          "text": "咁又唔怪得佢嘅"
         },
         {
           "index": 7,
-          "text": "仲唔拼嘴呀嗌你"
+          "text": "佢又不過受咗兩個妖女嘅疑魂大發啫"
         },
         {
           "index": 8,
-          "text": "咦王才"
-        },
-        {
-          "index": 9,
-          "text": "咩你咬住條繩好似甘麵線噉嘅"
-        },
-        {
-          "index": 10,
-          "text": "咪我綁乾坤袋條繩嚟囉"
-        },
-        {
-          "index": 11,
           "text": ""
         },
         {
-          "index": 12,
-          "text": "死嘢鬼"
+          "index": 9,
+          "text": "放咗我如果唔係我叫我主人殺死你"
         },
         {
-          "index": 13,
-          "text": "天堂有路你唔走地獄無門闖進來"
+          "index": 10,
+          "text": "仲唔拼嘴呀嗌你"
+        },
+        {
+          "index": 11,
+          "text": "咦王才"
+        },
+        {
+          "index": 12,
+          "text": "咩你咬住條繩好似甘麵線噉嘅"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 10
+      "last_owned_index": 9
     },
     "answer": {
       "changes": [
         {
+          "index": 5,
+          "shift": 7
+        },
+        {
           "index": 6,
-          "shift": -12
+          "shift": 16
+        },
+        {
+          "index": 7,
+          "shift": 3
+        },
+        {
+          "index": 8,
+          "shift": 15
+        },
+        {
+          "index": 9,
+          "shift": 7
         }
       ]
     },
@@ -10335,81 +10921,77 @@
       "guides": [
         {
           "index": 1,
-          "text": "你咬著的繩子我怎麼覺得好面熟啊？"
+          "text": "放了我！"
         },
         {
           "index": 2,
-          "text": "奇怪"
+          "text": "不然我叫我主人殺了你們"
         },
         {
           "index": 3,
-          "text": "就是我綁乾坤袋條的繩子"
+          "text": "你還敢多！"
         },
         {
           "index": 4,
-          "text": "死老頭"
+          "text": "旺財"
         },
         {
           "index": 5,
-          "text": "天堂有路你不走，地獄無門你闖進來"
+          "text": "你咬著的繩子我怎麼覺得好面熟啊？"
         },
         {
           "index": 6,
-          "text": "來吧！"
+          "text": "奇怪"
         },
         {
           "index": 7,
-          "text": "讓我掐死你個托世孫悟空"
+          "text": "就是我綁乾坤袋條的繩子"
         },
         {
           "index": 8,
-          "text": "你就永遠都找不到唐三藏了"
+          "text": "死老頭"
         },
         {
           "index": 9,
-          "text": "甚麼？"
+          "text": "天堂有路你不走，地獄無門你闖進來"
         },
         {
           "index": 10,
-          "text": "他是孫悟空？"
+          "text": "來吧！"
         },
         {
           "index": 11,
-          "text": "你要暫時冒充啊"
+          "text": "讓我掐死你個托世孫悟空"
         },
         {
           "index": 12,
-          "text": "不然我們就完蛋去了"
+          "text": "你就永遠都找不到唐三藏了"
         },
         {
           "index": 13,
-          "text": "他不是孫悟空"
+          "text": "甚麼？"
         },
         {
           "index": 14,
-          "text": "他連我三味白骨火都受不了"
+          "text": "他是孫悟空？"
         },
         {
           "index": 15,
-          "text": "怎麼會是孫悟空呢？"
-        },
-        {
-          "index": 16,
-          "text": "玩笑開大了吧？"
+          "text": "你要暫時冒充啊"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "咦王才"
+          "text": "放咗我"
         },
         {
           "index": 2,
-          "text": "咩你咬住條繩好似甘麵線噉嘅"
+          "text": "如果唔係我叫我主人殺死你"
         },
         {
           "index": 3,
-          "text": "咪我綁乾坤袋條繩嚟囉"
+          "text": "仲唔拼嘴呀嗌你"
         },
         {
           "index": 4,
@@ -10417,61 +10999,81 @@
         },
         {
           "index": 5,
-          "text": "死嘢鬼"
+          "text": "咦王才"
         },
         {
           "index": 6,
-          "text": "天堂有路你唔走地獄無門闖進來"
+          "text": "咩你咬住條繩好似甘麵線噉嘅"
         },
         {
           "index": 7,
-          "text": "嚟呀"
+          "text": "咪我綁乾坤袋條繩嚟囉"
         },
         {
           "index": 8,
-          "text": "等我擬死你個托世孫悟空"
-        },
-        {
-          "index": 9,
-          "text": "你就永遠都搵唔到唐三藏㗎喇"
-        },
-        {
-          "index": 10,
-          "text": "咩話"
-        },
-        {
-          "index": 11,
-          "text": "佢孫悟空嚟呀"
-        },
-        {
-          "index": 12,
-          "text": "幾解都認孫悟空㗎"
-        },
-        {
-          "index": 13,
           "text": ""
         },
         {
+          "index": 9,
+          "text": "死嘢鬼"
+        },
+        {
+          "index": 10,
+          "text": "天堂有路你唔走地獄無門闖進來"
+        },
+        {
+          "index": 11,
+          "text": "嚟呀"
+        },
+        {
+          "index": 12,
+          "text": "等我擬死你個托世孫悟空"
+        },
+        {
+          "index": 13,
+          "text": "你就永遠都搵唔到唐三藏㗎喇"
+        },
+        {
           "index": 14,
-          "text": "唔係就一鑊熟㗎喇"
+          "text": "咩話"
         },
         {
           "index": 15,
-          "text": "佢唔係孫悟空"
-        },
-        {
-          "index": 16,
-          "text": "佢連我三味白骨火都頂唔住"
+          "text": "佢孫悟空嚟呀"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 13
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
         {
           "index": 4,
           "shift": 3
+        },
+        {
+          "index": 5,
+          "shift": 13
+        },
+        {
+          "index": 8,
+          "shift": 3
+        },
+        {
+          "index": 9,
+          "shift": 14
+        },
+        {
+          "index": 10,
+          "shift": 2
+        },
+        {
+          "index": 11,
+          "shift": 11
+        },
+        {
+          "index": 12,
+          "shift": 13
         }
       ]
     },
@@ -10482,85 +11084,232 @@
       "guides": [
         {
           "index": 1,
-          "text": "你要暫時冒充啊"
+          "text": "來吧！"
         },
         {
           "index": 2,
-          "text": "不然我們就完蛋去了"
+          "text": "讓我掐死你個托世孫悟空"
         },
         {
           "index": 3,
-          "text": "他不是孫悟空"
+          "text": "你就永遠都找不到唐三藏了"
         },
         {
           "index": 4,
-          "text": "他連我三味白骨火都受不了"
+          "text": "甚麼？"
         },
         {
           "index": 5,
-          "text": "怎麼會是孫悟空呢？"
+          "text": "他是孫悟空？"
         },
         {
           "index": 6,
-          "text": "玩笑開大了吧？"
+          "text": "你要暫時冒充啊"
         },
         {
           "index": 7,
-          "text": "這種天機你也敢洩露出來？"
+          "text": "不然我們就完蛋去了"
         },
         {
           "index": 8,
-          "text": "你瘋了嗎？"
+          "text": "他不是孫悟空"
         },
         {
           "index": 9,
-          "text": "這一邊"
+          "text": "他連我三味白骨火都受不了"
         },
         {
           "index": 10,
-          "text": "你算是個神仙嗎你"
+          "text": "怎麼會是孫悟空呢？"
         },
         {
           "index": 11,
-          "text": "把手拿過來"
+          "text": "玩笑開大了吧？"
         },
         {
           "index": 12,
-          "text": "過份⋯"
+          "text": "這種天機你也敢洩露出來？"
         },
         {
           "index": 13,
-          "text": "你以為我真的怕你的三味白骨火嗎？"
+          "text": "你瘋了嗎？"
         },
         {
           "index": 14,
+          "text": "這一邊"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "嚟呀"
+        },
+        {
+          "index": 2,
+          "text": "等我擬死你個托世孫悟空"
+        },
+        {
+          "index": 3,
+          "text": "你就永遠都搵唔到唐三藏㗎喇"
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
+          "index": 5,
+          "text": "咩話"
+        },
+        {
+          "index": 6,
+          "text": "佢孫悟空嚟呀"
+        },
+        {
+          "index": 7,
+          "text": "幾解都認孫悟空㗎"
+        },
+        {
+          "index": 8,
+          "text": ""
+        },
+        {
+          "index": 9,
+          "text": "唔係就一鑊熟㗎喇"
+        },
+        {
+          "index": 10,
+          "text": "佢唔係孫悟空"
+        },
+        {
+          "index": 11,
+          "text": "佢連我三味白骨火都頂唔住"
+        },
+        {
+          "index": 12,
+          "text": "點會係孫悟空啊"
+        },
+        {
+          "index": 13,
+          "text": "豈有此理"
+        },
+        {
+          "index": 14,
+          "text": "噉嘅天機你一時露出嚟㗎"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 11
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "shift": 2
+        },
+        {
+          "index": 5,
+          "shift": 6
+        },
+        {
+          "index": 6,
+          "shift": 8
+        },
+        {
+          "index": 7,
+          "shift": 8
+        },
+        {
+          "index": 8,
+          "shift": 14
+        },
+        {
+          "index": 9,
+          "shift": 18
+        },
+        {
+          "index": 10,
+          "shift": 19
+        },
+        {
+          "index": 11,
+          "shift": 7
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "他連我三味白骨火都受不了"
+        },
+        {
+          "index": 2,
+          "text": "怎麼會是孫悟空呢？"
+        },
+        {
+          "index": 3,
+          "text": "玩笑開大了吧？"
+        },
+        {
+          "index": 4,
+          "text": "這種天機你也敢洩露出來？"
+        },
+        {
+          "index": 5,
+          "text": "你瘋了嗎？"
+        },
+        {
+          "index": 6,
+          "text": "這一邊"
+        },
+        {
+          "index": 7,
+          "text": "你算是個神仙嗎你"
+        },
+        {
+          "index": 8,
+          "text": "把手拿過來"
+        },
+        {
+          "index": 9,
+          "text": "過份⋯"
+        },
+        {
+          "index": 10,
+          "text": "你以為我真的怕你的三味白骨火嗎？"
+        },
+        {
+          "index": 11,
           "text": "你再燒一次試試看"
         },
         {
-          "index": 15,
+          "index": 12,
           "text": "來真的？"
         },
         {
-          "index": 16,
+          "index": 13,
           "text": "好！"
         },
         {
-          "index": 17,
+          "index": 14,
           "text": "我不怕啦！對不對？"
         },
         {
-          "index": 18,
+          "index": 15,
           "text": "對啊！"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "佢孫悟空嚟呀"
+          "text": "佢連我三味白骨火都頂唔住"
         },
         {
           "index": 2,
-          "text": "幾解都認孫悟空㗎"
+          "text": "點會係孫悟空啊"
         },
         {
           "index": 3,
@@ -10568,124 +11317,100 @@
         },
         {
           "index": 4,
-          "text": "唔係就一鑊熟㗎喇"
-        },
-        {
-          "index": 5,
-          "text": "佢唔係孫悟空"
-        },
-        {
-          "index": 6,
-          "text": "佢連我三味白骨火都頂唔住"
-        },
-        {
-          "index": 7,
-          "text": "點會係孫悟空啊"
-        },
-        {
-          "index": 8,
-          "text": "豈有此理"
-        },
-        {
-          "index": 9,
-          "text": "噉嘅天機你一時露出嚟㗎"
-        },
-        {
-          "index": 10,
-          "text": "係咪呢邊呀"
-        },
-        {
-          "index": 11,
-          "text": "你仲算係神仙嚟㗎你"
-        },
-        {
-          "index": 12,
-          "text": "放手嚟呀你"
-        },
-        {
-          "index": 13,
-          "text": "過分呀你哎呀"
-        },
-        {
-          "index": 14,
-          "text": "呢份我真係拍你三味白骨火呀"
-        },
-        {
-          "index": 15,
           "text": ""
         },
         {
-          "index": 16,
+          "index": 5,
+          "text": "豈有此理"
+        },
+        {
+          "index": 6,
+          "text": "噉嘅天機你一時露出嚟㗎"
+        },
+        {
+          "index": 7,
+          "text": "係咪呢邊呀"
+        },
+        {
+          "index": 8,
+          "text": "你仲算係神仙嚟㗎你"
+        },
+        {
+          "index": 9,
+          "text": "放手嚟呀你"
+        },
+        {
+          "index": 10,
+          "text": "過分呀你哎呀"
+        },
+        {
+          "index": 11,
+          "text": "呢份我真係拍你三味白骨火呀"
+        },
+        {
+          "index": 12,
+          "text": ""
+        },
+        {
+          "index": 13,
           "text": "你再燒多次睇下唔係又呀"
         },
         {
-          "index": 17,
+          "index": 14,
           "text": "好呀啊"
         },
         {
-          "index": 18,
+          "index": 15,
           "text": "我唔怕喇係咪呀"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 17
+      "last_owned_index": 14
     },
     "answer": {
       "changes": [
         {
           "index": 4,
-          "shift": 18
-        },
-        {
-          "index": 5,
-          "shift": 19
-        },
-        {
-          "index": 6,
-          "shift": 11
-        },
-        {
-          "index": 7,
           "shift": 15
         },
         {
-          "index": 8,
+          "index": 5,
           "shift": 11
         },
         {
-          "index": 9,
+          "index": 6,
           "shift": 6
         },
         {
-          "index": 10,
+          "index": 7,
           "shift": 9
         },
         {
-          "index": 11,
-          "shift": 6
+          "index": 8,
+          "shift": 5
         },
         {
-          "index": 12,
-          "shift": 6
+          "index": 9,
+          "shift": 7
         },
         {
-          "index": 13,
+          "index": 10,
           "shift": 13
         },
         {
-          "index": 14,
+          "index": 11,
           "shift": 11
         },
         {
-          "index": 15,
+          "index": 12,
           "shift": 11
         },
         {
-          "index": 16,
+          "index": 13,
           "shift": 3
         },
         {
-          "index": 17,
+          "index": 14,
           "shift": 7
         }
       ]
@@ -10872,8 +11597,12 @@
           "shift": 2
         },
         {
-          "index": 4,
+          "index": 3,
           "shift": 7
+        },
+        {
+          "index": 4,
+          "shift": 11
         },
         {
           "index": 5,
@@ -11056,7 +11785,7 @@
         },
         {
           "index": 12,
-          "shift": 1
+          "shift": 5
         }
       ]
     },
@@ -11619,7 +12348,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11730,7 +12460,7 @@
       "changes": [
         {
           "index": 4,
-          "shift": 8
+          "shift": 9
         },
         {
           "index": 5,
@@ -11742,15 +12472,19 @@
         },
         {
           "index": 7,
-          "shift": 10
+          "shift": 9
+        },
+        {
+          "index": 8,
+          "shift": 20
         },
         {
           "index": 9,
-          "shift": 3
+          "shift": 2
         },
         {
           "index": 10,
-          "shift": 5
+          "shift": 4
         },
         {
           "index": 11,
@@ -12126,6 +12860,14 @@
         {
           "index": 11,
           "text": "你瘋啦"
+        },
+        {
+          "index": 12,
+          "text": "我是你的幫主呀，臭猴子！"
+        },
+        {
+          "index": 13,
+          "text": "我是瘋了"
         }
       ],
       "targets": [
@@ -12172,16 +12914,32 @@
         {
           "index": 11,
           "text": "盤獅洞"
+        },
+        {
+          "index": 12,
+          "text": "行啦,小馬騮"
+        },
+        {
+          "index": 13,
+          "text": "傻咗呀你,我係你幫主呀"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 8
+      "last_owned_index": 10
     },
     "answer": {
       "changes": [
         {
           "index": 2,
           "shift": 6
+        },
+        {
+          "index": 3,
+          "shift": 4
+        },
+        {
+          "index": 4,
+          "shift": 3
         },
         {
           "index": 5,
@@ -12198,6 +12956,14 @@
         {
           "index": 8,
           "shift": 18
+        },
+        {
+          "index": 9,
+          "shift": 3
+        },
+        {
+          "index": 10,
+          "shift": 9
         }
       ]
     },
@@ -12208,81 +12974,73 @@
       "guides": [
         {
           "index": 1,
-          "text": "對！"
-        },
-        {
-          "index": 2,
-          "text": "我主人是盤絲大仙座下大弟子蜘蛛精"
-        },
-        {
-          "index": 3,
           "text": "這裡不是盤絲洞是甚麼？"
         },
         {
-          "index": 4,
+          "index": 2,
           "text": "盤絲洞？"
         },
         {
-          "index": 5,
+          "index": 3,
           "text": "走吧，臭猴子！"
         },
         {
-          "index": 6,
+          "index": 4,
           "text": "你瘋啦"
         },
         {
-          "index": 7,
+          "index": 5,
           "text": "我是你的幫主呀，臭猴子！"
         },
         {
-          "index": 8,
+          "index": 6,
           "text": "我是瘋了"
         },
         {
-          "index": 9,
+          "index": 7,
           "text": "可是你還在裝傻"
         },
         {
-          "index": 10,
+          "index": 8,
           "text": "在山寨已經承認了"
         },
         {
-          "index": 11,
+          "index": 9,
           "text": "自己是齊天大聖了嘛"
         },
         {
-          "index": 12,
+          "index": 10,
           "text": "走吧"
         },
         {
-          "index": 13,
+          "index": 11,
           "text": "你聰明點"
         },
         {
-          "index": 14,
+          "index": 12,
           "text": "我是被逼暫時假裝的"
         },
         {
-          "index": 15,
+          "index": 13,
           "text": "不相信你拿個照妖鏡看看我是不是？"
         },
         {
-          "index": 16,
+          "index": 14,
           "text": "照妖鏡？"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "係,"
+          "text": "呢度唔係盤獅洞係咩"
         },
         {
           "index": 2,
-          "text": "我主人係盤獅大仙座下大弟子,知珠貞"
+          "text": "盤獅洞"
         },
         {
           "index": 3,
-          "text": "呢度唔係盤獅洞係咩"
+          "text": "行啦,小馬騮"
         },
         {
           "index": 4,
@@ -12294,19 +13052,19 @@
         },
         {
           "index": 6,
-          "text": "盤獅洞"
-        },
-        {
-          "index": 7,
-          "text": "行啦,小馬騮"
-        },
-        {
-          "index": 8,
           "text": "傻咗呀你,我係你幫主呀"
         },
         {
-          "index": 9,
+          "index": 7,
           "text": ""
+        },
+        {
+          "index": 8,
+          "text": ""
+        },
+        {
+          "index": 9,
+          "text": "我就是傻咗,你仲假底"
         },
         {
           "index": 10,
@@ -12314,7 +13072,7 @@
         },
         {
           "index": 11,
-          "text": "我就是傻咗,你仲假底"
+          "text": "你生製已經成咗自己係齊天大聖嘅喇嘛"
         },
         {
           "index": 12,
@@ -12322,72 +13080,56 @@
         },
         {
           "index": 13,
-          "text": "你生製已經成咗自己係齊天大聖嘅喇嘛"
-        },
-        {
-          "index": 14,
-          "text": ""
-        },
-        {
-          "index": 15,
           "text": "行啦你搵次聖啲啦,我局住認嘅咋嘛"
         },
         {
-          "index": 16,
+          "index": 14,
           "text": "唔信你用我照鏡睇下我係咪"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 15
+      "last_owned_index": 13
     },
     "answer": {
       "changes": [
         {
           "index": 4,
-          "shift": 3
+          "shift": 4
         },
         {
           "index": 5,
-          "shift": 9
-        },
-        {
-          "index": 6,
-          "shift": 10
-        },
-        {
-          "index": 7,
           "shift": 11
         },
         {
-          "index": 8,
+          "index": 6,
           "shift": 5
         },
         {
-          "index": 9,
-          "shift": 9
+          "index": 7,
+          "shift": 10
         },
         {
-          "index": 10,
-          "shift": 16
-        },
-        {
-          "index": 11,
-          "shift": 7
-        },
-        {
-          "index": 12,
+          "index": 8,
           "shift": 17
         },
         {
-          "index": 13,
-          "shift": 2
+          "index": 9,
+          "shift": 17
         },
         {
-          "index": 14,
+          "index": 10,
+          "shift": 19
+        },
+        {
+          "index": 11,
+          "shift": 8
+        },
+        {
+          "index": 12,
           "shift": 16
         },
         {
-          "index": 15,
+          "index": 13,
           "shift": 12
         }
       ]
@@ -12456,14 +13198,6 @@
         {
           "index": 15,
           "text": "好大的誤會呀"
-        },
-        {
-          "index": 16,
-          "text": "這個誤會大到怎樣？"
-        },
-        {
-          "index": 17,
-          "text": "我偷偷地跟你們說"
         }
       ],
       "targets": [
@@ -12526,18 +13260,10 @@
         {
           "index": 15,
           "text": "馬騮精"
-        },
-        {
-          "index": 16,
-          "text": "唉好大嘅誤會啊各位"
-        },
-        {
-          "index": 17,
-          "text": ""
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 14
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
@@ -12547,7 +13273,7 @@
         },
         {
           "index": 2,
-          "shift": 4
+          "shift": 3
         },
         {
           "index": 3,
@@ -12559,7 +13285,7 @@
         },
         {
           "index": 5,
-          "shift": 5
+          "shift": 6
         },
         {
           "index": 6,
@@ -12587,15 +13313,7 @@
         },
         {
           "index": 12,
-          "shift": 5
-        },
-        {
-          "index": 13,
-          "shift": 10
-        },
-        {
-          "index": 14,
-          "shift": 3
+          "shift": 6
         }
       ]
     },
@@ -12606,81 +13324,73 @@
       "guides": [
         {
           "index": 1,
+          "text": "我保證你無事"
+        },
+        {
+          "index": 2,
+          "text": "主人！"
+        },
+        {
+          "index": 3,
           "text": "主人呀！"
         },
         {
-          "index": 2,
+          "index": 4,
           "text": "主人呀！臭猴子來了"
         },
         {
-          "index": 3,
+          "index": 5,
           "text": "唐三藏究竟在哪裡？臭猴子"
         },
         {
-          "index": 4,
+          "index": 6,
           "text": "好大的誤會呀"
         },
         {
-          "index": 5,
+          "index": 7,
           "text": "這個誤會大到怎樣？"
         },
         {
-          "index": 6,
+          "index": 8,
           "text": "我偷偷地跟你們說"
         },
         {
-          "index": 7,
+          "index": 9,
           "text": "我真是屬猴，不過其實就不是猴子"
         },
         {
-          "index": 8,
+          "index": 10,
           "text": "不用說了！"
         },
         {
-          "index": 9,
+          "index": 11,
           "text": "我照妖鏡又有，什麼都有"
         },
         {
-          "index": 10,
+          "index": 12,
           "text": "你用來照照看"
         },
         {
-          "index": 11,
+          "index": 13,
           "text": "假的，假的"
         },
         {
-          "index": 12,
-          "text": "假的你都也敢⋯"
-        },
-        {
-          "index": 13,
-          "text": "你不要再裝蒜呀"
-        },
-        {
           "index": 14,
-          "text": "如果我真是孫悟空"
-        },
-        {
-          "index": 15,
-          "text": "我就不會被你咬住隻手"
-        },
-        {
-          "index": 16,
-          "text": "一個跟斗飛上天"
+          "text": "假的你都也敢⋯"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "主人啊"
+          "text": "我擔保你冇事"
         },
         {
           "index": 2,
-          "text": "主人啊佢死返到嚟咗啦"
+          "text": "主人"
         },
         {
           "index": 3,
-          "text": "韓三藏究竟喺邊啊馬騮精"
+          "text": "主人啊主"
         },
         {
           "index": 4,
@@ -12688,55 +13398,47 @@
         },
         {
           "index": 5,
+          "text": "人啊佢死返到嚟咗啦韓三藏究竟喺邊啊"
+        },
+        {
+          "index": 6,
+          "text": "馬騮精"
+        },
+        {
+          "index": 7,
           "text": "唉好大嘅誤會啊各位"
         },
         {
-          "index": 6,
-          "text": ""
-        },
-        {
-          "index": 7,
-          "text": "你個誤會大到點啊"
-        },
-        {
           "index": 8,
-          "text": "我就應該講啊"
+          "text": ""
         },
         {
           "index": 9,
-          "text": "我確係熟口嘅"
+          "text": "你個誤會大到點啊"
         },
         {
           "index": 10,
-          "text": "不過查實就唔係馬騮精嚟"
+          "text": "我就應該講啊"
         },
         {
           "index": 11,
-          "text": "講都廢事啊"
+          "text": "我確係熟口嘅"
         },
         {
           "index": 12,
-          "text": "我只好記下有咩嘢都有你攞嚟照下嘅"
+          "text": "不過查實就唔係馬騮精嚟"
         },
         {
           "index": 13,
-          "text": "假嘅"
+          "text": "講都廢事啊"
         },
         {
           "index": 14,
-          "text": "假嘅假嘅假嘅你都唔好做大嘢"
-        },
-        {
-          "index": 15,
-          "text": ""
-        },
-        {
-          "index": 16,
-          "text": "如果我真係輸完嗰個"
+          "text": "我只好記下有咩嘢都有你攞嚟照下嘅"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 13
+      "last_owned_index": 11
     },
     "answer": {
       "changes": [
@@ -12746,35 +13448,15 @@
         },
         {
           "index": 5,
-          "shift": 8
+          "shift": 3
         },
         {
           "index": 6,
-          "shift": 14
+          "shift": 1
         },
         {
           "index": 7,
-          "shift": 17
-        },
-        {
-          "index": 9,
-          "shift": 25
-        },
-        {
-          "index": 10,
-          "shift": 21
-        },
-        {
-          "index": 11,
-          "shift": 22
-        },
-        {
-          "index": 12,
-          "shift": 15
-        },
-        {
-          "index": 13,
-          "shift": 13
+          "shift": 10
         }
       ]
     },
@@ -12785,131 +13467,167 @@
       "guides": [
         {
           "index": 1,
-          "text": "假的，假的"
+          "text": "我真是屬猴，不過其實就不是猴子"
         },
         {
           "index": 2,
-          "text": "假的你都也敢⋯"
+          "text": "不用說了！"
         },
         {
           "index": 3,
-          "text": "你不要再裝蒜呀"
+          "text": "我照妖鏡又有，什麼都有"
         },
         {
           "index": 4,
-          "text": "如果我真是孫悟空"
+          "text": "你用來照照看"
         },
         {
           "index": 5,
-          "text": "我就不會被你咬住隻手"
+          "text": "假的，假的"
         },
         {
           "index": 6,
-          "text": "一個跟斗飛上天"
+          "text": "假的你都也敢⋯"
         },
         {
           "index": 7,
-          "text": "然後在你們天靈蓋拉個屎"
+          "text": "你不要再裝蒜呀"
         },
         {
           "index": 8,
-          "text": "你現在沒變真身"
+          "text": "如果我真是孫悟空"
         },
         {
           "index": 9,
-          "text": "到時你以為你不會"
+          "text": "我就不會被你咬住隻手"
         },
         {
           "index": 10,
-          "text": "怎麼樣？師妹"
+          "text": "一個跟斗飛上天"
         },
         {
           "index": 11,
-          "text": "心痛呀？"
+          "text": "然後在你們天靈蓋拉個屎"
         },
         {
           "index": 12,
-          "text": "不是呀！"
+          "text": "你現在沒變真身"
+        },
+        {
+          "index": 13,
+          "text": "到時你以為你不會"
+        },
+        {
+          "index": 14,
+          "text": "怎麼樣？師妹"
+        },
+        {
+          "index": 15,
+          "text": "心痛呀？"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "假嘅假嘅假嘅"
+          "text": ""
         },
         {
           "index": 2,
-          "text": "假嘅你都唔好做大嘢"
+          "text": "應該講啊"
         },
         {
           "index": 3,
-          "text": ""
+          "text": "我確係熟口嘅"
         },
         {
           "index": 4,
-          "text": ""
+          "text": "不過查實就唔係馬騮精嚟"
         },
         {
           "index": 5,
-          "text": ""
+          "text": "講都廢事啊"
         },
         {
           "index": 6,
-          "text": "如果我真係輸完嗰個"
+          "text": "我只好記下有咩嘢都有你攞嚟照下嘅"
         },
         {
           "index": 7,
-          "text": "我使喺度畀你咬住手咩"
+          "text": "假嘅"
         },
         {
           "index": 8,
-          "text": "一個關頭打上天"
+          "text": "假嘅假嘅假嘅你都唔好做大嘢"
         },
         {
           "index": 9,
-          "text": "一人我都屎落你天靈蓋啦"
+          "text": ""
         },
         {
           "index": 10,
-          "text": "你而家未變真身啫到時你放嚟唔噩哎"
+          "text": "如果我真係輸完嗰個"
         },
         {
           "index": 11,
-          "text": "啊啊"
+          "text": "我使喺度畀你咬住手咩"
         },
         {
           "index": 12,
-          "text": "點啊師妹"
+          "text": "一個關頭打上天"
+        },
+        {
+          "index": 13,
+          "text": "一人我都屎落你天靈蓋啦"
+        },
+        {
+          "index": 14,
+          "text": "你而家未變真身啫到時你放嚟唔噩哎"
+        },
+        {
+          "index": 15,
+          "text": "啊啊"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 9
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
         {
           "index": 4,
-          "shift": 9
+          "shift": 21
         },
         {
           "index": 5,
-          "shift": 19
+          "shift": 22
         },
         {
           "index": 6,
-          "shift": 17
+          "shift": 18
         },
         {
           "index": 7,
-          "shift": 18
+          "shift": 16
         },
         {
           "index": 8,
-          "shift": 18
+          "shift": 9
         },
         {
           "index": 9,
-          "shift": 16
+          "shift": 19
+        },
+        {
+          "index": 10,
+          "shift": 17
+        },
+        {
+          "index": 11,
+          "shift": 18
+        },
+        {
+          "index": 12,
+          "shift": 11
         }
       ]
     },
@@ -12920,73 +13638,77 @@
       "guides": [
         {
           "index": 1,
-          "text": "然後在你們天靈蓋拉個屎"
+          "text": "一個跟斗飛上天"
         },
         {
           "index": 2,
-          "text": "你現在沒變真身"
+          "text": "然後在你們天靈蓋拉個屎"
         },
         {
           "index": 3,
-          "text": "到時你以為你不會"
+          "text": "你現在沒變真身"
         },
         {
           "index": 4,
-          "text": "怎麼樣？師妹"
+          "text": "到時你以為你不會"
         },
         {
           "index": 5,
-          "text": "心痛呀？"
+          "text": "怎麼樣？師妹"
         },
         {
           "index": 6,
-          "text": "不是呀！"
+          "text": "心痛呀？"
         },
         {
           "index": 7,
-          "text": "不是？"
+          "text": "不是呀！"
         },
         {
           "index": 8,
-          "text": "我不會再為這個男人心痛"
+          "text": "不是？"
         },
         {
           "index": 9,
-          "text": "你欺騙我！"
+          "text": "我不會再為這個男人心痛"
         },
         {
           "index": 10,
-          "text": "師姐，我沒有騙你"
+          "text": "你欺騙我！"
         },
         {
           "index": 11,
-          "text": "沒有騙我？那你一劍殺了他吧"
+          "text": "師姐，我沒有騙你"
         },
         {
           "index": 12,
-          "text": "殺了他"
+          "text": "沒有騙我？那你一劍殺了他吧"
         },
         {
           "index": 13,
-          "text": "那你不想找唐三藏嗎？"
+          "text": "殺了他"
         },
         {
           "index": 14,
+          "text": "那你不想找唐三藏嗎？"
+        },
+        {
+          "index": 15,
           "text": "想呀！但是我不相信你會一劍殺了他"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "一人我都屎落你天靈蓋啦"
+          "text": "一個關頭打上天"
         },
         {
           "index": 2,
-          "text": "你而家未變真身"
+          "text": "一人我都屎落你天靈蓋啦"
         },
         {
           "index": 3,
-          "text": "啫到時你放嚟唔噩哎"
+          "text": ""
         },
         {
           "index": 4,
@@ -12994,88 +13716,96 @@
         },
         {
           "index": 5,
-          "text": "啊啊"
+          "text": "你而家未變真身啫到時你放嚟唔噩哎"
         },
         {
           "index": 6,
-          "text": "點啊師妹"
+          "text": "啊啊"
         },
         {
           "index": 7,
-          "text": "心痛啊"
+          "text": "點啊師妹"
         },
         {
           "index": 8,
-          "text": "唔係啊唔係"
+          "text": "心痛啊"
         },
         {
           "index": 9,
-          "text": "我唔會再為呢個男人心痛"
+          "text": "唔係啊唔係"
         },
         {
           "index": 10,
-          "text": "你呃我"
+          "text": "我唔會再為呢個男人心痛"
         },
         {
           "index": 11,
-          "text": "師姐我冇呃你"
+          "text": "你呃我"
         },
         {
           "index": 12,
-          "text": "冇呃我嘅"
+          "text": "師姐我冇呃你"
         },
         {
           "index": 13,
-          "text": "咁你都見殺咗佢啊喂殺咗佢"
+          "text": "冇呃我嘅"
         },
         {
           "index": 14,
+          "text": "咁你都見殺咗佢啊喂殺咗佢"
+        },
+        {
+          "index": 15,
           "text": "咁你唔想揾唐三藏想啊"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 13
+      "last_owned_index": 14
     },
     "answer": {
       "changes": [
         {
           "index": 4,
-          "shift": 6
+          "shift": 18
         },
         {
           "index": 5,
-          "shift": 7
+          "shift": 6
         },
         {
           "index": 6,
-          "shift": 6
+          "shift": 7
         },
         {
           "index": 7,
-          "shift": 5
-        },
-        {
-          "index": 8,
-          "shift": 11
-        },
-        {
-          "index": 9,
           "shift": 3
         },
         {
+          "index": 8,
+          "shift": 5
+        },
+        {
+          "index": 9,
+          "shift": 11
+        },
+        {
           "index": 10,
-          "shift": 6
+          "shift": 3
         },
         {
           "index": 11,
-          "shift": 14
+          "shift": 6
         },
         {
           "index": 12,
-          "shift": 12
+          "shift": 13
         },
         {
           "index": 13,
+          "shift": 12
+        },
+        {
+          "index": 14,
           "shift": 8
         }
       ]
@@ -13332,22 +14062,6 @@
         {
           "index": 9,
           "text": "臭猴子，你敢罵我！"
-        },
-        {
-          "index": 10,
-          "text": "我就罵你怎麼樣？"
-        },
-        {
-          "index": 11,
-          "text": "你別以為躲在裡面很安全"
-        },
-        {
-          "index": 12,
-          "text": "今天是十五月圓之夜"
-        },
-        {
-          "index": 13,
-          "text": "到時候她屍變，你死得難看"
         }
       ],
       "targets": [
@@ -13386,26 +14100,10 @@
         {
           "index": 9,
           "text": "到佢回復真身之後咪又唔理你"
-        },
-        {
-          "index": 10,
-          "text": "講完咪阿八婆啊"
-        },
-        {
-          "index": 11,
-          "text": "死馬嘍你個八婆吹呀八婆"
-        },
-        {
-          "index": 12,
-          "text": ""
-        },
-        {
-          "index": 13,
-          "text": "你咪懶得斥以後躲埋我裏面好安全今晚係十五月完事"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 12
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
@@ -13432,35 +14130,129 @@
         {
           "index": 6,
           "shift": 23
-        },
-        {
-          "index": 7,
-          "shift": 20
-        },
-        {
-          "index": 8,
-          "shift": 20
-        },
-        {
-          "index": 9,
-          "shift": 14
-        },
-        {
-          "index": 10,
-          "shift": 11
-        },
-        {
-          "index": 11,
-          "shift": 15
-        },
-        {
-          "index": 12,
-          "shift": 23
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "都被他搞壞了"
+        },
+        {
+          "index": 2,
+          "text": "他現在還沒本事"
+        },
+        {
+          "index": 3,
+          "text": "等他回復真身之後"
+        },
+        {
+          "index": 4,
+          "text": "一樣不理你的"
+        },
+        {
+          "index": 5,
+          "text": "你他媽的有完沒完啊？"
+        },
+        {
+          "index": 6,
+          "text": "臭猴子，你敢罵我！"
+        },
+        {
+          "index": 7,
+          "text": "我就罵你怎麼樣？"
+        },
+        {
+          "index": 8,
+          "text": "你別以為躲在裡面很安全"
+        },
+        {
+          "index": 9,
+          "text": "今天是十五月圓之夜"
+        },
+        {
+          "index": 10,
+          "text": "到時候她屍變，你死得難看"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "都係畀佢炒鑊嘅啫"
+        },
+        {
+          "index": 2,
+          "text": "佢而家未有本事"
+        },
+        {
+          "index": 3,
+          "text": "到佢回復真身之後"
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
+          "index": 5,
+          "text": ""
+        },
+        {
+          "index": 6,
+          "text": "咪又唔理你"
+        },
+        {
+          "index": 7,
+          "text": "講完咪阿八婆啊"
+        },
+        {
+          "index": 8,
+          "text": "死馬嘍你個八婆吹呀八婆"
+        },
+        {
+          "index": 9,
+          "text": ""
+        },
+        {
+          "index": 10,
+          "text": "你咪懶得斥以後躲埋我裏面好安全今晚係十五月完事"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 9
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "shift": 5
+        },
+        {
+          "index": 5,
+          "shift": 12
+        },
+        {
+          "index": 6,
+          "shift": 14
+        },
+        {
+          "index": 7,
+          "shift": 11
+        },
+        {
+          "index": 8,
+          "shift": 15
+        },
+        {
+          "index": 9,
+          "shift": 21
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -13676,26 +14468,6 @@
         {
           "index": 9,
           "text": "是嗎？"
-        },
-        {
-          "index": 10,
-          "text": "你動一下我就扭斷你的脖子"
-        },
-        {
-          "index": 11,
-          "text": "快拿鑰匙！把她關進去"
-        },
-        {
-          "index": 12,
-          "text": "你這麼愛進去，是不是？"
-        },
-        {
-          "index": 13,
-          "text": "進去！"
-        },
-        {
-          "index": 14,
-          "text": "再見！"
         }
       ],
       "targets": [
@@ -13734,36 +14506,16 @@
         {
           "index": 9,
           "text": "師母"
-        },
-        {
-          "index": 10,
-          "text": "你鬥我唔過嘅係咩"
-        },
-        {
-          "index": 11,
-          "text": "你一郁襯我就斂斷你嘅脖頸"
-        },
-        {
-          "index": 12,
-          "text": "攞條雪嚟混幾下入面"
-        },
-        {
-          "index": 13,
-          "text": ""
-        },
-        {
-          "index": 14,
-          "text": "一度阿咁癢入去係咪癢到啊你"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 13
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
         {
           "index": 1,
-          "shift": 3
+          "shift": 4
         },
         {
           "index": 2,
@@ -13784,39 +14536,137 @@
         {
           "index": 6,
           "shift": 10
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "開不了呀"
+        },
+        {
+          "index": 2,
+          "text": "嘴對嘴過點陽氣給她"
+        },
+        {
+          "index": 3,
+          "text": "這樣子可以阻止她一下"
+        },
+        {
+          "index": 4,
+          "text": "嚇死我了！"
+        },
+        {
+          "index": 5,
+          "text": "師妹，你鬥不過我的"
+        },
+        {
+          "index": 6,
+          "text": "是嗎？"
         },
         {
           "index": 7,
-          "shift": 3
+          "text": "你動一下我就扭斷你的脖子"
         },
         {
           "index": 8,
-          "shift": 8
+          "text": "快拿鑰匙！把她關進去"
         },
         {
           "index": 9,
-          "shift": 8
+          "text": "你這麼愛進去，是不是？"
         },
         {
           "index": 10,
-          "shift": 12
+          "text": "進去！"
         },
         {
           "index": 11,
+          "text": "再見！"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "開唔到啊"
+        },
+        {
+          "index": 2,
+          "text": "嘴對嘴嗰啲陽氣畀佢"
+        },
+        {
+          "index": 3,
+          "text": "噉可以阻止到佢發威㗎"
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
+          "index": 5,
+          "text": "嚇死我"
+        },
+        {
+          "index": 6,
+          "text": "師母"
+        },
+        {
+          "index": 7,
+          "text": "你鬥我唔過嘅係咩"
+        },
+        {
+          "index": 8,
+          "text": "你一郁襯我就斂斷你嘅脖頸"
+        },
+        {
+          "index": 9,
+          "text": "攞條雪嚟混幾下入面"
+        },
+        {
+          "index": 10,
+          "text": ""
+        },
+        {
+          "index": 11,
+          "text": "一度阿咁癢入去係咪癢到啊你"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 10
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "shift": 3
+        },
+        {
+          "index": 5,
+          "shift": 8
+        },
+        {
+          "index": 6,
+          "shift": 6
+        },
+        {
+          "index": 8,
           "shift": 9
         },
         {
-          "index": 12,
-          "shift": 5
+          "index": 9,
+          "shift": 9
         },
         {
-          "index": 13,
+          "index": 10,
           "shift": 13
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -14150,16 +15000,32 @@
     "answer": {
       "changes": [
         {
-          "index": 3,
+          "index": 2,
           "shift": 3
         },
         {
+          "index": 3,
+          "shift": 7
+        },
+        {
+          "index": 4,
+          "shift": 10
+        },
+        {
           "index": 5,
-          "shift": -2
+          "shift": 12
+        },
+        {
+          "index": 6,
+          "shift": 12
+        },
+        {
+          "index": 7,
+          "shift": 15
         },
         {
           "index": 8,
-          "shift": -3
+          "shift": 5
         }
       ]
     },
@@ -14232,19 +15098,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "開心就算剩返幾日命都已經足夠"
-        },
-        {
-          "index": 2,
-          "text": ""
-        },
-        {
-          "index": 3,
           "text": "如果我話你聽我唔係孫悅空"
         },
         {
+          "index": 2,
+          "text": "你會點"
+        },
+        {
+          "index": 3,
+          "text": "我會殺咗你"
+        },
+        {
           "index": 4,
-          "text": "你會點我會殺咗你"
+          "text": ""
         },
         {
           "index": 5,
@@ -14298,27 +15164,47 @@
       "changes": [
         {
           "index": 4,
-          "shift": -5
+          "shift": 7
+        },
+        {
+          "index": 5,
+          "shift": 15
+        },
+        {
+          "index": 6,
+          "shift": 13
+        },
+        {
+          "index": 7,
+          "shift": 11
+        },
+        {
+          "index": 8,
+          "shift": 8
+        },
+        {
+          "index": 9,
+          "shift": 9
         },
         {
           "index": 10,
-          "shift": -7
+          "shift": 6
         },
         {
           "index": 11,
-          "shift": -6
+          "shift": 9
         },
         {
           "index": 12,
-          "shift": -9
+          "shift": 8
         },
         {
           "index": 13,
-          "shift": -8
+          "shift": 6
         },
         {
           "index": 14,
-          "shift": -6
+          "shift": 11
         }
       ]
     },
@@ -14682,18 +15568,6 @@
         {
           "index": 11,
           "text": "我是男人怎麼做奶媽啊？"
-        },
-        {
-          "index": 12,
-          "text": "孩子是我們帶大的"
-        },
-        {
-          "index": 13,
-          "text": "你不說，他怎麼知道男人不能做奶媽？"
-        },
-        {
-          "index": 14,
-          "text": "那倒也是"
         }
       ],
       "targets": [
@@ -14740,22 +15614,10 @@
         {
           "index": 11,
           "text": "咁咁我認係咩啊?"
-        },
-        {
-          "index": 12,
-          "text": "奶媽囉!"
-        },
-        {
-          "index": 13,
-          "text": "啊?男人老狗點做奶媽喎"
-        },
-        {
-          "index": 14,
-          "text": "我哋打大佢㗎嘛你唔講佢點知奶媽男人咪"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 13
+      "last_owned_index": 8
     },
     "answer": {
       "changes": [
@@ -14772,49 +15634,103 @@
           "shift": 14
         },
         {
-          "index": 4,
-          "shift": 2
-        },
-        {
-          "index": 5,
-          "shift": 9
-        },
-        {
-          "index": 6,
-          "shift": 11
-        },
-        {
-          "index": 7,
-          "shift": 10
-        },
-        {
           "index": 8,
-          "shift": 9
-        },
-        {
-          "index": 9,
-          "shift": 10
-        },
-        {
-          "index": 10,
-          "shift": 12
-        },
-        {
-          "index": 11,
-          "shift": 15
-        },
-        {
-          "index": 12,
-          "shift": 18
-        },
-        {
-          "index": 13,
-          "shift": 18
+          "shift": -6
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "我警告你⋯"
+        },
+        {
+          "index": 2,
+          "text": "將來他長大了"
+        },
+        {
+          "index": 3,
+          "text": "你不許承認他的⋯那個"
+        },
+        {
+          "index": 4,
+          "text": "那我算甚麼？"
+        },
+        {
+          "index": 5,
+          "text": "奶媽呀？"
+        },
+        {
+          "index": 6,
+          "text": "我是男人怎麼做奶媽啊？"
+        },
+        {
+          "index": 7,
+          "text": "孩子是我們帶大的"
+        },
+        {
+          "index": 8,
+          "text": "你不說，他怎麼知道男人不能做奶媽？"
+        },
+        {
+          "index": 9,
+          "text": "那倒也是"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "唔該"
+        },
+        {
+          "index": 2,
+          "text": "咁開心做咩啊?"
+        },
+        {
+          "index": 3,
+          "text": "話你知啊"
+        },
+        {
+          "index": 4,
+          "text": "日日佢大過咗你唔會認係佢嘅"
+        },
+        {
+          "index": 5,
+          "text": "添啊"
+        },
+        {
+          "index": 6,
+          "text": "咁咁我認係咩啊?"
+        },
+        {
+          "index": 7,
+          "text": "奶媽囉!"
+        },
+        {
+          "index": 8,
+          "text": "啊?男人老狗點做奶媽喎"
+        },
+        {
+          "index": 9,
+          "text": "我哋打大佢㗎嘛你唔講佢點知奶媽男人咪"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 8
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "shift": 2
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -15654,22 +16570,6 @@
         {
           "index": 9,
           "text": "你看啦？"
-        },
-        {
-          "index": 10,
-          "text": "原來是我的菠蘿蓋！"
-        },
-        {
-          "index": 11,
-          "text": "怪不得沒有頭髮啦"
-        },
-        {
-          "index": 12,
-          "text": "有人來了"
-        },
-        {
-          "index": 13,
-          "text": "先躲一躲，躲一躲！"
         }
       ],
       "targets": [
@@ -15708,26 +16608,10 @@
         {
           "index": 9,
           "text": ""
-        },
-        {
-          "index": 10,
-          "text": "哎呀,個頭出咗嚟囉"
-        },
-        {
-          "index": 11,
-          "text": "係,我點解都唔知呀呢度呢"
-        },
-        {
-          "index": 12,
-          "text": ""
-        },
-        {
-          "index": 13,
-          "text": "唔係呀,嗰個膝頭嚟㗎怪唔住冇頭髮啦"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 12
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
@@ -15754,35 +16638,129 @@
         {
           "index": 6,
           "shift": 20
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "我扮成他讓你開心嘛"
+        },
+        {
+          "index": 2,
+          "text": "你幹甚麼嘛？"
+        },
+        {
+          "index": 3,
+          "text": "我幫你接生呀"
+        },
+        {
+          "index": 4,
+          "text": "頭出來了"
+        },
+        {
+          "index": 5,
+          "text": "是嗎？我怎麼沒感覺？"
+        },
+        {
+          "index": 6,
+          "text": "你看啦？"
         },
         {
           "index": 7,
-          "shift": 21
+          "text": "原來是我的菠蘿蓋！"
         },
         {
           "index": 8,
-          "shift": 18
+          "text": "怪不得沒有頭髮啦"
         },
         {
           "index": 9,
-          "shift": 21
+          "text": "有人來了"
         },
         {
           "index": 10,
+          "text": "先躲一躲，躲一躲！"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "咁我突然扮佢嚟,哄你好開心囉"
+        },
+        {
+          "index": 2,
+          "text": "哎呀,你做乜嘢呀"
+        },
+        {
+          "index": 3,
+          "text": "你三仔吖嘛,我幫你接生囉"
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
+          "index": 5,
+          "text": ""
+        },
+        {
+          "index": 6,
+          "text": ""
+        },
+        {
+          "index": 7,
+          "text": "哎呀,個頭出咗嚟囉"
+        },
+        {
+          "index": 8,
+          "text": "係,我點解都唔知呀呢度呢"
+        },
+        {
+          "index": 9,
+          "text": ""
+        },
+        {
+          "index": 10,
+          "text": "唔係呀,嗰個膝頭嚟㗎怪唔住冇頭髮啦"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 9
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "shift": 9
+        },
+        {
+          "index": 5,
+          "shift": 21
+        },
+        {
+          "index": 6,
+          "shift": 21
+        },
+        {
+          "index": 7,
           "shift": 22
         },
         {
-          "index": 11,
+          "index": 8,
           "shift": 17
         },
         {
-          "index": 12,
+          "index": 9,
           "shift": 17
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -15878,26 +16856,6 @@
         {
           "index": 12,
           "text": "只要你肯自願帶上金剛圈"
-        },
-        {
-          "index": 13,
-          "text": "肯改過自新"
-        },
-        {
-          "index": 14,
-          "text": "你就可以變回法力無邊的齊天大聖"
-        },
-        {
-          "index": 15,
-          "text": "到時候你就要負起取西經的重任"
-        },
-        {
-          "index": 16,
-          "text": "把歷史重改"
-        },
-        {
-          "index": 17,
-          "text": "不過從此人間一切與你無關"
         }
       ],
       "targets": [
@@ -15948,30 +16906,10 @@
         {
           "index": 12,
           "text": "希望你學得你師父一樣能夠捨己為人"
-        },
-        {
-          "index": 13,
-          "text": "將你過往嘅一切罪孽洗清"
-        },
-        {
-          "index": 14,
-          "text": "只要你肯自願戴上金剛鴛"
-        },
-        {
-          "index": 15,
-          "text": "即係肯改過自身"
-        },
-        {
-          "index": 16,
-          "text": "咁就可以成為法力無邊嘅齊天大聖"
-        },
-        {
-          "index": 17,
-          "text": "到時你就要負起取西經嘅重任"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 14
+      "last_owned_index": 9
     },
     "answer": {
       "changes": [
@@ -16001,35 +16939,11 @@
         },
         {
           "index": 7,
-          "shift": 30
+          "shift": 22
         },
         {
           "index": 8,
-          "shift": 23
-        },
-        {
-          "index": 9,
-          "shift": 27
-        },
-        {
-          "index": 10,
-          "shift": 16
-        },
-        {
-          "index": 11,
-          "shift": 27
-        },
-        {
-          "index": 12,
-          "shift": 22
-        },
-        {
-          "index": 13,
-          "shift": 18
-        },
-        {
-          "index": 14,
-          "shift": 22
+          "shift": 6
         }
       ]
     },
@@ -16040,81 +16954,220 @@
       "guides": [
         {
           "index": 1,
-          "text": "只要你肯自願帶上金剛圈"
+          "text": "玉皇大帝特意安排你"
         },
         {
           "index": 2,
-          "text": "肯改過自新"
+          "text": "五百年後重投人間"
         },
         {
           "index": 3,
-          "text": "你就可以變回法力無邊的齊天大聖"
+          "text": "希望你能學你師父一樣"
         },
         {
           "index": 4,
-          "text": "到時候你就要負起取西經的重任"
+          "text": "捨己為人"
         },
         {
           "index": 5,
-          "text": "把歷史重改"
+          "text": "把你過往的一切罪孽洗清"
         },
         {
           "index": 6,
-          "text": "不過從此人間一切與你無關"
+          "text": "只要你肯自願帶上金剛圈"
         },
         {
           "index": 7,
-          "text": "再不可能有半點情慾，半點留戀"
+          "text": "肯改過自新"
         },
         {
           "index": 8,
-          "text": "要全心歸依我佛"
+          "text": "你就可以變回法力無邊的齊天大聖"
         },
         {
           "index": 9,
-          "text": "你還沒變成真正的孫悟空托世"
+          "text": "到時候你就要負起取西經的重任"
         },
         {
           "index": 10,
-          "text": "只係因為你還沒遇上"
+          "text": "把歷史重改"
         },
         {
           "index": 11,
-          "text": "那個給你三顆痣的人"
+          "text": "不過從此人間一切與你無關"
         },
         {
           "index": 12,
-          "text": "當你遇到他之後"
+          "text": "再不可能有半點情慾，半點留戀"
         },
         {
           "index": 13,
+          "text": "要全心歸依我佛"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": ""
+        },
+        {
+          "index": 2,
+          "text": ""
+        },
+        {
+          "index": 3,
+          "text": ""
+        },
+        {
+          "index": 4,
+          "text": "玉皇大帝專登安排五百年後你重投人間"
+        },
+        {
+          "index": 5,
+          "text": ""
+        },
+        {
+          "index": 6,
+          "text": "希望你學得你師父一樣能夠捨己為人"
+        },
+        {
+          "index": 7,
+          "text": "將你過往嘅一切罪孽洗清"
+        },
+        {
+          "index": 8,
+          "text": "只要你肯自願戴上金剛鴛"
+        },
+        {
+          "index": 9,
+          "text": "即係肯改過自身"
+        },
+        {
+          "index": 10,
+          "text": "咁就可以成為法力無邊嘅齊天大聖"
+        },
+        {
+          "index": 11,
+          "text": "到時你就要負起取西經嘅重任"
+        },
+        {
+          "index": 12,
+          "text": "將歷史改變"
+        },
+        {
+          "index": 13,
+          "text": "不過從此人間一切與你無關"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 10
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "shift": 14
+        },
+        {
+          "index": 5,
+          "shift": 25
+        },
+        {
+          "index": 6,
+          "shift": 20
+        },
+        {
+          "index": 7,
+          "shift": 16
+        },
+        {
+          "index": 8,
+          "shift": 20
+        },
+        {
+          "index": 9,
+          "shift": 26
+        },
+        {
+          "index": 10,
+          "shift": 17
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "你就可以變回法力無邊的齊天大聖"
+        },
+        {
+          "index": 2,
+          "text": "到時候你就要負起取西經的重任"
+        },
+        {
+          "index": 3,
+          "text": "把歷史重改"
+        },
+        {
+          "index": 4,
+          "text": "不過從此人間一切與你無關"
+        },
+        {
+          "index": 5,
+          "text": "再不可能有半點情慾，半點留戀"
+        },
+        {
+          "index": 6,
+          "text": "要全心歸依我佛"
+        },
+        {
+          "index": 7,
+          "text": "你還沒變成真正的孫悟空托世"
+        },
+        {
+          "index": 8,
+          "text": "只係因為你還沒遇上"
+        },
+        {
+          "index": 9,
+          "text": "那個給你三顆痣的人"
+        },
+        {
+          "index": 10,
+          "text": "當你遇到他之後"
+        },
+        {
+          "index": 11,
           "text": "你的一生就會改變"
         },
         {
-          "index": 14,
+          "index": 12,
           "text": "跟我說話嗎？"
         },
         {
-          "index": 15,
+          "index": 13,
           "text": "不是跟我說的吧？"
         },
         {
-          "index": 16,
+          "index": 14,
           "text": "認錯人啦"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "只要你肯自願戴上金剛鴛"
+          "text": "自身咁就可以成為法力無邊嘅齊天"
         },
         {
           "index": 2,
-          "text": "即係肯改過自身"
+          "text": "大聖到時你就要負起取西經嘅"
         },
         {
           "index": 3,
-          "text": "咁就可以成為法力無邊嘅齊天大聖"
+          "text": "重任將歷史改"
         },
         {
           "index": 4,
@@ -16122,97 +17175,81 @@
         },
         {
           "index": 5,
-          "text": ""
+          "text": "變"
         },
         {
           "index": 6,
-          "text": "到時你就要負起取西經嘅重任"
-        },
-        {
-          "index": 7,
-          "text": "將歷史改變"
-        },
-        {
-          "index": 8,
           "text": "不過從此人間一切與你無關"
         },
         {
-          "index": 9,
+          "index": 7,
           "text": "再唔可以有半點情慾半點留戀"
         },
         {
-          "index": 10,
+          "index": 8,
           "text": "一心要歸依我佛"
         },
         {
-          "index": 11,
+          "index": 9,
           "text": ""
         },
         {
-          "index": 12,
+          "index": 10,
           "text": "你未變成真正嘅孫悟空托世"
         },
         {
-          "index": 13,
+          "index": 11,
           "text": "只係因為你未遇上嗰個比三粒字你嘅人"
         },
         {
-          "index": 14,
+          "index": 12,
           "text": "見到佢之後"
         },
         {
-          "index": 15,
+          "index": 13,
           "text": "你嘅一生就會改變"
         },
         {
-          "index": 16,
+          "index": 14,
           "text": "同我講呀唔係同我講呀"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 13
+      "last_owned_index": 11
     },
     "answer": {
       "changes": [
         {
           "index": 4,
-          "shift": 13
+          "shift": 1
         },
         {
           "index": 5,
-          "shift": 19
-        },
-        {
-          "index": 6,
-          "shift": 18
-        },
-        {
-          "index": 7,
           "shift": 25
         },
         {
+          "index": 6,
+          "shift": 20
+        },
+        {
+          "index": 7,
+          "shift": 19
+        },
+        {
           "index": 8,
-          "shift": 21
+          "shift": 20
         },
         {
           "index": 9,
-          "shift": 20
-        },
-        {
-          "index": 10,
-          "shift": 20
-        },
-        {
-          "index": 11,
           "shift": 29
         },
         {
-          "index": 12,
-          "shift": 23
+          "index": 10,
+          "shift": 22
         },
         {
-          "index": 13,
-          "shift": 15
+          "index": 11,
+          "shift": 5
         }
       ]
     },
@@ -16281,11 +17318,11 @@
         },
         {
           "index": 2,
-          "text": "見到佢之後你"
+          "text": "見到佢之後"
         },
         {
           "index": 3,
-          "text": "嘅一生就會改變同我"
+          "text": ""
         },
         {
           "index": 4,
@@ -16293,11 +17330,11 @@
         },
         {
           "index": 5,
-          "text": ""
+          "text": "你嘅一生就會改變"
         },
         {
           "index": 6,
-          "text": "講呀唔係同我講呀"
+          "text": "同我講呀唔係同我講呀"
         },
         {
           "index": 7,
@@ -16335,19 +17372,11 @@
       "changes": [
         {
           "index": 4,
-          "shift": 2
-        },
-        {
-          "index": 5,
           "shift": 8
         },
         {
-          "index": 6,
-          "shift": 5
-        },
-        {
-          "index": 7,
-          "shift": 3
+          "index": 5,
+          "shift": 10
         }
       ]
     },
@@ -16566,7 +17595,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16697,7 +17727,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17373,6 +18404,14 @@
         {
           "index": 12,
           "text": "老婆⋯我老婆"
+        },
+        {
+          "index": 13,
+          "text": "你老婆就快出來了，你急甚麼？"
+        },
+        {
+          "index": 14,
+          "text": "我還沒說完，你是怎麼知道的？"
         }
       ],
       "targets": [
@@ -17423,10 +18462,18 @@
         {
           "index": 12,
           "text": "空手走得咁快再來老婆"
+        },
+        {
+          "index": 13,
+          "text": "老婆"
+        },
+        {
+          "index": 14,
+          "text": "喂老婆你老婆走出嚟㗎啦定啲嚟呀"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 9
+      "last_owned_index": 11
     },
     "answer": {
       "changes": [
@@ -17447,8 +18494,24 @@
           "shift": 15
         },
         {
+          "index": 7,
+          "shift": 5
+        },
+        {
+          "index": 8,
+          "shift": 3
+        },
+        {
           "index": 9,
           "shift": 7
+        },
+        {
+          "index": 10,
+          "shift": 4
+        },
+        {
+          "index": 11,
+          "shift": 8
         }
       ]
     },
@@ -17459,198 +18522,166 @@
       "guides": [
         {
           "index": 1,
-          "text": "般若波羅蜜⋯！"
-        },
-        {
-          "index": 2,
-          "text": "升仙了！"
-        },
-        {
-          "index": 3,
           "text": "帥呀！這下時光倒流了！"
         },
         {
-          "index": 4,
+          "index": 2,
           "text": "等等⋯"
         },
         {
-          "index": 5,
+          "index": 3,
           "text": "兇手跑得那麼快？再來！"
         },
         {
-          "index": 6,
+          "index": 4,
           "text": "老婆⋯我老婆"
         },
         {
-          "index": 7,
+          "index": 5,
           "text": "你老婆就快出來了，你急甚麼？"
         },
         {
-          "index": 8,
+          "index": 6,
           "text": "我還沒說完，你是怎麼知道的？"
         },
         {
-          "index": 9,
+          "index": 7,
           "text": "真的出來了　　走呀"
         },
         {
-          "index": 10,
+          "index": 8,
           "text": "娘子⋯"
         },
         {
-          "index": 11,
+          "index": 9,
           "text": "般若波羅蜜！"
         },
         {
-          "index": 12,
+          "index": 10,
           "text": "又升仙了！"
         },
         {
-          "index": 13,
+          "index": 11,
           "text": "為甚麼又說〝又〞呢？"
         },
         {
-          "index": 14,
+          "index": 12,
           "text": "等等⋯！"
         },
         {
-          "index": 15,
+          "index": 13,
           "text": "再來！"
         },
         {
-          "index": 16,
+          "index": 14,
           "text": "老婆⋯！"
         },
         {
-          "index": 17,
+          "index": 15,
           "text": "我警告你別煩我！"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": ""
+          "text": "真係死光倒流呀"
         },
         {
           "index": 2,
-          "text": "波爾波羅密"
-        },
-        {
-          "index": 3,
-          "text": "星線呀真係死光倒流呀"
-        },
-        {
-          "index": 4,
-          "text": ""
-        },
-        {
-          "index": 5,
           "text": "等埋等埋"
         },
         {
-          "index": 6,
-          "text": "空手走得咁快再來老婆"
+          "index": 3,
+          "text": "空手走得咁快再來"
         },
         {
-          "index": 7,
+          "index": 4,
           "text": "老婆"
         },
         {
-          "index": 8,
+          "index": 5,
+          "text": "老婆"
+        },
+        {
+          "index": 6,
           "text": "喂老婆你老婆走出嚟㗎啦定啲嚟呀"
         },
         {
-          "index": 9,
+          "index": 7,
           "text": "我都未講完你點知呢"
         },
         {
-          "index": 10,
+          "index": 8,
           "text": "唔知你出嚟喎"
         },
         {
-          "index": 11,
+          "index": 9,
           "text": "定啲定啲"
         },
         {
-          "index": 12,
+          "index": 10,
           "text": "波爾波羅密"
         },
         {
-          "index": 13,
+          "index": 11,
           "text": "嘩有星線呀"
         },
         {
-          "index": 14,
+          "index": 12,
           "text": "點解我講啲又好嘅"
         },
         {
-          "index": 15,
+          "index": 13,
           "text": "等埋呀"
         },
         {
-          "index": 16,
+          "index": 14,
           "text": "再來好嬌喎"
         },
         {
-          "index": 17,
+          "index": 15,
           "text": "老婆"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 16
+      "last_owned_index": 14
     },
     "answer": {
       "changes": [
         {
           "index": 4,
-          "shift": 4
-        },
-        {
-          "index": 5,
-          "shift": 8
-        },
-        {
-          "index": 6,
           "shift": 2
         },
         {
-          "index": 7,
+          "index": 5,
           "shift": 15
         },
         {
-          "index": 8,
+          "index": 6,
           "shift": 9
         },
         {
           "index": 9,
-          "shift": 6
+          "shift": 5
         },
         {
           "index": 10,
-          "shift": 4
+          "shift": 5
         },
         {
           "index": 11,
-          "shift": 5
-        },
-        {
-          "index": 12,
-          "shift": 5
-        },
-        {
-          "index": 13,
           "shift": 8
         },
         {
-          "index": 14,
+          "index": 12,
           "shift": 3
         },
         {
-          "index": 15,
+          "index": 13,
           "shift": 5
         },
         {
-          "index": 16,
+          "index": 14,
           "shift": 2
         }
       ]
@@ -17975,26 +19006,6 @@
         {
           "index": 10,
           "text": "我是跑回來跟你師姐拿解藥去救你"
-        },
-        {
-          "index": 11,
-          "text": "誰知道晚了一步"
-        },
-        {
-          "index": 12,
-          "text": "回去已經找不到你了"
-        },
-        {
-          "index": 13,
-          "text": "你騙我"
-        },
-        {
-          "index": 14,
-          "text": "你不信"
-        },
-        {
-          "index": 15,
-          "text": "你看"
         }
       ],
       "targets": [
@@ -18037,30 +19048,10 @@
         {
           "index": 10,
           "text": "仲同我師姐生馬仔噉你唔會"
-        },
-        {
-          "index": 11,
-          "text": "唔好呀英雄"
-        },
-        {
-          "index": 12,
-          "text": ""
-        },
-        {
-          "index": 13,
-          "text": "其實我嗰日走咗係想返嚟問你師姐攞假藥去救你"
-        },
-        {
-          "index": 14,
-          "text": "點知遲咗一步返去已經揾你唔到啦"
-        },
-        {
-          "index": 15,
-          "text": "理解我"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 14
+      "last_owned_index": 7
     },
     "answer": {
       "changes": [
@@ -18082,48 +19073,150 @@
         },
         {
           "index": 5,
-          "shift": 14
+          "shift": 12
         },
         {
           "index": 6,
-          "shift": 22
-        },
-        {
-          "index": 7,
           "shift": 20
         },
         {
+          "index": 7,
+          "shift": 18
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "正在想！你先給我一個殺我的理由"
+        },
+        {
+          "index": 2,
+          "text": "好呀！你一聲不響丟下我"
+        },
+        {
+          "index": 3,
+          "text": "還跟師姐生了個兒子！"
+        },
+        {
+          "index": 4,
+          "text": "你完全誤會了　　找死？"
+        },
+        {
+          "index": 5,
+          "text": "不要啊，英雄！"
+        },
+        {
+          "index": 6,
+          "text": "我是跑回來跟你師姐拿解藥去救你"
+        },
+        {
+          "index": 7,
+          "text": "誰知道晚了一步"
+        },
+        {
           "index": 8,
-          "shift": 22
+          "text": "回去已經找不到你了"
         },
         {
           "index": 9,
-          "shift": 17
+          "text": "你騙我"
         },
         {
           "index": 10,
-          "shift": 26
+          "text": "你不信"
         },
         {
           "index": 11,
+          "text": "你看"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "唔啱噉呀你畀個殺我的理由"
+        },
+        {
+          "index": 2,
+          "text": "我先好呀你粒細唔出扔低我"
+        },
+        {
+          "index": 3,
+          "text": "不理仲同我師姐生"
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
+          "index": 5,
+          "text": ""
+        },
+        {
+          "index": 6,
+          "text": "馬仔噉你唔會"
+        },
+        {
+          "index": 7,
+          "text": "唔好呀英雄"
+        },
+        {
+          "index": 8,
+          "text": ""
+        },
+        {
+          "index": 9,
+          "text": "其實我嗰日走咗係想返嚟問你師姐攞假藥去救你"
+        },
+        {
+          "index": 10,
+          "text": "點知遲咗一步返去已經揾你唔到啦"
+        },
+        {
+          "index": 11,
+          "text": "理解我"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 10
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "shift": 6
+        },
+        {
+          "index": 5,
+          "shift": 11
+        },
+        {
+          "index": 6,
+          "shift": 26
+        },
+        {
+          "index": 7,
           "shift": 27
         },
         {
-          "index": 12,
+          "index": 8,
           "shift": 36
         },
         {
-          "index": 13,
+          "index": 9,
           "shift": 18
         },
         {
-          "index": 14,
+          "index": 10,
           "shift": 3
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {

@@ -16,7 +16,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -51,7 +52,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -102,7 +104,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -233,7 +236,8 @@
       "first_owned_index": 1,
       "last_owned_index": 12
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -396,7 +400,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -686,7 +691,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -721,7 +727,8 @@
       "first_owned_index": 1,
       "last_owned_index": 3
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1027,7 +1034,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1281,7 +1289,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1436,7 +1445,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1563,7 +1573,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1694,7 +1705,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1757,7 +1769,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1872,7 +1885,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1907,7 +1921,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1942,7 +1957,8 @@
       "first_owned_index": 1,
       "last_owned_index": 3
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1985,7 +2001,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2036,7 +2053,8 @@
       "first_owned_index": 1,
       "last_owned_index": 5
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2071,7 +2089,8 @@
       "first_owned_index": 1,
       "last_owned_index": 3
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2214,7 +2233,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2321,7 +2341,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2412,7 +2433,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2567,7 +2589,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2674,7 +2697,8 @@
       "first_owned_index": 1,
       "last_owned_index": 9
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2781,7 +2805,8 @@
       "first_owned_index": 4,
       "last_owned_index": 12
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2800,7 +2825,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2935,7 +2961,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3078,7 +3105,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3213,7 +3241,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3336,7 +3365,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3435,7 +3465,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3566,7 +3597,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3649,7 +3681,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3676,7 +3709,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3695,7 +3729,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3758,7 +3793,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3860,7 +3896,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3951,7 +3988,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4070,7 +4108,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4479,7 +4518,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4781,7 +4821,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4952,7 +4993,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5059,7 +5101,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5094,7 +5137,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5157,7 +5201,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5220,7 +5265,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5379,7 +5425,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5518,7 +5565,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5665,7 +5713,8 @@
       "first_owned_index": 4,
       "last_owned_index": 17
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -5692,7 +5741,8 @@
       "first_owned_index": 1,
       "last_owned_index": 2
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -5711,7 +5761,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -5730,7 +5781,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -5769,7 +5821,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6185,7 +6238,8 @@
       "first_owned_index": 4,
       "last_owned_index": 9
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -6526,7 +6580,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6545,7 +6600,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -6592,7 +6648,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6611,7 +6668,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -6646,7 +6704,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6685,7 +6744,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6720,7 +6780,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6767,7 +6828,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6805,7 +6867,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -6832,7 +6895,8 @@
       "first_owned_index": 1,
       "last_owned_index": 2
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -6943,7 +7007,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7078,7 +7143,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7208,7 +7274,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7227,7 +7294,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -7286,7 +7354,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7393,7 +7462,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7428,7 +7498,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7475,7 +7546,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7606,7 +7678,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7729,7 +7802,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7832,7 +7906,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7963,7 +8038,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -8097,7 +8173,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -8248,7 +8325,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -8355,7 +8433,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -8613,7 +8692,8 @@
       "first_owned_index": 4,
       "last_owned_index": 10
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -8752,7 +8832,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -8795,7 +8876,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -8926,7 +9008,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9057,7 +9140,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9220,7 +9304,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9331,7 +9416,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9350,7 +9436,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -9389,7 +9476,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9488,7 +9576,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9789,7 +9878,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9984,7 +10074,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10107,7 +10198,8 @@
       "first_owned_index": 4,
       "last_owned_index": 14
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -10142,7 +10234,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10188,7 +10281,8 @@
       "first_owned_index": 1,
       "last_owned_index": 2
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -10287,7 +10381,8 @@
       "first_owned_index": 1,
       "last_owned_index": 8
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -10402,7 +10497,8 @@
       "first_owned_index": 4,
       "last_owned_index": 13
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -10453,7 +10549,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10472,7 +10569,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -10499,7 +10597,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10554,7 +10653,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10669,7 +10769,8 @@
       "first_owned_index": 1,
       "last_owned_index": 13
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -10780,7 +10881,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10907,7 +11009,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10926,7 +11029,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11025,7 +11129,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11072,7 +11177,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11195,7 +11301,8 @@
       "first_owned_index": 1,
       "last_owned_index": 14
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11230,7 +11337,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11257,7 +11365,8 @@
       "first_owned_index": 1,
       "last_owned_index": 2
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11332,7 +11441,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11379,7 +11489,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11398,7 +11509,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11445,7 +11557,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11536,7 +11649,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11555,7 +11669,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11980,7 +12095,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12111,7 +12227,8 @@
       "first_owned_index": 4,
       "last_owned_index": 12
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12274,7 +12391,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12357,7 +12475,8 @@
       "first_owned_index": 1,
       "last_owned_index": 9
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12412,7 +12531,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12439,7 +12559,8 @@
       "first_owned_index": 1,
       "last_owned_index": 2
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12474,7 +12595,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12529,7 +12651,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12556,7 +12679,8 @@
       "first_owned_index": 1,
       "last_owned_index": 2
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12647,7 +12771,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12786,7 +12911,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12869,7 +12995,8 @@
       "first_owned_index": 4,
       "last_owned_index": 9
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -13000,7 +13127,8 @@
       "first_owned_index": 1,
       "last_owned_index": 12
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -13139,7 +13267,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13210,7 +13339,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13296,7 +13426,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -13335,7 +13466,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13410,7 +13542,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13437,7 +13570,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13464,7 +13598,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13507,7 +13642,8 @@
       "first_owned_index": 1,
       "last_owned_index": 4
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -13586,7 +13722,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13633,7 +13770,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13660,7 +13798,8 @@
       "first_owned_index": 1,
       "last_owned_index": 2
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -13679,7 +13818,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -13734,7 +13874,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13769,7 +13910,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13828,7 +13970,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -13847,7 +13990,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -13976,7 +14120,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14067,7 +14212,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14086,7 +14232,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -14121,7 +14268,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14164,7 +14312,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14183,7 +14332,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -14234,7 +14384,8 @@
       "first_owned_index": 1,
       "last_owned_index": 5
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -14261,7 +14412,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14339,7 +14491,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14478,7 +14631,8 @@
       "first_owned_index": 1,
       "last_owned_index": 13
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -14609,7 +14763,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14855,7 +15010,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14906,7 +15062,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15180,7 +15337,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15207,7 +15365,8 @@
       "first_owned_index": 1,
       "last_owned_index": 2
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -15290,7 +15449,8 @@
       "first_owned_index": 1,
       "last_owned_index": 9
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -15333,7 +15493,8 @@
       "first_owned_index": 1,
       "last_owned_index": 4
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -15392,7 +15553,8 @@
       "first_owned_index": 1,
       "last_owned_index": 6
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -15427,7 +15589,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15462,7 +15625,8 @@
       "first_owned_index": 1,
       "last_owned_index": 3
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -15568,7 +15732,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15793,7 +15958,8 @@
       "first_owned_index": 1,
       "last_owned_index": 10
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -15900,7 +16066,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15943,7 +16110,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16002,7 +16170,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16049,7 +16218,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16068,7 +16238,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -16087,7 +16258,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -16122,7 +16294,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16165,7 +16338,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16192,7 +16366,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16327,7 +16502,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16346,7 +16522,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -16445,7 +16622,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16560,7 +16738,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16599,7 +16778,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16618,7 +16798,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -16657,7 +16838,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16708,7 +16890,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16775,7 +16958,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16794,7 +16978,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -16821,7 +17006,8 @@
       "first_owned_index": 1,
       "last_owned_index": 2
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -16987,7 +17173,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17006,7 +17193,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -17049,7 +17237,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17068,7 +17257,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -17135,7 +17325,8 @@
       "first_owned_index": 1,
       "last_owned_index": 7
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -17234,7 +17425,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17253,7 +17445,8 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -17336,7 +17529,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17431,7 +17625,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17550,7 +17745,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17717,7 +17913,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17864,7 +18061,8 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17915,6 +18113,7 @@
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   }
 ]

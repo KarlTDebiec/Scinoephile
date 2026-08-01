@@ -14,10 +14,7 @@ from scinoephile.llms.block_delineation import (
     BlockDelineationManager,
     BlockDelineationPrompt,
 )
-from scinoephile.llms.block_punctuation import (
-    BlockPunctuationManager,
-    BlockPunctuationPrompt,
-)
+from scinoephile.llms.block_punctuation import BlockPunctuationManager
 
 
 def test_block_answer_change_alias_is_pinyin():
@@ -45,12 +42,7 @@ def test_block_answer_change_alias_is_pinyin():
         assert "fuze_qishi_xuhao" in prompt.base_system_prompt
         assert "fuze_jieshu_xuhao" in prompt.base_system_prompt
         assert set(properties) == {expected_changes}
-        assert prompt.legacy_cache_prompts
-        legacy_prompt = prompt.legacy_cache_prompts[-1]
-        assert isinstance(
-            legacy_prompt, BlockDelineationPrompt | BlockPunctuationPrompt
-        )
-        assert legacy_prompt.changes == "yuewen_changes"
+        assert not prompt.legacy_cache_prompts
 
     for prompt in (
         YueZhoBlockDelineationPromptYueHans,
@@ -82,6 +74,7 @@ def test_block_prompts_require_local_index_and_character_conservation_checks():
     assert "返回同冇返回嘅全部分界新位置" in delineation_prompt
     assert "唔係某條輸出字幕" in delineation_prompt
     assert "返回較少項目或者空列表" in delineation_prompt
+    assert "連續幾個完整說話單位都錯配" in delineation_prompt
     assert "冇任何有效嘅 yidong_zifu_shu 範圍" in (
         YueZhoBlockDelineationPromptYueHant.boundary_neighbors_crossed_err_tpl
     )
@@ -101,6 +94,10 @@ def test_block_prompts_require_local_index_and_character_conservation_checks():
     assert "逐段核對連續重複字符" in punctuation_prompt
     assert "重複片段嘅" in punctuation_prompt
     assert "出現次數" in punctuation_prompt
+    assert "孤零零留喺字幕開頭" in punctuation_prompt
+    assert "只剩標點或者空格" in punctuation_prompt
+    assert "全形中文句子標點" in punctuation_prompt
+    assert YueZhoBlockPunctuationPromptYueHant.validate_output_quality is True
     assert "原有簡繁字形" in (
         YueZhoBlockPunctuationPromptYueHant.target_chars_changed_err_tpl
     )
