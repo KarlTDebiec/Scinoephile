@@ -430,7 +430,7 @@ _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V4 = replace(
 )
 """Predecessor prompt checking complete target-character identity."""
 
-YueZhoBlockPunctuationPromptYueHant = replace(
+_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V5 = replace(
     _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V4,
     base_system_prompt=dedent_and_compact(f"""
         {_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V4.base_system_prompt}
@@ -441,6 +441,45 @@ YueZhoBlockPunctuationPromptYueHant = replace(
     legacy_cache_prompts=(
         _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V4,
         *_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V4.legacy_cache_prompts,
+    ),
+)
+"""Predecessor prompt preserving incomplete target text."""
+
+_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V6 = replace(
+    _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V5,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V5.base_system_prompt}
+        提交之前，對原文同答案分別移除標點同空格，再逐段核對連續重複字符嘅
+        字符同出現次數；每段重複字符嘅長度必須完全相同。唔可以將兩個或以上
+        相同字符縮成一個，亦唔可以用省略號代替任何一個重複字符。"""),
+    target_chars_changed_err_tpl=(
+        _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V5.target_chars_changed_err_tpl
+        + " 如果差異係漏咗重複字符，必須由原文重新複製每一次出現；唔可以將"
+        "重複字符合併，亦唔可以用省略號代替。"
+    ),
+    legacy_cache_prompts=(
+        _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V5,
+        *_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V5.legacy_cache_prompts,
+    ),
+)
+"""Predecessor prompt preserving adjacent repeated characters."""
+
+YueZhoBlockPunctuationPromptYueHant = replace(
+    _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V6,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V6.base_system_prompt}
+        如果同一個 yuewen_to_punctuate.wenben 有一段字詞或者短句重複出現，
+        必須逐次由原文完整複製每一次出現，包括每次出現入面嘅語氣助詞；唔可以
+        將其中一次縮短、合併或者省略任何非標點字符。提交之前要核對重複片段嘅
+        出現次數，同埋每一次出現移除標點同空格後嘅完整字符次序。"""),
+    target_chars_changed_err_tpl=(
+        _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V6.target_chars_changed_err_tpl
+        + " 如果原文有重複字詞或者短句，必須由原文逐次完整複製每一次出現，"
+        "包括每次嘅語氣助詞；唔可以縮短、合併或者省略其中一次。"
+    ),
+    legacy_cache_prompts=(
+        _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V6,
+        *_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V6.legacy_cache_prompts,
     ),
 )
 """Text for Traditional Cantonese/Chinese block punctuation."""

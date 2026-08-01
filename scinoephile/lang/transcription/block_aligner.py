@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
+from itertools import groupby
 from logging import getLogger
 from math import ceil, floor
 from typing import cast
@@ -46,6 +47,8 @@ _BOUNDARY_FLEXIBILITY = 3
 """Maximum nominal ownership-boundary movement when preferring timing gaps."""
 _MIN_OWNED_SUBTITLES = 6
 """Minimum ownership retained after timing-gap boundary selection."""
+_MAX_PUNCTUATION_REPEAT_RUN_LENGTH = 32
+"""Longest identical-character run included in a punctuation query."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -269,10 +272,25 @@ class BlockTranscriptionAligner:
             complete locally punctuated target text
         """
         test_case_cls = self.punctuation_processor.test_case_cls
+        query_targets = targets.copy()
+        masked_indexes: list[int] = []
+        for index, target in enumerate(targets, 1):
+            has_excessive_repeat_run = any(
+                sum(1 for _ in characters) > _MAX_PUNCTUATION_REPEAT_RUN_LENGTH
+                for _, characters in groupby(target)
+            )
+            if has_excessive_repeat_run:
+                query_targets[index - 1] = ""
+                masked_indexes.append(index)
+        if masked_indexes:
+            logger.info(
+                "Keeping long repeated-character target indexes unchanged during "
+                f"block punctuation window {window_index}: {masked_indexes}"
+            )
         query = test_case_cls.query_cls.model_validate(
             {
                 "guides": self._get_indexed_items(guides),
-                "targets": self._get_indexed_items(targets),
+                "targets": self._get_indexed_items(query_targets),
                 "first_owned_index": window.first_owned_index,
                 "last_owned_index": window.last_owned_index,
             }

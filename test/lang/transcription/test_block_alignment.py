@@ -223,6 +223,42 @@ def test_invalid_punctuation_falls_back_to_delineated_text():
     ]
 
 
+def test_punctuation_masks_excessive_repeat_runs_and_preserves_original_text():
+    """Punctuation should not ask an LLM to reproduce pathological repeats."""
+    delineation_processor, punctuation_processor = _get_mock_processors()
+    aligner = BlockTranscriptionAligner(delineation_processor, punctuation_processor)
+    targets = ["甲", "嚟" * 54, "乙"]
+
+    def punctuate_unmasked_targets(test_case: BlockPunctuationTestCase):
+        """Punctuate normal targets while leaving the masked target empty."""
+        assert [target.text for target in test_case.query.targets] == ["甲", "", "乙"]
+        return type(test_case).model_validate(
+            {
+                **test_case.model_dump(mode="json"),
+                "answer": {
+                    "changes": [
+                        {"index": 1, "text": "甲！"},
+                        {"index": 3, "text": "乙？"},
+                    ]
+                },
+            }
+        )
+
+    punctuation_processor.queryer.side_effect = punctuate_unmasked_targets
+    window = BlockTranscriptionAligner._get_windows(  # noqa: SLF001
+        [
+            Subtitle(start=index * 1_000, end=(index + 1) * 1_000, text=str(index))
+            for index in range(3)
+        ]
+    )[0]
+
+    output = aligner._punctuate_window(  # noqa: SLF001
+        ["參考一", "參考二", "參考三"], targets, window, 1
+    )
+
+    assert output == ["甲！", "嚟" * 54, "乙？"]
+
+
 def test_provider_errors_do_not_trigger_no_op_fallback():
     """Operational LLM failures should propagate rather than become no-op data."""
     guide, transcription = _get_block()

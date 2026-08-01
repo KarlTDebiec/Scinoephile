@@ -136,7 +136,31 @@
       "first_owned_index": 1,
       "last_owned_index": 13
     },
-    "answer": {}
+    "answer": {
+      "changes": [
+        {
+          "index": 2,
+          "shift": 2
+        },
+        {
+          "index": 3,
+          "shift": 3
+        },
+        {
+          "index": 4,
+          "shift": 11
+        },
+        {
+          "index": 7,
+          "shift": -1
+        },
+        {
+          "index": 9,
+          "shift": 1
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -255,15 +279,15 @@
       "changes": [
         {
           "index": 4,
-          "text": "唔知你犯咗弥天大罪啊？"
+          "shift": 2
         },
         {
           "index": 5,
-          "text": "你仲抢咗紫霞仙子嘅月光宝盒，"
+          "shift": 1
         },
         {
           "index": 6,
-          "text": "分明就系"
+          "shift": -4
         }
       ]
     },
@@ -422,59 +446,7 @@
       "first_owned_index": 4,
       "last_owned_index": 15
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 4,
-          "text": "放手啊！"
-        },
-        {
-          "index": 5,
-          "text": "你爱啊？"
-        },
-        {
-          "index": 6,
-          "text": "悟空，你爱就要讲啦，"
-        },
-        {
-          "index": 7,
-          "text": "做咩唔出声啫？"
-        },
-        {
-          "index": 8,
-          "text": "你望住我做咩啫？"
-        },
-        {
-          "index": 9,
-          "text": "虽然你咁有诚意咁望住我，"
-        },
-        {
-          "index": 10,
-          "text": "我系好高兴，"
-        },
-        {
-          "index": 11,
-          "text": "你都要讲噶，"
-        },
-        {
-          "index": 12,
-          "text": "攞去啦！"
-        },
-        {
-          "index": 13,
-          "text": "你唔系真系爱啊嘛？"
-        },
-        {
-          "index": 14,
-          "text": "你真系爱咩？"
-        },
-        {
-          "index": 15,
-          "text": "吓，孙悟空，你又点啊？"
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -751,11 +723,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "啊！脑飞入去你个脑里边，"
-        },
-        {
-          "index": 2,
-          "text": "救命啊！"
+          "shift": -1
         }
       ]
     },
@@ -879,39 +847,27 @@
       "changes": [
         {
           "index": 1,
-          "text": ""
+          "shift": -1
         },
         {
           "index": 2,
-          "text": "于是我就捉住只乌蝇，捏爆佢个肚，"
+          "shift": -3
         },
         {
           "index": 3,
-          "text": "逼条肠出嚟，"
+          "shift": -4
         },
         {
           "index": 4,
-          "text": "再将条肠箍翻住佢条颈，"
-        },
-        {
-          "index": 5,
-          "text": "跟住用力一扯。"
+          "shift": -4
         },
         {
           "index": 6,
-          "text": "各位，成条脷根出咗嚟，"
-        },
-        {
-          "index": 7,
-          "text": "再扫一刀落，"
+          "shift": 2
         },
         {
           "index": 12,
-          "text": "你根本唔想去取西经。"
-        },
-        {
-          "index": 13,
-          "text": ""
+          "shift": 1
         }
       ]
     },
@@ -1007,11 +963,7 @@
       "changes": [
         {
           "index": 5,
-          "text": "求姐姐同玉皇大帝讲声，"
-        },
-        {
-          "index": 6,
-          "text": "贫僧愿意一命赔一命。"
+          "shift": -4
         }
       ]
     },
@@ -1119,19 +1071,11 @@
       "changes": [
         {
           "index": 7,
-          "text": "你睇唔到哑巴头先扭下扭个啰柚咩？"
-        },
-        {
-          "index": 8,
-          "text": "咁扭法会唔会生痔疮啊？"
+          "shift": 2
         },
         {
           "index": 10,
-          "text": "一个生痔疮嘅官兵"
-        },
-        {
-          "index": 11,
-          "text": "惊佢咩啊？"
+          "shift": -1
         }
       ]
     },
@@ -1167,11 +1111,7 @@
       "changes": [
         {
           "index": 1,
-          "text": ""
-        },
-        {
-          "index": 2,
-          "text": "难道各位睇唔出我系一个女人咩？"
+          "shift": -1
         }
       ]
     },
@@ -1271,31 +1211,23 @@
       "changes": [
         {
           "index": 2,
-          "text": "西途险恶，北风如刀。"
+          "shift": 2
         },
         {
           "index": 3,
-          "text": "一个弱质嘅女子"
-        },
-        {
-          "index": 4,
-          "text": "想揾个地方歇歇脚，"
+          "shift": 5
         },
         {
           "index": 5,
-          "text": "洗洗身上嘅风尘。"
+          "shift": -1
         },
         {
           "index": 6,
-          "text": "你知唔知呢度系咩嘢地方啊？"
+          "shift": 4
         },
         {
           "index": 7,
-          "text": "此处乌烟瘴气，各位又面目狰狞，"
-        },
-        {
-          "index": 8,
-          "text": "绝唔似系间客栈，"
+          "shift": -1
         }
       ]
     },
@@ -1356,19 +1288,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "洗洗身上嘅风尘。你"
+          "text": "洗洗身上嘅风尘。"
         },
         {
           "index": 2,
-          "text": "知唔知呢度系咩嘢"
+          "text": "你知唔知呢度系咩嘢地方啊？"
         },
         {
           "index": 3,
-          "text": "地方啊？此处乌烟瘴气，各位又面目狰狞，绝"
+          "text": "此处乌烟瘴气，各位又面目狰狞，"
         },
         {
           "index": 4,
-          "text": "唔似系间客栈，"
+          "text": "绝唔似系间客栈，"
         },
         {
           "index": 5,
@@ -1410,27 +1342,19 @@
       "changes": [
         {
           "index": 7,
-          "text": "你唔怕送羊入虎口咩？"
+          "shift": 3
         },
         {
           "index": 8,
-          "text": "边个系羊，边个系虎，"
+          "shift": 2
         },
         {
           "index": 9,
-          "text": "恐怕尚系言之过早。"
-        },
-        {
-          "index": 10,
-          "text": "各位大爷可以系强盗，"
+          "shift": 2
         },
         {
           "index": 11,
-          "text": "唔通我唔可以系咩？"
-        },
-        {
-          "index": 12,
-          "text": "你到底系何方神圣？"
+          "shift": 2
         }
       ]
     },
@@ -1473,11 +1397,7 @@
       "changes": [
         {
           "index": 2,
-          "text": "唔发过去，全朝不生，"
-        },
-        {
-          "index": 3,
-          "text": "金钱落地，人头不保。"
+          "shift": 2
         }
       ]
     },
@@ -1521,11 +1441,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "春沙嚟呢个岳山做咩？"
-        },
-        {
-          "index": 2,
-          "text": "呢个女魔头素来无宝不落，"
+          "shift": 2
         }
       ]
     },
@@ -1649,35 +1565,19 @@
       "changes": [
         {
           "index": 2,
-          "text": "用咁靓嘅头来做咩啊？"
-        },
-        {
-          "index": 3,
-          "text": "摆低佢！"
+          "shift": 3
         },
         {
           "index": 4,
-          "text": "唔得啊，金主，我哋有头，帮主"
-        },
-        {
-          "index": 5,
-          "text": "。当家！"
+          "shift": 1
         },
         {
           "index": 7,
-          "text": "冇胆点做啊，二当家？"
+          "shift": -1
         },
         {
           "index": 8,
-          "text": "帮主啊，我唔系二当家啊，我系孟冰啊，"
-        },
-        {
-          "index": 9,
-          "text": "佢先系二当家。"
-        },
-        {
-          "index": 10,
-          "text": "我"
+          "shift": 1
         }
       ]
     },
@@ -1770,11 +1670,11 @@
       "targets": [
         {
           "index": 1,
-          "text": "主啊，我唔系二当家啊，我系孟冰"
+          "text": "帮主啊，我唔系二当家啊，我系孟冰啊"
         },
         {
           "index": 2,
-          "text": "啊，佢"
+          "text": "，佢"
         },
         {
           "index": 3,
@@ -1856,51 +1756,39 @@
       "changes": [
         {
           "index": 4,
-          "text": "唔知咩，我闹阿飞啊，要你惭愧"
-        },
-        {
-          "index": 5,
-          "text": "。走啊！"
+          "shift": 2
         },
         {
           "index": 6,
-          "text": "你望下你自己，鬼鬼祟祟，望嚟睇睇"
+          "shift": 6
         },
         {
           "index": 7,
-          "text": "，仲话留到披头散发"
+          "shift": 2
         },
         {
           "index": 8,
-          "text": "，点解要我走佬江湖啊？"
+          "shift": 2
         },
         {
           "index": 9,
-          "text": "吓？帮主，我喺呢度啊"
+          "shift": 1
         },
         {
           "index": 10,
-          "text": "。仲唔蒲头？"
+          "shift": 3
         },
         {
           "index": 11,
-          "text": "蒲头啦！帮主"
+          "shift": 1
         },
         {
           "index": 12,
-          "text": "，你中咗昆仑三圣嘅"
-        },
-        {
-          "index": 13,
-          "text": "七伤拳，而家伤势开始发作啦。"
+          "shift": 4
         },
         {
           "index": 14,
-          "text": "你同我讲啊，"
-        },
-        {
-          "index": 15,
-          "text": "𠮶日唔系得你缩低个头，"
+          "shift": 3
         }
       ]
     },
@@ -1977,7 +1865,7 @@
       "targets": [
         {
           "index": 1,
-          "text": "我讲啊，𠮶日唔系得你缩低个头，"
+          "text": "，𠮶日唔系得你缩低个头，"
         },
         {
           "index": 2,
@@ -2047,47 +1935,43 @@
       "changes": [
         {
           "index": 4,
-          "text": "七伤拳害得帮主真系惨啊！"
+          "shift": 4
         },
         {
           "index": 5,
-          "text": "帮主，我当日吓到企都跪低嘅咋，"
+          "shift": 3
         },
         {
           "index": 6,
-          "text": "听讲中咗七伤拳咧，"
+          "shift": 6
         },
         {
           "index": 7,
-          "text": "首先就双眼斗鸡，"
+          "shift": 4
         },
         {
           "index": 8,
-          "text": "跟住就双耳失聪，听唔到嘢，"
+          "shift": 4
         },
         {
           "index": 9,
-          "text": "然之后声线失控，讲嘢走晒音，"
+          "shift": 5
         },
         {
           "index": 10,
-          "text": "最后心脏血管爆炸，咁就死啦！"
+          "shift": 3
         },
         {
           "index": 11,
-          "text": "帮主，你而家斗鸡都好紧要啊！"
+          "shift": 14
         },
         {
           "index": 12,
-          "text": "边个话我斗鸡？"
+          "shift": 7
         },
         {
           "index": 13,
-          "text": "我只系将个视线集中喺一点，"
-        },
-        {
-          "index": 14,
-          "text": "改变我要睇嘢方法啫。咩"
+          "shift": 4
         }
       ]
     },
@@ -2152,19 +2036,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "死啦！帮主，你而家斗鸡"
+          "text": "帮主，你而家斗鸡都好紧要啊！边个话我斗鸡？我"
         },
         {
           "index": 2,
-          "text": "都好紧要啊！边个话我"
+          "text": "只系将"
         },
         {
           "index": 3,
-          "text": "斗鸡？我只系将个视线集中"
+          "text": "个视线集中喺一点，"
         },
         {
           "index": 4,
-          "text": "喺一点，改变我要睇嘢方法啫。咩"
+          "text": "改变我要睇嘢方法啫。咩"
         },
         {
           "index": 5,
@@ -2210,23 +2094,19 @@
       "changes": [
         {
           "index": 4,
-          "text": "喺一点，改变我要睇嘢方法啫。咩啊？"
+          "shift": 2
         },
         {
           "index": 5,
-          "text": "专登话我唔掂想坐位啊？"
+          "shift": 2
         },
         {
           "index": 6,
-          "text": "唔敢啊帮主！"
+          "shift": 5
         },
         {
           "index": 7,
-          "text": "唔敢？我踩死你都唔敢！"
-        },
-        {
-          "index": 8,
-          "text": "死啦！"
+          "shift": 3
         }
       ]
     },
@@ -2341,39 +2221,23 @@
       "changes": [
         {
           "index": 1,
-          "text": "在下斧头帮帮主，"
-        },
-        {
-          "index": 2,
-          "text": "绰号玉面飞龙至尊宝。"
+          "shift": 2
         },
         {
           "index": 3,
-          "text": "久闻春沙娘大名如雷贯耳，"
-        },
-        {
-          "index": 4,
-          "text": "唔知沙娘帮临系帮"
+          "shift": 2
         },
         {
           "index": 5,
-          "text": "有咩帮衬呢？"
+          "shift": 2
         },
         {
           "index": 6,
-          "text": "我想喺呢个地方逗留片刻啫。"
-        },
-        {
-          "index": 7,
-          "text": "唔知片刻即系几耐呢？"
+          "shift": 2
         },
         {
           "index": 9,
-          "text": "啊，亦可能系三五七年。"
-        },
-        {
-          "index": 10,
-          "text": "总之等到我要等嘅人出现，"
+          "shift": 2
         }
       ]
     },
@@ -2441,19 +2305,11 @@
       "changes": [
         {
           "index": 2,
-          "text": "冇，小完便，揪翻条裤啫。"
-        },
-        {
-          "index": 3,
-          "text": "你喺呢度小便？"
+          "shift": 2
         },
         {
           "index": 4,
-          "text": "唔系你边有咁大江水冲凉？"
-        },
-        {
-          "index": 5,
-          "text": "你讲咩话？"
+          "shift": 4
         }
       ]
     },
@@ -2489,11 +2345,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "信晒我冇问题，"
-        },
-        {
-          "index": 2,
-          "text": "问我乜问题先？"
+          "shift": -7
         }
       ]
     },
@@ -2617,43 +2469,35 @@
       "changes": [
         {
           "index": 1,
-          "text": "冇义气啊！"
+          "shift": -3
         },
         {
           "index": 2,
-          "text": "冇义气啊！木盘变饭碗底啊！"
-        },
-        {
-          "index": 3,
-          "text": "天啊！饶命啊！"
+          "shift": -4
         },
         {
           "index": 4,
-          "text": "你有本事杀晒我哋啊！"
+          "shift": 2
         },
         {
           "index": 5,
-          "text": "饶命啊，女皇！"
+          "shift": -1
         },
         {
           "index": 6,
-          "text": "饶命啊，女皇！"
+          "shift": 2
         },
         {
           "index": 7,
-          "text": "你个狗腿，做乜唔放过你嘅啦"
+          "shift": 7
         },
         {
           "index": 8,
-          "text": "咩？我拼条命都同你死过。"
+          "shift": 12
         },
         {
           "index": 9,
-          "text": ""
-        },
-        {
-          "index": 10,
-          "text": "男儿身下有黄金，既然佢哋肯求我"
+          "shift": 3
         }
       ]
     },
@@ -2689,11 +2533,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "孺子可教，"
-        },
-        {
-          "index": 2,
-          "text": "叫大家洗干净，叫佢喺出边等我。"
+          "shift": 2
         }
       ]
     },
@@ -2793,35 +2633,27 @@
       "changes": [
         {
           "index": 1,
-          "text": "点解有大粒噶？"
+          "shift": 3
         },
         {
           "index": 2,
-          "text": "诶，唔系粒嚟嘅，污糟嚟嘅啫。"
-        },
-        {
-          "index": 3,
-          "text": "即刻洗干净佢，"
+          "shift": 3
         },
         {
           "index": 4,
-          "text": "唔系我成只脚斩落嚟。"
+          "shift": 3
         },
         {
           "index": 5,
-          "text": "对唔住啊，"
+          "shift": 3
         },
         {
           "index": 6,
-          "text": "点解要睇我哋脚板底咧？"
+          "shift": 3
         },
         {
           "index": 7,
-          "text": "好彩我真系睇脚板，唔系睇啰柚啫。"
-        },
-        {
-          "index": 8,
-          "text": "你惊"
+          "shift": 2
         }
       ]
     },
@@ -2890,19 +2722,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "落嚟。对唔"
+          "text": "对唔住啊，"
         },
         {
           "index": 2,
-          "text": "住啊，点解要睇我哋脚板"
+          "text": "点解要睇我哋脚板底咧？"
         },
         {
           "index": 3,
-          "text": "底咧？好彩我真系睇脚板，唔系睇啰柚"
+          "text": "好彩我真系睇脚板，唔系睇啰柚啫。"
         },
         {
           "index": 4,
-          "text": "啫。你惊"
+          "text": "你惊"
         },
         {
           "index": 5,
@@ -2952,47 +2784,39 @@
       "changes": [
         {
           "index": 4,
-          "text": "啫。你惊啊？"
+          "shift": 2
         },
         {
           "index": 5,
-          "text": "我唔惊啊，你惊啫。"
+          "shift": 2
         },
         {
           "index": 6,
-          "text": "点讲啊？"
+          "shift": 2
         },
         {
           "index": 7,
-          "text": "你啰柚生咁多嘢，"
-        },
-        {
-          "index": 8,
-          "text": "费事用乜嘢话你唔干净，"
+          "shift": -1
         },
         {
           "index": 9,
-          "text": "叫你切咗佢噶。"
+          "shift": 2
         },
         {
           "index": 10,
-          "text": "你点知我啰柚？"
+          "shift": 4
         },
         {
           "index": 11,
-          "text": "俾我装你冲凉见到噶嘛。"
+          "shift": 2
         },
         {
           "index": 12,
-          "text": "做咩装我冲凉啊你？"
+          "shift": 3
         },
         {
           "index": 13,
-          "text": "我唔止装你一个，"
-        },
-        {
-          "index": 14,
-          "text": "我冚唪唥都装过晒啊！"
+          "shift": 3
         }
       ]
     },
@@ -3123,59 +2947,51 @@
       "changes": [
         {
           "index": 1,
-          "text": "点样都冇噶？"
+          "shift": 2
         },
         {
           "index": 2,
-          "text": "系啊，"
+          "shift": 2
         },
         {
           "index": 3,
-          "text": "我身体其他地方仲长得更加茂盛。"
+          "shift": 3
         },
         {
           "index": 4,
-          "text": "点啊？"
+          "shift": 2
         },
         {
           "index": 5,
-          "text": "系咪睇到你热血奔腾咧？"
+          "shift": 2
         },
         {
           "index": 6,
-          "text": "你话边度长得仲茂盛话？"
-        },
-        {
-          "index": 7,
-          "text": "唔系啊，"
+          "shift": -1
         },
         {
           "index": 8,
-          "text": "其实我净系得个头同脚板有嘅啫，"
+          "shift": 3
         },
         {
           "index": 9,
-          "text": "唔知系咪生错地方咧。"
+          "shift": 2
         },
         {
           "index": 10,
-          "text": "由今日起，不分日夜，"
+          "shift": 2
         },
         {
           "index": 11,
-          "text": "截查所有经过呢度嘅人。"
+          "shift": 2
         },
         {
           "index": 12,
-          "text": "查咩啊？"
+          "shift": 2
         },
         {
           "index": 13,
-          "text": "查佢哋脚板，"
-        },
-        {
-          "index": 14,
-          "text": "如果发现有三粒痣嘅，即刻通知我。"
+          "shift": 2
         }
       ]
     },
@@ -3315,63 +3131,55 @@
       "changes": [
         {
           "index": 1,
-          "text": "帮主啊，又唔去打劫，"
+          "shift": 3
         },
         {
           "index": 2,
-          "text": "净系睇人哋脚板底，"
+          "shift": 2
         },
         {
           "index": 3,
-          "text": "俾啲行家知道会唔会笑我哋变态噶？"
+          "shift": 2
         },
         {
           "index": 4,
-          "text": "明刀明枪唔够佢练啫，暗箭佢难防嘅。"
+          "shift": 6
         },
         {
           "index": 5,
-          "text": "今晚三更，直接用毒物围埋一个，"
+          "shift": 6
         },
         {
           "index": 6,
-          "text": "等下千斤落沙。"
-        },
-        {
-          "index": 7,
-          "text": "计谋，"
+          "shift": 3
         },
         {
           "index": 8,
-          "text": "你都讲得好靓啊。"
+          "shift": 2
         },
         {
           "index": 9,
-          "text": "嗯，呢招就由你去执行。"
+          "shift": 2
         },
         {
           "index": 10,
-          "text": "吓，咁睇低我唔好啩？"
+          "shift": 2
         },
         {
           "index": 11,
-          "text": "哎，入去睇啦，整鬼啊帮主！"
+          "shift": 2
         },
         {
           "index": 12,
-          "text": "你恶傻咁咩？成嚿唔听使。"
+          "shift": -1
         },
         {
           "index": 13,
-          "text": "帮主，你七伤拳嘅伤势开始扩大啦。"
+          "shift": 5
         },
         {
           "index": 14,
-          "text": "我仲有对手，"
-        },
-        {
-          "index": 15,
-          "text": "我唔会屈服噶。"
+          "shift": 2
         }
       ]
     },
@@ -3467,27 +3275,23 @@
       "changes": [
         {
           "index": 1,
-          "text": "你揾到三粒字？"
+          "shift": 2
         },
         {
           "index": 2,
-          "text": "点解个个都要揾三粒字嘅？"
+          "shift": 3
         },
         {
           "index": 3,
-          "text": "揾到你就可以救翻佢。"
+          "shift": 2
         },
         {
           "index": 4,
-          "text": "你讲紧咩啊？"
+          "shift": 2
         },
         {
           "index": 5,
-          "text": "呢度究竟系边度啊？"
-        },
-        {
-          "index": 6,
-          "text": "边度？"
+          "shift": 3
         }
       ]
     },
@@ -3567,19 +3371,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "Gigi啊，Gigi啊，Gigi啊，Gigi啊。"
+          "shift": 2
         },
         {
           "index": 2,
-          "text": "Gigi有冇狗仔啫？"
+          "shift": 5
         },
         {
           "index": 3,
-          "text": "好大只啊！"
-        },
-        {
-          "index": 4,
-          "text": "大只啦。"
+          "shift": 5
         }
       ]
     },
@@ -3623,15 +3423,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "哇！叫咗你班友仔平时勤啲打扫下噶啦，"
+          "shift": 3
         },
         {
           "index": 2,
-          "text": "一阵见到啲蜘蛛仲大只过我，"
-        },
-        {
-          "index": 3,
-          "text": "点射啦！"
+          "shift": 2
         }
       ]
     },
@@ -3719,19 +3515,15 @@
       "changes": [
         {
           "index": 2,
-          "text": "你成日都向住呢边追追啊！"
+          "shift": 4
         },
         {
           "index": 3,
-          "text": "哦，行埋呢边啦，唔系呢边，唔系呢边，"
+          "shift": 12
         },
         {
           "index": 4,
-          "text": "呢边啦，唔系呢边啦，"
-        },
-        {
-          "index": 5,
-          "text": "呢边有只梳啊！"
+          "shift": 14
         }
       ]
     },
@@ -3855,55 +3647,47 @@
       "changes": [
         {
           "index": 1,
-          "text": "救命啊！"
+          "shift": 4
         },
         {
           "index": 2,
-          "text": "哎呀，人嚟啊！佢喺呢度啊！"
-        },
-        {
-          "index": 3,
-          "text": ""
+          "shift": 2
         },
         {
           "index": 4,
-          "text": ""
+          "shift": -1
         },
         {
           "index": 5,
-          "text": "救命啊！救命！"
+          "shift": 5
         },
         {
           "index": 6,
-          "text": ""
+          "shift": 2
         },
         {
           "index": 7,
-          "text": "前面乜都冇，大家翻转头。"
+          "shift": 8
         },
         {
           "index": 8,
-          "text": "喂喂喂，我帮住你噶。"
+          "shift": 3
         },
         {
           "index": 9,
-          "text": "咁唔系呢嚿渣嚟咩？"
+          "shift": 5
         },
         {
           "index": 10,
-          "text": "哎呀，帮住你噶。"
+          "shift": 8
         },
         {
           "index": 11,
-          "text": "讲下咋？"
+          "shift": 2
         },
         {
           "index": 12,
-          "text": "哇，你班契弟啊！"
-        },
-        {
-          "index": 13,
-          "text": "放心，我嚟救你。"
+          "shift": 2
         }
       ]
     },
@@ -3955,19 +3739,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "哎呀，你咩嚟啊？"
+          "shift": 2
         },
         {
           "index": 2,
-          "text": "哎呀，搞到帮主你咁。"
+          "shift": 2
         },
         {
           "index": 3,
-          "text": "二当家咁开心，谂住同咩走咧？"
-        },
-        {
-          "index": 4,
-          "text": "啊，帮主，乜唔系抱走你咩？"
+          "shift": 4
         }
       ]
     },
@@ -4059,31 +3839,23 @@
       "changes": [
         {
           "index": 1,
-          "text": "冲！"
-        },
-        {
-          "index": 2,
-          "text": "放旗啦，放旗啦，放旗啦！"
+          "shift": -10
         },
         {
           "index": 3,
-          "text": "嗱，其他中国人努力翻，今晚本事埋去啦，好唔好？"
+          "shift": 2
         },
         {
           "index": 4,
-          "text": "呀！"
+          "shift": -2
         },
         {
           "index": 5,
-          "text": "冲上去！"
+          "shift": -8
         },
         {
           "index": 6,
-          "text": "阿美，爆头！"
-        },
-        {
-          "index": 7,
-          "text": "系！"
+          "shift": -2
         }
       ]
     },
@@ -4207,11 +3979,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "哦，比如中秋节，"
-        },
-        {
-          "index": 2,
-          "text": "就是再见。"
+          "shift": 5
         }
       ]
     },
@@ -4255,15 +4023,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "红色"
+          "shift": -4
         },
         {
           "index": 2,
-          "text": "𠮶边"
-        },
-        {
-          "index": 3,
-          "text": "啊！"
+          "shift": -2
         }
       ]
     },
@@ -4307,11 +4071,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "啊！哦，你唔好走啊！"
-        },
-        {
-          "index": 2,
-          "text": ""
+          "shift": 3
         }
       ]
     },
@@ -4427,23 +4187,27 @@
       "changes": [
         {
           "index": 1,
-          "text": "行开，等我嚟烧佢。"
+          "shift": 2
         },
         {
           "index": 2,
-          "text": ""
+          "shift": 2
         },
         {
           "index": 3,
-          "text": ""
+          "shift": 6
         },
         {
           "index": 4,
-          "text": "哇！"
+          "shift": 7
         },
         {
-          "index": 5,
-          "text": "帮主，你睇下呢个帮主。啊！啊！"
+          "index": 6,
+          "shift": 3
+        },
+        {
+          "index": 7,
+          "shift": 4
         }
       ]
     },
@@ -4528,11 +4292,11 @@
       "targets": [
         {
           "index": 1,
-          "text": "命"
+          "text": "帮主"
         },
         {
           "index": 2,
-          "text": "啊！帮主"
+          "text": ""
         },
         {
           "index": 3,
@@ -4606,47 +4370,31 @@
       "changes": [
         {
           "index": 4,
-          "text": "救火！"
+          "shift": 3
         },
         {
           "index": 5,
-          "text": "攞水嚟啊！"
-        },
-        {
-          "index": 6,
-          "text": "快啲！"
-        },
-        {
-          "index": 7,
-          "text": "救火！"
-        },
-        {
-          "index": 8,
-          "text": "救火！"
-        },
-        {
-          "index": 9,
-          "text": "救火！"
+          "shift": -2
         },
         {
           "index": 10,
-          "text": "唔得，快"
+          "shift": 5
         },
         {
           "index": 11,
-          "text": "啲！快啲！哎呀，蒲哥，你边个老婆啫？"
+          "shift": 13
         },
         {
           "index": 12,
-          "text": "行开啦你真系。揸住，等"
+          "shift": 3
         },
         {
-          "index": 17,
-          "text": "佢。爆佢。"
+          "index": 13,
+          "shift": 12
         },
         {
-          "index": 18,
-          "text": "一、二、三、四、一、二。"
+          "index": 14,
+          "shift": 5
         }
       ]
     },
@@ -4800,60 +4548,48 @@
     "answer": {
       "changes": [
         {
-          "index": 1,
-          "text": "烧肉啊！"
-        },
-        {
           "index": 2,
-          "text": "嗱，啲火咧系咁细，踩"
+          "shift": 11
         },
         {
           "index": 3,
-          "text": "住都识噶嘛，死蠢嚟！"
+          "shift": 10
         },
         {
           "index": 4,
-          "text": "边个烧"
+          "shift": 9
         },
         {
           "index": 5,
-          "text": "我？"
+          "shift": 2
         },
         {
           "index": 6,
-          "text": "估到系"
+          "shift": 3
         },
         {
           "index": 7,
-          "text": "你噶啦！我一早啊睇穿"
-        },
-        {
-          "index": 8,
-          "text": "晒你心肝脾肺肾啊，"
-        },
-        {
-          "index": 9,
-          "text": "系想坐我"
+          "shift": 4
         },
         {
           "index": 10,
-          "text": "位嘅。帮主"
+          "shift": 4
         },
         {
           "index": 11,
-          "text": "，对眼冇斗鸡"
+          "shift": 2
         },
         {
           "index": 12,
-          "text": "嘅。"
+          "shift": 2
         },
         {
           "index": 13,
-          "text": "帮主，你嘅七伤拳好翻"
+          "shift": 3
         },
         {
           "index": 14,
-          "text": "晒啦？"
+          "shift": 5
         }
       ]
     },
@@ -4934,19 +4670,19 @@
         },
         {
           "index": 2,
-          "text": "嘅。帮主，你嘅七伤拳好翻"
+          "text": "帮主，你嘅七伤拳好翻晒啦？"
         },
         {
           "index": 3,
-          "text": "晒啦？"
+          "text": "系。点解啊"
         },
         {
           "index": 4,
-          "text": "系。点解"
+          "text": ""
         },
         {
           "index": 5,
-          "text": "啊？我明啦，医七伤拳嘅方"
+          "text": "？我明啦，医七伤拳嘅方"
         },
         {
           "index": 6,
@@ -5000,39 +4736,43 @@
       "changes": [
         {
           "index": 4,
-          "text": "系。点解啊？我明啦，"
+          "shift": 5
         },
         {
           "index": 5,
-          "text": "医七伤拳嘅方法系要以毒攻毒，"
+          "shift": 7
         },
         {
           "index": 6,
-          "text": "伤上加伤。"
+          "shift": 6
         },
         {
           "index": 7,
-          "text": "有道理，有道理，有道理。"
+          "shift": 10
         },
         {
           "index": 8,
-          "text": "子儿当家咯，佢系无心之失嘅啫。"
+          "shift": 9
         },
         {
           "index": 9,
-          "text": "如果唔系佢打你祠堂𠮶下，"
+          "shift": 7
         },
         {
           "index": 10,
-          "text": "啲病都唔会医得好咁快啦。"
+          "shift": 10
         },
         {
           "index": 11,
-          "text": "你咁维护佢，莫非你同佢有路？"
+          "shift": 4
         },
         {
           "index": 12,
-          "text": "人哋对你一条"
+          "shift": 1
+        },
+        {
+          "index": 13,
+          "shift": 1
         }
       ]
     },
@@ -5105,11 +4845,11 @@
       "targets": [
         {
           "index": 1,
-          "text": "都唔会医得好咁快啦。你咁维护佢，莫非你同"
+          "text": "你咁维护佢，莫非你同佢有路？"
         },
         {
           "index": 2,
-          "text": "佢有路？人哋对你一条"
+          "text": "人哋对你一条心"
         },
         {
           "index": 3,
@@ -5117,7 +4857,7 @@
         },
         {
           "index": 4,
-          "text": "心"
+          "text": ""
         },
         {
           "index": 5,
@@ -5170,40 +4910,24 @@
     "answer": {
       "changes": [
         {
-          "index": 4,
-          "text": "心噶。"
-        },
-        {
-          "index": 5,
-          "text": ""
-        },
-        {
-          "index": 6,
-          "text": ""
-        },
-        {
           "index": 8,
-          "text": "老啊！我系一个咁理性嘅人"
+          "shift": 7
         },
         {
           "index": 9,
-          "text": "，你叫我点能够接受啲咁无稽嘅嘢咧？"
+          "shift": 4
         },
         {
           "index": 10,
-          "text": "啊，晒佢！"
+          "shift": 5
         },
         {
           "index": 11,
-          "text": "诶，帮主，你就咁去啊？唔怕"
+          "shift": 8
         },
         {
           "index": 12,
-          "text": "咩？我伤好"
-        },
-        {
-          "index": 13,
-          "text": ""
+          "shift": 2
         }
       ]
     },
@@ -5260,19 +4984,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "嘅嘢咧？"
+          "text": "啊，晒佢！"
         },
         {
           "index": 2,
-          "text": "啊，晒佢！诶，帮主，"
+          "text": "诶，帮主，你就咁去啊？唔怕"
         },
         {
           "index": 3,
-          "text": "你就咁去啊？唔怕"
+          "text": "咩？"
         },
         {
           "index": 4,
-          "text": "咩？我伤好"
+          "text": "我伤好"
         },
         {
           "index": 5,
@@ -5310,35 +5034,31 @@
       "changes": [
         {
           "index": 4,
-          "text": "咩？我伤好翻晒，惊唔够佢打？"
+          "shift": 9
         },
         {
           "index": 5,
-          "text": "好，有种！"
+          "shift": 3
         },
         {
           "index": 6,
-          "text": "你都觉得好啦，"
+          "shift": 10
         },
         {
           "index": 7,
-          "text": "当住你当我冇讲过咯。"
+          "shift": 4
         },
         {
           "index": 8,
-          "text": "好啊，嗱，"
+          "shift": 6
         },
         {
           "index": 9,
-          "text": "你是但拿把嘢冲入佢房就劈，"
+          "shift": 4
         },
         {
           "index": 10,
-          "text": "我哋喺你后边掩护你。"
-        },
-        {
-          "index": 11,
-          "text": "喺后边唔得。"
+          "shift": 9
         }
       ]
     },
@@ -5413,31 +5133,27 @@
       "changes": [
         {
           "index": 1,
-          "text": "哇！又话要我行近啲㖞。"
+          "shift": 5
         },
         {
           "index": 2,
-          "text": "定啲嚟啊！"
+          "shift": 5
         },
         {
           "index": 3,
-          "text": "我呢度几廿把嘢行住噶嘛，"
+          "shift": 7
         },
         {
           "index": 4,
-          "text": "一有咩嘢就揼低埋噶啦嘛。"
+          "shift": 7
         },
         {
           "index": 5,
-          "text": "哦，咁咪连我钉死埋？"
+          "shift": 7
         },
         {
           "index": 6,
-          "text": "傻，"
-        },
-        {
-          "index": 7,
-          "text": "至多咪重伤，边有死咁易？"
+          "shift": 2
         }
       ]
     },
@@ -5513,27 +5229,23 @@
       "changes": [
         {
           "index": 2,
-          "text": "起身，喺我面前唔好炸，"
+          "shift": 10
         },
         {
           "index": 3,
-          "text": "你第一位啫"
+          "shift": 5
         },
         {
           "index": 4,
-          "text": "吓。"
+          "shift": 2
         },
         {
           "index": 5,
-          "text": "真系难做，"
+          "shift": 5
         },
         {
           "index": 6,
-          "text": "大牛二虎啊，"
-        },
-        {
-          "index": 7,
-          "text": "成班都废晒，我自己嚟。"
+          "shift": 6
         }
       ]
     },
@@ -5585,11 +5297,7 @@
       "changes": [
         {
           "index": 3,
-          "text": "系，你一早就忍辱偷生，"
-        },
-        {
-          "index": 4,
-          "text": "差不多，但你算得咩啊？"
+          "shift": 6
         }
       ]
     },
@@ -5649,23 +5357,19 @@
       "changes": [
         {
           "index": 1,
-          "text": "啊，边度漏水咧？"
+          "shift": 5
         },
         {
           "index": 2,
-          "text": "啊，二当家，唔系漏水，系你流血啊！"
+          "shift": 6
         },
         {
           "index": 3,
-          "text": "神医，神医！"
+          "shift": 8
         },
         {
           "index": 4,
-          "text": "只要我用功法提高两个穴位，"
-        },
-        {
-          "index": 5,
-          "text": "即时冇血流。"
+          "shift": 8
         }
       ]
     },
@@ -5717,19 +5421,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "呢度唔算系山明水秀，"
+          "shift": 4
         },
         {
           "index": 2,
-          "text": "但系都别有一番风貌嘅。"
+          "shift": 5
         },
         {
           "index": 3,
-          "text": "两位绝罗相信会喜欢嘅，"
-        },
-        {
-          "index": 4,
-          "text": "早啲唞。"
+          "shift": 2
         }
       ]
     },
@@ -5797,27 +5497,23 @@
       "changes": [
         {
           "index": 1,
-          "text": "点啊？"
+          "shift": 2
         },
         {
           "index": 2,
-          "text": "系咪妖怪啊？"
+          "shift": 8
         },
         {
           "index": 3,
-          "text": "系，"
+          "shift": 7
         },
         {
           "index": 4,
-          "text": "仲非常之重要添，"
+          "shift": 6
         },
         {
           "index": 5,
-          "text": "搞到我心砰砰砰砰咁跳。"
-        },
-        {
-          "index": 6,
-          "text": "帮主请留步。"
+          "shift": -1
         }
       ]
     },
@@ -5901,35 +5597,31 @@
       "changes": [
         {
           "index": 1,
-          "text": "师姐话帮主你大仁大义，系侠中之侠，"
+          "shift": 6
         },
         {
           "index": 2,
-          "text": "加上帮主你呢种朋友，"
+          "shift": 10
         },
         {
           "index": 3,
-          "text": "真系三生有幸啊。"
+          "shift": 7
         },
         {
           "index": 4,
-          "text": "今日动喺你班手足头上嘅钱，"
+          "shift": 12
         },
         {
           "index": 5,
-          "text": "就当请大家去买酒饮啦。"
+          "shift": 8
         },
         {
           "index": 6,
-          "text": "多谢三娘一番美意。"
+          "shift": 2
         },
         {
           "index": 7,
-          "text": "帮主，普通料嚟啫，"
-        },
-        {
-          "index": 8,
-          "text": "各花各眼。"
+          "shift": 8
         }
       ]
     },
@@ -5965,11 +5657,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "啊！架车大髀啫，周身都窿，"
-        },
-        {
-          "index": 2,
-          "text": "乜嘢意思？"
+          "shift": 5
         }
       ]
     },
@@ -6124,68 +5812,48 @@
     "answer": {
       "changes": [
         {
-          "index": 2,
-          "text": "做咩忽然间不辞而别，"
-        },
-        {
           "index": 3,
-          "text": "走咗嚟啲穷乡僻壤，仲俾班草莽之夫"
+          "shift": 3
         },
         {
           "index": 4,
-          "text": "用迷药整到你露出原形咁"
+          "shift": -4
         },
         {
           "index": 5,
-          "text": "失策啊！你嚟做咩啊？"
+          "shift": 4
         },
         {
           "index": 6,
-          "text": "咁你咧？"
+          "shift": 4
         },
         {
           "index": 7,
-          "text": "我想行开下散心啫。"
+          "shift": -5
         },
         {
           "index": 8,
-          "text": "你想喺度等唐三藏出现，"
+          "shift": -12
         },
         {
           "index": 9,
-          "text": "要尝佢长生不老之肉啫啩？"
-        },
-        {
-          "index": 10,
-          "text": "你可以喺菩提老祖口中"
+          "shift": -14
         },
         {
           "index": 11,
-          "text": "氹佢讲出呢个天机，"
+          "shift": 4
         },
         {
           "index": 12,
-          "text": "难道我唔可以咩？"
+          "shift": 3
         },
         {
           "index": 13,
-          "text": "乱噏！"
+          "shift": 3
         },
         {
           "index": 14,
-          "text": "乱噏？咁你走嚟五岳山做咩？"
-        },
-        {
-          "index": 15,
-          "text": "呢度以前就叫做五指山，系只"
-        },
-        {
-          "index": 16,
-          "text": "死马骝当年困禁之地，"
-        },
-        {
-          "index": 17,
-          "text": "天机"
+          "shift": -7
         }
       ]
     },
@@ -6266,19 +5934,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "老祖口中氹佢讲出呢个"
+          "text": "氹佢讲出呢个天机，"
         },
         {
           "index": 2,
-          "text": "天机，难道我唔可"
+          "text": "难道我唔可以咩？"
         },
         {
           "index": 3,
-          "text": "以咩？乱噏！乱噏？咁你走嚟"
+          "text": "乱噏！"
         },
         {
           "index": 4,
-          "text": "五岳山做咩？呢"
+          "text": "乱噏？咁你走嚟五岳山做咩？呢"
         },
         {
           "index": 5,
@@ -6340,59 +6008,55 @@
       "changes": [
         {
           "index": 4,
-          "text": "五岳山做咩？呢度以前就叫做五指山"
+          "shift": -1
         },
         {
           "index": 5,
-          "text": "，系只死马骝当年困禁之地"
+          "shift": -3
         },
         {
           "index": 6,
-          "text": "，天机泄漏咗佢会转世成人"
+          "shift": -3
         },
         {
           "index": 7,
-          "text": "，投咗胎之后脚板底会有三粒痣"
+          "shift": -10
         },
         {
           "index": 8,
-          "text": "，只要揾到佢就可以揾到唐三藏"
+          "shift": -9
         },
         {
           "index": 9,
-          "text": "。师姐，我咁样讲唔知算唔算乱噏呢？"
+          "shift": -11
         },
         {
           "index": 10,
-          "text": "你自己想见翻只死马骝啫啩？"
+          "shift": -10
         },
         {
           "index": 11,
-          "text": "见翻呢个寡情薄幸嘅人又点啊？"
+          "shift": -7
         },
         {
           "index": 12,
-          "text": "分别只不过上次佢死喺观世音手上"
+          "shift": -12
         },
         {
           "index": 13,
-          "text": "，而今次就会死喺我手上。"
+          "shift": -8
         },
         {
           "index": 14,
-          "text": "总之一个和尚担水食"
+          "shift": -2
         },
         {
           "index": 15,
-          "text": "，两个和尚没水食"
+          "shift": -3
         },
         {
           "index": 16,
-          "text": "，呢个道理你明噶？"
-        },
-        {
-          "index": 17,
-          "text": "想同我争？"
+          "shift": -7
         }
       ]
     },
@@ -6451,23 +6115,19 @@
       "changes": [
         {
           "index": 1,
-          "text": "你见到啲咩？"
+          "shift": 6
         },
         {
           "index": 2,
-          "text": "冇嘢。"
+          "shift": 6
         },
         {
           "index": 3,
-          "text": "哦，"
+          "shift": 5
         },
         {
           "index": 4,
-          "text": "咁你踎低做咩啊？"
-        },
-        {
-          "index": 5,
-          "text": "我喺度学。"
+          "shift": 8
         }
       ]
     },
@@ -6535,27 +6195,23 @@
       "changes": [
         {
           "index": 1,
-          "text": "如果唐僧呢个消息传咗出去，"
+          "shift": 6
         },
         {
           "index": 2,
-          "text": "我第一个就杀咗你。"
+          "shift": 2
         },
         {
           "index": 3,
-          "text": "到时咪群妖会行至山"
+          "shift": 9
         },
         {
           "index": 4,
-          "text": "向师姐讨伐唐僧肉食啦。"
+          "shift": 9
         },
         {
           "index": 5,
-          "text": "唐三藏呢个消息，如果俾大王知，"
-        },
-        {
-          "index": 6,
-          "text": "一定重重赏。"
+          "shift": 9
         }
       ]
     },
@@ -6679,55 +6335,47 @@
       "changes": [
         {
           "index": 1,
-          "text": "哇！连只牛都开口讲嘢，今次真系百口莫辩。"
+          "shift": 6
         },
         {
           "index": 2,
-          "text": "哎呀，走啦走啦，离开呢度。"
+          "shift": 7
         },
         {
           "index": 3,
-          "text": "咁样走咗好冇义气㗎。"
+          "shift": 7
         },
         {
           "index": 4,
-          "text": "唔得，报告帮主。"
+          "shift": 10
         },
         {
           "index": 5,
-          "text": "哎呀，帮主啊！"
+          "shift": 3
         },
         {
           "index": 6,
-          "text": "哇，原来我哋呢度五岳山啊，"
+          "shift": 8
         },
         {
           "index": 7,
-          "text": "即系以前嘅五指山，"
+          "shift": 11
         },
         {
           "index": 8,
-          "text": "唐僧孙悟空咧就会喺处会合过。"
+          "shift": 11
         },
         {
           "index": 9,
-          "text": "哎呀，我哋牛拉只牛啊，竟然开口讲嘢啊，"
+          "shift": 13
         },
         {
           "index": 10,
-          "text": "本嚟只嘢踩佢"
-        },
-        {
-          "index": 11,
-          "text": "啊八只脚嘅，一脚个头，等等等。"
+          "shift": 16
         },
         {
           "index": 12,
-          "text": "啊，我系咩头嘅？"
-        },
-        {
-          "index": 13,
-          "text": "讲咩？"
+          "shift": 2
         }
       ]
     },
@@ -6851,47 +6499,43 @@
       "changes": [
         {
           "index": 1,
-          "text": "冇啊！"
+          "shift": 3
         },
         {
           "index": 2,
-          "text": "啲猪乸就猪乸啦，生咗两只猪仔㖞"
+          "shift": 13
         },
         {
           "index": 3,
-          "text": "，一只咧有八八只脚"
+          "shift": 5
         },
         {
           "index": 4,
-          "text": "嘅，一只咧，个头咧就四百几斤重嘅。"
+          "shift": 8
         },
         {
           "index": 5,
-          "text": "帮主，我哋今次发咗猪油饼嚟，"
+          "shift": 12
         },
         {
           "index": 6,
-          "text": "以后唔好做山贼啦。"
+          "shift": 8
         },
         {
           "index": 7,
-          "text": "我哋又养猪啦？"
+          "shift": 7
         },
         {
           "index": 8,
-          "text": "我哋冇养猪咩？"
+          "shift": 7
         },
         {
           "index": 9,
-          "text": "或者我发紧梦啊，乱噏嘢啦。"
+          "shift": 12
         },
         {
           "index": 10,
-          "text": "咁我走啦，唔阻各位休息啦"
-        },
-        {
-          "index": 11,
-          "text": ""
+          "shift": 5
         }
       ]
     },
@@ -6948,19 +6592,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "我哋又养猪啦？"
+          "text": "我哋冇养猪咩？"
         },
         {
           "index": 2,
-          "text": "我哋冇养猪咩？或"
+          "text": "或者我发紧梦啊，乱噏嘢啦。"
         },
         {
           "index": 3,
-          "text": "者我发紧梦啊，乱噏嘢啦。咁我走啦，唔阻"
+          "text": "咁我走啦，唔阻各位休息啦"
         },
         {
           "index": 4,
-          "text": "各位休息啦"
+          "text": ""
         },
         {
           "index": 5,
@@ -6998,31 +6642,27 @@
       "changes": [
         {
           "index": 4,
-          "text": "各位休息啦吓。我哋都走。"
+          "shift": 7
         },
         {
           "index": 5,
-          "text": "哎，顺便送埋两位姑娘出去。"
+          "shift": 15
         },
         {
           "index": 6,
-          "text": "唔得。"
+          "shift": 9
         },
         {
           "index": 7,
-          "text": "两位听我使，怕有关人等"
+          "shift": 5
         },
         {
           "index": 8,
-          "text": "喺隔篱作一次彻底搜查，你哋要揾嘅人。"
+          "shift": 7
         },
         {
           "index": 9,
-          "text": "多谢帮主。"
-        },
-        {
-          "index": 10,
-          "text": "我话你啦。早唞，帮主。"
+          "shift": 5
         }
       ]
     },
@@ -7073,19 +6713,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "呢匀死火啦！"
+          "shift": 6
         },
         {
           "index": 2,
-          "text": "点解晶晶姑娘对我呢个造型"
+          "shift": 9
         },
         {
           "index": 3,
-          "text": "完全冇反应嘅？"
-        },
-        {
-          "index": 4,
-          "text": ""
+          "shift": 2
         }
       ]
     },
@@ -7137,19 +6773,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "唔好杀我！唔好杀我！唔好杀我！唔好杀我！唔好杀我！唔好杀我！唔好杀！"
+          "shift": 3
         },
         {
           "index": 2,
-          "text": "我同你哋玩下啫，"
+          "shift": 8
         },
         {
           "index": 3,
-          "text": "咁中意玩啊？"
-        },
-        {
-          "index": 4,
-          "text": "系啊，就玩下啦。"
+          "shift": 6
         }
       ]
     },
@@ -7193,15 +6825,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "好唔好玩啊？"
+          "shift": 6
         },
         {
           "index": 2,
-          "text": "好，"
-        },
-        {
-          "index": 3,
-          "text": "好就玩。"
+          "shift": 4
         }
       ]
     },
@@ -7293,39 +6921,35 @@
       "changes": [
         {
           "index": 1,
-          "text": "仲玩唔玩啊？"
+          "shift": 6
         },
         {
           "index": 2,
-          "text": "我唔玩啦，我唔玩啦。"
+          "shift": 8
         },
         {
           "index": 3,
-          "text": "头先话见到边个有八只爪啊？"
+          "shift": 12
         },
         {
           "index": 4,
-          "text": "记得咯。"
+          "shift": 3
         },
         {
           "index": 5,
-          "text": "喂，咩啊？"
+          "shift": 2
         },
         {
           "index": 6,
-          "text": "哇！哎呀呀呀！"
+          "shift": 2
         },
         {
           "index": 7,
-          "text": "哎，我我阿婆啊。咁我个头系咪咁样噶？"
+          "shift": 4
         },
         {
           "index": 8,
-          "text": "系啊系啊，"
-        },
-        {
-          "index": 9,
-          "text": "系咩啫？佢都未必。"
+          "shift": 3
         }
       ]
     },
@@ -7385,23 +7009,19 @@
       "changes": [
         {
           "index": 1,
-          "text": "一刀杀尽啦！"
+          "shift": 6
         },
         {
           "index": 2,
-          "text": ""
+          "shift": 5
         },
         {
           "index": 3,
-          "text": "点解？"
+          "shift": 2
         },
         {
           "index": 4,
-          "text": "我要用移魂大法迷咗佢，"
-        },
-        {
-          "index": 5,
-          "text": "留翻嚟做我嘅卧底。"
+          "shift": 4
         }
       ]
     },
@@ -7501,35 +7121,31 @@
       "changes": [
         {
           "index": 3,
-          "text": "我睇下，"
+          "shift": 4
         },
         {
           "index": 4,
-          "text": "咁靓仔你嗌有鬼，"
+          "shift": 6
         },
         {
           "index": 5,
-          "text": "烂泥扶唔上壁。"
+          "shift": 5
         },
         {
           "index": 6,
-          "text": "喂，杨Sir，唔好扮嘢啦，"
+          "shift": 3
         },
         {
           "index": 7,
-          "text": "唔系我逐忽逐忽肉同你片出嚟啊！"
+          "shift": 5
         },
         {
           "index": 8,
-          "text": "喂，我可唔可以唔系咁残忍啊嘛？"
+          "shift": 15
         },
         {
           "index": 9,
-          "text": "望住我，"
-        },
-        {
-          "index": 10,
-          "text": "疑云大。"
+          "shift": 10
         }
       ]
     },
@@ -7581,19 +7197,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "边个？"
+          "shift": 1
         },
         {
           "index": 2,
-          "text": "长夜漫漫，无心睡眠。"
+          "shift": 9
         },
         {
           "index": 3,
-          "text": "我以为我一个瞓唔着啫，"
-        },
-        {
-          "index": 4,
-          "text": "原来晶晶姑娘你都瞓唔着啊！"
+          "shift": 11
         }
       ]
     },
@@ -7757,67 +7369,63 @@
       "changes": [
         {
           "index": 1,
-          "text": "系啊，唔知帮主你又为咩瞓唔着呢？"
+          "shift": 10
         },
         {
           "index": 2,
-          "text": "就系因为晶晶姑娘你。"
+          "shift": 3
         },
         {
           "index": 3,
-          "text": "系我？"
+          "shift": 3
         },
         {
           "index": 4,
-          "text": "冇错，自从见到姑娘之后，"
+          "shift": 9
         },
         {
           "index": 5,
-          "text": "我决定改过自新，唔再做贼。"
+          "shift": 5
         },
         {
           "index": 6,
-          "text": "为咗表示对姑娘你嘅诚意，"
+          "shift": 2
         },
         {
           "index": 7,
-          "text": "我唔要再见到以前嘅我。"
+          "shift": 2
         },
         {
           "index": 8,
-          "text": "啱睇嘛？"
+          "shift": 4
         },
         {
           "index": 9,
-          "text": "系你只马骝精！"
+          "shift": 9
         },
         {
           "index": 10,
-          "text": "马骝精？"
+          "shift": 6
         },
         {
           "index": 11,
-          "text": "孙悟空咯！"
+          "shift": 7
         },
         {
           "index": 12,
-          "text": "孙悟空？"
+          "shift": 7
         },
         {
           "index": 13,
-          "text": "你变咗人样就得啦？"
+          "shift": 11
         },
         {
           "index": 14,
-          "text": "人样？"
+          "shift": 9
         },
         {
           "index": 15,
-          "text": "睇嚟我唔用三昧白骨火你都唔会认噶啦。"
-        },
-        {
-          "index": 16,
-          "text": "哇，使唔使"
+          "shift": 9
         }
       ]
     },
@@ -7890,19 +7498,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "空咯！孙悟"
+          "text": "你变咗人样就得啦？"
         },
         {
           "index": 2,
-          "text": "空？你变咗"
+          "text": "人样？"
         },
         {
           "index": 3,
-          "text": "人样就得啦？人样？睇嚟我唔用三昧白骨"
+          "text": "睇嚟我唔用三昧白骨火你都唔会认噶啦。"
         },
         {
           "index": 4,
-          "text": "火你都唔会认噶啦。哇，使唔使"
+          "text": "哇，使唔使"
         },
         {
           "index": 5,
@@ -7956,43 +7564,39 @@
       "changes": [
         {
           "index": 4,
-          "text": "火你都唔会认噶啦。哇，使唔使啊？又烧？"
+          "shift": 5
         },
         {
           "index": 5,
-          "text": "何必呢？"
+          "shift": 3
         },
         {
           "index": 6,
-          "text": "唔通我搞错？"
+          "shift": 6
         },
         {
           "index": 7,
-          "text": "何必呢？"
+          "shift": 3
         },
         {
           "index": 8,
-          "text": "哇！你做咩用火焰弹烧我？"
+          "shift": 9
         },
         {
           "index": 9,
-          "text": "你做咩无端端剃晒须啊？"
+          "shift": 11
         },
         {
           "index": 10,
-          "text": "你知唔知冇咗须"
+          "shift": 9
         },
         {
           "index": 11,
-          "text": "好冇性格噶？"
+          "shift": 13
         },
         {
           "index": 12,
-          "text": "系，"
-        },
-        {
-          "index": 13,
-          "text": "文"
+          "shift": 15
         }
       ]
     },
@@ -8061,23 +7665,23 @@
       "targets": [
         {
           "index": 1,
-          "text": "你做咩无端端剃晒须"
-        },
-        {
-          "index": 2,
-          "text": "啊？"
-        },
-        {
-          "index": 3,
           "text": "你知唔知冇咗须"
         },
         {
+          "index": 2,
+          "text": "好冇性格噶？"
+        },
+        {
+          "index": 3,
+          "text": "系，文又唔得，武又"
+        },
+        {
           "index": 4,
-          "text": "好冇性格噶？系，文"
+          "text": ""
         },
         {
           "index": 5,
-          "text": "又唔得，武又唔得，你唔"
+          "text": "唔得，你唔"
         },
         {
           "index": 6,
@@ -8122,60 +7726,44 @@
     "answer": {
       "changes": [
         {
-          "index": 1,
-          "text": "你做咩无端端剃晒须啊？"
-        },
-        {
-          "index": 2,
-          "text": "你知唔知冇咗须好冇性格噶？"
-        },
-        {
-          "index": 3,
-          "text": "系，"
-        },
-        {
           "index": 4,
-          "text": "文又唔得，武又唔得，"
+          "shift": 3
         },
         {
           "index": 5,
-          "text": "你唔做山贼想做状元啊？"
+          "shift": 9
         },
         {
           "index": 6,
-          "text": "都有谂过下嘅。"
+          "shift": 8
         },
         {
           "index": 7,
-          "text": "悭啲啦，你学人转形象，"
+          "shift": 10
         },
         {
           "index": 8,
-          "text": "安安分分咁做山贼呢份咁有前途"
+          "shift": 12
         },
         {
           "index": 9,
-          "text": "嘅职业啊嘛。"
+          "shift": 8
         },
         {
           "index": 10,
-          "text": "我知啊，"
+          "shift": 5
         },
         {
           "index": 11,
-          "text": "我会继续努力啊！"
+          "shift": 4
         },
         {
           "index": 12,
-          "text": "好似唔似？似𠮶只衰嘢。"
+          "shift": 5
         },
         {
           "index": 13,
-          "text": "哼，真失败。"
-        },
-        {
-          "index": 14,
-          "text": "原来晶晶姑娘会中意我粗犷嘅一面。"
+          "shift": 4
         }
       ]
     },
@@ -8266,39 +7854,35 @@
       "changes": [
         {
           "index": 1,
-          "text": "孙悟空，你同我拉出嚟！"
+          "shift": 9
         },
         {
           "index": 2,
-          "text": "死马骝，"
+          "shift": 4
         },
         {
           "index": 3,
-          "text": "喺我十八岁𠮶年，你话会嚟娶我，"
+          "shift": 9
         },
         {
           "index": 4,
-          "text": "而家我等咗你三年，"
+          "shift": 11
         },
         {
           "index": 5,
-          "text": "你同我死出嚟！"
+          "shift": 9
         },
         {
           "index": 6,
-          "text": "我哋大王有啲事行开咗，"
+          "shift": 8
         },
         {
           "index": 7,
-          "text": "佢话白姑娘嚟到咧，就将呢件嘢交翻俾你，"
+          "shift": 8
         },
         {
           "index": 8,
-          "text": "仲话多谢白姑娘嘅一番美意，"
-        },
-        {
-          "index": 9,
-          "text": "佢又无福消受。"
+          "shift": 11
         }
       ]
     },
@@ -8334,11 +7918,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "五百年啦，五百年啦，"
-        },
-        {
-          "index": 2,
-          "text": "卒之揾到唐三藏嘅。"
+          "shift": 9
         }
       ]
     },
@@ -8374,11 +7954,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "唉，连个板木都睇唔埋，"
-        },
-        {
-          "index": 2,
-          "text": "都唔知几时先生得翻添嘅。"
+          "shift": 11
         }
       ]
     },
@@ -8422,15 +7998,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "弊，俾佢谂咗一道先啊！"
+          "shift": 5
         },
         {
           "index": 2,
-          "text": "报天，我蒲太老早都要谂个方法，通知"
-        },
-        {
-          "index": 3,
-          "text": "呢班无辜嘅。"
+          "shift": 10
         }
       ]
     },
@@ -8530,43 +8102,39 @@
       "changes": [
         {
           "index": 1,
-          "text": "你又翻嚟水帘洞啊？"
+          "shift": 3
         },
         {
           "index": 2,
-          "text": "咩话水帘洞？"
+          "shift": 4
         },
         {
           "index": 3,
-          "text": "你边位啊？"
+          "shift": 5
         },
         {
           "index": 4,
-          "text": "成日带我去𠮶度做咩啊？"
+          "shift": 7
         },
         {
           "index": 5,
-          "text": "冇人带，你自己要翻去。"
+          "shift": 2
         },
         {
           "index": 6,
-          "text": "一个人喺屋企打，始终都系唔惯。"
+          "shift": 3
         },
         {
           "index": 7,
-          "text": "哇！你咪吓我啊！"
+          "shift": 8
         },
         {
           "index": 8,
-          "text": "我屋企系木山第四，点解忽然又地下？"
+          "shift": 6
         },
         {
           "index": 9,
-          "text": "你搞错咗，听到嘛？"
-        },
-        {
-          "index": 10,
-          "text": "以后唔好再烦我啊！"
+          "shift": 9
         }
       ]
     },
@@ -8634,27 +8202,23 @@
       "changes": [
         {
           "index": 1,
-          "text": "出发啦，帮主，唔系就迟到噶啦！"
+          "shift": 10
         },
         {
           "index": 2,
-          "text": "出咩发啊？你想点啊？"
+          "shift": 18
         },
         {
           "index": 3,
-          "text": "打劫啊，帮主！"
+          "shift": 16
         },
         {
           "index": 4,
-          "text": "边个够胆嚟打劫啊？"
+          "shift": 14
         },
         {
           "index": 5,
-          "text": "我哋打劫人哋啊！"
-        },
-        {
-          "index": 6,
-          "text": ""
+          "shift": 13
         }
       ]
     },
@@ -8706,19 +8270,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "打紧"
+          "shift": 2
         },
         {
           "index": 2,
-          "text": "咩话？"
+          "shift": 5
         },
         {
           "index": 3,
-          "text": "搞板啊，老爷！"
-        },
-        {
-          "index": 4,
-          "text": ""
+          "shift": 12
         }
       ]
     },
@@ -8794,27 +8354,23 @@
       "changes": [
         {
           "index": 1,
-          "text": "望咩啊？"
+          "shift": 4
         },
         {
           "index": 2,
-          "text": "睇正咗块面，靓仔咗，妒忌啊？"
+          "shift": 12
         },
         {
           "index": 3,
-          "text": "晴晴，你几好啊？"
+          "shift": 10
         },
         {
           "index": 4,
-          "text": ""
+          "shift": 3
         },
         {
           "index": 5,
-          "text": "妒忌啊，妒忌啊，"
-        },
-        {
-          "index": 6,
-          "text": "班友。"
+          "shift": 8
         }
       ]
     },
@@ -8866,19 +8422,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "帮主，菩提子洗干净啦，"
+          "shift": 10
         },
         {
           "index": 2,
-          "text": "出发啦，"
+          "shift": 14
         },
         {
           "index": 3,
-          "text": "晚饭。"
-        },
-        {
-          "index": 4,
-          "text": ""
+          "shift": 12
         }
       ]
     },
@@ -8994,43 +8546,39 @@
       "changes": [
         {
           "index": 1,
-          "text": "唉，我，我问你带翻嚟𠮶执菩提子啦。"
+          "shift": 8
         },
         {
           "index": 2,
-          "text": "你系菩提子？"
+          "shift": 7
         },
         {
           "index": 3,
-          "text": "唔系，我系菩提老祖啊。"
+          "shift": 10
         },
         {
           "index": 4,
-          "text": "乜咁大老母啊？"
+          "shift": 5
         },
         {
           "index": 5,
-          "text": "你讲粗口！"
+          "shift": 7
         },
         {
           "index": 6,
-          "text": "我系菩提老祖啊，我系神仙啊，"
+          "shift": 14
         },
         {
           "index": 7,
-          "text": "我化做菩提子嚟救你噶。"
+          "shift": 9
         },
         {
           "index": 8,
-          "text": "你挞咗我收菩提子，仲唔系老母？"
+          "shift": 8
         },
         {
           "index": 9,
-          "text": "𠮶两个"
-        },
-        {
-          "index": 10,
-          "text": "女人呢，"
+          "shift": 13
         }
       ]
     },
@@ -9115,23 +8663,23 @@
       "targets": [
         {
           "index": 1,
-          "text": "我系菩提老祖啊，我系神仙啊，我化"
+          "text": "我化做菩提子嚟救你噶。"
         },
         {
           "index": 2,
-          "text": "做菩提子嚟救你噶。你挞咗我收菩提"
+          "text": "你挞咗我收菩提子，仲唔系老母？"
         },
         {
           "index": 3,
-          "text": "子，仲唔系老母？𠮶两个"
+          "text": "𠮶两个女人呢，系妖怪嚟嘅。如果你"
         },
         {
           "index": 4,
-          "text": "女人呢，"
+          "text": ""
         },
         {
           "index": 5,
-          "text": "系妖怪嚟嘅。如果你唔信，你问我照妖镜一"
+          "text": "唔信，你问我照妖镜一"
         },
         {
           "index": 6,
@@ -9193,51 +8741,47 @@
       "changes": [
         {
           "index": 4,
-          "text": "女人呢，系妖怪嚟嘅。"
+          "shift": 3
         },
         {
           "index": 5,
-          "text": "如果你唔信，"
+          "shift": 9
         },
         {
           "index": 6,
-          "text": "你问我照妖镜一照咧，你就明白晒。"
+          "shift": 5
         },
         {
           "index": 7,
-          "text": "照你都唔"
+          "shift": 2
         },
         {
           "index": 8,
-          "text": "好，块镜你话你系咪？"
+          "shift": 4
         },
         {
           "index": 9,
-          "text": "哇！挞咗我收"
-        },
-        {
-          "index": 10,
-          "text": "菩提子！冇啊，我冇"
+          "shift": 6
         },
         {
           "index": 11,
-          "text": "啊。咁我"
+          "shift": -4
         },
         {
           "index": 12,
-          "text": "收菩提子喺边？我咪你"
+          "shift": -12
         },
         {
           "index": 13,
-          "text": "而家执菩提子咯。大声啲！"
+          "shift": -24
         },
         {
           "index": 14,
-          "text": "我咪你而家执菩提子咯。你唔信你"
+          "shift": 9
         },
         {
           "index": 15,
-          "text": "咪听歌啫，菩提子。"
+          "shift": 1
         }
       ]
     },
@@ -9310,19 +8854,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "而家执菩提子咯。大声啲！"
+          "text": ""
         },
         {
           "index": 2,
-          "text": "我咪你而家执菩提子咯。你唔信你"
+          "text": "咁我收菩提子喺边？我咪你而家执菩提子咯。大声啲！我咪你而家执菩提子咯。你唔信你咪听歌啫，菩提子。"
         },
         {
           "index": 3,
-          "text": "咪听歌啫，菩提子。"
+          "text": "你"
         },
         {
           "index": 4,
-          "text": "你"
+          "text": ""
         },
         {
           "index": 5,
@@ -9376,39 +8920,39 @@
       "changes": [
         {
           "index": 4,
-          "text": "你唔好以为我唔够你打㖞，"
+          "shift": 8
         },
         {
           "index": 5,
-          "text": "我唔想伤及无辜啫。"
+          "shift": 12
         },
         {
           "index": 6,
-          "text": "你啊，又扮伤啊！"
+          "shift": 16
         },
         {
           "index": 7,
-          "text": "哎呀，正经过啦。"
+          "shift": 7
         },
         {
           "index": 8,
-          "text": "哇，帮主把手"
+          "shift": 11
         },
         {
           "index": 9,
-          "text": "好粗犷啊！"
+          "shift": 16
         },
         {
           "index": 10,
-          "text": "得唔得啊？"
+          "shift": 22
         },
         {
           "index": 11,
-          "text": "得。点解头先明明白板嘅？"
+          "shift": 25
         },
         {
           "index": 12,
-          "text": "啱打完枪铺嚟，"
+          "shift": 6
         }
       ]
     },
@@ -9473,19 +9017,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "啦。哇，帮主把手"
+          "text": "啊？得。点解头先明明白板嘅？"
         },
         {
           "index": 2,
-          "text": "好粗犷啊！得唔得"
+          "text": "啱打完枪铺嚟，知啊嘛。"
         },
         {
           "index": 3,
-          "text": "啊？得。点解头先明明白板嘅？啱打完枪铺嚟，"
+          "text": "黑风"
         },
         {
           "index": 4,
-          "text": "知啊嘛。黑风"
+          "text": ""
         },
         {
           "index": 5,
@@ -9531,43 +9075,39 @@
       "changes": [
         {
           "index": 4,
-          "text": "知啊嘛。黑风第二，都有嘅。"
+          "shift": 7
         },
         {
           "index": 5,
-          "text": "食饭啦。"
+          "shift": 4
         },
         {
           "index": 6,
-          "text": "吓？"
+          "shift": 2
         },
         {
           "index": 7,
-          "text": "食饭啊？"
+          "shift": 4
         },
         {
           "index": 8,
-          "text": "食饭好啊。"
+          "shift": 8
         },
         {
           "index": 9,
-          "text": "好咧。今日𠮶个月光咁靓，不如……"
+          "shift": 13
         },
         {
           "index": 10,
-          "text": "月光？冇啊。"
+          "shift": 2
         },
         {
           "index": 11,
-          "text": "哇，咁大个月光你睇唔到啊？睇真少少啊。"
+          "shift": 10
         },
         {
           "index": 12,
-          "text": "咦，天都咁黑，点会有月光㖞？"
-        },
-        {
-          "index": 13,
-          "text": ""
+          "shift": 9
         }
       ]
     },
@@ -9722,63 +9262,43 @@
       "changes": [
         {
           "index": 2,
-          "text": "啊！边个老母？"
+          "shift": 7
         },
         {
           "index": 3,
-          "text": "边个老母？我变咗提子啊！"
+          "shift": 9
         },
         {
           "index": 4,
-          "text": "喺边啊？"
-        },
-        {
-          "index": 5,
-          "text": "喺你裤浪啊！"
-        },
-        {
-          "index": 6,
-          "text": "哇！咁大只秋喺度。"
-        },
-        {
-          "index": 7,
-          "text": "你臭你嘅，我喺你后边。"
+          "shift": 9
         },
         {
           "index": 8,
-          "text": "哎呀，见翻你真系好啊！"
+          "shift": 3
         },
         {
           "index": 9,
-          "text": "你而家信啦？"
+          "shift": 2
         },
         {
           "index": 10,
-          "text": "我信啦，我信啦。"
+          "shift": -3
         },
         {
           "index": 11,
-          "text": "喂，点解呢度会有妖精啊？"
+          "shift": -2
         },
         {
           "index": 12,
-          "text": "蠢材啊！我话你知啦，"
+          "shift": 20
         },
         {
           "index": 13,
-          "text": "呢班妖精咧就喺度等唐三藏重现人间嘅。"
+          "shift": 6
         },
         {
           "index": 14,
-          "text": "唐三藏重现人间？"
-        },
-        {
-          "index": 15,
-          "text": "嗯，五百年前孙悟空"
-        },
-        {
-          "index": 16,
-          "text": "俾观音大士所消灭，"
+          "shift": 6
         }
       ]
     },
@@ -9843,19 +9363,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "解呢度会有妖精啊？蠢材"
+          "text": "，点解呢度会有妖精啊？蠢材啊！我话你知啦，呢班妖精咧就喺度等唐三藏"
         },
         {
           "index": 2,
-          "text": "啊！我话你知啦，呢班妖精咧就喺度等唐三藏"
+          "text": "重现人间嘅。"
         },
         {
           "index": 3,
-          "text": "重现人间嘅。唐三"
+          "text": "唐三藏重现人间？"
         },
         {
           "index": 4,
-          "text": "藏重现人间？嗯，五百年前孙悟"
+          "text": "嗯，五百年前孙悟"
         },
         {
           "index": 5,
@@ -9901,31 +9421,7 @@
       "changes": [
         {
           "index": 4,
-          "text": "藏重现人间？嗯，五百年前孙悟空俾观音大士所消灭，"
-        },
-        {
-          "index": 5,
-          "text": "佢师傅唐三藏为咗普度众生"
-        },
-        {
-          "index": 6,
-          "text": "，不惜千辛万苦去取"
-        },
-        {
-          "index": 7,
-          "text": "西经，希望借此经书嚟感化世人"
-        },
-        {
-          "index": 8,
-          "text": "，满天神佛都俾佢呢种精神所感动嘅。"
-        },
-        {
-          "index": 9,
-          "text": "玉皇大帝有见及此，就俾个机会孙悟空转世"
-        },
-        {
-          "index": 10,
-          "text": "，安排佢两师徒今世。"
+          "shift": 10
         }
       ]
     },
@@ -10068,27 +9564,7 @@
       "first_owned_index": 4,
       "last_owned_index": 13
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 11,
-          "text": "佢两师徒今世喺呢度重逢，继续完成取西经嘅使命。"
-        },
-        {
-          "index": 12,
-          "text": "嗯，你而家明白点解咁多妖精喺呢度出现呢？"
-        },
-        {
-          "index": 13,
-          "text": "哦，唔"
-        },
-        {
-          "index": 14,
-          "text": ""
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -10215,39 +9691,35 @@
       "changes": [
         {
           "index": 4,
-          "text": "精喺呢度出现呢？哦，"
+          "shift": 13
         },
         {
           "index": 5,
-          "text": "唔怪得一路以嚟我都发住同一个"
+          "shift": 13
         },
         {
           "index": 6,
-          "text": "噩梦啦。喺一片漆黑孤独嘅环境里头，"
+          "shift": 7
         },
         {
           "index": 7,
-          "text": "有一对一对非常之咸湿嘅眼睛"
+          "shift": 10
         },
         {
           "index": 8,
-          "text": "系咁望住我，"
+          "shift": 6
         },
         {
           "index": 9,
-          "text": "令到我鬼死咁唔好意思。"
+          "shift": 10
         },
         {
           "index": 10,
-          "text": "就系你呢挺眼神"
+          "shift": 9
         },
         {
           "index": 11,
-          "text": "，有几次仲望到我有啲面红添。"
-        },
-        {
-          "index": 12,
-          "text": ""
+          "shift": 11
         }
       ]
     },
@@ -10320,19 +9792,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "睛系咁望住我，令"
+          "text": "，令到我鬼死咁唔好意思。"
         },
         {
           "index": 2,
-          "text": "到我鬼死咁唔好意"
+          "text": "就系你呢挺眼神"
         },
         {
           "index": 3,
-          "text": "思。就系你呢挺眼神，有几"
+          "text": "，有几次仲望到我有啲面红添。"
         },
         {
           "index": 4,
-          "text": "次仲望到我有啲面红添。"
+          "text": ""
         },
         {
           "index": 5,
@@ -10386,43 +9858,39 @@
       "changes": [
         {
           "index": 4,
-          "text": "次仲望到我有啲面红添。原来注定我今日撞妖。"
+          "shift": 10
         },
         {
           "index": 5,
-          "text": "系啊，你今日真系撞妖啊！"
+          "shift": 9
         },
         {
           "index": 6,
-          "text": "嗱，呢度有两个乾坤袋，一沓隐身"
+          "shift": 1
         },
         {
           "index": 7,
-          "text": "符，你一贴咗道符喺身咧，佢就睇唔到你噶"
+          "shift": 21
         },
         {
           "index": 8,
-          "text": "啦。趁佢唔觉意咧，你就一粒落去"
+          "shift": 2
         },
         {
           "index": 9,
-          "text": "佢个头𠮶度。嗱，我喺后边掩护"
+          "shift": 6
         },
         {
           "index": 10,
-          "text": "你。哇！你句句白话，我讲噶㖞。"
+          "shift": 2
         },
         {
           "index": 11,
-          "text": "你同边个讲啊？"
+          "shift": 8
         },
         {
           "index": 12,
-          "text": "同佢啊。"
-        },
-        {
-          "index": 13,
-          "text": "我啊，"
+          "shift": 6
         }
       ]
     },
@@ -10491,19 +9959,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "佢个头𠮶度。嗱，我喺后边掩护"
+          "text": "嗱，我喺后边掩护你。"
         },
         {
           "index": 2,
-          "text": "你。哇！你句句"
+          "text": "哇！你句句白话，我讲噶㖞。"
         },
         {
           "index": 3,
-          "text": "白话，我讲噶㖞。你"
+          "text": "你同边个讲啊？"
         },
         {
           "index": 4,
-          "text": "同边个讲啊？同佢啊。我啊，"
+          "text": "同佢啊。我啊，"
         },
         {
           "index": 5,
@@ -10553,47 +10021,43 @@
       "changes": [
         {
           "index": 4,
-          "text": "同边个讲啊？同佢啊。我啊，我会帮你啊。"
+          "shift": -3
         },
         {
           "index": 5,
-          "text": "冇得顶啊！你不愧为我好兄弟"
+          "shift": -3
         },
         {
           "index": 6,
-          "text": "。嗱，你而家出去叫晒啲手足入嚟"
+          "shift": 5
         },
         {
           "index": 7,
-          "text": "，每人俾道符佢。"
+          "shift": 13
         },
         {
           "index": 8,
-          "text": "我翻去菩提老祖度攞埋个乾坤袋，"
+          "shift": 16
         },
         {
           "index": 9,
-          "text": "夹手夹脚捉妖精。"
+          "shift": 15
         },
         {
           "index": 10,
-          "text": "冇问题。"
+          "shift": 14
         },
         {
           "index": 11,
-          "text": "好兄弟。"
+          "shift": 4
         },
         {
           "index": 12,
-          "text": "哦，今日你啲眼神好似咁。"
+          "shift": 12
         },
         {
           "index": 13,
-          "text": ""
-        },
-        {
-          "index": 14,
-          "text": ""
+          "shift": 12
         }
       ]
     },
@@ -10652,23 +10116,19 @@
       "changes": [
         {
           "index": 1,
-          "text": "诶，两位请慢用啊！"
+          "shift": 6
         },
         {
           "index": 2,
-          "text": ""
+          "shift": 2
         },
         {
           "index": 3,
-          "text": "好，大家帮主翻嚟啦，快啲食啦！"
+          "shift": 10
         },
         {
           "index": 4,
-          "text": ""
-        },
-        {
-          "index": 5,
-          "text": ""
+          "shift": 7
         }
       ]
     },
@@ -10704,11 +10164,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "通知其他人，帮住揾。"
-        },
-        {
-          "index": 2,
-          "text": ""
+          "shift": 10
         }
       ]
     },
@@ -10752,15 +10208,11 @@
       "changes": [
         {
           "index": 1,
-          "text": ""
+          "shift": -1
         },
         {
           "index": 2,
-          "text": "嗯，"
-        },
-        {
-          "index": 3,
-          "text": "我哋不同星座。"
+          "shift": 1
         }
       ]
     },
@@ -10812,19 +10264,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "你做乜嘢？"
+          "shift": 5
         },
         {
           "index": 2,
-          "text": "我有啲醉，诶，瞓阵先。"
+          "shift": 10
         },
         {
           "index": 3,
-          "text": "唔使惊，睇唔到噶。"
-        },
-        {
-          "index": 4,
-          "text": "饮得唔好学人饮啦，真。"
+          "shift": 9
         }
       ]
     },
@@ -10868,15 +10316,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "真系睇唔到，"
+          "shift": 6
         },
         {
           "index": 2,
-          "text": "你不嬲都睇唔到。"
-        },
-        {
-          "index": 3,
-          "text": ""
+          "shift": 13
         }
       ]
     },
@@ -10920,15 +10364,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "哇，公子咁好端嚟嘅，唔知咧。"
+          "shift": 14
         },
         {
           "index": 2,
-          "text": ""
-        },
-        {
-          "index": 3,
-          "text": ""
+          "shift": 11
         }
       ]
     },
@@ -10964,11 +10404,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "一，二，"
-        },
-        {
-          "index": 2,
-          "text": "一，二。"
+          "shift": -4
         }
       ]
     },
@@ -11068,39 +10504,35 @@
       "changes": [
         {
           "index": 1,
-          "text": "好还钱咯，靓仔！"
+          "shift": 8
         },
         {
           "index": 2,
-          "text": "讲话讲衰都发烂渣啊！"
+          "shift": 12
         },
         {
           "index": 3,
-          "text": "发你唔起啊？下次唔使还啦。"
+          "shift": 15
         },
         {
           "index": 4,
-          "text": "讲话你几时争我钱啊？"
+          "shift": 20
         },
         {
           "index": 5,
-          "text": "你争我钱啊真？"
+          "shift": 22
         },
         {
           "index": 6,
-          "text": "我争？"
+          "shift": 8
         },
         {
           "index": 7,
-          "text": "记得咧，"
+          "shift": 9
         },
         {
           "index": 8,
-          "text": ""
-        },
-        {
-          "index": 9,
-          "text": "我记性啊！"
+          "shift": 2
         }
       ]
     },
@@ -11216,51 +10648,47 @@
       "changes": [
         {
           "index": 1,
-          "text": "靓仔，到你嘅环节啦，"
+          "shift": 9
         },
         {
           "index": 2,
-          "text": "使唔使发咁大烂渣啊？"
+          "shift": 15
         },
         {
           "index": 3,
-          "text": "话就话你用得啊！"
+          "shift": 14
         },
         {
           "index": 4,
-          "text": "喂，我上个月咪还咗俾你咯。"
+          "shift": 15
         },
         {
           "index": 5,
-          "text": "你还咗啊？系㖞，还咗啊！"
+          "shift": 3
         },
         {
           "index": 6,
-          "text": "你真系，你老啦，你你冇记性啊！"
+          "shift": 5
         },
         {
           "index": 7,
-          "text": "算啦，头先人哋都唔啱先嘅。"
+          "shift": 4
         },
         {
           "index": 8,
-          "text": "呢个都老唔实，"
+          "shift": 7
         },
         {
           "index": 9,
-          "text": "肯咬啲啫，总好过冇嘅。"
+          "shift": 8
         },
         {
           "index": 10,
-          "text": "明刀明枪同佢嚟呢个。"
+          "shift": 12
         },
         {
           "index": 11,
-          "text": ""
-        },
-        {
-          "index": 12,
-          "text": ""
+          "shift": 9
         }
       ]
     },
@@ -11312,19 +10740,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "两只妖怪出嚟受死！"
+          "shift": 3
         },
         {
           "index": 2,
-          "text": "个乾坤袋咧喂，"
+          "shift": 6
         },
         {
           "index": 3,
-          "text": "乾坤袋喺度。主人，佢哋想陷害你啊，"
-        },
-        {
-          "index": 4,
-          "text": "反骨仔！"
+          "shift": 10
         }
       ]
     },
@@ -11376,19 +10800,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "哼，不过今日出卖得我，"
+          "shift": 9
         },
         {
           "index": 2,
-          "text": "听日一样我要出卖翻你，"
+          "shift": 16
         },
         {
           "index": 3,
-          "text": "系咩？"
-        },
-        {
-          "index": 4,
-          "text": ""
+          "shift": 9
         }
       ]
     },
@@ -11424,11 +10844,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "我菩提老祖为咗伏妖除魔除魅。"
-        },
-        {
-          "index": 2,
-          "text": ""
+          "shift": 14
         }
       ]
     },
@@ -11584,63 +11000,59 @@
       "changes": [
         {
           "index": 1,
-          "text": "公主果然够眼光，二当家真系有问题。"
+          "shift": 14
         },
         {
           "index": 2,
-          "text": "平时啲女仔嗌佢做嘢咁推三推四嘅，"
+          "shift": 16
         },
         {
           "index": 3,
-          "text": "今次咁顺摊，梗有景轰啦！"
+          "shift": 15
         },
         {
           "index": 4,
-          "text": "拖佢出嚟！"
+          "shift": 15
         },
         {
           "index": 5,
-          "text": "系！"
+          "shift": 7
         },
         {
           "index": 6,
-          "text": "放咗"
+          "shift": 4
         },
         {
           "index": 7,
-          "text": "佢！放咗"
+          "shift": 4
         },
         {
           "index": 8,
-          "text": "佢！"
+          "shift": 4
         },
         {
           "index": 9,
-          "text": "放咗"
+          "shift": 4
         },
         {
           "index": 10,
-          "text": "佢！系咧，你条木契，"
+          "shift": 4
         },
         {
           "index": 11,
-          "text": "今晚我就㓥咗你当烧猪"
+          "shift": 10
         },
         {
           "index": 12,
-          "text": "食！"
+          "shift": 2
         },
         {
           "index": 13,
-          "text": "唉，咁又唔怪得佢嘅，佢又不过受咗两个妖女"
+          "shift": 9
         },
         {
           "index": 14,
-          "text": "嘅移魂大"
-        },
-        {
-          "index": 15,
-          "text": ""
+          "shift": 4
         }
       ]
     },
@@ -11705,19 +11117,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "今晚我就㓥咗你当烧猪"
-        },
-        {
-          "index": 2,
           "text": "食！"
         },
         {
+          "index": 2,
+          "text": "唉，咁又唔怪得佢嘅"
+        },
+        {
           "index": 3,
-          "text": "唉，咁又唔怪得佢嘅，佢又不过受咗两个妖女"
+          "text": "，佢又不过受咗两个妖女嘅移魂大"
         },
         {
           "index": 4,
-          "text": "嘅移魂大"
+          "text": ""
         },
         {
           "index": 5,
@@ -11759,7 +11171,35 @@
       "first_owned_index": 4,
       "last_owned_index": 10
     },
-    "answer": {}
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "shift": 7
+        },
+        {
+          "index": 5,
+          "shift": 17
+        },
+        {
+          "index": 6,
+          "shift": 8
+        },
+        {
+          "index": 7,
+          "shift": 6
+        },
+        {
+          "index": 8,
+          "shift": 14
+        },
+        {
+          "index": 9,
+          "shift": 8
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -11832,15 +11272,15 @@
       "targets": [
         {
           "index": 1,
-          "text": "仲讲二旺财，"
+          "text": "乜你咬住条绳好似个面线咁嘅？"
         },
         {
           "index": 2,
-          "text": "乜你咬住条绳"
+          "text": ""
         },
         {
           "index": 3,
-          "text": "好似个面线咁嘅？咪我绑乾坤袋条绳嚟咯。"
+          "text": "咪我绑乾坤袋条绳嚟咯。"
         },
         {
           "index": 4,
@@ -11902,39 +11342,43 @@
       "changes": [
         {
           "index": 4,
-          "text": "哦，"
+          "shift": 2
         },
         {
           "index": 5,
-          "text": "天堂有路你唔走，地狱无门闯进来。"
+          "shift": 15
         },
         {
           "index": 6,
-          "text": "嚟啊！"
+          "shift": 5
         },
         {
           "index": 7,
-          "text": "等我捻熄你个托世孙悟空，"
+          "shift": 12
         },
         {
           "index": 8,
-          "text": "就永远都揾唔到唐三藏噶啦。"
+          "shift": 13
         },
         {
           "index": 9,
-          "text": "咩话？"
+          "shift": 7
         },
         {
           "index": 10,
-          "text": "佢系孙悟空？"
+          "shift": 12
         },
         {
           "index": 11,
-          "text": "嚟"
+          "shift": 17
         },
         {
           "index": 12,
-          "text": "啊！你睇下你个样，孙悟"
+          "shift": 12
+        },
+        {
+          "index": 13,
+          "shift": 13
         }
       ]
     },
@@ -12019,23 +11463,23 @@
       "targets": [
         {
           "index": 1,
-          "text": "咩话？佢系孙悟空？嚟"
+          "text": "你睇下你个样，孙悟空啊，唔系就"
         },
         {
           "index": 2,
-          "text": "啊！你睇下你个样，孙悟"
+          "text": "一镬熟噶啦。"
         },
         {
           "index": 3,
-          "text": "空啊，唔系就"
+          "text": "佢唔系孙悟空，"
         },
         {
           "index": 4,
-          "text": "一镬熟噶啦。佢"
+          "text": ""
         },
         {
           "index": 5,
-          "text": "唔系孙悟空，佢连"
+          "text": "佢连"
         },
         {
           "index": 6,
@@ -12097,63 +11541,59 @@
       "changes": [
         {
           "index": 4,
-          "text": "一镬熟噶啦。"
+          "shift": 12
         },
         {
           "index": 5,
-          "text": "佢唔系孙悟空，佢连"
+          "shift": 22
         },
         {
           "index": 6,
-          "text": "我三昧白骨火都顶唔住，"
+          "shift": 15
         },
         {
           "index": 7,
-          "text": "点会系孙悟空啊？"
+          "shift": 17
         },
         {
           "index": 8,
-          "text": "岂有此理！"
+          "shift": 17
         },
         {
           "index": 9,
-          "text": "咁就天机你都泄露出嚟嘅，系嘛？"
+          "shift": 9
         },
         {
           "index": 10,
-          "text": "啊，呢边"
+          "shift": 13
         },
         {
           "index": 11,
-          "text": "啊，你仲唔算系神仙嚟嘅你？"
+          "shift": 12
         },
         {
           "index": 12,
-          "text": "我手嚟啊！"
+          "shift": 8
         },
         {
           "index": 13,
-          "text": "过分啦你！"
+          "shift": 16
         },
         {
           "index": 14,
-          "text": "哎呀，你话我真系怕你三"
+          "shift": 14
         },
         {
           "index": 15,
-          "text": "昧白骨火啊？"
+          "shift": 13
         },
         {
           "index": 16,
-          "text": "你再烧多次睇下。"
+          "shift": 6
         },
         {
           "index": 17,
-          "text": "唔系啊嘛？好啊！啊，"
-        },
-        {
-          "index": 18,
-          "text": "我唔怕啦，系咪啊？"
+          "shift": 9
         }
       ]
     },
@@ -12196,15 +11636,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "我孙悟空就喺萝卜手喺度俾你烧，"
+          "shift": 13
         },
         {
           "index": 2,
-          "text": "嗯，惊我未惊过啦，嗯，"
-        },
-        {
-          "index": 3,
-          "text": "都唔怕。"
+          "shift": -1
         }
       ]
     },
@@ -12336,51 +11772,47 @@
       "changes": [
         {
           "index": 1,
-          "text": "嗯，真系烧到窿晒都冇事㖞。"
+          "shift": 10
         },
         {
           "index": 2,
-          "text": "放手！"
+          "shift": 6
         },
         {
           "index": 3,
-          "text": "第一次我见噶啦，"
+          "shift": 9
         },
         {
           "index": 4,
-          "text": "好投降啦！"
+          "shift": 13
         },
         {
           "index": 5,
-          "text": "我仲有成班兄弟，再加个神仙。"
+          "shift": 16
         },
         {
           "index": 6,
-          "text": "喂，你去边啊？"
+          "shift": 15
         },
         {
           "index": 7,
-          "text": "我系会同你报仇噶啦！"
+          "shift": 10
         },
         {
           "index": 8,
-          "text": "哇，你神仙都咁冇义气，"
+          "shift": 12
         },
         {
           "index": 9,
-          "text": "咁唔使问啦，"
+          "shift": 17
         },
         {
           "index": 10,
-          "text": "我成班兄弟梗过晒𠮶边啦。"
+          "shift": 16
         },
         {
           "index": 11,
-          "text": "系。"
-        },
-        {
-          "index": 12,
-          "text": ""
+          "shift": 8
         }
       ]
     },
@@ -12445,23 +11877,23 @@
       "targets": [
         {
           "index": 1,
-          "text": "啦！"
+          "text": "，咁唔使问啦，"
         },
         {
           "index": 2,
-          "text": "哇，你神仙都咁冇义气，咁唔使问"
+          "text": "我成班兄弟梗过晒𠮶边啦。系。"
         },
         {
           "index": 3,
-          "text": "啦，我成班兄弟梗过晒𠮶边"
+          "text": "唉，呢班"
         },
         {
           "index": 4,
-          "text": "啦。系。"
+          "text": ""
         },
         {
           "index": 5,
-          "text": "唉，呢班"
+          "text": ""
         },
         {
           "index": 6,
@@ -12502,40 +11934,40 @@
     "answer": {
       "changes": [
         {
+          "index": 4,
+          "shift": 2
+        },
+        {
           "index": 5,
-          "text": "唉，呢班奸"
+          "shift": 9
         },
         {
           "index": 6,
-          "text": "，你就系个负心人，"
+          "shift": 10
         },
         {
           "index": 7,
-          "text": "你琴晚仲呃我。"
+          "shift": 13
         },
         {
           "index": 8,
-          "text": "吓，咪就系𠮶只马骝精咯"
+          "shift": 14
         },
         {
           "index": 9,
-          "text": "，师妹嫁唔出都因为你啫。"
+          "shift": 4
         },
         {
           "index": 10,
-          "text": "哦。"
+          "shift": 8
         },
         {
           "index": 11,
-          "text": "捉住至尊宝！"
+          "shift": 10
         },
         {
           "index": 12,
-          "text": "上！"
-        },
-        {
-          "index": 13,
-          "text": "鬼嚟啊！"
+          "shift": 9
         }
       ]
     },
@@ -12602,23 +12034,19 @@
       "changes": [
         {
           "index": 2,
-          "text": "不如就咁话啦，计错数，行少一步，"
+          "shift": 16
         },
         {
           "index": 3,
-          "text": "你唔会怪我啊嘛？"
+          "shift": 13
         },
         {
           "index": 4,
-          "text": "我一生人都"
+          "shift": 2
         },
         {
           "index": 5,
-          "text": "盲，"
-        },
-        {
-          "index": 6,
-          "text": "女女最惊，最有眼光就系跟住帮主。"
+          "shift": -2
         }
       ]
     },
@@ -12678,19 +12106,15 @@
       "changes": [
         {
           "index": 2,
-          "text": "呢个系唔使你咁负心人，"
+          "shift": 11
         },
         {
           "index": 3,
-          "text": "你仲帮住佢，"
+          "shift": 14
         },
         {
           "index": 4,
-          "text": "仲要靠佢揾糖心。"
-        },
-        {
-          "index": 5,
-          "text": ""
+          "shift": 13
         }
       ]
     },
@@ -12798,47 +12222,43 @@
       "changes": [
         {
           "index": 1,
-          "text": "师姐，"
+          "shift": 2
         },
         {
           "index": 2,
-          "text": "一个和尚担水食，两个和尚冇水食。"
+          "shift": 14
         },
         {
           "index": 3,
-          "text": "原来呢个道理你唔明，"
+          "shift": 13
         },
         {
           "index": 4,
-          "text": "你打伤咗我都唔见得一定有水食啊。"
+          "shift": 18
         },
         {
           "index": 5,
-          "text": "睇下你自己只掌，"
+          "shift": 11
         },
         {
           "index": 6,
-          "text": "黑寡妇，"
+          "shift": 4
         },
         {
           "index": 7,
-          "text": "你中咗我盘丝软甲嘅毒，"
+          "shift": 11
         },
         {
           "index": 8,
-          "text": "七日之内如果冇我解药，"
+          "shift": 20
         },
         {
           "index": 9,
-          "text": "你就会毒气攻心而死。"
+          "shift": 14
         },
         {
           "index": 10,
-          "text": "我有。"
-        },
-        {
-          "index": 11,
-          "text": ""
+          "shift": 5
         }
       ]
     },
@@ -12898,15 +12318,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "啊啊啊！哎呀！中间嘅两针发炎啦你！"
+          "shift": 15
         },
         {
           "index": 2,
-          "text": "唔系啊，侧边嚟呢只蚂蚁啊！"
-        },
-        {
-          "index": 3,
-          "text": "出蛋！"
+          "shift": 5
         }
       ]
     },
@@ -12942,11 +12358,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "阿母，"
-        },
-        {
-          "index": 2,
-          "text": "我过嚟咗。"
+          "shift": 3
         }
       ]
     },
@@ -12990,11 +12402,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "人都炸死呀！"
+          "shift": 6
         },
         {
-          "index": 3,
-          "text": ""
+          "index": 2,
+          "shift": 6
         }
       ]
     },
@@ -13094,35 +12506,31 @@
       "changes": [
         {
           "index": 1,
-          "text": "乌太老祖，"
+          "shift": 3
         },
         {
           "index": 2,
-          "text": "今日你唔将唐三藏交出嚟，"
+          "shift": 14
         },
         {
           "index": 3,
-          "text": "死路一条！"
+          "shift": 17
         },
         {
           "index": 4,
-          "text": "你同我讲咁多做咩啊？"
+          "shift": 21
         },
         {
           "index": 5,
-          "text": "你唔系托世孙悟空啊嘛？"
+          "shift": 21
         },
         {
           "index": 6,
-          "text": "喂，结拜细佬孙悟空"
+          "shift": 9
         },
         {
           "index": 7,
-          "text": ""
-        },
-        {
-          "index": 8,
-          "text": ""
+          "shift": 6
         }
       ]
     },
@@ -13183,23 +12591,23 @@
       "targets": [
         {
           "index": 1,
-          "text": "三藏交出嚟，死路一条！"
+          "text": "你唔系托世孙悟空啊嘛？"
         },
         {
           "index": 2,
-          "text": "你同我讲咁多做咩啊？你唔系托世孙悟空啊嘛？"
+          "text": "喂，结拜细佬孙悟空"
         },
         {
           "index": 3,
-          "text": "喂，结拜细佬孙悟"
+          "text": "喺边度啊？"
         },
         {
           "index": 4,
-          "text": "空"
+          "text": ""
         },
         {
           "index": 5,
-          "text": "喺边度啊？咦，"
+          "text": "咦，"
         },
         {
           "index": 6,
@@ -13237,39 +12645,35 @@
       "changes": [
         {
           "index": 4,
-          "text": "空喺边度啊？"
+          "shift": 6
         },
         {
           "index": 5,
-          "text": "咦，呢件马料"
+          "shift": 16
         },
         {
           "index": 6,
-          "text": "原来就系孙"
+          "shift": 15
         },
         {
           "index": 7,
-          "text": "悟空嘅结拜大佬，今次有"
+          "shift": 14
         },
         {
           "index": 8,
-          "text": "救啦！细佬就系结拜大"
+          "shift": 17
         },
         {
           "index": 9,
-          "text": "佬，你嘅结拜细佬孙悟"
+          "shift": 10
         },
         {
           "index": 10,
-          "text": "空托世"
+          "shift": 7
         },
         {
           "index": 11,
-          "text": "啦。你系啊，就系"
-        },
-        {
-          "index": 12,
-          "text": "细佬啦。"
+          "shift": 10
         }
       ]
     },
@@ -13344,31 +12748,23 @@
       "changes": [
         {
           "index": 1,
-          "text": "我方舟来，报上名来。"
+          "shift": 10
         },
         {
           "index": 2,
-          "text": "大师大师，坐下大师，企上大师"
+          "shift": 21
         },
         {
           "index": 3,
-          "text": "。"
+          "shift": 17
         },
         {
           "index": 4,
-          "text": "剩低嘅祖师、大师、大师𠮶阵，"
-        },
-        {
-          "index": 5,
-          "text": "两个都唔知喺边度啊，"
+          "shift": 14
         },
         {
           "index": 6,
-          "text": "咁竟然得一个。"
-        },
-        {
-          "index": 7,
-          "text": ""
+          "shift": 1
         }
       ]
     },
@@ -13412,15 +12808,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "边个够胆挡路嘅，"
+          "shift": -2
         },
         {
           "index": 2,
-          "text": "就杀边个！"
-        },
-        {
-          "index": 3,
-          "text": ""
+          "shift": 1
         }
       ]
     },
@@ -13544,27 +12936,23 @@
       "changes": [
         {
           "index": 1,
-          "text": "老鬼，乜你仲未死嘅"
+          "shift": 9
         },
         {
           "index": 2,
-          "text": "咩？我哋正话喺楼梯咋，"
+          "shift": 11
         },
         {
           "index": 3,
-          "text": "冇得顶啊你！"
+          "shift": 8
         },
         {
           "index": 4,
-          "text": "喂，唔好走啊！喂，唔好走啊！"
+          "shift": 14
         },
         {
           "index": 5,
-          "text": "睇下你啲宠物先发报。"
-        },
-        {
-          "index": 6,
-          "text": ""
+          "shift": 10
         }
       ]
     },
@@ -13600,11 +12988,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "一个正常嘅狐狸根。"
-        },
-        {
-          "index": 2,
-          "text": ""
+          "shift": 9
         }
       ]
     },
@@ -13712,39 +13096,35 @@
       "changes": [
         {
           "index": 1,
-          "text": "做咩啊你？"
+          "shift": 5
         },
         {
           "index": 2,
-          "text": "我主人要见你。"
+          "shift": 10
         },
         {
           "index": 3,
-          "text": "咩地方嚟噶？"
+          "shift": 10
         },
         {
           "index": 4,
-          "text": "盘丝洞。"
+          "shift": 10
         },
         {
           "index": 5,
-          "text": "盘丝洞？"
+          "shift": 6
         },
         {
           "index": 6,
-          "text": "系，"
+          "shift": 4
         },
         {
           "index": 7,
-          "text": "我主人系盘丝大仙座下大弟子蜘蛛精，"
+          "shift": 19
         },
         {
           "index": 8,
-          "text": "呢度唔系盘丝洞系"
-        },
-        {
-          "index": 9,
-          "text": ""
+          "shift": 21
         }
       ]
     },
@@ -13821,27 +13201,27 @@
       "targets": [
         {
           "index": 1,
-          "text": "洞。盘丝"
+          "text": "系，"
         },
         {
           "index": 2,
-          "text": "洞？"
+          "text": "我主人系盘丝大仙座下大弟子蜘蛛精，"
         },
         {
           "index": 3,
-          "text": "系，我主人系盘丝大"
+          "text": "呢度唔系盘丝洞系咩啊？"
         },
         {
           "index": 4,
-          "text": "仙座下大弟子蜘蛛精，呢度唔系盘丝洞系"
+          "text": ""
         },
         {
           "index": 5,
-          "text": "咩"
+          "text": ""
         },
         {
           "index": 6,
-          "text": "啊？盘丝"
+          "text": "盘丝"
         },
         {
           "index": 7,
@@ -13891,55 +13271,51 @@
       "changes": [
         {
           "index": 4,
-          "text": "仙座下大弟子蜘蛛精，呢度唔系盘丝洞系咩啊？盘丝洞。"
+          "shift": 4
         },
         {
           "index": 5,
-          "text": "行啦，死马骝！"
+          "shift": 11
         },
         {
           "index": 6,
-          "text": "喂，傻咗啊你？"
+          "shift": 16
         },
         {
           "index": 7,
-          "text": "我哋帮主啊！死马骝，"
+          "shift": 15
         },
         {
           "index": 8,
-          "text": "我真系傻咗。"
+          "shift": 16
         },
         {
           "index": 9,
-          "text": "你仲渣仔？"
+          "shift": 15
         },
         {
           "index": 10,
-          "text": "你生仔已经成咗"
+          "shift": 16
         },
         {
           "index": 11,
-          "text": "自己系齐天大圣啦嘛？"
+          "shift": 19
         },
         {
           "index": 12,
-          "text": "吓，"
+          "shift": 17
         },
         {
           "index": 13,
-          "text": "你揾次醒啲啦，"
+          "shift": 17
         },
         {
           "index": 14,
-          "text": "我焗住认嘅啫嘛。"
+          "shift": 17
         },
         {
           "index": 15,
-          "text": "唔信你用个照镜睇下我系咪？"
-        },
-        {
-          "index": 16,
-          "text": ""
+          "shift": 15
         }
       ]
     },
@@ -14094,63 +13470,59 @@
       "changes": [
         {
           "index": 1,
-          "text": "嗱，睇到啦嘛？睇到"
+          "shift": 7
         },
         {
           "index": 2,
-          "text": "啦，"
+          "shift": 9
         },
         {
           "index": 3,
-          "text": "啊，清楚冇？"
+          "shift": 8
         },
         {
           "index": 4,
-          "text": "哼，你呃我，"
+          "shift": 7
         },
         {
           "index": 5,
-          "text": "你根本就……"
+          "shift": 10
         },
         {
           "index": 6,
-          "text": "主人！"
+          "shift": 3
         },
         {
           "index": 7,
-          "text": "师姐，当可怜下我啊！"
+          "shift": 13
         },
         {
           "index": 8,
-          "text": "你咁咩啫？"
+          "shift": 17
         },
         {
           "index": 9,
-          "text": "响呢段时间，你听听话话，"
+          "shift": 17
         },
         {
           "index": 10,
-          "text": "我担保你冇事。"
+          "shift": 18
         },
         {
           "index": 11,
-          "text": "主人！"
+          "shift": 10
         },
         {
           "index": 12,
-          "text": "主人啦！"
+          "shift": 11
         },
         {
           "index": 13,
-          "text": "主人啊！小白狼嚟咗啦！"
+          "shift": 19
         },
         {
           "index": 14,
-          "text": "唐三藏究竟响边啊？马骝精！"
-        },
-        {
-          "index": 15,
-          "text": "唉，"
+          "shift": 10
         }
       ]
     },
@@ -14227,19 +13599,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "我担保你冇"
+          "text": "主人啦！主人"
         },
         {
           "index": 2,
-          "text": "事。主"
+          "text": "啊！小白狼嚟咗啦！唐三"
         },
         {
           "index": 3,
-          "text": "人！主人啦！主人啊！小白狼嚟咗啦！唐三藏究竟"
+          "text": "藏究竟响边啊？马骝精！唉，"
         },
         {
           "index": 4,
-          "text": "响边啊？马骝精！唉，"
+          "text": ""
         },
         {
           "index": 5,
@@ -14297,47 +13669,43 @@
       "changes": [
         {
           "index": 4,
-          "text": "响边啊？马骝精！唉，好大嘅误会啊"
+          "shift": 6
         },
         {
           "index": 5,
-          "text": "各位！呢个误会大到点啊？"
+          "shift": 16
         },
         {
           "index": 6,
-          "text": "嗱，我哋应该讲啦，"
+          "shift": 20
         },
         {
           "index": 7,
-          "text": "我确系属猴嘅，不过查实就唔系马骝"
+          "shift": 43
         },
         {
           "index": 8,
-          "text": "系马骝整嚟嘅，讲都费事啊！"
+          "shift": 35
         },
         {
           "index": 9,
-          "text": "我只要佢有咩都有，"
+          "shift": 31
         },
         {
           "index": 10,
-          "text": "你攞嚟照下。"
+          "shift": 25
         },
         {
           "index": 11,
-          "text": "搞错，搞错，"
+          "shift": 20
         },
         {
           "index": 12,
-          "text": "搞错！"
+          "shift": 23
         },
         {
           "index": 13,
-          "text": "嗱，唔好再闹"
-        },
-        {
-          "index": 14,
-          "text": ""
+          "shift": 13
         }
       ]
     },
@@ -14398,23 +13766,23 @@
       "targets": [
         {
           "index": 1,
-          "text": "整嚟嘅，讲都费事"
+          "text": "搞错，"
         },
         {
           "index": 2,
-          "text": "啊！我只要佢有咩都"
-        },
-        {
-          "index": 3,
-          "text": "有，你攞嚟照下。搞错，"
-        },
-        {
-          "index": 4,
           "text": "搞错，搞错！嗱，唔好再闹"
         },
         {
+          "index": 3,
+          "text": "嘢"
+        },
+        {
+          "index": 4,
+          "text": ""
+        },
+        {
           "index": 5,
-          "text": "嘢。"
+          "text": "。"
         },
         {
           "index": 6,
@@ -14452,31 +13820,27 @@
       "changes": [
         {
           "index": 4,
-          "text": "搞错，搞错！嗱，唔好再闹嘢。"
+          "shift": 9
         },
         {
           "index": 5,
-          "text": "如果我"
+          "shift": 22
         },
         {
           "index": 6,
-          "text": "真系孙悟空，我使企喺度俾你咬住只手咩？"
+          "shift": 27
         },
         {
           "index": 7,
-          "text": "一个筋斗打上天，"
+          "shift": 19
         },
         {
           "index": 8,
-          "text": "一个倒挂落嚟天灵盖啦！你而家未变真身啫，"
+          "shift": 18
         },
         {
           "index": 9,
-          "text": "到时你翻嚟唔安。"
-        },
-        {
-          "index": 10,
-          "text": "点"
+          "shift": 15
         }
       ]
     },
@@ -14545,19 +13909,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "真系孙悟空，我使企喺度俾你咬住只手咩？"
+          "text": "一个倒挂落嚟天灵盖啦！"
         },
         {
           "index": 2,
-          "text": "一个筋斗打上天，"
+          "text": "你而家未变真身"
         },
         {
           "index": 3,
-          "text": "一个倒挂落嚟天灵盖啦！你而家"
+          "text": "啫，到时你翻嚟唔安。点"
         },
         {
           "index": 4,
-          "text": "未变真身啫，到时你翻嚟唔安。点"
+          "text": ""
         },
         {
           "index": 5,
@@ -14607,47 +13971,43 @@
       "changes": [
         {
           "index": 4,
-          "text": "未变真身啫，到时你翻嚟唔安。点啊，师妹，"
+          "shift": 5
         },
         {
           "index": 5,
-          "text": "心痛啊？"
+          "shift": 6
         },
         {
           "index": 6,
-          "text": "唔系啊。"
+          "shift": 8
         },
         {
           "index": 7,
-          "text": "唔系？"
+          "shift": 7
         },
         {
           "index": 8,
-          "text": "我唔会再为呢个男人心痛。"
+          "shift": 12
         },
         {
           "index": 9,
-          "text": "你呃我啊？"
+          "shift": 7
         },
         {
           "index": 10,
-          "text": "师姐，我冇呃你。"
+          "shift": 11
         },
         {
           "index": 11,
-          "text": "冇呃我嘅，咁你点杀咗佢？"
+          "shift": 18
         },
         {
           "index": 12,
-          "text": "吓？喂，杀咗佢？"
+          "shift": 14
         },
         {
           "index": 13,
-          "text": "咁你唔想揾唐三藏？"
-        },
-        {
-          "index": 14,
-          "text": "想揾。"
+          "shift": 11
         }
       ]
     },
@@ -14738,39 +14098,35 @@
       "changes": [
         {
           "index": 1,
-          "text": "嗯，"
+          "shift": 1
         },
         {
           "index": 2,
-          "text": "好醉。俾翻钱佢。"
+          "shift": 8
         },
         {
           "index": 3,
-          "text": ""
+          "shift": -2
         },
         {
           "index": 4,
-          "text": "嗯，哦，去啊！"
+          "shift": 2
         },
         {
           "index": 5,
-          "text": "阿九，哎呀，你骗咗我大饼嘢啊！"
+          "shift": 15
         },
         {
           "index": 6,
-          "text": "我有心嘅。"
+          "shift": 17
         },
         {
           "index": 7,
-          "text": "哦，咁你好走，但系我俾翻钱你啊！"
+          "shift": 26
         },
         {
           "index": 8,
-          "text": ""
-        },
-        {
-          "index": 9,
-          "text": ""
+          "shift": 18
         }
       ]
     },
@@ -14806,11 +14162,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "啊！你只贱人，总算系对只死马都算你溜啦。"
-        },
-        {
-          "index": 2,
-          "text": ""
+          "shift": 17
         }
       ]
     },
@@ -14846,11 +14198,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "喺咁紧张嘅时刻都仲咁关心我，"
-        },
-        {
-          "index": 2,
-          "text": "冇办法啦。"
+          "shift": 13
         }
       ]
     },
@@ -14894,11 +14242,7 @@
       "changes": [
         {
           "index": 2,
-          "text": "哇！小姐，道门顶唔顶得住噶？"
-        },
-        {
-          "index": 3,
-          "text": ""
+          "shift": 14
         }
       ]
     },
@@ -15022,55 +14366,51 @@
       "changes": [
         {
           "index": 1,
-          "text": "好，师妹，你唔记得佢以前点样对你啊？"
+          "shift": 15
         },
         {
           "index": 2,
-          "text": "佢欺骗感情，背弃婚约，"
+          "shift": 14
         },
         {
           "index": 3,
-          "text": "你原本同赤练神君有一段大好嘅姻缘，"
+          "shift": 24
         },
         {
           "index": 4,
-          "text": "都系俾佢拆散啫。"
+          "shift": 25
         },
         {
           "index": 5,
-          "text": "佢而家咪有本事，"
+          "shift": 22
         },
         {
           "index": 6,
-          "text": "到佢回复真身之后，"
+          "shift": 22
         },
         {
           "index": 7,
-          "text": "咪又唔理你。"
+          "shift": 23
         },
         {
           "index": 8,
-          "text": "讲完未啊八婆？"
+          "shift": 22
         },
         {
           "index": 9,
-          "text": "死马骝，你个八婆！"
+          "shift": 15
         },
         {
           "index": 10,
-          "text": "吹啊八婆！"
+          "shift": 10
         },
         {
           "index": 11,
-          "text": "你咪懒得戚，入你马骝里唔好安全。"
+          "shift": 18
         },
         {
           "index": 12,
-          "text": "今晚十五圆。"
-        },
-        {
-          "index": 13,
-          "text": ""
+          "shift": 19
         }
       ]
     },
@@ -15130,23 +14470,19 @@
       "changes": [
         {
           "index": 1,
-          "text": "咩话？"
+          "shift": 3
         },
         {
           "index": 2,
-          "text": "大王，呢度有几千个山头，山洞又多，"
+          "shift": 20
         },
         {
           "index": 3,
-          "text": "唔知边个系盘丝洞入口㖞。"
+          "shift": 22
         },
         {
           "index": 4,
-          "text": ""
-        },
-        {
-          "index": 5,
-          "text": ""
+          "shift": 15
         }
       ]
     },
@@ -15230,35 +14566,31 @@
       "changes": [
         {
           "index": 1,
-          "text": "哎，你冇事啊嘛？"
+          "shift": 6
         },
         {
           "index": 2,
-          "text": "里面点啊？死咗未啊？"
+          "shift": 9
         },
         {
           "index": 3,
-          "text": "你死我都未死啊，"
+          "shift": 10
         },
         {
           "index": 4,
-          "text": "我哋乜事都冇啊。"
+          "shift": 14
         },
         {
           "index": 5,
-          "text": "晶晶姑娘不知几靓女，"
+          "shift": 10
         },
         {
           "index": 6,
-          "text": "我就照旧靓仔到不得了，"
+          "shift": 16
         },
         {
           "index": 7,
-          "text": "我哋不知几靓仔靓女。"
-        },
-        {
-          "index": 8,
-          "text": ""
+          "shift": 16
         }
       ]
     },
@@ -15390,59 +14722,55 @@
       "changes": [
         {
           "index": 1,
-          "text": "啊！救命啊！"
+          "shift": 6
         },
         {
           "index": 2,
-          "text": "死边啊！"
+          "shift": 8
         },
         {
           "index": 3,
-          "text": "开门，"
+          "shift": 10
         },
         {
           "index": 4,
-          "text": "开唔到啊！"
+          "shift": 14
         },
         {
           "index": 5,
-          "text": "嘴对嘴，过啲氧气俾佢，"
+          "shift": 23
         },
         {
           "index": 6,
-          "text": "咁可以阻止到佢发威噶。"
+          "shift": 13
         },
         {
           "index": 7,
-          "text": "吓，吓死我！"
+          "shift": 6
         },
         {
           "index": 8,
-          "text": "师傅，你斗我唔过嘅。"
+          "shift": 12
         },
         {
           "index": 9,
-          "text": "系咩？"
+          "shift": 12
         },
         {
           "index": 10,
-          "text": "你一喐亲，我就捻断你条颈。"
+          "shift": 13
         },
         {
           "index": 11,
-          "text": "攞住条蛇，韫喺里边。"
+          "shift": 4
         },
         {
           "index": 12,
-          "text": "一日到黑咁行入去啊，"
+          "shift": 10
         },
         {
           "index": 13,
-          "text": "行到啊你。"
-        },
-        {
-          "index": 14,
-          "text": ""
+          "shift": 13
         }
       ]
     },
@@ -15486,15 +14814,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "唉，冤冤相报何时了啊？"
+          "shift": 7
         },
         {
           "index": 2,
-          "text": "或者我建议咁样啦。"
-        },
-        {
-          "index": 3,
-          "text": ""
+          "shift": 9
         }
       ]
     },
@@ -15530,11 +14854,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "边度都唔好打，唔该。"
-        },
-        {
-          "index": 2,
-          "text": ""
+          "shift": 9
         }
       ]
     },
@@ -15606,15 +14926,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "好，你仲唔开门啊嘛？"
+          "shift": 10
         },
         {
           "index": 2,
-          "text": "咁就一拍两散，"
-        },
-        {
-          "index": 3,
-          "text": "我即刻攞。"
+          "shift": 17
         }
       ]
     },
@@ -15682,27 +14998,23 @@
       "changes": [
         {
           "index": 1,
-          "text": "你做咩啊？"
+          "shift": 5
         },
         {
           "index": 2,
-          "text": "我打咗个冷震，"
+          "shift": 11
         },
         {
           "index": 3,
-          "text": "好过瘾啊！"
+          "shift": 10
         },
         {
           "index": 4,
-          "text": "你喺我身上打个冷震？"
+          "shift": 15
         },
         {
           "index": 5,
-          "text": "系啊。"
-        },
-        {
-          "index": 6,
-          "text": ""
+          "shift": 6
         }
       ]
     },
@@ -15810,39 +15122,35 @@
       "changes": [
         {
           "index": 1,
-          "text": "你中嘅毒越嚟越深，"
+          "shift": 8
         },
         {
           "index": 2,
-          "text": "再唔解死噶啦。"
+          "shift": 8
         },
         {
           "index": 3,
-          "text": "解咗又点？"
+          "shift": 9
         },
         {
           "index": 4,
-          "text": "唔开心，长生不死都冇用。"
+          "shift": 14
         },
         {
           "index": 5,
-          "text": "开心，就算剩翻几日命都已经足够。"
+          "shift": 12
         },
         {
           "index": 6,
-          "text": "如果我话你听我唔系孙悟空，"
+          "shift": 15
         },
         {
           "index": 7,
-          "text": "你会点？"
+          "shift": 16
         },
         {
           "index": 8,
-          "text": "我会杀"
-        },
-        {
-          "index": 9,
-          "text": ""
+          "shift": 9
         }
       ]
     },
@@ -15915,23 +15223,23 @@
       "targets": [
         {
           "index": 1,
-          "text": "就算剩翻几日命都已经"
+          "text": "。如果我话你听我唔系孙悟空"
         },
         {
           "index": 2,
-          "text": "足够。"
+          "text": "，你会点"
         },
         {
           "index": 3,
-          "text": "如果我话你听我唔系孙悟空，"
+          "text": "？我会杀咗你"
         },
         {
           "index": 4,
-          "text": "你会点？我会杀"
+          "text": ""
         },
         {
           "index": 5,
-          "text": "咗你。"
+          "text": "。"
         },
         {
           "index": 6,
@@ -15981,47 +15289,47 @@
       "changes": [
         {
           "index": 4,
-          "text": "你会点？"
+          "shift": 10
         },
         {
           "index": 5,
-          "text": "我会杀咗你。"
+          "shift": 18
         },
         {
           "index": 6,
-          "text": "我的而且确唔系佢。"
+          "shift": 18
         },
         {
           "index": 7,
-          "text": "你块真系照镜嚟噶，"
+          "shift": 15
         },
         {
           "index": 8,
-          "text": "你照下自己。"
+          "shift": 11
         },
         {
           "index": 9,
-          "text": "咩话？你唔系佢？"
+          "shift": 11
         },
         {
           "index": 10,
-          "text": "唔系。"
+          "shift": 8
         },
         {
           "index": 11,
-          "text": "你唔怕我杀咗你？"
+          "shift": 12
         },
         {
           "index": 12,
-          "text": "怕，但系冇办法，"
+          "shift": 8
         },
         {
           "index": 13,
-          "text": "因为我唔想你望住我，但系谂住另外一个。"
+          "shift": 6
         },
         {
           "index": 14,
-          "text": "我就杀咗你！"
+          "shift": 13
         }
       ]
     },
@@ -16056,11 +15364,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "啊！"
-        },
-        {
-          "index": 2,
-          "text": "你。"
+          "shift": -2
         }
       ]
     },
@@ -16164,31 +15468,27 @@
       "changes": [
         {
           "index": 1,
-          "text": "我唔系有心噶，"
+          "shift": 7
         },
         {
           "index": 2,
-          "text": "我见你坐到咁行，"
+          "shift": 15
         },
         {
           "index": 3,
-          "text": "我谂住配合下噶啫。"
+          "shift": 19
         },
         {
           "index": 4,
-          "text": "我虽然唔系正人君子，"
+          "shift": 19
         },
         {
           "index": 5,
-          "text": "都未做下乘人之危啊。"
+          "shift": 20
         },
         {
           "index": 6,
-          "text": "如果一百"
-        },
-        {
-          "index": 7,
-          "text": "唔关。"
+          "shift": 6
         }
       ]
     },
@@ -16240,19 +15540,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "天黑我，天光我，"
+          "shift": 8
         },
         {
           "index": 2,
-          "text": "你随时需要随时吩咐啊，"
+          "shift": 14
         },
         {
           "index": 3,
-          "text": "由今日开。"
-        },
-        {
-          "index": 4,
-          "text": ""
+          "shift": 12
         }
       ]
     },
@@ -16332,15 +15628,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "天冇眼，"
+          "shift": 4
         },
         {
           "index": 2,
-          "text": "我春三十两貌美如花，"
-        },
-        {
-          "index": 3,
-          "text": "竟然同一个咁肉酸嘅男。"
+          "shift": 10
         }
       ]
     },
@@ -16472,55 +15764,51 @@
       "changes": [
         {
           "index": 2,
-          "text": "上唔上嚟？收声"
+          "shift": 7
         },
         {
           "index": 3,
-          "text": "啊！我唔系为咗佢，我一掌打死你添。"
+          "shift": 17
         },
         {
           "index": 4,
-          "text": "唔该。"
+          "shift": 11
         },
         {
           "index": 5,
-          "text": "咁开心做咩啊？"
+          "shift": 10
         },
         {
           "index": 6,
-          "text": "话你知啊，"
+          "shift": 12
         },
         {
           "index": 7,
-          "text": "第日佢大个咗，"
+          "shift": 15
         },
         {
           "index": 8,
-          "text": "你唔好认系佢嘅阿妈。"
+          "shift": 9
         },
         {
           "index": 9,
-          "text": "咁我认系咩啊？"
+          "shift": 11
         },
         {
           "index": 10,
-          "text": "奶妈咯。"
+          "shift": 11
         },
         {
           "index": 11,
-          "text": "哦，男人佬九点做奶妈？"
+          "shift": 15
         },
         {
           "index": 12,
-          "text": "我哋带奶妈男人？大佢噶嘛，"
+          "shift": 24
         },
         {
           "index": 13,
-          "text": "你唔讲佢点知"
-        },
-        {
-          "index": 14,
-          "text": ""
+          "shift": 11
         }
       ]
     },
@@ -16572,11 +15860,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "系你。"
-        },
-        {
-          "index": 2,
-          "text": ""
+          "shift": 3
         }
       ]
     },
@@ -16644,27 +15928,23 @@
       "changes": [
         {
           "index": 1,
-          "text": "唔好还手。要食唐僧肉系要付出多少代价？"
+          "shift": 14
         },
         {
           "index": 2,
-          "text": "值得嘅。"
+          "shift": 14
         },
         {
           "index": 3,
-          "text": "如果姑娘俾解药我救白晶晶嘅话，"
+          "shift": 15
         },
         {
           "index": 4,
-          "text": "我就话你知唐僧喺边。"
+          "shift": 20
         },
         {
           "index": 5,
-          "text": "又系为咗贱人。"
-        },
-        {
-          "index": 6,
-          "text": ""
+          "shift": 10
         }
       ]
     },
@@ -16700,11 +15980,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "来嘛。"
-        },
-        {
-          "index": 2,
-          "text": "嗯。"
+          "shift": 3
         }
       ]
     },
@@ -16740,11 +16016,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "我要嘅系钱"
-        },
-        {
-          "index": 2,
-          "text": "，就算你真系为我用。"
+          "shift": 5
         }
       ]
     },
@@ -16816,15 +16088,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "谢逊宝，"
+          "shift": 2
         },
         {
           "index": 2,
-          "text": "你再唔快啲，师傅唔掂噶啦！"
-        },
-        {
-          "index": 3,
-          "text": ""
+          "shift": 14
         }
       ]
     },
@@ -16876,19 +16144,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "唔肚饿啊！我唔系你个沙律吧女仔，冻啊！"
+          "shift": 8
         },
         {
           "index": 2,
-          "text": "唔系啊嘛，"
+          "shift": 5
         },
         {
           "index": 3,
-          "text": "晶晶！"
-        },
-        {
-          "index": 4,
-          "text": ""
+          "shift": 5
         }
       ]
     },
@@ -17004,51 +16268,47 @@
       "changes": [
         {
           "index": 1,
-          "text": "啊！家下以为我走咗唔理佢啊！"
+          "shift": 14
         },
         {
           "index": 2,
-          "text": "喂，仲要揾几耐啊？"
+          "shift": 23
         },
         {
           "index": 3,
-          "text": "贞姐，"
+          "shift": 15
         },
         {
           "index": 4,
-          "text": "一日都发六十六次脾气。"
+          "shift": 13
         },
         {
           "index": 5,
-          "text": "喂，一日最衰都系你，"
+          "shift": 13
         },
         {
           "index": 6,
-          "text": "点解俾我瞓一晚啫？"
+          "shift": 17
         },
         {
           "index": 7,
-          "text": "呢个老嘢讲两晚，"
+          "shift": 20
         },
         {
           "index": 8,
-          "text": "点解唔打多边只马啫？"
+          "shift": 20
         },
         {
           "index": 9,
-          "text": "我跟到咪仲大把好多块噶嘛！"
+          "shift": 29
         },
         {
           "index": 10,
-          "text": "你唔使知我讲唐三藏，"
+          "shift": 27
         },
         {
           "index": 11,
-          "text": "你俾得我咩都唔知啊！"
-        },
-        {
-          "index": 12,
-          "text": ""
+          "shift": 26
         }
       ]
     },
@@ -17124,23 +16384,19 @@
       "changes": [
         {
           "index": 1,
-          "text": "放你即刻出去人，走！别话，"
+          "shift": 12
         },
         {
           "index": 2,
-          "text": "大王，我哋发现白晶晶闻到香啊，"
+          "shift": 20
         },
         {
           "index": 3,
-          "text": "菩提老祖重伤不治，"
+          "shift": 12
         },
         {
           "index": 4,
-          "text": "天助我也，"
-        },
-        {
-          "index": 5,
-          "text": "饮啊！"
+          "shift": -3
         }
       ]
     },
@@ -17208,27 +16464,23 @@
       "changes": [
         {
           "index": 1,
-          "text": "今次冇死啊！改写魔王神功护体，"
+          "shift": 9
         },
         {
           "index": 2,
-          "text": "我而家医翻好你嘅伤，"
+          "shift": 14
         },
         {
           "index": 3,
-          "text": "你要跑入司徒府揾只马骝精头先，"
+          "shift": 23
         },
         {
           "index": 4,
-          "text": "我迟早揾到唐三藏，"
+          "shift": 23
         },
         {
           "index": 5,
-          "text": "到时食唐僧就唔少得你𠮶份。"
-        },
-        {
-          "index": 6,
-          "text": ""
+          "shift": 22
         }
       ]
     },
@@ -17272,15 +16524,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "播音波频，"
+          "shift": -3
         },
         {
           "index": 2,
-          "text": "发问内容，"
-        },
-        {
-          "index": 3,
-          "text": "远光报号。"
+          "shift": -3
         }
       ]
     },
@@ -17456,55 +16704,51 @@
       "changes": [
         {
           "index": 1,
-          "text": "啊！撞鬼啊你！"
+          "shift": 5
         },
         {
           "index": 2,
-          "text": "你扮鬼扮马咁嘅样做咩啫？"
+          "shift": 15
         },
         {
           "index": 3,
-          "text": "冇，"
+          "shift": 12
         },
         {
           "index": 4,
-          "text": "我见你成日郁下心口，我特登扮佢嚟氹你开心咯。"
+          "shift": 24
         },
         {
           "index": 5,
-          "text": "哎呀，你做乜嘢？"
+          "shift": 26
         },
         {
           "index": 6,
-          "text": "你生仔啊嘛，我帮你接生咯。"
+          "shift": 28
         },
         {
           "index": 7,
-          "text": "啊，个头出咗嚟咯。"
+          "shift": 25
         },
         {
           "index": 8,
-          "text": "系，点解我都唔知。"
+          "shift": 21
         },
         {
           "index": 9,
-          "text": "唔系啊，佢仲伸头。"
+          "shift": 29
         },
         {
           "index": 10,
-          "text": "关照啲头发啦。"
+          "shift": 25
         },
         {
           "index": 11,
-          "text": ""
+          "shift": 18
         },
         {
           "index": 12,
-          "text": ""
-        },
-        {
-          "index": 13,
-          "text": ""
+          "shift": 15
         }
       ]
     },
@@ -17548,15 +16792,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "哎呀，好痛啊！"
+          "shift": 7
         },
         {
           "index": 2,
-          "text": "我都好痛啊！"
-        },
-        {
-          "index": 3,
-          "text": ""
+          "shift": 12
         }
       ]
     },
@@ -17711,64 +16951,56 @@
     "answer": {
       "changes": [
         {
-          "index": 1,
-          "text": ""
-        },
-        {
           "index": 2,
-          "text": "孙悟空，你当年罪恶"
+          "shift": 10
         },
         {
           "index": 3,
-          "text": "滔天，希望你今生会大彻大悟，痛改前非"
+          "shift": 19
         },
         {
           "index": 4,
-          "text": "。边个讲嘢？"
+          "shift": 18
         },
         {
           "index": 5,
-          "text": "五百年前，你师父唐三藏为咗赎你一命，"
+          "shift": 20
         },
         {
           "index": 6,
-          "text": "牺牲咗佢自己。"
+          "shift": 25
         },
         {
           "index": 7,
-          "text": "玉皇大帝专登安排"
+          "shift": 26
         },
         {
           "index": 8,
-          "text": "五百年后你重投人间，"
+          "shift": 23
         },
         {
           "index": 9,
-          "text": "希望你学得你师父一样"
+          "shift": 25
         },
         {
           "index": 10,
-          "text": "能够舍己为人，"
+          "shift": 24
         },
         {
           "index": 11,
-          "text": "将你过往嘅一切罪孽洗清。"
+          "shift": 25
         },
         {
           "index": 12,
-          "text": "只要你肯自愿戴上金光圈，"
+          "shift": 19
         },
         {
           "index": 13,
-          "text": "即系肯改过自新，"
+          "shift": 24
         },
         {
           "index": 14,
-          "text": "咁就可以成为"
-        },
-        {
-          "index": 15,
-          "text": ""
+          "shift": 18
         }
       ]
     },
@@ -17845,19 +17077,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "得你师父一样能够舍己为人，将"
+          "text": "只要你肯自愿戴上"
         },
         {
           "index": 2,
-          "text": "你过往嘅一切"
+          "text": "金光圈，即系肯改过自新"
         },
         {
           "index": 3,
-          "text": "罪孽洗清。只要你肯自愿戴上"
+          "text": "，咁就可以成为"
         },
         {
           "index": 4,
-          "text": "金光圈，即系肯改过自新，咁就可以成为"
+          "text": ""
         },
         {
           "index": 5,
@@ -17915,47 +17147,43 @@
       "changes": [
         {
           "index": 4,
-          "text": "金光圈，即系肯改过自新，咁就可以成为法力无边嘅齐天大圣。到时你就要负起取西经嘅重任"
+          "shift": 23
         },
         {
           "index": 5,
-          "text": "，将历史改变。"
+          "shift": 24
         },
         {
           "index": 6,
-          "text": "不过从此人间一切与"
+          "shift": 24
         },
         {
           "index": 7,
-          "text": "你无关，再唔可以有半点情欲，半点"
+          "shift": 27
         },
         {
           "index": 8,
-          "text": "留恋，一生要皈依我佛。"
+          "shift": 26
         },
         {
           "index": 9,
-          "text": "你未变成真正嘅孙悟空托世，"
+          "shift": 23
         },
         {
           "index": 10,
-          "text": "只系因为你未遇上𠮶个"
+          "shift": 25
         },
         {
           "index": 11,
-          "text": "俾三粒痣你嘅人。"
+          "shift": 29
         },
         {
           "index": 12,
-          "text": "当你遇到佢之后，"
+          "shift": 30
         },
         {
           "index": 13,
-          "text": ""
-        },
-        {
-          "index": 14,
-          "text": ""
+          "shift": 11
         }
       ]
     },
@@ -18020,19 +17248,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "依我佛。你"
+          "text": "𠮶个俾三粒痣你嘅人"
         },
         {
           "index": 2,
-          "text": "未变成真正嘅孙"
+          "text": "。当你遇到佢之后"
         },
         {
           "index": 3,
-          "text": "悟空托世，只系因为你未遇上𠮶个俾三粒痣你"
+          "text": "，"
         },
         {
           "index": 4,
-          "text": "嘅人。当你遇到佢之后，"
+          "text": ""
         },
         {
           "index": 5,
@@ -18074,31 +17302,7 @@
       "first_owned_index": 4,
       "last_owned_index": 12
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 6,
-          "text": "同我讲啊？"
-        },
-        {
-          "index": 7,
-          "text": "唔系同我讲啊嘛？"
-        },
-        {
-          "index": 8,
-          "text": "认错人啦！"
-        },
-        {
-          "index": 9,
-          "text": "猪八戒！"
-        },
-        {
-          "index": 10,
-          "text": "喂，你搞成咁，我同你搏头先啦！"
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -18169,27 +17373,27 @@
       "changes": [
         {
           "index": 1,
-          "text": "小心，"
+          "shift": 3
+        },
+        {
+          "index": 2,
+          "shift": 3
         },
         {
           "index": 3,
-          "text": ""
+          "shift": -1
         },
         {
           "index": 4,
-          "text": "快啲过嚟！啊！快啲过嚟捉住我啊！"
+          "shift": 13
         },
         {
           "index": 5,
-          "text": "哎呀，捉住啦，捉住啦，生啦，"
+          "shift": 13
         },
         {
           "index": 6,
-          "text": "生啦！"
-        },
-        {
-          "index": 7,
-          "text": ""
+          "shift": 3
         }
       ]
     },
@@ -18297,39 +17501,35 @@
       "changes": [
         {
           "index": 1,
-          "text": "似都好似我。我觉得"
+          "shift": 5
         },
         {
           "index": 2,
-          "text": "做唔做神仙"
+          "shift": 9
         },
         {
           "index": 3,
-          "text": "，食唔食到唐僧肉都唔系咁紧要"
+          "shift": 20
         },
         {
           "index": 4,
-          "text": "，最重要嘅就系以后我哋能够好好哋咁生活"
+          "shift": 21
         },
         {
           "index": 5,
-          "text": "，凑大个仔，"
+          "shift": 22
         },
         {
           "index": 6,
-          "text": "唔好好似我咁做山贼。"
+          "shift": 17
         },
         {
           "index": 7,
-          "text": "你咁想要唐僧"
+          "shift": 17
         },
         {
           "index": 8,
-          "text": "，不如"
-        },
-        {
-          "index": 9,
-          "text": ""
+          "shift": 14
         }
       ]
     },
@@ -18386,27 +17586,27 @@
       "targets": [
         {
           "index": 1,
-          "text": "要嘅就系以后我哋能够好好哋咁生"
+          "text": "唔好好似我咁做山贼。"
         },
         {
           "index": 2,
-          "text": "活，凑大个仔，"
+          "text": "你咁想要唐僧，"
         },
         {
           "index": 3,
-          "text": "唔好好似我咁做山贼。你咁想要"
+          "text": "不如就叫个仔做三藏啦。"
         },
         {
           "index": 4,
-          "text": "唐僧，不如"
+          "text": ""
         },
         {
           "index": 5,
-          "text": "就叫个仔做三"
+          "text": ""
         },
         {
           "index": 6,
-          "text": "藏啦。边个？"
+          "text": "边个？"
         },
         {
           "index": 7,
@@ -18436,35 +17636,31 @@
       "changes": [
         {
           "index": 4,
-          "text": "唐僧，不如"
+          "shift": 3
         },
         {
           "index": 5,
-          "text": "就叫个仔做三"
+          "shift": 13
         },
         {
           "index": 6,
-          "text": "藏啦。边个？"
+          "shift": 14
         },
         {
           "index": 7,
-          "text": "今次都算冤家路窄啦，你想点？"
+          "shift": 4
         },
         {
           "index": 8,
-          "text": "个细路女噶？"
+          "shift": 12
         },
         {
           "index": 9,
-          "text": "系啊，系我同至尊宝生嘅。"
+          "shift": 9
         },
         {
           "index": 10,
-          "text": "你讲咩？"
-        },
-        {
-          "index": 11,
-          "text": "拉妈。"
+          "shift": 5
         }
       ]
     },
@@ -18499,11 +17695,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "是。"
-        },
-        {
-          "index": 2,
-          "text": ""
+          "shift": 2
         }
       ]
     },
@@ -18579,27 +17771,23 @@
       "changes": [
         {
           "index": 2,
-          "text": "嚟！俾你走啦，阿冰！"
+          "shift": 10
         },
         {
           "index": 3,
-          "text": "唔使惊，我保护你。"
+          "shift": 19
         },
         {
           "index": 4,
-          "text": "你呢个死尸萝卜皮，"
+          "shift": 26
         },
         {
           "index": 5,
-          "text": "几时轮到你去？"
+          "shift": 27
         },
         {
           "index": 6,
-          "text": ""
-        },
-        {
-          "index": 7,
-          "text": ""
+          "shift": 18
         }
       ]
     },
@@ -18683,27 +17871,23 @@
       "changes": [
         {
           "index": 3,
-          "text": "我唔系同你讲啊！"
+          "shift": 4
         },
         {
           "index": 4,
-          "text": "你唐三藏，呢个我仔嚟噶！"
+          "shift": 10
         },
         {
           "index": 5,
-          "text": "唔系唐三藏嚟啊！"
+          "shift": 12
         },
         {
           "index": 6,
-          "text": "有病啊！"
+          "shift": 8
         },
         {
           "index": 7,
-          "text": "有病啊！"
-        },
-        {
-          "index": 8,
-          "text": "有病啊！"
+          "shift": 6
         }
       ]
     },
@@ -18799,11 +17983,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "老婆，"
-        },
-        {
-          "index": 2,
-          "text": "观众大家。"
+          "shift": -3
         }
       ]
     },
@@ -18839,11 +18019,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "我劈你辣椒，俾你"
-        },
-        {
-          "index": 2,
-          "text": "点挡？"
+          "shift": -1
         }
       ]
     },
@@ -18879,11 +18055,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "阴山车"
-        },
-        {
-          "index": 2,
-          "text": "行。"
+          "shift": -2
         }
       ]
     },
@@ -18959,31 +18131,27 @@
       "changes": [
         {
           "index": 1,
-          "text": "老婆，"
+          "shift": 3
         },
         {
           "index": 2,
-          "text": "老婆，喂喂，我老婆喺入边啊，"
+          "shift": 17
         },
         {
           "index": 3,
-          "text": "唔该帮帮手啊，"
+          "shift": 20
         },
         {
           "index": 4,
-          "text": "唔得闲啊，"
+          "shift": 23
         },
         {
           "index": 5,
-          "text": "唔该啊。"
+          "shift": 12
         },
         {
           "index": 6,
-          "text": ""
-        },
-        {
-          "index": 7,
-          "text": ""
+          "shift": 4
         }
       ]
     },
@@ -19035,19 +18203,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "你走先啦，走。"
+          "shift": 7
         },
         {
           "index": 2,
-          "text": "我唔走，要走一齐走。"
+          "shift": 17
         },
         {
           "index": 3,
-          "text": ""
-        },
-        {
-          "index": 4,
-          "text": ""
+          "shift": 14
         }
       ]
     },
@@ -19091,11 +18255,7 @@
       "changes": [
         {
           "index": 2,
-          "text": "找我啦！"
-        },
-        {
-          "index": 3,
-          "text": ""
+          "shift": 3
         }
       ]
     },
@@ -19207,7 +18367,23 @@
       "first_owned_index": 1,
       "last_owned_index": 9
     },
-    "answer": {}
+    "answer": {
+      "changes": [
+        {
+          "index": 6,
+          "shift": 10
+        },
+        {
+          "index": 7,
+          "shift": -6
+        },
+        {
+          "index": 8,
+          "shift": -1
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -19284,15 +18460,15 @@
       "targets": [
         {
           "index": 1,
-          "text": "啊！哦，波依菠萝蜜，波依菠萝蜜。哇，新鲜啊！"
+          "text": "波依菠萝蜜。"
         },
         {
           "index": 2,
-          "text": "你"
+          "text": "哇，新鲜啊！"
         },
         {
           "index": 3,
-          "text": "冇事"
+          "text": "你冇事"
         },
         {
           "index": 4,
@@ -19358,59 +18534,51 @@
       "changes": [
         {
           "index": 4,
-          "text": "啊？真系时光倒流啊！喂喂，等埋，等"
+          "shift": 10
         },
         {
           "index": 5,
-          "text": "埋。凶手走得咁快？再嚟。老"
+          "shift": 12
         },
         {
           "index": 6,
-          "text": "婆！老婆！"
+          "shift": 5
         },
         {
           "index": 7,
-          "text": "喂，我老婆，你老婆走咗出嚟噶啦，俾唔切啊！"
+          "shift": 14
         },
         {
           "index": 8,
-          "text": "我都未讲完，你点知咧？"
+          "shift": 18
         },
         {
           "index": 9,
-          "text": "真系犀利㖞。"
-        },
-        {
-          "index": 10,
-          "text": ""
+          "shift": 9
         },
         {
           "index": 11,
-          "text": "波依菠萝蜜。"
+          "shift": 5
         },
         {
           "index": 12,
-          "text": "哇，又新鲜啊！"
+          "shift": 5
         },
         {
           "index": 13,
-          "text": "跟我讲就，阿宝，"
+          "shift": 10
         },
         {
           "index": 14,
-          "text": "再嚟。"
+          "shift": 3
         },
         {
           "index": 15,
-          "text": "老婆！"
+          "shift": 3
         },
         {
           "index": 16,
-          "text": "老婆！"
-        },
-        {
-          "index": 17,
-          "text": ""
+          "shift": 2
         }
       ]
     },
@@ -19525,51 +18693,47 @@
       "changes": [
         {
           "index": 1,
-          "text": "讲到你咪烦我啦！喂喂喂喂喂喂，做咩要叫我咪烦你，仲要警告我啊？"
+          "shift": 20
         },
         {
           "index": 2,
-          "text": "你好惨啊，仆街！"
+          "shift": 24
         },
         {
           "index": 3,
-          "text": "系啊，我都觉得自己好惨啊，"
+          "shift": 23
         },
         {
           "index": 4,
-          "text": "点解？好惊啊！"
+          "shift": 20
         },
         {
           "index": 5,
-          "text": "出嚟啊！"
+          "shift": 21
         },
         {
           "index": 6,
-          "text": "走！"
+          "shift": 10
         },
         {
           "index": 7,
-          "text": "立子！立子！立子！"
+          "shift": 9
         },
         {
           "index": 8,
-          "text": "立子！立子！"
+          "shift": 14
         },
         {
           "index": 9,
-          "text": "死！你有咁惨？"
+          "shift": 19
         },
         {
           "index": 10,
-          "text": "唔好啦，"
+          "shift": 17
         },
         {
           "index": 11,
-          "text": "好攰啊！"
-        },
-        {
-          "index": 12,
-          "text": ""
+          "shift": 18
         }
       ]
     },
@@ -19629,19 +18793,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "费事同你讲啊！"
+          "shift": -12
         },
         {
           "index": 2,
-          "text": "费事讲咪唔好讲咯，"
+          "shift": -11
         },
         {
           "index": 3,
-          "text": "点解要打镬啫？"
-        },
-        {
-          "index": 4,
-          "text": "老铁，老铁"
+          "shift": -5
         }
       ]
     },
@@ -19685,15 +18845,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "自杀了！"
+          "shift": 4
         },
         {
           "index": 2,
-          "text": "外面谁又自杀了？"
-        },
-        {
-          "index": 3,
-          "text": ""
+          "shift": 12
         }
       ]
     },
@@ -19833,63 +18989,59 @@
       "changes": [
         {
           "index": 1,
-          "text": "夜红，"
+          "shift": 3
         },
         {
           "index": 2,
-          "text": "你放过我啊！"
+          "shift": 9
         },
         {
           "index": 3,
-          "text": "放过你？"
+          "shift": 13
         },
         {
           "index": 4,
-          "text": "你俾一个我唔杀你嘅理由啊！"
+          "shift": 22
         },
         {
           "index": 5,
-          "text": "啱咁啊，你俾个杀我嘅理由我先。"
+          "shift": 17
         },
         {
           "index": 6,
-          "text": "好啊，你粒声唔出抌低我"
+          "shift": 24
         },
         {
           "index": 7,
-          "text": "唔理，仲同我师姐生马仔。"
+          "shift": 29
         },
         {
           "index": 8,
-          "text": "咁你唔会抌低我？"
+          "shift": 30
         },
         {
           "index": 9,
-          "text": "英雄，"
+          "shift": 23
         },
         {
           "index": 10,
-          "text": "其实我𠮶日走咗去，想翻嚟问你师姐攞解药去救你，"
+          "shift": 33
         },
         {
           "index": 11,
-          "text": "点知迟咗一步"
+          "shift": 32
         },
         {
           "index": 12,
-          "text": "翻到已经揾你唔到啦。"
+          "shift": 28
         },
         {
           "index": 13,
-          "text": "你呃我？"
+          "shift": 23
         },
         {
           "index": 14,
-          "text": ""
-        },
-        {
-          "index": 15,
-          "text": ""
+          "shift": 10
         }
       ]
     },
@@ -19941,19 +19093,15 @@
       "changes": [
         {
           "index": 1,
-          "text": "你睇，"
+          "shift": 2
         },
         {
           "index": 2,
-          "text": "做咩啊？"
+          "shift": 6
         },
         {
           "index": 3,
-          "text": "去边啊？"
-        },
-        {
-          "index": 4,
-          "text": ""
+          "shift": 8
         }
       ]
     },
@@ -20021,15 +19169,11 @@
       "changes": [
         {
           "index": 1,
-          "text": ""
+          "shift": -2
         },
         {
           "index": 2,
-          "text": ""
-        },
-        {
-          "index": 3,
-          "text": "金师傅，我哋再见啦。"
+          "shift": -10
         }
       ]
     },
@@ -20065,11 +19209,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "人去晒边？"
-        },
-        {
-          "index": 2,
-          "text": ""
+          "shift": 5
         }
       ]
     },
@@ -20113,15 +19253,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "沈思"
+          "shift": 2
         },
         {
           "index": 2,
-          "text": "娜，"
-        },
-        {
-          "index": 3,
-          "text": "如果。"
+          "shift": 2
         }
       ]
     },
@@ -20173,15 +19309,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "唔该。哎，盘丝洞冇乱闯，"
+          "shift": 12
         },
         {
           "index": 2,
-          "text": "盘丝洞。"
-        },
-        {
-          "index": 3,
-          "text": ""
+          "shift": 13
         }
       ]
     },
@@ -20225,11 +19357,11 @@
       "changes": [
         {
           "index": 1,
-          "text": ""
+          "shift": -3
         },
         {
-          "index": 3,
-          "text": "睬我。"
+          "index": 2,
+          "shift": -3
         }
       ]
     },
@@ -20297,27 +19429,23 @@
       "changes": [
         {
           "index": 1,
-          "text": "嘿！我而家郑重宣布，"
+          "shift": 9
         },
         {
           "index": 2,
-          "text": "喺呢个山头所有嘢都系我嘅，"
+          "shift": 21
         },
         {
           "index": 3,
-          "text": "包括你在内。"
+          "shift": 26
         },
         {
           "index": 4,
-          "text": ""
+          "shift": 21
         },
         {
           "index": 5,
-          "text": ""
-        },
-        {
-          "index": 6,
-          "text": ""
+          "shift": 14
         }
       ]
     },
@@ -20377,23 +19505,19 @@
       "changes": [
         {
           "index": 1,
-          "text": "你已经系我人啦，"
+          "shift": 8
         },
         {
           "index": 2,
-          "text": "如果有人恰你咧，你系打我啦。"
+          "shift": 22
         },
         {
           "index": 3,
-          "text": "从今日起，我叫盘丝大仙。"
+          "shift": 21
         },
         {
           "index": 4,
-          "text": ""
-        },
-        {
-          "index": 5,
-          "text": ""
+          "shift": 3
         }
       ]
     },
@@ -20429,11 +19553,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "你咪变成孙悟空托世。"
-        },
-        {
-          "index": 2,
-          "text": ""
+          "shift": 10
         }
       ]
     },

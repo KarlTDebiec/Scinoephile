@@ -12,6 +12,7 @@ from scinoephile.audio.transcription import VADMode
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
+from scinoephile.lang.transcription import TranscriptionAlignmentMode
 from test.data.ocr import process_ocr
 from test.data.srt import process_srt
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
@@ -128,8 +129,12 @@ if "yue-Hant_transcribe" in actions:
         reviewer_kw={"prune_test_cases": True},
         translator_kw={"prune_test_cases": True},
         transcription_no_op=False,
+        transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
+        transcription_fallback_to_no_op=True,
         vad_mode=VADMode.OFF,
-        overwrite=False,
+        transcription_overwrite=True,
+        run_merge_and_translation=True,
+        overwrite=True,
     )
 if "yue-Hant_diff" in actions:
     zho_hant_guide = Series.load(zho_hant_guide_path)

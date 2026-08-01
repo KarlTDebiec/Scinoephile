@@ -94,7 +94,7 @@ if "yue-Hant_transcribe" in actions:
         transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
         transcription_fallback_to_no_op=True,
         vad_mode=VADMode.OFF,
-        transcription_names=("qwen",),
-        run_merge_and_translation=False,
+        transcription_overwrite=True,
+        run_merge_and_translation=True,
         overwrite=True,
     )

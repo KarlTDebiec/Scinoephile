@@ -24,15 +24,7 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 1,
-          "shift": -1
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -142,10 +134,6 @@
           "shift": -2
         },
         {
-          "index": 4,
-          "shift": -1
-        },
-        {
           "index": 5,
           "shift": -1
         },
@@ -155,15 +143,11 @@
         },
         {
           "index": 7,
-          "shift": 3
+          "shift": 4
         },
         {
           "index": 8,
           "shift": 5
-        },
-        {
-          "index": 9,
-          "shift": -2
         }
       ]
     },
@@ -310,7 +294,7 @@
         },
         {
           "index": 7,
-          "shift": -1
+          "shift": 2
         },
         {
           "index": 9,
@@ -457,7 +441,7 @@
       "changes": [
         {
           "index": 4,
-          "shift": -2
+          "shift": -3
         },
         {
           "index": 6,
@@ -469,7 +453,7 @@
         },
         {
           "index": 9,
-          "shift": -1
+          "shift": -2
         },
         {
           "index": 10,
@@ -584,7 +568,7 @@
         },
         {
           "index": 8,
-          "shift": -3
+          "shift": -6
         }
       ]
     },
@@ -615,7 +599,15 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {
+      "changes": [
+        {
+          "index": 1,
+          "shift": 1
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -658,7 +650,7 @@
         },
         {
           "index": 2,
-          "shift": -1
+          "shift": 2
         }
       ]
     },
@@ -858,7 +850,7 @@
       "changes": [
         {
           "index": 2,
-          "shift": -2
+          "shift": -1
         },
         {
           "index": 3,
@@ -1022,15 +1014,7 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 1,
-          "shift": 4
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -1422,7 +1406,7 @@
         },
         {
           "index": 7,
-          "shift": 2
+          "shift": 1
         },
         {
           "index": 9,
@@ -1431,10 +1415,6 @@
         {
           "index": 10,
           "shift": -1
-        },
-        {
-          "index": 11,
-          "shift": 1
         },
         {
           "index": 12,
@@ -1446,7 +1426,7 @@
         },
         {
           "index": 14,
-          "shift": -1
+          "shift": 2
         },
         {
           "index": 15,
@@ -1535,7 +1515,7 @@
       "targets": [
         {
           "index": 1,
-          "text": "加呢度俾翻你啫嘛，"
+          "text": "俾翻你啫嘛，"
         },
         {
           "index": 2,
@@ -1616,16 +1596,20 @@
           "shift": 1
         },
         {
+          "index": 12,
+          "shift": -2
+        },
+        {
           "index": 13,
-          "shift": 2
+          "shift": 1
         },
         {
           "index": 14,
-          "shift": 2
+          "shift": 1
         },
         {
           "index": 16,
-          "shift": 3
+          "shift": 2
         }
       ]
     },
@@ -1724,7 +1708,7 @@
       "changes": [
         {
           "index": 2,
-          "shift": 2
+          "shift": 1
         },
         {
           "index": 3,
@@ -1733,6 +1717,10 @@
         {
           "index": 5,
           "shift": 2
+        },
+        {
+          "index": 6,
+          "shift": 1
         }
       ]
     },
@@ -1805,11 +1793,11 @@
         },
         {
           "index": 2,
-          "text": "你唔走，俾翻个宝盒我，我走"
+          "text": "你唔走，俾翻个宝盒我，我走啊"
         },
         {
           "index": 3,
-          "text": "啊？咩宝盒啊？"
+          "text": "？咩宝盒啊？"
         },
         {
           "index": 4,
@@ -1866,12 +1854,16 @@
           "shift": 1
         },
         {
+          "index": 7,
+          "shift": 2
+        },
+        {
           "index": 8,
           "shift": 3
         },
         {
           "index": 9,
-          "shift": 5
+          "shift": 4
         },
         {
           "index": 10,
@@ -1924,6 +1916,10 @@
     },
     "answer": {
       "changes": [
+        {
+          "index": 2,
+          "shift": 2
+        },
         {
           "index": 3,
           "shift": 2
@@ -2164,15 +2160,15 @@
       "changes": [
         {
           "index": 4,
-          "shift": 1
+          "shift": 2
         },
         {
           "index": 9,
-          "shift": 5
+          "shift": 4
         },
         {
           "index": 10,
-          "shift": 1
+          "shift": 2
         }
       ]
     },
@@ -2239,11 +2235,11 @@
       "changes": [
         {
           "index": 3,
-          "shift": 2
+          "shift": 1
         },
         {
           "index": 4,
-          "shift": 2
+          "shift": 1
         },
         {
           "index": 5,
@@ -2457,10 +2453,6 @@
       "changes": [
         {
           "index": 1,
-          "shift": 3
-        },
-        {
-          "index": 2,
           "shift": 2
         },
         {
@@ -2469,6 +2461,10 @@
         },
         {
           "index": 4,
+          "shift": 2
+        },
+        {
+          "index": 5,
           "shift": 2
         },
         {
@@ -2632,7 +2628,7 @@
       "changes": [
         {
           "index": 4,
-          "shift": -15
+          "shift": -14
         },
         {
           "index": 5,
@@ -2647,16 +2643,12 @@
           "shift": -1
         },
         {
-          "index": 8,
-          "shift": 1
-        },
-        {
           "index": 9,
-          "shift": 4
+          "shift": 6
         },
         {
           "index": 10,
-          "shift": 3
+          "shift": 4
         }
       ]
     },
@@ -2709,15 +2701,15 @@
       "targets": [
         {
           "index": 1,
-          "text": "。废话唔讲啦，总之你家姐憎到你非常"
+          "text": "啦。废话唔讲啦，总之你家姐憎到你非常嘅。"
         },
         {
           "index": 2,
-          "text": "嘅。我今晚呃佢话我杀咗"
+          "text": "我今晚呃佢话我杀咗你"
         },
         {
           "index": 3,
-          "text": "你，你以后安乐"
+          "text": "，你以后安乐"
         },
         {
           "index": 4,
@@ -2762,12 +2754,8 @@
           "shift": 3
         },
         {
-          "index": 6,
-          "shift": 3
-        },
-        {
           "index": 7,
-          "shift": 4
+          "shift": 2
         },
         {
           "index": 9,
@@ -2891,6 +2879,18 @@
         {
           "index": 2,
           "shift": 2
+        },
+        {
+          "index": 4,
+          "shift": 2
+        },
+        {
+          "index": 6,
+          "shift": 3
+        },
+        {
+          "index": 7,
+          "shift": 3
         }
       ]
     },
@@ -2955,11 +2955,11 @@
       "targets": [
         {
           "index": 1,
-          "text": "人样，仲同子霞仙子喺埋"
+          "text": "仲同子霞仙子喺埋一齐。"
         },
         {
           "index": 2,
-          "text": "一齐。唔通祝师傅呢单"
+          "text": "唔通祝师傅呢单"
         },
         {
           "index": 3,
@@ -3021,7 +3021,7 @@
         },
         {
           "index": 6,
-          "shift": 4
+          "shift": 3
         },
         {
           "index": 7,
@@ -3038,6 +3038,10 @@
         {
           "index": 10,
           "shift": 2
+        },
+        {
+          "index": 12,
+          "shift": -13
         }
       ]
     },
@@ -3187,16 +3191,12 @@
           "shift": 2
         },
         {
-          "index": 2,
-          "shift": 2
-        },
-        {
           "index": 3,
           "shift": 3
         },
         {
           "index": 4,
-          "shift": 2
+          "shift": 1
         },
         {
           "index": 6,
@@ -3220,6 +3220,10 @@
         },
         {
           "index": 12,
+          "shift": 2
+        },
+        {
+          "index": 13,
           "shift": 2
         }
       ]
@@ -3305,11 +3309,11 @@
         },
         {
           "index": 3,
-          "text": "呢段姻缘系上天安排嘅，你话几惊"
+          "text": "呢段姻缘系上天安排嘅，你话几惊呢？"
         },
         {
           "index": 4,
-          "text": "呢？"
+          "text": ""
         },
         {
           "index": 5,
@@ -3371,6 +3375,10 @@
         },
         {
           "index": 5,
+          "shift": 1
+        },
+        {
+          "index": 6,
           "shift": 2
         },
         {
@@ -3388,6 +3396,10 @@
         {
           "index": 12,
           "shift": 4
+        },
+        {
+          "index": 13,
+          "shift": 2
         },
         {
           "index": 14,
@@ -3525,16 +3537,12 @@
     "answer": {
       "changes": [
         {
-          "index": 1,
-          "shift": 2
-        },
-        {
           "index": 2,
           "shift": 3
         },
         {
           "index": 4,
-          "shift": 8
+          "shift": 7
         },
         {
           "index": 5,
@@ -3558,7 +3566,7 @@
         },
         {
           "index": 10,
-          "shift": 2
+          "shift": 1
         },
         {
           "index": 11,
@@ -3623,11 +3631,11 @@
         },
         {
           "index": 2,
-          "text": "嗱，你而家咧就唯有撇咗你嗰个老婆，"
+          "text": "嗱，你而家咧就唯有撇咗你嗰个老婆"
         },
         {
           "index": 3,
-          "text": "跟我一齐走。"
+          "text": "，跟我一齐走。"
         },
         {
           "index": 4,
@@ -3677,14 +3685,6 @@
         },
         {
           "index": 6,
-          "shift": 2
-        },
-        {
-          "index": 7,
-          "shift": 2
-        },
-        {
-          "index": 8,
           "shift": 2
         },
         {
@@ -3768,7 +3768,7 @@
         },
         {
           "index": 3,
-          "shift": 3
+          "shift": 2
         },
         {
           "index": 4,
@@ -3867,15 +3867,15 @@
         },
         {
           "index": 2,
-          "shift": 5
+          "shift": 11
         },
         {
           "index": 3,
           "shift": 6
         },
         {
-          "index": 5,
-          "shift": -9
+          "index": 4,
+          "shift": 9
         },
         {
           "index": 6,
@@ -3883,7 +3883,7 @@
         },
         {
           "index": 7,
-          "shift": 2
+          "shift": 1
         }
       ]
     },
@@ -3974,7 +3974,7 @@
         },
         {
           "index": 3,
-          "shift": 3
+          "shift": 17
         },
         {
           "index": 4,
@@ -3987,6 +3987,10 @@
         {
           "index": 6,
           "shift": 3
+        },
+        {
+          "index": 7,
+          "shift": 1
         }
       ]
     },
@@ -4050,10 +4054,6 @@
         {
           "index": 3,
           "shift": 3
-        },
-        {
-          "index": 4,
-          "shift": -1
         }
       ]
     },
@@ -4139,14 +4139,10 @@
       "changes": [
         {
           "index": 1,
-          "shift": 2
+          "shift": 3
         },
         {
           "index": 2,
-          "shift": 2
-        },
-        {
-          "index": 3,
           "shift": 2
         }
       ]
@@ -4270,7 +4266,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 3
+          "shift": 2
         },
         {
           "index": 2,
@@ -4278,7 +4274,7 @@
         },
         {
           "index": 3,
-          "shift": 12
+          "shift": 11
         },
         {
           "index": 4,
@@ -4294,19 +4290,15 @@
         },
         {
           "index": 7,
-          "shift": 9
+          "shift": 2
         },
         {
           "index": 8,
-          "shift": 11
+          "shift": 2
         },
         {
           "index": 9,
-          "shift": 10
-        },
-        {
-          "index": 10,
-          "shift": 2
+          "shift": 3
         }
       ]
     },
@@ -4375,19 +4367,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "，我见你系女人先唔打"
+          "text": "追踪我三日三夜，"
         },
         {
           "index": 2,
-          "text": "你啫。冇以为我怕咗你"
+          "text": "我见你系女人先唔打你啫。"
         },
         {
           "index": 3,
-          "text": "喎。"
+          "text": "冇以为我怕咗你"
         },
         {
           "index": 4,
-          "text": "悟"
+          "text": "喎。悟"
         },
         {
           "index": 5,
@@ -4437,7 +4429,7 @@
       "changes": [
         {
           "index": 4,
-          "shift": 1
+          "shift": 2
         },
         {
           "index": 5,
@@ -4461,15 +4453,11 @@
         },
         {
           "index": 10,
-          "shift": 5
-        },
-        {
-          "index": 11,
-          "shift": 2
+          "shift": 4
         },
         {
           "index": 12,
-          "shift": 4
+          "shift": 5
         },
         {
           "index": 13,
@@ -4592,19 +4580,15 @@
         },
         {
           "index": 2,
-          "shift": -3
+          "shift": 1
         },
         {
           "index": 4,
-          "shift": -5
+          "shift": -4
         },
         {
           "index": 5,
           "shift": -3
-        },
-        {
-          "index": 6,
-          "shift": 2
         },
         {
           "index": 7,
@@ -4689,7 +4673,7 @@
       "targets": [
         {
           "index": 1,
-          "text": "啊，好容易掟亲啲小朋友，"
+          "text": "噶。啊，好容易掟亲啲小朋友，"
         },
         {
           "index": 2,
@@ -4762,16 +4746,16 @@
           "shift": 3
         },
         {
+          "index": 6,
+          "shift": 1
+        },
+        {
           "index": 8,
           "shift": -2
         },
         {
           "index": 9,
           "shift": -1
-        },
-        {
-          "index": 10,
-          "shift": -4
         },
         {
           "index": 11,
@@ -4842,7 +4826,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 2
+          "shift": 3
         },
         {
           "index": 2,
@@ -4956,15 +4940,15 @@
       "changes": [
         {
           "index": 1,
-          "shift": 10
+          "shift": 16
         },
         {
           "index": 2,
-          "shift": 7
+          "shift": 21
         },
         {
           "index": 3,
-          "shift": 1
+          "shift": 2
         }
       ]
     },
@@ -5082,8 +5066,20 @@
           "shift": 1
         },
         {
+          "index": 2,
+          "shift": 5
+        },
+        {
+          "index": 3,
+          "shift": 4
+        },
+        {
           "index": 4,
           "shift": 1
+        },
+        {
+          "index": 5,
+          "shift": 2
         },
         {
           "index": 6,
@@ -5254,19 +5250,19 @@
       "changes": [
         {
           "index": 4,
-          "shift": 1
+          "shift": 2
         },
         {
           "index": 5,
-          "shift": 5
+          "shift": 6
         },
         {
           "index": 6,
-          "shift": 2
+          "shift": 3
         },
         {
           "index": 7,
-          "shift": 2
+          "shift": 3
         },
         {
           "index": 8,
@@ -5278,7 +5274,7 @@
         },
         {
           "index": 10,
-          "shift": 3
+          "shift": 4
         },
         {
           "index": 11,
@@ -5286,7 +5282,7 @@
         },
         {
           "index": 12,
-          "shift": 6
+          "shift": 7
         },
         {
           "index": 13,
@@ -5294,7 +5290,7 @@
         },
         {
           "index": 14,
-          "shift": 5
+          "shift": 6
         }
       ]
     },
@@ -5379,19 +5375,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "，不过谂唔到你咁烦啫"
+          "text": "，不过谂唔到你咁烦啫。"
         },
         {
           "index": 2,
-          "text": "。我以前俾个金光圈你制服呢只马骝，"
+          "text": "我以前俾个金光圈你制服呢只马骝，"
         },
         {
           "index": 3,
-          "text": "你竟然唔用"
+          "text": "你竟然唔用。"
         },
         {
           "index": 4,
-          "text": "。啊，讲起嗰个金光圈，车马"
+          "text": "啊，讲起嗰个金光圈，车马"
         },
         {
           "index": 5,
@@ -5457,7 +5453,7 @@
       "changes": [
         {
           "index": 4,
-          "shift": 3
+          "shift": 2
         },
         {
           "index": 5,
@@ -5465,51 +5461,47 @@
         },
         {
           "index": 6,
-          "shift": 5
+          "shift": 4
         },
         {
           "index": 7,
-          "shift": 4
+          "shift": 3
         },
         {
           "index": 8,
-          "shift": 5
+          "shift": 4
         },
         {
           "index": 9,
-          "shift": 5
+          "shift": 4
         },
         {
           "index": 10,
-          "shift": 5
+          "shift": 4
         },
         {
           "index": 11,
-          "shift": 8
+          "shift": 5
         },
         {
           "index": 12,
-          "shift": 7
+          "shift": 6
         },
         {
           "index": 13,
-          "shift": 8
+          "shift": 6
         },
         {
           "index": 14,
-          "shift": 4
+          "shift": 3
         },
         {
           "index": 15,
-          "shift": 8
+          "shift": 7
         },
         {
           "index": 16,
-          "shift": 2
-        },
-        {
-          "index": 17,
-          "shift": 4
+          "shift": 1
         }
       ]
     },
@@ -5550,10 +5542,6 @@
     },
     "answer": {
       "changes": [
-        {
-          "index": 1,
-          "shift": 3
-        },
         {
           "index": 2,
           "shift": 2
@@ -5658,7 +5646,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 8
+          "shift": 9
         },
         {
           "index": 2,
@@ -5670,7 +5658,7 @@
         },
         {
           "index": 4,
-          "shift": 3
+          "shift": 4
         }
       ]
     },
@@ -5781,7 +5769,7 @@
         },
         {
           "index": 2,
-          "shift": 2
+          "shift": 1
         },
         {
           "index": 3,
@@ -5789,7 +5777,7 @@
         },
         {
           "index": 4,
-          "shift": 3
+          "shift": 2
         },
         {
           "index": 5,
@@ -5797,11 +5785,7 @@
         },
         {
           "index": 6,
-          "shift": 2
-        },
-        {
-          "index": 7,
-          "shift": 5
+          "shift": 1
         },
         {
           "index": 8,
@@ -5862,15 +5846,15 @@
       "targets": [
         {
           "index": 1,
-          "text": "。求观音姐姐你放一条生路啦。"
+          "text": "。求观音姐姐你放一条生路啦"
         },
         {
           "index": 2,
-          "text": "我唔消灭佢，"
+          "text": "。我"
         },
         {
           "index": 3,
-          "text": "冇办法同玉皇大帝交代"
+          "text": "唔消灭佢，冇办法同玉皇大帝交代"
         },
         {
           "index": 4,
@@ -5916,19 +5900,19 @@
         },
         {
           "index": 5,
-          "shift": -3
+          "shift": -4
         },
         {
           "index": 6,
-          "shift": 2
+          "shift": 1
         },
         {
           "index": 8,
-          "shift": 2
+          "shift": 1
         },
         {
           "index": 9,
-          "shift": 3
+          "shift": 4
         },
         {
           "index": 10,
@@ -5975,7 +5959,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 1
+          "shift": 4
         },
         {
           "index": 2,
@@ -6046,7 +6030,7 @@
       "changes": [
         {
           "index": 2,
-          "shift": -4
+          "shift": -5
         },
         {
           "index": 3,
@@ -6054,7 +6038,7 @@
         },
         {
           "index": 4,
-          "shift": -6
+          "shift": -10
         },
         {
           "index": 5,
@@ -6153,15 +6137,19 @@
         },
         {
           "index": 4,
-          "shift": 8
+          "shift": 7
         },
         {
           "index": 5,
           "shift": 3
         },
         {
+          "index": 6,
+          "shift": 5
+        },
+        {
           "index": 7,
-          "shift": -1
+          "shift": 8
         }
       ]
     },
@@ -6220,7 +6208,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 9
+          "shift": 12
         },
         {
           "index": 2,
@@ -6395,7 +6383,7 @@
         },
         {
           "index": 5,
-          "shift": 1
+          "shift": 2
         },
         {
           "index": 6,
@@ -6407,27 +6395,27 @@
         },
         {
           "index": 8,
-          "shift": 6
+          "shift": 5
         },
         {
           "index": 9,
-          "shift": 8
+          "shift": 7
         },
         {
           "index": 10,
-          "shift": 9
+          "shift": 7
         },
         {
           "index": 11,
-          "shift": 5
+          "shift": 3
         },
         {
           "index": 12,
-          "shift": 5
+          "shift": 3
         },
         {
           "index": 13,
-          "shift": 3
+          "shift": 1
         }
       ]
     },
@@ -6492,23 +6480,23 @@
       "targets": [
         {
           "index": 1,
-          "text": "，个月江宝喺你度喺我"
+          "text": "系喎，个月江宝喺你度"
         },
         {
           "index": 2,
-          "text": "度，你仲想要边个"
+          "text": "喺我度，你仲想要"
         },
         {
           "index": 3,
-          "text": "啊？吓"
+          "text": "边个啊"
         },
         {
           "index": 4,
-          "text": ""
+          "text": "？"
         },
         {
           "index": 5,
-          "text": "，"
+          "text": "吓，"
         },
         {
           "index": 6,
@@ -6550,7 +6538,7 @@
       "changes": [
         {
           "index": 4,
-          "shift": 5
+          "shift": 6
         },
         {
           "index": 5,
@@ -6748,8 +6736,12 @@
           "shift": 5
         },
         {
+          "index": 12,
+          "shift": 4
+        },
+        {
           "index": 13,
-          "shift": 2
+          "shift": 6
         },
         {
           "index": 14,
@@ -6828,7 +6820,7 @@
         },
         {
           "index": 3,
-          "shift": 5
+          "shift": 3
         }
       ]
     },
@@ -6879,7 +6871,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 3
+          "shift": 2
         },
         {
           "index": 2,
@@ -6951,10 +6943,6 @@
         {
           "index": 2,
           "shift": 5
-        },
-        {
-          "index": 3,
-          "shift": 1
         }
       ]
     },
@@ -7032,7 +7020,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 2
+          "shift": 4
         },
         {
           "index": 2,
@@ -7203,7 +7191,7 @@
         },
         {
           "index": 10,
-          "shift": 7
+          "shift": 6
         },
         {
           "index": 11,
@@ -7276,11 +7264,11 @@
         },
         {
           "index": 2,
-          "text": "刘大哥啊，你究竟系点样认识呢"
+          "text": "刘大哥啊，你究竟系点样认识"
         },
         {
           "index": 3,
-          "text": "一位新夫人嘅呢？"
+          "text": "呢一位新夫人嘅呢？"
         },
         {
           "index": 4,
@@ -7334,19 +7322,23 @@
         },
         {
           "index": 5,
-          "shift": 5
+          "shift": 7
         },
         {
           "index": 6,
-          "shift": 2
+          "shift": 12
+        },
+        {
+          "index": 7,
+          "shift": 8
         },
         {
           "index": 8,
-          "shift": 4
+          "shift": 17
         },
         {
           "index": 9,
-          "shift": -9
+          "shift": 19
         },
         {
           "index": 11,
@@ -7354,7 +7346,7 @@
         },
         {
           "index": 12,
-          "shift": 5
+          "shift": 4
         }
       ]
     },
@@ -7504,27 +7496,27 @@
         },
         {
           "index": 2,
-          "shift": 3
+          "shift": 2
         },
         {
           "index": 3,
-          "shift": 9
+          "shift": 8
         },
         {
           "index": 4,
-          "shift": 3
+          "shift": 2
         },
         {
           "index": 5,
-          "shift": 6
+          "shift": 5
         },
         {
           "index": 6,
-          "shift": 6
+          "shift": 5
         },
         {
           "index": 7,
-          "shift": 10
+          "shift": 9
         },
         {
           "index": 8,
@@ -7663,15 +7655,15 @@
         },
         {
           "index": 3,
-          "shift": 8
+          "shift": 4
         },
         {
           "index": 4,
-          "shift": 5
+          "shift": 6
         },
         {
           "index": 5,
-          "shift": 5
+          "shift": 6
         },
         {
           "index": 6,
@@ -7687,7 +7679,7 @@
         },
         {
           "index": 9,
-          "shift": 10
+          "shift": 8
         },
         {
           "index": 10,
@@ -7768,11 +7760,11 @@
         },
         {
           "index": 2,
-          "text": "就系我送俾你嘅定情信物。我希"
+          "text": "就系我送俾你嘅定情信物。"
         },
         {
           "index": 3,
-          "text": "望你会答应我。"
+          "text": "我希望你会答应我。"
         },
         {
           "index": 4,
@@ -7842,11 +7834,11 @@
         },
         {
           "index": 7,
-          "shift": 14
+          "shift": 11
         },
         {
           "index": 8,
-          "shift": 9
+          "shift": 12
         },
         {
           "index": 9,
@@ -7854,19 +7846,15 @@
         },
         {
           "index": 10,
-          "shift": 16
+          "shift": 17
         },
         {
           "index": 11,
-          "shift": 11
+          "shift": 13
         },
         {
           "index": 12,
           "shift": 8
-        },
-        {
-          "index": 14,
-          "shift": 4
         }
       ]
     },
@@ -7941,7 +7929,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 4
+          "shift": 5
         },
         {
           "index": 2,
@@ -7949,7 +7937,7 @@
         },
         {
           "index": 3,
-          "shift": 5
+          "shift": 6
         },
         {
           "index": 4,
@@ -7961,7 +7949,7 @@
         },
         {
           "index": 6,
-          "shift": -7
+          "shift": -6
         }
       ]
     },
@@ -7996,7 +7984,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 5
+          "shift": 6
         }
       ]
     },
@@ -8197,44 +8185,60 @@
           "shift": 2
         },
         {
+          "index": 2,
+          "shift": 7
+        },
+        {
           "index": 3,
-          "shift": -1
+          "shift": 8
+        },
+        {
+          "index": 4,
+          "shift": 11
         },
         {
           "index": 5,
-          "shift": -10
+          "shift": 6
         },
         {
           "index": 6,
-          "shift": -9
+          "shift": 3
         },
         {
           "index": 7,
-          "shift": -8
+          "shift": 5
         },
         {
           "index": 8,
-          "shift": -15
+          "shift": 3
         },
         {
           "index": 9,
-          "shift": -3
+          "shift": 10
+        },
+        {
+          "index": 10,
+          "shift": 6
         },
         {
           "index": 11,
-          "shift": -2
+          "shift": 5
         },
         {
           "index": 12,
-          "shift": -11
+          "shift": 5
+        },
+        {
+          "index": 13,
+          "shift": 5
         },
         {
           "index": 14,
-          "shift": -1
+          "shift": 6
         },
         {
           "index": 15,
-          "shift": -4
+          "shift": 4
         }
       ]
     },
@@ -8295,19 +8299,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "曾经有一份至真嘅爱情摆喺我面前，"
-        },
-        {
-          "index": 2,
           "text": "我冇珍惜，"
         },
         {
+          "index": 2,
+          "text": "到冇咗嘅时候，"
+        },
+        {
           "index": 3,
-          "text": "到冇咗嘅时候"
+          "text": "先至后悔莫及。"
         },
         {
           "index": 4,
-          "text": "，先至后悔莫及。尘世间最痛苦"
+          "text": "尘世间最痛苦"
         },
         {
           "index": 5,
@@ -8353,7 +8357,7 @@
         },
         {
           "index": 5,
-          "shift": 5
+          "shift": 6
         },
         {
           "index": 6,
@@ -8365,7 +8369,7 @@
         },
         {
           "index": 8,
-          "shift": 3
+          "shift": 6
         },
         {
           "index": 9,
@@ -8484,11 +8488,11 @@
         },
         {
           "index": 3,
-          "shift": 11
+          "shift": -2
         },
         {
           "index": 4,
-          "shift": 3
+          "shift": 2
         },
         {
           "index": 5,
@@ -8500,7 +8504,7 @@
         },
         {
           "index": 7,
-          "shift": 4
+          "shift": 3
         }
       ]
     },
@@ -8577,7 +8581,7 @@
       "targets": [
         {
           "index": 1,
-          "text": "我唔理任何人点讲"
+          "text": "。我唔理任何人点讲"
         },
         {
           "index": 2,
@@ -8585,11 +8589,11 @@
         },
         {
           "index": 3,
-          "text": "对我唾骂，"
+          "text": "对我唾骂"
         },
         {
           "index": 4,
-          "text": "我一个人承"
+          "text": "，我一个人承"
         },
         {
           "index": 5,
@@ -8662,20 +8666,8 @@
           "shift": 2
         },
         {
-          "index": 11,
-          "shift": 4
-        },
-        {
-          "index": 12,
-          "shift": 3
-        },
-        {
-          "index": 13,
-          "shift": 3
-        },
-        {
-          "index": 15,
-          "shift": 6
+          "index": 8,
+          "shift": 2
         }
       ]
     },
@@ -8854,15 +8846,15 @@
         },
         {
           "index": 5,
-          "shift": 7
+          "shift": 10
         },
         {
           "index": 6,
-          "shift": 8
+          "shift": 7
         },
         {
           "index": 7,
-          "shift": 9
+          "shift": 8
         },
         {
           "index": 8,
@@ -8874,27 +8866,27 @@
         },
         {
           "index": 10,
-          "shift": 7
-        },
-        {
-          "index": 11,
-          "shift": 9
-        },
-        {
-          "index": 12,
-          "shift": 13
-        },
-        {
-          "index": 13,
           "shift": 4
         },
         {
-          "index": 14,
+          "index": 11,
           "shift": 8
         },
         {
+          "index": 12,
+          "shift": 9
+        },
+        {
+          "index": 13,
+          "shift": 3
+        },
+        {
+          "index": 14,
+          "shift": 7
+        },
+        {
           "index": 15,
-          "shift": 6
+          "shift": 2
         }
       ]
     },
@@ -8967,19 +8959,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "啦阿嫂。"
+          "text": "？我讲咗啦阿嫂"
         },
         {
           "index": 2,
-          "text": "你叫我做阿嫂啊？"
+          "text": "。你叫我做阿嫂啊"
         },
         {
           "index": 3,
-          "text": "对唔住，应该系牛夫人。嗯，以"
+          "text": "？对唔住，应该系牛夫人"
         },
         {
           "index": 4,
-          "text": ""
+          "text": "。嗯，以"
         },
         {
           "index": 5,
@@ -9033,15 +9025,15 @@
       "changes": [
         {
           "index": 4,
-          "shift": 9
+          "shift": 8
         },
         {
           "index": 5,
-          "shift": 9
+          "shift": 4
         },
         {
           "index": 6,
-          "shift": 7
+          "shift": 6
         },
         {
           "index": 8,
@@ -9053,7 +9045,7 @@
         },
         {
           "index": 10,
-          "shift": 19
+          "shift": 2
         },
         {
           "index": 11,
@@ -9069,7 +9061,7 @@
         },
         {
           "index": 14,
-          "shift": 10
+          "shift": 9
         }
       ]
     },
@@ -9128,7 +9120,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 7
+          "shift": 6
         },
         {
           "index": 2,
@@ -9215,23 +9207,23 @@
       "changes": [
         {
           "index": 1,
-          "shift": 8
+          "shift": 6
         },
         {
           "index": 2,
-          "shift": 10
+          "shift": 8
         },
         {
           "index": 3,
-          "shift": 14
-        },
-        {
-          "index": 4,
           "shift": 12
         },
         {
+          "index": 4,
+          "shift": 8
+        },
+        {
           "index": 5,
-          "shift": 4
+          "shift": 1
         },
         {
           "index": 6,
@@ -9330,15 +9322,15 @@
         },
         {
           "index": 2,
-          "shift": 6
+          "shift": 1
         },
         {
           "index": 3,
-          "shift": 12
+          "shift": 9
         },
         {
           "index": 4,
-          "shift": 12
+          "shift": 13
         },
         {
           "index": 5,
@@ -9350,11 +9342,11 @@
         },
         {
           "index": 7,
-          "shift": 3
+          "shift": 4
         },
         {
           "index": 8,
-          "shift": 12
+          "shift": 11
         }
       ]
     },
@@ -9521,7 +9513,7 @@
         },
         {
           "index": 4,
-          "shift": 10
+          "shift": 12
         },
         {
           "index": 5,
@@ -9529,11 +9521,11 @@
         },
         {
           "index": 6,
-          "shift": 16
+          "shift": 13
         },
         {
           "index": 7,
-          "shift": 9
+          "shift": 10
         },
         {
           "index": 8,
@@ -9548,20 +9540,12 @@
           "shift": 14
         },
         {
-          "index": 11,
-          "shift": 6
-        },
-        {
-          "index": 12,
-          "shift": 7
-        },
-        {
           "index": 13,
-          "shift": 12
+          "shift": 11
         },
         {
           "index": 14,
-          "shift": 7
+          "shift": 13
         }
       ]
     },
@@ -9638,19 +9622,19 @@
       "targets": [
         {
           "index": 1,
-          "text": "吓，你唔走啊？"
+          "text": "我唔会走嘅。"
         },
         {
           "index": 2,
-          "text": "我哋四师徒今次取西经，可"
+          "text": "吓，你唔走啊？我哋四师徒今次取西经，"
         },
         {
           "index": 3,
-          "text": "以讲困难重重。"
+          "text": "可以讲困难重重。原因系我哋唔"
         },
         {
           "index": 4,
-          "text": "原因系我哋唔"
+          "text": ""
         },
         {
           "index": 5,
@@ -9716,7 +9700,7 @@
         },
         {
           "index": 6,
-          "shift": 6
+          "shift": 5
         },
         {
           "index": 7,
@@ -9724,7 +9708,7 @@
         },
         {
           "index": 8,
-          "shift": 7
+          "shift": 6
         },
         {
           "index": 9,
@@ -9819,7 +9803,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 1
+          "shift": 2
         },
         {
           "index": 2,
@@ -9835,7 +9819,7 @@
         },
         {
           "index": 5,
-          "shift": 10
+          "shift": 11
         }
       ]
     },
@@ -9950,11 +9934,11 @@
         },
         {
           "index": 3,
-          "shift": 15
+          "shift": 12
         },
         {
           "index": 4,
-          "shift": 11
+          "shift": 9
         },
         {
           "index": 6,
@@ -10049,7 +10033,7 @@
         },
         {
           "index": 3,
-          "shift": 5
+          "shift": -1
         },
         {
           "index": 4,
@@ -10136,15 +10120,15 @@
       "changes": [
         {
           "index": 1,
-          "shift": 12
+          "shift": 11
         },
         {
           "index": 2,
-          "shift": 8
+          "shift": 7
         },
         {
           "index": 3,
-          "shift": 13
+          "shift": 11
         },
         {
           "index": 4,
@@ -10156,11 +10140,11 @@
         },
         {
           "index": 6,
-          "shift": 7
+          "shift": 6
         },
         {
           "index": 7,
-          "shift": 7
+          "shift": 12
         }
       ]
     },
@@ -10338,7 +10322,7 @@
         },
         {
           "index": 3,
-          "shift": 30
+          "shift": 29
         },
         {
           "index": 4,
@@ -10354,7 +10338,7 @@
         },
         {
           "index": 7,
-          "shift": 5
+          "shift": 4
         },
         {
           "index": 8,
@@ -10366,7 +10350,7 @@
         },
         {
           "index": 10,
-          "shift": 7
+          "shift": 5
         }
       ]
     },
@@ -10447,7 +10431,7 @@
       "targets": [
         {
           "index": 1,
-          "text": "一眼就睇到啦，使咩听啫？"
+          "text": "，一眼就睇到啦，使咩听啫？"
         },
         {
           "index": 2,
@@ -10455,11 +10439,11 @@
         },
         {
           "index": 3,
-          "text": "抱住。哦。"
+          "text": "抱住。"
         },
         {
           "index": 4,
-          "text": ""
+          "text": "哦。"
         },
         {
           "index": 5,
@@ -10545,7 +10529,7 @@
         },
         {
           "index": 10,
-          "shift": 10
+          "shift": 5
         },
         {
           "index": 11,
@@ -10553,7 +10537,7 @@
         },
         {
           "index": 12,
-          "shift": 5
+          "shift": 8
         },
         {
           "index": 13,
@@ -10622,11 +10606,11 @@
       "targets": [
         {
           "index": 1,
-          "text": "我趁佢瞓着咗，插咗佢几刀"
+          "text": "我趁佢瞓着咗，插咗佢几刀。啊。"
         },
         {
           "index": 2,
-          "text": "。啊。呢个女人一日唔死"
+          "text": "呢个女人一日唔死"
         },
         {
           "index": 3,
@@ -10687,20 +10671,12 @@
           "shift": 9
         },
         {
-          "index": 7,
-          "shift": 12
-        },
-        {
-          "index": 8,
-          "shift": 8
-        },
-        {
           "index": 9,
-          "shift": 11
+          "shift": 2
         },
         {
           "index": 10,
-          "shift": 9
+          "shift": 1
         },
         {
           "index": 11,
@@ -10877,7 +10853,7 @@
         },
         {
           "index": 5,
-          "shift": 5
+          "shift": 4
         },
         {
           "index": 6,
@@ -10956,7 +10932,7 @@
         },
         {
           "index": 3,
-          "shift": 2
+          "shift": 11
         },
         {
           "index": 4,
@@ -11079,7 +11055,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 9
+          "shift": 7
         },
         {
           "index": 2,
@@ -11111,7 +11087,7 @@
         },
         {
           "index": 9,
-          "shift": 2
+          "shift": 6
         },
         {
           "index": 10,
@@ -11119,7 +11095,7 @@
         },
         {
           "index": 11,
-          "shift": 9
+          "shift": 8
         }
       ]
     },
@@ -11329,7 +11305,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 2
+          "shift": 8
         },
         {
           "index": 2,
@@ -11357,11 +11333,11 @@
         },
         {
           "index": 8,
-          "shift": 17
+          "shift": 15
         },
         {
           "index": 9,
-          "shift": 22
+          "shift": 21
         },
         {
           "index": 10,
@@ -11369,7 +11345,7 @@
         },
         {
           "index": 11,
-          "shift": 13
+          "shift": 10
         },
         {
           "index": 12,
@@ -11458,15 +11434,15 @@
       "targets": [
         {
           "index": 1,
-          "text": "只可以发第二次噶。"
+          "text": "，只可以发第二次噶。"
         },
         {
           "index": 2,
-          "text": "七七四十九日，我渣你。"
+          "text": "七七四十九日，我"
         },
         {
           "index": 3,
-          "text": "长林，你面对现实啦。"
+          "text": "渣你。长林，你面对现实啦。"
         },
         {
           "index": 4,
@@ -11548,39 +11524,35 @@
         },
         {
           "index": 7,
-          "shift": 13
+          "shift": 18
         },
         {
           "index": 8,
-          "shift": 17
+          "shift": 16
         },
         {
           "index": 9,
-          "shift": 15
+          "shift": 14
         },
         {
           "index": 10,
-          "shift": 9
+          "shift": 8
         },
         {
           "index": 11,
-          "shift": 12
+          "shift": 9
         },
         {
           "index": 12,
-          "shift": 4
+          "shift": 3
         },
         {
           "index": 13,
-          "shift": 2
+          "shift": 1
         },
         {
           "index": 14,
-          "shift": 7
-        },
-        {
-          "index": 15,
-          "shift": 4
+          "shift": 1
         }
       ]
     },
@@ -11649,23 +11621,23 @@
       "targets": [
         {
           "index": 1,
-          "text": "林。"
+          "text": "强林"
         },
         {
           "index": 2,
-          "text": "至尊宝。子"
-        },
-        {
-          "index": 3,
-          "text": "夏。子"
-        },
-        {
-          "index": 4,
           "text": ""
         },
         {
+          "index": 3,
+          "text": "。至尊宝。"
+        },
+        {
+          "index": 4,
+          "text": "子夏。"
+        },
+        {
           "index": 5,
-          "text": "夏，"
+          "text": "子夏，"
         },
         {
           "index": 6,
@@ -11710,10 +11682,6 @@
     "answer": {
       "changes": [
         {
-          "index": 4,
-          "shift": 2
-        },
-        {
           "index": 5,
           "shift": 6
         },
@@ -11739,7 +11707,7 @@
         },
         {
           "index": 11,
-          "shift": 11
+          "shift": 7
         }
       ]
     },
@@ -11800,11 +11768,11 @@
         },
         {
           "index": 3,
-          "text": "唔记得咗攞啊。吓。哼，"
+          "text": "唔记得咗攞啊。"
         },
         {
           "index": 4,
-          "text": ""
+          "text": "吓。哼，"
         },
         {
           "index": 5,
@@ -11985,23 +11953,27 @@
         },
         {
           "index": 2,
-          "shift": 7
+          "shift": 8
         },
         {
           "index": 3,
-          "shift": 7
+          "shift": 6
         },
         {
           "index": 4,
-          "shift": 20
-        },
-        {
-          "index": 5,
           "shift": 19
         },
         {
+          "index": 5,
+          "shift": 18
+        },
+        {
           "index": 6,
-          "shift": 22
+          "shift": 21
+        },
+        {
+          "index": 7,
+          "shift": 7
         },
         {
           "index": 8,
@@ -12013,7 +11985,7 @@
         },
         {
           "index": 10,
-          "shift": 12
+          "shift": 11
         },
         {
           "index": 11,
@@ -12152,11 +12124,7 @@
         },
         {
           "index": 7,
-          "shift": 13
-        },
-        {
-          "index": 8,
-          "shift": 8
+          "shift": 4
         }
       ]
     },
@@ -12217,19 +12185,19 @@
         },
         {
           "index": 2,
-          "text": "你估个衰婆好得过我好多啊？"
+          "text": "你估个衰"
         },
         {
           "index": 3,
-          "text": "你睇下。"
+          "text": "婆好得过我"
         },
         {
           "index": 4,
-          "text": ""
+          "text": "好多啊？你睇"
         },
         {
           "index": 5,
-          "text": "你都压得我够"
+          "text": "下。你都压得我够"
         },
         {
           "index": 6,
@@ -12263,11 +12231,11 @@
       "changes": [
         {
           "index": 4,
-          "shift": 10
+          "shift": 2
         },
         {
           "index": 5,
-          "shift": 14
+          "shift": 2
         },
         {
           "index": 6,
@@ -12275,19 +12243,19 @@
         },
         {
           "index": 7,
-          "shift": 7
+          "shift": 2
         },
         {
           "index": 8,
-          "shift": 13
+          "shift": 2
         },
         {
           "index": 9,
-          "shift": 18
+          "shift": 10
         },
         {
           "index": 10,
-          "shift": 10
+          "shift": -3
         }
       ]
     },
@@ -12433,15 +12401,15 @@
         },
         {
           "index": 2,
-          "shift": 15
+          "shift": 13
         },
         {
           "index": 3,
-          "shift": 7
+          "shift": 9
         },
         {
           "index": 4,
-          "shift": 11
+          "shift": 10
         },
         {
           "index": 5,
@@ -12449,7 +12417,7 @@
         },
         {
           "index": 6,
-          "shift": 11
+          "shift": 10
         },
         {
           "index": 7,
@@ -12556,11 +12524,11 @@
         },
         {
           "index": 2,
-          "shift": 17
+          "shift": 15
         },
         {
           "index": 3,
-          "shift": 14
+          "shift": 13
         },
         {
           "index": 4,
@@ -12647,15 +12615,7 @@
         },
         {
           "index": 2,
-          "shift": 12
-        },
-        {
-          "index": 3,
-          "shift": 10
-        },
-        {
-          "index": 4,
-          "shift": 9
+          "shift": 5
         },
         {
           "index": 5,
@@ -12817,7 +12777,7 @@
         },
         {
           "index": 2,
-          "shift": 15
+          "shift": 13
         },
         {
           "index": 3,
@@ -12872,7 +12832,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 7
+          "shift": 4
         }
       ]
     },
@@ -13030,7 +12990,7 @@
         },
         {
           "index": 3,
-          "shift": 8
+          "shift": 9
         },
         {
           "index": 4,
@@ -13046,7 +13006,7 @@
         },
         {
           "index": 7,
-          "shift": 5
+          "shift": 6
         },
         {
           "index": 8,
@@ -13235,15 +13195,15 @@
       "changes": [
         {
           "index": 1,
-          "shift": 7
+          "shift": 6
         },
         {
           "index": 2,
-          "shift": 14
+          "shift": 13
         },
         {
           "index": 3,
-          "shift": 12
+          "shift": 11
         },
         {
           "index": 4,
@@ -13251,11 +13211,11 @@
         },
         {
           "index": 5,
-          "shift": 12
+          "shift": 13
         },
         {
           "index": 6,
-          "shift": 10
+          "shift": 9
         },
         {
           "index": 7,
@@ -13306,7 +13266,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 11
+          "shift": 10
         },
         {
           "index": 2,
@@ -13425,19 +13385,19 @@
       "changes": [
         {
           "index": 1,
-          "shift": 6
+          "shift": 9
         },
         {
           "index": 2,
-          "shift": 8
+          "shift": 12
         },
         {
           "index": 3,
-          "shift": 4
+          "shift": 8
         },
         {
           "index": 4,
-          "shift": 12
+          "shift": 11
         },
         {
           "index": 5,
@@ -13445,7 +13405,7 @@
         },
         {
           "index": 6,
-          "shift": 16
+          "shift": 19
         },
         {
           "index": 7,
@@ -13453,7 +13413,7 @@
         },
         {
           "index": 8,
-          "shift": 14
+          "shift": 16
         },
         {
           "index": 9,
@@ -13546,15 +13506,15 @@
       "targets": [
         {
           "index": 1,
-          "text": "我信。"
+          "text": ""
         },
         {
           "index": 2,
-          "text": "啊？只死马骝唔会对我咁温柔嘅"
+          "text": "啊？只死马骝唔会对我咁温柔嘅。你"
         },
         {
           "index": 3,
-          "text": "。你系边个？"
+          "text": "系边个？"
         },
         {
           "index": 4,
@@ -13628,11 +13588,11 @@
       "changes": [
         {
           "index": 4,
-          "shift": 6
+          "shift": 12
         },
         {
           "index": 5,
-          "shift": 12
+          "shift": 17
         },
         {
           "index": 6,
@@ -13640,7 +13600,7 @@
         },
         {
           "index": 7,
-          "shift": 28
+          "shift": 29
         },
         {
           "index": 8,
@@ -13648,11 +13608,11 @@
         },
         {
           "index": 9,
-          "shift": 30
+          "shift": 29
         },
         {
           "index": 10,
-          "shift": 27
+          "shift": 26
         },
         {
           "index": 11,
@@ -13660,23 +13620,23 @@
         },
         {
           "index": 12,
-          "shift": 10
+          "shift": 8
         },
         {
           "index": 13,
-          "shift": 10
+          "shift": 11
         },
         {
           "index": 14,
-          "shift": 9
+          "shift": 10
         },
         {
           "index": 15,
-          "shift": 12
+          "shift": 13
         },
         {
           "index": 16,
-          "shift": 16
+          "shift": 13
         }
       ]
     },
@@ -13749,15 +13709,15 @@
       "targets": [
         {
           "index": 1,
-          "text": "。唔怪得你"
+          "text": "唔怪得你，"
         },
         {
           "index": 2,
-          "text": "，等我再谂谂"
+          "text": "等我再谂谂。"
         },
         {
           "index": 3,
-          "text": "。不过我觉得我识你"
+          "text": "不过我觉得"
         },
         {
           "index": 4,
@@ -13765,11 +13725,11 @@
         },
         {
           "index": 5,
-          "text": ""
+          "text": "我识"
         },
         {
           "index": 6,
-          "text": "。绝对识嘅。仲"
+          "text": "你。绝对识嘅。仲"
         },
         {
           "index": 7,
@@ -13815,15 +13775,19 @@
       "changes": [
         {
           "index": 4,
-          "shift": 6
+          "shift": 9
         },
         {
           "index": 5,
-          "shift": 10
+          "shift": 11
         },
         {
           "index": 6,
           "shift": 9
+        },
+        {
+          "index": 7,
+          "shift": 11
         },
         {
           "index": 8,
@@ -13843,7 +13807,7 @@
         },
         {
           "index": 12,
-          "shift": 17
+          "shift": 18
         }
       ]
     },
@@ -13932,7 +13896,7 @@
         },
         {
           "index": 3,
-          "text": "我拧过嚟你就失惊无神咁，我一指"
+          "text": "我拧过嚟你就失惊无神咁，我一指，"
         },
         {
           "index": 4,
@@ -13944,7 +13908,7 @@
         },
         {
           "index": 6,
-          "text": "，我就成个手着晒火，你仲要出密啊？"
+          "text": "我就成个手着晒火，你仲要出密啊？"
         },
         {
           "index": 7,
@@ -13998,31 +13962,31 @@
       "changes": [
         {
           "index": 4,
-          "shift": 10
+          "shift": 9
         },
         {
           "index": 5,
-          "shift": 17
-        },
-        {
-          "index": 6,
           "shift": 16
         },
         {
+          "index": 6,
+          "shift": 15
+        },
+        {
           "index": 7,
-          "shift": 17
+          "shift": 19
         },
         {
           "index": 8,
-          "shift": 34
+          "shift": 35
         },
         {
           "index": 9,
-          "shift": 24
+          "shift": 23
         },
         {
           "index": 10,
-          "shift": 21
+          "shift": 20
         },
         {
           "index": 11,
@@ -14034,11 +13998,11 @@
         },
         {
           "index": 13,
-          "shift": 18
+          "shift": 17
         },
         {
           "index": 14,
-          "shift": 16
+          "shift": 14
         }
       ]
     },
@@ -14091,11 +14055,11 @@
         },
         {
           "index": 2,
-          "text": "你当时手抽一条尾龙骨，大战牛魔王之后"
+          "text": "你当时手抽一条尾龙骨，大战牛魔王之"
         },
         {
           "index": 3,
-          "text": "，仲将我捉咗翻嚟，知唔知？所谓"
+          "text": "后，仲将我捉咗翻嚟，知唔知？"
         },
         {
           "index": 4,
@@ -14103,7 +14067,7 @@
         },
         {
           "index": 5,
-          "text": "光阴似"
+          "text": "所谓光阴似"
         },
         {
           "index": 6,
@@ -14129,7 +14093,7 @@
       "changes": [
         {
           "index": 4,
-          "shift": 12
+          "shift": 15
         },
         {
           "index": 5,
@@ -14141,11 +14105,11 @@
         },
         {
           "index": 7,
-          "shift": 17
+          "shift": 18
         },
         {
           "index": 8,
-          "shift": 23
+          "shift": 22
         }
       ]
     },
@@ -14284,15 +14248,15 @@
         },
         {
           "index": 7,
-          "shift": 8
+          "shift": 7
         },
         {
           "index": 8,
-          "shift": 10
+          "shift": 11
         },
         {
           "index": 9,
-          "shift": 14
+          "shift": 13
         },
         {
           "index": 10,
@@ -14300,7 +14264,7 @@
         },
         {
           "index": 11,
-          "shift": 9
+          "shift": 8
         }
       ]
     },
@@ -14427,7 +14391,7 @@
         },
         {
           "index": 4,
-          "shift": 6
+          "shift": 7
         },
         {
           "index": 5,
@@ -14451,7 +14415,7 @@
         },
         {
           "index": 10,
-          "shift": 26
+          "shift": 25
         },
         {
           "index": 11,
@@ -14582,11 +14546,11 @@
         },
         {
           "index": 4,
-          "shift": 18
+          "shift": 17
         },
         {
           "index": 5,
-          "shift": 12
+          "shift": 13
         },
         {
           "index": 6,
@@ -14602,7 +14566,7 @@
         },
         {
           "index": 9,
-          "shift": 7
+          "shift": 15
         }
       ]
     },
@@ -14663,7 +14627,7 @@
         },
         {
           "index": 3,
-          "text": "啊，咁系咪即系佢最爱嘅人就系我啊？"
+          "text": "啊，咁系咪即系佢最爱嘅人就系我啊？哼，你翻嚟咁耐，"
         },
         {
           "index": 4,
@@ -14675,7 +14639,7 @@
         },
         {
           "index": 6,
-          "text": "哼，你翻嚟咁耐，"
+          "text": ""
         },
         {
           "index": 7,
@@ -14700,12 +14664,8 @@
     "answer": {
       "changes": [
         {
-          "index": 4,
-          "shift": 8
-        },
-        {
           "index": 5,
-          "shift": 22
+          "shift": 13
         },
         {
           "index": 6,
@@ -14868,7 +14828,7 @@
         },
         {
           "index": 5,
-          "shift": 7
+          "shift": 10
         },
         {
           "index": 6,
@@ -14880,7 +14840,7 @@
         },
         {
           "index": 8,
-          "shift": 16
+          "shift": 18
         },
         {
           "index": 9,
@@ -14892,7 +14852,7 @@
         },
         {
           "index": 11,
-          "shift": 5
+          "shift": 13
         }
       ]
     },
@@ -14969,7 +14929,7 @@
       "targets": [
         {
           "index": 1,
-          "text": "啊。咩你真系信嗰条古话，就要返嚟接你咩？"
+          "text": "咩你真系信嗰条古话，就要返嚟接你咩？"
         },
         {
           "index": 2,
@@ -14977,7 +14937,7 @@
         },
         {
           "index": 3,
-          "text": ""
+          "text": "不过就算佢返嚟，"
         },
         {
           "index": 4,
@@ -14985,7 +14945,7 @@
         },
         {
           "index": 5,
-          "text": "不过就算佢返嚟，"
+          "text": ""
         },
         {
           "index": 6,
@@ -15039,7 +14999,7 @@
       "changes": [
         {
           "index": 4,
-          "shift": 13
+          "shift": 4
         },
         {
           "index": 5,
@@ -15063,11 +15023,11 @@
         },
         {
           "index": 10,
-          "shift": 16
+          "shift": 17
         },
         {
           "index": 11,
-          "shift": 12
+          "shift": 13
         },
         {
           "index": 12,
@@ -15174,7 +15134,7 @@
         },
         {
           "index": 3,
-          "shift": 19
+          "shift": 24
         },
         {
           "index": 4,
@@ -15182,11 +15142,11 @@
         },
         {
           "index": 5,
-          "shift": 7
+          "shift": 8
         },
         {
           "index": 6,
-          "shift": 6
+          "shift": 7
         },
         {
           "index": 7,
@@ -15312,11 +15272,11 @@
         },
         {
           "index": 2,
-          "shift": 5
+          "shift": 15
         },
         {
           "index": 3,
-          "shift": 2
+          "shift": 12
         },
         {
           "index": 4,
@@ -15324,11 +15284,11 @@
         },
         {
           "index": 5,
-          "shift": 6
+          "shift": 2
         },
         {
           "index": 6,
-          "shift": 2
+          "shift": 6
         },
         {
           "index": 7,
@@ -15467,7 +15427,11 @@
         },
         {
           "index": 2,
-          "shift": 10
+          "shift": 9
+        },
+        {
+          "index": 3,
+          "shift": 17
         },
         {
           "index": 4,
@@ -15495,7 +15459,7 @@
         },
         {
           "index": 10,
-          "shift": 22
+          "shift": 23
         },
         {
           "index": 11,
@@ -15572,11 +15536,11 @@
         },
         {
           "index": 2,
-          "text": "亦或系一个句号？"
+          "text": "亦或系一个句号？你"
         },
         {
           "index": 3,
-          "text": "你脑海里系咪充满问号咧？"
+          "text": "脑海里系咪充满问号咧？"
         },
         {
           "index": 4,
@@ -15634,7 +15598,7 @@
         },
         {
           "index": 5,
-          "shift": 21
+          "shift": 22
         },
         {
           "index": 6,
@@ -15654,7 +15618,7 @@
         },
         {
           "index": 10,
-          "shift": 18
+          "shift": 19
         },
         {
           "index": 11,
@@ -15727,11 +15691,11 @@
         },
         {
           "index": 2,
-          "text": "你爱上一个你讨厌嘅人"
+          "text": "你爱上一个你讨厌嘅人，"
         },
         {
           "index": 3,
-          "text": "，呢段感情先至最裸淡。"
+          "text": "呢段感情先至最裸淡。"
         },
         {
           "index": 4,
@@ -15789,7 +15753,7 @@
         },
         {
           "index": 6,
-          "shift": 14
+          "shift": 11
         },
         {
           "index": 7,
@@ -15801,15 +15765,15 @@
         },
         {
           "index": 9,
-          "shift": 19
+          "shift": 18
         },
         {
           "index": 10,
-          "shift": 18
+          "shift": 17
         },
         {
           "index": 11,
-          "shift": 18
+          "shift": 17
         },
         {
           "index": 12,
@@ -15927,24 +15891,12 @@
     "answer": {
       "changes": [
         {
-          "index": 1,
-          "shift": 5
-        },
-        {
-          "index": 2,
-          "shift": 10
-        },
-        {
           "index": 3,
           "shift": 10
         },
         {
           "index": 4,
-          "shift": 15
-        },
-        {
-          "index": 5,
-          "shift": 10
+          "shift": 22
         },
         {
           "index": 7,
@@ -15960,7 +15912,7 @@
         },
         {
           "index": 10,
-          "shift": 7
+          "shift": 6
         }
       ]
     },
@@ -16102,7 +16054,7 @@
         },
         {
           "index": 7,
-          "shift": 7
+          "shift": 8
         }
       ]
     },
@@ -16347,48 +16299,36 @@
     "answer": {
       "changes": [
         {
-          "index": 1,
-          "shift": 12
-        },
-        {
-          "index": 2,
-          "shift": 20
-        },
-        {
           "index": 3,
-          "shift": 13
+          "shift": 2
         },
         {
           "index": 4,
-          "shift": 9
+          "shift": 3
         },
         {
           "index": 5,
-          "shift": 17
+          "shift": 2
         },
         {
           "index": 6,
-          "shift": 16
+          "shift": 1
         },
         {
           "index": 7,
-          "shift": 18
+          "shift": 7
         },
         {
           "index": 8,
-          "shift": 15
+          "shift": 5
         },
         {
           "index": 9,
-          "shift": 14
-        },
-        {
-          "index": 10,
-          "shift": 15
+          "shift": 11
         },
         {
           "index": 11,
-          "shift": 13
+          "shift": 5
         }
       ]
     },
@@ -16566,7 +16506,7 @@
         },
         {
           "index": 2,
-          "shift": 7
+          "shift": 8
         },
         {
           "index": 3,
@@ -16586,11 +16526,11 @@
         },
         {
           "index": 7,
-          "shift": 21
+          "shift": 19
         },
         {
           "index": 8,
-          "shift": 18
+          "shift": 20
         },
         {
           "index": 9,
@@ -16647,15 +16587,15 @@
       "targets": [
         {
           "index": 1,
-          "text": "我听讲话，如果把刀出得快，落点准，劏开"
+          "text": "我听讲话，如果把刀出得快，落点准，"
         },
         {
           "index": 2,
-          "text": "一个人之后，个人未即刻死"
+          "text": "劏开一个人之后，个人未即刻死住，"
         },
         {
           "index": 3,
-          "text": "住，只眼仲睇到嘢。"
+          "text": "只眼仲睇到嘢。"
         },
         {
           "index": 4,
@@ -16693,7 +16633,7 @@
       "changes": [
         {
           "index": 4,
-          "shift": 8
+          "shift": 9
         },
         {
           "index": 5,
@@ -16709,7 +16649,7 @@
         },
         {
           "index": 8,
-          "shift": 10
+          "shift": 9
         },
         {
           "index": 9,
@@ -16799,11 +16739,11 @@
       "changes": [
         {
           "index": 1,
-          "shift": 9
+          "shift": 10
         },
         {
           "index": 2,
-          "shift": 14
+          "shift": 15
         },
         {
           "index": 3,
@@ -16918,11 +16858,11 @@
         },
         {
           "index": 4,
-          "shift": 11
+          "shift": 10
         },
         {
           "index": 5,
-          "shift": 7
+          "shift": 6
         },
         {
           "index": 6,
@@ -17068,11 +17008,11 @@
       "changes": [
         {
           "index": 1,
-          "shift": 3
+          "shift": 2
         },
         {
           "index": 2,
-          "shift": 5
+          "shift": 7
         },
         {
           "index": 3,
@@ -17123,15 +17063,7 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 1,
-          "shift": -5
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -17269,15 +17201,15 @@
       "changes": [
         {
           "index": 2,
-          "shift": 5
+          "shift": 6
         },
         {
           "index": 3,
-          "shift": 12
+          "shift": 13
         },
         {
           "index": 4,
-          "shift": 11
+          "shift": 12
         },
         {
           "index": 5,
@@ -17285,7 +17217,7 @@
         },
         {
           "index": 6,
-          "shift": 12
+          "shift": 11
         },
         {
           "index": 7,
@@ -17332,7 +17264,15 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {
+      "changes": [
+        {
+          "index": 1,
+          "shift": 1
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -17459,39 +17399,39 @@
       "changes": [
         {
           "index": 1,
-          "shift": 7
+          "shift": 15
         },
         {
           "index": 2,
-          "shift": 15
+          "shift": 24
         },
         {
           "index": 3,
-          "shift": 22
+          "shift": 27
         },
         {
           "index": 4,
-          "shift": 13
+          "shift": 14
         },
         {
           "index": 5,
-          "shift": 8
+          "shift": 9
         },
         {
           "index": 6,
-          "shift": 16
+          "shift": 17
         },
         {
           "index": 7,
-          "shift": 20
+          "shift": 21
         },
         {
           "index": 8,
-          "shift": 22
+          "shift": 21
         },
         {
           "index": 9,
-          "shift": 15
+          "shift": 14
         },
         {
           "index": 10,
@@ -17499,7 +17439,7 @@
         },
         {
           "index": 11,
-          "shift": 10
+          "shift": 12
         }
       ]
     },
@@ -17576,15 +17516,15 @@
       "targets": [
         {
           "index": 1,
-          "text": "我开始用心眼去睇呢个世界。"
+          "text": "，我开始用心眼去睇呢个世界"
         },
         {
           "index": 2,
-          "text": "所有嘅嘢"
+          "text": "。所有嘅嘢"
         },
         {
           "index": 3,
-          "text": "真系可以睇得前所未有咁清"
+          "text": "真系可以睇得前所未有咁清楚。"
         },
         {
           "index": 4,
@@ -17592,7 +17532,7 @@
         },
         {
           "index": 5,
-          "text": "楚。原来嗰个"
+          "text": "原来嗰个"
         },
         {
           "index": 6,
@@ -17646,7 +17586,7 @@
       "changes": [
         {
           "index": 4,
-          "shift": 8
+          "shift": 7
         },
         {
           "index": 5,
@@ -17670,7 +17610,7 @@
         },
         {
           "index": 10,
-          "shift": 12
+          "shift": 13
         },
         {
           "index": 11,
@@ -17682,7 +17622,7 @@
         },
         {
           "index": 13,
-          "shift": 12
+          "shift": 13
         }
       ]
     },
@@ -17775,7 +17715,7 @@
       "targets": [
         {
           "index": 1,
-          "text": "，生亦何哀，"
+          "text": "生亦何哀，"
         },
         {
           "index": 2,
@@ -17783,7 +17723,7 @@
         },
         {
           "index": 3,
-          "text": "讲得好，讲得好"
+          "text": "讲得好，讲得好，"
         },
         {
           "index": 4,
@@ -17791,7 +17731,7 @@
         },
         {
           "index": 5,
-          "text": "，哈哈"
+          "text": "哈哈"
         },
         {
           "index": 6,
@@ -17861,7 +17801,7 @@
       "changes": [
         {
           "index": 4,
-          "shift": 8
+          "shift": 15
         },
         {
           "index": 5,
@@ -17869,7 +17809,7 @@
         },
         {
           "index": 6,
-          "shift": 24
+          "shift": 23
         },
         {
           "index": 7,
@@ -17877,7 +17817,7 @@
         },
         {
           "index": 8,
-          "shift": 29
+          "shift": 28
         },
         {
           "index": 9,
@@ -17893,15 +17833,15 @@
         },
         {
           "index": 12,
-          "shift": 19
+          "shift": 28
         },
         {
           "index": 13,
-          "shift": 26
+          "shift": 29
         },
         {
           "index": 14,
-          "shift": 19
+          "shift": 20
         },
         {
           "index": 15,
@@ -17909,7 +17849,7 @@
         },
         {
           "index": 16,
-          "shift": 21
+          "shift": 17
         },
         {
           "index": 17,
@@ -17978,15 +17918,15 @@
       "targets": [
         {
           "index": 1,
-          "text": "，佢就系想执住呢本经书去化"
+          "text": "佢就系想执住呢本经书去化"
         },
         {
           "index": 2,
-          "text": "解人世间嘅仇恨。明白"
+          "text": "解人世间嘅仇"
         },
         {
           "index": 3,
-          "text": "。"
+          "text": "恨。明白。"
         },
         {
           "index": 4,
@@ -18068,7 +18008,7 @@
         },
         {
           "index": 12,
-          "shift": 15
+          "shift": 18
         }
       ]
     },
@@ -18179,7 +18119,7 @@
         },
         {
           "index": 4,
-          "shift": 14
+          "shift": 12
         },
         {
           "index": 5,
@@ -18187,7 +18127,7 @@
         },
         {
           "index": 6,
-          "shift": 18
+          "shift": 16
         },
         {
           "index": 7,
@@ -18290,11 +18230,11 @@
       "changes": [
         {
           "index": 1,
-          "shift": 15
+          "shift": 16
         },
         {
           "index": 2,
-          "shift": 20
+          "shift": 21
         },
         {
           "index": 3,
@@ -18302,7 +18242,7 @@
         },
         {
           "index": 4,
-          "shift": 12
+          "shift": 13
         },
         {
           "index": 5,
@@ -18310,15 +18250,15 @@
         },
         {
           "index": 6,
-          "shift": 18
+          "shift": 19
         },
         {
           "index": 7,
-          "shift": 17
+          "shift": 18
         },
         {
           "index": 8,
-          "shift": 16
+          "shift": 17
         }
       ]
     },
@@ -18353,7 +18293,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": -3
+          "shift": -4
         }
       ]
     },
@@ -18388,7 +18328,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 7
+          "shift": 2
         }
       ]
     },
@@ -18513,7 +18453,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 4
+          "shift": 7
         },
         {
           "index": 2,
@@ -18727,11 +18667,11 @@
         },
         {
           "index": 8,
-          "shift": 18
+          "shift": 19
         },
         {
           "index": 9,
-          "shift": 20
+          "shift": 21
         },
         {
           "index": 10,
@@ -18906,7 +18846,7 @@
         },
         {
           "index": 5,
-          "shift": 14
+          "shift": 15
         },
         {
           "index": 6,
@@ -18914,19 +18854,19 @@
         },
         {
           "index": 7,
-          "shift": 21
+          "shift": 19
         },
         {
           "index": 8,
-          "shift": 21
-        },
-        {
-          "index": 9,
           "shift": 20
         },
         {
+          "index": 9,
+          "shift": 19
+        },
+        {
           "index": 10,
-          "shift": 15
+          "shift": 14
         },
         {
           "index": 11,
@@ -18934,7 +18874,7 @@
         },
         {
           "index": 12,
-          "shift": 24
+          "shift": 12
         },
         {
           "index": 13,
@@ -18946,7 +18886,7 @@
         },
         {
           "index": 15,
-          "shift": 15
+          "shift": 16
         },
         {
           "index": 16,
@@ -19048,7 +18988,15 @@
       "first_owned_index": 1,
       "last_owned_index": 2
     },
-    "answer": {}
+    "answer": {
+      "changes": [
+        {
+          "index": 1,
+          "shift": 2
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -19111,7 +19059,7 @@
         },
         {
           "index": 3,
-          "shift": 17
+          "shift": 18
         },
         {
           "index": 4,
@@ -19190,11 +19138,11 @@
       "changes": [
         {
           "index": 1,
-          "shift": 9
+          "shift": 15
         },
         {
           "index": 2,
-          "shift": 14
+          "shift": 11
         },
         {
           "index": 3,
@@ -19202,7 +19150,7 @@
         },
         {
           "index": 4,
-          "shift": 11
+          "shift": 14
         },
         {
           "index": 5,
@@ -19241,15 +19189,7 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 1,
-          "shift": 6
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -19276,7 +19216,15 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {
+      "changes": [
+        {
+          "index": 1,
+          "shift": 1
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -19386,11 +19334,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 2
-        },
-        {
-          "index": 2,
-          "shift": 8
+          "shift": -6
         },
         {
           "index": 3,
@@ -19493,7 +19437,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 7
+          "shift": 6
         },
         {
           "index": 2,
@@ -19501,7 +19445,7 @@
         },
         {
           "index": 3,
-          "shift": 13
+          "shift": 18
         },
         {
           "index": 4,
@@ -19623,11 +19567,11 @@
       "changes": [
         {
           "index": 1,
-          "shift": 8
+          "shift": 7
         },
         {
           "index": 2,
-          "shift": 4
+          "shift": 1
         }
       ]
     },
@@ -19710,7 +19654,7 @@
         },
         {
           "index": 3,
-          "shift": 21
+          "shift": 19
         },
         {
           "index": 4,
@@ -19789,7 +19733,7 @@
         },
         {
           "index": 3,
-          "shift": 10
+          "shift": 7
         }
       ]
     },
@@ -20003,7 +19947,7 @@
         },
         {
           "index": 8,
-          "shift": 27
+          "shift": 21
         },
         {
           "index": 9,
@@ -20011,19 +19955,19 @@
         },
         {
           "index": 10,
-          "shift": 33
+          "shift": 32
         },
         {
           "index": 11,
-          "shift": 18
+          "shift": 25
         },
         {
           "index": 12,
-          "shift": 4
+          "shift": 24
         },
         {
           "index": 13,
-          "shift": 26
+          "shift": 27
         },
         {
           "index": 14,
@@ -20219,16 +20163,20 @@
     "answer": {
       "changes": [
         {
+          "index": 2,
+          "shift": 12
+        },
+        {
           "index": 3,
           "shift": 15
         },
         {
           "index": 4,
-          "shift": 5
+          "shift": 4
         },
         {
           "index": 5,
-          "shift": 10
+          "shift": 11
         },
         {
           "index": 6,
@@ -20351,19 +20299,19 @@
         },
         {
           "index": 4,
-          "shift": 28
-        },
-        {
-          "index": 5,
           "shift": 29
         },
         {
+          "index": 5,
+          "shift": 30
+        },
+        {
           "index": 6,
-          "shift": 22
+          "shift": 23
         },
         {
           "index": 7,
-          "shift": 16
+          "shift": 17
         },
         {
           "index": 8,
@@ -20557,7 +20505,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": 17
+          "shift": 13
         },
         {
           "index": 2,
@@ -20565,11 +20513,11 @@
         },
         {
           "index": 3,
-          "shift": 31
+          "shift": 30
         },
         {
           "index": 4,
-          "shift": 35
+          "shift": 37
         },
         {
           "index": 5,
@@ -20585,11 +20533,11 @@
         },
         {
           "index": 8,
-          "shift": 25
+          "shift": 28
         },
         {
           "index": 9,
-          "shift": 24
+          "shift": 25
         },
         {
           "index": 10,
@@ -20601,11 +20549,11 @@
         },
         {
           "index": 12,
-          "shift": 28
+          "shift": 27
         },
         {
           "index": 13,
-          "shift": 24
+          "shift": 32
         }
       ]
     },
@@ -20670,11 +20618,11 @@
         },
         {
           "index": 2,
-          "text": "你睇啊，嗰啲毛都冧啦，眯晒口嘅，又"
+          "text": "你睇啊，嗰啲毛都冧啦，眯晒口嘅，"
         },
         {
           "index": 3,
-          "text": "好似带两份咸汁"
+          "text": "又好似带两份咸汁俾喺佢头嗰度咁样"
         },
         {
           "index": 4,
@@ -20686,7 +20634,7 @@
         },
         {
           "index": 6,
-          "text": "俾喺佢头嗰度咁样，出"
+          "text": "，出"
         },
         {
           "index": 7,
@@ -20720,11 +20668,11 @@
       "changes": [
         {
           "index": 4,
-          "shift": 21
+          "shift": 13
         },
         {
           "index": 5,
-          "shift": 26
+          "shift": 18
         },
         {
           "index": 6,
@@ -20732,7 +20680,7 @@
         },
         {
           "index": 7,
-          "shift": 29
+          "shift": 27
         },
         {
           "index": 8,
@@ -20740,15 +20688,15 @@
         },
         {
           "index": 9,
-          "shift": 23
+          "shift": 22
         },
         {
           "index": 10,
-          "shift": 23
+          "shift": 22
         },
         {
           "index": 11,
-          "shift": 18
+          "shift": 17
         }
       ]
     },
@@ -20779,7 +20727,15 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {
+      "changes": [
+        {
+          "index": 1,
+          "shift": 5
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -20810,7 +20766,7 @@
       "changes": [
         {
           "index": 1,
-          "shift": -11
+          "shift": -7
         }
       ]
     },
@@ -20901,27 +20857,27 @@
       "changes": [
         {
           "index": 1,
-          "shift": 7
+          "shift": 9
         },
         {
           "index": 2,
-          "shift": 19
+          "shift": 17
         },
         {
           "index": 3,
-          "shift": 23
+          "shift": 21
         },
         {
           "index": 4,
-          "shift": 28
+          "shift": 25
         },
         {
           "index": 5,
-          "shift": 24
+          "shift": 20
         },
         {
           "index": 6,
-          "shift": 21
+          "shift": 24
         },
         {
           "index": 7,
@@ -21068,58 +21024,50 @@
       "changes": [
         {
           "index": 1,
-          "shift": 9
+          "shift": 8
         },
         {
           "index": 2,
-          "shift": 18
+          "shift": 16
         },
         {
           "index": 3,
-          "shift": 22
+          "shift": 10
         },
         {
           "index": 4,
-          "shift": 18
-        },
-        {
-          "index": 5,
-          "shift": 5
+          "shift": 2
         },
         {
           "index": 6,
-          "shift": 7
+          "shift": 3
         },
         {
           "index": 7,
-          "shift": 14
+          "shift": 2
         },
         {
           "index": 8,
-          "shift": 7
+          "shift": 5
         },
         {
           "index": 9,
-          "shift": 13
+          "shift": 3
         },
         {
           "index": 10,
-          "shift": 12
+          "shift": 9
         },
         {
           "index": 11,
-          "shift": 13
+          "shift": 8
         },
         {
           "index": 12,
-          "shift": 11
+          "shift": 3
         },
         {
           "index": 13,
-          "shift": 18
-        },
-        {
-          "index": 14,
           "shift": 13
         }
       ]
@@ -21219,15 +21167,15 @@
         },
         {
           "index": 3,
-          "shift": 16
+          "shift": 17
         },
         {
           "index": 4,
-          "shift": 15
+          "shift": 26
         },
         {
           "index": 5,
-          "shift": 23
+          "shift": 25
         },
         {
           "index": 6,
@@ -21401,7 +21349,7 @@
         },
         {
           "index": 2,
-          "shift": 18
+          "shift": 16
         },
         {
           "index": 3,
@@ -21417,7 +21365,7 @@
         },
         {
           "index": 6,
-          "shift": 19
+          "shift": 20
         },
         {
           "index": 7,
@@ -21433,7 +21381,7 @@
         },
         {
           "index": 10,
-          "shift": 28
+          "shift": 22
         }
       ]
     },
@@ -21526,7 +21474,7 @@
         },
         {
           "index": 3,
-          "text": "你俾我走吧啦。好，我俾你"
+          "text": "你俾我走吧啦"
         },
         {
           "index": 4,
@@ -21538,7 +21486,7 @@
         },
         {
           "index": 6,
-          "text": ""
+          "text": "。好，我俾你"
         },
         {
           "index": 7,
@@ -21596,11 +21544,11 @@
       "changes": [
         {
           "index": 4,
-          "shift": 2
+          "shift": 8
         },
         {
           "index": 5,
-          "shift": 11
+          "shift": 17
         },
         {
           "index": 6,
@@ -21612,7 +21560,7 @@
         },
         {
           "index": 8,
-          "shift": 14
+          "shift": 15
         },
         {
           "index": 9,
@@ -21620,31 +21568,31 @@
         },
         {
           "index": 10,
-          "shift": 22
+          "shift": 21
         },
         {
           "index": 11,
-          "shift": 21
+          "shift": 17
         },
         {
           "index": 12,
-          "shift": 21
+          "shift": 16
         },
         {
           "index": 13,
-          "shift": 22
+          "shift": 18
         },
         {
           "index": 14,
-          "shift": 25
+          "shift": 21
         },
         {
           "index": 15,
-          "shift": 28
+          "shift": 24
         },
         {
           "index": 16,
-          "shift": 30
+          "shift": 25
         },
         {
           "index": 17,
@@ -21738,11 +21686,11 @@
         },
         {
           "index": 2,
-          "shift": 8
+          "shift": 9
         },
         {
           "index": 3,
-          "shift": 11
+          "shift": 12
         }
       ]
     },
