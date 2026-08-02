@@ -286,6 +286,99 @@ YueZhoBlockDelineationPromptYueHant = replace(
         *_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SHIFTS_V4.legacy_cache_prompts,
     ),
 )
+"""Predecessor prompt preferring safe noncrossing boundary shifts."""
+
+_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_NONCROSSING = (
+    YueZhoBlockDelineationPromptYueHant
+)
+
+YueZhoBlockDelineationPromptYueHant = replace(
+    _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_NONCROSSING,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_NONCROSSING.base_system_prompt}
+        計好全部分界之後，必須將重組後負責範圍嘅粵文由頭到尾再讀一次，逐條同
+        相同 xuhao 嘅 zhongwen 比較。唔可以只判斷每個分界左右兩句係咪通順；
+        要特別檢查有冇由某一條開始，連續幾個完整說話單位都錯配到前一條或者
+        後一條 zhongwen。發現呢種整段早一格或遲一格，就要將相關分界當成一組
+        重新決定，直到每個完整說話單位都落喺語意相應嘅同索引字幕。"""),
+    legacy_cache_prompts=(),
+)
+"""Predecessor prompt checking whole-block semantic alignment."""
+
+_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SEMANTIC_CHECK = (
+    YueZhoBlockDelineationPromptYueHant
+)
+
+_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_BOUNDARY_CHECK_V1 = replace(
+    _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SEMANTIC_CHECK,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_SEMANTIC_CHECK.base_system_prompt}
+        查詢另外提供 bianjie_fanwei；每項列出一個可以修改嘅分界 xuhao、原本
+        累積 Unicode 字符位置 yuanben_pianyi，以及單獨計算時可以使用嘅
+        zuixiao_yidong 同 zuida_yidong（兩端包括）。返回嘅 yidong_zifu_shu
+        必須喺該項範圍內；如果同時返回多個分界，仲要確保佢哋嘅最終位置互不
+        越過。呢啲範圍保證分界唔會超出本視窗字符帶首尾；被一個合法移動跨過而
+        冇返回嘅初步上下文分界，仍然按前述規則摺疊到同一位置。
+        fuze_jieshu_xuhao 唔係「最後一條可以閱讀但唔可以改」；佢後面嗰個分界
+        仍然係本視窗負責、可以返回嘅最後分界。緊接住嘅下一條字幕係右邊上下文，
+        用嚟判斷呢個最後分界應該放喺邊，但再下一個分界唔可以修改。
+        提交前必須完成以下「最終重組分界核對清單」：
+        1. 由每個 yuanben_pianyi 加上準備返回嘅移動，同時算出全部最終分界；
+        2. 將稀疏修改套用到原本字符帶，實際重組視窗內全部字幕，包括冇返回嘅
+        索引同最後負責分界右邊嗰條字幕；
+        3. 逐個負責分界讀左、右兩邊，確認完整說話單位同相同索引 zhongwen 對應；
+        4. 非空字幕唔可以由逗號、句號、問號、感嘆號、分號、冒號或者頓號開頭，
+        亦唔可以由左括號、左引號等開啟標點結尾；
+        5. 字幕可以完全空白，但唔可以只剩標點或者空格；
+        6. 最後再串連全部重組字幕，確認同原本字符帶逐字、逐序完全相同。
+        任何一項唔通過，就要修正相關分界或者刪除唔可靠嘅修改，先至提交。"""),
+    boundaries="bianjie_fanwei",
+    boundaries_desc="本視窗全部可修改分界嘅原本字符位置同合法移動範圍",
+    original_offset="yuanben_pianyi",
+    original_offset_desc="分界喺本視窗不可變字符帶上嘅原本累積 Unicode 字符位置",
+    minimum_shift="zuixiao_yidong",
+    minimum_shift_desc="單獨計算時呢個分界可以向左移動嘅最小字符數（包括）",
+    maximum_shift="zuida_yidong",
+    maximum_shift_desc="單獨計算時呢個分界可以向右移動嘅最大字符數（包括）",
+    boundary_constraints_err=(
+        "bianjie_fanwei 必須逐項準確列出每個可修改分界嘅 yuanben_pianyi、"
+        "zuixiao_yidong 同 zuida_yidong。"
+    ),
+    leading_closing_punctuation_err_tpl=(
+        "重組後字幕索引 {indexes} 由孤立嘅句子結束標點開頭。下一次要按最終重組"
+        "分界核對清單重新檢查相鄰分界，將標點留喺合適說話單位。"
+    ),
+    trailing_opening_punctuation_err_tpl=(
+        "重組後字幕索引 {indexes} 由孤立嘅開啟括號或者引號結尾。下一次要按最終"
+        "重組分界核對清單重新檢查相鄰分界。"
+    ),
+    punctuation_only_target_err_tpl=(
+        "重組後字幕索引 {indexes} 只剩標點或者空格。下一次要調整相鄰分界，令佢"
+        "包含所屬說話字符或者完全空白。"
+    ),
+    validate_output_quality=True,
+    legacy_cache_prompts=(),
+)
+"""Predecessor prompt checking every target edge in the query window."""
+
+YueZhoBlockDelineationPromptYueHant = replace(
+    _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_BOUNDARY_CHECK_V1,
+    base_system_prompt=(
+        _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_BOUNDARY_CHECK_V1.base_system_prompt.replace(
+            dedent_and_compact("""
+                4. 非空字幕唔可以由逗號、句號、問號、感嘆號、分號、冒號或者頓號開頭，
+                亦唔可以由左括號、左引號等開啟標點結尾；"""),
+            dedent_and_compact("""
+                4. 逐個可以修改嘅分界檢查：右邊非空字幕唔可以由逗號、句號、
+                問號、感嘆號、分號、冒號或者頓號開頭，左邊非空字幕亦唔可以由
+                左括號、左引號等開啟標點結尾；視窗最左同最右、唔受可以修改分界
+                控制嘅外邊緣唔屬於呢項；"""),
+        )
+    ),
+    legacy_cache_prompts=(
+        _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_BOUNDARY_CHECK_V1,
+    ),
+)
 """Text for Traditional Cantonese/Chinese block delineation."""
 
 YueZhoBlockDelineationPromptYueHans = YueZhoBlockDelineationPromptYueHant.transformed(
@@ -481,6 +574,68 @@ YueZhoBlockPunctuationPromptYueHant = replace(
         _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V6,
         *_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_IMMUTABILITY_V6.legacy_cache_prompts,
     ),
+)
+"""Predecessor prompt preserving repeated target phrases."""
+
+_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_REPETITIONS = (
+    YueZhoBlockPunctuationPromptYueHant
+)
+
+YueZhoBlockPunctuationPromptYueHant = replace(
+    _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_REPETITIONS,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_REPETITIONS.base_system_prompt}
+        提交之前，必須逐條檢查負責範圍內最終 wenben 嘅第一個同最後一個字符。
+        逗號、句號、問號、感嘆號、分號、冒號或者頓號唔可以孤零零留喺字幕開頭；
+        要從開頭刪除，並喺適當而且同樣屬於負責範圍嘅前一條字幕結尾補上合適標點。
+        如果一條最終 wenben 只剩標點或者空格、完全冇粵文字符，要明確返回嗰個
+        xuhao 同空字串。含有漢字嘅字幕要用全形中文句子標點，唔好保留半形嘅
+        , . ! ? ; :；但係半形標點如果係西文數字或者詞語本身一部分，例如 0.01，
+        就要保留。最後再核對一次每條非空字幕嘅首尾，先至提交。"""),
+    leading_closing_punctuation_err_tpl=(
+        "最終負責字幕索引 {indexes} 開頭仲有逗號、句號、問號、感嘆號、分號、"
+        "冒號或者頓號。刪除呢啲孤立開頭標點；如果適當，只可以將相應標點放到"
+        "同樣屬於負責範圍嘅正確前一條字幕結尾。"
+    ),
+    punctuation_only_target_err_tpl=(
+        "最終負責字幕索引 {indexes} 只有標點或者空格，冇任何粵文字符。下一次要"
+        "返回呢啲索引，wenben 用空字串。"
+    ),
+    half_width_sentence_punctuation_err_tpl=(
+        "最終負責字幕索引 {indexes} 含有漢字，但仍然有半形句子標點 "
+        "{characters}。下一次要換成對應全形中文標點，唔可以改動任何粵文字符。"
+    ),
+    validate_output_quality=True,
+    legacy_cache_prompts=(),
+)
+"""Predecessor prompt checking deterministic punctuation layout."""
+
+_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_LAYOUT = YueZhoBlockPunctuationPromptYueHant
+
+YueZhoBlockPunctuationPromptYueHant = replace(
+    _YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_LAYOUT,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_BLOCK_PUNCTUATION_PROMPT_YUE_HANT_LAYOUT.base_system_prompt}
+        完全空白或者原本只含標點同空格嘅目標會由程式機械式處理成空字串；如果
+        查詢顯示空白 wenben，唔可以喺答案返回嗰個 xuhao，亦唔可以補入任何標點。
+        問號要保守處理：只有相同索引 zhongwen 明確係問題，而且粵文有強烈疑問
+        線索，例如「係咪、有冇、點解、乜嘢、做咩、邊個、邊度、幾時、幾多、
+        點樣」或者句尾「咩／嗎」，先必須用全形問號。唔好因為中文字幕單方面有
+        問號，就將語氣含糊嘅粵文機械改成問題。
+        提交前必須完成以下「最終重組分界核對清單」：
+        1. 將 yuewen_xiugai 覆蓋到原本 yuewen_to_punctuate，冇返回嘅索引保持
+        原樣，實際重組負責範圍內每條最終 wenben；
+        2. 逐條核對移除標點同空格後嘅字符、字形、次序同重複次數完全不變；
+        3. 逐個相鄰分界讀左邊結尾同右邊開頭，確認冇孤立句子標點，亦冇只剩標點
+        或者空格嘅字幕；
+        4. 對同時有 zhongwen 問句同強烈粵語疑問線索嘅字幕，確認相應疑問句有
+        全形問號；
+        5. 含漢字嘅句子標點必須係全形。任何一項唔通過，先修正答案再提交。"""),
+    interrogative_target_err_tpl=(
+        "最終負責字幕索引 {indexes} 嘅 zhongwen 明確係問題，粵文亦有強烈疑問"
+        "線索，但完全冇問號。下一次只加入合適嘅全形問號，唔可以改動粵文字符。"
+    ),
+    legacy_cache_prompts=(),
 )
 """Text for Traditional Cantonese/Chinese block punctuation."""
 

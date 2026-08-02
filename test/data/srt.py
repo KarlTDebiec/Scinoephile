@@ -119,7 +119,7 @@ def process_srt(
         simplify_reviewer_kw.pop("prompt", None)
         simplify_reviewer_kw.pop("reviewer", None)
         simplify_reviewer_kw.pop("test_cases", None)
-        simplify_reviewer_kw["test_case_path"] = (
+        simplify_reviewer_kw["current_test_cases_path"] = (
             output_dir_path / "lang" / "yue" / "simplify_review.json"
         )
         simplified_reviewed = load_or_review_series(

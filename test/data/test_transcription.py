@@ -87,7 +87,7 @@ def test_process_transcription_multi_review_uses_root_json_cache(
         "language": Language.yue_hant,
         "guide_language": Language.zho_hant,
         "stop_at_idx": 5,
-        "test_case_path": output_path.parent / "json" / "multi_review.json",
+        "current_test_cases_path": output_path.parent / "json" / "multi_review.json",
         "additional_context": "Film context",
     }
 
@@ -557,10 +557,10 @@ def test_transcription_stages_use_flat_json_directory(
     )
     assert "delineation_json_path" not in transcribe.call_args.kwargs
     assert "punctuation_json_path" not in transcribe.call_args.kwargs
-    assert review.call_args.kwargs["test_case_path"] == (
+    assert review.call_args.kwargs["current_test_cases_path"] == (
         json_dir_path / "guided_review-mps.json"
     )
-    assert translate.call_args.kwargs["test_case_path"] == (
+    assert translate.call_args.kwargs["current_test_cases_path"] == (
         json_dir_path / "gap_translation-mps.json"
     )
 

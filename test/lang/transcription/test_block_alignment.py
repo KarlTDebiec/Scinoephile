@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 from unittest.mock import Mock
 
+from pydantic import ValidationError
 from pydub import AudioSegment
 from pytest import raises
 
@@ -115,6 +116,10 @@ def test_aligner_queries_each_operation_once_with_complete_indexed_block(
         ],
         "first_owned_index": 1,
         "last_owned_index": 2,
+        "boundaries": [
+            {"index": 1, "original_offset": 2, "minimum_shift": -2, "maximum_shift": 2},
+            {"index": 2, "original_offset": 3, "minimum_shift": -3, "maximum_shift": 1},
+        ],
     }
     punctuation_messages = provider.chat_completion.call_args_list[1].args[0]
     assert json.loads(punctuation_messages[1]["content"])["targets"] == [
@@ -172,6 +177,9 @@ def test_invalid_delineation_falls_back_and_punctuation_uses_timing_baseline():
     assert fallback.answer is not None
     assert fallback.answer.changes == []
     assert fallback.verified is False
+    assert delineation_processor.queryer.log_encountered_test_case.call_args.kwargs == {
+        "skip_output_quality_validation": True
+    }
     punctuation_query = punctuation_processor.queryer.call_args.args[0].query
     assert [target.text for target in punctuation_query.targets] == ["甲乙", "丙", "丁"]
     assert [subtitle.text for subtitle in alignment.transcription] == [
@@ -216,6 +224,9 @@ def test_invalid_punctuation_falls_back_to_delineated_text():
     assert fallback.answer is not None
     assert fallback.answer.changes == []
     assert fallback.verified is False
+    assert punctuation_processor.queryer.log_encountered_test_case.call_args.kwargs == {
+        "skip_output_quality_validation": True
+    }
     assert [subtitle.text for subtitle in alignment.transcription] == [
         "甲",
         "乙丙",
@@ -259,6 +270,84 @@ def test_punctuation_masks_excessive_repeat_runs_and_preserves_original_text():
     assert output == ["甲！", "嚟" * 54, "乙？"]
 
 
+def test_punctuation_clears_empty_and_punctuation_only_targets_deterministically():
+    """Punctuation should clear empty fragments without asking the LLM to copy them."""
+    delineation_processor, punctuation_processor = _get_mock_processors()
+    aligner = BlockTranscriptionAligner(delineation_processor, punctuation_processor)
+
+    def punctuate_nonempty_target(test_case: BlockPunctuationTestCase):
+        """Punctuate the only nonempty target in the query."""
+        assert [target.text for target in test_case.query.targets] == ["", "", "甲"]
+        return type(test_case).model_validate(
+            {
+                **test_case.model_dump(mode="json"),
+                "answer": {"changes": [{"index": 3, "text": "甲！"}]},
+            }
+        )
+
+    punctuation_processor.queryer.side_effect = punctuate_nonempty_target
+    window = BlockTranscriptionAligner._get_windows(  # noqa: SLF001
+        [
+            Subtitle(start=index * 1_000, end=(index + 1) * 1_000, text=str(index))
+            for index in range(3)
+        ]
+    )[0]
+
+    output = aligner._punctuate_window(  # noqa: SLF001
+        ["參考一", "參考二", "參考三"], ["", "， ", "甲"], window, 1
+    )
+
+    assert output == ["", "", "甲！"]
+
+
+def test_aligner_clears_punctuation_only_targets_before_delineation():
+    """Punctuation-only timing targets should never reach either LLM query."""
+    guide, transcription = _get_block()
+    transcription[0].text = "， "
+    delineation_processor, punctuation_processor = _get_mock_processors()
+
+    def delineate(test_case: BlockDelineationTestCase):
+        """Confirm deterministic cleanup occurs before delineation."""
+        assert [target.text for target in test_case.query.targets] == ["", "丙", "丁"]
+        return type(test_case).model_validate(
+            {**test_case.model_dump(mode="json"), "answer": {"changes": []}}
+        )
+
+    def punctuate(test_case: BlockPunctuationTestCase):
+        """Confirm the cleaned empty target remains empty for punctuation."""
+        assert [target.text for target in test_case.query.targets] == ["", "丙", "丁"]
+        return type(test_case).model_validate(
+            {**test_case.model_dump(mode="json"), "answer": {"changes": []}}
+        )
+
+    delineation_processor.queryer.side_effect = delineate
+    punctuation_processor.queryer.side_effect = punctuate
+    aligner = BlockTranscriptionAligner(delineation_processor, punctuation_processor)
+
+    alignment = aligner.align(guide, transcription)
+
+    assert [subtitle.text for subtitle in alignment.transcription] == ["丙", "丁"]
+
+
+def test_punctuation_skips_query_when_all_owned_targets_are_deterministic():
+    """Punctuation should not query when every owned target becomes empty."""
+    delineation_processor, punctuation_processor = _get_mock_processors()
+    aligner = BlockTranscriptionAligner(delineation_processor, punctuation_processor)
+    window = BlockTranscriptionAligner._get_windows(  # noqa: SLF001
+        [
+            Subtitle(start=index * 1_000, end=(index + 1) * 1_000, text=str(index))
+            for index in range(2)
+        ]
+    )[0]
+
+    output = aligner._punctuate_window(  # noqa: SLF001
+        ["參考一", "參考二"], ["。", "  "], window, 1
+    )
+
+    assert output == ["", ""]
+    punctuation_processor.queryer.assert_not_called()
+
+
 def test_provider_errors_do_not_trigger_no_op_fallback():
     """Operational LLM failures should propagate rather than become no-op data."""
     guide, transcription = _get_block()
@@ -273,6 +362,51 @@ def test_provider_errors_do_not_trigger_no_op_fallback():
 
     delineation_processor.queryer.log_encountered_test_case.assert_not_called()
     punctuation_processor.queryer.assert_not_called()
+
+
+def test_structured_provider_errors_trigger_no_op_fallback():
+    """Provider-wrapped structured validation failures should use fallback."""
+    guide, transcription = _get_block()
+    delineation_processor, punctuation_processor = _get_mock_processors()
+
+    def reject_structured_response(_: BlockDelineationTestCase):
+        """Raise the provider error used for an invalid structured response."""
+        try:
+            BlockDelineationTestCase.answer_cls.model_validate(
+                {"changes": [{"index": 0, "shift": 1}]}
+            )
+        except ValidationError as exc:
+            raise ScinoephileError("invalid structured content") from exc
+        raise AssertionError("Invalid structured answer unexpectedly validated.")
+
+    delineation_processor.queryer.side_effect = reject_structured_response
+    punctuation_processor.queryer.return_value = (
+        BlockPunctuationTestCase.model_validate(
+            {
+                "query": {
+                    "guides": [
+                        {"index": index, "text": subtitle.text}
+                        for index, subtitle in enumerate(guide, 1)
+                    ],
+                    "targets": [
+                        {"index": index, "text": subtitle.text}
+                        for index, subtitle in enumerate(transcription, 1)
+                    ],
+                },
+                "answer": {"changes": []},
+            }
+        )
+    )
+    aligner = BlockTranscriptionAligner(
+        delineation_processor, punctuation_processor, fallback_to_no_op=True
+    )
+
+    aligner.align(guide, transcription)
+
+    fallback = delineation_processor.queryer.log_encountered_test_case.call_args.args[0]
+    assert fallback.answer is not None
+    assert fallback.answer.changes == []
+    punctuation_processor.queryer.assert_called_once()
 
 
 def test_long_blocks_use_timing_gap_windows_and_reconcile_owned_outputs():

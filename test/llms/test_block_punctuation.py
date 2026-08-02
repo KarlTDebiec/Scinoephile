@@ -4,11 +4,16 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+from unittest.mock import Mock
+
 from pydantic import ValidationError
 from pytest import raises
 
+from scinoephile.core.llms import LLMProvider
 from scinoephile.llms.block_punctuation import (
     BlockPunctuationManager,
+    BlockPunctuationProcessor,
     BlockPunctuationPrompt,
     BlockPunctuationTestCase,
 )
@@ -199,3 +204,62 @@ def test_output_quality_validation_can_be_skipped_for_persisted_or_no_op_answers
 
     assert test_case.answer is not None
     assert test_case.answer.changes == []
+
+
+def test_no_op_processor_logs_output_that_skips_quality_validation(tmp_path: Path):
+    """No-op processing should retain deliberately unchanged invalid punctuation."""
+    prompt = BlockPunctuationPrompt(validate_output_quality=True)
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    processor = BlockPunctuationProcessor(
+        prompt, provider=provider, cache_root_path=tmp_path, no_op=True
+    )
+    test_case = processor.test_case_cls.model_validate(
+        {
+            "query": {
+                "guides": [{"index": 1, "text": "參考"}],
+                "targets": [{"index": 1, "text": "，目標"}],
+            }
+        }
+    )
+
+    result = processor.queryer(test_case)
+
+    assert result.answer is not None
+    assert result.answer.changes == []
+    assert processor.queryer.encountered_test_cases[result.query.key] == result
+    provider.chat_completion.assert_not_called()
+
+
+def test_output_quality_validation_requires_strongly_supported_question_mark():
+    """Question checks should require both guide and strong Cantonese evidence."""
+    prompt = BlockPunctuationPrompt(validate_output_quality=True)
+    test_case_cls = BlockPunctuationManager.get_test_case_cls(prompt)
+    query = {
+        "guides": [
+            {"index": 1, "text": "你有沒有銀票？"},
+            {"index": 2, "text": "你很好嗎？"},
+            {"index": 3, "text": "你很好？"},
+        ],
+        "targets": [
+            {"index": 1, "text": "你有冇銀票"},
+            {"index": 2, "text": "你好嗎"},
+            {"index": 3, "text": "你好呀"},
+        ],
+    }
+
+    with raises(ValidationError, match="indexes 1, 2 have both"):
+        test_case_cls.model_validate({"query": query, "answer": {"changes": []}})
+
+    corrected = test_case_cls.model_validate(
+        {
+            "query": query,
+            "answer": {
+                "changes": [
+                    {"index": 1, "text": "你有冇銀票？"},
+                    {"index": 2, "text": "你好嗎？」"},
+                ]
+            },
+        }
+    )
+    assert corrected.answer is not None
+    assert [change.index for change in corrected.answer.changes] == [1, 2]

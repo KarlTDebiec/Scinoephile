@@ -38,6 +38,12 @@ class BlockDelineationPrompt(Prompt):
         "Last local target index whose following boundary belongs to this window."
     )
     """Description of last owned local index field in query."""
+    boundaries: str = "boundaries"
+    """Name of editable boundary constraints field in query."""
+    boundaries_desc: str = (
+        "Editable boundaries with original offsets and inclusive legal shift ranges."
+    )
+    """Description of editable boundary constraints field in query."""
     changes: str = "changes"
     """Name of sparse target changes field in answer."""
     changes_desc: str = "Only target boundaries whose position must change."
@@ -50,6 +56,12 @@ class BlockDelineationPrompt(Prompt):
     """Name of text field in subtitle items."""
     shift: str | None = "shift"
     """Name of signed boundary-shift field, or None for legacy text answers."""
+    original_offset: str = "original_offset"
+    """Name of original boundary character-offset field."""
+    minimum_shift: str = "minimum_shift"
+    """Name of minimum legal boundary-shift field."""
+    maximum_shift: str = "maximum_shift"
+    """Name of maximum legal boundary-shift field."""
     guide_text_desc: str = "Guide subtitle text."
     """Description of guide subtitle text."""
     target_text_desc: str = "Initially assigned target subtitle text."
@@ -62,6 +74,18 @@ class BlockDelineationPrompt(Prompt):
         "boundaries crossed by the move collapse onto it."
     )
     """Description of signed boundary shifts."""
+    original_offset_desc: str = (
+        "Original cumulative Unicode-character offset of this boundary."
+    )
+    """Description of original boundary character offsets."""
+    minimum_shift_desc: str = (
+        "Minimum inclusive shift allowed before considering other returned boundaries."
+    )
+    """Description of minimum legal boundary shifts."""
+    maximum_shift_desc: str = (
+        "Maximum inclusive shift allowed before considering other returned boundaries."
+    )
+    """Description of maximum legal boundary shifts."""
     guide_indices_err: str = (
         "Query guide indexes must be consecutive, ordered, and begin at 1."
     )
@@ -75,6 +99,11 @@ class BlockDelineationPrompt(Prompt):
         "inclusive range within the query indexes."
     )
     """Error when query owned indexes are invalid."""
+    boundary_constraints_err: str = (
+        "Query boundary constraints must exactly describe every editable boundary's "
+        "original offset and inclusive legal shift range."
+    )
+    """Error when query boundary constraints do not match its target text."""
     change_indices_err: str = (
         "Answer change indexes must be unique and in ascending order."
     )
@@ -100,6 +129,22 @@ class BlockDelineationPrompt(Prompt):
         "before retrying."
     )
     """Error template when neighboring explicit shifted boundaries cross."""
+    leading_closing_punctuation_err_tpl: str = (
+        "Reconstructed target indexes {indexes} begin with stranded closing sentence "
+        "punctuation. Revise the adjacent editable boundary shifts."
+    )
+    """Error template when reconstructed text begins with closing punctuation."""
+    trailing_opening_punctuation_err_tpl: str = (
+        "Reconstructed target indexes {indexes} end with stranded opening punctuation. "
+        "Revise the adjacent editable boundary shifts."
+    )
+    """Error template when reconstructed text ends with opening punctuation."""
+    punctuation_only_target_err_tpl: str = (
+        "Reconstructed target indexes {indexes} contain punctuation or whitespace but "
+        "no target characters. Revise the adjacent editable boundary shifts, or make "
+        "the fragment empty."
+    )
+    """Error template when reconstructed text contains only punctuation."""
     target_chars_changed_err_tpl: str = (
         "Reconstructed block target text does not preserve the query target "
         "characters in order. The first mismatch is in reconstructed index "
@@ -109,6 +154,8 @@ class BlockDelineationPrompt(Prompt):
         "Expected: {expected}\nReceived: {received}"
     )
     """Error template when reconstructed target characters differ."""
+    validate_output_quality: bool = False
+    """Whether to reject deterministic reconstructed-boundary defects."""
 
     def target_chars_changed_err(self, index: int, expected: str, received: str) -> str:
         """Get an error for changed block target characters.

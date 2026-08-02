@@ -33,7 +33,7 @@ def translate_series(
     target_language: Language,
     source_language: Language | None = None,
     prompt: TranslationPrompt | None = None,
-    test_cases: list[TestCase] | None = None,
+    shared_test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     translator: TranslationProcessor | None = None,
     start_at_idx: int = 0,
@@ -47,7 +47,7 @@ def translate_series(
         source_language: explicit source language, or None to detect it
         target_language: target language
         prompt: prompt override
-        test_cases: test cases
+        shared_test_cases: shared test cases
         provider: LLM provider to use
         translator: translator to use, or None to construct one
         start_at_idx: inclusive zero-based block index at which to start processing
@@ -65,7 +65,7 @@ def translate_series(
             resolved_source_language,
             target_language,
             prompt,
-            test_cases,
+            shared_test_cases,
             provider,
             **kwargs,
         )
@@ -81,7 +81,7 @@ def translate_series_gaps(
     source_language: Language | None = None,
     target_language: Language | None = None,
     prompt: GapTranslationPrompt | None = None,
-    test_cases: list[TestCase] | None = None,
+    shared_test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     translator: GapTranslationProcessor | None = None,
     start_at_idx: int = 0,
@@ -96,7 +96,7 @@ def translate_series_gaps(
         source_language: explicit source language, or None to detect it
         target_language: explicit target language, or None to detect it
         prompt: prompt override
-        test_cases: test cases
+        shared_test_cases: shared test cases
         provider: LLM provider to use
         translator: translator to use, or None to construct one
         start_at_idx: inclusive zero-based block index at which to start processing
@@ -115,7 +115,7 @@ def translate_series_gaps(
             resolved_source_language,
             resolved_target_language,
             prompt,
-            test_cases,
+            shared_test_cases,
             provider,
             **kwargs,
         )
@@ -131,7 +131,7 @@ def translate_series_guided(
     source_language: Language | None = None,
     target_language: Language | None = None,
     prompt: GuidedTranslationPrompt | None = None,
-    test_cases: list[TestCase] | None = None,
+    shared_test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     translator: GuidedTranslationProcessor | None = None,
     start_at_idx: int = 0,
@@ -146,7 +146,7 @@ def translate_series_guided(
         source_language: explicit source language, or None to detect it
         target_language: explicit target language, or None to detect it
         prompt: prompt override
-        test_cases: test cases
+        shared_test_cases: shared test cases
         provider: LLM provider to use
         translator: translator to use, or None to construct one
         start_at_idx: inclusive zero-based block index at which to start processing
@@ -165,7 +165,7 @@ def translate_series_guided(
             resolved_source_language,
             resolved_target_language,
             prompt,
-            test_cases,
+            shared_test_cases,
             provider,
             **kwargs,
         )

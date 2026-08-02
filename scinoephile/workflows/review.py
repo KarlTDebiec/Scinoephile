@@ -27,7 +27,7 @@ def review_series(
     *,
     language: Language | None = None,
     prompt: ReviewPrompt | None = None,
-    test_cases: list[TestCase] | None = None,
+    shared_test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     reviewer: ReviewProcessor | None = None,
     start_at_idx: int = 0,
@@ -40,7 +40,7 @@ def review_series(
         series: subtitle series to review
         language: explicit language, or None to detect it
         prompt: text for LLM correspondence
-        test_cases: test cases
+        shared_test_cases: shared test cases
         provider: provider to use for queries
         reviewer: reviewer to use, or None to construct one
         start_at_idx: inclusive zero-based block index at which to start processing
@@ -55,7 +55,7 @@ def review_series(
 
     if reviewer is None:
         reviewer = get_reviewer(
-            resolved_language, prompt, test_cases, provider, **kwargs
+            resolved_language, prompt, shared_test_cases, provider, **kwargs
         )
     return reviewer.process(series, stop_at_idx=stop_at_idx, start_at_idx=start_at_idx)
 
@@ -67,7 +67,7 @@ def review_series_guided(
     language: Language | None = None,
     guide_language: Language | None = None,
     prompt: GuidedReviewPrompt | None = None,
-    test_cases: list[TestCase] | None = None,
+    shared_test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     reviewer: GuidedReviewProcessor | None = None,
     start_at_idx: int = 0,
@@ -82,7 +82,7 @@ def review_series_guided(
         language: explicit target language, or None to detect it
         guide_language: explicit guide language, or None to detect it
         prompt: text for LLM correspondence
-        test_cases: test cases
+        shared_test_cases: shared test cases
         provider: provider to use for queries
         reviewer: reviewer to use, or None to construct one
         start_at_idx: inclusive zero-based block index at which to start processing
@@ -100,7 +100,7 @@ def review_series_guided(
             resolved_language,
             resolved_guide_language,
             prompt,
-            test_cases,
+            shared_test_cases,
             provider=provider,
             **kwargs,
         )
@@ -116,7 +116,7 @@ def review_series_multi(
     language: Language | None = None,
     guide_language: Language | None = None,
     prompt: MultiReviewPrompt | None = None,
-    test_cases: list[TestCase] | None = None,
+    shared_test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     reviewer: MultiReviewProcessor | None = None,
     start_at_idx: int = 0,
@@ -131,7 +131,7 @@ def review_series_multi(
         language: explicit source and output language, or None to detect it
         guide_language: explicit guide language, or None to detect it
         prompt: text for LLM correspondence
-        test_cases: test cases
+        shared_test_cases: shared test cases
         provider: provider to use for queries
         reviewer: reviewer to use, or None to construct one
         start_at_idx: inclusive zero-based block index at which to start processing
@@ -163,7 +163,7 @@ def review_series_multi(
             resolved_language,
             resolved_guide_language,
             prompt,
-            test_cases,
+            shared_test_cases,
             provider=provider,
             **kwargs,
         )

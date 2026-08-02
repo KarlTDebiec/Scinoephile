@@ -12,6 +12,7 @@ from scinoephile.core.llms.models import LLMModel
 
 from .models import (
     BlockDelineationAnswer,
+    BlockDelineationBoundary,
     BlockDelineationBoundaryChange,
     BlockDelineationQuery,
     BlockDelineationSubtitle,
@@ -84,6 +85,39 @@ class BlockDelineationManager(Manager[BlockDelineationTestCase]):
 
     @classmethod
     @cache
+    def get_boundary_cls(
+        cls, prompt: BlockDelineationPrompt
+    ) -> type[BlockDelineationBoundary]:
+        """Get editable-boundary item class with prompt-specific aliases.
+
+        Arguments:
+            prompt: text and field aliases for LLM correspondence
+        Returns:
+            editable-boundary item model class
+        """
+        return cls.create_prompt_model(
+            BlockDelineationBoundary,
+            prompt,
+            {
+                "index": PromptModelField(
+                    alias=prompt.index, description=prompt.index_desc
+                ),
+                "original_offset": PromptModelField(
+                    alias=prompt.original_offset,
+                    description=prompt.original_offset_desc,
+                ),
+                "minimum_shift": PromptModelField(
+                    alias=prompt.minimum_shift, description=prompt.minimum_shift_desc
+                ),
+                "maximum_shift": PromptModelField(
+                    alias=prompt.maximum_shift, description=prompt.maximum_shift_desc
+                ),
+            },
+            name="BlockDelineationBoundary",
+        )
+
+    @classmethod
+    @cache
     def get_guide_cls(
         cls, prompt: BlockDelineationPrompt
     ) -> type[BlockDelineationSubtitle]:
@@ -120,6 +154,7 @@ class BlockDelineationManager(Manager[BlockDelineationTestCase]):
         """
         guide_cls = cls.get_guide_cls(prompt)
         target_cls = cls.get_target_cls(prompt)
+        boundary_cls = cls.get_boundary_cls(prompt)
         return cls.create_prompt_model(
             BlockDelineationQuery,
             prompt,
@@ -141,6 +176,11 @@ class BlockDelineationManager(Manager[BlockDelineationTestCase]):
                 "last_owned_index": PromptModelField(
                     alias=prompt.last_owned_index,
                     description=prompt.last_owned_index_desc,
+                ),
+                "boundaries": PromptModelField(
+                    alias=prompt.boundaries,
+                    annotation=list[boundary_cls],  # ty: ignore[invalid-type-form]
+                    description=prompt.boundaries_desc,
                 ),
             },
         )

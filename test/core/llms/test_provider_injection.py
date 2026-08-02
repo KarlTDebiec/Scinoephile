@@ -697,23 +697,23 @@ def test_cache_path_does_not_retain_queryer(tmp_path):
     assert queryer_ref() is None
 
 
-def test_processor_preserves_supplied_verified_cases_from_local_override(
+def test_processor_preserves_shared_verified_cases_from_current_unverified_case(
     tmp_path: Path,
 ):
-    """All supplied verified cases should reach the nascent Queryer."""
+    """All shared verified cases should reach the nascent Queryer."""
     verified = _TestCase(
         query=_Query(text="input"), answer=_Answer(output="verified"), verified=True
     )
-    local_unverified = _TestCase(
+    current_unverified = _TestCase(
         query=_Query(text="input"), answer=_Answer(output="unverified")
     )
-    test_case_path = tmp_path / "test_cases.json"
-    save_test_cases_to_json(test_case_path, [local_unverified], _Manager)
+    current_test_cases_path = tmp_path / "test_cases.json"
+    save_test_cases_to_json(current_test_cases_path, [current_unverified], _Manager)
 
     processor = _Processor(
         prompt=_PROMPT,
-        test_cases=[verified],
-        test_case_path=test_case_path,
+        shared_test_cases=[verified],
+        current_test_cases_path=current_test_cases_path,
         provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
     )
 
@@ -721,22 +721,24 @@ def test_processor_preserves_supplied_verified_cases_from_local_override(
     assert loaded.answer == verified.answer
 
 
-def test_processor_passes_conflicting_verified_cases_to_queryer(tmp_path: Path):
-    """Conflicting supplied and local verified answers should abort construction."""
-    supplied = _TestCase(
-        query=_Query(text="input"), answer=_Answer(output="supplied"), verified=True
+def test_processor_rejects_conflicting_shared_and_current_verified_cases(
+    tmp_path: Path,
+):
+    """Conflicting shared and current verified answers should abort construction."""
+    shared = _TestCase(
+        query=_Query(text="input"), answer=_Answer(output="shared"), verified=True
     )
-    local = _TestCase(
-        query=_Query(text="input"), answer=_Answer(output="local"), verified=True
+    current = _TestCase(
+        query=_Query(text="input"), answer=_Answer(output="current"), verified=True
     )
-    test_case_path = tmp_path / "test_cases.json"
-    save_test_cases_to_json(test_case_path, [local], _Manager)
+    current_test_cases_path = tmp_path / "test_cases.json"
+    save_test_cases_to_json(current_test_cases_path, [current], _Manager)
 
-    with raises(ValueError, match="(?s)Existing answer.*supplied.*Conflicting.*local"):
+    with raises(ValueError, match="(?s)Existing answer.*shared.*Conflicting.*current"):
         _Processor(
             prompt=_PROMPT,
-            test_cases=[supplied],
-            test_case_path=test_case_path,
+            shared_test_cases=[shared],
+            current_test_cases_path=current_test_cases_path,
             provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
         )
 

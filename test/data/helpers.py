@@ -92,7 +92,7 @@ def load_or_review_series(
 
     reviewer_kw = dict(reviewer_kw or {})
     reviewer_kw.setdefault(
-        "test_case_path",
+        "current_test_cases_path",
         output_path.parent / "lang" / language.language / "review.json",
     )
     reviewer_kw.setdefault("auto_verify", True)

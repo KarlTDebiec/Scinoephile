@@ -152,10 +152,10 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.transcriber.demucs_separator is not None
     assert transcriber.recovery_transcriber.demucs_separator is None
     test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
-    assert transcriber.aligner.delineation_processor.test_case_path == (
+    assert transcriber.aligner.delineation_processor.current_test_cases_path == (
         test_case_dir_path / "delineation" / "test.json"
     )
-    assert transcriber.aligner.punctuation_processor.test_case_path == (
+    assert transcriber.aligner.punctuation_processor.current_test_cases_path == (
         test_case_dir_path / "punctuation" / "test.json"
     )
     assert not transcriber.aligner.delineation_processor.prune_test_cases
@@ -250,10 +250,10 @@ def test_get_guided_transcriber_configures_block_alignment(tmp_path: Path):
     )
     assert transcriber.aligner.fallback_to_no_op
     test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
-    assert transcriber.aligner.delineation_processor.test_case_path == (
+    assert transcriber.aligner.delineation_processor.current_test_cases_path == (
         test_case_dir_path / "block_delineation" / "test.json"
     )
-    assert transcriber.aligner.punctuation_processor.test_case_path == (
+    assert transcriber.aligner.punctuation_processor.current_test_cases_path == (
         test_case_dir_path / "block_punctuation" / "test.json"
     )
 
@@ -284,10 +284,10 @@ def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path
         punctuation_test_cases=[],
     )
 
-    assert transcriber.aligner.delineation_processor.test_case_path == (
+    assert transcriber.aligner.delineation_processor.current_test_cases_path == (
         delineation_json_path
     )
-    assert transcriber.aligner.punctuation_processor.test_case_path == (
+    assert transcriber.aligner.punctuation_processor.current_test_cases_path == (
         punctuation_json_path
     )
 

@@ -30,7 +30,7 @@ from scinoephile.lang.yue_zho.transcription import (
     YueZhoPunctuationPromptYueHans,
     YueZhoPunctuationPromptYueHant,
 )
-from scinoephile.llms import load_default_test_cases
+from scinoephile.llms import load_shared_test_cases
 from scinoephile.llms.block_delineation import (
     BlockDelineationManager,
     BlockDelineationProcessor,
@@ -99,6 +99,31 @@ _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
     ),
 )
 """Default written Cantonese transcription punctuation JSON paths."""
+
+_YUE_ZHO_BLOCK_TEST_CASE_DIR_PATHS = tuple(
+    Path(dataset_name)
+    / "output"
+    / "yue-Hant_transcribe"
+    / vad_name
+    / transcription_name
+    / "json"
+    for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
+    for vad_name in ("vad-auto", "vad-off")
+    for transcription_name in ("whisper", "mimo", "qwen")
+)
+"""Repository JSON directories for each written Cantonese transcription run."""
+
+_YUE_ZHO_BLOCK_DELINEATION_JSON_PATHS = tuple(
+    dir_path / "block_delineation-mps.json"
+    for dir_path in _YUE_ZHO_BLOCK_TEST_CASE_DIR_PATHS
+)
+"""Repository block-delineation JSON paths for written Cantonese."""
+
+_YUE_ZHO_BLOCK_PUNCTUATION_JSON_PATHS = tuple(
+    dir_path / "block_punctuation-mps.json"
+    for dir_path in _YUE_ZHO_BLOCK_TEST_CASE_DIR_PATHS
+)
+"""Repository block-punctuation JSON paths for written Cantonese."""
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -176,6 +201,8 @@ _YUE_HANS_SPEC = GuidedTranscriptionSpec(
     delineation_prompt=YueZhoDelineationPromptYueHans,
     punctuation_prompt=YueZhoPunctuationPromptYueHans,
     test_case_dir_path=Path("lang/yue_zho/transcription"),
+    block_delineation_json_paths=_YUE_ZHO_BLOCK_DELINEATION_JSON_PATHS,
+    block_punctuation_json_paths=_YUE_ZHO_BLOCK_PUNCTUATION_JSON_PATHS,
     delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
     punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
 )
@@ -188,6 +215,8 @@ _YUE_HANT_SPEC = GuidedTranscriptionSpec(
     delineation_prompt=YueZhoDelineationPromptYueHant,
     punctuation_prompt=YueZhoPunctuationPromptYueHant,
     test_case_dir_path=Path("lang/yue_zho/transcription"),
+    block_delineation_json_paths=_YUE_ZHO_BLOCK_DELINEATION_JSON_PATHS,
+    block_punctuation_json_paths=_YUE_ZHO_BLOCK_PUNCTUATION_JSON_PATHS,
     delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
     punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
 )
@@ -407,7 +436,7 @@ def _get_block_aligner(
             )
     if delineation_test_cases is None:
         delineation_test_cases = list(
-            load_default_test_cases(
+            load_shared_test_cases(
                 BlockDelineationManager,
                 delineation_prompt,
                 spec.block_delineation_json_paths,
@@ -415,7 +444,7 @@ def _get_block_aligner(
         )
     if punctuation_test_cases is None:
         punctuation_test_cases = list(
-            load_default_test_cases(
+            load_shared_test_cases(
                 BlockPunctuationManager,
                 punctuation_prompt,
                 spec.block_punctuation_json_paths,
@@ -423,8 +452,8 @@ def _get_block_aligner(
         )
     delineation_processor = BlockDelineationProcessor(
         delineation_prompt,
-        test_cases=delineation_test_cases,
-        test_case_path=delineation_json_path,
+        shared_test_cases=delineation_test_cases,
+        current_test_cases_path=delineation_json_path,
         provider=provider,
         additional_context=additional_context,
         cache_root_path=cache_root_path,
@@ -434,8 +463,8 @@ def _get_block_aligner(
     )
     punctuation_processor = BlockPunctuationProcessor(
         punctuation_prompt,
-        test_cases=punctuation_test_cases,
-        test_case_path=punctuation_json_path,
+        shared_test_cases=punctuation_test_cases,
+        current_test_cases_path=punctuation_json_path,
         provider=provider,
         additional_context=additional_context,
         cache_root_path=cache_root_path,
@@ -506,20 +535,20 @@ def _get_pairwise_aligner(
             )
     if delineation_test_cases is None:
         delineation_test_cases = list(
-            load_default_test_cases(
+            load_shared_test_cases(
                 DelineationManager, delineation_prompt, spec.delineation_json_paths
             )
         )
     if punctuation_test_cases is None:
         punctuation_test_cases = list(
-            load_default_test_cases(
+            load_shared_test_cases(
                 PunctuationManager, punctuation_prompt, spec.punctuation_json_paths
             )
         )
     delineation_processor = DelineationProcessor(
         delineation_prompt,
-        test_cases=delineation_test_cases,
-        test_case_path=delineation_json_path,
+        shared_test_cases=delineation_test_cases,
+        current_test_cases_path=delineation_json_path,
         provider=provider,
         additional_context=additional_context,
         cache_root_path=cache_root_path,
@@ -529,8 +558,8 @@ def _get_pairwise_aligner(
     )
     punctuation_processor = PunctuationProcessor(
         punctuation_prompt,
-        test_cases=punctuation_test_cases,
-        test_case_path=punctuation_json_path,
+        shared_test_cases=punctuation_test_cases,
+        current_test_cases_path=punctuation_json_path,
         provider=provider,
         additional_context=additional_context,
         cache_root_path=cache_root_path,

@@ -14,6 +14,7 @@ from __future__ import annotations
 from .manager import BlockDelineationManager
 from .models import (
     BlockDelineationAnswer,
+    BlockDelineationBoundary,
     BlockDelineationBoundaryChange,
     BlockDelineationQuery,
     BlockDelineationSubtitle,
@@ -24,6 +25,7 @@ from .prompt import BlockDelineationPrompt
 
 __all__ = [
     "BlockDelineationAnswer",
+    "BlockDelineationBoundary",
     "BlockDelineationBoundaryChange",
     "BlockDelineationManager",
     "BlockDelineationProcessor",

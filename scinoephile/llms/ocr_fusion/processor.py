@@ -109,7 +109,7 @@ class OcrFusionProcessor(Processor):
             )
             output_subtitles.append(sub)
 
-        self.save_test_cases()
+        self.save_encountered_test_cases()
 
         # Organize and return
         return Series(events=output_subtitles)

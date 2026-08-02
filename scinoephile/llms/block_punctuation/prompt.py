@@ -73,6 +73,30 @@ class BlockPunctuationPrompt(Prompt):
         "Every answer change index must be within the query's owned index range."
     )
     """Error when an answer changes a context-only index."""
+    leading_closing_punctuation_err_tpl: str = (
+        "Final owned target indexes {indexes} begin with closing sentence "
+        "punctuation. Remove that stranded leading punctuation, or place equivalent "
+        "punctuation at the end of the appropriate owned target."
+    )
+    """Error template when final owned text begins with closing punctuation."""
+    punctuation_only_target_err_tpl: str = (
+        "Final owned target indexes {indexes} contain punctuation or whitespace but "
+        "no target characters. Return those indexes with empty text."
+    )
+    """Error template when final owned text contains only punctuation."""
+    half_width_sentence_punctuation_err_tpl: str = (
+        "Final owned target indexes {indexes} contain Hanzi together with half-width "
+        "sentence punctuation {characters}. Replace it with the corresponding "
+        "full-width Chinese punctuation without changing target characters."
+    )
+    """Error template when Hanzi text contains half-width sentence punctuation."""
+    interrogative_target_err_tpl: str = (
+        "Final owned target indexes {indexes} have both a question guide and a "
+        "strong Cantonese interrogative cue, but contain no question mark. "
+        "Use appropriate full-width question punctuation without changing target "
+        "characters."
+    )
+    """Error template when a strongly supported question lacks a question mark."""
     target_chars_changed_err_tpl: str = (
         "Punctuation change at index {index} does not preserve its target "
         "characters after removing punctuation and whitespace. The first mismatch "
@@ -82,6 +106,8 @@ class BlockPunctuationPrompt(Prompt):
         "Received: {received}"
     )
     """Error template when a punctuation change alters target characters."""
+    validate_output_quality: bool = False
+    """Whether to reject deterministic punctuation-layout defects."""
 
     def target_chars_changed_err(self, index: int, expected: str, received: str) -> str:
         """Get an error for changed target characters at one index.

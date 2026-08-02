@@ -289,30 +289,6 @@
         {
           "index": 12,
           "text": "這樣吧，師爺"
-        },
-        {
-          "index": 13,
-          "text": "你先揹著它簪花掛紅，遊行威風一下"
-        },
-        {
-          "index": 14,
-          "text": "走吧"
-        },
-        {
-          "index": 15,
-          "text": "阿燦，來⋯坐⋯"
-        },
-        {
-          "index": 16,
-          "text": "你這麼爭氣，我也很安慰"
-        },
-        {
-          "index": 17,
-          "text": "你聽我說，爹是有名的敗家兒"
-        },
-        {
-          "index": 18,
-          "text": "家裡的財產也敗得差不多"
         }
       ],
       "targets": [
@@ -354,54 +330,165 @@
         },
         {
           "index": 10,
-          "text": "表起"
+          "text": "表起佢？"
         },
         {
           "index": 11,
-          "text": "佢？师爷，你攞有咁多银挂咁多银。"
+          "text": "师爷，你攞有咁多银挂咁多银。"
         },
         {
           "index": 12,
           "text": "咁啊咪，师爷，"
-        },
-        {
-          "index": 13,
-          "text": "你孭住佢撑花棍，有轮街威下先"
-        },
-        {
-          "index": 14,
-          "text": "吓"
-        },
-        {
-          "index": 15,
-          "text": "嘛？阿灿阿灿，坐坐坐。见"
-        },
-        {
-          "index": 16,
-          "text": "你咁生性，我都好安慰吓"
-        },
-        {
-          "index": 17,
-          "text": "。嗱，你听我讲，阿爹咧，书名系二世祖，"
-        },
-        {
-          "index": 18,
-          "text": "副身家咧都使到七七八八噶啦。"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 15
+      "last_owned_index": 9
     },
     "answer": {
       "changes": [
         {
+          "index": 4,
+          "text": "今日晓写字，"
+        },
+        {
           "index": 5,
           "text": "他朝就必成大学士。"
+        },
+        {
+          "index": 6,
+          "text": "今日晓写名，"
         }
       ]
     },
     "difficulty": 1,
     "verified": true
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "他日一定會生子"
+        },
+        {
+          "index": 2,
+          "text": "少爺，你真是要好好地學習寫字"
+        },
+        {
+          "index": 3,
+          "text": "阿燦，先把它裱起來"
+        },
+        {
+          "index": 4,
+          "text": "裱起它"
+        },
+        {
+          "index": 5,
+          "text": "師爺，把它掛在最當眼的地方"
+        },
+        {
+          "index": 6,
+          "text": "這樣吧，師爺"
+        },
+        {
+          "index": 7,
+          "text": "你先揹著它簪花掛紅，遊行威風一下"
+        },
+        {
+          "index": 8,
+          "text": "走吧"
+        },
+        {
+          "index": 9,
+          "text": "阿燦，來⋯坐⋯"
+        },
+        {
+          "index": 10,
+          "text": "你這麼爭氣，我也很安慰"
+        },
+        {
+          "index": 11,
+          "text": "你聽我說，爹是有名的敗家兒"
+        },
+        {
+          "index": 12,
+          "text": "家裡的財產也敗得差不多"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "他日生仔就必有病。"
+        },
+        {
+          "index": 2,
+          "text": "少爷，你真系要学啲学写字。"
+        },
+        {
+          "index": 3,
+          "text": "我刷刷刷，我睇表起佢好。"
+        },
+        {
+          "index": 4,
+          "text": "表起佢？"
+        },
+        {
+          "index": 5,
+          "text": "师爷，你攞有咁多银挂咁多银。"
+        },
+        {
+          "index": 6,
+          "text": "咁啊咪，师爷，"
+        },
+        {
+          "index": 7,
+          "text": "你孭住佢撑花棍，有轮街威下先"
+        },
+        {
+          "index": 8,
+          "text": "吓嘛？"
+        },
+        {
+          "index": 9,
+          "text": "阿灿阿灿，坐坐坐。"
+        },
+        {
+          "index": 10,
+          "text": "见你咁生性，我都好安慰吓。"
+        },
+        {
+          "index": 11,
+          "text": "嗱，你听我讲，阿爹咧，书名系二世祖，"
+        },
+        {
+          "index": 12,
+          "text": "副身家咧都使到七七八八噶啦。"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 9
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 5,
+          "text": "师爷，你攞有咁多银，挂咁多银。"
+        },
+        {
+          "index": 6,
+          "text": "咁啊咪，师爷。"
+        },
+        {
+          "index": 7,
+          "text": "你孭住佢撑花棍，有轮街威下先。"
+        },
+        {
+          "index": 9,
+          "text": "阿灿，阿灿，坐坐坐。"
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -453,6 +540,18 @@
         {
           "index": 12,
           "text": "你去哪，阿燦？"
+        },
+        {
+          "index": 13,
+          "text": "今晚我做大壽"
+        },
+        {
+          "index": 14,
+          "text": "你貴庚？"
+        },
+        {
+          "index": 15,
+          "text": "廿五歲大壽，早點到"
         }
       ],
       "targets": [
@@ -462,19 +561,19 @@
         },
         {
           "index": 2,
-          "text": "吓"
+          "text": "吓嘛？"
         },
         {
           "index": 3,
-          "text": "嘛？阿灿阿灿，坐坐坐。见"
+          "text": "阿灿阿灿，坐坐坐。"
         },
         {
           "index": 4,
-          "text": "你咁生性，我都好安慰吓"
+          "text": "见你咁生性，我都好安慰吓。"
         },
         {
           "index": 5,
-          "text": "。嗱，你听我讲，阿爹咧，书名系二世祖，"
+          "text": "嗱，你听我讲，阿爹咧，书名系二世祖，"
         },
         {
           "index": 6,
@@ -503,196 +602,160 @@
         {
           "index": 12,
           "text": "去边啊，阿灿？"
+        },
+        {
+          "index": 13,
+          "text": "啊！今晚我摆大寿。"
+        },
+        {
+          "index": 14,
+          "text": "嗯，你鬼惊啊？"
+        },
+        {
+          "index": 15,
+          "text": "二十五岁大寿啊嘛，早啲到啊！"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 9
+      "last_owned_index": 12
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 4,
-          "text": "你咁生性，我都好安慰吓。"
-        },
-        {
-          "index": 5,
-          "text": "嗱，你听我讲，阿爹咧，书名系二世祖。"
-        },
-        {
-          "index": 6,
-          "text": "副身家咧，都使到七七八八噶啦。"
-        },
-        {
-          "index": 7,
-          "text": "好话唔好听，第日阿爹两腿一扬咧，唉，"
-        },
-        {
-          "index": 8,
-          "text": "你就冚唪唥靠自己啦。"
-        },
-        {
-          "index": 9,
-          "text": "不嬲都靠自己噶啦。"
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "guides": [
         {
           "index": 1,
-          "text": "說難聽一點，日後我兩腳一伸"
-        },
-        {
-          "index": 2,
-          "text": "你個王八蛋，怎麼到這裡來討飯？"
-        },
-        {
-          "index": 3,
-          "text": "向來我都是靠自己"
-        },
-        {
-          "index": 4,
           "text": "十萬兩一張，省一點花啊"
         },
         {
-          "index": 5,
+          "index": 2,
           "text": "茂利，把我的西洋帽拿來"
         },
         {
-          "index": 6,
+          "index": 3,
           "text": "你去哪，阿燦？"
         },
         {
-          "index": 7,
+          "index": 4,
           "text": "今晚我做大壽"
         },
         {
-          "index": 8,
+          "index": 5,
           "text": "你貴庚？"
         },
         {
-          "index": 9,
+          "index": 6,
           "text": "廿五歲大壽，早點到"
         },
         {
-          "index": 10,
+          "index": 7,
           "text": "做大壽你也得先把頭髮梳整齊"
         },
         {
-          "index": 11,
+          "index": 8,
           "text": "老是一個乞丐的模樣"
         },
         {
-          "index": 12,
+          "index": 9,
           "text": "乞丐會那麼有錢？我也想當"
         },
         {
-          "index": 13,
+          "index": 10,
           "text": "那壽頭真是⋯"
         },
         {
-          "index": 14,
+          "index": 11,
           "text": "過來，過來"
         },
         {
-          "index": 15,
+          "index": 12,
           "text": "老爺，甚麼事？"
         },
         {
-          "index": 16,
+          "index": 13,
           "text": "那臭小子的壽帖真威風"
         },
         {
-          "index": 17,
+          "index": 14,
           "text": "他日老爺做大壽，要比他威風"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "好话唔好听，第日阿爹两腿一扬咧，唉，"
-        },
-        {
-          "index": 2,
-          "text": "你就冚唪唥靠自己啦。"
-        },
-        {
-          "index": 3,
-          "text": "不嬲都靠自己噶啦。"
-        },
-        {
-          "index": 4,
           "text": "嗱，成十万两银，将嚟使啊吓。嗯，"
         },
         {
-          "index": 5,
+          "index": 2,
           "text": "牛利，攞我顶细洋帽过嚟。"
         },
         {
-          "index": 6,
+          "index": 3,
           "text": "去边啊，阿灿？"
         },
         {
-          "index": 7,
-          "text": "啊！今晚我摆大寿。嗯，"
+          "index": 4,
+          "text": "啊！今晚我摆大寿。"
         },
         {
-          "index": 8,
-          "text": "你鬼惊啊？"
+          "index": 5,
+          "text": "嗯，你鬼惊啊？"
         },
         {
-          "index": 9,
+          "index": 6,
           "text": "二十五岁大寿啊嘛，早啲到啊！"
         },
         {
-          "index": 10,
+          "index": 7,
           "text": "喂，摆大寿你都梳靓你个头啦，"
         },
         {
-          "index": 11,
+          "index": 8,
           "text": "成世好似乞衣仔咁。"
         },
         {
-          "index": 12,
+          "index": 9,
           "text": "乞衣会咁有钱，我都想做"
         },
         {
-          "index": 13,
+          "index": 10,
           "text": "啊！啊，个细路都唔啱时己真系。"
         },
         {
-          "index": 14,
+          "index": 11,
           "text": "过嚟，过嚟，过嚟。"
         },
         {
-          "index": 15,
+          "index": 12,
           "text": "做咩啊，老爷？"
         },
         {
-          "index": 16,
+          "index": 13,
           "text": "啊，个衰仔摆大寿打张帖都架势过人嘅，"
         },
         {
-          "index": 17,
+          "index": 14,
           "text": "但系老爷摆大寿咧，要架势过佢。"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 17
+      "last_owned_index": 14
     },
     "answer": {
       "changes": [
         {
-          "index": 13,
-          "text": "啊！啊，个细路都唔啱时己真系⋯"
+          "index": 9,
+          "text": "乞衣会咁有钱，我都想做。"
+        },
+        {
+          "index": 10,
+          "text": "啊！啊，个细路都唔啱时己真系……"
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -788,22 +851,6 @@
         {
           "index": 14,
           "text": "你包？"
-        },
-        {
-          "index": 15,
-          "text": "不可以嗎？"
-        },
-        {
-          "index": 16,
-          "text": "可以，可以"
-        },
-        {
-          "index": 17,
-          "text": "大爺進我間房吧⋯　　請你跟我來"
-        },
-        {
-          "index": 18,
-          "text": "蘇⋯翁"
         }
       ],
       "targets": [
@@ -862,40 +909,16 @@
         {
           "index": 14,
           "text": "唔包？"
-        },
-        {
-          "index": 15,
-          "text": "吹啊！"
-        },
-        {
-          "index": 16,
-          "text": "唔吹，唔吹。"
-        },
-        {
-          "index": 17,
-          "text": "睇过未？睇过。"
-        },
-        {
-          "index": 18,
-          "text": ""
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 15
+      "last_owned_index": 11
     },
     "answer": {
       "changes": [
         {
           "index": 4,
           "text": "死人冧楼，妻离子散，我冚家铲！"
-        },
-        {
-          "index": 6,
-          "text": "呢个仆街又曱甴，吓，即刻到嚟你呢度？"
-        },
-        {
-          "index": 9,
-          "text": "有冇搞错啊？攞钱就走！"
         }
       ]
     },
@@ -906,135 +929,131 @@
       "guides": [
         {
           "index": 1,
-          "text": "吃飯看戲宵夜嫖妓，我包"
+          "text": "這樣也有打賞？"
         },
         {
           "index": 2,
-          "text": "你包？"
+          "text": "乞丐也是人"
         },
         {
           "index": 3,
-          "text": "不可以嗎？"
+          "text": "只要有錢的都可以來"
         },
         {
           "index": 4,
-          "text": "可以，可以"
+          "text": "你這個月來這裡"
         },
         {
           "index": 5,
-          "text": "大爺進我間房吧⋯　　請你跟我來"
+          "text": "吃飯看戲宵夜嫖妓，我包"
         },
         {
           "index": 6,
-          "text": "蘇⋯翁"
+          "text": "你包？"
         },
         {
           "index": 7,
-          "text": "是⋯"
+          "text": "不可以嗎？"
         },
         {
           "index": 8,
-          "text": "你好嗎，鴇母？"
+          "text": "可以，可以"
         },
         {
           "index": 9,
-          "text": "你真壞，有名字你不叫，叫我鴇母"
+          "text": "大爺進我間房吧⋯　　請你跟我來"
         },
         {
           "index": 10,
-          "text": "大家坦白一點不好嗎？"
+          "text": "蘇⋯翁"
         },
         {
           "index": 11,
-          "text": "要坦白嗎"
+          "text": "是⋯"
         },
         {
           "index": 12,
-          "text": "你的帽子像披麻帶孝似的"
+          "text": "你好嗎，鴇母？"
         },
         {
           "index": 13,
-          "text": "你老爸死了嗎？"
+          "text": "你真壞，有名字你不叫，叫我鴇母"
         },
         {
           "index": 14,
-          "text": "這樣說大家才開心嘛"
+          "text": "大家坦白一點不好嗎？"
+        },
+        {
+          "index": 15,
+          "text": "要坦白嗎"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "食饭睇嘢，少爷直落叫鸡我包。"
+          "text": "有冇搞错啊？攞钱就走"
         },
         {
           "index": 2,
-          "text": "唔包？"
+          "text": "啊？诶，吓，呢度系人，"
         },
         {
           "index": 3,
-          "text": "吹啊！"
+          "text": "系人有钱都系嚟你度，"
         },
         {
           "index": 4,
-          "text": "唔吹，唔吹。"
+          "text": "你呢个月喺呢度"
         },
         {
           "index": 5,
-          "text": "睇过未？睇过。"
+          "text": "食饭睇嘢，少爷直落叫鸡我包。"
         },
         {
           "index": 6,
-          "text": ""
+          "text": "唔包？"
         },
         {
           "index": 7,
-          "text": "素"
+          "text": "吹啊！"
         },
         {
           "index": 8,
-          "text": "蓉。喂，点啊，龟婆？"
+          "text": "唔吹，唔吹。"
         },
         {
           "index": 9,
-          "text": "好衰嘅，你冇名你叫叫龟婆啊？"
+          "text": ""
         },
         {
           "index": 10,
-          "text": "咁大家坦白啲唔好咩？"
+          "text": "睇过未？睇过。"
         },
         {
           "index": 11,
-          "text": "你要坦白啊！"
+          "text": "素蓉。"
         },
         {
           "index": 12,
-          "text": "你耳仔冇毛啊，披麻戴孝咁，"
+          "text": "喂，点啊，龟婆？"
         },
         {
           "index": 13,
-          "text": "死老豆啊你！"
+          "text": "好衰嘅，你冇名你叫叫龟婆啊？"
         },
         {
           "index": 14,
-          "text": "咁讲嘢先开心啊，大家。"
+          "text": "咁大家坦白啲唔好咩？"
+        },
+        {
+          "index": 15,
+          "text": "你要坦白啊！"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 11
+      "last_owned_index": 12
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 7,
-          "text": "素⋯"
-        },
-        {
-          "index": 11,
-          "text": "你要坦白啊？"
-        }
-      ]
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1042,99 +1061,124 @@
       "guides": [
         {
           "index": 1,
-          "text": "你真壞，有名字你不叫，叫我鴇母"
+          "text": "蘇⋯翁"
         },
         {
           "index": 2,
-          "text": "大家坦白一點不好嗎？"
+          "text": "是⋯"
         },
         {
           "index": 3,
-          "text": "要坦白嗎"
+          "text": "你好嗎，鴇母？"
         },
         {
           "index": 4,
-          "text": "你的帽子像披麻帶孝似的"
+          "text": "你真壞，有名字你不叫，叫我鴇母"
         },
         {
           "index": 5,
-          "text": "你老爸死了嗎？"
+          "text": "大家坦白一點不好嗎？"
         },
         {
           "index": 6,
-          "text": "這樣說大家才開心嘛"
+          "text": "要坦白嗎"
         },
         {
           "index": 7,
-          "text": "趙先生這趟幫本官掃平長毛賊"
+          "text": "你的帽子像披麻帶孝似的"
         },
         {
           "index": 8,
-          "text": "皇上一定重重有賞"
+          "text": "你老爸死了嗎？"
         },
         {
           "index": 9,
-          "text": "那就有勞皇爺在皇上面前"
+          "text": "這樣說大家才開心嘛"
         },
         {
           "index": 10,
-          "text": "多說幾句好說話"
+          "text": "趙先生這趟幫本官掃平長毛賊"
         },
         {
           "index": 11,
+          "text": "皇上一定重重有賞"
+        },
+        {
+          "index": 12,
+          "text": "那就有勞皇爺在皇上面前"
+        },
+        {
+          "index": 13,
+          "text": "多說幾句好說話"
+        },
+        {
+          "index": 14,
           "text": "大戲做完了，請用毛巾"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "好衰嘅，你冇名你叫叫龟婆啊？"
+          "text": "睇过未？睇过。"
         },
         {
           "index": 2,
-          "text": "咁大家坦白啲唔好咩？"
+          "text": "素蓉。"
         },
         {
           "index": 3,
-          "text": "你要坦白啊！"
+          "text": "喂，点啊，龟婆？"
         },
         {
           "index": 4,
-          "text": "你耳仔冇毛啊，披麻戴孝咁，"
+          "text": "好衰嘅，你冇名你叫叫龟婆啊？"
         },
         {
           "index": 5,
-          "text": "死老豆啊你！"
+          "text": "咁大家坦白啲唔好咩？"
         },
         {
           "index": 6,
-          "text": "咁讲嘢先开心啊，大家。"
+          "text": "你要坦白啊！"
         },
         {
           "index": 7,
-          "text": "今次赵先生帮本官扫平唱和贼，"
+          "text": "你耳仔冇毛啊，披麻戴孝咁，"
         },
         {
           "index": 8,
-          "text": "皇上一定重重有赏。"
+          "text": "死老豆啊你！"
         },
         {
           "index": 9,
-          "text": "咁就有劳王爷喺皇上面前"
+          "text": "咁讲嘢先开心啊，大家。"
         },
         {
           "index": 10,
-          "text": "讲多几句好说话。"
+          "text": "今次赵先生帮本官扫平唱和贼，"
         },
         {
           "index": 11,
+          "text": "皇上一定重重有赏。"
+        },
+        {
+          "index": 12,
+          "text": "咁就有劳王爷喺皇上面前"
+        },
+        {
+          "index": 13,
+          "text": "讲多几句好说话。"
+        },
+        {
+          "index": 14,
           "text": "嗯，大戏做完啦，请用毛巾啊。"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 11
+      "last_owned_index": 14
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1174,30 +1218,6 @@
         {
           "index": 9,
           "text": "木魚則可以碰嘛"
-        },
-        {
-          "index": 10,
-          "text": "那當然要木魚"
-        },
-        {
-          "index": 11,
-          "text": "你們還不過來待候客人⋯"
-        },
-        {
-          "index": 12,
-          "text": "蘇翁，今天是你的大日子"
-        },
-        {
-          "index": 13,
-          "text": "你想要怎樣的女人，你說就成"
-        },
-        {
-          "index": 14,
-          "text": "隨便，女人都是一樣的"
-        },
-        {
-          "index": 15,
-          "text": "沒甚麼特別"
         }
       ],
       "targets": [
@@ -1236,60 +1256,120 @@
         {
           "index": 9,
           "text": "唔可以搏噶嘛。"
-        },
-        {
-          "index": 10,
-          "text": "哇，金鱼定木鱼咧？"
-        },
-        {
-          "index": 11,
-          "text": "几个木鱼仲唔过嚟招呼客人？"
-        },
-        {
-          "index": 12,
-          "text": "秀翁啊，今日你系主大噶啦，"
-        },
-        {
-          "index": 13,
-          "text": "你中意咩女人，你开声就得噶啦。"
-        },
-        {
-          "index": 14,
-          "text": "冇所谓，女人个个都系一样"
-        },
-        {
-          "index": 15,
-          "text": "，有乜特别啫？"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 15
+      "last_owned_index": 6
     },
-    "answer": {
-      "changes": [
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "guides": [
         {
           "index": 1,
-          "text": "秀翁嚟咗啦⋯"
+          "text": "蘇翁，今天是你的好日子，很高興吧"
+        },
+        {
+          "index": 2,
+          "text": "我們有幾位新來的姑娘，保證你滿意"
         },
         {
           "index": 3,
-          "text": "呢边啦⋯呢边啦"
+          "text": "金魚還是木魚？"
+        },
+        {
+          "index": 4,
+          "text": "少爺，甚麼金魚、木魚？"
+        },
+        {
+          "index": 5,
+          "text": "傻瓜，金魚只可以看"
+        },
+        {
+          "index": 6,
+          "text": "木魚則可以碰嘛"
+        },
+        {
+          "index": 7,
+          "text": "那當然要木魚"
+        },
+        {
+          "index": 8,
+          "text": "你們還不過來待候客人⋯"
+        },
+        {
+          "index": 9,
+          "text": "蘇翁，今天是你的大日子"
+        },
+        {
+          "index": 10,
+          "text": "你想要怎樣的女人，你說就成"
+        },
+        {
+          "index": 11,
+          "text": "隨便，女人都是一樣的"
         },
         {
           "index": 12,
-          "text": "秀翁啊，今日你系主大噶啦！"
+          "text": "沒甚麼特別"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "秀翁，今日啲好日子，开心死你啦！"
         },
         {
-          "index": 14,
-          "text": "冇所谓，女人个个都系一样。"
+          "index": 2,
+          "text": "我哋有几位新姑娘啊，包你满意。"
         },
         {
-          "index": 15,
+          "index": 3,
+          "text": "金鱼定木鱼啊？"
+        },
+        {
+          "index": 4,
+          "text": "少爷，乜嘢金鱼定木鱼啊？"
+        },
+        {
+          "index": 5,
+          "text": "傻仔，今日净系爱嚟睇，"
+        },
+        {
+          "index": 6,
+          "text": "唔可以搏噶嘛。"
+        },
+        {
+          "index": 7,
+          "text": "哇，金鱼定木鱼咧？"
+        },
+        {
+          "index": 8,
+          "text": "几个木鱼仲唔过嚟招呼客人？"
+        },
+        {
+          "index": 9,
+          "text": "秀翁啊，今日你系主大噶啦，"
+        },
+        {
+          "index": 10,
+          "text": "你中意咩女人，你开声就得噶啦。"
+        },
+        {
+          "index": 11,
+          "text": "冇所谓，女人个个都系一样，"
+        },
+        {
+          "index": 12,
           "text": "有乜特别啫？"
         }
-      ]
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 12
     },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1354,32 +1434,24 @@
         {
           "index": 15,
           "text": "那我就卻之不恭了"
-        },
-        {
-          "index": 16,
-          "text": "擺房"
-        },
-        {
-          "index": 17,
-          "text": "如霜，快點下來見趙大人"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "周庸，咩事啊？"
+          "text": "周庸，咩事"
         },
         {
           "index": 2,
-          "text": "我俾人挑咗。"
+          "text": "啊？我俾人挑咗。"
         },
         {
           "index": 3,
-          "text": "咩话？"
+          "text": "咩话？边个"
         },
         {
           "index": 4,
-          "text": "边个咁大胆挑你？等我掌佢个嘴。"
+          "text": "咁大胆挑你？等我掌佢个嘴。"
         },
         {
           "index": 5,
@@ -1424,24 +1496,20 @@
         {
           "index": 15,
           "text": "咁我就却之不恭啦。"
-        },
-        {
-          "index": 16,
-          "text": "拜访。"
-        },
-        {
-          "index": 17,
-          "text": "余霜啊，快啲落嚟见下赵大人啦。"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 14
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
         {
-          "index": 7,
-          "text": "诱惑仲带有杀气，哇！呢只眼神我未见过，"
+          "index": 1,
+          "text": "周庸，咩事？"
+        },
+        {
+          "index": 3,
+          "text": "咩话？边个？"
         }
       ]
     },
@@ -1453,123 +1521,143 @@
       "guides": [
         {
           "index": 1,
-          "text": "怎麼樣，皇爺？"
+          "text": "趙大人有沒有興趣和她擺房？"
         },
         {
           "index": 2,
-          "text": "大家自己人，何必客氣呢？"
+          "text": "你應該先問皇爺才對"
         },
         {
           "index": 3,
-          "text": "趙先生，請隨便"
+          "text": "怎麼樣，皇爺？"
         },
         {
           "index": 4,
-          "text": "那我就卻之不恭了"
+          "text": "大家自己人，何必客氣呢？"
         },
         {
           "index": 5,
-          "text": "擺房"
+          "text": "趙先生，請隨便"
         },
         {
           "index": 6,
-          "text": "如霜，快點下來見趙大人"
+          "text": "那我就卻之不恭了"
         },
         {
           "index": 7,
-          "text": "姐姐，就是他"
+          "text": "擺房"
         },
         {
           "index": 8,
-          "text": "殺阿爹的人就是他"
+          "text": "如霜，快點下來見趙大人"
         },
         {
           "index": 9,
-          "text": "我知道，鎮定點"
+          "text": "姐姐，就是他"
         },
         {
           "index": 10,
-          "text": "走吧"
+          "text": "殺阿爹的人就是他"
         },
         {
           "index": 11,
-          "text": "失陪　　趙大人"
+          "text": "我知道，鎮定點"
         },
         {
           "index": 12,
-          "text": "如霜姑娘到"
+          "text": "走吧"
         },
         {
           "index": 13,
+          "text": "失陪　　趙大人"
+        },
+        {
+          "index": 14,
+          "text": "如霜姑娘到"
+        },
+        {
+          "index": 15,
           "text": "小女子如霜，拜見趙大人"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "点啊，王爷？"
+          "text": "唔知赵大人有冇兴趣同佢拜访呢？"
         },
         {
           "index": 2,
-          "text": "大家自己人，又何必客气呢？"
+          "text": "你应该问下王爷先啊嘛。"
         },
         {
           "index": 3,
-          "text": "赵先生，请随便。"
+          "text": "点啊，王爷？"
         },
         {
           "index": 4,
-          "text": "咁我就却之不恭啦。"
+          "text": "大家自己人，又何必客气呢？"
         },
         {
           "index": 5,
-          "text": "拜访。"
+          "text": "赵先生，请随便。"
         },
         {
           "index": 6,
-          "text": "余霜啊，快啲落嚟见下赵大人啦。"
+          "text": "咁我就却之不恭啦。"
         },
         {
           "index": 7,
-          "text": "系佢，呢架车"
+          "text": "拜访。"
         },
         {
           "index": 8,
-          "text": "晒低𠮶个就系佢啊。"
+          "text": "余霜啊，快啲落嚟见下赵大人啦。"
         },
         {
           "index": 9,
-          "text": "我知，镇定啲，"
+          "text": "系佢，呢架车"
         },
         {
           "index": 10,
-          "text": "行。"
+          "text": "晒低𠮶个就系佢啊。"
         },
         {
           "index": 11,
-          "text": "赵大人，"
+          "text": "我知，镇定啲，"
         },
         {
           "index": 12,
-          "text": "余霜姑娘到啦。"
+          "text": "行。"
         },
         {
           "index": 13,
+          "text": "赵大人，"
+        },
+        {
+          "index": 14,
+          "text": "余霜姑娘到啦。"
+        },
+        {
+          "index": 15,
           "text": "小女子余霜，拜见赵大人。"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 13
+      "last_owned_index": 15
     },
     "answer": {
       "changes": [
         {
-          "index": 7,
+          "index": 9,
           "text": "系佢，呢架车。"
         },
         {
-          "index": 9,
+          "index": 11,
           "text": "我知，镇定啲。"
+        },
+        {
+          "index": 13,
+          "text": "赵大人。"
         }
       ]
     },
@@ -1618,22 +1706,6 @@
         {
           "index": 10,
           "text": "如霜姑娘就陪誰"
-        },
-        {
-          "index": 11,
-          "text": "千萬不要傷和氣，對不對？"
-        },
-        {
-          "index": 12,
-          "text": "這位朋友真捨得花錢"
-        },
-        {
-          "index": 13,
-          "text": "銀票實在太普通"
-        },
-        {
-          "index": 14,
-          "text": "我有一顆朝廷大內的定風珠，無價寶"
         }
       ],
       "targets": [
@@ -1659,11 +1731,11 @@
         },
         {
           "index": 6,
-          "text": "咁多位，唔好意思啊，"
+          "text": "咁多位，唔好意思啊，真系"
         },
         {
           "index": 7,
-          "text": "真系冇咩嘢见啦嘛。"
+          "text": "冇咩嘢见啦嘛。"
         },
         {
           "index": 8,
@@ -1676,36 +1748,112 @@
         {
           "index": 10,
           "text": "咁余霜姑娘咪陪边个咯。"
-        },
-        {
-          "index": 11,
-          "text": "千祈唔好伤咗和气啊！啱唔啱听？啱唔啱听？啱唔啱听吓？"
-        },
-        {
-          "index": 12,
-          "text": "呢位朋友都好肯使钱。"
-        },
-        {
-          "index": 13,
-          "text": "哼，银票实在太普通啦，"
-        },
-        {
-          "index": 14,
-          "text": "我有啦，朝廷带来嘅定风珠，无价嘅。"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 14
+      "last_owned_index": 7
     },
     "answer": {
       "changes": [
         {
           "index": 7,
-          "text": "真系冇咩嘢见啦嘛？"
+          "text": "冇咩嘢见啦嘛？"
         }
       ]
     },
     "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "沒空招呼你"
+        },
+        {
+          "index": 2,
+          "text": "各位⋯真不好意思"
+        },
+        {
+          "index": 3,
+          "text": "有甚麼意見嗎？"
+        },
+        {
+          "index": 4,
+          "text": "讓我來⋯讓我說句公道話"
+        },
+        {
+          "index": 5,
+          "text": "只要你們誰能付超過十萬兩銀票"
+        },
+        {
+          "index": 6,
+          "text": "如霜姑娘就陪誰"
+        },
+        {
+          "index": 7,
+          "text": "千萬不要傷和氣，對不對？"
+        },
+        {
+          "index": 8,
+          "text": "這位朋友真捨得花錢"
+        },
+        {
+          "index": 9,
+          "text": "銀票實在太普通"
+        },
+        {
+          "index": 10,
+          "text": "我有一顆朝廷大內的定風珠，無價寶"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "唔得闲招呼你噃。"
+        },
+        {
+          "index": 2,
+          "text": "咁多位，唔好意思啊，真系"
+        },
+        {
+          "index": 3,
+          "text": "冇咩嘢见啦嘛。"
+        },
+        {
+          "index": 4,
+          "text": "哎呀，等我嚟，等我嚟，等我讲翻句公道嘅说话。"
+        },
+        {
+          "index": 5,
+          "text": "只要你哋边个出得多过十万两银票咯，"
+        },
+        {
+          "index": 6,
+          "text": "咁余霜姑娘咪陪边个咯。"
+        },
+        {
+          "index": 7,
+          "text": "千祈唔好伤咗和气啊！啱唔啱听？啱唔啱听？啱唔啱听吓？"
+        },
+        {
+          "index": 8,
+          "text": "呢位朋友都好肯使钱。"
+        },
+        {
+          "index": 9,
+          "text": "哼，银票实在太普通啦，"
+        },
+        {
+          "index": 10,
+          "text": "我有啦，朝廷带来嘅定风珠，无价嘅。"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 10
+    },
+    "answer": {},
     "verified": true
   },
   {
@@ -1943,15 +2091,15 @@
       "targets": [
         {
           "index": 1,
-          "text": "小心！"
+          "text": "小心！好，走，跟上。"
         },
         {
           "index": 2,
-          "text": "好，"
+          "text": ""
         },
         {
           "index": 3,
-          "text": "走，跟上。"
+          "text": ""
         }
       ],
       "first_owned_index": 1,
@@ -2155,7 +2303,7 @@
       "targets": [
         {
           "index": 1,
-          "text": "广州将军澳"
+          "text": "广州将军澳，"
         },
         {
           "index": 2,
@@ -2163,19 +2311,19 @@
         },
         {
           "index": 3,
-          "text": "，边个手头黑，我整个弹俾"
+          "text": "边个手头黑，我整个弹俾我。"
         },
         {
           "index": 4,
-          "text": "我。"
+          "text": ""
         },
         {
           "index": 5,
-          "text": "唔使惊啊，三，边个恰你？"
+          "text": "唔使惊啊，三，边个恰你？系"
         },
         {
           "index": 6,
-          "text": "系我恰紧人啫。"
+          "text": "我恰紧人啫。"
         },
         {
           "index": 7,
@@ -2183,11 +2331,11 @@
         },
         {
           "index": 8,
-          "text": "喂，佢有几银身家？佢够唔够资格"
+          "text": "喂，佢有几银身家？佢够唔够资格啊？"
         },
         {
           "index": 9,
-          "text": "啊？系你"
+          "text": "系你"
         },
         {
           "index": 10,
@@ -2217,24 +2365,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "广州将军澳！"
-        },
-        {
-          "index": 3,
-          "text": "边个手头黑，我整个弹俾"
-        },
-        {
-          "index": 8,
-          "text": "喂，佢有几银身家？佢够唔够资格？"
-        },
-        {
-          "index": 9,
-          "text": "啊？系你！"
+          "text": "广州将军澳。"
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2279,7 +2414,7 @@
       "targets": [
         {
           "index": 1,
-          "text": "啊？系你"
+          "text": "系你"
         },
         {
           "index": 2,
@@ -2320,29 +2455,12 @@
     "answer": {
       "changes": [
         {
-          "index": 4,
-          "text": "哎呀，跳舞之王？"
-        },
-        {
-          "index": 5,
-          "text": "唉，送过嚟。"
-        },
-        {
-          "index": 6,
-          "text": "喂，灿啊！"
-        },
-        {
           "index": 8,
           "text": "嚟，攞去打赏俾你。呢度啦。"
-        },
-        {
-          "index": 9,
-          "text": "个灵牌上面写住：跳舞之王张嘉林，三蚊。"
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2382,6 +2500,10 @@
         {
           "index": 9,
           "text": "對呀，我是來⋯"
+        },
+        {
+          "index": 10,
+          "text": "來拉⋯　　拉你"
         }
       ],
       "targets": [
@@ -2420,20 +2542,16 @@
         {
           "index": 9,
           "text": "咪咯？我咪就系"
+        },
+        {
+          "index": 10,
+          "text": "你你你你你拉拉你，"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 6
+      "last_owned_index": 7
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 2,
-          "text": "捉起佢！"
-        }
-      ]
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -2441,151 +2559,151 @@
       "guides": [
         {
           "index": 1,
-          "text": "身為朝廷命官，不得嫖妓"
-        },
-        {
-          "index": 2,
           "text": "你現在身在怡紅院"
         },
         {
-          "index": 3,
+          "index": 2,
           "text": "知法犯法，該當何罪？"
         },
         {
-          "index": 4,
+          "index": 3,
           "text": "那麼你呢？"
         },
         {
-          "index": 5,
+          "index": 4,
           "text": "你說我？　　是"
         },
         {
-          "index": 6,
+          "index": 5,
           "text": "對呀，我是來⋯"
         },
         {
-          "index": 7,
+          "index": 6,
           "text": "來拉⋯　　拉你"
         },
         {
-          "index": 8,
+          "index": 7,
           "text": "他！　　拉他"
         },
         {
-          "index": 9,
+          "index": 8,
           "text": "我身為廣州將軍"
         },
         {
-          "index": 10,
+          "index": 9,
           "text": "當然要來拉你這害羣之馬"
         },
         {
-          "index": 11,
+          "index": 10,
           "text": "還有⋯還有"
         },
         {
-          "index": 12,
+          "index": 11,
           "text": "還有甚麼？說吧"
         },
         {
-          "index": 13,
+          "index": 12,
           "text": "今天是清太祖皇后葉赫拿拉氏的忌辰"
         },
         {
-          "index": 14,
+          "index": 13,
           "text": "身為京官罪加一等"
         },
         {
-          "index": 15,
+          "index": 14,
           "text": "可以問斬"
         },
         {
-          "index": 16,
+          "index": 15,
           "text": "斬他⋯斬他"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "身为朝廷命官，不得嫖妓。"
-        },
-        {
-          "index": 2,
           "text": "你嘅身在怡红院，"
         },
         {
-          "index": 3,
+          "index": 2,
           "text": "知犯犯法，该当何罪？"
         },
         {
-          "index": 4,
+          "index": 3,
           "text": "咁你咧？"
         },
         {
-          "index": 5,
+          "index": 4,
           "text": "系咪话我啊？系"
         },
         {
-          "index": 6,
+          "index": 5,
           "text": "咪咯？我咪就系"
         },
         {
-          "index": 7,
+          "index": 6,
           "text": "你你你你你拉拉你，"
         },
         {
-          "index": 8,
+          "index": 7,
           "text": "拉佢啊！拉佢啊！"
         },
         {
-          "index": 9,
+          "index": 8,
           "text": "我身为广州将军，"
         },
         {
-          "index": 10,
+          "index": 9,
           "text": "梗系要嚟拉你呢啲虚棍之马啦。"
         },
         {
-          "index": 11,
+          "index": 10,
           "text": "仲有仲有，"
         },
         {
-          "index": 12,
+          "index": 11,
           "text": "做咩？仲有咧？"
         },
         {
-          "index": 13,
+          "index": 12,
           "text": "今日系二月清太祖皇后叶赫那拉氏嘅忌辰，"
         },
         {
-          "index": 14,
+          "index": 13,
           "text": "身为京官，醉加一等，"
         },
         {
-          "index": 15,
-          "text": "可以问斩啊佢！"
+          "index": 14,
+          "text": "可以问斩"
         },
         {
-          "index": 16,
-          "text": "走啊！"
+          "index": 15,
+          "text": "啊佢！走啊！"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 16
+      "last_owned_index": 15
     },
     "answer": {
       "changes": [
         {
+          "index": 4,
+          "text": "系咪话我啊？系！"
+        },
+        {
           "index": 5,
-          "text": "系咪话我啊？系。"
+          "text": "咪咯，我咪就系……"
         },
         {
           "index": 6,
-          "text": "咪咯？我咪就系⋯"
+          "text": "你你你你你拉拉你……"
         },
         {
-          "index": 11,
-          "text": "仲有⋯仲有"
+          "index": 10,
+          "text": "仲有……仲有……"
+        },
+        {
+          "index": 14,
+          "text": "可以问斩。"
         }
       ]
     },
@@ -2874,18 +2992,6 @@
         {
           "index": 11,
           "text": "因為湊合我們幾個也不是他的對手"
-        },
-        {
-          "index": 12,
-          "text": "我會盡量誘他到床邊"
-        },
-        {
-          "index": 13,
-          "text": "長老，有人來"
-        },
-        {
-          "index": 14,
-          "text": "大家準備⋯"
         }
       ],
       "targets": [
@@ -2907,11 +3013,11 @@
         },
         {
           "index": 5,
-          "text": "搞到江上边嘅兄弟"
+          "text": "搞到江上边嘅兄弟个个"
         },
         {
           "index": 6,
-          "text": "个个都睇我哋唔起，话"
+          "text": "都睇我哋唔起，话"
         },
         {
           "index": 7,
@@ -2932,32 +3038,128 @@
         {
           "index": 11,
           "text": "因为我哋几个加埋都未必系佢对手。"
-        },
-        {
-          "index": 12,
-          "text": "我会尽量引佢埋床噶啦。"
-        },
-        {
-          "index": 13,
-          "text": "长老，人嚟，"
-        },
-        {
-          "index": 14,
-          "text": "大家准备。"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 14
+      "last_owned_index": 8
     },
     "answer": {
       "changes": [
         {
           "index": 2,
           "text": "好！赵无极佢暗算我哋帮主"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "人人也瞧不起我們"
+        },
+        {
+          "index": 2,
+          "text": "說我們投靠了朝廷"
+        },
+        {
+          "index": 3,
+          "text": "這個仇今天可以報了"
+        },
+        {
+          "index": 4,
+          "text": "他們的先天罡氣很厲害"
         },
         {
           "index": 5,
-          "text": "搞到江上边嘅兄弟，"
+          "text": "你們待會見他沒上當，千萬別出手"
+        },
+        {
+          "index": 6,
+          "text": "因為湊合我們幾個也不是他的對手"
+        },
+        {
+          "index": 7,
+          "text": "我會盡量誘他到床邊"
+        },
+        {
+          "index": 8,
+          "text": "長老，有人來"
+        },
+        {
+          "index": 9,
+          "text": "大家準備⋯"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "都睇我哋唔起，话"
+        },
+        {
+          "index": 2,
+          "text": "我哋投靠咗朝廷。"
+        },
+        {
+          "index": 3,
+          "text": "呢个仇今日可以报啦。"
+        },
+        {
+          "index": 4,
+          "text": "嗯，佢嘅先天罡气好厉害，"
+        },
+        {
+          "index": 5,
+          "text": "你哋一阵见佢未上当，千祈唔好出手，"
+        },
+        {
+          "index": 6,
+          "text": "因为我哋几个加埋都未必系佢对手。"
+        },
+        {
+          "index": 7,
+          "text": "我会尽量引佢埋床噶啦。"
+        },
+        {
+          "index": 8,
+          "text": "长老，人嚟，"
+        },
+        {
+          "index": 9,
+          "text": "大家准备。"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 9
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "text": "嗯，佢嘅先天罡气好厉害，"
+        },
+        {
+          "index": 5,
+          "text": "你哋一阵见佢未上当，千祈唔好出手，"
+        },
+        {
+          "index": 6,
+          "text": "因为我哋几个加埋都未必系佢对手。"
+        },
+        {
+          "index": 7,
+          "text": "我会尽量引佢埋床噶啦。"
+        },
+        {
+          "index": 8,
+          "text": "长老，人嚟，"
+        },
+        {
+          "index": 9,
+          "text": "大家准备……"
         }
       ]
     },
@@ -3006,26 +3208,6 @@
         {
           "index": 10,
           "text": "我不會還給他的"
-        },
-        {
-          "index": 11,
-          "text": "說到蘇翁的為人⋯"
-        },
-        {
-          "index": 12,
-          "text": "廢話少說，鴇母"
-        },
-        {
-          "index": 13,
-          "text": "你先出去"
-        },
-        {
-          "index": 14,
-          "text": "是的⋯是的"
-        },
-        {
-          "index": 15,
-          "text": "七姑娘⋯　　將就一下⋯"
         }
       ],
       "targets": [
@@ -3051,11 +3233,11 @@
         },
         {
           "index": 6,
-          "text": "唉，你咪数埋头发，好似数把咁啊"
+          "text": "唉，你咪数埋头发，好似数把咁啊，"
         },
         {
           "index": 7,
-          "text": "，实在份人好有情趣噶。"
+          "text": "实在份人好有情趣噶。"
         },
         {
           "index": 8,
@@ -3068,44 +3250,112 @@
         {
           "index": 10,
           "text": "想攞翻出嚟就好难啦。"
-        },
-        {
-          "index": 11,
-          "text": "讲到苏呢份人咧……"
-        },
-        {
-          "index": 12,
-          "text": "废话可以少啲讲啦，贵婆，"
-        },
-        {
-          "index": 13,
-          "text": "你出翻去先。"
-        },
-        {
-          "index": 14,
-          "text": "系嘅，系嘅，"
-        },
-        {
-          "index": 15,
-          "text": "姑娘，将就下啦，将就下啦。"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 15
+      "last_owned_index": 7
     },
-    "answer": {
-      "changes": [
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "我沖水喝了"
+        },
+        {
+          "index": 2,
+          "text": "你不要看蘇翁的頭髮像掃帚"
+        },
+        {
+          "index": 3,
+          "text": "其實他為人很有情趣"
+        },
+        {
+          "index": 4,
+          "text": "但是⋯"
+        },
+        {
+          "index": 5,
+          "text": "但是甚麼，十萬兩我已拿了"
+        },
         {
           "index": 6,
-          "text": "唉，你咪数埋头发，好似数把咁啊，"
+          "text": "我不會還給他的"
         },
         {
           "index": 7,
-          "text": "实在份人好有情趣噶。"
+          "text": "說到蘇翁的為人⋯"
+        },
+        {
+          "index": 8,
+          "text": "廢話少說，鴇母"
+        },
+        {
+          "index": 9,
+          "text": "你先出去"
+        },
+        {
+          "index": 10,
+          "text": "是的⋯是的"
+        },
+        {
+          "index": 11,
+          "text": "七姑娘⋯　　將就一下⋯"
         }
-      ]
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "冲水饮埋添啊。"
+        },
+        {
+          "index": 2,
+          "text": "唉，你咪数埋头发，好似数把咁啊，"
+        },
+        {
+          "index": 3,
+          "text": "实在份人好有情趣噶。"
+        },
+        {
+          "index": 4,
+          "text": "但系……"
+        },
+        {
+          "index": 5,
+          "text": "冇但系啊，𠮶十万两我袋咗落袋噶啦，"
+        },
+        {
+          "index": 6,
+          "text": "想攞翻出嚟就好难啦。"
+        },
+        {
+          "index": 7,
+          "text": "讲到苏呢份人咧……"
+        },
+        {
+          "index": 8,
+          "text": "废话可以少啲讲啦，贵婆，"
+        },
+        {
+          "index": 9,
+          "text": "你出翻去先。"
+        },
+        {
+          "index": 10,
+          "text": "系嘅，系嘅，"
+        },
+        {
+          "index": 11,
+          "text": "姑娘，将就下啦，将就下啦。"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 11
     },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -3146,26 +3396,6 @@
         {
           "index": 9,
           "text": "希望如霜姑娘今晚能夠陪我把酒談歡"
-        },
-        {
-          "index": 10,
-          "text": "我不想跟你多說"
-        },
-        {
-          "index": 11,
-          "text": "請你出去"
-        },
-        {
-          "index": 12,
-          "text": "我果然沒選錯人"
-        },
-        {
-          "index": 13,
-          "text": "好，我先飲為敬"
-        },
-        {
-          "index": 14,
-          "text": "不要喝⋯"
         }
       ],
       "targets": [
@@ -3175,11 +3405,11 @@
         },
         {
           "index": 2,
-          "text": "我唔知"
+          "text": "我唔知啊。"
         },
         {
           "index": 3,
-          "text": "啊。姑娘，首先有个好消息，"
+          "text": "姑娘，首先有个好消息，"
         },
         {
           "index": 4,
@@ -3204,40 +3434,116 @@
         {
           "index": 9,
           "text": "希望如霜姑娘今晚能够陪我把酒谈欢。"
-        },
-        {
-          "index": 10,
-          "text": "我唔想同你多讲，"
-        },
-        {
-          "index": 11,
-          "text": "请你出去。"
-        },
-        {
-          "index": 12,
-          "text": "我果然冇拣错人，"
-        },
-        {
-          "index": 13,
-          "text": "好，我就先饮为敬。"
-        },
-        {
-          "index": 14,
-          "text": "唔好饮啊！"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 14
+      "last_owned_index": 6
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "我很喜歡你"
+        },
+        {
+          "index": 2,
+          "text": "這對我來說是一個壞消息"
+        },
+        {
+          "index": 3,
+          "text": "我早知道你會這樣說"
+        },
+        {
+          "index": 4,
+          "text": "閒話休提"
+        },
+        {
+          "index": 5,
+          "text": "我願意出一百顆珍珠"
+        },
+        {
+          "index": 6,
+          "text": "希望如霜姑娘今晚能夠陪我把酒談歡"
+        },
+        {
+          "index": 7,
+          "text": "我不想跟你多說"
+        },
+        {
+          "index": 8,
+          "text": "請你出去"
+        },
+        {
+          "index": 9,
+          "text": "我果然沒選錯人"
+        },
+        {
+          "index": 10,
+          "text": "好，我先飲為敬"
+        },
+        {
+          "index": 11,
+          "text": "不要喝⋯"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "我好喜欢你。"
+        },
+        {
+          "index": 2,
+          "text": "哼，呢个对于我嚟讲系坏消息噃。"
+        },
+        {
+          "index": 3,
+          "text": "我早知你会咁讲噶啦。"
+        },
+        {
+          "index": 4,
+          "text": "闲话休提，"
+        },
+        {
+          "index": 5,
+          "text": "我愿意出一百粒珍珠，"
+        },
+        {
+          "index": 6,
+          "text": "希望如霜姑娘今晚能够陪我把酒谈欢。"
+        },
+        {
+          "index": 7,
+          "text": "我唔想同你多讲，"
+        },
+        {
+          "index": 8,
+          "text": "请你出去。"
+        },
+        {
+          "index": 9,
+          "text": "我果然冇拣错人，"
+        },
+        {
+          "index": 10,
+          "text": "好，我就先饮为敬。"
+        },
+        {
+          "index": 11,
+          "text": "唔好饮啊！"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 11
     },
     "answer": {
       "changes": [
         {
-          "index": 2,
-          "text": "我唔知。"
-        },
-        {
-          "index": 3,
-          "text": "啊，姑娘，首先有个好消息，"
+          "index": 11,
+          "text": "唔好饮啊……"
         }
       ]
     },
@@ -3510,18 +3816,6 @@
         {
           "index": 10,
           "text": "我要他武功蓋世，狀元之才"
-        },
-        {
-          "index": 11,
-          "text": "一人之下，萬人之上"
-        },
-        {
-          "index": 12,
-          "text": "那你是否做得到？"
-        },
-        {
-          "index": 13,
-          "text": "讓我想一想"
         }
       ],
       "targets": [
@@ -3564,40 +3858,96 @@
         {
           "index": 10,
           "text": "我要佢武功盖世，状元之才，"
-        },
-        {
-          "index": 11,
-          "text": "一人之下，万人之上。"
-        },
-        {
-          "index": 12,
-          "text": "咁你做唔做得到啊？"
-        },
-        {
-          "index": 13,
-          "text": "俾我谂谂。"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 13
+      "last_owned_index": 7
     },
-    "answer": {
-      "changes": [
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "若然有半句假話，天打雷劈"
+        },
         {
           "index": 2,
-          "text": "证人？系。"
+          "text": "姐姐，我真的替你興奮⋯"
+        },
+        {
+          "index": 3,
+          "text": "唏！"
+        },
+        {
+          "index": 4,
+          "text": "你以為當我丈夫那麼容易嗎"
+        },
+        {
+          "index": 5,
+          "text": "要怎樣才可以當你丈夫呢？"
         },
         {
           "index": 6,
-          "text": "家姐，我真系戥你兴奋……"
+          "text": "我要他武功蓋世，狀元之才"
         },
         {
           "index": 7,
-          "text": "喂！"
+          "text": "一人之下，萬人之上"
+        },
+        {
+          "index": 8,
+          "text": "那你是否做得到？"
+        },
+        {
+          "index": 9,
+          "text": "讓我想一想"
         }
-      ]
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "若然有半句假话，天打雷劈。"
+        },
+        {
+          "index": 2,
+          "text": "家姐，我真系戥你兴奋。"
+        },
+        {
+          "index": 3,
+          "text": "喂，"
+        },
+        {
+          "index": 4,
+          "text": "你估做我丈夫咁容易嘅咩？"
+        },
+        {
+          "index": 5,
+          "text": "咁要点先可以做你丈夫呢？"
+        },
+        {
+          "index": 6,
+          "text": "我要佢武功盖世，状元之才，"
+        },
+        {
+          "index": 7,
+          "text": "一人之下，万人之上。"
+        },
+        {
+          "index": 8,
+          "text": "咁你做唔做得到啊？"
+        },
+        {
+          "index": 9,
+          "text": "俾我谂谂。"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 9
     },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -3826,10 +4176,15 @@
         {
           "index": 1,
           "text": "喂，我哋嚟迟咗！"
+        },
+        {
+          "index": 2,
+          "text": "一日都系我骑下只驴先！"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4218,7 +4573,7 @@
         },
         {
           "index": 13,
-          "text": "唔去！咁就唔系为咗任何人，"
+          "text": "唔去！咁就唔系为咗任何"
         }
       ],
       "first_owned_index": 1,
@@ -4228,7 +4583,23 @@
       "changes": [
         {
           "index": 2,
-          "text": "听讲话，佢⋯佢去咗京城啊。"
+          "text": "听讲话，佢……佢去咗京城啊。"
+        },
+        {
+          "index": 4,
+          "text": "男儿为国家……"
+        },
+        {
+          "index": 5,
+          "text": "条鞭啊冇啊掂过……"
+        },
+        {
+          "index": 6,
+          "text": "揈我！揈我！"
+        },
+        {
+          "index": 10,
+          "text": "阿仔"
         }
       ]
     },
@@ -4321,19 +4692,19 @@
         },
         {
           "index": 6,
-          "text": "唔去！咁就唔系为咗任何人，"
+          "text": "唔去！咁就唔系为咗任何"
         },
         {
           "index": 7,
-          "text": "只系为咗个女仔。"
+          "text": "人，只系为咗个女仔。"
         },
         {
           "index": 8,
-          "text": "英雄"
+          "text": "英雄，"
         },
         {
           "index": 9,
-          "text": "，为女死，为女亡，为女上京考，做"
+          "text": "为女死，为女亡，为女上京考，做"
         },
         {
           "index": 10,
@@ -4363,15 +4734,8 @@
       "first_owned_index": 4,
       "last_owned_index": 12
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 4,
-          "text": "阿爹等你讲呢句说话，等咗二十五年。"
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -4472,11 +4836,11 @@
         },
         {
           "index": 9,
-          "text": "少爷，少爷"
+          "text": "少爷，少爷，"
         },
         {
           "index": 10,
-          "text": "，上京访男噶噃。"
+          "text": "上京访男噶噃。"
         },
         {
           "index": 11,
@@ -4505,21 +4869,12 @@
     "answer": {
       "changes": [
         {
-          "index": 9,
-          "text": "少爷，少爷！"
-        },
-        {
-          "index": 10,
-          "text": "上京访男噶噃。"
-        },
-        {
           "index": 11,
           "text": "哎呀，你哋唔好追啦！"
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4583,16 +4938,12 @@
         {
           "index": 15,
           "text": "小看我？"
-        },
-        {
-          "index": 16,
-          "text": "總有一天比你大"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "，上京访男噶噃。"
+          "text": "上京访男噶噃。"
         },
         {
           "index": 2,
@@ -4640,23 +4991,19 @@
         },
         {
           "index": 13,
-          "text": "唔使噶啦嘛，哥。啦"
+          "text": "唔使噶啦嘛，哥。啦嘛，"
         },
         {
           "index": 14,
-          "text": "嘛，我呸！大得过我咩家下？"
+          "text": "我呸！大得过我咩家下？"
         },
         {
           "index": 15,
-          "text": "睇小我"
-        },
-        {
-          "index": 16,
-          "text": "啊！迟早一日大过你嘅。"
+          "text": "睇小我啊！"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 13
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
@@ -4671,10 +5018,6 @@
         {
           "index": 10,
           "text": "系啦。"
-        },
-        {
-          "index": 13,
-          "text": "唔使噶啦嘛，哥啦。"
         }
       ]
     },
@@ -4685,125 +5028,125 @@
       "guides": [
         {
           "index": 1,
-          "text": "留件衣服給我穿啊"
+          "text": "當然"
         },
         {
           "index": 2,
-          "text": "小孩子怕甚麼呢？"
+          "text": "留件衣服給我穿啊"
         },
         {
           "index": 3,
-          "text": "我不小了"
+          "text": "小孩子怕甚麼呢？"
         },
         {
           "index": 4,
-          "text": "呸！比我大嗎？"
+          "text": "我不小了"
         },
         {
           "index": 5,
-          "text": "小看我？"
+          "text": "呸！比我大嗎？"
         },
         {
           "index": 6,
-          "text": "總有一天比你大"
+          "text": "小看我？"
         },
         {
           "index": 7,
-          "text": "有誰願意脫下衣服來給我穿一下"
+          "text": "總有一天比你大"
         },
         {
           "index": 8,
-          "text": "沒眼看"
+          "text": "有誰願意脫下衣服來給我穿一下"
         },
         {
           "index": 9,
-          "text": "你們站著幹嘛？還不把它搬走"
+          "text": "沒眼看"
         },
         {
           "index": 10,
-          "text": "屋那麼大，何時才搬妥"
+          "text": "你們站著幹嘛？還不把它搬走"
         },
         {
           "index": 11,
-          "text": "請大家賣力點，好不好"
+          "text": "屋那麼大，何時才搬妥"
         },
         {
           "index": 12,
-          "text": "數三聲！一，二，三，推"
+          "text": "請大家賣力點，好不好"
         },
         {
           "index": 13,
-          "text": "推⋯"
+          "text": "數三聲！一，二，三，推"
         },
         {
           "index": 14,
-          "text": "小心推"
+          "text": "推⋯"
         },
         {
           "index": 15,
-          "text": "綁牢一點⋯綁牢一點"
+          "text": "小心推"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "喂，留翻件衫就好嘛。"
+          "text": "系啦，"
         },
         {
           "index": 2,
-          "text": "系啊，苏姑怕乜嘢啊？"
+          "text": "喂，留翻件衫就好嘛。"
         },
         {
           "index": 3,
-          "text": "唔使噶啦嘛，哥。啦"
+          "text": "系啊，苏姑怕乜嘢啊？"
         },
         {
           "index": 4,
-          "text": "嘛，我呸！大得过我咩家下？"
+          "text": "唔使噶啦嘛，哥。啦嘛，"
         },
         {
           "index": 5,
-          "text": "睇小我"
+          "text": "我呸！大得过我咩家下？"
         },
         {
           "index": 6,
-          "text": "啊！迟早一日大过你嘅。"
+          "text": "睇小我啊！"
         },
         {
           "index": 7,
-          "text": "喂，后边边个快啲除条裤落嚟揞住啊！喂，快啲快啲除！"
+          "text": "迟早一日大过你嘅。"
         },
         {
           "index": 8,
-          "text": ""
+          "text": "喂，后边边个快啲除条裤落嚟揞住啊！"
         },
         {
           "index": 9,
-          "text": "你哋企晒喺度做咩？你仲唔搬走？"
+          "text": "喂，快啲快啲除！"
         },
         {
           "index": 10,
-          "text": "嘿，咁大间屋啊，几时先搬得完啊？"
+          "text": "你哋企晒喺度做咩？你仲唔搬走？嘿，"
         },
         {
           "index": 11,
-          "text": "唔该大家落力啲啦，好唔好啊？"
+          "text": "咁大间屋啊，几时先搬得完啊？"
         },
         {
           "index": 12,
-          "text": "嚟，数三声啦，一、二、三，去！"
+          "text": "唔该大家落力啲啦，好唔好啊？"
         },
         {
           "index": 13,
-          "text": "去！去！"
+          "text": "嚟，数三声啦，一、二、三，去！"
         },
         {
           "index": 14,
-          "text": "好声啲啊！"
+          "text": "去！去！"
         },
         {
           "index": 15,
-          "text": "啊，稳啲，稳啲啊！"
+          "text": "好声啲啊！"
         }
       ],
       "first_owned_index": 4,
@@ -4813,11 +5156,15 @@
       "changes": [
         {
           "index": 4,
-          "text": "嘛，我呸！大得过我咩，家下？"
+          "text": "唔使噶啦嘛，哥。啦嘛。"
         },
         {
-          "index": 5,
-          "text": "睇小我？"
+          "index": 6,
+          "text": "睇小我啊？"
+        },
+        {
+          "index": 10,
+          "text": "你哋企晒喺度做咩？你仲唔搬走？嘿！"
         }
       ]
     },
@@ -4829,149 +5176,256 @@
       "guides": [
         {
           "index": 1,
-          "text": "屋那麼大，何時才搬妥"
+          "text": "你們站著幹嘛？還不把它搬走"
         },
         {
           "index": 2,
-          "text": "請大家賣力點，好不好"
+          "text": "屋那麼大，何時才搬妥"
         },
         {
           "index": 3,
-          "text": "數三聲！一，二，三，推"
+          "text": "請大家賣力點，好不好"
         },
         {
           "index": 4,
-          "text": "推⋯"
+          "text": "數三聲！一，二，三，推"
         },
         {
           "index": 5,
-          "text": "小心推"
+          "text": "推⋯"
         },
         {
           "index": 6,
-          "text": "綁牢一點⋯綁牢一點"
+          "text": "小心推"
         },
         {
           "index": 7,
-          "text": "老爺，樹也要搬？"
+          "text": "綁牢一點⋯綁牢一點"
         },
         {
           "index": 8,
-          "text": "當然"
+          "text": "老爺，樹也要搬？"
         },
         {
           "index": 9,
-          "text": "否則我到京城哪有荔枝吃？"
+          "text": "當然"
         },
         {
           "index": 10,
-          "text": "推到那邊⋯推到那邊"
+          "text": "否則我到京城哪有荔枝吃？"
         },
         {
           "index": 11,
-          "text": "小心點⋯小心我的荔枝"
+          "text": "推到那邊⋯推到那邊"
         },
         {
           "index": 12,
-          "text": "小心我的荔枝，笨蛋"
+          "text": "小心點⋯小心我的荔枝"
         },
         {
           "index": 13,
-          "text": "趙無極這趟協助微臣"
+          "text": "小心我的荔枝，笨蛋"
         },
         {
           "index": 14,
-          "text": "到廣西剿平長毛餘孽立功不少"
+          "text": "趙無極這趟協助微臣"
         },
         {
           "index": 15,
-          "text": "微臣特意帶他來見皇上"
-        },
-        {
-          "index": 16,
-          "text": "好！朕現在賜你為都察院副左都御史"
-        },
-        {
-          "index": 17,
-          "text": "希望你日後好好為大清效力"
-        },
-        {
-          "index": 18,
-          "text": "謝主龍恩"
+          "text": "到廣西剿平長毛餘孽立功不少"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "嘿，咁大间屋啊，几时先搬得完啊？"
+          "text": "你哋企晒喺度做咩？你仲唔搬走？嘿，"
         },
         {
           "index": 2,
-          "text": "唔该大家落力啲啦，好唔好啊？"
+          "text": "咁大间屋啊，几时先搬得完啊？"
         },
         {
           "index": 3,
-          "text": "嚟，数三声啦，一、二、三，去！"
+          "text": "唔该大家落力啲啦，好唔好啊？"
         },
         {
           "index": 4,
-          "text": "去！去！"
+          "text": "嚟，数三声啦，一、二、三，去！"
         },
         {
           "index": 5,
-          "text": "好声啲啊！"
+          "text": "去！去！"
         },
         {
           "index": 6,
-          "text": "啊，稳啲，稳啲啊！"
+          "text": "好声啲啊！"
         },
         {
           "index": 7,
-          "text": "老爷，树都搬，"
+          "text": "啊，稳啲，稳啲啊！"
         },
         {
           "index": 8,
-          "text": "梗系啦，"
+          "text": "老爷，树都搬，"
         },
         {
           "index": 9,
-          "text": "唔系我上到京城边有荔枝食啊家阵？"
+          "text": "梗系啦，"
         },
         {
           "index": 10,
-          "text": "啊，嚟，推啊，快推啊！好声啊，好声"
+          "text": "唔系我上到京城边有荔枝食啊家阵？"
         },
         {
           "index": 11,
-          "text": "啊，睇住我啲荔枝啊，睇住我。啊！"
+          "text": "啊，嚟，推啊，快推啊！好声啊，好声"
         },
         {
           "index": 12,
-          "text": "睇住我啲荔枝啊！手头。"
+          "text": "啊，睇住我啲荔枝啊，睇住我。啊！"
         },
         {
           "index": 13,
-          "text": "赵无极今次协助微臣"
+          "text": "睇住我啲荔枝啊！手头。"
         },
         {
           "index": 14,
-          "text": "喺广西剿平长毛余孽，立功不少，"
+          "text": "赵无极今次协助微臣"
         },
         {
           "index": 15,
+          "text": "喺广西剿平长毛余孽，立功不少，"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 12
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "否則我到京城哪有荔枝吃？"
+        },
+        {
+          "index": 2,
+          "text": "推到那邊⋯推到那邊"
+        },
+        {
+          "index": 3,
+          "text": "小心點⋯小心我的荔枝"
+        },
+        {
+          "index": 4,
+          "text": "小心我的荔枝，笨蛋"
+        },
+        {
+          "index": 5,
+          "text": "趙無極這趟協助微臣"
+        },
+        {
+          "index": 6,
+          "text": "到廣西剿平長毛餘孽立功不少"
+        },
+        {
+          "index": 7,
+          "text": "微臣特意帶他來見皇上"
+        },
+        {
+          "index": 8,
+          "text": "好！朕現在賜你為都察院副左都御史"
+        },
+        {
+          "index": 9,
+          "text": "希望你日後好好為大清效力"
+        },
+        {
+          "index": 10,
+          "text": "謝主龍恩"
+        },
+        {
+          "index": 11,
+          "text": "皇上，趙先生一身奇技異術"
+        },
+        {
+          "index": 12,
+          "text": "不如請他示範一下，讓皇上開開眼界"
+        },
+        {
+          "index": 13,
+          "text": "異術？"
+        },
+        {
+          "index": 14,
+          "text": "趙先生，你就示範給朕看"
+        },
+        {
+          "index": 15,
+          "text": "是"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "唔系我上到京城边有荔枝食啊家阵？"
+        },
+        {
+          "index": 2,
+          "text": "啊，嚟，推啊，快推啊！好声啊，好声"
+        },
+        {
+          "index": 3,
+          "text": "啊，睇住我啲荔枝啊，睇住我。啊！"
+        },
+        {
+          "index": 4,
+          "text": "睇住我啲荔枝啊！手头。"
+        },
+        {
+          "index": 5,
+          "text": "赵无极今次协助微臣"
+        },
+        {
+          "index": 6,
+          "text": "喺广西剿平长毛余孽，立功不少，"
+        },
+        {
+          "index": 7,
           "text": "微臣特意带佢嚟见皇上。"
         },
         {
-          "index": 16,
+          "index": 8,
           "text": "好，朕而家赐你为都察院副左都御史，"
         },
         {
-          "index": 17,
+          "index": 9,
           "text": "希望你日后好好为大清尽力。"
         },
         {
-          "index": 18,
+          "index": 10,
           "text": "谢主隆恩。"
+        },
+        {
+          "index": 11,
+          "text": "皇上，赵先生一身奇技异术，"
+        },
+        {
+          "index": 12,
+          "text": "不如请佢展示下，俾皇上开下眼界。"
+        },
+        {
+          "index": 13,
+          "text": "异术？"
+        },
+        {
+          "index": 14,
+          "text": "赵先生，你就展示俾朕睇下。"
+        },
+        {
+          "index": 15,
+          "text": "系。"
         }
       ],
       "first_owned_index": 4,
@@ -4980,124 +5434,12 @@
     "answer": {
       "changes": [
         {
-          "index": 7,
-          "text": "老爷，树都搬？"
-        },
-        {
-          "index": 10,
-          "text": "啊，嚟，推啊，快推啊！好声啊，好声！"
-        },
-        {
-          "index": 12,
+          "index": 4,
           "text": "睇住我啲荔枝啊，手头！"
-        }
-      ]
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "guides": [
-        {
-          "index": 1,
-          "text": "趙無極這趟協助微臣"
-        },
-        {
-          "index": 2,
-          "text": "到廣西剿平長毛餘孽立功不少"
-        },
-        {
-          "index": 3,
-          "text": "微臣特意帶他來見皇上"
-        },
-        {
-          "index": 4,
-          "text": "好！朕現在賜你為都察院副左都御史"
-        },
-        {
-          "index": 5,
-          "text": "希望你日後好好為大清效力"
-        },
-        {
-          "index": 6,
-          "text": "謝主龍恩"
-        },
-        {
-          "index": 7,
-          "text": "皇上，趙先生一身奇技異術"
         },
         {
           "index": 8,
-          "text": "不如請他示範一下，讓皇上開開眼界"
-        },
-        {
-          "index": 9,
-          "text": "異術？"
-        },
-        {
-          "index": 10,
-          "text": "趙先生，你就示範給朕看"
-        },
-        {
-          "index": 11,
-          "text": "是"
-        }
-      ],
-      "targets": [
-        {
-          "index": 1,
-          "text": "赵无极今次协助微臣"
-        },
-        {
-          "index": 2,
-          "text": "喺广西剿平长毛余孽，立功不少，"
-        },
-        {
-          "index": 3,
-          "text": "微臣特意带佢嚟见皇上。"
-        },
-        {
-          "index": 4,
-          "text": "好，朕而家赐你为都察院副左都御史，"
-        },
-        {
-          "index": 5,
-          "text": "希望你日后好好为大清尽力。"
-        },
-        {
-          "index": 6,
-          "text": "谢主隆恩。"
-        },
-        {
-          "index": 7,
-          "text": "皇上，赵先生一身奇技异术，"
-        },
-        {
-          "index": 8,
-          "text": "不如请佢展示下，俾皇上开下眼界。"
-        },
-        {
-          "index": 9,
-          "text": "异术？"
-        },
-        {
-          "index": 10,
-          "text": "赵先生，你就展示俾朕睇下。"
-        },
-        {
-          "index": 11,
-          "text": "系。"
-        }
-      ],
-      "first_owned_index": 4,
-      "last_owned_index": 11
-    },
-    "answer": {
-      "changes": [
-        {
-          "index": 4,
-          "text": "好！朕而家赐你为都察院副左都御史，"
+          "text": "好，朕而家赐你为都察院副左都御史。"
         }
       ]
     },
@@ -5314,30 +5656,6 @@
         {
           "index": 11,
           "text": "阿爹還想作弄你一下，好棒好棒"
-        },
-        {
-          "index": 12,
-          "text": "好了好了，少爺明早要考試"
-        },
-        {
-          "index": 13,
-          "text": "別玩得太瘋"
-        },
-        {
-          "index": 14,
-          "text": "出去，出去"
-        },
-        {
-          "index": 15,
-          "text": "阿燦，你明天考試"
-        },
-        {
-          "index": 16,
-          "text": "準備好了沒有？"
-        },
-        {
-          "index": 17,
-          "text": "準備甚麼？我贏定了，你不知道嗎"
         }
       ],
       "targets": [
@@ -5384,34 +5702,10 @@
         {
           "index": 11,
           "text": "阿爹就咁整蛊你添。你好，你好，你好。"
-        },
-        {
-          "index": 12,
-          "text": "好啦，好啦，少爷听朝考试，"
-        },
-        {
-          "index": 13,
-          "text": "唔好玩到咁癫，"
-        },
-        {
-          "index": 14,
-          "text": "出翻去，出翻去。"
-        },
-        {
-          "index": 15,
-          "text": "阿七啊，你听日考试咯，"
-        },
-        {
-          "index": 16,
-          "text": "啲嘢预备好晒未？"
-        },
-        {
-          "index": 17,
-          "text": "预备咩？嗯，赢梗噶嘛，乜你唔知咩？"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 14
+      "last_owned_index": 8
     },
     "answer": {
       "changes": [
@@ -5433,139 +5727,131 @@
       "guides": [
         {
           "index": 1,
-          "text": "好了好了，少爺明早要考試"
+          "text": "你是大嘛"
         },
         {
           "index": 2,
-          "text": "別玩得太瘋"
+          "text": "懷孕的也有？騙不倒我"
         },
         {
           "index": 3,
-          "text": "出去，出去"
+          "text": "你是爹"
         },
         {
           "index": 4,
-          "text": "阿燦，你明天考試"
+          "text": "你很壞！這樣也給你猜中"
         },
         {
           "index": 5,
-          "text": "準備好了沒有？"
+          "text": "聰明，聰明"
         },
         {
           "index": 6,
-          "text": "準備甚麼？我贏定了，你不知道嗎"
+          "text": "阿爹還想作弄你一下，好棒好棒"
         },
         {
           "index": 7,
-          "text": "知道"
+          "text": "好了好了，少爺明早要考試"
         },
         {
           "index": 8,
-          "text": "你這樣的態度，我就有信心"
+          "text": "別玩得太瘋"
         },
         {
           "index": 9,
-          "text": "阿燦，這位是鄭世伯"
+          "text": "出去，出去"
         },
         {
           "index": 10,
-          "text": "明天鄭世伯做主考"
+          "text": "阿燦，你明天考試"
         },
         {
           "index": 11,
-          "text": "你來打個招呼"
+          "text": "準備好了沒有？"
         },
         {
           "index": 12,
-          "text": "鄭世伯，招呼不週"
+          "text": "準備甚麼？我贏定了，你不知道嗎"
         },
         {
           "index": 13,
-          "text": "你看"
+          "text": "知道"
         },
         {
           "index": 14,
-          "text": "我的兒子是否狀元臉？"
+          "text": "你這樣的態度，我就有信心"
         },
         {
           "index": 15,
-          "text": "要看他的造化了"
+          "text": "阿燦，這位是鄭世伯"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "好啦，好啦，少爷听朝考试，"
+          "text": "咁都俾"
         },
         {
           "index": 2,
-          "text": "唔好玩到咁癫，"
+          "text": "你估到。"
         },
         {
           "index": 3,
-          "text": "出翻去，出翻去。"
+          "text": "嗱，"
         },
         {
           "index": 4,
-          "text": "阿七啊，你听日考试咯，"
+          "text": "叻"
         },
         {
           "index": 5,
-          "text": "啲嘢预备好晒未？"
+          "text": "仔，叻仔，"
         },
         {
           "index": 6,
-          "text": "预备咩？嗯，赢梗噶嘛，乜你唔知咩？"
+          "text": "阿爹就咁整蛊你添。你好，你好，你好。"
         },
         {
           "index": 7,
-          "text": "吓，知啊！"
+          "text": "好啦，好啦，少爷听朝考试，"
         },
         {
           "index": 8,
-          "text": "你咁态度咧，我就有晒信心啦。"
+          "text": "唔好玩到咁癫，"
         },
         {
           "index": 9,
-          "text": "阿七啊，嗱呢位咧就郑世伯，"
+          "text": "出翻去，出翻去。"
         },
         {
           "index": 10,
-          "text": "听日郑世伯主考，"
+          "text": "阿七啊，你听日考试咯，"
         },
         {
           "index": 11,
-          "text": "你打个招呼。"
+          "text": "啲嘢预备好晒未？"
         },
         {
           "index": 12,
-          "text": "郑世伯，招呼唔到。"
+          "text": "预备咩？嗯，赢梗噶嘛，乜你唔知咩？"
         },
         {
           "index": 13,
-          "text": "诶诶诶诶诶诶！嗱嗱嗱，"
+          "text": "吓，知啊！"
         },
         {
           "index": 14,
-          "text": "系嘛？我真系咪成个状元咁格局噶啦？"
+          "text": "你咁态度咧，我就有晒信心啦。"
         },
         {
           "index": 15,
-          "text": "吓，睇个做法"
+          "text": "阿七啊，嗱呢位咧就郑世伯，"
         }
       ],
       "first_owned_index": 4,
       "last_owned_index": 12
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 9,
-          "text": "阿七啊，嗱呢位咧就郑世伯。"
-        }
-      ]
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -5573,148 +5859,255 @@
       "guides": [
         {
           "index": 1,
-          "text": "明天鄭世伯做主考"
+          "text": "阿燦，你明天考試"
         },
         {
           "index": 2,
-          "text": "你來打個招呼"
+          "text": "準備好了沒有？"
         },
         {
           "index": 3,
-          "text": "鄭世伯，招呼不週"
+          "text": "準備甚麼？我贏定了，你不知道嗎"
         },
         {
           "index": 4,
-          "text": "你看"
+          "text": "知道"
         },
         {
           "index": 5,
-          "text": "我的兒子是否狀元臉？"
+          "text": "你這樣的態度，我就有信心"
         },
         {
           "index": 6,
-          "text": "要看他的造化了"
+          "text": "阿燦，這位是鄭世伯"
         },
         {
           "index": 7,
-          "text": "老鄭，你給我的考卷"
+          "text": "明天鄭世伯做主考"
         },
         {
           "index": 8,
-          "text": "我已經找人在做"
+          "text": "你來打個招呼"
         },
         {
           "index": 9,
-          "text": "不會改了吧？"
+          "text": "鄭世伯，招呼不週"
         },
         {
           "index": 10,
-          "text": "考卷方面是沒問題了"
+          "text": "你看"
         },
         {
           "index": 11,
-          "text": "至於臨場考弓箭、騎馬"
+          "text": "我的兒子是否狀元臉？"
         },
         {
           "index": 12,
-          "text": "舉石、搏擊、兵器"
+          "text": "要看他的造化了"
         },
         {
           "index": 13,
-          "text": "就全靠他自己"
+          "text": "老鄭，你給我的考卷"
         },
         {
           "index": 14,
+          "text": "我已經找人在做"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "阿七啊，你听日考试咯，"
+        },
+        {
+          "index": 2,
+          "text": "啲嘢预备好晒未？"
+        },
+        {
+          "index": 3,
+          "text": "预备咩？嗯，赢梗噶嘛，乜你唔知咩？"
+        },
+        {
+          "index": 4,
+          "text": "吓，知啊！"
+        },
+        {
+          "index": 5,
+          "text": "你咁态度咧，我就有晒信心啦。"
+        },
+        {
+          "index": 6,
+          "text": "阿七啊，嗱呢位咧就郑世伯，"
+        },
+        {
+          "index": 7,
+          "text": "听日郑世伯主考，"
+        },
+        {
+          "index": 8,
+          "text": "你打个招呼。"
+        },
+        {
+          "index": 9,
+          "text": "郑世伯，招呼唔到。"
+        },
+        {
+          "index": 10,
+          "text": "诶诶诶诶诶诶！嗱嗱嗱，系嘛？"
+        },
+        {
+          "index": 11,
+          "text": "我真系咪成个状元咁格局噶啦？"
+        },
+        {
+          "index": 12,
+          "text": "吓，睇个做法啦。"
+        },
+        {
+          "index": 13,
+          "text": "喂，老郑，你俾我啲试卷咧，"
+        },
+        {
+          "index": 14,
+          "text": "我就已经揾人做紧噶啦，"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 11
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "鄭世伯，招呼不週"
+        },
+        {
+          "index": 2,
+          "text": "你看"
+        },
+        {
+          "index": 3,
+          "text": "我的兒子是否狀元臉？"
+        },
+        {
+          "index": 4,
+          "text": "要看他的造化了"
+        },
+        {
+          "index": 5,
+          "text": "老鄭，你給我的考卷"
+        },
+        {
+          "index": 6,
+          "text": "我已經找人在做"
+        },
+        {
+          "index": 7,
+          "text": "不會改了吧？"
+        },
+        {
+          "index": 8,
+          "text": "考卷方面是沒問題了"
+        },
+        {
+          "index": 9,
+          "text": "至於臨場考弓箭、騎馬"
+        },
+        {
+          "index": 10,
+          "text": "舉石、搏擊、兵器"
+        },
+        {
+          "index": 11,
+          "text": "就全靠他自己"
+        },
+        {
+          "index": 12,
           "text": "這一點你放心"
         },
         {
-          "index": 15,
+          "index": 13,
           "text": "我的兒子十八般武藝樣樣精通"
         },
         {
-          "index": 16,
+          "index": 14,
           "text": "那二百萬兩可否酌量減一點？"
         },
         {
-          "index": 17,
+          "index": 15,
           "text": "人情歸人情，數目一定要分明"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "听日郑世伯主考，"
-        },
-        {
-          "index": 2,
-          "text": "你打个招呼。"
-        },
-        {
-          "index": 3,
           "text": "郑世伯，招呼唔到。"
         },
         {
+          "index": 2,
+          "text": "诶诶诶诶诶诶！嗱嗱嗱，系嘛？"
+        },
+        {
+          "index": 3,
+          "text": "我真系咪成个状元咁格局噶啦？"
+        },
+        {
           "index": 4,
-          "text": "诶诶诶诶诶诶！嗱嗱嗱，"
+          "text": "吓，睇个做法啦。"
         },
         {
           "index": 5,
-          "text": "系嘛？我真系咪成个状元咁格局噶啦？"
+          "text": "喂，老郑，你俾我啲试卷咧，"
         },
         {
           "index": 6,
-          "text": "吓，睇个做法"
-        },
-        {
-          "index": 7,
-          "text": "啦。喂，老郑，你俾我啲试卷咧，"
-        },
-        {
-          "index": 8,
           "text": "我就已经揾人做紧噶啦，"
         },
         {
-          "index": 9,
+          "index": 7,
           "text": "唔会改啦嘛？"
         },
         {
-          "index": 10,
+          "index": 8,
           "text": "试卷可以同佢换嘅啫，"
         },
         {
-          "index": 11,
+          "index": 9,
           "text": "至于到时考弓箭、骑马、"
         },
         {
-          "index": 12,
+          "index": 10,
           "text": "举石、搏击同兵器咧，"
         },
         {
-          "index": 13,
+          "index": 11,
           "text": "就自己杀过自己啦。"
         },
         {
-          "index": 14,
+          "index": 12,
           "text": "呢层你放心，"
         },
         {
-          "index": 15,
+          "index": 13,
           "text": "我这十八般武艺件件皆精。"
         },
         {
-          "index": 16,
+          "index": 14,
           "text": "喂，个二百万两系咪可以酌量减啲啊？"
         },
         {
-          "index": 17,
+          "index": 15,
           "text": "诶，人情还人情，均真啲好。"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 17
+      "last_owned_index": 15
     },
-    "answer": {},
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
@@ -5799,11 +6192,11 @@
       "targets": [
         {
           "index": 1,
-          "text": "劳力啫"
+          "text": "劳力啫，"
         },
         {
           "index": 2,
-          "text": "，无耻啊，似你老母。"
+          "text": "无耻啊，似你老母。"
         }
       ],
       "first_owned_index": 1,
@@ -5817,7 +6210,7 @@
         },
         {
           "index": 2,
-          "text": "无耻啊，似你老母。"
+          "text": "无耻啊！似你老母。"
         }
       ]
     },
@@ -5954,11 +6347,11 @@
         },
         {
           "index": 13,
-          "text": "全部满分啊，晋级嘅。点投？"
+          "text": "全部满分啊，晋级嘅。点投？喂，"
         },
         {
           "index": 14,
-          "text": "喂，家阵考状元噃，你估做咕喱啊？"
+          "text": "家阵考状元噃，你估做咕喱啊？"
         }
       ],
       "first_owned_index": 1,
@@ -5972,11 +6365,12 @@
         },
         {
           "index": 3,
-          "text": "系由蒙古嘅博达尔多……"
+          "text": "系由蒙古嘅博达尔多，"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6036,22 +6430,6 @@
         {
           "index": 14,
           "text": "我猜可能是虛火"
-        },
-        {
-          "index": 15,
-          "text": "是嗎？"
-        },
-        {
-          "index": 16,
-          "text": "但是這個蘇察哈爾燦"
-        },
-        {
-          "index": 17,
-          "text": "怎樣？怎樣？"
-        },
-        {
-          "index": 18,
-          "text": "雖然沿途低著頭"
         }
       ],
       "targets": [
@@ -6073,11 +6451,11 @@
         },
         {
           "index": 5,
-          "text": "全部满分啊，晋级嘅。点投？"
+          "text": "全部满分啊，晋级嘅。点投？喂，"
         },
         {
           "index": 6,
-          "text": "喂，家阵考状元噃，你估做咕喱啊？"
+          "text": "家阵考状元噃，你估做咕喱啊？"
         },
         {
           "index": 7,
@@ -6085,11 +6463,11 @@
         },
         {
           "index": 8,
-          "text": "咁又唔系咁讲啊，"
+          "text": "咁又唔系咁讲啊，因为"
         },
         {
           "index": 9,
-          "text": "因为同乡有见地啊。"
+          "text": "同乡有见地啊。"
         },
         {
           "index": 10,
@@ -6110,133 +6488,10 @@
         {
           "index": 14,
           "text": "我谂落可能系虚火嚟嘅。"
-        },
-        {
-          "index": 15,
-          "text": "系，"
-        },
-        {
-          "index": 16,
-          "text": "但系呢个苏察哈尔察林唔同。"
-        },
-        {
-          "index": 17,
-          "text": "点啊点啊点啊？"
-        },
-        {
-          "index": 18,
-          "text": "系圆头头耷耷，吓，老实地，"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 15
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "guides": [
-        {
-          "index": 1,
-          "text": "但是未出賽行圈頸部就已經有白汗"
-        },
-        {
-          "index": 2,
-          "text": "我猜可能是虛火"
-        },
-        {
-          "index": 3,
-          "text": "是嗎？"
-        },
-        {
-          "index": 4,
-          "text": "但是這個蘇察哈爾燦"
-        },
-        {
-          "index": 5,
-          "text": "怎樣？怎樣？"
-        },
-        {
-          "index": 6,
-          "text": "雖然沿途低著頭"
-        },
-        {
-          "index": 7,
-          "text": "但是能進入決賽是很困難的"
-        },
-        {
-          "index": 8,
-          "text": "甚麼？"
-        },
-        {
-          "index": 9,
-          "text": "是洋文！即是有鬥心"
-        },
-        {
-          "index": 10,
-          "text": "所以我準備全押"
-        },
-        {
-          "index": 11,
-          "text": "是嗎？那你打算押多少？"
-        },
-        {
-          "index": 12,
-          "text": "八十萬兩！"
-        }
-      ],
-      "targets": [
-        {
-          "index": 1,
-          "text": "但未出赛行圈已经一头白汗，"
-        },
-        {
-          "index": 2,
-          "text": "我谂落可能系虚火嚟嘅。"
-        },
-        {
-          "index": 3,
-          "text": "系，"
-        },
-        {
-          "index": 4,
-          "text": "但系呢个苏察哈尔察林唔同。"
-        },
-        {
-          "index": 5,
-          "text": "点啊点啊点啊？"
-        },
-        {
-          "index": 6,
-          "text": "系圆头头耷耷，吓，老实地，"
-        },
-        {
-          "index": 7,
-          "text": "佢嘴唇都系好有虾嘅。"
-        },
-        {
-          "index": 8,
-          "text": "吓？乜虾啊？"
-        },
-        {
-          "index": 9,
-          "text": "系洋文嚟嘅，虾即系有斗心咁解。"
-        },
-        {
-          "index": 10,
-          "text": "哦，所以我啊谂住瞓身。"
-        },
-        {
-          "index": 11,
-          "text": "系啊，喂，咁你打算买几多啊？"
-        },
-        {
-          "index": 12,
-          "text": "八十万两。"
-        }
-      ],
-      "first_owned_index": 4,
-      "last_owned_index": 9
+      "last_owned_index": 11
     },
     "answer": {},
     "verified": true
@@ -6246,135 +6501,270 @@
       "guides": [
         {
           "index": 1,
-          "text": "但是能進入決賽是很困難的"
+          "text": "這位同僚有見識"
         },
         {
           "index": 2,
-          "text": "甚麼？"
+          "text": "我鑽研了這場比賽很久"
         },
         {
           "index": 3,
-          "text": "是洋文！即是有鬥心"
+          "text": "也覺得個賠率有點古怪"
         },
         {
           "index": 4,
-          "text": "所以我準備全押"
+          "text": "這個博達爾多外型俊朗，渾身有力"
         },
         {
           "index": 5,
-          "text": "是嗎？那你打算押多少？"
+          "text": "但是未出賽行圈頸部就已經有白汗"
         },
         {
           "index": 6,
-          "text": "八十萬兩！"
+          "text": "我猜可能是虛火"
         },
         {
           "index": 7,
-          "text": "八十萬兩那麼少？買夠二百萬兩嘛"
+          "text": "是嗎？"
         },
         {
           "index": 8,
-          "text": "怎麼？為甚麼你突然間看好他"
+          "text": "但是這個蘇察哈爾燦"
         },
         {
           "index": 9,
-          "text": "我看你分析得那麼清楚"
+          "text": "怎樣？怎樣？"
         },
         {
           "index": 10,
-          "text": "給你說說"
+          "text": "雖然沿途低著頭"
         },
         {
           "index": 11,
-          "text": "我都覺得蘇燦像贏定的"
+          "text": "但是能進入決賽是很困難的"
         },
         {
           "index": 12,
-          "text": "過來過來"
+          "text": "甚麼？"
         },
         {
           "index": 13,
-          "text": "我第二次全押"
+          "text": "是洋文！即是有鬥心"
         },
         {
           "index": 14,
+          "text": "所以我準備全押"
+        },
+        {
+          "index": 15,
+          "text": "是嗎？那你打算押多少？"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "同乡有见地啊。"
+        },
+        {
+          "index": 2,
+          "text": "我注意呢场赛事好耐，"
+        },
+        {
+          "index": 3,
+          "text": "觉得个赔率有啲古怪。系咩？"
+        },
+        {
+          "index": 4,
+          "text": "呢个博达尔多外形俊朗，浑身是力，"
+        },
+        {
+          "index": 5,
+          "text": "但未出赛行圈已经一头白汗，"
+        },
+        {
+          "index": 6,
+          "text": "我谂落可能系虚火嚟嘅。"
+        },
+        {
+          "index": 7,
+          "text": "系，"
+        },
+        {
+          "index": 8,
+          "text": "但系呢个苏察哈尔察林唔同。"
+        },
+        {
+          "index": 9,
+          "text": "点啊点啊点啊？"
+        },
+        {
+          "index": 10,
+          "text": "系圆头头耷耷，"
+        },
+        {
+          "index": 11,
+          "text": "吓，老实地，佢嘴唇都系好有虾嘅。"
+        },
+        {
+          "index": 12,
+          "text": "吓？乜虾啊？"
+        },
+        {
+          "index": 13,
+          "text": "系洋文嚟嘅，虾即系有斗心咁解。"
+        },
+        {
+          "index": 14,
+          "text": "哦，所以我啊谂住瞓身。"
+        },
+        {
+          "index": 15,
+          "text": "系啊，喂，咁你打算买几多啊？"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 12
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "雖然沿途低著頭"
+        },
+        {
+          "index": 2,
+          "text": "但是能進入決賽是很困難的"
+        },
+        {
+          "index": 3,
+          "text": "甚麼？"
+        },
+        {
+          "index": 4,
+          "text": "是洋文！即是有鬥心"
+        },
+        {
+          "index": 5,
+          "text": "所以我準備全押"
+        },
+        {
+          "index": 6,
+          "text": "是嗎？那你打算押多少？"
+        },
+        {
+          "index": 7,
+          "text": "八十萬兩！"
+        },
+        {
+          "index": 8,
+          "text": "八十萬兩那麼少？買夠二百萬兩嘛"
+        },
+        {
+          "index": 9,
+          "text": "怎麼？為甚麼你突然間看好他"
+        },
+        {
+          "index": 10,
+          "text": "我看你分析得那麼清楚"
+        },
+        {
+          "index": 11,
+          "text": "給你說說"
+        },
+        {
+          "index": 12,
+          "text": "我都覺得蘇燦像贏定的"
+        },
+        {
+          "index": 13,
+          "text": "過來過來"
+        },
+        {
+          "index": 14,
+          "text": "我第二次全押"
+        },
+        {
+          "index": 15,
           "text": "是嗎？"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "佢嘴唇都系好有虾嘅。"
+          "text": "系圆头头耷耷，"
         },
         {
           "index": 2,
-          "text": "吓？乜虾啊？"
+          "text": "吓，老实地，佢嘴唇都系好有虾嘅。"
         },
         {
           "index": 3,
-          "text": "系洋文嚟嘅，虾即系有斗心咁解。"
+          "text": "吓？乜虾啊？"
         },
         {
           "index": 4,
-          "text": "哦，所以我啊谂住瞓身。"
+          "text": "系洋文嚟嘅，虾即系有斗心咁解。"
         },
         {
           "index": 5,
-          "text": "系啊，喂，咁你打算买几多啊？"
+          "text": "哦，所以我啊谂住瞓身。"
         },
         {
           "index": 6,
-          "text": "八十万两。"
+          "text": "系啊，喂，咁你打算买几多啊？"
         },
         {
           "index": 7,
-          "text": "八十万两咁少，买够二百万两啊嘛。"
+          "text": "八十万两。"
         },
         {
           "index": 8,
-          "text": "诶，点解啊？点解你突然间睇得咁好？"
+          "text": "八十万两咁少，买够二百万两啊嘛。"
         },
         {
           "index": 9,
-          "text": "我见你分析得咁清楚，"
+          "text": "诶，点解啊？点解你突然间睇得咁好？"
         },
         {
           "index": 10,
-          "text": "点解突然间话"
+          "text": "我见你分析得咁清楚，"
         },
         {
           "index": 11,
-          "text": "，我觉得苏察好似赢咁。得苏仔好似赢紧咁啊！"
+          "text": "点解突然间话，"
         },
         {
           "index": 12,
-          "text": "吓，诶，过嚟过嚟，"
+          "text": "我觉得苏察好似赢咁。得苏仔好似赢紧咁啊！"
         },
         {
           "index": 13,
-          "text": "我分两次身，"
+          "text": "吓，诶，过嚟过嚟，"
         },
         {
           "index": 14,
+          "text": "我分两次身，"
+        },
+        {
+          "index": 15,
           "text": "系"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 11
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
         {
           "index": 4,
-          "text": "哦，所以我啊，谂住瞓身。"
+          "text": "系洋文嚟嘅！虾即系有斗心咁解。"
         },
         {
-          "index": 6,
-          "text": "八十万两！"
-        },
-        {
-          "index": 7,
-          "text": "八十万两咁少？买够二百万两啊嘛！"
+          "index": 8,
+          "text": "八十万两咁少？买够二百万两啊嘛。"
         }
       ]
     },
@@ -6451,11 +6841,11 @@
         },
         {
           "index": 2,
-          "text": "点解突然间话"
+          "text": "点解突然间话，"
         },
         {
           "index": 3,
-          "text": "，我觉得苏察好似赢咁。得苏仔好似赢紧咁啊！"
+          "text": "我觉得苏察好似赢咁。得苏仔好似赢紧咁啊！"
         },
         {
           "index": 4,
@@ -6479,11 +6869,11 @@
         },
         {
           "index": 9,
-          "text": "诶，点解你唔落注？我落注"
+          "text": "诶，点解你唔落注？"
         },
         {
           "index": 10,
-          "text": "嚟做咩啫？𠮶个我仔嚟噶嘛！"
+          "text": "我落注嚟做咩啫？𠮶个我仔嚟噶嘛！"
         },
         {
           "index": 11,
@@ -6512,8 +6902,16 @@
     "answer": {
       "changes": [
         {
-          "index": 4,
-          "text": "吓，诶，过嚟过嚟！"
+          "index": 6,
+          "text": "系，"
+        },
+        {
+          "index": 7,
+          "text": "二百万两。"
+        },
+        {
+          "index": 11,
+          "text": "衰啦！弊，睇落去又唔添！"
         }
       ]
     },
@@ -6806,11 +7204,11 @@
         },
         {
           "index": 2,
-          "text": "系咪面面，面面，"
+          "text": "系咪面面，面面，面。"
         },
         {
           "index": 3,
-          "text": "面。"
+          "text": ""
         }
       ],
       "first_owned_index": 1,
@@ -6820,11 +7218,7 @@
       "changes": [
         {
           "index": 1,
-          "text": "哎，张番号，张番号啊！准备面面啊嘛？"
-        },
-        {
-          "index": 2,
-          "text": "系咪面面？面面？"
+          "text": "哎，张番号，张番号啊！准备面面啊嘛！"
         }
       ]
     },
@@ -7065,11 +7459,11 @@
         },
         {
           "index": 2,
-          "text": "你以后唔好俾我见到你"
+          "text": "你以后唔好俾我见到你，"
         },
         {
           "index": 3,
-          "text": "，见一次打一次！"
+          "text": "见一次打一次！"
         },
         {
           "index": 4,
@@ -7093,11 +7487,11 @@
         },
         {
           "index": 9,
-          "text": "卑鄙无耻"
+          "text": "卑鄙无耻！"
         },
         {
           "index": 10,
-          "text": "！郭达已到三局两胜，系今科武状元！"
+          "text": "郭达已到三局两胜，系今科武状元！"
         },
         {
           "index": 11,
@@ -7110,36 +7504,12 @@
     "answer": {
       "changes": [
         {
-          "index": 2,
-          "text": "你以后唔好俾我见到你，"
-        },
-        {
-          "index": 3,
-          "text": "见一次打一次！"
-        },
-        {
-          "index": 4,
-          "text": "唔使啦！你以后都见唔到佢啊。"
-        },
-        {
           "index": 6,
-          "text": "我而家就去劈佢！"
+          "text": "我而家就去劈佢。"
         },
         {
           "index": 8,
-          "text": "嗱，讲下啫！"
-        },
-        {
-          "index": 9,
-          "text": "卑鄙无耻！"
-        },
-        {
-          "index": 10,
-          "text": "郭达已到三局两胜，系今科武状元！"
-        },
-        {
-          "index": 11,
-          "text": "明明系我赢噶！我抗议！"
+          "text": "嗱，讲下啫。"
         }
       ]
     },
@@ -7227,7 +7597,7 @@
         },
         {
           "index": 2,
-          "text": "啊？支镖有毒！"
+          "text": "啊？支镖有毒。"
         }
       ]
     },
@@ -7524,11 +7894,11 @@
         },
         {
           "index": 2,
-          "text": "哎呀，好彩好彩，净系写个名啫，写名佢得"
+          "text": "哎呀，好彩好彩，净系写个名啫，"
         },
         {
           "index": 3,
-          "text": "，唔写名佢得。"
+          "text": "写名佢得，唔写名佢得。"
         }
       ],
       "first_owned_index": 1,
@@ -7538,11 +7908,7 @@
       "changes": [
         {
           "index": 2,
-          "text": "哎呀，好彩好彩，净系写个名啫，写名佢得，"
-        },
-        {
-          "index": 3,
-          "text": "唔写名佢得。"
+          "text": "哎呀，好彩好彩！净系写个名啫，"
         }
       ]
     },
@@ -8128,25 +8494,18 @@
         },
         {
           "index": 10,
-          "text": "由今日开始"
+          "text": "由今日开始，"
         },
         {
           "index": 11,
-          "text": "，我谂你要认真啲学写字嗱。"
+          "text": "我谂你要认真啲学写字嗱。"
         }
       ],
       "first_owned_index": 4,
       "last_owned_index": 11
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 10,
-          "text": "由今日开始，"
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -8403,15 +8762,15 @@
         },
         {
           "index": 8,
-          "text": "啊，皇上，"
+          "text": "啊，皇上，好兴奋，"
         },
         {
           "index": 9,
-          "text": "好兴奋，"
+          "text": "真开心"
         },
         {
           "index": 10,
-          "text": "真开心啊。"
+          "text": "啊。"
         }
       ],
       "first_owned_index": 4,
@@ -8420,16 +8779,20 @@
     "answer": {
       "changes": [
         {
-          "index": 8,
-          "text": "啊，皇上！"
+          "index": 5,
+          "text": "老爷，我哋走咯。"
+        },
+        {
+          "index": 6,
+          "text": "我哋走啦，老爷。"
+        },
+        {
+          "index": 7,
+          "text": "走啦，走啦。"
         },
         {
           "index": 9,
-          "text": "好兴奋！"
-        },
-        {
-          "index": 10,
-          "text": "真开心啊！"
+          "text": "真开心，"
         }
       ]
     },
@@ -8503,39 +8866,39 @@
       "targets": [
         {
           "index": 1,
-          "text": "哎，有冇？哎呀，快啲入去，快啲入去！啊！"
+          "text": "哎，有冇？哎呀，快啲入去，快啲入去！"
         },
         {
           "index": 2,
-          "text": "喂喂，抢入去，抢入去，稳定，稳定！"
+          "text": "啊！"
         },
         {
           "index": 3,
-          "text": "哎呀，臭家仔，我只眼啊，真系顶住"
+          "text": "喂喂，抢入去，抢入去，稳定，稳定！"
         },
         {
           "index": 4,
-          "text": "啊，千祈唔好喺度失礼人，"
+          "text": "哎呀，臭家仔，我只眼啊，真系顶住"
         },
         {
           "index": 5,
-          "text": "继续试。"
+          "text": "啊，千祈唔好喺度失礼人，继续试。"
         },
         {
           "index": 6,
-          "text": "喂，仔啊，正话你可唔可以留翻你一张半张银票傍下身咁啊？你啊，你唔记得"
+          "text": "喂，仔啊，正话你可唔可以留翻你一张半张银票傍下身咁啊？"
         },
         {
           "index": 7,
-          "text": "咗啊？啊！冇阴功啊，咁家产，臭家，"
+          "text": "你啊，你唔记得咗啊？"
         },
         {
           "index": 8,
-          "text": ""
+          "text": "啊！冇阴功啊，咁家产，臭家，好想啊！"
         },
         {
           "index": 9,
-          "text": "好想啊！"
+          "text": ""
         },
         {
           "index": 10,
@@ -8568,16 +8931,13 @@
     "answer": {
       "changes": [
         {
-          "index": 3,
-          "text": "哎呀，臭家仔，我只眼啊，真系顶住！"
-        },
-        {
           "index": 4,
-          "text": "啊，千祈唔好喺度失礼人！"
+          "text": "哎呀，臭家仔，我只眼啊，真系顶住！"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -8666,15 +9026,15 @@
         },
         {
           "index": 8,
-          "text": "唉，俾紧钱佢好过啊！"
+          "text": "唉，俾紧钱佢好过啊！多谢，多谢，多谢。"
         },
         {
           "index": 9,
-          "text": "多谢，多谢，多谢。食到我唱歌𠮶个？"
+          "text": "食到我唱歌𠮶个？唔"
         },
         {
           "index": 10,
-          "text": "唔系啊，跌啲糖啊，国花国额啫。"
+          "text": "系啊，跌啲糖啊，国花国额啫。"
         },
         {
           "index": 11,
@@ -8692,8 +9052,15 @@
       "first_owned_index": 4,
       "last_owned_index": 10
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "changes": [
+        {
+          "index": 9,
+          "text": "食到我唱歌𠮶个，唔。"
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -8762,15 +9129,15 @@
       "targets": [
         {
           "index": 1,
-          "text": "唉，俾紧钱佢好过啊！"
+          "text": "唉，俾紧钱佢好过啊！多谢，多谢，多谢。"
         },
         {
           "index": 2,
-          "text": "多谢，多谢，多谢。食到我唱歌𠮶个？"
+          "text": "食到我唱歌𠮶个？唔"
         },
         {
           "index": 3,
-          "text": "唔系啊，跌啲糖啊，国花国额啫。"
+          "text": "系啊，跌啲糖啊，国花国额啫。"
         },
         {
           "index": 4,
@@ -8786,11 +9153,11 @@
         },
         {
           "index": 7,
-          "text": "做咩啫？"
+          "text": "做咩啫？做"
         },
         {
           "index": 8,
-          "text": "做皇帝叫我哋做乞儿，"
+          "text": "皇帝叫我哋做乞儿，"
         },
         {
           "index": 9,
@@ -8824,15 +9191,7 @@
       "first_owned_index": 4,
       "last_owned_index": 15
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 5,
-          "text": "以前成日叫你乞儿仔！乞儿仔啊，"
-        }
-      ]
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -9118,11 +9477,11 @@
         },
         {
           "index": 12,
-          "text": "乞？哇！你个大种乞，以后呃"
+          "text": "乞？哇！你个大种乞，以后呃我，"
         },
         {
           "index": 13,
-          "text": "我，当我猪兜啊？我都唔知几精啊！"
+          "text": "当我猪兜啊？我都唔知几精啊！"
         },
         {
           "index": 14,
@@ -9197,22 +9556,6 @@
         {
           "index": 13,
           "text": "是！如果你肯跟他交際一下"
-        },
-        {
-          "index": 14,
-          "text": "我想他會幫我們忙先回廣州"
-        },
-        {
-          "index": 15,
-          "text": "但是就要你老人家犧牲一下"
-        },
-        {
-          "index": 16,
-          "text": "不知道你老人家意思⋯"
-        },
-        {
-          "index": 17,
-          "text": "為了這個家，我甚麼都可以做"
         }
       ],
       "targets": [
@@ -9230,11 +9573,11 @@
         },
         {
           "index": 4,
-          "text": "乞？哇！你个大种乞，以后呃"
+          "text": "乞？哇！你个大种乞，以后呃我，"
         },
         {
           "index": 5,
-          "text": "我，当我猪兜啊？我都唔知几精啊！"
+          "text": "当我猪兜啊？我都唔知几精啊！"
         },
         {
           "index": 6,
@@ -9258,49 +9601,25 @@
         },
         {
           "index": 11,
-          "text": "佢不嬲都同我透露话好欣赏你"
-        },
-        {
-          "index": 12,
-          "text": "。吓，有啲咁嘅事？"
-        },
-        {
-          "index": 13,
-          "text": "系咧，如果你肯同佢交际下，"
-        },
-        {
-          "index": 14,
-          "text": "我谂佢会帮我哋个忙，翻去广州先。"
-        },
-        {
-          "index": 15,
-          "text": "但系就要你老人家牺牲下，"
-        },
-        {
-          "index": 16,
-          "text": "唔知你老人家意思。"
-        },
-        {
-          "index": 17,
-          "text": "老人家，你话点啊点啊。"
-        }
-      ],
-      "first_owned_index": 4,
-      "last_owned_index": 14
-    },
-    "answer": {
-      "changes": [
-        {
-          "index": 6,
-          "text": "咁你嘅？"
-        },
-        {
-          "index": 11,
           "text": "佢不嬲都同我透露话好欣赏你。"
         },
         {
           "index": 12,
           "text": "吓，有啲咁嘅事？"
+        },
+        {
+          "index": 13,
+          "text": "系咧，如果你肯同佢交际下，"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 10
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 9,
+          "text": "一系咁，我有个朋友个阿姨个妹，"
         }
       ]
     },
@@ -9312,107 +9631,127 @@
       "guides": [
         {
           "index": 1,
-          "text": "會有這回事？"
+          "text": "你想到沒有？"
         },
         {
           "index": 2,
-          "text": "是！如果你肯跟他交際一下"
+          "text": "有辦法，我有個朋友的阿姨的妹妹"
         },
         {
           "index": 3,
-          "text": "我想他會幫我們忙先回廣州"
+          "text": "正好住在京城"
         },
         {
           "index": 4,
-          "text": "但是就要你老人家犧牲一下"
+          "text": "她早就向我透露很欣賞你"
         },
         {
           "index": 5,
-          "text": "不知道你老人家意思⋯"
+          "text": "會有這回事？"
         },
         {
           "index": 6,
-          "text": "為了這個家，我甚麼都可以做"
+          "text": "是！如果你肯跟他交際一下"
         },
         {
           "index": 7,
-          "text": "我知道太為難你了"
+          "text": "我想他會幫我們忙先回廣州"
         },
         {
           "index": 8,
-          "text": "別再說了！我們去見他"
+          "text": "但是就要你老人家犧牲一下"
         },
         {
           "index": 9,
-          "text": "我早就跟你安排好了"
+          "text": "不知道你老人家意思⋯"
         },
         {
           "index": 10,
+          "text": "為了這個家，我甚麼都可以做"
+        },
+        {
+          "index": 11,
+          "text": "我知道太為難你了"
+        },
+        {
+          "index": 12,
+          "text": "別再說了！我們去見他"
+        },
+        {
+          "index": 13,
+          "text": "我早就跟你安排好了"
+        },
+        {
+          "index": 14,
           "text": "就在對面燈籠下穿紅衣服的那個"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "。吓，有啲咁嘅事？"
+          "text": "你谂到计未啊？"
         },
         {
           "index": 2,
-          "text": "系咧，如果你肯同佢交际下，"
+          "text": "一系咁，我有个朋友个阿姨个妹"
         },
         {
           "index": 3,
-          "text": "我谂佢会帮我哋个忙，翻去广州先。"
+          "text": "咁啱就住喺京城，"
         },
         {
           "index": 4,
-          "text": "但系就要你老人家牺牲下，"
+          "text": "佢不嬲都同我透露话好欣赏你。"
         },
         {
           "index": 5,
-          "text": "唔知你老人家意思。"
+          "text": "吓，有啲咁嘅事？"
         },
         {
           "index": 6,
-          "text": "老人家，你话点啊点啊。"
+          "text": "系咧，如果你肯同佢交际下，"
         },
         {
           "index": 7,
-          "text": "我都知系好难为。你唔好讲咁多"
+          "text": "我谂佢会帮我哋个忙，翻去广州先。"
         },
         {
           "index": 8,
-          "text": "，我哋见佢啦。"
+          "text": "但系就要你老人家牺牲下，"
         },
         {
           "index": 9,
-          "text": "一早同你安排好啦，"
+          "text": "唔知你老人家意思。"
         },
         {
           "index": 10,
+          "text": "老人家，你话点啊点啊。"
+        },
+        {
+          "index": 11,
+          "text": "我都知系好难为。"
+        },
+        {
+          "index": 12,
+          "text": "你唔好讲咁多，我哋见佢啦。"
+        },
+        {
+          "index": 13,
+          "text": "一早同你安排好啦，"
+        },
+        {
+          "index": 14,
           "text": "就喺对面灯笼下边着红衫𠮶个系。"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 10
+      "last_owned_index": 14
     },
     "answer": {
       "changes": [
         {
-          "index": 5,
-          "text": "唔知你老人家意思……"
-        },
-        {
           "index": 6,
-          "text": "老人家，你话点啊点啊？"
-        },
-        {
-          "index": 7,
-          "text": "我都知系好难为。你唔好讲咁多，"
-        },
-        {
-          "index": 8,
-          "text": "我哋见佢啦。"
+          "text": "系咧！如果你肯同佢交际下，"
         }
       ]
     },
@@ -9646,11 +9985,11 @@
         },
         {
           "index": 7,
-          "text": "我只系奉本子办事。人嚟"
+          "text": "我只系奉本子办事。人嚟，"
         },
         {
           "index": 8,
-          "text": "，将所有嘢搬走。"
+          "text": "将所有嘢搬走。"
         },
         {
           "index": 9,
@@ -9663,20 +10002,21 @@
     "answer": {
       "changes": [
         {
+          "index": 1,
+          "text": "兄弟，我哋只系想筹啲水脚。"
+        },
+        {
           "index": 2,
           "text": "翻落广州啫。"
         },
         {
           "index": 4,
           "text": "皇上御旨："
-        },
-        {
-          "index": 7,
-          "text": "我只系奉本子办事！人嚟"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9783,15 +10123,8 @@
       "first_owned_index": 1,
       "last_owned_index": 12
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 7,
-          "text": "即刻联上楼打啫？"
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -9935,26 +10268,6 @@
         {
           "index": 13,
           "text": "這個王八蛋當日在怡紅院"
-        },
-        {
-          "index": 14,
-          "text": "我們父子倆放他一馬"
-        },
-        {
-          "index": 15,
-          "text": "想不到他恩將仇報"
-        },
-        {
-          "index": 16,
-          "text": "陷害我的兒子"
-        },
-        {
-          "index": 17,
-          "text": "在兵器上全都動了手腳"
-        },
-        {
-          "index": 18,
-          "text": "還好我兒子有真材實料⋯"
         }
       ],
       "targets": [
@@ -9968,11 +10281,11 @@
         },
         {
           "index": 3,
-          "text": "唔使惊，唔使惊"
+          "text": "唔使惊，唔使惊啊。"
         },
         {
           "index": 4,
-          "text": "啊。当日我同我个仔一脚踩入个市场，"
+          "text": "当日我同我个仔一脚踩入个市场，"
         },
         {
           "index": 5,
@@ -9988,11 +10301,11 @@
         },
         {
           "index": 8,
-          "text": "呢个契弟同我哋两仔系有恩怨噶嘛。啊，"
+          "text": "呢个契弟同我哋两仔系有恩怨噶嘛。"
         },
         {
           "index": 9,
-          "text": "一讲到恩怨层，哎，"
+          "text": "啊，一讲到恩怨层，哎，"
         },
         {
           "index": 10,
@@ -10000,77 +10313,25 @@
         },
         {
           "index": 11,
-          "text": "整啖烟提神啊，"
+          "text": "整啖烟提神啊，好啲噶。"
         },
         {
           "index": 12,
-          "text": "好啲噶。系啊，系啊，好啲噶，"
+          "text": "系啊，系啊，好啲噶，"
         },
         {
           "index": 13,
           "text": "呢个冚家产啊！当日喺怡红院，"
-        },
-        {
-          "index": 14,
-          "text": "我哋两仔爷放佢一马，"
-        },
-        {
-          "index": 15,
-          "text": "估唔到佢恩将仇报"
-        },
-        {
-          "index": 16,
-          "text": "啊！竟然设法陷害我个仔，"
-        },
-        {
-          "index": 17,
-          "text": "喺啲兵器处啊做晒手脚。"
-        },
-        {
-          "index": 18,
-          "text": "好在啊，我个仔有真才实料。"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 15
+      "last_owned_index": 10
     },
     "answer": {
       "changes": [
         {
-          "index": 1,
-          "text": "唔使惊，阿茶，冇事啊，冇事嘅，冇事……"
-        },
-        {
-          "index": 2,
-          "text": "唔使惊，唔使惊，冇事啊，冇事，唔使惊阿茶啦……"
-        },
-        {
-          "index": 3,
-          "text": "唔使惊，唔使惊。"
-        },
-        {
-          "index": 4,
-          "text": "啊，当日我同我个仔一脚踩入个市场，"
-        },
-        {
-          "index": 8,
-          "text": "呢个契弟同我哋两仔系有恩怨噶嘛？啊，"
-        },
-        {
           "index": 9,
-          "text": "一讲到恩怨层，哎……"
-        },
-        {
-          "index": 11,
-          "text": "整啖烟提神啊。"
-        },
-        {
-          "index": 12,
-          "text": "好啲噶。系啊，系啊，好啲噶。"
-        },
-        {
-          "index": 15,
-          "text": "估唔到佢恩将仇报。"
+          "text": "啊，一讲到恩怨层，哎……"
         }
       ]
     },
@@ -10082,124 +10343,247 @@
       "guides": [
         {
           "index": 1,
-          "text": "這個王八蛋當日在怡紅院"
+          "text": "這個龜兒子跟我們父子倆有過節嗎"
         },
         {
           "index": 2,
-          "text": "我們父子倆放他一馬"
+          "text": "一說到他我就氣死了⋯"
         },
         {
           "index": 3,
-          "text": "想不到他恩將仇報"
+          "text": "不要說了，先吸口煙"
         },
         {
           "index": 4,
-          "text": "陷害我的兒子"
+          "text": "吸口煙提提神"
         },
         {
           "index": 5,
-          "text": "在兵器上全都動了手腳"
+          "text": "是的，好多了"
         },
         {
           "index": 6,
-          "text": "還好我兒子有真材實料⋯"
+          "text": "這個王八蛋當日在怡紅院"
         },
         {
           "index": 7,
-          "text": "我要他武功蓋世，狀元之才"
+          "text": "我們父子倆放他一馬"
         },
         {
           "index": 8,
-          "text": "一人之下，萬人之上"
+          "text": "想不到他恩將仇報"
         },
         {
           "index": 9,
-          "text": "那你做不做得到呢？"
+          "text": "陷害我的兒子"
         },
         {
           "index": 10,
-          "text": "做得到"
+          "text": "在兵器上全都動了手腳"
         },
         {
           "index": 11,
-          "text": "好"
+          "text": "還好我兒子有真材實料⋯"
         },
         {
           "index": 12,
-          "text": "待你做得到的時候就回來找我"
+          "text": "我要他武功蓋世，狀元之才"
         },
         {
           "index": 13,
+          "text": "一人之下，萬人之上"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "呢个契弟同我哋两仔系有恩怨噶嘛。"
+        },
+        {
+          "index": 2,
+          "text": "啊，一讲到恩怨层，哎，"
+        },
+        {
+          "index": 3,
+          "text": "唔好讲啦，整啖烟先。"
+        },
+        {
+          "index": 4,
+          "text": "整啖烟提神啊，好啲噶。"
+        },
+        {
+          "index": 5,
+          "text": "系啊，系啊，好啲噶，"
+        },
+        {
+          "index": 6,
+          "text": "呢个冚家产啊！当日喺怡红院，"
+        },
+        {
+          "index": 7,
+          "text": "我哋两仔爷放佢一马，"
+        },
+        {
+          "index": 8,
+          "text": "估唔到佢恩将仇报"
+        },
+        {
+          "index": 9,
+          "text": "啊！竟然设法陷害我个仔，"
+        },
+        {
+          "index": 10,
+          "text": "喺啲兵器处啊做晒手脚。"
+        },
+        {
+          "index": 11,
+          "text": "好在啊，我个仔有真才实料。"
+        },
+        {
+          "index": 12,
+          "text": "我要盖世武功，天下无敌，"
+        },
+        {
+          "index": 13,
+          "text": "一人之下，万人之上。"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 10
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 5,
+          "text": "系啊，系啊，好啲噶。"
+        },
+        {
+          "index": 8,
+          "text": "估唔到佢恩将仇报，"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "想不到他恩將仇報"
+        },
+        {
+          "index": 2,
+          "text": "陷害我的兒子"
+        },
+        {
+          "index": 3,
+          "text": "在兵器上全都動了手腳"
+        },
+        {
+          "index": 4,
+          "text": "還好我兒子有真材實料⋯"
+        },
+        {
+          "index": 5,
+          "text": "我要他武功蓋世，狀元之才"
+        },
+        {
+          "index": 6,
+          "text": "一人之下，萬人之上"
+        },
+        {
+          "index": 7,
+          "text": "那你做不做得到呢？"
+        },
+        {
+          "index": 8,
+          "text": "做得到"
+        },
+        {
+          "index": 9,
+          "text": "好"
+        },
+        {
+          "index": 10,
+          "text": "待你做得到的時候就回來找我"
+        },
+        {
+          "index": 11,
           "text": "既然如此，我想我們要先定婚期"
         },
         {
-          "index": 14,
+          "index": 12,
           "text": "因為做狀元對我來說易如反掌"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "呢个冚家产啊！当日喺怡红院，"
-        },
-        {
-          "index": 2,
-          "text": "我哋两仔爷放佢一马，"
-        },
-        {
-          "index": 3,
           "text": "估唔到佢恩将仇报"
         },
         {
-          "index": 4,
+          "index": 2,
           "text": "啊！竟然设法陷害我个仔，"
         },
         {
-          "index": 5,
+          "index": 3,
           "text": "喺啲兵器处啊做晒手脚。"
         },
         {
-          "index": 6,
+          "index": 4,
           "text": "好在啊，我个仔有真才实料。"
         },
         {
-          "index": 7,
+          "index": 5,
           "text": "我要盖世武功，天下无敌，"
         },
         {
-          "index": 8,
+          "index": 6,
           "text": "一人之下，万人之上。"
         },
         {
-          "index": 9,
+          "index": 7,
           "text": "咁你做唔做得到啊？"
         },
         {
-          "index": 10,
+          "index": 8,
           "text": "做得到。"
         },
         {
-          "index": 11,
+          "index": 9,
           "text": "好，"
         },
         {
+          "index": 10,
+          "text": "咁等你做得到𠮶阵，先至嚟揾我"
+        },
+        {
+          "index": 11,
+          "text": "啊。诶，我谂我哋要先订婚嘅，"
+        },
+        {
           "index": 12,
-          "text": "咁等你做得到𠮶阵，先至嚟揾我啊。"
-        },
-        {
-          "index": 13,
-          "text": "诶，我谂我哋要先订婚嘅，"
-        },
-        {
-          "index": 14,
           "text": "因为做状元对我嚟讲易如反掌啊。"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 14
+      "last_owned_index": 12
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "text": "好在啊，我个仔有真才实料⋯"
+        },
+        {
+          "index": 10,
+          "text": "咁等你做得到𠮶阵，先至嚟揾我。"
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -10475,11 +10859,11 @@
         },
         {
           "index": 9,
-          "text": ""
+          "text": "啊，嚟嚟嚟嚟嚟。"
         },
         {
           "index": 10,
-          "text": "啊，嚟嚟嚟嚟嚟。"
+          "text": ""
         },
         {
           "index": 11,
@@ -10497,7 +10881,15 @@
       "first_owned_index": 4,
       "last_owned_index": 13
     },
-    "answer": {},
+    "answer": {
+      "changes": [
+        {
+          "index": 7,
+          "text": "起码要攞个钵！咁样先至有身份。"
+        }
+      ]
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -10694,22 +11086,6 @@
         {
           "index": 9,
           "text": "你快躺下吧，今天讓我去"
-        },
-        {
-          "index": 10,
-          "text": "你去討飯？"
-        },
-        {
-          "index": 11,
-          "text": "沒有問題，我會有辦法"
-        },
-        {
-          "index": 12,
-          "text": "你休息一下"
-        },
-        {
-          "index": 13,
-          "text": "我找到錢就回來帶你看大夫"
         }
       ],
       "targets": [
@@ -10748,26 +11124,110 @@
         {
           "index": 9,
           "text": "快啲瞓翻低先，今次等我去。"
-        },
-        {
-          "index": 10,
-          "text": "吓，你要去？"
-        },
-        {
-          "index": 11,
-          "text": "得噶啦，总之我有办法噶啦。"
-        },
-        {
-          "index": 12,
-          "text": "你唞下先，"
-        },
-        {
-          "index": 13,
-          "text": "我一阵翻嚟同你睇大夫。"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 13
+      "last_owned_index": 6
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 6,
+          "text": "冇冇……"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "好冷？糟糕了！你身體好燙"
+        },
+        {
+          "index": 2,
+          "text": "你病了？"
+        },
+        {
+          "index": 3,
+          "text": "沒有⋯沒有"
+        },
+        {
+          "index": 4,
+          "text": "這麼晚了"
+        },
+        {
+          "index": 5,
+          "text": "阿爹出去討些東西給你吃"
+        },
+        {
+          "index": 6,
+          "text": "你快躺下吧，今天讓我去"
+        },
+        {
+          "index": 7,
+          "text": "你去討飯？"
+        },
+        {
+          "index": 8,
+          "text": "沒有問題，我會有辦法"
+        },
+        {
+          "index": 9,
+          "text": "你休息一下"
+        },
+        {
+          "index": 10,
+          "text": "我找到錢就回來帶你看大夫"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "好冻？唔系㖞，你嘅身好热㖞。"
+        },
+        {
+          "index": 2,
+          "text": "你病啊？"
+        },
+        {
+          "index": 3,
+          "text": "冇冇。"
+        },
+        {
+          "index": 4,
+          "text": "吓，咁晚噶啦，"
+        },
+        {
+          "index": 5,
+          "text": "我出去揾啲嘢翻嚟食啊。"
+        },
+        {
+          "index": 6,
+          "text": "快啲瞓翻低先，今次等我去。"
+        },
+        {
+          "index": 7,
+          "text": "吓，你要去？"
+        },
+        {
+          "index": 8,
+          "text": "得噶啦，总之我有办法噶啦。"
+        },
+        {
+          "index": 9,
+          "text": "你唞下先，"
+        },
+        {
+          "index": 10,
+          "text": "我一阵翻嚟同你睇大夫。"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 10
     },
     "answer": {},
     "verified": true
@@ -10819,11 +11279,11 @@
       "targets": [
         {
           "index": 1,
-          "text": "啊！你个衰仔硬系唔食嘢噶"
+          "text": "啊！你个衰仔硬系唔食嘢噶，你唔食嘢啊，"
         },
         {
           "index": 2,
-          "text": "，你唔食嘢啊，边度可以有阿爹咁大只啊？"
+          "text": "边度可以有阿爹咁大只啊？"
         },
         {
           "index": 3,
@@ -10864,16 +11324,12 @@
     "answer": {
       "changes": [
         {
-          "index": 1,
-          "text": "啊！你个衰仔硬系唔食嘢噶，"
-        },
-        {
-          "index": 2,
-          "text": "你唔食嘢啊，边度可以有阿爹咁大只啊？"
-        },
-        {
           "index": 5,
-          "text": "饱……饱饱饱都要食啊，快啲食埋佢！"
+          "text": "饱、饱、饱、饱都要食啊，快啲食埋佢！"
+        },
+        {
+          "index": 7,
+          "text": "食！快啲食埋佢，食啦！"
         },
         {
           "index": 8,
@@ -11218,26 +11674,6 @@
         {
           "index": 9,
           "text": "差點兒是"
-        },
-        {
-          "index": 10,
-          "text": "真的！真是狀元爺"
-        },
-        {
-          "index": 11,
-          "text": "一定給面子狀元爺"
-        },
-        {
-          "index": 12,
-          "text": "多謝⋯多謝"
-        },
-        {
-          "index": 13,
-          "text": "等一等！相請不如偶遇"
-        },
-        {
-          "index": 14,
-          "text": "相請不如偶遇，是否想請我們喝酒呢"
         }
       ],
       "targets": [
@@ -11276,30 +11712,110 @@
         {
           "index": 9,
           "text": "真定系啊？"
-        },
-        {
-          "index": 10,
-          "text": "真系啊，状元爷嚟噶。哦，状元"
-        },
-        {
-          "index": 11,
-          "text": "爷，状元爷一定要俾面啊。"
-        },
-        {
-          "index": 12,
-          "text": "哦，多谢多谢。"
-        },
-        {
-          "index": 13,
-          "text": "喂，相请不如偶遇"
-        },
-        {
-          "index": 14,
-          "text": "啊。相请不如偶遇，即系咪想请我哋饮埋烧酒先咧吓？"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 14
+      "last_owned_index": 6
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "我這裡有饅頭！還給他"
+        },
+        {
+          "index": 2,
+          "text": "這樣也可以嗎？"
+        },
+        {
+          "index": 3,
+          "text": "我斬了你個頭再還給你可不可以？"
+        },
+        {
+          "index": 4,
+          "text": "你是狀元爺嗎？"
+        },
+        {
+          "index": 5,
+          "text": "是不是？是不是你？"
+        },
+        {
+          "index": 6,
+          "text": "差點兒是"
+        },
+        {
+          "index": 7,
+          "text": "真的！真是狀元爺"
+        },
+        {
+          "index": 8,
+          "text": "一定給面子狀元爺"
+        },
+        {
+          "index": 9,
+          "text": "多謝⋯多謝"
+        },
+        {
+          "index": 10,
+          "text": "等一等！相請不如偶遇"
+        },
+        {
+          "index": 11,
+          "text": "相請不如偶遇，是否想請我們喝酒呢"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "咁都要馒头，我还翻俾你。"
+        },
+        {
+          "index": 2,
+          "text": "咁都得嘅咩？"
+        },
+        {
+          "index": 3,
+          "text": "我斩咗你个头再还翻俾你，得唔得？"
+        },
+        {
+          "index": 4,
+          "text": "喂喂，咦？你系咪状元爷？"
+        },
+        {
+          "index": 5,
+          "text": "系咪啊？系咪状元爷啊？"
+        },
+        {
+          "index": 6,
+          "text": "真定系啊？"
+        },
+        {
+          "index": 7,
+          "text": "真系啊，状元爷嚟噶。哦，状元爷，"
+        },
+        {
+          "index": 8,
+          "text": "状元爷一定要俾面啊。"
+        },
+        {
+          "index": 9,
+          "text": "哦，多谢多谢。"
+        },
+        {
+          "index": 10,
+          "text": "喂，相请不如偶遇"
+        },
+        {
+          "index": 11,
+          "text": "啊。相请不如偶遇，即系咪想请我哋饮埋烧酒先咧吓？"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 11
     },
     "answer": {},
     "verified": true
@@ -11710,32 +12226,16 @@
         {
           "index": 9,
           "text": "加入你們丐幫有個照應也好"
-        },
-        {
-          "index": 10,
-          "text": "阿燦⋯他去哪兒呢？"
-        },
-        {
-          "index": 11,
-          "text": "阿燦呢？在哪裡？"
-        },
-        {
-          "index": 12,
-          "text": "好，我們兩個報名，兩個"
-        },
-        {
-          "index": 13,
-          "text": "燦⋯燦"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "诶，你"
+          "text": "诶，你系"
         },
         {
           "index": 2,
-          "text": "系丐帮帮主，系我爹嚟嘅。"
+          "text": "丐帮帮主，系我爹嚟嘅。"
         },
         {
           "index": 3,
@@ -11764,52 +12264,117 @@
         {
           "index": 9,
           "text": "加入你哋丐帮，做个职员都好啊。"
-        },
-        {
-          "index": 10,
-          "text": "阿七啊，七啊，个寿头嚟嘅啊。"
-        },
-        {
-          "index": 11,
-          "text": "我哋两个报名"
-        },
-        {
-          "index": 12,
-          "text": "啦吓，两个啊，七"
-        },
-        {
-          "index": 13,
-          "text": "七啦。"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 13
+      "last_owned_index": 6
     },
     "answer": {
       "changes": [
         {
           "index": 1,
-          "text": "诶，你……"
+          "text": "诶，你系⋯"
         },
         {
           "index": 4,
           "text": "毛大叔，好唔好？"
-        },
-        {
-          "index": 8,
-          "text": "啊，有啦，有啦，而家我哋做紧乞衣，"
-        },
-        {
-          "index": 11,
-          "text": "我哋两个报名。"
-        },
-        {
-          "index": 12,
-          "text": "啦吓，两个啊，七……"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "莫大叔，好不好"
+        },
+        {
+          "index": 2,
+          "text": "好"
+        },
+        {
+          "index": 3,
+          "text": "丐幫是不是討飯幫？"
+        },
+        {
+          "index": 4,
+          "text": "是"
+        },
+        {
+          "index": 5,
+          "text": "正好⋯現在我們當乞丐"
+        },
+        {
+          "index": 6,
+          "text": "加入你們丐幫有個照應也好"
+        },
+        {
+          "index": 7,
+          "text": "阿燦⋯他去哪兒呢？"
+        },
+        {
+          "index": 8,
+          "text": "阿燦呢？在哪裡？"
+        },
+        {
+          "index": 9,
+          "text": "好，我們兩個報名，兩個"
+        },
+        {
+          "index": 10,
+          "text": "燦⋯燦"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "毛大叔，好唔好"
+        },
+        {
+          "index": 2,
+          "text": "啊？"
+        },
+        {
+          "index": 3,
+          "text": "哇，丐帮系咪即系乞衣帮啊？"
+        },
+        {
+          "index": 4,
+          "text": "系啊。"
+        },
+        {
+          "index": 5,
+          "text": "啊，有啦有啦，而家我哋做紧乞衣，"
+        },
+        {
+          "index": 6,
+          "text": "加入你哋丐帮，做个职员都好啊。"
+        },
+        {
+          "index": 7,
+          "text": "阿七啊，"
+        },
+        {
+          "index": 8,
+          "text": "七啊，个寿头嚟嘅啊。"
+        },
+        {
+          "index": 9,
+          "text": "我哋两个报名啦吓，两个啊，"
+        },
+        {
+          "index": 10,
+          "text": "七七啦。"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 10
+    },
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11919,12 +12484,17 @@
     "answer": {
       "changes": [
         {
+          "index": 1,
+          "text": "哎，二叔！恭喜发财！"
+        },
+        {
           "index": 9,
-          "text": "咁就攞嚟！嚟嚟嚟嚟嚟嚟嚟⋯"
+          "text": "咁就攞嚟！嚟嚟嚟嚟嚟嚟嚟。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11988,22 +12558,6 @@
         {
           "index": 15,
           "text": "新年還在睡覺"
-        },
-        {
-          "index": 16,
-          "text": "真是沒用的傢伙！"
-        },
-        {
-          "index": 17,
-          "text": "大家到齊了沒？"
-        },
-        {
-          "index": 18,
-          "text": "對付趙無極一定要團結丐幫"
-        },
-        {
-          "index": 19,
-          "text": "我們要選出新幫主來主持大局"
         }
       ],
       "targets": [
@@ -12045,11 +12599,11 @@
         },
         {
           "index": 10,
-          "text": "阿灿啊？阿灿啊？哎呀，佢由年三十晚啊，瞓到年初一都仲未瞓醒噶。"
+          "text": "阿灿啊？阿灿啊？哎呀，佢由年三十晚啊，瞓到年初一都"
         },
         {
           "index": 11,
-          "text": ""
+          "text": "仲未瞓醒噶。"
         },
         {
           "index": 12,
@@ -12066,26 +12620,10 @@
         {
           "index": 15,
           "text": "新正头仲瞓觉，"
-        },
-        {
-          "index": 16,
-          "text": "真系嚟福唔双降。"
-        },
-        {
-          "index": 17,
-          "text": "大家到齐啦嘛？"
-        },
-        {
-          "index": 18,
-          "text": "对付赵无忌，一定要团结丐"
-        },
-        {
-          "index": 19,
-          "text": "帮。我哋即刻选位新帮主出嚟主持大局。"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 16
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
@@ -12103,129 +12641,245 @@
       "guides": [
         {
           "index": 1,
-          "text": "好！我幫你"
+          "text": "阿燦？他由年三十睡到大年初一"
         },
         {
           "index": 2,
-          "text": "新年還在睡覺"
+          "text": "還沒睡醒"
         },
         {
           "index": 3,
-          "text": "真是沒用的傢伙！"
+          "text": "他剛剛才睡！別把他吵醒"
         },
         {
           "index": 4,
-          "text": "大家到齊了沒？"
+          "text": "我做年糕給大家吃吧"
         },
         {
           "index": 5,
-          "text": "對付趙無極一定要團結丐幫"
+          "text": "好！我幫你"
         },
         {
           "index": 6,
-          "text": "我們要選出新幫主來主持大局"
+          "text": "新年還在睡覺"
         },
         {
           "index": 7,
-          "text": "如霜⋯如霜"
+          "text": "真是沒用的傢伙！"
         },
         {
           "index": 8,
-          "text": "對付三位長老的蓮花落陣"
+          "text": "大家到齊了沒？"
         },
         {
           "index": 9,
-          "text": "全靠你了"
+          "text": "對付趙無極一定要團結丐幫"
         },
         {
           "index": 10,
-          "text": "莫大叔！蓮花落陣你也沒把握"
+          "text": "我們要選出新幫主來主持大局"
         },
         {
           "index": 11,
-          "text": "以我現在打狗棒法的功力"
+          "text": "如霜⋯如霜"
         },
         {
           "index": 12,
-          "text": "怎麼可能打敗三位長老當上幫主呢？"
+          "text": "對付三位長老的蓮花落陣"
         },
         {
           "index": 13,
-          "text": "這顆大還丹，你吃了之後會功力大增"
+          "text": "全靠你了"
         },
         {
           "index": 14,
-          "text": "不行！這顆大還丹是給你治內傷用的"
-        },
-        {
-          "index": 15,
-          "text": "我怎麼能吃呢？"
+          "text": "莫大叔！蓮花落陣你也沒把握"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "嚟嚟嚟嚟嚟嚟嚟。"
+          "text": "阿灿啊？阿灿啊？哎呀，佢由年三十晚啊，瞓到年初一都"
         },
         {
           "index": 2,
-          "text": "新正头仲瞓觉，"
+          "text": "仲未瞓醒噶。"
         },
         {
           "index": 3,
-          "text": "真系嚟福唔双降。"
+          "text": "啱啱先瞓着咋，唔好嘈醒佢啊。"
         },
         {
           "index": 4,
-          "text": "大家到齐啦嘛？"
+          "text": "啊，我整啲年糕大家食啊。"
         },
         {
           "index": 5,
-          "text": "对付赵无忌，一定要团结丐"
+          "text": "嚟嚟嚟嚟嚟嚟嚟。"
         },
         {
           "index": 6,
-          "text": "帮。我哋即刻选位新帮主出嚟主持大局。"
+          "text": "新正头仲瞓觉，"
         },
         {
           "index": 7,
-          "text": "余霜，余霜，"
+          "text": "真系嚟福唔双降。"
         },
         {
           "index": 8,
-          "text": "对付三位长老嘅莲花落阵，"
+          "text": "大家到齐啦嘛？"
         },
         {
           "index": 9,
-          "text": "靠你啦。"
+          "text": "对付赵无忌，一定要团结丐帮。"
         },
         {
           "index": 10,
-          "text": "穆大叔啊，莲花落阵你都冇把握，"
+          "text": "我哋即刻选位新帮主出嚟主持大局。"
         },
         {
           "index": 11,
-          "text": "而我而家打狗棍法又咁靓，"
+          "text": "余霜，余霜，"
         },
         {
           "index": 12,
-          "text": "我又点可以代替三位长老做帮主啊？"
+          "text": "对付三位长老嘅莲花落阵，"
         },
         {
           "index": 13,
-          "text": "呢粒大还丹，你食咗之后会功力大增。"
+          "text": "靠你啦。"
         },
         {
           "index": 14,
-          "text": "唔得噶，呢粒大还丹系医你内伤噶嘛，"
-        },
-        {
-          "index": 15,
-          "text": "我点可以食呢？"
+          "text": "穆大叔啊，莲花落阵你都冇把握，"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 12
+      "last_owned_index": 11
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 5,
+          "text": "嚟嚟嚟嚟嚟嚟嚟！"
+        },
+        {
+          "index": 7,
+          "text": "真系嚟福唔双降！"
+        },
+        {
+          "index": 11,
+          "text": "余霜……余霜……"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "對付趙無極一定要團結丐幫"
+        },
+        {
+          "index": 2,
+          "text": "我們要選出新幫主來主持大局"
+        },
+        {
+          "index": 3,
+          "text": "如霜⋯如霜"
+        },
+        {
+          "index": 4,
+          "text": "對付三位長老的蓮花落陣"
+        },
+        {
+          "index": 5,
+          "text": "全靠你了"
+        },
+        {
+          "index": 6,
+          "text": "莫大叔！蓮花落陣你也沒把握"
+        },
+        {
+          "index": 7,
+          "text": "以我現在打狗棒法的功力"
+        },
+        {
+          "index": 8,
+          "text": "怎麼可能打敗三位長老當上幫主呢？"
+        },
+        {
+          "index": 9,
+          "text": "這顆大還丹，你吃了之後會功力大增"
+        },
+        {
+          "index": 10,
+          "text": "不行！這顆大還丹是給你治內傷用的"
+        },
+        {
+          "index": 11,
+          "text": "我怎麼能吃呢？"
+        },
+        {
+          "index": 12,
+          "text": "不用擔心不用擔心"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "对付赵无忌，一定要团结丐帮。"
+        },
+        {
+          "index": 2,
+          "text": "我哋即刻选位新帮主出嚟主持大局。"
+        },
+        {
+          "index": 3,
+          "text": "余霜，余霜，"
+        },
+        {
+          "index": 4,
+          "text": "对付三位长老嘅莲花落阵，"
+        },
+        {
+          "index": 5,
+          "text": "靠你啦。"
+        },
+        {
+          "index": 6,
+          "text": "穆大叔啊，莲花落阵你都冇把握，"
+        },
+        {
+          "index": 7,
+          "text": "而我而家打狗棍法又咁靓，"
+        },
+        {
+          "index": 8,
+          "text": "我又点可以代替三位长老做帮主啊？"
+        },
+        {
+          "index": 9,
+          "text": "呢粒大还丹，你食咗之后会功力大增。"
+        },
+        {
+          "index": 10,
+          "text": "唔得噶，呢粒大还丹系医你内伤噶嘛，"
+        },
+        {
+          "index": 11,
+          "text": "我点可以食呢？"
+        },
+        {
+          "index": 12,
+          "text": "唔使闭气，唔使闭气。"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 9
     },
     "answer": {},
     "verified": true
@@ -12235,159 +12889,143 @@
       "guides": [
         {
           "index": 1,
-          "text": "莫大叔！蓮花落陣你也沒把握"
-        },
-        {
-          "index": 2,
           "text": "以我現在打狗棒法的功力"
         },
         {
-          "index": 3,
+          "index": 2,
           "text": "怎麼可能打敗三位長老當上幫主呢？"
         },
         {
-          "index": 4,
+          "index": 3,
           "text": "這顆大還丹，你吃了之後會功力大增"
         },
         {
-          "index": 5,
+          "index": 4,
           "text": "不行！這顆大還丹是給你治內傷用的"
         },
         {
-          "index": 6,
+          "index": 5,
           "text": "我怎麼能吃呢？"
         },
         {
-          "index": 7,
+          "index": 6,
           "text": "不用擔心不用擔心"
         },
         {
-          "index": 8,
+          "index": 7,
           "text": "想找人比武可以找我兒子"
         },
         {
-          "index": 9,
+          "index": 8,
           "text": "我兒子怎麼說也是一個武狀元"
         },
         {
-          "index": 10,
+          "index": 9,
           "text": "現在⋯"
         },
         {
-          "index": 11,
+          "index": 10,
           "text": "⋯不！曾經"
         },
         {
-          "index": 12,
+          "index": 11,
           "text": "你看他懶洋洋的"
         },
         {
-          "index": 13,
+          "index": 12,
           "text": "只會睡覺，怎能打架呢？"
         },
         {
-          "index": 14,
+          "index": 13,
           "text": "連當乞丐的資格都沒有"
         },
         {
-          "index": 15,
+          "index": 14,
           "text": "你別那麼坦白行不行？"
         },
         {
-          "index": 16,
+          "index": 15,
           "text": "你別那麼大聲好不好？"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "穆大叔啊，莲花落阵你都冇把握，"
-        },
-        {
-          "index": 2,
           "text": "而我而家打狗棍法又咁靓，"
         },
         {
-          "index": 3,
+          "index": 2,
           "text": "我又点可以代替三位长老做帮主啊？"
         },
         {
-          "index": 4,
+          "index": 3,
           "text": "呢粒大还丹，你食咗之后会功力大增。"
         },
         {
-          "index": 5,
+          "index": 4,
           "text": "唔得噶，呢粒大还丹系医你内伤噶嘛，"
         },
         {
-          "index": 6,
+          "index": 5,
           "text": "我点可以食呢？"
         },
         {
-          "index": 7,
+          "index": 6,
           "text": "唔使闭气，唔使闭气。"
         },
         {
-          "index": 8,
+          "index": 7,
           "text": "嗱，讲到比武可以揾我仔啊嘛，"
         },
         {
+          "index": 8,
+          "text": "我仔假假地都系武状元啦，"
+        },
+        {
           "index": 9,
-          "text": "我仔假假地都系武状元啦"
+          "text": "家阵，"
         },
         {
           "index": 10,
-          "text": "，家阵，"
-        },
-        {
-          "index": 11,
           "text": "唔系，曾经。"
         },
         {
+          "index": 11,
+          "text": "你睇佢死蛇烂鳝咁，"
+        },
+        {
           "index": 12,
-          "text": "你睇佢死蛇烂鳝咁"
+          "text": "净系识得瞓，点打交啊？"
         },
         {
           "index": 13,
-          "text": "，净系识得瞓，点打交啊？"
-        },
-        {
-          "index": 14,
           "text": "做乞衣都未够资格啦。"
         },
         {
-          "index": 15,
+          "index": 14,
           "text": "你唔好咁坦白得唔得啊？"
         },
         {
-          "index": 16,
+          "index": 15,
           "text": "喂，你唔好咁大声得唔得啊？"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 16
+      "last_owned_index": 15
     },
     "answer": {
       "changes": [
         {
-          "index": 9,
-          "text": "我仔假假地都系武状元啦，"
+          "index": 4,
+          "text": "唔得噶！呢粒大还丹系医你内伤噶嘛，"
         },
         {
-          "index": 10,
+          "index": 9,
           "text": "家阵……"
         },
         {
-          "index": 11,
+          "index": 10,
           "text": "……唔系，曾经。"
-        },
-        {
-          "index": 12,
-          "text": "你睇佢死蛇烂鳝咁，"
-        },
-        {
-          "index": 13,
-          "text": "净系识得瞓，点打交啊？"
         }
       ]
     },
@@ -13399,15 +14037,8 @@
       "first_owned_index": 1,
       "last_owned_index": 6
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 1,
-          "text": "我唔理你系边个，我唔想再同你讲嘢。"
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -13700,11 +14331,11 @@
         },
         {
           "index": 6,
-          "text": "天下就喺我手"
+          "text": "天下就喺我手，"
         },
         {
           "index": 7,
-          "text": "，荣华富贵绝对唔会少咗你哋嘅。"
+          "text": "荣华富贵绝对唔会少咗你哋嘅。"
         }
       ],
       "first_owned_index": 1,
@@ -13713,12 +14344,8 @@
     "answer": {
       "changes": [
         {
-          "index": 6,
-          "text": "天下就喺我手，"
-        },
-        {
-          "index": 7,
-          "text": "荣华富贵绝对唔会少咗你哋嘅。"
+          "index": 1,
+          "text": "皇帝听日去成都狩猎。"
         }
       ]
     },
@@ -13748,11 +14375,11 @@
         },
         {
           "index": 2,
-          "text": "长老"
+          "text": "长老，"
         },
         {
           "index": 3,
-          "text": "，翻去先至讲。"
+          "text": "翻去先至讲"
         }
       ],
       "first_owned_index": 1,
@@ -13760,10 +14387,6 @@
     },
     "answer": {
       "changes": [
-        {
-          "index": 2,
-          "text": "长老！"
-        },
         {
           "index": 3,
           "text": "翻去先至讲。"
@@ -14050,15 +14673,8 @@
       "first_owned_index": 1,
       "last_owned_index": 6
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 1,
-          "text": "喂，莫大叔⋯"
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -14077,7 +14693,16 @@
       "first_owned_index": 1,
       "last_owned_index": 1
     },
-    "answer": {}
+    "answer": {
+      "changes": [
+        {
+          "index": 1,
+          "text": "当你带兵的时候？"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -14556,10 +15181,6 @@
         {
           "index": 15,
           "text": "以後大家沒得爭"
-        },
-        {
-          "index": 16,
-          "text": "絕對是有功沒有過"
         }
       ],
       "targets": [
@@ -14622,14 +15243,10 @@
         {
           "index": 15,
           "text": "以后，大家就冇得争住，"
-        },
-        {
-          "index": 16,
-          "text": "所以有功冇过。"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 13
+      "last_owned_index": 12
     },
     "answer": {},
     "verified": true
@@ -14639,127 +15256,139 @@
       "guides": [
         {
           "index": 1,
-          "text": "但是你這些蠢蛋居然當寶"
+          "text": "棒的本身並不代表甚麼"
         },
         {
           "index": 2,
-          "text": "還為了爭奪它弄到丐幫四分五裂"
+          "text": "但是你這些蠢蛋居然當寶"
         },
         {
           "index": 3,
-          "text": "五年沒有幫主在位！你們慚不慚愧？"
+          "text": "還為了爭奪它弄到丐幫四分五裂"
         },
         {
           "index": 4,
-          "text": "蘇燦現在把棒打斷了"
+          "text": "五年沒有幫主在位！你們慚不慚愧？"
         },
         {
           "index": 5,
-          "text": "以後大家沒得爭"
+          "text": "蘇燦現在把棒打斷了"
         },
         {
           "index": 6,
-          "text": "絕對是有功沒有過"
+          "text": "以後大家沒得爭"
         },
         {
           "index": 7,
-          "text": "這個年輕人！雖然資歷低"
+          "text": "絕對是有功沒有過"
         },
         {
           "index": 8,
-          "text": "但是天才橫溢！聰明絕頂"
+          "text": "這個年輕人！雖然資歷低"
         },
         {
           "index": 9,
-          "text": "還是我洪某的傳人洪日新親手提攜"
+          "text": "但是天才橫溢！聰明絕頂"
         },
         {
           "index": 10,
-          "text": "誰要對付他就是對付我"
+          "text": "還是我洪某的傳人洪日新親手提攜"
         },
         {
           "index": 11,
-          "text": "你們不只要選他當幫主"
+          "text": "誰要對付他就是對付我"
         },
         {
           "index": 12,
-          "text": "還要交出你們的愛心"
+          "text": "你們不只要選他當幫主"
         },
         {
           "index": 13,
+          "text": "還要交出你們的愛心"
+        },
+        {
+          "index": 14,
           "text": "來愛護他！關懷他！常常請他喝茶"
+        },
+        {
+          "index": 15,
+          "text": "那我洪某在天之靈"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "但系你班蠢材居然当宝，"
+          "text": "碌棍本身并唔代表啲咩嘢嘢，"
         },
         {
           "index": 2,
-          "text": "仲为咗争夺佢，而搞到丐帮四分五裂。"
+          "text": "但系你班蠢材居然当宝，"
         },
         {
           "index": 3,
-          "text": "五年冇帮主在位，你哋惭唔惭愧？"
+          "text": "仲为咗争夺佢，而搞到丐帮四分五裂。"
         },
         {
           "index": 4,
-          "text": "苏灿家打断碌棍"
+          "text": "五年冇帮主在位，你哋惭唔惭愧？"
         },
         {
           "index": 5,
-          "text": "以后，大家就冇得争住，"
+          "text": "苏灿家打断碌棍"
         },
         {
           "index": 6,
-          "text": "所以有功冇过。"
+          "text": "以后，大家就冇得争住，"
         },
         {
           "index": 7,
-          "text": "呢个后生仔虽然资历浅，"
+          "text": "所以有功冇过。"
         },
         {
           "index": 8,
-          "text": "但系天才横溢，聪明绝顶，"
+          "text": "呢个后生仔虽然资历浅，"
         },
         {
           "index": 9,
-          "text": "仲系我洪某嘅传人洪日升亲手提骨"
+          "text": "但系天才横溢，聪明绝顶，"
         },
         {
           "index": 10,
-          "text": "，边个唔妥佢，就系唔妥我。"
+          "text": "仲系我洪某嘅传人洪日升亲手提"
         },
         {
           "index": 11,
-          "text": "你哋唔单止要选佢做帮主，"
+          "text": "骨，边个唔妥佢，就系唔妥我。"
         },
         {
           "index": 12,
-          "text": "仲要交出你哋嘅爱心"
+          "text": "你哋唔单止要选佢做帮主，"
         },
         {
           "index": 13,
+          "text": "仲要交出你哋嘅爱心"
+        },
+        {
+          "index": 14,
           "text": "嚟爱护佢，关怀佢，多啲请佢饮茶。"
+        },
+        {
+          "index": 15,
+          "text": "咁我洪某在天之灵，"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 10
+      "last_owned_index": 12
     },
     "answer": {
       "changes": [
         {
-          "index": 4,
-          "text": "苏灿家打断碌棍。"
+          "index": 5,
+          "text": "苏灿家打断碌棍，"
         },
         {
-          "index": 9,
-          "text": "仲系我洪某嘅传人洪日升亲手提骨，"
-        },
-        {
-          "index": 10,
-          "text": "边个唔妥佢，就系唔妥我。"
+          "index": 6,
+          "text": "以后大家就冇得争住，"
         }
       ]
     },
@@ -14771,147 +15400,132 @@
       "guides": [
         {
           "index": 1,
-          "text": "但是天才橫溢！聰明絕頂"
-        },
-        {
-          "index": 2,
           "text": "還是我洪某的傳人洪日新親手提攜"
         },
         {
-          "index": 3,
+          "index": 2,
           "text": "誰要對付他就是對付我"
         },
         {
-          "index": 4,
+          "index": 3,
           "text": "你們不只要選他當幫主"
         },
         {
-          "index": 5,
+          "index": 4,
           "text": "還要交出你們的愛心"
         },
         {
-          "index": 6,
+          "index": 5,
           "text": "來愛護他！關懷他！常常請他喝茶"
         },
         {
-          "index": 7,
+          "index": 6,
           "text": "那我洪某在天之靈"
         },
         {
-          "index": 8,
+          "index": 7,
           "text": "定會保佑丐幫生意興隆！千秋萬世"
         },
         {
-          "index": 9,
+          "index": 8,
           "text": "是真的還是假的？"
         },
         {
-          "index": 10,
+          "index": 9,
           "text": "寧可信其有不可信其無"
         },
         {
-          "index": 11,
+          "index": 10,
           "text": "洪七公顯靈"
         },
         {
-          "index": 12,
+          "index": 11,
           "text": "天有眼，我們有福"
         },
         {
-          "index": 13,
+          "index": 12,
           "text": "就這樣瞞天過海，我果真是天才！"
         },
         {
-          "index": 14,
+          "index": 13,
           "text": "大家有飯吃了"
         },
         {
-          "index": 15,
+          "index": 14,
           "text": "發生甚麼事？"
         },
         {
-          "index": 16,
+          "index": 15,
           "text": "參見幫主"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "但系天才横溢，聪明绝顶，"
+          "text": "仲系我洪某嘅传人洪日升亲手提"
         },
         {
           "index": 2,
-          "text": "仲系我洪某嘅传人洪日升亲手提骨"
+          "text": "骨，边个唔妥佢，就系唔妥我。"
         },
         {
           "index": 3,
-          "text": "，边个唔妥佢，就系唔妥我。"
-        },
-        {
-          "index": 4,
           "text": "你哋唔单止要选佢做帮主，"
         },
         {
-          "index": 5,
+          "index": 4,
           "text": "仲要交出你哋嘅爱心"
         },
         {
-          "index": 6,
+          "index": 5,
           "text": "嚟爱护佢，关怀佢，多啲请佢饮茶。"
         },
         {
-          "index": 7,
+          "index": 6,
           "text": "咁我洪某在天之灵，"
         },
         {
-          "index": 8,
+          "index": 7,
           "text": "自当保佑丐帮生意兴隆，千秋万世。"
         },
         {
-          "index": 9,
+          "index": 8,
           "text": "喂，真定假？"
         },
         {
-          "index": 10,
+          "index": 9,
           "text": "宁可信其有，不可信其无。"
         },
         {
+          "index": 10,
+          "text": "咁都过到骨，果然系天才。"
+        },
+        {
           "index": 11,
-          "text": "咁都过到骨，"
-        },
-        {
-          "index": 12,
-          "text": "果然系天才。"
-        },
-        {
-          "index": 13,
           "text": "发生咩事啊？"
         },
         {
-          "index": 14,
+          "index": 12,
           "text": "参见帮主。"
+        },
+        {
+          "index": 13,
+          "text": ""
+        },
+        {
+          "index": 14,
+          "text": ""
         },
         {
           "index": 15,
           "text": ""
-        },
-        {
-          "index": 16,
-          "text": ""
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 16
+      "last_owned_index": 15
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 5,
-          "text": "仲要交出你哋嘅爱心，"
-        }
-      ]
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -15132,11 +15746,11 @@
       "targets": [
         {
           "index": 1,
-          "text": "长路漫漫伴你闯"
+          "text": "长路漫漫伴你闯，"
         },
         {
           "index": 2,
-          "text": "，系一身胆识。"
+          "text": "系一身胆识。"
         },
         {
           "index": 3,
@@ -15197,12 +15811,17 @@
     "answer": {
       "changes": [
         {
+          "index": 2,
+          "text": "系一身胆识，"
+        },
+        {
           "index": 10,
-          "text": "你咪当我流嘅至得嘅？"
+          "text": "你咪当我流嘅至得嘅。"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -15679,7 +16298,7 @@
         },
         {
           "index": 6,
-          "text": "。"
+          "text": ""
         }
       ],
       "first_owned_index": 1,
@@ -15688,12 +16307,8 @@
     "answer": {
       "changes": [
         {
-          "index": 4,
-          "text": "放狼烟！"
-        },
-        {
           "index": 5,
-          "text": "戒备！"
+          "text": "戒备。"
         }
       ]
     },
@@ -15843,7 +16458,16 @@
       "first_owned_index": 1,
       "last_owned_index": 10
     },
-    "answer": {}
+    "answer": {
+      "changes": [
+        {
+          "index": 9,
+          "text": "胆大包天！竟敢诬告官员？"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -16756,11 +17380,11 @@
       "targets": [
         {
           "index": 1,
-          "text": "你个叛贼"
+          "text": "你个叛贼，"
         },
         {
           "index": 2,
-          "text": "，捉住佢！"
+          "text": "捉住佢！"
         }
       ],
       "first_owned_index": 1,
@@ -16771,10 +17395,6 @@
         {
           "index": 1,
           "text": "你个叛贼！"
-        },
-        {
-          "index": 2,
-          "text": "捉住佢！"
         }
       ]
     },
@@ -16816,11 +17436,11 @@
       "targets": [
         {
           "index": 1,
-          "text": "臭仔，将你个身交俾我"
+          "text": "臭仔，将你个身交俾我。"
         },
         {
           "index": 2,
-          "text": "。讲嘢。"
+          "text": "讲嘢。"
         }
       ],
       "first_owned_index": 1,
@@ -16830,16 +17450,11 @@
       "changes": [
         {
           "index": 1,
-          "text": "臭仔，将你个身交俾我！"
-        },
-        {
-          "index": 2,
-          "text": "讲嘢？"
+          "text": "臭仔，将你个身交俾我。"
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -17056,11 +17671,11 @@
       "targets": [
         {
           "index": 1,
-          "text": "降龙十八掌第七式"
+          "text": "降龙十八掌第七式，"
         },
         {
           "index": 2,
-          "text": "，飞龙在天。"
+          "text": "飞龙在天。"
         },
         {
           "index": 3,
@@ -17101,12 +17716,12 @@
     "answer": {
       "changes": [
         {
-          "index": 6,
-          "text": "龙飞凤舞，伏波卧龙⋯"
+          "index": 2,
+          "text": "飞龙在天，"
         },
         {
-          "index": 7,
-          "text": "⋯缩龙成寸，龙蛇混杂，"
+          "index": 6,
+          "text": "龙飞凤舞，伏波卧龙⋯"
         },
         {
           "index": 8,
@@ -17114,11 +17729,12 @@
         },
         {
           "index": 9,
-          "text": "⋯龙马精神，旺夫成龙⋯"
+          "text": "龙马精神，旺夫成龙⋯"
         }
       ]
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -17151,11 +17767,11 @@
         },
         {
           "index": 3,
-          "text": "一定可以打赢我"
+          "text": "一定可以打赢我。不"
         },
         {
           "index": 4,
-          "text": "。不过你冇呢个机会啊！"
+          "text": "过你冇呢个机会啊！"
         }
       ],
       "first_owned_index": 1,
@@ -17165,16 +17781,11 @@
       "changes": [
         {
           "index": 3,
-          "text": "一定可以打赢我。"
-        },
-        {
-          "index": 4,
-          "text": "不过你冇呢个机会啊！"
+          "text": "一定可以打赢我，不"
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -17391,11 +18002,11 @@
         },
         {
           "index": 7,
-          "text": "报告帮主"
+          "text": "报告帮主，"
         },
         {
           "index": 8,
-          "text": "，赵无极𠮶只马都俾我哋捉住啦！"
+          "text": "赵无极𠮶只马都俾我哋捉住啦！"
         }
       ],
       "first_owned_index": 1,
@@ -17404,29 +18015,16 @@
     "answer": {
       "changes": [
         {
-          "index": 1,
-          "text": "呢只冇野马啊？"
-        },
-        {
           "index": 3,
           "text": "啊，四围都系。"
         },
         {
           "index": 4,
-          "text": "啊，四围都系，四围都系？"
-        },
-        {
-          "index": 7,
-          "text": "报告帮主，"
-        },
-        {
-          "index": 8,
-          "text": "赵无极𠮶只马都俾我哋捉住啦！"
+          "text": "啊，四围都系，四围都系。"
         }
       ]
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -17587,11 +18185,11 @@
         },
         {
           "index": 4,
-          "text": "你做黑衣好，睇你个样有潜质嘅。听日去城"
+          "text": "你做黑衣好，睇你个样有潜质嘅。"
         },
         {
           "index": 5,
-          "text": "隍庙报到。"
+          "text": "听日去城隍庙报到。"
         },
         {
           "index": 6,
@@ -17599,11 +18197,11 @@
         },
         {
           "index": 7,
-          "text": "多谢帮主，多谢帮主关照"
+          "text": "多谢帮主，多谢帮主关照。"
         },
         {
           "index": 8,
-          "text": "。苏灿，你有啲咩要求？"
+          "text": "苏灿，你有啲咩要求？"
         },
         {
           "index": 9,
@@ -17613,19 +18211,7 @@
       "first_owned_index": 1,
       "last_owned_index": 9
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 7,
-          "text": "多谢帮主，多谢帮主关照。"
-        },
-        {
-          "index": 8,
-          "text": "苏灿，你有啲咩要求？"
-        }
-      ]
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -17674,24 +18260,40 @@
         {
           "index": 11,
           "text": "你丐幫弟子幾千萬"
+        },
+        {
+          "index": 12,
+          "text": "你一天不解散，朕怎麼安心？"
+        },
+        {
+          "index": 13,
+          "text": "丐幫有多少弟子不是由我決定"
+        },
+        {
+          "index": 14,
+          "text": "而是由你決定"
+        },
+        {
+          "index": 15,
+          "text": "我？"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "有冇讲？走"
+          "text": "有冇讲？走啦！"
         },
         {
           "index": 2,
-          "text": "啦！扶起我啦！诶"
+          "text": "扶起我啦！"
         },
         {
           "index": 3,
-          "text": "，苏英雄，苏英雄"
+          "text": "诶，苏英雄，苏英雄，"
         },
         {
           "index": 4,
-          "text": "，落嚟摆翻低。"
+          "text": "落嚟摆翻低。"
         },
         {
           "index": 5,
@@ -17707,11 +18309,11 @@
         },
         {
           "index": 8,
-          "text": "踎就唔好乱喐啦，唔系仲养眼啊。嗯，"
+          "text": "踎就唔好乱喐啦，唔系仲养眼啊。"
         },
         {
           "index": 9,
-          "text": "其实我同你冇啦冇掕，"
+          "text": "嗯，其实我同你冇啦冇掕，"
         },
         {
           "index": 10,
@@ -17720,32 +18322,28 @@
         {
           "index": 11,
           "text": "你丐帮弟子几千万，"
+        },
+        {
+          "index": 12,
+          "text": "你一人唔解散，叫我点安心啊？"
+        },
+        {
+          "index": 13,
+          "text": "丐帮有几多黑衣，唔系由我决定，"
+        },
+        {
+          "index": 14,
+          "text": "系由你决定。"
+        },
+        {
+          "index": 15,
+          "text": "我？"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 8
+      "last_owned_index": 12
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 1,
-          "text": "有冇讲？走！"
-        },
-        {
-          "index": 2,
-          "text": "啦！扶起我啦！诶！"
-        },
-        {
-          "index": 3,
-          "text": "苏英雄！苏英雄！"
-        },
-        {
-          "index": 4,
-          "text": "落嚟，摆翻低。"
-        }
-      ]
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -17753,167 +18351,123 @@
       "guides": [
         {
           "index": 1,
-          "text": "你對朕不敬，朕一樣會殺了你"
-        },
-        {
-          "index": 2,
-          "text": "你要殺我就不會這樣跟我說話"
-        },
-        {
-          "index": 3,
-          "text": "不要動，否則還礙眼"
-        },
-        {
-          "index": 4,
-          "text": "其實我跟你沒醪沒轕"
-        },
-        {
-          "index": 5,
           "text": "真沒甚麼好談"
         },
         {
-          "index": 6,
+          "index": 2,
           "text": "你丐幫弟子幾千萬"
         },
         {
-          "index": 7,
+          "index": 3,
           "text": "你一天不解散，朕怎麼安心？"
         },
         {
-          "index": 8,
+          "index": 4,
           "text": "丐幫有多少弟子不是由我決定"
         },
         {
-          "index": 9,
+          "index": 5,
           "text": "而是由你決定"
         },
         {
-          "index": 10,
+          "index": 6,
           "text": "我？"
         },
         {
-          "index": 11,
+          "index": 7,
           "text": "如果你真的英明神武，令到國泰民安"
         },
         {
-          "index": 12,
+          "index": 8,
           "text": "誰會願意當乞丐？"
         },
         {
-          "index": 13,
+          "index": 9,
           "text": "有道理，有道理　　好自為之吧"
         },
         {
-          "index": 14,
+          "index": 10,
           "text": "不過"
         },
         {
-          "index": 15,
+          "index": 11,
           "text": "你總該給朕一點面子，讓朕好下台"
         },
         {
-          "index": 16,
+          "index": 12,
           "text": "好"
         },
         {
-          "index": 17,
+          "index": 13,
           "text": "皇上吉祥"
         },
         {
-          "index": 18,
+          "index": 14,
           "text": "萬歲萬萬歲　　平身"
         }
       ],
       "targets": [
         {
           "index": 1,
-          "text": "你对我不敬，我一样可以杀咗你。"
-        },
-        {
-          "index": 2,
-          "text": "要杀我就唔使踎喺度同我讲啦。"
-        },
-        {
-          "index": 3,
-          "text": "踎就唔好乱喐啦，唔系仲养眼啊。嗯，"
-        },
-        {
-          "index": 4,
-          "text": "其实我同你冇啦冇掕，"
-        },
-        {
-          "index": 5,
           "text": "真系好唔好倾嘅啫。"
         },
         {
-          "index": 6,
+          "index": 2,
           "text": "你丐帮弟子几千万，"
         },
         {
-          "index": 7,
+          "index": 3,
           "text": "你一人唔解散，叫我点安心啊？"
         },
         {
-          "index": 8,
+          "index": 4,
           "text": "丐帮有几多黑衣，唔系由我决定，"
         },
         {
-          "index": 9,
+          "index": 5,
           "text": "系由你决定。"
         },
         {
-          "index": 10,
+          "index": 6,
           "text": "我？"
         },
         {
-          "index": 11,
+          "index": 7,
           "text": "如果你真系英明神武，令到国泰民安，"
         },
         {
-          "index": 12,
+          "index": 8,
           "text": "揾鬼得人做黑衣咩？"
         },
         {
-          "index": 13,
-          "text": "有道理，有道理，执生啦。诶，"
+          "index": 9,
+          "text": "有道理，有道理，执生啦。"
         },
         {
-          "index": 14,
-          "text": "不过咁啊，"
+          "index": 10,
+          "text": "诶，不过咁啊，"
         },
         {
-          "index": 15,
+          "index": 11,
           "text": "你俾翻啲面我好啊，等我好落台。"
         },
         {
-          "index": 16,
+          "index": 12,
           "text": "系啦，"
         },
         {
-          "index": 17,
+          "index": 13,
           "text": "皇上吉祥，"
         },
         {
-          "index": 18,
+          "index": 14,
           "text": "万岁万万岁。平身。"
         }
       ],
       "first_owned_index": 4,
-      "last_owned_index": 18
+      "last_owned_index": 14
     },
-    "answer": {
-      "changes": [
-        {
-          "index": 16,
-          "text": "系啦。"
-        },
-        {
-          "index": 17,
-          "text": "皇上吉祥！"
-        }
-      ]
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -17958,26 +18512,6 @@
         {
           "index": 10,
           "text": "怕了你"
-        },
-        {
-          "index": 11,
-          "text": "先別走"
-        },
-        {
-          "index": 12,
-          "text": "又怎麼？"
-        },
-        {
-          "index": 13,
-          "text": "還有一家大小的！給多點"
-        },
-        {
-          "index": 14,
-          "text": "添多少？"
-        },
-        {
-          "index": 15,
-          "text": "沒有一千都給八百"
         }
       ],
       "targets": [
@@ -18007,11 +18541,11 @@
         },
         {
           "index": 7,
-          "text": "老冯兄弟。嗯，"
+          "text": "老冯兄弟。"
         },
         {
           "index": 8,
-          "text": "奉旨乞食。有冇搞错？"
+          "text": "嗯，奉旨乞食。有冇搞错？"
         },
         {
           "index": 9,
@@ -18020,49 +18554,136 @@
         {
           "index": 10,
           "text": "唉，怕你啊。"
-        },
-        {
-          "index": 11,
-          "text": "喂，行者，"
-        },
-        {
-          "index": 12,
-          "text": "今次点啊？"
-        },
-        {
-          "index": 13,
-          "text": "我成兜灰耳仔啦。天地点"
-        },
-        {
-          "index": 14,
-          "text": "啊？天地都话"
-        },
-        {
-          "index": 15,
-          "text": "冇一千就俾几百啊。"
         }
       ],
       "first_owned_index": 1,
-      "last_owned_index": 15
+      "last_owned_index": 7
     },
     "answer": {
       "changes": [
         {
+          "index": 2,
+          "text": "化灰都认得你啊，大钟黑衣！"
+        },
+        {
           "index": 3,
           "text": "孭埋个女嚟博同情？"
-        },
-        {
-          "index": 8,
-          "text": "奉旨乞食？有冇搞错？"
-        },
-        {
-          "index": 9,
-          "text": "冇搞错！走你走啊！"
         }
       ]
     },
     "difficulty": 1,
     "verified": true
+  },
+  {
+    "query": {
+      "guides": [
+        {
+          "index": 1,
+          "text": "乞丐就是不給！快滾"
+        },
+        {
+          "index": 2,
+          "text": "不給不行"
+        },
+        {
+          "index": 3,
+          "text": "應份的！兄弟"
+        },
+        {
+          "index": 4,
+          "text": "奉旨乞食？有沒有搞錯？"
+        },
+        {
+          "index": 5,
+          "text": "沒有搞錯！爽手點！"
+        },
+        {
+          "index": 6,
+          "text": "怕了你"
+        },
+        {
+          "index": 7,
+          "text": "先別走"
+        },
+        {
+          "index": 8,
+          "text": "又怎麼？"
+        },
+        {
+          "index": 9,
+          "text": "還有一家大小的！給多點"
+        },
+        {
+          "index": 10,
+          "text": "添多少？"
+        },
+        {
+          "index": 11,
+          "text": "沒有一千都給八百"
+        }
+      ],
+      "targets": [
+        {
+          "index": 1,
+          "text": "我乞儿唔俾噶，过主啊。"
+        },
+        {
+          "index": 2,
+          "text": "唔俾唔得啊，"
+        },
+        {
+          "index": 3,
+          "text": "老冯兄弟。"
+        },
+        {
+          "index": 4,
+          "text": "嗯，奉旨乞食。有冇搞错？"
+        },
+        {
+          "index": 5,
+          "text": "冇搞错。走你走啊！"
+        },
+        {
+          "index": 6,
+          "text": "唉，怕你啊。"
+        },
+        {
+          "index": 7,
+          "text": "喂，行者，"
+        },
+        {
+          "index": 8,
+          "text": "今次点啊？"
+        },
+        {
+          "index": 9,
+          "text": "我成兜灰耳仔啦。"
+        },
+        {
+          "index": 10,
+          "text": "天地点啊？"
+        },
+        {
+          "index": 11,
+          "text": "天地都话冇一千就俾几百啊。"
+        }
+      ],
+      "first_owned_index": 4,
+      "last_owned_index": 11
+    },
+    "answer": {
+      "changes": [
+        {
+          "index": 4,
+          "text": "嗯，奉旨乞食？有冇搞错？"
+        },
+        {
+          "index": 5,
+          "text": "冇搞错！走你走啊！"
+        }
+      ]
+    },
+    "difficulty": 1
   },
   {
     "query": {

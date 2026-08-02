@@ -12,7 +12,7 @@ from typing import Unpack
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.lang.yue_zho.review import YueZhoMultiReviewPromptYueHant
-from scinoephile.llms import load_default_test_cases
+from scinoephile.llms import load_shared_test_cases
 from scinoephile.llms.multi_review import (
     MultiReviewManager,
     MultiReviewProcessor,
@@ -44,7 +44,7 @@ def get_multi_reviewer(
     language: Language,
     guide_language: Language,
     prompt: MultiReviewPrompt | None = None,
-    test_cases: list[TestCase] | None = None,
+    shared_test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> MultiReviewProcessor:
@@ -54,7 +54,7 @@ def get_multi_reviewer(
         language: language of subtitle sources and output
         guide_language: language of guide subtitles
         prompt: text for LLM correspondence
-        test_cases: test cases
+        shared_test_cases: shared test cases
         provider: provider to use for queries
         **kwargs: additional processor keyword arguments
     Returns:
@@ -70,10 +70,10 @@ def get_multi_reviewer(
         )
     if prompt is None:
         prompt = DEFAULT_PROMPTS[key]
-    if test_cases is None:
-        test_cases = list(
-            load_default_test_cases(MultiReviewManager, prompt, _JSON_PATHS[key])
+    if shared_test_cases is None:
+        shared_test_cases = list(
+            load_shared_test_cases(MultiReviewManager, prompt, _JSON_PATHS[key])
         )
     if provider is None:
         provider = get_provider()
-    return MultiReviewProcessor(prompt, test_cases, provider=provider, **kwargs)
+    return MultiReviewProcessor(prompt, shared_test_cases, provider=provider, **kwargs)

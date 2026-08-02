@@ -24,10 +24,14 @@ _LOCALIZED_PROMPT = BlockDelineationPrompt(
     targets="chushi",
     first_owned_index="fuze_kaishi",
     last_owned_index="fuze_jieshu",
+    boundaries="bianjie",
     changes="xiugai",
     index="xuhao",
     text="wenben",
     shift="yidong",
+    original_offset="yuanben",
+    minimum_shift="zuixiao",
+    maximum_shift="zuida",
 )
 """Block-delineation prompt with localized correspondence field names."""
 
@@ -58,12 +62,44 @@ def test_prompt_aliases_apply_to_lists_and_nested_subtitles():
         "chushi": [{"xuhao": 1, "wenben": "甲乙"}, {"xuhao": 2, "wenben": "丙"}],
         "fuze_kaishi": 1,
         "fuze_jieshu": 2,
+        "bianjie": [{"xuhao": 1, "yuanben": 2, "zuixiao": -2, "zuida": 1}],
     }
     assert test_case.answer is not None
     assert test_case.answer.model_dump(by_alias=True) == {
         "xiugai": [{"xuhao": 1, "yidong": -1}]
     }
     assert test_case.get_output_texts() == ["甲", "乙丙"]
+
+
+def test_query_supplies_original_offsets_and_legal_shift_ranges():
+    """Queries should deterministically expose every editable boundary's range."""
+    query_cls = BlockDelineationManager.get_query_cls(_LOCALIZED_PROMPT)
+
+    query = query_cls.model_validate(
+        {
+            "cankao": [
+                {"xuhao": index, "wenben": f"參考{index}"} for index in range(1, 5)
+            ],
+            "chushi": [
+                {"xuhao": index, "wenben": text}
+                for index, text in enumerate(("甲乙", "", "丙", "丁戊"), 1)
+            ],
+            "fuze_kaishi": 2,
+            "fuze_jieshu": 3,
+        }
+    )
+
+    assert query.model_dump(by_alias=True)["bianjie"] == [
+        {"xuhao": 2, "yuanben": 2, "zuixiao": -2, "zuida": 3},
+        {"xuhao": 3, "yuanben": 3, "zuixiao": -3, "zuida": 2},
+    ]
+    with raises(ValidationError, match="exactly describe every editable boundary"):
+        query_cls.model_validate(
+            {
+                **query.model_dump(by_alias=True),
+                "bianjie": [{"xuhao": 2, "yuanben": 2, "zuixiao": -1, "zuida": 3}],
+            }
+        )
 
 
 def test_sparse_boundary_shifts_validate_indices_and_non_crossing_offsets():
@@ -263,3 +299,54 @@ def test_query_requires_complete_corresponding_indexes():
                 }
             }
         )
+
+
+def test_output_quality_validation_rejects_stranded_boundary_punctuation():
+    """Configured delineation prompts should reject obvious boundary fragments."""
+    prompt = BlockDelineationPrompt(validate_output_quality=True)
+    test_case_cls = BlockDelineationManager.get_test_case_cls(prompt)
+    query = {
+        "guides": [
+            {"index": 1, "text": "參考一"},
+            {"index": 2, "text": "參考二"},
+            {"index": 3, "text": "參考三"},
+        ],
+        "targets": [
+            {"index": 1, "text": "甲「"},
+            {"index": 2, "text": "，"},
+            {"index": 3, "text": "乙"},
+        ],
+        "first_owned_index": 1,
+        "last_owned_index": 2,
+    }
+
+    with raises(ValidationError, match=r"(?s)indexes 1 end.*indexes 2 contain"):
+        test_case_cls.model_validate({"query": query, "answer": {"changes": []}})
+
+    corrected = test_case_cls.model_validate(
+        {"query": query, "answer": {"changes": [{"index": 1, "shift": 1}]}}
+    )
+    assert corrected.get_output_texts() == ["甲「，", "", "乙"]
+
+
+def test_output_quality_validation_ignores_immutable_outer_edges():
+    """Delineation should inspect only edges controlled by editable boundaries."""
+    prompt = BlockDelineationPrompt(validate_output_quality=True)
+    test_case_cls = BlockDelineationManager.get_test_case_cls(prompt)
+    query = {
+        "guides": [{"index": index, "text": f"參考{index}"} for index in range(1, 5)],
+        "targets": [
+            {"index": 1, "text": "，甲"},
+            {"index": 2, "text": "乙"},
+            {"index": 3, "text": "丙"},
+            {"index": 4, "text": "丁「"},
+        ],
+        "first_owned_index": 2,
+        "last_owned_index": 3,
+    }
+
+    test_case = test_case_cls.model_validate(
+        {"query": query, "answer": {"changes": []}}
+    )
+
+    assert test_case.get_output_texts() == ["，甲", "乙", "丙", "丁「"]

@@ -139,7 +139,7 @@ class MultiReviewProcessor(Processor):
             logger.info(f"Block {block_idx}:\n{output_block.to_simple_string()}")
             output_blocks[block_idx] = output_block
 
-        self.save_test_cases()
+        self.save_encountered_test_cases()
 
         processed_blocks = [block for block in output_blocks if block is not None]
         if processed_blocks:

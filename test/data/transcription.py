@@ -314,7 +314,7 @@ def process_transcription_multi_review(
 
     reviewer_kw = dict(reviewer_kw or {})
     reviewer_kw.setdefault(
-        "test_case_path", output_path.parent / "json" / "multi_review.json"
+        "current_test_cases_path", output_path.parent / "json" / "multi_review.json"
     )
     if additional_context is not None:
         reviewer_kw.setdefault("additional_context", additional_context)
@@ -563,7 +563,7 @@ def _load_or_review_series_guided(
 
     reviewer_kw = dict(reviewer_kw or {})
     reviewer_kw.setdefault(
-        "test_case_path",
+        "current_test_cases_path",
         output_path.parent / "json" / f"guided_review-{get_torch_device()}.json",
     )
     reviewed = review_series_guided(
@@ -674,7 +674,7 @@ def _load_or_translate_series_gaps(
 
     translator_kw = dict(translator_kw or {})
     translator_kw.setdefault(
-        "test_case_path",
+        "current_test_cases_path",
         output_path.parent / "json" / f"gap_translation-{get_torch_device()}.json",
     )
     translated = translate_series_gaps(

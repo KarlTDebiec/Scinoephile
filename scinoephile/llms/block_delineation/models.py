@@ -7,15 +7,17 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import ClassVar, Self, cast
 
-from pydantic import Field, model_validator
+from pydantic import Field, ValidationInfo, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase, TestCaseSubtitle
 from scinoephile.core.llms.models import LLMModel
+from scinoephile.core.text import remove_punc_and_whitespace
 
 from .prompt import BlockDelineationPrompt
 
 __all__ = [
     "BlockDelineationAnswer",
+    "BlockDelineationBoundary",
     "BlockDelineationBoundaryChange",
     "BlockDelineationQuery",
     "BlockDelineationSubtitle",
@@ -24,6 +26,11 @@ __all__ = [
 
 
 _BASE_PROMPT = BlockDelineationPrompt()
+
+_LEADING_CLOSING_PUNCTUATION = set(",.!?;:，。！？；：、")
+"""Sentence punctuation that must not begin reconstructed target text."""
+_TRAILING_OPENING_PUNCTUATION = set("([{<（［｛〈《「『【〔〖〘〚‘“")
+"""Opening punctuation that must not end reconstructed target text."""
 
 
 class BlockDelineationSubtitle(TestCaseSubtitle):
@@ -42,6 +49,19 @@ class BlockDelineationBoundaryChange(LLMModel):
     """Signed character count by which to move the boundary."""
 
 
+class BlockDelineationBoundary(LLMModel):
+    """Original position and legal shift range of one editable boundary."""
+
+    index: int = Field(ge=1)
+    """One-based target index immediately before the boundary."""
+    original_offset: int = Field(ge=0)
+    """Original cumulative Unicode-character offset of the boundary."""
+    minimum_shift: int
+    """Minimum inclusive legal shift relative to the original offset."""
+    maximum_shift: int
+    """Maximum inclusive legal shift relative to the original offset."""
+
+
 class BlockDelineationQuery(Query):
     """Complete guides and timing-based initial targets for one query window."""
 
@@ -55,6 +75,8 @@ class BlockDelineationQuery(Query):
     """First local target index whose following boundary this window owns."""
     last_owned_index: int | None = Field(default=None, ge=1)
     """Last local target index whose following boundary this window owns."""
+    boundaries: list[BlockDelineationBoundary] = Field(default_factory=list)
+    """Original offsets and legal shift ranges of every editable boundary."""
 
     @property
     def owned_index_range(self) -> range:
@@ -69,6 +91,70 @@ class BlockDelineationQuery(Query):
         first_index = self.first_owned_index or 1
         last_index = self.last_owned_index or len(self.targets)
         return range(first_index, min(last_index, len(self.targets) - 1) + 1)
+
+    @model_validator(mode="before")
+    @classmethod
+    def populate_boundary_constraints(cls, value: object) -> object:
+        """Populate boundary metadata when loading queries from older storage.
+
+        Arguments:
+            value: raw query data
+        Returns:
+            query data with deterministic editable-boundary constraints
+        """
+        if not isinstance(value, Mapping):
+            return value
+        boundary_keys = {"boundaries", cls.prompt.boundaries}
+        if any(key in value for key in boundary_keys):
+            return value
+
+        targets_value = value.get(cls.prompt.targets, value.get("targets"))
+        if not isinstance(targets_value, list) or not targets_value:
+            return value
+        target_text_values = [
+            (
+                target_value.get(cls.prompt.text, target_value.get("text"))
+                if isinstance(target_value, Mapping)
+                else target_value.text
+                if isinstance(target_value, BlockDelineationSubtitle)
+                else None
+            )
+            for target_value in targets_value
+        ]
+        if not all(isinstance(text_value, str) for text_value in target_text_values):
+            return value
+        target_texts = cast("list[str]", target_text_values)
+
+        first_owned_index = value.get(
+            cls.prompt.first_owned_index, value.get("first_owned_index", 1)
+        )
+        last_owned_index = value.get(
+            cls.prompt.last_owned_index,
+            value.get("last_owned_index", len(target_texts)),
+        )
+        if first_owned_index is None:
+            first_owned_index = 1
+        if last_owned_index is None:
+            last_owned_index = len(target_texts)
+        if not isinstance(first_owned_index, int) or not isinstance(
+            last_owned_index, int
+        ):
+            return value
+
+        constraints = cls._get_boundary_constraint_values(
+            target_texts, first_owned_index, last_owned_index
+        )
+        updated_value = dict(value)
+        updated_value[cls.prompt.boundaries] = [
+            {
+                cls.prompt.index: index,
+                cls.prompt.original_offset: original_offset,
+                cls.prompt.minimum_shift: minimum_shift,
+                cls.prompt.maximum_shift: maximum_shift,
+            }
+            for index, original_offset, minimum_shift, maximum_shift in constraints
+        ]
+        return updated_value
 
     @model_validator(mode="after")
     def validate_indices(self) -> Self:
@@ -87,7 +173,48 @@ class BlockDelineationQuery(Query):
             or self.last_owned_index > len(guide_indexes)
         ):
             raise ValueError(self.prompt.owned_indices_err)
+        expected_boundaries = self._get_boundary_constraint_values(
+            [target.text for target in self.targets],
+            self.first_owned_index or 1,
+            self.last_owned_index or len(self.targets),
+        )
+        received_boundaries = [
+            (
+                boundary.index,
+                boundary.original_offset,
+                boundary.minimum_shift,
+                boundary.maximum_shift,
+            )
+            for boundary in self.boundaries
+        ]
+        if received_boundaries != expected_boundaries:
+            raise ValueError(self.prompt.boundary_constraints_err)
         return self
+
+    @staticmethod
+    def _get_boundary_constraint_values(
+        target_texts: list[str], first_owned_index: int, last_owned_index: int
+    ) -> list[tuple[int, int, int, int]]:
+        """Get deterministic editable-boundary constraint values.
+
+        Arguments:
+            target_texts: preliminary target texts in index order
+            first_owned_index: first one-based editable boundary index
+            last_owned_index: last one-based owned target or boundary index
+        Returns:
+            index, original offset, minimum shift, and maximum shift tuples
+        """
+        last_boundary_index = min(last_owned_index, len(target_texts) - 1)
+        if first_owned_index > last_boundary_index:
+            return []
+
+        offsets = [0]
+        for text in target_texts:
+            offsets.append(offsets[-1] + len(text))
+        return [
+            (index, offsets[index], -offsets[index], offsets[-1] - offsets[index])
+            for index in range(first_owned_index, last_boundary_index + 1)
+        ]
 
 
 type _LegacyTextAnswerData = tuple[
@@ -253,6 +380,75 @@ class BlockDelineationTestCase(TestCase):
         ]
         target_texts = [target.text for target in self.query.targets]
         self._get_shifted_boundary_offsets(target_texts, self.answer.changes)
+        return self
+
+    @model_validator(mode="after")
+    def validate_output_quality(self, info: ValidationInfo) -> Self:
+        """Reject deterministic defects around reconstructed owned boundaries.
+
+        Arguments:
+            info: Pydantic validation context
+        Returns:
+            validated test case
+        """
+        context = info.context
+        if (
+            self.answer is None
+            or not self.prompt.validate_output_quality
+            or (
+                isinstance(context, dict)
+                and context.get("skip_output_quality_validation") is True
+            )
+        ):
+            return self
+
+        boundary_indexes = list(self.query.owned_boundary_index_range)
+        if not boundary_indexes:
+            return self
+        output = self.get_output_texts()
+        left_indexes = set(boundary_indexes)
+        right_indexes = {index + 1 for index in boundary_indexes}
+        affected_indexes = sorted(left_indexes | right_indexes)
+        leading_closing_indexes: list[int] = []
+        trailing_opening_indexes: list[int] = []
+        punctuation_only_indexes: list[int] = []
+        for index in affected_indexes:
+            text = output[index - 1]
+            stripped = text.strip()
+            if text and not remove_punc_and_whitespace(text):
+                punctuation_only_indexes.append(index)
+                continue
+            if (
+                index in right_indexes
+                and stripped
+                and stripped[0] in _LEADING_CLOSING_PUNCTUATION
+            ):
+                leading_closing_indexes.append(index)
+            if (
+                index in left_indexes
+                and stripped
+                and stripped[-1] in _TRAILING_OPENING_PUNCTUATION
+            ):
+                trailing_opening_indexes.append(index)
+
+        errors: list[str] = []
+        if leading_closing_indexes:
+            indexes = ", ".join(map(str, leading_closing_indexes))
+            errors.append(
+                self.prompt.leading_closing_punctuation_err_tpl.format(indexes=indexes)
+            )
+        if trailing_opening_indexes:
+            indexes = ", ".join(map(str, trailing_opening_indexes))
+            errors.append(
+                self.prompt.trailing_opening_punctuation_err_tpl.format(indexes=indexes)
+            )
+        if punctuation_only_indexes:
+            indexes = ", ".join(map(str, punctuation_only_indexes))
+            errors.append(
+                self.prompt.punctuation_only_target_err_tpl.format(indexes=indexes)
+            )
+        if errors:
+            raise ValueError("\n".join(errors))
         return self
 
     @classmethod

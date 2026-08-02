@@ -14,10 +14,11 @@ from typing import cast
 from pydantic import ValidationError
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
+from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Processor, TestCase, TestCaseSubtitle
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.synchronization import SyncGroup
-from scinoephile.core.text import replace_control_characters
+from scinoephile.core.text import remove_punc_and_whitespace, replace_control_characters
 from scinoephile.llms.block_delineation import (
     BlockDelineationProcessor,
     BlockDelineationTestCase,
@@ -35,12 +36,12 @@ __all__ = ["BlockTranscriptionAligner"]
 
 logger = getLogger(__name__)
 
-_MAX_UNSPLIT_SUBTITLES = 15
+_MAX_UNSPLIT_SUBTITLES = 12
 """Largest block aligned in one LLM query."""
-_EDGE_OWNED_SUBTITLES = 12
-"""Nominal number of subtitles owned by first and last windows."""
-_INTERIOR_OWNED_SUBTITLES = 9
-"""Nominal number of subtitles owned by interior windows."""
+_MAX_EDGE_OWNED_SUBTITLES = 12
+"""Maximum subtitles owned by first and last windows."""
+_MAX_INTERIOR_OWNED_SUBTITLES = 9
+"""Maximum subtitles owned by interior windows."""
 _CONTEXT_SUBTITLES = 3
 """Number of neighboring subtitles supplied as context on each available side."""
 _BOUNDARY_FLEXIBILITY = 3
@@ -118,6 +119,9 @@ class BlockTranscriptionAligner:
             )
             for _, transcription_idxs in alignment.sync_groups
         ]
+        targets = [
+            target if remove_punc_and_whitespace(target) else "" for target in targets
+        ]
         if not any(targets):
             self._set_output(alignment, targets)
             return alignment
@@ -132,8 +136,8 @@ class BlockTranscriptionAligner:
 
     def update_all_test_cases(self):
         """Persist block test cases encountered during the current run."""
-        self.delineation_processor.save_test_cases()
-        self.punctuation_processor.save_test_cases()
+        self.delineation_processor.save_encountered_test_cases()
+        self.punctuation_processor.save_encountered_test_cases()
 
     def _delineate(
         self, references: Sequence[Subtitle], targets: list[str]
@@ -274,7 +278,12 @@ class BlockTranscriptionAligner:
         test_case_cls = self.punctuation_processor.test_case_cls
         query_targets = targets.copy()
         masked_indexes: list[int] = []
+        deterministic_empty_indexes: list[int] = []
         for index, target in enumerate(targets, 1):
+            if not remove_punc_and_whitespace(target):
+                query_targets[index - 1] = ""
+                deterministic_empty_indexes.append(index)
+                continue
             has_excessive_repeat_run = any(
                 sum(1 for _ in characters) > _MAX_PUNCTUATION_REPEAT_RUN_LENGTH
                 for _, characters in groupby(target)
@@ -287,6 +296,18 @@ class BlockTranscriptionAligner:
                 "Keeping long repeated-character target indexes unchanged during "
                 f"block punctuation window {window_index}: {masked_indexes}"
             )
+        owned_indexes = set(
+            range(window.first_owned_index, window.last_owned_index + 1)
+        )
+        if not any(
+            query_targets[index - 1]
+            for index in owned_indexes
+            if index not in masked_indexes
+        ):
+            output = targets.copy()
+            for index in owned_indexes & set(deterministic_empty_indexes):
+                output[index - 1] = ""
+            return output
         query = test_case_cls.query_cls.model_validate(
             {
                 "guides": self._get_indexed_items(guides),
@@ -305,7 +326,10 @@ class BlockTranscriptionAligner:
             ),
         )
         answer = cast(BlockPunctuationAnswer, test_case.answer)
-        return self._apply_changes(targets, answer.changes)
+        output = self._apply_changes(targets, answer.changes)
+        for index in owned_indexes & set(deterministic_empty_indexes):
+            output[index - 1] = ""
+        return output
 
     @classmethod
     def _get_windows(cls, references: Sequence[Subtitle]) -> list[_AlignmentWindow]:
@@ -320,44 +344,22 @@ class BlockTranscriptionAligner:
         if subtitle_count <= _MAX_UNSPLIT_SUBTITLES:
             return [_AlignmentWindow(0, subtitle_count, 0, subtitle_count)]
 
-        window_count = max(
-            2,
-            (subtitle_count - 6 + _INTERIOR_OWNED_SUBTITLES // 2)
-            // _INTERIOR_OWNED_SUBTITLES,
-        )
-        ideal_sizes = [
-            _EDGE_OWNED_SUBTITLES,
-            *([_INTERIOR_OWNED_SUBTITLES] * (window_count - 2)),
-            _EDGE_OWNED_SUBTITLES,
+        window_count = 2
+        while subtitle_count > (
+            2 * _MAX_EDGE_OWNED_SUBTITLES
+            + (window_count - 2) * _MAX_INTERIOR_OWNED_SUBTITLES
+        ):
+            window_count += 1
+        maximum_sizes = [
+            _MAX_EDGE_OWNED_SUBTITLES,
+            *([_MAX_INTERIOR_OWNED_SUBTITLES] * (window_count - 2)),
+            _MAX_EDGE_OWNED_SUBTITLES,
         ]
-        size_delta = subtitle_count - sum(ideal_sizes)
-        if window_count == 2 and size_delta < 0:
-            ideal_sizes = [subtitle_count // 2, subtitle_count - subtitle_count // 2]
-        elif size_delta > 0:
-            interior_indexes = list(range(1, window_count - 1))
-            while size_delta and any(
-                ideal_sizes[index] < _MAX_UNSPLIT_SUBTITLES
-                for index in interior_indexes
-            ):
-                for index in interior_indexes:
-                    if ideal_sizes[index] >= _MAX_UNSPLIT_SUBTITLES:
-                        continue
-                    ideal_sizes[index] += 1
-                    size_delta -= 1
-                    if not size_delta:
-                        break
-            for index in (window_count - 1, 0):
-                expansion = min(size_delta, _MAX_UNSPLIT_SUBTITLES - ideal_sizes[index])
-                ideal_sizes[index] += expansion
-                size_delta -= expansion
-        elif size_delta < 0:
-            shrinkable_indexes = [window_count - 1, *range(window_count - 2, 0, -1), 0]
-            for index in shrinkable_indexes:
-                reduction = min(-size_delta, ideal_sizes[index] - _MIN_OWNED_SUBTITLES)
-                ideal_sizes[index] -= reduction
-                size_delta += reduction
-                if not size_delta:
-                    break
+        total_capacity = sum(maximum_sizes)
+        ideal_sizes = [
+            subtitle_count * maximum_size / total_capacity
+            for maximum_size in maximum_sizes
+        ]
         gaps = [
             references[index].start - references[index - 1].end
             for index in range(1, subtitle_count)
@@ -370,13 +372,14 @@ class BlockTranscriptionAligner:
             ideal_cut = cumulative_ideal
             remaining_groups = window_count - cut_number
             previous_cut = cuts[-1] if cuts else 0
+            remaining_capacity = sum(maximum_sizes[cut_number:])
             minimum_cut = max(
                 previous_cut + _MIN_OWNED_SUBTITLES,
-                subtitle_count - remaining_groups * _MAX_UNSPLIT_SUBTITLES,
+                subtitle_count - remaining_capacity,
                 ceil(ideal_cut - _BOUNDARY_FLEXIBILITY),
             )
             maximum_cut = min(
-                previous_cut + _MAX_UNSPLIT_SUBTITLES,
+                previous_cut + maximum_sizes[cut_number - 1],
                 subtitle_count - remaining_groups * _MIN_OWNED_SUBTITLES,
                 floor(ideal_cut + _BOUNDARY_FLEXIBILITY),
             )
@@ -435,7 +438,11 @@ class BlockTranscriptionAligner:
         """
         try:
             return processor.queryer(test_case)
-        except ValidationError as exc:
+        except (ScinoephileError, ValidationError) as exc:
+            if isinstance(exc, ScinoephileError) and not isinstance(
+                exc.__cause__, ValidationError
+            ):
+                raise
             if not self.fallback_to_no_op:
                 raise
 
@@ -445,9 +452,12 @@ class BlockTranscriptionAligner:
                     "answer": test_case.get_no_op_answer().model_dump(mode="json"),
                     "few_shot": False,
                     "verified": False,
-                }
+                },
+                context={"skip_output_quality_validation": True},
             )
-            processor.queryer.log_encountered_test_case(fallback_test_case)
+            processor.queryer.log_encountered_test_case(
+                fallback_test_case, skip_output_quality_validation=True
+            )
             logger.warning(
                 f"Falling back to an unverified no-op answer for {operation} after "
                 f"invalid LLM responses: {exc}"

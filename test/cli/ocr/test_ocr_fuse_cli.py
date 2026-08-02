@@ -129,7 +129,7 @@ def test_ocr_fuse_cli_pipe(
     assert_series_equal(output, expected)
 
 
-def test_ocr_fuse_cli_passes_test_case_path(tmp_path: Path):
+def test_ocr_fuse_cli_passes_current_test_cases_path(tmp_path: Path):
     """Test OCR-fusion CLI passes an optional test-case JSON path.
 
     Arguments:
@@ -156,7 +156,7 @@ def test_ocr_fuse_cli_passes_test_case_path(tmp_path: Path):
             f"--cache-dir {cache_root_path} --cache-overwrite --llm-no-op",
         )
 
-    assert fuse.call_args.kwargs["test_case_path"] == json_path.resolve()
+    assert fuse.call_args.kwargs["current_test_cases_path"] == json_path.resolve()
     assert fuse.call_args.kwargs["cache_root_path"] == cache_root_path.resolve()
     assert fuse.call_args.kwargs["overwrite_cache"] is True
     assert fuse.call_args.kwargs["no_op"] is True
