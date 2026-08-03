@@ -49,9 +49,10 @@ response.
 
 Find the exact guide SRT used during transcription and the logged delineation
 JSON. Do not substitute a similarly named subtitle track. Current workflows may
-use flat names such as `delineation-<provider>.json` or
-`block_delineation-<provider>.json`; older workflows may use provider names such
-as `delineation/mps.json` or `delineation/cuda.json`.
+use flat names such as `delineation-<provider>.json`,
+`block_delineation-<provider>.json`, `advisory_delineation-<provider>.json`, or
+`candidate_delineation-<provider>.json`; older workflows may use provider names
+such as `delineation/mps.json` or `delineation/cuda.json`.
 
 The guide SRT is required because delineation JSON stores guide text but not
 global subtitle numbers. The CLI matches each pair or complete window sequence
@@ -107,8 +108,10 @@ also show `Owns boundaries after refs ...`; local lines are marked
 are inclusive local `first_owned_index` and `last_owned_index` values. A block
 Output cell lists only reconstructed subtitles that differ from Input. The CLI
 derives these texts from sparse boundary shifts; they are not literal copies of
-the JSON answer. Mentally overlay them on Input to assess the complete window. A
-blank line is displayed as `—`. Rows are sorted by matched reference indexes.
+the JSON answer. Mentally overlay them on Input to assess the complete window. An
+empty string is displayed as `(empty)` so that it cannot be confused with a
+literal em dash, which is displayed as `—`. Rows are sorted by matched reference
+indexes.
 Preserve the original log order among repeated pairwise cases because they may
 record successive decisions. In pairwise JSON, an empty answer (`{}`) means no
 boundary shift. In block JSON, an empty `changes` list means the complete
@@ -190,6 +193,12 @@ than a generated SRT:
   applies all listed shifts simultaneously. If an owned shift crosses unchanged
   preliminary cuts, the runtime collapses those intervening cuts; do not add
   context changes merely to make their subtitles empty.
+- Advisory block JSON additionally stores ranked timing `suggestions` on each
+  boundary. They are non-binding evidence: a corrected `shift` may use any legal
+  value even when absent from `suggestions`. Candidate block JSON is restrictive:
+  each corrected `shift` must equal one of that boundary's listed candidate
+  shifts. Preserve these query fields unchanged when editing answers or marking
+  cases verified.
 - Legacy block JSON containing full replacement `text` entries remains readable
   and is migrated on the next normal save. When correcting a case, use the
   current `index`/`shift` form. Confirm the reconstructed Output preserves every

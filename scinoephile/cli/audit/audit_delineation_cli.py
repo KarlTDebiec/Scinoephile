@@ -16,8 +16,10 @@ from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core import ScinoephileError
 from scinoephile.llms.block_delineation import (
+    AdvisoryBlockDelineationManager,
     BlockDelineationManager,
     BlockDelineationTestCase,
+    CandidateBlockDelineationManager,
 )
 from scinoephile.llms.delineation import DelineationManager, DelineationTestCase
 
@@ -159,7 +161,12 @@ class AuditDelineationCli(AuditCliBase):
             cls.load_test_cases_for_managers(
                 parser,
                 json_path,
-                (DelineationManager, BlockDelineationManager),
+                (
+                    DelineationManager,
+                    AdvisoryBlockDelineationManager,
+                    CandidateBlockDelineationManager,
+                    BlockDelineationManager,
+                ),
                 workflow_name="delineation",
             ),
         )

@@ -178,6 +178,29 @@ def test_audit_punctuation_formats_unanswered_case():
     assert "| 1 | 參考 | 原文 | (unanswered) |  |  |" in report
 
 
+def test_audit_punctuation_distinguishes_empty_from_literal_em_dash():
+    """Empty target text should not look like a literal em dash."""
+    reference = _get_series("參考一", "參考二")
+    target = _get_series("", "—")
+    test_case = BlockPunctuationTestCase(
+        query=BlockPunctuationQuery(
+            guides=[
+                BlockPunctuationSubtitle(index=1, text="參考一"),
+                BlockPunctuationSubtitle(index=2, text="參考二"),
+            ],
+            targets=[
+                BlockPunctuationSubtitle(index=1, text=""),
+                BlockPunctuationSubtitle(index=2, text="—"),
+            ],
+        ),
+        answer=BlockPunctuationAnswer(),
+    )
+
+    report = audit_punctuation(reference, target, (test_case,))
+
+    assert "| 1. (empty)<br>2. — |" in report
+
+
 def test_audit_punctuation_filters_rows_and_subtitle_range():
     """Test row status and inclusive subtitle-range filters."""
     reference = _get_series("參考一", "參考二", "參考三")

@@ -8,6 +8,7 @@ from collections.abc import Callable
 from enum import StrEnum
 from logging import getLogger
 from pathlib import Path
+from statistics import median
 
 from pydub import AudioSegment
 from pydub.effects import normalize
@@ -17,20 +18,26 @@ from scinoephile.audio.transcription import (
     DemucsMode,
     MlxAudioTranscriber,
     TranscribedSegment,
+    TranscribedWord,
     TranscriptionError,
     VADMode,
     WhisperTranscriber,
+    get_segment_split_at_idx,
     get_segment_split_on_word_timings,
 )
 from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
+from scinoephile.core.text import FULL_PUNC_CHARS, HALF_PUNC_CHARS
 
 from .aligner import TranscriptionAligner
 from .block_aligner import BlockTranscriptionAligner
 
 __all__ = [
+    "BlockDelineationMode",
+    "BlockPunctuationMode",
     "GuidedTranscriber",
+    "MlxAudioTimingMode",
     "TranscribedSegmentSplitter",
     "TranscriptionAlignmentMode",
     "TranscriptionBackend",
@@ -69,6 +76,56 @@ _TAIL_RECOVERY_MAX_NO_SPEECH_PROBABILITY = 0.6
 _TAIL_RECOVERY_MAX_SECONDS_PER_CHARACTER = 1.5
 """Maximum duration per character accepted from focused tail recovery."""
 
+_LEXICAL_INFIX_PUNCTUATION = {
+    "'",
+    "-",
+    ".",
+    "/",
+    ":",
+    "‐",
+    "–",
+    "’",
+    "．",
+    "：",
+    "－",
+    "／",
+    "＇",
+    "﹣",
+}
+"""Punctuation preserved between ASCII alphanumeric characters."""
+
+_MLX_PHRASE_MAX_CHARACTERS = 12
+"""Maximum characters retained in one phrase-level MLX timing unit."""
+
+_MLX_PHRASE_MIN_CHARACTERS = 2
+"""Minimum preferred characters in one phrase-level MLX timing unit."""
+
+_MLX_PHRASE_PAUSE_RATIO = 2.5
+"""Median-duration multiple treated as phrase-final CTC hold time."""
+
+_MLX_PHRASE_PAUSE_SECONDS = 0.6
+"""Minimum absolute CTC hold time treated as phrase-final."""
+
+_MLX_PHRASE_TARGET_CHARACTERS = 7
+"""Preferred characters in one phrase-level MLX timing unit."""
+
+_MLX_PHRASE_STRONG_PUNCTUATION = set(".!?;。！？；…")
+"""Sentence punctuation treated as a strong phrase boundary."""
+
+_MLX_PHRASE_WEAK_PUNCTUATION = set(",:，：、")
+"""Clause punctuation treated as a weak phrase boundary."""
+
+
+class MlxAudioTimingMode(StrEnum):
+    """Granularity of CTC timing units exposed for MLX-Audio alignment."""
+
+    SEGMENT = "segment"
+    """Retain complete MLX-Audio transcription segments."""
+    PHRASE = "phrase"
+    """Group CTC timing units into pause- and punctuation-aware phrases."""
+    CTC_UNIT = "ctc-unit"
+    """Expose every individually timed CTC unit."""
+
 
 class TranscriptionBackend(StrEnum):
     """Audio transcription backends."""
@@ -86,6 +143,30 @@ class TranscriptionAlignmentMode(StrEnum):
     """Use adjacent-pair delineation and per-subtitle punctuation queries."""
     BLOCK = "block"
     """Use one delineation and one punctuation query per populated audio block."""
+    BLOCK_POSITIONAL = "block-positional"
+    """Select timed boundary candidates and insert punctuation by character offset."""
+
+
+class BlockDelineationMode(StrEnum):
+    """Delineation strategy used by block transcription alignment."""
+
+    ADVISORY = "advisory"
+    """Allow any legal shift while supplying ranked timing suggestions."""
+    GATED_ADVISORY = "gated-advisory"
+    """Supply ranked timing suggestions only when evidence is strong."""
+    UNRESTRICTED = "unrestricted"
+    """Allow each editable boundary to move to any legal character offset."""
+    CANDIDATE = "candidate"
+    """Restrict each editable boundary to supplied timing-supported candidates."""
+
+
+class BlockPunctuationMode(StrEnum):
+    """Punctuation strategy used by block transcription alignment."""
+
+    FULL_TEXT = "full-text"
+    """Return complete replacement text for subtitles whose punctuation changes."""
+    POSITIONAL = "positional"
+    """Insert punctuation at offsets on immutable subtitle text."""
 
 
 class GuidedTranscriber:
@@ -105,7 +186,9 @@ class GuidedTranscriber:
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
         mlx_audio_transcriber: MlxAudioTranscriber | None = None,
+        mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
         segment_splitter: TranscribedSegmentSplitter | None = None,
+        strip_generated_punctuation: bool = False,
     ):
         """Initialize.
 
@@ -121,7 +204,10 @@ class GuidedTranscriber:
             cache_root_path: cache root directory path
             overwrite_cache: whether to replace matching generated cache files
             mlx_audio_transcriber: configured MLX-Audio transcriber, when selected
+            mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
             segment_splitter: optional strategy for splitting transcribed segments
+            strip_generated_punctuation: whether to remove generated sentence
+                punctuation after timing and before guided alignment
         """
         self.language = language
         self.guide_language = guide_language
@@ -132,7 +218,9 @@ class GuidedTranscriber:
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
         self.mlx_audio_transcriber = mlx_audio_transcriber
+        self.mlx_audio_timing_mode = mlx_audio_timing_mode
         self.segment_splitter = segment_splitter
+        self.strip_generated_punctuation = strip_generated_punctuation
 
         # Use MLX-Audio's shared preprocessing fallbacks without Whisper recovery
         if self.backend is TranscriptionBackend.MLX_AUDIO:
@@ -265,11 +353,16 @@ class GuidedTranscriber:
             for segment in segments:
                 split_segments.extend(self.segment_splitter(segment))
 
-        # Expose MLX-Audio's CTC timing units to reference-guided alignment
+        # Expose the configured MLX-Audio timing granularity to guided alignment
         if self.backend is TranscriptionBackend.MLX_AUDIO:
             timed_segments = []
             for segment in split_segments:
-                timed_segments.extend(get_segment_split_on_word_timings(segment))
+                if self.mlx_audio_timing_mode is MlxAudioTimingMode.SEGMENT:
+                    timed_segments.append(segment)
+                elif self.mlx_audio_timing_mode is MlxAudioTimingMode.PHRASE:
+                    timed_segments.extend(_get_segment_split_on_phrase_timings(segment))
+                else:
+                    timed_segments.extend(get_segment_split_on_word_timings(segment))
             split_segments = [
                 segment.model_copy(update={"id": segment_idx})
                 for segment_idx, segment in enumerate(timed_segments)
@@ -278,6 +371,12 @@ class GuidedTranscriber:
         transcription_block = get_series_from_segments(
             split_segments, audio=audio_block.audio, offset=offset
         )
+        if self.strip_generated_punctuation:
+            for event in transcription_block.events:
+                event.text = _strip_generated_punctuation(event.text)
+            transcription_block.events = [
+                event for event in transcription_block.events if event.text.strip()
+            ]
         alignment = self.aligner.align(reference_block, transcription_block)
         return alignment.transcription
 
@@ -507,7 +606,7 @@ class GuidedTranscriber:
         return recovered_segments
 
     @staticmethod
-    def _segments_are_usable(
+    def _segments_are_usable(  # noqa: PLR0911
         segments: list[TranscribedSegment],
         *,
         audio_duration: float | None = None,
@@ -586,3 +685,136 @@ class GuidedTranscriber:
         if not has_text:
             logger.warning(f"Rejecting empty {transcriber_name} transcription")
         return has_text
+
+
+def _get_phrase_boundary_scores(
+    text: str,
+    words: list[TranscribedWord],
+    durations: list[float],
+    pause_threshold: float,
+) -> dict[int, int]:
+    """Score phrase boundaries using punctuation and CTC hold durations."""
+    boundary_scores: dict[int, int] = {}
+    for character_index, character in enumerate(text, 1):
+        if character in _MLX_PHRASE_STRONG_PUNCTUATION:
+            boundary_scores[character_index] = 4
+        elif character in _MLX_PHRASE_WEAK_PUNCTUATION:
+            boundary_scores[character_index] = 2
+
+    character_offset = 0
+    for word, duration in zip(words, durations, strict=True):
+        character_offset += len(word.text)
+        boundary_scores.setdefault(character_offset, 1)
+        if duration >= pause_threshold:
+            boundary_scores[character_offset] = max(
+                boundary_scores[character_offset], 3
+            )
+    return boundary_scores
+
+
+def _get_segment_split_on_phrase_timings(
+    segment: TranscribedSegment,
+) -> list[TranscribedSegment]:
+    """Split an MLX-Audio segment into phrase-sized CTC timing groups.
+
+    CTC blank frames are represented as held duration on neighboring timing units,
+    so unusually long unit durations provide pause evidence even when consecutive
+    units have no literal timestamp gap.
+
+    Arguments:
+        segment: CTC-aligned MLX-Audio segment
+    Returns:
+        transcribed segments grouped into phrase-level timing units
+    """
+    words = segment.words
+    if not words or len(segment.text) <= _MLX_PHRASE_MIN_CHARACTERS:
+        return [segment]
+    if "".join(word.text for word in words) != segment.text:
+        return [segment]
+
+    durations = [max(word.end - word.start, 0.0) for word in words]
+    pause_threshold = max(
+        _MLX_PHRASE_PAUSE_SECONDS, median(durations) * _MLX_PHRASE_PAUSE_RATIO
+    )
+    boundary_scores = _get_phrase_boundary_scores(
+        segment.text, words, durations, pause_threshold
+    )
+
+    # Select phrase boundaries while retaining short genuine utterances
+    split_offsets: list[int] = []
+    phrase_start = 0
+    text_length = len(segment.text)
+    while text_length - phrase_start > _MLX_PHRASE_MIN_CHARACTERS:
+        minimum_offset = phrase_start + _MLX_PHRASE_MIN_CHARACTERS
+        maximum_offset = min(
+            phrase_start + _MLX_PHRASE_MAX_CHARACTERS,
+            text_length - _MLX_PHRASE_MIN_CHARACTERS,
+        )
+        hard_offsets = [
+            offset
+            for offset, score in boundary_scores.items()
+            if minimum_offset <= offset <= maximum_offset and score >= 3
+        ]
+        if hard_offsets:
+            split_offset = min(hard_offsets)
+        elif text_length - phrase_start <= _MLX_PHRASE_MAX_CHARACTERS:
+            break
+        else:
+            candidate_offsets = [
+                offset
+                for offset in boundary_scores
+                if minimum_offset <= offset <= maximum_offset
+            ]
+            if candidate_offsets:
+                split_offset = max(
+                    candidate_offsets,
+                    key=lambda offset: (
+                        boundary_scores[offset],
+                        -abs(offset - phrase_start - _MLX_PHRASE_TARGET_CHARACTERS),
+                    ),
+                )
+            else:
+                split_offset = phrase_start + _MLX_PHRASE_TARGET_CHARACTERS
+        split_offsets.append(split_offset)
+        phrase_start = split_offset
+    if not split_offsets:
+        return [segment]
+
+    # Split through the existing character-aware timing helper
+    output: list[TranscribedSegment] = []
+    remaining = segment
+    previous_offset = 0
+    for split_offset in split_offsets:
+        first, remaining = get_segment_split_at_idx(
+            remaining, split_offset - previous_offset
+        )
+        output.append(first)
+        previous_offset = split_offset
+    output.append(remaining)
+    return output
+
+
+def _strip_generated_punctuation(text: str) -> str:
+    """Remove generated punctuation while retaining ASCII lexical infixes.
+
+    Arguments:
+        text: timed transcription text
+    Returns:
+        text without generated sentence punctuation
+    """
+    punctuation = HALF_PUNC_CHARS | FULL_PUNC_CHARS
+    output: list[str] = []
+    for index, character in enumerate(text):
+        if character not in punctuation:
+            output.append(character)
+            continue
+        if (
+            character in _LEXICAL_INFIX_PUNCTUATION
+            and 0 < index < len(text) - 1
+            and text[index - 1].isascii()
+            and text[index - 1].isalnum()
+            and text[index + 1].isascii()
+            and text[index + 1].isalnum()
+        ):
+            output.append(character)
+    return "".join(output)

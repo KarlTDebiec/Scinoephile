@@ -4,12 +4,18 @@
 
 from __future__ import annotations
 
+from os import environ
 from pathlib import Path
 
 from scinoephile.audio.transcription import VADMode
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
-from scinoephile.lang.transcription import TranscriptionAlignmentMode
+from scinoephile.lang.transcription import (
+    BlockDelineationMode,
+    BlockPunctuationMode,
+    MlxAudioTimingMode,
+    TranscriptionAlignmentMode,
+)
 from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.data.transcription import process_transcription_pipeline
@@ -22,6 +28,37 @@ yue_hans_ocr_path = output_path / "yue-Hans_ocr"
 yue_hant_ocr_path = output_path / "yue-Hant_ocr"
 yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
 yue_hant_transcribe_vad_off_path = yue_hant_transcribe_path / "vad-off"
+yue_hant_transcribe_vad_off_stripped_punctuation_path = (
+    yue_hant_transcribe_path / "vad-off-stripped-punctuation"
+)
+yue_hant_transcribe_vad_off_phrase_timing_stripped_punctuation_path = (
+    yue_hant_transcribe_path / "vad-off-phrase-timing-stripped-punctuation"
+)
+yue_hant_transcribe_vad_off_phrase_timing_block_positional_path = (
+    yue_hant_transcribe_path / "vad-off-phrase-timing-block-positional"
+)
+yue_hant_transcribe_vad_off_phrase_timing_advisory_delineation_path = (
+    yue_hant_transcribe_path / "vad-off-phrase-timing-advisory-delineation"
+)
+yue_hant_transcribe_vad_off_phrase_timing_gated_advisory_delineation_path = (
+    yue_hant_transcribe_path / "vad-off-phrase-timing-gated-advisory-delineation"
+)
+yue_hant_transcribe_vad_off_phrase_timing_pairwise_path = (
+    yue_hant_transcribe_path / "vad-off-phrase-timing-pairwise"
+)
+yue_hant_transcribe_vad_off_phrase_timing_candidate_delineation_path = (
+    yue_hant_transcribe_path / "vad-off-phrase-timing-candidate-delineation"
+)
+yue_hant_transcribe_vad_off_phrase_timing_positional_punctuation_path = (
+    yue_hant_transcribe_path / "vad-off-phrase-timing-positional-punctuation"
+)
+yue_hant_transcribe_vad_auto_phrase_timing_stripped_punctuation_path = (
+    yue_hant_transcribe_path / "vad-auto-phrase-timing-stripped-punctuation"
+)
+yue_hant_transcribe_vad_auto_phrase_timing_gated_advisory_delineation_path = (
+    yue_hant_transcribe_path
+    / "vad-auto-phrase-timing-gated-advisory-delineation"
+)
 zho_hans_ocr_path = output_path / "zho-Hans_ocr"
 zho_hant_ocr_path = output_path / "zho-Hant_ocr"
 zho_hant_guide_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
@@ -55,6 +92,14 @@ transcription_additional_context = """
 
 set_logging_verbosity(2)
 
+selected_transcription_name = environ.get("SCINOEPHILE_TRANSCRIPTION_NAME")
+if selected_transcription_name is None:
+    transcription_names = ("whisper", "mimo", "qwen")
+elif selected_transcription_name in {"whisper", "mimo", "qwen"}:
+    transcription_names = (selected_transcription_name,)
+else:
+    raise ValueError("SCINOEPHILE_TRANSCRIPTION_NAME must be whisper, mimo, or qwen")
+
 actions = {
     # "eng_ocr",
     # "yue-Hans_ocr",
@@ -63,7 +108,12 @@ actions = {
     # "zho-Hant_ocr",
     # "yue-Hans_eng",
     # "zho-Hans_eng",
-    "yue-Hant_transcribe"
+    "yue-Hant_transcribe_vad_auto_phrase_timing",
+    # "yue-Hant_transcribe_advisory_delineation",
+    "yue-Hant_transcribe_vad_auto_gated_advisory_delineation",
+    # "yue-Hant_transcribe_pairwise",
+    # "yue-Hant_transcribe_candidate_delineation",
+    # "yue-Hant_transcribe_positional_punctuation",
 }
 
 if "eng_ocr" in actions:
@@ -100,5 +150,237 @@ if "yue-Hant_transcribe" in actions:
         vad_mode=VADMode.OFF,
         transcription_overwrite=True,
         run_merge_and_translation=True,
+        overwrite=True,
+    )
+if "yue-Hant_transcribe_strip_punctuation" in actions:
+    process_transcription_pipeline(
+        title_root,
+        zho_hant_guide_path,
+        reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        output_dir_path=yue_hant_transcribe_vad_off_stripped_punctuation_path,
+        audio_dir_path=yue_hant_transcribe_path / "audio",
+        additional_context=transcription_additional_context,
+        transcription_no_op=False,
+        transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
+        transcription_fallback_to_no_op=True,
+        strip_mlx_audio_punctuation=True,
+        vad_mode=VADMode.OFF,
+        stop_at_idx=20,
+        transcription_names=("mimo", "qwen"),
+        transcription_overwrite=True,
+        run_merge_and_translation=False,
+        overwrite=True,
+    )
+if "yue-Hant_transcribe_phrase_timing" in actions:
+    process_transcription_pipeline(
+        title_root,
+        zho_hant_guide_path,
+        reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        output_dir_path=(
+            yue_hant_transcribe_vad_off_phrase_timing_stripped_punctuation_path
+        ),
+        audio_dir_path=yue_hant_transcribe_path / "audio",
+        additional_context=transcription_additional_context,
+        transcription_no_op=False,
+        transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
+        transcription_fallback_to_no_op=True,
+        strip_mlx_audio_punctuation=True,
+        mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+        vad_mode=VADMode.OFF,
+        transcription_names=transcription_names,
+        transcription_overwrite=True,
+        run_merge_and_translation=False,
+        overwrite=True,
+    )
+if "yue-Hant_transcribe_block_positional" in actions:
+    process_transcription_pipeline(
+        title_root,
+        zho_hant_guide_path,
+        reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        output_dir_path=yue_hant_transcribe_vad_off_phrase_timing_block_positional_path,
+        audio_dir_path=yue_hant_transcribe_path / "audio",
+        additional_context=transcription_additional_context,
+        transcription_no_op=False,
+        transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK_POSITIONAL,
+        transcription_fallback_to_no_op=True,
+        mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+        vad_mode=VADMode.OFF,
+        stop_at_idx=20,
+        transcription_names=("mimo", "qwen"),
+        transcription_overwrite=True,
+        run_merge_and_translation=False,
+        overwrite=True,
+    )
+if "yue-Hant_transcribe_advisory_delineation" in actions:
+    process_transcription_pipeline(
+        title_root,
+        zho_hant_guide_path,
+        reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        output_dir_path=(
+            yue_hant_transcribe_vad_off_phrase_timing_advisory_delineation_path
+        ),
+        audio_dir_path=yue_hant_transcribe_path / "audio",
+        additional_context=transcription_additional_context,
+        transcription_no_op=False,
+        transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
+        transcription_block_delineation_mode=BlockDelineationMode.ADVISORY,
+        transcription_fallback_to_no_op=True,
+        strip_mlx_audio_punctuation=True,
+        mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+        vad_mode=VADMode.OFF,
+        stop_at_idx=20,
+        transcription_names=("mimo", "qwen"),
+        transcription_overwrite=True,
+        run_merge_and_translation=False,
+        overwrite=True,
+    )
+if "yue-Hant_transcribe_gated_advisory_delineation" in actions:
+    process_transcription_pipeline(
+        title_root,
+        zho_hant_guide_path,
+        reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        output_dir_path=(
+            yue_hant_transcribe_vad_off_phrase_timing_gated_advisory_delineation_path
+        ),
+        audio_dir_path=yue_hant_transcribe_path / "audio",
+        additional_context=transcription_additional_context,
+        transcription_no_op=False,
+        transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
+        transcription_block_delineation_mode=BlockDelineationMode.GATED_ADVISORY,
+        transcription_fallback_to_no_op=True,
+        strip_mlx_audio_punctuation=True,
+        mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+        vad_mode=VADMode.OFF,
+        transcription_names=transcription_names,
+        transcription_overwrite=True,
+        run_merge_and_translation=False,
+        overwrite=True,
+    )
+if "yue-Hant_transcribe_vad_auto_phrase_timing" in actions:
+    process_transcription_pipeline(
+        title_root,
+        zho_hant_guide_path,
+        reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        output_dir_path=(
+            yue_hant_transcribe_vad_auto_phrase_timing_stripped_punctuation_path
+        ),
+        audio_dir_path=yue_hant_transcribe_path / "audio",
+        additional_context=transcription_additional_context,
+        transcription_no_op=False,
+        transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
+        transcription_fallback_to_no_op=True,
+        strip_mlx_audio_punctuation=True,
+        mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+        vad_mode=VADMode.AUTO,
+        transcription_names=transcription_names,
+        transcription_overwrite=True,
+        run_merge_and_translation=False,
+        overwrite=True,
+    )
+if "yue-Hant_transcribe_vad_auto_gated_advisory_delineation" in actions:
+    process_transcription_pipeline(
+        title_root,
+        zho_hant_guide_path,
+        reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        output_dir_path=(
+            yue_hant_transcribe_vad_auto_phrase_timing_gated_advisory_delineation_path
+        ),
+        audio_dir_path=yue_hant_transcribe_path / "audio",
+        additional_context=transcription_additional_context,
+        transcription_no_op=False,
+        transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
+        transcription_block_delineation_mode=BlockDelineationMode.GATED_ADVISORY,
+        transcription_fallback_to_no_op=True,
+        strip_mlx_audio_punctuation=True,
+        mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+        vad_mode=VADMode.AUTO,
+        transcription_names=transcription_names,
+        transcription_overwrite=True,
+        run_merge_and_translation=False,
+        overwrite=True,
+    )
+if "yue-Hant_transcribe_pairwise" in actions:
+    process_transcription_pipeline(
+        title_root,
+        zho_hant_guide_path,
+        reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        output_dir_path=yue_hant_transcribe_vad_off_phrase_timing_pairwise_path,
+        audio_dir_path=yue_hant_transcribe_path / "audio",
+        additional_context=transcription_additional_context,
+        transcription_no_op=False,
+        transcription_alignment_mode=TranscriptionAlignmentMode.PAIRWISE,
+        strip_mlx_audio_punctuation=True,
+        mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+        vad_mode=VADMode.OFF,
+        stop_at_idx=20,
+        transcription_names=("mimo", "qwen"),
+        transcription_overwrite=True,
+        run_merge_and_translation=False,
+        overwrite=True,
+    )
+if "yue-Hant_transcribe_candidate_delineation" in actions:
+    process_transcription_pipeline(
+        title_root,
+        zho_hant_guide_path,
+        reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        output_dir_path=(
+            yue_hant_transcribe_vad_off_phrase_timing_candidate_delineation_path
+        ),
+        audio_dir_path=yue_hant_transcribe_path / "audio",
+        additional_context=transcription_additional_context,
+        transcription_no_op=False,
+        transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
+        transcription_block_delineation_mode=BlockDelineationMode.CANDIDATE,
+        transcription_fallback_to_no_op=True,
+        strip_mlx_audio_punctuation=True,
+        mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+        vad_mode=VADMode.OFF,
+        stop_at_idx=20,
+        transcription_names=("mimo", "qwen"),
+        transcription_overwrite=True,
+        run_merge_and_translation=False,
+        overwrite=True,
+    )
+if "yue-Hant_transcribe_positional_punctuation" in actions:
+    process_transcription_pipeline(
+        title_root,
+        zho_hant_guide_path,
+        reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        output_dir_path=(
+            yue_hant_transcribe_vad_off_phrase_timing_positional_punctuation_path
+        ),
+        audio_dir_path=yue_hant_transcribe_path / "audio",
+        additional_context=transcription_additional_context,
+        transcription_no_op=False,
+        transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
+        transcription_block_punctuation_mode=BlockPunctuationMode.POSITIONAL,
+        transcription_fallback_to_no_op=True,
+        strip_mlx_audio_punctuation=True,
+        mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+        vad_mode=VADMode.OFF,
+        stop_at_idx=20,
+        transcription_names=("mimo", "qwen"),
+        transcription_overwrite=True,
+        run_merge_and_translation=False,
         overwrite=True,
     )

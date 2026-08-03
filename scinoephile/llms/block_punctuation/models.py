@@ -4,11 +4,13 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import ClassVar, Self
 
-from pydantic import Field, ValidationInfo, model_validator
+from pydantic import Field, ValidationInfo, field_validator, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase, TestCaseSubtitle
+from scinoephile.core.llms.models import LLMModel
 from scinoephile.core.text import (
     FULL_PUNC_CHARS,
     HALF_PUNC_CHARS,
@@ -17,13 +19,18 @@ from scinoephile.core.text import (
     remove_punc_and_whitespace,
 )
 
-from .prompt import BlockPunctuationPrompt
+from .prompt import BlockPunctuationPrompt, PositionalBlockPunctuationPrompt
 
 __all__ = [
     "BlockPunctuationAnswer",
     "BlockPunctuationQuery",
     "BlockPunctuationSubtitle",
     "BlockPunctuationTestCase",
+    "PositionalBlockPunctuationAnswer",
+    "PositionalBlockPunctuationChange",
+    "PositionalBlockPunctuationEdit",
+    "PositionalBlockPunctuationTestCase",
+    "PositionalBlockPunctuationTarget",
 ]
 
 
@@ -119,6 +126,94 @@ class BlockPunctuationAnswer(Answer):
         return self
 
 
+class PositionalBlockPunctuationEdit(LLMModel):
+    """Punctuation inserted at one position on an immutable target string."""
+
+    prompt: ClassVar[PositionalBlockPunctuationPrompt] = (
+        PositionalBlockPunctuationPrompt()
+    )
+    """Text and field aliases for positional punctuation."""
+    position: int = Field(ge=0)
+    """Zero-based insertion position on the target string."""
+    punctuation: str = Field(min_length=1)
+    """Punctuation and whitespace inserted at that position."""
+
+    @field_validator("punctuation")
+    @classmethod
+    def validate_punctuation(cls, value: str) -> str:
+        """Ensure an insertion contains no lexical characters."""
+        allowed = FULL_PUNC_CHARS | HALF_PUNC_CHARS | WHITESPACE_CHARS
+        if any(character not in allowed for character in value):
+            raise ValueError(cls.prompt.edit_punctuation_invalid_err)
+        return value
+
+
+class PositionalBlockPunctuationTarget(BlockPunctuationSubtitle):
+    """Immutable punctuation target with an explicit character count."""
+
+    prompt: ClassVar[PositionalBlockPunctuationPrompt] = (
+        PositionalBlockPunctuationPrompt()
+    )
+    """Text and field aliases for positional punctuation."""
+    character_count: int = Field(ge=0)
+    """Exact Unicode-character count of the target text."""
+
+    @model_validator(mode="before")
+    @classmethod
+    def populate_character_count(cls, value: object) -> object:
+        """Populate deterministic character-count metadata when omitted."""
+        if not isinstance(value, Mapping):
+            return value
+        character_count_keys = {"character_count", cls.prompt.character_count}
+        if any(key in value for key in character_count_keys):
+            return value
+        text = value.get(cls.prompt.text, value.get("text"))
+        if not isinstance(text, str):
+            return value
+        updated_value = dict(value)
+        updated_value[cls.prompt.character_count] = len(text)
+        return updated_value
+
+    @model_validator(mode="after")
+    def validate_character_count(self) -> Self:
+        """Ensure the supplied count exactly describes the target text."""
+        if self.character_count != len(self.text):
+            raise ValueError(self.prompt.character_count_err)
+        return self
+
+
+class PositionalBlockPunctuationChange(LLMModel):
+    """Sparse punctuation insertions for one target subtitle."""
+
+    prompt: ClassVar[PositionalBlockPunctuationPrompt] = (
+        PositionalBlockPunctuationPrompt()
+    )
+    """Text and field aliases for positional punctuation."""
+    index: int = Field(ge=1)
+    """One-based target index."""
+    edits: list[PositionalBlockPunctuationEdit] = Field(min_length=1)
+    """Ordered punctuation insertion operations."""
+
+    @model_validator(mode="after")
+    def validate_edit_positions(self) -> Self:
+        """Ensure insertion positions are ordered and unique."""
+        positions = [edit.position for edit in self.edits]
+        if positions != sorted(set(positions)):
+            raise ValueError(self.prompt.edit_positions_err)
+        return self
+
+
+class PositionalBlockPunctuationAnswer(BlockPunctuationAnswer):
+    """Sparse positional punctuation insertions for one query window."""
+
+    prompt: ClassVar[PositionalBlockPunctuationPrompt] = (
+        PositionalBlockPunctuationPrompt()
+    )
+    """Text and field aliases for positional punctuation."""
+    changes: list[PositionalBlockPunctuationChange] = Field(default_factory=list)
+    """Only target subtitles requiring punctuation insertions."""
+
+
 class BlockPunctuationTestCase(TestCase):
     """Block-punctuation query and optional sparse answer."""
 
@@ -150,7 +245,19 @@ class BlockPunctuationTestCase(TestCase):
         Returns:
             empty sparse-change answer
         """
-        return BlockPunctuationAnswer()
+        return self.answer_cls()
+
+    def get_output_texts(self) -> list[str]:
+        """Overlay sparse full-text punctuation replacements.
+
+        Returns:
+            complete punctuated target text by index
+        """
+        output = [target.text for target in self.query.targets]
+        if self.answer is not None:
+            for change in self.answer.changes:
+                output[change.index - 1] = change.text
+        return output
 
     @model_validator(mode="after")
     def validate_changed_subtitles(self) -> Self:
@@ -208,10 +315,7 @@ class BlockPunctuationTestCase(TestCase):
         ):
             return self
 
-        output_by_index = {target.index: target.text for target in self.query.targets}
-        output_by_index.update(
-            {change.index: change.text for change in self.answer.changes}
-        )
+        output_by_index = dict(enumerate(self.get_output_texts(), 1))
         leading_closing_indexes: list[int] = []
         punctuation_only_indexes: list[int] = []
         half_width_by_index: dict[int, str] = {}
@@ -301,3 +405,68 @@ class BlockPunctuationTestCase(TestCase):
             terminal_marks += stripped[-1]
             stripped = stripped[:-1]
         return "?" in terminal_marks or "？" in terminal_marks
+
+
+class PositionalBlockPunctuationTestCase(BlockPunctuationTestCase):
+    """Block-punctuation query using sparse positional insertions."""
+
+    answer_cls: ClassVar[type[PositionalBlockPunctuationAnswer]] = (
+        PositionalBlockPunctuationAnswer
+    )
+    """Answer model class."""
+    prompt: ClassVar[PositionalBlockPunctuationPrompt] = (
+        PositionalBlockPunctuationPrompt()
+    )
+    """Text and field aliases for positional punctuation."""
+    answer: PositionalBlockPunctuationAnswer | None = None
+    """Sparse positional punctuation insertions, if available."""
+
+    @model_validator(mode="after")
+    def validate_changed_subtitles(self) -> Self:
+        """Keep owned changes and validate insertion positions against targets."""
+        if self.answer is None:
+            return self
+
+        target_text_by_index = {
+            target.index: target.text for target in self.query.targets
+        }
+        owned_indexes = set(self.query.owned_index_range)
+        self.answer.changes = [
+            change
+            for change in self.answer.changes
+            if change.index in target_text_by_index and change.index in owned_indexes
+        ]
+        for change in self.answer.changes:
+            target_length = len(target_text_by_index[change.index])
+            for edit in change.edits:
+                if edit.position > target_length:
+                    raise ValueError(
+                        self.prompt.edit_position_invalid_err_tpl.format(
+                            index=change.index,
+                            position=edit.position,
+                            length=target_length,
+                        )
+                    )
+        return self
+
+    def get_no_op_answer(self) -> PositionalBlockPunctuationAnswer:
+        """Get an empty positional-insertion answer."""
+        return self.answer_cls()
+
+    def get_output_texts(self) -> list[str]:
+        """Apply sparse punctuation insertions without rewriting target text."""
+        output = [target.text for target in self.query.targets]
+        if self.answer is None:
+            return output
+        for change in self.answer.changes:
+            target = output[change.index - 1]
+            insertion_by_position = {
+                edit.position: edit.punctuation for edit in change.edits
+            }
+            pieces: list[str] = []
+            for position, character in enumerate(target):
+                pieces.append(insertion_by_position.get(position, ""))
+                pieces.append(character)
+            pieces.append(insertion_by_position.get(len(target), ""))
+            output[change.index - 1] = "".join(pieces)
+        return output

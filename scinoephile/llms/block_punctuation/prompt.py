@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from scinoephile.core.llms import Prompt
 from scinoephile.llms._text_validation import get_text_mismatch_details
 
-__all__ = ["BlockPunctuationPrompt"]
+__all__ = ["BlockPunctuationPrompt", "PositionalBlockPunctuationPrompt"]
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -125,3 +125,48 @@ class BlockPunctuationPrompt(Prompt):
             received=received,
             **get_text_mismatch_details(expected, received),
         )
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class PositionalBlockPunctuationPrompt(BlockPunctuationPrompt):
+    """Text and aliases for sparse positional punctuation insertion."""
+
+    edits: str = "edits"
+    """Name of punctuation insertion operations within one changed target."""
+    edits_desc: str = "Ordered punctuation insertions for this target subtitle."
+    """Description of punctuation insertion operations."""
+    position: str = "position"
+    """Name of insertion position field."""
+    position_desc: str = (
+        "Zero-based Unicode-character position before which punctuation is inserted; "
+        "the target length means after its final character."
+    )
+    """Description of insertion positions."""
+    punctuation: str = "punctuation"
+    """Name of inserted punctuation field."""
+    punctuation_desc: str = "Punctuation and whitespace to insert at this position."
+    """Description of inserted punctuation text."""
+    character_count: str = "character_count"
+    """Name of target Unicode-character count field."""
+    character_count_desc: str = (
+        "Exact Unicode-character count of the immutable target text."
+    )
+    """Description of target Unicode-character count."""
+    character_count_err: str = (
+        "Each target's character count must equal the length of its immutable text."
+    )
+    """Error when target character-count metadata is invalid."""
+    edit_positions_err: str = (
+        "Punctuation edit positions within each changed target must be unique and in "
+        "ascending order."
+    )
+    """Error when positional edits are unordered or duplicated."""
+    edit_position_invalid_err_tpl: str = (
+        "Punctuation edit position {position} at target index {index} must be between "
+        "zero and that target's Unicode-character length {length}, inclusive."
+    )
+    """Error template when an insertion position is outside its target."""
+    edit_punctuation_invalid_err: str = (
+        "Every positional punctuation edit must contain only punctuation or whitespace."
+    )
+    """Error when an insertion contains lexical characters."""

@@ -22,6 +22,9 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.transcriber import (
+    BlockDelineationMode,
+    BlockPunctuationMode,
+    MlxAudioTimingMode,
     TranscriptionAlignmentMode,
     TranscriptionBackend,
 )
@@ -356,7 +359,11 @@ def process_transcription_pipeline(
     transcription_alignment_mode: TranscriptionAlignmentMode = (
         TranscriptionAlignmentMode.PAIRWISE
     ),
+    transcription_block_delineation_mode: BlockDelineationMode | None = None,
+    transcription_block_punctuation_mode: BlockPunctuationMode | None = None,
     transcription_fallback_to_no_op: bool = False,
+    strip_mlx_audio_punctuation: bool = False,
+    mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
     vad_mode: VADMode = VADMode.AUTO,
     transcription_names: tuple[str, ...] | None = None,
     transcription_overwrite: bool | None = None,
@@ -389,8 +396,13 @@ def process_transcription_pipeline(
           answers instead of querying an LLM
         transcription_alignment_mode: LLM query granularity for transcription
           alignment and punctuation
+        transcription_block_delineation_mode: block delineation strategy override
+        transcription_block_punctuation_mode: block punctuation strategy override
         transcription_fallback_to_no_op: whether invalid block answers fall back to
           sparse no-op answers
+        strip_mlx_audio_punctuation: whether to remove MLX-Audio-generated sentence
+          punctuation after timing and before guided alignment
+        mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
         vad_mode: voice activity detection mode shared by all transcription backends
         transcription_names: transcription sources to prepare in order, or None for
           all three sources
@@ -420,7 +432,7 @@ def process_transcription_pipeline(
             "alignment_mode": transcription_alignment_mode,
             "fallback_to_no_op": transcription_fallback_to_no_op,
             "no_op": transcription_no_op,
-            "prune_test_cases": True,
+            "prune_test_cases": stop_at_idx is None,
             "vad_mode": vad_mode,
         },
         "mimo": {
@@ -428,8 +440,9 @@ def process_transcription_pipeline(
             "backend": TranscriptionBackend.MLX_AUDIO,
             "fallback_to_no_op": transcription_fallback_to_no_op,
             "model_name": MIMO_MODEL_NAME,
+            "mlx_audio_timing_mode": mlx_audio_timing_mode,
             "no_op": transcription_no_op,
-            "prune_test_cases": True,
+            "prune_test_cases": stop_at_idx is None,
             "vad_mode": vad_mode,
         },
         "qwen": {
@@ -437,11 +450,25 @@ def process_transcription_pipeline(
             "backend": TranscriptionBackend.MLX_AUDIO,
             "fallback_to_no_op": transcription_fallback_to_no_op,
             "model_name": QWEN3_ASR_MODEL_NAME,
+            "mlx_audio_timing_mode": mlx_audio_timing_mode,
             "no_op": transcription_no_op,
-            "prune_test_cases": True,
+            "prune_test_cases": stop_at_idx is None,
             "vad_mode": vad_mode,
         },
     }
+    block_strategy_kw = {
+        key: value
+        for key, value in (
+            ("block_delineation_mode", transcription_block_delineation_mode),
+            ("block_punctuation_mode", transcription_block_punctuation_mode),
+        )
+        if value is not None
+    }
+    for transcription_kw in transcription_runs.values():
+        transcription_kw.update(block_strategy_kw)
+    if strip_mlx_audio_punctuation:
+        transcription_runs["mimo"]["strip_generated_punctuation"] = True
+        transcription_runs["qwen"]["strip_generated_punctuation"] = True
     if transcription_names is None:
         transcription_names = tuple(transcription_runs)
     if transcription_overwrite is None:
@@ -613,14 +640,45 @@ def _load_or_transcribe_series_guided(
     alignment_mode = transcription_kw.get(
         "alignment_mode", TranscriptionAlignmentMode.PAIRWISE
     )
-    if alignment_mode is TranscriptionAlignmentMode.BLOCK:
+    default_block_modes = {
+        TranscriptionAlignmentMode.BLOCK: (
+            BlockDelineationMode.UNRESTRICTED,
+            BlockPunctuationMode.FULL_TEXT,
+        ),
+        TranscriptionAlignmentMode.BLOCK_POSITIONAL: (
+            BlockDelineationMode.CANDIDATE,
+            BlockPunctuationMode.POSITIONAL,
+        ),
+    }
+    if alignment_mode in default_block_modes:
+        default_delineation_mode, default_punctuation_mode = default_block_modes[
+            alignment_mode
+        ]
+        delineation_mode = (
+            transcription_kw.get("block_delineation_mode") or default_delineation_mode
+        )
+        punctuation_mode = (
+            transcription_kw.get("block_punctuation_mode") or default_punctuation_mode
+        )
+        delineation_filenames = {
+            BlockDelineationMode.ADVISORY: f"advisory_delineation-{device}.json",
+            BlockDelineationMode.GATED_ADVISORY: (
+                f"gated_advisory_delineation-{device}.json"
+            ),
+            BlockDelineationMode.UNRESTRICTED: f"block_delineation-{device}.json",
+            BlockDelineationMode.CANDIDATE: f"candidate_delineation-{device}.json",
+        }
+        punctuation_filenames = {
+            BlockPunctuationMode.FULL_TEXT: f"block_punctuation-{device}.json",
+            BlockPunctuationMode.POSITIONAL: (f"positional_punctuation-{device}.json"),
+        }
         transcription_kw.setdefault(
             "block_delineation_json_path",
-            json_dir_path / f"block_delineation-{device}.json",
+            json_dir_path / delineation_filenames[delineation_mode],
         )
         transcription_kw.setdefault(
             "block_punctuation_json_path",
-            json_dir_path / f"block_punctuation-{device}.json",
+            json_dir_path / punctuation_filenames[punctuation_mode],
         )
     else:
         transcription_kw.setdefault(

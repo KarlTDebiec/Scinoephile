@@ -9,7 +9,11 @@ from dataclasses import dataclass
 from scinoephile.core.llms import Prompt
 from scinoephile.llms._text_validation import get_text_mismatch_details
 
-__all__ = ["BlockDelineationPrompt"]
+__all__ = [
+    "AdvisoryBlockDelineationPrompt",
+    "BlockDelineationPrompt",
+    "CandidateBlockDelineationPrompt",
+]
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -210,3 +214,102 @@ class BlockDelineationPrompt(Prompt):
             minimum_shift=previous_offset - original_offset,
             maximum_shift=next_offset - original_offset,
         )
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdvisoryBlockDelineationPrompt(BlockDelineationPrompt):
+    """Text and aliases for advisory timing-supported boundary suggestions."""
+
+    suggestions: str = "suggestions"
+    """Name of ranked timing suggestions within one editable boundary."""
+    suggestions_desc: str = (
+        "Ranked timing-supported cuts offered as non-binding suggestions; empty "
+        "when no timing evidence is strong enough to highlight."
+    )
+    """Description of ranked timing suggestions within one boundary."""
+    suggestion_rank: str = "rank"
+    """Name of timing-suggestion rank field."""
+    suggestion_rank_desc: str = "One-based evidence rank; lower ranks are stronger."
+    """Description of timing-suggestion rank."""
+    suggestion_offset: str = "offset"
+    """Name of suggestion cumulative-offset field."""
+    suggestion_offset_desc: str = (
+        "Suggested cumulative Unicode-character offset on the query target tape."
+    )
+    """Description of suggestion cumulative offset."""
+    suggestion_left_context: str = "left_context"
+    """Name of suggestion left-context field."""
+    suggestion_left_context_desc: str = "Target text immediately before this cut."
+    """Description of suggestion left context."""
+    suggestion_right_context: str = "right_context"
+    """Name of suggestion right-context field."""
+    suggestion_right_context_desc: str = "Target text immediately after this cut."
+    """Description of suggestion right context."""
+    suggestion_timing_delta_ms: str = "timing_delta_ms"
+    """Name of suggestion timing-delta field."""
+    suggestion_timing_delta_ms_desc: str = (
+        "Suggested transcription time minus the guide boundary time in milliseconds."
+    )
+    """Description of suggestion timing delta."""
+    suggestion_pause_ms: str = "pause_ms"
+    """Name of suggestion following-pause field."""
+    suggestion_pause_ms_desc: str = (
+        "Nonnegative audio gap after the transcription unit at this cut, in "
+        "milliseconds."
+    )
+    """Description of suggestion following pause."""
+    boundary_suggestions_err: str = (
+        "Each boundary's suggestions must have consecutive ranks, unique shifts, "
+        "remain within its legal range, match its original offset, and include "
+        "shift zero when nonempty."
+    )
+    """Error when query boundary suggestions are invalid."""
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class CandidateBlockDelineationPrompt(BlockDelineationPrompt):
+    """Text and aliases for selecting timing-supported boundary candidates."""
+
+    candidates: str = "candidates"
+    """Name of candidate cuts field within one editable boundary."""
+    candidates_desc: str = (
+        "Candidate cuts supported by transcription timing and local text context."
+    )
+    """Description of candidate cuts field within one editable boundary."""
+    candidate_offset: str = "offset"
+    """Name of candidate cumulative-offset field."""
+    candidate_offset_desc: str = (
+        "Candidate cumulative Unicode-character offset on the query target tape."
+    )
+    """Description of candidate cumulative-offset field."""
+    candidate_left_context: str = "left_context"
+    """Name of candidate left-context field."""
+    candidate_left_context_desc: str = "Target text immediately before this cut."
+    """Description of candidate left-context field."""
+    candidate_right_context: str = "right_context"
+    """Name of candidate right-context field."""
+    candidate_right_context_desc: str = "Target text immediately after this cut."
+    """Description of candidate right-context field."""
+    candidate_timing_delta_ms: str = "timing_delta_ms"
+    """Name of candidate timing-delta field."""
+    candidate_timing_delta_ms_desc: str = (
+        "Candidate transcription time minus the guide boundary time in milliseconds."
+    )
+    """Description of candidate timing-delta field."""
+    candidate_pause_ms: str = "pause_ms"
+    """Name of candidate following-pause field."""
+    candidate_pause_ms_desc: str = (
+        "Nonnegative audio gap after the transcription unit at this cut, in "
+        "milliseconds."
+    )
+    """Description of candidate following-pause field."""
+    boundary_candidates_err: str = (
+        "Each boundary's candidates must have unique ordered shifts, remain within "
+        "its legal range, match its original offset, and include shift zero."
+    )
+    """Error when query boundary candidates are invalid."""
+    change_shift_not_candidate_err_tpl: str = (
+        "The shift for boundary after index {index} must be selected from the supplied "
+        "candidate shifts: {candidate_shifts}."
+    )
+    """Error template when an answer does not select a supplied candidate."""

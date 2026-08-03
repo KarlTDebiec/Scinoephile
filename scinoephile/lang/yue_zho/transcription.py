@@ -11,20 +11,33 @@ from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
-from scinoephile.llms.block_delineation import BlockDelineationPrompt
-from scinoephile.llms.block_punctuation import BlockPunctuationPrompt
+from scinoephile.llms.block_delineation import (
+    AdvisoryBlockDelineationPrompt,
+    BlockDelineationPrompt,
+    CandidateBlockDelineationPrompt,
+)
+from scinoephile.llms.block_punctuation import (
+    BlockPunctuationPrompt,
+    PositionalBlockPunctuationPrompt,
+)
 from scinoephile.llms.delineation import DelineationPrompt
 from scinoephile.llms.punctuation import PunctuationPrompt
 
 __all__ = [
+    "YueZhoAdvisoryBlockDelineationPromptYueHans",
+    "YueZhoAdvisoryBlockDelineationPromptYueHant",
     "YueZhoBlockDelineationPromptYueHans",
     "YueZhoBlockDelineationPromptYueHant",
     "YueZhoBlockPunctuationPromptYueHans",
     "YueZhoBlockPunctuationPromptYueHant",
+    "YueZhoCandidateBlockDelineationPromptYueHans",
+    "YueZhoCandidateBlockDelineationPromptYueHant",
     "YueZhoDelineationPromptYueHans",
     "YueZhoDelineationPromptYueHant",
     "YueZhoPunctuationPromptYueHans",
     "YueZhoPunctuationPromptYueHant",
+    "YueZhoPositionalBlockPunctuationPromptYueHans",
+    "YueZhoPositionalBlockPunctuationPromptYueHant",
 ]
 
 
@@ -723,3 +736,186 @@ YueZhoPunctuationPromptYueHans = YueZhoPunctuationPromptYueHant.transformed(
     Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
 )
 """Text for simplified written Cantonese/standard Chinese punctuation."""
+
+
+_YUE_ZHO_ADVISORY_BLOCK_DELINEATION_BASE_SYSTEM_PROMPT = (
+    YueZhoBlockDelineationPromptYueHant.base_system_prompt.replace(
+        "bianjie_fanwei", "bianjie_tishi"
+    )
+)
+"""Unrestricted block prompt text using the advisory boundary-field alias."""
+
+YueZhoAdvisoryBlockDelineationPromptYueHant = AdvisoryBlockDelineationPrompt(
+    language=Language.yue_hant,
+    **YUE_HANT_PROMPT_FIELDS,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_ADVISORY_BLOCK_DELINEATION_BASE_SYSTEM_PROMPT}
+        查詢嘅 bianjie_tishi 除咗列出每個可修改分界嘅原位同完整合法移動範圍，
+        亦可能提供按轉寫時間證據排列嘅 shijian_jianyi；空白清單代表冇足夠強嘅
+        時間證據值得特別提示。paiming 由 1 開始，數字越細只代表時間證據越強；
+        shijian_chayi_haomiao 越接近零，轉寫切口時間越接近中文字幕分界；
+        tingdun_haomiao 越大，切口後停頓越明顯。
+        呢啲建議只係幫你較快搵到可能切口，唔係完整答案集合，亦唔係限制。
+        必須先用完整粵語說話單位同相同 xuhao 嘅 zhongwen 語意核對。建議正確
+        可以採用；原分界正確就保持不變；如果全部建議都會拆詞、拆語氣助詞或者
+        語意錯配，可以返回 bianjie_tishi 合法範圍內任何其他整數移動。絕對唔好
+        為咗遷就 paiming 而採用語意錯誤嘅分界。答案仍然只返回 bianjie_xiugai，
+        唔需要亦唔可以抄寫建議。"""),
+    guides="zhongwen",
+    guides_desc="查詢視窗完整而有序嘅中文字幕",
+    targets="yuewen_initial",
+    targets_desc="按時間初步分配、合起來不可修改嘅粵文字符帶",
+    first_owned_index="fuze_qishi_xuhao",
+    first_owned_index_desc="本視窗負責嘅第一個本地分界索引（包括）",
+    last_owned_index="fuze_jieshu_xuhao",
+    last_owned_index_desc="本視窗負責嘅最後一個本地分界索引（包括）",
+    boundaries="bianjie_tishi",
+    boundaries_desc="本視窗全部可修改分界、合法範圍及非強制時間建議",
+    suggestions="shijian_jianyi",
+    suggestions_desc=(
+        "按時間證據由強至弱排列、但唔限制答案嘅建議切口；空白代表冇可靠提示"
+    ),
+    suggestion_rank="paiming",
+    suggestion_rank_desc="由1開始嘅時間證據排名；數字越細證據越強",
+    suggestion_offset="zifu_pianyi",
+    suggestion_offset_desc="建議切口喺本視窗字符帶上嘅累積 Unicode 字符位置",
+    suggestion_left_context="zuo_wenben",
+    suggestion_left_context_desc="建議切口左邊緊接文字",
+    suggestion_right_context="you_wenben",
+    suggestion_right_context_desc="建議切口右邊緊接文字",
+    suggestion_timing_delta_ms="shijian_chayi_haomiao",
+    suggestion_timing_delta_ms_desc="建議轉寫時間減去分界參考時間，單位毫秒",
+    suggestion_pause_ms="tingdun_haomiao",
+    suggestion_pause_ms_desc="建議切口前轉寫單位後面嘅停頓毫秒數",
+    changes="bianjie_xiugai",
+    changes_desc="只列出真正需要移動嘅負責分界",
+    index="xuhao",
+    index_desc="由1開始嘅本地字幕或分界索引",
+    text="wenben",
+    shift="yidong_zifu_shu",
+    original_offset="yuanben_pianyi",
+    minimum_shift="zuixiao_yidong",
+    maximum_shift="zuida_yidong",
+    validate_output_quality=True,
+)
+"""Advisory-timing block delineation for Traditional Cantonese/Chinese."""
+
+YueZhoAdvisoryBlockDelineationPromptYueHans = (
+    YueZhoAdvisoryBlockDelineationPromptYueHant.transformed(
+        Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
+    )
+)
+"""Advisory-timing block delineation for Simplified Cantonese/Chinese."""
+
+
+YueZhoCandidateBlockDelineationPromptYueHant = CandidateBlockDelineationPrompt(
+    language=Language.yue_hant,
+    **YUE_HANT_PROMPT_FIELDS,
+    base_system_prompt=dedent_and_compact("""
+        你負責用中文字幕語意同粵文轉寫時間，為一個字幕視窗揀選粵文分界。
+        zhongwen 同 yuewen_chubu 索引相同；粵文字符帶不可修改，只可以移動分界。
+        每個 bianjie_houxuan 項目代表一個可以修改嘅分界，並列出可揀嘅 houxuan。
+        houxuan 嘅 yidong_zifu_shu 係相對原分界嘅字符移動；zuo_wenben、
+        you_wenben 顯示切口兩邊文字；shijian_chayi_haomiao 越接近零，時間越吻合；
+        tingdun_haomiao 越大，切口後停頓越明顯。時間只係證據，最終要以完整粵語
+        說話單位同相同索引 zhongwen 嘅語意對應為準。
+        只可以修改 fuze_qishi_xuhao 至 fuze_jieshu_xuhao 負責嘅分界，包括
+        fuze_jieshu_xuhao 後面嗰個分界；範圍外索引只係上下文。
+        答案 bianjie_xiugai 只返回需要移動嘅分界，索引遞增；每個移動必須逐字
+        選自該分界提供嘅 houxuan。保持原位就唔好返回。唔可以自行提出其他切口。
+        提交前將全部修改套用到完整字符帶，逐個核對負責分界左右兩邊：冇拆開
+        詞語或語氣助詞，冇孤立標點，字幕唔會只剩標點，而且串連後所有原字符
+        逐字、逐序不變。任何一項失敗，就改揀另一個已提供候選或者保留原分界。"""),
+    guides="zhongwen",
+    guides_desc="查詢視窗完整而有序嘅中文字幕",
+    targets="yuewen_chubu",
+    targets_desc="按時間初步分配、合起來不可修改嘅粵文字符帶",
+    first_owned_index="fuze_qishi_xuhao",
+    first_owned_index_desc="本視窗負責嘅第一個本地分界索引（包括）",
+    last_owned_index="fuze_jieshu_xuhao",
+    last_owned_index_desc="本視窗負責嘅最後一個本地分界索引（包括）",
+    boundaries="bianjie_houxuan",
+    boundaries_desc="本視窗全部可修改分界及其時間支持候選",
+    candidates="houxuan",
+    candidates_desc="呢個分界可以揀選嘅候選切口",
+    candidate_offset="zifu_pianyi",
+    candidate_offset_desc="候選切口喺本視窗字符帶上嘅累積 Unicode 字符位置",
+    candidate_left_context="zuo_wenben",
+    candidate_left_context_desc="候選切口左邊緊接文字",
+    candidate_right_context="you_wenben",
+    candidate_right_context_desc="候選切口右邊緊接文字",
+    candidate_timing_delta_ms="shijian_chayi_haomiao",
+    candidate_timing_delta_ms_desc="候選轉寫時間減去分界參考時間，單位毫秒",
+    candidate_pause_ms="tingdun_haomiao",
+    candidate_pause_ms_desc="候選切口前轉寫單位後面嘅停頓毫秒數",
+    changes="bianjie_xiugai",
+    changes_desc="只列出需要改揀候選嘅負責分界",
+    index="xuhao",
+    index_desc="由1開始嘅本地字幕或分界索引",
+    text="wenben",
+    shift="yidong_zifu_shu",
+    original_offset="yuanben_pianyi",
+    minimum_shift="zuixiao_yidong",
+    maximum_shift="zuida_yidong",
+    validate_output_quality=True,
+)
+"""Candidate-selection block delineation for Traditional Cantonese/Chinese."""
+
+YueZhoCandidateBlockDelineationPromptYueHans = (
+    YueZhoCandidateBlockDelineationPromptYueHant.transformed(
+        Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
+    )
+)
+"""Candidate-selection block delineation for Simplified Cantonese/Chinese."""
+
+
+YueZhoPositionalBlockPunctuationPromptYueHant = PositionalBlockPunctuationPrompt(
+    language=Language.yue_hant,
+    **YUE_HANT_PROMPT_FIELDS,
+    base_system_prompt=dedent_and_compact("""
+        你負責參考 zhongwen，為已經分界嘅粵文字幕加入標點同空格。
+        yuewen_to_punctuate 嘅每個 wenben 都係不可修改嘅 Unicode 字符串；呢個
+        任務唔准重寫完整字幕，只准返回插入操作。每個目標明確提供 zifu_shu。
+        zifu_pianyi 必須由零開始，合法範圍係 0 至 zifu_shu（包括兩端）；表示喺
+        該位置原字符之前插入，等於 zifu_shu 就表示加喺最後，絕對唔可以返回
+        zifu_shu + 1。每個 Unicode 字符計一個位置，包括保留喺原文入面嘅數字、
+        西文字符同詞內符號。
+        只檢查 fuze_qishi_xuhao 至 fuze_jieshu_xuhao 兩端包括嘅索引；其他索引
+        只係上下文。biaodian_xiugai 只返回需要插入標點嘅索引，每個索引嘅
+        biaodian_caozuo 按 zifu_pianyi 遞增。biaodian 只可以包含標點或者空格。
+        唔可以加入、刪除、替換、轉換或者重新排序任何粵文字符，亦唔可以從
+        zhongwen 複製字詞。空白目標唔可以返回。冇操作就返回空列表。
+        提交前按位置機械式重組每條負責字幕，逐條確認原字符完整不變、標點符合
+        粵語語意、含漢字時使用全形句子標點、開頭冇孤立句末標點；同時有中文問句
+        同強烈粵語疑問線索時要有全形問號。"""),
+    guides="zhongwen",
+    guides_desc="查詢視窗完整而有序嘅中文字幕",
+    targets="yuewen_to_punctuate",
+    targets_desc="已分界而且不可修改嘅粵文字符",
+    character_count="zifu_shu",
+    character_count_desc="呢個不可修改粵文字符串嘅準確 Unicode 字符數量",
+    first_owned_index="fuze_qishi_xuhao",
+    first_owned_index_desc="本視窗負責嘅第一個本地粵文索引（包括）",
+    last_owned_index="fuze_jieshu_xuhao",
+    last_owned_index_desc="本視窗負責嘅最後一個本地粵文索引（包括）",
+    changes="biaodian_xiugai",
+    changes_desc="只列出需要插入標點或者空格嘅負責索引",
+    edits="biaodian_caozuo",
+    edits_desc="呢個索引按位置排列嘅標點插入操作",
+    position="zifu_pianyi",
+    position_desc="由零開始嘅 Unicode 字符插入位置；字符長度表示加喺最後",
+    punctuation="biaodian",
+    punctuation_desc="喺指定位置插入嘅標點或者空格",
+    index="xuhao",
+    index_desc="由1開始嘅本地字幕索引",
+    text="wenben",
+    validate_output_quality=True,
+)
+"""Positional block punctuation for Traditional Cantonese/Chinese."""
+
+YueZhoPositionalBlockPunctuationPromptYueHans = (
+    YueZhoPositionalBlockPunctuationPromptYueHant.transformed(
+        Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
+    )
+)
+"""Positional block punctuation for Simplified Cantonese/Chinese."""

@@ -13,7 +13,10 @@ from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.transcription.guided import get_guided_transcriber
 from scinoephile.lang.transcription.transcriber import (
+    BlockDelineationMode,
+    BlockPunctuationMode,
     GuidedTranscriber,
+    MlxAudioTimingMode,
     TranscriptionAlignmentMode,
     TranscriptionBackend,
 )
@@ -39,10 +42,14 @@ def transcribe_series_guided(
     vad_mode: VADMode = VADMode.AUTO,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
+    strip_generated_punctuation: bool = False,
+    mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     no_op: bool = False,
     alignment_mode: TranscriptionAlignmentMode = TranscriptionAlignmentMode.PAIRWISE,
+    block_delineation_mode: BlockDelineationMode | None = None,
+    block_punctuation_mode: BlockPunctuationMode | None = None,
     fallback_to_no_op: bool = False,
     prune_test_cases: bool = False,
     block_delineation_prompt: BlockDelineationPrompt | None = None,
@@ -74,10 +81,15 @@ def transcribe_series_guided(
         vad_mode: Whisper VAD mode
         cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching generated cache files
+        strip_generated_punctuation: whether to remove generated sentence
+            punctuation after timing and before guided alignment
+        mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         no_op: use neutral answers instead of querying an LLM
         alignment_mode: LLM query granularity for alignment and punctuation
+        block_delineation_mode: block delineation strategy override
+        block_punctuation_mode: block punctuation strategy override
         fallback_to_no_op: whether invalid block answers fall back to sparse no-op
         prune_test_cases: whether to remove test cases not encountered in this run
         block_delineation_prompt: block delineation prompt override
@@ -112,10 +124,14 @@ def transcribe_series_guided(
             vad_mode=vad_mode,
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
+            strip_generated_punctuation=strip_generated_punctuation,
+            mlx_audio_timing_mode=mlx_audio_timing_mode,
             provider=provider,
             additional_context=additional_context,
             no_op=no_op,
             alignment_mode=alignment_mode,
+            block_delineation_mode=block_delineation_mode,
+            block_punctuation_mode=block_punctuation_mode,
             fallback_to_no_op=fallback_to_no_op,
             prune_test_cases=prune_test_cases,
             block_delineation_prompt=block_delineation_prompt,

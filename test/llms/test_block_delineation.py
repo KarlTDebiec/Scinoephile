@@ -13,10 +13,14 @@ from pytest import raises
 
 from scinoephile.core.llms import LLMProvider
 from scinoephile.llms.block_delineation import (
+    AdvisoryBlockDelineationManager,
+    AdvisoryBlockDelineationPrompt,
     BlockDelineationManager,
     BlockDelineationProcessor,
     BlockDelineationPrompt,
     BlockDelineationTestCase,
+    CandidateBlockDelineationManager,
+    CandidateBlockDelineationPrompt,
 )
 
 _LOCALIZED_PROMPT = BlockDelineationPrompt(
@@ -98,6 +102,130 @@ def test_query_supplies_original_offsets_and_legal_shift_ranges():
             {
                 **query.model_dump(by_alias=True),
                 "bianjie": [{"xuhao": 2, "yuanben": 2, "zuixiao": -1, "zuida": 3}],
+            }
+        )
+
+
+def test_candidate_delineation_requires_supplied_boundary_shift():
+    """Candidate delineation should accept only one of each boundary's listed cuts."""
+    prompt = CandidateBlockDelineationPrompt()
+    test_case_cls = CandidateBlockDelineationManager.get_test_case_cls(prompt)
+    query = {
+        "guides": [{"index": 1, "text": "參考一"}, {"index": 2, "text": "參考二"}],
+        "targets": [{"index": 1, "text": "甲乙"}, {"index": 2, "text": "丙"}],
+        "first_owned_index": 1,
+        "last_owned_index": 1,
+        "boundaries": [
+            {
+                "index": 1,
+                "original_offset": 2,
+                "minimum_shift": -2,
+                "maximum_shift": 1,
+                "candidates": [
+                    {
+                        "shift": -1,
+                        "offset": 1,
+                        "left_context": "甲",
+                        "right_context": "乙丙",
+                        "timing_delta_ms": -100,
+                        "pause_ms": 50,
+                    },
+                    {
+                        "shift": 0,
+                        "offset": 2,
+                        "left_context": "甲乙",
+                        "right_context": "丙",
+                        "timing_delta_ms": 100,
+                        "pause_ms": 0,
+                    },
+                ],
+            }
+        ],
+    }
+
+    test_case = test_case_cls.model_validate(
+        {"query": query, "answer": {"changes": [{"index": 1, "shift": -1}]}}
+    )
+
+    assert test_case.get_output_texts() == ["甲", "乙丙"]
+    with raises(ValidationError, match="selected from the supplied candidate"):
+        test_case_cls.model_validate(
+            {"query": query, "answer": {"changes": [{"index": 1, "shift": 1}]}}
+        )
+
+
+def test_advisory_delineation_accepts_legal_unsuggested_boundary_shift():
+    """Advisory timing cuts should rank evidence without restricting answers."""
+    prompt = AdvisoryBlockDelineationPrompt()
+    test_case_cls = AdvisoryBlockDelineationManager.get_test_case_cls(prompt)
+    query = {
+        "guides": [{"index": 1, "text": "參考一"}, {"index": 2, "text": "參考二"}],
+        "targets": [{"index": 1, "text": "甲乙"}, {"index": 2, "text": "丙"}],
+        "first_owned_index": 1,
+        "last_owned_index": 1,
+        "boundaries": [
+            {
+                "index": 1,
+                "original_offset": 2,
+                "minimum_shift": -2,
+                "maximum_shift": 1,
+                "suggestions": [
+                    {
+                        "rank": 1,
+                        "shift": -1,
+                        "offset": 1,
+                        "left_context": "甲",
+                        "right_context": "乙丙",
+                        "timing_delta_ms": -100,
+                        "pause_ms": 50,
+                    },
+                    {
+                        "rank": 2,
+                        "shift": 0,
+                        "offset": 2,
+                        "left_context": "甲乙",
+                        "right_context": "丙",
+                        "timing_delta_ms": 100,
+                        "pause_ms": 0,
+                    },
+                ],
+            }
+        ],
+    }
+
+    test_case = test_case_cls.model_validate(
+        {"query": query, "answer": {"changes": [{"index": 1, "shift": 1}]}}
+    )
+
+    assert test_case.get_output_texts() == ["甲乙丙", ""]
+    query_without_suggestions = {
+        **query,
+        "boundaries": [{**query["boundaries"][0], "suggestions": []}],
+    }
+    assert (
+        test_case_cls.model_validate(
+            {"query": query_without_suggestions, "answer": {"changes": []}}
+        )
+        .query.boundaries[0]
+        .suggestions
+        == []
+    )
+    with raises(ValidationError, match="consecutive ranks"):
+        test_case_cls.model_validate(
+            {
+                "query": {
+                    **query,
+                    "boundaries": [
+                        {
+                            **query["boundaries"][0],
+                            "suggestions": [
+                                {**query["boundaries"][0]["suggestions"][0], "rank": 2},
+                                query["boundaries"][0]["suggestions"][1],
+                            ],
+                        }
+                    ],
+                },
+                "answer": {"changes": []},
             }
         )
 

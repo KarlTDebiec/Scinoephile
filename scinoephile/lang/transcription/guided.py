@@ -21,25 +21,40 @@ from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.paths import get_runtime_data_root_path
 from scinoephile.lang.yue_zho.transcription import (
+    YueZhoAdvisoryBlockDelineationPromptYueHans,
+    YueZhoAdvisoryBlockDelineationPromptYueHant,
     YueZhoBlockDelineationPromptYueHans,
     YueZhoBlockDelineationPromptYueHant,
     YueZhoBlockPunctuationPromptYueHans,
     YueZhoBlockPunctuationPromptYueHant,
+    YueZhoCandidateBlockDelineationPromptYueHans,
+    YueZhoCandidateBlockDelineationPromptYueHant,
     YueZhoDelineationPromptYueHans,
     YueZhoDelineationPromptYueHant,
+    YueZhoPositionalBlockPunctuationPromptYueHans,
+    YueZhoPositionalBlockPunctuationPromptYueHant,
     YueZhoPunctuationPromptYueHans,
     YueZhoPunctuationPromptYueHant,
 )
 from scinoephile.llms import load_shared_test_cases
 from scinoephile.llms.block_delineation import (
+    AdvisoryBlockDelineationManager,
+    AdvisoryBlockDelineationProcessor,
+    AdvisoryBlockDelineationPrompt,
     BlockDelineationManager,
     BlockDelineationProcessor,
     BlockDelineationPrompt,
+    CandidateBlockDelineationManager,
+    CandidateBlockDelineationProcessor,
+    CandidateBlockDelineationPrompt,
 )
 from scinoephile.llms.block_punctuation import (
     BlockPunctuationManager,
     BlockPunctuationProcessor,
     BlockPunctuationPrompt,
+    PositionalBlockPunctuationManager,
+    PositionalBlockPunctuationProcessor,
+    PositionalBlockPunctuationPrompt,
 )
 from scinoephile.llms.delineation import (
     DelineationManager,
@@ -56,7 +71,10 @@ from scinoephile.llms.punctuation import (
 from .aligner import TranscriptionAligner
 from .block_aligner import BlockTranscriptionAligner
 from .transcriber import (
+    BlockDelineationMode,
+    BlockPunctuationMode,
     GuidedTranscriber,
+    MlxAudioTimingMode,
     TranscribedSegmentSplitter,
     TranscriptionAlignmentMode,
     TranscriptionBackend,
@@ -110,8 +128,56 @@ _YUE_ZHO_BLOCK_TEST_CASE_DIR_PATHS = tuple(
     for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
     for vad_name in ("vad-auto", "vad-off")
     for transcription_name in ("whisper", "mimo", "qwen")
+) + (
+    Path("acopopb/output/yue-Hant_transcribe/vad-off-stripped-punctuation/mimo/json"),
+    Path("acopopb/output/yue-Hant_transcribe/vad-off-stripped-punctuation/qwen/json"),
+) + tuple(
+    Path("acopopb/output/yue-Hant_transcribe")
+    / f"{vad_name}-phrase-timing-stripped-punctuation"
+    / transcription_name
+    / "json"
+    for vad_name in ("vad-auto", "vad-off")
+    for transcription_name in ("whisper", "mimo", "qwen")
 )
 """Repository JSON directories for each written Cantonese transcription run."""
+
+_YUE_ZHO_CANDIDATE_BLOCK_TEST_CASE_DIR_PATHS = (
+    *_YUE_ZHO_BLOCK_TEST_CASE_DIR_PATHS,
+    Path(
+        "acopopb/output/yue-Hant_transcribe/"
+        "vad-off-phrase-timing-block-positional/mimo/json"
+    ),
+    Path(
+        "acopopb/output/yue-Hant_transcribe/"
+        "vad-off-phrase-timing-block-positional/qwen/json"
+    ),
+    Path(
+        "acopopb/output/yue-Hant_transcribe/"
+        "vad-off-phrase-timing-candidate-delineation/mimo/json"
+    ),
+    Path(
+        "acopopb/output/yue-Hant_transcribe/"
+        "vad-off-phrase-timing-candidate-delineation/qwen/json"
+    ),
+    Path(
+        "acopopb/output/yue-Hant_transcribe/"
+        "vad-off-phrase-timing-positional-punctuation/mimo/json"
+    ),
+    Path(
+        "acopopb/output/yue-Hant_transcribe/"
+        "vad-off-phrase-timing-positional-punctuation/qwen/json"
+    ),
+)
+"""Repository JSON directories for candidate/positional transcription runs."""
+
+_YUE_ZHO_ADVISORY_BLOCK_TEST_CASE_DIR_PATHS = tuple(
+    Path("acopopb/output/yue-Hant_transcribe")
+    / "vad-off-phrase-timing-advisory-delineation"
+    / transcription_name
+    / "json"
+    for transcription_name in ("mimo", "qwen")
+)
+"""Repository JSON directories for advisory delineation experiments."""
 
 _YUE_ZHO_BLOCK_DELINEATION_JSON_PATHS = tuple(
     dir_path / "block_delineation-mps.json"
@@ -124,6 +190,32 @@ _YUE_ZHO_BLOCK_PUNCTUATION_JSON_PATHS = tuple(
     for dir_path in _YUE_ZHO_BLOCK_TEST_CASE_DIR_PATHS
 )
 """Repository block-punctuation JSON paths for written Cantonese."""
+
+_YUE_ZHO_CANDIDATE_BLOCK_DELINEATION_JSON_PATHS = tuple(
+    dir_path / "candidate_delineation-mps.json"
+    for dir_path in _YUE_ZHO_CANDIDATE_BLOCK_TEST_CASE_DIR_PATHS
+)
+"""Repository candidate block-delineation JSON paths for written Cantonese."""
+
+_YUE_ZHO_ADVISORY_BLOCK_DELINEATION_JSON_PATHS = tuple(
+    dir_path / "advisory_delineation-mps.json"
+    for dir_path in _YUE_ZHO_ADVISORY_BLOCK_TEST_CASE_DIR_PATHS
+) + tuple(
+    Path("acopopb/output/yue-Hant_transcribe")
+    / f"{vad_name}-phrase-timing-gated-advisory-delineation"
+    / transcription_name
+    / "json"
+    / "gated_advisory_delineation-mps.json"
+    for vad_name in ("vad-auto", "vad-off")
+    for transcription_name in ("whisper", "mimo", "qwen")
+)
+"""Repository advisory block-delineation JSON paths for written Cantonese."""
+
+_YUE_ZHO_POSITIONAL_BLOCK_PUNCTUATION_JSON_PATHS = tuple(
+    dir_path / "positional_punctuation-mps.json"
+    for dir_path in _YUE_ZHO_CANDIDATE_BLOCK_TEST_CASE_DIR_PATHS
+)
+"""Repository positional block-punctuation JSON paths for written Cantonese."""
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -174,10 +266,16 @@ class GuidedTranscriptionSpec:
 
     language_spec: TranscriptionLanguageSpec
     """Configuration for the transcription language."""
+    advisory_block_delineation_prompt: AdvisoryBlockDelineationPrompt
+    """Prompt for unrestricted boundaries with advisory timing suggestions."""
     block_delineation_prompt: BlockDelineationPrompt
     """Prompt for moving target text across a complete guide block."""
     block_punctuation_prompt: BlockPunctuationPrompt
     """Prompt for punctuating target text across a complete guide block."""
+    candidate_block_delineation_prompt: CandidateBlockDelineationPrompt
+    """Prompt for selecting timing-supported target boundaries."""
+    positional_block_punctuation_prompt: PositionalBlockPunctuationPrompt
+    """Prompt for inserting punctuation at target character offsets."""
     delineation_prompt: DelineationPrompt
     """Prompt for moving transcription text between reference subtitles."""
     punctuation_prompt: PunctuationPrompt
@@ -192,17 +290,35 @@ class GuidedTranscriptionSpec:
     """Bundled block-delineation test-case JSON paths."""
     block_punctuation_json_paths: tuple[Path, ...] = ()
     """Bundled block-punctuation test-case JSON paths."""
+    advisory_block_delineation_json_paths: tuple[Path, ...] = ()
+    """Bundled advisory block-delineation test-case JSON paths."""
+    candidate_block_delineation_json_paths: tuple[Path, ...] = ()
+    """Bundled candidate block-delineation test-case JSON paths."""
+    positional_block_punctuation_json_paths: tuple[Path, ...] = ()
+    """Bundled positional block-punctuation test-case JSON paths."""
 
 
 _YUE_HANS_SPEC = GuidedTranscriptionSpec(
     language_spec=_YUE_LANGUAGE_SPEC,
+    advisory_block_delineation_prompt=YueZhoAdvisoryBlockDelineationPromptYueHans,
     block_delineation_prompt=YueZhoBlockDelineationPromptYueHans,
     block_punctuation_prompt=YueZhoBlockPunctuationPromptYueHans,
+    candidate_block_delineation_prompt=YueZhoCandidateBlockDelineationPromptYueHans,
+    positional_block_punctuation_prompt=YueZhoPositionalBlockPunctuationPromptYueHans,
     delineation_prompt=YueZhoDelineationPromptYueHans,
     punctuation_prompt=YueZhoPunctuationPromptYueHans,
     test_case_dir_path=Path("lang/yue_zho/transcription"),
     block_delineation_json_paths=_YUE_ZHO_BLOCK_DELINEATION_JSON_PATHS,
     block_punctuation_json_paths=_YUE_ZHO_BLOCK_PUNCTUATION_JSON_PATHS,
+    advisory_block_delineation_json_paths=(
+        _YUE_ZHO_ADVISORY_BLOCK_DELINEATION_JSON_PATHS
+    ),
+    candidate_block_delineation_json_paths=(
+        _YUE_ZHO_CANDIDATE_BLOCK_DELINEATION_JSON_PATHS
+    ),
+    positional_block_punctuation_json_paths=(
+        _YUE_ZHO_POSITIONAL_BLOCK_PUNCTUATION_JSON_PATHS
+    ),
     delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
     punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
 )
@@ -210,13 +326,25 @@ _YUE_HANS_SPEC = GuidedTranscriptionSpec(
 
 _YUE_HANT_SPEC = GuidedTranscriptionSpec(
     language_spec=_YUE_LANGUAGE_SPEC,
+    advisory_block_delineation_prompt=YueZhoAdvisoryBlockDelineationPromptYueHant,
     block_delineation_prompt=YueZhoBlockDelineationPromptYueHant,
     block_punctuation_prompt=YueZhoBlockPunctuationPromptYueHant,
+    candidate_block_delineation_prompt=YueZhoCandidateBlockDelineationPromptYueHant,
+    positional_block_punctuation_prompt=YueZhoPositionalBlockPunctuationPromptYueHant,
     delineation_prompt=YueZhoDelineationPromptYueHant,
     punctuation_prompt=YueZhoPunctuationPromptYueHant,
     test_case_dir_path=Path("lang/yue_zho/transcription"),
     block_delineation_json_paths=_YUE_ZHO_BLOCK_DELINEATION_JSON_PATHS,
     block_punctuation_json_paths=_YUE_ZHO_BLOCK_PUNCTUATION_JSON_PATHS,
+    advisory_block_delineation_json_paths=(
+        _YUE_ZHO_ADVISORY_BLOCK_DELINEATION_JSON_PATHS
+    ),
+    candidate_block_delineation_json_paths=(
+        _YUE_ZHO_CANDIDATE_BLOCK_DELINEATION_JSON_PATHS
+    ),
+    positional_block_punctuation_json_paths=(
+        _YUE_ZHO_POSITIONAL_BLOCK_PUNCTUATION_JSON_PATHS
+    ),
     delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
     punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
 )
@@ -246,10 +374,14 @@ def get_guided_transcriber(
     vad_mode: VADMode = VADMode.AUTO,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
+    strip_generated_punctuation: bool = False,
+    mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     no_op: bool = False,
     alignment_mode: TranscriptionAlignmentMode = TranscriptionAlignmentMode.PAIRWISE,
+    block_delineation_mode: BlockDelineationMode | None = None,
+    block_punctuation_mode: BlockPunctuationMode | None = None,
     fallback_to_no_op: bool = False,
     prune_test_cases: bool = False,
     block_delineation_prompt: BlockDelineationPrompt | None = None,
@@ -276,10 +408,15 @@ def get_guided_transcriber(
         vad_mode: voice activity detection mode
         cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching generated cache files
+        strip_generated_punctuation: whether to remove generated sentence
+            punctuation after timing and before guided alignment
+        mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         no_op: use neutral answers instead of querying an LLM
         alignment_mode: LLM query granularity for alignment and punctuation
+        block_delineation_mode: block delineation strategy override
+        block_punctuation_mode: block punctuation strategy override
         fallback_to_no_op: whether invalid block answers fall back to sparse no-op
         prune_test_cases: whether to remove test cases not encountered in this run
         block_delineation_prompt: block delineation prompt override
@@ -313,10 +450,27 @@ def get_guided_transcriber(
     if provider is None:
         provider = get_provider()
 
-    if alignment_mode is TranscriptionAlignmentMode.BLOCK:
+    default_block_modes = {
+        TranscriptionAlignmentMode.BLOCK: (
+            BlockDelineationMode.UNRESTRICTED,
+            BlockPunctuationMode.FULL_TEXT,
+        ),
+        TranscriptionAlignmentMode.BLOCK_POSITIONAL: (
+            BlockDelineationMode.CANDIDATE,
+            BlockPunctuationMode.POSITIONAL,
+        ),
+    }
+    if alignment_mode in default_block_modes:
+        default_delineation_mode, default_punctuation_mode = default_block_modes[
+            alignment_mode
+        ]
+        block_delineation_mode = block_delineation_mode or default_delineation_mode
+        block_punctuation_mode = block_punctuation_mode or default_punctuation_mode
         aligner = _get_block_aligner(
             spec,
             provider,
+            delineation_mode=block_delineation_mode,
+            punctuation_mode=block_punctuation_mode,
             additional_context=additional_context,
             cache_root_path=cache_root_path,
             fallback_to_no_op=fallback_to_no_op,
@@ -331,9 +485,11 @@ def get_guided_transcriber(
             punctuation_test_cases=block_punctuation_test_cases,
         )
     else:
+        if block_delineation_mode is not None or block_punctuation_mode is not None:
+            raise ValueError("Block strategy overrides require a block alignment mode.")
         if fallback_to_no_op:
             raise ValueError(
-                "fallback_to_no_op is supported only with block alignment."
+                "fallback_to_no_op is supported only with block alignment modes."
             )
         aligner = _get_pairwise_aligner(
             spec,
@@ -362,6 +518,8 @@ def get_guided_transcriber(
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
         )
+    if block_punctuation_mode is BlockPunctuationMode.POSITIONAL:
+        strip_generated_punctuation = True
     return GuidedTranscriber(
         language=language,
         guide_language=guide_language,
@@ -374,7 +532,9 @@ def get_guided_transcriber(
         cache_root_path=cache_root_path,
         overwrite_cache=overwrite_cache,
         mlx_audio_transcriber=mlx_audio_transcriber,
+        mlx_audio_timing_mode=mlx_audio_timing_mode,
         segment_splitter=language_spec.segment_splitter,
+        strip_generated_punctuation=strip_generated_punctuation,
     )
 
 
@@ -382,6 +542,8 @@ def _get_block_aligner(
     spec: GuidedTranscriptionSpec,
     provider: LLMProvider,
     *,
+    delineation_mode: BlockDelineationMode,
+    punctuation_mode: BlockPunctuationMode,
     additional_context: str | None,
     cache_root_path: Path | None,
     fallback_to_no_op: bool,
@@ -400,6 +562,8 @@ def _get_block_aligner(
     Arguments:
         spec: guided transcription specification
         provider: provider to use for LLM queries
+        delineation_mode: selected block delineation strategy
+        punctuation_mode: selected block punctuation strategy
         additional_context: additional context to include in LLM prompts
         cache_root_path: cache root directory path
         fallback_to_no_op: whether invalid answers fall back to sparse no-op
@@ -415,10 +579,26 @@ def _get_block_aligner(
     Returns:
         configured block transcription aligner
     """
-    if delineation_prompt is None:
-        delineation_prompt = spec.block_delineation_prompt
-    if punctuation_prompt is None:
-        punctuation_prompt = spec.block_punctuation_prompt
+    advisory_modes = {
+        BlockDelineationMode.ADVISORY,
+        BlockDelineationMode.GATED_ADVISORY,
+    }
+    use_advisory_suggestions = delineation_mode in advisory_modes
+    gate_advisory_suggestions = delineation_mode is BlockDelineationMode.GATED_ADVISORY
+    use_candidates = delineation_mode is BlockDelineationMode.CANDIDATE
+    use_positional = punctuation_mode is BlockPunctuationMode.POSITIONAL
+    delineation_prompts = {
+        BlockDelineationMode.ADVISORY: spec.advisory_block_delineation_prompt,
+        BlockDelineationMode.GATED_ADVISORY: (spec.advisory_block_delineation_prompt),
+        BlockDelineationMode.UNRESTRICTED: spec.block_delineation_prompt,
+        BlockDelineationMode.CANDIDATE: spec.candidate_block_delineation_prompt,
+    }
+    delineation_prompt = delineation_prompt or delineation_prompts[delineation_mode]
+    punctuation_prompts = {
+        BlockPunctuationMode.FULL_TEXT: spec.block_punctuation_prompt,
+        BlockPunctuationMode.POSITIONAL: spec.positional_block_punctuation_prompt,
+    }
+    punctuation_prompt = punctuation_prompt or punctuation_prompts[punctuation_mode]
     if delineation_json_path is None or punctuation_json_path is None:
         runtime_test_case_dir_path = (
             get_runtime_data_root_path(create=False)
@@ -427,30 +607,90 @@ def _get_block_aligner(
         )
         device = get_torch_device()
         if delineation_json_path is None:
+            delineation_dir_names = {
+                BlockDelineationMode.ADVISORY: "advisory_block_delineation",
+                BlockDelineationMode.GATED_ADVISORY: (
+                    "gated_advisory_block_delineation"
+                ),
+                BlockDelineationMode.UNRESTRICTED: "block_delineation",
+                BlockDelineationMode.CANDIDATE: "candidate_block_delineation",
+            }
             delineation_json_path = (
-                runtime_test_case_dir_path / "block_delineation" / f"{device}.json"
+                runtime_test_case_dir_path
+                / delineation_dir_names[delineation_mode]
+                / f"{device}.json"
             )
         if punctuation_json_path is None:
+            punctuation_dir_names = {
+                BlockPunctuationMode.FULL_TEXT: "block_punctuation",
+                BlockPunctuationMode.POSITIONAL: "positional_block_punctuation",
+            }
             punctuation_json_path = (
-                runtime_test_case_dir_path / "block_punctuation" / f"{device}.json"
+                runtime_test_case_dir_path
+                / punctuation_dir_names[punctuation_mode]
+                / f"{device}.json"
             )
     if delineation_test_cases is None:
+        delineation_managers = {
+            BlockDelineationMode.ADVISORY: AdvisoryBlockDelineationManager,
+            BlockDelineationMode.GATED_ADVISORY: AdvisoryBlockDelineationManager,
+            BlockDelineationMode.UNRESTRICTED: BlockDelineationManager,
+            BlockDelineationMode.CANDIDATE: CandidateBlockDelineationManager,
+        }
+        delineation_json_paths_by_mode = {
+            BlockDelineationMode.ADVISORY: (spec.advisory_block_delineation_json_paths),
+            BlockDelineationMode.GATED_ADVISORY: (
+                spec.advisory_block_delineation_json_paths
+            ),
+            BlockDelineationMode.UNRESTRICTED: spec.block_delineation_json_paths,
+            BlockDelineationMode.CANDIDATE: (
+                spec.candidate_block_delineation_json_paths
+            ),
+        }
         delineation_test_cases = list(
             load_shared_test_cases(
-                BlockDelineationManager,
+                delineation_managers[delineation_mode],
                 delineation_prompt,
-                spec.block_delineation_json_paths,
+                delineation_json_paths_by_mode[delineation_mode],
             )
         )
     if punctuation_test_cases is None:
+        punctuation_managers = {
+            BlockPunctuationMode.FULL_TEXT: BlockPunctuationManager,
+            BlockPunctuationMode.POSITIONAL: PositionalBlockPunctuationManager,
+        }
+        punctuation_json_paths_by_mode = {
+            BlockPunctuationMode.FULL_TEXT: spec.block_punctuation_json_paths,
+            BlockPunctuationMode.POSITIONAL: (
+                spec.positional_block_punctuation_json_paths
+            ),
+        }
         punctuation_test_cases = list(
             load_shared_test_cases(
-                BlockPunctuationManager,
+                punctuation_managers[punctuation_mode],
                 punctuation_prompt,
-                spec.block_punctuation_json_paths,
+                punctuation_json_paths_by_mode[punctuation_mode],
             )
         )
-    delineation_processor = BlockDelineationProcessor(
+    delineation_processor_classes = {
+        BlockDelineationMode.ADVISORY: AdvisoryBlockDelineationProcessor,
+        BlockDelineationMode.GATED_ADVISORY: AdvisoryBlockDelineationProcessor,
+        BlockDelineationMode.UNRESTRICTED: BlockDelineationProcessor,
+        BlockDelineationMode.CANDIDATE: CandidateBlockDelineationProcessor,
+    }
+    delineation_prompt_classes = {
+        BlockDelineationMode.ADVISORY: AdvisoryBlockDelineationPrompt,
+        BlockDelineationMode.GATED_ADVISORY: AdvisoryBlockDelineationPrompt,
+        BlockDelineationMode.UNRESTRICTED: BlockDelineationPrompt,
+        BlockDelineationMode.CANDIDATE: CandidateBlockDelineationPrompt,
+    }
+    expected_delineation_prompt_cls = delineation_prompt_classes[delineation_mode]
+    if not isinstance(delineation_prompt, expected_delineation_prompt_cls):
+        raise TypeError(
+            f"{delineation_mode.value.title()} block delineation requires a "
+            f"{expected_delineation_prompt_cls.__name__}."
+        )
+    delineation_processor = delineation_processor_classes[delineation_mode](
         delineation_prompt,
         shared_test_cases=delineation_test_cases,
         current_test_cases_path=delineation_json_path,
@@ -461,21 +701,42 @@ def _get_block_aligner(
         overwrite_cache=overwrite_cache,
         prune_test_cases=prune_test_cases,
     )
-    punctuation_processor = BlockPunctuationProcessor(
-        punctuation_prompt,
-        shared_test_cases=punctuation_test_cases,
-        current_test_cases_path=punctuation_json_path,
-        provider=provider,
-        additional_context=additional_context,
-        cache_root_path=cache_root_path,
-        no_op=no_op,
-        overwrite_cache=overwrite_cache,
-        prune_test_cases=prune_test_cases,
-    )
+    if use_positional:
+        if not isinstance(punctuation_prompt, PositionalBlockPunctuationPrompt):
+            raise TypeError(
+                "Positional block punctuation requires a "
+                "PositionalBlockPunctuationPrompt."
+            )
+        punctuation_processor = PositionalBlockPunctuationProcessor(
+            punctuation_prompt,
+            shared_test_cases=punctuation_test_cases,
+            current_test_cases_path=punctuation_json_path,
+            provider=provider,
+            additional_context=additional_context,
+            cache_root_path=cache_root_path,
+            no_op=no_op,
+            overwrite_cache=overwrite_cache,
+            prune_test_cases=prune_test_cases,
+        )
+    else:
+        punctuation_processor = BlockPunctuationProcessor(
+            punctuation_prompt,
+            shared_test_cases=punctuation_test_cases,
+            current_test_cases_path=punctuation_json_path,
+            provider=provider,
+            additional_context=additional_context,
+            cache_root_path=cache_root_path,
+            no_op=no_op,
+            overwrite_cache=overwrite_cache,
+            prune_test_cases=prune_test_cases,
+        )
     return BlockTranscriptionAligner(
         delineation_processor,
         punctuation_processor,
         fallback_to_no_op=fallback_to_no_op,
+        gate_delineation_suggestions=gate_advisory_suggestions,
+        use_delineation_candidates=use_candidates,
+        use_delineation_suggestions=use_advisory_suggestions,
     )
 
 

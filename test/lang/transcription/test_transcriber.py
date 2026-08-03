@@ -27,7 +27,9 @@ from scinoephile.lang.transcription.aligner import TranscriptionAligner
 from scinoephile.lang.transcription.alignment import TranscriptionAlignment
 from scinoephile.lang.transcription.transcriber import (
     GuidedTranscriber,
+    MlxAudioTimingMode,
     TranscriptionBackend,
+    _get_segment_split_on_phrase_timings,
 )
 
 
@@ -37,6 +39,8 @@ def _get_transcriber(
     demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.OFF,
     overwrite_cache: bool = False,
+    strip_generated_punctuation: bool = False,
+    mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
 ) -> tuple[GuidedTranscriber, Mock]:
     """Get a transcriber with a passthrough alignment mock.
 
@@ -45,6 +49,9 @@ def _get_transcriber(
         demucs_mode: Demucs preprocessing mode
         vad_mode: Whisper VAD mode
         overwrite_cache: whether to replace matching transcription cache files
+        strip_generated_punctuation: whether to remove generated punctuation before
+            guided alignment
+        mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
     Returns:
         transcriber and alignment mock
     """
@@ -69,6 +76,8 @@ def _get_transcriber(
             vad_mode=vad_mode,
             overwrite_cache=overwrite_cache,
             mlx_audio_transcriber=mlx_audio_transcriber,
+            mlx_audio_timing_mode=mlx_audio_timing_mode,
+            strip_generated_punctuation=strip_generated_punctuation,
         ),
         aligner,
     )
@@ -449,6 +458,24 @@ def test_process_block_preserves_raw_segments_and_uses_buffered_offset():
     aligner.update_all_test_cases.assert_not_called()
 
 
+def test_process_block_strips_generated_punctuation_after_timing():
+    """Test guided alignment can omit sentence but retain lexical punctuation."""
+    transcriber, aligner = _get_transcriber(strip_generated_punctuation=True)
+    audio_block = AudioSeries(
+        audio=AudioSegment.silent(duration=1000),
+        events=[AudioSubtitle(start=0, end=1000, text="reference")],
+    )
+    audio_block.buffered_start = 0
+    reference_block = Series(events=[Subtitle(start=0, end=1000, text="reference")])
+    segment = _get_segment(text="你好！0.01、don't、re-entry，")
+
+    with patch.object(transcriber, "_transcribe_block_audio", return_value=[segment]):
+        transcriber.process_block(audio_block, reference_block)
+
+    transcription = aligner.align.call_args.args[1]
+    assert [subtitle.text for subtitle in transcription] == ["你好0.01don'tre-entry"]
+
+
 def test_process_block_applies_configured_segment_splitter():
     """Test language specs may split raw Whisper segments."""
     transcriber, aligner = _get_transcriber()
@@ -512,6 +539,76 @@ def test_process_block_splits_mlx_audio_segments_on_word_timings():
     assert [subtitle.segment.id for subtitle in transcription] == [0, 1]
     alignment = TranscriptionAlignment(reference_block, transcription)
     assert alignment.sync_groups == [([0], [0]), ([1], [1])]
+
+
+def test_process_block_groups_mlx_audio_segments_on_phrase_timings():
+    """Test phrase timing groups use punctuation before it may be stripped."""
+    transcriber, aligner = _get_transcriber(
+        backend=TranscriptionBackend.MLX_AUDIO,
+        mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+        strip_generated_punctuation=True,
+    )
+    audio_block = AudioSeries(
+        audio=AudioSegment.silent(duration=1500),
+        events=[AudioSubtitle(start=0, end=1500, text="reference")],
+    )
+    audio_block.buffered_start = 0
+    reference_block = Series(
+        events=[
+            Subtitle(start=0, end=500, text="參考一"),
+            Subtitle(start=500, end=1500, text="參考二"),
+        ]
+    )
+    text = "甲乙。丙丁戊己庚辛壬癸"
+    words = [
+        TranscribedWord(
+            text=character, start=word_idx / 10, end=(word_idx + 1) / 10, confidence=1.0
+        )
+        for word_idx, character in enumerate(text)
+    ]
+    segment = TranscribedSegment(
+        id=0, seek=0, start=0.0, end=len(text) / 10, text=text, words=words
+    )
+
+    with patch.object(transcriber, "_transcribe_block_audio", return_value=[segment]):
+        transcriber.process_block(audio_block, reference_block)
+
+    transcription = aligner.align.call_args.args[1]
+    assert [subtitle.text for subtitle in transcription] == ["甲乙", "丙丁戊己庚辛壬癸"]
+    assert [(subtitle.start, subtitle.end) for subtitle in transcription] == [
+        (0, 300),
+        (300, 1100),
+    ]
+
+
+def test_phrase_timing_groups_split_on_ctc_hold_time_and_size():
+    """Test acoustic holds and maximum size both produce phrase boundaries."""
+    text = "甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未"
+    words = []
+    start = 0.0
+    for word_idx, character in enumerate(text):
+        duration = 0.1
+        if word_idx == 2:
+            duration = 0.7
+        words.append(
+            TranscribedWord(
+                text=character, start=start, end=start + duration, confidence=1.0
+            )
+        )
+        start += duration
+    segment = TranscribedSegment(
+        id=0, seek=0, start=0.0, end=start, text=text, words=words
+    )
+
+    output = _get_segment_split_on_phrase_timings(segment)
+
+    assert [item.text for item in output] == [
+        "甲乙丙",
+        "丁戊己庚辛壬癸",
+        "子丑寅卯辰巳午未",
+    ]
+    assert [item.start for item in output] == approx([0.0, 0.9, 1.6])
+    assert [item.end for item in output] == approx([0.9, 1.6, 2.4])
 
 
 def test_process_uses_exclusive_stop_index(caplog: LogCaptureFixture):

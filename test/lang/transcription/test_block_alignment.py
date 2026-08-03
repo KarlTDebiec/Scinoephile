@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import cast
 from unittest.mock import Mock
 
 from pydantic import ValidationError
@@ -16,18 +17,27 @@ from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.lang.transcription.block_aligner import BlockTranscriptionAligner
+from scinoephile.lang.transcription.block_aligner import (
+    BlockTranscriptionAligner,
+    _TimingBoundary,
+)
 from scinoephile.llms.block_delineation import (
+    AdvisoryBlockDelineationProcessor,
+    AdvisoryBlockDelineationPrompt,
     BlockDelineationManager,
     BlockDelineationProcessor,
     BlockDelineationPrompt,
     BlockDelineationTestCase,
+    CandidateBlockDelineationProcessor,
+    CandidateBlockDelineationPrompt,
 )
 from scinoephile.llms.block_punctuation import (
     BlockPunctuationManager,
     BlockPunctuationProcessor,
     BlockPunctuationPrompt,
     BlockPunctuationTestCase,
+    PositionalBlockPunctuationProcessor,
+    PositionalBlockPunctuationPrompt,
 )
 
 
@@ -140,6 +150,133 @@ def test_aligner_queries_each_operation_once_with_complete_indexed_block(
         (2_000, 3_000),
     ]
     assert alignment.sync_groups == [([0], [0]), ([1], [1]), ([2], [2])]
+
+
+def test_candidate_alignment_selects_timed_cut_and_inserts_punctuation(tmp_path: Path):
+    """Candidate mode should expose timed cuts and apply positional punctuation."""
+    guide, transcription = _get_block()
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider.chat_completion.side_effect = [
+        json.dumps({"changes": [{"index": 1, "shift": 1}]}),
+        json.dumps(
+            {
+                "changes": [
+                    {"index": 1, "edits": [{"position": 3, "punctuation": "！"}]}
+                ]
+            },
+            ensure_ascii=False,
+        ),
+    ]
+    delineation_processor = CandidateBlockDelineationProcessor(
+        CandidateBlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
+    )
+    punctuation_processor = PositionalBlockPunctuationProcessor(
+        PositionalBlockPunctuationPrompt(), provider=provider, cache_root_path=tmp_path
+    )
+    aligner = BlockTranscriptionAligner(
+        delineation_processor, punctuation_processor, use_delineation_candidates=True
+    )
+
+    alignment = aligner.align(guide, transcription)
+
+    delineation_query = json.loads(
+        provider.chat_completion.call_args_list[0].args[0][1]["content"]
+    )
+    assert [
+        candidate["shift"]
+        for candidate in delineation_query["boundaries"][0]["candidates"]
+    ] == [0, 1, 2]
+    assert [subtitle.text for subtitle in alignment.transcription] == ["甲乙丙！", "丁"]
+
+
+def test_advisory_alignment_ranks_timed_cuts_without_restricting_shift(tmp_path: Path):
+    """Advisory mode should rank timed cuts but accept another legal boundary."""
+    guide, transcription = _get_block()
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider.chat_completion.side_effect = [
+        json.dumps({"changes": [{"index": 1, "shift": -1}]}),
+        json.dumps({"changes": []}),
+    ]
+    delineation_processor = AdvisoryBlockDelineationProcessor(
+        AdvisoryBlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
+    )
+    punctuation_processor = BlockPunctuationProcessor(
+        BlockPunctuationPrompt(), provider=provider, cache_root_path=tmp_path
+    )
+    aligner = BlockTranscriptionAligner(
+        delineation_processor, punctuation_processor, use_delineation_suggestions=True
+    )
+
+    alignment = aligner.align(guide, transcription)
+
+    delineation_query = json.loads(
+        provider.chat_completion.call_args_list[0].args[0][1]["content"]
+    )
+    suggestions = delineation_query["boundaries"][0]["suggestions"]
+    assert [suggestion["rank"] for suggestion in suggestions] == list(
+        range(1, len(suggestions) + 1)
+    )
+    assert -1 not in [suggestion["shift"] for suggestion in suggestions]
+    assert [subtitle.text for subtitle in alignment.transcription] == [
+        "甲",
+        "乙丙",
+        "丁",
+    ]
+
+
+def test_gated_advisory_highlights_only_stronger_timing_evidence():
+    """Gated advisory mode should omit weak cuts and retain strong alternatives."""
+    references = [
+        Subtitle(start=0, end=1_000, text="參考一"),
+        Subtitle(start=1_000, end=2_000, text="參考二"),
+    ]
+    targets = ["甲乙", "丙丁"]
+
+    stronger_values = BlockTranscriptionAligner._get_advisory_boundary_values(  # noqa: SLF001
+        references,
+        targets,
+        1,
+        1,
+        0,
+        [
+            _TimingBoundary(offset=1, time=1_100, pause=0),
+            _TimingBoundary(offset=2, time=2_000, pause=0),
+            _TimingBoundary(offset=3, time=1_200, pause=0),
+        ],
+        gated=True,
+    )
+    weak_values = BlockTranscriptionAligner._get_advisory_boundary_values(  # noqa: SLF001
+        references,
+        targets,
+        1,
+        1,
+        0,
+        [
+            _TimingBoundary(offset=1, time=1_600, pause=0),
+            _TimingBoundary(offset=2, time=1_100, pause=0),
+            _TimingBoundary(offset=3, time=1_700, pause=0),
+        ],
+        gated=True,
+    )
+    missing_baseline_values = BlockTranscriptionAligner._get_advisory_boundary_values(  # noqa: SLF001
+        references,
+        targets,
+        1,
+        1,
+        0,
+        [
+            _TimingBoundary(offset=1, time=4_000, pause=0),
+            _TimingBoundary(offset=3, time=5_000, pause=0),
+        ],
+        gated=True,
+    )
+
+    stronger_suggestions = cast(
+        "list[dict[str, object]]", stronger_values[0]["suggestions"]
+    )
+    assert [suggestion["shift"] for suggestion in stronger_suggestions] == [-1, 1, 0]
+    assert weak_values[0]["suggestions"] == []
+    assert missing_baseline_values[0]["suggestions"] == []
 
 
 def test_invalid_delineation_falls_back_and_punctuation_uses_timing_baseline():

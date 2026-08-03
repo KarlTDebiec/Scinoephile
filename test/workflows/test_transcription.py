@@ -14,7 +14,11 @@ from scinoephile.audio.transcription import DemucsMode, VADMode
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.transcriber import (
+    BlockDelineationMode,
+    BlockPunctuationMode,
     GuidedTranscriber,
+    MlxAudioTimingMode,
+    TranscriptionAlignmentMode,
     TranscriptionBackend,
 )
 from scinoephile.workflows.transcription import transcribe_series_guided
@@ -44,7 +48,12 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
             backend=TranscriptionBackend.MLX_AUDIO,
             cache_root_path=tmp_path / "cache",
             overwrite_cache=True,
+            strip_generated_punctuation=True,
+            mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
             no_op=True,
+            alignment_mode=TranscriptionAlignmentMode.BLOCK,
+            block_delineation_mode=BlockDelineationMode.CANDIDATE,
+            block_punctuation_mode=BlockPunctuationMode.FULL_TEXT,
             prune_test_cases=True,
             delineation_json_path=delineation_json_path,
             punctuation_json_path=punctuation_json_path,
@@ -61,7 +70,24 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
     )
     assert get_transcriber.call_args.kwargs["cache_root_path"] == tmp_path / "cache"
     assert get_transcriber.call_args.kwargs["overwrite_cache"] is True
+    assert get_transcriber.call_args.kwargs["strip_generated_punctuation"] is True
+    assert (
+        get_transcriber.call_args.kwargs["mlx_audio_timing_mode"]
+        is MlxAudioTimingMode.PHRASE
+    )
     assert get_transcriber.call_args.kwargs["no_op"] is True
+    assert (
+        get_transcriber.call_args.kwargs["alignment_mode"]
+        is TranscriptionAlignmentMode.BLOCK
+    )
+    assert (
+        get_transcriber.call_args.kwargs["block_delineation_mode"]
+        is BlockDelineationMode.CANDIDATE
+    )
+    assert (
+        get_transcriber.call_args.kwargs["block_punctuation_mode"]
+        is BlockPunctuationMode.FULL_TEXT
+    )
     assert get_transcriber.call_args.kwargs["prune_test_cases"] is True
     assert (
         get_transcriber.call_args.kwargs["delineation_json_path"]

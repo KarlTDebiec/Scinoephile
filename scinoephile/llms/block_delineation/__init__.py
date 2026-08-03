@@ -11,21 +11,49 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from .manager import BlockDelineationManager
+from .manager import (
+    AdvisoryBlockDelineationManager,
+    BlockDelineationManager,
+    CandidateBlockDelineationManager,
+)
 from .models import (
+    AdvisoryBlockDelineationBoundary,
+    AdvisoryBlockDelineationBoundarySuggestion,
+    AdvisoryBlockDelineationQuery,
+    AdvisoryBlockDelineationTestCase,
     BlockDelineationAnswer,
     BlockDelineationBoundary,
+    BlockDelineationBoundaryCandidate,
     BlockDelineationBoundaryChange,
     BlockDelineationQuery,
     BlockDelineationSubtitle,
     BlockDelineationTestCase,
+    CandidateBlockDelineationBoundary,
+    CandidateBlockDelineationQuery,
+    CandidateBlockDelineationTestCase,
 )
-from .processor import BlockDelineationProcessor
-from .prompt import BlockDelineationPrompt
+from .processor import (
+    AdvisoryBlockDelineationProcessor,
+    BlockDelineationProcessor,
+    CandidateBlockDelineationProcessor,
+)
+from .prompt import (
+    AdvisoryBlockDelineationPrompt,
+    BlockDelineationPrompt,
+    CandidateBlockDelineationPrompt,
+)
 
 __all__ = [
+    "AdvisoryBlockDelineationBoundary",
+    "AdvisoryBlockDelineationBoundarySuggestion",
+    "AdvisoryBlockDelineationManager",
+    "AdvisoryBlockDelineationProcessor",
+    "AdvisoryBlockDelineationPrompt",
+    "AdvisoryBlockDelineationQuery",
+    "AdvisoryBlockDelineationTestCase",
     "BlockDelineationAnswer",
     "BlockDelineationBoundary",
+    "BlockDelineationBoundaryCandidate",
     "BlockDelineationBoundaryChange",
     "BlockDelineationManager",
     "BlockDelineationProcessor",
@@ -33,4 +61,10 @@ __all__ = [
     "BlockDelineationQuery",
     "BlockDelineationSubtitle",
     "BlockDelineationTestCase",
+    "CandidateBlockDelineationBoundary",
+    "CandidateBlockDelineationManager",
+    "CandidateBlockDelineationProcessor",
+    "CandidateBlockDelineationPrompt",
+    "CandidateBlockDelineationQuery",
+    "CandidateBlockDelineationTestCase",
 ]

@@ -19,18 +19,31 @@ from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.lang.transcription.block_aligner import BlockTranscriptionAligner
 from scinoephile.lang.transcription.guided import DEFAULT_SPECS, get_guided_transcriber
 from scinoephile.lang.transcription.transcriber import (
+    BlockDelineationMode,
+    BlockPunctuationMode,
+    MlxAudioTimingMode,
     TranscriptionAlignmentMode,
     TranscriptionBackend,
 )
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
+    YueZhoAdvisoryBlockDelineationPromptYueHant,
     YueZhoBlockDelineationPromptYueHant,
     YueZhoBlockPunctuationPromptYueHant,
+    YueZhoCandidateBlockDelineationPromptYueHant,
     YueZhoDelineationPromptYueHant,
+    YueZhoPositionalBlockPunctuationPromptYueHant,
     YueZhoPunctuationPromptYueHant,
 )
-from scinoephile.llms.block_delineation import BlockDelineationProcessor
-from scinoephile.llms.block_punctuation import BlockPunctuationProcessor
+from scinoephile.llms.block_delineation import (
+    AdvisoryBlockDelineationProcessor,
+    BlockDelineationProcessor,
+    CandidateBlockDelineationProcessor,
+)
+from scinoephile.llms.block_punctuation import (
+    BlockPunctuationProcessor,
+    PositionalBlockPunctuationProcessor,
+)
 from scinoephile.llms.delineation import DelineationManager, DelineationProcessor
 from scinoephile.llms.punctuation import PunctuationProcessor
 
@@ -67,16 +80,36 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
             (Language.yue_hant, Language.zho_hant)
         ].punctuation_json_paths
     )
-    expected_block_json_dir_paths = tuple(
-        Path(dataset_name)
-        / "output"
-        / "yue-Hant_transcribe"
-        / vad_name
-        / transcription_name
-        / "json"
-        for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
-        for vad_name in ("vad-auto", "vad-off")
-        for transcription_name in ("whisper", "mimo", "qwen")
+    expected_block_json_dir_paths = (
+        tuple(
+            Path(dataset_name)
+            / "output"
+            / "yue-Hant_transcribe"
+            / vad_name
+            / transcription_name
+            / "json"
+            for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
+            for vad_name in ("vad-auto", "vad-off")
+            for transcription_name in ("whisper", "mimo", "qwen")
+        )
+        + tuple(
+            Path("acopopb")
+            / "output"
+            / "yue-Hant_transcribe"
+            / "vad-off-stripped-punctuation"
+            / transcription_name
+            / "json"
+            for transcription_name in ("mimo", "qwen")
+        )
+        + tuple(
+            Path("acopopb")
+            / "output"
+            / "yue-Hant_transcribe"
+            / "vad-off-phrase-timing-stripped-punctuation"
+            / transcription_name
+            / "json"
+            for transcription_name in ("mimo", "qwen")
+        )
     )
     spec = DEFAULT_SPECS[(Language.yue_hant, Language.zho_hant)]
     assert spec.block_delineation_json_paths == tuple(
@@ -186,6 +219,8 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
             Language.zho_hans,
             backend=TranscriptionBackend.MLX_AUDIO,
             cache_root_path=tmp_path,
+            strip_generated_punctuation=True,
+            mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
             provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
             delineation_json_path=tmp_path / "delineation.json",
             punctuation_json_path=tmp_path / "punctuation.json",
@@ -198,6 +233,8 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
     assert transcriber.transcriber is mlx_audio_transcriber
     assert transcriber.recovery_transcriber is None
     assert transcriber.tail_recovery_transcriber is None
+    assert transcriber.strip_generated_punctuation
+    assert transcriber.mlx_audio_timing_mode is MlxAudioTimingMode.PHRASE
     mlx_audio_transcriber_class.assert_called_once_with(
         model_name=MIMO_MODEL_NAME,
         language=Language.yue_hant,
@@ -258,6 +295,231 @@ def test_get_guided_transcriber_configures_block_alignment(tmp_path: Path):
     )
 
 
+def test_get_guided_transcriber_configures_block_positional_alignment(tmp_path: Path):
+    """Test positional mode uses distinct schemas, paths, and punctuation cleanup."""
+    with (
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
+            return_value=tmp_path / "data",
+        ),
+        patch(
+            "scinoephile.lang.transcription.guided.get_torch_device",
+            return_value="test",
+        ),
+    ):
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hant,
+            alignment_mode=TranscriptionAlignmentMode.BLOCK_POSITIONAL,
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+            block_delineation_test_cases=[],
+            block_punctuation_test_cases=[],
+            cache_root_path=tmp_path,
+        )
+
+    assert isinstance(transcriber.aligner, BlockTranscriptionAligner)
+    assert isinstance(
+        transcriber.aligner.delineation_processor, CandidateBlockDelineationProcessor
+    )
+    assert isinstance(
+        transcriber.aligner.punctuation_processor, PositionalBlockPunctuationProcessor
+    )
+    assert transcriber.aligner.delineation_processor.prompt is (
+        YueZhoCandidateBlockDelineationPromptYueHant
+    )
+    assert transcriber.aligner.punctuation_processor.prompt is (
+        YueZhoPositionalBlockPunctuationPromptYueHant
+    )
+    assert transcriber.aligner.use_delineation_candidates
+    assert transcriber.strip_generated_punctuation
+    test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
+    assert transcriber.aligner.delineation_processor.current_test_cases_path == (
+        test_case_dir_path / "candidate_block_delineation" / "test.json"
+    )
+    assert transcriber.aligner.punctuation_processor.current_test_cases_path == (
+        test_case_dir_path / "positional_block_punctuation" / "test.json"
+    )
+
+
+def test_get_guided_transcriber_configures_candidate_delineation_only(tmp_path: Path):
+    """Test candidate delineation can use the existing punctuation strategy.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    with (
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
+            return_value=tmp_path / "data",
+        ),
+        patch(
+            "scinoephile.lang.transcription.guided.get_torch_device",
+            return_value="test",
+        ),
+    ):
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hant,
+            alignment_mode=TranscriptionAlignmentMode.BLOCK,
+            block_delineation_mode=BlockDelineationMode.CANDIDATE,
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+            block_delineation_test_cases=[],
+            block_punctuation_test_cases=[],
+            cache_root_path=tmp_path,
+        )
+
+    assert isinstance(transcriber.aligner, BlockTranscriptionAligner)
+    assert isinstance(
+        transcriber.aligner.delineation_processor, CandidateBlockDelineationProcessor
+    )
+    assert isinstance(
+        transcriber.aligner.punctuation_processor, BlockPunctuationProcessor
+    )
+    assert transcriber.aligner.use_delineation_candidates
+    assert not transcriber.strip_generated_punctuation
+    test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
+    assert transcriber.aligner.delineation_processor.current_test_cases_path == (
+        test_case_dir_path / "candidate_block_delineation" / "test.json"
+    )
+    assert transcriber.aligner.punctuation_processor.current_test_cases_path == (
+        test_case_dir_path / "block_punctuation" / "test.json"
+    )
+
+
+def test_get_guided_transcriber_configures_advisory_delineation_only(tmp_path: Path):
+    """Test advisory delineation can use the existing punctuation strategy.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    with (
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
+            return_value=tmp_path / "data",
+        ),
+        patch(
+            "scinoephile.lang.transcription.guided.get_torch_device",
+            return_value="test",
+        ),
+    ):
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hant,
+            alignment_mode=TranscriptionAlignmentMode.BLOCK,
+            block_delineation_mode=BlockDelineationMode.ADVISORY,
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+            block_delineation_test_cases=[],
+            block_punctuation_test_cases=[],
+            cache_root_path=tmp_path,
+        )
+
+    assert isinstance(transcriber.aligner, BlockTranscriptionAligner)
+    assert isinstance(
+        transcriber.aligner.delineation_processor, AdvisoryBlockDelineationProcessor
+    )
+    assert isinstance(
+        transcriber.aligner.punctuation_processor, BlockPunctuationProcessor
+    )
+    assert transcriber.aligner.delineation_processor.prompt is (
+        YueZhoAdvisoryBlockDelineationPromptYueHant
+    )
+    assert transcriber.aligner.use_delineation_suggestions
+    assert not transcriber.aligner.use_delineation_candidates
+    assert not transcriber.strip_generated_punctuation
+    test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
+    assert transcriber.aligner.delineation_processor.current_test_cases_path == (
+        test_case_dir_path / "advisory_block_delineation" / "test.json"
+    )
+    assert transcriber.aligner.punctuation_processor.current_test_cases_path == (
+        test_case_dir_path / "block_punctuation" / "test.json"
+    )
+
+
+def test_get_guided_transcriber_configures_gated_advisory_delineation(tmp_path: Path):
+    """Test gated advisory delineation omits weak timing suggestions.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    with (
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
+            return_value=tmp_path / "data",
+        ),
+        patch(
+            "scinoephile.lang.transcription.guided.get_torch_device",
+            return_value="test",
+        ),
+    ):
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hant,
+            alignment_mode=TranscriptionAlignmentMode.BLOCK,
+            block_delineation_mode=BlockDelineationMode.GATED_ADVISORY,
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+            block_delineation_test_cases=[],
+            block_punctuation_test_cases=[],
+            cache_root_path=tmp_path,
+        )
+
+    assert isinstance(transcriber.aligner, BlockTranscriptionAligner)
+    assert isinstance(
+        transcriber.aligner.delineation_processor, AdvisoryBlockDelineationProcessor
+    )
+    assert transcriber.aligner.use_delineation_suggestions
+    assert transcriber.aligner.gate_delineation_suggestions
+    assert not transcriber.aligner.use_delineation_candidates
+    test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
+    assert transcriber.aligner.delineation_processor.current_test_cases_path == (
+        test_case_dir_path / "gated_advisory_block_delineation" / "test.json"
+    )
+
+
+def test_get_guided_transcriber_configures_positional_punctuation_only(tmp_path: Path):
+    """Test positional punctuation can use unrestricted delineation.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    with (
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
+            return_value=tmp_path / "data",
+        ),
+        patch(
+            "scinoephile.lang.transcription.guided.get_torch_device",
+            return_value="test",
+        ),
+    ):
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hant,
+            alignment_mode=TranscriptionAlignmentMode.BLOCK,
+            block_punctuation_mode=BlockPunctuationMode.POSITIONAL,
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+            block_delineation_test_cases=[],
+            block_punctuation_test_cases=[],
+            cache_root_path=tmp_path,
+        )
+
+    assert isinstance(transcriber.aligner, BlockTranscriptionAligner)
+    assert isinstance(
+        transcriber.aligner.delineation_processor, BlockDelineationProcessor
+    )
+    assert isinstance(
+        transcriber.aligner.punctuation_processor, PositionalBlockPunctuationProcessor
+    )
+    assert not transcriber.aligner.use_delineation_candidates
+    assert transcriber.strip_generated_punctuation
+    test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
+    assert transcriber.aligner.delineation_processor.current_test_cases_path == (
+        test_case_dir_path / "block_delineation" / "test.json"
+    )
+    assert transcriber.aligner.punctuation_processor.current_test_cases_path == (
+        test_case_dir_path / "positional_block_punctuation" / "test.json"
+    )
+
+
 def test_get_guided_transcriber_rejects_pairwise_fallback():
     """Test sparse no-op fallback cannot be enabled for legacy pairwise mode."""
     with raises(ValueError, match="only with block alignment"):
@@ -265,6 +527,17 @@ def test_get_guided_transcriber_rejects_pairwise_fallback():
             Language.yue_hant,
             Language.zho_hant,
             fallback_to_no_op=True,
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+        )
+
+
+def test_get_guided_transcriber_rejects_block_strategy_in_pairwise_mode():
+    """Test block strategy overrides cannot be used in pairwise mode."""
+    with raises(ValueError, match="require a block alignment mode"):
+        get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hant,
+            block_delineation_mode=BlockDelineationMode.CANDIDATE,
             provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
         )
 

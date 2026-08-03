@@ -16,6 +16,8 @@ from scinoephile.llms.block_punctuation import (
     BlockPunctuationProcessor,
     BlockPunctuationPrompt,
     BlockPunctuationTestCase,
+    PositionalBlockPunctuationManager,
+    PositionalBlockPunctuationPrompt,
 )
 
 _LOCALIZED_PROMPT = BlockPunctuationPrompt(
@@ -106,6 +108,57 @@ def test_sparse_changes_may_only_adjust_punctuation_within_each_index():
     )
     assert unknown.answer is not None
     assert unknown.answer.changes == []
+
+
+def test_positional_changes_insert_punctuation_without_rewriting_text():
+    """Positional punctuation should apply valid insertions and reject bad ones."""
+    prompt = PositionalBlockPunctuationPrompt()
+    test_case_cls = PositionalBlockPunctuationManager.get_test_case_cls(prompt)
+    query = {
+        "guides": [{"index": 1, "text": "你好嗎？"}],
+        "targets": [{"index": 1, "text": "你好嗎"}],
+    }
+
+    test_case = test_case_cls.model_validate(
+        {
+            "query": query,
+            "answer": {
+                "changes": [
+                    {
+                        "index": 1,
+                        "edits": [
+                            {"position": 2, "punctuation": "，"},
+                            {"position": 3, "punctuation": "？"},
+                        ],
+                    }
+                ]
+            },
+        }
+    )
+
+    assert test_case.get_output_texts() == ["你好，嗎？"]
+    with raises(ValidationError, match="only punctuation or whitespace"):
+        test_case_cls.model_validate(
+            {
+                "query": query,
+                "answer": {
+                    "changes": [
+                        {"index": 1, "edits": [{"position": 3, "punctuation": "呀"}]}
+                    ]
+                },
+            }
+        )
+    with raises(ValidationError, match="between zero.*length 3"):
+        test_case_cls.model_validate(
+            {
+                "query": query,
+                "answer": {
+                    "changes": [
+                        {"index": 1, "edits": [{"position": 4, "punctuation": "？"}]}
+                    ]
+                },
+            }
+        )
 
 
 def test_sparse_changes_restore_source_characters_with_matching_length():

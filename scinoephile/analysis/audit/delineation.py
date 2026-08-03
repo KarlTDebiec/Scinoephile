@@ -262,7 +262,9 @@ def _format_pair(one: str, two: str) -> str:
     Returns:
         subtitle texts separated by a newline
     """
-    return f"{one or '—'}\n{two or '—'}"
+    one_display = one if one else "(empty)"
+    two_display = two if two else "(empty)"
+    return f"{one_display}\n{two_display}"
 
 
 def _format_indexed_texts(texts: Sequence[str]) -> str:
@@ -273,7 +275,9 @@ def _format_indexed_texts(texts: Sequence[str]) -> str:
     Returns:
         newline-separated indexed texts
     """
-    return "\n".join(f"{index}. {text or '—'}" for index, text in enumerate(texts, 1))
+    return "\n".join(
+        f"{index}. {text if text else '(empty)'}" for index, text in enumerate(texts, 1)
+    )
 
 
 def _format_window_indexed_texts(
@@ -290,7 +294,7 @@ def _format_window_indexed_texts(
     return "\n".join(
         f"{index}. "
         f"{'[owns next boundary] ' if index in owned_index_range else '[context] '}"
-        f"{text or '—'}"
+        f"{text if text else '(empty)'}"
         for index, text in enumerate(texts, 1)
     )
 
@@ -435,7 +439,7 @@ def _get_block_delineation_rows(
             input_texts = [target.text for target in test_case.query.targets]
             output_texts = test_case.get_output_texts()
             output = "\n".join(
-                f"{index}. {output_text or '—'}"
+                f"{index}. {output_text if output_text else '(empty)'}"
                 for index, (input_text, output_text) in enumerate(
                     zip(input_texts, output_texts, strict=True), 1
                 )

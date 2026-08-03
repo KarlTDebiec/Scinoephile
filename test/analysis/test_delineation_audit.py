@@ -138,7 +138,7 @@ def test_audit_delineation_formats_shift_and_no_shift_rows():
     assert "- unanswered cases: 0" in report
     assert "| Indexes | Reference | Input | Output | Notes | Verified |" in report
     assert "| 1<br>2 | 參\\|考一<br>參考二 | 甲乙<br>丙 | 甲<br>乙丙 |  | ✓ |" in report
-    assert "| 2<br>3 | 參考二<br>參考三 | 丁<br>— |  |  |  |" in report
+    assert "| 2<br>3 | 參考二<br>參考三 | 丁<br>(empty) |  |  |  |" in report
 
 
 def test_audit_delineation_sorts_rows_and_omits_unchanged_output():
@@ -185,7 +185,26 @@ def test_audit_delineation_formats_unanswered_case():
     report = audit_delineation(_get_series("參考一", "參考二"), (test_case,))
 
     assert "- unanswered cases: 1" in report
-    assert "| 1<br>2 | 參考一<br>參考二 | 甲<br>— | (unanswered) |  |  |" in report
+    assert (
+        "| 1<br>2 | 參考一<br>參考二 | 甲<br>(empty) | (unanswered) |  |  |"
+    ) in report
+
+
+def test_audit_delineation_distinguishes_empty_from_literal_em_dash():
+    """Empty target text should not look like a literal em dash."""
+    test_case = DelineationTestCase(
+        query=DelineationQuery(
+            reference_one="參考一",
+            reference_two="參考二",
+            target_one="",
+            target_two="—",
+        ),
+        answer=DelineationAnswer(),
+    )
+
+    report = audit_delineation(_get_series("參考一", "參考二"), (test_case,))
+
+    assert "| (empty)<br>— |" in report
 
 
 def test_audit_delineation_filters_rows_and_subtitle_range():
@@ -449,8 +468,8 @@ def test_audit_delineation_resolves_context_before_logged_restart():
 
     report = audit_delineation(reference, test_cases)
 
-    assert "| 2<br>3 | 甲<br>乙 | 中<br>— |" in report
-    assert "| 4<br>5 | 甲<br>乙 | 中<br>— |" not in report
+    assert "| 2<br>3 | 甲<br>乙 | 中<br>(empty) |" in report
+    assert "| 4<br>5 | 甲<br>乙 | 中<br>(empty) |" not in report
 
 
 def test_audit_delineation_resolves_reverse_traversal_before_restart():
@@ -485,8 +504,8 @@ def test_audit_delineation_resolves_reverse_traversal_before_restart():
 
     report = audit_delineation(reference, test_cases)
 
-    assert "| 2<br>3 | 乙<br>甲 | 左<br>— |" in report
-    assert "| 4<br>5 | 乙<br>甲 | 左<br>— |" not in report
+    assert "| 2<br>3 | 乙<br>甲 | 左<br>(empty) |" in report
+    assert "| 4<br>5 | 乙<br>甲 | 左<br>(empty) |" not in report
 
 
 def test_audit_delineation_rejects_ambiguous_reference_pair():
@@ -548,7 +567,7 @@ def test_audit_delineation_resolves_repeated_pair_before_range_filtering():
         reference, test_cases, first_index=1, last_index=2
     )
 
-    assert "| 4<br>5 | 重複一<br>重複二 | 中<br>— |" in report
+    assert "| 4<br>5 | 重複一<br>重複二 | 中<br>(empty) |" in report
     assert "- logged cases: 0" in ranged_report
     assert "- table rows: 0" in ranged_report
 

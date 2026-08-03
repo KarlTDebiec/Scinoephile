@@ -20,13 +20,15 @@ from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.synchronization import SyncGroup
 from scinoephile.core.text import remove_punc_and_whitespace, replace_control_characters
 from scinoephile.llms.block_delineation import (
+    AdvisoryBlockDelineationProcessor,
     BlockDelineationProcessor,
     BlockDelineationTestCase,
+    CandidateBlockDelineationProcessor,
 )
 from scinoephile.llms.block_punctuation import (
-    BlockPunctuationAnswer,
     BlockPunctuationProcessor,
     BlockPunctuationTestCase,
+    PositionalBlockPunctuationProcessor,
 )
 
 from .alignment import TranscriptionAlignment
@@ -50,6 +52,30 @@ _MIN_OWNED_SUBTITLES = 6
 """Minimum ownership retained after timing-gap boundary selection."""
 _MAX_PUNCTUATION_REPEAT_RUN_LENGTH = 32
 """Longest identical-character run included in a punctuation query."""
+_MAX_CANDIDATE_DISTANCE = 24
+"""Largest character distance considered for a timing-supported candidate cut."""
+_CANDIDATE_CONTEXT_CHARACTERS = 8
+"""Target characters shown on each side of a candidate cut."""
+_MIN_ADVISORY_TIMING_IMPROVEMENT_MS = 500
+"""Minimum timing improvement for highlighting an alternative boundary cut."""
+_MAX_ADVISORY_MISSING_BASELINE_TIMING_DELTA_MS = 750
+"""Largest guide-time distance when the preliminary cut has no timing record."""
+_MAX_ADVISORY_PAUSE_TIMING_DELTA_MS = 400
+"""Largest guide-time distance for highlighting a pause-supported cut."""
+_MIN_ADVISORY_PAUSE_MS = 200
+"""Minimum audio pause for independently highlighting a boundary cut."""
+
+
+@dataclass(frozen=True, slots=True)
+class _TimingBoundary:
+    """Character offset and audio evidence after one transcription unit."""
+
+    offset: int
+    """Cumulative character offset on the complete target tape."""
+    time: float
+    """End time of the transcription unit."""
+    pause: float
+    """Nonnegative gap before the following transcription unit."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -81,10 +107,19 @@ class BlockTranscriptionAligner:
 
     def __init__(
         self,
-        delineation_processor: BlockDelineationProcessor,
-        punctuation_processor: BlockPunctuationProcessor,
+        delineation_processor: (
+            AdvisoryBlockDelineationProcessor
+            | BlockDelineationProcessor
+            | CandidateBlockDelineationProcessor
+        ),
+        punctuation_processor: (
+            BlockPunctuationProcessor | PositionalBlockPunctuationProcessor
+        ),
         *,
         fallback_to_no_op: bool = False,
+        gate_delineation_suggestions: bool = False,
+        use_delineation_candidates: bool = False,
+        use_delineation_suggestions: bool = False,
     ):
         """Initialize.
 
@@ -92,13 +127,35 @@ class BlockTranscriptionAligner:
             delineation_processor: processor for block delineation queries
             punctuation_processor: processor for block punctuation queries
             fallback_to_no_op: whether invalid answers fall back to sparse no-op
+            gate_delineation_suggestions: whether weak timing suggestions are omitted
+            use_delineation_candidates: whether boundary shifts must select from
+                timing-supported candidate cuts
+            use_delineation_suggestions: whether unrestricted boundaries include
+                ranked timing-supported suggestions
+        Raises:
+            ValueError: if candidate restriction and advisory suggestions are both set
         """
+        if use_delineation_candidates and use_delineation_suggestions:
+            raise ValueError(
+                "Delineation candidates and advisory suggestions are mutually "
+                "exclusive."
+            )
+        if gate_delineation_suggestions and not use_delineation_suggestions:
+            raise ValueError(
+                "Delineation suggestions must be enabled before they can be gated."
+            )
         self.delineation_processor = delineation_processor
         """Redistribute target characters across all guide indexes in one query."""
         self.punctuation_processor = punctuation_processor
         """Punctuate all delineated target subtitles in one query."""
         self.fallback_to_no_op = fallback_to_no_op
         """Whether exhausted invalid answers fall back to sparse no-op answers."""
+        self.gate_delineation_suggestions = gate_delineation_suggestions
+        """Whether weak advisory timing suggestions are omitted."""
+        self.use_delineation_candidates = use_delineation_candidates
+        """Whether delineation queries include timing-supported candidate cuts."""
+        self.use_delineation_suggestions = use_delineation_suggestions
+        """Whether delineation queries include advisory timing-supported cuts."""
 
     def align(
         self, reference_subs: Series, transcription_subs: AudioSeries
@@ -129,7 +186,14 @@ class BlockTranscriptionAligner:
         references = list(alignment.reference)
         delineated = targets
         if len(references) > 1:
-            delineated = self._delineate(references, targets)
+            timing_boundaries = (
+                self._get_timing_boundaries(alignment, targets)
+                if self.use_delineation_candidates or self.use_delineation_suggestions
+                else []
+            )
+            delineated = self._delineate(
+                references, targets, timing_boundaries=timing_boundaries
+            )
         punctuated = self._punctuate(references, delineated)
         self._set_output(alignment, punctuated)
         return alignment
@@ -140,13 +204,18 @@ class BlockTranscriptionAligner:
         self.punctuation_processor.save_encountered_test_cases()
 
     def _delineate(
-        self, references: Sequence[Subtitle], targets: list[str]
+        self,
+        references: Sequence[Subtitle],
+        targets: list[str],
+        *,
+        timing_boundaries: Sequence[_TimingBoundary] = (),
     ) -> list[str]:
         """Delineate windows sequentially and retain their owned boundaries.
 
         Arguments:
             references: complete timed guide subtitles
             targets: timing-based initial target assignment by index
+            timing_boundaries: transcription-unit cuts on the complete target tape
         Returns:
             delineated target text by index
         """
@@ -167,17 +236,19 @@ class BlockTranscriptionAligner:
                     strict=True,
                 )
             ]
+            window_offset = boundary_offsets[window.start]
             output = self._delineate_window(
-                [reference.text for reference in references[window.start : window.end]],
+                references[window.start : window.end],
                 local_targets,
                 first_owned_index=window.first_owned_index,
                 last_owned_index=(
                     min(window.owned_end, len(targets) - 1) - window.start
                 ),
                 window_index=window_index,
+                window_offset=window_offset,
+                timing_boundaries=timing_boundaries,
             )
             local_offsets = self._get_text_offsets(output)
-            window_offset = boundary_offsets[window.start]
             for boundary_index in range(
                 window.owned_start, min(window.owned_end, len(targets) - 1)
             ):
@@ -198,32 +269,56 @@ class BlockTranscriptionAligner:
 
     def _delineate_window(
         self,
-        guides: list[str],
+        references: Sequence[Subtitle],
         targets: list[str],
         first_owned_index: int,
         last_owned_index: int,
         window_index: int,
+        window_offset: int,
+        timing_boundaries: Sequence[_TimingBoundary],
     ) -> list[str]:
         """Delineate one query window using sparse boundary movements.
 
         Arguments:
-            guides: local guide text by index
+            references: local timed guide subtitles by index
             targets: local preliminary target text by index
             first_owned_index: first local index whose following boundary is owned
             last_owned_index: last local index whose following boundary is owned
             window_index: one-based window number for diagnostics
+            window_offset: character offset of the local tape in the complete tape
+            timing_boundaries: transcription-unit cuts on the complete target tape
         Returns:
             complete locally delineated target text
         """
         test_case_cls = self.delineation_processor.test_case_cls
-        query = test_case_cls.query_cls.model_validate(
-            {
-                "guides": self._get_indexed_items(guides),
-                "targets": self._get_indexed_items(targets),
-                "first_owned_index": first_owned_index,
-                "last_owned_index": last_owned_index,
-            }
-        )
+        query_data: dict[str, object] = {
+            "guides": self._get_indexed_items(
+                [reference.text for reference in references]
+            ),
+            "targets": self._get_indexed_items(targets),
+            "first_owned_index": first_owned_index,
+            "last_owned_index": last_owned_index,
+        }
+        if self.use_delineation_candidates:
+            query_data["boundaries"] = self._get_candidate_boundary_values(
+                references,
+                targets,
+                first_owned_index,
+                last_owned_index,
+                window_offset,
+                timing_boundaries,
+            )
+        elif self.use_delineation_suggestions:
+            query_data["boundaries"] = self._get_advisory_boundary_values(
+                references,
+                targets,
+                first_owned_index,
+                last_owned_index,
+                window_offset,
+                timing_boundaries,
+                gated=self.gate_delineation_suggestions,
+            )
+        query = test_case_cls.query_cls.model_validate(query_data)
         test_case = test_case_cls(query=query)
         test_case = cast(
             BlockDelineationTestCase,
@@ -325,11 +420,324 @@ class BlockTranscriptionAligner:
                 f"block punctuation window {window_index}",
             ),
         )
-        answer = cast(BlockPunctuationAnswer, test_case.answer)
-        output = self._apply_changes(targets, answer.changes)
+        query_output = test_case.get_output_texts()
+        output = targets.copy()
+        for index in owned_indexes.difference(masked_indexes):
+            output[index - 1] = query_output[index - 1]
         for index in owned_indexes & set(deterministic_empty_indexes):
             output[index - 1] = ""
         return output
+
+    @staticmethod
+    def _get_timing_boundaries(
+        alignment: TranscriptionAlignment, targets: Sequence[str]
+    ) -> list[_TimingBoundary]:
+        """Get raw transcription-unit boundaries on the aligned character tape.
+
+        Timing evidence is used only when guide-order alignment retains every raw
+        transcription event in its original order. Otherwise candidate delineation
+        safely exposes only each preliminary boundary.
+
+        Arguments:
+            alignment: preliminary timing alignment
+            targets: preliminary target text by guide index
+        Returns:
+            ordered transcription-unit boundaries, or an empty list when the raw
+            event order cannot be mapped exactly onto the target tape
+        """
+        transcription_indexes = [
+            transcription_index
+            for _, group_indexes in alignment.sync_groups
+            for transcription_index in group_indexes
+        ]
+        if transcription_indexes != list(range(len(alignment.transcription))):
+            return []
+
+        raw_texts = [
+            event.text if remove_punc_and_whitespace(event.text) else ""
+            for event in alignment.transcription
+        ]
+        if "".join(raw_texts) != "".join(targets):
+            return []
+
+        boundaries_by_offset: dict[int, _TimingBoundary] = {}
+        offset = 0
+        for index, (event, text) in enumerate(
+            zip(alignment.transcription, raw_texts, strict=True)
+        ):
+            offset += len(text)
+            pause = 0.0
+            if index + 1 < len(alignment.transcription):
+                pause = max(0.0, alignment.transcription[index + 1].start - event.end)
+            candidate = _TimingBoundary(offset, event.end, pause)
+            existing = boundaries_by_offset.get(offset)
+            if existing is None or candidate.pause > existing.pause:
+                boundaries_by_offset[offset] = candidate
+        return [boundaries_by_offset[offset] for offset in sorted(boundaries_by_offset)]
+
+    @classmethod
+    def _get_candidate_boundary_values(
+        cls,
+        references: Sequence[Subtitle],
+        targets: Sequence[str],
+        first_owned_index: int,
+        last_owned_index: int,
+        window_offset: int,
+        timing_boundaries: Sequence[_TimingBoundary],
+    ) -> list[dict[str, object]]:
+        """Build compact candidate lists for each locally editable boundary.
+
+        Arguments:
+            references: local timed guide subtitles
+            targets: local preliminary target text
+            first_owned_index: first local editable boundary index
+            last_owned_index: last local owned boundary index
+            window_offset: local tape offset within the complete target tape
+            timing_boundaries: transcription-unit cuts on the complete target tape
+        Returns:
+            candidate-bearing boundary mappings accepted by the query model
+        """
+        target_tape = "".join(targets)
+        offsets = cls._get_text_offsets(targets)
+        last_boundary_index = min(last_owned_index, len(targets) - 1)
+        local_timing_boundaries = [
+            _TimingBoundary(
+                boundary.offset - window_offset, boundary.time, boundary.pause
+            )
+            for boundary in timing_boundaries
+            if window_offset <= boundary.offset <= window_offset + len(target_tape)
+        ]
+        values: list[dict[str, object]] = []
+        for index in range(first_owned_index, last_boundary_index + 1):
+            original_offset = offsets[index]
+            guide_boundary_time = references[index - 1].end
+            nearby = [
+                boundary
+                for boundary in local_timing_boundaries
+                if abs(boundary.offset - original_offset) <= _MAX_CANDIDATE_DISTANCE
+            ]
+            selected_offsets = {original_offset}
+            selected_offsets.update(
+                boundary.offset
+                for boundary in sorted(
+                    nearby,
+                    key=lambda boundary: (
+                        abs(boundary.time - guide_boundary_time),
+                        abs(boundary.offset - original_offset),
+                        boundary.offset,
+                    ),
+                )[:3]
+            )
+            selected_offsets.update(
+                boundary.offset
+                for boundary in sorted(
+                    nearby,
+                    key=lambda boundary: (
+                        -boundary.pause,
+                        abs(boundary.offset - original_offset),
+                        boundary.offset,
+                    ),
+                )[:3]
+            )
+            selected_offsets.update(
+                boundary.offset
+                for boundary in sorted(
+                    nearby,
+                    key=lambda boundary: (
+                        abs(boundary.offset - original_offset),
+                        boundary.offset,
+                    ),
+                )[:2]
+            )
+            timing_by_offset = {
+                boundary.offset: boundary for boundary in local_timing_boundaries
+            }
+            candidates = []
+            for candidate_offset in sorted(selected_offsets):
+                timing = timing_by_offset.get(candidate_offset)
+                candidates.append(
+                    {
+                        "shift": candidate_offset - original_offset,
+                        "offset": candidate_offset,
+                        "left_context": target_tape[
+                            max(
+                                0, candidate_offset - _CANDIDATE_CONTEXT_CHARACTERS
+                            ) : candidate_offset
+                        ],
+                        "right_context": target_tape[
+                            candidate_offset : candidate_offset
+                            + _CANDIDATE_CONTEXT_CHARACTERS
+                        ],
+                        "timing_delta_ms": (
+                            round(timing.time - guide_boundary_time)
+                            if timing is not None
+                            else None
+                        ),
+                        "pause_ms": round(timing.pause) if timing is not None else None,
+                    }
+                )
+            values.append(
+                {
+                    "index": index,
+                    "original_offset": original_offset,
+                    "minimum_shift": -original_offset,
+                    "maximum_shift": len(target_tape) - original_offset,
+                    "candidates": candidates,
+                }
+            )
+        return values
+
+    @classmethod
+    def _get_advisory_boundary_values(
+        cls,
+        references: Sequence[Subtitle],
+        targets: Sequence[str],
+        first_owned_index: int,
+        last_owned_index: int,
+        window_offset: int,
+        timing_boundaries: Sequence[_TimingBoundary],
+        *,
+        gated: bool = False,
+    ) -> list[dict[str, object]]:
+        """Build ranked, non-binding timing suggestions for editable boundaries.
+
+        Arguments:
+            references: local timed guide subtitles
+            targets: local preliminary target text
+            first_owned_index: first local editable boundary index
+            last_owned_index: last local owned boundary index
+            window_offset: local tape offset within the complete target tape
+            timing_boundaries: transcription-unit cuts on the complete target tape
+            gated: whether to omit suggestions without strong comparative evidence
+        Returns:
+            advisory boundary mappings accepted by the query model
+        """
+        candidate_values = cls._get_candidate_boundary_values(
+            references,
+            targets,
+            first_owned_index,
+            last_owned_index,
+            window_offset,
+            timing_boundaries,
+        )
+        values: list[dict[str, object]] = []
+        for candidate_value in candidate_values:
+            candidates = candidate_value["candidates"]
+            if not isinstance(candidates, list):
+                raise TypeError("Boundary candidates must be a list.")
+            ranked_candidates = sorted(candidates, key=cls._get_suggestion_sort_key)
+            if gated:
+                ranked_candidates = cls._get_gated_suggestion_candidates(
+                    ranked_candidates
+                )
+            suggestions = []
+            for rank, candidate in enumerate(ranked_candidates, 1):
+                if not isinstance(candidate, dict):
+                    raise TypeError("Boundary candidate must be a mapping.")
+                suggestions.append({"rank": rank, **candidate})
+            values.append(
+                {
+                    key: value
+                    for key, value in candidate_value.items()
+                    if key != "candidates"
+                }
+                | {"suggestions": suggestions}
+            )
+        return values
+
+    @staticmethod
+    def _get_gated_suggestion_candidates(
+        candidates: Sequence[object],
+    ) -> list[dict[str, object]]:
+        """Retain only the baseline and alternatives with strong timing evidence.
+
+        Arguments:
+            candidates: ranked boundary candidate mappings
+        Returns:
+            gated candidates, or an empty list when no alternative is strong
+        Raises:
+            TypeError: if candidate timing evidence does not have its expected type
+        """
+        if not all(isinstance(candidate, dict) for candidate in candidates):
+            raise TypeError("Boundary candidates must be mappings.")
+        candidate_values = cast("list[dict[str, object]]", candidates)
+        original_candidate = next(
+            candidate for candidate in candidate_values if candidate.get("shift") == 0
+        )
+        original_timing_delta_ms = original_candidate.get("timing_delta_ms")
+        if original_timing_delta_ms is not None and not isinstance(
+            original_timing_delta_ms, int
+        ):
+            raise TypeError("Original boundary timing delta must be an integer.")
+
+        strong_candidates: list[dict[str, object]] = []
+        for candidate in candidate_values:
+            shift = candidate.get("shift")
+            timing_delta_ms = candidate.get("timing_delta_ms")
+            pause_ms = candidate.get("pause_ms")
+            if shift == 0 or timing_delta_ms is None:
+                continue
+            if not isinstance(timing_delta_ms, int) or not isinstance(pause_ms, int):
+                raise TypeError(
+                    "Timed boundary candidates require integer timing evidence."
+                )
+            if original_timing_delta_ms is None:
+                has_stronger_timing = (
+                    abs(timing_delta_ms)
+                    <= _MAX_ADVISORY_MISSING_BASELINE_TIMING_DELTA_MS
+                )
+            else:
+                timing_improvement_ms = abs(original_timing_delta_ms) - abs(
+                    timing_delta_ms
+                )
+                has_stronger_timing = (
+                    timing_improvement_ms >= _MIN_ADVISORY_TIMING_IMPROVEMENT_MS
+                )
+            has_strong_pause = (
+                abs(timing_delta_ms) <= _MAX_ADVISORY_PAUSE_TIMING_DELTA_MS
+                and pause_ms >= _MIN_ADVISORY_PAUSE_MS
+            )
+            if has_stronger_timing or has_strong_pause:
+                strong_candidates.append(candidate)
+        if not strong_candidates:
+            return []
+        return [
+            candidate
+            for candidate in candidate_values
+            if candidate is original_candidate or candidate in strong_candidates
+        ]
+
+    @staticmethod
+    def _get_suggestion_sort_key(value: object) -> tuple[int, int, int, int, int]:
+        """Get deterministic timing-evidence rank for one boundary suggestion.
+
+        Arguments:
+            value: candidate boundary mapping
+        Returns:
+            sort key prioritizing timing proximity, pauses, and local proximity
+        Raises:
+            TypeError: if candidate values do not have their expected types
+        """
+        if not isinstance(value, dict):
+            raise TypeError("Boundary candidate must be a mapping.")
+        timing_delta_ms = value.get("timing_delta_ms")
+        pause_ms = value.get("pause_ms")
+        shift = value.get("shift")
+        offset = value.get("offset")
+        if timing_delta_ms is not None and not isinstance(timing_delta_ms, int):
+            raise TypeError("Boundary candidate timing delta must be an integer.")
+        if pause_ms is not None and not isinstance(pause_ms, int):
+            raise TypeError("Boundary candidate pause must be an integer.")
+        if not isinstance(shift, int) or not isinstance(offset, int):
+            raise TypeError("Boundary candidate shift and offset must be integers.")
+        timing_missing = 0
+        timing_distance = 0
+        if timing_delta_ms is None:
+            timing_missing = 1
+        else:
+            timing_distance = abs(timing_delta_ms)
+        pause = pause_ms or 0
+        return timing_missing, timing_distance, -pause, abs(shift), offset
 
     @classmethod
     def _get_windows(cls, references: Sequence[Subtitle]) -> list[_AlignmentWindow]:

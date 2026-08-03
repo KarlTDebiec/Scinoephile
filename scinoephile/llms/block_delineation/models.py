@@ -13,19 +13,32 @@ from scinoephile.core.llms import Answer, Query, TestCase, TestCaseSubtitle
 from scinoephile.core.llms.models import LLMModel
 from scinoephile.core.text import remove_punc_and_whitespace
 
-from .prompt import BlockDelineationPrompt
+from .prompt import (
+    AdvisoryBlockDelineationPrompt,
+    BlockDelineationPrompt,
+    CandidateBlockDelineationPrompt,
+)
 
 __all__ = [
+    "AdvisoryBlockDelineationBoundary",
+    "AdvisoryBlockDelineationBoundarySuggestion",
+    "AdvisoryBlockDelineationQuery",
+    "AdvisoryBlockDelineationTestCase",
     "BlockDelineationAnswer",
     "BlockDelineationBoundary",
+    "BlockDelineationBoundaryCandidate",
     "BlockDelineationBoundaryChange",
     "BlockDelineationQuery",
     "BlockDelineationSubtitle",
     "BlockDelineationTestCase",
+    "CandidateBlockDelineationBoundary",
+    "CandidateBlockDelineationQuery",
+    "CandidateBlockDelineationTestCase",
 ]
 
 
 _BASE_PROMPT = BlockDelineationPrompt()
+_ADVISORY_PROMPT = AdvisoryBlockDelineationPrompt()
 
 _LEADING_CLOSING_PUNCTUATION = set(",.!?;:，。！？；：、")
 """Sentence punctuation that must not begin reconstructed target text."""
@@ -49,6 +62,30 @@ class BlockDelineationBoundaryChange(LLMModel):
     """Signed character count by which to move the boundary."""
 
 
+class BlockDelineationBoundaryCandidate(LLMModel):
+    """One timing-supported candidate position for an editable boundary."""
+
+    shift: int
+    """Signed movement relative to the preliminary boundary."""
+    offset: int = Field(ge=0)
+    """Cumulative Unicode-character offset on the local target tape."""
+    left_context: str
+    """Target text immediately before the candidate cut."""
+    right_context: str
+    """Target text immediately after the candidate cut."""
+    timing_delta_ms: int | None = None
+    """Candidate time minus the guide boundary time, in milliseconds."""
+    pause_ms: int | None = Field(default=None, ge=0)
+    """Nonnegative audio gap following the transcription unit, in milliseconds."""
+
+
+class AdvisoryBlockDelineationBoundarySuggestion(BlockDelineationBoundaryCandidate):
+    """One ranked, non-binding timing-supported boundary suggestion."""
+
+    rank: int = Field(ge=1)
+    """One-based evidence rank, with lower ranks representing stronger evidence."""
+
+
 class BlockDelineationBoundary(LLMModel):
     """Original position and legal shift range of one editable boundary."""
 
@@ -60,6 +97,22 @@ class BlockDelineationBoundary(LLMModel):
     """Minimum inclusive legal shift relative to the original offset."""
     maximum_shift: int
     """Maximum inclusive legal shift relative to the original offset."""
+
+
+class AdvisoryBlockDelineationBoundary(BlockDelineationBoundary):
+    """Editable boundary with ranked, non-binding timing suggestions."""
+
+    suggestions: list[AdvisoryBlockDelineationBoundarySuggestion] = Field(
+        default_factory=list
+    )
+    """Ranked timing-supported suggestions, or empty when evidence is weak."""
+
+
+class CandidateBlockDelineationBoundary(BlockDelineationBoundary):
+    """Editable boundary with timing-supported candidate cuts."""
+
+    candidates: list[BlockDelineationBoundaryCandidate] = Field(min_length=1)
+    """Timing-supported candidate cuts for this boundary."""
 
 
 class BlockDelineationQuery(Query):
@@ -215,6 +268,65 @@ class BlockDelineationQuery(Query):
             (index, offsets[index], -offsets[index], offsets[-1] - offsets[index])
             for index in range(first_owned_index, last_boundary_index + 1)
         ]
+
+
+class CandidateBlockDelineationQuery(BlockDelineationQuery):
+    """Block delineation query restricted to supplied candidate cuts."""
+
+    prompt: ClassVar[CandidateBlockDelineationPrompt] = (
+        CandidateBlockDelineationPrompt()
+    )
+    """Text and field aliases for candidate block delineation."""
+    boundaries: list[CandidateBlockDelineationBoundary] = Field(default_factory=list)
+    """Editable boundaries and their timing-supported candidate cuts."""
+
+    @model_validator(mode="after")
+    def validate_boundary_candidates(self) -> Self:
+        """Ensure each candidate list is ordered, complete, and internally valid."""
+        for boundary in self.boundaries:
+            shifts = [candidate.shift for candidate in boundary.candidates]
+            if (
+                shifts != sorted(set(shifts))
+                or 0 not in shifts
+                or any(
+                    candidate.shift < boundary.minimum_shift
+                    or candidate.shift > boundary.maximum_shift
+                    or candidate.offset != boundary.original_offset + candidate.shift
+                    for candidate in boundary.candidates
+                )
+            ):
+                raise ValueError(self.prompt.boundary_candidates_err)
+        return self
+
+
+class AdvisoryBlockDelineationQuery(BlockDelineationQuery):
+    """Block delineation query with non-binding timing-supported suggestions."""
+
+    prompt: ClassVar[AdvisoryBlockDelineationPrompt] = _ADVISORY_PROMPT
+    """Text and field aliases for advisory block delineation."""
+    boundaries: list[AdvisoryBlockDelineationBoundary] = Field(default_factory=list)
+    """Editable boundaries and their ranked timing-supported suggestions."""
+
+    @model_validator(mode="after")
+    def validate_boundary_suggestions(self) -> Self:
+        """Ensure suggestions are ranked, complete, and internally valid."""
+        for boundary in self.boundaries:
+            ranks = [suggestion.rank for suggestion in boundary.suggestions]
+            shifts = [suggestion.shift for suggestion in boundary.suggestions]
+            if (
+                ranks != list(range(1, len(ranks) + 1))
+                or len(shifts) != len(set(shifts))
+                or bool(shifts)
+                and 0 not in shifts
+                or any(
+                    suggestion.shift < boundary.minimum_shift
+                    or suggestion.shift > boundary.maximum_shift
+                    or suggestion.offset != boundary.original_offset + suggestion.shift
+                    for suggestion in boundary.suggestions
+                )
+            ):
+                raise ValueError(self.prompt.boundary_suggestions_err)
+        return self
 
 
 type _LegacyTextAnswerData = tuple[
@@ -568,3 +680,54 @@ class BlockDelineationTestCase(TestCase):
         for text in texts:
             offsets.append(offsets[-1] + len(text))
         return offsets
+
+
+class AdvisoryBlockDelineationTestCase(BlockDelineationTestCase):
+    """Unrestricted block delineation with advisory timing suggestions."""
+
+    query_cls: ClassVar[type[AdvisoryBlockDelineationQuery]] = (
+        AdvisoryBlockDelineationQuery
+    )
+    """Query model class."""
+    prompt: ClassVar[AdvisoryBlockDelineationPrompt] = (
+        AdvisoryBlockDelineationQuery.prompt
+    )
+    """Text and field aliases for advisory block delineation."""
+    query: AdvisoryBlockDelineationQuery
+    """Guide, preliminary targets, legal shifts, and advisory timing cuts."""
+
+
+class CandidateBlockDelineationTestCase(BlockDelineationTestCase):
+    """Candidate-restricted block-delineation query and sparse answer."""
+
+    query_cls: ClassVar[type[CandidateBlockDelineationQuery]] = (
+        CandidateBlockDelineationQuery
+    )
+    """Query model class."""
+    prompt: ClassVar[CandidateBlockDelineationPrompt] = (
+        CandidateBlockDelineationQuery.prompt
+    )
+    """Text and field aliases for candidate block delineation."""
+    query: CandidateBlockDelineationQuery
+    """Guide, preliminary targets, and candidate cuts."""
+
+    @model_validator(mode="after")
+    def validate_candidate_shifts(self) -> Self:
+        """Ensure every returned shift selects a supplied candidate cut."""
+        if self.answer is None:
+            return self
+        boundary_by_index = {
+            boundary.index: boundary for boundary in self.query.boundaries
+        }
+        for change in self.answer.changes:
+            candidate_shifts = [
+                candidate.shift
+                for candidate in boundary_by_index[change.index].candidates
+            ]
+            if change.shift not in candidate_shifts:
+                raise ValueError(
+                    self.prompt.change_shift_not_candidate_err_tpl.format(
+                        index=change.index, candidate_shifts=candidate_shifts
+                    )
+                )
+        return self

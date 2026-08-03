@@ -11,15 +11,20 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from .manager import BlockPunctuationManager
+from .manager import BlockPunctuationManager, PositionalBlockPunctuationManager
 from .models import (
     BlockPunctuationAnswer,
     BlockPunctuationQuery,
     BlockPunctuationSubtitle,
     BlockPunctuationTestCase,
+    PositionalBlockPunctuationAnswer,
+    PositionalBlockPunctuationChange,
+    PositionalBlockPunctuationEdit,
+    PositionalBlockPunctuationTarget,
+    PositionalBlockPunctuationTestCase,
 )
-from .processor import BlockPunctuationProcessor
-from .prompt import BlockPunctuationPrompt
+from .processor import BlockPunctuationProcessor, PositionalBlockPunctuationProcessor
+from .prompt import BlockPunctuationPrompt, PositionalBlockPunctuationPrompt
 
 __all__ = [
     "BlockPunctuationAnswer",
@@ -29,4 +34,12 @@ __all__ = [
     "BlockPunctuationQuery",
     "BlockPunctuationSubtitle",
     "BlockPunctuationTestCase",
+    "PositionalBlockPunctuationAnswer",
+    "PositionalBlockPunctuationChange",
+    "PositionalBlockPunctuationEdit",
+    "PositionalBlockPunctuationManager",
+    "PositionalBlockPunctuationProcessor",
+    "PositionalBlockPunctuationPrompt",
+    "PositionalBlockPunctuationTestCase",
+    "PositionalBlockPunctuationTarget",
 ]

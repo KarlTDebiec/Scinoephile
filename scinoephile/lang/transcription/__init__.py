@@ -16,15 +16,21 @@ from .alignment import TranscriptionAlignment
 from .block_aligner import BlockTranscriptionAligner
 from .guided import GuidedTranscriptionSpec, TranscriptionLanguageSpec
 from .transcriber import (
+    BlockDelineationMode,
+    BlockPunctuationMode,
     GuidedTranscriber,
+    MlxAudioTimingMode,
     TranscriptionAlignmentMode,
     TranscriptionBackend,
 )
 
 __all__ = [
+    "BlockDelineationMode",
+    "BlockPunctuationMode",
     "BlockTranscriptionAligner",
     "GuidedTranscriber",
     "GuidedTranscriptionSpec",
+    "MlxAudioTimingMode",
     "TranscriptionAligner",
     "TranscriptionAlignment",
     "TranscriptionAlignmentMode",

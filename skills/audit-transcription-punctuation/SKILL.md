@@ -21,6 +21,11 @@ choice, Mandarinisms, omissions, or repetitions. Those belong to later review
 stages. Do not criticize the delineation of the input fragments except where the
 punctuation answer itself joins or separates them incorrectly.
 
+An empty target has no punctuation work to perform. If it remains empty, judge
+that index as correct; do not treat the absence of transcribed text as a
+punctuation error. A literal punctuation-only target is different and remains
+subject to the deterministic punctuation-only validation rule below.
+
 ## Protect the source data
 
 Generating and annotating an audit is read-only with respect to the source JSON
@@ -92,8 +97,10 @@ whitespace change and `(unanswered)` when no answer is present. Verified
 contains `✓` for a verified JSON case and is otherwise blank. A subtitle range
 includes a complete legacy block only when its full guide range is selected; it
 includes a window when its full owned range is selected, even if displayed
-context extends outside the range. Rows are
-sorted by resolved reference start; repeated logged cases remain separate.
+context extends outside the range. Within indexed Input or Output text, an empty
+string is displayed as `(empty)` so that it cannot be confused with a literal em
+dash, which is displayed as `—`. Rows are sorted by resolved reference start;
+repeated logged cases remain separate.
 
 ## Audit every row
 

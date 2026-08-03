@@ -8,16 +8,22 @@ from functools import cache
 from typing import ClassVar
 
 from scinoephile.core.llms import Answer, Manager, PromptModelField, Query, TestCase
+from scinoephile.core.llms.models import LLMModel
 
 from .models import (
     BlockPunctuationAnswer,
     BlockPunctuationQuery,
     BlockPunctuationSubtitle,
     BlockPunctuationTestCase,
+    PositionalBlockPunctuationAnswer,
+    PositionalBlockPunctuationChange,
+    PositionalBlockPunctuationEdit,
+    PositionalBlockPunctuationTarget,
+    PositionalBlockPunctuationTestCase,
 )
-from .prompt import BlockPunctuationPrompt
+from .prompt import BlockPunctuationPrompt, PositionalBlockPunctuationPrompt
 
-__all__ = ["BlockPunctuationManager"]
+__all__ = ["BlockPunctuationManager", "PositionalBlockPunctuationManager"]
 
 
 class BlockPunctuationManager(Manager[BlockPunctuationTestCase]):
@@ -167,3 +173,100 @@ class BlockPunctuationManager(Manager[BlockPunctuationTestCase]):
             },
             name="BlockPunctuationTarget",
         )
+
+
+class PositionalBlockPunctuationManager(BlockPunctuationManager):
+    """Factories for prompt-specific positional block-punctuation classes."""
+
+    operation: ClassVar[str] = "positional-block-punctuation"
+    """Stable operation identifier used in persistence."""
+    base_prompt: ClassVar[PositionalBlockPunctuationPrompt] = (
+        PositionalBlockPunctuationTestCase.prompt
+    )
+    """Base prompt defining persisted field names."""
+    test_case_base_cls: ClassVar[type[TestCase]] = PositionalBlockPunctuationTestCase
+    """Static test-case model defining positional punctuation's semantic shape."""
+
+    @classmethod
+    @cache
+    def get_edit_cls(
+        cls, prompt: PositionalBlockPunctuationPrompt
+    ) -> type[PositionalBlockPunctuationEdit]:
+        """Get positional punctuation-edit class with prompt-specific aliases."""
+        return cls.create_prompt_model(
+            PositionalBlockPunctuationEdit,
+            prompt,
+            {
+                "position": PromptModelField(
+                    alias=prompt.position, description=prompt.position_desc
+                ),
+                "punctuation": PromptModelField(
+                    alias=prompt.punctuation, description=prompt.punctuation_desc
+                ),
+            },
+            name="PositionalBlockPunctuationEdit",
+        )
+
+    @classmethod
+    @cache
+    def get_change_cls(cls, prompt: PositionalBlockPunctuationPrompt) -> type[LLMModel]:
+        """Get positional target-change class with prompt-specific aliases."""
+        edit_cls = cls.get_edit_cls(prompt)
+        return cls.create_prompt_model(
+            PositionalBlockPunctuationChange,
+            prompt,
+            {
+                "index": PromptModelField(
+                    alias=prompt.index, description=prompt.index_desc
+                ),
+                "edits": PromptModelField(
+                    alias=prompt.edits,
+                    annotation=list[edit_cls],  # ty: ignore[invalid-type-form]
+                    description=prompt.edits_desc,
+                ),
+            },
+            name="PositionalBlockPunctuationChange",
+        )
+
+    @classmethod
+    @cache
+    def get_answer_cls(cls, prompt: PositionalBlockPunctuationPrompt) -> type[Answer]:
+        """Get positional answer class with prompt-specific aliases."""
+        change_cls = cls.get_change_cls(prompt)
+        return cls.create_prompt_model(
+            PositionalBlockPunctuationAnswer,
+            prompt,
+            {
+                "changes": PromptModelField(
+                    alias=prompt.changes,
+                    annotation=list[change_cls],  # ty: ignore[invalid-type-form]
+                    description=prompt.changes_desc,
+                )
+            },
+        )
+
+    @classmethod
+    @cache
+    def get_target_cls(
+        cls, prompt: PositionalBlockPunctuationPrompt
+    ) -> type[PositionalBlockPunctuationTarget]:
+        """Get counted immutable-target class with prompt-specific aliases."""
+        target_cls = cls.create_prompt_model(
+            PositionalBlockPunctuationTarget,
+            prompt,
+            {
+                "index": PromptModelField(
+                    alias=prompt.index, description=prompt.index_desc
+                ),
+                "text": PromptModelField(
+                    alias=prompt.text, description=prompt.target_text_desc
+                ),
+                "character_count": PromptModelField(
+                    alias=prompt.character_count,
+                    description=prompt.character_count_desc,
+                ),
+            },
+            name="PositionalBlockPunctuationTarget",
+        )
+        target_cls.prompt = prompt
+        return target_cls

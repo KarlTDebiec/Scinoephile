@@ -6,10 +6,10 @@ from __future__ import annotations
 
 from scinoephile.core.llms import Processor
 
-from .manager import BlockPunctuationManager
-from .prompt import BlockPunctuationPrompt
+from .manager import BlockPunctuationManager, PositionalBlockPunctuationManager
+from .prompt import BlockPunctuationPrompt, PositionalBlockPunctuationPrompt
 
-__all__ = ["BlockPunctuationProcessor"]
+__all__ = ["BlockPunctuationProcessor", "PositionalBlockPunctuationProcessor"]
 
 
 class BlockPunctuationProcessor(Processor):
@@ -18,4 +18,13 @@ class BlockPunctuationProcessor(Processor):
     prompt: BlockPunctuationPrompt
     """Text for block-level punctuation."""
     manager_cls = BlockPunctuationManager
+    """Manager used to construct prompt-specific models."""
+
+
+class PositionalBlockPunctuationProcessor(Processor):
+    """Processor for positional block-punctuation LLM queries."""
+
+    prompt: PositionalBlockPunctuationPrompt
+    """Text for positional block punctuation."""
+    manager_cls = PositionalBlockPunctuationManager
     """Manager used to construct prompt-specific models."""

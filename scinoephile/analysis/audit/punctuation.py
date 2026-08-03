@@ -251,7 +251,9 @@ def _format_indexed_texts(texts: Sequence[str]) -> str:
     Returns:
         newline-separated indexed texts
     """
-    return "\n".join(f"{index}. {text or '—'}" for index, text in enumerate(texts, 1))
+    return "\n".join(
+        f"{index}. {text if text else '(empty)'}" for index, text in enumerate(texts, 1)
+    )
 
 
 def _format_window_indexed_texts(
@@ -267,7 +269,7 @@ def _format_window_indexed_texts(
     """
     return "\n".join(
         f"{index}. {'[owned] ' if index in owned_index_range else '[context] '}"
-        f"{text or '—'}"
+        f"{text if text else '(empty)'}"
         for index, text in enumerate(texts, 1)
     )
 
@@ -445,7 +447,8 @@ def _get_block_punctuation_rows(
             result = AuditResult.unanswered
         elif answer.changes:
             output = "\n".join(
-                f"{change.index}. {change.text or '—'}" for change in answer.changes
+                f"{change.index}. {change.text if change.text else '(empty)'}"
+                for change in answer.changes
             )
             changes += 1
             result = AuditResult.changed
