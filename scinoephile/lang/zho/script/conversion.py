@@ -115,6 +115,9 @@ TRADITIONAL_CONFIGS = {
 }
 """OpenCC configurations that convert text toward traditional Chinese."""
 
+_S2T_EXCLUSION_CONFIGS = TRADITIONAL_CONFIGS - {OpenCCConfig.t2jp}
+"""OpenCC configurations to which traditional Chinese exclusions apply."""
+
 
 def get_zho_character_variants(texts: Iterable[str]) -> tuple[str, ...]:
     """Get characters and their simplified/traditional variants.
@@ -182,7 +185,7 @@ def get_zho_text_converted(
 
     if apply_exclusions and config in SIMPLIFIED_CONFIGS:
         return _get_zho_text_converted_with_exclusions(text, converter, T2S_EXCLUSIONS)
-    if apply_exclusions and config in TRADITIONAL_CONFIGS:
+    if apply_exclusions and config in _S2T_EXCLUSION_CONFIGS:
         return _get_zho_text_converted_with_exclusions(text, converter, S2T_EXCLUSIONS)
     return converter.convert(text)
 

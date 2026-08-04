@@ -44,15 +44,21 @@ def test_get_zho_text_converted_applies_exclusions(
     assert get_zho_text_converted(text, config) == expected
 
 
+def test_get_zho_text_converted_does_not_apply_chinese_exclusions_to_t2jp():
+    """Test Japanese conversion is not suppressed by Chinese exclusions."""
+    assert get_zho_text_converted("萬里長城說", OpenCCConfig.t2jp) == "万里長城説"
+
+
 @parametrize("text", sorted(S2T_EXCLUSIONS))
 def test_s2hk_exclusions_are_raw_opencc_changes(text: str):
-    """Test every Hong Kong exclusion changes under raw OpenCC.
+    """Test every Hong Kong exclusion changes raw and is preserved when applied.
 
     Arguments:
         text: excluded text span
     """
     converted_text = get_zho_converter(OpenCCConfig.s2hk).convert(text)
     assert converted_text != text
+    assert get_zho_text_converted(text, OpenCCConfig.s2hk) == text
 
 
 @parametrize("text", sorted(T2S_EXCLUSIONS))
