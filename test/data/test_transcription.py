@@ -583,7 +583,7 @@ def test_transcription_stages_use_flat_json_directory(
         overwrite=True,
     )
     assert transcribe.call_args.kwargs["block_delineation_json_path"] == (
-        json_dir_path / "gated_advisory_delineation-mps.json"
+        json_dir_path / "block_delineation-mps.json"
     )
     assert transcribe.call_args.kwargs["block_punctuation_json_path"] == (
         json_dir_path / "block_punctuation-mps.json"
@@ -605,7 +605,7 @@ def test_transcription_stages_use_flat_json_directory(
         overwrite=True,
     )
     assert transcribe.call_args.kwargs["block_delineation_json_path"] == (
-        json_dir_path / "gated_advisory_delineation-mps.json"
+        json_dir_path / "block_delineation-mps.json"
     )
     assert "block_punctuation_json_path" not in transcribe.call_args.kwargs
 
@@ -712,7 +712,7 @@ def test_transcription_stages_use_flat_json_directory(
         overwrite=True,
     )
     assert transcribe.call_args.kwargs["block_delineation_json_path"] == (
-        json_dir_path / "gated_advisory_delineation-mps.json"
+        json_dir_path / "block_delineation-mps.json"
     )
     assert transcribe.call_args.kwargs["block_punctuation_json_path"] == (
         json_dir_path / "positional_punctuation-mps.json"

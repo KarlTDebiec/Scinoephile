@@ -9,7 +9,7 @@ from pathlib import Path
 
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.analysis.diff import SeriesDiff
-from scinoephile.audio.transcription import VADMode
+from scinoephile.audio.transcription import DemucsMode, VADMode
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
@@ -142,13 +142,14 @@ if "yue-Hant_transcribe" in actions:
         translator_kw={"prune_test_cases": True},
         transcription_no_op=False,
         transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
-        transcription_block_delineation_mode=BlockDelineationMode.GATED_ADVISORY,
+        transcription_block_delineation_mode=BlockDelineationMode.UNRESTRICTED,
         transcription_fallback_to_no_op=True,
         strip_mlx_audio_punctuation=True,
         mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+        demucs_mode=DemucsMode.OFF,
         vad_mode=VADMode.OFF,
         transcription_names=transcription_names,
-        transcription_overwrite=False,
+        transcription_overwrite=True,
         run_merge_and_translation=True,
         overwrite=True,
     )

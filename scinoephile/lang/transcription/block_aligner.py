@@ -116,6 +116,7 @@ class BlockTranscriptionAligner:
             BlockPunctuationProcessor | PositionalBlockPunctuationProcessor | None
         ),
         *,
+        unrestricted_delineation_processor: BlockDelineationProcessor | None = None,
         fallback_to_no_op: bool = False,
         gate_delineation_suggestions: bool = False,
         use_delineation_candidates: bool = False,
@@ -127,6 +128,8 @@ class BlockTranscriptionAligner:
             delineation_processor: processor for block delineation queries
             punctuation_processor: processor for block punctuation queries, or None
                 to retain the delineated transcription without LLM punctuation
+            unrestricted_delineation_processor: unrestricted processor used for
+                suggestion-free gated-advisory windows, or None
             fallback_to_no_op: whether invalid answers fall back to sparse no-op
             gate_delineation_suggestions: whether weak timing suggestions are omitted
             use_delineation_candidates: whether boundary shifts must select from
@@ -147,6 +150,8 @@ class BlockTranscriptionAligner:
             )
         self.delineation_processor = delineation_processor
         """Redistribute target characters across all guide indexes in one query."""
+        self.unrestricted_delineation_processor = unrestricted_delineation_processor
+        """Process suggestion-free gated windows using unrestricted cache identity."""
         self.punctuation_processor = punctuation_processor
         """Punctuate all delineated target subtitles in one query."""
         self.fallback_to_no_op = fallback_to_no_op
@@ -315,7 +320,7 @@ class BlockTranscriptionAligner:
                 timing_boundaries,
             )
         elif self.use_delineation_suggestions:
-            query_data["boundaries"] = self._get_advisory_boundary_values(
+            boundaries = self._get_advisory_boundary_values(
                 references,
                 targets,
                 first_owned_index,
@@ -324,6 +329,16 @@ class BlockTranscriptionAligner:
                 timing_boundaries,
                 gated=self.gate_delineation_suggestions,
             )
+            query_data["boundaries"] = boundaries
+            if (
+                self.gate_delineation_suggestions
+                and self.unrestricted_delineation_processor is not None
+                and not any(boundary["suggestions"] for boundary in boundaries)
+            ):
+                test_case = self._query_suggestion_free_gated_window(
+                    query_data, window_index
+                )
+                return test_case.get_output_texts()
         query = test_case_cls.query_cls.model_validate(query_data)
         test_case = test_case_cls(query=query)
         test_case = cast(
@@ -335,6 +350,132 @@ class BlockTranscriptionAligner:
             ),
         )
         return test_case.get_output_texts()
+
+    def _query_suggestion_free_gated_window(
+        self, advisory_query_data: dict[str, object], window_index: int
+    ) -> BlockDelineationTestCase:
+        """Route a suggestion-free gated window through unrestricted delineation.
+
+        Existing advisory answers are migrated to the unrestricted response cache.
+        The answer is also logged using the active advisory query shape so gated
+        runs retain their own auditable test-case JSON.
+
+        Arguments:
+            advisory_query_data: complete gated-advisory query mapping
+            window_index: one-based window number for diagnostics
+        Returns:
+            answered unrestricted test case
+        Raises:
+            ValueError: if both query shapes have contradictory verified answers
+        """
+        unrestricted_processor = self.unrestricted_delineation_processor
+        assert unrestricted_processor is not None
+
+        advisory_test_case_cls = self.delineation_processor.test_case_cls
+        advisory_query = advisory_test_case_cls.query_cls.model_validate(
+            advisory_query_data
+        )
+        advisory_test_case = advisory_test_case_cls(query=advisory_query)
+
+        unrestricted_query_data = {
+            key: value
+            for key, value in advisory_query_data.items()
+            if key != "boundaries"
+        }
+        unrestricted_test_case_cls = unrestricted_processor.test_case_cls
+        unrestricted_query = unrestricted_test_case_cls.query_cls.model_validate(
+            unrestricted_query_data
+        )
+        unrestricted_test_case = unrestricted_test_case_cls(query=unrestricted_query)
+
+        known_unrestricted = unrestricted_processor.queryer.get_known_test_case(
+            unrestricted_test_case
+        )
+        known_advisory = self.delineation_processor.queryer.get_known_test_case(
+            advisory_test_case
+        )
+        if (
+            known_unrestricted is not None
+            and known_advisory is not None
+            and known_unrestricted.verified
+            and known_advisory.verified
+            and known_unrestricted.answer != known_advisory.answer
+        ):
+            raise ValueError(
+                "Conflicting verified answers for equivalent suggestion-free "
+                "unrestricted and gated-advisory delineation queries.\n"
+                f"Unrestricted answer:\n{known_unrestricted.answer}\n"
+                f"Gated-advisory answer:\n{known_advisory.answer}"
+            )
+
+        canonical_test_case: TestCase
+        if known_unrestricted is not None and known_unrestricted.verified:
+            canonical_test_case = known_unrestricted
+        elif known_advisory is not None and known_advisory.verified:
+            canonical_test_case = self._copy_test_case_answer(
+                known_advisory, unrestricted_test_case
+            )
+            canonical_test_case = (
+                unrestricted_processor.queryer.store_answered_test_case(
+                    canonical_test_case
+                )
+            )
+        elif known_unrestricted is not None:
+            canonical_test_case = known_unrestricted
+        elif known_advisory is not None:
+            canonical_test_case = self._copy_test_case_answer(
+                known_advisory, unrestricted_test_case
+            )
+            canonical_test_case = (
+                unrestricted_processor.queryer.store_answered_test_case(
+                    canonical_test_case
+                )
+            )
+        else:
+            canonical_test_case = self._query_with_fallback(
+                unrestricted_processor,
+                unrestricted_test_case,
+                f"block delineation window {window_index}",
+            )
+
+        logged_advisory = self._copy_test_case_answer(
+            canonical_test_case, advisory_test_case, skip_output_quality_validation=True
+        )
+        self.delineation_processor.queryer.log_encountered_test_case(
+            logged_advisory, skip_output_quality_validation=True
+        )
+        return cast("BlockDelineationTestCase", canonical_test_case)
+
+    @staticmethod
+    def _copy_test_case_answer(
+        source: TestCase,
+        target: TestCase,
+        *,
+        skip_output_quality_validation: bool = False,
+    ) -> TestCase:
+        """Copy an answer and audit metadata between equivalent query shapes.
+
+        Arguments:
+            source: answered source test case
+            target: unanswered target test case
+            skip_output_quality_validation: whether to retain an intentional fallback
+        Returns:
+            answered target test case
+        Raises:
+            ValueError: if the source test case has no answer
+        """
+        if source.answer is None:
+            raise ValueError("Cannot copy a missing test-case answer.")
+        return type(target).model_validate(
+            {
+                **target.model_dump(mode="json"),
+                "answer": source.answer.model_dump(mode="json"),
+                "difficulty": source.difficulty,
+                "few_shot": source.few_shot,
+                "verified": source.verified,
+            },
+            context={"skip_output_quality_validation": skip_output_quality_validation},
+        )
 
     def _punctuate(
         self, references: Sequence[Subtitle], targets: list[str]

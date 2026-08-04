@@ -11,7 +11,6 @@ from scinoephile.audio.transcription import VADMode
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.lang.transcription import (
-    BlockDelineationMode,
     MlxAudioTimingMode,
     TranscriptionAlignmentMode,
 )
@@ -95,7 +94,6 @@ if "yue-Hant_transcribe" in actions:
         additional_context=transcription_additional_context,
         transcription_no_op=False,
         transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
-        transcription_block_delineation_mode=BlockDelineationMode.GATED_ADVISORY,
         transcription_fallback_to_no_op=True,
         strip_mlx_audio_punctuation=True,
         mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,

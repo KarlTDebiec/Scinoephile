@@ -37,6 +37,7 @@ from scinoephile.lang.yue_zho.transcription import (
 )
 from scinoephile.llms.block_delineation import (
     AdvisoryBlockDelineationProcessor,
+    BlockDelineationProcessor,
     CandidateBlockDelineationProcessor,
 )
 from scinoephile.llms.block_punctuation import (
@@ -272,23 +273,23 @@ def test_get_guided_transcriber_configures_block_alignment(tmp_path: Path):
 
     assert isinstance(transcriber.aligner, BlockTranscriptionAligner)
     assert isinstance(
-        transcriber.aligner.delineation_processor, AdvisoryBlockDelineationProcessor
+        transcriber.aligner.delineation_processor, BlockDelineationProcessor
     )
     assert isinstance(
         transcriber.aligner.punctuation_processor, BlockPunctuationProcessor
     )
     assert transcriber.aligner.delineation_processor.prompt is (
-        YueZhoAdvisoryBlockDelineationPromptYueHant
+        YueZhoBlockDelineationPromptYueHant
     )
     assert transcriber.aligner.punctuation_processor.prompt is (
         YueZhoBlockPunctuationPromptYueHant
     )
     assert transcriber.aligner.fallback_to_no_op
-    assert transcriber.aligner.use_delineation_suggestions
-    assert transcriber.aligner.gate_delineation_suggestions
+    assert not transcriber.aligner.use_delineation_suggestions
+    assert not transcriber.aligner.gate_delineation_suggestions
     test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
     assert transcriber.aligner.delineation_processor.current_test_cases_path == (
-        test_case_dir_path / "gated_advisory_block_delineation" / "test.json"
+        test_case_dir_path / "block_delineation" / "test.json"
     )
     assert transcriber.aligner.punctuation_processor.current_test_cases_path == (
         test_case_dir_path / "block_punctuation" / "test.json"
@@ -447,6 +448,7 @@ def test_get_guided_transcriber_configures_advisory_delineation_only(tmp_path: P
     assert isinstance(
         transcriber.aligner.delineation_processor, AdvisoryBlockDelineationProcessor
     )
+    assert transcriber.aligner.unrestricted_delineation_processor is None
     assert isinstance(
         transcriber.aligner.punctuation_processor, BlockPunctuationProcessor
     )
@@ -496,6 +498,10 @@ def test_get_guided_transcriber_configures_gated_advisory_delineation(tmp_path: 
     assert isinstance(
         transcriber.aligner.delineation_processor, AdvisoryBlockDelineationProcessor
     )
+    assert isinstance(
+        transcriber.aligner.unrestricted_delineation_processor,
+        BlockDelineationProcessor,
+    )
     assert transcriber.aligner.use_delineation_suggestions
     assert transcriber.aligner.gate_delineation_suggestions
     assert not transcriber.aligner.use_delineation_candidates
@@ -534,7 +540,7 @@ def test_get_guided_transcriber_configures_positional_punctuation_only(tmp_path:
 
     assert isinstance(transcriber.aligner, BlockTranscriptionAligner)
     assert isinstance(
-        transcriber.aligner.delineation_processor, AdvisoryBlockDelineationProcessor
+        transcriber.aligner.delineation_processor, BlockDelineationProcessor
     )
     assert isinstance(
         transcriber.aligner.punctuation_processor, PositionalBlockPunctuationProcessor
@@ -543,7 +549,7 @@ def test_get_guided_transcriber_configures_positional_punctuation_only(tmp_path:
     assert transcriber.strip_generated_punctuation
     test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
     assert transcriber.aligner.delineation_processor.current_test_cases_path == (
-        test_case_dir_path / "gated_advisory_block_delineation" / "test.json"
+        test_case_dir_path / "block_delineation" / "test.json"
     )
     assert transcriber.aligner.punctuation_processor.current_test_cases_path == (
         test_case_dir_path / "positional_block_punctuation" / "test.json"

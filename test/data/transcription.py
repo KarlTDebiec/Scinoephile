@@ -701,7 +701,7 @@ def _load_or_transcribe_series_guided(
     )
     default_block_modes = {
         TranscriptionAlignmentMode.BLOCK: (
-            BlockDelineationMode.GATED_ADVISORY,
+            BlockDelineationMode.UNRESTRICTED,
             BlockPunctuationMode.FULL_TEXT,
         ),
         TranscriptionAlignmentMode.BLOCK_POSITIONAL: (

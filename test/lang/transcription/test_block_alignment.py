@@ -305,6 +305,147 @@ def test_gated_advisory_highlights_only_stronger_timing_evidence():
     assert missing_baseline_values[0]["suggestions"] == []
 
 
+def test_suggestion_free_gated_advisory_uses_unrestricted_cache(tmp_path: Path):
+    """Suggestion-free gated windows should share unrestricted cache identity.
+
+    Arguments:
+        tmp_path: temporary cache root path
+    """
+    guide, transcription = _get_block()
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider.chat_completion.return_value = json.dumps({"changes": []})
+    advisory_processor = AdvisoryBlockDelineationProcessor(
+        AdvisoryBlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
+    )
+    unrestricted_processor = BlockDelineationProcessor(
+        BlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
+    )
+    gated_aligner = BlockTranscriptionAligner(
+        advisory_processor,
+        None,
+        unrestricted_delineation_processor=unrestricted_processor,
+        gate_delineation_suggestions=True,
+        use_delineation_suggestions=True,
+    )
+
+    gated_aligner.align(guide, transcription)
+
+    assert provider.chat_completion.call_count == 1
+    assert provider.chat_completion.call_args.kwargs["operation"] == (
+        "block-delineation"
+    )
+    query = json.loads(provider.chat_completion.call_args.args[0][1]["content"])
+    assert all("suggestions" not in boundary for boundary in query["boundaries"])
+    assert len(advisory_processor.queryer.encountered_test_cases) == 1
+    assert len(unrestricted_processor.queryer.encountered_test_cases) == 1
+
+    fresh_unrestricted_processor = BlockDelineationProcessor(
+        BlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
+    )
+    unrestricted_aligner = BlockTranscriptionAligner(fresh_unrestricted_processor, None)
+
+    unrestricted_aligner.align(guide, transcription)
+
+    assert provider.chat_completion.call_count == 1
+    assert len(fresh_unrestricted_processor.queryer.encountered_test_cases) == 1
+
+
+def test_suggestion_free_gated_advisory_migrates_advisory_cache(tmp_path: Path):
+    """Existing suggestion-free advisory responses should seed unrestricted cache.
+
+    Arguments:
+        tmp_path: temporary cache root path
+    """
+    guide, transcription = _get_block()
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider.chat_completion.return_value = json.dumps({"changes": []})
+    legacy_advisory_processor = AdvisoryBlockDelineationProcessor(
+        AdvisoryBlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
+    )
+    legacy_aligner = BlockTranscriptionAligner(
+        legacy_advisory_processor,
+        None,
+        gate_delineation_suggestions=True,
+        use_delineation_suggestions=True,
+    )
+    legacy_aligner.align(guide, transcription)
+    assert provider.chat_completion.call_count == 1
+
+    advisory_processor = AdvisoryBlockDelineationProcessor(
+        AdvisoryBlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
+    )
+    unrestricted_processor = BlockDelineationProcessor(
+        BlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
+    )
+    gated_aligner = BlockTranscriptionAligner(
+        advisory_processor,
+        None,
+        unrestricted_delineation_processor=unrestricted_processor,
+        gate_delineation_suggestions=True,
+        use_delineation_suggestions=True,
+    )
+    gated_aligner.align(guide, transcription)
+
+    fresh_unrestricted_processor = BlockDelineationProcessor(
+        BlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
+    )
+    BlockTranscriptionAligner(fresh_unrestricted_processor, None).align(
+        guide, transcription
+    )
+
+    assert provider.chat_completion.call_count == 1
+
+
+def test_gated_advisory_with_suggestions_uses_advisory_query(tmp_path: Path):
+    """Gated windows with strong timing evidence should retain advisory queries.
+
+    Arguments:
+        tmp_path: temporary cache root path
+    """
+    references = [
+        Subtitle(start=0, end=1_000, text="參考一"),
+        Subtitle(start=1_000, end=2_000, text="參考二"),
+    ]
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider.chat_completion.return_value = json.dumps({"changes": []})
+    advisory_processor = AdvisoryBlockDelineationProcessor(
+        AdvisoryBlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
+    )
+    unrestricted_processor = BlockDelineationProcessor(
+        BlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
+    )
+    aligner = BlockTranscriptionAligner(
+        advisory_processor,
+        None,
+        unrestricted_delineation_processor=unrestricted_processor,
+        gate_delineation_suggestions=True,
+        use_delineation_suggestions=True,
+    )
+
+    output = aligner._delineate_window(  # noqa: SLF001
+        references,
+        ["甲乙", "丙丁"],
+        first_owned_index=1,
+        last_owned_index=1,
+        window_index=1,
+        window_offset=0,
+        timing_boundaries=[
+            _TimingBoundary(offset=1, time=1_100, pause=0),
+            _TimingBoundary(offset=2, time=2_000, pause=0),
+            _TimingBoundary(offset=3, time=1_200, pause=0),
+        ],
+    )
+
+    assert output == ["甲乙", "丙丁"]
+    assert provider.chat_completion.call_count == 1
+    assert provider.chat_completion.call_args.kwargs["operation"] == (
+        "advisory-block-delineation"
+    )
+    query = json.loads(provider.chat_completion.call_args.args[0][1]["content"])
+    assert query["boundaries"][0]["suggestions"]
+    assert not unrestricted_processor.queryer.encountered_test_cases
+
+
 def test_invalid_delineation_falls_back_and_punctuation_uses_timing_baseline():
     """Delineation fallback should retain timing assignments for punctuation."""
     guide, transcription = _get_block()

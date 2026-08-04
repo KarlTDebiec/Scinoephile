@@ -99,7 +99,7 @@ if "yue-Hant_transcribe" in actions:
         additional_context=transcription_additional_context,
         transcription_no_op=False,
         transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
-        transcription_block_delineation_mode=BlockDelineationMode.GATED_ADVISORY,
+        transcription_block_delineation_mode=BlockDelineationMode.UNRESTRICTED,
         transcription_fallback_to_no_op=True,
         strip_mlx_audio_punctuation=True,
         mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,

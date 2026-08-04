@@ -411,7 +411,7 @@ def get_guided_transcriber(
 
     default_block_modes = {
         TranscriptionAlignmentMode.BLOCK: (
-            BlockDelineationMode.GATED_ADVISORY,
+            BlockDelineationMode.UNRESTRICTED,
             BlockPunctuationMode.FULL_TEXT,
         ),
         TranscriptionAlignmentMode.BLOCK_POSITIONAL: (
@@ -550,6 +550,7 @@ def _get_block_aligner(
     gate_advisory_suggestions = delineation_mode is BlockDelineationMode.GATED_ADVISORY
     use_candidates = delineation_mode is BlockDelineationMode.CANDIDATE
     use_positional = punctuate and punctuation_mode is BlockPunctuationMode.POSITIONAL
+    delineation_test_cases_supplied = delineation_test_cases is not None
     delineation_prompts = {
         BlockDelineationMode.ADVISORY: spec.advisory_block_delineation_prompt,
         BlockDelineationMode.GATED_ADVISORY: (spec.advisory_block_delineation_prompt),
@@ -665,6 +666,28 @@ def _get_block_aligner(
         overwrite_cache=overwrite_cache,
         prune_test_cases=prune_test_cases,
     )
+    unrestricted_delineation_processor = None
+    if delineation_mode is BlockDelineationMode.GATED_ADVISORY:
+        unrestricted_test_cases = (
+            []
+            if delineation_test_cases_supplied
+            else list(
+                load_shared_test_cases(
+                    BlockDelineationManager,
+                    spec.block_delineation_prompt,
+                    spec.block_delineation_json_paths,
+                )
+            )
+        )
+        unrestricted_delineation_processor = BlockDelineationProcessor(
+            spec.block_delineation_prompt,
+            shared_test_cases=unrestricted_test_cases,
+            provider=provider,
+            additional_context=additional_context,
+            cache_root_path=cache_root_path,
+            no_op=no_op,
+            overwrite_cache=overwrite_cache,
+        )
     punctuation_processor = None
     if use_positional:
         if not isinstance(punctuation_prompt, PositionalBlockPunctuationPrompt):
@@ -699,6 +722,7 @@ def _get_block_aligner(
     return BlockTranscriptionAligner(
         delineation_processor,
         punctuation_processor,
+        unrestricted_delineation_processor=unrestricted_delineation_processor,
         fallback_to_no_op=fallback_to_no_op,
         gate_delineation_suggestions=gate_advisory_suggestions,
         use_delineation_candidates=use_candidates,
