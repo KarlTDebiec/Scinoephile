@@ -190,6 +190,20 @@ def test_series_cer_ignores_separator_only_line_wrapping(
     assert result.deletions == 0
 
 
+def test_series_cer_groups_wrapped_text_with_edited_shorter_suffix():
+    """Test edited text is scored independently of subtitle wrapping."""
+    reference = get_text_series("只要你哋邊個出得多過", "十萬兩銀票喇喎")
+    candidate = get_text_series("只要你哋邊個出得多過十萬兩銀票咯，")
+
+    result = SeriesCER(reference, candidate)
+
+    assert result.cer == 2 / 17
+    assert result.correct == 15
+    assert result.substitutions == 1
+    assert result.insertions == 0
+    assert result.deletions == 1
+
+
 def test_series_cer_string_includes_percentages():
     """Test series-level CER output includes percentages of reference length."""
     result = SeriesCER(get_text_series("abc"), get_text_series("axc"))
