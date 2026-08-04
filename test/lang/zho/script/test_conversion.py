@@ -7,7 +7,7 @@ from __future__ import annotations
 from pytest import FixtureRequest, param
 
 from scinoephile.lang.zho.script.conversion import (
-    S2T_EXCLUSIONS,
+    S2HK_EXCLUSIONS,
     T2S_EXCLUSIONS,
     OpenCCConfig,
     get_zho_character_variants,
@@ -22,10 +22,10 @@ from test.helpers import assert_series_equal, parametrize
     ("text", "config", "expected"),
     [
         ("台臺", OpenCCConfig.s2t, "臺臺"),
-        ("你吃吓晒啦", OpenCCConfig.s2t, "你喫吓晒啦"),
-        ("唔好郁，响邊扑你", OpenCCConfig.s2t, "唔好郁，响邊扑你"),
-        ("一群牛虱", OpenCCConfig.s2t, "一群牛蝨"),
-        ("萬里長城說，瞓床搵你", OpenCCConfig.s2t, "萬里長城說，瞓床搵你"),
+        ("你吃吓晒啦", OpenCCConfig.s2hk, "你吃吓晒啦"),
+        ("唔好郁，响邊扑你", OpenCCConfig.s2hk, "唔好郁，响邊扑你"),
+        ("一群牛虱", OpenCCConfig.s2hk, "一群牛蝨"),
+        ("萬里長城說，瞓床搵你", OpenCCConfig.s2hk, "萬里長城說，瞓床搵你"),
         ("台臺", OpenCCConfig.t2s, "台台"),
         ("呢個嗰度喎", OpenCCConfig.t2s, "呢个嗰度㖞"),
         ("劏唓嗰餸繁體", OpenCCConfig.t2s, "劏唓嗰餸繁体"),
@@ -44,15 +44,22 @@ def test_get_zho_text_converted_applies_exclusions(
     assert get_zho_text_converted(text, config) == expected
 
 
-@parametrize("text", sorted(S2T_EXCLUSIONS))
+def test_get_zho_text_converted_only_applies_s2hk_exclusions_to_s2hk():
+    """Test Hong Kong exclusions do not affect other conversion configurations."""
+    assert get_zho_text_converted("說", OpenCCConfig.s2t) == "說"
+    assert get_zho_text_converted("萬里長城說", OpenCCConfig.t2jp) == "万里長城説"
+
+
+@parametrize("text", sorted(S2HK_EXCLUSIONS))
 def test_s2hk_exclusions_are_raw_opencc_changes(text: str):
-    """Test every Hong Kong exclusion changes under raw OpenCC.
+    """Test every Hong Kong exclusion changes raw and is preserved when applied.
 
     Arguments:
         text: excluded text span
     """
     converted_text = get_zho_converter(OpenCCConfig.s2hk).convert(text)
     assert converted_text != text
+    assert get_zho_text_converted(text, OpenCCConfig.s2hk) == text
 
 
 @parametrize("text", sorted(T2S_EXCLUSIONS))
