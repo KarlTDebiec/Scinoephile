@@ -14,11 +14,18 @@ from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOper
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import are_series_one_to_one
+from scinoephile.core.text import remove_punc_and_whitespace
 
 from .line_diff import LineDiff
 from .line_diff_kind import LineDiffKind
 
 __all__ = ["SeriesDiff", "SeriesDiffKwargs"]
+
+type _LineIndexes = tuple[int, ...]
+"""Ordered local line indexes from one side of a subtitle block."""
+
+type _LineSpan = tuple[_LineIndexes, _LineIndexes]
+"""Paired local line indexes from the two sides of a subtitle block."""
 
 
 class SeriesDiffKwargs(TypedDict, total=False):
@@ -53,6 +60,12 @@ class _SeriesDiffLineRecord:
     norm: str
     """Normalized text line used for matching."""
 
+    start: int
+    """Subtitle event start time in milliseconds."""
+
+    end: int
+    """Subtitle event end time in milliseconds."""
+
 
 @dataclass(frozen=True)
 class _SeriesDiffBlockSide:
@@ -66,6 +79,9 @@ class _SeriesDiffBlockSide:
 
     normlines: tuple[str, ...]
     """Normalized line text."""
+
+    times: tuple[tuple[int, int], ...]
+    """Subtitle event start and end times by local line index."""
 
     text: str
     """Joined normalized text."""
@@ -94,7 +110,7 @@ class SeriesDiff:
             two: second subtitle series
             one_lbl: label for first series in messages
             two_lbl: label for second series in messages
-            similarity_cutoff: similarity cutoff for many-to-many shifted text
+            similarity_cutoff: similarity cutoff for line and span pairing
             max_alignment_cells: max dynamic programming cells for block alignment
         """
         self.one_lbl = one_lbl
@@ -440,7 +456,7 @@ class SeriesDiff:
         one_changed: set[int] = set()
         two_changed: set[int] = set()
         changed_columns: list[tuple[LineAlignmentOperation, int, int]] = []
-        spans: list[tuple[tuple[int, ...], tuple[int, ...]]] = []
+        spans: list[_LineSpan] = []
 
         def flush_changed():
             """Record the current changed span."""
@@ -498,8 +514,14 @@ class SeriesDiff:
 
         flush_changed()
         spans = self._merge_changed_spans(spans)
-        spans = self._merge_adjacent_one_sided_spans(spans, one_side, two_side)
+        spans = self._fill_changed_span_gaps(
+            self._merge_adjacent_one_sided_spans(spans, one_side, two_side)
+        )
+        spans = self._claim_temporally_supported_boundary_gaps(
+            spans, one_side, two_side
+        )
         spans = self._split_uncovered_multiline_spans(spans, one_side, two_side)
+        spans = self._unclaim_shifted_boundary_lines(spans, one_side, two_side)
         spans = self._pair_one_sided_spans_with_implicit_lines(
             spans, one_side, two_side
         )
@@ -509,7 +531,7 @@ class SeriesDiff:
         self,
         one_side: _SeriesDiffBlockSide,
         two_side: _SeriesDiffBlockSide,
-        spans: list[tuple[tuple[int, ...], tuple[int, ...]]],
+        spans: list[_LineSpan],
     ):
         """Add equal and changed messages for a diffed block.
 
@@ -574,7 +596,7 @@ class SeriesDiff:
             one_side: first side of the current block
             two_side: second side of the current block
         """
-        spans: list[tuple[tuple[int, ...], tuple[int, ...]]] = []
+        spans: list[_LineSpan] = []
         matcher = difflib.SequenceMatcher(
             None, one_side.normlines, two_side.normlines, autojunk=False
         )
@@ -700,7 +722,7 @@ class SeriesDiff:
         one_side: _SeriesDiffBlockSide,
         two_side: _SeriesDiffBlockSide,
         changed_columns: list[tuple[LineAlignmentOperation, int, int]],
-    ) -> tuple[tuple[int, ...], tuple[int, ...]] | None:
+    ) -> _LineSpan | None:
         """Get changed line spans for a changed separator-only run.
 
         Arguments:
@@ -767,7 +789,7 @@ class SeriesDiff:
         one_side: _SeriesDiffBlockSide,
         two_side: _SeriesDiffBlockSide,
         changed_column: tuple[LineAlignmentOperation, int, int],
-    ) -> tuple[tuple[int, ...], tuple[int, ...]] | None:
+    ) -> _LineSpan | None:
         """Get line spans for one changed separator column.
 
         Arguments:
@@ -794,7 +816,7 @@ class SeriesDiff:
         two_side: _SeriesDiffBlockSide,
         one_pos: int,
         two_pos: int,
-    ) -> tuple[tuple[int, ...], tuple[int, ...]] | None:
+    ) -> _LineSpan | None:
         """Get line spans for a deleted separator newline.
 
         Arguments:
@@ -819,7 +841,7 @@ class SeriesDiff:
         two_side: _SeriesDiffBlockSide,
         one_pos: int,
         two_pos: int,
-    ) -> tuple[tuple[int, ...], tuple[int, ...]] | None:
+    ) -> _LineSpan | None:
         """Get line spans for an inserted separator newline.
 
         Arguments:
@@ -874,29 +896,35 @@ class SeriesDiff:
         Returns:
             whether every touched line is mostly represented in target text
         """
-        target_compact = re.sub(r"\s+", "", target_text)
-        coverage_cutoff = max(self.similarity_cutoff, 0.75)
+        target_compact = remove_punc_and_whitespace(target_text)
+        line_coverage_cutoff = max(self.similarity_cutoff, 0.7)
+        combined_coverage_cutoff = max(self.similarity_cutoff, 0.75)
+        lines_compact = ""
         for local_idx in local_idxs:
-            line_compact = re.sub(r"\s+", "", side.normlines[local_idx])
+            line_compact = remove_punc_and_whitespace(side.normlines[local_idx])
             if not line_compact:
                 continue
+            lines_compact += line_compact
             best_ratio = self._get_best_substring_similarity(
                 line_compact, target_compact
             )
-            if best_ratio < coverage_cutoff:
+            if best_ratio < line_coverage_cutoff:
                 return False
 
-        return True
+        combined_ratio = self._get_best_substring_similarity(
+            lines_compact, target_compact
+        )
+        return combined_ratio >= combined_coverage_cutoff
 
     @staticmethod
     def _get_best_substring_similarity(needle: str, haystack: str) -> float:
-        """Get the best same-length substring similarity for a text span.
+        """Get the best nearby-length substring similarity for a text span.
 
         Arguments:
             needle: text to search for
             haystack: text that may contain the needle text
         Returns:
-            best similarity against a same-length haystack substring
+            best similarity against a nearby-length haystack substring
         """
         if not needle or not haystack:
             return 0.0
@@ -907,12 +935,15 @@ class SeriesDiff:
             ).ratio()
 
         best_ratio = 0.0
-        for start_idx in range(len(haystack) - len(needle) + 1):
-            candidate = haystack[start_idx : start_idx + len(needle)]
-            ratio = difflib.SequenceMatcher(
-                None, needle, candidate, autojunk=False
-            ).ratio()
-            best_ratio = max(best_ratio, ratio)
+        min_candidate_length = max(1, len(needle) - 1)
+        max_candidate_length = min(len(haystack), len(needle) + 1)
+        for candidate_length in range(min_candidate_length, max_candidate_length + 1):
+            for start_idx in range(len(haystack) - candidate_length + 1):
+                candidate = haystack[start_idx : start_idx + candidate_length]
+                ratio = difflib.SequenceMatcher(
+                    None, needle, candidate, autojunk=False
+                ).ratio()
+                best_ratio = max(best_ratio, ratio)
 
         return best_ratio
 
@@ -929,20 +960,22 @@ class SeriesDiff:
         full_ratio = difflib.SequenceMatcher(
             None, one_text, two_text, autojunk=False
         ).ratio()
-        one_compact = re.sub(r"\s+", "", one_text)
-        two_compact = re.sub(r"\s+", "", two_text)
-        if len(one_compact) <= len(two_compact):
-            substring_ratio = 1.0 if one_compact in two_compact else 0.0
-        else:
-            substring_ratio = 1.0 if two_compact in one_compact else 0.0
+        one_compact = remove_punc_and_whitespace(one_text)
+        two_compact = remove_punc_and_whitespace(two_text)
+        substring_ratio = 0.0
+        if one_compact and two_compact:
+            if len(one_compact) <= len(two_compact):
+                substring_ratio = 1.0 if one_compact in two_compact else 0.0
+            else:
+                substring_ratio = 1.0 if two_compact in one_compact else 0.0
         return max(full_ratio, substring_ratio)
 
     def _split_uncovered_multiline_spans(
         self,
-        spans: list[tuple[tuple[int, ...], tuple[int, ...]]],
+        spans: list[_LineSpan],
         one_side: _SeriesDiffBlockSide,
         two_side: _SeriesDiffBlockSide,
-    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
+    ) -> list[_LineSpan]:
         """Split unrelated extra lines out of one-to-many changed spans.
 
         Arguments:
@@ -952,18 +985,18 @@ class SeriesDiff:
         Returns:
             changed spans with unrelated extra lines separated
         """
-        split_spans: list[tuple[tuple[int, ...], tuple[int, ...]]] = []
+        split_spans: list[_LineSpan] = []
         for one_idxs, two_idxs in spans:
             if len(one_idxs) == 1 and len(two_idxs) > 1:
                 split_spans.extend(
-                    self._split_uncovered_one_to_many_span(
-                        one_side, two_side, one_idxs[0], two_idxs
+                    self._split_uncovered_multiline_span(
+                        one_side, two_side, one_idxs[0], two_idxs, single_position=0
                     )
                 )
             elif len(two_idxs) == 1 and len(one_idxs) > 1:
                 split_spans.extend(
-                    self._split_uncovered_many_to_one_span(
-                        one_side, two_side, one_idxs, two_idxs[0]
+                    self._split_uncovered_multiline_span(
+                        two_side, one_side, two_idxs[0], one_idxs, single_position=1
                     )
                 )
             else:
@@ -971,101 +1004,230 @@ class SeriesDiff:
 
         return split_spans
 
-    def _split_uncovered_many_to_one_span(
+    def _split_uncovered_multiline_span(
         self,
-        one_side: _SeriesDiffBlockSide,
-        two_side: _SeriesDiffBlockSide,
-        one_idxs: tuple[int, ...],
-        two_idx: int,
-    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
-        """Split unrelated first-side lines out of a many-to-one span.
+        single_side: _SeriesDiffBlockSide,
+        multi_side: _SeriesDiffBlockSide,
+        single_idx: int,
+        multi_idxs: tuple[int, ...],
+        *,
+        single_position: int,
+    ) -> list[_LineSpan]:
+        """Split unrelated lines out of a one-to-many changed span.
 
         Arguments:
-            one_side: first side of the current block
-            two_side: second side of the current block
-            one_idxs: first-side local line indices in the current span
-            two_idx: second-side local line index in the current span
+            single_side: side containing the single changed line
+            multi_side: side containing multiple changed lines
+            single_idx: single-side local line index
+            multi_idxs: multi-side local line indices
+            single_position: position of the single side in returned spans
         Returns:
             one or more changed spans
         """
-        target_text = SeriesDiff._join_normlines(two_side, (two_idx,))
-        first_one_idx = one_idxs[0]
-        remaining_one_idxs = one_idxs[1:]
-        if self._should_split_uncovered_multiline_span(
-            one_side, two_side, first_one_idx, two_idx, remaining_one_idxs, target_text
-        ):
-            return self._get_split_many_to_one_spans(
-                one_side,
-                two_side,
-                first_one_idx,
-                two_idx,
-                remaining_one_idxs,
-                prefix=True,
-            )
+        target_text = self._join_normlines(single_side, (single_idx,))
+        for prefix in (True, False):
+            if prefix:
+                paired_multi_idx = multi_idxs[0]
+                remaining_multi_idxs = multi_idxs[1:]
+            else:
+                paired_multi_idx = multi_idxs[-1]
+                remaining_multi_idxs = multi_idxs[:-1]
 
-        last_one_idx = one_idxs[-1]
-        remaining_one_idxs = one_idxs[:-1]
-        if self._should_split_uncovered_multiline_span(
-            one_side, two_side, last_one_idx, two_idx, remaining_one_idxs, target_text
-        ):
-            return self._get_split_many_to_one_spans(
-                one_side,
-                two_side,
-                last_one_idx,
-                two_idx,
-                remaining_one_idxs,
-                prefix=False,
-            )
+            if not self._should_split_uncovered_multiline_span(
+                multi_side,
+                single_side,
+                paired_multi_idx,
+                single_idx,
+                remaining_multi_idxs,
+                target_text,
+            ):
+                continue
 
-        return [(one_idxs, (two_idx,))]
+            if single_position == 0:
+                paired_span: _LineSpan = ((single_idx,), (paired_multi_idx,))
+                remaining_span: _LineSpan = ((), remaining_multi_idxs)
+            else:
+                paired_span = ((paired_multi_idx,), (single_idx,))
+                remaining_span = (remaining_multi_idxs, ())
 
-    def _split_uncovered_one_to_many_span(
+            paired_spans = [paired_span]
+            if (
+                single_side.normlines[single_idx]
+                == multi_side.normlines[paired_multi_idx]
+            ):
+                paired_spans = []
+            if prefix:
+                return [*paired_spans, remaining_span]
+            return [remaining_span, *paired_spans]
+
+        if single_position == 0:
+            return [((single_idx,), multi_idxs)]
+        return [(multi_idxs, (single_idx,))]
+
+    def _claim_temporally_supported_boundary_gaps(
         self,
+        spans: list[_LineSpan],
         one_side: _SeriesDiffBlockSide,
         two_side: _SeriesDiffBlockSide,
-        one_idx: int,
-        two_idxs: tuple[int, ...],
-    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
-        """Split unrelated second-side lines out of a one-to-many span.
+    ) -> list[_LineSpan]:
+        """Include unclaimed leading lines supported by text and timing.
+
+        Character alignment can omit an unchanged prefix line from a split
+        when the separator beside it is part of a larger edit. This expands
+        the following span when the single opposite-side line represents both
+        the omitted prefix and the already-claimed line.
 
         Arguments:
+            spans: changed spans
             one_side: first side of the current block
             two_side: second side of the current block
-            one_idx: first-side local line index in the current span
-            two_idxs: second-side local line indices in the current span
         Returns:
-            one or more changed spans
+            changed spans expanded across supported leading gaps
         """
-        target_text = SeriesDiff._join_normlines(one_side, (one_idx,))
-        first_two_idx = two_idxs[0]
-        remaining_two_idxs = two_idxs[1:]
-        if self._should_split_uncovered_multiline_span(
-            two_side, one_side, first_two_idx, one_idx, remaining_two_idxs, target_text
-        ):
-            return self._get_split_one_to_many_spans(
-                one_side,
-                two_side,
-                one_idx,
-                first_two_idx,
-                remaining_two_idxs,
-                prefix=True,
-            )
+        claimed: list[_LineSpan] = []
+        sides = (one_side, two_side)
+        for raw_span, gaps in self._iter_spans_with_leading_gaps(spans):
+            span = [*raw_span]
+            for single_position, multi_position in ((0, 1), (1, 0)):
+                single_idxs = span[single_position]
+                if (
+                    gaps[single_position]
+                    or not gaps[multi_position]
+                    or len(single_idxs) != 1
+                ):
+                    continue
+                candidate_multi_idxs = (*gaps[multi_position], *span[multi_position])
+                if self._is_temporally_supported_multiline_span(
+                    sides[multi_position],
+                    sides[single_position],
+                    single_idxs[0],
+                    candidate_multi_idxs,
+                ):
+                    span[multi_position] = candidate_multi_idxs
 
-        last_two_idx = two_idxs[-1]
-        remaining_two_idxs = two_idxs[:-1]
-        if self._should_split_uncovered_multiline_span(
-            two_side, one_side, last_two_idx, one_idx, remaining_two_idxs, target_text
-        ):
-            return self._get_split_one_to_many_spans(
-                one_side,
-                two_side,
-                one_idx,
-                last_two_idx,
-                remaining_two_idxs,
-                prefix=False,
-            )
+            claimed.append((span[0], span[1]))
 
-        return [((one_idx,), two_idxs)]
+        return claimed
+
+    def _unclaim_shifted_boundary_lines(
+        self,
+        spans: list[_LineSpan],
+        one_side: _SeriesDiffBlockSide,
+        two_side: _SeriesDiffBlockSide,
+    ) -> list[_LineSpan]:
+        """Release span-leading lines that match an opposite-side gap.
+
+        Character alignment can attach a line to a later changed span when an
+        earlier subtitle is split on only one side. Releasing matching leading
+        lines lets line-level alignment pair them across that shifted boundary.
+
+        Arguments:
+            spans: changed spans
+            one_side: first side of the current block
+            two_side: second side of the current block
+        Returns:
+            changed spans with shifted boundary lines released
+        """
+        unclaimed: list[_LineSpan] = []
+        sides = (one_side, two_side)
+        for raw_span, gaps in self._iter_spans_with_leading_gaps(spans):
+            span = [*raw_span]
+            for line_position, gap_position in ((0, 1), (1, 0)):
+                line_idxs = span[line_position]
+                if gaps[line_position] or not gaps[gap_position] or not line_idxs:
+                    continue
+                released_count = 0
+                for line_idx, gap_idx in zip(
+                    line_idxs, gaps[gap_position], strict=False
+                ):
+                    if not self._are_lines_similar(
+                        sides[line_position],
+                        sides[gap_position],
+                        (line_idx,),
+                        (gap_idx,),
+                    ):
+                        break
+                    released_count += 1
+                span[line_position] = line_idxs[released_count:]
+
+            if span[0] or span[1]:
+                unclaimed.append((span[0], span[1]))
+
+        return unclaimed
+
+    @staticmethod
+    def _iter_spans_with_leading_gaps(
+        spans: list[_LineSpan],
+    ) -> Iterator[tuple[_LineSpan, _LineSpan]]:
+        """Iterate over changed spans and their unclaimed leading lines.
+
+        Arguments:
+            spans: changed spans in block order
+        Yields:
+            each raw span and its first- and second-side leading gaps
+        """
+        positions = [0, 0]
+        for span in spans:
+            starts = []
+            for position, line_idxs in enumerate(span):
+                if line_idxs:
+                    start = line_idxs[0]
+                else:
+                    start = positions[position]
+                starts.append(start)
+            gaps: _LineSpan = (
+                tuple(range(positions[0], starts[0])),
+                tuple(range(positions[1], starts[1])),
+            )
+            yield span, gaps
+            for position, line_idxs in enumerate(span):
+                if line_idxs:
+                    positions[position] = line_idxs[-1] + 1
+
+    def _is_temporally_supported_multiline_span(
+        self,
+        multi_side: _SeriesDiffBlockSide,
+        single_side: _SeriesDiffBlockSide,
+        single_idx: int,
+        multi_idxs: tuple[int, ...],
+    ) -> bool:
+        """Check text and timing support for a weak multiline match.
+
+        Arguments:
+            multi_side: side with multiple changed lines
+            single_side: side with one changed line
+            single_idx: single-side local line index
+            multi_idxs: multi-side line indices in the span
+        Returns:
+            whether each line and the combined span have sufficient evidence
+        """
+        target_compact = remove_punc_and_whitespace(single_side.normlines[single_idx])
+        if not multi_idxs or not target_compact:
+            return False
+
+        line_similarity_cutoff = max(0.4, self.similarity_cutoff - 0.2)
+        for multi_idx in multi_idxs:
+            line_compact = remove_punc_and_whitespace(multi_side.normlines[multi_idx])
+            if len(multi_idxs) > 1 and line_compact == target_compact:
+                return False
+            if (
+                self._get_best_substring_similarity(line_compact, target_compact)
+                < line_similarity_cutoff
+            ):
+                return False
+
+        multi_compact = remove_punc_and_whitespace(
+            self._join_normlines(multi_side, multi_idxs)
+        )
+        timing_similarity_cutoff = max(0.5, self.similarity_cutoff - 0.1)
+        if (
+            self._get_best_substring_similarity(multi_compact, target_compact)
+            <= timing_similarity_cutoff
+        ):
+            return False
+        return self._are_lines_temporally_aligned(
+            single_side, multi_side, single_idx, multi_idxs
+        )
 
     def _should_split_uncovered_multiline_span(
         self,
@@ -1090,91 +1252,36 @@ class SeriesDiff:
         """
         if not remaining_multi_idxs:
             return False
+        all_multi_idxs = tuple(sorted((paired_multi_idx, *remaining_multi_idxs)))
+        if self._are_separator_lines_covered(multi_side, all_multi_idxs, target_text):
+            return False
+        target_compact = remove_punc_and_whitespace(target_text)
         if not self._are_lines_similar(
             single_side, multi_side, (single_idx,), (paired_multi_idx,)
         ):
-            paired_text = re.sub(r"\s+", "", multi_side.normlines[paired_multi_idx])
-            target_compact = re.sub(r"\s+", "", target_text)
+            paired_text = remove_punc_and_whitespace(
+                multi_side.normlines[paired_multi_idx]
+            )
             coverage_cutoff = max(self.similarity_cutoff, 0.75)
             if (
                 self._get_best_substring_similarity(paired_text, target_compact)
                 < coverage_cutoff
             ):
                 return False
+        if self._is_temporally_supported_multiline_span(
+            multi_side, single_side, single_idx, all_multi_idxs
+        ):
+            return False
         return not self._are_separator_lines_covered(
             multi_side, remaining_multi_idxs, target_text
         )
 
-    @staticmethod
-    def _get_split_many_to_one_spans(
-        one_side: _SeriesDiffBlockSide,
-        two_side: _SeriesDiffBlockSide,
-        paired_one_idx: int,
-        two_idx: int,
-        remaining_one_idxs: tuple[int, ...],
-        *,
-        prefix: bool,
-    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
-        """Build split spans for a many-to-one span with unrelated lines.
-
-        Arguments:
-            one_side: first side of the current block
-            two_side: second side of the current block
-            paired_one_idx: first-side line paired with the second-side line
-            two_idx: second-side local line index
-            remaining_one_idxs: unrelated first-side local line indices
-            prefix: whether the paired line is before the unrelated lines
-        Returns:
-            changed spans
-        """
-        paired_span = ((paired_one_idx,), (two_idx,))
-        if one_side.normlines[paired_one_idx] == two_side.normlines[two_idx]:
-            paired_spans: list[tuple[tuple[int, ...], tuple[int, ...]]] = []
-        else:
-            paired_spans = [paired_span]
-        remaining_span = (remaining_one_idxs, ())
-        if prefix:
-            return [*paired_spans, remaining_span]
-        return [remaining_span, *paired_spans]
-
-    @staticmethod
-    def _get_split_one_to_many_spans(
-        one_side: _SeriesDiffBlockSide,
-        two_side: _SeriesDiffBlockSide,
-        one_idx: int,
-        paired_two_idx: int,
-        remaining_two_idxs: tuple[int, ...],
-        *,
-        prefix: bool,
-    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
-        """Build split spans for a one-to-many span with unrelated lines.
-
-        Arguments:
-            one_side: first side of the current block
-            two_side: second side of the current block
-            one_idx: first-side local line index
-            paired_two_idx: second-side line paired with the first-side line
-            remaining_two_idxs: unrelated second-side local line indices
-            prefix: whether the paired line is before the unrelated lines
-        Returns:
-            changed spans
-        """
-        paired_span = ((one_idx,), (paired_two_idx,))
-        if one_side.normlines[one_idx] == two_side.normlines[paired_two_idx]:
-            paired_spans: list[tuple[tuple[int, ...], tuple[int, ...]]] = []
-        else:
-            paired_spans = [paired_span]
-        remaining_span = ((), remaining_two_idxs)
-        if prefix:
-            return [*paired_spans, remaining_span]
-        return [remaining_span, *paired_spans]
-
     def _merge_adjacent_one_sided_spans(
         self,
-        spans: list[tuple[tuple[int, ...], tuple[int, ...]]],
+        spans: list[_LineSpan],
         one_side: _SeriesDiffBlockSide,
         two_side: _SeriesDiffBlockSide,
-    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
+    ) -> list[_LineSpan]:
         """Merge adjacent one-sided spans whose line text is similar.
 
         Arguments:
@@ -1184,7 +1291,7 @@ class SeriesDiff:
         Returns:
             changed spans with similar adjacent one-sided spans paired
         """
-        merged: list[tuple[tuple[int, ...], tuple[int, ...]]] = []
+        merged: list[_LineSpan] = []
         idx = 0
         while idx < len(spans):
             if idx + 1 >= len(spans):
@@ -1210,6 +1317,30 @@ class SeriesDiff:
             idx += 1
 
         return merged
+
+    @staticmethod
+    def _fill_changed_span_gaps(spans: list[_LineSpan]) -> list[_LineSpan]:
+        """Include implicit line matches enclosed by changed line spans.
+
+        Arguments:
+            spans: changed line spans
+        Returns:
+            changed spans with enclosed local line indices included
+        """
+        filled: list[_LineSpan] = []
+        for one_idxs, two_idxs in spans:
+            filled_one_idxs: _LineIndexes
+            if one_idxs:
+                filled_one_idxs = tuple(range(one_idxs[0], one_idxs[-1] + 1))
+            else:
+                filled_one_idxs = ()
+            filled_two_idxs: _LineIndexes
+            if two_idxs:
+                filled_two_idxs = tuple(range(two_idxs[0], two_idxs[-1] + 1))
+            else:
+                filled_two_idxs = ()
+            filled.append((filled_one_idxs, filled_two_idxs))
+        return filled
 
     def _should_merge_adjacent_one_sided_spans(
         self,
@@ -1331,6 +1462,7 @@ class SeriesDiff:
         line_idxs = tuple(record.idx for record in records)
         lines = tuple(record.text for record in records)
         normlines = tuple(record.norm for record in records)
+        times = tuple((record.start, record.end) for record in records)
 
         chunks: list[str] = []
         char_line_idxs: list[tuple[int, ...]] = []
@@ -1345,6 +1477,7 @@ class SeriesDiff:
             line_idxs=line_idxs,
             lines=lines,
             normlines=normlines,
+            times=times,
             text="".join(chunks),
             char_line_idxs=tuple(char_line_idxs),
         )
@@ -1373,6 +1506,8 @@ class SeriesDiff:
                             event_idx=event_idx,
                             text=stripped,
                             norm=SeriesDiff._normalize_line(stripped),
+                            start=subtitle.start,
+                            end=subtitle.end,
                         )
                     )
                     line_idx += 1
@@ -1439,9 +1574,7 @@ class SeriesDiff:
         return " ".join(side.normlines[idx] for idx in local_idxs)
 
     @staticmethod
-    def _merge_changed_spans(
-        spans: list[tuple[tuple[int, ...], tuple[int, ...]]],
-    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
+    def _merge_changed_spans(spans: list[_LineSpan]) -> list[_LineSpan]:
         """Merge changed character spans that project to the same line change.
 
         Arguments:
@@ -1449,21 +1582,19 @@ class SeriesDiff:
         Returns:
             merged line-level changed spans
         """
-        merged: list[tuple[tuple[int, ...], tuple[int, ...]]] = []
+        merged: list[_LineSpan] = []
         for next_one, next_two in spans:
-            if not merged:
-                merged.append((next_one, next_two))
-                continue
-
-            prev_one, prev_two = merged[-1]
-            if SeriesDiff._should_merge_changed_spans(
-                prev_one, prev_two, next_one, next_two
-            ):
-                one_idxs = tuple(sorted({*prev_one, *next_one}))
-                two_idxs = tuple(sorted({*prev_two, *next_two}))
-                merged[-1] = (one_idxs, two_idxs)
-            else:
-                merged.append((next_one, next_two))
+            merged.append((next_one, next_two))
+            while len(merged) >= 2:
+                prev_one, prev_two = merged[-2]
+                current_one, current_two = merged[-1]
+                if not SeriesDiff._should_merge_changed_spans(
+                    prev_one, prev_two, current_one, current_two
+                ):
+                    break
+                one_idxs = tuple(sorted({*prev_one, *current_one}))
+                two_idxs = tuple(sorted({*prev_two, *current_two}))
+                merged[-2:] = [(one_idxs, two_idxs)]
         return merged
 
     @staticmethod
@@ -1481,7 +1612,7 @@ class SeriesDiff:
 
     @staticmethod
     def _get_implicit_candidate_indices(
-        spans: list[tuple[tuple[int, ...], tuple[int, ...]]],
+        spans: list[_LineSpan],
         span_idx: int,
         candidate_side_position: int,
         claimed_candidate_idxs: set[int],
@@ -1530,7 +1661,7 @@ class SeriesDiff:
         claimed_candidate_idxs: set[int],
         *,
         source_side_position: int,
-    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
+    ) -> list[_LineSpan]:
         """Pair one-sided source lines with similar implicit candidates.
 
         Arguments:
@@ -1579,10 +1710,10 @@ class SeriesDiff:
 
     def _pair_one_sided_spans_with_implicit_lines(
         self,
-        spans: list[tuple[tuple[int, ...], tuple[int, ...]]],
+        spans: list[_LineSpan],
         one_side: _SeriesDiffBlockSide,
         two_side: _SeriesDiffBlockSide,
-    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
+    ) -> list[_LineSpan]:
         """Pair one-sided spans with similar implicit lines in their interval.
 
         Arguments:
@@ -1594,7 +1725,7 @@ class SeriesDiff:
         """
         claimed_one_idxs = {one_idx for one_idxs, _ in spans for one_idx in one_idxs}
         claimed_two_idxs = {two_idx for _, two_idxs in spans for two_idx in two_idxs}
-        paired: list[tuple[tuple[int, ...], tuple[int, ...]]] = []
+        paired: list[_LineSpan] = []
         for idx, (one_idxs, two_idxs) in enumerate(spans):
             if one_idxs and two_idxs:
                 paired.append((one_idxs, two_idxs))
@@ -1652,6 +1783,32 @@ class SeriesDiff:
             None, one_text, two_text, autojunk=False
         ).ratio()
         return ratio >= self.similarity_cutoff
+
+    @staticmethod
+    def _are_lines_temporally_aligned(
+        single_side: _SeriesDiffBlockSide,
+        multi_side: _SeriesDiffBlockSide,
+        single_idx: int,
+        multi_idxs: tuple[int, ...],
+        tolerance: int = 100,
+    ) -> bool:
+        """Check whether one line overlaps or closely meets opposite-side lines.
+
+        Arguments:
+            single_side: side containing one line
+            multi_side: side containing multiple lines
+            single_idx: single-side local line index
+            multi_idxs: multi-side local line indices
+            tolerance: allowed boundary separation in milliseconds
+        Returns:
+            whether the single subtitle aligns temporally with every line
+        """
+        single_start, single_end = single_side.times[single_idx]
+        return all(
+            min(single_end, multi_side.times[multi_idx][1]) + tolerance
+            >= max(single_start, multi_side.times[multi_idx][0])
+            for multi_idx in multi_idxs
+        )
 
     def _validate_message_coverage(self):
         """Validate that complete output represents every input line exactly once.

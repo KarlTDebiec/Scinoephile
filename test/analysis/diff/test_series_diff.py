@@ -329,14 +329,14 @@ def test_series_diff_represents_line_before_one_sided_span():
 
 
 def test_series_diff_represents_line_before_shifted_changed_span():
-    """Test lines before a shifted changed span are not dropped."""
+    """Test lines before a shifted changed span are aligned in place."""
     messages = SeriesDiff(
         get_text_series("a", "b"), get_text_series("a", "ab")
     ).get_messages(include_equal=True)
 
     assert [
         (message.kind, message.one_idxs, message.two_idxs) for message in messages
-    ] == [(LineDiffKind.INSERT, None, (0,)), (LineDiffKind.MERGE_EDIT, (0, 1), (1,))]
+    ] == [(LineDiffKind.EQUAL, (0,), (0,)), (LineDiffKind.EDIT, (1,), (1,))]
 
 
 def test_series_diff_represents_deleted_repeated_line_before_equal_lines():
@@ -434,6 +434,141 @@ def test_series_diff_reports_covered_edited_continuation_split():
     assert messages[0].two_idxs == (0, 1)
 
 
+def test_series_diff_reports_edited_split_with_shorter_suffix():
+    """Test punctuation and a shorter edited suffix preserve a wrapped match."""
+    diff = SeriesDiff(
+        get_text_series("只要你哋邊個出得多過十萬兩銀票咯，"),
+        get_text_series("只要你哋邊個出得多過", "十萬兩銀票喇喎"),
+    )
+
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.SPLIT_EDIT
+    assert messages[0].one_idxs == (0,)
+    assert messages[0].two_idxs == (0, 1)
+
+
+def test_series_diff_reports_edited_split_with_distributed_prefix():
+    """Test an edited line split after its short shared prefix stays paired."""
+    diff = SeriesDiff(
+        get_text_series("你放心呀，我哋有好多好靚好醒嘅姑娘㗎。"),
+        get_text_series("你放心！", "我仲有好多好靚好省鏡嘅姑娘嘅"),
+    )
+
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.SPLIT_EDIT
+    assert messages[0].one_idxs == (0,)
+    assert messages[0].two_idxs == (0, 1)
+
+
+@parametrize(
+    ("candidate_text", "reference_texts"),
+    [
+        ("嚟，攞去打賞畀條女啦，老爺。", ("嚟⋯擺去打賞畀呢度啲姑娘", "老爺")),
+        (
+            "不過老爺諗住阿燦一個咁就夠咁解啫。",
+            ("不過老爺諗住", "有阿燦一個咁就夠咁解啫"),
+        ),
+        ("有，攞嚟使住先。", ("有！", "拎嚟洗住先呀！")),
+        (
+            "雖然你休息咗兩個月，啲手腳就喐得下。",
+            ("雖然你抖咗兩個月", "手腳都叫做郁得吓！"),
+        ),
+        (
+            "順便返嚟就煲埋最後呢劑藥畀你飲下。",
+            ("順便返嚟就煲埋最後呢劑藥", "畀你飲呀吓"),
+        ),
+        ("有就攞嚟，嚟嚟嚟嚟嚟嚟嚟！做乜嘢？", ("有就拎嚟！嚟⋯", "做咩呀？")),
+        ("等我走咗你先唱。好啊。", ("等我走咗你先唱啦", "好喇")),
+    ],
+)
+def test_series_diff_reports_temporally_aligned_weak_split(
+    candidate_text: str, reference_texts: tuple[str, str]
+):
+    """Test timing preserves a split whose paraphrased text is weakly similar."""
+    diff = SeriesDiff(
+        get_text_series(candidate_text, start_ms=708, duration_ms=1600),
+        get_text_series(*reference_texts, duration_ms=700, step_ms=800),
+    )
+
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.SPLIT_EDIT
+    assert messages[0].one_idxs == (0,)
+    assert messages[0].two_idxs == (0, 1)
+
+
+def test_series_diff_pairs_punctuation_variant_contained_line():
+    """Test punctuation does not hide a contained implicit line match."""
+    messages = list(
+        SeriesDiff(
+            get_text_series("多謝，多謝，多謝，真係可憐⋯"), get_text_series("多謝⋯")
+        )
+    )
+
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.EDIT
+    assert messages[0].one_idxs == (0,)
+    assert messages[0].two_idxs == (0,)
+
+
+def test_series_diff_does_not_pair_punctuation_only_implicit_line():
+    """Test empty compact text does not become an implicit line match."""
+    messages = SeriesDiff(
+        get_text_series(".", "abc"), get_text_series("abc")
+    ).get_messages(include_equal=True)
+
+    assert [
+        (message.kind, message.one_idxs, message.two_idxs) for message in messages
+    ] == [(LineDiffKind.DELETE, (0,), None), (LineDiffKind.EQUAL, (1,), (0,))]
+
+
+def test_series_diff_realigns_line_after_edited_split():
+    """Test a split does not shift the next matching subtitle out of alignment."""
+    diff = SeriesDiff(
+        get_text_series(
+            "你放心呀，我哋有好多好靚好醒嘅姑娘㗎。",
+            "龜婆，咁今晚我就靠晒你喇。",
+            "我衰咗啊，",
+            "放肆！係",
+        ),
+        get_text_series(
+            "你放心！",
+            "我仲有好多好靚好省鏡嘅姑娘嘅",
+            "龜婆，咁今晚我就靠晒你喇",
+            "唔關我事嘅",
+            "大膽！放肆！",
+        ),
+    )
+
+    messages = diff.get_messages(include_equal=True)
+    assert messages[0].kind == LineDiffKind.SPLIT_EDIT
+    assert messages[0].one_idxs == (0,)
+    assert messages[0].two_idxs == (0, 1)
+    assert messages[1].kind == LineDiffKind.EDIT
+    assert messages[1].one_idxs == (1,)
+    assert messages[1].two_idxs == (2,)
+
+
+def test_series_diff_reports_repeated_wrapped_lines_separately():
+    """Test repeated lines are not collapsed into one wrapped match."""
+    messages = list(
+        SeriesDiff(
+            get_text_series("〝送给妈妈〞"),
+            get_text_series("「送给妈妈」", "「送给妈妈」", "「送给妈妈」"),
+        )
+    )
+
+    assert [
+        (message.kind, message.one_idxs, message.two_idxs) for message in messages
+    ] == [
+        (LineDiffKind.EDIT, (0,), (0,)),
+        (LineDiffKind.INSERT, None, (1,)),
+        (LineDiffKind.INSERT, None, (2,)),
+    ]
+
+
 def test_series_diff_reports_merge_edit():
     """Test many-to-one merge with edited text."""
     diff = SeriesDiff(get_text_series("alpha", "beta"), get_text_series("alpha betx"))
@@ -493,6 +628,46 @@ def test_series_diff_reports_shift():
     assert messages[0].kind == LineDiffKind.SHIFT
     assert messages[0].one_idxs == (0, 1)
     assert messages[0].two_idxs == (0, 1)
+
+
+def test_series_diff_reports_transitively_overlapping_shift():
+    """Test changed spans connected through an intermediate span are merged."""
+    diff = SeriesDiff(
+        get_text_series("係咁啊，皇上，", "依例最多判抄家咋喎。"),
+        get_text_series("係咁嘅話喇", "皇上，依例最多判抄家！"),
+    )
+
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.SHIFT
+    assert messages[0].one_idxs == (0, 1)
+    assert messages[0].two_idxs == (0, 1)
+
+
+def test_series_diff_includes_unchanged_line_inside_shift():
+    """Test an implicit match inside a changed span remains represented."""
+    diff = SeriesDiff(
+        get_text_series(
+            "晶晶係我娘子",
+            "仲有一個名叫紫霞嘅",
+            "你叫咗七百八十四次",
+            "七百八十四次",
+            "阿紫霞僅係掙你好多錢",
+        ),
+        get_text_series(
+            "正正系我",
+            "娘子，仲有一个名叫做紫霞",
+            "嘅，你叫咗七百八十四次。喂，",
+            "七百八十四",
+            "次，阿紫霞梗系争你好",
+        ),
+    )
+
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.SHIFT
+    assert messages[0].one_idxs == (0, 1, 2, 3, 4)
+    assert messages[0].two_idxs == (0, 1, 2, 3, 4)
 
 
 def test_series_diff_reports_split():
