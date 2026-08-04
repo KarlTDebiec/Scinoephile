@@ -343,9 +343,9 @@ class WhisperTranscriber(Transcriber):
             with get_temp_file_path(suffix=".wav") as temp_audio_path:
                 audio.export(temp_audio_path, format="wav")
                 sample_len = self._get_sample_len(audio)
-                logger.info(
-                    f"Limiting Whisper decoding to {sample_len} tokens for "
-                    f"{len(audio) / 1000:.2f}s of audio"
+                logger.debug(
+                    f"Using a {sample_len}-token Whisper decoding budget per window "
+                    f"for {len(audio) / 1000:.2f}s of audio"
                 )
                 result = whisper_timestamped.transcribe(
                     self.model,
@@ -364,6 +364,20 @@ class WhisperTranscriber(Transcriber):
         segments = [
             TranscribedSegment.model_validate(segment) for segment in result["segments"]
         ]
+        token_counts_by_seek: dict[int, int] = {}
+        for segment in segments:
+            if segment.tokens is None:
+                continue
+            token_counts_by_seek.setdefault(segment.seek, 0)
+            token_counts_by_seek[segment.seek] += len(segment.tokens)
+        limit_hit_count = sum(
+            token_count >= sample_len for token_count in token_counts_by_seek.values()
+        )
+        if limit_hit_count:
+            logger.info(
+                f"Whisper reached its {sample_len}-token decoding limit "
+                f"(affected windows: {limit_hit_count})"
+            )
         return self._normalize_transcription_segments(
             segments, source="whisper", cache_path=None, use_vad=settings.use_vad
         )
