@@ -56,6 +56,7 @@ __all__ = [
     "get_segment_merged",
     "get_segment_split_at_idx",
     "get_segment_split_on_whitespace",
+    "get_segment_split_on_word_timings",
 ]
 
 logger = getLogger(__name__)
@@ -226,3 +227,32 @@ def get_segment_split_on_whitespace(
         split_segments.append(nascent_segment)
 
     return split_segments
+
+
+def get_segment_split_on_word_timings(
+    segment: TranscribedSegment,
+) -> list[TranscribedSegment]:
+    """Split a transcribed segment into its individually timed words.
+
+    Arguments:
+        segment: transcribed segment to split
+    Returns:
+        transcribed segments split using word timings
+    """
+    if not segment.words:
+        return [segment]
+
+    return [
+        segment.model_copy(
+            update={
+                "id": word_idx,
+                "start": word.start,
+                "end": word.end,
+                "text": word.text,
+                "words": [word.model_copy(deep=True)],
+            },
+            deep=True,
+        )
+        for word_idx, word in enumerate(segment.words)
+        if word.text
+    ]

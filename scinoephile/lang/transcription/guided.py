@@ -42,6 +42,7 @@ from scinoephile.llms.punctuation import (
 from .aligner import TranscriptionAligner
 from .transcriber import (
     GuidedTranscriber,
+    MlxAudioTimingMode,
     TranscribedSegmentSplitter,
     TranscriptionBackend,
 )
@@ -189,6 +190,8 @@ def get_guided_transcriber(
     vad_mode: VADMode = VADMode.OFF,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
+    strip_generated_punctuation: bool = False,
+    mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     no_op: bool = False,
@@ -211,6 +214,9 @@ def get_guided_transcriber(
         vad_mode: voice activity detection mode
         cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching generated cache files
+        strip_generated_punctuation: whether to remove generated sentence
+            punctuation after timing and before guided alignment
+        mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         no_op: use neutral answers instead of querying an LLM
@@ -320,5 +326,7 @@ def get_guided_transcriber(
         cache_root_path=cache_root_path,
         overwrite_cache=overwrite_cache,
         mlx_audio_transcriber=mlx_audio_transcriber,
+        mlx_audio_timing_mode=mlx_audio_timing_mode,
         segment_splitter=language_spec.segment_splitter,
+        strip_generated_punctuation=strip_generated_punctuation,
     )
