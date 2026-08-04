@@ -21,7 +21,7 @@ dependencies = [
     "jieba>=0.42.1",
     "numba>=0.66.0",
     "numpy>=2.4.6",
-    "openai>=2.48.0",
+    "openai>=2.50.0",
     "opencc>=1.4.1",
     "pillow>=12.3.0",
     "pycantonese>=5.0.0",
@@ -49,7 +49,7 @@ ocr-cuda = [
 ]
 transcription = [
     "demucs-infer>=4.2.2",
-    "huggingface-hub>=1.24.0",
+    "huggingface-hub>=1.25.1",
     "mlx-audio @ git+https://github.com/ailuntx/mlx-audio@ff0197c0ae9f9fd02072904c696f2533e329c06e ; platform_machine == 'arm64' and sys_platform == 'darwin'",
     "onnxruntime>=1.28.0",
     "torch>=2.10.0",
@@ -78,7 +78,7 @@ dev = [
     "pytest-github-actions-annotate-failures>=0.4.2",
     "pytest-xdist>=3.8.0",
     "ruff>=0.16.0",
-    "ty>=0.0.61",
+    "ty>=0.0.64",
 ]
 
 [tool.pytest.ini_options]

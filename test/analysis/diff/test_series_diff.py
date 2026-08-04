@@ -513,6 +513,17 @@ def test_series_diff_pairs_punctuation_variant_contained_line():
     assert messages[0].two_idxs == (0,)
 
 
+def test_series_diff_does_not_pair_punctuation_only_implicit_line():
+    """Test empty compact text does not become an implicit line match."""
+    messages = SeriesDiff(
+        get_text_series(".", "abc"), get_text_series("abc")
+    ).get_messages(include_equal=True)
+
+    assert [
+        (message.kind, message.one_idxs, message.two_idxs) for message in messages
+    ] == [(LineDiffKind.DELETE, (0,), None), (LineDiffKind.EQUAL, (1,), (0,))]
+
+
 def test_series_diff_realigns_line_after_edited_split():
     """Test a split does not shift the next matching subtitle out of alignment."""
     diff = SeriesDiff(

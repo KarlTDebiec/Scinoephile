@@ -186,7 +186,7 @@ class Transcriber(ABC):
                 continue
             cache_path, segments = cached_transcription
             segments = self._prepare_cached_segments(segments, cache_path, settings)
-            if is_usable is None or is_usable(segments):
+            if segments and (is_usable is None or is_usable(segments)):
                 return segments, rejected_settings
             rejected_settings.add(settings)
         return None, rejected_settings

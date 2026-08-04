@@ -238,8 +238,28 @@ def test_empty_failures_are_cached(tmp_path: Path):
 
     expected_calls = [(audio, vad_settings), (audio, no_vad_settings)]
     assert transcriber.calls == expected_calls
-    assert transcriber(audio, is_usable=bool) == []
+    assert transcriber(audio) == []
     assert transcriber.calls == expected_calls
+
+
+def test_cached_empty_attempt_does_not_shadow_cached_fallback(tmp_path: Path):
+    """Test an empty preferred cache advances to a successful fallback.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    audio = AudioSegment.silent(duration=100)
+    vad_settings = TranscriptionPreprocessingSettings(False, True)
+    no_vad_settings = TranscriptionPreprocessingSettings(False, False)
+    expected_segments = [_get_segment("fallback")]
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VADMode.AUTO)
+    transcriber._cache.save(audio, transcriber._get_cache_metadata(vad_settings), [])
+    transcriber._cache.save(
+        audio, transcriber._get_cache_metadata(no_vad_settings), expected_segments
+    )
+
+    assert transcriber(audio) == expected_segments
+    assert transcriber.calls == []
 
 
 def test_rejected_cached_configuration_takes_precedence_over_other_error(

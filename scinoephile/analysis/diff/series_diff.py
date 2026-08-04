@@ -110,7 +110,7 @@ class SeriesDiff:
             two: second subtitle series
             one_lbl: label for first series in messages
             two_lbl: label for second series in messages
-            similarity_cutoff: similarity cutoff for many-to-many shifted text
+            similarity_cutoff: similarity cutoff for line and span pairing
             max_alignment_cells: max dynamic programming cells for block alignment
         """
         self.one_lbl = one_lbl
@@ -924,7 +924,7 @@ class SeriesDiff:
             needle: text to search for
             haystack: text that may contain the needle text
         Returns:
-            best similarity against a same-length haystack substring
+            best similarity against a nearby-length haystack substring
         """
         if not needle or not haystack:
             return 0.0
@@ -962,10 +962,12 @@ class SeriesDiff:
         ).ratio()
         one_compact = remove_punc_and_whitespace(one_text)
         two_compact = remove_punc_and_whitespace(two_text)
-        if len(one_compact) <= len(two_compact):
-            substring_ratio = 1.0 if one_compact in two_compact else 0.0
-        else:
-            substring_ratio = 1.0 if two_compact in one_compact else 0.0
+        substring_ratio = 0.0
+        if one_compact and two_compact:
+            if len(one_compact) <= len(two_compact):
+                substring_ratio = 1.0 if one_compact in two_compact else 0.0
+            else:
+                substring_ratio = 1.0 if two_compact in one_compact else 0.0
         return max(full_ratio, substring_ratio)
 
     def _split_uncovered_multiline_spans(
@@ -1166,10 +1168,13 @@ class SeriesDiff:
         """
         positions = [0, 0]
         for span in spans:
-            starts = [
-                line_idxs[0] if line_idxs else positions[position]
-                for position, line_idxs in enumerate(span)
-            ]
+            starts = []
+            for position, line_idxs in enumerate(span):
+                if line_idxs:
+                    start = line_idxs[0]
+                else:
+                    start = positions[position]
+                starts.append(start)
             gaps: _LineSpan = (
                 tuple(range(positions[0], starts[0])),
                 tuple(range(positions[1], starts[1])),
@@ -1322,13 +1327,20 @@ class SeriesDiff:
         Returns:
             changed spans with enclosed local line indices included
         """
-        return [
-            (
-                tuple(range(one_idxs[0], one_idxs[-1] + 1)) if one_idxs else (),
-                tuple(range(two_idxs[0], two_idxs[-1] + 1)) if two_idxs else (),
-            )
-            for one_idxs, two_idxs in spans
-        ]
+        filled: list[_LineSpan] = []
+        for one_idxs, two_idxs in spans:
+            filled_one_idxs: _LineIndexes
+            if one_idxs:
+                filled_one_idxs = tuple(range(one_idxs[0], one_idxs[-1] + 1))
+            else:
+                filled_one_idxs = ()
+            filled_two_idxs: _LineIndexes
+            if two_idxs:
+                filled_two_idxs = tuple(range(two_idxs[0], two_idxs[-1] + 1))
+            else:
+                filled_two_idxs = ()
+            filled.append((filled_one_idxs, filled_two_idxs))
+        return filled
 
     def _should_merge_adjacent_one_sided_spans(
         self,

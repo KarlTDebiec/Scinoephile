@@ -15,7 +15,7 @@ from scinoephile.core.subtitles import Series
 
 __all__ = [
     "OpenCCConfig",
-    "S2T_EXCLUSIONS",
+    "S2HK_EXCLUSIONS",
     "SIMPLIFIED_CONFIGS",
     "T2S_EXCLUSIONS",
     "TRADITIONAL_CONFIGS",
@@ -25,7 +25,7 @@ __all__ = [
     "get_zho_text_converted",
 ]
 
-S2T_EXCLUSIONS: set[str] = {
+S2HK_EXCLUSIONS: set[str] = {
     "吓",  # 嚇
     "响",  # 響
     "床",  # 牀
@@ -37,7 +37,7 @@ S2T_EXCLUSIONS: set[str] = {
     "說",  # 説
     "郁",  # 鬱
 }
-"""Cantonese text spans to preserve when converting toward traditional."""
+"""Text spans to preserve when converting simplified Chinese toward Hong Kong."""
 
 T2S_EXCLUSIONS: set[str] = {
     "劏",  # 㓥
@@ -182,8 +182,8 @@ def get_zho_text_converted(
 
     if apply_exclusions and config in SIMPLIFIED_CONFIGS:
         return _get_zho_text_converted_with_exclusions(text, converter, T2S_EXCLUSIONS)
-    if apply_exclusions and config in TRADITIONAL_CONFIGS:
-        return _get_zho_text_converted_with_exclusions(text, converter, S2T_EXCLUSIONS)
+    if apply_exclusions and config == OpenCCConfig.s2hk:
+        return _get_zho_text_converted_with_exclusions(text, converter, S2HK_EXCLUSIONS)
     return converter.convert(text)
 
 

@@ -42,6 +42,8 @@ _MIN_SAMPLE_LEN = 32
 
 if TYPE_CHECKING:
     from pydub import AudioSegment
+    from torch import Tensor
+    from whisper.decoding import DecodingOptions, DecodingResult
 
     from scinoephile.core.dependencies.transcription import WhisperModel
 
@@ -347,15 +349,43 @@ class WhisperTranscriber(Transcriber):
                     f"Using a {sample_len}-token Whisper decoding budget per window "
                     f"for {len(audio) / 1000:.2f}s of audio"
                 )
-                result = whisper_timestamped.transcribe(
-                    self.model,
-                    str(temp_audio_path),
-                    language=self.language,
-                    vad=settings.use_vad,
-                    temperature=self.temperature,
-                    condition_on_previous_text=self.condition_on_previous_text,
-                    sample_len=sample_len,
-                )
+                model = self.model
+                decode_is_instance_attribute = "decode" in vars(model)
+                decode = model.decode
+                exhausted_windows: list[Tensor] = []
+
+                def decode_with_limit_tracking(
+                    mel: Tensor, options: DecodingOptions, **kwargs: object
+                ) -> DecodingResult | list[DecodingResult]:
+                    """Decode a window and record whether it exhausts its budget."""
+                    decode_result = decode(mel, options, **kwargs)
+                    decode_results = (
+                        decode_result
+                        if isinstance(decode_result, list)
+                        else [decode_result]
+                    )
+                    if any(
+                        len(result.tokens) >= sample_len for result in decode_results
+                    ) and all(mel is not window for window in exhausted_windows):
+                        exhausted_windows.append(mel)
+                    return decode_result
+
+                setattr(model, "decode", decode_with_limit_tracking)
+                try:
+                    result = whisper_timestamped.transcribe(
+                        model,
+                        str(temp_audio_path),
+                        language=self.language,
+                        vad=settings.use_vad,
+                        temperature=self.temperature,
+                        condition_on_previous_text=self.condition_on_previous_text,
+                        sample_len=sample_len,
+                    )
+                finally:
+                    if decode_is_instance_attribute:
+                        setattr(model, "decode", decode)
+                    else:
+                        delattr(model, "decode")
         except AssertionError as exc:
             raise TranscriptionInferenceError(
                 f"Whisper inference failed with an assertion: {exc}"
@@ -364,15 +394,7 @@ class WhisperTranscriber(Transcriber):
         segments = [
             TranscribedSegment.model_validate(segment) for segment in result["segments"]
         ]
-        token_counts_by_seek: dict[int, int] = {}
-        for segment in segments:
-            if segment.tokens is None:
-                continue
-            token_counts_by_seek.setdefault(segment.seek, 0)
-            token_counts_by_seek[segment.seek] += len(segment.tokens)
-        limit_hit_count = sum(
-            token_count >= sample_len for token_count in token_counts_by_seek.values()
-        )
+        limit_hit_count = len(exhausted_windows)
         if limit_hit_count:
             logger.info(
                 f"Whisper reached its {sample_len}-token decoding limit "

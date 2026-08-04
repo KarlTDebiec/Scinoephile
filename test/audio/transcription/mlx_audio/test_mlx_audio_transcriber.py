@@ -612,7 +612,7 @@ def test_transcribe_rejects_low_information_vocalizations(
     )
     transcriber.ctc_aligner = Mock(model_name="ctc/test-model")
 
-    with pytest.raises(TranscriptionError, match="low-information"):
+    with pytest.raises(TranscriptionEmptyError, match="low-information"):
         transcriber.transcribe(AudioSegment.silent(duration=1000))
 
     transcriber.ctc_aligner.assert_not_called()

@@ -12,7 +12,7 @@ from pydub import AudioSegment
 from pydub.generators import Sine
 from pytest import LogCaptureFixture, approx, raises
 
-from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
+from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle, get_sub_split_at_idx
 from scinoephile.audio.transcription import (
     DemucsMode,
     MlxAudioTranscriber,
@@ -39,8 +39,8 @@ def _get_transcriber(
     demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.OFF,
     overwrite_cache: bool = False,
-    strip_generated_punctuation: bool = False,
     mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
+    strip_generated_punctuation: bool = False,
 ) -> tuple[GuidedTranscriber, Mock]:
     """Get a transcriber with a passthrough alignment mock.
 
@@ -49,9 +49,9 @@ def _get_transcriber(
         demucs_mode: Demucs preprocessing mode
         vad_mode: Whisper VAD mode
         overwrite_cache: whether to replace matching transcription cache files
+        mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
         strip_generated_punctuation: whether to remove generated punctuation before
             guided alignment
-        mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
     Returns:
         transcriber and alignment mock
     """
@@ -501,7 +501,77 @@ def test_process_block_applies_configured_segment_splitter():
     assert [subtitle.text for subtitle in transcription] == ["one", "two"]
 
 
-def test_process_block_splits_mlx_audio_segments_on_word_timings():
+def test_process_block_strips_generated_punctuation_after_timing():
+    """Test guided alignment can omit sentence but retain lexical punctuation."""
+    transcriber, aligner = _get_transcriber(strip_generated_punctuation=True)
+    audio_block = AudioSeries(
+        audio=AudioSegment.silent(duration=1000),
+        events=[AudioSubtitle(start=0, end=1000, text="reference")],
+    )
+    audio_block.buffered_start = 0
+    reference_block = Series(events=[Subtitle(start=0, end=1000, text="reference")])
+    segment = _get_segment(text="你好！0.01、don't、re-entry，", with_words=True)
+
+    with patch.object(transcriber, "_transcribe_block_audio", return_value=[segment]):
+        transcriber.process_block(audio_block, reference_block)
+
+    transcription = aligner.align.call_args.args[1]
+    assert [subtitle.text for subtitle in transcription] == ["你好0.01don'tre-entry"]
+    assert transcription[0].segment.text == transcription[0].text
+    assert [word.text for word in transcription[0].segment.words or []] == [
+        "你好0.01don'tre-entry"
+    ]
+
+
+def test_process_block_synchronizes_stripped_punctuation_with_word_timings():
+    """Test stripped text indexes continue to target matching timed characters."""
+    transcriber, aligner = _get_transcriber(
+        backend=TranscriptionBackend.MLX_AUDIO,
+        mlx_audio_timing_mode=MlxAudioTimingMode.SEGMENT,
+        strip_generated_punctuation=True,
+    )
+    audio_block = AudioSeries(
+        audio=AudioSegment.silent(duration=1000),
+        events=[AudioSubtitle(start=0, end=1000, text="reference")],
+    )
+    audio_block.buffered_start = 0
+    reference_block = Series(events=[Subtitle(start=0, end=1000, text="reference")])
+    text = "甲，乙丙"
+    segment = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.1,
+        end=0.5,
+        text=text,
+        words=[
+            TranscribedWord(
+                text=character,
+                start=(word_idx + 1) / 10,
+                end=(word_idx + 2) / 10,
+                confidence=1.0,
+            )
+            for word_idx, character in enumerate(text)
+        ],
+    )
+
+    with patch.object(transcriber, "_transcribe_block_audio", return_value=[segment]):
+        transcriber.process_block(audio_block, reference_block)
+
+    subtitle = aligner.align.call_args.args[1][0]
+    assert subtitle.text == "甲乙丙"
+    assert subtitle.segment.text == subtitle.text
+    assert "".join(word.text for word in subtitle.segment.words or []) == subtitle.text
+
+    first, second = get_sub_split_at_idx(subtitle, 2)
+    assert first.text == first.segment.text == "甲乙"
+    assert "".join(word.text for word in first.segment.words or []) == "甲乙"
+    assert first.end == 400
+    assert second.text == second.segment.text == "丙"
+    assert "".join(word.text for word in second.segment.words or []) == "丙"
+    assert second.start == 400
+
+
+def test_process_block_splits_mlx_audio_segments_on_ctc_unit_timings():
     """Test MLX-Audio CTC timing units reach reference-guided alignment."""
     transcriber, aligner = _get_transcriber(backend=TranscriptionBackend.MLX_AUDIO)
     audio_block = AudioSeries(
@@ -540,6 +610,40 @@ def test_process_block_splits_mlx_audio_segments_on_word_timings():
     alignment = TranscriptionAlignment(reference_block, transcription)
     assert alignment.sync_groups == [([0], [0]), ([1], [1])]
 
+
+def test_process_block_retains_complete_mlx_audio_segments():
+    """Test segment timing mode retains MLX-Audio segment granularity."""
+    transcriber, aligner = _get_transcriber(
+        backend=TranscriptionBackend.MLX_AUDIO,
+        mlx_audio_timing_mode=MlxAudioTimingMode.SEGMENT,
+    )
+    audio_block = AudioSeries(
+        audio=AudioSegment.silent(duration=1000),
+        events=[AudioSubtitle(start=0, end=1000, text="reference")],
+    )
+    audio_block.buffered_start = 0
+    reference_block = Series(events=[Subtitle(start=0, end=1000, text="參考")])
+    segment = TranscribedSegment(
+        id=4,
+        seek=0,
+        start=0.1,
+        end=0.8,
+        text="甲乙",
+        words=[
+            TranscribedWord(text="甲", start=0.1, end=0.2, confidence=1.0),
+            TranscribedWord(text="乙", start=0.7, end=0.8, confidence=1.0),
+        ],
+    )
+
+    with patch.object(transcriber, "_transcribe_block_audio", return_value=[segment]):
+        transcriber.process_block(audio_block, reference_block)
+
+    transcription = aligner.align.call_args.args[1]
+    assert [subtitle.text for subtitle in transcription] == ["甲乙"]
+    assert [(subtitle.start, subtitle.end) for subtitle in transcription] == [
+        (100, 800)
+    ]
+    assert transcription[0].segment.id == 0
 
 def test_process_block_groups_mlx_audio_segments_on_phrase_timings():
     """Test phrase timing groups use punctuation before it may be stripped."""
