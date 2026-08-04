@@ -15,6 +15,7 @@ from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.transcriber import (
     GuidedTranscriber,
+    MlxAudioTimingMode,
     TranscriptionBackend,
 )
 from scinoephile.workflows.transcription import transcribe_series_guided
@@ -44,6 +45,8 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
             backend=TranscriptionBackend.MLX_AUDIO,
             cache_root_path=tmp_path / "cache",
             overwrite_cache=True,
+            strip_generated_punctuation=True,
+            mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
             no_op=True,
             prune_test_cases=True,
             delineation_json_path=delineation_json_path,
@@ -61,6 +64,11 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
     )
     assert get_transcriber.call_args.kwargs["cache_root_path"] == tmp_path / "cache"
     assert get_transcriber.call_args.kwargs["overwrite_cache"] is True
+    assert get_transcriber.call_args.kwargs["strip_generated_punctuation"] is True
+    assert (
+        get_transcriber.call_args.kwargs["mlx_audio_timing_mode"]
+        is MlxAudioTimingMode.PHRASE
+    )
     assert get_transcriber.call_args.kwargs["no_op"] is True
     assert get_transcriber.call_args.kwargs["prune_test_cases"] is True
     assert (

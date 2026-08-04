@@ -17,7 +17,10 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.lang.transcription.guided import DEFAULT_SPECS, get_guided_transcriber
-from scinoephile.lang.transcription.transcriber import TranscriptionBackend
+from scinoephile.lang.transcription.transcriber import (
+    MlxAudioTimingMode,
+    TranscriptionBackend,
+)
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHant,
@@ -158,6 +161,8 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
             Language.zho_hans,
             backend=TranscriptionBackend.MLX_AUDIO,
             cache_root_path=tmp_path,
+            strip_generated_punctuation=True,
+            mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
             provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
             delineation_json_path=tmp_path / "delineation.json",
             punctuation_json_path=tmp_path / "punctuation.json",
@@ -170,6 +175,8 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
     assert transcriber.transcriber is mlx_audio_transcriber
     assert transcriber.recovery_transcriber is None
     assert transcriber.tail_recovery_transcriber is None
+    assert transcriber.strip_generated_punctuation
+    assert transcriber.mlx_audio_timing_mode is MlxAudioTimingMode.PHRASE
     mlx_audio_transcriber_class.assert_called_once_with(
         model_name=MIMO_MODEL_NAME,
         language=Language.yue_hant,
