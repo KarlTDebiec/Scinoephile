@@ -37,7 +37,7 @@ S2T_EXCLUSIONS: set[str] = {
     "說",  # 説
     "郁",  # 鬱
 }
-"""Cantonese text spans to preserve when converting toward traditional."""
+"""Text spans to preserve when converting toward traditional."""
 
 T2S_EXCLUSIONS: set[str] = {
     "劏",  # 㓥

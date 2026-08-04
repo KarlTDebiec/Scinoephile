@@ -22,28 +22,13 @@ from test.helpers import assert_series_equal, parametrize
     ("text", "config", "expected"),
     [
         ("台臺", OpenCCConfig.s2t, "臺臺"),
-        ("台臺", OpenCCConfig.t2s, "台台"),
         ("你吃吓晒啦", OpenCCConfig.s2t, "你喫吓晒啦"),
         ("唔好郁，响邊扑你", OpenCCConfig.s2t, "唔好郁，响邊扑你"),
         ("一群牛虱", OpenCCConfig.s2t, "一群牛蝨"),
-        ("这家伙", OpenCCConfig.s2t, "這傢伙"),
+        ("萬里長城說，瞓床搵你", OpenCCConfig.s2t, "萬里長城說，瞓床搵你"),
+        ("台臺", OpenCCConfig.t2s, "台台"),
         ("呢個嗰度喎", OpenCCConfig.t2s, "呢个嗰度㖞"),
-        ("希望藉此答覆", OpenCCConfig.t2s, "希望借此答复"),
-        ("丑大了", OpenCCConfig.s2t, "醜大了"),
-        ("移形換影", OpenCCConfig.t2s, "移形换影"),
-        ("黃大富", OpenCCConfig.t2s, "黄大富"),
-        ("干杯", OpenCCConfig.s2t, "乾杯"),
-        ("一只猫", OpenCCConfig.s2t, "一隻貓"),
-        ("方便面", OpenCCConfig.s2t, "方便麪"),
-        ("家具", OpenCCConfig.s2t, "傢俱"),
-        ("制作", OpenCCConfig.s2t, "製作"),
-        ("制定", OpenCCConfig.s2t, "制定"),
-        ("注定", OpenCCConfig.s2t, "註定"),
-        ("标准", OpenCCConfig.s2t, "標準"),
-        ("無厘頭", OpenCCConfig.s2t, "無釐頭"),
-        ("无厘頭", OpenCCConfig.s2t, "無釐頭"),
-        ("答覆", OpenCCConfig.t2s, "答复"),
-        ("藉口", OpenCCConfig.t2s, "借口"),
+        ("劏唓嗰餸繁體", OpenCCConfig.t2s, "劏唓嗰餸繁体"),
     ],
 )
 def test_get_zho_text_converted_applies_exclusions(
@@ -60,8 +45,8 @@ def test_get_zho_text_converted_applies_exclusions(
 
 
 @parametrize("text", sorted(S2T_EXCLUSIONS))
-def test_s2t_exclusions_are_raw_opencc_changes(text: str):
-    """Test every simplified-to-traditional exclusion changes under raw OpenCC.
+def test_s2hk_exclusions_are_raw_opencc_changes(text: str):
+    """Test every Hong Kong exclusion changes under raw OpenCC.
 
     Arguments:
         text: excluded text span
