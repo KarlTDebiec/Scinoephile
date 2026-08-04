@@ -20,6 +20,7 @@ from .ctc_aligner import CtcAligner
 from .demucs import DemucsSeparator
 from .exceptions import (
     TranscriptionAlignmentError,
+    TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,
     TranscriptionError,
     TranscriptionInferenceError,
@@ -44,6 +45,7 @@ __all__ = [
     "TranscribedWord",
     "Transcriber",
     "TranscriptionAlignmentError",
+    "TranscriptionAlignmentIncompleteError",
     "TranscriptionCache",
     "TranscriptionEmptyError",
     "TranscriptionError",

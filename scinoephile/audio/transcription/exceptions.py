@@ -8,6 +8,7 @@ from scinoephile.core.exceptions import ScinoephileError
 
 __all__ = [
     "TranscriptionAlignmentError",
+    "TranscriptionAlignmentIncompleteError",
     "TranscriptionEmptyError",
     "TranscriptionError",
     "TranscriptionInferenceError",
@@ -20,6 +21,10 @@ class TranscriptionError(ScinoephileError):
 
 class TranscriptionAlignmentError(TranscriptionError):
     """Raised when transcription output cannot be timestamp-aligned."""
+
+
+class TranscriptionAlignmentIncompleteError(TranscriptionAlignmentError):
+    """Raised when CTC alignment cannot consume every transcript token."""
 
 
 class TranscriptionEmptyError(TranscriptionError):

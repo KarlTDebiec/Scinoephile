@@ -12,7 +12,11 @@ import numpy as np
 import pytest
 from pydub import AudioSegment
 
-from scinoephile.audio.transcription import CtcAligner, TranscriptionAlignmentError
+from scinoephile.audio.transcription import (
+    CtcAligner,
+    TranscriptionAlignmentError,
+    TranscriptionAlignmentIncompleteError,
+)
 from scinoephile.core import Language
 
 
@@ -153,7 +157,9 @@ def test_ctc_best_path_requires_blank_between_repeated_labels():
     """Test adjacent repeated labels cannot advance on consecutive frames."""
     log_probs = np.log(np.array([[0.01, 0.99], [0.01, 0.99]]))
 
-    with pytest.raises(TranscriptionAlignmentError, match="did not reach all tokens"):
+    with pytest.raises(
+        TranscriptionAlignmentIncompleteError, match="did not reach all tokens"
+    ):
         CtcAligner._get_best_path(log_probs, [1, 1], 0)
 
 

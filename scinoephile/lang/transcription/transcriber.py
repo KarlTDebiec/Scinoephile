@@ -142,7 +142,7 @@ class GuidedTranscriber:
         aligner: TranscriptionAligner,
         backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
         demucs_mode: DemucsMode = DemucsMode.AUTO,
-        vad_mode: VADMode = VADMode.AUTO,
+        vad_mode: VADMode = VADMode.OFF,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
         mlx_audio_transcriber: MlxAudioTranscriber | None = None,

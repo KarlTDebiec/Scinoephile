@@ -222,7 +222,7 @@ class TranscribeCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--vad",
-            default=VADMode.AUTO,
+            default=VADMode.OFF,
             dest="vad_mode",
             metavar=enum_metavar(VADMode),
             type=enum_arg(VADMode),
