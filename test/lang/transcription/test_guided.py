@@ -92,7 +92,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.guide_language is Language.zho_hans
     assert transcriber.backend is TranscriptionBackend.WHISPER
     assert transcriber.demucs_mode is DemucsMode.AUTO
-    assert transcriber.vad_mode is VADMode.AUTO
+    assert transcriber.vad_mode is VADMode.OFF
     assert not hasattr(transcriber, "overwrite_cache")
     assert not hasattr(transcriber, "cache_root_path")
     assert transcriber.whisper_language == "yue"
@@ -107,7 +107,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     )
     assert transcriber.transcriber.language == "yue"
     assert transcriber.transcriber.demucs_mode is DemucsMode.AUTO
-    assert transcriber.transcriber.vad_mode is VADMode.AUTO
+    assert transcriber.transcriber.vad_mode is VADMode.OFF
     assert transcriber.recovery_transcriber is not None
     assert transcriber.tail_recovery_transcriber is not None
     assert not hasattr(transcriber.transcriber, "cache_root_path")
@@ -174,7 +174,7 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
         model_name=MIMO_MODEL_NAME,
         language=Language.yue_hant,
         demucs_mode=DemucsMode.AUTO,
-        vad_mode=VADMode.AUTO,
+        vad_mode=VADMode.OFF,
         cache_root_path=tmp_path,
         overwrite_cache=False,
     )
