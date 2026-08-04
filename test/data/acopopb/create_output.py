@@ -107,9 +107,9 @@ actions = {
     # "zho-Hant_ocr",
     # "yue-Hans_eng",
     # "zho-Hans_eng",
-    "yue-Hant_transcribe_vad_auto_phrase_timing",
+    # "yue-Hant_transcribe_vad_auto_phrase_timing",
     # "yue-Hant_transcribe_advisory_delineation",
-    "yue-Hant_transcribe_vad_auto_gated_advisory_delineation",
+    "yue-Hant_transcribe_gated_advisory_delineation"
     # "yue-Hant_transcribe_pairwise",
     # "yue-Hant_transcribe_candidate_delineation",
     # "yue-Hant_transcribe_positional_punctuation",
@@ -261,8 +261,8 @@ if "yue-Hant_transcribe_gated_advisory_delineation" in actions:
         mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
         vad_mode=VADMode.OFF,
         transcription_names=transcription_names,
-        transcription_overwrite=True,
-        run_merge_and_translation=False,
+        transcription_overwrite=False,
+        run_merge_and_translation=True,
         overwrite=True,
     )
 if "yue-Hant_transcribe_vad_auto_phrase_timing" in actions:

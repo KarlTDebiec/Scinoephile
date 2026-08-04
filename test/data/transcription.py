@@ -19,6 +19,11 @@ from scinoephile.audio.transcription.mlx_audio.backend import (
     QWEN3_ASR_MODEL_NAME,
 )
 from scinoephile.core import Language, ScinoephileError
+from scinoephile.core.llms import LLMProvider
+from scinoephile.core.llms.usage import (
+    format_chat_completion_metrics_report,
+    save_chat_completion_metrics_to_json,
+)
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.transcriber import (
@@ -28,6 +33,7 @@ from scinoephile.lang.transcription.transcriber import (
     TranscriptionAlignmentMode,
     TranscriptionBackend,
 )
+from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.helpers import resolve_language
 from scinoephile.workflows.review import review_series_guided, review_series_multi
 from scinoephile.workflows.transcription import transcribe_series_guided
@@ -339,7 +345,7 @@ def process_transcription_multi_review(
     return reviewed
 
 
-def process_transcription_pipeline(
+def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
     title_root_path: Path,
     guide_path: Path,
     *,
@@ -353,6 +359,8 @@ def process_transcription_pipeline(
     stream_index: int | None = None,
     stop_at_idx: int | None = None,
     additional_context: str | None = None,
+    provider: LLMProvider | None = None,
+    llm_usage_path: Path | None = None,
     reviewer_kw: dict[str, Any] | None = None,
     translator_kw: dict[str, Any] | None = None,
     transcription_no_op: bool = False,
@@ -391,6 +399,9 @@ def process_transcription_pipeline(
         stop_at_idx: exclusive guide block index at which to stop processing
         additional_context: additional context shared by transcription, merge, and
           gap-translation LLM prompts
+        provider: shared LLM provider, or None to construct the default provider
+        llm_usage_path: detailed completion-usage JSON path; defaults to
+          `output_dir_path/json/llm_usage.json`
         reviewer_kw: additional keyword arguments for the multi-source merge
         translator_kw: additional keyword arguments for gap translation
         transcription_no_op: whether delineation and punctuation should use neutral
@@ -429,6 +440,16 @@ def process_transcription_pipeline(
     output_dir_path.mkdir(parents=True, exist_ok=True)
     if audio_dir_path is None:
         audio_dir_path = output_dir_path / "audio"
+    if provider is None:
+        provider = get_provider()
+    initial_completion_count = len(provider.get_completion_metrics())
+    if llm_usage_path is None:
+        llm_usage_path = output_dir_path / "json" / "llm_usage.json"
+
+    reviewer_kw = dict(reviewer_kw or {})
+    reviewer_kw.setdefault("provider", provider)
+    translator_kw = dict(translator_kw or {})
+    translator_kw.setdefault("provider", provider)
 
     transcription_runs: dict[str, dict[str, Any]] = {
         "whisper": {
@@ -437,6 +458,7 @@ def process_transcription_pipeline(
             "no_op": transcription_no_op,
             "punctuate": punctuate_sources,
             "prune_test_cases": stop_at_idx is None,
+            "provider": provider,
             "vad_mode": vad_mode,
         },
         "mimo": {
@@ -448,6 +470,7 @@ def process_transcription_pipeline(
             "no_op": transcription_no_op,
             "punctuate": punctuate_sources,
             "prune_test_cases": stop_at_idx is None,
+            "provider": provider,
             "vad_mode": vad_mode,
         },
         "qwen": {
@@ -459,6 +482,7 @@ def process_transcription_pipeline(
             "no_op": transcription_no_op,
             "punctuate": punctuate_sources,
             "prune_test_cases": stop_at_idx is None,
+            "provider": provider,
             "vad_mode": vad_mode,
         },
     }
@@ -485,10 +509,11 @@ def process_transcription_pipeline(
         raise ValueError(f"Unsupported transcription sources: {unsupported_names_text}")
 
     source_paths: dict[str, Path] = {}
+    sources: dict[str, Series] = {}
     for transcription_name in transcription_names:
         transcription_kw = transcription_runs[transcription_name]
         model_dir_path = output_dir_path / transcription_name
-        process_transcription(
+        sources[transcription_name] = process_transcription(
             title_root_path,
             guide_path,
             reference_path=reference_path,
@@ -511,6 +536,11 @@ def process_transcription_pipeline(
         )
 
     if not run_merge_and_translation:
+        _save_llm_usage(
+            provider,
+            initial_completion_count=initial_completion_count,
+            output_path=llm_usage_path,
+        )
         logger.info(
             f"Stopped transcription pipeline before merge under {output_dir_path}"
         )
@@ -537,7 +567,6 @@ def process_transcription_pipeline(
         overwrite=overwrite,
     )
 
-    translator_kw = dict(translator_kw or {})
     if additional_context is not None:
         translator_kw.setdefault("additional_context", additional_context)
     # Gap translation detects absent timed events, so omit explicit blank merge cues
@@ -562,6 +591,25 @@ def process_transcription_pipeline(
 
     simplify_path = output_dir_path / "merge_translate_simplify.srt"
     simplified = load_or_simplify_series(translated, simplify_path, overwrite)
+    cer_by_stage = {
+        **{
+            source_name: SeriesCER(evaluation_reference, source)
+            for source_name, source in sources.items()
+        },
+        "merge": SeriesCER(evaluation_reference, merged),
+        "merge_translate": SeriesCER(evaluation_reference, translated),
+    }
+    logger.info(
+        "Transcription pipeline CER summary:\n"
+        + "\n\n".join(
+            f"{stage_name}:\n{cer}" for stage_name, cer in cer_by_stage.items()
+        )
+    )
+    _save_llm_usage(
+        provider,
+        initial_completion_count=initial_completion_count,
+        output_path=llm_usage_path,
+    )
     logger.info(f"Saved merged transcription outputs under {output_dir_path}")
     return simplified
 
@@ -785,6 +833,22 @@ def _relog_cantonese_transcription_mismatch(language: Language) -> Iterator[None
         yield
     finally:
         language_logger.removeFilter(mismatch_filter)
+
+
+def _save_llm_usage(
+    provider: LLMProvider, *, initial_completion_count: int, output_path: Path
+):
+    """Persist and log completion metrics generated during one pipeline invocation.
+
+    Arguments:
+        provider: shared provider used throughout the pipeline
+        initial_completion_count: provider metric count before the pipeline began
+        output_path: detailed completion-usage JSON path
+    """
+    completion_metrics = provider.get_completion_metrics()[initial_completion_count:]
+    save_chat_completion_metrics_to_json(output_path, completion_metrics)
+    logger.info(format_chat_completion_metrics_report(completion_metrics))
+    logger.info(f"Saved LLM completion usage to {output_path}")
 
 
 def _stage_audio_series(

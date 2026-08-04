@@ -135,6 +135,8 @@ class OpenAIProviderBase(LLMProvider):
         response_format: type[Answer],
         tool_box: ToolBox | None = None,
         *,
+        operation: str | None = None,
+        query_key_sha256: str | None = None,
         query_attempt: int = 1,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
@@ -144,6 +146,8 @@ class OpenAIProviderBase(LLMProvider):
             messages: messages to send
             response_format: structured response format
             tool_box: available tools and handlers
+            operation: stable LLM operation identifier
+            query_key_sha256: SHA-256 digest of the semantic query key
             query_attempt: one-based answer-validation attempt
             **kwargs: additional keyword arguments
         Returns:
@@ -176,6 +180,8 @@ class OpenAIProviderBase(LLMProvider):
                 completion, transport_retries = self._query(messages, request_kwargs)
                 metrics = self._get_completion_metrics(
                     completion,
+                    operation=operation,
+                    query_key_sha256=query_key_sha256,
                     query_attempt=query_attempt,
                     tool_round=tool_round,
                     transport_retries=transport_retries,
@@ -228,11 +234,20 @@ class OpenAIProviderBase(LLMProvider):
                 f"OpenAI-compatible API error ({exc_code=}, {exc_type=} {exc_param=}): "
                 f"{exc}"
             ) from exc
+
         except ValidationError as exc:
             raise ScinoephileError(
                 "OpenAI-compatible API returned content that failed structured "
                 "response validation."
             ) from exc
+
+    def get_completion_metrics(self) -> tuple[ChatCompletionMetrics, ...]:
+        """Get completion metrics recorded by this provider instance.
+
+        Returns:
+            immutable snapshot of recorded completion metrics
+        """
+        return tuple(self.completion_metrics)
 
     def _build_openai_tools(self, tool_box: ToolBox) -> list[dict[str, object]]:
         """Build OpenAI tool payload from local tool specs.
@@ -334,6 +349,8 @@ class OpenAIProviderBase(LLMProvider):
         self,
         completion: Any,
         *,
+        operation: str | None,
+        query_key_sha256: str | None,
         query_attempt: int,
         tool_round: int,
         transport_retries: int,
@@ -344,6 +361,8 @@ class OpenAIProviderBase(LLMProvider):
 
         Arguments:
             completion: provider completion response
+            operation: stable LLM operation identifier
+            query_key_sha256: SHA-256 digest of the semantic query key
             query_attempt: one-based answer-validation attempt
             tool_round: one-based tool-calling round
             transport_retries: transport retries taken by the SDK
@@ -356,6 +375,8 @@ class OpenAIProviderBase(LLMProvider):
         prompt_details = getattr(usage, "prompt_tokens_details", None)
         completion_details = getattr(usage, "completion_tokens_details", None)
         return ChatCompletionMetrics(
+            operation=operation,
+            query_key_sha256=query_key_sha256,
             model=self.model,
             query_attempt=query_attempt,
             tool_round=tool_round,

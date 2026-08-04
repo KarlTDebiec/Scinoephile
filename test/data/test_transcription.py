@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import json
 from logging import INFO, WARNING, getLogger
 from pathlib import Path
 from unittest.mock import Mock
@@ -190,12 +191,14 @@ def test_process_transcription_pipeline_runs_all_stages(
         call.kwargs["output_dir_path"].name: call.kwargs["transcription_kw"]
         for call in transcribe.call_args_list
     }
+    provider = transcription_kw_by_name["whisper"]["provider"]
     assert transcription_kw_by_name["whisper"] == {
         "alignment_mode": transcription_data.TranscriptionAlignmentMode.PAIRWISE,
         "fallback_to_no_op": False,
         "no_op": False,
         "punctuate": False,
         "prune_test_cases": False,
+        "provider": provider,
         "vad_mode": VADMode.OFF,
     }
     assert transcription_kw_by_name["mimo"] == {
@@ -207,6 +210,7 @@ def test_process_transcription_pipeline_runs_all_stages(
         "no_op": False,
         "punctuate": False,
         "prune_test_cases": False,
+        "provider": provider,
         "vad_mode": VADMode.OFF,
     }
     assert transcription_kw_by_name["qwen"] == {
@@ -218,6 +222,7 @@ def test_process_transcription_pipeline_runs_all_stages(
         "no_op": False,
         "punctuate": False,
         "prune_test_cases": False,
+        "provider": provider,
         "vad_mode": VADMode.OFF,
     }
     assert all(
@@ -230,7 +235,10 @@ def test_process_transcription_pipeline_runs_all_stages(
         for name in ("whisper", "mimo", "qwen")
     }
     assert merge.call_args.args[2] == output_dir_path / "merge.srt"
-    assert merge.call_args.kwargs["reviewer_kw"] == {"prune_test_cases": True}
+    assert merge.call_args.kwargs["reviewer_kw"] == {
+        "prune_test_cases": True,
+        "provider": provider,
+    }
     assert translate.call_args.args[:3] == (
         guide,
         Series(events=[merged.events[0]]),
@@ -239,12 +247,17 @@ def test_process_transcription_pipeline_runs_all_stages(
     assert translate.call_args.kwargs["translator_kw"] == {
         "prune_test_cases": True,
         "additional_context": "Film context",
+        "provider": provider,
     }
     assert simplify.call_args.args == (
         translated,
         output_dir_path / "merge_translate_simplify.srt",
         True,
     )
+    usage = json.loads(
+        (output_dir_path / "json" / "llm_usage.json").read_text(encoding="utf-8")
+    )
+    assert usage["summary"]["completions"] == 0
 
 
 def test_process_transcription_pipeline_can_stop_before_merge(

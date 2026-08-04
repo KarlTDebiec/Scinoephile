@@ -20,6 +20,10 @@ __all__ = ["ChatCompletionKwargs", "ChatCompletionMetrics", "LLMProvider"]
 class ChatCompletionMetrics:
     """Usage and timing recorded for one provider completion."""
 
+    operation: str | None
+    """Stable LLM operation identifier, if supplied by the queryer."""
+    query_key_sha256: str | None
+    """SHA-256 digest of the semantic query key, if supplied by the queryer."""
     model: str
     """Model identifier."""
     query_attempt: int
@@ -93,6 +97,8 @@ class LLMProvider(ABC):
         response_format: type[Answer],
         tool_box: ToolBox | None = None,
         *,
+        operation: str | None = None,
+        query_key_sha256: str | None = None,
         query_attempt: int = 1,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
@@ -102,6 +108,8 @@ class LLMProvider(ABC):
             messages: messages to send
             response_format: structured response format
             tool_box: available tools
+            operation: stable LLM operation identifier
+            query_key_sha256: SHA-256 digest of the semantic query key
             query_attempt: one-based answer-validation attempt
             **kwargs: provider-specific keyword arguments
         Returns:
@@ -110,3 +118,11 @@ class LLMProvider(ABC):
             ScinoephileError: Error during chat completion
         """
         raise NotImplementedError()
+
+    def get_completion_metrics(self) -> tuple[ChatCompletionMetrics, ...]:
+        """Get completion metrics recorded by this provider instance.
+
+        Returns:
+            immutable snapshot of recorded completion metrics
+        """
+        return ()

@@ -18,6 +18,7 @@ from pytest import raises
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import (
     Answer,
+    ChatCompletionMetrics,
     LLMProvider,
     Manager,
     Processor,
@@ -161,6 +162,9 @@ class _RecordingProvider(LLMProvider):
             base_url: base URL identity for cache namespacing
         """
         self.calls: list[list[dict[str, Any]]] = []
+        self.completion_metrics: list[ChatCompletionMetrics] = []
+        self.operations: list[str | None] = []
+        self.query_key_sha256s: list[str | None] = []
         self.response_formats: list[type[Answer]] = []
         self.query_attempts: list[int] = []
         self.response = response
@@ -182,15 +186,41 @@ class _RecordingProvider(LLMProvider):
         response_format: type[Answer],
         tool_box: ToolBox | None = None,
         *,
+        operation: str | None = None,
+        query_key_sha256: str | None = None,
         query_attempt: int = 1,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Record messages and return a fixed completion response."""
         _ = (tool_box, kwargs)
         self.calls.append(messages)
+        self.operations.append(operation)
+        self.query_key_sha256s.append(query_key_sha256)
         self.response_formats.append(response_format)
         self.query_attempts.append(query_attempt)
+        self.completion_metrics.append(
+            ChatCompletionMetrics(
+                operation=operation,
+                query_key_sha256=query_key_sha256,
+                model=self.model,
+                query_attempt=query_attempt,
+                tool_round=1,
+                input_tokens=10,
+                cached_input_tokens=0,
+                cache_write_tokens=0,
+                output_tokens=2,
+                reasoning_tokens=0,
+                total_tokens=12,
+                transport_retries=0,
+                latency_seconds=0.1,
+                prompt_cache_key=None,
+            )
+        )
         return self.response
+
+    def get_completion_metrics(self) -> tuple[ChatCompletionMetrics, ...]:
+        """Get completion metrics recorded by this provider instance."""
+        return tuple(self.completion_metrics)
 
 
 class _AlternateRecordingProvider(_RecordingProvider):
@@ -209,7 +239,11 @@ def test_queryer_uses_injected_provider():
     assert output_test_case.answer.output == "done"
     assert len(provider.calls) == 1
     assert provider.response_formats == [_Answer]
+    assert provider.operations == ["test"]
+    assert provider.query_key_sha256s[0] is not None
+    assert len(provider.query_key_sha256s[0]) == 64
     assert provider.query_attempts == [1]
+    assert queryer.completion_metrics == provider.completion_metrics
     assert queryer.system_prompt == _PROMPT.base_system_prompt
 
 
