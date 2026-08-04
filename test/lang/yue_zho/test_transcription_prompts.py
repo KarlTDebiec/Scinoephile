@@ -5,10 +5,12 @@
 from __future__ import annotations
 
 from scinoephile.lang.yue_zho.transcription import (
+    YueZhoAdvisoryBlockDelineationPromptYueHant,
     YueZhoBlockDelineationPromptYueHans,
     YueZhoBlockDelineationPromptYueHant,
     YueZhoBlockPunctuationPromptYueHans,
     YueZhoBlockPunctuationPromptYueHant,
+    YueZhoCandidateBlockDelineationPromptYueHant,
 )
 from scinoephile.llms.block_delineation import (
     BlockDelineationManager,
@@ -93,6 +95,35 @@ def test_block_delineation_prompt_requires_reconstruction_checks():
     assert YueZhoBlockDelineationPromptYueHant.validate_output_quality is True
     assert "冇任何有效嘅 yidong_zifu_shu 範圍" in (
         YueZhoBlockDelineationPromptYueHant.boundary_neighbors_crossed_err_tpl
+    )
+
+
+def test_specialized_block_delineation_prompts_localize_validation():
+    """Specialized delineation prompts should retry in written Cantonese."""
+    for prompt in (
+        YueZhoAdvisoryBlockDelineationPromptYueHant,
+        YueZhoCandidateBlockDelineationPromptYueHant,
+    ):
+        error = prompt.boundary_shift_invalid_err(
+            index=2, offset=13, original_offset=11, previous_offset=11, next_offset=11
+        )
+
+        assert error.startswith("索引 2 之後嘅分界")
+        assert "yidong_zifu_shu 必須喺 0 至 0 之間" in error
+        assert prompt.guide_text_desc == "中文字幕文字"
+        assert prompt.guide_indices_err.startswith("zhongwen 索引必須")
+        assert prompt.change_indices_err.startswith("bianjie_xiugai 索引必須")
+        assert prompt.leading_closing_punctuation_err_tpl.startswith("重組後字幕索引")
+        assert prompt.legacy_cache_prompts
+
+    assert "shijian_jianyi 必須" in (
+        YueZhoAdvisoryBlockDelineationPromptYueHant.boundary_suggestions_err
+    )
+    assert "houxuan 必須" in (
+        YueZhoCandidateBlockDelineationPromptYueHant.boundary_candidates_err
+    )
+    assert "必須揀自所提供嘅 houxuan" in (
+        YueZhoCandidateBlockDelineationPromptYueHant.change_shift_not_candidate_err_tpl
     )
 
 

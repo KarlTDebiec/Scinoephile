@@ -745,10 +745,11 @@ _YUE_ZHO_ADVISORY_BLOCK_DELINEATION_BASE_SYSTEM_PROMPT = (
 )
 """Unrestricted block prompt text using the advisory boundary-field alias."""
 
-YueZhoAdvisoryBlockDelineationPromptYueHant = AdvisoryBlockDelineationPrompt(
-    language=Language.yue_hant,
-    **YUE_HANT_PROMPT_FIELDS,
-    base_system_prompt=dedent_and_compact(f"""
+_YUE_ZHO_ADVISORY_BLOCK_DELINEATION_PROMPT_YUE_HANT_ENGLISH_VALIDATION = (
+    AdvisoryBlockDelineationPrompt(
+        language=Language.yue_hant,
+        **YUE_HANT_PROMPT_FIELDS,
+        base_system_prompt=dedent_and_compact(f"""
         {_YUE_ZHO_ADVISORY_BLOCK_DELINEATION_BASE_SYSTEM_PROMPT}
         查詢嘅 bianjie_tishi 除咗列出每個可修改分界嘅原位同完整合法移動範圍，
         亦可能提供按轉寫時間證據排列嘅 shijian_jianyi；空白清單代表冇足夠強嘅
@@ -761,42 +762,96 @@ YueZhoAdvisoryBlockDelineationPromptYueHant = AdvisoryBlockDelineationPrompt(
         語意錯配，可以返回 bianjie_tishi 合法範圍內任何其他整數移動。絕對唔好
         為咗遷就 paiming 而採用語意錯誤嘅分界。答案仍然只返回 bianjie_xiugai，
         唔需要亦唔可以抄寫建議。"""),
-    guides="zhongwen",
-    guides_desc="查詢視窗完整而有序嘅中文字幕",
-    targets="yuewen_initial",
-    targets_desc="按時間初步分配、合起來不可修改嘅粵文字符帶",
-    first_owned_index="fuze_qishi_xuhao",
-    first_owned_index_desc="本視窗負責嘅第一個本地分界索引（包括）",
-    last_owned_index="fuze_jieshu_xuhao",
-    last_owned_index_desc="本視窗負責嘅最後一個本地分界索引（包括）",
-    boundaries="bianjie_tishi",
-    boundaries_desc="本視窗全部可修改分界、合法範圍及非強制時間建議",
-    suggestions="shijian_jianyi",
-    suggestions_desc=(
-        "按時間證據由強至弱排列、但唔限制答案嘅建議切口；空白代表冇可靠提示"
+        guides="zhongwen",
+        guides_desc="查詢視窗完整而有序嘅中文字幕",
+        targets="yuewen_initial",
+        targets_desc="按時間初步分配、合起來不可修改嘅粵文字符帶",
+        first_owned_index="fuze_qishi_xuhao",
+        first_owned_index_desc="本視窗負責嘅第一個本地分界索引（包括）",
+        last_owned_index="fuze_jieshu_xuhao",
+        last_owned_index_desc="本視窗負責嘅最後一個本地分界索引（包括）",
+        boundaries="bianjie_tishi",
+        boundaries_desc="本視窗全部可修改分界、合法範圍及非強制時間建議",
+        suggestions="shijian_jianyi",
+        suggestions_desc=(
+            "按時間證據由強至弱排列、但唔限制答案嘅建議切口；空白代表冇可靠提示"
+        ),
+        suggestion_rank="paiming",
+        suggestion_rank_desc="由1開始嘅時間證據排名；數字越細證據越強",
+        suggestion_offset="zifu_pianyi",
+        suggestion_offset_desc="建議切口喺本視窗字符帶上嘅累積 Unicode 字符位置",
+        suggestion_left_context="zuo_wenben",
+        suggestion_left_context_desc="建議切口左邊緊接文字",
+        suggestion_right_context="you_wenben",
+        suggestion_right_context_desc="建議切口右邊緊接文字",
+        suggestion_timing_delta_ms="shijian_chayi_haomiao",
+        suggestion_timing_delta_ms_desc="建議轉寫時間減去分界參考時間，單位毫秒",
+        suggestion_pause_ms="tingdun_haomiao",
+        suggestion_pause_ms_desc="建議切口前轉寫單位後面嘅停頓毫秒數",
+        changes="bianjie_xiugai",
+        changes_desc="只列出真正需要移動嘅負責分界",
+        index="xuhao",
+        index_desc="由1開始嘅本地字幕或分界索引",
+        text="wenben",
+        shift="yidong_zifu_shu",
+        original_offset="yuanben_pianyi",
+        minimum_shift="zuixiao_yidong",
+        maximum_shift="zuida_yidong",
+        validate_output_quality=True,
+    )
+)
+"""Predecessor advisory prompt retaining default English validation text."""
+
+YueZhoAdvisoryBlockDelineationPromptYueHant = replace(
+    _YUE_ZHO_ADVISORY_BLOCK_DELINEATION_PROMPT_YUE_HANT_ENGLISH_VALIDATION,
+    guide_text_desc=YueZhoBlockDelineationPromptYueHant.guide_text_desc,
+    target_text_desc=YueZhoBlockDelineationPromptYueHant.target_text_desc,
+    change_text_desc=YueZhoBlockDelineationPromptYueHant.change_text_desc,
+    shift_desc=YueZhoBlockDelineationPromptYueHant.shift_desc,
+    original_offset_desc=YueZhoBlockDelineationPromptYueHant.original_offset_desc,
+    minimum_shift_desc=YueZhoBlockDelineationPromptYueHant.minimum_shift_desc,
+    maximum_shift_desc=YueZhoBlockDelineationPromptYueHant.maximum_shift_desc,
+    guide_indices_err=YueZhoBlockDelineationPromptYueHant.guide_indices_err,
+    target_indices_err=YueZhoBlockDelineationPromptYueHant.target_indices_err,
+    owned_indices_err=YueZhoBlockDelineationPromptYueHant.owned_indices_err,
+    boundary_constraints_err=(
+        YueZhoBlockDelineationPromptYueHant.boundary_constraints_err.replace(
+            "bianjie_fanwei", "bianjie_tishi"
+        )
     ),
-    suggestion_rank="paiming",
-    suggestion_rank_desc="由1開始嘅時間證據排名；數字越細證據越強",
-    suggestion_offset="zifu_pianyi",
-    suggestion_offset_desc="建議切口喺本視窗字符帶上嘅累積 Unicode 字符位置",
-    suggestion_left_context="zuo_wenben",
-    suggestion_left_context_desc="建議切口左邊緊接文字",
-    suggestion_right_context="you_wenben",
-    suggestion_right_context_desc="建議切口右邊緊接文字",
-    suggestion_timing_delta_ms="shijian_chayi_haomiao",
-    suggestion_timing_delta_ms_desc="建議轉寫時間減去分界參考時間，單位毫秒",
-    suggestion_pause_ms="tingdun_haomiao",
-    suggestion_pause_ms_desc="建議切口前轉寫單位後面嘅停頓毫秒數",
-    changes="bianjie_xiugai",
-    changes_desc="只列出真正需要移動嘅負責分界",
-    index="xuhao",
-    index_desc="由1開始嘅本地字幕或分界索引",
-    text="wenben",
-    shift="yidong_zifu_shu",
-    original_offset="yuanben_pianyi",
-    minimum_shift="zuixiao_yidong",
-    maximum_shift="zuida_yidong",
-    validate_output_quality=True,
+    change_indices_err=YueZhoBlockDelineationPromptYueHant.change_indices_err,
+    change_index_missing_err=(
+        YueZhoBlockDelineationPromptYueHant.change_index_missing_err
+    ),
+    change_shift_zero_err=YueZhoBlockDelineationPromptYueHant.change_shift_zero_err,
+    boundary_shift_invalid_err_tpl=(
+        YueZhoBlockDelineationPromptYueHant.boundary_shift_invalid_err_tpl
+    ),
+    boundary_neighbors_crossed_err_tpl=(
+        YueZhoBlockDelineationPromptYueHant.boundary_neighbors_crossed_err_tpl
+    ),
+    leading_closing_punctuation_err_tpl=(
+        YueZhoBlockDelineationPromptYueHant.leading_closing_punctuation_err_tpl
+    ),
+    trailing_opening_punctuation_err_tpl=(
+        YueZhoBlockDelineationPromptYueHant.trailing_opening_punctuation_err_tpl
+    ),
+    punctuation_only_target_err_tpl=(
+        YueZhoBlockDelineationPromptYueHant.punctuation_only_target_err_tpl
+    ),
+    target_chars_changed_err_tpl=(
+        YueZhoBlockDelineationPromptYueHant.target_chars_changed_err_tpl.replace(
+            "yuewen_xiugai", "bianjie_xiugai"
+        )
+    ),
+    boundary_suggestions_err=(
+        "每個分界嘅 shijian_jianyi 必須由1開始連續排名、移動字符數唯一、"
+        "全部喺該分界合法範圍內、字符位置同原位加移動字符數一致，而且非空時"
+        "必須包括移動字符數 0。"
+    ),
+    legacy_cache_prompts=(
+        _YUE_ZHO_ADVISORY_BLOCK_DELINEATION_PROMPT_YUE_HANT_ENGLISH_VALIDATION,
+    ),
 )
 """Advisory-timing block delineation for Traditional Cantonese/Chinese."""
 
@@ -808,10 +863,11 @@ YueZhoAdvisoryBlockDelineationPromptYueHans = (
 """Advisory-timing block delineation for Simplified Cantonese/Chinese."""
 
 
-YueZhoCandidateBlockDelineationPromptYueHant = CandidateBlockDelineationPrompt(
-    language=Language.yue_hant,
-    **YUE_HANT_PROMPT_FIELDS,
-    base_system_prompt=dedent_and_compact("""
+_YUE_ZHO_CANDIDATE_BLOCK_DELINEATION_PROMPT_YUE_HANT_ENGLISH_VALIDATION = (
+    CandidateBlockDelineationPrompt(
+        language=Language.yue_hant,
+        **YUE_HANT_PROMPT_FIELDS,
+        base_system_prompt=dedent_and_compact("""
         你負責用中文字幕語意同粵文轉寫時間，為一個字幕視窗揀選粵文分界。
         zhongwen 同 yuewen_chubu 索引相同；粵文字符帶不可修改，只可以移動分界。
         每個 bianjie_houxuan 項目代表一個可以修改嘅分界，並列出可揀嘅 houxuan。
@@ -826,38 +882,100 @@ YueZhoCandidateBlockDelineationPromptYueHant = CandidateBlockDelineationPrompt(
         提交前將全部修改套用到完整字符帶，逐個核對負責分界左右兩邊：冇拆開
         詞語或語氣助詞，冇孤立標點，字幕唔會只剩標點，而且串連後所有原字符
         逐字、逐序不變。任何一項失敗，就改揀另一個已提供候選或者保留原分界。"""),
-    guides="zhongwen",
-    guides_desc="查詢視窗完整而有序嘅中文字幕",
-    targets="yuewen_chubu",
-    targets_desc="按時間初步分配、合起來不可修改嘅粵文字符帶",
-    first_owned_index="fuze_qishi_xuhao",
-    first_owned_index_desc="本視窗負責嘅第一個本地分界索引（包括）",
-    last_owned_index="fuze_jieshu_xuhao",
-    last_owned_index_desc="本視窗負責嘅最後一個本地分界索引（包括）",
-    boundaries="bianjie_houxuan",
-    boundaries_desc="本視窗全部可修改分界及其時間支持候選",
-    candidates="houxuan",
-    candidates_desc="呢個分界可以揀選嘅候選切口",
-    candidate_offset="zifu_pianyi",
-    candidate_offset_desc="候選切口喺本視窗字符帶上嘅累積 Unicode 字符位置",
-    candidate_left_context="zuo_wenben",
-    candidate_left_context_desc="候選切口左邊緊接文字",
-    candidate_right_context="you_wenben",
-    candidate_right_context_desc="候選切口右邊緊接文字",
-    candidate_timing_delta_ms="shijian_chayi_haomiao",
-    candidate_timing_delta_ms_desc="候選轉寫時間減去分界參考時間，單位毫秒",
-    candidate_pause_ms="tingdun_haomiao",
-    candidate_pause_ms_desc="候選切口前轉寫單位後面嘅停頓毫秒數",
-    changes="bianjie_xiugai",
-    changes_desc="只列出需要改揀候選嘅負責分界",
-    index="xuhao",
-    index_desc="由1開始嘅本地字幕或分界索引",
-    text="wenben",
-    shift="yidong_zifu_shu",
-    original_offset="yuanben_pianyi",
-    minimum_shift="zuixiao_yidong",
-    maximum_shift="zuida_yidong",
-    validate_output_quality=True,
+        guides="zhongwen",
+        guides_desc="查詢視窗完整而有序嘅中文字幕",
+        targets="yuewen_chubu",
+        targets_desc="按時間初步分配、合起來不可修改嘅粵文字符帶",
+        first_owned_index="fuze_qishi_xuhao",
+        first_owned_index_desc="本視窗負責嘅第一個本地分界索引（包括）",
+        last_owned_index="fuze_jieshu_xuhao",
+        last_owned_index_desc="本視窗負責嘅最後一個本地分界索引（包括）",
+        boundaries="bianjie_houxuan",
+        boundaries_desc="本視窗全部可修改分界及其時間支持候選",
+        candidates="houxuan",
+        candidates_desc="呢個分界可以揀選嘅候選切口",
+        candidate_offset="zifu_pianyi",
+        candidate_offset_desc="候選切口喺本視窗字符帶上嘅累積 Unicode 字符位置",
+        candidate_left_context="zuo_wenben",
+        candidate_left_context_desc="候選切口左邊緊接文字",
+        candidate_right_context="you_wenben",
+        candidate_right_context_desc="候選切口右邊緊接文字",
+        candidate_timing_delta_ms="shijian_chayi_haomiao",
+        candidate_timing_delta_ms_desc="候選轉寫時間減去分界參考時間，單位毫秒",
+        candidate_pause_ms="tingdun_haomiao",
+        candidate_pause_ms_desc="候選切口前轉寫單位後面嘅停頓毫秒數",
+        changes="bianjie_xiugai",
+        changes_desc="只列出需要改揀候選嘅負責分界",
+        index="xuhao",
+        index_desc="由1開始嘅本地字幕或分界索引",
+        text="wenben",
+        shift="yidong_zifu_shu",
+        original_offset="yuanben_pianyi",
+        minimum_shift="zuixiao_yidong",
+        maximum_shift="zuida_yidong",
+        validate_output_quality=True,
+    )
+)
+"""Predecessor candidate prompt retaining default English validation text."""
+
+YueZhoCandidateBlockDelineationPromptYueHant = replace(
+    _YUE_ZHO_CANDIDATE_BLOCK_DELINEATION_PROMPT_YUE_HANT_ENGLISH_VALIDATION,
+    guide_text_desc=YueZhoBlockDelineationPromptYueHant.guide_text_desc,
+    target_text_desc=YueZhoBlockDelineationPromptYueHant.target_text_desc,
+    change_text_desc=YueZhoBlockDelineationPromptYueHant.change_text_desc,
+    shift_desc=YueZhoBlockDelineationPromptYueHant.shift_desc.replace(
+        "yuewen_initial", "yuewen_chubu"
+    ),
+    original_offset_desc=YueZhoBlockDelineationPromptYueHant.original_offset_desc,
+    minimum_shift_desc=YueZhoBlockDelineationPromptYueHant.minimum_shift_desc,
+    maximum_shift_desc=YueZhoBlockDelineationPromptYueHant.maximum_shift_desc,
+    guide_indices_err=YueZhoBlockDelineationPromptYueHant.guide_indices_err,
+    target_indices_err=YueZhoBlockDelineationPromptYueHant.target_indices_err.replace(
+        "yuewen_initial", "yuewen_chubu"
+    ),
+    owned_indices_err=YueZhoBlockDelineationPromptYueHant.owned_indices_err,
+    boundary_constraints_err=(
+        YueZhoBlockDelineationPromptYueHant.boundary_constraints_err.replace(
+            "bianjie_fanwei", "bianjie_houxuan"
+        )
+    ),
+    change_indices_err=YueZhoBlockDelineationPromptYueHant.change_indices_err,
+    change_index_missing_err=(
+        YueZhoBlockDelineationPromptYueHant.change_index_missing_err
+    ),
+    change_shift_zero_err=YueZhoBlockDelineationPromptYueHant.change_shift_zero_err,
+    boundary_shift_invalid_err_tpl=(
+        YueZhoBlockDelineationPromptYueHant.boundary_shift_invalid_err_tpl
+    ),
+    boundary_neighbors_crossed_err_tpl=(
+        YueZhoBlockDelineationPromptYueHant.boundary_neighbors_crossed_err_tpl
+    ),
+    leading_closing_punctuation_err_tpl=(
+        YueZhoBlockDelineationPromptYueHant.leading_closing_punctuation_err_tpl
+    ),
+    trailing_opening_punctuation_err_tpl=(
+        YueZhoBlockDelineationPromptYueHant.trailing_opening_punctuation_err_tpl
+    ),
+    punctuation_only_target_err_tpl=(
+        YueZhoBlockDelineationPromptYueHant.punctuation_only_target_err_tpl
+    ),
+    target_chars_changed_err_tpl=(
+        YueZhoBlockDelineationPromptYueHant.target_chars_changed_err_tpl.replace(
+            "yuewen_xiugai", "bianjie_xiugai"
+        ).replace("yuewen_initial", "yuewen_chubu")
+    ),
+    boundary_candidates_err=(
+        "每個分界嘅 houxuan 必須按移動字符數排列、移動字符數唯一、全部喺該"
+        "分界合法範圍內、字符位置同原位加移動字符數一致，而且必須包括移動"
+        "字符數 0。"
+    ),
+    change_shift_not_candidate_err_tpl=(
+        "索引 {index} 之後嘅分界移動字符數必須揀自所提供嘅 houxuan："
+        "{candidate_shifts}。"
+    ),
+    legacy_cache_prompts=(
+        _YUE_ZHO_CANDIDATE_BLOCK_DELINEATION_PROMPT_YUE_HANT_ENGLISH_VALIDATION,
+    ),
 )
 """Candidate-selection block delineation for Traditional Cantonese/Chinese."""
 
