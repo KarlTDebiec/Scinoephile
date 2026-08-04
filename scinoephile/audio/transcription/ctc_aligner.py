@@ -17,7 +17,10 @@ from scinoephile.core.dependencies.transcription import (
     import_transformers,
 )
 
-from .exceptions import TranscriptionAlignmentError
+from .exceptions import (
+    TranscriptionAlignmentError,
+    TranscriptionAlignmentIncompleteError,
+)
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 
@@ -407,7 +410,9 @@ class CtcAligner:
         # Select the best completed alignment
         final_column = trellis[:, alignment_token_count]
         if np.all(np.isneginf(final_column)):
-            raise TranscriptionAlignmentError("CTC alignment did not reach all tokens.")
+            raise TranscriptionAlignmentIncompleteError(
+                "CTC alignment did not reach all tokens."
+            )
         frame_idx = int(np.argmax(final_column))
 
         # Backtrack through the trellis to recover token frame spans
