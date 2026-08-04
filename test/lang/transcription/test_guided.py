@@ -150,7 +150,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.language is Language.yue_hant
     assert transcriber.guide_language is Language.zho_hans
     assert transcriber.backend is TranscriptionBackend.WHISPER
-    assert transcriber.demucs_mode is DemucsMode.AUTO
+    assert transcriber.demucs_mode is DemucsMode.OFF
     assert transcriber.vad_mode is VADMode.OFF
     assert not hasattr(transcriber, "overwrite_cache")
     assert not hasattr(transcriber, "cache_root_path")
@@ -165,7 +165,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
         YueZhoPunctuationPromptYueHant
     )
     assert transcriber.transcriber.language == "yue"
-    assert transcriber.transcriber.demucs_mode is DemucsMode.AUTO
+    assert transcriber.transcriber.demucs_mode is DemucsMode.OFF
     assert transcriber.transcriber.vad_mode is VADMode.OFF
     assert transcriber.recovery_transcriber is not None
     assert transcriber.tail_recovery_transcriber is not None
@@ -180,7 +180,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.transcriber._cache.overwrite
     assert transcriber.recovery_transcriber._cache.overwrite
     assert transcriber.tail_recovery_transcriber._cache.overwrite
-    assert transcriber.transcriber.demucs_separator is not None
+    assert transcriber.transcriber.demucs_separator is None
     assert transcriber.recovery_transcriber.demucs_separator is None
     test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
     assert transcriber.aligner.delineation_processor.current_test_cases_path == (
@@ -236,7 +236,7 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
     mlx_audio_transcriber_class.assert_called_once_with(
         model_name=MIMO_MODEL_NAME,
         language=Language.yue_hant,
-        demucs_mode=DemucsMode.AUTO,
+        demucs_mode=DemucsMode.OFF,
         vad_mode=VADMode.OFF,
         cache_root_path=tmp_path,
         overwrite_cache=False,

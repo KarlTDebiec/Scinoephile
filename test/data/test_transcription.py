@@ -13,7 +13,7 @@ from pytest import LogCaptureFixture, MonkeyPatch, mark, param
 
 import test.data.transcription as transcription_data
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import VADMode
+from scinoephile.audio.transcription import DemucsMode, VADMode
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
 
@@ -194,6 +194,7 @@ def test_process_transcription_pipeline_runs_all_stages(
     provider = transcription_kw_by_name["whisper"]["provider"]
     assert transcription_kw_by_name["whisper"] == {
         "alignment_mode": transcription_data.TranscriptionAlignmentMode.PAIRWISE,
+        "demucs_mode": DemucsMode.OFF,
         "fallback_to_no_op": False,
         "no_op": False,
         "punctuate": False,
@@ -204,6 +205,7 @@ def test_process_transcription_pipeline_runs_all_stages(
     assert transcription_kw_by_name["mimo"] == {
         "alignment_mode": transcription_data.TranscriptionAlignmentMode.PAIRWISE,
         "backend": transcription_data.TranscriptionBackend.MLX_AUDIO,
+        "demucs_mode": DemucsMode.OFF,
         "fallback_to_no_op": False,
         "model_name": transcription_data.MIMO_MODEL_NAME,
         "mlx_audio_timing_mode": transcription_data.MlxAudioTimingMode.CTC_UNIT,
@@ -216,6 +218,7 @@ def test_process_transcription_pipeline_runs_all_stages(
     assert transcription_kw_by_name["qwen"] == {
         "alignment_mode": transcription_data.TranscriptionAlignmentMode.PAIRWISE,
         "backend": transcription_data.TranscriptionBackend.MLX_AUDIO,
+        "demucs_mode": DemucsMode.OFF,
         "fallback_to_no_op": False,
         "model_name": transcription_data.QWEN3_ASR_MODEL_NAME,
         "mlx_audio_timing_mode": transcription_data.MlxAudioTimingMode.CTC_UNIT,

@@ -82,7 +82,7 @@ class MlxAudioTranscriber(Transcriber):
         max_tokens: int | None = None,
         chunk_duration_seconds: float | None = None,
         chunk_overlap_seconds: float = 1.0,
-        demucs_mode: DemucsMode = DemucsMode.AUTO,
+        demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.OFF,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,

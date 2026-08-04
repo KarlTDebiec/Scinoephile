@@ -7,7 +7,7 @@ from __future__ import annotations
 from os import environ
 from pathlib import Path
 
-from scinoephile.audio.transcription import VADMode
+from scinoephile.audio.transcription import DemucsMode, VADMode
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.lang.transcription import (
@@ -103,9 +103,10 @@ if "yue-Hant_transcribe" in actions:
         transcription_fallback_to_no_op=True,
         strip_mlx_audio_punctuation=True,
         mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+        demucs_mode=DemucsMode.OFF,
         vad_mode=VADMode.OFF,
         transcription_names=transcription_names,
-        transcription_overwrite=False,
+        transcription_overwrite=True,
         run_merge_and_translation=True,
         overwrite=True,
     )

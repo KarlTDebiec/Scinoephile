@@ -211,7 +211,7 @@ class TranscribeCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--demucs",
-            default=DemucsMode.AUTO,
+            default=DemucsMode.OFF,
             dest="demucs_mode",
             metavar=enum_metavar(DemucsMode),
             type=enum_arg(DemucsMode),

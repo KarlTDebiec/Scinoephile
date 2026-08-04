@@ -181,7 +181,7 @@ class GuidedTranscriber:
         whisper_language: str,
         aligner: TranscriptionAligner | BlockTranscriptionAligner,
         backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
-        demucs_mode: DemucsMode = DemucsMode.AUTO,
+        demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.OFF,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,

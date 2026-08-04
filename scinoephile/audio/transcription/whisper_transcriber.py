@@ -8,7 +8,7 @@ from collections.abc import Sequence
 from logging import getLogger
 from math import ceil
 from pathlib import Path
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING, ClassVar, cast
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.dependencies.transcription import (
@@ -66,7 +66,7 @@ class WhisperTranscriber(Transcriber):
         self,
         model_name: str = "khleeloo/whisper-large-v3-cantonese",
         language: str = "yue",
-        demucs_mode: DemucsMode = DemucsMode.AUTO,
+        demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.OFF,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
@@ -359,11 +359,11 @@ class WhisperTranscriber(Transcriber):
                 ) -> DecodingResult | list[DecodingResult]:
                     """Decode a window and record whether it exhausts its budget."""
                     decode_result = decode(mel, options, **kwargs)
-                    decode_results = (
-                        decode_result
-                        if isinstance(decode_result, list)
-                        else [decode_result]
-                    )
+                    decode_results: list[DecodingResult]
+                    if isinstance(decode_result, list):
+                        decode_results = cast(list[DecodingResult], decode_result)
+                    else:
+                        decode_results = [decode_result]
                     if any(
                         len(result.tokens) >= sample_len for result in decode_results
                     ) and all(mel is not window for window in exhausted_windows):

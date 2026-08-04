@@ -13,7 +13,7 @@ from typing import Any
 
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import VADMode
+from scinoephile.audio.transcription import DemucsMode, VADMode
 from scinoephile.audio.transcription.mlx_audio.backend import (
     MIMO_MODEL_NAME,
     QWEN3_ASR_MODEL_NAME,
@@ -373,6 +373,7 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
     transcription_fallback_to_no_op: bool = False,
     strip_mlx_audio_punctuation: bool = False,
     mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
+    demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.OFF,
     transcription_names: tuple[str, ...] | None = None,
     transcription_overwrite: bool | None = None,
@@ -417,6 +418,7 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
         strip_mlx_audio_punctuation: whether to remove MLX-Audio-generated sentence
           punctuation after timing and before guided alignment
         mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
+        demucs_mode: Demucs preprocessing mode shared by all transcription backends
         vad_mode: voice activity detection mode shared by all transcription backends
         transcription_names: transcription sources to prepare in order, or None for
           all three sources
@@ -454,6 +456,7 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
     transcription_runs: dict[str, dict[str, Any]] = {
         "whisper": {
             "alignment_mode": transcription_alignment_mode,
+            "demucs_mode": demucs_mode,
             "fallback_to_no_op": transcription_fallback_to_no_op,
             "no_op": transcription_no_op,
             "punctuate": punctuate_sources,
@@ -464,6 +467,7 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
         "mimo": {
             "alignment_mode": transcription_alignment_mode,
             "backend": TranscriptionBackend.MLX_AUDIO,
+            "demucs_mode": demucs_mode,
             "fallback_to_no_op": transcription_fallback_to_no_op,
             "model_name": MIMO_MODEL_NAME,
             "mlx_audio_timing_mode": mlx_audio_timing_mode,
@@ -476,6 +480,7 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
         "qwen": {
             "alignment_mode": transcription_alignment_mode,
             "backend": TranscriptionBackend.MLX_AUDIO,
+            "demucs_mode": demucs_mode,
             "fallback_to_no_op": transcription_fallback_to_no_op,
             "model_name": QWEN3_ASR_MODEL_NAME,
             "mlx_audio_timing_mode": mlx_audio_timing_mode,

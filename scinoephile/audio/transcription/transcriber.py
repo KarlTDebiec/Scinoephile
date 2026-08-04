@@ -42,7 +42,7 @@ class Transcriber(ABC):
     def __init__(
         self,
         cache_root_path: Path | None,
-        demucs_mode: DemucsMode = DemucsMode.AUTO,
+        demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.OFF,
         overwrite_cache: bool = False,
         demucs_separator: DemucsSeparator | None = None,
