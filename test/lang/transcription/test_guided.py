@@ -87,27 +87,17 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
             / vad_name
             / transcription_name
             / "json"
-            for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
+            for dataset_name in ("acoptc", "kob", "tmm")
             for vad_name in ("vad-auto", "vad-off")
             for transcription_name in ("whisper", "mimo", "qwen")
         ),
         *(
-            Path("acopopb")
+            Path(dataset_name)
             / "output"
             / "yue-Hant_transcribe"
-            / "vad-off-stripped-punctuation"
             / transcription_name
             / "json"
-            for transcription_name in ("mimo", "qwen")
-        ),
-        *(
-            Path("acopopb")
-            / "output"
-            / "yue-Hant_transcribe"
-            / f"{vad_name}-phrase-timing-stripped-punctuation"
-            / transcription_name
-            / "json"
-            for vad_name in ("vad-auto", "vad-off")
+            for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
             for transcription_name in ("whisper", "mimo", "qwen")
         ),
     }
@@ -118,6 +108,16 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
     ):
         assert all(path.name == filename for path in json_paths)
         assert required_block_json_dir_paths <= {path.parent for path in json_paths}
+    assert {
+        Path(dataset_name)
+        / "output"
+        / "yue-Hant_transcribe"
+        / transcription_name
+        / "json"
+        / "gated_advisory_delineation-mps.json"
+        for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
+        for transcription_name in ("whisper", "mimo", "qwen")
+    } <= set(spec.advisory_block_delineation_json_paths)
     mutable_specs = cast(dict, DEFAULT_SPECS)
     with raises(TypeError):
         mutable_specs[(Language.eng, Language.zho_hans)] = DEFAULT_SPECS[

@@ -118,74 +118,25 @@ _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
 )
 """Default written Cantonese transcription punctuation JSON paths."""
 
-_YUE_ZHO_BLOCK_TEST_CASE_DIR_PATHS = (
-    tuple(
-        Path(dataset_name)
-        / "output"
-        / "yue-Hant_transcribe"
-        / vad_name
-        / transcription_name
-        / "json"
-        for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
-        for vad_name in ("vad-auto", "vad-off")
-        for transcription_name in ("whisper", "mimo", "qwen")
-    )
-    + (
-        Path(
-            "acopopb/output/yue-Hant_transcribe/vad-off-stripped-punctuation/mimo/json"
-        ),
-        Path(
-            "acopopb/output/yue-Hant_transcribe/vad-off-stripped-punctuation/qwen/json"
-        ),
-    )
-    + tuple(
-        Path("acopopb/output/yue-Hant_transcribe")
-        / f"{vad_name}-phrase-timing-stripped-punctuation"
-        / transcription_name
-        / "json"
-        for vad_name in ("vad-auto", "vad-off")
-        for transcription_name in ("whisper", "mimo", "qwen")
-    )
+_YUE_ZHO_BLOCK_TEST_CASE_DIR_PATHS = tuple(
+    Path(dataset_name)
+    / "output"
+    / "yue-Hant_transcribe"
+    / vad_name
+    / transcription_name
+    / "json"
+    for dataset_name in ("acoptc", "kob", "tmm")
+    for vad_name in ("vad-auto", "vad-off")
+    for transcription_name in ("whisper", "mimo", "qwen")
+) + tuple(
+    Path(dataset_name) / "output" / "yue-Hant_transcribe" / transcription_name / "json"
+    for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
+    for transcription_name in ("whisper", "mimo", "qwen")
 )
 """Repository JSON directories for each written Cantonese transcription run."""
 
-_YUE_ZHO_CANDIDATE_BLOCK_TEST_CASE_DIR_PATHS = (
-    *_YUE_ZHO_BLOCK_TEST_CASE_DIR_PATHS,
-    Path(
-        "acopopb/output/yue-Hant_transcribe/"
-        "vad-off-phrase-timing-block-positional/mimo/json"
-    ),
-    Path(
-        "acopopb/output/yue-Hant_transcribe/"
-        "vad-off-phrase-timing-block-positional/qwen/json"
-    ),
-    Path(
-        "acopopb/output/yue-Hant_transcribe/"
-        "vad-off-phrase-timing-candidate-delineation/mimo/json"
-    ),
-    Path(
-        "acopopb/output/yue-Hant_transcribe/"
-        "vad-off-phrase-timing-candidate-delineation/qwen/json"
-    ),
-    Path(
-        "acopopb/output/yue-Hant_transcribe/"
-        "vad-off-phrase-timing-positional-punctuation/mimo/json"
-    ),
-    Path(
-        "acopopb/output/yue-Hant_transcribe/"
-        "vad-off-phrase-timing-positional-punctuation/qwen/json"
-    ),
-)
+_YUE_ZHO_CANDIDATE_BLOCK_TEST_CASE_DIR_PATHS = _YUE_ZHO_BLOCK_TEST_CASE_DIR_PATHS
 """Repository JSON directories for candidate/positional transcription runs."""
-
-_YUE_ZHO_ADVISORY_BLOCK_TEST_CASE_DIR_PATHS = tuple(
-    Path("acopopb/output/yue-Hant_transcribe")
-    / "vad-off-phrase-timing-advisory-delineation"
-    / transcription_name
-    / "json"
-    for transcription_name in ("mimo", "qwen")
-)
-"""Repository JSON directories for advisory delineation experiments."""
 
 _YUE_ZHO_BLOCK_DELINEATION_JSON_PATHS = tuple(
     dir_path / "block_delineation-mps.json"
@@ -206,15 +157,13 @@ _YUE_ZHO_CANDIDATE_BLOCK_DELINEATION_JSON_PATHS = tuple(
 """Repository candidate block-delineation JSON paths for written Cantonese."""
 
 _YUE_ZHO_ADVISORY_BLOCK_DELINEATION_JSON_PATHS = tuple(
-    dir_path / "advisory_delineation-mps.json"
-    for dir_path in _YUE_ZHO_ADVISORY_BLOCK_TEST_CASE_DIR_PATHS
-) + tuple(
-    Path("acopopb/output/yue-Hant_transcribe")
-    / f"{vad_name}-phrase-timing-gated-advisory-delineation"
+    Path(dataset_name)
+    / "output"
+    / "yue-Hant_transcribe"
     / transcription_name
     / "json"
     / "gated_advisory_delineation-mps.json"
-    for vad_name in ("vad-auto", "vad-off")
+    for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
     for transcription_name in ("whisper", "mimo", "qwen")
 )
 """Repository advisory block-delineation JSON paths for written Cantonese."""
