@@ -162,6 +162,7 @@ class _RecordingProvider(LLMProvider):
         """
         self.calls: list[list[dict[str, Any]]] = []
         self.response_formats: list[type[Answer]] = []
+        self.query_attempts: list[int] = []
         self.response = response
         self.model = model
         self.base_url = base_url
@@ -180,12 +181,15 @@ class _RecordingProvider(LLMProvider):
         messages: list[dict[str, Any]],
         response_format: type[Answer],
         tool_box: ToolBox | None = None,
+        *,
+        query_attempt: int = 1,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Record messages and return a fixed completion response."""
         _ = (tool_box, kwargs)
         self.calls.append(messages)
         self.response_formats.append(response_format)
+        self.query_attempts.append(query_attempt)
         return self.response
 
 
@@ -205,6 +209,7 @@ def test_queryer_uses_injected_provider():
     assert output_test_case.answer.output == "done"
     assert len(provider.calls) == 1
     assert provider.response_formats == [_Answer]
+    assert provider.query_attempts == [1]
     assert queryer.system_prompt == _PROMPT.base_system_prompt
 
 
@@ -290,6 +295,9 @@ def test_queryer_retries_provider_errors():
 
     assert result.answer == _Answer(output="done")
     assert provider.chat_completion.call_count == 2
+    assert [
+        call.kwargs["query_attempt"] for call in provider.chat_completion.call_args_list
+    ] == [1, 2]
 
 
 def test_queryer_requires_injected_provider():

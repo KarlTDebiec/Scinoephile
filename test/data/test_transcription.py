@@ -194,6 +194,7 @@ def test_process_transcription_pipeline_runs_all_stages(
         "alignment_mode": transcription_data.TranscriptionAlignmentMode.PAIRWISE,
         "fallback_to_no_op": False,
         "no_op": False,
+        "punctuate": False,
         "prune_test_cases": False,
         "vad_mode": VADMode.OFF,
     }
@@ -204,6 +205,7 @@ def test_process_transcription_pipeline_runs_all_stages(
         "model_name": transcription_data.MIMO_MODEL_NAME,
         "mlx_audio_timing_mode": transcription_data.MlxAudioTimingMode.CTC_UNIT,
         "no_op": False,
+        "punctuate": False,
         "prune_test_cases": False,
         "vad_mode": VADMode.OFF,
     }
@@ -214,6 +216,7 @@ def test_process_transcription_pipeline_runs_all_stages(
         "model_name": transcription_data.QWEN3_ASR_MODEL_NAME,
         "mlx_audio_timing_mode": transcription_data.MlxAudioTimingMode.CTC_UNIT,
         "no_op": False,
+        "punctuate": False,
         "prune_test_cases": False,
         "vad_mode": VADMode.OFF,
     }
@@ -305,6 +308,7 @@ def test_process_transcription_pipeline_can_prepare_selected_sources(
         language=Language.yue_hant,
         guide_language=Language.zho_hant,
         transcription_names=("mimo",),
+        punctuate_sources=True,
         strip_mlx_audio_punctuation=True,
         mlx_audio_timing_mode=transcription_data.MlxAudioTimingMode.PHRASE,
         run_merge_and_translation=False,
@@ -321,6 +325,7 @@ def test_process_transcription_pipeline_can_prepare_selected_sources(
         transcribe.call_args.kwargs["transcription_kw"]["mlx_audio_timing_mode"]
         is transcription_data.MlxAudioTimingMode.PHRASE
     )
+    assert transcribe.call_args.kwargs["transcription_kw"]["punctuate"] is True
 
 
 def test_process_transcription_pipeline_can_preserve_sources_while_overwriting_merge(
@@ -562,13 +567,31 @@ def test_transcription_stages_use_flat_json_directory(
         overwrite=True,
     )
     assert transcribe.call_args.kwargs["block_delineation_json_path"] == (
-        json_dir_path / "block_delineation-mps.json"
+        json_dir_path / "gated_advisory_delineation-mps.json"
     )
     assert transcribe.call_args.kwargs["block_punctuation_json_path"] == (
         json_dir_path / "block_punctuation-mps.json"
     )
     assert "delineation_json_path" not in transcribe.call_args.kwargs
     assert "punctuation_json_path" not in transcribe.call_args.kwargs
+
+    transcribe.reset_mock()
+    transcription_data._load_or_transcribe_series_guided(
+        audio,
+        series,
+        model_dir_path / "transcribe-block-no-punctuation.srt",
+        Language.yue_hant,
+        Language.zho_hant,
+        transcription_kw={
+            "alignment_mode": transcription_data.TranscriptionAlignmentMode.BLOCK,
+            "punctuate": False,
+        },
+        overwrite=True,
+    )
+    assert transcribe.call_args.kwargs["block_delineation_json_path"] == (
+        json_dir_path / "gated_advisory_delineation-mps.json"
+    )
+    assert "block_punctuation_json_path" not in transcribe.call_args.kwargs
 
     transcribe.reset_mock()
     transcription_data._load_or_transcribe_series_guided(
@@ -673,7 +696,7 @@ def test_transcription_stages_use_flat_json_directory(
         overwrite=True,
     )
     assert transcribe.call_args.kwargs["block_delineation_json_path"] == (
-        json_dir_path / "block_delineation-mps.json"
+        json_dir_path / "gated_advisory_delineation-mps.json"
     )
     assert transcribe.call_args.kwargs["block_punctuation_json_path"] == (
         json_dir_path / "positional_punctuation-mps.json"

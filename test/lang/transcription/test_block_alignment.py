@@ -152,6 +152,32 @@ def test_aligner_queries_each_operation_once_with_complete_indexed_block(
     assert alignment.sync_groups == [([0], [0]), ([1], [1]), ([2], [2])]
 
 
+def test_aligner_can_skip_punctuation(tmp_path: Path):
+    """Block alignment should retain delineated text without a punctuation query.
+
+    Arguments:
+        tmp_path: temporary cache root path
+    """
+    guide, transcription = _get_block()
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider.chat_completion.return_value = json.dumps(
+        {"changes": [{"index": 1, "shift": -1}]}
+    )
+    delineation_processor = BlockDelineationProcessor(
+        BlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
+    )
+    aligner = BlockTranscriptionAligner(delineation_processor, None)
+
+    alignment = aligner.align(guide, transcription)
+
+    assert provider.chat_completion.call_count == 1
+    assert [subtitle.text for subtitle in alignment.transcription] == [
+        "甲",
+        "乙丙",
+        "丁",
+    ]
+
+
 def test_candidate_alignment_selects_timed_cut_and_inserts_punctuation(tmp_path: Path):
     """Candidate mode should expose timed cuts and apply positional punctuation."""
     guide, transcription = _get_block()

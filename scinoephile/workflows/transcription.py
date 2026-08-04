@@ -39,7 +39,7 @@ def transcribe_series_guided(
     model_name: str | None = None,
     backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
-    vad_mode: VADMode = VADMode.AUTO,
+    vad_mode: VADMode = VADMode.OFF,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     strip_generated_punctuation: bool = False,
@@ -47,6 +47,7 @@ def transcribe_series_guided(
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     no_op: bool = False,
+    punctuate: bool = True,
     alignment_mode: TranscriptionAlignmentMode = TranscriptionAlignmentMode.PAIRWISE,
     block_delineation_mode: BlockDelineationMode | None = None,
     block_punctuation_mode: BlockPunctuationMode | None = None,
@@ -87,6 +88,7 @@ def transcribe_series_guided(
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         no_op: use neutral answers instead of querying an LLM
+        punctuate: whether to query an LLM to punctuate delineated transcription
         alignment_mode: LLM query granularity for alignment and punctuation
         block_delineation_mode: block delineation strategy override
         block_punctuation_mode: block punctuation strategy override
@@ -129,6 +131,7 @@ def transcribe_series_guided(
             provider=provider,
             additional_context=additional_context,
             no_op=no_op,
+            punctuate=punctuate,
             alignment_mode=alignment_mode,
             block_delineation_mode=block_delineation_mode,
             block_punctuation_mode=block_punctuation_mode,

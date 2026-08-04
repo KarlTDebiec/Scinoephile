@@ -157,10 +157,12 @@ class _DummyProvider(LLMProvider):
         messages: list[dict[str, Any]],
         response_format: type[Answer],
         tool_box: ToolBox | None = None,
+        *,
+        query_attempt: int = 1,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return a fixed completion value."""
-        _ = (messages, response_format, tool_box, kwargs)
+        _ = (messages, response_format, tool_box, query_attempt, kwargs)
         return "{}"
 
 

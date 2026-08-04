@@ -47,13 +47,14 @@ class TranscriptionAligner:
     def __init__(
         self,
         delineation_processor: DelineationProcessor,
-        punctuation_processor: PunctuationProcessor,
+        punctuation_processor: PunctuationProcessor | None,
     ):
         """Initialize.
 
         Arguments:
             delineation_processor: processor for delineation LLM queries
-            punctuation_processor: processor for punctuation LLM queries
+            punctuation_processor: processor for punctuation LLM queries, or None
+                to retain the delineated transcription without LLM punctuation
         """
         self.delineation_processor = delineation_processor
         """Shift transcription text between adjacent reference subtitles."""
@@ -89,13 +90,44 @@ class TranscriptionAligner:
             if not self._delineate(alignment):
                 break
 
-        self._punctuate(alignment)
+        if self.punctuation_processor is None:
+            self._consolidate(alignment)
+        else:
+            self._punctuate(alignment)
         return alignment
 
     def update_all_test_cases(self):
         """Update all test cases encountered during the current run."""
         self.delineation_processor.save_encountered_test_cases()
-        self.punctuation_processor.save_encountered_test_cases()
+        if self.punctuation_processor is not None:
+            self.punctuation_processor.save_encountered_test_cases()
+
+    @staticmethod
+    def _consolidate(alignment: TranscriptionAlignment):
+        """Consolidate delineated text by guide index without punctuating it.
+
+        Arguments:
+            alignment: nascent alignment
+        """
+        nascent_transcription = AudioSeries(audio=alignment.transcription.audio)
+        nascent_sync_groups: list[SyncGroup] = []
+        for sync_group in alignment.sync_groups:
+            reference_idx = sync_group[0][0]
+            transcription_subtitles = [
+                alignment.transcription.events[idx] for idx in sync_group[1]
+            ]
+            if not transcription_subtitles:
+                nascent_sync_groups.append(([reference_idx], []))
+                continue
+            subtitle = get_sub_merged(transcription_subtitles)
+            subtitle.start = alignment.reference[reference_idx].start
+            subtitle.end = alignment.reference[reference_idx].end
+            nascent_transcription.append(subtitle)
+            nascent_sync_groups.append(
+                ([reference_idx], [len(nascent_transcription) - 1])
+            )
+        alignment.transcription = nascent_transcription
+        alignment._sync_groups_override = nascent_sync_groups
 
     def _delineate(self, alignment: TranscriptionAlignment) -> bool:
         """Delineate transcribed text.
@@ -236,6 +268,7 @@ class TranscriptionAligner:
 
         nascent_transcription = AudioSeries(audio=alignment.transcription.audio)
         nascent_sync_groups: list[SyncGroup] = []
+        assert self.punctuation_processor is not None
         punctuation_queryer = self.punctuation_processor.queryer
         punctuation_prompt = cast(PunctuationPrompt, punctuation_queryer.prompt)
         for sync_group_idx, sync_group in enumerate(alignment.sync_groups):

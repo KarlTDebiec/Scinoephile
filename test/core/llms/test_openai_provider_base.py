@@ -27,6 +27,15 @@ class _DummyProvider(OpenAIProviderBase):
     """Dummy model name."""
 
 
+class _CachingDummyProvider(_DummyProvider):
+    """Dummy provider with explicit prompt caching enabled."""
+
+    @property
+    def use_explicit_prompt_caching(self) -> bool:
+        """Enable explicit prompt caching for tests."""
+        return True
+
+
 class _Answer(Answer):
     """Structured answer fixture."""
 
@@ -94,13 +103,26 @@ class _Completion:
             message: completion message
         """
         self.choices = [SimpleNamespace(message=message)]
+        self.usage = SimpleNamespace(
+            prompt_tokens=100,
+            prompt_tokens_details=SimpleNamespace(
+                cached_tokens=60, cache_write_tokens=20
+            ),
+            completion_tokens=12,
+            completion_tokens_details=SimpleNamespace(reasoning_tokens=7),
+            total_tokens=112,
+        )
 
 
 class _DummyClient:
     """Dummy client that returns tool calls once then a final response."""
 
-    def __init__(self):
-        """Initialize dummy client state and completion surface."""
+    def __init__(self, *, use_raw_response: bool = False):
+        """Initialize dummy client state and completion surface.
+
+        Arguments:
+            use_raw_response: whether to expose SDK retry metadata
+        """
         self.calls: list[dict[str, object]] = []
         self.parse_calls = 0
         self._round = 0
@@ -145,9 +167,19 @@ class _DummyClient:
             return create(messages=messages, model=model, **kwargs)
 
         self.chat = SimpleNamespace(completions=SimpleNamespace(create=create))
-        self.beta = SimpleNamespace(
-            chat=SimpleNamespace(completions=SimpleNamespace(parse=parse))
-        )
+        completions = SimpleNamespace(parse=parse)
+        if use_raw_response:
+
+            def raw_parse(
+                *, messages: list[dict[str, object]], model: str, **kwargs: Any
+            ) -> SimpleNamespace:
+                """Return a raw response carrying retry metadata."""
+                self.parse_calls += 1
+                completion = create(messages=messages, model=model, **kwargs)
+                return SimpleNamespace(parse=lambda: completion, retries_taken=2)
+
+            completions.with_raw_response = SimpleNamespace(parse=raw_parse)
+        self.beta = SimpleNamespace(chat=SimpleNamespace(completions=completions))
 
 
 def _get_tool_box(handler: Callable[[dict[str, object]], object]) -> ToolBox:
@@ -195,10 +227,20 @@ def test_tool_call_loop_runs_handler_and_returns_final_text():
     assert len(client.calls) == 2
     first_call_kwargs = cast(dict[str, object], client.calls[0]["kwargs"])
     assert first_call_kwargs["response_format"] is _Answer
+    assert first_call_kwargs["timeout"] == 120.0
     second_call_messages = cast(list[dict[str, object]], client.calls[1]["messages"])
     assert second_call_messages[1]["reasoning_content"] == (
         "Need tool output before answering."
     )
+    assert [metrics.tool_round for metrics in provider.completion_metrics] == [1, 2]
+    assert provider.completion_metrics[0].input_tokens == 100
+    assert provider.completion_metrics[0].cached_input_tokens == 60
+    assert provider.completion_metrics[0].cache_write_tokens == 20
+    assert provider.completion_metrics[0].output_tokens == 12
+    assert provider.completion_metrics[0].reasoning_tokens == 7
+    assert provider.completion_metrics[0].total_tokens == 112
+    assert provider.completion_metrics[0].transport_retries == 0
+    assert provider.completion_metrics[0].latency_seconds >= 0
 
 
 def test_model_override_updates_provider_model():
@@ -221,12 +263,91 @@ def test_structured_response_validation_error_is_wrapped():
     with raises(ValidationError) as exc_info:
         _Answer.model_validate({})
     client.beta.chat.completions.parse.side_effect = exc_info.value
+    client.beta.chat.completions.with_raw_response = None
     provider = _DummyProvider(client=cast(OpenAI, client))
 
     with raises(ScinoephileError, match="failed structured response validation"):
         provider.chat_completion(
             messages=[{"role": "user", "content": "hi"}], response_format=_Answer
         )
+
+
+def test_timeout_must_be_positive():
+    """Test provider request timeouts must be positive."""
+    with raises(ValueError, match="timeout_seconds must be positive"):
+        _DummyProvider(timeout_seconds=0)
+
+
+def test_raw_response_records_transport_retries():
+    """Test SDK retry metadata is retained for every completion."""
+    client = _DummyClient(use_raw_response=True)
+    provider = _DummyProvider(client=cast(OpenAI, client))
+
+    result = provider.chat_completion(
+        messages=[{"role": "user", "content": "hi"}],
+        response_format=_Answer,
+        tool_box=_get_tool_box(lambda args: args),
+        query_attempt=3,
+    )
+
+    assert result == "done"
+    assert [metrics.transport_retries for metrics in provider.completion_metrics] == [
+        2,
+        2,
+    ]
+    assert [metrics.query_attempt for metrics in provider.completion_metrics] == [3, 3]
+
+
+def test_explicit_prompt_cache_reuses_stable_prefix_key():
+    """Test cache routing ignores the variable user-query suffix."""
+    client = _DummyClient()
+    provider = _CachingDummyProvider(client=cast(OpenAI, client))
+    tool_box = _get_tool_box(lambda args: args)
+
+    provider.chat_completion(
+        messages=[
+            {"role": "system", "content": "Stable instructions"},
+            {"role": "user", "content": "first query"},
+        ],
+        response_format=_Answer,
+        tool_box=tool_box,
+    )
+    provider.chat_completion(
+        messages=[
+            {"role": "system", "content": "Stable instructions"},
+            {"role": "user", "content": "second query"},
+        ],
+        response_format=_Answer,
+        tool_box=tool_box,
+    )
+    provider.chat_completion(
+        messages=[
+            {"role": "system", "content": "Changed instructions"},
+            {"role": "user", "content": "second query"},
+        ],
+        response_format=_Answer,
+        tool_box=tool_box,
+    )
+
+    first_kwargs = cast(dict[str, object], client.calls[0]["kwargs"])
+    second_kwargs = cast(dict[str, object], client.calls[2]["kwargs"])
+    third_kwargs = cast(dict[str, object], client.calls[3]["kwargs"])
+    assert first_kwargs["prompt_cache_key"] == second_kwargs["prompt_cache_key"]
+    assert first_kwargs["prompt_cache_key"] != third_kwargs["prompt_cache_key"]
+    assert first_kwargs["prompt_cache_options"] == {"mode": "explicit"}
+    first_messages = cast(list[dict[str, object]], client.calls[0]["messages"])
+    assert first_messages[0]["content"] == [
+        {
+            "type": "text",
+            "text": "Stable instructions",
+            "prompt_cache_breakpoint": {"mode": "explicit"},
+        }
+    ]
+    assert first_messages[1]["content"] == "first query"
+    assert (
+        provider.completion_metrics[0].prompt_cache_key
+        == (first_kwargs["prompt_cache_key"])
+    )
 
 
 def test_cache_identity_contains_nonsecret_effective_configuration():

@@ -41,12 +41,12 @@ _OPTIONAL_TRANSCRIPTION_MODULES = (
 )
 
 
-def test_init_defaults_preprocessing_to_auto():
-    """Test Whisper defaults both preprocessing dimensions to automatic."""
+def test_init_defaults_demucs_to_auto_and_vad_to_off():
+    """Test Whisper defaults Demucs to automatic and VAD to off."""
     transcriber = WhisperTranscriber()
 
     assert transcriber.demucs_mode is DemucsMode.AUTO
-    assert transcriber.vad_mode is VADMode.AUTO
+    assert transcriber.vad_mode is VADMode.OFF
 
 
 def _get_cache_path(transcriber: WhisperTranscriber, audio: AudioSegment) -> Path:

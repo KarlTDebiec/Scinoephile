@@ -118,26 +118,34 @@ _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
 )
 """Default written Cantonese transcription punctuation JSON paths."""
 
-_YUE_ZHO_BLOCK_TEST_CASE_DIR_PATHS = tuple(
-    Path(dataset_name)
-    / "output"
-    / "yue-Hant_transcribe"
-    / vad_name
-    / transcription_name
-    / "json"
-    for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
-    for vad_name in ("vad-auto", "vad-off")
-    for transcription_name in ("whisper", "mimo", "qwen")
-) + (
-    Path("acopopb/output/yue-Hant_transcribe/vad-off-stripped-punctuation/mimo/json"),
-    Path("acopopb/output/yue-Hant_transcribe/vad-off-stripped-punctuation/qwen/json"),
-) + tuple(
-    Path("acopopb/output/yue-Hant_transcribe")
-    / f"{vad_name}-phrase-timing-stripped-punctuation"
-    / transcription_name
-    / "json"
-    for vad_name in ("vad-auto", "vad-off")
-    for transcription_name in ("whisper", "mimo", "qwen")
+_YUE_ZHO_BLOCK_TEST_CASE_DIR_PATHS = (
+    tuple(
+        Path(dataset_name)
+        / "output"
+        / "yue-Hant_transcribe"
+        / vad_name
+        / transcription_name
+        / "json"
+        for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
+        for vad_name in ("vad-auto", "vad-off")
+        for transcription_name in ("whisper", "mimo", "qwen")
+    )
+    + (
+        Path(
+            "acopopb/output/yue-Hant_transcribe/vad-off-stripped-punctuation/mimo/json"
+        ),
+        Path(
+            "acopopb/output/yue-Hant_transcribe/vad-off-stripped-punctuation/qwen/json"
+        ),
+    )
+    + tuple(
+        Path("acopopb/output/yue-Hant_transcribe")
+        / f"{vad_name}-phrase-timing-stripped-punctuation"
+        / transcription_name
+        / "json"
+        for vad_name in ("vad-auto", "vad-off")
+        for transcription_name in ("whisper", "mimo", "qwen")
+    )
 )
 """Repository JSON directories for each written Cantonese transcription run."""
 
@@ -371,7 +379,7 @@ def get_guided_transcriber(
     model_name: str | None = None,
     backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.AUTO,
-    vad_mode: VADMode = VADMode.AUTO,
+    vad_mode: VADMode = VADMode.OFF,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     strip_generated_punctuation: bool = False,
@@ -379,6 +387,7 @@ def get_guided_transcriber(
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     no_op: bool = False,
+    punctuate: bool = True,
     alignment_mode: TranscriptionAlignmentMode = TranscriptionAlignmentMode.PAIRWISE,
     block_delineation_mode: BlockDelineationMode | None = None,
     block_punctuation_mode: BlockPunctuationMode | None = None,
@@ -414,6 +423,7 @@ def get_guided_transcriber(
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         no_op: use neutral answers instead of querying an LLM
+        punctuate: whether to query an LLM to punctuate delineated transcription
         alignment_mode: LLM query granularity for alignment and punctuation
         block_delineation_mode: block delineation strategy override
         block_punctuation_mode: block punctuation strategy override
@@ -452,7 +462,7 @@ def get_guided_transcriber(
 
     default_block_modes = {
         TranscriptionAlignmentMode.BLOCK: (
-            BlockDelineationMode.UNRESTRICTED,
+            BlockDelineationMode.GATED_ADVISORY,
             BlockPunctuationMode.FULL_TEXT,
         ),
         TranscriptionAlignmentMode.BLOCK_POSITIONAL: (
@@ -475,6 +485,7 @@ def get_guided_transcriber(
             cache_root_path=cache_root_path,
             fallback_to_no_op=fallback_to_no_op,
             no_op=no_op,
+            punctuate=punctuate,
             overwrite_cache=overwrite_cache,
             prune_test_cases=prune_test_cases,
             delineation_prompt=block_delineation_prompt,
@@ -497,6 +508,7 @@ def get_guided_transcriber(
             additional_context=additional_context,
             cache_root_path=cache_root_path,
             no_op=no_op,
+            punctuate=punctuate,
             overwrite_cache=overwrite_cache,
             prune_test_cases=prune_test_cases,
             delineation_prompt=delineation_prompt,
@@ -518,7 +530,7 @@ def get_guided_transcriber(
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
         )
-    if block_punctuation_mode is BlockPunctuationMode.POSITIONAL:
+    if punctuate and block_punctuation_mode is BlockPunctuationMode.POSITIONAL:
         strip_generated_punctuation = True
     return GuidedTranscriber(
         language=language,
@@ -548,6 +560,7 @@ def _get_block_aligner(
     cache_root_path: Path | None,
     fallback_to_no_op: bool,
     no_op: bool,
+    punctuate: bool,
     overwrite_cache: bool,
     prune_test_cases: bool,
     delineation_prompt: BlockDelineationPrompt | None,
@@ -568,6 +581,7 @@ def _get_block_aligner(
         cache_root_path: cache root directory path
         fallback_to_no_op: whether invalid answers fall back to sparse no-op
         no_op: use neutral answers instead of querying an LLM
+        punctuate: whether to configure and run block punctuation queries
         overwrite_cache: whether to replace matching generated cache files
         prune_test_cases: whether to remove unencountered test cases
         delineation_prompt: block delineation prompt override
@@ -586,7 +600,7 @@ def _get_block_aligner(
     use_advisory_suggestions = delineation_mode in advisory_modes
     gate_advisory_suggestions = delineation_mode is BlockDelineationMode.GATED_ADVISORY
     use_candidates = delineation_mode is BlockDelineationMode.CANDIDATE
-    use_positional = punctuation_mode is BlockPunctuationMode.POSITIONAL
+    use_positional = punctuate and punctuation_mode is BlockPunctuationMode.POSITIONAL
     delineation_prompts = {
         BlockDelineationMode.ADVISORY: spec.advisory_block_delineation_prompt,
         BlockDelineationMode.GATED_ADVISORY: (spec.advisory_block_delineation_prompt),
@@ -598,8 +612,9 @@ def _get_block_aligner(
         BlockPunctuationMode.FULL_TEXT: spec.block_punctuation_prompt,
         BlockPunctuationMode.POSITIONAL: spec.positional_block_punctuation_prompt,
     }
-    punctuation_prompt = punctuation_prompt or punctuation_prompts[punctuation_mode]
-    if delineation_json_path is None or punctuation_json_path is None:
+    if punctuate:
+        punctuation_prompt = punctuation_prompt or punctuation_prompts[punctuation_mode]
+    if delineation_json_path is None or (punctuate and punctuation_json_path is None):
         runtime_test_case_dir_path = (
             get_runtime_data_root_path(create=False)
             / "test_cases"
@@ -620,7 +635,7 @@ def _get_block_aligner(
                 / delineation_dir_names[delineation_mode]
                 / f"{device}.json"
             )
-        if punctuation_json_path is None:
+        if punctuate and punctuation_json_path is None:
             punctuation_dir_names = {
                 BlockPunctuationMode.FULL_TEXT: "block_punctuation",
                 BlockPunctuationMode.POSITIONAL: "positional_block_punctuation",
@@ -654,7 +669,7 @@ def _get_block_aligner(
                 delineation_json_paths_by_mode[delineation_mode],
             )
         )
-    if punctuation_test_cases is None:
+    if punctuate and punctuation_test_cases is None:
         punctuation_managers = {
             BlockPunctuationMode.FULL_TEXT: BlockPunctuationManager,
             BlockPunctuationMode.POSITIONAL: PositionalBlockPunctuationManager,
@@ -701,6 +716,7 @@ def _get_block_aligner(
         overwrite_cache=overwrite_cache,
         prune_test_cases=prune_test_cases,
     )
+    punctuation_processor = None
     if use_positional:
         if not isinstance(punctuation_prompt, PositionalBlockPunctuationPrompt):
             raise TypeError(
@@ -718,7 +734,8 @@ def _get_block_aligner(
             overwrite_cache=overwrite_cache,
             prune_test_cases=prune_test_cases,
         )
-    else:
+    elif punctuate:
+        assert punctuation_prompt is not None
         punctuation_processor = BlockPunctuationProcessor(
             punctuation_prompt,
             shared_test_cases=punctuation_test_cases,
@@ -747,6 +764,7 @@ def _get_pairwise_aligner(
     additional_context: str | None,
     cache_root_path: Path | None,
     no_op: bool,
+    punctuate: bool,
     overwrite_cache: bool,
     prune_test_cases: bool,
     delineation_prompt: DelineationPrompt | None,
@@ -764,6 +782,7 @@ def _get_pairwise_aligner(
         additional_context: additional context to include in LLM prompts
         cache_root_path: cache root directory path
         no_op: use neutral answers instead of querying an LLM
+        punctuate: whether to configure and run punctuation queries
         overwrite_cache: whether to replace matching generated cache files
         prune_test_cases: whether to remove unencountered test cases
         delineation_prompt: delineation prompt override
@@ -777,9 +796,9 @@ def _get_pairwise_aligner(
     """
     if delineation_prompt is None:
         delineation_prompt = spec.delineation_prompt
-    if punctuation_prompt is None:
+    if punctuate and punctuation_prompt is None:
         punctuation_prompt = spec.punctuation_prompt
-    if delineation_json_path is None or punctuation_json_path is None:
+    if delineation_json_path is None or (punctuate and punctuation_json_path is None):
         runtime_test_case_dir_path = (
             get_runtime_data_root_path(create=False)
             / "test_cases"
@@ -790,7 +809,7 @@ def _get_pairwise_aligner(
             delineation_json_path = (
                 runtime_test_case_dir_path / "delineation" / f"{device}.json"
             )
-        if punctuation_json_path is None:
+        if punctuate and punctuation_json_path is None:
             punctuation_json_path = (
                 runtime_test_case_dir_path / "punctuation" / f"{device}.json"
             )
@@ -800,7 +819,7 @@ def _get_pairwise_aligner(
                 DelineationManager, delineation_prompt, spec.delineation_json_paths
             )
         )
-    if punctuation_test_cases is None:
+    if punctuate and punctuation_test_cases is None:
         punctuation_test_cases = list(
             load_shared_test_cases(
                 PunctuationManager, punctuation_prompt, spec.punctuation_json_paths
@@ -817,17 +836,20 @@ def _get_pairwise_aligner(
         overwrite_cache=overwrite_cache,
         prune_test_cases=prune_test_cases,
     )
-    punctuation_processor = PunctuationProcessor(
-        punctuation_prompt,
-        shared_test_cases=punctuation_test_cases,
-        current_test_cases_path=punctuation_json_path,
-        provider=provider,
-        additional_context=additional_context,
-        cache_root_path=cache_root_path,
-        no_op=no_op,
-        overwrite_cache=overwrite_cache,
-        prune_test_cases=prune_test_cases,
-    )
+    punctuation_processor = None
+    if punctuate:
+        assert punctuation_prompt is not None
+        punctuation_processor = PunctuationProcessor(
+            punctuation_prompt,
+            shared_test_cases=punctuation_test_cases,
+            current_test_cases_path=punctuation_json_path,
+            provider=provider,
+            additional_context=additional_context,
+            cache_root_path=cache_root_path,
+            no_op=no_op,
+            overwrite_cache=overwrite_cache,
+            prune_test_cases=prune_test_cases,
+        )
     return TranscriptionAligner(
         delineation_processor=delineation_processor,
         punctuation_processor=punctuation_processor,

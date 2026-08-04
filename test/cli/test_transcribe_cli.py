@@ -100,8 +100,8 @@ def test_transcribe_cli_defers_whisper_model_default_to_registry():
     assert model_action.default is None
 
 
-def test_transcribe_cli_defaults_audio_preprocessing_to_auto():
-    """Test transcription CLI defaults Demucs and VAD to automatic modes."""
+def test_transcribe_cli_defaults_demucs_to_auto_and_vad_to_off():
+    """Test transcription CLI defaults Demucs to automatic and disables VAD."""
     parser = TranscribeCli.argparser()
     demucs_action = next(
         action
@@ -115,7 +115,7 @@ def test_transcribe_cli_defaults_audio_preprocessing_to_auto():
     )
 
     assert demucs_action.default is DemucsMode.AUTO
-    assert vad_action.default is VADMode.AUTO
+    assert vad_action.default is VADMode.OFF
 
 
 def test_transcribe_cli_writes_file(audio_series: Mock, expected_series: Series):

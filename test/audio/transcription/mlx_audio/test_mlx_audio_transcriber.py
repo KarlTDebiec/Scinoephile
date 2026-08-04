@@ -60,12 +60,12 @@ def _get_cache_path(
     return cache_path
 
 
-def test_init_defaults_preprocessing_to_auto():
-    """Test MLX-Audio defaults both preprocessing dimensions to automatic."""
+def test_init_defaults_demucs_to_auto_and_vad_to_off():
+    """Test MLX-Audio defaults Demucs to automatic and VAD to off."""
     transcriber = MlxAudioTranscriber()
 
     assert transcriber.demucs_mode is DemucsMode.AUTO
-    assert transcriber.vad_mode is VADMode.AUTO
+    assert transcriber.vad_mode is VADMode.OFF
 
 
 def test_get_cache_path_separates_model_configuration():

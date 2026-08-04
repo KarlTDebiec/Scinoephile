@@ -56,8 +56,7 @@ yue_hant_transcribe_vad_auto_phrase_timing_stripped_punctuation_path = (
     yue_hant_transcribe_path / "vad-auto-phrase-timing-stripped-punctuation"
 )
 yue_hant_transcribe_vad_auto_phrase_timing_gated_advisory_delineation_path = (
-    yue_hant_transcribe_path
-    / "vad-auto-phrase-timing-gated-advisory-delineation"
+    yue_hant_transcribe_path / "vad-auto-phrase-timing-gated-advisory-delineation"
 )
 zho_hans_ocr_path = output_path / "zho-Hans_ocr"
 zho_hant_ocr_path = output_path / "zho-Hant_ocr"

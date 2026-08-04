@@ -356,6 +356,7 @@ def process_transcription_pipeline(
     reviewer_kw: dict[str, Any] | None = None,
     translator_kw: dict[str, Any] | None = None,
     transcription_no_op: bool = False,
+    punctuate_sources: bool = False,
     transcription_alignment_mode: TranscriptionAlignmentMode = (
         TranscriptionAlignmentMode.PAIRWISE
     ),
@@ -364,7 +365,7 @@ def process_transcription_pipeline(
     transcription_fallback_to_no_op: bool = False,
     strip_mlx_audio_punctuation: bool = False,
     mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
-    vad_mode: VADMode = VADMode.AUTO,
+    vad_mode: VADMode = VADMode.OFF,
     transcription_names: tuple[str, ...] | None = None,
     transcription_overwrite: bool | None = None,
     run_merge_and_translation: bool = True,
@@ -394,6 +395,8 @@ def process_transcription_pipeline(
         translator_kw: additional keyword arguments for gap translation
         transcription_no_op: whether delineation and punctuation should use neutral
           answers instead of querying an LLM
+        punctuate_sources: whether to punctuate each source before the merge; false
+          leaves punctuation synthesis to the multi-source merge
         transcription_alignment_mode: LLM query granularity for transcription
           alignment and punctuation
         transcription_block_delineation_mode: block delineation strategy override
@@ -432,6 +435,7 @@ def process_transcription_pipeline(
             "alignment_mode": transcription_alignment_mode,
             "fallback_to_no_op": transcription_fallback_to_no_op,
             "no_op": transcription_no_op,
+            "punctuate": punctuate_sources,
             "prune_test_cases": stop_at_idx is None,
             "vad_mode": vad_mode,
         },
@@ -442,6 +446,7 @@ def process_transcription_pipeline(
             "model_name": MIMO_MODEL_NAME,
             "mlx_audio_timing_mode": mlx_audio_timing_mode,
             "no_op": transcription_no_op,
+            "punctuate": punctuate_sources,
             "prune_test_cases": stop_at_idx is None,
             "vad_mode": vad_mode,
         },
@@ -452,6 +457,7 @@ def process_transcription_pipeline(
             "model_name": QWEN3_ASR_MODEL_NAME,
             "mlx_audio_timing_mode": mlx_audio_timing_mode,
             "no_op": transcription_no_op,
+            "punctuate": punctuate_sources,
             "prune_test_cases": stop_at_idx is None,
             "vad_mode": vad_mode,
         },
@@ -642,7 +648,7 @@ def _load_or_transcribe_series_guided(
     )
     default_block_modes = {
         TranscriptionAlignmentMode.BLOCK: (
-            BlockDelineationMode.UNRESTRICTED,
+            BlockDelineationMode.GATED_ADVISORY,
             BlockPunctuationMode.FULL_TEXT,
         ),
         TranscriptionAlignmentMode.BLOCK_POSITIONAL: (
@@ -676,17 +682,19 @@ def _load_or_transcribe_series_guided(
             "block_delineation_json_path",
             json_dir_path / delineation_filenames[delineation_mode],
         )
-        transcription_kw.setdefault(
-            "block_punctuation_json_path",
-            json_dir_path / punctuation_filenames[punctuation_mode],
-        )
+        if transcription_kw.get("punctuate", True):
+            transcription_kw.setdefault(
+                "block_punctuation_json_path",
+                json_dir_path / punctuation_filenames[punctuation_mode],
+            )
     else:
         transcription_kw.setdefault(
             "delineation_json_path", json_dir_path / f"delineation-{device}.json"
         )
-        transcription_kw.setdefault(
-            "punctuation_json_path", json_dir_path / f"punctuation-{device}.json"
-        )
+        if transcription_kw.get("punctuate", True):
+            transcription_kw.setdefault(
+                "punctuation_json_path", json_dir_path / f"punctuation-{device}.json"
+            )
     audio_transcription = transcribe_series_guided(
         audio,
         guide,

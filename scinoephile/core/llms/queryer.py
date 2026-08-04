@@ -163,7 +163,10 @@ class Queryer[TTestCase: TestCase]:
             # Get answer from provider
             try:
                 content = self.provider.chat_completion(
-                    messages, self.test_case_cls.answer_cls, self.tool_box
+                    messages,
+                    self.test_case_cls.answer_cls,
+                    self.tool_box,
+                    query_attempt=attempt,
                 )
             except ScinoephileError as exc:
                 logger.error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")

@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from .answer import Answer
 from .cache import LlmCache
-from .llm_provider import ChatCompletionKwargs, LLMProvider
+from .llm_provider import ChatCompletionKwargs, ChatCompletionMetrics, LLMProvider
 from .manager import Manager, PromptModelField
 from .openai_provider_base import OpenAIProviderBase
 from .processor import Processor, ProcessorKwargs
@@ -32,6 +32,7 @@ __all__ = [
     "AnnotatedTestCaseSubtitle",
     "Answer",
     "ChatCompletionKwargs",
+    "ChatCompletionMetrics",
     "LLMProvider",
     "LlmCache",
     "Manager",

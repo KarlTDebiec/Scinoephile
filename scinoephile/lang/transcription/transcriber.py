@@ -182,7 +182,7 @@ class GuidedTranscriber:
         aligner: TranscriptionAligner | BlockTranscriptionAligner,
         backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
         demucs_mode: DemucsMode = DemucsMode.AUTO,
-        vad_mode: VADMode = VADMode.AUTO,
+        vad_mode: VADMode = VADMode.OFF,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
         mlx_audio_transcriber: MlxAudioTranscriber | None = None,
@@ -300,9 +300,11 @@ class GuidedTranscriber:
                 f"{len(reference_blocks)} blocks."
             )
         block_range = val_index_range(len(audio_blocks), start_at_idx, stop_at_idx)
-        if (
-            self.aligner.delineation_processor.prune_test_cases
-            or self.aligner.punctuation_processor.prune_test_cases
+        processors = [self.aligner.delineation_processor]
+        if self.aligner.punctuation_processor is not None:
+            processors.append(self.aligner.punctuation_processor)
+        if any(
+            processor.prune_test_cases for processor in processors
         ) and block_range != range(len(audio_blocks)):
             raise ValueError(
                 "Cannot prune test cases while processing only a subset of blocks."

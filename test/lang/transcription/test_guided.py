@@ -37,7 +37,6 @@ from scinoephile.lang.yue_zho.transcription import (
 )
 from scinoephile.llms.block_delineation import (
     AdvisoryBlockDelineationProcessor,
-    BlockDelineationProcessor,
     CandidateBlockDelineationProcessor,
 )
 from scinoephile.llms.block_punctuation import (
@@ -80,8 +79,8 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
             (Language.yue_hant, Language.zho_hant)
         ].punctuation_json_paths
     )
-    expected_block_json_dir_paths = (
-        tuple(
+    required_block_json_dir_paths = {
+        *(
             Path(dataset_name)
             / "output"
             / "yue-Hant_transcribe"
@@ -91,8 +90,8 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
             for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
             for vad_name in ("vad-auto", "vad-off")
             for transcription_name in ("whisper", "mimo", "qwen")
-        )
-        + tuple(
+        ),
+        *(
             Path("acopopb")
             / "output"
             / "yue-Hant_transcribe"
@@ -100,26 +99,25 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
             / transcription_name
             / "json"
             for transcription_name in ("mimo", "qwen")
-        )
-        + tuple(
+        ),
+        *(
             Path("acopopb")
             / "output"
             / "yue-Hant_transcribe"
-            / "vad-off-phrase-timing-stripped-punctuation"
+            / f"{vad_name}-phrase-timing-stripped-punctuation"
             / transcription_name
             / "json"
-            for transcription_name in ("mimo", "qwen")
-        )
-    )
+            for vad_name in ("vad-auto", "vad-off")
+            for transcription_name in ("whisper", "mimo", "qwen")
+        ),
+    }
     spec = DEFAULT_SPECS[(Language.yue_hant, Language.zho_hant)]
-    assert spec.block_delineation_json_paths == tuple(
-        dir_path / "block_delineation-mps.json"
-        for dir_path in expected_block_json_dir_paths
-    )
-    assert spec.block_punctuation_json_paths == tuple(
-        dir_path / "block_punctuation-mps.json"
-        for dir_path in expected_block_json_dir_paths
-    )
+    for json_paths, filename in (
+        (spec.block_delineation_json_paths, "block_delineation-mps.json"),
+        (spec.block_punctuation_json_paths, "block_punctuation-mps.json"),
+    ):
+        assert all(path.name == filename for path in json_paths)
+        assert required_block_json_dir_paths <= {path.parent for path in json_paths}
     mutable_specs = cast(dict, DEFAULT_SPECS)
     with raises(TypeError):
         mutable_specs[(Language.eng, Language.zho_hans)] = DEFAULT_SPECS[
@@ -153,7 +151,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.guide_language is Language.zho_hans
     assert transcriber.backend is TranscriptionBackend.WHISPER
     assert transcriber.demucs_mode is DemucsMode.AUTO
-    assert transcriber.vad_mode is VADMode.AUTO
+    assert transcriber.vad_mode is VADMode.OFF
     assert not hasattr(transcriber, "overwrite_cache")
     assert not hasattr(transcriber, "cache_root_path")
     assert transcriber.whisper_language == "yue"
@@ -168,7 +166,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     )
     assert transcriber.transcriber.language == "yue"
     assert transcriber.transcriber.demucs_mode is DemucsMode.AUTO
-    assert transcriber.transcriber.vad_mode is VADMode.AUTO
+    assert transcriber.transcriber.vad_mode is VADMode.OFF
     assert transcriber.recovery_transcriber is not None
     assert transcriber.tail_recovery_transcriber is not None
     assert not hasattr(transcriber.transcriber, "cache_root_path")
@@ -239,7 +237,7 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
         model_name=MIMO_MODEL_NAME,
         language=Language.yue_hant,
         demucs_mode=DemucsMode.AUTO,
-        vad_mode=VADMode.AUTO,
+        vad_mode=VADMode.OFF,
         cache_root_path=tmp_path,
         overwrite_cache=False,
     )
@@ -274,25 +272,57 @@ def test_get_guided_transcriber_configures_block_alignment(tmp_path: Path):
 
     assert isinstance(transcriber.aligner, BlockTranscriptionAligner)
     assert isinstance(
-        transcriber.aligner.delineation_processor, BlockDelineationProcessor
+        transcriber.aligner.delineation_processor, AdvisoryBlockDelineationProcessor
     )
     assert isinstance(
         transcriber.aligner.punctuation_processor, BlockPunctuationProcessor
     )
     assert transcriber.aligner.delineation_processor.prompt is (
-        YueZhoBlockDelineationPromptYueHant
+        YueZhoAdvisoryBlockDelineationPromptYueHant
     )
     assert transcriber.aligner.punctuation_processor.prompt is (
         YueZhoBlockPunctuationPromptYueHant
     )
     assert transcriber.aligner.fallback_to_no_op
+    assert transcriber.aligner.use_delineation_suggestions
+    assert transcriber.aligner.gate_delineation_suggestions
     test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
     assert transcriber.aligner.delineation_processor.current_test_cases_path == (
-        test_case_dir_path / "block_delineation" / "test.json"
+        test_case_dir_path / "gated_advisory_block_delineation" / "test.json"
     )
     assert transcriber.aligner.punctuation_processor.current_test_cases_path == (
         test_case_dir_path / "block_punctuation" / "test.json"
     )
+
+
+def test_get_guided_transcriber_can_skip_punctuation(tmp_path: Path):
+    """Test guided transcription can avoid constructing punctuation queries.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    with (
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
+            return_value=tmp_path / "data",
+        ),
+        patch(
+            "scinoephile.lang.transcription.guided.get_torch_device",
+            return_value="test",
+        ),
+    ):
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hant,
+            alignment_mode=TranscriptionAlignmentMode.BLOCK,
+            punctuate=False,
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+            block_delineation_test_cases=[],
+            cache_root_path=tmp_path,
+        )
+
+    assert isinstance(transcriber.aligner, BlockTranscriptionAligner)
+    assert transcriber.aligner.punctuation_processor is None
 
 
 def test_get_guided_transcriber_configures_block_positional_alignment(tmp_path: Path):
@@ -504,7 +534,7 @@ def test_get_guided_transcriber_configures_positional_punctuation_only(tmp_path:
 
     assert isinstance(transcriber.aligner, BlockTranscriptionAligner)
     assert isinstance(
-        transcriber.aligner.delineation_processor, BlockDelineationProcessor
+        transcriber.aligner.delineation_processor, AdvisoryBlockDelineationProcessor
     )
     assert isinstance(
         transcriber.aligner.punctuation_processor, PositionalBlockPunctuationProcessor
@@ -513,7 +543,7 @@ def test_get_guided_transcriber_configures_positional_punctuation_only(tmp_path:
     assert transcriber.strip_generated_punctuation
     test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
     assert transcriber.aligner.delineation_processor.current_test_cases_path == (
-        test_case_dir_path / "block_delineation" / "test.json"
+        test_case_dir_path / "gated_advisory_block_delineation" / "test.json"
     )
     assert transcriber.aligner.punctuation_processor.current_test_cases_path == (
         test_case_dir_path / "positional_block_punctuation" / "test.json"
@@ -560,6 +590,7 @@ def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path
     assert transcriber.aligner.delineation_processor.current_test_cases_path == (
         delineation_json_path
     )
+    assert transcriber.aligner.punctuation_processor is not None
     assert transcriber.aligner.punctuation_processor.current_test_cases_path == (
         punctuation_json_path
     )
@@ -688,6 +719,7 @@ def test_get_guided_transcriber_loads_verified_cases_from_exact_json(tmp_path: P
     )
     queryer = transcriber.aligner.delineation_processor.queryer
     assert not transcriber.aligner.delineation_processor.prune_test_cases
+    assert transcriber.aligner.punctuation_processor is not None
     assert not transcriber.aligner.punctuation_processor.prune_test_cases
     pending_test_case = test_case_cls.model_validate(
         {"query": verified_test_case.query.model_dump()}

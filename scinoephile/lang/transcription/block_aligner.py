@@ -113,7 +113,7 @@ class BlockTranscriptionAligner:
             | CandidateBlockDelineationProcessor
         ),
         punctuation_processor: (
-            BlockPunctuationProcessor | PositionalBlockPunctuationProcessor
+            BlockPunctuationProcessor | PositionalBlockPunctuationProcessor | None
         ),
         *,
         fallback_to_no_op: bool = False,
@@ -125,7 +125,8 @@ class BlockTranscriptionAligner:
 
         Arguments:
             delineation_processor: processor for block delineation queries
-            punctuation_processor: processor for block punctuation queries
+            punctuation_processor: processor for block punctuation queries, or None
+                to retain the delineated transcription without LLM punctuation
             fallback_to_no_op: whether invalid answers fall back to sparse no-op
             gate_delineation_suggestions: whether weak timing suggestions are omitted
             use_delineation_candidates: whether boundary shifts must select from
@@ -194,14 +195,19 @@ class BlockTranscriptionAligner:
             delineated = self._delineate(
                 references, targets, timing_boundaries=timing_boundaries
             )
-        punctuated = self._punctuate(references, delineated)
+        punctuated = (
+            delineated
+            if self.punctuation_processor is None
+            else self._punctuate(references, delineated)
+        )
         self._set_output(alignment, punctuated)
         return alignment
 
     def update_all_test_cases(self):
         """Persist block test cases encountered during the current run."""
         self.delineation_processor.save_encountered_test_cases()
-        self.punctuation_processor.save_encountered_test_cases()
+        if self.punctuation_processor is not None:
+            self.punctuation_processor.save_encountered_test_cases()
 
     def _delineate(
         self,
@@ -341,6 +347,7 @@ class BlockTranscriptionAligner:
         Returns:
             punctuated target text by index
         """
+        assert self.punctuation_processor is not None
         output = list(targets)
         for window_index, window in enumerate(self._get_windows(references), 1):
             local_output = self._punctuate_window(
@@ -370,6 +377,7 @@ class BlockTranscriptionAligner:
         Returns:
             complete locally punctuated target text
         """
+        assert self.punctuation_processor is not None
         test_case_cls = self.punctuation_processor.test_case_cls
         query_targets = targets.copy()
         masked_indexes: list[int] = []
