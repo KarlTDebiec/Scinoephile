@@ -962,10 +962,12 @@ class SeriesDiff:
         ).ratio()
         one_compact = remove_punc_and_whitespace(one_text)
         two_compact = remove_punc_and_whitespace(two_text)
-        if len(one_compact) <= len(two_compact):
-            substring_ratio = 1.0 if one_compact in two_compact else 0.0
-        else:
-            substring_ratio = 1.0 if two_compact in one_compact else 0.0
+        substring_ratio = 0.0
+        if one_compact and two_compact:
+            if len(one_compact) <= len(two_compact):
+                substring_ratio = 1.0 if one_compact in two_compact else 0.0
+            else:
+                substring_ratio = 1.0 if two_compact in one_compact else 0.0
         return max(full_ratio, substring_ratio)
 
     def _split_uncovered_multiline_spans(

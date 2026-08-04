@@ -190,6 +190,20 @@ def test_series_cer_ignores_separator_only_line_wrapping(
     assert result.deletions == 0
 
 
+def test_series_cer_ignores_punctuation_only_line_before_equal_text():
+    """Test punctuation-only lines do not displace an exact text match."""
+    reference = get_text_series(".", "abc")
+    candidate = get_text_series("abc")
+
+    result = SeriesCER(reference, candidate)
+
+    assert result.cer == 0.0
+    assert result.correct == 3
+    assert result.substitutions == 0
+    assert result.insertions == 0
+    assert result.deletions == 0
+
+
 def test_series_cer_groups_wrapped_text_with_edited_shorter_suffix():
     """Test edited text is scored independently of subtitle wrapping."""
     reference = get_text_series("只要你哋邊個出得多過", "十萬兩銀票喇喎")
