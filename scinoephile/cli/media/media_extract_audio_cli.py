@@ -8,6 +8,9 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.common.argument_parsing import (
+    enum_arg,
+    enum_metavar,
+    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
     int_arg,
@@ -15,7 +18,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.media.audio import extract_audio
+from scinoephile.media.audio import AudioExtractionMode, extract_audio
 
 __all__ = ["MediaExtractAudioCli"]
 
@@ -24,6 +27,15 @@ MEDIA_EXTRACT_AUDIO_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "audio outfile path in WAV format": "WAV 格式的音频输出文件路径",
         "extract an audio stream from a media file": "从媒体文件提取音频流",
         "media infile containing audio streams": "包含音频流的媒体输入文件",
+        (
+            f"audio extraction mode (options: "
+            f"{enum_options_list_str(AudioExtractionMode)}; "
+            "default: %(default)s)"
+        ): (
+            "音频提取模式（选项：transcription、native-center、"
+            "native-center-heavy、native-mono 或 native-stereo；"
+            "默认：%(default)s）"
+        ),
         "media stream index of audio stream (default: first audio stream)": (
             "音频媒体流的媒体流索引（默认：第一个音频流）"
         ),
@@ -33,6 +45,15 @@ MEDIA_EXTRACT_AUDIO_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "audio outfile path in WAV format": "WAV 格式的音訊輸出檔路徑",
         "extract an audio stream from a media file": "從媒體檔提取音訊流",
         "media infile containing audio streams": "包含音訊流的媒體輸入檔",
+        (
+            f"audio extraction mode (options: "
+            f"{enum_options_list_str(AudioExtractionMode)}; "
+            "default: %(default)s)"
+        ): (
+            "音訊提取模式（選項：transcription、native-center、"
+            "native-center-heavy、native-mono 或 native-stereo；"
+            "預設：%(default)s）"
+        ),
         "media stream index of audio stream (default: first audio stream)": (
             "音訊媒體流的媒體流索引（預設：第一個音訊流）"
         ),
@@ -75,6 +96,17 @@ class MediaExtractAudioCli(ScinoephileCliBase):
             type=int_arg(min_value=0),
             help=("media stream index of audio stream (default: first audio stream)"),
         )
+        arg_groups["operation arguments"].add_argument(
+            "--mode",
+            default=AudioExtractionMode.TRANSCRIPTION,
+            metavar=enum_metavar(AudioExtractionMode),
+            type=enum_arg(AudioExtractionMode),
+            help=(
+                f"audio extraction mode (options: "
+                f"{enum_options_list_str(AudioExtractionMode)}; "
+                "default: %(default)s)"
+            ),
+        )
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
@@ -106,6 +138,7 @@ class MediaExtractAudioCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         infile_path: Path,
         stream_index: int | None,
+        mode: AudioExtractionMode,
         outfile_path: Path,
         overwrite: bool,
     ):
@@ -116,6 +149,7 @@ class MediaExtractAudioCli(ScinoephileCliBase):
                 infile_path,
                 outfile_path,
                 stream_index=stream_index,
+                mode=mode,
                 overwrite=overwrite,
             )
         except ScinoephileError as exc:

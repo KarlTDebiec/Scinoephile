@@ -13,6 +13,7 @@ from scinoephile.cli.media.media_extract_audio_cli import MediaExtractAudioCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.media.audio_stream import AudioStream
+from scinoephile.media.audio import AudioExtractionMode
 
 
 def test_media_extract_audio_cli_extracts_selected_stream(
@@ -38,11 +39,15 @@ def test_media_extract_audio_cli_extracts_selected_stream(
         run_cli_with_args(
             MediaExtractAudioCli,
             f"--infile {infile_path} --stream-index 3 --outfile {outfile_path} "
-            "--overwrite",
+            "--mode native-center-heavy --overwrite",
         )
 
     extract.assert_called_once_with(
-        infile_path.resolve(), outfile_path.resolve(), stream_index=3, overwrite=True
+        infile_path.resolve(),
+        outfile_path.resolve(),
+        stream_index=3,
+        mode=AudioExtractionMode.NATIVE_CENTER_HEAVY,
+        overwrite=True,
     )
     assert capsys.readouterr().out.strip() == (
         f"Extracted audio: {stream.description} -> {outfile_path.resolve()}"
