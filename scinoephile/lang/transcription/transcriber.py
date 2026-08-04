@@ -328,15 +328,17 @@ class GuidedTranscriber:
                 for segment_idx, segment in enumerate(timed_segments)
             ]
 
+        if self.strip_generated_punctuation:
+            split_segments = [
+                _get_segment_without_generated_punctuation(segment)
+                for segment in split_segments
+            ]
+            split_segments = [
+                segment for segment in split_segments if segment.text.strip()
+            ]
         transcription_block = get_series_from_segments(
             split_segments, audio=audio_block.audio, offset=offset
         )
-        if self.strip_generated_punctuation:
-            for event in transcription_block.events:
-                event.text = _strip_generated_punctuation(event.text)
-            transcription_block.events = [
-                event for event in transcription_block.events if event.text.strip()
-            ]
         alignment = self.aligner.align(reference_block, transcription_block)
         return alignment.transcription
 
@@ -653,6 +655,54 @@ def _get_phrase_boundary_scores(
     return boundary_scores
 
 
+def _get_segment_without_generated_punctuation(
+    segment: TranscribedSegment,
+) -> TranscribedSegment:
+    """Remove generated punctuation from segment text and word timing data.
+
+    Arguments:
+        segment: timed transcription segment
+    Returns:
+        segment whose text and word data use matching character offsets
+    """
+    keep_characters = _get_text_character_retention(segment.text)
+    text = _strip_generated_punctuation(segment.text)
+    if not segment.words:
+        return segment.model_copy(update={"text": text})
+
+    # Apply the segment-level retention map to its corresponding timed words
+    word_text = "".join(word.text for word in segment.words)
+    if word_text == segment.text:
+        words: list[TranscribedWord] = []
+        character_offset = 0
+        for word in segment.words:
+            word_end = character_offset + len(word.text)
+            retained_word_text = "".join(
+                character
+                for character, keep_character in zip(
+                    word.text, keep_characters[character_offset:word_end], strict=True
+                )
+                if keep_character
+            )
+            if retained_word_text:
+                words.append(word.model_copy(update={"text": retained_word_text}))
+            character_offset = word_end
+        return segment.model_copy(update={"text": text, "words": words})
+
+    # Preserve safe offsets when backend word text cannot be mapped character-wise
+    words = []
+    if text:
+        words.append(
+            TranscribedWord(
+                text=text,
+                start=segment.start,
+                end=segment.end,
+                confidence=min(word.confidence for word in segment.words),
+            )
+        )
+    return segment.model_copy(update={"text": text, "words": words})
+
+
 def _get_segment_split_on_phrase_timings(
     segment: TranscribedSegment,
 ) -> list[TranscribedSegment]:
@@ -735,20 +785,18 @@ def _get_segment_split_on_phrase_timings(
     return output
 
 
-def _strip_generated_punctuation(text: str) -> str:
-    """Remove generated punctuation while retaining ASCII lexical infixes.
+def _get_text_character_retention(text: str) -> list[bool]:
+    """Identify characters retained when removing generated punctuation.
 
     Arguments:
         text: timed transcription text
     Returns:
-        text without generated sentence punctuation
+        whether each character should be retained
     """
     punctuation = HALF_PUNC_CHARS | FULL_PUNC_CHARS
-    output: list[str] = []
+    output: list[bool] = []
     for index, character in enumerate(text):
-        if character not in punctuation:
-            output.append(character)
-            continue
+        keep_character = character not in punctuation
         if (
             character in _LEXICAL_INFIX_PUNCTUATION
             and 0 < index < len(text) - 1
@@ -757,5 +805,23 @@ def _strip_generated_punctuation(text: str) -> str:
             and text[index + 1].isascii()
             and text[index + 1].isalnum()
         ):
-            output.append(character)
-    return "".join(output)
+            keep_character = True
+        output.append(keep_character)
+    return output
+
+
+def _strip_generated_punctuation(text: str) -> str:
+    """Remove generated punctuation while retaining ASCII lexical infixes.
+
+    Arguments:
+        text: timed transcription text
+    Returns:
+        text without generated sentence punctuation
+    """
+    return "".join(
+        character
+        for character, keep_character in zip(
+            text, _get_text_character_retention(text), strict=True
+        )
+        if keep_character
+    )
