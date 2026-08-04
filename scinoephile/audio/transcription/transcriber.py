@@ -14,7 +14,7 @@ from scinoephile.core.exceptions import ScinoephileError
 
 from .cache import TranscriptionCache
 from .demucs import DemucsSeparator
-from .exceptions import TranscriptionError
+from .exceptions import TranscriptionEmptyError, TranscriptionError
 from .preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
@@ -144,15 +144,12 @@ class Transcriber(ABC):
         if segments is not None:
             return segments
 
-        # Skip rejected intermediate caches but rerun the final fallback
+        # Run only configurations that do not already have a rejected cache
         settings_to_run = [
             settings
             for settings in preprocessing_settings
             if settings not in rejected_settings
         ]
-        final_settings = preprocessing_settings[-1]
-        if final_settings not in settings_to_run:
-            settings_to_run.append(final_settings)
 
         # Run Demucs once if any remaining configuration requires separated audio
         separated_audio = None
@@ -189,7 +186,7 @@ class Transcriber(ABC):
                 continue
             cache_path, segments = cached_transcription
             segments = self._prepare_cached_segments(segments, cache_path, settings)
-            if is_usable is None or is_usable(segments):
+            if segments and (is_usable is None or is_usable(segments)):
                 return segments, rejected_settings
             rejected_settings.add(settings)
         return None, rejected_settings
@@ -326,6 +323,11 @@ class Transcriber(ABC):
                 logger.info(f"Retrying {self.backend_label} without VAD")
             try:
                 segments = self._transcribe_attempt(transcription_audio, settings)
+            except TranscriptionEmptyError as exc:
+                logger.warning(f"{self.backend_label} attempt failed: {exc}")
+                self._cache.save(audio, self._get_cache_metadata(settings), [])
+                last_error = exc
+                continue
             except TranscriptionError as exc:
                 logger.warning(f"{self.backend_label} attempt failed: {exc}")
                 last_error = exc
