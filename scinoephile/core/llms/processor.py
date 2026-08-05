@@ -43,7 +43,7 @@ class ProcessorKwargs(TypedDict, total=False):
     """Whether to remove persisted test cases not encountered in the current run."""
 
     current_test_cases_path: Path | None
-    """Active configuration's test-case JSON path."""
+    """Current configuration's test-case JSON path."""
 
     tool_box: ToolBox | None
     """Available tools and handlers."""
@@ -79,8 +79,8 @@ class Processor(ABC):
 
         Arguments:
             prompt: text for LLM correspondence
-            shared_test_cases: test cases available across configurations
-            current_test_cases_path: active configuration's test-case JSON path
+            shared_test_cases: known test cases shared across configurations
+            current_test_cases_path: current configuration's test-case JSON path
             provider: provider to use for queries
             additional_context: additional context to include in the system prompt
             auto_verify: automatically verify test cases if they meet selected criteria
@@ -110,7 +110,7 @@ class Processor(ABC):
             if test_case.verified
         ]
         self.current_test_cases_path = current_test_cases_path
-        """Active configuration's test-case JSON path."""
+        """Current configuration's test-case JSON path."""
         self.prune_test_cases = prune_test_cases
         """Whether to remove persisted cases not encountered in the current run."""
 

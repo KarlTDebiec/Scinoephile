@@ -20,7 +20,7 @@ from scinoephile.audio.transcription.mlx_audio.backend import (
 )
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
-from scinoephile.core.llms.usage import (
+from scinoephile.core.llms.metrics import (
     format_chat_completion_metrics_report,
     save_chat_completion_metrics_to_json,
 )
@@ -455,7 +455,7 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
         audio_dir_path = output_dir_path / "audio"
     if provider is None:
         provider = get_provider()
-    initial_completion_count = len(provider.get_completion_metrics())
+    initial_completion_count = len(provider.completion_metrics)
     if llm_usage_path is None:
         llm_usage_path = output_dir_path / "json" / "llm_usage.json"
 
@@ -863,7 +863,7 @@ def _save_llm_usage(
         initial_completion_count: provider metric count before the pipeline began
         output_path: detailed completion-usage JSON path
     """
-    completion_metrics = provider.get_completion_metrics()[initial_completion_count:]
+    completion_metrics = provider.completion_metrics[initial_completion_count:]
     save_chat_completion_metrics_to_json(output_path, completion_metrics)
     logger.info(format_chat_completion_metrics_report(completion_metrics))
     logger.info(f"Saved LLM completion usage to {output_path}")

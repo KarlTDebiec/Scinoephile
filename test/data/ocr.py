@@ -96,7 +96,7 @@ def process_ocr(
         simplify_reviewer_kw = dict(reviewer_kw or {})
         simplify_reviewer_kw.pop("prompt", None)
         simplify_reviewer_kw.pop("reviewer", None)
-        simplify_reviewer_kw.pop("test_cases", None)
+        simplify_reviewer_kw.pop("shared_test_cases", None)
         simplify_reviewer_kw["current_test_cases_path"] = (
             output_dir_path / "lang" / language.language / "simplify_review.json"
         )

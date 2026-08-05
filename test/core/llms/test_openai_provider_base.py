@@ -8,11 +8,11 @@ import json
 from collections.abc import Callable
 from types import SimpleNamespace
 from typing import Any, cast
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from openai import OpenAI
 from pydantic import ValidationError
-from pytest import raises
+from pytest import mark, raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, OpenAIProviderBase
@@ -30,10 +30,8 @@ class _DummyProvider(OpenAIProviderBase):
 class _CachingDummyProvider(_DummyProvider):
     """Dummy provider with explicit prompt caching enabled."""
 
-    @property
-    def use_explicit_prompt_caching(self) -> bool:
-        """Enable explicit prompt caching for tests."""
-        return True
+    explicit_prompt_caching = True
+    """Enable explicit prompt caching for tests."""
 
 
 class _Answer(Answer):
@@ -96,31 +94,34 @@ class _Message:
 class _Completion:
     """Completion fixture matching the minimal OpenAI SDK surface."""
 
-    def __init__(self, message: _Message):
+    def __init__(self, message: _Message, *, include_usage: bool = True):
         """Initialize completion fixture.
 
         Arguments:
             message: completion message
+            include_usage: whether to expose provider usage details
         """
         self.choices = [SimpleNamespace(message=message)]
-        self.usage = SimpleNamespace(
-            prompt_tokens=100,
-            prompt_tokens_details=SimpleNamespace(
-                cached_tokens=60, cache_write_tokens=20
-            ),
-            completion_tokens=12,
-            completion_tokens_details=SimpleNamespace(reasoning_tokens=7),
-            total_tokens=112,
-        )
+        if include_usage:
+            self.usage = SimpleNamespace(
+                prompt_tokens=100,
+                prompt_tokens_details=SimpleNamespace(
+                    cached_tokens=60, cache_write_tokens=20
+                ),
+                completion_tokens=12,
+                completion_tokens_details=SimpleNamespace(reasoning_tokens=7),
+                total_tokens=112,
+            )
 
 
 class _DummyClient:
     """Dummy client that returns tool calls once then a final response."""
 
-    def __init__(self, *, use_raw_response: bool = False):
+    def __init__(self, *, include_usage: bool = True, use_raw_response: bool = False):
         """Initialize dummy client state and completion surface.
 
         Arguments:
+            include_usage: whether completions expose provider usage details
             use_raw_response: whether to expose SDK retry metadata
         """
         self.calls: list[dict[str, object]] = []
@@ -147,9 +148,12 @@ class _DummyClient:
                         content=None,
                         tool_calls=[_ToolCall("tool-1", "do", '{"x": 1}')],
                         reasoning_content="Need tool output before answering.",
-                    )
+                    ),
+                    include_usage=include_usage,
                 )
-            return _Completion(_Message(content="done", tool_calls=[]))
+            return _Completion(
+                _Message(content="done", tool_calls=[]), include_usage=include_usage
+            )
 
         def parse(
             *, messages: list[dict[str, object]], model: str, **kwargs: Any
@@ -227,7 +231,7 @@ def test_tool_call_loop_runs_handler_and_returns_final_text():
     assert len(client.calls) == 2
     first_call_kwargs = cast(dict[str, object], client.calls[0]["kwargs"])
     assert first_call_kwargs["response_format"] is _Answer
-    assert first_call_kwargs["timeout"] == 120.0
+    assert "prompt_cache_key" not in first_call_kwargs
     second_call_messages = cast(list[dict[str, object]], client.calls[1]["messages"])
     assert second_call_messages[1]["reasoning_content"] == (
         "Need tool output before answering."
@@ -239,7 +243,7 @@ def test_tool_call_loop_runs_handler_and_returns_final_text():
     assert provider.completion_metrics[0].output_tokens == 12
     assert provider.completion_metrics[0].reasoning_tokens == 7
     assert provider.completion_metrics[0].total_tokens == 112
-    assert provider.completion_metrics[0].transport_retries == 0
+    assert provider.completion_metrics[0].transport_retries is None
     assert provider.completion_metrics[0].latency_seconds >= 0
 
 
@@ -257,6 +261,23 @@ def test_model_override_updates_provider_model():
     assert cast(str, client.calls[0]["model"]) == "override-model"
 
 
+def test_completion_requests_use_configured_timeout():
+    """Test completion requests forward the timeout to an injected client."""
+    client = _DummyClient()
+    provider = _DummyProvider(client=cast(OpenAI, client), timeout_seconds=45.0)
+
+    result = provider.chat_completion(
+        messages=[{"role": "user", "content": "hi"}],
+        response_format=_Answer,
+        tool_box=_get_tool_box(lambda args: args),
+    )
+
+    assert result == "done"
+    assert [
+        cast(dict[str, object], call["kwargs"])["timeout"] for call in client.calls
+    ] == [45.0, 45.0]
+
+
 def test_structured_response_validation_error_is_wrapped():
     """Test client-side structured validation failures become domain errors."""
     client = Mock()
@@ -272,10 +293,25 @@ def test_structured_response_validation_error_is_wrapped():
         )
 
 
-def test_timeout_must_be_positive():
-    """Test provider request timeouts must be positive."""
-    with raises(ValueError, match="timeout_seconds must be positive"):
-        _DummyProvider(timeout_seconds=0)
+def test_completion_metrics_preserve_missing_usage_details():
+    """Test omitted provider metrics remain unknown rather than becoming zero."""
+    client = _DummyClient(include_usage=False)
+    provider = _DummyProvider(client=cast(OpenAI, client))
+
+    provider.chat_completion(
+        messages=[{"role": "user", "content": "hi"}],
+        response_format=_Answer,
+        tool_box=_get_tool_box(lambda args: args),
+    )
+
+    metrics = provider.completion_metrics[0]
+    assert metrics.input_tokens is None
+    assert metrics.cached_input_tokens is None
+    assert metrics.cache_write_tokens is None
+    assert metrics.output_tokens is None
+    assert metrics.reasoning_tokens is None
+    assert metrics.total_tokens is None
+    assert metrics.transport_retries is None
 
 
 def test_raw_response_records_transport_retries():
@@ -298,23 +334,25 @@ def test_raw_response_records_transport_retries():
     assert [metrics.query_attempt for metrics in provider.completion_metrics] == [3, 3]
 
 
-def test_explicit_prompt_cache_reuses_stable_prefix_key():
-    """Test cache routing ignores the variable user-query suffix."""
+def test_explicit_prompt_cache_reuses_stable_prefix_without_mutation():
+    """Test cache routing ignores user content and preserves caller messages."""
     client = _DummyClient()
     provider = _CachingDummyProvider(client=cast(OpenAI, client))
     tool_box = _get_tool_box(lambda args: args)
+    first_messages = [
+        {"role": "system", "content": "Stable system instructions"},
+        {"role": "developer", "content": "Stable developer instructions"},
+        {"role": "user", "content": "first query"},
+    ]
+    expected_first_messages = [dict(message) for message in first_messages]
 
     provider.chat_completion(
-        messages=[
-            {"role": "system", "content": "Stable instructions"},
-            {"role": "user", "content": "first query"},
-        ],
-        response_format=_Answer,
-        tool_box=tool_box,
+        messages=first_messages, response_format=_Answer, tool_box=tool_box
     )
     provider.chat_completion(
         messages=[
-            {"role": "system", "content": "Stable instructions"},
+            {"role": "system", "content": "Stable system instructions"},
+            {"role": "developer", "content": "Stable developer instructions"},
             {"role": "user", "content": "second query"},
         ],
         response_format=_Answer,
@@ -335,19 +373,58 @@ def test_explicit_prompt_cache_reuses_stable_prefix_key():
     assert first_kwargs["prompt_cache_key"] == second_kwargs["prompt_cache_key"]
     assert first_kwargs["prompt_cache_key"] != third_kwargs["prompt_cache_key"]
     assert first_kwargs["prompt_cache_options"] == {"mode": "explicit"}
-    first_messages = cast(list[dict[str, object]], client.calls[0]["messages"])
-    assert first_messages[0]["content"] == [
+    sent_messages = cast(list[dict[str, object]], client.calls[0]["messages"])
+    assert sent_messages[0]["content"] == "Stable system instructions"
+    assert sent_messages[1]["content"] == [
         {
             "type": "text",
-            "text": "Stable instructions",
+            "text": "Stable developer instructions",
             "prompt_cache_breakpoint": {"mode": "explicit"},
         }
     ]
-    assert first_messages[1]["content"] == "first query"
+    assert sent_messages[2]["content"] == "first query"
+    assert first_messages == expected_first_messages
     assert (
         provider.completion_metrics[0].prompt_cache_key
         == (first_kwargs["prompt_cache_key"])
     )
+
+
+def test_timeout_defaults_to_120_seconds():
+    """Test provider requests default to a 120-second timeout."""
+    provider = _DummyProvider(client=cast(OpenAI, _DummyClient()))
+
+    assert provider.timeout_seconds == 120.0
+
+
+def test_custom_timeout_is_stored():
+    """Test providers retain a custom request timeout."""
+    provider = _DummyProvider(client=cast(OpenAI, _DummyClient()), timeout_seconds=45.0)
+
+    assert provider.timeout_seconds == 45.0
+
+
+@mark.parametrize("timeout_seconds", [0.0, -1.0])
+def test_timeout_must_be_positive(timeout_seconds: float):
+    """Test provider request timeouts must be positive."""
+    with raises(ValueError, match="timeout_seconds must be positive"):
+        _DummyProvider(timeout_seconds=timeout_seconds)
+
+
+def test_sync_client_is_created_lazily_with_configured_timeout():
+    """Test lazy OpenAI client construction uses the configured timeout."""
+    with patch("scinoephile.core.llms.openai_provider_base.OpenAI") as openai:
+        provider = _DummyProvider(
+            api_key="test-api-key",
+            base_url="https://example.invalid/v1",
+            timeout_seconds=45.0,
+        )
+
+        openai.assert_not_called()
+        assert provider.sync_client is openai.return_value
+        openai.assert_called_once_with(
+            api_key="test-api-key", base_url="https://example.invalid/v1", timeout=45.0
+        )
 
 
 def test_cache_identity_contains_nonsecret_effective_configuration():

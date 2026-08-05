@@ -44,7 +44,7 @@ logger = logging.getLogger(__name__)
 def load_shared_test_cases(
     manager_cls: type[Manager], prompt: Prompt, relative_paths: tuple[Path, ...]
 ) -> tuple[TestCase, ...]:
-    """Load shared test cases from repository JSON files and cache the result.
+    """Load shared test cases from explicit repository JSON files and cache them.
 
     Arguments:
         manager_cls: manager class used to construct test case models

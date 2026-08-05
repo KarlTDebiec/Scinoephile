@@ -6,12 +6,11 @@ from __future__ import annotations
 
 import os
 from collections.abc import Mapping
-from dataclasses import asdict
 from hashlib import sha256
 from json import dumps
 from logging import getLogger
 from time import monotonic, sleep
-from typing import Any, Unpack, cast
+from typing import Any, ClassVar, Unpack, cast
 
 from openai import OpenAI, OpenAIError
 from openai.types.chat import ChatCompletionMessageFunctionToolCall
@@ -20,7 +19,8 @@ from pydantic import JsonValue, ValidationError
 from scinoephile.core.exceptions import ScinoephileError
 
 from .answer import Answer
-from .llm_provider import ChatCompletionKwargs, ChatCompletionMetrics, LLMProvider
+from .llm_provider import ChatCompletionKwargs, LLMProvider
+from .metrics import ChatCompletionMetrics
 from .tool_box import ToolBox
 
 __all__ = ["OpenAIProviderBase"]
@@ -40,8 +40,11 @@ class OpenAIProviderBase(LLMProvider):
     base_url: str | None = None
     """Default base URL for the OpenAI client."""
 
+    explicit_prompt_caching: ClassVar[bool] = False
+    """Whether requests should mark and route a stable cached prefix."""
+
     timeout_seconds: float
-    """Timeout for each provider request attempt."""
+    """Timeout for each provider request."""
 
     def __init__(
         self,
@@ -59,7 +62,7 @@ class OpenAIProviderBase(LLMProvider):
             api_key: explicit API key; if omitted, env var is used if configured
             base_url: explicit base URL; if omitted, provider default is used
             model: model identifier override
-            timeout_seconds: timeout for each provider request attempt
+            timeout_seconds: timeout for each provider request
         Raises:
             ValueError: if timeout_seconds is not positive
         """
@@ -120,11 +123,6 @@ class OpenAIProviderBase(LLMProvider):
         return self._sync_client
 
     @property
-    def use_explicit_prompt_caching(self) -> bool:
-        """Whether requests should mark and route a stable cached prefix."""
-        return False
-
-    @property
     def use_strict_tools(self) -> bool:
         """Whether function tool schemas should request strict mode by default."""
         return True
@@ -161,8 +159,8 @@ class OpenAIProviderBase(LLMProvider):
             tool_box = tool_box or ToolBox()
             openai_tools = self._build_openai_tools(tool_box) if tool_box else None
             prompt_cache_key = None
-            if self.use_explicit_prompt_caching:
-                messages, prompt_cache_key = self._configure_prompt_cache(
+            if self.explicit_prompt_caching:
+                prompt_cache_key = self._configure_prompt_cache(
                     messages, response_format, openai_tools
                 )
             request_kwargs = self._build_request_kwargs(
@@ -189,7 +187,7 @@ class OpenAIProviderBase(LLMProvider):
                     prompt_cache_key=prompt_cache_key,
                 )
                 self.completion_metrics.append(metrics)
-                logger.info(f"LLM completion metrics: {dumps(asdict(metrics))}")
+                logger.debug(f"LLM completion metrics: {metrics!r}")
                 message = completion.choices[0].message
                 tool_calls = cast(
                     list[ChatCompletionMessageFunctionToolCall],
@@ -234,20 +232,11 @@ class OpenAIProviderBase(LLMProvider):
                 f"OpenAI-compatible API error ({exc_code=}, {exc_type=} {exc_param=}): "
                 f"{exc}"
             ) from exc
-
         except ValidationError as exc:
             raise ScinoephileError(
                 "OpenAI-compatible API returned content that failed structured "
                 "response validation."
             ) from exc
-
-    def get_completion_metrics(self) -> tuple[ChatCompletionMetrics, ...]:
-        """Get completion metrics recorded by this provider instance.
-
-        Returns:
-            immutable snapshot of recorded completion metrics
-        """
-        return tuple(self.completion_metrics)
 
     def _build_openai_tools(self, tool_box: ToolBox) -> list[dict[str, object]]:
         """Build OpenAI tool payload from local tool specs.
@@ -272,14 +261,14 @@ class OpenAIProviderBase(LLMProvider):
 
     def _query(
         self, messages: list[dict[str, Any]], request_kwargs: dict[str, Any]
-    ) -> tuple[Any, int]:
+    ) -> tuple[Any, int | None]:
         """Query provider for completion.
 
         Arguments:
             messages: messages to send
             request_kwargs: OpenAI SDK request keyword arguments
         Returns:
-            completion response object and transport retry count
+            completion response object and transport retry count, if available
         """
         completions = self.sync_client.beta.chat.completions
         raw_completions = getattr(completions, "with_raw_response", None)
@@ -290,21 +279,21 @@ class OpenAIProviderBase(LLMProvider):
                 timeout=self.timeout_seconds,
                 **request_kwargs,
             )
-            return completion, 0
+            return completion, None
         response = raw_completions.parse(
             messages=messages,
             model=self.model,
             timeout=self.timeout_seconds,
             **request_kwargs,
         )
-        return response.parse(), response.retries_taken
+        return response.parse(), getattr(response, "retries_taken", None)
 
     def _configure_prompt_cache(
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer],
         openai_tools: list[dict[str, object]] | None,
-    ) -> tuple[list[dict[str, Any]], str | None]:
+    ) -> str | None:
         """Mark the stable message prefix and derive its routing key.
 
         Arguments:
@@ -312,7 +301,7 @@ class OpenAIProviderBase(LLMProvider):
             response_format: structured response format
             openai_tools: serialized OpenAI tool payload
         Returns:
-            copied messages with an explicit breakpoint and its cache key
+            routing key when a stable prefix is available, otherwise None
         """
         stable_end = -1
         for index, message in enumerate(messages):
@@ -320,11 +309,11 @@ class OpenAIProviderBase(LLMProvider):
                 break
             stable_end = index
         if stable_end < 0:
-            return messages, None
+            return None
 
         stable_content = messages[stable_end].get("content")
         if not isinstance(stable_content, str):
-            return messages, None
+            return None
         cache_payload = {
             "messages": messages[: stable_end + 1],
             "model": self.model,
@@ -343,7 +332,7 @@ class OpenAIProviderBase(LLMProvider):
                 "prompt_cache_breakpoint": {"mode": "explicit"},
             }
         ]
-        return messages, f"scinoephile:{digest}"
+        return f"scinoephile:{digest}"
 
     def _get_completion_metrics(
         self,
@@ -353,7 +342,7 @@ class OpenAIProviderBase(LLMProvider):
         query_key_sha256: str | None,
         query_attempt: int,
         tool_round: int,
-        transport_retries: int,
+        transport_retries: int | None,
         latency_seconds: float,
         prompt_cache_key: str | None,
     ) -> ChatCompletionMetrics:
@@ -365,7 +354,7 @@ class OpenAIProviderBase(LLMProvider):
             query_key_sha256: SHA-256 digest of the semantic query key
             query_attempt: one-based answer-validation attempt
             tool_round: one-based tool-calling round
-            transport_retries: transport retries taken by the SDK
+            transport_retries: transport retries taken by the SDK, if reported
             latency_seconds: wall-clock request latency
             prompt_cache_key: provider prompt-cache routing key
         Returns:

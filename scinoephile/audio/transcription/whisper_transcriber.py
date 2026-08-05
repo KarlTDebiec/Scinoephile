@@ -322,11 +322,12 @@ class WhisperTranscriber(Transcriber):
         return segment_text_from_words
 
     def _get_backend_cache_metadata(
-        self, settings: TranscriptionPreprocessingSettings
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> dict[str, object]:
         """Get cache metadata identifying configured Whisper output.
 
         Arguments:
+            audio: audio whose properties may affect backend behavior
             settings: preprocessing settings
         Returns:
             backend configuration identifying the output
@@ -353,26 +354,6 @@ class WhisperTranscriber(Transcriber):
                 }
             )
         return metadata
-
-    def _get_compatible_cache_metadata_for_audio(
-        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> tuple[Mapping[str, object], ...]:
-        """Get current and pre-CTC-fallback Whisper cache identities.
-
-        Arguments:
-            audio: audio whose properties affect cache identity
-            settings: preprocessing settings
-        Returns:
-            current cache metadata followed by compatible legacy metadata
-        """
-        metadata = self._get_cache_metadata_for_audio(audio, settings)
-        if self.ctc_aligner is None:
-            return (metadata,)
-        legacy_metadata = dict(metadata)
-        legacy_metadata.pop("timestamp_fallback")
-        legacy_metadata.pop("timestamp_fallback_language")
-        legacy_metadata.pop("timestamp_fallback_model_name")
-        return metadata, legacy_metadata
 
     def _prepare_cached_segments(
         self,
@@ -404,11 +385,11 @@ class WhisperTranscriber(Transcriber):
         Returns:
             normalized transcription segments
         Raises:
-            TranscriptionInferenceError: if Whisper decoding fails
+            TranscriptionInferenceError: if Whisper fails with an assertion
         """
         whisper_timestamped = import_whisper_timestamped()
-        with get_temp_file_path(suffix=".wav") as temp_audio_path:
-            try:
+        try:
+            with get_temp_file_path(suffix=".wav") as temp_audio_path:
                 audio.export(temp_audio_path, format="wav")
                 sample_len = self._get_sample_len(audio)
                 logger.debug(
@@ -425,11 +406,11 @@ class WhisperTranscriber(Transcriber):
                 ) -> DecodingResult | list[DecodingResult]:
                     """Decode a window and record whether it exhausts its budget."""
                     decode_result = decode(mel, options, **kwargs)
-                    decode_results: list[DecodingResult]
-                    if isinstance(decode_result, list):
-                        decode_results = cast(list[DecodingResult], decode_result)
-                    else:
-                        decode_results = [decode_result]
+                    decode_results = (
+                        cast("list[DecodingResult]", decode_result)
+                        if isinstance(decode_result, list)
+                        else [cast("DecodingResult", decode_result)]
+                    )
                     if any(
                         len(result.tokens) >= sample_len for result in decode_results
                     ) and all(mel is not window for window in exhausted_windows):
@@ -454,19 +435,21 @@ class WhisperTranscriber(Transcriber):
                         else:
                             delattr(model, "decode")
                 except AssertionError as exc:
-                    if self.ctc_aligner is None:
-                        raise TranscriptionInferenceError(
-                            f"Whisper inference failed with an assertion: {exc}"
-                        ) from exc
-                    return self._transcribe_with_ctc_fallback(
-                        audio, temp_audio_path, sample_len, exc
-                    )
-            except TranscriptionInferenceError:
-                raise
-            except (ImportError, OSError, RuntimeError, ValueError) as exc:
-                raise TranscriptionInferenceError(
-                    f"Unable to run Whisper inference: {exc}"
-                ) from exc
+                    if self.ctc_aligner is not None and str(exc).startswith(
+                        "Inconsistent number of segments:"
+                    ):
+                        return self._transcribe_with_ctc_fallback(
+                            audio, temp_audio_path, sample_len, exc
+                        )
+                    raise TranscriptionInferenceError(
+                        f"Whisper inference failed with an assertion: {exc}"
+                    ) from exc
+        except TranscriptionInferenceError:
+            raise
+        except (ImportError, OSError, RuntimeError, ValueError) as exc:
+            raise TranscriptionInferenceError(
+                f"Unable to run Whisper inference: {exc}"
+            ) from exc
 
         segments = [
             TranscribedSegment.model_validate(segment) for segment in result["segments"]
@@ -499,7 +482,8 @@ class WhisperTranscriber(Transcriber):
             CTC-aligned native Whisper transcript
         Raises:
             TranscriptionEmptyError: if native Whisper returns empty text
-            TranscriptionInferenceError: if native Whisper returns malformed output
+            TranscriptionInferenceError: if native Whisper fails or returns malformed
+                output
         """
         assert self.ctc_aligner is not None
         logger.info(
@@ -521,7 +505,14 @@ class WhisperTranscriber(Transcriber):
                 word_timestamps=False,
                 verbose=False,
             )
-        except (AssertionError, OSError, RuntimeError, TypeError, ValueError) as exc:
+        except (
+            AssertionError,
+            ImportError,
+            OSError,
+            RuntimeError,
+            TypeError,
+            ValueError,
+        ) as exc:
             raise TranscriptionInferenceError(
                 f"Unable to run native Whisper fallback: {exc}"
             ) from exc
@@ -538,4 +529,50 @@ class WhisperTranscriber(Transcriber):
             raise TranscriptionEmptyError(
                 "Native Whisper fallback returned empty transcript."
             )
-        return self.ctc_aligner(audio, text)
+        native_segment_data = result.get("segments")
+        if (
+            not isinstance(native_segment_data, Sequence)
+            or isinstance(native_segment_data, str | bytes)
+            or not native_segment_data
+        ):
+            raise TranscriptionInferenceError(
+                "Native Whisper fallback output contains malformed segments."
+            )
+        try:
+            native_segments = [
+                TranscribedSegment.model_validate(segment)
+                for segment in native_segment_data
+            ]
+        except (TypeError, ValueError) as exc:
+            raise TranscriptionInferenceError(
+                "Native Whisper fallback output contains malformed segments."
+            ) from exc
+
+        # Preserve the least favorable native quality signals across CTC timing
+        quality_signals: dict[str, float] = {}
+        avg_logprobs = [
+            segment.avg_logprob
+            for segment in native_segments
+            if segment.avg_logprob is not None
+        ]
+        if avg_logprobs:
+            quality_signals["avg_logprob"] = min(avg_logprobs)
+        compression_ratios = [
+            segment.compression_ratio
+            for segment in native_segments
+            if segment.compression_ratio is not None
+        ]
+        if compression_ratios:
+            quality_signals["compression_ratio"] = max(compression_ratios)
+        no_speech_probs = [
+            segment.no_speech_prob
+            for segment in native_segments
+            if segment.no_speech_prob is not None
+        ]
+        if no_speech_probs:
+            quality_signals["no_speech_prob"] = max(no_speech_probs)
+
+        return [
+            segment.model_copy(update=quality_signals)
+            for segment in self.ctc_aligner(audio, text)
+        ]

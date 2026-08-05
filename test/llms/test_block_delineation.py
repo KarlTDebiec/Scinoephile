@@ -368,7 +368,11 @@ def test_legacy_text_response_cache_migrates_to_boundary_shifts(tmp_path: Path):
         "guides": [{"index": 1, "text": "參考一"}, {"index": 2, "text": "參考二"}],
         "targets": [{"index": 1, "text": "甲乙"}, {"index": 2, "text": "丙"}],
     }
-    legacy_provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    legacy_provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     legacy_provider.chat_completion.return_value = json.dumps(
         {"changes": [{"index": 1, "text": "甲"}, {"index": 2, "text": "乙丙"}]},
         ensure_ascii=False,
@@ -380,7 +384,11 @@ def test_legacy_text_response_cache_migrates_to_boundary_shifts(tmp_path: Path):
         legacy_processor.test_case_cls.model_validate({"query": query})
     )
 
-    current_provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    current_provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     current_processor = BlockDelineationProcessor(
         current_prompt, provider=current_provider, cache_root_path=tmp_path
     )

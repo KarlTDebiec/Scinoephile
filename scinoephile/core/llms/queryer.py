@@ -14,7 +14,8 @@ from scinoephile.core.exceptions import ScinoephileError
 
 from .answer import Answer
 from .cache import LlmCache
-from .llm_provider import ChatCompletionMetrics, LLMProvider
+from .llm_provider import LLMProvider
+from .metrics import ChatCompletionMetrics
 from .query import Query
 from .test_case import TestCase
 from .tool_box import ToolBox
@@ -160,10 +161,7 @@ class Queryer[TTestCase: TestCase]:
         query_key_sha256 = sha256(test_case.query.key_str.encode()).hexdigest()
         for attempt in range(1, self.max_attempts + 1):
             # Get answer from provider
-            provider_metrics = self.provider.get_completion_metrics()
-            if not isinstance(provider_metrics, tuple):
-                provider_metrics = ()
-            initial_completion_count = len(provider_metrics)
+            initial_completion_count = len(self.provider.completion_metrics)
             try:
                 content = self.provider.chat_completion(
                     messages,
@@ -179,11 +177,8 @@ class Queryer[TTestCase: TestCase]:
                     raise
                 continue
             finally:
-                provider_metrics = self.provider.get_completion_metrics()
-                if not isinstance(provider_metrics, tuple):
-                    provider_metrics = ()
                 self.completion_metrics.extend(
-                    provider_metrics[initial_completion_count:]
+                    self.provider.completion_metrics[initial_completion_count:]
                 )
 
             # Validate answer

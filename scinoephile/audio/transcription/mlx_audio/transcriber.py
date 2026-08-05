@@ -164,47 +164,36 @@ class MlxAudioTranscriber(Transcriber):
         return self.backend.default_max_tokens
 
     def _get_backend_cache_metadata(
-        self, settings: TranscriptionPreprocessingSettings
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> dict[str, object]:
         """Get metadata that identifies cached MLX-Audio output.
 
         Arguments:
+            audio: audio whose duration selects guarded behavior
             settings: preprocessing settings
         Returns:
             cache identity metadata
         """
+        chunk_duration_ms, chunk_overlap_ms = self._get_effective_chunking(audio)
+        chunk_duration_seconds = None
+        if chunk_duration_ms is not None:
+            chunk_duration_seconds = chunk_duration_ms / 1000
         vad_version = None
         if settings.use_vad:
             vad_version = _VAD_CACHE_VERSION
-        return {
+        metadata: dict[str, object] = {
             "model_family": self.backend.model_family,
             "model_name": self.model_name,
             "runtime": "mlx",
             "language": self.language.code,
             "mlx_audio_language": self.backend.mlx_audio_language,
             "max_tokens": self._effective_max_tokens,
-            "chunk_duration_seconds": self.chunk_duration_seconds,
-            "chunk_overlap_seconds": self.chunk_overlap_seconds,
+            "chunk_duration_seconds": chunk_duration_seconds,
+            "chunk_overlap_seconds": chunk_overlap_ms / 1000,
             "aligner": "ctc",
             "aligner_model_name": self.ctc_aligner.model_name,
             "vad_version": vad_version,
         }
-
-    def _get_cache_metadata_for_audio(
-        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> dict[str, object]:
-        """Get cache metadata for MLX-Audio behavior used by one audio input.
-
-        Arguments:
-            audio: audio whose duration selects guarded chunking
-            settings: preprocessing settings
-        Returns:
-            configuration identifying the output
-        """
-        metadata = super()._get_cache_metadata_for_audio(audio, settings)
-        metadata["chunk_duration_seconds"] = self._get_effective_chunk_duration_seconds(
-            audio
-        )
         if self._uses_token_limit_guard(audio):
             metadata["token_limit_guard_fraction"] = _TOKEN_LIMIT_GUARD_FRACTION
         return metadata
@@ -284,7 +273,7 @@ class MlxAudioTranscriber(Transcriber):
             ) from exc
 
     def _transcribe_audio_window(
-        self, audio: AudioSegment, guard_token_limit: bool = False
+        self, audio: AudioSegment, guard_token_limit: bool
     ) -> list[TranscribedSegment]:
         """Run MLX-Audio transcription and timestamp alignment for one audio window.
 
@@ -327,7 +316,7 @@ class MlxAudioTranscriber(Transcriber):
             return self.ctc_aligner(audio, text)
 
     def _transcribe_audio_window_with_retry(
-        self, audio: AudioSegment, guard_token_limit: bool = False
+        self, audio: AudioSegment, guard_token_limit: bool
     ) -> list[TranscribedSegment]:
         """Transcribe a window, splitting it after recoverable length failures.
 
@@ -366,7 +355,7 @@ class MlxAudioTranscriber(Transcriber):
         audio: AudioSegment,
         chunk_duration_ms: int,
         chunk_overlap_ms: int,
-        guard_token_limit: bool = False,
+        guard_token_limit: bool,
     ) -> list[TranscribedSegment]:
         """Run MLX-Audio transcription over shorter overlapping chunks.
 
@@ -412,7 +401,7 @@ class MlxAudioTranscriber(Transcriber):
         return segments
 
     def _transcribe_unfiltered_audio(
-        self, audio: AudioSegment, guard_token_limit: bool = False
+        self, audio: AudioSegment, guard_token_limit: bool
     ) -> list[TranscribedSegment]:
         """Transcribe audio without applying VAD.
 
@@ -422,25 +411,28 @@ class MlxAudioTranscriber(Transcriber):
         Returns:
             timestamped transcription segments
         """
-        chunk_duration_seconds = self._get_effective_chunk_duration_seconds(audio)
-        if chunk_duration_seconds is None:
+        chunk_duration_ms, chunk_overlap_ms = self._get_effective_chunking(audio)
+        if chunk_duration_ms is None:
             return self._transcribe_audio_window_with_retry(audio, guard_token_limit)
-        chunk_duration_ms = int(round(chunk_duration_seconds * 1000))
         if len(audio) <= chunk_duration_ms:
             return self._transcribe_audio_window_with_retry(audio, guard_token_limit)
-        if guard_token_limit and chunk_duration_seconds != self.chunk_duration_seconds:
+        if guard_token_limit:
+            guarded_window_duration_seconds = (
+                self.backend.token_limit_guard_window_duration_seconds
+            )
+            assert guarded_window_duration_seconds is not None
             logger.info(
                 f"Guarding MLX-Audio generation token limit with "
-                f"{chunk_duration_seconds:.3f}s chunks for "
+                f"inference windows up to "
+                f"{guarded_window_duration_seconds:.3f}s for "
                 f"{len(audio) / 1000:.3f}s of audio"
             )
-        chunk_overlap_ms = int(round(self.chunk_overlap_seconds * 1000))
         return self._transcribe_chunked_audio(
             audio, chunk_duration_ms, chunk_overlap_ms, guard_token_limit
         )
 
     def _transcribe_vad_audio(
-        self, audio: AudioSegment, guard_token_limit: bool = False
+        self, audio: AudioSegment, guard_token_limit: bool
     ) -> list[TranscribedSegment]:
         """Transcribe detected speech and restore original-audio timestamps.
 
@@ -469,28 +461,38 @@ class MlxAudioTranscriber(Transcriber):
         )
         return self._restore_vad_timestamps(speech_segments, speech_intervals)
 
-    def _get_effective_chunk_duration_seconds(
-        self, audio: AudioSegment
-    ) -> float | None:
-        """Get the explicit or guarded chunk duration for one audio input.
+    def _get_effective_chunking(self, audio: AudioSegment) -> tuple[int | None, int]:
+        """Get effective core and overlap durations for one audio input.
 
         Arguments:
             audio: audio whose duration selects guarded chunking
         Returns:
-            effective chunk duration, or None for unchunked inference
+            core chunk duration and overlap in milliseconds
         """
-        chunk_duration_seconds = self.chunk_duration_seconds
-        if not self._uses_token_limit_guard(audio):
-            return chunk_duration_seconds
+        chunk_overlap_ms = int(round(self.chunk_overlap_seconds * 1000))
+        chunk_duration_ms = None
+        if self.chunk_duration_seconds is not None:
+            chunk_duration_ms = int(round(self.chunk_duration_seconds * 1000))
 
-        guarded_duration_seconds = self.backend.token_limit_guard_chunk_duration_seconds
-        assert guarded_duration_seconds is not None
+        if not self._uses_token_limit_guard(audio):
+            return chunk_duration_ms, chunk_overlap_ms
+
+        guarded_window_duration_seconds = (
+            self.backend.token_limit_guard_window_duration_seconds
+        )
+        assert guarded_window_duration_seconds is not None
+        guarded_window_duration_ms = int(round(guarded_window_duration_seconds * 1000))
         if (
-            chunk_duration_seconds is None
-            or chunk_duration_seconds > guarded_duration_seconds
+            chunk_duration_ms is not None
+            and chunk_duration_ms < guarded_window_duration_ms
         ):
-            return guarded_duration_seconds
-        return chunk_duration_seconds
+            maximum_overlap_ms = (guarded_window_duration_ms - chunk_duration_ms) // 2
+            return chunk_duration_ms, min(chunk_overlap_ms, maximum_overlap_ms)
+
+        maximum_overlap_ms = (guarded_window_duration_ms - 1) // 2
+        chunk_overlap_ms = min(chunk_overlap_ms, maximum_overlap_ms)
+        chunk_duration_ms = guarded_window_duration_ms - (2 * chunk_overlap_ms)
+        return chunk_duration_ms, chunk_overlap_ms
 
     def _uses_token_limit_guard(self, audio: AudioSegment) -> bool:
         """Check whether the opt-in token-limit guard changes this audio's behavior.
@@ -500,10 +502,12 @@ class MlxAudioTranscriber(Transcriber):
         Returns:
             whether guarded inference is active
         """
-        guarded_duration_seconds = self.backend.token_limit_guard_chunk_duration_seconds
-        if not self.token_limit_guard or guarded_duration_seconds is None:
+        guarded_window_duration_seconds = (
+            self.backend.token_limit_guard_window_duration_seconds
+        )
+        if not self.token_limit_guard or guarded_window_duration_seconds is None:
             return False
-        return len(audio) > round(guarded_duration_seconds * 1000)
+        return len(audio) > round(guarded_window_duration_seconds * 1000)
 
     @staticmethod
     def _restore_vad_timestamps(

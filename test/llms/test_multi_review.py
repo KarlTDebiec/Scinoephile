@@ -274,7 +274,11 @@ def test_boundary_aware_answer_allows_supported_single_character_correction():
 
 def test_processor_uses_sparse_sources_and_guide_timing():
     """Processor should query sparse inputs and return complete guide-timed output."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     provider.chat_completion.return_value = json.dumps(
         {
             "shuchu": [

@@ -114,9 +114,15 @@ def test_transcribe_cli_defaults_demucs_and_vad_to_off():
         for action in parser._actions  # noqa: SLF001
         if "--vad" in action.option_strings
     )
+    token_limit_guard_action = next(
+        action
+        for action in parser._actions  # noqa: SLF001
+        if "--mlx-audio-token-limit-guard" in action.option_strings
+    )
 
     assert demucs_action.default is DemucsMode.OFF
     assert vad_action.default is VADMode.OFF
+    assert token_limit_guard_action.default is False
 
 
 def test_transcribe_cli_writes_file(audio_series: Mock, expected_series: Series):

@@ -10,7 +10,12 @@ from unittest.mock import Mock
 from pytest import fixture, raises
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Answer, LLMProvider, OpenAIProviderBase
+from scinoephile.core.llms import (
+    Answer,
+    ChatCompletionMetrics,
+    LLMProvider,
+    OpenAIProviderBase,
+)
 from scinoephile.core.llms.llm_provider import ChatCompletionKwargs
 from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.llms.providers import registry as provider_registry
@@ -150,6 +155,7 @@ class _DummyProvider(LLMProvider):
         Arguments:
             marker: marker value for construction assertions
         """
+        self.completion_metrics: list[ChatCompletionMetrics] = []
         self.marker = marker
 
     def chat_completion(

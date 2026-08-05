@@ -29,7 +29,10 @@ from scinoephile.core.llms import (
 )
 from scinoephile.core.llms.llm_provider import ChatCompletionKwargs
 from scinoephile.core.llms.tool_box import ToolBox
-from scinoephile.core.llms.utils import save_test_cases_to_json
+from scinoephile.core.llms.utils import (
+    load_test_cases_from_json,
+    save_test_cases_to_json,
+)
 
 _PROMPT = Prompt(
     language=Language.eng,
@@ -163,10 +166,7 @@ class _RecordingProvider(LLMProvider):
         """
         self.calls: list[list[dict[str, Any]]] = []
         self.completion_metrics: list[ChatCompletionMetrics] = []
-        self.operations: list[str | None] = []
-        self.query_key_sha256s: list[str | None] = []
         self.response_formats: list[type[Answer]] = []
-        self.query_attempts: list[int] = []
         self.response = response
         self.model = model
         self.base_url = base_url
@@ -194,10 +194,7 @@ class _RecordingProvider(LLMProvider):
         """Record messages and return a fixed completion response."""
         _ = (tool_box, kwargs)
         self.calls.append(messages)
-        self.operations.append(operation)
-        self.query_key_sha256s.append(query_key_sha256)
         self.response_formats.append(response_format)
-        self.query_attempts.append(query_attempt)
         self.completion_metrics.append(
             ChatCompletionMetrics(
                 operation=operation,
@@ -218,13 +215,47 @@ class _RecordingProvider(LLMProvider):
         )
         return self.response
 
-    def get_completion_metrics(self) -> tuple[ChatCompletionMetrics, ...]:
-        """Get completion metrics recorded by this provider instance."""
-        return tuple(self.completion_metrics)
-
 
 class _AlternateRecordingProvider(_RecordingProvider):
     """Alternate provider implementation for cache identity tests."""
+
+
+class _SequenceRecordingProvider(_RecordingProvider):
+    """Recording provider returning a sequence of responses."""
+
+    def __init__(self, responses: list[str]):
+        """Initialize.
+
+        Arguments:
+            responses: completion responses to return in order
+        """
+        if not responses:
+            raise ValueError("responses must not be empty.")
+        super().__init__(responses[0])
+        self.responses = responses.copy()
+
+    def chat_completion(
+        self,
+        messages: list[dict[str, Any]],
+        response_format: type[Answer],
+        tool_box: ToolBox | None = None,
+        *,
+        operation: str | None = None,
+        query_key_sha256: str | None = None,
+        query_attempt: int = 1,
+        **kwargs: Unpack[ChatCompletionKwargs],
+    ) -> str:
+        """Record messages and return the next completion response."""
+        self.response = self.responses.pop(0)
+        return super().chat_completion(
+            messages,
+            response_format,
+            tool_box,
+            operation=operation,
+            query_key_sha256=query_key_sha256,
+            query_attempt=query_attempt,
+            **kwargs,
+        )
 
 
 def test_queryer_uses_injected_provider():
@@ -239,10 +270,11 @@ def test_queryer_uses_injected_provider():
     assert output_test_case.answer.output == "done"
     assert len(provider.calls) == 1
     assert provider.response_formats == [_Answer]
-    assert provider.operations == ["test"]
-    assert provider.query_key_sha256s[0] is not None
-    assert len(provider.query_key_sha256s[0]) == 64
-    assert provider.query_attempts == [1]
+    [completion_metrics] = provider.completion_metrics
+    assert completion_metrics.operation == "test"
+    assert completion_metrics.query_key_sha256 is not None
+    assert len(completion_metrics.query_key_sha256) == 64
+    assert completion_metrics.query_attempt == 1
     assert queryer.completion_metrics == provider.completion_metrics
     assert queryer.system_prompt == _PROMPT.base_system_prompt
 
@@ -318,7 +350,11 @@ def test_queryer_no_op_prefers_verified_answer(tmp_path: Path):
 
 def test_queryer_retries_provider_errors():
     """Test transient provider errors use the configured attempt count."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     provider.chat_completion.side_effect = [
         ScinoephileError("invalid structured content"),
         '{"output":"done"}',
@@ -332,6 +368,52 @@ def test_queryer_retries_provider_errors():
     assert [
         call.kwargs["query_attempt"] for call in provider.chat_completion.call_args_list
     ] == [1, 2]
+
+
+def test_queryer_attributes_validation_retries_to_one_query(tmp_path: Path):
+    """Test validation retries retain their query identity and attempt number.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    provider = _SequenceRecordingProvider(["{}", '{"output":"done"}'])
+    queryer = Queryer(
+        _TestCase, provider=provider, cache_root_path=tmp_path, max_attempts=2
+    )
+
+    result = queryer(_TestCase(query=_Query(text="input")))
+
+    assert result.answer == _Answer(output="done")
+    assert [metrics.query_attempt for metrics in queryer.completion_metrics] == [1, 2]
+    assert (
+        len({metrics.query_key_sha256 for metrics in queryer.completion_metrics}) == 1
+    )
+
+
+def test_queryers_sharing_provider_retain_only_their_metrics(tmp_path: Path):
+    """Test shared provider history is partitioned by completion call metadata.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    provider = _RecordingProvider()
+    first_queryer = Queryer(
+        _TestCase, provider=provider, cache_root_path=tmp_path, max_attempts=1
+    )
+    second_queryer = Queryer(
+        _TestCase, provider=provider, cache_root_path=tmp_path, max_attempts=1
+    )
+
+    first_queryer(_TestCase(query=_Query(text="first")))
+    second_queryer(_TestCase(query=_Query(text="second")))
+
+    assert len(provider.completion_metrics) == 2
+    assert first_queryer.completion_metrics == [provider.completion_metrics[0]]
+    assert second_queryer.completion_metrics == [provider.completion_metrics[1]]
+    assert (
+        first_queryer.completion_metrics[0].query_key_sha256
+        != second_queryer.completion_metrics[0].query_key_sha256
+    )
 
 
 def test_queryer_requires_injected_provider():
@@ -373,7 +455,11 @@ def test_queryer_includes_additional_context_before_few_shot_prompt():
 
 def test_queryer_preserves_existing_encountered_test_case_metadata():
     """Test queryer preserves existing few-shot and verified metadata."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     queryer = Queryer(_TestCase, provider=provider)
     test_case = _TestCase(
         query=_Query(text="input"),
@@ -391,7 +477,11 @@ def test_queryer_preserves_existing_encountered_test_case_metadata():
 
 def test_queryer_clears_stale_verified_metadata_after_generating_answer():
     """Test queryer clears stale verified metadata after generating an answer."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     provider.chat_completion.return_value = '{"output":"new"}'
     queryer = Queryer(_TestCase, provider=provider, max_attempts=1)
     test_case = _TestCase(
@@ -411,7 +501,11 @@ def test_queryer_clears_stale_verified_metadata_after_generating_answer():
 
 def test_queryer_preserves_auto_verified_encountered_test_case(monkeypatch):
     """Test queryer preserves auto-verified encountered test cases."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     provider.chat_completion.return_value = '{"output":"done"}'
     monkeypatch.setattr(_TestCase, "get_auto_verified", lambda self: True)
     queryer = Queryer(_TestCase, provider=provider, max_attempts=1, auto_verify=True)
@@ -424,7 +518,11 @@ def test_queryer_preserves_auto_verified_encountered_test_case(monkeypatch):
 
 def test_queryer_rejects_verified_test_case_from_incompatible_class():
     """Test verified answers must conform to the configured test-case class."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     incompatible = _IncompatibleTestCase(
         query=_Query(text="input"),
         answer=_IncompatibleAnswer(note="reviewed"),
@@ -437,7 +535,11 @@ def test_queryer_rejects_verified_test_case_from_incompatible_class():
 
 def test_queryer_normalizes_input_into_configured_test_case_class():
     """Test compatible inputs are returned using the configured test-case class."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     verified = _TestCase(
         query=_Query(text="input"), answer=_Answer(output="done"), verified=True
     )
@@ -452,7 +554,11 @@ def test_queryer_normalizes_input_into_configured_test_case_class():
 
 def test_queryer_requires_answers_for_verified_test_cases():
     """Test verified inputs cannot omit their answers."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     incomplete = _TestCase.model_construct(
         query=_Query(text="input"), answer=None, verified=True
     )
@@ -463,7 +569,11 @@ def test_queryer_requires_answers_for_verified_test_cases():
 
 def test_queryer_requires_test_cases_to_be_verified():
     """Test Queryer rejects unverified test cases."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     unverified = _TestCase(query=_Query(text="input"), answer=_Answer(output="done"))
 
     with raises(ValueError, match="must be verified"):
@@ -486,7 +596,11 @@ def test_test_case_requires_few_shot_to_be_verified():
 
 def test_queryer_merges_identical_verified_duplicates():
     """Test identical duplicate answers merge their metadata."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     few_shot = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="done"),
@@ -514,7 +628,11 @@ def test_queryer_merges_identical_verified_duplicates():
 
 def test_queryer_rejects_conflicting_verified_duplicates():
     """Test duplicate queries cannot silently choose one of two answers."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     first = _TestCase(
         query=_Query(text="input"), answer=_Answer(output="first"), verified=True
     )
@@ -534,7 +652,11 @@ def test_queryer_rejects_conflicting_verified_duplicates():
 
 def test_queryer_snapshots_verified_test_cases():
     """Test later mutation of caller-owned cases does not alter queryer state."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     verified = _TestCase(
         query=_Query(text="input"), answer=_Answer(output="original"), verified=True
     )
@@ -743,7 +865,7 @@ def test_processor_preserves_shared_verified_cases_from_current_unverified_case(
     tmp_path: Path,
 ):
     """All shared verified cases should reach the nascent Queryer."""
-    verified = _TestCase(
+    shared_verified = _TestCase(
         query=_Query(text="input"), answer=_Answer(output="verified"), verified=True
     )
     current_unverified = _TestCase(
@@ -754,13 +876,17 @@ def test_processor_preserves_shared_verified_cases_from_current_unverified_case(
 
     processor = _Processor(
         prompt=_PROMPT,
-        shared_test_cases=[verified],
+        shared_test_cases=[shared_verified],
         current_test_cases_path=current_test_cases_path,
-        provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+        provider=Mock(
+            spec=LLMProvider,
+            cache_identity={"implementation": "test"},
+            completion_metrics=[],
+        ),
     )
 
-    loaded = processor.queryer.verified_test_cases[verified.query.key]
-    assert loaded.answer == verified.answer
+    loaded = processor.queryer.verified_test_cases[shared_verified.query.key]
+    assert loaded.answer == shared_verified.answer
 
 
 def test_processor_rejects_conflicting_shared_and_current_verified_cases(
@@ -781,13 +907,46 @@ def test_processor_rejects_conflicting_shared_and_current_verified_cases(
             prompt=_PROMPT,
             shared_test_cases=[shared],
             current_test_cases_path=current_test_cases_path,
-            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+            provider=Mock(
+                spec=LLMProvider,
+                cache_identity={"implementation": "test"},
+                completion_metrics=[],
+            ),
         )
+
+
+def test_processor_saves_encountered_cases_to_current_json(tmp_path: Path):
+    """Encountered cases should be saved to the current configuration's JSON."""
+    shared = _TestCase(
+        query=_Query(text="input"), answer=_Answer(output="verified"), verified=True
+    )
+    current_test_cases_path = tmp_path / "test_cases.json"
+    processor = _Processor(
+        prompt=_PROMPT,
+        shared_test_cases=[shared],
+        current_test_cases_path=current_test_cases_path,
+        provider=Mock(
+            spec=LLMProvider,
+            cache_identity={"implementation": "test"},
+            completion_metrics=[],
+        ),
+    )
+
+    processor.queryer(_TestCase(query=_Query(text="input")))
+    processor.save_encountered_test_cases()
+
+    saved = load_test_cases_from_json(current_test_cases_path, _Manager, _PROMPT)
+    assert len(saved) == 1
+    assert saved[0].model_dump(mode="json") == shared.model_dump(mode="json")
 
 
 def test_processor_passes_injected_provider_to_queryer():
     """Test processor wires injected providers into its queryer."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     processor = _Processor(prompt=_PROMPT, provider=provider)
 
     assert processor.queryer.provider is provider

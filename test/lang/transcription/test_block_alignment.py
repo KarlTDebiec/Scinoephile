@@ -93,7 +93,11 @@ def test_aligner_queries_each_operation_once_with_complete_indexed_block(
         tmp_path: temporary cache root path
     """
     guide, transcription = _get_block()
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     provider.chat_completion.side_effect = [
         json.dumps({"changes": [{"index": 1, "shift": -1}]}, ensure_ascii=False),
         json.dumps(
@@ -159,7 +163,11 @@ def test_aligner_can_skip_punctuation(tmp_path: Path):
         tmp_path: temporary cache root path
     """
     guide, transcription = _get_block()
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     provider.chat_completion.return_value = json.dumps(
         {"changes": [{"index": 1, "shift": -1}]}
     )
@@ -181,7 +189,11 @@ def test_aligner_can_skip_punctuation(tmp_path: Path):
 def test_candidate_alignment_selects_timed_cut_and_inserts_punctuation(tmp_path: Path):
     """Candidate mode should expose timed cuts and apply positional punctuation."""
     guide, transcription = _get_block()
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     provider.chat_completion.side_effect = [
         json.dumps({"changes": [{"index": 1, "shift": 1}]}),
         json.dumps(
@@ -218,7 +230,11 @@ def test_candidate_alignment_selects_timed_cut_and_inserts_punctuation(tmp_path:
 def test_advisory_alignment_ranks_timed_cuts_without_restricting_shift(tmp_path: Path):
     """Advisory mode should rank timed cuts but accept another legal boundary."""
     guide, transcription = _get_block()
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     provider.chat_completion.side_effect = [
         json.dumps({"changes": [{"index": 1, "shift": -1}]}),
         json.dumps({"changes": []}),
@@ -312,7 +328,11 @@ def test_suggestion_free_gated_advisory_uses_unrestricted_cache(tmp_path: Path):
         tmp_path: temporary cache root path
     """
     guide, transcription = _get_block()
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     provider.chat_completion.return_value = json.dumps({"changes": []})
     advisory_processor = AdvisoryBlockDelineationProcessor(
         AdvisoryBlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
@@ -357,7 +377,11 @@ def test_suggestion_free_gated_advisory_migrates_advisory_cache(tmp_path: Path):
         tmp_path: temporary cache root path
     """
     guide, transcription = _get_block()
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     provider.chat_completion.return_value = json.dumps({"changes": []})
     legacy_advisory_processor = AdvisoryBlockDelineationProcessor(
         AdvisoryBlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
@@ -406,7 +430,11 @@ def test_gated_advisory_with_suggestions_uses_advisory_query(tmp_path: Path):
         Subtitle(start=0, end=1_000, text="參考一"),
         Subtitle(start=1_000, end=2_000, text="參考二"),
     ]
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     provider.chat_completion.return_value = json.dumps({"changes": []})
     advisory_processor = AdvisoryBlockDelineationProcessor(
         AdvisoryBlockDelineationPrompt(), provider=provider, cache_root_path=tmp_path
