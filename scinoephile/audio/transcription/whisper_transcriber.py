@@ -354,8 +354,8 @@ class WhisperTranscriber(Transcriber):
             TranscriptionInferenceError: if Whisper fails with an assertion
         """
         whisper_timestamped = import_whisper_timestamped()
-        with get_temp_file_path(suffix=".wav") as temp_audio_path:
-            try:
+        try:
+            with get_temp_file_path(suffix=".wav") as temp_audio_path:
                 audio.export(temp_audio_path, format="wav")
                 sample_len = self._get_sample_len(audio)
                 logger.debug(
@@ -410,12 +410,12 @@ class WhisperTranscriber(Transcriber):
                     raise TranscriptionInferenceError(
                         f"Whisper inference failed with an assertion: {exc}"
                     ) from exc
-            except TranscriptionInferenceError:
-                raise
-            except (ImportError, OSError, RuntimeError, ValueError) as exc:
-                raise TranscriptionInferenceError(
-                    f"Unable to run Whisper inference: {exc}"
-                ) from exc
+        except TranscriptionInferenceError:
+            raise
+        except (ImportError, OSError, RuntimeError, ValueError) as exc:
+            raise TranscriptionInferenceError(
+                f"Unable to run Whisper inference: {exc}"
+            ) from exc
 
         segments = [
             TranscribedSegment.model_validate(segment) for segment in result["segments"]
@@ -539,6 +539,6 @@ class WhisperTranscriber(Transcriber):
             quality_signals["no_speech_prob"] = max(no_speech_probs)
 
         return [
-            segment.model_copy(update=quality_signals, deep=True)
+            segment.model_copy(update=quality_signals)
             for segment in self.ctc_aligner(audio, text)
         ]
