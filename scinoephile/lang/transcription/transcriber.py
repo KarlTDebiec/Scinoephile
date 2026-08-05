@@ -15,6 +15,7 @@ from pydub.effects import normalize
 
 from scinoephile.audio.subtitles import AudioSeries, get_series_from_segments
 from scinoephile.audio.transcription import (
+    CtcAligner,
     DemucsMode,
     MlxAudioTranscriber,
     TranscribedSegment,
@@ -192,6 +193,7 @@ class GuidedTranscriber:
             return
 
         # Configure standard preprocessing fallbacks
+        whisper_ctc_aligner = CtcAligner(self.language)
         self.transcriber = WhisperTranscriber(
             model_name=self.model_name,
             language=self.whisper_language,
@@ -199,6 +201,7 @@ class GuidedTranscriber:
             vad_mode=self.vad_mode,
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
+            ctc_aligner=whisper_ctc_aligner,
         )
 
         # Configure defensive decoding after standard attempts are exhausted
@@ -217,6 +220,7 @@ class GuidedTranscriber:
             overwrite_cache=overwrite_cache,
             temperature=_RECOVERY_TEMPERATURES,
             condition_on_previous_text=False,
+            ctc_aligner=whisper_ctc_aligner,
             demucs_separator=self.transcriber.demucs_separator,
         )
 
@@ -229,6 +233,7 @@ class GuidedTranscriber:
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
             condition_on_previous_text=False,
+            ctc_aligner=whisper_ctc_aligner,
         )
 
     def process(
