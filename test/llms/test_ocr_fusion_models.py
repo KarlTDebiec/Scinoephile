@@ -216,7 +216,11 @@ def test_queryer_corresponds_using_prompt_aliases():
     test_case = test_case_cls.model_validate(
         {"query": {"source_one": "來源一", "source_two": "來源二"}}
     )
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=(),
+    )
     provider.chat_completion.return_value = (
         '{"jieguo": "來源一", "shuoming": "採用來源一"}'
     )
@@ -233,7 +237,11 @@ def test_queryer_corresponds_using_prompt_aliases():
 
 def test_processor_uses_semantic_fields_at_runtime():
     """Processor should build and consume the static semantic model shape."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=(),
+    )
     provider.chat_completion.return_value = (
         '{"jieguo": "融合結果", "shuoming": "融合兩個來源"}'
     )
@@ -250,7 +258,11 @@ def test_processor_uses_semantic_fields_at_runtime():
 
 def test_processor_honors_zero_stop_index():
     """A zero stop index should process no OCR-fusion subtitles."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=(),
+    )
     processor = OcrFusionProcessor(_LOCALIZED_PROMPT, provider=provider)
     source_one = Series([Subtitle(start=0, end=1000, text="來源一")])
     source_two = Series([Subtitle(start=0, end=1000, text="來源二")])
@@ -265,7 +277,11 @@ def test_processor_rejects_negative_stop_index():
     """A negative stop index should be rejected."""
     processor = OcrFusionProcessor(
         _LOCALIZED_PROMPT,
-        provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+        provider=Mock(
+            spec=LLMProvider,
+            cache_identity={"implementation": "test"},
+            completion_metrics=(),
+        ),
     )
     source = Series([Subtitle(start=0, end=1000, text="subtitle")])
 

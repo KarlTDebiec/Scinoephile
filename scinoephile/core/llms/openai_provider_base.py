@@ -6,12 +6,11 @@ from __future__ import annotations
 
 import os
 from collections.abc import Mapping
-from dataclasses import asdict
 from hashlib import sha256
 from json import dumps
 from logging import getLogger
 from time import monotonic, sleep
-from typing import Any, Unpack, cast
+from typing import Any, ClassVar, Unpack, cast
 
 from openai import OpenAI, OpenAIError
 from openai.types.chat import ChatCompletionMessageFunctionToolCall
@@ -20,7 +19,8 @@ from pydantic import JsonValue, ValidationError
 from scinoephile.core.exceptions import ScinoephileError
 
 from .answer import Answer
-from .llm_provider import ChatCompletionKwargs, ChatCompletionMetrics, LLMProvider
+from .llm_provider import ChatCompletionKwargs, LLMProvider
+from .metrics import ChatCompletionMetrics
 from .tool_box import ToolBox
 
 __all__ = ["OpenAIProviderBase"]
@@ -39,6 +39,9 @@ class OpenAIProviderBase(LLMProvider):
 
     base_url: str | None = None
     """Default base URL for the OpenAI client."""
+
+    explicit_prompt_caching: ClassVar[bool] = False
+    """Whether requests should mark and route a stable cached prefix."""
 
     timeout_seconds: float
     """Timeout for each provider request."""
@@ -68,7 +71,7 @@ class OpenAIProviderBase(LLMProvider):
         self._sync_client: OpenAI | None = client
         self._api_key: str | None = api_key
         self.timeout_seconds = timeout_seconds
-        self.completion_metrics: list[ChatCompletionMetrics] = []
+        self._completion_metrics: list[ChatCompletionMetrics] = []
         """Usage and timing for completions made by this provider instance."""
         if base_url is not None:
             self.base_url = base_url
@@ -109,6 +112,11 @@ class OpenAIProviderBase(LLMProvider):
         return identity
 
     @property
+    def completion_metrics(self) -> tuple[ChatCompletionMetrics, ...]:
+        """Immutable snapshot of completion metrics recorded by this provider."""
+        return tuple(self._completion_metrics)
+
+    @property
     def sync_client(self) -> OpenAI:
         """Synchronous OpenAI client."""
         if self._sync_client is None:
@@ -118,11 +126,6 @@ class OpenAIProviderBase(LLMProvider):
                 timeout=self.timeout_seconds,
             )
         return self._sync_client
-
-    @property
-    def use_explicit_prompt_caching(self) -> bool:
-        """Whether requests should mark and route a stable cached prefix."""
-        return False
 
     @property
     def use_strict_tools(self) -> bool:
@@ -161,7 +164,7 @@ class OpenAIProviderBase(LLMProvider):
             tool_box = tool_box or ToolBox()
             openai_tools = self._build_openai_tools(tool_box) if tool_box else None
             prompt_cache_key = None
-            if self.use_explicit_prompt_caching:
+            if self.explicit_prompt_caching:
                 messages, prompt_cache_key = self._configure_prompt_cache(
                     messages, response_format, openai_tools
                 )
@@ -188,8 +191,8 @@ class OpenAIProviderBase(LLMProvider):
                     latency_seconds=monotonic() - start_time,
                     prompt_cache_key=prompt_cache_key,
                 )
-                self.completion_metrics.append(metrics)
-                logger.info(f"LLM completion metrics: {dumps(asdict(metrics))}")
+                self._completion_metrics.append(metrics)
+                logger.debug(f"LLM completion metrics: {metrics!r}")
                 message = completion.choices[0].message
                 tool_calls = cast(
                     list[ChatCompletionMessageFunctionToolCall],
@@ -239,14 +242,6 @@ class OpenAIProviderBase(LLMProvider):
                 "OpenAI-compatible API returned content that failed structured "
                 "response validation."
             ) from exc
-
-    def get_completion_metrics(self) -> tuple[ChatCompletionMetrics, ...]:
-        """Get completion metrics recorded by this provider instance.
-
-        Returns:
-            immutable snapshot of recorded completion metrics
-        """
-        return tuple(self.completion_metrics)
 
     def _build_openai_tools(self, tool_box: ToolBox) -> list[dict[str, object]]:
         """Build OpenAI tool payload from local tool specs.

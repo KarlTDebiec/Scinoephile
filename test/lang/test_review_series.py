@@ -416,7 +416,11 @@ def test_review_series(
         language: language to review
         prompt: prompt for the review path
     """
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=(),
+    )
     reviewer = get_reviewer(
         language, prompt=prompt, shared_test_cases=test_case_loader(), provider=provider
     )

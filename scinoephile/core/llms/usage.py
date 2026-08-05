@@ -9,47 +9,16 @@ from collections import defaultdict
 from collections.abc import Iterable
 from dataclasses import asdict
 from pathlib import Path
-from typing import TypedDict
 
 from scinoephile.common.file import open_atomic_text_file
 
-from .llm_provider import ChatCompletionMetrics
+from .metrics import ChatCompletionMetrics, ChatCompletionMetricsSummary
 
 __all__ = [
-    "ChatCompletionMetricsSummary",
     "format_chat_completion_metrics_report",
     "get_chat_completion_metrics_summary",
     "save_chat_completion_metrics_to_json",
 ]
-
-
-class ChatCompletionMetricsSummary(TypedDict):
-    """Aggregate LLM completion metrics suitable for JSON serialization."""
-
-    queries: int
-    """Number of unique semantic queries sent to a provider."""
-    completions: int
-    """Number of successful provider completions, including tool rounds."""
-    validation_retries: int
-    """Number of additional answer-validation attempts after the first."""
-    transport_retries: int | None
-    """Total provider SDK transport retries, or None when unavailable."""
-    input_tokens: int | None
-    """Total input tokens, or None when unavailable."""
-    cached_input_tokens: int | None
-    """Total input tokens read from provider prompt caches, or None."""
-    uncached_input_tokens: int | None
-    """Total input tokens not read from provider prompt caches, or None."""
-    cache_write_tokens: int | None
-    """Total input tokens written to provider prompt caches, or None."""
-    output_tokens: int | None
-    """Total output tokens, or None when unavailable."""
-    reasoning_tokens: int | None
-    """Total output tokens used for reasoning, or None when unavailable."""
-    total_tokens: int | None
-    """Total input and output tokens, or None when unavailable."""
-    latency_seconds: float
-    """Total provider latency in seconds."""
 
 
 def format_chat_completion_metrics_report(

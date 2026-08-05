@@ -61,7 +61,11 @@ def test_review_series_guided_yue_zho(
     yuewen = request.getfixturevalue(yuewen_fixture)
     zhongwen = request.getfixturevalue(zhongwen_fixture)
     expected = request.getfixturevalue(expected_fixture)
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=(),
+    )
     with patch(device_patch_target, return_value=device_name):
         test_cases = test_case_loader()
     reviewer = get_guided_reviewer(

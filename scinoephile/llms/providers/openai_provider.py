@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from re import match
 from typing import ClassVar
 
 from scinoephile.core.llms import OpenAIProviderBase
@@ -27,12 +26,5 @@ class OpenAIProvider(OpenAIProviderBase):
     api_key_env_var_name = "OPENAI_API_KEY"
     """Environment variable name used for the OpenAI API key."""
 
-    @property
-    def use_explicit_prompt_caching(self) -> bool:
-        """Whether the configured model supports explicit prompt caching."""
-        version_match = match(r"^gpt-(\d+)(?:\.(\d+))?", self.model)
-        if version_match is None:
-            return False
-        major = int(version_match.group(1))
-        minor = int(version_match.group(2) or 0)
-        return (major, minor) >= (5, 6)
+    explicit_prompt_caching = True
+    """Whether requests should mark and route a stable cached prefix."""

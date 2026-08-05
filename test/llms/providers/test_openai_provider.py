@@ -40,9 +40,6 @@ def test_openai_constructs_client_without_overrides(monkeypatch: MonkeyPatch):
     assert client.kwargs["base_url"] is None
 
 
-def test_explicit_prompt_caching_requires_gpt_5_6_or_later():
-    """Test explicit prompt caching is limited to supported OpenAI models."""
-    assert OpenAIProvider(model="gpt-5.6-luna").use_explicit_prompt_caching is True
-    assert OpenAIProvider(model="gpt-6").use_explicit_prompt_caching is True
-    assert OpenAIProvider(model="gpt-5.4-nano").use_explicit_prompt_caching is False
-    assert OpenAIProvider(model="o4-mini").use_explicit_prompt_caching is False
+def test_explicit_prompt_caching_is_enabled():
+    """Test explicit prompt caching is enabled for OpenAI."""
+    assert OpenAIProvider.explicit_prompt_caching is True

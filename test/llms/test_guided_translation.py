@@ -134,7 +134,11 @@ def test_outputs_must_correspond_to_query_subtitles(
 
 def test_processor_maps_indexed_outputs_to_subtitle_timing():
     """Processor outputs should preserve source-subtitle ordering and timing."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=(),
+    )
     provider.chat_completion.return_value = json.dumps(
         {
             "shuchu": [
@@ -199,7 +203,11 @@ def test_persistence_uses_base_prompt_field_names(tmp_path: Path):
 
 def test_processor_honors_start_index():
     """An inclusive start index should skip earlier guided-translation blocks."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=(),
+    )
     provider.chat_completion.return_value = json.dumps(
         {"shuchu": [{"xuhao": 1, "wenben": "譯文二"}]}, ensure_ascii=False
     )

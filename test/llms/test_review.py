@@ -71,7 +71,11 @@ def test_queryer_corresponds_using_prompt_aliases():
     test_case = test_case_cls.model_validate(
         {"query": {"subtitles": [{"index": 1, "text": "原文"}]}}
     )
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=(),
+    )
     provider.chat_completion.return_value = '{"xiugai": []}'
     queryer = Queryer(test_case_cls, provider=provider, max_attempts=1)
 
@@ -91,7 +95,11 @@ def test_queryer_rejects_type_coercion_at_llm_boundary():
     test_case = test_case_cls.model_validate(
         {"query": {"subtitles": [{"index": 1, "text": "原文"}]}}
     )
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=(),
+    )
     provider.chat_completion.side_effect = [
         '{"xiugai": [{"xuhao": "1", "wenben": "修改", "beizhu": "修正"}]}',
         '{"xiugai": [{"xuhao": 1, "wenben": "修改", "beizhu": "修正"}]}',
@@ -112,7 +120,11 @@ def test_queryer_localizes_answer_validation_retry():
     test_case = test_case_cls.model_validate(
         {"query": {"subtitles": [{"index": 1, "text": "原文"}]}}
     )
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=(),
+    )
     provider.chat_completion.side_effect = [
         '{"xiugai": [{"xuhao": "1", "wenben": "修改", "beizhu": "修正"}]}',
         '{"xiugai": [{"xuhao": 1, "wenben": "修改", "beizhu": "修正"}]}',
@@ -141,7 +153,11 @@ def test_queryer_includes_localized_answer_validation_details():
             }
         }
     )
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=(),
+    )
     provider.chat_completion.side_effect = [
         (
             '{"xiugai": ['
@@ -171,7 +187,11 @@ def test_queryer_localizes_test_case_validation_retry():
     test_case = test_case_cls.model_validate(
         {"query": {"subtitles": [{"index": 1, "text": "原文"}]}}
     )
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=(),
+    )
     provider.chat_completion.side_effect = [
         '{"xiugai": [{"xuhao": 2, "wenben": "修改", "beizhu": "修正"}]}',
         '{"xiugai": []}',
@@ -208,7 +228,11 @@ def test_partial_processing_preserves_unencountered_test_cases(tmp_path: Path):
     processor = ReviewProcessor(
         ReviewManager.base_prompt,
         current_test_cases_path=current_test_cases_path,
-        provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+        provider=Mock(
+            spec=LLMProvider,
+            cache_identity={"implementation": "test"},
+            completion_metrics=(),
+        ),
     )
     series = Series(events=[Subtitle(start=0, end=1000, text="existing")])
 
@@ -234,7 +258,11 @@ def test_partial_processing_prunes_only_when_requested(tmp_path: Path):
     processor = ReviewProcessor(
         ReviewManager.base_prompt,
         current_test_cases_path=current_test_cases_path,
-        provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+        provider=Mock(
+            spec=LLMProvider,
+            cache_identity={"implementation": "test"},
+            completion_metrics=(),
+        ),
         prune_test_cases=True,
     )
     series = Series(events=[Subtitle(start=0, end=1000, text="existing")])
@@ -246,7 +274,11 @@ def test_partial_processing_prunes_only_when_requested(tmp_path: Path):
 
 def test_processor_honors_start_index():
     """An inclusive start index should skip earlier review blocks."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=(),
+    )
     provider.chat_completion.return_value = '{"xiugai": []}'
     processor = ReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
     series = Series(

@@ -56,7 +56,11 @@ def test_gap_translator_zho_to_yue(
     yuewen = request.getfixturevalue(yuewen_fixture)
     zhongwen = request.getfixturevalue(zhongwen_fixture)
     expected = request.getfixturevalue(expected_fixture)
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=(),
+    )
     with patch(device_patch_target, return_value="cuda"):
         test_cases = test_case_loader()
     translator = get_gap_translator(

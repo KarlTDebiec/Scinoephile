@@ -30,10 +30,8 @@ class _DummyProvider(OpenAIProviderBase):
 class _CachingDummyProvider(_DummyProvider):
     """Dummy provider with explicit prompt caching enabled."""
 
-    @property
-    def use_explicit_prompt_caching(self) -> bool:
-        """Enable explicit prompt caching for tests."""
-        return True
+    explicit_prompt_caching = True
+    """Enable explicit prompt caching for tests."""
 
 
 class _Answer(Answer):
