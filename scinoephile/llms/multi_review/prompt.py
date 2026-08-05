@@ -15,6 +15,12 @@ __all__ = ["MultiReviewPrompt"]
 class MultiReviewPrompt(Prompt):
     """Text for reviewing equal-status subtitle sources using a guide."""
 
+    boundary_aware: bool = False
+    """Whether outputs must reconcile provisional boundaries across the block."""
+
+    minimum_duplicate_fragment_characters: int = 4
+    """Minimum normalized fragment length checked for conflicting duplication."""
+
     # Query fields
     sources: str = "sources"
     """Name of sources field in query."""
@@ -105,6 +111,29 @@ class MultiReviewPrompt(Prompt):
         "Answer output {idx} must be blank because every subtitle source is absent."
     )
     """Error template when an unsupported output contains text."""
+
+    conflicting_boundary_duplication_err_tpl: str = (
+        "Answer outputs {one_idx} and {two_idx} reuse fragment {fragment!r} from "
+        "conflicting whole-versus-split source boundaries. Reconcile the boundary "
+        "once across the complete block; do not emit the same spoken fragment twice."
+    )
+    """Error template when outputs duplicate a conflicting boundary fragment."""
+
+    def conflicting_boundary_duplication_err(
+        self, one_idx: int, two_idx: int, fragment: str
+    ) -> str:
+        """Get error when adjacent outputs reuse a conflicting source fragment.
+
+        Arguments:
+            one_idx: first one-based output index
+            two_idx: second one-based output index
+            fragment: duplicated normalized output fragment
+        Returns:
+            error message
+        """
+        return self.conflicting_boundary_duplication_err_tpl.format(
+            one_idx=one_idx, two_idx=two_idx, fragment=fragment
+        )
 
     def unsupported_output_err(self, idx: int) -> str:
         """Get error when an unsupported output contains text.

@@ -8,6 +8,11 @@ from unittest.mock import Mock
 
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.lang.review.multi import get_multi_reviewer
+from scinoephile.lang.yue_zho.review import (
+    YueZhoMultiReviewPromptYueHant,
+    YueZhoMultiReviewPromptYueHantBlockGlobal,
+)
 from scinoephile.llms.multi_review import MultiReviewProcessor
 from scinoephile.workflows.review import review_series_multi
 
@@ -38,3 +43,20 @@ def test_review_series_multi_delegates_named_sources_and_block_range():
     reviewer.process.assert_called_once_with(
         sources, guide, stop_at_idx=4, start_at_idx=2
     )
+
+
+def test_get_multi_reviewer_selects_boundary_aware_prompt_only_when_enabled():
+    """The alternative prompt should be opt-in and leave the default unchanged."""
+    default = get_multi_reviewer(
+        Language.yue_hant, Language.zho_hant, shared_test_cases=[], provider=Mock()
+    )
+    boundary_aware = get_multi_reviewer(
+        Language.yue_hant,
+        Language.zho_hant,
+        shared_test_cases=[],
+        provider=Mock(),
+        boundary_aware=True,
+    )
+
+    assert default.prompt is YueZhoMultiReviewPromptYueHant
+    assert boundary_aware.prompt is YueZhoMultiReviewPromptYueHantBlockGlobal

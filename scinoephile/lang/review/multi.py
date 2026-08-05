@@ -11,7 +11,10 @@ from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
-from scinoephile.lang.yue_zho.review import YueZhoMultiReviewPromptYueHant
+from scinoephile.lang.yue_zho.review import (
+    YueZhoMultiReviewPromptYueHant,
+    YueZhoMultiReviewPromptYueHantBlockGlobal,
+)
 from scinoephile.llms import load_shared_test_cases
 from scinoephile.llms.multi_review import (
     MultiReviewManager,
@@ -39,6 +42,17 @@ _JSON_PATHS: Mapping[tuple[Language, Language], tuple[Path, ...]] = MappingProxy
 )
 """Multi-review JSON paths keyed by output and guide languages."""
 
+_BOUNDARY_AWARE_PROMPTS: Mapping[tuple[Language, Language], MultiReviewPrompt] = (
+    MappingProxyType(
+        {
+            (Language.yue_hant, Language.zho_hant): (
+                YueZhoMultiReviewPromptYueHantBlockGlobal
+            )
+        }
+    )
+)
+"""Boundary-aware block-global prompts keyed by output and guide languages."""
+
 
 def get_multi_reviewer(
     language: Language,
@@ -46,6 +60,8 @@ def get_multi_reviewer(
     prompt: MultiReviewPrompt | None = None,
     shared_test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
+    *,
+    boundary_aware: bool = False,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> MultiReviewProcessor:
     """Get a multi-source reviewer for a supported language pair.
@@ -56,6 +72,8 @@ def get_multi_reviewer(
         prompt: text for LLM correspondence
         shared_test_cases: shared test cases
         provider: provider to use for queries
+        boundary_aware: whether to use block-global boundary reconciliation when
+            `prompt` is None
         **kwargs: additional processor keyword arguments
     Returns:
         configured multi-review processor
@@ -69,11 +87,17 @@ def get_multi_reviewer(
             f"{language.code} <- {guide_language.code}"
         )
     if prompt is None:
-        prompt = DEFAULT_PROMPTS[key]
+        if boundary_aware:
+            prompt = _BOUNDARY_AWARE_PROMPTS[key]
+        else:
+            prompt = DEFAULT_PROMPTS[key]
     if shared_test_cases is None:
-        shared_test_cases = list(
-            load_shared_test_cases(MultiReviewManager, prompt, _JSON_PATHS[key])
-        )
+        if prompt.boundary_aware:
+            shared_test_cases = []
+        else:
+            shared_test_cases = list(
+                load_shared_test_cases(MultiReviewManager, prompt, _JSON_PATHS[key])
+            )
     if provider is None:
         provider = get_provider()
     return MultiReviewProcessor(prompt, shared_test_cases, provider=provider, **kwargs)

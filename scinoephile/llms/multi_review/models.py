@@ -10,6 +10,7 @@ from pydantic import Field, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase, TestCaseSubtitle
 from scinoephile.core.llms.models import LLMModel
+from scinoephile.core.text import remove_punc_and_whitespace
 
 from .prompt import MultiReviewPrompt
 
@@ -152,12 +153,136 @@ class MultiReviewTestCase(TestCase):
         if output_indexes != guide_indexes:
             raise ValueError(self.prompt.output_correspondence_err)
 
-        supported_indexes = {
-            subtitle.index
+        if not self.prompt.boundary_aware:
+            supported_indexes = {
+                subtitle.index
+                for source in self.query.sources
+                for subtitle in source.subtitles
+            }
+            for output in self.answer.outputs:
+                if output.index not in supported_indexes and output.text:
+                    raise ValueError(self.prompt.unsupported_output_err(output.index))
+            return self
+
+        source_text_by_index = [
+            {
+                subtitle.index: remove_punc_and_whitespace(subtitle.text)
+                for subtitle in source.subtitles
+            }
             for source in self.query.sources
-            for subtitle in source.subtitles
-        }
+        ]
         for output in self.answer.outputs:
-            if output.index not in supported_indexes and output.text:
+            output_text = remove_punc_and_whitespace(output.text)
+            if output_text and not self._has_local_source_support(
+                source_text_by_index, output.index, output_text
+            ):
                 raise ValueError(self.prompt.unsupported_output_err(output.index))
+
+        conflict = self._get_conflicting_boundary_duplication()
+        if conflict is not None:
+            one_idx, two_idx, fragment = conflict
+            raise ValueError(
+                self.prompt.conflicting_boundary_duplication_err(
+                    one_idx, two_idx, fragment
+                )
+            )
         return self
+
+    def _get_conflicting_boundary_duplication(self) -> tuple[int, int, str] | None:
+        """Get output duplication caused by conflicting source boundaries.
+
+        Returns:
+            first index, second index, and duplicated normalized fragment, or None
+        """
+        assert self.answer is not None
+        source_text_by_index = [
+            {
+                subtitle.index: remove_punc_and_whitespace(subtitle.text)
+                for subtitle in source.subtitles
+            }
+            for source in self.query.sources
+        ]
+        guide_text_by_index = {
+            guide.index: remove_punc_and_whitespace(guide.text)
+            for guide in self.query.guides
+        }
+        normalized_outputs = [
+            remove_punc_and_whitespace(output.text) for output in self.answer.outputs
+        ]
+        for one, two, one_text, two_text in zip(
+            self.answer.outputs[:-1],
+            self.answer.outputs[1:],
+            normalized_outputs[:-1],
+            normalized_outputs[1:],
+            strict=True,
+        ):
+            if not one_text or not two_text:
+                continue
+            if len(one_text) <= len(two_text):
+                fragment = one_text
+            else:
+                fragment = two_text
+            if (
+                len(fragment) < self.prompt.minimum_duplicate_fragment_characters
+                or fragment not in one_text
+                or fragment not in two_text
+            ):
+                continue
+
+            one_guide = guide_text_by_index[one.index]
+            two_guide = guide_text_by_index[two.index]
+            if one_guide == two_guide:
+                continue
+
+            source_pairs = [
+                (source_text.get(one.index, ""), source_text.get(two.index, ""))
+                for source_text in source_text_by_index
+            ]
+            if any(
+                fragment in source_one and fragment in source_two
+                for source_one, source_two in source_pairs
+            ):
+                continue
+            supports_one_only = any(
+                fragment in source_one and fragment not in source_two
+                for source_one, source_two in source_pairs
+            )
+            supports_two_only = any(
+                fragment not in source_one and fragment in source_two
+                for source_one, source_two in source_pairs
+            )
+            if supports_one_only and supports_two_only:
+                return one.index, two.index, fragment
+        return None
+
+    @staticmethod
+    def _has_local_source_support(
+        source_text_by_index: list[dict[int, str]], index: int, text: str
+    ) -> bool:
+        """Whether an output text has support at its index or a direct neighbor.
+
+        Arguments:
+            source_text_by_index: normalized source texts keyed by subtitle index
+            index: one-based output subtitle index
+            text: normalized output text
+        Returns:
+            whether a nearby source shares a one- or two-character fragment
+        """
+        nearby_source_texts = [
+            source_texts.get(nearby_index, "")
+            for source_texts in source_text_by_index
+            for nearby_index in range(index - 1, index + 2)
+        ]
+        if len(text) == 1:
+            return any(nearby_source_texts)
+
+        fragment_length = min(2, len(text))
+        fragments = {
+            text[start : start + fragment_length]
+            for start in range(len(text) - fragment_length + 1)
+        }
+        return any(
+            fragment in source_text
+            for source_text in nearby_source_texts
+            for fragment in fragments
+        )

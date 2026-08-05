@@ -292,6 +292,7 @@ def process_transcription_multi_review(
     stop_at_idx: int | None = None,
     additional_context: str | None = None,
     reviewer_kw: dict[str, Any] | None = None,
+    boundary_aware: bool = False,
     overwrite: bool = False,
 ) -> Series:
     """Review multiple transcription outputs into one guide-timed series.
@@ -306,6 +307,7 @@ def process_transcription_multi_review(
         stop_at_idx: exclusive guide block index at which to stop processing
         additional_context: additional context included in the LLM prompt
         reviewer_kw: additional keyword arguments for `review_series_multi`
+        boundary_aware: whether to reconcile source boundaries across each block
         overwrite: whether to overwrite an existing output
     Returns:
         multi-reviewed subtitle series
@@ -322,8 +324,11 @@ def process_transcription_multi_review(
     evaluation_reference = get_reference_for_guide_blocks(reference, guide, stop_at_idx)
 
     reviewer_kw = dict(reviewer_kw or {})
+    current_test_cases_name = "multi_review.json"
+    if boundary_aware:
+        current_test_cases_name = "multi_review_block_global.json"
     reviewer_kw.setdefault(
-        "current_test_cases_path", output_path.parent / "json" / "multi_review.json"
+        "current_test_cases_path", output_path.parent / "json" / current_test_cases_name
     )
     if additional_context is not None:
         reviewer_kw.setdefault("additional_context", additional_context)
@@ -333,6 +338,7 @@ def process_transcription_multi_review(
         language=language,
         guide_language=guide_language,
         stop_at_idx=stop_at_idx,
+        boundary_aware=boundary_aware,
         **reviewer_kw,
     )
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -363,6 +369,7 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
     llm_usage_path: Path | None = None,
     reviewer_kw: dict[str, Any] | None = None,
     translator_kw: dict[str, Any] | None = None,
+    boundary_aware_multi_review: bool = False,
     transcription_no_op: bool = False,
     punctuate_sources: bool = False,
     transcription_alignment_mode: TranscriptionAlignmentMode = (
@@ -406,6 +413,8 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
           `output_dir_path/json/llm_usage.json`
         reviewer_kw: additional keyword arguments for the multi-source merge
         translator_kw: additional keyword arguments for gap translation
+        boundary_aware_multi_review: whether the merge should reconcile provisional
+            source boundaries across each complete block
         transcription_no_op: whether delineation and punctuation should use neutral
           answers instead of querying an LLM
         punctuate_sources: whether to punctuate each source before the merge; false
@@ -572,6 +581,7 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
         stop_at_idx=stop_at_idx,
         additional_context=additional_context,
         reviewer_kw=reviewer_kw,
+        boundary_aware=boundary_aware_multi_review,
         overwrite=overwrite,
     )
 

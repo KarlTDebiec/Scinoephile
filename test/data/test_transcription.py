@@ -40,14 +40,26 @@ def test_get_reference_for_guide_blocks_limits_reference_prefix():
     assert [subtitle.text for subtitle in limited] == ["甲", "乙"]
 
 
+@mark.parametrize(
+    ("boundary_aware", "current_test_cases_name"),
+    [
+        param(False, "multi_review.json", id="index-local"),
+        param(True, "multi_review_block_global.json", id="block-global"),
+    ],
+)
 def test_process_transcription_multi_review_uses_root_json_cache(
-    tmp_path: Path, monkeypatch: MonkeyPatch
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+    boundary_aware: bool,
+    current_test_cases_name: str,
 ):
     """Load named sources and store the aggregate cache beside model directories.
 
     Arguments:
         tmp_path: temporary pipeline directory
         monkeypatch: pytest monkeypatch fixture
+        boundary_aware: whether to reconcile provisional source boundaries
+        current_test_cases_name: expected mode-specific test-case filename
     """
     source_paths = {
         "whisper": tmp_path / "whisper.srt",
@@ -77,6 +89,7 @@ def test_process_transcription_multi_review_uses_root_json_cache(
         guide_language=Language.zho_hant,
         stop_at_idx=5,
         additional_context="Film context",
+        boundary_aware=boundary_aware,
         overwrite=True,
     )
 
@@ -88,8 +101,11 @@ def test_process_transcription_multi_review_uses_root_json_cache(
         "language": Language.yue_hant,
         "guide_language": Language.zho_hant,
         "stop_at_idx": 5,
-        "current_test_cases_path": output_path.parent / "json" / "multi_review.json",
+        "current_test_cases_path": output_path.parent
+        / "json"
+        / current_test_cases_name,
         "additional_context": "Film context",
+        "boundary_aware": boundary_aware,
     }
 
 
@@ -243,6 +259,7 @@ def test_process_transcription_pipeline_runs_all_stages(
         "prune_test_cases": True,
         "provider": provider,
     }
+    assert merge.call_args.kwargs["boundary_aware"] is False
     assert translate.call_args.args[:3] == (
         guide,
         Series(events=[merged.events[0]]),

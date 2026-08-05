@@ -65,6 +65,7 @@ def process_yue_hant_transcription(
     transcription_names: tuple[str, ...] = ("whisper", "mimo", "qwen"),
     mlx_audio_token_limit_guard: bool = True,
     run_merge_and_translation: bool = True,
+    boundary_aware_multi_review: bool = False,
 ):
     """Run the configured ACOPOPB Cantonese transcription pipeline.
 
@@ -74,6 +75,8 @@ def process_yue_hant_transcription(
         transcription_names: transcription sources to process in order
         mlx_audio_token_limit_guard: whether to guard MiMo's generation-token limit
         run_merge_and_translation: whether to merge sources and translate gaps
+        boundary_aware_multi_review: whether the merge should reconcile provisional
+            source boundaries across the complete block
     """
     process_transcription_pipeline(
         title_root,
@@ -85,6 +88,7 @@ def process_yue_hant_transcription(
         audio_dir_path=yue_hant_transcribe_path / "audio",
         stop_at_idx=stop_at_idx,
         additional_context=transcription_additional_context,
+        boundary_aware_multi_review=boundary_aware_multi_review,
         transcription_no_op=False,
         transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
         transcription_block_delineation_mode=BlockDelineationMode.UNRESTRICTED,

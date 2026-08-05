@@ -121,6 +121,7 @@ def review_series_multi(
     reviewer: MultiReviewProcessor | None = None,
     start_at_idx: int = 0,
     stop_at_idx: int | None = None,
+    boundary_aware: bool = False,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> Series:
     """Review multiple equal-status subtitle sources using a complete guide.
@@ -136,6 +137,8 @@ def review_series_multi(
         reviewer: reviewer to use, or None to construct one
         start_at_idx: inclusive zero-based block index at which to start processing
         stop_at_idx: exclusive zero-based block index at which to stop processing
+        boundary_aware: whether to reconcile provisional source boundaries across
+            each complete block
         **kwargs: additional keyword arguments for MultiReviewProcessor
     Returns:
         reviewed subtitle series using guide timing
@@ -165,6 +168,7 @@ def review_series_multi(
             prompt,
             shared_test_cases,
             provider=provider,
+            boundary_aware=boundary_aware,
             **kwargs,
         )
     return reviewer.process(

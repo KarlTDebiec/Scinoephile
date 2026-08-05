@@ -32,6 +32,9 @@ _LOCALIZED_PROMPT = MultiReviewPrompt(
 )
 """Multi-review prompt with localized correspondence field names."""
 
+_BOUNDARY_AWARE_PROMPT = MultiReviewPrompt(boundary_aware=True)
+"""Multi-review prompt that reconciles provisional boundaries across a block."""
+
 
 def test_prompt_aliases_are_used_for_nested_llm_correspondence():
     """Generated nested schemas and JSON should use prompt-specific aliases."""
@@ -153,6 +156,119 @@ def test_answer_must_cover_every_guide_and_leave_unsupported_positions_blank():
             },
         }
     )
+    assert test_case.answer is not None
+
+
+def test_boundary_aware_answer_rejects_conflicting_fragment_duplication():
+    """Block-global answers should not combine whole and split source variants."""
+    query = {
+        "sources": [
+            {"name": "whole", "subtitles": [{"index": 1, "text": "完整句子後半段落"}]},
+            {
+                "name": "split",
+                "subtitles": [
+                    {"index": 1, "text": "完整句子"},
+                    {"index": 2, "text": "後半段落"},
+                ],
+            },
+        ],
+        "guides": [{"index": 1, "text": "第一句"}, {"index": 2, "text": "第二句"}],
+    }
+    answer = {
+        "outputs": [
+            {"index": 1, "text": "完整句子後半段落"},
+            {"index": 2, "text": "後半段落"},
+        ]
+    }
+
+    boundary_aware_cls = MultiReviewManager.get_test_case_cls(_BOUNDARY_AWARE_PROMPT)
+    with raises(ValidationError, match="whole-versus-split"):
+        boundary_aware_cls.model_validate({"query": query, "answer": answer})
+
+    standard = MultiReviewTestCase.model_validate({"query": query, "answer": answer})
+    assert standard.answer is not None
+
+
+def test_boundary_aware_answer_can_move_text_to_an_unsupported_index():
+    """Block-global review may move misplaced source text to an adjacent blank."""
+    test_case_cls = MultiReviewManager.get_test_case_cls(_BOUNDARY_AWARE_PROMPT)
+
+    test_case = test_case_cls.model_validate(
+        {
+            "query": {
+                "sources": [
+                    {"name": "one", "subtitles": [{"index": 1, "text": "移去下一行"}]},
+                    {"name": "two", "subtitles": [{"index": 1, "text": "移去下一行"}]},
+                ],
+                "guides": [
+                    {"index": 1, "text": "第一句"},
+                    {"index": 2, "text": "下一句"},
+                ],
+            },
+            "answer": {
+                "outputs": [
+                    {"index": 1, "text": ""},
+                    {"index": 2, "text": "移去下一行"},
+                ]
+            },
+        }
+    )
+
+    assert test_case.answer is not None
+
+
+def test_boundary_aware_answer_rejects_distant_text_without_local_support():
+    """Block-global review should not move source text beyond direct neighbors."""
+    test_case_cls = MultiReviewManager.get_test_case_cls(_BOUNDARY_AWARE_PROMPT)
+
+    with raises(ValidationError, match="output 1 must be blank"):
+        test_case_cls.model_validate(
+            {
+                "query": {
+                    "sources": [
+                        {
+                            "name": "one",
+                            "subtitles": [{"index": 3, "text": "重複對白片段"}],
+                        },
+                        {
+                            "name": "two",
+                            "subtitles": [{"index": 3, "text": "重複對白片段"}],
+                        },
+                    ],
+                    "guides": [
+                        {"index": 1, "text": "第一句"},
+                        {"index": 2, "text": "第二句"},
+                        {"index": 3, "text": "第三句"},
+                    ],
+                },
+                "answer": {
+                    "outputs": [
+                        {"index": 1, "text": "重複對白片段"},
+                        {"index": 2, "text": ""},
+                        {"index": 3, "text": "重複對白片段"},
+                    ]
+                },
+            }
+        )
+
+
+def test_boundary_aware_answer_allows_supported_single_character_correction():
+    """A one-character ASR correction may rely on nearby nonempty evidence."""
+    test_case_cls = MultiReviewManager.get_test_case_cls(_BOUNDARY_AWARE_PROMPT)
+
+    test_case = test_case_cls.model_validate(
+        {
+            "query": {
+                "sources": [
+                    {"name": "one", "subtitles": [{"index": 1, "text": "哇"}]},
+                    {"name": "two", "subtitles": [{"index": 1, "text": "哇"}]},
+                ],
+                "guides": [{"index": 1, "text": "嘩！"}],
+            },
+            "answer": {"outputs": [{"index": 1, "text": "嘩！"}]},
+        }
+    )
+
     assert test_case.answer is not None
 
 
