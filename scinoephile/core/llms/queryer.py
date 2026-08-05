@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from hashlib import sha256
 from logging import getLogger
 from pathlib import Path
 
@@ -13,6 +14,7 @@ from scinoephile.core.exceptions import ScinoephileError
 
 from .cache import LlmCache
 from .llm_provider import LLMProvider
+from .metrics import ChatCompletionMetrics
 from .query import Query
 from .test_case import TestCase
 from .tool_box import ToolBox
@@ -72,6 +74,8 @@ class Queryer[TTestCase: TestCase]:
         """Test cases included as few-shot examples."""
         self.encountered_test_cases: dict[tuple, TTestCase] = {}
         """Test cases actually encountered."""
+        self.completion_metrics: list[ChatCompletionMetrics] = []
+        """Provider completions made for test cases encountered by this queryer."""
 
         self.no_op = no_op
         """Whether neutral answers replace cache access and LLM queries."""
@@ -96,7 +100,9 @@ class Queryer[TTestCase: TestCase]:
             self.system_prompt += f"\n\n{self.additional_context}"
         self.system_prompt += self.get_few_shot_test_cases_str()
 
-    def __call__(self, test_case: TestCase) -> TTestCase:
+    def __call__(  # noqa: PLR0912, PLR0915
+        self, test_case: TestCase
+    ) -> TTestCase:
         """Query LLM.
 
         Arguments:
@@ -137,17 +143,28 @@ class Queryer[TTestCase: TestCase]:
             {"role": "system", "content": self.system_prompt},
             {"role": "user", "content": query_json},
         ]
+        query_key_sha256 = sha256(test_case.query.key_str.encode()).hexdigest()
         for attempt in range(1, self.max_attempts + 1):
             # Get answer from provider
+            initial_completion_count = len(self.provider.completion_metrics)
             try:
                 content = self.provider.chat_completion(
-                    messages, self.test_case_cls.answer_cls, self.tool_box
+                    messages,
+                    self.test_case_cls.answer_cls,
+                    self.tool_box,
+                    operation=self.test_case_cls.operation,
+                    query_key_sha256=query_key_sha256,
+                    query_attempt=attempt,
                 )
             except ScinoephileError as exc:
                 logger.error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")
                 if attempt == self.max_attempts:
                     raise
                 continue
+            finally:
+                self.completion_metrics.extend(
+                    self.provider.completion_metrics[initial_completion_count:]
+                )
 
             # Validate answer
             try:
