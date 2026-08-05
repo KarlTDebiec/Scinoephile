@@ -13,6 +13,12 @@ from statistics import median
 from pydub import AudioSegment
 from pydub.effects import normalize
 
+from scinoephile.audio.diarization import (
+    DiarizationMode,
+    PyannoteDiarizer,
+    SpeakerDiarizationError,
+    SpeakerDiarizationResult,
+)
 from scinoephile.audio.subtitles import AudioSeries, get_series_from_segments
 from scinoephile.audio.transcription import (
     CtcAligner,
@@ -21,6 +27,7 @@ from scinoephile.audio.transcription import (
     TranscribedSegment,
     TranscribedWord,
     TranscriptionError,
+    VADImplementation,
     VADMode,
     WhisperTranscriber,
     get_segment_split_at_idx,
@@ -184,8 +191,11 @@ class GuidedTranscriber:
         backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.OFF,
+        diarization_mode: DiarizationMode = DiarizationMode.OFF,
+        vad_implementation: VADImplementation = VADImplementation.SILERO,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
+        diarizer: Callable[[AudioSegment], SpeakerDiarizationResult] | None = None,
         mlx_audio_transcriber: MlxAudioTranscriber | None = None,
         mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
         segment_splitter: TranscribedSegmentSplitter | None = None,
@@ -202,8 +212,11 @@ class GuidedTranscriber:
             backend: audio transcription backend
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
+            diarization_mode: source-wide speaker diarization mode
+            vad_implementation: voice activity detection implementation
             cache_root_path: cache root directory path
             overwrite_cache: whether to replace matching generated cache files
+            diarizer: optional configured source-wide speaker diarizer
             mlx_audio_transcriber: configured MLX-Audio transcriber, when selected
             mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
             segment_splitter: optional strategy for splitting transcribed segments
@@ -218,6 +231,13 @@ class GuidedTranscriber:
         self.backend = backend
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
+        self.diarization_mode = diarization_mode
+        self.diarizer = diarizer
+        if self.diarization_mode is not DiarizationMode.OFF and self.diarizer is None:
+            self.diarizer = PyannoteDiarizer(
+                cache_root_path, overwrite_cache=overwrite_cache
+            )
+        self.vad_implementation = vad_implementation
         self.mlx_audio_transcriber = mlx_audio_transcriber
         self.mlx_audio_timing_mode = mlx_audio_timing_mode
         self.segment_splitter = segment_splitter
@@ -239,6 +259,7 @@ class GuidedTranscriber:
             language=self.whisper_language,
             demucs_mode=self.demucs_mode,
             vad_mode=self.vad_mode,
+            vad_implementation=self.vad_implementation,
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
             ctc_aligner=whisper_ctc_aligner,
@@ -256,6 +277,8 @@ class GuidedTranscriber:
             language=self.whisper_language,
             demucs_mode=recovery_demucs_mode,
             vad_mode=recovery_vad_mode,
+            vad_implementation=self.vad_implementation,
+            vad_detector=self.transcriber.vad_detector,
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
             temperature=_RECOVERY_TEMPERATURES,
@@ -270,6 +293,7 @@ class GuidedTranscriber:
             language=self.whisper_language,
             demucs_mode=DemucsMode.OFF,
             vad_mode=VADMode.OFF,
+            vad_implementation=self.vad_implementation,
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
             condition_on_previous_text=False,
@@ -316,10 +340,27 @@ class GuidedTranscriber:
             )
 
         output_events = []
+        diarization = None
+        if self.diarization_mode is not DiarizationMode.OFF:
+            assert self.diarizer is not None
+            try:
+                diarization = self.diarizer(audio_series.audio)
+            except SpeakerDiarizationError as exc:
+                if self.diarization_mode is DiarizationMode.ON:
+                    raise
+                logger.warning(
+                    f"Speaker diarization is unavailable; continuing without "
+                    f"speaker evidence: {exc}"
+                )
         for block_idx in block_range:
             audio_block = audio_blocks[block_idx]
             reference_block = reference_blocks[block_idx]
-            output_block = self.process_block(audio_block, reference_block)
+            if diarization is None:
+                output_block = self.process_block(audio_block, reference_block)
+            else:
+                output_block = self.process_block(
+                    audio_block, reference_block, diarization=diarization
+                )
             logger.info(
                 f"BLOCK {block_idx + 1}:\n"
                 f"REFERENCE ({self.guide_language.code}):\n"
@@ -336,13 +377,18 @@ class GuidedTranscriber:
         return output
 
     def process_block(
-        self, audio_block: AudioSeries, reference_block: Series
+        self,
+        audio_block: AudioSeries,
+        reference_block: Series,
+        *,
+        diarization: SpeakerDiarizationResult | None = None,
     ) -> AudioSeries:
         """Transcribe and align a single audio block.
 
         Arguments:
             audio_block: audio block to transcribe
             reference_block: corresponding reference subtitle block
+            diarization: optional complete-source speaker diarization result
         Returns:
             transcribed and aligned audio subtitle block
         """
@@ -383,6 +429,10 @@ class GuidedTranscriber:
             split_segments = [
                 segment for segment in split_segments if segment.text.strip()
             ]
+        if diarization is not None:
+            split_segments = diarization.reconcile_transcription(
+                split_segments, offset_seconds=offset / 1000
+            )
         transcription_block = get_series_from_segments(
             split_segments, audio=audio_block.audio, offset=offset
         )

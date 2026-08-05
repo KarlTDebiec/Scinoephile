@@ -38,6 +38,7 @@ _OPTIONAL_TRANSCRIPTION_MODULES = (
     "demucs_infer",
     "huggingface_hub",
     "onnxruntime",
+    "ten_vad",
     "torch",
     "torchaudio",
     "transformers",

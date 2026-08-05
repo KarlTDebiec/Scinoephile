@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 from unittest.mock import Mock
 
+import numpy as np
 import pytest
 from pydub import AudioSegment
 
@@ -23,6 +24,7 @@ from scinoephile.audio.transcription import (
     TranscriptionInferenceError,
     TranscriptionPreprocessingSettings,
     VADMode,
+    VoiceActivityTrace,
 )
 from scinoephile.audio.transcription.mlx_audio.backend import (
     MIMO_MODEL_NAME,
@@ -697,9 +699,15 @@ def test_transcribe_vad_restores_original_timestamps(monkeypatch: pytest.MonkeyP
     transcriber = MlxAudioTranscriber(
         model_name=MIMO_MODEL_NAME, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.ON
     )
+    trace = VoiceActivityTrace(
+        np.ones(375, dtype=np.float32), start_ms=8, step_ms=16, duration_ms=6000
+    )
     monkeypatch.setattr(
-        transcriber,
-        "_get_vad_speech_intervals",
+        transcriber, "_get_voice_activity_trace", Mock(return_value=trace)
+    )
+    monkeypatch.setattr(
+        transcriber.vad_detector,
+        "get_speech_intervals",
         Mock(return_value=[(1000, 2000), (4000, 5500)]),
     )
     patched_transcribe = Mock(
@@ -730,7 +738,15 @@ def test_transcribe_vad_rejects_audio_without_detected_speech(
     transcriber = MlxAudioTranscriber(
         model_name=MIMO_MODEL_NAME, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.ON
     )
-    monkeypatch.setattr(transcriber, "_get_vad_speech_intervals", Mock(return_value=[]))
+    trace = VoiceActivityTrace(
+        np.zeros(63, dtype=np.float32), start_ms=8, step_ms=16, duration_ms=1000
+    )
+    monkeypatch.setattr(
+        transcriber, "_get_voice_activity_trace", Mock(return_value=trace)
+    )
+    monkeypatch.setattr(
+        transcriber.vad_detector, "get_speech_intervals", Mock(return_value=[])
+    )
     patched_transcribe = Mock()
     monkeypatch.setattr(transcriber, "_transcribe_unfiltered_audio", patched_transcribe)
 
@@ -746,7 +762,15 @@ def test_transcribe_vad_auto_retries_unfiltered_audio(monkeypatch: pytest.Monkey
     transcriber = MlxAudioTranscriber(
         model_name=MIMO_MODEL_NAME, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.AUTO
     )
-    monkeypatch.setattr(transcriber, "_get_vad_speech_intervals", Mock(return_value=[]))
+    trace = VoiceActivityTrace(
+        np.zeros(63, dtype=np.float32), start_ms=8, step_ms=16, duration_ms=1000
+    )
+    monkeypatch.setattr(
+        transcriber, "_get_voice_activity_trace", Mock(return_value=trace)
+    )
+    monkeypatch.setattr(
+        transcriber.vad_detector, "get_speech_intervals", Mock(return_value=[])
+    )
     patched_transcribe = Mock(return_value=expected_segments)
     monkeypatch.setattr(transcriber, "_transcribe_unfiltered_audio", patched_transcribe)
     audio = AudioSegment.silent(duration=1000)

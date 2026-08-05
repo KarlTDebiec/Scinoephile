@@ -11,8 +11,6 @@ from math import ceil
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-import numpy as np
-
 from scinoephile.audio.transcription.ctc_aligner import CtcAligner
 from scinoephile.audio.transcription.demucs import DemucsSeparator
 from scinoephile.audio.transcription.exceptions import (
@@ -30,12 +28,9 @@ from scinoephile.audio.transcription.preprocessing_settings import (
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.transcriber import Transcriber
+from scinoephile.audio.transcription.vad import VADImplementation, VoiceActivityDetector
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language
-from scinoephile.core.dependencies.transcription import (
-    import_torch,
-    import_whisper_timestamped_transcribe,
-)
 
 from .backend import MIMO_MODEL_NAME, MlxAudioBackend
 
@@ -46,23 +41,14 @@ if TYPE_CHECKING:
 
 logger = getLogger(__name__)
 
+_CHUNK_POSTPROCESSING_VERSION = "2"
+"""Version of overlapping chunk ownership and timestamp clipping."""
+
 _LOW_INFORMATION_CHARACTERS = frozenset("啊呀吖哦噢嗯嘶")
 """Standalone vocalizations rejected as unusable transcripts."""
 
 _TOKEN_LIMIT_GUARD_FRACTION = 0.95
 """Generation-budget fraction treated as suspicious under the opt-in guard."""
-
-_VAD_CACHE_VERSION = "silero-v1"
-"""Cache identity for the current MLX-Audio VAD implementation."""
-
-_VAD_MIN_SILENCE_DURATION_SECONDS = 1.0
-"""Minimum silence separating MLX-Audio speech intervals."""
-
-_VAD_PADDING_SECONDS = 0.5
-"""Context retained around each MLX-Audio speech interval."""
-
-_VAD_SAMPLE_RATE = 16000
-"""Sample rate expected by the Silero VAD model."""
 
 
 class _MlxAudioTokenLimitError(TranscriptionInferenceError):
@@ -92,6 +78,8 @@ class MlxAudioTranscriber(Transcriber):
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
         demucs_separator: DemucsSeparator | None = None,
+        vad_implementation: VADImplementation = VADImplementation.SILERO,
+        vad_detector: VoiceActivityDetector | None = None,
     ):
         """Initialize.
 
@@ -108,6 +96,8 @@ class MlxAudioTranscriber(Transcriber):
             cache_root_path: root directory beneath which to cache
             overwrite_cache: whether to replace matching cache files
             demucs_separator: optional shared Demucs vocal separator
+            vad_implementation: voice activity detection implementation
+            vad_detector: optional shared voice activity detector
         Raises:
             TranscriptionError: if the platform does not support MLX-Audio
             ValueError: if the language or numeric configuration is invalid
@@ -143,7 +133,13 @@ class MlxAudioTranscriber(Transcriber):
         if self.chunk_overlap_seconds < 0:
             raise ValueError("MLX-Audio chunk overlap must be non-negative.")
         super().__init__(
-            cache_root_path, demucs_mode, vad_mode, overwrite_cache, demucs_separator
+            cache_root_path,
+            demucs_mode,
+            vad_mode,
+            overwrite_cache,
+            demucs_separator,
+            vad_implementation,
+            vad_detector,
         )
 
     @property
@@ -178,9 +174,6 @@ class MlxAudioTranscriber(Transcriber):
         chunk_duration_seconds = None
         if chunk_duration_ms is not None:
             chunk_duration_seconds = chunk_duration_ms / 1000
-        vad_version = None
-        if settings.use_vad:
-            vad_version = _VAD_CACHE_VERSION
         metadata: dict[str, object] = {
             "model_family": self.backend.model_family,
             "model_name": self.model_name,
@@ -190,64 +183,13 @@ class MlxAudioTranscriber(Transcriber):
             "max_tokens": self._effective_max_tokens,
             "chunk_duration_seconds": chunk_duration_seconds,
             "chunk_overlap_seconds": chunk_overlap_ms / 1000,
+            "chunk_postprocessing_version": _CHUNK_POSTPROCESSING_VERSION,
             "aligner": "ctc",
             "aligner_model_name": self.ctc_aligner.model_name,
-            "vad_version": vad_version,
         }
         if self._uses_token_limit_guard(audio):
             metadata["token_limit_guard_fraction"] = _TOKEN_LIMIT_GUARD_FRACTION
         return metadata
-
-    @staticmethod
-    def _get_vad_speech_intervals(audio: AudioSegment) -> list[tuple[int, int]]:
-        """Get padded speech intervals using Whisper's Silero VAD implementation.
-
-        Arguments:
-            audio: source audio
-        Returns:
-            speech start and end offsets in milliseconds
-        Raises:
-            TranscriptionError: if Silero VAD is unavailable or fails
-        """
-        try:
-            torch = import_torch()
-            whisper_timestamped_transcribe = import_whisper_timestamped_transcribe()
-        except ImportError as exc:
-            raise TranscriptionError(
-                "MLX-Audio VAD requires the optional transcription dependencies."
-            ) from exc
-
-        normalized_audio = (
-            audio.set_channels(1).set_frame_rate(_VAD_SAMPLE_RATE).set_sample_width(2)
-        )
-        samples = (
-            np.array(normalized_audio.get_array_of_samples(), dtype=np.float32)
-            / np.iinfo(np.int16).max
-        )
-        audio_tensor = torch.from_numpy(samples)
-        try:
-            raw_intervals = whisper_timestamped_transcribe.get_vad_segments(
-                audio_tensor,
-                sample_rate=_VAD_SAMPLE_RATE,
-                output_sample=False,
-                min_silence_duration=_VAD_MIN_SILENCE_DURATION_SECONDS,
-                dilatation=_VAD_PADDING_SECONDS,
-                method="silero",
-            )
-        except (AssertionError, OSError, RuntimeError, ValueError) as exc:
-            raise TranscriptionError(f"Unable to run MLX-Audio VAD: {exc}") from exc
-
-        intervals = []
-        for raw_interval in raw_intervals:
-            start = raw_interval.get("start")
-            end = raw_interval.get("end")
-            if not isinstance(start, int | float) or not isinstance(end, int | float):
-                raise TranscriptionError("MLX-Audio VAD returned malformed timestamps.")
-            start_ms = max(0, round(float(start) * 1000))
-            end_ms = min(len(audio), round(float(end) * 1000))
-            if end_ms > start_ms:
-                intervals.append((start_ms, end_ms))
-        return intervals
 
     def _transcribe_attempt(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
@@ -444,7 +386,8 @@ class MlxAudioTranscriber(Transcriber):
         Raises:
             TranscriptionEmptyError: if VAD finds no speech
         """
-        speech_intervals = self._get_vad_speech_intervals(audio)
+        voice_activity_trace = self._get_voice_activity_trace(audio)
+        speech_intervals = self.vad_detector.get_speech_intervals(voice_activity_trace)
         if not speech_intervals:
             raise TranscriptionEmptyError("MLX-Audio VAD found no speech.")
 
@@ -459,7 +402,10 @@ class MlxAudioTranscriber(Transcriber):
         speech_segments = self._transcribe_unfiltered_audio(
             speech_audio, guard_token_limit
         )
-        return self._restore_vad_timestamps(speech_segments, speech_intervals)
+        restored_segments = self._restore_vad_timestamps(
+            speech_segments, speech_intervals
+        )
+        return self._add_voice_activity_scores(restored_segments, voice_activity_trace)
 
     def _get_effective_chunking(self, audio: AudioSegment) -> tuple[int | None, int]:
         """Get effective core and overlap durations for one audio input.
@@ -640,7 +586,12 @@ class MlxAudioTranscriber(Transcriber):
                 if midpoint < core_start_seconds or midpoint >= core_end_seconds:
                     continue
                 words.append(
-                    word.model_copy(update={"start": global_start, "end": global_end})
+                    word.model_copy(
+                        update={
+                            "start": max(global_start, core_start_seconds),
+                            "end": min(global_end, core_end_seconds),
+                        }
+                    )
                 )
             if not words:
                 continue

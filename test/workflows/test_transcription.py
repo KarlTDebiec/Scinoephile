@@ -9,8 +9,9 @@ from unittest.mock import Mock, patch
 
 from pydub import AudioSegment
 
-from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import DemucsMode, VADMode
+from scinoephile.audio.diarization import DiarizationMode
+from scinoephile.audio.subtitles import AudioSeries, UnguidedDelineationSettings
+from scinoephile.audio.transcription import DemucsMode, VADImplementation, VADMode
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.transcriber import (
@@ -21,7 +22,11 @@ from scinoephile.lang.transcription.transcriber import (
     TranscriptionAlignmentMode,
     TranscriptionBackend,
 )
-from scinoephile.workflows.transcription import transcribe_series_guided
+from scinoephile.lang.transcription.unguided import UnguidedTranscriber
+from scinoephile.workflows.transcription import (
+    transcribe_series_guided,
+    transcribe_series_unguided,
+)
 
 
 def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
@@ -46,6 +51,7 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
             language=Language.yue_hant,
             guide_language=Language.zho_hans,
             backend=TranscriptionBackend.MLX_AUDIO,
+            vad_implementation=VADImplementation.TEN,
             cache_root_path=tmp_path / "cache",
             overwrite_cache=True,
             strip_generated_punctuation=True,
@@ -66,6 +72,10 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
     assert get_transcriber.call_args.args == (Language.yue_hant, Language.zho_hans)
     assert get_transcriber.call_args.kwargs["demucs_mode"] is DemucsMode.OFF
     assert get_transcriber.call_args.kwargs["vad_mode"] is VADMode.OFF
+    assert get_transcriber.call_args.kwargs["diarization_mode"] is DiarizationMode.OFF
+    assert get_transcriber.call_args.kwargs["vad_implementation"] is (
+        VADImplementation.TEN
+    )
     assert get_transcriber.call_args.kwargs["backend"] is (
         TranscriptionBackend.MLX_AUDIO
     )
@@ -101,4 +111,90 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
     )
     transcriber.process.assert_called_once_with(
         audio_series, reference_series, stop_at_idx=2, start_at_idx=1
+    )
+
+
+def test_transcribe_series_unguided_constructs_transcriber_and_delegates(
+    tmp_path: Path,
+):
+    """Test unguided workflow forwards configuration and delegates processing."""
+    audio_series = Mock(spec=AudioSeries)
+    expected = AudioSeries(audio=AudioSegment.silent(duration=1000))
+    transcriber = Mock(spec=UnguidedTranscriber)
+    transcriber.process.return_value = expected
+    settings = UnguidedDelineationSettings(target_characters=7)
+
+    with patch(
+        "scinoephile.workflows.transcription.get_unguided_transcriber",
+        return_value=transcriber,
+    ) as get_transcriber:
+        output = transcribe_series_unguided(
+            audio_series,
+            language=Language.yue_hant,
+            model_name="custom/mlx-audio",
+            backend=TranscriptionBackend.MLX_AUDIO,
+            demucs_mode=DemucsMode.ON,
+            vad_mode=VADMode.AUTO,
+            diarization_mode=DiarizationMode.ON,
+            vad_implementation=VADImplementation.TEN,
+            mlx_audio_token_limit_guard=True,
+            cache_root_path=tmp_path / "cache",
+            overwrite_cache=True,
+            delineation_settings=settings,
+        )
+
+    assert output is expected
+    get_transcriber.assert_called_once_with(
+        Language.yue_hant,
+        multi_source=False,
+        model_name="custom/mlx-audio",
+        backend=TranscriptionBackend.MLX_AUDIO,
+        demucs_mode=DemucsMode.ON,
+        vad_mode=VADMode.AUTO,
+        diarization_mode=DiarizationMode.ON,
+        vad_implementation=VADImplementation.TEN,
+        block_vad_implementation=VADImplementation.PYANNOTE,
+        mlx_audio_token_limit_guard=True,
+        cache_root_path=tmp_path / "cache",
+        overwrite_cache=True,
+        delineation_settings=settings,
+        provider=None,
+        additional_context=None,
+        no_op=False,
+    )
+    transcriber.process.assert_called_once_with(
+        audio_series, start_at_idx=0, stop_at_idx=None
+    )
+
+
+def test_transcribe_series_unguided_forwards_multi_source_configuration():
+    """Test unguided workflow forwards reference-free consensus configuration."""
+    audio_series = Mock(spec=AudioSeries)
+    expected = AudioSeries(audio=AudioSegment.silent(duration=1000))
+    transcriber = Mock(spec=UnguidedTranscriber)
+    transcriber.process.return_value = expected
+    provider = Mock()
+
+    with patch(
+        "scinoephile.workflows.transcription.get_unguided_transcriber",
+        return_value=transcriber,
+    ) as get_transcriber:
+        output = transcribe_series_unguided(
+            audio_series,
+            language=Language.yue_hant,
+            multi_source=True,
+            provider=provider,
+            additional_context="人物名係阿明。",
+            no_op=True,
+            start_at_idx=1,
+            stop_at_idx=2,
+        )
+
+    assert output is expected
+    assert get_transcriber.call_args.kwargs["multi_source"] is True
+    assert get_transcriber.call_args.kwargs["provider"] is provider
+    assert get_transcriber.call_args.kwargs["additional_context"] == "人物名係阿明。"
+    assert get_transcriber.call_args.kwargs["no_op"] is True
+    transcriber.process.assert_called_once_with(
+        audio_series, start_at_idx=1, stop_at_idx=2
     )

@@ -77,6 +77,10 @@ class BlockDelineationBoundaryCandidate(LLMModel):
     """Candidate time minus the guide boundary time, in milliseconds."""
     pause_ms: int | None = Field(default=None, ge=0)
     """Nonnegative audio gap following the transcription unit, in milliseconds."""
+    speaker_change: bool | None = None
+    """Whether diarization assigns different speakers across this cut."""
+    voice_activity_score: float | None = Field(default=None, ge=0, le=1)
+    """Mean VAD model score in the audio gap following this cut."""
 
 
 class AdvisoryBlockDelineationBoundarySuggestion(BlockDelineationBoundaryCandidate):

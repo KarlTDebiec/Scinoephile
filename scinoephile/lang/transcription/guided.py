@@ -9,9 +9,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from types import MappingProxyType
 
+from scinoephile.audio.diarization import DiarizationMode
 from scinoephile.audio.transcription import (
     DemucsMode,
     MlxAudioTranscriber,
+    VADImplementation,
     VADMode,
     get_segment_split_on_whitespace,
 )
@@ -329,6 +331,8 @@ def get_guided_transcriber(
     backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.OFF,
+    diarization_mode: DiarizationMode = DiarizationMode.OFF,
+    vad_implementation: VADImplementation = VADImplementation.SILERO,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     strip_generated_punctuation: bool = False,
@@ -365,6 +369,8 @@ def get_guided_transcriber(
         backend: audio transcription backend
         demucs_mode: Demucs preprocessing mode
         vad_mode: voice activity detection mode
+        diarization_mode: source-wide speaker diarization mode
+        vad_implementation: voice activity detection implementation
         cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching generated cache files
         strip_generated_punctuation: whether to remove generated sentence
@@ -479,6 +485,7 @@ def get_guided_transcriber(
             token_limit_guard=mlx_audio_token_limit_guard,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
+            vad_implementation=vad_implementation,
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
         )
@@ -493,6 +500,8 @@ def get_guided_transcriber(
         backend=backend,
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
+        diarization_mode=diarization_mode,
+        vad_implementation=vad_implementation,
         cache_root_path=cache_root_path,
         overwrite_cache=overwrite_cache,
         mlx_audio_transcriber=mlx_audio_transcriber,
