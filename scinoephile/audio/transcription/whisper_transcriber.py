@@ -28,6 +28,8 @@ from .preprocessing_settings import (
 )
 from .transcribed_segment import TranscribedSegment
 from .transcriber import Transcriber
+from .vad import VADImplementation, VoiceActivityDetector
+from .voice_activity_trace import VoiceActivityTrace
 
 __all__ = ["SUBTITLE_CREDIT_HALLUCINATION_MARKERS", "WhisperTranscriber"]
 
@@ -81,6 +83,8 @@ class WhisperTranscriber(Transcriber):
         condition_on_previous_text: bool = True,
         ctc_aligner: CtcAligner | None = None,
         demucs_separator: DemucsSeparator | None = None,
+        vad_implementation: VADImplementation = VADImplementation.SILERO,
+        vad_detector: VoiceActivityDetector | None = None,
     ):
         """Initialize.
 
@@ -96,6 +100,8 @@ class WhisperTranscriber(Transcriber):
                 the preceding window
             ctc_aligner: optional CTC aligner used when Whisper timestamping fails
             demucs_separator: optional shared Demucs vocal separator
+            vad_implementation: voice activity detection implementation
+            vad_detector: optional shared voice activity detector
         """
         self.model_name = model_name
         self._model: WhisperModel | None = None
@@ -104,7 +110,13 @@ class WhisperTranscriber(Transcriber):
         self.condition_on_previous_text = condition_on_previous_text
         self.ctc_aligner = ctc_aligner
         super().__init__(
-            cache_root_path, demucs_mode, vad_mode, overwrite_cache, demucs_separator
+            cache_root_path,
+            demucs_mode,
+            vad_mode,
+            overwrite_cache,
+            demucs_separator,
+            vad_implementation,
+            vad_detector,
         )
 
     @property
@@ -334,15 +346,11 @@ class WhisperTranscriber(Transcriber):
         temperature: object = self.temperature
         if not isinstance(self.temperature, int | float):
             temperature = list(self.temperature)
-        vad_implementation = None
-        if settings.use_vad:
-            vad_implementation = "whisper-timestamped"
         metadata: dict[str, object] = {
             "condition_on_previous_text": self.condition_on_previous_text,
             "language": self.language,
             "model_name": self.model_name,
             "temperature": temperature,
-            "vad_implementation": vad_implementation,
         }
         if self.ctc_aligner is not None:
             metadata.update(
@@ -393,6 +401,34 @@ class WhisperTranscriber(Transcriber):
             segments, source="cache", cache_path=cache_path, use_vad=settings.use_vad
         )
 
+    def _get_whisper_vad(
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
+    ) -> tuple[bool | list[tuple[float, float]], VoiceActivityTrace | None]:
+        """Get Whisper-compatible VAD intervals and their probability trace.
+
+        Arguments:
+            audio: audio whose speech intervals should be detected
+            settings: active preprocessing settings
+        Returns:
+            Whisper VAD configuration and its probability trace, if enabled
+        Raises:
+            TranscriptionEmptyError: if enabled VAD finds no speech
+        """
+        if not settings.use_vad:
+            return False, None
+
+        trace = self._get_voice_activity_trace(audio)
+        speech_intervals = self.vad_detector.get_speech_intervals(trace)
+        if not speech_intervals:
+            implementation_label = self.vad_detector.implementation.value.upper()
+            raise TranscriptionEmptyError(
+                f"{implementation_label} VAD found no speech."
+            )
+        return (
+            [(start_ms / 1000, end_ms / 1000) for start_ms, end_ms in speech_intervals],
+            trace,
+        )
+
     def _transcribe_attempt(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> list[TranscribedSegment]:
@@ -407,6 +443,7 @@ class WhisperTranscriber(Transcriber):
             TranscriptionInferenceError: if Whisper decoding fails
         """
         whisper_timestamped = import_whisper_timestamped()
+        whisper_vad, voice_activity_trace = self._get_whisper_vad(audio, settings)
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             try:
                 audio.export(temp_audio_path, format="wav")
@@ -443,7 +480,7 @@ class WhisperTranscriber(Transcriber):
                             model,
                             str(temp_audio_path),
                             language=self.language,
-                            vad=settings.use_vad,
+                            vad=whisper_vad,
                             temperature=self.temperature,
                             condition_on_previous_text=self.condition_on_previous_text,
                             sample_len=sample_len,
@@ -458,9 +495,14 @@ class WhisperTranscriber(Transcriber):
                         raise TranscriptionInferenceError(
                             f"Whisper inference failed with an assertion: {exc}"
                         ) from exc
-                    return self._transcribe_with_ctc_fallback(
+                    fallback_segments = self._transcribe_with_ctc_fallback(
                         audio, temp_audio_path, sample_len, exc
                     )
+                    if voice_activity_trace is not None:
+                        return self._add_voice_activity_scores(
+                            fallback_segments, voice_activity_trace
+                        )
+                    return fallback_segments
             except TranscriptionInferenceError:
                 raise
             except (ImportError, OSError, RuntimeError, ValueError) as exc:
@@ -477,9 +519,14 @@ class WhisperTranscriber(Transcriber):
                 f"Whisper reached its {sample_len}-token decoding limit "
                 f"(affected windows: {limit_hit_count})"
             )
-        return self._normalize_transcription_segments(
+        normalized_segments = self._normalize_transcription_segments(
             segments, source="whisper", cache_path=None, use_vad=settings.use_vad
         )
+        if voice_activity_trace is not None:
+            return self._add_voice_activity_scores(
+                normalized_segments, voice_activity_trace
+            )
+        return normalized_segments
 
     def _transcribe_with_ctc_fallback(
         self,

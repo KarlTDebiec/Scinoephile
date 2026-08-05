@@ -1,5 +1,40 @@
 # Third-Party Notices
 
+## TEN VAD (optional user-installed voice activity detector)
+
+Scinoephile can use the official TEN VAD Python runtime when users install it
+separately. Scinoephile does not distribute TEN VAD source, native libraries, or
+model artifacts and does not install them through an optional dependency.
+
+- Project: https://github.com/TEN-framework/ten-vad
+- License: Apache License 2.0 with additional conditions
+- Copyright: Copyright © 2025 Agora
+
+The additional conditions restrict deployments that compete with Agora's
+offerings and limit deployment to applications for the user's and their direct
+end users' benefit. Review the complete upstream terms before installing or
+using TEN VAD:
+
+- https://github.com/TEN-framework/ten-vad/blob/main/LICENSE
+
+After accepting those terms, install the tested upstream revision separately:
+
+```shell
+uv pip install "ten-vad @ git+https://github.com/TEN-framework/ten-vad.git@22a3bcd4509d0faaa8eef4881e8af5f39c178950"
+```
+
+Select it with `--vad on --vad-implementation ten` (or use `--vad auto` to
+retain the non-VAD fallback).
+
+TEN VAD cache identities record the installed distribution version, installed
+runtime artifact digest, and the PEP 610 source URL and Git commit when available.
+The pinned installation above therefore records revision
+`22a3bcd4509d0faaa8eef4881e8af5f39c178950`. Silero uses the Whisper
+Timestamped-compatible `v6.2` model tag and records both the installed Whisper
+Timestamped adapter and cached Silero model artifact digests. When an exact
+runtime or model artifact cannot be identified, Scinoephile disables
+cross-process VAD cache reuse rather than risk reusing stale output.
+
 ## jyut-dict (source inspiration and adapted logic)
 
 Scinoephile's CUHK and GZZJ dictionary ingestion code is informed by and
@@ -129,6 +164,74 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## pyannote speaker-diarization-3.0 (speaker diarization model)
+
+Scinoephile can download and run the `speaker-diarization-3.0` speaker diarization
+pipeline locally after the user accepts its Hugging Face access conditions. The
+model is not bundled with Scinoephile.
+
+- Model: https://huggingface.co/pyannote/speaker-diarization-3.0
+- Pinned revision:
+  https://huggingface.co/pyannote/speaker-diarization-3.0/tree/61bc5e801239695154ba03562a72e1d6254ed4e4
+- License: MIT
+- Project: https://github.com/pyannote/pyannote-audio
+
+The model license permits use, modification, and distribution, provided the
+copyright and permission notice are included in copies or substantial portions
+of the software. For the complete license terms, see:
+
+- https://huggingface.co/pyannote/speaker-diarization-3.0/blob/61bc5e801239695154ba03562a72e1d6254ed4e4/LICENSE
+
+## pyannote segmentation-3.0 (voice activity detection model)
+
+Scinoephile can download and run the `segmentation-3.0` model locally as an
+optional voice activity detector after the user accepts its Hugging Face access
+conditions. The model is not bundled with Scinoephile.
+
+- Model: https://huggingface.co/pyannote/segmentation-3.0
+- Pinned revision:
+  https://huggingface.co/pyannote/segmentation-3.0/tree/e66f3d3b9eb0873085418a7b813d3b369bf160bb
+- License: MIT
+- Project: https://github.com/pyannote/pyannote-audio
+
+The model license permits use, modification, and distribution, provided the
+copyright and permission notice are included in copies or substantial portions
+of the software. For the complete license terms, see:
+
+- https://huggingface.co/pyannote/segmentation-3.0/blob/e66f3d3b9eb0873085418a7b813d3b369bf160bb/LICENSE
+
+## pyannote speaker-diarization-community-1 (PLDA assets)
+
+When Scinoephile runs `speaker-diarization-3.0` through pyannote.audio 4, it
+downloads the PLDA clustering assets from `speaker-diarization-community-1`.
+Scinoephile pins the asset revision and does not bundle the files. Users must
+separately accept the repository's Hugging Face access conditions.
+
+- Model: https://huggingface.co/pyannote/speaker-diarization-community-1
+- Pinned revision:
+  https://huggingface.co/pyannote/speaker-diarization-community-1/tree/3533c8cf8e369892e6b79ff1bf80f7b0286a54ee
+- License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+The model license permits sharing and adaptation with attribution. For the
+complete license terms, see:
+
+- https://creativecommons.org/licenses/by/4.0/legalcode
+
+## WeSpeaker VoxCeleb ResNet34-LM (speaker embedding model)
+
+The pinned `speaker-diarization-3.0` configuration uses the WeSpeaker
+VoxCeleb ResNet34-LM model to generate speaker embeddings. Scinoephile pins the
+model revision and does not bundle its files.
+
+- Model: https://huggingface.co/hbredin/wespeaker-voxceleb-resnet34-LM
+- Pinned revision:
+  https://huggingface.co/hbredin/wespeaker-voxceleb-resnet34-LM/tree/0ae88dcaf48cacdf741275d6d1a8101f45eee220
+- License: Apache License 2.0
+
+For the complete license terms, see:
+
+- https://huggingface.co/hbredin/wespeaker-voxceleb-resnet34-LM/blob/0ae88dcaf48cacdf741275d6d1a8101f45eee220/LICENCE.md
 
 ## MLX-Audio (speech-to-text inference runtime)
 

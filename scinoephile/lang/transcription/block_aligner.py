@@ -76,6 +76,10 @@ class _TimingBoundary:
     """End time of the transcription unit."""
     pause: float
     """Nonnegative gap before the following transcription unit."""
+    speaker_change: bool | None = None
+    """Whether adjacent units have different assigned speakers, when known."""
+    voice_activity_score: float | None = None
+    """Mean VAD model score in the gap after the transcription unit."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -616,11 +620,71 @@ class BlockTranscriptionAligner:
         ):
             offset += len(text)
             pause = 0.0
+            speaker_change = None
+            voice_activity_score = None
             if index + 1 < len(alignment.transcription):
-                pause = max(0.0, alignment.transcription[index + 1].start - event.end)
-            candidate = _TimingBoundary(offset, event.end, pause)
+                next_event = alignment.transcription[index + 1]
+                pause = max(0.0, next_event.start - event.end)
+                current_words = []
+                if isinstance(event, AudioSubtitle) and event._segment is not None:
+                    current_words = event._segment.words or []
+                next_words = []
+                if (
+                    isinstance(next_event, AudioSubtitle)
+                    and next_event._segment is not None
+                ):
+                    next_words = next_event._segment.words or []
+                current_speaker = next(
+                    (
+                        word.speaker
+                        for word in reversed(current_words)
+                        if word.speaker is not None
+                    ),
+                    None,
+                )
+                next_speaker = next(
+                    (word.speaker for word in next_words if word.speaker is not None),
+                    None,
+                )
+                if current_speaker is not None and next_speaker is not None:
+                    speaker_change = current_speaker != next_speaker
+                if current_words:
+                    voice_activity_score = current_words[
+                        -1
+                    ].following_voice_activity_score
+            candidate = _TimingBoundary(
+                offset,
+                event.end,
+                pause,
+                speaker_change=speaker_change,
+                voice_activity_score=voice_activity_score,
+            )
             existing = boundaries_by_offset.get(offset)
-            if existing is None or candidate.pause > existing.pause:
+            if (
+                existing is None
+                or (
+                    candidate.speaker_change is True
+                    and existing.speaker_change is not True
+                )
+                or (
+                    candidate.speaker_change is existing.speaker_change
+                    and (
+                        (
+                            candidate.voice_activity_score is not None
+                            and (
+                                existing.voice_activity_score is None
+                                or candidate.voice_activity_score
+                                < existing.voice_activity_score
+                            )
+                        )
+                        or (
+                            candidate.voice_activity_score
+                            == existing.voice_activity_score
+                            and candidate.pause > existing.pause
+                        )
+                    )
+                )
+            ):
                 boundaries_by_offset[offset] = candidate
         return [boundaries_by_offset[offset] for offset in sorted(boundaries_by_offset)]
 
@@ -651,7 +715,11 @@ class BlockTranscriptionAligner:
         last_boundary_index = min(last_owned_index, len(targets) - 1)
         local_timing_boundaries = [
             _TimingBoundary(
-                boundary.offset - window_offset, boundary.time, boundary.pause
+                boundary.offset - window_offset,
+                boundary.time,
+                boundary.pause,
+                speaker_change=boundary.speaker_change,
+                voice_activity_score=boundary.voice_activity_score,
             )
             for boundary in timing_boundaries
             if window_offset <= boundary.offset <= window_offset + len(target_tape)
@@ -680,6 +748,21 @@ class BlockTranscriptionAligner:
             selected_offsets.update(
                 boundary.offset
                 for boundary in sorted(
+                    (
+                        boundary
+                        for boundary in nearby
+                        if boundary.voice_activity_score is not None
+                    ),
+                    key=lambda boundary: (
+                        boundary.voice_activity_score,
+                        abs(boundary.offset - original_offset),
+                        boundary.offset,
+                    ),
+                )[:3]
+            )
+            selected_offsets.update(
+                boundary.offset
+                for boundary in sorted(
                     nearby,
                     key=lambda boundary: (
                         -boundary.pause,
@@ -697,6 +780,11 @@ class BlockTranscriptionAligner:
                         boundary.offset,
                     ),
                 )[:2]
+            )
+            selected_offsets.update(
+                boundary.offset
+                for boundary in nearby
+                if boundary.speaker_change is True
             )
             timing_by_offset = {
                 boundary.offset: boundary for boundary in local_timing_boundaries
@@ -723,6 +811,12 @@ class BlockTranscriptionAligner:
                             else None
                         ),
                         "pause_ms": round(timing.pause) if timing is not None else None,
+                        "speaker_change": (
+                            timing.speaker_change if timing is not None else None
+                        ),
+                        "voice_activity_score": (
+                            timing.voice_activity_score if timing is not None else None
+                        ),
                     }
                 )
             values.append(
@@ -824,12 +918,15 @@ class BlockTranscriptionAligner:
             shift = candidate.get("shift")
             timing_delta_ms = candidate.get("timing_delta_ms")
             pause_ms = candidate.get("pause_ms")
+            speaker_change = candidate.get("speaker_change")
             if shift == 0 or timing_delta_ms is None:
                 continue
             if not isinstance(timing_delta_ms, int) or not isinstance(pause_ms, int):
                 raise TypeError(
                     "Timed boundary candidates require integer timing evidence."
                 )
+            if speaker_change is not None and not isinstance(speaker_change, bool):
+                raise TypeError("Speaker-change evidence must be boolean.")
             if original_timing_delta_ms is None:
                 has_stronger_timing = (
                     abs(timing_delta_ms)
@@ -846,7 +943,12 @@ class BlockTranscriptionAligner:
                 abs(timing_delta_ms) <= _MAX_ADVISORY_PAUSE_TIMING_DELTA_MS
                 and pause_ms >= _MIN_ADVISORY_PAUSE_MS
             )
-            if has_stronger_timing or has_strong_pause:
+            has_nearby_speaker_change = (
+                speaker_change is True
+                and abs(timing_delta_ms)
+                <= _MAX_ADVISORY_MISSING_BASELINE_TIMING_DELTA_MS
+            )
+            if has_stronger_timing or has_strong_pause or has_nearby_speaker_change:
                 strong_candidates.append(candidate)
         if not strong_candidates:
             return []
@@ -857,7 +959,9 @@ class BlockTranscriptionAligner:
         ]
 
     @staticmethod
-    def _get_suggestion_sort_key(value: object) -> tuple[int, int, int, int, int]:
+    def _get_suggestion_sort_key(
+        value: object,
+    ) -> tuple[int, int, int, int, int, int, int]:
         """Get deterministic timing-evidence rank for one boundary suggestion.
 
         Arguments:
@@ -871,12 +975,20 @@ class BlockTranscriptionAligner:
             raise TypeError("Boundary candidate must be a mapping.")
         timing_delta_ms = value.get("timing_delta_ms")
         pause_ms = value.get("pause_ms")
+        speaker_change = value.get("speaker_change")
+        voice_activity_score = value.get("voice_activity_score")
         shift = value.get("shift")
         offset = value.get("offset")
         if timing_delta_ms is not None and not isinstance(timing_delta_ms, int):
             raise TypeError("Boundary candidate timing delta must be an integer.")
         if pause_ms is not None and not isinstance(pause_ms, int):
             raise TypeError("Boundary candidate pause must be an integer.")
+        if speaker_change is not None and not isinstance(speaker_change, bool):
+            raise TypeError("Speaker-change evidence must be boolean.")
+        if voice_activity_score is not None and not isinstance(
+            voice_activity_score, int | float
+        ):
+            raise TypeError("Voice-activity evidence must be numeric.")
         if not isinstance(shift, int) or not isinstance(offset, int):
             raise TypeError("Boundary candidate shift and offset must be integers.")
         timing_missing = 0
@@ -886,7 +998,21 @@ class BlockTranscriptionAligner:
         else:
             timing_distance = abs(timing_delta_ms)
         pause = pause_ms or 0
-        return timing_missing, timing_distance, -pause, abs(shift), offset
+        speaker_change_rank = 1
+        if speaker_change is True:
+            speaker_change_rank = 0
+        voice_activity_rank = 1_001
+        if voice_activity_score is not None:
+            voice_activity_rank = round(float(voice_activity_score) * 1000)
+        return (
+            timing_missing,
+            speaker_change_rank,
+            timing_distance,
+            voice_activity_rank,
+            -pause,
+            abs(shift),
+            offset,
+        )
 
     @classmethod
     def _get_windows(cls, references: Sequence[Subtitle]) -> list[_AlignmentWindow]:

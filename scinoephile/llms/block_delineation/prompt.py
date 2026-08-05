@@ -258,6 +258,14 @@ class AdvisoryBlockDelineationPrompt(BlockDelineationPrompt):
         "milliseconds."
     )
     """Description of suggestion following pause."""
+    suggestion_voice_activity_score: str = "voice_activity_score"
+    """Name of suggestion voice-activity score field."""
+    suggestion_voice_activity_score_desc: str = (
+        "Mean VAD model score in the audio gap after this cut; lower values support "
+        "a break. Scores are model-specific and are supporting, not mandatory, "
+        "evidence."
+    )
+    """Description of suggestion voice-activity evidence."""
     boundary_suggestions_err: str = (
         "Each boundary's suggestions must have consecutive ranks, unique shifts, "
         "remain within its legal range, match its original offset, and include "
@@ -303,6 +311,21 @@ class CandidateBlockDelineationPrompt(BlockDelineationPrompt):
         "milliseconds."
     )
     """Description of candidate following-pause field."""
+    candidate_speaker_change: str = "speaker_change"
+    """Name of candidate speaker-change field."""
+    candidate_speaker_change_desc: str = (
+        "Whether source-wide diarization assigns different speakers immediately "
+        "across this cut. Treat this as supporting evidence, not a mandatory cut."
+    )
+    """Description of candidate speaker-change evidence."""
+    candidate_voice_activity_score: str = "voice_activity_score"
+    """Name of candidate voice-activity score field."""
+    candidate_voice_activity_score_desc: str = (
+        "Mean VAD model score in the audio gap after this cut; lower values support "
+        "a break. Scores are model-specific and are supporting, not mandatory, "
+        "evidence."
+    )
+    """Description of candidate voice-activity evidence."""
     boundary_candidates_err: str = (
         "Each boundary's candidates must have unique ordered shifts, remain within "
         "its legal range, match its original offset, and include shift zero."

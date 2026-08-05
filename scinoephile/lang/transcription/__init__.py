@@ -7,6 +7,8 @@ Package hierarchy (modules may import from any above):
 * aligner / block_aligner
 * transcriber
 * guided
+* multisource
+* unguided
 """
 
 from __future__ import annotations
@@ -15,6 +17,7 @@ from .aligner import TranscriptionAligner
 from .alignment import TranscriptionAlignment
 from .block_aligner import BlockTranscriptionAligner
 from .guided import GuidedTranscriptionSpec, TranscriptionLanguageSpec
+from .multisource import UnguidedMultiSourceTranscriber
 from .transcriber import (
     BlockDelineationMode,
     BlockPunctuationMode,
@@ -23,6 +26,7 @@ from .transcriber import (
     TranscriptionAlignmentMode,
     TranscriptionBackend,
 )
+from .unguided import UnguidedTranscriber
 
 __all__ = [
     "BlockDelineationMode",
@@ -36,4 +40,6 @@ __all__ = [
     "TranscriptionAlignmentMode",
     "TranscriptionBackend",
     "TranscriptionLanguageSpec",
+    "UnguidedMultiSourceTranscriber",
+    "UnguidedTranscriber",
 ]

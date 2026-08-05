@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of AudioSeries.load_from_media."""
+"""Tests of AudioSeries media loading methods."""
 
 from __future__ import annotations
 
@@ -14,6 +14,42 @@ from pytest import raises
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import ScinoephileError
+
+
+def test_audio_series_load_audio_from_media_returns_complete_audio_without_events():
+    """Test whole-media audio loading returns an empty WAV-backed series."""
+    with get_temp_file_path(".mp4") as media_path:
+        media_path.touch()
+        with patch(
+            "scinoephile.audio.subtitles.series.extract_audio",
+            side_effect=_write_selected_audio,
+        ) as extract:
+            series = AudioSeries.load_audio_from_media(media_path, stream_index=12)
+
+    extract.assert_called_once()
+    assert extract.call_args.args[0].resolve() == media_path.resolve()
+    assert extract.call_args.args[1].name == "full_audio.wav"
+    assert extract.call_args.kwargs == {"stream_index": 12}
+    assert len(series.audio) == 3126
+    assert series.events == []
+    assert series.format == "wav"
+
+
+def test_audio_series_load_audio_from_media_wraps_input_path_errors(tmp_path: Path):
+    """Test whole-media audio loading path errors are user-facing.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    media_path = tmp_path / "missing.mkv"
+
+    with raises(
+        ScinoephileError,
+        match="Unable to load AudioSeries audio from media .*missing.mkv",
+    ) as excinfo:
+        AudioSeries.load_audio_from_media(media_path)
+
+    assert isinstance(excinfo.value.__cause__, OSError)
 
 
 def test_audio_series_load_from_media_supports_stream_index():

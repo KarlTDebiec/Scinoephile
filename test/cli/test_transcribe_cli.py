@@ -11,8 +11,9 @@ from unittest.mock import Mock, patch
 
 from pytest import fixture, mark, raises
 
+from scinoephile.audio.diarization import DiarizationMode
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import DemucsMode, VADMode
+from scinoephile.audio.transcription import DemucsMode, VADImplementation, VADMode
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.cli.transcribe_cli import TranscribeCli
 from scinoephile.common.file import get_temp_file_path
@@ -60,6 +61,8 @@ def test_transcribe_help_lists_generic_options():
     assert stderr.getvalue() == ""
     assert "--media-infile MEDIA_INFILE_PATH" in help_text
     assert "--guide-infile GUIDE_INFILE_PATH" in help_text
+    assert "--unguided" in help_text
+    assert "--multi-source" in help_text
     assert "--language" in help_text
     assert "--guide-language" in help_text
     assert "--delineation-json DELINEATION_JSON_PATH" in help_text
@@ -70,6 +73,8 @@ def test_transcribe_help_lists_generic_options():
     assert "--convert" not in normalized_help_text
     assert "--demucs {auto,on,off}" in help_text
     assert "--vad {auto,on,off}" in help_text
+    assert "--diarization {auto,on,off}" in help_text
+    assert "--vad-implementation {silero,ten,pyannote}" in help_text
     assert "--backend {whisper,mlx-audio}" in help_text
     assert "--model MODEL_NAME" in help_text
     assert "--mlx-audio-token-limit-guard" in help_text
@@ -89,6 +94,16 @@ def test_transcribe_help_lists_generic_options():
     assert "--llm-no-op" in help_text
 
 
+def test_transcribe_cli_parses_unguided_without_guide():
+    """Test guide input is optional during parsing for explicit unguided mode."""
+    args = TranscribeCli.argparser().parse_args(
+        ["--media-infile", _MEDIA_INFILE_PATH, "--language", "yue-Hans", "--unguided"]
+    )
+
+    assert args.unguided
+    assert args.guide_infile_path is None
+
+
 def test_transcribe_cli_defers_whisper_model_default_to_registry():
     """Test the language-pair registry supplies the default Whisper model."""
     parser = TranscribeCli.argparser()
@@ -101,8 +116,8 @@ def test_transcribe_cli_defers_whisper_model_default_to_registry():
     assert model_action.default is None
 
 
-def test_transcribe_cli_defaults_demucs_and_vad_to_off():
-    """Test transcription CLI defaults Demucs and VAD to off."""
+def test_transcribe_cli_defaults_audio_preprocessing_to_off():
+    """Test transcription CLI defaults optional audio analyses to off."""
     parser = TranscribeCli.argparser()
     demucs_action = next(
         action
@@ -114,9 +129,21 @@ def test_transcribe_cli_defaults_demucs_and_vad_to_off():
         for action in parser._actions  # noqa: SLF001
         if "--vad" in action.option_strings
     )
+    diarization_action = next(
+        action
+        for action in parser._actions  # noqa: SLF001
+        if "--diarization" in action.option_strings
+    )
+    vad_implementation_action = next(
+        action
+        for action in parser._actions  # noqa: SLF001
+        if "--vad-implementation" in action.option_strings
+    )
 
     assert demucs_action.default is DemucsMode.OFF
     assert vad_action.default is VADMode.OFF
+    assert diarization_action.default is DiarizationMode.OFF
+    assert vad_implementation_action.default is VADImplementation.SILERO
 
 
 def test_transcribe_cli_writes_file(audio_series: Mock, expected_series: Series):
@@ -175,6 +202,104 @@ def test_transcribe_cli_writes_stdout(audio_series: Mock, expected_series: Serie
     assert_series_equal(output_series, expected_series)
 
 
+def test_transcribe_cli_unguided_loads_complete_audio_and_dispatches(
+    audio_series: Mock, expected_series: Series, tmp_path: Path
+):
+    """Test unguided CLI bypasses guide loading and guided transcription.
+
+    Arguments:
+        audio_series: mock complete audio series
+        expected_series: expected automatically delineated subtitle series
+        tmp_path: temporary directory path
+    """
+    stdout_stream = StringIO()
+    with (
+        patch(
+            "scinoephile.cli.transcribe_cli.AudioSeries.load_audio_from_media",
+            return_value=audio_series,
+        ) as load_audio,
+        patch(
+            "scinoephile.cli.transcribe_cli.AudioSeries.load_from_media"
+        ) as load_guided_audio,
+        patch(
+            "scinoephile.cli.transcribe_cli.transcribe_series_unguided",
+            return_value=expected_series,
+        ) as transcribe_unguided,
+        patch(
+            "scinoephile.cli.transcribe_cli.transcribe_series_guided"
+        ) as transcribe_guided,
+        patch("scinoephile.cli.helpers.io.stdout", stdout_stream),
+    ):
+        run_cli_with_args(
+            TranscribeCli,
+            f"--media-infile {_MEDIA_INFILE_PATH} --language yue-Hant --unguided "
+            "--stream-index 2 --model custom/mlx-audio --backend mlx-audio "
+            "--demucs on --vad auto --diarization auto "
+            "--vad-implementation pyannote --mlx-audio-token-limit-guard "
+            f"--cache-dir {tmp_path / 'cache'} "
+            "--cache-overwrite --first-block 2 --last-block 3",
+        )
+
+    load_audio.assert_called_once_with(media_path=_MEDIA_INFILE_PATH, stream_index=2)
+    load_guided_audio.assert_not_called()
+    transcribe_unguided.assert_called_once_with(
+        audio_series,
+        language=Language.yue_hant,
+        multi_source=False,
+        model_name="custom/mlx-audio",
+        backend=TranscriptionBackend.MLX_AUDIO,
+        demucs_mode=DemucsMode.ON,
+        vad_mode=VADMode.AUTO,
+        diarization_mode=DiarizationMode.AUTO,
+        vad_implementation=VADImplementation.PYANNOTE,
+        block_vad_implementation=VADImplementation.PYANNOTE,
+        mlx_audio_token_limit_guard=True,
+        cache_root_path=tmp_path / "cache",
+        overwrite_cache=True,
+        provider=None,
+        additional_context=None,
+        no_op=False,
+        start_at_idx=1,
+        stop_at_idx=3,
+    )
+    transcribe_guided.assert_not_called()
+    output_series = Series.from_string(stdout_stream.getvalue(), format_="srt")
+    assert_series_equal(output_series, expected_series)
+
+
+def test_transcribe_cli_dispatches_multi_source_unguided(
+    audio_series: Mock, expected_series: Series
+):
+    """Test multi-source mode constructs its LLM provider and forwards options."""
+    stdout_stream = StringIO()
+    provider = Mock()
+    with (
+        patch(
+            "scinoephile.cli.transcribe_cli.AudioSeries.load_audio_from_media",
+            return_value=audio_series,
+        ),
+        patch(
+            "scinoephile.cli.transcribe_cli.transcribe_series_unguided",
+            return_value=expected_series,
+        ) as transcribe_unguided,
+        patch(
+            "scinoephile.cli.transcribe_cli.get_provider", return_value=provider
+        ) as get_llm_provider,
+        patch("scinoephile.cli.helpers.io.stdout", stdout_stream),
+    ):
+        run_cli_with_args(
+            TranscribeCli,
+            f"--media-infile {_MEDIA_INFILE_PATH} --language yue-Hant "
+            "--unguided --multi-source --llm-provider openai "
+            "--llm-model custom-llm --llm-no-op",
+        )
+
+    get_llm_provider.assert_called_once_with("openai", model="custom-llm")
+    assert transcribe_unguided.call_args.kwargs["multi_source"] is True
+    assert transcribe_unguided.call_args.kwargs["provider"] is provider
+    assert transcribe_unguided.call_args.kwargs["no_op"] is True
+
+
 def test_transcribe_cli_passes_generic_configuration(
     audio_series: Mock, expected_series: Series, tmp_path: Path
 ):
@@ -197,6 +322,8 @@ def test_transcribe_cli_passes_generic_configuration(
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
         mlx_audio_token_limit_guard: bool,
+        diarization_mode: DiarizationMode,
+        vad_implementation: VADImplementation,
         cache_root_path: Path | None,
         overwrite_cache: bool,
         provider: object,
@@ -217,6 +344,8 @@ def test_transcribe_cli_passes_generic_configuration(
         assert demucs_mode is DemucsMode.ON
         assert vad_mode is VADMode.OFF
         assert mlx_audio_token_limit_guard is True
+        assert diarization_mode is DiarizationMode.ON
+        assert vad_implementation is VADImplementation.TEN
         assert cache_root_path == tmp_path / "cache"
         assert overwrite_cache
         assert provider is not None
@@ -242,7 +371,8 @@ def test_transcribe_cli_passes_generic_configuration(
                 f"--guide-infile {_GUIDE_INFILE_PATH} "
                 "--language yue-Hant --guide-language zho-Hans "
                 "--model custom/mlx-audio --backend mlx-audio "
-                "--demucs on --vad off --mlx-audio-token-limit-guard "
+                "--demucs on --vad off --diarization on "
+                "--vad-implementation ten --mlx-audio-token-limit-guard "
                 f"--cache-dir {tmp_path / 'cache'} --cache-overwrite "
                 f"--delineation-json {tmp_path / 'delineation.json'} "
                 f"--punctuation-json {tmp_path / 'punctuation.json'} "
@@ -285,6 +415,81 @@ def test_transcribe_cli_rejects_invalid_arguments(args: str):
     """
     with raises(SystemExit, match="2"):
         run_cli_with_args(TranscribeCli, args)
+
+
+def test_transcribe_cli_rejects_missing_guide_without_unguided():
+    """Test guided mode still requires an explicit guide subtitle input."""
+    with (
+        patch(
+            "scinoephile.cli.transcribe_cli.AudioSeries.load_audio_from_media"
+        ) as load_audio,
+        patch(
+            "scinoephile.cli.transcribe_cli.AudioSeries.load_from_media"
+        ) as load_guided_audio,
+        raises(SystemExit, match="2"),
+    ):
+        run_cli_with_args(
+            TranscribeCli, f"--media-infile {_MEDIA_INFILE_PATH} --language yue-Hans"
+        )
+
+    load_audio.assert_not_called()
+    load_guided_audio.assert_not_called()
+
+
+@mark.parametrize(
+    "mode_args",
+    (
+        "--multi-source",
+        "--unguided --multi-source --model custom/asr",
+        "--unguided --multi-source --backend mlx-audio",
+    ),
+    ids=("guided mode", "model override", "backend override"),
+)
+def test_transcribe_cli_rejects_invalid_multi_source_modes(mode_args: str):
+    """Test multi-source mode rejects incompatible transcription options."""
+    with patch(
+        "scinoephile.cli.transcribe_cli.AudioSeries.load_audio_from_media"
+    ) as load_audio:
+        with raises(SystemExit, match="2"):
+            run_cli_with_args(
+                TranscribeCli,
+                f"--media-infile {_MEDIA_INFILE_PATH} --language yue-Hant {mode_args}",
+            )
+
+    load_audio.assert_not_called()
+
+
+@mark.parametrize(
+    "guided_args",
+    (
+        f"--guide-infile {_GUIDE_INFILE_PATH}",
+        "--guide-language zho-Hans",
+        "--delineation-json {tmp_path}/delineation.json",
+        "--punctuation-json {tmp_path}/punctuation.json",
+    ),
+    ids=("guide infile", "guide language", "delineation JSON", "punctuation JSON"),
+)
+def test_transcribe_cli_rejects_guided_options_in_unguided_mode(
+    guided_args: str, tmp_path: Path
+):
+    """Test unguided mode rejects guide-dependent options before loading media.
+
+    Arguments:
+        guided_args: guide-dependent CLI arguments
+        tmp_path: temporary directory path
+    """
+    args = guided_args.format(tmp_path=tmp_path)
+    with patch(
+        "scinoephile.cli.transcribe_cli.AudioSeries.load_audio_from_media"
+    ) as load_audio:
+        with raises(SystemExit, match="2"):
+            run_cli_with_args(
+                TranscribeCli,
+                f"--media-infile {_MEDIA_INFILE_PATH} --language yue-Hans "
+                f"--unguided {args}",
+            )
+
+    load_audio.assert_not_called()
 
 
 def test_transcribe_cli_rejects_oversized_last_block_before_loading_audio():

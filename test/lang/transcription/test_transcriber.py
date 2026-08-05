@@ -12,6 +12,12 @@ from pydub import AudioSegment
 from pydub.generators import Sine
 from pytest import LogCaptureFixture, approx, raises
 
+from scinoephile.audio.diarization import (
+    DiarizationMode,
+    SpeakerDiarizationDependencyError,
+    SpeakerDiarizationResult,
+    SpeakerTurn,
+)
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle, get_sub_split_at_idx
 from scinoephile.audio.transcription import (
     DemucsMode,
@@ -458,22 +464,155 @@ def test_process_block_preserves_raw_segments_and_uses_buffered_offset():
     aligner.update_all_test_cases.assert_not_called()
 
 
-def test_process_block_strips_generated_punctuation_after_timing():
-    """Test guided alignment can omit sentence but retain lexical punctuation."""
-    transcriber, aligner = _get_transcriber(strip_generated_punctuation=True)
+def test_process_block_assigns_source_timeline_speakers_with_buffered_offset():
+    """Block words should use source-relative exclusive speaker turns."""
+    transcriber, aligner = _get_transcriber()
+    audio_block = AudioSeries(
+        audio=AudioSegment.silent(duration=1000),
+        events=[AudioSubtitle(start=10_000, end=10_500, text="reference")],
+    )
+    audio_block.buffered_start = 9_750
+    reference_block = Series(
+        events=[Subtitle(start=10_000, end=10_500, text="reference")]
+    )
+    segment = _get_segment(start=0.2, end=0.4, text="hello", with_words=True)
+    diarization = SpeakerDiarizationResult(
+        turns=[SpeakerTurn(start=9.8, end=10.3, speaker="SPEAKER_04")],
+        exclusive_turns=[SpeakerTurn(start=9.8, end=10.3, speaker="SPEAKER_04")],
+    )
+
+    with patch.object(transcriber, "_transcribe_block_audio", return_value=[segment]):
+        transcriber.process_block(audio_block, reference_block, diarization=diarization)
+
+    transcription = aligner.align.call_args.args[1]
+    assert (transcription[0].segment.words or [])[0].speaker == "SPEAKER_04"
+
+
+def test_process_block_splits_internal_speaker_changes_for_default_aligner():
+    """Pairwise alignment should receive real units at internal speaker changes."""
+    transcriber, aligner = _get_transcriber()
     audio_block = AudioSeries(
         audio=AudioSegment.silent(duration=1000),
         events=[AudioSubtitle(start=0, end=1000, text="reference")],
     )
     audio_block.buffered_start = 0
     reference_block = Series(events=[Subtitle(start=0, end=1000, text="reference")])
-    segment = _get_segment(text="你好！0.01、don't、re-entry，")
+    segment = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.1,
+        end=0.9,
+        text="甲乙",
+        words=[
+            TranscribedWord(text="甲", start=0.1, end=0.4, confidence=1.0),
+            TranscribedWord(text="乙", start=0.5, end=0.9, confidence=1.0),
+        ],
+    )
+    diarization = SpeakerDiarizationResult(
+        turns=[],
+        exclusive_turns=[
+            SpeakerTurn(start=0.0, end=0.45, speaker="SPEAKER_00"),
+            SpeakerTurn(start=0.45, end=1.0, speaker="SPEAKER_01"),
+        ],
+    )
 
     with patch.object(transcriber, "_transcribe_block_audio", return_value=[segment]):
-        transcriber.process_block(audio_block, reference_block)
+        output = transcriber.process_block(
+            audio_block, reference_block, diarization=diarization
+        )
 
     transcription = aligner.align.call_args.args[1]
-    assert [subtitle.text for subtitle in transcription] == ["你好0.01don'tre-entry"]
+    assert len(transcription) == 2
+    assert [event.text for event in transcription] == ["甲", "乙"]
+    assert [(event.start, event.end) for event in transcription] == [
+        (100, 400),
+        (500, 900),
+    ]
+    assert [(event.segment.words or [])[0].speaker for event in transcription] == [
+        "SPEAKER_00",
+        "SPEAKER_01",
+    ]
+    assert [event.text for event in output] == ["甲", "乙"]
+
+
+def test_process_runs_one_source_diarization_for_all_blocks():
+    """All selected blocks should share one whole-media diarization result."""
+    transcriber, aligner = _get_transcriber()
+    transcriber.diarization_mode = DiarizationMode.ON
+    diarization = SpeakerDiarizationResult(
+        turns=[SpeakerTurn(start=0.0, end=6.0, speaker="SPEAKER_00")],
+        exclusive_turns=[SpeakerTurn(start=0.0, end=6.0, speaker="SPEAKER_00")],
+    )
+    transcriber.diarizer = Mock(return_value=diarization)
+    audio_series = AudioSeries(
+        audio=AudioSegment.silent(duration=6000),
+        events=[
+            AudioSubtitle(start=0, end=1000, text="one"),
+            AudioSubtitle(start=5000, end=6000, text="two"),
+        ],
+    )
+    reference_series = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="one"),
+            Subtitle(start=5000, end=6000, text="two"),
+        ]
+    )
+
+    with patch.object(
+        transcriber,
+        "process_block",
+        side_effect=lambda audio_block, reference_block, *, diarization: audio_block,
+    ) as process_block:
+        transcriber.process(audio_series, reference_series)
+
+    transcriber.diarizer.assert_called_once_with(audio_series.audio)
+    assert process_block.call_count == 2
+    assert all(
+        call.kwargs["diarization"] is diarization
+        for call in process_block.call_args_list
+    )
+    aligner.update_all_test_cases.assert_called_once_with()
+
+
+def test_process_auto_diarization_preserves_existing_behavior_after_failure():
+    """Automatic diarization should warn and process normally when unavailable."""
+    transcriber, _ = _get_transcriber()
+    transcriber.diarization_mode = DiarizationMode.AUTO
+    transcriber.diarizer = Mock(
+        side_effect=SpeakerDiarizationDependencyError("pyannote unavailable")
+    )
+    audio_series = AudioSeries(
+        audio=AudioSegment.silent(duration=1000),
+        events=[AudioSubtitle(start=0, end=1000, text="one")],
+    )
+    reference_series = Series(events=[Subtitle(start=0, end=1000, text="one")])
+
+    with patch.object(
+        transcriber,
+        "process_block",
+        side_effect=lambda audio_block, reference_block: audio_block,
+    ) as process_block:
+        output = transcriber.process(audio_series, reference_series)
+
+    assert [event.text for event in output] == ["one"]
+    process_block.assert_called_once()
+
+
+def test_process_required_diarization_propagates_failure():
+    """Required diarization should expose domain failures to callers."""
+    transcriber, _ = _get_transcriber()
+    transcriber.diarization_mode = DiarizationMode.ON
+    transcriber.diarizer = Mock(
+        side_effect=SpeakerDiarizationDependencyError("pyannote unavailable")
+    )
+    audio_series = AudioSeries(
+        audio=AudioSegment.silent(duration=1000),
+        events=[AudioSubtitle(start=0, end=1000, text="one")],
+    )
+    reference_series = Series(events=[Subtitle(start=0, end=1000, text="one")])
+
+    with raises(SpeakerDiarizationDependencyError, match="unavailable"):
+        transcriber.process(audio_series, reference_series)
 
 
 def test_process_block_applies_configured_segment_splitter():

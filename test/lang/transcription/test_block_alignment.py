@@ -14,9 +14,11 @@ from pydub import AudioSegment
 from pytest import raises
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
+from scinoephile.audio.transcription import TranscribedSegment, TranscribedWord
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.lang.transcription.alignment import TranscriptionAlignment
 from scinoephile.lang.transcription.block_aligner import (
     BlockTranscriptionAligner,
     _TimingBoundary,
@@ -303,6 +305,76 @@ def test_gated_advisory_highlights_only_stronger_timing_evidence():
     assert [suggestion["shift"] for suggestion in stronger_suggestions] == [-1, 1, 0]
     assert weak_values[0]["suggestions"] == []
     assert missing_baseline_values[0]["suggestions"] == []
+
+
+def test_candidate_boundaries_include_soft_speaker_change_evidence():
+    """Actual diarized events should expose nonmandatory speaker evidence."""
+    references = [
+        Subtitle(start=0, end=2_000, text="參考一"),
+        Subtitle(start=2_000, end=3_000, text="參考二"),
+    ]
+    transcription_events = []
+    for index, (text, start, end, speaker, voice_activity_score) in enumerate(
+        [
+            ("甲", 0, 900, "SPEAKER_00", 0.05),
+            ("乙", 900, 1_800, "SPEAKER_01", 0.6),
+            ("丙", 2_100, 2_900, "SPEAKER_01", None),
+        ]
+    ):
+        segment = TranscribedSegment(
+            id=index,
+            seek=0,
+            start=start / 1000,
+            end=end / 1000,
+            text=text,
+            words=[
+                TranscribedWord(
+                    text=text,
+                    start=start / 1000,
+                    end=end / 1000,
+                    confidence=1.0,
+                    following_voice_activity_score=voice_activity_score,
+                    speaker=speaker,
+                )
+            ],
+        )
+        transcription_events.append(
+            AudioSubtitle(start=start, end=end, text=text, segment=segment)
+        )
+    transcription = AudioSeries(
+        audio=AudioSegment.silent(duration=3_000), events=transcription_events
+    )
+    alignment = TranscriptionAlignment(Series(events=references), transcription)
+    timing_boundaries = BlockTranscriptionAligner._get_timing_boundaries(  # noqa: SLF001
+        alignment, ["甲乙", "丙"]
+    )
+
+    assert [boundary.speaker_change for boundary in timing_boundaries] == [
+        True,
+        False,
+        None,
+    ]
+    assert [boundary.voice_activity_score for boundary in timing_boundaries] == [
+        0.05,
+        0.6,
+        None,
+    ]
+
+    values = BlockTranscriptionAligner._get_candidate_boundary_values(  # noqa: SLF001
+        references, ["甲乙", "丙"], 1, 1, 0, timing_boundaries
+    )
+
+    candidates = cast("list[dict[str, object]]", values[0]["candidates"])
+    speaker_candidate = next(
+        candidate for candidate in candidates if candidate["offset"] == 1
+    )
+    baseline_candidate = next(
+        candidate for candidate in candidates if candidate["shift"] == 0
+    )
+    assert speaker_candidate["speaker_change"] is True
+    assert speaker_candidate["voice_activity_score"] == 0.05
+    assert baseline_candidate["speaker_change"] is False
+    assert baseline_candidate["voice_activity_score"] == 0.6
 
 
 def test_suggestion_free_gated_advisory_uses_unrestricted_cache(tmp_path: Path):

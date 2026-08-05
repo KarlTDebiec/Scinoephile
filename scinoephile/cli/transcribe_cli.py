@@ -1,8 +1,8 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for reference-guided subtitle transcription.
+"""Command-line interface for guided and unguided subtitle transcription.
 
-Transcribe audio using reference subtitles.
+Transcribe audio with optional reference subtitle guidance.
 """
 
 from __future__ import annotations
@@ -10,8 +10,9 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.audio.diarization import DiarizationMode
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import DemucsMode, VADMode
+from scinoephile.audio.transcription import DemucsMode, VADImplementation, VADMode
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
@@ -28,7 +29,10 @@ from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.lang.transcription import TranscriptionBackend
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.workflows.transcription import transcribe_series_guided
+from scinoephile.workflows.transcription import (
+    transcribe_series_guided,
+    transcribe_series_unguided,
+)
 
 from .helpers.blocks import (
     BLOCK_LOCALIZATIONS,
@@ -49,17 +53,25 @@ __all__ = ["TranscribeCli"]
 
 TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "command-line interface for reference-guided subtitle transcription": (
-            "参考字幕引导的字幕转写命令行界面"
+        "command-line interface for guided and unguided subtitle transcription": (
+            "引导及无引导字幕转写命令行界面"
         ),
-        "Transcribe audio using reference subtitles.": "使用参考字幕转写音频。",
+        "Transcribe audio with optional reference subtitle guidance.": (
+            "使用可选参考字幕引导转写音频。"
+        ),
         "media infile used for transcription": "用于转写的媒体输入文件",
         (
             "media stream index of audio stream in media input "
             "(default: first audio stream)"
         ): "媒体输入中的音频媒体流索引（默认：第一个音频流）",
-        'guide subtitle infile, or "-" for stdin': (
-            '引导字幕输入文件，或使用 "-" 表示标准输入'
+        'guide subtitle infile, or "-" for stdin (required unless unguided)': (
+            '引导字幕输入文件，或使用 "-" 表示标准输入（无引导模式除外）'
+        ),
+        "transcribe and delineate without reference subtitles": (
+            "无需参考字幕进行转写及断句"
+        ),
+        "merge Whisper, MiMo, and Qwen before unguided delineation": (
+            "在无引导断句前合并 Whisper、MiMo 和 Qwen"
         ),
         "transcription language": "转写语言",
         "guide language (detected from infile if omitted)": (
@@ -78,6 +90,18 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             f"voice activity detection mode (options: "
             f"{enum_options_list_str(VADMode)}; default: %(default)s)"
         ): "语音活动检测模式（选项：auto、on 或 off；默认：%(default)s）",
+        (
+            f"speaker diarization mode (options: "
+            f"{enum_options_list_str(DiarizationMode)}; default: %(default)s)"
+        ): "说话人分离模式（选项：auto、on 或 off；默认：%(default)s）",
+        (
+            f"voice activity detection implementation (options: "
+            f"{enum_options_list_str(VADImplementation)}; default: %(default)s)"
+        ): "语音活动检测实现（选项：silero、ten 或 pyannote；默认：%(default)s）",
+        (
+            f"unguided block-planning VAD implementation (options: "
+            f"{enum_options_list_str(VADImplementation)}; default: pyannote)"
+        ): "无引导区块规划 VAD 实现（选项：silero、ten 或 pyannote；默认：pyannote）",
         "transcription model (default: backend default)": (
             "转写模型（默认：后端默认值）"
         ),
@@ -92,17 +116,25 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "transcribe audio using reference subtitles": "使用参考字幕转写音频",
     },
     "zh-hant": {
-        "command-line interface for reference-guided subtitle transcription": (
-            "參考字幕引導的字幕轉寫命令列介面"
+        "command-line interface for guided and unguided subtitle transcription": (
+            "引導及無引導字幕轉寫命令列介面"
         ),
-        "Transcribe audio using reference subtitles.": "使用參考字幕轉寫音訊。",
+        "Transcribe audio with optional reference subtitle guidance.": (
+            "使用可選參考字幕引導轉寫音訊。"
+        ),
         "media infile used for transcription": "用於轉寫的媒體輸入檔",
         (
             "media stream index of audio stream in media input "
             "(default: first audio stream)"
         ): "媒體輸入中的音訊媒體流索引（預設：第一個音訊流）",
-        'guide subtitle infile, or "-" for stdin': (
-            '引導字幕輸入檔，或使用 "-" 代表標準輸入'
+        'guide subtitle infile, or "-" for stdin (required unless unguided)': (
+            '引導字幕輸入檔，或使用 "-" 代表標準輸入（無引導模式除外）'
+        ),
+        "transcribe and delineate without reference subtitles": (
+            "無需參考字幕進行轉寫及斷句"
+        ),
+        "merge Whisper, MiMo, and Qwen before unguided delineation": (
+            "在無引導斷句前合併 Whisper、MiMo 和 Qwen"
         ),
         "transcription language": "轉寫語言",
         "guide language (detected from infile if omitted)": (
@@ -121,6 +153,18 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             f"voice activity detection mode (options: "
             f"{enum_options_list_str(VADMode)}; default: %(default)s)"
         ): "語音活動偵測模式（選項：auto、on 或 off；預設：%(default)s）",
+        (
+            f"speaker diarization mode (options: "
+            f"{enum_options_list_str(DiarizationMode)}; default: %(default)s)"
+        ): "說話者分離模式（選項：auto、on 或 off；預設：%(default)s）",
+        (
+            f"voice activity detection implementation (options: "
+            f"{enum_options_list_str(VADImplementation)}; default: %(default)s)"
+        ): "語音活動偵測實作（選項：silero、ten 或 pyannote；預設：%(default)s）",
+        (
+            f"unguided block-planning VAD implementation (options: "
+            f"{enum_options_list_str(VADImplementation)}; default: pyannote)"
+        ): "無引導區塊規劃 VAD 實作（選項：silero、ten 或 pyannote；預設：pyannote）",
         "transcription model (default: backend default)": (
             "轉寫模型（預設：後端預設值）"
         ),
@@ -137,7 +181,7 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class TranscribeCli(ScinoephileCliBase):
-    """Transcribe audio using reference subtitles."""
+    """Transcribe audio with optional reference subtitle guidance."""
 
     localizations = merge_localizations(
         BLOCK_LOCALIZATIONS,
@@ -176,9 +220,8 @@ class TranscribeCli(ScinoephileCliBase):
         arg_groups["input arguments"].add_argument(
             "--guide-infile",
             dest="guide_infile_path",
-            required=True,
             type=input_file_arg(allow_stdin=True),
-            help='guide subtitle infile, or "-" for stdin',
+            help=('guide subtitle infile, or "-" for stdin (required unless unguided)'),
         )
         arg_groups["input arguments"].add_argument(
             "--stream-index",
@@ -196,6 +239,16 @@ class TranscribeCli(ScinoephileCliBase):
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
             help="transcription language",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--unguided",
+            action="store_true",
+            help="transcribe and delineate without reference subtitles",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--multi-source",
+            action="store_true",
+            help="merge Whisper, MiMo, and Qwen before unguided delineation",
         )
         arg_groups["operation arguments"].add_argument(
             "--guide-language",
@@ -235,6 +288,36 @@ class TranscribeCli(ScinoephileCliBase):
             help=(
                 f"voice activity detection mode (options: "
                 f"{enum_options_list_str(VADMode)}; default: %(default)s)"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--diarization",
+            default=DiarizationMode.OFF,
+            dest="diarization_mode",
+            metavar=enum_metavar(DiarizationMode),
+            type=enum_arg(DiarizationMode),
+            help=(
+                f"speaker diarization mode (options: "
+                f"{enum_options_list_str(DiarizationMode)}; default: %(default)s)"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--vad-implementation",
+            default=VADImplementation.SILERO,
+            metavar=enum_metavar(VADImplementation),
+            type=enum_arg(VADImplementation),
+            help=(
+                f"voice activity detection implementation (options: "
+                f"{enum_options_list_str(VADImplementation)}; default: %(default)s)"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--block-vad-implementation",
+            metavar=enum_metavar(VADImplementation),
+            type=enum_arg(VADImplementation),
+            help=(
+                f"unguided block-planning VAD implementation (options: "
+                f"{enum_options_list_str(VADImplementation)}; default: pyannote)"
             ),
         )
         arg_groups["operation arguments"].add_argument(
@@ -287,15 +370,20 @@ class TranscribeCli(ScinoephileCliBase):
         *,
         _parser: ArgumentParser | None = None,
         media_infile_path: str,
-        guide_infile_path: Path | str,
+        guide_infile_path: Path | str | None,
         stream_index: int | None,
         language: Language,
+        unguided: bool,
+        multi_source: bool,
         guide_language: Language | None,
         first_block: int | None,
         last_block: int | None,
         backend: TranscriptionBackend,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
+        diarization_mode: DiarizationMode,
+        vad_implementation: VADImplementation,
+        block_vad_implementation: VADImplementation | None,
         model_name: str | None,
         mlx_audio_token_limit_guard: bool,
         llm_args: LlmArguments,
@@ -308,12 +396,85 @@ class TranscribeCli(ScinoephileCliBase):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
-        if media_infile_path == "-" and guide_infile_path == "-":
-            parser.error("--media-infile and --guide-infile may not both be '-'")
-        if overwrite and outfile_path is None:
-            parser.error("--overwrite may only be used with --outfile")
+        cls._validate_mode_arguments(
+            parser,
+            media_infile_path=media_infile_path,
+            guide_infile_path=guide_infile_path,
+            guide_language=guide_language,
+            first_block=first_block,
+            last_block=last_block,
+            block_vad_implementation=block_vad_implementation,
+            unguided=unguided,
+            multi_source=multi_source,
+            backend=backend,
+            model_name=model_name,
+            delineation_json_path=delineation_json_path,
+            punctuation_json_path=punctuation_json_path,
+            outfile_path=outfile_path,
+            overwrite=overwrite,
+        )
 
-        # Read inputs
+        # Read complete audio directly in unguided mode
+        if unguided:
+            start_at_idx, stop_at_idx = get_block_range_indexes(
+                parser, first_block, last_block
+            )
+            try:
+                audio = AudioSeries.load_audio_from_media(
+                    media_path=media_infile_path, stream_index=stream_index
+                )
+            except (
+                FileNotFoundError,
+                NotADirectoryError,
+                NotAFileError,
+                ScinoephileError,
+                ValueError,
+            ) as exc:
+                parser.error(str(exc))
+            multi_source_provider = None
+            multi_source_additional_context = None
+            try:
+                if multi_source:
+                    multi_source_provider = get_provider(
+                        llm_args.provider_name, model=llm_args.model_name
+                    )
+                    multi_source_additional_context = read_llm_additional_context(
+                        parser, llm_args.additional_context_file_path
+                    )
+                output = transcribe_series_unguided(
+                    audio,
+                    language=language,
+                    multi_source=multi_source,
+                    model_name=model_name,
+                    backend=backend,
+                    demucs_mode=demucs_mode,
+                    vad_mode=vad_mode,
+                    diarization_mode=diarization_mode,
+                    vad_implementation=vad_implementation,
+                    block_vad_implementation=(
+                        block_vad_implementation or VADImplementation.PYANNOTE
+                    ),
+                    mlx_audio_token_limit_guard=mlx_audio_token_limit_guard,
+                    cache_root_path=cache_args.root_path,
+                    overwrite_cache=cache_args.overwrite,
+                    provider=multi_source_provider,
+                    additional_context=multi_source_additional_context,
+                    no_op=llm_args.no_op,
+                    start_at_idx=start_at_idx,
+                    stop_at_idx=stop_at_idx,
+                )
+            except ScinoephileError as exc:
+                parser.error(str(exc))
+            write_series(
+                parser,
+                output,
+                outfile_path if outfile_path is not None else "-",
+                overwrite,
+            )
+            return
+
+        # Read guided inputs
+        assert guide_infile_path is not None
         guide = read_series(parser, guide_infile_path, allow_stdin=True)
         start_at_idx, stop_at_idx = get_block_range_indexes(
             parser, first_block, last_block, len(guide.blocks)
@@ -354,6 +515,8 @@ class TranscribeCli(ScinoephileCliBase):
                 demucs_mode=demucs_mode,
                 vad_mode=vad_mode,
                 mlx_audio_token_limit_guard=mlx_audio_token_limit_guard,
+                diarization_mode=diarization_mode,
+                vad_implementation=vad_implementation,
                 cache_root_path=cache_args.root_path,
                 overwrite_cache=cache_args.overwrite,
                 provider=get_provider(
@@ -375,6 +538,67 @@ class TranscribeCli(ScinoephileCliBase):
         write_series(
             parser, output, outfile_path if outfile_path is not None else "-", overwrite
         )
+
+    @staticmethod
+    def _validate_mode_arguments(
+        parser: ArgumentParser,
+        *,
+        media_infile_path: str,
+        guide_infile_path: Path | str | None,
+        guide_language: Language | None,
+        first_block: int | None,
+        last_block: int | None,
+        block_vad_implementation: VADImplementation | None,
+        unguided: bool,
+        multi_source: bool,
+        backend: TranscriptionBackend,
+        model_name: str | None,
+        delineation_json_path: Path | None,
+        punctuation_json_path: Path | None,
+        outfile_path: Path | None,
+        overwrite: bool,
+    ):
+        """Validate arguments that depend on guided or unguided mode.
+
+        Arguments:
+            parser: active argument parser
+            media_infile_path: media input file path or standard-input marker
+            guide_infile_path: guide subtitle path or standard-input marker
+            guide_language: explicit guide language
+            first_block: first selected guided block
+            last_block: last selected guided block
+            block_vad_implementation: explicitly selected unguided block VAD
+            unguided: whether reference-free transcription is selected
+            multi_source: whether to merge three ASR sources before delineation
+            backend: selected single-source transcription backend
+            model_name: selected single-source model override
+            delineation_json_path: guided delineation test-case path
+            punctuation_json_path: guided punctuation test-case path
+            outfile_path: subtitle output path
+            overwrite: whether an existing output may be replaced
+        """
+        if not unguided and guide_infile_path is None:
+            parser.error("--guide-infile is required unless --unguided is used")
+        if unguided and guide_infile_path is not None:
+            parser.error("--guide-infile cannot be used with --unguided")
+        if unguided and guide_language is not None:
+            parser.error("--guide-language cannot be used with --unguided")
+        if not unguided and block_vad_implementation is not None:
+            parser.error("--block-vad-implementation requires --unguided")
+        if multi_source and not unguided:
+            parser.error("--multi-source requires --unguided")
+        if multi_source and backend is not TranscriptionBackend.WHISPER:
+            parser.error("--backend cannot be changed with --multi-source")
+        if multi_source and model_name is not None:
+            parser.error("--model cannot be used with --multi-source")
+        if unguided and (
+            delineation_json_path is not None or punctuation_json_path is not None
+        ):
+            parser.error("guided LLM test-case files cannot be used with --unguided")
+        if media_infile_path == "-" and guide_infile_path == "-":
+            parser.error("--media-infile and --guide-infile may not both be '-'")
+        if overwrite and outfile_path is None:
+            parser.error("--overwrite may only be used with --outfile")
 
 
 if __name__ == "__main__":

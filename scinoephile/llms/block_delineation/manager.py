@@ -310,6 +310,10 @@ class AdvisoryBlockDelineationManager(BlockDelineationManager):
                     alias=prompt.suggestion_pause_ms,
                     description=prompt.suggestion_pause_ms_desc,
                 ),
+                "voice_activity_score": PromptModelField(
+                    alias=prompt.suggestion_voice_activity_score,
+                    description=prompt.suggestion_voice_activity_score_desc,
+                ),
             },
             name="AdvisoryBlockDelineationBoundarySuggestion",
         )
@@ -396,6 +400,14 @@ class CandidateBlockDelineationManager(BlockDelineationManager):
                 "pause_ms": PromptModelField(
                     alias=prompt.candidate_pause_ms,
                     description=prompt.candidate_pause_ms_desc,
+                ),
+                "speaker_change": PromptModelField(
+                    alias=prompt.candidate_speaker_change,
+                    description=prompt.candidate_speaker_change_desc,
+                ),
+                "voice_activity_score": PromptModelField(
+                    alias=prompt.candidate_voice_activity_score,
+                    description=prompt.candidate_voice_activity_score_desc,
                 ),
             },
             name="BlockDelineationBoundaryCandidate",

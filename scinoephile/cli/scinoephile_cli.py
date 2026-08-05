@@ -56,7 +56,9 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "translate subtitles between supported languages": (
             "在受支持的语言之间翻译字幕"
         ),
-        "transcribe audio using reference subtitles": "使用参考字幕转写音频",
+        "transcribe audio with optional reference subtitle guidance": (
+            "使用可选参考字幕引导转写音频"
+        ),
         "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
     },
     "zh-hant": {
@@ -87,7 +89,9 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "將兩個序列堆疊為上下行字幕"
         ),
         "translate subtitles between supported languages": ("在支援的語言之間翻譯字幕"),
-        "transcribe audio using reference subtitles": "使用參考字幕轉寫音訊",
+        "transcribe audio with optional reference subtitle guidance": (
+            "使用可選參考字幕引導轉寫音訊"
+        ),
         "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
     },
 }
