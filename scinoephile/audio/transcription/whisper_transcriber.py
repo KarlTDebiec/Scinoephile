@@ -41,9 +41,6 @@ _MAX_TOKENS_PER_SECOND = 16
 _MIN_SAMPLE_LEN = 32
 """Minimum token budget for very short source audio."""
 
-_TIMESTAMP_ALIGNMENT_ASSERTION_PREFIX = "Inconsistent number of segments:"
-"""Prefix of the known Whisper Timestamped alignment assertion."""
-
 if TYPE_CHECKING:
     from pydub import AudioSegment
     from torch import Tensor
@@ -405,7 +402,7 @@ class WhisperTranscriber(Transcriber):
                             delattr(model, "decode")
                 except AssertionError as exc:
                     if self.ctc_aligner is not None and str(exc).startswith(
-                        _TIMESTAMP_ALIGNMENT_ASSERTION_PREFIX
+                        "Inconsistent number of segments:"
                     ):
                         return self._transcribe_with_ctc_fallback(
                             audio, temp_audio_path, sample_len, exc
