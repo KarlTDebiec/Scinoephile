@@ -29,7 +29,7 @@ from scinoephile.lang.zho_yue.translation import (
     ZhoYueGuidedTranslationPromptZhoHans,
     ZhoYueGuidedTranslationPromptZhoHant,
 )
-from scinoephile.llms import load_default_test_cases
+from scinoephile.llms import load_shared_test_cases
 from scinoephile.llms.guided_translation import (
     GuidedTranslationManager,
     GuidedTranslationProcessor,
@@ -130,7 +130,7 @@ def get_guided_translator(
     source_language: Language,
     target_language: Language,
     prompt: GuidedTranslationPrompt | None = None,
-    test_cases: list[TestCase] | None = None,
+    shared_test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> GuidedTranslationProcessor:
@@ -140,7 +140,7 @@ def get_guided_translator(
         source_language: source language
         target_language: target language
         prompt: prompt override
-        test_cases: test cases
+        shared_test_cases: shared test cases
         provider: provider to use for queries
         **kwargs: processor initialization keyword arguments
     Returns:
@@ -157,12 +157,14 @@ def get_guided_translator(
 
     if prompt is None:
         prompt = DEFAULT_PROMPTS[key]
-    if test_cases is None:
+    if shared_test_cases is None:
         json_paths = _JSON_PATHS[key]
-        test_cases = list(
-            load_default_test_cases(GuidedTranslationManager, prompt, json_paths)
+        shared_test_cases = list(
+            load_shared_test_cases(GuidedTranslationManager, prompt, json_paths)
         )
     if provider is None:
         provider = get_provider()
 
-    return GuidedTranslationProcessor(prompt, test_cases, provider=provider, **kwargs)
+    return GuidedTranslationProcessor(
+        prompt, shared_test_cases, provider=provider, **kwargs
+    )

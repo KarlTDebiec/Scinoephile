@@ -366,17 +366,17 @@ class Queryer[TTestCase: TestCase]:
         return None
 
     def _get_verified_test_cases(
-        self, test_cases: list[TestCase]
+        self, verified_test_cases: list[TestCase]
     ) -> dict[tuple, TTestCase]:
         """Snapshot, validate, and merge verified test cases.
 
         Arguments:
-            test_cases: verified test cases to prepare
+            verified_test_cases: verified test cases to prepare
         Returns:
             verified test cases keyed by query
         """
-        verified_test_cases: dict[tuple, TTestCase] = {}
-        for test_case in test_cases:
+        verified_test_cases_by_query: dict[tuple, TTestCase] = {}
+        for test_case in verified_test_cases:
             normalized = self.test_case_cls.model_validate(
                 test_case.model_dump(mode="json")
             )
@@ -385,20 +385,22 @@ class Queryer[TTestCase: TestCase]:
             if normalized.answer is None:
                 raise ValueError("Verified test cases must include an answer.")
             key = normalized.query.key
-            existing = verified_test_cases.get(key)
+            existing = verified_test_cases_by_query.get(key)
             if existing is None:
-                verified_test_cases[key] = normalized
+                verified_test_cases_by_query[key] = normalized
                 continue
             assert existing.answer is not None
             if existing.answer != normalized.answer:
                 raise ValueError(
                     "Conflicting verified answers for query "
-                    f"{normalized.query.key_str}."
+                    f"{normalized.query.key_str}.\n"
+                    f"Existing answer:\n{existing.answer}\n"
+                    f"Conflicting answer:\n{normalized.answer}"
                 )
             existing.difficulty = max(existing.difficulty, normalized.difficulty)
             existing.few_shot |= normalized.few_shot
             existing.verified |= normalized.verified
-        return verified_test_cases
+        return verified_test_cases_by_query
 
     @staticmethod
     def _format_validation_errors(exc: ValidationError) -> str:
