@@ -66,7 +66,7 @@ class WhisperTranscriber(Transcriber):
         self,
         model_name: str = "khleeloo/whisper-large-v3-cantonese",
         language: str = "yue",
-        demucs_mode: DemucsMode = DemucsMode.AUTO,
+        demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.OFF,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,

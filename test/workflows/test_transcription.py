@@ -57,7 +57,7 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
 
     assert output is expected
     assert get_transcriber.call_args.args == (Language.yue_hant, Language.zho_hans)
-    assert get_transcriber.call_args.kwargs["demucs_mode"] is DemucsMode.AUTO
+    assert get_transcriber.call_args.kwargs["demucs_mode"] is DemucsMode.OFF
     assert get_transcriber.call_args.kwargs["vad_mode"] is VADMode.OFF
     assert get_transcriber.call_args.kwargs["backend"] is (
         TranscriptionBackend.MLX_AUDIO
