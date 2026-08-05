@@ -189,8 +189,10 @@ def test_token_limit_guard_cache_identity_depends_on_audio_duration(tmp_path: Pa
     assert guarded.get_cached_transcription(short_audio) == expected_segments
 
     guarded_metadata = guarded._get_cache_metadata_for_audio(long_audio, settings)
-    assert guarded_metadata["chunk_duration_seconds"] == 55.0
+    assert guarded_metadata["chunk_duration_seconds"] == 53.0
+    assert guarded_metadata["chunk_overlap_seconds"] == 1.0
     assert guarded_metadata["token_limit_guard_fraction"] == 0.95
+    assert guarded_metadata["token_limit_guard_window_duration_seconds"] == 55.0
     assert "token_limit_guard_fraction" not in (
         guarded._get_cache_metadata_for_audio(short_audio, settings)
     )
@@ -448,8 +450,8 @@ def test_transcribe_chunks_audio_and_offsets_segments(monkeypatch: pytest.Monkey
 def test_token_limit_guard_proactively_chunks_long_mimo_audio(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Chunk long MiMo audio with overlapping context."""
-    audio = AudioSegment.silent(duration=56_000, frame_rate=1_000)
+    """Keep complete overlapping MiMo inference windows within the guard."""
+    audio = AudioSegment.silent(duration=108_000, frame_rate=1_000)
     transcriber = MlxAudioTranscriber(
         model_name=MIMO_MODEL_NAME,
         demucs_mode=DemucsMode.OFF,
@@ -460,27 +462,30 @@ def test_token_limit_guard_proactively_chunks_long_mimo_audio(
         side_effect=[
             MlxAudioInferenceResult(text="one duplicate", generation_tokens=3),
             MlxAudioInferenceResult(text="duplicate two", generation_tokens=3),
+            MlxAudioInferenceResult(text="two three", generation_tokens=3),
         ]
     )
     transcriber.ctc_aligner = Mock(
         model_name="ctc/test-model",
         side_effect=[
-            [_get_timed_segment("one", start=0.1, end=54.0)],
-            [_get_timed_segment("two", start=1.1, end=1.9)],
+            [_get_timed_segment("one", start=0.1, end=52.9)],
+            [_get_timed_segment("two", start=1.1, end=53.9)],
+            [_get_timed_segment("three", start=1.1, end=2.9)],
         ],
     )
     monkeypatch.setattr(transcriber.backend, "transcribe", backend_transcribe)
 
     segments = transcriber.transcribe(audio)
 
-    assert backend_transcribe.call_count == 2
+    assert backend_transcribe.call_count == 3
     assert [len(call.args[0]) for call in transcriber.ctc_aligner.call_args_list] == [
-        56_000,
-        2_000,
+        54_000,
+        55_000,
+        3_000,
     ]
-    assert [segment.text for segment in segments] == ["one", "two"]
-    assert [segment.start for segment in segments] == pytest.approx([0.1, 55.1])
-    assert [segment.end for segment in segments] == pytest.approx([54.0, 55.9])
+    assert [segment.text for segment in segments] == ["one", "two", "three"]
+    assert [segment.start for segment in segments] == pytest.approx([0.1, 53.1, 106.1])
+    assert [segment.end for segment in segments] == pytest.approx([52.9, 105.9, 107.9])
 
 
 def test_token_limit_guard_honors_shorter_explicit_chunks(
