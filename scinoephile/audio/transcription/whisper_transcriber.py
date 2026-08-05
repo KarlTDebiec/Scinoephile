@@ -495,4 +495,50 @@ class WhisperTranscriber(Transcriber):
             raise TranscriptionEmptyError(
                 "Native Whisper fallback returned empty transcript."
             )
-        return self.ctc_aligner(audio, text)
+        native_segment_data = result.get("segments")
+        if (
+            not isinstance(native_segment_data, Sequence)
+            or isinstance(native_segment_data, str | bytes)
+            or not native_segment_data
+        ):
+            raise TranscriptionInferenceError(
+                "Native Whisper fallback output contains malformed segments."
+            )
+        try:
+            native_segments = [
+                TranscribedSegment.model_validate(segment)
+                for segment in native_segment_data
+            ]
+        except (TypeError, ValueError) as exc:
+            raise TranscriptionInferenceError(
+                "Native Whisper fallback output contains malformed segments."
+            ) from exc
+
+        # Preserve the least favorable native quality signals across CTC timing
+        quality_signals: dict[str, float] = {}
+        avg_logprobs = [
+            segment.avg_logprob
+            for segment in native_segments
+            if segment.avg_logprob is not None
+        ]
+        if avg_logprobs:
+            quality_signals["avg_logprob"] = min(avg_logprobs)
+        compression_ratios = [
+            segment.compression_ratio
+            for segment in native_segments
+            if segment.compression_ratio is not None
+        ]
+        if compression_ratios:
+            quality_signals["compression_ratio"] = max(compression_ratios)
+        no_speech_probs = [
+            segment.no_speech_prob
+            for segment in native_segments
+            if segment.no_speech_prob is not None
+        ]
+        if no_speech_probs:
+            quality_signals["no_speech_prob"] = max(no_speech_probs)
+
+        return [
+            segment.model_copy(update=quality_signals, deep=True)
+            for segment in self.ctc_aligner(audio, text)
+        ]

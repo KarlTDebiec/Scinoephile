@@ -312,10 +312,33 @@ def test_transcribe_falls_back_to_native_text_with_ctc_alignment(
     model = Mock()
     model.decode = decode
 
-    def transcribe_natively(*_args: object, **_kwargs: object) -> dict[str, str]:
+    native_segments = [
+        {
+            "id": 0,
+            "seek": 0,
+            "start": 0.0,
+            "end": 0.4,
+            "text": " 你",
+            "avg_logprob": -0.25,
+            "compression_ratio": 0.8,
+            "no_speech_prob": 0.1,
+        },
+        {
+            "id": 1,
+            "seek": 0,
+            "start": 0.4,
+            "end": 1.0,
+            "text": "好 ",
+            "avg_logprob": -0.75,
+            "compression_ratio": 2.8,
+            "no_speech_prob": 0.6,
+        },
+    ]
+
+    def transcribe_natively(*_args: object, **_kwargs: object) -> dict[str, object]:
         """Return native text after confirming the decode method was restored."""
         assert model.decode is decode
-        return {"text": transcript_text}
+        return {"text": transcript_text, "segments": native_segments}
 
     model.transcribe = Mock(side_effect=transcribe_natively)
     timestamped_transcribe = Mock(
@@ -339,7 +362,13 @@ def test_transcribe_falls_back_to_native_text_with_ctc_alignment(
         Mock(return_value=SimpleNamespace(transcribe=timestamped_transcribe)),
     )
 
-    assert transcriber(audio) == ctc_aligner.return_value
+    segments = transcriber(audio)
+
+    assert len(segments) == 1
+    assert segments[0].text == transcript_text
+    assert segments[0].avg_logprob == -0.75
+    assert segments[0].compression_ratio == 2.8
+    assert segments[0].no_speech_prob == 0.6
     timestamped_transcribe.assert_called_once()
     model.transcribe.assert_called_once()
     assert model.transcribe.call_args.kwargs == {
@@ -444,6 +473,12 @@ def test_transcribe_unrelated_assertion_does_not_use_ctc(
         ({}, TranscriptionInferenceError, "missing transcript text"),
         ({"text": None}, TranscriptionInferenceError, "missing transcript text"),
         ({"text": "   "}, TranscriptionEmptyError, "empty transcript"),
+        ({"text": "你好"}, TranscriptionInferenceError, "malformed segments"),
+        (
+            {"text": "你好", "segments": [{"text": "你好"}]},
+            TranscriptionInferenceError,
+            "malformed segments",
+        ),
     ],
 )
 def test_transcribe_rejects_invalid_native_fallback_output(
