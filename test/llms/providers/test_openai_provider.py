@@ -38,3 +38,8 @@ def test_openai_constructs_client_without_overrides(monkeypatch: MonkeyPatch):
     assert isinstance(client, DummyOpenAI)
     assert client.kwargs["api_key"] is None
     assert client.kwargs["base_url"] is None
+
+
+def test_explicit_prompt_caching_is_enabled():
+    """Test explicit prompt caching is enabled for OpenAI."""
+    assert OpenAIProvider.explicit_prompt_caching is True
