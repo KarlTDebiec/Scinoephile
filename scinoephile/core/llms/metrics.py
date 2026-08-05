@@ -9,7 +9,6 @@ from collections import defaultdict
 from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import TypedDict
 
 from scinoephile.common.file import open_atomic_text_file
 
@@ -56,8 +55,9 @@ class ChatCompletionMetrics:
     """Provider prompt-cache routing key, if used."""
 
 
-class ChatCompletionMetricsSummary(TypedDict):
-    """Aggregate LLM completion metrics suitable for JSON serialization."""
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ChatCompletionMetricsSummary:
+    """Aggregate LLM completion metrics."""
 
     queries: int
     """Number of unique semantic queries sent to a provider."""
@@ -144,35 +144,35 @@ def get_chat_completion_metrics_summary(
     if input_tokens is not None and cached_input_tokens is not None:
         uncached_input_tokens = input_tokens - cached_input_tokens
 
-    return {
-        "queries": len(query_attempts_by_key) + anonymous_queries,
-        "completions": len(metrics),
-        "validation_retries": sum(
+    return ChatCompletionMetricsSummary(
+        queries=len(query_attempts_by_key) + anonymous_queries,
+        completions=len(metrics),
+        validation_retries=sum(
             max(query_attempts - 1, 0)
             for query_attempts in query_attempts_by_key.values()
         ),
-        "transport_retries": _sum_optional(
+        transport_retries=_sum_optional(
             completion_metrics.transport_retries for completion_metrics in metrics
         ),
-        "input_tokens": input_tokens,
-        "cached_input_tokens": cached_input_tokens,
-        "uncached_input_tokens": uncached_input_tokens,
-        "cache_write_tokens": _sum_optional(
+        input_tokens=input_tokens,
+        cached_input_tokens=cached_input_tokens,
+        uncached_input_tokens=uncached_input_tokens,
+        cache_write_tokens=_sum_optional(
             completion_metrics.cache_write_tokens for completion_metrics in metrics
         ),
-        "output_tokens": _sum_optional(
+        output_tokens=_sum_optional(
             completion_metrics.output_tokens for completion_metrics in metrics
         ),
-        "reasoning_tokens": _sum_optional(
+        reasoning_tokens=_sum_optional(
             completion_metrics.reasoning_tokens for completion_metrics in metrics
         ),
-        "total_tokens": _sum_optional(
+        total_tokens=_sum_optional(
             completion_metrics.total_tokens for completion_metrics in metrics
         ),
-        "latency_seconds": sum(
+        latency_seconds=sum(
             completion_metrics.latency_seconds for completion_metrics in metrics
         ),
-    }
+    )
 
 
 def save_chat_completion_metrics_to_json(
@@ -190,9 +190,9 @@ def save_chat_completion_metrics_to_json(
         operation = completion_metrics.operation or "unknown"
         metrics_by_operation[operation].append(completion_metrics)
     data = {
-        "summary": get_chat_completion_metrics_summary(metrics),
+        "summary": asdict(get_chat_completion_metrics_summary(metrics)),
         "by_operation": {
-            operation: get_chat_completion_metrics_summary(operation_metrics)
+            operation: asdict(get_chat_completion_metrics_summary(operation_metrics))
             for operation, operation_metrics in sorted(metrics_by_operation.items())
         },
         "completions": [asdict(completion_metrics) for completion_metrics in metrics],
@@ -225,18 +225,18 @@ def _format_summary_line(label: str, summary: ChatCompletionMetricsSummary) -> s
         formatted summary line
     """
     return (
-        f"{label}: queries={summary['queries']}, "
-        f"completions={summary['completions']}, "
-        f"validation_retries={summary['validation_retries']}, "
-        f"transport_retries={_format_optional(summary['transport_retries'])}, "
-        f"input_tokens={_format_optional(summary['input_tokens'])}, "
-        f"cached_input_tokens={_format_optional(summary['cached_input_tokens'])}, "
-        f"uncached_input_tokens={_format_optional(summary['uncached_input_tokens'])}, "
-        f"cache_write_tokens={_format_optional(summary['cache_write_tokens'])}, "
-        f"output_tokens={_format_optional(summary['output_tokens'])}, "
-        f"reasoning_tokens={_format_optional(summary['reasoning_tokens'])}, "
-        f"total_tokens={_format_optional(summary['total_tokens'])}, "
-        f"latency_seconds={summary['latency_seconds']:.2f}"
+        f"{label}: queries={summary.queries}, "
+        f"completions={summary.completions}, "
+        f"validation_retries={summary.validation_retries}, "
+        f"transport_retries={_format_optional(summary.transport_retries)}, "
+        f"input_tokens={_format_optional(summary.input_tokens)}, "
+        f"cached_input_tokens={_format_optional(summary.cached_input_tokens)}, "
+        f"uncached_input_tokens={_format_optional(summary.uncached_input_tokens)}, "
+        f"cache_write_tokens={_format_optional(summary.cache_write_tokens)}, "
+        f"output_tokens={_format_optional(summary.output_tokens)}, "
+        f"reasoning_tokens={_format_optional(summary.reasoning_tokens)}, "
+        f"total_tokens={_format_optional(summary.total_tokens)}, "
+        f"latency_seconds={summary.latency_seconds:.2f}"
     )
 
 

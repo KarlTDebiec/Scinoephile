@@ -10,7 +10,7 @@ from pathlib import Path
 
 from pytest import MonkeyPatch, raises
 
-from scinoephile.core.llms import ChatCompletionMetrics
+from scinoephile.core.llms import ChatCompletionMetrics, ChatCompletionMetricsSummary
 from scinoephile.core.llms import metrics as metrics_module
 from scinoephile.core.llms.metrics import (
     format_chat_completion_metrics_report,
@@ -88,20 +88,20 @@ def test_completion_metrics_summary_groups_retries_and_tokens():
 
     summary = get_chat_completion_metrics_summary(metrics)
 
-    assert summary == {
-        "queries": 2,
-        "completions": 3,
-        "validation_retries": 1,
-        "transport_retries": 1,
-        "input_tokens": 300,
-        "cached_input_tokens": 140,
-        "uncached_input_tokens": 160,
-        "cache_write_tokens": 0,
-        "output_tokens": 30,
-        "reasoning_tokens": 6,
-        "total_tokens": 330,
-        "latency_seconds": 3.75,
-    }
+    assert summary == ChatCompletionMetricsSummary(
+        queries=2,
+        completions=3,
+        validation_retries=1,
+        transport_retries=1,
+        input_tokens=300,
+        cached_input_tokens=140,
+        uncached_input_tokens=160,
+        cache_write_tokens=0,
+        output_tokens=30,
+        reasoning_tokens=6,
+        total_tokens=330,
+        latency_seconds=3.75,
+    )
 
 
 def test_completion_metrics_summary_preserves_unknown_values():
@@ -119,14 +119,14 @@ def test_completion_metrics_summary_preserves_unknown_values():
 
     summary = get_chat_completion_metrics_summary((_get_metrics(), missing))
 
-    assert summary["transport_retries"] is None
-    assert summary["input_tokens"] is None
-    assert summary["cached_input_tokens"] is None
-    assert summary["uncached_input_tokens"] is None
-    assert summary["cache_write_tokens"] is None
-    assert summary["output_tokens"] is None
-    assert summary["reasoning_tokens"] is None
-    assert summary["total_tokens"] is None
+    assert summary.transport_retries is None
+    assert summary.input_tokens is None
+    assert summary.cached_input_tokens is None
+    assert summary.uncached_input_tokens is None
+    assert summary.cache_write_tokens is None
+    assert summary.output_tokens is None
+    assert summary.reasoning_tokens is None
+    assert summary.total_tokens is None
     assert "transport_retries=n/a" in format_chat_completion_metrics_report(
         (_get_metrics(), missing)
     )

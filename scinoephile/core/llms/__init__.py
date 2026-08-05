@@ -18,7 +18,7 @@ from .answer import Answer
 from .cache import LlmCache
 from .llm_provider import ChatCompletionKwargs, LLMProvider
 from .manager import Manager, PromptModelField
-from .metrics import ChatCompletionMetrics
+from .metrics import ChatCompletionMetrics, ChatCompletionMetricsSummary
 from .openai_provider_base import OpenAIProviderBase
 from .processor import Processor, ProcessorKwargs
 from .prompt import Prompt, SharedPromptLocalizationFields
@@ -34,6 +34,7 @@ __all__ = [
     "Answer",
     "ChatCompletionKwargs",
     "ChatCompletionMetrics",
+    "ChatCompletionMetricsSummary",
     "LLMProvider",
     "LlmCache",
     "Manager",
