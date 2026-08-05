@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for LLM completion usage persistence and reporting."""
+"""Tests for LLM completion metrics, reporting, and persistence."""
 
 from __future__ import annotations
 
@@ -11,8 +11,8 @@ from pathlib import Path
 from pytest import MonkeyPatch, raises
 
 from scinoephile.core.llms import ChatCompletionMetrics
-from scinoephile.core.llms import usage as usage_module
-from scinoephile.core.llms.usage import (
+from scinoephile.core.llms import metrics as metrics_module
+from scinoephile.core.llms.metrics import (
     format_chat_completion_metrics_report,
     get_chat_completion_metrics_summary,
     save_chat_completion_metrics_to_json,
@@ -43,7 +43,7 @@ def test_completion_metrics_persistence_is_atomic(
         _ = (args, kwargs)
         raise RuntimeError("serialization failed")
 
-    monkeypatch.setattr(usage_module.json, "dump", fail_dump)
+    monkeypatch.setattr(metrics_module.json, "dump", fail_dump)
 
     with raises(RuntimeError, match="serialization failed"):
         save_chat_completion_metrics_to_json(output_path, [_get_metrics()])
