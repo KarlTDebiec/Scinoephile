@@ -11,7 +11,7 @@ from unittest.mock import Mock, patch
 
 from pytest import raises
 
-from scinoephile.audio.transcription import DemucsMode, VADMode
+from scinoephile.audio.transcription import CtcAligner, DemucsMode, VADMode
 from scinoephile.audio.transcription.mlx_audio.backend import MIMO_MODEL_NAME
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
@@ -126,6 +126,16 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.tail_recovery_transcriber._cache.overwrite
     assert transcriber.transcriber.demucs_separator is not None
     assert transcriber.recovery_transcriber.demucs_separator is None
+    assert isinstance(transcriber.transcriber.ctc_aligner, CtcAligner)
+    assert transcriber.transcriber.ctc_aligner.language is Language.yue_hant
+    assert (
+        transcriber.recovery_transcriber.ctc_aligner
+        is transcriber.transcriber.ctc_aligner
+    )
+    assert (
+        transcriber.tail_recovery_transcriber.ctc_aligner
+        is transcriber.transcriber.ctc_aligner
+    )
     test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
     assert transcriber.aligner.delineation_processor.test_case_path == (
         test_case_dir_path / "delineation" / "test.json"

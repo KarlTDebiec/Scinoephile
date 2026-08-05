@@ -120,6 +120,8 @@ class Transcriber(ABC):
         """
         for settings in self._get_preprocessing_settings():
             self._cache.remove(audio, self._get_cache_metadata(settings))
+            for metadata in self._get_compatible_cache_metadata(settings):
+                self._cache.remove(audio, metadata)
 
     def transcribe(
         self,
@@ -182,13 +184,23 @@ class Transcriber(ABC):
         for settings in preprocessing_settings:
             metadata = self._get_cache_metadata(settings)
             cached_transcription = self._cache.load(audio, metadata)
-            if cached_transcription is None:
+            if cached_transcription is not None:
+                cache_path, segments = cached_transcription
+                segments = self._prepare_cached_segments(segments, cache_path, settings)
+                if segments and (is_usable is None or is_usable(segments)):
+                    return segments, rejected_settings
+                rejected_settings.add(settings)
                 continue
-            cache_path, segments = cached_transcription
-            segments = self._prepare_cached_segments(segments, cache_path, settings)
-            if segments and (is_usable is None or is_usable(segments)):
-                return segments, rejected_settings
-            rejected_settings.add(settings)
+
+            # Compatible identities are reusable only for successful output
+            for compatible_metadata in self._get_compatible_cache_metadata(settings):
+                cached_transcription = self._cache.load(audio, compatible_metadata)
+                if cached_transcription is None:
+                    continue
+                cache_path, segments = cached_transcription
+                segments = self._prepare_cached_segments(segments, cache_path, settings)
+                if segments and (is_usable is None or is_usable(segments)):
+                    return segments, rejected_settings
         return None, rejected_settings
 
     def _get_preprocessing_settings(
@@ -252,6 +264,18 @@ class Transcriber(ABC):
             "use_demucs": settings.use_demucs,
             "use_vad": settings.use_vad,
         }
+
+    def _get_compatible_cache_metadata(
+        self, settings: TranscriptionPreprocessingSettings
+    ) -> tuple[Mapping[str, object], ...]:
+        """Get older cache identities accepted for successful lookup.
+
+        Arguments:
+            settings: preprocessing settings
+        Returns:
+            compatible cache metadata mappings in lookup order
+        """
+        return ()
 
     def _get_separated_audio(self, audio: AudioSegment) -> AudioSegment | None:
         """Get Demucs-separated audio for configured preprocessing settings.
