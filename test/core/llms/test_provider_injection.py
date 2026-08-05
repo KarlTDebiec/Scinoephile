@@ -166,10 +166,7 @@ class _RecordingProvider(LLMProvider):
         """
         self.calls: list[list[dict[str, Any]]] = []
         self.completion_metrics: list[ChatCompletionMetrics] = []
-        self.operations: list[str | None] = []
-        self.query_key_sha256s: list[str | None] = []
         self.response_formats: list[type[Answer]] = []
-        self.query_attempts: list[int] = []
         self.response = response
         self.model = model
         self.base_url = base_url
@@ -197,10 +194,7 @@ class _RecordingProvider(LLMProvider):
         """Record messages and return a fixed completion response."""
         _ = (tool_box, kwargs)
         self.calls.append(messages)
-        self.operations.append(operation)
-        self.query_key_sha256s.append(query_key_sha256)
         self.response_formats.append(response_format)
-        self.query_attempts.append(query_attempt)
         self.completion_metrics.append(
             ChatCompletionMetrics(
                 operation=operation,
@@ -276,10 +270,11 @@ def test_queryer_uses_injected_provider():
     assert output_test_case.answer.output == "done"
     assert len(provider.calls) == 1
     assert provider.response_formats == [_Answer]
-    assert provider.operations == ["test"]
-    assert provider.query_key_sha256s[0] is not None
-    assert len(provider.query_key_sha256s[0]) == 64
-    assert provider.query_attempts == [1]
+    [completion_metrics] = provider.completion_metrics
+    assert completion_metrics.operation == "test"
+    assert completion_metrics.query_key_sha256 is not None
+    assert len(completion_metrics.query_key_sha256) == 64
+    assert completion_metrics.query_attempt == 1
     assert queryer.completion_metrics == provider.completion_metrics
     assert queryer.system_prompt == _PROMPT.base_system_prompt
 

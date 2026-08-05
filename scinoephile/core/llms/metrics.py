@@ -99,10 +99,7 @@ def format_chat_completion_metrics_report(
     summary = get_chat_completion_metrics_summary(metrics)
     lines = ["LLM query performance:", _format_summary_line("all", summary)]
 
-    metrics_by_operation: dict[str, list[ChatCompletionMetrics]] = defaultdict(list)
-    for completion_metrics in metrics:
-        operation = completion_metrics.operation or "unknown"
-        metrics_by_operation[operation].append(completion_metrics)
+    metrics_by_operation = _group_metrics_by_operation(metrics)
     for operation in sorted(metrics_by_operation):
         operation_summary = get_chat_completion_metrics_summary(
             metrics_by_operation[operation]
@@ -185,10 +182,7 @@ def save_chat_completion_metrics_to_json(
         metrics: completion metrics to persist
     """
     metrics = tuple(metrics)
-    metrics_by_operation: dict[str, list[ChatCompletionMetrics]] = defaultdict(list)
-    for completion_metrics in metrics:
-        operation = completion_metrics.operation or "unknown"
-        metrics_by_operation[operation].append(completion_metrics)
+    metrics_by_operation = _group_metrics_by_operation(metrics)
     data = {
         "summary": asdict(get_chat_completion_metrics_summary(metrics)),
         "by_operation": {
@@ -240,6 +234,23 @@ def _format_summary_line(label: str, summary: ChatCompletionMetricsSummary) -> s
     )
 
 
+def _group_metrics_by_operation(
+    metrics: Iterable[ChatCompletionMetrics],
+) -> dict[str, list[ChatCompletionMetrics]]:
+    """Group completion metrics by operation.
+
+    Arguments:
+        metrics: completion metrics to group
+    Returns:
+        completion metrics keyed by operation
+    """
+    metrics_by_operation: dict[str, list[ChatCompletionMetrics]] = defaultdict(list)
+    for completion_metrics in metrics:
+        operation = completion_metrics.operation or "unknown"
+        metrics_by_operation[operation].append(completion_metrics)
+    return metrics_by_operation
+
+
 def _sum_optional(values: Iterable[int | None]) -> int | None:
     """Sum optional integers only when every value is present.
 
@@ -248,9 +259,9 @@ def _sum_optional(values: Iterable[int | None]) -> int | None:
     Returns:
         sum when all values are available, otherwise None
     """
-    values_to_sum: list[int] = []
+    total = 0
     for value in values:
         if value is None:
             return None
-        values_to_sum.append(value)
-    return sum(values_to_sum)
+        total += value
+    return total

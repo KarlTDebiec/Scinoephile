@@ -162,14 +162,8 @@ class Queryer[TTestCase: TestCase]:
                     raise
                 continue
             finally:
-                provider_metrics = self.provider.completion_metrics
-                new_metrics = provider_metrics[initial_completion_count:]
                 self.completion_metrics.extend(
-                    completion_metrics
-                    for completion_metrics in new_metrics
-                    if completion_metrics.operation == self.test_case_cls.operation
-                    and completion_metrics.query_key_sha256 == query_key_sha256
-                    and completion_metrics.query_attempt == attempt
+                    self.provider.completion_metrics[initial_completion_count:]
                 )
 
             # Validate answer

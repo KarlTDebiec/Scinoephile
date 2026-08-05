@@ -160,7 +160,7 @@ class OpenAIProviderBase(LLMProvider):
             openai_tools = self._build_openai_tools(tool_box) if tool_box else None
             prompt_cache_key = None
             if self.explicit_prompt_caching:
-                messages, prompt_cache_key = self._configure_prompt_cache(
+                prompt_cache_key = self._configure_prompt_cache(
                     messages, response_format, openai_tools
                 )
             request_kwargs = self._build_request_kwargs(
@@ -293,7 +293,7 @@ class OpenAIProviderBase(LLMProvider):
         messages: list[dict[str, Any]],
         response_format: type[Answer],
         openai_tools: list[dict[str, object]] | None,
-    ) -> tuple[list[dict[str, Any]], str | None]:
+    ) -> str | None:
         """Mark the stable message prefix and derive its routing key.
 
         Arguments:
@@ -301,7 +301,7 @@ class OpenAIProviderBase(LLMProvider):
             response_format: structured response format
             openai_tools: serialized OpenAI tool payload
         Returns:
-            copied messages with an explicit breakpoint and its cache key
+            routing key when a stable prefix is available, otherwise None
         """
         stable_end = -1
         for index, message in enumerate(messages):
@@ -309,11 +309,11 @@ class OpenAIProviderBase(LLMProvider):
                 break
             stable_end = index
         if stable_end < 0:
-            return messages, None
+            return None
 
         stable_content = messages[stable_end].get("content")
         if not isinstance(stable_content, str):
-            return messages, None
+            return None
         cache_payload = {
             "messages": messages[: stable_end + 1],
             "model": self.model,
@@ -332,7 +332,7 @@ class OpenAIProviderBase(LLMProvider):
                 "prompt_cache_breakpoint": {"mode": "explicit"},
             }
         ]
-        return messages, f"scinoephile:{digest}"
+        return f"scinoephile:{digest}"
 
     def _get_completion_metrics(
         self,
