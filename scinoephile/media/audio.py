@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from enum import StrEnum
 from logging import getLogger
 from pathlib import Path
 
@@ -15,9 +16,24 @@ from scinoephile.core.media.audio_stream import AudioStream
 
 from .probe import get_streams
 
-__all__ = ["extract_audio"]
+__all__ = ["AudioExtractionMode", "extract_audio"]
 
 logger = getLogger(__name__)
+
+
+class AudioExtractionMode(StrEnum):
+    """Channel preparation used during audio extraction."""
+
+    ORIGINAL = "original"
+    """Preserve the source sample rate and channel layout."""
+    CENTER = "center"
+    """Preserve the source sample rate and extract only the center channel."""
+    CENTER_HEAVY = "center-heavy"
+    """Preserve the source sample rate and mix center with quieter front channels."""
+    MONO = "mono"
+    """Preserve the source sample rate and downmix the complete stream to mono."""
+    STEREO = "stereo"
+    """Preserve the source sample rate and downmix the complete stream to stereo."""
 
 
 def extract_audio(
@@ -25,17 +41,19 @@ def extract_audio(
     outfile_path: Path,
     *,
     stream_index: int | None = None,
+    mode: AudioExtractionMode = AudioExtractionMode.ORIGINAL,
     overwrite: bool = False,
 ) -> AudioStream:
-    """Extract a selected audio stream as a transcription-ready mono WAV file.
+    """Extract and prepare a selected audio stream as a WAV file.
 
-    Multichannel streams with a center channel use that channel; other streams are
-    downmixed to mono. Output is sampled at 16 kHz.
+    The default mode preserves the source sample rate and channel layout. Other modes
+    preserve the source sample rate while selecting or mixing channels.
 
     Arguments:
         infile_path: media input file
         outfile_path: WAV output file
         stream_index: absolute media stream index, or None for the first audio stream
+        mode: channel preparation mode
         overwrite: whether to overwrite an existing output file
     Returns:
         selected audio stream metadata
@@ -80,55 +98,76 @@ def extract_audio(
         raise ScinoephileError(
             f"No stream index {stream_index} found in {validated_infile_path}"
         )
-    if stream.channels is None:
-        raise ScinoephileError(
-            f"Audio stream {stream.index} in {validated_infile_path} has no "
-            "channel count"
-        )
     _extract_audio_track(
-        validated_infile_path, validated_outfile_path, stream.index, stream.channels
+        validated_infile_path, validated_outfile_path, stream.index, mode
     )
     return stream
 
 
 def _extract_audio_track(
-    infile_path: Path, outfile_path: Path, stream_index: int, channels: int
+    infile_path: Path, outfile_path: Path, stream_index: int, mode: AudioExtractionMode
 ):
-    """Extract a known media audio stream as a mono 16 kHz WAV file.
+    """Extract a known media audio stream using the selected preparation mode.
 
     Arguments:
         infile_path: media input file
         outfile_path: WAV output file
         stream_index: absolute media stream index
-        channels: number of channels in the selected stream
+        mode: channel preparation mode
     Raises:
         ScinoephileError: if ffmpeg cannot extract the stream
     """
+    output_kwargs: dict[str, object] = {"format": "wav"}
+    required_channels: str | None = None
+    if mode is AudioExtractionMode.ORIGINAL:
+        operation = f"Extracting original audio stream {stream_index}"
+        output_kwargs["map"] = f"0:{stream_index}"
+    elif mode is AudioExtractionMode.CENTER:
+        operation = (
+            f"Extracting native-rate center channel of audio stream {stream_index}"
+        )
+        required_channels = "a front center (FC) channel"
+        output_kwargs.update(
+            filter_complex=(
+                f"[0:{stream_index}]channelmap=map=FC:channel_layout=mono[out]"
+            ),
+            map="[out]",
+        )
+    elif mode is AudioExtractionMode.CENTER_HEAVY:
+        operation = (
+            f"Extracting native-rate center-heavy mix of audio stream {stream_index}"
+        )
+        required_channels = (
+            "front left (FL), front right (FR), and front center (FC) channels"
+        )
+        output_kwargs.update(
+            filter_complex=(
+                f"[0:{stream_index}]"
+                "channelmap=map=FL|FR|FC:channel_layout=3.0,"
+                "pan=mono|c0=0.15*c0+0.15*c1+0.70*c2[out]"
+            ),
+            map="[out]",
+        )
+    else:
+        output_channels = 1
+        if mode is AudioExtractionMode.STEREO:
+            output_channels = 2
+        operation = (
+            f"Downmixing complete audio stream {stream_index} to native-rate "
+            f"{mode.value}"
+        )
+        output_kwargs.update(map=f"0:{stream_index}", ac=output_channels)
+
+    logger.info(f"{operation} from {infile_path} to {outfile_path}")
     try:
-        if channels >= 6:
-            logger.info(
-                f"Extracting center channel of audio stream {stream_index} from "
-                f"{infile_path} to {outfile_path}"
-            )
-            ffmpeg.input(str(infile_path)).output(
-                str(outfile_path),
-                format="wav",
-                ar=16000,
-                **{
-                    "filter_complex": f"[0:{stream_index}]pan=mono|c0=c2[out]",
-                    "map": "[out]",
-                },
-            ).run(quiet=False, overwrite_output=True)
-        else:
-            logger.info(
-                f"Downmixing audio stream {stream_index} from {infile_path} to "
-                f"{outfile_path}"
-            )
-            ffmpeg.input(str(infile_path)).output(
-                str(outfile_path), format="wav", ar=16000, map=f"0:{stream_index}", ac=1
-            ).run(quiet=False, overwrite_output=True)
+        ffmpeg.input(str(infile_path)).output(str(outfile_path), **output_kwargs).run(
+            quiet=False, overwrite_output=True
+        )
     except (ffmpeg.Error, OSError) as exc:
-        raise ScinoephileError(
+        message = (
             f"Could not extract audio stream {stream_index} from {infile_path} "
             f"to {outfile_path}"
-        ) from exc
+        )
+        if isinstance(exc, ffmpeg.Error) and required_channels is not None:
+            message = f"{message}; mode {mode.value} requires {required_channels}"
+        raise ScinoephileError(message) from exc
