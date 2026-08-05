@@ -54,7 +54,7 @@ def _get_cache_path(transcriber: WhisperTranscriber, audio: AudioSegment) -> Pat
     """Get the cache path for the transcriber's first preprocessing settings."""
     settings = transcriber._get_preprocessing_settings()[0]
     cache_path = transcriber._cache.get_path(
-        audio, transcriber._get_cache_metadata(settings)
+        audio, transcriber._get_cache_metadata(audio, settings)
     )
     return cache_path
 
