@@ -119,7 +119,10 @@ class Transcriber(ABC):
             audio: audio used for cache-key generation
         """
         for settings in self._get_preprocessing_settings():
-            self._cache.remove(audio, self._get_cache_metadata(settings))
+            for metadata in self._get_compatible_cache_metadata_for_audio(
+                audio, settings
+            ):
+                self._cache.remove(audio, metadata)
 
     def transcribe(
         self,
@@ -180,15 +183,20 @@ class Transcriber(ABC):
         """
         rejected_settings: set[TranscriptionPreprocessingSettings] = set()
         for settings in preprocessing_settings:
-            metadata = self._get_cache_metadata(settings)
-            cached_transcription = self._cache.load(audio, metadata)
-            if cached_transcription is None:
-                continue
-            cache_path, segments = cached_transcription
-            segments = self._prepare_cached_segments(segments, cache_path, settings)
-            if segments and (is_usable is None or is_usable(segments)):
-                return segments, rejected_settings
-            rejected_settings.add(settings)
+            found_cached_transcription = False
+            for metadata in self._get_compatible_cache_metadata_for_audio(
+                audio, settings
+            ):
+                cached_transcription = self._cache.load(audio, metadata)
+                if cached_transcription is None:
+                    continue
+                found_cached_transcription = True
+                cache_path, segments = cached_transcription
+                segments = self._prepare_cached_segments(segments, cache_path, settings)
+                if segments and (is_usable is None or is_usable(segments)):
+                    return segments, rejected_settings
+            if found_cached_transcription:
+                rejected_settings.add(settings)
         return None, rejected_settings
 
     def _get_preprocessing_settings(
@@ -252,6 +260,32 @@ class Transcriber(ABC):
             "use_demucs": settings.use_demucs,
             "use_vad": settings.use_vad,
         }
+
+    def _get_cache_metadata_for_audio(
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
+    ) -> dict[str, object]:
+        """Get cache metadata for behavior selected by one audio input.
+
+        Arguments:
+            audio: audio whose properties may affect backend behavior
+            settings: preprocessing settings
+        Returns:
+            configuration identifying the output
+        """
+        return self._get_cache_metadata(settings)
+
+    def _get_compatible_cache_metadata_for_audio(
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
+    ) -> tuple[Mapping[str, object], ...]:
+        """Get cache identities accepted for one audio input in lookup order.
+
+        Arguments:
+            audio: audio whose properties may affect backend behavior
+            settings: preprocessing settings
+        Returns:
+            cache metadata mappings ordered from current to legacy-compatible
+        """
+        return (self._get_cache_metadata_for_audio(audio, settings),)
 
     def _get_separated_audio(self, audio: AudioSegment) -> AudioSegment | None:
         """Get Demucs-separated audio for configured preprocessing settings.
@@ -325,7 +359,9 @@ class Transcriber(ABC):
                 segments = self._transcribe_attempt(transcription_audio, settings)
             except TranscriptionEmptyError as exc:
                 logger.warning(f"{self.backend_label} attempt failed: {exc}")
-                self._cache.save(audio, self._get_cache_metadata(settings), [])
+                self._cache.save(
+                    audio, self._get_cache_metadata_for_audio(audio, settings), []
+                )
                 last_error = exc
                 continue
             except TranscriptionError as exc:
@@ -334,7 +370,9 @@ class Transcriber(ABC):
                 continue
             successful_result = True
 
-            self._cache.save(audio, self._get_cache_metadata(settings), segments)
+            self._cache.save(
+                audio, self._get_cache_metadata_for_audio(audio, settings), segments
+            )
             if is_usable is None or is_usable(segments):
                 return segments
 

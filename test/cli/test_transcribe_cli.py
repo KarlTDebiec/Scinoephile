@@ -72,6 +72,7 @@ def test_transcribe_help_lists_generic_options():
     assert "--vad {auto,on,off}" in help_text
     assert "--backend {whisper,mlx-audio}" in help_text
     assert "--model MODEL_NAME" in help_text
+    assert "--mlx-audio-token-limit-guard" in help_text
     assert "transcription model (default: backend default)" in normalized_help_text
     assert "--cache-overwrite" in help_text
     assert "overwrite matching cache files" in normalized_help_text
@@ -195,6 +196,7 @@ def test_transcribe_cli_passes_generic_configuration(
         backend: TranscriptionBackend,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
+        mlx_audio_token_limit_guard: bool,
         cache_root_path: Path | None,
         overwrite_cache: bool,
         provider: object,
@@ -214,6 +216,7 @@ def test_transcribe_cli_passes_generic_configuration(
         assert backend is TranscriptionBackend.MLX_AUDIO
         assert demucs_mode is DemucsMode.ON
         assert vad_mode is VADMode.OFF
+        assert mlx_audio_token_limit_guard is True
         assert cache_root_path == tmp_path / "cache"
         assert overwrite_cache
         assert provider is not None
@@ -239,7 +242,7 @@ def test_transcribe_cli_passes_generic_configuration(
                 f"--guide-infile {_GUIDE_INFILE_PATH} "
                 "--language yue-Hant --guide-language zho-Hans "
                 "--model custom/mlx-audio --backend mlx-audio "
-                "--demucs on --vad off "
+                "--demucs on --vad off --mlx-audio-token-limit-guard "
                 f"--cache-dir {tmp_path / 'cache'} --cache-overwrite "
                 f"--delineation-json {tmp_path / 'delineation.json'} "
                 f"--punctuation-json {tmp_path / 'punctuation.json'} "

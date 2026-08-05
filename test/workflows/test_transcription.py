@@ -50,6 +50,7 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
             overwrite_cache=True,
             strip_generated_punctuation=True,
             mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+            mlx_audio_token_limit_guard=True,
             no_op=True,
             alignment_mode=TranscriptionAlignmentMode.BLOCK,
             block_delineation_mode=BlockDelineationMode.CANDIDATE,
@@ -75,6 +76,7 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
         get_transcriber.call_args.kwargs["mlx_audio_timing_mode"]
         is MlxAudioTimingMode.PHRASE
     )
+    assert get_transcriber.call_args.kwargs["mlx_audio_token_limit_guard"] is True
     assert get_transcriber.call_args.kwargs["no_op"] is True
     assert (
         get_transcriber.call_args.kwargs["alignment_mode"]

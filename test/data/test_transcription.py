@@ -209,6 +209,7 @@ def test_process_transcription_pipeline_runs_all_stages(
         "fallback_to_no_op": False,
         "model_name": transcription_data.MIMO_MODEL_NAME,
         "mlx_audio_timing_mode": transcription_data.MlxAudioTimingMode.CTC_UNIT,
+        "mlx_audio_token_limit_guard": False,
         "no_op": False,
         "punctuate": False,
         "prune_test_cases": False,
@@ -327,6 +328,7 @@ def test_process_transcription_pipeline_can_prepare_selected_sources(
         punctuate_sources=True,
         strip_mlx_audio_punctuation=True,
         mlx_audio_timing_mode=transcription_data.MlxAudioTimingMode.PHRASE,
+        mlx_audio_token_limit_guard=True,
         run_merge_and_translation=False,
     )
 
@@ -340,6 +342,10 @@ def test_process_transcription_pipeline_can_prepare_selected_sources(
     assert (
         transcribe.call_args.kwargs["transcription_kw"]["mlx_audio_timing_mode"]
         is transcription_data.MlxAudioTimingMode.PHRASE
+    )
+    assert (
+        transcribe.call_args.kwargs["transcription_kw"]["mlx_audio_token_limit_guard"]
+        is True
     )
     assert transcribe.call_args.kwargs["transcription_kw"]["punctuate"] is True
 

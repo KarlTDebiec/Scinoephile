@@ -373,6 +373,7 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
     transcription_fallback_to_no_op: bool = False,
     strip_mlx_audio_punctuation: bool = False,
     mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
+    mlx_audio_token_limit_guard: bool = False,
     demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.OFF,
     transcription_names: tuple[str, ...] | None = None,
@@ -418,6 +419,7 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
         strip_mlx_audio_punctuation: whether to remove MLX-Audio-generated sentence
           punctuation after timing and before guided alignment
         mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
+        mlx_audio_token_limit_guard: whether to guard constrained MLX-Audio models
         demucs_mode: Demucs preprocessing mode shared by all transcription backends
         vad_mode: voice activity detection mode shared by all transcription backends
         transcription_names: transcription sources to prepare in order, or None for
@@ -471,6 +473,7 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
             "fallback_to_no_op": transcription_fallback_to_no_op,
             "model_name": MIMO_MODEL_NAME,
             "mlx_audio_timing_mode": mlx_audio_timing_mode,
+            "mlx_audio_token_limit_guard": mlx_audio_token_limit_guard,
             "no_op": transcription_no_op,
             "punctuate": punctuate_sources,
             "prune_test_cases": stop_at_idx is None,

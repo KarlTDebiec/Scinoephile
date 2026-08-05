@@ -57,45 +57,33 @@ transcription_additional_context = """
 - 照妖鏡 / 乾坤袋 / 隱身符 / 移魂大法 / 三味白骨火：劇中法器、法術名稱。
 """
 
-set_logging_verbosity(2)
 
-selected_transcription_name = environ.get("SCINOEPHILE_TRANSCRIPTION_NAME")
-if selected_transcription_name is None:
-    transcription_names = ("whisper", "mimo", "qwen")
-elif selected_transcription_name in {"whisper", "mimo", "qwen"}:
-    transcription_names = (selected_transcription_name,)
-else:
-    raise ValueError("SCINOEPHILE_TRANSCRIPTION_NAME must be whisper, mimo, or qwen")
+def process_yue_hant_transcription(
+    output_dir_path: Path = yue_hant_transcribe_path,
+    *,
+    stop_at_idx: int | None = None,
+    transcription_names: tuple[str, ...] = ("whisper", "mimo", "qwen"),
+    mlx_audio_token_limit_guard: bool = True,
+    run_merge_and_translation: bool = True,
+):
+    """Run the configured ACOPOPB Cantonese transcription pipeline.
 
-actions = {"yue-Hant_transcribe"}
-
-if "eng_ocr" in actions:
-    process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
-if "yue-Hans_ocr" in actions:
-    process_ocr(title_root, Language.yue_hans, overwrite=False, interactive=True)
-if "yue-Hant_ocr" in actions:
-    process_ocr(title_root, Language.yue_hant, overwrite=False, interactive=True)
-if "zho-Hans_ocr" in actions:
-    process_ocr(title_root, Language.zho_hans, overwrite=False, interactive=True)
-if "zho-Hant_ocr" in actions:
-    process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=True)
-if "yue-Hans_eng" in actions:
-    yue_hans_path = yue_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
-    eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
-    process_yue_hans_eng(title_root, yue_hans_path, eng_path, overwrite=False)
-if "zho-Hans_eng" in actions:
-    zho_hans_path = zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
-    eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
-    process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
-if "yue-Hant_transcribe" in actions:
+    Arguments:
+        output_dir_path: directory in which to write transcription outputs
+        stop_at_idx: exclusive guide block index at which to stop processing
+        transcription_names: transcription sources to process in order
+        mlx_audio_token_limit_guard: whether to guard MiMo's generation-token limit
+        run_merge_and_translation: whether to merge sources and translate gaps
+    """
     process_transcription_pipeline(
         title_root,
         zho_hant_guide_path,
         reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
         language=Language.yue_hant,
         guide_language=Language.zho_hant,
-        output_dir_path=yue_hant_transcribe_path,
+        output_dir_path=output_dir_path,
         audio_dir_path=yue_hant_transcribe_path / "audio",
+        stop_at_idx=stop_at_idx,
         additional_context=transcription_additional_context,
         transcription_no_op=False,
         transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
@@ -103,10 +91,53 @@ if "yue-Hant_transcribe" in actions:
         transcription_fallback_to_no_op=True,
         strip_mlx_audio_punctuation=True,
         mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+        mlx_audio_token_limit_guard=mlx_audio_token_limit_guard,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VADMode.OFF,
         transcription_names=transcription_names,
         transcription_overwrite=True,
-        run_merge_and_translation=True,
+        run_merge_and_translation=run_merge_and_translation,
         overwrite=True,
     )
+
+
+def main():
+    """Create configured ACOPOPB test outputs."""
+    set_logging_verbosity(2)
+
+    selected_transcription_name = environ.get("SCINOEPHILE_TRANSCRIPTION_NAME")
+    if selected_transcription_name is None:
+        transcription_names = ("whisper", "mimo", "qwen")
+    elif selected_transcription_name in {"whisper", "mimo", "qwen"}:
+        transcription_names = (selected_transcription_name,)
+    else:
+        raise ValueError(
+            "SCINOEPHILE_TRANSCRIPTION_NAME must be whisper, mimo, or qwen"
+        )
+
+    actions = {"yue-Hant_transcribe"}
+
+    if "eng_ocr" in actions:
+        process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
+    if "yue-Hans_ocr" in actions:
+        process_ocr(title_root, Language.yue_hans, overwrite=False, interactive=True)
+    if "yue-Hant_ocr" in actions:
+        process_ocr(title_root, Language.yue_hant, overwrite=False, interactive=True)
+    if "zho-Hans_ocr" in actions:
+        process_ocr(title_root, Language.zho_hans, overwrite=False, interactive=True)
+    if "zho-Hant_ocr" in actions:
+        process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=True)
+    if "yue-Hans_eng" in actions:
+        yue_hans_path = yue_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
+        eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
+        process_yue_hans_eng(title_root, yue_hans_path, eng_path, overwrite=False)
+    if "zho-Hans_eng" in actions:
+        zho_hans_path = zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
+        eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
+        process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
+    if "yue-Hant_transcribe" in actions:
+        process_yue_hant_transcription(transcription_names=transcription_names)
+
+
+if __name__ == "__main__":
+    main()

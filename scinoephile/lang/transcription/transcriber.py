@@ -15,6 +15,7 @@ from pydub.effects import normalize
 
 from scinoephile.audio.subtitles import AudioSeries, get_series_from_segments
 from scinoephile.audio.transcription import (
+    CtcAligner,
     DemucsMode,
     MlxAudioTranscriber,
     TranscribedSegment,
@@ -24,6 +25,9 @@ from scinoephile.audio.transcription import (
     WhisperTranscriber,
     get_segment_split_at_idx,
     get_segment_split_on_word_timings,
+)
+from scinoephile.audio.transcription.whisper_transcriber import (
+    SUBTITLE_CREDIT_HALLUCINATION_MARKERS,
 )
 from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
@@ -57,9 +61,6 @@ _EXPECTED_TAIL_TOLERANCE_SECONDS = 1.0
 
 _MAX_COMPRESSION_RATIO = 2.4
 """Maximum Whisper compression ratio accepted for guided alignment."""
-
-_SUBTITLE_CREDIT_HALLUCINATION_MARKERS = ("amara.org", "字幕由", "字幕提供者")
-"""Markers indicating an ASR-generated subtitle-credit hallucination."""
 
 _RECOVERY_TEMPERATURES = (0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
 """Whisper temperature schedule used after standard decoding fails."""
@@ -232,6 +233,7 @@ class GuidedTranscriber:
             return
 
         # Configure standard preprocessing fallbacks
+        whisper_ctc_aligner = CtcAligner(self.language)
         self.transcriber = WhisperTranscriber(
             model_name=self.model_name,
             language=self.whisper_language,
@@ -239,6 +241,7 @@ class GuidedTranscriber:
             vad_mode=self.vad_mode,
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
+            ctc_aligner=whisper_ctc_aligner,
         )
 
         # Configure defensive decoding after standard attempts are exhausted
@@ -257,6 +260,7 @@ class GuidedTranscriber:
             overwrite_cache=overwrite_cache,
             temperature=_RECOVERY_TEMPERATURES,
             condition_on_previous_text=False,
+            ctc_aligner=whisper_ctc_aligner,
             demucs_separator=self.transcriber.demucs_separator,
         )
 
@@ -269,6 +273,7 @@ class GuidedTranscriber:
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
             condition_on_previous_text=False,
+            ctc_aligner=whisper_ctc_aligner,
         )
 
     def process(
@@ -634,7 +639,7 @@ class GuidedTranscriber:
             if marker := next(
                 (
                     marker
-                    for marker in _SUBTITLE_CREDIT_HALLUCINATION_MARKERS
+                    for marker in SUBTITLE_CREDIT_HALLUCINATION_MARKERS
                     if marker in normalized_text
                 ),
                 None,

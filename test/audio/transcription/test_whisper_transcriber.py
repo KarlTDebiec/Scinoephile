@@ -27,6 +27,7 @@ from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.common import package_root
 from scinoephile.common.subprocess import run_command
+from scinoephile.core import Language
 from scinoephile.core.dependencies.transcription import import_whisper_timestamped
 from test.helpers import parametrize
 
@@ -177,6 +178,129 @@ def test_transcribe_forwards_recovery_decoding_options(
     )
     assert budget_record.levelname == "DEBUG"
     assert not any("Whisper reached its" in record.message for record in caplog.records)
+
+
+def test_transcribe_falls_back_to_native_text_with_ctc_alignment(
+    monkeypatch: MonkeyPatch, tmp_path: Path
+):
+    """Test failed Whisper timestamping falls back to native text plus CTC.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    audio = AudioSegment.silent(duration=1000)
+    aligned_segments = [
+        TranscribedSegment(
+            id=0,
+            seek=0,
+            start=0.0,
+            end=1.0,
+            text="你好",
+            words=[
+                TranscribedWord(text="你", start=0.0, end=0.5, confidence=1.0),
+                TranscribedWord(text="好", start=0.5, end=1.0, confidence=1.0),
+            ],
+        )
+    ]
+    ctc_aligner = Mock(
+        language=Language.yue_hant,
+        model_name="ctc/test-model",
+        return_value=aligned_segments,
+    )
+    model = Mock()
+    model.decode = Mock()
+    model.transcribe.return_value = {"text": "你好"}
+    timestamped_transcribe = Mock(
+        side_effect=AssertionError(
+            "Inconsistent number of segments: whisper_segments (2) != "
+            "timestamped_word_segments (1)"
+        )
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped",
+        Mock(return_value=SimpleNamespace(transcribe=timestamped_transcribe)),
+    )
+    transcriber = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model_name="custom/model",
+        language="yue",
+        ctc_aligner=ctc_aligner,
+    )
+    transcriber._model = model
+
+    assert transcriber(audio) == aligned_segments
+    timestamped_transcribe.assert_called_once()
+    model.transcribe.assert_called_once()
+    assert model.transcribe.call_args.kwargs == {
+        "language": "yue",
+        "temperature": 0.0,
+        "condition_on_previous_text": True,
+        "sample_len": 32,
+        "word_timestamps": False,
+        "verbose": False,
+    }
+    ctc_aligner.assert_called_once_with(audio, "你好")
+    cache_payload = json.loads(
+        _get_cache_path(transcriber, audio).read_text(encoding="utf-8")
+    )
+    assert cache_payload["metadata"]["timestamp_fallback"] == "ctc"
+    assert cache_payload["metadata"]["timestamp_fallback_language"] == "yue-Hant"
+    assert (
+        cache_payload["metadata"]["timestamp_fallback_model_name"] == "ctc/test-model"
+    )
+
+
+def test_ctc_fallback_configuration_reads_legacy_whisper_cache(
+    monkeypatch: MonkeyPatch, tmp_path: Path
+):
+    """Test enabling CTC fallback preserves pre-fallback Whisper cache hits.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    audio = AudioSegment.silent(duration=1000)
+    segments = [
+        TranscribedSegment(
+            id=0,
+            seek=0,
+            start=0.0,
+            end=1.0,
+            text="你好",
+            words=[TranscribedWord(text="你好", start=0.0, end=1.0, confidence=1.0)],
+        )
+    ]
+    legacy_transcriber = WhisperTranscriber(
+        cache_root_path=tmp_path, model_name="custom/model", language="yue"
+    )
+    settings = legacy_transcriber._get_preprocessing_settings()[0]
+    legacy_transcriber._cache.save(
+        audio,
+        legacy_transcriber._get_cache_metadata_for_audio(audio, settings),
+        segments,
+    )
+    ctc_aligner = Mock(language=Language.yue_hant, model_name="ctc/test-model")
+    transcribe = Mock(side_effect=AssertionError("Whisper should not run"))
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped",
+        Mock(return_value=SimpleNamespace(transcribe=transcribe)),
+    )
+    transcriber = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model_name="custom/model",
+        language="yue",
+        ctc_aligner=ctc_aligner,
+    )
+
+    assert _get_cache_path(transcriber, audio) != _get_cache_path(
+        legacy_transcriber, audio
+    )
+    assert transcriber(audio) == segments
+    transcribe.assert_not_called()
+    ctc_aligner.assert_not_called()
 
 
 def test_transcribe_logs_when_decoding_window_reaches_token_limit(
@@ -568,6 +692,95 @@ def test_normalize_transcription_segments_coalesces_malformed_duplicate_pair():
         "先生",
         "你就",
     ]
+
+
+def test_normalize_transcription_segments_discards_terminal_credit_hallucination(
+    caplog: LogCaptureFixture,
+):
+    """Test a terminal high-no-speech subtitle credit is discarded.
+
+    Arguments:
+        caplog: captured log records
+    """
+    transcriber = WhisperTranscriber(model_name="custom/model")
+    dialogue = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.0,
+        end=1.0,
+        text="對白",
+        words=[TranscribedWord(text="對白", start=0.0, end=1.0, confidence=1.0)],
+    )
+    credit = TranscribedSegment(
+        id=1,
+        seek=0,
+        start=1.0,
+        end=1.5,
+        text="字幕由 Amara.org 社群提供",
+        no_speech_prob=0.824,
+        words=[
+            TranscribedWord(
+                text="字幕由 Amara.org 社群提供", start=1.0, end=1.5, confidence=1.0
+            )
+        ],
+    )
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        [dialogue, credit],
+        source="cache",
+        cache_path=Path("/tmp/whisper.json"),
+        use_vad=False,
+    )
+
+    assert normalized_segments == [dialogue]
+    assert "Discarding terminal Whisper subtitle-credit hallucination" in caplog.text
+
+
+@parametrize(
+    ("credit_idx", "no_speech_prob"),
+    [(0, 0.824), (1, 0.1)],
+    ids=("nonterminal", "plausible-speech"),
+)
+def test_normalize_transcription_segments_preserves_ambiguous_credit_segments(
+    credit_idx: int, no_speech_prob: float
+):
+    """Test ambiguous subtitle-credit segments remain subject to validation.
+
+    Arguments:
+        credit_idx: index at which the credit-like segment appears
+        no_speech_prob: no-speech probability assigned to the credit-like segment
+    """
+    transcriber = WhisperTranscriber(model_name="custom/model")
+    dialogue = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.0,
+        end=1.0,
+        text="對白",
+        words=[TranscribedWord(text="對白", start=0.0, end=1.0, confidence=1.0)],
+    )
+    credit = TranscribedSegment(
+        id=1,
+        seek=0,
+        start=1.0,
+        end=1.5,
+        text="字幕由 Amara.org 社群提供",
+        no_speech_prob=no_speech_prob,
+        words=[
+            TranscribedWord(
+                text="字幕由 Amara.org 社群提供", start=1.0, end=1.5, confidence=1.0
+            )
+        ],
+    )
+    segments = [dialogue, credit]
+    if credit_idx == 0:
+        segments.reverse()
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        segments, source="whisper", cache_path=None, use_vad=False
+    )
+
+    assert normalized_segments == segments
 
 
 def test_get_segment_split_at_idx_includes_segment_details_in_error():

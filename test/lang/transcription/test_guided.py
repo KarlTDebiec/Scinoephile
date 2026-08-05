@@ -11,7 +11,7 @@ from unittest.mock import Mock, patch
 
 from pytest import raises
 
-from scinoephile.audio.transcription import DemucsMode, VADMode
+from scinoephile.audio.transcription import CtcAligner, DemucsMode, VADMode
 from scinoephile.audio.transcription.mlx_audio.backend import MIMO_MODEL_NAME
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
@@ -183,6 +183,16 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.tail_recovery_transcriber._cache.overwrite
     assert transcriber.transcriber.demucs_separator is None
     assert transcriber.recovery_transcriber.demucs_separator is None
+    assert isinstance(transcriber.transcriber.ctc_aligner, CtcAligner)
+    assert transcriber.transcriber.ctc_aligner.language is Language.yue_hant
+    assert (
+        transcriber.recovery_transcriber.ctc_aligner
+        is transcriber.transcriber.ctc_aligner
+    )
+    assert (
+        transcriber.tail_recovery_transcriber.ctc_aligner
+        is transcriber.transcriber.ctc_aligner
+    )
     test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
     assert transcriber.aligner.delineation_processor.current_test_cases_path == (
         test_case_dir_path / "delineation" / "test.json"
@@ -220,6 +230,7 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
             cache_root_path=tmp_path,
             strip_generated_punctuation=True,
             mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
+            mlx_audio_token_limit_guard=True,
             provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
             delineation_json_path=tmp_path / "delineation.json",
             punctuation_json_path=tmp_path / "punctuation.json",
@@ -237,6 +248,7 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
     mlx_audio_transcriber_class.assert_called_once_with(
         model_name=MIMO_MODEL_NAME,
         language=Language.yue_hant,
+        token_limit_guard=True,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VADMode.OFF,
         cache_root_path=tmp_path,

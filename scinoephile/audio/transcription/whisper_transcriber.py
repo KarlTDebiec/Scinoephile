@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from logging import getLogger
 from math import ceil
 from pathlib import Path
@@ -18,8 +18,9 @@ from scinoephile.core.dependencies.transcription import (
 )
 from scinoephile.core.ml import get_torch_device
 
+from .ctc_aligner import CtcAligner
 from .demucs import DemucsSeparator
-from .exceptions import TranscriptionInferenceError
+from .exceptions import TranscriptionEmptyError, TranscriptionInferenceError
 from .preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
@@ -28,7 +29,10 @@ from .preprocessing_settings import (
 from .transcribed_segment import TranscribedSegment
 from .transcriber import Transcriber
 
-__all__ = ["WhisperTranscriber"]
+__all__ = ["SUBTITLE_CREDIT_HALLUCINATION_MARKERS", "WhisperTranscriber"]
+
+SUBTITLE_CREDIT_HALLUCINATION_MARKERS = ("amara.org", "字幕由", "字幕提供者")
+"""Markers indicating an ASR-generated subtitle-credit hallucination."""
 
 _LOCAL_MODEL_PATH_PREFIXES = {"checkpoint", "checkpoints", "model", "models"}
 _MAX_SAMPLE_LEN = 224
@@ -39,6 +43,9 @@ _MAX_TOKENS_PER_SECOND = 16
 
 _MIN_SAMPLE_LEN = 32
 """Minimum token budget for very short source audio."""
+
+_SUBTITLE_CREDIT_MAX_NO_SPEECH_PROBABILITY = 0.6
+"""Minimum no-speech probability for discarding a terminal subtitle credit."""
 
 if TYPE_CHECKING:
     from pydub import AudioSegment
@@ -72,6 +79,7 @@ class WhisperTranscriber(Transcriber):
         overwrite_cache: bool = False,
         temperature: float | Sequence[float] = 0.0,
         condition_on_previous_text: bool = True,
+        ctc_aligner: CtcAligner | None = None,
         demucs_separator: DemucsSeparator | None = None,
     ):
         """Initialize.
@@ -86,6 +94,7 @@ class WhisperTranscriber(Transcriber):
             temperature: decoding temperature or fallback schedule
             condition_on_previous_text: whether to condition each decoding window on
                 the preceding window
+            ctc_aligner: optional CTC aligner used when Whisper timestamping fails
             demucs_separator: optional shared Demucs vocal separator
         """
         self.model_name = model_name
@@ -93,6 +102,7 @@ class WhisperTranscriber(Transcriber):
         self.language = language
         self.temperature: float | Sequence[float] = temperature
         self.condition_on_previous_text = condition_on_previous_text
+        self.ctc_aligner = ctc_aligner
         super().__init__(
             cache_root_path, demucs_mode, vad_mode, overwrite_cache, demucs_separator
         )
@@ -193,9 +203,36 @@ class WhisperTranscriber(Transcriber):
             normalized transcription segments
         """
         normalized_segments: list[TranscribedSegment] = []
+        text_segment_indexes = [
+            idx for idx, segment in enumerate(segments) if segment.text.strip()
+        ]
+        last_text_segment_idx = None
+        if text_segment_indexes:
+            last_text_segment_idx = text_segment_indexes[-1]
         segment_idx = 0
         while segment_idx < len(segments):
             segment = segments[segment_idx].model_copy(deep=True)
+
+            normalized_text = segment.text.casefold()
+            if (
+                segment_idx == last_text_segment_idx
+                and segment.no_speech_prob is not None
+                and segment.no_speech_prob >= _SUBTITLE_CREDIT_MAX_NO_SPEECH_PROBABILITY
+                and any(
+                    marker in normalized_text
+                    for marker in SUBTITLE_CREDIT_HALLUCINATION_MARKERS
+                )
+            ):
+                logger.warning(
+                    f"Discarding terminal Whisper subtitle-credit hallucination for "
+                    f"model={self.model_name} vad={use_vad} "
+                    f"source={source} cache={cache_path} "
+                    f"segment_idx={segment_idx} id={segment.id} "
+                    f"no_speech_prob={segment.no_speech_prob:.3f} "
+                    f"text={segment.text!r}"
+                )
+                segment_idx += 1
+                continue
 
             if segment_idx + 1 < len(segments):
                 next_segment = segments[segment_idx + 1]
@@ -300,13 +337,42 @@ class WhisperTranscriber(Transcriber):
         vad_implementation = None
         if settings.use_vad:
             vad_implementation = "whisper-timestamped"
-        return {
+        metadata: dict[str, object] = {
             "condition_on_previous_text": self.condition_on_previous_text,
             "language": self.language,
             "model_name": self.model_name,
             "temperature": temperature,
             "vad_implementation": vad_implementation,
         }
+        if self.ctc_aligner is not None:
+            metadata.update(
+                {
+                    "timestamp_fallback": "ctc",
+                    "timestamp_fallback_language": self.ctc_aligner.language.code,
+                    "timestamp_fallback_model_name": self.ctc_aligner.model_name,
+                }
+            )
+        return metadata
+
+    def _get_compatible_cache_metadata_for_audio(
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
+    ) -> tuple[Mapping[str, object], ...]:
+        """Get current and pre-CTC-fallback Whisper cache identities.
+
+        Arguments:
+            audio: audio whose properties affect cache identity
+            settings: preprocessing settings
+        Returns:
+            current cache metadata followed by compatible legacy metadata
+        """
+        metadata = self._get_cache_metadata_for_audio(audio, settings)
+        if self.ctc_aligner is None:
+            return (metadata,)
+        legacy_metadata = dict(metadata)
+        legacy_metadata.pop("timestamp_fallback")
+        legacy_metadata.pop("timestamp_fallback_language")
+        legacy_metadata.pop("timestamp_fallback_model_name")
+        return metadata, legacy_metadata
 
     def _prepare_cached_segments(
         self,
@@ -338,11 +404,11 @@ class WhisperTranscriber(Transcriber):
         Returns:
             normalized transcription segments
         Raises:
-            TranscriptionInferenceError: if Whisper fails with an assertion
+            TranscriptionInferenceError: if Whisper decoding fails
         """
         whisper_timestamped = import_whisper_timestamped()
-        try:
-            with get_temp_file_path(suffix=".wav") as temp_audio_path:
+        with get_temp_file_path(suffix=".wav") as temp_audio_path:
+            try:
                 audio.export(temp_audio_path, format="wav")
                 sample_len = self._get_sample_len(audio)
                 logger.debug(
@@ -372,24 +438,35 @@ class WhisperTranscriber(Transcriber):
 
                 setattr(model, "decode", decode_with_limit_tracking)
                 try:
-                    result = whisper_timestamped.transcribe(
-                        model,
-                        str(temp_audio_path),
-                        language=self.language,
-                        vad=settings.use_vad,
-                        temperature=self.temperature,
-                        condition_on_previous_text=self.condition_on_previous_text,
-                        sample_len=sample_len,
+                    try:
+                        result = whisper_timestamped.transcribe(
+                            model,
+                            str(temp_audio_path),
+                            language=self.language,
+                            vad=settings.use_vad,
+                            temperature=self.temperature,
+                            condition_on_previous_text=self.condition_on_previous_text,
+                            sample_len=sample_len,
+                        )
+                    finally:
+                        if decode_is_instance_attribute:
+                            setattr(model, "decode", decode)
+                        else:
+                            delattr(model, "decode")
+                except AssertionError as exc:
+                    if self.ctc_aligner is None:
+                        raise TranscriptionInferenceError(
+                            f"Whisper inference failed with an assertion: {exc}"
+                        ) from exc
+                    return self._transcribe_with_ctc_fallback(
+                        audio, temp_audio_path, sample_len, exc
                     )
-                finally:
-                    if decode_is_instance_attribute:
-                        setattr(model, "decode", decode)
-                    else:
-                        delattr(model, "decode")
-        except AssertionError as exc:
-            raise TranscriptionInferenceError(
-                f"Whisper inference failed with an assertion: {exc}"
-            ) from exc
+            except TranscriptionInferenceError:
+                raise
+            except (ImportError, OSError, RuntimeError, ValueError) as exc:
+                raise TranscriptionInferenceError(
+                    f"Unable to run Whisper inference: {exc}"
+                ) from exc
 
         segments = [
             TranscribedSegment.model_validate(segment) for segment in result["segments"]
@@ -403,3 +480,62 @@ class WhisperTranscriber(Transcriber):
         return self._normalize_transcription_segments(
             segments, source="whisper", cache_path=None, use_vad=settings.use_vad
         )
+
+    def _transcribe_with_ctc_fallback(
+        self,
+        audio: AudioSegment,
+        audio_path: Path,
+        sample_len: int,
+        timestamp_error: AssertionError,
+    ) -> list[TranscribedSegment]:
+        """Decode text natively and align it after Whisper timestamping fails.
+
+        Arguments:
+            audio: audio being transcribed
+            audio_path: temporary audio file passed to native Whisper
+            sample_len: maximum number of tokens decoded per Whisper window
+            timestamp_error: assertion raised by Whisper Timestamped
+        Returns:
+            CTC-aligned native Whisper transcript
+        Raises:
+            TranscriptionEmptyError: if native Whisper returns empty text
+            TranscriptionInferenceError: if native Whisper returns malformed output
+        """
+        assert self.ctc_aligner is not None
+        logger.info(
+            f"Retrying Whisper after timestamp alignment failed ({timestamp_error}) "
+            f"using native decoding and CTC model {self.ctc_aligner.model_name}"
+        )
+        temperature: float | tuple[float, ...]
+        if isinstance(self.temperature, int | float):
+            temperature = float(self.temperature)
+        else:
+            temperature = tuple(self.temperature)
+        try:
+            result = self.model.transcribe(
+                str(audio_path),
+                language=self.language,
+                temperature=temperature,
+                condition_on_previous_text=self.condition_on_previous_text,
+                sample_len=sample_len,
+                word_timestamps=False,
+                verbose=False,
+            )
+        except (AssertionError, OSError, RuntimeError, TypeError, ValueError) as exc:
+            raise TranscriptionInferenceError(
+                f"Unable to run native Whisper fallback: {exc}"
+            ) from exc
+        if not isinstance(result, Mapping):
+            raise TranscriptionInferenceError(
+                "Native Whisper fallback returned malformed output."
+            )
+        text = result.get("text")
+        if not isinstance(text, str):
+            raise TranscriptionInferenceError(
+                "Native Whisper fallback output is missing transcript text."
+            )
+        if not text.strip():
+            raise TranscriptionEmptyError(
+                "Native Whisper fallback returned empty transcript."
+            )
+        return self.ctc_aligner(audio, text)
