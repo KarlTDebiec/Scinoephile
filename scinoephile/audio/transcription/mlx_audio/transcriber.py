@@ -7,6 +7,7 @@ from __future__ import annotations
 import platform
 from collections.abc import Sequence
 from logging import getLogger
+from math import ceil
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -48,6 +49,9 @@ logger = getLogger(__name__)
 _LOW_INFORMATION_CHARACTERS = frozenset("啊呀吖哦噢嗯嘶")
 """Standalone vocalizations rejected as unusable transcripts."""
 
+_TOKEN_LIMIT_GUARD_FRACTION = 0.95
+"""Generation-budget fraction treated as suspicious under the opt-in guard."""
+
 _VAD_CACHE_VERSION = "silero-v1"
 """Cache identity for the current MLX-Audio VAD implementation."""
 
@@ -82,6 +86,7 @@ class MlxAudioTranscriber(Transcriber):
         max_tokens: int | None = None,
         chunk_duration_seconds: float | None = None,
         chunk_overlap_seconds: float = 1.0,
+        token_limit_guard: bool = False,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.OFF,
         cache_root_path: Path | None = None,
@@ -97,6 +102,7 @@ class MlxAudioTranscriber(Transcriber):
             max_tokens: optional maximum number of text tokens to generate
             chunk_duration_seconds: optional chunk duration for inference
             chunk_overlap_seconds: context overlap applied to each chunk
+            token_limit_guard: whether to proactively guard model-family token limits
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
             cache_root_path: root directory beneath which to cache
@@ -124,6 +130,7 @@ class MlxAudioTranscriber(Transcriber):
         self.max_tokens = max_tokens
         self.chunk_duration_seconds = chunk_duration_seconds
         self.chunk_overlap_seconds = chunk_overlap_seconds
+        self.token_limit_guard = token_limit_guard
         if self.max_tokens is not None and self.max_tokens <= 0:
             raise ValueError("MLX-Audio max tokens must be positive.")
         if (
@@ -182,6 +189,25 @@ class MlxAudioTranscriber(Transcriber):
             "aligner_model_name": self.ctc_aligner.model_name,
             "vad_version": vad_version,
         }
+
+    def _get_cache_metadata_for_audio(
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
+    ) -> dict[str, object]:
+        """Get cache metadata for MLX-Audio behavior used by one audio input.
+
+        Arguments:
+            audio: audio whose duration selects guarded chunking
+            settings: preprocessing settings
+        Returns:
+            configuration identifying the output
+        """
+        metadata = super()._get_cache_metadata_for_audio(audio, settings)
+        metadata["chunk_duration_seconds"] = self._get_effective_chunk_duration_seconds(
+            audio
+        )
+        if self._uses_token_limit_guard(audio):
+            metadata["token_limit_guard_fraction"] = _TOKEN_LIMIT_GUARD_FRACTION
+        return metadata
 
     @staticmethod
     def _get_vad_speech_intervals(audio: AudioSegment) -> list[tuple[int, int]]:
@@ -248,19 +274,23 @@ class MlxAudioTranscriber(Transcriber):
             TranscriptionInferenceError: if an optional dependency or assertion fails
         """
         try:
+            guard_token_limit = self._uses_token_limit_guard(audio)
             if settings.use_vad:
-                return self._transcribe_vad_audio(audio)
-            return self._transcribe_unfiltered_audio(audio)
+                return self._transcribe_vad_audio(audio, guard_token_limit)
+            return self._transcribe_unfiltered_audio(audio, guard_token_limit)
         except (AssertionError, ImportError) as exc:
             raise TranscriptionInferenceError(
                 f"Unable to run MLX-Audio transcription: {exc}"
             ) from exc
 
-    def _transcribe_audio_window(self, audio: AudioSegment) -> list[TranscribedSegment]:
+    def _transcribe_audio_window(
+        self, audio: AudioSegment, guard_token_limit: bool = False
+    ) -> list[TranscribedSegment]:
         """Run MLX-Audio transcription and timestamp alignment for one audio window.
 
         Arguments:
             audio: audio to transcribe
+            guard_token_limit: whether to reserve generation-token headroom
         Returns:
             timestamped transcription segments
         Raises:
@@ -276,12 +306,15 @@ class MlxAudioTranscriber(Transcriber):
                 raise TranscriptionInferenceError(
                     f"Unable to run MLX-Audio inference: {exc}"
                 ) from exc
-            if (
-                inference_result.generation_tokens is not None
-                and inference_result.generation_tokens >= max_tokens
+            generation_tokens = inference_result.generation_tokens
+            guarded_limit = ceil(max_tokens * _TOKEN_LIMIT_GUARD_FRACTION)
+            if generation_tokens is not None and (
+                generation_tokens >= max_tokens
+                or (guard_token_limit and generation_tokens >= guarded_limit)
             ):
                 raise _MlxAudioTokenLimitError(
-                    f"MLX-Audio exhausted its generation token limit of {max_tokens}."
+                    f"MLX-Audio used {generation_tokens} of its {max_tokens} "
+                    "generation tokens."
                 )
             text = inference_result.text
             if not text.strip():
@@ -294,19 +327,20 @@ class MlxAudioTranscriber(Transcriber):
             return self.ctc_aligner(audio, text)
 
     def _transcribe_audio_window_with_retry(
-        self, audio: AudioSegment
+        self, audio: AudioSegment, guard_token_limit: bool = False
     ) -> list[TranscribedSegment]:
         """Transcribe a window, splitting it after recoverable length failures.
 
         Arguments:
             audio: audio window to transcribe
+            guard_token_limit: whether to reserve generation-token headroom
         Returns:
             timestamped transcription segments
         Raises:
             TranscriptionError: if a one-millisecond window still fails
         """
         try:
-            return self._transcribe_audio_window(audio)
+            return self._transcribe_audio_window(audio, guard_token_limit)
         except (_MlxAudioTokenLimitError, TranscriptionAlignmentIncompleteError) as exc:
             if len(audio) <= 1:
                 raise
@@ -324,11 +358,15 @@ class MlxAudioTranscriber(Transcriber):
             f"{chunk_duration_ms / 1000:.3f}s chunks"
         )
         return self._transcribe_chunked_audio(
-            audio, chunk_duration_ms, chunk_overlap_ms
+            audio, chunk_duration_ms, chunk_overlap_ms, guard_token_limit
         )
 
     def _transcribe_chunked_audio(
-        self, audio: AudioSegment, chunk_duration_ms: int, chunk_overlap_ms: int
+        self,
+        audio: AudioSegment,
+        chunk_duration_ms: int,
+        chunk_overlap_ms: int,
+        guard_token_limit: bool = False,
     ) -> list[TranscribedSegment]:
         """Run MLX-Audio transcription over shorter overlapping chunks.
 
@@ -336,6 +374,7 @@ class MlxAudioTranscriber(Transcriber):
             audio: audio to transcribe
             chunk_duration_ms: core chunk duration in milliseconds
             chunk_overlap_ms: context overlap in milliseconds
+            guard_token_limit: whether to reserve generation-token headroom
         Returns:
             timestamped transcription segments
         """
@@ -347,7 +386,9 @@ class MlxAudioTranscriber(Transcriber):
             window_end_ms = min(len(audio), core_end_ms + chunk_overlap_ms)
             window_audio = audio[window_start_ms:window_end_ms]
             try:
-                window_segments = self._transcribe_audio_window_with_retry(window_audio)
+                window_segments = self._transcribe_audio_window_with_retry(
+                    window_audio, guard_token_limit
+                )
             except TranscriptionEmptyError:
                 logger.info(
                     f"Skipping empty MLX-Audio audio window "
@@ -371,30 +412,41 @@ class MlxAudioTranscriber(Transcriber):
         return segments
 
     def _transcribe_unfiltered_audio(
-        self, audio: AudioSegment
+        self, audio: AudioSegment, guard_token_limit: bool = False
     ) -> list[TranscribedSegment]:
         """Transcribe audio without applying VAD.
 
         Arguments:
             audio: audio to transcribe
+            guard_token_limit: whether to reserve generation-token headroom
         Returns:
             timestamped transcription segments
         """
-        if self.chunk_duration_seconds is None:
-            return self._transcribe_audio_window_with_retry(audio)
-        chunk_duration_ms = int(round(self.chunk_duration_seconds * 1000))
+        chunk_duration_seconds = self._get_effective_chunk_duration_seconds(audio)
+        if chunk_duration_seconds is None:
+            return self._transcribe_audio_window_with_retry(audio, guard_token_limit)
+        chunk_duration_ms = int(round(chunk_duration_seconds * 1000))
         if len(audio) <= chunk_duration_ms:
-            return self._transcribe_audio_window_with_retry(audio)
+            return self._transcribe_audio_window_with_retry(audio, guard_token_limit)
+        if guard_token_limit and chunk_duration_seconds != self.chunk_duration_seconds:
+            logger.info(
+                f"Guarding MLX-Audio generation token limit with "
+                f"{chunk_duration_seconds:.3f}s chunks for "
+                f"{len(audio) / 1000:.3f}s of audio"
+            )
         chunk_overlap_ms = int(round(self.chunk_overlap_seconds * 1000))
         return self._transcribe_chunked_audio(
-            audio, chunk_duration_ms, chunk_overlap_ms
+            audio, chunk_duration_ms, chunk_overlap_ms, guard_token_limit
         )
 
-    def _transcribe_vad_audio(self, audio: AudioSegment) -> list[TranscribedSegment]:
+    def _transcribe_vad_audio(
+        self, audio: AudioSegment, guard_token_limit: bool = False
+    ) -> list[TranscribedSegment]:
         """Transcribe detected speech and restore original-audio timestamps.
 
         Arguments:
             audio: original audio containing speech and non-speech regions
+            guard_token_limit: whether to reserve generation-token headroom
         Returns:
             timestamped transcription segments on the original audio timeline
         Raises:
@@ -412,8 +464,46 @@ class MlxAudioTranscriber(Transcriber):
         for start_ms, end_ms in speech_intervals:
             speech_audio += audio[start_ms:end_ms]
 
-        speech_segments = self._transcribe_unfiltered_audio(speech_audio)
+        speech_segments = self._transcribe_unfiltered_audio(
+            speech_audio, guard_token_limit
+        )
         return self._restore_vad_timestamps(speech_segments, speech_intervals)
+
+    def _get_effective_chunk_duration_seconds(
+        self, audio: AudioSegment
+    ) -> float | None:
+        """Get the explicit or guarded chunk duration for one audio input.
+
+        Arguments:
+            audio: audio whose duration selects guarded chunking
+        Returns:
+            effective chunk duration, or None for unchunked inference
+        """
+        chunk_duration_seconds = self.chunk_duration_seconds
+        if not self._uses_token_limit_guard(audio):
+            return chunk_duration_seconds
+
+        guarded_duration_seconds = self.backend.token_limit_guard_chunk_duration_seconds
+        assert guarded_duration_seconds is not None
+        if (
+            chunk_duration_seconds is None
+            or chunk_duration_seconds > guarded_duration_seconds
+        ):
+            return guarded_duration_seconds
+        return chunk_duration_seconds
+
+    def _uses_token_limit_guard(self, audio: AudioSegment) -> bool:
+        """Check whether the opt-in token-limit guard changes this audio's behavior.
+
+        Arguments:
+            audio: audio whose duration selects guarded chunking
+        Returns:
+            whether guarded inference is active
+        """
+        guarded_duration_seconds = self.backend.token_limit_guard_chunk_duration_seconds
+        if not self.token_limit_guard or guarded_duration_seconds is None:
+            return False
+        return len(audio) > round(guarded_duration_seconds * 1000)
 
     @staticmethod
     def _restore_vad_timestamps(

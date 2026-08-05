@@ -68,6 +68,18 @@ class _TestTranscriber(Transcriber):
         return outcome
 
 
+class _PerAudioCacheTranscriber(_TestTranscriber):
+    """Test transcriber whose cache identity depends on audio duration."""
+
+    def _get_cache_metadata_for_audio(
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
+    ) -> dict[str, object]:
+        """Add the audio duration to the generic cache metadata."""
+        metadata = super()._get_cache_metadata_for_audio(audio, settings)
+        metadata["audio_duration_ms"] = len(audio)
+        return metadata
+
+
 def test_get_preprocessing_settings_orders_preferred_configurations_first(
     tmp_path: Path,
 ):
@@ -92,6 +104,31 @@ def test_get_preprocessing_settings_honors_forced_modes(tmp_path: Path):
     assert transcriber._get_preprocessing_settings() == (
         TranscriptionPreprocessingSettings(False, True),
     )
+
+
+def test_per_audio_cache_metadata_is_used_for_cache_lifecycle(tmp_path: Path):
+    """Test per-audio metadata controls cache saves, loads, and removals."""
+    audio = AudioSegment.silent(duration=100)
+    settings = TranscriptionPreprocessingSettings(False, False)
+    segments = [_get_segment("cached")]
+    transcriber = _PerAudioCacheTranscriber(tmp_path, DemucsMode.OFF, VADMode.OFF)
+    transcriber.outcomes[settings] = segments
+
+    assert transcriber(audio) == segments
+    per_audio_cache_path = transcriber._cache.get_path(
+        audio, transcriber._get_cache_metadata_for_audio(audio, settings)
+    )
+    generic_cache_path = transcriber._cache.get_path(
+        audio, transcriber._get_cache_metadata(settings)
+    )
+    assert per_audio_cache_path.exists()
+    assert not generic_cache_path.exists()
+
+    assert transcriber(audio) == segments
+    assert transcriber.calls == [(audio, settings)]
+
+    transcriber.remove_cached_transcriptions(audio)
+    assert not per_audio_cache_path.exists()
 
 
 def test_fallback_cache_is_checked_before_demucs(tmp_path: Path):
