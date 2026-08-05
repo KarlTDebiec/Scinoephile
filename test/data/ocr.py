@@ -96,8 +96,8 @@ def process_ocr(
         simplify_reviewer_kw = dict(reviewer_kw or {})
         simplify_reviewer_kw.pop("prompt", None)
         simplify_reviewer_kw.pop("reviewer", None)
-        simplify_reviewer_kw.pop("test_cases", None)
-        simplify_reviewer_kw["test_case_path"] = (
+        simplify_reviewer_kw.pop("shared_test_cases", None)
+        simplify_reviewer_kw["current_test_cases_path"] = (
             output_dir_path / "lang" / language.language / "simplify_review.json"
         )
         simplified_reviewed = load_or_review_series(
@@ -155,7 +155,7 @@ def _ocr(
     # Prepare kwargs
     fuser_kw = dict(fuser_kw or {})
     fuser_kw.setdefault(
-        "test_case_path",
+        "current_test_cases_path",
         output_dir_path / "lang" / language.language / "ocr_fusion.json",
     )
     fuser_kw.setdefault("auto_verify", True)

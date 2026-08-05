@@ -29,7 +29,7 @@ from scinoephile.lang.zho_yue.translation import (
     ZhoYueTranslationPromptZhoHans,
     ZhoYueTranslationPromptZhoHant,
 )
-from scinoephile.llms import load_default_test_cases
+from scinoephile.llms import load_shared_test_cases
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.llms.translation import (
     TranslationManager,
@@ -106,7 +106,7 @@ def get_translator(
     source_language: Language,
     target_language: Language,
     prompt: TranslationPrompt | None = None,
-    test_cases: list[TestCase] | None = None,
+    shared_test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> TranslationProcessor:
@@ -116,7 +116,7 @@ def get_translator(
         source_language: source language
         target_language: target language
         prompt: prompt override
-        test_cases: test cases
+        shared_test_cases: shared test cases
         provider: provider to use for queries
         **kwargs: processor initialization keyword arguments
     Returns:
@@ -133,12 +133,12 @@ def get_translator(
 
     if prompt is None:
         prompt = DEFAULT_PROMPTS[key]
-    if test_cases is None:
+    if shared_test_cases is None:
         json_paths = _JSON_PATHS[key]
-        test_cases = list(
-            load_default_test_cases(TranslationManager, prompt, json_paths)
+        shared_test_cases = list(
+            load_shared_test_cases(TranslationManager, prompt, json_paths)
         )
     if provider is None:
         provider = get_provider()
 
-    return TranslationProcessor(prompt, test_cases, provider=provider, **kwargs)
+    return TranslationProcessor(prompt, shared_test_cases, provider=provider, **kwargs)

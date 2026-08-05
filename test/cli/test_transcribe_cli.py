@@ -100,8 +100,8 @@ def test_transcribe_cli_defers_whisper_model_default_to_registry():
     assert model_action.default is None
 
 
-def test_transcribe_cli_defaults_demucs_to_auto_and_vad_to_off():
-    """Test transcription CLI defaults Demucs to automatic and disables VAD."""
+def test_transcribe_cli_defaults_demucs_and_vad_to_off():
+    """Test transcription CLI defaults Demucs and VAD to off."""
     parser = TranscribeCli.argparser()
     demucs_action = next(
         action
@@ -114,7 +114,7 @@ def test_transcribe_cli_defaults_demucs_to_auto_and_vad_to_off():
         if "--vad" in action.option_strings
     )
 
-    assert demucs_action.default is DemucsMode.AUTO
+    assert demucs_action.default is DemucsMode.OFF
     assert vad_action.default is VADMode.OFF
 
 

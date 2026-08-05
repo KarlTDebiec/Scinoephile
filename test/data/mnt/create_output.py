@@ -78,7 +78,9 @@ if "yue_eng" in actions:
         Language.zho_hant,
         Language.eng,
         prompt=EngZhoYueGuidedTranslationPrompt,
-        test_case_path=(output_path / "yue_eng/lang/eng_zho/guided_translation.json"),
+        current_test_cases_path=(
+            output_path / "yue_eng/lang/eng_zho/guided_translation.json"
+        ),
         additional_context=additional_context,
         auto_verify=True,
     )

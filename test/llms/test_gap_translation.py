@@ -375,7 +375,7 @@ def test_processor_maps_targets_and_outputs_by_index():
     )
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = GapTranslationProcessor(
-        prompt, test_cases=[test_case], provider=provider
+        prompt, shared_test_cases=[test_case], provider=provider
     )
 
     output = processor.process(source_one, source_two)
@@ -441,14 +441,16 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
             "verified": True,
         }
     )
-    test_case_path = tmp_path / "gap_translation.json"
-    save_test_cases_to_json(test_case_path, [old_test_case], GapTranslationManager)
+    current_test_cases_path = tmp_path / "gap_translation.json"
+    save_test_cases_to_json(
+        current_test_cases_path, [old_test_case], GapTranslationManager
+    )
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = json.dumps(
         {"outputs": [{"index": 2, "text": "new translation"}]}
     )
     processor = GapTranslationProcessor(
-        prompt, test_case_path=test_case_path, provider=provider
+        prompt, current_test_cases_path=current_test_cases_path, provider=provider
     )
     target = Series(events=[Subtitle(start=0, end=100, text="new target")])
     guide = Series(
@@ -460,7 +462,9 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
 
     processor.process(target, guide)
 
-    persisted = load_test_cases_from_json(test_case_path, GapTranslationManager, prompt)
+    persisted = load_test_cases_from_json(
+        current_test_cases_path, GapTranslationManager, prompt
+    )
     assert len(persisted) == 2
     persisted_cases = cast("list[GapTranslationTestCase]", persisted)
     assert [item.query.targets[0].text for item in persisted_cases] == [

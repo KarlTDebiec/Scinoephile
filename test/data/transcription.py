@@ -264,7 +264,7 @@ def _load_or_review_series_guided(
     reviewer_kw = dict(reviewer_kw or {})
     language_pair_name = f"{language.language}_{guide_language.language}"
     reviewer_kw.setdefault(
-        "test_case_path",
+        "current_test_cases_path",
         output_path.parent
         / "lang"
         / language_pair_name
@@ -371,7 +371,7 @@ def _load_or_translate_series_gaps(
     translator_kw = dict(translator_kw or {})
     language_pair_name = f"{target_language.language}_{source_language.language}"
     translator_kw.setdefault(
-        "test_case_path",
+        "current_test_cases_path",
         output_path.parent
         / "lang"
         / language_pair_name

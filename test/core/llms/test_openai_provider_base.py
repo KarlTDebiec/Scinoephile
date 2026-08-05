@@ -8,11 +8,11 @@ import json
 from collections.abc import Callable
 from types import SimpleNamespace
 from typing import Any, cast
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from openai import OpenAI
 from pydantic import ValidationError
-from pytest import raises
+from pytest import mark, raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, OpenAIProviderBase
@@ -215,6 +215,23 @@ def test_model_override_updates_provider_model():
     assert cast(str, client.calls[0]["model"]) == "override-model"
 
 
+def test_completion_requests_use_configured_timeout():
+    """Test completion requests forward the timeout to an injected client."""
+    client = _DummyClient()
+    provider = _DummyProvider(client=cast(OpenAI, client), timeout_seconds=45.0)
+
+    result = provider.chat_completion(
+        messages=[{"role": "user", "content": "hi"}],
+        response_format=_Answer,
+        tool_box=_get_tool_box(lambda args: args),
+    )
+
+    assert result == "done"
+    assert [
+        cast(dict[str, object], call["kwargs"])["timeout"] for call in client.calls
+    ] == [45.0, 45.0]
+
+
 def test_structured_response_validation_error_is_wrapped():
     """Test client-side structured validation failures become domain errors."""
     client = Mock()
@@ -226,6 +243,43 @@ def test_structured_response_validation_error_is_wrapped():
     with raises(ScinoephileError, match="failed structured response validation"):
         provider.chat_completion(
             messages=[{"role": "user", "content": "hi"}], response_format=_Answer
+        )
+
+
+def test_timeout_defaults_to_120_seconds():
+    """Test provider requests default to a 120-second timeout."""
+    provider = _DummyProvider(client=cast(OpenAI, _DummyClient()))
+
+    assert provider.timeout_seconds == 120.0
+
+
+def test_custom_timeout_is_stored():
+    """Test providers retain a custom request timeout."""
+    provider = _DummyProvider(client=cast(OpenAI, _DummyClient()), timeout_seconds=45.0)
+
+    assert provider.timeout_seconds == 45.0
+
+
+@mark.parametrize("timeout_seconds", [0.0, -1.0])
+def test_timeout_must_be_positive(timeout_seconds: float):
+    """Test provider request timeouts must be positive."""
+    with raises(ValueError, match="timeout_seconds must be positive"):
+        _DummyProvider(timeout_seconds=timeout_seconds)
+
+
+def test_sync_client_is_created_lazily_with_configured_timeout():
+    """Test lazy OpenAI client construction uses the configured timeout."""
+    with patch("scinoephile.core.llms.openai_provider_base.OpenAI") as openai:
+        provider = _DummyProvider(
+            api_key="test-api-key",
+            base_url="https://example.invalid/v1",
+            timeout_seconds=45.0,
+        )
+
+        openai.assert_not_called()
+        assert provider.sync_client is openai.return_value
+        openai.assert_called_once_with(
+            api_key="test-api-key", base_url="https://example.invalid/v1", timeout=45.0
         )
 
 

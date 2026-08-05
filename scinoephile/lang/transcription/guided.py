@@ -26,7 +26,7 @@ from scinoephile.lang.yue_zho.transcription import (
     YueZhoPunctuationPromptYueHans,
     YueZhoPunctuationPromptYueHant,
 )
-from scinoephile.llms import load_default_test_cases
+from scinoephile.llms import load_shared_test_cases
 from scinoephile.llms.delineation import (
     DelineationManager,
     DelineationProcessor,
@@ -186,7 +186,7 @@ def get_guided_transcriber(
     *,
     model_name: str | None = None,
     backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
-    demucs_mode: DemucsMode = DemucsMode.AUTO,
+    demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.OFF,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
@@ -264,7 +264,7 @@ def get_guided_transcriber(
             )
     if delineation_test_cases is None:
         delineation_test_cases = list(
-            load_default_test_cases(
+            load_shared_test_cases(
                 DelineationManager, delineation_prompt, spec.delineation_json_paths
             )
         )
@@ -272,8 +272,8 @@ def get_guided_transcriber(
         provider = get_provider()
     delineation_processor = DelineationProcessor(
         delineation_prompt,
-        test_cases=delineation_test_cases,
-        test_case_path=delineation_json_path,
+        shared_test_cases=delineation_test_cases,
+        current_test_cases_path=delineation_json_path,
         provider=provider,
         additional_context=additional_context,
         cache_root_path=cache_root_path,
@@ -283,14 +283,14 @@ def get_guided_transcriber(
     )
     if punctuation_test_cases is None:
         punctuation_test_cases = list(
-            load_default_test_cases(
+            load_shared_test_cases(
                 PunctuationManager, punctuation_prompt, spec.punctuation_json_paths
             )
         )
     punctuation_processor = PunctuationProcessor(
         punctuation_prompt,
-        test_cases=punctuation_test_cases,
-        test_case_path=punctuation_json_path,
+        shared_test_cases=punctuation_test_cases,
+        current_test_cases_path=punctuation_json_path,
         provider=provider,
         additional_context=additional_context,
         cache_root_path=cache_root_path,

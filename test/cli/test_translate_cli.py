@@ -79,7 +79,7 @@ def test_translate_cli_passes_block_range(
                 "--cache-overwrite --llm-no-op",
             )
 
-    assert workflow.call_args.kwargs["test_case_path"] == json_path
+    assert workflow.call_args.kwargs["current_test_cases_path"] == json_path
     assert workflow.call_args.kwargs["start_at_idx"] == 1
     assert workflow.call_args.kwargs["stop_at_idx"] == 3
     assert workflow.call_args.kwargs["cache_root_path"] == cache_root_path.resolve()

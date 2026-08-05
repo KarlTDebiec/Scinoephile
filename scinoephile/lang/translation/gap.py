@@ -29,7 +29,7 @@ from scinoephile.lang.zho_yue.translation import (
     ZhoYueGapTranslationPromptZhoHans,
     ZhoYueGapTranslationPromptZhoHant,
 )
-from scinoephile.llms import load_default_test_cases
+from scinoephile.llms import load_shared_test_cases
 from scinoephile.llms.gap_translation import (
     GapTranslationManager,
     GapTranslationProcessor,
@@ -110,7 +110,7 @@ def get_gap_translator(
     source_language: Language,
     target_language: Language,
     prompt: GapTranslationPrompt | None = None,
-    test_cases: list[TestCase] | None = None,
+    shared_test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> GapTranslationProcessor:
@@ -120,7 +120,7 @@ def get_gap_translator(
         source_language: source language
         target_language: target language
         prompt: prompt override
-        test_cases: test cases
+        shared_test_cases: shared test cases
         provider: provider to use for queries
         **kwargs: processor initialization keyword arguments
     Returns:
@@ -137,12 +137,14 @@ def get_gap_translator(
 
     if prompt is None:
         prompt = DEFAULT_PROMPTS[key]
-    if test_cases is None:
+    if shared_test_cases is None:
         json_paths = _JSON_PATHS[key]
-        test_cases = list(
-            load_default_test_cases(GapTranslationManager, prompt, json_paths)
+        shared_test_cases = list(
+            load_shared_test_cases(GapTranslationManager, prompt, json_paths)
         )
     if provider is None:
         provider = get_provider()
 
-    return GapTranslationProcessor(prompt, test_cases, provider=provider, **kwargs)
+    return GapTranslationProcessor(
+        prompt, shared_test_cases, provider=provider, **kwargs
+    )
