@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from enum import StrEnum
 from logging import getLogger
 from pathlib import Path
 
@@ -15,9 +16,24 @@ from scinoephile.core.media.audio_stream import AudioStream
 
 from .probe import get_streams
 
-__all__ = ["extract_audio"]
+__all__ = ["AudioExtractionMode", "extract_audio"]
 
 logger = getLogger(__name__)
+
+
+class AudioExtractionMode(StrEnum):
+    """Channel and sample-rate preparation used during audio extraction."""
+
+    TRANSCRIPTION = "transcription"
+    """Prepare the current transcription input: mono at 16 kHz."""
+    NATIVE_CENTER = "native-center"
+    """Preserve the source sample rate and extract only the center channel."""
+    NATIVE_CENTER_HEAVY = "native-center-heavy"
+    """Preserve the source sample rate and mix center with quieter front channels."""
+    NATIVE_MONO = "native-mono"
+    """Preserve the source sample rate and downmix the complete stream to mono."""
+    NATIVE_STEREO = "native-stereo"
+    """Preserve the source sample rate and downmix the complete stream to stereo."""
 
 
 def extract_audio(
@@ -25,17 +41,19 @@ def extract_audio(
     outfile_path: Path,
     *,
     stream_index: int | None = None,
+    mode: AudioExtractionMode = AudioExtractionMode.TRANSCRIPTION,
     overwrite: bool = False,
 ) -> AudioStream:
-    """Extract a selected audio stream as a transcription-ready mono WAV file.
+    """Extract and prepare a selected audio stream as a WAV file.
 
-    Multichannel streams with a center channel use that channel; other streams are
-    downmixed to mono. Output is sampled at 16 kHz.
+    The default mode extracts a transcription-ready mono 16-kHz signal. Native-rate
+    modes preserve the source sample rate while selecting or mixing channels.
 
     Arguments:
         infile_path: media input file
         outfile_path: WAV output file
         stream_index: absolute media stream index, or None for the first audio stream
+        mode: channel and sample-rate preparation mode
         overwrite: whether to overwrite an existing output file
     Returns:
         selected audio stream metadata
@@ -86,26 +104,45 @@ def extract_audio(
             "channel count"
         )
     _extract_audio_track(
-        validated_infile_path, validated_outfile_path, stream.index, stream.channels
+        validated_infile_path,
+        validated_outfile_path,
+        stream.index,
+        stream.channels,
+        mode,
     )
     return stream
 
 
 def _extract_audio_track(
-    infile_path: Path, outfile_path: Path, stream_index: int, channels: int
+    infile_path: Path,
+    outfile_path: Path,
+    stream_index: int,
+    channels: int,
+    mode: AudioExtractionMode,
 ):
-    """Extract a known media audio stream as a mono 16 kHz WAV file.
+    """Extract a known media audio stream using the selected preparation mode.
 
     Arguments:
         infile_path: media input file
         outfile_path: WAV output file
         stream_index: absolute media stream index
         channels: number of channels in the selected stream
+        mode: channel and sample-rate preparation mode
     Raises:
         ScinoephileError: if ffmpeg cannot extract the stream
     """
+    if (
+        mode
+        in {AudioExtractionMode.NATIVE_CENTER, AudioExtractionMode.NATIVE_CENTER_HEAVY}
+        and channels < 3
+    ):
+        raise ScinoephileError(
+            f"Audio extraction mode {mode.value} requires a stream with a center "
+            f"channel; stream {stream_index} has {channels} channels"
+        )
+
     try:
-        if channels >= 6:
+        if mode is AudioExtractionMode.TRANSCRIPTION and channels >= 6:
             logger.info(
                 f"Extracting center channel of audio stream {stream_index} from "
                 f"{infile_path} to {outfile_path}"
@@ -119,13 +156,57 @@ def _extract_audio_track(
                     "map": "[out]",
                 },
             ).run(quiet=False, overwrite_output=True)
-        else:
+        elif mode is AudioExtractionMode.TRANSCRIPTION:
             logger.info(
                 f"Downmixing audio stream {stream_index} from {infile_path} to "
                 f"{outfile_path}"
             )
             ffmpeg.input(str(infile_path)).output(
                 str(outfile_path), format="wav", ar=16000, map=f"0:{stream_index}", ac=1
+            ).run(quiet=False, overwrite_output=True)
+        elif mode is AudioExtractionMode.NATIVE_CENTER:
+            logger.info(
+                f"Extracting native-rate center channel of audio stream "
+                f"{stream_index} from {infile_path} to {outfile_path}"
+            )
+            ffmpeg.input(str(infile_path)).output(
+                str(outfile_path),
+                format="wav",
+                **{
+                    "filter_complex": f"[0:{stream_index}]pan=mono|c0=c2[out]",
+                    "map": "[out]",
+                },
+            ).run(quiet=False, overwrite_output=True)
+        elif mode is AudioExtractionMode.NATIVE_CENTER_HEAVY:
+            logger.info(
+                f"Extracting native-rate center-heavy mix of audio stream "
+                f"{stream_index} from {infile_path} to {outfile_path}"
+            )
+            ffmpeg.input(str(infile_path)).output(
+                str(outfile_path),
+                format="wav",
+                **{
+                    "filter_complex": (
+                        f"[0:{stream_index}]pan=mono|c0=0.70*c2+0.15*c0+0.15*c1[out]"
+                    ),
+                    "map": "[out]",
+                },
+            ).run(quiet=False, overwrite_output=True)
+        elif mode is AudioExtractionMode.NATIVE_MONO:
+            logger.info(
+                f"Downmixing complete audio stream {stream_index} to native-rate "
+                f"mono from {infile_path} to {outfile_path}"
+            )
+            ffmpeg.input(str(infile_path)).output(
+                str(outfile_path), format="wav", map=f"0:{stream_index}", ac=1
+            ).run(quiet=False, overwrite_output=True)
+        else:
+            logger.info(
+                f"Downmixing complete audio stream {stream_index} to native-rate "
+                f"stereo from {infile_path} to {outfile_path}"
+            )
+            ffmpeg.input(str(infile_path)).output(
+                str(outfile_path), format="wav", map=f"0:{stream_index}", ac=2
             ).run(quiet=False, overwrite_output=True)
     except (ffmpeg.Error, OSError) as exc:
         raise ScinoephileError(
