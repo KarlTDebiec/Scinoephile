@@ -51,7 +51,7 @@ class FakeFfmpegInput:
 
 
 def test_extract_audio_selects_stream_and_extracts_track(tmp_path: Path):
-    """Test extraction selects the requested stream and forwards its channel count.
+    """Test extraction selects and returns the requested stream.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -59,7 +59,7 @@ def test_extract_audio_selects_stream_and_extracts_track(tmp_path: Path):
     infile_path = tmp_path / "movie.mkv"
     infile_path.touch()
     outfile_path = tmp_path / "audio.wav"
-    stream = AudioStream(index=3, codec_type="audio", channels=6)
+    stream = AudioStream(index=3, codec_type="audio")
 
     with (
         patch("scinoephile.media.audio.get_streams", return_value=[stream]),
@@ -69,19 +69,19 @@ def test_extract_audio_selects_stream_and_extracts_track(tmp_path: Path):
 
     assert selected is stream
     extract_track.assert_called_once_with(
-        infile_path.resolve(),
-        outfile_path.resolve(),
-        3,
-        6,
-        AudioExtractionMode.TRANSCRIPTION,
+        infile_path.resolve(), outfile_path.resolve(), 3, AudioExtractionMode.ORIGINAL
     )
 
 
-def test_extract_audio_transcription_filters_multichannel_center(tmp_path: Path):
-    """Test transcription extraction isolates multichannel center at 16 kHz.
+@mark.parametrize("source_channel_count", [1, 2, 6])
+def test_extract_audio_original_preserves_rate_and_channels(
+    tmp_path: Path, source_channel_count: int
+):
+    """Test original extraction preserves the source rate and channel count.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
+        source_channel_count: source channel count
     """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
@@ -90,35 +90,9 @@ def test_extract_audio_transcription_filters_multichannel_center(tmp_path: Path)
     with (
         patch(
             "scinoephile.media.audio.get_streams",
-            return_value=[AudioStream(index=12, codec_type="audio", channels=6)],
-        ),
-        patch("scinoephile.media.audio.ffmpeg.input", return_value=fake_ffmpeg_input),
-    ):
-        extract_audio(infile_path, tmp_path / "audio.wav")
-
-    assert fake_ffmpeg_input.output_kwargs is not None
-    assert fake_ffmpeg_input.output_kwargs["filter_complex"] == (
-        "[0:12]pan=mono|c0=c2[out]"
-    )
-    assert fake_ffmpeg_input.output_kwargs["map"] == "[out]"
-    assert fake_ffmpeg_input.output_kwargs["ar"] == 16000
-    assert "ac" not in fake_ffmpeg_input.output_kwargs
-
-
-def test_extract_audio_transcription_downmixes_non_multichannel_stream(tmp_path: Path):
-    """Test transcription downmixes other streams to mono at 16 kHz.
-
-    Arguments:
-        tmp_path: temporary directory provided by pytest
-    """
-    infile_path = tmp_path / "video.mkv"
-    infile_path.touch()
-    fake_ffmpeg_input = FakeFfmpegInput()
-
-    with (
-        patch(
-            "scinoephile.media.audio.get_streams",
-            return_value=[AudioStream(index=12, codec_type="audio", channels=2)],
+            return_value=[
+                AudioStream(index=12, codec_type="audio", channels=source_channel_count)
+            ],
         ),
         patch("scinoephile.media.audio.ffmpeg.input", return_value=fake_ffmpeg_input),
     ):
@@ -126,13 +100,13 @@ def test_extract_audio_transcription_downmixes_non_multichannel_stream(tmp_path:
 
     assert fake_ffmpeg_input.output_kwargs is not None
     assert fake_ffmpeg_input.output_kwargs["map"] == "0:12"
-    assert fake_ffmpeg_input.output_kwargs["ac"] == 1
-    assert fake_ffmpeg_input.output_kwargs["ar"] == 16000
+    assert "ac" not in fake_ffmpeg_input.output_kwargs
+    assert "ar" not in fake_ffmpeg_input.output_kwargs
     assert "filter_complex" not in fake_ffmpeg_input.output_kwargs
 
 
-def test_extract_audio_native_center_extracts_center_at_source_rate(tmp_path: Path):
-    """Test native center extraction isolates the absolute stream center channel.
+def test_extract_audio_center_extracts_center_at_source_rate(tmp_path: Path):
+    """Test center extraction isolates the absolute stream center channel.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -149,7 +123,7 @@ def test_extract_audio_native_center_extracts_center_at_source_rate(tmp_path: Pa
         patch("scinoephile.media.audio.ffmpeg.input", return_value=fake_ffmpeg_input),
     ):
         extract_audio(
-            infile_path, tmp_path / "audio.wav", mode=AudioExtractionMode.NATIVE_CENTER
+            infile_path, tmp_path / "audio.wav", mode=AudioExtractionMode.CENTER
         )
 
     assert fake_ffmpeg_input.output_kwargs is not None
@@ -160,8 +134,8 @@ def test_extract_audio_native_center_extracts_center_at_source_rate(tmp_path: Pa
     assert "ar" not in fake_ffmpeg_input.output_kwargs
 
 
-def test_extract_audio_native_center_heavy_uses_weighted_mix(tmp_path: Path):
-    """Test native center-heavy extraction uses the requested coefficients.
+def test_extract_audio_center_heavy_uses_weighted_mix(tmp_path: Path):
+    """Test center-heavy extraction uses the requested coefficients.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -178,9 +152,7 @@ def test_extract_audio_native_center_heavy_uses_weighted_mix(tmp_path: Path):
         patch("scinoephile.media.audio.ffmpeg.input", return_value=fake_ffmpeg_input),
     ):
         extract_audio(
-            infile_path,
-            tmp_path / "audio.wav",
-            mode=AudioExtractionMode.NATIVE_CENTER_HEAVY,
+            infile_path, tmp_path / "audio.wav", mode=AudioExtractionMode.CENTER_HEAVY
         )
 
     assert fake_ffmpeg_input.output_kwargs is not None
@@ -194,9 +166,9 @@ def test_extract_audio_native_center_heavy_uses_weighted_mix(tmp_path: Path):
 
 @mark.parametrize(
     ("mode", "channel_count"),
-    [(AudioExtractionMode.NATIVE_MONO, 1), (AudioExtractionMode.NATIVE_STEREO, 2)],
+    [(AudioExtractionMode.MONO, 1), (AudioExtractionMode.STEREO, 2)],
 )
-def test_extract_audio_native_complete_mix_preserves_rate(
+def test_extract_audio_complete_mix_preserves_rate(
     tmp_path: Path, mode: AudioExtractionMode, channel_count: int
 ):
     """Test native complete-stream downmixes use the requested channel count.
@@ -226,7 +198,7 @@ def test_extract_audio_native_complete_mix_preserves_rate(
 
 
 @mark.parametrize(
-    "mode", [AudioExtractionMode.NATIVE_CENTER, AudioExtractionMode.NATIVE_CENTER_HEAVY]
+    "mode", [AudioExtractionMode.CENTER, AudioExtractionMode.CENTER_HEAVY]
 )
 def test_extract_audio_center_modes_require_center_channel(
     tmp_path: Path, mode: AudioExtractionMode

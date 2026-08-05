@@ -22,19 +22,19 @@ from scinoephile.media.audio import AudioExtractionMode, extract_audio
 
 __all__ = ["MediaExtractAudioCli"]
 
+_AUDIO_EXTRACTION_MODE_HELP = (
+    f"audio extraction mode (options: "
+    f"{enum_options_list_str(AudioExtractionMode)}; default: %(default)s)"
+)
+
 MEDIA_EXTRACT_AUDIO_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "audio outfile path in WAV format": "WAV 格式的音频输出文件路径",
         "extract an audio stream from a media file": "从媒体文件提取音频流",
         "media infile containing audio streams": "包含音频流的媒体输入文件",
-        (
-            f"audio extraction mode (options: "
-            f"{enum_options_list_str(AudioExtractionMode)}; "
-            "default: %(default)s)"
-        ): (
-            "音频提取模式（选项：transcription、native-center、"
-            "native-center-heavy、native-mono 或 native-stereo；"
-            "默认：%(default)s）"
+        _AUDIO_EXTRACTION_MODE_HELP: (
+            "音频提取模式（选项：original、center、center-heavy、"
+            "mono 或 stereo；默认：%(default)s）"
         ),
         "media stream index of audio stream (default: first audio stream)": (
             "音频媒体流的媒体流索引（默认：第一个音频流）"
@@ -45,14 +45,9 @@ MEDIA_EXTRACT_AUDIO_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "audio outfile path in WAV format": "WAV 格式的音訊輸出檔路徑",
         "extract an audio stream from a media file": "從媒體檔提取音訊流",
         "media infile containing audio streams": "包含音訊流的媒體輸入檔",
-        (
-            f"audio extraction mode (options: "
-            f"{enum_options_list_str(AudioExtractionMode)}; "
-            "default: %(default)s)"
-        ): (
-            "音訊提取模式（選項：transcription、native-center、"
-            "native-center-heavy、native-mono 或 native-stereo；"
-            "預設：%(default)s）"
+        _AUDIO_EXTRACTION_MODE_HELP: (
+            "音訊提取模式（選項：original、center、center-heavy、"
+            "mono 或 stereo；預設：%(default)s）"
         ),
         "media stream index of audio stream (default: first audio stream)": (
             "音訊媒體流的媒體流索引（預設：第一個音訊流）"
@@ -98,14 +93,10 @@ class MediaExtractAudioCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--mode",
-            default=AudioExtractionMode.TRANSCRIPTION,
+            default=AudioExtractionMode.ORIGINAL,
             metavar=enum_metavar(AudioExtractionMode),
             type=enum_arg(AudioExtractionMode),
-            help=(
-                f"audio extraction mode (options: "
-                f"{enum_options_list_str(AudioExtractionMode)}; "
-                "default: %(default)s)"
-            ),
+            help=_AUDIO_EXTRACTION_MODE_HELP,
         )
         arg_groups["output arguments"].add_argument(
             "-o",
