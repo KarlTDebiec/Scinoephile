@@ -25,3 +25,6 @@ class OpenAIProvider(OpenAIProviderBase):
 
     api_key_env_var_name = "OPENAI_API_KEY"
     """Environment variable name used for the OpenAI API key."""
+
+    explicit_prompt_caching = True
+    """Whether requests should mark and route a stable cached prefix."""

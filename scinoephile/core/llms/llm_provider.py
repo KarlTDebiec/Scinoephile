@@ -10,6 +10,7 @@ from typing import Any, TypedDict, Unpack
 from pydantic import JsonValue
 
 from .answer import Answer
+from .metrics import ChatCompletionMetrics
 from .tool_box import ToolBox
 
 __all__ = ["ChatCompletionKwargs", "LLMProvider"]
@@ -46,6 +47,9 @@ class ChatCompletionKwargs(TypedDict, total=False):
 class LLMProvider(ABC):
     """ABC for LLM providers."""
 
+    completion_metrics: list[ChatCompletionMetrics]
+    """Completion metrics recorded by this provider."""
+
     @property
     def cache_identity(self) -> dict[str, JsonValue]:
         """Stable, non-secret configuration affecting completion behavior.
@@ -61,6 +65,10 @@ class LLMProvider(ABC):
         messages: list[dict[str, Any]],
         response_format: type[Answer],
         tool_box: ToolBox | None = None,
+        *,
+        operation: str | None = None,
+        query_key_sha256: str | None = None,
+        query_attempt: int = 1,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return chat completion text synchronously.
@@ -69,6 +77,9 @@ class LLMProvider(ABC):
             messages: messages to send
             response_format: structured response format
             tool_box: available tools
+            operation: stable LLM operation identifier
+            query_key_sha256: SHA-256 digest of the semantic query key
+            query_attempt: one-based answer-validation attempt
             **kwargs: provider-specific keyword arguments
         Returns:
             completion text from the model

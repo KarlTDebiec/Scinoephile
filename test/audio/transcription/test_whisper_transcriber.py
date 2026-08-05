@@ -8,7 +8,7 @@ import builtins
 import json
 import os
 import sys
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
 from textwrap import dedent
 from types import SimpleNamespace
@@ -19,6 +19,9 @@ from pytest import LogCaptureFixture, MonkeyPatch, raises
 
 from scinoephile.audio.transcription import (
     DemucsMode,
+    TranscriptionEmptyError,
+    TranscriptionError,
+    TranscriptionInferenceError,
     VADMode,
     get_segment_split_at_idx,
 )
@@ -27,6 +30,7 @@ from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.common import package_root
 from scinoephile.common.subprocess import run_command
+from scinoephile.core import Language
 from scinoephile.core.dependencies.transcription import import_whisper_timestamped
 from test.helpers import parametrize
 
@@ -39,6 +43,12 @@ _OPTIONAL_TRANSCRIPTION_MODULES = (
     "transformers",
     "whisper_timestamped",
 )
+
+_TIMESTAMP_ALIGNMENT_ERROR = (
+    "Inconsistent number of segments: whisper_segments (2) != "
+    "timestamped_word_segments (1)"
+)
+"""Known assertion raised when Whisper Timestamped cannot align decoder output."""
 
 
 def test_init_defaults_demucs_and_vad_to_off():
@@ -54,9 +64,49 @@ def _get_cache_path(transcriber: WhisperTranscriber, audio: AudioSegment) -> Pat
     """Get the cache path for the transcriber's first preprocessing settings."""
     settings = transcriber._get_preprocessing_settings()[0]
     cache_path = transcriber._cache.get_path(
-        audio, transcriber._get_cache_metadata(settings)
+        audio, transcriber._get_cache_metadata(audio, settings)
     )
     return cache_path
+
+
+def _get_ctc_aligner(text: str = "你好", model_name: str = "ctc/test-model") -> Mock:
+    """Get a mock CTC aligner with one aligned output segment.
+
+    Arguments:
+        text: transcript text retained in aligned output
+        model_name: CTC model identity
+    Returns:
+        configured mock aligner
+    """
+    aligned_segments = [
+        TranscribedSegment(
+            id=0,
+            seek=0,
+            start=0.0,
+            end=1.0,
+            text=text,
+            words=[TranscribedWord(text=text, start=0.0, end=1.0, confidence=1.0)],
+        )
+    ]
+    return Mock(
+        language=Language.yue_hant, model_name=model_name, return_value=aligned_segments
+    )
+
+
+def _patch_whisper_timestamped(
+    monkeypatch: MonkeyPatch, transcribe: Callable[..., object]
+):
+    """Patch Whisper Timestamped with the provided transcribe callable.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        transcribe: replacement Whisper Timestamped transcription callable
+    """
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper_transcriber."
+        "import_whisper_timestamped",
+        Mock(return_value=SimpleNamespace(transcribe=transcribe)),
+    )
 
 
 @parametrize(
@@ -142,6 +192,55 @@ def test_get_cache_path_accepts_list_temperature_schedule(tmp_path: Path):
     )
 
 
+def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
+    """Test CTC fallback mode, language, and model contribute to cache identity.
+
+    Arguments:
+        tmp_path: temporary cache directory path
+    """
+    audio = AudioSegment.silent(duration=1000)
+    without_fallback = WhisperTranscriber(
+        cache_root_path=tmp_path, model_name="custom/model", demucs_mode=DemucsMode.OFF
+    )
+    first_fallback = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model_name="custom/model",
+        demucs_mode=DemucsMode.OFF,
+        ctc_aligner=_get_ctc_aligner(),
+    )
+    second_model_fallback = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model_name="custom/model",
+        demucs_mode=DemucsMode.OFF,
+        ctc_aligner=_get_ctc_aligner(model_name="ctc/other-model"),
+    )
+    second_language_aligner = _get_ctc_aligner()
+    second_language_aligner.language = Language.zho_hant
+    second_language_fallback = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model_name="custom/model",
+        demucs_mode=DemucsMode.OFF,
+        ctc_aligner=second_language_aligner,
+    )
+
+    cache_paths = {
+        _get_cache_path(transcriber, audio)
+        for transcriber in (
+            without_fallback,
+            first_fallback,
+            second_model_fallback,
+            second_language_fallback,
+        )
+    }
+
+    assert len(cache_paths) == 4
+    settings = first_fallback._get_preprocessing_settings()[0]
+    metadata = first_fallback._get_cache_metadata(settings)
+    assert metadata["timestamp_fallback"] == "ctc"
+    assert metadata["timestamp_fallback_language"] == "yue-Hant"
+    assert metadata["timestamp_fallback_model_name"] == "ctc/test-model"
+
+
 def test_transcribe_forwards_recovery_decoding_options(
     monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
 ):
@@ -159,11 +258,7 @@ def test_transcribe_forwards_recovery_decoding_options(
         condition_on_previous_text=False,
     )
     transcriber._model = Mock()
-    monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper_transcriber."
-        "import_whisper_timestamped",
-        Mock(return_value=SimpleNamespace(transcribe=transcribe)),
-    )
+    _patch_whisper_timestamped(monkeypatch, transcribe)
     audio = AudioSegment.silent(duration=1000)
 
     assert transcriber(audio) == []
@@ -178,6 +273,270 @@ def test_transcribe_forwards_recovery_decoding_options(
     )
     assert budget_record.levelname == "DEBUG"
     assert not any("Whisper reached its" in record.message for record in caplog.records)
+
+
+def test_transcribe_timestamped_success_does_not_use_ctc(
+    monkeypatch: MonkeyPatch, tmp_path: Path
+):
+    """Test successful Whisper Timestamped output bypasses native and CTC fallback.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    ctc_aligner = _get_ctc_aligner()
+    timestamped_transcribe = Mock(return_value={"segments": []})
+    model = Mock()
+    model.decode = Mock()
+    transcriber = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model_name="custom/model",
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VADMode.OFF,
+        ctc_aligner=ctc_aligner,
+    )
+    transcriber._model = model
+    _patch_whisper_timestamped(monkeypatch, timestamped_transcribe)
+
+    assert transcriber(AudioSegment.silent(duration=1000)) == []
+    timestamped_transcribe.assert_called_once()
+    model.transcribe.assert_not_called()
+    ctc_aligner.assert_not_called()
+
+
+def test_transcribe_falls_back_to_native_text_with_ctc_alignment(
+    monkeypatch: MonkeyPatch, tmp_path: Path
+):
+    """Test failed Whisper timestamping falls back to native text plus CTC.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    audio = AudioSegment.silent(duration=1000)
+    transcript_text = " 你好 "
+    ctc_aligner = _get_ctc_aligner(transcript_text)
+    decode = Mock()
+    model = Mock()
+    model.decode = decode
+
+    native_segments = [
+        {
+            "id": 0,
+            "seek": 0,
+            "start": 0.0,
+            "end": 0.4,
+            "text": " 你",
+            "avg_logprob": -0.25,
+            "compression_ratio": 0.8,
+            "no_speech_prob": 0.1,
+        },
+        {
+            "id": 1,
+            "seek": 0,
+            "start": 0.4,
+            "end": 1.0,
+            "text": "好 ",
+            "avg_logprob": -0.75,
+            "compression_ratio": 2.8,
+            "no_speech_prob": 0.6,
+        },
+    ]
+
+    def transcribe_natively(*_args: object, **_kwargs: object) -> dict[str, object]:
+        """Return native text after confirming the decode method was restored."""
+        assert model.decode is decode
+        return {"text": transcript_text, "segments": native_segments}
+
+    model.transcribe = Mock(side_effect=transcribe_natively)
+    timestamped_transcribe = Mock(
+        side_effect=AssertionError(_TIMESTAMP_ALIGNMENT_ERROR)
+    )
+    temperatures = (0.0, 0.2, 0.4)
+    transcriber = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model_name="custom/model",
+        language="yue",
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VADMode.OFF,
+        temperature=temperatures,
+        condition_on_previous_text=False,
+        ctc_aligner=ctc_aligner,
+    )
+    transcriber._model = model
+    _patch_whisper_timestamped(monkeypatch, timestamped_transcribe)
+
+    segments = transcriber(audio)
+
+    assert len(segments) == 1
+    assert segments[0].text == transcript_text
+    assert segments[0].avg_logprob == -0.75
+    assert segments[0].compression_ratio == 2.8
+    assert segments[0].no_speech_prob == 0.6
+    timestamped_transcribe.assert_called_once()
+    model.transcribe.assert_called_once()
+    assert model.transcribe.call_args.kwargs == {
+        "language": "yue",
+        "temperature": temperatures,
+        "condition_on_previous_text": False,
+        "sample_len": 32,
+        "word_timestamps": False,
+        "verbose": False,
+    }
+    ctc_aligner.assert_called_once_with(audio, transcript_text)
+    assert model.decode is decode
+    assert _get_cache_path(transcriber, audio).is_file()
+
+
+def test_transcribe_timestamp_assertion_without_ctc_remains_error(
+    monkeypatch: MonkeyPatch, tmp_path: Path
+):
+    """Test Whisper timestamping assertions retain existing no-aligner behavior.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    decode = Mock()
+    model = Mock()
+    model.decode = decode
+    transcriber = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model_name="custom/model",
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VADMode.OFF,
+    )
+    transcriber._model = model
+    _patch_whisper_timestamped(
+        monkeypatch, Mock(side_effect=AssertionError(_TIMESTAMP_ALIGNMENT_ERROR))
+    )
+
+    with raises(
+        TranscriptionInferenceError, match="Whisper inference failed with an assertion"
+    ):
+        transcriber(AudioSegment.silent(duration=1000))
+
+    model.transcribe.assert_not_called()
+    assert model.decode is decode
+
+
+def test_transcribe_unrelated_assertion_does_not_use_ctc(
+    monkeypatch: MonkeyPatch, tmp_path: Path
+):
+    """Test only the known Whisper Timestamped alignment assertion triggers CTC.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    ctc_aligner = _get_ctc_aligner()
+    model = Mock()
+    model.decode = Mock()
+    transcriber = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model_name="custom/model",
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VADMode.OFF,
+        ctc_aligner=ctc_aligner,
+    )
+    transcriber._model = model
+    _patch_whisper_timestamped(
+        monkeypatch, Mock(side_effect=AssertionError("unexpected assertion"))
+    )
+
+    with raises(TranscriptionInferenceError, match="unexpected assertion"):
+        transcriber(AudioSegment.silent(duration=1000))
+
+    model.transcribe.assert_not_called()
+    ctc_aligner.assert_not_called()
+
+
+@parametrize(
+    ("native_output", "error_type", "message"),
+    [
+        (None, TranscriptionInferenceError, "malformed output"),
+        ({}, TranscriptionInferenceError, "missing transcript text"),
+        ({"text": None}, TranscriptionInferenceError, "missing transcript text"),
+        ({"text": "   "}, TranscriptionEmptyError, "empty transcript"),
+        ({"text": "你好"}, TranscriptionInferenceError, "malformed segments"),
+        (
+            {"text": "你好", "segments": [{"text": "你好"}]},
+            TranscriptionInferenceError,
+            "malformed segments",
+        ),
+    ],
+)
+def test_transcribe_rejects_invalid_native_fallback_output(
+    monkeypatch: MonkeyPatch,
+    tmp_path: Path,
+    native_output: object,
+    error_type: type[TranscriptionError],
+    message: str,
+):
+    """Test malformed and empty native Whisper fallback output is rejected.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+        native_output: output returned by native Whisper
+        error_type: expected transcription exception type
+        message: expected exception message fragment
+    """
+    ctc_aligner = _get_ctc_aligner()
+    model = Mock()
+    model.decode = Mock()
+    model.transcribe.return_value = native_output
+    transcriber = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model_name="custom/model",
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VADMode.OFF,
+        ctc_aligner=ctc_aligner,
+    )
+    transcriber._model = model
+    _patch_whisper_timestamped(
+        monkeypatch, Mock(side_effect=AssertionError(_TIMESTAMP_ALIGNMENT_ERROR))
+    )
+
+    with raises(error_type, match=message):
+        transcriber(AudioSegment.silent(duration=1000))
+
+    ctc_aligner.assert_not_called()
+
+
+def test_transcribe_wraps_native_fallback_failure(
+    monkeypatch: MonkeyPatch, tmp_path: Path
+):
+    """Test native Whisper decoding failures become transcription errors.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    ctc_aligner = _get_ctc_aligner()
+    model = Mock()
+    model.decode = Mock()
+    native_error = RuntimeError("decoder failed")
+    model.transcribe.side_effect = native_error
+    transcriber = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model_name="custom/model",
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VADMode.OFF,
+        ctc_aligner=ctc_aligner,
+    )
+    transcriber._model = model
+    _patch_whisper_timestamped(
+        monkeypatch, Mock(side_effect=AssertionError(_TIMESTAMP_ALIGNMENT_ERROR))
+    )
+
+    with raises(
+        TranscriptionInferenceError, match="Unable to run native Whisper fallback"
+    ) as exc_info:
+        transcriber(AudioSegment.silent(duration=1000))
+
+    assert exc_info.value.__cause__ is native_error
+    ctc_aligner.assert_not_called()
 
 
 def test_transcribe_logs_when_decoding_window_reaches_token_limit(
@@ -220,11 +579,7 @@ def test_transcribe_logs_when_decoding_window_reaches_token_limit(
         model_name="custom/model", demucs_mode=DemucsMode.OFF, vad_mode=VADMode.OFF
     )
     transcriber._model = model
-    monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper_transcriber."
-        "import_whisper_timestamped",
-        Mock(return_value=SimpleNamespace(transcribe=Mock(side_effect=transcribe))),
-    )
+    _patch_whisper_timestamped(monkeypatch, Mock(side_effect=transcribe))
     audio = AudioSegment.silent(duration=1000)
 
     transcriber(audio)
@@ -312,11 +667,7 @@ def test_transcribe_overwrites_matching_cache(monkeypatch: MonkeyPatch, tmp_path
         return {"segments": []}
 
     transcribe_mock = Mock(side_effect=transcribe)
-    monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper_transcriber."
-        "import_whisper_timestamped",
-        Mock(return_value=SimpleNamespace(transcribe=transcribe_mock)),
-    )
+    _patch_whisper_timestamped(monkeypatch, transcribe_mock)
 
     assert transcriber(audio) == []
     assert json.loads(cache_path.read_text(encoding="utf-8"))["segments"] == []
@@ -343,11 +694,7 @@ def test_transcribe_recovers_from_malformed_cache(
     cache_path = _get_cache_path(transcriber, audio)
     cache_path.write_text("{", encoding="utf-8")
     transcribe = Mock(return_value={"segments": []})
-    monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper_transcriber."
-        "import_whisper_timestamped",
-        Mock(return_value=SimpleNamespace(transcribe=transcribe)),
-    )
+    _patch_whisper_timestamped(monkeypatch, transcribe)
 
     assert transcriber.transcribe(audio) == []
     assert json.loads(cache_path.read_text(encoding="utf-8"))["segments"] == []
@@ -374,11 +721,7 @@ def test_transcribe_discards_invalid_cache_when_atomic_write_fails(
     cache_path = _get_cache_path(transcriber, audio)
     cache_path.write_text("existing cache", encoding="utf-8")
     transcribe = Mock(return_value={"segments": []})
-    monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper_transcriber."
-        "import_whisper_timestamped",
-        Mock(return_value=SimpleNamespace(transcribe=transcribe)),
-    )
+    _patch_whisper_timestamped(monkeypatch, transcribe)
     monkeypatch.setattr(
         "scinoephile.audio.transcription.cache.json.dump",
         Mock(side_effect=RuntimeError("write failed")),

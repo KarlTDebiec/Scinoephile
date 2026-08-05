@@ -119,7 +119,7 @@ class Transcriber(ABC):
             audio: audio used for cache-key generation
         """
         for settings in self._get_preprocessing_settings():
-            self._cache.remove(audio, self._get_cache_metadata(settings))
+            self._cache.remove(audio, self._get_cache_metadata(audio, settings))
 
     def transcribe(
         self,
@@ -180,7 +180,7 @@ class Transcriber(ABC):
         """
         rejected_settings: set[TranscriptionPreprocessingSettings] = set()
         for settings in preprocessing_settings:
-            metadata = self._get_cache_metadata(settings)
+            metadata = self._get_cache_metadata(audio, settings)
             cached_transcription = self._cache.load(audio, metadata)
             if cached_transcription is None:
                 continue
@@ -221,11 +221,12 @@ class Transcriber(ABC):
 
     @abstractmethod
     def _get_backend_cache_metadata(
-        self, settings: TranscriptionPreprocessingSettings
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> Mapping[str, object]:
         """Get backend-specific cache metadata for one configuration.
 
         Arguments:
+            audio: audio whose properties may affect backend behavior
             settings: preprocessing settings
         Returns:
             backend configuration identifying the output
@@ -233,11 +234,12 @@ class Transcriber(ABC):
         raise NotImplementedError()
 
     def _get_cache_metadata(
-        self, settings: TranscriptionPreprocessingSettings
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> dict[str, object]:
         """Get complete backend and preprocessing cache metadata.
 
         Arguments:
+            audio: audio whose properties may affect backend behavior
             settings: preprocessing settings
         Returns:
             configuration identifying the output
@@ -247,7 +249,7 @@ class Transcriber(ABC):
             assert self.demucs_separator is not None
             demucs_model_name = self.demucs_separator.model_name
         return {
-            **self._get_backend_cache_metadata(settings),
+            **self._get_backend_cache_metadata(audio, settings),
             "demucs_model_name": demucs_model_name,
             "use_demucs": settings.use_demucs,
             "use_vad": settings.use_vad,
@@ -325,7 +327,7 @@ class Transcriber(ABC):
                 segments = self._transcribe_attempt(transcription_audio, settings)
             except TranscriptionEmptyError as exc:
                 logger.warning(f"{self.backend_label} attempt failed: {exc}")
-                self._cache.save(audio, self._get_cache_metadata(settings), [])
+                self._cache.save(audio, self._get_cache_metadata(audio, settings), [])
                 last_error = exc
                 continue
             except TranscriptionError as exc:
@@ -334,7 +336,7 @@ class Transcriber(ABC):
                 continue
             successful_result = True
 
-            self._cache.save(audio, self._get_cache_metadata(settings), segments)
+            self._cache.save(audio, self._get_cache_metadata(audio, settings), segments)
             if is_usable is None or is_usable(segments):
                 return segments
 
