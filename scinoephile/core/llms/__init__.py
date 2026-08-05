@@ -3,7 +3,7 @@
 """Core code related to interactions with LLMs.
 
 Package hierarchy (modules may import from any above):
-* models / prompt / tool
+* metrics / models / prompt / tool
 * answer / query / test_case_subtitle / tool_box
 * llm_provider / test_case
 * manager / openai_provider_base / cache
@@ -18,6 +18,7 @@ from .answer import Answer
 from .cache import LlmCache
 from .llm_provider import ChatCompletionKwargs, LLMProvider
 from .manager import Manager, PromptModelField
+from .metrics import ChatCompletionMetrics, ChatCompletionMetricsSummary
 from .openai_provider_base import OpenAIProviderBase
 from .processor import Processor, ProcessorKwargs
 from .prompt import Prompt, SharedPromptLocalizationFields
@@ -32,6 +33,8 @@ __all__ = [
     "AnnotatedTestCaseSubtitle",
     "Answer",
     "ChatCompletionKwargs",
+    "ChatCompletionMetrics",
+    "ChatCompletionMetricsSummary",
     "LLMProvider",
     "LlmCache",
     "Manager",

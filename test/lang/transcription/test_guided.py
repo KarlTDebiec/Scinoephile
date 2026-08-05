@@ -84,7 +84,11 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
         transcriber = get_guided_transcriber(
             Language.yue_hant,
             Language.zho_hans,
-            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+            provider=Mock(
+                spec=LLMProvider,
+                cache_identity={"implementation": "test"},
+                completion_metrics=[],
+            ),
             delineation_test_cases=[],
             punctuation_test_cases=[],
             cache_root_path=tmp_path,
@@ -164,7 +168,11 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
             strip_generated_punctuation=True,
             mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
             mlx_audio_token_limit_guard=True,
-            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+            provider=Mock(
+                spec=LLMProvider,
+                cache_identity={"implementation": "test"},
+                completion_metrics=[],
+            ),
             delineation_json_path=tmp_path / "delineation.json",
             punctuation_json_path=tmp_path / "punctuation.json",
             delineation_test_cases=[],
@@ -196,7 +204,11 @@ def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path
     transcriber = get_guided_transcriber(
         Language.yue_hant,
         Language.zho_hans,
-        provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+        provider=Mock(
+            spec=LLMProvider,
+            cache_identity={"implementation": "test"},
+            completion_metrics=[],
+        ),
         prune_test_cases=True,
         delineation_json_path=delineation_json_path,
         punctuation_json_path=punctuation_json_path,
@@ -262,7 +274,11 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: 
         transcriber = get_guided_transcriber(
             Language.yue_hant,
             Language.zho_hans,
-            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+            provider=Mock(
+                spec=LLMProvider,
+                cache_identity={"implementation": "test"},
+                completion_metrics=[],
+            ),
             delineation_test_cases=[],
             punctuation_test_cases=[],
             cache_root_path=tmp_path,
@@ -324,7 +340,11 @@ def test_get_guided_transcriber_loads_verified_cases_from_exact_json(tmp_path: P
     save_test_cases_to_json(
         delineation_json_path, [verified_test_case], DelineationManager
     )
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
     transcriber = get_guided_transcriber(
         Language.yue_hant,
         Language.zho_hant,
