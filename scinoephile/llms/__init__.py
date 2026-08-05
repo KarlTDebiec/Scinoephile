@@ -30,36 +30,37 @@ import scinoephile.core.llms.utils as llm_utils
 from scinoephile import common
 from scinoephile.core.llms import Manager, Prompt, TestCase
 
-__all__ = ["load_default_test_cases"]
+__all__ = ["load_shared_test_cases"]
 
 logger = logging.getLogger(__name__)
 
 
 @functools.cache
-def load_default_test_cases(
+def load_shared_test_cases(
     manager_cls: type[Manager], prompt: Prompt, relative_paths: tuple[Path, ...]
 ) -> tuple[TestCase, ...]:
-    """Load default test cases from repository JSON files and cache the result.
+    """Load shared test cases from explicit repository JSON files and cache them.
 
     Arguments:
         manager_cls: manager class used to construct test case models
         prompt: text for LLM correspondence
         relative_paths: paths relative to repository test data root
     Returns:
-        loaded test cases
+        shared test cases
     """
     test_data_root = common.package_root.parent / "test/data"
     if not test_data_root.is_dir():
         logger.info(f"Test data root {test_data_root} does not exist.")
         return tuple()
 
-    loaded_test_cases: list[TestCase] = []
+    shared_test_cases: list[TestCase] = []
     for relative_path in relative_paths:
         path = test_data_root / relative_path
         if not path.is_file():
             continue
-        loaded_test_cases.extend(
-            llm_utils.load_test_cases_from_json(path, manager_cls, prompt=prompt)
+        path_test_cases = llm_utils.load_test_cases_from_json(
+            path, manager_cls, prompt=prompt
         )
-        logger.info(f"Loaded {len(loaded_test_cases)} test cases from {path}.")
-    return tuple(loaded_test_cases)
+        shared_test_cases.extend(path_test_cases)
+        logger.info(f"Loaded {len(path_test_cases)} test cases from {path}.")
+    return tuple(shared_test_cases)

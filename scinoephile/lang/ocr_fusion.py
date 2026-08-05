@@ -11,7 +11,7 @@ from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
-from scinoephile.llms import load_default_test_cases
+from scinoephile.llms import load_shared_test_cases
 from scinoephile.llms.ocr_fusion import (
     OcrFusionManager,
     OcrFusionProcessor,
@@ -86,7 +86,7 @@ DEFAULT_PROMPTS: Mapping[Language, OcrFusionPrompt] = MappingProxyType(
 def get_ocr_fuser(
     language: Language,
     prompt: OcrFusionPrompt | None = None,
-    test_cases: list[TestCase] | None = None,
+    shared_test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> OcrFusionProcessor:
@@ -95,7 +95,7 @@ def get_ocr_fuser(
     Arguments:
         language: subtitle language
         prompt: text for LLM correspondence
-        test_cases: test cases
+        shared_test_cases: shared test cases
         provider: provider to use for queries
         **kwargs: additional keyword arguments for OcrFusionProcessor
     Returns:
@@ -108,9 +108,11 @@ def get_ocr_fuser(
 
     if prompt is None:
         prompt = DEFAULT_PROMPTS[language]
-    if test_cases is None:
+    if shared_test_cases is None:
         json_paths = _JSON_PATHS[language]
-        test_cases = list(load_default_test_cases(OcrFusionManager, prompt, json_paths))
+        shared_test_cases = list(
+            load_shared_test_cases(OcrFusionManager, prompt, json_paths)
+        )
     if provider is None:
         provider = get_provider()
-    return OcrFusionProcessor(prompt, test_cases, provider=provider, **kwargs)
+    return OcrFusionProcessor(prompt, shared_test_cases, provider=provider, **kwargs)

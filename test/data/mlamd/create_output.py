@@ -104,7 +104,7 @@ if "yue-Hans_transcribe" in actions:
     translator = get_gap_translator(
         Language.zho_hans,
         Language.yue_hans,
-        test_case_path=output_path
+        current_test_cases_path=output_path
         / "yue-Hans_transcribe"
         / "lang"
         / "yue_zho"
@@ -126,7 +126,7 @@ if "yue-Hans_transcribe" in actions:
     reviewer = get_guided_reviewer(
         Language.yue_hans,
         Language.zho_hans,
-        test_case_path=output_path
+        current_test_cases_path=output_path
         / "yue-Hans_transcribe"
         / "lang"
         / "yue_zho"

@@ -65,7 +65,10 @@ def test_review_series_guided_yue_zho(
     with patch(device_patch_target, return_value=device_name):
         test_cases = test_case_loader()
     reviewer = get_guided_reviewer(
-        Language.yue_hans, Language.zho_hans, test_cases=test_cases, provider=provider
+        Language.yue_hans,
+        Language.zho_hans,
+        shared_test_cases=test_cases,
+        provider=provider,
     )
     output = review_series_guided(yuewen, zhongwen, reviewer=reviewer)
     assert_series_equal(output, expected)

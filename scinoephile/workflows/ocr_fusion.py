@@ -21,7 +21,7 @@ def fuse_ocr_series(
     *,
     language: Language,
     prompt: OcrFusionPrompt | None = None,
-    test_cases: list[TestCase] | None = None,
+    shared_test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     fuser: OcrFusionProcessor | None = None,
     stop_at_idx: int | None = None,
@@ -34,7 +34,7 @@ def fuse_ocr_series(
         source_two: Tesseract or PaddleOCR subtitle series
         language: subtitle language
         prompt: text for LLM correspondence
-        test_cases: test cases
+        shared_test_cases: shared test cases
         provider: provider to use for queries
         fuser: OCR fuser to use, or None to construct one
         stop_at_idx: exclusive subtitle index at which to stop processing
@@ -45,5 +45,5 @@ def fuse_ocr_series(
         ScinoephileError: if OCR fusion does not support the language
     """
     if fuser is None:
-        fuser = get_ocr_fuser(language, prompt, test_cases, provider, **kwargs)
+        fuser = get_ocr_fuser(language, prompt, shared_test_cases, provider, **kwargs)
     return fuser.process(source_one, source_two, stop_at_idx=stop_at_idx)

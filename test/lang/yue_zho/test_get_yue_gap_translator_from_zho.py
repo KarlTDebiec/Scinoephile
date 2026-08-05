@@ -60,7 +60,10 @@ def test_gap_translator_zho_to_yue(
     with patch(device_patch_target, return_value="cuda"):
         test_cases = test_case_loader()
     translator = get_gap_translator(
-        Language.zho_hans, Language.yue_hans, test_cases=test_cases, provider=provider
+        Language.zho_hans,
+        Language.yue_hans,
+        shared_test_cases=test_cases,
+        provider=provider,
     )
     output = translator.process(yuewen, zhongwen)
     assert_series_equal(output, expected)
