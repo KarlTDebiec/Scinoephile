@@ -85,7 +85,7 @@ def test_queryer_corresponds_using_prompt_aliases():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     provider.chat_completion.return_value = '{"xiugai": []}'
     queryer = Queryer(test_case_cls, provider=provider, max_attempts=1)
@@ -122,7 +122,7 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     provider.chat_completion.return_value = '{"xiugai": []}'
     processor = GuidedReviewProcessor(
@@ -151,7 +151,7 @@ def test_processor_honors_start_index():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     provider.chat_completion.return_value = '{"xiugai": []}'
     processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
@@ -179,7 +179,7 @@ def test_processor_deletes_target_with_replacement_character_revision():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     provider.chat_completion.return_value = json.dumps(
         {"xiugai": [{"xuhao": 1, "wenben": "�", "beizhu": "刪除多餘字幕"}]},
@@ -204,7 +204,7 @@ def test_processor_reviews_target_only_blocks_for_deletion():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     provider.chat_completion.return_value = json.dumps(
         {"xiugai": [{"xuhao": 1, "wenben": "�", "beizhu": "刪除多餘字幕"}]},
@@ -413,7 +413,7 @@ def test_processor_uses_indexed_lists_and_applies_sparse_revisions():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     provider.chat_completion.return_value = json.dumps(
         {"xiugai": [{"xuhao": 2, "wenben": "修改二", "beizhu": "修正錯字"}]},

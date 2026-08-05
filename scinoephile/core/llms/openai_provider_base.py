@@ -71,7 +71,7 @@ class OpenAIProviderBase(LLMProvider):
         self._sync_client: OpenAI | None = client
         self._api_key: str | None = api_key
         self.timeout_seconds = timeout_seconds
-        self._completion_metrics: list[ChatCompletionMetrics] = []
+        self.completion_metrics: list[ChatCompletionMetrics] = []
         """Usage and timing for completions made by this provider instance."""
         if base_url is not None:
             self.base_url = base_url
@@ -110,11 +110,6 @@ class OpenAIProviderBase(LLMProvider):
             }
         )
         return identity
-
-    @property
-    def completion_metrics(self) -> tuple[ChatCompletionMetrics, ...]:
-        """Immutable snapshot of completion metrics recorded by this provider."""
-        return tuple(self._completion_metrics)
 
     @property
     def sync_client(self) -> OpenAI:
@@ -191,7 +186,7 @@ class OpenAIProviderBase(LLMProvider):
                     latency_seconds=monotonic() - start_time,
                     prompt_cache_key=prompt_cache_key,
                 )
-                self._completion_metrics.append(metrics)
+                self.completion_metrics.append(metrics)
                 logger.debug(f"LLM completion metrics: {metrics!r}")
                 message = completion.choices[0].message
                 tool_calls = cast(

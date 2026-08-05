@@ -75,7 +75,7 @@ def test_queryer_corresponds_using_prompt_aliases():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     provider.chat_completion.return_value = (
         '{"fanyi": [{"xuhao": 1, "wenben": "譯文"}]}'
@@ -214,7 +214,7 @@ def test_processor_uses_indexed_subtitles_and_outputs():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     processor = TranslationProcessor(_LOCALIZED_PROMPT, [test_case], provider=provider)
 
@@ -232,7 +232,7 @@ def test_processor_honors_zero_stop_index():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     processor = TranslationProcessor(_LOCALIZED_PROMPT, provider=provider)
     block = Series([Subtitle(start=0, end=1000, text="original")])
@@ -250,7 +250,7 @@ def test_processor_allows_start_beyond_last_block():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     processor = TranslationProcessor(_LOCALIZED_PROMPT, provider=provider)
     series = Series(events=[Subtitle(start=0, end=1000, text="原文")])
@@ -266,7 +266,7 @@ def test_processor_honors_start_index():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     provider.chat_completion.return_value = json.dumps(
         {"fanyi": [{"xuhao": 1, "wenben": "譯文二"}]}, ensure_ascii=False
@@ -292,7 +292,7 @@ def test_processor_rejects_negative_stop_index():
         provider=Mock(
             spec=LLMProvider,
             cache_identity={"implementation": "test"},
-            completion_metrics=(),
+            completion_metrics=[],
         ),
     )
 
@@ -307,7 +307,7 @@ def test_processor_rejects_reversed_range():
         provider=Mock(
             spec=LLMProvider,
             cache_identity={"implementation": "test"},
-            completion_metrics=(),
+            completion_metrics=[],
         ),
     )
 

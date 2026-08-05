@@ -64,7 +64,7 @@ def test_review_series_guided_yue_zho(
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     with patch(device_patch_target, return_value=device_name):
         test_cases = test_case_loader()

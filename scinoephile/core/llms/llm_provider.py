@@ -47,6 +47,9 @@ class ChatCompletionKwargs(TypedDict, total=False):
 class LLMProvider(ABC):
     """ABC for LLM providers."""
 
+    completion_metrics: list[ChatCompletionMetrics]
+    """Completion metrics recorded by this provider."""
+
     @property
     def cache_identity(self) -> dict[str, JsonValue]:
         """Stable, non-secret configuration affecting completion behavior.
@@ -55,11 +58,6 @@ class LLMProvider(ABC):
         behavior-affecting settings while excluding credentials.
         """
         return {"implementation": f"{type(self).__module__}.{type(self).__qualname__}"}
-
-    @property
-    def completion_metrics(self) -> tuple[ChatCompletionMetrics, ...]:
-        """Immutable snapshot of completion metrics recorded by this provider."""
-        return ()
 
     @abstractmethod
     def chat_completion(

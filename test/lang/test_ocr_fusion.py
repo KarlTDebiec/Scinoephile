@@ -302,7 +302,7 @@ def test_fuse_ocr_series(
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     processor = get_ocr_fuser(
         language, shared_test_cases=test_case_loader(), provider=provider

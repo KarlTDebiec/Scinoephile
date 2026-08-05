@@ -137,7 +137,7 @@ def test_processor_maps_indexed_outputs_to_subtitle_timing():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     provider.chat_completion.return_value = json.dumps(
         {
@@ -206,7 +206,7 @@ def test_processor_honors_start_index():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     provider.chat_completion.return_value = json.dumps(
         {"shuchu": [{"xuhao": 1, "wenben": "譯文二"}]}, ensure_ascii=False

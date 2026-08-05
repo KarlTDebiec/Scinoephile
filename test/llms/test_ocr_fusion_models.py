@@ -219,7 +219,7 @@ def test_queryer_corresponds_using_prompt_aliases():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     provider.chat_completion.return_value = (
         '{"jieguo": "來源一", "shuoming": "採用來源一"}'
@@ -240,7 +240,7 @@ def test_processor_uses_semantic_fields_at_runtime():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     provider.chat_completion.return_value = (
         '{"jieguo": "融合結果", "shuoming": "融合兩個來源"}'
@@ -261,7 +261,7 @@ def test_processor_honors_zero_stop_index():
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     processor = OcrFusionProcessor(_LOCALIZED_PROMPT, provider=provider)
     source_one = Series([Subtitle(start=0, end=1000, text="來源一")])
@@ -280,7 +280,7 @@ def test_processor_rejects_negative_stop_index():
         provider=Mock(
             spec=LLMProvider,
             cache_identity={"implementation": "test"},
-            completion_metrics=(),
+            completion_metrics=[],
         ),
     )
     source = Series([Subtitle(start=0, end=1000, text="subtitle")])

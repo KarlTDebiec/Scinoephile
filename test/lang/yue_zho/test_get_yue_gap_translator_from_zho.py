@@ -59,7 +59,7 @@ def test_gap_translator_zho_to_yue(
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     with patch(device_patch_target, return_value="cuda"):
         test_cases = test_case_loader()

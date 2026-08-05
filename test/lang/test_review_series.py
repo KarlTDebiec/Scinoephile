@@ -419,7 +419,7 @@ def test_review_series(
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
-        completion_metrics=(),
+        completion_metrics=[],
     )
     reviewer = get_reviewer(
         language, prompt=prompt, shared_test_cases=test_case_loader(), provider=provider
