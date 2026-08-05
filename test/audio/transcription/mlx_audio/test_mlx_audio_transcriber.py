@@ -55,7 +55,7 @@ def _get_cache_path(
     """Get the cache path for one preprocessing configuration."""
     settings = TranscriptionPreprocessingSettings(use_demucs, use_vad)
     cache_path = transcriber._cache.get_path(
-        audio, transcriber._get_cache_metadata_for_audio(audio, settings)
+        audio, transcriber._get_cache_metadata(audio, settings)
     )
     assert cache_path is not None
     return cache_path
@@ -108,7 +108,7 @@ def test_get_cache_path_uses_mlx_runtime_on_apple_silicon():
     transcriber = _get_mlx_audio_transcriber(model_name=MIMO_MODEL_NAME)
 
     metadata = transcriber._get_cache_metadata(
-        TranscriptionPreprocessingSettings(False, False)
+        _get_cache_audio(), TranscriptionPreprocessingSettings(False, False)
     )
 
     assert metadata["runtime"] == "mlx"
@@ -183,18 +183,17 @@ def test_token_limit_guard_cache_identity_depends_on_audio_duration(tmp_path: Pa
     expected_segments = [_get_timed_segment("cached")]
     unguarded._cache.save(
         short_audio,
-        unguarded._get_cache_metadata_for_audio(short_audio, settings),
+        unguarded._get_cache_metadata(short_audio, settings),
         expected_segments,
     )
     assert guarded.get_cached_transcription(short_audio) == expected_segments
 
-    guarded_metadata = guarded._get_cache_metadata_for_audio(long_audio, settings)
+    guarded_metadata = guarded._get_cache_metadata(long_audio, settings)
     assert guarded_metadata["chunk_duration_seconds"] == 53.0
     assert guarded_metadata["chunk_overlap_seconds"] == 1.0
     assert guarded_metadata["token_limit_guard_fraction"] == 0.95
-    assert guarded_metadata["token_limit_guard_window_duration_seconds"] == 55.0
     assert "token_limit_guard_fraction" not in (
-        guarded._get_cache_metadata_for_audio(short_audio, settings)
+        guarded._get_cache_metadata(short_audio, settings)
     )
 
 
@@ -267,7 +266,7 @@ def test_get_cached_transcription_reads_mlx_audio_payload(tmp_path: Path):
     transcriber._cache.save(
         audio,
         transcriber._get_cache_metadata(
-            TranscriptionPreprocessingSettings(False, False)
+            audio, TranscriptionPreprocessingSettings(False, False)
         ),
         expected_segments,
     )

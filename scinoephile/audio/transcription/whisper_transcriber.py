@@ -285,11 +285,12 @@ class WhisperTranscriber(Transcriber):
         return segment_text_from_words
 
     def _get_backend_cache_metadata(
-        self, settings: TranscriptionPreprocessingSettings
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> dict[str, object]:
         """Get cache metadata identifying configured Whisper output.
 
         Arguments:
+            audio: audio whose properties may affect backend behavior
             settings: preprocessing settings
         Returns:
             backend configuration identifying the output
