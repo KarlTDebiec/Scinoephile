@@ -8,13 +8,15 @@ from abc import ABC
 from pathlib import Path
 from typing import TypedDict
 
+from scinoephile.common.validation import val_output_path
+
 from .llm_provider import LLMProvider
 from .manager import Manager
 from .prompt import Prompt
 from .queryer import Queryer
 from .test_case import TestCase
 from .tool_box import ToolBox
-from .utils import load_test_cases, save_test_cases_to_json
+from .utils import load_test_cases_from_json, save_test_cases_to_json
 
 __all__ = ["Processor", "ProcessorKwargs"]
 
@@ -40,8 +42,8 @@ class ProcessorKwargs(TypedDict, total=False):
     prune_test_cases: bool
     """Whether to remove persisted test cases not encountered in the current run."""
 
-    test_case_path: Path | None
-    """Path where test cases are persisted."""
+    current_test_cases_path: Path | None
+    """Current configuration's test-case JSON path."""
 
     tool_box: ToolBox | None
     """Available tools and handlers."""
@@ -61,8 +63,8 @@ class Processor(ABC):
     def __init__(
         self,
         prompt: Prompt,
-        test_cases: list[TestCase] | None = None,
-        test_case_path: Path | None = None,
+        shared_test_cases: list[TestCase] | None = None,
+        current_test_cases_path: Path | None = None,
         *,
         provider: LLMProvider,
         additional_context: str | None = None,
@@ -77,8 +79,8 @@ class Processor(ABC):
 
         Arguments:
             prompt: text for LLM correspondence
-            test_cases: test cases
-            test_case_path: path to file containing test cases
+            shared_test_cases: known test cases shared across configurations
+            current_test_cases_path: current configuration's test-case JSON path
             provider: provider to use for queries
             additional_context: additional context to include in the system prompt
             auto_verify: automatically verify test cases if they meet selected criteria
@@ -93,20 +95,28 @@ class Processor(ABC):
             raise ValueError("manager_cls must be set on Processor subclasses.")
         self.test_case_cls = self.manager_cls.get_test_case_cls(self.prompt)
 
-        test_cases, test_case_path = load_test_cases(
-            self.manager_cls,
-            self.prompt,
-            test_cases=test_cases,
-            test_case_path=test_case_path,
-        )
-        self.test_case_path = test_case_path
-        """Path to file containing test cases."""
+        if current_test_cases_path is not None:
+            current_test_cases_path = val_output_path(
+                current_test_cases_path, exist_ok=True
+            )
+        current_test_cases = []
+        if current_test_cases_path is not None and current_test_cases_path.exists():
+            current_test_cases = load_test_cases_from_json(
+                current_test_cases_path, self.manager_cls, self.prompt
+            )
+        verified_test_cases = [
+            test_case
+            for test_case in [*(shared_test_cases or []), *current_test_cases]
+            if test_case.verified
+        ]
+        self.current_test_cases_path = current_test_cases_path
+        """Current configuration's test-case JSON path."""
         self.prune_test_cases = prune_test_cases
         """Whether to remove persisted cases not encountered in the current run."""
 
         self.queryer = Queryer(
             self.test_case_cls,
-            verified_test_cases=[tc for tc in test_cases if tc.verified],
+            verified_test_cases=verified_test_cases,
             provider=provider,
             cache_root_path=cache_root_path,
             additional_context=additional_context,
@@ -117,12 +127,12 @@ class Processor(ABC):
         )
         """LLM queryer."""
 
-    def save_test_cases(self):
+    def save_encountered_test_cases(self):
         """Persist encountered test cases."""
-        if self.test_case_path is None or self.manager_cls is None:
+        if self.current_test_cases_path is None or self.manager_cls is None:
             return
         save_test_cases_to_json(
-            self.test_case_path,
+            self.current_test_cases_path,
             self.queryer.encountered_test_cases.values(),
             self.manager_cls,
             prune=self.prune_test_cases,

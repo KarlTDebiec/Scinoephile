@@ -87,7 +87,7 @@ class TranslationProcessor(Processor):
             )
             output_series_to_concatenate[block_idx] = output_series
 
-        self.save_test_cases()
+        self.save_encountered_test_cases()
 
         # Organize and return
         output_series_blocks = [

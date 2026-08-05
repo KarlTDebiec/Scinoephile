@@ -14,7 +14,7 @@ from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.lang.eng.review import ReviewPromptEng
 from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
 from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
-from scinoephile.llms import load_default_test_cases
+from scinoephile.llms import load_shared_test_cases
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.llms.review import ReviewManager, ReviewProcessor, ReviewPrompt
 
@@ -84,7 +84,7 @@ DEFAULT_PROMPTS: Mapping[Language, ReviewPrompt] = MappingProxyType(
 def get_reviewer(
     language: Language,
     prompt: ReviewPrompt | None = None,
-    test_cases: list[TestCase] | None = None,
+    shared_test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> ReviewProcessor:
@@ -93,7 +93,7 @@ def get_reviewer(
     Arguments:
         language: subtitle language
         prompt: text for LLM correspondence
-        test_cases: test cases
+        shared_test_cases: shared test cases
         provider: provider to use for queries
         **kwargs: additional keyword arguments for ReviewProcessor
     Returns:
@@ -106,9 +106,11 @@ def get_reviewer(
 
     if prompt is None:
         prompt = DEFAULT_PROMPTS[language]
-    if test_cases is None:
+    if shared_test_cases is None:
         json_paths = _JSON_PATHS[language]
-        test_cases = list(load_default_test_cases(ReviewManager, prompt, json_paths))
+        shared_test_cases = list(
+            load_shared_test_cases(ReviewManager, prompt, json_paths)
+        )
     if provider is None:
         provider = get_provider()
-    return ReviewProcessor(prompt, test_cases, provider=provider, **kwargs)
+    return ReviewProcessor(prompt, shared_test_cases, provider=provider, **kwargs)

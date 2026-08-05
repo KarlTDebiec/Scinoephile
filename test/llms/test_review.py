@@ -200,19 +200,21 @@ def test_partial_processing_preserves_unencountered_test_cases(tmp_path: Path):
             "verified": True,
         }
     )
-    test_case_path = tmp_path / "review.json"
-    save_test_cases_to_json(test_case_path, [existing_test_case], ReviewManager)
-    original_contents = test_case_path.read_bytes()
+    current_test_cases_path = tmp_path / "review.json"
+    save_test_cases_to_json(
+        current_test_cases_path, [existing_test_case], ReviewManager
+    )
+    original_contents = current_test_cases_path.read_bytes()
     processor = ReviewProcessor(
         ReviewManager.base_prompt,
-        test_case_path=test_case_path,
+        current_test_cases_path=current_test_cases_path,
         provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
     )
     series = Series(events=[Subtitle(start=0, end=1000, text="existing")])
 
     processor.process(series, stop_at_idx=0)
 
-    assert test_case_path.read_bytes() == original_contents
+    assert current_test_cases_path.read_bytes() == original_contents
 
 
 def test_partial_processing_prunes_only_when_requested(tmp_path: Path):
@@ -225,11 +227,13 @@ def test_partial_processing_prunes_only_when_requested(tmp_path: Path):
             "verified": True,
         }
     )
-    test_case_path = tmp_path / "review.json"
-    save_test_cases_to_json(test_case_path, [existing_test_case], ReviewManager)
+    current_test_cases_path = tmp_path / "review.json"
+    save_test_cases_to_json(
+        current_test_cases_path, [existing_test_case], ReviewManager
+    )
     processor = ReviewProcessor(
         ReviewManager.base_prompt,
-        test_case_path=test_case_path,
+        current_test_cases_path=current_test_cases_path,
         provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
         prune_test_cases=True,
     )
@@ -237,7 +241,7 @@ def test_partial_processing_prunes_only_when_requested(tmp_path: Path):
 
     processor.process(series, stop_at_idx=0)
 
-    assert json.loads(test_case_path.read_text(encoding="utf-8")) == []
+    assert json.loads(current_test_cases_path.read_text(encoding="utf-8")) == []
 
 
 def test_processor_honors_start_index():
