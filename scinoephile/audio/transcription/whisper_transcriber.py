@@ -324,24 +324,6 @@ class WhisperTranscriber(Transcriber):
             )
         return metadata
 
-    def _get_compatible_cache_metadata(
-        self, settings: TranscriptionPreprocessingSettings
-    ) -> tuple[Mapping[str, object], ...]:
-        """Get the pre-CTC-fallback Whisper cache identity.
-
-        Arguments:
-            settings: preprocessing settings
-        Returns:
-            compatible legacy cache metadata, when CTC fallback is enabled
-        """
-        if self.ctc_aligner is None:
-            return ()
-        legacy_metadata = self._get_cache_metadata(settings)
-        legacy_metadata.pop("timestamp_fallback")
-        legacy_metadata.pop("timestamp_fallback_language")
-        legacy_metadata.pop("timestamp_fallback_model_name")
-        return (legacy_metadata,)
-
     def _prepare_cached_segments(
         self,
         segments: list[TranscribedSegment],

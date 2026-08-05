@@ -49,7 +49,6 @@ class _TestTranscriber(Transcriber):
             list[TranscribedSegment] | TranscriptionError,
         ] = {}
         self.calls: list[tuple[AudioSegment, TranscriptionPreprocessingSettings]] = []
-        self.compatible_cache_metadata: tuple[Mapping[str, object], ...] = ()
         super().__init__(cache_root_path, demucs_mode, vad_mode, overwrite_cache)
 
     def _get_backend_cache_metadata(
@@ -57,12 +56,6 @@ class _TestTranscriber(Transcriber):
     ) -> Mapping[str, object]:
         """Get test backend cache metadata."""
         return {}
-
-    def _get_compatible_cache_metadata(
-        self, settings: TranscriptionPreprocessingSettings
-    ) -> tuple[Mapping[str, object], ...]:
-        """Get configured compatible test cache metadata."""
-        return self.compatible_cache_metadata
 
     def _transcribe_attempt(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
@@ -267,25 +260,6 @@ def test_cached_empty_attempt_does_not_shadow_cached_fallback(tmp_path: Path):
 
     assert transcriber(audio) == expected_segments
     assert transcriber.calls == []
-
-
-def test_empty_compatible_cache_does_not_prevent_current_transcription(tmp_path: Path):
-    """Test a failed legacy-compatible cache does not suppress current behavior.
-
-    Arguments:
-        tmp_path: temporary directory provided by pytest
-    """
-    audio = AudioSegment.silent(duration=100)
-    settings = TranscriptionPreprocessingSettings(False, False)
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VADMode.OFF)
-    compatible_metadata = {"legacy": True, "use_demucs": False, "use_vad": False}
-    transcriber.compatible_cache_metadata = (compatible_metadata,)
-    transcriber._cache.save(audio, compatible_metadata, [])
-    expected_segments = [_get_segment("current")]
-    transcriber.outcomes[settings] = expected_segments
-
-    assert transcriber(audio) == expected_segments
-    assert transcriber.calls == [(audio, settings)]
 
 
 def test_rejected_cached_configuration_takes_precedence_over_other_error(
