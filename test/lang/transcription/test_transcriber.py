@@ -645,6 +645,7 @@ def test_process_block_retains_complete_mlx_audio_segments():
     ]
     assert transcription[0].segment.id == 0
 
+
 def test_process_block_groups_mlx_audio_segments_on_phrase_timings():
     """Test phrase timing groups use punctuation before it may be stripped."""
     transcriber, aligner = _get_transcriber(

@@ -392,6 +392,24 @@ YueZhoBlockDelineationPromptYueHant = replace(
         _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_BOUNDARY_CHECK_V1,
     ),
 )
+"""Predecessor prompt checking every target edge in the query window."""
+
+_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_EDGE_CHECK = (
+    YueZhoBlockDelineationPromptYueHant
+)
+
+YueZhoBlockDelineationPromptYueHant = replace(
+    _YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_EDGE_CHECK,
+    base_system_prompt=dedent_and_compact(f"""
+        {_YUE_ZHO_BLOCK_DELINEATION_PROMPT_YUE_HANT_EDGE_CHECK.base_system_prompt}
+        最後要單獨核對 fuze_jieshu_xuhao 後面嗰個分界。右邊上下文字幕入面嘅
+        初步粵文唔一定屬於右邊上下文：如果當中完整說話單位語意上對應
+        fuze_jieshu_xuhao 嘅 zhongwen，就必須將最後負責分界向右移，必要時
+        可以移到合法範圍最右端，令右邊上下文完全空白。唔好因為轉寫冇收錄
+        右邊上下文 zhongwen 本身嘅說話，就將上一句錯留喺右邊上下文。反過來，
+        如果初步粵文確實對應右邊上下文 zhongwen，就要保留喺右邊。"""),
+    legacy_cache_prompts=(),
+)
 """Text for Traditional Cantonese/Chinese block delineation."""
 
 YueZhoBlockDelineationPromptYueHans = YueZhoBlockDelineationPromptYueHant.transformed(

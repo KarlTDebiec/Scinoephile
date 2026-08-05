@@ -45,7 +45,7 @@ def test_block_answer_change_alias_is_pinyin():
         assert "fuze_jieshu_xuhao" in prompt.base_system_prompt
         assert set(properties) == {expected_changes}
         if isinstance(prompt, BlockDelineationPrompt):
-            assert len(prompt.legacy_cache_prompts) == 1
+            assert not prompt.legacy_cache_prompts
         else:
             assert not prompt.legacy_cache_prompts
 
@@ -90,6 +90,8 @@ def test_block_delineation_prompt_requires_reconstruction_checks():
     assert "yuanben_pianyi" in delineation_prompt
     assert "fuze_jieshu_xuhao 唔係" in delineation_prompt
     assert "最後分界" in delineation_prompt
+    assert "最後要單獨核對 fuze_jieshu_xuhao 後面嗰個分界" in delineation_prompt
+    assert "令右邊上下文完全空白" in delineation_prompt
     assert "最終重組分界核對清單" in delineation_prompt
     assert "只剩標點或者空格" in delineation_prompt
     assert YueZhoBlockDelineationPromptYueHant.validate_output_quality is True
