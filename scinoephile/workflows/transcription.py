@@ -33,7 +33,7 @@ def transcribe_series_guided(
     guide_language: Language | None = None,
     model_name: str | None = None,
     backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
-    demucs_mode: DemucsMode = DemucsMode.AUTO,
+    demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.OFF,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,

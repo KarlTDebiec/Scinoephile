@@ -418,7 +418,7 @@ def test_review_series(
     """
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     reviewer = get_reviewer(
-        language, prompt=prompt, test_cases=test_case_loader(), provider=provider
+        language, prompt=prompt, shared_test_cases=test_case_loader(), provider=provider
     )
     expected = request.getfixturevalue(expected_fixture)
     output = review_series(

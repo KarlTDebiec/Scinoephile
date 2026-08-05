@@ -51,12 +51,13 @@ _TIMESTAMP_ALIGNMENT_ERROR = (
 """Known assertion raised when Whisper Timestamped cannot align decoder output."""
 
 
-def test_init_defaults_demucs_to_auto_and_vad_to_off():
-    """Test Whisper defaults Demucs to automatic and VAD to off."""
+def test_init_defaults_demucs_and_vad_to_off():
+    """Test Whisper defaults Demucs and VAD to off."""
     transcriber = WhisperTranscriber()
 
-    assert transcriber.demucs_mode is DemucsMode.AUTO
+    assert transcriber.demucs_mode is DemucsMode.OFF
     assert transcriber.vad_mode is VADMode.OFF
+    assert transcriber.demucs_separator is None
 
 
 def _get_cache_path(transcriber: WhisperTranscriber, audio: AudioSegment) -> Path:
@@ -114,14 +115,26 @@ def test_get_cache_path_separates_configuration(
         second_value: second transcriber field value
     """
     audio = AudioSegment(data=b"audio", sample_width=1, frame_rate=8000, channels=1)
-    first_transcriber = WhisperTranscriber(
-        cache_root_path=tmp_path, model_name="custom/model"
-    )
-    second_transcriber = WhisperTranscriber(
-        cache_root_path=tmp_path, model_name="custom/model"
-    )
-    setattr(first_transcriber, field_name, first_value)
-    setattr(second_transcriber, field_name, second_value)
+    if field_name == "demucs_mode":
+        assert isinstance(first_value, DemucsMode)
+        assert isinstance(second_value, DemucsMode)
+        first_transcriber = WhisperTranscriber(
+            cache_root_path=tmp_path, model_name="custom/model", demucs_mode=first_value
+        )
+        second_transcriber = WhisperTranscriber(
+            cache_root_path=tmp_path,
+            model_name="custom/model",
+            demucs_mode=second_value,
+        )
+    else:
+        first_transcriber = WhisperTranscriber(
+            cache_root_path=tmp_path, model_name="custom/model"
+        )
+        second_transcriber = WhisperTranscriber(
+            cache_root_path=tmp_path, model_name="custom/model"
+        )
+        setattr(first_transcriber, field_name, first_value)
+        setattr(second_transcriber, field_name, second_value)
     first_cache_path = _get_cache_path(first_transcriber, audio)
     second_cache_path = _get_cache_path(second_transcriber, audio)
 

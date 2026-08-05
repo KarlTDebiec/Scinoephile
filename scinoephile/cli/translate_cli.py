@@ -240,7 +240,7 @@ class TranslateCli(ScinoephileCliBase):
             "cache_root_path": cache_args.root_path,
             "no_op": llm_args.no_op,
             "overwrite_cache": cache_args.overwrite,
-            "test_case_path": json_path,
+            "current_test_cases_path": json_path,
             "start_at_idx": start_at_idx,
             "stop_at_idx": stop_at_idx,
         }

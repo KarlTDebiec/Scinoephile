@@ -105,7 +105,7 @@ class OcrProcessingWorkflow:
             self.fuser_kw = dict(fuser_kw)
         self.fuser_kw.setdefault("additional_context", additional_context)
         self.fuser_kw.setdefault(
-            "test_case_path",
+            "current_test_cases_path",
             self.output_dir_path / "lang" / self.language.language / "ocr_fusion.json",
         )
         self.host = host

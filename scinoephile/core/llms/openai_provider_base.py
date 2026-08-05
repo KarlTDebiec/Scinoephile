@@ -37,6 +37,9 @@ class OpenAIProviderBase(LLMProvider):
     base_url: str | None = None
     """Default base URL for the OpenAI client."""
 
+    timeout_seconds: float
+    """Timeout for each provider request."""
+
     def __init__(
         self,
         client: OpenAI | None = None,
@@ -44,6 +47,7 @@ class OpenAIProviderBase(LLMProvider):
         api_key: str | None = None,
         base_url: str | None = None,
         model: str | None = None,
+        timeout_seconds: float = 120.0,
     ):
         """Initialize.
 
@@ -52,9 +56,15 @@ class OpenAIProviderBase(LLMProvider):
             api_key: explicit API key; if omitted, env var is used if configured
             base_url: explicit base URL; if omitted, provider default is used
             model: model identifier override
+            timeout_seconds: timeout for each provider request
+        Raises:
+            ValueError: if timeout_seconds is not positive
         """
+        if timeout_seconds <= 0:
+            raise ValueError("timeout_seconds must be positive.")
         self._sync_client: OpenAI | None = client
         self._api_key: str | None = api_key
+        self.timeout_seconds = timeout_seconds
         if base_url is not None:
             self.base_url = base_url
         if model is not None:
@@ -97,7 +107,11 @@ class OpenAIProviderBase(LLMProvider):
     def sync_client(self) -> OpenAI:
         """Synchronous OpenAI client."""
         if self._sync_client is None:
-            self._sync_client = OpenAI(api_key=self.api_key, base_url=self.base_url)
+            self._sync_client = OpenAI(
+                api_key=self.api_key,
+                base_url=self.base_url,
+                timeout=self.timeout_seconds,
+            )
         return self._sync_client
 
     @property
@@ -223,6 +237,7 @@ class OpenAIProviderBase(LLMProvider):
         return self.sync_client.beta.chat.completions.parse(
             messages=messages,  # ty:ignore[invalid-argument-type]
             model=self.model,
+            timeout=self.timeout_seconds,
             **request_kwargs,
         )
 

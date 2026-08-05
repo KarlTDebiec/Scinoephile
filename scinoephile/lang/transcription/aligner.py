@@ -94,8 +94,8 @@ class TranscriptionAligner:
 
     def update_all_test_cases(self):
         """Update all test cases encountered during the current run."""
-        self.delineation_processor.save_test_cases()
-        self.punctuation_processor.save_test_cases()
+        self.delineation_processor.save_encountered_test_cases()
+        self.punctuation_processor.save_encountered_test_cases()
 
     def _delineate(self, alignment: TranscriptionAlignment) -> bool:
         """Delineate transcribed text.

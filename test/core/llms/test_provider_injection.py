@@ -28,6 +28,10 @@ from scinoephile.core.llms import (
 )
 from scinoephile.core.llms.llm_provider import ChatCompletionKwargs
 from scinoephile.core.llms.tool_box import ToolBox
+from scinoephile.core.llms.utils import (
+    load_test_cases_from_json,
+    save_test_cases_to_json,
+)
 
 _PROMPT = Prompt(
     language=Language.eng,
@@ -479,7 +483,13 @@ def test_queryer_rejects_conflicting_verified_duplicates():
         query=_Query(text="input"), answer=_Answer(output="second"), verified=True
     )
 
-    with raises(ValueError, match="Conflicting verified answers"):
+    with raises(
+        ValueError,
+        match=(
+            "(?s)Conflicting verified answers.*Existing answer.*first.*"
+            "Conflicting answer.*second"
+        ),
+    ):
         Queryer(_TestCase, verified_test_cases=[first, second], provider=provider)
 
 
@@ -654,6 +664,73 @@ def test_cache_path_does_not_retain_queryer(tmp_path):
     gc.collect()
 
     assert queryer_ref() is None
+
+
+def test_processor_preserves_shared_verified_cases_from_current_unverified_case(
+    tmp_path: Path,
+):
+    """All shared verified cases should reach the nascent Queryer."""
+    shared_verified = _TestCase(
+        query=_Query(text="input"), answer=_Answer(output="verified"), verified=True
+    )
+    current_unverified = _TestCase(
+        query=_Query(text="input"), answer=_Answer(output="unverified")
+    )
+    current_test_cases_path = tmp_path / "test_cases.json"
+    save_test_cases_to_json(current_test_cases_path, [current_unverified], _Manager)
+
+    processor = _Processor(
+        prompt=_PROMPT,
+        shared_test_cases=[shared_verified],
+        current_test_cases_path=current_test_cases_path,
+        provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+    )
+
+    loaded = processor.queryer.verified_test_cases[shared_verified.query.key]
+    assert loaded.answer == shared_verified.answer
+
+
+def test_processor_rejects_conflicting_shared_and_current_verified_cases(
+    tmp_path: Path,
+):
+    """Conflicting shared and current verified answers should abort construction."""
+    shared = _TestCase(
+        query=_Query(text="input"), answer=_Answer(output="shared"), verified=True
+    )
+    current = _TestCase(
+        query=_Query(text="input"), answer=_Answer(output="current"), verified=True
+    )
+    current_test_cases_path = tmp_path / "test_cases.json"
+    save_test_cases_to_json(current_test_cases_path, [current], _Manager)
+
+    with raises(ValueError, match="(?s)Existing answer.*shared.*Conflicting.*current"):
+        _Processor(
+            prompt=_PROMPT,
+            shared_test_cases=[shared],
+            current_test_cases_path=current_test_cases_path,
+            provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+        )
+
+
+def test_processor_saves_encountered_cases_to_current_json(tmp_path: Path):
+    """Encountered cases should be saved to the current configuration's JSON."""
+    shared = _TestCase(
+        query=_Query(text="input"), answer=_Answer(output="verified"), verified=True
+    )
+    current_test_cases_path = tmp_path / "test_cases.json"
+    processor = _Processor(
+        prompt=_PROMPT,
+        shared_test_cases=[shared],
+        current_test_cases_path=current_test_cases_path,
+        provider=Mock(spec=LLMProvider, cache_identity={"implementation": "test"}),
+    )
+
+    processor.queryer(_TestCase(query=_Query(text="input")))
+    processor.save_encountered_test_cases()
+
+    saved = load_test_cases_from_json(current_test_cases_path, _Manager, _PROMPT)
+    assert len(saved) == 1
+    assert saved[0].model_dump(mode="json") == shared.model_dump(mode="json")
 
 
 def test_processor_passes_injected_provider_to_queryer():

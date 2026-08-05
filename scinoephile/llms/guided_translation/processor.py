@@ -89,7 +89,7 @@ class GuidedTranslationProcessor(Processor):
             logger.info(f"Block {blk_idx}:\n{output_series.to_simple_string()}")
             output_series_to_concatenate[blk_idx] = output_series
 
-        self.save_test_cases()
+        self.save_encountered_test_cases()
 
         output_series_blocks = [
             series for series in output_series_to_concatenate if series is not None

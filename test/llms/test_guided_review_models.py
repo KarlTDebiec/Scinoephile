@@ -111,12 +111,16 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
             "verified": True,
         }
     )
-    test_case_path = tmp_path / "guided_review.json"
-    save_test_cases_to_json(test_case_path, [old_test_case], GuidedReviewManager)
+    current_test_cases_path = tmp_path / "guided_review.json"
+    save_test_cases_to_json(
+        current_test_cases_path, [old_test_case], GuidedReviewManager
+    )
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     provider.chat_completion.return_value = '{"xiugai": []}'
     processor = GuidedReviewProcessor(
-        _LOCALIZED_PROMPT, test_case_path=test_case_path, provider=provider
+        _LOCALIZED_PROMPT,
+        current_test_cases_path=current_test_cases_path,
+        provider=provider,
     )
     target = Series(events=[Subtitle(start=0, end=100, text="新原文")])
     guide = Series(events=[Subtitle(start=0, end=100, text="參考")])
@@ -124,7 +128,7 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
     processor.process(target, guide)
 
     persisted = load_test_cases_from_json(
-        test_case_path, GuidedReviewManager, _LOCALIZED_PROMPT
+        current_test_cases_path, GuidedReviewManager, _LOCALIZED_PROMPT
     )
     assert len(persisted) == 2
     persisted_cases = cast("list[GuidedReviewTestCase]", persisted)

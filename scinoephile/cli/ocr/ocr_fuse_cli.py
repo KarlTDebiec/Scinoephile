@@ -270,7 +270,7 @@ class OcrFuseCli(ScinoephileCliBase):
                 cache_root_path=cache_args.root_path,
                 no_op=llm_args.no_op,
                 overwrite_cache=cache_args.overwrite,
-                test_case_path=json_path,
+                current_test_cases_path=json_path,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
