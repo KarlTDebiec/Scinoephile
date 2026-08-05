@@ -154,7 +154,7 @@ def test_extract_audio_native_center_extracts_center_at_source_rate(tmp_path: Pa
 
     assert fake_ffmpeg_input.output_kwargs is not None
     assert fake_ffmpeg_input.output_kwargs["filter_complex"] == (
-        "[0:12]pan=mono|c0=c2[out]"
+        "[0:12]channelmap=map=FC:channel_layout=mono[out]"
     )
     assert fake_ffmpeg_input.output_kwargs["map"] == "[out]"
     assert "ar" not in fake_ffmpeg_input.output_kwargs
@@ -185,7 +185,8 @@ def test_extract_audio_native_center_heavy_uses_weighted_mix(tmp_path: Path):
 
     assert fake_ffmpeg_input.output_kwargs is not None
     assert fake_ffmpeg_input.output_kwargs["filter_complex"] == (
-        "[0:12]pan=mono|c0=0.70*c2+0.15*c0+0.15*c1[out]"
+        "[0:12]channelmap=map=FL|FR|FC:channel_layout=3.0,"
+        "pan=mono|c0=0.15*c0+0.15*c1+0.70*c2[out]"
     )
     assert fake_ffmpeg_input.output_kwargs["map"] == "[out]"
     assert "ar" not in fake_ffmpeg_input.output_kwargs
@@ -230,7 +231,7 @@ def test_extract_audio_native_complete_mix_preserves_rate(
 def test_extract_audio_center_modes_require_center_channel(
     tmp_path: Path, mode: AudioExtractionMode
 ):
-    """Test center-dependent modes reject streams without a center channel.
+    """Test center-dependent modes explain FFmpeg channel-layout failures.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -238,24 +239,25 @@ def test_extract_audio_center_modes_require_center_channel(
     """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
+    fake_ffmpeg_input = FakeFfmpegInput(
+        ffmpeg.Error(
+            "ffmpeg", b"", b"input channel 'FC' not available from input layout 'quad'"
+        )
+    )
 
     with (
         patch(
             "scinoephile.media.audio.get_streams",
-            return_value=[AudioStream(index=12, codec_type="audio", channels=2)],
+            return_value=[AudioStream(index=12, codec_type="audio", channels=4)],
         ),
-        patch("scinoephile.media.audio.ffmpeg.input") as ffmpeg_input,
+        patch("scinoephile.media.audio.ffmpeg.input", return_value=fake_ffmpeg_input),
         raises(
-            ScinoephileError,
-            match=(
-                rf"Audio extraction mode {mode.value} requires a stream with a "
-                r"center channel; stream 12 has 2 channels"
-            ),
-        ),
+            ScinoephileError, match=rf"mode {mode.value} requires .*front center \(FC\)"
+        ) as excinfo,
     ):
         extract_audio(infile_path, tmp_path / "audio.wav", mode=mode)
 
-    ffmpeg_input.assert_not_called()
+    assert isinstance(excinfo.value.__cause__, ffmpeg.Error)
 
 
 def test_extract_audio_track_wraps_ffmpeg_errors(tmp_path: Path):

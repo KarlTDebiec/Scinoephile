@@ -131,16 +131,6 @@ def _extract_audio_track(
     Raises:
         ScinoephileError: if ffmpeg cannot extract the stream
     """
-    if (
-        mode
-        in {AudioExtractionMode.NATIVE_CENTER, AudioExtractionMode.NATIVE_CENTER_HEAVY}
-        and channels < 3
-    ):
-        raise ScinoephileError(
-            f"Audio extraction mode {mode.value} requires a stream with a center "
-            f"channel; stream {stream_index} has {channels} channels"
-        )
-
     try:
         if mode is AudioExtractionMode.TRANSCRIPTION and channels >= 6:
             logger.info(
@@ -173,7 +163,9 @@ def _extract_audio_track(
                 str(outfile_path),
                 format="wav",
                 **{
-                    "filter_complex": f"[0:{stream_index}]pan=mono|c0=c2[out]",
+                    "filter_complex": (
+                        f"[0:{stream_index}]channelmap=map=FC:channel_layout=mono[out]"
+                    ),
                     "map": "[out]",
                 },
             ).run(quiet=False, overwrite_output=True)
@@ -187,7 +179,9 @@ def _extract_audio_track(
                 format="wav",
                 **{
                     "filter_complex": (
-                        f"[0:{stream_index}]pan=mono|c0=0.70*c2+0.15*c0+0.15*c1[out]"
+                        f"[0:{stream_index}]"
+                        "channelmap=map=FL|FR|FC:channel_layout=3.0,"
+                        "pan=mono|c0=0.15*c0+0.15*c1+0.70*c2[out]"
                     ),
                     "map": "[out]",
                 },
@@ -208,7 +202,24 @@ def _extract_audio_track(
             ffmpeg.input(str(infile_path)).output(
                 str(outfile_path), format="wav", map=f"0:{stream_index}", ac=2
             ).run(quiet=False, overwrite_output=True)
-    except (ffmpeg.Error, OSError) as exc:
+    except ffmpeg.Error as exc:
+        if mode is AudioExtractionMode.NATIVE_CENTER:
+            raise ScinoephileError(
+                f"Could not extract audio stream {stream_index} from {infile_path} "
+                f"to {outfile_path}; mode {mode.value} requires a front center "
+                "(FC) channel"
+            ) from exc
+        if mode is AudioExtractionMode.NATIVE_CENTER_HEAVY:
+            raise ScinoephileError(
+                f"Could not extract audio stream {stream_index} from {infile_path} "
+                f"to {outfile_path}; mode {mode.value} requires front left (FL), "
+                "front right (FR), and front center (FC) channels"
+            ) from exc
+        raise ScinoephileError(
+            f"Could not extract audio stream {stream_index} from {infile_path} "
+            f"to {outfile_path}"
+        ) from exc
+    except OSError as exc:
         raise ScinoephileError(
             f"Could not extract audio stream {stream_index} from {infile_path} "
             f"to {outfile_path}"
