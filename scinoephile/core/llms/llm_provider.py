@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from typing import Any, TypedDict, Unpack
 
 from pydantic import JsonValue
@@ -12,7 +13,41 @@ from pydantic import JsonValue
 from .answer import Answer
 from .tool_box import ToolBox
 
-__all__ = ["ChatCompletionKwargs", "LLMProvider"]
+__all__ = ["ChatCompletionKwargs", "ChatCompletionMetrics", "LLMProvider"]
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ChatCompletionMetrics:
+    """Usage and timing recorded for one provider completion."""
+
+    operation: str | None
+    """Stable LLM operation identifier, if supplied by the queryer."""
+    query_key_sha256: str | None
+    """SHA-256 digest of the semantic query key, if supplied by the queryer."""
+    model: str
+    """Model identifier."""
+    query_attempt: int
+    """One-based answer-validation attempt."""
+    tool_round: int
+    """One-based tool-calling round within the query attempt."""
+    input_tokens: int | None
+    """Total input tokens, if reported by the provider."""
+    cached_input_tokens: int | None
+    """Input tokens read from the provider prompt cache, if reported."""
+    cache_write_tokens: int | None
+    """Input tokens written to the provider prompt cache, if reported."""
+    output_tokens: int | None
+    """Total output tokens, if reported by the provider."""
+    reasoning_tokens: int | None
+    """Output tokens used for reasoning, if reported by the provider."""
+    total_tokens: int | None
+    """Total input and output tokens, if reported by the provider."""
+    transport_retries: int | None
+    """Transport retries taken by the provider SDK, if reported."""
+    latency_seconds: float
+    """Wall-clock completion latency in seconds."""
+    prompt_cache_key: str | None
+    """Provider prompt-cache routing key, if used."""
 
 
 class ChatCompletionKwargs(TypedDict, total=False):
@@ -61,6 +96,10 @@ class LLMProvider(ABC):
         messages: list[dict[str, Any]],
         response_format: type[Answer],
         tool_box: ToolBox | None = None,
+        *,
+        operation: str | None = None,
+        query_key_sha256: str | None = None,
+        query_attempt: int = 1,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return chat completion text synchronously.
@@ -69,6 +108,9 @@ class LLMProvider(ABC):
             messages: messages to send
             response_format: structured response format
             tool_box: available tools
+            operation: stable LLM operation identifier
+            query_key_sha256: SHA-256 digest of the semantic query key
+            query_attempt: one-based answer-validation attempt
             **kwargs: provider-specific keyword arguments
         Returns:
             completion text from the model
@@ -76,3 +118,11 @@ class LLMProvider(ABC):
             ScinoephileError: Error during chat completion
         """
         raise NotImplementedError()
+
+    def get_completion_metrics(self) -> tuple[ChatCompletionMetrics, ...]:
+        """Get completion metrics recorded by this provider instance.
+
+        Returns:
+            immutable snapshot of recorded completion metrics
+        """
+        return ()

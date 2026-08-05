@@ -18,6 +18,7 @@ from pytest import raises
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import (
     Answer,
+    ChatCompletionMetrics,
     LLMProvider,
     Manager,
     Processor,
@@ -160,7 +161,11 @@ class _RecordingProvider(LLMProvider):
             base_url: base URL identity for cache namespacing
         """
         self.calls: list[list[dict[str, Any]]] = []
+        self.completion_metrics: list[ChatCompletionMetrics] = []
+        self.operations: list[str | None] = []
+        self.query_key_sha256s: list[str | None] = []
         self.response_formats: list[type[Answer]] = []
+        self.query_attempts: list[int] = []
         self.response = response
         self.model = model
         self.base_url = base_url
@@ -179,17 +184,84 @@ class _RecordingProvider(LLMProvider):
         messages: list[dict[str, Any]],
         response_format: type[Answer],
         tool_box: ToolBox | None = None,
+        *,
+        operation: str | None = None,
+        query_key_sha256: str | None = None,
+        query_attempt: int = 1,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Record messages and return a fixed completion response."""
         _ = (tool_box, kwargs)
         self.calls.append(messages)
+        self.operations.append(operation)
+        self.query_key_sha256s.append(query_key_sha256)
         self.response_formats.append(response_format)
+        self.query_attempts.append(query_attempt)
+        self.completion_metrics.append(
+            ChatCompletionMetrics(
+                operation=operation,
+                query_key_sha256=query_key_sha256,
+                model=self.model,
+                query_attempt=query_attempt,
+                tool_round=1,
+                input_tokens=10,
+                cached_input_tokens=0,
+                cache_write_tokens=0,
+                output_tokens=2,
+                reasoning_tokens=0,
+                total_tokens=12,
+                transport_retries=0,
+                latency_seconds=0.1,
+                prompt_cache_key=None,
+            )
+        )
         return self.response
+
+    def get_completion_metrics(self) -> tuple[ChatCompletionMetrics, ...]:
+        """Get completion metrics recorded by this provider instance."""
+        return tuple(self.completion_metrics)
 
 
 class _AlternateRecordingProvider(_RecordingProvider):
     """Alternate provider implementation for cache identity tests."""
+
+
+class _SequenceRecordingProvider(_RecordingProvider):
+    """Recording provider returning a sequence of responses."""
+
+    def __init__(self, responses: list[str]):
+        """Initialize.
+
+        Arguments:
+            responses: completion responses to return in order
+        """
+        if not responses:
+            raise ValueError("responses must not be empty.")
+        super().__init__(responses[0])
+        self.responses = responses.copy()
+
+    def chat_completion(
+        self,
+        messages: list[dict[str, Any]],
+        response_format: type[Answer],
+        tool_box: ToolBox | None = None,
+        *,
+        operation: str | None = None,
+        query_key_sha256: str | None = None,
+        query_attempt: int = 1,
+        **kwargs: Unpack[ChatCompletionKwargs],
+    ) -> str:
+        """Record messages and return the next completion response."""
+        self.response = self.responses.pop(0)
+        return super().chat_completion(
+            messages,
+            response_format,
+            tool_box,
+            operation=operation,
+            query_key_sha256=query_key_sha256,
+            query_attempt=query_attempt,
+            **kwargs,
+        )
 
 
 def test_queryer_uses_injected_provider():
@@ -204,6 +276,11 @@ def test_queryer_uses_injected_provider():
     assert output_test_case.answer.output == "done"
     assert len(provider.calls) == 1
     assert provider.response_formats == [_Answer]
+    assert provider.operations == ["test"]
+    assert provider.query_key_sha256s[0] is not None
+    assert len(provider.query_key_sha256s[0]) == 64
+    assert provider.query_attempts == [1]
+    assert queryer.completion_metrics == provider.completion_metrics
     assert queryer.system_prompt == _PROMPT.base_system_prompt
 
 
@@ -289,6 +366,55 @@ def test_queryer_retries_provider_errors():
 
     assert result.answer == _Answer(output="done")
     assert provider.chat_completion.call_count == 2
+    assert [
+        call.kwargs["query_attempt"] for call in provider.chat_completion.call_args_list
+    ] == [1, 2]
+
+
+def test_queryer_attributes_validation_retries_to_one_query(tmp_path: Path):
+    """Test validation retries retain their query identity and attempt number.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    provider = _SequenceRecordingProvider(["{}", '{"output":"done"}'])
+    queryer = Queryer(
+        _TestCase, provider=provider, cache_root_path=tmp_path, max_attempts=2
+    )
+
+    result = queryer(_TestCase(query=_Query(text="input")))
+
+    assert result.answer == _Answer(output="done")
+    assert [metrics.query_attempt for metrics in queryer.completion_metrics] == [1, 2]
+    assert (
+        len({metrics.query_key_sha256 for metrics in queryer.completion_metrics}) == 1
+    )
+
+
+def test_queryers_sharing_provider_retain_only_their_metrics(tmp_path: Path):
+    """Test shared provider history is partitioned by completion call metadata.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    provider = _RecordingProvider()
+    first_queryer = Queryer(
+        _TestCase, provider=provider, cache_root_path=tmp_path, max_attempts=1
+    )
+    second_queryer = Queryer(
+        _TestCase, provider=provider, cache_root_path=tmp_path, max_attempts=1
+    )
+
+    first_queryer(_TestCase(query=_Query(text="first")))
+    second_queryer(_TestCase(query=_Query(text="second")))
+
+    assert len(provider.completion_metrics) == 2
+    assert first_queryer.completion_metrics == [provider.completion_metrics[0]]
+    assert second_queryer.completion_metrics == [provider.completion_metrics[1]]
+    assert (
+        first_queryer.completion_metrics[0].query_key_sha256
+        != second_queryer.completion_metrics[0].query_key_sha256
+    )
 
 
 def test_queryer_requires_injected_provider():

@@ -6,8 +6,11 @@ from __future__ import annotations
 
 import os
 from collections.abc import Mapping
+from dataclasses import asdict
+from hashlib import sha256
+from json import dumps
 from logging import getLogger
-from time import sleep
+from time import monotonic, sleep
 from typing import Any, Unpack, cast
 
 from openai import OpenAI, OpenAIError
@@ -17,7 +20,7 @@ from pydantic import JsonValue, ValidationError
 from scinoephile.core.exceptions import ScinoephileError
 
 from .answer import Answer
-from .llm_provider import ChatCompletionKwargs, LLMProvider
+from .llm_provider import ChatCompletionKwargs, ChatCompletionMetrics, LLMProvider
 from .tool_box import ToolBox
 
 __all__ = ["OpenAIProviderBase"]
@@ -55,6 +58,8 @@ class OpenAIProviderBase(LLMProvider):
         """
         self._sync_client: OpenAI | None = client
         self._api_key: str | None = api_key
+        self.completion_metrics: list[ChatCompletionMetrics] = []
+        """Usage and timing for completions made by this provider instance."""
         if base_url is not None:
             self.base_url = base_url
         if model is not None:
@@ -101,6 +106,11 @@ class OpenAIProviderBase(LLMProvider):
         return self._sync_client
 
     @property
+    def use_explicit_prompt_caching(self) -> bool:
+        """Whether requests should mark and route a stable cached prefix."""
+        return False
+
+    @property
     def use_strict_tools(self) -> bool:
         """Whether function tool schemas should request strict mode by default."""
         return True
@@ -110,6 +120,10 @@ class OpenAIProviderBase(LLMProvider):
         messages: list[dict[str, Any]],
         response_format: type[Answer],
         tool_box: ToolBox | None = None,
+        *,
+        operation: str | None = None,
+        query_key_sha256: str | None = None,
+        query_attempt: int = 1,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return chat completion text synchronously.
@@ -118,6 +132,9 @@ class OpenAIProviderBase(LLMProvider):
             messages: messages to send
             response_format: structured response format
             tool_box: available tools and handlers
+            operation: stable LLM operation identifier
+            query_key_sha256: SHA-256 digest of the semantic query key
+            query_attempt: one-based answer-validation attempt
             **kwargs: additional keyword arguments
         Returns:
             completion text from the model
@@ -129,15 +146,36 @@ class OpenAIProviderBase(LLMProvider):
             messages = [dict(message) for message in messages]
             tool_box = tool_box or ToolBox()
             openai_tools = self._build_openai_tools(tool_box) if tool_box else None
+            prompt_cache_key = None
+            if self.use_explicit_prompt_caching:
+                messages, prompt_cache_key = self._configure_prompt_cache(
+                    messages, response_format, openai_tools
+                )
             request_kwargs = self._build_request_kwargs(
                 response_format, openai_tools, kwargs
             )
+            if prompt_cache_key is not None:
+                request_kwargs["prompt_cache_key"] = prompt_cache_key
+                request_kwargs["prompt_cache_options"] = {"mode": "explicit"}
 
             # Query provider, process tool calls if applicable, and return
             max_tool_rounds = 8
-            for _ in range(max_tool_rounds):
+            for tool_round in range(1, max_tool_rounds + 1):
                 # Query provider
-                completion = self._query(messages, request_kwargs)
+                start_time = monotonic()
+                completion, transport_retries = self._query(messages, request_kwargs)
+                metrics = self._get_completion_metrics(
+                    completion,
+                    operation=operation,
+                    query_key_sha256=query_key_sha256,
+                    query_attempt=query_attempt,
+                    tool_round=tool_round,
+                    transport_retries=transport_retries,
+                    latency_seconds=monotonic() - start_time,
+                    prompt_cache_key=prompt_cache_key,
+                )
+                self.completion_metrics.append(metrics)
+                logger.info(f"LLM completion metrics: {dumps(asdict(metrics))}")
                 message = completion.choices[0].message
                 tool_calls = cast(
                     list[ChatCompletionMessageFunctionToolCall],
@@ -188,6 +226,14 @@ class OpenAIProviderBase(LLMProvider):
                 "response validation."
             ) from exc
 
+    def get_completion_metrics(self) -> tuple[ChatCompletionMetrics, ...]:
+        """Get completion metrics recorded by this provider instance.
+
+        Returns:
+            immutable snapshot of recorded completion metrics
+        """
+        return tuple(self.completion_metrics)
+
     def _build_openai_tools(self, tool_box: ToolBox) -> list[dict[str, object]]:
         """Build OpenAI tool payload from local tool specs.
 
@@ -211,19 +257,119 @@ class OpenAIProviderBase(LLMProvider):
 
     def _query(
         self, messages: list[dict[str, Any]], request_kwargs: dict[str, Any]
-    ) -> Any:
+    ) -> tuple[Any, int | None]:
         """Query provider for completion.
 
         Arguments:
             messages: messages to send
             request_kwargs: OpenAI SDK request keyword arguments
         Returns:
-            completion response object
+            completion response object and transport retry count, if available
         """
-        return self.sync_client.beta.chat.completions.parse(
-            messages=messages,  # ty:ignore[invalid-argument-type]
+        completions = self.sync_client.beta.chat.completions
+        raw_completions = getattr(completions, "with_raw_response", None)
+        if raw_completions is None:
+            completion = completions.parse(
+                messages=messages,  # ty:ignore[invalid-argument-type]
+                model=self.model,
+                **request_kwargs,
+            )
+            return completion, None
+        response = raw_completions.parse(
+            messages=messages, model=self.model, **request_kwargs
+        )
+        return response.parse(), getattr(response, "retries_taken", None)
+
+    def _configure_prompt_cache(
+        self,
+        messages: list[dict[str, Any]],
+        response_format: type[Answer],
+        openai_tools: list[dict[str, object]] | None,
+    ) -> tuple[list[dict[str, Any]], str | None]:
+        """Mark the stable message prefix and derive its routing key.
+
+        Arguments:
+            messages: completion messages
+            response_format: structured response format
+            openai_tools: serialized OpenAI tool payload
+        Returns:
+            copied messages with an explicit breakpoint and its cache key
+        """
+        stable_end = -1
+        for index, message in enumerate(messages):
+            if message.get("role") not in {"system", "developer"}:
+                break
+            stable_end = index
+        if stable_end < 0:
+            return messages, None
+
+        stable_content = messages[stable_end].get("content")
+        if not isinstance(stable_content, str):
+            return messages, None
+        cache_payload = {
+            "messages": messages[: stable_end + 1],
+            "model": self.model,
+            "response_format": response_format.model_json_schema(),
+            "tools": openai_tools,
+        }
+        digest = sha256(
+            dumps(
+                cache_payload, ensure_ascii=False, separators=(",", ":"), sort_keys=True
+            ).encode()
+        ).hexdigest()[:32]
+        messages[stable_end]["content"] = [
+            {
+                "type": "text",
+                "text": stable_content,
+                "prompt_cache_breakpoint": {"mode": "explicit"},
+            }
+        ]
+        return messages, f"scinoephile:{digest}"
+
+    def _get_completion_metrics(
+        self,
+        completion: Any,
+        *,
+        operation: str | None,
+        query_key_sha256: str | None,
+        query_attempt: int,
+        tool_round: int,
+        transport_retries: int | None,
+        latency_seconds: float,
+        prompt_cache_key: str | None,
+    ) -> ChatCompletionMetrics:
+        """Extract usage and timing from one completion.
+
+        Arguments:
+            completion: provider completion response
+            operation: stable LLM operation identifier
+            query_key_sha256: SHA-256 digest of the semantic query key
+            query_attempt: one-based answer-validation attempt
+            tool_round: one-based tool-calling round
+            transport_retries: transport retries taken by the SDK, if reported
+            latency_seconds: wall-clock request latency
+            prompt_cache_key: provider prompt-cache routing key
+        Returns:
+            normalized completion metrics
+        """
+        usage = getattr(completion, "usage", None)
+        prompt_details = getattr(usage, "prompt_tokens_details", None)
+        completion_details = getattr(usage, "completion_tokens_details", None)
+        return ChatCompletionMetrics(
+            operation=operation,
+            query_key_sha256=query_key_sha256,
             model=self.model,
-            **request_kwargs,
+            query_attempt=query_attempt,
+            tool_round=tool_round,
+            input_tokens=getattr(usage, "prompt_tokens", None),
+            cached_input_tokens=getattr(prompt_details, "cached_tokens", None),
+            cache_write_tokens=getattr(prompt_details, "cache_write_tokens", None),
+            output_tokens=getattr(usage, "completion_tokens", None),
+            reasoning_tokens=getattr(completion_details, "reasoning_tokens", None),
+            total_tokens=getattr(usage, "total_tokens", None),
+            transport_retries=transport_retries,
+            latency_seconds=latency_seconds,
+            prompt_cache_key=prompt_cache_key,
         )
 
     @staticmethod
