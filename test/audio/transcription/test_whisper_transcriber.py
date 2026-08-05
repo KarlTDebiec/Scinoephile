@@ -235,7 +235,7 @@ def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
 
     assert len(cache_paths) == 4
     settings = first_fallback._get_preprocessing_settings()[0]
-    metadata = first_fallback._get_cache_metadata(settings)
+    metadata = first_fallback._get_cache_metadata(audio, settings)
     assert metadata["timestamp_fallback"] == "ctc"
     assert metadata["timestamp_fallback_language"] == "yue-Hant"
     assert metadata["timestamp_fallback_model_name"] == "ctc/test-model"
