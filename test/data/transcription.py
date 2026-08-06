@@ -1,917 +1,272 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Functions for generating reference-guided transcription test data."""
+"""Generate and evaluate aligned multi-source transcription test data."""
 
 from __future__ import annotations
 
-from collections.abc import Iterator, Mapping
-from contextlib import contextmanager
-from logging import WARNING, Filter, LogRecord, getLogger
+import json
+from collections import Counter
+from logging import getLogger
 from pathlib import Path
 from shutil import copy2
-from typing import Any
 
-from scinoephile.analysis.character_error_rate import SeriesCER
-from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import DemucsMode, VADMode
-from scinoephile.audio.transcription.mlx_audio.backend import (
-    MIMO_MODEL_NAME,
-    QWEN3_ASR_MODEL_NAME,
+from scinoephile.analysis.audit.transcription_alignment import (
+    audit_transcription_alignment,
 )
+from scinoephile.analysis.character_error_rate import LineCER
+from scinoephile.analysis.transcription_alignment import (
+    SubtitleTimingSettings,
+    TranscriptionAlignmentArtifact,
+)
+from scinoephile.analysis.transcription_timing import (
+    evaluate_transcription_timing,
+    get_reference_for_alignment,
+)
+from scinoephile.audio.diarization import DiarizationMode
+from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.metrics import (
     format_chat_completion_metrics_report,
     save_chat_completion_metrics_to_json,
 )
-from scinoephile.core.ml import get_torch_device
-from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.lang.transcription.transcriber import (
-    BlockDelineationMode,
-    BlockPunctuationMode,
-    MlxAudioTimingMode,
-    TranscriptionAlignmentMode,
-    TranscriptionBackend,
+from scinoephile.core.subtitles import Series
+from scinoephile.lang.transcription.pipeline import (
+    TranscriptionPipeline,
+    get_transcription_pipeline,
 )
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.workflows.helpers import resolve_language
-from scinoephile.workflows.review import review_series_guided, review_series_multi
-from scinoephile.workflows.transcription import transcribe_series_guided
-from scinoephile.workflows.translation import translate_series_gaps
+from scinoephile.workflows.transcription import transcribe_series
 
-from .helpers import (
-    load_or_clean_series,
-    load_or_simplify_series,
-    load_or_traditionalize_series,
-)
-
-__all__ = [
-    "get_reference_for_guide_blocks",
-    "process_transcription",
-    "process_transcription_multi_review",
-    "process_transcription_pipeline",
-]
+__all__ = ["process_transcription_pipeline"]
 
 logger = getLogger(__name__)
 
 
-class _RelogLanguageMismatchFilter(Filter):
-    """Relog one expected language-mismatch warning at info level."""
-
-    def __init__(self, expected_message: str):
-        """Initialize.
-
-        Arguments:
-            expected_message: warning message to suppress and relog
-        """
-        super().__init__()
-        self.expected_message = expected_message
-
-    def filter(self, record: LogRecord) -> bool:
-        """Relog the expected warning and allow all other records.
-
-        Arguments:
-            record: log record to inspect
-        Returns:
-            whether the original record should continue to handlers
-        """
-        if record.levelno != WARNING or record.getMessage() != self.expected_message:
-            return True
-        logger.info(record.getMessage())
-        return False
-
-
-def get_reference_for_guide_blocks(
-    reference: Series, guide: Series, stop_at_idx: int | None
-) -> Series:
-    """Limit an evaluation reference to a prefix of guide blocks.
-
-    Arguments:
-        reference: evaluation reference to limit
-        guide: guide whose block boundaries define the processed prefix
-        stop_at_idx: exclusive guide block index, or None for the full reference
-    Returns:
-        reference covering only the processed guide block prefix
-    Raises:
-        ValueError: if stop_at_idx is negative
-    """
-    if stop_at_idx is None:
-        return reference
-    if stop_at_idx < 0:
-        raise ValueError("stop_at_idx must be greater than or equal to 0")
-
-    guide_blocks = guide.blocks[:stop_at_idx]
-    if not guide_blocks:
-        return type(reference)()
-    end_time = guide_blocks[-1].events[-1].end
-    return type(reference)(
-        events=[event for event in reference if event.start < end_time]
-    )
-
-
-def process_transcription(
+def process_transcription_pipeline(
     title_root_path: Path,
-    guide_path: Path,
     *,
     reference_path: Path,
-    language: Language | None = None,
-    guide_language: Language | None = None,
+    language: Language = Language.yue_hant,
     output_dir_path: Path | None = None,
     audio_dir_path: Path | None = None,
     audio_source_path: Path | None = None,
     media_path: Path | None = None,
     stream_index: int | None = None,
     stop_at_idx: int | None = None,
+    target_reference_subtitles: int = 100,
     additional_context: str | None = None,
-    transcription_kw: dict[str, Any] | None = None,
-    reviewer_kw: dict[str, Any] | None = None,
-    translator_kw: dict[str, Any] | None = None,
-    run_cleaning: bool = True,
-    run_traditionalize: bool = False,
-    run_review_and_translation: bool = True,
+    timing_settings: SubtitleTimingSettings | None = None,
+    diarization_mode: DiarizationMode = DiarizationMode.AUTO,
+    mlx_audio_token_limit_guard: bool = True,
     overwrite: bool = False,
 ) -> Series:
-    """Generate and clean a guided transcription, with optional postprocessing.
+    """Run one reference-free transcription experiment and save its evaluation.
+
+    The Cantonese reference determines only how many leading VAD blocks are run
+    and how the finished output is scored. It is never passed to ASR, alignment,
+    CTC timing, diarization, or the consensus LLM.
 
     Arguments:
-        title_root_path: title root directory
-        guide_path: guide subtitle path used for alignment, review, and translation
-        reference_path: expected transcription used only to compute CER
-        language: explicit transcription language, or None to detect it from the
-          evaluation reference
-        guide_language: explicit guide subtitle language, or None to detect it
-        output_dir_path: directory where pipeline outputs are written; defaults to
-          `title_root_path/output/{language.code}_transcribe`
-        audio_dir_path: directory containing staged guide subtitles and audio;
-          defaults to `output_dir_path/audio`
-        audio_source_path: optional existing wav file to copy into the output
-        media_path: optional media path used to generate staged audio if missing
-        stream_index: media stream index used when generating staged audio, or None
-          to use the first audio stream
-        stop_at_idx: exclusive block index at which to stop LLM processing
-        additional_context: additional context shared by transcription, review, and
-          gap-translation LLM prompts
-        transcription_kw: additional keyword arguments for
-          `transcribe_series_guided`
-        reviewer_kw: additional keyword arguments for `review_series_guided`
-        translator_kw: additional keyword arguments for `translate_series_gaps`
-        run_cleaning: whether to clean the generated transcription
-        run_traditionalize: whether to save a Hong Kong Traditional derivation of
-          the cleaned transcription
-        run_review_and_translation: whether to run guided review and gap translation
-          after cleaning
-        overwrite: whether to overwrite existing stage outputs
+        title_root_path: test title root directory
+        reference_path: independent Cantonese reference used only for evaluation
+        language: transcription and output language
+        output_dir_path: standardized output directory
+        audio_dir_path: directory containing ``audio.wav`` and ``audio.srt``
+        audio_source_path: optional WAV copied into the audio directory
+        media_path: optional media from which to extract audio when not staged
+        stream_index: optional media audio-stream index
+        stop_at_idx: explicit exclusive VAD block index, overriding target count
+        target_reference_subtitles: minimum reference subtitles covered by blocks
+        additional_context: production consensus prompt context
+        timing_settings: reference-free display-timing policy
+        diarization_mode: speaker diarization mode
+        mlx_audio_token_limit_guard: whether to guard MiMo generation length
+        overwrite: whether to regenerate an existing artifact and SRT
     Returns:
-        last generated transcription stage
-    Raises:
-        ScinoephileError: if staged audio is missing and cannot be generated
+        merged transcription series
     """
-    reference = Series.load(reference_path)
-    guide = Series.load(guide_path)
-    language = resolve_language(reference, language)
-    guide_language = resolve_language(guide, guide_language)
-
-    transcription_kw = dict(transcription_kw or {})
-    reviewer_kw = dict(reviewer_kw or {})
-    translator_kw = dict(translator_kw or {})
-    if additional_context is not None:
-        transcription_kw.setdefault("additional_context", additional_context)
-        reviewer_kw.setdefault("additional_context", additional_context)
-        translator_kw.setdefault("additional_context", additional_context)
-
+    if target_reference_subtitles <= 0:
+        raise ValueError("target_reference_subtitles must be positive.")
     if output_dir_path is None:
         output_dir_path = title_root_path / "output" / f"{language.code}_transcribe"
-    output_dir_path.mkdir(parents=True, exist_ok=True)
     if audio_dir_path is None:
         audio_dir_path = output_dir_path / "audio"
+    output_dir_path.mkdir(parents=True, exist_ok=True)
+    artifact_path = output_dir_path / "alignment.json"
+    transcription_path = output_dir_path / "transcribe.srt"
+    reference = Series.load(reference_path)
 
-    evaluation_reference = get_reference_for_guide_blocks(reference, guide, stop_at_idx)
+    if artifact_path.exists() and transcription_path.exists() and not overwrite:
+        artifact = TranscriptionAlignmentArtifact.load(artifact_path)
+        output = artifact.get_series()
+        _save_evaluation(output_dir_path, artifact, reference)
+        return output
 
-    # Stage guide subtitles and audio under the transcription output
-    audio = _stage_audio_series(
-        guide,
+    audio = _load_audio_series(
         audio_dir_path,
         audio_source_path=audio_source_path,
         media_path=media_path,
         stream_index=stream_index,
-        overwrite=overwrite,
     )
-
-    # Transcribe, delineate, and punctuate
-    transcribe_path = output_dir_path / "transcribe.srt"
-    transcribe = _load_or_transcribe_series_guided(
-        audio,
-        guide,
-        transcribe_path,
-        language,
-        guide_language,
-        stop_at_idx=stop_at_idx,
-        transcription_kw=transcription_kw,
-        overwrite=overwrite,
-    )
-    logger.info(
-        f"{language.code} transcription CER after transcription:\n"
-        f"{SeriesCER(evaluation_reference, transcribe)}"
-    )
-    if not run_cleaning:
-        logger.info(f"Saved transcription output under {output_dir_path}")
-        return transcribe
-
-    # Clean transcription
-    clean_path = output_dir_path / "transcribe_clean.srt"
-    with _relog_cantonese_transcription_mismatch(language):
-        cleaned = load_or_clean_series(transcribe, clean_path, language, overwrite)
-    logger.info(
-        f"{language.code} transcription CER after cleaning:\n"
-        f"{SeriesCER(evaluation_reference, cleaned)}"
-    )
-
-    postprocessed = cleaned
-    postprocessed_stem = "transcribe_clean"
-    if run_traditionalize:
-        traditionalize_path = output_dir_path / "transcribe_clean_traditionalize.srt"
-        traditionalized = load_or_traditionalize_series(
-            cleaned, traditionalize_path, overwrite
-        )
-        logger.info(
-            f"{language.code} transcription CER after traditionalization:\n"
-            f"{SeriesCER(evaluation_reference, traditionalized)}"
-        )
-        postprocessed = traditionalized
-        postprocessed_stem = "transcribe_clean_traditionalize"
-
-    if not run_review_and_translation:
-        logger.info(f"Saved transcription output under {output_dir_path}")
-        return postprocessed
-
-    # Review postprocessed transcription using guide subtitles
-    review_path = output_dir_path / f"{postprocessed_stem}_review.srt"
-    reviewed = _load_or_review_series_guided(
-        postprocessed,
-        guide,
-        review_path,
-        language,
-        guide_language,
-        stop_at_idx=stop_at_idx,
-        reviewer_kw=reviewer_kw,
-        overwrite=overwrite,
-    )
-    logger.info(
-        f"{language.code} transcription CER after review:\n"
-        f"{SeriesCER(evaluation_reference, reviewed)}"
-    )
-
-    # Fill gaps in reviewed transcription using guide subtitles
-    translate_path = output_dir_path / f"{postprocessed_stem}_review_translate.srt"
-    translated = _load_or_translate_series_gaps(
-        guide,
-        reviewed,
-        translate_path,
-        guide_language,
-        language,
-        stop_at_idx=stop_at_idx,
-        translator_kw=translator_kw,
-        overwrite=overwrite,
-    )
-    logger.info(
-        f"{language.code} transcription CER after gap translation:\n"
-        f"{SeriesCER(evaluation_reference, translated)}"
-    )
-    logger.info(f"Saved transcription output under {output_dir_path}")
-    return translated
-
-
-def process_transcription_multi_review(
-    source_paths: Mapping[str, Path],
-    guide_path: Path,
-    output_path: Path,
-    *,
-    reference_path: Path,
-    language: Language,
-    guide_language: Language,
-    stop_at_idx: int | None = None,
-    additional_context: str | None = None,
-    reviewer_kw: dict[str, Any] | None = None,
-    boundary_aware: bool = False,
-    overwrite: bool = False,
-) -> Series:
-    """Review multiple transcription outputs into one guide-timed series.
-
-    Arguments:
-        source_paths: named paths to equal-status transcription sources
-        guide_path: complete guide subtitle path
-        output_path: path where the multi-reviewed series is written
-        reference_path: expected transcription used only to compute CER
-        language: language of transcription sources and output
-        guide_language: language of guide subtitles
-        stop_at_idx: exclusive guide block index at which to stop processing
-        additional_context: additional context included in the LLM prompt
-        reviewer_kw: additional keyword arguments for `review_series_multi`
-        boundary_aware: whether to reconcile source boundaries across each block
-        overwrite: whether to overwrite an existing output
-    Returns:
-        multi-reviewed subtitle series
-    """
-    if output_path.exists() and not overwrite:
-        return Series.load(output_path)
-
-    sources = {
-        source_name: Series.load(source_path)
-        for source_name, source_path in source_paths.items()
-    }
-    guide = Series.load(guide_path)
-    reference = Series.load(reference_path)
-    evaluation_reference = get_reference_for_guide_blocks(reference, guide, stop_at_idx)
-
-    reviewer_kw = dict(reviewer_kw or {})
-    current_test_cases_name = "multi_review.json"
-    if boundary_aware:
-        current_test_cases_name = "multi_review_block_global.json"
-    reviewer_kw.setdefault(
-        "current_test_cases_path", output_path.parent / "json" / current_test_cases_name
-    )
-    if additional_context is not None:
-        reviewer_kw.setdefault("additional_context", additional_context)
-    reviewed = review_series_multi(
-        sources,
-        guide,
-        language=language,
-        guide_language=guide_language,
-        stop_at_idx=stop_at_idx,
-        boundary_aware=boundary_aware,
-        **reviewer_kw,
-    )
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    reviewed.save(output_path)
-    logger.info(
-        f"{language.code} transcription CER after multi-review:\n"
-        f"{SeriesCER(evaluation_reference, reviewed)}"
-    )
-    logger.info(f"Saved multi-reviewed transcription to {output_path}")
-    return reviewed
-
-
-def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
-    title_root_path: Path,
-    guide_path: Path,
-    *,
-    reference_path: Path,
-    language: Language | None = None,
-    guide_language: Language | None = None,
-    output_dir_path: Path | None = None,
-    audio_dir_path: Path | None = None,
-    audio_source_path: Path | None = None,
-    media_path: Path | None = None,
-    stream_index: int | None = None,
-    stop_at_idx: int | None = None,
-    additional_context: str | None = None,
-    provider: LLMProvider | None = None,
-    llm_usage_path: Path | None = None,
-    reviewer_kw: dict[str, Any] | None = None,
-    translator_kw: dict[str, Any] | None = None,
-    boundary_aware_multi_review: bool = False,
-    transcription_no_op: bool = False,
-    punctuate_sources: bool = False,
-    transcription_alignment_mode: TranscriptionAlignmentMode = (
-        TranscriptionAlignmentMode.PAIRWISE
-    ),
-    transcription_block_delineation_mode: BlockDelineationMode | None = None,
-    transcription_block_punctuation_mode: BlockPunctuationMode | None = None,
-    transcription_fallback_to_no_op: bool = False,
-    strip_mlx_audio_punctuation: bool = False,
-    mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
-    mlx_audio_token_limit_guard: bool = False,
-    demucs_mode: DemucsMode = DemucsMode.OFF,
-    vad_mode: VADMode = VADMode.OFF,
-    transcription_names: tuple[str, ...] | None = None,
-    transcription_overwrite: bool | None = None,
-    run_merge_and_translation: bool = True,
-    overwrite: bool = False,
-) -> Series | None:
-    """Transcribe with three models, merge, gap-translate, and simplify.
-
-    Arguments:
-        title_root_path: title root directory
-        guide_path: guide subtitle path used for alignment, merge, and translation
-        reference_path: expected transcription used only to compute CER
-        language: explicit transcription language, or None to detect it from the
-          evaluation reference
-        guide_language: explicit guide subtitle language, or None to detect it
-        output_dir_path: directory containing model outputs and merged stages;
-          defaults to `title_root_path/output/{language.code}_transcribe`
-        audio_dir_path: shared directory containing staged guide subtitles and
-          audio; defaults to `output_dir_path/audio`
-        audio_source_path: optional existing wav file to copy into the output
-        media_path: optional media path used to generate staged audio if missing
-        stream_index: media stream index used when generating staged audio, or None
-          to use the first audio stream
-        stop_at_idx: exclusive guide block index at which to stop processing
-        additional_context: additional context shared by transcription, merge, and
-          gap-translation LLM prompts
-        provider: shared LLM provider, or None to construct the default provider
-        llm_usage_path: detailed completion-usage JSON path; defaults to
-          `output_dir_path/json/llm_usage.json`
-        reviewer_kw: additional keyword arguments for the multi-source merge
-        translator_kw: additional keyword arguments for gap translation
-        boundary_aware_multi_review: whether the merge should reconcile provisional
-            source boundaries across each complete block
-        transcription_no_op: whether delineation and punctuation should use neutral
-          answers instead of querying an LLM
-        punctuate_sources: whether to punctuate each source before the merge; false
-          leaves punctuation synthesis to the multi-source merge
-        transcription_alignment_mode: LLM query granularity for transcription
-          alignment and punctuation
-        transcription_block_delineation_mode: block delineation strategy override
-        transcription_block_punctuation_mode: block punctuation strategy override
-        transcription_fallback_to_no_op: whether invalid block answers fall back to
-          sparse no-op answers
-        strip_mlx_audio_punctuation: whether to remove MLX-Audio-generated sentence
-          punctuation after timing and before guided alignment
-        mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
-        mlx_audio_token_limit_guard: whether to guard constrained MLX-Audio models
-        demucs_mode: Demucs preprocessing mode shared by all transcription backends
-        vad_mode: voice activity detection mode shared by all transcription backends
-        transcription_names: transcription sources to prepare in order, or None for
-          all three sources
-        transcription_overwrite: whether to overwrite transcription-source stages;
-          defaults to the pipeline-level `overwrite` value
-        run_merge_and_translation: whether to merge the transcription sources, fill
-          translation gaps, and simplify the result
-        overwrite: whether to overwrite existing stage outputs
-    Returns:
-        simplified merged and gap-translated subtitles, or None when stopping after
-        transcription
-    """
-    reference = Series.load(reference_path)
-    guide = Series.load(guide_path)
-    language = resolve_language(reference, language)
-    guide_language = resolve_language(guide, guide_language)
-    evaluation_reference = get_reference_for_guide_blocks(reference, guide, stop_at_idx)
-
-    if output_dir_path is None:
-        output_dir_path = title_root_path / "output" / f"{language.code}_transcribe"
-    output_dir_path.mkdir(parents=True, exist_ok=True)
-    if audio_dir_path is None:
-        audio_dir_path = output_dir_path / "audio"
-    if provider is None:
-        provider = get_provider()
+    provider = get_provider()
     initial_completion_count = len(provider.completion_metrics)
-    if llm_usage_path is None:
-        llm_usage_path = output_dir_path / "json" / "llm_usage.json"
-
-    reviewer_kw = dict(reviewer_kw or {})
-    reviewer_kw.setdefault("provider", provider)
-    translator_kw = dict(translator_kw or {})
-    translator_kw.setdefault("provider", provider)
-
-    transcription_runs: dict[str, dict[str, Any]] = {
-        "whisper": {
-            "alignment_mode": transcription_alignment_mode,
-            "demucs_mode": demucs_mode,
-            "fallback_to_no_op": transcription_fallback_to_no_op,
-            "no_op": transcription_no_op,
-            "punctuate": punctuate_sources,
-            "prune_test_cases": stop_at_idx is None,
-            "provider": provider,
-            "vad_mode": vad_mode,
-        },
-        "mimo": {
-            "alignment_mode": transcription_alignment_mode,
-            "backend": TranscriptionBackend.MLX_AUDIO,
-            "demucs_mode": demucs_mode,
-            "fallback_to_no_op": transcription_fallback_to_no_op,
-            "model_name": MIMO_MODEL_NAME,
-            "mlx_audio_timing_mode": mlx_audio_timing_mode,
-            "mlx_audio_token_limit_guard": mlx_audio_token_limit_guard,
-            "no_op": transcription_no_op,
-            "punctuate": punctuate_sources,
-            "prune_test_cases": stop_at_idx is None,
-            "provider": provider,
-            "vad_mode": vad_mode,
-        },
-        "qwen": {
-            "alignment_mode": transcription_alignment_mode,
-            "backend": TranscriptionBackend.MLX_AUDIO,
-            "demucs_mode": demucs_mode,
-            "fallback_to_no_op": transcription_fallback_to_no_op,
-            "model_name": QWEN3_ASR_MODEL_NAME,
-            "mlx_audio_timing_mode": mlx_audio_timing_mode,
-            "no_op": transcription_no_op,
-            "punctuate": punctuate_sources,
-            "prune_test_cases": stop_at_idx is None,
-            "provider": provider,
-            "vad_mode": vad_mode,
-        },
-    }
-    block_strategy_kw = {
-        key: value
-        for key, value in (
-            ("block_delineation_mode", transcription_block_delineation_mode),
-            ("block_punctuation_mode", transcription_block_punctuation_mode),
-        )
-        if value is not None
-    }
-    for transcription_kw in transcription_runs.values():
-        transcription_kw.update(block_strategy_kw)
-    if strip_mlx_audio_punctuation:
-        transcription_runs["mimo"]["strip_generated_punctuation"] = True
-        transcription_runs["qwen"]["strip_generated_punctuation"] = True
-    if transcription_names is None:
-        transcription_names = tuple(transcription_runs)
-    if transcription_overwrite is None:
-        transcription_overwrite = overwrite
-    unsupported_names = set(transcription_names).difference(transcription_runs)
-    if unsupported_names:
-        unsupported_names_text = ", ".join(sorted(unsupported_names))
-        raise ValueError(f"Unsupported transcription sources: {unsupported_names_text}")
-
-    source_paths: dict[str, Path] = {}
-    sources: dict[str, Series] = {}
-    for transcription_name in transcription_names:
-        transcription_kw = transcription_runs[transcription_name]
-        model_dir_path = output_dir_path / transcription_name
-        sources[transcription_name] = process_transcription(
-            title_root_path,
-            guide_path,
-            reference_path=reference_path,
-            language=language,
-            guide_language=guide_language,
-            output_dir_path=model_dir_path,
-            audio_dir_path=audio_dir_path,
-            audio_source_path=audio_source_path,
-            media_path=media_path,
-            stream_index=stream_index,
-            stop_at_idx=stop_at_idx,
-            additional_context=additional_context,
-            transcription_kw=transcription_kw,
-            run_traditionalize=True,
-            run_review_and_translation=False,
-            overwrite=transcription_overwrite,
-        )
-        source_paths[transcription_name] = (
-            model_dir_path / "transcribe_clean_traditionalize.srt"
-        )
-
-    if not run_merge_and_translation:
-        _save_llm_usage(
-            provider,
-            initial_completion_count=initial_completion_count,
-            output_path=llm_usage_path,
-        )
-        logger.info(
-            f"Stopped transcription pipeline before merge under {output_dir_path}"
-        )
-        return None
-
-    missing_names = set(transcription_runs).difference(source_paths)
-    if missing_names:
-        missing_names_text = ", ".join(sorted(missing_names))
-        raise ValueError(
-            f"Merge requires all transcription sources; missing: {missing_names_text}"
-        )
-
-    merge_path = output_dir_path / "merge.srt"
-    merged = process_transcription_multi_review(
-        source_paths,
-        guide_path,
-        merge_path,
-        reference_path=reference_path,
-        language=language,
-        guide_language=guide_language,
-        stop_at_idx=stop_at_idx,
-        additional_context=additional_context,
-        reviewer_kw=reviewer_kw,
-        boundary_aware=boundary_aware_multi_review,
-        overwrite=overwrite,
-    )
-
-    if additional_context is not None:
-        translator_kw.setdefault("additional_context", additional_context)
-    # Gap translation detects absent timed events, so omit explicit blank merge cues
-    translation_target = type(merged)(
-        events=[event for event in merged if event.text.strip()]
-    )
-    translate_path = output_dir_path / "merge_translate.srt"
-    translated = _load_or_translate_series_gaps(
-        guide,
-        translation_target,
-        translate_path,
-        guide_language,
+    pipeline = get_transcription_pipeline(
         language,
-        stop_at_idx=stop_at_idx,
-        translator_kw=translator_kw,
-        overwrite=overwrite,
+        diarization_mode=diarization_mode,
+        provider=provider,
+        additional_context=additional_context,
+        aligned_merge_json_path=output_dir_path / "json" / "aligned_merge.json",
+        timing_settings=timing_settings,
+        mlx_audio_token_limit_guard=mlx_audio_token_limit_guard,
     )
-    logger.info(
-        f"{language.code} transcription CER after merged gap translation:\n"
-        f"{SeriesCER(evaluation_reference, translated)}"
-    )
-
-    simplify_path = output_dir_path / "merge_translate_simplify.srt"
-    simplified = load_or_simplify_series(translated, simplify_path, overwrite)
-    cer_by_stage = {
-        **{
-            source_name: SeriesCER(evaluation_reference, source)
-            for source_name, source in sources.items()
-        },
-        "merge": SeriesCER(evaluation_reference, merged),
-        "merge_translate": SeriesCER(evaluation_reference, translated),
-    }
-    logger.info(
-        "Transcription pipeline CER summary:\n"
-        + "\n\n".join(
-            f"{stage_name}:\n{cer}" for stage_name, cer in cer_by_stage.items()
+    if stop_at_idx is None:
+        stop_at_idx = _get_stop_at_idx_for_reference_count(
+            pipeline, audio, reference, target_reference_subtitles
         )
-    )
-    _save_llm_usage(
-        provider,
-        initial_completion_count=initial_completion_count,
-        output_path=llm_usage_path,
-    )
-    logger.info(f"Saved merged transcription outputs under {output_dir_path}")
-    return simplified
-
-
-def _load_or_review_series_guided(
-    target: Series,
-    guide: Series,
-    output_path: Path,
-    language: Language,
-    guide_language: Language,
-    *,
-    stop_at_idx: int | None = None,
-    reviewer_kw: dict[str, Any] | None = None,
-    overwrite: bool = False,
-) -> Series:
-    """Load or create a guide-reviewed subtitle series.
-
-    Arguments:
-        target: target subtitle series to review
-        guide: guide subtitle series
-        output_path: reviewed subtitle output path
-        language: target subtitle language
-        guide_language: guide language
-        stop_at_idx: exclusive review block index at which to stop processing
-        reviewer_kw: additional keyword arguments for `review_series_guided`
-        overwrite: whether to overwrite an existing output
-    Returns:
-        guide-reviewed subtitle series
-    """
-    if output_path.exists() and not overwrite:
-        return Series.load(output_path)
-
-    reviewer_kw = dict(reviewer_kw or {})
-    reviewer_kw.setdefault(
-        "current_test_cases_path",
-        output_path.parent / "json" / f"guided_review-{get_torch_device()}.json",
-    )
-    reviewed = review_series_guided(
-        target,
-        guide,
-        language=language,
-        guide_language=guide_language,
-        stop_at_idx=stop_at_idx,
-        **reviewer_kw,
-    )
-    reviewed.save(output_path)
-    return reviewed
-
-
-def _load_or_transcribe_series_guided(
-    audio: AudioSeries,
-    guide: Series,
-    output_path: Path,
-    language: Language,
-    guide_language: Language,
-    *,
-    stop_at_idx: int | None = None,
-    transcription_kw: dict[str, Any] | None = None,
-    overwrite: bool = False,
-) -> Series:
-    """Load or create a guided transcription.
-
-    Arguments:
-        audio: audio series to transcribe
-        guide: guide subtitle series
-        output_path: transcription output path
-        language: transcription language
-        guide_language: guide subtitle language
-        stop_at_idx: exclusive block index at which to stop processing
-        transcription_kw: additional keyword arguments for
-          `transcribe_series_guided`
-        overwrite: whether to overwrite an existing output
-    Returns:
-        guided transcription
-    """
-    if output_path.exists() and not overwrite:
-        return Series.load(output_path)
-
-    transcription_kw = dict(transcription_kw or {})
-    json_dir_path = output_path.parent / "json"
-    device = get_torch_device()
-    alignment_mode = transcription_kw.get(
-        "alignment_mode", TranscriptionAlignmentMode.PAIRWISE
-    )
-    default_block_modes = {
-        TranscriptionAlignmentMode.BLOCK: (
-            BlockDelineationMode.UNRESTRICTED,
-            BlockPunctuationMode.FULL_TEXT,
-        ),
-        TranscriptionAlignmentMode.BLOCK_POSITIONAL: (
-            BlockDelineationMode.CANDIDATE,
-            BlockPunctuationMode.POSITIONAL,
-        ),
-    }
-    if alignment_mode in default_block_modes:
-        default_delineation_mode, default_punctuation_mode = default_block_modes[
-            alignment_mode
-        ]
-        delineation_mode = (
-            transcription_kw.get("block_delineation_mode") or default_delineation_mode
-        )
-        punctuation_mode = (
-            transcription_kw.get("block_punctuation_mode") or default_punctuation_mode
-        )
-        delineation_filenames = {
-            BlockDelineationMode.ADVISORY: f"advisory_delineation-{device}.json",
-            BlockDelineationMode.GATED_ADVISORY: (
-                f"gated_advisory_delineation-{device}.json"
-            ),
-            BlockDelineationMode.UNRESTRICTED: f"block_delineation-{device}.json",
-            BlockDelineationMode.CANDIDATE: f"candidate_delineation-{device}.json",
-        }
-        punctuation_filenames = {
-            BlockPunctuationMode.FULL_TEXT: f"block_punctuation-{device}.json",
-            BlockPunctuationMode.POSITIONAL: (f"positional_punctuation-{device}.json"),
-        }
-        transcription_kw.setdefault(
-            "block_delineation_json_path",
-            json_dir_path / delineation_filenames[delineation_mode],
-        )
-        if transcription_kw.get("punctuate", True):
-            transcription_kw.setdefault(
-                "block_punctuation_json_path",
-                json_dir_path / punctuation_filenames[punctuation_mode],
-            )
-    else:
-        transcription_kw.setdefault(
-            "delineation_json_path", json_dir_path / f"delineation-{device}.json"
-        )
-        if transcription_kw.get("punctuate", True):
-            transcription_kw.setdefault(
-                "punctuation_json_path", json_dir_path / f"punctuation-{device}.json"
-            )
-    audio_transcription = transcribe_series_guided(
+    output = transcribe_series(
         audio,
-        guide,
         language=language,
-        guide_language=guide_language,
+        pipeline=pipeline,
+        alignment_json_path=artifact_path,
         stop_at_idx=stop_at_idx,
-        **transcription_kw,
     )
-    transcription = Series(
-        events=[Subtitle(**event.as_dict()) for event in audio_transcription]
-    )
-    transcription.save(output_path)
-    return transcription
-
-
-def _load_or_translate_series_gaps(
-    source: Series,
-    target: Series,
-    output_path: Path,
-    source_language: Language,
-    target_language: Language,
-    *,
-    stop_at_idx: int | None = None,
-    translator_kw: dict[str, Any] | None = None,
-    overwrite: bool = False,
-) -> Series:
-    """Load or create a gap-translated subtitle series.
-
-    Arguments:
-        source: source-language guide subtitle series
-        target: target-language gapped subtitle series
-        output_path: translated subtitle output path
-        source_language: source subtitle language
-        target_language: target subtitle language
-        stop_at_idx: exclusive block index at which to stop processing
-        translator_kw: additional keyword arguments for `translate_series_gaps`
-        overwrite: whether to overwrite an existing output
-    Returns:
-        gap-translated subtitle series
-    """
-    if output_path.exists() and not overwrite:
-        return Series.load(output_path)
-
-    translator_kw = dict(translator_kw or {})
-    translator_kw.setdefault(
-        "current_test_cases_path",
-        output_path.parent / "json" / f"gap_translation-{get_torch_device()}.json",
-    )
-    translated = translate_series_gaps(
-        source,
-        target,
-        source_language=source_language,
-        target_language=target_language,
-        stop_at_idx=stop_at_idx,
-        **translator_kw,
-    )
-    translated.save(output_path)
-    return translated
-
-
-@contextmanager
-def _relog_cantonese_transcription_mismatch(language: Language) -> Iterator[None]:
-    """Relog expected same-script Cantonese-to-Mandarin detection at info.
-
-    Arguments:
-        language: expected transcription language
-    Returns:
-        context in which the expected mismatch is intercepted
-    """
-    detected_language = None
-    if language is Language.yue_hans:
-        detected_language = Language.zho_hans
-    elif language is Language.yue_hant:
-        detected_language = Language.zho_hant
-    if detected_language is None:
-        yield
-        return
-
-    expected_message = (
-        f"Explicit language {language.code} does not "
-        f"match detected language {detected_language.code}; "
-        f"using {language.code}"
-    )
-    mismatch_filter = _RelogLanguageMismatchFilter(expected_message)
-    language_logger = getLogger("scinoephile.workflows.helpers")
-    language_logger.addFilter(mismatch_filter)
-    try:
-        yield
-    finally:
-        language_logger.removeFilter(mismatch_filter)
-
-
-def _save_llm_usage(
-    provider: LLMProvider, *, initial_completion_count: int, output_path: Path
-):
-    """Persist and log completion metrics generated during one pipeline invocation.
-
-    Arguments:
-        provider: shared provider used throughout the pipeline
-        initial_completion_count: provider metric count before the pipeline began
-        output_path: detailed completion-usage JSON path
-    """
+    output.save(transcription_path)
+    artifact = pipeline.last_alignment_artifact
+    if artifact is None:
+        raise RuntimeError("Transcription pipeline did not produce an artifact.")
     completion_metrics = provider.completion_metrics[initial_completion_count:]
-    save_chat_completion_metrics_to_json(output_path, completion_metrics)
+    usage_path = output_dir_path / "json" / "llm_usage.json"
+    save_chat_completion_metrics_to_json(usage_path, completion_metrics)
     logger.info(format_chat_completion_metrics_report(completion_metrics))
-    logger.info(f"Saved LLM completion usage to {output_path}")
+    _save_evaluation(output_dir_path, artifact, reference)
+    return output
 
 
-def _stage_audio_series(
-    guide: Series,
+def _get_stop_at_idx_for_reference_count(
+    pipeline: TranscriptionPipeline,
+    audio: AudioSeries,
+    reference: Series,
+    target_count: int,
+) -> int:
+    """Get the smallest VAD-block prefix covering the target reference count."""
+    blocks = pipeline.plan_blocks(audio)
+    covered = 0
+    for stop_at_idx, block in enumerate(blocks, start=1):
+        covered += sum(
+            block.start_ms <= (subtitle.start + subtitle.end) / 2 < block.end_ms
+            for subtitle in reference
+        )
+        if covered >= target_count:
+            logger.info(
+                f"Selected {stop_at_idx} VAD blocks covering {covered} reference "
+                "subtitles."
+            )
+            return stop_at_idx
+    raise ScinoephileError(
+        f"The complete VAD plan covers only {covered} reference subtitles; "
+        f"cannot reach target {target_count}."
+    )
+
+
+def _load_audio_series(
     audio_dir_path: Path,
     *,
     audio_source_path: Path | None,
     media_path: Path | None,
     stream_index: int | None,
-    overwrite: bool,
 ) -> AudioSeries:
-    """Stage and load guide-aligned audio for transcription.
-
-    Arguments:
-        guide: guide subtitles used to segment audio
-        audio_dir_path: directory containing staged guide subtitles and audio
-        audio_source_path: optional existing wav file to stage
-        media_path: optional media path from which to extract audio
-        stream_index: audio stream index, or None to use the first stream
-        overwrite: whether to overwrite staged inputs
-    Returns:
-        staged guide-aligned audio series
-    Raises:
-        ScinoephileError: if staged audio is missing and cannot be generated
-    """
-    audio_dir_path.mkdir(parents=True, exist_ok=True)
+    """Load staged complete audio without supplying subtitle events to ASR."""
     staged_audio_path = audio_dir_path / "audio.wav"
-    if audio_source_path is not None and audio_source_path != staged_audio_path:
-        if overwrite or not staged_audio_path.exists():
-            copy2(audio_source_path, staged_audio_path)
-
-    audio_srt_path = audio_dir_path / "audio.srt"
-    if overwrite or not audio_srt_path.exists():
-        guide.save(audio_srt_path)
-
-    if not staged_audio_path.exists():
-        if media_path is None:
-            raise ScinoephileError(
-                "Staged audio is missing. Provide `audio_source_path` or "
-                f"`media_path`, or stage {staged_audio_path} manually."
-            )
-        audio = AudioSeries.load_from_media(
-            media_path=media_path,
-            subtitle_path=audio_srt_path,
-            stream_index=stream_index,
+    if audio_source_path is not None and not staged_audio_path.exists():
+        audio_dir_path.mkdir(parents=True, exist_ok=True)
+        copy2(audio_source_path, staged_audio_path)
+        (audio_dir_path / "audio.srt").write_text("", encoding="utf-8")
+    if staged_audio_path.exists():
+        staged = AudioSeries.load(audio_dir_path)
+        return AudioSeries(audio=staged.audio, events=[])
+    if media_path is None:
+        raise ScinoephileError(
+            f"Staged audio is missing at {staged_audio_path}; provide media_path."
         )
-        audio.save(audio_dir_path)
-    return AudioSeries.load(audio_dir_path)
+    audio = AudioSeries.load_audio_from_media(media_path, stream_index=stream_index)
+    audio.save(audio_dir_path)
+    return audio
+
+
+def _save_evaluation(
+    output_dir_path: Path, artifact: TranscriptionAlignmentArtifact, reference: Series
+):
+    """Save standardized reference-only evaluation metrics and audit Markdown."""
+    selected_reference = get_reference_for_alignment(artifact, reference)
+    reference_text = "".join(
+        subtitle.text_with_newline for subtitle in selected_reference
+    )
+    candidate_texts = {source.name: [] for source in artifact.sources}
+    for block in artifact.blocks:
+        rows = {row.name: row.text for row in block.rows}
+        for source in artifact.sources:
+            candidate_texts[source.name].append(
+                rows.get(source.name, "").replace("　", "").replace("・", "")
+            )
+    candidate_texts["merged"] = [
+        subtitle.text for block in artifact.blocks for subtitle in block.subtitles
+    ]
+    cer = {
+        name: _get_cer_dict(LineCER(reference_text, "".join(text_parts)))
+        for name, text_parts in candidate_texts.items()
+    }
+    timing = evaluate_transcription_timing(artifact, reference)
+    subtitle_alignment_groups = Counter(
+        f"{len(pair.candidate_indexes)}:{len(pair.reference_indexes)}"
+        for pair in timing.pairs
+    )
+    metrics = {
+        "format": "scinoephile-transcription-evaluation",
+        "version": 1,
+        "processed_blocks": len(artifact.blocks),
+        "reference_subtitles": len(selected_reference),
+        "candidate_subtitles": sum(len(block.subtitles) for block in artifact.blocks),
+        "cer": cer,
+        "timing": {
+            "settings": timing.settings.model_dump(mode="json"),
+            "text_aligned_groups": len(timing.pairs),
+            "micro_intersection_over_union": timing.micro_intersection_over_union,
+            "one_to_one_groups": len(timing.one_to_one_pairs),
+            "one_to_one_micro_intersection_over_union": (
+                timing.one_to_one_micro_intersection_over_union
+            ),
+            "mean_intersection_over_union": timing.mean_intersection_over_union,
+            "mean_reference_coverage": timing.mean_reference_coverage,
+            "mean_start_error_ms": timing.mean_start_error_ms,
+            "mean_end_error_ms": timing.mean_end_error_ms,
+            "mean_absolute_start_error_ms": timing.mean_absolute_start_error_ms,
+            "mean_absolute_end_error_ms": timing.mean_absolute_end_error_ms,
+            "unmatched_candidate_subtitles": timing.unmatched_candidate_subtitles,
+            "unmatched_reference_subtitles": timing.unmatched_reference_subtitles,
+            "candidate_to_reference_group_counts": dict(
+                sorted(subtitle_alignment_groups.items())
+            ),
+        },
+    }
+    (output_dir_path / "metrics.json").write_text(
+        json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    (output_dir_path / "audit.md").write_text(
+        audit_transcription_alignment(artifact, reference), encoding="utf-8"
+    )
+    logger.info(
+        "Aligned transcription evaluation: "
+        + ", ".join(f"{name} CER {values['cer']:.3%}" for name, values in cer.items())
+    )
+
+
+def _get_cer_dict(result: LineCER) -> dict[str, float | int]:
+    """Serialize one character-error result."""
+    return {
+        "cer": result.cer,
+        "correct": result.correct,
+        "substitutions": result.substitutions,
+        "insertions": result.insertions,
+        "deletions": result.deletions,
+        "reference_length": result.reference_length,
+    }

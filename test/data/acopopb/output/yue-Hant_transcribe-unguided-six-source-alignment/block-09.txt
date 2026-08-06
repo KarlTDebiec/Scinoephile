@@ -1,0 +1,37 @@
+ACOPOPB unguided pyannote block 9
+core_ms: 274410-278612
+buffered_ms: 273410-279612
+reference_ms: 274167-278208
+whisper_characters: 6
+mimo_characters: 6
+qwen_characters: 6
+sensevoice_characters: 6
+firered_characters: 6
+glm_characters: 14
+merged_characters: 6
+merged_subtitles: 2
+whisper_cer: 1.000000 (6 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+mimo_cer: 0.333333 (2 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+qwen_cer: 1.000000 (6 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+sensevoice_cer: 0.833333 (5 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+firered_cer: 0.333333 (2 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+glm_cer: 2.333333 (6 substitutions + 8 insertions + 0 deletions / 6 reference characters)
+merged_cer: 0.333333 (2 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+minimum_pause_seconds: 0.25
+pause_unit_seconds: 0.25
+reference_boundary_columns: 1
+timed_pause_columns: 7
+alignment_columns: 22
+
+Legend: 「　」=alignment gap; ・=timed pause; ｜=reference subtitle boundary; Ａ／Ｂ／…=exclusive speaker; ＊=speech without speaker; 「　」=no speech
+
+[0001-0022] 273.410-279.612s
+whisper     ・・・・南無我　　　　　　　　未託飯｜・・・
+mimo        ・・・・南無阿　　　　　　　　彌陀佛｜・・・
+qwen        ・・・・難道我　　　　　　　　沒何妨｜・・・
+sensevoice  ・・・・南路歌　　　　　　　　味河佛｜・・・
+firered     ・・・・南無阿　　　　　　　　彌陀佛｜・・・
+glm         ・・・・L à m b ó b ó m è b ó p h á ｜・・・
+speaker     ・・・・ＣＣＣＣＣＣＣＣＣＣＣＣＣＣ｜・・・
+merged      ・・・・南無阿　　　　　　　　彌陀佛｜・・・
+reference   ・・・・喃嘸阿　　　　　　　　彌陀佛｜・・・

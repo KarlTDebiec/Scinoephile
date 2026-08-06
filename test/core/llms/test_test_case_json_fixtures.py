@@ -15,12 +15,10 @@ from scinoephile.core.llms.utils import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
-from scinoephile.llms.delineation import DelineationManager
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
 from scinoephile.llms.multi_review import MultiReviewManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
-from scinoephile.llms.punctuation import PunctuationManager
 from scinoephile.llms.review import ReviewManager
 from test.helpers import test_data_root
 
@@ -30,12 +28,8 @@ _TEST_CASE_FAMILIES: tuple[tuple[str, type[Manager]], ...] = (
     ("*/output/*/lang/*/simplify_review.json", ReviewManager),
     ("*/output/*/lang/yue_zho/gap_translation/*.json", GapTranslationManager),
     ("*/output/*/lang/yue_zho/guided_review/*.json", GuidedReviewManager),
-    ("*/output/*/lang/yue_zho/transcription/delineation/*.json", DelineationManager),
-    ("*/output/*/lang/yue_zho/transcription/punctuation/*.json", PunctuationManager),
-    ("*/output/*_transcribe/**/json/delineation-*.json", DelineationManager),
     ("*/output/*_transcribe/**/json/gap_translation-*.json", GapTranslationManager),
     ("*/output/*_transcribe/**/json/multi_review.json", MultiReviewManager),
-    ("*/output/*_transcribe/**/json/punctuation-*.json", PunctuationManager),
 )
 
 

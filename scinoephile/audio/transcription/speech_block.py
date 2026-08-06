@@ -56,7 +56,7 @@ class SpeechBlock:
 
 
 class SpeechBlockSplitter:
-    """Split a VAD trace into end-to-end blocks at long inactive runs."""
+    """Split retained speech into blocks at long inactive runs."""
 
     def __init__(self, settings: SpeechBlockSettings | None = None):
         """Initialize.
@@ -70,43 +70,48 @@ class SpeechBlockSplitter:
         """Block-splitting configuration."""
 
     def __call__(self, trace: VoiceActivityTrace) -> list[SpeechBlock]:
-        """Split a complete source timeline into stable blocks.
+        """Split retained voice activity into stable padded blocks.
 
         Arguments:
             trace: full-source voice-activity score trace
         Returns:
-            blocks whose core ranges exactly tile the source duration
+            blocks spanning speech groups separated by long inactive runs
         """
         if trace.duration_ms == 0:
             return []
 
         active_runs = self._get_active_runs(trace)
-        cuts_ms = []
-        for (_, left_end_idx), (right_start_idx, _) in zip(
-            active_runs, active_runs[1:], strict=False
-        ):
-            gap_start_ms = self._get_frame_boundary_ms(trace, left_end_idx)
-            gap_end_ms = self._get_frame_boundary_ms(trace, right_start_idx)
-            if gap_end_ms - gap_start_ms < self.settings.speech_free_gap_seconds * 1000:
-                continue
-            cut_ms = round((gap_start_ms + gap_end_ms) / 2)
-            if 0 < cut_ms < trace.duration_ms:
-                cuts_ms.append(cut_ms)
+        if not active_runs:
+            return []
+
+        grouped_runs = []
+        group_start_idx, group_end_idx = active_runs[0]
+        for run_start_idx, run_end_idx in active_runs[1:]:
+            gap_start_ms = self._get_frame_boundary_ms(trace, group_end_idx)
+            gap_end_ms = self._get_frame_boundary_ms(trace, run_start_idx)
+            if gap_end_ms - gap_start_ms >= (
+                self.settings.speech_free_gap_seconds * 1000
+            ):
+                grouped_runs.append((group_start_idx, group_end_idx))
+                group_start_idx = run_start_idx
+            group_end_idx = run_end_idx
+        grouped_runs.append((group_start_idx, group_end_idx))
 
         padding_ms = round(self.settings.context_padding_seconds * 1000)
-        core_edges_ms = [0, *cuts_ms, trace.duration_ms]
-        return [
-            SpeechBlock(
-                index=index,
-                start_ms=start_ms,
-                end_ms=end_ms,
-                buffered_start_ms=max(0, start_ms - padding_ms),
-                buffered_end_ms=min(trace.duration_ms, end_ms + padding_ms),
+        blocks = []
+        for index, (start_idx, end_idx) in enumerate(grouped_runs):
+            start_ms = round(self._get_frame_boundary_ms(trace, start_idx))
+            end_ms = round(self._get_frame_boundary_ms(trace, end_idx))
+            blocks.append(
+                SpeechBlock(
+                    index=index,
+                    start_ms=start_ms,
+                    end_ms=end_ms,
+                    buffered_start_ms=max(0, start_ms - padding_ms),
+                    buffered_end_ms=min(trace.duration_ms, end_ms + padding_ms),
+                )
             )
-            for index, (start_ms, end_ms) in enumerate(
-                zip(core_edges_ms, core_edges_ms[1:], strict=False)
-            )
-        ]
+        return blocks
 
     def _get_active_runs(self, trace: VoiceActivityTrace) -> list[tuple[int, int]]:
         """Get significant half-open runs of active trace frames.

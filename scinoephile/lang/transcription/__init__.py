@@ -1,45 +1,26 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code for transcribing audio using guide-language subtitles.
+"""Reference-free aligned multi-source audio transcription.
 
 Package hierarchy (modules may import from any above):
-* alignment
-* aligner / block_aligner
-* transcriber
-* guided
+* aligned_merge / multisource_alignment / sources / timing
 * multisource
-* unguided
+* pipeline
 """
 
 from __future__ import annotations
 
-from .aligner import TranscriptionAligner
-from .alignment import TranscriptionAlignment
-from .block_aligner import BlockTranscriptionAligner
-from .guided import GuidedTranscriptionSpec, TranscriptionLanguageSpec
-from .multisource import UnguidedMultiSourceTranscriber
-from .transcriber import (
-    BlockDelineationMode,
-    BlockPunctuationMode,
-    GuidedTranscriber,
-    MlxAudioTimingMode,
-    TranscriptionAlignmentMode,
-    TranscriptionBackend,
-)
-from .unguided import UnguidedTranscriber
+from scinoephile.analysis.transcription_alignment import SubtitleTimingSettings
+
+from .multisource import MultiSourceTranscriber
+from .multisource_alignment import CantoneseTimedTokenSimilarity
+from .pipeline import TranscriptionPipeline
+from .sources import TranscriptionSourceSpec
 
 __all__ = [
-    "BlockDelineationMode",
-    "BlockPunctuationMode",
-    "BlockTranscriptionAligner",
-    "GuidedTranscriber",
-    "GuidedTranscriptionSpec",
-    "MlxAudioTimingMode",
-    "TranscriptionAligner",
-    "TranscriptionAlignment",
-    "TranscriptionAlignmentMode",
-    "TranscriptionBackend",
-    "TranscriptionLanguageSpec",
-    "UnguidedMultiSourceTranscriber",
-    "UnguidedTranscriber",
+    "CantoneseTimedTokenSimilarity",
+    "MultiSourceTranscriber",
+    "SubtitleTimingSettings",
+    "TranscriptionPipeline",
+    "TranscriptionSourceSpec",
 ]

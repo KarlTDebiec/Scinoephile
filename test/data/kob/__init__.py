@@ -24,17 +24,11 @@ from scinoephile.lang.yue_zho.review import (
     YueZhoGuidedReviewPromptYueHant,
     YueZhoMultiReviewPromptYueHant,
 )
-from scinoephile.lang.yue_zho.transcription import (
-    YueZhoDelineationPromptYueHant,
-    YueZhoPunctuationPromptYueHant,
-)
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
-from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
 from scinoephile.llms.guided_review import GuidedReviewManager, GuidedReviewPrompt
 from scinoephile.llms.multi_review import MultiReviewManager, MultiReviewPrompt
 from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
-from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
 from test.helpers import test_data_root
 
@@ -45,10 +39,8 @@ __all__ = [
     "get_kob_eng_ocr_fusion_test_cases",
     "get_kob_eng_review_test_cases",
     "get_kob_yue_hans_review_test_cases",
-    "get_kob_yue_hant_delineation_test_cases",
     "get_kob_yue_hant_guided_review_test_cases",
     "get_kob_yue_hant_multi_review_test_cases",
-    "get_kob_yue_hant_punctuation_test_cases",
     "get_kob_yue_hant_review_test_cases",
     "get_kob_yue_hant_simplify_review_test_cases",
     "get_kob_zho_hant_ocr_fusion_test_cases",
@@ -165,30 +157,6 @@ def get_kob_eng_review_test_cases(
 
 
 @cache
-def get_kob_yue_hant_delineation_test_cases(
-    prompt: DelineationPrompt = YueZhoDelineationPromptYueHant,
-    **kwargs: Unpack[_KobTestCaseKwargs],
-) -> list[TestCase]:
-    """Get KOB yue-Hant delineation test cases.
-
-    Arguments:
-        prompt: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = (
-        output_dir
-        / "yue-Hant_transcribe"
-        / "vad-auto"
-        / "whisper"
-        / "json"
-        / f"delineation-{get_torch_device()}.json"
-    )
-    return load_test_cases_from_json(path, DelineationManager, prompt=prompt, **kwargs)
-
-
-@cache
 def get_kob_yue_hant_guided_review_test_cases(
     prompt: GuidedReviewPrompt = YueZhoGuidedReviewPromptYueHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
@@ -284,30 +252,6 @@ def get_kob_yue_hant_simplify_review_test_cases(
     for test_case in test_cases:
         test_case.verified = True
     return test_cases
-
-
-@cache
-def get_kob_yue_hant_punctuation_test_cases(
-    prompt: PunctuationPrompt = YueZhoPunctuationPromptYueHant,
-    **kwargs: Unpack[_KobTestCaseKwargs],
-) -> list[TestCase]:
-    """Get KOB yue-Hant punctuation test cases.
-
-    Arguments:
-        prompt: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = (
-        output_dir
-        / "yue-Hant_transcribe"
-        / "vad-auto"
-        / "whisper"
-        / "json"
-        / f"punctuation-{get_torch_device()}.json"
-    )
-    return load_test_cases_from_json(path, PunctuationManager, prompt=prompt, **kwargs)
 
 
 @cache

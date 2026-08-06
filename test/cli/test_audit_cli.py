@@ -11,21 +11,20 @@ from unittest.mock import patch
 from pytest import CaptureFixture, mark, raises
 
 from scinoephile.analysis.audit.aligned_diff import AlignedDiffAuditFilter
-from scinoephile.analysis.audit.delineation import DelineationAuditFilter
 from scinoephile.analysis.audit.dual_review import DualReviewAuditFilter
 from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter
-from scinoephile.analysis.audit.punctuation import PunctuationAuditFilter
 from scinoephile.analysis.audit.review import ReviewAuditFilter
 from scinoephile.analysis.audit.translation import TranslationAuditFilter
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_aligned_diff_cli import AuditAlignedDiffCli
 from scinoephile.cli.audit.audit_cli_base import AuditCliBase
-from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
 from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
-from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
+from scinoephile.cli.audit.audit_transcription_alignment_cli import (
+    AuditTranscriptionAlignmentCli,
+)
 from scinoephile.cli.audit.audit_translation_cli import AuditTranslationCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
@@ -35,8 +34,7 @@ from scinoephile.common.testing import run_cli_with_args
 def test_audit_cli_subcommands():
     """Test the audit CLI and its workflow subcommands are registered."""
     assert issubclass(AuditAlignedDiffCli, AuditCliBase)
-    assert issubclass(AuditDelineationCli, AuditCliBase)
-    assert issubclass(AuditPunctuationCli, AuditCliBase)
+    assert issubclass(AuditTranscriptionAlignmentCli, AuditCliBase)
     assert issubclass(AuditReviewCli, AuditCliBase)
     assert issubclass(AuditReviewDualCli, AuditCliBase)
     assert issubclass(AuditReviewTradCli, AuditCliBase)
@@ -44,12 +42,11 @@ def test_audit_cli_subcommands():
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
         "aligned-diff": AuditAlignedDiffCli,
-        "delineation": AuditDelineationCli,
         "ocr-fusion": AuditOcrFusionCli,
-        "punctuation": AuditPunctuationCli,
         "review": AuditReviewCli,
         "review-dual": AuditReviewDualCli,
         "review-trad": AuditReviewTradCli,
+        "transcription-alignment": AuditTranscriptionAlignmentCli,
         "translation": AuditTranslationCli,
     }
 
@@ -58,9 +55,7 @@ def test_audit_cli_filter_enums():
     """Test every audit CLI parses its expected filter enum."""
     filter_types = {
         AuditAlignedDiffCli: AlignedDiffAuditFilter,
-        AuditDelineationCli: DelineationAuditFilter,
         AuditOcrFusionCli: OcrFusionAuditFilter,
-        AuditPunctuationCli: PunctuationAuditFilter,
         AuditReviewCli: ReviewAuditFilter,
         AuditReviewDualCli: DualReviewAuditFilter,
         AuditReviewTradCli: ReviewAuditFilter,
@@ -77,13 +72,7 @@ def test_audit_cli_filter_enums():
 
 def test_audit_cli_single_json_help_is_concise():
     """Test audit CLIs with one LLM JSON use generic help text."""
-    cli_classes = (
-        AuditDelineationCli,
-        AuditOcrFusionCli,
-        AuditPunctuationCli,
-        AuditReviewCli,
-        AuditTranslationCli,
-    )
+    cli_classes = (AuditOcrFusionCli, AuditReviewCli, AuditTranslationCli)
 
     for cli_class in cli_classes:
         actions = {
@@ -642,118 +631,29 @@ def test_audit_translation_cli_infers_workflow_from_inputs(
     assert "unverified includes" in filter_action.help
 
 
-def test_transcription_audit_clis_auto_detect_block_json(
+def test_transcription_alignment_audit_cli_help_and_validation(
     tmp_path: Path, capsys: CaptureFixture
 ):
-    """Test existing transcription audit commands accept block JSON unchanged.
+    """Test the alignment audit is registered and validates artifact JSON.
 
     Arguments:
         tmp_path: temporary path
         capsys: pytest stdout/stderr capture fixture
     """
-    reference_path = tmp_path / "reference.srt"
-    target_path = tmp_path / "target.srt"
-    delineation_json_path = tmp_path / "block_delineation.json"
-    punctuation_json_path = tmp_path / "block_punctuation.json"
-    _write_srt(reference_path, ("參考一", "參考二"))
-    _write_srt(target_path, ("甲", "乙！"))
-    guides = [{"index": 1, "text": "參考一"}, {"index": 2, "text": "參考二"}]
-    delineation_json_path.write_text(
-        json.dumps(
-            [
-                {
-                    "query": {
-                        "guides": guides,
-                        "targets": [
-                            {"index": 1, "text": "甲乙"},
-                            {"index": 2, "text": ""},
-                        ],
-                    },
-                    "answer": {
-                        "changes": [
-                            {"index": 1, "text": "甲"},
-                            {"index": 2, "text": "乙"},
-                        ]
-                    },
-                }
-            ],
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
-    punctuation_json_path.write_text(
-        json.dumps(
-            [
-                {
-                    "query": {
-                        "guides": guides,
-                        "targets": [
-                            {"index": 1, "text": "甲"},
-                            {"index": 2, "text": "乙"},
-                        ],
-                    },
-                    "answer": {"changes": [{"index": 2, "text": "乙！"}]},
-                }
-            ],
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
-
-    run_cli_with_args(
-        AuditDelineationCli,
-        f"--reference {reference_path} --json {delineation_json_path}",
-    )
-    delineation_output = capsys.readouterr().out
-    run_cli_with_args(
-        AuditPunctuationCli,
-        (
-            f"--reference {reference_path} --target {target_path} "
-            f"--json {punctuation_json_path}"
-        ),
-    )
-    punctuation_output = capsys.readouterr().out
-
-    assert (
-        "| Case 1<br>Refs 1–2 | 1. 參考一<br>2. 參考二 | "
-        "1. 甲乙<br>2. (empty) | 1. 甲<br>2. 乙 |"
-    ) in delineation_output
-    assert (
-        "| Case 1<br>Refs 1–2 | 1. 參考一<br>2. 參考二 | 1. 甲<br>2. 乙 | 2. 乙！ |"
-    ) in punctuation_output
-
-
-def test_transcription_audit_cli_help_describes_subtitle_indexes():
-    """Test transcription audit range help describes subtitle indexes."""
-    for cli_class in (AuditAlignedDiffCli, AuditDelineationCli, AuditPunctuationCli):
-        actions = {
-            action.dest: action
-            for action in cli_class.argparser()._actions  # noqa: SLF001
-        }
-        assert actions["first_index"].help == (
-            "first 1-indexed subtitle number to include, inclusive"
-        )
-        assert actions["last_index"].help == (
-            "last 1-indexed subtitle number to include, inclusive"
-        )
-
-    filter_types = {
-        AuditDelineationCli: DelineationAuditFilter,
-        AuditPunctuationCli: PunctuationAuditFilter,
+    actions = {
+        action.dest: action
+        for action in AuditTranscriptionAlignmentCli.argparser()._actions  # noqa: SLF001
     }
-    for cli_class, filter_type in filter_types.items():
-        actions = {
-            action.dest: action
-            for action in cli_class.argparser()._actions  # noqa: SLF001
-        }
-        filter_action = actions["row_filter"]
-        assert filter_action.choices is None
-        assert filter_action.metavar == enum_metavar(filter_type)
-        assert isinstance(filter_action.help, str)
-        assert enum_options_list_str(filter_type) in filter_action.help
-        assert "all includes every" in filter_action.help
-        assert "changes includes" in filter_action.help
-        assert "unverified includes" in filter_action.help
+    assert actions["first_index"].help == (
+        "first 1-indexed subtitle number to include, inclusive"
+    )
+    assert actions["alignment_path"].required
+
+    invalid_path = tmp_path / "alignment.json"
+    invalid_path.write_text("{}", encoding="utf-8")
+    with raises(SystemExit):
+        run_cli_with_args(AuditTranscriptionAlignmentCli, f"--alignment {invalid_path}")
+    assert "Unable to load transcription alignment artifact" in capsys.readouterr().err
 
 
 def _write_srt(file_path: Path, texts: tuple[str, ...]):

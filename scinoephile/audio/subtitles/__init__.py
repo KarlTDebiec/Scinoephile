@@ -5,7 +5,6 @@
 Package hierarchy (modules may import from any above):
 * subtitle
 * series
-* delineation
 """
 
 from __future__ import annotations
@@ -18,22 +17,12 @@ from scinoephile.audio.transcription import (
     get_segment_split_at_idx,
 )
 
-from .delineation import (
-    UnguidedBoundaryEvidence,
-    UnguidedDelineationResult,
-    UnguidedDelineationSettings,
-    UnguidedDelineator,
-)
 from .series import AudioSeries
 from .subtitle import AudioSubtitle
 
 __all__ = [
     "AudioSeries",
     "AudioSubtitle",
-    "UnguidedBoundaryEvidence",
-    "UnguidedDelineationResult",
-    "UnguidedDelineationSettings",
-    "UnguidedDelineator",
     "get_series_from_segments",
     "get_series_with_sub_split_at_idx",
     "get_sub_merged",

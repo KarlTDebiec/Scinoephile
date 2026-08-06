@@ -1,0 +1,37 @@
+ACOPOPB unguided pyannote block 4
+core_ms: 201949-202843
+buffered_ms: 200949-203843
+reference_ms: 201583-204250
+whisper_characters: 6
+mimo_characters: 6
+qwen_characters: 6
+sensevoice_characters: 6
+firered_characters: 6
+glm_characters: 6
+merged_characters: 3
+merged_subtitles: 1
+whisper_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+mimo_cer: 1.000000 (6 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+qwen_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+sensevoice_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+firered_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+glm_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+merged_cer: 0.500000 (0 substitutions + 0 insertions + 3 deletions / 6 reference characters)
+minimum_pause_seconds: 0.25
+pause_unit_seconds: 0.25
+reference_boundary_columns: 1
+timed_pause_columns: 7
+alignment_columns: 14
+
+Legend: 「　」=alignment gap; ・=timed pause; ｜=reference subtitle boundary; Ａ／Ｂ／…=exclusive speaker; ＊=speech without speaker; 「　」=no speech
+
+[0001-0014] 200.949-204.250s
+whisper     ・・・・咁你而家・・・明白｜
+mimo        ・・・・更了一個・・・名吧｜
+qwen        ・・・・咁你而家・・・明白｜
+sensevoice  ・・・・咁你而家・・・明白｜
+firered     ・・・・咁你而家・・・明白｜
+glm         ・・・・咁你而家・・・明白｜
+speaker     ・・・・ＢＢＢＢ・・・ＢＢ｜
+merged      ・・・・咁你而　・・・　　｜
+reference   ・・・・咁你而家・・・明白｜

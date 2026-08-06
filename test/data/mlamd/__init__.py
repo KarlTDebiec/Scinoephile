@@ -21,21 +21,15 @@ from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
 from scinoephile.lang.eng.review import ReviewPromptEng
 from scinoephile.lang.yue_zho.review import YueZhoGuidedReviewPromptYueHans
-from scinoephile.lang.yue_zho.transcription import (
-    YueZhoDelineationPromptYueHans,
-    YueZhoPunctuationPromptYueHans,
-)
 from scinoephile.lang.yue_zho.translation import YueZhoGapTranslationPromptYueHans
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
 from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
-from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
 from scinoephile.llms.gap_translation import GapTranslationManager, GapTranslationPrompt
 from scinoephile.llms.guided_review import GuidedReviewManager, GuidedReviewPrompt
 from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
-from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
 from test.helpers import test_data_root
 
@@ -45,9 +39,7 @@ __all__ = [
     "mlamd_zho_hant_ocr_sup_path",
     "get_mlamd_eng_ocr_fusion_test_cases",
     "get_mlamd_eng_review_test_cases",
-    "get_mlamd_yue_delineation_test_cases",
     "get_mlamd_yue_from_zho_gap_translation_test_cases",
-    "get_mlamd_yue_punctuation_test_cases",
     "get_mlamd_yue_vs_zho_guided_review_test_cases",
     "get_mlamd_zho_hans_ocr_fusion_test_cases",
     "get_mlamd_zho_hans_review_test_cases",
@@ -159,30 +151,6 @@ def get_mlamd_eng_review_test_cases(
 
 
 @cache
-def get_mlamd_yue_delineation_test_cases(
-    prompt: DelineationPrompt = YueZhoDelineationPromptYueHans, **kwargs: Any
-) -> list[TestCase]:
-    """Get MLAMD yue-Hans delineation test cases.
-
-    Arguments:
-        prompt: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = (
-        output_dir
-        / "yue-Hans_transcribe"
-        / "lang"
-        / "yue_zho"
-        / "transcription"
-        / "delineation"
-        / f"{get_torch_device()}.json"
-    )
-    return load_test_cases_from_json(path, DelineationManager, prompt=prompt, **kwargs)
-
-
-@cache
 def get_mlamd_yue_from_zho_gap_translation_test_cases(
     prompt: GapTranslationPrompt = YueZhoGapTranslationPromptYueHans, **kwargs: Any
 ) -> list[TestCase]:
@@ -205,30 +173,6 @@ def get_mlamd_yue_from_zho_gap_translation_test_cases(
     return load_test_cases_from_json(
         path, GapTranslationManager, prompt=prompt, **kwargs
     )
-
-
-@cache
-def get_mlamd_yue_punctuation_test_cases(
-    prompt: PunctuationPrompt = YueZhoPunctuationPromptYueHans, **kwargs: Any
-) -> list[TestCase]:
-    """Get MLAMD yue-Hans punctuation test cases.
-
-    Arguments:
-        prompt: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = (
-        output_dir
-        / "yue-Hans_transcribe"
-        / "lang"
-        / "yue_zho"
-        / "transcription"
-        / "punctuation"
-        / f"{get_torch_device()}.json"
-    )
-    return load_test_cases_from_json(path, PunctuationManager, prompt=prompt, **kwargs)
 
 
 @cache

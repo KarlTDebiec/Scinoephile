@@ -4,20 +4,13 @@
 
 from __future__ import annotations
 
-from os import environ
 from pathlib import Path
 
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.analysis.diff import SeriesDiff
-from scinoephile.audio.transcription import DemucsMode, VADMode
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.transcription import (
-    BlockDelineationMode,
-    MlxAudioTimingMode,
-    TranscriptionAlignmentMode,
-)
 from test.data.ocr import process_ocr
 from test.data.srt import process_srt
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
@@ -67,14 +60,6 @@ zho-Hant字幕只係語義指引；如果佢嘅字眼同實際粵語對白唔同
 - 蓮花落陣：用嚟考驗蘇燦能否統領丐幫嘅陣法
 - 麒麟煙：天理教使用嘅煙霧武器
 """
-
-selected_transcription_name = environ.get("SCINOEPHILE_TRANSCRIPTION_NAME")
-if selected_transcription_name is None:
-    transcription_names = ("whisper", "mimo", "qwen")
-elif selected_transcription_name in {"whisper", "mimo", "qwen"}:
-    transcription_names = (selected_transcription_name,)
-else:
-    raise ValueError("SCINOEPHILE_TRANSCRIPTION_NAME must be whisper, mimo, or qwen")
 
 actions = {
     # "eng_ocr",
@@ -131,26 +116,11 @@ if "yue-Hans_eng" in actions:
 if "yue-Hant_transcribe" in actions:
     process_transcription_pipeline(
         title_root,
-        zho_hant_guide_path,
         reference_path=yue_hant_path / "clean_review_flatten_timewarp.srt",
         language=Language.yue_hant,
-        guide_language=Language.zho_hant,
         output_dir_path=yue_hant_transcribe_path,
         audio_dir_path=yue_hant_transcribe_path / "audio",
         additional_context=transcription_additional_context,
-        reviewer_kw={"prune_test_cases": True},
-        translator_kw={"prune_test_cases": True},
-        transcription_no_op=False,
-        transcription_alignment_mode=TranscriptionAlignmentMode.BLOCK,
-        transcription_block_delineation_mode=BlockDelineationMode.UNRESTRICTED,
-        transcription_fallback_to_no_op=True,
-        strip_mlx_audio_punctuation=True,
-        mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
-        demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.OFF,
-        transcription_names=transcription_names,
-        transcription_overwrite=True,
-        run_merge_and_translation=True,
         overwrite=True,
     )
 if "yue-Hant_diff" in actions:

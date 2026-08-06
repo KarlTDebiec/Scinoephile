@@ -29,8 +29,11 @@ __all__ = [
 
 if TYPE_CHECKING:
     from demucs_infer.apply import BagOfModels, Model
+    from mlx_audio.stt.models.fireredasr2 import Model as FireRedAsr2Model
+    from mlx_audio.stt.models.glmasr import Model as GlmAsrModel
     from mlx_audio.stt.models.mimo_v2_asr import Model as MimoModel
     from mlx_audio.stt.models.qwen3_asr import Model as Qwen3AsrModel
+    from mlx_audio.stt.models.sensevoice import Model as SenseVoiceModel
     from torch import Tensor
     from transformers import PreTrainedModel, ProcessorMixin
     from whisper import Whisper
@@ -38,7 +41,9 @@ if TYPE_CHECKING:
     type CtcModel = PreTrainedModel
     type CtcProcessor = ProcessorMixin
     type DemucsModel = BagOfModels | Model
-    type MlxAudioModel = MimoModel | Qwen3AsrModel
+    type MlxAudioModel = (
+        FireRedAsr2Model | GlmAsrModel | MimoModel | Qwen3AsrModel | SenseVoiceModel
+    )
     type TorchTensor = Tensor
     type WhisperModel = Whisper
 

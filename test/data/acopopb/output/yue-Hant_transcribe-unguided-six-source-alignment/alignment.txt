@@ -1,0 +1,648 @@
+ACOPOPB unguided pyannote block 1
+core_ms: 52571-160909
+buffered_ms: 51571-161909
+reference_ms: 52667-161542
+whisper_characters: 374
+mimo_characters: 365
+qwen_characters: 367
+sensevoice_characters: 349
+firered_characters: 364
+glm_characters: 367
+merged_characters: 374
+merged_subtitles: 46
+whisper_cer: 0.219101 (46 substitutions + 25 insertions + 7 deletions / 356 reference characters)
+mimo_cer: 0.193820 (46 substitutions + 16 insertions + 7 deletions / 356 reference characters)
+qwen_cer: 0.255618 (66 substitutions + 18 insertions + 7 deletions / 356 reference characters)
+sensevoice_cer: 0.244382 (52 substitutions + 14 insertions + 21 deletions / 356 reference characters)
+firered_cer: 0.210674 (51 substitutions + 16 insertions + 8 deletions / 356 reference characters)
+glm_cer: 0.278090 (78 substitutions + 16 insertions + 5 deletions / 356 reference characters)
+merged_cer: 0.140449 (24 substitutions + 22 insertions + 4 deletions / 356 reference characters)
+minimum_pause_seconds: 0.25
+pause_unit_seconds: 0.25
+reference_boundary_columns: 46
+timed_pause_columns: 123
+alignment_columns: 555
+
+Legend: 「　」=alignment gap; ・=timed pause; ｜=reference subtitle boundary; Ａ／Ｂ／…=exclusive speaker; ＊=speech without speaker; 「　」=no speech
+
+[0001-0060] 051.571-065.520s
+whisper     ・・・・孫悟空・｜你本來答應如來佛祖｜護送你師父唐三藏去取西經嘅｜・・而家你竟然想夾埋牛魔王嚟食咗你師父｜・・・八婆｜・
+mimo        ・・・・孫悟空・｜你本來應承如來佛祖｜護送你師父唐三藏去取西經嘅｜・・而家你竟然想夾埋牛魔王嚟食咗你師父｜・・・八婆｜・
+qwen        ・・・・孫悟空・｜你本來應承如來佛祖｜護送你師傅唐三藏去取西經嘅｜・・而家你竟然想夾埋牛魔王嚟食咗你師傅｜・・・八婆｜・
+sensevoice  ・・・・孫悟空・｜你本來應承如來佛祖｜護送你師傅唐三藏去取西經嘅｜・・而家你竟然想夾埋牛魔王嚟食咗你師傅｜・・・八婆｜・
+firered     ・・・・孫悟空・｜你本來應承如來佛祖｜護送你師傅唐三藏去取西經嘅｜・・而家你竟然想夾埋牛魔王嚟食咗你師傅｜・・・八婆｜・
+glm         ・・・・師唔空・｜你本來應承如來佛祖｜護送你師父唐三藏去取西經嘅｜・・而家你竟然想夾埋牛魔王嚟食咗你師父｜・・・八婆｜・
+speaker     ・・・・ＡＡＡ・｜ＡＡＡＡＡＡＡＡＡ｜ＡＡＡＡＡＡＡＡＡＡＡＡＡ｜・・ＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡ｜・・・ＢＢ｜・
+merged      ・・・・孫悟空・｜你本來應承如來佛祖｜護送你師父唐三藏去取西經嘅｜・・而家你竟然想夾埋牛魔王嚟食咗你師父｜・・・八婆｜・
+reference   ・・・・孫悟空・｜你本來應承如來佛祖｜護送你師父唐三藏去取西經嘅｜・・　　你竟然　夾埋牛魔王要食　你師父｜・・・八婆｜・
+
+[0061-0120] 063.798-075.200s
+whisper     ・・・・・・最重呀三日三夜｜・・・見你係女人唔搭你｜・・・唔會以為我把下咗你喎｜・・・・悟空・・・你點可以同觀音姐姐咁　
+mimo        ・・・・・・追咗我三日三夜｜・・・見你係女人唔打你｜・・・唔好以為我　怕咗你　｜・・・・悟空・・・你點可以同觀音姐姐咁　
+qwen        ・・・・・・追仲啊三日三夜｜・・・見你啊女人　打你｜・・・唔會以為我　爬出嚟喎｜・・・・悟空・・・你點可以同觀音姐姐咁　
+sensevoice  ・・・・・・最　　三日三夜｜・・・見你　女人　打你｜・・・唔好以為我　怕咗你　｜・・・・悟空・・・你點可以同觀音姐姐咁　
+firered     ・・・・・・最終系三日三夜｜・・・見你係女人唔打你｜・・・唔好以為我　怕咗你　｜・・・・悟空・・・你點可以同觀音姐姐咁　
+glm         ・・・・・・最終我三日三夜｜・・・見你個女人唔打你｜・・・唔好以為我　怕咗你喎｜・・・・唔空・・・你點可以同觀音姐姐咁　
+speaker     ・・・・・・ＢＢＢＢＢＢＢ｜・・・ＢＢＢＢＢＢＢＢ｜・・・ＢＢＢＣＢＢＢＢＢＢ｜・・・・ＣＣ・・・ＣＣＣＣＣＣＣＣＣＣＣ
+merged      ・・・・・・追咗我三日三夜｜・・・見你係女人唔打你｜・・・唔好以為我　怕咗你喎｜・・・・悟空・・・你點可以同觀音姐姐咁　
+reference   ・・・・・・追咗我三日三夜｜・・・見你係女人唔打你｜・・・唔好以為我　怕咗你喎｜・・・・悟空・・・你點可以同觀音姐姐咁樣
+
+[0121-0180] 075.006-088.036s
+whisper     講嘢呢｜・・・　　・・・咪做｜・・・・・・你又嚇我啦｜・・・・你知唔知你犯咗彌天大罪呀｜・你仲搶咗紫霞仙子嘅月光寶盒分｜
+mimo        講嘢呢｜・・・　　・・・咪做｜・・・・・・你又吓我啦｜・・・・你知唔知你犯咗彌天大罪啊｜・你仲搶咗紫霞仙子嘅月光寶盒分｜
+qwen        講嘢咧｜・・・唔啊・・・咪做｜・・・・・・你又吓我啦｜・・・・你知唔知你犯咗彌天大罪啊｜・你仲搶咗子夏先子嘅月光寶盒分｜
+sensevoice  講嘢呢｜・・・　　・・・咪　｜・・・・・・你又吓我啦｜・・・・你知唔知你犯咗彌天大罪啊｜・你仲搶咗紫霞仙子嘅月光寶盒分｜
+firered     講嘢呢｜・・・　　・・・　　｜・・・・・・你又吓我啦｜・・・・你知唔知你犯咗彌天大罪啊｜・你仲搶咗紫霞仙子嘅月光寶盒分｜
+glm         講嘢咧｜・・・　　・・・咪做｜・・・・・・你又嚇我啦｜・・・・你知唔知你犯咗禍天大罪啊｜・你仲搶咗紫霞仙子嘅月光寶盒分｜
+speaker     ＣＣＣ｜・・・ＣＣ・・・ＣＣ｜・・・・・・ＣＣＣＣＣ｜・・・・ＡＡＡＡＡＡＡＡＡＡＡＡ｜・ＡＡＡＡＡＡＡＡＡＡＡＡＡＡ｜
+merged      講嘢呢｜・・・　　・・・咪做｜・・・・・・你又嚇我啦｜・・・・你知唔知你犯咗彌天大罪啊｜・你仲搶咗紫霞仙子嘅月光寶盒分｜
+reference   講嘢呢｜・・・　　・・・咪嘈｜・・・・・・你又嚇我啦｜・・・・你知唔知你犯咗彌天大罪呀｜・你又搶走紫霞仙子嘅月光寶盒呢｜
+
+[0181-0240] 088.036-100.243s
+whisper     明就　　係想避開我啦｜・・・・・・既然避無可避｜老孫就同你決一死戰｜・・・・・・做咩呀｜・・　・・・大家唔好嬲啦｜噉會犯
+mimo        明就　　係想避開我啦｜・・・・・・既然避無可避｜老孫就同你決一死戰｜・・・・・・做咩　｜・・啊・・・大家唔好嬲啦｜咁會犯
+qwen        明就　　係想避開我啦｜・・・・・・既然避無可避｜老孫就同你決一死戰｜・・・・・・做咩　｜・・啊・・・大家唔好嬲啦｜咁會犯
+sensevoice  明就　　係想避開我啦｜・・・・・・既然鼻無可避｜老孫就同你缺一死戰｜・・・・・・做咩　｜・・啊・・・大家唔好嬲啦｜咁會犯
+firered     明就　　係想避開我啦｜・・・・・・既然避無可避｜老孫就同你決一死戰｜・・・・・・做咩　｜・・啊・・・大家唔好嬲啦｜咁會犯
+glm         明就　　係想避開我啦｜・・・・・・既然避無可避｜老師就同你決一死爭｜・・・・・・做咩啊｜・・啊・・・大家唔好嬲啦｜咁會犯
+speaker     ＡＡＡＡＡＡＡＡＡＡ｜・・・・・・　ＤＤＤＤＤ｜ＤＤＤＤＤＤＤＤＣ｜・・・・・・ＣＣＣ｜・・Ｃ・・・ＣＣＣＣＣＣ｜ＣＣＣ
+merged      明就　　係想避開我啦｜・・・・・・既然避無可避｜老孫就同你決一死喂｜・・・・・・做咩　｜・・呀・・・大家唔好嬲啦｜咁會犯
+reference   你無非都係想避開我啫｜・・・・・・既然避無可避｜老孫就同你決一死戰｜・・・・・・做咩呀｜・・　・・・大家唔好嬲啦｜咁會犯
+
+[0241-0300] 100.243-111.571s
+whisper     咗真戒㗎｜・吓悟空你真係嘻嘻啦｜我叫咗你唔好亂咁掟嘢㗎｜啦你咁樣亂咁掟嘢係唔啱呀｜喇挖好未完　又掟咗支棍喇｜月光寶盒係寶
+mimo        咗真戒噶｜・唉悟空你真系二世啦｜我叫咗你唔好亂咁掟嘢噶｜啦你咁樣亂咁掟嘢系唔啱啊｜嗱我行未完　就掟咗支棍啦｜月光寶盒系寶
+qwen        咗真戒噶｜・唉悟空你真系曳曳啦｜我叫多你唔好亂咁掟嘢噶｜啦你咁樣亂咁掟嘢系唔啱啊｜嗱我考慮完　又掟咗支棍啦｜月光寶盒系寶
+sensevoice  得　　噶｜・　　　你真系　　啦｜我叫咗你　好亂咁掟嘢噶｜啦你咁樣亂咁掟嘢系唔啱啊｜嗱　口味原　　掟咗　棍啦｜月光寶盒系寶
+firered     得真界噶｜・唉悟空你真系曳曳啦｜我叫咗你唔好亂咁掟嘢噶｜啦你咁樣亂咁掟嘢系唔啱啊｜嗱話口未完　又掟咗支棍啊｜月光寶盒系寶
+glm         咗真戒噶｜・唉唔空你真系咿咿啦｜我叫到你唔好亂咁定嘢噶｜啦你咁樣亂咁定嘢系唔啱噶｜嗱　話冇完　又定咗支棍啦｜月光波唔系寶
+speaker     ＣＣＣＣ｜・ＣＣＣＣＣＣＣＣＣ｜ＣＣＣＣＣＣＣＣＣＣＣ｜ＣＣＣＣＣＣＣＣＣＣＣＣ｜ＣＣＣＣＣＣＣＣＣＣＣＣ｜ＣＣＣＣＣＣ
+merged      咗嗔戒㗎｜・唉悟空你真係曳曳啦｜我叫咗你唔好亂咁掟嘢㗎｜啦你咁樣亂咁掟嘢係唔啱呀｜嗱話口未完　又掟咗支棍啦｜月光寶盒係寶
+reference   　嗔戒㗎｜・　悟空你真係曳曳呀｜我叫咗你唔好亂咁掟嘢㗎｜　你咁　亂咁掟嘢係唔啱嘅｜嗱話口未完你又掟咗支棍啦｜月光寶盒係寶
+
+[0301-0360] 111.592-124.860s
+whisper     物嘅　　｜你咁亂咁掟會染污環境嘅｜　・又會掟親啲小朋友｜就算冇小朋友｜掟親啲花花草草都係唔好嘅｜・・・・・・・・做咩呀｜
+mimo        物嚟噶嘛｜你咁亂咁掟會染污環境噶｜唉・又會掟親啲小朋友｜就算冇小朋友｜掟親啲花花草草都系唔好嘅｜・・・・・・・・做咩啊｜
+qwen        物嚟噶嘛｜你咁亂咁掟會染污環境噶｜唉・又會掟親啲小朋友｜就算冇小朋友｜掟親啲花花草草都系唔好嘅｜・・・・・・・・做咩啊｜
+sensevoice  物嚟噶嘛｜你咁亂咁掟會掩污環境噶｜唉・又會掟緊啲小朋友｜就算冇小朋友｜掟親啲花花草草都系唔好嘅｜・・・・・・・・做咩啊｜
+firered     物嚟噶嘛｜你咁亂咁掟會染污環境噶｜唉・又會掟緊啲小朋友｜就算冇小朋友｜掟親啲花花草草都系唔好嘅｜・・・・・・・・做咩啊｜
+glm         物嚟㗎嘛｜你咁亂咁定會影污環境㗎｜唉・又會定親到小朋友｜就算冇小朋友｜定親到花花草草都系唔好嘅｜・・・・・・・・做咩啊｜
+speaker     ＣＣＣＣ｜ＣＣＣＣＣＣＣＣＣＣＣ｜Ｃ・ＣＣＣＣＣＣＣＣ｜ＣＣＣＣＣＣ｜ＣＣＣＣＣＣＣＣＣＣＣＣ｜・・・・・・・・ＣＣＣ｜
+merged      物嚟㗎嘛｜你咁亂咁掟會染污環境㗎｜唉・又會掟親啲小朋友｜就算冇小朋友｜掟親啲花花草草都係唔好嘅｜・・・・・・・・做咩呀｜
+reference   物嚟吖嘛｜你咁亂咁掟會染污環境㗎｜唉・又會掟親啲小朋友｜就算冇小朋友｜掟親啲花花草草都係唔好嘅｜・・・・・・・・做咩呀｜
+
+[0361-0420] 124.298-138.087s
+whisper     ・・放手呀｜・・你愛呀・｜吳空・你愛就要講啦｜做咩唔出聲啫・｜你望住我做咩啫雖然你咁有誠意咁望住我｜我係好高興你都要講㗎
+mimo        ・・放手啊｜・・你愛啊・｜悟空・你愛就要講啦｜做咩唔出聲啫・｜你望住我做咩啫雖然你咁有誠意咁望住我｜我係好高興你都要講噶
+qwen        ・・防守啊｜・・你愛啊・｜悟空・你愛就要講啦｜做咩唔出聲啫・｜你望住我做咩啫雖然你咁有誠意咁望住我｜我係好高興你都要講噶
+sensevoice  ・・放手啊｜・・你愛啊・｜唔空・你愛就要講啦｜做咩唔出聲啫・｜你望住我做咩啫雖然你咁有誠意咁望住我｜我係好高興你都要講噶
+firered     ・・放手啊｜・・你愛啊・｜悟空・你愛就要講啦｜做咩唔出聲啫・｜你望住我做咩啫雖然你咁有誠意咁望住我｜我係好高興你都要講噶
+glm         ・・放手啊｜・・你愛啊・｜唔空・你愛就要講啦｜做咩唔出聲啫・｜你望住我做咩啫雖然你咁有誠意咁望住我｜我繫好高興你都要講噶
+speaker     ・・ＣＣＣ｜・・ＣＣＣ・｜ＣＣ・ＣＣＣＣＣＣ｜ＣＣＣＣＣＣ・｜ＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣ｜ＣＣＣＣＣＣＣＣＣＣ
+merged      ・・放手呀｜・・你愛呀・｜悟空・你愛就要講啦｜做咩唔出聲啫・｜你望住我做咩啫雖然你咁有誠意咁望住我｜我係好高興你都要講㗎
+reference   ・・放手呀｜・・你愛呀・｜悟空・你愛就要講啦｜做乜唔出聲啫・｜　　　　　　　雖然你咁有誠意咁望住我｜我係好高興你都要講㗎
+
+[0421-0480] 137.833-148.488s
+whisper     ｜攞去啦・｜你唔係真係愛呀嘛｜・你真係愛呀講完咩｜・・・・・・・・走你｜　吓孫吳空｜哈哈哈哈・・・・・・・・・・・你而家
+mimo        ｜攞去啦・｜你唔系真系愛啊嘛｜・你真系愛　　　咩｜・・・・・・・・　　｜　吓孫悟空｜　　　　・・・・・・・・・・・你　睇
+qwen        ｜攞去啦・｜你唔系真系愛啊嘛｜・你真系愛　　　咩｜・・・・・・・・　你｜吓吓孫悟空｜　　　　・・・・・・・・・・・你　個
+sensevoice  ｜攞去啦・｜你唔系真系愛啊嘛｜・你真系愛　　　咩｜・・・・・・・・　你｜吓吓孫悟空｜　　　　・・・・・・・・・・・你　家
+firered     ｜攞去啦・｜你唔系真系愛啊嘛｜・你真系愛　　　咩｜・・・・・・・・　你｜吓吓孫悟空｜　　　　・・・・・・・・・・・你　家
+glm         ｜攞去啦・｜你唔系真系愛啊嘛｜・你真系愛　　　咩｜・・・・・・・・　　｜嚇嚇算唔通｜　　　　・・・・・・・・・・・你　家
+speaker     ｜ＣＣＣ・｜ＣＣＣＣＣＣＣＣ｜・ＣＣＣＣＣ　　Ｃ｜・・・・・・・・　Ｃ｜ＣＣＣＣＣ｜ＣＣＥ　・・・・・・・・・・・ＤＤＤ
+merged      ｜攞去啦・｜你唔係真係愛呀嘛｜・你真係愛　　　咩｜・・・・・・・・　你｜嚇吓孫悟空｜哈哈哈哈・・・・・・・・・・・你而家
+reference   ｜攞去啦・｜你唔係真係愛吖嘛｜・你真係愛　　　咩｜・・・・・・・・我挑｜　　孫悟空｜　　　　・・・・・・・・・・・你　都
+
+[0481-0540] 148.488-159.147s
+whisper     見啦・・｜呢個友講嘢長篇大論｜九五大八嘢嘻嘩嘩　・・｜就成日好似有隻蒼蠅撈住｜・・・・・・・・・・・對唔住・唔係一隻・・
+mimo        見啊・・｜條　友講嘢長篇大論｜咁唔搭白嘅咿咿哦哦・・｜就成日好似有隻烏蠅嬲住｜・・・・・・・・・・・對唔住・唔系一隻・・
+qwen        見啊・・｜你　有講嘢長篇大論｜咁唔得扮嘢　　我我・・｜就成日好似有隻烏蠅鬧住｜・・・・・・・・・・・對唔住・唔系一隻・・
+sensevoice  見啊・・｜　撩友講嘢長篇大論｜咁唔搭扮　　耳哦哦・・｜就成日好似有隻烏蠅嬲住｜・・・・・・・・・・・繃唔住・唔系一隻・・
+firered     見啊・・｜呢條友講嘢長篇大論｜咁唔搭白　　咦我我・・｜就成日好似有隻烏蠅摟住｜・・・・・・・・・・・對唔住・唔系一隻・・
+glm         見啊・・｜你女友講嘢長篇大論｜九五大半嘢唉　我我・・｜就成日好似有隻烏鴉嬲住｜・・・・・・・・・・・對唔住・唔系一隻・・
+speaker     ＤＤ・・｜ＤＤＤＤＤＤＤＤＤ｜ＤＤＤＤＤＤＦＦＦ・・｜ＦＦＦＦＦＦＦＦＦＦＦ｜・・・・・・・・・・・ＦＦＦ・ＦＦＦＦ・・
+merged      見啊・・｜呢條友講嘢長篇大論｜咁唔搭白嘅咿咿哦哦・・｜就成日好似有隻烏蠅嬲住｜・・・・・・・・・・・對唔住・唔係一隻・・
+reference   見啦・・｜呢條友講嘢長篇大論｜九唔搭八　依依哦哦・・｜就成日好似有隻烏蠅嬲住｜・・・・・・・・・・・對唔住・唔係一隻・・
+
+[0541-0555] 158.875-161.909s
+whisper     ｜係一堆蒼蠅喺你耳仔邊・・・｜
+mimo        ｜系一紮烏蠅喺你耳仔邊・・・｜
+qwen        ｜系一紮烏蠅喺你耳仔邊・・・｜
+sensevoice  ｜系一紮烏蠅喺你耳仔邊・・・｜
+firered     ｜系一紮烏蠅喺你耳仔邊・・・｜
+glm         ｜系一紮烏鴉喺你耳仔邊・・・｜
+speaker     ｜ＦＦＦＦＦＦＦＦＦＦ・・・｜
+merged      ｜係一紮烏蠅喺你耳仔邊・・・｜
+reference   ｜係一群烏蠅喺你耳仔邊・・・｜
+
+ACOPOPB unguided pyannote block 2
+core_ms: 165026-192617
+buffered_ms: 164026-193617
+reference_ms: 165708-193083
+whisper_characters: 222
+mimo_characters: 70
+qwen_characters: 74
+sensevoice_characters: 61
+firered_characters: 70
+glm_characters: 60
+merged_characters: 75
+merged_subtitles: 13
+whisper_cer: 3.507937 (62 substitutions + 159 insertions + 0 deletions / 63 reference characters)
+mimo_cer: 0.380952 (15 substitutions + 8 insertions + 1 deletions / 63 reference characters)
+qwen_cer: 0.492063 (20 substitutions + 11 insertions + 0 deletions / 63 reference characters)
+sensevoice_cer: 0.396825 (17 substitutions + 3 insertions + 5 deletions / 63 reference characters)
+firered_cer: 0.269841 (10 substitutions + 7 insertions + 0 deletions / 63 reference characters)
+glm_cer: 0.523810 (24 substitutions + 3 insertions + 6 deletions / 63 reference characters)
+merged_cer: 0.317460 (8 substitutions + 12 insertions + 0 deletions / 63 reference characters)
+minimum_pause_seconds: 0.25
+pause_unit_seconds: 0.25
+reference_boundary_columns: 10
+timed_pause_columns: 33
+alignment_columns: 338
+
+Legend: 「　」=alignment gap; ・=timed pause; ｜=reference subtitle boundary; Ａ／Ｂ／…=exclusive speaker; ＊=speech without speaker; 「　」=no speech
+
+[0001-0060] 164.026-182.493s
+whisper     ・・・・　呀呀呀　　　　　　　　　　｜・　　　｜　　　・・・・・・・・　・・・・・・・・・　　　　　　　　　｜　　　　　
+mimo        ・・・・　哎呀　　流飛入去你個腦裏邊｜・救命啊｜救命　・・・・・・・・於・・・・・・・・・是乎我就捉住只烏蠅｜捏爆佢個肚
+qwen        ・・・・　啊呀呀一路飛入我你嘅腦裏邊｜・救命啊｜救命啊・・・・・・・・於・・・・・・・・・是馮明就捉住咗會應｜臉爆嘅嗰條
+sensevoice  ・・・・　　　　一路飛入去你嘅腦裏邊｜・救命啊｜救命　・・・・・・・・於・・・・・・・・・是乎　就捉住　　應｜鏈爆佢個肚
+firered     ・・・・　　　　一路飛入去你嘅腦裏邊｜・救命啊｜救命　・・・・・・・・於・・・・・・・・・是乎我就捉住只烏蠅｜捻爆佢個肚
+glm         ・・・・　　　　　　　　　　　　　　｜・救命啊｜救命啊・・・・・・・・於・・・・・・・・・時鐘我就捉住咗蝴蝶｜擰爆佢個肚
+speaker     ・・・・ＢＢＧＧＧＧＧＧＧＧＧＧＧＧ｜・ＧＨＨ｜ＨＨＨ・・・・・・・・Ｈ・・・・・・・・・ＦＦＦＦＦＦＦＦＦ｜ＦＦＦＦＦ
+merged      ・・・・哎呀呀呀一路飛入去你個腦裏邊｜・救命啊｜救命啊・・・・・・・・於・・・・・・・・・是乎我就捉住隻烏蠅｜捻爆佢個肚
+reference   ・・・・　　　　一路飛入　你嘅腦裡面｜・救命呀｜　　　・・・・・・・・於・・・・・・・・・是乎我　捉住隻烏蠅｜鏈爆佢個肚
+
+[0061-0120] 182.208-193.617s
+whisper     ｜　　　　　　｜　　　　　　　　　　｜　　　　　　｜・　・・・　　・・　　　　　　　　・・｜　　　　　　　｜　｜・・・呀
+mimo        ｜搣條　腸出嚟｜再將條腸箍翻住佢條頸｜跟住用力一扯｜・　・・・各位・・成條脷已經出咗嚟・・｜啦我再手起刀落｜哇｜・・・　
+qwen        ｜必佢都搶出嚟｜再將條腸箍翻住佢條頸｜跟住用力一扯｜・啦・・・各位・・成條脷　筋出咗嚟・・｜啦我再手起刀落｜哇｜・・・　
+sensevoice  ｜　　都搶出嚟｜再將條腸箍翻住　條頸｜跟住用到一切｜・啦・・・各　・・成條脷　巾出咗嚟・・｜　我再手起　落｜哇｜・・・　
+firered     ｜激佢啲腸出嚟｜再將條腸箍翻住佢條頸｜跟住用力一扯｜・啦・・・各位・・成條脷　根出咗嚟・・｜啦我再手起刀落｜哇｜・・・　
+glm         ｜逼佢都搶出嚟｜再將條長哭翻咗佢條腳｜跟住用力一扯｜・　・・・各位・・成條利　鏟出咗嚟・・｜啦我再手氣到落｜哇｜・・・　
+speaker     ｜ＦＦＦＦＦＦ｜ＦＦＦＦＦＦＦＦＦＦ｜ＦＦＦＦＦＦ｜・Ｆ・・・ＦＦ・・ＦＦＦＦＦＦＦＦ・・｜　ＢＢＢＢＢＢ｜Ｂ｜・・・　
+merged      ｜搣佢啲腸出嚟｜再將條腸箍返住佢條頸｜跟住用力一扯｜・啦・・・各位・・成條脷　根出咗嚟・・｜啦我再手起刀落｜嘩｜・・・　
+reference   ｜唧佢啲腸出嚟｜再將啲腸箍返　佢條頸｜跟住用力一扯｜・　・・・各位・・成條脷　根出咗嚟・・｜　我就手起刀落｜嘩｜・・・　
+
+[0121-0180] 193.326-194.526s
+whisper     呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀
+mimo        　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+qwen        　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+sensevoice  　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+firered     　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+glm         　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+speaker     　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+merged      　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+reference   　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+
+[0181-0240] 194.526-195.726s
+whisper     呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀
+mimo        　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+qwen        　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+sensevoice  　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+firered     　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+glm         　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+speaker     　　ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+merged      　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+reference   　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+
+[0241-0300] 195.726-196.926s
+whisper     呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀
+mimo        　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+qwen        　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+sensevoice  　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+firered     　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+glm         　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+speaker     　　　　　　　　　　　　　　　　　　　　　　　　ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ
+merged      　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+reference   　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+
+[0301-0338] 196.926-197.686s
+whisper     呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀呀
+mimo        　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+qwen        　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+sensevoice  　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+firered     　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+glm         　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+speaker     ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ　　　　　　　　　　　　　
+merged      　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+reference   　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+
+ACOPOPB unguided pyannote block 3
+core_ms: 196228-198878
+buffered_ms: 195228-199878
+reference_ms: 196125-199375
+whisper_characters: 7
+mimo_characters: 7
+qwen_characters: 7
+sensevoice_characters: 7
+firered_characters: 7
+glm_characters: 7
+merged_characters: 7
+merged_subtitles: 2
+whisper_cer: 0.142857 (1 substitutions + 0 insertions + 0 deletions / 7 reference characters)
+mimo_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 7 reference characters)
+qwen_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 7 reference characters)
+sensevoice_cer: 0.142857 (1 substitutions + 0 insertions + 0 deletions / 7 reference characters)
+firered_cer: 0.142857 (1 substitutions + 0 insertions + 0 deletions / 7 reference characters)
+glm_cer: 0.285714 (2 substitutions + 0 insertions + 0 deletions / 7 reference characters)
+merged_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 7 reference characters)
+minimum_pause_seconds: 0.25
+pause_unit_seconds: 0.25
+reference_boundary_columns: 1
+timed_pause_columns: 9
+alignment_columns: 17
+
+Legend: 「　」=alignment gap; ・=timed pause; ｜=reference subtitle boundary; Ａ／Ｂ／…=exclusive speaker; ＊=speech without speaker; 「　」=no speech
+
+[0001-0017] 195.228-199.878s
+whisper     ・・・・成個世界・・清淨晒｜・・・
+mimo        ・・・・成個世界・・清靜晒｜・・・
+qwen        ・・・・成個世界・・清靜晒｜・・・
+sensevoice  ・・・・成個世界・・清淨晒｜・・・
+firered     ・・・・整個世界・・清靜晒｜・・・
+glm         ・・・・成個世界・・清淨曬｜・・・
+speaker     ・・・・ＢＢＢＢ・・ＢＢＢ｜・・・
+merged      ・・・・成個世界・・清靜晒｜・・・
+reference   ・・・・成個世界・・清靜晒｜・・・
+
+ACOPOPB unguided pyannote block 4
+core_ms: 201949-202843
+buffered_ms: 200949-203843
+reference_ms: 201583-204250
+whisper_characters: 6
+mimo_characters: 6
+qwen_characters: 6
+sensevoice_characters: 6
+firered_characters: 6
+glm_characters: 6
+merged_characters: 3
+merged_subtitles: 1
+whisper_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+mimo_cer: 1.000000 (6 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+qwen_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+sensevoice_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+firered_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+glm_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+merged_cer: 0.500000 (0 substitutions + 0 insertions + 3 deletions / 6 reference characters)
+minimum_pause_seconds: 0.25
+pause_unit_seconds: 0.25
+reference_boundary_columns: 1
+timed_pause_columns: 7
+alignment_columns: 14
+
+Legend: 「　」=alignment gap; ・=timed pause; ｜=reference subtitle boundary; Ａ／Ｂ／…=exclusive speaker; ＊=speech without speaker; 「　」=no speech
+
+[0001-0014] 200.949-204.250s
+whisper     ・・・・咁你而家・・・明白｜
+mimo        ・・・・更了一個・・・名吧｜
+qwen        ・・・・咁你而家・・・明白｜
+sensevoice  ・・・・咁你而家・・・明白｜
+firered     ・・・・咁你而家・・・明白｜
+glm         ・・・・咁你而家・・・明白｜
+speaker     ・・・・ＢＢＢＢ・・・ＢＢ｜
+merged      ・・・・咁你而　・・・　　｜
+reference   ・・・・咁你而家・・・明白｜
+
+ACOPOPB unguided pyannote block 5
+core_ms: 206336-216360
+buffered_ms: 205336-217360
+reference_ms: 205708-216667
+whisper_characters: 31
+mimo_characters: 31
+qwen_characters: 32
+sensevoice_characters: 35
+firered_characters: 31
+glm_characters: 31
+merged_characters: 31
+merged_subtitles: 8
+whisper_cer: 0.093750 (2 substitutions + 0 insertions + 1 deletions / 32 reference characters)
+mimo_cer: 0.125000 (3 substitutions + 0 insertions + 1 deletions / 32 reference characters)
+qwen_cer: 0.156250 (3 substitutions + 1 insertions + 1 deletions / 32 reference characters)
+sensevoice_cer: 0.343750 (6 substitutions + 4 insertions + 1 deletions / 32 reference characters)
+firered_cer: 0.125000 (3 substitutions + 0 insertions + 1 deletions / 32 reference characters)
+glm_cer: 0.218750 (6 substitutions + 0 insertions + 1 deletions / 32 reference characters)
+merged_cer: 0.093750 (2 substitutions + 0 insertions + 1 deletions / 32 reference characters)
+minimum_pause_seconds: 0.25
+pause_unit_seconds: 0.25
+reference_boundary_columns: 5
+timed_pause_columns: 19
+alignment_columns: 60
+
+Legend: 「　」=alignment gap; ・=timed pause; ｜=reference subtitle boundary; Ａ／Ｂ／…=exclusive speaker; ＊=speech without speaker; 「　」=no speech
+
+[0001-0060] 205.336-217.360s
+whisper     ・・・・點解我要殺咗佢｜・・・・　　　　悟・・空你諸多藉口｜・你根本唔想去取西經｜　講・・・・咁多仲未呀｜・打啦｜・・・
+mimo        ・・・・點解我要殺咗佢｜・・・・　　　　悟・・空你諸多借口｜・你根本唔想去取西經｜　講・・・・咁多做咩啊｜・打啦｜・・・
+qwen        ・・・・點解我要殺咗佢｜・・・・　　　啊悟・・空你諸多借口｜・你根本唔想去取西經｜　講・・・・咁多做咩啊｜・打啦｜・・・
+sensevoice  ・・・・點解我要殺咗佢｜・・・・悟空悟空悟・・空你豬多隻口｜・你根本唔想去取西京｜　講・・・・咁多做咩啊｜・啊啦｜・・・
+firered     ・・・・點解我要殺咗佢｜・・・・　　　　悟・・空你諸多借口｜・你根本唔想去取西經｜　講・・・・咁多做咩啊｜・打啦｜・・・
+glm         ・・・・點解我要殺咗佢｜・・・・　　　　唔・・空你諗多直口｜・你根本唔想去取西京｜　講・・・・咁多做咩啊｜・打啦｜・・・
+speaker     ・・・・ＢＡＡＡＡＡＡ｜・・・・ＡＡＡＡＡ・・ＡＡＡＡＡＡ｜・ＡＡＡＡＡＡＡＡＡ｜ＩＩ・・・・ＩＩＩＩＩ｜・ＩＩ｜・・・
+merged      ・・・・點解我要殺咗佢｜・・・・悟　　　　・・空你諸多藉口｜・你根本唔想去取西經｜　講・・・・咁多做咩啊｜・打啦｜・・・
+reference   ・・・・點解我要殺咗佢｜・・・・悟空　　　・・　你諸多藉口｜・你根本唔想去取西經｜唔講・・・・咁多做乜呀｜・打啦｜・・・
+
+ACOPOPB unguided pyannote block 6
+core_ms: 232560-235277
+buffered_ms: 231560-236277
+reference_ms: 232375-235500
+whisper_characters: 16
+mimo_characters: 16
+qwen_characters: 16
+sensevoice_characters: 16
+firered_characters: 17
+glm_characters: 16
+merged_characters: 17
+merged_subtitles: 2
+whisper_cer: 0.352941 (5 substitutions + 0 insertions + 1 deletions / 17 reference characters)
+mimo_cer: 0.411765 (6 substitutions + 0 insertions + 1 deletions / 17 reference characters)
+qwen_cer: 0.235294 (3 substitutions + 0 insertions + 1 deletions / 17 reference characters)
+sensevoice_cer: 0.352941 (5 substitutions + 0 insertions + 1 deletions / 17 reference characters)
+firered_cer: 0.058824 (1 substitutions + 0 insertions + 0 deletions / 17 reference characters)
+glm_cer: 0.470588 (7 substitutions + 0 insertions + 1 deletions / 17 reference characters)
+merged_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 17 reference characters)
+minimum_pause_seconds: 0.25
+pause_unit_seconds: 0.25
+reference_boundary_columns: 2
+timed_pause_columns: 7
+alignment_columns: 26
+
+Legend: 「　」=alignment gap; ・=timed pause; ｜=reference subtitle boundary; Ａ／Ｂ／…=exclusive speaker; ＊=speech without speaker; 「　」=no speech
+
+[0001-0026] 231.560-236.277s
+whisper     ・・・・保孫由金剛崩壞之身｜十個官審　都唔怕｜・・・
+mimo        ・・・・老孫有金光法圍之實｜十個姑且　都唔怕｜・・・
+qwen        ・・・・老孫有金剛破壞之身｜十個官相　都唔怕｜・・・
+sensevoice  ・・・・老孫由金剛幫壞之神｜十個官西　都唔怕｜・・・
+firered     ・・・・老孫由金剛不壞之身｜十個觀世音都唔怕｜・・・
+glm         ・・・・保證要金光不會之身｜十個關係　都唔怕｜・・・
+speaker     ・・・・ＦＦＦＦＦＦＦＦＦ｜ＦＦＦＦＦＦＦＦ｜・・・
+merged      ・・・・老孫有金剛不壞之身｜十個觀世音都唔怕｜・・・
+reference   ・・・・老孫有金剛不壞之身｜十個觀世音都唔怕｜・・・
+
+ACOPOPB unguided pyannote block 7
+core_ms: 245672-263441
+buffered_ms: 244672-264441
+reference_ms: 248208-263708
+whisper_characters: 65
+mimo_characters: 66
+qwen_characters: 65
+sensevoice_characters: 65
+firered_characters: 65
+glm_characters: 64
+merged_characters: 66
+merged_subtitles: 5
+whisper_cer: 0.073529 (2 substitutions + 0 insertions + 3 deletions / 68 reference characters)
+mimo_cer: 0.058824 (2 substitutions + 0 insertions + 2 deletions / 68 reference characters)
+qwen_cer: 0.088235 (3 substitutions + 0 insertions + 3 deletions / 68 reference characters)
+sensevoice_cer: 0.132353 (6 substitutions + 0 insertions + 3 deletions / 68 reference characters)
+firered_cer: 0.088235 (3 substitutions + 0 insertions + 3 deletions / 68 reference characters)
+glm_cer: 0.161765 (7 substitutions + 0 insertions + 4 deletions / 68 reference characters)
+merged_cer: 0.058824 (2 substitutions + 0 insertions + 2 deletions / 68 reference characters)
+minimum_pause_seconds: 0.25
+pause_unit_seconds: 0.25
+reference_boundary_columns: 7
+timed_pause_columns: 20
+alignment_columns: 95
+
+Legend: 「　」=alignment gap; ・=timed pause; ｜=reference subtitle boundary; Ａ／Ｂ／…=exclusive speaker; ＊=speech without speaker; 「　」=no speech
+
+[0001-0060] 244.672-257.208s
+whisper     ・・・・・・・・・・・今天我要替天行道｜・・・・徒弟有錯｜做師父　都有責任嘅｜求觀　音姐姐放佢　條生路啦｜・我唔消滅佢冇
+mimo        ・・・・・・・・・・・今日我要替天行道｜・・・・徒弟有錯｜做師傅　都有責任嘅｜求觀　音姐姐放佢一條生路啦｜・我唔消滅佢冇
+qwen        ・・・・・・・・・・・今日我要替天行道｜・・・・徒弟有錯｜做師傅　都有責任嘅｜求觀　音姐姐放起　條生路啦｜・我唔消滅佢冇
+sensevoice  ・・・・・・・・・・・今日我要替天行動｜・・・・徒弟有錯｜做師傅　都有責任嘅｜求觀　音姐姐放棄　條生路啦｜・我唔消滅佢冇
+firered     ・・・・・・・・・・・今日我要替天行道｜・・・・徒弟有錯｜做師傅　都有責任嘅｜求觀　音姐姐放棄　條生路啦｜・我唔消滅佢冇
+glm         ・・・・・・・・・・・今日我要替天行道｜・・・・徒弟又　｜做師傅　都有責任嘅｜求姑　娘姐姐放佢　條生路啦｜・我唔消滅佢冇
+speaker     ・・・・・・・・・・・ＡＡＡＡＡＡＡＡ｜・・・・ＣＣＣＣ｜ＣＣＣＣＣＣＣＣＣ｜ＣＣＣＣＣＣＣＣＣＣＣＣＣ｜・ＡＡＡＡＡＡ
+merged      ・・・・・・・・・・・今日我要替天行道｜・・・・徒弟有錯｜做師傅　都有責任嘅｜求觀　音姐姐放佢一條生路啦｜・我唔消滅佢冇
+reference   ・・・・・・・・・・・今日我要替天行道｜・・・・徒弟有錯｜做師父嘅都有責任嘅｜求觀世音姐姐放佢一條生路啦｜・我唔消滅佢無
+
+[0061-0095] 257.208-264.441s
+whisper     辦法同玉皇大帝交代｜・求姐姐同玉皇大帝講聲｜貧僧願意一命賠一命｜・・・
+mimo        辦法同玉皇大帝交代｜・求姐姐同玉皇大帝講聲｜貧僧願意一命賠一命｜・・・
+qwen        辦法同玉皇大帝交代｜・求姐姐同玉皇大帝講聲｜貧僧願意一命賠一命｜・・・
+sensevoice  辦法同玉皇大帝交代｜・求姐姐同玉皇弟帝講聲｜憑僧願意一命賠一命｜・・・
+firered     辦法同玉皇大帝交代｜・求姐姐同玉皇大帝講聲｜貧僧願意一命賠一命｜・・・
+glm         辦法同玉皇大帝交代｜・求姐姐同玉皇大帝講聲｜豐曾願意一命賠一命｜・・・
+speaker     ＡＡＡＡＡＡＡＡＡ｜・ＣＣＣＣＣＣＣＣＣＣ｜ＣＣＣＣＣＣＣＣＣ｜・・・
+merged      辦法同玉皇大帝交代｜・求姐姐同玉皇大帝講聲｜貧僧願意一命賠一命｜・・・
+reference   辦法同玉皇大帝交代｜・求姐姐同玉皇大帝講聲｜貧僧願意一命賠一命｜・・・
+
+ACOPOPB unguided pyannote block 8
+core_ms: 270647-271288
+buffered_ms: 269647-272288
+reference_ms: 270333-271542
+whisper_characters: 3
+mimo_characters: 3
+qwen_characters: 3
+sensevoice_characters: 3
+firered_characters: 4
+glm_characters: 3
+merged_characters: 3
+merged_subtitles: 1
+whisper_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 3 reference characters)
+mimo_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 3 reference characters)
+qwen_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 3 reference characters)
+sensevoice_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 3 reference characters)
+firered_cer: 0.333333 (0 substitutions + 1 insertions + 0 deletions / 3 reference characters)
+glm_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 3 reference characters)
+merged_cer: 0.000000 (0 substitutions + 0 insertions + 0 deletions / 3 reference characters)
+minimum_pause_seconds: 0.25
+pause_unit_seconds: 0.25
+reference_boundary_columns: 1
+timed_pause_columns: 7
+alignment_columns: 12
+
+Legend: 「　」=alignment gap; ・=timed pause; ｜=reference subtitle boundary; Ａ／Ｂ／…=exclusive speaker; ＊=speech without speaker; 「　」=no speech
+
+[0001-0012] 269.647-272.288s
+whisper     ・・・・唐三藏　｜・・・
+mimo        ・・・・唐三藏　｜・・・
+qwen        ・・・・唐三藏　｜・・・
+sensevoice  ・・・・唐三藏　｜・・・
+firered     ・・・・唐三藏藏｜・・・
+glm         ・・・・唐三藏　｜・・・
+speaker     ・・・・ＡＡＡＡ｜・・・
+merged      ・・・・唐三藏　｜・・・
+reference   ・・・・唐三　藏｜・・・
+
+ACOPOPB unguided pyannote block 9
+core_ms: 274410-278612
+buffered_ms: 273410-279612
+reference_ms: 274167-278208
+whisper_characters: 6
+mimo_characters: 6
+qwen_characters: 6
+sensevoice_characters: 6
+firered_characters: 6
+glm_characters: 14
+merged_characters: 6
+merged_subtitles: 2
+whisper_cer: 1.000000 (6 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+mimo_cer: 0.333333 (2 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+qwen_cer: 1.000000 (6 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+sensevoice_cer: 0.833333 (5 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+firered_cer: 0.333333 (2 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+glm_cer: 2.333333 (6 substitutions + 8 insertions + 0 deletions / 6 reference characters)
+merged_cer: 0.333333 (2 substitutions + 0 insertions + 0 deletions / 6 reference characters)
+minimum_pause_seconds: 0.25
+pause_unit_seconds: 0.25
+reference_boundary_columns: 1
+timed_pause_columns: 7
+alignment_columns: 22
+
+Legend: 「　」=alignment gap; ・=timed pause; ｜=reference subtitle boundary; Ａ／Ｂ／…=exclusive speaker; ＊=speech without speaker; 「　」=no speech
+
+[0001-0022] 273.410-279.612s
+whisper     ・・・・南無我　　　　　　　　未託飯｜・・・
+mimo        ・・・・南無阿　　　　　　　　彌陀佛｜・・・
+qwen        ・・・・難道我　　　　　　　　沒何妨｜・・・
+sensevoice  ・・・・南路歌　　　　　　　　味河佛｜・・・
+firered     ・・・・南無阿　　　　　　　　彌陀佛｜・・・
+glm         ・・・・L à m b ó b ó m è b ó p h á ｜・・・
+speaker     ・・・・ＣＣＣＣＣＣＣＣＣＣＣＣＣＣ｜・・・
+merged      ・・・・南無阿　　　　　　　　彌陀佛｜・・・
+reference   ・・・・喃嘸阿　　　　　　　　彌陀佛｜・・・
+
+ACOPOPB unguided pyannote block 10
+core_ms: 404364-435161
+buffered_ms: 403364-436161
+reference_ms: 406458-432542
+whisper_characters: 85
+mimo_characters: 80
+qwen_characters: 94
+sensevoice_characters: 85
+firered_characters: 88
+glm_characters: 88
+merged_characters: 95
+merged_subtitles: 13
+whisper_cer: 0.659091 (45 substitutions + 5 insertions + 8 deletions / 88 reference characters)
+mimo_cer: 0.443182 (21 substitutions + 5 insertions + 13 deletions / 88 reference characters)
+qwen_cer: 0.579545 (25 substitutions + 16 insertions + 10 deletions / 88 reference characters)
+sensevoice_cer: 0.500000 (29 substitutions + 6 insertions + 9 deletions / 88 reference characters)
+firered_cer: 0.488636 (25 substitutions + 9 insertions + 9 deletions / 88 reference characters)
+glm_cer: 0.613636 (32 substitutions + 11 insertions + 11 deletions / 88 reference characters)
+merged_cer: 0.409091 (17 substitutions + 13 insertions + 6 deletions / 88 reference characters)
+minimum_pause_seconds: 0.25
+pause_unit_seconds: 0.25
+reference_boundary_columns: 11
+timed_pause_columns: 35
+alignment_columns: 160
+
+Legend: 「　」=alignment gap; ・=timed pause; ｜=reference subtitle boundary; Ａ／Ｂ／…=exclusive speaker; ＊=speech without speaker; 「　」=no speech
+
+[0001-0060] 403.364-418.574s
+whisper     ・・・・別走　　　　　｜　　　・・　　　　屁・・・・掌舊　給他｜・・・・・・・大家聰明點｜・外面有個女人進來　｜二當家你
+mimo        ・・・・　　　　　　　｜　　　・・　　　　　・・・・掌教嘅俾我｜・・・・・・・大家聲烈啲｜・出邊有個女人入緊嚟｜二當家你
+qwen        ・・・・　哦大頭啊好獎｜我啊系・・攞啊嗰度呸・・・・獎夠嘅俾我｜・・・・・・・大家聲名啲｜・出面有個兩人　　嚟｜二當家你
+sensevoice  ・・・・會唔會　　　　｜　　走・・攞　　　　・・・・掌究佢俾佢｜・・・・・・・大家識明啲｜・出邊有個兩人　噶你｜二當家你
+firered     ・・・・　　　　　好搶｜我啊　・・　　　　　・・・・搶救　俾佢｜・・・・・・・大家聲明啲｜・準備一個女人入緊嚟｜二當家你
+glm         ・・・・　　　　　我揾｜我啊　・・　　　　賤・・・・掌舵都俾佢｜・・・・・・・大家清醒啲｜・準備一個兩人　緊你｜二當家你
+speaker     ・・・・ＨＨＨＨＨＨＨ｜ＨＪＨ・・ＪＨＪＪＪ・・・・ＨＨＨＨＨ｜・・・・・・・ＪＪＪＪＪ｜・ＪＪＪＪＪＪＪＪＪ｜ＪＪＪＪ
+merged      ・・・・唔　　　　好　｜　　走・・攞啊嗰度呸・・・・掌舵都俾佢｜・・・・・・・大家醒目啲｜・出邊有個女人入緊嚟｜二當家你
+reference   ・・・・　　　　唔好搶｜　　　・・　　　　　・・・・獎舊肉俾佢｜・・・・・・・大家醒定啲｜・出面有嗰女人入緊嚟｜二當家你
+
+[0061-0120] 418.574-428.540s
+whisper     猜會不會是官兵呢｜・怪　不得　你叫盲餅呢｜・・・・　　你看不見阿斌剛才扭一扭的屁股嗎　　｜・・・那扭得很快會不會生字瘡　
+mimo        估　佢會系官兵咩｜・怪　唔知　你叫盲炳啊｜・・・・　　你睇唔到啞巴頭先扭下扭下個囉柚　咩｜・・・咁扭　　法會唔會生痔瘡啊
+qwen        估會唔會系官兵呢｜・我係唔知　你叫盲兵啊｜・・・・　　你睇唔到啞巴頭先扭下扭　佢囉有　咩｜・・・咁扭　　快會唔會生痔瘡啊
+sensevoice  估　唔會系官兵呢｜・喂　唔知　你叫盲丙啊｜・・・・　　你睇唔到啞爸頭先扭下攞　個囉有　咩｜・・・咁扭　　快會唔會生痔瘡啊
+firered     估會唔會系官兵呢｜・我　唔知　你叫盲炳啊｜・・・・　　你睇唔到啞巴頭先扭下扭　個囉柚　咩｜・・・咁扭　　快會唔會生痔瘡啊
+glm         估　唔會係官兵咧｜・怪　唔知　你叫盲俠咧｜・・・・　　你睇唔到阿爸頭先扭下扭下個攞有　咩｜・・・咁扭　　快會唔會生自殺啊
+speaker     ＪＪＪＪＪＪＪＪ｜・ＪＪＪＪＪＪＪＪＪＪ｜・・・・　　ＪＪＪＪＪＪＪＪＪＪＪＪＪＪＪＪＪ｜・・・ＫＫＫＫＫＫＫＫＫＫＫＪ
+merged      估會唔會係官兵呢｜・怪　唔得　你叫盲炳呢｜・・・・　　你睇唔到啞巴頭先扭下扭下個囉柚　咩｜・・・咁扭得咁快會唔會生痔瘡啊
+reference   估會唔會係官兵呢｜・怪　唔知得你叫盲炳啦｜・・・・頭先你睇唔到啞仔　　　　扭吓個籮友嘅咩｜・・・咁扭　　法會唔會生痔瘡呀
+
+[0121-0160] 427.042-436.161s
+whisper     ｜・・　就算是　｜・都　是個生　字瘡的官兵｜・・怕他甚麼啊啊　　　　啊｜・・・・
+mimo        ｜・・　就算系啊｜・都　系　生　痔瘡　官兵｜・・驚佢咩　啊　　　　咩　｜・・・・
+qwen        ｜・・　就算系啊｜・　　得個生　痔瘡　官兵｜・・驚佢咩　啊　　　　咩啊｜・・・・
+sensevoice  ｜・・　就算系啊｜・都　系佢生　痔瘡　官兵｜・・驚佢咩　啊　　　　咩啊｜・・・・
+firered     ｜・・　就算系啊｜・　　得個生　痔瘡　官兵｜・・驚系咩　啊啊嗯嗯嗯嗯啊｜・・・・
+glm         ｜・・　就算系啊｜・　　得個生　自殺　官兵｜・・驚佢咩　啊M u s i c 　｜・・・・
+speaker     ｜・・ＫＪＪＪＪ｜・ＪＪＪＪＪＪＪＪＪＪＪ｜・・　ＪＪＪＪＪＪＪＪＪＪ｜・・・・
+merged      ｜・・　就算係啊｜・都係得個生　痔瘡嘅官兵｜・・驚佢咩　啊　　　　咩啊｜・・・・
+reference   ｜・・哼就算係呀｜・都係一個生咗痔瘡嘅官兵｜・・驚佢咩　　　　　　　呀｜・・・・
+
+ACOPOPB unguided pyannote block 11
+core_ms: 460440-513293
+buffered_ms: 459440-514293
+reference_ms: 459833-513042
+whisper_characters: 156
+mimo_characters: 157
+qwen_characters: 158
+sensevoice_characters: 156
+firered_characters: 155
+glm_characters: 162
+merged_characters: 157
+merged_subtitles: 19
+whisper_cer: 0.292994 (39 substitutions + 3 insertions + 4 deletions / 157 reference characters)
+mimo_cer: 0.197452 (21 substitutions + 5 insertions + 5 deletions / 157 reference characters)
+qwen_cer: 0.165605 (15 substitutions + 6 insertions + 5 deletions / 157 reference characters)
+sensevoice_cer: 0.235669 (28 substitutions + 4 insertions + 5 deletions / 157 reference characters)
+firered_cer: 0.146497 (17 substitutions + 2 insertions + 4 deletions / 157 reference characters)
+glm_cer: 0.286624 (32 substitutions + 9 insertions + 4 deletions / 157 reference characters)
+merged_cer: 0.089172 (8 substitutions + 3 insertions + 3 deletions / 157 reference characters)
+minimum_pause_seconds: 0.25
+pause_unit_seconds: 0.25
+reference_boundary_columns: 17
+timed_pause_columns: 76
+alignment_columns: 270
+
+Legend: 「　」=alignment gap; ・=timed pause; ｜=reference subtitle boundary; Ａ／Ｂ／…=exclusive speaker; ＊=speech without speaker; 「　」=no speech
+
+[0001-0060] 459.440-472.328s
+whisper     ・・・・你是什麼人｜・・・・難道各位看不出來我是一個女人嗎｜・・・・・　　　　你在這裡幹什麼　｜・・・・・・・・・世圖險
+mimo        ・・・・你係　咩人｜・・・・難道各位睇唔出　我係一個女人咩｜・・・・・哦　　　女嚟呢度做乜嘢啊｜・・・・・・・・・西途險
+qwen        ・・・・你係　咩人｜・・・・難道各位睇唔出　我係一個女人咩｜・・・・・哦嚯嚯嚯你哋呢度做乜嘢啊｜・・・・・・・・・世途險
+sensevoice  ・・・・你係　咩人｜・・・・難道各位睇唔出　我係一個女人咩｜・・・・・　　　　你哋喺度做乜嘢啊｜・・・・・・・・・　圖險
+firered     ・・・・你係　咩人｜・・・・難道各位睇唔出　我係一個女人咩｜・・・・・　　　　你嚟呢度做乜嘢啊｜・・・・・・・・・世途險
+glm         ・・・・你係　咩人｜・・・・難道各位睇唔出　我係一個女人咩｜・・・・・哦嚇　　你哋喺度做乜嘢啊｜・・・・・・・・・世途顯
+speaker     ・・・・ＬＬＬＬＬ｜・・・・ＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬ｜・・・・・ＬＬＪＪＪＪＪＪＪＪＪＬ｜・・・・・・・・・ＬＬＬ
+merged      ・・・・你係　咩人｜・・・・難道各位睇唔出　我係一個女人咩｜・・・・・哦　　　你哋喺度做乜嘢啊｜・・・・・・・・・世途險
+reference   ・・・・你係咩嘢人｜・・・・難道各位睇唔出　我係一個女人咩｜・・・・・　　　　你嚟呢度做　咩呀｜・・・・・・・・・世途險
+
+[0061-0120] 472.328-483.949s
+whisper     惡北風如都｜・一個弱質的女子想找個地方起　血腳｜洗洗身上的風塵｜你知・・・・・不知道這裡是什麼　地方　｜・・・・此處烏煙
+mimo        惡北風如刀｜・一個弱質嘅女子想揾個地方歇　歇腳｜洗洗身上嘅風塵｜你知・・・・・唔知　呢度系咩嘢　地方啊｜・・・・此處烏煙
+qwen        惡北風如刀｜・一個弱質嘅女子想搵個地方歇　歇腳｜洗洗身上嘅風塵｜你知・・・・・唔知　呢度系咩嘢　地方啊｜・・・・此處烏煙
+sensevoice  惡北風如刀｜・一個弱質嘅女子想　個地方顯　怯腳｜洗洗身上嘅風塵｜你知・・・・・唔知　呢個系咩嘢　地方啊｜・・・・此處烏煙
+firered     惡北風如刀｜・一個弱質嘅女子想揾個地方歇　歇腳｜洗洗身上嘅風塵｜你知・・・・・唔知　呢度系咩嘢　地方啊｜・・・・此處烏煙
+glm         惡步風如刀｜・一個弱質嘅女子想揾個地方赤　赤腳｜洗洗身上嘅風塵｜你知・・・・・唔知　呢度系咩嘢嘅地方啊｜・・・・此處煙霧
+speaker     ＬＬＬＬＬ｜・ＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬ｜ＬＬＬＬＬＬＬ｜ＬＬ・・・・・ＪＪＪＪＪＪＪＪＪＪＪＪ｜・・・・ＬＬＬＬ
+merged      惡北風如刀｜・一個弱質嘅女子想搵個地方歇　歇腳｜洗洗身上嘅風塵｜你知・・・・・唔知　呢度係咩嘢　地方啊｜・・・・此處烏煙
+reference   惡北風如刀｜・一個弱質　女子想搵個地方歇一歇腳｜洗洗身上嘅風塵｜你知・・・・・唔知　呢度係咩嘢　地方呀｜・・・・此處烏煙
+
+[0121-0180] 483.949-496.104s
+whisper     瘴氣各位又面目爭靈｜・・・・・・・絕　不像是一間客棧｜　　　・莫非是一間黑店｜・・・・・・・明　　知係黑店啲　夠膽入嚟｜
+mimo        瘴氣各位又面目猙獰｜・・・・・・・絕　唔似系　間客棧｜莫非系・莫非系　間黑店｜・・・・・・・明　　知系黑店你　夠膽入嚟｜
+qwen        瘴氣各位又面目猙獰｜・・・・・・・絕　唔似喺　間客棧｜　　　・莫非系一間黑店｜・・・・・・・明　　知系黑店你　夠膽入嚟｜
+sensevoice  瘴氣各位又面目猙獰｜・・・・・・・絕　唔似喺　間客棧｜　　　・莫非系一間黑店｜・・・・・・・唔系唔知系黑店啲　夠膽入嚟｜
+firered     瘴氣各位又面目猙獰｜・・・・・・・絕　唔似喺　間客棧｜　　　・莫非系一間黑店｜・・・・・・・明　　知系黑店都　夠膽入嚟｜
+glm         戰氣各位又面目憑侔｜・・・・・・・絕　唔似喺　間客户｜　　　・莫非係一間黑店｜・・・・・・・明　　知係黑店啲　舊膽入嚟｜
+speaker     ＬＬＬＬＬＬＬＬ　｜・・・・・・・Ｌ　ＬＬＬＬＬＬＬ｜ＬＬＬ・ＬＬＬＬＬＬＬ｜・・・・・・・ＪＪＪＪＪＪＪＪＪＪＪＪＪ｜
+merged      瘴氣各位又面目猙獰｜・・・・・・・絕　唔似喺一間客棧｜　　　・莫非係一間黑店｜・・・・・・・明　　知係黑店你　夠膽入嚟｜
+reference   瘴氣各位又面目猙獰｜・・・・・・・絕對唔　係一間客棧｜　　　・莫非係一間黑店｜・・・・・・・明　　知係黑店你都夠膽入嚟｜
+
+[0181-0240] 495.076-508.350s
+whisper     ・・・・你唔　怕送羊入苦口咩｜・・・・・・・・邊個係羊邊個係苦｜恐怕上是言之過早｜・・各位大爺可以係強盜｜・・・・・難道
+mimo        ・・・・你唔　怕松陽有苦口咩｜・・・・・・・・邊個系羊邊個系虎｜恐怕尚系言之過早｜・・各位大爺可以系強盜｜・・・・・唔通
+qwen        ・・・・你唔　怕送羊入虎口咩｜・・・・・・・・邊個系羊邊個系虎｜恐怕上系言之過早｜・・各位大爺可以系強盜｜・・・・・唔通
+sensevoice  ・・・・你唔可以送羊肉虎口咩｜・・・・・・・・邊個系讓邊個系苦｜恐怕上系言之過早｜・・各位大爺可以系強盜｜・・・・・唔通
+firered     ・・・・你唔　怕松羊入虎口咩｜・・・・・・・・邊個系羊邊個系虎｜恐怕上系言之過早｜・・各位大爺可以系強盜｜・・・・・唔通
+glm         ・・・・你唔　該鬆餅入苦口咩｜・・・・・・・・邊個係羊邊個係苦｜恐怕上係言辭過咗｜・・各位大佬可以係強道｜・・・・・唔通
+speaker     ・・・・ＪＪＪＪＪＪＪＪＪＬ｜・・・・・・・・ＬＬＬＬＬＬＬＬ｜ＬＬＬＬＬＬＬＬ｜・・ＬＬＬＬＬＬＬＬＬ｜・・・・・ＬＬ
+merged      ・・・・你唔　怕送羊入虎口咩｜・・・・・・・・邊個係羊邊個係虎｜恐怕尚係言之過早｜・・各位大爺可以係強盜｜・・・・・唔通
+reference   ・・・・你唔　怕送羊入虎口咩｜・・・・・・・・邊個係羊邊個係虎｜恐怕尚係言之過早｜・・各位大爺可以係強盜｜・・・・・唔通
+
+[0241-0270] 508.350-514.293s
+whisper     我不可以係咩｜・・・　　　　・・・・你到底　何方神聖｜・・・
+mimo        我唔可以系咩｜・・・　　　　・・・・你到底　何方神聖｜・・・
+qwen        我唔可以系咩｜・・・　　　　・・・・你到底　何方神聖｜・・・
+sensevoice  我唔可以系咩｜・・・　　　　・・・・你到底系何方神聖｜・・・
+firered     我唔可以系咩｜・・・　　　　・・・・你到底系何方神聖｜・・・
+glm         我唔可以係咩｜・・・W e l l ・・・・你到底屬何方神聖｜・・・
+speaker     ＬＬＬＬＬＬ｜・・・ＬＬＬＬ・・・・ＬＬＬＬＬＬＬＬ｜・・・
+merged      我唔可以係咩｜・・・　　　　・・・・你到底係何方神聖｜・・・
+reference   我唔可以係咩｜・・・　　　　・・・・你到底係何方神聖｜・・・
