@@ -245,14 +245,14 @@ class TranscribeCli(ScinoephileCliBase):
         )
         operation_group.add_argument(
             "--lead-in",
-            default=0.0,
+            default=0.25,
             dest="lead_in_seconds",
             type=float_arg(min_value=0.0),
             help="display lead-in seconds (default: %(default)s)",
         )
         operation_group.add_argument(
             "--lead-out",
-            default=0.0,
+            default=0.5,
             dest="lead_out_seconds",
             type=float_arg(min_value=0.0),
             help="display lead-out seconds (default: %(default)s)",

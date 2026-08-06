@@ -10,6 +10,8 @@ from logging import getLogger
 from pathlib import Path
 from shutil import copy2
 
+from pydub import AudioSegment
+
 from scinoephile.analysis.audit.transcription_alignment import (
     audit_transcription_alignment,
 )
@@ -30,6 +32,9 @@ from scinoephile.core.llms.metrics import (
     save_chat_completion_metrics_to_json,
 )
 from scinoephile.core.subtitles import Series
+from scinoephile.lang.transcription.multisource_alignment import (
+    CantoneseTimedTokenSimilarity,
+)
 from scinoephile.lang.transcription.pipeline import (
     TranscriptionPipeline,
     get_transcription_pipeline,
@@ -52,6 +57,7 @@ def process_transcription_pipeline(
     audio_source_path: Path | None = None,
     media_path: Path | None = None,
     stream_index: int | None = None,
+    media_start_seconds: float = 0.0,
     stop_at_idx: int | None = None,
     target_reference_subtitles: int = 100,
     additional_context: str | None = None,
@@ -75,6 +81,7 @@ def process_transcription_pipeline(
         audio_source_path: optional WAV copied into the audio directory
         media_path: optional media from which to extract audio when not staged
         stream_index: optional media audio-stream index
+        media_start_seconds: seconds trimmed from extracted media audio
         stop_at_idx: explicit exclusive VAD block index, overriding target count
         target_reference_subtitles: minimum reference subtitles covered by blocks
         additional_context: production consensus prompt context
@@ -107,6 +114,7 @@ def process_transcription_pipeline(
         audio_source_path=audio_source_path,
         media_path=media_path,
         stream_index=stream_index,
+        media_start_seconds=media_start_seconds,
     )
     provider = get_provider()
     initial_completion_count = len(provider.completion_metrics)
@@ -174,21 +182,30 @@ def _load_audio_series(
     audio_source_path: Path | None,
     media_path: Path | None,
     stream_index: int | None,
+    media_start_seconds: float,
 ) -> AudioSeries:
     """Load staged complete audio without supplying subtitle events to ASR."""
+    if media_start_seconds < 0.0:
+        raise ValueError("media_start_seconds must be non-negative.")
     staged_audio_path = audio_dir_path / "audio.wav"
     if audio_source_path is not None and not staged_audio_path.exists():
         audio_dir_path.mkdir(parents=True, exist_ok=True)
         copy2(audio_source_path, staged_audio_path)
         (audio_dir_path / "audio.srt").write_text("", encoding="utf-8")
     if staged_audio_path.exists():
-        staged = AudioSeries.load(audio_dir_path)
-        return AudioSeries(audio=staged.audio, events=[])
+        return AudioSeries(audio=AudioSegment.from_wav(staged_audio_path), events=[])
     if media_path is None:
         raise ScinoephileError(
             f"Staged audio is missing at {staged_audio_path}; provide media_path."
         )
     audio = AudioSeries.load_audio_from_media(media_path, stream_index=stream_index)
+    trim_start_ms = round(media_start_seconds * 1000)
+    if trim_start_ms >= len(audio.audio):
+        raise ScinoephileError(
+            f"Audio trim start {media_start_seconds:.3f}s is outside the media."
+        )
+    if trim_start_ms:
+        audio = AudioSeries(audio=audio.audio[trim_start_ms:], events=[])
     audio.save(audio_dir_path)
     return audio
 
@@ -251,8 +268,16 @@ def _save_evaluation(
     (output_dir_path / "metrics.json").write_text(
         json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
+    reference_similarity = None
+    if artifact.language in {Language.yue_hans, Language.yue_hant}:
+        reference_similarity = CantoneseTimedTokenSimilarity(
+            timing_weight=4.0, timing_tolerance_seconds=0.75
+        )
     (output_dir_path / "audit.md").write_text(
-        audit_transcription_alignment(artifact, reference), encoding="utf-8"
+        audit_transcription_alignment(
+            artifact, reference, reference_similarity=reference_similarity
+        ),
+        encoding="utf-8",
     )
     logger.info(
         "Aligned transcription evaluation: "

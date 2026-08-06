@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import unicodedata
 from collections import Counter
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 
 from scinoephile.analysis.character_error_rate import LineCER
 from scinoephile.analysis.multisequence_alignment import (
@@ -41,6 +41,8 @@ def audit_transcription_alignment(
     artifact: TranscriptionAlignmentArtifact,
     reference: Series | None = None,
     *,
+    reference_similarity: Callable[[TimedAlignmentToken, TimedAlignmentToken], float]
+    | None = None,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -52,6 +54,7 @@ def audit_transcription_alignment(
     Arguments:
         artifact: portable multi-source transcription alignment
         reference: optional independent reference used only for evaluation
+        reference_similarity: optional audit-only reference substitution scoring
         first_index: first one-based merged subtitle index to include
         last_index: last one-based merged subtitle index to include
         first_block: first one-based VAD block index to include
@@ -99,7 +102,9 @@ def audit_transcription_alignment(
         )
 
     lines.extend(("", "## Alignments", ""))
-    aligner = TimedMultiSequenceAligner(_get_token_similarity)
+    if reference_similarity is None:
+        reference_similarity = _get_token_similarity
+    aligner = TimedMultiSequenceAligner(reference_similarity)
     for block in blocks:
         lines.extend(
             (

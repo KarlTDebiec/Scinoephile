@@ -18,6 +18,7 @@ from scinoephile.workflows.translation import translate_series_guided
 from test.data.ocr import process_ocr
 from test.data.prompts import EngZhoYueGuidedTranslationPrompt
 from test.data.stacking import process_zho_hans_eng
+from test.data.transcription import process_transcription_pipeline
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -27,6 +28,37 @@ set_logging_verbosity(2)
 
 eng_ocr_path = output_path / "eng_ocr"
 zho_hans_ocr_path = output_path / "zho-Hans_ocr"
+yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
+yue_audio_cache_path = Path(
+    "/Volumes/Backup/Video/Cache/My Neighbor Totoro (1988)/"
+    "My Neighbor Totoro (1988) - yue.m4a"
+)
+# The remux metadata is reversed: stream 12 is the verified Cantonese program
+yue_remux_path = Path(
+    "/Volumes/Backup/Video/BD Remux/My Neighbor Totoro (1988) - [yolerejiju] "
+    "My Neighbor Totoro 1988 1080p BD REMUX FLAC 2.0 [Audio Multi] "
+    "[Sub Multi].mkv"
+)
+
+transcription_additional_context = """
+電影背景：
+《龍貓》係一九八八年宮崎駿動畫電影嘅香港粵語配音版。草壁一家搬到鄉郊，
+小月同妹妹小美喺媽媽留院養病期間遇到龍貓、煤煤蟲同貓巴士。對白以家庭日常、
+兒童說話同溫暖奇幻場面為主。請按實際粵語語音用香港繁體粵語字詞轉錄，保留
+語氣助詞、兒童口吻同角色稱呼。評估參考字幕係書面中文，雖然對應粵語音軌，
+但經常意譯或將粵語口語改寫成標準中文；唔應照抄而令轉錄普通話化。
+
+電影專有名稱及用語：
+- 小月 / 姐姐：草壁家長女，英文名 Satsuki。
+- 小美 / 妹妹：草壁家幼女，英文名 Mei。
+- 草壁：一家人嘅姓氏。
+- 勘太：鄰居男孩。
+- 婆婆：照顧兩姊妹嘅鄰居長輩。
+- 龍貓：森林入面嘅神秘生物；按實際對白保留「龍貓」。
+- 貓巴士：貓形巴士。
+- 煤煤蟲 / 煤屎：屋入面嘅黑色小精靈；按實際粵語講法轉錄。
+- 樟樹、橡果子 / 種子、粟米：故事中反覆出現嘅事物。
+"""
 
 additional_context = """
 Movie context:
@@ -53,10 +85,11 @@ Movie-specific names and terminology:
 """
 
 actions = {
-    "eng_ocr",
-    "zho-Hans_ocr",
-    "zho-Hant_ocr",
-    "zho-Hans_eng",
+    # "eng_ocr",
+    # "zho-Hans_ocr",
+    # "zho-Hant_ocr",
+    # "zho-Hans_eng",
+    "yue-Hant_transcribe"
     # "yue_eng",
     # "yue_zho-Hans_eng",
 }
@@ -71,6 +104,26 @@ if "zho-Hans_eng" in actions:
     zho_hans_path = zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
     eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
     process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
+if "yue-Hant_transcribe" in actions:
+    media_path = yue_audio_cache_path
+    media_start_seconds = 0.0
+    stream_index = 0
+    if not media_path.exists():
+        media_path = yue_remux_path
+        media_start_seconds = 1.0
+        stream_index = 12
+    process_transcription_pipeline(
+        title_root,
+        reference_path=input_path / "yue_zho-Hant.srt",
+        language=Language.yue_hant,
+        output_dir_path=yue_hant_transcribe_path,
+        audio_dir_path=yue_hant_transcribe_path / "audio",
+        media_path=media_path,
+        stream_index=stream_index,
+        media_start_seconds=media_start_seconds,
+        additional_context=transcription_additional_context,
+        overwrite=True,
+    )
 if "yue_eng" in actions:
     yue_zho_hant = Series.load(input_path / "yue_zho-Hant.srt")
     jpn_eng = Series.load(input_path / "jpn_eng.srt")

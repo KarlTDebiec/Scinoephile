@@ -37,9 +37,9 @@ class SubtitleTimingSettings(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    lead_in_seconds: float = Field(default=0.0, ge=0.0)
+    lead_in_seconds: float = Field(default=0.25, ge=0.0)
     """Preferred display time before CTC-estimated speech begins."""
-    lead_out_seconds: float = Field(default=0.0, ge=0.0)
+    lead_out_seconds: float = Field(default=0.5, ge=0.0)
     """Preferred display time after CTC-estimated speech ends."""
     minimum_duration_seconds: float = Field(default=0.75, gt=0.0)
     """Preferred minimum subtitle display duration."""

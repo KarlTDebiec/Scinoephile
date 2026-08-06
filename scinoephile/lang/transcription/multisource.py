@@ -21,6 +21,7 @@ from scinoephile.audio.transcription import (
     CtcAligner,
     TranscribedSegment,
     Transcriber,
+    TranscriptionAlignmentError,
     TranscriptionEmptyError,
     TranscriptionError,
     VoiceActivityTrace,
@@ -298,12 +299,52 @@ class MultiSourceTranscriber:
                 )
                 continue
             start_seconds, end_seconds = request_interval
-            span_audio = audio[round(start_seconds * 1000) : round(end_seconds * 1000)]
-            aligned = self.ctc_aligner(span_audio, request_answer.transcript)
-            if not aligned:
-                raise TranscriptionEmptyError(
-                    "CTC alignment produced no timed consensus text."
+            if output_segments:
+                start_seconds = max(start_seconds, output_segments[-1].end)
+                if end_seconds <= start_seconds:
+                    end_seconds = duration_seconds
+            if end_seconds <= start_seconds:
+                logger.warning(
+                    f"Skipping aligned merge request {request_idx} because no "
+                    "chronologically usable block audio remains."
                 )
+                continue
+            span_audio = audio[round(start_seconds * 1000) : round(end_seconds * 1000)]
+            try:
+                aligned = self.ctc_aligner(span_audio, request_answer.transcript)
+            except TranscriptionAlignmentError as exc:
+                retry_start_seconds = (
+                    output_segments[-1].end if output_segments else 0.0
+                )
+                if retry_start_seconds >= duration_seconds:
+                    logger.warning(
+                        f"Skipping aligned merge request {request_idx} because "
+                        f"CTC timing failed and no unconsumed block audio remains: "
+                        f"{exc}"
+                    )
+                    continue
+                logger.warning(
+                    f"CTC timing failed within aligned merge request "
+                    f"{request_idx}'s evidence interval; retrying against the "
+                    f"unconsumed block audio: {exc}"
+                )
+                retry_audio = audio[round(retry_start_seconds * 1000) :]
+                try:
+                    aligned = self.ctc_aligner(retry_audio, request_answer.transcript)
+                except TranscriptionAlignmentError as retry_exc:
+                    logger.warning(
+                        f"Skipping aligned merge request {request_idx} because "
+                        f"CTC timing also failed across the unconsumed block audio: "
+                        f"{retry_exc}"
+                    )
+                    continue
+                start_seconds = retry_start_seconds
+            if not aligned:
+                logger.warning(
+                    f"Skipping aligned merge request {request_idx} because CTC "
+                    "alignment produced no timed consensus text."
+                )
+                continue
             aligned_segment = get_segment_merged(aligned)
             request_segments = self._split_aligned_segment(
                 aligned_segment, request_answer

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from pydub import AudioSegment
 from pytest import raises
@@ -26,6 +26,7 @@ from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.pipeline import TranscriptionPipeline
 from test.data.transcription import (
     _get_stop_at_idx_for_reference_count,
+    _load_audio_series,
     _save_evaluation,
 )
 
@@ -61,6 +62,34 @@ def test_reference_count_selects_smallest_vad_block_prefix():
     assert _get_stop_at_idx_for_reference_count(pipeline, audio, reference, 3) == 2
     with raises(ScinoephileError, match="covers only 3"):
         _get_stop_at_idx_for_reference_count(pipeline, audio, reference, 4)
+
+
+def test_media_audio_trim_is_applied_before_staging(tmp_path: Path):
+    """Media extraction should apply title-specific leading trim before staging."""
+    extracted = AudioSeries(
+        audio=AudioSegment.silent(duration=5_000, frame_rate=16_000), events=[]
+    )
+    with patch.object(
+        AudioSeries, "load_audio_from_media", return_value=extracted
+    ) as load_audio:
+        audio = _load_audio_series(
+            tmp_path / "audio",
+            audio_source_path=None,
+            media_path=tmp_path / "source.mkv",
+            stream_index=12,
+            media_start_seconds=1.0,
+        )
+        reloaded = _load_audio_series(
+            tmp_path / "audio",
+            audio_source_path=None,
+            media_path=tmp_path / "source.mkv",
+            stream_index=12,
+            media_start_seconds=1.0,
+        )
+
+    assert len(audio.audio) == 4_000
+    assert len(reloaded.audio) == 4_000
+    load_audio.assert_called_once()
 
 
 def test_evaluation_writes_standardized_metrics_and_audit(tmp_path: Path):

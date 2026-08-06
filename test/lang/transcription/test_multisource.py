@@ -7,7 +7,7 @@ from __future__ import annotations
 from unittest.mock import Mock
 
 from pydub import AudioSegment
-from pytest import raises
+from pytest import approx, raises
 
 from scinoephile.analysis.multisequence_alignment import (
     TimedAlignmentColumn,
@@ -19,6 +19,7 @@ from scinoephile.audio.transcription import (
     TranscribedSegment,
     TranscribedWord,
     Transcriber,
+    TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,
     TranscriptionInferenceError,
 )
@@ -210,6 +211,69 @@ def test_request_interval_falls_back_to_in_audio_lexical_timing():
     )
 
     assert interval == (0.35, 1.0)
+
+
+def test_timing_retries_incomplete_request_against_unconsumed_block():
+    """A short request window should be retried after prior merged output."""
+    audio = AudioSegment.silent(duration=3_000)
+    first_answer = _get_answer("甲。")
+    second_answer = _get_answer("乙。")
+    third_answer = _get_answer("丙。")
+    answer = _get_answer("甲。", "乙。", "丙。")
+    merger = Mock(spec=AlignedTranscriptionMergeProcessor)
+    merger.last_request_spans = ((0, 1), (2, 3), (4, 5))
+    merger.last_request_answers = (first_answer, second_answer, third_answer)
+    ctc_aligner = Mock(
+        spec=CtcAligner,
+        side_effect=[
+            [_get_segment("甲。", 0.1, 0.4)],
+            TranscriptionAlignmentIncompleteError(
+                "CTC alignment did not reach all tokens."
+            ),
+            [_get_segment("乙。", 1.4, 2.0)],
+            [_get_segment("丙。", 0.1, 0.3)],
+        ],
+    )
+    transcriber = _get_transcriber(merger=merger, ctc_aligner=ctc_aligner)
+    alignment = TimedMultiSequenceAlignment(
+        source_names=("whisper", "mimo"),
+        columns=(
+            TimedAlignmentColumn(
+                (
+                    TimedAlignmentToken("甲", 0.1, 0.4),
+                    TimedAlignmentToken("甲", 0.1, 0.4),
+                )
+            ),
+            TimedAlignmentColumn((None, None), pause_interval_seconds=(0.5, 1.5)),
+            TimedAlignmentColumn(
+                (
+                    TimedAlignmentToken("乙", 1.8, 2.4),
+                    TimedAlignmentToken("乙", 1.8, 2.4),
+                )
+            ),
+            TimedAlignmentColumn((None, None), pause_interval_seconds=(2.0, 2.1)),
+            TimedAlignmentColumn(
+                (
+                    TimedAlignmentToken("丙", 2.5, 2.8),
+                    TimedAlignmentToken("丙", 2.5, 2.8),
+                )
+            ),
+        ),
+    )
+
+    output = transcriber._get_timed_answer_segments(  # noqa: SLF001
+        audio, alignment, answer
+    )
+
+    assert [segment.text for segment in output] == ["甲。", "乙。", "丙。"]
+    assert [segment.start for segment in output] == approx([0.1, 1.8, 2.5])
+    assert [segment.end for segment in output] == approx([0.4, 2.4, 2.7])
+    assert [len(call.args[0]) for call in ctc_aligner.call_args_list] == [
+        500,
+        500,
+        2_600,
+        600,
+    ]
 
 
 def test_call_runs_sources_and_merges_successful_outputs():

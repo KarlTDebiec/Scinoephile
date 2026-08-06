@@ -19,7 +19,11 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
     int_arg,
 )
+from scinoephile.core import Language
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.lang.transcription.multisource_alignment import (
+    CantoneseTimedTokenSimilarity,
+)
 
 from .audit_cli_base import AuditCliBase
 
@@ -138,10 +142,16 @@ class AuditTranscriptionAlignmentCli(AuditCliBase):
         reference = None
         if reference_path is not None:
             reference = read_series(parser, reference_path)
+        reference_similarity = None
+        if artifact.language in {Language.yue_hans, Language.yue_hant}:
+            reference_similarity = CantoneseTimedTokenSimilarity(
+                timing_weight=4.0, timing_tolerance_seconds=0.75
+            )
         try:
             report = audit_transcription_alignment(
                 artifact,
                 reference,
+                reference_similarity=reference_similarity,
                 first_index=first_index,
                 last_index=last_index,
                 first_block=first_block,

@@ -1,0 +1,3533 @@
+[
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　歩　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "阿部　　　　　　　　　　子阿部子　"
+        },
+        {
+          "name": "qwen",
+          "text": "　啊　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　歩　　　　　　　　　　　　　　こ"
+        },
+        {
+          "name": "firered",
+          "text": "idogoidogowhatdo　"
+        },
+        {
+          "name": "glm",
+          "text": "ある　　　　　　　　　　　　　　こ"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ　"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "啊"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　　　　行　歩　　　　　　　　　行　　　　　　・・　　　我好健　　　　　　康歩行　　　　　　　　愛歩　　　慢慢　　　　　　　　　　　　　走坡道洞　窟　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　草原　一歩走　"
+        },
+        {
+          "name": "mimo",
+          "text": "　　　私は元気阿部子の大好きどんどん行こうさすが道・・　　　　　　　　　　　　　　　　　　　　　　　とねる草穴一本　　　　　　　　　　足で背　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "qwen",
+          "text": "　　　　　　狗　啊　　　　　　　　　狗　　　　　　・・　　　我係健　　　　　　記啊狗　　　　　　　　我最　　　喜動　　　　　　　　　　動有狗走過路碰著不　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　散巴拉一本巴　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "歩　こ私は元気　歩くの大好きどんどん行こうさ　　道・・飛んネる草ら　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　一本走に"
+        },
+        {
+          "name": "firered",
+          "text": "　　　　　　　　　　　　　　　　　　　　　　　　　・・esshewhatcantkeepidontknowthatistokeepdontdontyougosakamichikonalukusaaparayibongbashitise　　　　　　　"
+        },
+        {
+          "name": "glm",
+          "text": "あるこ私は元気　あるこ大好きとんとう　ごう山　　道・・電車の木下坂　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　日本橋に"
+        }
+      ],
+      "speaker": "　　ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＡＡＡＡＡＡＡＡＡＡ　　　ＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＢＢＢＢＢＢＢＢＢＢＢＢＢＡＡＡＢＢＢ　"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "行吓，行吓，我好健康。"
+        },
+        {
+          "index": 2,
+          "text": "行路我最鍾意，快啲行。"
+        },
+        {
+          "index": 3,
+          "text": "山路、隧道、草原。"
+        },
+        {
+          "index": 4,
+          "text": "一條獨木橋，凹凸石路。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　　　　　　　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "　こぼこじゃりび　　　　"
+        },
+        {
+          "name": "qwen",
+          "text": "　　　　　　　　　　　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "でこぼ　　　　　紅茶　　"
+        },
+        {
+          "name": "firered",
+          "text": "　　　　　　　　　　　　"
+        },
+        {
+          "name": "glm",
+          "text": "세계를　　　　　쓰고쓰자"
+        }
+      ],
+      "speaker": "　ＢＢＡＡＡＢＢＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "嗰個？"
+        },
+        {
+          "index": 2,
+          "text": "唔係呀。"
+        },
+        {
+          "index": 3,
+          "text": "係龍貓嚟㗎！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　"
+        },
+        {
+          "name": "mimo",
+          "text": "　"
+        },
+        {
+          "name": "qwen",
+          "text": "　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　"
+        },
+        {
+          "name": "firered",
+          "text": "　"
+        },
+        {
+          "name": "glm",
+          "text": "리"
+        }
+      ],
+      "speaker": "Ｂ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "嚟。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　"
+        },
+        {
+          "name": "mimo",
+          "text": "　　"
+        },
+        {
+          "name": "qwen",
+          "text": "　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　で"
+        },
+        {
+          "name": "firered",
+          "text": "　　"
+        },
+        {
+          "name": "glm",
+          "text": "미　"
+        }
+      ],
+      "speaker": "ＡＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "咪？"
+        },
+        {
+          "index": 2,
+          "text": "啲？"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　　　絲・・綱　　木砂路　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "　　　　　　・・　　　　　米　　　　　　　　　　　　　　　　　　　　　　　　　　奇"
+        },
+        {
+          "name": "qwen",
+          "text": "　　　　　士・・呢一個木頭調　　　　　　　　　　　　　　　　　　　　　　　　　　離"
+        },
+        {
+          "name": "sensevoice",
+          "text": "道雲없이く　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　く"
+        },
+        {
+          "name": "firered",
+          "text": "　　　　　k・・omokotadi籍咕嚕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕"
+        },
+        {
+          "name": "glm",
+          "text": "　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ　ＢＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "係……"
+        },
+        {
+          "index": 2,
+          "text": "呢一個木頭造嘅。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　雲下　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "咕嚕咕嚕咕　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "qwen",
+          "text": "別雲朵酥脆　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "って下り道　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "firered",
+          "text": "咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕"
+        },
+        {
+          "name": "glm",
+          "text": "　　　　　　　　　　　　　　　　　　　　　　"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕"
+        },
+        {
+          "index": 2,
+          "text": "咕嚕咕嚕咕嚕"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "下　　路　　　　　　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "咕得古達　　　　　　　　　　　　　　　　　　　　　　　利"
+        },
+        {
+          "name": "qwen",
+          "text": "孤　　單　　　　　　　　　　　　　　　　　　　　　　　離"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "firered",
+          "text": "咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕"
+        },
+        {
+          "name": "glm",
+          "text": "　　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ　　　　　　　　　ＡＡＡＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "嗰度咁大。"
+        },
+        {
+          "index": 2,
+          "text": "嚟。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　　　　　　　　　　　　　　・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "米奇　　　　　　　　　　　　　　・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "　別　　　　　　　　　　　　　　・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　　　　　　　　　　　　　　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕咕嚕・・・"
+        },
+        {
+          "name": "glm",
+          "text": "　　　　　　　　　　　　　　　　・・・"
+        }
+      ],
+      "speaker": "ＡＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "米奇"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "　　　"
+        },
+        {
+          "name": "qwen",
+          "text": "　　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　歩こ"
+        },
+        {
+          "name": "firered",
+          "text": "i　　"
+        },
+        {
+          "name": "glm",
+          "text": "あるこ"
+        }
+      ],
+      "speaker": "　　　"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "行喇！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "歩行歩行我好健康歩行　　　　　　　　　　大好　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　趕快走狗　　　　　　　　　　狗　　　　出來吧　　　　　　　　探險試　　　　　　　　用林　　　　　野到　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "阿部子阿部子　　　　　私を元気阿部子の　大好き　　　ど　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　んどん　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　行こう　傷も・・病も全部お願い感謝　　　しようはやしの熊嬉し　　"
+        },
+        {
+          "name": "qwen",
+          "text": "啊狗啊狗我係健記啊狗都　　　　　　　　　大好き　　　ど　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　んどん遛狗皮　　　　　　膚也大氣　　　　也別帶　　　　　　我嚟探險士哦　　　　　　黑沙的　　　　　奧特曼　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　歩子　　　　　　　　私は元気　歩くの　大好き　　とど　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　行こうキスも・・歌も出てお　い　　でた　しを林　　　の　　　く前"
+        },
+        {
+          "name": "firered",
+          "text": "　　　　　　　　　　　　　　　　dogoidogowhatdoesshewhatcantkeepidodoknowthatisthekeydontdontyougoitsthenemotimetokeepmovingthentheresall　　　　　　・・　　　　　　　　　　　　　　　　　　　　to　　"
+        },
+        {
+          "name": "glm",
+          "text": "あるこ　　　　　　　　私は元気あるこのお大好きとっとと　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　行こう　昔も・・今も出てお　い　　でたけしよう　　村の　　　奧深"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＡ　ＡＡＡＡＡＡＡＢＢＢＢＢＢ・・　ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＡＡＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "行喇行喇，我好健康。"
+        },
+        {
+          "index": 2,
+          "text": "行路我最愛，快啲快啲行。"
+        },
+        {
+          "index": 3,
+          "text": "我哋探險去囉！"
+        },
+        {
+          "index": 4,
+          "text": "斜路、隧道、草地，"
+        },
+        {
+          "index": 5,
+          "text": "一條橋仔，凹凸石路，"
+        },
+        {
+          "index": 6,
+          "text": "穿過蜘蛛網，落斜路。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　　　　　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "いな友達　がさ　嬉　　　　　　　　　　　　　し　　"
+        },
+        {
+          "name": "qwen",
+          "text": "　　去滿　　　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　友達たくさ　嬉　　　　　　　　　　　　　しいい"
+        },
+        {
+          "name": "firered",
+          "text": "morrowwontyoudancewithmet"
+        },
+        {
+          "name": "glm",
+          "text": "い　友達たくさん喜　　　　　　　　　　　　　し　い"
+        }
+      ],
+      "speaker": "ＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有咁多朋友，真係開心呀！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　友人多開心　　　　　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "qwen",
+          "text": "地友達滿地　　　　　　　　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "な友達ちたくさ　　　　　　　"
+        },
+        {
+          "name": "firered",
+          "text": "omorrowwontyou"
+        },
+        {
+          "name": "glm",
+          "text": "今友達　たくさ　　　　　　　"
+        }
+      ],
+      "speaker": "　ＢＢＢＢＢＢＢＢＢＢＢＢＡ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "地下有好多煤煤蟲呀！"
+        },
+        {
+          "index": 2,
+          "text": "吓？"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　　　　　　・　　　　　　　　　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "　　　　　　　　・　　　　　　　　　　　　"
+        },
+        {
+          "name": "qwen",
+          "text": "　　　　　　　歡・喜滿地　　　　　　　　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　　　　　　・嬉しい　　　　　　　　　"
+        },
+        {
+          "name": "firered",
+          "text": "dancewit・hmetomorroww"
+        },
+        {
+          "name": "glm",
+          "text": "　　　　　　　ん・喜しい　　　　　　　　　"
+        }
+      ],
+      "speaker": "ＡＡＡＡＡＡＡＡ・Ａ　　　　　　　　　　　"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "歡"
+        },
+        {
+          "index": 2,
+          "text": "喜滿地"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　　　　　　　　友人多開"
+        },
+        {
+          "name": "mimo",
+          "text": "　　　　　　　　　　い　　　"
+        },
+        {
+          "name": "qwen",
+          "text": "　　　　　　　　　　友達　滿"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　　　　　　　　い　　　"
+        },
+        {
+          "name": "firered",
+          "text": "ontyoudancewit"
+        },
+        {
+          "name": "glm",
+          "text": "　　　　　　　　　　　　　　"
+        }
+      ],
+      "speaker": "　　　ＡＡＡＡＡＡＡＡＡＡＡ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有咁多喎！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "心　　・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "　　な・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "地歡喜・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　な・・・"
+        },
+        {
+          "name": "firered",
+          "text": "hme・・・"
+        },
+        {
+          "name": "glm",
+          "text": "　　今・・・"
+        }
+      ],
+      "speaker": "ＡＡＡ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "咁歡喜。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "姐姐呀姐姐點解咁耐都仲未到嘅・你唔好噉啦食完粒糖呢就到㗎喇・・・點解"
+        },
+        {
+          "name": "mimo",
+          "text": "姐姐啊姐姐點解咁耐都仲未到嘅・你唔好咁啦食完粒糖咧就到噶啦・・・　　"
+        },
+        {
+          "name": "qwen",
+          "text": "姐姐啊姐姐點解咁耐都仲未到嘅・你唔好咁啦食完粒糖咧就到噶啦・・・就食"
+        },
+        {
+          "name": "sensevoice",
+          "text": "姐姐啊姐姐點解咁耐都仲未到噶・你唔好咁啦食完粒糖啦就到噶啦・・・　　"
+        },
+        {
+          "name": "firered",
+          "text": "姐姐啊姐姐點解咁耐都仲未到嘅・你唔好咁啦食完粒糖咧就到噶啦・・・　　"
+        },
+        {
+          "name": "glm",
+          "text": "姐姐啊姐姐點解咁耐都仲未到㗎・你唔好咁啦食完粒糖咧就到㗎啦・・・　　"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・　　"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "姐姐啊姐姐，點解咁耐都仲未到嘅？"
+        },
+        {
+          "index": 2,
+          "text": "你唔好咁啦，食完粒糖呢就到㗎啦。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "爸爸何　時才・・到吃完　這粒糖之後　・轉完這個彎之後呢・・　就會到的了・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "爸B啊幾時先・・到噶食埋呢粒糖之後啦・轉埋呢個彎之後咧・・　就會到噶啦・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "爸啲啊幾時先・・到噶食埋呢粒糖之後啦・轉埋呢個彎之後咧・・　就會到噶啦・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "大啲啊幾時先・・到噶食埋呢粒蚌之後啦・轉埋呢個彎之後呢・・　就會到噶啦・・・"
+        },
+        {
+          "name": "firered",
+          "text": "爸啲啊幾時先・・到噶食埋呢粒糖之後啦・轉埋呢個彎之後咧・・誒就會到噶啦・・・"
+        },
+        {
+          "name": "glm",
+          "text": "爸爸啊幾時見・・到噶食埋呢粒糖之後啦・轉埋呢個彎之後咧・・誒就會到噶啦・・・"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢ・・ＣＣＣＣＣＣＣＣＣＣ・ＣＣＣＣＣＣＣＣ・・ＣＣＣＣＣＣ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸啊，幾時先……"
+        },
+        {
+          "index": 2,
+          "text": "到㗎？"
+        },
+        {
+          "index": 3,
+          "text": "食埋呢粒糖之後啦。"
+        },
+        {
+          "index": 4,
+          "text": "轉埋呢個彎之後咧。"
+        },
+        {
+          "index": 5,
+          "text": "就會到㗎啦。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "屎空氣咁清晨監　視媽咪養病嘅・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "　小葵咁識得家　姐媽咪養大嘅・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "你好系咁清心今日　冇咩人帶嘅・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "只好企咁清晒三　晒媽咪養大嘅・・・"
+        },
+        {
+          "name": "firered",
+          "text": "啲空氣咁清新啱　晒媽咪養病噶・・・"
+        },
+        {
+          "name": "glm",
+          "text": "你好系咁清曉今日系媽咪餵飽嘅・・・"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "啲空氣咁清新，啱"
+        },
+        {
+          "index": 2,
+          "text": "晒媽咪養病㗎。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "那"
+        },
+        {
+          "name": "mimo",
+          "text": "誒"
+        },
+        {
+          "name": "qwen",
+          "text": "誒"
+        },
+        {
+          "name": "sensevoice",
+          "text": "誒"
+        },
+        {
+          "name": "firered",
+          "text": "誒"
+        },
+        {
+          "name": "glm",
+          "text": "誒"
+        }
+      ],
+      "speaker": "　"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "誒。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　個是誰　呢・・是尤親叔叔當・然很　快就到了　"
+        },
+        {
+          "name": "mimo",
+          "text": "嗰個系邊個咧・・系郵差叔叔啊・佢　好快就到噶啦"
+        },
+        {
+          "name": "qwen",
+          "text": "嗰個系邊個咧・・系油餐叔叔啊・梗繫好快就到噶啦"
+        },
+        {
+          "name": "sensevoice",
+          "text": "嗰　系邊個呢・・系油餐叔叔啊・梗繫好快就到噶啦"
+        },
+        {
+          "name": "firered",
+          "text": "　個系邊個咧・・系郵差叔叔啊・梗繫好快就到噶啦"
+        },
+        {
+          "name": "glm",
+          "text": "嗰個　邊個咧・・系油茶叔叔啊・梗繫好快就到噶啦"
+        }
+      ],
+      "speaker": "ＤＤＤＤＤＤ・・ＤＤＤＤＤＤ・ＤＤＤＤＤＤＤＤ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "嗰個係邊個咧？"
+        },
+        {
+          "index": 2,
+          "text": "係郵差叔叔啊。"
+        },
+        {
+          "index": 3,
+          "text": "梗係好快就到㗎啦。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "尤親叔叔你好嗎你・・好我"
+        },
+        {
+          "name": "mimo",
+          "text": "郵差叔叔你好嘛誒・・　我"
+        },
+        {
+          "name": "qwen",
+          "text": "油餐叔叔你好嗎誒・・　我"
+        },
+        {
+          "name": "sensevoice",
+          "text": "油餐叔叔你好嗎啊・・　我"
+        },
+        {
+          "name": "firered",
+          "text": "郵差叔叔你好嗎唉・・　我"
+        },
+        {
+          "name": "glm",
+          "text": "油茶叔叔你好嘛　・・　我"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢ・・ＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "郵差叔叔，你好嗎呀？"
+        },
+        {
+          "index": 2,
+          "text": "我"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "是大卷草子吃　多多子狗・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "係大軟兔子啊請多多指教・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "係大卷手指啊請多多指教・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "係大卷兔子啊等多得屎噶・・・"
+        },
+        {
+          "name": "firered",
+          "text": "係大卷兔子啊請多多指教・・・"
+        },
+        {
+          "name": "glm",
+          "text": "係大隻叔叔啊請多多指教・・・"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢＢＢ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "係大龍貓呀，請多多指教。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "係小朋友你好嘛你屋企人喺　咩度・・啊係對面做緊嘢・・・我唔虧晒你喎"
+        },
+        {
+          "name": "mimo",
+          "text": "誒小朋友你好嘛你屋企人喺唔喺度・・啊喺對面做緊嘢・・・好唔該晒你　"
+        },
+        {
+          "name": "qwen",
+          "text": "誒小朋友你好嘛你屋企人喺　咪度・・啊誒對面做緊嘢・・・我唔該晒你喎"
+        },
+        {
+          "name": "sensevoice",
+          "text": "誒小朋友你好嗎你屋企人喺　咩度・・啊哎對明族緊嘢・・・我唔該晒你　"
+        },
+        {
+          "name": "firered",
+          "text": "誒小朋友你好嘛你屋企人喺　邊度・・啊喺對面做緊嘢・・・好唔該晒你　"
+        },
+        {
+          "name": "glm",
+          "text": "喂小明有你好嗎你屋企人喺　咩度・・啊喂對面做緊嘢・・・我唔該曬你喎"
+        }
+      ],
+      "speaker": "ＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣ・・ＥＥＥＥＥＥＥ・・・ＥＥＥＥＥＥ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂，小朋友，你好嘛？"
+        },
+        {
+          "index": 2,
+          "text": "你屋企人喺咩度？"
+        },
+        {
+          "index": 3,
+          "text": "啊，喺對面做緊嘢。"
+        },
+        {
+          "index": 4,
+          "text": "好，唔該晒你喎。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "喂咁多位你哋好嘛・我係啱啱搬嚟嘅大卷啊・・・請多多指教・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "喂咁多位你哋好嘛・我係啱啱搬嚟嘅大卷啊・・・請多多指教・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "喂咁多位你哋好嘛・我係啱啱搬嚟嘅大卷啊・・・請多多指教・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "喂咁多位你哋好嗎・我係啱啱搬嚟嘅大卷啊・・・請多多指教・・・"
+        },
+        {
+          "name": "firered",
+          "text": "喂咁多位你哋好嘛・我係啱啱搬嚟嘅大卷啊・・・請多多指教・・・"
+        },
+        {
+          "name": "glm",
+          "text": "喂咁多位你哋好嗎・我係啱啱搬嚟嘅大卷啊・・・請多多指教・・・"
+        }
+      ],
+      "speaker": "ＥＥＥＥＥＥＥＥ・ＥＥＥＥＥＥＥＥＥＥ・・・ＥＥＥＥＥ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂，咁多位你哋好嘛？"
+        },
+        {
+          "index": 2,
+          "text": "我係啱啱搬嚟嘅大卷啊。"
+        },
+        {
+          "index": 3,
+          "text": "請多多指教。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "唔怕走佢唔好聲　　・・・　　　咩欸唔該晒你喎・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "誒　　　　　　　　・・・　　　　　唔該晒你喎・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "　　我爸　　　　走・・・去唔做咩哎唔該晒你　・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　酒誒　　　　　・・・　　　　　唔該晒你　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "抓着我了怎麼都分呢・・・　　　　哎唔該晒你　・・・"
+        },
+        {
+          "name": "glm",
+          "text": "　　　　　　　　　・・・　　　　喂唔該曬你喎・・・"
+        }
+      ],
+      "speaker": "ＥＥＥＥＥＥＥＥＥ・・・ＦＥＥ　ＦＥＥＥＥＥ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "捉住我啦，唔好走呀！"
+        },
+        {
+          "index": 2,
+          "text": "喂。"
+        },
+        {
+          "index": 3,
+          "text": "唔該晒你喎。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "我哋終於到啦嘩好"
+        },
+        {
+          "name": "mimo",
+          "text": "我哋終於到啦　好"
+        },
+        {
+          "name": "qwen",
+          "text": "我哋終於到啦　好"
+        },
+        {
+          "name": "sensevoice",
+          "text": "我哋終於到啦　好"
+        },
+        {
+          "name": "firered",
+          "text": "我哋終於到啦　　"
+        },
+        {
+          "name": "glm",
+          "text": "我哋終於到啦　　"
+        }
+      ],
+      "speaker": "ＣＣＣＣＣＣＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我哋終於到啦！"
+        },
+        {
+          "index": 2,
+          "text": "好。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "嘢等埋喇・・・唔好咁心急呀"
+        },
+        {
+          "name": "mimo",
+          "text": "嘢　好嘢・・・唔好咁心急啊"
+        },
+        {
+          "name": "qwen",
+          "text": "呀等埋呀・・・唔好咁心急啊"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　得系啊・・・唔好咁心急啊"
+        },
+        {
+          "name": "firered",
+          "text": "　　　　・・・唔好咁心急啊"
+        },
+        {
+          "name": "glm",
+          "text": "　　　　・・・　冇咁心急啊"
+        }
+      ],
+      "speaker": "ＢＢＢＢ・・・ＣＣＣＣＣＣ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂，等埋呀。"
+        },
+        {
+          "index": 2,
+          "text": "唔好咁心急呀。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "你睇下　河好靚呀係咩"
+        },
+        {
+          "name": "mimo",
+          "text": "你睇下啲海好靚啊系咩"
+        },
+        {
+          "name": "qwen",
+          "text": "你睇　　住好靚啊系咩"
+        },
+        {
+          "name": "sensevoice",
+          "text": "你睇　　住好靚啊系咩"
+        },
+        {
+          "name": "firered",
+          "text": "你睇　　見好靚啊系咩"
+        },
+        {
+          "name": "glm",
+          "text": "你睇　見佢好靚啊系咩"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你睇吓，呢度好靚呀，係咪？"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "你見唔見到有魚呀・・冇㗎你個緊字眼呀因住戴眼鏡呀"
+        },
+        {
+          "name": "mimo",
+          "text": "你見唔見到有魚啊・・冇噶你　一陣先啊戴住副眼鏡啊"
+        },
+        {
+          "name": "qwen",
+          "text": "你見唔見到有魚啊・・冇嘅你個近視眼咧因住戴眼鏡啊"
+        },
+        {
+          "name": "sensevoice",
+          "text": "你見唔見得有雨啊・・冇噶你嗰　陣眼都　住戴眼鏡啊"
+        },
+        {
+          "name": "firered",
+          "text": "你見唔見得有魚啊・・冇噶你個近視眼都一住戴眼鏡啊"
+        },
+        {
+          "name": "glm",
+          "text": "你見唔見到有魚啊・・冇嘅你個緊視眼咧一直戴眼鏡啊"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你見唔見到有魚呀？"
+        },
+        {
+          "index": 2,
+          "text": "冇㗎，你個近視眼，"
+        },
+        {
+          "index": 3,
+          "text": "梗係要戴住副眼鏡呀！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "小心唔好跌落河呀・嗯・・・　去睇下　屋靚唔靚囉嗯・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "小心唔好跌落河啊・嗯・・・啊去睇下間屋靚唔靚咯啊・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "小心唔好跌落河啊・嗯・・・啊去睇下　我靚唔靚咯　・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "小心唔好跌落河啊・嗯・・・啊佢睇緊　我靚唔靚　　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "小心唔好跌落河啊・嗯・・・啊去睇間　屋靚唔靚咯啊・・・"
+        },
+        {
+          "name": "glm",
+          "text": "小心唔好跌落河啊・嗯・・・啊佢睇見佢個靚唔靚咯　・・・"
+        }
+      ],
+      "speaker": "ＣＣＣＣＣＣＣＣ・Ｂ・・・ＢＢＢＢＢＢＢＢＢＢＢ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小心唔好跌落河呀。"
+        },
+        {
+          "index": 2,
+          "text": "嗯。"
+        },
+        {
+          "index": 3,
+          "text": "啊，去睇下間屋靚唔靚囉。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　把電眼抬下啦　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "　　　把電　抬好了　　　　"
+        },
+        {
+          "name": "qwen",
+          "text": "　　　　快點睇下啦啊啊啊啊"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　快啲去睇下啦　　　　"
+        },
+        {
+          "name": "firered",
+          "text": "啊啊啊把敵人抬下來　　啊啊"
+        },
+        {
+          "name": "glm",
+          "text": "　　　把電影抬下來　　　　"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "快啲去睇下啦！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　　　　　・・・　　　　・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "　　　　　　　・・・　　　　・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "啊啊啊啊啊啊啊・・・啊啊啊啊・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　　　　　・・・　　　　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "啊啊啊啊啊啊啊・・・啊啊啊　・・・"
+        },
+        {
+          "name": "glm",
+          "text": "　　　　　　　・・・　　　　・・・"
+        }
+      ],
+      "speaker": "ＢＢＢＡＡＡＡ・・・ＡＡＡＡ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "啊啊啊"
+        },
+        {
+          "index": 2,
+          "text": "啊啊啊啊"
+        },
+        {
+          "index": 3,
+          "text": "啊啊啊啊"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "嘩咁夠嘅・・・　"
+        },
+        {
+          "name": "mimo",
+          "text": "哇咁舊嘅・・・啊"
+        },
+        {
+          "name": "qwen",
+          "text": "哇咁夠嘅・・・　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "哇咁舊嘅・・・　"
+        },
+        {
+          "name": "firered",
+          "text": "哇咁舊嘅・・・吓"
+        },
+        {
+          "name": "glm",
+          "text": "哇咁夠嘅・・・　"
+        }
+      ],
+      "speaker": "ＢＢＢＢ・・・　"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "哇，咁舊嘅！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "都怪我噉"
+        },
+        {
+          "name": "mimo",
+          "text": "　拐我幹"
+        },
+        {
+          "name": "qwen",
+          "text": "　鬼佬咁"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　鬼咁咁"
+        },
+        {
+          "name": "firered",
+          "text": "　怪哥咁"
+        },
+        {
+          "name": "glm",
+          "text": "　喂佢咁"
+        }
+      ],
+      "speaker": "ＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "都怪我㗎。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　呀係呀真係呀　　・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "嘛啊來　　　　　啦・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "　啊吓點　　啊　　・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　啊你啊　你啊　　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "　啊唉第　一次見啦・・・"
+        },
+        {
+          "name": "glm",
+          "text": "　啊系啊　系啊　　・・・"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "啊，係呀，真係呀，"
+        },
+        {
+          "index": 2,
+          "text": "第一次見啦。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "甚麼這麼化學的好像雙臘一樣・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "　　乜佢翻學噶好似上林咁啊・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "　　唔咁化學噶好似手林咁啊・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　乜咁化學噶好似想諗咁啊・・・"
+        },
+        {
+          "name": "firered",
+          "text": "　　乜咁化學噶好似想冧咁啊・・・"
+        },
+        {
+          "name": "glm",
+          "text": "　　咩咁翻學噶好似想諗咁啊・・・"
+        }
+      ],
+      "speaker": "　ＢＢＢＢＢＢＢＢＢＢＢＢ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "乜咁化學㗎，好似想冧咁啊！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "咦"
+        },
+        {
+          "name": "mimo",
+          "text": "　"
+        },
+        {
+          "name": "qwen",
+          "text": "　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　"
+        },
+        {
+          "name": "firered",
+          "text": "　"
+        },
+        {
+          "name": "glm",
+          "text": "　"
+        }
+      ],
+      "speaker": "Ｂ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "咦？"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "咦你・睇"
+        },
+        {
+          "name": "mimo",
+          "text": "啊你・睇"
+        },
+        {
+          "name": "qwen",
+          "text": "啊你・睇"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　你・睇"
+        },
+        {
+          "name": "firered",
+          "text": "　你・睇"
+        },
+        {
+          "name": "glm",
+          "text": "　你・睇"
+        }
+      ],
+      "speaker": "ＢＢ・Ｂ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你"
+        },
+        {
+          "index": 2,
+          "text": "睇！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "下嗯柏樹・・呀嘩"
+        },
+        {
+          "name": "mimo",
+          "text": "下啊棵樹・・啊哇"
+        },
+        {
+          "name": "qwen",
+          "text": "下啊棵樹・・啊哇"
+        },
+        {
+          "name": "sensevoice",
+          "text": "下　啪樹・・啊哇"
+        },
+        {
+          "name": "firered",
+          "text": "下　棵樹・・啊哇"
+        },
+        {
+          "name": "glm",
+          "text": "下爬　樹・・啊　"
+        }
+      ],
+      "speaker": "ＢＢＢＢ・・ＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "吓，嗰棵樹"
+        },
+        {
+          "index": 2,
+          "text": "啊哇"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "爸爸話我哋小朋友嘅成就第二日好似呢棵樹噉呀・・　即係點呀・要好似佢咁高咁大呀啊啊啊・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "爸B話我哋小朋友嘅成就第日又好似呢棵樹咁啊・・　即系點啊・要好似佢咁高咁大　　　啊・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "爸邊話我哋小朋友嘅成就第日又好似呢棵樹咁啊・・　即系點啊・要好似佢咁高咁大　　　啊・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "爸b話我哋小朋友嘅成就但日又好似呢棵樹咁啊・・一腳系點啊・咦好似佢咁高咁大　　　　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "爸爸話我哋小朋友嘅成就第日又好似呢棵樹咁啊・・　即系點啊・要好似佢咁高咁大　　　啊・・・"
+        },
+        {
+          "name": "glm",
+          "text": "爸比話我哋小朋友嘅成就第二就好似呢棵樹咁啊・・　即系點啊・亦好似佢咁高咁大　　　啊・・・"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢ　　Ｂ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸話我哋小朋友嘅成長"
+        },
+        {
+          "index": 2,
+          "text": "將來又好似呢棵樹咁呀。"
+        },
+        {
+          "index": 3,
+          "text": "即係點呀？"
+        },
+        {
+          "index": 4,
+          "text": "要好似佢咁高咁大啊……"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "爸比呀呢棵係咩樹嚟㗎"
+        },
+        {
+          "name": "mimo",
+          "text": "爸B啊呢棵系咩樹嚟噶"
+        },
+        {
+          "name": "qwen",
+          "text": "爸B啊呢棵系咩樹嚟噶"
+        },
+        {
+          "name": "sensevoice",
+          "text": "爸b啊呢個系咩樹嚟噶"
+        },
+        {
+          "name": "firered",
+          "text": "爸b啊呢棵系咩樹嚟噶"
+        },
+        {
+          "name": "glm",
+          "text": "爸爸啊你個係咩樹嚟㗎"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "爸爸呀，呢棵係咩樹嚟㗎？"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "哦係橡樹啊橡樹啊・・係咪大笨橡邊嘅樹啊"
+        },
+        {
+          "name": "mimo",
+          "text": "哦系橡樹啊橡樹　・・系咪大笨象變嘅樹啊"
+        },
+        {
+          "name": "qwen",
+          "text": "哦系橡樹啊橡樹啊・・系咪大笨象俾嘅樹呀"
+        },
+        {
+          "name": "sensevoice",
+          "text": "哦系橡樹啊橡樹　・・系咪大笨象俾嘅樹啊"
+        },
+        {
+          "name": "firered",
+          "text": "哦系橡樹啊橡樹　・・系咪大笨象邊嘅樹啊"
+        },
+        {
+          "name": "glm",
+          "text": "哦係樟樹啊樟樹　・・係咪大笨樹邊嘅樹啊"
+        }
+      ],
+      "speaker": "ＣＣＣＣＣＢＢＢ・・ＢＢＢＢＢＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "哦，係橡樹啊，橡樹啊……"
+        },
+        {
+          "index": 2,
+          "text": "係咪大笨象變嘅樹啊？"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "啊・・・啊"
+        },
+        {
+          "name": "mimo",
+          "text": "　・・・　"
+        },
+        {
+          "name": "qwen",
+          "text": "　・・・　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "啊・・・　"
+        },
+        {
+          "name": "firered",
+          "text": "　・・・　"
+        },
+        {
+          "name": "glm",
+          "text": "　・・・　"
+        }
+      ],
+      "speaker": "Ａ・・・Ａ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "啊！"
+        },
+        {
+          "index": 2,
+          "text": "啊！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　小心啲呀"
+        },
+        {
+          "name": "mimo",
+          "text": "哎哎呀小心啲喎"
+        },
+        {
+          "name": "qwen",
+          "text": "　哎呀小心啲啊"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　哎啊小心啲　"
+        },
+        {
+          "name": "firered",
+          "text": "　哎呀小心啲啊"
+        },
+        {
+          "name": "glm",
+          "text": "　哎呀小心啲喎"
+        }
+      ],
+      "speaker": "ＧＧＧＧＧＧＧ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "哎呀，小心啲喎！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "有粒種子"
+        },
+        {
+          "name": "mimo",
+          "text": "有粒種子"
+        },
+        {
+          "name": "qwen",
+          "text": "有粒種子"
+        },
+        {
+          "name": "sensevoice",
+          "text": "有粒種子"
+        },
+        {
+          "name": "firered",
+          "text": "有粒種子"
+        },
+        {
+          "name": "glm",
+          "text": "有粒種子"
+        }
+      ],
+      "speaker": "ＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有粒種子。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "呀　・畀我呀唔畀唔畀唔畀衰咗我差　食雞鼻・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "啊吓・俾我啊唔俾唔俾唔俾再阻我踩　住雞髀・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "啊　・俾我啊唔俾唔俾唔俾追到我睇一隻雞鼻・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "啊　・俾　啊唔俾唔俾唔俾追到我睇　食雞髀・・・"
+        },
+        {
+          "name": "firered",
+          "text": "啊　・俾我啊唔俾唔俾唔俾追到我請你食雞髀・・・"
+        },
+        {
+          "name": "glm",
+          "text": "啊　・餅喎啊唔餅唔餅唔餅追到我睇　只雞餅・・・"
+        }
+      ],
+      "speaker": "ＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "啊，"
+        },
+        {
+          "index": 2,
+          "text": "畀我呀！"
+        },
+        {
+          "index": 3,
+          "text": "唔畀唔畀唔畀！"
+        },
+        {
+          "index": 4,
+          "text": "追到我先畀你食雞髀！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "啊　我都揾　　　　　　　　　　　　　　到　隻雞腿・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "HuhArethewindowsopenbabe・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "吓吓我都影　　　　　　　　　　　　　　到　只雞髀・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　我都穩　　　　　　　　　　　　　　到　只雞髀・・・"
+        },
+        {
+          "name": "firered",
+          "text": "嗯哼耳朵聞　　　　　　　　　　　　　　到就給一百・・・"
+        },
+        {
+          "name": "glm",
+          "text": "　　我都揾　　　　　　　　　　　　　　到　只雞尾・・・"
+        }
+      ],
+      "speaker": "　ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "吓，我都搵到隻雞髀……"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "咩雞腿啊喺呢度邊度會有雞腿㗎・・你睇下・・我喺呢度執到粒粽子啊爸爸我都有一粒　啊"
+        },
+        {
+          "name": "mimo",
+          "text": "咩雞髀啊喺呢度邊度會有雞髀噶・・你睇下・・我喺呢度執到粒種子啊爸B我都有一粒　啊"
+        },
+        {
+          "name": "qwen",
+          "text": "咩雞髀啊喺呢度邊度會有雞髀噶・・你睇下・・我喺呢度執到粒種子啊爸邊我都有一粒啦爸"
+        },
+        {
+          "name": "sensevoice",
+          "text": "咩雞髀啊喺呢度邊度會有雞髀噶・・你睇下・・我喺呢度執到粒種子啊爸b我都有一粒　啊"
+        },
+        {
+          "name": "firered",
+          "text": "咩雞髀啊喺呢度邊度會有雞髀噶・・你睇下・・我喺呢度執到粒種子啊爸b我都有一粒　啊"
+        },
+        {
+          "name": "glm",
+          "text": "咩雞比啊喺呢度邊度會有雞比㗎・・你睇下・・我喺呢度執到粒種子啊爸爸我都有一粒　啊"
+        }
+      ],
+      "speaker": "ＣＣＣＣＣＣＣＣＣＣＣＣＣＣ・・ＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "咩雞髀啊，喺呢度邊度會有雞髀㗎？"
+        },
+        {
+          "index": 2,
+          "text": "你睇下。"
+        },
+        {
+          "index": 3,
+          "text": "我喺呢度執到粒種子啊，爸爸！"
+        },
+        {
+          "index": 4,
+          "text": "我都有一粒啊。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "嗯・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "嗯・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "嗯・・・"
+        },
+        {
+          "name": "firered",
+          "text": "　・・・"
+        },
+        {
+          "name": "glm",
+          "text": "嗯・・・"
+        }
+      ],
+      "speaker": "Ｃ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "嗯。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "種子呀・・喺屋入面點會有種子呢有喎點解呀・話唔定呢係松鼠搬入嚟㗎・吓咩松鼠識搬屋㗎咩・・・先生呀啲嘢究竟搬去邊㗎・・・對唔住呀請搬入嚟呀真係唔好意思呀・快啲去打開後門透下氣啦哦・・・乖乖啲快啲去・・嗱佢哋幾精哎喲・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "種子啊・・喺屋入邊點會有種子呢系啊點解啊・話唔定呢系松鼠搬入嚟噶・吓乜松鼠識搬屋嘅咩・・・先生啊啲嘢究竟搬去邊噶・・・對唔住啊請搬入嚟啊真系唔好意思啊・快啲去打開後門唞下氣啦啊・・・乖乖哋快啲去・・　　　　　　　・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "種子啊・・喺屋入邊點會有種子咧系啊點解啊・話唔定咧系從書搬入嚟噶・吓咪從書即搬屋噶咩・・・先生啊啲嘢究竟搬去邊噶・・・對唔住啊請搬入嚟啊真系唔好意思啊・快啲去打開後碗唞下氣啦啊・・・乖乖哋快啲去・・啊佢哋幾精啊　・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "種子啊・・喺屋入邊點會用種子咧系　點解啊・話唔定咧系松鼠搬入嚟噶・吓乜蟲水識搬屋噶咩・・・先生啊啲嘢究竟搬去邊噶・・・對唔住啊請搬入嚟啊真系唔好意思啊・快啲去打開後門透下氣啦啊・・・乖乖哋快啲去・・　佢哋幾　　　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "種子啊・・喺屋入邊點會有種子咧系　點解啊・話唔定咧系松鼠搬入嚟噶・吓乜松鼠識搬屋嘅咩・・・先生啊啲嘢究竟搬去邊噶・・・對唔住啊請搬入嚟啊真系唔好意思啊・快啲去打開後門唞下氣啦啊・・・乖乖哋快啲去・・　　　　　　　・・・"
+        },
+        {
+          "name": "glm",
+          "text": "種子啊・・喺屋入邊點會有種子咧系喎點解噶・話唔定咧系從水搬入嚟噶・嚇乜從水啲搬屋噶咩・・・先生啊啲嘢究竟搬去邊噶・・・對唔住啊請搬入嚟啊真系唔好意思啊・快啲去打開後門透下氣啦啊・・・乖乖哋快啲去・・　我哋幾接嘅　・・・"
+        }
+      ],
+      "speaker": "ＣＣＣ・・ＣＣＣＣＣＣＣＣＣＢＢＢＢＢＢ・ＣＣＣＣＣＣＣＣＣＣＣ・ＢＢＢＢＢＢＢＢＢ・・・ＦＦＦＦＦＦＦＦＦＦＣ・・・ＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣ・ＣＣＣＣＣＣＣＣＣＣＣＡ・・・ＣＣＣＣＣＣ・・ＣＣＣＣＡＡＡ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "種子呀。"
+        },
+        {
+          "index": 2,
+          "text": "喺屋入邊點會有種子呢？"
+        },
+        {
+          "index": 3,
+          "text": "係呀，點解呀？"
+        },
+        {
+          "index": 4,
+          "text": "話唔定呢，係松鼠搬入嚟㗎。"
+        },
+        {
+          "index": 5,
+          "text": "吓？乜松鼠識搬屋㗎咩？"
+        },
+        {
+          "index": 6,
+          "text": "先生呀，啲嘢究竟搬去邊㗎？"
+        },
+        {
+          "index": 7,
+          "text": "對唔住呀，請搬入嚟呀，真係唔好意思呀。"
+        },
+        {
+          "index": 8,
+          "text": "快啲去打開後門唞下氣啦，啊。"
+        },
+        {
+          "index": 9,
+          "text": "乖乖哋，快啲去。"
+        },
+        {
+          "index": 10,
+          "text": "佢哋幾精。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "追"
+        },
+        {
+          "name": "mimo",
+          "text": "加"
+        },
+        {
+          "name": "qwen",
+          "text": "等"
+        },
+        {
+          "name": "sensevoice",
+          "text": "等"
+        },
+        {
+          "name": "firered",
+          "text": "等"
+        }
+      ],
+      "speaker": "Ｂ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "等"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "我呀　"
+        },
+        {
+          "name": "mimo",
+          "text": "油啊　"
+        },
+        {
+          "name": "qwen",
+          "text": "我啊　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "我啊啊"
+        },
+        {
+          "name": "firered",
+          "text": "我啊　"
+        }
+      ],
+      "speaker": "ＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我呀。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "看看看看　　　・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "Igotsin・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "睇下　　　　新・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "睇下　　　　先・・・"
+        },
+        {
+          "name": "firered",
+          "text": "睇下　　　　先・・・"
+        }
+      ],
+      "speaker": "ＢＢ　ＢＢＢＢ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "睇下，睇下先！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "嗯嗯嗯　　　　"
+        },
+        {
+          "name": "firered",
+          "text": "unkspku"
+        }
+      ],
+      "speaker": "　ＡＡＡＡＡＡ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "嗯嗯嗯。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "nk・・・"
+        }
+      ],
+      "speaker": "ＡＡ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "嗯。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "搞掂・啦"
+        },
+        {
+          "name": "mimo",
+          "text": "搞掂・啦"
+        },
+        {
+          "name": "qwen",
+          "text": "搞掂・啦"
+        },
+        {
+          "name": "sensevoice",
+          "text": "搞掂・啦"
+        },
+        {
+          "name": "firered",
+          "text": "搞掂・啦"
+        },
+        {
+          "name": "glm",
+          "text": "搞掂・啦"
+        }
+      ],
+      "speaker": "ＢＢ・Ｂ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "搞掂。"
+        },
+        {
+          "index": 2,
+          "text": "啦。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "嗯爸爸話呢見我啲污糟嘢一味要靠客㗎・・・冇嘅・・去晒邊啫　・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "嗯爸B話咧見到啲污糟嘢一定要敲黑噶・・・冇嘅・・去晒邊咧　・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "嗯爸b話咧見到啲污糟有一味要靠黑嘅・・・冇嘅・・去晒邊啊誒・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "嗯爸b話呢見到啲污糟人一味要靠吓噶・・・冇嘅・・去晒邊啦　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "　爸爸話呢見到啲污糟又一味要靠客噶・・・冇嘅・・去晒邊呢　・・・"
+        },
+        {
+          "name": "glm",
+          "text": "　爸爸話咧見到啲污糟有一味要考客嘅・・・冇嘅・・去曬邊咧　・・・"
+        }
+      ],
+      "speaker": "　ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・ＢＢ・・ＢＢＢＢ　・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "嗯，爸爸話呢，"
+        },
+        {
+          "index": 2,
+          "text": "見到啲污糟嘢，一味要靠嚇㗎。"
+        },
+        {
+          "index": 3,
+          "text": "冇嘅。"
+        },
+        {
+          "index": 4,
+          "text": "去晒邊啫？"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "冇呀去咗"
+        },
+        {
+          "name": "mimo",
+          "text": "冇喎去咗"
+        },
+        {
+          "name": "qwen",
+          "text": "冇啊去咗"
+        },
+        {
+          "name": "sensevoice",
+          "text": "冇啊去咗"
+        },
+        {
+          "name": "firered",
+          "text": "冇啊去咗"
+        },
+        {
+          "name": "glm",
+          "text": "冇啊去咗"
+        }
+      ],
+      "speaker": "ＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "冇呀，去咗。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "邊睇下有冇啲未嚇走嘅先"
+        },
+        {
+          "name": "mimo",
+          "text": "邊睇下有冇啲未吓走嘅先"
+        },
+        {
+          "name": "qwen",
+          "text": "邊睇下有冇啲未吓走嘅先"
+        },
+        {
+          "name": "sensevoice",
+          "text": "邊睇下有冇啲未吓酒嘅先"
+        },
+        {
+          "name": "firered",
+          "text": "邊睇下有冇啲未吓走嘅先"
+        },
+        {
+          "name": "glm",
+          "text": "邊睇下有冇啲未客走嘅先"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "邊睇下有冇啲未嚇走嘅先。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "真係冇喎嗯　"
+        },
+        {
+          "name": "mimo",
+          "text": "真系冇喎嗯阿"
+        },
+        {
+          "name": "qwen",
+          "text": "真系冇啊嗯　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "真系冇　　　"
+        },
+        {
+          "name": "firered",
+          "text": "真系冇　　　"
+        },
+        {
+          "name": "glm",
+          "text": "真系冇喎　　"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "真係冇喎，嗯。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　嗰度係沖涼房嚟㗎頭先我哋見到啲髒　嘢　・噢咩喎・　嗰啲髒　嘢　畀我哋兩個客人嚟沖涼房呢一度不過而家唔見晒一啲都搵唔到喎・等我去睇下・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "爹嗰度系沖涼房嚟噶頭先我哋見到啲污糟嘢啊・哦咩污・糟嗰啲污糟嘢　俾我哋兩個吓咗嚟沖涼房呢一度不過而家唔見晒一啲都揾唔到啊・等我去睇下・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "　嗰度系粗糧房嚟噶頭先我哋見到啲污糟嘢啊・哦咩話・　嗰啲污糟嘢啊俾我哋兩個校長嚟粗糧房呢一度不過而家唔見晒一啲都揾唔到啊・等我去睇下・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　嗰度系沖涼房嚟噶頭先我哋見到啲污糟嘢啊・　　　・　嗰啲污糟嘢　俾我哋兩個客　嚟沖涼房呢　　不過而家唔見晒一啲都　唔到啊・等我去睇下・・・"
+        },
+        {
+          "name": "firered",
+          "text": "　　度系沖涼房嚟噶頭先我哋見到啲污糟嘢啊・好咩　・　　啲污糟嘢啊俾我哋兩個吓咗嚟沖涼房呢　度不過而家唔見晒一啲都穩唔到啊・等我去睇下・・・"
+        },
+        {
+          "name": "glm",
+          "text": "　嗰度系沖涼房嚟㗎頭先我哋見到啲污糟嘢啊・哦咩喎・　嗰啲污糟嘢啊俾我哋兩個客咗嚟沖涼房呢　度不過而家唔見曬一啲都揾唔到喎・等我去睇下・・・"
+        }
+      ],
+      "speaker": "ＣＣＣＣＣＣＣＣＣＢＢＢＢＢＢＢＢＢＢＢ・ＣＣＣ・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・ＣＣＣＣＣ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "嗰度係沖涼房嚟㗎。"
+        },
+        {
+          "index": 2,
+          "text": "頭先我哋見到啲污糟嘢。"
+        },
+        {
+          "index": 3,
+          "text": "哦，咩喎？"
+        },
+        {
+          "index": 4,
+          "text": "嗰啲污糟嘢啊，"
+        },
+        {
+          "index": 5,
+          "text": "俾我哋兩個嚇親，"
+        },
+        {
+          "index": 6,
+          "text": "走咗嚟沖涼房呢一度，"
+        },
+        {
+          "index": 7,
+          "text": "不過而家唔見晒，"
+        },
+        {
+          "index": 8,
+          "text": "一啲都搵唔到喎。"
+        },
+        {
+          "index": 9,
+          "text": "等我去睇吓。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　"
+        },
+        {
+          "name": "mimo",
+          "text": "　"
+        },
+        {
+          "name": "qwen",
+          "text": "　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　"
+        },
+        {
+          "name": "firered",
+          "text": "嗯"
+        },
+        {
+          "name": "glm",
+          "text": "　"
+        }
+      ],
+      "speaker": "　"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "嗯。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "見唔見"
+        },
+        {
+          "name": "mimo",
+          "text": "見唔見"
+        },
+        {
+          "name": "qwen",
+          "text": "見唔見"
+        },
+        {
+          "name": "sensevoice",
+          "text": "見唔見"
+        },
+        {
+          "name": "firered",
+          "text": "見唔見"
+        },
+        {
+          "name": "glm",
+          "text": "見唔見"
+        }
+      ],
+      "speaker": "ＣＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "見唔見？"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "呀冇呀嗰啲係梅屎嚟啫嘛・係梅屎呀咪唔係污糟嘢嚟咩・・你哋頭先喺外面凍光入屋咪眼花花囉・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "啊冇啊嗰啲系黴屎嚟啫嘛・系黴屎啊乜唔系污糟嘢嚟咩・・你哋頭先喺外邊咁光入屋咪眼花花咯・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "啊冇啊嗰啲系煤屎嚟啫嘛・系煤屎啊咪唔系污糟嘢嚟咩・・你哋頭先喺外邊咁光入屋咪眼花花咯・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "啊冇啊嗰啲系梅市嚟啫嘛・系梅市啊乜唔系污糟嘢嚟咩・・你哋頭先喺外面咁光入屋咪眼花花咯・・・"
+        },
+        {
+          "name": "firered",
+          "text": "啊冇啊　啲系梅屎嚟啫嘛・系梅屎啊乜唔系污糟嘢嚟咩・・你哋頭先喺外面咁光入屋咪眼花花咯・・・"
+        },
+        {
+          "name": "glm",
+          "text": "啊冇啊嗰啲系門屎嚟啫嘛・系門屎啊咩唔系污糟嘢嚟咩・・你哋頭先喺外面陽光入屋咪眼花花咯・・・"
+        }
+      ],
+      "speaker": "ＢＣＣＣＣＣＣＣＣＣＣ・ＢＢＢＢＢＢＢＢＢＢＢＢ・・ＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "啊冇啊，嗰啲係煤屎嚟啫嘛。"
+        },
+        {
+          "index": 2,
+          "text": "係煤屎啊，咪唔係污糟嘢嚟咩？"
+        },
+        {
+          "index": 3,
+          "text": "你哋頭先喺外面咁光，入屋咪眼花花囉。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "話你哋知道啦當陽光曬入屋之後呢乜嘢污糟辣太嘢都會走晒㗎喇唔使驚㗎・・・見光就走㗎喇・・・梅塔斯鬼走呀呀呀唔見晒機會走呀呀呀・呀"
+        },
+        {
+          "name": "mimo",
+          "text": "話你哋知道啦當用過洗液屋之後咧乜嘢污糟邋遢嘢都會走晒噶啦唔使驚噶・・・見鬼就走噶啦・・・維他斯鬼走啦呀呀唔見晒啲污糟嘢啦咿・呀"
+        },
+        {
+          "name": "qwen",
+          "text": "話你哋知道啦當陽光晒入屋之後咧乜嘢污糟邋遢嘢都會走晒噶啦唔使驚嘅・・・見光就走噶啦・・・咪嘆死鬼咒啦呀呀唔見晒啲污糟邋遢　・呀"
+        },
+        {
+          "name": "sensevoice",
+          "text": "話你哋知道啦當陽光晒入屋之後呢乜嘢污糟邋遢嘢都會走晒噶啦唔使驚噶・・・見光就走噶啦・・・煤　炭鬼糟　　　　　　　　　　　　・　"
+        },
+        {
+          "name": "firered",
+          "text": "話你哋知道啦當陽光晒入屋之後咧乜嘢污糟邋遢嘢都會走晒噶啦唔使驚噶・・・見光就走噶啦・・・煤　炭鬼走啦　　唔見晒啲污糟嘢啦　・　"
+        },
+        {
+          "name": "glm",
+          "text": "話你哋知道啦當陽光曬入屋之後咧乜嘢污糟亂塌嘢都會走曬㗎啦唔使驚㗎・・・見光就走㗎啦・・・埋貪死鬼走啦呀呀唔見曬嘅污糟嘢啦啦・咦"
+        }
+      ],
+      "speaker": "ＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣ・・・ＢＢＢＢＢＢ・・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・Ｂ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "話你哋知道啦，"
+        },
+        {
+          "index": 2,
+          "text": "當陽光曬入屋之後呢，"
+        },
+        {
+          "index": 3,
+          "text": "乜嘢污糟邋遢嘢都會走晒㗎啦，"
+        },
+        {
+          "index": 4,
+          "text": "唔使驚㗎。"
+        },
+        {
+          "index": 5,
+          "text": "見光就走㗎啦。"
+        },
+        {
+          "index": 6,
+          "text": "煤煤蟲走啦呀呀，"
+        },
+        {
+          "index": 7,
+          "text": "唔見晒啲污糟嘢啦。"
+        },
+        {
+          "index": 8,
+          "text": "呀。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　　　・・　　　　　　　　　　呀"
+        },
+        {
+          "name": "mimo",
+          "text": "　　　　　・・　　　　　　　　　　喂"
+        },
+        {
+          "name": "qwen",
+          "text": "哈哈哈哈哈・・哈哈哈哈哈哈哈哈哈哈各"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　　　・・　　　　　　　　　　　"
+        },
+        {
+          "name": "firered",
+          "text": "　　　　　・・　　　　　　　　　　喂"
+        },
+        {
+          "name": "glm",
+          "text": "　　　　　・・　　　　　　　　　　　"
+        }
+      ],
+      "speaker": "ＢＢＢＡＡ・・ＡＡＡＡ　　ＣＣＣＣＡ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "哈哈哈"
+        },
+        {
+          "index": 2,
+          "text": "哈哈"
+        },
+        {
+          "index": 3,
+          "text": "哈哈哈哈"
+        },
+        {
+          "index": 4,
+          "text": "哈哈哈哈"
+        },
+        {
+          "index": 5,
+          "text": "喂"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "喂喂餵你哋唔好玩喇乖乖啲快啲去做嘢你哋識唔識得點樣上二樓呀吓揾條樓梯上去二樓度將所有窗打開晒佢　"
+        },
+        {
+          "name": "mimo",
+          "text": "喂喂喂你哋唔好玩啦乖乖哋快啲去做嘢你哋識唔識得點樣上二樓啊吓揾條樓梯上去二樓度將所有窗打開晒　　"
+        },
+        {
+          "name": "qwen",
+          "text": "位各位你哋唔好玩啊乖乖哋快啲去做嘢你哋識唔識得點樣上二樓啊吓揾條樓梯上去二樓度將所有窗打開晒　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　　　　　　　乖乖哋快　去做嘢　　　　　　點　上二樓　　　　樓梯　去二樓　　　　　打　　佢打"
+        },
+        {
+          "name": "firered",
+          "text": "喂喂喂你哋唔好玩啦乖乖哋快啲去做嘢你哋識唔識得點樣上二樓啊吓穩條樓梯上去二樓度將所有窗打開晒　　"
+        },
+        {
+          "name": "glm",
+          "text": "喂喂餵你哋唔好玩啦乖乖哋快啲去做嘢你哋識唔識得點樣上二樓啊嚇揾條樓梯上去二樓度將所有窗打開曬佢　"
+        }
+      ],
+      "speaker": "ＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＡＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "喂喂喂，你哋唔好玩啦！"
+        },
+        {
+          "index": 2,
+          "text": "乖乖哋快啲去做嘢。"
+        },
+        {
+          "index": 3,
+          "text": "你哋識唔識得點樣上二樓呀？"
+        },
+        {
+          "index": 4,
+          "text": "吓？"
+        },
+        {
+          "index": 5,
+          "text": "搵條樓梯上去二樓度，"
+        },
+        {
+          "index": 6,
+          "text": "將所有窗打開晒佢。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　點打呀・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "佢知道　・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "佢知道啦・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "佢知打　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "佢知道啦・・・"
+        },
+        {
+          "name": "glm",
+          "text": "佢知道啦・・・"
+        }
+      ],
+      "speaker": "ＣＢＢＢ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "佢。"
+        },
+        {
+          "index": 2,
+          "text": "知道啦。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "冇喎"
+        },
+        {
+          "name": "mimo",
+          "text": "冇啊"
+        },
+        {
+          "name": "qwen",
+          "text": "冇啊"
+        },
+        {
+          "name": "sensevoice",
+          "text": "冇啊"
+        },
+        {
+          "name": "firered",
+          "text": "冇啊"
+        },
+        {
+          "name": "glm",
+          "text": "冇啊"
+        }
+      ],
+      "speaker": "ＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "冇啊。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "冇喎搵頭先唔"
+        },
+        {
+          "name": "mimo",
+          "text": "冇啊媽打開唔"
+        },
+        {
+          "name": "qwen",
+          "text": "冇啊把門開唔"
+        },
+        {
+          "name": "sensevoice",
+          "text": "冇啊梯　　唔"
+        },
+        {
+          "name": "firered",
+          "text": "冇啊把打開唔"
+        },
+        {
+          "name": "glm",
+          "text": "冇啊　　冇啊"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "冇啊，把門開唔？"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "係喎　　"
+        },
+        {
+          "name": "mimo",
+          "text": "系啊　　"
+        },
+        {
+          "name": "qwen",
+          "text": "系啊　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "系　　　"
+        },
+        {
+          "name": "firered",
+          "text": "系啊　　"
+        },
+        {
+          "name": "glm",
+          "text": "冇啊冇啊"
+        }
+      ],
+      "speaker": "ＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "係啊。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　係　咪呢度呢係咪　呢度呢冇喎有冇喎・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "　系　咪呢度咧系咪　呢度咧冇啊系冇啊・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "　喺唔喺呢度咧喺唔喺呢度咧冇啊有冇啊・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　喺　咪呢度啦　咪　呢度都冇　有冇啊・・・"
+        },
+        {
+          "name": "firered",
+          "text": "　喺　埋呢度啦喺埋　呢度啦冇啊阿媽喂・・・"
+        },
+        {
+          "name": "glm",
+          "text": "喎系　咪你走啦系咪　你走啦冇喎　冇喎・・・"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "係咪呢度呢？係咪呢度呢？"
+        },
+        {
+          "index": 2,
+          "text": "冇喎，有冇喎？"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "我搵得啦切子・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "我揾到啦晴晴・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "我揾得啦姐姐・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "我咪咗啦廁紙・・・"
+        },
+        {
+          "name": "firered",
+          "text": "我穩到啦姐姐・・・"
+        },
+        {
+          "name": "glm",
+          "text": "我問到了次子・・・"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我搵到啦，姐姐！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "咁黑㗎　　・・會唔會又有・・未　嘗試"
+        },
+        {
+          "name": "mimo",
+          "text": "咁好嘅　　・・會唔會入藥・・你睇下先"
+        },
+        {
+          "name": "qwen",
+          "text": "咁hot噶・・會唔會又有・・唔　貪食"
+        },
+        {
+          "name": "sensevoice",
+          "text": "咁黑　　噶・・會唔會又有・・你　攤屎"
+        },
+        {
+          "name": "firered",
+          "text": "敢不　　好・・改我我有有・・你　看誰"
+        },
+        {
+          "name": "glm",
+          "text": "咁刻　　噶・・會唔會又有・・冇　貪死"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢ・・ＢＢＢＢＢ・・ＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "咁黑㗎。"
+        },
+        {
+          "index": 2,
+          "text": "會唔會又有？"
+        },
+        {
+          "index": 3,
+          "text": "你睇吓先。"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "呀啲聲呀・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "啊會聲啊・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "啊咩聲啊・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "啊出聲啊・・・"
+        },
+        {
+          "name": "firered",
+          "text": "　　　　・・・"
+        },
+        {
+          "name": "glm",
+          "text": "啊你聽啊・・・"
+        }
+      ],
+      "speaker": "ＢＢＢＢ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "啊，咩聲啊？"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "還該揹我啊"
+        },
+        {
+          "name": "mimo",
+          "text": "還敢擺我呃"
+        },
+        {
+          "name": "qwen",
+          "text": "係該俾我　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "系街髀　　"
+        },
+        {
+          "name": "firered",
+          "text": "還該陪我　"
+        },
+        {
+          "name": "glm",
+          "text": "還敢揹我　"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "梗係揹我呀！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "梅太死鬼走啦呀呀・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "妹太　快走啦呀呀・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "煤炭市鬼走啦呀呀・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "冇睇使鬼咗啦呀呀・・・"
+        },
+        {
+          "name": "firered",
+          "text": "煤炭死鬼走啦呀呀・・・"
+        },
+        {
+          "name": "glm",
+          "text": "喂睇先快走啦呀呀・・・"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢ・・・"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "煤炭屎鬼，走啦呀呀！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "用絕招呀"
+        },
+        {
+          "name": "mimo",
+          "text": "用絕招啊"
+        },
+        {
+          "name": "qwen",
+          "text": "用絕招啊"
+        },
+        {
+          "name": "sensevoice",
+          "text": "用絕招啊"
+        },
+        {
+          "name": "firered",
+          "text": "用絕招啊"
+        },
+        {
+          "name": "glm",
+          "text": "用住招啊"
+        }
+      ],
+      "speaker": "ＤＤＤＤ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "用絕招啊！"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "嗯啊啊啊啊啊・・・啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+        },
+        {
+          "name": "mimo",
+          "text": "嗯　　　　　・・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "qwen",
+          "text": "　　　　　　・・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　　　　・・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "firered",
+          "text": "　　　　　　・・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "glm",
+          "text": "嗯　　　　　・・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+        }
+      ],
+      "speaker": "ＡＡＡＡＡＡ・・・ＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡ　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　Ｂ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "嗯啊啊啊啊啊"
+        },
+        {
+          "index": 2,
+          "text": "啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+        },
+        {
+          "index": 3,
+          "text": "啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+        },
+        {
+          "index": 4,
+          "text": "啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+        },
+        {
+          "index": 5,
+          "text": "啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+        },
+        {
+          "index": 6,
+          "text": "啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+        },
+        {
+          "index": 7,
+          "text": "啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "咁夠膽玩我哋兩個等我哋炮製你先"
+        },
+        {
+          "name": "mimo",
+          "text": "敢夠膽玩我哋兩個等我哋炮製你先"
+        },
+        {
+          "name": "qwen",
+          "text": "咁夠膽玩我哋兩個等我哋炮製你先"
+        },
+        {
+          "name": "sensevoice",
+          "text": "咁夠膽玩我哋兩個等我哋炮製你先"
+        },
+        {
+          "name": "firered",
+          "text": "咁夠膽玩我哋兩個等我哋炮製你先"
+        },
+        {
+          "name": "glm",
+          "text": "咁夠膽玩我哋兩個等我哋炮製你先"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ"
+    },
+    "answer": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "咁夠膽玩我哋兩個，"
+        },
+        {
+          "index": 2,
+          "text": "等我哋炮製你先！"
+        }
+      ]
+    }
+  }
+]

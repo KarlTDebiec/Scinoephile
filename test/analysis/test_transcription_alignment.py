@@ -11,6 +11,7 @@ from pytest import approx, raises
 from scinoephile.analysis.audit.transcription_alignment import (
     audit_transcription_alignment,
 )
+from scinoephile.analysis.multisequence_alignment import TimedAlignmentToken
 from scinoephile.analysis.transcription_alignment import (
     SubtitleTimingSettings,
     TranscriptionAlignmentArtifact,
@@ -139,6 +140,24 @@ def test_audit_renders_merged_speaker_reference_and_boundary():
     assert "## Timing Comparisons" in report
     assert "CTC speech" in report
     assert "+100 ms" in report
+
+
+def test_audit_accepts_reference_specific_similarity():
+    """Reference augmentation should accept dialect-aware substitution scoring."""
+    artifact = _get_artifact()
+    reference = Series(events=[Subtitle(start=800, end=2_300, text="是嗎")])
+    compared_characters = []
+
+    def similarity(one: TimedAlignmentToken, two: TimedAlignmentToken) -> float:
+        """Record compared characters and prefer identical text."""
+        compared_characters.append((one.text, two.text))
+        if one.text == two.text:
+            return 6.0
+        return -2.0
+
+    audit_transcription_alignment(artifact, reference, reference_similarity=similarity)
+
+    assert compared_characters
 
 
 def _get_artifact() -> TranscriptionAlignmentArtifact:
