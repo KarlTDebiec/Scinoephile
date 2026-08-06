@@ -93,7 +93,9 @@ def calibrate_transcription_timing(
     loaded = {
         dataset.name: (
             dataset,
-            TranscriptionAlignmentArtifact.load(dataset.output_path / "alignment.json"),
+            TranscriptionAlignmentArtifact.load(
+                dataset.output_path / "json/alignment.json"
+            ),
             Series.load(dataset.reference_path),
         )
         for dataset in _DATASETS
@@ -140,7 +142,7 @@ def calibrate_transcription_timing(
         best_settings = SubtitleTimingSettings.model_validate(results[0]["settings"])
         for dataset, artifact, reference in loaded.values():
             retimed = get_transcription_alignment_with_timing(artifact, best_settings)
-            retimed.save(dataset.output_path / "alignment.json")
+            retimed.save(dataset.output_path / "json/alignment.json")
             retimed.get_series().save(dataset.output_path / "transcribe.srt")
             _save_evaluation(dataset.output_path, retimed, reference)
     return calibration

@@ -72,15 +72,16 @@ def test_media_audio_trim_is_applied_before_staging(tmp_path: Path):
     with patch.object(
         AudioSeries, "load_audio_from_media", return_value=extracted
     ) as load_audio:
+        audio_path = tmp_path / "audio.wav"
         audio = _load_audio_series(
-            tmp_path / "audio",
+            audio_path,
             audio_source_path=None,
             media_path=tmp_path / "source.mkv",
             stream_index=12,
             media_start_seconds=1.0,
         )
         reloaded = _load_audio_series(
-            tmp_path / "audio",
+            audio_path,
             audio_source_path=None,
             media_path=tmp_path / "source.mkv",
             stream_index=12,
@@ -89,6 +90,8 @@ def test_media_audio_trim_is_applied_before_staging(tmp_path: Path):
 
     assert len(audio.audio) == 4_000
     assert len(reloaded.audio) == 4_000
+    assert audio_path.exists()
+    assert not audio_path.with_suffix(".srt").exists()
     load_audio.assert_called_once()
 
 
@@ -99,7 +102,7 @@ def test_evaluation_writes_standardized_metrics_and_audit(tmp_path: Path):
 
     _save_evaluation(tmp_path, artifact, reference)
 
-    metrics = json.loads((tmp_path / "metrics.json").read_text(encoding="utf-8"))
+    metrics = json.loads((tmp_path / "json/metrics.json").read_text(encoding="utf-8"))
     assert metrics["format"] == "scinoephile-transcription-evaluation"
     assert set(metrics["cer"]) == {"whisper", "mimo", "merged"}
     assert metrics["candidate_subtitles"] == 1

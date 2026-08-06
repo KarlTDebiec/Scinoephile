@@ -53,6 +53,7 @@ def process_transcription_pipeline(
     reference_path: Path,
     language: Language = Language.yue_hant,
     output_dir_path: Path | None = None,
+    audio_path: Path | None = None,
     audio_dir_path: Path | None = None,
     audio_source_path: Path | None = None,
     media_path: Path | None = None,
@@ -77,8 +78,9 @@ def process_transcription_pipeline(
         reference_path: independent Cantonese reference used only for evaluation
         language: transcription and output language
         output_dir_path: standardized output directory
-        audio_dir_path: directory containing ``audio.wav`` and ``audio.srt``
-        audio_source_path: optional WAV copied into the audio directory
+        audio_path: path at which complete staged WAV audio is stored
+        audio_dir_path: legacy directory containing ``audio.wav``
+        audio_source_path: optional WAV copied to the staged audio path
         media_path: optional media from which to extract audio when not staged
         stream_index: optional media audio-stream index
         media_start_seconds: seconds trimmed from extracted media audio
@@ -96,10 +98,17 @@ def process_transcription_pipeline(
         raise ValueError("target_reference_subtitles must be positive.")
     if output_dir_path is None:
         output_dir_path = title_root_path / "output" / f"{language.code}_transcribe"
-    if audio_dir_path is None:
-        audio_dir_path = output_dir_path / "audio"
+    if audio_path is not None and audio_dir_path is not None:
+        raise ValueError("Specify audio_path or audio_dir_path, not both.")
+    if audio_path is None:
+        if audio_dir_path is None:
+            audio_path = output_dir_path / "audio.wav"
+        else:
+            audio_path = audio_dir_path / "audio.wav"
     output_dir_path.mkdir(parents=True, exist_ok=True)
-    artifact_path = output_dir_path / "alignment.json"
+    json_dir_path = output_dir_path / "json"
+    json_dir_path.mkdir(parents=True, exist_ok=True)
+    artifact_path = json_dir_path / "alignment.json"
     transcription_path = output_dir_path / "transcribe.srt"
     reference = Series.load(reference_path)
 
@@ -110,7 +119,7 @@ def process_transcription_pipeline(
         return output
 
     audio = _load_audio_series(
-        audio_dir_path,
+        audio_path,
         audio_source_path=audio_source_path,
         media_path=media_path,
         stream_index=stream_index,
@@ -123,7 +132,7 @@ def process_transcription_pipeline(
         diarization_mode=diarization_mode,
         provider=provider,
         additional_context=additional_context,
-        aligned_merge_json_path=output_dir_path / "json" / "aligned_merge.json",
+        aligned_merge_json_path=json_dir_path / "aligned_merge.json",
         timing_settings=timing_settings,
         mlx_audio_token_limit_guard=mlx_audio_token_limit_guard,
     )
@@ -143,7 +152,7 @@ def process_transcription_pipeline(
     if artifact is None:
         raise RuntimeError("Transcription pipeline did not produce an artifact.")
     completion_metrics = provider.completion_metrics[initial_completion_count:]
-    usage_path = output_dir_path / "json" / "llm_usage.json"
+    usage_path = json_dir_path / "llm_usage.json"
     save_chat_completion_metrics_to_json(usage_path, completion_metrics)
     logger.info(format_chat_completion_metrics_report(completion_metrics))
     _save_evaluation(output_dir_path, artifact, reference)
@@ -177,7 +186,7 @@ def _get_stop_at_idx_for_reference_count(
 
 
 def _load_audio_series(
-    audio_dir_path: Path,
+    audio_path: Path,
     *,
     audio_source_path: Path | None,
     media_path: Path | None,
@@ -187,16 +196,14 @@ def _load_audio_series(
     """Load staged complete audio without supplying subtitle events to ASR."""
     if media_start_seconds < 0.0:
         raise ValueError("media_start_seconds must be non-negative.")
-    staged_audio_path = audio_dir_path / "audio.wav"
-    if audio_source_path is not None and not staged_audio_path.exists():
-        audio_dir_path.mkdir(parents=True, exist_ok=True)
-        copy2(audio_source_path, staged_audio_path)
-        (audio_dir_path / "audio.srt").write_text("", encoding="utf-8")
-    if staged_audio_path.exists():
-        return AudioSeries(audio=AudioSegment.from_wav(staged_audio_path), events=[])
+    if audio_source_path is not None and not audio_path.exists():
+        audio_path.parent.mkdir(parents=True, exist_ok=True)
+        copy2(audio_source_path, audio_path)
+    if audio_path.exists():
+        return AudioSeries(audio=AudioSegment.from_wav(audio_path), events=[])
     if media_path is None:
         raise ScinoephileError(
-            f"Staged audio is missing at {staged_audio_path}; provide media_path."
+            f"Staged audio is missing at {audio_path}; provide media_path."
         )
     audio = AudioSeries.load_audio_from_media(media_path, stream_index=stream_index)
     trim_start_ms = round(media_start_seconds * 1000)
@@ -206,7 +213,8 @@ def _load_audio_series(
         )
     if trim_start_ms:
         audio = AudioSeries(audio=audio.audio[trim_start_ms:], events=[])
-    audio.save(audio_dir_path)
+    audio_path.parent.mkdir(parents=True, exist_ok=True)
+    audio.audio.export(audio_path, format="wav")
     return audio
 
 
@@ -265,7 +273,9 @@ def _save_evaluation(
             ),
         },
     }
-    (output_dir_path / "metrics.json").write_text(
+    json_dir_path = output_dir_path / "json"
+    json_dir_path.mkdir(parents=True, exist_ok=True)
+    (json_dir_path / "metrics.json").write_text(
         json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     reference_similarity = None

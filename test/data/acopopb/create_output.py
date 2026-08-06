@@ -13,6 +13,8 @@ from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.data.transcription import process_transcription_pipeline
 from test.helpers import test_data_root
 
+set_logging_verbosity(2)
+
 title_root = test_data_root / Path(__file__).parent.name
 output_path = title_root / "output"
 eng_ocr_path = output_path / "eng_ocr"
@@ -50,59 +52,34 @@ transcription_additional_context = """
 """
 
 
-def process_yue_hant_transcription(
-    output_dir_path: Path = yue_hant_transcribe_path,
-    *,
-    stop_at_idx: int | None = None,
-    mlx_audio_token_limit_guard: bool = True,
-):
-    """Run the configured ACOPOPB Cantonese transcription pipeline.
+actions = {"yue-Hant_transcribe"}
 
-    Arguments:
-        output_dir_path: directory in which to write transcription outputs
-        stop_at_idx: exclusive guide block index at which to stop processing
-        mlx_audio_token_limit_guard: whether to guard MiMo's generation-token limit
-    """
+if "eng_ocr" in actions:
+    process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
+if "yue-Hans_ocr" in actions:
+    process_ocr(title_root, Language.yue_hans, overwrite=False, interactive=True)
+if "yue-Hant_ocr" in actions:
+    process_ocr(title_root, Language.yue_hant, overwrite=False, interactive=True)
+if "zho-Hans_ocr" in actions:
+    process_ocr(title_root, Language.zho_hans, overwrite=False, interactive=True)
+if "zho-Hant_ocr" in actions:
+    process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=True)
+if "yue-Hans_eng" in actions:
+    yue_hans_path = yue_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    process_yue_hans_eng(title_root, yue_hans_path, eng_path, overwrite=False)
+if "zho-Hans_eng" in actions:
+    zho_hans_path = zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
+if "yue-Hant_transcribe" in actions:
     process_transcription_pipeline(
         title_root,
         reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
         language=Language.yue_hant,
-        output_dir_path=output_dir_path,
-        audio_dir_path=yue_hant_transcribe_path / "audio",
-        stop_at_idx=stop_at_idx,
+        output_dir_path=yue_hant_transcribe_path,
+        audio_path=yue_hant_transcribe_path / "audio.wav",
+        stop_at_idx=11,
         additional_context=transcription_additional_context,
-        mlx_audio_token_limit_guard=mlx_audio_token_limit_guard,
         overwrite=True,
     )
-
-
-def main():
-    """Create configured ACOPOPB test outputs."""
-    set_logging_verbosity(2)
-
-    actions = {"yue-Hant_transcribe"}
-
-    if "eng_ocr" in actions:
-        process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
-    if "yue-Hans_ocr" in actions:
-        process_ocr(title_root, Language.yue_hans, overwrite=False, interactive=True)
-    if "yue-Hant_ocr" in actions:
-        process_ocr(title_root, Language.yue_hant, overwrite=False, interactive=True)
-    if "zho-Hans_ocr" in actions:
-        process_ocr(title_root, Language.zho_hans, overwrite=False, interactive=True)
-    if "zho-Hant_ocr" in actions:
-        process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=True)
-    if "yue-Hans_eng" in actions:
-        yue_hans_path = yue_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
-        eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
-        process_yue_hans_eng(title_root, yue_hans_path, eng_path, overwrite=False)
-    if "zho-Hans_eng" in actions:
-        zho_hans_path = zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
-        eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
-        process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
-    if "yue-Hant_transcribe" in actions:
-        process_yue_hant_transcription()
-
-
-if __name__ == "__main__":
-    main()
