@@ -122,8 +122,8 @@ def test_artifact_can_be_retimed_without_changing_text_or_speech_bounds():
     assert retimed_subtitle.end_ms == 2500
 
 
-def test_audit_renders_merged_speaker_reference_and_boundary():
-    """The audit should stack production evidence above reference boundaries."""
+def test_audit_renders_merged_reference_and_boundary_by_default():
+    """Default rows should show ASR, merged, and collapsed reference boundaries."""
     artifact = _get_artifact()
     reference = Series(events=[Subtitle(start=800, end=2300, text="係呀")])
 
@@ -132,18 +132,122 @@ def test_audit_renders_merged_speaker_reference_and_boundary():
     assert "whisper" in report
     assert "mimo" in report
     assert "merged" in report
-    assert "speaker" in report
     assert "reference" in report
     assert "｜" in report
+    assert "Core " not in report
+    assert "Language trace:" not in report
+    assert not any(
+        line.startswith(("speaker", "language", "singing", "music"))
+        for line in report.splitlines()
+    )
+    merged_line = next(
+        line for line in report.splitlines() if line.startswith("merged")
+    )
+    reference_line = next(
+        line for line in report.splitlines() if line.startswith("reference")
+    )
+    whisper_line = next(
+        line for line in report.splitlines() if line.startswith("whisper")
+    )
+    report_lines = report.splitlines()
+    merged_idx = report_lines.index(merged_line)
+    separator_line = report_lines[merged_idx - 1]
+    assert report_lines[merged_idx - 2].startswith("mimo")
+    assert set(separator_line.lstrip(" ")) == {"－"}
+    assert merged_line.endswith("｜")
+    assert reference_line.endswith("｜")
+    assert whisper_line.endswith("　")
+    assert "＋" not in report
     assert "temporal micro IoU" in report
     assert "1:1 × 1" in report
+    assert "## Timing Comparisons" not in report
+    assert "CTC speech" not in report
+    assert "+100 ms" not in report
+
+
+def test_audit_renders_timing_tables_when_requested():
+    """Detailed timing tables should remain available as opt-in evidence."""
+    artifact = _get_artifact()
+    reference = Series(events=[Subtitle(start=800, end=2300, text="係呀")])
+
+    report = audit_transcription_alignment(
+        artifact, reference, include_timing_tables=True
+    )
+
     assert "## Timing Comparisons" in report
     assert "CTC speech" in report
     assert "+100 ms" in report
 
 
+def test_audit_distinguishes_unaligned_merged_and_reference_boundaries():
+    """Unaligned boundaries should mark only their owning alignment row."""
+    artifact = _get_artifact()
+    reference = Series(
+        events=[
+            Subtitle(start=800, end=1500, text="係"),
+            Subtitle(start=1500, end=2300, text="呀"),
+        ]
+    )
+
+    report = audit_transcription_alignment(artifact, reference)
+
+    merged_line = next(
+        line for line in report.splitlines() if line.startswith("merged")
+    )
+    reference_line = next(
+        line for line in report.splitlines() if line.startswith("reference")
+    )
+    whisper_line = next(
+        line for line in report.splitlines() if line.startswith("whisper")
+    )
+    assert "係　呀｜" in merged_line.replace("・", "")
+    assert "係｜呀｜" in reference_line.replace("・", "")
+    assert "係　呀　" in whisper_line.replace("・", "")
+
+
+def test_audit_renders_multiple_named_reference_rows():
+    """Multiple named references should retain independent owned boundaries."""
+    artifact = _get_artifact()
+    references = {
+        "zho-Hant": Series(events=[Subtitle(start=800, end=2300, text="係呀")]),
+        "yue-Hant": Series(
+            events=[
+                Subtitle(start=800, end=1500, text="係"),
+                Subtitle(start=1500, end=2300, text="呀"),
+            ]
+        ),
+    }
+
+    report = audit_transcription_alignment(artifact, references)
+
+    merged_line = next(
+        line for line in report.splitlines() if line.startswith("merged")
+    )
+    zho_hant_line = next(
+        line for line in report.splitlines() if line.startswith("zho-Hant")
+    )
+    yue_hant_line = next(
+        line for line in report.splitlines() if line.startswith("yue-Hant")
+    )
+    assert "references: zho-Hant, yue-Hant" in report
+    assert "### Reference zho-Hant" in report
+    assert "### Reference yue-Hant" in report
+    assert "係　呀｜" in merged_line.replace("・", "")
+    assert "係　呀｜" in zho_hant_line.replace("・", "")
+    assert "係｜呀｜" in yue_hant_line.replace("・", "")
+
+
+def test_audit_rejects_reference_name_conflicting_with_alignment_row():
+    """Reference names should not shadow production or annotation rows."""
+    artifact = _get_artifact()
+    reference = Series(events=[Subtitle(start=800, end=2300, text="係呀")])
+
+    with raises(ValueError, match="conflicts with alignment row"):
+        audit_transcription_alignment(artifact, {"merged": reference})
+
+
 def test_audit_renders_language_singing_and_music_rows():
-    """Portable FireRed traces should remain visible in audit alignments."""
+    """Portable FireRed traces should remain available as opt-in rows."""
     artifact = _get_artifact()
     block = artifact.blocks[0].model_copy(
         update={
@@ -155,15 +259,82 @@ def test_audit_renders_language_singing_and_music_rows():
     )
     artifact = artifact.model_copy(update={"blocks": (block,)})
 
-    report = audit_transcription_alignment(artifact)
+    report = audit_transcription_alignment(
+        artifact, include_audio_events=True, include_language=True, include_speaker=True
+    )
 
-    assert "Language trace: 粵=zh-yue, 日=ja." in report
+    assert "Language trace:" not in report
+    assert "speaker" in report
     assert "language" in report
     assert "singing" in report
     assert "music" in report
     assert "粵・日" in report
     assert "唱・　" in report
     assert "　・樂" in report
+
+
+def test_audit_splits_rows_at_merge_request_boundaries():
+    """Audit chunks should use the production long-pause request boundaries."""
+    artifact = _get_artifact()
+    block = TranscriptionAlignmentBlock(
+        index=1,
+        core_start_ms=500,
+        core_end_ms=2500,
+        buffered_start_ms=0,
+        buffered_end_ms=3000,
+        columns=(
+            TranscriptionAlignmentColumn(
+                index=1, start_ms=1000, end_ms=1200, kind="text"
+            ),
+            *(
+                TranscriptionAlignmentColumn(
+                    index=index,
+                    start_ms=1200 + (index - 2) * 250,
+                    end_ms=1450 + (index - 2) * 250,
+                    kind="pause",
+                )
+                for index in range(2, 6)
+            ),
+            TranscriptionAlignmentColumn(
+                index=6, start_ms=2200, end_ms=2400, kind="text"
+            ),
+        ),
+        rows=(
+            TranscriptionAlignmentRow(name="whisper", text="係・・・・呀"),
+            TranscriptionAlignmentRow(name="mimo", text="是・・・・呀"),
+        ),
+        speaker="Ａ・・・・Ａ",
+        merged="係・・・・呀",
+        subtitles=(
+            TranscriptionAlignmentSubtitle(
+                index=1,
+                text="係",
+                speech_start_ms=1000,
+                speech_end_ms=1200,
+                start_ms=900,
+                end_ms=1300,
+                speaker="SPEAKER_00",
+            ),
+            TranscriptionAlignmentSubtitle(
+                index=2,
+                text="呀",
+                speech_start_ms=2200,
+                speech_end_ms=2400,
+                start_ms=2100,
+                end_ms=2500,
+                speaker="SPEAKER_00",
+            ),
+        ),
+    )
+    artifact = artifact.model_copy(update={"blocks": (block,)})
+
+    report = audit_transcription_alignment(artifact)
+
+    assert report.count("whisper") == 2
+    assert "\n\nwhisper" in report
+    assert "[request " not in report
+    assert "[0001-" not in report
+    assert "・・・・" not in report
 
 
 def test_audit_renders_halfwidth_characters_as_fullwidth_cells():

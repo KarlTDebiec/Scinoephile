@@ -17,6 +17,7 @@ from .models import (
     AlignedTranscriptionMergeSubtitle,
 )
 from .prompt import AlignedTranscriptionMergePrompt
+from .splitting import get_alignment_content_spans
 
 __all__ = ["AlignedTranscriptionMergeProcessor"]
 
@@ -145,34 +146,6 @@ def _get_query_slice(
     )
 
 
-def _get_content_spans(
-    shared_pause_columns: Sequence[bool], request_pause_characters: int
-) -> tuple[tuple[int, int], ...]:
-    """Get content spans between long shared pause separators."""
-    separator_spans = []
-    run_start: int | None = None
-    for column_idx, is_shared_pause in enumerate((*shared_pause_columns, False)):
-        if is_shared_pause:
-            if run_start is None:
-                run_start = column_idx
-            continue
-        if run_start is None:
-            continue
-        if column_idx - run_start >= request_pause_characters:
-            separator_spans.append((run_start, column_idx))
-        run_start = None
-
-    content_spans = []
-    content_start = 0
-    for separator_start, separator_end in separator_spans:
-        if content_start < separator_start:
-            content_spans.append((content_start, separator_start))
-        content_start = separator_end
-    if content_start < len(shared_pause_columns):
-        content_spans.append((content_start, len(shared_pause_columns)))
-    return tuple(content_spans)
-
-
 def _get_request_queries(
     query: AlignedTranscriptionMergeQuery, request_pause_characters: int
 ) -> tuple[tuple[AlignedTranscriptionMergeQuery, ...], tuple[tuple[int, int], ...]]:
@@ -182,7 +155,9 @@ def _get_request_queries(
         and all(source.text[column_idx] == _PAUSE_CHARACTER for source in query.sources)
         for column_idx in range(len(query.speaker))
     )
-    content_spans = _get_content_spans(shared_pause_columns, request_pause_characters)
+    content_spans = get_alignment_content_spans(
+        shared_pause_columns, request_pause_characters
+    )
 
     requests = []
     request_spans = []

@@ -81,5 +81,6 @@ if "yue-Hant_transcribe" in actions:
         audio_path=yue_hant_transcribe_path / "audio.wav",
         stop_at_idx=11,
         additional_context=transcription_additional_context,
+        reference_name="yue-Hant",
         overwrite=True,
     )

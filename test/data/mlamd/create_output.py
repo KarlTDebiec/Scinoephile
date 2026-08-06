@@ -8,6 +8,8 @@ from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
+from scinoephile.core.subtitles import Series
+from test.data.helpers import load_or_traditionalize_series
 from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.data.transcription import process_transcription_pipeline
@@ -22,6 +24,12 @@ zho_hans_ocr_path = output_path / "zho-Hans_ocr"
 zho_hant_ocr_path = output_path / "zho-Hant_ocr"
 yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
 yue_transcribe_backup_path = output_path / "yue_transcribe_backup"
+old_yue_hans_path = (
+    yue_transcribe_backup_path / "transcribe_translate_guided_review.srt"
+)
+old_yue_hant_path = (
+    yue_transcribe_backup_path / "transcribe_translate_guided_review_traditionalize.srt"
+)
 
 transcription_additional_context = """
 電影背景：
@@ -75,6 +83,9 @@ if "yue-Hans_eng" in actions:
     eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
     process_yue_hans_eng(title_root, yue_hans_path, eng_path, overwrite=False)
 if "yue-Hant_transcribe" in actions:
+    old_yue_hant = load_or_traditionalize_series(
+        Series.load(old_yue_hans_path), old_yue_hant_path
+    )
     process_transcription_pipeline(
         title_root,
         reference_path=zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
@@ -83,5 +94,7 @@ if "yue-Hant_transcribe" in actions:
         audio_path=yue_hant_transcribe_path / "audio.wav",
         audio_source_path=yue_transcribe_backup_path / "audio/audio.wav",
         additional_context=transcription_additional_context,
+        additional_audit_references={"yue-Hant": old_yue_hant},
+        reference_name="zho-Hant",
         overwrite=True,
     )

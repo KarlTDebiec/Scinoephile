@@ -648,9 +648,45 @@ def test_transcription_alignment_audit_cli_help_and_validation(
         "first 1-indexed subtitle number to include, inclusive"
     )
     assert actions["alignment_path"].required
+    assert actions["reference_specs"].metavar == "NAME=PATH"
+    assert actions["reference_specs"].help == (
+        "named reference subtitle as NAME=PATH; repeat for multiple references"
+    )
+    assert actions["include_timing_tables"].default is False
+    assert actions["include_timing_tables"].help == (
+        "include detailed subtitle and reference timing tables"
+    )
+    assert "columns_per_chunk" not in actions
+    assert actions["include_speaker"].default is False
+    assert actions["include_language"].default is False
+    assert actions["include_audio_events"].default is False
 
     invalid_path = tmp_path / "alignment.json"
     invalid_path.write_text("{}", encoding="utf-8")
+    reference_path = tmp_path / "reference.srt"
+    _write_srt(reference_path, ("係呀",))
+    parsed = AuditTranscriptionAlignmentCli.argparser().parse_args(
+        [
+            "--alignment",
+            str(invalid_path),
+            "--reference",
+            f"zho-Hant={reference_path}",
+            "--reference",
+            f"yue-Hant={reference_path}",
+            "--include-speaker",
+            "--include-language",
+            "--include-audio-events",
+            "--include-timing",
+        ]
+    )
+    assert parsed.reference_specs == [
+        ("zho-Hant", reference_path),
+        ("yue-Hant", reference_path),
+    ]
+    assert parsed.include_speaker is True
+    assert parsed.include_language is True
+    assert parsed.include_audio_events is True
+    assert parsed.include_timing_tables is True
     with raises(SystemExit):
         run_cli_with_args(AuditTranscriptionAlignmentCli, f"--alignment {invalid_path}")
     assert "Unable to load transcription alignment artifact" in capsys.readouterr().err

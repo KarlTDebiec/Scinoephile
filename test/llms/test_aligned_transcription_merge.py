@@ -23,6 +23,9 @@ from scinoephile.llms.aligned_transcription_merge import (
     AlignedTranscriptionMergeSubtitle,
     AlignedTranscriptionMergeTestCase,
 )
+from scinoephile.llms.aligned_transcription_merge.splitting import (
+    get_alignment_content_spans,
+)
 
 _LOCALIZED_PROMPT = AlignedTranscriptionMergePrompt(
     language=Language.yue_hant,
@@ -35,6 +38,15 @@ _LOCALIZED_PROMPT = AlignedTranscriptionMergePrompt(
     subtitle_text="wenben",
 )
 """Aligned merge prompt with localized correspondence field names."""
+
+
+def test_alignment_content_spans_exclude_long_pause_separators():
+    """Content spans should retain short pauses and exclude long pause runs."""
+    shared_pauses = (False, True, False, True, True, True, True, False)
+
+    spans = get_alignment_content_spans(shared_pauses, separator_columns=4)
+
+    assert spans == ((0, 3), (7, 8))
 
 
 def _get_sources(*texts: str) -> list[AlignedTranscriptionMergeSource]:

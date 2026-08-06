@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 from collections import Counter
+from collections.abc import Mapping
 from logging import getLogger
 from pathlib import Path
 from shutil import copy2
@@ -62,6 +63,8 @@ def process_transcription_pipeline(
     stop_at_idx: int | None = None,
     target_reference_subtitles: int = 100,
     additional_context: str | None = None,
+    additional_audit_references: Mapping[str, Series] | None = None,
+    reference_name: str = "reference",
     timing_settings: SubtitleTimingSettings | None = None,
     diarization_mode: DiarizationMode = DiarizationMode.AUTO,
     mlx_audio_token_limit_guard: bool = True,
@@ -87,6 +90,8 @@ def process_transcription_pipeline(
         stop_at_idx: explicit exclusive VAD block index, overriding target count
         target_reference_subtitles: minimum reference subtitles covered by blocks
         additional_context: production consensus prompt context
+        additional_audit_references: additional named references used only in audits
+        reference_name: audit row name for the primary scoring reference
         timing_settings: reference-free display-timing policy
         diarization_mode: speaker diarization mode
         mlx_audio_token_limit_guard: whether to guard MiMo generation length
@@ -111,11 +116,18 @@ def process_transcription_pipeline(
     artifact_path = json_dir_path / "alignment.json"
     transcription_path = output_dir_path / "transcribe.srt"
     reference = Series.load(reference_path)
+    audit_references = {reference_name: reference}
+    for name, audit_reference in (additional_audit_references or {}).items():
+        if name in audit_references:
+            raise ValueError(f"Duplicate audit reference name: {name}")
+        audit_references[name] = audit_reference
 
     if artifact_path.exists() and transcription_path.exists() and not overwrite:
         artifact = TranscriptionAlignmentArtifact.load(artifact_path)
         output = artifact.get_series()
-        _save_evaluation(output_dir_path, artifact, reference)
+        _save_evaluation(
+            output_dir_path, artifact, reference, audit_references=audit_references
+        )
         return output
 
     audio = _load_audio_series(
@@ -155,7 +167,9 @@ def process_transcription_pipeline(
     usage_path = json_dir_path / "llm_usage.json"
     save_chat_completion_metrics_to_json(usage_path, completion_metrics)
     logger.info(format_chat_completion_metrics_report(completion_metrics))
-    _save_evaluation(output_dir_path, artifact, reference)
+    _save_evaluation(
+        output_dir_path, artifact, reference, audit_references=audit_references
+    )
     return output
 
 
@@ -219,9 +233,13 @@ def _load_audio_series(
 
 
 def _save_evaluation(
-    output_dir_path: Path, artifact: TranscriptionAlignmentArtifact, reference: Series
+    output_dir_path: Path,
+    artifact: TranscriptionAlignmentArtifact,
+    reference: Series,
+    *,
+    audit_references: Mapping[str, Series] | None = None,
 ):
-    """Save standardized reference-only evaluation metrics and audit Markdown."""
+    """Save standardized primary-reference metrics and named-reference audit."""
     selected_reference = get_reference_for_alignment(artifact, reference)
     reference_text = "".join(
         subtitle.text_with_newline for subtitle in selected_reference
@@ -285,7 +303,9 @@ def _save_evaluation(
         )
     (output_dir_path / "audit.md").write_text(
         audit_transcription_alignment(
-            artifact, reference, reference_similarity=reference_similarity
+            artifact,
+            audit_references or reference,
+            reference_similarity=reference_similarity,
         ),
         encoding="utf-8",
     )

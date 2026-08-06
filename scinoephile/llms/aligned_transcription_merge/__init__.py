@@ -6,6 +6,7 @@ Package hierarchy (modules may import from any above):
 * prompt
 * models
 * manager
+* splitting
 * processor
 """
 

@@ -3,7 +3,7 @@
   "version": 1,
   "processed_blocks": 33,
   "reference_subtitles": 100,
-  "candidate_subtitles": 173,
+  "candidate_subtitles": 157,
   "cer": {
     "whisper": {
       "cer": 1.2375776397515528,
@@ -54,11 +54,11 @@
       "reference_length": 644
     },
     "merged": {
-      "cer": 1.2531055900621118,
-      "correct": 248,
-      "substitutions": 375,
-      "insertions": 411,
-      "deletions": 21,
+      "cer": 1.2826086956521738,
+      "correct": 240,
+      "substitutions": 388,
+      "insertions": 422,
+      "deletions": 16,
       "reference_length": 644
     }
   },
@@ -68,27 +68,27 @@
       "lead_out_seconds": 0.5,
       "minimum_duration_seconds": 0.75
     },
-    "text_aligned_groups": 89,
-    "micro_intersection_over_union": 0.41377950334157115,
-    "one_to_one_groups": 56,
-    "one_to_one_micro_intersection_over_union": 0.42607610729881473,
-    "mean_intersection_over_union": 0.41610830493999634,
-    "mean_reference_coverage": 0.6998915295454841,
-    "mean_start_error_ms": -730.0898876404494,
-    "mean_end_error_ms": -31.134831460674157,
-    "mean_absolute_start_error_ms": 1063.3932584269662,
-    "mean_absolute_end_error_ms": 811.4494382022472,
-    "unmatched_candidate_subtitles": 44,
-    "unmatched_reference_subtitles": 0,
+    "text_aligned_groups": 86,
+    "micro_intersection_over_union": 0.447780745915956,
+    "one_to_one_groups": 58,
+    "one_to_one_micro_intersection_over_union": 0.41634028848646953,
+    "mean_intersection_over_union": 0.44580910876402224,
+    "mean_reference_coverage": 0.7373356307351893,
+    "mean_start_error_ms": -775.0697674418604,
+    "mean_end_error_ms": -11.63953488372093,
+    "mean_absolute_start_error_ms": 1059.0232558139535,
+    "mean_absolute_end_error_ms": 759.0581395348837,
+    "unmatched_candidate_subtitles": 39,
+    "unmatched_reference_subtitles": 1,
     "candidate_to_reference_group_counts": {
-      "1:1": 56,
+      "1:1": 58,
       "1:2": 5,
-      "2:1": 16,
-      "2:2": 5,
-      "3:1": 4,
-      "4:1": 1,
+      "2:1": 13,
+      "2:2": 4,
+      "3:1": 2,
+      "3:2": 2,
       "4:2": 1,
-      "6:1": 1
+      "5:2": 1
     }
   }
 }
