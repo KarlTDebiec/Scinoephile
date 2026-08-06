@@ -15,6 +15,7 @@ from pydub import AudioSegment
 
 from scinoephile.analysis.audit.transcription_alignment import (
     audit_transcription_alignment,
+    render_transcription_alignment_terminal,
 )
 from scinoephile.analysis.character_error_rate import LineCER
 from scinoephile.analysis.transcription_alignment import (
@@ -65,6 +66,7 @@ def process_transcription_pipeline(
     additional_context: str | None = None,
     additional_audit_references: Mapping[str, Series] | None = None,
     reference_name: str = "reference",
+    terminal_alignment_authority: str | None = None,
     timing_settings: SubtitleTimingSettings | None = None,
     diarization_mode: DiarizationMode = DiarizationMode.AUTO,
     mlx_audio_token_limit_guard: bool = True,
@@ -92,6 +94,7 @@ def process_transcription_pipeline(
         additional_context: production consensus prompt context
         additional_audit_references: additional named references used only in audits
         reference_name: audit row name for the primary scoring reference
+        terminal_alignment_authority: merged or named reference row for ANSI output
         timing_settings: reference-free display-timing policy
         diarization_mode: speaker diarization mode
         mlx_audio_token_limit_guard: whether to guard MiMo generation length
@@ -126,7 +129,11 @@ def process_transcription_pipeline(
         artifact = TranscriptionAlignmentArtifact.load(artifact_path)
         output = artifact.get_series()
         _save_evaluation(
-            output_dir_path, artifact, reference, audit_references=audit_references
+            output_dir_path,
+            artifact,
+            reference,
+            audit_references=audit_references,
+            terminal_alignment_authority=terminal_alignment_authority,
         )
         return output
 
@@ -168,7 +175,11 @@ def process_transcription_pipeline(
     save_chat_completion_metrics_to_json(usage_path, completion_metrics)
     logger.info(format_chat_completion_metrics_report(completion_metrics))
     _save_evaluation(
-        output_dir_path, artifact, reference, audit_references=audit_references
+        output_dir_path,
+        artifact,
+        reference,
+        audit_references=audit_references,
+        terminal_alignment_authority=terminal_alignment_authority,
     )
     return output
 
@@ -238,8 +249,9 @@ def _save_evaluation(
     reference: Series,
     *,
     audit_references: Mapping[str, Series] | None = None,
+    terminal_alignment_authority: str | None = None,
 ):
-    """Save standardized primary-reference metrics and named-reference audit."""
+    """Save evaluation artifacts and optionally log a colored alignment."""
     selected_reference = get_reference_for_alignment(artifact, reference)
     reference_text = "".join(
         subtitle.text_with_newline for subtitle in selected_reference
@@ -301,14 +313,21 @@ def _save_evaluation(
         reference_similarity = CantoneseTimedTokenSimilarity(
             timing_weight=4.0, timing_tolerance_seconds=0.75
         )
+    references = audit_references or reference
     (output_dir_path / "audit.md").write_text(
         audit_transcription_alignment(
-            artifact,
-            audit_references or reference,
-            reference_similarity=reference_similarity,
+            artifact, references, reference_similarity=reference_similarity
         ),
         encoding="utf-8",
     )
+    if terminal_alignment_authority is not None:
+        terminal_alignment = render_transcription_alignment_terminal(
+            artifact,
+            references,
+            authoritative_row_name=terminal_alignment_authority,
+            reference_similarity=reference_similarity,
+        )
+        logger.info(f"\n{terminal_alignment.rstrip()}")
     logger.info(
         "Aligned transcription evaluation: "
         + ", ".join(f"{name} CER {values['cer']:.3%}" for name, values in cer.items())

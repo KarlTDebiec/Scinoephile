@@ -3,14 +3,14 @@
   "version": 1,
   "processed_blocks": 11,
   "reference_subtitles": 100,
-  "candidate_subtitles": 107,
+  "candidate_subtitles": 106,
   "cer": {
     "whisper": {
-      "cer": 0.5454545454545454,
-      "correct": 563,
-      "substitutions": 205,
-      "insertions": 203,
-      "deletions": 24,
+      "cer": 0.3446969696969697,
+      "correct": 557,
+      "substitutions": 154,
+      "insertions": 38,
+      "deletions": 81,
       "reference_length": 792
     },
     "mimo": {
@@ -55,10 +55,10 @@
     },
     "merged": {
       "cer": 0.1717171717171717,
-      "correct": 711,
-      "substitutions": 65,
-      "insertions": 55,
-      "deletions": 16,
+      "correct": 712,
+      "substitutions": 63,
+      "insertions": 56,
+      "deletions": 17,
       "reference_length": 792
     }
   },
@@ -68,24 +68,24 @@
       "lead_out_seconds": 0.5,
       "minimum_duration_seconds": 0.75
     },
-    "text_aligned_groups": 87,
-    "micro_intersection_over_union": 0.6975591645729186,
-    "one_to_one_groups": 70,
-    "one_to_one_micro_intersection_over_union": 0.6592743254414293,
-    "mean_intersection_over_union": 0.7084883333088744,
-    "mean_reference_coverage": 0.8682710706426916,
-    "mean_start_error_ms": 53.9080459770115,
-    "mean_end_error_ms": 351.7241379310345,
-    "mean_absolute_start_error_ms": 284.5057471264368,
-    "mean_absolute_end_error_ms": 536.8505747126437,
+    "text_aligned_groups": 86,
+    "micro_intersection_over_union": 0.717987711348158,
+    "one_to_one_groups": 67,
+    "one_to_one_micro_intersection_over_union": 0.6744032538929158,
+    "mean_intersection_over_union": 0.7219850412740552,
+    "mean_reference_coverage": 0.8597056479413304,
+    "mean_start_error_ms": 108.5,
+    "mean_end_error_ms": 269.04651162790697,
+    "mean_absolute_start_error_ms": 261.3139534883721,
+    "mean_absolute_end_error_ms": 503.8139534883721,
     "unmatched_candidate_subtitles": 10,
-    "unmatched_reference_subtitles": 2,
+    "unmatched_reference_subtitles": 0,
     "candidate_to_reference_group_counts": {
-      "1:1": 70,
-      "1:2": 8,
-      "2:1": 5,
+      "1:1": 67,
+      "1:2": 9,
+      "2:1": 6,
       "2:2": 3,
-      "3:1": 1
+      "2:3": 1
     }
   }
 }

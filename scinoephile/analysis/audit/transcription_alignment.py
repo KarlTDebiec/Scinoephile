@@ -16,7 +16,6 @@ from scinoephile.analysis.multisequence_alignment import (
     TimedAlignmentToken,
     TimedMultiSequenceAligner,
     TimedMultiSequenceAlignment,
-    get_timed_alignment_with_pauses,
 )
 from scinoephile.analysis.transcription_alignment import (
     TranscriptionAlignmentArtifact,
@@ -27,13 +26,14 @@ from scinoephile.analysis.transcription_timing import (
     get_reference_for_alignment,
 )
 from scinoephile.core.subtitles import Series
+from scinoephile.core.text import AnsiColor, colorize
 from scinoephile.llms.aligned_transcription_merge.splitting import (
     get_alignment_content_spans,
 )
 
 from .utils import validate_audit_range
 
-__all__ = ["audit_transcription_alignment"]
+__all__ = ["audit_transcription_alignment", "render_transcription_alignment_terminal"]
 
 _BOUNDARY_CHARACTER = "｜"
 _GAP_CHARACTER = "　"
@@ -135,13 +135,97 @@ def audit_transcription_alignment(
             block,
             block_references,
             aligner,
-            pause_unit_ms=artifact.pause_unit_ms,
             request_pause_columns=artifact.request_pause_columns,
             include_audio_events=include_audio_events,
             include_language=include_language,
             include_speaker=include_speaker,
         )
         lines.extend(("", "```text", rendered, "```", ""))
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def render_transcription_alignment_terminal(
+    artifact: TranscriptionAlignmentArtifact,
+    references: Series | Mapping[str, Series] | None = None,
+    *,
+    authoritative_row_name: str = "merged",
+    reference_similarity: Callable[[TimedAlignmentToken, TimedAlignmentToken], float]
+    | None = None,
+    first_index: int | None = None,
+    last_index: int | None = None,
+    first_block: int | None = None,
+    last_block: int | None = None,
+    include_audio_events: bool = False,
+    include_language: bool = False,
+    include_speaker: bool = False,
+) -> str:
+    """Render an ANSI-colored multi-source alignment for a terminal.
+
+    Exact matches are green, substitutions are purple, characters present only
+    in the authoritative row are red, and characters absent from it are blue.
+
+    Arguments:
+        artifact: portable multi-source transcription alignment
+        references: optional named independent references, or one legacy series
+        authoritative_row_name: named reference or merged row used for coloring
+        reference_similarity: optional audit-only reference substitution scoring
+        first_index: first one-based merged subtitle index to include
+        last_index: last one-based merged subtitle index to include
+        first_block: first one-based VAD block index to include
+        last_block: last one-based VAD block index to include
+        include_audio_events: whether to render singing and music rows
+        include_language: whether to render the spoken-language row
+        include_speaker: whether to render the speaker row
+    Returns:
+        ANSI-colored terminal alignment
+    Raises:
+        ScinoephileError: if index and block ranges are mixed or invalid
+        ValueError: if the authoritative row is not merged or a named reference
+    """
+    validate_audit_range(first_index, last_index, first_block, last_block)
+    named_references = _get_named_references(artifact, references)
+    valid_authoritative_names = {"merged", *named_references}
+    if authoritative_row_name not in valid_authoritative_names:
+        options = ", ".join(sorted(valid_authoritative_names))
+        raise ValueError(
+            f"Authoritative alignment row must be one of: {options}; "
+            f"got {authoritative_row_name!r}."
+        )
+    blocks = _get_selected_blocks(
+        artifact.blocks,
+        first_index=first_index,
+        last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
+    )
+    if reference_similarity is None:
+        reference_similarity = _get_token_similarity
+    aligner = TimedMultiSequenceAligner(reference_similarity)
+    lines = [f"Authority: {authoritative_row_name}"]
+    for block in blocks:
+        lines.extend(("", f"Block {block.index}"))
+        if block.source_errors:
+            errors = "; ".join(
+                f"{name}: {error}" for name, error in block.source_errors.items()
+            )
+            lines.append(f"Source errors: {errors}")
+        block_artifact = artifact.model_copy(update={"blocks": (block,)})
+        block_references = {
+            reference_name: get_reference_for_alignment(block_artifact, reference)
+            for reference_name, reference in named_references.items()
+        }
+        lines.append(
+            _render_block(
+                block,
+                block_references,
+                aligner,
+                request_pause_columns=artifact.request_pause_columns,
+                include_audio_events=include_audio_events,
+                include_language=include_language,
+                include_speaker=include_speaker,
+                authoritative_row_name=authoritative_row_name,
+            )
+        )
     return "\n".join(lines).rstrip() + "\n"
 
 
@@ -282,28 +366,6 @@ def _get_metric_summary(
     return lines
 
 
-def _get_pause_intervals(
-    block: TranscriptionAlignmentBlock,
-) -> tuple[tuple[float, float], ...]:
-    """Combine consecutive artifact pause columns into intervals."""
-    intervals = []
-    start_ms = None
-    end_ms = None
-    for column in block.columns:
-        if column.kind == "pause":
-            if start_ms is None:
-                start_ms = column.start_ms
-            end_ms = column.end_ms
-            continue
-        if start_ms is not None and end_ms is not None:
-            intervals.append((start_ms / 1000, end_ms / 1000))
-        start_ms = None
-        end_ms = None
-    if start_ms is not None and end_ms is not None:
-        intervals.append((start_ms / 1000, end_ms / 1000))
-    return tuple(intervals)
-
-
 def _get_selected_blocks(
     blocks: Sequence[TranscriptionAlignmentBlock],
     *,
@@ -336,17 +398,19 @@ def _render_block(
     references: Mapping[str, Series],
     aligner: TimedMultiSequenceAligner,
     *,
-    pause_unit_ms: int,
     request_pause_columns: int,
     include_audio_events: bool,
     include_language: bool,
     include_speaker: bool,
+    authoritative_row_name: str | None = None,
 ) -> str:
     """Reconstruct and render one artifact block with named references."""
     artifact_rows = (*block.rows,)
     row_names = tuple(row.name for row in artifact_rows) + ("merged",)
     row_texts = tuple(row.text for row in artifact_rows) + (block.merged,)
     lexical_columns = []
+    pause_intervals_by_profile_boundary: dict[int, list[tuple[float, float]]] = {}
+    profile_column_anchor_ids = []
     annotation_rows = _get_annotation_rows(
         block,
         include_audio_events=include_audio_events,
@@ -356,6 +420,9 @@ def _render_block(
     annotations_by_token_id = {}
     for column_idx, column in enumerate(block.columns):
         if column.kind == "pause":
+            pause_intervals_by_profile_boundary.setdefault(
+                len(lexical_columns), []
+            ).append((column.start_ms / 1000, column.end_ms / 1000))
             continue
         tokens = []
         for row_text in row_texts:
@@ -369,7 +436,11 @@ def _render_block(
                     row[column_idx] for _, row in annotation_rows
                 )
             tokens.append(token)
-        lexical_columns.append(TimedAlignmentColumn(tuple(tokens)))
+        lexical_column = TimedAlignmentColumn(tuple(tokens))
+        lexical_columns.append(lexical_column)
+        profile_column_anchor_ids.append(
+            id(next(token for token in lexical_column.tokens if token is not None))
+        )
     alignment = TimedMultiSequenceAlignment(
         source_names=row_names, columns=tuple(lexical_columns)
     )
@@ -377,18 +448,15 @@ def _render_block(
     for reference_name, reference in references.items():
         reference_sequence = _get_reference_sequence(reference_name, reference)
         alignment = aligner.add_sequence(alignment, reference_sequence)
+    alignment = _get_alignment_with_profile_pauses(
+        alignment, tuple(profile_column_anchor_ids), pause_intervals_by_profile_boundary
+    )
     alignment, marker_source_indexes_by_column_id = _get_alignment_with_track_markers(
         alignment, _get_track_markers(block, references)
     )
-    pause_intervals = _get_pause_intervals(block)
-    if pause_intervals:
-        alignment = get_timed_alignment_with_pauses(
-            alignment,
-            pause_intervals_seconds=pause_intervals,
-            minimum_pause_seconds=pause_unit_ms / 1000,
-            pause_unit_seconds=pause_unit_ms / 1000,
-            source_names=("merged",),
-        )
+    authoritative_source_idx = None
+    if authoritative_row_name is not None:
+        authoritative_source_idx = alignment.source_names.index(authoritative_row_name)
 
     label_width = max(
         len(name)
@@ -413,16 +481,23 @@ def _render_block(
                     " " * (label_width + 2)
                     + _SECTION_SEPARATOR_CHARACTER * len(columns)
                 )
-            cells = [
-                _get_alignment_cell(
+            cells = []
+            for column in columns:
+                cell = _get_alignment_cell(
                     column, source_idx, marker_source_indexes_by_column_id
                 )
-                for column in columns
-            ]
-            lines.append(
-                f"{source_name:<{label_width}}  "
-                + "".join(_get_display_cell(cell) for cell in cells)
-            )
+                display_cell = _get_display_cell(cell)
+                if authoritative_source_idx is not None:
+                    color = _get_alignment_cell_color(
+                        column,
+                        source_idx,
+                        authoritative_source_idx,
+                        marker_source_indexes_by_column_id,
+                    )
+                    if color is not None:
+                        display_cell = colorize(display_cell, color)
+                cells.append(display_cell)
+            lines.append(f"{source_name:<{label_width}}  " + "".join(cells))
             if source_name == "merged":
                 for annotation_idx, (annotation_name, _) in enumerate(annotation_rows):
                     annotation_cells = [
@@ -483,6 +558,38 @@ def _get_alignment_cell(
     return token.text
 
 
+def _get_alignment_cell_color(
+    column: TimedAlignmentColumn,
+    source_idx: int,
+    authoritative_source_idx: int,
+    marker_source_indexes_by_column_id: dict[int, frozenset[int]],
+) -> AnsiColor | None:
+    """Get a cell color relative to one authoritative alignment row."""
+    cell = _get_alignment_cell(column, source_idx, marker_source_indexes_by_column_id)
+    if cell == _GAP_CHARACTER:
+        return None
+    authoritative_cell = _get_alignment_cell(
+        column, authoritative_source_idx, marker_source_indexes_by_column_id
+    )
+    if source_idx != authoritative_source_idx:
+        if cell == authoritative_cell:
+            return AnsiColor.GREEN
+        if authoritative_cell == _GAP_CHARACTER:
+            return AnsiColor.BLUE
+        return AnsiColor.PURPLE
+
+    other_cells = tuple(
+        _get_alignment_cell(column, other_idx, marker_source_indexes_by_column_id)
+        for other_idx in range(len(column.tokens))
+        if other_idx != authoritative_source_idx
+    )
+    if cell in other_cells:
+        return AnsiColor.GREEN
+    if any(other_cell != _GAP_CHARACTER for other_cell in other_cells):
+        return AnsiColor.PURPLE
+    return AnsiColor.RED
+
+
 def _get_alignment_with_track_markers(
     alignment: TimedMultiSequenceAlignment,
     markers_by_source: dict[str, tuple[tuple[int, float], ...]],
@@ -538,6 +645,47 @@ def _get_alignment_with_track_markers(
             source_names=alignment.source_names, columns=tuple(output_columns)
         ),
         marker_source_indexes_by_column_id,
+    )
+
+
+def _get_alignment_with_profile_pauses(
+    alignment: TimedMultiSequenceAlignment,
+    profile_column_anchor_ids: tuple[int, ...],
+    pause_intervals_by_profile_boundary: Mapping[int, Sequence[tuple[float, float]]],
+) -> TimedMultiSequenceAlignment:
+    """Restore artifact pauses at their fixed production profile boundaries."""
+    if not pause_intervals_by_profile_boundary:
+        return alignment
+
+    profile_boundaries = {0: 0}
+    profile_column_idx = 0
+    for boundary, column in enumerate(alignment.columns, 1):
+        if profile_column_idx >= len(profile_column_anchor_ids):
+            break
+        anchor_id = profile_column_anchor_ids[profile_column_idx]
+        if any(token is not None and id(token) == anchor_id for token in column.tokens):
+            profile_column_idx += 1
+            profile_boundaries[profile_column_idx] = boundary
+    if profile_column_idx != len(profile_column_anchor_ids):
+        raise RuntimeError("Audit reference alignment lost an artifact profile column.")
+
+    pauses_by_boundary = {
+        profile_boundaries[profile_boundary]: intervals
+        for profile_boundary, intervals in pause_intervals_by_profile_boundary.items()
+    }
+    output_columns = []
+    for boundary in range(len(alignment.columns) + 1):
+        output_columns.extend(
+            TimedAlignmentColumn(
+                (None,) * len(alignment.source_names),
+                pause_interval_seconds=pause_interval,
+            )
+            for pause_interval in pauses_by_boundary.get(boundary, ())
+        )
+        if boundary < len(alignment.columns):
+            output_columns.append(alignment.columns[boundary])
+    return TimedMultiSequenceAlignment(
+        source_names=alignment.source_names, columns=tuple(output_columns)
     )
 
 

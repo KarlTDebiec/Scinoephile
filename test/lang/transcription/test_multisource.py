@@ -33,14 +33,25 @@ from scinoephile.llms.aligned_transcription_merge import (
 
 
 def _get_segment(
-    text: str, start: float, end: float, *, with_words: bool = True
+    text: str,
+    start: float,
+    end: float,
+    *,
+    compression_ratio: float | None = None,
+    with_words: bool = True,
 ) -> TranscribedSegment:
     """Get one timestamped transcription segment."""
     words = None
     if with_words:
         words = [TranscribedWord(text=text, start=start, end=end, confidence=1.0)]
     return TranscribedSegment(
-        id=0, seek=0, start=start, end=end, text=text, words=words
+        id=0,
+        seek=0,
+        start=start,
+        end=end,
+        text=text,
+        compression_ratio=compression_ratio,
+        words=words,
     )
 
 
@@ -326,6 +337,64 @@ def test_call_falls_back_to_only_successful_source():
     assert output is segments
     merger.process.assert_not_called()
     ctc_aligner.assert_not_called()
+
+
+def test_call_excludes_source_with_pathological_compression():
+    """A repetitive source rejected by its compression signal should be omitted."""
+    audio = AudioSegment.silent(duration=1_000)
+    whisper = Mock(
+        spec=Transcriber,
+        return_value=[_get_segment("呀" * 100, 0.1, 0.4, compression_ratio=37.0)],
+    )
+    mimo_segments = [_get_segment("甲", 0.1, 0.4)]
+    qwen_segments = [_get_segment("乙", 0.2, 0.5)]
+    mimo = Mock(spec=Transcriber, return_value=mimo_segments)
+    qwen = Mock(spec=Transcriber, return_value=qwen_segments)
+    transcriber = _get_transcriber(
+        sources={"whisper": whisper, "mimo": mimo, "qwen": qwen}
+    )
+    expected = [_get_segment("甲乙", 0.1, 0.5)]
+    transcriber.merge = Mock(return_value=expected)
+
+    output = transcriber(audio)
+
+    assert output is expected
+    transcriber.merge.assert_called_once_with(
+        {"mimo": mimo_segments, "qwen": qwen_segments},
+        audio,
+        pause_intervals_seconds=(),
+        voice_activity_trace=None,
+        voice_activity_offset_seconds=0.0,
+        diarization=None,
+        diarization_offset_seconds=0.0,
+    )
+    assert transcriber.last_source_errors == {
+        "whisper": "Segment 0 compression ratio 37.00 exceeds maximum 2.40."
+    }
+
+
+def test_call_excludes_source_with_timestamp_beyond_audio():
+    """A source ending beyond the block tolerance should be omitted."""
+    audio = AudioSegment.silent(duration=1_000)
+    whisper = Mock(spec=Transcriber, return_value=[_get_segment("幻", 0.1, 2.1)])
+    mimo_segments = [_get_segment("甲", 0.1, 0.4)]
+    qwen_segments = [_get_segment("乙", 0.2, 0.5)]
+    transcriber = _get_transcriber(
+        sources={
+            "whisper": whisper,
+            "mimo": Mock(spec=Transcriber, return_value=mimo_segments),
+            "qwen": Mock(spec=Transcriber, return_value=qwen_segments),
+        }
+    )
+    expected = [_get_segment("甲乙", 0.1, 0.5)]
+    transcriber.merge = Mock(return_value=expected)
+
+    output = transcriber(audio)
+
+    assert output is expected
+    assert transcriber.last_source_errors == {
+        "whisper": "Segment 0 ends at 2.10s beyond 1.00s source audio."
+    }
 
 
 def test_call_tolerates_one_source_inference_failure():

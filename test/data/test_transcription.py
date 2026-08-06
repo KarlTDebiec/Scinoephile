@@ -9,7 +9,7 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 from pydub import AudioSegment
-from pytest import raises
+from pytest import LogCaptureFixture, raises
 
 from scinoephile.analysis.transcription_alignment import (
     TranscriptionAlignmentArtifact,
@@ -95,12 +95,21 @@ def test_media_audio_trim_is_applied_before_staging(tmp_path: Path):
     load_audio.assert_called_once()
 
 
-def test_evaluation_writes_standardized_metrics_and_audit(tmp_path: Path):
+def test_evaluation_writes_standardized_metrics_and_audit(
+    tmp_path: Path, caplog: LogCaptureFixture
+):
     """Evaluation should report every source, merged CER, and display timing."""
     artifact = _get_artifact()
     reference = Series(events=[Subtitle(start=900, end=2_100, text="係呀")])
+    caplog.set_level("INFO", logger="test.data.transcription")
 
-    _save_evaluation(tmp_path, artifact, reference)
+    _save_evaluation(
+        tmp_path,
+        artifact,
+        reference,
+        audit_references={"yue-Hant": reference},
+        terminal_alignment_authority="yue-Hant",
+    )
 
     metrics = json.loads((tmp_path / "json/metrics.json").read_text(encoding="utf-8"))
     assert metrics["format"] == "scinoephile-transcription-evaluation"
@@ -109,7 +118,9 @@ def test_evaluation_writes_standardized_metrics_and_audit(tmp_path: Path):
     assert metrics["reference_subtitles"] == 1
     audit = (tmp_path / "audit.md").read_text(encoding="utf-8")
     assert "# Transcription Alignment Audit" in audit
-    assert "reference" in audit
+    assert "yue-Hant" in audit
+    assert "Authority: yue-Hant" in caplog.text
+    assert any("\x1b[32m" in record.getMessage() for record in caplog.records)
 
 
 def _get_artifact() -> TranscriptionAlignmentArtifact:

@@ -689,10 +689,11 @@ def _get_alignment_with_explicit_pauses(
         )
         if not pause_columns:
             continue
-        pause_midpoint = (pause_start + pause_end) / 2
         boundary = max(
             previous_boundary,
-            _get_timed_insertion_boundary(alignment, source_indexes, pause_midpoint),
+            _get_explicit_pause_insertion_boundary(
+                alignment, source_indexes, pause_interval
+            ),
         )
         previous_boundary = boundary
         pauses_by_boundary.setdefault(boundary, []).extend(pause_columns)
@@ -705,6 +706,62 @@ def _get_alignment_with_explicit_pauses(
     return TimedMultiSequenceAlignment(
         source_names=alignment.source_names, columns=tuple(output_columns)
     )
+
+
+def _get_explicit_pause_insertion_boundary(
+    alignment: TimedMultiSequenceAlignment,
+    source_indexes: tuple[int, ...],
+    pause_interval: tuple[float, float],
+) -> int:
+    """Locate an explicit pause using source gaps before token midpoints.
+
+    A source whose inter-token gap overlaps most of the detected pause provides
+    direct boundary evidence. This is stronger than voting on character
+    midpoints, particularly when several sources share the same forced aligner
+    and therefore repeat one timing error. The robust median-midpoint placement
+    remains the fallback when no source exposes a sufficiently matching gap.
+    """
+    pause_start, pause_end = pause_interval
+    pause_midpoint = (pause_start + pause_end) / 2
+    fallback_boundary = _get_timed_insertion_boundary(
+        alignment, source_indexes, pause_midpoint
+    )
+    future_starts = _get_future_starts_by_source(alignment, source_indexes)
+    previous_ends: list[float | None] = [None] * len(source_indexes)
+    best_boundary = fallback_boundary
+    best_score = (0.0, 0.0, -len(alignment.columns))
+
+    for boundary in range(len(alignment.columns) + 1):
+        overlaps = []
+        for source_position, previous_end in enumerate(previous_ends):
+            next_start = future_starts[source_position][boundary]
+            if previous_end is None or next_start is None:
+                overlaps.append(0.0)
+                continue
+            overlaps.append(
+                max(0.0, min(next_start, pause_end) - max(previous_end, pause_start))
+            )
+        score = (
+            max(overlaps, default=0.0),
+            sum(overlaps),
+            -abs(boundary - fallback_boundary),
+        )
+        if score > best_score:
+            best_boundary = boundary
+            best_score = score
+
+        if boundary == len(alignment.columns):
+            continue
+        column = alignment.columns[boundary]
+        for source_position, source_idx in enumerate(source_indexes):
+            token = column.tokens[source_idx]
+            if token is not None:
+                previous_ends[source_position] = token.end_seconds
+
+    pause_duration = pause_end - pause_start
+    if best_score[0] < pause_duration / 2:
+        return fallback_boundary
+    return best_boundary
 
 
 def _get_timed_insertion_boundary(
@@ -727,6 +784,23 @@ def _get_timed_insertion_boundary(
         if column_time is not None and column_time <= target_time:
             boundary = column_idx + 1
     return boundary
+
+
+def _get_future_starts_by_source(
+    alignment: TimedMultiSequenceAlignment, source_indexes: tuple[int, ...]
+) -> tuple[tuple[float | None, ...], ...]:
+    """Get each selected source's next token start after every boundary."""
+    starts_by_source = []
+    for source_idx in source_indexes:
+        future_starts: list[float | None] = [None] * (len(alignment.columns) + 1)
+        next_start = None
+        for column_idx in range(len(alignment.columns) - 1, -1, -1):
+            token = alignment.columns[column_idx].tokens[source_idx]
+            if token is not None:
+                next_start = token.start_seconds
+            future_starts[column_idx] = next_start
+        starts_by_source.append(tuple(future_starts))
+    return tuple(starts_by_source)
 
 
 def _get_marker_source_indexes(

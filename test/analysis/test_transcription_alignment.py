@@ -10,6 +10,7 @@ from pytest import approx, raises
 
 from scinoephile.analysis.audit.transcription_alignment import (
     audit_transcription_alignment,
+    render_transcription_alignment_terminal,
 )
 from scinoephile.analysis.multisequence_alignment import TimedAlignmentToken
 from scinoephile.analysis.transcription_alignment import (
@@ -165,6 +166,84 @@ def test_audit_renders_merged_reference_and_boundary_by_default():
     assert "+100 ms" not in report
 
 
+def test_terminal_alignment_colors_rows_against_merged_authority():
+    """Terminal rows should reuse the standard four-color diff palette."""
+    artifact = _get_artifact()
+    block = artifact.blocks[0].model_copy(
+        update={
+            "columns": (
+                TranscriptionAlignmentColumn(
+                    index=1, start_ms=1_000, end_ms=1_200, kind="text"
+                ),
+                TranscriptionAlignmentColumn(
+                    index=2, start_ms=1_200, end_ms=1_400, kind="text"
+                ),
+                TranscriptionAlignmentColumn(
+                    index=3, start_ms=1_400, end_ms=1_600, kind="text"
+                ),
+                TranscriptionAlignmentColumn(
+                    index=4, start_ms=1_600, end_ms=1_800, kind="text"
+                ),
+            ),
+            "rows": (
+                TranscriptionAlignmentRow(name="whisper", text="甲丙　戊"),
+                TranscriptionAlignmentRow(name="mimo", text="甲　　　"),
+            ),
+            "speaker": "ＡＡＡＡ",
+            "merged": "甲乙丁　",
+            "subtitles": (
+                TranscriptionAlignmentSubtitle(
+                    index=1,
+                    text="甲乙丁",
+                    speech_start_ms=1_000,
+                    speech_end_ms=1_600,
+                    start_ms=900,
+                    end_ms=1_900,
+                ),
+            ),
+        }
+    )
+    artifact = artifact.model_copy(update={"blocks": (block,)})
+
+    rendered = render_transcription_alignment_terminal(artifact)
+
+    whisper_line = next(
+        line for line in rendered.splitlines() if line.startswith("whisper")
+    )
+    merged_line = next(
+        line for line in rendered.splitlines() if line.startswith("merged")
+    )
+    assert "Authority: merged" in rendered
+    assert "\x1b[32m甲\x1b[0m" in whisper_line
+    assert "\x1b[35m丙\x1b[0m" in whisper_line
+    assert "\x1b[34m戊\x1b[0m" in whisper_line
+    assert "\x1b[32m甲\x1b[0m" in merged_line
+    assert "\x1b[35m乙\x1b[0m" in merged_line
+    assert "\x1b[31m丁\x1b[0m" in merged_line
+
+
+def test_terminal_alignment_accepts_named_reference_authority():
+    """A named audit reference should be selectable as terminal authority."""
+    artifact = _get_artifact()
+    references = {
+        "yue-Hant": Series(events=[Subtitle(start=800, end=2_300, text="係呀")])
+    }
+
+    rendered = render_transcription_alignment_terminal(
+        artifact, references, authoritative_row_name="yue-Hant"
+    )
+
+    assert "Authority: yue-Hant" in rendered
+    reference_line = next(
+        line for line in rendered.splitlines() if line.startswith("yue-Hant")
+    )
+    assert "\x1b[32m係\x1b[0m" in reference_line
+    with raises(ValueError, match="Authoritative alignment row"):
+        render_transcription_alignment_terminal(
+            artifact, references, authoritative_row_name="zho-Hant"
+        )
+
+
 def test_audit_renders_timing_tables_when_requested():
     """Detailed timing tables should remain available as opt-in evidence."""
     artifact = _get_artifact()
@@ -177,6 +256,74 @@ def test_audit_renders_timing_tables_when_requested():
     assert "## Timing Comparisons" in report
     assert "CTC speech" in report
     assert "+100 ms" in report
+
+
+def test_audit_preserves_artifact_pause_boundary_despite_column_timing():
+    """Reference augmentation should not move a production pause across text."""
+    artifact = _get_artifact()
+    block = TranscriptionAlignmentBlock(
+        index=1,
+        core_start_ms=0,
+        core_end_ms=1_500,
+        buffered_start_ms=0,
+        buffered_end_ms=1_500,
+        columns=(
+            TranscriptionAlignmentColumn(
+                index=1, start_ms=0, end_ms=1_000, kind="text"
+            ),
+            TranscriptionAlignmentColumn(
+                index=2, start_ms=1_000, end_ms=1_100, kind="text"
+            ),
+            TranscriptionAlignmentColumn(
+                index=3, start_ms=500, end_ms=750, kind="pause"
+            ),
+            TranscriptionAlignmentColumn(
+                index=4, start_ms=1_200, end_ms=1_400, kind="text"
+            ),
+        ),
+        rows=(
+            TranscriptionAlignmentRow(name="whisper", text="三夜・見"),
+            TranscriptionAlignmentRow(name="mimo", text="三夜・見"),
+        ),
+        speaker="ＡＡ・Ａ",
+        merged="三夜・見",
+        subtitles=(
+            TranscriptionAlignmentSubtitle(
+                index=1,
+                text="三夜",
+                speech_start_ms=0,
+                speech_end_ms=1_100,
+                start_ms=0,
+                end_ms=1_100,
+                speaker="SPEAKER_00",
+            ),
+            TranscriptionAlignmentSubtitle(
+                index=2,
+                text="見",
+                speech_start_ms=1_200,
+                speech_end_ms=1_400,
+                start_ms=1_200,
+                end_ms=1_500,
+                speaker="SPEAKER_00",
+            ),
+        ),
+    )
+    artifact = artifact.model_copy(
+        update={"audio_duration_ms": 1_500, "blocks": (block,)}
+    )
+    reference = Series(
+        events=[
+            Subtitle(start=0, end=1_100, text="三夜"),
+            Subtitle(start=1_200, end=1_500, text="見"),
+        ]
+    )
+
+    report = audit_transcription_alignment(artifact, reference)
+
+    for row_name in ("whisper", "mimo", "merged", "reference"):
+        row = next(line for line in report.splitlines() if line.startswith(row_name))
+        assert "三夜" in row
+        assert "三・夜" not in row
 
 
 def test_audit_distinguishes_unaligned_merged_and_reference_boundaries():

@@ -188,6 +188,53 @@ def test_explicit_timed_pauses_are_inserted_at_source_time():
     assert with_pauses.columns[1].pause_interval_seconds == (0.3, 1.1)
 
 
+def test_explicit_timed_pause_prefers_matching_source_gap():
+    """A real source gap should override correlated forced-alignment timing."""
+    alignment = TimedMultiSequenceAlignment(
+        source_names=("native", "ctc-one", "ctc-two"),
+        columns=(
+            TimedAlignmentColumn(
+                (
+                    TimedAlignmentToken("三", 0.0, 0.2),
+                    TimedAlignmentToken("三", 0.0, 1.4),
+                    TimedAlignmentToken("三", 0.0, 1.4),
+                )
+            ),
+            TimedAlignmentColumn(
+                (
+                    TimedAlignmentToken("夜", 0.2, 0.4),
+                    TimedAlignmentToken("夜", 1.4, 1.5),
+                    TimedAlignmentToken("夜", 1.4, 1.5),
+                )
+            ),
+            TimedAlignmentColumn(
+                (
+                    TimedAlignmentToken("見", 1.2, 1.4),
+                    TimedAlignmentToken("見", 1.5, 1.7),
+                    TimedAlignmentToken("見", 1.5, 1.7),
+                )
+            ),
+        ),
+    )
+
+    with_pauses = get_timed_alignment_with_pauses(
+        alignment,
+        pause_intervals_seconds=((0.5, 1.1),),
+        source_names=("native", "ctc-one", "ctc-two"),
+    )
+
+    assert tuple(
+        column_idx
+        for column_idx, column in enumerate(with_pauses.columns)
+        if column.is_pause
+    ) == (2, 3)
+    assert [
+        token.text
+        for column in with_pauses.columns
+        if (token := column.tokens[0]) is not None
+    ] == ["三", "夜", "見"]
+
+
 def test_timed_pause_default_threshold_is_point_two_five_seconds():
     """Default pause rendering should include 0.25 seconds but exclude shorter gaps."""
     alignment = TimedMultiSequenceAlignment(
