@@ -96,5 +96,6 @@ if "yue-Hant_transcribe" in actions:
         additional_context=transcription_additional_context,
         additional_audit_references={"yue-Hant": old_yue_hant},
         reference_name="zho-Hant",
+        terminal_alignment_authority="yue-Hant",
         overwrite=True,
     )

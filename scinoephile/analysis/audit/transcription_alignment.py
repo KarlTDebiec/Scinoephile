@@ -468,51 +468,76 @@ def _render_block(
     )
     for chunk_start, chunk_end in content_spans:
         columns = alignment.columns[chunk_start:chunk_end]
-        if not any(
-            token is not None
-            for column in columns
-            for token in column.tokens[: len(artifact_rows)]
-        ):
-            continue
-        lines = []
-        for source_idx, source_name in enumerate(alignment.source_names):
-            if source_name == "merged":
-                lines.append(
-                    " " * (label_width + 2)
-                    + _SECTION_SEPARATOR_CHARACTER * len(columns)
-                )
-            cells = []
-            for column in columns:
-                cell = _get_alignment_cell(
-                    column, source_idx, marker_source_indexes_by_column_id
-                )
-                display_cell = _get_display_cell(cell)
-                if authoritative_source_idx is not None:
-                    color = _get_alignment_cell_color(
-                        column,
-                        source_idx,
-                        authoritative_source_idx,
-                        marker_source_indexes_by_column_id,
-                    )
-                    if color is not None:
-                        display_cell = colorize(display_cell, color)
-                cells.append(display_cell)
-            lines.append(f"{source_name:<{label_width}}  " + "".join(cells))
-            if source_name == "merged":
-                for annotation_idx, (annotation_name, _) in enumerate(annotation_rows):
-                    annotation_cells = [
-                        _get_annotation_cell(
-                            column, annotations_by_token_id, annotation_idx
-                        )
-                        for column in columns
-                    ]
-                    lines.append(
-                        f"{annotation_name:<{label_width}}  "
-                        + "".join(_get_display_cell(cell) for cell in annotation_cells)
-                    )
-
-        rendered_chunks.append("\n".join(lines))
+        rendered_chunk = _render_chunk(
+            columns,
+            alignment,
+            artifact_source_count=len(artifact_rows),
+            annotation_rows=annotation_rows,
+            annotations_by_token_id=annotations_by_token_id,
+            marker_source_indexes_by_column_id=marker_source_indexes_by_column_id,
+            authoritative_source_idx=authoritative_source_idx,
+            label_width=label_width,
+        )
+        if rendered_chunk is not None:
+            rendered_chunks.append(rendered_chunk)
     return "\n\n".join(rendered_chunks)
+
+
+def _render_chunk(
+    columns: Sequence[TimedAlignmentColumn],
+    alignment: TimedMultiSequenceAlignment,
+    *,
+    artifact_source_count: int,
+    annotation_rows: Sequence[tuple[str, str]],
+    annotations_by_token_id: dict[int, tuple[str, ...]],
+    marker_source_indexes_by_column_id: dict[int, frozenset[int]],
+    authoritative_source_idx: int | None,
+    label_width: int,
+) -> str | None:
+    """Render one long-pause-delimited alignment chunk."""
+    if not any(
+        token is not None
+        for column in columns
+        for token in column.tokens[:artifact_source_count]
+    ):
+        return None
+
+    lines = []
+    for source_idx, source_name in enumerate(alignment.source_names):
+        if source_name == "merged":
+            lines.append(
+                " " * (label_width + 2) + _SECTION_SEPARATOR_CHARACTER * len(columns)
+            )
+        cells = []
+        for column in columns:
+            cell = _get_alignment_cell(
+                column, source_idx, marker_source_indexes_by_column_id
+            )
+            display_cell = _get_display_cell(cell)
+            if authoritative_source_idx is not None:
+                color = _get_alignment_cell_color(
+                    column,
+                    source_idx,
+                    authoritative_source_idx,
+                    marker_source_indexes_by_column_id,
+                )
+                if color is not None:
+                    display_cell = colorize(display_cell, color)
+            cells.append(display_cell)
+        lines.append(f"{source_name:<{label_width}}  " + "".join(cells))
+        if source_name == "merged":
+            for annotation_idx, (annotation_name, _) in enumerate(annotation_rows):
+                annotation_cells = [
+                    _get_annotation_cell(
+                        column, annotations_by_token_id, annotation_idx
+                    )
+                    for column in columns
+                ]
+                lines.append(
+                    f"{annotation_name:<{label_width}}  "
+                    + "".join(_get_display_cell(cell) for cell in annotation_cells)
+                )
+    return "\n".join(lines)
 
 
 def _get_annotation_rows(
@@ -566,28 +591,31 @@ def _get_alignment_cell_color(
 ) -> AnsiColor | None:
     """Get a cell color relative to one authoritative alignment row."""
     cell = _get_alignment_cell(column, source_idx, marker_source_indexes_by_column_id)
-    if cell == _GAP_CHARACTER:
-        return None
-    authoritative_cell = _get_alignment_cell(
-        column, authoritative_source_idx, marker_source_indexes_by_column_id
-    )
-    if source_idx != authoritative_source_idx:
-        if cell == authoritative_cell:
-            return AnsiColor.GREEN
-        if authoritative_cell == _GAP_CHARACTER:
-            return AnsiColor.BLUE
-        return AnsiColor.PURPLE
-
-    other_cells = tuple(
-        _get_alignment_cell(column, other_idx, marker_source_indexes_by_column_id)
-        for other_idx in range(len(column.tokens))
-        if other_idx != authoritative_source_idx
-    )
-    if cell in other_cells:
-        return AnsiColor.GREEN
-    if any(other_cell != _GAP_CHARACTER for other_cell in other_cells):
-        return AnsiColor.PURPLE
-    return AnsiColor.RED
+    color = None
+    if cell != _GAP_CHARACTER:
+        authoritative_cell = _get_alignment_cell(
+            column, authoritative_source_idx, marker_source_indexes_by_column_id
+        )
+        if source_idx != authoritative_source_idx:
+            color = AnsiColor.PURPLE
+            if cell == authoritative_cell:
+                color = AnsiColor.GREEN
+            elif authoritative_cell == _GAP_CHARACTER:
+                color = AnsiColor.BLUE
+        else:
+            other_cells = tuple(
+                _get_alignment_cell(
+                    column, other_idx, marker_source_indexes_by_column_id
+                )
+                for other_idx in range(len(column.tokens))
+                if other_idx != authoritative_source_idx
+            )
+            color = AnsiColor.RED
+            if cell in other_cells:
+                color = AnsiColor.GREEN
+            elif any(other_cell != _GAP_CHARACTER for other_cell in other_cells):
+                color = AnsiColor.PURPLE
+    return color
 
 
 def _get_alignment_with_track_markers(

@@ -122,6 +122,8 @@ if "yue-Hant_transcribe" in actions:
         stream_index=stream_index,
         media_start_seconds=media_start_seconds,
         additional_context=transcription_additional_context,
+        reference_name="zho-Hant",
+        terminal_alignment_authority="zho-Hant",
         overwrite=True,
     )
 if "yue_eng" in actions:

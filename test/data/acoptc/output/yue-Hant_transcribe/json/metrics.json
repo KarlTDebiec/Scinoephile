@@ -3,7 +3,7 @@
   "version": 1,
   "processed_blocks": 25,
   "reference_subtitles": 113,
-  "candidate_subtitles": 119,
+  "candidate_subtitles": 126,
   "cer": {
     "whisper": {
       "cer": 0.31910112359550563,
@@ -54,11 +54,11 @@
       "reference_length": 890
     },
     "merged": {
-      "cer": 0.16067415730337078,
-      "correct": 794,
-      "substitutions": 80,
-      "insertions": 47,
-      "deletions": 16,
+      "cer": 0.17191011235955056,
+      "correct": 782,
+      "substitutions": 90,
+      "insertions": 45,
+      "deletions": 18,
       "reference_length": 890
     }
   },
@@ -68,28 +68,25 @@
       "lead_out_seconds": 0.5,
       "minimum_duration_seconds": 0.75
     },
-    "text_aligned_groups": 90,
-    "micro_intersection_over_union": 0.7468811386428645,
-    "one_to_one_groups": 65,
-    "one_to_one_micro_intersection_over_union": 0.6792454255054033,
-    "mean_intersection_over_union": 0.7186938814045277,
-    "mean_reference_coverage": 0.8753686990090878,
-    "mean_start_error_ms": -64.63333333333334,
-    "mean_end_error_ms": 163.0,
-    "mean_absolute_start_error_ms": 272.7,
-    "mean_absolute_end_error_ms": 389.8222222222222,
+    "text_aligned_groups": 95,
+    "micro_intersection_over_union": 0.772690716398438,
+    "one_to_one_groups": 61,
+    "one_to_one_micro_intersection_over_union": 0.7312968596032732,
+    "mean_intersection_over_union": 0.7583635205854573,
+    "mean_reference_coverage": 0.9084613642037186,
+    "mean_start_error_ms": -70.91578947368421,
+    "mean_end_error_ms": 140.67368421052632,
+    "mean_absolute_start_error_ms": 226.03157894736842,
+    "mean_absolute_end_error_ms": 309.4947368421053,
     "unmatched_candidate_subtitles": 5,
     "unmatched_reference_subtitles": 1,
     "candidate_to_reference_group_counts": {
-      "1:1": 65,
-      "1:2": 8,
-      "2:1": 6,
-      "2:2": 3,
-      "2:3": 2,
+      "1:1": 61,
+      "1:2": 12,
+      "2:1": 15,
+      "2:2": 4,
       "3:1": 2,
-      "3:2": 2,
-      "3:3": 1,
-      "4:4": 1
+      "4:2": 1
     }
   }
 }
