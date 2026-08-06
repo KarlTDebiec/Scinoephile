@@ -79,6 +79,15 @@ class AlignedTranscriptionMergeManager(Manager[AlignedTranscriptionMergeTestCase
                 "speaker": PromptModelField(
                     alias=prompt.speaker, description=prompt.speaker_desc
                 ),
+                "language_trace": PromptModelField(
+                    alias=prompt.language_trace, description=prompt.language_trace_desc
+                ),
+                "singing_trace": PromptModelField(
+                    alias=prompt.singing_trace, description=prompt.singing_trace_desc
+                ),
+                "music_trace": PromptModelField(
+                    alias=prompt.music_trace, description=prompt.music_trace_desc
+                ),
             },
         )
 

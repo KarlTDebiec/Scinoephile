@@ -125,6 +125,33 @@ def test_query_accepts_distinct_fullwidth_gap_and_pause_annotations():
     assert query.speaker == "Ａ　・"
 
 
+def test_query_accepts_equal_width_language_singing_and_music_rows():
+    """Optional FireRed traces should retain the alignment's exact width."""
+    query_cls = AlignedTranscriptionMergeManager.get_query_cls(
+        AlignedTranscriptionMergeManager.base_prompt
+    )
+
+    query = cast(
+        AlignedTranscriptionMergeQuery,
+        query_cls.model_validate(
+            {
+                "sources": [
+                    {"name": "one", "text": "甲・乙"},
+                    {"name": "two", "text": "甲・乙"},
+                ],
+                "speaker": "Ａ・Ｂ",
+                "language": "粵・日",
+                "singing": "唱・　",
+                "music": "　・樂",
+            }
+        ),
+    )
+
+    assert query.language_trace == "粵・日"
+    assert query.singing_trace == "唱・　"
+    assert query.music_trace == "　・樂"
+
+
 def test_query_rejects_reference_evidence_and_reference_markers():
     """Reference text and diagnostic boundary markers must not reach the LLM."""
     query_cls = AlignedTranscriptionMergeManager.get_query_cls(

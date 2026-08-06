@@ -40,6 +40,24 @@ class AlignedTranscriptionMergePrompt(Prompt):
         "gap or timed-pause markers."
     )
     """Description of speaker and voice-activity row field."""
+    language_trace: str = "language"
+    """Name of spoken-language annotation row field."""
+    language_trace_desc: str = (
+        "Optional column-aligned fullwidth spoken-language labels and gaps."
+    )
+    """Description of spoken-language annotation row field."""
+    singing_trace: str = "singing"
+    """Name of singing annotation row field."""
+    singing_trace_desc: str = (
+        "Optional column-aligned singing labels, gaps, and timed pauses."
+    )
+    """Description of singing annotation row field."""
+    music_trace: str = "music"
+    """Name of music annotation row field."""
+    music_trace_desc: str = (
+        "Optional column-aligned music labels, gaps, and timed pauses."
+    )
+    """Description of music annotation row field."""
     subtitles: str = "subtitles"
     """Name of merged consensus subtitles field in answer."""
     subtitles_desc: str = (
@@ -80,6 +98,16 @@ class AlignedTranscriptionMergePrompt(Prompt):
         "fullwidth gaps, and fullwidth timed-pause markers."
     )
     """Error when a speaker row contains an unknown annotation."""
+    language_character_err: str = (
+        "Language rows may contain only defined fullwidth language labels, gaps, "
+        "and timed-pause markers."
+    )
+    """Error when a language row contains an unknown annotation."""
+    audio_event_character_err: str = (
+        "Audio-event rows may contain only their defined fullwidth label, gaps, and "
+        "timed-pause markers."
+    )
+    """Error when an audio-event row contains an unknown annotation."""
     transcript_empty_err: str = (
         "Aligned transcription merge queries must contain transcribed text."
     )

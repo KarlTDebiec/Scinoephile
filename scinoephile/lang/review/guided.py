@@ -40,9 +40,9 @@ from scinoephile.llms.providers.registry import get_provider
 __all__ = ["DEFAULT_PROMPTS", "get_guided_reviewer"]
 
 _YUE_ZHO_JSON_PATHS = (
-    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/guided_review/cuda.json"),
-    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/guided_review/cpu.json"),
-    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/guided_review/mps.json"),
+    Path("mlamd/output/yue_transcribe_backup/lang/yue_zho/guided_review/cuda.json"),
+    Path("mlamd/output/yue_transcribe_backup/lang/yue_zho/guided_review/cpu.json"),
+    Path("mlamd/output/yue_transcribe_backup/lang/yue_zho/guided_review/mps.json"),
 )
 """Default written Cantonese/Chinese guided-review JSON paths."""
 

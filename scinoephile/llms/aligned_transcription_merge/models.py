@@ -44,6 +44,11 @@ _SPEAKER_CHARACTERS = frozenset(
     | {chr(ord("Ａ") + index) for index in range(26)}
 )
 """Characters permitted in the speaker annotation row."""
+_LANGUAGE_CHARACTERS = frozenset(
+    {_ALIGNMENT_GAP_CHARACTER, _PAUSE_CHARACTER, "粵", "普", "英", "日", "韓", "外"}
+    | {chr(ord("Ａ") + index) for index in range(26)}
+)
+"""Characters permitted in the spoken-language annotation row."""
 
 
 class AlignedTranscriptionMergeSource(LLMModel):
@@ -64,6 +69,27 @@ class AlignedTranscriptionMergeQuery(Query):
     """Named equal-status ASR source rows."""
     speaker: str = Field(min_length=1, max_length=10_000)
     """Column-aligned speaker and voice-activity annotations."""
+    language_trace: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=10_000,
+        exclude_if=lambda value: value is None,
+    )
+    """Column-aligned spoken-language annotations, when available."""
+    singing_trace: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=10_000,
+        exclude_if=lambda value: value is None,
+    )
+    """Column-aligned singing annotations, when available."""
+    music_trace: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=10_000,
+        exclude_if=lambda value: value is None,
+    )
+    """Column-aligned music annotations, when available."""
 
     @model_validator(mode="after")
     def validate_rows(self) -> Self:
@@ -76,15 +102,48 @@ class AlignedTranscriptionMergeQuery(Query):
         row_lengths = {
             len(self.speaker),
             *(len(source.text) for source in self.sources),
+            *(
+                len(annotation)
+                for annotation in (
+                    self.language_trace,
+                    self.singing_trace,
+                    self.music_trace,
+                )
+                if annotation is not None
+            ),
         }
         if row_lengths != {len(self.speaker)}:
             raise ValueError(self.prompt.row_length_err)
-        if _REFERENCE_BOUNDARY_CHARACTER in self.speaker or any(
-            _REFERENCE_BOUNDARY_CHARACTER in source.text for source in self.sources
+        annotation_rows = tuple(
+            annotation
+            for annotation in (
+                self.speaker,
+                self.language_trace,
+                self.singing_trace,
+                self.music_trace,
+            )
+            if annotation is not None
+        )
+        if any(
+            _REFERENCE_BOUNDARY_CHARACTER in row
+            for row in (*annotation_rows, *(source.text for source in self.sources))
         ):
             raise ValueError(self.prompt.reference_marker_err)
         if any(character not in _SPEAKER_CHARACTERS for character in self.speaker):
             raise ValueError(self.prompt.speaker_character_err)
+        if self.language_trace is not None and any(
+            character not in _LANGUAGE_CHARACTERS for character in self.language_trace
+        ):
+            raise ValueError(self.prompt.language_character_err)
+        for annotation, marker in (
+            (self.singing_trace, "唱"),
+            (self.music_trace, "樂"),
+        ):
+            if annotation is not None and any(
+                character not in {_ALIGNMENT_GAP_CHARACTER, _PAUSE_CHARACTER, marker}
+                for character in annotation
+            ):
+                raise ValueError(self.prompt.audio_event_character_err)
         if not any(
             character not in {_ALIGNMENT_GAP_CHARACTER, _PAUSE_CHARACTER}
             for source in self.sources

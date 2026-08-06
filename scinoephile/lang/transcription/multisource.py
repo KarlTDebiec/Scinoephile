@@ -7,6 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from logging import getLogger
 from pathlib import Path
+from typing import cast
 
 from pydub import AudioSegment
 
@@ -15,6 +16,10 @@ from scinoephile.analysis.multisequence_alignment import (
     TimedMultiSequenceAligner,
     TimedMultiSequenceAlignment,
     get_timed_alignment_with_pauses,
+)
+from scinoephile.audio.classification import (
+    AudioEventDetectionResult,
+    LanguageIdentificationResult,
 )
 from scinoephile.audio.diarization import SpeakerDiarizationResult
 from scinoephile.audio.transcription import (
@@ -121,6 +126,9 @@ class MultiSourceTranscriber:
         self,
         audio: AudioSegment,
         *,
+        audio_events: AudioEventDetectionResult | None = None,
+        classification_offset_seconds: float = 0.0,
+        language_identification: LanguageIdentificationResult | None = None,
         pause_intervals_seconds: Sequence[tuple[float, float]] = (),
         voice_activity_trace: VoiceActivityTrace | None = None,
         voice_activity_offset_seconds: float = 0.0,
@@ -131,6 +139,9 @@ class MultiSourceTranscriber:
 
         Arguments:
             audio: complete padded block audio
+            audio_events: optional source-wide FireRed audio-event timeline
+            classification_offset_seconds: source time at block-local zero
+            language_identification: optional source-wide FireRed language timeline
             pause_intervals_seconds: block-local VAD silence intervals
             voice_activity_trace: optional source-wide VAD score trace
             voice_activity_offset_seconds: source time at block-local zero
@@ -180,9 +191,22 @@ class MultiSourceTranscriber:
                 "output; skipping multi-source merge."
             )
             return segments
+        if audio_events is None and language_identification is None:
+            return self.merge(
+                successful_sources,
+                audio,
+                pause_intervals_seconds=pause_intervals_seconds,
+                voice_activity_trace=voice_activity_trace,
+                voice_activity_offset_seconds=voice_activity_offset_seconds,
+                diarization=diarization,
+                diarization_offset_seconds=diarization_offset_seconds,
+            )
         return self.merge(
             successful_sources,
             audio,
+            audio_events=audio_events,
+            classification_offset_seconds=classification_offset_seconds,
+            language_identification=language_identification,
             pause_intervals_seconds=pause_intervals_seconds,
             voice_activity_trace=voice_activity_trace,
             voice_activity_offset_seconds=voice_activity_offset_seconds,
@@ -195,6 +219,9 @@ class MultiSourceTranscriber:
         sources: Mapping[str, Sequence[TranscribedSegment]],
         audio: AudioSegment,
         *,
+        audio_events: AudioEventDetectionResult | None = None,
+        classification_offset_seconds: float = 0.0,
+        language_identification: LanguageIdentificationResult | None = None,
         pause_intervals_seconds: Sequence[tuple[float, float]] = (),
         voice_activity_trace: VoiceActivityTrace | None = None,
         voice_activity_offset_seconds: float = 0.0,
@@ -206,6 +233,9 @@ class MultiSourceTranscriber:
         Arguments:
             sources: named equal-status timestamped transcription sources
             audio: original block audio corresponding to local source timings
+            audio_events: optional source-wide FireRed audio-event timeline
+            classification_offset_seconds: source time at block-local zero
+            language_identification: optional source-wide FireRed language timeline
             pause_intervals_seconds: block-local VAD silence intervals
             voice_activity_trace: optional source-wide VAD score trace
             voice_activity_offset_seconds: source time at block-local zero
@@ -246,15 +276,25 @@ class MultiSourceTranscriber:
         self.last_alignment = alignment
         chunks = get_timed_multisource_alignment_chunks(
             alignment,
+            audio_events=audio_events,
+            classification_offset_seconds=classification_offset_seconds,
             diarization=diarization,
             diarization_offset_seconds=diarization_offset_seconds,
+            language_identification=language_identification,
             traditionalize=self.language is Language.yue_hant,
             voice_activity_trace=voice_activity_trace,
             voice_activity_offset_seconds=voice_activity_offset_seconds,
         )
-        merge_sources, speaker = self._join_chunks(chunks)
+        merge_sources, speaker, language_trace, singing_trace, music_trace = (
+            self._join_chunks(chunks)
+        )
         answer = self.merger.process(
-            merge_sources, speaker, request_pause_characters=_REQUEST_PAUSE_CHARACTERS
+            merge_sources,
+            speaker,
+            language_trace=language_trace,
+            music_trace=music_trace,
+            request_pause_characters=_REQUEST_PAUSE_CHARACTERS,
+            singing_trace=singing_trace,
         )
         if not answer.transcript.strip():
             raise TranscriptionEmptyError(
@@ -435,7 +475,11 @@ class MultiSourceTranscriber:
         )
 
     @staticmethod
-    def _join_chunks(chunks) -> tuple[list[AlignedTranscriptionMergeSource], str]:
+    def _join_chunks(
+        chunks,
+    ) -> tuple[
+        list[AlignedTranscriptionMergeSource], str, str | None, str | None, str | None
+    ]:
         """Join display-sized alignment chunks into complete request rows."""
         if not chunks:
             raise TranscriptionEmptyError("Multiple-sequence alignment is empty.")
@@ -452,7 +496,13 @@ class MultiSourceTranscriber:
             )
             for source_idx, name in enumerate(source_names)
         ]
-        return sources, "".join(chunk.speaker for chunk in chunks)
+        return (
+            sources,
+            "".join(chunk.speaker for chunk in chunks),
+            _join_optional_chunk_row(chunks, "language_trace"),
+            _join_optional_chunk_row(chunks, "singing_trace"),
+            _join_optional_chunk_row(chunks, "music_trace"),
+        )
 
     @staticmethod
     def _split_aligned_segment(
@@ -521,3 +571,13 @@ def get_multi_source_transcriber(
     return MultiSourceTranscriber(
         language=language, transcribers=transcribers, merger=merger
     )
+
+
+def _join_optional_chunk_row(chunks, attribute: str) -> str | None:
+    """Join an optional annotation row while enforcing chunk consistency."""
+    values = tuple(getattr(chunk, attribute) for chunk in chunks)
+    if all(value is None for value in values):
+        return None
+    if any(value is None for value in values):
+        raise RuntimeError(f"Aligned {attribute} availability changed between chunks.")
+    return "".join(cast(str, value) for value in values)

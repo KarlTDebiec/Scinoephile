@@ -164,7 +164,7 @@ def get_mlamd_yue_from_zho_gap_translation_test_cases(
     """
     path = (
         output_dir
-        / "yue-Hans_transcribe"
+        / "yue_transcribe_backup"
         / "lang"
         / "yue_zho"
         / "gap_translation"
@@ -189,7 +189,7 @@ def get_mlamd_yue_vs_zho_guided_review_test_cases(
     """
     path = (
         output_dir
-        / "yue-Hans_transcribe"
+        / "yue_transcribe_backup"
         / "lang"
         / "yue_zho"
         / "guided_review"
@@ -347,13 +347,13 @@ def mlamd_eng_ocr_tesseract_clean() -> Series:
 @fixture
 def mlamd_yue_hans_audio() -> AudioSeries:
     """MLAMD yue-Hans audio subtitles."""
-    return AudioSeries.load(output_dir / "yue-Hans_transcribe/audio")
+    return AudioSeries.load(output_dir / "yue_transcribe_backup/audio")
 
 
 @fixture
 def mlamd_yue_hans_audio_path() -> Path:
     """Path to MLAMD yue-Hans audio subtitles."""
-    return output_dir / "yue-Hans_transcribe/audio"
+    return output_dir / "yue_transcribe_backup/audio"
 
 
 @fixture
@@ -365,28 +365,28 @@ def mlamd_yue_hans_eng() -> Series:
 @fixture
 def mlamd_yue_hans_transcribe() -> Series:
     """MLAMD yue-Hans transcribed subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe/transcribe.srt")
+    return Series.load(output_dir / "yue_transcribe_backup/transcribe.srt")
 
 
 @fixture
 def mlamd_yue_hans_transcribe_translation_input() -> Series:
     """MLAMD yue-Hans transcription curated as gap-translation input."""
     return Series.load(
-        output_dir / "yue-Hans_transcribe/transcribe_translation_input.srt"
+        output_dir / "yue_transcribe_backup/transcribe_translation_input.srt"
     )
 
 
 @fixture
 def mlamd_yue_hans_transcribe_translate() -> Series:
     """MLAMD yue-Hans transcribed and gap-translated subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe/transcribe_translate.srt")
+    return Series.load(output_dir / "yue_transcribe_backup/transcribe_translate.srt")
 
 
 @fixture
 def mlamd_yue_hans_transcribe_translate_guided_review() -> Series:
     """MLAMD yue-Hans transcribed, gap-translated, and guided-reviewed subtitles."""
     return Series.load(
-        output_dir / "yue-Hans_transcribe/transcribe_translate_guided_review.srt"
+        output_dir / "yue_transcribe_backup/transcribe_translate_guided_review.srt"
     )
 
 

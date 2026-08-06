@@ -1,5 +1,28 @@
 # Third-Party Notices
 
+## FireRedASR2S (language identification and audio-event detection)
+
+Scinoephile's optional transcription dependencies install the official
+FireRedASR2S runtime from a pinned source revision. Scinoephile uses FireRedLID
+for utterance-level language and Chinese-dialect identification, and FireRedVAD's
+multi-label AED model for independent speech, singing, and music intervals. Model
+weights are downloaded from pinned Hugging Face revisions on first use and are
+not bundled with Scinoephile.
+
+- Project: https://github.com/FireRedTeam/FireRedASR2S
+- Runtime revision:
+  https://github.com/FireRedTeam/FireRedASR2S/tree/4e7d9aaf4482a47cec1724807026b9b151926eb5
+- FireRedLID model revision:
+  https://huggingface.co/FireRedTeam/FireRedLID/tree/1bb4d285c8456429385d9c0810300df4297bc11b
+- FireRedVAD model revision:
+  https://huggingface.co/FireRedTeam/FireRedVAD/tree/7990aaccc6b7aec1e527743bd30201f2c4a03b8c
+- License: Apache License 2.0
+- Copyright: Copyright 2026 Xiaohongshu
+
+The Apache License 2.0 permits use, modification, and distribution subject to
+its notice and license requirements. See the upstream repository and model cards
+for the complete terms.
+
 ## TEN VAD (optional user-installed voice activity detector)
 
 Scinoephile can use the official TEN VAD Python runtime when users install it

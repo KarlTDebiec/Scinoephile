@@ -123,6 +123,12 @@ def audit_transcription_alignment(
                 f"{name}: {error}" for name, error in block.source_errors.items()
             )
             lines.extend(("", f"Source errors: {errors}"))
+        if block.language_legend:
+            legend = ", ".join(
+                f"{symbol}={language}"
+                for symbol, language in block.language_legend.items()
+            )
+            lines.extend(("", f"Language trace: {legend}."))
         lines.extend(("", *_get_merged_subtitle_lines(block)))
         block_reference = None
         if reference is not None:
@@ -312,7 +318,8 @@ def _render_block(
     row_names = tuple(row.name for row in artifact_rows) + ("merged",)
     row_texts = tuple(row.text for row in artifact_rows) + (block.merged,)
     lexical_columns = []
-    speaker_by_token_id = {}
+    annotation_rows = _get_annotation_rows(block)
+    annotations_by_token_id = {}
     for column_idx, column in enumerate(block.columns):
         if column.kind == "pause":
             continue
@@ -324,7 +331,9 @@ def _render_block(
                 token = TimedAlignmentToken(
                     character, column.start_ms / 1000, column.end_ms / 1000
                 )
-                speaker_by_token_id[id(token)] = block.speaker[column_idx]
+                annotations_by_token_id[id(token)] = tuple(
+                    row[column_idx] for _, row in annotation_rows
+                )
             tokens.append(token)
         lexical_columns.append(TimedAlignmentColumn(tuple(tokens)))
     alignment = TimedMultiSequenceAlignment(
@@ -349,7 +358,10 @@ def _render_block(
             source_names=("merged",),
         )
 
-    label_width = max(len(name) for name in (*alignment.source_names, "speaker"))
+    label_width = max(
+        len(name)
+        for name in (*alignment.source_names, *(name for name, _ in annotation_rows))
+    )
     rendered_chunks = []
     for chunk_start in range(0, len(alignment.columns), columns_per_chunk):
         columns = alignment.columns[chunk_start : chunk_start + columns_per_chunk]
@@ -367,16 +379,33 @@ def _render_block(
                 + "".join(_get_display_cell(cell) for cell in cells)
             )
             if source_name == "merged":
-                speaker_cells = [
-                    _get_speaker_cell(column, speaker_by_token_id) for column in columns
-                ]
-                lines.append(
-                    f"{'speaker':<{label_width}}  "
-                    + "".join(_get_display_cell(cell) for cell in speaker_cells)
-                )
+                for annotation_idx, (annotation_name, _) in enumerate(annotation_rows):
+                    annotation_cells = [
+                        _get_annotation_cell(
+                            column, annotations_by_token_id, annotation_idx
+                        )
+                        for column in columns
+                    ]
+                    lines.append(
+                        f"{annotation_name:<{label_width}}  "
+                        + "".join(_get_display_cell(cell) for cell in annotation_cells)
+                    )
 
         rendered_chunks.append("\n".join(lines))
     return "\n\n".join(rendered_chunks)
+
+
+def _get_annotation_rows(block: TranscriptionAlignmentBlock) -> list[tuple[str, str]]:
+    """Get present portable annotation rows in stable display order."""
+    optional_rows = (
+        ("language", block.language_trace),
+        ("singing", block.singing_trace),
+        ("music", block.music_trace),
+    )
+    return [
+        ("speaker", block.speaker),
+        *((name, row) for name, row in optional_rows if row is not None),
+    ]
 
 
 def _get_alignment_cell(column: TimedAlignmentColumn, source_idx: int) -> str:
@@ -393,24 +422,32 @@ def _get_alignment_cell(column: TimedAlignmentColumn, source_idx: int) -> str:
 
 
 def _get_display_cell(character: str) -> str:
-    """Pad a narrow character to the width of one CJK alignment cell."""
+    """Render one character as a fullwidth alignment cell."""
+    codepoint = ord(character)
+    if 0x21 <= codepoint <= 0x7E:
+        return chr(codepoint + 0xFEE0)
+    normalized = unicodedata.normalize("NFKC", character)
+    if len(normalized) == 1 and unicodedata.east_asian_width(normalized) in {"F", "W"}:
+        return normalized
     if unicodedata.east_asian_width(character) in {"F", "W"}:
         return character
     return f"{character} "
 
 
-def _get_speaker_cell(
-    column: TimedAlignmentColumn, speaker_by_token_id: dict[int, str]
+def _get_annotation_cell(
+    column: TimedAlignmentColumn,
+    annotations_by_token_id: dict[int, tuple[str, ...]],
+    annotation_idx: int,
 ) -> str:
-    """Project the stored speaker row through added reference columns."""
+    """Project one stored annotation row through added reference columns."""
     if column.is_marker:
         assert column.marker is not None
         return column.marker
     if column.is_pause:
         return _PAUSE_CHARACTER
     for token in column.tokens:
-        if token is not None and id(token) in speaker_by_token_id:
-            return speaker_by_token_id[id(token)]
+        if token is not None and id(token) in annotations_by_token_id:
+            return annotations_by_token_id[id(token)][annotation_idx]
     return _GAP_CHARACTER
 
 

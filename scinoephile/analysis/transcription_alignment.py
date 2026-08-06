@@ -148,6 +148,14 @@ class TranscriptionAlignmentBlock(BaseModel):
     """Source rows in artifact source order."""
     speaker: str
     """Speaker/VAD annotation row aligned with all source rows."""
+    language_trace: str | None = None
+    """Spoken-language annotation row aligned with all source rows."""
+    language_legend: dict[str, str] = Field(default_factory=dict)
+    """Language-row display characters mapped to FireRed language labels."""
+    singing_trace: str | None = None
+    """Independent FireRed singing annotation row, when available."""
+    music_trace: str | None = None
+    """Independent FireRed music annotation row, when available."""
     merged: str
     """Lexical merged row aligned with all source rows."""
     subtitles: tuple[TranscriptionAlignmentSubtitle, ...]
@@ -188,6 +196,13 @@ class TranscriptionAlignmentBlock(BaseModel):
             raise ValueError("Alignment source rows must match the column count.")
         if len(self.speaker) != row_width:
             raise ValueError("Alignment speaker row must match the column count.")
+        for name, annotation in (
+            ("language", self.language_trace),
+            ("singing", self.singing_trace),
+            ("music", self.music_trace),
+        ):
+            if annotation is not None and len(annotation) != row_width:
+                raise ValueError(f"Alignment {name} row must match the column count.")
         if len(self.merged) != row_width:
             raise ValueError("Alignment merged row must match the column count.")
         if len({row.name for row in self.rows}) != len(self.rows):
@@ -202,14 +217,44 @@ class TranscriptionAlignmentBlock(BaseModel):
 
     def _validate_annotations(self) -> None:
         """Validate production-only annotations and shared pause columns."""
-        if any(character not in _SPEAKER_CHARACTERS for character in self.speaker):
-            raise ValueError("Alignment speaker row contains an invalid character.")
+        self._validate_annotation_characters()
         if _REFERENCE_BOUNDARY_CHARACTER in self.merged or any(
             _REFERENCE_BOUNDARY_CHARACTER in row.text for row in self.rows
         ):
             raise ValueError(
                 "Production alignment rows must not contain reference boundaries."
             )
+        self._validate_pause_columns()
+
+    def _validate_annotation_characters(self) -> None:
+        """Validate speaker, language, singing, and music row characters."""
+        if any(character not in _SPEAKER_CHARACTERS for character in self.speaker):
+            raise ValueError("Alignment speaker row contains an invalid character.")
+        if any(
+            len(symbol) != 1 or not label.strip()
+            for symbol, label in self.language_legend.items()
+        ):
+            raise ValueError("Alignment language legend must map characters to labels.")
+        if self.language_trace is None and self.language_legend:
+            raise ValueError("Alignment language legend requires a language row.")
+        if self.language_trace is not None and any(
+            character not in {_GAP_CHARACTER, _PAUSE_CHARACTER}
+            and character not in self.language_legend
+            for character in self.language_trace
+        ):
+            raise ValueError("Alignment language row contains an unknown character.")
+        for name, annotation, marker in (
+            ("singing", self.singing_trace, "唱"),
+            ("music", self.music_trace, "樂"),
+        ):
+            if annotation is not None and any(
+                character not in {_GAP_CHARACTER, _PAUSE_CHARACTER, marker}
+                for character in annotation
+            ):
+                raise ValueError(f"Alignment {name} row contains an invalid character.")
+
+    def _validate_pause_columns(self) -> None:
+        """Validate that timed pauses are shared by every present row."""
         for column_idx, column in enumerate(self.columns):
             if column.kind != "pause":
                 continue
@@ -222,6 +267,18 @@ class TranscriptionAlignmentBlock(BaseModel):
                 )
             if any(row.text[column_idx] != _PAUSE_CHARACTER for row in self.rows):
                 raise ValueError("Alignment pause columns must be shared by ASR rows.")
+            for annotation in (
+                self.language_trace,
+                self.singing_trace,
+                self.music_trace,
+            ):
+                if (
+                    annotation is not None
+                    and annotation[column_idx] != _PAUSE_CHARACTER
+                ):
+                    raise ValueError(
+                        "Alignment pause columns must be shared by annotation rows."
+                    )
 
 
 class TranscriptionAlignmentArtifact(BaseModel):
@@ -233,7 +290,7 @@ class TranscriptionAlignmentArtifact(BaseModel):
         "scinoephile-transcription-alignment"
     )
     """Stable artifact format identifier."""
-    version: Literal[1] = 1
+    version: Literal[1, 2] = 2
     """Artifact schema version."""
     language: Language
     """Language of the ASR rows and merged subtitles."""

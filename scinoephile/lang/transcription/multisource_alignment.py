@@ -25,6 +25,11 @@ from scinoephile.analysis.transcription_alignment import (
     TranscriptionAlignmentRow,
     TranscriptionAlignmentSubtitle,
 )
+from scinoephile.audio.classification import (
+    AudioEvent,
+    AudioEventDetectionResult,
+    LanguageIdentificationResult,
+)
 from scinoephile.audio.diarization.models import SpeakerDiarizationResult
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.voice_activity_trace import VoiceActivityTrace
@@ -166,6 +171,14 @@ class TimedMultisourceAlignmentChunk:
     """Named aligned ASR source rows."""
     speaker: str
     """Aligned speaker and voice-activity annotation row."""
+    language_trace: str | None
+    """Aligned spoken-language annotation row, when available."""
+    language_legend: Mapping[str, str]
+    """Language display characters mapped to FireRed language labels."""
+    singing_trace: str | None
+    """Aligned singing annotation row, when available."""
+    music_trace: str | None
+    """Aligned music annotation row, when available."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -239,8 +252,11 @@ def get_timed_multisource_alignment_chunks(
     *,
     alignment_offset_seconds: float = 0.0,
     columns_per_chunk: int = 60,
+    audio_events: AudioEventDetectionResult | None = None,
+    classification_offset_seconds: float = 0.0,
     diarization: SpeakerDiarizationResult | None = None,
     diarization_offset_seconds: float = 0.0,
+    language_identification: LanguageIdentificationResult | None = None,
     traditionalize: bool = False,
     voice_activity_offset_seconds: float = 0.0,
     voice_activity_trace: VoiceActivityTrace | None = None,
@@ -252,8 +268,11 @@ def get_timed_multisource_alignment_chunks(
         alignment: timed character alignment to render
         alignment_offset_seconds: source time corresponding to alignment-local zero
         columns_per_chunk: alignment columns included in each chunk
+        audio_events: optional FireRed speech, singing, and music timeline
+        classification_offset_seconds: source offset for alignment-local times
         diarization: optional exclusive pyannote speaker timeline
         diarization_offset_seconds: source offset for alignment-local times
+        language_identification: optional FireRed spoken-language timeline
         traditionalize: whether to render source characters in Traditional Chinese
         voice_activity_offset_seconds: source offset for alignment-local times
         voice_activity_trace: optional pyannote voice-activity score trace
@@ -269,6 +288,10 @@ def get_timed_multisource_alignment_chunks(
         voice_activity_threshold,
     )
     speaker_symbols = _get_speaker_symbols(diarization)
+    language_symbols = _get_language_symbols(language_identification)
+    language_legend = {
+        symbol: language for language, symbol in language_symbols.items()
+    }
     source_cells = tuple(
         _get_source_cells(alignment.columns, source_idx, traditionalize)
         for source_idx in range(len(alignment.source_names))
@@ -299,6 +322,27 @@ def get_timed_multisource_alignment_chunks(
             )
             for column in columns
         )
+        language_trace = None
+        if language_identification is not None:
+            language_trace = "".join(
+                _get_language_cell(
+                    column,
+                    language_identification,
+                    classification_offset_seconds,
+                    language_symbols,
+                )
+                for column in columns
+            )
+        singing_trace = _get_event_row(
+            columns,
+            audio_events,
+            AudioEvent.SINGING,
+            "唱",
+            classification_offset_seconds,
+        )
+        music_trace = _get_event_row(
+            columns, audio_events, AudioEvent.MUSIC, "樂", classification_offset_seconds
+        )
         chunks.append(
             TimedMultisourceAlignmentChunk(
                 index=len(chunks) + 1,
@@ -312,6 +356,10 @@ def get_timed_multisource_alignment_chunks(
                 ),
                 sources=sources,
                 speaker=speaker,
+                language_trace=language_trace,
+                language_legend=language_legend,
+                singing_trace=singing_trace,
+                music_trace=music_trace,
             )
         )
     return tuple(chunks)
@@ -402,8 +450,10 @@ def get_transcription_alignment_block(
     buffered_start_ms: int,
     core_end_ms: int,
     core_start_ms: int,
+    audio_events: AudioEventDetectionResult | None = None,
     diarization: SpeakerDiarizationResult | None = None,
     first_subtitle_index: int = 1,
+    language_identification: LanguageIdentificationResult | None = None,
     pause_intervals_seconds: Sequence[tuple[float, float]] = (),
     source_errors: Mapping[str, str] | None = None,
     traditionalize: bool = False,
@@ -424,8 +474,10 @@ def get_transcription_alignment_block(
         buffered_start_ms: inclusive start of the ASR input interval
         core_end_ms: exclusive end of the block-owned interval
         core_start_ms: inclusive start of the block-owned interval
+        audio_events: optional complete-source FireRed audio-event timeline
         diarization: optional complete-source speaker diarization
         first_subtitle_index: one-based global index for the first merged subtitle
+        language_identification: optional complete-source FireRed language timeline
         pause_intervals_seconds: block-local VAD silence intervals
         source_errors: failed source names and messages
         traditionalize: whether to render lexical rows in Hong Kong Traditional
@@ -453,9 +505,12 @@ def get_transcription_alignment_block(
     chunks = get_timed_multisource_alignment_chunks(
         augmented,
         alignment_offset_seconds=offset_seconds,
+        audio_events=audio_events,
+        classification_offset_seconds=offset_seconds,
         columns_per_chunk=max(len(augmented.columns), 1),
         diarization=diarization,
         diarization_offset_seconds=offset_seconds,
+        language_identification=language_identification,
         traditionalize=traditionalize,
         voice_activity_offset_seconds=offset_seconds,
         voice_activity_trace=voice_activity_trace,
@@ -491,6 +546,10 @@ def get_transcription_alignment_block(
             for name in alignment.source_names
         ),
         speaker=chunk.speaker,
+        language_trace=chunk.language_trace,
+        language_legend=dict(chunk.language_legend),
+        singing_trace=chunk.singing_trace,
+        music_trace=chunk.music_trace,
         merged=rendered_rows[merged_sequence.name],
         subtitles=subtitles,
         source_errors=dict(source_errors or {}),
@@ -674,6 +733,52 @@ def _get_annotation_cell(
     return _ALIGNMENT_GAP_CHARACTER
 
 
+def _get_language_cell(
+    column: TimedAlignmentColumn,
+    language_identification: LanguageIdentificationResult,
+    offset_seconds: float,
+    language_symbols: Mapping[str, str],
+) -> str:
+    """Get one spoken-language display character for an alignment column."""
+    if column.is_marker:
+        return _get_column_marker(column)
+    if column.is_pause:
+        return _PAUSE_CHARACTER
+    language = language_identification.get_language(
+        column.start_seconds + offset_seconds, column.end_seconds + offset_seconds
+    )
+    if language is None:
+        return _ALIGNMENT_GAP_CHARACTER
+    return language_symbols[language]
+
+
+def _get_event_row(
+    columns: Sequence[TimedAlignmentColumn],
+    audio_events: AudioEventDetectionResult | None,
+    event: AudioEvent,
+    marker: str,
+    offset_seconds: float,
+) -> str | None:
+    """Get one independent binary audio-event annotation row."""
+    if audio_events is None:
+        return None
+    cells = []
+    for column in columns:
+        if column.is_marker:
+            cells.append(_get_column_marker(column))
+        elif column.is_pause:
+            cells.append(_PAUSE_CHARACTER)
+        elif audio_events.has_event(
+            event,
+            column.start_seconds + offset_seconds,
+            column.end_seconds + offset_seconds,
+        ):
+            cells.append(marker)
+        else:
+            cells.append(_ALIGNMENT_GAP_CHARACTER)
+    return "".join(cells)
+
+
 @cache
 def _get_character_features(character: str) -> _CharacterFeatures:
     """Get reusable script, equivalence, and pronunciation features."""
@@ -724,6 +829,38 @@ def _get_speaker_symbols(
             symbols[turn.speaker] = chr(ord("Ａ") + speaker_idx)
         else:
             symbols[turn.speaker] = _VAD_SPEECH_CHARACTER
+    return symbols
+
+
+def _get_language_symbols(
+    language_identification: LanguageIdentificationResult | None,
+) -> dict[str, str]:
+    """Assign stable one-column symbols to FireRed language labels."""
+    if language_identification is None:
+        return {}
+    preferred_symbols = {
+        "zh-yue": "粵",
+        "zh-mandarin": "普",
+        "en": "英",
+        "ja": "日",
+        "ko": "韓",
+    }
+    symbols = {}
+    used_symbols = set()
+    languages = dict.fromkeys(span.language for span in language_identification.spans)
+    for language in languages:
+        symbol = preferred_symbols.get(language)
+        if symbol is not None:
+            symbols[language] = symbol
+            used_symbols.add(symbol)
+    fallback_symbols = (
+        chr(ord("Ａ") + index)
+        for index in range(26)
+        if chr(ord("Ａ") + index) not in used_symbols
+    )
+    for language in languages:
+        if language not in symbols:
+            symbols[language] = next(fallback_symbols, "外")
     return symbols
 
 

@@ -16,6 +16,14 @@ from scinoephile.analysis.transcription_alignment import (
     TranscriptionAlignmentBlock,
     TranscriptionAlignmentSource,
 )
+from scinoephile.audio.classification import (
+    AudioClassificationError,
+    AudioClassificationMode,
+    AudioEventDetectionResult,
+    FireRedAudioEventDetector,
+    FireRedLanguageIdentifier,
+    LanguageIdentificationResult,
+)
 from scinoephile.audio.diarization import (
     DiarizationMode,
     PyannoteDiarizer,
@@ -57,6 +65,8 @@ class TranscriptionPipeline:
         language: Language,
         transcriber: MultiSourceTranscriber,
         alignment_sources: tuple[TranscriptionAlignmentSource, ...],
+        audio_event_mode: AudioClassificationMode = AudioClassificationMode.AUTO,
+        audio_event_detector: FireRedAudioEventDetector | None = None,
         diarization_mode: DiarizationMode = DiarizationMode.AUTO,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
@@ -65,6 +75,10 @@ class TranscriptionPipeline:
         block_vad_cache: VoiceActivityCache | None = None,
         block_vad_detector: VoiceActivityDetector | None = None,
         diarizer: Callable[[AudioSegment], SpeakerDiarizationResult] | None = None,
+        language_identification_mode: AudioClassificationMode = (
+            AudioClassificationMode.AUTO
+        ),
+        language_identifier: FireRedLanguageIdentifier | None = None,
         timing_settings: SubtitleTimingSettings | None = None,
     ):
         """Initialize.
@@ -73,6 +87,8 @@ class TranscriptionPipeline:
             language: transcription and output language
             transcriber: configured aligned multi-source transcriber
             alignment_sources: portable descriptors for every expected ASR source
+            audio_event_mode: source-wide speech, singing, and music mode
+            audio_event_detector: optional configured FireRed audio-event detector
             diarization_mode: source-wide speaker diarization mode
             cache_root_path: cache root directory path
             overwrite_cache: whether to replace matching generated cache files
@@ -81,6 +97,8 @@ class TranscriptionPipeline:
             block_vad_cache: optional full-source VAD trace cache
             block_vad_detector: optional full-source block-planning VAD
             diarizer: optional configured source-wide speaker diarizer
+            language_identification_mode: source-wide spoken-language mode
+            language_identifier: optional configured FireRed language identifier
             timing_settings: reference-free merged subtitle display timing
         """
         self.language = language
@@ -89,6 +107,16 @@ class TranscriptionPipeline:
         """Configured aligned multi-source transcriber."""
         self.alignment_sources = alignment_sources
         """Portable descriptors for every expected ASR source."""
+        self.audio_event_mode = audio_event_mode
+        """Source-wide speech, singing, and music detection mode."""
+        self.audio_event_detector = audio_event_detector
+        """Optional FireRed multi-label audio-event detector."""
+        if self.audio_event_mode is not AudioClassificationMode.OFF and (
+            self.audio_event_detector is None
+        ):
+            self.audio_event_detector = FireRedAudioEventDetector(
+                cache_root_path, overwrite_cache=overwrite_cache
+            )
         self.diarization_mode = diarization_mode
         """Source-wide speaker diarization mode."""
         if block_splitter is None:
@@ -114,6 +142,16 @@ class TranscriptionPipeline:
         """Optional source-wide speaker diarizer."""
         if self.diarization_mode is not DiarizationMode.OFF and self.diarizer is None:
             self.diarizer = PyannoteDiarizer(
+                cache_root_path, overwrite_cache=overwrite_cache
+            )
+        self.language_identification_mode = language_identification_mode
+        """Source-wide spoken-language identification mode."""
+        self.language_identifier = language_identifier
+        """Optional FireRed spoken-language identifier."""
+        if self.language_identification_mode is not AudioClassificationMode.OFF and (
+            self.language_identifier is None
+        ):
+            self.language_identifier = FireRedLanguageIdentifier(
                 cache_root_path, overwrite_cache=overwrite_cache
             )
         if timing_settings is None:
@@ -153,6 +191,15 @@ class TranscriptionPipeline:
                 "subset of transcription blocks."
             )
         diarization = self._get_diarization(audio_series.audio, bool(selected_blocks))
+        classification_audio, classification_offset_ms = self._get_classification_audio(
+            audio_series.audio, selected_blocks
+        )
+        audio_events = self._get_audio_events(
+            classification_audio, classification_offset_ms
+        )
+        language_identification = self._get_language_identification(
+            classification_audio, classification_offset_ms, trace, selected_blocks
+        )
 
         output_segments = []
         alignment_blocks: list[TranscriptionAlignmentBlock] = []
@@ -164,6 +211,9 @@ class TranscriptionPipeline:
             try:
                 block_segments = self.transcriber.transcribe_block(
                     block_audio,
+                    audio_events=audio_events,
+                    classification_offset_seconds=block.buffered_start_ms / 1000,
+                    language_identification=language_identification,
                     pause_intervals_seconds=pause_intervals,
                     voice_activity_trace=trace,
                     voice_activity_offset_seconds=block.buffered_start_ms / 1000,
@@ -201,12 +251,14 @@ class TranscriptionPipeline:
                     block_segments,
                     self.transcriber.alignment_aligner,
                     block_index=block.index + 1,
+                    audio_events=audio_events,
                     buffered_end_ms=block.buffered_end_ms,
                     buffered_start_ms=block.buffered_start_ms,
                     core_end_ms=block.end_ms,
                     core_start_ms=block.start_ms,
                     diarization=diarization,
                     first_subtitle_index=len(output_segments) + 1,
+                    language_identification=language_identification,
                     pause_intervals_seconds=pause_intervals,
                     source_errors=self.transcriber.last_source_errors,
                     traditionalize=self.language is Language.yue_hant,
@@ -318,6 +370,90 @@ class TranscriptionPipeline:
                 f"evidence: {exc}"
             )
             return None
+
+    def _get_audio_events(
+        self, audio: AudioSegment | None, offset_ms: int
+    ) -> AudioEventDetectionResult | None:
+        """Get optional FireRed audio events over the selected block span."""
+        if self.audio_event_mode is AudioClassificationMode.OFF or audio is None:
+            return None
+        assert self.audio_event_detector is not None
+        try:
+            return self.audio_event_detector(audio, offset_seconds=offset_ms / 1000)
+        except AudioClassificationError as exc:
+            if self.audio_event_mode is AudioClassificationMode.ON:
+                raise
+            logger.warning(
+                f"Audio-event detection is unavailable; continuing without "
+                f"singing or music evidence: {exc}"
+            )
+            return None
+
+    def _get_language_identification(
+        self,
+        audio: AudioSegment | None,
+        offset_ms: int,
+        trace: VoiceActivityTrace,
+        selected_blocks: list[SpeechBlock],
+    ) -> LanguageIdentificationResult | None:
+        """Get optional FireRed LID over selected VAD speech intervals."""
+        if (
+            self.language_identification_mode is AudioClassificationMode.OFF
+            or audio is None
+        ):
+            return None
+        assert self.language_identifier is not None
+        speech_intervals = self._get_classification_speech_intervals(
+            trace, selected_blocks, offset_ms, len(audio)
+        )
+        try:
+            return self.language_identifier(
+                audio, speech_intervals, offset_seconds=offset_ms / 1000
+            )
+        except AudioClassificationError as exc:
+            if self.language_identification_mode is AudioClassificationMode.ON:
+                raise
+            logger.warning(
+                f"Language identification is unavailable; continuing without "
+                f"language evidence: {exc}"
+            )
+            return None
+
+    @staticmethod
+    def _get_classification_audio(
+        audio: AudioSegment, selected_blocks: list[SpeechBlock]
+    ) -> tuple[AudioSegment | None, int]:
+        """Get the smallest contiguous source slice covering selected buffers."""
+        if not selected_blocks:
+            return None, 0
+        start_ms = min(block.buffered_start_ms for block in selected_blocks)
+        end_ms = max(block.buffered_end_ms for block in selected_blocks)
+        return audio[start_ms:end_ms], start_ms
+
+    def _get_classification_speech_intervals(
+        self,
+        trace: VoiceActivityTrace,
+        selected_blocks: list[SpeechBlock],
+        offset_ms: int,
+        duration_ms: int,
+    ) -> tuple[tuple[int, int], ...]:
+        """Clip block-planning speech intervals to the classification slice."""
+        if not selected_blocks:
+            return ()
+        source_end_ms = offset_ms + duration_ms
+        intervals = []
+        for start_ms, end_ms in self.block_vad_detector.get_speech_intervals(trace):
+            if end_ms <= offset_ms:
+                continue
+            if start_ms >= source_end_ms:
+                break
+            intervals.append(
+                (
+                    max(offset_ms, start_ms) - offset_ms,
+                    min(source_end_ms, end_ms) - offset_ms,
+                )
+            )
+        return tuple(intervals)
 
     def _get_block_pause_intervals(
         self, trace: VoiceActivityTrace, block: SpeechBlock
@@ -440,9 +576,13 @@ class TranscriptionPipeline:
 def get_transcription_pipeline(
     language: Language,
     *,
+    audio_event_mode: AudioClassificationMode = AudioClassificationMode.AUTO,
     source_specs: tuple[TranscriptionSourceSpec, ...] | None = None,
     demucs_mode: DemucsMode = DemucsMode.OFF,
     diarization_mode: DiarizationMode = DiarizationMode.AUTO,
+    language_identification_mode: AudioClassificationMode = (
+        AudioClassificationMode.AUTO
+    ),
     vad_implementation: VADImplementation = VADImplementation.SILERO,
     block_vad_implementation: VADImplementation = VADImplementation.PYANNOTE,
     mlx_audio_token_limit_guard: bool = True,
@@ -460,9 +600,11 @@ def get_transcription_pipeline(
 
     Arguments:
         language: transcription and output language
+        audio_event_mode: source-wide speech, singing, and music mode
         source_specs: optional future-extensible ASR source registry override
         demucs_mode: source-level vocal-separation mode
         diarization_mode: source-wide speaker diarization mode
+        language_identification_mode: source-wide spoken-language mode
         vad_implementation: backend VAD implementation retained for cache identity
         block_vad_implementation: VAD used for block planning and pause evidence
         mlx_audio_token_limit_guard: whether to guard MiMo generation length
@@ -511,7 +653,9 @@ def get_transcription_pipeline(
         language=language,
         transcriber=transcriber,
         alignment_sources=alignment_sources,
+        audio_event_mode=audio_event_mode,
         diarization_mode=diarization_mode,
+        language_identification_mode=language_identification_mode,
         cache_root_path=cache_root_path,
         overwrite_cache=overwrite_cache,
         block_settings=block_settings,

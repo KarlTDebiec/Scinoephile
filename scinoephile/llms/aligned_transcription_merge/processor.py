@@ -43,14 +43,20 @@ class AlignedTranscriptionMergeProcessor(Processor):
         sources: Sequence[AlignedTranscriptionMergeSource],
         speaker: str,
         *,
+        language_trace: str | None = None,
+        music_trace: str | None = None,
         request_pause_characters: int = 4,
+        singing_trace: str | None = None,
     ) -> AlignedTranscriptionMergeAnswer:
         """Merge one complete aligned transcription block.
 
         Arguments:
             sources: named equal-status aligned ASR rows
             speaker: aligned speaker and voice-activity row
+            language_trace: optional aligned spoken-language row
+            music_trace: optional aligned music row
             request_pause_characters: shared consecutive pauses separating requests
+            singing_trace: optional aligned singing row
         Returns:
             consensus transcript divided into subtitles
         Raises:
@@ -65,6 +71,9 @@ class AlignedTranscriptionMergeProcessor(Processor):
                 {
                     "sources": [source.model_dump(mode="json") for source in sources],
                     "speaker": speaker,
+                    "language_trace": language_trace,
+                    "singing_trace": singing_trace,
+                    "music_trace": music_trace,
                 }
             ),
         )
@@ -83,6 +92,9 @@ class AlignedTranscriptionMergeProcessor(Processor):
                         for source in request_query.sources
                     ],
                     "speaker": request_query.speaker,
+                    "language_trace": request_query.language_trace,
+                    "singing_trace": request_query.singing_trace,
+                    "music_trace": request_query.music_trace,
                 }
             )
             test_case = self.test_case_cls(query=query)
@@ -121,6 +133,15 @@ def _get_query_slice(
             for source in query.sources
         ],
         speaker=query.speaker[start:end],
+        language_trace=(
+            None if query.language_trace is None else query.language_trace[start:end]
+        ),
+        singing_trace=(
+            None if query.singing_trace is None else query.singing_trace[start:end]
+        ),
+        music_trace=(
+            None if query.music_trace is None else query.music_trace[start:end]
+        ),
     )
 
 

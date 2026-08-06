@@ -10,6 +10,7 @@ from unittest.mock import Mock, patch
 from pydub import AudioSegment
 
 from scinoephile.analysis.transcription_alignment import SubtitleTimingSettings
+from scinoephile.audio.classification import AudioClassificationMode
 from scinoephile.audio.diarization import DiarizationMode
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.transcription import DemucsMode, VADImplementation
@@ -54,9 +55,11 @@ def test_transcribe_series_constructs_aligned_pipeline(tmp_path: Path):
     assert output is expected
     get_pipeline.assert_called_once_with(
         Language.yue_hant,
+        audio_event_mode=AudioClassificationMode.AUTO,
         source_specs=None,
         demucs_mode=DemucsMode.ON,
         diarization_mode=DiarizationMode.ON,
+        language_identification_mode=AudioClassificationMode.AUTO,
         vad_implementation=VADImplementation.TEN,
         block_vad_implementation=VADImplementation.SILERO,
         mlx_audio_token_limit_guard=False,

@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.analysis.transcription_alignment import SubtitleTimingSettings
+from scinoephile.audio.classification import AudioClassificationMode
 from scinoephile.audio.diarization import DiarizationMode
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.transcription import DemucsMode, VADImplementation
@@ -66,6 +67,14 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             f"{enum_options_list_str(DiarizationMode)}; default: %(default)s)"
         ): "说话人分离模式（默认：%(default)s）",
         (
+            f"spoken-language identification mode (options: "
+            f"{enum_options_list_str(AudioClassificationMode)}; default: %(default)s)"
+        ): "口语语言识别模式（默认：%(default)s）",
+        (
+            f"speech, singing, and music detection mode (options: "
+            f"{enum_options_list_str(AudioClassificationMode)}; default: %(default)s)"
+        ): "语音、歌唱和音乐检测模式（默认：%(default)s）",
+        (
             f"ASR backend VAD implementation (options: "
             f"{enum_options_list_str(VADImplementation)}; default: %(default)s)"
         ): "语音识别后端 VAD 实现（默认：%(default)s）",
@@ -114,6 +123,14 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             f"speaker diarization mode (options: "
             f"{enum_options_list_str(DiarizationMode)}; default: %(default)s)"
         ): "說話者分離模式（預設：%(default)s）",
+        (
+            f"spoken-language identification mode (options: "
+            f"{enum_options_list_str(AudioClassificationMode)}; default: %(default)s)"
+        ): "口語語言識別模式（預設：%(default)s）",
+        (
+            f"speech, singing, and music detection mode (options: "
+            f"{enum_options_list_str(AudioClassificationMode)}; default: %(default)s)"
+        ): "語音、歌唱同音樂偵測模式（預設：%(default)s）",
         (
             f"ASR backend VAD implementation (options: "
             f"{enum_options_list_str(VADImplementation)}; default: %(default)s)"
@@ -218,6 +235,30 @@ class TranscribeCli(ScinoephileCliBase):
             ),
         )
         operation_group.add_argument(
+            "--language-identification",
+            default=AudioClassificationMode.AUTO,
+            dest="language_identification_mode",
+            metavar=enum_metavar(AudioClassificationMode),
+            type=enum_arg(AudioClassificationMode),
+            help=(
+                f"spoken-language identification mode (options: "
+                f"{enum_options_list_str(AudioClassificationMode)}; "
+                f"default: %(default)s)"
+            ),
+        )
+        operation_group.add_argument(
+            "--audio-events",
+            default=AudioClassificationMode.AUTO,
+            dest="audio_event_mode",
+            metavar=enum_metavar(AudioClassificationMode),
+            type=enum_arg(AudioClassificationMode),
+            help=(
+                f"speech, singing, and music detection mode (options: "
+                f"{enum_options_list_str(AudioClassificationMode)}; "
+                f"default: %(default)s)"
+            ),
+        )
+        operation_group.add_argument(
             "--vad-implementation",
             default=VADImplementation.SILERO,
             metavar=enum_metavar(VADImplementation),
@@ -311,6 +352,8 @@ class TranscribeCli(ScinoephileCliBase):
         last_block: int | None,
         demucs_mode: DemucsMode,
         diarization_mode: DiarizationMode,
+        language_identification_mode: AudioClassificationMode,
+        audio_event_mode: AudioClassificationMode,
         vad_implementation: VADImplementation,
         block_vad_implementation: VADImplementation,
         mlx_audio_token_limit_guard: bool,
@@ -354,8 +397,10 @@ class TranscribeCli(ScinoephileCliBase):
             output = transcribe_series(
                 audio,
                 language=language,
+                audio_event_mode=audio_event_mode,
                 demucs_mode=demucs_mode,
                 diarization_mode=diarization_mode,
+                language_identification_mode=language_identification_mode,
                 vad_implementation=vad_implementation,
                 block_vad_implementation=block_vad_implementation,
                 mlx_audio_token_limit_guard=mlx_audio_token_limit_guard,

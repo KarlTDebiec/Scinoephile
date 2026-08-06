@@ -11,6 +11,7 @@ from pydub import AudioSegment
 from pytest import CaptureFixture, raises
 
 from scinoephile.analysis.transcription_alignment import SubtitleTimingSettings
+from scinoephile.audio.classification import AudioClassificationMode
 from scinoephile.audio.diarization import DiarizationMode
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.transcription import DemucsMode, VADImplementation
@@ -42,6 +43,10 @@ def test_transcribe_help_exposes_only_aligned_pipeline_options():
     assert "delineation_json_path" not in actions
     assert "punctuation_json_path" not in actions
     assert actions["diarization_mode"].default is DiarizationMode.AUTO
+    assert (
+        actions["language_identification_mode"].default is AudioClassificationMode.AUTO
+    )
+    assert actions["audio_event_mode"].default is AudioClassificationMode.AUTO
     assert actions["block_vad_implementation"].default is VADImplementation.PYANNOTE
 
 
@@ -77,8 +82,10 @@ def test_transcribe_cli_dispatches_and_derives_alignment_path(tmp_path: Path):
     transcribe.assert_called_once_with(
         audio,
         language=Language.yue_hant,
+        audio_event_mode=AudioClassificationMode.AUTO,
         demucs_mode=DemucsMode.OFF,
         diarization_mode=DiarizationMode.AUTO,
+        language_identification_mode=AudioClassificationMode.AUTO,
         vad_implementation=VADImplementation.SILERO,
         block_vad_implementation=VADImplementation.PYANNOTE,
         mlx_audio_token_limit_guard=True,

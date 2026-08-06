@@ -11,6 +11,13 @@ from scinoephile.analysis.multisequence_alignment import (
     TimedAlignmentToken,
     TimedMultiSequenceAlignment,
 )
+from scinoephile.audio.classification import (
+    AudioEvent,
+    AudioEventDetectionResult,
+    AudioEventSpan,
+    LanguageIdentificationResult,
+    LanguageSpan,
+)
 from scinoephile.audio.diarization import SpeakerDiarizationResult, SpeakerTurn
 from scinoephile.audio.transcription import (
     TranscribedSegment,
@@ -149,6 +156,52 @@ def test_get_timed_multisource_alignment_chunks_preserves_column_rows():
         ("two", "是・"),
     ]
     assert chunks[0].speaker == "Ａ・"
+
+
+def test_alignment_chunks_add_language_singing_and_music_rows():
+    """FireRed classifications should project onto every alignment column."""
+    alignment = TimedMultiSequenceAlignment(
+        source_names=("one", "two"),
+        columns=(
+            TimedAlignmentColumn(
+                (
+                    TimedAlignmentToken("甲", 0.0, 0.2),
+                    TimedAlignmentToken("甲", 0.0, 0.2),
+                )
+            ),
+            TimedAlignmentColumn((None, None), pause_interval_seconds=(0.2, 0.5)),
+            TimedAlignmentColumn(
+                (
+                    TimedAlignmentToken("乙", 0.5, 0.7),
+                    TimedAlignmentToken("乙", 0.5, 0.7),
+                )
+            ),
+        ),
+    )
+    languages = LanguageIdentificationResult(
+        spans=[
+            LanguageSpan(start=10.0, end=10.3, language="zh-yue", confidence=0.9),
+            LanguageSpan(start=10.4, end=10.8, language="ja", confidence=0.8),
+        ]
+    )
+    events = AudioEventDetectionResult(
+        spans=[
+            AudioEventSpan(start=10.0, end=10.3, event=AudioEvent.SINGING),
+            AudioEventSpan(start=10.4, end=10.8, event=AudioEvent.MUSIC),
+        ]
+    )
+
+    chunks = get_timed_multisource_alignment_chunks(
+        alignment,
+        audio_events=events,
+        classification_offset_seconds=10.0,
+        language_identification=languages,
+    )
+
+    assert chunks[0].language_trace == "粵・日"
+    assert chunks[0].language_legend == {"粵": "zh-yue", "日": "ja"}
+    assert chunks[0].singing_trace == "唱・　"
+    assert chunks[0].music_trace == "　・樂"
 
 
 def test_render_timed_alignment_adds_exclusive_speaker_and_vad_row():

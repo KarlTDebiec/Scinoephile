@@ -7,6 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.analysis.transcription_alignment import SubtitleTimingSettings
+from scinoephile.audio.classification import AudioClassificationMode
 from scinoephile.audio.diarization import DiarizationMode
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.transcription import DemucsMode, VADImplementation
@@ -25,9 +26,13 @@ def transcribe_series(
     audio_series: AudioSeries,
     *,
     language: Language,
+    audio_event_mode: AudioClassificationMode = AudioClassificationMode.AUTO,
     source_specs: tuple[TranscriptionSourceSpec, ...] | None = None,
     demucs_mode: DemucsMode = DemucsMode.OFF,
     diarization_mode: DiarizationMode = DiarizationMode.AUTO,
+    language_identification_mode: AudioClassificationMode = (
+        AudioClassificationMode.AUTO
+    ),
     vad_implementation: VADImplementation = VADImplementation.SILERO,
     block_vad_implementation: VADImplementation = VADImplementation.PYANNOTE,
     mlx_audio_token_limit_guard: bool = True,
@@ -50,9 +55,11 @@ def transcribe_series(
     Arguments:
         audio_series: complete source audio without required subtitle events
         language: transcription and output language
+        audio_event_mode: source-wide speech, singing, and music mode
         source_specs: optional future-extensible ASR source registry override
         demucs_mode: source-level vocal-separation mode
         diarization_mode: source-wide speaker diarization mode
+        language_identification_mode: source-wide spoken-language mode
         vad_implementation: backend VAD implementation retained for cache identity
         block_vad_implementation: VAD used for block planning and pause evidence
         mlx_audio_token_limit_guard: whether to guard MiMo generation length
@@ -75,9 +82,11 @@ def transcribe_series(
     if pipeline is None:
         pipeline = get_transcription_pipeline(
             language,
+            audio_event_mode=audio_event_mode,
             source_specs=source_specs,
             demucs_mode=demucs_mode,
             diarization_mode=diarization_mode,
+            language_identification_mode=language_identification_mode,
             vad_implementation=vad_implementation,
             block_vad_implementation=block_vad_implementation,
             mlx_audio_token_limit_guard=mlx_audio_token_limit_guard,

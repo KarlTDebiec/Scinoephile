@@ -142,6 +142,50 @@ def test_audit_renders_merged_speaker_reference_and_boundary():
     assert "+100 ms" in report
 
 
+def test_audit_renders_language_singing_and_music_rows():
+    """Portable FireRed traces should remain visible in audit alignments."""
+    artifact = _get_artifact()
+    block = artifact.blocks[0].model_copy(
+        update={
+            "language_trace": "粵・日",
+            "language_legend": {"粵": "zh-yue", "日": "ja"},
+            "singing_trace": "唱・　",
+            "music_trace": "　・樂",
+        }
+    )
+    artifact = artifact.model_copy(update={"blocks": (block,)})
+
+    report = audit_transcription_alignment(artifact)
+
+    assert "Language trace: 粵=zh-yue, 日=ja." in report
+    assert "language" in report
+    assert "singing" in report
+    assert "music" in report
+    assert "粵・日" in report
+    assert "唱・　" in report
+    assert "　・樂" in report
+
+
+def test_audit_renders_halfwidth_characters_as_fullwidth_cells():
+    """The audit should widen Latin, digits, and halfwidth katakana."""
+    artifact = _get_artifact()
+    block = artifact.blocks[0].model_copy(
+        update={
+            "rows": (
+                TranscriptionAlignmentRow(name="whisper", text="A・1"),
+                TranscriptionAlignmentRow(name="mimo", text="ｶ・B"),
+            ),
+            "merged": "A・1",
+        }
+    )
+    artifact = artifact.model_copy(update={"blocks": (block,)})
+
+    report = audit_transcription_alignment(artifact)
+
+    assert "whisper  Ａ・１" in report
+    assert "mimo     カ・Ｂ" in report
+
+
 def test_audit_accepts_reference_specific_similarity():
     """Reference augmentation should accept dialect-aware substitution scoring."""
     artifact = _get_artifact()

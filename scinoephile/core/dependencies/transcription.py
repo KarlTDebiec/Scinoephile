@@ -13,6 +13,8 @@ from typing import TYPE_CHECKING
 __all__ = [
     "import_demucs_infer_apply",
     "import_demucs_infer_pretrained",
+    "import_firered_aed",
+    "import_firered_lid",
     "import_huggingface_hub",
     "import_huggingface_hub_utils",
     "import_mlx_audio_stt_load",
@@ -51,6 +53,32 @@ _TRANSCRIPTION_EXTRA_MESSAGE = (
     "Transcription support requires optional transcription dependencies. "
     "Install scinoephile with the 'transcription' extra."
 )
+
+
+def import_firered_aed() -> tuple[type[object], type[object]]:
+    """Import the official FireRed multi-label VAD classes on demand.
+
+    Returns:
+        FireRed AED model and configuration classes
+    """
+    try:
+        from fireredasr2s.fireredvad import FireRedAed, FireRedAedConfig
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return FireRedAed, FireRedAedConfig
+
+
+def import_firered_lid() -> tuple[type[object], type[object]]:
+    """Import the official FireRed language-identification classes on demand.
+
+    Returns:
+        FireRed LID model and configuration classes
+    """
+    try:
+        from fireredasr2s.fireredlid import FireRedLid, FireRedLidConfig
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return FireRedLid, FireRedLidConfig
 
 
 def import_demucs_infer_apply() -> ModuleType:
