@@ -73,7 +73,7 @@ if "yue-Hant_transcribe" in actions:
         reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
         language=Language.yue_hant,
         output_dir_path=yue_hant_transcribe_path,
-        audio_dir_path=yue_hant_transcribe_path / "audio",
+        audio_path=yue_hant_transcribe_path / "audio.wav",
         additional_context=transcription_additional_context,
         overwrite=True,
     )

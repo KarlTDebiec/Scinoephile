@@ -12,7 +12,6 @@ from typing import TypedDict, Unpack
 
 from pytest import fixture
 
-from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.ml import get_torch_device
@@ -66,7 +65,6 @@ __all__ = [
     "kob_yue_hans_clean_review_flatten_timewarp",
     "kob_yue_hans_clean_review_flatten_timewarp_romanize",
     "kob_yue_hans_eng",
-    "kob_yue_hant_audio",
     "kob_yue_hant_clean",
     "kob_yue_hant_clean_review",
     "kob_yue_hant_clean_review_flatten",
@@ -569,12 +567,6 @@ def kob_yue_hans_clean_review_flatten_timewarp_romanize() -> Series:
 def kob_yue_hans_eng() -> Series:
     """KOB bilingual yue-Hans and English subtitles."""
     return Series.load(output_dir / "yue-Hans_eng.srt")
-
-
-@fixture
-def kob_yue_hant_audio() -> AudioSeries:
-    """KOB yue-Hant transcription audio guided by zho-Hant subtitles."""
-    return AudioSeries.load(output_dir / "yue-Hant_transcribe/audio")
 
 
 @fixture

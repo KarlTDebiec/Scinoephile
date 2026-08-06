@@ -117,7 +117,7 @@ if "yue-Hant_transcribe" in actions:
         reference_path=input_path / "yue_zho-Hant.srt",
         language=Language.yue_hant,
         output_dir_path=yue_hant_transcribe_path,
-        audio_dir_path=yue_hant_transcribe_path / "audio",
+        audio_path=yue_hant_transcribe_path / "audio.wav",
         media_path=media_path,
         stream_index=stream_index,
         media_start_seconds=media_start_seconds,

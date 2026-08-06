@@ -6,11 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.analysis.character_error_rate import SeriesCER
-from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
-from scinoephile.core.subtitles import Series
 from test.data.ocr import process_ocr
 from test.data.srt import process_srt
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
@@ -27,7 +24,6 @@ zho_hant_ocr_path = output_path / "zho-Hant_ocr"
 yue_hant_path = output_path / "yue-Hant"
 yue_hans_path = output_path / "yue-Hans"
 yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
-zho_hant_guide_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
 
 transcription_additional_context = """
 電影背景：
@@ -70,7 +66,6 @@ actions = {
     # "zho-Hans_eng",
     # "yue-Hans_eng",
     "yue-Hant_transcribe"
-    # "yue-Hant_diff"
 }
 
 if "eng_ocr" in actions:
@@ -119,30 +114,7 @@ if "yue-Hant_transcribe" in actions:
         reference_path=yue_hant_path / "clean_review_flatten_timewarp.srt",
         language=Language.yue_hant,
         output_dir_path=yue_hant_transcribe_path,
-        audio_dir_path=yue_hant_transcribe_path / "audio",
+        audio_path=yue_hant_transcribe_path / "audio.wav",
         additional_context=transcription_additional_context,
         overwrite=True,
     )
-if "yue-Hant_diff" in actions:
-    zho_hant_guide = Series.load(zho_hant_guide_path)
-    yue_hant_transcribe = Series.load(yue_hant_transcribe_path / "merge_translate.srt")
-    yue_hant_reference = Series.load(
-        yue_hant_path / "clean_review_flatten_timewarp.srt"
-    )
-    zho_hant_guide_by_timing = {
-        (subtitle.start, subtitle.end): subtitle for subtitle in zho_hant_guide
-    }
-    aligned_zho_hant_guide = Series(
-        events=[
-            zho_hant_guide_by_timing[(subtitle.start, subtitle.end)]
-            for subtitle in yue_hant_transcribe
-        ]
-    )
-    diff = SeriesDiff(
-        yue_hant_transcribe,
-        yue_hant_reference,
-        one_lbl="TRANSCRIPTION",
-        two_lbl="REFERENCE",
-    )
-    print(diff.get_stacked_str(three=aligned_zho_hant_guide, include_equal=True))
-    print(SeriesCER(yue_hant_reference, yue_hant_transcribe))

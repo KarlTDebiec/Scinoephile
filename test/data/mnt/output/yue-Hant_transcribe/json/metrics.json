@@ -1,0 +1,94 @@
+{
+  "format": "scinoephile-transcription-evaluation",
+  "version": 1,
+  "processed_blocks": 33,
+  "reference_subtitles": 100,
+  "candidate_subtitles": 173,
+  "cer": {
+    "whisper": {
+      "cer": 1.2375776397515528,
+      "correct": 238,
+      "substitutions": 392,
+      "insertions": 391,
+      "deletions": 14,
+      "reference_length": 644
+    },
+    "mimo": {
+      "cer": 1.2142857142857142,
+      "correct": 193,
+      "substitutions": 437,
+      "insertions": 331,
+      "deletions": 14,
+      "reference_length": 644
+    },
+    "qwen": {
+      "cer": 1.2080745341614907,
+      "correct": 213,
+      "substitutions": 416,
+      "insertions": 347,
+      "deletions": 15,
+      "reference_length": 644
+    },
+    "sensevoice": {
+      "cer": 1.1009316770186335,
+      "correct": 182,
+      "substitutions": 435,
+      "insertions": 247,
+      "deletions": 27,
+      "reference_length": 644
+    },
+    "firered": {
+      "cer": 1.593167701863354,
+      "correct": 223,
+      "substitutions": 398,
+      "insertions": 605,
+      "deletions": 23,
+      "reference_length": 644
+    },
+    "glm": {
+      "cer": 1.1661490683229814,
+      "correct": 191,
+      "substitutions": 430,
+      "insertions": 298,
+      "deletions": 23,
+      "reference_length": 644
+    },
+    "merged": {
+      "cer": 1.2531055900621118,
+      "correct": 248,
+      "substitutions": 375,
+      "insertions": 411,
+      "deletions": 21,
+      "reference_length": 644
+    }
+  },
+  "timing": {
+    "settings": {
+      "lead_in_seconds": 0.25,
+      "lead_out_seconds": 0.5,
+      "minimum_duration_seconds": 0.75
+    },
+    "text_aligned_groups": 89,
+    "micro_intersection_over_union": 0.41377950334157115,
+    "one_to_one_groups": 56,
+    "one_to_one_micro_intersection_over_union": 0.42607610729881473,
+    "mean_intersection_over_union": 0.41610830493999634,
+    "mean_reference_coverage": 0.6998915295454841,
+    "mean_start_error_ms": -730.0898876404494,
+    "mean_end_error_ms": -31.134831460674157,
+    "mean_absolute_start_error_ms": 1063.3932584269662,
+    "mean_absolute_end_error_ms": 811.4494382022472,
+    "unmatched_candidate_subtitles": 44,
+    "unmatched_reference_subtitles": 0,
+    "candidate_to_reference_group_counts": {
+      "1:1": 56,
+      "1:2": 5,
+      "2:1": 16,
+      "2:2": 5,
+      "3:1": 4,
+      "4:1": 1,
+      "4:2": 1,
+      "6:1": 1
+    }
+  }
+}

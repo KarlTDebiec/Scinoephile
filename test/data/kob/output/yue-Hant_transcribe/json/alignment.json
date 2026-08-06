@@ -1,0 +1,8181 @@
+{
+  "format": "scinoephile-transcription-alignment",
+  "version": 1,
+  "language": "yue-Hant",
+  "audio_duration_ms": 5993845,
+  "gap_character": "　",
+  "pause_character": "・",
+  "speech_character": "＊",
+  "pause_unit_ms": 250,
+  "request_pause_columns": 4,
+  "timing": {
+    "lead_in_seconds": 0.25,
+    "lead_out_seconds": 0.5,
+    "minimum_duration_seconds": 0.75
+  },
+  "sources": [
+    {
+      "name": "whisper",
+      "backend": "whisper",
+      "model": "khleeloo/whisper-large-v3-cantonese"
+    },
+    {
+      "name": "mimo",
+      "backend": "mlx-audio",
+      "model": "mlx-community/MiMo-V2.5-ASR-MLX"
+    },
+    {
+      "name": "qwen",
+      "backend": "mlx-audio",
+      "model": "mlx-community/Qwen3-ASR-0.6B-8bit"
+    },
+    {
+      "name": "sensevoice",
+      "backend": "mlx-audio",
+      "model": "mlx-community/SenseVoiceSmall"
+    },
+    {
+      "name": "firered",
+      "backend": "mlx-audio",
+      "model": "mlx-community/FireRedASR2-AED-mlx"
+    },
+    {
+      "name": "glm",
+      "backend": "mlx-audio",
+      "model": "mlx-community/GLM-ASR-Nano-2512-8bit"
+    }
+  ],
+  "blocks": [
+    {
+      "index": 1,
+      "core_start_ms": 103281,
+      "core_end_ms": 104074,
+      "buffered_start_ms": 102281,
+      "buffered_end_ms": 105074,
+      "columns": [
+        {
+          "index": 1,
+          "start_ms": 102281,
+          "end_ms": 102531,
+          "kind": "pause"
+        },
+        {
+          "index": 2,
+          "start_ms": 102531,
+          "end_ms": 102781,
+          "kind": "pause"
+        },
+        {
+          "index": 3,
+          "start_ms": 102781,
+          "end_ms": 103031,
+          "kind": "pause"
+        },
+        {
+          "index": 4,
+          "start_ms": 103031,
+          "end_ms": 103289,
+          "kind": "pause"
+        },
+        {
+          "index": 5,
+          "start_ms": 103369,
+          "end_ms": 103490,
+          "kind": "text"
+        },
+        {
+          "index": 6,
+          "start_ms": 103490,
+          "end_ms": 103667,
+          "kind": "text"
+        },
+        {
+          "index": 7,
+          "start_ms": 103667,
+          "end_ms": 103738,
+          "kind": "text"
+        },
+        {
+          "index": 8,
+          "start_ms": 103738,
+          "end_ms": 103808,
+          "kind": "text"
+        },
+        {
+          "index": 9,
+          "start_ms": 103808,
+          "end_ms": 104009,
+          "kind": "text"
+        },
+        {
+          "index": 10,
+          "start_ms": 104009,
+          "end_ms": 104029,
+          "kind": "text"
+        },
+        {
+          "index": 11,
+          "start_ms": 104029,
+          "end_ms": 105074,
+          "kind": "text"
+        },
+        {
+          "index": 12,
+          "start_ms": 104082,
+          "end_ms": 104332,
+          "kind": "pause"
+        },
+        {
+          "index": 13,
+          "start_ms": 104332,
+          "end_ms": 104582,
+          "kind": "pause"
+        },
+        {
+          "index": 14,
+          "start_ms": 104582,
+          "end_ms": 105074,
+          "kind": "pause"
+        }
+      ],
+      "rows": [
+        {
+          "name": "whisper",
+          "text": "・・・・少爺準備好了　・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "・・・・少爺準備好啦嗯・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "・・・・少爺準備好啦　・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "・・・・少爺準備好啦嗯・・・"
+        },
+        {
+          "name": "firered",
+          "text": "・・・・少爺準備好了嗯・・・"
+        },
+        {
+          "name": "glm",
+          "text": "・・・・小葉準備好啦嗯・・・"
+        }
+      ],
+      "speaker": "・・・・ＢＢＢＢＢＢＡ・・・",
+      "merged": "・・・・少爺準備好啦　・・・",
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "少爺，準備好啦",
+          "speech_start_ms": 103369,
+          "speech_end_ms": 104011,
+          "start_ms": 103119,
+          "end_ms": 104511,
+          "speaker": "SPEAKER_04"
+        }
+      ],
+      "source_errors": {}
+    },
+    {
+      "index": 2,
+      "core_start_ms": 145941,
+      "core_end_ms": 147729,
+      "buffered_start_ms": 144941,
+      "buffered_end_ms": 148729,
+      "columns": [
+        {
+          "index": 1,
+          "start_ms": 144941,
+          "end_ms": 145191,
+          "kind": "pause"
+        },
+        {
+          "index": 2,
+          "start_ms": 145191,
+          "end_ms": 145441,
+          "kind": "pause"
+        },
+        {
+          "index": 3,
+          "start_ms": 145441,
+          "end_ms": 145691,
+          "kind": "pause"
+        },
+        {
+          "index": 4,
+          "start_ms": 145691,
+          "end_ms": 145949,
+          "kind": "pause"
+        },
+        {
+          "index": 5,
+          "start_ms": 146043,
+          "end_ms": 146184,
+          "kind": "text"
+        },
+        {
+          "index": 6,
+          "start_ms": 146184,
+          "end_ms": 146264,
+          "kind": "text"
+        },
+        {
+          "index": 7,
+          "start_ms": 146264,
+          "end_ms": 146424,
+          "kind": "text"
+        },
+        {
+          "index": 8,
+          "start_ms": 146424,
+          "end_ms": 146598,
+          "kind": "text"
+        },
+        {
+          "index": 9,
+          "start_ms": 146598,
+          "end_ms": 146771,
+          "kind": "text"
+        },
+        {
+          "index": 10,
+          "start_ms": 146771,
+          "end_ms": 146945,
+          "kind": "text"
+        },
+        {
+          "index": 11,
+          "start_ms": 146945,
+          "end_ms": 147126,
+          "kind": "text"
+        },
+        {
+          "index": 12,
+          "start_ms": 147126,
+          "end_ms": 147306,
+          "kind": "text"
+        },
+        {
+          "index": 13,
+          "start_ms": 147306,
+          "end_ms": 147326,
+          "kind": "text"
+        },
+        {
+          "index": 14,
+          "start_ms": 147326,
+          "end_ms": 148028,
+          "kind": "text"
+        },
+        {
+          "index": 15,
+          "start_ms": 147738,
+          "end_ms": 147988,
+          "kind": "pause"
+        },
+        {
+          "index": 16,
+          "start_ms": 147988,
+          "end_ms": 148238,
+          "kind": "pause"
+        },
+        {
+          "index": 17,
+          "start_ms": 148238,
+          "end_ms": 148729,
+          "kind": "pause"
+        }
+      ],
+      "rows": [
+        {
+          "name": "whisper",
+          "text": "・・・・辛苦啦少爺會喊啦少爺・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "・・・・上坡了小爺你好呢小爺・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "・・・・辛苦啦少爺會汗啦少爺・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "・・・・辛苦啦少爺會寒　少爺・・・"
+        },
+        {
+          "name": "firered",
+          "text": "・・・・辛苦啦少爺會寒啦少爺・・・"
+        },
+        {
+          "name": "glm",
+          "text": "・・・・辛苦啦小嘢會喊啦小嘢・・・"
+        }
+      ],
+      "speaker": "・・・・ＤＤＤＤＥＥＥＥＥＥ・・・",
+      "merged": "・・・・辛苦啦少爺會喊啦少爺・・・",
+      "subtitles": [
+        {
+          "index": 2,
+          "text": "辛苦啦，少爺。",
+          "speech_start_ms": 146050,
+          "speech_end_ms": 146795,
+          "start_ms": 145800,
+          "end_ms": 146795,
+          "speaker": "SPEAKER_05"
+        },
+        {
+          "index": 3,
+          "text": "會喊啦，少爺。",
+          "speech_start_ms": 146795,
+          "speech_end_ms": 147500,
+          "start_ms": 146795,
+          "end_ms": 148000,
+          "speaker": "SPEAKER_18"
+        }
+      ],
+      "source_errors": {}
+    },
+    {
+      "index": 3,
+      "core_start_ms": 156977,
+      "core_end_ms": 165263,
+      "buffered_start_ms": 155977,
+      "buffered_end_ms": 166263,
+      "columns": [
+        {
+          "index": 1,
+          "start_ms": 155977,
+          "end_ms": 156227,
+          "kind": "pause"
+        },
+        {
+          "index": 2,
+          "start_ms": 156227,
+          "end_ms": 156477,
+          "kind": "pause"
+        },
+        {
+          "index": 3,
+          "start_ms": 156477,
+          "end_ms": 156727,
+          "kind": "pause"
+        },
+        {
+          "index": 4,
+          "start_ms": 156727,
+          "end_ms": 156985,
+          "kind": "pause"
+        },
+        {
+          "index": 5,
+          "start_ms": 156997,
+          "end_ms": 157137,
+          "kind": "text"
+        },
+        {
+          "index": 6,
+          "start_ms": 157137,
+          "end_ms": 157337,
+          "kind": "text"
+        },
+        {
+          "index": 7,
+          "start_ms": 156848,
+          "end_ms": 157398,
+          "kind": "text"
+        },
+        {
+          "index": 8,
+          "start_ms": 157578,
+          "end_ms": 157704,
+          "kind": "text"
+        },
+        {
+          "index": 9,
+          "start_ms": 157698,
+          "end_ms": 157858,
+          "kind": "text"
+        },
+        {
+          "index": 10,
+          "start_ms": 157858,
+          "end_ms": 158018,
+          "kind": "text"
+        },
+        {
+          "index": 11,
+          "start_ms": 158018,
+          "end_ms": 158138,
+          "kind": "text"
+        },
+        {
+          "index": 12,
+          "start_ms": 158138,
+          "end_ms": 158639,
+          "kind": "text"
+        },
+        {
+          "index": 13,
+          "start_ms": 158639,
+          "end_ms": 158739,
+          "kind": "text"
+        },
+        {
+          "index": 14,
+          "start_ms": 158739,
+          "end_ms": 159059,
+          "kind": "text"
+        },
+        {
+          "index": 15,
+          "start_ms": 159059,
+          "end_ms": 159939,
+          "kind": "text"
+        },
+        {
+          "index": 16,
+          "start_ms": 159162,
+          "end_ms": 159412,
+          "kind": "pause"
+        },
+        {
+          "index": 17,
+          "start_ms": 159412,
+          "end_ms": 159662,
+          "kind": "pause"
+        },
+        {
+          "index": 18,
+          "start_ms": 159662,
+          "end_ms": 159912,
+          "kind": "pause"
+        },
+        {
+          "index": 19,
+          "start_ms": 159912,
+          "end_ms": 160162,
+          "kind": "pause"
+        },
+        {
+          "index": 20,
+          "start_ms": 160162,
+          "end_ms": 160597,
+          "kind": "pause"
+        },
+        {
+          "index": 21,
+          "start_ms": 159939,
+          "end_ms": 160720,
+          "kind": "text"
+        },
+        {
+          "index": 22,
+          "start_ms": 160720,
+          "end_ms": 160850,
+          "kind": "text"
+        },
+        {
+          "index": 23,
+          "start_ms": 160850,
+          "end_ms": 161117,
+          "kind": "text"
+        },
+        {
+          "index": 24,
+          "start_ms": 161117,
+          "end_ms": 162021,
+          "kind": "text"
+        },
+        {
+          "index": 25,
+          "start_ms": 162021,
+          "end_ms": 162161,
+          "kind": "text"
+        },
+        {
+          "index": 26,
+          "start_ms": 162161,
+          "end_ms": 162321,
+          "kind": "text"
+        },
+        {
+          "index": 27,
+          "start_ms": 162321,
+          "end_ms": 162441,
+          "kind": "text"
+        },
+        {
+          "index": 28,
+          "start_ms": 162441,
+          "end_ms": 162594,
+          "kind": "text"
+        },
+        {
+          "index": 29,
+          "start_ms": 162594,
+          "end_ms": 162748,
+          "kind": "text"
+        },
+        {
+          "index": 30,
+          "start_ms": 162748,
+          "end_ms": 162901,
+          "kind": "text"
+        },
+        {
+          "index": 31,
+          "start_ms": 162901,
+          "end_ms": 163041,
+          "kind": "text"
+        },
+        {
+          "index": 32,
+          "start_ms": 163041,
+          "end_ms": 163171,
+          "kind": "text"
+        },
+        {
+          "index": 33,
+          "start_ms": 163171,
+          "end_ms": 163301,
+          "kind": "text"
+        },
+        {
+          "index": 34,
+          "start_ms": 163301,
+          "end_ms": 163621,
+          "kind": "text"
+        },
+        {
+          "index": 35,
+          "start_ms": 163621,
+          "end_ms": 164242,
+          "kind": "text"
+        },
+        {
+          "index": 36,
+          "start_ms": 163904,
+          "end_ms": 164208,
+          "kind": "pause"
+        },
+        {
+          "index": 37,
+          "start_ms": 164242,
+          "end_ms": 164562,
+          "kind": "text"
+        },
+        {
+          "index": 38,
+          "start_ms": 164562,
+          "end_ms": 164582,
+          "kind": "text"
+        },
+        {
+          "index": 39,
+          "start_ms": 164979,
+          "end_ms": 165160,
+          "kind": "text"
+        },
+        {
+          "index": 40,
+          "start_ms": 165160,
+          "end_ms": 165210,
+          "kind": "text"
+        },
+        {
+          "index": 41,
+          "start_ms": 165271,
+          "end_ms": 165521,
+          "kind": "pause"
+        },
+        {
+          "index": 42,
+          "start_ms": 165521,
+          "end_ms": 165771,
+          "kind": "pause"
+        },
+        {
+          "index": 43,
+          "start_ms": 165771,
+          "end_ms": 166263,
+          "kind": "pause"
+        }
+      ],
+      "rows": [
+        {
+          "name": "whisper",
+          "text": "・・・・師爺　少爺寫乜嘢呀名呀・・・・・嘩好靚呀原來少爺識寫自己個名喎・係呀嬰兒・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "・・・・星爺　小人寫乜嘢啊名啊・・・・・哇好靚啊原來小人識寫自己個名喎・系啊　　・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "・・・・師爺　少爺寫乜嘢啊名啊・・・・・哇好靚啊原來少爺識寫自己個名喎・系啊　　・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "・・・・師爺詩　爺寫乜嘢啊名啊・・・・・哇好靚啊原來詩爺識識自己個名　・系啊　　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "・・・・師爺啊少爺寫乜嘢啊名啊・・・・・哇好叻啊原來少爺識寫自己個名　・系啊　　・・・"
+        },
+        {
+          "name": "glm",
+          "text": "・・・・仙女　小人寫咩嘢啊名啊・・・・・哇好靚啊原來小人識寫自己個名喎・系啊　　・・・"
+        }
+      ],
+      "speaker": "・・・・ＦＦＦＦＦＦＦＦＧＧＧ・・・・・ＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦ・ＨＨＩＩ・・・",
+      "merged": "・・・・師爺　少爺寫乜嘢啊名啊・・・・・嘩好靚呀原來少爺識寫自己個名喎・係呀嬰兒・・・",
+      "subtitles": [
+        {
+          "index": 4,
+          "text": "師爺！",
+          "speech_start_ms": 157086,
+          "speech_end_ms": 157570,
+          "start_ms": 156820,
+          "end_ms": 157570,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 5,
+          "text": "少爺寫乜嘢啊？",
+          "speech_start_ms": 157570,
+          "speech_end_ms": 158759,
+          "start_ms": 157570,
+          "end_ms": 158759,
+          "speaker": null
+        },
+        {
+          "index": 6,
+          "text": "名啊。",
+          "speech_start_ms": 158759,
+          "speech_end_ms": 158900,
+          "start_ms": 158759,
+          "end_ms": 159509,
+          "speaker": "SPEAKER_24"
+        },
+        {
+          "index": 7,
+          "text": "嘩，好靚呀，原來少爺識寫自己個名喎！",
+          "speech_start_ms": 160677,
+          "speech_end_ms": 164241,
+          "start_ms": 160427,
+          "end_ms": 164241,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 8,
+          "text": "係呀。",
+          "speech_start_ms": 164241,
+          "speech_end_ms": 164962,
+          "start_ms": 164241,
+          "end_ms": 164962,
+          "speaker": null
+        },
+        {
+          "index": 9,
+          "text": "嬰兒",
+          "speech_start_ms": 164962,
+          "speech_end_ms": 165182,
+          "start_ms": 164962,
+          "end_ms": 165712,
+          "speaker": "SPEAKER_10"
+        }
+      ],
+      "source_errors": {}
+    },
+    {
+      "index": 4,
+      "core_start_ms": 169043,
+      "core_end_ms": 281346,
+      "buffered_start_ms": 168043,
+      "buffered_end_ms": 282346,
+      "columns": [
+        {
+          "index": 1,
+          "start_ms": 168043,
+          "end_ms": 168293,
+          "kind": "pause"
+        },
+        {
+          "index": 2,
+          "start_ms": 168293,
+          "end_ms": 168543,
+          "kind": "pause"
+        },
+        {
+          "index": 3,
+          "start_ms": 168543,
+          "end_ms": 168793,
+          "kind": "pause"
+        },
+        {
+          "index": 4,
+          "start_ms": 168793,
+          "end_ms": 169051,
+          "kind": "pause"
+        },
+        {
+          "index": 5,
+          "start_ms": 169324,
+          "end_ms": 171325,
+          "kind": "text"
+        },
+        {
+          "index": 6,
+          "start_ms": 169642,
+          "end_ms": 169892,
+          "kind": "pause"
+        },
+        {
+          "index": 7,
+          "start_ms": 169892,
+          "end_ms": 170142,
+          "kind": "pause"
+        },
+        {
+          "index": 8,
+          "start_ms": 170142,
+          "end_ms": 170392,
+          "kind": "pause"
+        },
+        {
+          "index": 9,
+          "start_ms": 170392,
+          "end_ms": 170642,
+          "kind": "pause"
+        },
+        {
+          "index": 10,
+          "start_ms": 170642,
+          "end_ms": 170892,
+          "kind": "pause"
+        },
+        {
+          "index": 11,
+          "start_ms": 170892,
+          "end_ms": 171228,
+          "kind": "pause"
+        },
+        {
+          "index": 12,
+          "start_ms": 171325,
+          "end_ms": 171645,
+          "kind": "text"
+        },
+        {
+          "index": 13,
+          "start_ms": 171645,
+          "end_ms": 172826,
+          "kind": "text"
+        },
+        {
+          "index": 14,
+          "start_ms": 171852,
+          "end_ms": 172102,
+          "kind": "pause"
+        },
+        {
+          "index": 15,
+          "start_ms": 172102,
+          "end_ms": 172352,
+          "kind": "pause"
+        },
+        {
+          "index": 16,
+          "start_ms": 172352,
+          "end_ms": 172763,
+          "kind": "pause"
+        },
+        {
+          "index": 17,
+          "start_ms": 172832,
+          "end_ms": 173202,
+          "kind": "text"
+        },
+        {
+          "index": 18,
+          "start_ms": 173202,
+          "end_ms": 173496,
+          "kind": "text"
+        },
+        {
+          "index": 19,
+          "start_ms": 173366,
+          "end_ms": 173627,
+          "kind": "text"
+        },
+        {
+          "index": 20,
+          "start_ms": 173520,
+          "end_ms": 176569,
+          "kind": "text"
+        },
+        {
+          "index": 21,
+          "start_ms": 174063,
+          "end_ms": 174313,
+          "kind": "pause"
+        },
+        {
+          "index": 22,
+          "start_ms": 174313,
+          "end_ms": 174563,
+          "kind": "pause"
+        },
+        {
+          "index": 23,
+          "start_ms": 174563,
+          "end_ms": 174813,
+          "kind": "pause"
+        },
+        {
+          "index": 24,
+          "start_ms": 174813,
+          "end_ms": 175063,
+          "kind": "pause"
+        },
+        {
+          "index": 25,
+          "start_ms": 175063,
+          "end_ms": 175313,
+          "kind": "pause"
+        },
+        {
+          "index": 26,
+          "start_ms": 175313,
+          "end_ms": 175563,
+          "kind": "pause"
+        },
+        {
+          "index": 27,
+          "start_ms": 175563,
+          "end_ms": 175813,
+          "kind": "pause"
+        },
+        {
+          "index": 28,
+          "start_ms": 175813,
+          "end_ms": 176063,
+          "kind": "pause"
+        },
+        {
+          "index": 29,
+          "start_ms": 176063,
+          "end_ms": 176527,
+          "kind": "pause"
+        },
+        {
+          "index": 30,
+          "start_ms": 176569,
+          "end_ms": 176909,
+          "kind": "text"
+        },
+        {
+          "index": 31,
+          "start_ms": 176909,
+          "end_ms": 177209,
+          "kind": "text"
+        },
+        {
+          "index": 32,
+          "start_ms": 177209,
+          "end_ms": 177659,
+          "kind": "text"
+        },
+        {
+          "index": 33,
+          "start_ms": 177659,
+          "end_ms": 178110,
+          "kind": "text"
+        },
+        {
+          "index": 34,
+          "start_ms": 178110,
+          "end_ms": 178560,
+          "kind": "text"
+        },
+        {
+          "index": 35,
+          "start_ms": 178560,
+          "end_ms": 179010,
+          "kind": "text"
+        },
+        {
+          "index": 36,
+          "start_ms": 179010,
+          "end_ms": 179591,
+          "kind": "text"
+        },
+        {
+          "index": 37,
+          "start_ms": 179591,
+          "end_ms": 180171,
+          "kind": "text"
+        },
+        {
+          "index": 38,
+          "start_ms": 180171,
+          "end_ms": 180451,
+          "kind": "text"
+        },
+        {
+          "index": 39,
+          "start_ms": 180451,
+          "end_ms": 180751,
+          "kind": "text"
+        },
+        {
+          "index": 40,
+          "start_ms": 180751,
+          "end_ms": 180931,
+          "kind": "text"
+        },
+        {
+          "index": 41,
+          "start_ms": 180931,
+          "end_ms": 181342,
+          "kind": "text"
+        },
+        {
+          "index": 42,
+          "start_ms": 181752,
+          "end_ms": 181865,
+          "kind": "text"
+        },
+        {
+          "index": 43,
+          "start_ms": 181603,
+          "end_ms": 181752,
+          "kind": "text"
+        },
+        {
+          "index": 44,
+          "start_ms": 181752,
+          "end_ms": 181912,
+          "kind": "text"
+        },
+        {
+          "index": 45,
+          "start_ms": 181912,
+          "end_ms": 182232,
+          "kind": "text"
+        },
+        {
+          "index": 46,
+          "start_ms": 182232,
+          "end_ms": 182702,
+          "kind": "text"
+        },
+        {
+          "index": 47,
+          "start_ms": 182534,
+          "end_ms": 182784,
+          "kind": "pause"
+        },
+        {
+          "index": 48,
+          "start_ms": 182784,
+          "end_ms": 183034,
+          "kind": "pause"
+        },
+        {
+          "index": 49,
+          "start_ms": 183034,
+          "end_ms": 183293,
+          "kind": "pause"
+        },
+        {
+          "index": 50,
+          "start_ms": 182702,
+          "end_ms": 183313,
+          "kind": "text"
+        },
+        {
+          "index": 51,
+          "start_ms": 183313,
+          "end_ms": 183853,
+          "kind": "text"
+        },
+        {
+          "index": 52,
+          "start_ms": 183853,
+          "end_ms": 184113,
+          "kind": "text"
+        },
+        {
+          "index": 53,
+          "start_ms": 184113,
+          "end_ms": 184394,
+          "kind": "text"
+        },
+        {
+          "index": 54,
+          "start_ms": 184394,
+          "end_ms": 184504,
+          "kind": "text"
+        },
+        {
+          "index": 55,
+          "start_ms": 184504,
+          "end_ms": 184703,
+          "kind": "text"
+        },
+        {
+          "index": 56,
+          "start_ms": 184934,
+          "end_ms": 185995,
+          "kind": "text"
+        },
+        {
+          "index": 57,
+          "start_ms": 185995,
+          "end_ms": 186195,
+          "kind": "text"
+        },
+        {
+          "index": 58,
+          "start_ms": 186195,
+          "end_ms": 187235,
+          "kind": "text"
+        },
+        {
+          "index": 59,
+          "start_ms": 186466,
+          "end_ms": 186716,
+          "kind": "pause"
+        },
+        {
+          "index": 60,
+          "start_ms": 186716,
+          "end_ms": 187175,
+          "kind": "pause"
+        },
+        {
+          "index": 61,
+          "start_ms": 187235,
+          "end_ms": 187476,
+          "kind": "text"
+        },
+        {
+          "index": 62,
+          "start_ms": 187476,
+          "end_ms": 187616,
+          "kind": "text"
+        },
+        {
+          "index": 63,
+          "start_ms": 187616,
+          "end_ms": 187656,
+          "kind": "text"
+        },
+        {
+          "index": 64,
+          "start_ms": 187656,
+          "end_ms": 187856,
+          "kind": "text"
+        },
+        {
+          "index": 65,
+          "start_ms": 187856,
+          "end_ms": 188036,
+          "kind": "text"
+        },
+        {
+          "index": 66,
+          "start_ms": 188036,
+          "end_ms": 188216,
+          "kind": "text"
+        },
+        {
+          "index": 67,
+          "start_ms": 188216,
+          "end_ms": 191018,
+          "kind": "text"
+        },
+        {
+          "index": 68,
+          "start_ms": 188508,
+          "end_ms": 188758,
+          "kind": "pause"
+        },
+        {
+          "index": 69,
+          "start_ms": 188758,
+          "end_ms": 189008,
+          "kind": "pause"
+        },
+        {
+          "index": 70,
+          "start_ms": 189008,
+          "end_ms": 189258,
+          "kind": "pause"
+        },
+        {
+          "index": 71,
+          "start_ms": 189258,
+          "end_ms": 189508,
+          "kind": "pause"
+        },
+        {
+          "index": 72,
+          "start_ms": 189508,
+          "end_ms": 189758,
+          "kind": "pause"
+        },
+        {
+          "index": 73,
+          "start_ms": 189758,
+          "end_ms": 190008,
+          "kind": "pause"
+        },
+        {
+          "index": 74,
+          "start_ms": 190008,
+          "end_ms": 190258,
+          "kind": "pause"
+        },
+        {
+          "index": 75,
+          "start_ms": 190258,
+          "end_ms": 190508,
+          "kind": "pause"
+        },
+        {
+          "index": 76,
+          "start_ms": 190508,
+          "end_ms": 190955,
+          "kind": "pause"
+        },
+        {
+          "index": 77,
+          "start_ms": 191018,
+          "end_ms": 191118,
+          "kind": "text"
+        },
+        {
+          "index": 78,
+          "start_ms": 191118,
+          "end_ms": 191258,
+          "kind": "text"
+        },
+        {
+          "index": 79,
+          "start_ms": 191258,
+          "end_ms": 192139,
+          "kind": "text"
+        },
+        {
+          "index": 80,
+          "start_ms": 191427,
+          "end_ms": 191677,
+          "kind": "pause"
+        },
+        {
+          "index": 81,
+          "start_ms": 191677,
+          "end_ms": 192119,
+          "kind": "pause"
+        },
+        {
+          "index": 82,
+          "start_ms": 192139,
+          "end_ms": 192459,
+          "kind": "text"
+        },
+        {
+          "index": 83,
+          "start_ms": 192459,
+          "end_ms": 192629,
+          "kind": "text"
+        },
+        {
+          "index": 84,
+          "start_ms": 192629,
+          "end_ms": 192799,
+          "kind": "text"
+        },
+        {
+          "index": 85,
+          "start_ms": 192799,
+          "end_ms": 193039,
+          "kind": "text"
+        },
+        {
+          "index": 86,
+          "start_ms": 193039,
+          "end_ms": 193316,
+          "kind": "text"
+        },
+        {
+          "index": 87,
+          "start_ms": 193316,
+          "end_ms": 193519,
+          "kind": "text"
+        },
+        {
+          "index": 88,
+          "start_ms": 193519,
+          "end_ms": 194120,
+          "kind": "text"
+        },
+        {
+          "index": 89,
+          "start_ms": 194120,
+          "end_ms": 194280,
+          "kind": "text"
+        },
+        {
+          "index": 90,
+          "start_ms": 194280,
+          "end_ms": 194580,
+          "kind": "text"
+        },
+        {
+          "index": 91,
+          "start_ms": 194580,
+          "end_ms": 194780,
+          "kind": "text"
+        },
+        {
+          "index": 92,
+          "start_ms": 194780,
+          "end_ms": 195020,
+          "kind": "text"
+        },
+        {
+          "index": 93,
+          "start_ms": 195020,
+          "end_ms": 195160,
+          "kind": "text"
+        },
+        {
+          "index": 94,
+          "start_ms": 195160,
+          "end_ms": 195441,
+          "kind": "text"
+        },
+        {
+          "index": 95,
+          "start_ms": 195441,
+          "end_ms": 195608,
+          "kind": "text"
+        },
+        {
+          "index": 96,
+          "start_ms": 195608,
+          "end_ms": 195774,
+          "kind": "text"
+        },
+        {
+          "index": 97,
+          "start_ms": 195774,
+          "end_ms": 195941,
+          "kind": "text"
+        },
+        {
+          "index": 98,
+          "start_ms": 195941,
+          "end_ms": 196081,
+          "kind": "text"
+        },
+        {
+          "index": 99,
+          "start_ms": 196081,
+          "end_ms": 196201,
+          "kind": "text"
+        },
+        {
+          "index": 100,
+          "start_ms": 196201,
+          "end_ms": 196301,
+          "kind": "text"
+        },
+        {
+          "index": 101,
+          "start_ms": 196301,
+          "end_ms": 196481,
+          "kind": "text"
+        },
+        {
+          "index": 102,
+          "start_ms": 196481,
+          "end_ms": 196541,
+          "kind": "text"
+        },
+        {
+          "index": 103,
+          "start_ms": 196541,
+          "end_ms": 196601,
+          "kind": "text"
+        },
+        {
+          "index": 104,
+          "start_ms": 196601,
+          "end_ms": 196802,
+          "kind": "text"
+        },
+        {
+          "index": 105,
+          "start_ms": 196802,
+          "end_ms": 197662,
+          "kind": "text"
+        },
+        {
+          "index": 106,
+          "start_ms": 197662,
+          "end_ms": 197822,
+          "kind": "text"
+        },
+        {
+          "index": 107,
+          "start_ms": 197822,
+          "end_ms": 197962,
+          "kind": "text"
+        },
+        {
+          "index": 108,
+          "start_ms": 197962,
+          "end_ms": 198022,
+          "kind": "text"
+        },
+        {
+          "index": 109,
+          "start_ms": 198043,
+          "end_ms": 198204,
+          "kind": "text"
+        },
+        {
+          "index": 110,
+          "start_ms": 198204,
+          "end_ms": 198924,
+          "kind": "text"
+        },
+        {
+          "index": 111,
+          "start_ms": 198924,
+          "end_ms": 199104,
+          "kind": "text"
+        },
+        {
+          "index": 112,
+          "start_ms": 199104,
+          "end_ms": 199284,
+          "kind": "text"
+        },
+        {
+          "index": 113,
+          "start_ms": 199284,
+          "end_ms": 199485,
+          "kind": "text"
+        },
+        {
+          "index": 114,
+          "start_ms": 199485,
+          "end_ms": 199592,
+          "kind": "text"
+        },
+        {
+          "index": 115,
+          "start_ms": 199592,
+          "end_ms": 199698,
+          "kind": "text"
+        },
+        {
+          "index": 116,
+          "start_ms": 199698,
+          "end_ms": 199805,
+          "kind": "text"
+        },
+        {
+          "index": 117,
+          "start_ms": 199805,
+          "end_ms": 200003,
+          "kind": "text"
+        },
+        {
+          "index": 118,
+          "start_ms": 200003,
+          "end_ms": 200263,
+          "kind": "text"
+        },
+        {
+          "index": 119,
+          "start_ms": 200263,
+          "end_ms": 200885,
+          "kind": "text"
+        },
+        {
+          "index": 120,
+          "start_ms": 200885,
+          "end_ms": 201048,
+          "kind": "text"
+        },
+        {
+          "index": 121,
+          "start_ms": 201052,
+          "end_ms": 201229,
+          "kind": "text"
+        },
+        {
+          "index": 122,
+          "start_ms": 201226,
+          "end_ms": 201406,
+          "kind": "text"
+        },
+        {
+          "index": 123,
+          "start_ms": 201406,
+          "end_ms": 201606,
+          "kind": "text"
+        },
+        {
+          "index": 124,
+          "start_ms": 201606,
+          "end_ms": 201746,
+          "kind": "text"
+        },
+        {
+          "index": 125,
+          "start_ms": 201746,
+          "end_ms": 201886,
+          "kind": "text"
+        },
+        {
+          "index": 126,
+          "start_ms": 201886,
+          "end_ms": 202126,
+          "kind": "text"
+        },
+        {
+          "index": 127,
+          "start_ms": 202126,
+          "end_ms": 202767,
+          "kind": "text"
+        },
+        {
+          "index": 128,
+          "start_ms": 202767,
+          "end_ms": 202967,
+          "kind": "text"
+        },
+        {
+          "index": 129,
+          "start_ms": 202967,
+          "end_ms": 203087,
+          "kind": "text"
+        },
+        {
+          "index": 130,
+          "start_ms": 203087,
+          "end_ms": 203867,
+          "kind": "text"
+        },
+        {
+          "index": 131,
+          "start_ms": 203867,
+          "end_ms": 203987,
+          "kind": "text"
+        },
+        {
+          "index": 132,
+          "start_ms": 203987,
+          "end_ms": 204187,
+          "kind": "text"
+        },
+        {
+          "index": 133,
+          "start_ms": 204187,
+          "end_ms": 204388,
+          "kind": "text"
+        },
+        {
+          "index": 134,
+          "start_ms": 204388,
+          "end_ms": 204768,
+          "kind": "text"
+        },
+        {
+          "index": 135,
+          "start_ms": 204768,
+          "end_ms": 205088,
+          "kind": "text"
+        },
+        {
+          "index": 136,
+          "start_ms": 205088,
+          "end_ms": 205248,
+          "kind": "text"
+        },
+        {
+          "index": 137,
+          "start_ms": 205248,
+          "end_ms": 205508,
+          "kind": "text"
+        },
+        {
+          "index": 138,
+          "start_ms": 205508,
+          "end_ms": 205828,
+          "kind": "text"
+        },
+        {
+          "index": 139,
+          "start_ms": 205828,
+          "end_ms": 206649,
+          "kind": "text"
+        },
+        {
+          "index": 140,
+          "start_ms": 206649,
+          "end_ms": 206929,
+          "kind": "text"
+        },
+        {
+          "index": 141,
+          "start_ms": 206929,
+          "end_ms": 207156,
+          "kind": "text"
+        },
+        {
+          "index": 142,
+          "start_ms": 207156,
+          "end_ms": 207383,
+          "kind": "text"
+        },
+        {
+          "index": 143,
+          "start_ms": 207383,
+          "end_ms": 207610,
+          "kind": "text"
+        },
+        {
+          "index": 144,
+          "start_ms": 207610,
+          "end_ms": 207990,
+          "kind": "text"
+        },
+        {
+          "index": 145,
+          "start_ms": 207990,
+          "end_ms": 208350,
+          "kind": "text"
+        },
+        {
+          "index": 146,
+          "start_ms": 208350,
+          "end_ms": 208470,
+          "kind": "text"
+        },
+        {
+          "index": 147,
+          "start_ms": 208470,
+          "end_ms": 208610,
+          "kind": "text"
+        },
+        {
+          "index": 148,
+          "start_ms": 208610,
+          "end_ms": 208830,
+          "kind": "text"
+        },
+        {
+          "index": 149,
+          "start_ms": 208830,
+          "end_ms": 209091,
+          "kind": "text"
+        },
+        {
+          "index": 150,
+          "start_ms": 209091,
+          "end_ms": 209271,
+          "kind": "text"
+        },
+        {
+          "index": 151,
+          "start_ms": 209271,
+          "end_ms": 209451,
+          "kind": "text"
+        },
+        {
+          "index": 152,
+          "start_ms": 209451,
+          "end_ms": 210011,
+          "kind": "text"
+        },
+        {
+          "index": 153,
+          "start_ms": 210011,
+          "end_ms": 210271,
+          "kind": "text"
+        },
+        {
+          "index": 154,
+          "start_ms": 210271,
+          "end_ms": 210485,
+          "kind": "text"
+        },
+        {
+          "index": 155,
+          "start_ms": 210485,
+          "end_ms": 210698,
+          "kind": "text"
+        },
+        {
+          "index": 156,
+          "start_ms": 210698,
+          "end_ms": 210912,
+          "kind": "text"
+        },
+        {
+          "index": 157,
+          "start_ms": 210912,
+          "end_ms": 211412,
+          "kind": "text"
+        },
+        {
+          "index": 158,
+          "start_ms": 211412,
+          "end_ms": 211712,
+          "kind": "text"
+        },
+        {
+          "index": 159,
+          "start_ms": 211712,
+          "end_ms": 211892,
+          "kind": "text"
+        },
+        {
+          "index": 160,
+          "start_ms": 211892,
+          "end_ms": 212172,
+          "kind": "text"
+        },
+        {
+          "index": 161,
+          "start_ms": 212172,
+          "end_ms": 212293,
+          "kind": "text"
+        },
+        {
+          "index": 162,
+          "start_ms": 212293,
+          "end_ms": 212453,
+          "kind": "text"
+        },
+        {
+          "index": 163,
+          "start_ms": 212453,
+          "end_ms": 212633,
+          "kind": "text"
+        },
+        {
+          "index": 164,
+          "start_ms": 212633,
+          "end_ms": 212873,
+          "kind": "text"
+        },
+        {
+          "index": 165,
+          "start_ms": 212873,
+          "end_ms": 213133,
+          "kind": "text"
+        },
+        {
+          "index": 166,
+          "start_ms": 212867,
+          "end_ms": 212947,
+          "kind": "text"
+        },
+        {
+          "index": 167,
+          "start_ms": 212947,
+          "end_ms": 213147,
+          "kind": "text"
+        },
+        {
+          "index": 168,
+          "start_ms": 213133,
+          "end_ms": 213574,
+          "kind": "text"
+        },
+        {
+          "index": 169,
+          "start_ms": 213263,
+          "end_ms": 213513,
+          "kind": "pause"
+        },
+        {
+          "index": 170,
+          "start_ms": 213513,
+          "end_ms": 213972,
+          "kind": "pause"
+        },
+        {
+          "index": 171,
+          "start_ms": 213574,
+          "end_ms": 214014,
+          "kind": "text"
+        },
+        {
+          "index": 172,
+          "start_ms": 214014,
+          "end_ms": 214134,
+          "kind": "text"
+        },
+        {
+          "index": 173,
+          "start_ms": 214134,
+          "end_ms": 214254,
+          "kind": "text"
+        },
+        {
+          "index": 174,
+          "start_ms": 214254,
+          "end_ms": 214274,
+          "kind": "text"
+        },
+        {
+          "index": 175,
+          "start_ms": 214274,
+          "end_ms": 214374,
+          "kind": "text"
+        },
+        {
+          "index": 176,
+          "start_ms": 214374,
+          "end_ms": 214534,
+          "kind": "text"
+        },
+        {
+          "index": 177,
+          "start_ms": 214634,
+          "end_ms": 214814,
+          "kind": "text"
+        },
+        {
+          "index": 178,
+          "start_ms": 214534,
+          "end_ms": 214626,
+          "kind": "text"
+        },
+        {
+          "index": 179,
+          "start_ms": 214626,
+          "end_ms": 214721,
+          "kind": "text"
+        },
+        {
+          "index": 180,
+          "start_ms": 214721,
+          "end_ms": 214863,
+          "kind": "text"
+        },
+        {
+          "index": 181,
+          "start_ms": 214863,
+          "end_ms": 215094,
+          "kind": "text"
+        },
+        {
+          "index": 182,
+          "start_ms": 215070,
+          "end_ms": 215401,
+          "kind": "text"
+        },
+        {
+          "index": 183,
+          "start_ms": 215094,
+          "end_ms": 215334,
+          "kind": "text"
+        },
+        {
+          "index": 184,
+          "start_ms": 215238,
+          "end_ms": 215712,
+          "kind": "text"
+        },
+        {
+          "index": 185,
+          "start_ms": 215712,
+          "end_ms": 215837,
+          "kind": "text"
+        },
+        {
+          "index": 186,
+          "start_ms": 215715,
+          "end_ms": 215835,
+          "kind": "text"
+        },
+        {
+          "index": 187,
+          "start_ms": 215835,
+          "end_ms": 215955,
+          "kind": "text"
+        },
+        {
+          "index": 188,
+          "start_ms": 215955,
+          "end_ms": 216815,
+          "kind": "text"
+        },
+        {
+          "index": 189,
+          "start_ms": 216217,
+          "end_ms": 216467,
+          "kind": "pause"
+        },
+        {
+          "index": 190,
+          "start_ms": 216467,
+          "end_ms": 216807,
+          "kind": "pause"
+        },
+        {
+          "index": 191,
+          "start_ms": 216815,
+          "end_ms": 216975,
+          "kind": "text"
+        },
+        {
+          "index": 192,
+          "start_ms": 216975,
+          "end_ms": 217176,
+          "kind": "text"
+        },
+        {
+          "index": 193,
+          "start_ms": 217176,
+          "end_ms": 217316,
+          "kind": "text"
+        },
+        {
+          "index": 194,
+          "start_ms": 217316,
+          "end_ms": 217476,
+          "kind": "text"
+        },
+        {
+          "index": 195,
+          "start_ms": 217476,
+          "end_ms": 217616,
+          "kind": "text"
+        },
+        {
+          "index": 196,
+          "start_ms": 217616,
+          "end_ms": 218030,
+          "kind": "text"
+        },
+        {
+          "index": 197,
+          "start_ms": 218030,
+          "end_ms": 218230,
+          "kind": "text"
+        },
+        {
+          "index": 198,
+          "start_ms": 218230,
+          "end_ms": 218650,
+          "kind": "text"
+        },
+        {
+          "index": 199,
+          "start_ms": 218036,
+          "end_ms": 218651,
+          "kind": "text"
+        },
+        {
+          "index": 200,
+          "start_ms": 218236,
+          "end_ms": 218657,
+          "kind": "text"
+        },
+        {
+          "index": 201,
+          "start_ms": 218657,
+          "end_ms": 218917,
+          "kind": "text"
+        },
+        {
+          "index": 202,
+          "start_ms": 218917,
+          "end_ms": 219257,
+          "kind": "text"
+        },
+        {
+          "index": 203,
+          "start_ms": 219257,
+          "end_ms": 219337,
+          "kind": "text"
+        },
+        {
+          "index": 204,
+          "start_ms": 219337,
+          "end_ms": 219497,
+          "kind": "text"
+        },
+        {
+          "index": 205,
+          "start_ms": 219407,
+          "end_ms": 219487,
+          "kind": "text"
+        },
+        {
+          "index": 206,
+          "start_ms": 219497,
+          "end_ms": 219677,
+          "kind": "text"
+        },
+        {
+          "index": 207,
+          "start_ms": 219677,
+          "end_ms": 219837,
+          "kind": "text"
+        },
+        {
+          "index": 208,
+          "start_ms": 219837,
+          "end_ms": 219997,
+          "kind": "text"
+        },
+        {
+          "index": 209,
+          "start_ms": 219997,
+          "end_ms": 220168,
+          "kind": "text"
+        },
+        {
+          "index": 210,
+          "start_ms": 220168,
+          "end_ms": 220338,
+          "kind": "text"
+        },
+        {
+          "index": 211,
+          "start_ms": 220338,
+          "end_ms": 220478,
+          "kind": "text"
+        },
+        {
+          "index": 212,
+          "start_ms": 220478,
+          "end_ms": 220618,
+          "kind": "text"
+        },
+        {
+          "index": 213,
+          "start_ms": 220618,
+          "end_ms": 220898,
+          "kind": "text"
+        },
+        {
+          "index": 214,
+          "start_ms": 220898,
+          "end_ms": 221198,
+          "kind": "text"
+        },
+        {
+          "index": 215,
+          "start_ms": 221198,
+          "end_ms": 221338,
+          "kind": "text"
+        },
+        {
+          "index": 216,
+          "start_ms": 221338,
+          "end_ms": 221514,
+          "kind": "text"
+        },
+        {
+          "index": 217,
+          "start_ms": 221514,
+          "end_ms": 221694,
+          "kind": "text"
+        },
+        {
+          "index": 218,
+          "start_ms": 221535,
+          "end_ms": 221790,
+          "kind": "text"
+        },
+        {
+          "index": 219,
+          "start_ms": 221889,
+          "end_ms": 222239,
+          "kind": "text"
+        },
+        {
+          "index": 220,
+          "start_ms": 222239,
+          "end_ms": 222439,
+          "kind": "text"
+        },
+        {
+          "index": 221,
+          "start_ms": 222439,
+          "end_ms": 222759,
+          "kind": "text"
+        },
+        {
+          "index": 222,
+          "start_ms": 222759,
+          "end_ms": 222919,
+          "kind": "text"
+        },
+        {
+          "index": 223,
+          "start_ms": 222919,
+          "end_ms": 223076,
+          "kind": "text"
+        },
+        {
+          "index": 224,
+          "start_ms": 223076,
+          "end_ms": 223376,
+          "kind": "text"
+        },
+        {
+          "index": 225,
+          "start_ms": 223376,
+          "end_ms": 223577,
+          "kind": "text"
+        },
+        {
+          "index": 226,
+          "start_ms": 223431,
+          "end_ms": 223580,
+          "kind": "text"
+        },
+        {
+          "index": 227,
+          "start_ms": 223580,
+          "end_ms": 223840,
+          "kind": "text"
+        },
+        {
+          "index": 228,
+          "start_ms": 223633,
+          "end_ms": 223808,
+          "kind": "text"
+        },
+        {
+          "index": 229,
+          "start_ms": 223840,
+          "end_ms": 224020,
+          "kind": "text"
+        },
+        {
+          "index": 230,
+          "start_ms": 224020,
+          "end_ms": 224200,
+          "kind": "text"
+        },
+        {
+          "index": 231,
+          "start_ms": 224200,
+          "end_ms": 224380,
+          "kind": "text"
+        },
+        {
+          "index": 232,
+          "start_ms": 224380,
+          "end_ms": 224500,
+          "kind": "text"
+        },
+        {
+          "index": 233,
+          "start_ms": 224500,
+          "end_ms": 224680,
+          "kind": "text"
+        },
+        {
+          "index": 234,
+          "start_ms": 224680,
+          "end_ms": 225499,
+          "kind": "text"
+        },
+        {
+          "index": 235,
+          "start_ms": 225499,
+          "end_ms": 225719,
+          "kind": "text"
+        },
+        {
+          "index": 236,
+          "start_ms": 225719,
+          "end_ms": 226421,
+          "kind": "text"
+        },
+        {
+          "index": 237,
+          "start_ms": 226421,
+          "end_ms": 226581,
+          "kind": "text"
+        },
+        {
+          "index": 238,
+          "start_ms": 226421,
+          "end_ms": 226431,
+          "kind": "text"
+        },
+        {
+          "index": 239,
+          "start_ms": 226501,
+          "end_ms": 226603,
+          "kind": "text"
+        },
+        {
+          "index": 240,
+          "start_ms": 226603,
+          "end_ms": 226703,
+          "kind": "text"
+        },
+        {
+          "index": 241,
+          "start_ms": 226703,
+          "end_ms": 226903,
+          "kind": "text"
+        },
+        {
+          "index": 242,
+          "start_ms": 226941,
+          "end_ms": 228043,
+          "kind": "text"
+        },
+        {
+          "index": 243,
+          "start_ms": 227062,
+          "end_ms": 227223,
+          "kind": "text"
+        },
+        {
+          "index": 244,
+          "start_ms": 226915,
+          "end_ms": 227165,
+          "kind": "pause"
+        },
+        {
+          "index": 245,
+          "start_ms": 227165,
+          "end_ms": 227415,
+          "kind": "pause"
+        },
+        {
+          "index": 246,
+          "start_ms": 227415,
+          "end_ms": 227665,
+          "kind": "pause"
+        },
+        {
+          "index": 247,
+          "start_ms": 227665,
+          "end_ms": 228130,
+          "kind": "pause"
+        },
+        {
+          "index": 248,
+          "start_ms": 228144,
+          "end_ms": 228264,
+          "kind": "text"
+        },
+        {
+          "index": 249,
+          "start_ms": 228264,
+          "end_ms": 228284,
+          "kind": "text"
+        },
+        {
+          "index": 250,
+          "start_ms": 228144,
+          "end_ms": 228264,
+          "kind": "text"
+        },
+        {
+          "index": 251,
+          "start_ms": 228264,
+          "end_ms": 228404,
+          "kind": "text"
+        },
+        {
+          "index": 252,
+          "start_ms": 228404,
+          "end_ms": 228995,
+          "kind": "text"
+        },
+        {
+          "index": 253,
+          "start_ms": 228451,
+          "end_ms": 228701,
+          "kind": "pause"
+        },
+        {
+          "index": 254,
+          "start_ms": 228701,
+          "end_ms": 228951,
+          "kind": "pause"
+        },
+        {
+          "index": 255,
+          "start_ms": 228951,
+          "end_ms": 229413,
+          "kind": "pause"
+        },
+        {
+          "index": 256,
+          "start_ms": 229363,
+          "end_ms": 229585,
+          "kind": "text"
+        },
+        {
+          "index": 257,
+          "start_ms": 229585,
+          "end_ms": 229725,
+          "kind": "text"
+        },
+        {
+          "index": 258,
+          "start_ms": 229725,
+          "end_ms": 229865,
+          "kind": "text"
+        },
+        {
+          "index": 259,
+          "start_ms": 229865,
+          "end_ms": 230185,
+          "kind": "text"
+        },
+        {
+          "index": 260,
+          "start_ms": 230185,
+          "end_ms": 230665,
+          "kind": "text"
+        },
+        {
+          "index": 261,
+          "start_ms": 230665,
+          "end_ms": 230825,
+          "kind": "text"
+        },
+        {
+          "index": 262,
+          "start_ms": 230825,
+          "end_ms": 230945,
+          "kind": "text"
+        },
+        {
+          "index": 263,
+          "start_ms": 230945,
+          "end_ms": 231046,
+          "kind": "text"
+        },
+        {
+          "index": 264,
+          "start_ms": 231046,
+          "end_ms": 231326,
+          "kind": "text"
+        },
+        {
+          "index": 265,
+          "start_ms": 231326,
+          "end_ms": 231726,
+          "kind": "text"
+        },
+        {
+          "index": 266,
+          "start_ms": 231728,
+          "end_ms": 232446,
+          "kind": "text"
+        },
+        {
+          "index": 267,
+          "start_ms": 232028,
+          "end_ms": 232433,
+          "kind": "pause"
+        },
+        {
+          "index": 268,
+          "start_ms": 232446,
+          "end_ms": 232647,
+          "kind": "text"
+        },
+        {
+          "index": 269,
+          "start_ms": 232549,
+          "end_ms": 232694,
+          "kind": "text"
+        },
+        {
+          "index": 270,
+          "start_ms": 232737,
+          "end_ms": 232827,
+          "kind": "text"
+        },
+        {
+          "index": 271,
+          "start_ms": 232827,
+          "end_ms": 233287,
+          "kind": "text"
+        },
+        {
+          "index": 272,
+          "start_ms": 233007,
+          "end_ms": 233257,
+          "kind": "pause"
+        },
+        {
+          "index": 273,
+          "start_ms": 233257,
+          "end_ms": 233750,
+          "kind": "pause"
+        },
+        {
+          "index": 274,
+          "start_ms": 233287,
+          "end_ms": 233747,
+          "kind": "text"
+        },
+        {
+          "index": 275,
+          "start_ms": 233747,
+          "end_ms": 234047,
+          "kind": "text"
+        },
+        {
+          "index": 276,
+          "start_ms": 234047,
+          "end_ms": 234308,
+          "kind": "text"
+        },
+        {
+          "index": 277,
+          "start_ms": 234308,
+          "end_ms": 234608,
+          "kind": "text"
+        },
+        {
+          "index": 278,
+          "start_ms": 234608,
+          "end_ms": 234728,
+          "kind": "text"
+        },
+        {
+          "index": 279,
+          "start_ms": 234668,
+          "end_ms": 234848,
+          "kind": "text"
+        },
+        {
+          "index": 280,
+          "start_ms": 234848,
+          "end_ms": 235028,
+          "kind": "text"
+        },
+        {
+          "index": 281,
+          "start_ms": 235028,
+          "end_ms": 235228,
+          "kind": "text"
+        },
+        {
+          "index": 282,
+          "start_ms": 235228,
+          "end_ms": 235468,
+          "kind": "text"
+        },
+        {
+          "index": 283,
+          "start_ms": 235468,
+          "end_ms": 235708,
+          "kind": "text"
+        },
+        {
+          "index": 284,
+          "start_ms": 235708,
+          "end_ms": 236249,
+          "kind": "text"
+        },
+        {
+          "index": 285,
+          "start_ms": 236249,
+          "end_ms": 236389,
+          "kind": "text"
+        },
+        {
+          "index": 286,
+          "start_ms": 236389,
+          "end_ms": 236669,
+          "kind": "text"
+        },
+        {
+          "index": 287,
+          "start_ms": 236669,
+          "end_ms": 236869,
+          "kind": "text"
+        },
+        {
+          "index": 288,
+          "start_ms": 236869,
+          "end_ms": 237089,
+          "kind": "text"
+        },
+        {
+          "index": 289,
+          "start_ms": 237089,
+          "end_ms": 237229,
+          "kind": "text"
+        },
+        {
+          "index": 290,
+          "start_ms": 237229,
+          "end_ms": 237349,
+          "kind": "text"
+        },
+        {
+          "index": 291,
+          "start_ms": 237349,
+          "end_ms": 237510,
+          "kind": "text"
+        },
+        {
+          "index": 292,
+          "start_ms": 237510,
+          "end_ms": 237770,
+          "kind": "text"
+        },
+        {
+          "index": 293,
+          "start_ms": 237770,
+          "end_ms": 237970,
+          "kind": "text"
+        },
+        {
+          "index": 294,
+          "start_ms": 237970,
+          "end_ms": 238170,
+          "kind": "text"
+        },
+        {
+          "index": 295,
+          "start_ms": 238170,
+          "end_ms": 238350,
+          "kind": "text"
+        },
+        {
+          "index": 296,
+          "start_ms": 238350,
+          "end_ms": 238410,
+          "kind": "text"
+        },
+        {
+          "index": 297,
+          "start_ms": 238410,
+          "end_ms": 238890,
+          "kind": "text"
+        },
+        {
+          "index": 298,
+          "start_ms": 238890,
+          "end_ms": 238990,
+          "kind": "text"
+        },
+        {
+          "index": 299,
+          "start_ms": 238990,
+          "end_ms": 239091,
+          "kind": "text"
+        },
+        {
+          "index": 300,
+          "start_ms": 239091,
+          "end_ms": 239311,
+          "kind": "text"
+        },
+        {
+          "index": 301,
+          "start_ms": 239311,
+          "end_ms": 239631,
+          "kind": "text"
+        },
+        {
+          "index": 302,
+          "start_ms": 239631,
+          "end_ms": 239951,
+          "kind": "text"
+        },
+        {
+          "index": 303,
+          "start_ms": 239951,
+          "end_ms": 240051,
+          "kind": "text"
+        },
+        {
+          "index": 304,
+          "start_ms": 240036,
+          "end_ms": 240056,
+          "kind": "text"
+        },
+        {
+          "index": 305,
+          "start_ms": 240052,
+          "end_ms": 240212,
+          "kind": "text"
+        },
+        {
+          "index": 306,
+          "start_ms": 240211,
+          "end_ms": 240374,
+          "kind": "text"
+        },
+        {
+          "index": 307,
+          "start_ms": 240374,
+          "end_ms": 240625,
+          "kind": "text"
+        },
+        {
+          "index": 308,
+          "start_ms": 240625,
+          "end_ms": 240734,
+          "kind": "text"
+        },
+        {
+          "index": 309,
+          "start_ms": 240734,
+          "end_ms": 240834,
+          "kind": "text"
+        },
+        {
+          "index": 310,
+          "start_ms": 240836,
+          "end_ms": 241072,
+          "kind": "text"
+        },
+        {
+          "index": 311,
+          "start_ms": 241072,
+          "end_ms": 241572,
+          "kind": "text"
+        },
+        {
+          "index": 312,
+          "start_ms": 241572,
+          "end_ms": 241832,
+          "kind": "text"
+        },
+        {
+          "index": 313,
+          "start_ms": 241832,
+          "end_ms": 241941,
+          "kind": "text"
+        },
+        {
+          "index": 314,
+          "start_ms": 241938,
+          "end_ms": 241998,
+          "kind": "text"
+        },
+        {
+          "index": 315,
+          "start_ms": 241961,
+          "end_ms": 242253,
+          "kind": "text"
+        },
+        {
+          "index": 316,
+          "start_ms": 242253,
+          "end_ms": 242353,
+          "kind": "text"
+        },
+        {
+          "index": 317,
+          "start_ms": 242353,
+          "end_ms": 242513,
+          "kind": "text"
+        },
+        {
+          "index": 318,
+          "start_ms": 242261,
+          "end_ms": 242513,
+          "kind": "text"
+        },
+        {
+          "index": 319,
+          "start_ms": 242513,
+          "end_ms": 242713,
+          "kind": "text"
+        },
+        {
+          "index": 320,
+          "start_ms": 242713,
+          "end_ms": 242833,
+          "kind": "text"
+        },
+        {
+          "index": 321,
+          "start_ms": 242833,
+          "end_ms": 242973,
+          "kind": "text"
+        },
+        {
+          "index": 322,
+          "start_ms": 242973,
+          "end_ms": 243193,
+          "kind": "text"
+        },
+        {
+          "index": 323,
+          "start_ms": 243193,
+          "end_ms": 243413,
+          "kind": "text"
+        },
+        {
+          "index": 324,
+          "start_ms": 243413,
+          "end_ms": 243513,
+          "kind": "text"
+        },
+        {
+          "index": 325,
+          "start_ms": 243378,
+          "end_ms": 243468,
+          "kind": "text"
+        },
+        {
+          "index": 326,
+          "start_ms": 243513,
+          "end_ms": 243613,
+          "kind": "text"
+        },
+        {
+          "index": 327,
+          "start_ms": 243613,
+          "end_ms": 243854,
+          "kind": "text"
+        },
+        {
+          "index": 328,
+          "start_ms": 243854,
+          "end_ms": 243974,
+          "kind": "text"
+        },
+        {
+          "index": 329,
+          "start_ms": 243974,
+          "end_ms": 244114,
+          "kind": "text"
+        },
+        {
+          "index": 330,
+          "start_ms": 244114,
+          "end_ms": 244194,
+          "kind": "text"
+        },
+        {
+          "index": 331,
+          "start_ms": 244194,
+          "end_ms": 245174,
+          "kind": "text"
+        },
+        {
+          "index": 332,
+          "start_ms": 244364,
+          "end_ms": 244614,
+          "kind": "pause"
+        },
+        {
+          "index": 333,
+          "start_ms": 244614,
+          "end_ms": 245090,
+          "kind": "pause"
+        },
+        {
+          "index": 334,
+          "start_ms": 245174,
+          "end_ms": 245995,
+          "kind": "text"
+        },
+        {
+          "index": 335,
+          "start_ms": 245410,
+          "end_ms": 245660,
+          "kind": "pause"
+        },
+        {
+          "index": 336,
+          "start_ms": 245660,
+          "end_ms": 245933,
+          "kind": "pause"
+        },
+        {
+          "index": 337,
+          "start_ms": 245995,
+          "end_ms": 246175,
+          "kind": "text"
+        },
+        {
+          "index": 338,
+          "start_ms": 246175,
+          "end_ms": 246368,
+          "kind": "text"
+        },
+        {
+          "index": 339,
+          "start_ms": 246368,
+          "end_ms": 246536,
+          "kind": "text"
+        },
+        {
+          "index": 340,
+          "start_ms": 246536,
+          "end_ms": 246749,
+          "kind": "text"
+        },
+        {
+          "index": 341,
+          "start_ms": 246676,
+          "end_ms": 246781,
+          "kind": "text"
+        },
+        {
+          "index": 342,
+          "start_ms": 246749,
+          "end_ms": 246895,
+          "kind": "text"
+        },
+        {
+          "index": 343,
+          "start_ms": 246840,
+          "end_ms": 246940,
+          "kind": "text"
+        },
+        {
+          "index": 344,
+          "start_ms": 246895,
+          "end_ms": 247076,
+          "kind": "text"
+        },
+        {
+          "index": 345,
+          "start_ms": 247076,
+          "end_ms": 247196,
+          "kind": "text"
+        },
+        {
+          "index": 346,
+          "start_ms": 247196,
+          "end_ms": 247336,
+          "kind": "text"
+        },
+        {
+          "index": 347,
+          "start_ms": 247156,
+          "end_ms": 247196,
+          "kind": "text"
+        },
+        {
+          "index": 348,
+          "start_ms": 247336,
+          "end_ms": 247356,
+          "kind": "text"
+        },
+        {
+          "index": 349,
+          "start_ms": 247356,
+          "end_ms": 247926,
+          "kind": "text"
+        },
+        {
+          "index": 350,
+          "start_ms": 247705,
+          "end_ms": 247955,
+          "kind": "pause"
+        },
+        {
+          "index": 351,
+          "start_ms": 247955,
+          "end_ms": 248414,
+          "kind": "pause"
+        },
+        {
+          "index": 352,
+          "start_ms": 247926,
+          "end_ms": 248496,
+          "kind": "text"
+        },
+        {
+          "index": 353,
+          "start_ms": 248494,
+          "end_ms": 248616,
+          "kind": "text"
+        },
+        {
+          "index": 354,
+          "start_ms": 248616,
+          "end_ms": 249257,
+          "kind": "text"
+        },
+        {
+          "index": 355,
+          "start_ms": 248819,
+          "end_ms": 249173,
+          "kind": "pause"
+        },
+        {
+          "index": 356,
+          "start_ms": 249257,
+          "end_ms": 249357,
+          "kind": "text"
+        },
+        {
+          "index": 357,
+          "start_ms": 249357,
+          "end_ms": 249477,
+          "kind": "text"
+        },
+        {
+          "index": 358,
+          "start_ms": 249477,
+          "end_ms": 249597,
+          "kind": "text"
+        },
+        {
+          "index": 359,
+          "start_ms": 249597,
+          "end_ms": 249717,
+          "kind": "text"
+        },
+        {
+          "index": 360,
+          "start_ms": 249717,
+          "end_ms": 249857,
+          "kind": "text"
+        },
+        {
+          "index": 361,
+          "start_ms": 249857,
+          "end_ms": 249987,
+          "kind": "text"
+        },
+        {
+          "index": 362,
+          "start_ms": 249987,
+          "end_ms": 250117,
+          "kind": "text"
+        },
+        {
+          "index": 363,
+          "start_ms": 250117,
+          "end_ms": 250498,
+          "kind": "text"
+        },
+        {
+          "index": 364,
+          "start_ms": 250498,
+          "end_ms": 250628,
+          "kind": "text"
+        },
+        {
+          "index": 365,
+          "start_ms": 250628,
+          "end_ms": 250753,
+          "kind": "text"
+        },
+        {
+          "index": 366,
+          "start_ms": 250748,
+          "end_ms": 251043,
+          "kind": "text"
+        },
+        {
+          "index": 367,
+          "start_ms": 250758,
+          "end_ms": 250896,
+          "kind": "text"
+        },
+        {
+          "index": 368,
+          "start_ms": 251113,
+          "end_ms": 251899,
+          "kind": "text"
+        },
+        {
+          "index": 369,
+          "start_ms": 251097,
+          "end_ms": 251347,
+          "kind": "pause"
+        },
+        {
+          "index": 370,
+          "start_ms": 251347,
+          "end_ms": 251597,
+          "kind": "pause"
+        },
+        {
+          "index": 371,
+          "start_ms": 251597,
+          "end_ms": 251847,
+          "kind": "pause"
+        },
+        {
+          "index": 372,
+          "start_ms": 251847,
+          "end_ms": 252346,
+          "kind": "pause"
+        },
+        {
+          "index": 373,
+          "start_ms": 251899,
+          "end_ms": 252459,
+          "kind": "text"
+        },
+        {
+          "index": 374,
+          "start_ms": 252459,
+          "end_ms": 252539,
+          "kind": "text"
+        },
+        {
+          "index": 375,
+          "start_ms": 252539,
+          "end_ms": 252639,
+          "kind": "text"
+        },
+        {
+          "index": 376,
+          "start_ms": 252639,
+          "end_ms": 252739,
+          "kind": "text"
+        },
+        {
+          "index": 377,
+          "start_ms": 252739,
+          "end_ms": 252899,
+          "kind": "text"
+        },
+        {
+          "index": 378,
+          "start_ms": 252899,
+          "end_ms": 253439,
+          "kind": "text"
+        },
+        {
+          "index": 379,
+          "start_ms": 253439,
+          "end_ms": 253980,
+          "kind": "text"
+        },
+        {
+          "index": 380,
+          "start_ms": 253443,
+          "end_ms": 253693,
+          "kind": "pause"
+        },
+        {
+          "index": 381,
+          "start_ms": 253693,
+          "end_ms": 253943,
+          "kind": "pause"
+        },
+        {
+          "index": 382,
+          "start_ms": 253943,
+          "end_ms": 254193,
+          "kind": "pause"
+        },
+        {
+          "index": 383,
+          "start_ms": 254193,
+          "end_ms": 254455,
+          "kind": "pause"
+        },
+        {
+          "index": 384,
+          "start_ms": 253980,
+          "end_ms": 254520,
+          "kind": "text"
+        },
+        {
+          "index": 385,
+          "start_ms": 254520,
+          "end_ms": 254570,
+          "kind": "text"
+        },
+        {
+          "index": 386,
+          "start_ms": 254570,
+          "end_ms": 254620,
+          "kind": "text"
+        },
+        {
+          "index": 387,
+          "start_ms": 254620,
+          "end_ms": 254880,
+          "kind": "text"
+        },
+        {
+          "index": 388,
+          "start_ms": 254880,
+          "end_ms": 255501,
+          "kind": "text"
+        },
+        {
+          "index": 389,
+          "start_ms": 255012,
+          "end_ms": 255417,
+          "kind": "pause"
+        },
+        {
+          "index": 390,
+          "start_ms": 255501,
+          "end_ms": 255641,
+          "kind": "text"
+        },
+        {
+          "index": 391,
+          "start_ms": 255501,
+          "end_ms": 255841,
+          "kind": "text"
+        },
+        {
+          "index": 392,
+          "start_ms": 255841,
+          "end_ms": 255911,
+          "kind": "text"
+        },
+        {
+          "index": 393,
+          "start_ms": 255911,
+          "end_ms": 255981,
+          "kind": "text"
+        },
+        {
+          "index": 394,
+          "start_ms": 255981,
+          "end_ms": 256061,
+          "kind": "text"
+        },
+        {
+          "index": 395,
+          "start_ms": 256061,
+          "end_ms": 256141,
+          "kind": "text"
+        },
+        {
+          "index": 396,
+          "start_ms": 256141,
+          "end_ms": 256341,
+          "kind": "text"
+        },
+        {
+          "index": 397,
+          "start_ms": 256341,
+          "end_ms": 256742,
+          "kind": "text"
+        },
+        {
+          "index": 398,
+          "start_ms": 256742,
+          "end_ms": 256862,
+          "kind": "text"
+        },
+        {
+          "index": 399,
+          "start_ms": 256862,
+          "end_ms": 256962,
+          "kind": "text"
+        },
+        {
+          "index": 400,
+          "start_ms": 256962,
+          "end_ms": 257082,
+          "kind": "text"
+        },
+        {
+          "index": 401,
+          "start_ms": 257082,
+          "end_ms": 258043,
+          "kind": "text"
+        },
+        {
+          "index": 402,
+          "start_ms": 257189,
+          "end_ms": 257439,
+          "kind": "pause"
+        },
+        {
+          "index": 403,
+          "start_ms": 257439,
+          "end_ms": 257689,
+          "kind": "pause"
+        },
+        {
+          "index": 404,
+          "start_ms": 257689,
+          "end_ms": 257939,
+          "kind": "pause"
+        },
+        {
+          "index": 405,
+          "start_ms": 257939,
+          "end_ms": 258189,
+          "kind": "pause"
+        },
+        {
+          "index": 406,
+          "start_ms": 258189,
+          "end_ms": 258674,
+          "kind": "pause"
+        },
+        {
+          "index": 407,
+          "start_ms": 258064,
+          "end_ms": 258524,
+          "kind": "text"
+        },
+        {
+          "index": 408,
+          "start_ms": 258524,
+          "end_ms": 258985,
+          "kind": "text"
+        },
+        {
+          "index": 409,
+          "start_ms": 258985,
+          "end_ms": 259105,
+          "kind": "text"
+        },
+        {
+          "index": 410,
+          "start_ms": 259105,
+          "end_ms": 259303,
+          "kind": "text"
+        },
+        {
+          "index": 411,
+          "start_ms": 259303,
+          "end_ms": 259625,
+          "kind": "text"
+        },
+        {
+          "index": 412,
+          "start_ms": 259625,
+          "end_ms": 259726,
+          "kind": "text"
+        },
+        {
+          "index": 413,
+          "start_ms": 259726,
+          "end_ms": 259826,
+          "kind": "text"
+        },
+        {
+          "index": 414,
+          "start_ms": 259826,
+          "end_ms": 259986,
+          "kind": "text"
+        },
+        {
+          "index": 415,
+          "start_ms": 259823,
+          "end_ms": 259923,
+          "kind": "text"
+        },
+        {
+          "index": 416,
+          "start_ms": 259986,
+          "end_ms": 260119,
+          "kind": "text"
+        },
+        {
+          "index": 417,
+          "start_ms": 260119,
+          "end_ms": 260253,
+          "kind": "text"
+        },
+        {
+          "index": 418,
+          "start_ms": 260253,
+          "end_ms": 260386,
+          "kind": "text"
+        },
+        {
+          "index": 419,
+          "start_ms": 260386,
+          "end_ms": 260907,
+          "kind": "text"
+        },
+        {
+          "index": 420,
+          "start_ms": 260786,
+          "end_ms": 260907,
+          "kind": "text"
+        },
+        {
+          "index": 421,
+          "start_ms": 260907,
+          "end_ms": 261147,
+          "kind": "text"
+        },
+        {
+          "index": 422,
+          "start_ms": 261147,
+          "end_ms": 261287,
+          "kind": "text"
+        },
+        {
+          "index": 423,
+          "start_ms": 261283,
+          "end_ms": 261363,
+          "kind": "text"
+        },
+        {
+          "index": 424,
+          "start_ms": 261287,
+          "end_ms": 261387,
+          "kind": "text"
+        },
+        {
+          "index": 425,
+          "start_ms": 261387,
+          "end_ms": 261467,
+          "kind": "text"
+        },
+        {
+          "index": 426,
+          "start_ms": 261467,
+          "end_ms": 261687,
+          "kind": "text"
+        },
+        {
+          "index": 427,
+          "start_ms": 261687,
+          "end_ms": 261867,
+          "kind": "text"
+        },
+        {
+          "index": 428,
+          "start_ms": 261867,
+          "end_ms": 262088,
+          "kind": "text"
+        },
+        {
+          "index": 429,
+          "start_ms": 262088,
+          "end_ms": 262948,
+          "kind": "text"
+        },
+        {
+          "index": 430,
+          "start_ms": 262420,
+          "end_ms": 262876,
+          "kind": "pause"
+        },
+        {
+          "index": 431,
+          "start_ms": 262948,
+          "end_ms": 263169,
+          "kind": "text"
+        },
+        {
+          "index": 432,
+          "start_ms": 263169,
+          "end_ms": 263289,
+          "kind": "text"
+        },
+        {
+          "index": 433,
+          "start_ms": 263289,
+          "end_ms": 263409,
+          "kind": "text"
+        },
+        {
+          "index": 434,
+          "start_ms": 263409,
+          "end_ms": 263529,
+          "kind": "text"
+        },
+        {
+          "index": 435,
+          "start_ms": 263529,
+          "end_ms": 263849,
+          "kind": "text"
+        },
+        {
+          "index": 436,
+          "start_ms": 263849,
+          "end_ms": 264169,
+          "kind": "text"
+        },
+        {
+          "index": 437,
+          "start_ms": 264169,
+          "end_ms": 264310,
+          "kind": "text"
+        },
+        {
+          "index": 438,
+          "start_ms": 264310,
+          "end_ms": 264410,
+          "kind": "text"
+        },
+        {
+          "index": 439,
+          "start_ms": 264410,
+          "end_ms": 264590,
+          "kind": "text"
+        },
+        {
+          "index": 440,
+          "start_ms": 264590,
+          "end_ms": 267312,
+          "kind": "text"
+        },
+        {
+          "index": 441,
+          "start_ms": 264935,
+          "end_ms": 265185,
+          "kind": "pause"
+        },
+        {
+          "index": 442,
+          "start_ms": 265185,
+          "end_ms": 265435,
+          "kind": "pause"
+        },
+        {
+          "index": 443,
+          "start_ms": 265435,
+          "end_ms": 265685,
+          "kind": "pause"
+        },
+        {
+          "index": 444,
+          "start_ms": 265685,
+          "end_ms": 265935,
+          "kind": "pause"
+        },
+        {
+          "index": 445,
+          "start_ms": 265935,
+          "end_ms": 266185,
+          "kind": "pause"
+        },
+        {
+          "index": 446,
+          "start_ms": 266185,
+          "end_ms": 266435,
+          "kind": "pause"
+        },
+        {
+          "index": 447,
+          "start_ms": 266435,
+          "end_ms": 266685,
+          "kind": "pause"
+        },
+        {
+          "index": 448,
+          "start_ms": 266685,
+          "end_ms": 266935,
+          "kind": "pause"
+        },
+        {
+          "index": 449,
+          "start_ms": 266935,
+          "end_ms": 267185,
+          "kind": "pause"
+        },
+        {
+          "index": 450,
+          "start_ms": 267185,
+          "end_ms": 267435,
+          "kind": "pause"
+        },
+        {
+          "index": 451,
+          "start_ms": 267435,
+          "end_ms": 267770,
+          "kind": "pause"
+        },
+        {
+          "index": 452,
+          "start_ms": 267832,
+          "end_ms": 268222,
+          "kind": "text"
+        },
+        {
+          "index": 453,
+          "start_ms": 268213,
+          "end_ms": 268371,
+          "kind": "text"
+        },
+        {
+          "index": 454,
+          "start_ms": 268211,
+          "end_ms": 268393,
+          "kind": "text"
+        },
+        {
+          "index": 455,
+          "start_ms": 268392,
+          "end_ms": 268582,
+          "kind": "text"
+        },
+        {
+          "index": 456,
+          "start_ms": 268593,
+          "end_ms": 268734,
+          "kind": "text"
+        },
+        {
+          "index": 457,
+          "start_ms": 268734,
+          "end_ms": 269012,
+          "kind": "text"
+        },
+        {
+          "index": 458,
+          "start_ms": 269012,
+          "end_ms": 269194,
+          "kind": "text"
+        },
+        {
+          "index": 459,
+          "start_ms": 269194,
+          "end_ms": 269334,
+          "kind": "text"
+        },
+        {
+          "index": 460,
+          "start_ms": 269334,
+          "end_ms": 269454,
+          "kind": "text"
+        },
+        {
+          "index": 461,
+          "start_ms": 269514,
+          "end_ms": 269734,
+          "kind": "text"
+        },
+        {
+          "index": 462,
+          "start_ms": 269654,
+          "end_ms": 269765,
+          "kind": "text"
+        },
+        {
+          "index": 463,
+          "start_ms": 269765,
+          "end_ms": 269855,
+          "kind": "text"
+        },
+        {
+          "index": 464,
+          "start_ms": 269855,
+          "end_ms": 269944,
+          "kind": "text"
+        },
+        {
+          "index": 465,
+          "start_ms": 269944,
+          "end_ms": 270014,
+          "kind": "text"
+        },
+        {
+          "index": 466,
+          "start_ms": 270014,
+          "end_ms": 270140,
+          "kind": "text"
+        },
+        {
+          "index": 467,
+          "start_ms": 270125,
+          "end_ms": 270275,
+          "kind": "text"
+        },
+        {
+          "index": 468,
+          "start_ms": 270275,
+          "end_ms": 270916,
+          "kind": "text"
+        },
+        {
+          "index": 469,
+          "start_ms": 270436,
+          "end_ms": 270757,
+          "kind": "pause"
+        },
+        {
+          "index": 470,
+          "start_ms": 270916,
+          "end_ms": 271116,
+          "kind": "text"
+        },
+        {
+          "index": 471,
+          "start_ms": 271116,
+          "end_ms": 271316,
+          "kind": "text"
+        },
+        {
+          "index": 472,
+          "start_ms": 271216,
+          "end_ms": 271296,
+          "kind": "text"
+        },
+        {
+          "index": 473,
+          "start_ms": 271316,
+          "end_ms": 271856,
+          "kind": "text"
+        },
+        {
+          "index": 474,
+          "start_ms": 271803,
+          "end_ms": 272053,
+          "kind": "pause"
+        },
+        {
+          "index": 475,
+          "start_ms": 272053,
+          "end_ms": 272377,
+          "kind": "pause"
+        },
+        {
+          "index": 476,
+          "start_ms": 271856,
+          "end_ms": 272537,
+          "kind": "text"
+        },
+        {
+          "index": 477,
+          "start_ms": 272397,
+          "end_ms": 272547,
+          "kind": "text"
+        },
+        {
+          "index": 478,
+          "start_ms": 272538,
+          "end_ms": 272697,
+          "kind": "text"
+        },
+        {
+          "index": 479,
+          "start_ms": 272697,
+          "end_ms": 272937,
+          "kind": "text"
+        },
+        {
+          "index": 480,
+          "start_ms": 272937,
+          "end_ms": 273138,
+          "kind": "text"
+        },
+        {
+          "index": 481,
+          "start_ms": 273138,
+          "end_ms": 273338,
+          "kind": "text"
+        },
+        {
+          "index": 482,
+          "start_ms": 273338,
+          "end_ms": 273488,
+          "kind": "text"
+        },
+        {
+          "index": 483,
+          "start_ms": 273488,
+          "end_ms": 273638,
+          "kind": "text"
+        },
+        {
+          "index": 484,
+          "start_ms": 273638,
+          "end_ms": 273778,
+          "kind": "text"
+        },
+        {
+          "index": 485,
+          "start_ms": 273778,
+          "end_ms": 273918,
+          "kind": "text"
+        },
+        {
+          "index": 486,
+          "start_ms": 273918,
+          "end_ms": 274018,
+          "kind": "text"
+        },
+        {
+          "index": 487,
+          "start_ms": 273978,
+          "end_ms": 274119,
+          "kind": "text"
+        },
+        {
+          "index": 488,
+          "start_ms": 274119,
+          "end_ms": 274279,
+          "kind": "text"
+        },
+        {
+          "index": 489,
+          "start_ms": 274279,
+          "end_ms": 274486,
+          "kind": "text"
+        },
+        {
+          "index": 490,
+          "start_ms": 274486,
+          "end_ms": 274692,
+          "kind": "text"
+        },
+        {
+          "index": 491,
+          "start_ms": 274692,
+          "end_ms": 274899,
+          "kind": "text"
+        },
+        {
+          "index": 492,
+          "start_ms": 274899,
+          "end_ms": 275099,
+          "kind": "text"
+        },
+        {
+          "index": 493,
+          "start_ms": 275099,
+          "end_ms": 275640,
+          "kind": "text"
+        },
+        {
+          "index": 494,
+          "start_ms": 275600,
+          "end_ms": 275640,
+          "kind": "text"
+        },
+        {
+          "index": 495,
+          "start_ms": 275640,
+          "end_ms": 275740,
+          "kind": "text"
+        },
+        {
+          "index": 496,
+          "start_ms": 275740,
+          "end_ms": 275900,
+          "kind": "text"
+        },
+        {
+          "index": 497,
+          "start_ms": 275900,
+          "end_ms": 275953,
+          "kind": "text"
+        },
+        {
+          "index": 498,
+          "start_ms": 275953,
+          "end_ms": 276007,
+          "kind": "text"
+        },
+        {
+          "index": 499,
+          "start_ms": 276007,
+          "end_ms": 276060,
+          "kind": "text"
+        },
+        {
+          "index": 500,
+          "start_ms": 276060,
+          "end_ms": 276561,
+          "kind": "text"
+        },
+        {
+          "index": 501,
+          "start_ms": 276561,
+          "end_ms": 276701,
+          "kind": "text"
+        },
+        {
+          "index": 502,
+          "start_ms": 276701,
+          "end_ms": 277041,
+          "kind": "text"
+        },
+        {
+          "index": 503,
+          "start_ms": 277041,
+          "end_ms": 277341,
+          "kind": "text"
+        },
+        {
+          "index": 504,
+          "start_ms": 277341,
+          "end_ms": 277428,
+          "kind": "text"
+        },
+        {
+          "index": 505,
+          "start_ms": 277428,
+          "end_ms": 277515,
+          "kind": "text"
+        },
+        {
+          "index": 506,
+          "start_ms": 277515,
+          "end_ms": 277602,
+          "kind": "text"
+        },
+        {
+          "index": 507,
+          "start_ms": 277602,
+          "end_ms": 277622,
+          "kind": "text"
+        },
+        {
+          "index": 508,
+          "start_ms": 278123,
+          "end_ms": 278563,
+          "kind": "text"
+        },
+        {
+          "index": 509,
+          "start_ms": 278563,
+          "end_ms": 278943,
+          "kind": "text"
+        },
+        {
+          "index": 510,
+          "start_ms": 274950,
+          "end_ms": 275270,
+          "kind": "text"
+        },
+        {
+          "index": 511,
+          "start_ms": 275270,
+          "end_ms": 275930,
+          "kind": "text"
+        },
+        {
+          "index": 512,
+          "start_ms": 276865,
+          "end_ms": 277220,
+          "kind": "pause"
+        },
+        {
+          "index": 513,
+          "start_ms": 278030,
+          "end_ms": 278280,
+          "kind": "pause"
+        },
+        {
+          "index": 514,
+          "start_ms": 278280,
+          "end_ms": 278530,
+          "kind": "pause"
+        },
+        {
+          "index": 515,
+          "start_ms": 278530,
+          "end_ms": 278780,
+          "kind": "pause"
+        },
+        {
+          "index": 516,
+          "start_ms": 278780,
+          "end_ms": 279211,
+          "kind": "pause"
+        },
+        {
+          "index": 517,
+          "start_ms": 281457,
+          "end_ms": 281487,
+          "kind": "text"
+        },
+        {
+          "index": 518,
+          "start_ms": 281487,
+          "end_ms": 281558,
+          "kind": "text"
+        },
+        {
+          "index": 519,
+          "start_ms": 281558,
+          "end_ms": 281578,
+          "kind": "text"
+        },
+        {
+          "index": 520,
+          "start_ms": 281578,
+          "end_ms": 281598,
+          "kind": "text"
+        },
+        {
+          "index": 521,
+          "start_ms": 281598,
+          "end_ms": 281628,
+          "kind": "text"
+        },
+        {
+          "index": 522,
+          "start_ms": 281628,
+          "end_ms": 281658,
+          "kind": "text"
+        },
+        {
+          "index": 523,
+          "start_ms": 281718,
+          "end_ms": 281738,
+          "kind": "text"
+        },
+        {
+          "index": 524,
+          "start_ms": 281738,
+          "end_ms": 282070,
+          "kind": "text"
+        },
+        {
+          "index": 525,
+          "start_ms": 282070,
+          "end_ms": 282230,
+          "kind": "text"
+        },
+        {
+          "index": 526,
+          "start_ms": 282500,
+          "end_ms": 282570,
+          "kind": "text"
+        },
+        {
+          "index": 527,
+          "start_ms": 282570,
+          "end_ms": 282590,
+          "kind": "text"
+        },
+        {
+          "index": 528,
+          "start_ms": 282590,
+          "end_ms": 282940,
+          "kind": "text"
+        },
+        {
+          "index": 529,
+          "start_ms": 283140,
+          "end_ms": 283280,
+          "kind": "text"
+        },
+        {
+          "index": 530,
+          "start_ms": 283280,
+          "end_ms": 283320,
+          "kind": "text"
+        },
+        {
+          "index": 531,
+          "start_ms": 280557,
+          "end_ms": 280658,
+          "kind": "text"
+        },
+        {
+          "index": 532,
+          "start_ms": 280658,
+          "end_ms": 280678,
+          "kind": "text"
+        },
+        {
+          "index": 533,
+          "start_ms": 281354,
+          "end_ms": 281604,
+          "kind": "pause"
+        },
+        {
+          "index": 534,
+          "start_ms": 281604,
+          "end_ms": 281854,
+          "kind": "pause"
+        },
+        {
+          "index": 535,
+          "start_ms": 281854,
+          "end_ms": 282346,
+          "kind": "pause"
+        }
+      ],
+      "rows": [
+        {
+          "name": "whisper",
+          "text": "・・・・　・・・・・・好字・・・走開　　・・・・・・・・・好字呀龍飛鳳舞蘇擦蝦二擦　調轉咗老・・・爺殘疑蝦擦蘇　叻仔・・但事　冇叫接下・・・・・・・・・爹　爹・・我哋蘇擦蝦二家自太祖皇帝到家陣幾代都冇愛曉寫字嘅而家唔係啦我　仔你佢孫阿擦呢佢曉寫自己個名啦　　爹呢一步非同小可　　今日曉寫字他朝就必成大學士今日曉寫名他日生仔就必有病　　少・・爺你真係要好　啲學寫字　　傻呀擦呀擦・・我睇表起佢好表　起佢師爺你攞佢有咁多眼掛咁多眼嗰　咪係師爺你揹住佢參夫阿國和友鄰皆威下先行啦　　擦呀擦嚟嚟・・・・　　　　坐・・・見你咁生性我都好安慰　・　你聽我・・講　爹呢書咗名係二世祖負身家呢都洗到七七八八㗎喇好話唔好聽但係　爹兩個嘅癮呢　你真係全部都靠自己啦我不留都靠自己㗎啦・・　・・成十萬兩一張省得你洗　呀　・・　謀你・攞我頂西洋帽過嚟去邊呀陳　・・・・　今日我擺大壽・・・・　你跪跟呀・　廿五歲大壽　嘛早啲到呀・・・・・　擺大壽你都梳你一啲個頭啦　成世都好似乞丫仔噉・乞丫會咁有錢我都想做・・・・・・・・・・・　　個壽頭硬事嘅真係　　　　　過嚟・做咩呀老・・爺　個衰仔擺大壽打張簽　都嫁細個人嘅但係　老爺擺大壽呢要嫁細個佢老爺哈哈・・・・・你真係你真係你真係你真係你真　係・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "・・・・啊・・・・・・好字・・・哎系啊啊・・・・・・・・・好字啊龍飛鳳舞蘇察哈爾察　調轉咗老・・・爺察爾哈察蘇啊叻仔・・但是唔好叫知嘛・・・・・・・・・爹啊爹・・我哋蘇察哈爾家自太祖皇帝到家陣幾代都冇過曉寫字嘅而家唔系啦我個仔你個孫阿燦咧佢要寫自己個名啊喂阿爹呢一步非同小可噃吓今日要寫字他朝就必成大學士今日要寫名他日生仔就必有病　　少・・爺你真系要好　啲學寫字　　阿叔撐一撐・・我睇表起佢好表　起佢師爺你攞　有咁多銀掛咁多銀咁啊咪師　爺你孭住佢撐花　棍　有輪街威下先吓啱啊阿燦阿燦坐　・・・・　　坐坐坐・・・見你咁生性我都好安慰啊・嗱　聽我・・講阿爹咧　算命系二世祖副身家咧都使到七七八八噶啦好話唔好聽第日阿爹兩腿一揚咧唉你就冚唪唥　靠自己啦不嬲　都靠自己噶啦・・嗱・・成十萬兩嘅賬　啊你使　啊吓・・嗯茂利・攞我頂細羊帽過嚟去邊啊阿七・・・・啊今日我拜大壽・・・・嗯你貴庚啊・二十五歲大壽啊嘛早啲到啊・・・・・喂擺大手你都梳靚　啲個頭啦　成世都　似乞衣仔咁・乞衣會咁有錢我都想做・・・・・・・・・・・啊啊個手咁硬時嘅真系嚟過嚟過嚟過嚟・做咩啊老・・爺啊個衰仔擺大手打張　帖都架勢過人嘅但系阿老爺擺大手咧要架勢過佢　　　　・・・・・　　　　　　　　　　　　　　　　・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "・・・・啊・・・・・・好字・・・哎呀我啊・・・・・・・・・好字啊龍飛鳳舞蘇擦蝦意餐啊調轉咗老・・・爺餐意蝦擦蘇啊叻仔・・但是　冇腰知嘛・・・・・・・・・爹啊爹・・我哋蘇擦蝦意家是太祖皇帝到家陣幾代都冇過曉寫字嘅而家唔系啦我個仔你個孫阿燦咧佢曉寫自己個名啊喂阿爹呢一步非同小可噃啊今日曉寫字他朝就必成大學士今日曉寫名他日生仔就必有病　　少・・爺你真系要好　啲學寫字啊我傻啊擦啊擦・・我睇表起佢好喎　表佢少爺你攞　有咁多眼掛咁多眼咁啊唔系少爺你孭住佢參乎阿哥　有輪街威下先行啦　阿燦啊擦嚟嚟・・・・嚟嚟坐坐坐・・・見你咁生性我都好安慰吓・嗱你聽我・・講阿爹咧就説明系二世祖副身家咧都使到七七八八噶啦好話唔好聽第　阿爹兩個人　咧唉你真冚唪唥都靠自己啦冚唪唥都靠自己噶啦・・嗱・・成十萬兩一張　卡你使　啊吓・・嗯冇理・攞我頂細陽冇過嚟去邊啊　陣・・・・啊今日我擺大壽・・・・嗯你貴庚啊・　廿五歲大壽啊嘛早啲到啊・・・・・喂擺大壽你都梳靚　啲個頭啦　成世都　似乞衣仔咁・乞衣會咁有錢我都想做・・・・・・・・・・・啊啊個壽奴硬是幾真　啊過嚟過嚟過嚟・做咩啊老・・爺啊個衰仔擺大壽膽中　錢都架勢個人嘅但系　老爺擺嚟手咧　架勢過佢　　哈哈・・・・・　　　　　　　　　　　　　　　哈・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "・・・・啊・・・・・・好似・・・　　　啊・・・・・・・・・好似啊龍飛鳳舞蘇賊蝦二刷　丟清楚老・・・爺燦二蝦擦酥啊叻仔・・但是唔好驕知嘛・・・・・・・・・爹啊爹・・我哋蘇賊蝦二家自太祖皇帝老家陣幾代都冇外曉寫字嘅而家唔系啦我個仔你個書阿嚓咧佢妖寫自己個名啊喂阿迪呢一部非同小可噃啊今日曉寫字他朝就必成大學史今日妖寫名他日生仔就必有病　　少・・爺你真系要好好啲學寫字　　擦啊　　擦・・我睇表起佢好屌　　佢師爺你攞　有咁多眼掛咁多眼咁啊咪阿書爺你孭住佢參花阿國　有輪皆威下先行啦啊　擦啊擦嚟　・・・・　　坐坐坐・・・見你咁生性我都好安慰啊・嗱你聽我・・講阿爹　　呢未系二細祖副身家咧都使到七七八八噶啦好話唔好聽第　阿爹兩個一贏呢唉你　冚唪肯　靠自己啦　嬲　　靠自己噶啦・・嗱・・成十萬兩蚊張　硬你洗　啊　・・　　你・攞我頂西洋帽過嚟去邊啊　撐・・・・啊今日我擺大壽・・・・　你貴根啊・　廿五歲大壽啊嘛早呢度啊・・・・・喂擺大壽你都梳你　呢個頭啦你成細　佬似乞衣仔咁・乞衣服咁有錢我都想做・・・・・・・・・・・啊啊個　頭硬事嘅真系　過嚟過嚟過嚟・做咩　老・・爺　個衰仔擺大壽膽中　錢都架晒個人嘅　系啊老爺擺嚟手咧　架晒過佢　　　　・・・・・　　　　　　　　　　　　　　　　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "・・・・啊・・・・・・好字・・・　　　　・・・・・・・・・好字啊龍飛鳳舞蘇察哈爾燦　調轉咗老・・・爺燦爾哈察蘇啊叻仔・・但是唔好叫知嘛・・・・・・・・・爹啊爹・・我哋蘇察哈爾家自太祖皇帝到家陣幾代都冇個曉寫字嘅而家唔系啦我個仔你個書辣刷咧佢曉寫自己個名啊喂阿爹呢一部非同小可噃啊今日曉寫字他朝就必成大學士今日曉寫名他日生仔就必有病　　少・・爺你真系要好　啲學寫字　　刷刷　　刷・・我睇表起佢好表　　佢師爺你攞　有咁多眼掛咁多眼咁系咪師　爺你孭住佢參花個人　有輪街威下先行啦啊　擦啊擦嚟　・・・・　　坐坐坐・・・見你咁生性我都好安慰啊・嗱你聽我・・講阿爹咧出出名系二世祖副身家咧都使到七七八八噶啦好話唔好聽第　阿爹兩個一樣咧唉你真冚唪冷　靠自己啦不嬲　都靠自己噶啦・・嗱・・成十萬兩一張　眼你使　啊吓・・嗯茂你・攞我頂西洋帽過嚟去邊啊　贊・・・・啊今日我擺大壽・・・・嗯你貴庚啊・　廿五歲大壽啊嘛早呢度啊・・・・・喂擺大壽你都梳靚　呢個頭啦　成世都好似乞衣仔咁・乞衣會咁有錢我都想做・・・・・・・・・・・啊啊個壽頭硬士嘅真系啊過嚟過嚟過嚟・做咩　老・・爺一個衰仔擺大壽打張唔錢都架勢過人嘅但系　老爺擺嚟手咧要架勢過佢　　　　・・・・・　　　　　　　　　　　　　　　　・・・"
+        },
+        {
+          "name": "glm",
+          "text": "・・・・啊・・・・・・好字・・・　　　啊・・・・・・・・・好字啊龍飛鳳舞蘇拆哈二拆　調轉咗老・・・爺拆二哈拆蘇啊呢仔・・但是　冇教知嘛・・・・・・・・・爹啊爹・・我哋蘇拆哈二家自太祖皇帝到家產幾代都冇個小寫字嘅而家唔系啦我　仔你個書啦差咧佢　寫自己個名啊喂阿爹呢一部非同小可噃啊今日　寫字他朝就必成大學士今日　寫名他日生仔就必有病　　病・・　你真系要好　啲學寫字啊　　　拆啦拆・・我睇表起佢好喎　表佢師爺你攞　有咁多眼掛咁多眼我問下師　爺你咩住佢搶花　佢　有輪街威下先行啦　　拆啦拆坐　・・・・　　坐坐坐・・・見你咁生性我都好安慰啊・嗱你聽我・・講阿爹咧祖宗名系二世祖父親家咧都洗到七七八八噶啦好話　冇聽但系阿爹兩個一樣咧唉你真係恨不諗靠自己啦唔撈　都靠自己嘅啦・・嗱・・成十萬兩　張　啊啲使　啊啊・・唔撈你・攞我頂西洋冇過嚟去邊　啦趁・・・・啊今日我擺大獸・・・・嗯你貴庚啊・　廿五歲大獸啊嘛早就到啊・・・・・喂擺大獸你都瘦靚　啲個頭啦　成細　佬黐　衣仔咁・黐衣會咁有錢我都想做・・・・・・・・・・・啊　個獸頭硬是幾真系嚟過嚟過嚟過嚟・做咩嘢老・・爺　個衰仔擺大獸彈中唔撳都架細個人嘅　第二老爺擺嚟手咧要架細個佢　　　　・・・・・　　　　　　　　　　　　　　　　・・・"
+        }
+      ],
+      "speaker": "・・・・Ｉ・・・・・・ＩＩ・・・ＩＩＩＩ・・・・・・・・・ＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫ・・・ＫＫＫＫＫＫＫＫＫ・・ＫＫＫＫＫＬＬ・・・・・・・・・ＬＬＬ・・ＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬ・・ＬＬＬＬＬＬＬＬＬＬＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＫＫＫＫＫＫＫＬＬＫＬＫＬ　・・・・ＬＬＬＬＬ・・・ＬＬＬＬＬＬＬＬＬＬＬ・ＬＬＬＬ・・ＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・Ｂ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢ・・ＡＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢ・・・・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢ・・・・・・・・・・・ＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬ・ＨＨＨＨ・・ＬＬＬＬＬＬＬＬＬＬＬＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫ　　ＫＫ・・・・・　　　　　　　　　　　　　　ＫＫ・・・",
+      "merged": "・・・・啊・・・・・・好似・・・哎呀我啊・・・・・・・・・好字呀龍飛鳳舞蘇察哈爾燦　調轉咗老・・・爺燦爾哈察蘇呀叻仔・・但係唔好叫知嘛・・・・・・・・・爹啊爹・・我哋蘇察哈爾家自太祖皇帝到家陣幾代都冇個識寫字嘅而家唔係啦我個仔你個孫阿燦咧佢識寫自己個名啊喂阿爹呢一步非同小可噃　今日識寫字他朝就必成大學士今日識寫名他日生仔就必有病少爺少・・爺你真係要好　啲學寫字　　燦呀燦呀　・・我睇得起佢好睇得起佢師爺你攞住有咁多銀掛咁多銀咁呀咪係師爺你孭住佢撐花　　轎遊吓街威吓先行啦　阿燦阿燦嚟嚟・・・・　　坐坐坐・・・見你咁生性我都好安慰啊・嗱你聽我・・講阿爹呢出　名係二世祖副身家呢都使到七七八八㗎喇好話唔好聽第日阿爹兩腿一伸呢唉你就冚唪唥　靠自己啦不嬲　都靠自己㗎啦・・嗱・・成十萬兩一張銀票你使唔使呀・・嗯茂利・攞我頂西洋帽過嚟去邊呀阿七・・・・啊今日我擺大壽・・・・嗯你貴庚啊・　廿五歲大壽啊嘛早啲到啊・・・・・喂擺大壽你都梳靚　啲個頭啦　成世都好似乞衣仔咁・乞衣會咁有錢我都想做・・・・・・・・・・・啊　個壽頭硬實嘅真係　過嚟過嚟過嚟・做咩呀老・・爺　個衰仔擺大壽打張　帖都架勢過人嘅但係　老爺擺大壽呢要架勢過佢　　　　・・・・・你真係你真係你真係你真係你真係哈・・・",
+      "subtitles": [
+        {
+          "index": 10,
+          "text": "啊。",
+          "speech_start_ms": 169214,
+          "speech_end_ms": 169234,
+          "start_ms": 168964,
+          "end_ms": 169734,
+          "speaker": "SPEAKER_10"
+        },
+        {
+          "index": 11,
+          "text": "好似……",
+          "speech_start_ms": 171288,
+          "speech_end_ms": 172837,
+          "start_ms": 171038,
+          "end_ms": 172837,
+          "speaker": "SPEAKER_10"
+        },
+        {
+          "index": 12,
+          "text": "哎呀我啊！",
+          "speech_start_ms": 172837,
+          "speech_end_ms": 173540,
+          "start_ms": 172837,
+          "end_ms": 174040,
+          "speaker": "SPEAKER_10"
+        },
+        {
+          "index": 13,
+          "text": "好字呀，龍飛鳳舞，蘇察哈爾燦。",
+          "speech_start_ms": 176567,
+          "speech_end_ms": 181756,
+          "start_ms": 176317,
+          "end_ms": 181756,
+          "speaker": "SPEAKER_23"
+        },
+        {
+          "index": 14,
+          "text": "調轉咗老……",
+          "speech_start_ms": 181756,
+          "speech_end_ms": 182377,
+          "start_ms": 181756,
+          "end_ms": 182377,
+          "speaker": "SPEAKER_23"
+        },
+        {
+          "index": 15,
+          "text": "爺燦爾哈察蘇呀，叻仔。",
+          "speech_start_ms": 182377,
+          "speech_end_ms": 187246,
+          "start_ms": 182377,
+          "end_ms": 187246,
+          "speaker": "SPEAKER_23"
+        },
+        {
+          "index": 16,
+          "text": "但係唔好叫，",
+          "speech_start_ms": 187246,
+          "speech_end_ms": 188047,
+          "start_ms": 187246,
+          "end_ms": 188047,
+          "speaker": "SPEAKER_23"
+        },
+        {
+          "index": 17,
+          "text": "知嘛",
+          "speech_start_ms": 188047,
+          "speech_end_ms": 188248,
+          "start_ms": 188047,
+          "end_ms": 188797,
+          "speaker": "SPEAKER_07"
+        },
+        {
+          "index": 18,
+          "text": "爹啊爹。",
+          "speech_start_ms": 190995,
+          "speech_end_ms": 192116,
+          "start_ms": 190745,
+          "end_ms": 192116,
+          "speaker": "SPEAKER_07"
+        },
+        {
+          "index": 19,
+          "text": "我哋蘇察哈爾家，自太祖皇帝到家陣，",
+          "speech_start_ms": 192116,
+          "speech_end_ms": 195638,
+          "start_ms": 192116,
+          "end_ms": 195638,
+          "speaker": "SPEAKER_07"
+        },
+        {
+          "index": 20,
+          "text": "幾代都冇個識寫字嘅。",
+          "speech_start_ms": 195638,
+          "speech_end_ms": 197639,
+          "start_ms": 195638,
+          "end_ms": 197639,
+          "speaker": "SPEAKER_07"
+        },
+        {
+          "index": 21,
+          "text": "而家唔係啦，我個仔，你個孫阿燦咧，",
+          "speech_start_ms": 197639,
+          "speech_end_ms": 200881,
+          "start_ms": 197639,
+          "end_ms": 200881,
+          "speaker": "SPEAKER_07"
+        },
+        {
+          "index": 22,
+          "text": "佢識寫自己個名啊。",
+          "speech_start_ms": 200881,
+          "speech_end_ms": 202762,
+          "start_ms": 200881,
+          "end_ms": 202762,
+          "speaker": "SPEAKER_07"
+        },
+        {
+          "index": 23,
+          "text": "喂，阿爹，呢一步非同小可噃。",
+          "speech_start_ms": 202762,
+          "speech_end_ms": 206644,
+          "start_ms": 202762,
+          "end_ms": 206644,
+          "speaker": "SPEAKER_07"
+        },
+        {
+          "index": 24,
+          "text": "今日識寫字，他朝就必成大學士。",
+          "speech_start_ms": 206644,
+          "speech_end_ms": 210006,
+          "start_ms": 206644,
+          "end_ms": 210006,
+          "speaker": "SPEAKER_07"
+        },
+        {
+          "index": 25,
+          "text": "今日識寫名，他日生仔就必有病少爺。",
+          "speech_start_ms": 210006,
+          "speech_end_ms": 213147,
+          "start_ms": 210006,
+          "end_ms": 213147,
+          "speaker": "SPEAKER_07"
+        },
+        {
+          "index": 26,
+          "text": "少爺，你真係要好啲學寫字。",
+          "speech_start_ms": 213147,
+          "speech_end_ms": 215502,
+          "start_ms": 213147,
+          "end_ms": 215502,
+          "speaker": null
+        },
+        {
+          "index": 27,
+          "text": "燦呀，燦呀……",
+          "speech_start_ms": 215502,
+          "speech_end_ms": 216809,
+          "start_ms": 215502,
+          "end_ms": 216809,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 28,
+          "text": "我睇得起佢，好睇得起佢。",
+          "speech_start_ms": 216809,
+          "speech_end_ms": 218831,
+          "start_ms": 216809,
+          "end_ms": 218831,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 29,
+          "text": "師爺，你攞住有咁多銀，掛咁多銀。",
+          "speech_start_ms": 218831,
+          "speech_end_ms": 220932,
+          "start_ms": 218831,
+          "end_ms": 220932,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 30,
+          "text": "咁呀，咪係師爺你孭住佢，撐花轎。",
+          "speech_start_ms": 220932,
+          "speech_end_ms": 223833,
+          "start_ms": 220932,
+          "end_ms": 223833,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 31,
+          "text": "遊吓街威吓先行啦。",
+          "speech_start_ms": 223833,
+          "speech_end_ms": 225354,
+          "start_ms": 223833,
+          "end_ms": 225354,
+          "speaker": null
+        },
+        {
+          "index": 32,
+          "text": "阿燦，阿燦，嚟嚟。",
+          "speech_start_ms": 225354,
+          "speech_end_ms": 226835,
+          "start_ms": 225354,
+          "end_ms": 227335,
+          "speaker": "SPEAKER_23"
+        },
+        {
+          "index": 33,
+          "text": "坐坐坐。",
+          "speech_start_ms": 228150,
+          "speech_end_ms": 229450,
+          "start_ms": 227900,
+          "end_ms": 229450,
+          "speaker": "SPEAKER_07"
+        },
+        {
+          "index": 34,
+          "text": "見你咁生性，我都好安慰啊。",
+          "speech_start_ms": 229450,
+          "speech_end_ms": 231931,
+          "start_ms": 229450,
+          "end_ms": 231931,
+          "speaker": "SPEAKER_07"
+        },
+        {
+          "index": 35,
+          "text": "嗱，你聽我講，阿爹呢，",
+          "speech_start_ms": 231931,
+          "speech_end_ms": 234592,
+          "start_ms": 231931,
+          "end_ms": 234592,
+          "speaker": "SPEAKER_07"
+        },
+        {
+          "index": 36,
+          "text": "出名係二世祖，副身家呢，",
+          "speech_start_ms": 234592,
+          "speech_end_ms": 237093,
+          "start_ms": 234592,
+          "end_ms": 237093,
+          "speaker": "SPEAKER_07"
+        },
+        {
+          "index": 37,
+          "text": "都使到七七八八㗎喇。",
+          "speech_start_ms": 237093,
+          "speech_end_ms": 238873,
+          "start_ms": 237093,
+          "end_ms": 238873,
+          "speaker": null
+        },
+        {
+          "index": 38,
+          "text": "好話唔好聽，第日阿爹兩腿一伸呢，",
+          "speech_start_ms": 238873,
+          "speech_end_ms": 241574,
+          "start_ms": 238873,
+          "end_ms": 241574,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 39,
+          "text": "唉，你就冚唪唥靠自己啦。",
+          "speech_start_ms": 241574,
+          "speech_end_ms": 243195,
+          "start_ms": 241574,
+          "end_ms": 243195,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 40,
+          "text": "不嬲都靠自己㗎啦。",
+          "speech_start_ms": 243195,
+          "speech_end_ms": 245155,
+          "start_ms": 243195,
+          "end_ms": 245155,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 41,
+          "text": "嗱，成十萬兩一張銀票，你使唔使呀？",
+          "speech_start_ms": 245155,
+          "speech_end_ms": 247906,
+          "start_ms": 245155,
+          "end_ms": 247906,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 42,
+          "text": "嗯，茂利，攞我頂西洋帽過嚟。",
+          "speech_start_ms": 247906,
+          "speech_end_ms": 250497,
+          "start_ms": 247906,
+          "end_ms": 250497,
+          "speaker": null
+        },
+        {
+          "index": 43,
+          "text": "去邊呀，阿七？",
+          "speech_start_ms": 250497,
+          "speech_end_ms": 250897,
+          "start_ms": 250497,
+          "end_ms": 251397,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 44,
+          "text": "啊，今日我擺大壽。",
+          "speech_start_ms": 252448,
+          "speech_end_ms": 253077,
+          "start_ms": 252198,
+          "end_ms": 253577,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 45,
+          "text": "嗯，你貴庚啊？",
+          "speech_start_ms": 254455,
+          "speech_end_ms": 255480,
+          "start_ms": 254205,
+          "end_ms": 255480,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 46,
+          "text": "廿五歲大壽啊嘛，早啲到啊。",
+          "speech_start_ms": 255480,
+          "speech_end_ms": 257088,
+          "start_ms": 255480,
+          "end_ms": 257588,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 47,
+          "text": "喂，擺大壽你都梳靚啲個頭啦。",
+          "speech_start_ms": 258694,
+          "speech_end_ms": 260922,
+          "start_ms": 258444,
+          "end_ms": 260922,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 48,
+          "text": "成世都好似乞衣仔咁。",
+          "speech_start_ms": 260922,
+          "speech_end_ms": 262948,
+          "start_ms": 260922,
+          "end_ms": 262948,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 49,
+          "text": "乞衣會咁有錢，我都想做。",
+          "speech_start_ms": 262948,
+          "speech_end_ms": 264614,
+          "start_ms": 262948,
+          "end_ms": 265114,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 50,
+          "text": "啊，個壽頭硬實嘅，真係！過嚟過嚟過嚟！",
+          "speech_start_ms": 267830,
+          "speech_end_ms": 270775,
+          "start_ms": 267580,
+          "end_ms": 270775,
+          "speaker": null
+        },
+        {
+          "index": 51,
+          "text": "做咩呀？",
+          "speech_start_ms": 270775,
+          "speech_end_ms": 271296,
+          "start_ms": 270775,
+          "end_ms": 271296,
+          "speaker": "SPEAKER_17"
+        },
+        {
+          "index": 52,
+          "text": "老爺，個衰仔擺大壽，",
+          "speech_start_ms": 271296,
+          "speech_end_ms": 273640,
+          "start_ms": 271296,
+          "end_ms": 273640,
+          "speaker": null
+        },
+        {
+          "index": 53,
+          "text": "打張帖都架勢過人嘅。",
+          "speech_start_ms": 273640,
+          "speech_end_ms": 275643,
+          "start_ms": 273640,
+          "end_ms": 275643,
+          "speaker": null
+        },
+        {
+          "index": 54,
+          "text": "但係老爺擺大壽呢，",
+          "speech_start_ms": 275643,
+          "speech_end_ms": 276464,
+          "start_ms": 275643,
+          "end_ms": 276464,
+          "speaker": "SPEAKER_23"
+        },
+        {
+          "index": 55,
+          "text": "要架勢過佢！",
+          "speech_start_ms": 276464,
+          "speech_end_ms": 276725,
+          "start_ms": 276464,
+          "end_ms": 277225,
+          "speaker": "SPEAKER_23"
+        },
+        {
+          "index": 56,
+          "text": "你真係你真係你真係你真係你真係哈……",
+          "speech_start_ms": 279211,
+          "speech_end_ms": 280678,
+          "start_ms": 278961,
+          "end_ms": 281178,
+          "speaker": "SPEAKER_23"
+        }
+      ],
+      "source_errors": {}
+    },
+    {
+      "index": 5,
+      "core_start_ms": 297731,
+      "core_end_ms": 307620,
+      "buffered_start_ms": 296731,
+      "buffered_end_ms": 308620,
+      "columns": [
+        {
+          "index": 1,
+          "start_ms": 296731,
+          "end_ms": 296981,
+          "kind": "pause"
+        },
+        {
+          "index": 2,
+          "start_ms": 296981,
+          "end_ms": 297231,
+          "kind": "pause"
+        },
+        {
+          "index": 3,
+          "start_ms": 297231,
+          "end_ms": 297481,
+          "kind": "pause"
+        },
+        {
+          "index": 4,
+          "start_ms": 297481,
+          "end_ms": 297740,
+          "kind": "pause"
+        },
+        {
+          "index": 5,
+          "start_ms": 297752,
+          "end_ms": 298402,
+          "kind": "text"
+        },
+        {
+          "index": 6,
+          "start_ms": 298111,
+          "end_ms": 298361,
+          "kind": "pause"
+        },
+        {
+          "index": 7,
+          "start_ms": 298361,
+          "end_ms": 298611,
+          "kind": "pause"
+        },
+        {
+          "index": 8,
+          "start_ms": 298611,
+          "end_ms": 299022,
+          "kind": "pause"
+        },
+        {
+          "index": 9,
+          "start_ms": 298402,
+          "end_ms": 299053,
+          "kind": "text"
+        },
+        {
+          "index": 10,
+          "start_ms": 299053,
+          "end_ms": 299153,
+          "kind": "text"
+        },
+        {
+          "index": 11,
+          "start_ms": 299153,
+          "end_ms": 299253,
+          "kind": "text"
+        },
+        {
+          "index": 12,
+          "start_ms": 299253,
+          "end_ms": 299380,
+          "kind": "text"
+        },
+        {
+          "index": 13,
+          "start_ms": 299380,
+          "end_ms": 299506,
+          "kind": "text"
+        },
+        {
+          "index": 14,
+          "start_ms": 299506,
+          "end_ms": 299633,
+          "kind": "text"
+        },
+        {
+          "index": 15,
+          "start_ms": 299633,
+          "end_ms": 299733,
+          "kind": "text"
+        },
+        {
+          "index": 16,
+          "start_ms": 299733,
+          "end_ms": 300494,
+          "kind": "text"
+        },
+        {
+          "index": 17,
+          "start_ms": 300494,
+          "end_ms": 301254,
+          "kind": "text"
+        },
+        {
+          "index": 18,
+          "start_ms": 299931,
+          "end_ms": 300031,
+          "kind": "text"
+        },
+        {
+          "index": 19,
+          "start_ms": 300440,
+          "end_ms": 300690,
+          "kind": "pause"
+        },
+        {
+          "index": 20,
+          "start_ms": 300690,
+          "end_ms": 300940,
+          "kind": "pause"
+        },
+        {
+          "index": 21,
+          "start_ms": 300940,
+          "end_ms": 301190,
+          "kind": "pause"
+        },
+        {
+          "index": 22,
+          "start_ms": 301190,
+          "end_ms": 301440,
+          "kind": "pause"
+        },
+        {
+          "index": 23,
+          "start_ms": 301440,
+          "end_ms": 301690,
+          "kind": "pause"
+        },
+        {
+          "index": 24,
+          "start_ms": 301690,
+          "end_ms": 301992,
+          "kind": "pause"
+        },
+        {
+          "index": 25,
+          "start_ms": 301254,
+          "end_ms": 302015,
+          "kind": "text"
+        },
+        {
+          "index": 26,
+          "start_ms": 302015,
+          "end_ms": 302275,
+          "kind": "text"
+        },
+        {
+          "index": 27,
+          "start_ms": 302275,
+          "end_ms": 302395,
+          "kind": "text"
+        },
+        {
+          "index": 28,
+          "start_ms": 302395,
+          "end_ms": 302531,
+          "kind": "text"
+        },
+        {
+          "index": 29,
+          "start_ms": 302531,
+          "end_ms": 303085,
+          "kind": "text"
+        },
+        {
+          "index": 30,
+          "start_ms": 302971,
+          "end_ms": 303292,
+          "kind": "pause"
+        },
+        {
+          "index": 31,
+          "start_ms": 303085,
+          "end_ms": 303656,
+          "kind": "text"
+        },
+        {
+          "index": 32,
+          "start_ms": 303656,
+          "end_ms": 303876,
+          "kind": "text"
+        },
+        {
+          "index": 33,
+          "start_ms": 303876,
+          "end_ms": 304057,
+          "kind": "text"
+        },
+        {
+          "index": 34,
+          "start_ms": 304057,
+          "end_ms": 304197,
+          "kind": "text"
+        },
+        {
+          "index": 35,
+          "start_ms": 304197,
+          "end_ms": 304397,
+          "kind": "text"
+        },
+        {
+          "index": 36,
+          "start_ms": 304397,
+          "end_ms": 304948,
+          "kind": "text"
+        },
+        {
+          "index": 37,
+          "start_ms": 304878,
+          "end_ms": 305128,
+          "kind": "pause"
+        },
+        {
+          "index": 38,
+          "start_ms": 305128,
+          "end_ms": 305401,
+          "kind": "pause"
+        },
+        {
+          "index": 39,
+          "start_ms": 304948,
+          "end_ms": 305498,
+          "kind": "text"
+        },
+        {
+          "index": 40,
+          "start_ms": 305498,
+          "end_ms": 305828,
+          "kind": "text"
+        },
+        {
+          "index": 41,
+          "start_ms": 305828,
+          "end_ms": 306158,
+          "kind": "text"
+        },
+        {
+          "index": 42,
+          "start_ms": 306158,
+          "end_ms": 306318,
+          "kind": "text"
+        },
+        {
+          "index": 43,
+          "start_ms": 306318,
+          "end_ms": 306418,
+          "kind": "text"
+        },
+        {
+          "index": 44,
+          "start_ms": 306418,
+          "end_ms": 306538,
+          "kind": "text"
+        },
+        {
+          "index": 45,
+          "start_ms": 306538,
+          "end_ms": 306719,
+          "kind": "text"
+        },
+        {
+          "index": 46,
+          "start_ms": 306719,
+          "end_ms": 306739,
+          "kind": "text"
+        },
+        {
+          "index": 47,
+          "start_ms": 306739,
+          "end_ms": 307399,
+          "kind": "text"
+        },
+        {
+          "index": 48,
+          "start_ms": 307399,
+          "end_ms": 307993,
+          "kind": "text"
+        },
+        {
+          "index": 49,
+          "start_ms": 307628,
+          "end_ms": 307878,
+          "kind": "pause"
+        },
+        {
+          "index": 50,
+          "start_ms": 307878,
+          "end_ms": 308128,
+          "kind": "pause"
+        },
+        {
+          "index": 51,
+          "start_ms": 308128,
+          "end_ms": 308620,
+          "kind": "pause"
+        }
+      ],
+      "rows": [
+        {
+          "name": "whisper",
+          "text": "・・・・王・・・爺你覺得廣東嘅大戲如・・・・・・何地方戲曲・當然比不上京・・戲不過都算係一番電視・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "・・・・王・・・爺你覺得廣東嘅大戲　・・・・・・點地方戲曲・當然比唔上京・・戲不過都算係一番見識・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "・・・・王・・・爺你覺得廣東嘅大戲　・・・・・・點地方戲曲・當然比唔上京・・戲不過都算係一番見識・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "・・・・王・・・爺你覺得廣東嘅大氣　・・・・・・點地方戲概・當然比唔上驚・・氣不過都算係一番變識・・・"
+        },
+        {
+          "name": "firered",
+          "text": "・・・・王・・・爺你覺得廣東嘅大戲　・・・・・・點地方戲曲・當然比唔上京・・戲不過都算係一番見識・・・"
+        },
+        {
+          "name": "glm",
+          "text": "・・・・王・・・爺你覺得廣東嘅大氣　・・・・・・點地方氣魄・當然比唔上京・・畿不過都算係一番見識・・・"
+        }
+      ],
+      "speaker": "・・・・Ｂ・・・ＢＢＢＢＢＢＢＢ　Ｂ・・・・・・ＢＢＢＢＢ・ＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢ・・・",
+      "merged": "・・・・王・・・爺你覺得廣東嘅大戲　・・・・・・啲地方戲曲・當然比唔上京・・劇不過都算係一番見識・・・",
+      "subtitles": [
+        {
+          "index": 57,
+          "text": "王",
+          "speech_start_ms": 297760,
+          "speech_end_ms": 297921,
+          "start_ms": 297171,
+          "end_ms": 297921,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 58,
+          "text": "爺，你覺得廣東嘅大戲？",
+          "speech_start_ms": 297921,
+          "speech_end_ms": 299936,
+          "start_ms": 297921,
+          "end_ms": 300436,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 59,
+          "text": "啲地方戲曲。",
+          "speech_start_ms": 301992,
+          "speech_end_ms": 303374,
+          "start_ms": 301742,
+          "end_ms": 303374,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 60,
+          "text": "當然比唔上京劇。",
+          "speech_start_ms": 303374,
+          "speech_end_ms": 305476,
+          "start_ms": 303374,
+          "end_ms": 305476,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 61,
+          "text": "不過都算係一番見識。",
+          "speech_start_ms": 305476,
+          "speech_end_ms": 307419,
+          "start_ms": 305476,
+          "end_ms": 307919,
+          "speaker": "SPEAKER_04"
+        }
+      ],
+      "source_errors": {}
+    },
+    {
+      "index": 6,
+      "core_start_ms": 311873,
+      "core_end_ms": 345083,
+      "buffered_start_ms": 310873,
+      "buffered_end_ms": 346083,
+      "columns": [
+        {
+          "index": 1,
+          "start_ms": 310873,
+          "end_ms": 311123,
+          "kind": "pause"
+        },
+        {
+          "index": 2,
+          "start_ms": 311123,
+          "end_ms": 311373,
+          "kind": "pause"
+        },
+        {
+          "index": 3,
+          "start_ms": 311373,
+          "end_ms": 311623,
+          "kind": "pause"
+        },
+        {
+          "index": 4,
+          "start_ms": 311623,
+          "end_ms": 311881,
+          "kind": "pause"
+        },
+        {
+          "index": 5,
+          "start_ms": 312034,
+          "end_ms": 312974,
+          "kind": "text"
+        },
+        {
+          "index": 6,
+          "start_ms": 312235,
+          "end_ms": 312485,
+          "kind": "pause"
+        },
+        {
+          "index": 7,
+          "start_ms": 312485,
+          "end_ms": 312735,
+          "kind": "pause"
+        },
+        {
+          "index": 8,
+          "start_ms": 312735,
+          "end_ms": 312985,
+          "kind": "pause"
+        },
+        {
+          "index": 9,
+          "start_ms": 312985,
+          "end_ms": 313235,
+          "kind": "pause"
+        },
+        {
+          "index": 10,
+          "start_ms": 313235,
+          "end_ms": 313636,
+          "kind": "pause"
+        },
+        {
+          "index": 11,
+          "start_ms": 312974,
+          "end_ms": 313915,
+          "kind": "text"
+        },
+        {
+          "index": 12,
+          "start_ms": 313915,
+          "end_ms": 314806,
+          "kind": "text"
+        },
+        {
+          "index": 13,
+          "start_ms": 314176,
+          "end_ms": 314426,
+          "kind": "pause"
+        },
+        {
+          "index": 14,
+          "start_ms": 314426,
+          "end_ms": 314676,
+          "kind": "pause"
+        },
+        {
+          "index": 15,
+          "start_ms": 314676,
+          "end_ms": 314926,
+          "kind": "pause"
+        },
+        {
+          "index": 16,
+          "start_ms": 314926,
+          "end_ms": 315176,
+          "kind": "pause"
+        },
+        {
+          "index": 17,
+          "start_ms": 315176,
+          "end_ms": 315644,
+          "kind": "pause"
+        },
+        {
+          "index": 18,
+          "start_ms": 314806,
+          "end_ms": 315696,
+          "kind": "text"
+        },
+        {
+          "index": 19,
+          "start_ms": 315696,
+          "end_ms": 315786,
+          "kind": "text"
+        },
+        {
+          "index": 20,
+          "start_ms": 315786,
+          "end_ms": 315876,
+          "kind": "text"
+        },
+        {
+          "index": 21,
+          "start_ms": 315876,
+          "end_ms": 316317,
+          "kind": "text"
+        },
+        {
+          "index": 22,
+          "start_ms": 316317,
+          "end_ms": 316477,
+          "kind": "text"
+        },
+        {
+          "index": 23,
+          "start_ms": 316477,
+          "end_ms": 316637,
+          "kind": "text"
+        },
+        {
+          "index": 24,
+          "start_ms": 316637,
+          "end_ms": 316837,
+          "kind": "text"
+        },
+        {
+          "index": 25,
+          "start_ms": 316837,
+          "end_ms": 317017,
+          "kind": "text"
+        },
+        {
+          "index": 26,
+          "start_ms": 317017,
+          "end_ms": 317197,
+          "kind": "text"
+        },
+        {
+          "index": 27,
+          "start_ms": 317197,
+          "end_ms": 317287,
+          "kind": "text"
+        },
+        {
+          "index": 28,
+          "start_ms": 317287,
+          "end_ms": 317377,
+          "kind": "text"
+        },
+        {
+          "index": 29,
+          "start_ms": 317377,
+          "end_ms": 317878,
+          "kind": "text"
+        },
+        {
+          "index": 30,
+          "start_ms": 317878,
+          "end_ms": 318158,
+          "kind": "text"
+        },
+        {
+          "index": 31,
+          "start_ms": 318158,
+          "end_ms": 318958,
+          "kind": "text"
+        },
+        {
+          "index": 32,
+          "start_ms": 318658,
+          "end_ms": 319037,
+          "kind": "text"
+        },
+        {
+          "index": 33,
+          "start_ms": 318966,
+          "end_ms": 319258,
+          "kind": "text"
+        },
+        {
+          "index": 34,
+          "start_ms": 319258,
+          "end_ms": 319539,
+          "kind": "text"
+        },
+        {
+          "index": 35,
+          "start_ms": 319539,
+          "end_ms": 319779,
+          "kind": "text"
+        },
+        {
+          "index": 36,
+          "start_ms": 319779,
+          "end_ms": 320319,
+          "kind": "text"
+        },
+        {
+          "index": 37,
+          "start_ms": 320319,
+          "end_ms": 320519,
+          "kind": "text"
+        },
+        {
+          "index": 38,
+          "start_ms": 320519,
+          "end_ms": 320799,
+          "kind": "text"
+        },
+        {
+          "index": 39,
+          "start_ms": 320799,
+          "end_ms": 321107,
+          "kind": "text"
+        },
+        {
+          "index": 40,
+          "start_ms": 321107,
+          "end_ms": 321620,
+          "kind": "text"
+        },
+        {
+          "index": 41,
+          "start_ms": 321620,
+          "end_ms": 321870,
+          "kind": "text"
+        },
+        {
+          "index": 42,
+          "start_ms": 321870,
+          "end_ms": 322120,
+          "kind": "text"
+        },
+        {
+          "index": 43,
+          "start_ms": 322120,
+          "end_ms": 322340,
+          "kind": "text"
+        },
+        {
+          "index": 44,
+          "start_ms": 322340,
+          "end_ms": 322601,
+          "kind": "text"
+        },
+        {
+          "index": 45,
+          "start_ms": 322601,
+          "end_ms": 322761,
+          "kind": "text"
+        },
+        {
+          "index": 46,
+          "start_ms": 322761,
+          "end_ms": 322921,
+          "kind": "text"
+        },
+        {
+          "index": 47,
+          "start_ms": 322921,
+          "end_ms": 323031,
+          "kind": "text"
+        },
+        {
+          "index": 48,
+          "start_ms": 323031,
+          "end_ms": 323141,
+          "kind": "text"
+        },
+        {
+          "index": 49,
+          "start_ms": 323141,
+          "end_ms": 323948,
+          "kind": "text"
+        },
+        {
+          "index": 50,
+          "start_ms": 323401,
+          "end_ms": 323661,
+          "kind": "text"
+        },
+        {
+          "index": 51,
+          "start_ms": 323661,
+          "end_ms": 324108,
+          "kind": "text"
+        },
+        {
+          "index": 52,
+          "start_ms": 324115,
+          "end_ms": 324205,
+          "kind": "text"
+        },
+        {
+          "index": 53,
+          "start_ms": 324205,
+          "end_ms": 324322,
+          "kind": "text"
+        },
+        {
+          "index": 54,
+          "start_ms": 324322,
+          "end_ms": 324482,
+          "kind": "text"
+        },
+        {
+          "index": 55,
+          "start_ms": 324402,
+          "end_ms": 324532,
+          "kind": "text"
+        },
+        {
+          "index": 56,
+          "start_ms": 324482,
+          "end_ms": 324682,
+          "kind": "text"
+        },
+        {
+          "index": 57,
+          "start_ms": 324682,
+          "end_ms": 325963,
+          "kind": "text"
+        },
+        {
+          "index": 58,
+          "start_ms": 324853,
+          "end_ms": 324873,
+          "kind": "text"
+        },
+        {
+          "index": 59,
+          "start_ms": 324873,
+          "end_ms": 324893,
+          "kind": "text"
+        },
+        {
+          "index": 60,
+          "start_ms": 325131,
+          "end_ms": 325441,
+          "kind": "text"
+        },
+        {
+          "index": 61,
+          "start_ms": 326038,
+          "end_ms": 326238,
+          "kind": "text"
+        },
+        {
+          "index": 62,
+          "start_ms": 324953,
+          "end_ms": 325073,
+          "kind": "text"
+        },
+        {
+          "index": 63,
+          "start_ms": 325073,
+          "end_ms": 325333,
+          "kind": "text"
+        },
+        {
+          "index": 64,
+          "start_ms": 325583,
+          "end_ms": 325904,
+          "kind": "pause"
+        },
+        {
+          "index": 65,
+          "start_ms": 325963,
+          "end_ms": 326183,
+          "kind": "text"
+        },
+        {
+          "index": 66,
+          "start_ms": 326183,
+          "end_ms": 326293,
+          "kind": "text"
+        },
+        {
+          "index": 67,
+          "start_ms": 326293,
+          "end_ms": 326403,
+          "kind": "text"
+        },
+        {
+          "index": 68,
+          "start_ms": 326403,
+          "end_ms": 326643,
+          "kind": "text"
+        },
+        {
+          "index": 69,
+          "start_ms": 326643,
+          "end_ms": 326803,
+          "kind": "text"
+        },
+        {
+          "index": 70,
+          "start_ms": 326803,
+          "end_ms": 326987,
+          "kind": "text"
+        },
+        {
+          "index": 71,
+          "start_ms": 326987,
+          "end_ms": 327164,
+          "kind": "text"
+        },
+        {
+          "index": 72,
+          "start_ms": 327164,
+          "end_ms": 327304,
+          "kind": "text"
+        },
+        {
+          "index": 73,
+          "start_ms": 327298,
+          "end_ms": 327524,
+          "kind": "text"
+        },
+        {
+          "index": 74,
+          "start_ms": 327524,
+          "end_ms": 327664,
+          "kind": "text"
+        },
+        {
+          "index": 75,
+          "start_ms": 327664,
+          "end_ms": 327804,
+          "kind": "text"
+        },
+        {
+          "index": 76,
+          "start_ms": 327804,
+          "end_ms": 327924,
+          "kind": "text"
+        },
+        {
+          "index": 77,
+          "start_ms": 327924,
+          "end_ms": 328024,
+          "kind": "text"
+        },
+        {
+          "index": 78,
+          "start_ms": 328024,
+          "end_ms": 328304,
+          "kind": "text"
+        },
+        {
+          "index": 79,
+          "start_ms": 328304,
+          "end_ms": 328644,
+          "kind": "text"
+        },
+        {
+          "index": 80,
+          "start_ms": 328644,
+          "end_ms": 328985,
+          "kind": "text"
+        },
+        {
+          "index": 81,
+          "start_ms": 328985,
+          "end_ms": 329165,
+          "kind": "text"
+        },
+        {
+          "index": 82,
+          "start_ms": 329165,
+          "end_ms": 329945,
+          "kind": "text"
+        },
+        {
+          "index": 83,
+          "start_ms": 329865,
+          "end_ms": 330043,
+          "kind": "text"
+        },
+        {
+          "index": 84,
+          "start_ms": 329951,
+          "end_ms": 330326,
+          "kind": "text"
+        },
+        {
+          "index": 85,
+          "start_ms": 330326,
+          "end_ms": 330766,
+          "kind": "text"
+        },
+        {
+          "index": 86,
+          "start_ms": 330766,
+          "end_ms": 331032,
+          "kind": "text"
+        },
+        {
+          "index": 87,
+          "start_ms": 331032,
+          "end_ms": 331153,
+          "kind": "text"
+        },
+        {
+          "index": 88,
+          "start_ms": 331299,
+          "end_ms": 332470,
+          "kind": "text"
+        },
+        {
+          "index": 89,
+          "start_ms": 331372,
+          "end_ms": 331622,
+          "kind": "pause"
+        },
+        {
+          "index": 90,
+          "start_ms": 331622,
+          "end_ms": 331872,
+          "kind": "pause"
+        },
+        {
+          "index": 91,
+          "start_ms": 331872,
+          "end_ms": 332122,
+          "kind": "pause"
+        },
+        {
+          "index": 92,
+          "start_ms": 332122,
+          "end_ms": 332452,
+          "kind": "pause"
+        },
+        {
+          "index": 93,
+          "start_ms": 332373,
+          "end_ms": 332453,
+          "kind": "text"
+        },
+        {
+          "index": 94,
+          "start_ms": 332567,
+          "end_ms": 333196,
+          "kind": "text"
+        },
+        {
+          "index": 95,
+          "start_ms": 333202,
+          "end_ms": 333322,
+          "kind": "text"
+        },
+        {
+          "index": 96,
+          "start_ms": 332922,
+          "end_ms": 333373,
+          "kind": "text"
+        },
+        {
+          "index": 97,
+          "start_ms": 333373,
+          "end_ms": 333443,
+          "kind": "text"
+        },
+        {
+          "index": 98,
+          "start_ms": 333428,
+          "end_ms": 333468,
+          "kind": "text"
+        },
+        {
+          "index": 99,
+          "start_ms": 333458,
+          "end_ms": 333478,
+          "kind": "text"
+        },
+        {
+          "index": 100,
+          "start_ms": 333342,
+          "end_ms": 333393,
+          "kind": "text"
+        },
+        {
+          "index": 101,
+          "start_ms": 333393,
+          "end_ms": 333443,
+          "kind": "text"
+        },
+        {
+          "index": 102,
+          "start_ms": 333443,
+          "end_ms": 333588,
+          "kind": "text"
+        },
+        {
+          "index": 103,
+          "start_ms": 333588,
+          "end_ms": 333708,
+          "kind": "text"
+        },
+        {
+          "index": 104,
+          "start_ms": 333708,
+          "end_ms": 334758,
+          "kind": "text"
+        },
+        {
+          "index": 105,
+          "start_ms": 334122,
+          "end_ms": 334372,
+          "kind": "pause"
+        },
+        {
+          "index": 106,
+          "start_ms": 334372,
+          "end_ms": 334622,
+          "kind": "pause"
+        },
+        {
+          "index": 107,
+          "start_ms": 334622,
+          "end_ms": 334872,
+          "kind": "pause"
+        },
+        {
+          "index": 108,
+          "start_ms": 334872,
+          "end_ms": 335122,
+          "kind": "pause"
+        },
+        {
+          "index": 109,
+          "start_ms": 335122,
+          "end_ms": 335372,
+          "kind": "pause"
+        },
+        {
+          "index": 110,
+          "start_ms": 335372,
+          "end_ms": 335641,
+          "kind": "pause"
+        },
+        {
+          "index": 111,
+          "start_ms": 334808,
+          "end_ms": 335695,
+          "kind": "text"
+        },
+        {
+          "index": 112,
+          "start_ms": 335709,
+          "end_ms": 335929,
+          "kind": "text"
+        },
+        {
+          "index": 113,
+          "start_ms": 335705,
+          "end_ms": 335790,
+          "kind": "text"
+        },
+        {
+          "index": 114,
+          "start_ms": 335790,
+          "end_ms": 335855,
+          "kind": "text"
+        },
+        {
+          "index": 115,
+          "start_ms": 335855,
+          "end_ms": 335976,
+          "kind": "text"
+        },
+        {
+          "index": 116,
+          "start_ms": 335929,
+          "end_ms": 336049,
+          "kind": "text"
+        },
+        {
+          "index": 117,
+          "start_ms": 336049,
+          "end_ms": 336129,
+          "kind": "text"
+        },
+        {
+          "index": 118,
+          "start_ms": 336129,
+          "end_ms": 336189,
+          "kind": "text"
+        },
+        {
+          "index": 119,
+          "start_ms": 336189,
+          "end_ms": 336870,
+          "kind": "text"
+        },
+        {
+          "index": 120,
+          "start_ms": 336367,
+          "end_ms": 336839,
+          "kind": "pause"
+        },
+        {
+          "index": 121,
+          "start_ms": 336870,
+          "end_ms": 337090,
+          "kind": "text"
+        },
+        {
+          "index": 122,
+          "start_ms": 337090,
+          "end_ms": 337250,
+          "kind": "text"
+        },
+        {
+          "index": 123,
+          "start_ms": 337250,
+          "end_ms": 337350,
+          "kind": "text"
+        },
+        {
+          "index": 124,
+          "start_ms": 337350,
+          "end_ms": 337450,
+          "kind": "text"
+        },
+        {
+          "index": 125,
+          "start_ms": 337450,
+          "end_ms": 337610,
+          "kind": "text"
+        },
+        {
+          "index": 126,
+          "start_ms": 337610,
+          "end_ms": 337750,
+          "kind": "text"
+        },
+        {
+          "index": 127,
+          "start_ms": 337750,
+          "end_ms": 337830,
+          "kind": "text"
+        },
+        {
+          "index": 128,
+          "start_ms": 337830,
+          "end_ms": 337970,
+          "kind": "text"
+        },
+        {
+          "index": 129,
+          "start_ms": 337970,
+          "end_ms": 338471,
+          "kind": "text"
+        },
+        {
+          "index": 130,
+          "start_ms": 338088,
+          "end_ms": 338408,
+          "kind": "pause"
+        },
+        {
+          "index": 131,
+          "start_ms": 338471,
+          "end_ms": 338591,
+          "kind": "text"
+        },
+        {
+          "index": 132,
+          "start_ms": 338591,
+          "end_ms": 338721,
+          "kind": "text"
+        },
+        {
+          "index": 133,
+          "start_ms": 338721,
+          "end_ms": 338851,
+          "kind": "text"
+        },
+        {
+          "index": 134,
+          "start_ms": 338851,
+          "end_ms": 339031,
+          "kind": "text"
+        },
+        {
+          "index": 135,
+          "start_ms": 339031,
+          "end_ms": 339131,
+          "kind": "text"
+        },
+        {
+          "index": 136,
+          "start_ms": 339131,
+          "end_ms": 339151,
+          "kind": "text"
+        },
+        {
+          "index": 137,
+          "start_ms": 339151,
+          "end_ms": 339311,
+          "kind": "text"
+        },
+        {
+          "index": 138,
+          "start_ms": 339311,
+          "end_ms": 339532,
+          "kind": "text"
+        },
+        {
+          "index": 139,
+          "start_ms": 339532,
+          "end_ms": 339752,
+          "kind": "text"
+        },
+        {
+          "index": 140,
+          "start_ms": 339752,
+          "end_ms": 339872,
+          "kind": "text"
+        },
+        {
+          "index": 141,
+          "start_ms": 339872,
+          "end_ms": 340032,
+          "kind": "text"
+        },
+        {
+          "index": 142,
+          "start_ms": 340032,
+          "end_ms": 340212,
+          "kind": "text"
+        },
+        {
+          "index": 143,
+          "start_ms": 340212,
+          "end_ms": 340372,
+          "kind": "text"
+        },
+        {
+          "index": 144,
+          "start_ms": 340372,
+          "end_ms": 340512,
+          "kind": "text"
+        },
+        {
+          "index": 145,
+          "start_ms": 340512,
+          "end_ms": 340672,
+          "kind": "text"
+        },
+        {
+          "index": 146,
+          "start_ms": 340672,
+          "end_ms": 340772,
+          "kind": "text"
+        },
+        {
+          "index": 147,
+          "start_ms": 340772,
+          "end_ms": 340873,
+          "kind": "text"
+        },
+        {
+          "index": 148,
+          "start_ms": 340855,
+          "end_ms": 341026,
+          "kind": "text"
+        },
+        {
+          "index": 149,
+          "start_ms": 341015,
+          "end_ms": 341235,
+          "kind": "text"
+        },
+        {
+          "index": 150,
+          "start_ms": 341235,
+          "end_ms": 341776,
+          "kind": "text"
+        },
+        {
+          "index": 151,
+          "start_ms": 341776,
+          "end_ms": 341996,
+          "kind": "text"
+        },
+        {
+          "index": 152,
+          "start_ms": 341996,
+          "end_ms": 342497,
+          "kind": "text"
+        },
+        {
+          "index": 153,
+          "start_ms": 342497,
+          "end_ms": 342617,
+          "kind": "text"
+        },
+        {
+          "index": 154,
+          "start_ms": 342608,
+          "end_ms": 342732,
+          "kind": "text"
+        },
+        {
+          "index": 155,
+          "start_ms": 343293,
+          "end_ms": 343773,
+          "kind": "text"
+        },
+        {
+          "index": 156,
+          "start_ms": 342617,
+          "end_ms": 343920,
+          "kind": "text"
+        },
+        {
+          "index": 157,
+          "start_ms": 342863,
+          "end_ms": 343113,
+          "kind": "pause"
+        },
+        {
+          "index": 158,
+          "start_ms": 343113,
+          "end_ms": 343363,
+          "kind": "pause"
+        },
+        {
+          "index": 159,
+          "start_ms": 343363,
+          "end_ms": 343613,
+          "kind": "pause"
+        },
+        {
+          "index": 160,
+          "start_ms": 343613,
+          "end_ms": 343863,
+          "kind": "pause"
+        },
+        {
+          "index": 161,
+          "start_ms": 343863,
+          "end_ms": 344113,
+          "kind": "pause"
+        },
+        {
+          "index": 162,
+          "start_ms": 344113,
+          "end_ms": 344363,
+          "kind": "pause"
+        },
+        {
+          "index": 163,
+          "start_ms": 344363,
+          "end_ms": 344618,
+          "kind": "pause"
+        },
+        {
+          "index": 164,
+          "start_ms": 343920,
+          "end_ms": 344140,
+          "kind": "text"
+        },
+        {
+          "index": 165,
+          "start_ms": 344140,
+          "end_ms": 344541,
+          "kind": "text"
+        },
+        {
+          "index": 166,
+          "start_ms": 344541,
+          "end_ms": 344781,
+          "kind": "text"
+        },
+        {
+          "index": 167,
+          "start_ms": 344781,
+          "end_ms": 344801,
+          "kind": "text"
+        },
+        {
+          "index": 168,
+          "start_ms": 345091,
+          "end_ms": 345341,
+          "kind": "pause"
+        },
+        {
+          "index": 169,
+          "start_ms": 345341,
+          "end_ms": 345591,
+          "kind": "pause"
+        },
+        {
+          "index": 170,
+          "start_ms": 345591,
+          "end_ms": 346083,
+          "kind": "pause"
+        }
+      ],
+      "rows": [
+        {
+          "name": "whisper",
+          "text": "・・・・打・・・・・賞　・・・・・　打賞恭喜蘇翁生辰快樂黑家散人噴病老藥死人塌樓妻離子散我黑家產呀　施捨個地名錢呀搞錯呀死黑衣・打你個混蛋黑賊　黑色黑道來呢度我　打打賞黑少爺有・・・・沒有　搞錯　呀有錢就走呀・・・・・・　黑　　　衣都是人・是人有錢都是來這裡・你這個月在這裡吃飯看你宵夜直落叫雞　我包　包催呀催呀・・・・・・・好嘍唔催・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "・・・・打・・・・・賞打・・・・・賞打賞恭喜蘇翁生辰快樂仆街殺人貧病老弱死人冧樓妻離子散冇咁家產啊識唔識個　　　字　　　　　　・啊呢個仆街又曱甴乞食乞到嚟呢度我我打打賞唉少爺　・・・・　　冇搞錯　啊攞錢就走啊・・・・・・誒乞　　　衣都系人・系人有錢都系嚟呢度・你呢個月喺呢度食飯睇嘢少爺直落叫雞　我包你包吹　　啊・・・・・・・唔吹唔吹・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "・・・・打・・・・・賞打・・・・・賞打賞恭喜蘇東生辰快樂我家神　病病老弱死人臨樓妻離子散我恨家慘啊　施施個吊明錢啊　　　　　　・啊你個仆街人夾就黑食黑度嚟呢度我我打打賞嘿宵夜　・・・・　有冇搞錯有啊　錢就走啦・・・・・・哎客　　　依都系人・系人有錢都系嚟呢度・你呢個月喺呢度食飯睇去宵夜直落叫雞　我包年包吹　　啊・・・・・・・唔吹唔吹・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "・・・・打・・・・・賞打・・・・・賞打賞恭你收中生神快樂我家晒人噴病老藥死人冧流妻離子散　冚家鏟啊　　少個點阿姨啊　　　　　　・啊你個仆街又家就黑食黑到嚟呢度我我打打賞嗨少爺我・・・・　有　　　　　　錢就走　・・・・・・　乞　　　姨都系人・系人有錢都系嚟呢度・你呢個月喺呢度食飯睇你宵夜直落叫雞　我包點包吹　　啊・・・・・・・唔吹唔　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "・・・・打・・・・・賞打・・・・・賞打賞恭喜收音生辰快樂我家散人噴病老弱死人冧樓妻離子散我冚家鏟啊　輸少個屌　民乞　　　　　　・啊你個扑街又夾雜黑食黑到嚟呢度我我打打賞系宵夜　・・・・　有冇搞錯　啊攞錢就走啦・・・・・・　乞　　　衣都系人・系人有錢都系嚟呢度・你呢個月喺呢度食飯睇嘅宵夜直落叫雞　我包點包吹　　啊・・・・・・・　　唔吹・・・"
+        },
+        {
+          "name": "glm",
+          "text": "・・・・打・・・・・上打・・・・・上打上恭喜收穫生辰快樂我家善人拼病老樣死人拎樓妻離子散我恨家慘啊　　　　　　　　　　　死　　・　　　　　　　　　　　　死個地獄我打　上嘿小葉　・・・・　　　搞錯　　　　　　咗・・・・・・搞錯咗嘿呢度都系人・系人有錢都系嚟呢度・你呢個月喺呢度食飯睇下消夜直落叫雞雞我包點包吹　　啊・・・・・・・唔吹唔吹・・・"
+        }
+      ],
+      "speaker": "・・・・Ｂ・・・・・ＢＢ・・・・・ＢＢＢＢＭＭＭＭＭＭＭＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＡＢＢＡ・ＢＢＢＢＢＢＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮ・・・・ＥＥＯＯＯＯＯＯＯＯＯＥ・・・・・・ＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＡＡＡＡ　Ａ・・・・・・・　　ＢＢ・・・",
+      "merged": "・・・・打・・・・・想打・・・・・　打賞恭喜蘇翁生辰快樂仆街殺人貧病老弱死人冧樓妻離子散　冚家鏟呀　施捨個一蚊錢　　　呀　　　・啊你個仆街又夾埋啲乞兒嚟到呢度我　　打賞呀少爺　・・・・　有冇搞錯　呀攞錢就走啦・・・・・・搞錯咗喎乞衣都係人・係人有錢都係嚟呢度・你呢個月喺呢度食飯睇戲宵夜直落叫　雞我包你包吹呀　　・・・・・・・　　唔吹・・・",
+      "subtitles": [
+        {
+          "index": 62,
+          "text": "打",
+          "speech_start_ms": 312048,
+          "speech_end_ms": 312068,
+          "start_ms": 311798,
+          "end_ms": 312568,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 63,
+          "text": "想打。",
+          "speech_start_ms": 313636,
+          "speech_end_ms": 313698,
+          "start_ms": 313386,
+          "end_ms": 314198,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 64,
+          "text": "打賞，恭喜蘇翁生辰快樂！",
+          "speech_start_ms": 315704,
+          "speech_end_ms": 317865,
+          "start_ms": 315454,
+          "end_ms": 317865,
+          "speaker": null
+        },
+        {
+          "index": 65,
+          "text": "仆街殺人，貧病老弱，",
+          "speech_start_ms": 317865,
+          "speech_end_ms": 320306,
+          "start_ms": 317865,
+          "end_ms": 320306,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 66,
+          "text": "死人冧樓，妻離子散，",
+          "speech_start_ms": 320306,
+          "speech_end_ms": 322748,
+          "start_ms": 320306,
+          "end_ms": 322748,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 67,
+          "text": "冚家鏟呀！",
+          "speech_start_ms": 322748,
+          "speech_end_ms": 323948,
+          "start_ms": 322748,
+          "end_ms": 323948,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 68,
+          "text": "施捨個一蚊錢呀！",
+          "speech_start_ms": 323948,
+          "speech_end_ms": 325969,
+          "start_ms": 323948,
+          "end_ms": 325969,
+          "speaker": null
+        },
+        {
+          "index": 69,
+          "text": "啊，你個仆街！",
+          "speech_start_ms": 325969,
+          "speech_end_ms": 326810,
+          "start_ms": 325969,
+          "end_ms": 326810,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 70,
+          "text": "又夾埋啲乞兒嚟到呢度！",
+          "speech_start_ms": 326810,
+          "speech_end_ms": 328991,
+          "start_ms": 326810,
+          "end_ms": 328991,
+          "speaker": null
+        },
+        {
+          "index": 71,
+          "text": "我打賞呀，少爺！",
+          "speech_start_ms": 328991,
+          "speech_end_ms": 331052,
+          "start_ms": 328991,
+          "end_ms": 331552,
+          "speaker": "SPEAKER_03"
+        },
+        {
+          "index": 72,
+          "text": "有冇搞錯呀，攞錢就走啦？",
+          "speech_start_ms": 333176,
+          "speech_end_ms": 333740,
+          "start_ms": 332926,
+          "end_ms": 334240,
+          "speaker": "SPEAKER_02"
+        },
+        {
+          "index": 73,
+          "text": "搞錯咗喎，乞衣都係人。",
+          "speech_start_ms": 335661,
+          "speech_end_ms": 336865,
+          "start_ms": 335411,
+          "end_ms": 336865,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 74,
+          "text": "係人有錢都係嚟呢度。",
+          "speech_start_ms": 336865,
+          "speech_end_ms": 338470,
+          "start_ms": 336865,
+          "end_ms": 338470,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 75,
+          "text": "你呢個月喺呢度食飯睇戲，",
+          "speech_start_ms": 338470,
+          "speech_end_ms": 339994,
+          "start_ms": 338470,
+          "end_ms": 339994,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 76,
+          "text": "宵夜直落叫雞。",
+          "speech_start_ms": 339994,
+          "speech_end_ms": 341037,
+          "start_ms": 339994,
+          "end_ms": 341037,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 77,
+          "text": "我包你包吹呀。",
+          "speech_start_ms": 341037,
+          "speech_end_ms": 342662,
+          "start_ms": 341037,
+          "end_ms": 343162,
+          "speaker": null
+        },
+        {
+          "index": 78,
+          "text": "唔吹",
+          "speech_start_ms": 344618,
+          "speech_end_ms": 345019,
+          "start_ms": 344368,
+          "end_ms": 345519,
+          "speaker": "SPEAKER_04"
+        }
+      ],
+      "source_errors": {}
+    },
+    {
+      "index": 7,
+      "core_start_ms": 351056,
+      "core_end_ms": 416531,
+      "buffered_start_ms": 350056,
+      "buffered_end_ms": 417531,
+      "columns": [
+        {
+          "index": 1,
+          "start_ms": 350056,
+          "end_ms": 350306,
+          "kind": "pause"
+        },
+        {
+          "index": 2,
+          "start_ms": 350306,
+          "end_ms": 350556,
+          "kind": "pause"
+        },
+        {
+          "index": 3,
+          "start_ms": 350556,
+          "end_ms": 350806,
+          "kind": "pause"
+        },
+        {
+          "index": 4,
+          "start_ms": 350806,
+          "end_ms": 351065,
+          "kind": "pause"
+        },
+        {
+          "index": 5,
+          "start_ms": 350176,
+          "end_ms": 351237,
+          "kind": "text"
+        },
+        {
+          "index": 6,
+          "start_ms": 351757,
+          "end_ms": 352622,
+          "kind": "text"
+        },
+        {
+          "index": 7,
+          "start_ms": 351237,
+          "end_ms": 351937,
+          "kind": "text"
+        },
+        {
+          "index": 8,
+          "start_ms": 352347,
+          "end_ms": 352597,
+          "kind": "pause"
+        },
+        {
+          "index": 9,
+          "start_ms": 352597,
+          "end_ms": 352988,
+          "kind": "pause"
+        },
+        {
+          "index": 10,
+          "start_ms": 351937,
+          "end_ms": 354604,
+          "kind": "text"
+        },
+        {
+          "index": 11,
+          "start_ms": 354187,
+          "end_ms": 354558,
+          "kind": "pause"
+        },
+        {
+          "index": 12,
+          "start_ms": 354604,
+          "end_ms": 354709,
+          "kind": "text"
+        },
+        {
+          "index": 13,
+          "start_ms": 354709,
+          "end_ms": 354819,
+          "kind": "text"
+        },
+        {
+          "index": 14,
+          "start_ms": 354819,
+          "end_ms": 354959,
+          "kind": "text"
+        },
+        {
+          "index": 15,
+          "start_ms": 354959,
+          "end_ms": 355099,
+          "kind": "text"
+        },
+        {
+          "index": 16,
+          "start_ms": 355099,
+          "end_ms": 355900,
+          "kind": "text"
+        },
+        {
+          "index": 17,
+          "start_ms": 355368,
+          "end_ms": 355857,
+          "kind": "pause"
+        },
+        {
+          "index": 18,
+          "start_ms": 355900,
+          "end_ms": 356140,
+          "kind": "text"
+        },
+        {
+          "index": 19,
+          "start_ms": 356140,
+          "end_ms": 356360,
+          "kind": "text"
+        },
+        {
+          "index": 20,
+          "start_ms": 356360,
+          "end_ms": 356480,
+          "kind": "text"
+        },
+        {
+          "index": 21,
+          "start_ms": 356480,
+          "end_ms": 356600,
+          "kind": "text"
+        },
+        {
+          "index": 22,
+          "start_ms": 356600,
+          "end_ms": 356740,
+          "kind": "text"
+        },
+        {
+          "index": 23,
+          "start_ms": 356740,
+          "end_ms": 356860,
+          "kind": "text"
+        },
+        {
+          "index": 24,
+          "start_ms": 356860,
+          "end_ms": 357000,
+          "kind": "text"
+        },
+        {
+          "index": 25,
+          "start_ms": 357000,
+          "end_ms": 357301,
+          "kind": "text"
+        },
+        {
+          "index": 26,
+          "start_ms": 357301,
+          "end_ms": 357461,
+          "kind": "text"
+        },
+        {
+          "index": 27,
+          "start_ms": 357461,
+          "end_ms": 357621,
+          "kind": "text"
+        },
+        {
+          "index": 28,
+          "start_ms": 357621,
+          "end_ms": 357841,
+          "kind": "text"
+        },
+        {
+          "index": 29,
+          "start_ms": 357841,
+          "end_ms": 358101,
+          "kind": "text"
+        },
+        {
+          "index": 30,
+          "start_ms": 358101,
+          "end_ms": 358341,
+          "kind": "text"
+        },
+        {
+          "index": 31,
+          "start_ms": 358341,
+          "end_ms": 358461,
+          "kind": "text"
+        },
+        {
+          "index": 32,
+          "start_ms": 358461,
+          "end_ms": 358622,
+          "kind": "text"
+        },
+        {
+          "index": 33,
+          "start_ms": 358622,
+          "end_ms": 358922,
+          "kind": "text"
+        },
+        {
+          "index": 34,
+          "start_ms": 358922,
+          "end_ms": 359102,
+          "kind": "text"
+        },
+        {
+          "index": 35,
+          "start_ms": 359102,
+          "end_ms": 359202,
+          "kind": "text"
+        },
+        {
+          "index": 36,
+          "start_ms": 359202,
+          "end_ms": 359302,
+          "kind": "text"
+        },
+        {
+          "index": 37,
+          "start_ms": 359302,
+          "end_ms": 359442,
+          "kind": "text"
+        },
+        {
+          "index": 38,
+          "start_ms": 359442,
+          "end_ms": 359922,
+          "kind": "text"
+        },
+        {
+          "index": 39,
+          "start_ms": 359922,
+          "end_ms": 360062,
+          "kind": "text"
+        },
+        {
+          "index": 40,
+          "start_ms": 360062,
+          "end_ms": 360122,
+          "kind": "text"
+        },
+        {
+          "index": 41,
+          "start_ms": 360122,
+          "end_ms": 360323,
+          "kind": "text"
+        },
+        {
+          "index": 42,
+          "start_ms": 360323,
+          "end_ms": 360443,
+          "kind": "text"
+        },
+        {
+          "index": 43,
+          "start_ms": 360443,
+          "end_ms": 361223,
+          "kind": "text"
+        },
+        {
+          "index": 44,
+          "start_ms": 361223,
+          "end_ms": 361484,
+          "kind": "text"
+        },
+        {
+          "index": 45,
+          "start_ms": 361357,
+          "end_ms": 361498,
+          "kind": "text"
+        },
+        {
+          "index": 46,
+          "start_ms": 361484,
+          "end_ms": 361744,
+          "kind": "text"
+        },
+        {
+          "index": 47,
+          "start_ms": 361744,
+          "end_ms": 362004,
+          "kind": "text"
+        },
+        {
+          "index": 48,
+          "start_ms": 362004,
+          "end_ms": 362394,
+          "kind": "text"
+        },
+        {
+          "index": 49,
+          "start_ms": 362504,
+          "end_ms": 362704,
+          "kind": "text"
+        },
+        {
+          "index": 50,
+          "start_ms": 362704,
+          "end_ms": 362764,
+          "kind": "text"
+        },
+        {
+          "index": 51,
+          "start_ms": 362764,
+          "end_ms": 362944,
+          "kind": "text"
+        },
+        {
+          "index": 52,
+          "start_ms": 362944,
+          "end_ms": 363124,
+          "kind": "text"
+        },
+        {
+          "index": 53,
+          "start_ms": 363124,
+          "end_ms": 363325,
+          "kind": "text"
+        },
+        {
+          "index": 54,
+          "start_ms": 363216,
+          "end_ms": 363356,
+          "kind": "text"
+        },
+        {
+          "index": 55,
+          "start_ms": 363325,
+          "end_ms": 363805,
+          "kind": "text"
+        },
+        {
+          "index": 56,
+          "start_ms": 363805,
+          "end_ms": 364025,
+          "kind": "text"
+        },
+        {
+          "index": 57,
+          "start_ms": 364025,
+          "end_ms": 364225,
+          "kind": "text"
+        },
+        {
+          "index": 58,
+          "start_ms": 364225,
+          "end_ms": 364445,
+          "kind": "text"
+        },
+        {
+          "index": 59,
+          "start_ms": 364445,
+          "end_ms": 364645,
+          "kind": "text"
+        },
+        {
+          "index": 60,
+          "start_ms": 364645,
+          "end_ms": 366527,
+          "kind": "text"
+        },
+        {
+          "index": 61,
+          "start_ms": 364835,
+          "end_ms": 365085,
+          "kind": "pause"
+        },
+        {
+          "index": 62,
+          "start_ms": 365085,
+          "end_ms": 365335,
+          "kind": "pause"
+        },
+        {
+          "index": 63,
+          "start_ms": 365335,
+          "end_ms": 365585,
+          "kind": "pause"
+        },
+        {
+          "index": 64,
+          "start_ms": 365585,
+          "end_ms": 365835,
+          "kind": "pause"
+        },
+        {
+          "index": 65,
+          "start_ms": 365835,
+          "end_ms": 366085,
+          "kind": "pause"
+        },
+        {
+          "index": 66,
+          "start_ms": 366085,
+          "end_ms": 366488,
+          "kind": "pause"
+        },
+        {
+          "index": 67,
+          "start_ms": 366527,
+          "end_ms": 366817,
+          "kind": "text"
+        },
+        {
+          "index": 68,
+          "start_ms": 366817,
+          "end_ms": 367107,
+          "kind": "text"
+        },
+        {
+          "index": 69,
+          "start_ms": 367107,
+          "end_ms": 367267,
+          "kind": "text"
+        },
+        {
+          "index": 70,
+          "start_ms": 367267,
+          "end_ms": 367447,
+          "kind": "text"
+        },
+        {
+          "index": 71,
+          "start_ms": 367447,
+          "end_ms": 367627,
+          "kind": "text"
+        },
+        {
+          "index": 72,
+          "start_ms": 367627,
+          "end_ms": 367767,
+          "kind": "text"
+        },
+        {
+          "index": 73,
+          "start_ms": 367767,
+          "end_ms": 367948,
+          "kind": "text"
+        },
+        {
+          "index": 74,
+          "start_ms": 367948,
+          "end_ms": 368108,
+          "kind": "text"
+        },
+        {
+          "index": 75,
+          "start_ms": 368108,
+          "end_ms": 369809,
+          "kind": "text"
+        },
+        {
+          "index": 76,
+          "start_ms": 368243,
+          "end_ms": 368493,
+          "kind": "pause"
+        },
+        {
+          "index": 77,
+          "start_ms": 368493,
+          "end_ms": 368743,
+          "kind": "pause"
+        },
+        {
+          "index": 78,
+          "start_ms": 368743,
+          "end_ms": 368993,
+          "kind": "pause"
+        },
+        {
+          "index": 79,
+          "start_ms": 368993,
+          "end_ms": 369243,
+          "kind": "pause"
+        },
+        {
+          "index": 80,
+          "start_ms": 369243,
+          "end_ms": 369712,
+          "kind": "pause"
+        },
+        {
+          "index": 81,
+          "start_ms": 369809,
+          "end_ms": 370109,
+          "kind": "text"
+        },
+        {
+          "index": 82,
+          "start_ms": 370109,
+          "end_ms": 370399,
+          "kind": "text"
+        },
+        {
+          "index": 83,
+          "start_ms": 370399,
+          "end_ms": 370689,
+          "kind": "text"
+        },
+        {
+          "index": 84,
+          "start_ms": 370689,
+          "end_ms": 370869,
+          "kind": "text"
+        },
+        {
+          "index": 85,
+          "start_ms": 370869,
+          "end_ms": 371090,
+          "kind": "text"
+        },
+        {
+          "index": 86,
+          "start_ms": 371090,
+          "end_ms": 371310,
+          "kind": "text"
+        },
+        {
+          "index": 87,
+          "start_ms": 371310,
+          "end_ms": 371510,
+          "kind": "text"
+        },
+        {
+          "index": 88,
+          "start_ms": 371510,
+          "end_ms": 371750,
+          "kind": "text"
+        },
+        {
+          "index": 89,
+          "start_ms": 371750,
+          "end_ms": 371990,
+          "kind": "text"
+        },
+        {
+          "index": 90,
+          "start_ms": 371990,
+          "end_ms": 372210,
+          "kind": "text"
+        },
+        {
+          "index": 91,
+          "start_ms": 372210,
+          "end_ms": 372430,
+          "kind": "text"
+        },
+        {
+          "index": 92,
+          "start_ms": 372430,
+          "end_ms": 372651,
+          "kind": "text"
+        },
+        {
+          "index": 93,
+          "start_ms": 372651,
+          "end_ms": 373171,
+          "kind": "text"
+        },
+        {
+          "index": 94,
+          "start_ms": 373171,
+          "end_ms": 373491,
+          "kind": "text"
+        },
+        {
+          "index": 95,
+          "start_ms": 373491,
+          "end_ms": 373651,
+          "kind": "text"
+        },
+        {
+          "index": 96,
+          "start_ms": 373651,
+          "end_ms": 373791,
+          "kind": "text"
+        },
+        {
+          "index": 97,
+          "start_ms": 373791,
+          "end_ms": 373991,
+          "kind": "text"
+        },
+        {
+          "index": 98,
+          "start_ms": 373991,
+          "end_ms": 374292,
+          "kind": "text"
+        },
+        {
+          "index": 99,
+          "start_ms": 374292,
+          "end_ms": 374492,
+          "kind": "text"
+        },
+        {
+          "index": 100,
+          "start_ms": 374492,
+          "end_ms": 374772,
+          "kind": "text"
+        },
+        {
+          "index": 101,
+          "start_ms": 374772,
+          "end_ms": 375953,
+          "kind": "text"
+        },
+        {
+          "index": 102,
+          "start_ms": 375095,
+          "end_ms": 375345,
+          "kind": "pause"
+        },
+        {
+          "index": 103,
+          "start_ms": 375345,
+          "end_ms": 375595,
+          "kind": "pause"
+        },
+        {
+          "index": 104,
+          "start_ms": 375595,
+          "end_ms": 375871,
+          "kind": "pause"
+        },
+        {
+          "index": 105,
+          "start_ms": 375953,
+          "end_ms": 376093,
+          "kind": "text"
+        },
+        {
+          "index": 106,
+          "start_ms": 376093,
+          "end_ms": 376153,
+          "kind": "text"
+        },
+        {
+          "index": 107,
+          "start_ms": 376153,
+          "end_ms": 376253,
+          "kind": "text"
+        },
+        {
+          "index": 108,
+          "start_ms": 376253,
+          "end_ms": 376633,
+          "kind": "text"
+        },
+        {
+          "index": 109,
+          "start_ms": 376343,
+          "end_ms": 376383,
+          "kind": "text"
+        },
+        {
+          "index": 110,
+          "start_ms": 376633,
+          "end_ms": 376773,
+          "kind": "text"
+        },
+        {
+          "index": 111,
+          "start_ms": 376773,
+          "end_ms": 376913,
+          "kind": "text"
+        },
+        {
+          "index": 112,
+          "start_ms": 376913,
+          "end_ms": 377073,
+          "kind": "text"
+        },
+        {
+          "index": 113,
+          "start_ms": 377073,
+          "end_ms": 377294,
+          "kind": "text"
+        },
+        {
+          "index": 114,
+          "start_ms": 377294,
+          "end_ms": 377434,
+          "kind": "text"
+        },
+        {
+          "index": 115,
+          "start_ms": 377434,
+          "end_ms": 377654,
+          "kind": "text"
+        },
+        {
+          "index": 116,
+          "start_ms": 377654,
+          "end_ms": 377794,
+          "kind": "text"
+        },
+        {
+          "index": 117,
+          "start_ms": 377794,
+          "end_ms": 377934,
+          "kind": "text"
+        },
+        {
+          "index": 118,
+          "start_ms": 377934,
+          "end_ms": 378064,
+          "kind": "text"
+        },
+        {
+          "index": 119,
+          "start_ms": 378064,
+          "end_ms": 378194,
+          "kind": "text"
+        },
+        {
+          "index": 120,
+          "start_ms": 378194,
+          "end_ms": 378414,
+          "kind": "text"
+        },
+        {
+          "index": 121,
+          "start_ms": 378414,
+          "end_ms": 378824,
+          "kind": "text"
+        },
+        {
+          "index": 122,
+          "start_ms": 378893,
+          "end_ms": 379372,
+          "kind": "text"
+        },
+        {
+          "index": 123,
+          "start_ms": 378807,
+          "end_ms": 379057,
+          "kind": "pause"
+        },
+        {
+          "index": 124,
+          "start_ms": 379057,
+          "end_ms": 379307,
+          "kind": "pause"
+        },
+        {
+          "index": 125,
+          "start_ms": 379307,
+          "end_ms": 379557,
+          "kind": "pause"
+        },
+        {
+          "index": 126,
+          "start_ms": 379557,
+          "end_ms": 379807,
+          "kind": "pause"
+        },
+        {
+          "index": 127,
+          "start_ms": 379807,
+          "end_ms": 380057,
+          "kind": "pause"
+        },
+        {
+          "index": 128,
+          "start_ms": 380057,
+          "end_ms": 380377,
+          "kind": "pause"
+        },
+        {
+          "index": 129,
+          "start_ms": 379509,
+          "end_ms": 380056,
+          "kind": "text"
+        },
+        {
+          "index": 130,
+          "start_ms": 379645,
+          "end_ms": 380056,
+          "kind": "text"
+        },
+        {
+          "index": 131,
+          "start_ms": 380397,
+          "end_ms": 380547,
+          "kind": "text"
+        },
+        {
+          "index": 132,
+          "start_ms": 380547,
+          "end_ms": 380697,
+          "kind": "text"
+        },
+        {
+          "index": 133,
+          "start_ms": 380697,
+          "end_ms": 380837,
+          "kind": "text"
+        },
+        {
+          "index": 134,
+          "start_ms": 380837,
+          "end_ms": 380977,
+          "kind": "text"
+        },
+        {
+          "index": 135,
+          "start_ms": 380977,
+          "end_ms": 381268,
+          "kind": "text"
+        },
+        {
+          "index": 136,
+          "start_ms": 381268,
+          "end_ms": 381558,
+          "kind": "text"
+        },
+        {
+          "index": 137,
+          "start_ms": 381558,
+          "end_ms": 381678,
+          "kind": "text"
+        },
+        {
+          "index": 138,
+          "start_ms": 381678,
+          "end_ms": 381838,
+          "kind": "text"
+        },
+        {
+          "index": 139,
+          "start_ms": 381838,
+          "end_ms": 384399,
+          "kind": "text"
+        },
+        {
+          "index": 140,
+          "start_ms": 382081,
+          "end_ms": 382331,
+          "kind": "pause"
+        },
+        {
+          "index": 141,
+          "start_ms": 382331,
+          "end_ms": 382581,
+          "kind": "pause"
+        },
+        {
+          "index": 142,
+          "start_ms": 382581,
+          "end_ms": 382831,
+          "kind": "pause"
+        },
+        {
+          "index": 143,
+          "start_ms": 382831,
+          "end_ms": 383081,
+          "kind": "pause"
+        },
+        {
+          "index": 144,
+          "start_ms": 383081,
+          "end_ms": 383331,
+          "kind": "pause"
+        },
+        {
+          "index": 145,
+          "start_ms": 383331,
+          "end_ms": 383581,
+          "kind": "pause"
+        },
+        {
+          "index": 146,
+          "start_ms": 383581,
+          "end_ms": 383831,
+          "kind": "pause"
+        },
+        {
+          "index": 147,
+          "start_ms": 383831,
+          "end_ms": 384308,
+          "kind": "pause"
+        },
+        {
+          "index": 148,
+          "start_ms": 384399,
+          "end_ms": 386160,
+          "kind": "text"
+        },
+        {
+          "index": 149,
+          "start_ms": 384713,
+          "end_ms": 384963,
+          "kind": "pause"
+        },
+        {
+          "index": 150,
+          "start_ms": 384963,
+          "end_ms": 385213,
+          "kind": "pause"
+        },
+        {
+          "index": 151,
+          "start_ms": 385213,
+          "end_ms": 385463,
+          "kind": "pause"
+        },
+        {
+          "index": 152,
+          "start_ms": 385463,
+          "end_ms": 385713,
+          "kind": "pause"
+        },
+        {
+          "index": 153,
+          "start_ms": 385713,
+          "end_ms": 386047,
+          "kind": "pause"
+        },
+        {
+          "index": 154,
+          "start_ms": 386160,
+          "end_ms": 386423,
+          "kind": "text"
+        },
+        {
+          "index": 155,
+          "start_ms": 386421,
+          "end_ms": 386701,
+          "kind": "text"
+        },
+        {
+          "index": 156,
+          "start_ms": 386425,
+          "end_ms": 386595,
+          "kind": "text"
+        },
+        {
+          "index": 157,
+          "start_ms": 386595,
+          "end_ms": 386725,
+          "kind": "text"
+        },
+        {
+          "index": 158,
+          "start_ms": 386725,
+          "end_ms": 386925,
+          "kind": "text"
+        },
+        {
+          "index": 159,
+          "start_ms": 386831,
+          "end_ms": 386960,
+          "kind": "text"
+        },
+        {
+          "index": 160,
+          "start_ms": 386960,
+          "end_ms": 387101,
+          "kind": "text"
+        },
+        {
+          "index": 161,
+          "start_ms": 387650,
+          "end_ms": 387900,
+          "kind": "pause"
+        },
+        {
+          "index": 162,
+          "start_ms": 387900,
+          "end_ms": 388150,
+          "kind": "pause"
+        },
+        {
+          "index": 163,
+          "start_ms": 388150,
+          "end_ms": 388400,
+          "kind": "pause"
+        },
+        {
+          "index": 164,
+          "start_ms": 388400,
+          "end_ms": 388747,
+          "kind": "pause"
+        },
+        {
+          "index": 165,
+          "start_ms": 388582,
+          "end_ms": 388902,
+          "kind": "text"
+        },
+        {
+          "index": 166,
+          "start_ms": 388902,
+          "end_ms": 389042,
+          "kind": "text"
+        },
+        {
+          "index": 167,
+          "start_ms": 389042,
+          "end_ms": 389382,
+          "kind": "text"
+        },
+        {
+          "index": 168,
+          "start_ms": 389382,
+          "end_ms": 389472,
+          "kind": "text"
+        },
+        {
+          "index": 169,
+          "start_ms": 389472,
+          "end_ms": 389563,
+          "kind": "text"
+        },
+        {
+          "index": 170,
+          "start_ms": 389563,
+          "end_ms": 390003,
+          "kind": "text"
+        },
+        {
+          "index": 171,
+          "start_ms": 390003,
+          "end_ms": 390123,
+          "kind": "text"
+        },
+        {
+          "index": 172,
+          "start_ms": 390123,
+          "end_ms": 390370,
+          "kind": "text"
+        },
+        {
+          "index": 173,
+          "start_ms": 390329,
+          "end_ms": 390663,
+          "kind": "text"
+        },
+        {
+          "index": 174,
+          "start_ms": 390616,
+          "end_ms": 390863,
+          "kind": "text"
+        },
+        {
+          "index": 175,
+          "start_ms": 390863,
+          "end_ms": 390974,
+          "kind": "text"
+        },
+        {
+          "index": 176,
+          "start_ms": 390974,
+          "end_ms": 391084,
+          "kind": "text"
+        },
+        {
+          "index": 177,
+          "start_ms": 391084,
+          "end_ms": 391164,
+          "kind": "text"
+        },
+        {
+          "index": 178,
+          "start_ms": 391164,
+          "end_ms": 391270,
+          "kind": "text"
+        },
+        {
+          "index": 179,
+          "start_ms": 391270,
+          "end_ms": 391496,
+          "kind": "text"
+        },
+        {
+          "index": 180,
+          "start_ms": 391496,
+          "end_ms": 391857,
+          "kind": "text"
+        },
+        {
+          "index": 181,
+          "start_ms": 391850,
+          "end_ms": 392084,
+          "kind": "text"
+        },
+        {
+          "index": 182,
+          "start_ms": 392084,
+          "end_ms": 392424,
+          "kind": "text"
+        },
+        {
+          "index": 183,
+          "start_ms": 392424,
+          "end_ms": 392504,
+          "kind": "text"
+        },
+        {
+          "index": 184,
+          "start_ms": 392504,
+          "end_ms": 392584,
+          "kind": "text"
+        },
+        {
+          "index": 185,
+          "start_ms": 392584,
+          "end_ms": 392705,
+          "kind": "text"
+        },
+        {
+          "index": 186,
+          "start_ms": 392705,
+          "end_ms": 392865,
+          "kind": "text"
+        },
+        {
+          "index": 187,
+          "start_ms": 392865,
+          "end_ms": 393045,
+          "kind": "text"
+        },
+        {
+          "index": 188,
+          "start_ms": 393045,
+          "end_ms": 393215,
+          "kind": "text"
+        },
+        {
+          "index": 189,
+          "start_ms": 393215,
+          "end_ms": 393385,
+          "kind": "text"
+        },
+        {
+          "index": 190,
+          "start_ms": 393385,
+          "end_ms": 393605,
+          "kind": "text"
+        },
+        {
+          "index": 191,
+          "start_ms": 393605,
+          "end_ms": 393845,
+          "kind": "text"
+        },
+        {
+          "index": 192,
+          "start_ms": 393845,
+          "end_ms": 394005,
+          "kind": "text"
+        },
+        {
+          "index": 193,
+          "start_ms": 394005,
+          "end_ms": 394586,
+          "kind": "text"
+        },
+        {
+          "index": 194,
+          "start_ms": 394586,
+          "end_ms": 394686,
+          "kind": "text"
+        },
+        {
+          "index": 195,
+          "start_ms": 394686,
+          "end_ms": 394706,
+          "kind": "text"
+        },
+        {
+          "index": 196,
+          "start_ms": 394706,
+          "end_ms": 394806,
+          "kind": "text"
+        },
+        {
+          "index": 197,
+          "start_ms": 394806,
+          "end_ms": 394906,
+          "kind": "text"
+        },
+        {
+          "index": 198,
+          "start_ms": 394906,
+          "end_ms": 395026,
+          "kind": "text"
+        },
+        {
+          "index": 199,
+          "start_ms": 395026,
+          "end_ms": 395246,
+          "kind": "text"
+        },
+        {
+          "index": 200,
+          "start_ms": 395246,
+          "end_ms": 395406,
+          "kind": "text"
+        },
+        {
+          "index": 201,
+          "start_ms": 395406,
+          "end_ms": 395546,
+          "kind": "text"
+        },
+        {
+          "index": 202,
+          "start_ms": 395546,
+          "end_ms": 395746,
+          "kind": "text"
+        },
+        {
+          "index": 203,
+          "start_ms": 395746,
+          "end_ms": 395947,
+          "kind": "text"
+        },
+        {
+          "index": 204,
+          "start_ms": 395947,
+          "end_ms": 396053,
+          "kind": "text"
+        },
+        {
+          "index": 205,
+          "start_ms": 396053,
+          "end_ms": 396293,
+          "kind": "text"
+        },
+        {
+          "index": 206,
+          "start_ms": 396293,
+          "end_ms": 396559,
+          "kind": "text"
+        },
+        {
+          "index": 207,
+          "start_ms": 396867,
+          "end_ms": 396907,
+          "kind": "text"
+        },
+        {
+          "index": 208,
+          "start_ms": 396714,
+          "end_ms": 396834,
+          "kind": "text"
+        },
+        {
+          "index": 209,
+          "start_ms": 396834,
+          "end_ms": 396879,
+          "kind": "text"
+        },
+        {
+          "index": 210,
+          "start_ms": 396916,
+          "end_ms": 396976,
+          "kind": "text"
+        },
+        {
+          "index": 211,
+          "start_ms": 396879,
+          "end_ms": 397488,
+          "kind": "text"
+        },
+        {
+          "index": 212,
+          "start_ms": 397488,
+          "end_ms": 397658,
+          "kind": "text"
+        },
+        {
+          "index": 213,
+          "start_ms": 397658,
+          "end_ms": 397828,
+          "kind": "text"
+        },
+        {
+          "index": 214,
+          "start_ms": 397828,
+          "end_ms": 398148,
+          "kind": "text"
+        },
+        {
+          "index": 215,
+          "start_ms": 398144,
+          "end_ms": 398326,
+          "kind": "text"
+        },
+        {
+          "index": 216,
+          "start_ms": 398358,
+          "end_ms": 398568,
+          "kind": "text"
+        },
+        {
+          "index": 217,
+          "start_ms": 398568,
+          "end_ms": 398688,
+          "kind": "text"
+        },
+        {
+          "index": 218,
+          "start_ms": 398688,
+          "end_ms": 398828,
+          "kind": "text"
+        },
+        {
+          "index": 219,
+          "start_ms": 398828,
+          "end_ms": 398968,
+          "kind": "text"
+        },
+        {
+          "index": 220,
+          "start_ms": 398968,
+          "end_ms": 399109,
+          "kind": "text"
+        },
+        {
+          "index": 221,
+          "start_ms": 398956,
+          "end_ms": 399026,
+          "kind": "text"
+        },
+        {
+          "index": 222,
+          "start_ms": 399109,
+          "end_ms": 399249,
+          "kind": "text"
+        },
+        {
+          "index": 223,
+          "start_ms": 399249,
+          "end_ms": 399419,
+          "kind": "text"
+        },
+        {
+          "index": 224,
+          "start_ms": 399419,
+          "end_ms": 399589,
+          "kind": "text"
+        },
+        {
+          "index": 225,
+          "start_ms": 399589,
+          "end_ms": 399989,
+          "kind": "text"
+        },
+        {
+          "index": 226,
+          "start_ms": 399989,
+          "end_ms": 400229,
+          "kind": "text"
+        },
+        {
+          "index": 227,
+          "start_ms": 400229,
+          "end_ms": 400710,
+          "kind": "text"
+        },
+        {
+          "index": 228,
+          "start_ms": 400710,
+          "end_ms": 400864,
+          "kind": "text"
+        },
+        {
+          "index": 229,
+          "start_ms": 400864,
+          "end_ms": 400940,
+          "kind": "text"
+        },
+        {
+          "index": 230,
+          "start_ms": 400940,
+          "end_ms": 401016,
+          "kind": "text"
+        },
+        {
+          "index": 231,
+          "start_ms": 401016,
+          "end_ms": 401224,
+          "kind": "text"
+        },
+        {
+          "index": 232,
+          "start_ms": 401224,
+          "end_ms": 401370,
+          "kind": "text"
+        },
+        {
+          "index": 233,
+          "start_ms": 401370,
+          "end_ms": 401530,
+          "kind": "text"
+        },
+        {
+          "index": 234,
+          "start_ms": 401530,
+          "end_ms": 401850,
+          "kind": "text"
+        },
+        {
+          "index": 235,
+          "start_ms": 401850,
+          "end_ms": 402000,
+          "kind": "text"
+        },
+        {
+          "index": 236,
+          "start_ms": 402000,
+          "end_ms": 402150,
+          "kind": "text"
+        },
+        {
+          "index": 237,
+          "start_ms": 402010,
+          "end_ms": 402080,
+          "kind": "text"
+        },
+        {
+          "index": 238,
+          "start_ms": 402115,
+          "end_ms": 402320,
+          "kind": "text"
+        },
+        {
+          "index": 239,
+          "start_ms": 402320,
+          "end_ms": 402586,
+          "kind": "text"
+        },
+        {
+          "index": 240,
+          "start_ms": 402491,
+          "end_ms": 402871,
+          "kind": "text"
+        },
+        {
+          "index": 241,
+          "start_ms": 402871,
+          "end_ms": 403011,
+          "kind": "text"
+        },
+        {
+          "index": 242,
+          "start_ms": 403011,
+          "end_ms": 403451,
+          "kind": "text"
+        },
+        {
+          "index": 243,
+          "start_ms": 403451,
+          "end_ms": 404012,
+          "kind": "text"
+        },
+        {
+          "index": 244,
+          "start_ms": 404012,
+          "end_ms": 404212,
+          "kind": "text"
+        },
+        {
+          "index": 245,
+          "start_ms": 404112,
+          "end_ms": 404212,
+          "kind": "text"
+        },
+        {
+          "index": 246,
+          "start_ms": 404212,
+          "end_ms": 404432,
+          "kind": "text"
+        },
+        {
+          "index": 247,
+          "start_ms": 404432,
+          "end_ms": 404572,
+          "kind": "text"
+        },
+        {
+          "index": 248,
+          "start_ms": 404572,
+          "end_ms": 405242,
+          "kind": "text"
+        },
+        {
+          "index": 249,
+          "start_ms": 404812,
+          "end_ms": 405062,
+          "kind": "pause"
+        },
+        {
+          "index": 250,
+          "start_ms": 405062,
+          "end_ms": 405312,
+          "kind": "pause"
+        },
+        {
+          "index": 251,
+          "start_ms": 405312,
+          "end_ms": 405807,
+          "kind": "pause"
+        },
+        {
+          "index": 252,
+          "start_ms": 405242,
+          "end_ms": 405913,
+          "kind": "text"
+        },
+        {
+          "index": 253,
+          "start_ms": 405913,
+          "end_ms": 406033,
+          "kind": "text"
+        },
+        {
+          "index": 254,
+          "start_ms": 406033,
+          "end_ms": 406153,
+          "kind": "text"
+        },
+        {
+          "index": 255,
+          "start_ms": 406153,
+          "end_ms": 406273,
+          "kind": "text"
+        },
+        {
+          "index": 256,
+          "start_ms": 406273,
+          "end_ms": 406483,
+          "kind": "text"
+        },
+        {
+          "index": 257,
+          "start_ms": 406483,
+          "end_ms": 406693,
+          "kind": "text"
+        },
+        {
+          "index": 258,
+          "start_ms": 406693,
+          "end_ms": 406873,
+          "kind": "text"
+        },
+        {
+          "index": 259,
+          "start_ms": 406873,
+          "end_ms": 406913,
+          "kind": "text"
+        },
+        {
+          "index": 260,
+          "start_ms": 406913,
+          "end_ms": 406953,
+          "kind": "text"
+        },
+        {
+          "index": 261,
+          "start_ms": 406953,
+          "end_ms": 407074,
+          "kind": "text"
+        },
+        {
+          "index": 262,
+          "start_ms": 407074,
+          "end_ms": 407234,
+          "kind": "text"
+        },
+        {
+          "index": 263,
+          "start_ms": 407234,
+          "end_ms": 407334,
+          "kind": "text"
+        },
+        {
+          "index": 264,
+          "start_ms": 407334,
+          "end_ms": 407534,
+          "kind": "text"
+        },
+        {
+          "index": 265,
+          "start_ms": 407534,
+          "end_ms": 408484,
+          "kind": "text"
+        },
+        {
+          "index": 266,
+          "start_ms": 408203,
+          "end_ms": 408453,
+          "kind": "pause"
+        },
+        {
+          "index": 267,
+          "start_ms": 408453,
+          "end_ms": 408703,
+          "kind": "pause"
+        },
+        {
+          "index": 268,
+          "start_ms": 408703,
+          "end_ms": 409098,
+          "kind": "pause"
+        },
+        {
+          "index": 269,
+          "start_ms": 408733,
+          "end_ms": 409435,
+          "kind": "text"
+        },
+        {
+          "index": 270,
+          "start_ms": 409435,
+          "end_ms": 409564,
+          "kind": "text"
+        },
+        {
+          "index": 271,
+          "start_ms": 409655,
+          "end_ms": 409942,
+          "kind": "pause"
+        },
+        {
+          "index": 272,
+          "start_ms": 409569,
+          "end_ms": 410035,
+          "kind": "text"
+        },
+        {
+          "index": 273,
+          "start_ms": 410056,
+          "end_ms": 410138,
+          "kind": "text"
+        },
+        {
+          "index": 274,
+          "start_ms": 410138,
+          "end_ms": 410238,
+          "kind": "text"
+        },
+        {
+          "index": 275,
+          "start_ms": 410238,
+          "end_ms": 410438,
+          "kind": "text"
+        },
+        {
+          "index": 276,
+          "start_ms": 410438,
+          "end_ms": 410499,
+          "kind": "text"
+        },
+        {
+          "index": 277,
+          "start_ms": 410499,
+          "end_ms": 410739,
+          "kind": "text"
+        },
+        {
+          "index": 278,
+          "start_ms": 410739,
+          "end_ms": 410959,
+          "kind": "text"
+        },
+        {
+          "index": 279,
+          "start_ms": 410959,
+          "end_ms": 411060,
+          "kind": "text"
+        },
+        {
+          "index": 280,
+          "start_ms": 411060,
+          "end_ms": 411360,
+          "kind": "text"
+        },
+        {
+          "index": 281,
+          "start_ms": 411360,
+          "end_ms": 411500,
+          "kind": "text"
+        },
+        {
+          "index": 282,
+          "start_ms": 411500,
+          "end_ms": 411601,
+          "kind": "text"
+        },
+        {
+          "index": 283,
+          "start_ms": 411601,
+          "end_ms": 411681,
+          "kind": "text"
+        },
+        {
+          "index": 284,
+          "start_ms": 411596,
+          "end_ms": 411656,
+          "kind": "text"
+        },
+        {
+          "index": 285,
+          "start_ms": 411681,
+          "end_ms": 411861,
+          "kind": "text"
+        },
+        {
+          "index": 286,
+          "start_ms": 411861,
+          "end_ms": 411961,
+          "kind": "text"
+        },
+        {
+          "index": 287,
+          "start_ms": 411961,
+          "end_ms": 412242,
+          "kind": "text"
+        },
+        {
+          "index": 288,
+          "start_ms": 412242,
+          "end_ms": 412369,
+          "kind": "text"
+        },
+        {
+          "index": 289,
+          "start_ms": 412369,
+          "end_ms": 412495,
+          "kind": "text"
+        },
+        {
+          "index": 290,
+          "start_ms": 412495,
+          "end_ms": 412622,
+          "kind": "text"
+        },
+        {
+          "index": 291,
+          "start_ms": 412622,
+          "end_ms": 412722,
+          "kind": "text"
+        },
+        {
+          "index": 292,
+          "start_ms": 412722,
+          "end_ms": 412863,
+          "kind": "text"
+        },
+        {
+          "index": 293,
+          "start_ms": 412863,
+          "end_ms": 412963,
+          "kind": "text"
+        },
+        {
+          "index": 294,
+          "start_ms": 412963,
+          "end_ms": 413504,
+          "kind": "text"
+        },
+        {
+          "index": 295,
+          "start_ms": 413047,
+          "end_ms": 413502,
+          "kind": "pause"
+        },
+        {
+          "index": 296,
+          "start_ms": 413504,
+          "end_ms": 413804,
+          "kind": "text"
+        },
+        {
+          "index": 297,
+          "start_ms": 413804,
+          "end_ms": 413884,
+          "kind": "text"
+        },
+        {
+          "index": 298,
+          "start_ms": 413884,
+          "end_ms": 413965,
+          "kind": "text"
+        },
+        {
+          "index": 299,
+          "start_ms": 413965,
+          "end_ms": 414606,
+          "kind": "text"
+        },
+        {
+          "index": 300,
+          "start_ms": 414606,
+          "end_ms": 414666,
+          "kind": "text"
+        },
+        {
+          "index": 301,
+          "start_ms": 414666,
+          "end_ms": 414726,
+          "kind": "text"
+        },
+        {
+          "index": 302,
+          "start_ms": 414726,
+          "end_ms": 414786,
+          "kind": "text"
+        },
+        {
+          "index": 303,
+          "start_ms": 414786,
+          "end_ms": 414986,
+          "kind": "text"
+        },
+        {
+          "index": 304,
+          "start_ms": 414986,
+          "end_ms": 415207,
+          "kind": "text"
+        },
+        {
+          "index": 305,
+          "start_ms": 415207,
+          "end_ms": 415548,
+          "kind": "text"
+        },
+        {
+          "index": 306,
+          "start_ms": 415548,
+          "end_ms": 415888,
+          "kind": "text"
+        },
+        {
+          "index": 307,
+          "start_ms": 415888,
+          "end_ms": 416048,
+          "kind": "text"
+        },
+        {
+          "index": 308,
+          "start_ms": 415836,
+          "end_ms": 415926,
+          "kind": "text"
+        },
+        {
+          "index": 309,
+          "start_ms": 416048,
+          "end_ms": 416169,
+          "kind": "text"
+        },
+        {
+          "index": 310,
+          "start_ms": 416169,
+          "end_ms": 416239,
+          "kind": "text"
+        },
+        {
+          "index": 311,
+          "start_ms": 416239,
+          "end_ms": 416309,
+          "kind": "text"
+        },
+        {
+          "index": 312,
+          "start_ms": 416309,
+          "end_ms": 416329,
+          "kind": "text"
+        },
+        {
+          "index": 313,
+          "start_ms": 416540,
+          "end_ms": 416790,
+          "kind": "pause"
+        },
+        {
+          "index": 314,
+          "start_ms": 416790,
+          "end_ms": 417040,
+          "kind": "pause"
+        },
+        {
+          "index": 315,
+          "start_ms": 417040,
+          "end_ms": 417531,
+          "kind": "pause"
+        }
+      ],
+      "rows": [
+        {
+          "name": "whisper",
+          "text": "・・・・老爸素・・容・怎麼樣龜婆・很壞的你沒名字就叫龜婆　那大家坦白點不好嗎你要坦白　你耳頂沒有比　麻大孝那樣死老爸　這・・・・・・樣說話才開心　大家・・・・・這次趙先生幫本官蘇平長毛賊皇上一定重重有上・・・那就讓六　王爺在皇上面前多說幾句好　・・・・・・話　大喜做完了請用毛巾・・・・・・・・　・・・・・　　來了　素容・・・・來了　　素容恭喜發財這邊　　　　素容今天你好日子開心死你了我們有幾位新姑娘　包你滿意　金魚還是木魚　少爺甚麼金魚還是木魚　傻瓜金魚只用來看　木魚　可以搏當然　　　　要木・・・魚　幾個木魚還不過來招呼客人・・・素容・　今天你是自大　　你想要甚麼女人你開聲就行了　・無所謂女人個個都是一樣有甚麼特別呢・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "・・・・哇　素・・蓉・喂點啊龜婆・好衰嘅你冇名你叫叫龜婆啊咁大家坦白啲唔好咩你要坦白啊你　頂帽啊披　麻戴孝　咁死老豆啊你・・・・・・咁講嘢先開心啊大家・・・・・今次趙先生幫本官掃平唱和賊皇上一定重重有賞・・・咁就有勞　王爺喺皇上面前講多幾句好説・・・・・・話嗯大戲做完啦請用毛巾・・・・・・・・啦・・・・・嗱　　　　蘇翁・・・・嚟咗啦哦蘇翁恭喜發財呢邊啦呢邊啦蘇翁今日你好日子開心死你啦我哋有幾位新姑娘啊包你滿意　金魚　定木魚啊少爺乜嘢金魚　定木魚啊傻仔金魚就係愛嚟睇木魚系愛嚟搏噶嘛哇梗　系要木・・・魚咧幾個木魚就唔過嚟招呼客人・・・蘇翁・啊今日你係自大噶啦你想娶　咩女人你開聲就得噶啦・冇所謂女人個個都系一樣有　乜特別咧・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "・・・・好啊蘇・・庸・　點啊龜婆・好衰嘅你冇名你叫叫龜婆啊咁大家坦白啲唔好咩你要坦白啊你　頂冇啊不如麻大孝　咁死老豆啊你・・・・・・咁講嘢先開心咯大家・・・・・今次趙先生幫本官蘇評長無策皇上一定重重有賞・・・咁就有六　王爺喺皇上面前講多幾句好説・・・・・・話　大戲做完啊請用毛巾・・・・・・・・啦・・・・・嗱嗱嚟咗啦松庸・・・・嚟咗啦哦松庸恭喜發財呢邊啦呢邊啦松庸今日你好日子開心死你啦我哋有幾匹新姑娘啊包你滿意嘅金魚　定木魚啊少爺乜嘢金魚　定木魚啊傻仔金魚淨系我嚟睇木魚　可以剝噶嘛哇今　日要木・・・魚咧幾個木魚就唔過嚟招呼客人・・・松庸・啊今日你係自大噶啦你中意　咩女人你開聲就得噶啦・冇所謂女人個個都系一樣有　乜特別呢・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "・・・・　啊素・・翁・喂點碼歸婆・好衰嘅你冇名你叫叫龜婆啊　大家坦白啲唔好咩你要坦白啊你　頂冇啊譬如麻大孝　咁死老竇話你・・・・・・咁講嘢先開心啊大家・・・・・今次趙先生幫本官蘇平長無策皇上一定重重有相・・・今次有度　黃爺喺皇上面前講多幾句好説・・・・・・話　大氣做完啊請用毛巾・・・・・・・・啊・・・・・嗱　　　啦松茸・・・・嚟咗啦哦蘇翁今日　財呢邊啊呢邊啊蘇翁今日你好日子開心死你啦我哋有幾位新姑娘啊包你滿意啊金魚　定木魚啊　爺乜嘢金魚　定木魚啊傻仔今日淨系過嚟睇木魚　　　博噶嘛哇金魚系要木・・・魚咧幾個木魚仲唔過嚟招呼客人・・・蘇茸・啊今日你係自大噶啦你需要　咩女人你開聲就得噶啦・冇所謂女人個個都系一樣有　乜特別呢・・・"
+        },
+        {
+          "name": "firered",
+          "text": "・・・・　　　・・　・喂點啊龜婆・好衰噶你冇名你叫叫龜婆啊咁大家坦白啲唔好咩你要坦白啊你耳頂帽啊披　麻大孝　咁死老豆啊你・・・・・・咁講嘢先開心啊大家・・・・・今次趙先生幫本官蘇平長無策皇上一定重重有賞・・・咁就有勞　王爺喺皇上面前講多幾句好説・・・・・・話　大戲做完啦請用毛巾・・・・・・・・啊・・・・・嗱　嚟到啦蘇庸・・・・嚟到啦哦蘇庸恭喜發財呢邊啦呢邊啦蘇庸今日你好日子開心死你啦我哋有幾位新姑娘啊包你滿意　金魚　定木魚啊少爺乜嘢金魚　定木魚啊傻仔今日淨系我嚟睇木魚　可以搏噶嘛哇梗　系要木・・・魚咧幾個木魚仲唔過嚟招呼客人・・・蘇庸・啊今日你係自大噶啦你需要　咩女人你開聲就得噶啦・冇所謂女人個個都系一樣有　乜特別咧・・・"
+        },
+        {
+          "name": "glm",
+          "text": "・・・・哇　素・・用・喂點啊歸婆・好衰噶你冇名你叫叫歸婆啊咁大家坦白啲唔好咩你要坦白噶你以頂冇啊譬如麻大後　咁死佬鬥啊你・・・・・・咁講嘢先開心啊大家・・・・・今次趙先生幫本官蘇平長無差皇上一定重重有賞・・・感謝有路　王爺喺皇上面前講到幾句好說・・・・・・話　帶起做完啦請用毛巾・・・・・・・・啦・・・・・嗱　來咗啦蘇雍・・・・來咗啦哦蘇雍恭喜我賺呢邊啊呢邊啊蘇雍今日你好得意開心死你啦我哋有幾位新姑娘啊包你滿意嘅今日　定沐浴啊小姐乜嘢今日　定沐浴啊傻仔今日淨係我嚟睇沐浴　可以搏噶嘛　今　日要沐・・・浴咧幾個沐浴仲唔過嚟招呼客人・・・松莊・啊今日你係自大嘅啦你想　　咩女人你開聲都得嘅啦・冇所謂女人個個都　一樣有　乜特別咧・・・"
+        }
+      ],
+      "speaker": "・・・・ＦＦＦ・・Ｐ・ＰＰＰＰＰ・ＦＦＦＦＦＦＦＦＦＦＦＦＰＰＰＰＰＰＰＰＰＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦ・・・・・・ＦＦＦＦＦＦＦＦＮ・・・・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・・・　　ＢＢＢＢＢＢＢＢＱ・・・・・・・・Ｑ・・・・・ＱＱＱＱＱＱＦ・・・・ＱＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＢＢＢＢＢＢＢＢＢＢＦＦＢＢＢＢＢＢＢＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦ・・・ＦＦＦＦＦＦＦＦＦＦＦＦＦＦ・・・ＦＦ・ＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦ・ＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰ・・・",
+      "merged": "・・・・我係蘇・・燦・喂點呀龜婆・好衰嘅你冇名你叫叫龜婆呀咁大家坦白啲唔好咩你要坦白呀你戴頂帽呀披　麻戴孝　咁死老豆呀你・・・・・・咁講嘢先開心啊大家・・・・・今次趙先生幫本官掃平長毛賊皇上一定重重有賞・・・咁就有勞六王爺喺皇上面前講多幾句好說・・・・・・話　大戲做完啦請用毛巾・・・・・・・・啦・・・・・嗱　嚟咗啦蘇翁・・・・嚟咗啦喎蘇翁恭喜發財呢邊啦呢邊啦蘇翁今日你好日子開心死你啦我哋有幾位新姑娘　包你滿意　金魚　定木魚啊少爺乜嘢金魚　定木魚啊傻仔金魚淨係用嚟睇木魚　可以搏㗎嘛　梗　係要木・・・魚咧幾個木魚仲唔過嚟招呼客人・・・蘇翁・啊今日你係最大㗎啦你想要　咩女人你開聲就得㗎啦・冇所謂女人個個都係一樣有　乜特別呢・・・",
+      "subtitles": [
+        {
+          "index": 79,
+          "text": "我係蘇燦。",
+          "speech_start_ms": 353066,
+          "speech_end_ms": 354608,
+          "start_ms": 352816,
+          "end_ms": 354608,
+          "speaker": "SPEAKER_13"
+        },
+        {
+          "index": 80,
+          "text": "喂，點呀，龜婆？",
+          "speech_start_ms": 354608,
+          "speech_end_ms": 355909,
+          "start_ms": 354608,
+          "end_ms": 355909,
+          "speaker": "SPEAKER_13"
+        },
+        {
+          "index": 81,
+          "text": "好衰嘅你，冇名你叫叫龜婆呀，",
+          "speech_start_ms": 355909,
+          "speech_end_ms": 358110,
+          "start_ms": 355909,
+          "end_ms": 358110,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 82,
+          "text": "咁大家坦白啲唔好咩？",
+          "speech_start_ms": 358110,
+          "speech_end_ms": 359931,
+          "start_ms": 358110,
+          "end_ms": 359931,
+          "speaker": "SPEAKER_13"
+        },
+        {
+          "index": 83,
+          "text": "你要坦白呀，",
+          "speech_start_ms": 359931,
+          "speech_end_ms": 361212,
+          "start_ms": 359931,
+          "end_ms": 361212,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 84,
+          "text": "你戴頂帽呀，披麻戴孝，",
+          "speech_start_ms": 361212,
+          "speech_end_ms": 363314,
+          "start_ms": 361212,
+          "end_ms": 363314,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 85,
+          "text": "咁死老豆呀你！",
+          "speech_start_ms": 363314,
+          "speech_end_ms": 364655,
+          "start_ms": 363314,
+          "end_ms": 365155,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 86,
+          "text": "咁講嘢先開心啊",
+          "speech_start_ms": 366528,
+          "speech_end_ms": 367961,
+          "start_ms": 366278,
+          "end_ms": 367961,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 87,
+          "text": "大家。",
+          "speech_start_ms": 367961,
+          "speech_end_ms": 368122,
+          "start_ms": 367961,
+          "end_ms": 368711,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 88,
+          "text": "今次趙先生幫本官掃平長毛賊，",
+          "speech_start_ms": 369792,
+          "speech_end_ms": 373158,
+          "start_ms": 369542,
+          "end_ms": 373158,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 89,
+          "text": "皇上一定重重有賞。",
+          "speech_start_ms": 373158,
+          "speech_end_ms": 375942,
+          "start_ms": 373158,
+          "end_ms": 375942,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 90,
+          "text": "咁就有勞六王爺",
+          "speech_start_ms": 375942,
+          "speech_end_ms": 376884,
+          "start_ms": 375942,
+          "end_ms": 376884,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 91,
+          "text": "喺皇上面前講多幾句好說。",
+          "speech_start_ms": 376884,
+          "speech_end_ms": 378627,
+          "start_ms": 376884,
+          "end_ms": 379127,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 92,
+          "text": "話，大戲做完啦，請用毛巾。",
+          "speech_start_ms": 380377,
+          "speech_end_ms": 381878,
+          "start_ms": 380127,
+          "end_ms": 382378,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 93,
+          "text": "啦",
+          "speech_start_ms": 384409,
+          "speech_end_ms": 384429,
+          "start_ms": 384159,
+          "end_ms": 384929,
+          "speaker": "SPEAKER_15"
+        },
+        {
+          "index": 94,
+          "text": "嗱，嚟咗啦，蘇翁。",
+          "speech_start_ms": 386250,
+          "speech_end_ms": 386980,
+          "start_ms": 386000,
+          "end_ms": 387480,
+          "speaker": "SPEAKER_15"
+        },
+        {
+          "index": 95,
+          "text": "嚟咗啦喎，蘇翁。",
+          "speech_start_ms": 388887,
+          "speech_end_ms": 389988,
+          "start_ms": 388637,
+          "end_ms": 389988,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 96,
+          "text": "恭喜發財，呢邊啦！",
+          "speech_start_ms": 389988,
+          "speech_end_ms": 391149,
+          "start_ms": 389988,
+          "end_ms": 391149,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 97,
+          "text": "呢邊啦，蘇翁。",
+          "speech_start_ms": 391149,
+          "speech_end_ms": 392410,
+          "start_ms": 391149,
+          "end_ms": 392410,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 98,
+          "text": "今日你好日子，開心死你啦。",
+          "speech_start_ms": 392410,
+          "speech_end_ms": 394572,
+          "start_ms": 392410,
+          "end_ms": 394572,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 99,
+          "text": "我哋有幾位新姑娘，包你滿意。",
+          "speech_start_ms": 394572,
+          "speech_end_ms": 396714,
+          "start_ms": 394572,
+          "end_ms": 396714,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 100,
+          "text": "金魚定木魚啊，少爺？",
+          "speech_start_ms": 396714,
+          "speech_end_ms": 398575,
+          "start_ms": 396714,
+          "end_ms": 398575,
+          "speaker": "SPEAKER_04"
+        },
+        {
+          "index": 101,
+          "text": "乜嘢金魚定木魚啊？",
+          "speech_start_ms": 398575,
+          "speech_end_ms": 399976,
+          "start_ms": 398575,
+          "end_ms": 399976,
+          "speaker": null
+        },
+        {
+          "index": 102,
+          "text": "傻仔，金魚淨係用嚟睇，",
+          "speech_start_ms": 399976,
+          "speech_end_ms": 402478,
+          "start_ms": 399976,
+          "end_ms": 402478,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 103,
+          "text": "木魚可以搏㗎嘛，梗係要木……魚咧。",
+          "speech_start_ms": 402478,
+          "speech_end_ms": 405921,
+          "start_ms": 402478,
+          "end_ms": 405921,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 104,
+          "text": "幾個木魚，仲唔過嚟招呼客人？",
+          "speech_start_ms": 405921,
+          "speech_end_ms": 409284,
+          "start_ms": 405921,
+          "end_ms": 409284,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 105,
+          "text": "蘇翁。",
+          "speech_start_ms": 409284,
+          "speech_end_ms": 409564,
+          "start_ms": 409284,
+          "end_ms": 409564,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 106,
+          "text": "啊，今日你係最大㗎啦。",
+          "speech_start_ms": 409564,
+          "speech_end_ms": 411366,
+          "start_ms": 409564,
+          "end_ms": 411366,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 107,
+          "text": "你想要咩女人，你開聲就得㗎啦。",
+          "speech_start_ms": 411366,
+          "speech_end_ms": 413508,
+          "start_ms": 411366,
+          "end_ms": 413508,
+          "speaker": "SPEAKER_21"
+        },
+        {
+          "index": 108,
+          "text": "冇所謂，女人個個都係一樣，",
+          "speech_start_ms": 413508,
+          "speech_end_ms": 415890,
+          "start_ms": 413508,
+          "end_ms": 415890,
+          "speaker": "SPEAKER_13"
+        },
+        {
+          "index": 109,
+          "text": "有乜特別呢？",
+          "speech_start_ms": 415890,
+          "speech_end_ms": 416450,
+          "start_ms": 415890,
+          "end_ms": 416950,
+          "speaker": "SPEAKER_13"
+        }
+      ],
+      "source_errors": {}
+    }
+  ]
+}
