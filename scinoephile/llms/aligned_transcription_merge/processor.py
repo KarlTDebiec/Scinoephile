@@ -14,7 +14,6 @@ from .models import (
     AlignedTranscriptionMergeAnswer,
     AlignedTranscriptionMergeQuery,
     AlignedTranscriptionMergeSource,
-    AlignedTranscriptionMergeSubtitle,
 )
 from .prompt import AlignedTranscriptionMergePrompt
 from .splitting import get_alignment_content_spans
@@ -83,7 +82,6 @@ class AlignedTranscriptionMergeProcessor(Processor):
         )
         self.last_request_count = len(request_queries)
 
-        subtitle_texts = []
         request_answers = []
         for request_query in request_queries:
             query = query_cls.model_validate(
@@ -102,16 +100,10 @@ class AlignedTranscriptionMergeProcessor(Processor):
             test_case = self.queryer(test_case)
             answer = cast(AlignedTranscriptionMergeAnswer, test_case.answer)
             request_answers.append(answer)
-            subtitle_texts.extend(subtitle.text for subtitle in answer.subtitles)
 
         self.last_request_answers = tuple(request_answers)
         self.save_encountered_test_cases()
-        return AlignedTranscriptionMergeAnswer(
-            subtitles=[
-                AlignedTranscriptionMergeSubtitle(index=index, text=text)
-                for index, text in enumerate(subtitle_texts, start=1)
-            ]
-        )
+        return AlignedTranscriptionMergeAnswer.concatenate(request_answers)
 
 
 def _get_query_slice(

@@ -123,8 +123,9 @@ if "yue-Hant_transcribe" in actions:
         media_start_seconds=media_start_seconds,
         additional_context=transcription_additional_context,
         reference_name="zho-Hant",
-        terminal_alignment_authority="zho-Hant",
-        overwrite=True,
+        skip_singing_blocks=True,
+        skip_non_target_language_blocks=True,
+        terminal_alignment_authority="merged",
     )
 if "yue_eng" in actions:
     yue_zho_hant = Series.load(input_path / "yue_zho-Hant.srt")

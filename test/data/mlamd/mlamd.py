@@ -9,6 +9,7 @@ from pathlib import Path
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
+from scinoephile.media.audio import AudioExtractionMode
 from test.data.helpers import load_or_traditionalize_series
 from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
@@ -24,6 +25,7 @@ zho_hans_ocr_path = output_path / "zho-Hans_ocr"
 zho_hant_ocr_path = output_path / "zho-Hant_ocr"
 yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
 yue_transcribe_backup_path = output_path / "yue_transcribe_backup"
+yue_remux_path = Path("/Volumes/Backup/Video/BD Remux/My Life as McDull (2001).mkv")
 old_yue_hans_path = (
     yue_transcribe_backup_path / "transcribe_translate_guided_review.srt"
 )
@@ -92,10 +94,11 @@ if "yue-Hant_transcribe" in actions:
         language=Language.yue_hant,
         output_dir_path=yue_hant_transcribe_path,
         audio_path=yue_hant_transcribe_path / "audio.wav",
-        audio_source_path=yue_transcribe_backup_path / "audio/audio.wav",
+        media_path=yue_remux_path,
+        stream_index=1,
+        audio_extraction_mode=AudioExtractionMode.CENTER_HEAVY,
         additional_context=transcription_additional_context,
         additional_audit_references={"yue-Hant": old_yue_hant},
         reference_name="zho-Hant",
-        terminal_alignment_authority="yue-Hant",
-        overwrite=True,
+        terminal_alignment_authority="merged",
     )

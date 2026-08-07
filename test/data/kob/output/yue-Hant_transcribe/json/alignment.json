@@ -344,7 +344,7 @@
       "subtitles": [
         {
           "index": 2,
-          "text": "辛苦啦，少爺。",
+          "text": "辛苦啦少爺。",
           "speech_start_ms": 146050,
           "speech_end_ms": 146795,
           "start_ms": 145800,
@@ -353,7 +353,7 @@
         },
         {
           "index": 3,
-          "text": "會喊啦，少爺。",
+          "text": "會喊啦少爺。",
           "speech_start_ms": 146795,
           "speech_end_ms": 147500,
           "start_ms": 146795,
@@ -668,7 +668,7 @@
       },
       "singing_trace": "・・・・　　　　　　　　　　　・・・・・　　　　　　　　　　　　　　　・　　　　・・・",
       "music_trace": "・・・・　　　　　　　　　　　・・・・・　　　　　　　　　　　　　　　・　　　　・・・",
-      "merged": "・・・・師爺　少爺寫乜嘢啊名啊・・・・・哇好靚呀原來少爺識寫自己個名喎・係呀　　・・・",
+      "merged": "・・・・師爺　少爺寫乜嘢啊名啊・・・・・嘩好靚呀原來少爺識寫自己個名喎・係呀　　・・・",
       "subtitles": [
         {
           "index": 4,
@@ -681,7 +681,7 @@
         },
         {
           "index": 5,
-          "text": "名啊。",
+          "text": "名啊？",
           "speech_start_ms": 158759,
           "speech_end_ms": 158900,
           "start_ms": 158759,
@@ -690,16 +690,16 @@
         },
         {
           "index": 6,
-          "text": "哇，好靚呀！原來少爺識寫自己個名喎。",
-          "speech_start_ms": 160597,
+          "text": "嘩，好靚呀，原來少爺識寫自己個名喎！",
+          "speech_start_ms": 160677,
           "speech_end_ms": 164241,
-          "start_ms": 160347,
+          "start_ms": 160427,
           "end_ms": 164241,
           "speaker": "SPEAKER_21"
         },
         {
           "index": 7,
-          "text": "係呀。",
+          "text": "係呀！",
           "speech_start_ms": 164241,
           "speech_end_ms": 164581,
           "start_ms": 164241,
@@ -1108,2706 +1108,2688 @@
         },
         {
           "index": 66,
-          "start_ms": 188027,
-          "end_ms": 188047,
-          "kind": "text"
-        },
-        {
-          "index": 67,
           "start_ms": 188036,
           "end_ms": 188216,
           "kind": "text"
         },
         {
-          "index": 68,
+          "index": 67,
           "start_ms": 188216,
           "end_ms": 191018,
           "kind": "text"
         },
         {
-          "index": 69,
+          "index": 68,
           "start_ms": 188508,
           "end_ms": 188758,
           "kind": "pause"
         },
         {
-          "index": 70,
+          "index": 69,
           "start_ms": 188758,
           "end_ms": 189008,
           "kind": "pause"
         },
         {
-          "index": 71,
+          "index": 70,
           "start_ms": 189008,
           "end_ms": 189258,
           "kind": "pause"
         },
         {
-          "index": 72,
+          "index": 71,
           "start_ms": 189258,
           "end_ms": 189508,
           "kind": "pause"
         },
         {
-          "index": 73,
+          "index": 72,
           "start_ms": 189508,
           "end_ms": 189758,
           "kind": "pause"
         },
         {
-          "index": 74,
+          "index": 73,
           "start_ms": 189758,
           "end_ms": 190008,
           "kind": "pause"
         },
         {
-          "index": 75,
+          "index": 74,
           "start_ms": 190008,
           "end_ms": 190258,
           "kind": "pause"
         },
         {
-          "index": 76,
+          "index": 75,
           "start_ms": 190258,
           "end_ms": 190508,
           "kind": "pause"
         },
         {
-          "index": 77,
+          "index": 76,
           "start_ms": 190508,
           "end_ms": 190955,
           "kind": "pause"
         },
         {
-          "index": 78,
+          "index": 77,
           "start_ms": 191018,
           "end_ms": 191118,
           "kind": "text"
         },
         {
-          "index": 79,
+          "index": 78,
           "start_ms": 191118,
           "end_ms": 191258,
           "kind": "text"
         },
         {
-          "index": 80,
+          "index": 79,
           "start_ms": 191258,
           "end_ms": 192139,
           "kind": "text"
         },
         {
-          "index": 81,
+          "index": 80,
           "start_ms": 191427,
           "end_ms": 191677,
           "kind": "pause"
         },
         {
-          "index": 82,
+          "index": 81,
           "start_ms": 191677,
           "end_ms": 192119,
           "kind": "pause"
         },
         {
-          "index": 83,
+          "index": 82,
           "start_ms": 192139,
           "end_ms": 192459,
           "kind": "text"
         },
         {
-          "index": 84,
+          "index": 83,
           "start_ms": 192459,
           "end_ms": 192629,
           "kind": "text"
         },
         {
-          "index": 85,
+          "index": 84,
           "start_ms": 192629,
           "end_ms": 192799,
           "kind": "text"
         },
         {
-          "index": 86,
+          "index": 85,
           "start_ms": 192799,
           "end_ms": 193039,
           "kind": "text"
         },
         {
-          "index": 87,
+          "index": 86,
           "start_ms": 193039,
           "end_ms": 193318,
           "kind": "text"
         },
         {
-          "index": 88,
+          "index": 87,
           "start_ms": 193318,
           "end_ms": 193519,
           "kind": "text"
         },
         {
-          "index": 89,
+          "index": 88,
           "start_ms": 193519,
           "end_ms": 194120,
           "kind": "text"
         },
         {
-          "index": 90,
+          "index": 89,
           "start_ms": 194120,
           "end_ms": 194280,
           "kind": "text"
         },
         {
-          "index": 91,
+          "index": 90,
           "start_ms": 194280,
           "end_ms": 194580,
           "kind": "text"
         },
         {
-          "index": 92,
+          "index": 91,
           "start_ms": 194580,
           "end_ms": 194780,
           "kind": "text"
         },
         {
-          "index": 93,
+          "index": 92,
           "start_ms": 194780,
           "end_ms": 195020,
           "kind": "text"
         },
         {
-          "index": 94,
+          "index": 93,
           "start_ms": 195020,
           "end_ms": 195160,
           "kind": "text"
         },
         {
-          "index": 95,
+          "index": 94,
           "start_ms": 195160,
           "end_ms": 195441,
           "kind": "text"
         },
         {
-          "index": 96,
+          "index": 95,
           "start_ms": 195441,
           "end_ms": 195608,
           "kind": "text"
         },
         {
-          "index": 97,
+          "index": 96,
           "start_ms": 195608,
           "end_ms": 195774,
           "kind": "text"
         },
         {
-          "index": 98,
+          "index": 97,
           "start_ms": 195774,
           "end_ms": 195941,
           "kind": "text"
         },
         {
-          "index": 99,
+          "index": 98,
           "start_ms": 195941,
           "end_ms": 196081,
           "kind": "text"
         },
         {
-          "index": 100,
+          "index": 99,
           "start_ms": 196081,
           "end_ms": 196201,
           "kind": "text"
         },
         {
-          "index": 101,
+          "index": 100,
           "start_ms": 196201,
           "end_ms": 196360,
           "kind": "text"
         },
         {
-          "index": 102,
+          "index": 101,
           "start_ms": 196360,
           "end_ms": 196441,
           "kind": "text"
         },
         {
-          "index": 103,
+          "index": 102,
           "start_ms": 196441,
           "end_ms": 196521,
           "kind": "text"
         },
         {
-          "index": 104,
+          "index": 103,
           "start_ms": 196521,
           "end_ms": 196601,
           "kind": "text"
         },
         {
-          "index": 105,
+          "index": 104,
           "start_ms": 196601,
           "end_ms": 196802,
           "kind": "text"
         },
         {
-          "index": 106,
+          "index": 105,
           "start_ms": 196802,
           "end_ms": 197662,
           "kind": "text"
         },
         {
-          "index": 107,
+          "index": 106,
           "start_ms": 197662,
           "end_ms": 197822,
           "kind": "text"
         },
         {
-          "index": 108,
+          "index": 107,
           "start_ms": 197822,
           "end_ms": 197962,
           "kind": "text"
         },
         {
-          "index": 109,
+          "index": 108,
           "start_ms": 197962,
           "end_ms": 198022,
           "kind": "text"
         },
         {
-          "index": 110,
+          "index": 109,
           "start_ms": 198043,
           "end_ms": 198204,
           "kind": "text"
         },
         {
-          "index": 111,
+          "index": 110,
           "start_ms": 198204,
           "end_ms": 198924,
           "kind": "text"
         },
         {
-          "index": 112,
+          "index": 111,
           "start_ms": 198924,
           "end_ms": 199104,
           "kind": "text"
         },
         {
-          "index": 113,
+          "index": 112,
           "start_ms": 199104,
           "end_ms": 199284,
           "kind": "text"
         },
         {
-          "index": 114,
+          "index": 113,
           "start_ms": 199284,
           "end_ms": 199485,
           "kind": "text"
         },
         {
-          "index": 115,
+          "index": 114,
           "start_ms": 199485,
           "end_ms": 199592,
           "kind": "text"
         },
         {
-          "index": 116,
+          "index": 115,
           "start_ms": 199592,
           "end_ms": 199698,
           "kind": "text"
         },
         {
-          "index": 117,
+          "index": 116,
           "start_ms": 199698,
           "end_ms": 199805,
           "kind": "text"
         },
         {
-          "index": 118,
+          "index": 117,
           "start_ms": 199805,
           "end_ms": 200045,
           "kind": "text"
         },
         {
-          "index": 119,
+          "index": 118,
           "start_ms": 200045,
           "end_ms": 200245,
           "kind": "text"
         },
         {
-          "index": 120,
+          "index": 119,
           "start_ms": 200245,
           "end_ms": 200885,
           "kind": "text"
         },
         {
-          "index": 121,
+          "index": 120,
           "start_ms": 200885,
           "end_ms": 201053,
           "kind": "text"
         },
         {
-          "index": 122,
+          "index": 121,
           "start_ms": 201059,
           "end_ms": 201232,
           "kind": "text"
         },
         {
-          "index": 123,
+          "index": 122,
           "start_ms": 201229,
           "end_ms": 201406,
           "kind": "text"
         },
         {
-          "index": 124,
+          "index": 123,
           "start_ms": 201406,
           "end_ms": 201606,
           "kind": "text"
         },
         {
-          "index": 125,
+          "index": 124,
           "start_ms": 201606,
           "end_ms": 201746,
           "kind": "text"
         },
         {
-          "index": 126,
+          "index": 125,
           "start_ms": 201746,
           "end_ms": 201886,
           "kind": "text"
         },
         {
-          "index": 127,
+          "index": 126,
           "start_ms": 201886,
           "end_ms": 202126,
           "kind": "text"
         },
         {
-          "index": 128,
+          "index": 127,
           "start_ms": 202126,
           "end_ms": 202767,
           "kind": "text"
         },
         {
-          "index": 129,
+          "index": 128,
           "start_ms": 202767,
           "end_ms": 202967,
           "kind": "text"
         },
         {
-          "index": 130,
+          "index": 129,
           "start_ms": 202967,
           "end_ms": 203087,
           "kind": "text"
         },
         {
-          "index": 131,
+          "index": 130,
           "start_ms": 203087,
           "end_ms": 203867,
           "kind": "text"
         },
         {
-          "index": 132,
+          "index": 131,
           "start_ms": 203867,
           "end_ms": 203987,
           "kind": "text"
         },
         {
-          "index": 133,
+          "index": 132,
           "start_ms": 203987,
           "end_ms": 204187,
           "kind": "text"
         },
         {
-          "index": 134,
+          "index": 133,
           "start_ms": 204187,
           "end_ms": 204388,
           "kind": "text"
         },
         {
-          "index": 135,
+          "index": 134,
           "start_ms": 204388,
           "end_ms": 204768,
           "kind": "text"
         },
         {
-          "index": 136,
+          "index": 135,
           "start_ms": 204768,
           "end_ms": 205088,
           "kind": "text"
         },
         {
-          "index": 137,
+          "index": 136,
           "start_ms": 205088,
           "end_ms": 205248,
           "kind": "text"
         },
         {
-          "index": 138,
+          "index": 137,
           "start_ms": 205248,
           "end_ms": 205508,
           "kind": "text"
         },
         {
-          "index": 139,
+          "index": 138,
           "start_ms": 205508,
           "end_ms": 205828,
           "kind": "text"
         },
         {
-          "index": 140,
+          "index": 139,
           "start_ms": 205828,
           "end_ms": 206649,
           "kind": "text"
         },
         {
-          "index": 141,
+          "index": 140,
           "start_ms": 206649,
           "end_ms": 206929,
           "kind": "text"
         },
         {
-          "index": 142,
+          "index": 141,
           "start_ms": 206929,
           "end_ms": 207160,
           "kind": "text"
         },
         {
-          "index": 143,
+          "index": 142,
           "start_ms": 207156,
           "end_ms": 207383,
           "kind": "text"
         },
         {
-          "index": 144,
+          "index": 143,
           "start_ms": 207384,
           "end_ms": 207610,
           "kind": "text"
         },
         {
-          "index": 145,
+          "index": 144,
           "start_ms": 207610,
           "end_ms": 207990,
           "kind": "text"
         },
         {
-          "index": 146,
+          "index": 145,
           "start_ms": 207990,
           "end_ms": 208350,
           "kind": "text"
         },
         {
-          "index": 147,
+          "index": 146,
           "start_ms": 208350,
           "end_ms": 208470,
           "kind": "text"
         },
         {
-          "index": 148,
+          "index": 147,
           "start_ms": 208470,
           "end_ms": 208610,
           "kind": "text"
         },
         {
-          "index": 149,
+          "index": 148,
           "start_ms": 208610,
           "end_ms": 208830,
           "kind": "text"
         },
         {
-          "index": 150,
+          "index": 149,
           "start_ms": 208830,
           "end_ms": 209091,
           "kind": "text"
         },
         {
-          "index": 151,
+          "index": 150,
           "start_ms": 209091,
           "end_ms": 209271,
           "kind": "text"
         },
         {
-          "index": 152,
+          "index": 151,
           "start_ms": 209271,
           "end_ms": 209451,
           "kind": "text"
         },
         {
-          "index": 153,
+          "index": 152,
           "start_ms": 209451,
           "end_ms": 210011,
           "kind": "text"
         },
         {
-          "index": 154,
+          "index": 153,
           "start_ms": 210011,
           "end_ms": 210271,
           "kind": "text"
         },
         {
-          "index": 155,
+          "index": 154,
           "start_ms": 210271,
           "end_ms": 210485,
           "kind": "text"
         },
         {
-          "index": 156,
+          "index": 155,
           "start_ms": 210485,
           "end_ms": 210698,
           "kind": "text"
         },
         {
-          "index": 157,
+          "index": 156,
           "start_ms": 210698,
           "end_ms": 210912,
           "kind": "text"
         },
         {
-          "index": 158,
+          "index": 157,
           "start_ms": 210912,
           "end_ms": 211412,
           "kind": "text"
         },
         {
-          "index": 159,
+          "index": 158,
           "start_ms": 211412,
           "end_ms": 211712,
           "kind": "text"
         },
         {
-          "index": 160,
+          "index": 159,
           "start_ms": 211712,
           "end_ms": 211892,
           "kind": "text"
         },
         {
-          "index": 161,
+          "index": 160,
           "start_ms": 211892,
           "end_ms": 212172,
           "kind": "text"
         },
         {
-          "index": 162,
+          "index": 161,
           "start_ms": 212172,
           "end_ms": 212293,
           "kind": "text"
         },
         {
-          "index": 163,
+          "index": 162,
           "start_ms": 212293,
           "end_ms": 212453,
           "kind": "text"
         },
         {
-          "index": 164,
+          "index": 163,
           "start_ms": 212453,
           "end_ms": 212633,
           "kind": "text"
         },
         {
-          "index": 165,
+          "index": 164,
           "start_ms": 212633,
           "end_ms": 212873,
           "kind": "text"
         },
         {
-          "index": 166,
+          "index": 165,
           "start_ms": 212873,
           "end_ms": 213133,
           "kind": "text"
         },
         {
-          "index": 167,
+          "index": 166,
           "start_ms": 213133,
           "end_ms": 213574,
           "kind": "text"
         },
         {
-          "index": 168,
+          "index": 167,
           "start_ms": 213263,
           "end_ms": 213513,
           "kind": "pause"
         },
         {
-          "index": 169,
+          "index": 168,
           "start_ms": 213513,
           "end_ms": 213972,
           "kind": "pause"
         },
         {
-          "index": 170,
+          "index": 169,
           "start_ms": 213574,
           "end_ms": 214014,
           "kind": "text"
         },
         {
-          "index": 171,
+          "index": 170,
           "start_ms": 214014,
           "end_ms": 214134,
           "kind": "text"
         },
         {
-          "index": 172,
+          "index": 171,
           "start_ms": 214134,
           "end_ms": 214254,
           "kind": "text"
         },
         {
-          "index": 173,
+          "index": 172,
           "start_ms": 214254,
           "end_ms": 214274,
           "kind": "text"
         },
         {
-          "index": 174,
+          "index": 173,
           "start_ms": 214274,
           "end_ms": 214374,
           "kind": "text"
         },
         {
-          "index": 175,
+          "index": 174,
           "start_ms": 214374,
           "end_ms": 214534,
           "kind": "text"
         },
         {
-          "index": 176,
+          "index": 175,
           "start_ms": 214634,
           "end_ms": 214814,
           "kind": "text"
         },
         {
-          "index": 177,
+          "index": 176,
           "start_ms": 214534,
           "end_ms": 214627,
           "kind": "text"
         },
         {
-          "index": 178,
+          "index": 177,
           "start_ms": 214627,
           "end_ms": 214763,
           "kind": "text"
         },
         {
-          "index": 179,
+          "index": 178,
           "start_ms": 214763,
           "end_ms": 214950,
           "kind": "text"
         },
         {
-          "index": 180,
+          "index": 179,
           "start_ms": 214950,
-          "end_ms": 215211,
+          "end_ms": 215141,
+          "kind": "text"
+        },
+        {
+          "index": 180,
+          "start_ms": 215141,
+          "end_ms": 215711,
           "kind": "text"
         },
         {
           "index": 181,
-          "start_ms": 215211,
-          "end_ms": 215715,
+          "start_ms": 215151,
+          "end_ms": 215332,
           "kind": "text"
         },
         {
           "index": 182,
-          "start_ms": 215094,
-          "end_ms": 215334,
-          "kind": "text"
-        },
-        {
-          "index": 183,
           "start_ms": 215334,
           "end_ms": 215434,
           "kind": "text"
         },
         {
+          "index": 183,
+          "start_ms": 215707,
+          "end_ms": 215827,
+          "kind": "text"
+        },
+        {
           "index": 184,
-          "start_ms": 215711,
-          "end_ms": 215831,
+          "start_ms": 215771,
+          "end_ms": 215952,
           "kind": "text"
         },
         {
           "index": 185,
-          "start_ms": 215827,
-          "end_ms": 215955,
+          "start_ms": 215948,
+          "end_ms": 216385,
           "kind": "text"
         },
         {
           "index": 186,
-          "start_ms": 215952,
-          "end_ms": 216597,
-          "kind": "text"
-        },
-        {
-          "index": 187,
-          "start_ms": 216170,
+          "start_ms": 215969,
           "end_ms": 216815,
           "kind": "text"
         },
         {
-          "index": 188,
+          "index": 187,
           "start_ms": 216217,
           "end_ms": 216467,
           "kind": "pause"
         },
         {
-          "index": 189,
+          "index": 188,
           "start_ms": 216467,
           "end_ms": 216807,
           "kind": "pause"
         },
         {
-          "index": 190,
+          "index": 189,
           "start_ms": 216815,
           "end_ms": 216975,
           "kind": "text"
         },
         {
-          "index": 191,
+          "index": 190,
           "start_ms": 216975,
           "end_ms": 217176,
           "kind": "text"
         },
         {
-          "index": 192,
+          "index": 191,
           "start_ms": 217176,
           "end_ms": 217316,
           "kind": "text"
         },
         {
-          "index": 193,
+          "index": 192,
           "start_ms": 217316,
           "end_ms": 217476,
           "kind": "text"
         },
         {
-          "index": 194,
+          "index": 193,
           "start_ms": 217476,
           "end_ms": 217616,
           "kind": "text"
         },
         {
-          "index": 195,
+          "index": 194,
           "start_ms": 217616,
           "end_ms": 217886,
           "kind": "text"
         },
         {
-          "index": 196,
+          "index": 195,
           "start_ms": 217733,
           "end_ms": 218033,
           "kind": "text"
         },
         {
-          "index": 197,
+          "index": 196,
           "start_ms": 218036,
           "end_ms": 218236,
           "kind": "text"
         },
         {
-          "index": 198,
-          "start_ms": 218173,
-          "end_ms": 218444,
-          "kind": "text"
-        },
-        {
-          "index": 199,
-          "start_ms": 218236,
+          "index": 197,
+          "start_ms": 218233,
           "end_ms": 218654,
           "kind": "text"
         },
         {
-          "index": 200,
-          "start_ms": 218650,
-          "end_ms": 218790,
+          "index": 198,
+          "start_ms": 218443,
+          "end_ms": 218734,
           "kind": "text"
         },
         {
-          "index": 201,
-          "start_ms": 218790,
-          "end_ms": 218810,
-          "kind": "text"
-        },
-        {
-          "index": 202,
-          "start_ms": 218810,
-          "end_ms": 218831,
-          "kind": "text"
-        },
-        {
-          "index": 203,
+          "index": 199,
           "start_ms": 218734,
           "end_ms": 218924,
           "kind": "text"
         },
         {
-          "index": 204,
+          "index": 200,
           "start_ms": 218924,
           "end_ms": 219257,
           "kind": "text"
         },
         {
-          "index": 205,
+          "index": 201,
           "start_ms": 219257,
           "end_ms": 219337,
           "kind": "text"
         },
         {
-          "index": 206,
+          "index": 202,
           "start_ms": 219337,
           "end_ms": 219497,
           "kind": "text"
         },
         {
-          "index": 207,
+          "index": 203,
           "start_ms": 219497,
           "end_ms": 219677,
           "kind": "text"
         },
         {
-          "index": 208,
+          "index": 204,
           "start_ms": 219677,
           "end_ms": 219837,
           "kind": "text"
         },
         {
-          "index": 209,
+          "index": 205,
           "start_ms": 219837,
           "end_ms": 219997,
           "kind": "text"
         },
         {
-          "index": 210,
+          "index": 206,
           "start_ms": 219997,
           "end_ms": 220169,
           "kind": "text"
         },
         {
-          "index": 211,
+          "index": 207,
           "start_ms": 220169,
           "end_ms": 220338,
           "kind": "text"
         },
         {
-          "index": 212,
+          "index": 208,
+          "start_ms": 220311,
+          "end_ms": 220331,
+          "kind": "text"
+        },
+        {
+          "index": 209,
           "start_ms": 220338,
           "end_ms": 220478,
           "kind": "text"
         },
         {
-          "index": 213,
+          "index": 210,
           "start_ms": 220478,
           "end_ms": 220618,
           "kind": "text"
         },
         {
-          "index": 214,
+          "index": 211,
           "start_ms": 220618,
           "end_ms": 220898,
           "kind": "text"
         },
         {
-          "index": 215,
+          "index": 212,
           "start_ms": 220898,
           "end_ms": 221198,
           "kind": "text"
         },
         {
-          "index": 216,
+          "index": 213,
           "start_ms": 221198,
           "end_ms": 221338,
           "kind": "text"
         },
         {
-          "index": 217,
+          "index": 214,
           "start_ms": 221338,
           "end_ms": 221585,
           "kind": "text"
         },
         {
-          "index": 218,
+          "index": 215,
           "start_ms": 221585,
           "end_ms": 221786,
           "kind": "text"
         },
         {
-          "index": 219,
+          "index": 216,
           "start_ms": 221708,
           "end_ms": 221974,
           "kind": "text"
         },
         {
-          "index": 220,
+          "index": 217,
           "start_ms": 221914,
           "end_ms": 222239,
           "kind": "text"
         },
         {
-          "index": 221,
+          "index": 218,
           "start_ms": 222239,
           "end_ms": 222439,
           "kind": "text"
         },
         {
-          "index": 222,
+          "index": 219,
           "start_ms": 222439,
           "end_ms": 222759,
           "kind": "text"
         },
         {
-          "index": 223,
+          "index": 220,
           "start_ms": 222759,
           "end_ms": 222919,
           "kind": "text"
         },
         {
-          "index": 224,
+          "index": 221,
           "start_ms": 222919,
           "end_ms": 223112,
           "kind": "text"
         },
         {
-          "index": 225,
+          "index": 222,
           "start_ms": 223112,
           "end_ms": 223378,
           "kind": "text"
         },
         {
-          "index": 226,
+          "index": 223,
           "start_ms": 223378,
           "end_ms": 223579,
           "kind": "text"
         },
         {
-          "index": 227,
+          "index": 224,
           "start_ms": 223480,
           "end_ms": 223580,
           "kind": "text"
         },
         {
-          "index": 228,
+          "index": 225,
           "start_ms": 223580,
           "end_ms": 223840,
           "kind": "text"
         },
         {
-          "index": 229,
+          "index": 226,
           "start_ms": 223840,
           "end_ms": 224020,
           "kind": "text"
         },
         {
-          "index": 230,
+          "index": 227,
           "start_ms": 224020,
           "end_ms": 224200,
           "kind": "text"
         },
         {
-          "index": 231,
+          "index": 228,
           "start_ms": 224200,
           "end_ms": 224380,
           "kind": "text"
         },
         {
-          "index": 232,
+          "index": 229,
           "start_ms": 224380,
           "end_ms": 224500,
           "kind": "text"
         },
         {
-          "index": 233,
+          "index": 230,
           "start_ms": 224500,
           "end_ms": 224680,
           "kind": "text"
         },
         {
-          "index": 234,
+          "index": 231,
           "start_ms": 224680,
           "end_ms": 225500,
           "kind": "text"
         },
         {
-          "index": 235,
+          "index": 232,
           "start_ms": 225501,
           "end_ms": 225741,
           "kind": "text"
         },
         {
-          "index": 236,
-          "start_ms": 225730,
+          "index": 233,
+          "start_ms": 225741,
           "end_ms": 226421,
           "kind": "text"
         },
         {
-          "index": 237,
+          "index": 234,
           "start_ms": 226421,
           "end_ms": 226581,
           "kind": "text"
         },
         {
-          "index": 238,
+          "index": 235,
           "start_ms": 226421,
           "end_ms": 226431,
           "kind": "text"
         },
         {
-          "index": 239,
+          "index": 236,
           "start_ms": 226540,
           "end_ms": 226640,
           "kind": "text"
         },
         {
-          "index": 240,
+          "index": 237,
           "start_ms": 226640,
           "end_ms": 226746,
           "kind": "text"
         },
         {
-          "index": 241,
+          "index": 238,
           "start_ms": 226746,
           "end_ms": 226872,
           "kind": "text"
         },
         {
-          "index": 242,
+          "index": 239,
           "start_ms": 226872,
           "end_ms": 228043,
           "kind": "text"
         },
         {
-          "index": 243,
+          "index": 240,
           "start_ms": 226915,
           "end_ms": 227165,
           "kind": "pause"
         },
         {
-          "index": 244,
+          "index": 241,
           "start_ms": 227165,
           "end_ms": 227415,
           "kind": "pause"
         },
         {
-          "index": 245,
+          "index": 242,
           "start_ms": 227415,
           "end_ms": 227665,
           "kind": "pause"
         },
         {
-          "index": 246,
+          "index": 243,
           "start_ms": 227665,
           "end_ms": 228130,
           "kind": "pause"
         },
         {
-          "index": 247,
-          "start_ms": 227666,
-          "end_ms": 228227,
+          "index": 244,
+          "start_ms": 227062,
+          "end_ms": 228043,
           "kind": "text"
         },
         {
-          "index": 248,
-          "start_ms": 228277,
-          "end_ms": 228917,
-          "kind": "text"
-        },
-        {
-          "index": 249,
-          "start_ms": 228917,
-          "end_ms": 228957,
-          "kind": "text"
-        },
-        {
-          "index": 250,
+          "index": 245,
           "start_ms": 228144,
           "end_ms": 228264,
           "kind": "text"
         },
         {
-          "index": 251,
+          "index": 246,
+          "start_ms": 228264,
+          "end_ms": 228284,
+          "kind": "text"
+        },
+        {
+          "index": 247,
+          "start_ms": 228144,
+          "end_ms": 228264,
+          "kind": "text"
+        },
+        {
+          "index": 248,
           "start_ms": 228264,
           "end_ms": 228404,
           "kind": "text"
         },
         {
-          "index": 252,
+          "index": 249,
           "start_ms": 228404,
           "end_ms": 229220,
           "kind": "text"
         },
         {
-          "index": 253,
+          "index": 250,
           "start_ms": 228451,
           "end_ms": 228701,
           "kind": "pause"
         },
         {
-          "index": 254,
+          "index": 251,
           "start_ms": 228701,
           "end_ms": 228951,
           "kind": "pause"
         },
         {
-          "index": 255,
+          "index": 252,
           "start_ms": 228951,
           "end_ms": 229413,
           "kind": "pause"
         },
         {
-          "index": 256,
+          "index": 253,
           "start_ms": 229220,
           "end_ms": 229585,
           "kind": "text"
         },
         {
-          "index": 257,
+          "index": 254,
           "start_ms": 229585,
           "end_ms": 229725,
           "kind": "text"
         },
         {
-          "index": 258,
+          "index": 255,
           "start_ms": 229725,
           "end_ms": 229865,
           "kind": "text"
         },
         {
-          "index": 259,
+          "index": 256,
           "start_ms": 229865,
           "end_ms": 230185,
           "kind": "text"
         },
         {
-          "index": 260,
+          "index": 257,
           "start_ms": 230185,
           "end_ms": 230665,
           "kind": "text"
         },
         {
-          "index": 261,
+          "index": 258,
           "start_ms": 230665,
           "end_ms": 230825,
           "kind": "text"
         },
         {
-          "index": 262,
+          "index": 259,
           "start_ms": 230825,
           "end_ms": 230945,
           "kind": "text"
         },
         {
-          "index": 263,
+          "index": 260,
           "start_ms": 230945,
           "end_ms": 231046,
           "kind": "text"
         },
         {
-          "index": 264,
+          "index": 261,
           "start_ms": 231046,
           "end_ms": 231326,
           "kind": "text"
         },
         {
-          "index": 265,
+          "index": 262,
           "start_ms": 231326,
           "end_ms": 231728,
           "kind": "text"
         },
         {
-          "index": 266,
+          "index": 263,
           "start_ms": 231728,
           "end_ms": 232446,
           "kind": "text"
         },
         {
-          "index": 267,
+          "index": 264,
           "start_ms": 232028,
           "end_ms": 232433,
           "kind": "pause"
         },
         {
-          "index": 268,
+          "index": 265,
           "start_ms": 232446,
           "end_ms": 232647,
           "kind": "text"
         },
         {
-          "index": 269,
+          "index": 266,
           "start_ms": 232647,
           "end_ms": 232737,
           "kind": "text"
         },
         {
-          "index": 270,
+          "index": 267,
           "start_ms": 232737,
           "end_ms": 232827,
           "kind": "text"
         },
         {
-          "index": 271,
+          "index": 268,
           "start_ms": 232827,
           "end_ms": 233287,
           "kind": "text"
         },
         {
-          "index": 272,
+          "index": 269,
           "start_ms": 233007,
           "end_ms": 233257,
           "kind": "pause"
         },
         {
-          "index": 273,
+          "index": 270,
           "start_ms": 233257,
           "end_ms": 233750,
           "kind": "pause"
         },
         {
-          "index": 274,
+          "index": 271,
           "start_ms": 233287,
           "end_ms": 233747,
           "kind": "text"
         },
         {
-          "index": 275,
+          "index": 272,
           "start_ms": 233747,
           "end_ms": 234047,
           "kind": "text"
         },
         {
-          "index": 276,
+          "index": 273,
           "start_ms": 234047,
           "end_ms": 234310,
           "kind": "text"
         },
         {
-          "index": 277,
+          "index": 274,
           "start_ms": 234308,
           "end_ms": 234608,
           "kind": "text"
         },
         {
-          "index": 278,
+          "index": 275,
           "start_ms": 234608,
           "end_ms": 234732,
           "kind": "text"
         },
         {
-          "index": 279,
+          "index": 276,
           "start_ms": 234728,
           "end_ms": 234848,
           "kind": "text"
         },
         {
-          "index": 280,
+          "index": 277,
           "start_ms": 234848,
           "end_ms": 235028,
           "kind": "text"
         },
         {
-          "index": 281,
+          "index": 278,
           "start_ms": 235028,
           "end_ms": 235228,
           "kind": "text"
         },
         {
-          "index": 282,
+          "index": 279,
           "start_ms": 235228,
           "end_ms": 235468,
           "kind": "text"
         },
         {
-          "index": 283,
+          "index": 280,
           "start_ms": 235468,
           "end_ms": 235708,
           "kind": "text"
         },
         {
-          "index": 284,
+          "index": 281,
           "start_ms": 235708,
           "end_ms": 236249,
           "kind": "text"
         },
         {
-          "index": 285,
+          "index": 282,
           "start_ms": 236249,
           "end_ms": 236389,
           "kind": "text"
         },
         {
-          "index": 286,
+          "index": 283,
           "start_ms": 236389,
           "end_ms": 236669,
           "kind": "text"
         },
         {
-          "index": 287,
+          "index": 284,
           "start_ms": 236669,
           "end_ms": 236869,
           "kind": "text"
         },
         {
-          "index": 288,
+          "index": 285,
           "start_ms": 236869,
           "end_ms": 237089,
           "kind": "text"
         },
         {
-          "index": 289,
+          "index": 286,
           "start_ms": 237089,
           "end_ms": 237229,
           "kind": "text"
         },
         {
-          "index": 290,
+          "index": 287,
           "start_ms": 237229,
           "end_ms": 237349,
           "kind": "text"
         },
         {
-          "index": 291,
+          "index": 288,
           "start_ms": 237349,
           "end_ms": 237510,
           "kind": "text"
         },
         {
-          "index": 292,
+          "index": 289,
           "start_ms": 237510,
           "end_ms": 237770,
           "kind": "text"
         },
         {
-          "index": 293,
+          "index": 290,
           "start_ms": 237770,
           "end_ms": 237970,
           "kind": "text"
         },
         {
-          "index": 294,
+          "index": 291,
           "start_ms": 237970,
           "end_ms": 238170,
           "kind": "text"
         },
         {
-          "index": 295,
+          "index": 292,
           "start_ms": 238170,
           "end_ms": 238350,
           "kind": "text"
         },
         {
-          "index": 296,
+          "index": 293,
           "start_ms": 238350,
           "end_ms": 238410,
           "kind": "text"
         },
         {
-          "index": 297,
+          "index": 294,
           "start_ms": 238410,
           "end_ms": 238890,
           "kind": "text"
         },
         {
-          "index": 298,
+          "index": 295,
           "start_ms": 238890,
           "end_ms": 238990,
           "kind": "text"
         },
         {
-          "index": 299,
+          "index": 296,
           "start_ms": 238990,
           "end_ms": 239091,
           "kind": "text"
         },
         {
-          "index": 300,
+          "index": 297,
           "start_ms": 239091,
           "end_ms": 239311,
           "kind": "text"
         },
         {
-          "index": 301,
+          "index": 298,
           "start_ms": 239311,
           "end_ms": 239631,
           "kind": "text"
         },
         {
-          "index": 302,
+          "index": 299,
           "start_ms": 239631,
           "end_ms": 239951,
           "kind": "text"
         },
         {
-          "index": 303,
+          "index": 300,
           "start_ms": 239951,
           "end_ms": 240051,
           "kind": "text"
         },
         {
-          "index": 304,
+          "index": 301,
           "start_ms": 240038,
           "end_ms": 240058,
           "kind": "text"
         },
         {
-          "index": 305,
+          "index": 302,
           "start_ms": 240052,
           "end_ms": 240212,
           "kind": "text"
         },
         {
-          "index": 306,
+          "index": 303,
           "start_ms": 240212,
           "end_ms": 240377,
           "kind": "text"
         },
         {
-          "index": 307,
+          "index": 304,
           "start_ms": 240377,
           "end_ms": 240628,
           "kind": "text"
         },
         {
-          "index": 308,
+          "index": 305,
           "start_ms": 240628,
           "end_ms": 240736,
           "kind": "text"
         },
         {
-          "index": 309,
+          "index": 306,
           "start_ms": 240736,
           "end_ms": 240836,
           "kind": "text"
         },
         {
-          "index": 310,
+          "index": 307,
           "start_ms": 240839,
           "end_ms": 241072,
           "kind": "text"
         },
         {
-          "index": 311,
+          "index": 308,
           "start_ms": 241072,
           "end_ms": 241572,
           "kind": "text"
         },
         {
-          "index": 312,
+          "index": 309,
           "start_ms": 241572,
           "end_ms": 241832,
           "kind": "text"
         },
         {
-          "index": 313,
+          "index": 310,
           "start_ms": 241832,
           "end_ms": 241946,
           "kind": "text"
         },
         {
-          "index": 314,
+          "index": 311,
           "start_ms": 241941,
           "end_ms": 242034,
           "kind": "text"
         },
         {
-          "index": 315,
+          "index": 312,
           "start_ms": 241961,
           "end_ms": 242061,
           "kind": "text"
         },
         {
-          "index": 316,
+          "index": 313,
           "start_ms": 242043,
           "end_ms": 242253,
           "kind": "text"
         },
         {
-          "index": 317,
+          "index": 314,
           "start_ms": 242253,
           "end_ms": 242353,
           "kind": "text"
         },
         {
-          "index": 318,
+          "index": 315,
           "start_ms": 242353,
           "end_ms": 242513,
           "kind": "text"
         },
         {
-          "index": 319,
+          "index": 316,
           "start_ms": 242473,
           "end_ms": 242513,
           "kind": "text"
         },
         {
-          "index": 320,
+          "index": 317,
           "start_ms": 242513,
           "end_ms": 242713,
           "kind": "text"
         },
         {
-          "index": 321,
+          "index": 318,
           "start_ms": 242713,
           "end_ms": 242833,
           "kind": "text"
         },
         {
-          "index": 322,
+          "index": 319,
           "start_ms": 242833,
           "end_ms": 242973,
           "kind": "text"
         },
         {
-          "index": 323,
+          "index": 320,
           "start_ms": 242973,
           "end_ms": 243193,
           "kind": "text"
         },
         {
-          "index": 324,
+          "index": 321,
           "start_ms": 243193,
           "end_ms": 243413,
           "kind": "text"
         },
         {
-          "index": 325,
+          "index": 322,
           "start_ms": 243413,
           "end_ms": 243513,
           "kind": "text"
         },
         {
-          "index": 326,
+          "index": 323,
           "start_ms": 243513,
           "end_ms": 243533,
           "kind": "text"
         },
         {
-          "index": 327,
+          "index": 324,
           "start_ms": 243513,
           "end_ms": 243613,
           "kind": "text"
         },
         {
-          "index": 328,
+          "index": 325,
           "start_ms": 243613,
           "end_ms": 243854,
           "kind": "text"
         },
         {
-          "index": 329,
+          "index": 326,
           "start_ms": 243854,
           "end_ms": 243974,
           "kind": "text"
         },
         {
-          "index": 330,
+          "index": 327,
           "start_ms": 243974,
           "end_ms": 244114,
           "kind": "text"
         },
         {
-          "index": 331,
+          "index": 328,
           "start_ms": 244114,
           "end_ms": 244194,
           "kind": "text"
         },
         {
-          "index": 332,
+          "index": 329,
           "start_ms": 244194,
           "end_ms": 245174,
           "kind": "text"
         },
         {
-          "index": 333,
+          "index": 330,
           "start_ms": 244364,
           "end_ms": 244614,
           "kind": "pause"
         },
         {
-          "index": 334,
+          "index": 331,
           "start_ms": 244614,
           "end_ms": 245090,
           "kind": "pause"
         },
         {
-          "index": 335,
+          "index": 332,
           "start_ms": 245174,
           "end_ms": 245995,
           "kind": "text"
         },
         {
-          "index": 336,
+          "index": 333,
           "start_ms": 245410,
           "end_ms": 245660,
           "kind": "pause"
         },
         {
-          "index": 337,
+          "index": 334,
           "start_ms": 245660,
           "end_ms": 245933,
           "kind": "pause"
         },
         {
-          "index": 338,
+          "index": 335,
           "start_ms": 245995,
           "end_ms": 246175,
           "kind": "text"
         },
         {
-          "index": 339,
+          "index": 336,
           "start_ms": 246175,
           "end_ms": 246368,
           "kind": "text"
         },
         {
-          "index": 340,
+          "index": 337,
           "start_ms": 246368,
           "end_ms": 246549,
           "kind": "text"
         },
         {
-          "index": 341,
+          "index": 338,
           "start_ms": 246549,
           "end_ms": 246752,
           "kind": "text"
         },
         {
-          "index": 342,
+          "index": 339,
           "start_ms": 246755,
           "end_ms": 246825,
           "kind": "text"
         },
         {
-          "index": 343,
+          "index": 340,
           "start_ms": 246787,
           "end_ms": 246895,
           "kind": "text"
         },
         {
-          "index": 344,
+          "index": 341,
           "start_ms": 246895,
           "end_ms": 247076,
           "kind": "text"
         },
         {
-          "index": 345,
+          "index": 342,
           "start_ms": 247076,
           "end_ms": 247196,
           "kind": "text"
         },
         {
-          "index": 346,
+          "index": 343,
           "start_ms": 247196,
           "end_ms": 247336,
           "kind": "text"
         },
         {
-          "index": 347,
+          "index": 344,
           "start_ms": 247336,
           "end_ms": 247356,
           "kind": "text"
         },
         {
-          "index": 348,
+          "index": 345,
           "start_ms": 247356,
           "end_ms": 247926,
           "kind": "text"
         },
         {
-          "index": 349,
+          "index": 346,
           "start_ms": 247705,
           "end_ms": 247955,
           "kind": "pause"
         },
         {
-          "index": 350,
+          "index": 347,
           "start_ms": 247955,
           "end_ms": 248414,
           "kind": "pause"
         },
         {
-          "index": 351,
+          "index": 348,
           "start_ms": 247926,
           "end_ms": 248496,
           "kind": "text"
         },
         {
-          "index": 352,
+          "index": 349,
           "start_ms": 248496,
           "end_ms": 248616,
           "kind": "text"
         },
         {
-          "index": 353,
+          "index": 350,
           "start_ms": 248616,
           "end_ms": 249257,
           "kind": "text"
         },
         {
-          "index": 354,
+          "index": 351,
           "start_ms": 248819,
           "end_ms": 249173,
           "kind": "pause"
         },
         {
-          "index": 355,
+          "index": 352,
           "start_ms": 249257,
           "end_ms": 249357,
           "kind": "text"
         },
         {
-          "index": 356,
+          "index": 353,
           "start_ms": 249357,
           "end_ms": 249477,
           "kind": "text"
         },
         {
-          "index": 357,
+          "index": 354,
           "start_ms": 249477,
           "end_ms": 249597,
           "kind": "text"
         },
         {
-          "index": 358,
+          "index": 355,
           "start_ms": 249597,
           "end_ms": 249717,
           "kind": "text"
         },
         {
-          "index": 359,
+          "index": 356,
           "start_ms": 249717,
           "end_ms": 249857,
           "kind": "text"
         },
         {
-          "index": 360,
+          "index": 357,
           "start_ms": 249857,
           "end_ms": 249987,
           "kind": "text"
         },
         {
-          "index": 361,
+          "index": 358,
           "start_ms": 249987,
           "end_ms": 250117,
           "kind": "text"
         },
         {
-          "index": 362,
+          "index": 359,
           "start_ms": 250117,
           "end_ms": 250498,
           "kind": "text"
         },
         {
-          "index": 363,
+          "index": 360,
           "start_ms": 250498,
           "end_ms": 250628,
           "kind": "text"
         },
         {
-          "index": 364,
+          "index": 361,
           "start_ms": 250628,
           "end_ms": 250758,
           "kind": "text"
         },
         {
-          "index": 365,
+          "index": 362,
           "start_ms": 250758,
           "end_ms": 251111,
           "kind": "text"
         },
         {
-          "index": 366,
-          "start_ms": 250818,
-          "end_ms": 250898,
+          "index": 363,
+          "start_ms": 250778,
+          "end_ms": 250888,
           "kind": "text"
         },
         {
-          "index": 367,
+          "index": 364,
           "start_ms": 251113,
           "end_ms": 251899,
           "kind": "text"
         },
         {
-          "index": 368,
+          "index": 365,
           "start_ms": 251097,
           "end_ms": 251347,
           "kind": "pause"
         },
         {
-          "index": 369,
+          "index": 366,
           "start_ms": 251347,
           "end_ms": 251597,
           "kind": "pause"
         },
         {
-          "index": 370,
+          "index": 367,
           "start_ms": 251597,
           "end_ms": 251847,
           "kind": "pause"
         },
         {
-          "index": 371,
+          "index": 368,
           "start_ms": 251847,
           "end_ms": 252346,
           "kind": "pause"
         },
         {
-          "index": 372,
+          "index": 369,
           "start_ms": 251899,
           "end_ms": 252459,
           "kind": "text"
         },
         {
-          "index": 373,
+          "index": 370,
           "start_ms": 252459,
           "end_ms": 252539,
           "kind": "text"
         },
         {
-          "index": 374,
+          "index": 371,
           "start_ms": 252539,
           "end_ms": 252639,
           "kind": "text"
         },
         {
-          "index": 375,
+          "index": 372,
           "start_ms": 252639,
           "end_ms": 252754,
           "kind": "text"
         },
         {
-          "index": 376,
+          "index": 373,
           "start_ms": 252754,
           "end_ms": 252899,
           "kind": "text"
         },
         {
-          "index": 377,
+          "index": 374,
           "start_ms": 252899,
           "end_ms": 253439,
           "kind": "text"
         },
         {
-          "index": 378,
+          "index": 375,
           "start_ms": 253439,
           "end_ms": 253980,
           "kind": "text"
         },
         {
-          "index": 379,
+          "index": 376,
           "start_ms": 253443,
           "end_ms": 253693,
           "kind": "pause"
         },
         {
-          "index": 380,
+          "index": 377,
           "start_ms": 253693,
           "end_ms": 253943,
           "kind": "pause"
         },
         {
-          "index": 381,
+          "index": 378,
           "start_ms": 253943,
           "end_ms": 254193,
           "kind": "pause"
         },
         {
-          "index": 382,
+          "index": 379,
           "start_ms": 254193,
           "end_ms": 254455,
           "kind": "pause"
         },
         {
-          "index": 383,
+          "index": 380,
           "start_ms": 253980,
           "end_ms": 254520,
           "kind": "text"
         },
         {
-          "index": 384,
+          "index": 381,
           "start_ms": 254520,
           "end_ms": 254570,
           "kind": "text"
         },
         {
-          "index": 385,
+          "index": 382,
           "start_ms": 254570,
           "end_ms": 254620,
           "kind": "text"
         },
         {
-          "index": 386,
+          "index": 383,
           "start_ms": 254620,
           "end_ms": 254880,
           "kind": "text"
         },
         {
-          "index": 387,
+          "index": 384,
           "start_ms": 254880,
           "end_ms": 255501,
           "kind": "text"
         },
         {
-          "index": 388,
+          "index": 385,
           "start_ms": 255012,
           "end_ms": 255417,
           "kind": "pause"
         },
         {
-          "index": 389,
+          "index": 386,
           "start_ms": 255501,
           "end_ms": 255790,
           "kind": "text"
         },
         {
-          "index": 390,
-          "start_ms": 255641,
-          "end_ms": 255841,
+          "index": 387,
+          "start_ms": 255631,
+          "end_ms": 255781,
           "kind": "text"
         },
         {
-          "index": 391,
+          "index": 388,
           "start_ms": 255841,
           "end_ms": 255911,
           "kind": "text"
         },
         {
-          "index": 392,
+          "index": 389,
           "start_ms": 255911,
           "end_ms": 255981,
           "kind": "text"
         },
         {
-          "index": 393,
+          "index": 390,
           "start_ms": 255981,
           "end_ms": 256061,
           "kind": "text"
         },
         {
-          "index": 394,
+          "index": 391,
           "start_ms": 256061,
           "end_ms": 256141,
           "kind": "text"
         },
         {
-          "index": 395,
+          "index": 392,
           "start_ms": 256141,
           "end_ms": 256341,
           "kind": "text"
         },
         {
-          "index": 396,
+          "index": 393,
           "start_ms": 256341,
           "end_ms": 256742,
           "kind": "text"
         },
         {
-          "index": 397,
+          "index": 394,
           "start_ms": 256742,
           "end_ms": 256862,
           "kind": "text"
         },
         {
-          "index": 398,
+          "index": 395,
           "start_ms": 256862,
           "end_ms": 256962,
           "kind": "text"
         },
         {
-          "index": 399,
+          "index": 396,
           "start_ms": 256962,
           "end_ms": 257082,
           "kind": "text"
         },
         {
-          "index": 400,
+          "index": 397,
           "start_ms": 257082,
           "end_ms": 258043,
           "kind": "text"
         },
         {
-          "index": 401,
+          "index": 398,
           "start_ms": 257189,
           "end_ms": 257439,
           "kind": "pause"
         },
         {
-          "index": 402,
+          "index": 399,
           "start_ms": 257439,
           "end_ms": 257689,
           "kind": "pause"
         },
         {
-          "index": 403,
+          "index": 400,
           "start_ms": 257689,
           "end_ms": 257939,
           "kind": "pause"
         },
         {
-          "index": 404,
+          "index": 401,
           "start_ms": 257939,
           "end_ms": 258189,
           "kind": "pause"
         },
         {
-          "index": 405,
+          "index": 402,
           "start_ms": 258189,
           "end_ms": 258674,
           "kind": "pause"
         },
         {
-          "index": 406,
+          "index": 403,
           "start_ms": 258064,
           "end_ms": 258524,
           "kind": "text"
         },
         {
-          "index": 407,
+          "index": 404,
           "start_ms": 258524,
           "end_ms": 258985,
           "kind": "text"
         },
         {
-          "index": 408,
+          "index": 405,
           "start_ms": 258985,
           "end_ms": 259160,
           "kind": "text"
         },
         {
-          "index": 409,
+          "index": 406,
           "start_ms": 259160,
           "end_ms": 259305,
           "kind": "text"
         },
         {
-          "index": 410,
+          "index": 407,
           "start_ms": 259305,
           "end_ms": 259625,
           "kind": "text"
         },
         {
-          "index": 411,
+          "index": 408,
           "start_ms": 259625,
           "end_ms": 259735,
           "kind": "text"
         },
         {
-          "index": 412,
+          "index": 409,
           "start_ms": 259735,
           "end_ms": 259846,
           "kind": "text"
         },
         {
-          "index": 413,
+          "index": 410,
           "start_ms": 259846,
           "end_ms": 259986,
           "kind": "text"
         },
         {
-          "index": 414,
+          "index": 411,
           "start_ms": 259986,
           "end_ms": 260119,
           "kind": "text"
         },
         {
-          "index": 415,
+          "index": 412,
           "start_ms": 260119,
           "end_ms": 260253,
           "kind": "text"
         },
         {
-          "index": 416,
+          "index": 413,
           "start_ms": 260253,
           "end_ms": 260386,
           "kind": "text"
         },
         {
-          "index": 417,
+          "index": 414,
           "start_ms": 260386,
           "end_ms": 260907,
           "kind": "text"
         },
         {
-          "index": 418,
+          "index": 415,
           "start_ms": 260786,
           "end_ms": 260907,
           "kind": "text"
         },
         {
-          "index": 419,
+          "index": 416,
           "start_ms": 260907,
           "end_ms": 261147,
           "kind": "text"
         },
         {
-          "index": 420,
+          "index": 417,
           "start_ms": 261147,
           "end_ms": 261287,
           "kind": "text"
         },
         {
-          "index": 421,
+          "index": 418,
           "start_ms": 261285,
           "end_ms": 261387,
           "kind": "text"
         },
         {
-          "index": 422,
+          "index": 419,
           "start_ms": 261287,
           "end_ms": 261387,
           "kind": "text"
         },
         {
-          "index": 423,
+          "index": 420,
           "start_ms": 261387,
           "end_ms": 261467,
           "kind": "text"
         },
         {
-          "index": 424,
+          "index": 421,
           "start_ms": 261467,
           "end_ms": 261687,
           "kind": "text"
         },
         {
-          "index": 425,
+          "index": 422,
           "start_ms": 261687,
           "end_ms": 261867,
           "kind": "text"
         },
         {
-          "index": 426,
+          "index": 423,
           "start_ms": 261867,
           "end_ms": 262088,
           "kind": "text"
         },
         {
-          "index": 427,
+          "index": 424,
           "start_ms": 262088,
           "end_ms": 262948,
           "kind": "text"
         },
         {
-          "index": 428,
+          "index": 425,
           "start_ms": 262420,
           "end_ms": 262876,
           "kind": "pause"
         },
         {
-          "index": 429,
+          "index": 426,
           "start_ms": 262948,
           "end_ms": 263169,
           "kind": "text"
         },
         {
-          "index": 430,
+          "index": 427,
           "start_ms": 263169,
           "end_ms": 263289,
           "kind": "text"
         },
         {
-          "index": 431,
+          "index": 428,
           "start_ms": 263289,
           "end_ms": 263409,
           "kind": "text"
         },
         {
-          "index": 432,
+          "index": 429,
           "start_ms": 263409,
           "end_ms": 263529,
           "kind": "text"
         },
         {
-          "index": 433,
+          "index": 430,
           "start_ms": 263529,
           "end_ms": 263849,
           "kind": "text"
         },
         {
-          "index": 434,
+          "index": 431,
           "start_ms": 263849,
           "end_ms": 264169,
           "kind": "text"
         },
         {
-          "index": 435,
+          "index": 432,
           "start_ms": 264169,
           "end_ms": 264310,
           "kind": "text"
         },
         {
-          "index": 436,
+          "index": 433,
           "start_ms": 264310,
           "end_ms": 264410,
           "kind": "text"
         },
         {
-          "index": 437,
+          "index": 434,
           "start_ms": 264410,
           "end_ms": 264590,
           "kind": "text"
         },
         {
-          "index": 438,
+          "index": 435,
           "start_ms": 264590,
           "end_ms": 267572,
           "kind": "text"
         },
         {
-          "index": 439,
+          "index": 436,
           "start_ms": 264935,
           "end_ms": 265185,
           "kind": "pause"
         },
         {
-          "index": 440,
+          "index": 437,
           "start_ms": 265185,
           "end_ms": 265435,
           "kind": "pause"
         },
         {
-          "index": 441,
+          "index": 438,
           "start_ms": 265435,
           "end_ms": 265685,
           "kind": "pause"
         },
         {
-          "index": 442,
+          "index": 439,
           "start_ms": 265685,
           "end_ms": 265935,
           "kind": "pause"
         },
         {
-          "index": 443,
+          "index": 440,
           "start_ms": 265935,
           "end_ms": 266185,
           "kind": "pause"
         },
         {
-          "index": 444,
+          "index": 441,
           "start_ms": 266185,
           "end_ms": 266435,
           "kind": "pause"
         },
         {
-          "index": 445,
+          "index": 442,
           "start_ms": 266435,
           "end_ms": 266685,
           "kind": "pause"
         },
         {
-          "index": 446,
+          "index": 443,
           "start_ms": 266685,
           "end_ms": 266935,
           "kind": "pause"
         },
         {
-          "index": 447,
+          "index": 444,
           "start_ms": 266935,
           "end_ms": 267185,
           "kind": "pause"
         },
         {
-          "index": 448,
+          "index": 445,
           "start_ms": 267185,
           "end_ms": 267435,
           "kind": "pause"
         },
         {
-          "index": 449,
+          "index": 446,
           "start_ms": 267435,
           "end_ms": 267770,
           "kind": "pause"
         },
         {
-          "index": 450,
+          "index": 447,
           "start_ms": 267832,
           "end_ms": 268142,
           "kind": "text"
         },
         {
-          "index": 451,
+          "index": 448,
           "start_ms": 268050,
           "end_ms": 268211,
           "kind": "text"
         },
         {
-          "index": 452,
+          "index": 449,
           "start_ms": 268222,
           "end_ms": 268393,
           "kind": "text"
         },
         {
-          "index": 453,
+          "index": 450,
           "start_ms": 268393,
           "end_ms": 268593,
           "kind": "text"
         },
         {
-          "index": 454,
+          "index": 451,
           "start_ms": 268593,
           "end_ms": 268734,
           "kind": "text"
         },
         {
-          "index": 455,
+          "index": 452,
           "start_ms": 268734,
           "end_ms": 269023,
           "kind": "text"
         },
         {
-          "index": 456,
+          "index": 453,
           "start_ms": 269023,
           "end_ms": 269194,
           "kind": "text"
         },
         {
-          "index": 457,
+          "index": 454,
           "start_ms": 269194,
           "end_ms": 269334,
           "kind": "text"
         },
         {
-          "index": 458,
+          "index": 455,
           "start_ms": 269334,
           "end_ms": 269514,
           "kind": "text"
         },
         {
-          "index": 459,
+          "index": 456,
           "start_ms": 269574,
           "end_ms": 269735,
           "kind": "text"
         },
         {
-          "index": 460,
+          "index": 457,
           "start_ms": 269574,
           "end_ms": 269735,
           "kind": "text"
         },
         {
-          "index": 461,
+          "index": 458,
           "start_ms": 269765,
           "end_ms": 269855,
           "kind": "text"
         },
         {
-          "index": 462,
+          "index": 459,
           "start_ms": 269855,
           "end_ms": 269944,
           "kind": "text"
         },
         {
-          "index": 463,
+          "index": 460,
           "start_ms": 269944,
           "end_ms": 270014,
           "kind": "text"
         },
         {
-          "index": 464,
+          "index": 461,
           "start_ms": 270014,
           "end_ms": 270140,
           "kind": "text"
         },
         {
-          "index": 465,
+          "index": 462,
           "start_ms": 270140,
           "end_ms": 270275,
           "kind": "text"
         },
         {
-          "index": 466,
+          "index": 463,
           "start_ms": 270275,
           "end_ms": 270916,
           "kind": "text"
         },
         {
-          "index": 467,
+          "index": 464,
           "start_ms": 270436,
           "end_ms": 270757,
           "kind": "pause"
         },
         {
-          "index": 468,
+          "index": 465,
           "start_ms": 270916,
           "end_ms": 271116,
           "kind": "text"
         },
         {
-          "index": 469,
+          "index": 466,
           "start_ms": 271116,
           "end_ms": 271396,
           "kind": "text"
         },
         {
-          "index": 470,
+          "index": 467,
           "start_ms": 271286,
           "end_ms": 271826,
           "kind": "text"
         },
         {
-          "index": 471,
+          "index": 468,
           "start_ms": 271836,
           "end_ms": 272127,
           "kind": "text"
         },
         {
-          "index": 472,
+          "index": 469,
           "start_ms": 272127,
           "end_ms": 272468,
           "kind": "text"
         },
         {
-          "index": 473,
+          "index": 470,
           "start_ms": 272398,
           "end_ms": 272542,
           "kind": "text"
         },
         {
-          "index": 474,
+          "index": 471,
           "start_ms": 272542,
           "end_ms": 272697,
           "kind": "text"
         },
         {
-          "index": 475,
+          "index": 472,
           "start_ms": 272697,
           "end_ms": 272937,
           "kind": "text"
         },
         {
-          "index": 476,
+          "index": 473,
           "start_ms": 272937,
           "end_ms": 273138,
           "kind": "text"
         },
         {
-          "index": 477,
+          "index": 474,
           "start_ms": 273138,
           "end_ms": 273338,
           "kind": "text"
         },
         {
-          "index": 478,
+          "index": 475,
           "start_ms": 273338,
           "end_ms": 273494,
           "kind": "text"
         },
         {
-          "index": 479,
+          "index": 476,
           "start_ms": 273494,
           "end_ms": 273638,
           "kind": "text"
         },
         {
-          "index": 480,
+          "index": 477,
           "start_ms": 273638,
           "end_ms": 273793,
           "kind": "text"
         },
         {
-          "index": 481,
+          "index": 478,
           "start_ms": 273793,
           "end_ms": 273918,
           "kind": "text"
         },
         {
-          "index": 482,
+          "index": 479,
           "start_ms": 273918,
-          "end_ms": 273998,
+          "end_ms": 273980,
           "kind": "text"
         },
         {
-          "index": 483,
+          "index": 480,
           "start_ms": 273978,
           "end_ms": 274119,
           "kind": "text"
         },
         {
-          "index": 484,
+          "index": 481,
           "start_ms": 274119,
           "end_ms": 274279,
           "kind": "text"
         },
         {
-          "index": 485,
+          "index": 482,
           "start_ms": 274279,
           "end_ms": 274532,
           "kind": "text"
         },
         {
-          "index": 486,
+          "index": 483,
           "start_ms": 274532,
           "end_ms": 274716,
           "kind": "text"
         },
         {
-          "index": 487,
+          "index": 484,
           "start_ms": 274716,
           "end_ms": 274899,
           "kind": "text"
         },
         {
-          "index": 488,
+          "index": 485,
           "start_ms": 274899,
           "end_ms": 275099,
           "kind": "text"
         },
         {
-          "index": 489,
+          "index": 486,
           "start_ms": 275099,
           "end_ms": 275632,
           "kind": "text"
         },
         {
-          "index": 490,
+          "index": 487,
           "start_ms": 275623,
           "end_ms": 275643,
           "kind": "text"
         },
         {
-          "index": 491,
+          "index": 488,
           "start_ms": 275642,
           "end_ms": 275740,
           "kind": "text"
         },
         {
-          "index": 492,
+          "index": 489,
           "start_ms": 275740,
           "end_ms": 275900,
           "kind": "text"
         },
         {
-          "index": 493,
+          "index": 490,
           "start_ms": 275900,
           "end_ms": 275953,
           "kind": "text"
         },
         {
-          "index": 494,
+          "index": 491,
           "start_ms": 275953,
           "end_ms": 276007,
           "kind": "text"
         },
         {
-          "index": 495,
+          "index": 492,
           "start_ms": 276007,
           "end_ms": 276060,
           "kind": "text"
         },
         {
-          "index": 496,
+          "index": 493,
           "start_ms": 276060,
           "end_ms": 276561,
           "kind": "text"
         },
         {
-          "index": 497,
+          "index": 494,
           "start_ms": 276561,
           "end_ms": 276701,
           "kind": "text"
         },
         {
-          "index": 498,
+          "index": 495,
           "start_ms": 276701,
           "end_ms": 277041,
           "kind": "text"
         },
         {
-          "index": 499,
+          "index": 496,
           "start_ms": 277041,
           "end_ms": 277341,
           "kind": "text"
         },
         {
-          "index": 500,
+          "index": 497,
           "start_ms": 277341,
           "end_ms": 277428,
           "kind": "text"
         },
         {
-          "index": 501,
+          "index": 498,
           "start_ms": 277428,
           "end_ms": 277515,
           "kind": "text"
         },
         {
-          "index": 502,
+          "index": 499,
           "start_ms": 277515,
           "end_ms": 277602,
           "kind": "text"
         },
         {
-          "index": 503,
+          "index": 500,
           "start_ms": 277602,
           "end_ms": 277622,
           "kind": "text"
         },
         {
-          "index": 504,
+          "index": 501,
           "start_ms": 270916,
           "end_ms": 271316,
           "kind": "text"
         },
         {
-          "index": 505,
+          "index": 502,
           "start_ms": 271316,
           "end_ms": 272397,
           "kind": "text"
         },
         {
-          "index": 506,
+          "index": 503,
           "start_ms": 271803,
           "end_ms": 272053,
           "kind": "pause"
         },
         {
-          "index": 507,
+          "index": 504,
           "start_ms": 272053,
           "end_ms": 272377,
           "kind": "pause"
         },
         {
-          "index": 508,
+          "index": 505,
           "start_ms": 272397,
           "end_ms": 272417,
           "kind": "text"
         },
         {
-          "index": 509,
+          "index": 506,
           "start_ms": 276865,
           "end_ms": 277220,
           "kind": "pause"
         },
         {
-          "index": 510,
+          "index": 507,
           "start_ms": 278030,
           "end_ms": 278280,
           "kind": "pause"
         },
         {
-          "index": 511,
+          "index": 508,
           "start_ms": 278280,
           "end_ms": 278530,
           "kind": "pause"
         },
         {
-          "index": 512,
+          "index": 509,
           "start_ms": 278530,
           "end_ms": 278780,
           "kind": "pause"
         },
         {
-          "index": 513,
+          "index": 510,
           "start_ms": 278780,
           "end_ms": 279211,
           "kind": "pause"
         },
         {
-          "index": 514,
+          "index": 511,
           "start_ms": 281354,
           "end_ms": 281604,
           "kind": "pause"
         },
         {
-          "index": 515,
+          "index": 512,
           "start_ms": 281604,
           "end_ms": 281854,
           "kind": "pause"
         },
         {
-          "index": 516,
+          "index": 513,
           "start_ms": 281854,
           "end_ms": 282346,
           "kind": "pause"
@@ -3816,27 +3798,27 @@
       "rows": [
         {
           "name": "mimo",
-          "text": "・・・・啊・・・・・・好字・・・哎系啊啊・・・・・・・・・好字啊龍飛鳳舞蘇察哈爾察　調轉咗老・・・爺察爾哈察蘇啊叻仔・・但是唔好叫　知嘛・・・・・・・・・爹啊爹・・我哋蘇察哈爾家自太祖皇帝到家陣幾代都冇過曉寫字嘅而家唔系啦我個仔你個孫阿燦咧佢要寫自己個名啊喂阿爹呢一步非同小可噃吓今日要寫字他朝就必成大學士今日要寫名他日生仔就必有病少・・爺你真系要好　啲學寫字阿　　叔撐一撐・・我睇表起佢好　表起佢　　　師爺你攞有咁多銀掛咁多銀咁啊咪師　爺你孭住佢撐花　棍有輪街威下先吓啱啊阿燦阿燦坐・・・・　　　坐坐坐・・・見你咁生性我都好安慰啊・嗱　聽我・・講阿爹咧算　命系二世祖副身家咧都使到七七八八噶啦好話唔好聽第日阿爹兩腿一揚咧唉你就　冚唪唥　靠自己啦不嬲　都靠自己噶啦・・嗱・・成十萬兩嘅賬啊你使啊吓・・嗯茂利・攞我頂細羊帽過嚟去邊啊阿七・・・・啊今日我拜大壽・・・・嗯你貴庚啊・二十五歲大壽啊嘛早啲到啊・・・・・喂擺大手你都梳靚啲個頭啦　成世都　似乞衣仔咁・乞衣會咁有錢我都想做・・・・・・・・・・・啊啊個手咁硬時嘅真系嚟過嚟過嚟過嚟・做咩啊老爺啊個衰仔擺大手打張　帖都架勢過人嘅但系阿老爺擺大手咧要架勢過佢　　・・　・・・・・・・・"
+          "text": "・・・・啊・・・・・・好字・・・哎系啊啊・・・・・・・・・好字啊龍飛鳳舞蘇察哈爾察　調轉咗老・・・爺察爾哈察蘇啊叻仔・・但是唔好叫知嘛・・・・・・・・・爹啊爹・・我哋蘇察哈爾家自太祖皇帝到家陣幾代都冇過曉寫字嘅而家唔系啦我個仔你個孫阿燦咧佢要寫自己個名啊喂阿爹呢一步非同小可噃吓今日要寫字他朝就必成大學士今日要寫名他日生仔就必有病少・・爺你真系要好　啲學寫字阿　　叔撐一撐・・我睇表起佢好　表起佢師爺你攞有咁多銀掛　咁多銀咁啊咪師　爺你孭住佢撐花　棍有輪街威下先吓啱啊阿燦阿燦坐・・・・　　　坐坐坐・・・見你咁生性我都好安慰啊・嗱　聽我・・講阿爹咧算　命系二世祖副身家咧都使到七七八八噶啦好話唔好聽第日阿爹兩腿一揚咧唉你就　冚唪唥　靠自己啦不嬲　都靠自己噶啦・・嗱・・成十萬兩嘅賬啊你使啊吓・・嗯茂利・攞我頂細羊帽過嚟去邊啊阿七・・・・啊今日我拜大壽・・・・嗯你貴庚啊・二十五歲大壽啊嘛早啲到啊・・・・・喂擺大手你都梳靚啲個頭啦　成世都　似乞衣仔咁・乞衣會咁有錢我都想做・・・・・・・・・・・啊啊個手咁硬時嘅真系嚟過嚟過嚟過嚟・做咩啊老爺啊個衰仔擺大手打張　帖都架勢過人嘅但系阿老爺擺大手咧要架勢過佢　　・・　・・・・・・・・"
         },
         {
           "name": "qwen",
-          "text": "・・・・啊・・・・・・好字・・・哎呀我啊・・・・・・・・・好字啊龍飛鳳舞蘇擦蝦意餐啊調轉咗老・・・爺餐意蝦擦蘇啊叻仔・・但是　冇腰　知嘛・・・・・・・・・爹啊爹・・我哋蘇擦蝦意家是太祖皇帝到家陣幾代都冇過曉寫字嘅而家唔系啦我個仔你個孫阿燦咧佢曉寫自己個名啊喂阿爹呢一步非同小可噃啊今日曉寫字他朝就必成大學士今日曉寫名他日生仔就必有病少・・爺你真系要好　啲學寫字啊我傻啊擦啊擦・・我睇表起佢好喎表　佢　　　少爺你攞有咁多眼掛咁多眼咁啊唔系少爺你孭住佢參乎阿哥有輪街威下先行啦　阿燦啊擦嚟・・・・嚟嚟嚟坐坐坐・・・見你咁生性我都好安慰吓・嗱你聽我・・講阿爹咧就説明系二世祖副身家咧都使到七七八八噶啦好話唔好聽第　阿爹兩個人　咧唉你真　冚唪唥都靠自己啦冚唪唥都靠自己噶啦・・嗱・・成十萬兩一張卡你使啊吓・・嗯冇理・攞我頂細陽冇過嚟去邊啊　陣・・・・啊今日我擺大壽・・・・嗯你貴庚啊・廿　五歲大壽啊嘛早啲到啊・・・・・喂擺大壽你都梳靚啲個頭啦　成世都　似乞衣仔咁・乞衣會咁有錢我都想做・・・・・・・・・・・啊啊個壽奴硬是幾真　啊過嚟過嚟過嚟・做咩啊老爺啊個衰仔擺大壽膽中　錢都架勢個人嘅但系　老爺擺嚟手咧　架勢過佢哈哈・・哈・・・・・・・・"
+          "text": "・・・・啊・・・・・・好字・・・哎呀我啊・・・・・・・・・好字啊龍飛鳳舞蘇擦蝦意餐啊調轉咗老・・・爺餐意蝦擦蘇啊叻仔・・但是　冇腰知嘛・・・・・・・・・爹啊爹・・我哋蘇擦蝦意家是太祖皇帝到家陣幾代都冇過曉寫字嘅而家唔系啦我個仔你個孫阿燦咧佢曉寫自己個名啊喂阿爹呢一步非同小可噃啊今日曉寫字他朝就必成大學士今日曉寫名他日生仔就必有病少・・爺你真系要好　啲學寫字啊我傻啊擦啊擦・・我睇表起佢好喎表　佢少爺你攞有咁多眼掛　咁多眼咁啊唔系少爺你孭住佢參乎阿哥有輪街威下先行啦　阿燦啊擦嚟・・・・嚟嚟嚟坐坐坐・・・見你咁生性我都好安慰吓・嗱你聽我・・講阿爹咧就説明系二世祖副身家咧都使到七七八八噶啦好話唔好聽第　阿爹兩個人　咧唉你真　冚唪唥都靠自己啦冚唪唥都靠自己噶啦・・嗱・・成十萬兩一張卡你使啊吓・・嗯冇理・攞我頂細陽冇過嚟去邊啊　陣・・・・啊今日我擺大壽・・・・嗯你貴庚啊・廿　五歲大壽啊嘛早啲到啊・・・・・喂擺大壽你都梳靚啲個頭啦　成世都　似乞衣仔咁・乞衣會咁有錢我都想做・・・・・・・・・・・啊啊個壽奴硬是幾真　啊過嚟過嚟過嚟・做咩啊老爺啊個衰仔擺大壽膽中　錢都架勢個人嘅但系　老爺擺嚟手咧　架勢過佢哈哈・・哈・・・・・・・・"
         },
         {
           "name": "sensevoice",
-          "text": "・・・・啊・・・・・・好似・・・　　　啊・・・・・・・・・好似啊龍飛鳳舞蘇賊蝦二刷　丟清楚老・・・爺燦二蝦擦酥啊叻仔・・但是唔好驕　知嘛・・・・・・・・・爹啊爹・・我哋蘇賊蝦二家自太祖皇帝老家陣幾代都冇外曉寫字嘅而家唔系啦我個仔你個書阿嚓咧佢妖寫自己個名啊喂阿迪呢一部非同小可噃啊今日曉寫字他朝就必成大學史今日妖寫名他日生仔就必有病少・・爺你真系要好好啲學寫字擦　　啊擦　　・・我睇表起佢好屌　　佢　　　師爺你攞有咁多眼掛咁多眼咁啊咪阿書爺你孭住佢參花阿國有輪皆威下先行啦啊　擦啊擦嚟・・・・　　　坐坐坐・・・見你咁生性我都好安慰啊・嗱你聽我・・講阿爹　　呢未系二細祖副身家咧都使到七七八八噶啦好話唔好聽第　阿爹兩個一贏呢唉你　　冚唪肯　靠自己啦　嬲　　靠自己噶啦・・嗱・・成十萬兩蚊張硬你洗啊　・・　　你・攞我頂西洋帽過嚟去邊啊　撐・・・・啊今日我擺大壽・・・・　你貴根啊・廿　五歲大壽啊嘛早呢度啊・・・・・喂擺大壽你都梳你呢個頭啦你成細　佬似乞衣仔咁・乞衣服咁有錢我都想做・・・・・・・・・・・啊啊個　頭硬事嘅真系　過嚟過嚟過嚟・做咩　老爺　個衰仔擺大壽膽中　錢都架晒個人嘅　系啊老爺擺嚟手咧　架晒過佢　　・・　・・・・・・・・"
+          "text": "・・・・啊・・・・・・好似・・・　　　啊・・・・・・・・・好似啊龍飛鳳舞蘇賊蝦二刷　丟清楚老・・・爺燦二蝦擦酥啊叻仔・・但是唔好驕知嘛・・・・・・・・・爹啊爹・・我哋蘇賊蝦二家自太祖皇帝老家陣幾代都冇外曉寫字嘅而家唔系啦我個仔你個書阿嚓咧佢妖寫自己個名啊喂阿迪呢一部非同小可噃啊今日曉寫字他朝就必成大學史今日妖寫名他日生仔就必有病少・・爺你真系要好好啲學寫字擦　　啊擦　　・・我睇表起佢好屌　　佢師爺你攞有咁多眼掛　咁多眼咁啊咪阿書爺你孭住佢參花阿國有輪皆威下先行啦啊　擦啊擦嚟・・・・　　　坐坐坐・・・見你咁生性我都好安慰啊・嗱你聽我・・講阿爹　　呢未系二細祖副身家咧都使到七七八八噶啦好話唔好聽第　阿爹兩個一贏呢唉你　　冚唪肯　靠自己啦　嬲　　靠自己噶啦・・嗱・・成十萬兩蚊張硬你洗啊　・・　　你・攞我頂西洋帽過嚟去邊啊　撐・・・・啊今日我擺大壽・・・・　你貴根啊・廿　五歲大壽啊嘛早呢度啊・・・・・喂擺大壽你都梳你呢個頭啦你成細　佬似乞衣仔咁・乞衣服咁有錢我都想做・・・・・・・・・・・啊啊個　頭硬事嘅真系　過嚟過嚟過嚟・做咩　老爺　個衰仔擺大壽膽中　錢都架晒個人嘅　系啊老爺擺嚟手咧　架晒過佢　　・・　・・・・・・・・"
         },
         {
           "name": "firered",
-          "text": "・・・・啊・・・・・・好字・・・　　　　・・・・・・・・・好字啊龍飛鳳舞蘇察哈爾燦　調轉咗老・・・爺燦爾哈察蘇啊叻仔・・但是唔好叫　知嘛・・・・・・・・・爹啊爹・・我哋蘇察哈爾家自太祖皇帝到家陣幾代都冇個曉寫字嘅而家唔系啦我個仔你個書辣刷咧佢曉寫自己個名啊喂阿爹呢一部非同小可噃啊今日曉寫字他朝就必成大學士今日曉寫名他日生仔就必有病少・・爺你真系要好　啲學寫字刷　　　刷刷　・・我睇表起佢好　表　佢　　　師爺你攞有咁多眼掛咁多眼咁系咪師　爺你孭住佢參花個人有輪街威下先行啦啊　擦啊擦嚟・・・・　　　坐坐坐・・・見你咁生性我都好安慰啊・嗱你聽我・・講阿爹咧出出名系二世祖副身家咧都使到七七八八噶啦好話唔好聽第　阿爹兩個一樣咧唉你真　冚唪冷　靠自己啦不嬲　都靠自己噶啦・・嗱・・成十萬兩一張眼你使啊吓・・嗯茂你・攞我頂西洋帽過嚟去邊啊　贊・・・・啊今日我擺大壽・・・・嗯你貴庚啊・廿　五歲大壽啊嘛早呢度啊・・・・・喂擺大壽你都梳靚呢個頭啦　成世都好似乞衣仔咁・乞衣會咁有錢我都想做・・・・・・・・・・・啊啊個壽頭硬士嘅真系啊過嚟過嚟過嚟・做咩　老爺一個衰仔擺大壽打張唔錢都架勢過人嘅但系　老爺擺嚟手咧要架勢過佢　　・・　・・・・・・・・"
+          "text": "・・・・啊・・・・・・好字・・・　　　　・・・・・・・・・好字啊龍飛鳳舞蘇察哈爾燦　調轉咗老・・・爺燦爾哈察蘇啊叻仔・・但是唔好叫知嘛・・・・・・・・・爹啊爹・・我哋蘇察哈爾家自太祖皇帝到家陣幾代都冇個曉寫字嘅而家唔系啦我個仔你個書辣刷咧佢曉寫自己個名啊喂阿爹呢一部非同小可噃啊今日曉寫字他朝就必成大學士今日曉寫名他日生仔就必有病少・・爺你真系要好　啲學寫字刷　　　刷刷　・・我睇表起佢好　表　佢師爺你攞有咁多眼掛　咁多眼咁系咪師　爺你孭住佢參花個人有輪街威下先行啦啊　擦啊擦嚟・・・・　　　坐坐坐・・・見你咁生性我都好安慰啊・嗱你聽我・・講阿爹咧出出名系二世祖副身家咧都使到七七八八噶啦好話唔好聽第　阿爹兩個一樣咧唉你真　冚唪冷　靠自己啦不嬲　都靠自己噶啦・・嗱・・成十萬兩一張眼你使啊吓・・嗯茂你・攞我頂西洋帽過嚟去邊啊　贊・・・・啊今日我擺大壽・・・・嗯你貴庚啊・廿　五歲大壽啊嘛早呢度啊・・・・・喂擺大壽你都梳靚呢個頭啦　成世都好似乞衣仔咁・乞衣會咁有錢我都想做・・・・・・・・・・・啊啊個壽頭硬士嘅真系啊過嚟過嚟過嚟・做咩　老爺一個衰仔擺大壽打張唔錢都架勢過人嘅但系　老爺擺嚟手咧要架勢過佢　　・・　・・・・・・・・"
         },
         {
           "name": "glm",
-          "text": "・・・・啊・・・・・・好字・・・　　　啊・・・・・・・・・好字啊龍飛鳳舞蘇拆哈二拆　調轉咗老・・・爺拆二哈拆蘇啊呢仔・・但是　冇教　知嘛・・・・・・・・・爹啊爹・・我哋蘇拆哈二家自太祖皇帝到家產幾代都冇個小寫字嘅而家唔系啦我　仔你個書啦差咧佢　寫自己個名啊喂阿爹呢一部非同小可噃啊今日　寫字他朝就必成大學士今日　寫名他日生仔就必有病病・・　你真系要好　啲學寫字啊　　拆啦拆　・・我睇表起佢好喎表　佢　　　師爺你攞有咁多眼掛咁多眼我問下師　爺你咩住佢搶花　佢有輪街威下先行啦　　拆啦拆坐・・・・　　　坐坐坐・・・見你咁生性我都好安慰啊・嗱你聽我・・講阿爹咧祖宗名系二世祖父親家咧都洗到七七八八噶啦好話　冇聽但系阿爹兩個一樣咧唉你真係恨不諗　靠自己啦唔撈　都靠自己嘅啦・・嗱・・成十萬兩　張啊啲使啊啊・・唔撈你・攞我頂西洋冇過嚟去邊啦　趁・・・・啊今日我擺大獸・・・・嗯你貴庚啊・廿　五歲大獸啊嘛早就到啊・・・・・喂擺大獸你都瘦靚啲個頭啦　成細　佬黐　衣仔咁・黐衣會咁有錢我都想做・・・・・・・・・・・啊　個獸頭硬是幾真系嚟過嚟過嚟過嚟・做咩嘢老爺　個衰仔擺大獸彈中唔撳都架細個人嘅第二　老爺擺嚟手咧要架細個佢　　・・　・・・・・・・・"
+          "text": "・・・・啊・・・・・・好字・・・　　　啊・・・・・・・・・好字啊龍飛鳳舞蘇拆哈二拆　調轉咗老・・・爺拆二哈拆蘇啊呢仔・・但是　冇教知嘛・・・・・・・・・爹啊爹・・我哋蘇拆哈二家自太祖皇帝到家產幾代都冇個小寫字嘅而家唔系啦我　仔你個書啦差咧佢　寫自己個名啊喂阿爹呢一部非同小可噃啊今日　寫字他朝就必成大學士今日　寫名他日生仔就必有病病・・　你真系要好　啲學寫字啊　　拆啦拆　・・我睇表起佢好喎表　佢師爺你攞有咁多眼掛　咁多眼我問下師　爺你咩住佢搶花　佢有輪街威下先行啦　　拆啦拆坐・・・・　　　坐坐坐・・・見你咁生性我都好安慰啊・嗱你聽我・・講阿爹咧祖宗名系二世祖父親家咧都洗到七七八八噶啦好話　冇聽但系阿爹兩個一樣咧唉你真係恨不諗　靠自己啦唔撈　都靠自己嘅啦・・嗱・・成十萬兩　張啊啲使啊啊・・唔撈你・攞我頂西洋冇過嚟去邊啦　趁・・・・啊今日我擺大獸・・・・嗯你貴庚啊・廿　五歲大獸啊嘛早就到啊・・・・・喂擺大獸你都瘦靚啲個頭啦　成細　佬黐　衣仔咁・黐衣會咁有錢我都想做・・・・・・・・・・・啊　個獸頭硬是幾真系嚟過嚟過嚟過嚟・做咩嘢老爺　個衰仔擺大獸彈中唔撳都架細個人嘅第二　老爺擺嚟手咧要架細個佢　　・・　・・・・・・・・"
         }
       ],
-      "speaker": "・・・・Ｉ・・・・・・ＩＩ・・・ＩＩＩＩ・・・・・・・・・ＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫ・・・ＫＫＫＫＫＫＫＫＫ・・ＫＫＫＫＫＬＬＬ・・・・・・・・・ＬＬＬ・・ＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬ・・ＬＬＬＬＬＬＬＬＬＬＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＫＫＫＫＫＫＫＬＬＫＬＫＬ・・・・ＬＬ　ＬＬＬ・・・ＬＬＬＬＬＬＬＬＬＬＬ・ＬＬＬＬ・・ＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・Ｂ・・ＢＢＢＢＢＢＢＢＢＢＢ・・ＡＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢ・・・・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢ・・・・・・・・・・・ＢＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬ・ＨＨＨ　ＬＬＬＬＬＬＬＬＬＬＬＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＨＨ・・Ｌ・・・・・・・・",
-      "language_trace": "・・・・日・・・・・・普普・・・日日日日・・・・・・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・ＡＡＡＡＡＡＡＡＡ・・粵粵粵粵粵粵粵粵・・・・・・・・・　　粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵ＢＢＢＢＢＢ・・・・　　　　　　・・・粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵・・　粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵・・粵粵粵粵粵粵粵粵粵粵粵・・　　粵・粵粵粵粵粵粵粵粵普普普普　・・・・粵粵粵粵粵粵粵・・・・粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵・・・・・　粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵・・・・・・・・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵　粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵・・・・・・・・",
+      "speaker": "・・・・Ｉ・・・・・・ＩＩ・・・ＩＩＩＩ・・・・・・・・・ＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫ・・・ＫＫＫＫＫＫＫＫＫ・・ＫＫＫＫＫＬＬ・・・・・・・・・ＬＬＬ・・ＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬ・・ＬＬＬＬＬＬＬＬＬＬＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＫＫＫＫＫＫＫＬＬＫＬＫＬ・・・・　ＬＬＬＬＬ・・・ＬＬＬＬＬＬＬＬＬＬＬ・ＬＬＬＬ・・ＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・Ｂ・・ＢＢＢＢＢＢＢＢＢＢＢ・・ＡＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢ・・・・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢ・・・・・・・・・・・ＢＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬＬ・ＨＨＨ　ＬＬＬＬＬＬＬＬＬＬＬＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＫＨＨ・・Ｌ・・・・・・・・",
+      "language_trace": "・・・・日・・・・・・普普・・・日日日日・・・・・・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・ＡＡＡＡＡＡＡＡＡ・・粵粵粵粵粵粵粵・・・・・・・・・　　粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵ＢＢＢＢＢＢ・・・・　　　　　　・・・粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵・・　粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵・・粵粵粵粵粵粵粵粵粵粵粵・・　　粵・粵粵粵粵粵粵粵粵普普普普　・・・・粵粵粵粵粵粵粵・・・・粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵・・・・・　粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵・・・・・・・・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵　粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵・・・・・・・・",
       "language_legend": {
         "粵": "zh-yue",
         "日": "ja",
@@ -3846,9 +3828,9 @@
         "Ｃ": "zh-xinan",
         "Ｄ": "vi"
       },
-      "singing_trace": "・・・・　・・・・・・　　・・・　　　　・・・・・・・・・　　　　　　　　　　　　　　　　　・・・　　　　　　　　　・・　　　　　　　　・・・・・・・・・　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・・　　　　　　・・・　　　　　　　　　　　・　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　・・　　　　　　　　　　　・・　　　・　　　　　　　　　　　　　・・・・　　　　　　　・・・・　　　　　・　　　　　　　　　　　　・・・・・　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　・・・・・・・・・・・　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　　　　唱唱唱唱唱唱唱唱唱唱唱唱　　　　　　　　　・・　・・・・・・・・",
-      "music_trace": "・・・・　・・・・・・　　・・・　　　　・・・・・・・・・　　　　　　　　　　　　　　　　　・・・　　　　　　　　　・・　　　　　　　　・・・・・・・・・　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・・　　　　　　・・・　　　　　　　　　　　・　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　・・　　　　　　　　　　　・・　　　・　　　　　　　　　　　　　・・・・　　　　　　　・・・・　　　　　・　　　　　　　　　　　　・・・・・　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　・・・・・・・・・・・　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　　　　樂樂樂樂樂樂樂樂樂樂樂樂　　　　　　　　　・・　・・・・・・・・",
-      "merged": "・・・・啊・・・・・・好字・・・哎呀我啊・・・・・・・・・好字啊龍飛鳳舞蘇察哈爾燦　調轉咗老・・・爺燦爾哈察蘇啊叻仔・・但係唔好叫人知嘛・・・・・・・・・爹啊爹・・我哋蘇察哈爾家自太祖皇帝到家陣幾代都冇個曉寫字嘅而家唔係啦我個仔你個孫阿燦咧佢曉寫自己個名啊喂阿爹呢一步非同小可噃　今日曉寫字他朝就必成大學士今日曉寫名他日生仔就必有病少・・爺你真係要好　啲學寫字啊　　　　　　・・我睇　怕佢好喎抱起佢抱起佢師爺你攞有咁多銀掛咁多銀咁呀咪師　爺你孭住佢撐花　傘行吓街威吓先　啦　阿燦阿燦坐・・・・嚟嚟嚟坐坐坐・・・見你咁生性我都好安慰啊・嗱你聽我・・講阿爹呢就　算係二世祖副身家呢都使到七七八八㗎啦好話唔好聽第日阿爹兩腿一揚呢唉你就　冚唪唥　靠自己啦不嬲　都靠自己㗎啦・・嗱・・成十萬兩　銀票你使　吓・・嗯茂利・攞我頂西洋帽過嚟去邊啊阿燦・・・・啊今日我擺大壽・・・・嗯你貴庚啊・廿　五歲大壽啊嘛早啲到啊・・・・・喂擺大壽你都梳靚啲個頭啦　成世都　似乞衣仔咁・乞衣會咁有錢我都想做・・・・・・・・・・・啊啊個手頭硬係幾真係嚟過嚟過嚟過嚟・做咩啊老爺啊個衰仔擺大壽打張　帖都架勢過人嘅但係阿老爺擺大手喎要架勢過佢　　・・　・・・・・・・・",
+      "singing_trace": "・・・・　・・・・・・　　・・・　　　　・・・・・・・・・　　　　　　　　　　　　　　　　　・・・　　　　　　　　　・・　　　　　　　・・・・・・・・・　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・・　　　　　　・・・　　　　　　　　　　　・　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　・・　　　　　　　　　　　・・　　　・　　　　　　　　　　　　　・・・・　　　　　　　・・・・　　　　　・　　　　　　　　　　　　・・・・・　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　・・・・・・・・・・・　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　　　　唱唱唱唱唱唱唱唱唱唱唱唱　　　　　　　　　・・　・・・・・・・・",
+      "music_trace": "・・・・　・・・・・・　　・・・　　　　・・・・・・・・・　　　　　　　　　　　　　　　　　・・・　　　　　　　　　・・　　　　　　　・・・・・・・・・　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・・　　　　　　・・・　　　　　　　　　　　・　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　・・　　　　　　　　　　　・・　　　・　　　　　　　　　　　　　・・・・　　　　　　　・・・・　　　　　・　　　　　　　　　　　　・・・・・　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　・・・・・・・・・・・　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　　　　樂樂樂樂樂樂樂樂樂樂樂樂　　　　　　　　　・・　・・・・・・・・",
+      "merged": "・・・・啊・・・・・・好字・・・哎呀我啊・・・・・・・・・好字啊龍飛鳳舞蘇察哈爾燦　調轉咗老・・・爺燦爾哈察蘇啊叻仔・・但是唔好叫知嘛・・・・・・・・・爹啊爹・・我哋蘇察哈爾家自太祖皇帝到家陣幾代都冇個曉寫字嘅而家唔係啦我個仔你個孫阿燦呢佢要寫自己個名啊喂阿爹呢一步非同小可噃　今日要寫字他朝就必成大學士今日要寫名他日生仔就必有病少・・爺你真係要好　啲學寫字啊阿　叔撐一撐・・我睇抱起佢好喎抱起佢師爺你攞住咁多銀掛住咁多銀咁啊咪師　爺你孭住佢撐花　棍遊吓街威下先　　　阿燦阿燦坐・・・・　　　坐坐坐・・・見你咁生性我都好安慰啊・嗱你聽我・・講阿爹呢出　名係二世祖副身家呢都使到七七八八㗎啦好話唔好聽第日阿爹兩腿一伸呢唉你就　冚唪唥　靠自己啦不嬲　都靠自己㗎啦・・嗱・・成十萬兩　銀紙你使呀吓・・嗯冇理・攞我頂西洋帽過嚟去邊啊阿七・・・・啊今日我擺大壽・・・・嗯你貴庚啊・二十五歲大壽啊嘛早啲到啊・・・・・喂擺大壽你都梳靚啲個頭啦　成世都　似乞衣仔咁・乞衣會咁有錢我都想做・・・・・・・・・・・啊嗰個手咁硬實嘅真係呀過嚟過嚟過嚟・做咩啊老爺嗰個衰仔擺大手揸張銀票都架勢過人嘅但係阿老爺擺大手呢要架勢過佢　　・・　・・・・・・・・",
       "subtitles": [
         {
           "index": 8,
@@ -3870,7 +3852,7 @@
         },
         {
           "index": 10,
-          "text": "哎呀我啊。",
+          "text": "哎呀我啊",
           "speech_start_ms": 172837,
           "speech_end_ms": 173540,
           "start_ms": 172837,
@@ -3879,25 +3861,25 @@
         },
         {
           "index": 11,
-          "text": "好字啊，龍飛鳳舞，蘇察哈爾燦。",
+          "text": "好字啊，龍飛鳳舞，蘇察哈爾燦，調轉咗老",
           "speech_start_ms": 176567,
-          "speech_end_ms": 181756,
+          "speech_end_ms": 182377,
           "start_ms": 176317,
-          "end_ms": 181756,
+          "end_ms": 182377,
           "speaker": "SPEAKER_23"
         },
         {
           "index": 12,
-          "text": "調轉咗老爺，燦爾哈察蘇啊，叻仔。",
-          "speech_start_ms": 181756,
+          "text": "爺燦爾哈察蘇啊叻仔",
+          "speech_start_ms": 182377,
           "speech_end_ms": 187246,
-          "start_ms": 181756,
+          "start_ms": 182377,
           "end_ms": 187246,
           "speaker": "SPEAKER_23"
         },
         {
           "index": 13,
-          "text": "但係唔好叫人知嘛。",
+          "text": "但是唔好叫知嘛",
           "speech_start_ms": 187246,
           "speech_end_ms": 188248,
           "start_ms": 187246,
@@ -3906,7 +3888,7 @@
         },
         {
           "index": 14,
-          "text": "爹啊，爹……",
+          "text": "爹啊爹。",
           "speech_start_ms": 190995,
           "speech_end_ms": 192116,
           "start_ms": 190745,
@@ -3915,43 +3897,34 @@
         },
         {
           "index": 15,
-          "text": "我哋蘇察哈爾家，自太祖皇帝",
+          "text": "我哋蘇察哈爾家，自太祖皇帝到家陣，",
           "speech_start_ms": 192116,
-          "speech_end_ms": 195137,
+          "speech_end_ms": 195638,
           "start_ms": 192116,
-          "end_ms": 195137,
+          "end_ms": 195638,
           "speaker": "SPEAKER_07"
         },
         {
           "index": 16,
-          "text": "到家陣幾代都冇個曉寫字嘅。",
-          "speech_start_ms": 195137,
+          "text": "幾代都冇個曉寫字嘅。",
+          "speech_start_ms": 195638,
           "speech_end_ms": 197639,
-          "start_ms": 195137,
+          "start_ms": 195638,
           "end_ms": 197639,
           "speaker": "SPEAKER_07"
         },
         {
           "index": 17,
-          "text": "而家唔係啦！",
+          "text": "而家唔係啦，我個仔，你個孫阿燦呢，",
           "speech_start_ms": 197639,
-          "speech_end_ms": 198919,
-          "start_ms": 197639,
-          "end_ms": 198919,
-          "speaker": "SPEAKER_07"
-        },
-        {
-          "index": 18,
-          "text": "我個仔，你個孫，阿燦咧！",
-          "speech_start_ms": 198919,
           "speech_end_ms": 200881,
-          "start_ms": 198919,
+          "start_ms": 197639,
           "end_ms": 200881,
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 19,
-          "text": "佢曉寫自己個名啊！",
+          "index": 18,
+          "text": "佢要寫自己個名啊。",
           "speech_start_ms": 200881,
           "speech_end_ms": 202762,
           "start_ms": 200881,
@@ -3959,8 +3932,8 @@
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 20,
-          "text": "喂，阿爹，呢一步非同小可噃！",
+          "index": 19,
+          "text": "喂，阿爹，呢一步非同小可噃。",
           "speech_start_ms": 202762,
           "speech_end_ms": 206644,
           "start_ms": 202762,
@@ -3968,8 +3941,8 @@
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 21,
-          "text": "今日曉寫字，他朝就必成大學士；",
+          "index": 20,
+          "text": "今日要寫字，他朝就必成大學士。",
           "speech_start_ms": 206644,
           "speech_end_ms": 210006,
           "start_ms": 206644,
@@ -3977,44 +3950,44 @@
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 22,
-          "text": "今日曉寫名，他日生仔就必有病！",
+          "index": 21,
+          "text": "今日要寫名，他日生仔就必有病少。",
           "speech_start_ms": 210006,
-          "speech_end_ms": 213147,
+          "speech_end_ms": 213347,
           "start_ms": 210006,
-          "end_ms": 213147,
+          "end_ms": 213347,
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 23,
-          "text": "少爺，你真係要好啲學寫字啊。",
-          "speech_start_ms": 213147,
-          "speech_end_ms": 216809,
-          "start_ms": 213147,
-          "end_ms": 216809,
+          "index": 22,
+          "text": "爺，你真係要好啲學寫字啊。",
+          "speech_start_ms": 213347,
+          "speech_end_ms": 215208,
+          "start_ms": 213347,
+          "end_ms": 215208,
           "speaker": null
         },
         {
-          "index": 24,
-          "text": "我睇怕佢好喎，抱起佢！",
-          "speech_start_ms": 216809,
-          "speech_end_ms": 218650,
-          "start_ms": 216809,
-          "end_ms": 218650,
+          "index": 23,
+          "text": "阿叔，撐一撐。",
+          "speech_start_ms": 215208,
+          "speech_end_ms": 216809,
+          "start_ms": 215208,
+          "end_ms": 216809,
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 25,
-          "text": "抱起佢！",
-          "speech_start_ms": 218650,
+          "index": 24,
+          "text": "我睇抱起佢好喎，抱起佢。",
+          "speech_start_ms": 216809,
           "speech_end_ms": 218831,
-          "start_ms": 218650,
+          "start_ms": 216809,
           "end_ms": 218831,
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 26,
-          "text": "師爺，你攞有咁多銀，掛咁多銀咁呀？",
+          "index": 25,
+          "text": "師爺，你攞住咁多銀，掛住咁多銀咁啊？",
           "speech_start_ms": 218831,
           "speech_end_ms": 221352,
           "start_ms": 218831,
@@ -4022,26 +3995,17 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 27,
-          "text": "咪師爺，你孭住佢，撐花傘，",
+          "index": 26,
+          "text": "咪師爺，你孭住佢，撐花棍，遊吓街威下先。",
           "speech_start_ms": 221352,
-          "speech_end_ms": 223833,
-          "start_ms": 221352,
-          "end_ms": 223833,
-          "speaker": "SPEAKER_04"
-        },
-        {
-          "index": 28,
-          "text": "行吓街，威吓先啦！",
-          "speech_start_ms": 223833,
           "speech_end_ms": 225114,
-          "start_ms": 223833,
+          "start_ms": 221352,
           "end_ms": 225114,
           "speaker": null
         },
         {
-          "index": 29,
-          "text": "阿燦，阿燦，坐！",
+          "index": 27,
+          "text": "阿燦，阿燦，坐。",
           "speech_start_ms": 225114,
           "speech_end_ms": 225374,
           "start_ms": 225114,
@@ -4049,44 +4013,44 @@
           "speaker": "SPEAKER_23"
         },
         {
-          "index": 30,
-          "text": "嚟嚟嚟，坐坐坐。",
-          "speech_start_ms": 228270,
-          "speech_end_ms": 229730,
-          "start_ms": 228020,
-          "end_ms": 229730,
+          "index": 28,
+          "text": "坐坐坐。",
+          "speech_start_ms": 228150,
+          "speech_end_ms": 229450,
+          "start_ms": 227900,
+          "end_ms": 229450,
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 31,
+          "index": 29,
           "text": "見你咁生性，我都好安慰啊。",
-          "speech_start_ms": 229730,
+          "speech_start_ms": 229450,
           "speech_end_ms": 231931,
-          "start_ms": 229730,
+          "start_ms": 229450,
           "end_ms": 231931,
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 32,
-          "text": "嗱，你聽我講。",
+          "index": 30,
+          "text": "嗱，你聽我講，阿爹呢，",
           "speech_start_ms": 231931,
-          "speech_end_ms": 233752,
+          "speech_end_ms": 234592,
           "start_ms": 231931,
-          "end_ms": 233752,
+          "end_ms": 234592,
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 33,
-          "text": "阿爹呢，就算係二世祖。",
-          "speech_start_ms": 233752,
+          "index": 31,
+          "text": "出名係二世祖，",
+          "speech_start_ms": 234592,
           "speech_end_ms": 236252,
-          "start_ms": 233752,
+          "start_ms": 234592,
           "end_ms": 236252,
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 34,
-          "text": "副身家呢，都使到七七八八㗎啦。",
+          "index": 32,
+          "text": "副身家呢都使到七七八八㗎啦。",
           "speech_start_ms": 236252,
           "speech_end_ms": 238873,
           "start_ms": 236252,
@@ -4094,8 +4058,8 @@
           "speaker": null
         },
         {
-          "index": 35,
-          "text": "好話唔好聽，第日阿爹兩腿一揚呢。",
+          "index": 33,
+          "text": "好話唔好聽，第日阿爹兩腿一伸呢。",
           "speech_start_ms": 238873,
           "speech_end_ms": 241574,
           "start_ms": 238873,
@@ -4103,7 +4067,7 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 36,
+          "index": 34,
           "text": "唉，你就冚唪唥靠自己啦。",
           "speech_start_ms": 241574,
           "speech_end_ms": 243195,
@@ -4112,7 +4076,7 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 37,
+          "index": 35,
           "text": "不嬲都靠自己㗎啦。",
           "speech_start_ms": 243195,
           "speech_end_ms": 245155,
@@ -4121,34 +4085,25 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 38,
-          "text": "嗱，成十萬兩銀票。",
+          "index": 36,
+          "text": "嗱，成十萬兩銀紙，你使呀吓？",
           "speech_start_ms": 245155,
-          "speech_end_ms": 247076,
+          "speech_end_ms": 247916,
           "start_ms": 245155,
-          "end_ms": 247076,
+          "end_ms": 247916,
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 39,
-          "text": "你使吓？",
-          "speech_start_ms": 247076,
-          "speech_end_ms": 247906,
-          "start_ms": 247076,
-          "end_ms": 247906,
-          "speaker": "SPEAKER_04"
-        },
-        {
-          "index": 40,
-          "text": "嗯，茂利。",
-          "speech_start_ms": 247906,
+          "index": 37,
+          "text": "嗯，冇理。",
+          "speech_start_ms": 247916,
           "speech_end_ms": 249256,
-          "start_ms": 247906,
+          "start_ms": 247916,
           "end_ms": 249256,
           "speaker": null
         },
         {
-          "index": 41,
+          "index": 38,
           "text": "攞我頂西洋帽過嚟。",
           "speech_start_ms": 249256,
           "speech_end_ms": 250497,
@@ -4157,16 +4112,16 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 42,
-          "text": "去邊啊，阿燦？",
+          "index": 39,
+          "text": "去邊啊，阿七？",
           "speech_start_ms": 250497,
-          "speech_end_ms": 251097,
+          "speech_end_ms": 250897,
           "start_ms": 250497,
-          "end_ms": 251597,
+          "end_ms": 251397,
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 43,
+          "index": 40,
           "text": "啊，今日我擺大壽。",
           "speech_start_ms": 252448,
           "speech_end_ms": 253077,
@@ -4175,7 +4130,7 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 44,
+          "index": 41,
           "text": "嗯，你貴庚啊？",
           "speech_start_ms": 254455,
           "speech_end_ms": 255480,
@@ -4184,8 +4139,8 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 45,
-          "text": "廿五歲大壽啊嘛，早啲到啊。",
+          "index": 42,
+          "text": "二十五歲大壽啊嘛，早啲到啊。",
           "speech_start_ms": 255480,
           "speech_end_ms": 257088,
           "start_ms": 255480,
@@ -4193,7 +4148,7 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 46,
+          "index": 43,
           "text": "喂，擺大壽你都梳靚啲個頭啦。",
           "speech_start_ms": 258694,
           "speech_end_ms": 260922,
@@ -4202,7 +4157,7 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 47,
+          "index": 44,
           "text": "成世都似乞衣仔咁。",
           "speech_start_ms": 260922,
           "speech_end_ms": 262948,
@@ -4211,7 +4166,7 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 48,
+          "index": 45,
           "text": "乞衣會咁有錢，我都想做。",
           "speech_start_ms": 262948,
           "speech_end_ms": 264614,
@@ -4220,35 +4175,44 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 49,
-          "text": "啊啊個手頭硬係幾真係嚟過嚟過嚟過嚟",
+          "index": 46,
+          "text": "啊，嗰個手咁硬實嘅，",
           "speech_start_ms": 267830,
-          "speech_end_ms": 270775,
+          "speech_end_ms": 269333,
           "start_ms": 267580,
+          "end_ms": 269333,
+          "speaker": null
+        },
+        {
+          "index": 47,
+          "text": "真係呀，過嚟過嚟過嚟！",
+          "speech_start_ms": 269333,
+          "speech_end_ms": 270775,
+          "start_ms": 269333,
           "end_ms": 270775,
+          "speaker": "SPEAKER_07"
+        },
+        {
+          "index": 48,
+          "text": "做咩啊？",
+          "speech_start_ms": 270775,
+          "speech_end_ms": 271296,
+          "start_ms": 270775,
+          "end_ms": 271296,
+          "speaker": "SPEAKER_17"
+        },
+        {
+          "index": 49,
+          "text": "老爺，嗰個衰仔擺大手，",
+          "speech_start_ms": 271296,
+          "speech_end_ms": 273640,
+          "start_ms": 271296,
+          "end_ms": 273640,
           "speaker": null
         },
         {
           "index": 50,
-          "text": "做咩啊，老爺？",
-          "speech_start_ms": 270775,
-          "speech_end_ms": 272398,
-          "start_ms": 270775,
-          "end_ms": 272398,
-          "speaker": "SPEAKER_17"
-        },
-        {
-          "index": 51,
-          "text": "啊，個衰仔擺大壽，",
-          "speech_start_ms": 272398,
-          "speech_end_ms": 273640,
-          "start_ms": 272398,
-          "end_ms": 273640,
-          "speaker": "SPEAKER_07"
-        },
-        {
-          "index": 52,
-          "text": "打張帖都架勢過人嘅，",
+          "text": "揸張銀票都架勢過人嘅。",
           "speech_start_ms": 273640,
           "speech_end_ms": 275623,
           "start_ms": 273640,
@@ -4256,21 +4220,12 @@
           "speaker": null
         },
         {
-          "index": 53,
-          "text": "但係阿老爺擺大手喎，",
+          "index": 51,
+          "text": "但係阿老爺擺大手呢，要架勢過佢。",
           "speech_start_ms": 275623,
-          "speech_end_ms": 276384,
+          "speech_end_ms": 276845,
           "start_ms": 275623,
-          "end_ms": 276384,
-          "speaker": "SPEAKER_23"
-        },
-        {
-          "index": 54,
-          "text": "要架勢過佢。",
-          "speech_start_ms": 276384,
-          "speech_end_ms": 276725,
-          "start_ms": 276384,
-          "end_ms": 277225,
+          "end_ms": 277345,
           "speaker": "SPEAKER_23"
         }
       ],
@@ -4634,26 +4589,26 @@
       "merged": "・・・・王・・・爺你覺得廣東嘅大戲　點・・・・・・地方戲曲・當然比唔上京戲・・不過都算係一番見識・・・",
       "subtitles": [
         {
-          "index": 55,
-          "text": "王",
+          "index": 52,
+          "text": "王爺。",
           "speech_start_ms": 297760,
-          "speech_end_ms": 297921,
-          "start_ms": 297171,
-          "end_ms": 297921,
+          "speech_end_ms": 299050,
+          "start_ms": 297510,
+          "end_ms": 299050,
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 56,
-          "text": "爺，你覺得廣東嘅大戲點？",
-          "speech_start_ms": 297921,
+          "index": 53,
+          "text": "你覺得廣東嘅大戲點？",
+          "speech_start_ms": 299050,
           "speech_end_ms": 300259,
-          "start_ms": 297921,
+          "start_ms": 299050,
           "end_ms": 300759,
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 57,
-          "text": "地方戲曲，",
+          "index": 54,
+          "text": "地方戲曲。",
           "speech_start_ms": 302012,
           "speech_end_ms": 303374,
           "start_ms": 301762,
@@ -4661,8 +4616,8 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 58,
-          "text": "當然比唔上京戲，",
+          "index": 55,
+          "text": "當然比唔上京戲。",
           "speech_start_ms": 303374,
           "speech_end_ms": 305476,
           "start_ms": 303374,
@@ -4670,7 +4625,7 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 59,
+          "index": 56,
           "text": "不過都算係一番見識。",
           "speech_start_ms": 305476,
           "speech_end_ms": 307419,
@@ -5008,13 +4963,13 @@
         },
         {
           "index": 54,
-          "start_ms": 324322,
-          "end_ms": 324482,
+          "start_ms": 324289,
+          "end_ms": 324402,
           "kind": "text"
         },
         {
           "index": 55,
-          "start_ms": 324402,
+          "start_ms": 324345,
           "end_ms": 324532,
           "kind": "text"
         },
@@ -5044,7 +4999,7 @@
         },
         {
           "index": 60,
-          "start_ms": 325131,
+          "start_ms": 324891,
           "end_ms": 325441,
           "kind": "text"
         },
@@ -5105,12 +5060,12 @@
         {
           "index": 70,
           "start_ms": 326803,
-          "end_ms": 326993,
+          "end_ms": 326987,
           "kind": "text"
         },
         {
           "index": 71,
-          "start_ms": 326984,
+          "start_ms": 326987,
           "end_ms": 327164,
           "kind": "text"
         },
@@ -5182,13 +5137,13 @@
         },
         {
           "index": 83,
-          "start_ms": 329865,
-          "end_ms": 330136,
+          "start_ms": 329868,
+          "end_ms": 330043,
           "kind": "text"
         },
         {
           "index": 84,
-          "start_ms": 330136,
+          "start_ms": 329951,
           "end_ms": 330326,
           "kind": "text"
         },
@@ -5351,7 +5306,7 @@
         {
           "index": 111,
           "start_ms": 334808,
-          "end_ms": 335709,
+          "end_ms": 335705,
           "kind": "text"
         },
         {
@@ -5374,8 +5329,8 @@
         },
         {
           "index": 115,
-          "start_ms": 335815,
-          "end_ms": 335976,
+          "start_ms": 335929,
+          "end_ms": 336049,
           "kind": "text"
         },
         {
@@ -5735,7 +5690,7 @@
           "text": "・・・・打上・・・・・打・・・・・上打上恭喜收穫生辰快樂我家善人拼病老樣死人拎樓妻離子散我恨家慘啊　　　　　　　　　　　死　　・　　　　　　　　　　　　死個地獄我打　上嘿小葉・・・・　　　　搞錯　　　　　　咗・・・・・・搞錯咗嘿呢度都系人・系人有錢都系嚟呢度・你呢個月喺呢度食飯睇下消夜直落叫雞雞我包點包吹　　啊・・・・・・・唔吹唔吹・・・"
         }
       ],
-      "speaker": "・・・・ＢＢ・・・・・Ｂ・・・・・ＢＢＢＢＭＭＭＭＭＭＭＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＡＢＢＡ・ＢＢＢＢＢＢＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮ・・・・ＮＥＥＯＯＯＯＯＯＯＯＯＥ・・・・・・ＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＡＡＡＡ　Ａ・・・・・・・　　ＢＢ・・・",
+      "speaker": "・・・・ＢＢ・・・・・Ｂ・・・・・ＢＢＢＢＭＭＭＭＭＭＭＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＡ・ＢＢＢＢＢＢＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮ・・・・ＮＥＥＯＯＯＯＯＯＯＯＯＥ・・・・・・ＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＡＡＡＡ　Ａ・・・・・・・　　ＢＢ・・・",
       "language_trace": "・・・・　粵・・・・・粵・・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・粵ＣＣＣＣＣＣＣＣＣＣＣＣ・・・・・・粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵ＣＣＣＣ　Ｃ・・・・・・・　　　　・・・",
       "language_legend": {
         "粵": "zh-yue",
@@ -5748,10 +5703,10 @@
       },
       "singing_trace": "・・・・　　・・・・・　・・・・・　　　　　　　　　　　　　唱唱唱唱　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　　　　　　　唱唱唱・・・・　　　　　　　　　　　　　・・・・・・　　　　　　　　　・　　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　・・・・・・・　　　　・・・",
       "music_trace": "・・・・　　・・・・・　・・・・・　　　　　　　　　　　　樂樂樂樂樂樂樂樂樂樂樂　樂樂樂樂樂樂樂樂樂　　　　　　　　　　　　　・　　　　　　　樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・・・　　　　　　　　　　　　　・・・・・・　　　　　　　　　・　　　　　　　　　・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂　　　　　　　　・・・・・・・　　　　・・・",
-      "merged": "・・・・打賞・・・・・打・・・・・賞打賞恭喜蘇翁生辰快樂冚家散人貧病老弱死人冧樓妻離子散　冚家鏟呀　施捨個幾蚊錢　　　呀　　　・啊你個仆街又　嚟乞食乞到嚟呢度我　　打賞　少爺・・・・　　有冇搞錯　呀攞錢就走啦・・・・・・　　　　妓女都係人・係人有錢都係嚟呢度・你呢個月喺呢度食飯睇戲宵夜直落叫　雞我包你包吹呀　　・・・・・・・　　唔吹・・・",
+      "merged": "・・・・打賞・・・・・打・・・・・賞打賞恭喜蘇翁生辰快樂我家三人貧病老弱死人冧樓妻離子散我冚家鏟呀　施捨個　零錢　　　呀　　　・啊你個仆街又夾住乞食乞到嚟呢度我我打打賞喂少爺・・・・　　有冇搞錯　呀攞錢就走啦・・・・・・哎乞　　　兒都係人・係人有錢都係嚟呢度・你呢個月喺呢度食飯睇戲宵夜直落叫　雞我包你包吹呀　　・・・・・・・　　唔吹・・・",
       "subtitles": [
         {
-          "index": 60,
+          "index": 57,
           "text": "打賞。",
           "speech_start_ms": 312048,
           "speech_end_ms": 312235,
@@ -5760,7 +5715,7 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 61,
+          "index": 58,
           "text": "打",
           "speech_start_ms": 313678,
           "speech_end_ms": 313698,
@@ -5769,53 +5724,35 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 62,
-          "text": "賞！打賞！",
+          "index": 59,
+          "text": "賞，打賞，恭喜蘇翁生辰快樂。",
           "speech_start_ms": 315644,
-          "speech_end_ms": 316204,
-          "start_ms": 315394,
-          "end_ms": 316204,
-          "speaker": "SPEAKER_04"
-        },
-        {
-          "index": 63,
-          "text": "恭喜蘇翁生辰快樂！",
-          "speech_start_ms": 316204,
           "speech_end_ms": 317665,
-          "start_ms": 316204,
+          "start_ms": 315394,
           "end_ms": 317665,
-          "speaker": "SPEAKER_19"
+          "speaker": null
         },
         {
-          "index": 64,
-          "text": "冚家散人，貧病老弱，",
+          "index": 60,
+          "text": "我家三人貧病老弱，死人冧樓，",
           "speech_start_ms": 317665,
-          "speech_end_ms": 320306,
+          "speech_end_ms": 321607,
           "start_ms": 317665,
-          "end_ms": 320306,
+          "end_ms": 321607,
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 65,
-          "text": "死人冧樓，妻離子散，",
-          "speech_start_ms": 320306,
-          "speech_end_ms": 322748,
-          "start_ms": 320306,
-          "end_ms": 322748,
-          "speaker": "SPEAKER_04"
-        },
-        {
-          "index": 66,
-          "text": "冚家鏟呀！",
-          "speech_start_ms": 322748,
+          "index": 61,
+          "text": "妻離子散，我冚家鏟呀，",
+          "speech_start_ms": 321607,
           "speech_end_ms": 323948,
-          "start_ms": 322748,
+          "start_ms": 321607,
           "end_ms": 323948,
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 67,
-          "text": "施捨個幾蚊錢呀？",
+          "index": 62,
+          "text": "施捨個零錢呀。",
           "speech_start_ms": 323948,
           "speech_end_ms": 325969,
           "start_ms": 323948,
@@ -5823,35 +5760,26 @@
           "speaker": null
         },
         {
-          "index": 68,
-          "text": "啊，你個仆街！",
+          "index": 63,
+          "text": "啊，你個仆街，又夾住乞食乞到嚟呢度。",
           "speech_start_ms": 325969,
-          "speech_end_ms": 326810,
+          "speech_end_ms": 328651,
           "start_ms": 325969,
-          "end_ms": 326810,
-          "speaker": "SPEAKER_04"
+          "end_ms": 328651,
+          "speaker": null
         },
         {
-          "index": 69,
-          "text": "又嚟乞食乞到嚟呢度？",
-          "speech_start_ms": 326810,
-          "speech_end_ms": 328991,
-          "start_ms": 326810,
-          "end_ms": 328991,
-          "speaker": "SPEAKER_03"
-        },
-        {
-          "index": 70,
-          "text": "我打賞，少爺。",
-          "speech_start_ms": 328991,
+          "index": 64,
+          "text": "我我打打賞，喂，少爺。",
+          "speech_start_ms": 328651,
           "speech_end_ms": 331052,
-          "start_ms": 328991,
+          "start_ms": 328651,
           "end_ms": 331552,
           "speaker": "SPEAKER_03"
         },
         {
-          "index": 71,
-          "text": "有冇搞錯呀？攞錢就走啦！",
+          "index": 65,
+          "text": "有冇搞錯呀，攞錢就走啦！",
           "speech_start_ms": 333176,
           "speech_end_ms": 333740,
           "start_ms": 332926,
@@ -5859,16 +5787,16 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 72,
-          "text": "妓女都係人。",
-          "speech_start_ms": 335701,
+          "index": 66,
+          "text": "哎，乞兒都係人。",
+          "speech_start_ms": 335681,
           "speech_end_ms": 336865,
-          "start_ms": 335451,
+          "start_ms": 335431,
           "end_ms": 336865,
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 73,
+          "index": 67,
           "text": "係人有錢都係嚟呢度。",
           "speech_start_ms": 336865,
           "speech_end_ms": 338470,
@@ -5877,34 +5805,25 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 74,
-          "text": "你呢個月喺呢度食飯睇戲，",
+          "index": 68,
+          "text": "你呢個月喺呢度食飯睇戲，宵夜直落叫雞。",
           "speech_start_ms": 338470,
-          "speech_end_ms": 339994,
+          "speech_end_ms": 341037,
           "start_ms": 338470,
-          "end_ms": 339994,
+          "end_ms": 341037,
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 75,
-          "text": "宵夜直落叫雞，我包你。",
-          "speech_start_ms": 339994,
-          "speech_end_ms": 342000,
-          "start_ms": 339994,
-          "end_ms": 342000,
+          "index": 69,
+          "text": "我包你包吹呀。",
+          "speech_start_ms": 341037,
+          "speech_end_ms": 342662,
+          "start_ms": 341037,
+          "end_ms": 343162,
           "speaker": null
         },
         {
-          "index": 76,
-          "text": "包吹呀？",
-          "speech_start_ms": 342000,
-          "speech_end_ms": 342662,
-          "start_ms": 342000,
-          "end_ms": 343162,
-          "speaker": "SPEAKER_11"
-        },
-        {
-          "index": 77,
+          "index": 70,
           "text": "唔吹",
           "speech_start_ms": 344618,
           "speech_end_ms": 345019,
@@ -7852,19 +7771,19 @@
       },
       "singing_trace": "・・・・唱唱唱唱・・・　　　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・・・・　　　　　　　　　　・・・・・　　　　　　　　　　　　　　　　　　　　唱・・・　　　　　　　　　　　　　　　　　　　　・・・・・・　　　　　　　　　・・・・・・・・　・・・・・　　　　　　　　　・・・・　　　　　　　　　　　　　　　唱唱唱唱唱　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　唱唱唱　　　　　　　　　　　　　　　　　　唱唱唱唱唱　・・・　　　　　　　　　　　　唱・・・唱唱・唱　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　　　　・・・",
       "music_trace": "・・・・樂樂　　・・・　　　　　・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂　　　　　　　　　　　　　　　　・・・・・・　　　　　　　　　　・・・・・樂樂樂樂樂樂樂樂樂樂　　　　　　　樂樂樂樂・・・　　　　　　　　　　　　　　　　　　　　・・・・・・　　　　　　　　　・・・・・・・・　・・・・・　　　　　　　　　・・・・　　　　　　　　　樂樂樂樂樂樂樂樂樂樂樂樂樂　　　　　　　　　　　　　　　　　　　　　　　　　　　樂樂樂樂樂樂樂樂樂樂　　　　　樂樂樂樂　　　　　　　　　　樂樂樂　　・・・　　　　　　　　　　樂樂樂・・・樂樂・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・樂樂樂樂樂　　　　　　　　　　　　・・・",
-      "merged": "・・・・喂　蘇燦・・・喂點啊龜婆・好衰嘅你冇名你叫叫龜婆啊咁大家坦白啲唔好咩你要坦白啊你嗰頂帽啊披　麻戴孝　咁死老豆啊・・・・・・你咁講嘢先開心啊大家・・・・・今次趙先生幫本官掃平長毛賊皇上一定重重有賞・・・咁就有勞六王爺喺皇上面前講多幾句好說話　・・・・・・大戲做完啦請用毛巾・・・・・・・・啦・・・・・嗱　嚟咗啦蘇翁嚟咗・・・・喂　蘇翁恭喜發財呢邊啦呢邊啦蘇翁今日你好日子開心死你啦我哋有幾位新姑娘啊包你滿意　金魚　定木魚啊少爺乜嘢金魚　定木魚啊傻仔金魚淨係用嚟睇木魚　可以搏㗎嘛　梗　係要木魚・・・喂幾個木魚仲唔過嚟招呼客人・・・蘇翁・　今日你係自大㗎啦你想要　咩女人你開聲就得㗎啦・冇所謂女人個個都係一樣有　乜特別呢・・・",
+      "merged": "・・・・嘩　蘇蓉・・・喂點啊龜婆・好衰嘅你冇名你叫叫龜婆啊咁大家坦白啲唔好咩你要坦白啊你戴頂帽啊披　麻戴孝　咁死老豆啊・・・・・・你咁講嘢先開心啊大家・・・・・今次趙先生幫本官掃平長毛賊皇上一定重重有賞・・・咁就有勞六王爺喺皇上面前講多幾句好說話　・・・・・・大戲做完啦請用毛巾・・・・・・・・啦・・・・・嗱　嚟咗啦蘇翁嚟咗・・・・啦哦蘇翁恭喜發財呢邊啦呢邊啦蘇翁今日你好日子開心死你啦我哋有幾位新姑娘　包你滿意　金魚　定木魚啊少爺乜嘢金魚　定木魚啊傻仔金魚淨係用嚟睇木魚　可以搏㗎嘛　梗　係要木魚・・・呢幾個木魚仲唔過嚟招呼客人・・・蘇翁・　今日你係最大㗎啦你想要　咩女人你開聲就得㗎啦・冇所謂女人個個都係一樣有　乜特別呢・・・",
       "subtitles": [
         {
-          "index": 78,
-          "text": "喂，蘇燦……",
-          "speech_start_ms": 351245,
+          "index": 71,
+          "text": "嘩，蘇蓉……",
+          "speech_start_ms": 351225,
           "speech_end_ms": 354608,
-          "start_ms": 350995,
+          "start_ms": 350975,
           "end_ms": 354608,
           "speaker": null
         },
         {
-          "index": 79,
+          "index": 72,
           "text": "喂，點啊龜婆？",
           "speech_start_ms": 354608,
           "speech_end_ms": 355909,
@@ -7873,8 +7792,8 @@
           "speaker": "SPEAKER_13"
         },
         {
-          "index": 80,
-          "text": "好衰嘅你，冇名你叫叫龜婆啊？",
+          "index": 73,
+          "text": "好衰嘅，你冇名你叫叫龜婆啊！",
           "speech_start_ms": 355909,
           "speech_end_ms": 358110,
           "start_ms": 355909,
@@ -7882,7 +7801,7 @@
           "speaker": "SPEAKER_21"
         },
         {
-          "index": 81,
+          "index": 74,
           "text": "咁大家坦白啲唔好咩？",
           "speech_start_ms": 358110,
           "speech_end_ms": 359931,
@@ -7891,8 +7810,8 @@
           "speaker": "SPEAKER_13"
         },
         {
-          "index": 82,
-          "text": "你要坦白啊，你嗰頂帽啊，",
+          "index": 75,
+          "text": "你要坦白啊，你戴頂帽啊，",
           "speech_start_ms": 359931,
           "speech_end_ms": 362520,
           "start_ms": 359931,
@@ -7900,8 +7819,8 @@
           "speaker": "SPEAKER_21"
         },
         {
-          "index": 83,
-          "text": "披麻戴孝咁，死老豆啊。",
+          "index": 76,
+          "text": "披麻戴孝咁死老豆啊！",
           "speech_start_ms": 362520,
           "speech_end_ms": 364475,
           "start_ms": 362520,
@@ -7909,7 +7828,7 @@
           "speaker": "SPEAKER_21"
         },
         {
-          "index": 84,
+          "index": 77,
           "text": "你咁講嘢先開心啊，大家。",
           "speech_start_ms": 366508,
           "speech_end_ms": 368122,
@@ -7918,8 +7837,8 @@
           "speaker": "SPEAKER_21"
         },
         {
-          "index": 85,
-          "text": "今次趙先生幫本官掃平長毛賊。",
+          "index": 78,
+          "text": "今次趙先生幫本官掃平長毛賊，",
           "speech_start_ms": 369792,
           "speech_end_ms": 373158,
           "start_ms": 369542,
@@ -7927,7 +7846,7 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 86,
+          "index": 79,
           "text": "皇上一定重重有賞。",
           "speech_start_ms": 373158,
           "speech_end_ms": 375942,
@@ -7936,44 +7855,26 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 87,
-          "text": "咁就有勞六王爺喺皇上面前",
+          "index": 80,
+          "text": "咁就有勞六王爺喺皇上面前講多幾句好說話。",
           "speech_start_ms": 375942,
-          "speech_end_ms": 377926,
-          "start_ms": 375942,
-          "end_ms": 377926,
-          "speaker": "SPEAKER_04"
-        },
-        {
-          "index": 88,
-          "text": "講多幾句好說話。",
-          "speech_start_ms": 377926,
           "speech_end_ms": 378747,
-          "start_ms": 377926,
+          "start_ms": 375942,
           "end_ms": 379247,
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 89,
-          "text": "大戲做完啦，請用毛",
+          "index": 81,
+          "text": "大戲做完啦，請用毛巾",
           "speech_start_ms": 380397,
-          "speech_end_ms": 381858,
-          "start_ms": 380147,
-          "end_ms": 381858,
-          "speaker": "SPEAKER_04"
-        },
-        {
-          "index": 90,
-          "text": "巾",
-          "speech_start_ms": 381858,
           "speech_end_ms": 381878,
-          "start_ms": 381858,
-          "end_ms": 382608,
+          "start_ms": 380147,
+          "end_ms": 382378,
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 91,
-          "text": "啦。",
+          "index": 82,
+          "text": "啦",
           "speech_start_ms": 384409,
           "speech_end_ms": 384429,
           "start_ms": 384159,
@@ -7981,7 +7882,7 @@
           "speaker": "SPEAKER_15"
         },
         {
-          "index": 92,
+          "index": 83,
           "text": "嗱，嚟咗啦，蘇翁嚟咗。",
           "speech_start_ms": 386250,
           "speech_end_ms": 387143,
@@ -7990,61 +7891,34 @@
           "speaker": null
         },
         {
-          "index": 93,
-          "text": "喂，蘇翁，恭喜發財！",
+          "index": 84,
+          "text": "啦哦，蘇翁，恭喜發財，呢邊啦，呢邊啦！",
           "speech_start_ms": 388887,
-          "speech_end_ms": 390849,
-          "start_ms": 388637,
-          "end_ms": 390849,
-          "speaker": "SPEAKER_21"
-        },
-        {
-          "index": 94,
-          "text": "呢邊啦，呢邊啦！",
-          "speech_start_ms": 390849,
           "speech_end_ms": 391850,
-          "start_ms": 390849,
+          "start_ms": 388637,
           "end_ms": 391850,
           "speaker": "SPEAKER_21"
         },
         {
-          "index": 95,
-          "text": "蘇翁，今日你好日子，",
+          "index": 85,
+          "text": "蘇翁，今日你好日子，開心死你啦！",
           "speech_start_ms": 391850,
-          "speech_end_ms": 393231,
-          "start_ms": 391850,
-          "end_ms": 393231,
-          "speaker": "SPEAKER_21"
-        },
-        {
-          "index": 96,
-          "text": "開心死你啦！",
-          "speech_start_ms": 393231,
           "speech_end_ms": 394572,
-          "start_ms": 393231,
+          "start_ms": 391850,
           "end_ms": 394572,
           "speaker": "SPEAKER_21"
         },
         {
-          "index": 97,
-          "text": "我哋有幾位新姑娘啊，",
+          "index": 86,
+          "text": "我哋有幾位新姑娘，包你滿意。",
           "speech_start_ms": 394572,
-          "speech_end_ms": 395733,
-          "start_ms": 394572,
-          "end_ms": 395733,
-          "speaker": "SPEAKER_21"
-        },
-        {
-          "index": 98,
-          "text": "包你滿意。",
-          "speech_start_ms": 395733,
           "speech_end_ms": 396714,
-          "start_ms": 395733,
+          "start_ms": 394572,
           "end_ms": 396714,
           "speaker": "SPEAKER_21"
         },
         {
-          "index": 99,
+          "index": 87,
           "text": "金魚定木魚啊，少爺？",
           "speech_start_ms": 396714,
           "speech_end_ms": 398575,
@@ -8053,7 +7927,7 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 100,
+          "index": 88,
           "text": "乜嘢金魚定木魚啊？",
           "speech_start_ms": 398575,
           "speech_end_ms": 399976,
@@ -8062,53 +7936,35 @@
           "speaker": null
         },
         {
-          "index": 101,
-          "text": "傻仔，金魚淨係用嚟睇，",
+          "index": 89,
+          "text": "傻仔，金魚淨係用嚟睇，木魚可以搏㗎嘛。",
           "speech_start_ms": 399976,
-          "speech_end_ms": 402478,
-          "start_ms": 399976,
-          "end_ms": 402478,
-          "speaker": "SPEAKER_21"
-        },
-        {
-          "index": 102,
-          "text": "木魚可以搏㗎嘛，",
-          "speech_start_ms": 402478,
           "speech_end_ms": 404280,
-          "start_ms": 402478,
+          "start_ms": 399976,
           "end_ms": 404280,
           "speaker": "SPEAKER_21"
         },
         {
-          "index": 103,
+          "index": 90,
           "text": "梗係要木魚。",
           "speech_start_ms": 404280,
-          "speech_end_ms": 405921,
+          "speech_end_ms": 405181,
           "start_ms": 404280,
-          "end_ms": 405921,
+          "end_ms": 405181,
           "speaker": "SPEAKER_21"
         },
         {
-          "index": 104,
-          "text": "喂，幾個木魚仲唔過嚟",
-          "speech_start_ms": 405921,
-          "speech_end_ms": 407082,
-          "start_ms": 405921,
-          "end_ms": 407082,
-          "speaker": "SPEAKER_21"
-        },
-        {
-          "index": 105,
-          "text": "招呼客人？",
-          "speech_start_ms": 407082,
+          "index": 91,
+          "text": "呢幾個木魚仲唔過嚟招呼客人！",
+          "speech_start_ms": 405181,
           "speech_end_ms": 409284,
-          "start_ms": 407082,
+          "start_ms": 405181,
           "end_ms": 409284,
           "speaker": "SPEAKER_21"
         },
         {
-          "index": 106,
-          "text": "蘇翁，今日你係自大㗎啦。",
+          "index": 92,
+          "text": "蘇翁，今日你係最大㗎啦。",
           "speech_start_ms": 409284,
           "speech_end_ms": 411366,
           "start_ms": 409284,
@@ -8116,38 +7972,20 @@
           "speaker": "SPEAKER_21"
         },
         {
-          "index": 107,
-          "text": "你想要咩女人，",
+          "index": 93,
+          "text": "你想要咩女人，你開聲就得㗎啦。",
           "speech_start_ms": 411366,
-          "speech_end_ms": 412106,
-          "start_ms": 411366,
-          "end_ms": 412106,
-          "speaker": "SPEAKER_21"
-        },
-        {
-          "index": 108,
-          "text": "你開聲就得㗎啦。",
-          "speech_start_ms": 412106,
           "speech_end_ms": 413508,
-          "start_ms": 412106,
+          "start_ms": 411366,
           "end_ms": 413508,
           "speaker": "SPEAKER_21"
         },
         {
-          "index": 109,
-          "text": "冇所謂，女人個個都係一樣，",
+          "index": 94,
+          "text": "冇所謂，女人個個都係一樣，有乜特別呢？",
           "speech_start_ms": 413508,
-          "speech_end_ms": 415890,
-          "start_ms": 413508,
-          "end_ms": 415890,
-          "speaker": "SPEAKER_13"
-        },
-        {
-          "index": 110,
-          "text": "有乜特別呢？",
-          "speech_start_ms": 415890,
           "speech_end_ms": 416450,
-          "start_ms": 415890,
+          "start_ms": 413508,
           "end_ms": 416950,
           "speaker": "SPEAKER_13"
         }

@@ -6,7 +6,8 @@ from __future__ import annotations
 
 import unicodedata
 from collections import Counter
-from typing import ClassVar, Self
+from collections.abc import Mapping, Sequence
+from typing import ClassVar, Self, cast
 
 from opencc import OpenCC
 from pydantic import Field, ValidationInfo, model_validator
@@ -154,7 +155,7 @@ class AlignedTranscriptionMergeQuery(Query):
 
 
 class AlignedTranscriptionMergeSubtitle(LLMModel):
-    """One ordered consensus subtitle."""
+    """One ordered consensus subtitle derived from merged answer text."""
 
     index: int = Field(ge=1)
     """One-based subtitle index."""
@@ -163,37 +164,85 @@ class AlignedTranscriptionMergeSubtitle(LLMModel):
 
 
 class AlignedTranscriptionMergeAnswer(Answer):
-    """Merged consensus transcript divided into subtitles."""
+    """Merged consensus text containing inline subtitle boundaries."""
 
     prompt: ClassVar[AlignedTranscriptionMergePrompt] = _BASE_PROMPT
     """Text and field aliases for aligned transcription merging."""
-    subtitles: list[AlignedTranscriptionMergeSubtitle] = Field(min_length=1)
-    """Complete consensus subtitles in reading order."""
+    text: str = Field(min_length=2, max_length=20_000)
+    """Punctuated consensus with a fullwidth bar after every subtitle."""
+
+    @property
+    def subtitles(self) -> list[AlignedTranscriptionMergeSubtitle]:
+        """Get consensus subtitles deterministically from the boundary markers."""
+        return [
+            AlignedTranscriptionMergeSubtitle(index=index, text=text)
+            for index, text in enumerate(self.text[:-1].split("｜"), start=1)
+        ]
 
     @property
     def transcript(self) -> str:
         """Get the complete consensus transcript."""
         return "".join(subtitle.text for subtitle in self.subtitles)
 
+    @classmethod
+    def concatenate(
+        cls, answers: Sequence[AlignedTranscriptionMergeAnswer]
+    ) -> AlignedTranscriptionMergeAnswer:
+        """Concatenate independently queried answer rows.
+
+        Arguments:
+            answers: aligned request answers in chronological order
+        Returns:
+            one answer preserving all request-level subtitle boundaries
+        Raises:
+            ValueError: if no request answers are provided
+        """
+        if not answers:
+            raise ValueError("At least one aligned merge answer is required.")
+        return cls(text="".join(answer.text for answer in answers))
+
+    @model_validator(mode="before")
+    @classmethod
+    def migrate_legacy_subtitles(cls, value: object) -> object:
+        """Convert the former indexed-subtitle persistence shape to inline text."""
+        if not isinstance(value, Mapping):
+            return value
+        mapping = cast(Mapping[str, object], value)
+        if "subtitles" not in mapping:
+            return value
+        subtitles = mapping["subtitles"]
+        if not isinstance(subtitles, list) or not subtitles:
+            return value
+        texts = []
+        for subtitle in subtitles:
+            if not isinstance(subtitle, Mapping):
+                return value
+            text = subtitle.get("text")
+            if not isinstance(text, str):
+                return value
+            texts.append(text)
+        migrated = dict(value)
+        del migrated["subtitles"]
+        migrated["text"] = "".join(
+            text + _REFERENCE_BOUNDARY_CHARACTER for text in texts
+        )
+        return migrated
+
     @model_validator(mode="after")
-    def validate_subtitles(self) -> Self:
-        """Ensure subtitle indexes and text form a clean ordered transcript."""
-        indexes = [subtitle.index for subtitle in self.subtitles]
-        if indexes != list(range(1, len(indexes) + 1)):
-            raise ValueError(self.prompt.subtitle_indices_err)
-        if any(not subtitle.text.strip() for subtitle in self.subtitles):
-            raise ValueError(self.prompt.subtitle_text_err)
+    def validate_text(self) -> Self:
+        """Ensure boundary markers form nonblank, annotation-free subtitles."""
+        if not self.text.endswith(_REFERENCE_BOUNDARY_CHARACTER):
+            raise ValueError(self.prompt.answer_text_err)
+        subtitle_texts = self.text[:-1].split(_REFERENCE_BOUNDARY_CHARACTER)
+        if not subtitle_texts or any(not text.strip() for text in subtitle_texts):
+            raise ValueError(self.prompt.answer_text_err)
         annotation_characters = {
             _ALIGNMENT_GAP_CHARACTER,
             _PAUSE_CHARACTER,
-            _REFERENCE_BOUNDARY_CHARACTER,
             _VAD_SPEECH_CHARACTER,
         }
-        if any(
-            annotation_characters.intersection(subtitle.text)
-            for subtitle in self.subtitles
-        ):
-            raise ValueError(self.prompt.subtitle_annotation_err)
+        if any(annotation_characters.intersection(text) for text in subtitle_texts):
+            raise ValueError(self.prompt.answer_text_err)
         return self
 
 
@@ -216,8 +265,8 @@ class AlignedTranscriptionMergeTestCase(TestCase):
     """Merged consensus subtitles, if available."""
 
     @model_validator(mode="after")
-    def validate_subtitle_lengths(self, info: ValidationInfo) -> Self:
-        """Ensure generated subtitles are complete and obey the hard length limit.
+    def validate_answer(self, info: ValidationInfo) -> Self:
+        """Ensure the answer is sufficiently complete and obeys the length limit.
 
         Arguments:
             info: Pydantic validation context
@@ -256,7 +305,7 @@ class AlignedTranscriptionMergeTestCase(TestCase):
             .strip()
         )
         return AlignedTranscriptionMergeAnswer(
-            subtitles=[AlignedTranscriptionMergeSubtitle(index=1, text=text)]
+            text=text + _REFERENCE_BOUNDARY_CHARACTER
         )
 
 

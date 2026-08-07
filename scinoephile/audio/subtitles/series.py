@@ -24,7 +24,7 @@ from scinoephile.common.validation import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.media.audio import extract_audio
+from scinoephile.media.audio import AudioExtractionMode, extract_audio
 
 from .subtitle import AudioSubtitle
 
@@ -217,7 +217,10 @@ class AudioSeries(Series):
 
     @classmethod
     def load_audio_from_media(
-        cls, media_path: Path | str, stream_index: int | None = None
+        cls,
+        media_path: Path | str,
+        stream_index: int | None = None,
+        extraction_mode: AudioExtractionMode = AudioExtractionMode.ORIGINAL,
     ) -> Self:
         """Load complete audio from a media file without subtitle events.
 
@@ -225,6 +228,7 @@ class AudioSeries(Series):
             media_path: path to media file
             stream_index: media stream index of an audio stream, or None to use the
                 first audio stream
+            extraction_mode: channel preparation used during audio extraction
         Returns:
             audio series containing the complete extracted audio and no events
         Raises:
@@ -235,7 +239,10 @@ class AudioSeries(Series):
             with get_temp_directory_path() as temp_dir_path:
                 full_audio_path = temp_dir_path / "full_audio.wav"
                 extract_audio(
-                    validated_media_path, full_audio_path, stream_index=stream_index
+                    validated_media_path,
+                    full_audio_path,
+                    stream_index=stream_index,
+                    mode=extraction_mode,
                 )
                 logger.info(f"Loading full audio from {full_audio_path}")
                 full_audio = AudioSegment.from_wav(full_audio_path)

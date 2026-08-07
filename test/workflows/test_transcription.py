@@ -35,8 +35,10 @@ def test_transcribe_series_constructs_aligned_pipeline(tmp_path: Path):
         output = transcribe_series(
             audio_series,
             language=Language.yue_hant,
+            skip_singing_blocks=True,
             demucs_mode=DemucsMode.ON,
             diarization_mode=DiarizationMode.ON,
+            skip_non_target_language_blocks=True,
             vad_implementation=VADImplementation.TEN,
             block_vad_implementation=VADImplementation.SILERO,
             mlx_audio_token_limit_guard=False,
@@ -56,10 +58,12 @@ def test_transcribe_series_constructs_aligned_pipeline(tmp_path: Path):
     get_pipeline.assert_called_once_with(
         Language.yue_hant,
         audio_event_mode=AudioClassificationMode.AUTO,
+        skip_singing_blocks=True,
         source_specs=None,
         demucs_mode=DemucsMode.ON,
         diarization_mode=DiarizationMode.ON,
         language_identification_mode=AudioClassificationMode.AUTO,
+        skip_non_target_language_blocks=True,
         vad_implementation=VADImplementation.TEN,
         block_vad_implementation=VADImplementation.SILERO,
         mlx_audio_token_limit_guard=False,

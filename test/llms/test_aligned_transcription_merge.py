@@ -20,7 +20,6 @@ from scinoephile.llms.aligned_transcription_merge import (
     AlignedTranscriptionMergePrompt,
     AlignedTranscriptionMergeQuery,
     AlignedTranscriptionMergeSource,
-    AlignedTranscriptionMergeSubtitle,
     AlignedTranscriptionMergeTestCase,
 )
 from scinoephile.llms.aligned_transcription_merge.splitting import (
@@ -33,9 +32,7 @@ _LOCALIZED_PROMPT = AlignedTranscriptionMergePrompt(
     source_name="mingcheng",
     source_text="yuanwen",
     speaker="shuoshuuren",
-    subtitles="zimu",
-    subtitle_index="xuhao",
-    subtitle_text="wenben",
+    answer_text="wenben",
 )
 """Aligned merge prompt with localized correspondence field names."""
 
@@ -57,6 +54,11 @@ def _get_sources(*texts: str) -> list[AlignedTranscriptionMergeSource]:
     ]
 
 
+def _get_answer(*texts: str) -> AlignedTranscriptionMergeAnswer:
+    """Get one merged answer from punctuated subtitle text."""
+    return AlignedTranscriptionMergeAnswer(text="".join(text + "｜" for text in texts))
+
+
 def test_prompt_aliases_are_used_for_nested_llm_correspondence():
     """Generated nested schemas and JSON should use prompt aliases."""
     test_case_cls = AlignedTranscriptionMergeManager.get_test_case_cls(
@@ -71,7 +73,7 @@ def test_prompt_aliases_are_used_for_nested_llm_correspondence():
                 ],
                 "shuoshuuren": "ＡＡ",
             },
-            "answer": {"zimu": [{"xuhao": 1, "wenben": "我係。"}]},
+            "answer": {"wenben": "我係。｜"},
         }
     )
 
@@ -83,9 +85,45 @@ def test_prompt_aliases_are_used_for_nested_llm_correspondence():
         "shuoshuuren": "ＡＡ",
     }
     assert test_case.answer is not None
-    assert test_case.answer.model_dump(by_alias=True) == {
-        "zimu": [{"xuhao": 1, "wenben": "我係。"}]
-    }
+    assert test_case.answer.model_dump(by_alias=True) == {"wenben": "我係。｜"}
+
+
+def test_answer_text_derives_ordered_subtitles():
+    """Fullwidth boundary markers should deterministically recover subtitles."""
+    answer = AlignedTranscriptionMergeAnswer(text="甲。｜乙！｜")
+
+    assert answer.transcript == "甲。乙！"
+    assert [(subtitle.index, subtitle.text) for subtitle in answer.subtitles] == [
+        (1, "甲。"),
+        (2, "乙！"),
+    ]
+
+
+def test_answer_text_can_represent_a_spoken_word_space():
+    """Ordinary word spaces should remain part of the consensus transcript."""
+    answer = AlignedTranscriptionMergeAnswer(text="Ａ Ｂ。｜")
+
+    assert answer.transcript == "Ａ Ｂ。"
+
+
+def test_answer_migrates_legacy_indexed_subtitles():
+    """Persisted answers from the former list schema should remain readable."""
+    answer = AlignedTranscriptionMergeAnswer.model_validate(
+        {"subtitles": [{"index": 1, "text": "甲。"}, {"index": 2, "text": "乙！"}]},
+        extra="forbid",
+    )
+
+    assert answer.text == "甲。｜乙！｜"
+
+
+def test_answer_text_requires_clean_terminated_subtitles():
+    """Answers should terminate every nonblank subtitle and omit input annotations."""
+    with raises(ValidationError, match="separated and terminated"):
+        AlignedTranscriptionMergeAnswer(text="甲。｜乙！")
+    with raises(ValidationError, match="separated and terminated"):
+        AlignedTranscriptionMergeAnswer(text="甲。｜｜乙！｜")
+    with raises(ValidationError, match="separated and terminated"):
+        AlignedTranscriptionMergeAnswer(text="甲・乙｜")
 
 
 def test_query_supports_future_sources_and_requires_equal_width_rows():
@@ -212,8 +250,8 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
         completion_metrics=[],
     )
     provider.chat_completion.side_effect = [
-        json.dumps({"zimu": [{"xuhao": 1, "wenben": "甲。"}]}, ensure_ascii=False),
-        json.dumps({"zimu": [{"xuhao": 1, "wenben": "乙。"}]}, ensure_ascii=False),
+        json.dumps({"wenben": "甲。｜"}, ensure_ascii=False),
+        json.dumps({"wenben": "乙。｜"}, ensure_ascii=False),
     ]
     processor = AlignedTranscriptionMergeProcessor(_LOCALIZED_PROMPT, provider=provider)
 
@@ -252,16 +290,8 @@ def test_processor_retries_subtitles_exceeding_hard_length_limit():
         completion_metrics=[],
     )
     provider.chat_completion.side_effect = [
-        json.dumps({"zimu": [{"xuhao": 1, "wenben": "一" * 21}]}, ensure_ascii=False),
-        json.dumps(
-            {
-                "zimu": [
-                    {"xuhao": 1, "wenben": "一" * 11},
-                    {"xuhao": 2, "wenben": "一" * 10},
-                ]
-            },
-            ensure_ascii=False,
-        ),
+        json.dumps({"wenben": "一" * 21 + "｜"}, ensure_ascii=False),
+        json.dumps({"wenben": "一" * 11 + "｜" + "一" * 10 + "｜"}, ensure_ascii=False),
     ]
     processor = AlignedTranscriptionMergeProcessor(_LOCALIZED_PROMPT, provider=provider)
 
@@ -280,11 +310,8 @@ def test_processor_retries_answers_omitting_majority_consensus_speech():
         completion_metrics=[],
     )
     provider.chat_completion.side_effect = [
-        json.dumps({"zimu": [{"xuhao": 1, "wenben": "甲乙丙丁"}]}, ensure_ascii=False),
-        json.dumps(
-            {"zimu": [{"xuhao": 1, "wenben": "甲乙丙丁戊己庚辛壬癸"}]},
-            ensure_ascii=False,
-        ),
+        json.dumps({"wenben": "甲乙丙丁｜"}, ensure_ascii=False),
+        json.dumps({"wenben": "甲乙丙丁戊己庚辛壬癸｜"}, ensure_ascii=False),
     ]
     processor = AlignedTranscriptionMergeProcessor(_LOCALIZED_PROMPT, provider=provider)
 
@@ -307,11 +334,7 @@ def test_answer_coverage_allows_supported_character_corrections():
         ],
         speaker="ＡＡＡＡＡＡＡＡ",
     )
-    answer = AlignedTranscriptionMergeAnswer(
-        subtitles=[
-            AlignedTranscriptionMergeSubtitle(index=1, text="但唔通我唔可以係？")
-        ]
-    )
+    answer = AlignedTranscriptionMergeAnswer(text="但唔通我唔可以係？｜")
 
     test_case = AlignedTranscriptionMergeTestCase(query=query, answer=answer)
 

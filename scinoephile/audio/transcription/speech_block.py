@@ -22,6 +22,8 @@ class SpeechBlockSettings:
     """Additional ASR context supplied before and after each block core."""
     voice_activity_threshold: float = 0.9
     """Minimum model score treated as voice activity."""
+    min_silence_duration_seconds: float = 0.1
+    """Below-threshold gap bridged before minimum speech filtering."""
     min_speech_duration_seconds: float = 0.3
     """Minimum active run retained when locating speech-free gaps."""
 
@@ -35,6 +37,8 @@ class SpeechBlockSettings:
             raise ValueError(
                 "Speech-block voice threshold must be between zero and one."
             )
+        if self.min_silence_duration_seconds < 0.0:
+            raise ValueError("Minimum speech-block silence must be non-negative.")
         if self.min_speech_duration_seconds < 0.0:
             raise ValueError("Minimum speech-block activity must be non-negative.")
 
@@ -121,9 +125,6 @@ class SpeechBlockSplitter:
         Returns:
             retained active frame-index ranges
         """
-        minimum_active_frames = ceil(
-            self.settings.min_speech_duration_seconds * 1000 / trace.step_ms
-        )
         runs = []
         run_start_idx = None
         for frame_idx, score in enumerate(trace.scores):
@@ -133,15 +134,34 @@ class SpeechBlockSplitter:
                 continue
             if run_start_idx is None:
                 continue
-            if frame_idx - run_start_idx >= minimum_active_frames:
-                runs.append((run_start_idx, frame_idx))
+            runs.append((run_start_idx, frame_idx))
             run_start_idx = None
-        if (
-            run_start_idx is not None
-            and len(trace) - run_start_idx >= minimum_active_frames
-        ):
+        if run_start_idx is not None:
             runs.append((run_start_idx, len(trace)))
-        return runs
+
+        minimum_inactive_frames = ceil(
+            self.settings.min_silence_duration_seconds * 1000 / trace.step_ms
+        )
+        bridged_runs = []
+        if runs:
+            bridged_start_idx, bridged_end_idx = runs[0]
+            for next_start_idx, next_end_idx in runs[1:]:
+                if next_start_idx - bridged_end_idx < minimum_inactive_frames:
+                    bridged_end_idx = next_end_idx
+                    continue
+                bridged_runs.append((bridged_start_idx, bridged_end_idx))
+                bridged_start_idx = next_start_idx
+                bridged_end_idx = next_end_idx
+            bridged_runs.append((bridged_start_idx, bridged_end_idx))
+
+        minimum_active_frames = ceil(
+            self.settings.min_speech_duration_seconds * 1000 / trace.step_ms
+        )
+        return [
+            (start_idx, end_idx)
+            for start_idx, end_idx in bridged_runs
+            if end_idx - start_idx >= minimum_active_frames
+        ]
 
     @staticmethod
     def _get_frame_boundary_ms(trace: VoiceActivityTrace, frame_idx: int) -> float:

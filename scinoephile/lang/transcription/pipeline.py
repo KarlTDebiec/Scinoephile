@@ -19,6 +19,7 @@ from scinoephile.analysis.transcription_alignment import (
 from scinoephile.audio.classification import (
     AudioClassificationError,
     AudioClassificationMode,
+    AudioEvent,
     AudioEventDetectionResult,
     FireRedAudioEventDetector,
     FireRedLanguageIdentifier,
@@ -55,6 +56,27 @@ __all__ = ["TranscriptionPipeline", "get_transcription_pipeline"]
 
 logger = getLogger(__name__)
 
+_CONFIDENT_LANGUAGE_MINIMUM_CONFIDENCE = 0.9
+"""Minimum LID confidence used to reject a transcription block."""
+
+_CONFIDENT_LANGUAGE_MINIMUM_DURATION_SECONDS = 5.0
+"""Minimum high-confidence non-target speech used to reject a block."""
+
+_CONFIDENT_NON_TARGET_LANGUAGE_COVERAGE = 0.8
+"""Minimum classified-speech coverage used to reject a non-target block."""
+
+_CONFIDENT_SINGING_COVERAGE = 0.8
+"""Minimum corroborating singing and music coverage used to reject a block."""
+
+_FIRERED_TARGET_LANGUAGE_CODES = {
+    Language.eng: frozenset({"en"}),
+    Language.yue_hans: frozenset({"zh-yue"}),
+    Language.yue_hant: frozenset({"zh-yue"}),
+    Language.zho_hans: frozenset({"zh-mandarin"}),
+    Language.zho_hant: frozenset({"zh-mandarin"}),
+}
+"""FireRed LID codes accepted for each transcription language."""
+
 
 class TranscriptionPipeline:
     """Plan speech blocks, merge ASR evidence, and produce timed subtitles."""
@@ -67,6 +89,7 @@ class TranscriptionPipeline:
         alignment_sources: tuple[TranscriptionAlignmentSource, ...],
         audio_event_mode: AudioClassificationMode = AudioClassificationMode.AUTO,
         audio_event_detector: FireRedAudioEventDetector | None = None,
+        skip_singing_blocks: bool = False,
         diarization_mode: DiarizationMode = DiarizationMode.AUTO,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
@@ -79,6 +102,7 @@ class TranscriptionPipeline:
             AudioClassificationMode.AUTO
         ),
         language_identifier: FireRedLanguageIdentifier | None = None,
+        skip_non_target_language_blocks: bool = False,
         timing_settings: SubtitleTimingSettings | None = None,
     ):
         """Initialize.
@@ -89,6 +113,7 @@ class TranscriptionPipeline:
             alignment_sources: portable descriptors for every expected ASR source
             audio_event_mode: source-wide speech, singing, and music mode
             audio_event_detector: optional configured FireRed audio-event detector
+            skip_singing_blocks: whether to omit confidently singing blocks
             diarization_mode: source-wide speaker diarization mode
             cache_root_path: cache root directory path
             overwrite_cache: whether to replace matching generated cache files
@@ -99,6 +124,8 @@ class TranscriptionPipeline:
             diarizer: optional configured source-wide speaker diarizer
             language_identification_mode: source-wide spoken-language mode
             language_identifier: optional configured FireRed language identifier
+            skip_non_target_language_blocks: whether to omit confidently non-target
+                language blocks
             timing_settings: reference-free merged subtitle display timing
         """
         self.language = language
@@ -111,6 +138,8 @@ class TranscriptionPipeline:
         """Source-wide speech, singing, and music detection mode."""
         self.audio_event_detector = audio_event_detector
         """Optional FireRed multi-label audio-event detector."""
+        self.skip_singing_blocks = skip_singing_blocks
+        """Whether to omit blocks whose cores are at least 80% singing and music."""
         if self.audio_event_mode is not AudioClassificationMode.OFF and (
             self.audio_event_detector is None
         ):
@@ -148,6 +177,8 @@ class TranscriptionPipeline:
         """Source-wide spoken-language identification mode."""
         self.language_identifier = language_identifier
         """Optional FireRed spoken-language identifier."""
+        self.skip_non_target_language_blocks = skip_non_target_language_blocks
+        """Whether to omit blocks with sustained confident non-target speech."""
         if self.language_identification_mode is not AudioClassificationMode.OFF and (
             self.language_identifier is None
         ):
@@ -190,7 +221,6 @@ class TranscriptionPipeline:
                 "Cannot prune aligned merge test cases while processing only a "
                 "subset of transcription blocks."
             )
-        diarization = self._get_diarization(audio_series.audio, bool(selected_blocks))
         classification_audio, classification_offset_ms = self._get_classification_audio(
             audio_series.audio, selected_blocks
         )
@@ -200,6 +230,10 @@ class TranscriptionPipeline:
         language_identification = self._get_language_identification(
             classification_audio, classification_offset_ms, trace, selected_blocks
         )
+        selected_blocks = self._get_filtered_blocks(
+            selected_blocks, audio_events, language_identification
+        )
+        diarization = self._get_diarization(audio_series.audio, bool(selected_blocks))
 
         output_segments = []
         alignment_blocks: list[TranscriptionAlignmentBlock] = []
@@ -370,6 +404,74 @@ class TranscriptionPipeline:
                 f"evidence: {exc}"
             )
             return None
+
+    def _get_filtered_blocks(
+        self,
+        blocks: list[SpeechBlock],
+        audio_events: AudioEventDetectionResult | None,
+        language_identification: LanguageIdentificationResult | None,
+    ) -> list[SpeechBlock]:
+        """Remove blocks confidently classified outside transcription scope."""
+        output_blocks = []
+        target_language_codes = _FIRERED_TARGET_LANGUAGE_CODES[self.language]
+        non_target_language_codes = set()
+        if language_identification is not None:
+            non_target_language_codes = {
+                span.language
+                for span in language_identification.spans
+                if span.language not in target_language_codes
+            }
+        for block in blocks:
+            start = block.start_ms / 1000
+            end = block.end_ms / 1000
+            reasons = []
+            if self.skip_singing_blocks and audio_events is not None:
+                singing_coverage = audio_events.get_coverage(
+                    AudioEvent.SINGING, start, end
+                )
+                music_coverage = audio_events.get_coverage(AudioEvent.MUSIC, start, end)
+                if (
+                    singing_coverage >= _CONFIDENT_SINGING_COVERAGE
+                    and music_coverage >= _CONFIDENT_SINGING_COVERAGE
+                ):
+                    reasons.append(
+                        f"{singing_coverage:.1%} singing and "
+                        f"{music_coverage:.1%} music coverage"
+                    )
+            if (
+                self.skip_non_target_language_blocks
+                and language_identification is not None
+            ):
+                non_target_coverage = language_identification.get_coverage(
+                    start,
+                    end,
+                    languages=non_target_language_codes,
+                    minimum_confidence=_CONFIDENT_LANGUAGE_MINIMUM_CONFIDENCE,
+                )
+                non_target_duration = language_identification.get_duration(
+                    start,
+                    end,
+                    languages=non_target_language_codes,
+                    minimum_confidence=_CONFIDENT_LANGUAGE_MINIMUM_CONFIDENCE,
+                )
+                if (
+                    non_target_coverage >= _CONFIDENT_NON_TARGET_LANGUAGE_COVERAGE
+                    and non_target_duration
+                    >= _CONFIDENT_LANGUAGE_MINIMUM_DURATION_SECONDS
+                ):
+                    reasons.append(
+                        f"{non_target_coverage:.1%} confidently non-target "
+                        f"classified speech over {non_target_duration:.1f}s"
+                    )
+            if reasons:
+                logger.info(
+                    f"Skipping transcription block {block.index + 1} "
+                    f"({block.start_ms / 1000:.3f}-{block.end_ms / 1000:.3f}s): "
+                    f"{', '.join(reasons)}."
+                )
+                continue
+            output_blocks.append(block)
+        return output_blocks
 
     def _get_audio_events(
         self, audio: AudioSegment | None, offset_ms: int
@@ -577,12 +679,14 @@ def get_transcription_pipeline(
     language: Language,
     *,
     audio_event_mode: AudioClassificationMode = AudioClassificationMode.AUTO,
+    skip_singing_blocks: bool = False,
     source_specs: tuple[TranscriptionSourceSpec, ...] | None = None,
     demucs_mode: DemucsMode = DemucsMode.OFF,
     diarization_mode: DiarizationMode = DiarizationMode.AUTO,
     language_identification_mode: AudioClassificationMode = (
         AudioClassificationMode.AUTO
     ),
+    skip_non_target_language_blocks: bool = False,
     vad_implementation: VADImplementation = VADImplementation.SILERO,
     block_vad_implementation: VADImplementation = VADImplementation.PYANNOTE,
     mlx_audio_token_limit_guard: bool = True,
@@ -601,10 +705,13 @@ def get_transcription_pipeline(
     Arguments:
         language: transcription and output language
         audio_event_mode: source-wide speech, singing, and music mode
+        skip_singing_blocks: whether to omit confidently singing blocks
         source_specs: optional future-extensible ASR source registry override
         demucs_mode: source-level vocal-separation mode
         diarization_mode: source-wide speaker diarization mode
         language_identification_mode: source-wide spoken-language mode
+        skip_non_target_language_blocks: whether to omit confidently non-target
+            language blocks
         vad_implementation: backend VAD implementation retained for cache identity
         block_vad_implementation: VAD used for block planning and pause evidence
         mlx_audio_token_limit_guard: whether to guard MiMo generation length
@@ -654,8 +761,10 @@ def get_transcription_pipeline(
         transcriber=transcriber,
         alignment_sources=alignment_sources,
         audio_event_mode=audio_event_mode,
+        skip_singing_blocks=skip_singing_blocks,
         diarization_mode=diarization_mode,
         language_identification_mode=language_identification_mode,
+        skip_non_target_language_blocks=skip_non_target_language_blocks,
         cache_root_path=cache_root_path,
         overwrite_cache=overwrite_cache,
         block_settings=block_settings,

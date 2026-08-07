@@ -10,7 +10,7 @@ LLM verbatim; do not write a general film report or an exhaustive cast list.
 
 ## Determine the scope
 
-Identify these from the request, the dataset's `create_output.py`, and the
+Identify these from the request, the dataset's title-named Python script, and the
 available subtitle tracks:
 
 - The movie and dataset.
@@ -53,7 +53,7 @@ Use these repository examples as contrasts:
 ## Inspect subtitle evidence
 
 Locate the best available human-authored or human-reviewed reference subtitle
-tracks. Trace the workflow in `create_output.py` rather than choosing a file by
+tracks. Trace the workflow in the title-named script rather than choosing a file by
 its name alone. Do not treat generated LLM output as naming authority.
 
 Search the reference subtitles and inspect occurrences in context. Collect only
@@ -98,7 +98,7 @@ the supporting web pages in the final response instead.
 
 ## Draft the context
 
-Follow this plain-text shape, modeled on `test/data/mnt/create_output.py`:
+Follow this plain-text shape, modeled on `test/data/mnt/mnt.py`:
 
 ```text
 Movie context:
@@ -137,7 +137,7 @@ Keep the prose concise and operational:
 
 When the user names a code or configuration destination, update that destination
 and preserve its established representation. For a Scinoephile
-`create_output.py`, follow the existing `additional_context` multiline-string
+title-named dataset script, follow the existing `additional_context` multiline-string
 pattern and do not change which LLM calls receive it unless requested.
 
 Otherwise write prompt-ready UTF-8 text to:

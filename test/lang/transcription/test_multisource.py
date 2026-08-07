@@ -28,7 +28,6 @@ from scinoephile.lang.transcription.multisource import MultiSourceTranscriber
 from scinoephile.llms.aligned_transcription_merge import (
     AlignedTranscriptionMergeAnswer,
     AlignedTranscriptionMergeProcessor,
-    AlignedTranscriptionMergeSubtitle,
 )
 
 
@@ -56,13 +55,8 @@ def _get_segment(
 
 
 def _get_answer(*texts: str) -> AlignedTranscriptionMergeAnswer:
-    """Get one aligned merger answer with ordered subtitle texts."""
-    return AlignedTranscriptionMergeAnswer(
-        subtitles=[
-            AlignedTranscriptionMergeSubtitle(index=index, text=text)
-            for index, text in enumerate(texts, start=1)
-        ]
-    )
+    """Get one merged answer from punctuated subtitle text."""
+    return AlignedTranscriptionMergeAnswer(text="".join(text + "｜" for text in texts))
 
 
 def _get_transcriber(

@@ -79,5 +79,5 @@ if "yue-Hant_transcribe" in actions:
         additional_context=transcription_additional_context,
         reference_name="yue-Hant",
         terminal_alignment_authority="yue-Hant",
-        overwrite=True,
+        overwrite=False,
     )

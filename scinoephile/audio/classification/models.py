@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Collection
 from enum import StrEnum
 from typing import Self
 
@@ -108,6 +109,72 @@ class LanguageIdentificationResult(BaseModel):
                     best_span = span
         return None if best_span is None else best_span.language
 
+    def get_coverage(
+        self,
+        start: float,
+        end: float,
+        *,
+        languages: Collection[str] | None = None,
+        minimum_confidence: float = 0.0,
+    ) -> float:
+        """Get qualifying duration as a fraction of classified speech.
+
+        Arguments:
+            start: interval start relative to the complete source, in seconds
+            end: interval end relative to the complete source, in seconds
+            languages: optional accepted language codes
+            minimum_confidence: minimum confidence for qualifying spans
+        Returns:
+            qualifying overlap divided by all classified overlap
+        """
+        if start < 0.0 or end < start:
+            raise ValueError("Language coverage interval is invalid.")
+        if not 0.0 <= minimum_confidence <= 1.0:
+            raise ValueError("Minimum language confidence must be in [0, 1].")
+        total_overlap = self.get_duration(start, end)
+        qualifying_overlap = self.get_duration(
+            start, end, languages=languages, minimum_confidence=minimum_confidence
+        )
+        if total_overlap == 0.0:
+            return 0.0
+        return qualifying_overlap / total_overlap
+
+    def get_duration(
+        self,
+        start: float,
+        end: float,
+        *,
+        languages: Collection[str] | None = None,
+        minimum_confidence: float = 0.0,
+    ) -> float:
+        """Get qualifying classified-speech duration within an interval.
+
+        Arguments:
+            start: interval start relative to the complete source, in seconds
+            end: interval end relative to the complete source, in seconds
+            languages: optional accepted language codes
+            minimum_confidence: minimum confidence for qualifying spans
+        Returns:
+            qualifying classified-speech duration in seconds
+        """
+        if start < 0.0 or end < start:
+            raise ValueError("Language duration interval is invalid.")
+        if not 0.0 <= minimum_confidence <= 1.0:
+            raise ValueError("Minimum language confidence must be in [0, 1].")
+        duration = 0.0
+        for span in self.spans:
+            if span.start >= end:
+                break
+            overlap = min(end, span.end) - max(start, span.start)
+            if overlap <= 0.0:
+                continue
+            if span.confidence < minimum_confidence:
+                continue
+            if languages is not None and span.language not in languages:
+                continue
+            duration += overlap
+        return duration
+
 
 class AudioEventSpan(BaseModel):
     """One source-timeline interval containing an independently detected event."""
@@ -165,3 +232,24 @@ class AudioEventDetectionResult(BaseModel):
             span.event is event and span.start <= midpoint < span.end
             for span in self.spans
         )
+
+    def get_coverage(self, event: AudioEvent, start: float, end: float) -> float:
+        """Get the fraction of an interval covered by an event.
+
+        Arguments:
+            event: event type to look up
+            start: interval start relative to the complete source, in seconds
+            end: interval end relative to the complete source, in seconds
+        Returns:
+            fraction of the interval covered by the event
+        """
+        if start < 0.0 or end < start:
+            raise ValueError("Audio event coverage interval is invalid.")
+        if end == start:
+            return 0.0
+        covered_duration = sum(
+            max(0.0, min(end, span.end) - max(start, span.start))
+            for span in self.spans
+            if span.event is event and span.start < end and span.end > start
+        )
+        return covered_duration / (end - start)

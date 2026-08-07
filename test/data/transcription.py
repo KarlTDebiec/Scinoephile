@@ -42,6 +42,7 @@ from scinoephile.lang.transcription.pipeline import (
     get_transcription_pipeline,
 )
 from scinoephile.llms.providers.registry import get_provider
+from scinoephile.media.audio import AudioExtractionMode
 from scinoephile.workflows.transcription import transcribe_series
 
 __all__ = ["process_transcription_pipeline"]
@@ -60,6 +61,7 @@ def process_transcription_pipeline(
     audio_source_path: Path | None = None,
     media_path: Path | None = None,
     stream_index: int | None = None,
+    audio_extraction_mode: AudioExtractionMode = AudioExtractionMode.ORIGINAL,
     media_start_seconds: float = 0.0,
     stop_at_idx: int | None = None,
     target_reference_subtitles: int = 100,
@@ -69,6 +71,8 @@ def process_transcription_pipeline(
     terminal_alignment_authority: str | None = None,
     timing_settings: SubtitleTimingSettings | None = None,
     diarization_mode: DiarizationMode = DiarizationMode.AUTO,
+    skip_singing_blocks: bool = False,
+    skip_non_target_language_blocks: bool = False,
     mlx_audio_token_limit_guard: bool = True,
     overwrite: bool = False,
 ) -> Series:
@@ -84,10 +88,11 @@ def process_transcription_pipeline(
         language: transcription and output language
         output_dir_path: standardized output directory
         audio_path: path at which complete staged WAV audio is stored
-        audio_dir_path: legacy directory containing ``audio.wav``
+        audio_dir_path: legacy directory containing `audio.wav`
         audio_source_path: optional WAV copied to the staged audio path
         media_path: optional media from which to extract audio when not staged
         stream_index: optional media audio-stream index
+        audio_extraction_mode: channel preparation used during media audio extraction
         media_start_seconds: seconds trimmed from extracted media audio
         stop_at_idx: explicit exclusive VAD block index, overriding target count
         target_reference_subtitles: minimum reference subtitles covered by blocks
@@ -97,6 +102,9 @@ def process_transcription_pipeline(
         terminal_alignment_authority: merged or named reference row for ANSI output
         timing_settings: reference-free display-timing policy
         diarization_mode: speaker diarization mode
+        skip_singing_blocks: whether to omit confidently singing VAD blocks
+        skip_non_target_language_blocks: whether to omit confidently non-target
+            language VAD blocks
         mlx_audio_token_limit_guard: whether to guard MiMo generation length
         overwrite: whether to regenerate an existing artifact and SRT
     Returns:
@@ -142,6 +150,7 @@ def process_transcription_pipeline(
         audio_source_path=audio_source_path,
         media_path=media_path,
         stream_index=stream_index,
+        audio_extraction_mode=audio_extraction_mode,
         media_start_seconds=media_start_seconds,
     )
     provider = get_provider()
@@ -149,6 +158,8 @@ def process_transcription_pipeline(
     pipeline = get_transcription_pipeline(
         language,
         diarization_mode=diarization_mode,
+        skip_singing_blocks=skip_singing_blocks,
+        skip_non_target_language_blocks=skip_non_target_language_blocks,
         provider=provider,
         additional_context=additional_context,
         aligned_merge_json_path=json_dir_path / "aligned_merge.json",
@@ -216,6 +227,7 @@ def _load_audio_series(
     audio_source_path: Path | None,
     media_path: Path | None,
     stream_index: int | None,
+    audio_extraction_mode: AudioExtractionMode = AudioExtractionMode.ORIGINAL,
     media_start_seconds: float,
 ) -> AudioSeries:
     """Load staged complete audio without supplying subtitle events to ASR."""
@@ -230,7 +242,9 @@ def _load_audio_series(
         raise ScinoephileError(
             f"Staged audio is missing at {audio_path}; provide media_path."
         )
-    audio = AudioSeries.load_audio_from_media(media_path, stream_index=stream_index)
+    audio = AudioSeries.load_audio_from_media(
+        media_path, stream_index=stream_index, extraction_mode=audio_extraction_mode
+    )
     trim_start_ms = round(media_start_seconds * 1000)
     if trim_start_ms >= len(audio.audio):
         raise ScinoephileError(

@@ -13,7 +13,6 @@ from .models import (
     AlignedTranscriptionMergeAnswer,
     AlignedTranscriptionMergeQuery,
     AlignedTranscriptionMergeSource,
-    AlignedTranscriptionMergeSubtitle,
     AlignedTranscriptionMergeTestCase,
 )
 from .prompt import AlignedTranscriptionMergePrompt
@@ -43,15 +42,12 @@ class AlignedTranscriptionMergeManager(Manager[AlignedTranscriptionMergeTestCase
         Returns:
             answer model class
         """
-        subtitle_cls = cls.get_subtitle_cls(prompt)
         return cls.create_prompt_model(
             AlignedTranscriptionMergeAnswer,
             prompt,
             {
-                "subtitles": PromptModelField(
-                    alias=prompt.subtitles,
-                    annotation=list[subtitle_cls],  # ty: ignore[invalid-type-form]
-                    description=prompt.subtitles_desc,
+                "text": PromptModelField(
+                    alias=prompt.answer_text, description=prompt.answer_text_desc
                 )
             },
         )
@@ -112,31 +108,6 @@ class AlignedTranscriptionMergeManager(Manager[AlignedTranscriptionMergeTestCase
                 ),
                 "text": PromptModelField(
                     alias=prompt.source_text, description=prompt.source_text_desc
-                ),
-            },
-        )
-
-    @classmethod
-    @cache
-    def get_subtitle_cls(
-        cls, prompt: AlignedTranscriptionMergePrompt
-    ) -> type[AlignedTranscriptionMergeSubtitle]:
-        """Get consensus subtitle class with prompt-specific aliases.
-
-        Arguments:
-            prompt: text and field aliases for aligned transcription merging
-        Returns:
-            consensus subtitle model class
-        """
-        return cls.create_prompt_model(
-            AlignedTranscriptionMergeSubtitle,
-            prompt,
-            {
-                "index": PromptModelField(
-                    alias=prompt.subtitle_index, description=prompt.subtitle_index_desc
-                ),
-                "text": PromptModelField(
-                    alias=prompt.subtitle_text, description=prompt.subtitle_text_desc
                 ),
             },
         )

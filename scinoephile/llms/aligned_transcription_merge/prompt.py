@@ -58,22 +58,13 @@ class AlignedTranscriptionMergePrompt(Prompt):
         "Optional column-aligned music labels, gaps, and timed pauses."
     )
     """Description of music annotation row field."""
-    subtitles: str = "subtitles"
-    """Name of merged consensus subtitles field in answer."""
-    subtitles_desc: str = (
-        "Complete ordered consensus transcript divided into display subtitles."
+    answer_text: str = "text"
+    """Name of merged consensus text field in answer."""
+    answer_text_desc: str = (
+        "Complete punctuated consensus transcript with a fullwidth vertical bar "
+        "after every display subtitle."
     )
-    """Description of merged consensus subtitles field in answer."""
-    subtitle_index: str = "index"
-    """Name of consensus subtitle index field."""
-    subtitle_index_desc: str = "One-based consensus subtitle index."
-    """Description of consensus subtitle index field."""
-    subtitle_text: str = "text"
-    """Name of consensus subtitle text field."""
-    subtitle_text_desc: str = (
-        "Complete punctuated consensus subtitle text without alignment annotations."
-    )
-    """Description of consensus subtitle text field."""
+    """Description of merged consensus text field in answer."""
 
     source_name_err: str = (
         "ASR source names must be nonblank and unique within the query."
@@ -112,16 +103,11 @@ class AlignedTranscriptionMergePrompt(Prompt):
         "Aligned transcription merge queries must contain transcribed text."
     )
     """Error when every ASR row contains only gaps."""
-    subtitle_indices_err: str = (
-        "Answer subtitle indexes must be consecutive, ordered, and begin at 1."
+    answer_text_err: str = (
+        "Answer text must contain nonblank subtitles separated and terminated by "
+        "fullwidth vertical bars, without alignment or speaker annotations."
     )
-    """Error when answer subtitle indexes are invalid."""
-    subtitle_text_err: str = "Every answer subtitle must contain nonblank text."
-    """Error when an answer subtitle is blank."""
-    subtitle_annotation_err: str = (
-        "Answer subtitles must not contain alignment or speaker annotation characters."
-    )
-    """Error when answer text contains an alignment annotation."""
+    """Error when answer text or subtitle boundaries are invalid."""
     subtitle_length_err_tpl: str = (
         "Answer subtitle indexes {indexes} exceed the maximum of "
         "{max_characters} nonwhitespace characters."

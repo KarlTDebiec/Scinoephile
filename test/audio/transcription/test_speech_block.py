@@ -7,9 +7,11 @@ from __future__ import annotations
 from collections.abc import Sequence
 
 import numpy as np
+import pytest
 
 from scinoephile.audio.transcription import (
     SpeechBlock,
+    SpeechBlockSettings,
     SpeechBlockSplitter,
     VoiceActivityTrace,
 )
@@ -133,3 +135,37 @@ def test_splitter_handles_silent_and_zero_duration_traces():
 
     assert splitter(silent_trace) == []
     assert splitter(zero_duration_trace) == []
+
+
+def test_splitter_bridges_short_silence_before_filtering_short_speech():
+    """Brief score dips should not split speech into discarded fragments."""
+    trace = _get_trace(1_000, [(100, 300), (350, 550)])
+
+    blocks = SpeechBlockSplitter()(trace)
+
+    assert blocks == [
+        SpeechBlock(
+            index=0,
+            start_ms=100,
+            end_ms=550,
+            buffered_start_ms=0,
+            buffered_end_ms=1_000,
+        )
+    ]
+
+
+def test_splitter_preserves_minimum_silence_before_filtering_short_speech():
+    """A score dip reaching the bridge threshold should remain meaningful."""
+    trace = _get_trace(1_000, [(100, 300), (400, 600)])
+
+    blocks = SpeechBlockSplitter()(trace)
+
+    assert blocks == []
+
+
+def test_speech_block_settings_reject_negative_minimum_silence():
+    """The short-silence bridge duration should be non-negative."""
+    with pytest.raises(
+        ValueError, match="Minimum speech-block silence must be non-negative."
+    ):
+        SpeechBlockSettings(min_silence_duration_seconds=-0.1)

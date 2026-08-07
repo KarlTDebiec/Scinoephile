@@ -14,6 +14,7 @@ from pytest import raises
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import ScinoephileError
+from scinoephile.media.audio import AudioExtractionMode
 
 
 def test_audio_series_load_audio_from_media_returns_complete_audio_without_events():
@@ -24,12 +25,19 @@ def test_audio_series_load_audio_from_media_returns_complete_audio_without_event
             "scinoephile.audio.subtitles.series.extract_audio",
             side_effect=_write_selected_audio,
         ) as extract:
-            series = AudioSeries.load_audio_from_media(media_path, stream_index=12)
+            series = AudioSeries.load_audio_from_media(
+                media_path,
+                stream_index=12,
+                extraction_mode=AudioExtractionMode.CENTER_HEAVY,
+            )
 
     extract.assert_called_once()
     assert extract.call_args.args[0].resolve() == media_path.resolve()
     assert extract.call_args.args[1].name == "full_audio.wav"
-    assert extract.call_args.kwargs == {"stream_index": 12}
+    assert extract.call_args.kwargs == {
+        "stream_index": 12,
+        "mode": AudioExtractionMode.CENTER_HEAVY,
+    }
     assert len(series.audio) == 3126
     assert series.events == []
     assert series.format == "wav"
@@ -241,6 +249,7 @@ def _write_selected_audio(
     outfile_path: Path,
     *,
     stream_index: int | None = None,
+    mode: AudioExtractionMode = AudioExtractionMode.ORIGINAL,
     overwrite: bool = False,
 ):
     """Write a WAV whose duration identifies the selected stream.
@@ -249,9 +258,10 @@ def _write_selected_audio(
         infile_path: input media path
         outfile_path: output WAV path
         stream_index: selected audio stream index
+        mode: channel preparation used during audio extraction
         overwrite: whether an existing output may be replaced
     """
-    _ = infile_path, overwrite
+    _ = infile_path, mode, overwrite
     if stream_index is None:
         stream_index = 1
     channels = 6 if stream_index == 12 else 2
