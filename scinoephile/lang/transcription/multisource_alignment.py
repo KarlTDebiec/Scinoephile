@@ -137,7 +137,7 @@ class CantoneseTimedTokenSimilarity:
 
     def _get_lexical_score(self, one: str, two: str) -> float:
         """Get the substitution-matrix component for two characters."""
-        if one == two:
+        if unicodedata.normalize("NFKC", one) == unicodedata.normalize("NFKC", two):
             return self.exact_score
         one_features = _get_character_features(one)
         two_features = _get_character_features(two)

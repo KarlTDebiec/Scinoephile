@@ -42,6 +42,9 @@ def test_cantonese_similarity_orders_substitution_evidence():
     token = TimedAlignmentToken("係", 0.0, 0.1)
 
     exact = similarity(token, TimedAlignmentToken("係", 0.0, 0.1))
+    compatibility_width = similarity(
+        TimedAlignmentToken("J", 0.0, 0.1), TimedAlignmentToken("Ｊ", 0.0, 0.1)
+    )
     script = similarity(
         TimedAlignmentToken("裡", 0.0, 0.1), TimedAlignmentToken("里", 0.0, 0.1)
     )
@@ -54,6 +57,7 @@ def test_cantonese_similarity_orders_substitution_evidence():
     )
     unrelated = similarity(token, TimedAlignmentToken("八", 0.0, 0.1))
 
+    assert compatibility_width == exact
     assert exact > script > equivalent
     assert equivalent > same_jyutping > same_jyutping_base > unrelated
 

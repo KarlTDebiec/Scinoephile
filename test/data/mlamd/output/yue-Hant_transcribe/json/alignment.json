@@ -1633,1458 +1633,1452 @@
         },
         {
           "index": 264,
-          "start_ms": 106339,
-          "end_ms": 106439,
-          "kind": "text"
-        },
-        {
-          "index": 265,
           "start_ms": 106702,
           "end_ms": 107092,
           "kind": "text"
         },
         {
-          "index": 266,
+          "index": 265,
           "start_ms": 107092,
           "end_ms": 107332,
           "kind": "text"
         },
         {
-          "index": 267,
+          "index": 266,
           "start_ms": 107332,
           "end_ms": 107572,
           "kind": "text"
         },
         {
-          "index": 268,
+          "index": 267,
           "start_ms": 107673,
           "end_ms": 107794,
           "kind": "text"
         },
         {
-          "index": 269,
+          "index": 268,
           "start_ms": 107794,
           "end_ms": 108134,
           "kind": "text"
         },
         {
-          "index": 270,
+          "index": 269,
           "start_ms": 108134,
           "end_ms": 108474,
           "kind": "text"
         },
         {
-          "index": 271,
+          "index": 270,
           "start_ms": 108474,
           "end_ms": 108781,
           "kind": "text"
         },
         {
-          "index": 272,
+          "index": 271,
           "start_ms": 108781,
           "end_ms": 109088,
           "kind": "text"
         },
         {
-          "index": 273,
+          "index": 272,
           "start_ms": 109088,
           "end_ms": 109395,
           "kind": "text"
         },
         {
-          "index": 274,
+          "index": 273,
           "start_ms": 109395,
           "end_ms": 109795,
           "kind": "text"
         },
         {
-          "index": 275,
+          "index": 274,
           "start_ms": 109795,
           "end_ms": 110215,
           "kind": "text"
         },
         {
-          "index": 276,
+          "index": 275,
           "start_ms": 109972,
           "end_ms": 110222,
           "kind": "pause"
         },
         {
-          "index": 277,
+          "index": 276,
           "start_ms": 110222,
           "end_ms": 110596,
           "kind": "pause"
         },
         {
-          "index": 278,
+          "index": 277,
           "start_ms": 110453,
           "end_ms": 110693,
           "kind": "text"
         },
         {
-          "index": 279,
+          "index": 278,
           "start_ms": 110693,
           "end_ms": 110873,
           "kind": "text"
         },
         {
-          "index": 280,
+          "index": 279,
           "start_ms": 110873,
           "end_ms": 111049,
           "kind": "text"
         },
         {
-          "index": 281,
+          "index": 280,
           "start_ms": 111049,
           "end_ms": 111256,
           "kind": "text"
         },
         {
-          "index": 282,
+          "index": 281,
           "start_ms": 111256,
           "end_ms": 111516,
           "kind": "text"
         },
         {
-          "index": 283,
+          "index": 282,
           "start_ms": 111516,
           "end_ms": 111606,
           "kind": "text"
         },
         {
-          "index": 284,
+          "index": 283,
           "start_ms": 111606,
           "end_ms": 111696,
           "kind": "text"
         },
         {
-          "index": 285,
+          "index": 284,
           "start_ms": 111696,
           "end_ms": 112016,
           "kind": "text"
         },
         {
-          "index": 286,
+          "index": 285,
           "start_ms": 112016,
           "end_ms": 112136,
           "kind": "text"
         },
         {
-          "index": 287,
+          "index": 286,
           "start_ms": 112136,
           "end_ms": 112236,
           "kind": "text"
         },
         {
-          "index": 288,
+          "index": 287,
           "start_ms": 112236,
           "end_ms": 112397,
           "kind": "text"
         },
         {
-          "index": 289,
+          "index": 288,
           "start_ms": 112397,
           "end_ms": 112557,
           "kind": "text"
         },
         {
-          "index": 290,
+          "index": 289,
           "start_ms": 112557,
           "end_ms": 112777,
           "kind": "text"
         },
         {
-          "index": 291,
+          "index": 290,
           "start_ms": 112777,
           "end_ms": 112957,
           "kind": "text"
         },
         {
-          "index": 292,
+          "index": 291,
           "start_ms": 112957,
           "end_ms": 113757,
           "kind": "text"
         },
         {
-          "index": 293,
+          "index": 292,
           "start_ms": 113127,
           "end_ms": 113377,
           "kind": "pause"
         },
         {
-          "index": 294,
+          "index": 293,
           "start_ms": 113377,
           "end_ms": 113718,
           "kind": "pause"
         },
         {
-          "index": 295,
+          "index": 294,
           "start_ms": 113757,
           "end_ms": 113938,
           "kind": "text"
         },
         {
-          "index": 296,
+          "index": 295,
           "start_ms": 113938,
           "end_ms": 114618,
           "kind": "text"
         },
         {
-          "index": 297,
+          "index": 296,
           "start_ms": 114618,
           "end_ms": 114738,
           "kind": "text"
         },
         {
-          "index": 298,
+          "index": 297,
           "start_ms": 114738,
           "end_ms": 114858,
           "kind": "text"
         },
         {
-          "index": 299,
+          "index": 298,
           "start_ms": 114858,
           "end_ms": 115003,
           "kind": "text"
         },
         {
-          "index": 300,
+          "index": 299,
           "start_ms": 115003,
           "end_ms": 115198,
           "kind": "text"
         },
         {
-          "index": 301,
+          "index": 300,
           "start_ms": 115198,
           "end_ms": 115369,
           "kind": "text"
         },
         {
-          "index": 302,
+          "index": 301,
           "start_ms": 115369,
           "end_ms": 115539,
           "kind": "text"
         },
         {
-          "index": 303,
+          "index": 302,
           "start_ms": 115539,
           "end_ms": 115659,
           "kind": "text"
         },
         {
-          "index": 304,
+          "index": 303,
           "start_ms": 115659,
           "end_ms": 115899,
           "kind": "text"
         },
         {
-          "index": 305,
+          "index": 304,
           "start_ms": 115899,
           "end_ms": 116139,
           "kind": "text"
         },
         {
-          "index": 306,
+          "index": 305,
           "start_ms": 116139,
           "end_ms": 116319,
           "kind": "text"
         },
         {
-          "index": 307,
+          "index": 306,
           "start_ms": 116319,
           "end_ms": 116492,
           "kind": "text"
         },
         {
-          "index": 308,
+          "index": 307,
           "start_ms": 116492,
           "end_ms": 116666,
           "kind": "text"
         },
         {
-          "index": 309,
+          "index": 308,
           "start_ms": 116666,
           "end_ms": 116839,
           "kind": "text"
         },
         {
-          "index": 310,
+          "index": 309,
           "start_ms": 116839,
           "end_ms": 116999,
           "kind": "text"
         },
         {
-          "index": 311,
+          "index": 310,
           "start_ms": 116999,
           "end_ms": 117420,
           "kind": "text"
         },
         {
-          "index": 312,
+          "index": 311,
           "start_ms": 117420,
           "end_ms": 117540,
           "kind": "text"
         },
         {
-          "index": 313,
+          "index": 312,
           "start_ms": 117540,
           "end_ms": 117700,
           "kind": "text"
         },
         {
-          "index": 314,
+          "index": 313,
           "start_ms": 117700,
           "end_ms": 117840,
           "kind": "text"
         },
         {
-          "index": 315,
+          "index": 314,
           "start_ms": 117840,
           "end_ms": 118060,
           "kind": "text"
         },
         {
-          "index": 316,
+          "index": 315,
           "start_ms": 118060,
           "end_ms": 118300,
           "kind": "text"
         },
         {
-          "index": 317,
+          "index": 316,
           "start_ms": 118300,
           "end_ms": 118961,
           "kind": "text"
         },
         {
-          "index": 318,
+          "index": 317,
           "start_ms": 118612,
           "end_ms": 118898,
           "kind": "pause"
         },
         {
-          "index": 319,
+          "index": 318,
           "start_ms": 118961,
           "end_ms": 119141,
           "kind": "text"
         },
         {
-          "index": 320,
+          "index": 319,
           "start_ms": 119141,
           "end_ms": 119441,
           "kind": "text"
         },
         {
-          "index": 321,
+          "index": 320,
           "start_ms": 119441,
           "end_ms": 119701,
           "kind": "text"
         },
         {
-          "index": 322,
+          "index": 321,
           "start_ms": 119701,
           "end_ms": 120482,
           "kind": "text"
         },
         {
-          "index": 323,
+          "index": 322,
           "start_ms": 120080,
           "end_ms": 120434,
           "kind": "pause"
         },
         {
-          "index": 324,
+          "index": 323,
           "start_ms": 120482,
           "end_ms": 120582,
           "kind": "text"
         },
         {
-          "index": 325,
+          "index": 324,
           "start_ms": 120582,
           "end_ms": 120742,
           "kind": "text"
         },
         {
-          "index": 326,
+          "index": 325,
           "start_ms": 120742,
           "end_ms": 120882,
           "kind": "text"
         },
         {
-          "index": 327,
+          "index": 326,
           "start_ms": 120882,
           "end_ms": 121062,
           "kind": "text"
         },
         {
-          "index": 328,
+          "index": 327,
           "start_ms": 121062,
           "end_ms": 121272,
           "kind": "text"
         },
         {
-          "index": 329,
+          "index": 328,
           "start_ms": 121272,
           "end_ms": 121482,
           "kind": "text"
         },
         {
-          "index": 330,
+          "index": 329,
           "start_ms": 121482,
           "end_ms": 121722,
           "kind": "text"
         },
         {
-          "index": 331,
+          "index": 330,
           "start_ms": 121722,
           "end_ms": 121902,
           "kind": "text"
         },
         {
-          "index": 332,
+          "index": 331,
           "start_ms": 121902,
           "end_ms": 122083,
           "kind": "text"
         },
         {
-          "index": 333,
+          "index": 332,
           "start_ms": 122083,
           "end_ms": 123023,
           "kind": "text"
         },
         {
-          "index": 334,
+          "index": 333,
           "start_ms": 122341,
           "end_ms": 122591,
           "kind": "pause"
         },
         {
-          "index": 335,
+          "index": 334,
           "start_ms": 122591,
           "end_ms": 122999,
           "kind": "pause"
         },
         {
-          "index": 336,
+          "index": 335,
           "start_ms": 123023,
           "end_ms": 123203,
           "kind": "text"
         },
         {
-          "index": 337,
+          "index": 336,
           "start_ms": 123203,
           "end_ms": 123343,
           "kind": "text"
         },
         {
-          "index": 338,
+          "index": 337,
           "start_ms": 123343,
           "end_ms": 123490,
           "kind": "text"
         },
         {
-          "index": 339,
+          "index": 338,
           "start_ms": 123490,
           "end_ms": 123637,
           "kind": "text"
         },
         {
-          "index": 340,
+          "index": 339,
           "start_ms": 123637,
           "end_ms": 123784,
           "kind": "text"
         },
         {
-          "index": 341,
+          "index": 340,
           "start_ms": 123784,
           "end_ms": 123864,
           "kind": "text"
         },
         {
-          "index": 342,
+          "index": 341,
           "start_ms": 123864,
           "end_ms": 124044,
           "kind": "text"
         },
         {
-          "index": 343,
+          "index": 342,
           "start_ms": 124044,
           "end_ms": 124284,
           "kind": "text"
         },
         {
-          "index": 344,
+          "index": 343,
           "start_ms": 124284,
           "end_ms": 124434,
           "kind": "text"
         },
         {
-          "index": 345,
+          "index": 344,
           "start_ms": 124434,
           "end_ms": 124584,
           "kind": "text"
         },
         {
-          "index": 346,
+          "index": 345,
           "start_ms": 124584,
           "end_ms": 124834,
           "kind": "text"
         },
         {
-          "index": 347,
+          "index": 346,
           "start_ms": 124834,
           "end_ms": 125085,
           "kind": "text"
         },
         {
-          "index": 348,
+          "index": 347,
           "start_ms": 125085,
           "end_ms": 125916,
           "kind": "text"
         },
         {
-          "index": 349,
+          "index": 348,
           "start_ms": 125547,
           "end_ms": 125797,
           "kind": "pause"
         },
         {
-          "index": 350,
+          "index": 349,
           "start_ms": 125797,
           "end_ms": 126047,
           "kind": "pause"
         },
         {
-          "index": 351,
+          "index": 350,
           "start_ms": 126047,
           "end_ms": 126297,
           "kind": "pause"
         },
         {
-          "index": 352,
+          "index": 351,
           "start_ms": 126297,
           "end_ms": 126695,
           "kind": "pause"
         },
         {
-          "index": 353,
+          "index": 352,
           "start_ms": 125916,
           "end_ms": 126746,
           "kind": "text"
         },
         {
-          "index": 354,
+          "index": 353,
           "start_ms": 126746,
           "end_ms": 126926,
           "kind": "text"
         },
         {
-          "index": 355,
+          "index": 354,
           "start_ms": 126926,
           "end_ms": 127086,
           "kind": "text"
         },
         {
-          "index": 356,
+          "index": 355,
           "start_ms": 127086,
           "end_ms": 127366,
           "kind": "text"
         },
         {
-          "index": 357,
+          "index": 356,
           "start_ms": 127366,
           "end_ms": 127566,
           "kind": "text"
         },
         {
-          "index": 358,
+          "index": 357,
           "start_ms": 127566,
           "end_ms": 127746,
           "kind": "text"
         },
         {
-          "index": 359,
+          "index": 358,
           "start_ms": 127746,
           "end_ms": 128006,
           "kind": "text"
         },
         {
-          "index": 360,
+          "index": 359,
           "start_ms": 128006,
           "end_ms": 128797,
           "kind": "text"
         },
         {
-          "index": 361,
+          "index": 360,
           "start_ms": 128797,
           "end_ms": 129587,
           "kind": "text"
         },
         {
-          "index": 362,
+          "index": 361,
           "start_ms": 128197,
           "end_ms": 128447,
           "kind": "pause"
         },
         {
-          "index": 363,
+          "index": 362,
           "start_ms": 128447,
           "end_ms": 128697,
           "kind": "pause"
         },
         {
-          "index": 364,
+          "index": 363,
           "start_ms": 128697,
           "end_ms": 128947,
           "kind": "pause"
         },
         {
-          "index": 365,
+          "index": 364,
           "start_ms": 128947,
           "end_ms": 129197,
           "kind": "pause"
         },
         {
-          "index": 366,
+          "index": 365,
           "start_ms": 129197,
           "end_ms": 129563,
           "kind": "pause"
         },
         {
-          "index": 367,
+          "index": 366,
           "start_ms": 129587,
           "end_ms": 129747,
           "kind": "text"
         },
         {
-          "index": 368,
+          "index": 367,
           "start_ms": 129747,
           "end_ms": 129827,
           "kind": "text"
         },
         {
-          "index": 369,
+          "index": 368,
           "start_ms": 129827,
           "end_ms": 129948,
           "kind": "text"
         },
         {
-          "index": 370,
+          "index": 369,
           "start_ms": 129948,
           "end_ms": 130098,
           "kind": "text"
         },
         {
-          "index": 371,
+          "index": 370,
           "start_ms": 130098,
           "end_ms": 130248,
           "kind": "text"
         },
         {
-          "index": 372,
+          "index": 371,
           "start_ms": 130248,
           "end_ms": 130448,
           "kind": "text"
         },
         {
-          "index": 373,
+          "index": 372,
           "start_ms": 130448,
           "end_ms": 130528,
           "kind": "text"
         },
         {
-          "index": 374,
+          "index": 373,
           "start_ms": 130528,
           "end_ms": 130608,
           "kind": "text"
         },
         {
-          "index": 375,
+          "index": 374,
           "start_ms": 130608,
           "end_ms": 130768,
           "kind": "text"
         },
         {
-          "index": 376,
+          "index": 375,
           "start_ms": 130768,
           "end_ms": 130908,
           "kind": "text"
         },
         {
-          "index": 377,
+          "index": 376,
           "start_ms": 130908,
           "end_ms": 131538,
           "kind": "text"
         },
         {
-          "index": 378,
+          "index": 377,
           "start_ms": 131065,
           "end_ms": 131315,
           "kind": "pause"
         },
         {
-          "index": 379,
+          "index": 378,
           "start_ms": 131315,
           "end_ms": 131565,
           "kind": "pause"
         },
         {
-          "index": 380,
+          "index": 379,
           "start_ms": 131565,
           "end_ms": 131993,
           "kind": "pause"
         },
         {
-          "index": 381,
+          "index": 380,
           "start_ms": 131538,
           "end_ms": 132169,
           "kind": "text"
         },
         {
-          "index": 382,
+          "index": 381,
           "start_ms": 132169,
           "end_ms": 132289,
           "kind": "text"
         },
         {
-          "index": 383,
+          "index": 382,
           "start_ms": 132289,
           "end_ms": 132439,
           "kind": "text"
         },
         {
-          "index": 384,
+          "index": 383,
           "start_ms": 132439,
           "end_ms": 132589,
           "kind": "text"
         },
         {
-          "index": 385,
+          "index": 384,
           "start_ms": 132589,
           "end_ms": 133110,
           "kind": "text"
         },
         {
-          "index": 386,
+          "index": 385,
           "start_ms": 133110,
           "end_ms": 133630,
           "kind": "text"
         },
         {
-          "index": 387,
+          "index": 386,
           "start_ms": 133006,
           "end_ms": 133256,
           "kind": "pause"
         },
         {
-          "index": 388,
+          "index": 387,
           "start_ms": 133256,
           "end_ms": 133512,
           "kind": "pause"
         },
         {
-          "index": 389,
+          "index": 388,
           "start_ms": 133630,
           "end_ms": 133797,
           "kind": "text"
         },
         {
-          "index": 390,
+          "index": 389,
           "start_ms": 133797,
           "end_ms": 133917,
           "kind": "text"
         },
         {
-          "index": 391,
+          "index": 390,
           "start_ms": 133917,
           "end_ms": 134170,
           "kind": "text"
         },
         {
-          "index": 392,
+          "index": 391,
           "start_ms": 134170,
           "end_ms": 134330,
           "kind": "text"
         },
         {
-          "index": 393,
+          "index": 392,
           "start_ms": 134330,
           "end_ms": 134490,
           "kind": "text"
         },
         {
-          "index": 394,
+          "index": 393,
           "start_ms": 134490,
           "end_ms": 134630,
           "kind": "text"
         },
         {
-          "index": 395,
+          "index": 394,
           "start_ms": 134630,
           "end_ms": 134771,
           "kind": "text"
         },
         {
-          "index": 396,
+          "index": 395,
           "start_ms": 134771,
           "end_ms": 134911,
           "kind": "text"
         },
         {
-          "index": 397,
+          "index": 396,
           "start_ms": 134911,
           "end_ms": 135071,
           "kind": "text"
         },
         {
-          "index": 398,
+          "index": 397,
           "start_ms": 135071,
           "end_ms": 135251,
           "kind": "text"
         },
         {
-          "index": 399,
+          "index": 398,
           "start_ms": 135251,
           "end_ms": 135811,
           "kind": "text"
         },
         {
-          "index": 400,
+          "index": 399,
           "start_ms": 135811,
           "end_ms": 135961,
           "kind": "text"
         },
         {
-          "index": 401,
+          "index": 400,
           "start_ms": 135961,
           "end_ms": 136111,
           "kind": "text"
         },
         {
-          "index": 402,
+          "index": 401,
           "start_ms": 136111,
           "end_ms": 136251,
           "kind": "text"
         },
         {
-          "index": 403,
+          "index": 402,
           "start_ms": 136251,
           "end_ms": 136532,
           "kind": "text"
         },
         {
-          "index": 404,
+          "index": 403,
           "start_ms": 136532,
           "end_ms": 136592,
           "kind": "text"
         },
         {
-          "index": 405,
+          "index": 404,
           "start_ms": 136592,
           "end_ms": 136652,
           "kind": "text"
         },
         {
-          "index": 406,
+          "index": 405,
           "start_ms": 136652,
           "end_ms": 136712,
           "kind": "text"
         },
         {
-          "index": 407,
+          "index": 406,
           "start_ms": 136712,
           "end_ms": 137673,
           "kind": "text"
         },
         {
-          "index": 408,
+          "index": 407,
           "start_ms": 136887,
           "end_ms": 137137,
           "kind": "pause"
         },
         {
-          "index": 409,
+          "index": 408,
           "start_ms": 137137,
           "end_ms": 137387,
           "kind": "pause"
         },
         {
-          "index": 410,
+          "index": 409,
           "start_ms": 137387,
           "end_ms": 137637,
           "kind": "pause"
         },
         {
-          "index": 411,
+          "index": 410,
           "start_ms": 137637,
           "end_ms": 137917,
           "kind": "pause"
         },
         {
-          "index": 412,
+          "index": 411,
           "start_ms": 137934,
           "end_ms": 138094,
           "kind": "text"
         },
         {
-          "index": 413,
+          "index": 412,
           "start_ms": 138094,
           "end_ms": 138234,
           "kind": "text"
         },
         {
-          "index": 414,
+          "index": 413,
           "start_ms": 138234,
           "end_ms": 138374,
           "kind": "text"
         },
         {
-          "index": 415,
+          "index": 414,
           "start_ms": 138374,
           "end_ms": 138474,
           "kind": "text"
         },
         {
-          "index": 416,
+          "index": 415,
           "start_ms": 138474,
           "end_ms": 138614,
           "kind": "text"
         },
         {
-          "index": 417,
+          "index": 416,
           "start_ms": 138614,
           "end_ms": 138794,
           "kind": "text"
         },
         {
-          "index": 418,
+          "index": 417,
           "start_ms": 138794,
           "end_ms": 138975,
           "kind": "text"
         },
         {
-          "index": 419,
+          "index": 418,
           "start_ms": 138975,
           "end_ms": 139115,
           "kind": "text"
         },
         {
-          "index": 420,
+          "index": 419,
           "start_ms": 139115,
           "end_ms": 139235,
           "kind": "text"
         },
         {
-          "index": 421,
+          "index": 420,
           "start_ms": 139235,
           "end_ms": 139445,
           "kind": "text"
         },
         {
-          "index": 422,
+          "index": 421,
           "start_ms": 139445,
           "end_ms": 139655,
           "kind": "text"
         },
         {
-          "index": 423,
+          "index": 422,
           "start_ms": 139655,
           "end_ms": 140375,
           "kind": "text"
         },
         {
-          "index": 424,
+          "index": 423,
           "start_ms": 140375,
           "end_ms": 140456,
           "kind": "text"
         },
         {
-          "index": 425,
+          "index": 424,
           "start_ms": 140456,
           "end_ms": 140596,
           "kind": "text"
         },
         {
-          "index": 426,
+          "index": 425,
           "start_ms": 140596,
           "end_ms": 140796,
           "kind": "text"
         },
         {
-          "index": 427,
+          "index": 426,
           "start_ms": 140796,
           "end_ms": 141016,
           "kind": "text"
         },
         {
-          "index": 428,
+          "index": 427,
           "start_ms": 141016,
           "end_ms": 141276,
           "kind": "text"
         },
         {
-          "index": 429,
+          "index": 428,
           "start_ms": 141276,
           "end_ms": 141756,
           "kind": "text"
         },
         {
-          "index": 430,
+          "index": 429,
           "start_ms": 141756,
           "end_ms": 141977,
           "kind": "text"
         },
         {
-          "index": 431,
+          "index": 430,
           "start_ms": 141977,
           "end_ms": 142207,
           "kind": "text"
         },
         {
-          "index": 432,
+          "index": 431,
           "start_ms": 142207,
           "end_ms": 142507,
           "kind": "text"
         },
         {
-          "index": 433,
+          "index": 432,
           "start_ms": 142507,
           "end_ms": 142817,
           "kind": "text"
         },
         {
-          "index": 434,
+          "index": 433,
           "start_ms": 142817,
           "end_ms": 142937,
           "kind": "text"
         },
         {
-          "index": 435,
+          "index": 434,
           "start_ms": 142937,
           "end_ms": 143117,
           "kind": "text"
         },
         {
-          "index": 436,
+          "index": 435,
           "start_ms": 143117,
           "end_ms": 143237,
           "kind": "text"
         },
         {
-          "index": 437,
+          "index": 436,
           "start_ms": 143237,
           "end_ms": 143377,
           "kind": "text"
         },
         {
-          "index": 438,
+          "index": 437,
           "start_ms": 143377,
           "end_ms": 143578,
           "kind": "text"
         },
         {
-          "index": 439,
+          "index": 438,
           "start_ms": 143578,
           "end_ms": 143758,
           "kind": "text"
         },
         {
-          "index": 440,
+          "index": 439,
           "start_ms": 143758,
           "end_ms": 143978,
           "kind": "text"
         },
         {
-          "index": 441,
+          "index": 440,
           "start_ms": 143978,
           "end_ms": 144078,
           "kind": "text"
         },
         {
-          "index": 442,
+          "index": 441,
           "start_ms": 143984,
           "end_ms": 144084,
           "kind": "text"
         },
         {
-          "index": 443,
+          "index": 442,
           "start_ms": 144078,
           "end_ms": 145819,
           "kind": "text"
         },
         {
-          "index": 444,
+          "index": 443,
           "start_ms": 144312,
           "end_ms": 144562,
           "kind": "pause"
         },
         {
-          "index": 445,
+          "index": 444,
           "start_ms": 144562,
           "end_ms": 144812,
           "kind": "pause"
         },
         {
-          "index": 446,
+          "index": 445,
           "start_ms": 144812,
           "end_ms": 145062,
           "kind": "pause"
         },
         {
-          "index": 447,
+          "index": 446,
           "start_ms": 145062,
           "end_ms": 145312,
           "kind": "pause"
         },
         {
-          "index": 448,
+          "index": 447,
           "start_ms": 145312,
           "end_ms": 145780,
           "kind": "pause"
         },
         {
-          "index": 449,
+          "index": 448,
           "start_ms": 145819,
           "end_ms": 145979,
           "kind": "text"
         },
         {
-          "index": 450,
+          "index": 449,
           "start_ms": 145979,
           "end_ms": 146239,
           "kind": "text"
         },
         {
-          "index": 451,
+          "index": 450,
           "start_ms": 146239,
           "end_ms": 146460,
           "kind": "text"
         },
         {
-          "index": 452,
+          "index": 451,
           "start_ms": 146460,
           "end_ms": 146620,
           "kind": "text"
         },
         {
-          "index": 453,
+          "index": 452,
           "start_ms": 146620,
           "end_ms": 146820,
           "kind": "text"
         },
         {
-          "index": 454,
+          "index": 453,
           "start_ms": 146820,
           "end_ms": 147080,
           "kind": "text"
         },
         {
-          "index": 455,
+          "index": 454,
           "start_ms": 147080,
           "end_ms": 147320,
           "kind": "text"
         },
         {
-          "index": 456,
+          "index": 455,
           "start_ms": 147320,
           "end_ms": 147560,
           "kind": "text"
         },
         {
-          "index": 457,
+          "index": 456,
           "start_ms": 147560,
           "end_ms": 147740,
           "kind": "text"
         },
         {
-          "index": 458,
+          "index": 457,
           "start_ms": 147740,
           "end_ms": 147901,
           "kind": "text"
         },
         {
-          "index": 459,
+          "index": 458,
           "start_ms": 147901,
           "end_ms": 148081,
           "kind": "text"
         },
         {
-          "index": 460,
+          "index": 459,
           "start_ms": 148081,
           "end_ms": 148261,
           "kind": "text"
         },
         {
-          "index": 461,
+          "index": 460,
           "start_ms": 148261,
           "end_ms": 148441,
           "kind": "text"
         },
         {
-          "index": 462,
+          "index": 461,
           "start_ms": 148441,
           "end_ms": 148841,
           "kind": "text"
         },
         {
-          "index": 463,
+          "index": 462,
           "start_ms": 148841,
           "end_ms": 149642,
           "kind": "text"
         },
         {
-          "index": 464,
+          "index": 463,
           "start_ms": 149206,
           "end_ms": 149577,
           "kind": "pause"
         },
         {
-          "index": 465,
+          "index": 464,
           "start_ms": 149642,
           "end_ms": 149787,
           "kind": "text"
         },
         {
-          "index": 466,
+          "index": 465,
           "start_ms": 149787,
           "end_ms": 149932,
           "kind": "text"
         },
         {
-          "index": 467,
+          "index": 466,
           "start_ms": 149932,
           "end_ms": 150077,
           "kind": "text"
         },
         {
-          "index": 468,
+          "index": 467,
           "start_ms": 150077,
           "end_ms": 150222,
           "kind": "text"
         },
         {
-          "index": 469,
+          "index": 468,
           "start_ms": 150222,
           "end_ms": 150362,
           "kind": "text"
         },
         {
-          "index": 470,
+          "index": 469,
           "start_ms": 150362,
           "end_ms": 150602,
           "kind": "text"
         },
         {
-          "index": 471,
+          "index": 470,
           "start_ms": 150602,
           "end_ms": 150842,
           "kind": "text"
         },
         {
-          "index": 472,
+          "index": 471,
           "start_ms": 150842,
           "end_ms": 151003,
           "kind": "text"
         },
         {
-          "index": 473,
+          "index": 472,
           "start_ms": 151003,
           "end_ms": 151883,
           "kind": "text"
         },
         {
-          "index": 474,
+          "index": 473,
           "start_ms": 151484,
           "end_ms": 151734,
           "kind": "pause"
         },
         {
-          "index": 475,
+          "index": 474,
           "start_ms": 151734,
           "end_ms": 152041,
           "kind": "pause"
         },
         {
-          "index": 476,
+          "index": 475,
           "start_ms": 151623,
           "end_ms": 152243,
           "kind": "text"
         },
         {
-          "index": 477,
+          "index": 476,
           "start_ms": 152243,
           "end_ms": 152363,
           "kind": "text"
         },
         {
-          "index": 478,
+          "index": 477,
           "start_ms": 152363,
           "end_ms": 152524,
           "kind": "text"
         },
         {
-          "index": 479,
+          "index": 478,
           "start_ms": 152524,
           "end_ms": 152784,
           "kind": "text"
         },
         {
-          "index": 480,
+          "index": 479,
           "start_ms": 152784,
           "end_ms": 152944,
           "kind": "text"
         },
         {
-          "index": 481,
+          "index": 480,
           "start_ms": 152944,
           "end_ms": 153204,
           "kind": "text"
         },
         {
-          "index": 482,
+          "index": 481,
           "start_ms": 153194,
           "end_ms": 153314,
           "kind": "text"
         },
         {
-          "index": 483,
+          "index": 482,
           "start_ms": 153314,
           "end_ms": 153584,
           "kind": "text"
         },
         {
-          "index": 484,
+          "index": 483,
           "start_ms": 153584,
           "end_ms": 154005,
           "kind": "text"
         },
         {
-          "index": 485,
+          "index": 484,
           "start_ms": 154005,
           "end_ms": 154105,
           "kind": "text"
         },
         {
-          "index": 486,
+          "index": 485,
           "start_ms": 154105,
           "end_ms": 154245,
           "kind": "text"
         },
         {
-          "index": 487,
+          "index": 486,
           "start_ms": 154245,
           "end_ms": 154405,
           "kind": "text"
         },
         {
-          "index": 488,
+          "index": 487,
           "start_ms": 154405,
           "end_ms": 154585,
           "kind": "text"
         },
         {
-          "index": 489,
+          "index": 488,
           "start_ms": 154585,
           "end_ms": 154785,
           "kind": "text"
         },
         {
-          "index": 490,
+          "index": 489,
           "start_ms": 154785,
           "end_ms": 154985,
           "kind": "text"
         },
         {
-          "index": 491,
+          "index": 490,
           "start_ms": 154985,
           "end_ms": 156126,
           "kind": "text"
         },
         {
-          "index": 492,
+          "index": 491,
           "start_ms": 155281,
           "end_ms": 155531,
           "kind": "pause"
         },
         {
-          "index": 493,
+          "index": 492,
           "start_ms": 155531,
           "end_ms": 155781,
           "kind": "pause"
         },
         {
-          "index": 494,
+          "index": 493,
           "start_ms": 155781,
           "end_ms": 156074,
           "kind": "pause"
         },
         {
-          "index": 495,
+          "index": 494,
           "start_ms": 156126,
           "end_ms": 156406,
           "kind": "text"
         },
         {
-          "index": 496,
+          "index": 495,
           "start_ms": 156406,
           "end_ms": 156786,
           "kind": "text"
         },
         {
-          "index": 497,
+          "index": 496,
           "start_ms": 156786,
           "end_ms": 156867,
           "kind": "text"
         },
         {
-          "index": 498,
+          "index": 497,
           "start_ms": 156867,
           "end_ms": 156987,
           "kind": "text"
         },
         {
-          "index": 499,
+          "index": 498,
           "start_ms": 156987,
           "end_ms": 157167,
           "kind": "text"
         },
         {
-          "index": 500,
+          "index": 499,
           "start_ms": 157167,
           "end_ms": 157327,
           "kind": "text"
         },
         {
-          "index": 501,
+          "index": 500,
           "start_ms": 157327,
           "end_ms": 157527,
           "kind": "text"
         },
         {
-          "index": 502,
+          "index": 501,
           "start_ms": 157527,
           "end_ms": 157767,
           "kind": "text"
         },
         {
-          "index": 503,
+          "index": 502,
           "start_ms": 157767,
           "end_ms": 157787,
           "kind": "text"
         },
         {
-          "index": 504,
+          "index": 503,
           "start_ms": 158116,
           "end_ms": 158366,
           "kind": "pause"
         },
         {
-          "index": 505,
+          "index": 504,
           "start_ms": 158366,
           "end_ms": 158616,
           "kind": "pause"
         },
         {
-          "index": 506,
+          "index": 505,
           "start_ms": 158616,
           "end_ms": 159108,
           "kind": "pause"
@@ -3093,31 +3087,31 @@
       "rows": [
         {
           "name": "whisper",
-          "text": "・・・・就喺麥太快要臨盤嘅時候・・有一個膠兜喺九龍上空飛過・・・・沿住荔枝角度・直出大角咀度・・經過好彩酒家・再左轉返出花園街樂園牛園望對上・・・・・・・都係唔好・先去街市大樓　嗰間妹記魚腩粥嗰度・・・轉下轉下・都係唔好・・都係出返去阿佳路街飛過火車橋又轉入太平道・再右轉屈返出去窩打路道・・・向女人街方向飛下・・・・下飛下飛下・・最後膠兜飛咗入廣華醫院嘅後產房・・亦即係麥太　右邊雲晶對上・・・都係唔好左邊雲晶對上轉下轉下轉下噉・・・・麥太認定呢個係異象・・・於是向雲晶對上嘅膠兜許願・・而腦入面亦即時出現咗快要出世嗰陣　・　　希望佢好聰明讀書好叻・・膠兜對麥太嘅願望似乎冇咩表示　・・於是佢對住膠兜補充咁話或者讀書唔叻出嚟做嘢叻啦・又或者呢・又或者係好靚仔好靚仔・・好似周潤發同埋梁朝偉咁靚仔・・・・膠兜依然係噉喺度轉・・・・・好似一啲應承嘅跡象都冇・・・麥太一時心虛・・嗰嗰嗰喺膠兜未落地之前起過另外一個願望・・・・　就算唔係咁聰明同咁靚仔只要復星高照一世救運乜嘢事都逢空發㗎　喇・・・・・佢靠自己有了解決啲嘢就梗係好啦・不過運氣都好緊要喎・・雖然似梁朝偉周潤發都唔返去冒運行・・・但係都要叻仔先得㗎・・・"
+          "text": "・・・・就喺麥太快要臨盤嘅時候・・有一個膠兜喺九龍上空飛過・・・・沿住荔枝角度・直出大角咀度・・經過好彩酒家・再左轉返出花園街樂園牛園望對上・・・・・・・都係唔好・先去街市大樓　嗰間妹記魚腩粥嗰度・・・轉下轉下・都係唔好・・都係出返去阿佳路街飛過火車橋又轉入太平道・再右轉屈返出去窩打路道・・・向女人街方向飛下・・・・下飛下飛下・・最後膠兜飛咗入廣華醫院嘅後產房・・亦即係麥太　右邊雲晶對上・・・都係唔好左邊雲晶對上轉下轉下轉下噉・・・・麥太認定呢個係異象・・・於是向雲晶對上嘅膠兜許願・・而腦入面亦即時出現咗快要出世嗰陣　・　希望佢好聰明讀書好叻・・膠兜對麥太嘅願望似乎冇咩表示　・・於是佢對住膠兜補充咁話或者讀書唔叻出嚟做嘢叻啦・又或者呢・又或者係好靚仔好靚仔・・好似周潤發同埋梁朝偉咁靚仔・・・・膠兜依然係噉喺度轉・・・・・好似一啲應承嘅跡象都冇・・・麥太一時心虛・・嗰嗰嗰喺膠兜未落地之前起過另外一個願望・・・・　就算唔係咁聰明同咁靚仔只要復星高照一世救運乜嘢事都逢空發㗎　喇・・・・・佢靠自己有了解決啲嘢就梗係好啦・不過運氣都好緊要喎・・雖然似梁朝偉周潤發都唔返去冒運行・・・但係都要叻仔先得㗎・・・"
         },
         {
           "name": "mimo",
-          "text": "・・・・就喺麥太快要臨盆嘅時候・・有一個膠兜喺九龍上空飛過・・・・沿住荔枝角道・直出大角咀道・・經過好彩酒家・再左轉翻出花園街樂園牛丸王對上・・・・・・・都系唔好・先去街市大樓　嗰間妹記魚腩粥嗰度・・・轉下轉下・都系唔好・・都系出翻去亞皆老街飛過火車橋右轉入太平道・再右轉屈翻出去窩打老道・・・向女人街方向飛　・・・・下飛下飛下・・最後交兜飛咗入廣華醫院嘅後產房・・亦即系物體　右邊紋精對上・・・對　唔住左邊紋精對上轉下轉下轉下咁・・・・物體認定呢個系異象・・・於是向雲精對上嘅交兜許願・・而腦入面亦即時出現咗快要出世嘅仔嘅・　樣希望佢好聰明讀書好叻・・膠兜對麥太嘅願望似乎冇咩表示噃・・於是佢對住膠兜補充咁話或者讀書唔叻出嚟做嘢叻啦・又或者咧・又或者繫好靚仔好靚仔・・好似周潤發同埋梁朝偉咁靚仔・・・・膠兜依然系咁喺度轉・・・・・好似一啲應承嘅跡象都冇・・・麥太一時心虛・・嗱嗱臨喺膠兜未落地之前起過另外一個願望・・・・嗱就算唔系咁聰明同咁靚仔只要福星高照一世夠運乜嘢事都逢凶化吉　啊・・・・・佢靠自己有了解決啲嘢就梗繫好啦・不過運氣都好緊要　・・雖然似梁朝偉走唔化都唔方佢冇運行・・・但系都要叻仔先得噶・・・"
+          "text": "・・・・就喺麥太快要臨盆嘅時候・・有一個膠兜喺九龍上空飛過・・・・沿住荔枝角道・直出大角咀道・・經過好彩酒家・再左轉翻出花園街樂園牛丸王對上・・・・・・・都系唔好・先去街市大樓　嗰間妹記魚腩粥嗰度・・・轉下轉下・都系唔好・・都系出翻去亞皆老街飛過火車橋右轉入太平道・再右轉屈翻出去窩打老道・・・向女人街方向飛　・・・・下飛下飛下・・最後交兜飛咗入廣華醫院嘅後產房・・亦即系物體　右邊紋精對上・・・對　唔住左邊紋精對上轉下轉下轉下咁・・・・物體認定呢個系異象・・・於是向雲精對上嘅交兜許願・・而腦入面亦即時出現咗快要出世嘅仔嘅・樣希望佢好聰明讀書好叻・・膠兜對麥太嘅願望似乎冇咩表示噃・・於是佢對住膠兜補充咁話或者讀書唔叻出嚟做嘢叻啦・又或者咧・又或者繫好靚仔好靚仔・・好似周潤發同埋梁朝偉咁靚仔・・・・膠兜依然系咁喺度轉・・・・・好似一啲應承嘅跡象都冇・・・麥太一時心虛・・嗱嗱臨喺膠兜未落地之前起過另外一個願望・・・・嗱就算唔系咁聰明同咁靚仔只要福星高照一世夠運乜嘢事都逢凶化吉　啊・・・・・佢靠自己有了解決啲嘢就梗繫好啦・不過運氣都好緊要　・・雖然似梁朝偉走唔化都唔方佢冇運行・・・但系都要叻仔先得噶・・・"
         },
         {
           "name": "qwen",
-          "text": "・・・・就喺木胎快要臨盤嘅時候・・有一個膠兜喺九龍上空飛過・・・・沿住荔枝角道・直出大角咀道・・經過好彩酒家・再左轉翻出花園街落完牛苑望對上・・・・・・・都系唔好・先去街市大樓　嗰間妹記魚腩粥嗰度・・・轉下轉下・都系唔好・・都系出翻去亞街路街飛過火車橋右轉入太平道・再右轉乜翻出去窩打老道・・・向女人街方向飛　・・・・下飛下飛下・・最後交兜飛咗入廣華醫院嘅後產房・・亦即系麥體　右邊紋精對上・・・都系　冇左邊紋精對上轉下轉下轉下咁・・・・麥體認定呢個系異象・・・與　上紋精對上嘅交兜許遠・・而腦入面亦即時出現咗快要出世個仔嘅・　樣希望佢好聰明讀書好叻・・交兜對麥太嘅願望似乎冇咩表示噃・・於是佢對住交兜補充咁話或者讀書唔叻出嚟做嘢叻咧・又或者咧・又或者繫好靚仔好靚仔・・好似周潤發同埋梁朝偉咁靚仔・・・・交兜依然系咁喺度轉・・・・・好似一啲應承嘅跡象都冇・・・麥太一時心虛・・嗱嗱林喺交兜未落地之前起過另外一個願望・・・・那就算唔系咁聰明同咁靚仔只要福星高照一世救運乜嘢事都逢凶化吉　啊・・・・・佢靠自己有了解決啲嘢就梗繫好啦・不過運氣都好緊要喎・・雖然似梁朝偉周潤發都唔翻佢冇運行・・・但系都要叻仔先得噶・・・"
+          "text": "・・・・就喺木胎快要臨盤嘅時候・・有一個膠兜喺九龍上空飛過・・・・沿住荔枝角道・直出大角咀道・・經過好彩酒家・再左轉翻出花園街落完牛苑望對上・・・・・・・都系唔好・先去街市大樓　嗰間妹記魚腩粥嗰度・・・轉下轉下・都系唔好・・都系出翻去亞街路街飛過火車橋右轉入太平道・再右轉乜翻出去窩打老道・・・向女人街方向飛　・・・・下飛下飛下・・最後交兜飛咗入廣華醫院嘅後產房・・亦即系麥體　右邊紋精對上・・・都系　冇左邊紋精對上轉下轉下轉下咁・・・・麥體認定呢個系異象・・・與　上紋精對上嘅交兜許遠・・而腦入面亦即時出現咗快要出世個仔嘅・樣希望佢好聰明讀書好叻・・交兜對麥太嘅願望似乎冇咩表示噃・・於是佢對住交兜補充咁話或者讀書唔叻出嚟做嘢叻咧・又或者咧・又或者繫好靚仔好靚仔・・好似周潤發同埋梁朝偉咁靚仔・・・・交兜依然系咁喺度轉・・・・・好似一啲應承嘅跡象都冇・・・麥太一時心虛・・嗱嗱林喺交兜未落地之前起過另外一個願望・・・・那就算唔系咁聰明同咁靚仔只要福星高照一世救運乜嘢事都逢凶化吉　啊・・・・・佢靠自己有了解決啲嘢就梗繫好啦・不過運氣都好緊要喎・・雖然似梁朝偉周潤發都唔翻佢冇運行・・・但系都要叻仔先得噶・・・"
         },
         {
           "name": "sensevoice",
-          "text": "・・・・就喺麥太快要臨盤嘅時候・・有一個交兜喺九龍上空飛過・・・・沿住荔枝角道・直出大角咀道・・經過好彩酒家・再咗轉翻出花園街樂園牛丸望對上・・・・・・・　　　　・先去街市大樓　嗰間妹記魚腩燭嗰度・・・轉下轉　・都繫　好・・都系出翻去亞皆路街飛過火車橋又轉入太平道・再右轉屈翻出去窩打老道・・・向女人街方向飛　・・・・下飛下飛下・・最後膠兜飛咗　廣華醫院嘅後產房・・亦即系麥太喺右邊雲徵對上・・・都系唔好左邊雲徵對上轉下轉下轉下咁・・・・麥太認定呢個系異象・・・於是向雲徵對上嘅膠兜許願・・而腦入面亦即時出現咗快要出世個仔嘅・　樣希望佢好聰明讀書好叻・・膠兜對麥太嘅願望似乎冇咩表示噃・・於是佢對住膠兜補充咁話或者讀書唔叻出嚟做嘢叻啦・又或者咧・又或者繫好靚仔好靚仔・・好似周潤發同埋梁朝偉咁靚仔・・・・膠兜依然系咁喺度轉・・・・・好似一啲應承嘅跡象都冇・・・麥太一時心虛・・嗱嗱臨喺膠兜未落地之前起過另外一個願望・・・・但就算唔系咁聰明能咁靚仔只要福星高照一世夠運乜嘢事都　　發噶　啦・・・・・佢靠自己有了解決啲嘢就梗繫好啦・不過運氣都好緊要　・・雖然　梁朝偉　　發都唔　　冇運行・・・但系都要叻仔先得噶・・・"
+          "text": "・・・・就喺麥太快要臨盤嘅時候・・有一個交兜喺九龍上空飛過・・・・沿住荔枝角道・直出大角咀道・・經過好彩酒家・再咗轉翻出花園街樂園牛丸望對上・・・・・・・　　　　・先去街市大樓　嗰間妹記魚腩燭嗰度・・・轉下轉　・都繫　好・・都系出翻去亞皆路街飛過火車橋又轉入太平道・再右轉屈翻出去窩打老道・・・向女人街方向飛　・・・・下飛下飛下・・最後膠兜飛咗　廣華醫院嘅後產房・・亦即系麥太喺右邊雲徵對上・・・都系唔好左邊雲徵對上轉下轉下轉下咁・・・・麥太認定呢個系異象・・・於是向雲徵對上嘅膠兜許願・・而腦入面亦即時出現咗快要出世個仔嘅・樣希望佢好聰明讀書好叻・・膠兜對麥太嘅願望似乎冇咩表示噃・・於是佢對住膠兜補充咁話或者讀書唔叻出嚟做嘢叻啦・又或者咧・又或者繫好靚仔好靚仔・・好似周潤發同埋梁朝偉咁靚仔・・・・膠兜依然系咁喺度轉・・・・・好似一啲應承嘅跡象都冇・・・麥太一時心虛・・嗱嗱臨喺膠兜未落地之前起過另外一個願望・・・・但就算唔系咁聰明能咁靚仔只要福星高照一世夠運乜嘢事都　　發噶　啦・・・・・佢靠自己有了解決啲嘢就梗繫好啦・不過運氣都好緊要　・・雖然　梁朝偉　　發都唔　　冇運行・・・但系都要叻仔先得噶・・・"
         },
         {
           "name": "firered",
-          "text": "・・・・就喺麥啓快要臨盤嘅時候・・有一個膠兜喺九龍上空飛過・・・・沿住荔枝角道・直出大角咀道・・經過好彩酒家・再左轉翻出花園街樂園牛丸王對上・・・・・・・都系　冇・先去街市大樓　　間妹記魚腩粥　度・・・轉下轉下・都系唔好・・都系出翻去亞街老街飛過火車橋右轉入太平道・再右轉屈翻出去窩打路道・・・向女人街方向飛　・・・・下飛下飛下・・最後膠兜飛咗入廣華醫院嘅後產房・・亦即系麥太　右邊雲徵對上・・・都系唔好左邊雲徵對上轉下轉下轉下咁・・・・麥太認定呢個系異象・・・於是向雲徵對上嘅膠兜許願・・而腦入面亦即時出現咗快要出世個仔嘅・　樣希望佢好聰明讀書好叻・・膠兜對麥太嘅願望似乎冇咩表示噃・・於是佢對住膠兜補充咁話或者讀書唔叻出嚟做嘢叻啦・又或者咧・又或者繫好靚仔好靚仔・・好似周潤發同埋梁朝偉咁靚仔・・・・膠兜依然系咁喺度轉・・・・・好似一啲應承嘅跡象都冇・・・麥太一時心虛・・嗱嗱臨喺膠兜未落地之前起過另外一個願望・・・・嗱就算唔系咁聰明同咁靚仔只要福星高照一世舊運乜嘢事都逢空化噶　啦・・・・・佢靠自己有料解決啲嘢就梗繫好啦・不過運氣都好緊要　・・雖然似梁朝偉周潤發都唔翻佢冇運行・・・但系都要叻仔先得噶・・・"
+          "text": "・・・・就喺麥啓快要臨盤嘅時候・・有一個膠兜喺九龍上空飛過・・・・沿住荔枝角道・直出大角咀道・・經過好彩酒家・再左轉翻出花園街樂園牛丸王對上・・・・・・・都系　冇・先去街市大樓　　間妹記魚腩粥　度・・・轉下轉下・都系唔好・・都系出翻去亞街老街飛過火車橋右轉入太平道・再右轉屈翻出去窩打路道・・・向女人街方向飛　・・・・下飛下飛下・・最後膠兜飛咗入廣華醫院嘅後產房・・亦即系麥太　右邊雲徵對上・・・都系唔好左邊雲徵對上轉下轉下轉下咁・・・・麥太認定呢個系異象・・・於是向雲徵對上嘅膠兜許願・・而腦入面亦即時出現咗快要出世個仔嘅・樣希望佢好聰明讀書好叻・・膠兜對麥太嘅願望似乎冇咩表示噃・・於是佢對住膠兜補充咁話或者讀書唔叻出嚟做嘢叻啦・又或者咧・又或者繫好靚仔好靚仔・・好似周潤發同埋梁朝偉咁靚仔・・・・膠兜依然系咁喺度轉・・・・・好似一啲應承嘅跡象都冇・・・麥太一時心虛・・嗱嗱臨喺膠兜未落地之前起過另外一個願望・・・・嗱就算唔系咁聰明同咁靚仔只要福星高照一世舊運乜嘢事都逢空化噶　啦・・・・・佢靠自己有料解決啲嘢就梗繫好啦・不過運氣都好緊要　・・雖然似梁朝偉周潤發都唔翻佢冇運行・・・但系都要叻仔先得噶・・・"
         },
         {
           "name": "glm",
-          "text": "・・・・就喺物體快要陸據嘅時候・・有一個交都喺九龍上空飛過・・・・沿住荔枝角度・直出大磚隧道・・經過好彩酒家・再左轉翻出花園街落於牛園望對象・・・・・・・　系　冇・先去街市大劇院嗰間妹嘅魚腩粥嗰度・・・轉下轉下・都系　冇・・都系出翻去亞街路街飛過火車橋右轉入太平道・再右轉掹翻出去喺打路道・・・向女人街方向飛　・・・・下飛下飛下・・最後交兜飛咗入廣華醫院嘅後產房・・亦即系密　喺右邊雲鷹對上・・・都系唔好左邊雲鵰對象轉下轉下轉下咁・・・・目睇認定呢個系異象・・・於是向雲鵰對象嘅交都許願・・而老入面亦即時出現咗快要出世個仔嘅・　樣希望　好聰明讀書好叻・・交都對墨台嘅願望似乎唔咩表示　・・啱是佢對住交都補充咁話或者讀書唔叻出嚟做嘢叻啦・又或者叻・又或者繫好靚仔好靚仔・・好似周潤發同埋梁朝偉咁靚仔・・・・交投依然系咁喺度轉・・・・・好似一啲英雄嘅志向都冇・・・莫太一時心灰・・嗱嗱嗱喺交投未落地之前起過另外一句　夢・・・・嗱就算唔系咁聰明同咁靚仔只要福星高照一世舊運乜　事都逢凶化吉㗎啊・・・・・佢靠自己有了解決啲嘢就梗繫好啦・不過運氣都好緊要喎・・雖然似梁朝偉真係發都唔返佢冇運行・・・但系都要靚仔先得㗎・・・"
+          "text": "・・・・就喺物體快要陸據嘅時候・・有一個交都喺九龍上空飛過・・・・沿住荔枝角度・直出大磚隧道・・經過好彩酒家・再左轉翻出花園街落於牛園望對象・・・・・・・　系　冇・先去街市大劇院嗰間妹嘅魚腩粥嗰度・・・轉下轉下・都系　冇・・都系出翻去亞街路街飛過火車橋右轉入太平道・再右轉掹翻出去喺打路道・・・向女人街方向飛　・・・・下飛下飛下・・最後交兜飛咗入廣華醫院嘅後產房・・亦即系密　喺右邊雲鷹對上・・・都系唔好左邊雲鵰對象轉下轉下轉下咁・・・・目睇認定呢個系異象・・・於是向雲鵰對象嘅交都許願・・而老入面亦即時出現咗快要出世個仔嘅・樣希望　好聰明讀書好叻・・交都對墨台嘅願望似乎唔咩表示　・・啱是佢對住交都補充咁話或者讀書唔叻出嚟做嘢叻啦・又或者叻・又或者繫好靚仔好靚仔・・好似周潤發同埋梁朝偉咁靚仔・・・・交投依然系咁喺度轉・・・・・好似一啲英雄嘅志向都冇・・・莫太一時心灰・・嗱嗱嗱喺交投未落地之前起過另外一句　夢・・・・嗱就算唔系咁聰明同咁靚仔只要福星高照一世舊運乜　事都逢凶化吉㗎啊・・・・・佢靠自己有了解決啲嘢就梗繫好啦・不過運氣都好緊要喎・・雖然似梁朝偉真係發都唔返佢冇運行・・・但系都要靚仔先得㗎・・・"
         }
       ],
-      "speaker": "・・・・ＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢ・ＢＢＢＢＢＢ・・　ＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・・・・ＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢ・ＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・ＢＣＣＣＣＣＣＣＣＣＣＣ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＣＣＣＣＣＣＣＣＣＣＣＣ・ＣＣＣＣ・ＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢＢＢＢ・・・・・ＢＢＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・・ＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣ・ＣＣＣＣＣＣＣＣＣ・・ＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣ・・・ＣＣＣＣＣＣＣＣＣ・・・",
-      "language_trace": "・・・・粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵・・・・粵粵粵粵粵粵・粵粵粵粵粵粵・・　粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・・・・　　　粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵・粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵普粵・・・・普普普普普・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵・粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・粵粵粵粵粵粵粵粵粵・・・・・粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵粵粵・・・",
+      "speaker": "・・・・ＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢ・ＢＢＢＢＢＢ・・　ＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・・・・ＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢ・ＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・ＣＣＣＣＣＣＣＣＣＣＣ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＣＣＣＣＣＣＣＣＣＣＣＣ・ＣＣＣＣ・ＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢＢＢＢ・・・・・ＢＢＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・・ＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣ・ＣＣＣＣＣＣＣＣＣ・・ＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣ・・・ＣＣＣＣＣＣＣＣＣ・・・",
+      "language_trace": "・・・・粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵・・・・粵粵粵粵粵粵・粵粵粵粵粵粵・・　粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・・・・　　　粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵・粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵普粵・・・・普普普普普・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵・粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・粵粵粵粵粵粵粵粵粵・・・・・粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵粵粵・・・",
       "language_legend": {
         "粵": "zh-yue",
         "普": "zh-mandarin",
@@ -3129,13 +3123,13 @@
         "Ｄ": "yo",
         "Ｅ": "lo"
       },
-      "singing_trace": "・・・・　　　　　　　　　　　・・　　　　　　　　　　　　・・・・　　　　　　・　　　　　　・・　　　　　　・　　　　　　　　　　　　　　　・・・・・・・　　　　・　　　　　　　　　　　　　　　　・・・　　　　・　　　　・・　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　・・・　　　　　　　　・・・・　　　　　・・　　　　　　　　　　　　　　　・・　　　　　　　　　　　　・・・　　　　　　　　　　　　　　　　　・・・・　　　　　　　　　・・・　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　・・　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　・　　　　・　　　　　　　　　　・・　　　　　　　　　　　　　・・・・　　　　　　　　　・・・・・　　　　　　　　　　　・・・　　　　　　・・　　　　　　　　　　　　　　　　　　　・・・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・・・　　　　　　　　　　　　　　　・　　　　　　　　　・・　　　　　　　　　　　　　　　　・・・　　　　　　　　唱・・・",
-      "music_trace": "・・・・樂樂樂樂樂樂樂樂樂樂樂・・樂樂樂樂樂樂樂樂樂樂樂樂・・・・樂樂樂樂樂樂・樂樂樂樂樂樂・・樂樂樂樂　　・　　　　　　　　　　　　　　　・・・・・・・　　　　・　　　　　　　　　　　　　　　　・・・　　　　・　　　　・・　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　・・・　　　　　　　　・・・・　　　　　・・　樂樂樂樂　　　　　　　　　樂・・樂樂樂樂樂樂樂樂樂　　　・・・　　　　　　　　　　　　　　　　　・・・・　　樂樂樂　　　　・・・　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　・・　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　・　　　　・　　　　　　　　　　・・　　　　　　　　　　　　　・・・・　　　　　　　樂樂・・・・・樂樂樂樂樂樂樂樂樂樂樂・・・樂樂樂樂樂樂・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・・・樂樂樂樂　　樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂　樂樂樂樂樂樂樂樂樂・・・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・樂樂樂樂樂樂樂樂樂・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂　・・・樂樂樂樂樂樂樂樂樂・・・",
-      "merged": "・・・・就喺麥太快要臨盆嘅時候・・有一個膠兜喺九龍上空飛過・・・・沿住荔枝角道・直出大角咀道・・經過好彩酒家・再左轉返出花園街樂園牛丸王對上・・・・・・・都係唔好・先去街市大樓　嗰間妹記魚腩粥嗰度・・・轉下轉下・都係唔好・・都係出返去亞皆老街飛過火車橋又轉入太平道・再右轉屈返出去窩打老道・・・向女人街方向飛　・・・・下飛下飛下・・最後膠兜飛咗入廣華醫院嘅後產房・・亦即係麥太喺右邊雲徵對上・・・都係唔好左邊雲徵對上轉下轉下轉下咁・・・・麥太認定呢個係異象・・・於是向雲頂對上嘅膠兜許願・・而腦入面亦即時出現咗快要出世個仔嘅・模樣希望佢好聰明讀書好叻・・膠兜對麥太嘅願望似乎冇咩表示噃・・於是佢對住膠兜補充咁話或者讀書唔叻出嚟做嘢叻啦・又或者呢・又或者係好靚仔好靚仔・・好似周潤發同埋梁朝偉咁靚仔・・・・膠兜依然係咁喺度轉・・・・・好似一啲應承嘅跡象都冇・・・麥太一時心虛・・嗱嗱臨喺膠兜未落地之前起過另外一個願望・・・・嗱就算唔係咁聰明同咁靚仔只要福星高照一世夠運乜嘢事都逢凶化吉㗎喇・・・・・佢靠自己有了解決啲嘢就梗係好啦・不過運氣都好緊要喎・・雖然似梁朝偉周潤發都唔返佢冇運行・・・但係都要叻仔先得㗎・・・",
+      "singing_trace": "・・・・　　　　　　　　　　　・・　　　　　　　　　　　　・・・・　　　　　　・　　　　　　・・　　　　　　・　　　　　　　　　　　　　　　・・・・・・・　　　　・　　　　　　　　　　　　　　　　・・・　　　　・　　　　・・　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　・・・　　　　　　　　・・・・　　　　　・・　　　　　　　　　　　　　　　・・　　　　　　　　　　　　・・・　　　　　　　　　　　　　　　　　・・・・　　　　　　　　　・・・　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　・　　　　　　　　　　　・・　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　・　　　　・　　　　　　　　　　・・　　　　　　　　　　　　　・・・・　　　　　　　　　・・・・・　　　　　　　　　　　・・・　　　　　　・・　　　　　　　　　　　　　　　　　　　・・・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・・・　　　　　　　　　　　　　　　・　　　　　　　　　・・　　　　　　　　　　　　　　　　・・・　　　　　　　　唱・・・",
+      "music_trace": "・・・・樂樂樂樂樂樂樂樂樂樂樂・・樂樂樂樂樂樂樂樂樂樂樂樂・・・・樂樂樂樂樂樂・樂樂樂樂樂樂・・樂樂樂樂　　・　　　　　　　　　　　　　　　・・・・・・・　　　　・　　　　　　　　　　　　　　　　・・・　　　　・　　　　・・　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　・・・　　　　　　　　・・・・　　　　　・・　樂樂樂樂　　　　　　　　　樂・・樂樂樂樂樂樂樂樂樂　　　・・・　　　　　　　　　　　　　　　　　・・・・　　樂樂樂　　　　・・・　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　・　　　　　　　　　　　・・　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　・　　　　・　　　　　　　　　　・・　　　　　　　　　　　　　・・・・　　　　　　　樂樂・・・・・樂樂樂樂樂樂樂樂樂樂樂・・・樂樂樂樂樂樂・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・・・樂樂樂樂　　樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂　樂樂樂樂樂樂樂樂樂・・・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・樂樂樂樂樂樂樂樂樂・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂　・・・樂樂樂樂樂樂樂樂樂・・・",
+      "merged": "・・・・就喺麥太快要臨盆嘅時候・・有一個膠兜喺九龍上空飛過・・・・沿住荔枝角道・直出大角咀道・・經過好彩酒家・再左轉返出花園街樂園牛丸王對上・・・・・・・都係唔好・先去街市大樓　嗰間妹記魚腩粥嗰度・・・轉下轉下・都係唔好・・都係出返去亞皆老街飛過火車橋又轉入太平道・再右轉屈返出去窩打老道・・・向女人街方向飛　・・・・下飛下飛下・・最後麥兜飛咗入廣華醫院嘅後產房・・亦即係麥太喺右邊門診對上・・・都係唔好左邊門診對上轉下轉下轉下咁・・・・麥太認定呢個係異象・・・於是向雲精對上嘅膠兜許願・・而腦入面亦即時出現咗快要出世個仔嘅・樣希望佢好聰明讀書好叻・・膠兜對麥太嘅願望似乎冇咩表示噃・・於是佢對住膠兜補充咁話或者讀書唔叻出嚟做嘢叻啦・又或者呢・又或者係好靚仔好靚仔・・好似周潤發同埋梁朝偉咁靚仔・・・・膠兜依然係咁喺度轉・・・・・好似一啲應承嘅跡象都冇・・・麥太一時心虛・・嗱嗱臨喺膠兜未落地之前起過另外一個願望・・・・嗱就算唔係咁聰明同咁靚仔只要福星高照一世夠運乜嘢事都逢凶化吉㗎喇・・・・・佢靠自己有料解決啲嘢就梗係好啦・不過運氣都好緊要喎・・雖然似梁朝偉周潤發都唔返佢冇運行・・・但係都要叻仔先得㗎・・・",
       "subtitles": [
         {
           "index": 1,
-          "text": "就喺麥太快要臨盆嘅時候。",
+          "text": "就喺麥太快要臨盆嘅時候",
           "speech_start_ms": 48742,
           "speech_end_ms": 51134,
           "start_ms": 48492,
@@ -3144,7 +3138,7 @@
         },
         {
           "index": 2,
-          "text": "有一個膠兜喺九龍上空飛過。",
+          "text": "有一個膠兜喺九龍上空飛過",
           "speech_start_ms": 51134,
           "speech_end_ms": 53344,
           "start_ms": 51134,
@@ -3153,7 +3147,7 @@
         },
         {
           "index": 3,
-          "text": "沿住荔枝角道。",
+          "text": "沿住荔枝角道",
           "speech_start_ms": 54797,
           "speech_end_ms": 56398,
           "start_ms": 54547,
@@ -3162,7 +3156,7 @@
         },
         {
           "index": 4,
-          "text": "直出大角咀道。",
+          "text": "直出大角咀道",
           "speech_start_ms": 56398,
           "speech_end_ms": 58179,
           "start_ms": 56398,
@@ -3171,7 +3165,7 @@
         },
         {
           "index": 5,
-          "text": "經過好彩酒家。",
+          "text": "經過好彩酒家",
           "speech_start_ms": 58179,
           "speech_end_ms": 59960,
           "start_ms": 58179,
@@ -3180,7 +3174,7 @@
         },
         {
           "index": 6,
-          "text": "再左轉返出花園街，樂園牛丸王對上。",
+          "text": "再左轉返出花園街樂園牛丸王對上",
           "speech_start_ms": 59960,
           "speech_end_ms": 63783,
           "start_ms": 59960,
@@ -3189,7 +3183,7 @@
         },
         {
           "index": 7,
-          "text": "都係唔好。",
+          "text": "都係唔好",
           "speech_start_ms": 65715,
           "speech_end_ms": 66736,
           "start_ms": 65465,
@@ -3198,7 +3192,7 @@
         },
         {
           "index": 8,
-          "text": "先去街市大樓嗰間妹記魚腩粥嗰度。",
+          "text": "先去街市大樓嗰間妹記魚腩粥嗰度",
           "speech_start_ms": 66736,
           "speech_end_ms": 70318,
           "start_ms": 66736,
@@ -3207,7 +3201,7 @@
         },
         {
           "index": 9,
-          "text": "轉下轉下。",
+          "text": "轉下轉下",
           "speech_start_ms": 70318,
           "speech_end_ms": 71960,
           "start_ms": 70318,
@@ -3216,7 +3210,7 @@
         },
         {
           "index": 10,
-          "text": "都係唔好。",
+          "text": "都係唔好",
           "speech_start_ms": 71960,
           "speech_end_ms": 73281,
           "start_ms": 71960,
@@ -3225,25 +3219,16 @@
         },
         {
           "index": 11,
-          "text": "都係出返去亞皆老街，",
+          "text": "都係出返去亞皆老街飛過火車橋又轉入太平道",
           "speech_start_ms": 73281,
-          "speech_end_ms": 74762,
-          "start_ms": 73281,
-          "end_ms": 74762,
-          "speaker": "SPEAKER_01"
-        },
-        {
-          "index": 12,
-          "text": "飛過火車橋又轉入太平道。",
-          "speech_start_ms": 74762,
           "speech_end_ms": 78485,
-          "start_ms": 74762,
+          "start_ms": 73281,
           "end_ms": 78485,
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 13,
-          "text": "再右轉屈返出去窩打老道。",
+          "index": 12,
+          "text": "再右轉屈返出去窩打老道",
           "speech_start_ms": 78485,
           "speech_end_ms": 81587,
           "start_ms": 78485,
@@ -3251,8 +3236,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 14,
-          "text": "向女人街方向飛。",
+          "index": 13,
+          "text": "向女人街方向飛",
           "speech_start_ms": 81587,
           "speech_end_ms": 82668,
           "start_ms": 81587,
@@ -3260,8 +3245,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 15,
-          "text": "下飛下飛下。",
+          "index": 14,
+          "text": "下飛下飛下",
           "speech_start_ms": 84068,
           "speech_end_ms": 85831,
           "start_ms": 83818,
@@ -3269,8 +3254,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 16,
-          "text": "最後膠兜飛咗入廣華醫院嘅後產房。",
+          "index": 15,
+          "text": "最後麥兜飛咗入廣華醫院嘅後產房",
           "speech_start_ms": 85831,
           "speech_end_ms": 89157,
           "start_ms": 85831,
@@ -3278,8 +3263,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 17,
-          "text": "亦即係麥太喺右邊雲徵對上。",
+          "index": 16,
+          "text": "亦即係麥太喺右邊門診對上",
           "speech_start_ms": 89157,
           "speech_end_ms": 92744,
           "start_ms": 89157,
@@ -3287,8 +3272,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 18,
-          "text": "都係唔好左邊雲徵對上轉下轉下轉下咁。",
+          "index": 17,
+          "text": "都係唔好左邊門診對上轉下轉下轉下咁",
           "speech_start_ms": 92744,
           "speech_end_ms": 96892,
           "start_ms": 92744,
@@ -3296,8 +3281,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 19,
-          "text": "麥太認定呢個係異象。",
+          "index": 18,
+          "text": "麥太認定呢個係異象",
           "speech_start_ms": 98135,
           "speech_end_ms": 100636,
           "start_ms": 97885,
@@ -3305,8 +3290,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 20,
-          "text": "於是向雲頂對上嘅膠兜許願。",
+          "index": 19,
+          "text": "於是向雲精對上嘅膠兜許願",
           "speech_start_ms": 100636,
           "speech_end_ms": 103397,
           "start_ms": 100636,
@@ -3314,7 +3299,7 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 21,
+          "index": 20,
           "text": "而腦入面亦即時出現咗",
           "speech_start_ms": 103397,
           "speech_end_ms": 105378,
@@ -3323,8 +3308,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 22,
-          "text": "快要出世個仔嘅模樣，",
+          "index": 21,
+          "text": "快要出世個仔嘅樣",
           "speech_start_ms": 105378,
           "speech_end_ms": 107059,
           "start_ms": 105378,
@@ -3332,8 +3317,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 23,
-          "text": "希望佢好聰明讀書好叻。",
+          "index": 22,
+          "text": "希望佢好聰明讀書好叻",
           "speech_start_ms": 107059,
           "speech_end_ms": 110640,
           "start_ms": 107059,
@@ -3341,8 +3326,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 24,
-          "text": "膠兜對麥太嘅願望似乎冇咩表示噃。",
+          "index": 23,
+          "text": "膠兜對麥太嘅願望似乎冇咩表示噃",
           "speech_start_ms": 110640,
           "speech_end_ms": 113762,
           "start_ms": 110640,
@@ -3350,8 +3335,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 25,
-          "text": "於是佢對住膠兜補充咁話：",
+          "index": 24,
+          "text": "於是佢對住膠兜補充咁話",
           "speech_start_ms": 113762,
           "speech_end_ms": 116143,
           "start_ms": 113762,
@@ -3359,8 +3344,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 26,
-          "text": "或者讀書唔叻，出嚟做嘢叻啦。",
+          "index": 25,
+          "text": "或者讀書唔叻出嚟做嘢叻啦",
           "speech_start_ms": 116143,
           "speech_end_ms": 118964,
           "start_ms": 116143,
@@ -3368,8 +3353,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 27,
-          "text": "又或者呢。",
+          "index": 26,
+          "text": "又或者呢",
           "speech_start_ms": 118964,
           "speech_end_ms": 120465,
           "start_ms": 118964,
@@ -3377,8 +3362,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 28,
-          "text": "又或者係好靚仔好靚仔。",
+          "index": 27,
+          "text": "又或者係好靚仔好靚仔",
           "speech_start_ms": 120465,
           "speech_end_ms": 123026,
           "start_ms": 120465,
@@ -3386,8 +3371,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 29,
-          "text": "好似周潤發同埋梁朝偉咁靚仔。",
+          "index": 28,
+          "text": "好似周潤發同埋梁朝偉咁靚仔",
           "speech_start_ms": 123026,
           "speech_end_ms": 125087,
           "start_ms": 123026,
@@ -3395,8 +3380,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 30,
-          "text": "膠兜依然係咁喺度轉。",
+          "index": 29,
+          "text": "膠兜依然係咁喺度轉",
           "speech_start_ms": 126736,
           "speech_end_ms": 127852,
           "start_ms": 126486,
@@ -3404,8 +3389,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 31,
-          "text": "好似一啲應承嘅跡象都冇。",
+          "index": 30,
+          "text": "好似一啲應承嘅跡象都冇",
           "speech_start_ms": 129583,
           "speech_end_ms": 131991,
           "start_ms": 129333,
@@ -3413,8 +3398,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 32,
-          "text": "麥太一時心虛。",
+          "index": 31,
+          "text": "麥太一時心虛",
           "speech_start_ms": 131991,
           "speech_end_ms": 133636,
           "start_ms": 131991,
@@ -3422,26 +3407,17 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 33,
-          "text": "嗱嗱臨喺膠兜未落地之前，",
+          "index": 32,
+          "text": "嗱嗱臨喺膠兜未落地之前起過另外一個願望",
           "speech_start_ms": 133636,
-          "speech_end_ms": 135803,
-          "start_ms": 133636,
-          "end_ms": 135803,
-          "speaker": "SPEAKER_01"
-        },
-        {
-          "index": 34,
-          "text": "起過另外一個願望。",
-          "speech_start_ms": 135803,
           "speech_end_ms": 136726,
-          "start_ms": 135803,
+          "start_ms": 133636,
           "end_ms": 137226,
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 35,
-          "text": "嗱，就算唔係咁聰明同咁靚仔",
+          "index": 33,
+          "text": "嗱就算唔係咁聰明同咁靚仔",
           "speech_start_ms": 137937,
           "speech_end_ms": 140383,
           "start_ms": 137687,
@@ -3449,8 +3425,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 36,
-          "text": "只要福星高照，一世夠運",
+          "index": 34,
+          "text": "只要福星高照一世夠運",
           "speech_start_ms": 140383,
           "speech_end_ms": 142829,
           "start_ms": 140383,
@@ -3458,7 +3434,7 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 37,
+          "index": 35,
           "text": "乜嘢事都逢凶化吉㗎喇",
           "speech_start_ms": 142829,
           "speech_end_ms": 144112,
@@ -3467,8 +3443,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 38,
-          "text": "佢靠自己有了解決啲嘢就梗係好啦。",
+          "index": 36,
+          "text": "佢靠自己有料解決啲嘢就梗係好啦",
           "speech_start_ms": 145820,
           "speech_end_ms": 149642,
           "start_ms": 145570,
@@ -3476,8 +3452,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 39,
-          "text": "不過運氣都好緊要喎。",
+          "index": 37,
+          "text": "不過運氣都好緊要喎",
           "speech_start_ms": 149642,
           "speech_end_ms": 152144,
           "start_ms": 149642,
@@ -3485,8 +3461,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 40,
-          "text": "雖然似梁朝偉、周潤發，都唔返佢冇運行。",
+          "index": 38,
+          "text": "雖然似梁朝偉周潤發都唔返佢冇運行",
           "speech_start_ms": 152144,
           "speech_end_ms": 156126,
           "start_ms": 152144,
@@ -3494,8 +3470,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 41,
-          "text": "但係都要叻仔先得㗎。",
+          "index": 39,
+          "text": "但係都要叻仔先得㗎",
           "speech_start_ms": 156126,
           "speech_end_ms": 157787,
           "start_ms": 156126,
@@ -4574,38 +4550,38 @@
       },
       "singing_trace": "・・・・　　　　　　　　　　　・　　・・・　　　・・・　　　　　・・・　　　・・・　　　　　　・・　　　　　　　　・・・・・　　・・・　　　　　　　　　　・・・・・・・・　　　　　　　　　　　・・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・・・・・・　・・・・　　・・　　　　　　　　　　　　　　　　　・・・　　・・・",
       "music_trace": "・・・・　　　　　　　　　　樂・樂樂・・・樂樂　・・・樂樂樂樂樂・・・　樂樂・・・樂樂樂樂樂樂・・樂樂樂樂樂樂樂樂・・・・・樂樂・・・樂樂樂樂樂樂樂樂樂樂・・・・・・・・樂樂樂樂　　　　　　　・・・　　　樂樂樂樂樂樂樂樂樂樂　　　　　　　　　　　　　　　　・・・・・・・・　・・・・　　・・　　　　　　　　　　　　　　　　　・・・　　・・・",
-      "merged": "・・・・最後膠兜滴嘟一聲咁落地・滴嘟・・・滴嘟喎・・・即係應承啦・・・麥太心・・・諗今次冇死喇・・但係應承咗啲咩呢・・・・・叻仔・・・好運定係話似周潤發啊・・・・・・・・為咗紀念呢個賜福嘅膠兜・・・麥太決定將個仔嘅名叫做麥膠都係唔好膠膠聲咁難聽不如叫麥兜啦・・・・・・・・啦・・・・各位・・我就係呢個差少少就叫做麥膠嘅小朋友・・・麥兜・・・",
+      "merged": "・・・・最後膠兜滴嘟一聲咁落地・滴嘟・・・滴嘟喎・・・即係應承啦・・・麥太心・・・諗今次冇死喇・・但係應承咗啲咩呢・・・・・叻仔・・・好運定係話似周潤發啊・・・・・・・・為咗紀念呢個賜福嘅膠兜・・・麥太決定將個仔嘅名叫做麥膠都係唔好膠膠聲咁難聽不如叫麥兜啦・・・・・・・・啦・・・・各位・・我就係呢個差少少就叫做麥兜嘅小朋友・・・麥兜・・・",
       "subtitles": [
         {
-          "index": 42,
-          "text": "最後膠兜滴嘟一聲咁落地。",
+          "index": 40,
+          "text": "最後膠兜滴嘟一聲咁落地",
           "speech_start_ms": 162145,
-          "speech_end_ms": 164841,
+          "speech_end_ms": 164778,
           "start_ms": 161895,
-          "end_ms": 164841,
+          "end_ms": 164778,
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 43,
-          "text": "滴嘟。",
-          "speech_start_ms": 164841,
-          "speech_end_ms": 165835,
-          "start_ms": 164841,
-          "end_ms": 165835,
+          "index": 41,
+          "text": "滴嘟",
+          "speech_start_ms": 164778,
+          "speech_end_ms": 165618,
+          "start_ms": 164778,
+          "end_ms": 165618,
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 44,
-          "text": "滴嘟喎。",
-          "speech_start_ms": 165835,
+          "index": 42,
+          "text": "滴嘟喎",
+          "speech_start_ms": 165618,
           "speech_end_ms": 167671,
-          "start_ms": 165835,
+          "start_ms": 165618,
           "end_ms": 167671,
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 45,
-          "text": "即係應承啦。",
+          "index": 43,
+          "text": "即係應承啦",
           "speech_start_ms": 167671,
           "speech_end_ms": 169513,
           "start_ms": 167671,
@@ -4613,26 +4589,17 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 46,
-          "text": "麥太心……",
+          "index": 44,
+          "text": "麥太心諗今次冇死喇",
           "speech_start_ms": 169513,
-          "speech_end_ms": 169993,
-          "start_ms": 169513,
-          "end_ms": 169993,
-          "speaker": "SPEAKER_01"
-        },
-        {
-          "index": 47,
-          "text": "諗今次冇死喇。",
-          "speech_start_ms": 169993,
           "speech_end_ms": 172476,
-          "start_ms": 169993,
+          "start_ms": 169513,
           "end_ms": 172476,
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 48,
-          "text": "但係應承咗啲咩呢？",
+          "index": 45,
+          "text": "但係應承咗啲咩呢",
           "speech_start_ms": 172476,
           "speech_end_ms": 173437,
           "start_ms": 172476,
@@ -4640,8 +4607,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 49,
-          "text": "叻仔。",
+          "index": 46,
+          "text": "叻仔",
           "speech_start_ms": 174970,
           "speech_end_ms": 176295,
           "start_ms": 174720,
@@ -4649,8 +4616,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 50,
-          "text": "好運定係話似周潤發啊？",
+          "index": 47,
+          "text": "好運定係話似周潤發啊",
           "speech_start_ms": 176295,
           "speech_end_ms": 178384,
           "start_ms": 176295,
@@ -4658,8 +4625,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 51,
-          "text": "為咗紀念呢個賜福嘅膠兜。",
+          "index": 48,
+          "text": "為咗紀念呢個賜福嘅膠兜",
           "speech_start_ms": 180566,
           "speech_end_ms": 183212,
           "start_ms": 180316,
@@ -4667,8 +4634,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 52,
-          "text": "麥太決定將個仔嘅名叫做麥膠。",
+          "index": 49,
+          "text": "麥太決定將個仔嘅名叫做麥膠",
           "speech_start_ms": 183212,
           "speech_end_ms": 185177,
           "start_ms": 183212,
@@ -4676,8 +4643,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 53,
-          "text": "都係唔好膠膠聲咁難聽，",
+          "index": 50,
+          "text": "都係唔好膠膠聲咁難聽",
           "speech_start_ms": 185177,
           "speech_end_ms": 185418,
           "start_ms": 185177,
@@ -4685,8 +4652,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 54,
-          "text": "不如叫麥兜啦。",
+          "index": 51,
+          "text": "不如叫麥兜啦",
           "speech_start_ms": 185418,
           "speech_end_ms": 185538,
           "start_ms": 185418,
@@ -4694,8 +4661,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 55,
-          "text": "啦。",
+          "index": 52,
+          "text": "啦",
           "speech_start_ms": 189868,
           "speech_end_ms": 189888,
           "start_ms": 189618,
@@ -4703,8 +4670,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 56,
-          "text": "各位。",
+          "index": 53,
+          "text": "各位",
           "speech_start_ms": 192108,
           "speech_end_ms": 193269,
           "start_ms": 191858,
@@ -4712,8 +4679,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 57,
-          "text": "我就係呢個差少少就叫做麥膠嘅小朋友。",
+          "index": 54,
+          "text": "我就係呢個差少少就叫做麥兜嘅小朋友",
           "speech_start_ms": 193269,
           "speech_end_ms": 196993,
           "start_ms": 193269,
@@ -4721,8 +4688,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 58,
-          "text": "麥兜。",
+          "index": 55,
+          "text": "麥兜",
           "speech_start_ms": 196993,
           "speech_end_ms": 197233,
           "start_ms": 196993,
@@ -4916,12 +4883,12 @@
         {
           "index": 30,
           "start_ms": 214019,
-          "end_ms": 214218,
+          "end_ms": 214209,
           "kind": "text"
         },
         {
           "index": 31,
-          "start_ms": 214218,
+          "start_ms": 214209,
           "end_ms": 214579,
           "kind": "text"
         },
@@ -5042,1205 +5009,1241 @@
         {
           "index": 51,
           "start_ms": 220625,
-          "end_ms": 220785,
+          "end_ms": 220650,
           "kind": "text"
         },
         {
           "index": 52,
+          "start_ms": 220650,
+          "end_ms": 220674,
+          "kind": "text"
+        },
+        {
+          "index": 53,
+          "start_ms": 220674,
+          "end_ms": 220699,
+          "kind": "text"
+        },
+        {
+          "index": 54,
+          "start_ms": 220699,
+          "end_ms": 220723,
+          "kind": "text"
+        },
+        {
+          "index": 55,
+          "start_ms": 220723,
+          "end_ms": 220748,
+          "kind": "text"
+        },
+        {
+          "index": 56,
+          "start_ms": 220748,
+          "end_ms": 220773,
+          "kind": "text"
+        },
+        {
+          "index": 57,
           "start_ms": 220963,
           "end_ms": 221083,
           "kind": "text"
         },
         {
-          "index": 53,
+          "index": 58,
           "start_ms": 221083,
           "end_ms": 221103,
           "kind": "text"
         },
         {
-          "index": 54,
+          "index": 59,
           "start_ms": 221103,
           "end_ms": 221143,
           "kind": "text"
         },
         {
-          "index": 55,
+          "index": 60,
           "start_ms": 221143,
           "end_ms": 221163,
           "kind": "text"
         },
         {
-          "index": 56,
+          "index": 61,
           "start_ms": 221183,
           "end_ms": 221263,
           "kind": "text"
         },
         {
-          "index": 57,
+          "index": 62,
           "start_ms": 221263,
           "end_ms": 221323,
           "kind": "text"
         },
         {
-          "index": 58,
+          "index": 63,
           "start_ms": 221323,
           "end_ms": 221824,
           "kind": "text"
         },
         {
-          "index": 59,
+          "index": 64,
           "start_ms": 221824,
           "end_ms": 221844,
           "kind": "text"
         },
         {
-          "index": 60,
+          "index": 65,
           "start_ms": 222064,
           "end_ms": 222904,
           "kind": "text"
         },
         {
-          "index": 61,
+          "index": 66,
           "start_ms": 222904,
           "end_ms": 223185,
           "kind": "text"
         },
         {
-          "index": 62,
+          "index": 67,
           "start_ms": 223185,
           "end_ms": 223205,
           "kind": "text"
         },
         {
-          "index": 63,
-          "start_ms": 222784,
-          "end_ms": 223064,
+          "index": 68,
+          "start_ms": 223205,
+          "end_ms": 223225,
           "kind": "text"
         },
         {
-          "index": 64,
+          "index": 69,
           "start_ms": 223205,
           "end_ms": 223365,
           "kind": "text"
         },
         {
-          "index": 65,
+          "index": 70,
           "start_ms": 223285,
-          "end_ms": 223496,
+          "end_ms": 223495,
           "kind": "text"
         },
         {
-          "index": 66,
+          "index": 71,
           "start_ms": 223625,
           "end_ms": 223785,
           "kind": "text"
         },
         {
-          "index": 67,
+          "index": 72,
           "start_ms": 223705,
           "end_ms": 223945,
           "kind": "text"
         },
         {
-          "index": 68,
+          "index": 73,
           "start_ms": 223945,
           "end_ms": 224285,
           "kind": "text"
         },
         {
-          "index": 69,
+          "index": 74,
           "start_ms": 224285,
           "end_ms": 224686,
           "kind": "text"
         },
         {
-          "index": 70,
+          "index": 75,
           "start_ms": 224686,
           "end_ms": 225086,
           "kind": "text"
         },
         {
-          "index": 71,
+          "index": 76,
           "start_ms": 225087,
           "end_ms": 225826,
           "kind": "text"
         },
         {
-          "index": 72,
+          "index": 77,
           "start_ms": 225826,
           "end_ms": 226046,
           "kind": "text"
         },
         {
-          "index": 73,
+          "index": 78,
           "start_ms": 226046,
           "end_ms": 226247,
           "kind": "text"
         },
         {
-          "index": 74,
+          "index": 79,
           "start_ms": 226247,
           "end_ms": 226447,
           "kind": "text"
         },
         {
-          "index": 75,
+          "index": 80,
           "start_ms": 226447,
+          "end_ms": 226687,
+          "kind": "text"
+        },
+        {
+          "index": 81,
+          "start_ms": 226687,
           "end_ms": 226807,
           "kind": "text"
         },
         {
-          "index": 76,
+          "index": 82,
           "start_ms": 226807,
-          "end_ms": 226987,
+          "end_ms": 226907,
           "kind": "text"
         },
         {
-          "index": 77,
+          "index": 83,
+          "start_ms": 226807,
+          "end_ms": 226967,
+          "kind": "text"
+        },
+        {
+          "index": 84,
           "start_ms": 226897,
           "end_ms": 227067,
           "kind": "text"
         },
         {
-          "index": 78,
-          "start_ms": 227067,
-          "end_ms": 227207,
+          "index": 85,
+          "start_ms": 226987,
+          "end_ms": 227167,
           "kind": "text"
         },
         {
-          "index": 79,
-          "start_ms": 227207,
+          "index": 86,
+          "start_ms": 227167,
           "end_ms": 227347,
           "kind": "text"
         },
         {
-          "index": 80,
+          "index": 87,
           "start_ms": 227347,
           "end_ms": 229689,
           "kind": "text"
         },
         {
-          "index": 81,
+          "index": 88,
           "start_ms": 229689,
           "end_ms": 229942,
           "kind": "text"
         },
         {
-          "index": 82,
+          "index": 89,
           "start_ms": 229435,
           "end_ms": 229942,
           "kind": "text"
         },
         {
-          "index": 83,
+          "index": 90,
           "start_ms": 229942,
           "end_ms": 230449,
           "kind": "text"
         },
         {
-          "index": 84,
+          "index": 91,
           "start_ms": 230449,
           "end_ms": 230649,
           "kind": "text"
         },
         {
-          "index": 85,
+          "index": 92,
           "start_ms": 230649,
           "end_ms": 230850,
           "kind": "text"
         },
         {
-          "index": 86,
+          "index": 93,
           "start_ms": 230850,
           "end_ms": 231030,
           "kind": "text"
         },
         {
-          "index": 87,
+          "index": 94,
           "start_ms": 231030,
           "end_ms": 231140,
           "kind": "text"
         },
         {
-          "index": 88,
+          "index": 95,
           "start_ms": 231140,
           "end_ms": 231250,
           "kind": "text"
         },
         {
-          "index": 89,
+          "index": 96,
           "start_ms": 231250,
           "end_ms": 231970,
           "kind": "text"
         },
         {
-          "index": 90,
+          "index": 97,
           "start_ms": 231970,
           "end_ms": 232751,
           "kind": "text"
         },
         {
-          "index": 91,
+          "index": 98,
           "start_ms": 232520,
           "end_ms": 232740,
           "kind": "text"
         },
         {
-          "index": 92,
+          "index": 99,
           "start_ms": 232751,
           "end_ms": 233111,
           "kind": "text"
         },
         {
-          "index": 93,
+          "index": 100,
           "start_ms": 233111,
           "end_ms": 233291,
           "kind": "text"
         },
         {
-          "index": 94,
+          "index": 101,
           "start_ms": 233291,
           "end_ms": 233471,
           "kind": "text"
         },
         {
-          "index": 95,
+          "index": 102,
           "start_ms": 233471,
           "end_ms": 233491,
           "kind": "text"
         },
         {
-          "index": 96,
+          "index": 103,
           "start_ms": 228113,
           "end_ms": 228363,
           "kind": "pause"
         },
         {
-          "index": 97,
+          "index": 104,
           "start_ms": 228363,
           "end_ms": 228670,
           "kind": "pause"
         },
         {
-          "index": 98,
+          "index": 105,
           "start_ms": 230003,
           "end_ms": 230341,
           "kind": "pause"
         },
         {
-          "index": 99,
+          "index": 106,
           "start_ms": 233632,
           "end_ms": 234833,
           "kind": "text"
         },
         {
-          "index": 100,
+          "index": 107,
           "start_ms": 233868,
           "end_ms": 234118,
           "kind": "pause"
         },
         {
-          "index": 101,
+          "index": 108,
           "start_ms": 234118,
           "end_ms": 234368,
           "kind": "pause"
         },
         {
-          "index": 102,
+          "index": 109,
           "start_ms": 234368,
           "end_ms": 234796,
           "kind": "pause"
         },
         {
-          "index": 103,
+          "index": 110,
           "start_ms": 233853,
           "end_ms": 234833,
           "kind": "text"
         },
         {
-          "index": 104,
+          "index": 111,
           "start_ms": 234833,
           "end_ms": 235013,
           "kind": "text"
         },
         {
-          "index": 105,
+          "index": 112,
           "start_ms": 235013,
           "end_ms": 235534,
           "kind": "text"
         },
         {
-          "index": 106,
+          "index": 113,
           "start_ms": 235534,
           "end_ms": 235734,
           "kind": "text"
         },
         {
-          "index": 107,
+          "index": 114,
           "start_ms": 235734,
           "end_ms": 236324,
           "kind": "text"
         },
         {
-          "index": 108,
+          "index": 115,
           "start_ms": 235943,
           "end_ms": 236399,
           "kind": "pause"
         },
         {
-          "index": 109,
+          "index": 116,
           "start_ms": 236324,
           "end_ms": 236915,
           "kind": "text"
         },
         {
-          "index": 110,
+          "index": 117,
           "start_ms": 236915,
           "end_ms": 237993,
           "kind": "text"
         },
         {
-          "index": 111,
+          "index": 118,
           "start_ms": 237993,
           "end_ms": 238067,
           "kind": "text"
         },
         {
-          "index": 112,
+          "index": 119,
           "start_ms": 238067,
           "end_ms": 238249,
           "kind": "text"
         },
         {
-          "index": 113,
+          "index": 120,
           "start_ms": 238249,
           "end_ms": 238376,
           "kind": "text"
         },
         {
-          "index": 114,
+          "index": 121,
           "start_ms": 238376,
           "end_ms": 238654,
           "kind": "text"
         },
         {
-          "index": 115,
+          "index": 122,
           "start_ms": 238654,
           "end_ms": 238854,
           "kind": "text"
         },
         {
-          "index": 116,
+          "index": 123,
           "start_ms": 238854,
           "end_ms": 239116,
           "kind": "text"
         },
         {
-          "index": 117,
+          "index": 124,
           "start_ms": 239116,
           "end_ms": 239296,
           "kind": "text"
         },
         {
-          "index": 118,
+          "index": 125,
           "start_ms": 239296,
           "end_ms": 239856,
           "kind": "text"
         },
         {
-          "index": 119,
+          "index": 126,
           "start_ms": 240162,
           "end_ms": 240412,
           "kind": "pause"
         },
         {
-          "index": 120,
+          "index": 127,
           "start_ms": 240412,
           "end_ms": 240662,
           "kind": "pause"
         },
         {
-          "index": 121,
+          "index": 128,
           "start_ms": 240662,
           "end_ms": 241023,
           "kind": "pause"
         },
         {
-          "index": 122,
+          "index": 129,
           "start_ms": 239856,
           "end_ms": 241057,
           "kind": "text"
         },
         {
-          "index": 123,
+          "index": 130,
           "start_ms": 241057,
           "end_ms": 241858,
           "kind": "text"
         },
         {
-          "index": 124,
+          "index": 131,
           "start_ms": 241858,
           "end_ms": 242135,
           "kind": "text"
         },
         {
-          "index": 125,
+          "index": 132,
           "start_ms": 242135,
           "end_ms": 242408,
           "kind": "text"
         },
         {
-          "index": 126,
+          "index": 133,
           "start_ms": 242408,
           "end_ms": 242686,
           "kind": "text"
         },
         {
-          "index": 127,
+          "index": 134,
           "start_ms": 242686,
           "end_ms": 242968,
           "kind": "text"
         },
         {
-          "index": 128,
+          "index": 135,
           "start_ms": 242968,
           "end_ms": 244159,
           "kind": "text"
         },
         {
-          "index": 129,
+          "index": 136,
           "start_ms": 244159,
           "end_ms": 244880,
           "kind": "text"
         },
         {
-          "index": 130,
+          "index": 137,
           "start_ms": 244880,
           "end_ms": 245400,
           "kind": "text"
         },
         {
-          "index": 131,
+          "index": 138,
           "start_ms": 245400,
           "end_ms": 245634,
           "kind": "text"
         },
         {
-          "index": 132,
+          "index": 139,
           "start_ms": 245620,
           "end_ms": 245917,
           "kind": "text"
         },
         {
-          "index": 133,
+          "index": 140,
           "start_ms": 245917,
           "end_ms": 246210,
           "kind": "text"
         },
         {
-          "index": 134,
+          "index": 141,
           "start_ms": 246210,
           "end_ms": 246921,
           "kind": "text"
         },
         {
-          "index": 135,
+          "index": 142,
           "start_ms": 246921,
           "end_ms": 247346,
           "kind": "text"
         },
         {
-          "index": 136,
+          "index": 143,
           "start_ms": 247346,
           "end_ms": 247772,
           "kind": "text"
         },
         {
-          "index": 137,
+          "index": 144,
           "start_ms": 247772,
           "end_ms": 248197,
           "kind": "text"
         },
         {
-          "index": 138,
+          "index": 145,
           "start_ms": 248197,
           "end_ms": 248622,
           "kind": "text"
         },
         {
-          "index": 139,
+          "index": 146,
           "start_ms": 248622,
           "end_ms": 248882,
           "kind": "text"
         },
         {
-          "index": 140,
+          "index": 147,
           "start_ms": 248882,
           "end_ms": 248982,
           "kind": "text"
         },
         {
-          "index": 141,
+          "index": 148,
           "start_ms": 248982,
           "end_ms": 249182,
           "kind": "text"
         },
         {
-          "index": 142,
+          "index": 149,
           "start_ms": 249182,
           "end_ms": 249292,
           "kind": "text"
         },
         {
-          "index": 143,
+          "index": 150,
           "start_ms": 249292,
           "end_ms": 249402,
           "kind": "text"
         },
         {
-          "index": 144,
+          "index": 151,
           "start_ms": 249402,
           "end_ms": 249859,
           "kind": "text"
         },
         {
-          "index": 145,
+          "index": 152,
           "start_ms": 249782,
           "end_ms": 250163,
           "kind": "text"
         },
         {
-          "index": 146,
-          "start_ms": 249995,
-          "end_ms": 250175,
-          "kind": "text"
-        },
-        {
-          "index": 147,
+          "index": 153,
           "start_ms": 250163,
           "end_ms": 250563,
           "kind": "text"
         },
         {
-          "index": 148,
+          "index": 154,
           "start_ms": 250563,
           "end_ms": 250903,
           "kind": "text"
         },
         {
-          "index": 149,
+          "index": 155,
           "start_ms": 250903,
           "end_ms": 251124,
           "kind": "text"
         },
         {
-          "index": 150,
+          "index": 156,
           "start_ms": 251124,
           "end_ms": 251244,
           "kind": "text"
         },
         {
-          "index": 151,
+          "index": 157,
           "start_ms": 251244,
           "end_ms": 251384,
           "kind": "text"
         },
         {
-          "index": 152,
+          "index": 158,
           "start_ms": 251384,
           "end_ms": 251644,
           "kind": "text"
         },
         {
-          "index": 153,
+          "index": 159,
           "start_ms": 251644,
           "end_ms": 253245,
           "kind": "text"
         },
         {
-          "index": 154,
+          "index": 160,
           "start_ms": 252076,
           "end_ms": 252326,
           "kind": "pause"
         },
         {
-          "index": 155,
+          "index": 161,
           "start_ms": 252326,
           "end_ms": 252576,
           "kind": "pause"
         },
         {
-          "index": 156,
+          "index": 162,
           "start_ms": 252576,
           "end_ms": 252826,
           "kind": "pause"
         },
         {
-          "index": 157,
+          "index": 163,
           "start_ms": 252826,
           "end_ms": 253076,
           "kind": "pause"
         },
         {
-          "index": 158,
+          "index": 164,
           "start_ms": 253076,
           "end_ms": 253326,
           "kind": "pause"
         },
         {
-          "index": 159,
+          "index": 165,
           "start_ms": 253326,
           "end_ms": 253576,
           "kind": "pause"
         },
         {
-          "index": 160,
+          "index": 166,
           "start_ms": 253576,
           "end_ms": 253826,
           "kind": "pause"
         },
         {
-          "index": 161,
+          "index": 167,
           "start_ms": 253826,
           "end_ms": 254076,
           "kind": "pause"
         },
         {
-          "index": 162,
+          "index": 168,
           "start_ms": 254076,
           "end_ms": 254489,
           "kind": "pause"
         },
         {
-          "index": 163,
+          "index": 169,
           "start_ms": 253245,
           "end_ms": 253565,
           "kind": "text"
         },
         {
-          "index": 164,
+          "index": 170,
           "start_ms": 253565,
           "end_ms": 253725,
           "kind": "text"
         },
         {
-          "index": 165,
+          "index": 171,
           "start_ms": 253725,
           "end_ms": 254026,
           "kind": "text"
         },
         {
-          "index": 166,
+          "index": 172,
           "start_ms": 254026,
           "end_ms": 254326,
           "kind": "text"
         },
         {
-          "index": 167,
+          "index": 173,
           "start_ms": 254326,
           "end_ms": 254686,
           "kind": "text"
         },
         {
-          "index": 168,
+          "index": 174,
           "start_ms": 254686,
           "end_ms": 255086,
           "kind": "text"
         },
         {
-          "index": 169,
+          "index": 175,
           "start_ms": 255086,
           "end_ms": 255757,
           "kind": "text"
         },
         {
-          "index": 170,
+          "index": 176,
           "start_ms": 255757,
           "end_ms": 256427,
           "kind": "text"
         },
         {
-          "index": 171,
+          "index": 177,
           "start_ms": 256427,
           "end_ms": 256647,
           "kind": "text"
         },
         {
-          "index": 172,
+          "index": 178,
           "start_ms": 256647,
           "end_ms": 257067,
           "kind": "text"
         },
         {
-          "index": 173,
+          "index": 179,
           "start_ms": 257067,
           "end_ms": 257217,
           "kind": "text"
         },
         {
-          "index": 174,
+          "index": 180,
           "start_ms": 257217,
           "end_ms": 257367,
           "kind": "text"
         },
         {
-          "index": 175,
+          "index": 181,
           "start_ms": 257367,
           "end_ms": 257644,
           "kind": "text"
         },
         {
-          "index": 176,
+          "index": 182,
           "start_ms": 257644,
           "end_ms": 257930,
           "kind": "text"
         },
         {
-          "index": 177,
+          "index": 183,
           "start_ms": 257748,
           "end_ms": 258128,
           "kind": "text"
         },
         {
-          "index": 178,
+          "index": 184,
           "start_ms": 257948,
           "end_ms": 258128,
           "kind": "text"
         },
         {
-          "index": 179,
+          "index": 185,
           "start_ms": 258128,
           "end_ms": 258248,
           "kind": "text"
         },
         {
-          "index": 180,
+          "index": 186,
           "start_ms": 258308,
           "end_ms": 258328,
           "kind": "text"
         },
         {
-          "index": 181,
+          "index": 187,
           "start_ms": 258338,
           "end_ms": 258673,
           "kind": "text"
         },
         {
-          "index": 182,
+          "index": 188,
           "start_ms": 258318,
           "end_ms": 259329,
           "kind": "text"
         },
         {
-          "index": 183,
+          "index": 189,
           "start_ms": 258809,
           "end_ms": 259180,
           "kind": "pause"
         },
         {
-          "index": 184,
+          "index": 190,
           "start_ms": 259329,
           "end_ms": 259689,
           "kind": "text"
         },
         {
-          "index": 185,
+          "index": 191,
           "start_ms": 259689,
           "end_ms": 260109,
           "kind": "text"
         },
         {
-          "index": 186,
+          "index": 192,
           "start_ms": 260109,
           "end_ms": 260279,
           "kind": "text"
         },
         {
-          "index": 187,
+          "index": 193,
           "start_ms": 260279,
           "end_ms": 260449,
           "kind": "text"
         },
         {
-          "index": 188,
+          "index": 194,
           "start_ms": 260449,
           "end_ms": 260810,
           "kind": "text"
         },
         {
-          "index": 189,
+          "index": 195,
           "start_ms": 260810,
           "end_ms": 260970,
           "kind": "text"
         },
         {
-          "index": 190,
+          "index": 196,
           "start_ms": 260970,
           "end_ms": 261190,
           "kind": "text"
         },
         {
-          "index": 191,
+          "index": 197,
           "start_ms": 261190,
           "end_ms": 261412,
           "kind": "text"
         },
         {
-          "index": 192,
+          "index": 198,
           "start_ms": 261412,
           "end_ms": 261630,
           "kind": "text"
         },
         {
-          "index": 193,
+          "index": 199,
           "start_ms": 261630,
           "end_ms": 262371,
           "kind": "text"
         },
         {
-          "index": 194,
+          "index": 200,
           "start_ms": 261863,
           "end_ms": 262252,
           "kind": "pause"
         },
         {
-          "index": 195,
+          "index": 201,
           "start_ms": 262371,
           "end_ms": 262591,
           "kind": "text"
         },
         {
-          "index": 196,
+          "index": 202,
           "start_ms": 262591,
           "end_ms": 262771,
           "kind": "text"
         },
         {
-          "index": 197,
+          "index": 203,
           "start_ms": 262771,
-          "end_ms": 262954,
+          "end_ms": 262953,
           "kind": "text"
         },
         {
-          "index": 198,
-          "start_ms": 262954,
+          "index": 204,
+          "start_ms": 262953,
           "end_ms": 263151,
           "kind": "text"
         },
         {
-          "index": 199,
+          "index": 205,
           "start_ms": 263151,
           "end_ms": 263331,
           "kind": "text"
         },
         {
-          "index": 200,
+          "index": 206,
           "start_ms": 263331,
           "end_ms": 263511,
           "kind": "text"
         },
         {
-          "index": 201,
+          "index": 207,
           "start_ms": 263511,
           "end_ms": 263602,
           "kind": "text"
         },
         {
-          "index": 202,
+          "index": 208,
           "start_ms": 263873,
           "end_ms": 264400,
           "kind": "text"
         },
         {
-          "index": 203,
+          "index": 209,
           "start_ms": 264479,
           "end_ms": 264729,
           "kind": "pause"
         },
         {
-          "index": 204,
+          "index": 210,
           "start_ms": 264729,
           "end_ms": 264979,
           "kind": "pause"
         },
         {
-          "index": 205,
+          "index": 211,
           "start_ms": 264979,
           "end_ms": 265289,
           "kind": "pause"
         },
         {
-          "index": 206,
+          "index": 212,
           "start_ms": 265454,
           "end_ms": 265754,
           "kind": "text"
         },
         {
-          "index": 207,
+          "index": 213,
           "start_ms": 265754,
           "end_ms": 265914,
           "kind": "text"
         },
         {
-          "index": 208,
+          "index": 214,
           "start_ms": 265914,
           "end_ms": 266134,
           "kind": "text"
         },
         {
-          "index": 209,
+          "index": 215,
           "start_ms": 266134,
           "end_ms": 266435,
           "kind": "text"
         },
         {
-          "index": 210,
+          "index": 216,
           "start_ms": 266435,
           "end_ms": 266775,
           "kind": "text"
         },
         {
-          "index": 211,
+          "index": 217,
           "start_ms": 266775,
           "end_ms": 267115,
           "kind": "text"
         },
         {
-          "index": 212,
+          "index": 218,
           "start_ms": 267115,
           "end_ms": 268916,
           "kind": "text"
         },
         {
-          "index": 213,
+          "index": 219,
           "start_ms": 268411,
           "end_ms": 268850,
           "kind": "pause"
         },
         {
-          "index": 214,
+          "index": 220,
           "start_ms": 268916,
           "end_ms": 269006,
           "kind": "text"
         },
         {
-          "index": 215,
+          "index": 221,
           "start_ms": 269006,
           "end_ms": 269097,
           "kind": "text"
         },
         {
-          "index": 216,
+          "index": 222,
           "start_ms": 269097,
           "end_ms": 270958,
           "kind": "text"
         },
         {
-          "index": 217,
+          "index": 223,
           "start_ms": 269660,
           "end_ms": 269910,
           "kind": "pause"
         },
         {
-          "index": 218,
+          "index": 224,
           "start_ms": 269910,
           "end_ms": 270160,
           "kind": "pause"
         },
         {
-          "index": 219,
+          "index": 225,
           "start_ms": 270160,
           "end_ms": 270410,
           "kind": "pause"
         },
         {
-          "index": 220,
+          "index": 226,
           "start_ms": 270410,
           "end_ms": 270892,
           "kind": "pause"
         },
         {
-          "index": 221,
+          "index": 227,
           "start_ms": 270958,
           "end_ms": 271278,
           "kind": "text"
         },
         {
-          "index": 222,
+          "index": 228,
           "start_ms": 271278,
           "end_ms": 271438,
           "kind": "text"
         },
         {
-          "index": 223,
+          "index": 229,
           "start_ms": 271438,
           "end_ms": 271638,
           "kind": "text"
         },
         {
-          "index": 224,
+          "index": 230,
           "start_ms": 271638,
           "end_ms": 271958,
           "kind": "text"
         },
         {
-          "index": 225,
+          "index": 231,
           "start_ms": 271958,
           "end_ms": 272279,
           "kind": "text"
         },
         {
-          "index": 226,
+          "index": 232,
           "start_ms": 272279,
           "end_ms": 272559,
           "kind": "text"
         },
         {
-          "index": 227,
+          "index": 233,
           "start_ms": 272559,
           "end_ms": 272719,
           "kind": "text"
         },
         {
-          "index": 228,
+          "index": 234,
           "start_ms": 272719,
           "end_ms": 272899,
           "kind": "text"
         },
         {
-          "index": 229,
+          "index": 235,
           "start_ms": 272899,
           "end_ms": 273240,
           "kind": "text"
         },
         {
-          "index": 230,
+          "index": 236,
           "start_ms": 273230,
           "end_ms": 273580,
           "kind": "text"
         },
         {
-          "index": 231,
+          "index": 237,
           "start_ms": 273580,
           "end_ms": 273900,
           "kind": "text"
         },
         {
-          "index": 232,
+          "index": 238,
           "start_ms": 273900,
           "end_ms": 274060,
           "kind": "text"
         },
         {
-          "index": 233,
+          "index": 239,
           "start_ms": 274060,
           "end_ms": 274180,
           "kind": "text"
         },
         {
-          "index": 234,
+          "index": 240,
           "start_ms": 274180,
           "end_ms": 274260,
           "kind": "text"
         },
         {
-          "index": 235,
+          "index": 241,
           "start_ms": 274260,
           "end_ms": 274580,
           "kind": "text"
         },
         {
-          "index": 236,
+          "index": 242,
           "start_ms": 274580,
           "end_ms": 274941,
           "kind": "text"
         },
         {
-          "index": 237,
+          "index": 243,
           "start_ms": 274941,
           "end_ms": 275721,
           "kind": "text"
         },
         {
-          "index": 238,
+          "index": 244,
           "start_ms": 275279,
           "end_ms": 275633,
           "kind": "pause"
         },
         {
-          "index": 239,
+          "index": 245,
           "start_ms": 275721,
           "end_ms": 277222,
           "kind": "text"
         },
         {
-          "index": 240,
+          "index": 246,
           "start_ms": 276089,
           "end_ms": 276339,
           "kind": "pause"
         },
         {
-          "index": 241,
+          "index": 247,
           "start_ms": 276339,
           "end_ms": 276589,
           "kind": "pause"
         },
         {
-          "index": 242,
+          "index": 248,
           "start_ms": 276589,
           "end_ms": 276839,
           "kind": "pause"
         },
         {
-          "index": 243,
+          "index": 249,
           "start_ms": 276839,
           "end_ms": 277135,
           "kind": "pause"
         },
         {
-          "index": 244,
+          "index": 250,
           "start_ms": 277222,
           "end_ms": 278443,
           "kind": "text"
         },
         {
-          "index": 245,
+          "index": 251,
           "start_ms": 277490,
           "end_ms": 277740,
           "kind": "pause"
         },
         {
-          "index": 246,
+          "index": 252,
           "start_ms": 277740,
           "end_ms": 277990,
           "kind": "pause"
         },
         {
-          "index": 247,
+          "index": 253,
           "start_ms": 277990,
           "end_ms": 278367,
           "kind": "pause"
         },
         {
-          "index": 248,
+          "index": 254,
           "start_ms": 278443,
           "end_ms": 278463,
           "kind": "text"
         },
         {
-          "index": 249,
+          "index": 255,
           "start_ms": 278772,
           "end_ms": 279022,
           "kind": "pause"
         },
         {
-          "index": 250,
+          "index": 256,
           "start_ms": 279022,
           "end_ms": 279272,
           "kind": "pause"
         },
         {
-          "index": 251,
+          "index": 257,
           "start_ms": 279272,
           "end_ms": 279764,
           "kind": "pause"
@@ -6249,27 +6252,27 @@
       "rows": [
         {
           "name": "mimo",
-          "text": "・・・・我個名叫麥兜兜我阿媽叫麥太太我最喜歡食麥甩骨・以前前前以前食個餐・・・・我個名叫麥兜兜我老師叫MissChanChan我最喜歡食啲雞飯以前前前以前食個餐但現實就似一隻鴨下下也一定要得・・・得・・・　唔得唔得・點算啊點樣令只雞變到・・・鴨含住個雞煲仔望住食譜雞汁可能現實系要一隻鴨加塊　梨和共我一起炸・・・・・・・・・我最喜愛食啫啫雞我最喜愛食雞翼　　　　翼・我最喜愛食豉油皇雞翼・以前前前以前食餐・・・細細我食食冇你・不過咧・・・・我最想食雞我最想食雞我最中意　啦啦・啦・・・・啦・・・啦・・・"
+          "text": "・・・・我個名叫麥兜兜我阿媽叫麥太太我最喜歡食麥甩骨・以前前前以前食個餐・・・・我個名叫麥兜兜我老師叫　　　　　MissChanChan我最喜歡食啲雞飯以前前前　　以前食個餐但現實就似一隻鴨下下也一定要得・・・得・・・　唔得唔得・點算啊點樣令只雞變到・・・鴨含住個雞煲仔望住食譜雞汁可能現實系要一隻鴨加塊梨和共我一起炸・・・・・・・・・我最喜愛食啫啫雞我最喜愛食雞翼　　　　翼・我最喜愛食豉油皇雞翼・以前前前以前食餐・・・細細我食食冇你・不過咧・・・・我最想食雞我最想食雞我最中意　啦啦・啦・・・・啦・・・啦・・・"
         },
         {
           "name": "qwen",
-          "text": "・・・・我個名叫麥豆豆我阿媽叫麥太太我最喜愛食麥粒粒・一詞詞字一字一個餐・・・・我個名叫麥豆豆我老是叫MissChenChen我最喜愛食碟雞粉一詞詞字一字一個餐但現實就似一隻鴨哈哈　一定要得・・・得・・・　唔得唔得・點算啊點樣你只雞變咗・・・鴨含住個雞包仔望住四寶雞汁可嘆現實系要一隻鴨加倍　嚟僱同我一起賺・・・・・・・・・我最喜愛食爹爹雞我最喜愛食雞piepie・我最喜愛食豉油黃雞翼・意時時時意志就個・・・食食啊食食夢你・不過咧・・・・我最想吃雞我最想吃雞我最中意咬咬咬・咬・・・・咬・・・　・・・"
+          "text": "・・・・我個名叫麥豆豆我阿媽叫麥太太我最喜愛食麥粒粒・一詞詞字一字一個餐・・・・我個名叫麥豆豆我老是叫　　　　　MissChenChen我最喜愛食碟雞粉一詞詞字　　一字一個餐但現實就似一隻鴨哈哈　一定要得・・・得・・・　唔得唔得・點算啊點樣你只雞變咗・・・鴨含住個雞包仔望住四寶雞汁可嘆現實系要一隻鴨加倍嚟僱同我一起賺・・・・・・・・・我最喜愛食爹爹雞我最喜愛食雞piepie・我最喜愛食豉油黃雞翼・意時時時意志就個・・・食食啊食食夢你・不過咧・・・・我最想吃雞我最想吃雞我最中意咬咬咬・咬・・・・咬・・・　・・・"
         },
         {
           "name": "sensevoice",
-          "text": "・・・・我個名叫麥兜兜我　媽叫麥太太我最喜愛食麥粒　・　　　　　　　　　・・・・　　　叫麥兜兜我老　　miss　　　　　　　　　最　愛食碟雞　　　　　　　　　　　現實　　　只鴨　　　　定要得・・・得・・・拳唔得唔得・點算啊點樣令只雞變咗・・・啱含住個雞包仔嘛住　寶雞仔可嘆現實系要一隻鴨加　　嚟糊同我一起炸・・・・・・・・・我最喜愛食只只雞我最喜愛食雞　　　　劈劈・我最喜愛食豉油往雞影・以前遲次意只只　・・・　　　　　　　・　　　・・・・　　　　　　　　　雞　　　　　　　・　・・・・　・・・　・・・"
+          "text": "・・・・我個名叫麥兜兜我　媽叫麥太太我最喜愛食麥粒　・　　　　　　　　　・・・・　　　叫麥兜兜我老　　　　　　　miss　　　　　　　　　最　愛食碟雞　　　　　　　　　　　　　現實　　　只鴨　　　　定要得・・・得・・・拳唔得唔得・點算啊點樣令只雞變咗・・・啱含住個雞包仔嘛住　寶雞仔可嘆現實系要一隻鴨加　嚟糊同我一起炸・・・・・・・・・我最喜愛食只只雞我最喜愛食雞　　　　劈劈・我最喜愛食豉油往雞影・以前遲次意只只　・・・　　　　　　　・　　　・・・・　　　　　　　　　雞　　　　　　　・　・・・・　・・・　・・・"
         },
         {
           "name": "firered",
-          "text": "・・・・我個名叫麥兜兜我阿媽叫麥太太我最喜愛食麥甩吉・以前時至意志這個餐・・・・我個名叫麥兜兜我老師叫misscha　cha　我最喜愛食碟雞飯以前時至意志這個餐但現實就似一隻鴨下下　一定要得・・・得・・・　唔得唔得・點算啊點樣令只雞變做・・・鴨含住個雞包仔望住四寶雞扎可嘆現實系要一隻鴨加埋　泥糊共我一起炸・・・・・・・・・我最喜愛食啫啫雞我最喜愛食雞撇　　　　撇・我最喜愛食豉油黃雞翼・以前遲遲要住　餐・・・食食啊食食冇嚟・不過咧・・・・我最想吃雞我最想吃雞我最終變呃鴨鴨・鴨・・・・鴨・・・鴨・・・"
+          "text": "・・・・我個名叫麥兜兜我阿媽叫麥太太我最喜愛食麥甩吉・以前時至意志這個餐・・・・我個名叫麥兜兜我老師叫　　　　　misscha　cha　我最喜愛食碟雞飯以前時至　　意志這個餐但現實就似一隻鴨下下　一定要得・・・得・・・　唔得唔得・點算啊點樣令只雞變做・・・鴨含住個雞包仔望住四寶雞扎可嘆現實系要一隻鴨加埋泥糊共我一起炸・・・・・・・・・我最喜愛食啫啫雞我最喜愛食雞撇　　　　撇・我最喜愛食豉油黃雞翼・以前遲遲要住　餐・・・食食啊食食冇嚟・不過咧・・・・我最想吃雞我最想吃雞我最終變呃鴨鴨・鴨・・・・鴨・・・鴨・・・"
         },
         {
           "name": "glm",
-          "text": "・・・・我個名叫麥豆豆我阿媽叫麥太太我最喜愛食麥粒嘅・以前時日以至做個餐・・・・我個名叫麥豆豆我老師叫MissChanChan我最喜愛食碟雞飯以前時日以至做個餐但現實就似一隻　哈哈　一定要得・・・得・・・　唔得唔得・點算啊點解你只雞變咗・・・眼藏住個雞包仔望住四寶雞子可憐現實系要一隻眼加肥　粒貨咁我一雞仔・・・・・・・・・我最喜愛食這只雞我最喜愛食雞皮　　　　皮・我最喜愛食豉油王雞翼・一起學着一起　着・・・食食啊食食夢你・不過咧・・・・我最想食雞我最想食雞我最中意啊啊啊・啊・・・・啊・・・啊・・・"
+          "text": "・・・・我個名叫麥豆豆我阿媽叫麥太太我最喜愛食麥粒嘅・以前時日以至做個餐・・・・我個名叫麥豆豆我老師叫　　　　　MissChanChan我最喜愛食碟雞飯以前時日　　以至做個餐但現實就似一隻　哈哈　一定要得・・・得・・・　唔得唔得・點算啊點解你只雞變咗・・・眼藏住個雞包仔望住四寶雞子可憐現實系要一隻眼加肥粒貨咁我一雞仔・・・・・・・・・我最喜愛食這只雞我最喜愛食雞皮　　　　皮・我最喜愛食豉油王雞翼・一起學着一起　着・・・食食啊食食夢你・不過咧・・・・我最想食雞我最想食雞我最中意啊啊啊・啊・・・・啊・・・啊・・・"
         }
       ],
-      "speaker": "・・・・ＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤ・ＤＤＤＤＤＤＤＤＤ・・・・ＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤ・・・Ｄ・・・ＤＤＤＤＤ・ＤＤＤＤＤＤＤＤＤＤ・・・ＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤ・・・・・・・・・ＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤ・ＤＤＤＤＤＤＤＤＤＤ・ＤＤＤＤＤＤＤＤ・・・ＡＡＡＡＡＡＡ・ＤＤＤ・・・・ＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤ・Ｄ・・・・Ｄ・・・Ｄ・・・",
-      "language_trace": "・・・・ＡＡＡＡＡＡＡＡＡＡＡＡＡＡ粵粵粵粵粵粵粵粵・普普普普普普普普普・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵日日日粵粵粵粵粵粵粵粵粵粵粵粵粵・・・粵・・・粵　普普普・粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・・・・・・　　　　英英英粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵・粵粵粵・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・　・・・・　・・・　・・・",
+      "speaker": "・・・・ＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤ・ＤＤＤＤＤＤＤＤＤ・・・・ＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤ・・・Ｄ・・・ＤＤＤＤＤ・ＤＤＤＤＤＤＤＤＤＤ・・・ＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤ・・・・・・・・・ＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤ・ＤＤＤＤＤＤＤＤＤＤ・ＤＤＤＤＤＤＤＤ・・・ＡＡＡＡＡＡＡ・ＤＤＤ・・・・ＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤＤ・Ｄ・・・・Ｄ・・・Ｄ・・・",
+      "language_trace": "・・・・ＡＡＡＡＡＡＡＡＡＡＡＡＡＡ粵粵粵粵粵粵粵粵・普普普普普普普普普・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵日日日粵粵粵粵粵粵粵粵粵粵粵粵粵・・・粵・・・粵　普普普・粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・・・・・・　　　　英英英粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵・粵粵粵・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・　・・・・　・・・　・・・",
       "language_legend": {
         "粵": "zh-yue",
         "普": "zh-mandarin",
@@ -6281,31 +6284,22 @@
         "Ｄ": "yo",
         "Ｅ": "lo"
       },
-      "singing_trace": "・・・・　　　　　唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱　・　　　　唱唱唱唱唱・・・・唱唱唱唱唱唱唱唱唱　唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱　　　　　　　　　　唱唱唱唱唱唱・・・　・・・　　　　　・唱唱唱唱唱唱唱唱唱唱・・・唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱　唱唱唱唱　　唱唱唱唱・・・・・・・・・唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱・唱唱唱唱唱唱唱唱唱　・唱唱唱唱唱唱唱唱・・・　　　　　　唱・　　　・・・・唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱・　・・・・　・・・　・・・",
-      "music_trace": "・・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・樂樂樂樂樂樂樂樂樂・・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・・樂・・・樂樂樂樂樂・樂樂樂樂樂樂樂樂樂樂・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・・・・・・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・樂樂樂樂樂樂樂樂樂樂・樂樂樂樂樂樂樂樂・・・　　　　　　　・　　　・・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・樂・・・・樂・・・樂・・・",
-      "merged": "・・・・我個名叫麥兜兜我阿媽叫麥太太我最喜愛食麥粒粒・以前以前以前食個餐・・・・我個名叫麥兜兜我老師叫MissChanChan我最喜愛食　雞飯以前食過一　　　餐但現實就似一隻鴨下下也一定要得・・・得・・・　唔得唔得・點算啊點樣令隻雞變做・・・鴨含住個雞包仔望住四寶雞汁可惜現實係要一隻鴨加埋啲薯蓉同我一齊食・・・・・・・・・我最喜愛食啫啫雞我最喜愛食雞　　　　　翼・我最喜愛食豉油皇雞翼・以前食餐餐都係你・・・食食吓食食冇你・不過呢・・・・我最想食雞我最想食雞我最中意啊啊啊・啊・・・・啊・・・啊・・・",
+      "singing_trace": "・・・・　　　　　唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱　・　　　　唱唱唱唱唱・・・・唱唱唱唱唱唱唱唱唱　　　　唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱　　　　　　　　　　唱唱唱唱唱唱・・・　・・・　　　　　・唱唱唱唱唱唱唱唱唱唱・・・唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱　唱唱唱　　唱唱唱唱・・・・・・・・・唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱・唱唱唱唱唱唱唱唱唱　・唱唱唱唱唱唱唱唱・・・　　　　　　唱・　　　・・・・唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱・　・・・・　・・・　・・・",
+      "music_trace": "・・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・樂樂樂樂樂樂樂樂樂・・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・・樂・・・樂樂樂樂樂・樂樂樂樂樂樂樂樂樂樂・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・・・・・・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・樂樂樂樂樂樂樂樂樂樂・樂樂樂樂樂樂樂樂・・・　　　　　　　・　　　・・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・樂・・・・樂・・・樂・・・",
+      "merged": "・・・・我個名叫麥兜兜我阿媽叫麥太太我最喜愛食麥甩骨・以前　　以前食個餐・・・・我個名叫麥兜兜我老師叫ＭｉｓｓＣｈａｎＣｈａｎ　　　　　我最喜愛食碟雞飯以前時時都可以　食個餐但現實就似一隻鴨下下也一定要得・・・得・・・　唔得唔得・點算啊點樣令隻雞變咗・・・鴨含住個雞包仔望住四寶雞扎可憐現實係要一隻鴨加埋啲糊同我一齊炸・・・・・・・・・我最喜愛食啫啫雞我最喜愛食雞　　　　　翼・我最喜愛食豉油皇雞翼・以前以前以前食餐・・・食食啊食食冇你・不過咧・・・・我最想食雞我最想食雞我最中意啊啊啊・　・・・・　・・・　・・・",
       "subtitles": [
         {
-          "index": 59,
-          "text": "我個名叫麥兜兜。",
+          "index": 56,
+          "text": "我個名叫麥兜兜我阿媽叫麥太太",
           "speech_start_ms": 204740,
-          "speech_end_ms": 207646,
-          "start_ms": 204490,
-          "end_ms": 207646,
-          "speaker": "SPEAKER_11"
-        },
-        {
-          "index": 60,
-          "text": "我阿媽叫麥太太。",
-          "speech_start_ms": 207646,
           "speech_end_ms": 210872,
-          "start_ms": 207646,
+          "start_ms": 204490,
           "end_ms": 210872,
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 61,
-          "text": "我最喜愛食麥粒粒。",
+          "index": 57,
+          "text": "我最喜愛食麥甩骨",
           "speech_start_ms": 210872,
           "speech_end_ms": 213657,
           "start_ms": 210872,
@@ -6313,8 +6307,8 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 62,
-          "text": "以前以前以前食個餐。",
+          "index": 58,
+          "text": "以前以前食個餐",
           "speech_start_ms": 213657,
           "speech_end_ms": 215200,
           "start_ms": 213657,
@@ -6322,8 +6316,8 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 63,
-          "text": "我個名叫麥兜兜。",
+          "index": 59,
+          "text": "我個名叫麥兜兜",
           "speech_start_ms": 217124,
           "speech_end_ms": 219085,
           "start_ms": 216874,
@@ -6331,26 +6325,26 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 64,
-          "text": "我老師叫 Miss Chan Chan。",
+          "index": 60,
+          "text": "我老師叫ＭｉｓｓＣｈａｎＣｈａｎ",
           "speech_start_ms": 219085,
-          "speech_end_ms": 222886,
+          "speech_end_ms": 220945,
           "start_ms": 219085,
-          "end_ms": 222886,
+          "end_ms": 220945,
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 65,
-          "text": "我最喜愛食雞飯。",
-          "speech_start_ms": 222886,
+          "index": 61,
+          "text": "我最喜愛食碟雞飯",
+          "speech_start_ms": 220945,
           "speech_end_ms": 225807,
-          "start_ms": 222886,
+          "start_ms": 220945,
           "end_ms": 225807,
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 66,
-          "text": "以前食過一餐。",
+          "index": 62,
+          "text": "以前時時都可以食個餐",
           "speech_start_ms": 225807,
           "speech_end_ms": 228728,
           "start_ms": 225807,
@@ -6358,26 +6352,17 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 67,
-          "text": "但現實就似一隻鴨。",
+          "index": 63,
+          "text": "但現實就似一隻鴨下下也一定要得",
           "speech_start_ms": 228728,
-          "speech_end_ms": 231949,
-          "start_ms": 228728,
-          "end_ms": 231949,
-          "speaker": "SPEAKER_11"
-        },
-        {
-          "index": 68,
-          "text": "下下也一定要得。",
-          "speech_start_ms": 231949,
           "speech_end_ms": 233730,
-          "start_ms": 231949,
+          "start_ms": 228728,
           "end_ms": 233730,
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 69,
-          "text": "得……",
+          "index": 64,
+          "text": "得",
           "speech_start_ms": 233730,
           "speech_end_ms": 234850,
           "start_ms": 233730,
@@ -6385,8 +6370,8 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 70,
-          "text": "唔得唔得。",
+          "index": 65,
+          "text": "唔得唔得",
           "speech_start_ms": 234850,
           "speech_end_ms": 236491,
           "start_ms": 234850,
@@ -6394,8 +6379,8 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 71,
-          "text": "點算啊？",
+          "index": 66,
+          "text": "點算啊",
           "speech_start_ms": 236491,
           "speech_end_ms": 238011,
           "start_ms": 236491,
@@ -6403,8 +6388,8 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 72,
-          "text": "點樣令隻雞變做……",
+          "index": 67,
+          "text": "點樣令隻雞變咗",
           "speech_start_ms": 238011,
           "speech_end_ms": 239532,
           "start_ms": 238011,
@@ -6412,26 +6397,26 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 73,
-          "text": "鴨含住個雞包仔。",
+          "index": 68,
+          "text": "鴨",
           "speech_start_ms": 239532,
-          "speech_end_ms": 244133,
+          "speech_end_ms": 241052,
           "start_ms": 239532,
-          "end_ms": 244133,
+          "end_ms": 241052,
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 74,
-          "text": "望住四寶雞汁。",
-          "speech_start_ms": 244133,
+          "index": 69,
+          "text": "含住個雞包仔望住四寶雞扎",
+          "speech_start_ms": 241052,
           "speech_end_ms": 246914,
-          "start_ms": 244133,
+          "start_ms": 241052,
           "end_ms": 246914,
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 75,
-          "text": "可惜現實係要一隻鴨。",
+          "index": 70,
+          "text": "可憐現實係要一隻鴨",
           "speech_start_ms": 246914,
           "speech_end_ms": 249755,
           "start_ms": 246914,
@@ -6439,25 +6424,16 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 76,
-          "text": "加埋啲薯蓉。",
+          "index": 71,
+          "text": "加埋啲糊同我一齊炸",
           "speech_start_ms": 249755,
-          "speech_end_ms": 250916,
-          "start_ms": 249755,
-          "end_ms": 250916,
-          "speaker": "SPEAKER_11"
-        },
-        {
-          "index": 77,
-          "text": "同我一齊食。",
-          "speech_start_ms": 250916,
           "speech_end_ms": 251656,
-          "start_ms": 250916,
+          "start_ms": 249755,
           "end_ms": 252156,
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 78,
+          "index": 72,
           "text": "我最喜愛食啫啫雞",
           "speech_start_ms": 254529,
           "speech_end_ms": 256410,
@@ -6466,7 +6442,7 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 79,
+          "index": 73,
           "text": "我最喜愛食雞翼",
           "speech_start_ms": 256410,
           "speech_end_ms": 259312,
@@ -6475,7 +6451,7 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 80,
+          "index": 74,
           "text": "我最喜愛食豉油皇雞翼",
           "speech_start_ms": 259312,
           "speech_end_ms": 262355,
@@ -6484,8 +6460,8 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 81,
-          "text": "以前食餐餐都係你",
+          "index": 75,
+          "text": "以前以前以前食餐",
           "speech_start_ms": 262355,
           "speech_end_ms": 265457,
           "start_ms": 262355,
@@ -6493,8 +6469,8 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 82,
-          "text": "食食吓食食冇你",
+          "index": 76,
+          "text": "食食啊食食冇你",
           "speech_start_ms": 265457,
           "speech_end_ms": 268919,
           "start_ms": 265457,
@@ -6502,8 +6478,8 @@
           "speaker": "SPEAKER_08"
         },
         {
-          "index": 83,
-          "text": "不過呢",
+          "index": 77,
+          "text": "不過咧",
           "speech_start_ms": 268919,
           "speech_end_ms": 269320,
           "start_ms": 268919,
@@ -6511,39 +6487,12 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 84,
+          "index": 78,
           "text": "我最想食雞我最想食雞我最中意啊啊啊",
           "speech_start_ms": 270952,
-          "speech_end_ms": 275728,
-          "start_ms": 270702,
-          "end_ms": 275728,
-          "speaker": "SPEAKER_11"
-        },
-        {
-          "index": 85,
-          "text": "啊",
-          "speech_start_ms": 275728,
           "speech_end_ms": 275748,
-          "start_ms": 275728,
-          "end_ms": 276478,
-          "speaker": "SPEAKER_11"
-        },
-        {
-          "index": 86,
-          "text": "啊",
-          "speech_start_ms": 277235,
-          "speech_end_ms": 278439,
-          "start_ms": 276985,
-          "end_ms": 278439,
-          "speaker": "SPEAKER_11"
-        },
-        {
-          "index": 87,
-          "text": "啊",
-          "speech_start_ms": 278439,
-          "speech_end_ms": 278460,
-          "start_ms": 278439,
-          "end_ms": 279189,
+          "start_ms": 270702,
+          "end_ms": 276248,
           "speaker": "SPEAKER_11"
         }
       ],
@@ -7584,11 +7533,11 @@
       },
       "singing_trace": "・・・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　唱唱唱唱唱　・　唱唱唱唱・・・",
       "music_trace": "・・・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　樂樂　樂　　・　　樂樂樂・・・",
-      "merged": "・・・・咦麥太乜唔見你一排個腳瓜啷粗咗咁多呀鬼咩日日撲嚟撲去同我仔搵幼稚園吖嘛・點解唔試下好彩酒樓斜對面舊中橋百貨公司樓上嗰間春田花花幼稚園呢就係坐落喺界限街同南昌街交界銀城美食廣場附近嗰間春田花花幼稚園呀係呀深水埗地鐵站口行過去唔使十分鐘呀春田花花幼稚園師資優良仲係西人教英文添㗎咦西人教英文係呀春田花花真係・好多西人㗎・・・",
+      "merged": "・・・・咦麥太乜唔見你一排個腳瓜窿粗咗咁多啊鬼咩日日扑嚟扑去同我仔搵幼稚園啊嘛・點解唔試下好彩酒樓斜對面舊中橋百貨公司樓上嗰間春田花花幼稚園呢就係坐落喺界限街同南昌街交界銀城美食廣場附近嗰間春田花花幼稚園啊係呀深水埗地鐵站口行過去唔使十分鐘啊春田花花幼稚園師資優良仲係西人教英文添㗎咦西人教英文係啊春田花花真係・好多西人㗎・・・",
       "subtitles": [
         {
-          "index": 88,
-          "text": "咦，麥太，乜唔見你一排？",
+          "index": 79,
+          "text": "咦麥太乜唔見你一排",
           "speech_start_ms": 283233,
           "speech_end_ms": 285294,
           "start_ms": 282983,
@@ -7596,8 +7545,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 89,
-          "text": "個腳瓜啷粗咗咁多呀？",
+          "index": 80,
+          "text": "個腳瓜窿粗咗咁多啊",
           "speech_start_ms": 285294,
           "speech_end_ms": 287114,
           "start_ms": 285294,
@@ -7605,8 +7554,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 90,
-          "text": "鬼咩，日日撲嚟撲去，",
+          "index": 81,
+          "text": "鬼咩日日扑嚟扑去",
           "speech_start_ms": 287114,
           "speech_end_ms": 288775,
           "start_ms": 287114,
@@ -7614,8 +7563,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 91,
-          "text": "同我仔搵幼稚園吖嘛。",
+          "index": 82,
+          "text": "同我仔搵幼稚園啊嘛",
           "speech_start_ms": 288775,
           "speech_end_ms": 290755,
           "start_ms": 288775,
@@ -7623,8 +7572,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 92,
-          "text": "點解唔試下好彩酒樓斜對面？",
+          "index": 83,
+          "text": "點解唔試下好彩酒樓斜對面",
           "speech_start_ms": 290755,
           "speech_end_ms": 292836,
           "start_ms": 290755,
@@ -7632,7 +7581,7 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 93,
+          "index": 84,
           "text": "舊中橋百貨公司樓上嗰間",
           "speech_start_ms": 292836,
           "speech_end_ms": 295037,
@@ -7641,8 +7590,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 94,
-          "text": "春田花花幼稚園呢？",
+          "index": 85,
+          "text": "春田花花幼稚園呢",
           "speech_start_ms": 295037,
           "speech_end_ms": 297158,
           "start_ms": 295037,
@@ -7650,8 +7599,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 95,
-          "text": "就係坐落喺界限街同南昌街交界，",
+          "index": 86,
+          "text": "就係坐落喺界限街同南昌街交界",
           "speech_start_ms": 297158,
           "speech_end_ms": 299899,
           "start_ms": 297158,
@@ -7659,7 +7608,7 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 96,
+          "index": 87,
           "text": "銀城美食廣場附近嗰間",
           "speech_start_ms": 299899,
           "speech_end_ms": 302039,
@@ -7668,8 +7617,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 97,
-          "text": "春田花花幼稚園呀。",
+          "index": 88,
+          "text": "春田花花幼稚園啊",
           "speech_start_ms": 302039,
           "speech_end_ms": 303940,
           "start_ms": 302039,
@@ -7677,8 +7626,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 98,
-          "text": "係呀，深水埗地鐵站口",
+          "index": 89,
+          "text": "係呀深水埗地鐵站口",
           "speech_start_ms": 303940,
           "speech_end_ms": 306241,
           "start_ms": 303940,
@@ -7686,8 +7635,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 99,
-          "text": "行過去唔使十分鐘呀。",
+          "index": 90,
+          "text": "行過去唔使十分鐘啊",
           "speech_start_ms": 306241,
           "speech_end_ms": 308881,
           "start_ms": 306241,
@@ -7695,8 +7644,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 100,
-          "text": "春田花花幼稚園師資優良，",
+          "index": 91,
+          "text": "春田花花幼稚園師資優良",
           "speech_start_ms": 308881,
           "speech_end_ms": 311742,
           "start_ms": 308881,
@@ -7704,8 +7653,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 101,
-          "text": "仲係西人教英文添㗎。",
+          "index": 92,
+          "text": "仲係西人教英文添㗎",
           "speech_start_ms": 311742,
           "speech_end_ms": 314143,
           "start_ms": 311742,
@@ -7713,8 +7662,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 102,
-          "text": "咦，西人教英文？係呀，",
+          "index": 93,
+          "text": "咦西人教英文係啊",
           "speech_start_ms": 314143,
           "speech_end_ms": 316944,
           "start_ms": 314143,
@@ -7722,8 +7671,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 103,
-          "text": "春田花花真係，",
+          "index": 94,
+          "text": "春田花花真係",
           "speech_start_ms": 316944,
           "speech_end_ms": 319005,
           "start_ms": 316944,
@@ -7731,8 +7680,8 @@
           "speaker": null
         },
         {
-          "index": 104,
-          "text": "好多西人㗎。",
+          "index": 95,
+          "text": "好多西人㗎",
           "speech_start_ms": 319005,
           "speech_end_ms": 320565,
           "start_ms": 319005,
@@ -7865,20 +7814,20 @@
         },
         {
           "index": 20,
-          "start_ms": 333669,
-          "end_ms": 335514,
+          "start_ms": 334310,
+          "end_ms": 335528,
           "kind": "text"
         },
         {
           "index": 21,
-          "start_ms": 335514,
-          "end_ms": 336116,
+          "start_ms": 335528,
+          "end_ms": 335966,
           "kind": "text"
         },
         {
           "index": 22,
-          "start_ms": 336066,
-          "end_ms": 336316,
+          "start_ms": 335815,
+          "end_ms": 336116,
           "kind": "text"
         },
         {
@@ -7949,8 +7898,8 @@
         },
         {
           "index": 34,
-          "start_ms": 336798,
-          "end_ms": 337214,
+          "start_ms": 336517,
+          "end_ms": 337169,
           "kind": "text"
         },
         {
@@ -8017,11 +7966,11 @@
       },
       "singing_trace": "唱・・・・唱唱唱唱唱唱唱唱唱・・・・・唱唱唱唱　唱唱・・・・・・・　唱唱・・・",
       "music_trace": "樂・・・・樂樂樂樂樂樂樂樂樂・・・・・樂樂樂樂樂樂樂・・・・・・・樂樂樂・・・",
-      "merged": "　・・・・是　　的　　　　　・・・・・　　　　　　一・・・・・・・起　　・・・",
+      "merged": "　・・・・是　　的　　　　　・・・・・和母親　　　一・・・・・・・　　　・・・",
       "subtitles": [
         {
-          "index": 105,
-          "text": "是的。",
+          "index": 96,
+          "text": "是的",
           "speech_start_ms": 333134,
           "speech_end_ms": 333174,
           "start_ms": 332884,
@@ -8029,27 +7978,27 @@
           "speaker": "SPEAKER_08"
         },
         {
-          "index": 106,
-          "text": "一",
-          "speech_start_ms": 335542,
-          "speech_end_ms": 335562,
-          "start_ms": 335292,
-          "end_ms": 336062,
+          "index": 97,
+          "text": "和母親",
+          "speech_start_ms": 335084,
+          "speech_end_ms": 335625,
+          "start_ms": 334834,
+          "end_ms": 335625,
           "speaker": "SPEAKER_08"
         },
         {
-          "index": 107,
-          "text": "起",
-          "speech_start_ms": 338377,
-          "speech_end_ms": 338397,
-          "start_ms": 338127,
-          "end_ms": 338897,
+          "index": 98,
+          "text": "一",
+          "speech_start_ms": 335625,
+          "speech_end_ms": 335646,
+          "start_ms": 335625,
+          "end_ms": 336375,
           "speaker": "SPEAKER_08"
         }
       ],
       "source_errors": {
         "whisper": "Segment 0 compression ratio 10.60 exceeds maximum 2.40.",
-        "glm": "MLX-Audio returned empty transcript."
+        "glm": "Source produced no nonblank text."
       }
     },
     {
@@ -8097,20 +8046,20 @@
         },
         {
           "index": 7,
-          "start_ms": 342354,
-          "end_ms": 342634,
+          "start_ms": 341549,
+          "end_ms": 341809,
           "kind": "text"
         },
         {
           "index": 8,
-          "start_ms": 342674,
-          "end_ms": 343204,
+          "start_ms": 341889,
+          "end_ms": 342649,
           "kind": "text"
         },
         {
           "index": 9,
-          "start_ms": 343204,
-          "end_ms": 343354,
+          "start_ms": 342649,
+          "end_ms": 342929,
           "kind": "text"
         },
         {
@@ -9058,13 +9007,13 @@
         {
           "index": 167,
           "start_ms": 378992,
-          "end_ms": 379145,
+          "end_ms": 379142,
           "kind": "text"
         },
         {
           "index": 168,
-          "start_ms": 379145,
-          "end_ms": 379285,
+          "start_ms": 379142,
+          "end_ms": 379282,
           "kind": "text"
         },
         {
@@ -9178,7 +9127,7 @@
         {
           "index": 187,
           "start_ms": 384918,
-          "end_ms": 385099,
+          "end_ms": 385038,
           "kind": "text"
         },
         {
@@ -9249,8 +9198,8 @@
         },
         {
           "index": 199,
-          "start_ms": 386152,
-          "end_ms": 390362,
+          "start_ms": 388107,
+          "end_ms": 390765,
           "kind": "text"
         },
         {
@@ -9268,12 +9217,12 @@
         {
           "index": 202,
           "start_ms": 390362,
-          "end_ms": 390608,
+          "end_ms": 390602,
           "kind": "text"
         },
         {
           "index": 203,
-          "start_ms": 390608,
+          "start_ms": 390602,
           "end_ms": 390742,
           "kind": "text"
         },
@@ -9399,8 +9348,8 @@
         },
         {
           "index": 224,
-          "start_ms": 399429,
-          "end_ms": 399589,
+          "start_ms": 396346,
+          "end_ms": 397867,
           "kind": "text"
         },
         {
@@ -9453,8 +9402,8 @@
         },
         {
           "index": 233,
-          "start_ms": 396780,
-          "end_ms": 396801,
+          "start_ms": 393890,
+          "end_ms": 393910,
           "kind": "text"
         },
         {
@@ -9748,8 +9697,8 @@
           "text": "　　・・・・　　　・・　　　　　　　　　　　　　・・・・・・・・・・　嗱呢個扮緊白兔豬樣嘅小朋友即系橫睇邊睇都唔似發哥或者・・・位仔嗰個咧・・就係我・　　・・・・・・　呢間就係我度嘅幼稚園・・・・校長系潮州人・・・・可能仲系講緊潮州話　・所以咁多年嚟・我其實唔繫好知佢額文・・・・・・・・　　　　　・・・・・・・・・・・　　　　　　　　　　　・・・　　　　・　　　　　　　　　・・・　　・　　　　　・・　　　　　　　　　　・　　　　　　　　　　嗰個位同學今次組會　係・・・・・・今次組會係要同大家分享一個可重要嘅主題・・小朋友你哋今個月交咗學費未啊・・・"
         }
       ],
-      "speaker": "　Ａ・・・・ＡＡＡ・・ＡＡＡＡＡＡＡＡＡＡＡＡＡ・・・・・・・・・・　ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢＢ・・ＢＢＢ・ＢＢ・・・・・・ＢＢＢＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢ・・・・・・・・ＥＥＥＥ　・・・・・・・・・・・　ＥＥＥＥＥＥＥＥＦＥ・・・ＦＦＦＦ・ＥＥＥＥＥＥＥＥＥ・・・ＦＦ・ＦＥＥＥＦ・・ＥＥＥＥＥＥＥＥＥＥ・ＦＦＦＦＦＦＦＦＦＥＥＥＦ　ＦＦＦＦＦＥＦ・・・・・・ＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥ・・ＥＥＥＥＥＥＥＥＥＥＥＥＥＥ・・・",
-      "language_trace": "　　・・・・普普Ｃ・・ＣＣＣＣＣＣＣＣＣＣＣＣＣ・・・・・・・・・・　粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵・・粵粵粵・粵粵・・・・・・粵粵粵粵粵粵粵粵粵粵粵・・・・粵粵粵粵粵粵・・・・粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵・・・・・・・・普普普普　・・・・・・・・・・・　粵粵粵粵粵粵粵粵Ｄ粵・・・ＤＤＤＤ・粵粵粵粵粵粵粵粵粵・・・粵普・ＣＥＥＥＣ・・ＥＥＥＥＥＥＥＥＥＥ・粵粵粵粵粵粵粵粵粵粵粵粵粵　粵粵粵粵粵粵粵・・・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・",
+      "speaker": "　Ａ・・・・ＡＡＡ・・ＡＡＡＡＡＡＡＡＡＡＡＡＡ・・・・・・・・・・　ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢＢ・・ＢＢＢ・ＢＢ・・・・・・ＢＢＢＢＢＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢ・・・・ＢＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢ・・・・・・・・ＥＥＥＥ　・・・・・・・・・・・　ＥＥＥＥＥＥＥＥＦＥ・・・ＦＦＦＦ・ＥＥＥＥＥＥＥＥＥ・・・ＦＦ・ＦＥＥＥＦ・・ＥＥＥＥＥＥＥＥＥＥ・ＦＦＦＦＦＦＦＦＦＥＥＦＦ　ＦＦＦＦＦＥＦ・・・・・・ＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥ・・ＥＥＥＥＥＥＥＥＥＥＥＥＥＥ・・・",
+      "language_trace": "　　・・・・　普普・・ＣＣＣＣＣＣＣＣＣＣＣＣＣ・・・・・・・・・・　粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵・・粵粵粵・粵粵・・・・・・粵粵粵粵粵粵粵粵粵粵粵・・・・粵粵粵粵粵粵・・・・粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵・・・・・・・・普普普普　・・・・・・・・・・・　粵粵粵粵粵粵粵粵Ｄ粵・・・ＤＤＤＤ・粵粵粵粵粵粵粵粵粵・・・粵普・ＣＥＥＥＣ・・ＥＥＥＥＥＥＥＥＥＥ・粵粵粵粵粵粵粵粵粵粵粵粵粵　粵粵粵粵粵粵粵・・・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・",
       "language_legend": {
         "粵": "zh-yue",
         "普": "zh-mandarin",
@@ -9761,22 +9710,13 @@
         "Ｄ": "yo",
         "Ｅ": "lo"
       },
-      "singing_trace": "唱唱・・・・唱唱唱・・唱唱唱唱唱唱唱唱唱唱唱唱唱・・・・・・・・・・　唱唱唱唱　　　　　　　　　　　　　　　　　　　　　　・・・　　　　　・・　　　・　　・・・・・・　　　　　　　　　　　・・・・　　　　　　・・・・　　　　　　　　　　・　　　　　　・　　　　　　　　　　・・・・・・・・　　　　　・・・・・・・・・・・　　　　　　　　　　　・・・　唱唱　・　　　　　　　　　・・・　唱・唱　　　唱・・　　　　　　　　　　・　唱　　　唱唱唱唱　　　唱唱唱唱唱唱唱　唱・・・・・・　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　・・・",
-      "music_trace": "樂樂・・・・樂樂樂・・樂樂樂樂樂樂樂樂樂樂樂樂樂・・・・・・・・・・樂樂樂樂樂　　樂樂樂樂樂樂樂　　　樂樂樂樂樂　　　　　・・・　　　　　・・　　　・　　・・・・・・　樂樂樂樂樂　　　　　・・・・　　　　　　・・・・　　　　　　　　　　・　　　　　　・　　　　　　　　　　・・・・・・・・　　　　樂・・・・・・・・・・・　　　　　　　　　　　・・・　　　樂・　　　　　　　　　・・・　樂・　　　　樂・・　　　　　　　　　　・　　　　　樂樂樂樂　　　樂樂樂樂樂樂樂　樂・・・・・・　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　・・・",
-      "merged": "　　・・・・做屋企・・　　　　　　　　　　　　　・・・・・・・・・・　嗱呢個扮緊白兔豬樣嘅小朋友即係橫睇掂睇都唔似發哥或者・・・偉仔嗰個呢・・就係我・麥兜・・・・・・　呢間就係我讀嘅幼稚園・・・・校長係潮州人・・・・可能仲係講緊潮州話　・所以咁多年嚟・我其實唔係好知佢噏乜・・・・・・・・蛋撻　　　・・・・・・・・・・・　　　　都唔好彎腰　　・・・　　　　・　　　　　　　　駝・・・背　・　　　　呀・・都唔好彎腰駝背呀各　・　　　　　　　　　　　　位同學今次早會　係・・・・・・今次早會係要同大家分享一個好重要嘅主題・・小朋友你哋今個月交咗學費未啊・・・",
+      "singing_trace": "唱唱・・・・唱唱唱・・唱唱唱唱唱唱唱唱唱唱唱唱唱・・・・・・・・・・　唱唱唱唱　　　　　　　　　　　　　　　　　　　　　　・・・　　　　　・・　　　・　　・・・・・・　　　　　　　　　　　・・・・　　　　　　・・・・　　　　　　　　　　・　　　　　　・　　　　　　　　　　・・・・・・・・　　　　　・・・・・・・・・・・　　　　　　　　　　　・・・　唱唱　・　　　　　　　　　・・・　唱・唱　　　唱・・　　　　　　　　　　・　唱　　　唱唱唱唱　　唱唱唱唱唱唱唱唱　唱・・・・・・　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　・・・",
+      "music_trace": "樂樂・・・・樂樂樂・・樂樂樂樂樂樂樂樂樂樂樂樂樂・・・・・・・・・・樂樂樂樂樂　　樂樂樂樂樂樂樂　　　樂樂樂樂樂　　　　　・・・　　　　　・・　　　・　　・・・・・・　樂樂樂樂樂　　　　　・・・・　　　　　　・・・・　　　　　　　　　　・　　　　　　・　　　　　　　　　　・・・・・・・・　　　　樂・・・・・・・・・・・　　　　　　　　　　　・・・　　　樂・　　　　　　　　　・・・　樂・　　　　樂・・　　　　　　　　　　・　　　　　樂樂樂樂　　樂樂樂樂樂樂樂樂　　・・・・・・　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　・・・",
+      "merged": "　　・・・・　　　・・　　　　　　　　　　　　　・・・・・・・・・・　嗱呢個扮緊白兔豬樣嘅小朋友即係橫睇掂睇都唔似發哥或者・・・偉仔嗰個呢・・就係我・麥兜・・・・・・啊呢間就係我讀嘅幼稚園・・・・校長係潮州人・・・・可能仲係講緊潮州話　・所以咁多年嚟・我其實唔係好知佢噏乜・・・・・・・・蛋撻　　　・・・・・・・・・・・　　　　都唔好彎腰　　・・・　　　　・　　　　駝背交頭接・・・耳　・　　　　　・・　　　　　　　　　　・　　　　　　　　　　　各位同學今次早會　係・・・・・・今次早會係要同大家分享一個好重要嘅主題・・小朋友你哋今個月交咗學費未啊・・・",
       "subtitles": [
         {
-          "index": 108,
-          "text": "做屋企……",
-          "speech_start_ms": 343159,
-          "speech_end_ms": 343779,
-          "start_ms": 342909,
-          "end_ms": 344279,
-          "speaker": "SPEAKER_08"
-        },
-        {
-          "index": 109,
-          "text": "嗱，呢個扮緊白兔豬樣嘅小朋友。",
+          "index": 99,
+          "text": "嗱呢個扮緊白兔豬樣嘅小朋友",
           "speech_start_ms": 351746,
           "speech_end_ms": 354511,
           "start_ms": 351496,
@@ -9784,8 +9724,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 110,
-          "text": "即係橫睇掂睇都唔似發哥或者。",
+          "index": 100,
+          "text": "即係橫睇掂睇都唔似發哥或者",
           "speech_start_ms": 354511,
           "speech_end_ms": 357657,
           "start_ms": 354511,
@@ -9793,8 +9733,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 111,
-          "text": "偉仔嗰個呢。",
+          "index": 101,
+          "text": "偉仔嗰個呢",
           "speech_start_ms": 357657,
           "speech_end_ms": 359119,
           "start_ms": 357657,
@@ -9802,8 +9742,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 112,
-          "text": "就係我。",
+          "index": 102,
+          "text": "就係我",
           "speech_start_ms": 359119,
           "speech_end_ms": 360161,
           "start_ms": 359119,
@@ -9811,8 +9751,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 113,
-          "text": "麥兜。",
+          "index": 103,
+          "text": "麥兜",
           "speech_start_ms": 360161,
           "speech_end_ms": 360362,
           "start_ms": 360161,
@@ -9820,17 +9760,17 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 114,
-          "text": "呢間就係我讀嘅幼稚園。",
-          "speech_start_ms": 362246,
+          "index": 104,
+          "text": "啊呢間就係我讀嘅幼稚園",
+          "speech_start_ms": 362205,
           "speech_end_ms": 363542,
-          "start_ms": 361996,
+          "start_ms": 361955,
           "end_ms": 364042,
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 115,
-          "text": "校長係潮州人。",
+          "index": 105,
+          "text": "校長係潮州人",
           "speech_start_ms": 364787,
           "speech_end_ms": 365731,
           "start_ms": 364537,
@@ -9838,7 +9778,7 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 116,
+          "index": 106,
           "text": "可能仲係講緊潮州話",
           "speech_start_ms": 366981,
           "speech_end_ms": 368967,
@@ -9847,7 +9787,7 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 117,
+          "index": 107,
           "text": "所以咁多年嚟",
           "speech_start_ms": 368967,
           "speech_end_ms": 370472,
@@ -9856,7 +9796,7 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 118,
+          "index": 108,
           "text": "我其實唔係好知佢噏乜",
           "speech_start_ms": 370472,
           "speech_end_ms": 371796,
@@ -9865,8 +9805,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 119,
-          "text": "蛋撻。",
+          "index": 109,
+          "text": "蛋撻",
           "speech_start_ms": 374636,
           "speech_end_ms": 375099,
           "start_ms": 374386,
@@ -9874,35 +9814,26 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 120,
-          "text": "都唔好彎腰駝背呀。",
+          "index": 110,
+          "text": "都唔好彎腰駝背交頭接耳",
           "speech_start_ms": 378209,
-          "speech_end_ms": 390353,
+          "speech_end_ms": 386152,
           "start_ms": 377959,
-          "end_ms": 390353,
+          "end_ms": 386152,
           "speaker": null
         },
         {
-          "index": 121,
-          "text": "都唔好彎腰駝背呀。",
-          "speech_start_ms": 390353,
-          "speech_end_ms": 392074,
-          "start_ms": 390353,
-          "end_ms": 392074,
-          "speaker": "SPEAKER_04"
-        },
-        {
-          "index": 122,
-          "text": "各位同學，今次早會係",
-          "speech_start_ms": 392074,
-          "speech_end_ms": 396155,
-          "start_ms": 392074,
-          "end_ms": 396655,
+          "index": 111,
+          "text": "各位同學今次早會係",
+          "speech_start_ms": 386152,
+          "speech_end_ms": 390373,
+          "start_ms": 386152,
+          "end_ms": 390873,
           "speaker": null
         },
         {
-          "index": 123,
-          "text": "今次早會係要同大家分享一個好重要嘅主題。",
+          "index": 112,
+          "text": "今次早會係要同大家分享一個好重要嘅主題",
           "speech_start_ms": 400862,
           "speech_end_ms": 405433,
           "start_ms": 400612,
@@ -9910,8 +9841,8 @@
           "speaker": "SPEAKER_04"
         },
         {
-          "index": 124,
-          "text": "小朋友你哋今個月交咗學費未啊？",
+          "index": 113,
+          "text": "小朋友你哋今個月交咗學費未啊",
           "speech_start_ms": 405433,
           "speech_end_ms": 407679,
           "start_ms": 405433,
@@ -10090,11 +10021,11 @@
       },
       "singing_trace": "・・・・　唱唱　　　　　　　　　　・・・",
       "music_trace": "・・・・樂樂樂樂樂樂樂樂樂　　　　・・・",
-      "merged": "・・・・哎好在咁大家可以返去上堂啦・・・",
+      "merged": "・・・・哎好在咁大家可以翻去上堂啦・・・",
       "subtitles": [
         {
-          "index": 125,
-          "text": "哎，好在咁大家可以返去上堂啦。",
+          "index": 114,
+          "text": "哎好在咁大家可以翻去上堂啦",
           "speech_start_ms": 411011,
           "speech_end_ms": 413802,
           "start_ms": 410761,
@@ -10594,7 +10525,7 @@
         {
           "index": 81,
           "start_ms": 431603,
-          "end_ms": 431737,
+          "end_ms": 431683,
           "kind": "text"
         },
         {
@@ -10641,8 +10572,8 @@
         },
         {
           "index": 89,
-          "start_ms": 432066,
-          "end_ms": 432086,
+          "start_ms": 432051,
+          "end_ms": 432116,
           "kind": "text"
         },
         {
@@ -10990,7 +10921,7 @@
         {
           "index": 147,
           "start_ms": 443527,
-          "end_ms": 443867,
+          "end_ms": 443907,
           "kind": "text"
         },
         {
@@ -11001,8 +10932,8 @@
         },
         {
           "index": 149,
-          "start_ms": 443893,
-          "end_ms": 444013,
+          "start_ms": 443907,
+          "end_ms": 444751,
           "kind": "text"
         },
         {
@@ -11013,20 +10944,20 @@
         },
         {
           "index": 151,
-          "start_ms": 444300,
-          "end_ms": 444490,
+          "start_ms": 444693,
+          "end_ms": 444773,
           "kind": "text"
         },
         {
           "index": 152,
-          "start_ms": 444773,
-          "end_ms": 444823,
+          "start_ms": 444832,
+          "end_ms": 444917,
           "kind": "text"
         },
         {
           "index": 153,
-          "start_ms": 444816,
-          "end_ms": 444902,
+          "start_ms": 444823,
+          "end_ms": 444930,
           "kind": "text"
         },
         {
@@ -11097,522 +11028,498 @@
         },
         {
           "index": 165,
-          "start_ms": 447029,
-          "end_ms": 447049,
-          "kind": "text"
-        },
-        {
-          "index": 166,
-          "start_ms": 447049,
-          "end_ms": 447109,
-          "kind": "text"
-        },
-        {
-          "index": 167,
-          "start_ms": 447109,
-          "end_ms": 447209,
-          "kind": "text"
-        },
-        {
-          "index": 168,
-          "start_ms": 447209,
-          "end_ms": 447249,
-          "kind": "text"
-        },
-        {
-          "index": 169,
           "start_ms": 447114,
           "end_ms": 447334,
           "kind": "text"
         },
         {
-          "index": 170,
+          "index": 166,
           "start_ms": 447334,
           "end_ms": 447494,
           "kind": "text"
         },
         {
-          "index": 171,
+          "index": 167,
           "start_ms": 447494,
           "end_ms": 447934,
           "kind": "text"
         },
         {
-          "index": 172,
+          "index": 168,
           "start_ms": 447734,
           "end_ms": 447934,
           "kind": "text"
         },
         {
-          "index": 173,
+          "index": 169,
           "start_ms": 447934,
           "end_ms": 448955,
           "kind": "text"
         },
         {
-          "index": 174,
+          "index": 170,
           "start_ms": 448955,
-          "end_ms": 449110,
+          "end_ms": 449040,
           "kind": "text"
         },
         {
-          "index": 175,
+          "index": 171,
           "start_ms": 449115,
           "end_ms": 449155,
           "kind": "text"
         },
         {
-          "index": 176,
+          "index": 172,
           "start_ms": 449155,
           "end_ms": 449215,
           "kind": "text"
         },
         {
-          "index": 177,
-          "start_ms": 449210,
+          "index": 173,
+          "start_ms": 449215,
           "end_ms": 449315,
           "kind": "text"
         },
         {
-          "index": 178,
+          "index": 174,
           "start_ms": 449315,
           "end_ms": 449526,
           "kind": "text"
         },
         {
-          "index": 179,
+          "index": 175,
           "start_ms": 449526,
           "end_ms": 451036,
           "kind": "text"
         },
         {
-          "index": 180,
+          "index": 176,
           "start_ms": 449750,
           "end_ms": 450000,
           "kind": "pause"
         },
         {
-          "index": 181,
+          "index": 177,
           "start_ms": 450000,
           "end_ms": 450250,
           "kind": "pause"
         },
         {
-          "index": 182,
+          "index": 178,
           "start_ms": 450250,
           "end_ms": 450500,
           "kind": "pause"
         },
         {
-          "index": 183,
+          "index": 179,
           "start_ms": 450500,
           "end_ms": 450965,
           "kind": "pause"
         },
         {
-          "index": 184,
+          "index": 180,
           "start_ms": 450896,
           "end_ms": 451036,
           "kind": "text"
         },
         {
-          "index": 185,
+          "index": 181,
           "start_ms": 451036,
           "end_ms": 451777,
           "kind": "text"
         },
         {
-          "index": 186,
+          "index": 182,
           "start_ms": 451437,
           "end_ms": 451724,
           "kind": "pause"
         },
         {
-          "index": 187,
+          "index": 183,
           "start_ms": 451777,
-          "end_ms": 451937,
+          "end_ms": 451848,
           "kind": "text"
         },
         {
-          "index": 188,
+          "index": 184,
           "start_ms": 451937,
           "end_ms": 452157,
           "kind": "text"
         },
         {
-          "index": 189,
-          "start_ms": 452033,
-          "end_ms": 452093,
+          "index": 185,
+          "start_ms": 451993,
+          "end_ms": 452083,
           "kind": "text"
         },
         {
-          "index": 190,
-          "start_ms": 452029,
-          "end_ms": 452109,
+          "index": 186,
+          "start_ms": 452009,
+          "end_ms": 452090,
           "kind": "text"
         },
         {
-          "index": 191,
-          "start_ms": 452109,
+          "index": 187,
+          "start_ms": 452090,
           "end_ms": 452170,
           "kind": "text"
         },
         {
-          "index": 192,
+          "index": 188,
           "start_ms": 452157,
           "end_ms": 452330,
           "kind": "text"
         },
         {
-          "index": 193,
+          "index": 189,
           "start_ms": 452330,
           "end_ms": 452511,
           "kind": "text"
         },
         {
-          "index": 194,
+          "index": 190,
           "start_ms": 452998,
           "end_ms": 453038,
           "kind": "text"
         },
         {
-          "index": 195,
+          "index": 191,
           "start_ms": 453038,
           "end_ms": 454119,
           "kind": "text"
         },
         {
-          "index": 196,
+          "index": 192,
           "start_ms": 452551,
           "end_ms": 452801,
           "kind": "pause"
         },
         {
-          "index": 197,
+          "index": 193,
           "start_ms": 452801,
           "end_ms": 453051,
           "kind": "pause"
         },
         {
-          "index": 198,
+          "index": 194,
           "start_ms": 453051,
           "end_ms": 453301,
           "kind": "pause"
         },
         {
-          "index": 199,
+          "index": 195,
           "start_ms": 453301,
           "end_ms": 453551,
           "kind": "pause"
         },
         {
-          "index": 200,
+          "index": 196,
           "start_ms": 453551,
           "end_ms": 453801,
           "kind": "pause"
         },
         {
-          "index": 201,
+          "index": 197,
           "start_ms": 453801,
           "end_ms": 454070,
           "kind": "pause"
         },
         {
-          "index": 202,
+          "index": 198,
           "start_ms": 454119,
-          "end_ms": 454252,
+          "end_ms": 454199,
           "kind": "text"
         },
         {
-          "index": 203,
+          "index": 199,
           "start_ms": 454259,
           "end_ms": 454319,
           "kind": "text"
         },
         {
-          "index": 204,
-          "start_ms": 454313,
+          "index": 200,
+          "start_ms": 454283,
           "end_ms": 454339,
           "kind": "text"
         },
         {
-          "index": 205,
+          "index": 201,
           "start_ms": 454339,
           "end_ms": 454455,
           "kind": "text"
         },
         {
-          "index": 206,
+          "index": 202,
           "start_ms": 454459,
           "end_ms": 454549,
           "kind": "text"
         },
         {
-          "index": 207,
+          "index": 203,
           "start_ms": 454549,
           "end_ms": 454657,
           "kind": "text"
         },
         {
-          "index": 208,
+          "index": 204,
           "start_ms": 454880,
           "end_ms": 455130,
           "kind": "pause"
         },
         {
-          "index": 209,
+          "index": 205,
           "start_ms": 455130,
           "end_ms": 455380,
           "kind": "pause"
         },
         {
-          "index": 210,
+          "index": 206,
           "start_ms": 455380,
           "end_ms": 455791,
           "kind": "pause"
         },
         {
-          "index": 211,
+          "index": 207,
           "start_ms": 456415,
           "end_ms": 456665,
           "kind": "pause"
         },
         {
-          "index": 212,
+          "index": 208,
           "start_ms": 456665,
           "end_ms": 457057,
           "kind": "pause"
         },
         {
-          "index": 213,
+          "index": 209,
           "start_ms": 457140,
           "end_ms": 457281,
           "kind": "text"
         },
         {
-          "index": 214,
+          "index": 210,
           "start_ms": 455920,
           "end_ms": 457139,
           "kind": "text"
         },
         {
-          "index": 215,
+          "index": 211,
           "start_ms": 457139,
           "end_ms": 457281,
           "kind": "text"
         },
         {
-          "index": 216,
+          "index": 212,
           "start_ms": 457281,
           "end_ms": 457501,
           "kind": "text"
         },
         {
-          "index": 217,
+          "index": 213,
           "start_ms": 457501,
           "end_ms": 457591,
           "kind": "text"
         },
         {
-          "index": 218,
+          "index": 214,
           "start_ms": 457591,
           "end_ms": 457710,
           "kind": "text"
         },
         {
-          "index": 219,
+          "index": 215,
           "start_ms": 457934,
           "end_ms": 458184,
           "kind": "pause"
         },
         {
-          "index": 220,
+          "index": 216,
           "start_ms": 458184,
           "end_ms": 458434,
           "kind": "pause"
         },
         {
-          "index": 221,
+          "index": 217,
           "start_ms": 458434,
           "end_ms": 458684,
           "kind": "pause"
         },
         {
-          "index": 222,
+          "index": 218,
           "start_ms": 458684,
           "end_ms": 458947,
           "kind": "pause"
         },
         {
-          "index": 223,
+          "index": 219,
           "start_ms": 459007,
           "end_ms": 459342,
           "kind": "text"
         },
         {
-          "index": 224,
+          "index": 220,
           "start_ms": 459342,
           "end_ms": 460203,
           "kind": "text"
         },
         {
-          "index": 225,
+          "index": 221,
           "start_ms": 459622,
           "end_ms": 459872,
           "kind": "pause"
         },
         {
-          "index": 226,
+          "index": 222,
           "start_ms": 459872,
           "end_ms": 460145,
           "kind": "pause"
         },
         {
-          "index": 227,
+          "index": 223,
           "start_ms": 460203,
           "end_ms": 460283,
           "kind": "text"
         },
         {
-          "index": 228,
+          "index": 224,
           "start_ms": 460233,
           "end_ms": 460293,
           "kind": "text"
         },
         {
-          "index": 229,
+          "index": 225,
           "start_ms": 460293,
           "end_ms": 460363,
           "kind": "text"
         },
         {
-          "index": 230,
+          "index": 226,
           "start_ms": 460363,
           "end_ms": 460583,
           "kind": "text"
         },
         {
-          "index": 231,
+          "index": 227,
           "start_ms": 460583,
           "end_ms": 460673,
           "kind": "text"
         },
         {
-          "index": 232,
+          "index": 228,
           "start_ms": 460673,
           "end_ms": 460763,
           "kind": "text"
         },
         {
-          "index": 233,
-          "start_ms": 461235,
-          "end_ms": 461323,
+          "index": 229,
+          "start_ms": 461173,
+          "end_ms": 461243,
           "kind": "text"
         },
         {
-          "index": 234,
-          "start_ms": 461323,
+          "index": 230,
+          "start_ms": 461243,
           "end_ms": 461343,
           "kind": "text"
         },
         {
-          "index": 235,
+          "index": 231,
           "start_ms": 461343,
           "end_ms": 461383,
           "kind": "text"
         },
         {
-          "index": 236,
+          "index": 232,
           "start_ms": 461383,
           "end_ms": 461403,
           "kind": "text"
         },
         {
-          "index": 237,
+          "index": 233,
           "start_ms": 461423,
           "end_ms": 461543,
           "kind": "text"
         },
         {
-          "index": 238,
+          "index": 234,
           "start_ms": 461543,
           "end_ms": 461804,
           "kind": "text"
         },
         {
-          "index": 239,
+          "index": 235,
           "start_ms": 461804,
           "end_ms": 461964,
           "kind": "text"
         },
         {
-          "index": 240,
-          "start_ms": 461830,
+          "index": 236,
+          "start_ms": 461824,
           "end_ms": 461974,
           "kind": "text"
         },
         {
-          "index": 241,
+          "index": 237,
           "start_ms": 462144,
           "end_ms": 462234,
           "kind": "text"
         },
         {
-          "index": 242,
+          "index": 238,
           "start_ms": 462234,
           "end_ms": 462324,
           "kind": "text"
         },
         {
-          "index": 243,
+          "index": 239,
           "start_ms": 462324,
           "end_ms": 462464,
           "kind": "text"
         },
         {
-          "index": 244,
+          "index": 240,
           "start_ms": 462193,
           "end_ms": 462253,
           "kind": "text"
         },
         {
-          "index": 245,
+          "index": 241,
           "start_ms": 462464,
           "end_ms": 462604,
           "kind": "text"
         },
         {
-          "index": 246,
+          "index": 242,
           "start_ms": 462604,
           "end_ms": 462744,
           "kind": "text"
         },
         {
-          "index": 247,
+          "index": 243,
           "start_ms": 462744,
           "end_ms": 463585,
           "kind": "text"
         },
         {
-          "index": 248,
+          "index": 244,
           "start_ms": 463013,
           "end_ms": 463263,
           "kind": "pause"
         },
         {
-          "index": 249,
+          "index": 245,
           "start_ms": 463263,
           "end_ms": 463513,
           "kind": "pause"
         },
         {
-          "index": 250,
+          "index": 246,
           "start_ms": 463513,
           "end_ms": 464005,
           "kind": "pause"
         },
         {
-          "index": 251,
+          "index": 247,
           "start_ms": 463585,
           "end_ms": 463605,
           "kind": "text"
@@ -11621,31 +11528,31 @@
       "rows": [
         {
           "name": "whisper",
-          "text": "・・・・你哋可能覺得呢間幼稚園好逗利・・但係對於我同埋我　班同學仔嚟講・・・呢度係我哋最快樂最美麗嘅樂園・・・・・・・・・仲有一個好疼我哋不過就有少少失魂嘅班主啊MissCha　n・・・・・・佢嘅志願係做下一個王妃・・或者係做下一個陳維林都得好喇我哋而家開始點名・・麥麥　同學　到阿輝　　　同學　到・Bussy同學　　　　到・德　　　　巴同學　到阿May同學・・・・　到・阿June同學　到・・・・・・阿May同學・・・・・　到麥麥同學・・・・到　・・阿May同學MissChan你點咗我兩次喇・・・啊"
+          "text": "・・・・你哋可能覺得呢間幼稚園好逗利・・但係對於我同埋我　班同學仔嚟講・・・呢度係我哋最快樂最美麗嘅樂園・・・・・・・・・仲有一個好疼我哋不過就有少少失魂嘅班主啊MissCha　n・・・・・・佢嘅志願係做下一個王妃・・或者係做下一個陳維林都得好喇我哋而家開始點名・・麥麥　同學　到阿輝　　　同學　到・Bussy同學　　　　到・德巴同學　到阿May同學・・・・　到・阿June同學　到・・・・・・阿May同學・・・・・　到麥麥同學・・・・到　・・阿May同學MissChan你點咗我兩次喇・・・啊"
         },
         {
           "name": "mimo",
-          "text": "・・・・你哋可能覺得呢間幼稚園好豆泥・・但系對於我同埋我　班同學仔嚟講・・・呢度系我哋最快樂最美麗嘅樂園・・・・・・・・・仲有一個好錫我哋不過就有少少失魂嘅班主任MissCha　n・・・・・・佢嘅志願系做下一個王菲・・或者系做下一個陳慧琳都得好啦我哋而家開始點名・・麥麥　同學　到阿輝　　　同學　到・Bosie同學　　　　到・阿　　　　巴同學　到阿May同學・・・・　到・阿June同學　到・・・・・・阿May同學・・・・・　到媽媽同學・・・・到　・・阿May同學MissChan你點咗　兩次啦・・・啊"
+          "text": "・・・・你哋可能覺得呢間幼稚園好豆泥・・但系對於我同埋我　班同學仔嚟講・・・呢度系我哋最快樂最美麗嘅樂園・・・・・・・・・仲有一個好錫我哋不過就有少少失魂嘅班主任MissCha　n・・・・・・佢嘅志願系做下一個王菲・・或者系做下一個陳慧琳都得好啦我哋而家開始點名・・麥麥　同學　到阿輝　　　同學　到・Bosie同學　　　　到・阿巴同學　到阿May同學・・・・　到・阿June同學　到・・・・・・阿May同學・・・・・　到媽媽同學・・・・到　・・阿May同學MissChan你點咗　兩次啦・・・啊"
         },
         {
           "name": "qwen",
-          "text": "・・・・你哋可能覺得呢間幼稚園好鬥麗・・但系對於我同埋我一班同學仔嚟講・・・呢度系我哋最快樂最美麗嘅樂園・・・・・・・・・仲有一個好錫我哋不過就有少少失雲嘅班主有MissCha　n・・・・・・佢嘅志願系做下一個王妃・・或者系做下一個陳慧琳都得好啦我哋而家開始點名・・麥麥　同學　到阿輝　　　同學　到・　　　巫師同學　　　　到・德　　　　巴同學　到阿　　美同學・・・・　到・阿尊　　　同學　到・・・・・・阿美　　同學・・・・・　到媽媽同學・・・・到　・・阿　　美同學MissChen你點咗　兩次啦・・・啊"
+          "text": "・・・・你哋可能覺得呢間幼稚園好鬥麗・・但系對於我同埋我一班同學仔嚟講・・・呢度系我哋最快樂最美麗嘅樂園・・・・・・・・・仲有一個好錫我哋不過就有少少失雲嘅班主有MissCha　n・・・・・・佢嘅志願系做下一個王妃・・或者系做下一個陳慧琳都得好啦我哋而家開始點名・・麥麥　同學　到阿輝　　　同學　到・　　　巫師同學　　　　到・德巴同學　到阿　　美同學・・・・　到・阿尊　　　同學　到・・・・・・阿美　　同學・・・・・　到媽媽同學・・・・到　・・阿　　美同學MissChen你點咗　兩次啦・・・啊"
         },
         {
           "name": "sensevoice",
-          "text": "・・・・你哋可能覺得呢間幼稚園好逗嚟・・但系對於我同埋我　班同學仔嚟講・・・呢度系我哋最快樂最美麗嘅樂園・・・・・・・・・仲有一個好錫我哋不過就有少少失魂嘅班主任misscha　　・・・・・・佢嘅志願系做下一個王菲・・或者系做下一個陳慧琳都得好啦我哋而家開始點名・・麥嘜　同學　都阿輝　　　同學　都・bo　　　同學　　　　都・得　　　　巴同學do阿may同學・・・・do・阿jo　　同學do・・・・・・阿may同學・・・・・do媽媽同學・・・・do・・阿may同學misscha　你點咗　兩次啦・・・啊"
+          "text": "・・・・你哋可能覺得呢間幼稚園好逗嚟・・但系對於我同埋我　班同學仔嚟講・・・呢度系我哋最快樂最美麗嘅樂園・・・・・・・・・仲有一個好錫我哋不過就有少少失魂嘅班主任misscha　　・・・・・・佢嘅志願系做下一個王菲・・或者系做下一個陳慧琳都得好啦我哋而家開始點名・・麥嘜　同學　都阿輝　　　同學　都・bo　　　同學　　　　都・得巴同學do阿may同學・・・・do・阿jo　　同學do・・・・・・阿may同學・・・・・do媽媽同學・・・・do・・阿may同學misscha　你點咗　兩次啦・・・啊"
         },
         {
           "name": "firered",
-          "text": "・・・・你哋可能覺得呢間幼稚園好逗嚟・・但系對於我同埋我　班同學仔嚟講・・・呢度系我哋最快樂最美麗嘅樂園・・・・・・・・・仲有一個好錫我哋不過就有少少失魂嘅班主任misscha　n・・・・・・佢嘅志願系做下一個王菲・・或者系做下一個陳慧琳都得好啦我哋而家開始點名・・麥麥　同學　　阿輝同學w同學　德・巴　　　　同學　　　　　・德　　　　巴同學　刀阿may同學・・・・　刀・阿j　　　同學　刀・・・・・・阿may同學・・・・・　刀媽媽同學・・・・刀　・・阿may同學misschan你點咗　兩次啦・・・啊"
+          "text": "・・・・你哋可能覺得呢間幼稚園好逗嚟・・但系對於我同埋我　班同學仔嚟講・・・呢度系我哋最快樂最美麗嘅樂園・・・・・・・・・仲有一個好錫我哋不過就有少少失魂嘅班主任misscha　n・・・・・・佢嘅志願系做下一個王菲・・或者系做下一個陳慧琳都得好啦我哋而家開始點名・・麥麥　同學　　阿輝同學w同學　德・巴　　　　同學　　　　　・德巴同學　刀阿may同學・・・・　刀・阿j　　　同學　刀・・・・・・阿may同學・・・・・　刀媽媽同學・・・・刀　・・阿may同學misschan你點咗　兩次啦・・・啊"
         },
         {
           "name": "glm",
-          "text": "・・・・你哋可能覺得呢間幼稚園好鬧嚟・・但系對於我同埋我　班同學仔嚟講・・・呢度係我哋最快樂最美麗嘅樂園・・・・・・・・・仲有一個好識我哋不過就係少少識文嘅班　長MissChann・・・・・・佢嘅志願系做下　個王妃・・或者系做下　個陳慧琳都得好啦我哋而家開始點名・・Mom同學Do阿飛　　　同學Do・Bossy同學DoDad・得　　　　八同學　到阿　　妹同學・・・・　到・阿專　　　同學　到・・・・・・阿妹　　同學・・・・・　到阿媽同學・・・・到　・・阿　　妹同學MissChen你點咗　兩次啦・・・啊"
+          "text": "・・・・你哋可能覺得呢間幼稚園好鬧嚟・・但系對於我同埋我　班同學仔嚟講・・・呢度係我哋最快樂最美麗嘅樂園・・・・・・・・・仲有一個好識我哋不過就係少少識文嘅班　長MissChann・・・・・・佢嘅志願系做下　個王妃・・或者系做下　個陳慧琳都得好啦我哋而家開始點名・・Mom同學Do阿飛　　　同學Do・Bossy同學DoDad・得八同學　到阿　　妹同學・・・・　到・阿專　　　同學　到・・・・・・阿妹　　同學・・・・・　到阿媽同學・・・・到　・・阿　　妹同學MissChen你點咗　兩次啦・・・啊"
         }
       ],
-      "speaker": "・・・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢＢＢＢＢＢＢＢＢ　Ｂ・・・・・・・・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・・・ＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＧＧＧＧＧＧＧＧＧＧ・・ＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧ・ＧＧＧＧＧＧＧＧＧＧＧＧ・ＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧ・・・・ＧＧ・ＧＧＧＧＧＧＧＡＧ・・・・・・ＧＧＧＧＧＧ・・・・・ＧＧＧＧＧＧ・・・・ＧＧ・・ＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧ・・・　",
-      "language_trace": "・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵粵粵粵粵粵　粵・・・・・・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・・・粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・　粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・　粵粵粵粵粵粵粵粵粵粵普・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・　粵・粵粵粵粵粵粵粵　粵・・・・・・粵粵粵粵粵粵・・・・・粵普粵粵粵粵・・・・普普・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・　",
+      "speaker": "・・・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・ＢＢＢＢＢＢＢＢＢＢＢＢ　Ｂ・・・・・・・・・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・・・・ＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢＧＧＧＧＧＧＧＧＧＧ・・ＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧ・ＧＧＧＧＧＧＧＧＧＧＧＧ・ＧＧＧＧＧＧＧＧＧＧＧＧ・・・・ＧＧ・ＧＧＧＧＧＧＧＡＧ・・・・・・ＧＧＧＧＧＧ・・・・・ＧＧＧＧＧＧ・・・・ＧＧ・・ＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧ・・・　",
+      "language_trace": "・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵粵粵粵粵粵　粵・・・・・・・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・・・粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・　粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵普・粵粵粵粵粵粵粵粵粵粵粵粵・・・・　粵・粵粵粵粵粵粵粵　粵・・・・・・粵粵粵粵粵粵・・・・・粵普粵粵粵粵・・・・普普・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・　",
       "language_legend": {
         "粵": "zh-yue",
         "普": "zh-mandarin",
@@ -11657,13 +11564,13 @@
         "Ｄ": "yo",
         "Ｅ": "lo"
       },
-      "singing_trace": "・・・・　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　・・・　　　　　　　　　　　　　　・・・・・・・・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・・・・　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　・　　　　　　　　　　　　・　　　　　　　　　　　　　　　　・・・・　　・　　　　　　　　　・・・・・・　　　　　　・・・・・　　　　　　・・・・　　・・　　　　　　　　　　　　　　　　　　　　　・・・　",
-      "music_trace": "・・・・樂樂樂樂樂樂樂樂樂樂樂　　樂・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・・・・・・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・・・・・樂樂樂樂樂樂樂樂樂樂樂・・樂樂樂樂樂樂樂樂樂樂樂樂樂　　　　　　　　　・・　　　　　　　　　　　　　樂　樂・樂樂樂樂樂樂樂樂樂樂樂　・　　　　　　　　　　　　樂樂樂樂・・・・樂樂・樂樂樂樂樂樂樂樂樂・・・・・・樂樂樂樂樂樂・・・・・樂樂樂樂樂樂・・・・　　・・　　　　　　　　　　　　　　　　　　　　　・・・　",
-      "merged": "・・・・你哋可能覺得呢間幼稚園好鬥麗・・但係對於我同埋我　班同學仔嚟講・・・呢度係我哋最快樂最美麗嘅樂園・・・・・・・・・仲有一個好錫我哋不過就有少少失魂嘅班主任MissChan　・・・・・・佢嘅志願係做下一個王菲・・或者係做下一個陳慧琳都得好喇我哋而家開始點名・・麥嘜　同學　到阿輝　　　同學　到・Bobby同學　　　　到・Debbie同學　到阿May同學・・・・　到・阿June同學　到・・・・・・阿May同學・・・・・　到媽媽同學・・・・到　・・阿May同學MissChan你點咗　兩次　・・・　",
+      "singing_trace": "・・・・　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　・・・　　　　　　　　　　　　　　・・・・・・・・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・・・・　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　・　　　　　　　　　　　　・　　　　　　　　　　　　・・・・　　・　　　　　　　　　・・・・・・　　　　　　・・・・・　　　　　　・・・・　　・・　　　　　　　　　　　　　　　　　　　　　・・・　",
+      "music_trace": "・・・・樂樂樂樂樂樂樂樂樂樂樂　　樂・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・・・・・・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・・・・・樂樂樂樂樂樂樂樂樂樂樂・・樂樂樂樂樂樂樂樂樂樂樂樂樂　　　　　　　　　・・　　　　　　　　　　　　　樂　樂・樂樂樂樂樂樂樂樂樂樂樂　・　　　　　　　　樂樂樂樂・・・・樂樂・樂樂樂樂樂樂樂樂樂・・・・・・樂樂樂樂樂樂・・・・・樂樂樂樂樂樂・・・・　　・・　　　　　　　　　　　　　　　　　　　　　・・・　",
+      "merged": "・・・・你哋可能覺得呢間幼稚園好逗嚟・・但係對於我同埋我　班同學仔嚟講・・・呢度係我哋最快樂最美麗嘅樂園・・・・・・・・・仲有一個好錫我哋不過就有少少失魂嘅班主任ＭｉｓｓＣｈａｎ　・・・・・・佢嘅志願係做下一個王菲・・或者係做下一個陳慧琳都得好喇我哋而家開始點名・・麥嘜　同學　到阿輝　　　同學　到・　　　菇時同學　　　　到・得巴同學　到阿Ｍａｙ同學・・・・　到・阿Ｊｕｎｅ同學　到・・・・・・阿Ｍａｙ同學・・・・・　到媽媽同學・・・・到　・・阿Ｍａｙ同學ＭｉｓｓＣｈａｎ你點咗　兩次　・・・　",
       "subtitles": [
         {
-          "index": 126,
-          "text": "你哋可能覺得呢間幼稚園好鬥麗。",
+          "index": 115,
+          "text": "你哋可能覺得呢間幼稚園好逗嚟",
           "speech_start_ms": 417741,
           "speech_end_ms": 420446,
           "start_ms": 417491,
@@ -11671,8 +11578,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 127,
-          "text": "但係對於我同埋我班同學仔嚟講。",
+          "index": 116,
+          "text": "但係對於我同埋我班同學仔嚟講",
           "speech_start_ms": 420446,
           "speech_end_ms": 423632,
           "start_ms": 420446,
@@ -11680,8 +11587,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 128,
-          "text": "呢度係我哋最快樂最美麗嘅樂園。",
+          "index": 117,
+          "text": "呢度係我哋最快樂最美麗嘅樂園",
           "speech_start_ms": 423632,
           "speech_end_ms": 426157,
           "start_ms": 423632,
@@ -11689,8 +11596,8 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 129,
-          "text": "仲有一個好錫我哋，",
+          "index": 118,
+          "text": "仲有一個好錫我哋",
           "speech_start_ms": 428719,
           "speech_end_ms": 429987,
           "start_ms": 428469,
@@ -11698,25 +11605,25 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 130,
-          "text": "不過就有少少失魂嘅",
+          "index": 119,
+          "text": "不過就有少少失魂嘅班主任",
           "speech_start_ms": 429987,
-          "speech_end_ms": 431295,
+          "speech_end_ms": 431624,
           "start_ms": 429987,
-          "end_ms": 431295,
+          "end_ms": 431624,
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 131,
-          "text": "班主任，Miss Chan。",
-          "speech_start_ms": 431295,
-          "speech_end_ms": 432140,
-          "start_ms": 431295,
-          "end_ms": 432640,
+          "index": 120,
+          "text": "Ｍｉｓｓ Ｃｈａｎ",
+          "speech_start_ms": 431624,
+          "speech_end_ms": 432200,
+          "start_ms": 431624,
+          "end_ms": 432700,
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 132,
+          "index": 121,
           "text": "佢嘅志願係做下一個王菲",
           "speech_start_ms": 433863,
           "speech_end_ms": 436344,
@@ -11725,71 +11632,53 @@
           "speaker": "SPEAKER_01"
         },
         {
-          "index": 133,
-          "text": "或者係做下一個陳慧琳都得，好喇",
+          "index": 122,
+          "text": "或者係做下一個陳慧琳",
           "speech_start_ms": 436344,
-          "speech_end_ms": 439125,
+          "speech_end_ms": 438105,
           "start_ms": 436344,
-          "end_ms": 439125,
+          "end_ms": 438105,
+          "speaker": "SPEAKER_01"
+        },
+        {
+          "index": 123,
+          "text": "都得好喇我哋而家開始點名",
+          "speech_start_ms": 438105,
+          "speech_end_ms": 441066,
+          "start_ms": 438105,
+          "end_ms": 441066,
           "speaker": null
         },
         {
-          "index": 134,
-          "text": "我哋而家開始點名",
-          "speech_start_ms": 439125,
-          "speech_end_ms": 441066,
-          "start_ms": 439125,
-          "end_ms": 441066,
-          "speaker": "SPEAKER_05"
-        },
-        {
-          "index": 135,
-          "text": "麥嘜同學，到",
+          "index": 124,
+          "text": "麥嘜同學到阿輝同學到",
           "speech_start_ms": 441066,
-          "speech_end_ms": 442987,
+          "speech_end_ms": 444808,
           "start_ms": 441066,
-          "end_ms": 442987,
+          "end_ms": 444808,
           "speaker": "SPEAKER_05"
         },
         {
-          "index": 136,
-          "text": "阿輝同學，到",
-          "speech_start_ms": 442987,
-          "speech_end_ms": 443907,
-          "start_ms": 442987,
-          "end_ms": 443907,
-          "speaker": "SPEAKER_05"
-        },
-        {
-          "index": 137,
-          "text": "Bobby同學，到",
-          "speech_start_ms": 443907,
+          "index": 125,
+          "text": "菇時同學到",
+          "speech_start_ms": 444808,
           "speech_end_ms": 446969,
-          "start_ms": 443907,
+          "start_ms": 444808,
           "end_ms": 446969,
           "speaker": "SPEAKER_05"
         },
         {
-          "index": 138,
-          "text": "Debbie同學，到",
+          "index": 126,
+          "text": "得巴同學到阿Ｍａｙ同學",
           "speech_start_ms": 446969,
-          "speech_end_ms": 448950,
-          "start_ms": 446969,
-          "end_ms": 448950,
-          "speaker": "SPEAKER_05"
-        },
-        {
-          "index": 139,
-          "text": "阿May同學",
-          "speech_start_ms": 448950,
           "speech_end_ms": 449510,
-          "start_ms": 448950,
+          "start_ms": 446969,
           "end_ms": 450010,
           "speaker": "SPEAKER_05"
         },
         {
-          "index": 140,
-          "text": "到。",
+          "index": 127,
+          "text": "到",
           "speech_start_ms": 451025,
           "speech_end_ms": 451768,
           "start_ms": 450775,
@@ -11797,26 +11686,17 @@
           "speaker": "SPEAKER_05"
         },
         {
-          "index": 141,
-          "text": "阿June同學。",
+          "index": 128,
+          "text": "阿Ｊｕｎｅ同學到",
           "speech_start_ms": 451768,
-          "speech_end_ms": 452511,
-          "start_ms": 451768,
-          "end_ms": 452511,
-          "speaker": "SPEAKER_05"
-        },
-        {
-          "index": 142,
-          "text": "到。",
-          "speech_start_ms": 452511,
           "speech_end_ms": 452531,
-          "start_ms": 452511,
-          "end_ms": 453261,
+          "start_ms": 451768,
+          "end_ms": 453031,
           "speaker": "SPEAKER_05"
         },
         {
-          "index": 143,
-          "text": "阿May同學",
+          "index": 129,
+          "text": "阿Ｍａｙ同學",
           "speech_start_ms": 454111,
           "speech_end_ms": 454657,
           "start_ms": 453861,
@@ -11824,7 +11704,7 @@
           "speaker": "SPEAKER_05"
         },
         {
-          "index": 144,
+          "index": 130,
           "text": "到媽媽同學",
           "speech_start_ms": 457118,
           "speech_end_ms": 457710,
@@ -11833,8 +11713,8 @@
           "speaker": "SPEAKER_05"
         },
         {
-          "index": 145,
-          "text": "到。",
+          "index": 131,
+          "text": "到",
           "speech_start_ms": 459007,
           "speech_end_ms": 460211,
           "start_ms": 458757,
@@ -11842,20 +11722,11 @@
           "speaker": "SPEAKER_05"
         },
         {
-          "index": 146,
-          "text": "阿May同學，Miss Chan。",
+          "index": 132,
+          "text": "阿Ｍａｙ同學ＭｉｓｓＣｈａｎ你點咗兩次",
           "speech_start_ms": 460211,
-          "speech_end_ms": 461797,
-          "start_ms": 460211,
-          "end_ms": 461797,
-          "speaker": "SPEAKER_05"
-        },
-        {
-          "index": 147,
-          "text": "你點咗兩次",
-          "speech_start_ms": 461797,
           "speech_end_ms": 462740,
-          "start_ms": 461797,
+          "start_ms": 460211,
           "end_ms": 463240,
           "speaker": "SPEAKER_05"
         }

@@ -244,6 +244,45 @@ def test_terminal_alignment_accepts_named_reference_authority():
         )
 
 
+def test_terminal_alignment_colors_compatibility_width_matches_green():
+    """Visibly identical halfwidth and fullwidth cells should compare as exact."""
+    artifact = _get_artifact()
+    block = artifact.blocks[0].model_copy(
+        update={
+            "columns": (
+                TranscriptionAlignmentColumn(
+                    index=1, start_ms=1_000, end_ms=1_200, kind="text"
+                ),
+            ),
+            "rows": (
+                TranscriptionAlignmentRow(name="whisper", text="J"),
+                TranscriptionAlignmentRow(name="mimo", text="Ｊ"),
+            ),
+            "speaker": "Ａ",
+            "merged": "Ｊ",
+            "subtitles": (
+                TranscriptionAlignmentSubtitle(
+                    index=1,
+                    text="Ｊ",
+                    speech_start_ms=1_000,
+                    speech_end_ms=1_200,
+                    start_ms=900,
+                    end_ms=1_300,
+                ),
+            ),
+        }
+    )
+    artifact = artifact.model_copy(update={"blocks": (block,)})
+    references = {"zho-Hant": Series(events=[Subtitle(start=900, end=1_300, text="J")])}
+
+    rendered = render_transcription_alignment_terminal(artifact, references)
+
+    for row_name in ("whisper", "mimo", "merged", "zho-Hant"):
+        row = next(line for line in rendered.splitlines() if line.startswith(row_name))
+        assert "\x1b[32mＪ\x1b[0m" in row
+        assert "\x1b[35mＪ\x1b[0m" not in row
+
+
 def test_terminal_reference_deletion_ignores_asr_matches():
     """Reference deletions should be determined solely by the merged row."""
     artifact = _get_artifact()

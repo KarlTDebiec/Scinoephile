@@ -607,7 +607,7 @@ def _get_alignment_cell_color(
         )
         if source_idx != authoritative_source_idx:
             color = AnsiColor.PURPLE
-            if cell == authoritative_cell:
+            if _get_comparison_cell(cell) == _get_comparison_cell(authoritative_cell):
                 color = AnsiColor.GREEN
             elif authoritative_cell == _GAP_CHARACTER:
                 color = AnsiColor.BLUE
@@ -625,7 +625,11 @@ def _get_alignment_cell_color(
                 for other_idx in authoritative_peer_source_indexes
             )
             color = AnsiColor.RED
-            if cell in other_cells:
+            comparison_cell = _get_comparison_cell(cell)
+            if any(
+                comparison_cell == _get_comparison_cell(other_cell)
+                for other_cell in other_cells
+            ):
                 color = AnsiColor.GREEN
             elif any(other_cell != _GAP_CHARACTER for other_cell in other_cells):
                 color = AnsiColor.PURPLE
@@ -740,6 +744,11 @@ def _get_alignment_characters(text: str) -> tuple[str, ...]:
     )
 
 
+def _get_comparison_cell(character: str) -> str:
+    """Normalize compatibility-width variants for visible diff comparison."""
+    return unicodedata.normalize("NFKC", character)
+
+
 def _get_display_cell(character: str) -> str:
     """Render one character as a fullwidth alignment cell."""
     codepoint = ord(character)
@@ -814,7 +823,7 @@ def _get_track_markers(
 def _get_token_similarity(one: TimedAlignmentToken, two: TimedAlignmentToken) -> float:
     """Score audit-only reference alignment using text and overall timing."""
     lexical_score = -2.0
-    if one.text == two.text:
+    if _get_comparison_cell(one.text) == _get_comparison_cell(two.text):
         lexical_score = 6.0
     one_midpoint = (one.start_seconds + one.end_seconds) / 2
     two_midpoint = (two.start_seconds + two.end_seconds) / 2
