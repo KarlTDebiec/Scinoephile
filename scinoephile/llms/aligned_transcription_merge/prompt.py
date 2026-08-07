@@ -15,6 +15,8 @@ __all__ = ["AlignedTranscriptionMergePrompt"]
 class AlignedTranscriptionMergePrompt(Prompt):
     """Text and aliases for aligned transcription merging."""
 
+    answer_allows_punctuation: bool = True
+    """Whether merged transcript text may contain punctuation or symbols."""
     max_subtitle_characters: int = 20
     """Maximum nonwhitespace characters permitted in one subtitle."""
     minimum_consensus_coverage: float = 0.9
@@ -61,8 +63,9 @@ class AlignedTranscriptionMergePrompt(Prompt):
     answer_text: str = "text"
     """Name of merged consensus text field in answer."""
     answer_text_desc: str = (
-        "Complete punctuated consensus transcript with a fullwidth vertical bar "
-        "after every display subtitle."
+        "Complete consensus transcript with a fullwidth vertical bar after every "
+        "display subtitle, or an empty string when no speech has sufficient "
+        "cross-source support."
     )
     """Description of merged consensus text field in answer."""
 
@@ -104,10 +107,16 @@ class AlignedTranscriptionMergePrompt(Prompt):
     )
     """Error when every ASR row contains only gaps."""
     answer_text_err: str = (
-        "Answer text must contain nonblank subtitles separated and terminated by "
-        "fullwidth vertical bars, without alignment or speaker annotations."
+        "Answer text must be empty, or contain nonblank subtitles separated and "
+        "terminated by fullwidth vertical bars without alignment or speaker "
+        "annotations."
     )
     """Error when answer text or subtitle boundaries are invalid."""
+    answer_punctuation_err: str = (
+        "Answer text must not contain punctuation or symbol characters other than "
+        "fullwidth subtitle boundaries."
+    )
+    """Error when punctuation is forbidden but appears in answer text."""
     subtitle_length_err_tpl: str = (
         "Answer subtitle indexes {indexes} exceed the maximum of "
         "{max_characters} nonwhitespace characters."

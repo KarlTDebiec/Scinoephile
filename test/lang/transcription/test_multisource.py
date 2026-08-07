@@ -151,6 +151,49 @@ def test_merge_uses_long_pause_boundaries_as_separate_ctc_windows():
     assert [call.args[1] for call in ctc_aligner.call_args_list] == ["甲。", "乙。"]
 
 
+def test_timing_skips_request_omitted_for_insufficient_consensus():
+    """CTC timing should skip an empty request and retain later consensus."""
+    audio = AudioSegment.silent(duration=3_000)
+    empty_answer = AlignedTranscriptionMergeAnswer(text="")
+    second_answer = _get_answer("乙。")
+    merger = Mock(spec=AlignedTranscriptionMergeProcessor)
+    merger.last_request_spans = ((0, 1), (5, 6))
+    merger.last_request_answers = (empty_answer, second_answer)
+    ctc_aligner = Mock(spec=CtcAligner, return_value=[_get_segment("乙。", 0.2, 0.7)])
+    transcriber = _get_transcriber(merger=merger, ctc_aligner=ctc_aligner)
+    alignment = TimedMultiSequenceAlignment(
+        source_names=("whisper", "mimo"),
+        columns=(
+            TimedAlignmentColumn(
+                (
+                    TimedAlignmentToken("甲", 0.1, 0.4),
+                    TimedAlignmentToken("丙", 0.1, 0.4),
+                )
+            ),
+            *(
+                TimedAlignmentColumn((None, None), pause_interval_seconds=(0.5, 1.5))
+                for _ in range(4)
+            ),
+            TimedAlignmentColumn(
+                (
+                    TimedAlignmentToken("乙", 1.8, 2.4),
+                    TimedAlignmentToken("乙", 1.8, 2.4),
+                )
+            ),
+        ),
+    )
+
+    output = transcriber._get_timed_answer_segments(  # noqa: SLF001
+        audio, alignment, second_answer
+    )
+
+    assert [(segment.text, segment.start, segment.end) for segment in output] == [
+        ("乙。", 1.7, 2.2)
+    ]
+    ctc_aligner.assert_called_once()
+    assert ctc_aligner.call_args.args[1] == "乙。"
+
+
 def test_timing_skips_only_request_whose_evidence_is_beyond_audio():
     """A trailing ASR hallucination should not discard an otherwise valid block."""
     audio = AudioSegment.silent(duration=1_000)

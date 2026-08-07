@@ -3,7 +3,7 @@
   "version": 1,
   "processed_blocks": 7,
   "reference_subtitles": 101,
-  "candidate_subtitles": 94,
+  "candidate_subtitles": 98,
   "cer": {
     "whisper": {
       "cer": 0.685857321652065,
@@ -54,11 +54,11 @@
       "reference_length": 799
     },
     "merged": {
-      "cer": 0.2640801001251564,
-      "correct": 650,
-      "substitutions": 115,
-      "insertions": 62,
-      "deletions": 34,
+      "cer": 0.2553191489361702,
+      "correct": 653,
+      "substitutions": 113,
+      "insertions": 58,
+      "deletions": 33,
       "reference_length": 799
     }
   },
@@ -68,29 +68,28 @@
       "lead_out_seconds": 0.5,
       "minimum_duration_seconds": 0.75
     },
-    "text_aligned_groups": 66,
-    "micro_intersection_over_union": 0.7719480154301732,
-    "one_to_one_groups": 40,
-    "one_to_one_micro_intersection_over_union": 0.7081751952187759,
-    "mean_intersection_over_union": 0.7376258263642073,
-    "mean_reference_coverage": 0.8974720714487356,
-    "mean_start_error_ms": -352.6666666666667,
-    "mean_end_error_ms": -9.636363636363637,
-    "mean_absolute_start_error_ms": 428.7878787878788,
-    "mean_absolute_end_error_ms": 357.6666666666667,
+    "text_aligned_groups": 64,
+    "micro_intersection_over_union": 0.7665695828314902,
+    "one_to_one_groups": 33,
+    "one_to_one_micro_intersection_over_union": 0.7292522442660407,
+    "mean_intersection_over_union": 0.7451329501089949,
+    "mean_reference_coverage": 0.92047933569259,
+    "mean_start_error_ms": -386.59375,
+    "mean_end_error_ms": 65.5625,
+    "mean_absolute_start_error_ms": 453.4375,
+    "mean_absolute_end_error_ms": 379.34375,
     "unmatched_candidate_subtitles": 2,
-    "unmatched_reference_subtitles": 0,
+    "unmatched_reference_subtitles": 4,
     "candidate_to_reference_group_counts": {
-      "1:1": 40,
-      "1:2": 5,
+      "1:1": 33,
+      "1:2": 6,
       "1:3": 1,
-      "2:1": 4,
-      "2:2": 6,
-      "2:3": 3,
-      "2:4": 1,
-      "3:2": 2,
-      "3:3": 1,
-      "3:4": 3
+      "2:1": 9,
+      "2:2": 3,
+      "2:3": 4,
+      "3:2": 3,
+      "3:3": 4,
+      "3:4": 1
     }
   }
 }

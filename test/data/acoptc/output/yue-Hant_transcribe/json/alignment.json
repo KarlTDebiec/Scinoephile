@@ -150,11 +150,11 @@
       },
       "singing_trace": "・・・・　　　・・・",
       "music_trace": "・・・・　　　・・・",
-      "merged": "・・・・好靚啊・・・",
+      "merged": "・・・・好靚呀・・・",
       "subtitles": [
         {
           "index": 1,
-          "text": "好靚啊！",
+          "text": "好靚呀",
           "speech_start_ms": 152374,
           "speech_end_ms": 152897,
           "start_ms": 152124,
@@ -492,19 +492,10 @@
       "subtitles": [
         {
           "index": 3,
-          "text": "喂，各位客官啊，",
+          "text": "喂各位客官啊阻你哋一陣啊好快就點着㗎啦",
           "speech_start_ms": 208882,
-          "speech_end_ms": 209906,
-          "start_ms": 208632,
-          "end_ms": 209906,
-          "speaker": "SPEAKER_08"
-        },
-        {
-          "index": 4,
-          "text": "阻你哋一陣啊，好快就點着㗎啦。",
-          "speech_start_ms": 209906,
           "speech_end_ms": 212355,
-          "start_ms": 209906,
+          "start_ms": 208632,
           "end_ms": 212855,
           "speaker": "SPEAKER_08"
         }
@@ -1425,11 +1416,11 @@
       },
       "singing_trace": "・・・・　　　　　　　　　・・・・　　・・　　　　　　　　　・　　　　　　　　　・　　　・・・・・・　　　　　　　　　　　　　　・・・　　　　・・・・・・・・・・・　　　　・　　・・・・・　　　　　・　　　　　　　　　　　　　　　・・・　　　　　　　　　・　　　　　　　　　　　　　　・・・",
       "music_trace": "・・・・　　　　　　　　　・・・・　　・・　　　　　　　　　・　　　　　　　　　・　　　・・・・・・　　　　　　　　　　　　　　・・・　　　　・・・・・・・・・・・　　　　・　　・・・・・　　　　　・　　　　　　　　　　　　　　　・・・　　　　　　　　　・　　　　　　　　　　　　　　・・・",
-      "merged": "・・・・唔好意思啊對唔住啊・・・・阿伯・・你咁樣點樣點唔着㗎・淨係得啲油都冇燈芯・我都知・・・・・・但係唔見咗條燈芯　有乜辦法　・・・買嗰條囉・・・・・・・・・・・嗯有道理・姑娘・・・・・啊借問一聲・假如如來佛祖嗰盞神燈嘅燈芯唔見・・・咗咁又去邊度買　呢・知你　　　　有古惑㗎啦現身啦・・・",
+      "merged": "・・・・唔好意思啊對唔住啊・・・・阿伯・・你咁樣點樣點唔著㗎・淨係得啲油都冇燈芯・我都知・・・・・・但係唔見咗條燈芯　有乜辦法　・・・買嗰條囉・・・・・・・・・・・嗯有道理・姑娘・・・・・啊借問一聲・假如如來佛祖嗰盞神燈嘅燈芯唔見・・・咗咁又去邊度買　呢・知你　　　　有古惑㗎喇現身啦・・・",
       "subtitles": [
         {
-          "index": 5,
-          "text": "唔好意思啊，對唔住啊！",
+          "index": 4,
+          "text": "唔好意思啊對唔住啊",
           "speech_start_ms": 223628,
           "speech_end_ms": 225176,
           "start_ms": 223378,
@@ -1437,8 +1428,8 @@
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 6,
-          "text": "阿伯。",
+          "index": 5,
+          "text": "阿伯",
           "speech_start_ms": 226547,
           "speech_end_ms": 227768,
           "start_ms": 226297,
@@ -1446,8 +1437,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 7,
-          "text": "你咁樣點樣點唔着㗎？",
+          "index": 6,
+          "text": "你咁樣點樣點唔著㗎",
           "speech_start_ms": 227768,
           "speech_end_ms": 229730,
           "start_ms": 227768,
@@ -1455,8 +1446,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 8,
-          "text": "淨係得啲油都冇燈芯。",
+          "index": 7,
+          "text": "淨係得啲油都冇燈芯",
           "speech_start_ms": 229730,
           "speech_end_ms": 231732,
           "start_ms": 229730,
@@ -1464,8 +1455,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 9,
-          "text": "我都知。",
+          "index": 8,
+          "text": "我都知",
           "speech_start_ms": 231732,
           "speech_end_ms": 232153,
           "start_ms": 231732,
@@ -1473,8 +1464,8 @@
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 10,
-          "text": "但係唔見咗條燈芯，有乜辦法？",
+          "index": 9,
+          "text": "但係唔見咗條燈芯有乜辦法",
           "speech_start_ms": 234330,
           "speech_end_ms": 238185,
           "start_ms": 234080,
@@ -1482,8 +1473,8 @@
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 11,
-          "text": "買嗰條囉。",
+          "index": 10,
+          "text": "買嗰條囉",
           "speech_start_ms": 238185,
           "speech_end_ms": 238646,
           "start_ms": 238185,
@@ -1491,8 +1482,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 12,
-          "text": "嗯，有道理。",
+          "index": 11,
+          "text": "嗯有道理",
           "speech_start_ms": 242710,
           "speech_end_ms": 244163,
           "start_ms": 242460,
@@ -1500,8 +1491,8 @@
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 13,
-          "text": "姑娘。",
+          "index": 12,
+          "text": "姑娘",
           "speech_start_ms": 244163,
           "speech_end_ms": 244365,
           "start_ms": 244163,
@@ -1509,8 +1500,8 @@
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 14,
-          "text": "啊，借問一聲。",
+          "index": 13,
+          "text": "啊借問一聲",
           "speech_start_ms": 245849,
           "speech_end_ms": 247192,
           "start_ms": 245599,
@@ -1518,8 +1509,8 @@
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 15,
-          "text": "假如如來佛祖嗰盞神燈嘅燈芯唔見咗，",
+          "index": 14,
+          "text": "假如如來佛祖嗰盞神燈嘅燈芯唔見咗",
           "speech_start_ms": 247192,
           "speech_end_ms": 250919,
           "start_ms": 247192,
@@ -1527,8 +1518,8 @@
           "speaker": "SPEAKER_07"
         },
         {
-          "index": 16,
-          "text": "咁又去邊度買呢？",
+          "index": 15,
+          "text": "咁又去邊度買呢",
           "speech_start_ms": 250919,
           "speech_end_ms": 252462,
           "start_ms": 250919,
@@ -1536,8 +1527,8 @@
           "speaker": null
         },
         {
-          "index": 17,
-          "text": "知你有古惑㗎啦，現身啦！",
+          "index": 16,
+          "text": "知你有古惑㗎喇現身啦",
           "speech_start_ms": 252462,
           "speech_end_ms": 253685,
           "start_ms": 252462,
@@ -1628,8 +1619,8 @@
         },
         {
           "index": 13,
-          "start_ms": 261282,
-          "end_ms": 261473,
+          "start_ms": 261285,
+          "end_ms": 261465,
           "kind": "text"
         },
         {
@@ -3289,11 +3280,11 @@
       },
       "singing_trace": "・・・・　・・・・・　　　　　　　　　　　　　　　　・　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　・・・　　・・・　",
       "music_trace": "・・・・　・・・・・　　　　　　　　　　　　　　　　・　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　　　・・・　　・・・　",
-      "merged": "・・・・哦・・・・・原來係二郎神同埋南天門嘅四大天王・紫・・霞你同你姐姐青霞仙子本來係佛祖日月明燈裏邊捲埋一齊嘅燈芯你竟然擅自離開天庭仲公開對人話邊個能夠將你手上嘅紫青寶劍拉出鞘就係你嘅如意郎君・・你係神仙點可以動凡心㗎假如畀啲邪魔妖道拔咗把寶劍出嚟我哋仙界豈不是成為笑柄・・我唔理佢係神仙又好妖怪又好把劍只有我同我意中人先拉得・開就算佢係妖怪啊　我都會一心一意咁跟住佢㗎啦如果唔可以同我喜歡嘅人喺埋一齊啊・・・就算畀個玉皇大帝你做都唔會開心啦・・豈有此理教而不善既然你係執迷不悟今日我就要替天行道要你喺人間同仙界消失・・只羨鴛鴦不羨仙消失咪消失囉・・・放　・・・　",
+      "merged": "・・・・哦・・・・・原來　二郎神同埋南天門嘅四大天王・紫・・霞你同你姐姐青霞仙子本來係佛祖日月明燈裏邊卷埋一齊嘅燈芯你竟然擅自離開天庭仲公開對人話邊個能夠將你手上嘅紫青寶劍拉出鞘就係你嘅如意郎君・・你係神仙點可以動凡心㗎假如畀啲邪魔妖道拔咗把寶劍出嚟我哋仙界豈不是成為笑柄・・我唔理佢係神仙又好妖怪又好把劍只有我同我意中人先拉得・開就算佢係妖怪啊　我都會一心一意咁跟住佢㗎啦如果唔可以同我喜歡嘅人喺埋一齊啊・・・就算畀個玉皇大帝你做都唔會開心啦・・豈有此理驕而不善既然你係執迷不悟今日我就要替天行道要你喺人間同仙界消失・・只羨鴛鴦不羨仙消失咪消失咯・・・放　・・・　",
       "subtitles": [
         {
-          "index": 18,
-          "text": "哦。",
+          "index": 17,
+          "text": "哦",
           "speech_start_ms": 258732,
           "speech_end_ms": 258752,
           "start_ms": 258482,
@@ -3301,8 +3292,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 19,
-          "text": "原來係二郎神同埋南天門嘅四大天王。",
+          "index": 18,
+          "text": "原來二郎神同埋南天門嘅四大天王",
           "speech_start_ms": 260840,
           "speech_end_ms": 264302,
           "start_ms": 260590,
@@ -3310,8 +3301,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 20,
-          "text": "紫霞，你同你姐姐青霞仙子。",
+          "index": 19,
+          "text": "紫霞你同你姐姐青霞仙子",
           "speech_start_ms": 264302,
           "speech_end_ms": 266823,
           "start_ms": 264302,
@@ -3319,8 +3310,8 @@
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 21,
-          "text": "本來係佛祖日月明燈裏邊捲埋一齊嘅燈芯。",
+          "index": 20,
+          "text": "本來係佛祖日月明燈裏邊卷埋一齊嘅燈芯",
           "speech_start_ms": 266823,
           "speech_end_ms": 269584,
           "start_ms": 266823,
@@ -3328,35 +3319,26 @@
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 22,
-          "text": "你竟然擅自離開天庭，仲公開對人話。",
+          "index": 21,
+          "text": "你竟然擅自離開天庭仲公開對人話邊個能夠",
           "speech_start_ms": 269584,
-          "speech_end_ms": 272146,
+          "speech_end_ms": 272686,
           "start_ms": 269584,
-          "end_ms": 272146,
+          "end_ms": 272686,
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 23,
-          "text": "邊個能夠將你手上嘅紫青寶劍拉出鞘。",
-          "speech_start_ms": 272146,
-          "speech_end_ms": 274647,
-          "start_ms": 272146,
-          "end_ms": 274647,
-          "speaker": "SPEAKER_06"
-        },
-        {
-          "index": 24,
-          "text": "就係你嘅如意郎君！",
-          "speech_start_ms": 274647,
+          "index": 22,
+          "text": "將你手上嘅紫青寶劍拉出鞘就係你嘅如意郎君",
+          "speech_start_ms": 272686,
           "speech_end_ms": 276468,
-          "start_ms": 274647,
+          "start_ms": 272686,
           "end_ms": 276468,
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 25,
-          "text": "你係神仙，點可以動凡心㗎？",
+          "index": 23,
+          "text": "你係神仙點可以動凡心㗎",
           "speech_start_ms": 276468,
           "speech_end_ms": 278189,
           "start_ms": 276468,
@@ -3364,8 +3346,8 @@
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 26,
-          "text": "假如畀啲邪魔妖道拔咗把寶劍出嚟。",
+          "index": 24,
+          "text": "假如畀啲邪魔妖道拔咗把寶劍出嚟",
           "speech_start_ms": 278189,
           "speech_end_ms": 280170,
           "start_ms": 278189,
@@ -3373,8 +3355,8 @@
           "speaker": "SPEAKER_13"
         },
         {
-          "index": 27,
-          "text": "我哋仙界豈不是成為笑柄？",
+          "index": 25,
+          "text": "我哋仙界豈不是成為笑柄",
           "speech_start_ms": 280170,
           "speech_end_ms": 282371,
           "start_ms": 280170,
@@ -3382,8 +3364,8 @@
           "speaker": "SPEAKER_13"
         },
         {
-          "index": 28,
-          "text": "我唔理佢係神仙又好，妖怪又好。",
+          "index": 26,
+          "text": "我唔理佢係神仙又好妖怪又好",
           "speech_start_ms": 282371,
           "speech_end_ms": 284392,
           "start_ms": 282371,
@@ -3391,8 +3373,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 29,
-          "text": "把劍只有我同我意中人先拉得開。",
+          "index": 27,
+          "text": "把劍只有我同我意中人先拉得開",
           "speech_start_ms": 284392,
           "speech_end_ms": 286673,
           "start_ms": 284392,
@@ -3400,26 +3382,17 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 30,
-          "text": "就算佢係妖怪啊，",
+          "index": 28,
+          "text": "就算佢係妖怪啊我都會一心一意咁跟住佢㗎啦",
           "speech_start_ms": 286673,
-          "speech_end_ms": 287894,
-          "start_ms": 286673,
-          "end_ms": 287894,
-          "speaker": "SPEAKER_17"
-        },
-        {
-          "index": 31,
-          "text": "我都會一心一意咁跟住佢㗎啦。",
-          "speech_start_ms": 287894,
           "speech_end_ms": 289755,
-          "start_ms": 287894,
+          "start_ms": 286673,
           "end_ms": 289755,
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 32,
-          "text": "如果唔可以同我喜歡嘅人喺埋一齊啊。",
+          "index": 29,
+          "text": "如果唔可以同我喜歡嘅人喺埋一齊啊",
           "speech_start_ms": 289755,
           "speech_end_ms": 293216,
           "start_ms": 289755,
@@ -3427,8 +3400,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 33,
-          "text": "就算畀個玉皇大帝你做，都唔會開心啦。",
+          "index": 30,
+          "text": "就算畀個玉皇大帝你做都唔會開心啦",
           "speech_start_ms": 293216,
           "speech_end_ms": 296058,
           "start_ms": 293216,
@@ -3436,8 +3409,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 34,
-          "text": "豈有此理，教而不善！",
+          "index": 31,
+          "text": "豈有此理驕而不善",
           "speech_start_ms": 296058,
           "speech_end_ms": 297719,
           "start_ms": 296058,
@@ -3445,8 +3418,8 @@
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 35,
-          "text": "既然你係執迷不悟，今日我就要替天行道。",
+          "index": 32,
+          "text": "既然你係執迷不悟今日我就要替天行道",
           "speech_start_ms": 297719,
           "speech_end_ms": 300060,
           "start_ms": 297719,
@@ -3454,8 +3427,8 @@
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 36,
-          "text": "要你喺人間同仙界消失！",
+          "index": 33,
+          "text": "要你喺人間同仙界消失",
           "speech_start_ms": 300060,
           "speech_end_ms": 301901,
           "start_ms": 300060,
@@ -3463,16 +3436,25 @@
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 37,
-          "text": "只羨鴛鴦不羨仙，消失咪消失囉！",
+          "index": 34,
+          "text": "只羨鴛鴦不羨仙",
           "speech_start_ms": 301901,
-          "speech_end_ms": 304862,
+          "speech_end_ms": 303321,
           "start_ms": 301901,
+          "end_ms": 303321,
+          "speaker": "SPEAKER_17"
+        },
+        {
+          "index": 35,
+          "text": "消失咪消失咯",
+          "speech_start_ms": 303321,
+          "speech_end_ms": 304862,
+          "start_ms": 303321,
           "end_ms": 304862,
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 38,
+          "index": 36,
           "text": "放",
           "speech_start_ms": 304862,
           "speech_end_ms": 305443,
@@ -3859,7 +3841,7 @@
         {
           "index": 62,
           "start_ms": 388257,
-          "end_ms": 389249,
+          "end_ms": 389298,
           "kind": "text"
         },
         {
@@ -3882,8 +3864,8 @@
         },
         {
           "index": 66,
-          "start_ms": 389158,
-          "end_ms": 389379,
+          "start_ms": 389093,
+          "end_ms": 389382,
           "kind": "text"
         },
         {
@@ -3984,120 +3966,126 @@
         },
         {
           "index": 83,
+          "start_ms": 391980,
+          "end_ms": 392060,
+          "kind": "text"
+        },
+        {
+          "index": 84,
           "start_ms": 392045,
           "end_ms": 392185,
           "kind": "text"
         },
         {
-          "index": 84,
+          "index": 85,
           "start_ms": 392145,
           "end_ms": 392229,
           "kind": "text"
         },
         {
-          "index": 85,
+          "index": 86,
           "start_ms": 392229,
           "end_ms": 392269,
           "kind": "text"
         },
         {
-          "index": 86,
+          "index": 87,
           "start_ms": 392185,
           "end_ms": 392345,
           "kind": "text"
         },
         {
-          "index": 87,
+          "index": 88,
           "start_ms": 392345,
           "end_ms": 393085,
           "kind": "text"
         },
         {
-          "index": 88,
+          "index": 89,
           "start_ms": 393085,
           "end_ms": 393186,
           "kind": "text"
         },
         {
-          "index": 89,
+          "index": 90,
           "start_ms": 393186,
           "end_ms": 393306,
           "kind": "text"
         },
         {
-          "index": 90,
+          "index": 91,
           "start_ms": 393306,
           "end_ms": 393446,
           "kind": "text"
         },
         {
-          "index": 91,
+          "index": 92,
           "start_ms": 393446,
           "end_ms": 393606,
           "kind": "text"
         },
         {
-          "index": 92,
+          "index": 93,
           "start_ms": 393606,
           "end_ms": 393886,
           "kind": "text"
         },
         {
-          "index": 93,
+          "index": 94,
           "start_ms": 393886,
           "end_ms": 394126,
           "kind": "text"
         },
         {
-          "index": 94,
+          "index": 95,
           "start_ms": 394126,
           "end_ms": 394226,
           "kind": "text"
         },
         {
-          "index": 95,
+          "index": 96,
           "start_ms": 394226,
           "end_ms": 394447,
           "kind": "text"
         },
         {
-          "index": 96,
+          "index": 97,
           "start_ms": 394447,
           "end_ms": 394607,
           "kind": "text"
         },
         {
-          "index": 97,
+          "index": 98,
           "start_ms": 394607,
           "end_ms": 394687,
           "kind": "text"
         },
         {
-          "index": 98,
+          "index": 99,
           "start_ms": 394687,
           "end_ms": 394707,
           "kind": "text"
         },
         {
-          "index": 99,
+          "index": 100,
           "start_ms": 394707,
           "end_ms": 396168,
           "kind": "text"
         },
         {
-          "index": 100,
+          "index": 101,
           "start_ms": 395176,
           "end_ms": 395426,
           "kind": "pause"
         },
         {
-          "index": 101,
+          "index": 102,
           "start_ms": 395426,
           "end_ms": 395676,
           "kind": "pause"
         },
         {
-          "index": 102,
+          "index": 103,
           "start_ms": 395676,
           "end_ms": 396168,
           "kind": "pause"
@@ -4106,53 +4094,53 @@
       "rows": [
         {
           "name": "whisper",
-          "text": "・・・・　唔使講啦・・呢件事邊個講出去我哋殺出佢　・・・・・・我都話咗唔準講啦・唔係呀我想話你知你隻敲鐵犬喺外面騎咗隻狗喇　・・・連佢都動犯心・・好今晚我就劏咗佢哋食好呀好呀我哋四兄弟上咗好耐㗎喇　・・・"
+          "text": "・・・・　唔使講啦・・呢件事邊個講出去我哋殺出佢　・・・・・・我都話咗唔準講啦・唔係呀我想話你知你隻敲鐵犬喺外面騎咗隻狗喇　・・・連佢都動犯心・・好今晚我就劏咗佢哋　食好呀好呀我哋四兄弟上咗好耐㗎喇　・・・"
         },
         {
           "name": "mimo",
-          "text": "・・・・誒　　三哥・・呢件事邊個講出去我就殺咗佢誒・・・・・・我都話咗唔準講啦・唔系啊我想話你知你只黑天犬喺出邊騎住只狗乸啊・・・吓佢都動凡心・・好今晚我就劏咗佢嚟食　　好啊我哋四兄弟相交好耐噶啦嗯・・・"
+          "text": "・・・・誒　　三哥・・呢件事邊個講出去我就殺咗佢誒・・・・・・我都話咗唔準講啦・唔系啊我想話你知你只黑天犬喺出邊騎住只狗乸啊・・・吓佢都動凡心・・好今晚我就劏咗佢嚟　食　　好啊我哋四兄弟相交好耐噶啦嗯・・・"
         },
         {
           "name": "qwen",
-          "text": "・・・・誒唔使講啦・・呢件事邊個講出去我就殺出去誒・・・・・・我都話咗唔準講啦・唔系啊我想話你知你只烤天圈喺出邊騎住只狗乸　・・・　佢都動凡心・・好今晚我就燙咗佢嚟食好啊好啊我嚟四兄弟想咗好耐噶啦　・・・"
+          "text": "・・・・誒唔使講啦・・呢件事邊個講出去我就殺出去誒・・・・・・我都話咗唔準講啦・唔系啊我想話你知你只烤天圈喺出邊騎住只狗乸　・・・　佢都動凡心・・好今晚我就燙咗佢嚟　食好啊好啊我嚟四兄弟想咗好耐噶啦　・・・"
         },
         {
           "name": "sensevoice",
-          "text": "・・・・誒唔使講啦・・呢件事邊個講出嚟我就殺咗佢誒・・・・・・我都話　唔準講啦・唔系啊我想話你知你只　啲犬啊出邊騎住只狗乸　・・・吓佢都同煩心・・好今晚我就偷咗佢哋食　　好啊我嚟四兄弟上咗好耐噶啦嗯・・・"
+          "text": "・・・・誒唔使講啦・・呢件事邊個講出嚟我就殺咗佢誒・・・・・・我都話　唔準講啦・唔系啊我想話你知你只　啲犬啊出邊騎住只狗乸　・・・吓佢都同煩心・・好今晚我就偷咗佢哋　食　　好啊我嚟四兄弟上咗好耐噶啦嗯・・・"
         },
         {
           "name": "firered",
-          "text": "・・・・誒唔使講啦・・呢件事邊個講出去我哋殺咗佢誒・・・・・・我都話咗唔準講啦・唔系啊我想話你知你只哮天犬喺出邊騎住只狗乸　・・・　佢都動煩心・・好今晚我就拖咗佢哋先好啊好啊我哋四兄弟上咗好耐噶啦　・・・"
+          "text": "・・・・誒唔使講啦・・呢件事邊個講出去我哋殺咗佢誒・・・・・・我都話咗唔準講啦・唔系啊我想話你知你只哮天犬喺出邊騎住只狗乸　・・・　佢都動煩心・・好今晚我就拖咗佢哋　先好啊好啊我哋四兄弟上咗好耐噶啦　・・・"
         },
         {
           "name": "glm",
-          "text": "・・・・誒唔使講啦・・呢件事邊個廣出　我哋殺出佢誒・・・・・・好啦話都唔準講啦・唔系啊我想話你知你只　焦點喺周邊騎住只狗啦　・・・　佢都動反心・・好今晚我就通咗佢　先　　好啊我哋四兄弟想咗好耐嘅啦嗯・・・"
+          "text": "・・・・誒唔使講啦・・呢件事邊個廣出　我哋殺出佢誒・・・・・・好啦話都唔準講啦・唔系啊我想話你知你只　焦點喺周邊騎住只狗啦　・・・　佢都動反心・・好今晚我就通咗佢　　先　　好啊我哋四兄弟想咗好耐嘅啦嗯・・・"
         }
       ],
-      "speaker": "・・・・ＥＥＥＥＥ・・ＥＥＥＥＥＥＥＥＥＥＥＥＥＥ・・・・・・ＥＥＥＥＥＥＥＥ・ＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥ・・・ＥＥＥＥＥＥ・・ＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥ・・・",
-      "language_trace": "・・・・粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵日日日日日・・・・・・粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・",
+      "speaker": "・・・・ＥＥＥＥＥ・・ＥＥＥＥＥＥＥＥＥＥＥＥＥＥ・・・・・・ＥＥＥＥＥＥＥＥ・ＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥ・・・ＥＥＥＥＥＥ・・ＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥＥ・・・",
+      "language_trace": "・・・・粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵日日日日日・・・・・・粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・",
       "language_legend": {
         "粵": "zh-yue",
         "日": "ja",
         "普": "zh-mandarin",
         "Ａ": "pt"
       },
-      "singing_trace": "・・・・　　　　　・・　　　　　　　　　　　　　　・・・・・・　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　・・・　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　・・・",
-      "music_trace": "・・・・　　　　　・・　　　　　　　　　　　　　　・・・・・・　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　・・・　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　・・・",
-      "merged": "・・・・　唔使講啦・・呢件事邊個講出去我就殺咗佢誒・・・・・・我都話咗唔準講啦・唔係呀我想話你知你隻哮天犬喺出邊騎住隻狗乸呀・・・吓佢都動凡心・・好今晚我就劏咗佢哋食好呀好呀我哋四兄弟相交好耐㗎喇　・・・",
+      "singing_trace": "・・・・　　　　　・・　　　　　　　　　　　　　　・・・・・・　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　・・・　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・",
+      "music_trace": "・・・・　　　　　・・　　　　　　　　　　　　　　・・・・・・　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　・・・　　　　　　・・　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・",
+      "merged": "・・・・誒唔使講啦・・呢件事邊個講出去我就殺咗佢誒・・・・・・我都話咗唔準講啦・唔係呀我想話你知你隻哮天犬喺出邊騎住隻狗乸啊・・・　佢都動凡心・・好今晚我就劏咗佢哋嚟食好啊好啊我哋四兄弟相交好耐㗎喇　・・・",
       "subtitles": [
         {
-          "index": 39,
-          "text": "唔使講啦。",
-          "speech_start_ms": 379503,
+          "index": 37,
+          "text": "誒唔使講啦",
+          "speech_start_ms": 379162,
           "speech_end_ms": 380565,
-          "start_ms": 379253,
+          "start_ms": 378912,
           "end_ms": 380565,
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 40,
-          "text": "呢件事邊個講出去，我就殺咗佢誒。",
+          "index": 38,
+          "text": "呢件事邊個講出去我就殺咗佢誒",
           "speech_start_ms": 380565,
           "speech_end_ms": 382368,
           "start_ms": 380565,
@@ -4160,8 +4148,8 @@
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 41,
-          "text": "我都話咗唔準講啦。",
+          "index": 39,
+          "text": "我都話咗唔準講啦",
           "speech_start_ms": 384406,
           "speech_end_ms": 385648,
           "start_ms": 384156,
@@ -4169,8 +4157,8 @@
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 42,
-          "text": "唔係呀，我想話你知，",
+          "index": 40,
+          "text": "唔係呀我想話你知",
           "speech_start_ms": 385648,
           "speech_end_ms": 386750,
           "start_ms": 385648,
@@ -4178,26 +4166,26 @@
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 43,
-          "text": "你隻哮天犬喺出邊騎住隻狗乸呀？",
+          "index": 41,
+          "text": "你隻哮天犬喺出邊騎住隻狗乸啊",
           "speech_start_ms": 386750,
-          "speech_end_ms": 389275,
+          "speech_end_ms": 389375,
           "start_ms": 386750,
-          "end_ms": 389275,
+          "end_ms": 389375,
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 44,
-          "text": "吓，佢都動凡心？",
-          "speech_start_ms": 389275,
+          "index": 42,
+          "text": "佢都動凡心",
+          "speech_start_ms": 389375,
           "speech_end_ms": 390798,
-          "start_ms": 389275,
+          "start_ms": 389375,
           "end_ms": 390798,
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 45,
-          "text": "好，今晚我就劏咗佢哋食。",
+          "index": 43,
+          "text": "好今晚我就劏咗佢哋嚟食",
           "speech_start_ms": 390798,
           "speech_end_ms": 392200,
           "start_ms": 390798,
@@ -4205,8 +4193,8 @@
           "speaker": "SPEAKER_06"
         },
         {
-          "index": 46,
-          "text": "好呀好呀，我哋四兄弟相交好耐㗎喇。",
+          "index": 44,
+          "text": "好啊好啊我哋四兄弟相交好耐㗎喇",
           "speech_start_ms": 392200,
           "speech_end_ms": 394725,
           "start_ms": 392200,
@@ -4353,8 +4341,8 @@
       "merged": "・・・・晶晶　　　　　　・・・",
       "subtitles": [
         {
-          "index": 47,
-          "text": "晶晶！",
+          "index": 45,
+          "text": "晶晶",
           "speech_start_ms": 408777,
           "speech_end_ms": 408858,
           "start_ms": 408527,
@@ -4555,8 +4543,8 @@
       "merged": "・・・・晶晶・・・點　解會　咁・・嘅啲人呢・・・",
       "subtitles": [
         {
-          "index": 48,
-          "text": "晶晶。",
+          "index": 46,
+          "text": "晶晶",
           "speech_start_ms": 433249,
           "speech_end_ms": 434674,
           "start_ms": 432999,
@@ -4564,11 +4552,20 @@
           "speaker": "SPEAKER_11"
         },
         {
-          "index": 49,
-          "text": "點解會咁嘅啲人呢？",
+          "index": 47,
+          "text": "點解會咁",
           "speech_start_ms": 434674,
-          "speech_end_ms": 436139,
+          "speech_end_ms": 435176,
           "start_ms": 434674,
+          "end_ms": 435176,
+          "speaker": "SPEAKER_11"
+        },
+        {
+          "index": 48,
+          "text": "嘅啲人呢",
+          "speech_start_ms": 435176,
+          "speech_end_ms": 436139,
+          "start_ms": 435176,
           "end_ms": 436639,
           "speaker": "SPEAKER_11"
         }
@@ -4832,8 +4829,8 @@
       "merged": "・・・・神仙啊・・・・・・・・・・妖怪・・・・・・・・・・・唔該・・・",
       "subtitles": [
         {
-          "index": 50,
-          "text": "神仙啊！",
+          "index": 49,
+          "text": "神仙啊",
           "speech_start_ms": 467209,
           "speech_end_ms": 467573,
           "start_ms": 466959,
@@ -4841,7 +4838,7 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 51,
+          "index": 50,
           "text": "妖怪",
           "speech_start_ms": 470303,
           "speech_end_ms": 470385,
@@ -4850,8 +4847,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 52,
-          "text": "唔該。",
+          "index": 51,
+          "text": "唔該",
           "speech_start_ms": 473563,
           "speech_end_ms": 473705,
           "start_ms": 473313,
@@ -4924,8 +4921,8 @@
         },
         {
           "index": 10,
-          "start_ms": 480364,
-          "end_ms": 480540,
+          "start_ms": 479227,
+          "end_ms": 479375,
           "kind": "text"
         },
         {
@@ -5129,8 +5126,8 @@
           "text": "哎・・・・潘斯董冇　亂撞・・・・・・・潘斯董・・・你吓我唔識字啊水連董啊・・・"
         }
       ],
-      "speaker": "Ｉ・・・・　ＩＩＩＢＩＩ・・・・・・・ＢＢＢ・・・ＢＢＢＢＢＢＢＢＢＢＢ・・・",
-      "language_trace": "　・・・・　粵粵粵粵粵粵・・・・・・・粵粵粵・・・粵粵粵粵粵粵粵粵粵粵粵・・・",
+      "speaker": "Ｉ・・・・　ＩＩＩ　ＩＩ・・・・・・・ＢＢＢ・・・ＢＢＢＢＢＢＢＢＢＢＢ・・・",
+      "language_trace": "　・・・・　粵粵粵　粵粵・・・・・・・粵粵粵・・・粵粵粵粵粵粵粵粵粵粵粵・・・",
       "language_legend": {
         "粵": "zh-yue",
         "日": "ja",
@@ -5139,11 +5136,11 @@
       },
       "singing_trace": "　・・・・　　　　　　　・・・・・・・　　　・・・　　　　　　　　　　　・・・",
       "music_trace": "　・・・・　　　　　　　・・・・・・・　　　・・・　　　　　　　　　　　・・・",
-      "merged": "　・・・・盤絲洞冇　亂闖・・・・・・・盤絲洞・・・你蝦我唔識字呀水簾洞呀・・・",
+      "merged": "　・・・・盤絲洞唔好亂闖・・・・・・・盤絲洞・・・你蝦我唔識字啊水簾洞啊・・・",
       "subtitles": [
         {
-          "index": 53,
-          "text": "盤絲洞，冇亂闖。",
+          "index": 52,
+          "text": "盤絲洞唔好亂闖",
           "speech_start_ms": 477667,
           "speech_end_ms": 478371,
           "start_ms": 477417,
@@ -5151,8 +5148,8 @@
           "speaker": "SPEAKER_09"
         },
         {
-          "index": 54,
-          "text": "盤絲洞！",
+          "index": 53,
+          "text": "盤絲洞",
           "speech_start_ms": 480347,
           "speech_end_ms": 482369,
           "start_ms": 480097,
@@ -5160,8 +5157,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 55,
-          "text": "你蝦我唔識字呀，水簾洞呀！",
+          "index": 54,
+          "text": "你蝦我唔識字啊水簾洞啊",
           "speech_start_ms": 482369,
           "speech_end_ms": 484371,
           "start_ms": 482369,
@@ -5344,7 +5341,7 @@
       "merged": "盤・・・・絲洞・・吓呢個名又幾好聽喎・・・",
       "subtitles": [
         {
-          "index": 56,
+          "index": 55,
           "text": "盤",
           "speech_start_ms": 491683,
           "speech_end_ms": 491704,
@@ -5353,8 +5350,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 57,
-          "text": "絲洞。",
+          "index": 56,
+          "text": "絲洞",
           "speech_start_ms": 492105,
           "speech_end_ms": 493327,
           "start_ms": 491904,
@@ -5362,8 +5359,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 58,
-          "text": "吓，呢個名又幾好聽喎。",
+          "index": 57,
+          "text": "吓呢個名又幾好聽喎",
           "speech_start_ms": 493327,
           "speech_end_ms": 494349,
           "start_ms": 493327,
@@ -5510,8 +5507,8 @@
       "merged": "・・・・就叫你做盤絲洞啦・・・",
       "subtitles": [
         {
-          "index": 59,
-          "text": "就叫你做盤絲洞啦。",
+          "index": 58,
+          "text": "就叫你做盤絲洞啦",
           "speech_start_ms": 498842,
           "speech_end_ms": 500067,
           "start_ms": 498592,
@@ -5706,8 +5703,8 @@
       "merged": "・・・・好我就住喺呢一度・・・・・・咪住・・・",
       "subtitles": [
         {
-          "index": 60,
-          "text": "好，我就住喺呢一度。",
+          "index": 59,
+          "text": "好我就住喺呢一度",
           "speech_start_ms": 503808,
           "speech_end_ms": 504458,
           "start_ms": 503558,
@@ -5715,8 +5712,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 61,
-          "text": "咪住！",
+          "index": 60,
+          "text": "咪住",
           "speech_start_ms": 506118,
           "speech_end_ms": 506280,
           "start_ms": 505868,
@@ -5760,7 +5757,7 @@
         {
           "index": 5,
           "start_ms": 514807,
-          "end_ms": 516608,
+          "end_ms": 516870,
           "kind": "text"
         },
         {
@@ -6127,7 +6124,7 @@
         }
       ],
       "speaker": "・・・・Ｂ・・ＢＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＢＣ・・・・・・・ＢＢ・ＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・・・",
-      "language_trace": "・・・・　・・粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵　・・・・・・・　粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・",
+      "language_trace": "・・・・粵・・粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵　・・・・・・・　粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・",
       "language_legend": {
         "粵": "zh-yue",
         "日": "ja",
@@ -6139,8 +6136,8 @@
       "merged": "・・・・誒・・我而家鄭重宣佈・喺呢個山頭所有　嘢都係我嘅包括你在內我・・・・・・・係啊・好似隻驢仔　　咁幫你打個人先・・・",
       "subtitles": [
         {
-          "index": 62,
-          "text": "誒，我而家鄭重宣佈。",
+          "index": 61,
+          "text": "誒我而家鄭重宣佈",
           "speech_start_ms": 515815,
           "speech_end_ms": 518403,
           "start_ms": 515565,
@@ -6148,8 +6145,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 63,
-          "text": "喺呢個山頭所有嘢都係我嘅，包括你在內我。",
+          "index": 62,
+          "text": "喺呢個山頭所有嘢都係我嘅包括你在內我",
           "speech_start_ms": 518403,
           "speech_end_ms": 521212,
           "start_ms": 518403,
@@ -6157,8 +6154,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 64,
-          "text": "係啊。",
+          "index": 63,
+          "text": "係啊",
           "speech_start_ms": 523162,
           "speech_end_ms": 524068,
           "start_ms": 522912,
@@ -6166,8 +6163,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 65,
-          "text": "好似隻驢仔咁幫你打個人先。",
+          "index": 64,
+          "text": "好似隻驢仔咁幫你打個人先",
           "speech_start_ms": 524068,
           "speech_end_ms": 525578,
           "start_ms": 524068,
@@ -6324,228 +6321,234 @@
         },
         {
           "index": 24,
+          "start_ms": 535393,
+          "end_ms": 535413,
+          "kind": "text"
+        },
+        {
+          "index": 25,
           "start_ms": 535399,
           "end_ms": 535940,
           "kind": "text"
         },
         {
-          "index": 25,
+          "index": 26,
           "start_ms": 535610,
           "end_ms": 535860,
           "kind": "pause"
         },
         {
-          "index": 26,
+          "index": 27,
           "start_ms": 535860,
           "end_ms": 536251,
           "kind": "pause"
         },
         {
-          "index": 27,
+          "index": 28,
           "start_ms": 535940,
           "end_ms": 536480,
           "kind": "text"
         },
         {
-          "index": 28,
+          "index": 29,
           "start_ms": 536480,
           "end_ms": 536600,
           "kind": "text"
         },
         {
-          "index": 29,
+          "index": 30,
           "start_ms": 536600,
           "end_ms": 536740,
           "kind": "text"
         },
         {
-          "index": 30,
+          "index": 31,
           "start_ms": 536740,
           "end_ms": 537201,
           "kind": "text"
         },
         {
-          "index": 31,
+          "index": 32,
           "start_ms": 537201,
           "end_ms": 537261,
           "kind": "text"
         },
         {
-          "index": 32,
+          "index": 33,
           "start_ms": 537261,
           "end_ms": 537321,
           "kind": "text"
         },
         {
-          "index": 33,
+          "index": 34,
           "start_ms": 537321,
           "end_ms": 537495,
           "kind": "text"
         },
         {
-          "index": 34,
+          "index": 35,
           "start_ms": 537495,
           "end_ms": 537735,
           "kind": "text"
         },
         {
-          "index": 35,
+          "index": 36,
           "start_ms": 537735,
           "end_ms": 537835,
           "kind": "text"
         },
         {
-          "index": 36,
+          "index": 37,
           "start_ms": 537835,
           "end_ms": 538081,
           "kind": "text"
         },
         {
-          "index": 37,
+          "index": 38,
           "start_ms": 538242,
           "end_ms": 538492,
           "kind": "pause"
         },
         {
-          "index": 38,
+          "index": 39,
           "start_ms": 538492,
           "end_ms": 538742,
           "kind": "pause"
         },
         {
-          "index": 39,
+          "index": 40,
           "start_ms": 538742,
           "end_ms": 538992,
           "kind": "pause"
         },
         {
-          "index": 40,
+          "index": 41,
           "start_ms": 538992,
           "end_ms": 539242,
           "kind": "pause"
         },
         {
-          "index": 41,
+          "index": 42,
           "start_ms": 539242,
           "end_ms": 539492,
           "kind": "pause"
         },
         {
-          "index": 42,
+          "index": 43,
           "start_ms": 539492,
           "end_ms": 539742,
           "kind": "pause"
         },
         {
-          "index": 43,
+          "index": 44,
           "start_ms": 539742,
           "end_ms": 539992,
           "kind": "pause"
         },
         {
-          "index": 44,
+          "index": 45,
           "start_ms": 539992,
           "end_ms": 540242,
           "kind": "pause"
         },
         {
-          "index": 45,
+          "index": 46,
           "start_ms": 540242,
           "end_ms": 540503,
           "kind": "pause"
         },
         {
-          "index": 46,
+          "index": 47,
           "start_ms": 539009,
           "end_ms": 539957,
           "kind": "text"
         },
         {
-          "index": 47,
+          "index": 48,
           "start_ms": 539957,
           "end_ms": 540775,
           "kind": "text"
         },
         {
-          "index": 48,
+          "index": 49,
           "start_ms": 540775,
           "end_ms": 540875,
           "kind": "text"
         },
         {
-          "index": 49,
+          "index": 50,
           "start_ms": 540875,
           "end_ms": 541275,
           "kind": "text"
         },
         {
-          "index": 50,
+          "index": 51,
           "start_ms": 541279,
           "end_ms": 541361,
           "kind": "text"
         },
         {
-          "index": 51,
+          "index": 52,
           "start_ms": 541361,
           "end_ms": 541381,
           "kind": "text"
         },
         {
-          "index": 52,
+          "index": 53,
           "start_ms": 541381,
           "end_ms": 541631,
           "kind": "pause"
         },
         {
-          "index": 53,
+          "index": 54,
           "start_ms": 541631,
           "end_ms": 541881,
           "kind": "pause"
         },
         {
-          "index": 54,
+          "index": 55,
           "start_ms": 541881,
           "end_ms": 542131,
           "kind": "pause"
         },
         {
-          "index": 55,
+          "index": 56,
           "start_ms": 542131,
           "end_ms": 542381,
           "kind": "pause"
         },
         {
-          "index": 56,
+          "index": 57,
           "start_ms": 542381,
           "end_ms": 542815,
           "kind": "pause"
         },
         {
-          "index": 57,
+          "index": 58,
           "start_ms": 543037,
           "end_ms": 543235,
           "kind": "text"
         },
         {
-          "index": 58,
+          "index": 59,
           "start_ms": 543235,
           "end_ms": 543460,
           "kind": "text"
         },
         {
-          "index": 59,
+          "index": 60,
           "start_ms": 543676,
           "end_ms": 543926,
           "kind": "pause"
         },
         {
-          "index": 60,
+          "index": 61,
           "start_ms": 543926,
           "end_ms": 544176,
           "kind": "pause"
         },
         {
-          "index": 61,
+          "index": 62,
           "start_ms": 544176,
           "end_ms": 544668,
           "kind": "pause"
@@ -6554,44 +6557,44 @@
       "rows": [
         {
           "name": "whisper",
-          "text": "・・・・你已經係我人喇・・如果　人欺你你帶我到啦・・從今日起我去盤屍大仙・・・・・・・・・盤屍大仙五百・・・・・元錢・・・"
+          "text": "・・・・你已經係我人喇・・如果　人欺你你帶我到　啦・・從今日起我去盤屍大仙・・・・・・・・・盤屍大仙五百・・・・・元錢・・・"
         },
         {
           "name": "mimo",
-          "text": "・・・・你而家系惡人啊・・如果有人恰你你打惡朵啦・・從今日起我去盤絲大仙・・・・・・・・・盤絲大仙唔扮・・・・・唔整・・・"
+          "text": "・・・・你而家系惡人啊・・如果有人恰你你打惡朵　啦・・從今日起我去盤絲大仙・・・・・・・・・盤絲大仙唔扮・・・・・唔整・・・"
         },
         {
           "name": "qwen",
-          "text": "・・・・你已經系我人啦・・如果　人恰你你帶我躲啦・・從今日起我要盤師大仙・・・・・・・・・盤師大仙五百・・・・・年前・・・"
+          "text": "・・・・你已經系我人啦・・如果　人恰你你帶我躲　啦・・從今日起我要盤師大仙・・・・・・・・・盤師大仙五百・・・・・年前・・・"
         },
         {
           "name": "sensevoice",
-          "text": "・・・・你已經系愛人啦・・如果有人恰你你帶我朵啦・・從今日起我去盤師大仙・・・・・・・・・盤師大仙五百・・・・・年前・・・"
+          "text": "・・・・你已經系愛人啦・・如果有人恰你你帶我朵　啦・・從今日起我去盤師大仙・・・・・・・・・盤師大仙五百・・・・・年前・・・"
         },
         {
           "name": "firered",
-          "text": "・・・・你已經系我人啦・・如果有人恰你你帶我躲啦・・從今日起我去盤絲大仙・・・・・・・・・盤絲大仙五百・・・・・年前・・・"
+          "text": "・・・・你已經系我人啦・・如果有人恰你你帶我躲　啦・・從今日起我去盤絲大仙・・・・・・・・・盤絲大仙五百・・・・・年前・・・"
         },
         {
           "name": "glm",
-          "text": "・・・・你而家係我人啦・・如果有人黑你你帶我躲啦・・從今日起我去潘斯大仙・・・・・・・・・潘斯大仙五百・・・・・蚊錢・・・"
+          "text": "・・・・你而家係我人啦・・如果有人黑你你帶我躲　啦・・從今日起我去潘斯大仙・・・・・・・・・潘斯大仙五百・・・・・蚊錢・・・"
         }
       ],
-      "speaker": "・・・・ＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢ・・・・・・・・・　ＩＩＩＩＩ・・・・・ＩＩ・・・",
-      "language_trace": "・・・・粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵・・・・・・・・・　粵粵粵粵粵・・・・・粵粵・・・",
+      "speaker": "・・・・ＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢＢＢ・・・・・・・・・　ＩＩＩＩＩ・・・・・ＩＩ・・・",
+      "language_trace": "・・・・粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵・・・・・・・・・　粵粵粵粵粵・・・・・粵粵・・・",
       "language_legend": {
         "粵": "zh-yue",
         "日": "ja",
         "普": "zh-mandarin",
         "Ａ": "pt"
       },
-      "singing_trace": "・・・・　　　　　　　・・　　　　　　　　　　　・・　　　　　　　　　　・・・・・・・・・　　　　　　・・・・・　　・・・",
-      "music_trace": "・・・・　　　　　　　・・　　　　　　　　　　　・・　　　　　　　　　　・・・・・・・・・　　　　　　・・・・・　　・・・",
-      "merged": "・・・・你已經係我人喇・・如果有人恰你你帶我躲啦・・從今日起我去盤絲大仙・・・・・・・・・盤絲大仙五百・・・・・搵錢・・・",
+      "singing_trace": "・・・・　　　　　　　・・　　　　　　　　　　　　・・　　　　　　　　　　・・・・・・・・・　　　　　　・・・・・　　・・・",
+      "music_trace": "・・・・　　　　　　　・・　　　　　　　　　　　　・・　　　　　　　　　　・・・・・・・・・　　　　　　・・・・・　　・・・",
+      "merged": "・・・・你已經係我人喇・・如果有人恰你你帶我打佢啦・・從今日起我去盤絲大仙・・・・・・・・・盤絲大仙五百・・・・・搵錢・・・",
       "subtitles": [
         {
-          "index": 66,
-          "text": "你已經係我人喇。",
+          "index": 65,
+          "text": "你已經係我人喇",
           "speech_start_ms": 532463,
           "speech_end_ms": 534008,
           "start_ms": 532213,
@@ -6599,8 +6602,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 67,
-          "text": "如果有人恰你，你帶我躲啦。",
+          "index": 66,
+          "text": "如果有人恰你你帶我打佢啦",
           "speech_start_ms": 534008,
           "speech_end_ms": 536356,
           "start_ms": 534008,
@@ -6608,8 +6611,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 68,
-          "text": "從今日起，我去盤絲大仙。",
+          "index": 67,
+          "text": "從今日起我去盤絲大仙",
           "speech_start_ms": 536356,
           "speech_end_ms": 538081,
           "start_ms": 536356,
@@ -6617,8 +6620,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 69,
-          "text": "盤絲大仙五百。",
+          "index": 68,
+          "text": "盤絲大仙五百",
           "speech_start_ms": 540544,
           "speech_end_ms": 541381,
           "start_ms": 540294,
@@ -6626,8 +6629,8 @@
           "speaker": "SPEAKER_09"
         },
         {
-          "index": 70,
-          "text": "搵錢。",
+          "index": 69,
+          "text": "搵錢",
           "speech_start_ms": 543037,
           "speech_end_ms": 543460,
           "start_ms": 542787,
@@ -6891,11 +6894,11 @@
       },
       "singing_trace": "・・・・　　　　　　　　　　　　　　　　　　　　　　　・・・・　・・・",
       "music_trace": "・・・・　　　　　　　　　　　　　　　　　　　　　　　・・・・　・・・",
-      "merged": "・・・・你未變成孫悟空托世係因為你未遇到畀三粒痣你嘅人・・・・嗯・・・",
+      "merged": "・・・・你未變成孫悟空托世係因為你未遇到俾三粒痣你嘅人・・・・　・・・",
       "subtitles": [
         {
-          "index": 71,
-          "text": "你未變成孫悟空托世，",
+          "index": 70,
+          "text": "你未變成孫悟空托世",
           "speech_start_ms": 551057,
           "speech_end_ms": 553221,
           "start_ms": 550807,
@@ -6903,22 +6906,13 @@
           "speaker": "SPEAKER_19"
         },
         {
-          "index": 72,
-          "text": "係因為你未遇到畀三粒痣你嘅人。",
+          "index": 71,
+          "text": "係因為你未遇到俾三粒痣你嘅人",
           "speech_start_ms": 553221,
           "speech_end_ms": 555244,
           "start_ms": 553221,
           "end_ms": 555744,
           "speaker": "SPEAKER_19"
-        },
-        {
-          "index": 73,
-          "text": "嗯",
-          "speech_start_ms": 556467,
-          "speech_end_ms": 556914,
-          "start_ms": 556217,
-          "end_ms": 557414,
-          "speaker": "SPEAKER_14"
         }
       ],
       "source_errors": {}
@@ -7036,8 +7030,8 @@
       "merged": "・・・・芝麻開門・・・",
       "subtitles": [
         {
-          "index": 74,
-          "text": "芝麻開門。",
+          "index": 72,
+          "text": "芝麻開門",
           "speech_start_ms": 573767,
           "speech_end_ms": 574233,
           "start_ms": 573517,
@@ -7424,35 +7418,26 @@
       "merged": "・・・・我唔信我唔信我唔信我唔信我唔做馬騮我要返去救晶晶・・・・・・・俾返個寶盒　我唔該・・・・芝麻開門・・・",
       "subtitles": [
         {
-          "index": 75,
-          "text": "我唔信我唔信我唔信",
+          "index": 73,
+          "text": "我唔信我唔信我唔信我唔信",
           "speech_start_ms": 591903,
-          "speech_end_ms": 592986,
+          "speech_end_ms": 593367,
           "start_ms": 591653,
-          "end_ms": 592986,
+          "end_ms": 593367,
           "speaker": "SPEAKER_10"
         },
         {
-          "index": 76,
-          "text": "我唔信我唔做馬騮",
-          "speech_start_ms": 592986,
-          "speech_end_ms": 594611,
-          "start_ms": 592986,
-          "end_ms": 594611,
-          "speaker": "SPEAKER_10"
-        },
-        {
-          "index": 77,
-          "text": "我要返去救晶晶",
-          "speech_start_ms": 594611,
+          "index": 74,
+          "text": "我唔做馬騮我要返去救晶晶",
+          "speech_start_ms": 593367,
           "speech_end_ms": 595433,
-          "start_ms": 594611,
+          "start_ms": 593367,
           "end_ms": 595933,
           "speaker": "SPEAKER_10"
         },
         {
-          "index": 78,
-          "text": "俾返個寶盒，我唔該",
+          "index": 75,
+          "text": "俾返個寶盒我唔該",
           "speech_start_ms": 597628,
           "speech_end_ms": 598639,
           "start_ms": 597378,
@@ -7460,8 +7445,8 @@
           "speaker": "SPEAKER_02"
         },
         {
-          "index": 79,
-          "text": "芝麻開門。",
+          "index": 76,
+          "text": "芝麻開門",
           "speech_start_ms": 600180,
           "speech_end_ms": 600742,
           "start_ms": 599930,
@@ -7612,8 +7597,8 @@
         },
         {
           "index": 23,
-          "start_ms": 614634,
-          "end_ms": 614879,
+          "start_ms": 614347,
+          "end_ms": 614874,
           "kind": "text"
         }
       ],
@@ -7653,15 +7638,15 @@
       },
       "singing_trace": "　　・・・・　　　　　　　　　　　　　・・・　",
       "music_trace": "　　・・・・　　　　　　　　　　　　　・・・　",
-      "merged": "　　・・・・　我明明聽到佢話芝麻開門　・・・　",
+      "merged": "　　・・・・餵我明明聽到佢話芝麻開門　・・・㗎",
       "subtitles": [
         {
-          "index": 80,
-          "text": "我明明聽到佢話芝麻開門",
+          "index": 77,
+          "text": "喂我明明聽到佢話芝麻開門㗎",
           "speech_start_ms": 612627,
-          "speech_end_ms": 614289,
+          "speech_end_ms": 614079,
           "start_ms": 612377,
-          "end_ms": 614789,
+          "end_ms": 614579,
           "speaker": "SPEAKER_09"
         }
       ],
@@ -7780,8 +7765,8 @@
       "merged": "・・・・芝麻開門・・・",
       "subtitles": [
         {
-          "index": 81,
-          "text": "芝麻開門！",
+          "index": 78,
+          "text": "芝麻開門",
           "speech_start_ms": 633660,
           "speech_end_ms": 634065,
           "start_ms": 633410,
@@ -8003,11 +7988,11 @@
       },
       "singing_trace": "・・・・　　　・・・　　　　　　　　　　・・・　　・・・",
       "music_trace": "・・・・　　　・・・　　　　　　　　　　・・・　　・・・",
-      "merged": "・・・・怕你啊・・・睇嚟要搵個第二條路入・・・上山・・・",
+      "merged": "・・・・怕你呀・・・睇嚟要搵個第二條路入・・・上山・・・",
       "subtitles": [
         {
-          "index": 82,
-          "text": "怕你啊！",
+          "index": 79,
+          "text": "怕你呀",
           "speech_start_ms": 647706,
           "speech_end_ms": 648968,
           "start_ms": 647456,
@@ -8015,8 +8000,8 @@
           "speaker": "SPEAKER_09"
         },
         {
-          "index": 83,
-          "text": "睇嚟要搵個第二條路入。",
+          "index": 80,
+          "text": "睇嚟要搵個第二條路入",
           "speech_start_ms": 648968,
           "speech_end_ms": 650812,
           "start_ms": 648968,
@@ -8024,8 +8009,8 @@
           "speaker": "SPEAKER_09"
         },
         {
-          "index": 84,
-          "text": "上山。",
+          "index": 81,
+          "text": "上山",
           "speech_start_ms": 650812,
           "speech_end_ms": 650952,
           "start_ms": 650812,
@@ -8277,11 +8262,11 @@
       },
       "singing_trace": "・・・・　　　　・　唱唱唱・・・・・・　　　　・・　　　　　・・・",
       "music_trace": "・・・・　　　　・　　　　・・・・・・　樂　　・・　　　樂樂・・・",
-      "merged": "・・・・嗰邊嗰邊・芝麻開門・・・・・・邊個邊個・・邊個啊喂喂・・・",
+      "merged": "・・・・嗰邊嗰邊・芝麻開門・・・・・・邊個邊個・・邊個呀喂喂・・・",
       "subtitles": [
         {
-          "index": 85,
-          "text": "嗰邊嗰邊。",
+          "index": 82,
+          "text": "嗰邊嗰邊",
           "speech_start_ms": 657464,
           "speech_end_ms": 658268,
           "start_ms": 657214,
@@ -8289,8 +8274,8 @@
           "speaker": "SPEAKER_09"
         },
         {
-          "index": 86,
-          "text": "芝麻開門。",
+          "index": 83,
+          "text": "芝麻開門",
           "speech_start_ms": 658268,
           "speech_end_ms": 659092,
           "start_ms": 658268,
@@ -8298,8 +8283,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 87,
-          "text": "邊個邊個。",
+          "index": 84,
+          "text": "邊個邊個",
           "speech_start_ms": 661522,
           "speech_end_ms": 662786,
           "start_ms": 661272,
@@ -8307,8 +8292,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 88,
-          "text": "邊個啊喂喂！",
+          "index": 85,
+          "text": "邊個呀喂喂",
           "speech_start_ms": 662786,
           "speech_end_ms": 664170,
           "start_ms": 662786,
@@ -8458,11 +8443,11 @@
       },
       "singing_trace": "・・・・　　　　　　　　　・・・",
       "music_trace": "・・・・　　　　　　　　　・・・",
-      "merged": "・・・・嘩使唔使扎到咁散啊・・・",
+      "merged": "・・・・嘩使唔使炸到咁散啊・・・",
       "subtitles": [
         {
-          "index": 89,
-          "text": "嘩，使唔使扎到咁散啊？",
+          "index": 86,
+          "text": "嘩使唔使炸到咁散啊",
           "speech_start_ms": 667730,
           "speech_end_ms": 669743,
           "start_ms": 667480,
@@ -8577,13 +8562,13 @@
         },
         {
           "index": 17,
-          "start_ms": 687361,
-          "end_ms": 687481,
+          "start_ms": 685662,
+          "end_ms": 687433,
           "kind": "text"
         },
         {
           "index": 18,
-          "start_ms": 687433,
+          "start_ms": 687379,
           "end_ms": 687673,
           "kind": "text"
         },
@@ -8936,10 +8921,10 @@
       },
       "singing_trace": "・・・・　　・・・・・・・・・・　　　　・・・・　　　　　　　　　・・　　　　　　　　　　　　・・・・・・・　　　　　　　　　　　　　・・・",
       "music_trace": "・・・・　　・・・・・・・・・・　　　　・・・・　　　　　　　　　・・　　　　　　　　　　　　・・・・・・・　　　　　　　　　　　　　・・・",
-      "merged": "・・・・好嘢・・・・・・・・・・耶耶耶耶・・・・有咗呢個月光寶盒呢・・我就唔怕畀青霞姐姐追殺啦・・・・・・・出嚟啦鬼鬼祟祟咁　怕醜啊你・・・",
+      "merged": "・・・・好嘢・・・・・・・・・・　耶耶耶・・・・有咗呢個月光寶盒呢・・我就唔怕俾青霞姐姐追殺啦・・・・・・・出嚟啦鬼鬼祟祟咁　怕醜啊你・・・",
       "subtitles": [
         {
-          "index": 90,
+          "index": 87,
           "text": "好嘢",
           "speech_start_ms": 682511,
           "speech_end_ms": 682725,
@@ -8948,8 +8933,8 @@
           "speaker": "SPEAKER_15"
         },
         {
-          "index": 91,
-          "text": "耶耶耶耶",
+          "index": 88,
+          "text": "耶耶耶",
           "speech_start_ms": 687373,
           "speech_end_ms": 688538,
           "start_ms": 687123,
@@ -8957,8 +8942,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 92,
-          "text": "有咗呢個月光寶盒呢，",
+          "index": 89,
+          "text": "有咗呢個月光寶盒呢",
           "speech_start_ms": 690042,
           "speech_end_ms": 692274,
           "start_ms": 689792,
@@ -8966,8 +8951,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 93,
-          "text": "我就唔怕畀青霞姐姐追殺啦！",
+          "index": 90,
+          "text": "我就唔怕俾青霞姐姐追殺啦",
           "speech_start_ms": 692274,
           "speech_end_ms": 694044,
           "start_ms": 692274,
@@ -8975,11 +8960,20 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 94,
-          "text": "出嚟啦，鬼鬼祟祟咁，怕醜啊你？",
+          "index": 91,
+          "text": "出嚟啦鬼鬼祟祟咁",
           "speech_start_ms": 696120,
-          "speech_end_ms": 698528,
+          "speech_end_ms": 698107,
           "start_ms": 695870,
+          "end_ms": 698107,
+          "speaker": "SPEAKER_17"
+        },
+        {
+          "index": 92,
+          "text": "怕醜啊你",
+          "speech_start_ms": 698107,
+          "speech_end_ms": 698528,
+          "start_ms": 698107,
           "end_ms": 699028,
           "speaker": "SPEAKER_17"
         }
@@ -10045,204 +10039,210 @@
         },
         {
           "index": 176,
+          "start_ms": 734306,
+          "end_ms": 734426,
+          "kind": "text"
+        },
+        {
+          "index": 177,
           "start_ms": 734401,
           "end_ms": 734862,
           "kind": "text"
         },
         {
-          "index": 177,
+          "index": 178,
           "start_ms": 734439,
           "end_ms": 734699,
           "kind": "text"
         },
         {
-          "index": 178,
+          "index": 179,
           "start_ms": 734862,
           "end_ms": 734962,
           "kind": "text"
         },
         {
-          "index": 179,
+          "index": 180,
           "start_ms": 734962,
           "end_ms": 735122,
           "kind": "text"
         },
         {
-          "index": 180,
+          "index": 181,
           "start_ms": 735122,
           "end_ms": 735302,
           "kind": "text"
         },
         {
-          "index": 181,
+          "index": 182,
           "start_ms": 735302,
           "end_ms": 735702,
           "kind": "text"
         },
         {
-          "index": 182,
+          "index": 183,
           "start_ms": 735702,
           "end_ms": 736022,
           "kind": "text"
         },
         {
-          "index": 183,
+          "index": 184,
           "start_ms": 736022,
           "end_ms": 736182,
           "kind": "text"
         },
         {
-          "index": 184,
+          "index": 185,
           "start_ms": 736182,
           "end_ms": 736383,
           "kind": "text"
         },
         {
-          "index": 185,
+          "index": 186,
           "start_ms": 736383,
           "end_ms": 736483,
           "kind": "text"
         },
         {
-          "index": 186,
+          "index": 187,
           "start_ms": 736483,
           "end_ms": 736503,
           "kind": "text"
         },
         {
-          "index": 187,
+          "index": 188,
           "start_ms": 736503,
           "end_ms": 736643,
           "kind": "text"
         },
         {
-          "index": 188,
+          "index": 189,
           "start_ms": 736643,
           "end_ms": 736763,
           "kind": "text"
         },
         {
-          "index": 189,
+          "index": 190,
           "start_ms": 736763,
           "end_ms": 737903,
           "kind": "text"
         },
         {
-          "index": 190,
+          "index": 191,
           "start_ms": 736827,
           "end_ms": 737077,
           "kind": "pause"
         },
         {
-          "index": 191,
+          "index": 192,
           "start_ms": 737077,
           "end_ms": 737327,
           "kind": "pause"
         },
         {
-          "index": 192,
+          "index": 193,
           "start_ms": 737327,
           "end_ms": 737577,
           "kind": "pause"
         },
         {
-          "index": 193,
+          "index": 194,
           "start_ms": 737577,
           "end_ms": 737840,
           "kind": "pause"
         },
         {
-          "index": 194,
+          "index": 195,
           "start_ms": 737903,
           "end_ms": 738124,
           "kind": "text"
         },
         {
-          "index": 195,
+          "index": 196,
           "start_ms": 738124,
           "end_ms": 738404,
           "kind": "text"
         },
         {
-          "index": 196,
+          "index": 197,
           "start_ms": 738019,
           "end_ms": 738139,
           "kind": "text"
         },
         {
-          "index": 197,
+          "index": 198,
           "start_ms": 738404,
           "end_ms": 739765,
           "kind": "text"
         },
         {
-          "index": 198,
+          "index": 199,
           "start_ms": 738667,
           "end_ms": 738917,
           "kind": "pause"
         },
         {
-          "index": 199,
+          "index": 200,
           "start_ms": 738917,
           "end_ms": 739167,
           "kind": "pause"
         },
         {
-          "index": 200,
+          "index": 201,
           "start_ms": 739167,
           "end_ms": 739417,
           "kind": "pause"
         },
         {
-          "index": 201,
+          "index": 202,
           "start_ms": 739417,
           "end_ms": 739696,
           "kind": "pause"
         },
         {
-          "index": 202,
+          "index": 203,
           "start_ms": 739765,
           "end_ms": 739965,
           "kind": "text"
         },
         {
-          "index": 203,
+          "index": 204,
           "start_ms": 739779,
           "end_ms": 739939,
           "kind": "text"
         },
         {
-          "index": 204,
+          "index": 205,
           "start_ms": 739965,
           "end_ms": 740285,
           "kind": "text"
         },
         {
-          "index": 205,
+          "index": 206,
           "start_ms": 740285,
           "end_ms": 740625,
           "kind": "text"
         },
         {
-          "index": 206,
+          "index": 207,
           "start_ms": 740625,
           "end_ms": 740645,
           "kind": "text"
         },
         {
-          "index": 207,
+          "index": 208,
           "start_ms": 740894,
           "end_ms": 741144,
           "kind": "pause"
         },
         {
-          "index": 208,
+          "index": 209,
           "start_ms": 741144,
           "end_ms": 741394,
           "kind": "pause"
         },
         {
-          "index": 209,
+          "index": 210,
           "start_ms": 741394,
           "end_ms": 741886,
           "kind": "pause"
@@ -10251,44 +10251,44 @@
       "rows": [
         {
           "name": "whisper",
-          "text": "・・・・這個月光寶盒呢我的　・・・・・　說了　這裡所有東西都是我的　・你想怎麼樣沒有　　　・・我聽見你說想走・不知道可不可以帶上我　・・・你又被人追殺我趕著去救人　救誰　　救我娘子　・白晶晶　嘛你認識她嗎・不認識・我知道但　你遲些就認識了　因為她將會做　你徒弟　　還有這個寶盒呢我的我知道但　其實是我給了你然　後你再在那個時候給　我才讓　我回來　　・加上這裡給　你而已你明白嗎　・・・・我明白了・・・・你神經病的・・・"
+          "text": "・・・・這個月光寶盒呢我的　・・・・・　說了　這裡所有東西都是我的　・你想怎麼樣沒有　　　・・我聽見你說想走・不知道可不可以帶上我　・・・你又被人追殺我趕著去救人　救誰　　救我娘子　・白晶晶　嘛你認識她嗎・不認識・我知道但　你遲些就認識了　因為她將會做　你徒弟　　還有這個寶盒呢我的我知道但　其實是我給了你然　後你再在那個時候給　我才讓　我回來　　・　加上這裡給　你而已你明白嗎　・・・・我明白了・・・・你神經病的・・・"
         },
         {
           "name": "mimo",
-          "text": "・・・・呢個血光寶盒咧我噶咯・・・・・吓講咗啦呢度所有　嘢都系我噶嘛・你想點啊啊冇冇冇冇冇・・我聽見你話想走・唔知　可唔可以帶埋我咧・・・你又俾人追殺我趕住去救人啊救邊個啊救我娘子啊・白晶晶啊嘛你　識佢噶・唔　識・我知啊但系你遲啲就　識嘅你因為佢將會做咗你徒弟啊嘛仲有呢個寶盒咧我噶我知啊但系其實系我俾咗你然之後你最喺嗰個時候俾翻我先至有我翻翻到嚟・家　呢度俾翻你啫嘛你明唔明啫・・・・我明　啦・・・・你　黐線噶・・・"
+          "text": "・・・・呢個血光寶盒咧我噶咯・・・・・吓講咗啦呢度所有　嘢都系我噶嘛・你想點啊啊冇冇冇冇冇・・我聽見你話想走・唔知　可唔可以帶埋我咧・・・你又俾人追殺我趕住去救人啊救邊個啊救我娘子啊・白晶晶啊嘛你　識佢噶・唔　識・我知啊但系你遲啲就　識嘅你因為佢將會做咗你徒弟啊嘛仲有呢個寶盒咧我噶我知啊但系其實系我俾咗你然之後你最喺嗰個時候俾翻我先至有我翻翻到嚟・　家　呢度俾翻你啫嘛你明唔明啫・・・・我明　啦・・・・你　黐線噶・・・"
         },
         {
           "name": "qwen",
-          "text": "・・・・呢個月光寶盒咧我嘅咯・・・・・吓講咗啦呢度所有　嘢都系我嘅嘛・你想點啊我冇冇冇冇冇・・我聽見你話想走・唔知　因　為　帶埋我咧・・・你又俾人追殺我趕住要救人啊救邊個啊救我良子啊・白晶晶啊嘛你　識佢噶・唔　識・我知啊但系你遲啲啊　識嘅啦因為佢將會做咗你徒弟啊嘛仲有呢個寶盒咧我嘅我知啊但系其實系我俾咗你然之後你再喺嗰個時候俾翻我先之後我翻返到嚟・家　呢度俾翻你啫嘛你明唔明啫・・・・我明　啦・・・・你　黐線嘅・・・"
+          "text": "・・・・呢個月光寶盒咧我嘅咯・・・・・吓講咗啦呢度所有　嘢都系我嘅嘛・你想點啊我冇冇冇冇冇・・我聽見你話想走・唔知　因　為　帶埋我咧・・・你又俾人追殺我趕住要救人啊救邊個啊救我良子啊・白晶晶啊嘛你　識佢噶・唔　識・我知啊但系你遲啲啊　識嘅啦因為佢將會做咗你徒弟啊嘛仲有呢個寶盒咧我嘅我知啊但系其實系我俾咗你然之後你再喺嗰個時候俾翻我先之後我翻返到嚟・　家　呢度俾翻你啫嘛你明唔明啫・・・・我明　啦・・・・你　黐線嘅・・・"
         },
         {
           "name": "sensevoice",
-          "text": "・・・・呢個月光寶盒咧我噶咯・・・・・吓講咗啦呢個所有　嘢都系我噶嘛・你想點啊啊冇冇冇冇冇・・我聽見你話想走・然知　可　可以帶埋我咧・・・你又俾人追殺我趕住要救人啊救邊個啊夠我娘子啊・白晶晶啊嘛你　識佢噶・唔　識・我知啊但系你遲啲啊　識嘅啦因為佢將會做咗你徒弟啊嘛仲有呢個寶盒咧我嘅我知啊但系其實系我俾咗你然之後你再喺嗰個時候俾翻我先至後我翻翻到嚟・家　呢度俾翻你啫嘛你明唔明啫・・・・我明　啦・・・・你　痴線噶・・・"
+          "text": "・・・・呢個月光寶盒咧我噶咯・・・・・吓講咗啦呢個所有　嘢都系我噶嘛・你想點啊啊冇冇冇冇冇・・我聽見你話想走・然知　可　可以帶埋我咧・・・你又俾人追殺我趕住要救人啊救邊個啊夠我娘子啊・白晶晶啊嘛你　識佢噶・唔　識・我知啊但系你遲啲啊　識嘅啦因為佢將會做咗你徒弟啊嘛仲有呢個寶盒咧我嘅我知啊但系其實系我俾咗你然之後你再喺嗰個時候俾翻我先至後我翻翻到嚟・　家　呢度俾翻你啫嘛你明唔明啫・・・・我明　啦・・・・你　痴線噶・・・"
         },
         {
           "name": "firered",
-          "text": "・・・・呢個月光寶盒咧我噶咯・・・・・吓講咗啦呢度所有　嘢都系我噶嘛・你想點啊啊冇冇冇冇冇・・我聽見你話想走・唔知　可唔可以帶埋我咧・・・你又俾人追殺我趕住去救人啊救邊個啊救我娘子啊・白晶晶啊嘛你　識佢噶・唔　識・我知啊但系你遲啲就　識噶啦因為佢將會做咗你徒弟啊嘛仲有呢個寶盒咧我噶我知啊但系其實系我俾咗你然之後你再喺　個時候俾翻我先至有我翻翻到嚟・家　呢度俾翻你啫嘛你明唔明啫・・・・我明　啦・・・・你　黐線噶・・・"
+          "text": "・・・・呢個月光寶盒咧我噶咯・・・・・吓講咗啦呢度所有　嘢都系我噶嘛・你想點啊啊冇冇冇冇冇・・我聽見你話想走・唔知　可唔可以帶埋我咧・・・你又俾人追殺我趕住去救人啊救邊個啊救我娘子啊・白晶晶啊嘛你　識佢噶・唔　識・我知啊但系你遲啲就　識噶啦因為佢將會做咗你徒弟啊嘛仲有呢個寶盒咧我噶我知啊但系其實系我俾咗你然之後你再喺　個時候俾翻我先至有我翻翻到嚟・　家　呢度俾翻你啫嘛你明唔明啫・・・・我明　啦・・・・你　黐線噶・・・"
         },
         {
           "name": "glm",
-          "text": "・・・・呢個月甘保責咧我嘅咯・・・・・嚇講咗啦呢度所有　嘢都系我嘅嘛・你想點啊冇冇冇冇冇冇・・我聽見你話想走・唔知　點　解會帶埋我咧・・・你又俾人追殺我趕出去救人啊救邊個啊救我良子啊・白晶晶啊嘛你　識佢噶・唔　識・我知啊但　你遲啲啊　識噶啦因為佢將會做咗你徒弟啊嘛仲有呢個寶盒咧　　我知啊但　其實　我俾咗你然之後你再喺嗰個時候俾翻我先至有我翻返到嚟・家　呢度俾翻你啫嘛你明　明啫・・・・我明　啦・・・・你　騙線㗎・・・"
+          "text": "・・・・呢個月甘保責咧我嘅咯・・・・・嚇講咗啦呢度所有　嘢都系我嘅嘛・你想點啊冇冇冇冇冇冇・・我聽見你話想走・唔知　點　解會帶埋我咧・・・你又俾人追殺我趕出去救人啊救邊個啊救我良子啊・白晶晶啊嘛你　識佢噶・唔　識・我知啊但　你遲啲啊　識噶啦因為佢將會做咗你徒弟啊嘛仲有呢個寶盒咧　　我知啊但　其實　我俾咗你然之後你再喺嗰個時候俾翻我先至有我翻返到嚟・　家　呢度俾翻你啫嘛你明　明啫・・・・我明　啦・・・・你　騙線㗎・・・"
         }
       ],
-      "speaker": "・・・・ＩＩＩＩＩＩＩＩＢＢ・・・・・ＩＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＩＩＩＩＩ・・ＩＩＩＩＩＩＩ・ＩＩＩＩＩＩＩＩＩＩＩ・・・ＢＢＢＢＢＢＩＩＩＩＩＩＩＢＢＢＢＩＩＩＩＩ・ＩＩＩＩＩＩＩＩＩＩ・ＢＢＩ・ＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩ・ＩＩＩＩＩＩＩＩＩＩＩＩＩＩ・・・・ＢＢＢＢ・・・・ＢＢＢＢＢ・・・",
-      "language_trace": "・・・・粵粵粵粵粵粵粵粵粵粵・・・・・　粵粵粵粵粵粵粵粵粵粵粵粵粵粵・ＡＡＡＡＡＡＡＡＡＡ・・粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵・　　粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・粵粵粵粵・・・・粵粵粵粵粵・・・",
+      "speaker": "・・・・ＩＩＩＩＩＩＩＩＢＢ・・・・・ＩＢＢＢＢＢＢＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＩＩＩＩＩ・・ＩＩＩＩＩＩＩ・ＩＩＩＩＩＩＩＩＩＩＩ・・・ＢＢＢＢＢＢＩＩＩＩＩＩＩＢＢＢＢＩＩＩＩＩ・ＩＩＩＩＩＩＩＩＩＩ・ＢＢＩ・ＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩ・ＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩ・・・・ＢＢＢＢ・・・・ＢＢＢＢＢ・・・",
+      "language_trace": "・・・・粵粵粵粵粵粵粵粵粵粵・・・・・　粵粵粵粵粵粵粵粵粵粵粵粵粵粵・ＡＡＡＡＡＡＡＡＡＡ・・粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵・　　粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・　粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・・粵粵粵粵・・・・粵粵粵粵粵・・・",
       "language_legend": {
         "粵": "zh-yue",
         "日": "ja",
         "普": "zh-mandarin",
         "Ａ": "pt"
       },
-      "singing_trace": "・・・・　　　　　　　　　　・・・・・　　　　　　　　　　　　　　　・　　　　　　　　　　・・　　　　　　　・　　　　　　　　　　　・・・　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　・　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　・・・・　　　　・・・・　　　　　・・・",
-      "music_trace": "・・・・　　　　　　　　　　・・・・・　　　　　　　　　　　　　　　・　　　　　　　　　　・・　　　　　　　・　　　　　　　　　　　・・・　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　・　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　・・・・　　　　・・・・　　　　　・・・",
-      "merged": "・・・・呢個月光寶盒咧我嘅咯・・・・・吓講咗啦呢度所有　嘢都係我㗎嘛・你想點啊　冇冇冇冇冇・・我聽見你話想走・唔知　可唔可以帶埋我咧・・・你又俾人追殺我趕住去救人啊救邊個啊救我娘子啊・白晶晶啊嘛你　識佢㗎・唔　識・我知啊但係你遲啲就　識嘅　因為佢將會做咗你徒弟啊嘛仲有呢個寶盒咧我㗎我知啊但係其實係我俾咗你然之後你再喺嗰個時候俾返我先至有我返返到嚟・㗎　呢度俾返你啫嘛你明唔明啫・・・・我明　啦・・・・你　黐線㗎・・・",
+      "singing_trace": "・・・・　　　　　　　　　　・・・・・　　　　　　　　　　　　　　　・　　　　　　　　　　・・　　　　　　　・　　　　　　　　　　　・・・　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　・　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　　・・・・　　　　・・・・　　　　　・・・",
+      "music_trace": "・・・・　　　　　　　　　　・・・・・　　　　　　　　　　　　　　　・　　　　　　　　　　・・　　　　　　　・　　　　　　　　　　　・・・　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　・　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　　・・・・　　　　・・・・　　　　　・・・",
+      "merged": "・・・・呢個月光寶盒呢我嘅囉・・・・・吓講咗啦呢度所有　嘢都係我嘅嘛・你想點啊我冇冇冇冇冇・・我聽見你話想走・唔知　可唔可以帶埋我咧・・・你又俾人追殺我趕住去救人　救邊個啊救我娘子啊・白晶晶啊嘛你　識佢㗎・唔　識・我知啊但係你遲啲就　識㗎啦因為佢將會做咗你徒弟啊嘛仲有呢個寶盒咧我㗎我知啊但係其實係我俾咗你然之後你再喺嗰個時候俾返我先至有我返返到嚟・而家　呢度俾返你啫嘛你明唔明啫・・・・我明　啦・・・・你　黐線㗎・・・",
       "subtitles": [
         {
-          "index": 95,
-          "text": "呢個月光寶盒咧，我嘅咯。",
+          "index": 93,
+          "text": "呢個月光寶盒呢我嘅囉",
           "speech_start_ms": 702887,
           "speech_end_ms": 704632,
           "start_ms": 702637,
@@ -10296,8 +10296,8 @@
           "speaker": null
         },
         {
-          "index": 96,
-          "text": "吓，講咗啦，呢度所有嘢都係我㗎嘛。",
+          "index": 94,
+          "text": "吓講咗啦呢度所有嘢都係我嘅嘛",
           "speech_start_ms": 706357,
           "speech_end_ms": 709118,
           "start_ms": 706107,
@@ -10305,26 +10305,44 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 97,
-          "text": "你想點啊？冇冇冇冇冇",
+          "index": 95,
+          "text": "你想點啊",
           "speech_start_ms": 709118,
-          "speech_end_ms": 711179,
+          "speech_end_ms": 709778,
           "start_ms": 709118,
+          "end_ms": 709778,
+          "speaker": "SPEAKER_17"
+        },
+        {
+          "index": 96,
+          "text": "我冇冇冇冇冇",
+          "speech_start_ms": 709778,
+          "speech_end_ms": 711179,
+          "start_ms": 709778,
           "end_ms": 711179,
-          "speaker": null
+          "speaker": "SPEAKER_09"
+        },
+        {
+          "index": 97,
+          "text": "我聽見你話想走",
+          "speech_start_ms": 711179,
+          "speech_end_ms": 712619,
+          "start_ms": 711179,
+          "end_ms": 712619,
+          "speaker": "SPEAKER_09"
         },
         {
           "index": 98,
-          "text": "我聽見你話想走，唔知可唔可以帶埋我咧。",
-          "speech_start_ms": 711179,
+          "text": "唔知可唔可以帶埋我咧",
+          "speech_start_ms": 712619,
           "speech_end_ms": 714280,
-          "start_ms": 711179,
+          "start_ms": 712619,
           "end_ms": 714280,
           "speaker": "SPEAKER_09"
         },
         {
           "index": 99,
-          "text": "你又俾人追殺，我趕住去救人啊。",
+          "text": "你又俾人追殺我趕住去救人",
           "speech_start_ms": 714280,
           "speech_end_ms": 717161,
           "start_ms": 714280,
@@ -10333,16 +10351,25 @@
         },
         {
           "index": 100,
-          "text": "救邊個啊？救我娘子啊。",
+          "text": "救邊個啊",
           "speech_start_ms": 717161,
-          "speech_end_ms": 719501,
+          "speech_end_ms": 717961,
           "start_ms": 717161,
-          "end_ms": 719501,
-          "speaker": null
+          "end_ms": 717961,
+          "speaker": "SPEAKER_17"
         },
         {
           "index": 101,
-          "text": "白晶晶啊嘛，你識佢㗎？",
+          "text": "救我娘子啊",
+          "speech_start_ms": 717961,
+          "speech_end_ms": 719501,
+          "start_ms": 717961,
+          "end_ms": 719501,
+          "speaker": "SPEAKER_09"
+        },
+        {
+          "index": 102,
+          "text": "白晶晶啊嘛你識佢㗎",
           "speech_start_ms": 719501,
           "speech_end_ms": 722062,
           "start_ms": 719501,
@@ -10350,8 +10377,8 @@
           "speaker": "SPEAKER_09"
         },
         {
-          "index": 102,
-          "text": "唔識。",
+          "index": 103,
+          "text": "唔識",
           "speech_start_ms": 722062,
           "speech_end_ms": 722682,
           "start_ms": 722062,
@@ -10359,8 +10386,8 @@
           "speaker": "SPEAKER_17"
         },
         {
-          "index": 103,
-          "text": "我知啊，但係你遲啲就識嘅，",
+          "index": 104,
+          "text": "我知啊但係你遲啲就識㗎啦",
           "speech_start_ms": 722682,
           "speech_end_ms": 724483,
           "start_ms": 722682,
@@ -10368,8 +10395,8 @@
           "speaker": "SPEAKER_09"
         },
         {
-          "index": 104,
-          "text": "因為佢將會做咗你徒弟啊嘛。",
+          "index": 105,
+          "text": "因為佢將會做咗你徒弟啊嘛",
           "speech_start_ms": 724483,
           "speech_end_ms": 726244,
           "start_ms": 724483,
@@ -10377,8 +10404,8 @@
           "speaker": "SPEAKER_09"
         },
         {
-          "index": 105,
-          "text": "仲有呢個寶盒咧。",
+          "index": 106,
+          "text": "仲有呢個寶盒咧",
           "speech_start_ms": 726244,
           "speech_end_ms": 727944,
           "start_ms": 726244,
@@ -10386,26 +10413,17 @@
           "speaker": "SPEAKER_09"
         },
         {
-          "index": 106,
-          "text": "我㗎。",
-          "speech_start_ms": 727944,
-          "speech_end_ms": 728584,
-          "start_ms": 727944,
-          "end_ms": 728584,
-          "speaker": "SPEAKER_09"
-        },
-        {
           "index": 107,
-          "text": "我知啊，但係其實係我俾咗你，",
-          "speech_start_ms": 728584,
+          "text": "我㗎我知啊但係其實係我俾咗你",
+          "speech_start_ms": 727944,
           "speech_end_ms": 731025,
-          "start_ms": 728584,
+          "start_ms": 727944,
           "end_ms": 731025,
           "speaker": "SPEAKER_09"
         },
         {
           "index": 108,
-          "text": "然之後你再喺嗰個時候俾返我，",
+          "text": "然之後你再喺嗰個時候俾返我",
           "speech_start_ms": 731025,
           "speech_end_ms": 733006,
           "start_ms": 731025,
@@ -10414,25 +10432,25 @@
         },
         {
           "index": 109,
-          "text": "先至有我返返到嚟㗎。",
+          "text": "先至有我返返到嚟",
           "speech_start_ms": 733006,
-          "speech_end_ms": 734866,
+          "speech_end_ms": 734306,
           "start_ms": 733006,
-          "end_ms": 734866,
+          "end_ms": 734306,
           "speaker": "SPEAKER_09"
         },
         {
           "index": 110,
-          "text": "呢度俾返你啫嘛，你明唔明啫？",
-          "speech_start_ms": 734866,
+          "text": "而家呢度俾返你啫嘛你明唔明啫",
+          "speech_start_ms": 734306,
           "speech_end_ms": 736807,
-          "start_ms": 734866,
+          "start_ms": 734306,
           "end_ms": 737307,
           "speaker": "SPEAKER_09"
         },
         {
           "index": 111,
-          "text": "我明啦。",
+          "text": "我明啦",
           "speech_start_ms": 737901,
           "speech_end_ms": 738425,
           "start_ms": 737651,
@@ -10441,7 +10459,7 @@
         },
         {
           "index": 112,
-          "text": "你黐線㗎。",
+          "text": "你黐線㗎",
           "speech_start_ms": 739776,
           "speech_end_ms": 740640,
           "start_ms": 739526,

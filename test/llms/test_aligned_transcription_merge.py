@@ -27,6 +27,7 @@ from scinoephile.llms.aligned_transcription_merge.splitting import (
 )
 
 _LOCALIZED_PROMPT = AlignedTranscriptionMergePrompt(
+    answer_allows_punctuation=False,
     language=Language.yue_hant,
     sources="laiyuan",
     source_name="mingcheng",
@@ -55,7 +56,7 @@ def _get_sources(*texts: str) -> list[AlignedTranscriptionMergeSource]:
 
 
 def _get_answer(*texts: str) -> AlignedTranscriptionMergeAnswer:
-    """Get one merged answer from punctuated subtitle text."""
+    """Get one merged answer from subtitle text."""
     return AlignedTranscriptionMergeAnswer(text="".join(text + "｜" for text in texts))
 
 
@@ -73,7 +74,7 @@ def test_prompt_aliases_are_used_for_nested_llm_correspondence():
                 ],
                 "shuoshuuren": "ＡＡ",
             },
-            "answer": {"wenben": "我係。｜"},
+            "answer": {"wenben": "我係｜"},
         }
     )
 
@@ -85,25 +86,33 @@ def test_prompt_aliases_are_used_for_nested_llm_correspondence():
         "shuoshuuren": "ＡＡ",
     }
     assert test_case.answer is not None
-    assert test_case.answer.model_dump(by_alias=True) == {"wenben": "我係。｜"}
+    assert test_case.answer.model_dump(by_alias=True) == {"wenben": "我係｜"}
 
 
 def test_answer_text_derives_ordered_subtitles():
     """Fullwidth boundary markers should deterministically recover subtitles."""
-    answer = AlignedTranscriptionMergeAnswer(text="甲。｜乙！｜")
+    answer = AlignedTranscriptionMergeAnswer(text="甲乙｜丙丁｜")
 
-    assert answer.transcript == "甲。乙！"
+    assert answer.transcript == "甲乙丙丁"
     assert [(subtitle.index, subtitle.text) for subtitle in answer.subtitles] == [
-        (1, "甲。"),
-        (2, "乙！"),
+        (1, "甲乙"),
+        (2, "丙丁"),
     ]
 
 
 def test_answer_text_can_represent_a_spoken_word_space():
     """Ordinary word spaces should remain part of the consensus transcript."""
-    answer = AlignedTranscriptionMergeAnswer(text="Ａ Ｂ。｜")
+    answer = AlignedTranscriptionMergeAnswer(text="Ａ Ｂ｜")
 
-    assert answer.transcript == "Ａ Ｂ。"
+    assert answer.transcript == "Ａ Ｂ"
+
+
+def test_answer_text_can_omit_a_request_without_consensus():
+    """An empty answer should explicitly omit unsupported ASR evidence."""
+    answer = AlignedTranscriptionMergeAnswer(text="")
+
+    assert answer.transcript == ""
+    assert answer.subtitles == []
 
 
 def test_answer_migrates_legacy_indexed_subtitles():
@@ -124,6 +133,27 @@ def test_answer_text_requires_clean_terminated_subtitles():
         AlignedTranscriptionMergeAnswer(text="甲。｜｜乙！｜")
     with raises(ValidationError, match="separated and terminated"):
         AlignedTranscriptionMergeAnswer(text="甲・乙｜")
+
+
+def test_unpunctuated_prompt_rejects_answer_punctuation():
+    """A prompt may forbid punctuation while the persistence model remains tolerant."""
+    test_case_cls = AlignedTranscriptionMergeManager.get_test_case_cls(
+        _LOCALIZED_PROMPT
+    )
+
+    with raises(ValidationError, match="must not contain punctuation"):
+        test_case_cls.model_validate(
+            {
+                "query": {
+                    "laiyuan": [
+                        {"mingcheng": "one", "yuanwen": "我係"},
+                        {"mingcheng": "two", "yuanwen": "我係"},
+                    ],
+                    "shuoshuuren": "ＡＡ",
+                },
+                "answer": {"wenben": "我係。｜"},
+            }
+        )
 
 
 def test_query_supports_future_sources_and_requires_equal_width_rows():
@@ -250,8 +280,8 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
         completion_metrics=[],
     )
     provider.chat_completion.side_effect = [
-        json.dumps({"wenben": "甲。｜"}, ensure_ascii=False),
-        json.dumps({"wenben": "乙。｜"}, ensure_ascii=False),
+        json.dumps({"wenben": "甲｜"}, ensure_ascii=False),
+        json.dumps({"wenben": "乙｜"}, ensure_ascii=False),
     ]
     processor = AlignedTranscriptionMergeProcessor(_LOCALIZED_PROMPT, provider=provider)
 
@@ -259,7 +289,7 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
         _get_sources("甲・・・・乙", "甲・・・・乙"), "Ａ・・・・Ｂ"
     )
 
-    assert [subtitle.text for subtitle in answer.subtitles] == ["甲。", "乙。"]
+    assert [subtitle.text for subtitle in answer.subtitles] == ["甲", "乙"]
     assert [subtitle.index for subtitle in answer.subtitles] == [1, 2]
     assert processor.last_request_spans == ((0, 1), (5, 6))
     assert processor.last_request_count == 2
@@ -280,6 +310,27 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
         ],
         "shuoshuuren": "Ｂ",
     }
+
+
+def test_processor_omits_one_request_without_discarding_later_consensus():
+    """An empty request answer should not discard other request transcripts."""
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    provider.chat_completion.side_effect = [
+        json.dumps({"wenben": ""}, ensure_ascii=False),
+        json.dumps({"wenben": "乙｜"}, ensure_ascii=False),
+    ]
+    processor = AlignedTranscriptionMergeProcessor(_LOCALIZED_PROMPT, provider=provider)
+
+    answer = processor.process(
+        _get_sources("甲・・・・乙", "丙・・・・乙"), "Ａ・・・・Ｂ"
+    )
+
+    assert answer.transcript == "乙"
+    assert [request.text for request in processor.last_request_answers] == ["", "乙｜"]
 
 
 def test_processor_retries_subtitles_exceeding_hard_length_limit():
@@ -334,7 +385,7 @@ def test_answer_coverage_allows_supported_character_corrections():
         ],
         speaker="ＡＡＡＡＡＡＡＡ",
     )
-    answer = AlignedTranscriptionMergeAnswer(text="但唔通我唔可以係？｜")
+    answer = AlignedTranscriptionMergeAnswer(text="但唔通我唔可以係｜")
 
     test_case = AlignedTranscriptionMergeTestCase(query=query, answer=answer)
 

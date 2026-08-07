@@ -160,7 +160,7 @@ class AlignedTranscriptionMergeSubtitle(LLMModel):
     index: int = Field(ge=1)
     """One-based subtitle index."""
     text: str = Field(min_length=1, max_length=1000)
-    """Complete punctuated consensus subtitle text."""
+    """Complete consensus subtitle text."""
 
 
 class AlignedTranscriptionMergeAnswer(Answer):
@@ -168,12 +168,14 @@ class AlignedTranscriptionMergeAnswer(Answer):
 
     prompt: ClassVar[AlignedTranscriptionMergePrompt] = _BASE_PROMPT
     """Text and field aliases for aligned transcription merging."""
-    text: str = Field(min_length=2, max_length=20_000)
-    """Punctuated consensus with a fullwidth bar after every subtitle."""
+    text: str = Field(max_length=20_000)
+    """Consensus transcript with boundaries, or empty when evidence is insufficient."""
 
     @property
     def subtitles(self) -> list[AlignedTranscriptionMergeSubtitle]:
         """Get consensus subtitles deterministically from the boundary markers."""
+        if not self.text:
+            return []
         return [
             AlignedTranscriptionMergeSubtitle(index=index, text=text)
             for index, text in enumerate(self.text[:-1].split("｜"), start=1)
@@ -231,6 +233,8 @@ class AlignedTranscriptionMergeAnswer(Answer):
     @model_validator(mode="after")
     def validate_text(self) -> Self:
         """Ensure boundary markers form nonblank, annotation-free subtitles."""
+        if not self.text:
+            return self
         if not self.text.endswith(_REFERENCE_BOUNDARY_CHARACTER):
             raise ValueError(self.prompt.answer_text_err)
         subtitle_texts = self.text[:-1].split(_REFERENCE_BOUNDARY_CHARACTER)
@@ -279,6 +283,11 @@ class AlignedTranscriptionMergeTestCase(TestCase):
             and context.get("skip_output_quality_validation") is True
         ):
             return self
+        if not self.prompt.answer_allows_punctuation and any(
+            unicodedata.category(character)[0] in {"P", "S"}
+            for character in self.answer.transcript
+        ):
+            raise ValueError(self.prompt.answer_punctuation_err)
         consensus_coverage = _get_consensus_coverage(self.query, self.answer)
         if consensus_coverage < self.prompt.minimum_consensus_coverage:
             raise ValueError(self.prompt.consensus_coverage_err(consensus_coverage))

@@ -316,7 +316,7 @@ class MultiSourceTranscriber:
             )
         return self._get_timed_answer_segments(audio, alignment, answer)
 
-    def _get_timed_answer_segments(
+    def _get_timed_answer_segments(  # noqa: PLR0912
         self,
         audio: AudioSegment,
         alignment: TimedMultiSequenceAlignment,
@@ -343,6 +343,12 @@ class MultiSourceTranscriber:
             ),
             start=1,
         ):
+            if not request_answer.transcript:
+                logger.info(
+                    f"Skipping aligned merge request {request_idx} because the "
+                    "merger found no sufficiently supported speech."
+                )
+                continue
             request_interval = self._get_request_interval(
                 alignment, request_span, duration_seconds
             )

@@ -8,9 +8,7 @@ from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
-from scinoephile.core.subtitles import Series
 from scinoephile.media.audio import AudioExtractionMode
-from test.data.helpers import load_or_traditionalize_series
 from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.data.transcription import process_transcription_pipeline
@@ -29,10 +27,6 @@ yue_remux_path = Path("/Volumes/Backup/Video/BD Remux/My Life as McDull (2001).m
 old_yue_hans_path = (
     yue_transcribe_backup_path / "transcribe_translate_guided_review.srt"
 )
-old_yue_hant_path = (
-    yue_transcribe_backup_path / "transcribe_translate_guided_review_traditionalize.srt"
-)
-
 transcription_additional_context = """
 電影背景：
 《麥兜故事》係二〇〇一年香港粵語動畫電影。成年麥兜回憶自己喺九龍大角咀成長、
@@ -85,9 +79,6 @@ if "yue-Hans_eng" in actions:
     eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
     process_yue_hans_eng(title_root, yue_hans_path, eng_path, overwrite=False)
 if "yue-Hant_transcribe" in actions:
-    old_yue_hant = load_or_traditionalize_series(
-        Series.load(old_yue_hans_path), old_yue_hant_path
-    )
     process_transcription_pipeline(
         title_root,
         reference_path=zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
@@ -98,7 +89,6 @@ if "yue-Hant_transcribe" in actions:
         stream_index=1,
         audio_extraction_mode=AudioExtractionMode.CENTER_HEAVY,
         additional_context=transcription_additional_context,
-        additional_audit_references={"yue-Hant": old_yue_hant},
         reference_name="zho-Hant",
         terminal_alignment_authority="merged",
     )

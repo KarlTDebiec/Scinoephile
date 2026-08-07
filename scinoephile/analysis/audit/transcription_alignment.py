@@ -455,8 +455,13 @@ def _render_block(
         alignment, _get_track_markers(block, references)
     )
     authoritative_source_idx = None
+    authoritative_peer_source_indexes = None
     if authoritative_row_name is not None:
         authoritative_source_idx = alignment.source_names.index(authoritative_row_name)
+        if authoritative_row_name != "merged":
+            authoritative_peer_source_indexes = (
+                alignment.source_names.index("merged"),
+            )
 
     label_width = max(
         len(name)
@@ -476,6 +481,7 @@ def _render_block(
             annotations_by_token_id=annotations_by_token_id,
             marker_source_indexes_by_column_id=marker_source_indexes_by_column_id,
             authoritative_source_idx=authoritative_source_idx,
+            authoritative_peer_source_indexes=authoritative_peer_source_indexes,
             label_width=label_width,
         )
         if rendered_chunk is not None:
@@ -492,6 +498,7 @@ def _render_chunk(
     annotations_by_token_id: dict[int, tuple[str, ...]],
     marker_source_indexes_by_column_id: dict[int, frozenset[int]],
     authoritative_source_idx: int | None,
+    authoritative_peer_source_indexes: tuple[int, ...] | None,
     label_width: int,
 ) -> str | None:
     """Render one long-pause-delimited alignment chunk."""
@@ -520,6 +527,7 @@ def _render_chunk(
                     source_idx,
                     authoritative_source_idx,
                     marker_source_indexes_by_column_id,
+                    authoritative_peer_source_indexes,
                 )
                 if color is not None:
                     display_cell = colorize(display_cell, color)
@@ -588,6 +596,7 @@ def _get_alignment_cell_color(
     source_idx: int,
     authoritative_source_idx: int,
     marker_source_indexes_by_column_id: dict[int, frozenset[int]],
+    authoritative_peer_source_indexes: tuple[int, ...] | None,
 ) -> AnsiColor | None:
     """Get a cell color relative to one authoritative alignment row."""
     cell = _get_alignment_cell(column, source_idx, marker_source_indexes_by_column_id)
@@ -603,12 +612,17 @@ def _get_alignment_cell_color(
             elif authoritative_cell == _GAP_CHARACTER:
                 color = AnsiColor.BLUE
         else:
+            if authoritative_peer_source_indexes is None:
+                authoritative_peer_source_indexes = tuple(
+                    other_idx
+                    for other_idx in range(len(column.tokens))
+                    if other_idx != authoritative_source_idx
+                )
             other_cells = tuple(
                 _get_alignment_cell(
                     column, other_idx, marker_source_indexes_by_column_id
                 )
-                for other_idx in range(len(column.tokens))
-                if other_idx != authoritative_source_idx
+                for other_idx in authoritative_peer_source_indexes
             )
             color = AnsiColor.RED
             if cell in other_cells:

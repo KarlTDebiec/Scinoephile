@@ -244,6 +244,59 @@ def test_terminal_alignment_accepts_named_reference_authority():
         )
 
 
+def test_terminal_reference_deletion_ignores_asr_matches():
+    """Reference deletions should be determined solely by the merged row."""
+    artifact = _get_artifact()
+    block = artifact.blocks[0].model_copy(
+        update={
+            "columns": (
+                TranscriptionAlignmentColumn(
+                    index=1, start_ms=1_000, end_ms=1_200, kind="text"
+                ),
+                TranscriptionAlignmentColumn(
+                    index=2, start_ms=1_200, end_ms=1_400, kind="text"
+                ),
+                TranscriptionAlignmentColumn(
+                    index=3, start_ms=1_400, end_ms=1_600, kind="text"
+                ),
+            ),
+            "rows": (
+                TranscriptionAlignmentRow(name="whisper", text="甲唉乙"),
+                TranscriptionAlignmentRow(name="mimo", text="甲　乙"),
+            ),
+            "speaker": "ＡＡＡ",
+            "merged": "甲　乙",
+            "subtitles": (
+                TranscriptionAlignmentSubtitle(
+                    index=1,
+                    text="甲乙",
+                    speech_start_ms=1_000,
+                    speech_end_ms=1_600,
+                    start_ms=900,
+                    end_ms=1_700,
+                ),
+            ),
+        }
+    )
+    artifact = artifact.model_copy(update={"blocks": (block,)})
+    references = {
+        "yue-Hant": Series(events=[Subtitle(start=900, end=1_700, text="甲唉乙")])
+    }
+
+    rendered = render_transcription_alignment_terminal(
+        artifact, references, authoritative_row_name="yue-Hant"
+    )
+
+    reference_line = next(
+        line for line in rendered.splitlines() if line.startswith("yue-Hant")
+    )
+    whisper_line = next(
+        line for line in rendered.splitlines() if line.startswith("whisper")
+    )
+    assert "\x1b[31m唉\x1b[0m" in reference_line
+    assert "\x1b[32m唉\x1b[0m" in whisper_line
+
+
 def test_audit_renders_timing_tables_when_requested():
     """Detailed timing tables should remain available as opt-in evidence."""
     artifact = _get_artifact()
