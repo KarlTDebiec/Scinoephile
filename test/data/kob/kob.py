@@ -116,6 +116,7 @@ if "yue-Hant_transcribe" in actions:
         output_dir_path=yue_hant_transcribe_path,
         audio_path=yue_hant_transcribe_path / "audio.wav",
         additional_context=transcription_additional_context,
+        audit_include_merge_support=True,
         reference_name="yue-Hant",
         terminal_alignment_authority="yue-Hant",
         overwrite=False,

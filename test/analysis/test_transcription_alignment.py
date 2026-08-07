@@ -512,6 +512,45 @@ def test_audit_renders_language_singing_and_music_rows():
     assert "　・樂" in report
 
 
+def test_audit_renders_normalized_merge_support_as_optional_row():
+    """The support row should show source agreement without claiming confidence."""
+    artifact = _get_artifact()
+    reference = Series(events=[Subtitle(start=800, end=2300, text="係呀")])
+
+    default_report = audit_transcription_alignment(artifact)
+    report = audit_transcription_alignment(
+        artifact, reference, include_merge_support=True
+    )
+    terminal = render_transcription_alignment_terminal(
+        artifact, reference, include_merge_support=True
+    )
+
+    assert not any(line.startswith("support") for line in default_report.splitlines())
+    assert "merge support: ０=no successful ASR source" in report
+    support_line = next(
+        line for line in report.splitlines() if line.startswith("support")
+    )
+    terminal_support_line = next(
+        line for line in terminal.splitlines() if line.startswith("support")
+    )
+    assert support_line.rstrip().endswith("９・９")
+    assert terminal_support_line.count("\x1b[48;2;0;168;63m　\x1b[0m") == 2
+    assert "⬛︎" not in terminal_support_line
+    assert "９" not in terminal_support_line
+    report_rows = [
+        line.split(maxsplit=1)[0]
+        for line in report.splitlines()
+        if line.startswith(("merged", "reference", "support"))
+    ]
+    terminal_rows = [
+        line.split(maxsplit=1)[0]
+        for line in terminal.splitlines()
+        if line.startswith(("merged", "reference", "support"))
+    ]
+    assert report_rows == ["merged", "reference", "support"]
+    assert terminal_rows == ["merged", "reference", "support"]
+
+
 def test_audit_splits_rows_at_merge_request_boundaries():
     """Audit chunks should use the production long-pause request boundaries."""
     artifact = _get_artifact()

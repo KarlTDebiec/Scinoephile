@@ -20,7 +20,7 @@ class AlignedTranscriptionMergePrompt(Prompt):
     max_subtitle_characters: int = 20
     """Maximum nonwhitespace characters permitted in one subtitle."""
     minimum_consensus_coverage: float = 0.9
-    """Minimum answer-length coverage relative to strict-majority ASR evidence."""
+    """Minimum sequence-aligned preservation of strict-majority ASR evidence."""
     sources: str = "sources"
     """Name of aligned transcription source rows field."""
     sources_desc: str = "Named equal-status ASR rows aligned by Unicode column."
@@ -123,15 +123,15 @@ class AlignedTranscriptionMergePrompt(Prompt):
     )
     """Error template when answer subtitles exceed the configured maximum length."""
     consensus_coverage_err_tpl: str = (
-        "The answer preserves only {coverage:.1%} of the high-confidence majority "
-        "ASR character sequence; it must preserve at least {minimum:.1%}. The answer "
-        "likely omitted consensus speech. Re-read every aligned column and return the "
-        "complete transcript."
+        "The answer preserves only {coverage:.1%} of the sequence-aligned "
+        "high-confidence majority ASR columns; it must preserve at least "
+        "{minimum:.1%}. The answer likely omitted or replaced consensus speech. "
+        "Re-read every aligned column and return the complete transcript in order."
     )
     """Error template when answer coverage suggests omitted consensus speech."""
 
     def consensus_coverage_err(self, coverage: float) -> str:
-        """Get an error for insufficient exact-majority ASR character coverage.
+        """Get an error for insufficient sequence-aligned majority coverage.
 
         Arguments:
             coverage: proportion of the majority sequence preserved in the answer

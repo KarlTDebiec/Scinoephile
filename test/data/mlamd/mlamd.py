@@ -93,6 +93,7 @@ if "yue-Hant_transcribe" in actions:
         stream_index=1,
         audio_extraction_mode=AudioExtractionMode.CENTER_HEAVY,
         additional_context=transcription_additional_context,
+        audit_include_merge_support=True,
         reference_name="zho-Hant",
         terminal_alignment_authority="merged",
     )

@@ -17,6 +17,10 @@ from .models import (
 )
 from .prompt import AlignedTranscriptionMergePrompt
 from .splitting import get_alignment_content_spans
+from .validation import (
+    AlignedTranscriptionMergeValidation,
+    get_aligned_transcription_merge_validation,
+)
 
 __all__ = ["AlignedTranscriptionMergeProcessor"]
 
@@ -37,6 +41,8 @@ class AlignedTranscriptionMergeProcessor(Processor):
     """Alignment-column spans used by the latest separate requests."""
     last_request_answers: tuple[AlignedTranscriptionMergeAnswer, ...] = ()
     """Individual answers returned for the latest separate requests."""
+    last_request_validations: tuple[AlignedTranscriptionMergeValidation, ...] = ()
+    """Deterministic evidence validation for the latest request answers."""
 
     def process(
         self,
@@ -83,25 +89,37 @@ class AlignedTranscriptionMergeProcessor(Processor):
         self.last_request_count = len(request_queries)
 
         request_answers = []
+        request_validations = []
         for request_query in request_queries:
-            query = query_cls.model_validate(
-                {
-                    "sources": [
-                        source.model_dump(mode="json")
-                        for source in request_query.sources
-                    ],
-                    "speaker": request_query.speaker,
-                    "language_trace": request_query.language_trace,
-                    "singing_trace": request_query.singing_trace,
-                    "music_trace": request_query.music_trace,
-                }
+            query = cast(
+                AlignedTranscriptionMergeQuery,
+                query_cls.model_validate(
+                    {
+                        "sources": [
+                            source.model_dump(mode="json")
+                            for source in request_query.sources
+                        ],
+                        "speaker": request_query.speaker,
+                        "language_trace": request_query.language_trace,
+                        "singing_trace": request_query.singing_trace,
+                        "music_trace": request_query.music_trace,
+                    }
+                ),
             )
             test_case = self.test_case_cls(query=query)
             test_case = self.queryer(test_case)
             answer = cast(AlignedTranscriptionMergeAnswer, test_case.answer)
             request_answers.append(answer)
+            request_validations.append(
+                get_aligned_transcription_merge_validation(
+                    tuple(source.text for source in query.sources),
+                    answer.transcript,
+                    self.prompt.language,
+                )
+            )
 
         self.last_request_answers = tuple(request_answers)
+        self.last_request_validations = tuple(request_validations)
         self.save_encountered_test_cases()
         return AlignedTranscriptionMergeAnswer.concatenate(request_answers)
 

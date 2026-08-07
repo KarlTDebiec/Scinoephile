@@ -25,8 +25,12 @@ from scinoephile.analysis.transcription_timing import (
     evaluate_transcription_timing,
     get_reference_for_alignment,
 )
+from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import AnsiColor, colorize
+from scinoephile.llms.aligned_transcription_merge import (
+    get_aligned_transcription_merge_support_row,
+)
 from scinoephile.llms.aligned_transcription_merge.splitting import (
     get_alignment_content_spans,
 )
@@ -37,6 +41,21 @@ __all__ = ["audit_transcription_alignment", "render_transcription_alignment_term
 
 _BOUNDARY_CHARACTER = "｜"
 _GAP_CHARACTER = "　"
+_MERGE_SUPPORT_CHARACTERS = "０１２３４５６７８９"
+"""Fullwidth support levels used in Markdown and as terminal color indexes."""
+_MERGE_SUPPORT_RGB_COLORS = (
+    (255, 59, 48),
+    (255, 90, 54),
+    (255, 122, 50),
+    (255, 159, 10),
+    (255, 214, 10),
+    (212, 225, 87),
+    (168, 210, 74),
+    (114, 201, 65),
+    (52, 199, 89),
+    (0, 168, 63),
+)
+"""Red-to-green terminal colors for ascending merge-support levels."""
 _PAUSE_CHARACTER = "・"
 _SECTION_SEPARATOR_CHARACTER = "－"
 
@@ -53,6 +72,7 @@ def audit_transcription_alignment(
     last_block: int | None = None,
     include_audio_events: bool = False,
     include_language: bool = False,
+    include_merge_support: bool = False,
     include_speaker: bool = False,
     include_timing_tables: bool = False,
 ) -> str:
@@ -68,6 +88,7 @@ def audit_transcription_alignment(
         last_block: last one-based VAD block index to include
         include_audio_events: whether to render singing and music rows
         include_language: whether to render the spoken-language row
+        include_merge_support: whether to render normalized merged-character support
         include_speaker: whether to render the speaker row
         include_timing_tables: whether to render detailed subtitle timing tables
     Returns:
@@ -102,6 +123,11 @@ def audit_transcription_alignment(
             f"{artifact.request_pause_columns} consecutive {_PAUSE_CHARACTER}"
         ),
     ]
+    if include_merge_support:
+        lines.append(
+            "- merge support: ０=no successful ASR source; "
+            "９=all successful ASR sources"
+        )
     selected_artifact = artifact.model_copy(update={"blocks": tuple(blocks)})
     for reference_name, reference in named_references.items():
         lines.extend(("", f"### Reference {reference_name}", ""))
@@ -135,9 +161,11 @@ def audit_transcription_alignment(
             block,
             block_references,
             aligner,
+            language=artifact.language,
             request_pause_columns=artifact.request_pause_columns,
             include_audio_events=include_audio_events,
             include_language=include_language,
+            include_merge_support=include_merge_support,
             include_speaker=include_speaker,
         )
         lines.extend(("", "```text", rendered, "```", ""))
@@ -157,6 +185,7 @@ def render_transcription_alignment_terminal(
     last_block: int | None = None,
     include_audio_events: bool = False,
     include_language: bool = False,
+    include_merge_support: bool = False,
     include_speaker: bool = False,
 ) -> str:
     """Render an ANSI-colored multi-source alignment for a terminal.
@@ -175,6 +204,7 @@ def render_transcription_alignment_terminal(
         last_block: last one-based VAD block index to include
         include_audio_events: whether to render singing and music rows
         include_language: whether to render the spoken-language row
+        include_merge_support: whether to render normalized merged-character support
         include_speaker: whether to render the speaker row
     Returns:
         ANSI-colored terminal alignment
@@ -219,9 +249,11 @@ def render_transcription_alignment_terminal(
                 block,
                 block_references,
                 aligner,
+                language=artifact.language,
                 request_pause_columns=artifact.request_pause_columns,
                 include_audio_events=include_audio_events,
                 include_language=include_language,
+                include_merge_support=include_merge_support,
                 include_speaker=include_speaker,
                 authoritative_row_name=authoritative_row_name,
             )
@@ -247,6 +279,7 @@ def _get_named_references(
         "music",
         "singing",
         "speaker",
+        "support",
     }
     for name in named_references:
         if not name.strip() or "\n" in name or "\r" in name:
@@ -398,9 +431,11 @@ def _render_block(
     references: Mapping[str, Series],
     aligner: TimedMultiSequenceAligner,
     *,
+    language: Language,
     request_pause_columns: int,
     include_audio_events: bool,
     include_language: bool,
+    include_merge_support: bool,
     include_speaker: bool,
     authoritative_row_name: str | None = None,
 ) -> str:
@@ -413,8 +448,10 @@ def _render_block(
     profile_column_anchor_ids = []
     annotation_rows = _get_annotation_rows(
         block,
+        language,
         include_audio_events=include_audio_events,
         include_language=include_language,
+        include_merge_support=include_merge_support,
         include_speaker=include_speaker,
     )
     annotations_by_token_id = {}
@@ -509,6 +546,13 @@ def _render_chunk(
     ):
         return None
 
+    annotation_lines, support_lines = _get_rendered_annotation_lines(
+        columns,
+        annotation_rows,
+        annotations_by_token_id,
+        authoritative_source_idx=authoritative_source_idx,
+        label_width=label_width,
+    )
     lines = []
     for source_idx, source_name in enumerate(alignment.source_names):
         if source_name == "merged":
@@ -534,29 +578,61 @@ def _render_chunk(
             cells.append(display_cell)
         lines.append(f"{source_name:<{label_width}}  " + "".join(cells))
         if source_name == "merged":
-            for annotation_idx, (annotation_name, _) in enumerate(annotation_rows):
-                annotation_cells = [
-                    _get_annotation_cell(
-                        column, annotations_by_token_id, annotation_idx
-                    )
-                    for column in columns
-                ]
-                lines.append(
-                    f"{annotation_name:<{label_width}}  "
-                    + "".join(_get_display_cell(cell) for cell in annotation_cells)
-                )
+            lines.extend(annotation_lines)
+    lines.extend(support_lines)
     return "\n".join(lines)
+
+
+def _get_rendered_annotation_lines(
+    columns: Sequence[TimedAlignmentColumn],
+    annotation_rows: Sequence[tuple[str, str]],
+    annotations_by_token_id: dict[int, tuple[str, ...]],
+    *,
+    authoritative_source_idx: int | None,
+    label_width: int,
+) -> tuple[list[str], list[str]]:
+    """Render ordinary annotation lines and deferred merge-support lines."""
+    lines = []
+    support_lines = []
+    for annotation_idx, (annotation_name, _) in enumerate(annotation_rows):
+        annotation_cells = [
+            _get_annotation_cell(column, annotations_by_token_id, annotation_idx)
+            for column in columns
+        ]
+        display_cells = []
+        for cell in annotation_cells:
+            if annotation_name == "support" and authoritative_source_idx is not None:
+                display_cells.append(_get_merge_support_display_cell(cell))
+            else:
+                display_cells.append(_get_display_cell(cell))
+        annotation_line = f"{annotation_name:<{label_width}}  " + "".join(display_cells)
+        if annotation_name == "support":
+            support_lines.append(annotation_line)
+        else:
+            lines.append(annotation_line)
+    return lines, support_lines
 
 
 def _get_annotation_rows(
     block: TranscriptionAlignmentBlock,
+    language: Language,
     *,
     include_audio_events: bool,
     include_language: bool,
+    include_merge_support: bool,
     include_speaker: bool,
 ) -> list[tuple[str, str]]:
     """Get present portable annotation rows in stable display order."""
     rows = []
+    if include_merge_support:
+        rows.append(
+            (
+                "support",
+                get_aligned_transcription_merge_support_row(
+                    tuple(row.text for row in block.rows), block.merged, language
+                ),
+            )
+        )
     if include_speaker:
         rows.append(("speaker", block.speaker))
     if include_language and block.language_trace is not None:
@@ -760,6 +836,15 @@ def _get_display_cell(character: str) -> str:
     if unicodedata.east_asian_width(character) in {"F", "W"}:
         return character
     return f"{character} "
+
+
+def _get_merge_support_display_cell(character: str) -> str:
+    """Render one support level as a fullwidth cell of ANSI background color."""
+    if character not in _MERGE_SUPPORT_CHARACTERS:
+        return _get_display_cell(character)
+    support_level = _MERGE_SUPPORT_CHARACTERS.index(character)
+    red, green, blue = _MERGE_SUPPORT_RGB_COLORS[support_level]
+    return f"\x1b[48;2;{red};{green};{blue}m{_GAP_CHARACTER}{AnsiColor.RESET.value}"
 
 
 def _get_annotation_cell(

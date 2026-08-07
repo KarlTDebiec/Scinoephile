@@ -21,6 +21,8 @@ from scinoephile.llms.aligned_transcription_merge import (
     AlignedTranscriptionMergeQuery,
     AlignedTranscriptionMergeSource,
     AlignedTranscriptionMergeTestCase,
+    get_aligned_transcription_merge_support_row,
+    get_aligned_transcription_merge_validation,
 )
 from scinoephile.llms.aligned_transcription_merge.splitting import (
     get_alignment_content_spans,
@@ -45,6 +47,15 @@ def test_alignment_content_spans_exclude_long_pause_separators():
     spans = get_alignment_content_spans(shared_pauses, separator_columns=4)
 
     assert spans == ((0, 3), (7, 8))
+
+
+def test_merge_support_row_uses_fullwidth_digits():
+    """Source agreement should use portable fullwidth digits."""
+    support_row = get_aligned_transcription_merge_support_row(
+        ("甲乙・丁", "甲丙・丁"), "甲己・丁", Language.yue_hant
+    )
+
+    assert support_row == "９０・９"
 
 
 def _get_sources(*texts: str) -> list[AlignedTranscriptionMergeSource]:
@@ -375,8 +386,8 @@ def test_processor_retries_answers_omitting_majority_consensus_speech():
     assert "preserves only 40.0%" in retry_messages[-1]["content"]
 
 
-def test_answer_coverage_allows_supported_character_corrections():
-    """The omission guard should not require exact consensus character copying."""
+def test_answer_coverage_allows_locally_supported_character_corrections():
+    """The omission guard should allow a minority character at the same column."""
     query = AlignedTranscriptionMergeQuery(
         sources=[
             AlignedTranscriptionMergeSource(name="one", text="盜唔通我唔可以係"),
@@ -385,8 +396,92 @@ def test_answer_coverage_allows_supported_character_corrections():
         ],
         speaker="ＡＡＡＡＡＡＡＡ",
     )
-    answer = AlignedTranscriptionMergeAnswer(text="但唔通我唔可以係｜")
+    answer = AlignedTranscriptionMergeAnswer(text="道唔通我唔可以係｜")
 
     test_case = AlignedTranscriptionMergeTestCase(query=query, answer=answer)
 
     assert test_case.answer == answer
+
+
+def test_answer_coverage_rejects_equal_length_majority_replacement():
+    """Unrelated equal-length text should not count as preserved evidence."""
+    query = AlignedTranscriptionMergeQuery(
+        sources=_get_sources(*("ＡＢＣＤＥＦＧＨＩＪ" for _ in range(3))),
+        speaker="Ａ" * 10,
+    )
+    answer = AlignedTranscriptionMergeAnswer(text="ＫＬＭＮＯＰＱＲＳＴ｜")
+
+    with raises(ValidationError, match="preserves only 0.0%"):
+        AlignedTranscriptionMergeTestCase(query=query, answer=answer)
+
+
+def test_answer_coverage_rejects_insertions_replacing_missing_majority_span():
+    """Inserted text should not compensate for omitted majority characters."""
+    query = AlignedTranscriptionMergeQuery(
+        sources=_get_sources(*("甲乙丙丁戊己庚辛壬癸" for _ in range(3))),
+        speaker="Ａ" * 10,
+    )
+    answer = AlignedTranscriptionMergeAnswer(text="甲乙丙丁天地玄黃宇宙｜")
+
+    with raises(ValidationError, match="preserves only 40.0%"):
+        AlignedTranscriptionMergeTestCase(query=query, answer=answer)
+
+
+def test_answer_coverage_accepts_compatibility_width_equivalence():
+    """Halfwidth and fullwidth Latin characters should preserve the same evidence."""
+    query = AlignedTranscriptionMergeQuery(
+        sources=_get_sources(*("June" for _ in range(3))), speaker="Ａ" * 4
+    )
+    answer = AlignedTranscriptionMergeAnswer(text="Ｊｕｎｅ｜")
+
+    test_case = AlignedTranscriptionMergeTestCase(query=query, answer=answer)
+
+    assert test_case.answer == answer
+
+
+def test_answer_coverage_tolerates_one_contextual_spelling_replacement():
+    """One mapped unsupported name correction should not fail a short request."""
+    query = AlignedTranscriptionMergeQuery(
+        sources=_get_sources(*("膠兜依然係咁喺度" for _ in range(3))), speaker="Ａ" * 8
+    )
+    answer = AlignedTranscriptionMergeAnswer(text="麥兜依然係咁喺度｜")
+
+    test_case = AlignedTranscriptionMergeTestCase(query=query, answer=answer)
+
+    assert test_case.answer == answer
+
+
+def test_answer_coverage_does_not_reject_context_resolved_weak_columns():
+    """Columns without a strict majority should remain diagnostic rather than fatal."""
+    source_texts = ("菇時", "巫師", "　師", "古時", "　時", "姑絲")
+    query = AlignedTranscriptionMergeQuery(
+        sources=_get_sources(*source_texts), speaker="ＡＡ"
+    )
+    answer = AlignedTranscriptionMergeAnswer(text="菇時｜")
+
+    validation = get_aligned_transcription_merge_validation(
+        source_texts, answer.transcript, Language.yue_hant
+    )
+    test_case = AlignedTranscriptionMergeTestCase(query=query, answer=answer)
+
+    assert validation.majority_column_indexes == ()
+    assert validation.majority_coverage == 1.0
+    assert test_case.answer == answer
+
+
+def test_empty_answer_requires_absent_majority_evidence():
+    """An empty answer should fail only when strict-majority speech is present."""
+    weak_query = AlignedTranscriptionMergeQuery(
+        sources=_get_sources("甲", "乙", "丙"), speaker="Ａ"
+    )
+    strong_query = AlignedTranscriptionMergeQuery(
+        sources=_get_sources("甲", "甲", "甲"), speaker="Ａ"
+    )
+    answer = AlignedTranscriptionMergeAnswer(text="")
+
+    assert (
+        AlignedTranscriptionMergeTestCase(query=weak_query, answer=answer).answer
+        == answer
+    )
+    with raises(ValidationError, match="preserves only 0.0%"):
+        AlignedTranscriptionMergeTestCase(query=strong_query, answer=answer)

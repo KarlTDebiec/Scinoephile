@@ -34,6 +34,7 @@ AUDIT_TRANSCRIPTION_ALIGNMENT_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "include the speaker annotation row": "包含说话者标注行",
         "include the spoken-language annotation row": "包含口语语言标注行",
+        "include the merged-character source-support row": ("包含合并字符的来源支持行"),
         "include the singing and music annotation rows": "包含歌唱和音乐标注行",
         "include detailed subtitle and reference timing tables": (
             "包含详细的字幕和参考时间表"
@@ -47,6 +48,7 @@ AUDIT_TRANSCRIPTION_ALIGNMENT_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "include the speaker annotation row": "包含說話者標註列",
         "include the spoken-language annotation row": "包含口語語言標註列",
+        "include the merged-character source-support row": ("包含合併字符的來源支持列"),
         "include the singing and music annotation rows": "包含歌唱和音樂標註列",
         "include detailed subtitle and reference timing tables": (
             "包含詳細的字幕和參考時間表"
@@ -105,6 +107,11 @@ class AuditTranscriptionAlignmentCli(AuditCliBase):
             help="include the spoken-language annotation row",
         )
         arg_groups["operation arguments"].add_argument(
+            "--include-merge-support",
+            action="store_true",
+            help="include the merged-character source-support row",
+        )
+        arg_groups["operation arguments"].add_argument(
             "--include-audio-events",
             action="store_true",
             help="include the singing and music annotation rows",
@@ -138,6 +145,7 @@ class AuditTranscriptionAlignmentCli(AuditCliBase):
         last_block: int | None,
         include_speaker: bool,
         include_language: bool,
+        include_merge_support: bool,
         include_audio_events: bool,
         include_timing_tables: bool,
         outfile_path: Path | None,
@@ -155,6 +163,7 @@ class AuditTranscriptionAlignmentCli(AuditCliBase):
             last_block: last VAD block number to include
             include_speaker: whether to render the speaker annotation row
             include_language: whether to render the spoken-language annotation row
+            include_merge_support: whether to render merged-character source support
             include_audio_events: whether to render singing and music rows
             include_timing_tables: whether to render detailed timing tables
             outfile_path: optional Markdown output path
@@ -186,6 +195,7 @@ class AuditTranscriptionAlignmentCli(AuditCliBase):
                 last_block=last_block,
                 include_speaker=include_speaker,
                 include_language=include_language,
+                include_merge_support=include_merge_support,
                 include_audio_events=include_audio_events,
                 include_timing_tables=include_timing_tables,
             )

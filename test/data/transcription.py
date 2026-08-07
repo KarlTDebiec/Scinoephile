@@ -67,6 +67,7 @@ def process_transcription_pipeline(
     target_reference_subtitles: int = 100,
     additional_context: str | None = None,
     additional_audit_references: Mapping[str, Series] | None = None,
+    audit_include_merge_support: bool = False,
     reference_name: str = "reference",
     terminal_alignment_authority: str | None = None,
     timing_settings: SubtitleTimingSettings | None = None,
@@ -98,6 +99,7 @@ def process_transcription_pipeline(
         target_reference_subtitles: minimum reference subtitles covered by blocks
         additional_context: production consensus prompt context
         additional_audit_references: additional named references used only in audits
+        audit_include_merge_support: whether generated audits show source support
         reference_name: audit row name for the primary scoring reference
         terminal_alignment_authority: merged or named reference row for ANSI output
         timing_settings: reference-free display-timing policy
@@ -141,6 +143,7 @@ def process_transcription_pipeline(
             artifact,
             reference,
             audit_references=audit_references,
+            include_merge_support=audit_include_merge_support,
             terminal_alignment_authority=terminal_alignment_authority,
         )
         return output
@@ -190,6 +193,7 @@ def process_transcription_pipeline(
         artifact,
         reference,
         audit_references=audit_references,
+        include_merge_support=audit_include_merge_support,
         terminal_alignment_authority=terminal_alignment_authority,
     )
     return output
@@ -263,6 +267,7 @@ def _save_evaluation(
     reference: Series,
     *,
     audit_references: Mapping[str, Series] | None = None,
+    include_merge_support: bool = False,
     terminal_alignment_authority: str | None = None,
 ):
     """Save evaluation artifacts and optionally log a colored alignment."""
@@ -330,7 +335,10 @@ def _save_evaluation(
     references = audit_references or reference
     (output_dir_path / "audit.md").write_text(
         audit_transcription_alignment(
-            artifact, references, reference_similarity=reference_similarity
+            artifact,
+            references,
+            reference_similarity=reference_similarity,
+            include_merge_support=include_merge_support,
         ),
         encoding="utf-8",
     )
@@ -340,6 +348,7 @@ def _save_evaluation(
             references,
             authoritative_row_name=terminal_alignment_authority,
             reference_similarity=reference_similarity,
+            include_merge_support=include_merge_support,
         )
         logger.info(f"\n{terminal_alignment.rstrip()}")
     logger.info(

@@ -659,6 +659,7 @@ def test_transcription_alignment_audit_cli_help_and_validation(
     assert "columns_per_chunk" not in actions
     assert actions["include_speaker"].default is False
     assert actions["include_language"].default is False
+    assert actions["include_merge_support"].default is False
     assert actions["include_audio_events"].default is False
 
     invalid_path = tmp_path / "alignment.json"
@@ -675,6 +676,7 @@ def test_transcription_alignment_audit_cli_help_and_validation(
             f"yue-Hant={reference_path}",
             "--include-speaker",
             "--include-language",
+            "--include-merge-support",
             "--include-audio-events",
             "--include-timing",
         ]
@@ -685,6 +687,7 @@ def test_transcription_alignment_audit_cli_help_and_validation(
     ]
     assert parsed.include_speaker is True
     assert parsed.include_language is True
+    assert parsed.include_merge_support is True
     assert parsed.include_audio_events is True
     assert parsed.include_timing_tables is True
     with raises(SystemExit):

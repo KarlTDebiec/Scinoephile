@@ -5,17 +5,16 @@
 from __future__ import annotations
 
 import unicodedata
-from collections import Counter
 from collections.abc import Mapping, Sequence
 from typing import ClassVar, Self, cast
 
-from opencc import OpenCC
 from pydantic import Field, ValidationInfo, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase
 from scinoephile.core.llms.models import LLMModel
 
 from .prompt import AlignedTranscriptionMergePrompt
+from .validation import get_aligned_transcription_merge_validation
 
 __all__ = [
     "AlignedTranscriptionMergeAnswer",
@@ -34,8 +33,6 @@ _PAUSE_CHARACTER = "・"
 """Wide middle dot used for shared timed pauses."""
 _REFERENCE_BOUNDARY_CHARACTER = "｜"
 """Fullwidth boundary marker excluded from reference-free queries."""
-_SCRIPT_NORMALIZER = OpenCC("t2s")
-"""Converter used to compare Simplified and Traditional consensus text."""
 _VAD_SPEECH_CHARACTER = "＊"
 """Fullwidth unattributed-speech marker used in speaker rows."""
 _FORBIDDEN_SOURCE_NAMES = frozenset({"guide", "reference"})
@@ -288,8 +285,15 @@ class AlignedTranscriptionMergeTestCase(TestCase):
             for character in self.answer.transcript
         ):
             raise ValueError(self.prompt.answer_punctuation_err)
-        consensus_coverage = _get_consensus_coverage(self.query, self.answer)
-        if consensus_coverage < self.prompt.minimum_consensus_coverage:
+        validation = get_aligned_transcription_merge_validation(
+            tuple(source.text for source in self.query.sources),
+            self.answer.transcript,
+            self.prompt.language,
+        )
+        consensus_coverage = validation.majority_coverage
+        if not validation.preserves_required_majority(
+            self.prompt.minimum_consensus_coverage
+        ):
             raise ValueError(self.prompt.consensus_coverage_err(consensus_coverage))
         overlong_indexes = [
             subtitle.index
@@ -316,39 +320,3 @@ class AlignedTranscriptionMergeTestCase(TestCase):
         return AlignedTranscriptionMergeAnswer(
             text=text + _REFERENCE_BOUNDARY_CHARACTER
         )
-
-
-def _get_consensus_coverage(
-    query: AlignedTranscriptionMergeQuery, answer: AlignedTranscriptionMergeAnswer
-) -> float:
-    """Get answer-length coverage relative to strict-majority ASR evidence."""
-    consensus_characters = []
-    source_count = len(query.sources)
-    for column in zip(*(source.text for source in query.sources), strict=True):
-        character_counts = Counter(
-            character
-            for character in column
-            if character not in {_ALIGNMENT_GAP_CHARACTER, _PAUSE_CHARACTER}
-        )
-        if not character_counts:
-            continue
-        character, count = character_counts.most_common(1)[0]
-        if count > source_count / 2:
-            consensus_characters.append(character)
-    consensus = _get_lexical_text("".join(consensus_characters))
-    if not consensus:
-        return 1.0
-    answer_text = _get_lexical_text(answer.transcript)
-    return min(len(answer_text), len(consensus)) / len(consensus)
-
-
-def _get_lexical_text(text: str) -> str:
-    """Remove alignment annotations, punctuation, symbols, and whitespace."""
-    lexical_text = "".join(
-        character
-        for character in text
-        if character not in {_ALIGNMENT_GAP_CHARACTER, _PAUSE_CHARACTER}
-        and not character.isspace()
-        and unicodedata.category(character)[0] not in {"P", "S"}
-    )
-    return _SCRIPT_NORMALIZER.convert(lexical_text)

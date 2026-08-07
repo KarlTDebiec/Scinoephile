@@ -122,6 +122,7 @@ if "yue-Hant_transcribe" in actions:
         stream_index=stream_index,
         media_start_seconds=media_start_seconds,
         additional_context=transcription_additional_context,
+        audit_include_merge_support=True,
         reference_name="zho-Hant",
         skip_singing_blocks=True,
         skip_non_target_language_blocks=True,
