@@ -63,13 +63,16 @@ class Prompt:
     test_case_invalid_post: str = ""
     """Text following test case validation errors."""
 
+    legacy_cache_prompts: tuple[Prompt, ...] = ()
+    """Earlier prompt forms whose compatible response caches may be migrated."""
+
     @property
     def name(self) -> str:
         """Stable content-addressed name used for generated model classes."""
         prompt_fields = {
             field.name: getattr(self, field.name)
             for field in fields(self)
-            if field.name != "language"
+            if field.name not in {"language", "legacy_cache_prompts"}
         }
         payload_json = json.dumps(
             {
@@ -97,7 +100,16 @@ class Prompt:
         transformed_fields = {
             field.name: transform(value)
             for field in fields(self)
-            if field.name != "language"
+            if field.name not in {"language", "legacy_cache_prompts"}
             and isinstance(value := getattr(self, field.name), str)
         }
-        return replace(self, language=language, **transformed_fields)
+        transformed_legacy_cache_prompts = tuple(
+            prompt.transformed(language, transform)
+            for prompt in self.legacy_cache_prompts
+        )
+        return replace(
+            self,
+            language=language,
+            legacy_cache_prompts=transformed_legacy_cache_prompts,
+            **transformed_fields,
+        )

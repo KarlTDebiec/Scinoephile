@@ -8,20 +8,23 @@ from collections.abc import Mapping
 from types import MappingProxyType
 
 import scinoephile.lang.review.guided as guided_review
+import scinoephile.lang.review.multi as multi_review
 import scinoephile.lang.review.standard as review
-import scinoephile.lang.transcription.guided as guided_transcription
+import scinoephile.lang.transcription.aligned_merge as aligned_transcription_merge
 import scinoephile.lang.translation.gap as gap_translation
 import scinoephile.lang.translation.guided as guided_translation
 import scinoephile.lang.translation.standard as translation
 from scinoephile.core import Language
 from scinoephile.core.llms import Manager, Prompt
 from scinoephile.lang import ocr_fusion
-from scinoephile.llms.delineation import DelineationManager
+from scinoephile.llms.aligned_transcription_merge import (
+    AlignedTranscriptionMergeManager,
+)
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
 from scinoephile.llms.guided_translation import GuidedTranslationManager
+from scinoephile.llms.multi_review import MultiReviewManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
-from scinoephile.llms.punctuation import PunctuationManager
 from scinoephile.llms.review import ReviewManager
 from scinoephile.llms.translation import TranslationManager
 from scinoephile.optimization.prompt_spec import PromptSpec
@@ -36,10 +39,17 @@ def _build_prompt_specs() -> Mapping[str, PromptSpec]:
         read-only prompt specifications keyed by stable alias
     """
     prompt_spec_groups = (
+        _build_monolingual_prompt_specs(
+            AlignedTranscriptionMergeManager,
+            aligned_transcription_merge.DEFAULT_PROMPTS,
+        ),
         _build_monolingual_prompt_specs(ReviewManager, review.DEFAULT_PROMPTS),
         _build_monolingual_prompt_specs(OcrFusionManager, ocr_fusion.DEFAULT_PROMPTS),
         _build_pair_prompt_specs(
             GuidedReviewManager, guided_review.DEFAULT_PROMPTS, separator="vs"
+        ),
+        _build_pair_prompt_specs(
+            MultiReviewManager, multi_review.DEFAULT_PROMPTS, separator="vs"
         ),
         _build_pair_prompt_specs(
             TranslationManager, translation.DEFAULT_PROMPTS, separator="to"
@@ -50,7 +60,6 @@ def _build_prompt_specs() -> Mapping[str, PromptSpec]:
         _build_pair_prompt_specs(
             GuidedTranslationManager, guided_translation.DEFAULT_PROMPTS, separator="to"
         ),
-        _build_transcription_prompt_specs(guided_transcription.DEFAULT_SPECS),
     )
 
     prompt_specs: dict[str, PromptSpec] = {}
@@ -104,39 +113,6 @@ def _build_pair_prompt_specs(
         ): PromptSpec(manager_cls=manager_cls, prompt=prompt)
         for (first_language, second_language), prompt in prompts.items()
     }
-
-
-def _build_transcription_prompt_specs(
-    specs: Mapping[
-        tuple[Language, Language], guided_transcription.GuidedTranscriptionSpec
-    ],
-) -> dict[str, PromptSpec]:
-    """Build prompt specifications for guided transcription.
-
-    Guide-script variants that share a prompt use one stable language-code alias.
-
-    Arguments:
-        specs: guided transcription specifications keyed by language pair
-    Returns:
-        prompt specifications keyed by stable alias
-    Raises:
-        ValueError: if one alias resolves to conflicting prompts
-    """
-    prompt_specs: dict[str, PromptSpec] = {}
-    for (language, guide_language), spec in specs.items():
-        guide_code = guide_language.language.lower()
-        for manager_cls, prompt in (
-            (DelineationManager, spec.delineation_prompt),
-            (PunctuationManager, spec.punctuation_prompt),
-        ):
-            alias = f"{manager_cls.operation}-{language.code.lower()}-vs-{guide_code}"
-            prompt_spec = PromptSpec(manager_cls=manager_cls, prompt=prompt)
-            if alias in prompt_specs and prompt_specs[alias] != prompt_spec:
-                raise ValueError(
-                    f"Conflicting guided transcription prompt alias: {alias}"
-                )
-            prompt_specs[alias] = prompt_spec
-    return prompt_specs
 
 
 PROMPT_SPECS: Mapping[str, PromptSpec] = _build_prompt_specs()

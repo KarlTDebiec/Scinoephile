@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from collections.abc import Sequence
 from enum import Enum
 from pathlib import Path
 
@@ -162,6 +163,35 @@ class AuditCliBase(ScinoephileCliBase):
             )
         except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
             parser.error(f"Unable to load {workflow_name} JSON: {exc}")
+
+    @staticmethod
+    def load_test_cases_for_managers(
+        parser: ArgumentParser,
+        json_path: Path,
+        manager_classes: Sequence[type[Manager]],
+        *,
+        workflow_name: str,
+    ) -> list[TestCase]:
+        """Load test cases using the first compatible workflow schema.
+
+        Arguments:
+            parser: parser used to report user-facing errors
+            json_path: test-case JSON path
+            manager_classes: candidate managers in compatibility order
+            workflow_name: workflow name used in errors
+        Returns:
+            loaded test cases from the first compatible manager
+        """
+        errors = []
+        for manager_cls in manager_classes:
+            try:
+                return load_test_cases_from_json(
+                    json_path, manager_cls, manager_cls.base_prompt
+                )
+            except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
+                errors.append(f"{manager_cls.operation}: {exc}")
+        details = "; ".join(errors)
+        parser.error(f"Unable to load {workflow_name} JSON: {details}")
 
     @staticmethod
     def write_report(

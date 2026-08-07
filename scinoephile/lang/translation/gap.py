@@ -49,9 +49,9 @@ _YUE_ENG_GAP_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
 """Default English-to-written Cantonese gap translation JSON paths."""
 
 _YUE_ZHO_GAP_TRANSLATION_JSON_PATHS = (
-    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/gap_translation/cuda.json"),
-    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/gap_translation/cpu.json"),
-    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/gap_translation/mps.json"),
+    Path("mlamd/output/yue_transcribe_backup/lang/yue_zho/gap_translation/cuda.json"),
+    Path("mlamd/output/yue_transcribe_backup/lang/yue_zho/gap_translation/cpu.json"),
+    Path("mlamd/output/yue_transcribe_backup/lang/yue_zho/gap_translation/mps.json"),
 )
 """Default standard Chinese-to-written Cantonese gap translation JSON paths."""
 

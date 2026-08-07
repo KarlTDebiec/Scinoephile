@@ -17,6 +17,7 @@ __all__ = [
     "format_audit_report",
     "format_verification_marker",
     "get_contextual_index",
+    "get_reference_sequence_start_indexes",
     "get_selected_event_indexes",
     "get_superseded_keys",
     "is_block_in_range",
@@ -208,6 +209,32 @@ def get_contextual_index(
     if len(best_candidates) == 1:
         return best_candidates[0]
     return None
+
+
+def get_reference_sequence_start_indexes(
+    reference: Series, sequences: Sequence[Sequence[str]]
+) -> list[list[int]]:
+    """Get reference start indexes matching each complete text sequence.
+
+    Arguments:
+        reference: reference subtitle series
+        sequences: subtitle text sequences to locate
+    Returns:
+        matching zero-based reference start indexes for each sequence
+    """
+    reference_texts = [subtitle.text for subtitle in reference]
+    start_indexes_by_sequence: list[list[int]] = []
+    for sequence in sequences:
+        sequence_texts = list(sequence)
+        last_start = len(reference_texts) - len(sequence_texts)
+        start_indexes = [
+            start_index
+            for start_index in range(last_start + 1)
+            if reference_texts[start_index : start_index + len(sequence_texts)]
+            == sequence_texts
+        ]
+        start_indexes_by_sequence.append(start_indexes)
+    return start_indexes_by_sequence
 
 
 def get_selected_event_indexes(

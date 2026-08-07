@@ -6,26 +6,36 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from importlib import import_module
 from types import ModuleType
 from typing import TYPE_CHECKING
 
 __all__ = [
     "import_demucs_infer_apply",
     "import_demucs_infer_pretrained",
+    "import_firered_aed",
+    "import_firered_lid",
     "import_huggingface_hub",
     "import_huggingface_hub_utils",
     "import_mlx_audio_stt_load",
+    "import_pyannote_audio",
+    "import_pyannote_audio_voice_activity_detection",
+    "import_ten_vad",
     "import_torch",
     "import_torchaudio",
     "import_transformers",
     "import_whisper_timestamped",
     "import_whisper_timestamped_transcribe",
+    "import_yaml",
 ]
 
 if TYPE_CHECKING:
     from demucs_infer.apply import BagOfModels, Model
+    from mlx_audio.stt.models.fireredasr2 import Model as FireRedAsr2Model
+    from mlx_audio.stt.models.glmasr import Model as GlmAsrModel
     from mlx_audio.stt.models.mimo_v2_asr import Model as MimoModel
     from mlx_audio.stt.models.qwen3_asr import Model as Qwen3AsrModel
+    from mlx_audio.stt.models.sensevoice import Model as SenseVoiceModel
     from torch import Tensor
     from transformers import PreTrainedModel, ProcessorMixin
     from whisper import Whisper
@@ -33,7 +43,9 @@ if TYPE_CHECKING:
     type CtcModel = PreTrainedModel
     type CtcProcessor = ProcessorMixin
     type DemucsModel = BagOfModels | Model
-    type MlxAudioModel = MimoModel | Qwen3AsrModel
+    type MlxAudioModel = (
+        FireRedAsr2Model | GlmAsrModel | MimoModel | Qwen3AsrModel | SenseVoiceModel
+    )
     type TorchTensor = Tensor
     type WhisperModel = Whisper
 
@@ -41,6 +53,32 @@ _TRANSCRIPTION_EXTRA_MESSAGE = (
     "Transcription support requires optional transcription dependencies. "
     "Install scinoephile with the 'transcription' extra."
 )
+
+
+def import_firered_aed() -> tuple[type[object], type[object]]:
+    """Import the official FireRed multi-label VAD classes on demand.
+
+    Returns:
+        FireRed AED model and configuration classes
+    """
+    try:
+        from fireredasr2s.fireredvad import FireRedAed, FireRedAedConfig
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return FireRedAed, FireRedAedConfig
+
+
+def import_firered_lid() -> tuple[type[object], type[object]]:
+    """Import the official FireRed language-identification classes on demand.
+
+    Returns:
+        FireRed LID model and configuration classes
+    """
+    try:
+        from fireredasr2s.fireredlid import FireRedLid, FireRedLidConfig
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return FireRedLid, FireRedLidConfig
 
 
 def import_demucs_infer_apply() -> ModuleType:
@@ -108,6 +146,50 @@ def import_mlx_audio_stt_load() -> Callable[..., object]:
     return load
 
 
+def import_pyannote_audio() -> ModuleType:
+    """Import pyannote.audio on demand.
+
+    Returns:
+        pyannote.audio module
+    """
+    try:
+        import pyannote.audio
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return pyannote.audio
+
+
+def import_pyannote_audio_voice_activity_detection() -> Callable[..., object]:
+    """Import pyannote.audio's VAD pipeline class on demand.
+
+    Returns:
+        pyannote.audio voice activity detection pipeline class
+    """
+    try:
+        from pyannote.audio.pipelines import VoiceActivityDetection
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return VoiceActivityDetection
+
+
+def import_ten_vad() -> ModuleType:
+    """Import the official TEN VAD runtime on demand.
+
+    Returns:
+        TEN VAD module
+    """
+    try:
+        import ten_vad
+    except ImportError as exc:
+        raise ImportError(
+            "TEN VAD support requires the official ten-vad package, which is not "
+            "bundled because its license adds restrictions to Apache 2.0. Review "
+            "https://github.com/TEN-framework/ten-vad/blob/main/LICENSE before "
+            "installing it."
+        ) from exc
+    return ten_vad
+
+
 def import_torch() -> ModuleType:
     """Import Torch on demand.
 
@@ -167,7 +249,20 @@ def import_whisper_timestamped_transcribe() -> ModuleType:
         Whisper Timestamped transcription module
     """
     try:
-        import whisper_timestamped.transcribe as whisper_timestamped_transcribe
+        whisper_timestamped_transcribe = import_module("whisper_timestamped.transcribe")
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return whisper_timestamped_transcribe
+
+
+def import_yaml() -> ModuleType:
+    """Import PyYAML on demand.
+
+    Returns:
+        PyYAML module
+    """
+    try:
+        import yaml
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return yaml

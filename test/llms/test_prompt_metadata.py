@@ -155,7 +155,7 @@ def _get_legacy_prompt_name(prompt: Prompt) -> str:
     prompt_fields = {
         field.name: getattr(prompt, field.name)
         for field in fields(prompt)
-        if field.name != "language"
+        if field.name not in {"language", "legacy_cache_prompts"}
     }
     prompt_fields.update(_LEGACY_TEST_CASE_PROMPT_FIELDS)
     payload_json = json.dumps(

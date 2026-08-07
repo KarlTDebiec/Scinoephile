@@ -8,7 +8,7 @@ from collections.abc import Mapping, Sequence
 from logging import getLogger
 from math import ceil
 from pathlib import Path
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING, ClassVar, cast
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.dependencies.transcription import (
@@ -28,8 +28,13 @@ from .preprocessing_settings import (
 )
 from .transcribed_segment import TranscribedSegment
 from .transcriber import Transcriber
+from .vad import VADImplementation, VoiceActivityDetector
+from .voice_activity_trace import VoiceActivityTrace
 
-__all__ = ["WhisperTranscriber"]
+__all__ = ["SUBTITLE_CREDIT_HALLUCINATION_MARKERS", "WhisperTranscriber"]
+
+SUBTITLE_CREDIT_HALLUCINATION_MARKERS = ("amara.org", "字幕由", "字幕提供者")
+"""Markers indicating an ASR-generated subtitle-credit hallucination."""
 
 _LOCAL_MODEL_PATH_PREFIXES = {"checkpoint", "checkpoints", "model", "models"}
 _MAX_SAMPLE_LEN = 224
@@ -40,6 +45,9 @@ _MAX_TOKENS_PER_SECOND = 16
 
 _MIN_SAMPLE_LEN = 32
 """Minimum token budget for very short source audio."""
+
+_SUBTITLE_CREDIT_MAX_NO_SPEECH_PROBABILITY = 0.6
+"""Minimum no-speech probability for discarding a terminal subtitle credit."""
 
 if TYPE_CHECKING:
     from pydub import AudioSegment
@@ -75,6 +83,8 @@ class WhisperTranscriber(Transcriber):
         condition_on_previous_text: bool = True,
         ctc_aligner: CtcAligner | None = None,
         demucs_separator: DemucsSeparator | None = None,
+        vad_implementation: VADImplementation = VADImplementation.SILERO,
+        vad_detector: VoiceActivityDetector | None = None,
     ):
         """Initialize.
 
@@ -90,6 +100,8 @@ class WhisperTranscriber(Transcriber):
                 the preceding window
             ctc_aligner: optional CTC aligner used when Whisper timestamping fails
             demucs_separator: optional shared Demucs vocal separator
+            vad_implementation: voice activity detection implementation
+            vad_detector: optional shared voice activity detector
         """
         self.model_name = model_name
         self._model: WhisperModel | None = None
@@ -98,7 +110,13 @@ class WhisperTranscriber(Transcriber):
         self.condition_on_previous_text = condition_on_previous_text
         self.ctc_aligner = ctc_aligner
         super().__init__(
-            cache_root_path, demucs_mode, vad_mode, overwrite_cache, demucs_separator
+            cache_root_path,
+            demucs_mode,
+            vad_mode,
+            overwrite_cache,
+            demucs_separator,
+            vad_implementation,
+            vad_detector,
         )
 
     @property
@@ -197,9 +215,36 @@ class WhisperTranscriber(Transcriber):
             normalized transcription segments
         """
         normalized_segments: list[TranscribedSegment] = []
+        text_segment_indexes = [
+            idx for idx, segment in enumerate(segments) if segment.text.strip()
+        ]
+        last_text_segment_idx = None
+        if text_segment_indexes:
+            last_text_segment_idx = text_segment_indexes[-1]
         segment_idx = 0
         while segment_idx < len(segments):
             segment = segments[segment_idx].model_copy(deep=True)
+
+            normalized_text = segment.text.casefold()
+            if (
+                segment_idx == last_text_segment_idx
+                and segment.no_speech_prob is not None
+                and segment.no_speech_prob >= _SUBTITLE_CREDIT_MAX_NO_SPEECH_PROBABILITY
+                and any(
+                    marker in normalized_text
+                    for marker in SUBTITLE_CREDIT_HALLUCINATION_MARKERS
+                )
+            ):
+                logger.warning(
+                    f"Discarding terminal Whisper subtitle-credit hallucination for "
+                    f"model={self.model_name} vad={use_vad} "
+                    f"source={source} cache={cache_path} "
+                    f"segment_idx={segment_idx} id={segment.id} "
+                    f"no_speech_prob={segment.no_speech_prob:.3f} "
+                    f"text={segment.text!r}"
+                )
+                segment_idx += 1
+                continue
 
             if segment_idx + 1 < len(segments):
                 next_segment = segments[segment_idx + 1]
@@ -302,15 +347,11 @@ class WhisperTranscriber(Transcriber):
         temperature: object = self.temperature
         if not isinstance(self.temperature, int | float):
             temperature = list(self.temperature)
-        vad_implementation = None
-        if settings.use_vad:
-            vad_implementation = "whisper-timestamped"
         metadata: dict[str, object] = {
             "condition_on_previous_text": self.condition_on_previous_text,
             "language": self.language,
             "model_name": self.model_name,
             "temperature": temperature,
-            "vad_implementation": vad_implementation,
         }
         if self.ctc_aligner is not None:
             metadata.update(
@@ -341,6 +382,34 @@ class WhisperTranscriber(Transcriber):
             segments, source="cache", cache_path=cache_path, use_vad=settings.use_vad
         )
 
+    def _get_whisper_vad(
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
+    ) -> tuple[bool | list[tuple[float, float]], VoiceActivityTrace | None]:
+        """Get Whisper-compatible VAD intervals and their probability trace.
+
+        Arguments:
+            audio: audio whose speech intervals should be detected
+            settings: active preprocessing settings
+        Returns:
+            Whisper VAD configuration and its probability trace, if enabled
+        Raises:
+            TranscriptionEmptyError: if enabled VAD finds no speech
+        """
+        if not settings.use_vad:
+            return False, None
+
+        trace = self._get_voice_activity_trace(audio)
+        speech_intervals = self.vad_detector.get_speech_intervals(trace)
+        if not speech_intervals:
+            implementation_label = self.vad_detector.implementation.value.upper()
+            raise TranscriptionEmptyError(
+                f"{implementation_label} VAD found no speech."
+            )
+        return (
+            [(start_ms / 1000, end_ms / 1000) for start_ms, end_ms in speech_intervals],
+            trace,
+        )
+
     def _transcribe_attempt(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> list[TranscribedSegment]:
@@ -355,8 +424,9 @@ class WhisperTranscriber(Transcriber):
             TranscriptionInferenceError: if Whisper fails with an assertion
         """
         whisper_timestamped = import_whisper_timestamped()
-        try:
-            with get_temp_file_path(suffix=".wav") as temp_audio_path:
+        whisper_vad, voice_activity_trace = self._get_whisper_vad(audio, settings)
+        with get_temp_file_path(suffix=".wav") as temp_audio_path:
+            try:
                 audio.export(temp_audio_path, format="wav")
                 sample_len = self._get_sample_len(audio)
                 logger.debug(
@@ -374,9 +444,9 @@ class WhisperTranscriber(Transcriber):
                     """Decode a window and record whether it exhausts its budget."""
                     decode_result = decode(mel, options, **kwargs)
                     decode_results = (
-                        decode_result
+                        cast("list[DecodingResult]", decode_result)
                         if isinstance(decode_result, list)
-                        else [decode_result]
+                        else [cast("DecodingResult", decode_result)]
                     )
                     if any(
                         len(result.tokens) >= sample_len for result in decode_results
@@ -391,7 +461,7 @@ class WhisperTranscriber(Transcriber):
                             model,
                             str(temp_audio_path),
                             language=self.language,
-                            vad=settings.use_vad,
+                            vad=whisper_vad,
                             temperature=self.temperature,
                             condition_on_previous_text=self.condition_on_previous_text,
                             sample_len=sample_len,
@@ -405,18 +475,23 @@ class WhisperTranscriber(Transcriber):
                     if self.ctc_aligner is not None and str(exc).startswith(
                         "Inconsistent number of segments:"
                     ):
-                        return self._transcribe_with_ctc_fallback(
+                        fallback_segments = self._transcribe_with_ctc_fallback(
                             audio, temp_audio_path, sample_len, exc
                         )
+                        if voice_activity_trace is not None:
+                            return self._add_voice_activity_scores(
+                                fallback_segments, voice_activity_trace
+                            )
+                        return fallback_segments
                     raise TranscriptionInferenceError(
                         f"Whisper inference failed with an assertion: {exc}"
                     ) from exc
-        except TranscriptionInferenceError:
-            raise
-        except (ImportError, OSError, RuntimeError, ValueError) as exc:
-            raise TranscriptionInferenceError(
-                f"Unable to run Whisper inference: {exc}"
-            ) from exc
+            except TranscriptionInferenceError:
+                raise
+            except (ImportError, OSError, RuntimeError, ValueError) as exc:
+                raise TranscriptionInferenceError(
+                    f"Unable to run Whisper inference: {exc}"
+                ) from exc
 
         segments = [
             TranscribedSegment.model_validate(segment) for segment in result["segments"]
@@ -427,9 +502,14 @@ class WhisperTranscriber(Transcriber):
                 f"Whisper reached its {sample_len}-token decoding limit "
                 f"(affected windows: {limit_hit_count})"
             )
-        return self._normalize_transcription_segments(
+        normalized_segments = self._normalize_transcription_segments(
             segments, source="whisper", cache_path=None, use_vad=settings.use_vad
         )
+        if voice_activity_trace is not None:
+            return self._add_voice_activity_scores(
+                normalized_segments, voice_activity_trace
+            )
+        return normalized_segments
 
     def _transcribe_with_ctc_fallback(
         self,

@@ -21,6 +21,9 @@ from .preprocessing_settings import (
     VADMode,
 )
 from .transcribed_segment import TranscribedSegment
+from .vad import VADImplementation, VoiceActivityDetector
+from .vad_cache import VoiceActivityCache
+from .voice_activity_trace import VoiceActivityTrace
 
 __all__ = ["Transcriber"]
 
@@ -46,6 +49,8 @@ class Transcriber(ABC):
         vad_mode: VADMode = VADMode.OFF,
         overwrite_cache: bool = False,
         demucs_separator: DemucsSeparator | None = None,
+        vad_implementation: VADImplementation = VADImplementation.SILERO,
+        vad_detector: VoiceActivityDetector | None = None,
     ):
         """Initialize.
 
@@ -55,6 +60,8 @@ class Transcriber(ABC):
             vad_mode: voice activity detection mode
             overwrite_cache: whether to replace matching cache files
             demucs_separator: optional shared Demucs vocal separator
+            vad_implementation: voice activity detection implementation
+            vad_detector: optional shared voice activity detector
         """
         self.demucs_mode = demucs_mode
         """Demucs preprocessing mode."""
@@ -62,10 +69,22 @@ class Transcriber(ABC):
         self.vad_mode = vad_mode
         """Voice activity detection mode."""
 
+        if vad_detector is None:
+            vad_detector = VoiceActivityDetector(vad_implementation)
+        self.vad_detector = vad_detector
+        """Voice activity detector used by VAD-enabled configurations."""
+
         self._cache = TranscriptionCache(
             cache_root_path, self.backend_name, self.backend_label, overwrite_cache
         )
         """Timestamped transcription cache."""
+
+        self._voice_activity_cache: VoiceActivityCache | None = None
+        """Frame-level voice activity score cache, when VAD is enabled."""
+        if self.vad_mode is not VADMode.OFF:
+            self._voice_activity_cache = VoiceActivityCache(
+                self._cache.cache_root_path, overwrite_cache
+            )
 
         self.demucs_separator: DemucsSeparator | None = None
         """Demucs vocal separator used by configured preprocessing settings."""
@@ -161,6 +180,37 @@ class Transcriber(ABC):
             audio, settings_to_run, rejected_settings, separated_audio, is_usable
         )
 
+    def _add_voice_activity_scores(
+        self, segments: Sequence[TranscribedSegment], trace: VoiceActivityTrace
+    ) -> list[TranscribedSegment]:
+        """Attach VAD score summaries to timestamped words and gaps.
+
+        Arguments:
+            segments: timestamped transcription segments
+            trace: frame-level voice activity model scores
+        Returns:
+            copied segments with per-word and following-gap score summaries
+        """
+        output_segments = [segment.model_copy(deep=True) for segment in segments]
+        words = [
+            word
+            for segment in output_segments
+            for word in (segment.words if segment.words is not None else [])
+        ]
+        for word_idx, word in enumerate(words):
+            word.voice_activity_score = trace.get_mean_score(word.start, word.end)
+            word.voice_activity_peak = trace.get_peak_score(word.start, word.end)
+            word.voice_activity_coverage = trace.get_coverage(
+                word.start, word.end, self.vad_detector.threshold
+            )
+            if word_idx == len(words) - 1:
+                continue
+            next_word = words[word_idx + 1]
+            word.following_voice_activity_score = trace.get_mean_score(
+                word.end, next_word.start
+            )
+        return output_segments
+
     def _find_cached_transcription(
         self,
         audio: AudioSegment,
@@ -253,6 +303,7 @@ class Transcriber(ABC):
             "demucs_model_name": demucs_model_name,
             "use_demucs": settings.use_demucs,
             "use_vad": settings.use_vad,
+            "vad": self.vad_detector.cache_identity if settings.use_vad else None,
         }
 
     def _get_separated_audio(self, audio: AudioSegment) -> AudioSegment | None:
@@ -275,6 +326,24 @@ class Transcriber(ABC):
                 f"with original audio: {exc}"
             )
             return None
+
+    def _get_voice_activity_trace(self, audio: AudioSegment) -> VoiceActivityTrace:
+        """Get cached or newly inferred frame-level voice activity scores.
+
+        Arguments:
+            audio: original or Demucs-separated audio
+        Returns:
+            frame-level voice activity model scores
+        """
+        if self._voice_activity_cache is None:
+            raise RuntimeError("Voice activity trace requested while VAD is disabled.")
+        metadata = self.vad_detector.trace_cache_identity
+        trace = self._voice_activity_cache.load(audio, metadata)
+        if trace is not None:
+            return trace
+        trace = self.vad_detector.get_trace(audio)
+        self._voice_activity_cache.save(audio, metadata, trace)
+        return trace
 
     def _prepare_cached_segments(
         self,

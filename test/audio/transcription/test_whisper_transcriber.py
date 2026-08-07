@@ -38,6 +38,7 @@ _OPTIONAL_TRANSCRIPTION_MODULES = (
     "demucs_infer",
     "huggingface_hub",
     "onnxruntime",
+    "ten_vad",
     "torch",
     "torchaudio",
     "transformers",
@@ -912,6 +913,95 @@ def test_normalize_transcription_segments_coalesces_malformed_duplicate_pair():
         "先生",
         "你就",
     ]
+
+
+def test_normalize_transcription_segments_discards_terminal_credit_hallucination(
+    caplog: LogCaptureFixture,
+):
+    """Test a terminal high-no-speech subtitle credit is discarded.
+
+    Arguments:
+        caplog: captured log records
+    """
+    transcriber = WhisperTranscriber(model_name="custom/model")
+    dialogue = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.0,
+        end=1.0,
+        text="對白",
+        words=[TranscribedWord(text="對白", start=0.0, end=1.0, confidence=1.0)],
+    )
+    credit = TranscribedSegment(
+        id=1,
+        seek=0,
+        start=1.0,
+        end=1.5,
+        text="字幕由 Amara.org 社群提供",
+        no_speech_prob=0.824,
+        words=[
+            TranscribedWord(
+                text="字幕由 Amara.org 社群提供", start=1.0, end=1.5, confidence=1.0
+            )
+        ],
+    )
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        [dialogue, credit],
+        source="cache",
+        cache_path=Path("/tmp/whisper.json"),
+        use_vad=False,
+    )
+
+    assert normalized_segments == [dialogue]
+    assert "Discarding terminal Whisper subtitle-credit hallucination" in caplog.text
+
+
+@parametrize(
+    ("credit_idx", "no_speech_prob"),
+    [(0, 0.824), (1, 0.1)],
+    ids=("nonterminal", "plausible-speech"),
+)
+def test_normalize_transcription_segments_preserves_ambiguous_credit_segments(
+    credit_idx: int, no_speech_prob: float
+):
+    """Test ambiguous subtitle-credit segments remain subject to validation.
+
+    Arguments:
+        credit_idx: index at which the credit-like segment appears
+        no_speech_prob: no-speech probability assigned to the credit-like segment
+    """
+    transcriber = WhisperTranscriber(model_name="custom/model")
+    dialogue = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.0,
+        end=1.0,
+        text="對白",
+        words=[TranscribedWord(text="對白", start=0.0, end=1.0, confidence=1.0)],
+    )
+    credit = TranscribedSegment(
+        id=1,
+        seek=0,
+        start=1.0,
+        end=1.5,
+        text="字幕由 Amara.org 社群提供",
+        no_speech_prob=no_speech_prob,
+        words=[
+            TranscribedWord(
+                text="字幕由 Amara.org 社群提供", start=1.0, end=1.5, confidence=1.0
+            )
+        ],
+    )
+    segments = [dialogue, credit]
+    if credit_idx == 0:
+        segments.reverse()
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        segments, source="whisper", cache_path=None, use_vad=False
+    )
+
+    assert normalized_segments == segments
 
 
 def test_get_segment_split_at_idx_includes_segment_details_in_error():

@@ -349,3 +349,9 @@ def test_last_error_propagates_when_every_configuration_fails(tmp_path: Path):
 
     with raises(TranscriptionInferenceError, match="last"):
         transcriber(audio)
+
+    for settings in (vad_settings, no_vad_settings):
+        cache_path = transcriber._cache.get_path(
+            audio, transcriber._get_cache_metadata(audio, settings)
+        )
+        assert not cache_path.exists()

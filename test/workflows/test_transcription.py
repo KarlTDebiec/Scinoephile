@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for reference-guided transcription workflow."""
+"""Tests for the aligned multi-source transcription workflow."""
 
 from __future__ import annotations
 
@@ -9,78 +9,98 @@ from unittest.mock import Mock, patch
 
 from pydub import AudioSegment
 
+from scinoephile.analysis.transcription_alignment import SubtitleTimingSettings
+from scinoephile.audio.classification import AudioClassificationMode
+from scinoephile.audio.diarization import DiarizationMode
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import DemucsMode, VADMode
+from scinoephile.audio.transcription import DemucsMode, VADImplementation
 from scinoephile.core import Language
-from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.lang.transcription.transcriber import (
-    GuidedTranscriber,
-    MlxAudioTimingMode,
-    TranscriptionBackend,
-)
-from scinoephile.workflows.transcription import transcribe_series_guided
+from scinoephile.lang.transcription.pipeline import TranscriptionPipeline
+from scinoephile.workflows.transcription import transcribe_series
 
 
-def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
-    tmp_path: Path,
-):
-    """Test workflow resolves construction and delegates processing."""
-    audio_series = Mock(spec=AudioSeries)
-    reference_series = Series(events=[Subtitle(start=0, end=1000, text="你好")])
-    expected = AudioSeries(audio=AudioSegment.silent(duration=1000))
-    transcriber = Mock(spec=GuidedTranscriber)
-    transcriber.process.return_value = expected
-    delineation_json_path = tmp_path / "delineation.json"
-    punctuation_json_path = tmp_path / "punctuation.json"
+def test_transcribe_series_constructs_aligned_pipeline(tmp_path: Path):
+    """Workflow configuration should construct and invoke the production pipeline."""
+    audio_series = AudioSeries(audio=AudioSegment.silent(duration=1_000), events=[])
+    expected = AudioSeries(audio=audio_series.audio, events=[])
+    pipeline = Mock(spec=TranscriptionPipeline)
+    pipeline.process.return_value = expected
+    provider = Mock()
+    timing = SubtitleTimingSettings(lead_in_seconds=0.1)
 
     with patch(
-        "scinoephile.workflows.transcription.get_guided_transcriber",
-        return_value=transcriber,
-    ) as get_transcriber:
-        output = transcribe_series_guided(
+        "scinoephile.workflows.transcription.get_transcription_pipeline",
+        return_value=pipeline,
+    ) as get_pipeline:
+        output = transcribe_series(
             audio_series,
-            reference_series,
             language=Language.yue_hant,
-            guide_language=Language.zho_hans,
-            backend=TranscriptionBackend.MLX_AUDIO,
+            skip_singing_blocks=True,
+            demucs_mode=DemucsMode.ON,
+            diarization_mode=DiarizationMode.ON,
+            skip_non_target_language_blocks=True,
+            vad_implementation=VADImplementation.TEN,
+            block_vad_implementation=VADImplementation.SILERO,
+            mlx_audio_token_limit_guard=False,
             cache_root_path=tmp_path / "cache",
             overwrite_cache=True,
-            strip_generated_punctuation=True,
-            mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
-            mlx_audio_token_limit_guard=True,
+            provider=provider,
+            additional_context="人物名係阿明。",
             no_op=True,
+            aligned_merge_json_path=tmp_path / "merge.json",
             prune_test_cases=True,
-            delineation_json_path=delineation_json_path,
-            punctuation_json_path=punctuation_json_path,
+            timing_settings=timing,
             start_at_idx=1,
-            stop_at_idx=2,
+            stop_at_idx=3,
         )
 
     assert output is expected
-    assert get_transcriber.call_args.args == (Language.yue_hant, Language.zho_hans)
-    assert get_transcriber.call_args.kwargs["demucs_mode"] is DemucsMode.OFF
-    assert get_transcriber.call_args.kwargs["vad_mode"] is VADMode.OFF
-    assert get_transcriber.call_args.kwargs["backend"] is (
-        TranscriptionBackend.MLX_AUDIO
+    get_pipeline.assert_called_once_with(
+        Language.yue_hant,
+        audio_event_mode=AudioClassificationMode.AUTO,
+        skip_singing_blocks=True,
+        source_specs=None,
+        demucs_mode=DemucsMode.ON,
+        diarization_mode=DiarizationMode.ON,
+        language_identification_mode=AudioClassificationMode.AUTO,
+        skip_non_target_language_blocks=True,
+        vad_implementation=VADImplementation.TEN,
+        block_vad_implementation=VADImplementation.SILERO,
+        mlx_audio_token_limit_guard=False,
+        cache_root_path=tmp_path / "cache",
+        overwrite_cache=True,
+        provider=provider,
+        additional_context="人物名係阿明。",
+        no_op=True,
+        aligned_merge_json_path=tmp_path / "merge.json",
+        prune_test_cases=True,
+        aligned_merge_test_cases=None,
+        timing_settings=timing,
     )
-    assert get_transcriber.call_args.kwargs["cache_root_path"] == tmp_path / "cache"
-    assert get_transcriber.call_args.kwargs["overwrite_cache"] is True
-    assert get_transcriber.call_args.kwargs["strip_generated_punctuation"] is True
-    assert (
-        get_transcriber.call_args.kwargs["mlx_audio_timing_mode"]
-        is MlxAudioTimingMode.PHRASE
+    pipeline.process.assert_called_once_with(
+        audio_series, start_at_idx=1, stop_at_idx=3
     )
-    assert get_transcriber.call_args.kwargs["mlx_audio_token_limit_guard"] is True
-    assert get_transcriber.call_args.kwargs["no_op"] is True
-    assert get_transcriber.call_args.kwargs["prune_test_cases"] is True
-    assert (
-        get_transcriber.call_args.kwargs["delineation_json_path"]
-        == delineation_json_path
+
+
+def test_transcribe_series_saves_injected_pipeline_artifact(tmp_path: Path):
+    """An injected pipeline should save its portable artifact when requested."""
+    audio_series = AudioSeries(audio=AudioSegment.silent(duration=1_000), events=[])
+    expected = AudioSeries(audio=audio_series.audio, events=[])
+    pipeline = Mock(spec=TranscriptionPipeline)
+    pipeline.process.return_value = expected
+    artifact = Mock()
+    pipeline.last_alignment_artifact = artifact
+    artifact_path = tmp_path / "alignment.json"
+
+    output = transcribe_series(
+        audio_series,
+        language=Language.yue_hant,
+        pipeline=pipeline,
+        alignment_json_path=artifact_path,
     )
-    assert (
-        get_transcriber.call_args.kwargs["punctuation_json_path"]
-        == punctuation_json_path
+
+    assert output is expected
+    pipeline.process.assert_called_once_with(
+        audio_series, start_at_idx=0, stop_at_idx=None
     )
-    transcriber.process.assert_called_once_with(
-        audio_series, reference_series, stop_at_idx=2, start_at_idx=1
-    )
+    artifact.save.assert_called_once_with(artifact_path)

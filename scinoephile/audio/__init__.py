@@ -4,5 +4,5 @@
 
 Package hierarchy (modules may import from any above):
 * transcription
-* subtitles
+* classification / diarization / subtitles
 """
