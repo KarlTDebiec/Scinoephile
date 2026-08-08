@@ -1,17 +1,21 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Workflow for reference-guided audio transcription."""
+"""Reusable audio transcription workflows."""
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from pathlib import Path
 
+from scinoephile.analysis.transcription import TimingSettings
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.transcription import DemucsMode, VadMode
+from scinoephile.audio.vad import VadImplementation
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.transcription.guided import get_guided_transcriber
+from scinoephile.lang.transcription.sources import TranscriptionSourceSpec
 from scinoephile.lang.transcription.transcriber import (
     GuidedTranscriber,
     MlxAudioTimingMode,
@@ -21,8 +25,98 @@ from scinoephile.llms.delineation import DelineationPrompt
 from scinoephile.llms.punctuation import PunctuationPrompt
 
 from .helpers import resolve_language
+from .transcription_pipeline import AudioAnalysisMode, TranscriptionPipeline
+from .transcription_pipeline.factory import get_transcription_pipeline
 
-__all__ = ["transcribe_series_guided"]
+__all__ = ["transcribe_series", "transcribe_series_guided"]
+
+
+def transcribe_series(
+    audio_series: AudioSeries,
+    *,
+    language: Language,
+    audio_event_mode: AudioAnalysisMode = AudioAnalysisMode.AUTO,
+    source_specs: Sequence[TranscriptionSourceSpec] | None = None,
+    demucs_mode: DemucsMode = DemucsMode.OFF,
+    diarization_mode: AudioAnalysisMode = AudioAnalysisMode.AUTO,
+    language_identification_mode: AudioAnalysisMode = AudioAnalysisMode.AUTO,
+    block_vad_implementation: VadImplementation = VadImplementation.PYANNOTE,
+    cache_root_path: Path | None = None,
+    overwrite_cache: bool = False,
+    provider: LLMProvider | None = None,
+    additional_context: str | None = None,
+    no_op: bool = False,
+    current_test_cases_path: Path | None = None,
+    alignment_outfile_path: Path | None = None,
+    run_manifest_outfile_path: Path | None = None,
+    prune_test_cases: bool = False,
+    shared_test_cases: list[TestCase] | None = None,
+    timing_settings: TimingSettings | None = None,
+    pipeline: TranscriptionPipeline | None = None,
+    start_at_idx: int = 0,
+    stop_at_idx: int | None = None,
+) -> AudioSeries:
+    """Transcribe audio using aligned equal-status ASR evidence.
+
+    Arguments:
+        audio_series: complete source audio without required subtitle events
+        language: transcription and output language
+        audio_event_mode: source-wide speech, singing, and music mode
+        source_specs: optional ASR source registry override
+        demucs_mode: source-level vocal-separation mode
+        diarization_mode: source-wide speaker diarization mode
+        language_identification_mode: source-wide spoken-language mode
+        block_vad_implementation: VAD used for block planning and pause evidence
+        cache_root_path: cache root directory path
+        overwrite_cache: whether to replace matching generated cache files
+        provider: provider to use for consensus queries
+        additional_context: additional context for the consensus prompt
+        no_op: whether to use deterministic column consensus instead of an LLM
+        current_test_cases_path: current transcription test-case JSON path
+        alignment_outfile_path: portable alignment artifact output path
+        run_manifest_outfile_path: current-run provenance manifest output path
+        prune_test_cases: whether to remove unencountered transcription test cases
+        shared_test_cases: preloaded transcription test cases
+        timing_settings: reference-free merged subtitle display timing
+        pipeline: optional preconfigured pipeline override
+        start_at_idx: inclusive zero-based VAD block index at which to start
+        stop_at_idx: exclusive zero-based VAD block index at which to stop
+    Returns:
+        merged and timed audio subtitle series
+    """
+    if pipeline is None:
+        pipeline = get_transcription_pipeline(
+            language,
+            audio_event_mode=audio_event_mode,
+            source_specs=source_specs,
+            demucs_mode=demucs_mode,
+            diarization_mode=diarization_mode,
+            language_identification_mode=language_identification_mode,
+            block_vad_implementation=block_vad_implementation,
+            cache_root_path=cache_root_path,
+            overwrite_cache=overwrite_cache,
+            provider=provider,
+            additional_context=additional_context,
+            no_op=no_op,
+            current_test_cases_path=current_test_cases_path,
+            prune_test_cases=prune_test_cases,
+            shared_test_cases=shared_test_cases,
+            timing_settings=timing_settings,
+        )
+    output = pipeline.process(
+        audio_series, start_at_idx=start_at_idx, stop_at_idx=stop_at_idx
+    )
+    if alignment_outfile_path is not None:
+        if pipeline.last_alignment_artifact is None:
+            raise RuntimeError(
+                "Transcription pipeline did not retain an alignment artifact."
+            )
+        pipeline.last_alignment_artifact.save(alignment_outfile_path)
+    if run_manifest_outfile_path is not None:
+        if pipeline.last_run_manifest is None:
+            raise RuntimeError("Transcription pipeline did not retain a run manifest.")
+        pipeline.last_run_manifest.save(run_manifest_outfile_path)
+    return output
 
 
 def transcribe_series_guided(

@@ -1,4 +1,4 @@
 interface:
-  display_name: "Run Transcription Audits"
-  short_description: "Audit transcription delineation and punctuation"
-  default_prompt: "Use $run-transcription-workflow to transcribe a movie and verify delineation and punctuation in five-block batches."
+  display_name: "Run Transcription Workflow"
+  short_description: "Run and audit multi-source transcription"
+  default_prompt: "Use $run-transcription-workflow to transcribe a movie with the aligned multi-source pipeline and audit its versioned alignment artifact in five-block batches."
