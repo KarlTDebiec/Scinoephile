@@ -95,6 +95,19 @@ def test_get_cache_entries_supports_grouped_llm_namespaces(tmp_path: Path):
     ]
 
 
+def test_get_cache_entries_supports_grouped_audio_namespaces(tmp_path: Path):
+    """Test audio analyses are exposed as independent cache namespaces."""
+    write_cache_file(tmp_path / "audio/diarization/one.json", "one")
+    write_cache_file(tmp_path / "audio/vad/one.npz", "one")
+
+    assert discover_cache_namespaces(tmp_path) == ["audio/diarization", "audio/vad"]
+    entries = get_cache_entries(tmp_path, namespace="audio/diarization")
+
+    assert [entry.relative_path for entry in entries] == [
+        Path("audio/diarization/one.json")
+    ]
+
+
 def test_get_cache_entries_supports_legacy_media_namespace(tmp_path: Path):
     """Test old media cache namespaces remain available for maintenance.
 
