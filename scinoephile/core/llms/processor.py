@@ -117,6 +117,10 @@ class Processor(ABC):
         self.queryer = Queryer(
             self.test_case_cls,
             verified_test_cases=verified_test_cases,
+            legacy_cache_test_case_classes=[
+                self.manager_cls.get_test_case_cls(legacy_prompt)
+                for legacy_prompt in self.prompt.legacy_cache_prompts
+            ],
             provider=provider,
             cache_root_path=cache_root_path,
             additional_context=additional_context,
