@@ -4,6 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * line_alignment / multisequence_alignment / transcription_alignment
+* transcription_run
 * diff
 * audit / character_error_rate / transcription_timing
 """

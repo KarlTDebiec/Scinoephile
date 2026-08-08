@@ -78,6 +78,9 @@ class Transcriber(ABC):
             cache_root_path, self.backend_name, self.backend_label, overwrite_cache
         )
         """Timestamped transcription cache."""
+        self.last_cache_key_sha256: str | None = None
+        """Digest of the cache entry selected by the latest transcription call."""
+
         self._voice_activity_cache: VoiceActivityCache | None = None
         """Frame-level voice activity score cache, when VAD is enabled."""
         if self.vad_mode is not VADMode.OFF:
@@ -153,6 +156,7 @@ class Transcriber(ABC):
         Returns:
             first usable transcription, or an empty list when output was rejected
         """
+        self.last_cache_key_sha256 = None
         preprocessing_settings = self._get_preprocessing_settings()
 
         # Inspect every cache before running expensive preprocessing
@@ -236,6 +240,7 @@ class Transcriber(ABC):
             cache_path, segments = cached_transcription
             segments = self._prepare_cached_segments(segments, cache_path, settings)
             if segments and (is_usable is None or is_usable(segments)):
+                self.last_cache_key_sha256 = cache_path.stem
                 return segments, rejected_settings
             rejected_settings.add(settings)
         return None, rejected_settings
@@ -404,8 +409,11 @@ class Transcriber(ABC):
                 continue
             successful_result = True
 
-            self._cache.save(audio, self._get_cache_metadata(audio, settings), segments)
+            cache_path = self._cache.save(
+                audio, self._get_cache_metadata(audio, settings), segments
+            )
             if is_usable is None or is_usable(segments):
+                self.last_cache_key_sha256 = cache_path.stem
                 return segments
 
         if not successful_result and last_error is not None:
