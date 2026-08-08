@@ -10,19 +10,16 @@ from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
-from test.data.transcription import process_transcription
+from test.data.transcription import process_transcription_pipeline
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
-input_path = title_root / "input"
 output_path = title_root / "output"
 eng_ocr_path = output_path / "eng_ocr"
 yue_hans_ocr_path = output_path / "yue-Hans_ocr"
 yue_hant_ocr_path = output_path / "yue-Hant_ocr"
-yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
 zho_hans_ocr_path = output_path / "zho-Hans_ocr"
 zho_hant_ocr_path = output_path / "zho-Hant_ocr"
-zho_hant_guide_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
 
 transcription_additional_context = """
 電影背景：
@@ -50,16 +47,7 @@ transcription_additional_context = """
 
 set_logging_verbosity(2)
 
-actions = {
-    # "eng_ocr",
-    # "yue-Hans_ocr",
-    # "yue-Hant_ocr",
-    "zho-Hans_ocr",
-    "zho-Hant_ocr",
-    # "yue-Hans_eng",
-    "zho-Hans_eng",
-    "yue-Hant_transcribe",
-}
+actions = {"yue-Hant_transcribe"}
 if "eng_ocr" in actions:
     process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
 if "yue-Hans_ocr" in actions:
@@ -79,23 +67,10 @@ if "zho-Hans_eng" in actions:
     eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
     process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
 if "yue-Hant_transcribe" in actions:
-    process_transcription(
+    process_transcription_pipeline(
         title_root,
-        zho_hant_guide_path,
         reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        language=Language.yue_hant,
-        guide_language=Language.zho_hant,
-        output_dir_path=yue_hant_transcribe_path,
-        audio_source_path=yue_hant_transcribe_path / "audio" / "audio.wav",
-        media_path=input_path / "source.mkv",
         additional_context=transcription_additional_context,
-        transcription_kw={
-            "delineation_json_path": yue_hant_transcribe_path
-            / "lang/yue_zho/transcription/delineation/mps.json",
-            "punctuation_json_path": yue_hant_transcribe_path
-            / "lang/yue_zho/transcription/punctuation/mps.json",
-        },
-        run_cleaning=False,
-        run_review_and_translation=False,
-        overwrite=True,
+        reference_name="yue-Hant",
+        terminal_alignment_authority="yue-Hant",
     )
