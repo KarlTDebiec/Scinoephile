@@ -3,7 +3,7 @@
 """Code for transcribing audio using guide-language subtitles.
 
 Package hierarchy (modules may import from any above):
-* aligned_merge / alignment / multisource_alignment
+* aligned_merge / alignment / multisource_alignment / sources
 * aligner / multisource
 * transcriber
 * guided
@@ -16,6 +16,7 @@ from .alignment import TranscriptionAlignment
 from .guided import GuidedTranscriptionSpec, TranscriptionLanguageSpec
 from .multisource import MultiSourceTranscriber
 from .multisource_alignment import CantoneseTimedTokenSimilarity
+from .sources import TranscriptionSourceSpec
 from .transcriber import GuidedTranscriber, MlxAudioTimingMode, TranscriptionBackend
 
 __all__ = [
@@ -28,4 +29,5 @@ __all__ = [
     "TranscriptionAlignment",
     "TranscriptionBackend",
     "TranscriptionLanguageSpec",
+    "TranscriptionSourceSpec",
 ]
