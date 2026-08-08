@@ -49,7 +49,9 @@ ocr-cuda = [
 ]
 transcription = [
     "demucs-infer>=4.2.2",
+    "fireredasr2s @ git+https://github.com/FireRedTeam/FireRedASR2S.git@4e7d9aaf4482a47cec1724807026b9b151926eb5",
     "huggingface-hub>=1.25.1",
+    "kaldi-native-fbank>=1.22.3",
     "mlx-audio @ git+https://github.com/ailuntx/mlx-audio@ff0197c0ae9f9fd02072904c696f2533e329c06e ; platform_machine == 'arm64' and sys_platform == 'darwin'",
     "onnxruntime>=1.28.0",
     "torch>=2.10.0",
@@ -128,6 +130,8 @@ allowed-unresolved-imports = [
     "chrome_lens_py.**",
     "demucs_infer",
     "demucs_infer.**",
+    "fireredasr2s",
+    "fireredasr2s.**",
     "huggingface_hub",
     "huggingface_hub.**",
     "mlx_audio",
@@ -159,6 +163,10 @@ scinoephile = [
 ]
 
 [tool.uv]
+override-dependencies = [
+    "numpy>=2.4.6",
+    "transformers>=5.14.1",
+]
 package = true
 
 [[tool.uv.index]]
