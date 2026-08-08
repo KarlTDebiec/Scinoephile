@@ -146,6 +146,7 @@ allowed-unresolved-imports = [
     "whisper.**",
     "whisper_timestamped",
     "whisper_timestamped.**",
+    "yaml",
 ]
 
 [tool.setuptools]

@@ -24,6 +24,7 @@ __all__ = [
     "import_transformers",
     "import_whisper_timestamped",
     "import_whisper_timestamped_transcribe",
+    "import_yaml",
 ]
 
 if TYPE_CHECKING:
@@ -219,3 +220,16 @@ def import_whisper_timestamped_transcribe() -> ModuleType:
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return whisper_timestamped_transcribe
+
+
+def import_yaml() -> ModuleType:
+    """Import PyYAML on demand.
+
+    Returns:
+        PyYAML module
+    """
+    try:
+        import yaml
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return yaml
