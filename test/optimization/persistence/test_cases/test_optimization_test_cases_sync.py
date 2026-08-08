@@ -13,7 +13,6 @@ from pytest import raises
 
 from scinoephile import common
 from scinoephile.core import ScinoephileError
-from scinoephile.llms.punctuation import PunctuationManager
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
 from scinoephile.llms.translation import TranslationManager
 from scinoephile.optimization.persistence.test_cases import (
@@ -353,8 +352,18 @@ def test_sync_round_trips_unbounded_lists(tmp_path: Path):
         json.dumps(
             [
                 {
-                    "query": {"ref_sub": "reference", "target_subs": lines},
-                    "answer": {"target_sub_punctuated": "".join(lines)},
+                    "query": {
+                        "subtitles": [
+                            {"index": index, "text": line}
+                            for index, line in enumerate(lines, start=1)
+                        ]
+                    },
+                    "answer": {
+                        "outputs": [
+                            {"index": index, "text": line}
+                            for index, line in enumerate(lines, start=1)
+                        ]
+                    },
                 }
             ]
         ),
@@ -362,14 +371,14 @@ def test_sync_round_trips_unbounded_lists(tmp_path: Path):
     )
     database_path = tmp_path / "test_cases.sqlite"
 
-    sync_test_cases([source_path], database_path, PunctuationManager, dry_run=False)
+    sync_test_cases([source_path], database_path, TranslationManager, dry_run=False)
     loaded = TestCaseSqliteStore(database_path).get_test_cases_by_source_path(
         str(source_path.resolve())
     )
 
     list_lengths: list[int] = []
     for test_case in loaded:
-        value = test_case.query.get("target_subs")
+        value = test_case.query.get("subtitles")
         if isinstance(value, list):
             list_lengths.append(len(value))
     assert max(list_lengths) >= 36

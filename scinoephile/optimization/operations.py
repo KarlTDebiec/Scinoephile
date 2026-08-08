@@ -5,12 +5,13 @@
 from __future__ import annotations
 
 from scinoephile.core.llms import Manager
-from scinoephile.llms.delineation import DelineationManager
+from scinoephile.llms.aligned_transcription_merge import (
+    AlignedTranscriptionMergeManager,
+)
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
 from scinoephile.llms.guided_translation import GuidedTranslationManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
-from scinoephile.llms.punctuation import PunctuationManager
 from scinoephile.llms.review import ReviewManager
 from scinoephile.llms.translation import TranslationManager
 
@@ -21,12 +22,11 @@ OPERATIONS: dict[str, type[Manager]] = {
     manager_cls.operation: manager_cls
     for manager_cls in sorted(
         (
-            DelineationManager,
+            AlignedTranscriptionMergeManager,
             GapTranslationManager,
             GuidedReviewManager,
             GuidedTranslationManager,
             OcrFusionManager,
-            PunctuationManager,
             ReviewManager,
             TranslationManager,
         ),

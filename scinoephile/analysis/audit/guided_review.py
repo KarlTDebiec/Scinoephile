@@ -535,7 +535,7 @@ def _validate_selected_targets(
     """Validate selected logged targets against the current target block.
 
     This permits an audit of an unaffected prefix after later upstream
-    delineation changes while rejecting selected rows whose indexing changed.
+    boundary changes while rejecting selected rows whose indexing changed.
 
     Arguments:
         test_case: guided-review test case to validate

@@ -11,18 +11,14 @@ from unittest.mock import patch
 from pytest import CaptureFixture, mark, raises
 
 from scinoephile.analysis.audit.aligned_diff import AlignedDiffAuditFilter
-from scinoephile.analysis.audit.delineation import DelineationAuditFilter
 from scinoephile.analysis.audit.dual_review import DualReviewAuditFilter
 from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter
-from scinoephile.analysis.audit.punctuation import PunctuationAuditFilter
 from scinoephile.analysis.audit.review import ReviewAuditFilter
 from scinoephile.analysis.audit.translation import TranslationAuditFilter
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_aligned_diff_cli import AuditAlignedDiffCli
 from scinoephile.cli.audit.audit_cli_base import AuditCliBase
-from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
 from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
-from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
@@ -38,19 +34,15 @@ from scinoephile.common.testing import run_cli_with_args
 def test_audit_cli_subcommands():
     """Test the audit CLI and its workflow subcommands are registered."""
     assert issubclass(AuditAlignedDiffCli, AuditCliBase)
-    assert issubclass(AuditDelineationCli, AuditCliBase)
-    assert issubclass(AuditPunctuationCli, AuditCliBase)
+    assert issubclass(AuditTranscriptionAlignmentCli, AuditCliBase)
     assert issubclass(AuditReviewCli, AuditCliBase)
     assert issubclass(AuditReviewDualCli, AuditCliBase)
     assert issubclass(AuditReviewTradCli, AuditCliBase)
-    assert issubclass(AuditTranscriptionAlignmentCli, AuditCliBase)
     assert issubclass(AuditTranslationCli, AuditCliBase)
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
         "aligned-diff": AuditAlignedDiffCli,
-        "delineation": AuditDelineationCli,
         "ocr-fusion": AuditOcrFusionCli,
-        "punctuation": AuditPunctuationCli,
         "review": AuditReviewCli,
         "review-dual": AuditReviewDualCli,
         "review-trad": AuditReviewTradCli,
@@ -63,9 +55,7 @@ def test_audit_cli_filter_enums():
     """Test every audit CLI parses its expected filter enum."""
     filter_types = {
         AuditAlignedDiffCli: AlignedDiffAuditFilter,
-        AuditDelineationCli: DelineationAuditFilter,
         AuditOcrFusionCli: OcrFusionAuditFilter,
-        AuditPunctuationCli: PunctuationAuditFilter,
         AuditReviewCli: ReviewAuditFilter,
         AuditReviewDualCli: DualReviewAuditFilter,
         AuditReviewTradCli: ReviewAuditFilter,
@@ -82,13 +72,7 @@ def test_audit_cli_filter_enums():
 
 def test_audit_cli_single_json_help_is_concise():
     """Test audit CLIs with one LLM JSON use generic help text."""
-    cli_classes = (
-        AuditDelineationCli,
-        AuditOcrFusionCli,
-        AuditPunctuationCli,
-        AuditReviewCli,
-        AuditTranslationCli,
-    )
+    cli_classes = (AuditOcrFusionCli, AuditReviewCli, AuditTranslationCli)
 
     for cli_class in cli_classes:
         actions = {
@@ -647,39 +631,6 @@ def test_audit_translation_cli_infers_workflow_from_inputs(
     assert "unverified includes" in filter_action.help
 
 
-def test_transcription_audit_cli_help_describes_subtitle_indexes():
-    """Test transcription audit range help describes subtitle indexes."""
-    for cli_class in (AuditAlignedDiffCli, AuditDelineationCli, AuditPunctuationCli):
-        actions = {
-            action.dest: action
-            for action in cli_class.argparser()._actions  # noqa: SLF001
-        }
-        assert actions["first_index"].help == (
-            "first 1-indexed subtitle number to include, inclusive"
-        )
-        assert actions["last_index"].help == (
-            "last 1-indexed subtitle number to include, inclusive"
-        )
-
-    filter_types = {
-        AuditDelineationCli: DelineationAuditFilter,
-        AuditPunctuationCli: PunctuationAuditFilter,
-    }
-    for cli_class, filter_type in filter_types.items():
-        actions = {
-            action.dest: action
-            for action in cli_class.argparser()._actions  # noqa: SLF001
-        }
-        filter_action = actions["row_filter"]
-        assert filter_action.choices is None
-        assert filter_action.metavar == enum_metavar(filter_type)
-        assert isinstance(filter_action.help, str)
-        assert enum_options_list_str(filter_type) in filter_action.help
-        assert "all includes every decision" in filter_action.help
-        assert "changes includes" in filter_action.help
-        assert "unverified includes" in filter_action.help
-
-
 def test_transcription_alignment_audit_cli_help_and_validation(
     tmp_path: Path, capsys: CaptureFixture
 ):
@@ -702,6 +653,10 @@ def test_transcription_alignment_audit_cli_help_and_validation(
         "named reference subtitle as NAME=PATH; repeat for multiple references"
     )
     assert actions["include_timing_tables"].default is False
+    assert actions["include_timing_tables"].help == (
+        "include detailed subtitle and reference timing tables"
+    )
+    assert "columns_per_chunk" not in actions
     assert actions["include_speaker"].default is False
     assert actions["include_language"].default is False
     assert actions["include_merge_support"].default is False

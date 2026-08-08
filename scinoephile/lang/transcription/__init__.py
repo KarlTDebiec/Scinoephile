@@ -1,35 +1,26 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code for transcribing audio using guide-language subtitles.
+"""Reference-free aligned multi-source audio transcription.
 
 Package hierarchy (modules may import from any above):
-* aligned_merge / alignment / multisource_alignment / sources / timing
-* aligner / multisource
-* transcriber / pipeline
-* guided
+* aligned_merge / multisource_alignment / sources / timing
+* multisource
+* pipeline
 """
 
 from __future__ import annotations
 
-from .aligner import TranscriptionAligner
-from .alignment import TranscriptionAlignment
-from .guided import GuidedTranscriptionSpec, TranscriptionLanguageSpec
+from scinoephile.analysis.transcription_alignment import SubtitleTimingSettings
+
 from .multisource import MultiSourceTranscriber
 from .multisource_alignment import CantoneseTimedTokenSimilarity
 from .pipeline import TranscriptionPipeline
 from .sources import TranscriptionSourceSpec
-from .transcriber import GuidedTranscriber, MlxAudioTimingMode, TranscriptionBackend
 
 __all__ = [
     "CantoneseTimedTokenSimilarity",
-    "GuidedTranscriber",
-    "GuidedTranscriptionSpec",
-    "MlxAudioTimingMode",
     "MultiSourceTranscriber",
-    "TranscriptionAligner",
-    "TranscriptionAlignment",
-    "TranscriptionBackend",
-    "TranscriptionLanguageSpec",
+    "SubtitleTimingSettings",
     "TranscriptionPipeline",
     "TranscriptionSourceSpec",
 ]

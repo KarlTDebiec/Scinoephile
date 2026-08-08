@@ -7,7 +7,9 @@ from __future__ import annotations
 from pytest import mark, raises
 
 from scinoephile.core.llms import Manager
-from scinoephile.llms.delineation import DelineationManager
+from scinoephile.llms.aligned_transcription_merge import (
+    AlignedTranscriptionMergeManager,
+)
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
 from scinoephile.llms.guided_translation import (
@@ -15,11 +17,6 @@ from scinoephile.llms.guided_translation import (
     GuidedTranslationPrompt,
 )
 from scinoephile.llms.ocr_fusion import OcrFusionManager
-from scinoephile.llms.punctuation import (
-    PunctuationManager,
-    PunctuationPrompt,
-    PunctuationTestCase,
-)
 from scinoephile.llms.review import ReviewManager, ReviewPrompt, ReviewTestCase
 from scinoephile.llms.translation import TranslationManager, TranslationPrompt
 
@@ -37,18 +34,12 @@ _ALTERNATIVE_REVIEW_PROMPT = ReviewPrompt(
 )
 """Review prompt using alternative correspondence field names."""
 
-_LOCALIZED_PUNCTUATION_PROMPT = PunctuationPrompt(
-    ref_sub="source_two", target_subs="source_one", target_sub_punctuated="result"
-)
-"""Punctuation prompt using non-default correspondence field names."""
-
 _MANAGER_CLASSES: list[type[Manager]] = [
-    DelineationManager,
+    AlignedTranscriptionMergeManager,
     GapTranslationManager,
     GuidedReviewManager,
     GuidedTranslationManager,
     OcrFusionManager,
-    PunctuationManager,
     ReviewManager,
     TranslationManager,
 ]
@@ -120,37 +111,6 @@ def test_prompt_specific_classes_revalidate_by_semantic_field_name():
     assert alternative.answer.model_dump(by_alias=True) == {
         "corrections": [{"position": 1, "content": "corrected", "explanation": "typo"}]
     }
-
-
-def test_punctuation_factory_uses_static_fields_with_prompt_aliases():
-    """Punctuation models should use semantic fields and prompt aliases."""
-    test_case_cls = PunctuationManager.get_test_case_cls(_LOCALIZED_PUNCTUATION_PROMPT)
-
-    assert (
-        PunctuationManager.get_test_case_cls(_LOCALIZED_PUNCTUATION_PROMPT)
-        is test_case_cls
-    )
-    assert issubclass(test_case_cls, PunctuationTestCase)
-    assert set(test_case_cls.query_cls.model_fields) == {"subtitles", "guide"}
-    assert test_case_cls.query_cls.model_fields["subtitles"].alias == "source_one"
-    assert test_case_cls.query_cls.model_fields["guide"].alias == "source_two"
-    assert set(test_case_cls.answer_cls.model_fields) == {"output"}
-    assert test_case_cls.answer_cls.model_fields["output"].alias == "result"
-
-    test_case = test_case_cls.model_validate(
-        {
-            "query": {"subtitles": ["Hello"], "guide": "Hello"},
-            "answer": {"output": "Hello"},
-        }
-    )
-    assert test_case.query.model_dump() == {"subtitles": ["Hello"], "guide": "Hello"}
-    assert test_case.answer is not None
-    assert test_case.answer.model_dump() == {"output": "Hello"}
-    assert test_case.query.model_dump(by_alias=True) == {
-        "source_one": ["Hello"],
-        "source_two": "Hello",
-    }
-    assert test_case.answer.model_dump(by_alias=True) == {"result": "Hello"}
 
 
 def test_generated_test_case_inherits_stable_metadata_schema():
