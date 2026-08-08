@@ -24,7 +24,7 @@ __all__ = [
     "prune_cache",
 ]
 
-_CACHE_NAMESPACE_GROUP_NAMES = ("llm", "media")
+_CACHE_NAMESPACE_GROUP_NAMES = ("audio", "llm", "media")
 """Root directory names whose direct children are cache namespaces."""
 _LEGACY_CACHE_NAMESPACE_MARKER_FILENAME = ".scinoephile-cache-namespace"
 """Obsolete namespace marker filename ignored during cache inspection."""

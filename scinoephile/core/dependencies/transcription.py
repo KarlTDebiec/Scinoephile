@@ -15,11 +15,13 @@ __all__ = [
     "import_huggingface_hub",
     "import_huggingface_hub_utils",
     "import_mlx_audio_stt_load",
+    "import_pyannote_audio",
     "import_torch",
     "import_torchaudio",
     "import_transformers",
     "import_whisper_timestamped",
     "import_whisper_timestamped_transcribe",
+    "import_yaml",
 ]
 
 if TYPE_CHECKING:
@@ -108,6 +110,19 @@ def import_mlx_audio_stt_load() -> Callable[..., object]:
     return load
 
 
+def import_pyannote_audio() -> ModuleType:
+    """Import pyannote.audio on demand.
+
+    Returns:
+        pyannote.audio module
+    """
+    try:
+        import pyannote.audio
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return pyannote.audio
+
+
 def import_torch() -> ModuleType:
     """Import Torch on demand.
 
@@ -171,3 +186,16 @@ def import_whisper_timestamped_transcribe() -> ModuleType:
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return whisper_timestamped_transcribe
+
+
+def import_yaml() -> ModuleType:
+    """Import PyYAML on demand.
+
+    Returns:
+        PyYAML module
+    """
+    try:
+        import yaml
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return yaml

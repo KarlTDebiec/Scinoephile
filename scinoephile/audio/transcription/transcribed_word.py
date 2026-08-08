@@ -20,3 +20,19 @@ class TranscribedWord(BaseModel):
     """End time of the word in seconds."""
     confidence: float = Field(..., description="Confidence of transcription.")
     """Transcription confidence."""
+    speaker: str | None = Field(
+        None, description="Anonymous source-wide diarization speaker label."
+    )
+    """Anonymous source-wide diarization speaker label, when available."""
+    speaker_turn_end: float | None = Field(
+        None,
+        gt=0,
+        description="End of the assigned source-wide diarization turn in seconds.",
+    )
+    """End of the assigned source-wide diarization turn, when available."""
+    speaker_turn_start: float | None = Field(
+        None,
+        ge=0,
+        description="Start of the assigned source-wide diarization turn in seconds.",
+    )
+    """Start of the assigned source-wide diarization turn, when available."""
