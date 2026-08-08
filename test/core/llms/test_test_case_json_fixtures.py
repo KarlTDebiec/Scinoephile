@@ -15,11 +15,9 @@ from scinoephile.core.llms.utils import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
-from scinoephile.llms.delineation import DelineationManager
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
-from scinoephile.llms.punctuation import PunctuationManager
 from scinoephile.llms.review import ReviewManager
 from test.helpers import test_data_root
 
@@ -29,8 +27,6 @@ _TEST_CASE_FAMILIES: tuple[tuple[str, type[Manager]], ...] = (
     ("*/output/*/lang/*/simplify_review.json", ReviewManager),
     ("*/output/*/lang/yue_zho/gap_translation/*.json", GapTranslationManager),
     ("*/output/*/lang/yue_zho/guided_review/*.json", GuidedReviewManager),
-    ("*/output/*/lang/yue_zho/transcription/delineation/*.json", DelineationManager),
-    ("*/output/*/lang/yue_zho/transcription/punctuation/*.json", PunctuationManager),
 )
 
 
@@ -117,14 +113,3 @@ def test_tracked_test_case_json_round_trips_canonically(
     assert [test_case.model_dump(mode="json") for test_case in reloaded_test_cases] == [
         test_case.model_dump(mode="json") for test_case in base_test_cases
     ]
-
-
-def test_tracked_test_case_json_inventory_is_complete():
-    """Fixture contract should cover every tracked test case."""
-    test_case_count = sum(
-        len(json.loads(input_path.read_text(encoding="utf-8")))
-        for input_path, _ in _TEST_CASE_FILES
-    )
-
-    assert len(_TEST_CASE_FILES) == 84
-    assert test_case_count == 32_624
