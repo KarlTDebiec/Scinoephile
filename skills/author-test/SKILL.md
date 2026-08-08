@@ -8,7 +8,7 @@ description: Add or update pytest tests in Scinoephile's test/ suite, including 
 ## Quick steps
 - Identify the closest existing test module under `test/` and mirror its structure.
 - Reuse fixtures from `test/data/<title>/__init__.py`; add new fixtures there if needed.
-- If new expected outputs are required, update the matching `test/data/<title>/create_output.py` or helper functions in `test/data/ocr.py` or `test/data/synchronization.py`.
+- If new expected outputs are required, update the matching `test/data/<title>/<title>.py` or helper functions in `test/data/ocr.py` or `test/data/synchronization.py`.
 - Add or update test data files under `test/data/<title>/input` and `test/data/<title>/output`.
 - Run `uv run ruff format <changed.py>` and `uv run ruff check --fix <changed.py>` on changed Python files.
 - Run tests from `test/` with `cd test && uv run pytest <optional-path>`.
@@ -33,7 +33,7 @@ description: Add or update pytest tests in Scinoephile's test/ suite, including 
 
 ## Generating expected outputs
 - Use the existing helpers in `test/data/ocr.py` and `test/data/synchronization.py` to build consistent output artifacts.
-- Each title has a `test/data/<title>/create_output.py` script; extend it to generate any new outputs.
+- Each title has a `test/data/<title>/<title>.py` script; extend it to generate any new outputs.
 - Keep expected outputs in `test/data/<title>/output` and inputs in `test/data/<title>/input`.
 
 ## Data constraints
