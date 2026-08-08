@@ -31,7 +31,10 @@ from .transcriber import Transcriber
 from .vad import VADImplementation, VoiceActivityDetector
 from .voice_activity_trace import VoiceActivityTrace
 
-__all__ = ["WhisperTranscriber"]
+__all__ = ["SUBTITLE_CREDIT_HALLUCINATION_MARKERS", "WhisperTranscriber"]
+
+SUBTITLE_CREDIT_HALLUCINATION_MARKERS = ("amara.org", "字幕由", "字幕提供者")
+"""Markers indicating an ASR-generated subtitle-credit hallucination."""
 
 _LOCAL_MODEL_PATH_PREFIXES = {"checkpoint", "checkpoints", "model", "models"}
 _MAX_SAMPLE_LEN = 224
@@ -42,6 +45,9 @@ _MAX_TOKENS_PER_SECOND = 16
 
 _MIN_SAMPLE_LEN = 32
 """Minimum token budget for very short source audio."""
+
+_SUBTITLE_CREDIT_MAX_NO_SPEECH_PROBABILITY = 0.6
+"""Minimum no-speech probability for discarding a terminal subtitle credit."""
 
 if TYPE_CHECKING:
     from pydub import AudioSegment
@@ -209,9 +215,36 @@ class WhisperTranscriber(Transcriber):
             normalized transcription segments
         """
         normalized_segments: list[TranscribedSegment] = []
+        text_segment_indexes = [
+            idx for idx, segment in enumerate(segments) if segment.text.strip()
+        ]
+        last_text_segment_idx = None
+        if text_segment_indexes:
+            last_text_segment_idx = text_segment_indexes[-1]
         segment_idx = 0
         while segment_idx < len(segments):
             segment = segments[segment_idx].model_copy(deep=True)
+
+            normalized_text = segment.text.casefold()
+            if (
+                segment_idx == last_text_segment_idx
+                and segment.no_speech_prob is not None
+                and segment.no_speech_prob >= _SUBTITLE_CREDIT_MAX_NO_SPEECH_PROBABILITY
+                and any(
+                    marker in normalized_text
+                    for marker in SUBTITLE_CREDIT_HALLUCINATION_MARKERS
+                )
+            ):
+                logger.warning(
+                    f"Discarding terminal Whisper subtitle-credit hallucination for "
+                    f"model={self.model_name} vad={use_vad} "
+                    f"source={source} cache={cache_path} "
+                    f"segment_idx={segment_idx} id={segment.id} "
+                    f"no_speech_prob={segment.no_speech_prob:.3f} "
+                    f"text={segment.text!r}"
+                )
+                segment_idx += 1
+                continue
 
             if segment_idx + 1 < len(segments):
                 next_segment = segments[segment_idx + 1]
