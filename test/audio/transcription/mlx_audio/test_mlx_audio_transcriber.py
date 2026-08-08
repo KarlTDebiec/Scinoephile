@@ -25,8 +25,11 @@ from scinoephile.audio.transcription import (
     VADMode,
 )
 from scinoephile.audio.transcription.mlx_audio.backend import (
+    FIRERED_ASR2_MODEL_NAME,
+    GLM_ASR_MODEL_NAME,
     MIMO_MODEL_NAME,
     QWEN3_ASR_MODEL_NAME,
+    SENSEVOICE_MODEL_NAME,
     MlxAudioInferenceResult,
 )
 from scinoephile.audio.transcription.mlx_audio.transcriber import MlxAudioTranscriber
@@ -248,6 +251,34 @@ def test_init_rejects_non_positive_max_tokens():
     """Test MLX-Audio rejects unusable generation token limits."""
     with pytest.raises(ValueError, match="MLX-Audio max tokens must be positive"):
         MlxAudioTranscriber(max_tokens=0)
+
+
+def test_init_rejects_token_limit_for_sensevoice():
+    """Test token limits are rejected when the model family ignores them."""
+    with pytest.raises(ValueError, match="sensevoice does not support"):
+        MlxAudioTranscriber(model_name=SENSEVOICE_MODEL_NAME, max_tokens=128)
+
+
+@pytest.mark.parametrize(
+    ("model_name", "expected_max_tokens"),
+    [
+        (SENSEVOICE_MODEL_NAME, None),
+        (FIRERED_ASR2_MODEL_NAME, None),
+        (GLM_ASR_MODEL_NAME, 128),
+    ],
+)
+def test_new_model_families_derive_generation_limits(
+    model_name: str, expected_max_tokens: int | None
+):
+    """Test each new model family derives its effective generation limit.
+
+    Arguments:
+        model_name: MLX-Audio model name
+        expected_max_tokens: effective default generation limit
+    """
+    transcriber = MlxAudioTranscriber(model_name=model_name)
+
+    assert transcriber._effective_max_tokens == expected_max_tokens
 
 
 def test_init_rejects_chunk_duration_that_rounds_to_zero():

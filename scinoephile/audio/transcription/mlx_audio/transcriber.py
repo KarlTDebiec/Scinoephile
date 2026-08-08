@@ -134,6 +134,14 @@ class MlxAudioTranscriber(Transcriber):
         if self.max_tokens is not None and self.max_tokens <= 0:
             raise ValueError("MLX-Audio max tokens must be positive.")
         if (
+            self.max_tokens is not None
+            and self.backend.generation_limit_parameter_name is None
+        ):
+            raise ValueError(
+                f"MLX-Audio {self.backend.model_family} does not support a "
+                "generation token limit."
+            )
+        if (
             self.chunk_duration_seconds is not None
             and round(self.chunk_duration_seconds * 1000) <= 0
         ):
@@ -157,7 +165,7 @@ class MlxAudioTranscriber(Transcriber):
         return self.backend.model_name
 
     @property
-    def _effective_max_tokens(self) -> int:
+    def _effective_max_tokens(self) -> int | None:
         """Get the explicit or model-family default generation token limit."""
         if self.max_tokens is not None:
             return self.max_tokens
@@ -296,15 +304,15 @@ class MlxAudioTranscriber(Transcriber):
                     f"Unable to run MLX-Audio inference: {exc}"
                 ) from exc
             generation_tokens = inference_result.generation_tokens
-            guarded_limit = ceil(max_tokens * _TOKEN_LIMIT_GUARD_FRACTION)
-            if generation_tokens is not None and (
-                generation_tokens >= max_tokens
-                or (guard_token_limit and generation_tokens >= guarded_limit)
-            ):
-                raise _MlxAudioTokenLimitError(
-                    f"MLX-Audio used {generation_tokens} of its {max_tokens} "
-                    "generation tokens."
-                )
+            if max_tokens is not None and generation_tokens is not None:
+                guarded_limit = ceil(max_tokens * _TOKEN_LIMIT_GUARD_FRACTION)
+                if generation_tokens >= max_tokens or (
+                    guard_token_limit and generation_tokens >= guarded_limit
+                ):
+                    raise _MlxAudioTokenLimitError(
+                        f"MLX-Audio used {generation_tokens} of its {max_tokens} "
+                        "generation tokens."
+                    )
             text = inference_result.text
             if not text.strip():
                 raise TranscriptionEmptyError("MLX-Audio returned empty transcript.")
