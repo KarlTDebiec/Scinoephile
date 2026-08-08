@@ -8,63 +8,89 @@ import builtins
 import json
 import wave
 from collections.abc import Mapping, Sequence
+from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import Mock
+from unittest.mock import Mock, call
 
 import pytest
 
 from scinoephile.audio.transcription.exceptions import TranscriptionError
 from scinoephile.audio.transcription.mlx_audio import backend
 from scinoephile.audio.transcription.mlx_audio.backend import (
-    FIRERED_ASR2_MODEL_NAME,
-    GLM_ASR_MODEL_NAME,
-    MIMO_MODEL_NAME,
-    QWEN3_ASR_MODEL_NAME,
-    SENSEVOICE_MODEL_NAME,
+    FIRERED_ASR2_MODEL,
+    GLM_ASR_MODEL,
+    MIMO_MODEL,
+    QWEN3_ASR_MODEL,
+    SENSEVOICE_MODEL,
     MlxAudioBackend,
     MlxAudioInferenceResult,
+    MlxAudioModelProfile,
 )
 from scinoephile.core import Language
 from scinoephile.core.dependencies import transcription as transcription_dependencies
 
 
 @pytest.mark.parametrize(
-    ("model_name", "language", "mlx_audio_language"),
+    ("model_profile", "expected_languages"),
     [
-        (MIMO_MODEL_NAME, Language.eng, "en"),
-        (MIMO_MODEL_NAME, Language.yue_hans, "zh"),
-        (MIMO_MODEL_NAME, Language.yue_hant, "zh"),
-        (MIMO_MODEL_NAME, Language.zho_hans, "zh"),
-        (MIMO_MODEL_NAME, Language.zho_hant, "zh"),
-        (QWEN3_ASR_MODEL_NAME, Language.eng, "English"),
-        (QWEN3_ASR_MODEL_NAME, Language.yue_hans, "Cantonese"),
-        (QWEN3_ASR_MODEL_NAME, Language.yue_hant, "Cantonese"),
-        (QWEN3_ASR_MODEL_NAME, Language.zho_hans, "Chinese"),
-        (QWEN3_ASR_MODEL_NAME, Language.zho_hant, "Chinese"),
-        (SENSEVOICE_MODEL_NAME, Language.eng, "en"),
-        (SENSEVOICE_MODEL_NAME, Language.yue_hans, "yue"),
-        (SENSEVOICE_MODEL_NAME, Language.yue_hant, "yue"),
-        (SENSEVOICE_MODEL_NAME, Language.zho_hans, "zh"),
-        (SENSEVOICE_MODEL_NAME, Language.zho_hant, "zh"),
-        (FIRERED_ASR2_MODEL_NAME, Language.yue_hant, None),
-        (GLM_ASR_MODEL_NAME, Language.yue_hant, None),
+        pytest.param(
+            MIMO_MODEL,
+            {
+                Language.eng: "en",
+                Language.yue_hans: "zh",
+                Language.yue_hant: "zh",
+                Language.zho_hans: "zh",
+                Language.zho_hant: "zh",
+            },
+            id="mimo",
+        ),
+        pytest.param(
+            QWEN3_ASR_MODEL,
+            {
+                Language.eng: "English",
+                Language.yue_hans: "Cantonese",
+                Language.yue_hant: "Cantonese",
+                Language.zho_hans: "Chinese",
+                Language.zho_hant: "Chinese",
+            },
+            id="qwen3-asr",
+        ),
+        pytest.param(
+            SENSEVOICE_MODEL,
+            {
+                Language.eng: "en",
+                Language.yue_hans: "yue",
+                Language.yue_hant: "yue",
+                Language.zho_hans: "zh",
+                Language.zho_hant: "zh",
+            },
+            id="sensevoice",
+        ),
+        pytest.param(FIRERED_ASR2_MODEL, dict.fromkeys(Language), id="firered-asr2"),
+        pytest.param(GLM_ASR_MODEL, dict.fromkeys(Language), id="glm-asr"),
     ],
 )
 def test_init_derives_mlx_audio_languages(
-    model_name: str, language: Language, mlx_audio_language: str
+    model_profile: MlxAudioModelProfile,
+    expected_languages: Mapping[Language, str | None],
 ):
     """Test each model family derives its language identifier."""
-    mlx_audio_backend = MlxAudioBackend(model_name=model_name, language=language)
+    languages = {
+        language: MlxAudioBackend(
+            model_name=model_profile, language=language
+        ).mlx_audio_language
+        for language in Language
+    }
 
-    assert mlx_audio_backend.mlx_audio_language == mlx_audio_language
+    assert languages == expected_languages
 
 
 def test_init_matches_model_name_case_insensitively():
     """Test supported model profiles match model names case-insensitively."""
     mlx_audio_backend = MlxAudioBackend("custom/QWEN3-ASR-0.6B-8bit")
 
-    assert mlx_audio_backend.model_family == "qwen3-asr"
+    assert mlx_audio_backend.model_profile.family_name == "qwen3-asr"
 
 
 @pytest.mark.parametrize(
@@ -76,6 +102,7 @@ def test_init_matches_model_name_case_insensitively():
         ({"model_type": "fireredasr2"}, "firered-asr2"),
         ({"model_type": "glm"}, "glm-asr"),
     ],
+    ids=["mimo", "qwen3-asr", "sensevoice", "firered-asr2", "glm-asr"],
 )
 def test_init_reads_local_model_metadata(
     tmp_path: Path, metadata: dict[str, object], expected_family: str
@@ -87,7 +114,24 @@ def test_init_reads_local_model_metadata(
 
     mlx_audio_backend = MlxAudioBackend(str(model_path))
 
-    assert mlx_audio_backend.model_family == expected_family
+    assert mlx_audio_backend.model_profile.family_name == expected_family
+
+
+def test_init_prefers_exact_metadata_over_parent_path_marker(tmp_path: Path):
+    """Test exact metadata wins over unrelated markers in parent paths.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    model_path = tmp_path / "firered-asr2-evaluation" / "asr"
+    model_path.mkdir(parents=True)
+    (model_path / "config.json").write_text(
+        json.dumps({"model_type": "sensevoice"}), encoding="utf-8"
+    )
+
+    mlx_audio_backend = MlxAudioBackend(str(model_path))
+
+    assert mlx_audio_backend.model_profile.family_name == "sensevoice"
 
 
 def test_init_rejects_untested_family():
@@ -101,55 +145,70 @@ def test_init_rejects_untested_family():
         MlxAudioBackend("mlx-community/Whisper-Large-v3-MLX")
 
 
-def test_transcribe_reads_mapping_result(tmp_path: Path):
-    """Test mapping output and generation arguments are normalized.
+@pytest.mark.parametrize(
+    ("model_result", "language", "max_tokens", "expected_result", "expected_kwargs"),
+    [
+        (
+            {"text": "你好", "generation_tokens": 7},
+            Language.yue_hant,
+            128,
+            MlxAudioInferenceResult(text="你好", generation_tokens=7),
+            {"language": "zh", "max_tokens": 128},
+        ),
+        (
+            SimpleNamespace(text="hello"),
+            Language.eng,
+            None,
+            MlxAudioInferenceResult(text="hello"),
+            {"language": "en"},
+        ),
+    ],
+    ids=["mapping", "attributes"],
+)
+def test_transcribe_normalizes_results(
+    tmp_path: Path,
+    model_result: object,
+    language: Language,
+    max_tokens: int | None,
+    expected_result: MlxAudioInferenceResult,
+    expected_kwargs: dict[str, object],
+):
+    """Test mapping- and attribute-based results are normalized.
 
     Arguments:
         tmp_path: temporary directory path
+        model_result: result returned by the MLX-Audio model
+        language: language to transcribe
+        max_tokens: optional generation limit
+        expected_result: normalized inference result
+        expected_kwargs: expected model generation arguments
     """
-    audio_path = _write_wav(tmp_path / "audio.wav", duration_seconds=0.5)
+    audio_path = _write_wav(tmp_path / "audio.wav")
     model = Mock()
-    model.generate.return_value = {"text": "你好", "generation_tokens": 7}
-    mlx_audio_backend = MlxAudioBackend()
+    model.generate.return_value = model_result
+    mlx_audio_backend = MlxAudioBackend(language=language)
     mlx_audio_backend._model = model
 
-    result = mlx_audio_backend.transcribe(audio_path, 128)
+    result = mlx_audio_backend.transcribe(audio_path, max_tokens)
 
-    assert result == MlxAudioInferenceResult(text="你好", generation_tokens=7)
-    model.generate.assert_called_once_with(
-        str(audio_path), language="zh", max_tokens=128
-    )
-
-
-def test_transcribe_reads_object_result(tmp_path: Path):
-    """Test attribute-based output and omitted token limits are normalized.
-
-    Arguments:
-        tmp_path: temporary directory path
-    """
-    audio_path = _write_wav(tmp_path / "audio.wav", duration_seconds=0.25)
-    model = Mock()
-    model.generate.return_value = SimpleNamespace(text="hello")
-    mlx_audio_backend = MlxAudioBackend(language=Language.eng)
-    mlx_audio_backend._model = model
-
-    result = mlx_audio_backend.transcribe(audio_path)
-
-    assert result.text == "hello"
-    assert result.generation_tokens is None
-    model.generate.assert_called_once_with(str(audio_path), language="en")
+    assert result == expected_result
+    model.generate.assert_called_once_with(str(audio_path), **expected_kwargs)
 
 
 @pytest.mark.parametrize(
     ("model_name", "max_tokens", "expected_kwargs"),
     [
-        (SENSEVOICE_MODEL_NAME, 128, {"language": "yue"}),
-        (FIRERED_ASR2_MODEL_NAME, 128, {"max_len": 128}),
-        (GLM_ASR_MODEL_NAME, 128, {"max_tokens": 128}),
+        (SENSEVOICE_MODEL, None, {"language": "yue"}),
+        (FIRERED_ASR2_MODEL, 128, {"max_len": 128}),
+        (GLM_ASR_MODEL, 128, {"max_tokens": 128}),
     ],
+    ids=["sensevoice", "firered-asr2", "glm-asr"],
 )
 def test_transcribe_adapts_model_specific_generation_arguments(
-    tmp_path: Path, model_name: str, max_tokens: int, expected_kwargs: dict[str, object]
+    tmp_path: Path,
+    model_name: MlxAudioModelProfile,
+    max_tokens: int | None,
+    expected_kwargs: dict[str, object],
 ):
     """Test new model families receive only generation arguments they support.
 
@@ -171,80 +230,130 @@ def test_transcribe_adapts_model_specific_generation_arguments(
     model.generate.assert_called_once_with(str(audio_path), **expected_kwargs)
 
 
-def test_transcribe_rejects_missing_text(tmp_path: Path):
-    """Test output without transcript text is rejected.
-
-    Arguments:
-        tmp_path: temporary directory path
-    """
-    audio_path = _write_wav(tmp_path / "audio.wav")
-    model = Mock()
-    model.generate.return_value = {}
-    mlx_audio_backend = MlxAudioBackend()
-    mlx_audio_backend._model = model
-
-    with pytest.raises(ValueError, match="missing transcript text"):
-        mlx_audio_backend.transcribe(audio_path)
-
-
-@pytest.mark.parametrize("generation_tokens", [True, -1, 1.5, "1"])
-def test_transcribe_rejects_invalid_generation_tokens(
-    tmp_path: Path, generation_tokens: object
+@pytest.mark.parametrize(
+    ("model_profile", "max_tokens", "expected_message"),
+    [
+        (MIMO_MODEL, 0, "max tokens must be positive"),
+        (SENSEVOICE_MODEL, 128, "sensevoice does not support"),
+    ],
+    ids=["non-positive", "unsupported"],
+)
+def test_transcribe_rejects_invalid_generation_limit(
+    tmp_path: Path,
+    model_profile: MlxAudioModelProfile,
+    max_tokens: int,
+    expected_message: str,
 ):
-    """Test malformed generation token counts are rejected.
+    """Test the direct backend rejects invalid generation limits.
 
     Arguments:
         tmp_path: temporary directory path
-        generation_tokens: invalid token count
+        model_profile: MLX-Audio model profile
+        max_tokens: invalid generation limit
+        expected_message: expected validation error text
+    """
+    audio_path = _write_wav(tmp_path / "audio.wav")
+    mlx_audio_backend = MlxAudioBackend(model_profile)
+
+    with pytest.raises(ValueError, match=expected_message):
+        mlx_audio_backend.transcribe(audio_path, max_tokens)
+
+
+@pytest.mark.parametrize(
+    ("model_result", "expected_message"),
+    [
+        ({}, "missing transcript text"),
+        ({"text": "你好", "generation_tokens": True}, "invalid generation token"),
+        ({"text": "你好", "generation_tokens": -1}, "invalid generation token"),
+        ({"text": "你好", "generation_tokens": 1.5}, "invalid generation token"),
+        ({"text": "你好", "generation_tokens": "1"}, "invalid generation token"),
+    ],
+    ids=[
+        "missing-text",
+        "tokens-bool",
+        "tokens-negative",
+        "tokens-float",
+        "tokens-str",
+    ],
+)
+def test_transcribe_rejects_malformed_result(
+    tmp_path: Path, model_result: object, expected_message: str
+):
+    """Test malformed MLX-Audio results are rejected.
+
+    Arguments:
+        tmp_path: temporary directory path
+        model_result: malformed result returned by the MLX-Audio model
+        expected_message: expected validation error text
     """
     audio_path = _write_wav(tmp_path / "audio.wav")
     model = Mock()
-    model.generate.return_value = {
-        "text": "你好",
-        "generation_tokens": generation_tokens,
-    }
+    model.generate.return_value = model_result
     mlx_audio_backend = MlxAudioBackend()
     mlx_audio_backend._model = model
 
-    with pytest.raises(ValueError, match="invalid generation token count"):
+    with pytest.raises(ValueError, match=expected_message):
         mlx_audio_backend.transcribe(audio_path)
 
 
-def test_model_is_shared_by_reference(monkeypatch: pytest.MonkeyPatch):
-    """Test a model is loaded once per resolved reference.
+@pytest.mark.parametrize(
+    ("model_profile", "mlx_audio_model_type"),
+    [
+        (MIMO_MODEL, "mimo"),
+        (QWEN3_ASR_MODEL, "qwen3_asr"),
+        (SENSEVOICE_MODEL, "sensevoice"),
+        (FIRERED_ASR2_MODEL, "fireredasr2"),
+        (GLM_ASR_MODEL, "glm"),
+    ],
+    ids=["mimo", "qwen3-asr", "sensevoice", "firered-asr2", "glm-asr"],
+)
+def test_model_is_shared_by_profile_key(
+    monkeypatch: pytest.MonkeyPatch,
+    model_profile: MlxAudioModelProfile,
+    mlx_audio_model_type: str,
+):
+    """Test each profile loads its model type once per cache key.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        model_profile: MLX-Audio model profile
+        mlx_audio_model_type: expected MLX-Audio loader model type
+    """
+    load = Mock(return_value=object())
+    monkeypatch.setattr(MlxAudioBackend, "_models_by_key", {})
+    monkeypatch.setattr(backend, "import_mlx_audio_stt_load", Mock(return_value=load))
+
+    first = MlxAudioBackend(model_profile)
+    second = MlxAudioBackend(model_profile)
+
+    assert first._loaded_model is load.return_value
+    assert second._loaded_model is load.return_value
+    load.assert_called_once_with(
+        model_profile.model_name, model_type=mlx_audio_model_type
+    )
+
+
+def test_model_cache_key_includes_mlx_audio_model_type(monkeypatch: pytest.MonkeyPatch):
+    """Test loader types distinguish models with the same reference.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
     """
-    models = [object() for _ in range(5)]
+    models = [object(), object()]
     load = Mock(side_effect=models)
-    monkeypatch.setattr(MlxAudioBackend, "_models_by_reference", {})
+    monkeypatch.setattr(MlxAudioBackend, "_models_by_key", {})
     monkeypatch.setattr(backend, "import_mlx_audio_stt_load", Mock(return_value=load))
+    alternate_profile = replace(MIMO_MODEL, mlx_audio_model_type="qwen3_asr")
 
-    first = MlxAudioBackend(MIMO_MODEL_NAME)
-    second = MlxAudioBackend(MIMO_MODEL_NAME)
-    third = MlxAudioBackend(QWEN3_ASR_MODEL_NAME)
-    fourth = MlxAudioBackend(SENSEVOICE_MODEL_NAME)
-    fifth = MlxAudioBackend(FIRERED_ASR2_MODEL_NAME)
-    sixth = MlxAudioBackend(GLM_ASR_MODEL_NAME)
+    first = MlxAudioBackend(MIMO_MODEL)
+    second = MlxAudioBackend(alternate_profile)
 
     assert first._loaded_model is models[0]
-    assert second._loaded_model is models[0]
-    assert third._loaded_model is models[1]
-    assert fourth._loaded_model is models[2]
-    assert fifth._loaded_model is models[3]
-    assert sixth._loaded_model is models[4]
-    assert load.call_count == 5
-    assert load.call_args_list[0].args == (MIMO_MODEL_NAME,)
-    assert load.call_args_list[0].kwargs == {"model_type": "mimo"}
-    assert load.call_args_list[1].args == (QWEN3_ASR_MODEL_NAME,)
-    assert load.call_args_list[1].kwargs == {"model_type": "qwen3_asr"}
-    assert load.call_args_list[2].args == (SENSEVOICE_MODEL_NAME,)
-    assert load.call_args_list[2].kwargs == {"model_type": "sensevoice"}
-    assert load.call_args_list[3].args == (FIRERED_ASR2_MODEL_NAME,)
-    assert load.call_args_list[3].kwargs == {"model_type": "fireredasr2"}
-    assert load.call_args_list[4].args == (GLM_ASR_MODEL_NAME,)
-    assert load.call_args_list[4].kwargs == {"model_type": "glm"}
+    assert second._loaded_model is models[1]
+    assert load.call_args_list == [
+        call(MIMO_MODEL.model_name, model_type="mimo"),
+        call(MIMO_MODEL.model_name, model_type="qwen3_asr"),
+    ]
 
 
 def test_model_validates_local_path(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
@@ -260,7 +369,7 @@ def test_model_validates_local_path(monkeypatch: pytest.MonkeyPatch, tmp_path: P
         json.dumps({"architectures": ["MiMoV2ASRForCausalLM"]}), encoding="utf-8"
     )
     load = Mock(return_value=object())
-    monkeypatch.setattr(MlxAudioBackend, "_models_by_reference", {})
+    monkeypatch.setattr(MlxAudioBackend, "_models_by_key", {})
     monkeypatch.setattr(backend, "import_mlx_audio_stt_load", Mock(return_value=load))
 
     mlx_audio_backend = MlxAudioBackend(str(model_path))

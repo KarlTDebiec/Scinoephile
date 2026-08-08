@@ -25,12 +25,13 @@ from scinoephile.audio.transcription import (
     VADMode,
 )
 from scinoephile.audio.transcription.mlx_audio.backend import (
-    FIRERED_ASR2_MODEL_NAME,
-    GLM_ASR_MODEL_NAME,
-    MIMO_MODEL_NAME,
-    QWEN3_ASR_MODEL_NAME,
-    SENSEVOICE_MODEL_NAME,
+    FIRERED_ASR2_MODEL,
+    GLM_ASR_MODEL,
+    MIMO_MODEL,
+    QWEN3_ASR_MODEL,
+    SENSEVOICE_MODEL,
     MlxAudioInferenceResult,
+    MlxAudioModelProfile,
 )
 from scinoephile.audio.transcription.mlx_audio.transcriber import MlxAudioTranscriber
 from scinoephile.core import Language
@@ -108,7 +109,7 @@ def test_get_cache_path_separates_ctc_model_configuration():
 
 def test_get_cache_path_uses_mlx_runtime_on_apple_silicon():
     """Test cache metadata identifies the fixed MLX runtime."""
-    transcriber = _get_mlx_audio_transcriber(model_name=MIMO_MODEL_NAME)
+    transcriber = _get_mlx_audio_transcriber(model_name=MIMO_MODEL)
 
     metadata = transcriber._get_cache_metadata(
         _get_cache_audio(), TranscriptionPreprocessingSettings(False, False)
@@ -206,13 +207,13 @@ def test_token_limit_guard_does_not_change_qwen_behavior(
     """Leave Qwen cache identity and full-window inference unchanged."""
     audio = AudioSegment.silent(duration=120_000, frame_rate=1_000)
     unguarded = MlxAudioTranscriber(
-        model_name=QWEN3_ASR_MODEL_NAME,
+        model_name=QWEN3_ASR_MODEL,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VADMode.OFF,
         cache_root_path=tmp_path,
     )
     guarded = MlxAudioTranscriber(
-        model_name=QWEN3_ASR_MODEL_NAME,
+        model_name=QWEN3_ASR_MODEL,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VADMode.OFF,
         cache_root_path=tmp_path,
@@ -247,30 +248,43 @@ def test_get_cache_path_separates_audio_formats():
     assert len(cache_paths) == len(audio_segments)
 
 
-def test_init_rejects_non_positive_max_tokens():
-    """Test MLX-Audio rejects unusable generation token limits."""
-    with pytest.raises(ValueError, match="MLX-Audio max tokens must be positive"):
-        MlxAudioTranscriber(max_tokens=0)
+@pytest.mark.parametrize(
+    ("model_profile", "max_tokens", "expected_message"),
+    [
+        (MIMO_MODEL, 0, "MLX-Audio max tokens must be positive"),
+        (SENSEVOICE_MODEL, 128, "sensevoice does not support"),
+    ],
+    ids=["non-positive", "unsupported"],
+)
+def test_init_rejects_invalid_generation_limit(
+    model_profile: MlxAudioModelProfile, max_tokens: int, expected_message: str
+):
+    """Test MLX-Audio rejects unusable generation token limits.
 
-
-def test_init_rejects_token_limit_for_sensevoice():
-    """Test token limits are rejected when the model family ignores them."""
-    with pytest.raises(ValueError, match="sensevoice does not support"):
-        MlxAudioTranscriber(model_name=SENSEVOICE_MODEL_NAME, max_tokens=128)
+    Arguments:
+        model_profile: MLX-Audio model profile
+        max_tokens: invalid generation limit
+        expected_message: expected validation error text
+    """
+    with pytest.raises(ValueError, match=expected_message):
+        MlxAudioTranscriber(model_name=model_profile, max_tokens=max_tokens)
 
 
 @pytest.mark.parametrize(
     ("model_name", "expected_max_tokens"),
     [
-        (SENSEVOICE_MODEL_NAME, None),
-        (FIRERED_ASR2_MODEL_NAME, None),
-        (GLM_ASR_MODEL_NAME, 128),
+        (MIMO_MODEL, 256),
+        (QWEN3_ASR_MODEL, 8192),
+        (SENSEVOICE_MODEL, None),
+        (FIRERED_ASR2_MODEL, None),
+        (GLM_ASR_MODEL, 128),
     ],
+    ids=["mimo", "qwen3-asr", "sensevoice", "firered-asr2", "glm-asr"],
 )
-def test_new_model_families_derive_generation_limits(
-    model_name: str, expected_max_tokens: int | None
+def test_model_profiles_derive_generation_limits(
+    model_name: MlxAudioModelProfile, expected_max_tokens: int | None
 ):
-    """Test each new model family derives its effective generation limit.
+    """Test each model profile derives its effective generation limit.
 
     Arguments:
         model_name: MLX-Audio model name
@@ -368,7 +382,7 @@ def test_transcribe_uses_direct_mlx_audio_inference(monkeypatch: pytest.MonkeyPa
     audio = AudioSegment.silent(duration=1000)
     expected_segments = [_get_timed_segment("你好")]
     transcriber = MlxAudioTranscriber(
-        model_name=MIMO_MODEL_NAME, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.OFF
+        model_name=MIMO_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.OFF
     )
     transcriber.ctc_aligner = Mock(
         model_name="ctc/test-model", return_value=expected_segments
@@ -385,7 +399,7 @@ def test_transcribe_uses_direct_mlx_audio_inference(monkeypatch: pytest.MonkeyPa
     segments = transcriber.transcribe(audio)
 
     assert segments == expected_segments
-    assert transcriber.model_name == MIMO_MODEL_NAME
+    assert transcriber.model_name == MIMO_MODEL.model_name
     assert transcriber.backend.mlx_audio_language == "zh"
     assert captured["max_tokens"] == 256
     assert isinstance(captured["audio_path"], Path)
@@ -399,7 +413,7 @@ def test_transcribe_derives_language_and_passes_max_tokens(
     audio = AudioSegment.silent(duration=1000)
     expected_segments = [_get_timed_segment("你好")]
     transcriber = MlxAudioTranscriber(
-        model_name=MIMO_MODEL_NAME,
+        model_name=MIMO_MODEL,
         language=Language.eng,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VADMode.OFF,
@@ -428,7 +442,7 @@ def test_transcribe_chunks_audio_and_offsets_segments(monkeypatch: pytest.Monkey
     """Test MLX-Audio chunking offsets segments and drops overlap duplicates."""
     audio = AudioSegment.silent(duration=4500)
     transcriber = MlxAudioTranscriber(
-        model_name=MIMO_MODEL_NAME,
+        model_name=MIMO_MODEL,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VADMode.OFF,
         chunk_duration_seconds=2.0,
@@ -483,7 +497,7 @@ def test_token_limit_guard_proactively_chunks_long_mimo_audio(
     """Keep complete overlapping MiMo inference windows within the guard."""
     audio = AudioSegment.silent(duration=108_000, frame_rate=1_000)
     transcriber = MlxAudioTranscriber(
-        model_name=MIMO_MODEL_NAME,
+        model_name=MIMO_MODEL,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VADMode.OFF,
         token_limit_guard=True,
@@ -726,7 +740,7 @@ def test_transcribe_vad_restores_original_timestamps(monkeypatch: pytest.MonkeyP
     """Test MLX-Audio VAD removes silence and restores original word timings."""
     audio = AudioSegment.silent(duration=6000)
     transcriber = MlxAudioTranscriber(
-        model_name=MIMO_MODEL_NAME, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.ON
+        model_name=MIMO_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.ON
     )
     monkeypatch.setattr(
         transcriber,
@@ -759,7 +773,7 @@ def test_transcribe_vad_rejects_audio_without_detected_speech(
 ):
     """Test VAD does not invoke MLX-Audio when no speech is detected."""
     transcriber = MlxAudioTranscriber(
-        model_name=MIMO_MODEL_NAME, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.ON
+        model_name=MIMO_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.ON
     )
     monkeypatch.setattr(transcriber, "_get_vad_speech_intervals", Mock(return_value=[]))
     patched_transcribe = Mock()
@@ -775,7 +789,7 @@ def test_transcribe_vad_auto_retries_unfiltered_audio(monkeypatch: pytest.Monkey
     """Test automatic VAD retries unfiltered audio after VAD failure."""
     expected_segments = [_get_timed_segment("retry")]
     transcriber = MlxAudioTranscriber(
-        model_name=MIMO_MODEL_NAME, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.AUTO
+        model_name=MIMO_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.AUTO
     )
     monkeypatch.setattr(transcriber, "_get_vad_speech_intervals", Mock(return_value=[]))
     patched_transcribe = Mock(return_value=expected_segments)
@@ -815,7 +829,7 @@ def test_transcribe_aligns_text_and_writes_cache(
     assert cache_payload["cache_version"] == 1
     assert cache_payload["metadata"]["backend"] == "mlx-audio"
     assert cache_payload["metadata"]["model_family"] == "mimo"
-    assert cache_payload["metadata"]["model_name"] == MIMO_MODEL_NAME
+    assert cache_payload["metadata"]["model_name"] == MIMO_MODEL.model_name
     assert cache_payload["segments"][0]["text"] == "你好"
 
 
@@ -858,7 +872,9 @@ def test_transcribe_wraps_mlx_audio_inference_errors(monkeypatch: pytest.MonkeyP
 
 
 def _get_mlx_audio_transcriber(
-    *, cache_root_path: Path = Path("/tmp"), model_name: str = MIMO_MODEL_NAME
+    *,
+    cache_root_path: Path = Path("/tmp"),
+    model_name: str | MlxAudioModelProfile = MIMO_MODEL,
 ) -> MlxAudioTranscriber:
     """Get an MLX-Audio transcriber with preprocessing disabled.
 

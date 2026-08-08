@@ -12,7 +12,7 @@ from unittest.mock import Mock, patch
 from pytest import raises
 
 from scinoephile.audio.transcription import CtcAligner, DemucsMode, VADMode
-from scinoephile.audio.transcription.mlx_audio.backend import MIMO_MODEL_NAME
+from scinoephile.audio.transcription.mlx_audio.backend import MIMO_MODEL
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.utils import save_test_cases_to_json
@@ -190,14 +190,14 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
         )
 
     assert transcriber.backend is TranscriptionBackend.MLX_AUDIO
-    assert transcriber.model_name == MIMO_MODEL_NAME
+    assert transcriber.model_name == MIMO_MODEL.model_name
     assert transcriber.transcriber is mlx_audio_transcriber
     assert transcriber.recovery_transcriber is None
     assert transcriber.tail_recovery_transcriber is None
     assert transcriber.strip_generated_punctuation
     assert transcriber.mlx_audio_timing_mode is MlxAudioTimingMode.PHRASE
     mlx_audio_transcriber_class.assert_called_once_with(
-        model_name=MIMO_MODEL_NAME,
+        model_name=MIMO_MODEL.model_name,
         language=Language.yue_hant,
         token_limit_guard=True,
         demucs_mode=DemucsMode.OFF,

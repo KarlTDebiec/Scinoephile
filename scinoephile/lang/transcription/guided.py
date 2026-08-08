@@ -15,7 +15,7 @@ from scinoephile.audio.transcription import (
     VADMode,
     get_segment_split_on_whitespace,
 )
-from scinoephile.audio.transcription.mlx_audio.backend import MIMO_MODEL_NAME
+from scinoephile.audio.transcription.mlx_audio.backend import MIMO_MODEL
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.ml import get_torch_device
@@ -118,7 +118,7 @@ class TranscriptionLanguageSpec:
 _YUE_LANGUAGE_SPEC = TranscriptionLanguageSpec(
     model_names_by_backend=MappingProxyType(
         {
-            TranscriptionBackend.MLX_AUDIO: MIMO_MODEL_NAME,
+            TranscriptionBackend.MLX_AUDIO: MIMO_MODEL.model_name,
             TranscriptionBackend.WHISPER: "khleeloo/whisper-large-v3-cantonese",
         }
     ),

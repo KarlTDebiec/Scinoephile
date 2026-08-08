@@ -37,7 +37,7 @@ from scinoephile.core.dependencies.transcription import (
     import_whisper_timestamped_transcribe,
 )
 
-from .backend import MIMO_MODEL_NAME, MlxAudioBackend
+from .backend import MIMO_MODEL, MlxAudioBackend, MlxAudioModelProfile
 
 __all__ = ["MlxAudioTranscriber"]
 
@@ -80,7 +80,7 @@ class MlxAudioTranscriber(Transcriber):
 
     def __init__(
         self,
-        model_name: str = MIMO_MODEL_NAME,
+        model_name: str | MlxAudioModelProfile = MIMO_MODEL,
         language: Language = Language.yue_hant,
         ctc_model_name: str | None = None,
         max_tokens: int | None = None,
@@ -135,11 +135,11 @@ class MlxAudioTranscriber(Transcriber):
             raise ValueError("MLX-Audio max tokens must be positive.")
         if (
             self.max_tokens is not None
-            and self.backend.generation_limit_parameter_name is None
+            and self.backend.model_profile.generation_limit_parameter_name is None
         ):
+            model_family = self.backend.model_profile.family_name
             raise ValueError(
-                f"MLX-Audio {self.backend.model_family} does not support a "
-                "generation token limit."
+                f"MLX-Audio {model_family} does not support a generation token limit."
             )
         if (
             self.chunk_duration_seconds is not None
@@ -162,14 +162,14 @@ class MlxAudioTranscriber(Transcriber):
     @property
     def model_name(self) -> str:
         """Get the MLX-Audio model name or local model path."""
-        return self.backend.model_name
+        return self.backend.model_profile.model_name
 
     @property
     def _effective_max_tokens(self) -> int | None:
         """Get the explicit or model-family default generation token limit."""
         if self.max_tokens is not None:
             return self.max_tokens
-        return self.backend.default_max_tokens
+        return self.backend.model_profile.default_max_tokens
 
     def _get_backend_cache_metadata(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
@@ -190,7 +190,7 @@ class MlxAudioTranscriber(Transcriber):
         if settings.use_vad:
             vad_version = _VAD_CACHE_VERSION
         metadata: dict[str, object] = {
-            "model_family": self.backend.model_family,
+            "model_family": self.backend.model_profile.family_name,
             "model_name": self.model_name,
             "runtime": "mlx",
             "language": self.language.code,
@@ -426,7 +426,7 @@ class MlxAudioTranscriber(Transcriber):
             return self._transcribe_audio_window_with_retry(audio, guard_token_limit)
         if guard_token_limit:
             guarded_window_duration_seconds = (
-                self.backend.token_limit_guard_window_duration_seconds
+                self.backend.model_profile.token_limit_guard_window_duration_seconds
             )
             assert guarded_window_duration_seconds is not None
             logger.info(
@@ -486,7 +486,7 @@ class MlxAudioTranscriber(Transcriber):
             return chunk_duration_ms, chunk_overlap_ms
 
         guarded_window_duration_seconds = (
-            self.backend.token_limit_guard_window_duration_seconds
+            self.backend.model_profile.token_limit_guard_window_duration_seconds
         )
         assert guarded_window_duration_seconds is not None
         guarded_window_duration_ms = int(round(guarded_window_duration_seconds * 1000))
@@ -511,7 +511,7 @@ class MlxAudioTranscriber(Transcriber):
             whether guarded inference is active
         """
         guarded_window_duration_seconds = (
-            self.backend.token_limit_guard_window_duration_seconds
+            self.backend.model_profile.token_limit_guard_window_duration_seconds
         )
         if not self.token_limit_guard or guarded_window_duration_seconds is None:
             return False

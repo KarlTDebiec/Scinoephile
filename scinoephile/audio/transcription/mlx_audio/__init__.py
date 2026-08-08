@@ -9,6 +9,7 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
+from .backend import MlxAudioModelProfile
 from .transcriber import MlxAudioTranscriber
 
-__all__ = ["MlxAudioTranscriber"]
+__all__ = ["MlxAudioModelProfile", "MlxAudioTranscriber"]
