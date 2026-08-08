@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from importlib import import_module
 from types import ModuleType
 from typing import TYPE_CHECKING
 
@@ -15,6 +16,9 @@ __all__ = [
     "import_huggingface_hub",
     "import_huggingface_hub_utils",
     "import_mlx_audio_stt_load",
+    "import_pyannote_audio",
+    "import_pyannote_audio_voice_activity_detection",
+    "import_ten_vad",
     "import_torch",
     "import_torchaudio",
     "import_transformers",
@@ -108,6 +112,50 @@ def import_mlx_audio_stt_load() -> Callable[..., object]:
     return load
 
 
+def import_pyannote_audio() -> ModuleType:
+    """Import pyannote.audio on demand.
+
+    Returns:
+        pyannote.audio module
+    """
+    try:
+        import pyannote.audio
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return pyannote.audio
+
+
+def import_pyannote_audio_voice_activity_detection() -> Callable[..., object]:
+    """Import pyannote.audio's VAD pipeline class on demand.
+
+    Returns:
+        pyannote.audio voice activity detection pipeline class
+    """
+    try:
+        from pyannote.audio.pipelines import VoiceActivityDetection
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return VoiceActivityDetection
+
+
+def import_ten_vad() -> ModuleType:
+    """Import the official TEN VAD runtime on demand.
+
+    Returns:
+        TEN VAD module
+    """
+    try:
+        import ten_vad
+    except ImportError as exc:
+        raise ImportError(
+            "TEN VAD support requires the official ten-vad package, which is not "
+            "bundled because its license adds restrictions to Apache 2.0. Review "
+            "https://github.com/TEN-framework/ten-vad/blob/main/LICENSE before "
+            "installing it."
+        ) from exc
+    return ten_vad
+
+
 def import_torch() -> ModuleType:
     """Import Torch on demand.
 
@@ -167,7 +215,7 @@ def import_whisper_timestamped_transcribe() -> ModuleType:
         Whisper Timestamped transcription module
     """
     try:
-        import whisper_timestamped.transcribe as whisper_timestamped_transcribe
+        whisper_timestamped_transcribe = import_module("whisper_timestamped.transcribe")
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return whisper_timestamped_transcribe

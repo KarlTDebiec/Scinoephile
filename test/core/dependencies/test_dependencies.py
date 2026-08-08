@@ -6,8 +6,13 @@ from __future__ import annotations
 
 from importlib import import_module
 from pkgutil import iter_modules
+from types import ModuleType
+from unittest.mock import Mock
+
+from pytest import MonkeyPatch
 
 from scinoephile.core import dependencies
+from scinoephile.core.dependencies import transcription
 
 
 def test_dependency_exports_use_lazy_import_naming():
@@ -26,3 +31,19 @@ def test_dependency_exports_use_lazy_import_naming():
         exports = getattr(module, "__all__", None)
         assert isinstance(exports, list)
         assert all(name.startswith("import_") for name in exports)
+
+
+def test_whisper_timestamped_transcribe_imports_submodule(monkeypatch: MonkeyPatch):
+    """Import the VAD-bearing submodule rather than its namesake function.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    transcribe_module = ModuleType("whisper_timestamped.transcribe")
+    import_module_mock = Mock(return_value=transcribe_module)
+    monkeypatch.setattr(transcription, "import_module", import_module_mock)
+
+    imported = transcription.import_whisper_timestamped_transcribe()
+
+    assert imported is transcribe_module
+    import_module_mock.assert_called_once_with("whisper_timestamped.transcribe")

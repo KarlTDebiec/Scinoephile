@@ -1,5 +1,56 @@
 # Third-Party Notices
 
+## TEN VAD (optional user-installed voice activity detector)
+
+Scinoephile can use the official TEN VAD Python runtime when users install it
+separately. Scinoephile does not distribute TEN VAD source, native libraries, or
+model artifacts and does not install them through an optional dependency.
+
+- Project: https://github.com/TEN-framework/ten-vad
+- License: Apache License 2.0 with additional conditions
+- Copyright: Copyright © 2025 Agora
+
+The additional conditions restrict deployments that compete with Agora's
+offerings and limit deployment to applications for the user's and their direct
+end users' benefit. Review the complete upstream terms before installing or
+using TEN VAD:
+
+- https://github.com/TEN-framework/ten-vad/blob/main/LICENSE
+
+After accepting those terms, install the tested upstream revision separately:
+
+```shell
+uv pip install "ten-vad @ git+https://github.com/TEN-framework/ten-vad.git@22a3bcd4509d0faaa8eef4881e8af5f39c178950"
+```
+
+Select it with `--vad on --vad-implementation ten` (or use `--vad auto` to
+retain the non-VAD fallback).
+
+TEN VAD cache identities record the installed distribution version, installed
+runtime artifact digest, and the PEP 610 source URL and Git commit when available.
+Silero uses the Whisper Timestamped-compatible `v6.2` model tag and records both
+the installed adapter and cached model artifact digests. When an exact runtime
+or model artifact cannot be identified, Scinoephile disables cross-process VAD
+cache reuse rather than risk reusing stale output.
+
+## pyannote segmentation-3.0 (voice activity detection model)
+
+Scinoephile can download and run the `segmentation-3.0` model locally as an
+optional voice activity detector after the user accepts its Hugging Face access
+conditions. The model is not bundled with Scinoephile.
+
+- Model: https://huggingface.co/pyannote/segmentation-3.0
+- Pinned revision:
+  https://huggingface.co/pyannote/segmentation-3.0/tree/e66f3d3b9eb0873085418a7b813d3b369bf160bb
+- License: MIT
+- Project: https://github.com/pyannote/pyannote-audio
+
+The model license permits use, modification, and distribution, provided the
+copyright and permission notice are included in copies or substantial portions
+of the software. For the complete license terms, see:
+
+- https://huggingface.co/pyannote/segmentation-3.0/blob/e66f3d3b9eb0873085418a7b813d3b369bf160bb/LICENSE
+
 ## jyut-dict (source inspiration and adapted logic)
 
 Scinoephile's CUHK and GZZJ dictionary ingestion code is informed by and
