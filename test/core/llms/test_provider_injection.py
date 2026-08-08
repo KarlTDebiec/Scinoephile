@@ -724,6 +724,40 @@ def test_queryer_cache_stores_only_answer_and_preserves_current_metadata(tmp_pat
     assert len(provider.calls) == 1
 
 
+def test_processor_migrates_compatible_predecessor_prompt_cache(tmp_path: Path):
+    """Test a prompt alias revision lazily copies compatible cached answers.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    legacy_prompt = Prompt(base_system_prompt="Use old_answer.")
+    current_prompt = Prompt(
+        base_system_prompt="Use new_answer.", legacy_cache_prompts=(legacy_prompt,)
+    )
+    legacy_provider = _RecordingProvider('{"output":"cached"}')
+    legacy_processor = _Processor(
+        legacy_prompt, provider=legacy_provider, cache_root_path=tmp_path
+    )
+    legacy_processor.queryer(legacy_processor.test_case_cls(query=_Query(text="input")))
+
+    current_provider = _RecordingProvider('{"output":"new"}')
+    current_processor = _Processor(
+        current_prompt, provider=current_provider, cache_root_path=tmp_path
+    )
+    result = current_processor.queryer(
+        current_processor.test_case_cls(query=_Query(text="input"))
+    )
+
+    assert result.answer == _Answer(output="cached")
+    assert not current_provider.calls
+    cache_paths = list((tmp_path / "llm" / "test").glob("*.json"))
+    assert len(cache_paths) == 2
+    assert all(
+        json.loads(cache_path.read_text(encoding="utf-8")) == {"output": "cached"}
+        for cache_path in cache_paths
+    )
+
+
 def test_queryer_overwrites_matching_cache(tmp_path):
     """Test cache overwrite queries the provider and replaces the cached answer."""
     cached_provider = _RecordingProvider('{"output":"cached"}')
