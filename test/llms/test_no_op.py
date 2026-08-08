@@ -15,7 +15,6 @@ from scinoephile.llms.guided_translation import (
     GuidedTranslationQuery,
     GuidedTranslationTestCase,
 )
-from scinoephile.llms.multi_review import MultiReviewQuery, MultiReviewTestCase
 from scinoephile.llms.ocr_fusion import OcrFusionQuery, OcrFusionTestCase
 from scinoephile.llms.review import ReviewQuery, ReviewTestCase
 from scinoephile.llms.translation import TranslationQuery, TranslationTestCase
@@ -110,34 +109,6 @@ def test_ocr_fusion_no_op_selects_first_source():
     assert output.answer is not None
     assert output.answer.output == "Lens"
     assert output.answer.note == "No-op."
-
-
-def test_multi_review_no_op_selects_first_available_source():
-    """Multi-review no-op answers should avoid synthesizing missing text."""
-    test_case = MultiReviewTestCase(
-        query=MultiReviewQuery(
-            sources=[
-                {"name": "one", "subtitles": [{"index": 1, "text": "Source one"}]},
-                {"name": "two", "subtitles": [{"index": 2, "text": "Source two"}]},
-            ],
-            guides=[
-                {"index": 1, "text": "Guide one"},
-                {"index": 2, "text": "Guide two"},
-                {"index": 3, "text": "Guide three"},
-            ],
-        )
-    )
-
-    output = MultiReviewTestCase(
-        query=test_case.query, answer=test_case.get_no_op_answer()
-    )
-
-    assert output.answer is not None
-    assert [(item.index, item.text) for item in output.answer.outputs] == [
-        (1, "Source one"),
-        (2, "Source two"),
-        (3, ""),
-    ]
 
 
 def test_review_no_op_has_no_revisions():

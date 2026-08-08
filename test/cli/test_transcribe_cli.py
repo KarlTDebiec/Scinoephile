@@ -86,9 +86,7 @@ def test_transcribe_cli_dispatches_and_derives_alignment_path(tmp_path: Path):
         demucs_mode=DemucsMode.OFF,
         diarization_mode=DiarizationMode.AUTO,
         language_identification_mode=AudioClassificationMode.AUTO,
-        vad_implementation=VADImplementation.SILERO,
         block_vad_implementation=VADImplementation.PYANNOTE,
-        mlx_audio_token_limit_guard=True,
         cache_root_path=ANY,
         overwrite_cache=False,
         provider=provider,
@@ -96,6 +94,7 @@ def test_transcribe_cli_dispatches_and_derives_alignment_path(tmp_path: Path):
         no_op=False,
         aligned_merge_json_path=None,
         alignment_json_path=tmp_path / "transcribe.alignment.json",
+        run_manifest_json_path=tmp_path / "transcribe.run.json",
         timing_settings=SubtitleTimingSettings(
             lead_in_seconds=0.1, lead_out_seconds=0.2, minimum_duration_seconds=1.0
         ),
@@ -126,6 +125,7 @@ def test_transcribe_cli_writes_stdout_without_artifact(tmp_path: Path):
         )
 
     assert transcribe.call_args.kwargs["alignment_json_path"] is None
+    assert transcribe.call_args.kwargs["run_manifest_json_path"] is None
     write_series.assert_called_once_with(ANY, output, "-", False)
 
 

@@ -17,7 +17,6 @@ from opencc import OpenCC
 from scinoephile.core import Language
 
 __all__ = [
-    "AlignedTranscriptionMergeCharacterSupport",
     "AlignedTranscriptionMergeValidation",
     "get_aligned_transcription_merge_support_row",
     "get_aligned_transcription_merge_validation",
@@ -73,72 +72,24 @@ class _CharacterFeatures:
 
 
 @dataclass(frozen=True, slots=True)
-class AlignedTranscriptionMergeCharacterSupport:
-    """Cross-source evidence supporting one lexical answer character."""
-
-    answer_index: int
-    """Zero-based character index in the lexical answer sequence."""
-    character: str
-    """Original answer character."""
-    profile_column_index: int | None
-    """Zero-based input alignment column, or None for an inserted character."""
-    exact_source_count: int
-    """Sources supporting the character exactly after compatibility normalization."""
-    equivalent_source_count: int
-    """Additional sources supporting a script or defined Cantonese equivalent."""
-    pronunciation_source_count: int
-    """Additional sources supporting only the same Cantonese pronunciation."""
-    source_count: int
-    """Successful ASR source rows considered."""
-
-    @property
-    def is_inserted(self) -> bool:
-        """Whether the answer character aligned outside the input profile."""
-        return self.profile_column_index is None
-
-    @property
-    def strong_source_count(self) -> int:
-        """Get sources providing exact or defined-equivalent support."""
-        return self.exact_source_count + self.equivalent_source_count
-
-    @property
-    def support_fraction(self) -> float:
-        """Get the fraction of sources providing strong lexical support."""
-        return self.strong_source_count / self.source_count
-
-
-@dataclass(frozen=True, slots=True)
 class AlignedTranscriptionMergeValidation:
     """Sequence-aware comparison of one merged answer with its ASR profile."""
 
-    character_support: tuple[AlignedTranscriptionMergeCharacterSupport, ...]
-    """Answer-character support in reading order."""
-    majority_column_indexes: tuple[int, ...]
-    """Input columns containing strict-majority lexical evidence."""
-    mapped_majority_column_indexes: tuple[int, ...]
-    """Strict-majority columns occupied by an answer character of any support."""
-    preserved_majority_column_indexes: tuple[int, ...]
-    """Strict-majority columns preserved by locally supported answer characters."""
+    majority_column_count: int
+    """Number of input columns containing strict-majority lexical evidence."""
+    mapped_majority_column_count: int
+    """Number of strict-majority columns occupied by an answer character."""
+    preserved_majority_column_count: int
+    """Number of strict-majority columns preserved by supported answer characters."""
 
     @property
     def majority_coverage(self) -> float:
         """Get the proportion of strict-majority columns preserved in order."""
-        if not self.majority_column_indexes:
+        if not self.majority_column_count:
             return 1.0
-        return len(self.preserved_majority_column_indexes) / len(
-            self.majority_column_indexes
-        )
+        return self.preserved_majority_column_count / self.majority_column_count
 
-    @property
-    def unsupported_character_count(self) -> int:
-        """Get answer characters lacking exact or defined-equivalent source support."""
-        return sum(
-            not support.strong_source_count for support in self.character_support
-        )
-
-    def preserves_required_majority(
-        self, minimum_coverage: float, *, isolated_replacement_tolerance: int = 1
-    ) -> bool:
+    def preserves_required_majority(self, minimum_coverage: float) -> bool:
         """Whether majority evidence meets coverage with a short-answer safeguard.
 
         The configured coverage may permit omissions in longer requests. For short
@@ -148,30 +99,24 @@ class AlignedTranscriptionMergeValidation:
 
         Arguments:
             minimum_coverage: minimum proportion of majority columns to preserve
-            isolated_replacement_tolerance: maximum mapped unsupported replacements
-                tolerated when proportional coverage would otherwise permit none
         Returns:
             whether the answer passes deterministic majority preservation
         Raises:
-            ValueError: if either validation setting is outside its accepted range
+            ValueError: if minimum coverage is outside its accepted range
         """
         if not 0.0 <= minimum_coverage <= 1.0:
             raise ValueError("Minimum majority coverage must be between zero and one.")
-        if isolated_replacement_tolerance < 0:
-            raise ValueError("Isolated replacement tolerance must be non-negative.")
-        missing_columns = set(self.majority_column_indexes) - set(
-            self.preserved_majority_column_indexes
+        missing_column_count = (
+            self.majority_column_count - self.preserved_majority_column_count
         )
         proportional_tolerance = floor(
-            len(self.majority_column_indexes) * (1.0 - minimum_coverage) + 1e-12
+            self.majority_column_count * (1.0 - minimum_coverage) + 1e-12
         )
-        if len(missing_columns) <= proportional_tolerance:
+        if missing_column_count <= proportional_tolerance:
             return True
-        if not missing_columns.issubset(self.mapped_majority_column_indexes):
+        if self.mapped_majority_column_count < self.majority_column_count:
             return False
-        return len(missing_columns) <= max(
-            proportional_tolerance, isolated_replacement_tolerance
-        )
+        return missing_column_count <= max(proportional_tolerance, 1)
 
 
 def get_aligned_transcription_merge_support_row(
@@ -260,62 +205,38 @@ def get_aligned_transcription_merge_validation(
         profile_columns, answer_characters, source_count, language
     )
 
-    support = []
-    answer_index_by_profile_column = {}
-    profile_characters_by_index = dict(profile_columns)
-    for answer_idx, (character, profile_column_idx) in enumerate(
-        zip(answer_characters, answer_profile_indexes, strict=True)
-    ):
-        relationships = []
-        if profile_column_idx is not None:
-            answer_index_by_profile_column[profile_column_idx] = answer_idx
-            relationships = [
-                _get_character_relationship(character, source_character, language)
-                for source_character in profile_characters_by_index[profile_column_idx]
-            ]
-        support.append(
-            AlignedTranscriptionMergeCharacterSupport(
-                answer_index=answer_idx,
-                character=character,
-                profile_column_index=profile_column_idx,
-                exact_source_count=relationships.count(_CharacterRelationship.exact),
-                equivalent_source_count=relationships.count(
-                    _CharacterRelationship.equivalent
-                ),
-                pronunciation_source_count=relationships.count(
-                    _CharacterRelationship.pronunciation
-                ),
-                source_count=source_count,
-            )
-        )
+    answer_index_by_profile_column = {
+        profile_column_idx: answer_idx
+        for answer_idx, profile_column_idx in enumerate(answer_profile_indexes)
+        if profile_column_idx is not None
+    }
 
-    majority_columns = []
-    mapped_majority_columns = []
-    preserved_majority_columns = []
+    majority_column_count = 0
+    mapped_majority_column_count = 0
+    preserved_majority_column_count = 0
     for profile_column_idx, source_characters in profile_columns:
         majority_character = _get_majority_character(
             source_characters, source_count, language
         )
         if majority_character is None:
             continue
-        majority_columns.append(profile_column_idx)
+        majority_column_count += 1
         answer_idx = answer_index_by_profile_column.get(profile_column_idx)
         if answer_idx is None:
             continue
-        mapped_majority_columns.append(profile_column_idx)
+        mapped_majority_column_count += 1
         answer_character = answer_characters[answer_idx]
         if any(
             _get_character_relationship(answer_character, source_character, language)
             >= _CharacterRelationship.equivalent
             for source_character in source_characters
         ):
-            preserved_majority_columns.append(profile_column_idx)
+            preserved_majority_column_count += 1
 
     return AlignedTranscriptionMergeValidation(
-        character_support=tuple(support),
-        majority_column_indexes=tuple(majority_columns),
-        mapped_majority_column_indexes=tuple(mapped_majority_columns),
-        preserved_majority_column_indexes=tuple(preserved_majority_columns),
+        majority_column_count=majority_column_count,
+        mapped_majority_column_count=mapped_majority_column_count,
+        preserved_majority_column_count=preserved_majority_column_count,
     )
 
 

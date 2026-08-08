@@ -10,7 +10,6 @@ from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 from scinoephile.llms.guided_review import GuidedReviewPrompt
-from scinoephile.llms.multi_review import MultiReviewPrompt
 from scinoephile.llms.review import ReviewPrompt
 
 from .prompts import YUE_HANT_PROMPT_FIELDS
@@ -20,8 +19,6 @@ __all__ = [
     "GuidedReviewPromptYueHant",
     "ReviewPromptYueHans",
     "ReviewPromptYueHant",
-    "TimedTranscriptionMultiReviewPromptYueHans",
-    "TimedTranscriptionMultiReviewPromptYueHant",
 ]
 
 
@@ -101,54 +98,3 @@ ReviewPromptYueHans = ReviewPromptYueHant.transformed(
     Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
 )
 """LLM correspondence text for simplified written Cantonese review."""
-
-TimedTranscriptionMultiReviewPromptYueHant = MultiReviewPrompt(
-    language=Language.yue_hant,
-    **YUE_HANT_PROMPT_FIELDS,
-    base_system_prompt=dedent_and_compact("""
-        你負責綜合多個地位完全相同嘅廣東話語音轉寫來源，重建一份準確而完整嘅繁體粵文
-        對白。唔好預設任何一個來源比較可靠，亦唔好因為來源排列次序而優先採用某一個
-        來源。請比較各個來源，按粵語讀音、語境同內容判斷最合理嘅實際對白；多數共識係
-        有用證據，但唔代表一定正確。每個來源嘅時序可能有少量偏差，同一句對白亦可能落
-        喺相鄰時段，所以判斷時要一併考慮前後時段。
-        指引欄位只係中立嘅音訊時段標籤，用嚟決定答案序號同大致位置，並唔包含對白或
-        語義。唔好將時段標籤當成對白，亦唔好由標籤補寫內容。答案必須為每一個時段提供
-        同序號嘅輸出。如果某個時段至少有一個來源包含轉寫，請綜合所有來源輸出最準確嘅
-        繁體粵文；如果所有來源喺該時段都冇內容，輸出必須留空。
-        請保留實際對白嘅意思、語域、粗口、重複、語氣助詞同人物口吻，只修正語音辨識
-        錯誤、錯別字、標點同明顯前後矛盾。唔好潤色、概括、翻譯或虛構對白。"""),
-    sources="laiyuan",
-    sources_desc="多個地位相同、涵蓋同一段音訊嘅粵語轉寫來源",
-    guides="shiduan",
-    guides_desc="按順序排列、只表示音訊位置嘅中立時段標籤",
-    outputs="shuchu_yuewen",
-    outputs_desc="同每個時段序號一一對應嘅完整繁體粵文輸出",
-    source_name="mingcheng",
-    source_name_desc="轉寫來源嘅固定名稱",
-    subtitles="zhuanxie",
-    subtitles_desc="呢個來源現有嘅粵語轉寫，序號對應中立時段",
-    index="xuhao",
-    index_desc="由 1 開始嘅時段序號",
-    text="wenben",
-    source_text_desc="呢個來源喺該時段嘅粵語轉寫文本",
-    guide_text_desc="只表示音訊位置、冇對白語義嘅時段標籤",
-    output_text_desc="完整繁體粵文輸出；如果全部來源都缺失就留空",
-    guide_indices_err="查詢時段序號必須由 1 開始、連續並按順序排列。",
-    source_count_err="查詢必須包含至少兩個粵語轉寫來源。",
-    source_name_err="查詢來源名稱必須非空白而且唯一。",
-    source_indices_err="每個查詢來源嘅轉寫序號必須唯一並按升序排列。",
-    source_index_missing_err="每個查詢來源嘅轉寫序號都必須對應一個時段序號。",
-    output_indices_err="答案輸出序號必須由 1 開始、連續並按順序排列。",
-    output_correspondence_err="答案輸出序號必須同查詢時段序號完全對應。",
-    unsupported_output_err_tpl=(
-        "答案輸出 {idx} 必須留空，因為所有粵語轉寫來源喺呢個時段都冇內容。"
-    ),
-)
-"""Prompt for merging timed traditional Cantonese ASR evidence."""
-
-TimedTranscriptionMultiReviewPromptYueHans = (
-    TimedTranscriptionMultiReviewPromptYueHant.transformed(
-        Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
-    )
-)
-"""Prompt for merging timed simplified Cantonese ASR evidence."""

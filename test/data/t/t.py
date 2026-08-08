@@ -18,7 +18,6 @@ title_root = test_data_root / Path(__file__).parent.name
 output_path = title_root / "output"
 set_logging_verbosity(2)
 
-yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
 yue_remux_path = Path("/Volumes/Backup/Video/BD Remux/Trivisa (2016).mkv")
 
 transcription_additional_context = """
@@ -70,14 +69,10 @@ if "yue-Hant_transcribe" in actions:
         reference_path=(
             output_path / "zho-Hant_ocr" / "fuse_clean_validate_review_flatten.srt"
         ),
-        language=Language.yue_hant,
-        output_dir_path=yue_hant_transcribe_path,
-        audio_path=yue_hant_transcribe_path / "audio.wav",
         media_path=yue_remux_path,
         stream_index=1,
         audio_extraction_mode=AudioExtractionMode.CENTER_HEAVY,
         additional_context=transcription_additional_context,
-        audit_include_merge_support=True,
         reference_name="zho-Hant",
         terminal_alignment_authority="merged",
     )

@@ -182,7 +182,7 @@ class AuditTranscriptionAlignmentCli(AuditCliBase):
         reference_similarity = None
         if artifact.language in {Language.yue_hans, Language.yue_hant}:
             reference_similarity = CantoneseTimedTokenSimilarity(
-                timing_weight=4.0, timing_tolerance_seconds=0.75
+                timing_weight=2.0, timing_tolerance_seconds=0.75
             )
         try:
             report = audit_transcription_alignment(

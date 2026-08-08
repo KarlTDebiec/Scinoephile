@@ -75,14 +75,9 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             f"{enum_options_list_str(AudioClassificationMode)}; default: %(default)s)"
         ): "语音、歌唱和音乐检测模式（默认：%(default)s）",
         (
-            f"ASR backend VAD implementation (options: "
-            f"{enum_options_list_str(VADImplementation)}; default: %(default)s)"
-        ): "语音识别后端 VAD 实现（默认：%(default)s）",
-        (
             f"block-planning VAD implementation (options: "
             f"{enum_options_list_str(VADImplementation)}; default: %(default)s)"
         ): "区块规划 VAD 实现（默认：%(default)s）",
-        "disable MiMo generation-token omission guard": ("停用 MiMo 生成词元遗漏保护"),
         "display lead-in seconds (default: %(default)s)": (
             "字幕提前显示秒数（默认：%(default)s）"
         ),
@@ -132,14 +127,9 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             f"{enum_options_list_str(AudioClassificationMode)}; default: %(default)s)"
         ): "語音、歌唱同音樂偵測模式（預設：%(default)s）",
         (
-            f"ASR backend VAD implementation (options: "
-            f"{enum_options_list_str(VADImplementation)}; default: %(default)s)"
-        ): "語音辨識後端 VAD 實作（預設：%(default)s）",
-        (
             f"block-planning VAD implementation (options: "
             f"{enum_options_list_str(VADImplementation)}; default: %(default)s)"
         ): "區塊規劃 VAD 實作（預設：%(default)s）",
-        "disable MiMo generation-token omission guard": ("停用 MiMo 生成詞元遺漏保護"),
         "display lead-in seconds (default: %(default)s)": (
             "字幕提前顯示秒數（預設：%(default)s）"
         ),
@@ -259,16 +249,6 @@ class TranscribeCli(ScinoephileCliBase):
             ),
         )
         operation_group.add_argument(
-            "--vad-implementation",
-            default=VADImplementation.SILERO,
-            metavar=enum_metavar(VADImplementation),
-            type=enum_arg(VADImplementation),
-            help=(
-                f"ASR backend VAD implementation (options: "
-                f"{enum_options_list_str(VADImplementation)}; default: %(default)s)"
-            ),
-        )
-        operation_group.add_argument(
             "--block-vad-implementation",
             default=VADImplementation.PYANNOTE,
             metavar=enum_metavar(VADImplementation),
@@ -277,12 +257,6 @@ class TranscribeCli(ScinoephileCliBase):
                 f"block-planning VAD implementation (options: "
                 f"{enum_options_list_str(VADImplementation)}; default: %(default)s)"
             ),
-        )
-        operation_group.add_argument(
-            "--no-mlx-audio-token-limit-guard",
-            action="store_false",
-            dest="mlx_audio_token_limit_guard",
-            help="disable MiMo generation-token omission guard",
         )
         operation_group.add_argument(
             "--lead-in",
@@ -354,9 +328,7 @@ class TranscribeCli(ScinoephileCliBase):
         diarization_mode: DiarizationMode,
         language_identification_mode: AudioClassificationMode,
         audio_event_mode: AudioClassificationMode,
-        vad_implementation: VADImplementation,
         block_vad_implementation: VADImplementation,
-        mlx_audio_token_limit_guard: bool,
         lead_in_seconds: float,
         lead_out_seconds: float,
         minimum_duration_seconds: float,
@@ -373,7 +345,16 @@ class TranscribeCli(ScinoephileCliBase):
             parser.error("--overwrite requires an output file")
         if alignment_outfile_path is None and outfile_path is not None:
             alignment_outfile_path = outfile_path.with_suffix(".alignment.json")
-        for output_path in (outfile_path, alignment_outfile_path):
+        run_manifest_outfile_path = None
+        if outfile_path is not None:
+            run_manifest_outfile_path = outfile_path.with_suffix(".run.json")
+        elif alignment_outfile_path is not None:
+            run_manifest_outfile_path = alignment_outfile_path.with_suffix(".run.json")
+        for output_path in (
+            outfile_path,
+            alignment_outfile_path,
+            run_manifest_outfile_path,
+        ):
             if output_path is not None and output_path.exists() and not overwrite:
                 parser.error(f"{output_path} already exists")
 
@@ -401,9 +382,7 @@ class TranscribeCli(ScinoephileCliBase):
                 demucs_mode=demucs_mode,
                 diarization_mode=diarization_mode,
                 language_identification_mode=language_identification_mode,
-                vad_implementation=vad_implementation,
                 block_vad_implementation=block_vad_implementation,
-                mlx_audio_token_limit_guard=mlx_audio_token_limit_guard,
                 cache_root_path=cache_args.root_path,
                 overwrite_cache=cache_args.overwrite,
                 provider=get_provider(
@@ -415,6 +394,7 @@ class TranscribeCli(ScinoephileCliBase):
                 no_op=llm_args.no_op,
                 aligned_merge_json_path=aligned_merge_json_path,
                 alignment_json_path=alignment_outfile_path,
+                run_manifest_json_path=run_manifest_outfile_path,
                 timing_settings=SubtitleTimingSettings(
                     lead_in_seconds=lead_in_seconds,
                     lead_out_seconds=lead_out_seconds,

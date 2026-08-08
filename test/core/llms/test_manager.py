@@ -16,7 +16,6 @@ from scinoephile.llms.guided_translation import (
     GuidedTranslationManager,
     GuidedTranslationPrompt,
 )
-from scinoephile.llms.multi_review import MultiReviewManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
 from scinoephile.llms.review import ReviewManager, ReviewPrompt, ReviewTestCase
 from scinoephile.llms.translation import TranslationManager, TranslationPrompt
@@ -40,7 +39,6 @@ _MANAGER_CLASSES: list[type[Manager]] = [
     GapTranslationManager,
     GuidedReviewManager,
     GuidedTranslationManager,
-    MultiReviewManager,
     OcrFusionManager,
     ReviewManager,
     TranslationManager,

@@ -24,6 +24,7 @@ from scinoephile.analysis.transcription_alignment import (
     TranscriptionAlignmentColumn,
     TranscriptionAlignmentRow,
     TranscriptionAlignmentSubtitle,
+    TranscriptionTimingSource,
 )
 from scinoephile.audio.classification import (
     AudioEvent,
@@ -42,15 +43,12 @@ from scinoephile.lang.zho.script.conversion import (
 
 __all__ = [
     "CantoneseTimedTokenSimilarity",
-    "TimedMultisourceAlignmentChunk",
+    "TimedMultisourceAlignmentRows",
     "TimedMultisourceAlignmentSource",
     "get_timed_alignment_sequence",
-    "get_timed_multisource_alignment_chunks",
+    "get_timed_multisource_alignment_rows",
     "get_timed_reference_alignment_sequence",
-    "get_timed_reference_boundary_markers",
-    "get_timed_text_alignment_sequence",
     "get_transcription_alignment_block",
-    "render_timed_multisource_alignment",
 ]
 
 _CANTONESE_EQUIVALENCE_GROUPS = (
@@ -73,8 +71,8 @@ _PAUSE_CHARACTER = "・"
 _VAD_SPEECH_CHARACTER = "＊"
 """Fullwidth marker for speech without an attributed speaker."""
 
-_REFERENCE_BOUNDARY_CHARACTER = "｜"
-"""Fullwidth marker for a reference subtitle boundary."""
+_VAD_SPEECH_THRESHOLD = 0.9
+"""Minimum VAD score rendered as unattributed speech."""
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -158,15 +156,9 @@ class CantoneseTimedTokenSimilarity:
 
 
 @dataclass(frozen=True, slots=True)
-class TimedMultisourceAlignmentChunk:
-    """One rendered chunk of aligned ASR and speaker evidence."""
+class TimedMultisourceAlignmentRows:
+    """Rendered aligned ASR and annotation rows."""
 
-    index: int
-    """One-based chunk index."""
-    start_seconds: float
-    """Approximate chunk start on the complete source timeline."""
-    end_seconds: float
-    """Approximate chunk end on the complete source timeline."""
     sources: tuple[TimedMultisourceAlignmentSource, ...]
     """Named aligned ASR source rows."""
     speaker: str
@@ -183,7 +175,7 @@ class TimedMultisourceAlignmentChunk:
 
 @dataclass(frozen=True, slots=True)
 class TimedMultisourceAlignmentSource:
-    """One named rendered source row in an alignment chunk."""
+    """One named rendered source row in an alignment."""
 
     name: str
     """Stable ASR source name."""
@@ -247,46 +239,33 @@ def get_timed_alignment_sequence(
     )
 
 
-def get_timed_multisource_alignment_chunks(
+def get_timed_multisource_alignment_rows(
     alignment: TimedMultiSequenceAlignment,
     *,
-    alignment_offset_seconds: float = 0.0,
-    columns_per_chunk: int = 60,
     audio_events: AudioEventDetectionResult | None = None,
-    classification_offset_seconds: float = 0.0,
     diarization: SpeakerDiarizationResult | None = None,
-    diarization_offset_seconds: float = 0.0,
     language_identification: LanguageIdentificationResult | None = None,
+    source_offset_seconds: float = 0.0,
     traditionalize: bool = False,
-    voice_activity_offset_seconds: float = 0.0,
     voice_activity_trace: VoiceActivityTrace | None = None,
-    voice_activity_threshold: float = 0.9,
-) -> tuple[TimedMultisourceAlignmentChunk, ...]:
-    """Render aligned source and annotation rows into structured chunks.
+) -> TimedMultisourceAlignmentRows:
+    """Render complete aligned source and annotation rows.
 
     Arguments:
         alignment: timed character alignment to render
-        alignment_offset_seconds: source time corresponding to alignment-local zero
-        columns_per_chunk: alignment columns included in each chunk
         audio_events: optional FireRed speech, singing, and music timeline
-        classification_offset_seconds: source offset for alignment-local times
         diarization: optional exclusive pyannote speaker timeline
-        diarization_offset_seconds: source offset for alignment-local times
         language_identification: optional FireRed spoken-language timeline
+        source_offset_seconds: source time corresponding to alignment-local zero
         traditionalize: whether to render source characters in Traditional Chinese
-        voice_activity_offset_seconds: source offset for alignment-local times
         voice_activity_trace: optional pyannote voice-activity score trace
-        voice_activity_threshold: minimum score rendered as unattributed speech
     Returns:
-        structured aligned source and speaker chunks
+        structured complete aligned source and annotation rows
     """
-    _validate_render_arguments(
-        alignment_offset_seconds,
-        columns_per_chunk,
-        diarization_offset_seconds,
-        voice_activity_offset_seconds,
-        voice_activity_threshold,
-    )
+    if source_offset_seconds < 0.0:
+        raise ValueError("Alignment source offset must be non-negative.")
+    if not alignment.columns:
+        raise ValueError("Cannot render an empty timed alignment.")
     speaker_symbols = _get_speaker_symbols(diarization)
     language_symbols = _get_language_symbols(language_identification)
     language_legend = {
@@ -296,73 +275,50 @@ def get_timed_multisource_alignment_chunks(
         _get_source_cells(alignment.columns, source_idx, traditionalize)
         for source_idx in range(len(alignment.source_names))
     )
-    chunks = []
-    for chunk_start in range(0, len(alignment.columns), columns_per_chunk):
-        columns = alignment.columns[chunk_start : chunk_start + columns_per_chunk]
-        if not columns:
-            continue
-        sources = tuple(
-            TimedMultisourceAlignmentSource(
-                name=source_name,
-                text="".join(
-                    source_cells[source_idx][chunk_start : chunk_start + len(columns)]
-                ),
-            )
-            for source_idx, source_name in enumerate(alignment.source_names)
+    sources = tuple(
+        TimedMultisourceAlignmentSource(
+            name=source_name, text="".join(source_cells[source_idx])
         )
-        speaker = "".join(
-            _get_annotation_cell(
-                column,
-                diarization,
-                diarization_offset_seconds,
-                speaker_symbols,
-                voice_activity_trace,
-                voice_activity_offset_seconds,
-                voice_activity_threshold,
-            )
-            for column in columns
+        for source_idx, source_name in enumerate(alignment.source_names)
+    )
+    speaker = "".join(
+        _get_annotation_cell(
+            column,
+            diarization,
+            speaker_symbols,
+            source_offset_seconds,
+            voice_activity_trace,
         )
-        language_trace = None
-        if language_identification is not None:
-            language_trace = "".join(
-                _get_language_cell(
-                    column,
-                    language_identification,
-                    classification_offset_seconds,
-                    language_symbols,
-                )
-                for column in columns
+        for column in alignment.columns
+    )
+    language_trace = None
+    if language_identification is not None:
+        language_trace = "".join(
+            _get_language_cell(
+                column, language_identification, source_offset_seconds, language_symbols
             )
-        singing_trace = _get_event_row(
-            columns,
+            for column in alignment.columns
+        )
+    return TimedMultisourceAlignmentRows(
+        sources=sources,
+        speaker=speaker,
+        language_trace=language_trace,
+        language_legend=language_legend,
+        singing_trace=_get_event_row(
+            alignment.columns,
             audio_events,
             AudioEvent.SINGING,
             "唱",
-            classification_offset_seconds,
-        )
-        music_trace = _get_event_row(
-            columns, audio_events, AudioEvent.MUSIC, "樂", classification_offset_seconds
-        )
-        chunks.append(
-            TimedMultisourceAlignmentChunk(
-                index=len(chunks) + 1,
-                start_seconds=(
-                    min(column.start_seconds for column in columns)
-                    + alignment_offset_seconds
-                ),
-                end_seconds=(
-                    max(column.end_seconds for column in columns)
-                    + alignment_offset_seconds
-                ),
-                sources=sources,
-                speaker=speaker,
-                language_trace=language_trace,
-                language_legend=language_legend,
-                singing_trace=singing_trace,
-                music_trace=music_trace,
-            )
-        )
-    return tuple(chunks)
+            source_offset_seconds,
+        ),
+        music_trace=_get_event_row(
+            alignment.columns,
+            audio_events,
+            AudioEvent.MUSIC,
+            "樂",
+            source_offset_seconds,
+        ),
+    )
 
 
 def get_timed_reference_alignment_sequence(
@@ -394,52 +350,6 @@ def get_timed_reference_alignment_sequence(
     )
 
 
-def get_timed_reference_boundary_markers(
-    series: Series, *, offset_seconds: float = 0.0
-) -> tuple[tuple[float, str], ...]:
-    """Get a fullwidth marker at the end of each reference subtitle.
-
-    Arguments:
-        series: reference subtitles on the complete source timeline
-        offset_seconds: source time corresponding to alignment-local zero
-    Returns:
-        ordered local marker times and fullwidth boundary characters
-    Raises:
-        ValueError: if the source offset is negative
-    """
-    if offset_seconds < 0.0:
-        raise ValueError("Reference alignment offset must be non-negative.")
-    return tuple(
-        (max(0.0, subtitle.end / 1000 - offset_seconds), _REFERENCE_BOUNDARY_CHARACTER)
-        for subtitle in series
-    )
-
-
-def get_timed_text_alignment_sequence(
-    name: str, text: str, *, start_seconds: float, end_seconds: float
-) -> TimedAlignmentSequence:
-    """Convert untimed text into characters with uniformly estimated timings.
-
-    Arguments:
-        name: stable source name
-        text: untimed source text
-        start_seconds: estimated local start time
-        end_seconds: estimated local end time
-    Returns:
-        named lexical-character sequence spanning the estimated interval
-    Raises:
-        ValueError: if the estimated interval is invalid
-    """
-    if start_seconds < 0.0:
-        raise ValueError("Text alignment start must be non-negative.")
-    if end_seconds <= start_seconds:
-        raise ValueError("Text alignment interval must be nonempty.")
-    return TimedAlignmentSequence(
-        name=name,
-        tokens=_get_timed_alignment_tokens(((text, start_seconds, end_seconds),)),
-    )
-
-
 def get_transcription_alignment_block(
     alignment: TimedMultiSequenceAlignment,
     merged_segments: Sequence[TranscribedSegment],
@@ -456,6 +366,7 @@ def get_transcription_alignment_block(
     language_identification: LanguageIdentificationResult | None = None,
     pause_intervals_seconds: Sequence[tuple[float, float]] = (),
     source_errors: Mapping[str, str] | None = None,
+    timing_sources: Mapping[int, TranscriptionTimingSource] | None = None,
     traditionalize: bool = False,
     voice_activity_trace: VoiceActivityTrace | None = None,
 ) -> TranscriptionAlignmentBlock:
@@ -480,6 +391,7 @@ def get_transcription_alignment_block(
         language_identification: optional complete-source FireRed language timeline
         pause_intervals_seconds: block-local VAD silence intervals
         source_errors: failed source names and messages
+        timing_sources: final segment IDs mapped to their speech-timing origins
         traditionalize: whether to render lexical rows in Hong Kong Traditional
         voice_activity_trace: optional complete-source VAD score trace
     Returns:
@@ -502,23 +414,16 @@ def get_transcription_alignment_block(
         pause_unit_seconds=0.25,
         source_names=alignment.source_names,
     )
-    chunks = get_timed_multisource_alignment_chunks(
+    rendered = get_timed_multisource_alignment_rows(
         augmented,
-        alignment_offset_seconds=offset_seconds,
         audio_events=audio_events,
-        classification_offset_seconds=offset_seconds,
-        columns_per_chunk=max(len(augmented.columns), 1),
         diarization=diarization,
-        diarization_offset_seconds=offset_seconds,
         language_identification=language_identification,
+        source_offset_seconds=offset_seconds,
         traditionalize=traditionalize,
-        voice_activity_offset_seconds=offset_seconds,
         voice_activity_trace=voice_activity_trace,
     )
-    if len(chunks) != 1:
-        raise RuntimeError("Portable alignment block did not render as one chunk.")
-    chunk = chunks[0]
-    rendered_rows = {source.name: source.text for source in chunk.sources}
+    rendered_rows = {source.name: source.text for source in rendered.sources}
     columns = tuple(
         TranscriptionAlignmentColumn(
             index=column_idx,
@@ -530,7 +435,9 @@ def get_transcription_alignment_block(
     )
     subtitles = tuple(
         _get_transcription_alignment_subtitle(
-            segment, first_subtitle_index + segment_idx
+            segment,
+            first_subtitle_index + segment_idx,
+            (timing_sources or {}).get(segment.id, "source"),
         )
         for segment_idx, segment in enumerate(merged_segments)
     )
@@ -545,168 +452,23 @@ def get_transcription_alignment_block(
             TranscriptionAlignmentRow(name=name, text=rendered_rows[name])
             for name in alignment.source_names
         ),
-        speaker=chunk.speaker,
-        language_trace=chunk.language_trace,
-        language_legend=dict(chunk.language_legend),
-        singing_trace=chunk.singing_trace,
-        music_trace=chunk.music_trace,
+        speaker=rendered.speaker,
+        language_trace=rendered.language_trace,
+        language_legend=dict(rendered.language_legend),
+        singing_trace=rendered.singing_trace,
+        music_trace=rendered.music_trace,
         merged=rendered_rows[merged_sequence.name],
         subtitles=subtitles,
         source_errors=dict(source_errors or {}),
     )
 
 
-def render_timed_multisource_alignment(
-    alignment: TimedMultiSequenceAlignment,
-    *,
-    alignment_offset_seconds: float = 0.0,
-    columns_per_chunk: int = 60,
-    diarization: SpeakerDiarizationResult | None = None,
-    diarization_offset_seconds: float = 0.0,
-    primary_source_names: Sequence[str] | None = None,
-    traditionalize: bool = False,
-    voice_activity_offset_seconds: float = 0.0,
-    voice_activity_trace: VoiceActivityTrace | None = None,
-    voice_activity_threshold: float = 0.9,
-) -> str:
-    """Render aligned ASR rows with a separate speaker/VAD annotation row.
-
-    Each display cell occupies two terminal columns. CJK text, fullwidth gaps, and
-    annotation markers use their natural width; other characters are padded.
-
-    Arguments:
-        alignment: timed character alignment to render
-        alignment_offset_seconds: source time corresponding to alignment-local zero
-        columns_per_chunk: alignment columns shown in each stacked chunk
-        diarization: optional exclusive pyannote speaker timeline
-        diarization_offset_seconds: source offset for alignment-local times
-        primary_source_names: rows rendered above speaker/VAD annotations
-        traditionalize: whether to render source characters in Traditional Chinese
-        voice_activity_offset_seconds: source offset for alignment-local times
-        voice_activity_trace: optional pyannote voice-activity score trace
-        voice_activity_threshold: minimum score rendered as unattributed speech
-    Returns:
-        human-readable stacked alignment
-    """
-    _validate_render_arguments(
-        alignment_offset_seconds,
-        columns_per_chunk,
-        diarization_offset_seconds,
-        voice_activity_offset_seconds,
-        voice_activity_threshold,
-    )
-
-    if primary_source_names is None:
-        primary_source_names = alignment.source_names
-    primary_source_names = tuple(primary_source_names)
-    if len(set(primary_source_names)) != len(primary_source_names):
-        raise ValueError("Primary alignment source names must be unique.")
-    if not set(primary_source_names).issubset(alignment.source_names):
-        raise ValueError("Primary alignment source name is not present.")
-    primary_source_indexes = tuple(
-        alignment.source_names.index(name) for name in primary_source_names
-    )
-    secondary_source_indexes = tuple(
-        source_idx
-        for source_idx in range(len(alignment.source_names))
-        if source_idx not in primary_source_indexes
-    )
-    row_names = [
-        *primary_source_names,
-        *(alignment.source_names[idx] for idx in secondary_source_indexes),
-    ]
-    include_annotation = diarization is not None or voice_activity_trace is not None
-    if include_annotation:
-        row_names.append("speaker")
-    label_width = max(len(name) for name in row_names)
-    speaker_symbols = _get_speaker_symbols(diarization)
-    source_cells = tuple(
-        _get_source_cells(alignment.columns, source_idx, traditionalize)
-        for source_idx in range(len(alignment.source_names))
-    )
-    chunks = []
-    for chunk_start in range(0, len(alignment.columns), columns_per_chunk):
-        chunk = alignment.columns[chunk_start : chunk_start + columns_per_chunk]
-        if not chunk:
-            continue
-        chunk_start_seconds = min(column.start_seconds for column in chunk)
-        chunk_end_seconds = max(column.end_seconds for column in chunk)
-        lines = [
-            f"[{chunk_start + 1:04d}-{chunk_start + len(chunk):04d}] "
-            f"{chunk_start_seconds + alignment_offset_seconds:07.3f}-"
-            f"{chunk_end_seconds + alignment_offset_seconds:07.3f}s"
-        ]
-        lines.extend(
-            _get_rendered_source_line(
-                alignment,
-                source_cells,
-                source_idx,
-                chunk_start,
-                len(chunk),
-                label_width,
-            )
-            for source_idx in primary_source_indexes
-        )
-        if include_annotation:
-            annotation_cells = [
-                _get_annotation_cell(
-                    column,
-                    diarization,
-                    diarization_offset_seconds,
-                    speaker_symbols,
-                    voice_activity_trace,
-                    voice_activity_offset_seconds,
-                    voice_activity_threshold,
-                )
-                for column in chunk
-            ]
-            lines.append(
-                f"{'speaker':<{label_width}}  "
-                + "".join(_get_display_cell(cell) for cell in annotation_cells)
-            )
-        lines.extend(
-            _get_rendered_source_line(
-                alignment,
-                source_cells,
-                source_idx,
-                chunk_start,
-                len(chunk),
-                label_width,
-            )
-            for source_idx in secondary_source_indexes
-        )
-        chunks.append("\n".join(lines))
-    legend = _get_alignment_legend(alignment, include_annotation)
-    return f"{legend}\n\n" + "\n\n".join(chunks)
-
-
-def _get_alignment_legend(
-    alignment: TimedMultiSequenceAlignment, include_annotation: bool
-) -> str:
-    """Get the legend for the annotations present in an alignment."""
-    legend = (
-        f"Legend: 「{_ALIGNMENT_GAP_CHARACTER}」=alignment gap; "
-        f"{_PAUSE_CHARACTER}=timed pause"
-    )
-    if any(column.is_marker for column in alignment.columns):
-        legend += f"; {_REFERENCE_BOUNDARY_CHARACTER}=reference subtitle boundary"
-    if include_annotation:
-        legend += (
-            "; Ａ／Ｂ／…=exclusive speaker; "
-            f"{_VAD_SPEECH_CHARACTER}=speech without speaker; "
-            f"「{_ALIGNMENT_GAP_CHARACTER}」=no speech"
-        )
-    return legend
-
-
 def _get_annotation_cell(
     column: TimedAlignmentColumn,
     diarization: SpeakerDiarizationResult | None,
-    diarization_offset_seconds: float,
     speaker_symbols: dict[str, str],
+    source_offset_seconds: float,
     voice_activity_trace: VoiceActivityTrace | None,
-    voice_activity_offset_seconds: float,
-    voice_activity_threshold: float,
 ) -> str:
     """Get one speaker/VAD display character for an alignment column."""
     if column.is_marker:
@@ -718,17 +480,15 @@ def _get_annotation_cell(
     end_seconds = column.end_seconds
     if diarization is not None:
         speaker = diarization.get_exclusive_speaker(
-            start_seconds + diarization_offset_seconds,
-            end_seconds + diarization_offset_seconds,
+            start_seconds + source_offset_seconds, end_seconds + source_offset_seconds
         )
         if speaker is not None:
             return speaker_symbols[speaker]
     if voice_activity_trace is not None:
         score = voice_activity_trace.get_mean_score(
-            start_seconds + voice_activity_offset_seconds,
-            end_seconds + voice_activity_offset_seconds,
+            start_seconds + source_offset_seconds, end_seconds + source_offset_seconds
         )
-        if score is not None and score >= voice_activity_threshold:
+        if score is not None and score >= _VAD_SPEECH_THRESHOLD:
             return _VAD_SPEECH_CHARACTER
     return _ALIGNMENT_GAP_CHARACTER
 
@@ -807,13 +567,6 @@ def _get_character_features(character: str) -> _CharacterFeatures:
     )
 
 
-def _get_display_cell(character: str) -> str:
-    """Pad one character to a two-terminal-column display cell."""
-    if unicodedata.east_asian_width(character) in {"F", "W"}:
-        return character
-    return f"{character} "
-
-
 def _get_speaker_symbols(
     diarization: SpeakerDiarizationResult | None,
 ) -> dict[str, str]:
@@ -864,22 +617,6 @@ def _get_language_symbols(
     return symbols
 
 
-def _get_rendered_source_line(
-    alignment: TimedMultiSequenceAlignment,
-    source_cells: tuple[tuple[str, ...], ...],
-    source_idx: int,
-    chunk_start: int,
-    chunk_length: int,
-    label_width: int,
-) -> str:
-    """Render one source row for one alignment chunk."""
-    source_name = alignment.source_names[source_idx]
-    cells = source_cells[source_idx][chunk_start : chunk_start + chunk_length]
-    return f"{source_name:<{label_width}}  " + "".join(
-        _get_display_cell(cell) for cell in cells
-    )
-
-
 def _get_source_cells(
     columns: Sequence[TimedAlignmentColumn], source_idx: int, traditionalize: bool
 ) -> tuple[str, ...]:
@@ -925,13 +662,14 @@ def _get_source_cells(
 
 
 def _get_transcription_alignment_subtitle(
-    segment: TranscribedSegment, index: int
+    segment: TranscribedSegment, index: int, timing_source: TranscriptionTimingSource
 ) -> TranscriptionAlignmentSubtitle:
     """Convert one final segment into a portable subtitle record.
 
     Arguments:
         segment: final segment with display timing and optional CTC words
         index: one-based global subtitle index
+        timing_source: origin of the segment's speech interval
     Returns:
         portable subtitle retaining separate speech and display intervals
     """
@@ -954,6 +692,7 @@ def _get_transcription_alignment_subtitle(
         text=segment.text,
         speech_start_ms=speech_start_ms,
         speech_end_ms=speech_end_ms,
+        timing_source=timing_source,
         start_ms=min(start_ms, speech_start_ms),
         end_ms=max(end_ms, speech_end_ms),
         speaker=speaker,
@@ -985,26 +724,6 @@ def _get_timed_alignment_tokens(
                 TimedAlignmentToken(character, character_start, character_end)
             )
     return tuple(tokens)
-
-
-def _validate_render_arguments(
-    alignment_offset_seconds: float,
-    columns_per_chunk: int,
-    diarization_offset_seconds: float,
-    voice_activity_offset_seconds: float,
-    voice_activity_threshold: float,
-):
-    """Validate shared structured and text rendering arguments."""
-    if not 0.0 <= voice_activity_threshold <= 1.0:
-        raise ValueError("Voice activity threshold must be between zero and one.")
-    if alignment_offset_seconds < 0.0:
-        raise ValueError("Alignment offset must be non-negative.")
-    if diarization_offset_seconds < 0.0:
-        raise ValueError("Diarization offset must be non-negative.")
-    if voice_activity_offset_seconds < 0.0:
-        raise ValueError("Voice activity offset must be non-negative.")
-    if columns_per_chunk <= 0:
-        raise ValueError("Alignment columns per chunk must be positive.")
 
 
 def _is_alignment_character(character: str) -> bool:

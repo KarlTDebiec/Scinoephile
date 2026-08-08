@@ -92,7 +92,6 @@ _YUE_HANT_PROMPT = replace(
         singing_trace_desc="逐欄對齊嘅歌唱、冇歌唱同停頓標記（如果有）",
         music_trace="yinyue",
         music_trace_desc="逐欄對齊嘅音樂、冇音樂同停頓標記（如果有）",
-        answer_allows_punctuation=False,
         answer_text="wenben",
         answer_text_desc=(
             "冇標點並喺每項字幕後插入全形直線嘅完整共識轉寫；冇足夠跨來源支持時用空字串"

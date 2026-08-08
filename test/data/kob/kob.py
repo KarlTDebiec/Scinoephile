@@ -23,7 +23,6 @@ eng_path = output_path / "eng"
 zho_hant_ocr_path = output_path / "zho-Hant_ocr"
 yue_hant_path = output_path / "yue-Hant"
 yue_hans_path = output_path / "yue-Hans"
-yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
 
 transcription_additional_context = """
 電影背景：
@@ -112,12 +111,7 @@ if "yue-Hant_transcribe" in actions:
     process_transcription_pipeline(
         title_root,
         reference_path=yue_hant_path / "clean_review_flatten_timewarp.srt",
-        language=Language.yue_hant,
-        output_dir_path=yue_hant_transcribe_path,
-        audio_path=yue_hant_transcribe_path / "audio.wav",
         additional_context=transcription_additional_context,
-        audit_include_merge_support=True,
         reference_name="yue-Hant",
         terminal_alignment_authority="yue-Hant",
-        overwrite=False,
     )

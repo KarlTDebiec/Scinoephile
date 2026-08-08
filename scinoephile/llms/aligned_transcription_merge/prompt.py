@@ -15,8 +15,6 @@ __all__ = ["AlignedTranscriptionMergePrompt"]
 class AlignedTranscriptionMergePrompt(Prompt):
     """Text and aliases for aligned transcription merging."""
 
-    answer_allows_punctuation: bool = True
-    """Whether merged transcript text may contain punctuation or symbols."""
     max_subtitle_characters: int = 20
     """Maximum nonwhitespace characters permitted in one subtitle."""
     minimum_consensus_coverage: float = 0.9
@@ -116,7 +114,7 @@ class AlignedTranscriptionMergePrompt(Prompt):
         "Answer text must not contain punctuation or symbol characters other than "
         "fullwidth subtitle boundaries."
     )
-    """Error when punctuation is forbidden but appears in answer text."""
+    """Error when punctuation appears in answer text."""
     subtitle_length_err_tpl: str = (
         "Answer subtitle indexes {indexes} exceed the maximum of "
         "{max_characters} nonwhitespace characters."

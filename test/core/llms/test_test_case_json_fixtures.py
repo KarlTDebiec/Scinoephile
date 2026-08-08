@@ -17,7 +17,6 @@ from scinoephile.core.llms.utils import (
 )
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
-from scinoephile.llms.multi_review import MultiReviewManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
 from scinoephile.llms.review import ReviewManager
 from test.helpers import test_data_root
@@ -28,8 +27,6 @@ _TEST_CASE_FAMILIES: tuple[tuple[str, type[Manager]], ...] = (
     ("*/output/*/lang/*/simplify_review.json", ReviewManager),
     ("*/output/*/lang/yue_zho/gap_translation/*.json", GapTranslationManager),
     ("*/output/*/lang/yue_zho/guided_review/*.json", GuidedReviewManager),
-    ("*/output/*_transcribe/**/json/gap_translation-*.json", GapTranslationManager),
-    ("*/output/*_transcribe/**/json/multi_review.json", MultiReviewManager),
 )
 
 

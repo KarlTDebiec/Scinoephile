@@ -35,13 +35,9 @@ def test_transcribe_series_constructs_aligned_pipeline(tmp_path: Path):
         output = transcribe_series(
             audio_series,
             language=Language.yue_hant,
-            skip_singing_blocks=True,
             demucs_mode=DemucsMode.ON,
             diarization_mode=DiarizationMode.ON,
-            skip_non_target_language_blocks=True,
-            vad_implementation=VADImplementation.TEN,
             block_vad_implementation=VADImplementation.SILERO,
-            mlx_audio_token_limit_guard=False,
             cache_root_path=tmp_path / "cache",
             overwrite_cache=True,
             provider=provider,
@@ -58,15 +54,11 @@ def test_transcribe_series_constructs_aligned_pipeline(tmp_path: Path):
     get_pipeline.assert_called_once_with(
         Language.yue_hant,
         audio_event_mode=AudioClassificationMode.AUTO,
-        skip_singing_blocks=True,
         source_specs=None,
         demucs_mode=DemucsMode.ON,
         diarization_mode=DiarizationMode.ON,
         language_identification_mode=AudioClassificationMode.AUTO,
-        skip_non_target_language_blocks=True,
-        vad_implementation=VADImplementation.TEN,
         block_vad_implementation=VADImplementation.SILERO,
-        mlx_audio_token_limit_guard=False,
         cache_root_path=tmp_path / "cache",
         overwrite_cache=True,
         provider=provider,
@@ -104,3 +96,24 @@ def test_transcribe_series_saves_injected_pipeline_artifact(tmp_path: Path):
         audio_series, start_at_idx=0, stop_at_idx=None
     )
     artifact.save.assert_called_once_with(artifact_path)
+
+
+def test_transcribe_series_saves_injected_pipeline_run_manifest(tmp_path: Path):
+    """An injected pipeline should save its current-run provenance on request."""
+    audio_series = AudioSeries(audio=AudioSegment.silent(duration=1_000), events=[])
+    expected = AudioSeries(audio=audio_series.audio, events=[])
+    pipeline = Mock(spec=TranscriptionPipeline)
+    pipeline.process.return_value = expected
+    manifest = Mock()
+    pipeline.last_run_manifest = manifest
+    manifest_path = tmp_path / "run_manifest.json"
+
+    output = transcribe_series(
+        audio_series,
+        language=Language.yue_hant,
+        pipeline=pipeline,
+        run_manifest_json_path=manifest_path,
+    )
+
+    assert output is expected
+    manifest.save.assert_called_once_with(manifest_path)

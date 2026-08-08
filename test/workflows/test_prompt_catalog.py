@@ -8,7 +8,6 @@ from pathlib import Path
 from types import MappingProxyType
 
 import scinoephile.lang.review.guided as guided_review
-import scinoephile.lang.review.multi as multi_review
 import scinoephile.lang.review.standard as review
 import scinoephile.lang.transcription.aligned_merge as aligned_transcription_merge
 import scinoephile.lang.translation.gap as gap_translation
@@ -31,7 +30,6 @@ def test_prompt_catalog_and_domain_mappings_are_read_only():
         PROMPT_SPECS,
         aligned_transcription_merge.DEFAULT_PROMPTS,
         guided_review.DEFAULT_PROMPTS,
-        multi_review.DEFAULT_PROMPTS,
         gap_translation.DEFAULT_PROMPTS,
         guided_translation.DEFAULT_PROMPTS,
         translation.DEFAULT_PROMPTS,

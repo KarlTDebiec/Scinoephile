@@ -11,7 +11,6 @@ from scinoephile.llms.aligned_transcription_merge import (
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
 from scinoephile.llms.guided_translation import GuidedTranslationManager
-from scinoephile.llms.multi_review import MultiReviewManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
 from scinoephile.llms.review import ReviewManager
 from scinoephile.llms.translation import TranslationManager
@@ -27,7 +26,6 @@ OPERATIONS: dict[str, type[Manager]] = {
             GapTranslationManager,
             GuidedReviewManager,
             GuidedTranslationManager,
-            MultiReviewManager,
             OcrFusionManager,
             ReviewManager,
             TranslationManager,

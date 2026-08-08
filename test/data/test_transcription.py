@@ -28,6 +28,7 @@ from test.data.transcription import (
     _get_stop_at_idx_for_reference_count,
     _load_audio_series,
     _save_evaluation,
+    process_transcription_pipeline,
 )
 
 
@@ -75,14 +76,12 @@ def test_media_audio_trim_is_applied_before_staging(tmp_path: Path):
         audio_path = tmp_path / "audio.wav"
         audio = _load_audio_series(
             audio_path,
-            audio_source_path=None,
             media_path=tmp_path / "source.mkv",
             stream_index=12,
             media_start_seconds=1.0,
         )
         reloaded = _load_audio_series(
             audio_path,
-            audio_source_path=None,
             media_path=tmp_path / "source.mkv",
             stream_index=12,
             media_start_seconds=1.0,
@@ -93,6 +92,30 @@ def test_media_audio_trim_is_applied_before_staging(tmp_path: Path):
     assert audio_path.exists()
     assert not audio_path.with_suffix(".srt").exists()
     load_audio.assert_called_once()
+
+
+def test_existing_alignment_recreates_srt_without_transcription(tmp_path: Path):
+    """A portable alignment alone should be sufficient to reuse test output."""
+    title_root_path = tmp_path / "title"
+    output_dir_path = title_root_path / "output/yue-Hant_transcribe"
+    artifact_path = output_dir_path / "json/alignment.json"
+    reference_path = tmp_path / "reference.srt"
+    artifact = _get_artifact()
+    artifact.save(artifact_path)
+    artifact.get_series().save(reference_path)
+
+    with (
+        patch("test.data.transcription._load_audio_series") as load_audio,
+        patch("test.data.transcription.get_transcription_pipeline") as get_pipeline,
+    ):
+        output = process_transcription_pipeline(
+            title_root_path, reference_path=reference_path, reference_name="yue-Hant"
+        )
+
+    assert output == artifact.get_series()
+    assert (output_dir_path / "transcribe.srt").exists()
+    load_audio.assert_not_called()
+    get_pipeline.assert_not_called()
 
 
 def test_evaluation_writes_standardized_metrics_and_audit(
@@ -119,6 +142,7 @@ def test_evaluation_writes_standardized_metrics_and_audit(
     audit = (tmp_path / "audit.md").read_text(encoding="utf-8")
     assert "# Transcription Alignment Audit" in audit
     assert "yue-Hant" in audit
+    assert "support" in audit
     assert "Authority: yue-Hant" in caplog.text
     assert any("\x1b[32m" in record.getMessage() for record in caplog.records)
 
@@ -154,6 +178,10 @@ def _get_artifact() -> TranscriptionAlignmentArtifact:
                     TranscriptionAlignmentRow(name="mimo", text="是呀"),
                 ),
                 speaker="ＡＡ",
+                language_trace="粵粵",
+                language_legend={"粵": "zh-yue"},
+                singing_trace="　唱",
+                music_trace="樂樂",
                 merged="係呀",
                 subtitles=(
                     TranscriptionAlignmentSubtitle(

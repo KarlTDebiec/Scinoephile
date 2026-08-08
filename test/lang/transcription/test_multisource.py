@@ -109,6 +109,7 @@ def test_merge_aligns_flat_rows_then_ctc_times_llm_subtitle_splits():
         (0.5, 1.5),
         (1.5, 2.5),
     ]
+    assert transcriber.last_timing_sources == {0: "ctc-request", 1: "ctc-request"}
     ctc_aligner.assert_called_once_with(audio, "甲。乙！")
     merge_sources, speaker = merger.process.call_args.args
     assert [source.name for source in merge_sources] == ["whisper", "mimo"]
@@ -322,6 +323,11 @@ def test_timing_retries_incomplete_request_against_unconsumed_block():
         2_600,
         600,
     ]
+    assert transcriber.last_timing_sources == {
+        0: "ctc-request",
+        1: "ctc-unconsumed-block",
+        2: "ctc-request",
+    }
 
 
 def test_call_runs_sources_and_merges_successful_outputs():
@@ -347,11 +353,12 @@ def test_call_runs_sources_and_merges_successful_outputs():
     transcriber.merge.assert_called_once_with(
         {"whisper": whisper_segments, "qwen": qwen_segments},
         audio,
+        audio_events=None,
+        language_identification=None,
         pause_intervals_seconds=(),
+        source_offset_seconds=0.0,
         voice_activity_trace=None,
-        voice_activity_offset_seconds=0.0,
         diarization=None,
-        diarization_offset_seconds=0.0,
     )
 
 
@@ -399,11 +406,12 @@ def test_call_excludes_source_with_pathological_compression():
     transcriber.merge.assert_called_once_with(
         {"mimo": mimo_segments, "qwen": qwen_segments},
         audio,
+        audio_events=None,
+        language_identification=None,
         pause_intervals_seconds=(),
+        source_offset_seconds=0.0,
         voice_activity_trace=None,
-        voice_activity_offset_seconds=0.0,
         diarization=None,
-        diarization_offset_seconds=0.0,
     )
     assert transcriber.last_source_errors == {
         "whisper": "Segment 0 compression ratio 37.00 exceeds maximum 2.40."

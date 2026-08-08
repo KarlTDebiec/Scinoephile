@@ -5,8 +5,7 @@
 from __future__ import annotations
 
 import unicodedata
-from collections.abc import Mapping, Sequence
-from typing import ClassVar, Self, cast
+from typing import ClassVar, Self
 
 from pydantic import Field, ValidationInfo, model_validator
 
@@ -183,50 +182,6 @@ class AlignedTranscriptionMergeAnswer(Answer):
         """Get the complete consensus transcript."""
         return "".join(subtitle.text for subtitle in self.subtitles)
 
-    @classmethod
-    def concatenate(
-        cls, answers: Sequence[AlignedTranscriptionMergeAnswer]
-    ) -> AlignedTranscriptionMergeAnswer:
-        """Concatenate independently queried answer rows.
-
-        Arguments:
-            answers: aligned request answers in chronological order
-        Returns:
-            one answer preserving all request-level subtitle boundaries
-        Raises:
-            ValueError: if no request answers are provided
-        """
-        if not answers:
-            raise ValueError("At least one aligned merge answer is required.")
-        return cls(text="".join(answer.text for answer in answers))
-
-    @model_validator(mode="before")
-    @classmethod
-    def migrate_legacy_subtitles(cls, value: object) -> object:
-        """Convert the former indexed-subtitle persistence shape to inline text."""
-        if not isinstance(value, Mapping):
-            return value
-        mapping = cast(Mapping[str, object], value)
-        if "subtitles" not in mapping:
-            return value
-        subtitles = mapping["subtitles"]
-        if not isinstance(subtitles, list) or not subtitles:
-            return value
-        texts = []
-        for subtitle in subtitles:
-            if not isinstance(subtitle, Mapping):
-                return value
-            text = subtitle.get("text")
-            if not isinstance(text, str):
-                return value
-            texts.append(text)
-        migrated = dict(value)
-        del migrated["subtitles"]
-        migrated["text"] = "".join(
-            text + _REFERENCE_BOUNDARY_CHARACTER for text in texts
-        )
-        return migrated
-
     @model_validator(mode="after")
     def validate_text(self) -> Self:
         """Ensure boundary markers form nonblank, annotation-free subtitles."""
@@ -280,7 +235,7 @@ class AlignedTranscriptionMergeTestCase(TestCase):
             and context.get("skip_output_quality_validation") is True
         ):
             return self
-        if not self.prompt.answer_allows_punctuation and any(
+        if any(
             unicodedata.category(character)[0] in {"P", "S"}
             for character in self.answer.transcript
         ):

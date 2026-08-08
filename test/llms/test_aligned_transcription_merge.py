@@ -29,7 +29,6 @@ from scinoephile.llms.aligned_transcription_merge.splitting import (
 )
 
 _LOCALIZED_PROMPT = AlignedTranscriptionMergePrompt(
-    answer_allows_punctuation=False,
     language=Language.yue_hant,
     sources="laiyuan",
     source_name="mingcheng",
@@ -126,16 +125,6 @@ def test_answer_text_can_omit_a_request_without_consensus():
     assert answer.subtitles == []
 
 
-def test_answer_migrates_legacy_indexed_subtitles():
-    """Persisted answers from the former list schema should remain readable."""
-    answer = AlignedTranscriptionMergeAnswer.model_validate(
-        {"subtitles": [{"index": 1, "text": "甲。"}, {"index": 2, "text": "乙！"}]},
-        extra="forbid",
-    )
-
-    assert answer.text == "甲。｜乙！｜"
-
-
 def test_answer_text_requires_clean_terminated_subtitles():
     """Answers should terminate every nonblank subtitle and omit input annotations."""
     with raises(ValidationError, match="separated and terminated"):
@@ -146,8 +135,8 @@ def test_answer_text_requires_clean_terminated_subtitles():
         AlignedTranscriptionMergeAnswer(text="甲・乙｜")
 
 
-def test_unpunctuated_prompt_rejects_answer_punctuation():
-    """A prompt may forbid punctuation while the persistence model remains tolerant."""
+def test_merge_rejects_answer_punctuation():
+    """The merger should reject punctuation while its answer model remains tolerant."""
     test_case_cls = AlignedTranscriptionMergeManager.get_test_case_cls(
         _LOCALIZED_PROMPT
     )
@@ -303,7 +292,26 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
     assert [subtitle.text for subtitle in answer.subtitles] == ["甲", "乙"]
     assert [subtitle.index for subtitle in answer.subtitles] == [1, 2]
     assert processor.last_request_spans == ((0, 1), (5, 6))
-    assert processor.last_request_count == 2
+    assert len(processor.last_request_queries) == 2
+    assert [
+        query.model_dump(mode="json", by_alias=True)
+        for query in processor.last_request_queries
+    ] == [
+        {
+            "laiyuan": [
+                {"mingcheng": "source_1", "yuanwen": "甲"},
+                {"mingcheng": "source_2", "yuanwen": "甲"},
+            ],
+            "shuoshuuren": "Ａ",
+        },
+        {
+            "laiyuan": [
+                {"mingcheng": "source_1", "yuanwen": "乙"},
+                {"mingcheng": "source_2", "yuanwen": "乙"},
+            ],
+            "shuoshuuren": "Ｂ",
+        },
+    ]
     assert provider.chat_completion.call_count == 2
     first_messages = provider.chat_completion.call_args_list[0].args[0]
     second_messages = provider.chat_completion.call_args_list[1].args[0]
@@ -464,7 +472,7 @@ def test_answer_coverage_does_not_reject_context_resolved_weak_columns():
     )
     test_case = AlignedTranscriptionMergeTestCase(query=query, answer=answer)
 
-    assert validation.majority_column_indexes == ()
+    assert validation.majority_column_count == 0
     assert validation.majority_coverage == 1.0
     assert test_case.answer == answer
 

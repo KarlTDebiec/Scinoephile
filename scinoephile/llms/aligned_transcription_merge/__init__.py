@@ -23,7 +23,6 @@ from .models import (
 from .processor import AlignedTranscriptionMergeProcessor
 from .prompt import AlignedTranscriptionMergePrompt
 from .validation import (
-    AlignedTranscriptionMergeCharacterSupport,
     AlignedTranscriptionMergeValidation,
     get_aligned_transcription_merge_support_row,
     get_aligned_transcription_merge_validation,
@@ -31,7 +30,6 @@ from .validation import (
 
 __all__ = [
     "AlignedTranscriptionMergeAnswer",
-    "AlignedTranscriptionMergeCharacterSupport",
     "AlignedTranscriptionMergeManager",
     "AlignedTranscriptionMergeProcessor",
     "AlignedTranscriptionMergePrompt",

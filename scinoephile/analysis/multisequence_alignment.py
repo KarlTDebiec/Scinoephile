@@ -18,7 +18,6 @@ __all__ = [
     "TimedAlignmentToken",
     "TimedMultiSequenceAligner",
     "TimedMultiSequenceAlignment",
-    "get_timed_alignment_with_markers",
     "get_timed_alignment_with_pauses",
 ]
 
@@ -529,56 +528,6 @@ class TimedMultiSequenceAligner:
                         score += self.settings.gap_open_score
                     gap_state = current_gap_state
         return score
-
-
-def get_timed_alignment_with_markers(
-    alignment: TimedMultiSequenceAlignment,
-    markers: Sequence[tuple[float, str]],
-    *,
-    source_names: Sequence[str] | None = None,
-) -> TimedMultiSequenceAlignment:
-    """Insert timed marker columns across every row of a lexical alignment.
-
-    Arguments:
-        alignment: lexical alignment without existing annotations
-        markers: ordered local marker times and single-character labels
-        source_names: rows whose token timing positions the markers, or all rows
-    Returns:
-        alignment with shared timed-marker columns
-    Raises:
-        ValueError: if markers, names, or the input alignment are invalid
-    """
-    if any(column.is_pause or column.is_marker for column in alignment.columns):
-        raise ValueError("Markers must be inserted before other annotations.")
-    source_indexes = _get_marker_source_indexes(alignment, source_names)
-    markers_by_boundary: dict[int, list[TimedAlignmentColumn]] = {}
-    previous_time = 0.0
-    previous_boundary = 0
-    for marker_time, marker in markers:
-        if marker_time < previous_time:
-            raise ValueError("Timed alignment markers must be chronologically ordered.")
-        previous_time = marker_time
-        boundary = max(
-            previous_boundary,
-            _get_timed_insertion_boundary(alignment, source_indexes, marker_time),
-        )
-        previous_boundary = boundary
-        markers_by_boundary.setdefault(boundary, []).append(
-            TimedAlignmentColumn(
-                (None,) * len(alignment.source_names),
-                marker=marker,
-                marker_time_seconds=marker_time,
-            )
-        )
-
-    output_columns = []
-    for boundary in range(len(alignment.columns) + 1):
-        output_columns.extend(markers_by_boundary.get(boundary, ()))
-        if boundary < len(alignment.columns):
-            output_columns.append(alignment.columns[boundary])
-    return TimedMultiSequenceAlignment(
-        source_names=alignment.source_names, columns=tuple(output_columns)
-    )
 
 
 def get_timed_alignment_with_pauses(

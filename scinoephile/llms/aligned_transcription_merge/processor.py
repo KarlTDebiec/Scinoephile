@@ -17,15 +17,13 @@ from .models import (
 )
 from .prompt import AlignedTranscriptionMergePrompt
 from .splitting import get_alignment_content_spans
-from .validation import (
-    AlignedTranscriptionMergeValidation,
-    get_aligned_transcription_merge_validation,
-)
 
 __all__ = ["AlignedTranscriptionMergeProcessor"]
 
 _PAUSE_CHARACTER = "・"
 """Wide middle dot used for shared timed pauses."""
+_REQUEST_PAUSE_CHARACTERS = 4
+"""Shared pause columns required to start a separate LLM request."""
 
 
 class AlignedTranscriptionMergeProcessor(Processor):
@@ -35,14 +33,18 @@ class AlignedTranscriptionMergeProcessor(Processor):
     """Text for aligned transcription merging."""
     manager_cls = AlignedTranscriptionMergeManager
     """Manager used to construct prompt-specific models."""
-    last_request_count: int = 0
-    """Number of separate merge requests used by the latest process call."""
     last_request_spans: tuple[tuple[int, int], ...] = ()
     """Alignment-column spans used by the latest separate requests."""
     last_request_answers: tuple[AlignedTranscriptionMergeAnswer, ...] = ()
     """Individual answers returned for the latest separate requests."""
-    last_request_validations: tuple[AlignedTranscriptionMergeValidation, ...] = ()
-    """Deterministic evidence validation for the latest request answers."""
+    last_request_queries: tuple[AlignedTranscriptionMergeQuery, ...] = ()
+    """Exact semantic queries used by the latest separate requests."""
+
+    def reset_last_process(self):
+        """Clear retained request state before a new transcription block."""
+        self.last_request_spans = ()
+        self.last_request_answers = ()
+        self.last_request_queries = ()
 
     def process(
         self,
@@ -51,7 +53,6 @@ class AlignedTranscriptionMergeProcessor(Processor):
         *,
         language_trace: str | None = None,
         music_trace: str | None = None,
-        request_pause_characters: int = 4,
         singing_trace: str | None = None,
     ) -> AlignedTranscriptionMergeAnswer:
         """Merge one complete aligned transcription block.
@@ -61,15 +62,10 @@ class AlignedTranscriptionMergeProcessor(Processor):
             speaker: aligned speaker and voice-activity row
             language_trace: optional aligned spoken-language row
             music_trace: optional aligned music row
-            request_pause_characters: shared consecutive pauses separating requests
             singing_trace: optional aligned singing row
         Returns:
             consensus transcript divided into subtitles
-        Raises:
-            ValueError: if the request pause threshold is not positive
         """
-        if request_pause_characters <= 0:
-            raise ValueError("Merge request pause character count must be positive.")
         query_cls = self.test_case_cls.query_cls
         validated_query = cast(
             AlignedTranscriptionMergeQuery,
@@ -83,45 +79,22 @@ class AlignedTranscriptionMergeProcessor(Processor):
                 }
             ),
         )
-        request_queries, self.last_request_spans = _get_request_queries(
-            validated_query, request_pause_characters
-        )
-        self.last_request_count = len(request_queries)
+        self.reset_last_process()
+        request_queries, self.last_request_spans = _get_request_queries(validated_query)
+        self.last_request_queries = request_queries
 
         request_answers = []
-        request_validations = []
-        for request_query in request_queries:
-            query = cast(
-                AlignedTranscriptionMergeQuery,
-                query_cls.model_validate(
-                    {
-                        "sources": [
-                            source.model_dump(mode="json")
-                            for source in request_query.sources
-                        ],
-                        "speaker": request_query.speaker,
-                        "language_trace": request_query.language_trace,
-                        "singing_trace": request_query.singing_trace,
-                        "music_trace": request_query.music_trace,
-                    }
-                ),
-            )
+        for query in request_queries:
             test_case = self.test_case_cls(query=query)
             test_case = self.queryer(test_case)
             answer = cast(AlignedTranscriptionMergeAnswer, test_case.answer)
             request_answers.append(answer)
-            request_validations.append(
-                get_aligned_transcription_merge_validation(
-                    tuple(source.text for source in query.sources),
-                    answer.transcript,
-                    self.prompt.language,
-                )
-            )
 
         self.last_request_answers = tuple(request_answers)
-        self.last_request_validations = tuple(request_validations)
         self.save_encountered_test_cases()
-        return AlignedTranscriptionMergeAnswer.concatenate(request_answers)
+        return AlignedTranscriptionMergeAnswer(
+            text="".join(answer.text for answer in request_answers)
+        )
 
 
 def _get_query_slice(
@@ -136,28 +109,30 @@ def _get_query_slice(
     Returns:
         sliced request query
     """
-    return AlignedTranscriptionMergeQuery(
-        sources=[
-            AlignedTranscriptionMergeSource(
-                name=source.name, text=source.text[start:end]
-            )
-            for source in query.sources
-        ],
-        speaker=query.speaker[start:end],
-        language_trace=(
-            None if query.language_trace is None else query.language_trace[start:end]
-        ),
-        singing_trace=(
-            None if query.singing_trace is None else query.singing_trace[start:end]
-        ),
-        music_trace=(
-            None if query.music_trace is None else query.music_trace[start:end]
-        ),
+    return query.model_copy(
+        update={
+            "sources": [
+                source.model_copy(update={"text": source.text[start:end]})
+                for source in query.sources
+            ],
+            "speaker": query.speaker[start:end],
+            "language_trace": (
+                None
+                if query.language_trace is None
+                else query.language_trace[start:end]
+            ),
+            "singing_trace": (
+                None if query.singing_trace is None else query.singing_trace[start:end]
+            ),
+            "music_trace": (
+                None if query.music_trace is None else query.music_trace[start:end]
+            ),
+        }
     )
 
 
 def _get_request_queries(
-    query: AlignedTranscriptionMergeQuery, request_pause_characters: int
+    query: AlignedTranscriptionMergeQuery,
 ) -> tuple[tuple[AlignedTranscriptionMergeQuery, ...], tuple[tuple[int, int], ...]]:
     """Split a validated alignment query at long shared pause runs."""
     shared_pause_columns = tuple(
@@ -166,7 +141,7 @@ def _get_request_queries(
         for column_idx in range(len(query.speaker))
     )
     content_spans = get_alignment_content_spans(
-        shared_pause_columns, request_pause_characters
+        shared_pause_columns, _REQUEST_PAUSE_CHARACTERS
     )
 
     requests = []

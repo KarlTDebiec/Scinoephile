@@ -14,7 +14,6 @@ from scinoephile.audio.transcription import (
     DemucsMode,
     MlxAudioTranscriber,
     Transcriber,
-    VADImplementation,
     VADMode,
     WhisperTranscriber,
 )
@@ -85,8 +84,6 @@ def get_transcription_sources(
     *,
     source_specs: tuple[TranscriptionSourceSpec, ...] | None = None,
     demucs_mode: DemucsMode = DemucsMode.OFF,
-    mlx_audio_token_limit_guard: bool = True,
-    vad_implementation: VADImplementation = VADImplementation.SILERO,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
 ) -> tuple[dict[str, Transcriber], tuple[TranscriptionAlignmentSource, ...]]:
@@ -100,8 +97,6 @@ def get_transcription_sources(
         language: transcription and output language
         source_specs: optional source registry override
         demucs_mode: source-level vocal-separation mode
-        mlx_audio_token_limit_guard: whether to guard MiMo generation length
-        vad_implementation: backend VAD implementation retained for cache identity
         cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching generated cache files
     Returns:
@@ -135,17 +130,13 @@ def get_transcription_sources(
                 overwrite_cache=overwrite_cache,
             )
         elif source.backend == "mlx-audio":
-            token_limit_guard = (
-                mlx_audio_token_limit_guard and source.model == MIMO_MODEL_NAME
-            )
             transcriber = MlxAudioTranscriber(
                 model_name=source.model,
                 language=language,
                 chunk_duration_seconds=_MLX_AUDIO_CHUNK_DURATION_SECONDS,
-                token_limit_guard=token_limit_guard,
+                token_limit_guard=source.model == MIMO_MODEL_NAME,
                 demucs_mode=demucs_mode,
                 vad_mode=VADMode.OFF,
-                vad_implementation=vad_implementation,
                 cache_root_path=cache_root_path,
                 overwrite_cache=overwrite_cache,
             )

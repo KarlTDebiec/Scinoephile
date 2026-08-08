@@ -62,7 +62,7 @@ _SECTION_SEPARATOR_CHARACTER = "－"
 
 def audit_transcription_alignment(
     artifact: TranscriptionAlignmentArtifact,
-    references: Series | Mapping[str, Series] | None = None,
+    references: Mapping[str, Series] | None = None,
     *,
     reference_similarity: Callable[[TimedAlignmentToken, TimedAlignmentToken], float]
     | None = None,
@@ -80,7 +80,7 @@ def audit_transcription_alignment(
 
     Arguments:
         artifact: portable multi-source transcription alignment
-        references: optional named independent references, or one legacy series
+        references: optional named independent references
         reference_similarity: optional audit-only reference substitution scoring
         first_index: first one-based merged subtitle index to include
         last_index: last one-based merged subtitle index to include
@@ -174,7 +174,7 @@ def audit_transcription_alignment(
 
 def render_transcription_alignment_terminal(
     artifact: TranscriptionAlignmentArtifact,
-    references: Series | Mapping[str, Series] | None = None,
+    references: Mapping[str, Series] | None = None,
     *,
     authoritative_row_name: str = "merged",
     reference_similarity: Callable[[TimedAlignmentToken, TimedAlignmentToken], float]
@@ -195,7 +195,7 @@ def render_transcription_alignment_terminal(
 
     Arguments:
         artifact: portable multi-source transcription alignment
-        references: optional named independent references, or one legacy series
+        references: optional named independent references
         authoritative_row_name: named reference or merged row used for coloring
         reference_similarity: optional audit-only reference substitution scoring
         first_index: first one-based merged subtitle index to include
@@ -262,16 +262,10 @@ def render_transcription_alignment_terminal(
 
 
 def _get_named_references(
-    artifact: TranscriptionAlignmentArtifact,
-    references: Series | Mapping[str, Series] | None,
+    artifact: TranscriptionAlignmentArtifact, references: Mapping[str, Series] | None
 ) -> dict[str, Series]:
-    """Normalize and validate optional named audit references."""
-    if references is None:
-        return {}
-    if isinstance(references, Series):
-        named_references = {"reference": references}
-    else:
-        named_references = dict(references)
+    """Validate and copy optional named audit references."""
+    named_references = dict(references or {})
     reserved_names = {
         *(source.name for source in artifact.sources),
         "language",
@@ -546,7 +540,7 @@ def _render_chunk(
     ):
         return None
 
-    annotation_lines, support_lines = _get_rendered_annotation_lines(
+    inline_annotation_lines, trailing_annotation_lines = _get_rendered_annotation_lines(
         columns,
         annotation_rows,
         annotations_by_token_id,
@@ -578,8 +572,8 @@ def _render_chunk(
             cells.append(display_cell)
         lines.append(f"{source_name:<{label_width}}  " + "".join(cells))
         if source_name == "merged":
-            lines.extend(annotation_lines)
-    lines.extend(support_lines)
+            lines.extend(inline_annotation_lines)
+    lines.extend(trailing_annotation_lines)
     return "\n".join(lines)
 
 
@@ -591,9 +585,9 @@ def _get_rendered_annotation_lines(
     authoritative_source_idx: int | None,
     label_width: int,
 ) -> tuple[list[str], list[str]]:
-    """Render ordinary annotation lines and deferred merge-support lines."""
-    lines = []
-    support_lines = []
+    """Render inline and post-reference annotation lines."""
+    inline_lines = []
+    trailing_lines = []
     for annotation_idx, (annotation_name, _) in enumerate(annotation_rows):
         annotation_cells = [
             _get_annotation_cell(column, annotations_by_token_id, annotation_idx)
@@ -606,11 +600,11 @@ def _get_rendered_annotation_lines(
             else:
                 display_cells.append(_get_display_cell(cell))
         annotation_line = f"{annotation_name:<{label_width}}  " + "".join(display_cells)
-        if annotation_name == "support":
-            support_lines.append(annotation_line)
+        if annotation_name in {"language", "music", "singing", "support"}:
+            trailing_lines.append(annotation_line)
         else:
-            lines.append(annotation_line)
-    return lines, support_lines
+            inline_lines.append(annotation_line)
+    return inline_lines, trailing_lines
 
 
 def _get_annotation_rows(
@@ -624,6 +618,8 @@ def _get_annotation_rows(
 ) -> list[tuple[str, str]]:
     """Get present portable annotation rows in stable display order."""
     rows = []
+    if include_speaker:
+        rows.append(("speaker", block.speaker))
     if include_merge_support:
         rows.append(
             (
@@ -633,16 +629,14 @@ def _get_annotation_rows(
                 ),
             )
         )
-    if include_speaker:
-        rows.append(("speaker", block.speaker))
     if include_language and block.language_trace is not None:
         rows.append(("language", block.language_trace))
     if include_audio_events:
         rows.extend(
             (name, row)
             for name, row in (
-                ("singing", block.singing_trace),
                 ("music", block.music_trace),
+                ("singing", block.singing_trace),
             )
             if row is not None
         )

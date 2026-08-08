@@ -28,7 +28,6 @@ set_logging_verbosity(2)
 
 eng_ocr_path = output_path / "eng_ocr"
 zho_hans_ocr_path = output_path / "zho-Hans_ocr"
-yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
 yue_audio_cache_path = Path(
     "/Volumes/Backup/Video/Cache/My Neighbor Totoro (1988)/"
     "My Neighbor Totoro (1988) - yue.m4a"
@@ -115,17 +114,11 @@ if "yue-Hant_transcribe" in actions:
     process_transcription_pipeline(
         title_root,
         reference_path=input_path / "yue_zho-Hant.srt",
-        language=Language.yue_hant,
-        output_dir_path=yue_hant_transcribe_path,
-        audio_path=yue_hant_transcribe_path / "audio.wav",
         media_path=media_path,
         stream_index=stream_index,
         media_start_seconds=media_start_seconds,
         additional_context=transcription_additional_context,
-        audit_include_merge_support=True,
         reference_name="zho-Hant",
-        skip_singing_blocks=True,
-        skip_non_target_language_blocks=True,
         terminal_alignment_authority="merged",
     )
 if "yue_eng" in actions:

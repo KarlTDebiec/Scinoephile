@@ -20,6 +20,7 @@ __all__ = [
     "TranscriptionAlignmentRow",
     "TranscriptionAlignmentSource",
     "TranscriptionAlignmentSubtitle",
+    "TranscriptionTimingSource",
 ]
 
 _GAP_CHARACTER = "　"
@@ -30,6 +31,11 @@ _SPEAKER_CHARACTERS = frozenset(
     {_GAP_CHARACTER, _PAUSE_CHARACTER, _SPEECH_CHARACTER}
     | {chr(ord("Ａ") + index) for index in range(26)}
 )
+
+TranscriptionTimingSource = Literal[
+    "ctc-request", "ctc-unconsumed-block", "source", "unknown"
+]
+"""Origin of one final subtitle's speech timing."""
 
 
 class SubtitleTimingSettings(BaseModel):
@@ -101,11 +107,13 @@ class TranscriptionAlignmentSubtitle(BaseModel):
     index: int = Field(ge=1)
     """One-based subtitle index in the complete artifact output."""
     text: str = Field(min_length=1)
-    """Merged, punctuated subtitle text."""
+    """Merged subtitle text."""
     speech_start_ms: int = Field(ge=0)
     """Inclusive CTC-estimated speech start on the complete source timeline."""
     speech_end_ms: int = Field(ge=0)
     """Exclusive CTC-estimated speech end on the complete source timeline."""
+    timing_source: TranscriptionTimingSource = "unknown"
+    """Origin of the speech interval, or unknown for legacy artifacts."""
     start_ms: int = Field(ge=0)
     """Inclusive final SRT display start."""
     end_ms: int = Field(ge=0)
@@ -290,7 +298,7 @@ class TranscriptionAlignmentArtifact(BaseModel):
         "scinoephile-transcription-alignment"
     )
     """Stable artifact format identifier."""
-    version: Literal[1, 2] = 2
+    version: Literal[2, 3] = 3
     """Artifact schema version."""
     language: Language
     """Language of the ASR rows and merged subtitles."""

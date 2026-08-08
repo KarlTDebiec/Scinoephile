@@ -40,7 +40,9 @@ def test_artifact_round_trip_preserves_canonical_schema(tmp_path: Path):
     loaded = TranscriptionAlignmentArtifact.load(artifact_path)
 
     assert loaded == artifact
+    assert loaded.version == 3
     assert loaded.get_series()[0].text == "係呀"
+    assert loaded.blocks[0].subtitles[0].timing_source == "unknown"
     assert loaded.get_series()[0].start == 900
     assert loaded.get_series()[0].end == 2200
 
@@ -128,7 +130,7 @@ def test_audit_renders_merged_reference_and_boundary_by_default():
     artifact = _get_artifact()
     reference = Series(events=[Subtitle(start=800, end=2300, text="係呀")])
 
-    report = audit_transcription_alignment(artifact, reference)
+    report = audit_transcription_alignment(artifact, {"reference": reference})
 
     assert "whisper" in report
     assert "mimo" in report
@@ -342,7 +344,7 @@ def test_audit_renders_timing_tables_when_requested():
     reference = Series(events=[Subtitle(start=800, end=2300, text="係呀")])
 
     report = audit_transcription_alignment(
-        artifact, reference, include_timing_tables=True
+        artifact, {"reference": reference}, include_timing_tables=True
     )
 
     assert "## Timing Comparisons" in report
@@ -410,7 +412,7 @@ def test_audit_preserves_artifact_pause_boundary_despite_column_timing():
         ]
     )
 
-    report = audit_transcription_alignment(artifact, reference)
+    report = audit_transcription_alignment(artifact, {"reference": reference})
 
     for row_name in ("whisper", "mimo", "merged", "reference"):
         row = next(line for line in report.splitlines() if line.startswith(row_name))
@@ -428,7 +430,7 @@ def test_audit_distinguishes_unaligned_merged_and_reference_boundaries():
         ]
     )
 
-    report = audit_transcription_alignment(artifact, reference)
+    report = audit_transcription_alignment(artifact, {"reference": reference})
 
     merged_line = next(
         line for line in report.splitlines() if line.startswith("merged")
@@ -486,7 +488,7 @@ def test_audit_rejects_reference_name_conflicting_with_alignment_row():
 
 
 def test_audit_renders_language_singing_and_music_rows():
-    """Portable FireRed traces should remain available as opt-in rows."""
+    """Opt-in FireRed traces should render below merged and reference rows."""
     artifact = _get_artifact()
     block = artifact.blocks[0].model_copy(
         update={
@@ -497,9 +499,23 @@ def test_audit_renders_language_singing_and_music_rows():
         }
     )
     artifact = artifact.model_copy(update={"blocks": (block,)})
+    reference = Series(events=[Subtitle(start=800, end=2300, text="係呀")])
 
     report = audit_transcription_alignment(
-        artifact, include_audio_events=True, include_language=True, include_speaker=True
+        artifact,
+        {"reference": reference},
+        include_audio_events=True,
+        include_language=True,
+        include_merge_support=True,
+        include_speaker=True,
+    )
+    terminal = render_transcription_alignment_terminal(
+        artifact,
+        {"reference": reference},
+        include_audio_events=True,
+        include_language=True,
+        include_merge_support=True,
+        include_speaker=True,
     )
 
     assert "Language trace:" not in report
@@ -510,6 +526,22 @@ def test_audit_renders_language_singing_and_music_rows():
     assert "粵・日" in report
     assert "唱・　" in report
     assert "　・樂" in report
+    expected_rows = [
+        "merged",
+        "speaker",
+        "reference",
+        "support",
+        "language",
+        "music",
+        "singing",
+    ]
+    for rendered in (report, terminal):
+        rendered_rows = [
+            line.split(maxsplit=1)[0]
+            for line in rendered.splitlines()
+            if line.startswith(tuple(expected_rows))
+        ]
+        assert rendered_rows == expected_rows
 
 
 def test_audit_renders_normalized_merge_support_as_optional_row():
@@ -519,10 +551,10 @@ def test_audit_renders_normalized_merge_support_as_optional_row():
 
     default_report = audit_transcription_alignment(artifact)
     report = audit_transcription_alignment(
-        artifact, reference, include_merge_support=True
+        artifact, {"reference": reference}, include_merge_support=True
     )
     terminal = render_transcription_alignment_terminal(
-        artifact, reference, include_merge_support=True
+        artifact, {"reference": reference}, include_merge_support=True
     )
 
     assert not any(line.startswith("support") for line in default_report.splitlines())
@@ -648,7 +680,9 @@ def test_audit_accepts_reference_specific_similarity():
             return 6.0
         return -2.0
 
-    audit_transcription_alignment(artifact, reference, reference_similarity=similarity)
+    audit_transcription_alignment(
+        artifact, {"reference": reference}, reference_similarity=similarity
+    )
 
     assert compared_characters
 

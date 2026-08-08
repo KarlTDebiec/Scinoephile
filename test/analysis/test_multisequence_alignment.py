@@ -11,7 +11,6 @@ from scinoephile.analysis.multisequence_alignment import (
     TimedAlignmentToken,
     TimedMultiSequenceAligner,
     TimedMultiSequenceAlignment,
-    get_timed_alignment_with_markers,
     get_timed_alignment_with_pauses,
 )
 
@@ -285,41 +284,6 @@ def test_timed_pause_columns_encode_point_two_five_second_buckets():
         assert pauses[0].pause_interval_seconds[0] == 1.0
         assert pauses[-1].pause_interval_seconds is not None
         assert pauses[-1].pause_interval_seconds[1] == 1.0 + duration_seconds
-
-
-def test_timed_markers_are_inserted_across_all_sources():
-    """A timed marker should occupy one shared nonlexical column."""
-    alignment = TimedMultiSequenceAlignment(
-        source_names=("one", "two"),
-        columns=(
-            TimedAlignmentColumn(
-                (
-                    TimedAlignmentToken("甲", 0.0, 0.2),
-                    TimedAlignmentToken("甲", 0.0, 0.2),
-                )
-            ),
-            TimedAlignmentColumn(
-                (
-                    TimedAlignmentToken("乙", 1.2, 1.4),
-                    TimedAlignmentToken("乙", 1.2, 1.4),
-                )
-            ),
-        ),
-    )
-
-    with_marker = get_timed_alignment_with_markers(
-        alignment, ((0.3, "｜"),), source_names=("one", "two")
-    )
-
-    assert tuple(column.is_marker for column in with_marker.columns) == (
-        False,
-        True,
-        False,
-    )
-    assert with_marker.columns[1].tokens == (None, None)
-    assert with_marker.columns[1].marker == "｜"
-    assert with_marker.columns[1].marker_time_seconds == 0.3
-    assert with_marker.get_sequence_text("one") == "甲乙"
 
 
 def _get_sequence(

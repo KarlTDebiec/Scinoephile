@@ -69,11 +69,11 @@ def test_completion_metrics_persistence_includes_summary_and_details(tmp_path: P
     data = json.loads(output_path.read_text(encoding="utf-8"))
     assert data["summary"]["queries"] == 1
     assert data["summary"]["validation_retries"] == 1
-    assert data["by_operation"]["multi_review"]["total_tokens"] == 220
+    assert data["by_operation"]["review"]["total_tokens"] == 220
     assert data["completions"][0]["query_key_sha256"] == "abc"
     report = format_chat_completion_metrics_report(metrics)
     assert "all: queries=1, completions=2" in report
-    assert "multi_review: queries=1, completions=2" in report
+    assert "review: queries=1, completions=2" in report
 
 
 def test_completion_metrics_summary_groups_retries_and_tokens():
@@ -134,7 +134,7 @@ def test_completion_metrics_summary_preserves_unknown_values():
 
 def _get_metrics(
     *,
-    operation: str = "multi_review",
+    operation: str = "review",
     query_key_sha256: str = "abc",
     query_attempt: int = 1,
     cached_input_tokens: int = 0,

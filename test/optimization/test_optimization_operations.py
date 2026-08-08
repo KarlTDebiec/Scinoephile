@@ -11,7 +11,6 @@ from scinoephile.llms.aligned_transcription_merge import (
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
 from scinoephile.llms.guided_translation import GuidedTranslationManager
-from scinoephile.llms.multi_review import MultiReviewManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
 from scinoephile.llms.review import ReviewManager
 from scinoephile.llms.translation import TranslationManager
@@ -25,7 +24,6 @@ def test_operations_are_keyed_by_stable_manager_identifiers():
         "gap-translation": GapTranslationManager,
         "guided-review": GuidedReviewManager,
         "guided-translation": GuidedTranslationManager,
-        "multi-review": MultiReviewManager,
         "ocr-fusion": OcrFusionManager,
         "review": ReviewManager,
         "translation": TranslationManager,

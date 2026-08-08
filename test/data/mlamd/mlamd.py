@@ -21,7 +21,6 @@ set_logging_verbosity(2)
 eng_ocr_path = output_path / "eng_ocr"
 zho_hans_ocr_path = output_path / "zho-Hans_ocr"
 zho_hant_ocr_path = output_path / "zho-Hant_ocr"
-yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
 yue_transcribe_backup_path = output_path / "yue_transcribe_backup"
 yue_remux_path = Path("/Volumes/Backup/Video/BD Remux/My Life as McDull (2001).mkv")
 old_yue_hans_path = (
@@ -86,14 +85,10 @@ if "yue-Hant_transcribe" in actions:
     process_transcription_pipeline(
         title_root,
         reference_path=zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        language=Language.yue_hant,
-        output_dir_path=yue_hant_transcribe_path,
-        audio_path=yue_hant_transcribe_path / "audio.wav",
         media_path=yue_remux_path,
         stream_index=1,
         audio_extraction_mode=AudioExtractionMode.CENTER_HEAVY,
         additional_context=transcription_additional_context,
-        audit_include_merge_support=True,
         reference_name="zho-Hant",
         terminal_alignment_authority="merged",
     )

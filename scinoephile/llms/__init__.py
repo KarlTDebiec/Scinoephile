@@ -3,9 +3,8 @@
 """Code related to interactions with LLMs.
 
 Package hierarchy (modules may import from any above):
-* _text_validation
 * aligned_transcription_merge / gap_translation / guided_review / guided_translation
-  / multi_review / ocr_fusion / providers / review / translation
+  / ocr_fusion / providers / review / translation
 
 LLM shapes:
 
@@ -17,7 +16,6 @@ LLM shapes:
 | 2      | 1     | 1  | ocr_fusion         | OcrFusion         |
 | 2      | n - m | n  | gap_translation    | GapTranslation    |
 | 2      | n     | m  | guided_translation | GuidedTranslation |
-| 3+     | n * k | m  | multi_review       | MultiReview       |
 | 4+     | n * k | 1  | aligned_transcription_merge | AlignedTranscriptionMerge |
 """
 

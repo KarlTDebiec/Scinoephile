@@ -27,17 +27,13 @@ def transcribe_series(
     *,
     language: Language,
     audio_event_mode: AudioClassificationMode = AudioClassificationMode.AUTO,
-    skip_singing_blocks: bool = False,
     source_specs: tuple[TranscriptionSourceSpec, ...] | None = None,
     demucs_mode: DemucsMode = DemucsMode.OFF,
     diarization_mode: DiarizationMode = DiarizationMode.AUTO,
     language_identification_mode: AudioClassificationMode = (
         AudioClassificationMode.AUTO
     ),
-    skip_non_target_language_blocks: bool = False,
-    vad_implementation: VADImplementation = VADImplementation.SILERO,
     block_vad_implementation: VADImplementation = VADImplementation.PYANNOTE,
-    mlx_audio_token_limit_guard: bool = True,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     provider: LLMProvider | None = None,
@@ -45,6 +41,7 @@ def transcribe_series(
     no_op: bool = False,
     aligned_merge_json_path: Path | None = None,
     alignment_json_path: Path | None = None,
+    run_manifest_json_path: Path | None = None,
     prune_test_cases: bool = False,
     aligned_merge_test_cases: list[TestCase] | None = None,
     timing_settings: SubtitleTimingSettings | None = None,
@@ -58,16 +55,11 @@ def transcribe_series(
         audio_series: complete source audio without required subtitle events
         language: transcription and output language
         audio_event_mode: source-wide speech, singing, and music mode
-        skip_singing_blocks: whether to omit confidently singing blocks
         source_specs: optional future-extensible ASR source registry override
         demucs_mode: source-level vocal-separation mode
         diarization_mode: source-wide speaker diarization mode
         language_identification_mode: source-wide spoken-language mode
-        skip_non_target_language_blocks: whether to omit confidently non-target
-            language blocks
-        vad_implementation: backend VAD implementation retained for cache identity
         block_vad_implementation: VAD used for block planning and pause evidence
-        mlx_audio_token_limit_guard: whether to guard MiMo generation length
         cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching generated cache files
         provider: provider to use for consensus queries
@@ -75,6 +67,7 @@ def transcribe_series(
         no_op: select the first source instead of querying an LLM
         aligned_merge_json_path: aligned-merge test-case JSON path
         alignment_json_path: portable alignment artifact output path
+        run_manifest_json_path: current-run provenance manifest output path
         prune_test_cases: whether to remove unencountered merge test cases
         aligned_merge_test_cases: preloaded aligned-merge test cases
         timing_settings: reference-free merged subtitle display timing
@@ -88,15 +81,11 @@ def transcribe_series(
         pipeline = get_transcription_pipeline(
             language,
             audio_event_mode=audio_event_mode,
-            skip_singing_blocks=skip_singing_blocks,
             source_specs=source_specs,
             demucs_mode=demucs_mode,
             diarization_mode=diarization_mode,
             language_identification_mode=language_identification_mode,
-            skip_non_target_language_blocks=skip_non_target_language_blocks,
-            vad_implementation=vad_implementation,
             block_vad_implementation=block_vad_implementation,
-            mlx_audio_token_limit_guard=mlx_audio_token_limit_guard,
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
             provider=provider,
@@ -116,4 +105,8 @@ def transcribe_series(
                 "Transcription pipeline did not retain an alignment artifact."
             )
         pipeline.last_alignment_artifact.save(alignment_json_path)
+    if run_manifest_json_path is not None:
+        if pipeline.last_run_manifest is None:
+            raise RuntimeError("Transcription pipeline did not retain a run manifest.")
+        pipeline.last_run_manifest.save(run_manifest_json_path)
     return output

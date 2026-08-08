@@ -512,13 +512,8 @@ def test_processor_rejects_negative_stop_index():
 def test_repository_json_fixtures_load():
     """All repository gap-translation fixtures should use the canonical list shape."""
     fixture_paths = sorted(
-        (
-            *(common.package_root.parent / "test/data").glob(
-                "*/output/*_transcribe/lang/yue_zho/gap_translation/*.json"
-            ),
-            *(common.package_root.parent / "test/data").glob(
-                "*/output/*_transcribe/**/json/gap_translation-*.json"
-            ),
+        (common.package_root.parent / "test/data").glob(
+            "*/output/*/lang/yue_zho/gap_translation/*.json"
         )
     )
 
