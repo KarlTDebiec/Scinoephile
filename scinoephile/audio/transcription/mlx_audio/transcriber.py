@@ -37,7 +37,8 @@ from scinoephile.core.dependencies.transcription import (
     import_whisper_timestamped_transcribe,
 )
 
-from .backend import MIMO_MODEL, MlxAudioBackend, MlxAudioModel
+from .backend import MlxAudioBackend
+from .model import MIMO_MODEL, MlxAudioModel
 
 __all__ = ["MlxAudioTranscriber"]
 

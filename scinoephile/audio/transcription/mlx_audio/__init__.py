@@ -3,13 +3,14 @@
 """MLX-Audio transcription and timestamp alignment.
 
 Package hierarchy (modules may import from any above):
+* model
 * backend
 * transcriber
 """
 
 from __future__ import annotations
 
-from .backend import MlxAudioModel
+from .model import MlxAudioModel
 from .transcriber import MlxAudioTranscriber
 
 __all__ = ["MlxAudioModel", "MlxAudioTranscriber"]

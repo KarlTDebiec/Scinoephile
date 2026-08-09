@@ -15,7 +15,7 @@ from scinoephile.audio.transcription import (
     VADMode,
     get_segment_split_on_whitespace,
 )
-from scinoephile.audio.transcription.mlx_audio.backend import (
+from scinoephile.audio.transcription.mlx_audio.model import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,

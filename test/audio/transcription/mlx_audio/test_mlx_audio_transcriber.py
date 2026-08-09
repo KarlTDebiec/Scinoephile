@@ -25,13 +25,13 @@ from scinoephile.audio.transcription import (
     TranscriptionPreprocessingSettings,
     VADMode,
 )
-from scinoephile.audio.transcription.mlx_audio.backend import (
+from scinoephile.audio.transcription.mlx_audio.backend import MlxAudioInferenceResult
+from scinoephile.audio.transcription.mlx_audio.model import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
-    MlxAudioInferenceResult,
     MlxAudioModel,
 )
 from scinoephile.audio.transcription.mlx_audio.transcriber import MlxAudioTranscriber

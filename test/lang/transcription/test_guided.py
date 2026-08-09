@@ -12,7 +12,7 @@ from unittest.mock import Mock, patch
 from pytest import mark, raises
 
 from scinoephile.audio.transcription import CtcAligner, DemucsMode, VADMode
-from scinoephile.audio.transcription.mlx_audio.backend import (
+from scinoephile.audio.transcription.mlx_audio.model import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,

@@ -16,13 +16,15 @@ import pytest
 
 from scinoephile.audio.transcription.mlx_audio import backend
 from scinoephile.audio.transcription.mlx_audio.backend import (
+    MlxAudioBackend,
+    MlxAudioInferenceResult,
+)
+from scinoephile.audio.transcription.mlx_audio.model import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
-    MlxAudioBackend,
-    MlxAudioInferenceResult,
     MlxAudioModel,
 )
 from scinoephile.core import Language
