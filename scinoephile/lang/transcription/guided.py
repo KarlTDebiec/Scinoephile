@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from types import MappingProxyType
 
@@ -15,7 +15,10 @@ from scinoephile.audio.transcription import (
     VADMode,
     get_segment_split_on_whitespace,
 )
-from scinoephile.audio.transcription.mlx_audio.backend import MIMO_MODEL
+from scinoephile.audio.transcription.mlx_audio.backend import (
+    MIMO_MODEL,
+    MlxAudioModelProfile,
+)
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.ml import get_torch_device
@@ -90,35 +93,45 @@ _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
 class TranscriptionLanguageSpec:
     """Configuration for one transcription language."""
 
-    model_names_by_backend: Mapping[TranscriptionBackend, str]
-    """Default model names keyed by transcription backend."""
+    models_by_backend: Mapping[TranscriptionBackend, str | MlxAudioModelProfile]
+    """Default models keyed by transcription backend."""
     whisper_language: str
     """Language code passed to Whisper."""
     segment_splitter: TranscribedSegmentSplitter | None = None
     """Strategy for splitting raw transcribed segments."""
 
-    def get_model_name(self, backend: TranscriptionBackend) -> str:
-        """Get the default model name for a transcription backend.
+    def get_model_configuration(
+        self, backend: TranscriptionBackend, model_name: str | None
+    ) -> tuple[str, MlxAudioModelProfile | None]:
+        """Get the model configuration for a transcription backend.
 
         Arguments:
             backend: audio transcription backend
+            model_name: backend-specific model override
         Returns:
-            default model name for the backend
+            resolved model name and optional MLX-Audio model profile
         Raises:
             ScinoephileError: if the backend has no configured default model
         """
         try:
-            return self.model_names_by_backend[backend]
+            model = self.models_by_backend[backend]
         except KeyError as exc:
             raise ScinoephileError(
                 f"No default model is configured for transcription backend {backend}."
             ) from exc
+        if isinstance(model, MlxAudioModelProfile):
+            if model_name is not None:
+                model = replace(model, model_name=model_name)
+            return model.model_name, model
+        if model_name is None:
+            model_name = model
+        return model_name, None
 
 
 _YUE_LANGUAGE_SPEC = TranscriptionLanguageSpec(
-    model_names_by_backend=MappingProxyType(
+    models_by_backend=MappingProxyType(
         {
-            TranscriptionBackend.MLX_AUDIO: MIMO_MODEL.model_name,
+            TranscriptionBackend.MLX_AUDIO: MIMO_MODEL,
             TranscriptionBackend.WHISPER: "khleeloo/whisper-large-v3-cantonese",
         }
     ),
@@ -243,8 +256,9 @@ def get_guided_transcriber(
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec
 
-    if model_name is None:
-        model_name = language_spec.get_model_name(backend)
+    model_name, model_profile = language_spec.get_model_configuration(
+        backend, model_name
+    )
     if delineation_prompt is None:
         delineation_prompt = spec.delineation_prompt
     if punctuation_prompt is None:
@@ -307,9 +321,9 @@ def get_guided_transcriber(
 
     # Configure the selected audio transcription backend
     mlx_audio_transcriber = None
-    if backend is TranscriptionBackend.MLX_AUDIO:
+    if model_profile is not None:
         mlx_audio_transcriber = MlxAudioTranscriber(
-            model_name=model_name,
+            model_profile=model_profile,
             language=language,
             token_limit_guard=mlx_audio_token_limit_guard,
             demucs_mode=demucs_mode,

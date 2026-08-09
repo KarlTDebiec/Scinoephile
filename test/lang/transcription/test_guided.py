@@ -5,14 +5,18 @@
 from __future__ import annotations
 
 import json
+from dataclasses import replace
 from pathlib import Path
 from typing import cast
 from unittest.mock import Mock, patch
 
-from pytest import raises
+from pytest import mark, raises
 
 from scinoephile.audio.transcription import CtcAligner, DemucsMode, VADMode
-from scinoephile.audio.transcription.mlx_audio.backend import MIMO_MODEL
+from scinoephile.audio.transcription.mlx_audio.backend import (
+    MIMO_MODEL,
+    MlxAudioModelProfile,
+)
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.utils import save_test_cases_to_json
@@ -159,11 +163,26 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert punctuation_cache.overwrite
 
 
-def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
+@mark.parametrize(
+    ("model_name", "expected_model_profile"),
+    [
+        (None, MIMO_MODEL),
+        (
+            "custom/MiMo-V2.5-ASR",
+            replace(MIMO_MODEL, model_name="custom/MiMo-V2.5-ASR"),
+        ),
+    ],
+    ids=["default", "custom-reference"],
+)
+def test_get_guided_transcriber_configures_mlx_audio_backend(
+    tmp_path: Path, model_name: str | None, expected_model_profile: MlxAudioModelProfile
+):
     """Test the factory selects the MLX-Audio default and preprocessing modes.
 
     Arguments:
         tmp_path: temporary directory path
+        model_name: optional custom MLX-Audio model reference
+        expected_model_profile: expected explicit MLX-Audio model profile
     """
     mlx_audio_transcriber = Mock()
     with patch(
@@ -173,6 +192,7 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
         transcriber = get_guided_transcriber(
             Language.yue_hant,
             Language.zho_hans,
+            model_name=model_name,
             backend=TranscriptionBackend.MLX_AUDIO,
             cache_root_path=tmp_path,
             strip_generated_punctuation=True,
@@ -190,14 +210,14 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
         )
 
     assert transcriber.backend is TranscriptionBackend.MLX_AUDIO
-    assert transcriber.model_name == MIMO_MODEL.model_name
+    assert transcriber.model_name == expected_model_profile.model_name
     assert transcriber.transcriber is mlx_audio_transcriber
     assert transcriber.recovery_transcriber is None
     assert transcriber.tail_recovery_transcriber is None
     assert transcriber.strip_generated_punctuation
     assert transcriber.mlx_audio_timing_mode is MlxAudioTimingMode.PHRASE
     mlx_audio_transcriber_class.assert_called_once_with(
-        model_name=MIMO_MODEL.model_name,
+        model_profile=expected_model_profile,
         language=Language.yue_hant,
         token_limit_guard=True,
         demucs_mode=DemucsMode.OFF,

@@ -80,7 +80,7 @@ class MlxAudioTranscriber(Transcriber):
 
     def __init__(
         self,
-        model_name: str | MlxAudioModelProfile = MIMO_MODEL,
+        model_profile: MlxAudioModelProfile = MIMO_MODEL,
         language: Language = Language.yue_hant,
         ctc_model_name: str | None = None,
         max_tokens: int | None = None,
@@ -96,10 +96,10 @@ class MlxAudioTranscriber(Transcriber):
         """Initialize.
 
         Arguments:
-            model_name: supported MLX-Audio model name or local model path
+            model_profile: complete MLX-Audio model configuration
             language: language to transcribe
             ctc_model_name: optional CTC model name or local model path
-            max_tokens: optional maximum number of text tokens to generate
+            max_tokens: optional override for the profile's generation limit
             chunk_duration_seconds: optional chunk duration for inference
             chunk_overlap_seconds: context overlap applied to each chunk
             token_limit_guard: whether to proactively guard model-family token limits
@@ -123,24 +123,14 @@ class MlxAudioTranscriber(Transcriber):
                 "CUDA support is not included."
             )
 
-        self.backend = MlxAudioBackend(model_name, language)
+        self.backend = MlxAudioBackend(model_profile, language)
         """Direct MLX-Audio inference backend."""
 
         self.ctc_aligner = CtcAligner(language, ctc_model_name)
-        self.max_tokens = max_tokens
+        self.max_tokens = model_profile.get_max_tokens(max_tokens)
         self.chunk_duration_seconds = chunk_duration_seconds
         self.chunk_overlap_seconds = chunk_overlap_seconds
         self.token_limit_guard = token_limit_guard
-        if self.max_tokens is not None and self.max_tokens <= 0:
-            raise ValueError("MLX-Audio max tokens must be positive.")
-        if (
-            self.max_tokens is not None
-            and self.backend.model_profile.generation_limit_parameter_name is None
-        ):
-            model_family = self.backend.model_profile.family_name
-            raise ValueError(
-                f"MLX-Audio {model_family} does not support a generation token limit."
-            )
         if (
             self.chunk_duration_seconds is not None
             and round(self.chunk_duration_seconds * 1000) <= 0
@@ -163,13 +153,6 @@ class MlxAudioTranscriber(Transcriber):
     def model_name(self) -> str:
         """Get the MLX-Audio model name or local model path."""
         return self.backend.model_profile.model_name
-
-    @property
-    def _effective_max_tokens(self) -> int | None:
-        """Get the explicit or model-family default generation token limit."""
-        if self.max_tokens is not None:
-            return self.max_tokens
-        return self.backend.model_profile.default_max_tokens
 
     def _get_backend_cache_metadata(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
@@ -195,7 +178,7 @@ class MlxAudioTranscriber(Transcriber):
             "runtime": "mlx",
             "language": self.language.code,
             "mlx_audio_language": self.backend.mlx_audio_language,
-            "max_tokens": self._effective_max_tokens,
+            "max_tokens": self.max_tokens,
             "chunk_duration_seconds": chunk_duration_seconds,
             "chunk_overlap_seconds": chunk_overlap_ms / 1000,
             "aligner": "ctc",
@@ -296,7 +279,7 @@ class MlxAudioTranscriber(Transcriber):
         """
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
-            max_tokens = self._effective_max_tokens
+            max_tokens = self.max_tokens
             try:
                 inference_result = self.backend.transcribe(temp_audio_path, max_tokens)
             except (ImportError, OSError, RuntimeError, ValueError) as exc:
@@ -426,7 +409,7 @@ class MlxAudioTranscriber(Transcriber):
             return self._transcribe_audio_window_with_retry(audio, guard_token_limit)
         if guard_token_limit:
             guarded_window_duration_seconds = (
-                self.backend.model_profile.token_limit_guard_window_duration_seconds
+                self.backend.model_profile.token_limit_guard_duration_seconds
             )
             assert guarded_window_duration_seconds is not None
             logger.info(
@@ -486,7 +469,7 @@ class MlxAudioTranscriber(Transcriber):
             return chunk_duration_ms, chunk_overlap_ms
 
         guarded_window_duration_seconds = (
-            self.backend.model_profile.token_limit_guard_window_duration_seconds
+            self.backend.model_profile.token_limit_guard_duration_seconds
         )
         assert guarded_window_duration_seconds is not None
         guarded_window_duration_ms = int(round(guarded_window_duration_seconds * 1000))
@@ -511,7 +494,7 @@ class MlxAudioTranscriber(Transcriber):
             whether guarded inference is active
         """
         guarded_window_duration_seconds = (
-            self.backend.model_profile.token_limit_guard_window_duration_seconds
+            self.backend.model_profile.token_limit_guard_duration_seconds
         )
         if not self.token_limit_guard or guarded_window_duration_seconds is None:
             return False
