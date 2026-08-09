@@ -20,7 +20,7 @@ __all__ = [
     "MIMO_MODEL",
     "MlxAudioBackend",
     "MlxAudioInferenceResult",
-    "MlxAudioModelProfile",
+    "MlxAudioModel",
     "QWEN3_ASR_MODEL",
     "SENSEVOICE_MODEL",
 ]
@@ -38,8 +38,8 @@ class MlxAudioInferenceResult:
 
 
 @dataclass(frozen=True, slots=True)
-class MlxAudioModelProfile:
-    """Complete configuration for one MLX-Audio STT model."""
+class MlxAudioModel:
+    """Complete definition of one MLX-Audio STT model."""
 
     model_name: str
     """Hugging Face model name or local model path."""
@@ -85,25 +85,25 @@ class MlxAudioModelProfile:
         return max_tokens
 
 
-FIRERED_ASR2_MODEL = MlxAudioModelProfile(
+FIRERED_ASR2_MODEL = MlxAudioModel(
     model_name="mlx-community/FireRedASR2-AED-mlx",
     family_name="firered-asr2",
     model_type="fireredasr2",
     languages=dict.fromkeys(Language),
     max_tokens_argument="max_len",
 )
-"""Default MLX FireRedASR2-AED model profile."""
+"""Default MLX FireRedASR2-AED model."""
 
-GLM_ASR_MODEL = MlxAudioModelProfile(
+GLM_ASR_MODEL = MlxAudioModel(
     model_name="mlx-community/GLM-ASR-Nano-2512-8bit",
     family_name="glm-asr",
     model_type="glm",
     languages=dict.fromkeys(Language),
     default_max_tokens=128,
 )
-"""Default MLX GLM-ASR-Nano-2512 model profile."""
+"""Default MLX GLM-ASR-Nano-2512 model."""
 
-MIMO_MODEL = MlxAudioModelProfile(
+MIMO_MODEL = MlxAudioModel(
     model_name="mlx-community/MiMo-V2.5-ASR-MLX",
     family_name="mimo",
     model_type="mimo",
@@ -117,9 +117,9 @@ MIMO_MODEL = MlxAudioModelProfile(
     default_max_tokens=256,
     token_limit_guard_duration_seconds=55.0,
 )
-"""Default MLX MiMo model profile."""
+"""Default MLX MiMo model."""
 
-QWEN3_ASR_MODEL = MlxAudioModelProfile(
+QWEN3_ASR_MODEL = MlxAudioModel(
     model_name="mlx-community/Qwen3-ASR-0.6B-8bit",
     family_name="qwen3-asr",
     model_type="qwen3_asr",
@@ -132,9 +132,9 @@ QWEN3_ASR_MODEL = MlxAudioModelProfile(
     },
     default_max_tokens=8192,
 )
-"""Default MLX Qwen3-ASR model profile."""
+"""Default MLX Qwen3-ASR model."""
 
-SENSEVOICE_MODEL = MlxAudioModelProfile(
+SENSEVOICE_MODEL = MlxAudioModel(
     model_name="mlx-community/SenseVoiceSmall",
     family_name="sensevoice",
     model_type="sensevoice",
@@ -147,11 +147,11 @@ SENSEVOICE_MODEL = MlxAudioModelProfile(
     },
     max_tokens_argument=None,
 )
-"""Default MLX SenseVoiceSmall model profile."""
+"""Default MLX SenseVoiceSmall model."""
 
 
-class _MlxAudioModel(Protocol):
-    """Structural type for MLX-Audio models used by the backend."""
+class _LoadedMlxAudioModel(Protocol):
+    """Structural type for loaded MLX-Audio models used by the backend."""
 
     def generate(self, audio: str, **kwargs: object) -> object:
         """Generate a transcript for one audio file."""
@@ -160,37 +160,35 @@ class _MlxAudioModel(Protocol):
 class MlxAudioBackend:
     """Runs direct speech-to-text inference through one MLX-Audio model."""
 
-    _models_by_key: ClassVar[dict[tuple[str, str], _MlxAudioModel]] = {}
+    _models_by_key: ClassVar[dict[tuple[str, str], _LoadedMlxAudioModel]] = {}
     """Loaded models shared by resolved reference and MLX-Audio model type."""
 
     def __init__(
-        self,
-        model_profile: MlxAudioModelProfile = MIMO_MODEL,
-        language: Language = Language.yue_hant,
+        self, model: MlxAudioModel = MIMO_MODEL, language: Language = Language.yue_hant
     ):
         """Initialize.
 
         Arguments:
-            model_profile: complete MLX-Audio model configuration
+            model: MLX-Audio model
             language: language to transcribe
         Raises:
             ValueError: if the model family does not support the language
         """
-        self.model_profile = model_profile
-        """Complete configuration for the selected MLX-Audio model."""
+        self.model = model
+        """Selected MLX-Audio model."""
 
         # Convert the Scinoephile language to the selected model's value
         try:
             self.language = language
-            self.mlx_audio_language = self.model_profile.languages[language]
+            self.mlx_audio_language = self.model.languages[language]
         except KeyError as exc:
             raise ValueError(
                 f"{language} is not supported by MLX-Audio "
-                f"{self.model_profile.family_name} transcription"
+                f"{self.model.family_name} transcription"
             ) from exc
 
         # Resolve local paths while preserving remote Hugging Face references
-        selected_model_name = self.model_profile.model_name
+        selected_model_name = self.model.model_name
         model_reference: str | Path = selected_model_name
         model_path = Path(selected_model_name).expanduser()
         if model_path.exists() or selected_model_name.startswith(("/", ".", "~")):
@@ -198,7 +196,7 @@ class MlxAudioBackend:
         self._model_reference = model_reference
         """Resolved local model path or remote Hugging Face reference."""
 
-        self._model: _MlxAudioModel | None = None
+        self._loaded_model_instance: _LoadedMlxAudioModel | None = None
         """Loaded MLX-Audio model."""
 
     def transcribe(
@@ -208,7 +206,7 @@ class MlxAudioBackend:
 
         Arguments:
             audio_path: audio file to transcribe
-            max_tokens: optional override for the profile's generation limit
+            max_tokens: optional override for the model's generation limit
         Returns:
             normalized inference result
         Raises:
@@ -218,9 +216,9 @@ class MlxAudioBackend:
         generate_kwargs: dict[str, object] = {}
         if self.mlx_audio_language is not None:
             generate_kwargs["language"] = self.mlx_audio_language
-        max_tokens = self.model_profile.get_max_tokens(max_tokens)
+        max_tokens = self.model.get_max_tokens(max_tokens)
         if max_tokens is not None:
-            max_tokens_argument = self.model_profile.max_tokens_argument
+            max_tokens_argument = self.model.max_tokens_argument
             assert max_tokens_argument is not None
             generate_kwargs[max_tokens_argument] = max_tokens
         result = self._loaded_model.generate(str(audio_path), **generate_kwargs)
@@ -247,25 +245,25 @@ class MlxAudioBackend:
         return MlxAudioInferenceResult(text=text, generation_tokens=generation_tokens)
 
     @property
-    def _loaded_model(self) -> _MlxAudioModel:
+    def _loaded_model(self) -> _LoadedMlxAudioModel:
         """Get the cached MLX-Audio model, loading it if needed.
 
         Returns:
             loaded MLX-Audio model
         """
-        if self._model is not None:
-            return self._model
+        if self._loaded_model_instance is not None:
+            return self._loaded_model_instance
 
-        model_key = (str(self._model_reference), self.model_profile.model_type)
+        model_key = (str(self._model_reference), self.model.model_type)
 
         # Reuse the process-wide model cache across inference instances
         cached_model = self._models_by_key.get(model_key)
         if cached_model is None:
             load = import_mlx_audio_stt_load()
             cached_model = cast(
-                _MlxAudioModel,
-                load(self._model_reference, model_type=self.model_profile.model_type),
+                _LoadedMlxAudioModel,
+                load(self._model_reference, model_type=self.model.model_type),
             )
             self._models_by_key[model_key] = cached_model
-        self._model = cached_model
-        return self._model
+        self._loaded_model_instance = cached_model
+        return self._loaded_model_instance

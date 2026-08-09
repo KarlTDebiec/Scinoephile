@@ -18,7 +18,7 @@ from scinoephile.audio.transcription.mlx_audio.backend import (
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
-    MlxAudioModelProfile,
+    MlxAudioModel,
 )
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
@@ -172,7 +172,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
 
 
 @mark.parametrize(
-    ("model", "expected_model_profile"),
+    ("model", "expected_mlx_audio_model"),
     [
         (TranscriptionModel.MIMO, MIMO_MODEL),
         (TranscriptionModel.QWEN3_ASR, QWEN3_ASR_MODEL),
@@ -182,16 +182,14 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     ],
 )
 def test_get_guided_transcriber_configures_mlx_audio_model(
-    tmp_path: Path,
-    model: TranscriptionModel,
-    expected_model_profile: MlxAudioModelProfile,
+    tmp_path: Path, model: TranscriptionModel, expected_mlx_audio_model: MlxAudioModel
 ):
-    """Test the factory selects each complete MLX-Audio model profile.
+    """Test the factory selects each complete MLX-Audio model.
 
     Arguments:
         tmp_path: temporary directory path
         model: supported transcription model
-        expected_model_profile: expected explicit MLX-Audio model profile
+        expected_mlx_audio_model: expected explicit MLX-Audio model
     """
     mlx_audio_transcriber = Mock()
     with patch(
@@ -218,14 +216,14 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
         )
 
     assert transcriber.model is model
-    assert transcriber.model_name == expected_model_profile.model_name
+    assert transcriber.model_name == expected_mlx_audio_model.model_name
     assert transcriber.transcriber is mlx_audio_transcriber
     assert transcriber.recovery_transcriber is None
     assert transcriber.tail_recovery_transcriber is None
     assert transcriber.strip_generated_punctuation
     assert transcriber.mlx_audio_timing_mode is MlxAudioTimingMode.PHRASE
     mlx_audio_transcriber_class.assert_called_once_with(
-        model_profile=expected_model_profile,
+        model=expected_mlx_audio_model,
         language=Language.yue_hant,
         token_limit_guard=True,
         demucs_mode=DemucsMode.OFF,

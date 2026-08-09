@@ -21,7 +21,7 @@ from scinoephile.audio.transcription.mlx_audio.backend import (
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
-    MlxAudioModelProfile,
+    MlxAudioModel,
 )
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
@@ -97,7 +97,7 @@ _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
 class TranscriptionLanguageSpec:
     """Configuration for one transcription language."""
 
-    model_configurations: Mapping[TranscriptionModel, str | MlxAudioModelProfile]
+    model_configurations: Mapping[TranscriptionModel, str | MlxAudioModel]
     """Backend configurations keyed by supported transcription model."""
     whisper_language: str
     """Language code passed to Whisper."""
@@ -106,13 +106,13 @@ class TranscriptionLanguageSpec:
 
     def get_model_configuration(
         self, model: TranscriptionModel
-    ) -> tuple[str, MlxAudioModelProfile | None]:
+    ) -> tuple[str, MlxAudioModel | None]:
         """Get the backend configuration for a supported transcription model.
 
         Arguments:
             model: supported transcription model
         Returns:
-            resolved model name and optional MLX-Audio model profile
+            resolved model name and optional MLX-Audio model
         Raises:
             ScinoephileError: if the transcription model is not configured
         """
@@ -122,7 +122,7 @@ class TranscriptionLanguageSpec:
             raise ScinoephileError(
                 f"Transcription model {model} is not configured for this language."
             ) from exc
-        if isinstance(model_configuration, MlxAudioModelProfile):
+        if isinstance(model_configuration, MlxAudioModel):
             return model_configuration.model_name, model_configuration
         return model_configuration, None
 
@@ -257,7 +257,7 @@ def get_guided_transcriber(
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec
 
-    model_name, model_profile = language_spec.get_model_configuration(model)
+    model_name, mlx_audio_model = language_spec.get_model_configuration(model)
     if delineation_prompt is None:
         delineation_prompt = spec.delineation_prompt
     if punctuation_prompt is None:
@@ -320,9 +320,9 @@ def get_guided_transcriber(
 
     # Configure the selected audio transcription backend
     mlx_audio_transcriber = None
-    if model_profile is not None:
+    if mlx_audio_model is not None:
         mlx_audio_transcriber = MlxAudioTranscriber(
-            model_profile=model_profile,
+            model=mlx_audio_model,
             language=language,
             token_limit_guard=mlx_audio_token_limit_guard,
             demucs_mode=demucs_mode,
