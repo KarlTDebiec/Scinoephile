@@ -34,8 +34,8 @@ class MlxAudioModel:
     """Default maximum generated tokens, or None for the model's native behavior."""
     max_tokens_argument: str | None = "max_tokens"
     """MLX-Audio generation-limit parameter, or None when unsupported."""
-    token_limit_guard_duration_seconds: float | None = None
-    """Maximum guarded window duration, or None when no guard is required."""
+    max_safe_audio_duration_seconds: float | None = None
+    """Maximum safe audio duration per inference, or None when unrestricted."""
 
 
 FIRERED_ASR2_MODEL = MlxAudioModel(
@@ -68,7 +68,7 @@ MIMO_MODEL = MlxAudioModel(
         Language.zho_hant: "zh",
     },
     default_max_tokens=256,
-    token_limit_guard_duration_seconds=55.0,
+    max_safe_audio_duration_seconds=55.0,
 )
 """Default MLX MiMo model."""
 
