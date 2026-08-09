@@ -4,9 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
 from dataclasses import dataclass
-from types import MappingProxyType
 
 from scinoephile.core.language import Language
 
@@ -20,7 +18,7 @@ __all__ = [
 ]
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass
 class MlxAudioModel:
     """Complete definition of one MLX-Audio STT model."""
 
@@ -30,7 +28,7 @@ class MlxAudioModel:
     """Stable model-family name used in cache metadata."""
     model_type: str
     """Model type passed to the MLX-Audio loader."""
-    languages: Mapping[Language, str | None]
+    languages: dict[Language, str | None]
     """Model-specific language values keyed by Scinoephile language."""
     default_max_tokens: int | None = None
     """Default maximum generated tokens, or None for the model's native behavior."""
@@ -38,11 +36,6 @@ class MlxAudioModel:
     """MLX-Audio generation-limit parameter, or None when unsupported."""
     token_limit_guard_duration_seconds: float | None = None
     """Maximum guarded window duration, or None when no guard is required."""
-
-    def __post_init__(self):
-        """Freeze languages and validate the default generation limit."""
-        object.__setattr__(self, "languages", MappingProxyType(dict(self.languages)))
-        self.get_max_tokens()
 
     def get_max_tokens(self, max_tokens: int | None = None) -> int | None:
         """Get and validate the effective generation limit.
