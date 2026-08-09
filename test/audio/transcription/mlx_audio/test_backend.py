@@ -97,7 +97,7 @@ def test_init_derives_mlx_audio_languages(
             MIMO_MODEL,
             {"text": "你好", "generation_tokens": 7},
             Language.yue_hant,
-            None,
+            256,
             MlxAudioInferenceResult(text="你好", generation_tokens=7),
             {"language": "zh", "max_tokens": 256},
         ),
@@ -180,30 +180,13 @@ def test_transcribe_adapts_model_specific_generation_arguments(
     loaded_model.generate.assert_called_once_with(str(audio_path), **expected_kwargs)
 
 
-@pytest.mark.parametrize(
-    ("model", "max_tokens", "expected_message"),
-    [
-        (MIMO_MODEL, 0, "max tokens must be positive"),
-        (SENSEVOICE_MODEL, 128, "sensevoice does not support"),
-    ],
-    ids=["non-positive", "unsupported"],
-)
-def test_transcribe_rejects_invalid_generation_limit(
-    tmp_path: Path, model: MlxAudioModel, max_tokens: int, expected_message: str
-):
-    """Test the direct backend rejects invalid generation limits.
-
-    Arguments:
-        tmp_path: temporary directory path
-        model: MLX-Audio model
-        max_tokens: invalid generation limit
-        expected_message: expected validation error text
-    """
+def test_transcribe_rejects_unsupported_generation_limit(tmp_path: Path):
+    """Test the direct backend rejects unsupported generation limits."""
     audio_path = _write_wav(tmp_path / "audio.wav")
-    mlx_audio_backend = MlxAudioBackend(model)
+    mlx_audio_backend = MlxAudioBackend(SENSEVOICE_MODEL)
 
-    with pytest.raises(ValueError, match=expected_message):
-        mlx_audio_backend.transcribe(audio_path, max_tokens)
+    with pytest.raises(ValueError, match="sensevoice does not support"):
+        mlx_audio_backend.transcribe(audio_path, 128)
 
 
 @pytest.mark.parametrize(

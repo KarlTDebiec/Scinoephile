@@ -37,29 +37,6 @@ class MlxAudioModel:
     token_limit_guard_duration_seconds: float | None = None
     """Maximum guarded window duration, or None when no guard is required."""
 
-    def get_max_tokens(self, max_tokens: int | None = None) -> int | None:
-        """Get and validate the effective generation limit.
-
-        Arguments:
-            max_tokens: optional generation-limit override
-        Returns:
-            effective generation limit
-        Raises:
-            ValueError: if the limit is invalid or unsupported
-        """
-        if max_tokens is None:
-            max_tokens = self.default_max_tokens
-        if max_tokens is None:
-            return None
-        if max_tokens <= 0:
-            raise ValueError("MLX-Audio max tokens must be positive.")
-        if self.max_tokens_argument is None:
-            raise ValueError(
-                f"MLX-Audio {self.family_name} does not support a generation token "
-                "limit."
-            )
-        return max_tokens
-
 
 FIRERED_ASR2_MODEL = MlxAudioModel(
     model_name="mlx-community/FireRedASR2-AED-mlx",

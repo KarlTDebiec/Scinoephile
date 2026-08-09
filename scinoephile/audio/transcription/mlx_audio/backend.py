@@ -85,7 +85,7 @@ class MlxAudioBackend:
 
         Arguments:
             audio_path: audio file to transcribe
-            max_tokens: optional override for the model's generation limit
+            max_tokens: generation limit, or None to use native model behavior
         Returns:
             normalized inference result
         Raises:
@@ -95,10 +95,13 @@ class MlxAudioBackend:
         generate_kwargs: dict[str, object] = {}
         if self.mlx_audio_language is not None:
             generate_kwargs["language"] = self.mlx_audio_language
-        max_tokens = self.model.get_max_tokens(max_tokens)
         if max_tokens is not None:
             max_tokens_argument = self.model.max_tokens_argument
-            assert max_tokens_argument is not None
+            if max_tokens_argument is None:
+                raise ValueError(
+                    f"MLX-Audio {self.model.family_name} does not support a "
+                    "generation token limit."
+                )
             generate_kwargs[max_tokens_argument] = max_tokens
         result = self._loaded_model.generate(str(audio_path), **generate_kwargs)
 

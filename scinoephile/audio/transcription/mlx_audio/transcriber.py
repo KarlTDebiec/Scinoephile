@@ -128,7 +128,17 @@ class MlxAudioTranscriber(Transcriber):
         """Direct MLX-Audio inference backend."""
 
         self.ctc_aligner = CtcAligner(language, ctc_model_name)
-        self.max_tokens = model.get_max_tokens(max_tokens)
+        if max_tokens is None:
+            max_tokens = model.default_max_tokens
+        if max_tokens is not None:
+            if max_tokens <= 0:
+                raise ValueError("MLX-Audio max tokens must be positive.")
+            if model.max_tokens_argument is None:
+                raise ValueError(
+                    f"MLX-Audio {model.family_name} does not support a generation "
+                    "token limit."
+                )
+        self.max_tokens = max_tokens
         self.chunk_duration_seconds = chunk_duration_seconds
         self.chunk_overlap_seconds = chunk_overlap_seconds
         self.token_limit_guard = token_limit_guard
