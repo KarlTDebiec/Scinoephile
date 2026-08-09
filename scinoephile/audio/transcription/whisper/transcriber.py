@@ -10,6 +10,19 @@ from math import ceil
 from pathlib import Path
 from typing import TYPE_CHECKING, ClassVar
 
+from scinoephile.audio.transcription.ctc_aligner import CtcAligner
+from scinoephile.audio.transcription.demucs import DemucsSeparator
+from scinoephile.audio.transcription.exceptions import (
+    TranscriptionEmptyError,
+    TranscriptionInferenceError,
+)
+from scinoephile.audio.transcription.preprocessing_settings import (
+    DemucsMode,
+    TranscriptionPreprocessingSettings,
+    VADMode,
+)
+from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
+from scinoephile.audio.transcription.transcriber import Transcriber
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.dependencies.transcription import (
     import_huggingface_hub,
@@ -17,17 +30,6 @@ from scinoephile.core.dependencies.transcription import (
     import_whisper_timestamped,
 )
 from scinoephile.core.ml import get_torch_device
-
-from .ctc_aligner import CtcAligner
-from .demucs import DemucsSeparator
-from .exceptions import TranscriptionEmptyError, TranscriptionInferenceError
-from .preprocessing_settings import (
-    DemucsMode,
-    TranscriptionPreprocessingSettings,
-    VADMode,
-)
-from .transcribed_segment import TranscribedSegment
-from .transcriber import Transcriber
 
 __all__ = ["WhisperTranscriber"]
 

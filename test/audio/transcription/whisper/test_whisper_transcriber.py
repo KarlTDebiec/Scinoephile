@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of WhisperTranscriber."""
+"""Tests of the Whisper transcriber."""
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ from scinoephile.audio.transcription import (
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
-from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
+from scinoephile.audio.transcription.whisper.transcriber import WhisperTranscriber
 from scinoephile.common import package_root
 from scinoephile.common.subprocess import run_command
 from scinoephile.core import Language
@@ -103,7 +103,7 @@ def _patch_whisper_timestamped(
         transcribe: replacement Whisper Timestamped transcription callable
     """
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper_transcriber."
+        "scinoephile.audio.transcription.whisper.transcriber."
         "import_whisper_timestamped",
         Mock(return_value=SimpleNamespace(transcribe=transcribe)),
     )
@@ -246,7 +246,7 @@ def test_transcribe_forwards_recovery_decoding_options(
 ):
     """Test Whisper receives configured defensive decoding options."""
     caplog.set_level(
-        "DEBUG", logger="scinoephile.audio.transcription.whisper_transcriber"
+        "DEBUG", logger="scinoephile.audio.transcription.whisper.transcriber"
     )
     transcribe = Mock(return_value={"segments": []})
     temperatures = (0.0, 0.2, 0.4)
@@ -544,7 +544,7 @@ def test_transcribe_logs_when_decoding_window_reaches_token_limit(
 ):
     """Log exhausted decoder state even when Whisper discards the unfinished tail."""
     caplog.set_level(
-        "INFO", logger="scinoephile.audio.transcription.whisper_transcriber"
+        "INFO", logger="scinoephile.audio.transcription.whisper.transcriber"
     )
     decode = Mock(
         side_effect=[
@@ -618,12 +618,12 @@ def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch
     whisper_timestamped = Mock()
     whisper_timestamped.load_model.return_value = loaded_model
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper_transcriber."
+        "scinoephile.audio.transcription.whisper.transcriber."
         "import_whisper_timestamped",
         Mock(return_value=whisper_timestamped),
     )
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper_transcriber.get_torch_device",
+        "scinoephile.audio.transcription.whisper.transcriber.get_torch_device",
         Mock(return_value="cpu"),
     )
     WhisperTranscriber._models.clear()
@@ -758,7 +758,7 @@ def test_model_name_is_huggingface_repo_id_rejects_local_paths(
         """Accept the repository ID."""
 
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper_transcriber."
+        "scinoephile.audio.transcription.whisper.transcriber."
         "import_huggingface_hub_utils",
         lambda: SimpleNamespace(
             HFValidationError=ValueError, validate_repo_id=validate_repo_id
@@ -783,7 +783,7 @@ def test_model_name_is_huggingface_repo_id_rejects_validation_errors(
         raise ValueError("invalid repository ID")
 
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper_transcriber."
+        "scinoephile.audio.transcription.whisper.transcriber."
         "import_huggingface_hub_utils",
         lambda: SimpleNamespace(
             HFValidationError=ValueError, validate_repo_id=validate_repo_id

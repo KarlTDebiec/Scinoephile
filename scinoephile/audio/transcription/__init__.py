@@ -7,8 +7,7 @@ Package hierarchy (modules may import from any above):
 * transcribed_segment
 * cache / ctc_aligner
 * transcriber
-* whisper_transcriber
-* mlx_audio
+* mlx_audio / whisper
 """
 
 from __future__ import annotations
@@ -34,7 +33,7 @@ from .preprocessing_settings import (
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 from .transcriber import Transcriber
-from .whisper_transcriber import WhisperTranscriber
+from .whisper import WhisperTranscriber
 
 __all__ = [
     "CtcAligner",
