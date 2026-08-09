@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import json
-from dataclasses import replace
 from pathlib import Path
 from typing import cast
 from unittest.mock import Mock, patch
@@ -14,7 +13,11 @@ from pytest import mark, raises
 
 from scinoephile.audio.transcription import CtcAligner, DemucsMode, VADMode
 from scinoephile.audio.transcription.mlx_audio.backend import (
+    FIRERED_ASR2_MODEL,
+    GLM_ASR_MODEL,
     MIMO_MODEL,
+    QWEN3_ASR_MODEL,
+    SENSEVOICE_MODEL,
     MlxAudioModelProfile,
 )
 from scinoephile.core import Language, ScinoephileError
@@ -23,7 +26,7 @@ from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.lang.transcription.guided import DEFAULT_SPECS, get_guided_transcriber
 from scinoephile.lang.transcription.transcriber import (
     MlxAudioTimingMode,
-    TranscriptionBackend,
+    TranscriptionModel,
 )
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
@@ -54,6 +57,8 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
         DEFAULT_SPECS[(Language.yue_hans, Language.zho_hans)].language_spec
         is DEFAULT_SPECS[(Language.yue_hant, Language.zho_hans)].language_spec
     )
+    language_spec = DEFAULT_SPECS[(Language.yue_hans, Language.zho_hans)].language_spec
+    assert set(language_spec.model_configurations) == set(TranscriptionModel)
     assert any(
         path.parts[0] == "kob"
         for path in DEFAULT_SPECS[
@@ -71,6 +76,9 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
         mutable_specs[(Language.eng, Language.zho_hans)] = DEFAULT_SPECS[
             (Language.yue_hans, Language.zho_hans)
         ]
+    mutable_model_configurations = cast(dict, language_spec.model_configurations)
+    with raises(TypeError):
+        mutable_model_configurations[TranscriptionModel.WHISPER] = "other/model"
 
 
 def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path):
@@ -101,7 +109,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
 
     assert transcriber.language is Language.yue_hant
     assert transcriber.guide_language is Language.zho_hans
-    assert transcriber.backend is TranscriptionBackend.WHISPER
+    assert transcriber.model is TranscriptionModel.WHISPER
     assert transcriber.demucs_mode is DemucsMode.OFF
     assert transcriber.vad_mode is VADMode.OFF
     assert not hasattr(transcriber, "overwrite_cache")
@@ -164,24 +172,25 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
 
 
 @mark.parametrize(
-    ("model_name", "expected_model_profile"),
+    ("model", "expected_model_profile"),
     [
-        (None, MIMO_MODEL),
-        (
-            "custom/MiMo-V2.5-ASR",
-            replace(MIMO_MODEL, model_name="custom/MiMo-V2.5-ASR"),
-        ),
+        (TranscriptionModel.MIMO, MIMO_MODEL),
+        (TranscriptionModel.QWEN3_ASR, QWEN3_ASR_MODEL),
+        (TranscriptionModel.GLM_ASR, GLM_ASR_MODEL),
+        (TranscriptionModel.FIRERED_ASR2, FIRERED_ASR2_MODEL),
+        (TranscriptionModel.SENSEVOICE, SENSEVOICE_MODEL),
     ],
-    ids=["default", "custom-reference"],
 )
-def test_get_guided_transcriber_configures_mlx_audio_backend(
-    tmp_path: Path, model_name: str | None, expected_model_profile: MlxAudioModelProfile
+def test_get_guided_transcriber_configures_mlx_audio_model(
+    tmp_path: Path,
+    model: TranscriptionModel,
+    expected_model_profile: MlxAudioModelProfile,
 ):
-    """Test the factory selects the MLX-Audio default and preprocessing modes.
+    """Test the factory selects each complete MLX-Audio model profile.
 
     Arguments:
         tmp_path: temporary directory path
-        model_name: optional custom MLX-Audio model reference
+        model: supported transcription model
         expected_model_profile: expected explicit MLX-Audio model profile
     """
     mlx_audio_transcriber = Mock()
@@ -192,8 +201,7 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(
         transcriber = get_guided_transcriber(
             Language.yue_hant,
             Language.zho_hans,
-            model_name=model_name,
-            backend=TranscriptionBackend.MLX_AUDIO,
+            model=model,
             cache_root_path=tmp_path,
             strip_generated_punctuation=True,
             mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
@@ -209,7 +217,7 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(
             punctuation_test_cases=[],
         )
 
-    assert transcriber.backend is TranscriptionBackend.MLX_AUDIO
+    assert transcriber.model is model
     assert transcriber.model_name == expected_model_profile.model_name
     assert transcriber.transcriber is mlx_audio_transcriber
     assert transcriber.recovery_transcriber is None

@@ -132,7 +132,7 @@ deleting directory entries.
 
 Cache-producing CLIs should use the shared cache argument bundle, placing
 `--cache-dir` and `--cache-overwrite` in the `cache arguments` group. Cache
-directory help should include `(default: %(default)s)`.
+directory help should display the resolved default cache root path.
 
 The cache list, stats, prune, and clear commands operate on namespace entry
 boundaries. Because pruning uses modification times, caches must touch valid

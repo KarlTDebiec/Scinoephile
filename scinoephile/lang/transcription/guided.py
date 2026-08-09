@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from pathlib import Path
 from types import MappingProxyType
 
@@ -16,7 +16,11 @@ from scinoephile.audio.transcription import (
     get_segment_split_on_whitespace,
 )
 from scinoephile.audio.transcription.mlx_audio.backend import (
+    FIRERED_ASR2_MODEL,
+    GLM_ASR_MODEL,
     MIMO_MODEL,
+    QWEN3_ASR_MODEL,
+    SENSEVOICE_MODEL,
     MlxAudioModelProfile,
 )
 from scinoephile.core import Language, ScinoephileError
@@ -47,7 +51,7 @@ from .transcriber import (
     GuidedTranscriber,
     MlxAudioTimingMode,
     TranscribedSegmentSplitter,
-    TranscriptionBackend,
+    TranscriptionModel,
 )
 
 __all__ = [
@@ -93,46 +97,45 @@ _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
 class TranscriptionLanguageSpec:
     """Configuration for one transcription language."""
 
-    models_by_backend: Mapping[TranscriptionBackend, str | MlxAudioModelProfile]
-    """Default models keyed by transcription backend."""
+    model_configurations: Mapping[TranscriptionModel, str | MlxAudioModelProfile]
+    """Backend configurations keyed by supported transcription model."""
     whisper_language: str
     """Language code passed to Whisper."""
     segment_splitter: TranscribedSegmentSplitter | None = None
     """Strategy for splitting raw transcribed segments."""
 
     def get_model_configuration(
-        self, backend: TranscriptionBackend, model_name: str | None
+        self, model: TranscriptionModel
     ) -> tuple[str, MlxAudioModelProfile | None]:
-        """Get the model configuration for a transcription backend.
+        """Get the backend configuration for a supported transcription model.
 
         Arguments:
-            backend: audio transcription backend
-            model_name: backend-specific model override
+            model: supported transcription model
         Returns:
             resolved model name and optional MLX-Audio model profile
         Raises:
-            ScinoephileError: if the backend has no configured default model
+            ScinoephileError: if the transcription model is not configured
         """
         try:
-            model = self.models_by_backend[backend]
+            model_configuration = self.model_configurations[model]
         except KeyError as exc:
             raise ScinoephileError(
-                f"No default model is configured for transcription backend {backend}."
+                f"Transcription model {model} is not configured for this language."
             ) from exc
-        if isinstance(model, MlxAudioModelProfile):
-            if model_name is not None:
-                model = replace(model, model_name=model_name)
-            return model.model_name, model
-        if model_name is None:
-            model_name = model
-        return model_name, None
+        if isinstance(model_configuration, MlxAudioModelProfile):
+            return model_configuration.model_name, model_configuration
+        return model_configuration, None
 
 
 _YUE_LANGUAGE_SPEC = TranscriptionLanguageSpec(
-    models_by_backend=MappingProxyType(
+    model_configurations=MappingProxyType(
         {
-            TranscriptionBackend.MLX_AUDIO: MIMO_MODEL,
-            TranscriptionBackend.WHISPER: "khleeloo/whisper-large-v3-cantonese",
+            TranscriptionModel.WHISPER: "khleeloo/whisper-large-v3-cantonese",
+            TranscriptionModel.MIMO: MIMO_MODEL,
+            TranscriptionModel.QWEN3_ASR: QWEN3_ASR_MODEL,
+            TranscriptionModel.GLM_ASR: GLM_ASR_MODEL,
+            TranscriptionModel.FIRERED_ASR2: FIRERED_ASR2_MODEL,
+            TranscriptionModel.SENSEVOICE: SENSEVOICE_MODEL,
         }
     ),
     whisper_language="yue",
@@ -197,8 +200,7 @@ def get_guided_transcriber(
     language: Language,
     guide_language: Language,
     *,
-    model_name: str | None = None,
-    backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
+    model: TranscriptionModel = TranscriptionModel.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.OFF,
     cache_root_path: Path | None = None,
@@ -222,8 +224,7 @@ def get_guided_transcriber(
     Arguments:
         language: transcription language
         guide_language: guide subtitle language
-        model_name: backend-specific model override
-        backend: audio transcription backend
+        model: supported transcription model
         demucs_mode: Demucs preprocessing mode
         vad_mode: voice activity detection mode
         cache_root_path: cache root directory path
@@ -256,9 +257,7 @@ def get_guided_transcriber(
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec
 
-    model_name, model_profile = language_spec.get_model_configuration(
-        backend, model_name
-    )
+    model_name, model_profile = language_spec.get_model_configuration(model)
     if delineation_prompt is None:
         delineation_prompt = spec.delineation_prompt
     if punctuation_prompt is None:
@@ -334,10 +333,10 @@ def get_guided_transcriber(
     return GuidedTranscriber(
         language=language,
         guide_language=guide_language,
+        model=model,
         model_name=model_name,
         whisper_language=language_spec.whisper_language,
         aligner=aligner,
-        backend=backend,
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
         cache_root_path=cache_root_path,
