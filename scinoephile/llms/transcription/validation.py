@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Deterministic validation of merged text against aligned ASR evidence."""
+"""Deterministic validation of transcription against aligned ASR evidence."""
 
 from __future__ import annotations
 
@@ -16,10 +16,7 @@ from opencc import OpenCC
 
 from scinoephile.core import Language
 
-__all__ = [
-    "AlignedTranscriptionMergeValidation",
-    "get_aligned_transcription_merge_validation",
-]
+__all__ = ["TranscriptionValidation", "get_transcription_validation"]
 
 _ALIGNMENT_GAP_CHARACTER = "　"
 """Fullwidth ideographic space used for ordinary alignment gaps."""
@@ -44,7 +41,7 @@ _TRADITIONALIZER = OpenCC("s2t")
 
 
 class _CharacterRelationship(IntEnum):
-    """Strength of source support for one merged character."""
+    """Strength of source support for one answer character."""
 
     none = 0
     pronunciation = 1
@@ -69,8 +66,8 @@ class _CharacterFeatures:
 
 
 @dataclass(frozen=True, slots=True)
-class AlignedTranscriptionMergeValidation:
-    """Sequence-aware comparison of one merged answer with its ASR profile."""
+class TranscriptionValidation:
+    """Sequence-aware comparison of one answer with its ASR profile."""
 
     majority_column_count: int
     """Number of input columns containing strict-majority lexical evidence."""
@@ -91,8 +88,8 @@ class AlignedTranscriptionMergeValidation:
 
         The configured coverage may permit omissions in longer requests. For short
         requests, one mapped but unsupported replacement may also be tolerated so a
-        contextual spelling correction does not block the merger. The tolerance never
-        excuses a majority column omitted from the answer entirely.
+        contextual spelling correction does not block transcription. The tolerance
+        never excuses a majority column omitted from the answer entirely.
 
         Arguments:
             minimum_coverage: minimum proportion of majority columns to preserve
@@ -116,14 +113,14 @@ class AlignedTranscriptionMergeValidation:
         return missing_column_count <= max(proportional_tolerance, 1)
 
 
-def get_aligned_transcription_merge_validation(
+def get_transcription_validation(
     source_texts: Sequence[str], answer_text: str, language: Language
-) -> AlignedTranscriptionMergeValidation:
+) -> TranscriptionValidation:
     """Align a lexical answer to an ASR profile and quantify its evidence support.
 
     Arguments:
         source_texts: equal-width aligned ASR rows
-        answer_text: unaligned merged transcript, with optional punctuation
+        answer_text: unaligned consensus transcript, with optional punctuation
         language: transcription language controlling Cantonese equivalence
     Returns:
         deterministic sequence-aware validation result
@@ -180,7 +177,7 @@ def get_aligned_transcription_merge_validation(
         ):
             preserved_majority_column_count += 1
 
-    return AlignedTranscriptionMergeValidation(
+    return TranscriptionValidation(
         majority_column_count=majority_column_count,
         mapped_majority_column_count=mapped_majority_column_count,
         preserved_majority_column_count=preserved_majority_column_count,
@@ -274,7 +271,7 @@ def _get_answer_profile_indexes(
         elif state == 2:
             answer_idx -= 1
         else:
-            raise RuntimeError("Unable to backtrack aligned merge validation.")
+            raise RuntimeError("Unable to backtrack transcription validation.")
     return tuple(answer_profile_indexes)
 
 
@@ -330,14 +327,14 @@ def _get_relationship_score(relationship: _CharacterRelationship) -> float:
 
 
 def _is_lexical_character(character: str) -> bool:
-    """Whether a character participates in merge validation alignment."""
+    """Whether a character participates in transcription validation alignment."""
     return not unicodedata.category(character).startswith(("C", "P", "S", "Z"))
 
 
-def _validate_rows(source_texts: Sequence[str]) -> None:
+def _validate_rows(source_texts: Sequence[str]):
     """Validate aligned source row widths."""
     if len(source_texts) < 2:
-        raise ValueError("Aligned merge validation requires at least two sources.")
+        raise ValueError("Transcription validation requires at least two sources.")
     row_lengths = {len(source_text) for source_text in source_texts}
     if len(row_lengths) != 1 or not next(iter(row_lengths)):
-        raise ValueError("Aligned merge validation rows must have equal nonzero width.")
+        raise ValueError("Transcription validation rows must have equal nonzero width.")

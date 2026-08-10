@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for merging aligned transcription sources into subtitles."""
+"""Text for transcription from aligned ASR sources."""
 
 from __future__ import annotations
 
@@ -8,12 +8,12 @@ from dataclasses import dataclass
 
 from scinoephile.core.llms import Prompt
 
-__all__ = ["AlignedTranscriptionMergePrompt"]
+__all__ = ["TranscriptionPrompt"]
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
-class AlignedTranscriptionMergePrompt(Prompt):
-    """Text and aliases for aligned transcription merging."""
+class TranscriptionPrompt(Prompt):
+    """Text and aliases for transcription."""
 
     max_subtitle_characters: int = 20
     """Maximum nonwhitespace characters permitted in one subtitle."""
@@ -59,21 +59,20 @@ class AlignedTranscriptionMergePrompt(Prompt):
     )
     """Description of music annotation row field."""
     answer_text: str = "text"
-    """Name of merged consensus text field in answer."""
+    """Name of consensus text field in answer."""
     answer_text_desc: str = (
         "Complete consensus transcript with a fullwidth vertical bar after every "
         "display subtitle, or an empty string when no speech has sufficient "
         "cross-source support."
     )
-    """Description of merged consensus text field in answer."""
+    """Description of consensus text field in answer."""
 
     source_name_err: str = (
         "ASR source names must be nonblank and unique within the query."
     )
     """Error when source names are blank or duplicated."""
     reference_source_err: str = (
-        "Aligned transcription merge queries may contain ASR sources only, not a "
-        "reference or guide."
+        "Transcription queries may contain ASR sources only, not a reference or guide."
     )
     """Error when a reference-like source is included."""
     row_length_err: str = (
@@ -82,8 +81,7 @@ class AlignedTranscriptionMergePrompt(Prompt):
     )
     """Error when aligned row lengths differ."""
     reference_marker_err: str = (
-        "Aligned transcription merge queries must not contain reference boundary "
-        "markers."
+        "Transcription queries must not contain reference boundary markers."
     )
     """Error when an aligned row contains a reference boundary marker."""
     speaker_character_err: str = (
@@ -101,9 +99,7 @@ class AlignedTranscriptionMergePrompt(Prompt):
         "timed-pause markers."
     )
     """Error when an audio-event row contains an unknown annotation."""
-    transcript_empty_err: str = (
-        "Aligned transcription merge queries must contain transcribed text."
-    )
+    transcript_empty_err: str = "Transcription queries must contain transcribed text."
     """Error when every ASR row contains only gaps."""
     answer_text_err: str = (
         "Answer text must be empty, or contain nonblank subtitles separated and "

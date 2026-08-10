@@ -1,11 +1,11 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for language-specific aligned transcription merge configuration."""
+"""Tests for language-specific transcription configuration."""
 
 from __future__ import annotations
 
 from scinoephile.core import Language
-from scinoephile.lang.transcription.aligned_merge import DEFAULT_PROMPTS
+from scinoephile.lang.transcription.standard import DEFAULT_PROMPTS
 
 
 def test_cantonese_prompts_reject_single_source_lexical_insertions():

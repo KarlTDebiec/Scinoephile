@@ -3,7 +3,7 @@
 """Code for transcribing audio using guide-language subtitles.
 
 Package hierarchy (modules may import from any above):
-* aligned_merge / alignment
+* alignment / standard
 * aligner
 * transcriber
 * guided

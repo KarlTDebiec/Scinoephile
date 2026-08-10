@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""LLM prompts for merging aligned Cantonese transcriptions."""
+"""LLM prompts for Cantonese transcription from aligned ASR evidence."""
 
 from __future__ import annotations
 
@@ -9,17 +9,14 @@ from functools import partial
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
-from scinoephile.llms.aligned_transcription_merge import AlignedTranscriptionMergePrompt
+from scinoephile.llms.transcription import TranscriptionPrompt
 
 from .prompts import YUE_HANT_PROMPT_FIELDS
 
-__all__ = [
-    "AlignedTranscriptionMergePromptYueHans",
-    "AlignedTranscriptionMergePromptYueHant",
-]
+__all__ = ["TranscriptionPromptYueHans", "TranscriptionPromptYueHant"]
 
 
-AlignedTranscriptionMergePromptYueHant = AlignedTranscriptionMergePrompt(
+TranscriptionPromptYueHant = TranscriptionPrompt(
     language=Language.yue_hant,
     **YUE_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
@@ -92,13 +89,13 @@ AlignedTranscriptionMergePromptYueHant = AlignedTranscriptionMergePrompt(
         "冇標點並喺每項字幕後插入全形直線嘅完整共識轉寫；冇足夠跨來源支持時用空字串"
     ),
     source_name_err="每個查詢嘅來源名稱必須非空白而且唯一。",
-    reference_source_err="對齊轉寫合併查詢只可以包含語音轉寫，唔可以包含參考或者指引。",
+    reference_source_err="轉寫查詢只可以包含語音轉寫，唔可以包含參考或者指引。",
     row_length_err="同一查詢區段嘅所有來源列、講者列同可選分析列必須有相同嘅非零長度。",
-    reference_marker_err="對齊轉寫合併查詢唔可以包含參考字幕邊界標記。",
+    reference_marker_err="轉寫查詢唔可以包含參考字幕邊界標記。",
     speaker_character_err="講者列只可以包含全形講者、星號、全形空格同停頓標記。",
     language_character_err="語言列只可以包含已定義嘅全形語言、全形空格同停頓標記。",
     audio_event_character_err="歌唱同音樂列只可以包含相應嘅全形事件、全形空格同停頓標記。",
-    transcript_empty_err="對齊轉寫合併查詢必須包含轉寫文本。",
+    transcript_empty_err="轉寫查詢必須包含轉寫文本。",
     answer_text_err=(
         "答案文本必須係空字串，或者包含非空白字幕，以全形直線分隔並結束，而且唔可以"
         "包含對齊或者講者標記。"
@@ -112,11 +109,9 @@ AlignedTranscriptionMergePromptYueHant = AlignedTranscriptionMergePrompt(
         "答案字幕序號 {indexes} 超過每項 {max_characters} 個非空白字符嘅上限。"
     ),
 )
-"""Prompt for merging aligned traditional Cantonese ASR evidence."""
+"""Prompt for traditional Cantonese transcription."""
 
-AlignedTranscriptionMergePromptYueHans = (
-    AlignedTranscriptionMergePromptYueHant.transformed(
-        Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
-    )
+TranscriptionPromptYueHans = TranscriptionPromptYueHant.transformed(
+    Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
 )
-"""Prompt for merging aligned simplified Cantonese ASR evidence."""
+"""Prompt for simplified Cantonese transcription."""

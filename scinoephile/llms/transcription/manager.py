@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for prompt-specific aligned transcription merge classes."""
+"""Factories for prompt-specific transcription classes."""
 
 from __future__ import annotations
 
@@ -10,40 +10,38 @@ from typing import ClassVar
 from scinoephile.core.llms import Answer, Manager, PromptModelField, Query, TestCase
 
 from .models import (
-    AlignedTranscriptionMergeAnswer,
-    AlignedTranscriptionMergeQuery,
-    AlignedTranscriptionMergeSource,
-    AlignedTranscriptionMergeTestCase,
+    TranscriptionAnswer,
+    TranscriptionQuery,
+    TranscriptionSource,
+    TranscriptionTestCase,
 )
-from .prompt import AlignedTranscriptionMergePrompt
+from .prompt import TranscriptionPrompt
 
-__all__ = ["AlignedTranscriptionMergeManager"]
+__all__ = ["TranscriptionManager"]
 
 
-class AlignedTranscriptionMergeManager(Manager[AlignedTranscriptionMergeTestCase]):
-    """Factories for prompt-specific aligned transcription merge classes."""
+class TranscriptionManager(Manager[TranscriptionTestCase]):
+    """Factories for prompt-specific transcription classes."""
 
-    operation: ClassVar[str] = "aligned-transcription-merge"
+    operation: ClassVar[str] = "transcription"
     """Stable operation identifier used in persistence."""
-    base_prompt: ClassVar[AlignedTranscriptionMergePrompt] = (
-        AlignedTranscriptionMergeTestCase.prompt
-    )
+    base_prompt: ClassVar[TranscriptionPrompt] = TranscriptionTestCase.prompt
     """Base prompt defining persisted field names."""
-    test_case_base_cls: ClassVar[type[TestCase]] = AlignedTranscriptionMergeTestCase
+    test_case_base_cls: ClassVar[type[TestCase]] = TranscriptionTestCase
     """Static test-case model defining the operation's semantic shape."""
 
     @classmethod
     @cache
-    def get_answer_cls(cls, prompt: AlignedTranscriptionMergePrompt) -> type[Answer]:
+    def get_answer_cls(cls, prompt: TranscriptionPrompt) -> type[Answer]:
         """Get answer class with prompt-specific aliases.
 
         Arguments:
-            prompt: text and field aliases for aligned transcription merging
+            prompt: text and field aliases for transcription
         Returns:
             answer model class
         """
         return cls.create_prompt_model(
-            AlignedTranscriptionMergeAnswer,
+            TranscriptionAnswer,
             prompt,
             {
                 "text": PromptModelField(
@@ -54,17 +52,17 @@ class AlignedTranscriptionMergeManager(Manager[AlignedTranscriptionMergeTestCase
 
     @classmethod
     @cache
-    def get_query_cls(cls, prompt: AlignedTranscriptionMergePrompt) -> type[Query]:
+    def get_query_cls(cls, prompt: TranscriptionPrompt) -> type[Query]:
         """Get query class with prompt-specific aliases.
 
         Arguments:
-            prompt: text and field aliases for aligned transcription merging
+            prompt: text and field aliases for transcription
         Returns:
             query model class
         """
         source_cls = cls.get_source_cls(prompt)
         return cls.create_prompt_model(
-            AlignedTranscriptionMergeQuery,
+            TranscriptionQuery,
             prompt,
             {
                 "sources": PromptModelField(
@@ -89,18 +87,16 @@ class AlignedTranscriptionMergeManager(Manager[AlignedTranscriptionMergeTestCase
 
     @classmethod
     @cache
-    def get_source_cls(
-        cls, prompt: AlignedTranscriptionMergePrompt
-    ) -> type[AlignedTranscriptionMergeSource]:
+    def get_source_cls(cls, prompt: TranscriptionPrompt) -> type[TranscriptionSource]:
         """Get ASR source row class with prompt-specific aliases.
 
         Arguments:
-            prompt: text and field aliases for aligned transcription merging
+            prompt: text and field aliases for transcription
         Returns:
             ASR source row model class
         """
         return cls.create_prompt_model(
-            AlignedTranscriptionMergeSource,
+            TranscriptionSource,
             prompt,
             {
                 "name": PromptModelField(

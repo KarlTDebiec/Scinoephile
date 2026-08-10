@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for aligned transcription merge LLM models and processing."""
+"""Tests for transcription LLM models and processing."""
 
 from __future__ import annotations
 
@@ -13,20 +13,18 @@ from pytest import raises
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider
-from scinoephile.llms.aligned_transcription_merge import (
-    AlignedTranscriptionMergeAnswer,
-    AlignedTranscriptionMergeManager,
-    AlignedTranscriptionMergeProcessor,
-    AlignedTranscriptionMergePrompt,
-    AlignedTranscriptionMergeQuery,
-    AlignedTranscriptionMergeSource,
-    AlignedTranscriptionMergeTestCase,
+from scinoephile.llms.transcription import (
+    TranscriptionAnswer,
+    TranscriptionManager,
+    TranscriptionProcessor,
+    TranscriptionPrompt,
+    TranscriptionQuery,
+    TranscriptionSource,
+    TranscriptionTestCase,
 )
-from scinoephile.llms.aligned_transcription_merge.validation import (
-    get_aligned_transcription_merge_validation,
-)
+from scinoephile.llms.transcription.validation import get_transcription_validation
 
-_LOCALIZED_PROMPT = AlignedTranscriptionMergePrompt(
+_LOCALIZED_PROMPT = TranscriptionPrompt(
     language=Language.yue_hant,
     sources="laiyuan",
     source_name="mingcheng",
@@ -34,27 +32,25 @@ _LOCALIZED_PROMPT = AlignedTranscriptionMergePrompt(
     speaker="shuoshuuren",
     answer_text="wenben",
 )
-"""Aligned merge prompt with localized correspondence field names."""
+"""Transcription prompt with localized correspondence field names."""
 
 
-def _get_sources(*texts: str) -> list[AlignedTranscriptionMergeSource]:
+def _get_sources(*texts: str) -> list[TranscriptionSource]:
     """Get named equal-width ASR source rows."""
     return [
-        AlignedTranscriptionMergeSource(name=f"source_{index}", text=text)
+        TranscriptionSource(name=f"source_{index}", text=text)
         for index, text in enumerate(texts, start=1)
     ]
 
 
-def _get_answer(*texts: str) -> AlignedTranscriptionMergeAnswer:
-    """Get one merged answer from subtitle text."""
-    return AlignedTranscriptionMergeAnswer(text="".join(text + "｜" for text in texts))
+def _get_answer(*texts: str) -> TranscriptionAnswer:
+    """Get one consensus answer from subtitle text."""
+    return TranscriptionAnswer(text="".join(text + "｜" for text in texts))
 
 
 def test_prompt_aliases_are_used_for_nested_llm_correspondence():
     """Generated nested schemas and JSON should use prompt aliases."""
-    test_case_cls = AlignedTranscriptionMergeManager.get_test_case_cls(
-        _LOCALIZED_PROMPT
-    )
+    test_case_cls = TranscriptionManager.get_test_case_cls(_LOCALIZED_PROMPT)
     test_case = test_case_cls.model_validate(
         {
             "query": {
@@ -81,7 +77,7 @@ def test_prompt_aliases_are_used_for_nested_llm_correspondence():
 
 def test_answer_text_derives_ordered_subtitles():
     """Fullwidth boundary markers should deterministically recover subtitles."""
-    answer = AlignedTranscriptionMergeAnswer(text="甲乙｜丙丁｜")
+    answer = TranscriptionAnswer(text="甲乙｜丙丁｜")
 
     assert answer.transcript == "甲乙丙丁"
     assert [(subtitle.index, subtitle.text) for subtitle in answer.subtitles] == [
@@ -92,14 +88,14 @@ def test_answer_text_derives_ordered_subtitles():
 
 def test_answer_text_can_represent_a_spoken_word_space():
     """Ordinary word spaces should remain part of the consensus transcript."""
-    answer = AlignedTranscriptionMergeAnswer(text="Ａ Ｂ｜")
+    answer = TranscriptionAnswer(text="Ａ Ｂ｜")
 
     assert answer.transcript == "Ａ Ｂ"
 
 
 def test_answer_text_can_omit_a_request_without_consensus():
     """An empty answer should explicitly omit unsupported ASR evidence."""
-    answer = AlignedTranscriptionMergeAnswer(text="")
+    answer = TranscriptionAnswer(text="")
 
     assert answer.transcript == ""
     assert answer.subtitles == []
@@ -108,18 +104,16 @@ def test_answer_text_can_omit_a_request_without_consensus():
 def test_answer_text_requires_clean_terminated_subtitles():
     """Answers should terminate every nonblank subtitle and omit input annotations."""
     with raises(ValidationError, match="separated and terminated"):
-        AlignedTranscriptionMergeAnswer(text="甲。｜乙！")
+        TranscriptionAnswer(text="甲。｜乙！")
     with raises(ValidationError, match="separated and terminated"):
-        AlignedTranscriptionMergeAnswer(text="甲。｜｜乙！｜")
+        TranscriptionAnswer(text="甲。｜｜乙！｜")
     with raises(ValidationError, match="separated and terminated"):
-        AlignedTranscriptionMergeAnswer(text="甲・乙｜")
+        TranscriptionAnswer(text="甲・乙｜")
 
 
-def test_merge_rejects_answer_punctuation():
-    """The merger should reject punctuation while its answer model remains tolerant."""
-    test_case_cls = AlignedTranscriptionMergeManager.get_test_case_cls(
-        _LOCALIZED_PROMPT
-    )
+def test_transcription_rejects_answer_punctuation():
+    """Transcription rejects punctuation while its answer model remains tolerant."""
+    test_case_cls = TranscriptionManager.get_test_case_cls(_LOCALIZED_PROMPT)
 
     with raises(ValidationError, match="must not contain punctuation"):
         test_case_cls.model_validate(
@@ -138,9 +132,7 @@ def test_merge_rejects_answer_punctuation():
 
 def test_query_supports_future_sources_and_requires_equal_width_rows():
     """Queries should accept arbitrary ASRs while preserving alignment shape."""
-    query_cls = AlignedTranscriptionMergeManager.get_query_cls(
-        AlignedTranscriptionMergeManager.base_prompt
-    )
+    query_cls = TranscriptionManager.get_query_cls(TranscriptionManager.base_prompt)
     query_data = {
         "sources": [
             {"name": "whisper", "text": "我係"},
@@ -151,7 +143,7 @@ def test_query_supports_future_sources_and_requires_equal_width_rows():
         "speaker": "ＡＡ",
     }
 
-    query = cast(AlignedTranscriptionMergeQuery, query_cls.model_validate(query_data))
+    query = cast(TranscriptionQuery, query_cls.model_validate(query_data))
 
     assert [source.name for source in query.sources] == [
         "whisper",
@@ -165,11 +157,9 @@ def test_query_supports_future_sources_and_requires_equal_width_rows():
 
 def test_query_accepts_distinct_fullwidth_gap_and_pause_annotations():
     """Queries should distinguish ordinary alignment gaps from timed pauses."""
-    query_cls = AlignedTranscriptionMergeManager.get_query_cls(
-        AlignedTranscriptionMergeManager.base_prompt
-    )
+    query_cls = TranscriptionManager.get_query_cls(TranscriptionManager.base_prompt)
     query = cast(
-        AlignedTranscriptionMergeQuery,
+        TranscriptionQuery,
         query_cls.model_validate(
             {
                 "sources": [
@@ -187,12 +177,10 @@ def test_query_accepts_distinct_fullwidth_gap_and_pause_annotations():
 
 def test_query_accepts_equal_width_language_singing_and_music_rows():
     """Optional FireRed traces should retain the alignment's exact width."""
-    query_cls = AlignedTranscriptionMergeManager.get_query_cls(
-        AlignedTranscriptionMergeManager.base_prompt
-    )
+    query_cls = TranscriptionManager.get_query_cls(TranscriptionManager.base_prompt)
 
     query = cast(
-        AlignedTranscriptionMergeQuery,
+        TranscriptionQuery,
         query_cls.model_validate(
             {
                 "sources": [
@@ -214,10 +202,8 @@ def test_query_accepts_equal_width_language_singing_and_music_rows():
 
 def test_query_key_includes_optional_traces_omitted_from_serialization():
     """Query keys should distinguish absent and populated optional traces."""
-    query = AlignedTranscriptionMergeQuery(
-        sources=_get_sources("甲", "甲"), speaker="Ａ"
-    )
-    traced_query = AlignedTranscriptionMergeQuery(
+    query = TranscriptionQuery(sources=_get_sources("甲", "甲"), speaker="Ａ")
+    traced_query = TranscriptionQuery(
         sources=_get_sources("甲", "甲"), speaker="Ａ", language_trace="粵"
     )
 
@@ -227,9 +213,7 @@ def test_query_key_includes_optional_traces_omitted_from_serialization():
 
 def test_query_rejects_reference_evidence_and_reference_markers():
     """Reference text and diagnostic boundary markers must not reach the LLM."""
-    query_cls = AlignedTranscriptionMergeManager.get_query_cls(
-        AlignedTranscriptionMergeManager.base_prompt
-    )
+    query_cls = TranscriptionManager.get_query_cls(TranscriptionManager.base_prompt)
     with raises(ValidationError, match="reference or guide"):
         query_cls.model_validate(
             {
@@ -255,9 +239,7 @@ def test_query_rejects_reference_evidence_and_reference_markers():
 def test_processor_no_op_returns_empty_answer():
     """No-op mode should omit aligned content without selecting a source."""
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
-    processor = AlignedTranscriptionMergeProcessor(
-        _LOCALIZED_PROMPT, provider=provider, no_op=True
-    )
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider, no_op=True)
 
     answer = processor.process(_get_sources("甲　・乙", "甲丙・乙"), "ＡＡ・Ａ")
 
@@ -266,7 +248,7 @@ def test_processor_no_op_returns_empty_answer():
 
 
 def test_processor_splits_flat_rows_at_four_shared_pause_characters():
-    """Long shared pauses should form separate timing-free merge requests."""
+    """Long shared pauses should form separate timing-free requests."""
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
@@ -276,7 +258,7 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
         json.dumps({"wenben": "甲｜"}, ensure_ascii=False),
         json.dumps({"wenben": "乙｜"}, ensure_ascii=False),
     ]
-    processor = AlignedTranscriptionMergeProcessor(_LOCALIZED_PROMPT, provider=provider)
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
 
     answer = processor.process(
         _get_sources("甲・・・・乙", "甲・・・・乙"), "Ａ・・・・Ｂ"
@@ -314,7 +296,7 @@ def test_processor_omits_one_request_without_discarding_later_consensus():
         json.dumps({"wenben": ""}, ensure_ascii=False),
         json.dumps({"wenben": "乙｜"}, ensure_ascii=False),
     ]
-    processor = AlignedTranscriptionMergeProcessor(_LOCALIZED_PROMPT, provider=provider)
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
 
     answer = processor.process(
         _get_sources("甲・・・・乙", "丙・・・・乙"), "Ａ・・・・Ｂ"
@@ -335,7 +317,7 @@ def test_processor_retries_subtitles_exceeding_hard_length_limit():
         json.dumps({"wenben": "一" * 21 + "｜"}, ensure_ascii=False),
         json.dumps({"wenben": "一" * 11 + "｜" + "一" * 10 + "｜"}, ensure_ascii=False),
     ]
-    processor = AlignedTranscriptionMergeProcessor(_LOCALIZED_PROMPT, provider=provider)
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
 
     answer = processor.process(_get_sources("一" * 21, "一" * 21), "Ａ" * 21)
 
@@ -355,7 +337,7 @@ def test_processor_retries_answers_omitting_majority_consensus_speech():
         json.dumps({"wenben": "甲乙丙丁｜"}, ensure_ascii=False),
         json.dumps({"wenben": "甲乙丙丁戊己庚辛壬癸｜"}, ensure_ascii=False),
     ]
-    processor = AlignedTranscriptionMergeProcessor(_LOCALIZED_PROMPT, provider=provider)
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
 
     answer = processor.process(
         _get_sources(*("甲乙丙丁戊己庚辛壬癸" for _ in range(3))), "Ａ" * 10
@@ -368,65 +350,65 @@ def test_processor_retries_answers_omitting_majority_consensus_speech():
 
 def test_answer_coverage_allows_locally_supported_character_corrections():
     """The omission guard should allow a minority character at the same column."""
-    query = AlignedTranscriptionMergeQuery(
+    query = TranscriptionQuery(
         sources=[
-            AlignedTranscriptionMergeSource(name="one", text="盜唔通我唔可以係"),
-            AlignedTranscriptionMergeSource(name="two", text="盜唔通我唔可以系"),
-            AlignedTranscriptionMergeSource(name="three", text="道唔通我唔可以係"),
+            TranscriptionSource(name="one", text="盜唔通我唔可以係"),
+            TranscriptionSource(name="two", text="盜唔通我唔可以系"),
+            TranscriptionSource(name="three", text="道唔通我唔可以係"),
         ],
         speaker="ＡＡＡＡＡＡＡＡ",
     )
-    answer = AlignedTranscriptionMergeAnswer(text="道唔通我唔可以係｜")
+    answer = TranscriptionAnswer(text="道唔通我唔可以係｜")
 
-    test_case = AlignedTranscriptionMergeTestCase(query=query, answer=answer)
+    test_case = TranscriptionTestCase(query=query, answer=answer)
 
     assert test_case.answer == answer
 
 
 def test_answer_coverage_rejects_equal_length_majority_replacement():
     """Unrelated equal-length text should not count as preserved evidence."""
-    query = AlignedTranscriptionMergeQuery(
+    query = TranscriptionQuery(
         sources=_get_sources(*("ＡＢＣＤＥＦＧＨＩＪ" for _ in range(3))),
         speaker="Ａ" * 10,
     )
-    answer = AlignedTranscriptionMergeAnswer(text="ＫＬＭＮＯＰＱＲＳＴ｜")
+    answer = TranscriptionAnswer(text="ＫＬＭＮＯＰＱＲＳＴ｜")
 
     with raises(ValidationError, match="preserves only 0.0%"):
-        AlignedTranscriptionMergeTestCase(query=query, answer=answer)
+        TranscriptionTestCase(query=query, answer=answer)
 
 
 def test_answer_coverage_rejects_insertions_replacing_missing_majority_span():
     """Inserted text should not compensate for omitted majority characters."""
-    query = AlignedTranscriptionMergeQuery(
+    query = TranscriptionQuery(
         sources=_get_sources(*("甲乙丙丁戊己庚辛壬癸" for _ in range(3))),
         speaker="Ａ" * 10,
     )
-    answer = AlignedTranscriptionMergeAnswer(text="甲乙丙丁天地玄黃宇宙｜")
+    answer = TranscriptionAnswer(text="甲乙丙丁天地玄黃宇宙｜")
 
     with raises(ValidationError, match="preserves only 40.0%"):
-        AlignedTranscriptionMergeTestCase(query=query, answer=answer)
+        TranscriptionTestCase(query=query, answer=answer)
 
 
 def test_answer_coverage_accepts_compatibility_width_equivalence():
     """Halfwidth and fullwidth Latin characters should preserve the same evidence."""
-    query = AlignedTranscriptionMergeQuery(
+    query = TranscriptionQuery(
         sources=_get_sources(*("June" for _ in range(3))), speaker="Ａ" * 4
     )
-    answer = AlignedTranscriptionMergeAnswer(text="Ｊｕｎｅ｜")
+    answer = TranscriptionAnswer(text="Ｊｕｎｅ｜")
 
-    test_case = AlignedTranscriptionMergeTestCase(query=query, answer=answer)
+    test_case = TranscriptionTestCase(query=query, answer=answer)
 
     assert test_case.answer == answer
 
 
 def test_answer_coverage_tolerates_one_contextual_spelling_replacement():
     """One mapped unsupported name correction should not fail a short request."""
-    query = AlignedTranscriptionMergeQuery(
+    query = TranscriptionQuery(
         sources=_get_sources(*("膠兜依然係咁喺度" for _ in range(3))), speaker="Ａ" * 8
     )
-    answer = AlignedTranscriptionMergeAnswer(text="麥兜依然係咁喺度｜")
+    answer = TranscriptionAnswer(text="麥兜依然係咁喺度｜")
 
-    test_case = AlignedTranscriptionMergeTestCase(query=query, answer=answer)
+    test_case = TranscriptionTestCase(query=query, answer=answer)
 
     assert test_case.answer == answer
 
@@ -434,15 +416,13 @@ def test_answer_coverage_tolerates_one_contextual_spelling_replacement():
 def test_answer_coverage_does_not_reject_context_resolved_weak_columns():
     """Columns without a strict majority should remain diagnostic rather than fatal."""
     source_texts = ("菇時", "巫師", "　師", "古時", "　時", "姑絲")
-    query = AlignedTranscriptionMergeQuery(
-        sources=_get_sources(*source_texts), speaker="ＡＡ"
-    )
-    answer = AlignedTranscriptionMergeAnswer(text="菇時｜")
+    query = TranscriptionQuery(sources=_get_sources(*source_texts), speaker="ＡＡ")
+    answer = TranscriptionAnswer(text="菇時｜")
 
-    validation = get_aligned_transcription_merge_validation(
+    validation = get_transcription_validation(
         source_texts, answer.transcript, Language.yue_hant
     )
-    test_case = AlignedTranscriptionMergeTestCase(query=query, answer=answer)
+    test_case = TranscriptionTestCase(query=query, answer=answer)
 
     assert validation.majority_column_count == 0
     assert validation.majority_coverage == 1.0
@@ -451,17 +431,14 @@ def test_answer_coverage_does_not_reject_context_resolved_weak_columns():
 
 def test_empty_answer_requires_absent_majority_evidence():
     """An empty answer should fail only when strict-majority speech is present."""
-    weak_query = AlignedTranscriptionMergeQuery(
+    weak_query = TranscriptionQuery(
         sources=_get_sources("甲", "乙", "丙"), speaker="Ａ"
     )
-    strong_query = AlignedTranscriptionMergeQuery(
+    strong_query = TranscriptionQuery(
         sources=_get_sources("甲", "甲", "甲"), speaker="Ａ"
     )
-    answer = AlignedTranscriptionMergeAnswer(text="")
+    answer = TranscriptionAnswer(text="")
 
-    assert (
-        AlignedTranscriptionMergeTestCase(query=weak_query, answer=answer).answer
-        == answer
-    )
+    assert TranscriptionTestCase(query=weak_query, answer=answer).answer == answer
     with raises(ValidationError, match="preserves only 0.0%"):
-        AlignedTranscriptionMergeTestCase(query=strong_query, answer=answer)
+        TranscriptionTestCase(query=strong_query, answer=answer)

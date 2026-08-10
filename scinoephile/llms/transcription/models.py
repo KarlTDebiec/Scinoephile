@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Pydantic models for aligned transcription merge test cases."""
+"""Pydantic models for transcription test cases."""
 
 from __future__ import annotations
 
@@ -12,19 +12,19 @@ from pydantic import Field, model_validator
 from scinoephile.core.llms import Answer, Query, TestCase
 from scinoephile.core.llms.models import LLMModel, make_hashable
 
-from .prompt import AlignedTranscriptionMergePrompt
-from .validation import get_aligned_transcription_merge_validation
+from .prompt import TranscriptionPrompt
+from .validation import get_transcription_validation
 
 __all__ = [
-    "AlignedTranscriptionMergeAnswer",
-    "AlignedTranscriptionMergeQuery",
-    "AlignedTranscriptionMergeSource",
-    "AlignedTranscriptionMergeSubtitle",
-    "AlignedTranscriptionMergeTestCase",
+    "TranscriptionAnswer",
+    "TranscriptionQuery",
+    "TranscriptionSource",
+    "TranscriptionSubtitle",
+    "TranscriptionTestCase",
 ]
 
 
-_BASE_PROMPT = AlignedTranscriptionMergePrompt()
+_BASE_PROMPT = TranscriptionPrompt()
 
 _ALIGNMENT_GAP_CHARACTER = "　"
 """Fullwidth ideographic space used for ordinary alignment gaps."""
@@ -48,7 +48,7 @@ _LANGUAGE_CHARACTERS = frozenset(
 """Characters permitted in the spoken-language annotation row."""
 
 
-class AlignedTranscriptionMergeSource(LLMModel):
+class TranscriptionSource(LLMModel):
     """One named ASR row within a complete request alignment."""
 
     name: str = Field(min_length=1)
@@ -57,12 +57,12 @@ class AlignedTranscriptionMergeSource(LLMModel):
     """Column-aligned ASR characters and gaps."""
 
 
-class AlignedTranscriptionMergeQuery(Query):
+class TranscriptionQuery(Query):
     """Reference-free aligned ASR and speaker evidence for one request."""
 
-    prompt: ClassVar[AlignedTranscriptionMergePrompt] = _BASE_PROMPT
-    """Text and field aliases for aligned transcription merging."""
-    sources: list[AlignedTranscriptionMergeSource] = Field(min_length=2)
+    prompt: ClassVar[TranscriptionPrompt] = _BASE_PROMPT
+    """Text and field aliases for transcription."""
+    sources: list[TranscriptionSource] = Field(min_length=2)
     """Named equal-status ASR source rows."""
     speaker: str = Field(min_length=1, max_length=10_000)
     """Column-aligned speaker and voice-activity annotations."""
@@ -165,8 +165,8 @@ class AlignedTranscriptionMergeQuery(Query):
         return self
 
 
-class AlignedTranscriptionMergeSubtitle(LLMModel):
-    """One ordered consensus subtitle derived from merged answer text."""
+class TranscriptionSubtitle(LLMModel):
+    """One ordered consensus subtitle derived from answer text."""
 
     index: int = Field(ge=1)
     """One-based subtitle index."""
@@ -174,21 +174,21 @@ class AlignedTranscriptionMergeSubtitle(LLMModel):
     """Complete consensus subtitle text."""
 
 
-class AlignedTranscriptionMergeAnswer(Answer):
-    """Merged consensus text containing inline subtitle boundaries."""
+class TranscriptionAnswer(Answer):
+    """Consensus text containing inline subtitle boundaries."""
 
-    prompt: ClassVar[AlignedTranscriptionMergePrompt] = _BASE_PROMPT
-    """Text and field aliases for aligned transcription merging."""
+    prompt: ClassVar[TranscriptionPrompt] = _BASE_PROMPT
+    """Text and field aliases for transcription."""
     text: str = Field(max_length=20_000)
     """Consensus transcript with boundaries, or empty when evidence is insufficient."""
 
     @property
-    def subtitles(self) -> list[AlignedTranscriptionMergeSubtitle]:
+    def subtitles(self) -> list[TranscriptionSubtitle]:
         """Get consensus subtitles deterministically from the boundary markers."""
         if not self.text:
             return []
         return [
-            AlignedTranscriptionMergeSubtitle(index=index, text=text)
+            TranscriptionSubtitle(index=index, text=text)
             for index, text in enumerate(self.text[:-1].split("｜"), start=1)
         ]
 
@@ -217,23 +217,19 @@ class AlignedTranscriptionMergeAnswer(Answer):
         return self
 
 
-class AlignedTranscriptionMergeTestCase(TestCase):
-    """Aligned transcription merge query and optional consensus answer."""
+class TranscriptionTestCase(TestCase):
+    """Transcription query and optional consensus answer."""
 
-    query_cls: ClassVar[type[AlignedTranscriptionMergeQuery]] = (
-        AlignedTranscriptionMergeQuery
-    )
+    query_cls: ClassVar[type[TranscriptionQuery]] = TranscriptionQuery
     """Query model class."""
-    answer_cls: ClassVar[type[AlignedTranscriptionMergeAnswer]] = (
-        AlignedTranscriptionMergeAnswer
-    )
+    answer_cls: ClassVar[type[TranscriptionAnswer]] = TranscriptionAnswer
     """Answer model class."""
-    prompt: ClassVar[AlignedTranscriptionMergePrompt] = _BASE_PROMPT
-    """Text and field aliases for aligned transcription merging."""
-    query: AlignedTranscriptionMergeQuery
+    prompt: ClassVar[TranscriptionPrompt] = _BASE_PROMPT
+    """Text and field aliases for transcription."""
+    query: TranscriptionQuery
     """Reference-free aligned ASR evidence."""
-    answer: AlignedTranscriptionMergeAnswer | None = None
-    """Merged consensus subtitles, if available."""
+    answer: TranscriptionAnswer | None = None
+    """Consensus subtitles, if available."""
 
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
@@ -249,7 +245,7 @@ class AlignedTranscriptionMergeTestCase(TestCase):
             for character in self.answer.transcript
         ):
             raise ValueError(self.prompt.answer_punctuation_err)
-        validation = get_aligned_transcription_merge_validation(
+        validation = get_transcription_validation(
             tuple(source.text for source in self.query.sources),
             self.answer.transcript,
             self.prompt.language,
