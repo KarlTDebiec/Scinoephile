@@ -148,7 +148,6 @@ class GuidedTranscriber:
         *,
         language: Language,
         guide_language: Language,
-        model: TranscriptionModel,
         audio_model: WhisperModel | MlxAudioModel,
         aligner: TranscriptionAligner,
         demucs_mode: DemucsMode = DemucsMode.OFF,
@@ -165,7 +164,6 @@ class GuidedTranscriber:
         Arguments:
             language: transcription language
             guide_language: guide subtitle language
-            model: supported transcription model
             audio_model: configured transcription model
             aligner: transcription aligner
             demucs_mode: Demucs preprocessing mode
@@ -180,7 +178,6 @@ class GuidedTranscriber:
         """
         self.language = language
         self.guide_language = guide_language
-        self.model = model
         self.audio_model = audio_model
         self.model_name = audio_model.model_name
         self.aligner = aligner
@@ -192,9 +189,7 @@ class GuidedTranscriber:
         self.strip_generated_punctuation = strip_generated_punctuation
 
         # Use MLX-Audio's shared preprocessing fallbacks without Whisper recovery
-        if self.model is not TranscriptionModel.WHISPER:
-            if not isinstance(self.audio_model, MlxAudioModel):
-                raise ValueError("MLX-Audio backend requires a MLX-Audio model.")
+        if isinstance(self.audio_model, MlxAudioModel):
             if self.mlx_audio_transcriber is None:
                 raise ValueError("MLX-Audio backend requires a MLX-Audio transcriber.")
             self.transcriber = self.mlx_audio_transcriber
@@ -331,7 +326,7 @@ class GuidedTranscriber:
                 split_segments.extend(self.segment_splitter(segment))
 
         # Expose the configured MLX-Audio timing granularity to guided alignment
-        if self.model is not TranscriptionModel.WHISPER:
+        if isinstance(self.audio_model, MlxAudioModel):
             timed_segments = []
             for segment in split_segments:
                 if self.mlx_audio_timing_mode is MlxAudioTimingMode.SEGMENT:
@@ -370,7 +365,7 @@ class GuidedTranscriber:
         Returns:
             transcribed segments
         """
-        if self.model is not TranscriptionModel.WHISPER:
+        if isinstance(self.audio_model, MlxAudioModel):
             return self._transcribe_block_audio_with_mlx_audio(audio)
 
         audio_duration = len(audio) / 1000

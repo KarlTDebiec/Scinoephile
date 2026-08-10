@@ -101,34 +101,32 @@ _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
 class TranscriptionLanguageSpec:
     """Configuration for one transcription language."""
 
-    model_configurations: Mapping[TranscriptionModel, WhisperModel | MlxAudioModel]
-    """Backend configurations keyed by supported transcription model."""
+    models: Mapping[TranscriptionModel, WhisperModel | MlxAudioModel]
+    """Configured audio models keyed by supported transcription model."""
     segment_splitter: TranscribedSegmentSplitter | None = None
     """Strategy for splitting raw transcribed segments."""
 
-    def get_model_configuration(
-        self, model: TranscriptionModel
-    ) -> WhisperModel | MlxAudioModel:
-        """Get the backend configuration for a supported transcription model.
+    def get_model(self, model: TranscriptionModel) -> WhisperModel | MlxAudioModel:
+        """Get the configured audio model for a supported transcription model.
 
         Arguments:
             model: supported transcription model
         Returns:
-            configured transcription model
+            configured audio model
         Raises:
             ScinoephileError: if the transcription model is not configured
         """
         try:
-            model_configuration = self.model_configurations[model]
+            audio_model = self.models[model]
         except KeyError as exc:
             raise ScinoephileError(
                 f"Transcription model {model} is not configured for this language."
             ) from exc
-        return model_configuration
+        return audio_model
 
 
 _YUE_LANGUAGE_SPEC = TranscriptionLanguageSpec(
-    model_configurations=MappingProxyType(
+    models=MappingProxyType(
         {
             TranscriptionModel.WHISPER: WHISPER_LARGE_V3_CANTONESE_MODEL,
             TranscriptionModel.MIMO: MIMO_MODEL,
@@ -256,7 +254,7 @@ def get_guided_transcriber(
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec
 
-    audio_model = language_spec.get_model_configuration(model)
+    audio_model = language_spec.get_model(model)
     if delineation_prompt is None:
         delineation_prompt = spec.delineation_prompt
     if punctuation_prompt is None:
@@ -332,7 +330,6 @@ def get_guided_transcriber(
     return GuidedTranscriber(
         language=language,
         guide_language=guide_language,
-        model=model,
         audio_model=audio_model,
         aligner=aligner,
         demucs_mode=demucs_mode,

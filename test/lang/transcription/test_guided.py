@@ -66,8 +66,8 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
         is DEFAULT_SPECS[(Language.yue_hant, Language.zho_hans)].language_spec
     )
     language_spec = DEFAULT_SPECS[(Language.yue_hans, Language.zho_hans)].language_spec
-    whisper_model = language_spec.model_configurations[TranscriptionModel.WHISPER]
-    assert set(language_spec.model_configurations) == set(TranscriptionModel)
+    whisper_model = language_spec.models[TranscriptionModel.WHISPER]
+    assert set(language_spec.models) == set(TranscriptionModel)
     assert whisper_model is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert any(
         path.parts[0] == "kob"
@@ -86,9 +86,9 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
         mutable_specs[(Language.eng, Language.zho_hans)] = DEFAULT_SPECS[
             (Language.yue_hans, Language.zho_hans)
         ]
-    mutable_model_configurations = cast(dict, language_spec.model_configurations)
+    mutable_models = cast(dict, language_spec.models)
     with raises(TypeError):
-        mutable_model_configurations[TranscriptionModel.WHISPER] = whisper_model
+        mutable_models[TranscriptionModel.WHISPER] = whisper_model
 
 
 def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path):
@@ -119,7 +119,6 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
 
     assert transcriber.language is Language.yue_hant
     assert transcriber.guide_language is Language.zho_hans
-    assert transcriber.model is TranscriptionModel.WHISPER
     assert transcriber.demucs_mode is DemucsMode.OFF
     assert transcriber.vad_mode is VADMode.OFF
     assert not hasattr(transcriber, "overwrite_cache")
@@ -231,7 +230,7 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
             punctuation_test_cases=[],
         )
 
-    assert transcriber.model is model
+    assert transcriber.audio_model is expected_mlx_audio_model
     assert transcriber.model_name == expected_mlx_audio_model.model_name
     assert transcriber.transcriber is mlx_audio_transcriber
     assert transcriber.recovery_transcriber is None

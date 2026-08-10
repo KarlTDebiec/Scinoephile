@@ -72,7 +72,6 @@ def _get_transcriber(
         GuidedTranscriber(
             language=Language.eng,
             guide_language=Language.zho_hans,
-            model=model,
             audio_model=audio_model,
             aligner=aligner,
             demucs_mode=demucs_mode,
