@@ -16,6 +16,7 @@ from .models import (
     TranscriptionTestCase,
 )
 from .prompt import TranscriptionPrompt
+from .validation import TranscriptionAlignmentScorer
 
 __all__ = ["TranscriptionManager"]
 
@@ -23,6 +24,10 @@ __all__ = ["TranscriptionManager"]
 class TranscriptionManager(Manager[TranscriptionTestCase]):
     """Factories for prompt-specific transcription classes."""
 
+    alignment_scorer: ClassVar[TranscriptionAlignmentScorer] = (
+        TranscriptionTestCase.alignment_scorer
+    )
+    """Scorer assigned to generated test-case classes."""
     operation: ClassVar[str] = "transcription"
     """Stable operation identifier used in persistence."""
     base_prompt: ClassVar[TranscriptionPrompt] = TranscriptionTestCase.prompt
@@ -107,3 +112,19 @@ class TranscriptionManager(Manager[TranscriptionTestCase]):
                 ),
             },
         )
+
+    @classmethod
+    @cache
+    def get_test_case_cls(
+        cls, prompt: TranscriptionPrompt
+    ) -> type[TranscriptionTestCase]:
+        """Get test case class configured with aliases and evidence scoring.
+
+        Arguments:
+            prompt: text and field aliases for transcription
+        Returns:
+            test case model class
+        """
+        model = super().get_test_case_cls(prompt)
+        model.alignment_scorer = cls.alignment_scorer
+        return model

@@ -14,6 +14,7 @@ from pytest import raises
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider
 from scinoephile.llms.transcription import (
+    TranscriptionAlignmentScorer,
     TranscriptionAnswer,
     TranscriptionManager,
     TranscriptionProcessor,
@@ -22,7 +23,6 @@ from scinoephile.llms.transcription import (
     TranscriptionSource,
     TranscriptionTestCase,
 )
-from scinoephile.llms.transcription.validation import get_transcription_validation
 
 _LOCALIZED_PROMPT = TranscriptionPrompt(
     language=Language.yue_hant,
@@ -437,9 +437,7 @@ def test_answer_coverage_does_not_reject_context_resolved_weak_columns():
     query = TranscriptionQuery(sources=_get_sources(*source_texts), speaker="ＡＡ")
     answer = TranscriptionAnswer(text="菇時｜")
 
-    validation = get_transcription_validation(
-        source_texts, answer.transcript, Language.yue_hant
-    )
+    validation = TranscriptionAlignmentScorer().score(source_texts, answer.transcript)
     test_case = TranscriptionTestCase(query=query, answer=answer)
 
     assert validation.majority_column_count == 0

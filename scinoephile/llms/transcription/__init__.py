@@ -21,9 +21,16 @@ from .models import (
 )
 from .processor import TranscriptionProcessor
 from .prompt import TranscriptionPrompt
+from .validation import (
+    TranscriptionAlignmentScorer,
+    TranscriptionCharacterRelationship,
+    TranscriptionValidation,
+)
 
 __all__ = [
+    "TranscriptionAlignmentScorer",
     "TranscriptionAnswer",
+    "TranscriptionCharacterRelationship",
     "TranscriptionManager",
     "TranscriptionProcessor",
     "TranscriptionPrompt",
@@ -31,4 +38,5 @@ __all__ = [
     "TranscriptionSource",
     "TranscriptionSubtitle",
     "TranscriptionTestCase",
+    "TranscriptionValidation",
 ]

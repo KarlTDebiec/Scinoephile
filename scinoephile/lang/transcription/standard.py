@@ -15,6 +15,9 @@ from scinoephile.lang.yue.transcription import (
     TranscriptionPromptYueHans,
     TranscriptionPromptYueHant,
 )
+from scinoephile.lang.yue.transcription_validation import (
+    CantoneseTranscriptionAlignmentScorer,
+)
 from scinoephile.llms import load_shared_test_cases
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.llms.transcription import (
@@ -36,6 +39,20 @@ _JSON_PATHS: dict[Language, tuple[Path, ...]] = {
     Language.yue_hant: _YUE_HANT_TRANSCRIPTION_JSON_PATHS,
 }
 """Transcription JSON paths keyed by language."""
+
+
+class _CantoneseTranscriptionManager(TranscriptionManager):
+    """Transcription models using Cantonese evidence scoring."""
+
+    alignment_scorer = CantoneseTranscriptionAlignmentScorer()
+    """Cantonese scorer assigned to generated test-case classes."""
+
+
+class _CantoneseTranscriptionProcessor(TranscriptionProcessor):
+    """Transcription processor using Cantonese evidence scoring."""
+
+    manager_cls = _CantoneseTranscriptionManager
+    """Manager used to construct Cantonese-aware test-case models."""
 
 
 DEFAULT_PROMPTS: Mapping[Language, TranscriptionPrompt] = MappingProxyType(
@@ -73,10 +90,12 @@ def get_transcriber(
         prompt = DEFAULT_PROMPTS[language]
     if shared_test_cases is None:
         shared_test_cases = list(
-            load_shared_test_cases(TranscriptionManager, prompt, _JSON_PATHS[language])
+            load_shared_test_cases(
+                _CantoneseTranscriptionManager, prompt, _JSON_PATHS[language]
+            )
         )
     if provider is None:
         provider = get_provider()
-    return TranscriptionProcessor(
+    return _CantoneseTranscriptionProcessor(
         prompt, shared_test_cases, provider=provider, **kwargs
     )

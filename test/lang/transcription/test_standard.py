@@ -4,12 +4,16 @@
 
 from __future__ import annotations
 
+from typing import cast
 from unittest.mock import Mock, patch
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider
 from scinoephile.lang.transcription.standard import DEFAULT_PROMPTS, get_transcriber
-from scinoephile.llms.transcription import TranscriptionManager
+from scinoephile.lang.yue.transcription_validation import (
+    CantoneseTranscriptionAlignmentScorer,
+)
+from scinoephile.llms.transcription import TranscriptionTestCase
 
 
 def test_cantonese_prompts_distinguish_single_and_multiple_sources():
@@ -35,10 +39,14 @@ def test_get_transcriber_loads_defaults_only_when_shared_test_cases_are_omitted(
     loader_path = "scinoephile.lang.transcription.standard.load_shared_test_cases"
 
     with patch(loader_path, return_value=()) as load_shared_test_cases:
-        get_transcriber(Language.yue_hant, provider=provider, no_op=True)
+        transcriber = get_transcriber(Language.yue_hant, provider=provider, no_op=True)
 
     load_shared_test_cases.assert_called_once_with(
-        TranscriptionManager, DEFAULT_PROMPTS[Language.yue_hant], ()
+        transcriber.manager_cls, DEFAULT_PROMPTS[Language.yue_hant], ()
+    )
+    test_case_cls = cast(type[TranscriptionTestCase], transcriber.test_case_cls)
+    assert isinstance(
+        test_case_cls.alignment_scorer, CantoneseTranscriptionAlignmentScorer
     )
 
     with patch(loader_path) as load_shared_test_cases:

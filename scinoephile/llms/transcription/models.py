@@ -13,7 +13,7 @@ from scinoephile.core.llms import Answer, Query, TestCase
 from scinoephile.core.llms.models import LLMModel
 
 from .prompt import TranscriptionPrompt
-from .validation import get_transcription_validation
+from .validation import TranscriptionAlignmentScorer
 
 __all__ = [
     "TranscriptionAnswer",
@@ -185,6 +185,10 @@ class TranscriptionAnswer(Answer):
 class TranscriptionTestCase(TestCase):
     """Transcription query and optional consensus answer."""
 
+    alignment_scorer: ClassVar[TranscriptionAlignmentScorer] = (
+        TranscriptionAlignmentScorer()
+    )
+    """Scorer used to compare answers with ASR evidence."""
     minimum_consensus_coverage: ClassVar[float] = 0.9
     """Minimum sequence-aligned preservation of strict-majority ASR evidence."""
     query_cls: ClassVar[type[TranscriptionQuery]] = TranscriptionQuery
@@ -208,10 +212,8 @@ class TranscriptionTestCase(TestCase):
         if self.answer is None:
             return self
 
-        validation = get_transcription_validation(
-            tuple(source.text for source in self.query.sources),
-            self.answer.transcript,
-            self.prompt.language,
+        validation = self.alignment_scorer.score(
+            tuple(source.text for source in self.query.sources), self.answer.transcript
         )
         if not validation.preserves_required_majority(self.minimum_consensus_coverage):
             raise ValueError(

@@ -10,57 +10,25 @@ from dataclasses import dataclass
 from enum import IntEnum
 from functools import cache
 from math import floor
+from typing import ClassVar
 
-import pycantonese
-from opencc import OpenCC
-
-from scinoephile.core import Language
-
-__all__ = ["TranscriptionValidation", "get_transcription_validation"]
+__all__ = [
+    "TranscriptionAlignmentScorer",
+    "TranscriptionCharacterRelationship",
+    "TranscriptionValidation",
+]
 
 _ALIGNMENT_GAP_CHARACTER = "　"
 """Fullwidth ideographic space used for ordinary alignment gaps."""
-_CANTONESE_EQUIVALENCE_GROUPS = (
-    frozenset({"不", "唔"}),
-    frozenset({"他", "佢", "她", "它"}),
-    frozenset({"了", "咗"}),
-    frozenset({"在", "喺"}),
-    frozenset({"是", "係", "系"}),
-    frozenset({"的", "嘅"}),
-    frozenset({"這", "呢"}),
-)
-"""Common Mandarinized and Cantonese ASR substitutions."""
-_GAP_SCORE = -3.0
-"""Linear gap score used to project an answer onto an existing profile."""
-_SIMPLIFIER = OpenCC("t2s")
-"""Converter used to compare Simplified and Traditional characters."""
-_TRADITIONALIZER = OpenCC("s2t")
-"""Converter used to obtain Traditional characters for Cantonese readings."""
 
 
-class _CharacterRelationship(IntEnum):
+class TranscriptionCharacterRelationship(IntEnum):
     """Strength of source support for one answer character."""
 
     none = 0
     pronunciation = 1
     equivalent = 2
     exact = 3
-
-
-@dataclass(frozen=True, slots=True)
-class _CharacterFeatures:
-    """Cached comparison features for one character."""
-
-    equivalence_groups: frozenset[int]
-    """Known Cantonese equivalence-group indexes."""
-    jyutping: str
-    """Context-free Cantonese reading with tone, when available."""
-    jyutping_base: str
-    """Context-free Cantonese reading without tone, when available."""
-    nfkc: str
-    """Compatibility-normalized character text."""
-    simplified: str
-    """Compatibility-normalized Simplified Chinese form."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -111,216 +79,195 @@ class TranscriptionValidation:
         return missing_column_count <= max(proportional_tolerance, 1)
 
 
-def get_transcription_validation(
-    source_texts: Sequence[str], answer_text: str, language: Language
-) -> TranscriptionValidation:
-    """Align a lexical answer to an ASR profile and quantify its evidence support.
+class TranscriptionAlignmentScorer:
+    """Align answers with ASR evidence using language-neutral character support."""
 
-    Arguments:
-        source_texts: equal-width aligned ASR rows
-        answer_text: unaligned consensus transcript, with optional punctuation
-        language: transcription language controlling Cantonese equivalence
-    Returns:
-        deterministic sequence-aware validation result
-    Raises:
-        ValueError: if no sources are provided or row widths differ
-    """
-    _validate_rows(source_texts)
-    source_count = len(source_texts)
-    profile_columns = tuple(
-        (
-            column_idx,
-            tuple(
-                source_text[column_idx]
+    gap_score: ClassVar[float] = -3.0
+    """Linear gap score used to project an answer onto an existing profile."""
+
+    def get_character_relationship(
+        self, one: str, two: str
+    ) -> TranscriptionCharacterRelationship:
+        """Classify language-neutral support between two characters.
+
+        Arguments:
+            one: first character
+            two: second character
+        Returns:
+            relationship between the characters
+        """
+        if _get_nfkc(one) == _get_nfkc(two):
+            return TranscriptionCharacterRelationship.exact
+        return TranscriptionCharacterRelationship.none
+
+    def score(
+        self, source_texts: Sequence[str], answer_text: str
+    ) -> TranscriptionValidation:
+        """Align an answer to ASR evidence and quantify majority preservation.
+
+        Arguments:
+            source_texts: equal-width aligned ASR rows
+            answer_text: unaligned consensus transcript, with optional punctuation
+        Returns:
+            deterministic sequence-aware validation result
+        Raises:
+            ValueError: if no sources are provided or row widths differ
+        """
+        _validate_rows(source_texts)
+        source_count = len(source_texts)
+        profile_columns = tuple(
+            (
+                column_idx,
+                tuple(
+                    source_text[column_idx]
+                    for source_text in source_texts
+                    if source_text[column_idx] not in {_ALIGNMENT_GAP_CHARACTER, "・"}
+                ),
+            )
+            for column_idx in range(len(source_texts[0]))
+            if any(
+                source_text[column_idx] not in {_ALIGNMENT_GAP_CHARACTER, "・"}
                 for source_text in source_texts
-                if source_text[column_idx] not in {_ALIGNMENT_GAP_CHARACTER, "・"}
-            ),
+            )
         )
-        for column_idx in range(len(source_texts[0]))
-        if any(
-            source_text[column_idx] not in {_ALIGNMENT_GAP_CHARACTER, "・"}
-            for source_text in source_texts
+        answer_characters = tuple(
+            character for character in answer_text if _is_lexical_character(character)
         )
-    )
-    answer_characters = tuple(
-        character for character in answer_text if _is_lexical_character(character)
-    )
-    answer_profile_indexes = _get_answer_profile_indexes(
-        profile_columns, answer_characters, source_count, language
-    )
+        answer_profile_indexes = self._get_answer_profile_indexes(
+            profile_columns, answer_characters, source_count
+        )
 
-    answer_index_by_profile_column = {
-        profile_column_idx: answer_idx
-        for answer_idx, profile_column_idx in enumerate(answer_profile_indexes)
-        if profile_column_idx is not None
-    }
+        answer_index_by_profile_column = {
+            profile_column_idx: answer_idx
+            for answer_idx, profile_column_idx in enumerate(answer_profile_indexes)
+            if profile_column_idx is not None
+        }
 
-    majority_column_count = 0
-    mapped_majority_column_count = 0
-    preserved_majority_column_count = 0
-    for profile_column_idx, source_characters in profile_columns:
-        if not _has_strict_majority(source_characters, source_count, language):
-            continue
-        majority_column_count += 1
-        answer_idx = answer_index_by_profile_column.get(profile_column_idx)
-        if answer_idx is None:
-            continue
-        mapped_majority_column_count += 1
-        answer_character = answer_characters[answer_idx]
-        if any(
-            _get_character_relationship(answer_character, source_character, language)
-            >= _CharacterRelationship.equivalent
-            for source_character in source_characters
-        ):
-            preserved_majority_column_count += 1
+        majority_column_count = 0
+        mapped_majority_column_count = 0
+        preserved_majority_column_count = 0
+        for profile_column_idx, source_characters in profile_columns:
+            if not self._has_strict_majority(source_characters, source_count):
+                continue
+            majority_column_count += 1
+            answer_idx = answer_index_by_profile_column.get(profile_column_idx)
+            if answer_idx is None:
+                continue
+            mapped_majority_column_count += 1
+            answer_character = answer_characters[answer_idx]
+            if any(
+                self.get_character_relationship(answer_character, source_character)
+                >= TranscriptionCharacterRelationship.equivalent
+                for source_character in source_characters
+            ):
+                preserved_majority_column_count += 1
 
-    return TranscriptionValidation(
-        majority_column_count=majority_column_count,
-        mapped_majority_column_count=mapped_majority_column_count,
-        preserved_majority_column_count=preserved_majority_column_count,
-    )
+        return TranscriptionValidation(
+            majority_column_count=majority_column_count,
+            mapped_majority_column_count=mapped_majority_column_count,
+            preserved_majority_column_count=preserved_majority_column_count,
+        )
+
+    def _get_answer_profile_indexes(
+        self,
+        profile_columns: Sequence[tuple[int, tuple[str, ...]]],
+        answer_characters: Sequence[str],
+        source_count: int,
+    ) -> tuple[int | None, ...]:
+        """Project answer characters onto fixed profile columns."""
+        profile_length = len(profile_columns)
+        answer_length = len(answer_characters)
+        scores = [
+            [float("-inf")] * (answer_length + 1) for _ in range(profile_length + 1)
+        ]
+        backpointers = [[-1] * (answer_length + 1) for _ in range(profile_length + 1)]
+        scores[0][0] = 0.0
+        for profile_idx in range(1, profile_length + 1):
+            scores[profile_idx][0] = profile_idx * self.gap_score
+            backpointers[profile_idx][0] = 1
+        for answer_idx in range(1, answer_length + 1):
+            scores[0][answer_idx] = answer_idx * self.gap_score
+            backpointers[0][answer_idx] = 2
+
+        for profile_idx, (_, source_characters) in enumerate(profile_columns, start=1):
+            for answer_idx, answer_character in enumerate(answer_characters, start=1):
+                relationships = tuple(
+                    self.get_character_relationship(answer_character, source_character)
+                    for source_character in source_characters
+                )
+                profile_score = max(map(self._get_relationship_score, relationships))
+                strong_source_count = sum(
+                    relationship >= TranscriptionCharacterRelationship.equivalent
+                    for relationship in relationships
+                )
+                profile_score += 2.0 * strong_source_count / source_count
+                best_score = scores[profile_idx - 1][answer_idx - 1] + profile_score
+                best_state = 0
+                gap_in_answer_score = (
+                    scores[profile_idx - 1][answer_idx] + self.gap_score
+                )
+                if gap_in_answer_score > best_score:
+                    best_score = gap_in_answer_score
+                    best_state = 1
+                gap_in_profile_score = (
+                    scores[profile_idx][answer_idx - 1] + self.gap_score
+                )
+                if gap_in_profile_score > best_score:
+                    best_score = gap_in_profile_score
+                    best_state = 2
+                scores[profile_idx][answer_idx] = best_score
+                backpointers[profile_idx][answer_idx] = best_state
+
+        answer_profile_indexes: list[int | None] = [None] * answer_length
+        profile_idx = profile_length
+        answer_idx = answer_length
+        while profile_idx or answer_idx:
+            state = backpointers[profile_idx][answer_idx]
+            if state == 0:
+                profile_column_idx = profile_columns[profile_idx - 1][0]
+                answer_profile_indexes[answer_idx - 1] = profile_column_idx
+                profile_idx -= 1
+                answer_idx -= 1
+            elif state == 1:
+                profile_idx -= 1
+            elif state == 2:
+                answer_idx -= 1
+            else:
+                raise RuntimeError("Unable to backtrack transcription validation.")
+        return tuple(answer_profile_indexes)
+
+    def _has_strict_majority(
+        self, source_characters: Sequence[str], source_count: int
+    ) -> bool:
+        """Whether any character has strict strong-equivalent source support."""
+        for candidate in source_characters:
+            count = sum(
+                self.get_character_relationship(candidate, character)
+                >= TranscriptionCharacterRelationship.equivalent
+                for character in source_characters
+            )
+            if count > source_count / 2:
+                return True
+        return False
+
+    @staticmethod
+    def _get_relationship_score(
+        relationship: TranscriptionCharacterRelationship,
+    ) -> float:
+        """Get the profile-alignment substitution score for a relationship."""
+        if relationship is TranscriptionCharacterRelationship.exact:
+            return 6.0
+        if relationship is TranscriptionCharacterRelationship.equivalent:
+            return 5.0
+        if relationship is TranscriptionCharacterRelationship.pronunciation:
+            return 3.0
+        return -2.0
 
 
 @cache
-def _get_character_features(character: str) -> _CharacterFeatures:
-    """Get reusable compatibility, script, and Cantonese pronunciation features."""
-    nfkc = unicodedata.normalize("NFKC", character)
-    simplified = _SIMPLIFIER.convert(nfkc)
-    traditional = _TRADITIONALIZER.convert(nfkc)
-    script_forms = frozenset({nfkc, simplified, traditional})
-    equivalence_groups = frozenset(
-        group_idx
-        for group_idx, group in enumerate(_CANTONESE_EQUIVALENCE_GROUPS)
-        if script_forms.intersection(group)
-    )
-    jyutping = ""
-    if len(traditional) == 1:
-        _, raw_jyutping = pycantonese.characters_to_jyutping([traditional])[0]
-        if raw_jyutping is not None:
-            jyutping = raw_jyutping
-    return _CharacterFeatures(
-        equivalence_groups=equivalence_groups,
-        jyutping=jyutping,
-        jyutping_base=jyutping.rstrip("123456"),
-        nfkc=nfkc,
-        simplified=simplified,
-    )
-
-
-def _get_answer_profile_indexes(
-    profile_columns: Sequence[tuple[int, tuple[str, ...]]],
-    answer_characters: Sequence[str],
-    source_count: int,
-    language: Language,
-) -> tuple[int | None, ...]:
-    """Project answer characters onto fixed profile columns using global alignment."""
-    profile_length = len(profile_columns)
-    answer_length = len(answer_characters)
-    scores = [[float("-inf")] * (answer_length + 1) for _ in range(profile_length + 1)]
-    backpointers = [[-1] * (answer_length + 1) for _ in range(profile_length + 1)]
-    scores[0][0] = 0.0
-    for profile_idx in range(1, profile_length + 1):
-        scores[profile_idx][0] = profile_idx * _GAP_SCORE
-        backpointers[profile_idx][0] = 1
-    for answer_idx in range(1, answer_length + 1):
-        scores[0][answer_idx] = answer_idx * _GAP_SCORE
-        backpointers[0][answer_idx] = 2
-
-    for profile_idx, (_, source_characters) in enumerate(profile_columns, start=1):
-        for answer_idx, answer_character in enumerate(answer_characters, start=1):
-            relationships = tuple(
-                _get_character_relationship(
-                    answer_character, source_character, language
-                )
-                for source_character in source_characters
-            )
-            profile_score = max(map(_get_relationship_score, relationships))
-            strong_source_count = sum(
-                relationship >= _CharacterRelationship.equivalent
-                for relationship in relationships
-            )
-            profile_score += 2.0 * strong_source_count / source_count
-            best_score = scores[profile_idx - 1][answer_idx - 1] + profile_score
-            best_state = 0
-            gap_in_answer_score = scores[profile_idx - 1][answer_idx] + _GAP_SCORE
-            if gap_in_answer_score > best_score:
-                best_score = gap_in_answer_score
-                best_state = 1
-            gap_in_profile_score = scores[profile_idx][answer_idx - 1] + _GAP_SCORE
-            if gap_in_profile_score > best_score:
-                best_score = gap_in_profile_score
-                best_state = 2
-            scores[profile_idx][answer_idx] = best_score
-            backpointers[profile_idx][answer_idx] = best_state
-
-    answer_profile_indexes: list[int | None] = [None] * answer_length
-    profile_idx = profile_length
-    answer_idx = answer_length
-    while profile_idx or answer_idx:
-        state = backpointers[profile_idx][answer_idx]
-        if state == 0:
-            profile_column_idx = profile_columns[profile_idx - 1][0]
-            answer_profile_indexes[answer_idx - 1] = profile_column_idx
-            profile_idx -= 1
-            answer_idx -= 1
-        elif state == 1:
-            profile_idx -= 1
-        elif state == 2:
-            answer_idx -= 1
-        else:
-            raise RuntimeError("Unable to backtrack transcription validation.")
-    return tuple(answer_profile_indexes)
-
-
-def _get_character_relationship(
-    one: str, two: str, language: Language
-) -> _CharacterRelationship:
-    """Classify lexical support between two characters."""
-    one_features = _get_character_features(one)
-    two_features = _get_character_features(two)
-    if one_features.nfkc == two_features.nfkc:
-        return _CharacterRelationship.exact
-    if one_features.simplified == two_features.simplified:
-        return _CharacterRelationship.equivalent
-    if language.is_cantonese and one_features.equivalence_groups.intersection(
-        two_features.equivalence_groups
-    ):
-        return _CharacterRelationship.equivalent
-    matching_pronunciation = (
-        one_features.jyutping and one_features.jyutping == two_features.jyutping
-    ) or (
-        one_features.jyutping_base
-        and one_features.jyutping_base == two_features.jyutping_base
-    )
-    if language.is_cantonese and matching_pronunciation:
-        return _CharacterRelationship.pronunciation
-    return _CharacterRelationship.none
-
-
-def _has_strict_majority(
-    source_characters: Sequence[str], source_count: int, language: Language
-) -> bool:
-    """Whether any character has strict strong-equivalent source support."""
-    for candidate in source_characters:
-        count = sum(
-            _get_character_relationship(candidate, character, language)
-            >= _CharacterRelationship.equivalent
-            for character in source_characters
-        )
-        if count > source_count / 2:
-            return True
-    return False
-
-
-def _get_relationship_score(relationship: _CharacterRelationship) -> float:
-    """Get the profile-alignment substitution score for a relationship."""
-    if relationship is _CharacterRelationship.exact:
-        return 6.0
-    if relationship is _CharacterRelationship.equivalent:
-        return 5.0
-    if relationship is _CharacterRelationship.pronunciation:
-        return 3.0
-    return -2.0
+def _get_nfkc(character: str) -> str:
+    """Get the compatibility-normalized form of a character."""
+    return unicodedata.normalize("NFKC", character)
 
 
 def _is_lexical_character(character: str) -> bool:
