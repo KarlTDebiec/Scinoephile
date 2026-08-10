@@ -94,6 +94,7 @@ def get_transcriber(
         )
     if provider is None:
         provider = get_provider()
+
     return _CantoneseTranscriptionProcessor(
         prompt, shared_test_cases, provider=provider, **kwargs
     )
