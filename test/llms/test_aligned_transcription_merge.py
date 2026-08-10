@@ -274,8 +274,8 @@ def test_query_rejects_reference_evidence_and_reference_markers():
         )
 
 
-def test_no_op_answer_selects_first_source_without_annotations():
-    """No-op mode should produce one clean first-source subtitle per request."""
+def test_processor_no_op_returns_empty_answer():
+    """No-op mode should omit aligned content without selecting a source."""
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = AlignedTranscriptionMergeProcessor(
         _LOCALIZED_PROMPT, provider=provider, no_op=True
@@ -283,30 +283,26 @@ def test_no_op_answer_selects_first_source_without_annotations():
 
     answer = processor.process(_get_sources("甲　・乙", "甲丙・乙"), "ＡＡ・Ａ")
 
-    assert answer.transcript == "甲乙"
-    provider.chat_completion.assert_not_called()
-
-
-def test_no_op_answer_omits_request_when_first_source_is_empty():
-    """No-op mode should tolerate an empty first source in a valid alignment."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
-    processor = AlignedTranscriptionMergeProcessor(
-        _LOCALIZED_PROMPT, provider=provider, no_op=True
-    )
-
-    answer = processor.process(_get_sources("　・", "甲乙"), "ＡＡ")
-
     assert answer.text == ""
+    assert processor.last_request_answers == ()
+    assert processor.last_request_queries == ()
+    assert processor.last_request_spans == ()
     provider.chat_completion.assert_not_called()
 
 
 def test_processor_clears_request_state_before_validation():
     """A failed new block should not expose request state from the prior block."""
-    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
-    processor = AlignedTranscriptionMergeProcessor(
-        _LOCALIZED_PROMPT, provider=provider, no_op=True
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
     )
+    provider.chat_completion.return_value = json.dumps(
+        {"wenben": "甲｜"}, ensure_ascii=False
+    )
+    processor = AlignedTranscriptionMergeProcessor(_LOCALIZED_PROMPT, provider=provider)
     processor.process(_get_sources("甲", "甲"), "Ａ")
+    assert processor.last_request_spans == ((0, 1),)
 
     with raises(ValidationError, match="equal nonzero lengths"):
         processor.process(_get_sources("乙", "乙"), "ＡＡ")

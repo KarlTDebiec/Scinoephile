@@ -77,6 +77,9 @@ class AlignedTranscriptionMergeProcessor(Processor):
                 }
             ),
         )
+        if self.queryer.no_op:
+            return AlignedTranscriptionMergeAnswer(text="")
+
         request_queries, self.last_request_spans = _get_request_queries(validated_query)
         self.last_request_queries = request_queries
 

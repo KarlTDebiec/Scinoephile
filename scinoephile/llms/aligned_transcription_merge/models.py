@@ -7,7 +7,7 @@ from __future__ import annotations
 import unicodedata
 from typing import ClassVar, Self
 
-from pydantic import Field, ValidationInfo, model_validator
+from pydantic import Field, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase
 from scinoephile.core.llms.models import LLMModel, make_hashable
@@ -236,19 +236,13 @@ class AlignedTranscriptionMergeTestCase(TestCase):
     """Merged consensus subtitles, if available."""
 
     @model_validator(mode="after")
-    def validate_answer(self, info: ValidationInfo) -> Self:
+    def validate_answer(self) -> Self:
         """Ensure the answer is sufficiently complete and obeys the length limit.
 
-        Arguments:
-            info: Pydantic validation context
         Returns:
             validated test case
         """
-        context = info.context
-        if self.answer is None or (
-            isinstance(context, dict)
-            and context.get("skip_output_quality_validation") is True
-        ):
+        if self.answer is None:
             return self
         if any(
             unicodedata.category(character)[0] in {"P", "S"}
@@ -274,19 +268,3 @@ class AlignedTranscriptionMergeTestCase(TestCase):
         if overlong_indexes:
             raise ValueError(self.prompt.subtitle_length_err(overlong_indexes))
         return self
-
-    def get_no_op_answer(self) -> AlignedTranscriptionMergeAnswer:
-        """Get an answer selecting the first ASR source.
-
-        Returns:
-            first-source text as one subtitle
-        """
-        text = (
-            self.query.sources[0]
-            .text.replace(_ALIGNMENT_GAP_CHARACTER, "")
-            .replace(_PAUSE_CHARACTER, "")
-            .strip()
-        )
-        if text:
-            text += _REFERENCE_BOUNDARY_CHARACTER
-        return AlignedTranscriptionMergeAnswer(text=text)
