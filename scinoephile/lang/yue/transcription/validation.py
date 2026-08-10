@@ -4,12 +4,11 @@
 
 from __future__ import annotations
 
+from scinoephile.lang.yue.character_features import CharacterFeatures
 from scinoephile.llms.transcription import (
     TranscriptionAlignmentScorer,
     TranscriptionCharacterRelationship,
 )
-
-from .character_features import CharacterFeatures
 
 __all__ = ["CantoneseTranscriptionAlignmentScorer"]
 

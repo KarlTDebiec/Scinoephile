@@ -8,10 +8,9 @@ from functools import partial
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
+from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 from scinoephile.llms.transcription import TranscriptionPrompt
-
-from .prompts import YUE_HANT_PROMPT_FIELDS
 
 __all__ = ["TranscriptionPromptYueHans", "TranscriptionPromptYueHant"]
 

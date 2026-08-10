@@ -12,11 +12,9 @@ from typing import Unpack
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.lang.yue.transcription import (
+    CantoneseTranscriptionAlignmentScorer,
     TranscriptionPromptYueHans,
     TranscriptionPromptYueHant,
-)
-from scinoephile.lang.yue.transcription_validation import (
-    CantoneseTranscriptionAlignmentScorer,
 )
 from scinoephile.llms import load_shared_test_cases
 from scinoephile.llms.providers.registry import get_provider

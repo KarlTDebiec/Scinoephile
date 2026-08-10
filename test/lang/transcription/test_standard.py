@@ -10,7 +10,7 @@ from unittest.mock import Mock, patch
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider
 from scinoephile.lang.transcription.standard import DEFAULT_PROMPTS, get_transcriber
-from scinoephile.lang.yue.transcription_validation import (
+from scinoephile.lang.yue.transcription.validation import (
     CantoneseTranscriptionAlignmentScorer,
 )
 from scinoephile.llms.transcription import TranscriptionTestCase

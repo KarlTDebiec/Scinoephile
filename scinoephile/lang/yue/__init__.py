@@ -4,5 +4,5 @@
 
 Package hierarchy (modules may import from any above):
 * character_features / conversion / prompts / romanization
-* ocr_fusion / review / transcription / transcription_validation
+* ocr_fusion / review / transcription
 """

@@ -1,10 +1,10 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for Cantonese transcription alignment scoring."""
+"""Tests of Cantonese transcription alignment scoring."""
 
 from __future__ import annotations
 
-from scinoephile.lang.yue.transcription_validation import (
+from scinoephile.lang.yue.transcription.validation import (
     CantoneseTranscriptionAlignmentScorer,
 )
 from scinoephile.llms.transcription import (
