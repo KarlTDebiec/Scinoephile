@@ -26,6 +26,8 @@ from scinoephile.audio.transcription import (
     get_segment_split_at_idx,
     get_segment_split_on_word_timings,
 )
+from scinoephile.audio.transcription.mlx_audio.model import MlxAudioModel
+from scinoephile.audio.transcription.whisper.model import WhisperModel
 from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -147,8 +149,7 @@ class GuidedTranscriber:
         language: Language,
         guide_language: Language,
         model: TranscriptionModel,
-        model_name: str,
-        whisper_language: str,
+        audio_model: WhisperModel | MlxAudioModel,
         aligner: TranscriptionAligner,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.OFF,
@@ -165,8 +166,7 @@ class GuidedTranscriber:
             language: transcription language
             guide_language: guide subtitle language
             model: supported transcription model
-            model_name: backend model name used for transcription
-            whisper_language: language code passed to Whisper
+            audio_model: configured transcription model
             aligner: transcription aligner
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
@@ -181,8 +181,8 @@ class GuidedTranscriber:
         self.language = language
         self.guide_language = guide_language
         self.model = model
-        self.model_name = model_name
-        self.whisper_language = whisper_language
+        self.audio_model = audio_model
+        self.model_name = audio_model.model_name
         self.aligner = aligner
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
@@ -193,6 +193,8 @@ class GuidedTranscriber:
 
         # Use MLX-Audio's shared preprocessing fallbacks without Whisper recovery
         if self.model is not TranscriptionModel.WHISPER:
+            if not isinstance(self.audio_model, MlxAudioModel):
+                raise ValueError("MLX-Audio backend requires a MLX-Audio model.")
             if self.mlx_audio_transcriber is None:
                 raise ValueError("MLX-Audio backend requires a MLX-Audio transcriber.")
             self.transcriber = self.mlx_audio_transcriber
@@ -201,10 +203,12 @@ class GuidedTranscriber:
             return
 
         # Configure standard preprocessing fallbacks
+        if not isinstance(self.audio_model, WhisperModel):
+            raise ValueError("Whisper backend requires a Whisper model.")
         whisper_ctc_aligner = CtcAligner(self.language)
         self.transcriber = WhisperTranscriber(
-            model_name=self.model_name,
-            language=self.whisper_language,
+            model=self.audio_model,
+            language=self.language,
             demucs_mode=self.demucs_mode,
             vad_mode=self.vad_mode,
             cache_root_path=cache_root_path,
@@ -220,8 +224,8 @@ class GuidedTranscriber:
         if self.vad_mode is VADMode.ON:
             recovery_vad_mode = VADMode.ON
         self.recovery_transcriber = WhisperTranscriber(
-            model_name=self.model_name,
-            language=self.whisper_language,
+            model=self.audio_model,
+            language=self.language,
             demucs_mode=recovery_demucs_mode,
             vad_mode=recovery_vad_mode,
             cache_root_path=cache_root_path,
@@ -234,8 +238,8 @@ class GuidedTranscriber:
 
         # Configure focused recovery for missing speech near a guided tail
         self.tail_recovery_transcriber = WhisperTranscriber(
-            model_name=self.model_name,
-            language=self.whisper_language,
+            model=self.audio_model,
+            language=self.language,
             demucs_mode=DemucsMode.OFF,
             vad_mode=VADMode.OFF,
             cache_root_path=cache_root_path,

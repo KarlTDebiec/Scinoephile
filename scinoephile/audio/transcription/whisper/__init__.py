@@ -3,11 +3,13 @@
 """Whisper transcription.
 
 Package hierarchy (modules may import from any above):
+* model
 * transcriber
 """
 
 from __future__ import annotations
 
+from .model import WhisperModel
 from .transcriber import WhisperTranscriber
 
-__all__ = ["WhisperTranscriber"]
+__all__ = ["WhisperModel", "WhisperTranscriber"]
