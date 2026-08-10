@@ -8,11 +8,11 @@ import gc
 import json
 from functools import cache
 from pathlib import Path
-from typing import Any, Self, Unpack
+from typing import Any, Unpack
 from unittest.mock import Mock
 from weakref import ref
 
-from pydantic import JsonValue, ValidationError, ValidationInfo, model_validator
+from pydantic import JsonValue, ValidationError
 from pytest import raises
 
 from scinoephile.core import Language, ScinoephileError
@@ -100,39 +100,6 @@ class _IncompatibleTestCase(TestCase):
     """Optional incompatible answer fixture."""
 
 
-class _QualityValidatedTestCase(TestCase):
-    """Test-case fixture with optional answer-quality validation."""
-
-    query: _Query
-    """Query fixture."""
-    answer: _Answer | None = None
-    """Optional answer fixture."""
-
-    def get_no_op_answer(self) -> _Answer:
-        """Get a deliberately low-quality fallback answer."""
-        return _Answer(output="fallback")
-
-    @model_validator(mode="after")
-    def validate_output_quality(self, info: ValidationInfo) -> Self:
-        """Reject the fallback unless optional quality validation is skipped.
-
-        Arguments:
-            info: Pydantic validation context
-        Returns:
-            validated test case
-        """
-        if self.answer is None:
-            return self
-        if (
-            isinstance(info.context, dict)
-            and info.context.get("skip_output_quality_validation") is True
-        ):
-            return self
-        if self.answer.output == "fallback":
-            raise ValueError("Fallback answer fails output-quality validation.")
-        return self
-
-
 _Query.prompt = _PROMPT
 _Answer.prompt = _PROMPT
 _TestCase.query_cls = _Query
@@ -148,10 +115,6 @@ _IncompatibleTestCase.query_cls = _Query
 _IncompatibleTestCase.answer_cls = _IncompatibleAnswer
 _IncompatibleTestCase.operation = "test"
 _IncompatibleTestCase.prompt = _PROMPT
-_QualityValidatedTestCase.query_cls = _Query
-_QualityValidatedTestCase.answer_cls = _Answer
-_QualityValidatedTestCase.operation = "test"
-_QualityValidatedTestCase.prompt = _PROMPT
 
 
 class _Manager(Manager):
@@ -182,13 +145,6 @@ class _Processor(Processor):
 
     manager_cls = _Manager
     """Manager fixture class."""
-
-
-class _QualityValidatedManager(_Manager):
-    """Manager fixture using answer-quality validation."""
-
-    test_case_base_cls = _QualityValidatedTestCase
-    """Static test-case model."""
 
 
 class _RecordingProvider(LLMProvider):
@@ -799,25 +755,6 @@ def test_queryer_public_cache_lifecycle_normalizes_and_reuses_answer(tmp_path: P
     assert loaded.answer == _Answer(output="stored")
     assert loaded is fresh_queryer.encountered_test_cases[loaded.query.key]
     assert not fresh_provider.calls
-
-
-def test_no_op_quality_bypass_round_trips_test_case_json(tmp_path: Path):
-    """Test no-op answers bypass optional quality checks through persistence.
-
-    Arguments:
-        tmp_path: temporary directory path
-    """
-    test_case_cls = _QualityValidatedManager.get_test_case_cls(_PROMPT)
-    provider = _RecordingProvider()
-    queryer = Queryer(test_case_cls, provider=provider, no_op=True)
-
-    result = queryer(test_case_cls(query=_Query(text="input")))
-
-    assert result.answer == _Answer(output="fallback")
-    output_path = tmp_path / "test_cases.json"
-    save_test_cases_to_json(output_path, [result], _QualityValidatedManager)
-    [loaded] = load_test_cases_from_json(output_path, _QualityValidatedManager, _PROMPT)
-    assert loaded.answer == _Answer(output="fallback")
 
 
 def test_queryer_overwrites_matching_cache(tmp_path):

@@ -125,12 +125,9 @@ class Queryer[TTestCase: TestCase]:
                     "answer": answer.model_dump(mode="json"),
                     "few_shot": False,
                     "verified": False,
-                },
-                context={"skip_output_quality_validation": True},
+                }
             )
-            test_case = self.log_encountered_test_case(
-                test_case, skip_output_quality_validation=True
-            )
+            test_case = self.log_encountered_test_case(test_case)
             logger.info(f"Used no-op answer: {test_case.query.key_str}")
             return test_case
 
@@ -273,21 +270,16 @@ class Queryer[TTestCase: TestCase]:
         cache_path = self._get_cache_path(self.system_prompt, tools_json, query_json)
         return self._get_cached_test_case(normalized, cache_path)
 
-    def log_encountered_test_case(
-        self, test_case: TestCase, *, skip_output_quality_validation: bool = False
-    ) -> TTestCase:
+    def log_encountered_test_case(self, test_case: TestCase) -> TTestCase:
         """Log a test case as having been encountered.
 
         Arguments:
             test_case: test case to log
-            skip_output_quality_validation: retain an intentional no-op fallback
-              even when its unchanged output fails optional quality validation
         Returns:
             normalized logged test case
         """
         normalized = self.test_case_cls.model_validate(
-            test_case.model_dump(mode="json"),
-            context={"skip_output_quality_validation": skip_output_quality_validation},
+            test_case.model_dump(mode="json")
         )
         key = normalized.query.key
         normalized.few_shot |= key in self.few_shot_test_cases
