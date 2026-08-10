@@ -34,18 +34,18 @@ class TranscriptionProcessor(Processor):
         sources: Sequence[TranscriptionSource],
         speaker: str,
         *,
-        language_trace: str | None = None,
-        music_trace: str | None = None,
-        singing_trace: str | None = None,
+        language: str | None = None,
+        music: str | None = None,
+        singing: str | None = None,
     ) -> TranscriptionAnswer:
         """Transcribe one complete aligned ASR block.
 
         Arguments:
             sources: named equal-status aligned ASR rows
             speaker: aligned speaker and voice-activity row
-            language_trace: optional aligned spoken-language row
-            music_trace: optional aligned music row
-            singing_trace: optional aligned singing row
+            language: optional aligned spoken-language row
+            music: optional aligned music row
+            singing: optional aligned singing row
         Returns:
             consensus transcript divided into subtitles
         """
@@ -56,9 +56,9 @@ class TranscriptionProcessor(Processor):
                 {
                     "sources": [source.model_dump(mode="json") for source in sources],
                     "speaker": speaker,
-                    "language_trace": language_trace,
-                    "singing_trace": singing_trace,
-                    "music_trace": music_trace,
+                    "language": language,
+                    "singing": singing,
+                    "music": music,
                 }
             ),
         )
@@ -97,12 +97,12 @@ def _get_query_slice(
         ],
         "speaker": query.speaker[start:end],
     }
-    if query.language_trace is not None:
-        update["language_trace"] = query.language_trace[start:end]
-    if query.music_trace is not None:
-        update["music_trace"] = query.music_trace[start:end]
-    if query.singing_trace is not None:
-        update["singing_trace"] = query.singing_trace[start:end]
+    if query.language is not None:
+        update["language"] = query.language[start:end]
+    if query.music is not None:
+        update["music"] = query.music[start:end]
+    if query.singing is not None:
+        update["singing"] = query.singing[start:end]
     return query.model_copy(update=update)
 
 

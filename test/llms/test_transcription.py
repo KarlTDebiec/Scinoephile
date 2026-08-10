@@ -183,7 +183,7 @@ def test_query_accepts_distinct_fullwidth_gap_and_pause_annotations():
 
 
 def test_query_accepts_equal_width_language_singing_and_music_rows():
-    """Optional FireRed traces should retain the alignment's exact width."""
+    """Optional FireRed rows should retain the alignment's exact width."""
     query_cls = TranscriptionManager.get_query_cls(TranscriptionManager.base_prompt)
 
     query = cast(
@@ -202,20 +202,20 @@ def test_query_accepts_equal_width_language_singing_and_music_rows():
         ),
     )
 
-    assert query.language_trace == "粵・日"
-    assert query.singing_trace == "唱・　"
-    assert query.music_trace == "　・樂"
+    assert query.language == "粵・日"
+    assert query.singing == "唱・　"
+    assert query.music == "　・樂"
 
 
-def test_query_key_includes_optional_traces_omitted_from_serialization():
-    """Query keys should distinguish absent and populated optional traces."""
+def test_query_key_includes_optional_rows_omitted_from_serialization():
+    """Query keys should distinguish absent and populated optional rows."""
     query = TranscriptionQuery(sources=_get_sources("甲", "甲"), speaker="Ａ")
-    traced_query = TranscriptionQuery(
-        sources=_get_sources("甲", "甲"), speaker="Ａ", language_trace="粵"
+    annotated_query = TranscriptionQuery(
+        sources=_get_sources("甲", "甲"), speaker="Ａ", language="粵"
     )
 
-    assert "language_trace" not in query.model_dump(mode="json")
-    assert query.key != traced_query.key
+    assert "language" not in query.model_dump(mode="json")
+    assert query.key != annotated_query.key
 
 
 def test_query_rejects_reference_evidence_and_reference_markers():

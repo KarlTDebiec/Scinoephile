@@ -73,14 +73,14 @@ class TranscriptionManager(Manager[TranscriptionTestCase]):
                 "speaker": PromptModelField(
                     alias=prompt.speaker, description=prompt.speaker_desc
                 ),
-                "language_trace": PromptModelField(
-                    alias=prompt.language_trace, description=prompt.language_trace_desc
+                "language": PromptModelField(
+                    alias=prompt.language_field, description=prompt.language_desc
                 ),
-                "singing_trace": PromptModelField(
-                    alias=prompt.singing_trace, description=prompt.singing_trace_desc
+                "singing": PromptModelField(
+                    alias=prompt.singing, description=prompt.singing_desc
                 ),
-                "music_trace": PromptModelField(
-                    alias=prompt.music_trace, description=prompt.music_trace_desc
+                "music": PromptModelField(
+                    alias=prompt.music, description=prompt.music_desc
                 ),
             },
         )

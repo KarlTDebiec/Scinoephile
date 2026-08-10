@@ -66,21 +66,21 @@ class TranscriptionQuery(Query):
     """One or more named equal-status ASR source rows."""
     speaker: str = Field(min_length=1, max_length=10_000)
     """Column-aligned speaker and voice-activity annotations."""
-    language_trace: str | None = Field(
+    language: str | None = Field(
         default=None,
         min_length=1,
         max_length=10_000,
         exclude_if=lambda value: value is None,
     )
     """Column-aligned spoken-language annotations, when available."""
-    singing_trace: str | None = Field(
+    singing: str | None = Field(
         default=None,
         min_length=1,
         max_length=10_000,
         exclude_if=lambda value: value is None,
     )
     """Column-aligned singing annotations, when available."""
-    music_trace: str | None = Field(
+    music: str | None = Field(
         default=None,
         min_length=1,
         max_length=10_000,
@@ -90,14 +90,10 @@ class TranscriptionQuery(Query):
 
     @property
     def key(self) -> tuple:
-        """Unique key including optional traces omitted from serialization."""
+        """Unique key including optional analysis rows omitted from serialization."""
         data = self.model_dump(mode="json")
         data.update(
-            {
-                "language_trace": self.language_trace,
-                "music_trace": self.music_trace,
-                "singing_trace": self.singing_trace,
-            }
+            {"language": self.language, "music": self.music, "singing": self.singing}
         )
         return tuple(
             make_hashable(data[field]) for field in sorted(type(self).model_fields)
@@ -116,11 +112,7 @@ class TranscriptionQuery(Query):
             *(len(source.text) for source in self.sources),
             *(
                 len(annotation)
-                for annotation in (
-                    self.language_trace,
-                    self.singing_trace,
-                    self.music_trace,
-                )
+                for annotation in (self.language, self.singing, self.music)
                 if annotation is not None
             ),
         }
@@ -128,12 +120,7 @@ class TranscriptionQuery(Query):
             raise ValueError(self.prompt.row_length_err)
         annotation_rows = tuple(
             annotation
-            for annotation in (
-                self.speaker,
-                self.language_trace,
-                self.singing_trace,
-                self.music_trace,
-            )
+            for annotation in (self.speaker, self.language, self.singing, self.music)
             if annotation is not None
         )
         if any(
@@ -143,14 +130,11 @@ class TranscriptionQuery(Query):
             raise ValueError(self.prompt.reference_marker_err)
         if any(character not in _SPEAKER_CHARACTERS for character in self.speaker):
             raise ValueError(self.prompt.speaker_character_err)
-        if self.language_trace is not None and any(
-            character not in _LANGUAGE_CHARACTERS for character in self.language_trace
+        if self.language is not None and any(
+            character not in _LANGUAGE_CHARACTERS for character in self.language
         ):
             raise ValueError(self.prompt.language_character_err)
-        for annotation, marker in (
-            (self.singing_trace, "唱"),
-            (self.music_trace, "樂"),
-        ):
+        for annotation, marker in ((self.singing, "唱"), (self.music, "樂")):
             if annotation is not None and any(
                 character not in {_ALIGNMENT_GAP_CHARACTER, _PAUSE_CHARACTER, marker}
                 for character in annotation

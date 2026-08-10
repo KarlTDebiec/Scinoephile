@@ -42,23 +42,21 @@ class TranscriptionPrompt(Prompt):
         "gap or timed-pause markers."
     )
     """Description of speaker and voice-activity row field."""
-    language_trace: str = "language"
+    language_field: str = "language"
     """Name of spoken-language annotation row field."""
-    language_trace_desc: str = (
+    language_desc: str = (
         "Optional column-aligned fullwidth spoken-language labels and gaps."
     )
     """Description of spoken-language annotation row field."""
-    singing_trace: str = "singing"
+    singing: str = "singing"
     """Name of singing annotation row field."""
-    singing_trace_desc: str = (
+    singing_desc: str = (
         "Optional column-aligned singing labels, gaps, and timed pauses."
     )
     """Description of singing annotation row field."""
-    music_trace: str = "music"
+    music: str = "music"
     """Name of music annotation row field."""
-    music_trace_desc: str = (
-        "Optional column-aligned music labels, gaps, and timed pauses."
-    )
+    music_desc: str = "Optional column-aligned music labels, gaps, and timed pauses."
     """Description of music annotation row field."""
     answer_text: str = "text"
     """Name of consensus text field in answer."""
