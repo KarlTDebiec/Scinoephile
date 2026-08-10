@@ -9,17 +9,32 @@ from pathlib import Path
 from typing import cast
 from unittest.mock import Mock, patch
 
-from pytest import raises
+from pytest import mark, raises
 
-from scinoephile.audio.transcription import CtcAligner, DemucsMode, VADMode
-from scinoephile.audio.transcription.mlx_audio.backend import MIMO_MODEL_NAME
+from scinoephile.audio.transcription import (
+    CtcAligner,
+    DemucsMode,
+    VADMode,
+    WhisperTranscriber,
+)
+from scinoephile.audio.transcription.mlx_audio.model import (
+    FIRERED_ASR2_MODEL,
+    GLM_ASR_MODEL,
+    MIMO_MODEL,
+    QWEN3_ASR_MODEL,
+    SENSEVOICE_MODEL,
+    MlxAudioModel,
+)
+from scinoephile.audio.transcription.whisper.model import (
+    WHISPER_LARGE_V3_CANTONESE_MODEL,
+)
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.lang.transcription.guided import DEFAULT_SPECS, get_guided_transcriber
 from scinoephile.lang.transcription.transcriber import (
     MlxAudioTimingMode,
-    TranscriptionBackend,
+    TranscriptionModel,
 )
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
@@ -50,6 +65,10 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
         DEFAULT_SPECS[(Language.yue_hans, Language.zho_hans)].language_spec
         is DEFAULT_SPECS[(Language.yue_hant, Language.zho_hans)].language_spec
     )
+    language_spec = DEFAULT_SPECS[(Language.yue_hans, Language.zho_hans)].language_spec
+    whisper_model = language_spec.models[TranscriptionModel.WHISPER]
+    assert set(language_spec.models) == set(TranscriptionModel)
+    assert whisper_model is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert any(
         path.parts[0] == "kob"
         for path in DEFAULT_SPECS[
@@ -67,6 +86,9 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
         mutable_specs[(Language.eng, Language.zho_hans)] = DEFAULT_SPECS[
             (Language.yue_hans, Language.zho_hans)
         ]
+    mutable_models = cast(dict, language_spec.models)
+    with raises(TypeError):
+        mutable_models[TranscriptionModel.WHISPER] = whisper_model
 
 
 def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path):
@@ -97,12 +119,14 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
 
     assert transcriber.language is Language.yue_hant
     assert transcriber.guide_language is Language.zho_hans
-    assert transcriber.backend is TranscriptionBackend.WHISPER
     assert transcriber.demucs_mode is DemucsMode.OFF
     assert transcriber.vad_mode is VADMode.OFF
     assert not hasattr(transcriber, "overwrite_cache")
     assert not hasattr(transcriber, "cache_root_path")
-    assert transcriber.whisper_language == "yue"
+    assert (transcriber.audio_model, transcriber.model_name) == (
+        WHISPER_LARGE_V3_CANTONESE_MODEL,
+        WHISPER_LARGE_V3_CANTONESE_MODEL.model_name,
+    )
     assert transcriber.segment_splitter is not None
     assert isinstance(transcriber.aligner.delineation_processor, DelineationProcessor)
     assert isinstance(transcriber.aligner.punctuation_processor, PunctuationProcessor)
@@ -112,7 +136,10 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.aligner.punctuation_processor.prompt is (
         YueZhoPunctuationPromptYueHant
     )
-    assert transcriber.transcriber.language == "yue"
+    whisper_transcriber = transcriber.transcriber
+    assert isinstance(whisper_transcriber, WhisperTranscriber)
+    assert whisper_transcriber.model is WHISPER_LARGE_V3_CANTONESE_MODEL
+    assert whisper_transcriber.language is Language.yue_hant
     assert transcriber.transcriber.demucs_mode is DemucsMode.OFF
     assert transcriber.transcriber.vad_mode is VADMode.OFF
     assert transcriber.recovery_transcriber is not None
@@ -159,11 +186,25 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert punctuation_cache.overwrite
 
 
-def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
-    """Test the factory selects the MLX-Audio default and preprocessing modes.
+@mark.parametrize(
+    ("model", "expected_mlx_audio_model"),
+    [
+        (TranscriptionModel.MIMO, MIMO_MODEL),
+        (TranscriptionModel.QWEN3_ASR, QWEN3_ASR_MODEL),
+        (TranscriptionModel.GLM_ASR, GLM_ASR_MODEL),
+        (TranscriptionModel.FIRERED_ASR2, FIRERED_ASR2_MODEL),
+        (TranscriptionModel.SENSEVOICE, SENSEVOICE_MODEL),
+    ],
+)
+def test_get_guided_transcriber_configures_mlx_audio_model(
+    tmp_path: Path, model: TranscriptionModel, expected_mlx_audio_model: MlxAudioModel
+):
+    """Test the factory selects each complete MLX-Audio model.
 
     Arguments:
         tmp_path: temporary directory path
+        model: supported transcription model
+        expected_mlx_audio_model: expected explicit MLX-Audio model
     """
     mlx_audio_transcriber = Mock()
     with patch(
@@ -173,7 +214,7 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
         transcriber = get_guided_transcriber(
             Language.yue_hant,
             Language.zho_hans,
-            backend=TranscriptionBackend.MLX_AUDIO,
+            model=model,
             cache_root_path=tmp_path,
             strip_generated_punctuation=True,
             mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
@@ -189,15 +230,15 @@ def test_get_guided_transcriber_configures_mlx_audio_backend(tmp_path: Path):
             punctuation_test_cases=[],
         )
 
-    assert transcriber.backend is TranscriptionBackend.MLX_AUDIO
-    assert transcriber.model_name == MIMO_MODEL_NAME
+    assert transcriber.audio_model is expected_mlx_audio_model
+    assert transcriber.model_name == expected_mlx_audio_model.model_name
     assert transcriber.transcriber is mlx_audio_transcriber
     assert transcriber.recovery_transcriber is None
     assert transcriber.tail_recovery_transcriber is None
     assert transcriber.strip_generated_punctuation
     assert transcriber.mlx_audio_timing_mode is MlxAudioTimingMode.PHRASE
     mlx_audio_transcriber_class.assert_called_once_with(
-        model_name=MIMO_MODEL_NAME,
+        model=expected_mlx_audio_model,
         language=Language.yue_hant,
         token_limit_guard=True,
         demucs_mode=DemucsMode.OFF,
