@@ -114,23 +114,18 @@ def test_answer_text_requires_clean_terminated_subtitles():
         TranscriptionAnswer(text="甲・乙｜")
 
 
-def test_transcription_rejects_answer_punctuation():
-    """Transcription rejects punctuation while its answer model remains tolerant."""
-    test_case_cls = TranscriptionManager.get_test_case_cls(_LOCALIZED_PROMPT)
+def test_answer_rejects_punctuation():
+    """Answer validation should reject punctuation."""
+    answer_cls = TranscriptionManager.get_answer_cls(_LOCALIZED_PROMPT)
 
     with raises(ValidationError, match="must not contain punctuation"):
-        test_case_cls.model_validate(
-            {
-                "query": {
-                    "laiyuan": [
-                        {"mingcheng": "one", "yuanwen": "我係"},
-                        {"mingcheng": "two", "yuanwen": "我係"},
-                    ],
-                    "shuoshuuren": "ＡＡ",
-                },
-                "answer": {"wenben": "我係。｜"},
-            }
-        )
+        answer_cls.model_validate({"wenben": "我係。｜"})
+
+
+def test_answer_rejects_overlong_subtitles():
+    """Answer validation should reject overlong display subtitles."""
+    with raises(ValidationError, match="maximum of 20 nonwhitespace characters"):
+        TranscriptionAnswer(text="一" * 21 + "｜")
 
 
 def test_query_supports_future_sources_and_requires_equal_width_rows():

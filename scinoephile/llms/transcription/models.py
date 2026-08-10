@@ -122,6 +122,8 @@ class TranscriptionSubtitle(LLMModel):
 class TranscriptionAnswer(Answer):
     """Consensus text containing inline subtitle boundaries."""
 
+    max_subtitle_characters: ClassVar[int] = 20
+    """Maximum nonwhitespace characters permitted in one subtitle."""
     prompt: ClassVar[TranscriptionPrompt] = _BASE_PROMPT
     """Text and field aliases for transcription."""
     text: str = Field(max_length=20_000)
@@ -155,15 +157,36 @@ class TranscriptionAnswer(Answer):
         if any(not text.strip() for text in subtitle_texts):
             raise ValueError(self.prompt.answer_text_err)
 
-        # Alignment annotations must not leak into display subtitles
+        # Display subtitles contain neither alignment annotations nor punctuation
         if any({"　", "・", "＊"}.intersection(text) for text in subtitle_texts):
             raise ValueError(self.prompt.answer_text_err)
+        if any(
+            unicodedata.category(character)[0] in {"P", "S"}
+            for character in self.transcript
+        ):
+            raise ValueError(self.prompt.answer_punctuation_err)
+
+        # Enforce the display-length limit per subtitle
+        overlong_indexes = [
+            subtitle.index
+            for subtitle in self.subtitles
+            if sum(not character.isspace() for character in subtitle.text)
+            > self.max_subtitle_characters
+        ]
+        if overlong_indexes:
+            raise ValueError(
+                self.prompt.subtitle_length_err(
+                    overlong_indexes, self.max_subtitle_characters
+                )
+            )
         return self
 
 
 class TranscriptionTestCase(TestCase):
     """Transcription query and optional consensus answer."""
 
+    minimum_consensus_coverage: ClassVar[float] = 0.9
+    """Minimum sequence-aligned preservation of strict-majority ASR evidence."""
     query_cls: ClassVar[type[TranscriptionQuery]] = TranscriptionQuery
     """Query model class."""
     answer_cls: ClassVar[type[TranscriptionAnswer]] = TranscriptionAnswer
@@ -176,8 +199,8 @@ class TranscriptionTestCase(TestCase):
     """Consensus subtitles, if available."""
 
     @model_validator(mode="after")
-    def validate_answer(self) -> Self:
-        """Ensure the answer is sufficiently complete and obeys the length limit.
+    def validate_consensus_coverage(self) -> Self:
+        """Ensure the answer preserves sufficient consensus from the ASR sources.
 
         Returns:
             validated test case
@@ -185,33 +208,15 @@ class TranscriptionTestCase(TestCase):
         if self.answer is None:
             return self
 
-        # Answers are unpunctuated apart from their structural boundaries
-        if any(
-            unicodedata.category(character)[0] in {"P", "S"}
-            for character in self.answer.transcript
-        ):
-            raise ValueError(self.prompt.answer_punctuation_err)
-
-        # Preserve high-confidence agreement between ASR sources
         validation = get_transcription_validation(
             tuple(source.text for source in self.query.sources),
             self.answer.transcript,
             self.prompt.language,
         )
-        if not validation.preserves_required_majority(
-            self.prompt.minimum_consensus_coverage
-        ):
+        if not validation.preserves_required_majority(self.minimum_consensus_coverage):
             raise ValueError(
-                self.prompt.consensus_coverage_err(validation.majority_coverage)
+                self.prompt.consensus_coverage_err(
+                    validation.majority_coverage, self.minimum_consensus_coverage
+                )
             )
-
-        # Enforce the display-length limit per subtitle
-        overlong_indexes = [
-            subtitle.index
-            for subtitle in self.answer.subtitles
-            if sum(not character.isspace() for character in subtitle.text)
-            > self.prompt.max_subtitle_characters
-        ]
-        if overlong_indexes:
-            raise ValueError(self.prompt.subtitle_length_err(overlong_indexes))
         return self

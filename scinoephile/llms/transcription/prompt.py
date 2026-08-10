@@ -15,10 +15,6 @@ __all__ = ["TranscriptionPrompt"]
 class TranscriptionPrompt(Prompt):
     """Text and aliases for transcription."""
 
-    max_subtitle_characters: int = 20
-    """Maximum nonwhitespace characters permitted in one subtitle."""
-    minimum_consensus_coverage: float = 0.9
-    """Minimum sequence-aligned preservation of strict-majority ASR evidence."""
     sources: str = "sources"
     """Name of aligned transcription source rows field."""
     sources_desc: str = (
@@ -124,27 +120,29 @@ class TranscriptionPrompt(Prompt):
     )
     """Error template when answer coverage suggests omitted consensus speech."""
 
-    def consensus_coverage_err(self, coverage: float) -> str:
+    def consensus_coverage_err(self, coverage: float, minimum: float) -> str:
         """Get an error for insufficient sequence-aligned majority coverage.
 
         Arguments:
             coverage: proportion of the majority sequence preserved in the answer
+            minimum: minimum required coverage
         Returns:
             formatted error message
         """
         return self.consensus_coverage_err_tpl.format(
-            coverage=coverage, minimum=self.minimum_consensus_coverage
+            coverage=coverage, minimum=minimum
         )
 
-    def subtitle_length_err(self, indexes: list[int]) -> str:
+    def subtitle_length_err(self, indexes: list[int], max_characters: int) -> str:
         """Get an error for subtitles exceeding the configured maximum length.
 
         Arguments:
             indexes: one-based indexes of subtitles that are too long
+            max_characters: maximum permitted nonwhitespace characters
         Returns:
             formatted error message
         """
         return self.subtitle_length_err_tpl.format(
             indexes=", ".join(str(index) for index in indexes),
-            max_characters=self.max_subtitle_characters,
+            max_characters=max_characters,
         )
