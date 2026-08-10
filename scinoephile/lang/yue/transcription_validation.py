@@ -44,6 +44,41 @@ class _CharacterFeatures:
     simplified: str
     """Compatibility-normalized Simplified Chinese form."""
 
+    @classmethod
+    @cache
+    def get(cls, character: str) -> _CharacterFeatures:
+        """Get cached script and Cantonese pronunciation features.
+
+        Arguments:
+            character: character for which to get features
+        Returns:
+            cached comparison features
+        """
+        nfkc = unicodedata.normalize("NFKC", character)
+        simplified = get_zho_text_converted(
+            nfkc, OpenCCConfig.t2s, apply_exclusions=False
+        )
+        traditional = get_zho_text_converted(
+            nfkc, OpenCCConfig.s2t, apply_exclusions=False
+        )
+        script_forms = frozenset({nfkc, simplified, traditional})
+        equivalence_groups = frozenset(
+            group_idx
+            for group_idx, group in enumerate(_EQUIVALENCE_GROUPS)
+            if script_forms.intersection(group)
+        )
+        jyutping = ""
+        if len(traditional) == 1:
+            _, raw_jyutping = pycantonese.characters_to_jyutping([traditional])[0]
+            if raw_jyutping is not None:
+                jyutping = raw_jyutping
+        return cls(
+            equivalence_groups=equivalence_groups,
+            jyutping=jyutping,
+            jyutping_base=jyutping.rstrip("123456"),
+            simplified=simplified,
+        )
+
 
 class CantoneseTranscriptionAlignmentScorer(TranscriptionAlignmentScorer):
     """Score transcription alignment using Cantonese character relationships."""
@@ -63,8 +98,8 @@ class CantoneseTranscriptionAlignmentScorer(TranscriptionAlignmentScorer):
         if relationship is TranscriptionCharacterRelationship.exact:
             return relationship
 
-        one_features = _get_character_features(one)
-        two_features = _get_character_features(two)
+        one_features = _CharacterFeatures.get(one)
+        two_features = _CharacterFeatures.get(two)
         if one_features.simplified == two_features.simplified:
             return TranscriptionCharacterRelationship.equivalent
         if one_features.equivalence_groups.intersection(
@@ -81,28 +116,3 @@ class CantoneseTranscriptionAlignmentScorer(TranscriptionAlignmentScorer):
         if matching_pronunciation:
             return TranscriptionCharacterRelationship.pronunciation
         return TranscriptionCharacterRelationship.none
-
-
-@cache
-def _get_character_features(character: str) -> _CharacterFeatures:
-    """Get reusable script and Cantonese pronunciation features."""
-    nfkc = unicodedata.normalize("NFKC", character)
-    simplified = get_zho_text_converted(nfkc, OpenCCConfig.t2s, apply_exclusions=False)
-    traditional = get_zho_text_converted(nfkc, OpenCCConfig.s2t, apply_exclusions=False)
-    script_forms = frozenset({nfkc, simplified, traditional})
-    equivalence_groups = frozenset(
-        group_idx
-        for group_idx, group in enumerate(_EQUIVALENCE_GROUPS)
-        if script_forms.intersection(group)
-    )
-    jyutping = ""
-    if len(traditional) == 1:
-        _, raw_jyutping = pycantonese.characters_to_jyutping([traditional])[0]
-        if raw_jyutping is not None:
-            jyutping = raw_jyutping
-    return _CharacterFeatures(
-        equivalence_groups=equivalence_groups,
-        jyutping=jyutping,
-        jyutping_base=jyutping.rstrip("123456"),
-        simplified=simplified,
-    )
