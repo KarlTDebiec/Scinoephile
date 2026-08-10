@@ -4,8 +4,12 @@
 
 from __future__ import annotations
 
+from unittest.mock import Mock, patch
+
 from scinoephile.core import Language
-from scinoephile.lang.transcription.standard import DEFAULT_PROMPTS
+from scinoephile.core.llms import LLMProvider
+from scinoephile.lang.transcription.standard import DEFAULT_PROMPTS, get_transcriber
+from scinoephile.llms.transcription import TranscriptionManager
 
 
 def test_cantonese_prompts_reject_single_source_lexical_insertions():
@@ -19,3 +23,23 @@ def test_cantonese_prompts_reject_single_source_lexical_insertions():
     assert "只出现喺单一来源" in simplified_prompt
     assert "唔系独立嘅词汇证据" in simplified_prompt
     assert "同语言分类一致就收录" in simplified_prompt
+
+
+def test_get_transcriber_loads_defaults_only_when_shared_test_cases_are_omitted():
+    """Default cases should load for None without replacing an explicit empty list."""
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    loader_path = "scinoephile.lang.transcription.standard.load_shared_test_cases"
+
+    with patch(loader_path, return_value=()) as load_shared_test_cases:
+        get_transcriber(Language.yue_hant, provider=provider, no_op=True)
+
+    load_shared_test_cases.assert_called_once_with(
+        TranscriptionManager, DEFAULT_PROMPTS[Language.yue_hant], ()
+    )
+
+    with patch(loader_path) as load_shared_test_cases:
+        get_transcriber(
+            Language.yue_hant, shared_test_cases=[], provider=provider, no_op=True
+        )
+
+    load_shared_test_cases.assert_not_called()

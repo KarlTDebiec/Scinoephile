@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from pathlib import Path
 from types import MappingProxyType
 from typing import Unpack
 
@@ -14,10 +15,27 @@ from scinoephile.lang.yue.transcription import (
     TranscriptionPromptYueHans,
     TranscriptionPromptYueHant,
 )
+from scinoephile.llms import load_shared_test_cases
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.llms.transcription import TranscriptionProcessor, TranscriptionPrompt
+from scinoephile.llms.transcription import (
+    TranscriptionManager,
+    TranscriptionProcessor,
+    TranscriptionPrompt,
+)
 
 __all__ = ["DEFAULT_PROMPTS", "get_transcriber"]
+
+_YUE_HANS_TRANSCRIPTION_JSON_PATHS: tuple[Path, ...] = ()
+"""Default simplified Cantonese transcription JSON paths."""
+
+_YUE_HANT_TRANSCRIPTION_JSON_PATHS: tuple[Path, ...] = ()
+"""Default traditional Cantonese transcription JSON paths."""
+
+_JSON_PATHS: dict[Language, tuple[Path, ...]] = {
+    Language.yue_hans: _YUE_HANS_TRANSCRIPTION_JSON_PATHS,
+    Language.yue_hant: _YUE_HANT_TRANSCRIPTION_JSON_PATHS,
+}
+"""Transcription JSON paths keyed by language."""
 
 
 DEFAULT_PROMPTS: Mapping[Language, TranscriptionPrompt] = MappingProxyType(
@@ -53,8 +71,12 @@ def get_transcriber(
         raise ScinoephileError(f"Transcription does not support {language.code}.")
     if prompt is None:
         prompt = DEFAULT_PROMPTS[language]
+    if shared_test_cases is None:
+        shared_test_cases = list(
+            load_shared_test_cases(TranscriptionManager, prompt, _JSON_PATHS[language])
+        )
     if provider is None:
         provider = get_provider()
     return TranscriptionProcessor(
-        prompt, shared_test_cases or [], provider=provider, **kwargs
+        prompt, shared_test_cases, provider=provider, **kwargs
     )
