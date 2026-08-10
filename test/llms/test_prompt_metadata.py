@@ -14,7 +14,7 @@ from unittest.mock import Mock
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, Manager, Prompt, Queryer
 from scinoephile.llms.guided_review import GuidedReviewManager, GuidedReviewPrompt
-from scinoephile.llms.review import ReviewManager, ReviewPrompt
+from scinoephile.llms.review import ReviewManager, ReviewProcessor, ReviewPrompt
 from scinoephile.workflows.prompt_catalog import PROMPT_SPECS
 
 _LEGACY_TEST_CASE_PROMPT_FIELDS: Final = {
@@ -27,6 +27,97 @@ _LEGACY_TEST_CASE_PROMPT_FIELDS: Final = {
     ),
 }
 """Prompt fields removed when test-case metadata became static."""
+
+
+def test_prompt_legacy_cache_metadata_does_not_change_identity():
+    """Cache migration metadata should not alter prompt model identities."""
+    legacy_prompt = Prompt(base_system_prompt="Legacy")
+    prompt = Prompt(base_system_prompt="Current")
+    prompt_with_legacy_cache = Prompt(
+        base_system_prompt="Current", legacy_cache_prompts=(legacy_prompt,)
+    )
+
+    assert prompt_with_legacy_cache.name == prompt.name
+
+
+def test_prompt_transformation_includes_legacy_cache_prompts():
+    """Prompt transformation should retain localized cache predecessors."""
+    prompt = Prompt(
+        base_system_prompt="Current",
+        legacy_cache_prompts=(Prompt(base_system_prompt="Legacy"),),
+    )
+
+    transformed = prompt.transformed(Language.zho_hans, str.lower)
+
+    assert transformed.language is Language.zho_hans
+    assert transformed.base_system_prompt == "current"
+    assert len(transformed.legacy_cache_prompts) == 1
+    assert transformed.legacy_cache_prompts[0].language is Language.zho_hans
+    assert transformed.legacy_cache_prompts[0].base_system_prompt == "legacy"
+
+
+def test_processor_migrates_cache_across_prompt_aliases(tmp_path: Path):
+    """Compatible cached answers should migrate across correspondence aliases.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    legacy_prompt = ReviewPrompt(
+        base_system_prompt="Use old aliases.",
+        subtitles="old_subtitles",
+        revisions="old_revisions",
+        index="old_index",
+        text="old_text",
+        note="old_note",
+    )
+    current_prompt = ReviewPrompt(
+        base_system_prompt="Use new aliases.",
+        subtitles="new_subtitles",
+        revisions="new_revisions",
+        index="new_index",
+        text="new_text",
+        note="new_note",
+        legacy_cache_prompts=(legacy_prompt,),
+    )
+    legacy_provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    legacy_provider.chat_completion.return_value = '{"old_revisions":[]}'
+    legacy_processor = ReviewProcessor(
+        legacy_prompt, provider=legacy_provider, cache_root_path=tmp_path
+    )
+    legacy_processor.queryer(
+        legacy_processor.test_case_cls.model_validate(
+            {"query": {"old_subtitles": [{"old_index": 1, "old_text": "input"}]}}
+        )
+    )
+
+    current_provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    current_provider.chat_completion.return_value = '{"new_revisions":[]}'
+    current_processor = ReviewProcessor(
+        current_prompt, provider=current_provider, cache_root_path=tmp_path
+    )
+    result = current_processor.queryer(
+        current_processor.test_case_cls.model_validate(
+            {"query": {"new_subtitles": [{"new_index": 1, "new_text": "input"}]}}
+        )
+    )
+
+    assert result.answer is not None
+    assert result.answer.model_dump() == {"revisions": []}
+    current_provider.chat_completion.assert_not_called()
+    cache_paths = list((tmp_path / "llm" / "review").glob("*.json"))
+    assert len(cache_paths) == 2
+    assert all(
+        json.loads(cache_path.read_text(encoding="utf-8")) == {"revisions": []}
+        for cache_path in cache_paths
+    )
 
 
 def test_registered_prompt_model_and_cache_identities_change_once(tmp_path: Path):

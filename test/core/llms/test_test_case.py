@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from pydantic import Field
+
 from scinoephile.core.llms import Answer, Prompt, Query, TestCase
 
 _PROMPT = Prompt()
@@ -15,6 +17,17 @@ class _Query(Query):
 
     text: str
     """Query text."""
+
+
+class _QueryWithConditionalField(Query):
+    """Query fixture with a conditionally serialized field."""
+
+    optional_text: str | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    """Optional query text omitted from JSON when unset."""
+    required_text: str
+    """Required query text."""
 
 
 class _Answer(Answer):
@@ -42,10 +55,19 @@ class _TestCase(TestCase):
 
 
 _Query.prompt = _PROMPT
+_QueryWithConditionalField.prompt = _PROMPT
 _Answer.prompt = _PROMPT
 _TestCase.query_cls = _Query
 _TestCase.answer_cls = _Answer
 _TestCase.prompt = _PROMPT
+
+
+def test_query_key_includes_conditionally_excluded_fields():
+    """Conditionally omitted fields should have stable positions in query keys."""
+    query = _QueryWithConditionalField(required_text="required")
+
+    assert query.model_dump(mode="json") == {"required_text": "required"}
+    assert query.key == (None, "required")
 
 
 def test_test_case_enforces_minimum_difficulty_without_lowering_higher_values():

@@ -49,7 +49,7 @@ def load_test_cases_from_json[TTestCase: TestCase](
         by_name=False,
         strict=True,
         extra="forbid",
-        context={"alias_only": True},
+        context={"alias_only": True, "skip_output_quality_validation": True},
     )
     base_test_cases = cast("list[TTestCase]", validated_base_test_cases)
 
@@ -98,7 +98,8 @@ def save_test_cases_to_json[TTestCase: TestCase](
     data = []
     for test_case in test_cases_to_save:
         base_test_case = base_test_case_cls.model_validate(
-            test_case.model_dump(mode="json")
+            test_case.model_dump(mode="json"),
+            context={"skip_output_quality_validation": True},
         )
         data.append(
             base_test_case.model_dump(mode="json", by_alias=True, exclude_defaults=True)
