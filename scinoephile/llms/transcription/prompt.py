@@ -21,7 +21,9 @@ class TranscriptionPrompt(Prompt):
     """Minimum sequence-aligned preservation of strict-majority ASR evidence."""
     sources: str = "sources"
     """Name of aligned transcription source rows field."""
-    sources_desc: str = "Named equal-status ASR rows aligned by Unicode column."
+    sources_desc: str = (
+        "One or more named equal-status ASR rows aligned by Unicode column."
+    )
     """Description of aligned transcription source rows field."""
     source_name: str = "name"
     """Name of transcription source name field."""
@@ -62,8 +64,7 @@ class TranscriptionPrompt(Prompt):
     """Name of consensus text field in answer."""
     answer_text_desc: str = (
         "Complete consensus transcript with a fullwidth vertical bar after every "
-        "display subtitle, or an empty string when no speech has sufficient "
-        "cross-source support."
+        "display subtitle, or an empty string when no identifiable speech is present."
     )
     """Description of consensus text field in answer."""
 

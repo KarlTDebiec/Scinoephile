@@ -125,7 +125,7 @@ def get_transcription_validation(
     Returns:
         deterministic sequence-aware validation result
     Raises:
-        ValueError: if fewer than two sources are provided or row widths differ
+        ValueError: if no sources are provided or row widths differ
     """
     _validate_rows(source_texts)
     source_count = len(source_texts)
@@ -333,8 +333,8 @@ def _is_lexical_character(character: str) -> bool:
 
 def _validate_rows(source_texts: Sequence[str]):
     """Validate aligned source row widths."""
-    if len(source_texts) < 2:
-        raise ValueError("Transcription validation requires at least two sources.")
+    if not source_texts:
+        raise ValueError("Transcription validation requires at least one source.")
     row_lengths = {len(source_text) for source_text in source_texts}
     if len(row_lengths) != 1 or not next(iter(row_lengths)):
         raise ValueError("Transcription validation rows must have equal nonzero width.")

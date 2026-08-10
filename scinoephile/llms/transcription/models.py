@@ -62,8 +62,8 @@ class TranscriptionQuery(Query):
 
     prompt: ClassVar[TranscriptionPrompt] = _BASE_PROMPT
     """Text and field aliases for transcription."""
-    sources: list[TranscriptionSource] = Field(min_length=2)
-    """Named equal-status ASR source rows."""
+    sources: list[TranscriptionSource] = Field(min_length=1)
+    """One or more named equal-status ASR source rows."""
     speaker: str = Field(min_length=1, max_length=10_000)
     """Column-aligned speaker and voice-activity annotations."""
     language_trace: str | None = Field(

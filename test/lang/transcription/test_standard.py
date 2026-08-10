@@ -12,14 +12,18 @@ from scinoephile.lang.transcription.standard import DEFAULT_PROMPTS, get_transcr
 from scinoephile.llms.transcription import TranscriptionManager
 
 
-def test_cantonese_prompts_reject_single_source_lexical_insertions():
-    """Audio-analysis traces should not corroborate isolated ASR wording."""
+def test_cantonese_prompts_distinguish_single_and_multiple_sources():
+    """Prompts should preserve one source but reject isolated multisource wording."""
     traditional_prompt = DEFAULT_PROMPTS[Language.yue_hant].base_system_prompt
     simplified_prompt = DEFAULT_PROMPTS[Language.yue_hans].base_system_prompt
 
+    assert "如果查詢只有一個來源" in traditional_prompt
+    assert "如果查詢有多個來源" in traditional_prompt
     assert "只出現喺單一來源" in traditional_prompt
     assert "唔係獨立嘅詞彙證據" in traditional_prompt
     assert "同語言分類一致就收錄" in traditional_prompt
+    assert "如果查询只有一个来源" in simplified_prompt
+    assert "如果查询有多个来源" in simplified_prompt
     assert "只出现喺单一来源" in simplified_prompt
     assert "唔系独立嘅词汇证据" in simplified_prompt
     assert "同语言分类一致就收录" in simplified_prompt

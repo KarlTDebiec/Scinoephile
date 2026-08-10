@@ -155,6 +155,13 @@ def test_query_supports_future_sources_and_requires_equal_width_rows():
         query_cls.model_validate({**query_data, "speaker": "Ａ"})
 
 
+def test_query_supports_one_source():
+    """A single ASR row should be sufficient for transcription."""
+    query = TranscriptionQuery(sources=_get_sources("我係"), speaker="ＡＡ")
+
+    assert [source.text for source in query.sources] == ["我係"]
+
+
 def test_query_accepts_distinct_fullwidth_gap_and_pause_annotations():
     """Queries should distinguish ordinary alignment gaps from timed pauses."""
     query_cls = TranscriptionManager.get_query_cls(TranscriptionManager.base_prompt)
@@ -245,6 +252,24 @@ def test_processor_no_op_returns_empty_answer():
 
     assert answer.text == ""
     provider.chat_completion.assert_not_called()
+
+
+def test_processor_transcribes_one_source():
+    """One ASR source should be sent through the normal transcription path."""
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    provider.chat_completion.return_value = json.dumps(
+        {"wenben": "我係｜"}, ensure_ascii=False
+    )
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
+
+    answer = processor.process(_get_sources("我係"), "ＡＡ")
+
+    assert answer.transcript == "我係"
+    provider.chat_completion.assert_called_once()
 
 
 def test_processor_splits_flat_rows_at_four_shared_pause_characters():

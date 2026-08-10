@@ -18,7 +18,7 @@ LLM shapes:
 | 2      | 2     | 2  | delineation                 | Delineation               |
 | 2      | n - m | n  | gap_translation             | GapTranslation            |
 | 2      | n     | m  | guided_translation          | GuidedTranslation         |
-| 4+     | n * k | 1  | transcription               | Transcription             |
+| 2+     | n * k | 1  | transcription               | Transcription             |
 """
 
 from __future__ import annotations
