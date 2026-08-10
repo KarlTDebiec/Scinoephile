@@ -26,23 +26,12 @@ __all__ = [
 
 _BASE_PROMPT = TranscriptionPrompt()
 
-_ALIGNMENT_GAP_CHARACTER = "　"
-"""Fullwidth ideographic space used for ordinary alignment gaps."""
-_PAUSE_CHARACTER = "・"
-"""Wide middle dot used for shared timed pauses."""
-_REFERENCE_BOUNDARY_CHARACTER = "｜"
-"""Fullwidth boundary marker excluded from reference-free queries."""
-_VAD_SPEECH_CHARACTER = "＊"
-"""Fullwidth unattributed-speech marker used in speaker rows."""
-_FORBIDDEN_SOURCE_NAMES = frozenset({"guide", "reference"})
-"""Reserved names rejected from reference-free ASR inputs."""
 _SPEAKER_CHARACTERS = frozenset(
-    {_ALIGNMENT_GAP_CHARACTER, _PAUSE_CHARACTER, _VAD_SPEECH_CHARACTER}
-    | {chr(ord("Ａ") + index) for index in range(26)}
+    {"　", "・", "＊"} | {chr(ord("Ａ") + index) for index in range(26)}
 )
 """Characters permitted in the speaker annotation row."""
 _LANGUAGE_CHARACTERS = frozenset(
-    {_ALIGNMENT_GAP_CHARACTER, _PAUSE_CHARACTER, "粵", "普", "英", "日", "韓", "外"}
+    {"　", "・", "粵", "普", "英", "日", "韓", "外"}
     | {chr(ord("Ａ") + index) for index in range(26)}
 )
 """Characters permitted in the spoken-language annotation row."""
@@ -76,32 +65,29 @@ class TranscriptionQuery(Query):
     @model_validator(mode="after")
     def validate_rows(self) -> Self:
         """Ensure the request contains a valid equal-width ASR alignment."""
+        # Source names identify independent ASR inputs, not reference guides
         names = [source.name.strip() for source in self.sources]
         if any(not name for name in names) or len(set(names)) != len(names):
             raise ValueError(self.prompt.source_name_err)
-        if any(name.casefold() in _FORBIDDEN_SOURCE_NAMES for name in names):
+        if any(name.casefold() in {"guide", "reference"} for name in names):
             raise ValueError(self.prompt.reference_source_err)
-        row_lengths = {
-            len(self.speaker),
-            *(len(source.text) for source in self.sources),
+
+        # Every row shares one alignment-column grid without subtitle boundaries
+        rows = (
+            self.speaker,
+            *(source.text for source in self.sources),
             *(
-                len(annotation)
+                annotation
                 for annotation in (self.language, self.singing, self.music)
                 if annotation is not None
             ),
-        }
-        if row_lengths != {len(self.speaker)}:
-            raise ValueError(self.prompt.row_length_err)
-        annotation_rows = tuple(
-            annotation
-            for annotation in (self.speaker, self.language, self.singing, self.music)
-            if annotation is not None
         )
-        if any(
-            _REFERENCE_BOUNDARY_CHARACTER in row
-            for row in (*annotation_rows, *(source.text for source in self.sources))
-        ):
+        if len({len(row) for row in rows}) != 1:
+            raise ValueError(self.prompt.row_length_err)
+        if any("｜" in row for row in rows):
             raise ValueError(self.prompt.reference_marker_err)
+
+        # Validate the compact alphabets used by annotation rows
         if any(character not in _SPEAKER_CHARACTERS for character in self.speaker):
             raise ValueError(self.prompt.speaker_character_err)
         if self.language is not None and any(
@@ -110,12 +96,13 @@ class TranscriptionQuery(Query):
             raise ValueError(self.prompt.language_character_err)
         for annotation, marker in ((self.singing, "唱"), (self.music, "樂")):
             if annotation is not None and any(
-                character not in {_ALIGNMENT_GAP_CHARACTER, _PAUSE_CHARACTER, marker}
-                for character in annotation
+                character not in {"　", "・", marker} for character in annotation
             ):
                 raise ValueError(self.prompt.audio_event_character_err)
+
+        # At least one ASR source must contain text beyond gaps and pauses
         if not any(
-            character not in {_ALIGNMENT_GAP_CHARACTER, _PAUSE_CHARACTER}
+            character not in {"　", "・"}
             for source in self.sources
             for character in source.text
         ):
@@ -160,17 +147,16 @@ class TranscriptionAnswer(Answer):
         """Ensure boundary markers form nonblank, annotation-free subtitles."""
         if not self.text:
             return self
-        if not self.text.endswith(_REFERENCE_BOUNDARY_CHARACTER):
+
+        # Every subtitle must contain text and end with a boundary
+        if not self.text.endswith("｜"):
             raise ValueError(self.prompt.answer_text_err)
-        subtitle_texts = self.text[:-1].split(_REFERENCE_BOUNDARY_CHARACTER)
-        if not subtitle_texts or any(not text.strip() for text in subtitle_texts):
+        subtitle_texts = self.text[:-1].split("｜")
+        if any(not text.strip() for text in subtitle_texts):
             raise ValueError(self.prompt.answer_text_err)
-        annotation_characters = {
-            _ALIGNMENT_GAP_CHARACTER,
-            _PAUSE_CHARACTER,
-            _VAD_SPEECH_CHARACTER,
-        }
-        if any(annotation_characters.intersection(text) for text in subtitle_texts):
+
+        # Alignment annotations must not leak into display subtitles
+        if any({"　", "・", "＊"}.intersection(text) for text in subtitle_texts):
             raise ValueError(self.prompt.answer_text_err)
         return self
 
@@ -198,21 +184,28 @@ class TranscriptionTestCase(TestCase):
         """
         if self.answer is None:
             return self
+
+        # Answers are unpunctuated apart from their structural boundaries
         if any(
             unicodedata.category(character)[0] in {"P", "S"}
             for character in self.answer.transcript
         ):
             raise ValueError(self.prompt.answer_punctuation_err)
+
+        # Preserve high-confidence agreement between ASR sources
         validation = get_transcription_validation(
             tuple(source.text for source in self.query.sources),
             self.answer.transcript,
             self.prompt.language,
         )
-        consensus_coverage = validation.majority_coverage
         if not validation.preserves_required_majority(
             self.prompt.minimum_consensus_coverage
         ):
-            raise ValueError(self.prompt.consensus_coverage_err(consensus_coverage))
+            raise ValueError(
+                self.prompt.consensus_coverage_err(validation.majority_coverage)
+            )
+
+        # Enforce the display-length limit per subtitle
         overlong_indexes = [
             subtitle.index
             for subtitle in self.answer.subtitles
