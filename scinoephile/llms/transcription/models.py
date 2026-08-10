@@ -10,7 +10,7 @@ from typing import ClassVar, Self
 from pydantic import Field, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase
-from scinoephile.core.llms.models import LLMModel, make_hashable
+from scinoephile.core.llms.models import LLMModel
 
 from .prompt import TranscriptionPrompt
 from .validation import get_transcription_validation
@@ -66,38 +66,12 @@ class TranscriptionQuery(Query):
     """One or more named equal-status ASR source rows."""
     speaker: str = Field(min_length=1, max_length=10_000)
     """Column-aligned speaker and voice-activity annotations."""
-    language: str | None = Field(
-        default=None,
-        min_length=1,
-        max_length=10_000,
-        exclude_if=lambda value: value is None,
-    )
+    language: str | None = Field(default=None, min_length=1, max_length=10_000)
     """Column-aligned spoken-language annotations, when available."""
-    singing: str | None = Field(
-        default=None,
-        min_length=1,
-        max_length=10_000,
-        exclude_if=lambda value: value is None,
-    )
+    singing: str | None = Field(default=None, min_length=1, max_length=10_000)
     """Column-aligned singing annotations, when available."""
-    music: str | None = Field(
-        default=None,
-        min_length=1,
-        max_length=10_000,
-        exclude_if=lambda value: value is None,
-    )
+    music: str | None = Field(default=None, min_length=1, max_length=10_000)
     """Column-aligned music annotations, when available."""
-
-    @property
-    def key(self) -> tuple:
-        """Unique key including optional analysis rows omitted from serialization."""
-        data = self.model_dump(mode="json")
-        data.update(
-            {"language": self.language, "music": self.music, "singing": self.singing}
-        )
-        return tuple(
-            make_hashable(data[field]) for field in sorted(type(self).model_fields)
-        )
 
     @model_validator(mode="after")
     def validate_rows(self) -> Self:

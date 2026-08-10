@@ -70,6 +70,9 @@ def test_prompt_aliases_are_used_for_nested_llm_correspondence():
             {"mingcheng": "two", "yuanwen": "我是"},
         ],
         "shuoshuuren": "ＡＡ",
+        "language": None,
+        "singing": None,
+        "music": None,
     }
     assert test_case.answer is not None
     assert test_case.answer.model_dump(by_alias=True) == {"wenben": "我係｜"}
@@ -207,17 +210,6 @@ def test_query_accepts_equal_width_language_singing_and_music_rows():
     assert query.music == "　・樂"
 
 
-def test_query_key_includes_optional_rows_omitted_from_serialization():
-    """Query keys should distinguish absent and populated optional rows."""
-    query = TranscriptionQuery(sources=_get_sources("甲", "甲"), speaker="Ａ")
-    annotated_query = TranscriptionQuery(
-        sources=_get_sources("甲", "甲"), speaker="Ａ", language="粵"
-    )
-
-    assert "language" not in query.model_dump(mode="json")
-    assert query.key != annotated_query.key
-
-
 def test_query_rejects_reference_evidence_and_reference_markers():
     """Reference text and diagnostic boundary markers must not reach the LLM."""
     query_cls = TranscriptionManager.get_query_cls(TranscriptionManager.base_prompt)
@@ -300,6 +292,9 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
             {"mingcheng": "source_2", "yuanwen": "甲"},
         ],
         "shuoshuuren": "Ａ",
+        "language": None,
+        "singing": None,
+        "music": None,
     }
     assert json.loads(second_messages[1]["content"]) == {
         "laiyuan": [
@@ -307,6 +302,9 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
             {"mingcheng": "source_2", "yuanwen": "乙"},
         ],
         "shuoshuuren": "Ｂ",
+        "language": None,
+        "singing": None,
+        "music": None,
     }
 
 
