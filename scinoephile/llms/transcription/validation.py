@@ -32,8 +32,6 @@ _CANTONESE_EQUIVALENCE_GROUPS = (
 """Common Mandarinized and Cantonese ASR substitutions."""
 _GAP_SCORE = -3.0
 """Linear gap score used to project an answer onto an existing profile."""
-_PAUSE_CHARACTER = "・"
-"""Wide middle dot used for shared timed pauses."""
 _SIMPLIFIER = OpenCC("t2s")
 """Converter used to compare Simplified and Traditional characters."""
 _TRADITIONALIZER = OpenCC("s2t")
@@ -135,13 +133,12 @@ def get_transcription_validation(
             tuple(
                 source_text[column_idx]
                 for source_text in source_texts
-                if source_text[column_idx]
-                not in {_ALIGNMENT_GAP_CHARACTER, _PAUSE_CHARACTER}
+                if source_text[column_idx] not in {_ALIGNMENT_GAP_CHARACTER, "・"}
             ),
         )
         for column_idx in range(len(source_texts[0]))
         if any(
-            source_text[column_idx] not in {_ALIGNMENT_GAP_CHARACTER, _PAUSE_CHARACTER}
+            source_text[column_idx] not in {_ALIGNMENT_GAP_CHARACTER, "・"}
             for source_text in source_texts
         )
     )

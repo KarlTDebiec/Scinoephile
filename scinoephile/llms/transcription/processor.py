@@ -15,8 +15,6 @@ from .prompt import TranscriptionPrompt
 
 __all__ = ["TranscriptionProcessor"]
 
-_PAUSE_CHARACTER = "・"
-"""Wide middle dot used for shared timed pauses."""
 _REQUEST_PAUSE_CHARACTERS = 4
 """Shared pause columns required to start a separate LLM request."""
 
@@ -114,10 +112,8 @@ def _get_request_queries(query: TranscriptionQuery) -> tuple[TranscriptionQuery,
     pause_start: int | None = None
     for column_idx in range(len(query.speaker) + 1):
         is_shared_pause = column_idx < len(query.speaker) and (
-            query.speaker[column_idx] == _PAUSE_CHARACTER
-            and all(
-                source.text[column_idx] == _PAUSE_CHARACTER for source in query.sources
-            )
+            query.speaker[column_idx] == "・"
+            and all(source.text[column_idx] == "・" for source in query.sources)
         )
         if is_shared_pause:
             if pause_start is None:
@@ -135,7 +131,7 @@ def _get_request_queries(query: TranscriptionQuery) -> tuple[TranscriptionQuery,
     for content_start, content_end in content_spans:
         request = _get_query_slice(query, content_start, content_end)
         if any(
-            character != _PAUSE_CHARACTER and not character.isspace()
+            character != "・" and not character.isspace()
             for source in request.sources
             for character in source.text
         ):
