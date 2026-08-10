@@ -12,7 +12,7 @@ from typing import Unpack
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.lang.yue.transcription import (
-    CantoneseTranscriptionAlignmentScorer,
+    YueTranscriptionAlignmentScorer,
     YueTranscriptionPromptYueHans,
     YueTranscriptionPromptYueHant,
 )
@@ -27,10 +27,10 @@ from scinoephile.llms.transcription import (
 __all__ = ["DEFAULT_PROMPTS", "get_transcriber"]
 
 _YUE_HANS_TRANSCRIPTION_JSON_PATHS: tuple[Path, ...] = ()
-"""Default simplified Cantonese transcription JSON paths."""
+"""Default simplified Yue transcription JSON paths."""
 
 _YUE_HANT_TRANSCRIPTION_JSON_PATHS: tuple[Path, ...] = ()
-"""Default traditional Cantonese transcription JSON paths."""
+"""Default traditional Yue transcription JSON paths."""
 
 _JSON_PATHS: dict[Language, tuple[Path, ...]] = {
     Language.yue_hans: _YUE_HANS_TRANSCRIPTION_JSON_PATHS,
@@ -39,18 +39,18 @@ _JSON_PATHS: dict[Language, tuple[Path, ...]] = {
 """Transcription JSON paths keyed by language."""
 
 
-class _CantoneseTranscriptionManager(TranscriptionManager):
-    """Transcription models using Cantonese evidence scoring."""
+class _YueTranscriptionManager(TranscriptionManager):
+    """Transcription models using Yue evidence scoring."""
 
-    alignment_scorer = CantoneseTranscriptionAlignmentScorer()
-    """Cantonese scorer assigned to generated test-case classes."""
+    alignment_scorer = YueTranscriptionAlignmentScorer()
+    """Yue scorer assigned to generated test-case classes."""
 
 
-class _CantoneseTranscriptionProcessor(TranscriptionProcessor):
-    """Transcription processor using Cantonese evidence scoring."""
+class _YueTranscriptionProcessor(TranscriptionProcessor):
+    """Transcription processor using Yue evidence scoring."""
 
-    manager_cls = _CantoneseTranscriptionManager
-    """Manager used to construct Cantonese-aware test-case models."""
+    manager_cls = _YueTranscriptionManager
+    """Manager used to construct Yue-aware test-case models."""
 
 
 DEFAULT_PROMPTS: Mapping[Language, TranscriptionPrompt] = MappingProxyType(
@@ -89,11 +89,11 @@ def get_transcriber(
     if shared_test_cases is None:
         shared_test_cases = list(
             load_shared_test_cases(
-                _CantoneseTranscriptionManager, prompt, _JSON_PATHS[language]
+                _YueTranscriptionManager, prompt, _JSON_PATHS[language]
             )
         )
     if provider is None:
         provider = get_provider()
-    return _CantoneseTranscriptionProcessor(
+    return _YueTranscriptionProcessor(
         prompt, shared_test_cases, provider=provider, **kwargs
     )

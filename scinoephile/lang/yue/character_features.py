@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Cantonese character features used for text comparison."""
+"""Yue character features used for text comparison."""
 
 from __future__ import annotations
 
@@ -23,26 +23,26 @@ _EQUIVALENCE_GROUPS = (
     frozenset({"的", "嘅"}),
     frozenset({"這", "呢"}),
 )
-"""Common Mandarinized and Cantonese ASR substitutions."""
+"""Common Mandarinized and Yue ASR substitutions."""
 
 
 @dataclass(frozen=True, slots=True)
 class CharacterFeatures:
-    """Cached Cantonese comparison features for one character."""
+    """Cached Yue comparison features for one character."""
 
     equivalence_groups: frozenset[int]
-    """Known Cantonese equivalence-group indexes."""
+    """Known Yue equivalence-group indexes."""
     jyutping: str
-    """Context-free Cantonese reading with tone, when available."""
+    """Context-free Yue reading with tone, when available."""
     jyutping_base: str
-    """Context-free Cantonese reading without tone, when available."""
+    """Context-free Yue reading without tone, when available."""
     simplified: str
     """Compatibility-normalized Simplified Chinese form."""
 
     @classmethod
     @cache
     def get(cls, character: str) -> CharacterFeatures:
-        """Get cached script and Cantonese pronunciation features.
+        """Get cached script and Yue pronunciation features.
 
         Arguments:
             character: character for which to get features

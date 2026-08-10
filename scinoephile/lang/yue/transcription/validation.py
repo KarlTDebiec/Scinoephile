@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Cantonese scoring of transcription alignment evidence."""
+"""Yue scoring of transcription alignment evidence."""
 
 from __future__ import annotations
 
@@ -10,16 +10,16 @@ from scinoephile.llms.transcription import (
     TranscriptionCharacterRelationship,
 )
 
-__all__ = ["CantoneseTranscriptionAlignmentScorer"]
+__all__ = ["YueTranscriptionAlignmentScorer"]
 
 
-class CantoneseTranscriptionAlignmentScorer(TranscriptionAlignmentScorer):
-    """Score transcription alignment using Cantonese character relationships."""
+class YueTranscriptionAlignmentScorer(TranscriptionAlignmentScorer):
+    """Score transcription alignment using Yue character relationships."""
 
     def get_character_relationship(
         self, one: str, two: str
     ) -> TranscriptionCharacterRelationship:
-        """Classify Cantonese support between two characters.
+        """Classify Yue support between two characters.
 
         Arguments:
             one: first character

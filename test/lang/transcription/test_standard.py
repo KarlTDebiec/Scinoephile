@@ -11,12 +11,12 @@ from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider
 from scinoephile.lang.transcription.standard import DEFAULT_PROMPTS, get_transcriber
 from scinoephile.lang.yue.transcription.validation import (
-    CantoneseTranscriptionAlignmentScorer,
+    YueTranscriptionAlignmentScorer,
 )
 from scinoephile.llms.transcription import TranscriptionTestCase
 
 
-def test_cantonese_prompts_distinguish_single_and_multiple_sources():
+def test_yue_prompts_distinguish_single_and_multiple_sources():
     """Prompts should preserve one source but reject isolated multisource wording."""
     traditional_prompt = DEFAULT_PROMPTS[Language.yue_hant].base_system_prompt
     simplified_prompt = DEFAULT_PROMPTS[Language.yue_hans].base_system_prompt
@@ -45,9 +45,7 @@ def test_get_transcriber_loads_defaults_only_when_shared_test_cases_are_omitted(
         transcriber.manager_cls, DEFAULT_PROMPTS[Language.yue_hant], ()
     )
     test_case_cls = cast(type[TranscriptionTestCase], transcriber.test_case_cls)
-    assert isinstance(
-        test_case_cls.alignment_scorer, CantoneseTranscriptionAlignmentScorer
-    )
+    assert isinstance(test_case_cls.alignment_scorer, YueTranscriptionAlignmentScorer)
 
     with patch(loader_path) as load_shared_test_cases:
         get_transcriber(

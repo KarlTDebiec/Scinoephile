@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""LLM prompts for Cantonese transcription from aligned ASR evidence."""
+"""LLM prompts for Yue transcription from aligned ASR evidence."""
 
 from __future__ import annotations
 
@@ -111,9 +111,9 @@ YueTranscriptionPromptYueHant = TranscriptionPrompt(
         "答案字幕序號 {indexes} 超過每項 {max_characters} 個非空白字符嘅上限。"
     ),
 )
-"""Prompt for traditional Cantonese transcription."""
+"""Prompt for traditional Yue transcription."""
 
 YueTranscriptionPromptYueHans = YueTranscriptionPromptYueHant.transformed(
     Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
 )
-"""Prompt for simplified Cantonese transcription."""
+"""Prompt for simplified Yue transcription."""
