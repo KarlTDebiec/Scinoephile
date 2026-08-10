@@ -61,8 +61,8 @@ TRANSLATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "target-language subtitle infile with which to guide translation": (
             "用于指导翻译的目标语言字幕输入文件"
         ),
-        "source language (detected from infile if omitted)": (
-            "源语言（省略时从输入文件检测）"
+        "source language (default: detected automatically)": (
+            "源语言（默认：自动检测）"
         ),
         "target language (required unless guide or gapped input is detected)": (
             "目标语言（除非可从引导或缺口输入检测，否则必填）"
@@ -88,8 +88,8 @@ TRANSLATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "target-language subtitle infile with which to guide translation": (
             "用於指導翻譯的目標語言字幕輸入檔"
         ),
-        "source language (detected from infile if omitted)": (
-            "來源語言（省略時從輸入檔偵測）"
+        "source language (default: detected automatically)": (
+            "來源語言（預設：自動偵測）"
         ),
         "target language (required unless guide or gapped input is detected)": (
             "目標語言（除非可從引導或缺口輸入偵測，否則必填）"
@@ -159,7 +159,7 @@ class TranslateCli(ScinoephileCliBase):
             "--source-language",
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help="source language (detected from infile if omitted)",
+            help="source language (default: detected automatically)",
         )
         arg_groups["operation arguments"].add_argument(
             "--target-language",

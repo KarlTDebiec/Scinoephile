@@ -7,8 +7,7 @@ Package hierarchy (modules may import from any above):
 * transcribed_segment
 * cache / ctc_aligner
 * transcriber
-* whisper_transcriber
-* mlx_audio
+* mlx_audio / whisper
 """
 
 from __future__ import annotations
@@ -25,7 +24,7 @@ from .exceptions import (
     TranscriptionError,
     TranscriptionInferenceError,
 )
-from .mlx_audio import MlxAudioTranscriber
+from .mlx_audio import MlxAudioModel, MlxAudioTranscriber
 from .preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
@@ -34,12 +33,13 @@ from .preprocessing_settings import (
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 from .transcriber import Transcriber
-from .whisper_transcriber import WhisperTranscriber
+from .whisper import WhisperModel, WhisperTranscriber
 
 __all__ = [
     "CtcAligner",
     "DemucsMode",
     "DemucsSeparator",
+    "MlxAudioModel",
     "MlxAudioTranscriber",
     "TranscribedSegment",
     "TranscribedWord",
@@ -52,6 +52,7 @@ __all__ = [
     "TranscriptionInferenceError",
     "TranscriptionPreprocessingSettings",
     "VADMode",
+    "WhisperModel",
     "WhisperTranscriber",
     "get_segment_merged",
     "get_segment_split_at_idx",

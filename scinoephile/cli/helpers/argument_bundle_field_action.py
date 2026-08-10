@@ -34,7 +34,8 @@ class ArgumentBundleFieldAction(Action):
         """
         self.bundle_type = bundle_type
         self.field_name = field_name
-        kwargs.setdefault("default", bundle_type())
+        bundle_default = kwargs.setdefault("default", bundle_type())
+        self.field_default = getattr(bundle_default, field_name)
         super().__init__(option_strings=option_strings, dest=dest, **kwargs)
 
     def __call__(

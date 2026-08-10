@@ -16,7 +16,7 @@ from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.transcriber import (
     GuidedTranscriber,
     MlxAudioTimingMode,
-    TranscriptionBackend,
+    TranscriptionModel,
 )
 from scinoephile.workflows.transcription import transcribe_series_guided
 
@@ -42,7 +42,7 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
             reference_series,
             language=Language.yue_hant,
             guide_language=Language.zho_hans,
-            backend=TranscriptionBackend.MLX_AUDIO,
+            model=TranscriptionModel.MIMO,
             cache_root_path=tmp_path / "cache",
             overwrite_cache=True,
             strip_generated_punctuation=True,
@@ -60,9 +60,7 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
     assert get_transcriber.call_args.args == (Language.yue_hant, Language.zho_hans)
     assert get_transcriber.call_args.kwargs["demucs_mode"] is DemucsMode.OFF
     assert get_transcriber.call_args.kwargs["vad_mode"] is VADMode.OFF
-    assert get_transcriber.call_args.kwargs["backend"] is (
-        TranscriptionBackend.MLX_AUDIO
-    )
+    assert get_transcriber.call_args.kwargs["model"] is TranscriptionModel.MIMO
     assert get_transcriber.call_args.kwargs["cache_root_path"] == tmp_path / "cache"
     assert get_transcriber.call_args.kwargs["overwrite_cache"] is True
     assert get_transcriber.call_args.kwargs["strip_generated_punctuation"] is True

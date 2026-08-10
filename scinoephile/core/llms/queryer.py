@@ -145,7 +145,7 @@ class Queryer[TTestCase: TestCase]:
                 },
                 context={"skip_output_quality_validation": True},
             )
-            self.log_encountered_test_case(
+            test_case = self.log_encountered_test_case(
                 test_case, skip_output_quality_validation=True
             )
             logger.info(f"Used no-op answer: {test_case.query.key_str}")
@@ -277,32 +277,6 @@ class Queryer[TTestCase: TestCase]:
         cache_path = self._get_cache_path(self.system_prompt, tools_json, query_json)
         return self._get_any_cached_test_case(normalized, cache_path, tools_json)
 
-    def store_answered_test_case(self, test_case: TestCase) -> TTestCase:
-        """Log an answered test case and store its response under this queryer.
-
-        Arguments:
-            test_case: answered test case to normalize and store
-        Returns:
-            normalized answered test case
-        Raises:
-            ValueError: if the test case has no answer
-        """
-        normalized = self.test_case_cls.model_validate(
-            test_case.model_dump(mode="json")
-        )
-        if normalized.answer is None:
-            raise ValueError("Cannot store a test case without an answer.")
-        self.log_encountered_test_case(normalized)
-        if self._cache is None:
-            return normalized
-
-        query_json = normalized.query.model_dump_json(by_alias=True, indent=4)
-        tools_json = self.tool_box.to_json()
-        cache_path = self._get_cache_path(self.system_prompt, tools_json, query_json)
-        contents = normalized.answer.model_dump_json(exclude_defaults=True, indent=2)
-        self._cache.save(cache_path, contents)
-        return normalized
-
     def get_few_shot_test_cases_str(
         self, test_case_cls: type[TestCase] | None = None
     ) -> str:
@@ -332,13 +306,15 @@ class Queryer[TTestCase: TestCase]:
 
     def log_encountered_test_case(
         self, test_case: TestCase, *, skip_output_quality_validation: bool = False
-    ):
+    ) -> TTestCase:
         """Log a test case as having been encountered.
 
         Arguments:
             test_case: test case to log
             skip_output_quality_validation: retain an intentional no-op fallback
               even when its unchanged output fails optional quality validation
+        Returns:
+            normalized logged test case
         """
         normalized = self.test_case_cls.model_validate(
             test_case.model_dump(mode="json"),
@@ -349,6 +325,31 @@ class Queryer[TTestCase: TestCase]:
         normalized.verified |= key in self.verified_test_cases
         self.encountered_test_cases[key] = normalized
         logger.debug(f"Logged test case: {normalized.query.key_str}")
+        return normalized
+
+    def store_answered_test_case(self, test_case: TestCase) -> TTestCase:
+        """Log an answered test case and store its response under this queryer.
+
+        Arguments:
+            test_case: answered test case to normalize and store
+        Returns:
+            normalized answered test case
+        Raises:
+            ValueError: if the test case has no answer
+        """
+        if test_case.answer is None:
+            raise ValueError("Cannot store a test case without an answer.")
+        normalized = self.log_encountered_test_case(test_case)
+        assert normalized.answer is not None
+        if self._cache is None:
+            return normalized
+
+        query_json = normalized.query.model_dump_json(by_alias=True, indent=4)
+        tools_json = self.tool_box.to_json()
+        cache_path = self._get_cache_path(self.system_prompt, tools_json, query_json)
+        contents = normalized.answer.model_dump_json(exclude_defaults=True, indent=2)
+        self._cache.save(cache_path, contents)
+        return normalized
 
     def _get_any_cached_test_case(
         self, test_case: TTestCase, cache_path: Path, tools_json: str
@@ -435,7 +436,7 @@ class Queryer[TTestCase: TestCase]:
             )
             if self.auto_verify and test_case.get_auto_verified():
                 test_case.verified = True
-            self.log_encountered_test_case(test_case)
+            test_case = self.log_encountered_test_case(test_case)
             logger.info(f"Loaded from cache: {test_case.query.key_str}")
             return test_case
         except ValidationError as exc:
@@ -515,8 +516,7 @@ class Queryer[TTestCase: TestCase]:
             verified test case if available, else None
         """
         if test_case := self.verified_test_cases.get(query.key):
-            self.log_encountered_test_case(test_case)
-            test_case = self.encountered_test_cases[query.key]
+            test_case = self.log_encountered_test_case(test_case)
             logger.info(f"Loaded from verified log: {query.key_str}")
             return test_case
         return None

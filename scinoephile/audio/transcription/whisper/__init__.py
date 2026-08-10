@@ -1,16 +1,15 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""MLX-Audio transcription and timestamp alignment.
+"""Whisper transcription.
 
 Package hierarchy (modules may import from any above):
 * model
-* backend
 * transcriber
 """
 
 from __future__ import annotations
 
-from .model import MlxAudioModel
-from .transcriber import MlxAudioTranscriber
+from .model import WhisperModel
+from .transcriber import WhisperTranscriber
 
-__all__ = ["MlxAudioModel", "MlxAudioTranscriber"]
+__all__ = ["WhisperModel", "WhisperTranscriber"]

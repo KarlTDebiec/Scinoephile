@@ -26,6 +26,8 @@ from scinoephile.audio.transcription import (
     get_segment_split_at_idx,
     get_segment_split_on_word_timings,
 )
+from scinoephile.audio.transcription.mlx_audio.model import MlxAudioModel
+from scinoephile.audio.transcription.whisper.model import WhisperModel
 from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -37,7 +39,7 @@ __all__ = [
     "GuidedTranscriber",
     "MlxAudioTimingMode",
     "TranscribedSegmentSplitter",
-    "TranscriptionBackend",
+    "TranscriptionModel",
 ]
 
 
@@ -121,13 +123,21 @@ class MlxAudioTimingMode(StrEnum):
     """Expose every individually timed CTC unit."""
 
 
-class TranscriptionBackend(StrEnum):
-    """Audio transcription backends."""
+class TranscriptionModel(StrEnum):
+    """Supported transcription models."""
 
     WHISPER = "whisper"
     """Transcribe using Whisper."""
-    MLX_AUDIO = "mlx-audio"
-    """Transcribe using MLX-Audio."""
+    MIMO = "mimo"
+    """Transcribe using MiMo through MLX-Audio."""
+    QWEN3_ASR = "qwen3-asr"
+    """Transcribe using Qwen3-ASR through MLX-Audio."""
+    GLM_ASR = "glm-asr"
+    """Transcribe using GLM-ASR through MLX-Audio."""
+    FIRERED_ASR2 = "firered-asr2"
+    """Transcribe using FireRedASR2 through MLX-Audio."""
+    SENSEVOICE = "sensevoice"
+    """Transcribe using SenseVoice through MLX-Audio."""
 
 
 class GuidedTranscriber:
@@ -138,10 +148,8 @@ class GuidedTranscriber:
         *,
         language: Language,
         guide_language: Language,
-        model_name: str,
-        whisper_language: str,
+        audio_model: WhisperModel | MlxAudioModel,
         aligner: TranscriptionAligner,
-        backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.OFF,
         cache_root_path: Path | None = None,
@@ -156,10 +164,8 @@ class GuidedTranscriber:
         Arguments:
             language: transcription language
             guide_language: guide subtitle language
-            model_name: backend model name used for transcription
-            whisper_language: language code passed to Whisper
+            audio_model: configured transcription model
             aligner: transcription aligner
-            backend: audio transcription backend
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
             cache_root_path: cache root directory path
@@ -172,10 +178,9 @@ class GuidedTranscriber:
         """
         self.language = language
         self.guide_language = guide_language
-        self.model_name = model_name
-        self.whisper_language = whisper_language
+        self.audio_model = audio_model
+        self.model_name = audio_model.model_name
         self.aligner = aligner
-        self.backend = backend
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
         self.mlx_audio_transcriber = mlx_audio_transcriber
@@ -184,7 +189,7 @@ class GuidedTranscriber:
         self.strip_generated_punctuation = strip_generated_punctuation
 
         # Use MLX-Audio's shared preprocessing fallbacks without Whisper recovery
-        if self.backend is TranscriptionBackend.MLX_AUDIO:
+        if isinstance(self.audio_model, MlxAudioModel):
             if self.mlx_audio_transcriber is None:
                 raise ValueError("MLX-Audio backend requires a MLX-Audio transcriber.")
             self.transcriber = self.mlx_audio_transcriber
@@ -193,10 +198,12 @@ class GuidedTranscriber:
             return
 
         # Configure standard preprocessing fallbacks
+        if not isinstance(self.audio_model, WhisperModel):
+            raise ValueError("Whisper backend requires a Whisper model.")
         whisper_ctc_aligner = CtcAligner(self.language)
         self.transcriber = WhisperTranscriber(
-            model_name=self.model_name,
-            language=self.whisper_language,
+            model=self.audio_model,
+            language=self.language,
             demucs_mode=self.demucs_mode,
             vad_mode=self.vad_mode,
             cache_root_path=cache_root_path,
@@ -212,8 +219,8 @@ class GuidedTranscriber:
         if self.vad_mode is VADMode.ON:
             recovery_vad_mode = VADMode.ON
         self.recovery_transcriber = WhisperTranscriber(
-            model_name=self.model_name,
-            language=self.whisper_language,
+            model=self.audio_model,
+            language=self.language,
             demucs_mode=recovery_demucs_mode,
             vad_mode=recovery_vad_mode,
             cache_root_path=cache_root_path,
@@ -226,8 +233,8 @@ class GuidedTranscriber:
 
         # Configure focused recovery for missing speech near a guided tail
         self.tail_recovery_transcriber = WhisperTranscriber(
-            model_name=self.model_name,
-            language=self.whisper_language,
+            model=self.audio_model,
+            language=self.language,
             demucs_mode=DemucsMode.OFF,
             vad_mode=VADMode.OFF,
             cache_root_path=cache_root_path,
@@ -319,7 +326,7 @@ class GuidedTranscriber:
                 split_segments.extend(self.segment_splitter(segment))
 
         # Expose the configured MLX-Audio timing granularity to guided alignment
-        if self.backend is TranscriptionBackend.MLX_AUDIO:
+        if isinstance(self.audio_model, MlxAudioModel):
             timed_segments = []
             for segment in split_segments:
                 if self.mlx_audio_timing_mode is MlxAudioTimingMode.SEGMENT:
@@ -358,7 +365,7 @@ class GuidedTranscriber:
         Returns:
             transcribed segments
         """
-        if self.backend is TranscriptionBackend.MLX_AUDIO:
+        if isinstance(self.audio_model, MlxAudioModel):
             return self._transcribe_block_audio_with_mlx_audio(audio)
 
         audio_duration = len(audio) / 1000

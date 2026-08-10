@@ -14,7 +14,7 @@ from __future__ import annotations
 from .aligner import TranscriptionAligner
 from .alignment import TranscriptionAlignment
 from .guided import GuidedTranscriptionSpec, TranscriptionLanguageSpec
-from .transcriber import GuidedTranscriber, MlxAudioTimingMode, TranscriptionBackend
+from .transcriber import GuidedTranscriber, MlxAudioTimingMode, TranscriptionModel
 
 __all__ = [
     "GuidedTranscriber",
@@ -22,6 +22,6 @@ __all__ = [
     "MlxAudioTimingMode",
     "TranscriptionAligner",
     "TranscriptionAlignment",
-    "TranscriptionBackend",
     "TranscriptionLanguageSpec",
+    "TranscriptionModel",
 ]
