@@ -73,6 +73,8 @@ def test_init_defaults_demucs_and_vad_to_off():
     assert transcriber.demucs_mode is DemucsMode.OFF
     assert transcriber.vad_mode is VADMode.OFF
     assert transcriber.demucs_separator is None
+    assert transcriber.model is MIMO_MODEL
+    assert transcriber.language is Language.yue_hant
     assert transcriber.token_limit_guard is False
 
 

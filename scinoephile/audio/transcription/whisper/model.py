@@ -8,7 +8,7 @@ from dataclasses import dataclass
 
 from scinoephile.core.language import Language
 
-__all__ = ["CANTONESE_MODEL", "WhisperModel"]
+__all__ = ["WHISPER_LARGE_V3_CANTONESE_MODEL", "WhisperModel"]
 
 
 @dataclass
@@ -21,8 +21,8 @@ class WhisperModel:
     """Whisper language codes keyed by Scinoephile language."""
 
 
-CANTONESE_MODEL = WhisperModel(
+WHISPER_LARGE_V3_CANTONESE_MODEL = WhisperModel(
     model_name="khleeloo/whisper-large-v3-cantonese",
     languages={Language.yue_hans: "yue", Language.yue_hant: "yue"},
 )
-"""Default Cantonese Whisper model."""
+"""Default Whisper large-v3 Cantonese model."""

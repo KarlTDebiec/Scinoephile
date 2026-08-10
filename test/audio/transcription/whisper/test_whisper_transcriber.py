@@ -9,6 +9,7 @@ import json
 import os
 import sys
 from collections.abc import Callable, Mapping, Sequence
+from dataclasses import replace
 from pathlib import Path
 from textwrap import dedent
 from types import SimpleNamespace
@@ -27,7 +28,9 @@ from scinoephile.audio.transcription import (
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
-from scinoephile.audio.transcription.whisper.model import CANTONESE_MODEL, WhisperModel
+from scinoephile.audio.transcription.whisper.model import (
+    WHISPER_LARGE_V3_CANTONESE_MODEL,
+)
 from scinoephile.audio.transcription.whisper.transcriber import WhisperTranscriber
 from scinoephile.common import package_root
 from scinoephile.common.subprocess import run_command
@@ -52,18 +55,7 @@ _TIMESTAMP_ALIGNMENT_ERROR = (
 """Known assertion raised when Whisper Timestamped cannot align decoder output."""
 
 
-def _get_model(model_name: str = "custom/model") -> WhisperModel:
-    """Get a Whisper model for tests.
-
-    Arguments:
-        model_name: model name or local model path
-    Returns:
-        configured Whisper model
-    """
-    return WhisperModel(model_name, dict.fromkeys(Language, "yue"))
-
-
-_CUSTOM_MODEL = _get_model()
+_CUSTOM_MODEL = replace(WHISPER_LARGE_V3_CANTONESE_MODEL, model_name="custom/model")
 
 
 def test_init_defaults_demucs_and_vad_to_off():
@@ -73,9 +65,21 @@ def test_init_defaults_demucs_and_vad_to_off():
     assert transcriber.demucs_mode is DemucsMode.OFF
     assert transcriber.vad_mode is VADMode.OFF
     assert transcriber.demucs_separator is None
-    assert transcriber.model is CANTONESE_MODEL
+    assert transcriber.model is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert transcriber.language is Language.yue_hant
-    assert transcriber.whisper_language == "yue"
+
+
+@parametrize("language", [Language.yue_hans, Language.yue_hant])
+def test_init_derives_whisper_language(language: Language):
+    """Test the model derives its Whisper language code.
+
+    Arguments:
+        language: language to transcribe
+    """
+    transcriber = WhisperTranscriber(language=language)
+
+    assert transcriber.language is language
+    assert transcriber._whisper_language == "yue"
 
 
 def test_init_rejects_unsupported_language():
@@ -137,7 +141,11 @@ def _patch_whisper_timestamped(
     ("field_name", "first_value", "second_value"),
     [
         ("vad_mode", VADMode.ON, VADMode.OFF),
-        ("model", _get_model("model/one"), _get_model("model/two")),
+        (
+            "model",
+            replace(_CUSTOM_MODEL, model_name="model/one"),
+            replace(_CUSTOM_MODEL, model_name="model/two"),
+        ),
         ("demucs_mode", DemucsMode.ON, DemucsMode.OFF),
         ("temperature", 0.0, (0.0, 0.2, 0.4)),
         ("condition_on_previous_text", True, False),
@@ -646,7 +654,7 @@ def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch
         "scinoephile.audio.transcription.whisper.transcriber.get_torch_device",
         Mock(return_value="cpu"),
     )
-    WhisperTranscriber._models.clear()
+    monkeypatch.setattr(WhisperTranscriber, "_models_by_key", {})
     vad_transcriber = WhisperTranscriber(
         model=_CUSTOM_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.ON
     )
@@ -654,12 +662,9 @@ def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch
         model=_CUSTOM_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.OFF
     )
 
-    try:
-        assert vad_transcriber._loaded_model is loaded_model
-        assert no_vad_transcriber._loaded_model is loaded_model
-        whisper_timestamped.load_model.assert_called_once()
-    finally:
-        WhisperTranscriber._models.clear()
+    assert vad_transcriber._loaded_model is loaded_model
+    assert no_vad_transcriber._loaded_model is loaded_model
+    whisper_timestamped.load_model.assert_called_once()
 
 
 def test_transcribe_overwrites_matching_cache(monkeypatch: MonkeyPatch, tmp_path: Path):
@@ -784,7 +789,9 @@ def test_model_name_is_huggingface_repo_id_rejects_local_paths(
             HFValidationError=ValueError, validate_repo_id=validate_repo_id
         ),
     )
-    transcriber = WhisperTranscriber(model=_get_model(model_name))
+    transcriber = WhisperTranscriber(
+        model=replace(_CUSTOM_MODEL, model_name=model_name)
+    )
 
     assert transcriber._model_name_is_huggingface_repo_id() is expected
 
@@ -809,7 +816,9 @@ def test_model_name_is_huggingface_repo_id_rejects_validation_errors(
             HFValidationError=ValueError, validate_repo_id=validate_repo_id
         ),
     )
-    transcriber = WhisperTranscriber(model=_get_model("invalid/repository/id"))
+    transcriber = WhisperTranscriber(
+        model=replace(_CUSTOM_MODEL, model_name="invalid/repository/id")
+    )
 
     assert not transcriber._model_name_is_huggingface_repo_id()
 

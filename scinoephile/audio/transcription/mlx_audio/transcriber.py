@@ -124,7 +124,10 @@ class MlxAudioTranscriber(Transcriber):
                 "CUDA support is not included."
             )
 
-        self.backend = MlxAudioBackend(model, language)
+        self.model = model
+        """Selected MLX-Audio model."""
+
+        self.backend = MlxAudioBackend(self.model, language)
         """Direct MLX-Audio inference backend."""
 
         self.ctc_aligner = CtcAligner(language, ctc_model_name)
@@ -163,7 +166,7 @@ class MlxAudioTranscriber(Transcriber):
     @property
     def model_name(self) -> str:
         """Get the MLX-Audio model name or local model path."""
-        return self.backend.model.model_name
+        return self.model.model_name
 
     def _get_backend_cache_metadata(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
@@ -184,7 +187,7 @@ class MlxAudioTranscriber(Transcriber):
         if settings.use_vad:
             vad_version = _VAD_CACHE_VERSION
         metadata: dict[str, object] = {
-            "model_family": self.backend.model.family_name,
+            "model_family": self.model.family_name,
             "model_name": self.model_name,
             "runtime": "mlx",
             "language": self.language.code,
@@ -419,9 +422,7 @@ class MlxAudioTranscriber(Transcriber):
         if len(audio) <= chunk_duration_ms:
             return self._transcribe_audio_window_with_retry(audio, guard_token_limit)
         if guard_token_limit:
-            max_audio_duration_seconds = (
-                self.backend.model.max_safe_audio_duration_seconds
-            )
+            max_audio_duration_seconds = self.model.max_safe_audio_duration_seconds
             assert max_audio_duration_seconds is not None
             logger.info(
                 f"Guarding MLX-Audio generation token limit with "
@@ -479,7 +480,7 @@ class MlxAudioTranscriber(Transcriber):
         if not self._uses_token_limit_guard(audio):
             return chunk_duration_ms, chunk_overlap_ms
 
-        max_audio_duration_seconds = self.backend.model.max_safe_audio_duration_seconds
+        max_audio_duration_seconds = self.model.max_safe_audio_duration_seconds
         assert max_audio_duration_seconds is not None
         max_audio_duration_ms = int(round(max_audio_duration_seconds * 1000))
         if chunk_duration_ms is not None and chunk_duration_ms < max_audio_duration_ms:
@@ -499,7 +500,7 @@ class MlxAudioTranscriber(Transcriber):
         Returns:
             whether guarded inference is active
         """
-        max_audio_duration_seconds = self.backend.model.max_safe_audio_duration_seconds
+        max_audio_duration_seconds = self.model.max_safe_audio_duration_seconds
         if not self.token_limit_guard or max_audio_duration_seconds is None:
             return False
         return len(audio) > round(max_audio_duration_seconds * 1000)

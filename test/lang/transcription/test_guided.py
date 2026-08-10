@@ -25,7 +25,9 @@ from scinoephile.audio.transcription.mlx_audio.model import (
     SENSEVOICE_MODEL,
     MlxAudioModel,
 )
-from scinoephile.audio.transcription.whisper.model import CANTONESE_MODEL
+from scinoephile.audio.transcription.whisper.model import (
+    WHISPER_LARGE_V3_CANTONESE_MODEL,
+)
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.llms.utils import save_test_cases_to_json
@@ -64,11 +66,9 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
         is DEFAULT_SPECS[(Language.yue_hant, Language.zho_hans)].language_spec
     )
     language_spec = DEFAULT_SPECS[(Language.yue_hans, Language.zho_hans)].language_spec
+    whisper_model = language_spec.model_configurations[TranscriptionModel.WHISPER]
     assert set(language_spec.model_configurations) == set(TranscriptionModel)
-    assert (
-        language_spec.model_configurations[TranscriptionModel.WHISPER]
-        is CANTONESE_MODEL
-    )
+    assert whisper_model is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert any(
         path.parts[0] == "kob"
         for path in DEFAULT_SPECS[
@@ -88,7 +88,7 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
         ]
     mutable_model_configurations = cast(dict, language_spec.model_configurations)
     with raises(TypeError):
-        mutable_model_configurations[TranscriptionModel.WHISPER] = CANTONESE_MODEL
+        mutable_model_configurations[TranscriptionModel.WHISPER] = whisper_model
 
 
 def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path):
@@ -124,9 +124,9 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.vad_mode is VADMode.OFF
     assert not hasattr(transcriber, "overwrite_cache")
     assert not hasattr(transcriber, "cache_root_path")
-    assert (
-        transcriber.audio_model is CANTONESE_MODEL
-        and transcriber.model_name == CANTONESE_MODEL.model_name
+    assert (transcriber.audio_model, transcriber.model_name) == (
+        WHISPER_LARGE_V3_CANTONESE_MODEL,
+        WHISPER_LARGE_V3_CANTONESE_MODEL.model_name,
     )
     assert transcriber.segment_splitter is not None
     assert isinstance(transcriber.aligner.delineation_processor, DelineationProcessor)
@@ -139,11 +139,8 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     )
     whisper_transcriber = transcriber.transcriber
     assert isinstance(whisper_transcriber, WhisperTranscriber)
-    assert whisper_transcriber.model is CANTONESE_MODEL
-    assert (whisper_transcriber.language, whisper_transcriber.whisper_language) == (
-        Language.yue_hant,
-        "yue",
-    )
+    assert whisper_transcriber.model is WHISPER_LARGE_V3_CANTONESE_MODEL
+    assert whisper_transcriber.language is Language.yue_hant
     assert transcriber.transcriber.demucs_mode is DemucsMode.OFF
     assert transcriber.transcriber.vad_mode is VADMode.OFF
     assert transcriber.recovery_transcriber is not None

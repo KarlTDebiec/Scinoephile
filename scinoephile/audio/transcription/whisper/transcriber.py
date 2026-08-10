@@ -32,7 +32,7 @@ from scinoephile.core.dependencies.transcription import (
 from scinoephile.core.language import Language
 from scinoephile.core.ml import get_torch_device
 
-from .model import CANTONESE_MODEL, WhisperModel
+from .model import WHISPER_LARGE_V3_CANTONESE_MODEL, WhisperModel
 
 __all__ = ["WhisperTranscriber"]
 
@@ -49,11 +49,8 @@ _MIN_SAMPLE_LEN = 32
 if TYPE_CHECKING:
     from pydub import AudioSegment
     from torch import Tensor
+    from whisper import Whisper
     from whisper.decoding import DecodingOptions, DecodingResult
-
-    from scinoephile.core.dependencies.transcription import (
-        WhisperModel as LoadedWhisperModel,
-    )
 
 logger = getLogger(__name__)
 
@@ -67,12 +64,12 @@ class WhisperTranscriber(Transcriber):
     backend_label = "Whisper"
     """Human-readable backend name used in log messages."""
 
-    _models: ClassVar[dict[tuple[str, str], LoadedWhisperModel]] = {}
+    _models_by_key: ClassVar[dict[tuple[str, str], Whisper]] = {}
     """Loaded models shared by model name and device within the current process."""
 
     def __init__(
         self,
-        model: WhisperModel = CANTONESE_MODEL,
+        model: WhisperModel = WHISPER_LARGE_V3_CANTONESE_MODEL,
         language: Language = Language.yue_hant,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.OFF,
@@ -101,10 +98,10 @@ class WhisperTranscriber(Transcriber):
             ValueError: if the model does not support the language
         """
         self.model = model
-        self._loaded_model_instance: LoadedWhisperModel | None = None
+        self._loaded_model_instance: Whisper | None = None
         self.language = language
         try:
-            self.whisper_language = model.languages[language]
+            self._whisper_language = model.languages[language]
         except KeyError as exc:
             raise ValueError(
                 f"{language} is not supported by Whisper model {model.model_name}"
@@ -122,22 +119,24 @@ class WhisperTranscriber(Transcriber):
         return self.model.model_name
 
     @property
-    def _loaded_model(self) -> LoadedWhisperModel:
+    def _loaded_model(self) -> Whisper:
         """Get the cached Whisper model, loading it if needed.
 
         Returns:
             loaded Whisper model
         """
-        if self._loaded_model_instance is None:
-            device = get_torch_device()
-            model_key = (self.model_name, device)
-            if model_key in self._models:
-                self._loaded_model_instance = self._models[model_key]
-                return self._loaded_model_instance
+        if self._loaded_model_instance is not None:
+            return self._loaded_model_instance
 
+        device = get_torch_device()
+        model_key = (self.model_name, device)
+
+        # Reuse the process-wide model cache across transcriber instances
+        cached_model = self._models_by_key.get(model_key)
+        if cached_model is None:
             whisper_timestamped = import_whisper_timestamped()
             try:
-                self._loaded_model_instance = whisper_timestamped.load_model(
+                cached_model = whisper_timestamped.load_model(
                     self.model_name, device=device
                 )
             except FileNotFoundError:
@@ -149,10 +148,11 @@ class WhisperTranscriber(Transcriber):
                 )
                 huggingface_hub = import_huggingface_hub()
                 huggingface_hub.snapshot_download(repo_id=self.model_name)
-                self._loaded_model_instance = whisper_timestamped.load_model(
+                cached_model = whisper_timestamped.load_model(
                     self.model_name, device=device
                 )
-            self._models[model_key] = self._loaded_model_instance
+            self._models_by_key[model_key] = cached_model
+        self._loaded_model_instance = cached_model
         return self._loaded_model_instance
 
     @staticmethod
@@ -327,7 +327,7 @@ class WhisperTranscriber(Transcriber):
             vad_implementation = "whisper-timestamped"
         metadata: dict[str, object] = {
             "condition_on_previous_text": self.condition_on_previous_text,
-            "language": self.whisper_language,
+            "language": self._whisper_language,
             "model_name": self.model_name,
             "temperature": temperature,
             "vad_implementation": vad_implementation,
@@ -410,7 +410,7 @@ class WhisperTranscriber(Transcriber):
                         result = whisper_timestamped.transcribe(
                             model,
                             str(temp_audio_path),
-                            language=self.whisper_language,
+                            language=self._whisper_language,
                             vad=settings.use_vad,
                             temperature=self.temperature,
                             condition_on_previous_text=self.condition_on_previous_text,
@@ -485,7 +485,7 @@ class WhisperTranscriber(Transcriber):
         try:
             result = self._loaded_model.transcribe(
                 str(audio_path),
-                language=self.whisper_language,
+                language=self._whisper_language,
                 temperature=temperature,
                 condition_on_previous_text=self.condition_on_previous_text,
                 sample_len=sample_len,

@@ -23,7 +23,10 @@ from scinoephile.audio.transcription.mlx_audio.model import (
     SENSEVOICE_MODEL,
     MlxAudioModel,
 )
-from scinoephile.audio.transcription.whisper.model import CANTONESE_MODEL, WhisperModel
+from scinoephile.audio.transcription.whisper.model import (
+    WHISPER_LARGE_V3_CANTONESE_MODEL,
+    WhisperModel,
+)
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.ml import get_torch_device
@@ -127,7 +130,7 @@ class TranscriptionLanguageSpec:
 _YUE_LANGUAGE_SPEC = TranscriptionLanguageSpec(
     model_configurations=MappingProxyType(
         {
-            TranscriptionModel.WHISPER: CANTONESE_MODEL,
+            TranscriptionModel.WHISPER: WHISPER_LARGE_V3_CANTONESE_MODEL,
             TranscriptionModel.MIMO: MIMO_MODEL,
             TranscriptionModel.QWEN3_ASR: QWEN3_ASR_MODEL,
             TranscriptionModel.GLM_ASR: GLM_ASR_MODEL,
