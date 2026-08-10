@@ -77,7 +77,8 @@ class AlignedTranscriptionMergePrompt(Prompt):
     )
     """Error when a reference-like source is included."""
     row_length_err: str = (
-        "All ASR and speaker rows in a query must have equal nonzero lengths."
+        "All ASR, speaker, and optional analysis rows in a query must have equal "
+        "nonzero lengths."
     )
     """Error when aligned row lengths differ."""
     reference_marker_err: str = (

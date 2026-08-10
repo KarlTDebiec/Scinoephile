@@ -215,10 +215,7 @@ def get_aligned_transcription_merge_validation(
     mapped_majority_column_count = 0
     preserved_majority_column_count = 0
     for profile_column_idx, source_characters in profile_columns:
-        majority_character = _get_majority_character(
-            source_characters, source_count, language
-        )
-        if majority_character is None:
+        if not _has_strict_majority(source_characters, source_count, language):
             continue
         majority_column_count += 1
         answer_idx = answer_index_by_profile_column.get(profile_column_idx)
@@ -345,34 +342,30 @@ def _get_character_relationship(
         two_features.equivalence_groups
     ):
         return _CharacterRelationship.equivalent
-    if language.is_cantonese and (
-        one_features.jyutping
-        and one_features.jyutping == two_features.jyutping
-        or one_features.jyutping_base
+    matching_pronunciation = (
+        one_features.jyutping and one_features.jyutping == two_features.jyutping
+    ) or (
+        one_features.jyutping_base
         and one_features.jyutping_base == two_features.jyutping_base
-    ):
+    )
+    if language.is_cantonese and matching_pronunciation:
         return _CharacterRelationship.pronunciation
     return _CharacterRelationship.none
 
 
-def _get_majority_character(
+def _has_strict_majority(
     source_characters: Sequence[str], source_count: int, language: Language
-) -> str | None:
-    """Get a representative character with strict strong-equivalent support."""
-    best_character = None
-    best_count = 0
+) -> bool:
+    """Whether any character has strict strong-equivalent source support."""
     for candidate in source_characters:
         count = sum(
             _get_character_relationship(candidate, character, language)
             >= _CharacterRelationship.equivalent
             for character in source_characters
         )
-        if count > best_count:
-            best_character = candidate
-            best_count = count
-    if best_count > source_count / 2:
-        return best_character
-    return None
+        if count > source_count / 2:
+            return True
+    return False
 
 
 def _get_relationship_score(relationship: _CharacterRelationship) -> float:

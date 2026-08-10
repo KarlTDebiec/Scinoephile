@@ -272,6 +272,6 @@ class AlignedTranscriptionMergeTestCase(TestCase):
             .replace(_PAUSE_CHARACTER, "")
             .strip()
         )
-        return AlignedTranscriptionMergeAnswer(
-            text=text + _REFERENCE_BOUNDARY_CHARACTER
-        )
+        if text:
+            text += _REFERENCE_BOUNDARY_CHARACTER
+        return AlignedTranscriptionMergeAnswer(text=text)

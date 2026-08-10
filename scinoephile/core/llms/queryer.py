@@ -256,27 +256,6 @@ class Queryer[TTestCase: TestCase]:
 
         return self.store_answered_test_case(test_case)
 
-    def get_known_test_case(self, test_case: TestCase) -> TTestCase | None:
-        """Get a verified or response-cached test case without querying the LLM.
-
-        Arguments:
-            test_case: test case containing the query to look up
-        Returns:
-            previously answered test case if available, else None
-        """
-        normalized = self.test_case_cls.model_validate(
-            test_case.model_dump(mode="json")
-        )
-        if verified_test_case := self._get_verified_test_case(normalized.query):
-            return verified_test_case
-        if self._cache is None:
-            return None
-
-        query_json = normalized.query.model_dump_json(by_alias=True, indent=4)
-        tools_json = self.tool_box.to_json()
-        cache_path = self._get_cache_path(self.system_prompt, tools_json, query_json)
-        return self._get_any_cached_test_case(normalized, cache_path, tools_json)
-
     def get_few_shot_test_cases_str(
         self, test_case_cls: type[TestCase] | None = None
     ) -> str:
@@ -303,6 +282,30 @@ class Queryer[TTestCase: TestCase]:
             few_shot += f"\n{prompt.few_shot_answer_intro}\n"
             few_shot += prompt_test_case.answer.model_dump_json(by_alias=True, indent=4)
         return few_shot
+
+    def get_known_test_case(self, test_case: TestCase) -> TTestCase | None:
+        """Get a verified or response-cached test case without querying the LLM.
+
+        Arguments:
+            test_case: test case containing the query to look up
+        Returns:
+            previously answered test case if available, else None
+        """
+        normalized = self.test_case_cls.model_validate(
+            test_case.model_dump(mode="json")
+        )
+        if verified_test_case := self._get_verified_test_case(normalized.query):
+            return verified_test_case
+        if self._cache is None:
+            return None
+
+        query_json = normalized.query.model_dump_json(by_alias=True, indent=4)
+        tools_json = self.tool_box.to_json()
+        cache_path = self._get_cache_path(self.system_prompt, tools_json, query_json)
+        cached_test_case = self._get_cached_test_case(normalized, cache_path)
+        if cached_test_case is not None:
+            return cached_test_case
+        return self._get_legacy_cached_test_case(normalized, cache_path, tools_json)
 
     def log_encountered_test_case(
         self, test_case: TestCase, *, skip_output_quality_validation: bool = False
@@ -350,23 +353,6 @@ class Queryer[TTestCase: TestCase]:
         contents = normalized.answer.model_dump_json(exclude_defaults=True, indent=2)
         self._cache.save(cache_path, contents)
         return normalized
-
-    def _get_any_cached_test_case(
-        self, test_case: TTestCase, cache_path: Path, tools_json: str
-    ) -> TTestCase | None:
-        """Load a current or compatible predecessor response cache.
-
-        Arguments:
-            test_case: test case containing the semantic query
-            cache_path: current prompt's cache path
-            tools_json: JSON representation of configured tools
-        Returns:
-            cached test case if a compatible entry exists
-        """
-        cached_test_case = self._get_cached_test_case(test_case, cache_path)
-        if cached_test_case is not None:
-            return cached_test_case
-        return self._get_legacy_cached_test_case(test_case, cache_path, tools_json)
 
     def _get_cache_path(
         self,

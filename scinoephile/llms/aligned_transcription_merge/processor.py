@@ -33,18 +33,12 @@ class AlignedTranscriptionMergeProcessor(Processor):
     """Text for aligned transcription merging."""
     manager_cls = AlignedTranscriptionMergeManager
     """Manager used to construct prompt-specific models."""
-    last_request_spans: tuple[tuple[int, int], ...] = ()
-    """Alignment-column spans used by the latest separate requests."""
     last_request_answers: tuple[AlignedTranscriptionMergeAnswer, ...] = ()
     """Individual answers returned for the latest separate requests."""
     last_request_queries: tuple[AlignedTranscriptionMergeQuery, ...] = ()
     """Exact semantic queries used by the latest separate requests."""
-
-    def reset_last_process(self):
-        """Clear retained request state before a new transcription block."""
-        self.last_request_spans = ()
-        self.last_request_answers = ()
-        self.last_request_queries = ()
+    last_request_spans: tuple[tuple[int, int], ...] = ()
+    """Alignment-column spans used by the latest separate requests."""
 
     def process(
         self,
@@ -66,6 +60,10 @@ class AlignedTranscriptionMergeProcessor(Processor):
         Returns:
             consensus transcript divided into subtitles
         """
+        self.last_request_answers = ()
+        self.last_request_queries = ()
+        self.last_request_spans = ()
+
         query_cls = self.test_case_cls.query_cls
         validated_query = cast(
             AlignedTranscriptionMergeQuery,
@@ -79,7 +77,6 @@ class AlignedTranscriptionMergeProcessor(Processor):
                 }
             ),
         )
-        self.reset_last_process()
         request_queries, self.last_request_spans = _get_request_queries(validated_query)
         self.last_request_queries = request_queries
 
@@ -109,26 +106,20 @@ def _get_query_slice(
     Returns:
         sliced request query
     """
-    return query.model_copy(
-        update={
-            "sources": [
-                source.model_copy(update={"text": source.text[start:end]})
-                for source in query.sources
-            ],
-            "speaker": query.speaker[start:end],
-            "language_trace": (
-                None
-                if query.language_trace is None
-                else query.language_trace[start:end]
-            ),
-            "singing_trace": (
-                None if query.singing_trace is None else query.singing_trace[start:end]
-            ),
-            "music_trace": (
-                None if query.music_trace is None else query.music_trace[start:end]
-            ),
-        }
-    )
+    update: dict[str, object] = {
+        "sources": [
+            source.model_copy(update={"text": source.text[start:end]})
+            for source in query.sources
+        ],
+        "speaker": query.speaker[start:end],
+    }
+    if query.language_trace is not None:
+        update["language_trace"] = query.language_trace[start:end]
+    if query.music_trace is not None:
+        update["music_trace"] = query.music_trace[start:end]
+    if query.singing_trace is not None:
+        update["singing_trace"] = query.singing_trace[start:end]
+    return query.model_copy(update=update)
 
 
 def _get_request_queries(

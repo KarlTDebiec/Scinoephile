@@ -21,11 +21,13 @@ from scinoephile.llms.aligned_transcription_merge import (
     AlignedTranscriptionMergeQuery,
     AlignedTranscriptionMergeSource,
     AlignedTranscriptionMergeTestCase,
-    get_aligned_transcription_merge_support_row,
-    get_aligned_transcription_merge_validation,
 )
 from scinoephile.llms.aligned_transcription_merge.splitting import (
     get_alignment_content_spans,
+)
+from scinoephile.llms.aligned_transcription_merge.validation import (
+    get_aligned_transcription_merge_support_row,
+    get_aligned_transcription_merge_validation,
 )
 
 _LOCALIZED_PROMPT = AlignedTranscriptionMergePrompt(
@@ -270,6 +272,35 @@ def test_no_op_answer_selects_first_source_without_annotations():
 
     assert answer.transcript == "甲乙"
     provider.chat_completion.assert_not_called()
+
+
+def test_no_op_answer_omits_request_when_first_source_is_empty():
+    """No-op mode should tolerate an empty first source in a valid alignment."""
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    processor = AlignedTranscriptionMergeProcessor(
+        _LOCALIZED_PROMPT, provider=provider, no_op=True
+    )
+
+    answer = processor.process(_get_sources("　・", "甲乙"), "ＡＡ")
+
+    assert answer.text == ""
+    provider.chat_completion.assert_not_called()
+
+
+def test_processor_clears_request_state_before_validation():
+    """A failed new block should not expose request state from the prior block."""
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    processor = AlignedTranscriptionMergeProcessor(
+        _LOCALIZED_PROMPT, provider=provider, no_op=True
+    )
+    processor.process(_get_sources("甲", "甲"), "Ａ")
+
+    with raises(ValidationError, match="equal nonzero lengths"):
+        processor.process(_get_sources("乙", "乙"), "ＡＡ")
+
+    assert processor.last_request_answers == ()
+    assert processor.last_request_queries == ()
+    assert processor.last_request_spans == ()
 
 
 def test_processor_splits_flat_rows_at_four_shared_pause_characters():

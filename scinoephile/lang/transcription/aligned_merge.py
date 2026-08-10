@@ -98,7 +98,9 @@ _YUE_HANT_PROMPT = replace(
         ),
         source_name_err="每個查詢嘅來源名稱必須非空白而且唯一。",
         reference_source_err="對齊轉寫合併查詢只可以包含語音轉寫，唔可以包含參考或者指引。",
-        row_length_err="同一查詢區段嘅所有來源列同講者列必須有相同嘅非零長度。",
+        row_length_err=(
+            "同一查詢區段嘅所有來源列、講者列同可選分析列必須有相同嘅非零長度。"
+        ),
         reference_marker_err="對齊轉寫合併查詢唔可以包含參考字幕邊界標記。",
         speaker_character_err="講者列只可以包含全形講者、星號、全形空格同停頓標記。",
         language_character_err="語言列只可以包含已定義嘅全形語言、全形空格同停頓標記。",
