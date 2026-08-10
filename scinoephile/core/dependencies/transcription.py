@@ -24,18 +24,13 @@ __all__ = [
 
 if TYPE_CHECKING:
     from demucs_infer.apply import BagOfModels, Model
-    from mlx_audio.stt.models.mimo_v2_asr import Model as MimoModel
-    from mlx_audio.stt.models.qwen3_asr import Model as Qwen3AsrModel
     from torch import Tensor
     from transformers import PreTrainedModel, ProcessorMixin
-    from whisper import Whisper
 
     type CtcModel = PreTrainedModel
     type CtcProcessor = ProcessorMixin
     type DemucsModel = BagOfModels | Model
-    type MlxAudioModel = MimoModel | Qwen3AsrModel
     type TorchTensor = Tensor
-    type WhisperModel = Whisper
 
 _TRANSCRIPTION_EXTRA_MESSAGE = (
     "Transcription support requires optional transcription dependencies. "
