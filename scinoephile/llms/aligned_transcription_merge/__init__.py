@@ -6,7 +6,6 @@ Package hierarchy (modules may import from any above):
 * prompt / validation
 * models
 * manager
-* splitting
 * processor
 """
 
@@ -22,7 +21,6 @@ from .models import (
 )
 from .processor import AlignedTranscriptionMergeProcessor
 from .prompt import AlignedTranscriptionMergePrompt
-from .validation import AlignedTranscriptionMergeValidation
 
 __all__ = [
     "AlignedTranscriptionMergeAnswer",
@@ -33,5 +31,4 @@ __all__ = [
     "AlignedTranscriptionMergeSource",
     "AlignedTranscriptionMergeSubtitle",
     "AlignedTranscriptionMergeTestCase",
-    "AlignedTranscriptionMergeValidation",
 ]

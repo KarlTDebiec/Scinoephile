@@ -8,16 +8,16 @@ Package hierarchy (modules may import from any above):
 
 LLM shapes:
 
-| Tracks | T1    | T2 | Name               | Prefix            |
-| ------ | ----- | -- | ------------------ | ----------------- |
-| 1      | n     |    | review             | Review            |
-| 1      | n     |    | translation        | Translation       |
-| 2      | n     | m  | guided_review      | GuidedReview      |
-| 2      | 1     | 1  | ocr_fusion         | OcrFusion         |
-| 2      | n     | 1  | punctuation        | Punctuation       |
-| 2      | 2     | 2  | delineation        | Delineation       |
-| 2      | n - m | n  | gap_translation    | GapTranslation    |
-| 2      | n     | m  | guided_translation | GuidedTranslation |
+| Tracks | T1    | T2 | Name                        | Prefix                    |
+| ------ | ----- | -- | --------------------------- | ------------------------- |
+| 1      | n     |    | review                      | Review                    |
+| 1      | n     |    | translation                 | Translation               |
+| 2      | n     | m  | guided_review               | GuidedReview              |
+| 2      | 1     | 1  | ocr_fusion                  | OcrFusion                 |
+| 2      | n     | 1  | punctuation                 | Punctuation               |
+| 2      | 2     | 2  | delineation                 | Delineation               |
+| 2      | n - m | n  | gap_translation             | GapTranslation            |
+| 2      | n     | m  | guided_translation          | GuidedTranslation         |
 | 4+     | n * k | 1  | aligned_transcription_merge | AlignedTranscriptionMerge |
 """
 

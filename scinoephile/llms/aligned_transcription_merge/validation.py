@@ -18,7 +18,6 @@ from scinoephile.core import Language
 
 __all__ = [
     "AlignedTranscriptionMergeValidation",
-    "get_aligned_transcription_merge_support_row",
     "get_aligned_transcription_merge_validation",
 ]
 
@@ -40,8 +39,6 @@ _PAUSE_CHARACTER = "・"
 """Wide middle dot used for shared timed pauses."""
 _SIMPLIFIER = OpenCC("t2s")
 """Converter used to compare Simplified and Traditional characters."""
-_SUPPORT_CHARACTERS = "０１２３４５６７８９"
-"""Ascending fullwidth-digit scale used to encode source support."""
 _TRADITIONALIZER = OpenCC("s2t")
 """Converter used to obtain Traditional characters for Cantonese readings."""
 
@@ -117,53 +114,6 @@ class AlignedTranscriptionMergeValidation:
         if self.mapped_majority_column_count < self.majority_column_count:
             return False
         return missing_column_count <= max(proportional_tolerance, 1)
-
-
-def get_aligned_transcription_merge_support_row(
-    source_texts: Sequence[str], merged_text: str, language: Language
-) -> str:
-    """Get a compact fullwidth-digit support row for an aligned merged row.
-
-    Arguments:
-        source_texts: equal-width aligned ASR rows
-        merged_text: merged row aligned to the same profile
-        language: transcription language controlling Cantonese equivalence
-    Returns:
-        fullwidth support digits, gaps, and shared pause characters
-    Raises:
-        ValueError: if fewer than two sources are provided or row widths differ
-    """
-    _validate_rows(source_texts, merged_text)
-    source_count = len(source_texts)
-    output = []
-    for column_idx, merged_character in enumerate(merged_text):
-        if merged_character == _ALIGNMENT_GAP_CHARACTER:
-            output.append(_ALIGNMENT_GAP_CHARACTER)
-            continue
-        if merged_character == _PAUSE_CHARACTER:
-            output.append(_PAUSE_CHARACTER)
-            continue
-        relationships = (
-            _get_character_relationship(
-                merged_character, source_text[column_idx], language
-            )
-            for source_text in source_texts
-            if source_text[column_idx]
-            not in {_ALIGNMENT_GAP_CHARACTER, _PAUSE_CHARACTER}
-        )
-        strong_source_count = sum(
-            relationship >= _CharacterRelationship.equivalent
-            for relationship in relationships
-        )
-        support_level = min(
-            len(_SUPPORT_CHARACTERS) - 1,
-            int(
-                strong_source_count / source_count * (len(_SUPPORT_CHARACTERS) - 1)
-                + 0.5
-            ),
-        )
-        output.append(_SUPPORT_CHARACTERS[support_level])
-    return "".join(output)
 
 
 def get_aligned_transcription_merge_validation(
@@ -384,12 +334,10 @@ def _is_lexical_character(character: str) -> bool:
     return not unicodedata.category(character).startswith(("C", "P", "S", "Z"))
 
 
-def _validate_rows(source_texts: Sequence[str], merged_text: str | None = None):
-    """Validate aligned source and optional merged row widths."""
+def _validate_rows(source_texts: Sequence[str]) -> None:
+    """Validate aligned source row widths."""
     if len(source_texts) < 2:
         raise ValueError("Aligned merge validation requires at least two sources.")
     row_lengths = {len(source_text) for source_text in source_texts}
-    if merged_text is not None:
-        row_lengths.add(len(merged_text))
     if len(row_lengths) != 1 or not next(iter(row_lengths)):
         raise ValueError("Aligned merge validation rows must have equal nonzero width.")

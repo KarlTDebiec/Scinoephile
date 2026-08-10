@@ -16,7 +16,6 @@ from .models import (
     AlignedTranscriptionMergeSource,
 )
 from .prompt import AlignedTranscriptionMergePrompt
-from .splitting import get_alignment_content_spans
 
 __all__ = ["AlignedTranscriptionMergeProcessor"]
 
@@ -33,12 +32,6 @@ class AlignedTranscriptionMergeProcessor(Processor):
     """Text for aligned transcription merging."""
     manager_cls = AlignedTranscriptionMergeManager
     """Manager used to construct prompt-specific models."""
-    last_request_answers: tuple[AlignedTranscriptionMergeAnswer, ...] = ()
-    """Individual answers returned for the latest separate requests."""
-    last_request_queries: tuple[AlignedTranscriptionMergeQuery, ...] = ()
-    """Exact semantic queries used by the latest separate requests."""
-    last_request_spans: tuple[tuple[int, int], ...] = ()
-    """Alignment-column spans used by the latest separate requests."""
 
     def process(
         self,
@@ -60,10 +53,6 @@ class AlignedTranscriptionMergeProcessor(Processor):
         Returns:
             consensus transcript divided into subtitles
         """
-        self.last_request_answers = ()
-        self.last_request_queries = ()
-        self.last_request_spans = ()
-
         query_cls = self.test_case_cls.query_cls
         validated_query = cast(
             AlignedTranscriptionMergeQuery,
@@ -80,17 +69,13 @@ class AlignedTranscriptionMergeProcessor(Processor):
         if self.queryer.no_op:
             return AlignedTranscriptionMergeAnswer(text="")
 
-        request_queries, self.last_request_spans = _get_request_queries(validated_query)
-        self.last_request_queries = request_queries
-
         request_answers = []
-        for query in request_queries:
+        for query in _get_request_queries(validated_query):
             test_case = self.test_case_cls(query=query)
             test_case = self.queryer(test_case)
             answer = cast(AlignedTranscriptionMergeAnswer, test_case.answer)
             request_answers.append(answer)
 
-        self.last_request_answers = tuple(request_answers)
         self.save_encountered_test_cases()
         return AlignedTranscriptionMergeAnswer(
             text="".join(answer.text for answer in request_answers)
@@ -127,19 +112,32 @@ def _get_query_slice(
 
 def _get_request_queries(
     query: AlignedTranscriptionMergeQuery,
-) -> tuple[tuple[AlignedTranscriptionMergeQuery, ...], tuple[tuple[int, int], ...]]:
+) -> tuple[AlignedTranscriptionMergeQuery, ...]:
     """Split a validated alignment query at long shared pause runs."""
-    shared_pause_columns = tuple(
-        query.speaker[column_idx] == _PAUSE_CHARACTER
-        and all(source.text[column_idx] == _PAUSE_CHARACTER for source in query.sources)
-        for column_idx in range(len(query.speaker))
-    )
-    content_spans = get_alignment_content_spans(
-        shared_pause_columns, _REQUEST_PAUSE_CHARACTERS
-    )
-
     requests = []
-    request_spans = []
+    content_spans = []
+    content_start = 0
+    pause_start: int | None = None
+    for column_idx in range(len(query.speaker) + 1):
+        is_shared_pause = column_idx < len(query.speaker) and (
+            query.speaker[column_idx] == _PAUSE_CHARACTER
+            and all(
+                source.text[column_idx] == _PAUSE_CHARACTER for source in query.sources
+            )
+        )
+        if is_shared_pause:
+            if pause_start is None:
+                pause_start = column_idx
+            continue
+        if pause_start is not None:
+            if column_idx - pause_start >= _REQUEST_PAUSE_CHARACTERS:
+                if content_start < pause_start:
+                    content_spans.append((content_start, pause_start))
+                content_start = column_idx
+            pause_start = None
+    if content_start < len(query.speaker):
+        content_spans.append((content_start, len(query.speaker)))
+
     for content_start, content_end in content_spans:
         request = _get_query_slice(query, content_start, content_end)
         if any(
@@ -148,5 +146,4 @@ def _get_request_queries(
             for character in source.text
         ):
             requests.append(request)
-            request_spans.append((content_start, content_end))
-    return tuple(requests), tuple(request_spans)
+    return tuple(requests)

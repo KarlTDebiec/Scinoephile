@@ -22,11 +22,7 @@ from scinoephile.llms.aligned_transcription_merge import (
     AlignedTranscriptionMergeSource,
     AlignedTranscriptionMergeTestCase,
 )
-from scinoephile.llms.aligned_transcription_merge.splitting import (
-    get_alignment_content_spans,
-)
 from scinoephile.llms.aligned_transcription_merge.validation import (
-    get_aligned_transcription_merge_support_row,
     get_aligned_transcription_merge_validation,
 )
 
@@ -39,24 +35,6 @@ _LOCALIZED_PROMPT = AlignedTranscriptionMergePrompt(
     answer_text="wenben",
 )
 """Aligned merge prompt with localized correspondence field names."""
-
-
-def test_alignment_content_spans_exclude_long_pause_separators():
-    """Content spans should retain short pauses and exclude long pause runs."""
-    shared_pauses = (False, True, False, True, True, True, True, False)
-
-    spans = get_alignment_content_spans(shared_pauses, separator_columns=4)
-
-    assert spans == ((0, 3), (7, 8))
-
-
-def test_merge_support_row_uses_fullwidth_digits():
-    """Source agreement should use portable fullwidth digits."""
-    support_row = get_aligned_transcription_merge_support_row(
-        ("甲乙・丁", "甲丙・丁"), "甲己・丁", Language.yue_hant
-    )
-
-    assert support_row == "９０・９"
 
 
 def _get_sources(*texts: str) -> list[AlignedTranscriptionMergeSource]:
@@ -284,32 +262,7 @@ def test_processor_no_op_returns_empty_answer():
     answer = processor.process(_get_sources("甲　・乙", "甲丙・乙"), "ＡＡ・Ａ")
 
     assert answer.text == ""
-    assert processor.last_request_answers == ()
-    assert processor.last_request_queries == ()
-    assert processor.last_request_spans == ()
     provider.chat_completion.assert_not_called()
-
-
-def test_processor_clears_request_state_before_validation():
-    """A failed new block should not expose request state from the prior block."""
-    provider = Mock(
-        spec=LLMProvider,
-        cache_identity={"implementation": "test"},
-        completion_metrics=[],
-    )
-    provider.chat_completion.return_value = json.dumps(
-        {"wenben": "甲｜"}, ensure_ascii=False
-    )
-    processor = AlignedTranscriptionMergeProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.process(_get_sources("甲", "甲"), "Ａ")
-    assert processor.last_request_spans == ((0, 1),)
-
-    with raises(ValidationError, match="equal nonzero lengths"):
-        processor.process(_get_sources("乙", "乙"), "ＡＡ")
-
-    assert processor.last_request_answers == ()
-    assert processor.last_request_queries == ()
-    assert processor.last_request_spans == ()
 
 
 def test_processor_splits_flat_rows_at_four_shared_pause_characters():
@@ -331,27 +284,6 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
 
     assert [subtitle.text for subtitle in answer.subtitles] == ["甲", "乙"]
     assert [subtitle.index for subtitle in answer.subtitles] == [1, 2]
-    assert processor.last_request_spans == ((0, 1), (5, 6))
-    assert len(processor.last_request_queries) == 2
-    assert [
-        query.model_dump(mode="json", by_alias=True)
-        for query in processor.last_request_queries
-    ] == [
-        {
-            "laiyuan": [
-                {"mingcheng": "source_1", "yuanwen": "甲"},
-                {"mingcheng": "source_2", "yuanwen": "甲"},
-            ],
-            "shuoshuuren": "Ａ",
-        },
-        {
-            "laiyuan": [
-                {"mingcheng": "source_1", "yuanwen": "乙"},
-                {"mingcheng": "source_2", "yuanwen": "乙"},
-            ],
-            "shuoshuuren": "Ｂ",
-        },
-    ]
     assert provider.chat_completion.call_count == 2
     first_messages = provider.chat_completion.call_args_list[0].args[0]
     second_messages = provider.chat_completion.call_args_list[1].args[0]
@@ -389,7 +321,7 @@ def test_processor_omits_one_request_without_discarding_later_consensus():
     )
 
     assert answer.transcript == "乙"
-    assert [request.text for request in processor.last_request_answers] == ["", "乙｜"]
+    assert provider.chat_completion.call_count == 2
 
 
 def test_processor_retries_subtitles_exceeding_hard_length_limit():
