@@ -8,11 +8,11 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from .prompts import TranscriptionPromptYueHans, TranscriptionPromptYueHant
+from .prompts import YueTranscriptionPromptYueHans, YueTranscriptionPromptYueHant
 from .validation import CantoneseTranscriptionAlignmentScorer
 
 __all__ = [
     "CantoneseTranscriptionAlignmentScorer",
-    "TranscriptionPromptYueHans",
-    "TranscriptionPromptYueHant",
+    "YueTranscriptionPromptYueHans",
+    "YueTranscriptionPromptYueHant",
 ]

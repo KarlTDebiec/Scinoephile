@@ -12,10 +12,10 @@ from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 from scinoephile.llms.transcription import TranscriptionPrompt
 
-__all__ = ["TranscriptionPromptYueHans", "TranscriptionPromptYueHant"]
+__all__ = ["YueTranscriptionPromptYueHans", "YueTranscriptionPromptYueHant"]
 
 
-TranscriptionPromptYueHant = TranscriptionPrompt(
+YueTranscriptionPromptYueHant = TranscriptionPrompt(
     language=Language.yue_hant,
     **YUE_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
@@ -113,7 +113,7 @@ TranscriptionPromptYueHant = TranscriptionPrompt(
 )
 """Prompt for traditional Cantonese transcription."""
 
-TranscriptionPromptYueHans = TranscriptionPromptYueHant.transformed(
+YueTranscriptionPromptYueHans = YueTranscriptionPromptYueHant.transformed(
     Language.yue_hans, partial(get_zho_text_converted, config=OpenCCConfig.hk2s)
 )
 """Prompt for simplified Cantonese transcription."""

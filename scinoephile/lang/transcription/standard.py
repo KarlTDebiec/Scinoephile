@@ -13,8 +13,8 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.lang.yue.transcription import (
     CantoneseTranscriptionAlignmentScorer,
-    TranscriptionPromptYueHans,
-    TranscriptionPromptYueHant,
+    YueTranscriptionPromptYueHans,
+    YueTranscriptionPromptYueHant,
 )
 from scinoephile.llms import load_shared_test_cases
 from scinoephile.llms.providers.registry import get_provider
@@ -55,8 +55,8 @@ class _CantoneseTranscriptionProcessor(TranscriptionProcessor):
 
 DEFAULT_PROMPTS: Mapping[Language, TranscriptionPrompt] = MappingProxyType(
     {
-        Language.yue_hans: TranscriptionPromptYueHans,
-        Language.yue_hant: TranscriptionPromptYueHant,
+        Language.yue_hans: YueTranscriptionPromptYueHans,
+        Language.yue_hant: YueTranscriptionPromptYueHant,
     }
 )
 """Transcription prompts keyed by output language."""
@@ -94,7 +94,6 @@ def get_transcriber(
         )
     if provider is None:
         provider = get_provider()
-
     return _CantoneseTranscriptionProcessor(
         prompt, shared_test_cases, provider=provider, **kwargs
     )
