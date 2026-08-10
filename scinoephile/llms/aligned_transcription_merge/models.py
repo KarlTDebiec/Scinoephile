@@ -10,7 +10,7 @@ from typing import ClassVar, Self
 from pydantic import Field, ValidationInfo, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase
-from scinoephile.core.llms.models import LLMModel
+from scinoephile.core.llms.models import LLMModel, make_hashable
 
 from .prompt import AlignedTranscriptionMergePrompt
 from .validation import get_aligned_transcription_merge_validation
@@ -87,6 +87,21 @@ class AlignedTranscriptionMergeQuery(Query):
         exclude_if=lambda value: value is None,
     )
     """Column-aligned music annotations, when available."""
+
+    @property
+    def key(self) -> tuple:
+        """Unique key including optional traces omitted from serialization."""
+        data = self.model_dump(mode="json")
+        data.update(
+            {
+                "language_trace": self.language_trace,
+                "music_trace": self.music_trace,
+                "singing_trace": self.singing_trace,
+            }
+        )
+        return tuple(
+            make_hashable(data[field]) for field in sorted(type(self).model_fields)
+        )
 
     @model_validator(mode="after")
     def validate_rows(self) -> Self:

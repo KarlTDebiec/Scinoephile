@@ -234,6 +234,19 @@ def test_query_accepts_equal_width_language_singing_and_music_rows():
     assert query.music_trace == "　・樂"
 
 
+def test_query_key_includes_optional_traces_omitted_from_serialization():
+    """Query keys should distinguish absent and populated optional traces."""
+    query = AlignedTranscriptionMergeQuery(
+        sources=_get_sources("甲", "甲"), speaker="Ａ"
+    )
+    traced_query = AlignedTranscriptionMergeQuery(
+        sources=_get_sources("甲", "甲"), speaker="Ａ", language_trace="粵"
+    )
+
+    assert "language_trace" not in query.model_dump(mode="json")
+    assert query.key != traced_query.key
+
+
 def test_query_rejects_reference_evidence_and_reference_markers():
     """Reference text and diagnostic boundary markers must not reach the LLM."""
     query_cls = AlignedTranscriptionMergeManager.get_query_cls(
