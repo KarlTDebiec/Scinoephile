@@ -18,7 +18,7 @@ from .exceptions import TranscriptionEmptyError, TranscriptionError
 from .preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
-    VADMode,
+    VadMode,
 )
 from .transcribed_segment import TranscribedSegment
 
@@ -43,7 +43,7 @@ class Transcriber(ABC):
         self,
         cache_root_path: Path | None,
         demucs_mode: DemucsMode = DemucsMode.OFF,
-        vad_mode: VADMode = VADMode.OFF,
+        vad_mode: VadMode = VadMode.OFF,
         overwrite_cache: bool = False,
         demucs_separator: DemucsSeparator | None = None,
     ):
@@ -206,9 +206,9 @@ class Transcriber(ABC):
         else:
             demucs_values = (True, False)
 
-        if self.vad_mode is VADMode.ON:
+        if self.vad_mode is VadMode.ON:
             vad_values = (True,)
-        elif self.vad_mode is VADMode.OFF:
+        elif self.vad_mode is VadMode.OFF:
             vad_values = (False,)
         else:
             vad_values = (True, False)
@@ -321,7 +321,7 @@ class Transcriber(ABC):
                     continue
                 transcription_audio = separated_audio
 
-            if self.vad_mode is VADMode.AUTO and not settings.use_vad:
+            if self.vad_mode is VadMode.AUTO and not settings.use_vad:
                 logger.info(f"Retrying {self.backend_label} without VAD")
             try:
                 segments = self._transcribe_attempt(transcription_audio, settings)

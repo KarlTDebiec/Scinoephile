@@ -12,7 +12,7 @@ from unittest.mock import Mock, patch
 from pytest import fixture, mark, raises
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import DemucsMode, VADMode
+from scinoephile.audio.transcription import DemucsMode, VadMode
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.cli.transcribe_cli import TranscribeCli
 from scinoephile.common.file import get_temp_file_path
@@ -120,7 +120,7 @@ def test_transcribe_cli_defaults_demucs_and_vad_to_off():
         if "--vad" in action.option_strings
     )
     assert demucs_action.default is DemucsMode.OFF
-    assert vad_action.default is VADMode.OFF
+    assert vad_action.default is VadMode.OFF
 
 
 def test_transcribe_cli_writes_file(audio_series: Mock, expected_series: Series):
@@ -198,7 +198,7 @@ def test_transcribe_cli_passes_generic_configuration(
         guide_language: Language | None,
         model: TranscriptionModel,
         demucs_mode: DemucsMode,
-        vad_mode: VADMode,
+        vad_mode: VadMode,
         cache_root_path: Path | None,
         overwrite_cache: bool,
         provider: object,
@@ -216,7 +216,7 @@ def test_transcribe_cli_passes_generic_configuration(
         assert guide_language is Language.zho_hans
         assert model is TranscriptionModel.QWEN3_ASR
         assert demucs_mode is DemucsMode.ON
-        assert vad_mode is VADMode.OFF
+        assert vad_mode is VadMode.OFF
         assert cache_root_path == tmp_path / "cache"
         assert overwrite_cache
         assert provider is not None

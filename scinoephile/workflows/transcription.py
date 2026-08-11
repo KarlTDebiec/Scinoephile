@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import DemucsMode, VADMode
+from scinoephile.audio.transcription import DemucsMode, VadMode
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.subtitles import Series
@@ -33,7 +33,7 @@ def transcribe_series_guided(
     guide_language: Language | None = None,
     model: TranscriptionModel = TranscriptionModel.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.OFF,
-    vad_mode: VADMode = VADMode.OFF,
+    vad_mode: VadMode = VadMode.OFF,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     strip_generated_punctuation: bool = False,

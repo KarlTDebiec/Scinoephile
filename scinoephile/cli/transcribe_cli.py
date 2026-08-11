@@ -11,7 +11,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import DemucsMode, VADMode
+from scinoephile.audio.transcription import DemucsMode, VadMode
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
@@ -79,7 +79,7 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ): "Demucs 人声分离模式（选项：auto、on 或 off；默认：%(default)s）",
         (
             f"voice activity detection mode (options: "
-            f"{enum_options_list_str(VADMode)}; default: %(default)s)"
+            f"{enum_options_list_str(VadMode)}; default: %(default)s)"
         ): "语音活动检测模式（选项：auto、on 或 off；默认：%(default)s）",
         "JSON file containing delineation test cases": ("包含断句测试用例的 JSON 文件"),
         "JSON file containing punctuation test cases": ("包含标点测试用例的 JSON 文件"),
@@ -119,7 +119,7 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ): "Demucs 人聲分離模式（選項：auto、on 或 off；預設：%(default)s）",
         (
             f"voice activity detection mode (options: "
-            f"{enum_options_list_str(VADMode)}; default: %(default)s)"
+            f"{enum_options_list_str(VadMode)}; default: %(default)s)"
         ): "語音活動偵測模式（選項：auto、on 或 off；預設：%(default)s）",
         "JSON file containing delineation test cases": ("包含斷句測試案例的 JSON 檔"),
         "JSON file containing punctuation test cases": ("包含標點測試案例的 JSON 檔"),
@@ -215,13 +215,13 @@ class TranscribeCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--vad",
-            default=VADMode.OFF,
+            default=VadMode.OFF,
             dest="vad_mode",
-            metavar=enum_metavar(VADMode),
-            type=enum_arg(VADMode),
+            metavar=enum_metavar(VadMode),
+            type=enum_arg(VadMode),
             help=(
                 f"voice activity detection mode (options: "
-                f"{enum_options_list_str(VADMode)}; default: %(default)s)"
+                f"{enum_options_list_str(VadMode)}; default: %(default)s)"
             ),
         )
         arg_groups["operation arguments"].add_argument(
@@ -279,7 +279,7 @@ class TranscribeCli(ScinoephileCliBase):
         last_block: int | None,
         model: TranscriptionModel,
         demucs_mode: DemucsMode,
-        vad_mode: VADMode,
+        vad_mode: VadMode,
         llm_args: LlmArguments,
         cache_args: CacheArguments,
         delineation_json_path: Path | None,

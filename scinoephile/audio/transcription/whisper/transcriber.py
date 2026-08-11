@@ -19,7 +19,7 @@ from scinoephile.audio.transcription.exceptions import (
 from scinoephile.audio.transcription.preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
-    VADMode,
+    VadMode,
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcriber import Transcriber
@@ -72,7 +72,7 @@ class WhisperTranscriber(Transcriber):
         model: WhisperModel = WHISPER_LARGE_V3_CANTONESE_MODEL,
         language: Language = Language.yue_hant,
         demucs_mode: DemucsMode = DemucsMode.OFF,
-        vad_mode: VADMode = VADMode.OFF,
+        vad_mode: VadMode = VadMode.OFF,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
         temperature: float | Sequence[float] = 0.0,
