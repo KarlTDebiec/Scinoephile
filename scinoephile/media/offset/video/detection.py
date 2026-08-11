@@ -32,9 +32,32 @@ from .video_offset_candidate import VideoOffsetCandidate
 from .video_offset_result import VideoOffsetResult
 from .video_offset_window_result import VideoOffsetWindowResult
 
-__all__ = ["get_video_offset"]
+__all__ = ["get_offsets", "get_video_offset", "sample_video_frames"]
 
 logger = getLogger(__name__)
+
+
+def get_offsets(start: float, end: float, step: float) -> list[float]:
+    """Return inclusive candidate offsets.
+
+    Arguments:
+        start: first offset
+        end: last offset
+        step: offset interval
+    Returns:
+        candidate offsets
+    """
+    offsets = []
+    offset = start
+    epsilon = step / 1_000_000
+    while offset <= end + epsilon:
+        offsets.append(round(offset, 6))
+        offset += step
+    if offsets[-1] > end:
+        offsets[-1] = round(end, 6)
+    elif offsets[-1] < end:
+        offsets.append(round(end, 6))
+    return offsets
 
 
 def get_video_offset(
@@ -140,6 +163,80 @@ def get_video_offset(
         windows=window_results,
         aggregate=aggregate,
     )
+
+
+def sample_video_frames(
+    infile_path: Path,
+    *,
+    sample_rate: float,
+    start_time: float,
+    duration: float,
+    width: int,
+    height: int,
+) -> list[VideoFrameSample]:
+    """Sample grayscale frames from a video file.
+
+    Arguments:
+        infile_path: media input path
+        sample_rate: samples per second
+        start_time: media timestamp at which sampling starts, in seconds
+        duration: sampled window duration in seconds
+        width: output frame width
+        height: output frame height
+    Returns:
+        sampled video frames
+    Raises:
+        ScinoephileError: if ffmpeg fails or no frames are sampled
+    """
+    frame_size = width * height
+
+    # Build ffmpeg input options for the requested sample window
+    input_kwargs = {}
+    if start_time > 0:
+        input_kwargs["ss"] = start_time
+    if duration > 0:
+        input_kwargs["t"] = duration
+
+    # Decode scaled grayscale frames as raw bytes
+    try:
+        output, _ = (
+            ffmpeg.input(str(infile_path), **input_kwargs)
+            .filter("fps", fps=sample_rate)
+            .filter("scale", width, height)
+            .filter("format", "gray")
+            .output("pipe:", format="rawvideo", pix_fmt="gray")
+            .run(capture_stdout=True, capture_stderr=True)
+        )
+    except ffmpeg.Error as exc:
+        raise ScinoephileError(
+            f"Could not sample video frames from {infile_path}"
+        ) from exc
+
+    if len(output) < frame_size:
+        raise ScinoephileError(f"No video frames sampled from {infile_path}")
+    if len(output) % frame_size != 0:
+        logger.warning(
+            f"Truncating partial sampled video frame from {infile_path}: "
+            f"{len(output) % frame_size} trailing bytes"
+        )
+
+    frame_count = len(output) // frame_size
+
+    # Reshape raw frame bytes into sample objects
+    array = np.frombuffer(output[: frame_count * frame_size], dtype=np.uint8)
+    array = array.reshape((frame_count, height, width)).astype(np.float32)
+
+    # Normalize brightness once per sampled frame
+    for index in range(frame_count):
+        frame = array[index]
+        frame_std = float(np.std(frame))
+        if frame_std > 0:
+            array[index] = (frame - float(np.mean(frame))) / frame_std
+
+    return [
+        VideoFrameSample(time=index / sample_rate, frame=array[index])
+        for index in range(frame_count)
+    ]
 
 
 def _aggregate_window_results(
@@ -303,7 +400,7 @@ def _get_video_offset_window(
     Returns:
         window offset result
     """
-    reference_samples = _sample_video_frames(
+    reference_samples = sample_video_frames(
         reference_infile_path,
         sample_rate=sample_rate,
         start_time=start_time,
@@ -311,7 +408,7 @@ def _get_video_offset_window(
         width=width,
         height=height,
     )
-    target_samples = _sample_video_frames(
+    target_samples = sample_video_frames(
         target_infile_path,
         sample_rate=sample_rate,
         start_time=start_time,
@@ -322,7 +419,7 @@ def _get_video_offset_window(
 
     # Search the full offset range at coarse resolution
     min_matches = max(2, int(sample_rate * 2))
-    coarse_offsets = _get_offsets(-max_offset, max_offset, coarse_step)
+    coarse_offsets = get_offsets(-max_offset, max_offset, coarse_step)
     coarse_candidates = _score_offsets(
         reference_samples,
         target_samples,
@@ -371,29 +468,6 @@ def _get_video_offset_window(
         second_best=second_best,
         offset_frames=offset_frames,
     )
-
-
-def _get_offsets(start: float, end: float, step: float) -> list[float]:
-    """Return inclusive candidate offsets.
-
-    Arguments:
-        start: first offset
-        end: last offset
-        step: offset interval
-    Returns:
-        candidate offsets
-    """
-    offsets = []
-    offset = start
-    epsilon = step / 1_000_000
-    while offset <= end + epsilon:
-        offsets.append(round(offset, 6))
-        offset += step
-    if offsets[-1] > end:
-        offsets[-1] = round(end, 6)
-    elif offsets[-1] < end:
-        offsets.append(round(end, 6))
-    return offsets
 
 
 def _probe_video_metadata(
@@ -495,80 +569,6 @@ def _get_video_stream(probe: object) -> Mapping[str, object]:
         if stream.get("codec_type") == "video":
             return stream
     raise ScinoephileError("Could not find video stream")
-
-
-def _sample_video_frames(
-    infile_path: Path,
-    *,
-    sample_rate: float,
-    start_time: float,
-    duration: float,
-    width: int,
-    height: int,
-) -> list[VideoFrameSample]:
-    """Sample grayscale frames from a video file.
-
-    Arguments:
-        infile_path: media input path
-        sample_rate: samples per second
-        start_time: media timestamp at which sampling starts, in seconds
-        duration: sampled window duration in seconds
-        width: output frame width
-        height: output frame height
-    Returns:
-        sampled video frames
-    Raises:
-        ScinoephileError: if ffmpeg fails or no frames are sampled
-    """
-    frame_size = width * height
-
-    # Build ffmpeg input options for the requested sample window
-    input_kwargs = {}
-    if start_time > 0:
-        input_kwargs["ss"] = start_time
-    if duration > 0:
-        input_kwargs["t"] = duration
-
-    # Decode scaled grayscale frames as raw bytes
-    try:
-        output, _ = (
-            ffmpeg.input(str(infile_path), **input_kwargs)
-            .filter("fps", fps=sample_rate)
-            .filter("scale", width, height)
-            .filter("format", "gray")
-            .output("pipe:", format="rawvideo", pix_fmt="gray")
-            .run(capture_stdout=True, capture_stderr=True)
-        )
-    except ffmpeg.Error as exc:
-        raise ScinoephileError(
-            f"Could not sample video frames from {infile_path}"
-        ) from exc
-
-    if len(output) < frame_size:
-        raise ScinoephileError(f"No video frames sampled from {infile_path}")
-    if len(output) % frame_size != 0:
-        logger.warning(
-            f"Truncating partial sampled video frame from {infile_path}: "
-            f"{len(output) % frame_size} trailing bytes"
-        )
-
-    frame_count = len(output) // frame_size
-
-    # Reshape raw frame bytes into sample objects
-    array = np.frombuffer(output[: frame_count * frame_size], dtype=np.uint8)
-    array = array.reshape((frame_count, height, width)).astype(np.float32)
-
-    # Normalize brightness once per sampled frame
-    for index in range(frame_count):
-        frame = array[index]
-        frame_std = float(np.std(frame))
-        if frame_std > 0:
-            array[index] = (frame - float(np.mean(frame))) / frame_std
-
-    return [
-        VideoFrameSample(time=index / sample_rate, frame=array[index])
-        for index in range(frame_count)
-    ]
 
 
 def _score_offsets(

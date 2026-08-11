@@ -17,9 +17,9 @@ from pytest import approx, raises
 from scinoephile.common.subprocess import run_command
 from scinoephile.core import ScinoephileError
 from scinoephile.media.offset.video.detection import (
-    _get_offsets,
-    _sample_video_frames,
+    get_offsets,
     get_video_offset,
+    sample_video_frames,
 )
 from test.helpers import parametrize
 
@@ -57,7 +57,7 @@ def test_get_video_offset_prefers_known_shift():
             side_effect=[_get_probe(), _get_probe()],
         ),
         patch(
-            "scinoephile.media.offset.video.detection._sample_video_frames",
+            "scinoephile.media.offset.video.detection.sample_video_frames",
             side_effect=[reference_samples, target_samples],
         ),
     ):
@@ -94,7 +94,7 @@ def test_get_video_offset_uses_reference_frame_grid_for_fine_search():
             ],
         ),
         patch(
-            "scinoephile.media.offset.video.detection._sample_video_frames",
+            "scinoephile.media.offset.video.detection.sample_video_frames",
             side_effect=[reference_samples, target_samples],
         ),
     ):
@@ -130,7 +130,7 @@ def test_get_video_offset_tolerates_brightness_shift():
             side_effect=[_get_probe(), _get_probe()],
         ),
         patch(
-            "scinoephile.media.offset.video.detection._sample_video_frames",
+            "scinoephile.media.offset.video.detection.sample_video_frames",
             side_effect=[reference_samples, target_samples],
         ),
     ):
@@ -160,7 +160,7 @@ def test_get_video_offset_rejects_insufficient_matches():
                 side_effect=[_get_probe(), _get_probe()],
             ),
             patch(
-                "scinoephile.media.offset.video.detection._sample_video_frames",
+                "scinoephile.media.offset.video.detection.sample_video_frames",
                 side_effect=[reference_samples, target_samples],
             ),
         ):
@@ -190,7 +190,7 @@ def test_get_video_offset_rejects_missing_reference_frame_rate():
                 ],
             ),
             patch(
-                "scinoephile.media.offset.video.detection._sample_video_frames",
+                "scinoephile.media.offset.video.detection.sample_video_frames",
                 side_effect=[reference_samples, target_samples],
             ),
         ):
@@ -223,7 +223,7 @@ def test_get_video_offset_samples_multiple_windows_and_aggregates_frames():
             ],
         ),
         patch(
-            "scinoephile.media.offset.video.detection._sample_video_frames", new=sampler
+            "scinoephile.media.offset.video.detection.sample_video_frames", new=sampler
         ),
     ):
         result = get_video_offset(
@@ -267,7 +267,7 @@ def test_get_video_offset_clamps_duration_to_shared_runtime():
             side_effect=[_get_probe(duration=20.0), _get_probe(duration=20.0)],
         ),
         patch(
-            "scinoephile.media.offset.video.detection._sample_video_frames", new=sampler
+            "scinoephile.media.offset.video.detection.sample_video_frames", new=sampler
         ),
     ):
         result = get_video_offset(
@@ -301,7 +301,7 @@ def test_get_video_offset_handles_aggregate_without_exact_window_match():
             ],
         ),
         patch(
-            "scinoephile.media.offset.video.detection._sample_video_frames",
+            "scinoephile.media.offset.video.detection.sample_video_frames",
             side_effect=side_effect,
         ),
     ):
@@ -334,7 +334,7 @@ def test_get_video_offset_uses_separate_second_best_for_confidence():
             side_effect=[_get_probe(), _get_probe()],
         ),
         patch(
-            "scinoephile.media.offset.video.detection._sample_video_frames",
+            "scinoephile.media.offset.video.detection.sample_video_frames",
             side_effect=[reference_samples, target_samples],
         ),
     ):
@@ -355,7 +355,7 @@ def test_get_video_offset_uses_separate_second_best_for_confidence():
 
 def test_get_offsets_clamps_to_requested_end():
     """Test candidate offsets do not exceed the requested end."""
-    offsets = _get_offsets(-1.0, 1.0, 0.7)
+    offsets = get_offsets(-1.0, 1.0, 0.7)
 
     assert offsets == [-1.0, -0.3, 0.4, 1.0]
     assert max(offsets) == 1.0
@@ -371,7 +371,7 @@ def test_sample_video_frames_normalizes_brightness():
         "scinoephile.media.offset.video.detection.ffmpeg.input",
         return_value=_FakeFfmpegInput(output),
     ):
-        samples = _sample_video_frames(
+        samples = sample_video_frames(
             Path("video.mkv"),
             sample_rate=1.0,
             start_time=0.0,
@@ -422,7 +422,7 @@ def test_get_video_offset_propagates_sampling_failures():
             side_effect=[_get_probe(), _get_probe()],
         ),
         patch(
-            "scinoephile.media.offset.video.detection._sample_video_frames",
+            "scinoephile.media.offset.video.detection.sample_video_frames",
             side_effect=ScinoephileError("Could not sample frames"),
         ),
     ):

@@ -31,7 +31,7 @@ from scinoephile.lang.transcription.transcriber import (
     GuidedTranscriber,
     MlxAudioTimingMode,
     TranscriptionModel,
-    _get_segment_split_on_phrase_timings,
+    get_segment_split_on_phrase_timings,
 )
 
 
@@ -664,7 +664,7 @@ def test_phrase_timing_groups_split_on_ctc_hold_time_and_size():
         id=0, seek=0, start=0.0, end=start, text=text, words=words
     )
 
-    output = _get_segment_split_on_phrase_timings(segment)
+    output = get_segment_split_on_phrase_timings(segment)
 
     assert [item.text for item in output] == [
         "甲乙丙",
