@@ -9,6 +9,7 @@ from dataclasses import replace
 from pathlib import Path
 from unittest.mock import Mock
 
+import numpy as np
 import pytest
 from pydub import AudioSegment
 
@@ -35,6 +36,7 @@ from scinoephile.audio.transcription.mlx_audio.model import (
     MlxAudioModel,
 )
 from scinoephile.audio.transcription.mlx_audio.transcriber import MlxAudioTranscriber
+from scinoephile.audio.vad import VadImplementation, VoiceActivityTrace
 from scinoephile.core import Language
 
 
@@ -78,8 +80,12 @@ def test_init_defaults_demucs_and_vad_to_off():
     assert transcriber.token_limit_guard is False
 
 
-def test_get_cache_path_separates_model_configuration():
-    """Test MLX-Audio cache paths differ by model configuration."""
+def test_get_cache_path_separates_model_configuration(runtime_cache_root_path: Path):
+    """Test MLX-Audio cache paths differ by model configuration.
+
+    Arguments:
+        runtime_cache_root_path: isolated default runtime cache root
+    """
     audio = _get_cache_audio()
     first_transcriber = _get_mlx_audio_transcriber(
         model=replace(MIMO_MODEL, model_name="custom/MiMo-V2.5-ASR-one")
@@ -91,11 +97,11 @@ def test_get_cache_path_separates_model_configuration():
     first_cache_path = _get_cache_path(first_transcriber, audio)
     second_cache_path = _get_cache_path(second_transcriber, audio)
 
-    assert (
-        first_cache_path.parent == Path("/tmp/audio/transcription/mlx_audio").resolve()
+    assert first_cache_path.parent == (
+        runtime_cache_root_path / "audio/transcription/mlx_audio"
     )
-    assert (
-        second_cache_path.parent == Path("/tmp/audio/transcription/mlx_audio").resolve()
+    assert second_cache_path.parent == (
+        runtime_cache_root_path / "audio/transcription/mlx_audio"
     )
     assert first_cache_path != second_cache_path
 
@@ -743,17 +749,29 @@ def test_transcribe_chunks_audio_rejects_all_empty_windows(
         transcriber.transcribe(audio)
 
 
-def test_transcribe_vad_restores_original_timestamps(monkeypatch: pytest.MonkeyPatch):
-    """Test MLX-Audio VAD removes silence and restores original word timings."""
+def test_transcribe_vad_uses_shared_detector_and_restores_original_timestamps(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+):
+    """Use shared VAD intervals, restore timings, and attach score summaries."""
     audio = AudioSegment.silent(duration=6000)
+    trace = VoiceActivityTrace(
+        np.full(60, 0.8, dtype=np.float32), start_ms=50, step_ms=100, duration_ms=6000
+    )
+    vad_detector = Mock(
+        cache_identity={"implementation": "ten"},
+        trace_cache_identity={"implementation": "ten"},
+        threshold=0.5,
+    )
+    vad_detector.get_speech_intervals.return_value = [(1000, 2000), (4000, 5500)]
     transcriber = MlxAudioTranscriber(
-        model=MIMO_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VadMode.ON
+        model=MIMO_MODEL,
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VadMode.ON,
+        cache_root_path=tmp_path,
+        vad_detector=vad_detector,
     )
-    monkeypatch.setattr(
-        transcriber,
-        "_get_vad_speech_intervals",
-        Mock(return_value=[(1000, 2000), (4000, 5500)]),
-    )
+    get_trace = Mock(return_value=trace)
+    monkeypatch.setattr(transcriber, "_get_voice_activity_trace", get_trace)
     patched_transcribe = Mock(
         return_value=[
             _get_timed_segment("one", start=0.1, end=0.9),
@@ -764,6 +782,8 @@ def test_transcribe_vad_restores_original_timestamps(monkeypatch: pytest.MonkeyP
 
     segments = transcriber.transcribe(audio)
 
+    get_trace.assert_called_once_with(audio)
+    vad_detector.get_speech_intervals.assert_called_once_with(trace)
     speech_audio = patched_transcribe.call_args.args[0]
     assert len(speech_audio) == 2500
     assert [segment.text for segment in segments] == ["one", "two"]
@@ -773,16 +793,32 @@ def test_transcribe_vad_restores_original_timestamps(monkeypatch: pytest.MonkeyP
     assert segments[1].words is not None
     assert segments[1].words[0].start == pytest.approx(4.2)
     assert segments[1].words[0].end == pytest.approx(5.2)
+    assert segments[1].words[0].voice_activity_score == pytest.approx(0.8)
+    assert segments[1].words[0].voice_activity_peak == pytest.approx(0.8)
+    assert segments[1].words[0].voice_activity_coverage == pytest.approx(1.0)
 
 
 def test_transcribe_vad_rejects_audio_without_detected_speech(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
     """Test VAD does not invoke MLX-Audio when no speech is detected."""
-    transcriber = MlxAudioTranscriber(
-        model=MIMO_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VadMode.ON
+    trace = Mock()
+    vad_detector = Mock(
+        cache_identity={"implementation": "ten"},
+        trace_cache_identity={"implementation": "ten"},
+        threshold=0.5,
     )
-    monkeypatch.setattr(transcriber, "_get_vad_speech_intervals", Mock(return_value=[]))
+    vad_detector.get_speech_intervals.return_value = []
+    transcriber = MlxAudioTranscriber(
+        model=MIMO_MODEL,
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VadMode.ON,
+        cache_root_path=tmp_path,
+        vad_detector=vad_detector,
+    )
+    monkeypatch.setattr(
+        transcriber, "_get_voice_activity_trace", Mock(return_value=trace)
+    )
     patched_transcribe = Mock()
     monkeypatch.setattr(transcriber, "_transcribe_unfiltered_audio", patched_transcribe)
 
@@ -795,10 +831,22 @@ def test_transcribe_vad_rejects_audio_without_detected_speech(
 def test_transcribe_vad_auto_retries_unfiltered_audio(monkeypatch: pytest.MonkeyPatch):
     """Test automatic VAD retries unfiltered audio after VAD failure."""
     expected_segments = [_get_timed_segment("retry")]
-    transcriber = MlxAudioTranscriber(
-        model=MIMO_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VadMode.AUTO
+    trace = Mock()
+    vad_detector = Mock(
+        cache_identity={"implementation": "ten"},
+        trace_cache_identity={"implementation": "ten"},
+        threshold=0.5,
     )
-    monkeypatch.setattr(transcriber, "_get_vad_speech_intervals", Mock(return_value=[]))
+    vad_detector.get_speech_intervals.return_value = []
+    transcriber = MlxAudioTranscriber(
+        model=MIMO_MODEL,
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VadMode.AUTO,
+        vad_detector=vad_detector,
+    )
+    monkeypatch.setattr(
+        transcriber, "_get_voice_activity_trace", Mock(return_value=trace)
+    )
     patched_transcribe = Mock(return_value=expected_segments)
     monkeypatch.setattr(transcriber, "_transcribe_unfiltered_audio", patched_transcribe)
     audio = AudioSegment.silent(duration=1000)
@@ -807,6 +855,13 @@ def test_transcribe_vad_auto_retries_unfiltered_audio(monkeypatch: pytest.Monkey
 
     assert segments == expected_segments
     patched_transcribe.assert_called_once_with(audio, False)
+
+
+def test_init_selects_shared_vad_implementation():
+    """Configure MLX-Audio with the same reusable detector as other backends."""
+    transcriber = MlxAudioTranscriber(vad_implementation=VadImplementation.PYANNOTE)
+
+    assert transcriber.vad_detector.implementation is VadImplementation.PYANNOTE
 
 
 def test_transcribe_aligns_text_and_writes_cache(
@@ -879,7 +934,7 @@ def test_transcribe_wraps_mlx_audio_inference_errors(monkeypatch: pytest.MonkeyP
 
 
 def _get_mlx_audio_transcriber(
-    *, cache_root_path: Path = Path("/tmp"), model: MlxAudioModel = MIMO_MODEL
+    *, cache_root_path: Path | None = None, model: MlxAudioModel = MIMO_MODEL
 ) -> MlxAudioTranscriber:
     """Get an MLX-Audio transcriber with preprocessing disabled.
 

@@ -35,7 +35,7 @@ authoritative hierarchy declaration above for ordering.
 | Package | Responsibility |
 | --- | --- |
 | `analysis` | Subtitle metrics, comparisons, alignment, and review auditing |
-| `audio` | Audio representations, source separation, transcription, and audio-derived subtitles |
+| `audio` | Audio representations, source separation, voice activity detection, transcription, and audio-derived subtitles |
 | `cli` | Argument parsing, localization, validation, and user-facing adapters |
 | `common` | General-purpose utilities with no dependencies on other Scinoephile packages |
 | `core` | Stable subtitle-domain primitives, timing, synchronization, generic caching and LLM infrastructure, and shared CLI support |

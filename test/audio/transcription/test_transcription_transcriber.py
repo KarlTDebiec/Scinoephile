@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import Mock, PropertyMock
 
 from pydub import AudioSegment
 from pytest import raises
@@ -23,6 +23,7 @@ from scinoephile.audio.transcription import (
     TranscriptionPreprocessingSettings,
     VadMode,
 )
+from scinoephile.audio.vad import VoiceActivityError
 from scinoephile.core import ScinoephileError
 
 
@@ -357,3 +358,50 @@ def test_last_error_propagates_when_every_configuration_fails(tmp_path: Path):
 
     with raises(TranscriptionInferenceError, match="last"):
         transcriber(audio)
+
+    for settings in (vad_settings, no_vad_settings):
+        cache_path = transcriber._cache.get_path(
+            audio, transcriber._get_cache_metadata(audio, settings)
+        )
+        assert not cache_path.exists()
+
+
+def test_voice_activity_trace_save_uses_identity_resolved_during_inference(
+    tmp_path: Path,
+):
+    """Save a newly inferred trace under its post-load artifact identity."""
+    audio = AudioSegment.silent(duration=100)
+    trace = Mock()
+    detector = Mock()
+    type(detector).trace_cache_identity = PropertyMock(
+        side_effect=[{"artifact": "unresolved"}, {"artifact": "resolved"}]
+    )
+    detector.get_trace.return_value = trace
+    cache = Mock()
+    cache.load.return_value = None
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VadMode.ON)
+    transcriber.vad_detector = detector
+    transcriber._voice_activity_cache = cache
+
+    assert transcriber._get_voice_activity_trace(audio) is trace
+    cache.load.assert_called_once_with(audio, {"artifact": "unresolved"})
+    cache.save.assert_called_once_with(audio, {"artifact": "resolved"}, trace)
+
+
+def test_voice_activity_error_is_translated_at_transcription_boundary(tmp_path: Path):
+    """Translate reusable VAD failures into transcription-domain failures."""
+    audio = AudioSegment.silent(duration=100)
+    voice_activity_error = VoiceActivityError("VAD failed")
+    detector = Mock()
+    detector.trace_cache_identity = {"artifact": "resolved"}
+    detector.get_trace.side_effect = voice_activity_error
+    cache = Mock()
+    cache.load.return_value = None
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VadMode.ON)
+    transcriber.vad_detector = detector
+    transcriber._voice_activity_cache = cache
+
+    with raises(TranscriptionInferenceError, match="VAD failed") as exc_info:
+        transcriber._get_voice_activity_trace(audio)
+
+    assert exc_info.value.__cause__ is voice_activity_error
