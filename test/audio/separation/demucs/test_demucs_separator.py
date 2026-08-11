@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of DemucsSeparator."""
+"""Tests of Demucs audio separation."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ import numpy as np
 from pydub import AudioSegment
 from pytest import MonkeyPatch, importorskip
 
-from scinoephile.audio.transcription.demucs import DemucsSeparator
+from scinoephile.audio.separation.demucs import DemucsSeparator
 
 
 class _NumpyBackedTensor:
@@ -60,7 +60,7 @@ def test_separate_vocals_uses_default_demucs_shifts():
         return separated_sources
 
     with patch(
-        "scinoephile.audio.transcription.demucs.separator.import_demucs_infer_apply",
+        "scinoephile.audio.separation.demucs.separator.import_demucs_infer_apply",
         return_value=Mock(apply_model=apply_model),
     ):
         output_audio = separator.separate_vocals(input_audio)

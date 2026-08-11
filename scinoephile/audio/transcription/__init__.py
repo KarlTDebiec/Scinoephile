@@ -3,7 +3,7 @@
 """Code related to audio transcription.
 
 Package hierarchy (modules may import from any above):
-* demucs / exceptions / preprocessing_settings / transcribed_word
+* exceptions / preprocessing_settings / transcribed_word
 * transcribed_segment
 * cache / ctc_aligner
 * transcriber
@@ -16,7 +16,6 @@ from logging import getLogger
 
 from .cache import TranscriptionCache
 from .ctc_aligner import CtcAligner
-from .demucs import DemucsSeparator
 from .exceptions import (
     TranscriptionAlignmentError,
     TranscriptionAlignmentIncompleteError,
@@ -38,7 +37,6 @@ from .whisper import WhisperModel, WhisperTranscriber
 __all__ = [
     "CtcAligner",
     "DemucsMode",
-    "DemucsSeparator",
     "MlxAudioModel",
     "MlxAudioTranscriber",
     "TranscribedSegment",
