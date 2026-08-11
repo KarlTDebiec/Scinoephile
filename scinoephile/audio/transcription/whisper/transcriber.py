@@ -10,8 +10,8 @@ from math import ceil
 from pathlib import Path
 from typing import TYPE_CHECKING, ClassVar
 
+from scinoephile.audio.separation import DemucsSeparator
 from scinoephile.audio.transcription.ctc_aligner import CtcAligner
-from scinoephile.audio.transcription.demucs import DemucsSeparator
 from scinoephile.audio.transcription.exceptions import (
     TranscriptionEmptyError,
     TranscriptionInferenceError,

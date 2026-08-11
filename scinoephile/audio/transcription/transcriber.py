@@ -10,10 +10,10 @@ from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, ClassVar
 
+from scinoephile.audio.separation import DemucsSeparator
 from scinoephile.core.exceptions import ScinoephileError
 
 from .cache import TranscriptionCache
-from .demucs import DemucsSeparator
 from .exceptions import TranscriptionEmptyError, TranscriptionError
 from .preprocessing_settings import (
     DemucsMode,

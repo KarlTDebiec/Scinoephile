@@ -1,9 +1,13 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to audio.
+"""Audio source separation implementations.
 
 Package hierarchy (modules may import from any above):
-* samples / separation
-* transcription
-* subtitles
+* demucs
 """
+
+from __future__ import annotations
+
+from .demucs import DemucsSeparator
+
+__all__ = ["DemucsSeparator"]

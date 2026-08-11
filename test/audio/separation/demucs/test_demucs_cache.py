@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of DemucsCache."""
+"""Tests of the Demucs separation cache."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
 from pytest import MonkeyPatch, raises
 
-from scinoephile.audio.transcription.demucs.cache import DemucsCache
+from scinoephile.audio.separation.demucs.cache import DemucsCache
 from scinoephile.core.exceptions import ScinoephileError
 
 
@@ -45,9 +45,7 @@ def test_get_path_includes_cache_version(tmp_path: Path, monkeypatch: MonkeyPatc
     cache = DemucsCache(tmp_path, "model")
     first_cache_path = cache.get_path(audio)
 
-    monkeypatch.setattr(
-        "scinoephile.audio.transcription.demucs.cache._CACHE_VERSION", 2
-    )
+    monkeypatch.setattr("scinoephile.audio.separation.demucs.cache._CACHE_VERSION", 2)
 
     assert cache.get_path(audio) != first_cache_path
 
@@ -59,7 +57,7 @@ def test_load_discards_decode_failure(tmp_path: Path, monkeypatch: MonkeyPatch):
     cache_path = cache.get_path(audio)
     cache_path.write_bytes(b"not audio")
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.demucs.cache.AudioSegment.from_file",
+        "scinoephile.audio.separation.demucs.cache.AudioSegment.from_file",
         Mock(side_effect=CouldntDecodeError("invalid audio")),
     )
 

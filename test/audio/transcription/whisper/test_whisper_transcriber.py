@@ -840,8 +840,8 @@ def test_transcription_imports_without_optional_runtime_dependencies():
 
         sys.meta_path.insert(0, Blocker())
 
+        from scinoephile.audio.separation import DemucsSeparator
         from scinoephile.audio.transcription import (
-            DemucsSeparator,
             TranscribedSegment,
             WhisperTranscriber,
             get_segment_split_at_idx,
