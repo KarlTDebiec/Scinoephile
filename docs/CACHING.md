@@ -1,49 +1,44 @@
 # Caching
 
 This document defines Scinoephile's cache ownership, layout, and lifecycle
-conventions. Cache contents are disposable performance artifacts: removing the
-entire cache must not destroy authored output, user decisions, or other state
-that cannot be regenerated.
+conventions. Cache contents are disposable performance artifacts. Every entry
+must be regenerable from durable inputs and configuration.
 
 ## Cache and data boundaries
 
 Use the runtime cache root for reproducible artifacts such as model output,
 downloaded resources, extracted media streams, and derived analysis. Use the
 runtime data root for durable application state, including user-reviewed or
-user-edited data. A convenient filesystem location does not make durable data a
-cache.
+user-edited data. Authored output and user decisions are durable application
+state.
 
 `cache_root_path: Path | None` consistently means the root beneath all cache
-namespaces. `None` selects `get_runtime_cache_root_path()`; it does not disable
-caching. If an operation ever needs to disable persistence, represent that with
-an explicit option or a different cache implementation.
+namespaces. `None` selects `get_runtime_cache_root_path()`.
 
 ## Responsibilities
 
 A cache class owns storage mechanics:
 
 * resolving and validating the cache root
-* appending its namespace and exposing concrete `cache_root_path` and
+* resolving its registered namespace and exposing concrete `cache_root_path` and
   `cache_dir_path` attributes
 * deriving stable entry paths
 * validating, loading, saving, removing, and marking entries as recently used
 * implementing overwrite-once behavior
 
 The operation that produces an artifact owns computation and external
-dependencies. Extraction, network requests, model inference, parsing, and
-rendering do not belong in cache classes. Producers should follow the simple
-flow of loading from the cache, producing on a miss, and saving the result.
+dependencies, including extraction, network requests, model inference, parsing,
+and rendering. Producers load from the cache, produce on a miss, and save the
+result.
 
-Callers should not derive persistent entry paths, directly delete entries, or
-otherwise duplicate cache lifecycle logic. When a cache contains multiple
-related artifact types, give each type explicit path, load, save, and remove
-methods as needed.
+Callers use the cache's path and lifecycle methods. A cache containing multiple
+related artifact types exposes explicit path, load, save, and remove methods for
+each type as needed.
 
 An operation that owns a cache's lifetime may accept cache configuration and
-construct the cache. A function that accepts a caller-supplied cache should
-accept only that cache, optionally creating a default instance when omitted;
-it should not also accept the cache's constructor arguments. Related caches may
-reuse the owning cache's resolved root and overwrite policy.
+construct the cache. A function supporting cache injection accepts the cache
+itself and may create a default instance when omitted. Related caches may reuse
+the owning cache's resolved root and overwrite policy.
 
 ## Construction and nomenclature
 
@@ -57,39 +52,88 @@ command-line name uses the shorter conventional spelling.
 
 ## Namespaces and entries
 
-Each cache appends its own stable namespace beneath the cache root. Group
-related namespaces under domain directories such as `llm/` and `media/` rather
-than flattening every cache into the root. Do not introduce marker files merely
-to declare namespaces.
+The namespace mirrors the package that owns the produced artifact. The
+Scinoephile operation producing the cache entry determines ownership.
+
+`scinoephile.core.cache.cache_namespace.CacheNamespace` supplies generic
+namespace validation, resolution, and discovery behavior. Each owning package
+defines its concrete namespace enum in `cache_namespace.py`, and its cache
+constructors resolve directories through members of that enum.
+
+`scinoephile.workflows.cache_registry.CACHE_REGISTRY` explicitly aggregates the
+owner-defined enums for application-wide cache inspection, statistics, pruning,
+and clearing. The generic maintenance operations in `scinoephile.core.cache`
+receive this registry from their caller.
+
+The registered layout is:
+
+```text
+audio/
+  classification/<operation>/
+  diarization/
+  separation/
+    demucs/
+  transcription/
+    mlx_audio/
+    whisper/
+  vad/
+dictionaries/
+  cuhk/
+    discovery/
+    pages/
+image/
+  ocr/
+    lens/
+    paddle/
+    tesseract/
+      results/
+      legacy_data/
+lang/
+  zho/
+    subtitles/
+      analysis/
+llms/
+  <operation>/
+media/
+  subtitles/
+```
+
+Namespace segments use Python module spelling, including underscores such as
+`mlx_audio`. A parameterized `<operation>` segment is one validated path
+component. Materially different entry types receive separate leaf namespaces,
+as with Tesseract results and legacy trained data.
+
+The registry covers Scinoephile-owned caches. Dependency-managed caches,
+including Hugging Face, Torch Hub, Whisper model, and Paddle model caches, retain
+their dependencies' layouts and lifecycle.
 
 Cache inspection treats each direct child of a namespace as one independently
 removable entry. A directory entry may contain related files that must be kept
-or removed together. New grouped or nested namespace layouts must also be made
-discoverable by `scinoephile.core.cache.operations` so list, stats, prune, and
-clear commands agree with the owning cache.
+or removed together. Add a new namespace to its owner's enum; the cache
+constructor and application registry then consume the same declaration.
 
-Keep namespace names and entry boundaries stable when possible. Layout changes
-should not cause one cache's maintenance operation to delete another cache's
-entries.
+Keep namespace names and entry boundaries stable across compatible releases.
+Layout changes preserve isolation between namespaces.
 
 ## Identity and versioning
 
 An entry identity must include every input and configuration value that can
 change the reusable result. Depending on the domain, that may include source
 content or file metadata, model and backend identifiers, language, preprocessing
-settings, or prompt content. Exclude credentials, transient client objects, and
-unstable representations.
+settings, or prompt content. Identity values are stable and non-secret;
+credentials, transient client objects, and unstable representations remain
+outside the identity.
 
 Persistent cache implementations should define a private `_CACHE_VERSION`
 constant and include it in the serialized payload, identity hash, or path.
 Increment it whenever older entries are no longer safe to reuse. A version is
-local to the cache format; there is no global cache schema version.
+local to the cache format, and each cache owns its version independently.
 
 ## Lifecycle behavior
 
 Cache APIs should make hits, misses, and mutations explicit:
 
-* `get_path(...)` derives the entry location without implementing production.
+* `get_path(...)` derives the entry location.
 * `load(...)` returns the validated cached value or path, and returns `None` for
   a miss.
 * `save(...)` persists a complete value and returns its path.
@@ -100,11 +144,10 @@ Treat unreadable, malformed, mismatched, or unsupported entries as misses:
 remove them, log the reason, and allow the producer to regenerate them. A
 successful load should update the entry's modification timestamp inside the
 cache so pruning reflects recent reuse. If a caller performs additional domain
-validation, it should remove a rejected entry rather than managing timestamps
-itself.
+validation, it removes a rejected entry through the cache.
 
 Use clear log verbs consistently: `Loaded`, `Saved`, `Removed`, and `Discarded
-invalid`. Cache misses do not normally need logging.
+invalid`.
 
 ## Overwrite behavior
 
@@ -113,8 +156,7 @@ per cache instance. Track refreshed paths so an entry saved earlier in the same
 operation can be reused rather than immediately removed. A successful save
 counts as a refresh.
 
-Do not clear an entire namespace when overwrite is requested. Only entries whose
-identities are actually requested should be replaced.
+Replacement is scoped to requested entry identities.
 
 ## Filesystem safety
 
@@ -124,9 +166,8 @@ new artifact is complete. Cache classes create their required destination
 directories; producers may use cache-owned locations for same-filesystem
 staging but should hand completed artifacts back to the cache for persistence.
 
-Failed production or serialization must not leave a partial entry that can be
-mistaken for a hit. Removal code must not follow symbolic links when recursively
-deleting directory entries.
+Failed production or serialization leaves the previous valid entry intact or no
+entry. Recursive removal treats symbolic links as leaf entries.
 
 ## CLI and maintenance integration
 
@@ -152,5 +193,4 @@ Cache tests should cover the behavior relevant to their format:
 * namespace discovery and entry boundaries for new layouts
 
 Producer tests should separately verify cache-hit reuse, production on a miss,
-and save behavior without making the cache responsible for the production
-dependency.
+and save behavior.

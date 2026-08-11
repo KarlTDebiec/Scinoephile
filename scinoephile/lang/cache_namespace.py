@@ -12,5 +12,5 @@ __all__ = ["LangCacheNamespace"]
 class LangCacheNamespace(CacheNamespace):
     """Cache namespaces owned by the lang package."""
 
-    ZHO_SUBTITLES_ANALYSIS = "media/subtitles/analysis"
+    ZHO_SUBTITLES_ANALYSIS = "lang/zho/subtitles/analysis"
     """Chinese subtitle script analysis results."""

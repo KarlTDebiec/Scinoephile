@@ -12,9 +12,15 @@ __all__ = ["AudioCacheNamespace"]
 class AudioCacheNamespace(CacheNamespace):
     """Cache namespaces owned by the audio package."""
 
-    SEPARATION_DEMUCS = "demucs"
+    CLASSIFICATION_OPERATION = "audio/classification/<operation>"
+    """Operation-specific audio classification artifacts."""
+    DIARIZATION = "audio/diarization"
+    """Audio diarization artifacts."""
+    SEPARATION_DEMUCS = "audio/separation/demucs"
     """Demucs-separated audio."""
-    TRANSCRIPTION_MLX_AUDIO = "mlx-audio"
+    TRANSCRIPTION_MLX_AUDIO = "audio/transcription/mlx_audio"
     """MLX-Audio transcription results."""
-    TRANSCRIPTION_WHISPER = "whisper"
+    TRANSCRIPTION_WHISPER = "audio/transcription/whisper"
     """Whisper transcription results."""
+    VAD = "audio/vad"
+    """Voice activity detection traces."""

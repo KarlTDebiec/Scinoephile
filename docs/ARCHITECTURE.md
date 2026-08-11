@@ -38,11 +38,11 @@ authoritative hierarchy declaration above for ordering.
 | `audio` | Audio representations, source separation, transcription, and audio-derived subtitles |
 | `cli` | Argument parsing, localization, validation, and user-facing adapters |
 | `common` | General-purpose utilities with no dependencies on other Scinoephile packages |
-| `core` | Stable subtitle-domain primitives, timing, synchronization, caching, and shared CLI support |
+| `core` | Stable subtitle-domain primitives, timing, synchronization, generic caching and LLM infrastructure, and shared CLI support |
 | `dictionaries` | Dictionary lookup, parsing, and cache construction |
 | `image` | Image subtitle representations, drawing, OCR, and OCR validation |
 | `lang` | Language-specific, cross-language, and language-pair subtitle operations |
-| `llms` | Prompt types, providers, structured correspondence, and model-facing processing |
+| `llms` | Concrete prompt workflows, providers, and model-facing processing |
 | `media` | Media probing, subtitle extraction, cache analysis, and visual offset estimation |
 | `optimization` | Prompt optimization contracts, operation registry, and persistence |
 | `web` | Web interfaces for interactive operations |

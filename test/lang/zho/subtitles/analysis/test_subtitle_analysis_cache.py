@@ -24,7 +24,7 @@ def test_subtitle_script_analysis_cache_uses_runtime_default(
 
     assert cache.cache_root_path == runtime_cache_root_path
     assert cache.cache_dir_path == (
-        runtime_cache_root_path / "media" / "subtitles" / "analysis"
+        runtime_cache_root_path / "lang/zho/subtitles/analysis"
     )
 
 
@@ -44,7 +44,7 @@ def test_subtitle_script_analysis_cache_round_trip(tmp_path: Path):
 
     cache_path = cache.save(infile_path, stream, 4, ("zho-Hans", "zho-Hant"), analysis)
 
-    assert cache_path.parent == tmp_path / "cache/media/subtitles/analysis"
+    assert cache_path.parent == tmp_path / "cache/lang/zho/subtitles/analysis"
     assert cache.load(infile_path, stream, 4, ("zho-Hans", "zho-Hant")) == analysis
     payload = json.loads(cache_path.read_text(encoding="utf-8"))
     assert payload["cache_version"] == 1

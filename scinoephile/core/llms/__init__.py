@@ -4,11 +4,11 @@
 
 Package hierarchy (modules may import from any above):
 * cache_namespace / metrics / models / prompt / tool
-* answer / query / test_case_subtitle / tool_box
+* answer / cache / query / test_case_subtitle / tool_box
 * llm_provider / test_case
-* manager / openai_provider_base / cache
-* queryer
+* manager / openai_provider_base
 * utils
+* queryer
 * processor
 """
 
@@ -41,10 +41,10 @@ __all__ = [
     "LlmCacheNamespace",
     "Manager",
     "OpenAIProviderBase",
-    "Processor",
-    "ProcessorKwargs",
     "Prompt",
     "PromptModelField",
+    "Processor",
+    "ProcessorKwargs",
     "Query",
     "Queryer",
     "SharedPromptLocalizationFields",

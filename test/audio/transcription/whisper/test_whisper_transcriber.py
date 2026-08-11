@@ -184,8 +184,8 @@ def test_get_cache_path_separates_configuration(
     first_cache_path = _get_cache_path(first_transcriber, audio)
     second_cache_path = _get_cache_path(second_transcriber, audio)
 
-    assert first_cache_path.parent == tmp_path / "whisper"
-    assert second_cache_path.parent == tmp_path / "whisper"
+    assert first_cache_path.parent == tmp_path / "audio/transcription/whisper"
+    assert second_cache_path.parent == tmp_path / "audio/transcription/whisper"
     assert first_cache_path != second_cache_path
 
 

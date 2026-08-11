@@ -12,7 +12,7 @@ __all__ = ["DictionariesCacheNamespace"]
 class DictionariesCacheNamespace(CacheNamespace):
     """Cache namespaces owned by the dictionaries package."""
 
-    CUHK_DISCOVERY = "cuhk-discovery"
+    CUHK_DISCOVERY = "dictionaries/cuhk/discovery"
     """CUHK dictionary discovery responses."""
-    CUHK_PAGES = "cuhk-pages"
+    CUHK_PAGES = "dictionaries/cuhk/pages"
     """CUHK dictionary entry pages."""

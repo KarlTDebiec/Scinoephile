@@ -91,8 +91,12 @@ def test_get_cache_path_separates_model_configuration():
     first_cache_path = _get_cache_path(first_transcriber, audio)
     second_cache_path = _get_cache_path(second_transcriber, audio)
 
-    assert first_cache_path.parent == Path("/tmp/mlx-audio").resolve()
-    assert second_cache_path.parent == Path("/tmp/mlx-audio").resolve()
+    assert (
+        first_cache_path.parent == Path("/tmp/audio/transcription/mlx_audio").resolve()
+    )
+    assert (
+        second_cache_path.parent == Path("/tmp/audio/transcription/mlx_audio").resolve()
+    )
     assert first_cache_path != second_cache_path
 
 

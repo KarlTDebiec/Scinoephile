@@ -24,7 +24,7 @@ def test_demucs_cache_uses_runtime_default(runtime_cache_root_path: Path):
     cache = DemucsCache(None, "model")
 
     assert cache.cache_root_path == runtime_cache_root_path
-    assert cache.cache_dir_path == runtime_cache_root_path / "demucs"
+    assert cache.cache_dir_path == (runtime_cache_root_path / "audio/separation/demucs")
 
 
 def test_get_path_separates_model_configuration(tmp_path: Path):
@@ -34,8 +34,8 @@ def test_get_path_separates_model_configuration(tmp_path: Path):
     first_cache_path = DemucsCache(tmp_path, "model-one").get_path(audio)
     second_cache_path = DemucsCache(tmp_path, "model-two").get_path(audio)
 
-    assert first_cache_path.parent == tmp_path / "demucs"
-    assert second_cache_path.parent == tmp_path / "demucs"
+    assert first_cache_path.parent == tmp_path / "audio/separation/demucs"
+    assert second_cache_path.parent == tmp_path / "audio/separation/demucs"
     assert first_cache_path != second_cache_path
 
 

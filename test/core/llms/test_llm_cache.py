@@ -9,7 +9,7 @@ from time import time
 
 from pytest import MonkeyPatch, raises
 
-from scinoephile.core.llms.cache import LlmCache
+from scinoephile.core.llms import LlmCache
 from test.helpers.files import set_mtime
 
 
@@ -26,7 +26,7 @@ def test_llm_cache_uses_runtime_default(runtime_cache_root_path: Path):
 
     assert cache.cache_root_path == runtime_cache_root_path
     assert cache.operation == "translation"
-    assert cache_path.parent == runtime_cache_root_path / "llm" / "translation"
+    assert cache_path.parent == runtime_cache_root_path / "llms" / "translation"
     assert cache.load(cache_path) == "response"
 
 
@@ -52,8 +52,8 @@ def test_llm_cache_uses_operation_subdirectories(tmp_path: Path):
     )
     review_path = review_cache.get_path("provider", "system", "tools", "query")
 
-    assert translation_path.parent == tmp_path / "llm" / "translation"
-    assert review_path.parent == tmp_path / "llm" / "review"
+    assert translation_path.parent == tmp_path / "llms" / "translation"
+    assert review_path.parent == tmp_path / "llms" / "review"
     assert translation_path.name == review_path.name
 
 
