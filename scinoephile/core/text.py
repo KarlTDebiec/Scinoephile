@@ -35,8 +35,10 @@ __all__ = [
     "dedent_and_compact",
     "get_char_type",
     "is_full_width_char",
+    "is_lexical_character",
     "join_text_lines",
     "normalize_fullwidth_alphanumerics",
+    "normalize_nfkc",
     "normalize_ocr_confusables",
     "normalize_text",
     "replace_control_characters",
@@ -314,6 +316,17 @@ def is_full_width_char(char: str) -> bool:
     return get_char_type(char) == "full"
 
 
+def is_lexical_character(character: str) -> bool:
+    """Whether a character represents lexical text.
+
+    Arguments:
+        character: character to classify
+    Returns:
+        whether the character is lexical rather than formatting or punctuation
+    """
+    return not unicodedata.category(character).startswith(("C", "P", "S", "Z"))
+
+
 def join_text_lines(texts: Sequence[str]) -> str:
     """Join text lines with display-width-aware spaces.
 
@@ -352,6 +365,18 @@ def normalize_fullwidth_alphanumerics(text: str) -> str:
         text with fullwidth alphanumeric characters normalized
     """
     return text.translate(_FULLWIDTH_ALPHANUMERICS_TO_ASCII)
+
+
+@cache
+def normalize_nfkc(text: str) -> str:
+    """Normalize text using Unicode compatibility composition.
+
+    Arguments:
+        text: text to normalize
+    Returns:
+        Unicode NFKC-normalized text
+    """
+    return unicodedata.normalize("NFKC", text)
 
 
 def normalize_ocr_confusables(text: str) -> str:
