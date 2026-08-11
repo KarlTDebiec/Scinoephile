@@ -42,6 +42,11 @@
 
 ## Exports
 * Include `__all__` in Python modules that export public names.
+* Treat module-level functions, classes, and type aliases without a leading
+  underscore as public definitions and include them in `__all__`.
+* Do not infer assignment or import intent from name spelling alone. List
+  constants and imported aliases in `__all__` when they are part of the public
+  API.
 * Do not include empty `__all__` assignments.
 * `__all__` should list the intended public API for the module.
 * Do not include internal helpers, which are names prefixed with an underscore.
