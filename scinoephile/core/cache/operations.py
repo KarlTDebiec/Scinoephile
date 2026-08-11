@@ -26,8 +26,6 @@ __all__ = [
 
 _CACHE_NAMESPACE_GROUP_NAMES = ("llm", "media")
 """Root directory names whose direct children are cache namespaces."""
-_LEGACY_CACHE_NAMESPACE_MARKER_FILENAME = ".scinoephile-cache-namespace"
-"""Obsolete namespace marker filename ignored during cache inspection."""
 _NESTED_CACHE_NAMESPACE_NAMES = ("media/subtitles/analysis",)
 """Cache namespaces nested beneath another cache namespace."""
 
@@ -321,7 +319,6 @@ def _get_cache_entries(
             _build_cache_entry(cache_root_path, namespace_name, child_path)
             for child_path in sorted(namespace_dir_path.iterdir())
             if child_path.name not in nested_namespace_dir_names
-            and child_path.name != _LEGACY_CACHE_NAMESPACE_MARKER_FILENAME
         )
     return entries
 
