@@ -40,6 +40,7 @@ __all__ = [
     "MlxAudioTimingMode",
     "TranscribedSegmentSplitter",
     "TranscriptionModel",
+    "get_segment_split_on_phrase_timings",
 ]
 
 
@@ -332,7 +333,7 @@ class GuidedTranscriber:
                 if self.mlx_audio_timing_mode is MlxAudioTimingMode.SEGMENT:
                     timed_segments.append(segment)
                 elif self.mlx_audio_timing_mode is MlxAudioTimingMode.PHRASE:
-                    timed_segments.extend(_get_segment_split_on_phrase_timings(segment))
+                    timed_segments.extend(get_segment_split_on_phrase_timings(segment))
                 else:
                     timed_segments.extend(get_segment_split_on_word_timings(segment))
             split_segments = [
@@ -642,80 +643,7 @@ class GuidedTranscriber:
         return has_text
 
 
-def _get_phrase_boundary_scores(
-    text: str,
-    words: list[TranscribedWord],
-    durations: list[float],
-    pause_threshold: float,
-) -> dict[int, int]:
-    """Score phrase boundaries using punctuation and CTC hold durations."""
-    boundary_scores: dict[int, int] = {}
-    for character_index, character in enumerate(text, 1):
-        if character in _MLX_PHRASE_STRONG_PUNCTUATION:
-            boundary_scores[character_index] = 4
-        elif character in _MLX_PHRASE_WEAK_PUNCTUATION:
-            boundary_scores[character_index] = 2
-
-    character_offset = 0
-    for word, duration in zip(words, durations, strict=True):
-        character_offset += len(word.text)
-        boundary_scores.setdefault(character_offset, 1)
-        if duration >= pause_threshold:
-            boundary_scores[character_offset] = max(
-                boundary_scores[character_offset], 3
-            )
-    return boundary_scores
-
-
-def _get_segment_without_generated_punctuation(
-    segment: TranscribedSegment,
-) -> TranscribedSegment:
-    """Remove generated punctuation from segment text and word timing data.
-
-    Arguments:
-        segment: timed transcription segment
-    Returns:
-        segment whose text and word data use matching character offsets
-    """
-    keep_characters = _get_text_character_retention(segment.text)
-    text = _strip_generated_punctuation(segment.text)
-    if not segment.words:
-        return segment.model_copy(update={"text": text})
-
-    # Apply the segment-level retention map to its corresponding timed words
-    word_text = "".join(word.text for word in segment.words)
-    if word_text == segment.text:
-        words: list[TranscribedWord] = []
-        character_offset = 0
-        for word in segment.words:
-            word_end = character_offset + len(word.text)
-            retained_word_text = "".join(
-                character
-                for character, keep_character in zip(
-                    word.text, keep_characters[character_offset:word_end], strict=True
-                )
-                if keep_character
-            )
-            if retained_word_text:
-                words.append(word.model_copy(update={"text": retained_word_text}))
-            character_offset = word_end
-        return segment.model_copy(update={"text": text, "words": words})
-
-    # Preserve safe offsets when backend word text cannot be mapped character-wise
-    words = []
-    if text:
-        words.append(
-            TranscribedWord(
-                text=text,
-                start=segment.start,
-                end=segment.end,
-                confidence=min(word.confidence for word in segment.words),
-            )
-        )
-    return segment.model_copy(update={"text": text, "words": words})
-
-
-def _get_segment_split_on_phrase_timings(
+def get_segment_split_on_phrase_timings(
     segment: TranscribedSegment,
 ) -> list[TranscribedSegment]:
     """Split an MLX-Audio segment into phrase-sized CTC timing groups.
@@ -795,6 +723,79 @@ def _get_segment_split_on_phrase_timings(
         previous_offset = split_offset
     output.append(remaining)
     return output
+
+
+def _get_phrase_boundary_scores(
+    text: str,
+    words: list[TranscribedWord],
+    durations: list[float],
+    pause_threshold: float,
+) -> dict[int, int]:
+    """Score phrase boundaries using punctuation and CTC hold durations."""
+    boundary_scores: dict[int, int] = {}
+    for character_index, character in enumerate(text, 1):
+        if character in _MLX_PHRASE_STRONG_PUNCTUATION:
+            boundary_scores[character_index] = 4
+        elif character in _MLX_PHRASE_WEAK_PUNCTUATION:
+            boundary_scores[character_index] = 2
+
+    character_offset = 0
+    for word, duration in zip(words, durations, strict=True):
+        character_offset += len(word.text)
+        boundary_scores.setdefault(character_offset, 1)
+        if duration >= pause_threshold:
+            boundary_scores[character_offset] = max(
+                boundary_scores[character_offset], 3
+            )
+    return boundary_scores
+
+
+def _get_segment_without_generated_punctuation(
+    segment: TranscribedSegment,
+) -> TranscribedSegment:
+    """Remove generated punctuation from segment text and word timing data.
+
+    Arguments:
+        segment: timed transcription segment
+    Returns:
+        segment whose text and word data use matching character offsets
+    """
+    keep_characters = _get_text_character_retention(segment.text)
+    text = _strip_generated_punctuation(segment.text)
+    if not segment.words:
+        return segment.model_copy(update={"text": text})
+
+    # Apply the segment-level retention map to its corresponding timed words
+    word_text = "".join(word.text for word in segment.words)
+    if word_text == segment.text:
+        words: list[TranscribedWord] = []
+        character_offset = 0
+        for word in segment.words:
+            word_end = character_offset + len(word.text)
+            retained_word_text = "".join(
+                character
+                for character, keep_character in zip(
+                    word.text, keep_characters[character_offset:word_end], strict=True
+                )
+                if keep_character
+            )
+            if retained_word_text:
+                words.append(word.model_copy(update={"text": retained_word_text}))
+            character_offset = word_end
+        return segment.model_copy(update={"text": text, "words": words})
+
+    # Preserve safe offsets when backend word text cannot be mapped character-wise
+    words = []
+    if text:
+        words.append(
+            TranscribedWord(
+                text=text,
+                start=segment.start,
+                end=segment.end,
+                confidence=min(word.confidence for word in segment.words),
+            )
+        )
+    return segment.model_copy(update={"text": text, "words": words})
 
 
 def _get_text_character_retention(text: str) -> list[bool]:

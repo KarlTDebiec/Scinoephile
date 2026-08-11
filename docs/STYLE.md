@@ -27,6 +27,10 @@
   owns the name so internal dependencies remain visible (for example, use
   `from scinoephile.core.exceptions import ScinoephileError` within
   `scinoephile.core.llms`, not `from scinoephile.core import ScinoephileError`).
+* Do not import underscore-prefixed names from another project module. If a
+  project-owned name is needed across a module boundary, make it public and
+  include it in the owning module's `__all__`. This restriction does not apply
+  to standard-library or third-party modules.
 * Use `if TYPE_CHECKING:` blocks only when necessary to avoid circular imports.
 * Name dedicated lazy-import helpers
   `import_<module>[_<symbol_or_purpose>]` when public and
