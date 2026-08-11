@@ -7,7 +7,7 @@ from __future__ import annotations
 import unicodedata
 from typing import ClassVar, Self
 
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase
 from scinoephile.core.llms.models import LLMModel
@@ -45,6 +45,20 @@ class TranscriptionSource(LLMModel):
     text: str = Field(min_length=1, max_length=10_000)
     """Column-aligned ASR characters and gaps."""
 
+    @field_validator("name", mode="before")
+    @classmethod
+    def normalize_name(cls, name: object) -> object:
+        """Strip surrounding whitespace from a source name.
+
+        Arguments:
+            name: source name to normalize
+        Returns:
+            normalized source name
+        """
+        if isinstance(name, str):
+            return name.strip()
+        return name
+
 
 class TranscriptionQuery(Query):
     """Reference-free aligned ASR and speaker evidence for one request."""
@@ -66,8 +80,8 @@ class TranscriptionQuery(Query):
     def validate_rows(self) -> Self:
         """Ensure the request contains a valid equal-width ASR alignment."""
         # Source names identify independent ASR inputs, not reference guides
-        names = [source.name.strip() for source in self.sources]
-        if any(not name for name in names) or len(set(names)) != len(names):
+        names = [source.name for source in self.sources]
+        if len(set(names)) != len(names):
             raise ValueError(self.prompt.source_name_err)
         if any(name.casefold() in {"guide", "reference"} for name in names):
             raise ValueError(self.prompt.reference_source_err)

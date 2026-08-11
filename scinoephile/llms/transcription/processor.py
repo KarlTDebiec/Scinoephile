@@ -110,10 +110,18 @@ def _get_request_queries(query: TranscriptionQuery) -> tuple[TranscriptionQuery,
     content_spans = []
     content_start = 0
     pause_start: int | None = None
+    rows = (
+        query.speaker,
+        *(source.text for source in query.sources),
+        *(
+            annotation
+            for annotation in (query.language, query.singing, query.music)
+            if annotation is not None
+        ),
+    )
     for column_idx in range(len(query.speaker) + 1):
-        is_shared_pause = column_idx < len(query.speaker) and (
-            query.speaker[column_idx] == "・"
-            and all(source.text[column_idx] == "・" for source in query.sources)
+        is_shared_pause = column_idx < len(query.speaker) and all(
+            row[column_idx] == "・" for row in rows
         )
         if is_shared_pause:
             if pause_start is None:

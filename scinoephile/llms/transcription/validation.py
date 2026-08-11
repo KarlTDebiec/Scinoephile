@@ -118,12 +118,12 @@ class TranscriptionAlignmentScorer:
                 tuple(
                     source_text[column_idx]
                     for source_text in source_texts
-                    if source_text[column_idx] not in {"　", "・"}
+                    if is_lexical_character(source_text[column_idx])
                 ),
             )
             for column_idx in range(len(source_texts[0]))
             if any(
-                source_text[column_idx] not in {"　", "・"}
+                is_lexical_character(source_text[column_idx])
                 for source_text in source_texts
             )
         )

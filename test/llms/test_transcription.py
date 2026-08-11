@@ -23,6 +23,7 @@ from scinoephile.llms.transcription import (
     TranscriptionSource,
     TranscriptionTestCase,
 )
+from test.helpers import parametrize
 
 _LOCALIZED_PROMPT = TranscriptionPrompt(
     language=Language.yue_hant,
@@ -151,6 +152,24 @@ def test_query_supports_future_sources_and_requires_equal_width_rows():
     ]
     with raises(ValidationError, match="equal nonzero lengths"):
         query_cls.model_validate({**query_data, "speaker": "Ａ"})
+
+
+def test_query_strips_source_names_before_checking_uniqueness():
+    """Source names should be normalized before storage and comparison."""
+    query = TranscriptionQuery(
+        sources=[TranscriptionSource(name=" one ", text="甲")], speaker="Ａ"
+    )
+
+    assert query.sources[0].name == "one"
+
+    with raises(ValidationError, match="nonblank and unique"):
+        TranscriptionQuery(
+            sources=[
+                TranscriptionSource(name="one", text="甲"),
+                TranscriptionSource(name=" one ", text="甲"),
+            ],
+            speaker="Ａ",
+        )
 
 
 def test_query_supports_one_source():
@@ -303,6 +322,40 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
     }
 
 
+@parametrize(
+    ("language", "singing", "music"),
+    [
+        ("粵・英・・日", None, None),
+        (None, "　・唱・・　", None),
+        (None, None, "　・樂・・　"),
+    ],
+)
+def test_processor_does_not_split_when_an_optional_row_breaks_a_pause(
+    language: str | None, singing: str | None, music: str | None
+):
+    """A pause is shared only when every present analysis row marks it."""
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    provider.chat_completion.return_value = json.dumps(
+        {"wenben": "甲乙｜"}, ensure_ascii=False
+    )
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
+
+    answer = processor.process(
+        _get_sources("甲・・・・乙", "甲・・・・乙"),
+        "Ａ・・・・Ｂ",
+        language=language,
+        singing=singing,
+        music=music,
+    )
+
+    assert answer.transcript == "甲乙"
+    provider.chat_completion.assert_called_once()
+
+
 def test_processor_omits_one_request_without_discarding_later_consensus():
     """An empty request answer should not discard other request transcripts."""
     provider = Mock(
@@ -416,6 +469,24 @@ def test_answer_coverage_accepts_compatibility_width_equivalence():
 
     test_case = TranscriptionTestCase(query=query, answer=answer)
 
+    assert test_case.answer == answer
+
+
+def test_answer_coverage_ignores_nonlexical_source_columns():
+    """Punctuation and spaces should not count as required answer evidence."""
+    source_text = "甲，乙 丙，丁 戊，己"
+    query = TranscriptionQuery(
+        sources=_get_sources(source_text, source_text), speaker="Ａ" * len(source_text)
+    )
+    answer = TranscriptionAnswer(text="甲乙丙丁戊己｜")
+
+    validation = TranscriptionAlignmentScorer().score(
+        (source_text, source_text), answer.transcript
+    )
+    test_case = TranscriptionTestCase(query=query, answer=answer)
+
+    assert validation.majority_column_count == 6
+    assert validation.majority_coverage == 1.0
     assert test_case.answer == answer
 
 
