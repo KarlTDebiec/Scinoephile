@@ -11,6 +11,7 @@ from tempfile import TemporaryDirectory
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_root_path
+from scinoephile.image.cache_namespace import ImageCacheNamespace
 
 __all__ = ["TesseractLegacyDataCache"]
 
@@ -35,7 +36,9 @@ class TesseractLegacyDataCache:
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which traineddata files are cached."""
         self.cache_dir_path = val_output_dir_path(
-            self.cache_root_path / "tesseract-legacy-data"
+            ImageCacheNamespace.OCR_TESSERACT_LEGACY_DATA.get_dir_path(
+                self.cache_root_path
+            )
         )
         """Directory in which legacy-capable traineddata files are stored."""
 

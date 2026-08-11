@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, ClassVar
 
 from scinoephile.audio.separation import DemucsSeparator
+from scinoephile.core.cache.cache_namespace import CacheNamespace
 from scinoephile.core.exceptions import ScinoephileError
 
 from .cache import TranscriptionCache
@@ -32,6 +33,9 @@ logger = getLogger(__name__)
 
 class Transcriber(ABC):
     """Transcribes audio across configured Demucs and VAD fallbacks."""
+
+    cache_namespace: ClassVar[CacheNamespace]
+    """Registered namespace for cached backend output."""
 
     backend_name: ClassVar[str]
     """Stable backend name stored in cache metadata."""
@@ -63,7 +67,11 @@ class Transcriber(ABC):
         """Voice activity detection mode."""
 
         self._cache = TranscriptionCache(
-            cache_root_path, self.backend_name, self.backend_label, overwrite_cache
+            cache_root_path,
+            self.cache_namespace,
+            self.backend_name,
+            self.backend_label,
+            overwrite_cache,
         )
         """Timestamped transcription cache."""
 

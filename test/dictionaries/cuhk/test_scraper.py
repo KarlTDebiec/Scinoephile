@@ -10,6 +10,7 @@ from unittest.mock import Mock
 
 from pytest import MonkeyPatch, raises
 
+from scinoephile.dictionaries.cache_namespace import DictionariesCacheNamespace
 from scinoephile.dictionaries.cuhk.cache import CuhkResponseCache
 from scinoephile.dictionaries.cuhk.scraper import CuhkDictionaryScraper
 from test.helpers.files import set_mtime
@@ -17,9 +18,11 @@ from test.helpers.files import set_mtime
 
 def test_response_cache_overwrites_matching_entry_once(tmp_path: Path):
     """Test overwrite refreshes a matching CUHK response once per instance."""
-    cache = CuhkResponseCache(tmp_path, "cuhk-discovery")
+    cache = CuhkResponseCache(tmp_path, DictionariesCacheNamespace.CUHK_DISCOVERY)
     cache.save("terms", "stale")
-    overwrite_cache = CuhkResponseCache(tmp_path, "cuhk-discovery", True)
+    overwrite_cache = CuhkResponseCache(
+        tmp_path, DictionariesCacheNamespace.CUHK_DISCOVERY, True
+    )
 
     assert overwrite_cache.load("terms") is None
     overwrite_cache.save("terms", "fresh")
@@ -29,7 +32,7 @@ def test_response_cache_overwrites_matching_entry_once(tmp_path: Path):
 
 def test_response_cache_marks_matching_entry_used(tmp_path: Path):
     """Test a CUHK response cache hit refreshes its pruning timestamp."""
-    cache = CuhkResponseCache(tmp_path, "cuhk-discovery")
+    cache = CuhkResponseCache(tmp_path, DictionariesCacheNamespace.CUHK_DISCOVERY)
     cache_path = cache.save("terms", "cached")
     old_timestamp = time() - 60 * 60 * 24 * 40
     set_mtime(cache_path, old_timestamp)
@@ -42,7 +45,7 @@ def test_response_cache_marks_matching_entry_used(tmp_path: Path):
 
 def test_response_cache_discards_invalid_entry(tmp_path: Path):
     """Test an unreadable CUHK response cache is treated as a miss."""
-    cache = CuhkResponseCache(tmp_path, "cuhk-discovery")
+    cache = CuhkResponseCache(tmp_path, DictionariesCacheNamespace.CUHK_DISCOVERY)
     cache_path = cache.get_path("terms")
     cache_path.parent.mkdir()
     cache_path.write_bytes(b"\xff")
@@ -61,7 +64,7 @@ def test_response_cache_namespaces_are_flat(tmp_path: Path):
 
 def test_response_cache_paths_include_version(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test CUHK response cache paths differ between cache versions."""
-    cache = CuhkResponseCache(tmp_path, "cuhk-discovery")
+    cache = CuhkResponseCache(tmp_path, DictionariesCacheNamespace.CUHK_DISCOVERY)
     first_cache_path = cache.get_path("terms")
 
     monkeypatch.setattr("scinoephile.dictionaries.cuhk.cache._CACHE_VERSION", 2)
@@ -71,7 +74,7 @@ def test_response_cache_paths_include_version(tmp_path: Path, monkeypatch: Monke
 
 def test_response_cache_rejects_unsafe_stem(tmp_path: Path):
     """Test CUHK response stems may not escape the cache directory."""
-    cache = CuhkResponseCache(tmp_path, "cuhk-discovery")
+    cache = CuhkResponseCache(tmp_path, DictionariesCacheNamespace.CUHK_DISCOVERY)
 
     with raises(ValueError, match="single contained filename"):
         cache.get_path("../terms")

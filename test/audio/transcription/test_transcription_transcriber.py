@@ -11,6 +11,7 @@ from unittest.mock import Mock
 from pydub import AudioSegment
 from pytest import raises
 
+from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.transcription import (
     DemucsMode,
     TranscribedSegment,
@@ -33,6 +34,7 @@ def _get_segment(text: str) -> TranscribedSegment:
 class _TestTranscriber(Transcriber):
     """Concrete transcriber exposing shared control flow for testing."""
 
+    cache_namespace = AudioCacheNamespace.TRANSCRIPTION_WHISPER
     backend_name = "test"
     backend_label = "Test"
 
@@ -86,7 +88,7 @@ def test_get_preprocessing_settings_orders_preferred_configurations_first(
     """Test automatic modes try Demucs and VAD before their fallbacks."""
     transcriber = _TestTranscriber(tmp_path, DemucsMode.AUTO, VadMode.AUTO)
 
-    assert transcriber._cache.cache_dir_path == tmp_path / "test"
+    assert transcriber._cache.cache_dir_path == tmp_path / "whisper"
     assert transcriber.demucs_separator is not None
     assert transcriber.demucs_separator._cache.cache_dir_path == tmp_path / "demucs"
     assert transcriber._get_preprocessing_settings() == (
@@ -155,7 +157,9 @@ def test_overwrite_removes_all_configuration_caches_before_transcribing(tmp_path
         tmp_path, DemucsMode.AUTO, VadMode.AUTO, overwrite_cache=True
     )
     preprocessing_settings = transcriber._get_preprocessing_settings()
-    stale_cache = TranscriptionCache(tmp_path, "test", "Test")
+    stale_cache = TranscriptionCache(
+        tmp_path, AudioCacheNamespace.TRANSCRIPTION_WHISPER, "test", "Test"
+    )
     cache_paths = []
     for settings in preprocessing_settings:
         cache_path = stale_cache.save(

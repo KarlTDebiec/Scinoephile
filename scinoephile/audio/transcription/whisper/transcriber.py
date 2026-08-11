@@ -10,6 +10,7 @@ from math import ceil
 from pathlib import Path
 from typing import TYPE_CHECKING, ClassVar
 
+from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.separation import DemucsSeparator
 from scinoephile.audio.transcription.ctc_aligner import CtcAligner
 from scinoephile.audio.transcription.exceptions import (
@@ -57,6 +58,9 @@ logger = getLogger(__name__)
 
 class WhisperTranscriber(Transcriber):
     """Transcribes audio using Whisper."""
+
+    cache_namespace = AudioCacheNamespace.TRANSCRIPTION_WHISPER
+    """Registered namespace for cached Whisper output."""
 
     backend_name = "whisper"
     """Stable backend name stored in cache metadata."""

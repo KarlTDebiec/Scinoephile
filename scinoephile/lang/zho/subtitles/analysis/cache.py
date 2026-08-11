@@ -16,6 +16,7 @@ from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.paths import get_runtime_cache_root_path
+from scinoephile.lang.cache_namespace import LangCacheNamespace
 
 from .result import ZhoScriptAnalysisResult
 
@@ -42,7 +43,7 @@ class ZhoScriptAnalysisCache:
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which script analyses are cached."""
         self.cache_dir_path = val_output_dir_path(
-            self.cache_root_path / "media" / "subtitles" / "analysis"
+            LangCacheNamespace.ZHO_SUBTITLES_ANALYSIS.get_dir_path(self.cache_root_path)
         )
         """Directory in which cached script analyses are stored."""
 

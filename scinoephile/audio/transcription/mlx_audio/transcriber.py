@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
+from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.separation import DemucsSeparator
 from scinoephile.audio.transcription.ctc_aligner import CtcAligner
 from scinoephile.audio.transcription.exceptions import (
@@ -72,6 +73,9 @@ class _MlxAudioTokenLimitError(TranscriptionInferenceError):
 
 class MlxAudioTranscriber(Transcriber):
     """Transcribes audio using MLX-Audio and a timestamp alignment stage."""
+
+    cache_namespace = AudioCacheNamespace.TRANSCRIPTION_MLX_AUDIO
+    """Registered namespace for cached MLX-Audio output."""
 
     backend_name = "mlx-audio"
     """Stable backend name stored in cache metadata."""
