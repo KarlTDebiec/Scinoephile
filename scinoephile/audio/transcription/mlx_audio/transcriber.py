@@ -11,6 +11,7 @@ from math import ceil
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from scinoephile.audio.transcription.chunking import get_offset_core_segments
 from scinoephile.audio.transcription.ctc_aligner import CtcAligner
 from scinoephile.audio.transcription.demucs import DemucsSeparator
 from scinoephile.audio.transcription.exceptions import (
@@ -338,7 +339,7 @@ class MlxAudioTranscriber(Transcriber):
                 )
             else:
                 segments.extend(
-                    self._get_offset_core_segments(
+                    get_offset_core_segments(
                         window_segments,
                         window_start_ms / 1000,
                         core_start_ms / 1000,
@@ -559,61 +560,3 @@ class MlxAudioTranscriber(Transcriber):
 
         append_current_segment()
         return output_segments
-
-    @staticmethod
-    def _get_offset_core_segments(
-        segments: Sequence[TranscribedSegment],
-        offset_seconds: float,
-        core_start_seconds: float,
-        core_end_seconds: float,
-        start_id: int,
-    ) -> list[TranscribedSegment]:
-        """Offset chunk-local segments and keep only core-window segments.
-
-        Arguments:
-            segments: chunk-local timestamped segments
-            offset_seconds: offset from chunk-local time to original audio time
-            core_start_seconds: inclusive start of non-overlap core
-            core_end_seconds: exclusive end of non-overlap core
-            start_id: first segment id to assign
-        Returns:
-            offset segments containing only words assigned to the core window
-        Raises:
-            TranscriptionAlignmentError: if an aligned segment lacks word timings
-        """
-        offset_segments = []
-        for segment in segments:
-            if not segment.words:
-                raise TranscriptionAlignmentError(
-                    "MLX-Audio chunk cannot trim an aligned segment without word "
-                    "timings."
-                )
-            words = []
-            for word in segment.words:
-                global_start = word.start + offset_seconds
-                global_end = word.end + offset_seconds
-                midpoint = (global_start + global_end) / 2
-                if midpoint < core_start_seconds or midpoint >= core_end_seconds:
-                    continue
-                words.append(
-                    word.model_copy(
-                        update={
-                            "start": max(global_start, core_start_seconds),
-                            "end": min(global_end, core_end_seconds),
-                        }
-                    )
-                )
-            if not words:
-                continue
-            offset_segments.append(
-                segment.model_copy(
-                    update={
-                        "id": start_id + len(offset_segments),
-                        "start": words[0].start,
-                        "end": words[-1].end,
-                        "text": "".join(word.text for word in words),
-                        "words": words,
-                    }
-                )
-            )
-        return offset_segments

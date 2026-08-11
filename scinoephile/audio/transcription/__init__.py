@@ -7,7 +7,7 @@ Package hierarchy (modules may import from any above):
 * speech_block / vad_cache
 * vad
 * transcribed_segment
-* cache / ctc_aligner
+* cache / chunking / ctc_aligner / source_quality
 * transcriber
 * whisper_transcriber
 * mlx_audio

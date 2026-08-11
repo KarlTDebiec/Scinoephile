@@ -33,8 +33,8 @@ from scinoephile.audio.transcription import (
     get_segment_merged,
     get_segment_split_at_idx,
 )
-from scinoephile.audio.transcription.whisper_transcriber import (
-    SUBTITLE_CREDIT_HALLUCINATION_MARKERS,
+from scinoephile.audio.transcription.source_quality import (
+    get_transcription_source_quality_issue,
 )
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
@@ -57,10 +57,6 @@ __all__ = ["MultiSourceTranscriber", "get_multi_source_transcriber"]
 
 logger = getLogger(__name__)
 
-_AUDIO_END_TOLERANCE_SECONDS = 1.0
-"""Maximum accepted ASR timestamp extension beyond the source audio."""
-_MAX_COMPRESSION_RATIO = 2.4
-"""Maximum backend-reported compression ratio accepted for alignment."""
 _MINIMUM_PAUSE_SECONDS = 0.25
 """Shortest VAD pause represented in an aligned merge request."""
 _PAUSE_UNIT_SECONDS = 0.25
@@ -176,7 +172,7 @@ class MultiSourceTranscriber:
             cache_key = getattr(transcriber, "last_cache_key_sha256", None)
             if isinstance(cache_key, str):
                 self.last_source_cache_keys[source_name] = cache_key
-            quality_issue = _get_source_quality_issue(
+            quality_issue = get_transcription_source_quality_issue(
                 segments, audio_duration_seconds=len(audio) / 1000
             )
             if quality_issue is not None:
@@ -557,57 +553,3 @@ def get_multi_source_transcriber(
     return MultiSourceTranscriber(
         language=language, transcribers=transcribers, merger=merger
     )
-
-
-def _get_source_quality_issue(  # noqa: PLR0911
-    segments: Sequence[TranscribedSegment], *, audio_duration_seconds: float
-) -> str | None:
-    """Get the first issue making one source unusable for block alignment."""
-    for segment in segments:
-        if not segment.text.strip():
-            continue
-        normalized_text = segment.text.casefold()
-        if marker := next(
-            (
-                marker
-                for marker in SUBTITLE_CREDIT_HALLUCINATION_MARKERS
-                if marker in normalized_text
-            ),
-            None,
-        ):
-            return (
-                f"Segment {segment.id} contains subtitle-credit hallucination "
-                f"marker {marker!r}."
-            )
-        if not segment.words:
-            return f"Segment {segment.id} has no word timings."
-        if int(segment.end * 1000) <= int(segment.start * 1000):
-            return (
-                f"Segment {segment.id} has non-positive millisecond duration "
-                f"({segment.start:.3f}s to {segment.end:.3f}s)."
-            )
-        for word in segment.words:
-            if not word.text.strip():
-                continue
-            if int(word.end * 1000) <= int(word.start * 1000):
-                return (
-                    f"Segment {segment.id} word {word.text!r} has non-positive "
-                    f"millisecond duration ({word.start:.3f}s to {word.end:.3f}s)."
-                )
-        if (
-            segment.compression_ratio is not None
-            and segment.compression_ratio > _MAX_COMPRESSION_RATIO
-        ):
-            return (
-                f"Segment {segment.id} compression ratio "
-                f"{segment.compression_ratio:.2f} exceeds maximum "
-                f"{_MAX_COMPRESSION_RATIO:.2f}."
-            )
-        if segment.end > audio_duration_seconds + _AUDIO_END_TOLERANCE_SECONDS:
-            return (
-                f"Segment {segment.id} ends at {segment.end:.2f}s beyond "
-                f"{audio_duration_seconds:.2f}s source audio."
-            )
-    if not any(segment.text.strip() for segment in segments):
-        return "Source produced no nonblank text."
-    return None

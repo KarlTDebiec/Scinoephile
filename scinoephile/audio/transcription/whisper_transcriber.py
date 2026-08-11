@@ -18,6 +18,7 @@ from scinoephile.core.dependencies.transcription import (
 )
 from scinoephile.core.ml import get_torch_device
 
+from .chunking import get_offset_core_segments
 from .ctc_aligner import CtcAligner
 from .demucs import DemucsSeparator
 from .exceptions import TranscriptionEmptyError, TranscriptionInferenceError
@@ -26,6 +27,10 @@ from .preprocessing_settings import (
     TranscriptionPreprocessingSettings,
     VADMode,
 )
+from .source_quality import (
+    SUBTITLE_CREDIT_HALLUCINATION_MARKERS,
+    get_transcription_source_quality_issue,
+)
 from .transcribed_segment import TranscribedSegment
 from .transcriber import Transcriber
 from .vad import VADImplementation, VoiceActivityDetector
@@ -33,8 +38,17 @@ from .voice_activity_trace import VoiceActivityTrace
 
 __all__ = ["SUBTITLE_CREDIT_HALLUCINATION_MARKERS", "WhisperTranscriber"]
 
-SUBTITLE_CREDIT_HALLUCINATION_MARKERS = ("amara.org", "字幕由", "字幕提供者")
-"""Markers indicating an ASR-generated subtitle-credit hallucination."""
+_CHUNK_POSTPROCESSING_VERSION = "1"
+"""Version of overlapping Whisper fallback chunk recombination."""
+
+_FALLBACK_MAX_WINDOW_DURATION_SECONDS = 30.0
+"""Maximum Whisper inference-window duration during hallucination recovery."""
+
+_FALLBACK_MINIMUM_WINDOW_DURATION_SECONDS = 1.0
+"""Smallest Whisper window retried after suspicious decoding."""
+
+_FALLBACK_OVERLAP_SECONDS = 1.0
+"""Context overlap around each Whisper fallback core chunk."""
 
 _LOCAL_MODEL_PATH_PREFIXES = {"checkpoint", "checkpoints", "model", "models"}
 _MAX_SAMPLE_LEN = 224
@@ -48,6 +62,9 @@ _MIN_SAMPLE_LEN = 32
 
 _SUBTITLE_CREDIT_MAX_NO_SPEECH_PROBABILITY = 0.6
 """Minimum no-speech probability for discarding a terminal subtitle credit."""
+
+_TOKEN_LIMIT_GUARD_FRACTION = 0.95
+"""Decode-budget fraction that triggers smaller-window recovery."""
 
 if TYPE_CHECKING:
     from pydub import AudioSegment
@@ -152,6 +169,56 @@ class WhisperTranscriber(Transcriber):
                 )
             self._models[model_key] = self._model
         return self._model
+
+    @staticmethod
+    def _get_retry_chunking(audio: AudioSegment) -> tuple[int, int]:
+        """Get smaller core and overlap durations for a suspicious window.
+
+        The initial fallback keeps complete inference windows at or below Whisper's
+        native 30-second receptive field. Later recursive retries bisect the failing
+        audio while retaining bounded context on each side.
+
+        Arguments:
+            audio: suspicious audio window
+        Returns:
+            core chunk duration and overlap in milliseconds
+        """
+        maximum_window_ms = round(_FALLBACK_MAX_WINDOW_DURATION_SECONDS * 1000)
+        configured_overlap_ms = round(_FALLBACK_OVERLAP_SECONDS * 1000)
+        if len(audio) > maximum_window_ms:
+            chunk_duration_ms = maximum_window_ms - (2 * configured_overlap_ms)
+        else:
+            chunk_duration_ms = max(1, len(audio) // 2)
+        maximum_overlap_ms = max(0, (chunk_duration_ms - 1) // 2)
+        chunk_overlap_ms = min(configured_overlap_ms, maximum_overlap_ms)
+        return chunk_duration_ms, chunk_overlap_ms
+
+    @staticmethod
+    def _get_retry_reason(
+        segments: Sequence[TranscribedSegment],
+        *,
+        audio_duration_seconds: float,
+        guarded_window_count: int,
+    ) -> str | None:
+        """Get the reason suspicious Whisper output needs smaller-window recovery.
+
+        Arguments:
+            segments: normalized Whisper segments
+            audio_duration_seconds: duration of the attempted audio window
+            guarded_window_count: decoder windows using at least 95% of their budget
+        Returns:
+            retry reason, if recovery is required
+        """
+        if guarded_window_count:
+            return (
+                f"{guarded_window_count} decoder window(s) used at least "
+                f"{_TOKEN_LIMIT_GUARD_FRACTION:.0%} of their token budget."
+            )
+        if not any(segment.text.strip() for segment in segments):
+            return None
+        return get_transcription_source_quality_issue(
+            segments, audio_duration_seconds=audio_duration_seconds
+        )
 
     @staticmethod
     def _get_sample_len(audio: AudioSegment) -> int:
@@ -348,10 +415,19 @@ class WhisperTranscriber(Transcriber):
         if not isinstance(self.temperature, int | float):
             temperature = list(self.temperature)
         metadata: dict[str, object] = {
+            "chunk_postprocessing_version": _CHUNK_POSTPROCESSING_VERSION,
             "condition_on_previous_text": self.condition_on_previous_text,
+            "fallback_max_window_duration_seconds": (
+                _FALLBACK_MAX_WINDOW_DURATION_SECONDS
+            ),
+            "fallback_minimum_window_duration_seconds": (
+                _FALLBACK_MINIMUM_WINDOW_DURATION_SECONDS
+            ),
+            "fallback_overlap_seconds": _FALLBACK_OVERLAP_SECONDS,
             "language": self.language,
             "model_name": self.model_name,
             "temperature": temperature,
+            "token_limit_guard_fraction": _TOKEN_LIMIT_GUARD_FRACTION,
         }
         if self.ctc_aligner is not None:
             metadata.update(
@@ -413,7 +489,7 @@ class WhisperTranscriber(Transcriber):
     def _transcribe_attempt(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> list[TranscribedSegment]:
-        """Run one uncached Whisper transcription attempt.
+        """Run Whisper, recovering suspicious output with smaller windows.
 
         Arguments:
             audio: original or Demucs-separated audio to transcribe
@@ -423,12 +499,44 @@ class WhisperTranscriber(Transcriber):
         Raises:
             TranscriptionInferenceError: if Whisper fails with an assertion
         """
+        segments, guarded_window_count = self._transcribe_audio_window(audio, settings)
+        retry_reason = self._get_retry_reason(
+            segments,
+            audio_duration_seconds=len(audio) / 1000,
+            guarded_window_count=guarded_window_count,
+        )
+        if retry_reason is None:
+            return segments
+
+        chunk_duration_ms, chunk_overlap_ms = self._get_retry_chunking(audio)
+        logger.warning(
+            f"Retrying suspicious Whisper output with "
+            f"{chunk_duration_ms / 1000:.3f}s core chunks: {retry_reason}"
+        )
+        return self._transcribe_chunked_audio(
+            audio, settings, chunk_duration_ms, chunk_overlap_ms
+        )
+
+    def _transcribe_audio_window(
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
+    ) -> tuple[list[TranscribedSegment], int]:
+        """Transcribe one audio window and count near-exhausted decoder windows.
+
+        Arguments:
+            audio: audio window to transcribe
+            settings: preprocessing settings
+        Returns:
+            normalized segments and number of guarded decoder windows
+        Raises:
+            TranscriptionInferenceError: if Whisper inference fails
+        """
         whisper_timestamped = import_whisper_timestamped()
         whisper_vad, voice_activity_trace = self._get_whisper_vad(audio, settings)
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             try:
                 audio.export(temp_audio_path, format="wav")
                 sample_len = self._get_sample_len(audio)
+                guarded_limit = ceil(sample_len * _TOKEN_LIMIT_GUARD_FRACTION)
                 logger.debug(
                     f"Using a {sample_len}-token Whisper decoding budget per window "
                     f"for {len(audio) / 1000:.2f}s of audio"
@@ -449,7 +557,7 @@ class WhisperTranscriber(Transcriber):
                         else [cast("DecodingResult", decode_result)]
                     )
                     if any(
-                        len(result.tokens) >= sample_len for result in decode_results
+                        len(result.tokens) >= guarded_limit for result in decode_results
                     ) and all(mel is not window for window in exhausted_windows):
                         exhausted_windows.append(mel)
                     return decode_result
@@ -479,10 +587,10 @@ class WhisperTranscriber(Transcriber):
                             audio, temp_audio_path, sample_len, exc
                         )
                         if voice_activity_trace is not None:
-                            return self._add_voice_activity_scores(
+                            fallback_segments = self._add_voice_activity_scores(
                                 fallback_segments, voice_activity_trace
                             )
-                        return fallback_segments
+                        return fallback_segments, len(exhausted_windows)
                     raise TranscriptionInferenceError(
                         f"Whisper inference failed with an assertion: {exc}"
                     ) from exc
@@ -499,17 +607,106 @@ class WhisperTranscriber(Transcriber):
         limit_hit_count = len(exhausted_windows)
         if limit_hit_count:
             logger.info(
-                f"Whisper reached its {sample_len}-token decoding limit "
+                f"Whisper used at least {guarded_limit} of its {sample_len}-token "
+                f"decoding budget "
                 f"(affected windows: {limit_hit_count})"
             )
         normalized_segments = self._normalize_transcription_segments(
             segments, source="whisper", cache_path=None, use_vad=settings.use_vad
         )
         if voice_activity_trace is not None:
-            return self._add_voice_activity_scores(
+            normalized_segments = self._add_voice_activity_scores(
                 normalized_segments, voice_activity_trace
             )
-        return normalized_segments
+        return normalized_segments, limit_hit_count
+
+    def _transcribe_audio_window_with_retry(
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
+    ) -> list[TranscribedSegment]:
+        """Transcribe a window, recursively splitting suspicious output.
+
+        Arguments:
+            audio: audio window to transcribe
+            settings: preprocessing settings
+        Returns:
+            usable timestamped segments, possibly empty for an irrecoverable window
+        """
+        segments, guarded_window_count = self._transcribe_audio_window(audio, settings)
+        retry_reason = self._get_retry_reason(
+            segments,
+            audio_duration_seconds=len(audio) / 1000,
+            guarded_window_count=guarded_window_count,
+        )
+        if retry_reason is None:
+            return segments
+
+        minimum_window_ms = round(_FALLBACK_MINIMUM_WINDOW_DURATION_SECONDS * 1000)
+        if len(audio) <= minimum_window_ms:
+            logger.warning(
+                f"Omitting irrecoverable {len(audio) / 1000:.3f}s Whisper window: "
+                f"{retry_reason}"
+            )
+            return []
+
+        chunk_duration_ms, chunk_overlap_ms = self._get_retry_chunking(audio)
+        logger.info(
+            f"Retrying suspicious {len(audio) / 1000:.3f}s Whisper window with "
+            f"{chunk_duration_ms / 1000:.3f}s core chunks: {retry_reason}"
+        )
+        return self._transcribe_chunked_audio(
+            audio, settings, chunk_duration_ms, chunk_overlap_ms
+        )
+
+    def _transcribe_chunked_audio(
+        self,
+        audio: AudioSegment,
+        settings: TranscriptionPreprocessingSettings,
+        chunk_duration_ms: int,
+        chunk_overlap_ms: int,
+    ) -> list[TranscribedSegment]:
+        """Transcribe overlapping chunks and retain words owned by each core.
+
+        Arguments:
+            audio: audio to transcribe
+            settings: preprocessing settings
+            chunk_duration_ms: core chunk duration in milliseconds
+            chunk_overlap_ms: context overlap around each core chunk
+        Returns:
+            combined timestamped segments
+        Raises:
+            TranscriptionEmptyError: if every chunk is empty or irrecoverable
+        """
+        segments: list[TranscribedSegment] = []
+        for core_start_ms in range(0, len(audio), chunk_duration_ms):
+            core_end_ms = min(len(audio), core_start_ms + chunk_duration_ms)
+            window_start_ms = max(0, core_start_ms - chunk_overlap_ms)
+            window_end_ms = min(len(audio), core_end_ms + chunk_overlap_ms)
+            window_audio = audio[window_start_ms:window_end_ms]
+            try:
+                window_segments = self._transcribe_audio_window_with_retry(
+                    window_audio, settings
+                )
+            except TranscriptionEmptyError:
+                logger.info(
+                    f"Skipping empty Whisper audio window "
+                    f"{window_start_ms / 1000:.2f}s-"
+                    f"{window_end_ms / 1000:.2f}s"
+                )
+                continue
+            segments.extend(
+                get_offset_core_segments(
+                    window_segments,
+                    window_start_ms / 1000,
+                    core_start_ms / 1000,
+                    core_end_ms / 1000,
+                    len(segments),
+                )
+            )
+        if not segments:
+            raise TranscriptionEmptyError(
+                "Whisper returned no usable transcript across fallback chunks."
+            )
+        return segments
 
     def _transcribe_with_ctc_fallback(
         self,
