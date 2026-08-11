@@ -18,9 +18,6 @@ __all__ = [
     "TranscriptionValidation",
 ]
 
-_ALIGNMENT_GAP_CHARACTER = "　"
-"""Fullwidth ideographic space used for ordinary alignment gaps."""
-
 
 class TranscriptionCharacterRelationship(IntEnum):
     """Strength of source support for one answer character."""
@@ -121,12 +118,12 @@ class TranscriptionAlignmentScorer:
                 tuple(
                     source_text[column_idx]
                     for source_text in source_texts
-                    if source_text[column_idx] not in {_ALIGNMENT_GAP_CHARACTER, "・"}
+                    if source_text[column_idx] not in {"　", "・"}
                 ),
             )
             for column_idx in range(len(source_texts[0]))
             if any(
-                source_text[column_idx] not in {_ALIGNMENT_GAP_CHARACTER, "・"}
+                source_text[column_idx] not in {"　", "・"}
                 for source_text in source_texts
             )
         )
