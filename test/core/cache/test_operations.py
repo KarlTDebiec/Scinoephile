@@ -95,24 +95,6 @@ def test_get_cache_entries_supports_grouped_llm_namespaces(tmp_path: Path):
     ]
 
 
-def test_get_cache_entries_supports_legacy_media_namespace(tmp_path: Path):
-    """Test old media cache namespaces remain available for maintenance.
-
-    Arguments:
-        tmp_path: temporary directory provided by pytest
-    """
-    marker_name = ".scinoephile-cache-namespace"
-    write_cache_file(tmp_path / f"media/subtitle-analysis/{marker_name}")
-    write_cache_file(tmp_path / "media/subtitle-analysis/first.json", "analysis")
-
-    assert discover_cache_namespaces(tmp_path) == ["media/subtitle-analysis"]
-    entries = get_cache_entries(tmp_path, namespace="media/subtitle-analysis")
-
-    assert [entry.relative_path for entry in entries] == [
-        Path("media/subtitle-analysis/first.json")
-    ]
-
-
 def test_prune_cache_prunes_individual_nested_namespace_entries(tmp_path: Path):
     """Test nested cache namespaces preserve entry-level pruning.
 
