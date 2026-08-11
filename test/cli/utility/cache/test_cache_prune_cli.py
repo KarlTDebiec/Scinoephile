@@ -21,7 +21,7 @@ def test_cache_prune_dry_run(tmp_path: Path, capsys: CaptureFixture[str]):
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    old_path = write_cache_file(tmp_path / "llm/old.json")
+    old_path = write_cache_file(tmp_path / "llm/test/old.json")
     _set_old(old_path)
 
     run_cli_with_args(
@@ -29,7 +29,7 @@ def test_cache_prune_dry_run(tmp_path: Path, capsys: CaptureFixture[str]):
     )
 
     assert old_path.exists()
-    assert "llm/old.json" in capsys.readouterr().out
+    assert "llm/test/old.json" in capsys.readouterr().out
 
 
 def test_cache_prune_confirmed(tmp_path: Path):
@@ -38,8 +38,8 @@ def test_cache_prune_confirmed(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    old_path = write_cache_file(tmp_path / "llm/old.json")
-    new_path = write_cache_file(tmp_path / "llm/new.json")
+    old_path = write_cache_file(tmp_path / "llm/test/old.json")
+    new_path = write_cache_file(tmp_path / "llm/test/new.json")
     _set_old(old_path)
 
     run_cli_with_args(CachePruneCli, f"--cache-dir {tmp_path} --older-than 30d --yes")

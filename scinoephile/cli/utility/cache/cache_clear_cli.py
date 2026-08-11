@@ -13,6 +13,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import clear_cache, get_cache_entries
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.workflows.cache_registry import CACHE_REGISTRY
 
 from .output import print_entries
 
@@ -139,16 +140,21 @@ class CacheClearCli(ScinoephileCliBase):
         try:
             if dry_run:
                 if all_namespaces:
-                    entries = get_cache_entries(cache_root_path)
+                    entries = get_cache_entries(cache_root_path, CACHE_REGISTRY)
                 elif namespace is None:
                     raise ScinoephileError(
                         "--namespace is required unless --all is specified"
                     )
                 else:
-                    entries = get_cache_entries(cache_root_path, namespace=namespace)
+                    entries = get_cache_entries(
+                        cache_root_path, CACHE_REGISTRY, namespace=namespace
+                    )
             else:
                 entries = clear_cache(
-                    cache_root_path, namespace=namespace, all_namespaces=all_namespaces
+                    cache_root_path,
+                    CACHE_REGISTRY,
+                    namespace=namespace,
+                    all_namespaces=all_namespaces,
                 )
         except (NotADirectoryError, ScinoephileError) as exc:
             parser.error(str(exc))

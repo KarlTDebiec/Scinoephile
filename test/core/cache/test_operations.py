@@ -11,9 +11,10 @@ from time import time
 from pytest import raises
 
 from scinoephile.core import ScinoephileError
+from scinoephile.core.cache.cache_namespace import CacheNamespace
+from scinoephile.core.cache.cache_registry import CacheRegistry
 from scinoephile.core.cache.operations import (
     clear_cache,
-    discover_cache_namespaces,
     get_cache_entries,
     get_cache_stats,
     prune_cache,
@@ -21,17 +22,47 @@ from scinoephile.core.cache.operations import (
 from test.helpers.files import set_mtime, write_cache_file
 
 
-def test_discover_cache_namespaces(tmp_path: Path):
-    """Test dynamic namespace discovery.
+class _CacheNamespace(CacheNamespace):
+    """Cache namespace declarations for maintenance operation tests."""
+
+    AUDIO_CLASSIFICATION_OPERATION = "audio/classification/<operation>"
+    """Operation-specific audio classification artifacts."""
+    AUDIO_DIARIZATION = "audio/diarization"
+    """Audio diarization artifacts."""
+    AUDIO_SEPARATION_DEMUCS = "audio/separation/demucs"
+    """Demucs-separated audio."""
+    AUDIO_TRANSCRIPTION_WHISPER = "audio/transcription/whisper"
+    """Whisper transcription results."""
+    AUDIO_VAD = "audio/vad"
+    """Voice activity detection traces."""
+    LANG_ZHO_SUBTITLES_ANALYSIS = "lang/zho/subtitles/analysis"
+    """Chinese subtitle script analysis results."""
+    LLMS_OPERATION = "llms/<operation>"
+    """Operation-specific LLM responses."""
+    MEDIA_SUBTITLES = "media/subtitles"
+    """Extracted subtitle streams and image series."""
+
+
+_CACHE_REGISTRY = CacheRegistry(_CacheNamespace)
+"""Cache namespace registry for maintenance operation tests."""
+
+
+def test_cache_registry_discovers_namespaces(tmp_path: Path):
+    """Test registry-backed namespace discovery.
 
     Arguments:
         tmp_path: temporary directory
     """
-    write_cache_file(tmp_path / "llm/one.json")
-    write_cache_file(tmp_path / "whisper/two.json")
+    write_cache_file(tmp_path / "llms/test/one.json")
+    write_cache_file(tmp_path / "audio/transcription/whisper/two.json")
+    write_cache_file(tmp_path / "huggingface/hub/model/data.json")
+    write_cache_file(tmp_path / "torch/hub/model/data.json")
     write_cache_file(tmp_path / "root.json")
 
-    assert discover_cache_namespaces(tmp_path) == ["llm", "whisper"]
+    assert _CACHE_REGISTRY.discover_names(tmp_path) == [
+        "audio/transcription/whisper",
+        "llms/test",
+    ]
 
 
 def test_get_cache_entries_filters_namespace(tmp_path: Path):
@@ -40,19 +71,19 @@ def test_get_cache_entries_filters_namespace(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    write_cache_file(tmp_path / "llm/one.json", "one")
-    write_cache_file(tmp_path / "whisper/two.json", "two")
+    write_cache_file(tmp_path / "llms/test/one.json", "one")
+    write_cache_file(tmp_path / "audio/transcription/whisper/two.json", "two")
 
-    entries = get_cache_entries(tmp_path, namespace="llm")
+    entries = get_cache_entries(tmp_path, _CACHE_REGISTRY, namespace="llms/test")
 
     assert len(entries) == 1
-    assert entries[0].namespace == "llm"
-    assert entries[0].relative_path == Path("llm/one.json")
+    assert entries[0].namespace == "llms/test"
+    assert entries[0].relative_path == Path("llms/test/one.json")
     assert entries[0].size_bytes == 3
 
 
-def test_get_cache_entries_supports_nested_media_namespaces(tmp_path: Path):
-    """Test nested media namespaces retain individual cache entries.
+def test_get_cache_entries_separates_subtitles_by_owner(tmp_path: Path):
+    """Test media artifacts and language analysis use independent namespaces.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -62,15 +93,19 @@ def test_get_cache_entries_supports_nested_media_namespaces(tmp_path: Path):
     write_cache_file(
         tmp_path / "media/subtitles/second/image-series/index.html", "index"
     )
-    write_cache_file(tmp_path / "media/subtitles/analysis/first.json", "analysis")
+    write_cache_file(tmp_path / "lang/zho/subtitles/analysis/first.json", "analysis")
 
-    assert discover_cache_namespaces(tmp_path) == [
+    assert _CACHE_REGISTRY.discover_names(tmp_path) == [
+        "lang/zho/subtitles/analysis",
         "media/subtitles",
-        "media/subtitles/analysis",
     ]
 
-    subtitle_entries = get_cache_entries(tmp_path, namespace="media/subtitles")
-    analysis_entries = get_cache_entries(tmp_path, namespace="media/subtitles/analysis")
+    subtitle_entries = get_cache_entries(
+        tmp_path, _CACHE_REGISTRY, namespace="media/subtitles"
+    )
+    analysis_entries = get_cache_entries(
+        tmp_path, _CACHE_REGISTRY, namespace="lang/zho/subtitles/analysis"
+    )
 
     assert [entry.relative_path for entry in subtitle_entries] == [
         Path("media/subtitles/first"),
@@ -78,25 +113,50 @@ def test_get_cache_entries_supports_nested_media_namespaces(tmp_path: Path):
     ]
     assert [entry.file_count for entry in subtitle_entries] == [1, 2]
     assert [entry.relative_path for entry in analysis_entries] == [
-        Path("media/subtitles/analysis/first.json")
+        Path("lang/zho/subtitles/analysis/first.json")
     ]
 
 
 def test_get_cache_entries_supports_grouped_llm_namespaces(tmp_path: Path):
     """Test each LLM operation is exposed as an independent namespace."""
-    write_cache_file(tmp_path / "llm/translation/one.json", "one")
-    write_cache_file(tmp_path / "llm/review/two.json", "two")
+    write_cache_file(tmp_path / "llms/translation/one.json", "one")
+    write_cache_file(tmp_path / "llms/review/two.json", "two")
 
-    assert discover_cache_namespaces(tmp_path) == ["llm/review", "llm/translation"]
-    entries = get_cache_entries(tmp_path, namespace="llm/translation")
+    assert _CACHE_REGISTRY.discover_names(tmp_path) == [
+        "llms/review",
+        "llms/translation",
+    ]
+    entries = get_cache_entries(tmp_path, _CACHE_REGISTRY, namespace="llms/translation")
 
     assert [entry.relative_path for entry in entries] == [
-        Path("llm/translation/one.json")
+        Path("llms/translation/one.json")
     ]
 
 
-def test_prune_cache_prunes_individual_nested_namespace_entries(tmp_path: Path):
-    """Test nested cache namespaces preserve entry-level pruning.
+def test_get_cache_entries_supports_grouped_audio_namespaces(tmp_path: Path):
+    """Test audio analyses are exposed as independent cache namespaces."""
+    write_cache_file(tmp_path / "audio/classification/language/one.json", "one")
+    write_cache_file(tmp_path / "audio/diarization/one.json", "one")
+    write_cache_file(tmp_path / "audio/separation/demucs/one.wav", "one")
+    write_cache_file(tmp_path / "audio/vad/one.npz", "one")
+
+    assert _CACHE_REGISTRY.discover_names(tmp_path) == [
+        "audio/classification/language",
+        "audio/diarization",
+        "audio/separation/demucs",
+        "audio/vad",
+    ]
+    entries = get_cache_entries(
+        tmp_path, _CACHE_REGISTRY, namespace="audio/classification/language"
+    )
+
+    assert [entry.relative_path for entry in entries] == [
+        Path("audio/classification/language/one.json")
+    ]
+
+
+def test_prune_cache_prunes_individual_directory_entries(tmp_path: Path):
+    """Test directory-based cache entries preserve entry-level pruning.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -108,7 +168,10 @@ def test_prune_cache_prunes_individual_nested_namespace_entries(tmp_path: Path):
     set_mtime(old_path.parent, old_timestamp)
 
     deleted_entries = prune_cache(
-        tmp_path, older_than=timedelta(days=30), namespace="media/subtitles"
+        tmp_path,
+        _CACHE_REGISTRY,
+        older_than=timedelta(days=30),
+        namespace="media/subtitles",
     )
 
     assert [entry.relative_path for entry in deleted_entries] == [
@@ -126,54 +189,56 @@ def test_clear_cache_removes_empty_grouping_directory(tmp_path: Path):
     """
     write_cache_file(tmp_path / "media/subtitles/first/2.srt")
 
-    clear_cache(tmp_path, namespace="media/subtitles")
+    clear_cache(tmp_path, _CACHE_REGISTRY, namespace="media/subtitles")
 
     assert not (tmp_path / "media").exists()
 
 
-def test_clear_cache_preserves_nested_namespace(tmp_path: Path):
-    """Test clearing a namespace preserves its nested namespaces.
+def test_clear_cache_preserves_other_owner_namespace(tmp_path: Path):
+    """Test clearing media subtitles preserves language analysis.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
     """
     write_cache_file(tmp_path / "media/subtitles/first/2.srt")
-    analysis_path = write_cache_file(tmp_path / "media/subtitles/analysis/first.json")
+    analysis_path = write_cache_file(
+        tmp_path / "lang/zho/subtitles/analysis/first.json"
+    )
 
-    clear_cache(tmp_path, namespace="media/subtitles")
+    clear_cache(tmp_path, _CACHE_REGISTRY, namespace="media/subtitles")
 
     assert analysis_path.exists()
-    assert discover_cache_namespaces(tmp_path) == [
-        "media/subtitles",
-        "media/subtitles/analysis",
-    ]
+    assert _CACHE_REGISTRY.discover_names(tmp_path) == ["lang/zho/subtitles/analysis"]
 
 
-def test_clear_cache_removes_empty_parent_namespaces(tmp_path: Path):
-    """Test clearing a nested namespace removes empty grouping directories.
+def test_clear_cache_removes_empty_parent_directories(tmp_path: Path):
+    """Test clearing a namespace removes empty grouping directories.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
     """
-    write_cache_file(tmp_path / "media/subtitles/analysis/first.json")
+    write_cache_file(tmp_path / "lang/zho/subtitles/analysis/first.json")
 
-    clear_cache(tmp_path, namespace="media/subtitles/analysis")
+    clear_cache(tmp_path, _CACHE_REGISTRY, namespace="lang/zho/subtitles/analysis")
 
-    assert not (tmp_path / "media").exists()
+    assert not (tmp_path / "lang").exists()
 
 
-def test_clear_cache_all_removes_nested_namespaces(tmp_path: Path):
-    """Test clearing all namespaces handles nested namespaces deepest first.
+def test_clear_cache_all_removes_all_registered_namespaces(tmp_path: Path):
+    """Test clearing all namespaces removes every registered namespace.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
     """
     write_cache_file(tmp_path / "media/subtitles/first/2.srt")
-    write_cache_file(tmp_path / "media/subtitles/analysis/first.json")
+    write_cache_file(tmp_path / "lang/zho/subtitles/analysis/first.json")
+    external_path = write_cache_file(tmp_path / "huggingface/hub/model/data.json")
 
-    clear_cache(tmp_path, all_namespaces=True)
+    clear_cache(tmp_path, _CACHE_REGISTRY, all_namespaces=True)
 
     assert not (tmp_path / "media").exists()
+    assert not (tmp_path / "lang").exists()
+    assert external_path.exists()
 
 
 def test_get_cache_entries_missing_root_is_empty(tmp_path: Path):
@@ -182,7 +247,7 @@ def test_get_cache_entries_missing_root_is_empty(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    assert get_cache_entries(tmp_path / "missing") == []
+    assert get_cache_entries(tmp_path / "missing", _CACHE_REGISTRY) == []
 
 
 def test_get_cache_entries_invalid_namespace(tmp_path: Path):
@@ -191,10 +256,10 @@ def test_get_cache_entries_invalid_namespace(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    write_cache_file(tmp_path / "llm/one.json")
+    write_cache_file(tmp_path / "llms/test/one.json")
 
     with raises(ScinoephileError, match="was not found"):
-        get_cache_entries(tmp_path, namespace="ocr")
+        get_cache_entries(tmp_path, _CACHE_REGISTRY, namespace="ocr")
 
 
 def test_get_cache_stats(tmp_path: Path):
@@ -203,19 +268,19 @@ def test_get_cache_stats(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    write_cache_file(tmp_path / "llm/one.json", "one")
-    write_cache_file(tmp_path / "llm/two.json", "two")
-    write_cache_file(tmp_path / "whisper/three.json", "three")
+    write_cache_file(tmp_path / "llms/test/one.json", "one")
+    write_cache_file(tmp_path / "llms/test/two.json", "two")
+    write_cache_file(tmp_path / "audio/transcription/whisper/three.json", "three")
 
-    stats_by_namespace = get_cache_stats(tmp_path)
+    stats_by_namespace = get_cache_stats(tmp_path, _CACHE_REGISTRY)
     stats = {
         namespace_stats.namespace: namespace_stats
         for namespace_stats in stats_by_namespace
     }
 
-    assert stats["llm"].entry_count == 2
-    assert stats["llm"].total_bytes == 6
-    assert stats["whisper"].entry_count == 1
+    assert stats["llms/test"].entry_count == 2
+    assert stats["llms/test"].total_bytes == 6
+    assert stats["audio/transcription/whisper"].entry_count == 1
     assert stats["total"].entry_count == 3
     assert stats["total"].total_bytes == 11
 
@@ -226,16 +291,20 @@ def test_prune_cache(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    old_path = write_cache_file(tmp_path / "llm/old.json")
-    new_path = write_cache_file(tmp_path / "llm/new.json")
+    old_path = write_cache_file(tmp_path / "llms/test/old.json")
+    new_path = write_cache_file(tmp_path / "llms/test/new.json")
     old_timestamp = time() - 60 * 60 * 24 * 40
     old_path.touch()
     new_path.touch()
     set_mtime(old_path, old_timestamp)
 
-    deleted_entries = prune_cache(tmp_path, older_than=timedelta(days=30))
+    deleted_entries = prune_cache(
+        tmp_path, _CACHE_REGISTRY, older_than=timedelta(days=30)
+    )
 
-    assert [entry.relative_path for entry in deleted_entries] == [Path("llm/old.json")]
+    assert [entry.relative_path for entry in deleted_entries] == [
+        Path("llms/test/old.json")
+    ]
     assert not old_path.exists()
     assert new_path.exists()
 
@@ -246,11 +315,13 @@ def test_clear_cache_namespace(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    write_cache_file(tmp_path / "llm/one.json")
-    whisper_path = write_cache_file(tmp_path / "whisper/two.json")
+    write_cache_file(tmp_path / "llms/test/one.json")
+    whisper_path = write_cache_file(tmp_path / "audio/transcription/whisper/two.json")
 
-    deleted_entries = clear_cache(tmp_path, namespace="llm")
+    deleted_entries = clear_cache(tmp_path, _CACHE_REGISTRY, namespace="llms/test")
 
-    assert [entry.relative_path for entry in deleted_entries] == [Path("llm/one.json")]
-    assert not (tmp_path / "llm").exists()
+    assert [entry.relative_path for entry in deleted_entries] == [
+        Path("llms/test/one.json")
+    ]
+    assert not (tmp_path / "llms").exists()
     assert whisper_path.exists()

@@ -20,14 +20,14 @@ def test_cache_clear_dry_run(tmp_path: Path, capsys: CaptureFixture[str]):
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    cache_path = write_cache_file(tmp_path / "llm/one.json")
+    cache_path = write_cache_file(tmp_path / "llm/test/one.json")
 
     run_cli_with_args(
-        CacheClearCli, f"--cache-dir {tmp_path} --namespace llm --dry-run"
+        CacheClearCli, f"--cache-dir {tmp_path} --namespace llm/test --dry-run"
     )
 
     assert cache_path.exists()
-    assert "llm/one.json" in capsys.readouterr().out
+    assert "llm/test/one.json" in capsys.readouterr().out
 
 
 def test_cache_clear_all_dry_run_limits_output(
@@ -39,8 +39,8 @@ def test_cache_clear_all_dry_run_limits_output(
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    write_cache_file(tmp_path / "llm/one.json")
-    write_cache_file(tmp_path / "llm/two.json")
+    write_cache_file(tmp_path / "llm/test/one.json")
+    write_cache_file(tmp_path / "llm/test/two.json")
     write_cache_file(tmp_path / "whisper/three.json")
 
     run_cli_with_args(
@@ -58,10 +58,12 @@ def test_cache_clear_namespace_confirmed(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    write_cache_file(tmp_path / "llm/one.json")
+    write_cache_file(tmp_path / "llm/test/one.json")
     whisper_path = write_cache_file(tmp_path / "whisper/two.json")
 
-    run_cli_with_args(CacheClearCli, f"--cache-dir {tmp_path} --namespace llm --yes")
+    run_cli_with_args(
+        CacheClearCli, f"--cache-dir {tmp_path} --namespace llm/test --yes"
+    )
 
     assert not (tmp_path / "llm").exists()
     assert whisper_path.exists()
@@ -73,13 +75,13 @@ def test_cache_clear_all_confirmed(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    write_cache_file(tmp_path / "llm/one.json")
+    write_cache_file(tmp_path / "llm/test/one.json")
     write_cache_file(tmp_path / "whisper/two.json")
 
     run_cli_with_args(CacheClearCli, f"--cache-dir {tmp_path} --all --yes")
 
     assert not (tmp_path / "llm").exists()
-    assert not (tmp_path / "whisper").exists()
+    assert not (tmp_path / "audio").exists()
 
 
 def test_cache_clear_requires_scope(tmp_path: Path):
@@ -100,5 +102,5 @@ def test_cache_clear_requires_confirmation(tmp_path: Path):
         tmp_path: temporary directory
     """
     with raises(SystemExit) as exc_info:
-        run_cli_with_args(CacheClearCli, f"--cache-dir {tmp_path} --namespace llm")
+        run_cli_with_args(CacheClearCli, f"--cache-dir {tmp_path} --namespace llm/test")
     assert exc_info.value.code == 2

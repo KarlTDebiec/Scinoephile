@@ -21,12 +21,12 @@ def test_cache_list_text(tmp_path: Path, capsys: CaptureFixture[str]):
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    write_cache_file(tmp_path / "llm/one.json")
+    write_cache_file(tmp_path / "llm/test/one.json")
     write_cache_file(tmp_path / "whisper/two.json")
 
-    run_cli_with_args(CacheListCli, f"--cache-dir {tmp_path} --namespace llm")
+    run_cli_with_args(CacheListCli, f"--cache-dir {tmp_path} --namespace llm/test")
 
-    assert "llm\tllm/one.json" in capsys.readouterr().out
+    assert "llm/test\tllm/test/one.json" in capsys.readouterr().out
 
 
 def test_cache_list_json(tmp_path: Path, capsys: CaptureFixture[str]):
@@ -36,13 +36,13 @@ def test_cache_list_json(tmp_path: Path, capsys: CaptureFixture[str]):
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    write_cache_file(tmp_path / "llm/one.json")
+    write_cache_file(tmp_path / "llm/test/one.json")
 
     run_cli_with_args(CacheListCli, f"--cache-dir {tmp_path} --format json")
 
     entries = json.loads(capsys.readouterr().out)
-    assert entries[0]["namespace"] == "llm"
-    assert entries[0]["path"] == "llm/one.json"
+    assert entries[0]["namespace"] == "llm/test"
+    assert entries[0]["path"] == "llm/test/one.json"
 
 
 def test_cache_list_missing_root(tmp_path: Path, capsys: CaptureFixture[str]):

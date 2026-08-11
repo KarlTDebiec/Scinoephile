@@ -18,6 +18,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import get_cache_entries, prune_cache
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.workflows.cache_registry import CACHE_REGISTRY
 
 from .output import print_entries
 
@@ -148,12 +149,17 @@ class CachePruneCli(ScinoephileCliBase):
                 cutoff = datetime.now().astimezone() - older_than
                 entries = [
                     entry
-                    for entry in get_cache_entries(cache_root_path, namespace=namespace)
+                    for entry in get_cache_entries(
+                        cache_root_path, CACHE_REGISTRY, namespace=namespace
+                    )
                     if entry.modified_at < cutoff
                 ]
             else:
                 entries = prune_cache(
-                    cache_root_path, older_than=older_than, namespace=namespace
+                    cache_root_path,
+                    CACHE_REGISTRY,
+                    older_than=older_than,
+                    namespace=namespace,
                 )
         except (NotADirectoryError, ScinoephileError) as exc:
             parser.error(str(exc))

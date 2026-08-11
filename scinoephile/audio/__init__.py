@@ -3,7 +3,7 @@
 """Code related to audio.
 
 Package hierarchy (modules may import from any above):
-* samples / separation
+* cache_namespace / samples / separation
 * transcription
 * subtitles
 """

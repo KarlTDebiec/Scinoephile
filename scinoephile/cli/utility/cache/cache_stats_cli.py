@@ -14,6 +14,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import get_cache_stats
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.workflows.cache_registry import CACHE_REGISTRY
 
 from .output import print_stats
 
@@ -104,7 +105,9 @@ class CacheStatsCli(ScinoephileCliBase):
 
         # Perform operations
         try:
-            stats = get_cache_stats(cache_root_path, namespace=namespace)
+            stats = get_cache_stats(
+                cache_root_path, CACHE_REGISTRY, namespace=namespace
+            )
         except (NotADirectoryError, ScinoephileError) as exc:
             parser.error(str(exc))
 

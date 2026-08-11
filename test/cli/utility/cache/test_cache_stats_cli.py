@@ -21,13 +21,13 @@ def test_cache_stats_json(tmp_path: Path, capsys: CaptureFixture[str]):
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    write_cache_file(tmp_path / "llm/one.json", "one")
+    write_cache_file(tmp_path / "llm/test/one.json", "one")
 
     run_cli_with_args(CacheStatsCli, f"--cache-dir {tmp_path} --format json")
 
     stats = {item["namespace"]: item for item in json.loads(capsys.readouterr().out)}
-    assert stats["llm"]["entry_count"] == 1
-    assert stats["llm"]["total_bytes"] == 3
+    assert stats["llm/test"]["entry_count"] == 1
+    assert stats["llm/test"]["total_bytes"] == 3
     assert stats["total"]["entry_count"] == 1
 
 
@@ -38,11 +38,11 @@ def test_cache_stats_namespace(tmp_path: Path, capsys: CaptureFixture[str]):
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    write_cache_file(tmp_path / "llm/one.json")
+    write_cache_file(tmp_path / "llm/test/one.json")
     write_cache_file(tmp_path / "whisper/two.json")
 
     run_cli_with_args(CacheStatsCli, f"--cache-dir {tmp_path} --namespace whisper")
 
     output = capsys.readouterr().out
     assert "whisper\t1 entries" in output
-    assert "llm\t" not in output
+    assert "llm/test\t" not in output
