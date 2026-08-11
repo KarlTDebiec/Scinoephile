@@ -4,13 +4,13 @@
 
 from __future__ import annotations
 
-import unicodedata
 from collections.abc import Sequence
 from dataclasses import dataclass
 from enum import IntEnum
-from functools import cache
 from math import floor
 from typing import ClassVar
+
+from scinoephile.core.text import is_lexical_character, normalize_nfkc
 
 __all__ = [
     "TranscriptionAlignmentScorer",
@@ -96,7 +96,7 @@ class TranscriptionAlignmentScorer:
         Returns:
             relationship between the characters
         """
-        if _get_nfkc(one) == _get_nfkc(two):
+        if normalize_nfkc(one) == normalize_nfkc(two):
             return TranscriptionCharacterRelationship.exact
         return TranscriptionCharacterRelationship.none
 
@@ -131,7 +131,7 @@ class TranscriptionAlignmentScorer:
             )
         )
         answer_characters = tuple(
-            character for character in answer_text if _is_lexical_character(character)
+            character for character in answer_text if is_lexical_character(character)
         )
         answer_profile_indexes = self._get_answer_profile_indexes(
             profile_columns, answer_characters, source_count
@@ -262,17 +262,6 @@ class TranscriptionAlignmentScorer:
         if relationship is TranscriptionCharacterRelationship.pronunciation:
             return 3.0
         return -2.0
-
-
-@cache
-def _get_nfkc(character: str) -> str:
-    """Get the compatibility-normalized form of a character."""
-    return unicodedata.normalize("NFKC", character)
-
-
-def _is_lexical_character(character: str) -> bool:
-    """Whether a character participates in transcription validation alignment."""
-    return not unicodedata.category(character).startswith(("C", "P", "S", "Z"))
 
 
 def _validate_rows(source_texts: Sequence[str]):

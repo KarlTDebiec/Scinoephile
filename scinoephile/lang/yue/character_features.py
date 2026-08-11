@@ -4,12 +4,12 @@
 
 from __future__ import annotations
 
-import unicodedata
 from dataclasses import dataclass
 from functools import cache
 
 import pycantonese
 
+from scinoephile.core.text import normalize_nfkc
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 
 __all__ = ["CharacterFeatures"]
@@ -49,7 +49,7 @@ class CharacterFeatures:
         Returns:
             cached comparison features
         """
-        nfkc = unicodedata.normalize("NFKC", character)
+        nfkc = normalize_nfkc(character)
         simplified = get_zho_text_converted(
             nfkc, OpenCCConfig.t2s, apply_exclusions=False
         )
