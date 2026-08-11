@@ -20,7 +20,7 @@ from scinoephile.audio.transcription import (
     TranscriptionError,
     TranscriptionInferenceError,
     TranscriptionPreprocessingSettings,
-    VADMode,
+    VadMode,
 )
 from scinoephile.core import ScinoephileError
 
@@ -40,7 +40,7 @@ class _TestTranscriber(Transcriber):
         self,
         cache_root_path: Path,
         demucs_mode: DemucsMode,
-        vad_mode: VADMode,
+        vad_mode: VadMode,
         overwrite_cache: bool = False,
     ):
         """Initialize."""
@@ -84,7 +84,7 @@ def test_get_preprocessing_settings_orders_preferred_configurations_first(
     tmp_path: Path,
 ):
     """Test automatic modes try Demucs and VAD before their fallbacks."""
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.AUTO, VADMode.AUTO)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.AUTO, VadMode.AUTO)
 
     assert transcriber._cache.cache_dir_path == tmp_path / "test"
     assert transcriber.demucs_separator is not None
@@ -99,7 +99,7 @@ def test_get_preprocessing_settings_orders_preferred_configurations_first(
 
 def test_get_preprocessing_settings_honors_forced_modes(tmp_path: Path):
     """Test forced modes produce only their requested configuration."""
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VADMode.ON)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VadMode.ON)
 
     assert transcriber._get_preprocessing_settings() == (
         TranscriptionPreprocessingSettings(False, True),
@@ -111,7 +111,7 @@ def test_per_audio_cache_metadata_is_used_for_cache_lifecycle(tmp_path: Path):
     audio = AudioSegment.silent(duration=100)
     settings = TranscriptionPreprocessingSettings(False, False)
     segments = [_get_segment("cached")]
-    transcriber = _PerAudioCacheTranscriber(tmp_path, DemucsMode.OFF, VADMode.OFF)
+    transcriber = _PerAudioCacheTranscriber(tmp_path, DemucsMode.OFF, VadMode.OFF)
     transcriber.outcomes[settings] = segments
 
     assert transcriber(audio) == segments
@@ -133,7 +133,7 @@ def test_fallback_cache_is_checked_before_demucs(tmp_path: Path):
     """Test a usable fallback cache avoids expensive Demucs preprocessing."""
     audio = AudioSegment.silent(duration=100)
     segments = [_get_segment("cached")]
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.AUTO, VADMode.OFF)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.AUTO, VadMode.OFF)
     transcriber._cache.save(
         audio,
         transcriber._get_cache_metadata(
@@ -152,7 +152,7 @@ def test_overwrite_removes_all_configuration_caches_before_transcribing(tmp_path
     """Test cache overwrite clears every fallback variant before inference."""
     audio = AudioSegment.silent(duration=100)
     transcriber = _TestTranscriber(
-        tmp_path, DemucsMode.AUTO, VADMode.AUTO, overwrite_cache=True
+        tmp_path, DemucsMode.AUTO, VadMode.AUTO, overwrite_cache=True
     )
     preprocessing_settings = transcriber._get_preprocessing_settings()
     stale_cache = TranscriptionCache(tmp_path, "test", "Test")
@@ -178,7 +178,7 @@ def test_auto_demucs_failure_uses_original_audio(tmp_path: Path):
     audio = AudioSegment.silent(duration=100)
     settings = TranscriptionPreprocessingSettings(False, False)
     segments = [_get_segment("fallback")]
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.AUTO, VADMode.OFF)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.AUTO, VadMode.OFF)
     transcriber.demucs_separator = Mock(
         model_name="htdemucs_ft", side_effect=ScinoephileError("failed")
     )
@@ -191,7 +191,7 @@ def test_auto_demucs_failure_uses_original_audio(tmp_path: Path):
 def test_forced_demucs_failure_propagates(tmp_path: Path):
     """Test forced Demucs failure does not silently use original audio."""
     audio = AudioSegment.silent(duration=100)
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.ON, VADMode.OFF)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.ON, VadMode.OFF)
     transcriber.demucs_separator = Mock(
         model_name="htdemucs_ft", side_effect=ScinoephileError("failed")
     )
@@ -205,7 +205,7 @@ def test_unusable_vad_result_retries_without_vad(tmp_path: Path):
     audio = AudioSegment.silent(duration=100)
     vad_settings = TranscriptionPreprocessingSettings(False, True)
     no_vad_settings = TranscriptionPreprocessingSettings(False, False)
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VADMode.AUTO)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VadMode.AUTO)
     transcriber.outcomes[vad_settings] = [_get_segment("bad")]
     transcriber.outcomes[no_vad_settings] = [_get_segment("good")]
 
@@ -223,7 +223,7 @@ def test_rejected_cached_configuration_is_not_repeated(tmp_path: Path):
     audio = AudioSegment.silent(duration=100)
     vad_settings = TranscriptionPreprocessingSettings(False, True)
     no_vad_settings = TranscriptionPreprocessingSettings(False, False)
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VADMode.AUTO)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VadMode.AUTO)
     transcriber._cache.save(
         audio,
         transcriber._get_cache_metadata(audio, vad_settings),
@@ -245,7 +245,7 @@ def test_rejected_cached_final_configuration_is_not_repeated(tmp_path: Path):
     """
     audio = AudioSegment.silent(duration=100)
     settings = TranscriptionPreprocessingSettings(True, False)
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.ON, VADMode.OFF)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.ON, VadMode.OFF)
     transcriber.demucs_separator = Mock(model_name="htdemucs_ft", return_value=audio)
     transcriber._cache.save(
         audio, transcriber._get_cache_metadata(audio, settings), [_get_segment("bad")]
@@ -268,7 +268,7 @@ def test_empty_failures_are_cached(tmp_path: Path):
     audio = AudioSegment.silent(duration=100)
     vad_settings = TranscriptionPreprocessingSettings(False, True)
     no_vad_settings = TranscriptionPreprocessingSettings(False, False)
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VADMode.AUTO)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VadMode.AUTO)
     transcriber.outcomes[vad_settings] = TranscriptionEmptyError("no VAD speech")
     transcriber.outcomes[no_vad_settings] = TranscriptionEmptyError("empty transcript")
 
@@ -291,7 +291,7 @@ def test_cached_empty_attempt_does_not_shadow_cached_fallback(tmp_path: Path):
     vad_settings = TranscriptionPreprocessingSettings(False, True)
     no_vad_settings = TranscriptionPreprocessingSettings(False, False)
     expected_segments = [_get_segment("fallback")]
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VADMode.AUTO)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VadMode.AUTO)
     transcriber._cache.save(
         audio, transcriber._get_cache_metadata(audio, vad_settings), []
     )
@@ -312,7 +312,7 @@ def test_rejected_cached_configuration_takes_precedence_over_other_error(
     audio = AudioSegment.silent(duration=100)
     vad_settings = TranscriptionPreprocessingSettings(False, True)
     no_vad_settings = TranscriptionPreprocessingSettings(False, False)
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VADMode.AUTO)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VadMode.AUTO)
     transcriber._cache.save(
         audio,
         transcriber._get_cache_metadata(audio, vad_settings),
@@ -331,7 +331,7 @@ def test_unusable_success_takes_precedence_over_other_configuration_error(
     audio = AudioSegment.silent(duration=100)
     vad_settings = TranscriptionPreprocessingSettings(False, True)
     no_vad_settings = TranscriptionPreprocessingSettings(False, False)
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VADMode.AUTO)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VadMode.AUTO)
     transcriber.outcomes[vad_settings] = [_get_segment("bad")]
     transcriber.outcomes[no_vad_settings] = TranscriptionInferenceError("failed")
 
@@ -343,7 +343,7 @@ def test_last_error_propagates_when_every_configuration_fails(tmp_path: Path):
     audio = AudioSegment.silent(duration=100)
     vad_settings = TranscriptionPreprocessingSettings(False, True)
     no_vad_settings = TranscriptionPreprocessingSettings(False, False)
-    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VADMode.AUTO)
+    transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VadMode.AUTO)
     transcriber.outcomes[vad_settings] = TranscriptionInferenceError("first")
     transcriber.outcomes[no_vad_settings] = TranscriptionInferenceError("last")
 

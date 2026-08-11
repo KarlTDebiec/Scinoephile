@@ -14,7 +14,7 @@ from pytest import mark, raises
 from scinoephile.audio.transcription import (
     CtcAligner,
     DemucsMode,
-    VADMode,
+    VadMode,
     WhisperTranscriber,
 )
 from scinoephile.audio.transcription.mlx_audio.model import (
@@ -120,7 +120,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.language is Language.yue_hant
     assert transcriber.guide_language is Language.zho_hans
     assert transcriber.demucs_mode is DemucsMode.OFF
-    assert transcriber.vad_mode is VADMode.OFF
+    assert transcriber.vad_mode is VadMode.OFF
     assert not hasattr(transcriber, "overwrite_cache")
     assert not hasattr(transcriber, "cache_root_path")
     assert (transcriber.audio_model, transcriber.model_name) == (
@@ -141,7 +141,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert whisper_transcriber.model is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert whisper_transcriber.language is Language.yue_hant
     assert transcriber.transcriber.demucs_mode is DemucsMode.OFF
-    assert transcriber.transcriber.vad_mode is VADMode.OFF
+    assert transcriber.transcriber.vad_mode is VadMode.OFF
     assert transcriber.recovery_transcriber is not None
     assert transcriber.tail_recovery_transcriber is not None
     assert not hasattr(transcriber.transcriber, "cache_root_path")
@@ -242,7 +242,7 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
         language=Language.yue_hant,
         token_limit_guard=True,
         demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.OFF,
+        vad_mode=VadMode.OFF,
         cache_root_path=tmp_path,
         overwrite_cache=False,
     )

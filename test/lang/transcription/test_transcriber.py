@@ -19,7 +19,7 @@ from scinoephile.audio.transcription import (
     TranscribedSegment,
     TranscribedWord,
     TranscriptionError,
-    VADMode,
+    VadMode,
 )
 from scinoephile.audio.transcription.mlx_audio.model import MIMO_MODEL
 from scinoephile.audio.transcription.whisper.model import WhisperModel
@@ -39,7 +39,7 @@ def _get_transcriber(
     *,
     model: TranscriptionModel = TranscriptionModel.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.OFF,
-    vad_mode: VADMode = VADMode.OFF,
+    vad_mode: VadMode = VadMode.OFF,
     overwrite_cache: bool = False,
     mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
     strip_generated_punctuation: bool = False,
@@ -168,7 +168,7 @@ def test_segments_are_usable_accepts_partial_guided_tail():
 
 def test_missing_guided_tail_runs_focused_recovery():
     """Test a missing guided tail triggers normalized focused recovery."""
-    transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
+    transcriber, _ = _get_transcriber(vad_mode=VadMode.OFF)
     initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
     recovered_segments = [
         _get_segment(
@@ -201,7 +201,7 @@ def test_missing_guided_tail_runs_focused_recovery():
 
 def test_missing_guided_tail_keeps_base_after_unusable_recovery():
     """Test unusable focused-tail output leaves the base transcription intact."""
-    transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
+    transcriber, _ = _get_transcriber(vad_mode=VadMode.OFF)
     initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
     repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
     transcriber.transcriber = Mock()
@@ -225,7 +225,7 @@ def test_missing_guided_tail_keeps_base_after_unusable_recovery():
 
 def test_missing_guided_tail_keeps_valid_base_without_credible_recovery():
     """Test implausible tail recovery does not invalidate a valid base transcript."""
-    transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
+    transcriber, _ = _get_transcriber(vad_mode=VadMode.OFF)
     initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
     stretched_segment = _get_segment(
         end=5.0, text="x", compression_ratio=1.0, with_words=True
@@ -348,7 +348,7 @@ def test_mlx_audio_backend_delegates_to_shared_transcriber():
     transcriber, _ = _get_transcriber(
         model=TranscriptionModel.MIMO,
         demucs_mode=DemucsMode.AUTO,
-        vad_mode=VADMode.AUTO,
+        vad_mode=VadMode.AUTO,
     )
     repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
     usable_segments = [_get_segment(text="mlx-audio", with_words=True)]

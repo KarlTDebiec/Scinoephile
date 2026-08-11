@@ -27,7 +27,7 @@ from .mlx_audio import MlxAudioModel, MlxAudioTranscriber
 from .preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
-    VADMode,
+    VadMode,
 )
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
@@ -49,7 +49,7 @@ __all__ = [
     "TranscriptionError",
     "TranscriptionInferenceError",
     "TranscriptionPreprocessingSettings",
-    "VADMode",
+    "VadMode",
     "WhisperModel",
     "WhisperTranscriber",
     "get_segment_merged",

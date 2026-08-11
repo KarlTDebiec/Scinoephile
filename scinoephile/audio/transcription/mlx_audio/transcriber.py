@@ -25,7 +25,7 @@ from scinoephile.audio.transcription.exceptions import (
 from scinoephile.audio.transcription.preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
-    VADMode,
+    VadMode,
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
@@ -89,7 +89,7 @@ class MlxAudioTranscriber(Transcriber):
         chunk_overlap_seconds: float = 1.0,
         token_limit_guard: bool = False,
         demucs_mode: DemucsMode = DemucsMode.OFF,
-        vad_mode: VADMode = VADMode.OFF,
+        vad_mode: VadMode = VadMode.OFF,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
         demucs_separator: DemucsSeparator | None = None,

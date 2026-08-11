@@ -12,7 +12,7 @@ from types import MappingProxyType
 from scinoephile.audio.transcription import (
     DemucsMode,
     MlxAudioTranscriber,
-    VADMode,
+    VadMode,
     get_segment_split_on_whitespace,
 )
 from scinoephile.audio.transcription.mlx_audio.model import (
@@ -199,7 +199,7 @@ def get_guided_transcriber(
     *,
     model: TranscriptionModel = TranscriptionModel.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.OFF,
-    vad_mode: VADMode = VADMode.OFF,
+    vad_mode: VadMode = VadMode.OFF,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     strip_generated_punctuation: bool = False,

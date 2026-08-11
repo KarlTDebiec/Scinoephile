@@ -23,7 +23,7 @@ from scinoephile.audio.transcription import (
     TranscriptionEmptyError,
     TranscriptionError,
     TranscriptionInferenceError,
-    VADMode,
+    VadMode,
     get_segment_split_at_idx,
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
@@ -63,7 +63,7 @@ def test_init_defaults_demucs_and_vad_to_off():
     transcriber = WhisperTranscriber()
 
     assert transcriber.demucs_mode is DemucsMode.OFF
-    assert transcriber.vad_mode is VADMode.OFF
+    assert transcriber.vad_mode is VadMode.OFF
     assert transcriber.demucs_separator is None
     assert transcriber.model is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert transcriber.language is Language.yue_hant
@@ -140,7 +140,7 @@ def _patch_whisper_timestamped(
 @parametrize(
     ("field_name", "first_value", "second_value"),
     [
-        ("vad_mode", VADMode.ON, VADMode.OFF),
+        ("vad_mode", VadMode.ON, VadMode.OFF),
         (
             "model",
             replace(_CUSTOM_MODEL, model_name="model/one"),
@@ -281,7 +281,7 @@ def test_transcribe_forwards_recovery_decoding_options(
     transcriber = WhisperTranscriber(
         model=_CUSTOM_MODEL,
         demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.OFF,
+        vad_mode=VadMode.OFF,
         temperature=temperatures,
         condition_on_previous_text=False,
     )
@@ -320,7 +320,7 @@ def test_transcribe_timestamped_success_does_not_use_ctc(
         cache_root_path=tmp_path,
         model=_CUSTOM_MODEL,
         demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.OFF,
+        vad_mode=VadMode.OFF,
         ctc_aligner=ctc_aligner,
     )
     transcriber._loaded_model_instance = model
@@ -386,7 +386,7 @@ def test_transcribe_falls_back_to_native_text_with_ctc_alignment(
         model=_CUSTOM_MODEL,
         language=Language.yue_hant,
         demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.OFF,
+        vad_mode=VadMode.OFF,
         temperature=temperatures,
         condition_on_previous_text=False,
         ctc_aligner=ctc_aligner,
@@ -432,7 +432,7 @@ def test_transcribe_timestamp_assertion_without_ctc_remains_error(
         cache_root_path=tmp_path,
         model=_CUSTOM_MODEL,
         demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.OFF,
+        vad_mode=VadMode.OFF,
     )
     transcriber._loaded_model_instance = model
     _patch_whisper_timestamped(
@@ -464,7 +464,7 @@ def test_transcribe_unrelated_assertion_does_not_use_ctc(
         cache_root_path=tmp_path,
         model=_CUSTOM_MODEL,
         demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.OFF,
+        vad_mode=VadMode.OFF,
         ctc_aligner=ctc_aligner,
     )
     transcriber._loaded_model_instance = model
@@ -518,7 +518,7 @@ def test_transcribe_rejects_invalid_native_fallback_output(
         cache_root_path=tmp_path,
         model=_CUSTOM_MODEL,
         demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.OFF,
+        vad_mode=VadMode.OFF,
         ctc_aligner=ctc_aligner,
     )
     transcriber._loaded_model_instance = model
@@ -550,7 +550,7 @@ def test_transcribe_wraps_native_fallback_failure(
         cache_root_path=tmp_path,
         model=_CUSTOM_MODEL,
         demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.OFF,
+        vad_mode=VadMode.OFF,
         ctc_aligner=ctc_aligner,
     )
     transcriber._loaded_model_instance = model
@@ -604,7 +604,7 @@ def test_transcribe_logs_when_decoding_window_reaches_token_limit(
     model = Mock()
     model.decode = decode
     transcriber = WhisperTranscriber(
-        model=_CUSTOM_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.OFF
+        model=_CUSTOM_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VadMode.OFF
     )
     transcriber._loaded_model_instance = model
     _patch_whisper_timestamped(monkeypatch, Mock(side_effect=transcribe))
@@ -656,10 +656,10 @@ def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch
     )
     monkeypatch.setattr(WhisperTranscriber, "_models_by_key", {})
     vad_transcriber = WhisperTranscriber(
-        model=_CUSTOM_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.ON
+        model=_CUSTOM_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VadMode.ON
     )
     no_vad_transcriber = WhisperTranscriber(
-        model=_CUSTOM_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VADMode.OFF
+        model=_CUSTOM_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VadMode.OFF
     )
 
     assert vad_transcriber._loaded_model is loaded_model
@@ -679,7 +679,7 @@ def test_transcribe_overwrites_matching_cache(monkeypatch: MonkeyPatch, tmp_path
         cache_root_path=tmp_path,
         model=_CUSTOM_MODEL,
         demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.OFF,
+        vad_mode=VadMode.OFF,
         overwrite_cache=True,
     )
     transcriber._loaded_model_instance = Mock()
@@ -713,7 +713,7 @@ def test_transcribe_recovers_from_malformed_cache(
         cache_root_path=tmp_path,
         model=_CUSTOM_MODEL,
         demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.OFF,
+        vad_mode=VadMode.OFF,
     )
     transcriber._loaded_model_instance = Mock()
     cache_path = _get_cache_path(transcriber, audio)
@@ -740,7 +740,7 @@ def test_transcribe_discards_invalid_cache_when_atomic_write_fails(
         cache_root_path=tmp_path,
         model=_CUSTOM_MODEL,
         demucs_mode=DemucsMode.OFF,
-        vad_mode=VADMode.OFF,
+        vad_mode=VadMode.OFF,
     )
     transcriber._loaded_model_instance = Mock()
     cache_path = _get_cache_path(transcriber, audio)

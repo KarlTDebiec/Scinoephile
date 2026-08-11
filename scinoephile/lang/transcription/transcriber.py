@@ -21,7 +21,7 @@ from scinoephile.audio.transcription import (
     TranscribedSegment,
     TranscribedWord,
     TranscriptionError,
-    VADMode,
+    VadMode,
     WhisperTranscriber,
     get_segment_split_at_idx,
     get_segment_split_on_word_timings,
@@ -151,7 +151,7 @@ class GuidedTranscriber:
         audio_model: WhisperModel | MlxAudioModel,
         aligner: TranscriptionAligner,
         demucs_mode: DemucsMode = DemucsMode.OFF,
-        vad_mode: VADMode = VADMode.OFF,
+        vad_mode: VadMode = VadMode.OFF,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
         mlx_audio_transcriber: MlxAudioTranscriber | None = None,
@@ -215,9 +215,9 @@ class GuidedTranscriber:
         recovery_demucs_mode = DemucsMode.OFF
         if self.demucs_mode is DemucsMode.ON:
             recovery_demucs_mode = DemucsMode.ON
-        recovery_vad_mode = VADMode.OFF
-        if self.vad_mode is VADMode.ON:
-            recovery_vad_mode = VADMode.ON
+        recovery_vad_mode = VadMode.OFF
+        if self.vad_mode is VadMode.ON:
+            recovery_vad_mode = VadMode.ON
         self.recovery_transcriber = WhisperTranscriber(
             model=self.audio_model,
             language=self.language,
@@ -236,7 +236,7 @@ class GuidedTranscriber:
             model=self.audio_model,
             language=self.language,
             demucs_mode=DemucsMode.OFF,
-            vad_mode=VADMode.OFF,
+            vad_mode=VadMode.OFF,
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
             condition_on_previous_text=False,
