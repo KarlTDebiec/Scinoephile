@@ -3,6 +3,7 @@
 """Code related to audio.
 
 Package hierarchy (modules may import from any above):
+* samples
 * transcription
 * subtitles
 """
