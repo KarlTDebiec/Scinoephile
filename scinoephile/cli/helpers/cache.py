@@ -4,12 +4,11 @@
 
 from __future__ import annotations
 
-from argparse import _ArgumentGroup  # noqa: PLC2701
 from dataclasses import dataclass, field
 from functools import partial
 from pathlib import Path
 
-from scinoephile.common.argument_parsing import output_dir_arg
+from scinoephile.common.argument_parsing import ArgumentGroup, output_dir_arg
 from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .argument_bundle_field_action import ArgumentBundleFieldAction
@@ -52,7 +51,7 @@ class CacheArguments:
     """Whether matching cache files should be overwritten."""
 
 
-def add_cache_args(cache_arg_group: _ArgumentGroup):
+def add_cache_args(cache_arg_group: ArgumentGroup):
     """Add standard cache arguments to an argument group.
 
     Arguments:
@@ -84,7 +83,7 @@ def add_cache_args(cache_arg_group: _ArgumentGroup):
 
 
 def add_cache_root_arg(
-    cache_arg_group: _ArgumentGroup,
+    cache_arg_group: ArgumentGroup,
     help_text: str = "cache root directory path (default: %(default)s)",
 ):
     """Add a standard cache root argument to an argument group.

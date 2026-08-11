@@ -5,15 +5,10 @@
 from __future__ import annotations
 
 import sys
-from argparse import (  # noqa: PLC2701
-    SUPPRESS,
-    Action,
-    ArgumentParser,
-    Namespace,
-    _ArgumentGroup,
-)
+from argparse import SUPPRESS, Action, ArgumentParser, Namespace
 from typing import Any
 
+from scinoephile.common.argument_parsing import ArgumentGroup
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 
@@ -100,7 +95,7 @@ OPENCC_CONFIG_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 def add_opencc_convert_argument(
-    operation_arg_group: _ArgumentGroup, additional_help_arg_group: _ArgumentGroup
+    operation_arg_group: ArgumentGroup, additional_help_arg_group: ArgumentGroup
 ):
     """Add standard OpenCC conversion and help arguments to argument groups.
 
@@ -125,7 +120,7 @@ def add_opencc_convert_argument(
 
 
 def add_opencc_convert_auto_argument(
-    operation_arg_group: _ArgumentGroup, additional_help_arg_group: _ArgumentGroup
+    operation_arg_group: ArgumentGroup, additional_help_arg_group: ArgumentGroup
 ):
     """Add OpenCC conversion arguments allowing automatic config selection.
 

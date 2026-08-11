@@ -6,24 +6,39 @@ from __future__ import annotations
 
 import re
 from abc import ABC, abstractmethod
-from argparse import (
-    ArgumentParser,
-    RawDescriptionHelpFormatter,
-    _SubParsersAction,  # noqa pylint
-)
-from collections.abc import Callable
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from collections.abc import Callable, Mapping
 from datetime import datetime
 from inspect import cleandoc
 from logging import FileHandler, Formatter, getLogger
 from pathlib import Path
 from sys import argv
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar, Protocol, runtime_checkable
 
 from .logs import DEFAULT_LOG_FORMAT, configure_logging
 
-__all__ = ["CommandLineInterface"]
+__all__ = ["CommandLineInterface", "SubparsersAction"]
 
 logger = getLogger(__name__)
+
+
+@runtime_checkable
+class SubparsersAction(Protocol):
+    """Public interface for an argparse subparsers action."""
+
+    choices: Mapping[str, ArgumentParser]
+    """Subcommand parsers keyed by command name."""
+
+    def add_parser(self, name: str, **kwargs: Any) -> ArgumentParser:
+        """Add a subcommand parser.
+
+        Arguments:
+            name: subcommand name
+            **kwargs: argument parser configuration
+        Returns:
+            configured subcommand parser
+        """
+        ...
 
 
 class CommandLineInterface(ABC):
@@ -75,9 +90,7 @@ class CommandLineInterface(ABC):
                 action_group.title = "additional arguments"
 
     @classmethod
-    def argparser(
-        cls, *, subparsers: _SubParsersAction | None = None
-    ) -> ArgumentParser:
+    def argparser(cls, *, subparsers: SubparsersAction | None = None) -> ArgumentParser:
         """Construct argument parser.
 
         Arguments:

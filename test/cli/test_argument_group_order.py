@@ -4,11 +4,11 @@
 
 from __future__ import annotations
 
-from argparse import ArgumentParser, _SubParsersAction  # noqa: PLC2701
+from argparse import ArgumentParser
 from collections.abc import Iterator
-from typing import cast
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.common.command_line_interface import SubparsersAction
 
 _GROUP_ORDER = (
     "positional arguments",
@@ -71,7 +71,7 @@ def _iter_parsers(
     """
     yield path, parser
     for action in parser._actions:  # noqa: SLF001
-        if not isinstance(action, _SubParsersAction):
+        if not isinstance(action, SubparsersAction):
             continue
         for name, subparser in sorted(action.choices.items()):
-            yield from _iter_parsers(cast(ArgumentParser, subparser), (*path, name))
+            yield from _iter_parsers(subparser, (*path, name))

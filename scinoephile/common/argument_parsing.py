@@ -4,16 +4,12 @@
 
 from __future__ import annotations
 
-from argparse import (
-    ArgumentParser,
-    ArgumentTypeError,
-    _ArgumentGroup,  # noqa pylint
-)
+from argparse import Action, ArgumentParser, ArgumentTypeError
 from collections.abc import Callable, Collection
 from datetime import timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, TypedDict, Unpack
+from typing import Any, Protocol, TypedDict, Unpack, cast
 
 from .duration import parse_duration
 from .exceptions import NotAFileError
@@ -29,6 +25,7 @@ from .validation import (
 )
 
 __all__ = [
+    "ArgumentGroup",
     "FloatValidatorKwargs",
     "IntValidatorKwargs",
     "OutputDirValidatorKwargs",
@@ -52,6 +49,31 @@ __all__ = [
     "output_file_arg",
     "str_arg",
 ]
+
+
+class ArgumentGroup(Protocol):
+    """Public argument-group interface used by CLI helpers."""
+
+    def add_argument(self, *name_or_flags: str, **kwargs: Any) -> Action:
+        """Add an argument to the group.
+
+        Arguments:
+            *name_or_flags: positional argument name or option flags
+            **kwargs: argparse argument configuration
+        Returns:
+            configured argparse action
+        """
+        ...
+
+
+class _MutableArgumentGroup(ArgumentGroup, Protocol):
+    """Argument group interface used for internal argparse group ordering."""
+
+    title: str | None
+    """Argument group title."""
+
+    _group_actions: list[Action]
+    """Actions registered with the argument group."""
 
 
 class FloatValidatorKwargs(TypedDict, total=False):
@@ -101,7 +123,7 @@ class StrValidatorKwargs(TypedDict, total=False):
     """allowed string options."""
 
 
-def get_optional_args_group(parser: ArgumentParser) -> _ArgumentGroup:
+def get_optional_args_group(parser: ArgumentParser) -> ArgumentGroup:
     """Get the optional arguments group from an argparser.
 
     Arguments:
@@ -109,7 +131,10 @@ def get_optional_args_group(parser: ArgumentParser) -> _ArgumentGroup:
     Returns:
         Optional arguments group
     """
-    action_groups = parser._action_groups  # noqa pylint: disable=protected-access
+    action_groups = cast(
+        "list[_MutableArgumentGroup]",
+        parser._action_groups,  # noqa: SLF001
+    )
     return next(
         ag
         for ag in action_groups
@@ -117,7 +142,7 @@ def get_optional_args_group(parser: ArgumentParser) -> _ArgumentGroup:
     )
 
 
-def get_required_args_group(parser: ArgumentParser) -> _ArgumentGroup:
+def get_required_args_group(parser: ArgumentParser) -> ArgumentGroup:
     """Get or create a 'required arguments' group from an argparser.
 
     Arguments:
@@ -125,7 +150,10 @@ def get_required_args_group(parser: ArgumentParser) -> _ArgumentGroup:
     Returns:
         Required arguments group
     """
-    action_groups = parser._action_groups  # noqa pylint: disable=protected-access
+    action_groups = cast(
+        "list[_MutableArgumentGroup]",
+        parser._action_groups,  # noqa: SLF001
+    )
     for group in action_groups:
         if group.title == "required arguments":
             return group
@@ -142,7 +170,7 @@ def get_arg_groups_by_name(
     parser: ArgumentParser,
     *names: str,
     optional_arguments_name: str = "optional arguments",
-) -> dict[str, _ArgumentGroup]:
+) -> dict[str, ArgumentGroup]:
     """Get or create one or more argument groups by name.
 
     Groups will be ordered by the order in which they are specified, with additional
@@ -165,9 +193,12 @@ def get_arg_groups_by_name(
     Returns:
         Dictionary of names to argument groups
     """
-    specified_groups = {}
+    specified_groups: dict[str, _MutableArgumentGroup] = {}
     for name in names:
-        action_groups = parser._action_groups  # noqa pylint: disable=protected-access
+        action_groups = cast(
+            "list[_MutableArgumentGroup]",
+            parser._action_groups,  # noqa: SLF001
+        )
         for i, ag in enumerate(action_groups):
             if ag.title == name:
                 specified_groups[name] = action_groups.pop(i)
@@ -176,10 +207,13 @@ def get_arg_groups_by_name(
             parser.add_argument_group(name)
             specified_groups[name] = action_groups.pop()
 
-    action_groups = parser._action_groups  # noqa pylint: disable=protected-access
-    additional_groups = {}
-    optional_groups = {}
-    additional_help_groups = {}
+    action_groups = cast(
+        "list[_MutableArgumentGroup]",
+        parser._action_groups,  # noqa: SLF001
+    )
+    additional_groups: dict[str, _MutableArgumentGroup] = {}
+    optional_groups: dict[str, _MutableArgumentGroup] = {}
+    additional_help_groups: dict[str, _MutableArgumentGroup] = {}
     remaining_groups = action_groups[:]
     action_groups.clear()
     for ag in remaining_groups:
@@ -212,12 +246,15 @@ def get_arg_groups_by_name(
     action_groups.extend(additional_help_groups.values())
     action_groups.extend(trailing_groups.values())
 
-    return {
-        **specified_groups,
-        **additional_groups,
-        **optional_groups,
-        **additional_help_groups,
-    }
+    return cast(
+        "dict[str, ArgumentGroup]",
+        {
+            **specified_groups,
+            **additional_groups,
+            **optional_groups,
+            **additional_help_groups,
+        },
+    )
 
 
 def get_validator[T](function: Callable[..., T], **kwargs: Any) -> Callable[[Any], T]:

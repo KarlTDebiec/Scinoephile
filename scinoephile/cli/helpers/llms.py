@@ -5,19 +5,16 @@
 from __future__ import annotations
 
 import sys
-from argparse import (  # noqa: PLC2701
-    SUPPRESS,
-    Action,
-    ArgumentParser,
-    ArgumentTypeError,
-    Namespace,
-    _ArgumentGroup,
-)
+from argparse import SUPPRESS, Action, ArgumentParser, ArgumentTypeError, Namespace
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from scinoephile.common.argument_parsing import input_file_arg, output_file_arg
+from scinoephile.common.argument_parsing import (
+    ArgumentGroup,
+    input_file_arg,
+    output_file_arg,
+)
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.llms.providers.registry import (
     DEFAULT_PROVIDER_NAME,
@@ -96,7 +93,7 @@ class LlmArguments:
 
 
 def add_llm_provider_args(
-    llm_arg_group: _ArgumentGroup, additional_help_arg_group: _ArgumentGroup
+    llm_arg_group: ArgumentGroup, additional_help_arg_group: ArgumentGroup
 ):
     """Add standard LLM provider arguments to argument groups.
 
@@ -155,7 +152,7 @@ def add_llm_provider_args(
 
 
 def add_llm_test_case_json_arg(
-    llm_arg_group: _ArgumentGroup,
+    llm_arg_group: ArgumentGroup,
     option_name: str = "--json",
     *,
     dest: str = "json_path",
