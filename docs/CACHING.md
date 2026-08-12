@@ -67,8 +67,7 @@ constructors resolve their directories through members of that enum.
 
 `scinoephile.workflows.cache_registry.CACHE_REGISTRY` aggregates the owner
 enums for application-wide inspection and clearing. The generic maintenance
-operations in `scinoephile.core.cache` receive this registry from workflow
-callers.
+operations in `scinoephile.core.cache` receive this registry from their callers.
 
 Namespace segments use Python module spelling, including underscores such as
 `mlx_audio`. A parameterized `<operation>` segment represents one validated
