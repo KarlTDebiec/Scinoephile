@@ -39,8 +39,10 @@ class _LoadedMlxAudioModel(Protocol):
 class MlxAudioBackend:
     """Runs direct speech-to-text inference through one MLX-Audio model."""
 
-    _models_by_key: ClassVar[dict[tuple[str, str], _LoadedMlxAudioModel]] = {}
-    """Loaded models shared by resolved reference and MLX-Audio model type."""
+    _models_by_key: ClassVar[
+        dict[tuple[str, str | None, str], _LoadedMlxAudioModel]
+    ] = {}
+    """Loaded models shared by reference, revision, and MLX-Audio model type."""
 
     def __init__(
         self, model: MlxAudioModel = MIMO_MODEL, language: Language = Language.yue_hant
@@ -74,6 +76,11 @@ class MlxAudioBackend:
             model_reference = val_input_file_or_dir_path(selected_model_name)
         self._model_reference = model_reference
         """Resolved local model path or remote Hugging Face reference."""
+
+        self.model_revision = (
+            self.model.model_revision if isinstance(model_reference, str) else None
+        )
+        """Immutable remote model revision, or None for local models."""
 
         self._loaded_model_instance: _LoadedMlxAudioModel | None = None
         """Loaded MLX-Audio model."""
@@ -136,15 +143,21 @@ class MlxAudioBackend:
         if self._loaded_model_instance is not None:
             return self._loaded_model_instance
 
-        model_key = (str(self._model_reference), self.model.model_type)
+        model_key = (
+            str(self._model_reference),
+            self.model_revision,
+            self.model.model_type,
+        )
 
         # Reuse the process-wide model cache across inference instances
         cached_model = self._models_by_key.get(model_key)
         if cached_model is None:
             load = import_mlx_audio_stt_load()
+            load_kwargs: dict[str, object] = {"model_type": self.model.model_type}
+            if self.model_revision is not None:
+                load_kwargs["revision"] = self.model_revision
             cached_model = cast(
-                _LoadedMlxAudioModel,
-                load(self._model_reference, model_type=self.model.model_type),
+                _LoadedMlxAudioModel, load(self._model_reference, **load_kwargs)
             )
             self._models_by_key[model_key] = cached_model
         self._loaded_model_instance = cached_model

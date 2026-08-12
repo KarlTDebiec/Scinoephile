@@ -256,7 +256,9 @@ def test_loaded_model_is_shared_by_model_key(
 
     assert first._loaded_model is load.return_value
     assert second._loaded_model is load.return_value
-    load.assert_called_once_with(model.model_name, model_type=model_type)
+    load.assert_called_once_with(
+        model.model_name, model_type=model_type, revision=model.model_revision
+    )
 
 
 def test_model_cache_key_includes_model_type(monkeypatch: pytest.MonkeyPatch):
@@ -277,8 +279,14 @@ def test_model_cache_key_includes_model_type(monkeypatch: pytest.MonkeyPatch):
     assert first._loaded_model is models[0]
     assert second._loaded_model is models[1]
     assert load.call_args_list == [
-        call(MIMO_MODEL.model_name, model_type="mimo"),
-        call(MIMO_MODEL.model_name, model_type="qwen3_asr"),
+        call(
+            MIMO_MODEL.model_name, model_type="mimo", revision=MIMO_MODEL.model_revision
+        ),
+        call(
+            MIMO_MODEL.model_name,
+            model_type="qwen3_asr",
+            revision=MIMO_MODEL.model_revision,
+        ),
     ]
 
 

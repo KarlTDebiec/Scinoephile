@@ -19,10 +19,13 @@ class WhisperModel:
     """Hugging Face model name or local model path."""
     languages: dict[Language, str]
     """Whisper language codes keyed by Scinoephile language."""
+    model_revision: str | None = None
+    """Immutable Hugging Face revision, or None for local or mutable models."""
 
 
 WHISPER_LARGE_V3_CANTONESE_MODEL = WhisperModel(
     model_name="khleeloo/whisper-large-v3-cantonese",
     languages={Language.yue_hans: "yue", Language.yue_hant: "yue"},
+    model_revision="f48a890f78c7b6acf723f25d8c81e232ac7469ca",
 )
 """Default Whisper large-v3 Cantonese model."""

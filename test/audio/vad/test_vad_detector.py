@@ -29,7 +29,9 @@ from scinoephile.audio.vad import (
     VoiceActivityTrace,
 )
 
-_CUSTOM_MODEL = replace(WHISPER_LARGE_V3_CANTONESE_MODEL, model_name="custom/model")
+_CUSTOM_MODEL = replace(
+    WHISPER_LARGE_V3_CANTONESE_MODEL, model_name="custom/model", model_revision=None
+)
 
 
 def test_pyannote_inference_uses_pinned_model_and_shared_interval_settings(

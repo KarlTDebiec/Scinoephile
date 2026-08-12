@@ -306,13 +306,13 @@ class Transcriber(ABC):
         Returns:
             configuration identifying the output
         """
-        demucs_model_name = None
+        demucs_identity = None
         if settings.use_demucs:
             assert self.demucs_separator is not None
-            demucs_model_name = self.demucs_separator.model_name
+            demucs_identity = self.demucs_separator.cache_identity
         return {
             **self._get_backend_cache_metadata(audio, settings),
-            "demucs_model_name": demucs_model_name,
+            "demucs": demucs_identity,
             "use_demucs": settings.use_demucs,
             "use_vad": settings.use_vad,
             "vad": self.vad_detector.cache_identity if settings.use_vad else None,

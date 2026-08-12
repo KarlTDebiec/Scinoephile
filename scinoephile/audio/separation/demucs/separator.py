@@ -69,6 +69,11 @@ class DemucsSeparator:
         return self.separate_vocals(audio)
 
     @property
+    def cache_identity(self) -> dict[str, object]:
+        """Get the Demucs model and runtime cache identity."""
+        return self._cache.cache_identity
+
+    @property
     def device(self) -> str:
         """Get torch device identifier."""
         if self._device is None:

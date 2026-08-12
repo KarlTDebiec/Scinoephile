@@ -69,8 +69,8 @@ class WhisperTranscriber(Transcriber):
     backend_label = "Whisper"
     """Human-readable backend name used in log messages."""
 
-    _models_by_key: ClassVar[dict[tuple[str, str], Whisper]] = {}
-    """Loaded models shared by model name and device within the current process."""
+    _models_by_key: ClassVar[dict[tuple[str, str | None, str], Whisper]] = {}
+    """Loaded models shared by name, revision, and device in the current process."""
 
     def __init__(
         self,
@@ -141,31 +141,52 @@ class WhisperTranscriber(Transcriber):
             return self._loaded_model_instance
 
         device = get_torch_device()
-        model_key = (self.model_name, device)
+        model_key = (self.model_name, self.model.model_revision, device)
 
         # Reuse the process-wide model cache across transcriber instances
         cached_model = self._models_by_key.get(model_key)
         if cached_model is None:
             whisper_timestamped = import_whisper_timestamped()
+            model_reference = self._get_model_reference()
             try:
                 cached_model = whisper_timestamped.load_model(
-                    self.model_name, device=device
+                    model_reference, device=device
                 )
             except FileNotFoundError:
                 if not self._model_name_is_huggingface_repo_id():
                     raise
                 logger.warning(
                     "Whisper model load failed due to missing cache file; "
-                    "re-downloading HuggingFace snapshot and retrying."
+                    "re-downloading Hugging Face snapshot and retrying."
                 )
                 huggingface_hub = import_huggingface_hub()
-                huggingface_hub.snapshot_download(repo_id=self.model_name)
+                model_reference = huggingface_hub.snapshot_download(
+                    repo_id=self.model_name, revision=self.model.model_revision
+                )
                 cached_model = whisper_timestamped.load_model(
-                    self.model_name, device=device
+                    model_reference, device=device
                 )
             self._models_by_key[model_key] = cached_model
         self._loaded_model_instance = cached_model
         return self._loaded_model_instance
+
+    def _get_model_reference(self) -> str:
+        """Get the reference passed to Whisper Timestamped.
+
+        Returns:
+            model name, local path, or pinned Hugging Face snapshot path
+        """
+        if self.model.model_revision is None:
+            return self.model_name
+        if not self._model_name_is_huggingface_repo_id():
+            raise ValueError(
+                "A Whisper model revision may only be used with a Hugging Face "
+                "repository ID."
+            )
+        huggingface_hub = import_huggingface_hub()
+        return huggingface_hub.snapshot_download(
+            repo_id=self.model_name, revision=self.model.model_revision
+        )
 
     @staticmethod
     def _get_sample_len(audio: AudioSegment) -> int:
@@ -187,10 +208,10 @@ class WhisperTranscriber(Transcriber):
         )
 
     def _model_name_is_huggingface_repo_id(self) -> bool:
-        """Determine whether model name looks like a HuggingFace repo ID.
+        """Determine whether model name looks like a Hugging Face repo ID.
 
         Returns:
-            whether the model name should be passed to HuggingFace Hub
+            whether the model name should be passed to Hugging Face Hub
         """
         model_path = Path(self.model_name)
         model_path_parts = model_path.parts
@@ -338,6 +359,7 @@ class WhisperTranscriber(Transcriber):
             "condition_on_previous_text": self.condition_on_previous_text,
             "language": self._whisper_language,
             "model_name": self.model_name,
+            "model_revision": self.model.model_revision,
             "temperature": temperature,
         }
         if self.ctc_aligner is not None:
@@ -346,6 +368,9 @@ class WhisperTranscriber(Transcriber):
                     "timestamp_fallback": "ctc",
                     "timestamp_fallback_language": self.ctc_aligner.language.code,
                     "timestamp_fallback_model_name": self.ctc_aligner.model_name,
+                    "timestamp_fallback_model_revision": (
+                        self.ctc_aligner.model_revision
+                    ),
                 }
             )
         return metadata

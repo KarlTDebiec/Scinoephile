@@ -81,6 +81,7 @@ class MlxAudioTranscriber(Transcriber):
         overwrite_cache: bool = False,
         demucs_separator: DemucsSeparator | None = None,
         vad_detector: VoiceActivityDetector | None = None,
+        ctc_model_revision: str | None = None,
     ):
         """Initialize.
 
@@ -98,6 +99,7 @@ class MlxAudioTranscriber(Transcriber):
             overwrite_cache: whether to replace matching cache files
             demucs_separator: optional shared Demucs vocal separator
             vad_detector: optional shared voice activity detector
+            ctc_model_revision: optional immutable Hugging Face CTC model revision
         Raises:
             TranscriptionError: if the platform does not support MLX-Audio
             ValueError: if the language or numeric configuration is invalid
@@ -119,7 +121,9 @@ class MlxAudioTranscriber(Transcriber):
         self.backend = MlxAudioBackend(self.model, language)
         """Direct MLX-Audio inference backend."""
 
-        self.ctc_aligner = CtcAligner(language, ctc_model_name)
+        self.ctc_aligner = CtcAligner(
+            language, ctc_model_name, model_revision=ctc_model_revision
+        )
         if max_tokens is None:
             max_tokens = model.default_max_tokens
         if max_tokens is not None:
@@ -180,6 +184,7 @@ class MlxAudioTranscriber(Transcriber):
         metadata: dict[str, object] = {
             "model_family": self.model.family_name,
             "model_name": self.model_name,
+            "model_revision": self.backend.model_revision,
             "runtime": "mlx",
             "language": self.language.code,
             "mlx_audio_language": self.backend.mlx_audio_language,
@@ -188,6 +193,7 @@ class MlxAudioTranscriber(Transcriber):
             "chunk_overlap_seconds": chunk_overlap_ms / 1000,
             "aligner": "ctc",
             "aligner_model_name": self.ctc_aligner.model_name,
+            "aligner_model_revision": self.ctc_aligner.model_revision,
         }
         if self._uses_token_limit_guard(audio):
             metadata["token_limit_guard_fraction"] = _TOKEN_LIMIT_GUARD_FRACTION

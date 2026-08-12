@@ -112,6 +112,39 @@ def test_ctc_aligner_selects_language_default_model(
 
     assert aligner.language is language
     assert aligner.model_name == expected_model_name
+    assert aligner.model_revision is not None
+
+
+def test_ctc_aligner_loads_default_model_at_pinned_revision(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test default CTC assets load from their immutable Hugging Face revision."""
+    model = Mock()
+    model.to.return_value = model
+    model_factory = Mock(return_value=model)
+    processor_factory = Mock(return_value=object())
+    monkeypatch.setattr(CtcAligner, "_models", {})
+    monkeypatch.setattr(CtcAligner, "_processors", {})
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc_aligner.import_transformers",
+        Mock(
+            return_value=SimpleNamespace(
+                AutoModelForCTC=SimpleNamespace(from_pretrained=model_factory),
+                AutoProcessor=SimpleNamespace(from_pretrained=processor_factory),
+            )
+        ),
+    )
+    aligner = CtcAligner(Language.eng)
+
+    assert aligner.model is model
+    assert aligner.processor is not None
+    expected_revision = "22aad52d435eb6dbaf354bdad9b0da84ce7d6156"
+    model_factory.assert_called_once_with(
+        "facebook/wav2vec2-base-960h", revision=expected_revision
+    )
+    processor_factory.assert_called_once_with(
+        "facebook/wav2vec2-base-960h", revision=expected_revision
+    )
 
 
 def test_ctc_audio_samples_use_requested_rate_and_float32():

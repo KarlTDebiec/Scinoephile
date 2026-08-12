@@ -39,6 +39,15 @@ _DEFAULT_MODEL_NAMES = {
 }
 """Default CTC model names keyed by transcription language."""
 
+_DEFAULT_MODEL_REVISIONS = {
+    "facebook/wav2vec2-base-960h": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+    "ctl/wav2vec2-large-xlsr-cantonese": ("11cb21cb68b4ed15f4c6633494ae6cc90a89bc34"),
+    "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn": (
+        "99ccb2737be22b8bb50dcfcc39ad4d567fb90cfd"
+    ),
+}
+"""Immutable Hugging Face revisions for the default CTC models."""
+
 _SCRIPT_CONVERSION_CONFIGS = {
     (Language.yue_hans, _DEFAULT_MODEL_NAMES[Language.yue_hans]): "s2t",
     (Language.zho_hant, _DEFAULT_MODEL_NAMES[Language.zho_hant]): "t2s",
@@ -49,14 +58,19 @@ _SCRIPT_CONVERSION_CONFIGS = {
 class CtcAligner:
     """Aligns transcription text to audio using a CTC model."""
 
-    _models: ClassVar[dict[tuple[str, str], CtcModel]] = {}
-    """Loaded models shared by model name and device."""
+    _models: ClassVar[dict[tuple[str, str | None, str], CtcModel]] = {}
+    """Loaded models shared by model name, revision, and device."""
 
-    _processors: ClassVar[dict[str, CtcProcessor]] = {}
-    """Loaded processors shared by model name."""
+    _processors: ClassVar[dict[tuple[str, str | None], CtcProcessor]] = {}
+    """Loaded processors shared by model name and revision."""
 
     def __init__(
-        self, language: Language, model_name: str | None = None, device: str = "cpu"
+        self,
+        language: Language,
+        model_name: str | None = None,
+        device: str = "cpu",
+        *,
+        model_revision: str | None = None,
     ):
         """Initialize.
 
@@ -64,6 +78,7 @@ class CtcAligner:
             language: transcription language
             model_name: optional Hugging Face CTC model name or local model path
             device: device identifier passed to the CTC model
+            model_revision: optional immutable Hugging Face model revision
         Raises:
             ValueError: if no default model is available for the language
         """
@@ -77,8 +92,13 @@ class CtcAligner:
                 raise ValueError(
                     f"{language} is not supported by CTC alignment"
                 ) from exc
+            if model_revision is None:
+                model_revision = _DEFAULT_MODEL_REVISIONS.get(model_name)
         self.model_name = model_name
         """Hugging Face CTC model name or local model path."""
+
+        self.model_revision = model_revision
+        """Immutable Hugging Face model revision, or None."""
 
         self._script_conversion_config = _SCRIPT_CONVERSION_CONFIGS.get(
             (language, model_name)
@@ -113,14 +133,17 @@ class CtcAligner:
             loaded CTC model
         """
         if self._model is None:
-            model_key = (self.model_name, self.device)
+            model_key = (self.model_name, self.model_revision, self.device)
             cached_model = self._models.get(model_key)
             if cached_model is not None:
                 self._model = cached_model
                 return self._model
 
             transformers = import_transformers()
-            model = transformers.AutoModelForCTC.from_pretrained(self.model_name)
+            load_kwargs = self._get_load_kwargs()
+            model = transformers.AutoModelForCTC.from_pretrained(
+                self.model_name, **load_kwargs
+            )
             if hasattr(model, "to"):
                 model = model.to(self.device)
             if hasattr(model, "eval"):
@@ -137,15 +160,19 @@ class CtcAligner:
             loaded CTC processor
         """
         if self._processor is None:
-            cached_processor = self._processors.get(self.model_name)
+            processor_key = (self.model_name, self.model_revision)
+            cached_processor = self._processors.get(processor_key)
             if cached_processor is not None:
                 self._processor = cached_processor
                 return self._processor
 
             transformers = import_transformers()
-            processor = transformers.AutoProcessor.from_pretrained(self.model_name)
+            load_kwargs = self._get_load_kwargs()
+            processor = transformers.AutoProcessor.from_pretrained(
+                self.model_name, **load_kwargs
+            )
             self._processor = processor
-            self._processors[self.model_name] = processor
+            self._processors[processor_key] = processor
         return self._processor
 
     def align(self, audio: AudioSegment, text: str) -> list[TranscribedSegment]:
@@ -270,6 +297,12 @@ class CtcAligner:
         raise TranscriptionAlignmentError(
             "CTC aligner did not expose a blank token ID."
         )
+
+    def _get_load_kwargs(self) -> dict[str, str]:
+        """Get revision arguments passed to Hugging Face loaders."""
+        if self.model_revision is None:
+            return {}
+        return {"revision": self.model_revision}
 
     def _get_token_ids(self, text: str) -> tuple[list[int], list[int]]:
         """Get CTC token IDs and source text indices for supported characters.

@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from importlib.metadata import PackageNotFoundError, version
 from logging import getLogger
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -24,6 +25,16 @@ logger = getLogger(__name__)
 
 _CACHE_VERSION = 1
 """Current Demucs cache version."""
+
+
+def _get_runtime_identity() -> dict[str, str]:
+    """Get the installed Demucs runtime identity."""
+    distribution_name = "demucs-infer"
+    try:
+        distribution_version = version(distribution_name)
+    except PackageNotFoundError:
+        distribution_version = "unavailable"
+    return {"distribution": distribution_name, "version": distribution_version}
 
 
 class DemucsCache:
@@ -51,11 +62,19 @@ class DemucsCache:
         self.model_name = model_name
         """Demucs model name identifying cached vocals."""
 
+        self.runtime_identity = _get_runtime_identity()
+        """Installed Demucs runtime identity."""
+
         self.overwrite = overwrite
         """Whether matching cache files should be replaced."""
 
         self._refreshed_paths: set[Path] = set()
         """Cache paths refreshed by this cache instance."""
+
+    @property
+    def cache_identity(self) -> dict[str, object]:
+        """Get the model and runtime identity for cached vocals."""
+        return {"model_name": self.model_name, "runtime": self.runtime_identity}
 
     def get_path(self, audio: AudioSegment) -> Path:
         """Get the cache path for audio and Demucs configuration.
@@ -74,7 +93,7 @@ class DemucsCache:
                     "audio_frame_rate": audio.frame_rate,
                     "audio_sample_width": audio.sample_width,
                     "cache_version": _CACHE_VERSION,
-                    "model_name": self.model_name,
+                    "demucs": self.cache_identity,
                 },
                 ensure_ascii=False,
                 sort_keys=True,

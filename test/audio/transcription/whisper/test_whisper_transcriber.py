@@ -55,7 +55,9 @@ _TIMESTAMP_ALIGNMENT_ERROR = (
 """Known assertion raised when Whisper Timestamped cannot align decoder output."""
 
 
-_CUSTOM_MODEL = replace(WHISPER_LARGE_V3_CANTONESE_MODEL, model_name="custom/model")
+_CUSTOM_MODEL = replace(
+    WHISPER_LARGE_V3_CANTONESE_MODEL, model_name="custom/model", model_revision=None
+)
 
 
 def test_init_defaults_demucs_and_vad_to_off():
@@ -97,12 +99,17 @@ def _get_cache_path(transcriber: WhisperTranscriber, audio: AudioSegment) -> Pat
     return cache_path
 
 
-def _get_ctc_aligner(text: str = "你好", model_name: str = "ctc/test-model") -> Mock:
+def _get_ctc_aligner(
+    text: str = "你好",
+    model_name: str = "ctc/test-model",
+    model_revision: str | None = None,
+) -> Mock:
     """Get a mock CTC aligner with one aligned output segment.
 
     Arguments:
         text: transcript text retained in aligned output
         model_name: CTC model identity
+        model_revision: immutable CTC model revision
     Returns:
         configured mock aligner
     """
@@ -117,7 +124,10 @@ def _get_ctc_aligner(text: str = "你好", model_name: str = "ctc/test-model") -
         )
     ]
     return Mock(
-        language=Language.yue_hant, model_name=model_name, return_value=aligned_segments
+        language=Language.yue_hant,
+        model_name=model_name,
+        model_revision=model_revision,
+        return_value=aligned_segments,
     )
 
 
@@ -145,6 +155,11 @@ def _patch_whisper_timestamped(
             "model",
             replace(_CUSTOM_MODEL, model_name="model/one"),
             replace(_CUSTOM_MODEL, model_name="model/two"),
+        ),
+        (
+            "model",
+            replace(_CUSTOM_MODEL, model_revision="revision-one"),
+            replace(_CUSTOM_MODEL, model_revision="revision-two"),
         ),
         ("demucs_mode", DemucsMode.ON, DemucsMode.OFF),
         ("temperature", 0.0, (0.0, 0.2, 0.4)),
@@ -242,6 +257,12 @@ def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
         demucs_mode=DemucsMode.OFF,
         ctc_aligner=_get_ctc_aligner(model_name="ctc/other-model"),
     )
+    second_revision_fallback = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model=_CUSTOM_MODEL,
+        demucs_mode=DemucsMode.OFF,
+        ctc_aligner=_get_ctc_aligner(model_revision="revision-two"),
+    )
     second_language_aligner = _get_ctc_aligner()
     second_language_aligner.language = Language.zho_hant
     second_language_fallback = WhisperTranscriber(
@@ -257,16 +278,18 @@ def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
             without_fallback,
             first_fallback,
             second_model_fallback,
+            second_revision_fallback,
             second_language_fallback,
         )
     }
 
-    assert len(cache_paths) == 4
+    assert len(cache_paths) == 5
     settings = first_fallback._get_preprocessing_settings()[0]
     metadata = first_fallback._get_cache_metadata(audio, settings)
     assert metadata["timestamp_fallback"] == "ctc"
     assert metadata["timestamp_fallback_language"] == "yue-Hant"
     assert metadata["timestamp_fallback_model_name"] == "ctc/test-model"
+    assert metadata["timestamp_fallback_model_revision"] is None
 
 
 def test_transcribe_forwards_recovery_decoding_options(
@@ -667,6 +690,46 @@ def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch
     whisper_timestamped.load_model.assert_called_once()
 
 
+def test_default_model_loads_from_pinned_snapshot(monkeypatch: MonkeyPatch):
+    """Resolve the default model's immutable revision before Whisper loading."""
+    loaded_model = Mock()
+    whisper_timestamped = SimpleNamespace(load_model=Mock(return_value=loaded_model))
+    snapshot_download = Mock(return_value="/cached/snapshot")
+    monkeypatch.setattr(WhisperTranscriber, "_models_by_key", {})
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper.transcriber.get_torch_device",
+        Mock(return_value="cpu"),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper.transcriber."
+        "import_whisper_timestamped",
+        Mock(return_value=whisper_timestamped),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper.transcriber.import_huggingface_hub",
+        Mock(return_value=SimpleNamespace(snapshot_download=snapshot_download)),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper.transcriber."
+        "import_huggingface_hub_utils",
+        Mock(
+            return_value=SimpleNamespace(
+                HFValidationError=ValueError, validate_repo_id=Mock()
+            )
+        ),
+    )
+    transcriber = WhisperTranscriber()
+
+    assert transcriber._loaded_model is loaded_model
+    snapshot_download.assert_called_once_with(
+        repo_id=WHISPER_LARGE_V3_CANTONESE_MODEL.model_name,
+        revision=WHISPER_LARGE_V3_CANTONESE_MODEL.model_revision,
+    )
+    whisper_timestamped.load_model.assert_called_once_with(
+        "/cached/snapshot", device="cpu"
+    )
+
+
 def test_transcribe_overwrites_matching_cache(monkeypatch: MonkeyPatch, tmp_path: Path):
     """Test cache overwrite removes the matching file before transcription.
 
@@ -771,7 +834,7 @@ def test_transcribe_discards_invalid_cache_when_atomic_write_fails(
 def test_model_name_is_huggingface_repo_id_rejects_local_paths(
     monkeypatch: MonkeyPatch, model_name: str, expected: bool
 ):
-    """Test HuggingFace retry is skipped for local filesystem paths.
+    """Test Hugging Face retry is skipped for local filesystem paths.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
