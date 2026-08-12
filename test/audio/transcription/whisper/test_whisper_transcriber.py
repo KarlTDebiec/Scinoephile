@@ -1126,6 +1126,75 @@ def test_normalize_transcription_segments_discards_coalesced_terminal_credit():
     assert normalized_segments == [dialogue]
 
 
+def test_normalize_transcription_segments_discards_split_terminal_credit():
+    """Test a subtitle-credit hallucination split across segments is discarded."""
+    transcriber = WhisperTranscriber(model=_CUSTOM_MODEL)
+    dialogue, credit = _get_subtitle_credit_segments()
+    credit_parts = []
+    for part_idx, text in enumerate(("字幕由", "Amara.org", "社群提供"), start=1):
+        start = float(part_idx)
+        credit_parts.append(
+            credit.model_copy(
+                deep=True,
+                update={
+                    "id": part_idx,
+                    "start": start,
+                    "end": start + 0.5,
+                    "text": text,
+                    "words": [
+                        TranscribedWord(
+                            text=text, start=start, end=start + 0.5, confidence=1.0
+                        )
+                    ],
+                },
+            )
+        )
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        [dialogue, *credit_parts], source="whisper", cache_path=None, use_vad=False
+    )
+
+    assert normalized_segments == [dialogue]
+
+
+def test_normalize_transcription_segments_trims_credit_after_dialogue():
+    """Test dialogue preceding a terminal subtitle credit is preserved."""
+    transcriber = WhisperTranscriber(model=_CUSTOM_MODEL)
+    text = "頂唔順啊！我個腿掛好痺啊！字幕由Amara.org社群提供"
+    segment = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.0,
+        end=2.5,
+        text=text,
+        tokens=[1, 2, 3],
+        no_speech_prob=0.824,
+        words=[
+            TranscribedWord(text="頂唔順啊！", start=0.0, end=0.5, confidence=1.0),
+            TranscribedWord(
+                text="我個腿掛好痺啊！", start=0.5, end=1.0, confidence=1.0
+            ),
+            TranscribedWord(text="字幕由", start=1.0, end=1.5, confidence=1.0),
+            TranscribedWord(text="Amara.org", start=1.5, end=2.0, confidence=1.0),
+            TranscribedWord(text="社群提供", start=2.0, end=2.5, confidence=1.0),
+        ],
+    )
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        [segment], source="whisper", cache_path=None, use_vad=False
+    )
+
+    assert len(normalized_segments) == 1
+    assert normalized_segments[0].text == "頂唔順啊！我個腿掛好痺啊！"
+    assert normalized_segments[0].end == 1.0
+    assert normalized_segments[0].tokens is None
+    assert normalized_segments[0].words is not None
+    assert [word.text for word in normalized_segments[0].words] == [
+        "頂唔順啊！",
+        "我個腿掛好痺啊！",
+    ]
+
+
 @parametrize(
     ("credit_idx", "no_speech_prob"),
     [(0, 0.824), (1, 0.1)],
