@@ -24,7 +24,7 @@ def test_demucs_cache_uses_runtime_default(runtime_cache_root_path: Path):
     cache = DemucsCache(None, "model")
 
     assert cache.cache_root_path == runtime_cache_root_path
-    assert cache.cache_dir_path == (runtime_cache_root_path / "audio/separation/demucs")
+    assert cache.cache_dir_path == runtime_cache_root_path / "audio/separation/demucs"
 
 
 def test_get_path_separates_model_configuration(tmp_path: Path):

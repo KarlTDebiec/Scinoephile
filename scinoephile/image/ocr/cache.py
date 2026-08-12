@@ -15,8 +15,8 @@ from PIL import Image
 
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
-from scinoephile.core.cache.cache_namespace import CacheNamespace
 from scinoephile.core.paths import get_runtime_cache_root_path
+from scinoephile.image.cache_namespace import ImageCacheNamespace
 
 __all__ = ["OcrCacheBase"]
 
@@ -29,7 +29,7 @@ class OcrCacheBase[TResult](ABC):
     def __init__(
         self,
         cache_root_path: Path | None,
-        cache_namespace: CacheNamespace,
+        cache_namespace: ImageCacheNamespace,
         backend_label: str,
         cache_version: int,
         overwrite: bool = False,
@@ -52,9 +52,7 @@ class OcrCacheBase[TResult](ABC):
             cache_root_path = get_runtime_cache_root_path()
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which OCR results are cached."""
-        self.cache_dir_path = val_output_dir_path(
-            cache_namespace.get_dir_path(self.cache_root_path)
-        )
+        self.cache_dir_path = cache_namespace.get_dir_path(self.cache_root_path)
         """Directory in which cached OCR results are stored."""
 
         self.overwrite = overwrite

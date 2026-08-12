@@ -9,7 +9,7 @@ from time import time
 
 from pytest import MonkeyPatch, raises
 
-from scinoephile.core.llms import LlmCache
+from scinoephile.core.llms.cache import LlmCache
 from test.helpers.files import set_mtime
 
 

@@ -4,9 +4,10 @@
 
 from __future__ import annotations
 
+from argparse import _ArgumentGroup  # noqa: PLC2701
 from dataclasses import dataclass
 
-from scinoephile.common.argument_parsing import ArgumentGroup, int_arg
+from scinoephile.common.argument_parsing import int_arg
 
 from .argument_bundle_field_action import ArgumentBundleFieldAction
 
@@ -37,7 +38,7 @@ class WebServerArguments:
     """Port for the local web server."""
 
 
-def add_web_server_args(web_arg_group: ArgumentGroup):
+def add_web_server_args(web_arg_group: _ArgumentGroup):
     """Add standard local web server arguments to an argument group.
 
     Arguments:

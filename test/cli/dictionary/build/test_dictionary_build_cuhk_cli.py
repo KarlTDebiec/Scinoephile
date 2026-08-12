@@ -57,7 +57,9 @@ def test_dictionary_build_cuhk_cli_passes_cache_root_to_service(
                     )
                 ),
                 scraped_cache=SimpleNamespace(
-                    cache_dir_path=cache_dir_path.resolve() / "dictionaries/cuhk/pages"
+                    cache_dir_path=(
+                        cache_dir_path.resolve() / "dictionaries/cuhk/pages"
+                    )
                 ),
             )
             self.database_path = database_path

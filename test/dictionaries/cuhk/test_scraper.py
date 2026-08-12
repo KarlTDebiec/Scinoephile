@@ -54,8 +54,8 @@ def test_response_cache_discards_invalid_entry(tmp_path: Path):
     assert not cache_path.exists()
 
 
-def test_response_cache_namespaces_follow_package_ownership(tmp_path: Path):
-    """Test CUHK response namespaces follow their producing package."""
+def test_response_cache_namespaces_mirror_package_layout(tmp_path: Path):
+    """Test CUHK discovery and word pages mirror their package layout."""
     scraper = CuhkDictionaryScraper(cache_root_path=tmp_path)
 
     assert scraper.discovery_cache.cache_dir_path == (

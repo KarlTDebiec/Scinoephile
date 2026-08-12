@@ -10,8 +10,8 @@ from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, ClassVar
 
+from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.separation import DemucsSeparator
-from scinoephile.core.cache.cache_namespace import CacheNamespace
 from scinoephile.core.exceptions import ScinoephileError
 
 from .cache import TranscriptionCache
@@ -34,7 +34,7 @@ logger = getLogger(__name__)
 class Transcriber(ABC):
     """Transcribes audio across configured Demucs and VAD fallbacks."""
 
-    cache_namespace: ClassVar[CacheNamespace]
+    cache_namespace: ClassVar[AudioCacheNamespace]
     """Registered namespace for cached backend output."""
 
     backend_name: ClassVar[str]

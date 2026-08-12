@@ -24,7 +24,7 @@ def test_subtitle_script_analysis_cache_uses_runtime_default(
 
     assert cache.cache_root_path == runtime_cache_root_path
     assert cache.cache_dir_path == (
-        runtime_cache_root_path / "lang/zho/subtitles/analysis"
+        runtime_cache_root_path / "lang" / "zho" / "subtitles" / "analysis"
     )
 
 
