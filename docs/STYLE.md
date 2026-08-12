@@ -27,9 +27,10 @@
   owns the name so internal dependencies remain visible (for example, use
   `from scinoephile.core.exceptions import ScinoephileError` within
   `scinoephile.core.llms`, not `from scinoephile.core import ScinoephileError`).
-* Do not import underscore-prefixed names from another module. If a name is
-  needed across a module boundary, make it public and include it in the owning
-  module's `__all__`.
+* Do not import underscore-prefixed names from another project module. If a
+  project-owned name is needed across a module boundary, make it public and
+  include it in the owning module's `__all__`. This restriction does not apply
+  to standard-library or third-party modules.
 * Use `if TYPE_CHECKING:` blocks only when necessary to avoid circular imports.
 * Name dedicated lazy-import helpers
   `import_<module>[_<symbol_or_purpose>]` when public and
@@ -41,6 +42,11 @@
 
 ## Exports
 * Include `__all__` in Python modules that export public names.
+* Treat module-level functions, classes, and type aliases without a leading
+  underscore as public definitions and include them in `__all__`.
+* Do not infer assignment or import intent from name spelling alone. List
+  constants and imported aliases in `__all__` when they are part of the public
+  API.
 * Do not include empty `__all__` assignments.
 * `__all__` should list the intended public API for the module.
 * Do not include internal helpers, which are names prefixed with an underscore.
