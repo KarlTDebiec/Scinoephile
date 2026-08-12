@@ -36,7 +36,10 @@ from scinoephile.core.ml import get_torch_device
 
 from .model import WHISPER_LARGE_V3_CANTONESE_MODEL, WhisperModel
 
-__all__ = ["WhisperTranscriber"]
+__all__ = ["SUBTITLE_CREDIT_HALLUCINATION_MARKERS", "WhisperTranscriber"]
+
+SUBTITLE_CREDIT_HALLUCINATION_MARKERS = ("amara.org", "字幕由", "字幕提供者")
+"""Markers indicating an ASR-generated subtitle-credit hallucination."""
 
 _LOCAL_MODEL_PATH_PREFIXES = {"checkpoint", "checkpoints", "model", "models"}
 _MAX_SAMPLE_LEN = 224
@@ -47,6 +50,9 @@ _MAX_TOKENS_PER_SECOND = 16
 
 _MIN_SAMPLE_LEN = 32
 """Minimum token budget for very short source audio."""
+
+_SUBTITLE_CREDIT_MIN_NO_SPEECH_PROBABILITY = 0.6
+"""Minimum no-speech probability for discarding a terminal subtitle credit."""
 
 if TYPE_CHECKING:
     from pydub import AudioSegment
@@ -288,6 +294,57 @@ class WhisperTranscriber(Transcriber):
             normalized_segments.append(segment)
             segment_idx += 1
 
+        pending_suffix_indexes: list[int] = []
+        segment_idx = len(normalized_segments) - 1
+        while segment_idx >= 0:
+            segment = normalized_segments[segment_idx]
+            if not segment.text.strip():
+                segment_idx -= 1
+                continue
+            if (
+                segment.no_speech_prob is None
+                or segment.no_speech_prob < _SUBTITLE_CREDIT_MIN_NO_SPEECH_PROBABILITY
+            ):
+                break
+
+            normalized_text = segment.text.casefold()
+            marker_indexes = [
+                normalized_text.index(marker)
+                for marker in SUBTITLE_CREDIT_HALLUCINATION_MARKERS
+                if marker in normalized_text
+            ]
+            if not marker_indexes:
+                pending_suffix_indexes.append(segment_idx)
+                segment_idx -= 1
+                continue
+
+            marker_idx = min(marker_indexes)
+            retained_text = segment.text[:marker_idx].rstrip()
+            suffix_segment_indexes = [segment_idx, *reversed(pending_suffix_indexes)]
+            action = "Discarding"
+            if retained_text:
+                action = "Trimming"
+            logger.warning(
+                f"{action} terminal Whisper subtitle-credit hallucination for "
+                f"model={self.model_name} vad={use_vad} "
+                f"source={source} cache={cache_path} "
+                f"segment_idxs={tuple(suffix_segment_indexes)} id={segment.id} "
+                f"no_speech_prob={segment.no_speech_prob:.3f} "
+                f"text={segment.text!r}"
+            )
+            for suffix_segment_idx in pending_suffix_indexes:
+                del normalized_segments[suffix_segment_idx]
+            pending_suffix_indexes.clear()
+
+            if retained_text:
+                normalized_segments[segment_idx] = self._get_segment_prefix(
+                    segment, len(retained_text)
+                )
+                break
+
+            del normalized_segments[segment_idx]
+            segment_idx -= 1
+
         return normalized_segments
 
     @staticmethod
@@ -340,6 +397,57 @@ class WhisperTranscriber(Transcriber):
             return None
 
         return segment_text_from_words
+
+    @staticmethod
+    def _get_segment_prefix(
+        segment: TranscribedSegment, end_idx: int
+    ) -> TranscribedSegment:
+        """Get a segment prefix with corresponding word timings.
+
+        Arguments:
+            segment: segment whose suffix should be removed
+            end_idx: exclusive text index at which the suffix begins
+        Returns:
+            copied segment containing only the requested prefix
+        """
+        prefix = segment.model_copy(
+            deep=True, update={"text": segment.text[:end_idx], "tokens": None}
+        )
+        if not prefix.words:
+            return prefix
+
+        prefix_words = []
+        consumed_chars = 0
+        for word in prefix.words:
+            next_consumed_chars = consumed_chars + len(word.text)
+            if next_consumed_chars <= end_idx:
+                prefix_words.append(word)
+            elif consumed_chars < end_idx:
+                retained_length = end_idx - consumed_chars
+                retained_ratio = retained_length / len(word.text)
+                retained_end = word.start + (word.end - word.start) * retained_ratio
+                prefix_words.append(
+                    word.model_copy(
+                        update={
+                            "text": word.text[:retained_length],
+                            "end": retained_end,
+                            "following_voice_activity_score": None,
+                            "voice_activity_coverage": None,
+                            "voice_activity_peak": None,
+                            "voice_activity_score": None,
+                        }
+                    )
+                )
+                break
+            else:
+                break
+            consumed_chars = next_consumed_chars
+
+        prefix.words = prefix_words
+        if prefix_words:
+            prefix_words[-1].following_voice_activity_score = None
+            prefix.end = prefix_words[-1].end
+        return prefix
 
     def _get_backend_cache_metadata(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
@@ -489,6 +597,12 @@ class WhisperTranscriber(Transcriber):
                     ):
                         fallback_segments = self._transcribe_with_ctc_fallback(
                             audio, temp_audio_path, sample_len, exc
+                        )
+                        fallback_segments = self._normalize_transcription_segments(
+                            fallback_segments,
+                            source="whisper",
+                            cache_path=None,
+                            use_vad=settings.use_vad,
                         )
                         if voice_activity_trace is not None:
                             return self._add_voice_activity_scores(

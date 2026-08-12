@@ -54,6 +54,9 @@ _TIMESTAMP_ALIGNMENT_ERROR = (
 )
 """Known assertion raised when Whisper Timestamped cannot align decoder output."""
 
+_SUBTITLE_CREDIT_TEXT = "字幕由 Amara.org 社群提供"
+"""Representative terminal subtitle-credit hallucination."""
+
 
 _CUSTOM_MODEL = replace(
     WHISPER_LARGE_V3_CANTONESE_MODEL, model_name="custom/model", model_revision=None
@@ -129,6 +132,40 @@ def _get_ctc_aligner(
         model_revision=model_revision,
         return_value=aligned_segments,
     )
+
+
+def _get_subtitle_credit_segments(
+    no_speech_prob: float = 0.824,
+) -> tuple[TranscribedSegment, TranscribedSegment]:
+    """Get dialogue and subtitle-credit segments for normalization tests.
+
+    Arguments:
+        no_speech_prob: no-speech probability assigned to the credit segment
+    Returns:
+        dialogue and subtitle-credit segments
+    """
+    dialogue = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.0,
+        end=1.0,
+        text="對白",
+        words=[TranscribedWord(text="對白", start=0.0, end=1.0, confidence=1.0)],
+    )
+    credit = TranscribedSegment(
+        id=1,
+        seek=0,
+        start=1.0,
+        end=1.5,
+        text=_SUBTITLE_CREDIT_TEXT,
+        no_speech_prob=no_speech_prob,
+        words=[
+            TranscribedWord(
+                text=_SUBTITLE_CREDIT_TEXT, start=1.0, end=1.5, confidence=1.0
+            )
+        ],
+    )
+    return dialogue, credit
 
 
 def _patch_whisper_timestamped(
@@ -437,6 +474,50 @@ def test_transcribe_falls_back_to_native_text_with_ctc_alignment(
     ctc_aligner.assert_called_once_with(audio, transcript_text)
     assert model.decode is decode
     assert _get_cache_path(transcriber, audio).is_file()
+
+
+def test_transcribe_discards_ctc_aligned_terminal_credit(
+    monkeypatch: MonkeyPatch, tmp_path: Path
+):
+    """Test CTC-aligned fallback output receives Whisper normalization.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    audio = AudioSegment.silent(duration=1000)
+    transcript_text = _SUBTITLE_CREDIT_TEXT
+    ctc_aligner = _get_ctc_aligner(transcript_text)
+    model = Mock()
+    model.decode = Mock()
+    model.transcribe = Mock(
+        return_value={
+            "text": transcript_text,
+            "segments": [
+                {
+                    "id": 0,
+                    "seek": 0,
+                    "start": 0.0,
+                    "end": 1.0,
+                    "text": transcript_text,
+                    "no_speech_prob": 0.824,
+                }
+            ],
+        }
+    )
+    transcriber = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model=_CUSTOM_MODEL,
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VadMode.OFF,
+        ctc_aligner=ctc_aligner,
+    )
+    transcriber._loaded_model_instance = model
+    _patch_whisper_timestamped(
+        monkeypatch, Mock(side_effect=AssertionError(_TIMESTAMP_ALIGNMENT_ERROR))
+    )
+
+    assert transcriber(audio) == []
 
 
 def test_transcribe_timestamp_assertion_without_ctc_remains_error(
@@ -1004,6 +1085,141 @@ def test_normalize_transcription_segments_coalesces_malformed_duplicate_pair():
         "先生",
         "你就",
     ]
+
+
+def test_normalize_transcription_segments_discards_terminal_credit_hallucination(
+    caplog: LogCaptureFixture,
+):
+    """Test a terminal high-no-speech subtitle credit is discarded.
+
+    Arguments:
+        caplog: captured log records
+    """
+    transcriber = WhisperTranscriber(model=_CUSTOM_MODEL)
+    dialogue, credit = _get_subtitle_credit_segments()
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        [dialogue, credit],
+        source="cache",
+        cache_path=Path("/tmp/whisper.json"),
+        use_vad=False,
+    )
+
+    assert normalized_segments == [dialogue]
+    assert "Discarding terminal Whisper subtitle-credit hallucination" in caplog.text
+
+
+def test_normalize_transcription_segments_discards_coalesced_terminal_credit():
+    """Test a repaired terminal subtitle-credit hallucination is discarded."""
+    transcriber = WhisperTranscriber(model=_CUSTOM_MODEL)
+    dialogue, credit = _get_subtitle_credit_segments()
+    credit_with_words = credit.model_copy(update={"text": "", "no_speech_prob": 0.1})
+    duplicate_credit = credit.model_copy(update={"id": 2, "words": None})
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        [dialogue, credit_with_words, duplicate_credit],
+        source="whisper",
+        cache_path=None,
+        use_vad=False,
+    )
+
+    assert normalized_segments == [dialogue]
+
+
+def test_normalize_transcription_segments_discards_split_terminal_credit():
+    """Test a subtitle-credit hallucination split across segments is discarded."""
+    transcriber = WhisperTranscriber(model=_CUSTOM_MODEL)
+    dialogue, credit = _get_subtitle_credit_segments()
+    credit_parts = []
+    for part_idx, text in enumerate(("字幕由", "Amara.org", "社群提供"), start=1):
+        start = float(part_idx)
+        credit_parts.append(
+            credit.model_copy(
+                deep=True,
+                update={
+                    "id": part_idx,
+                    "start": start,
+                    "end": start + 0.5,
+                    "text": text,
+                    "words": [
+                        TranscribedWord(
+                            text=text, start=start, end=start + 0.5, confidence=1.0
+                        )
+                    ],
+                },
+            )
+        )
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        [dialogue, *credit_parts], source="whisper", cache_path=None, use_vad=False
+    )
+
+    assert normalized_segments == [dialogue]
+
+
+def test_normalize_transcription_segments_trims_credit_after_dialogue():
+    """Test dialogue preceding a terminal subtitle credit is preserved."""
+    transcriber = WhisperTranscriber(model=_CUSTOM_MODEL)
+    text = "頂唔順啊！我個腿掛好痺啊！字幕由Amara.org社群提供"
+    segment = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.0,
+        end=2.5,
+        text=text,
+        tokens=[1, 2, 3],
+        no_speech_prob=0.824,
+        words=[
+            TranscribedWord(text="頂唔順啊！", start=0.0, end=0.5, confidence=1.0),
+            TranscribedWord(
+                text="我個腿掛好痺啊！", start=0.5, end=1.0, confidence=1.0
+            ),
+            TranscribedWord(text="字幕由", start=1.0, end=1.5, confidence=1.0),
+            TranscribedWord(text="Amara.org", start=1.5, end=2.0, confidence=1.0),
+            TranscribedWord(text="社群提供", start=2.0, end=2.5, confidence=1.0),
+        ],
+    )
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        [segment], source="whisper", cache_path=None, use_vad=False
+    )
+
+    assert len(normalized_segments) == 1
+    assert normalized_segments[0].text == "頂唔順啊！我個腿掛好痺啊！"
+    assert normalized_segments[0].end == 1.0
+    assert normalized_segments[0].tokens is None
+    assert normalized_segments[0].words is not None
+    assert [word.text for word in normalized_segments[0].words] == [
+        "頂唔順啊！",
+        "我個腿掛好痺啊！",
+    ]
+
+
+@parametrize(
+    ("credit_idx", "no_speech_prob"),
+    [(0, 0.824), (1, 0.1)],
+    ids=("nonterminal", "plausible-speech"),
+)
+def test_normalize_transcription_segments_preserves_ambiguous_credit_segments(
+    credit_idx: int, no_speech_prob: float
+):
+    """Test ambiguous subtitle-credit segments remain subject to validation.
+
+    Arguments:
+        credit_idx: index at which the credit-like segment appears
+        no_speech_prob: no-speech probability assigned to the credit-like segment
+    """
+    transcriber = WhisperTranscriber(model=_CUSTOM_MODEL)
+    dialogue, credit = _get_subtitle_credit_segments(no_speech_prob)
+    segments = [dialogue, credit]
+    if credit_idx == 0:
+        segments.reverse()
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        segments, source="whisper", cache_path=None, use_vad=False
+    )
+
+    assert normalized_segments == segments
 
 
 def test_get_segment_split_at_idx_includes_segment_details_in_error():
