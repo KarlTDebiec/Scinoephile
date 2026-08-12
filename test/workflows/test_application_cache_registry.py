@@ -16,7 +16,7 @@ def test_cache_registry_matches_owned_layout():
         "google-lens",
         "llm/<operation>",
         "media/subtitles",
-        "media/subtitles/analysis",
+        "lang/zho/subtitles/analysis",
         "mlx-audio",
         "paddleocr",
         "tesseract",

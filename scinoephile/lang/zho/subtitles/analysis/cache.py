@@ -42,7 +42,7 @@ class ZhoScriptAnalysisCache:
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which script analyses are cached."""
         self.cache_dir_path = val_output_dir_path(
-            self.cache_root_path / "media" / "subtitles" / "analysis"
+            self.cache_root_path / "lang" / "zho" / "subtitles" / "analysis"
         )
         """Directory in which cached script analyses are stored."""
 
