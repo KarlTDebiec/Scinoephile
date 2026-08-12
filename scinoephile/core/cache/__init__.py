@@ -3,13 +3,14 @@
 """Cache inspection and invalidation helpers.
 
 Package hierarchy (modules may import from any above):
-* cache_entry / cache_stats
+* cache_entry / cache_namespace / cache_stats
 * operations
 """
 
 from __future__ import annotations
 
 from .cache_entry import CacheEntry
+from .cache_namespace import CacheNamespace
 from .cache_stats import CacheStats
 
-__all__ = ["CacheEntry", "CacheStats"]
+__all__ = ["CacheEntry", "CacheNamespace", "CacheStats"]
