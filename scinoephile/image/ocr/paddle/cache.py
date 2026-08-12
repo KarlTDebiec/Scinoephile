@@ -9,6 +9,7 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import cast
 
+from scinoephile.image.cache_namespace import ImageCacheNamespace
 from scinoephile.image.ocr.cache import OcrCacheBase
 
 from .bounding_box import PaddleOcrBoundingBox
@@ -31,7 +32,11 @@ class PaddleCache(OcrCacheBase[list[PaddleOcrTextResult]]):
             overwrite: whether to replace matching cache files
         """
         super().__init__(
-            cache_root_path, "paddle", "PaddleOCR", _CACHE_VERSION, overwrite
+            cache_root_path,
+            ImageCacheNamespace.OCR_PADDLE,
+            "PaddleOCR",
+            _CACHE_VERSION,
+            overwrite,
         )
 
     def _deserialize(self, payload: object) -> list[PaddleOcrTextResult]:

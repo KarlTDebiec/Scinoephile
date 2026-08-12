@@ -14,6 +14,7 @@ from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.image.subtitles import ImageSeries
+from scinoephile.media.cache_namespace import MediaCacheNamespace
 
 __all__ = ["SubtitleCache"]
 
@@ -38,8 +39,8 @@ class SubtitleCache:
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which subtitle artifacts are cached."""
 
-        self.cache_dir_path = val_output_dir_path(
-            self.cache_root_path / "media" / "subtitles"
+        self.cache_dir_path = MediaCacheNamespace.SUBTITLES.get_dir_path(
+            self.cache_root_path
         )
         """Directory in which cached subtitle streams are stored."""
 

@@ -10,6 +10,7 @@ from pathlib import Path
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_child_path, val_output_dir_path
 from scinoephile.core.paths import get_runtime_cache_root_path
+from scinoephile.dictionaries.cache_namespace import DictionariesCacheNamespace
 
 __all__ = ["CuhkResponseCache"]
 
@@ -23,22 +24,23 @@ class CuhkResponseCache:
     """Caches CUHK HTTP response bodies."""
 
     def __init__(
-        self, cache_root_path: Path | None, cache_dir_name: str, overwrite: bool = False
+        self,
+        cache_root_path: Path | None,
+        cache_namespace: DictionariesCacheNamespace,
+        overwrite: bool = False,
     ):
         """Initialize.
 
         Arguments:
             cache_root_path: root directory beneath which to cache, or None for default
-            cache_dir_name: cache subdirectory name beneath dictionaries/cuhk
+            cache_namespace: registered CUHK response namespace
             overwrite: whether to replace matching cache files
         """
         if cache_root_path is None:
             cache_root_path = get_runtime_cache_root_path()
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which CUHK responses are cached."""
-        self.cache_dir_path = val_output_dir_path(
-            self.cache_root_path / "dictionaries" / "cuhk" / cache_dir_name
-        )
+        self.cache_dir_path = cache_namespace.get_dir_path(self.cache_root_path)
         """Directory in which cached CUHK responses are stored."""
 
         self.overwrite = overwrite

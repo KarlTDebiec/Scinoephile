@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from scinoephile.image.cache_namespace import ImageCacheNamespace
 from scinoephile.image.ocr.cache import OcrCacheBase
 
 __all__ = ["TesseractCache"]
@@ -26,7 +27,7 @@ class TesseractCache(OcrCacheBase[str]):
         """
         super().__init__(
             cache_root_path,
-            "tesseract/results",
+            ImageCacheNamespace.OCR_TESSERACT,
             "Tesseract OCR",
             _CACHE_VERSION,
             overwrite,

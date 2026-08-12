@@ -62,6 +62,10 @@ related namespaces under domain directories such as `llms/` and `media/` rather
 than flattening every cache into the root. Do not introduce marker files merely
 to declare namespaces.
 
+`CacheNamespace.get_dir_path(...)` validates and creates the concrete namespace
+directory. Cache constructors should validate and retain their shared root,
+then use this method directly for their namespaced directory.
+
 Cache inspection treats each direct child of a namespace as one independently
 removable entry. A directory entry may contain related files that must be kept
 or removed together. New grouped or nested namespace layouts must also be made

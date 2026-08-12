@@ -23,6 +23,7 @@ from scinoephile.core.dictionaries import (
     DictionaryEntry,
     DictionarySource,
 )
+from scinoephile.dictionaries.cache_namespace import DictionariesCacheNamespace
 from scinoephile.lang.yue.conversion import get_yue_converted
 
 from .cache import CuhkResponseCache
@@ -100,11 +101,13 @@ class CuhkDictionaryScraper:
             session: requests session for dependency injection
         """
         self.discovery_cache = CuhkResponseCache(
-            cache_root_path, "discovery", overwrite_cache
+            cache_root_path, DictionariesCacheNamespace.CUHK_DISCOVERY, overwrite_cache
         )
         """Cache of CUHK discovery pages."""
         self.scraped_cache = CuhkResponseCache(
-            self.discovery_cache.cache_root_path, "pages", overwrite_cache
+            self.discovery_cache.cache_root_path,
+            DictionariesCacheNamespace.CUHK_PAGES,
+            overwrite_cache,
         )
         """Cache of CUHK word pages."""
 

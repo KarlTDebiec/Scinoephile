@@ -13,6 +13,7 @@ from tempfile import TemporaryDirectory
 from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError, CouldntEncodeError
 
+from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_root_path
@@ -42,8 +43,8 @@ class DemucsCache:
             cache_root_path = get_runtime_cache_root_path()
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which separated vocals are cached."""
-        self.cache_dir_path = val_output_dir_path(
-            self.cache_root_path / "audio" / "separation" / "demucs"
+        self.cache_dir_path = AudioCacheNamespace.SEPARATION_DEMUCS.get_dir_path(
+            self.cache_root_path
         )
         """Directory in which cached vocals are stored."""
 

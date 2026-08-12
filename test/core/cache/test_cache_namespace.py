@@ -45,18 +45,21 @@ def test_cache_namespace_base_has_no_concrete_members():
     assert list(CacheNamespace) == []
 
 
-def test_parameterized_cache_namespace_validates_operation(tmp_path: Path):
-    """Test operation families accept only a contained directory name.
+def test_parameterized_cache_namespace_validates_operation_and_creates_directory(
+    tmp_path: Path,
+):
+    """Test operation families create a directory for a valid contained name.
 
     Arguments:
         tmp_path: temporary cache root path
     """
     namespace = _CacheNamespace.OPERATION
 
+    namespace_dir_path = namespace.get_dir_path(tmp_path, operation="translation")
+
     assert namespace.get_name(operation="translation") == "test/translation"
-    assert namespace.get_dir_path(tmp_path, operation="translation") == (
-        tmp_path / "test/translation"
-    )
+    assert namespace_dir_path == tmp_path / "test/translation"
+    assert namespace_dir_path.is_dir()
     with raises(ValueError, match="requires an operation"):
         namespace.get_name()
     for operation in ("../translation", "CON", "aux.txt", "foo.", "foo ", "*", "a:b"):
