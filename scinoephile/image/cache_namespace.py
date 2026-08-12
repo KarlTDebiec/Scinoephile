@@ -18,5 +18,5 @@ class ImageCacheNamespace(CacheNamespace):
     """PaddleOCR results."""
     OCR_TESSERACT_LEGACY_DATA = "tesseract-legacy-data"
     """Legacy-capable Tesseract trained data."""
-    OCR_TESSERACT_RESULTS = "tesseract"
+    OCR_TESSERACT = "tesseract"
     """Tesseract OCR results."""
