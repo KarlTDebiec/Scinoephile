@@ -8,6 +8,8 @@ from enum import StrEnum
 from ntpath import isreserved
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
+from scinoephile.common.validation import val_output_dir_path
+
 __all__ = ["CacheNamespace"]
 
 _OPERATION_PLACEHOLDER = "<operation>"
@@ -45,14 +47,15 @@ class CacheNamespace(StrEnum):
     def get_dir_path(
         self, cache_root_path: Path, *, operation: str | None = None
     ) -> Path:
-        """Get this namespace's directory beneath a cache root.
+        """Get or create this namespace's directory beneath a cache root.
 
         Arguments:
             cache_root_path: cache root directory path
             operation: operation name required by parameterized namespaces
         Returns:
-            cache namespace directory path
+            validated cache namespace directory path
         Raises:
+            NotADirectoryError: if the namespace path is not a directory
             ValueError: if an existing namespace ancestor is a symbolic link
         """
         namespace_path = PurePosixPath(self.get_name(operation=operation))
@@ -64,7 +67,7 @@ class CacheNamespace(StrEnum):
                     f"Cache namespace {self.name} traverses symbolic link "
                     f"{namespace_dir_path}"
                 )
-        return namespace_dir_path
+        return val_output_dir_path(namespace_dir_path)
 
     def get_name(self, *, operation: str | None = None) -> str:
         """Get this namespace's portable name.
