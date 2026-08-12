@@ -54,6 +54,9 @@ _TIMESTAMP_ALIGNMENT_ERROR = (
 )
 """Known assertion raised when Whisper Timestamped cannot align decoder output."""
 
+_SUBTITLE_CREDIT_TEXT = "字幕由 Amara.org 社群提供"
+"""Representative terminal subtitle-credit hallucination."""
+
 
 _CUSTOM_MODEL = replace(
     WHISPER_LARGE_V3_CANTONESE_MODEL, model_name="custom/model", model_revision=None
@@ -129,6 +132,40 @@ def _get_ctc_aligner(
         model_revision=model_revision,
         return_value=aligned_segments,
     )
+
+
+def _get_subtitle_credit_segments(
+    no_speech_prob: float = 0.824,
+) -> tuple[TranscribedSegment, TranscribedSegment]:
+    """Get dialogue and subtitle-credit segments for normalization tests.
+
+    Arguments:
+        no_speech_prob: no-speech probability assigned to the credit segment
+    Returns:
+        dialogue and subtitle-credit segments
+    """
+    dialogue = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.0,
+        end=1.0,
+        text="對白",
+        words=[TranscribedWord(text="對白", start=0.0, end=1.0, confidence=1.0)],
+    )
+    credit = TranscribedSegment(
+        id=1,
+        seek=0,
+        start=1.0,
+        end=1.5,
+        text=_SUBTITLE_CREDIT_TEXT,
+        no_speech_prob=no_speech_prob,
+        words=[
+            TranscribedWord(
+                text=_SUBTITLE_CREDIT_TEXT, start=1.0, end=1.5, confidence=1.0
+            )
+        ],
+    )
+    return dialogue, credit
 
 
 def _patch_whisper_timestamped(
@@ -437,6 +474,50 @@ def test_transcribe_falls_back_to_native_text_with_ctc_alignment(
     ctc_aligner.assert_called_once_with(audio, transcript_text)
     assert model.decode is decode
     assert _get_cache_path(transcriber, audio).is_file()
+
+
+def test_transcribe_discards_ctc_aligned_terminal_credit(
+    monkeypatch: MonkeyPatch, tmp_path: Path
+):
+    """Test CTC-aligned fallback output receives Whisper normalization.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    audio = AudioSegment.silent(duration=1000)
+    transcript_text = _SUBTITLE_CREDIT_TEXT
+    ctc_aligner = _get_ctc_aligner(transcript_text)
+    model = Mock()
+    model.decode = Mock()
+    model.transcribe = Mock(
+        return_value={
+            "text": transcript_text,
+            "segments": [
+                {
+                    "id": 0,
+                    "seek": 0,
+                    "start": 0.0,
+                    "end": 1.0,
+                    "text": transcript_text,
+                    "no_speech_prob": 0.824,
+                }
+            ],
+        }
+    )
+    transcriber = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model=_CUSTOM_MODEL,
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VadMode.OFF,
+        ctc_aligner=ctc_aligner,
+    )
+    transcriber._loaded_model_instance = model
+    _patch_whisper_timestamped(
+        monkeypatch, Mock(side_effect=AssertionError(_TIMESTAMP_ALIGNMENT_ERROR))
+    )
+
+    assert transcriber(audio) == []
 
 
 def test_transcribe_timestamp_assertion_without_ctc_remains_error(
@@ -1014,28 +1095,8 @@ def test_normalize_transcription_segments_discards_terminal_credit_hallucination
     Arguments:
         caplog: captured log records
     """
-    transcriber = WhisperTranscriber(model_name="custom/model")
-    dialogue = TranscribedSegment(
-        id=0,
-        seek=0,
-        start=0.0,
-        end=1.0,
-        text="對白",
-        words=[TranscribedWord(text="對白", start=0.0, end=1.0, confidence=1.0)],
-    )
-    credit = TranscribedSegment(
-        id=1,
-        seek=0,
-        start=1.0,
-        end=1.5,
-        text="字幕由 Amara.org 社群提供",
-        no_speech_prob=0.824,
-        words=[
-            TranscribedWord(
-                text="字幕由 Amara.org 社群提供", start=1.0, end=1.5, confidence=1.0
-            )
-        ],
-    )
+    transcriber = WhisperTranscriber(model=_CUSTOM_MODEL)
+    dialogue, credit = _get_subtitle_credit_segments()
 
     normalized_segments = transcriber._normalize_transcription_segments(
         [dialogue, credit],
@@ -1046,6 +1107,23 @@ def test_normalize_transcription_segments_discards_terminal_credit_hallucination
 
     assert normalized_segments == [dialogue]
     assert "Discarding terminal Whisper subtitle-credit hallucination" in caplog.text
+
+
+def test_normalize_transcription_segments_discards_coalesced_terminal_credit():
+    """Test a repaired terminal subtitle-credit hallucination is discarded."""
+    transcriber = WhisperTranscriber(model=_CUSTOM_MODEL)
+    dialogue, credit = _get_subtitle_credit_segments()
+    credit_with_words = credit.model_copy(update={"text": "", "no_speech_prob": 0.1})
+    duplicate_credit = credit.model_copy(update={"id": 2, "words": None})
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        [dialogue, credit_with_words, duplicate_credit],
+        source="whisper",
+        cache_path=None,
+        use_vad=False,
+    )
+
+    assert normalized_segments == [dialogue]
 
 
 @parametrize(
@@ -1062,28 +1140,8 @@ def test_normalize_transcription_segments_preserves_ambiguous_credit_segments(
         credit_idx: index at which the credit-like segment appears
         no_speech_prob: no-speech probability assigned to the credit-like segment
     """
-    transcriber = WhisperTranscriber(model_name="custom/model")
-    dialogue = TranscribedSegment(
-        id=0,
-        seek=0,
-        start=0.0,
-        end=1.0,
-        text="對白",
-        words=[TranscribedWord(text="對白", start=0.0, end=1.0, confidence=1.0)],
-    )
-    credit = TranscribedSegment(
-        id=1,
-        seek=0,
-        start=1.0,
-        end=1.5,
-        text="字幕由 Amara.org 社群提供",
-        no_speech_prob=no_speech_prob,
-        words=[
-            TranscribedWord(
-                text="字幕由 Amara.org 社群提供", start=1.0, end=1.5, confidence=1.0
-            )
-        ],
-    )
+    transcriber = WhisperTranscriber(model=_CUSTOM_MODEL)
+    dialogue, credit = _get_subtitle_credit_segments(no_speech_prob)
     segments = [dialogue, credit]
     if credit_idx == 0:
         segments.reverse()

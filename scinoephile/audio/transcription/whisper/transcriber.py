@@ -51,7 +51,7 @@ _MAX_TOKENS_PER_SECOND = 16
 _MIN_SAMPLE_LEN = 32
 """Minimum token budget for very short source audio."""
 
-_SUBTITLE_CREDIT_MAX_NO_SPEECH_PROBABILITY = 0.6
+_SUBTITLE_CREDIT_MIN_NO_SPEECH_PROBABILITY = 0.6
 """Minimum no-speech probability for discarding a terminal subtitle credit."""
 
 if TYPE_CHECKING:
@@ -256,36 +256,9 @@ class WhisperTranscriber(Transcriber):
             normalized transcription segments
         """
         normalized_segments: list[TranscribedSegment] = []
-        text_segment_indexes = [
-            idx for idx, segment in enumerate(segments) if segment.text.strip()
-        ]
-        last_text_segment_idx = None
-        if text_segment_indexes:
-            last_text_segment_idx = text_segment_indexes[-1]
         segment_idx = 0
         while segment_idx < len(segments):
             segment = segments[segment_idx].model_copy(deep=True)
-
-            normalized_text = segment.text.casefold()
-            if (
-                segment_idx == last_text_segment_idx
-                and segment.no_speech_prob is not None
-                and segment.no_speech_prob >= _SUBTITLE_CREDIT_MAX_NO_SPEECH_PROBABILITY
-                and any(
-                    marker in normalized_text
-                    for marker in SUBTITLE_CREDIT_HALLUCINATION_MARKERS
-                )
-            ):
-                logger.warning(
-                    f"Discarding terminal Whisper subtitle-credit hallucination for "
-                    f"model={self.model_name} vad={use_vad} "
-                    f"source={source} cache={cache_path} "
-                    f"segment_idx={segment_idx} id={segment.id} "
-                    f"no_speech_prob={segment.no_speech_prob:.3f} "
-                    f"text={segment.text!r}"
-                )
-                segment_idx += 1
-                continue
 
             if segment_idx + 1 < len(segments):
                 next_segment = segments[segment_idx + 1]
@@ -320,6 +293,38 @@ class WhisperTranscriber(Transcriber):
 
             normalized_segments.append(segment)
             segment_idx += 1
+
+        last_text_segment_idx = next(
+            (
+                idx
+                for idx in range(len(normalized_segments) - 1, -1, -1)
+                if normalized_segments[idx].text.strip()
+            ),
+            None,
+        )
+        if last_text_segment_idx is None:
+            return normalized_segments
+
+        last_text_segment = normalized_segments[last_text_segment_idx]
+        normalized_text = last_text_segment.text.casefold()
+        if (
+            last_text_segment.no_speech_prob is not None
+            and last_text_segment.no_speech_prob
+            >= _SUBTITLE_CREDIT_MIN_NO_SPEECH_PROBABILITY
+            and any(
+                marker in normalized_text
+                for marker in SUBTITLE_CREDIT_HALLUCINATION_MARKERS
+            )
+        ):
+            logger.warning(
+                f"Discarding terminal Whisper subtitle-credit hallucination for "
+                f"model={self.model_name} vad={use_vad} "
+                f"source={source} cache={cache_path} "
+                f"segment_idx={last_text_segment_idx} id={last_text_segment.id} "
+                f"no_speech_prob={last_text_segment.no_speech_prob:.3f} "
+                f"text={last_text_segment.text!r}"
+            )
+            del normalized_segments[last_text_segment_idx]
 
         return normalized_segments
 
@@ -522,6 +527,12 @@ class WhisperTranscriber(Transcriber):
                     ):
                         fallback_segments = self._transcribe_with_ctc_fallback(
                             audio, temp_audio_path, sample_len, exc
+                        )
+                        fallback_segments = self._normalize_transcription_segments(
+                            fallback_segments,
+                            source="whisper",
+                            cache_path=None,
+                            use_vad=settings.use_vad,
                         )
                         if voice_activity_trace is not None:
                             return self._add_voice_activity_scores(
