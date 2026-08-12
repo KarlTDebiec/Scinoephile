@@ -16,20 +16,13 @@ from .exceptions import VoiceActivityError
 from .provider import VadImplementation, VadProvider
 from .trace import VoiceActivityTrace
 
-__all__ = [
-    "PYANNOTE_VAD_MODEL_ID",
-    "PYANNOTE_VAD_MODEL_REVISION",
-    "PyannoteVadProvider",
-]
+__all__ = ["PyannoteVadProvider"]
 
 if TYPE_CHECKING:
     from pydub import AudioSegment
 
-PYANNOTE_VAD_MODEL_ID = "pyannote/segmentation-3.0"
-"""Hugging Face model used by pyannote voice activity detection."""
-
-PYANNOTE_VAD_MODEL_REVISION = "e66f3d3b9eb0873085418a7b813d3b369bf160bb"
-"""Pinned Hugging Face revision of the pyannote segmentation model."""
+_MODEL_ID = "pyannote/segmentation-3.0"
+_MODEL_REVISION = "e66f3d3b9eb0873085418a7b813d3b369bf160bb"
 
 
 class PyannoteVadProvider(VadProvider):
@@ -58,8 +51,8 @@ class PyannoteVadProvider(VadProvider):
     def cache_identity(self) -> dict[str, object]:
         """Get the pyannote model and runtime identity."""
         return {
-            "model": PYANNOTE_VAD_MODEL_ID,
-            "model_revision": PYANNOTE_VAD_MODEL_REVISION,
+            "model": _MODEL_ID,
+            "model_revision": _MODEL_REVISION,
             "runtime": self._get_distribution_identity("pyannote.audio"),
         }
 
@@ -128,9 +121,7 @@ class PyannoteVadProvider(VadProvider):
             from_pretrained = cast(
                 Callable[..., object], getattr(model_class, "from_pretrained")
             )
-            model = from_pretrained(
-                PYANNOTE_VAD_MODEL_ID, revision=PYANNOTE_VAD_MODEL_REVISION
-            )
+            model = from_pretrained(_MODEL_ID, revision=_MODEL_REVISION)
             if model is None:
                 raise VoiceActivityError(
                     "Unable to load the gated pyannote segmentation model. Accept "
