@@ -136,7 +136,6 @@ class SileroVadProvider(VadProvider):
                 step_ms=32.0,
                 duration_ms=0,
             )
-        samples /= max(0.1, float(np.max(np.abs(samples))))
         try:
             model = self._load_model(load_silero_vad)
             reset_states = cast(Callable[[], object], getattr(model, "reset_states"))

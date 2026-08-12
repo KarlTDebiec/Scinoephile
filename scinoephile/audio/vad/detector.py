@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 _POSTPROCESSING_VERSION = "2"
 """Version of Scinoephile's probability-to-interval postprocessing."""
 
-_TRACE_IDENTITY_VERSION = "1"
+_TRACE_IDENTITY_VERSION = "2"
 """Version of Scinoephile's frame-level score trace identity."""
 
 

@@ -41,7 +41,20 @@ def test_pyannote_inference_uses_pinned_model_and_shared_interval_settings(
     """Run mocked pyannote VAD with pinned assets and shared interval settings."""
     segmentation = SimpleNamespace(
         data=np.asarray(
-            [[0], [1], [1], [1], [0], [0], [0], [0], [1], [1], [1], [0]],
+            [
+                [0, 0],
+                [1, 0],
+                [0, 1],
+                [1, 1],
+                [0, 0],
+                [0, 0],
+                [0, 0],
+                [0, 0],
+                [1, 0],
+                [0, 1],
+                [1, 1],
+                [0, 0],
+            ],
             dtype=np.float32,
         ),
         sliding_window=SimpleNamespace(start=0.05, duration=0.1, step=0.1),
@@ -252,11 +265,17 @@ def test_silero_inference_uses_shared_interval_settings(
         min_silence_duration_seconds=0.08,
         padding_seconds=0.1,
     )
+    samples = np.full(16000, round(0.05 * np.iinfo(np.int16).max), dtype=np.int16)
+    audio = AudioSegment(
+        data=samples.tobytes(), sample_width=2, frame_rate=16000, channels=1
+    )
 
-    assert detector(AudioSegment.silent(duration=1000)) == [(94, 834)]
+    assert detector(audio) == [(94, 834)]
     load_silero_vad.assert_called_once_with(onnx=True, opset_version=16)
     model.reset_states.assert_called_once_with()
     assert model.call_count == 32
+    first_frame = model.call_args_list[0].args[0]
+    assert np.max(first_frame) == pytest.approx(0.05, abs=1e-4)
 
 
 def test_silero_rejects_unsupported_sample_rate():
@@ -322,7 +341,7 @@ def test_vad_cache_identity_separates_implementation_and_settings(
         "runtime": {"distribution": "ten-vad", "version": "1.0.6.8"},
         "sample_rate": 16000,
         "threshold": 0.6,
-        "trace_identity_version": "1",
+        "trace_identity_version": "2",
     }
     assert silero_metadata["vad"] == {
         "implementation": "silero",
@@ -336,7 +355,7 @@ def test_vad_cache_identity_separates_implementation_and_settings(
         "runtime": {"distribution": "silero-vad", "version": "6.2.1"},
         "sample_rate": 16000,
         "threshold": 0.5,
-        "trace_identity_version": "1",
+        "trace_identity_version": "2",
     }
     assert silero._cache.get_path(audio, silero_metadata) != ten._cache.get_path(
         audio, ten_metadata
@@ -400,7 +419,7 @@ def test_vad_cache_identity_pins_pyannote_model_and_runtime(
         "runtime": {"distribution": "pyannote.audio", "version": "4.0.7"},
         "sample_rate": 16000,
         "threshold": 0.5,
-        "trace_identity_version": "1",
+        "trace_identity_version": "2",
     }
 
 

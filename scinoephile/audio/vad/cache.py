@@ -11,6 +11,7 @@ from logging import getLogger
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import TYPE_CHECKING
+from zipfile import BadZipFile
 
 import numpy as np
 
@@ -106,7 +107,7 @@ class VoiceActivityCache:
                 )
                 if trace.duration_ms != len(audio):
                     raise ValueError("cache duration does not match source audio")
-        except (KeyError, OSError, TypeError, ValueError) as exc:
+        except (BadZipFile, KeyError, OSError, TypeError, ValueError) as exc:
             cache_path.unlink(missing_ok=True)
             logger.warning(
                 f"Discarded invalid voice activity trace cache {cache_path}: {exc}"

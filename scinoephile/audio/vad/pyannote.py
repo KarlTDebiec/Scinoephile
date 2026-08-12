@@ -86,16 +86,17 @@ class PyannoteVadProvider(VadProvider):
                 {"sample_rate": self.sample_rate, "waveform": torch.from_numpy(samples)}
             )
             raw_scores = np.asarray(getattr(segmentation, "data"), dtype=np.float32)
-            if raw_scores.ndim != 2 or raw_scores.shape[1] != 1:
+            if raw_scores.ndim != 2 or raw_scores.shape[1] == 0:
                 raise VoiceActivityError(
                     "pyannote VAD returned malformed segmentation scores."
                 )
+            speech_scores = np.max(raw_scores, axis=1)
             sliding_window = getattr(segmentation, "sliding_window")
             start_seconds = float(getattr(sliding_window, "start"))
             frame_duration_seconds = float(getattr(sliding_window, "duration"))
             step_seconds = float(getattr(sliding_window, "step"))
             return VoiceActivityTrace(
-                raw_scores[:, 0],
+                speech_scores,
                 start_ms=(start_seconds + frame_duration_seconds / 2) * 1000,
                 step_ms=step_seconds * 1000,
                 duration_ms=len(audio),

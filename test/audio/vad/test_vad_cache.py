@@ -66,6 +66,18 @@ def test_vad_cache_discards_invalid_payload(tmp_path: Path):
     assert not cache_path.exists()
 
 
+def test_vad_cache_discards_malformed_zip_archive(tmp_path: Path):
+    """Remove a malformed ZIP cache and allow regeneration."""
+    cache = VoiceActivityCache(tmp_path)
+    audio = AudioSegment.silent(duration=100, frame_rate=16000)
+    metadata = {"model": "one"}
+    cache_path = cache.get_path(audio, metadata)
+    cache_path.write_bytes(b"PK\x03\x04not a zip")
+
+    assert cache.load(audio, metadata) is None
+    assert not cache_path.exists()
+
+
 def test_vad_cache_rejects_trace_for_different_audio_duration(tmp_path: Path):
     """Reject a trace whose timeline does not match its source audio."""
     cache = VoiceActivityCache(tmp_path)
