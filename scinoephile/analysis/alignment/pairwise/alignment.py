@@ -12,10 +12,6 @@ from .models import Column, Operation
 __all__ = ["Alignment"]
 
 _OPERATION_NONE = 255
-_OPERATION_MATCH = Operation.MATCH.value
-_OPERATION_SUBSTITUTE = Operation.SUBSTITUTE.value
-_OPERATION_DELETE = Operation.DELETE.value
-_OPERATION_INSERT = Operation.INSERT.value
 _GAP_NONE = -1
 
 
@@ -122,7 +118,7 @@ def _get_alignment_operation_table(  # noqa: PLR0915
         (one_length + 1, two_length + 1), _OPERATION_NONE, dtype=np.uint8
     )
     if two_length > 0:
-        operation_table[0, 1:] = _OPERATION_INSERT
+        operation_table[0, 1:] = Operation.INSERT
 
     previous_metrics = np.zeros((two_length + 1, 5), dtype=np.int32)
     current_metrics = np.empty((two_length + 1, 5), dtype=np.int32)
@@ -133,14 +129,14 @@ def _get_alignment_operation_table(  # noqa: PLR0915
     previous_gaps[0] = _GAP_NONE
     for two_idx in range(1, two_length + 1):
         _set_metric(previous_metrics, two_idx, two_idx, 1, 0, 0, two_idx)
-        previous_gaps[two_idx] = _OPERATION_INSERT
+        previous_gaps[two_idx] = Operation.INSERT
 
     # Fill each dynamic-programming row
     for one_idx in range(1, one_length + 1):
         # Seed the first column with deletions
-        operation_table[one_idx, 0] = _OPERATION_DELETE
+        operation_table[one_idx, 0] = Operation.DELETE
         _set_metric(current_metrics, 0, one_idx, 1, 0, one_idx, 0)
-        current_gaps[0] = _OPERATION_DELETE
+        current_gaps[0] = Operation.DELETE
         one_char = one[one_idx - 1]
 
         for two_idx in range(1, two_length + 1):
@@ -153,7 +149,7 @@ def _get_alignment_operation_table(  # noqa: PLR0915
                 best_2 = previous_metrics[previous_diagonal_idx, 2]
                 best_3 = previous_metrics[previous_diagonal_idx, 3]
                 best_4 = previous_metrics[previous_diagonal_idx, 4]
-                best_operation = _OPERATION_MATCH
+                best_operation = Operation.MATCH
                 best_gap = _GAP_NONE
             else:
                 best_0 = previous_metrics[previous_diagonal_idx, 0] + 1
@@ -161,13 +157,13 @@ def _get_alignment_operation_table(  # noqa: PLR0915
                 best_2 = previous_metrics[previous_diagonal_idx, 2] + 1
                 best_3 = previous_metrics[previous_diagonal_idx, 3]
                 best_4 = previous_metrics[previous_diagonal_idx, 4]
-                best_operation = _OPERATION_SUBSTITUTE
+                best_operation = Operation.SUBSTITUTE
                 best_gap = _GAP_NONE
 
             # Compare the insertion candidate
             previous_insert_idx = two_idx - 1
             insert_1 = current_metrics[previous_insert_idx, 1]
-            if current_gaps[previous_insert_idx] != _OPERATION_INSERT:
+            if current_gaps[previous_insert_idx] != Operation.INSERT:
                 insert_1 += 1
             insert_0 = current_metrics[previous_insert_idx, 0] + 1
             insert_2 = current_metrics[previous_insert_idx, 2]
@@ -190,12 +186,12 @@ def _get_alignment_operation_table(  # noqa: PLR0915
                 best_2 = insert_2
                 best_3 = insert_3
                 best_4 = insert_4
-                best_operation = _OPERATION_INSERT
-                best_gap = _OPERATION_INSERT
+                best_operation = Operation.INSERT
+                best_gap = Operation.INSERT
 
             # Compare the deletion candidate
             delete_1 = previous_metrics[two_idx, 1]
-            if previous_gaps[two_idx] != _OPERATION_DELETE:
+            if previous_gaps[two_idx] != Operation.DELETE:
                 delete_1 += 1
             delete_0 = previous_metrics[two_idx, 0] + 1
             delete_2 = previous_metrics[two_idx, 2]
@@ -226,15 +222,15 @@ def _get_alignment_operation_table(  # noqa: PLR0915
                 best_4,
             )
             if delete_is_less or (
-                delete_is_equal and _OPERATION_DELETE < best_operation
+                delete_is_equal and Operation.DELETE < best_operation
             ):
                 best_0 = delete_0
                 best_1 = delete_1
                 best_2 = delete_2
                 best_3 = delete_3
                 best_4 = delete_4
-                best_operation = _OPERATION_DELETE
-                best_gap = _OPERATION_DELETE
+                best_operation = Operation.DELETE
+                best_gap = Operation.DELETE
 
             # Store the chosen candidate and operation
             _set_metric(
