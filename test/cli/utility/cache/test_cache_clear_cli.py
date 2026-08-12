@@ -21,14 +21,14 @@ def test_cache_clear_dry_run(tmp_path: Path, capsys: CaptureFixture[str]):
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    cache_path = write_cache_file(tmp_path / "llm/test/one.json")
+    cache_path = write_cache_file(tmp_path / "llms/test/one.json")
 
     run_cli_with_args(
-        CacheClearCli, f"--cache-dir {tmp_path} --namespace llm/test --dry-run"
+        CacheClearCli, f"--cache-dir {tmp_path} --namespace llms/test --dry-run"
     )
 
     assert cache_path.exists()
-    assert "llm/test/one.json" in capsys.readouterr().out
+    assert "llms/test/one.json" in capsys.readouterr().out
 
 
 def test_cache_clear_all_dry_run_limits_output(
@@ -40,9 +40,9 @@ def test_cache_clear_all_dry_run_limits_output(
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    write_cache_file(tmp_path / "llm/test/one.json")
-    write_cache_file(tmp_path / "llm/test/two.json")
-    write_cache_file(tmp_path / "whisper/three.json")
+    write_cache_file(tmp_path / "llms/test/one.json")
+    write_cache_file(tmp_path / "llms/test/two.json")
+    write_cache_file(tmp_path / "audio/transcription/whisper/three.json")
 
     run_cli_with_args(
         CacheClearCli, f"--cache-dir {tmp_path} --all --dry-run --limit 2"
@@ -59,14 +59,14 @@ def test_cache_clear_namespace_confirmed(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    write_cache_file(tmp_path / "llm/test/one.json")
-    whisper_path = write_cache_file(tmp_path / "whisper/two.json")
+    write_cache_file(tmp_path / "llms/test/one.json")
+    whisper_path = write_cache_file(tmp_path / "audio/transcription/whisper/two.json")
 
     run_cli_with_args(
-        CacheClearCli, f"--cache-dir {tmp_path} --namespace llm/test --yes"
+        CacheClearCli, f"--cache-dir {tmp_path} --namespace llms/test --yes"
     )
 
-    assert not (tmp_path / "llm").exists()
+    assert not (tmp_path / "llms").exists()
     assert whisper_path.exists()
 
 
@@ -76,13 +76,13 @@ def test_cache_clear_all_confirmed(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    write_cache_file(tmp_path / "llm/test/one.json")
-    write_cache_file(tmp_path / "whisper/two.json")
+    write_cache_file(tmp_path / "llms/test/one.json")
+    write_cache_file(tmp_path / "audio/transcription/whisper/two.json")
 
     run_cli_with_args(CacheClearCli, f"--cache-dir {tmp_path} --all --yes")
 
-    assert not (tmp_path / "llm").exists()
-    assert not (tmp_path / "whisper").exists()
+    assert not (tmp_path / "llms").exists()
+    assert not (tmp_path / "audio").exists()
 
 
 def test_cache_clear_older_than_dry_run(tmp_path: Path, capsys: CaptureFixture[str]):
@@ -92,8 +92,8 @@ def test_cache_clear_older_than_dry_run(tmp_path: Path, capsys: CaptureFixture[s
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    old_path = write_cache_file(tmp_path / "llm/test/old.json")
-    new_path = write_cache_file(tmp_path / "llm/test/new.json")
+    old_path = write_cache_file(tmp_path / "llms/test/old.json")
+    new_path = write_cache_file(tmp_path / "llms/test/new.json")
     _set_old(old_path)
 
     run_cli_with_args(
@@ -101,8 +101,8 @@ def test_cache_clear_older_than_dry_run(tmp_path: Path, capsys: CaptureFixture[s
     )
 
     output = capsys.readouterr().out
-    assert "llm/test/old.json" in output
-    assert "llm/test/new.json" not in output
+    assert "llms/test/old.json" in output
+    assert "llms/test/new.json" not in output
     assert old_path.exists()
     assert new_path.exists()
 
@@ -113,8 +113,8 @@ def test_cache_clear_older_than_confirmed(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    old_path = write_cache_file(tmp_path / "llm/test/old.json")
-    new_path = write_cache_file(tmp_path / "llm/test/new.json")
+    old_path = write_cache_file(tmp_path / "llms/test/old.json")
+    new_path = write_cache_file(tmp_path / "llms/test/new.json")
     _set_old(old_path)
 
     run_cli_with_args(
@@ -143,7 +143,9 @@ def test_cache_clear_requires_confirmation(tmp_path: Path):
         tmp_path: temporary directory
     """
     with raises(SystemExit) as exc_info:
-        run_cli_with_args(CacheClearCli, f"--cache-dir {tmp_path} --namespace llm/test")
+        run_cli_with_args(
+            CacheClearCli, f"--cache-dir {tmp_path} --namespace llms/test"
+        )
     assert exc_info.value.code == 2
 
 

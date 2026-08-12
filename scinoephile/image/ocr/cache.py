@@ -37,7 +37,7 @@ class OcrCacheBase[TResult](ABC):
 
         Arguments:
             cache_root_path: root directory beneath which to cache, or None for default
-            cache_dir_name: cache subdirectory name
+            cache_dir_name: cache subdirectory name beneath image/ocr
             backend_label: human-readable backend name used in log messages
             cache_version: current backend cache version
             overwrite: whether to replace matching cache files
@@ -51,7 +51,9 @@ class OcrCacheBase[TResult](ABC):
             cache_root_path = get_runtime_cache_root_path()
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which OCR results are cached."""
-        self.cache_dir_path = val_output_dir_path(self.cache_root_path / cache_dir_name)
+        self.cache_dir_path = val_output_dir_path(
+            self.cache_root_path / "image" / "ocr" / cache_dir_name
+        )
         """Directory in which cached OCR results are stored."""
 
         self.overwrite = overwrite

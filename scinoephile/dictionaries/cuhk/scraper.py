@@ -100,11 +100,11 @@ class CuhkDictionaryScraper:
             session: requests session for dependency injection
         """
         self.discovery_cache = CuhkResponseCache(
-            cache_root_path, "cuhk-discovery", overwrite_cache
+            cache_root_path, "discovery", overwrite_cache
         )
         """Cache of CUHK discovery pages."""
         self.scraped_cache = CuhkResponseCache(
-            self.discovery_cache.cache_root_path, "cuhk-pages", overwrite_cache
+            self.discovery_cache.cache_root_path, "pages", overwrite_cache
         )
         """Cache of CUHK word pages."""
 

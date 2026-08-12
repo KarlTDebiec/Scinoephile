@@ -35,6 +35,7 @@ class TranscriptionCache:
     def __init__(
         self,
         cache_root_path: Path | None,
+        cache_dir_name: str,
         backend_name: str,
         backend_label: str,
         overwrite: bool = False,
@@ -43,6 +44,7 @@ class TranscriptionCache:
 
         Arguments:
             cache_root_path: root directory beneath which to cache, or None for default
+            cache_dir_name: cache subdirectory name
             backend_name: stable backend name stored in cache metadata
             backend_label: human-readable backend name used in log messages
             overwrite: whether to replace matching cache files
@@ -55,7 +57,9 @@ class TranscriptionCache:
             cache_root_path = get_runtime_cache_root_path()
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which transcriptions are cached."""
-        self.cache_dir_path = val_output_dir_path(self.cache_root_path / backend_name)
+        self.cache_dir_path = val_output_dir_path(
+            self.cache_root_path / "audio" / "transcription" / cache_dir_name
+        )
         """Directory in which cached transcriptions are stored."""
 
         self.overwrite = overwrite

@@ -42,7 +42,9 @@ class DemucsCache:
             cache_root_path = get_runtime_cache_root_path()
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which separated vocals are cached."""
-        self.cache_dir_path = val_output_dir_path(self.cache_root_path / "demucs")
+        self.cache_dir_path = val_output_dir_path(
+            self.cache_root_path / "audio" / "separation" / "demucs"
+        )
         """Directory in which cached vocals are stored."""
 
         self.model_name = model_name

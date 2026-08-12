@@ -29,14 +29,16 @@ class CuhkResponseCache:
 
         Arguments:
             cache_root_path: root directory beneath which to cache, or None for default
-            cache_dir_name: cache subdirectory name
+            cache_dir_name: cache subdirectory name beneath dictionaries/cuhk
             overwrite: whether to replace matching cache files
         """
         if cache_root_path is None:
             cache_root_path = get_runtime_cache_root_path()
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which CUHK responses are cached."""
-        self.cache_dir_path = val_output_dir_path(self.cache_root_path / cache_dir_name)
+        self.cache_dir_path = val_output_dir_path(
+            self.cache_root_path / "dictionaries" / "cuhk" / cache_dir_name
+        )
         """Directory in which cached CUHK responses are stored."""
 
         self.overwrite = overwrite

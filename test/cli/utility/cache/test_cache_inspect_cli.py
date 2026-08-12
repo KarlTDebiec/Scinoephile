@@ -22,13 +22,13 @@ def test_cache_inspect_summary_json(tmp_path: Path, capsys: CaptureFixture[str])
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    write_cache_file(tmp_path / "llm/test/one.json", "one")
+    write_cache_file(tmp_path / "llms/test/one.json", "one")
 
     run_cli_with_args(CacheInspectCli, f"--cache-dir {tmp_path} --format json")
 
     stats = {item["namespace"]: item for item in json.loads(capsys.readouterr().out)}
-    assert stats["llm/test"]["entry_count"] == 1
-    assert stats["llm/test"]["total_bytes"] == 3
+    assert stats["llms/test"]["entry_count"] == 1
+    assert stats["llms/test"]["total_bytes"] == 3
     assert stats["total"]["entry_count"] == 1
     assert "oldest_accessed_at" not in stats["total"]
 
@@ -40,14 +40,17 @@ def test_cache_inspect_summary_namespace(tmp_path: Path, capsys: CaptureFixture[
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    write_cache_file(tmp_path / "llm/test/one.json")
-    write_cache_file(tmp_path / "whisper/two.json")
+    write_cache_file(tmp_path / "llms/test/one.json")
+    write_cache_file(tmp_path / "audio/transcription/whisper/two.json")
 
-    run_cli_with_args(CacheInspectCli, f"--cache-dir {tmp_path} --namespace whisper")
+    run_cli_with_args(
+        CacheInspectCli,
+        f"--cache-dir {tmp_path} --namespace audio/transcription/whisper",
+    )
 
     output = capsys.readouterr().out
-    assert "whisper\t1 entries" in output
-    assert "llm/test\t" not in output
+    assert "audio/transcription/whisper\t1 entries" in output
+    assert "llms/test\t" not in output
 
 
 def test_cache_inspect_summary_by_age(tmp_path: Path, capsys: CaptureFixture[str]):
@@ -57,8 +60,8 @@ def test_cache_inspect_summary_by_age(tmp_path: Path, capsys: CaptureFixture[str
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    old_path = write_cache_file(tmp_path / "llm/test/old.json")
-    write_cache_file(tmp_path / "llm/test/new.json")
+    old_path = write_cache_file(tmp_path / "llms/test/old.json")
+    write_cache_file(tmp_path / "llms/test/new.json")
     timestamp = time() - 60 * 60 * 24 * 40
     set_mtime(old_path, timestamp)
 
@@ -67,7 +70,7 @@ def test_cache_inspect_summary_by_age(tmp_path: Path, capsys: CaptureFixture[str
     )
 
     stats = {item["namespace"]: item for item in json.loads(capsys.readouterr().out)}
-    assert stats["llm/test"]["entry_count"] == 1
+    assert stats["llms/test"]["entry_count"] == 1
     assert stats["total"]["entry_count"] == 1
 
 
@@ -78,15 +81,15 @@ def test_cache_inspect_entries(tmp_path: Path, capsys: CaptureFixture[str]):
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    write_cache_file(tmp_path / "llm/test/one.json")
-    write_cache_file(tmp_path / "whisper/two.json")
+    write_cache_file(tmp_path / "llms/test/one.json")
+    write_cache_file(tmp_path / "audio/transcription/whisper/two.json")
 
     run_cli_with_args(
-        CacheInspectCli, f"--cache-dir {tmp_path} --namespace llm/test --entries"
+        CacheInspectCli, f"--cache-dir {tmp_path} --namespace llms/test --entries"
     )
 
     output = capsys.readouterr().out
-    assert "llm/test\tllm/test/one.json" in output
+    assert "llms/test\tllms/test/one.json" in output
     assert "atime" not in output
 
 
@@ -97,8 +100,8 @@ def test_cache_inspect_entries_by_age_json(tmp_path: Path, capsys: CaptureFixtur
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    old_path = write_cache_file(tmp_path / "llm/test/old.json")
-    write_cache_file(tmp_path / "llm/test/new.json")
+    old_path = write_cache_file(tmp_path / "llms/test/old.json")
+    write_cache_file(tmp_path / "llms/test/new.json")
     timestamp = time() - 60 * 60 * 24 * 40
     set_mtime(old_path, timestamp)
 
@@ -108,7 +111,7 @@ def test_cache_inspect_entries_by_age_json(tmp_path: Path, capsys: CaptureFixtur
     )
 
     entries = json.loads(capsys.readouterr().out)
-    assert [entry["path"] for entry in entries] == ["llm/test/old.json"]
+    assert [entry["path"] for entry in entries] == ["llms/test/old.json"]
     assert "accessed_at" not in entries[0]
 
 

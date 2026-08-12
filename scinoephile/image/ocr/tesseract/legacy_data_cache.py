@@ -35,7 +35,7 @@ class TesseractLegacyDataCache:
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which traineddata files are cached."""
         self.cache_dir_path = val_output_dir_path(
-            self.cache_root_path / "tesseract-legacy-data"
+            self.cache_root_path / "image" / "ocr" / "tesseract" / "legacy_data"
         )
         """Directory in which legacy-capable traineddata files are stored."""
 

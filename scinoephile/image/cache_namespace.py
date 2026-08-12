@@ -12,11 +12,11 @@ __all__ = ["ImageCacheNamespace"]
 class ImageCacheNamespace(CacheNamespace):
     """Cache namespaces owned by the image package."""
 
-    OCR_LENS = "google-lens"
+    OCR_LENS = "image/ocr/lens"
     """Google Lens OCR results."""
-    OCR_PADDLE = "paddleocr"
+    OCR_PADDLE = "image/ocr/paddle"
     """PaddleOCR results."""
-    OCR_TESSERACT_LEGACY_DATA = "tesseract-legacy-data"
-    """Legacy-capable Tesseract trained data."""
-    OCR_TESSERACT = "tesseract"
+    OCR_TESSERACT = "image/ocr/tesseract/results"
     """Tesseract OCR results."""
+    OCR_TESSERACT_LEGACY_DATA = "image/ocr/tesseract/legacy_data"
+    """Legacy-capable Tesseract trained data."""

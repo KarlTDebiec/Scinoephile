@@ -73,6 +73,7 @@ class _MlxAudioTokenLimitError(TranscriptionInferenceError):
 class MlxAudioTranscriber(Transcriber):
     """Transcribes audio using MLX-Audio and a timestamp alignment stage."""
 
+    cache_dir_name = "mlx_audio"
     backend_name = "mlx-audio"
     """Stable backend name stored in cache metadata."""
 

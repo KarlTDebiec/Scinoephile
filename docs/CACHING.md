@@ -58,7 +58,7 @@ command-line name uses the shorter conventional spelling.
 ## Namespaces and entries
 
 Each cache appends its own stable namespace beneath the cache root. Group
-related namespaces under domain directories such as `llm/` and `media/` rather
+related namespaces under domain directories such as `llms/` and `media/` rather
 than flattening every cache into the root. Do not introduce marker files merely
 to declare namespaces.
 

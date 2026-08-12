@@ -12,5 +12,5 @@ __all__ = ["LlmCacheNamespace"]
 class LlmCacheNamespace(CacheNamespace):
     """Cache namespaces owned by the llms package."""
 
-    OPERATION = "llm/<operation>"
+    OPERATION = "llms/<operation>"
     """Operation-specific LLM responses."""

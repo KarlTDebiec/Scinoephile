@@ -33,6 +33,9 @@ logger = getLogger(__name__)
 class Transcriber(ABC):
     """Transcribes audio across configured Demucs and VAD fallbacks."""
 
+    cache_dir_name: ClassVar[str]
+    """Cache subdirectory name."""
+
     backend_name: ClassVar[str]
     """Stable backend name stored in cache metadata."""
 
@@ -63,7 +66,11 @@ class Transcriber(ABC):
         """Voice activity detection mode."""
 
         self._cache = TranscriptionCache(
-            cache_root_path, self.backend_name, self.backend_label, overwrite_cache
+            cache_root_path,
+            self.cache_dir_name,
+            self.backend_name,
+            self.backend_label,
+            overwrite_cache,
         )
         """Timestamped transcription cache."""
 

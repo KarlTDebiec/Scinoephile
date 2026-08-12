@@ -10,16 +10,16 @@ from scinoephile.workflows.cache_registry import CACHE_REGISTRY
 def test_cache_registry_matches_owned_layout():
     """Test the registry contains the complete Scinoephile-owned cache layout."""
     assert {namespace.value for namespace in CACHE_REGISTRY} == {
-        "cuhk-discovery",
-        "cuhk-pages",
-        "demucs",
-        "google-lens",
-        "llm/<operation>",
-        "media/subtitles",
+        "audio/separation/demucs",
+        "audio/transcription/mlx_audio",
+        "audio/transcription/whisper",
+        "dictionaries/cuhk/discovery",
+        "dictionaries/cuhk/pages",
+        "image/ocr/lens",
+        "image/ocr/paddle",
+        "image/ocr/tesseract/legacy_data",
+        "image/ocr/tesseract/results",
         "lang/zho/subtitles/analysis",
-        "mlx-audio",
-        "paddleocr",
-        "tesseract",
-        "tesseract-legacy-data",
-        "whisper",
+        "llms/<operation>",
+        "media/subtitles",
     }
