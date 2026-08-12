@@ -36,7 +36,11 @@ from scinoephile.audio.transcription.mlx_audio.model import (
     MlxAudioModel,
 )
 from scinoephile.audio.transcription.mlx_audio.transcriber import MlxAudioTranscriber
-from scinoephile.audio.vad import VadImplementation, VoiceActivityTrace
+from scinoephile.audio.vad import (
+    VadImplementation,
+    VoiceActivityDetector,
+    VoiceActivityTrace,
+)
 from scinoephile.core import Language
 
 
@@ -96,13 +100,10 @@ def test_get_cache_path_separates_model_configuration(runtime_cache_root_path: P
 
     first_cache_path = _get_cache_path(first_transcriber, audio)
     second_cache_path = _get_cache_path(second_transcriber, audio)
+    expected_cache_dir_path = runtime_cache_root_path / "audio/transcription/mlx_audio"
 
-    assert first_cache_path.parent == (
-        runtime_cache_root_path / "audio/transcription/mlx_audio"
-    )
-    assert second_cache_path.parent == (
-        runtime_cache_root_path / "audio/transcription/mlx_audio"
-    )
+    assert first_cache_path.parent == expected_cache_dir_path
+    assert second_cache_path.parent == expected_cache_dir_path
     assert first_cache_path != second_cache_path
 
 
@@ -857,11 +858,12 @@ def test_transcribe_vad_auto_retries_unfiltered_audio(monkeypatch: pytest.Monkey
     patched_transcribe.assert_called_once_with(audio, False)
 
 
-def test_init_selects_shared_vad_implementation():
+def test_init_accepts_shared_vad_detector():
     """Configure MLX-Audio with the same reusable detector as other backends."""
-    transcriber = MlxAudioTranscriber(vad_implementation=VadImplementation.PYANNOTE)
+    detector = VoiceActivityDetector(VadImplementation.PYANNOTE)
+    transcriber = MlxAudioTranscriber(vad_detector=detector)
 
-    assert transcriber.vad_detector.implementation is VadImplementation.PYANNOTE
+    assert transcriber.vad_detector is detector
 
 
 def test_transcribe_aligns_text_and_writes_cache(

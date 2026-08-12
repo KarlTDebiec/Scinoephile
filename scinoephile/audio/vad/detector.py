@@ -4,12 +4,10 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Mapping
-from copy import deepcopy
+from collections.abc import Callable
 from enum import StrEnum
 from functools import partial
 from typing import TYPE_CHECKING
-from uuid import uuid4
 
 from .identity import get_distribution_identity
 from .intervals import get_threshold_speech_intervals
@@ -27,9 +25,6 @@ __all__ = ["VadImplementation", "VoiceActivityDetector"]
 
 if TYPE_CHECKING:
     from pydub import AudioSegment
-
-_CACHE_IDENTITY_VERSION = "4"
-"""Version of Scinoephile's VAD cache identity schema."""
 
 _POSTPROCESSING_VERSION = "2"
 """Version of Scinoephile's probability-to-interval postprocessing."""
@@ -116,12 +111,6 @@ class VoiceActivityDetector:
         self.sample_rate = sample_rate
         """Sample rate expected by the VAD implementation."""
 
-        self._cache_nonce = uuid4().hex
-        """Process-local cache discriminator used when artifacts are unavailable."""
-
-        self._resolved_cache_identity: dict[str, object] | None = None
-        """Memoized cache identity after all runtime artifacts are identified."""
-
         self._provider: VadProvider
         """Provider-specific inference adapter."""
 
@@ -137,9 +126,7 @@ class VoiceActivityDetector:
         """Provider-appropriate trace postprocessor."""
 
         if implementation is VadImplementation.PYANNOTE:
-            self._provider = PyannoteVadProvider(
-                sample_rate, min_speech_duration_seconds, min_silence_duration_seconds
-            )
+            self._provider = PyannoteVadProvider(sample_rate)
         elif implementation is VadImplementation.SILERO:
             provider = SileroVadProvider(
                 threshold,
@@ -170,11 +157,8 @@ class VoiceActivityDetector:
         Returns:
             VAD implementation, model, runtime, and postprocessing configuration
         """
-        if self._resolved_cache_identity is not None:
-            return deepcopy(self._resolved_cache_identity)
-
         if self.implementation is VadImplementation.SILERO:
-            runtime_identity = get_distribution_identity("silero-vad", "silero_vad")
+            runtime_identity = get_distribution_identity("silero-vad")
             identity = self._get_common_cache_identity(runtime_identity)
             identity.update(
                 {
@@ -184,12 +168,10 @@ class VoiceActivityDetector:
                     "model_version": runtime_identity["version"],
                 }
             )
-            return self._finalize_cache_identity(
-                identity, "artifact_sha256" in runtime_identity
-            )
+            return identity
 
         if self.implementation is VadImplementation.PYANNOTE:
-            runtime_identity = get_distribution_identity("pyannote.audio", "pyannote")
+            runtime_identity = get_distribution_identity("pyannote.audio")
             identity = self._get_common_cache_identity(runtime_identity)
             identity.update(
                 {
@@ -198,11 +180,9 @@ class VoiceActivityDetector:
                     "model_version": PYANNOTE_VAD_MODEL_REVISION,
                 }
             )
-            return self._finalize_cache_identity(
-                identity, "artifact_sha256" in runtime_identity
-            )
+            return identity
 
-        runtime_identity = get_distribution_identity("ten-vad", "ten_vad")
+        runtime_identity = get_distribution_identity("ten-vad")
         identity = self._get_common_cache_identity(runtime_identity)
         identity.update(
             {
@@ -211,9 +191,7 @@ class VoiceActivityDetector:
                 "model_version": runtime_identity["version"],
             }
         )
-        return self._finalize_cache_identity(
-            identity, "artifact_sha256" in runtime_identity
-        )
+        return identity
 
     @property
     def trace_cache_identity(self) -> dict[str, object]:
@@ -224,7 +202,6 @@ class VoiceActivityDetector:
         """
         identity = self.cache_identity
         for key in (
-            "cache_identity_version",
             "min_silence_duration_seconds",
             "min_speech_duration_seconds",
             "padding_seconds",
@@ -255,22 +232,11 @@ class VoiceActivityDetector:
         """
         return self._provider.get_trace(audio)
 
-    def _finalize_cache_identity(
-        self, identity: dict[str, object], artifacts_available: bool
-    ) -> dict[str, object]:
-        """Memoize a reproducible identity or mark it process-local."""
-        if artifacts_available:
-            self._resolved_cache_identity = identity
-        else:
-            identity["unavailable_artifact_nonce"] = self._cache_nonce
-        return deepcopy(identity)
-
     def _get_common_cache_identity(
-        self, runtime_identity: Mapping[str, str]
+        self, runtime_identity: dict[str, str]
     ) -> dict[str, object]:
         """Get cache fields shared by all VAD implementations."""
         return {
-            "cache_identity_version": _CACHE_IDENTITY_VERSION,
             "implementation": self.implementation.value,
             "min_silence_duration_seconds": self.min_silence_duration_seconds,
             "min_speech_duration_seconds": self.min_speech_duration_seconds,

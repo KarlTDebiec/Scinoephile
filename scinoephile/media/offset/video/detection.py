@@ -46,7 +46,10 @@ def get_offsets(start: float, end: float, step: float) -> list[float]:
         step: offset interval
     Returns:
         candidate offsets
+    Raises:
+        ValueError: if the offset interval is not positive
     """
+    step = val_float(step, min_value=nextafter(0.0, 1.0))
     offsets = []
     offset = start
     epsilon = step / 1_000_000

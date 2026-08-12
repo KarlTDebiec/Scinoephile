@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from pathlib import Path
-from unittest.mock import Mock, PropertyMock
+from unittest.mock import Mock
 
 from pydub import AudioSegment
 from pytest import raises
@@ -89,9 +89,7 @@ def test_get_preprocessing_settings_orders_preferred_configurations_first(
     """Test automatic modes try Demucs and VAD before their fallbacks."""
     transcriber = _TestTranscriber(tmp_path, DemucsMode.AUTO, VadMode.AUTO)
 
-    assert transcriber._cache.cache_dir_path == (
-        tmp_path / "audio/transcription/whisper"
-    )
+    assert transcriber._cache.cache_dir_path == tmp_path / "audio/transcription/whisper"
     assert transcriber.demucs_separator is not None
     assert transcriber.demucs_separator._cache.cache_dir_path == (
         tmp_path / "audio/separation/demucs"
@@ -366,16 +364,12 @@ def test_last_error_propagates_when_every_configuration_fails(tmp_path: Path):
         assert not cache_path.exists()
 
 
-def test_voice_activity_trace_save_uses_identity_resolved_during_inference(
-    tmp_path: Path,
-):
-    """Save a newly inferred trace under its post-load artifact identity."""
+def test_voice_activity_trace_save_reuses_lookup_identity(tmp_path: Path):
+    """Save a newly inferred trace under the identity used for its lookup."""
     audio = AudioSegment.silent(duration=100)
     trace = Mock()
     detector = Mock()
-    type(detector).trace_cache_identity = PropertyMock(
-        side_effect=[{"artifact": "unresolved"}, {"artifact": "resolved"}]
-    )
+    detector.trace_cache_identity = {"runtime": "test"}
     detector.get_trace.return_value = trace
     cache = Mock()
     cache.load.return_value = None
@@ -384,8 +378,8 @@ def test_voice_activity_trace_save_uses_identity_resolved_during_inference(
     transcriber._voice_activity_cache = cache
 
     assert transcriber._get_voice_activity_trace(audio) is trace
-    cache.load.assert_called_once_with(audio, {"artifact": "unresolved"})
-    cache.save.assert_called_once_with(audio, {"artifact": "resolved"}, trace)
+    cache.load.assert_called_once_with(audio, {"runtime": "test"})
+    cache.save.assert_called_once_with(audio, {"runtime": "test"}, trace)
 
 
 def test_voice_activity_error_is_translated_at_transcription_boundary(tmp_path: Path):

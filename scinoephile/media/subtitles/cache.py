@@ -39,8 +39,8 @@ class SubtitleCache:
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which subtitle artifacts are cached."""
 
-        self.cache_dir_path = val_output_dir_path(
-            MediaCacheNamespace.SUBTITLES.get_dir_path(self.cache_root_path)
+        self.cache_dir_path = MediaCacheNamespace.SUBTITLES.get_dir_path(
+            self.cache_root_path
         )
         """Directory in which cached subtitle streams are stored."""
 

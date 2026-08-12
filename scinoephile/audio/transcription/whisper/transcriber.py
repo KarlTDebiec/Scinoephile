@@ -24,11 +24,7 @@ from scinoephile.audio.transcription.preprocessing_settings import (
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcriber import Transcriber
-from scinoephile.audio.vad import (
-    VadImplementation,
-    VoiceActivityDetector,
-    VoiceActivityTrace,
-)
+from scinoephile.audio.vad import VoiceActivityDetector, VoiceActivityTrace
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.dependencies.transcription import (
     import_huggingface_hub,
@@ -88,7 +84,6 @@ class WhisperTranscriber(Transcriber):
         condition_on_previous_text: bool = True,
         ctc_aligner: CtcAligner | None = None,
         demucs_separator: DemucsSeparator | None = None,
-        vad_implementation: VadImplementation = VadImplementation.SILERO,
         vad_detector: VoiceActivityDetector | None = None,
     ):
         """Initialize.
@@ -105,7 +100,6 @@ class WhisperTranscriber(Transcriber):
                 the preceding window
             ctc_aligner: optional CTC aligner used when Whisper timestamping fails
             demucs_separator: optional shared Demucs vocal separator
-            vad_implementation: voice activity detection implementation
             vad_detector: optional shared voice activity detector
         Raises:
             ValueError: if the model does not support the language
@@ -128,7 +122,6 @@ class WhisperTranscriber(Transcriber):
             vad_mode,
             overwrite_cache,
             demucs_separator,
-            vad_implementation,
             vad_detector,
         )
 

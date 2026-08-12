@@ -45,9 +45,7 @@ class VoiceActivityCache:
             cache_root_path = get_runtime_cache_root_path()
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which voice activity is cached."""
-        self.cache_dir_path = val_output_dir_path(
-            AudioCacheNamespace.VAD.get_dir_path(self.cache_root_path)
-        )
+        self.cache_dir_path = AudioCacheNamespace.VAD.get_dir_path(self.cache_root_path)
         """Directory in which voice activity traces are cached."""
         self.overwrite = overwrite
         """Whether matching cache entries should be replaced."""
@@ -106,6 +104,8 @@ class VoiceActivityCache:
                     step_ms=float(payload["step_ms"]),
                     duration_ms=int(payload["duration_ms"]),
                 )
+                if trace.duration_ms != len(audio):
+                    raise ValueError("cache duration does not match source audio")
         except (KeyError, OSError, TypeError, ValueError) as exc:
             cache_path.unlink(missing_ok=True)
             logger.warning(
@@ -149,7 +149,13 @@ class VoiceActivityCache:
             trace: frame-level voice activity scores
         Returns:
             saved cache path
+        Raises:
+            ValueError: if the trace duration does not match the source audio
         """
+        if trace.duration_ms != len(audio):
+            raise ValueError(
+                "Voice activity trace duration does not match source audio."
+            )
         cache_path = self.get_path(audio, metadata)
         serialized_metadata = json.dumps(
             self._get_metadata(audio, metadata), ensure_ascii=False, sort_keys=True

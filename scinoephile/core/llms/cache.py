@@ -42,10 +42,8 @@ class LlmCache:
         """Root directory beneath which LLM responses are cached."""
         self.operation = operation
         """Stable LLM operation identifier."""
-        self.cache_dir_path = val_output_dir_path(
-            LlmCacheNamespace.OPERATION.get_dir_path(
-                self.cache_root_path, operation=self.operation
-            )
+        self.cache_dir_path = LlmCacheNamespace.OPERATION.get_dir_path(
+            self.cache_root_path, operation=self.operation
         )
         """Directory in which cached LLM responses are stored."""
 

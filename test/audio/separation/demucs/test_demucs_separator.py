@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, cast
 from unittest.mock import Mock, patch
 
 import numpy as np
@@ -13,9 +12,6 @@ from pydub import AudioSegment
 from pytest import MonkeyPatch, importorskip
 
 from scinoephile.audio.separation.demucs import DemucsSeparator
-
-if TYPE_CHECKING:
-    from torch import Tensor
 
 
 class _NumpyBackedTensor:
@@ -36,9 +32,8 @@ class _NumpyBackedTensor:
 
 def test_get_audio_segment_restores_mono_output():
     """Test separated stereo vocals can be restored to mono output."""
-    vocals = cast(
-        "Tensor",
-        _NumpyBackedTensor(np.array([[0.25, -0.25], [0.25, -0.25]], dtype=np.float32)),
+    vocals = _NumpyBackedTensor(
+        np.array([[0.25, -0.25], [0.25, -0.25]], dtype=np.float32)
     )
 
     audio = DemucsSeparator._get_audio_segment(vocals, 16000, 1)

@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from contextlib import nullcontext
 from dataclasses import replace
-from json import dumps
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
@@ -77,9 +76,6 @@ def test_pyannote_inference_uses_pinned_model_and_shared_interval_settings(
         "pyannote/segmentation-3.0", revision="e66f3d3b9eb0873085418a7b813d3b369bf160bb"
     )
     pipeline_class.assert_called_once_with(segmentation=model)
-    pipeline.instantiate.assert_called_once_with(
-        {"min_duration_off": 0.3, "min_duration_on": 0.2}
-    )
     pipeline.to.assert_called_once_with("cpu")
     pipeline._segmentation.assert_called_once_with(
         {"sample_rate": 16000, "waveform": "waveform"}
@@ -272,31 +268,14 @@ def test_vad_cache_identity_separates_implementation_and_settings(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
     """Separate transcription caches by VAD model, runtime, and postprocessing."""
-    silero_distribution = Mock(version="6.2.1")
-    silero_distribution.read_text.return_value = None
-    ten_distribution = Mock(version="1.0.6.8")
-    ten_distribution.read_text.return_value = dumps(
-        {
-            "url": "https://github.com/TEN-framework/ten-vad.git",
-            "vcs_info": {
-                "commit_id": "22a3bcd4509d0faaa8eef4881e8af5f39c178950",
-                "requested_revision": "22a3bcd4509d0faaa8eef4881e8af5f39c178950",
-                "vcs": "git",
-            },
-        }
-    )
     monkeypatch.setattr(
-        "scinoephile.audio.vad.identity.distribution",
+        "scinoephile.audio.vad.detector.get_distribution_identity",
         Mock(
             side_effect=lambda name: {
-                "ten-vad": ten_distribution,
-                "silero-vad": silero_distribution,
-            }[name]
+                "distribution": name,
+                "version": {"silero-vad": "6.2.1", "ten-vad": "1.0.6.8"}[name],
+            }
         ),
-    )
-    monkeypatch.setattr(
-        "scinoephile.audio.vad.identity._get_distribution_artifact_sha256",
-        Mock(side_effect=["silero-runtime-digest", "ten-runtime-digest"]),
     )
     audio = AudioSegment.silent(duration=100)
     silero = WhisperTranscriber(
@@ -318,7 +297,6 @@ def test_vad_cache_identity_separates_implementation_and_settings(
 
     assert silero_metadata["vad"] != ten_metadata["vad"]
     assert ten_metadata["vad"] == {
-        "cache_identity_version": "4",
         "frame_size": 256,
         "implementation": "ten",
         "model": "ten-vad-native",
@@ -327,20 +305,11 @@ def test_vad_cache_identity_separates_implementation_and_settings(
         "min_speech_duration_seconds": 0.1,
         "padding_seconds": 0.5,
         "postprocessing_version": "2",
-        "runtime": {
-            "artifact_sha256": "ten-runtime-digest",
-            "distribution": "ten-vad",
-            "source_commit": "22a3bcd4509d0faaa8eef4881e8af5f39c178950",
-            "source_requested_revision": ("22a3bcd4509d0faaa8eef4881e8af5f39c178950"),
-            "source_url": "https://github.com/TEN-framework/ten-vad.git",
-            "source_vcs": "git",
-            "version": "1.0.6.8",
-        },
+        "runtime": {"distribution": "ten-vad", "version": "1.0.6.8"},
         "sample_rate": 16000,
         "threshold": 0.6,
     }
     assert silero_metadata["vad"] == {
-        "cache_identity_version": "4",
         "implementation": "silero",
         "model": "silero-vad",
         "model_format": "onnx",
@@ -350,11 +319,7 @@ def test_vad_cache_identity_separates_implementation_and_settings(
         "min_speech_duration_seconds": 0.1,
         "padding_seconds": 0.5,
         "postprocessing_version": "2",
-        "runtime": {
-            "artifact_sha256": "silero-runtime-digest",
-            "distribution": "silero-vad",
-            "version": "6.2.1",
-        },
+        "runtime": {"distribution": "silero-vad", "version": "6.2.1"},
         "sample_rate": 16000,
         "threshold": 0.5,
     }
@@ -363,49 +328,13 @@ def test_vad_cache_identity_separates_implementation_and_settings(
     )
 
 
-def test_vad_cache_identity_memoizes_only_resolved_artifacts(
-    monkeypatch: pytest.MonkeyPatch,
-):
-    """Recheck unavailable artifacts, then memoize and defensively copy identity."""
-    distribution_identity = Mock(
-        side_effect=[
-            {"distribution": "silero-vad", "version": "unavailable"},
-            {
-                "artifact_sha256": "runtime-digest",
-                "distribution": "silero-vad",
-                "version": "6.2.1",
-            },
-        ]
-    )
-    monkeypatch.setattr(
-        "scinoephile.audio.vad.detector.get_distribution_identity",
-        distribution_identity,
-    )
-    detector = VoiceActivityDetector(VadImplementation.SILERO)
-
-    unresolved_identity = detector.cache_identity
-    resolved_identity = detector.cache_identity
-    resolved_identity["model"] = "mutated"
-
-    assert "unavailable_artifact_nonce" in unresolved_identity
-    assert "unavailable_artifact_nonce" not in resolved_identity
-    assert detector.cache_identity["model"] == "silero-vad"
-    assert distribution_identity.call_count == 2
-
-
 def test_vad_trace_cache_identity_excludes_interval_postprocessing(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Reuse one TEN score trace across threshold and interval parameter sweeps."""
     monkeypatch.setattr(
         "scinoephile.audio.vad.detector.get_distribution_identity",
-        Mock(
-            return_value={
-                "artifact_sha256": "ten-runtime-digest",
-                "distribution": "ten-vad",
-                "version": "1.0.6.8",
-            }
-        ),
+        Mock(return_value={"distribution": "ten-vad", "version": "1.0.6.8"}),
     )
     first = VoiceActivityDetector(
         VadImplementation.TEN,
@@ -432,13 +361,7 @@ def test_vad_cache_identity_pins_pyannote_model_and_runtime(
     """Identify pyannote VAD by its exact model and installed runtime artifacts."""
     monkeypatch.setattr(
         "scinoephile.audio.vad.detector.get_distribution_identity",
-        Mock(
-            return_value={
-                "artifact_sha256": "pyannote-runtime-digest",
-                "distribution": "pyannote.audio",
-                "version": "4.0.7",
-            }
-        ),
+        Mock(return_value={"distribution": "pyannote.audio", "version": "4.0.7"}),
     )
     detector = VoiceActivityDetector(
         VadImplementation.PYANNOTE,
@@ -448,7 +371,6 @@ def test_vad_cache_identity_pins_pyannote_model_and_runtime(
     )
 
     assert detector.cache_identity == {
-        "cache_identity_version": "4",
         "implementation": "pyannote",
         "min_silence_duration_seconds": 0.3,
         "min_speech_duration_seconds": 0.2,
@@ -457,11 +379,7 @@ def test_vad_cache_identity_pins_pyannote_model_and_runtime(
         "model_version": "e66f3d3b9eb0873085418a7b813d3b369bf160bb",
         "padding_seconds": 0.1,
         "postprocessing_version": "2",
-        "runtime": {
-            "artifact_sha256": "pyannote-runtime-digest",
-            "distribution": "pyannote.audio",
-            "version": "4.0.7",
-        },
+        "runtime": {"distribution": "pyannote.audio", "version": "4.0.7"},
         "sample_rate": 16000,
         "threshold": 0.5,
     }

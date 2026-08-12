@@ -34,27 +34,14 @@ PYANNOTE_VAD_MODEL_REVISION = "e66f3d3b9eb0873085418a7b813d3b369bf160bb"
 class PyannoteVadProvider:
     """Infer frame-level voice activity scores through pyannote."""
 
-    def __init__(
-        self,
-        sample_rate: int,
-        min_speech_duration_seconds: float,
-        min_silence_duration_seconds: float,
-    ):
+    def __init__(self, sample_rate: int):
         """Initialize.
 
         Arguments:
             sample_rate: input sample rate expected by pyannote
-            min_speech_duration_seconds: minimum retained speech duration
-            min_silence_duration_seconds: minimum silence separating intervals
         """
         self.sample_rate = sample_rate
         """Input sample rate expected by pyannote."""
-
-        self.min_speech_duration_seconds = min_speech_duration_seconds
-        """Minimum retained speech duration."""
-
-        self.min_silence_duration_seconds = min_silence_duration_seconds
-        """Minimum silence separating intervals."""
 
         self._pipeline: object | None = None
         """Lazily loaded pyannote voice activity detection pipeline."""
@@ -136,16 +123,6 @@ class PyannoteVadProvider:
                 transcription.import_pyannote_audio_voice_activity_detection()
             )
             pipeline = pipeline_class(segmentation=model)
-            instantiate = cast(
-                Callable[[Mapping[str, float]], object],
-                getattr(pipeline, "instantiate"),
-            )
-            instantiate(
-                {
-                    "min_duration_off": self.min_silence_duration_seconds,
-                    "min_duration_on": self.min_speech_duration_seconds,
-                }
-            )
             device = cast(Callable[[str], object], getattr(torch, "device"))("cpu")
             cast(Callable[[object], object], getattr(pipeline, "to"))(device)
         except ImportError as exc:

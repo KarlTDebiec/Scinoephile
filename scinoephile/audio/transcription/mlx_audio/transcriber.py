@@ -29,7 +29,7 @@ from scinoephile.audio.transcription.preprocessing_settings import (
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.transcriber import Transcriber
-from scinoephile.audio.vad import VadImplementation, VoiceActivityDetector
+from scinoephile.audio.vad import VoiceActivityDetector
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language
 
@@ -80,7 +80,6 @@ class MlxAudioTranscriber(Transcriber):
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
         demucs_separator: DemucsSeparator | None = None,
-        vad_implementation: VadImplementation = VadImplementation.SILERO,
         vad_detector: VoiceActivityDetector | None = None,
     ):
         """Initialize.
@@ -98,7 +97,6 @@ class MlxAudioTranscriber(Transcriber):
             cache_root_path: root directory beneath which to cache
             overwrite_cache: whether to replace matching cache files
             demucs_separator: optional shared Demucs vocal separator
-            vad_implementation: voice activity detection implementation
             vad_detector: optional shared voice activity detector
         Raises:
             TranscriptionError: if the platform does not support MLX-Audio
@@ -151,7 +149,6 @@ class MlxAudioTranscriber(Transcriber):
             vad_mode,
             overwrite_cache,
             demucs_separator,
-            vad_implementation,
             vad_detector,
         )
 

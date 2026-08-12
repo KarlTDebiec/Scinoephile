@@ -145,13 +145,14 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.recovery_transcriber is not None
     assert transcriber.tail_recovery_transcriber is not None
     assert not hasattr(transcriber.transcriber, "cache_root_path")
-    whisper_cache_dir_path = tmp_path / "audio" / "transcription" / "whisper"
-    assert transcriber.transcriber._cache.cache_dir_path == whisper_cache_dir_path
+    assert transcriber.transcriber._cache.cache_dir_path == (
+        tmp_path / "audio/transcription/whisper"
+    )
     assert transcriber.recovery_transcriber._cache.cache_dir_path == (
-        whisper_cache_dir_path
+        tmp_path / "audio/transcription/whisper"
     )
     assert transcriber.tail_recovery_transcriber._cache.cache_dir_path == (
-        whisper_cache_dir_path
+        tmp_path / "audio/transcription/whisper"
     )
     assert transcriber.transcriber._cache.overwrite
     assert transcriber.recovery_transcriber._cache.overwrite

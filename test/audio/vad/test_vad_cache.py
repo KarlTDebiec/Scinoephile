@@ -66,6 +66,18 @@ def test_vad_cache_discards_invalid_payload(tmp_path: Path):
     assert not cache_path.exists()
 
 
+def test_vad_cache_rejects_trace_for_different_audio_duration(tmp_path: Path):
+    """Reject a trace whose timeline does not match its source audio."""
+    cache = VoiceActivityCache(tmp_path)
+    audio = AudioSegment.silent(duration=100, frame_rate=16000)
+    trace = VoiceActivityTrace(
+        np.asarray([0.5], dtype=np.float32), start_ms=50, step_ms=100, duration_ms=200
+    )
+
+    with pytest.raises(ValueError, match="duration does not match"):
+        cache.save(audio, {"model": "one"}, trace)
+
+
 def test_vad_cache_overwrites_each_entry_once(tmp_path: Path):
     """Refresh a requested entry once, then reuse the replacement."""
     audio = AudioSegment.silent(duration=100, frame_rate=16000)

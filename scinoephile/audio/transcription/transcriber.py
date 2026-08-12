@@ -10,15 +10,14 @@ from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, ClassVar
 
+from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.separation import DemucsSeparator
 from scinoephile.audio.vad import (
-    VadImplementation,
     VoiceActivityCache,
     VoiceActivityDetector,
     VoiceActivityError,
     VoiceActivityTrace,
 )
-from scinoephile.core.cache.cache_namespace import CacheNamespace
 from scinoephile.core.exceptions import ScinoephileError
 
 from .cache import TranscriptionCache
@@ -45,7 +44,7 @@ logger = getLogger(__name__)
 class Transcriber(ABC):
     """Transcribes audio across configured Demucs and VAD fallbacks."""
 
-    cache_namespace: ClassVar[CacheNamespace]
+    cache_namespace: ClassVar[AudioCacheNamespace]
     """Registered namespace for cached backend output."""
 
     backend_name: ClassVar[str]
@@ -61,7 +60,6 @@ class Transcriber(ABC):
         vad_mode: VadMode = VadMode.OFF,
         overwrite_cache: bool = False,
         demucs_separator: DemucsSeparator | None = None,
-        vad_implementation: VadImplementation = VadImplementation.SILERO,
         vad_detector: VoiceActivityDetector | None = None,
     ):
         """Initialize.
@@ -72,7 +70,6 @@ class Transcriber(ABC):
             vad_mode: voice activity detection mode
             overwrite_cache: whether to replace matching cache files
             demucs_separator: optional shared Demucs vocal separator
-            vad_implementation: voice activity detection implementation
             vad_detector: optional shared voice activity detector
         """
         self.demucs_mode = demucs_mode
@@ -82,7 +79,7 @@ class Transcriber(ABC):
         """Voice activity detection mode."""
 
         if vad_detector is None:
-            vad_detector = VoiceActivityDetector(vad_implementation)
+            vad_detector = VoiceActivityDetector()
         self.vad_detector = vad_detector
         """Voice activity detector used by VAD-enabled configurations."""
 
@@ -360,9 +357,7 @@ class Transcriber(ABC):
             trace = self.vad_detector.get_trace(audio)
         except VoiceActivityError as exc:
             raise TranscriptionInferenceError(str(exc)) from exc
-        self._voice_activity_cache.save(
-            audio, self.vad_detector.trace_cache_identity, trace
-        )
+        self._voice_activity_cache.save(audio, metadata, trace)
         return trace
 
     def _prepare_cached_segments(
