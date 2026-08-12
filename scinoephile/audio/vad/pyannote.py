@@ -13,6 +13,7 @@ from scinoephile.audio.samples import get_mono_pcm16_samples
 from scinoephile.core.dependencies import transcription
 
 from .exceptions import VoiceActivityError
+from .provider import VadImplementation, VadProvider
 from .trace import VoiceActivityTrace
 
 __all__ = [
@@ -31,20 +32,36 @@ PYANNOTE_VAD_MODEL_REVISION = "e66f3d3b9eb0873085418a7b813d3b369bf160bb"
 """Pinned Hugging Face revision of the pyannote segmentation model."""
 
 
-class PyannoteVadProvider:
+class PyannoteVadProvider(VadProvider):
     """Infer frame-level voice activity scores through pyannote."""
+
+    implementation = VadImplementation.PYANNOTE
+    """Voice activity detection implementation."""
 
     def __init__(self, sample_rate: int):
         """Initialize.
 
         Arguments:
             sample_rate: input sample rate expected by pyannote
+        Raises:
+            ValueError: if the sample rate is unsupported
         """
+        if sample_rate != 16000:
+            raise ValueError("pyannote VAD requires 16000 Hz audio.")
         self.sample_rate = sample_rate
         """Input sample rate expected by pyannote."""
 
         self._pipeline: object | None = None
         """Lazily loaded pyannote voice activity detection pipeline."""
+
+    @property
+    def cache_identity(self) -> dict[str, object]:
+        """Get the pyannote model and runtime identity."""
+        return {
+            "model": PYANNOTE_VAD_MODEL_ID,
+            "model_revision": PYANNOTE_VAD_MODEL_REVISION,
+            "runtime": self._get_distribution_identity("pyannote.audio"),
+        }
 
     def get_trace(self, audio: AudioSegment) -> VoiceActivityTrace:
         """Infer frame-level pyannote segmentation scores.

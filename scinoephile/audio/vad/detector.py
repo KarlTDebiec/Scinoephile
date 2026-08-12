@@ -4,21 +4,15 @@
 
 from __future__ import annotations
 
-from enum import StrEnum
-from importlib.metadata import PackageNotFoundError, version
 from typing import TYPE_CHECKING
 
-from .intervals import get_threshold_speech_intervals
-from .pyannote import (
-    PYANNOTE_VAD_MODEL_ID,
-    PYANNOTE_VAD_MODEL_REVISION,
-    PyannoteVadProvider,
-)
+from .provider import VadImplementation, VadProvider
+from .pyannote import PyannoteVadProvider
 from .silero import SileroVadProvider
 from .ten import TenVadProvider
 from .trace import VoiceActivityTrace
 
-__all__ = ["VadImplementation", "VoiceActivityDetector"]
+__all__ = ["VoiceActivityDetector"]
 
 if TYPE_CHECKING:
     from pydub import AudioSegment
@@ -28,17 +22,6 @@ _POSTPROCESSING_VERSION = "2"
 
 _TRACE_IDENTITY_VERSION = "1"
 """Version of Scinoephile's frame-level score trace identity."""
-
-
-class VadImplementation(StrEnum):
-    """Voice activity detection implementations."""
-
-    PYANNOTE = "pyannote"
-    """Use pyannote's speaker-segmentation model as a speech detector."""
-    SILERO = "silero"
-    """Use the official Silero VAD runtime."""
-    TEN = "ten"
-    """Use the official TEN VAD runtime."""
 
 
 class VoiceActivityDetector:
@@ -70,8 +53,6 @@ class VoiceActivityDetector:
         """
         if not 0 <= threshold <= 1:
             raise ValueError("VAD threshold must be between zero and one.")
-        if frame_size <= 0:
-            raise ValueError("VAD frame size must be positive.")
         if min_speech_duration_seconds < 0:
             raise ValueError("VAD minimum speech duration must be non-negative.")
         if min_silence_duration_seconds < 0:
@@ -80,21 +61,8 @@ class VoiceActivityDetector:
             raise ValueError("VAD padding must be non-negative.")
         if sample_rate <= 0:
             raise ValueError("VAD sample rate must be positive.")
-        if implementation is VadImplementation.PYANNOTE and sample_rate != 16000:
-            raise ValueError("pyannote VAD requires 16000 Hz audio.")
-        if implementation is VadImplementation.TEN and sample_rate != 16000:
-            raise ValueError("TEN VAD requires a sample rate of 16000 Hz.")
-        if implementation is VadImplementation.TEN and frame_size not in {160, 256}:
-            raise ValueError("TEN VAD frame size must be 160 or 256 samples.")
-
-        self.implementation = implementation
-        """VAD implementation."""
-
         self.threshold = threshold
         """Minimum model score treated as speech."""
-
-        self.frame_size = frame_size
-        """TEN inference frame size in samples."""
 
         self.min_speech_duration_seconds = min_speech_duration_seconds
         """Minimum retained speech duration."""
@@ -105,22 +73,13 @@ class VoiceActivityDetector:
         self.padding_seconds = padding_seconds
         """Context retained around speech intervals."""
 
-        self.sample_rate = sample_rate
-        """Sample rate expected by the VAD implementation."""
-
-        self._provider: PyannoteVadProvider | SileroVadProvider | TenVadProvider
+        self._provider: VadProvider
         """Provider-specific inference adapter."""
 
         if implementation is VadImplementation.PYANNOTE:
             self._provider = PyannoteVadProvider(sample_rate)
         elif implementation is VadImplementation.SILERO:
-            self._provider = SileroVadProvider(
-                threshold,
-                min_speech_duration_seconds,
-                min_silence_duration_seconds,
-                padding_seconds,
-                sample_rate,
-            )
+            self._provider = SileroVadProvider(sample_rate)
         else:
             self._provider = TenVadProvider(frame_size, sample_rate)
 
@@ -141,29 +100,14 @@ class VoiceActivityDetector:
         Returns:
             VAD implementation, model, runtime, and postprocessing configuration
         """
-        if self.implementation is VadImplementation.SILERO:
-            runtime_identity = _get_distribution_identity("silero-vad")
-            identity = self._get_common_cache_identity(runtime_identity)
-            identity.update(
-                {"model": "silero-vad", "model_format": "onnx", "model_opset": 16}
-            )
-            return identity
-
-        if self.implementation is VadImplementation.PYANNOTE:
-            runtime_identity = _get_distribution_identity("pyannote.audio")
-            identity = self._get_common_cache_identity(runtime_identity)
-            identity.update(
-                {
-                    "model": PYANNOTE_VAD_MODEL_ID,
-                    "model_revision": PYANNOTE_VAD_MODEL_REVISION,
-                }
-            )
-            return identity
-
-        runtime_identity = _get_distribution_identity("ten-vad")
-        identity = self._get_common_cache_identity(runtime_identity)
-        identity.update({"frame_size": self.frame_size, "model": "ten-vad-native"})
+        identity = self._get_common_cache_identity()
+        identity.update(self._provider.cache_identity)
         return identity
+
+    @property
+    def implementation(self) -> VadImplementation:
+        """Voice activity detection implementation."""
+        return self._provider.implementation
 
     @property
     def trace_cache_identity(self) -> dict[str, object]:
@@ -192,9 +136,7 @@ class VoiceActivityDetector:
         Returns:
             speech start and end offsets in milliseconds
         """
-        if isinstance(self._provider, SileroVadProvider):
-            return self._provider.get_speech_intervals(trace)
-        return get_threshold_speech_intervals(
+        return self._provider.get_speech_intervals(
             trace,
             threshold=self.threshold,
             min_speech_duration_seconds=self.min_speech_duration_seconds,
@@ -212,9 +154,7 @@ class VoiceActivityDetector:
         """
         return self._provider.get_trace(audio)
 
-    def _get_common_cache_identity(
-        self, runtime_identity: dict[str, str]
-    ) -> dict[str, object]:
+    def _get_common_cache_identity(self) -> dict[str, object]:
         """Get cache fields shared by all VAD implementations."""
         return {
             "implementation": self.implementation.value,
@@ -222,16 +162,6 @@ class VoiceActivityDetector:
             "min_speech_duration_seconds": self.min_speech_duration_seconds,
             "padding_seconds": self.padding_seconds,
             "postprocessing_version": _POSTPROCESSING_VERSION,
-            "runtime": runtime_identity,
-            "sample_rate": self.sample_rate,
+            "sample_rate": self._provider.sample_rate,
             "threshold": self.threshold,
         }
-
-
-def _get_distribution_identity(distribution_name: str) -> dict[str, str]:
-    """Get an installed distribution's name and version."""
-    try:
-        distribution_version = version(distribution_name)
-    except PackageNotFoundError:
-        distribution_version = "unavailable"
-    return {"distribution": distribution_name, "version": distribution_version}

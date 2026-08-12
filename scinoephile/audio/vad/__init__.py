@@ -5,15 +5,17 @@
 Package hierarchy (modules may import from any above):
 * exceptions / trace
 * cache / intervals
-* pyannote / silero / speech_block / ten
+* provider / speech_block
+* pyannote / silero / ten
 * detector
 """
 
 from __future__ import annotations
 
 from .cache import VoiceActivityCache
-from .detector import VadImplementation, VoiceActivityDetector
+from .detector import VoiceActivityDetector
 from .exceptions import VoiceActivityError
+from .provider import VadImplementation
 from .speech_block import SpeechBlock, SpeechBlockSettings, SpeechBlockSplitter
 from .trace import VoiceActivityTrace
 

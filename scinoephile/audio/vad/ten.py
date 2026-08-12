@@ -12,6 +12,7 @@ from scinoephile.audio.samples import get_mono_pcm16_samples
 from scinoephile.core.dependencies import transcription
 
 from .exceptions import VoiceActivityError
+from .provider import VadImplementation, VadProvider
 from .trace import VoiceActivityTrace
 
 __all__ = ["TenVadProvider"]
@@ -20,8 +21,11 @@ if TYPE_CHECKING:
     from pydub import AudioSegment
 
 
-class TenVadProvider:
+class TenVadProvider(VadProvider):
     """Infer frame-level voice activity scores through TEN VAD."""
+
+    implementation = VadImplementation.TEN
+    """Voice activity detection implementation."""
 
     def __init__(self, frame_size: int, sample_rate: int):
         """Initialize.
@@ -29,12 +33,27 @@ class TenVadProvider:
         Arguments:
             frame_size: TEN inference frame size in samples
             sample_rate: input sample rate expected by TEN VAD
+        Raises:
+            ValueError: if the inference geometry is unsupported
         """
+        if sample_rate != 16000:
+            raise ValueError("TEN VAD requires a sample rate of 16000 Hz.")
+        if frame_size not in {160, 256}:
+            raise ValueError("TEN VAD frame size must be 160 or 256 samples.")
         self.frame_size = frame_size
         """TEN inference frame size in samples."""
 
         self.sample_rate = sample_rate
         """Input sample rate expected by TEN VAD."""
+
+    @property
+    def cache_identity(self) -> dict[str, object]:
+        """Get the TEN model, runtime, and inference geometry identity."""
+        return {
+            "frame_size": self.frame_size,
+            "model": "ten-vad-native",
+            "runtime": self._get_distribution_identity("ten-vad"),
+        }
 
     def get_trace(self, audio: AudioSegment) -> VoiceActivityTrace:
         """Infer frame-level scores from the official TEN VAD runtime.

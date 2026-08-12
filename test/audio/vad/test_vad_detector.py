@@ -269,7 +269,7 @@ def test_vad_cache_identity_separates_implementation_and_settings(
 ):
     """Separate transcription caches by VAD model, runtime, and postprocessing."""
     monkeypatch.setattr(
-        "scinoephile.audio.vad.detector._get_distribution_identity",
+        "scinoephile.audio.vad.provider.VadProvider._get_distribution_identity",
         Mock(
             side_effect=lambda name: {
                 "distribution": name,
@@ -331,7 +331,7 @@ def test_vad_trace_cache_identity_excludes_interval_postprocessing(
 ):
     """Reuse one TEN score trace across threshold and interval parameter sweeps."""
     monkeypatch.setattr(
-        "scinoephile.audio.vad.detector._get_distribution_identity",
+        "scinoephile.audio.vad.provider.VadProvider._get_distribution_identity",
         Mock(return_value={"distribution": "ten-vad", "version": "1.0.6.8"}),
     )
     first = VoiceActivityDetector(
@@ -358,7 +358,7 @@ def test_vad_cache_identity_pins_pyannote_model_and_runtime(
 ):
     """Identify pyannote VAD by its pinned model and installed runtime version."""
     monkeypatch.setattr(
-        "scinoephile.audio.vad.detector._get_distribution_identity",
+        "scinoephile.audio.vad.provider.VadProvider._get_distribution_identity",
         Mock(return_value={"distribution": "pyannote.audio", "version": "4.0.7"}),
     )
     detector = VoiceActivityDetector(

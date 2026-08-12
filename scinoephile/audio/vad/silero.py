@@ -16,6 +16,7 @@ from scinoephile.core.dependencies import transcription
 
 from .exceptions import VoiceActivityError
 from .intervals import get_padded_intervals
+from .provider import VadImplementation, VadProvider
 from .trace import VoiceActivityTrace
 
 __all__ = ["SileroVadProvider"]
@@ -24,70 +25,72 @@ if TYPE_CHECKING:
     from pydub import AudioSegment
 
 
-class SileroVadProvider:
+class SileroVadProvider(VadProvider):
     """Infer and postprocess voice activity through Silero."""
 
-    def __init__(
-        self,
-        threshold: float,
-        min_speech_duration_seconds: float,
-        min_silence_duration_seconds: float,
-        padding_seconds: float,
-        sample_rate: int,
-    ):
+    implementation = VadImplementation.SILERO
+    """Voice activity detection implementation."""
+
+    def __init__(self, sample_rate: int):
         """Initialize.
 
         Arguments:
-            threshold: minimum model score treated as speech
-            min_speech_duration_seconds: minimum retained speech duration
-            min_silence_duration_seconds: minimum silence separating intervals
-            padding_seconds: context retained around detected speech
             sample_rate: input sample rate expected by Silero
         """
-        self.threshold = threshold
-        """Minimum model score treated as speech."""
-
-        self.min_speech_duration_seconds = min_speech_duration_seconds
-        """Minimum retained speech duration."""
-
-        self.min_silence_duration_seconds = min_silence_duration_seconds
-        """Minimum silence separating intervals."""
-
-        self.padding_seconds = padding_seconds
-        """Context retained around detected speech."""
-
         self.sample_rate = sample_rate
         """Input sample rate expected by Silero."""
 
         self._model: object | None = None
         """Lazily loaded official Silero model."""
 
-    def get_speech_intervals(self, trace: VoiceActivityTrace) -> list[tuple[int, int]]:
+    @property
+    def cache_identity(self) -> dict[str, object]:
+        """Get the Silero model and runtime identity."""
+        return {
+            "model": "silero-vad",
+            "model_format": "onnx",
+            "model_opset": 16,
+            "runtime": self._get_distribution_identity("silero-vad"),
+        }
+
+    def get_speech_intervals(
+        self,
+        trace: VoiceActivityTrace,
+        *,
+        threshold: float,
+        min_speech_duration_seconds: float,
+        min_silence_duration_seconds: float,
+        padding_seconds: float,
+    ) -> list[tuple[int, int]]:
         """Derive speech intervals using Silero's hysteresis postprocessing.
 
         Arguments:
             trace: frame-level Silero model scores
+            threshold: minimum model score treated as speech
+            min_speech_duration_seconds: minimum retained speech duration
+            min_silence_duration_seconds: minimum silence separating intervals
+            padding_seconds: context retained around detected speech
         Returns:
             speech start and end offsets in milliseconds
         """
         if not len(trace):
             return []
 
-        negative_threshold = max(self.threshold - 0.15, 0.01)
-        minimum_silence_ms = self.min_silence_duration_seconds * 1000
-        minimum_speech_ms = self.min_speech_duration_seconds * 1000
+        negative_threshold = max(threshold - 0.15, 0.01)
+        minimum_silence_ms = min_silence_duration_seconds * 1000
+        minimum_speech_ms = min_speech_duration_seconds * 1000
         triggered = False
         speech_start_ms = 0.0
         silence_start_ms = 0.0
         raw_intervals: list[list[float]] = []
         for frame_idx, score in enumerate(trace.scores):
             frame_start_ms = frame_idx * trace.step_ms
-            if score >= self.threshold and not triggered:
+            if score >= threshold and not triggered:
                 triggered = True
                 speech_start_ms = frame_start_ms
                 silence_start_ms = 0.0
                 continue
-            if score >= self.threshold and silence_start_ms:
+            if score >= threshold and silence_start_ms:
                 silence_start_ms = 0.0
             if score < negative_threshold and triggered:
                 if not silence_start_ms:
@@ -100,7 +103,9 @@ class SileroVadProvider:
                 silence_start_ms = 0.0
         if triggered and trace.duration_ms - speech_start_ms >= minimum_speech_ms:
             raw_intervals.append([speech_start_ms, float(trace.duration_ms)])
-        return self._get_padded_intervals(raw_intervals, trace.duration_ms)
+        return self._get_padded_intervals(
+            raw_intervals, trace.duration_ms, padding_seconds
+        )
 
     def get_trace(self, audio: AudioSegment) -> VoiceActivityTrace:
         """Infer frame-level scores from the Silero VAD model.
@@ -159,9 +164,17 @@ class SileroVadProvider:
         )
 
     def _get_padded_intervals(
-        self, raw_intervals: list[list[float]], duration_ms: int
+        self, raw_intervals: list[list[float]], duration_ms: int, padding_seconds: float
     ) -> list[tuple[int, int]]:
-        """Apply Silero's internal padding followed by configured padding."""
+        """Apply Silero's internal padding followed by configured padding.
+
+        Arguments:
+            raw_intervals: unpadded speech intervals in milliseconds
+            duration_ms: source audio duration in milliseconds
+            padding_seconds: configured context around detected speech
+        Returns:
+            padded speech intervals
+        """
         internal_padding_ms = 30.0
         for interval_idx, interval in enumerate(raw_intervals):
             if interval_idx == 0:
@@ -185,7 +198,7 @@ class SileroVadProvider:
         return get_padded_intervals(
             ((start_ms, end_ms) for start_ms, end_ms in raw_intervals),
             duration_ms,
-            self.padding_seconds,
+            padding_seconds,
         )
 
     def _load_model(self, load_silero_vad: Callable[..., object]) -> object:
