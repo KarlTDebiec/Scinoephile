@@ -127,20 +127,27 @@ def get_segment_split_at_idx(
             split_time = word.start + (word_duration * ratio)
             if first_text:
                 first_words.append(
-                    TranscribedWord(
-                        text=first_text,
-                        start=word.start,
-                        end=split_time,
-                        confidence=word.confidence,
+                    word.model_copy(
+                        update={
+                            "text": first_text,
+                            "end": split_time,
+                            "following_voice_activity_score": None,
+                            "voice_activity_coverage": None,
+                            "voice_activity_peak": None,
+                            "voice_activity_score": None,
+                        }
                     )
                 )
             if second_text:
                 second_words.append(
-                    TranscribedWord(
-                        text=second_text,
-                        start=split_time,
-                        end=word.end,
-                        confidence=word.confidence,
+                    word.model_copy(
+                        update={
+                            "text": second_text,
+                            "start": split_time,
+                            "voice_activity_coverage": None,
+                            "voice_activity_peak": None,
+                            "voice_activity_score": None,
+                        }
                     )
                 )
             split_done = True

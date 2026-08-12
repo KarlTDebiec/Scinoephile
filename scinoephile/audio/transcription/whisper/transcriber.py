@@ -8,7 +8,7 @@ from collections.abc import Mapping, Sequence
 from logging import getLogger
 from math import ceil
 from pathlib import Path
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING, ClassVar, cast
 
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.separation import DemucsSeparator
@@ -24,6 +24,7 @@ from scinoephile.audio.transcription.preprocessing_settings import (
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcriber import Transcriber
+from scinoephile.audio.vad import VoiceActivityDetector, VoiceActivityTrace
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.dependencies.transcription import (
     import_huggingface_hub,
@@ -68,8 +69,8 @@ class WhisperTranscriber(Transcriber):
     backend_label = "Whisper"
     """Human-readable backend name used in log messages."""
 
-    _models_by_key: ClassVar[dict[tuple[str, str], Whisper]] = {}
-    """Loaded models shared by model name and device within the current process."""
+    _models_by_key: ClassVar[dict[tuple[str, str | None, str], Whisper]] = {}
+    """Loaded models shared by name, revision, and device in the current process."""
 
     def __init__(
         self,
@@ -83,6 +84,7 @@ class WhisperTranscriber(Transcriber):
         condition_on_previous_text: bool = True,
         ctc_aligner: CtcAligner | None = None,
         demucs_separator: DemucsSeparator | None = None,
+        vad_detector: VoiceActivityDetector | None = None,
     ):
         """Initialize.
 
@@ -98,6 +100,7 @@ class WhisperTranscriber(Transcriber):
                 the preceding window
             ctc_aligner: optional CTC aligner used when Whisper timestamping fails
             demucs_separator: optional shared Demucs vocal separator
+            vad_detector: optional shared voice activity detector
         Raises:
             ValueError: if the model does not support the language
         """
@@ -114,7 +117,12 @@ class WhisperTranscriber(Transcriber):
         self.condition_on_previous_text = condition_on_previous_text
         self.ctc_aligner = ctc_aligner
         super().__init__(
-            cache_root_path, demucs_mode, vad_mode, overwrite_cache, demucs_separator
+            cache_root_path,
+            demucs_mode,
+            vad_mode,
+            overwrite_cache,
+            demucs_separator,
+            vad_detector,
         )
 
     @property
@@ -133,31 +141,52 @@ class WhisperTranscriber(Transcriber):
             return self._loaded_model_instance
 
         device = get_torch_device()
-        model_key = (self.model_name, device)
+        model_key = (self.model_name, self.model.model_revision, device)
 
         # Reuse the process-wide model cache across transcriber instances
         cached_model = self._models_by_key.get(model_key)
         if cached_model is None:
             whisper_timestamped = import_whisper_timestamped()
+            model_reference = self._get_model_reference()
             try:
                 cached_model = whisper_timestamped.load_model(
-                    self.model_name, device=device
+                    model_reference, device=device
                 )
             except FileNotFoundError:
                 if not self._model_name_is_huggingface_repo_id():
                     raise
                 logger.warning(
                     "Whisper model load failed due to missing cache file; "
-                    "re-downloading HuggingFace snapshot and retrying."
+                    "re-downloading Hugging Face snapshot and retrying."
                 )
                 huggingface_hub = import_huggingface_hub()
-                huggingface_hub.snapshot_download(repo_id=self.model_name)
+                model_reference = huggingface_hub.snapshot_download(
+                    repo_id=self.model_name, revision=self.model.model_revision
+                )
                 cached_model = whisper_timestamped.load_model(
-                    self.model_name, device=device
+                    model_reference, device=device
                 )
             self._models_by_key[model_key] = cached_model
         self._loaded_model_instance = cached_model
         return self._loaded_model_instance
+
+    def _get_model_reference(self) -> str:
+        """Get the reference passed to Whisper Timestamped.
+
+        Returns:
+            model name, local path, or pinned Hugging Face snapshot path
+        """
+        if self.model.model_revision is None:
+            return self.model_name
+        if not self._model_name_is_huggingface_repo_id():
+            raise ValueError(
+                "A Whisper model revision may only be used with a Hugging Face "
+                "repository ID."
+            )
+        huggingface_hub = import_huggingface_hub()
+        return huggingface_hub.snapshot_download(
+            repo_id=self.model_name, revision=self.model.model_revision
+        )
 
     @staticmethod
     def _get_sample_len(audio: AudioSegment) -> int:
@@ -179,10 +208,10 @@ class WhisperTranscriber(Transcriber):
         )
 
     def _model_name_is_huggingface_repo_id(self) -> bool:
-        """Determine whether model name looks like a HuggingFace repo ID.
+        """Determine whether model name looks like a Hugging Face repo ID.
 
         Returns:
-            whether the model name should be passed to HuggingFace Hub
+            whether the model name should be passed to Hugging Face Hub
         """
         model_path = Path(self.model_name)
         model_path_parts = model_path.parts
@@ -326,15 +355,12 @@ class WhisperTranscriber(Transcriber):
         temperature: object = self.temperature
         if not isinstance(self.temperature, int | float):
             temperature = list(self.temperature)
-        vad_implementation = None
-        if settings.use_vad:
-            vad_implementation = "whisper-timestamped"
         metadata: dict[str, object] = {
             "condition_on_previous_text": self.condition_on_previous_text,
             "language": self._whisper_language,
             "model_name": self.model_name,
+            "model_revision": self.model.model_revision,
             "temperature": temperature,
-            "vad_implementation": vad_implementation,
         }
         if self.ctc_aligner is not None:
             metadata.update(
@@ -342,6 +368,9 @@ class WhisperTranscriber(Transcriber):
                     "timestamp_fallback": "ctc",
                     "timestamp_fallback_language": self.ctc_aligner.language.code,
                     "timestamp_fallback_model_name": self.ctc_aligner.model_name,
+                    "timestamp_fallback_model_revision": (
+                        self.ctc_aligner.model_revision
+                    ),
                 }
             )
         return metadata
@@ -365,6 +394,34 @@ class WhisperTranscriber(Transcriber):
             segments, source="cache", cache_path=cache_path, use_vad=settings.use_vad
         )
 
+    def _get_whisper_vad(
+        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
+    ) -> tuple[bool | list[tuple[float, float]], VoiceActivityTrace | None]:
+        """Get Whisper-compatible VAD intervals and their probability trace.
+
+        Arguments:
+            audio: audio whose speech intervals should be detected
+            settings: active preprocessing settings
+        Returns:
+            Whisper VAD configuration and its probability trace, if enabled
+        Raises:
+            TranscriptionEmptyError: if enabled VAD finds no speech
+        """
+        if not settings.use_vad:
+            return False, None
+
+        trace = self._get_voice_activity_trace(audio)
+        speech_intervals = self.vad_detector.get_speech_intervals(trace)
+        if not speech_intervals:
+            implementation_label = self.vad_detector.implementation.value.upper()
+            raise TranscriptionEmptyError(
+                f"{implementation_label} VAD found no speech."
+            )
+        return (
+            [(start_ms / 1000, end_ms / 1000) for start_ms, end_ms in speech_intervals],
+            trace,
+        )
+
     def _transcribe_attempt(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> list[TranscribedSegment]:
@@ -379,8 +436,9 @@ class WhisperTranscriber(Transcriber):
             TranscriptionInferenceError: if Whisper fails with an assertion
         """
         whisper_timestamped = import_whisper_timestamped()
-        try:
-            with get_temp_file_path(suffix=".wav") as temp_audio_path:
+        whisper_vad, voice_activity_trace = self._get_whisper_vad(audio, settings)
+        with get_temp_file_path(suffix=".wav") as temp_audio_path:
+            try:
                 audio.export(temp_audio_path, format="wav")
                 sample_len = self._get_sample_len(audio)
                 logger.debug(
@@ -398,9 +456,9 @@ class WhisperTranscriber(Transcriber):
                     """Decode a window and record whether it exhausts its budget."""
                     decode_result = decode(mel, options, **kwargs)
                     decode_results = (
-                        decode_result
+                        cast("list[DecodingResult]", decode_result)
                         if isinstance(decode_result, list)
-                        else [decode_result]
+                        else [cast("DecodingResult", decode_result)]
                     )
                     if any(
                         len(result.tokens) >= sample_len for result in decode_results
@@ -415,7 +473,7 @@ class WhisperTranscriber(Transcriber):
                             model,
                             str(temp_audio_path),
                             language=self._whisper_language,
-                            vad=settings.use_vad,
+                            vad=whisper_vad,
                             temperature=self.temperature,
                             condition_on_previous_text=self.condition_on_previous_text,
                             sample_len=sample_len,
@@ -429,18 +487,23 @@ class WhisperTranscriber(Transcriber):
                     if self.ctc_aligner is not None and str(exc).startswith(
                         "Inconsistent number of segments:"
                     ):
-                        return self._transcribe_with_ctc_fallback(
+                        fallback_segments = self._transcribe_with_ctc_fallback(
                             audio, temp_audio_path, sample_len, exc
                         )
+                        if voice_activity_trace is not None:
+                            return self._add_voice_activity_scores(
+                                fallback_segments, voice_activity_trace
+                            )
+                        return fallback_segments
                     raise TranscriptionInferenceError(
                         f"Whisper inference failed with an assertion: {exc}"
                     ) from exc
-        except TranscriptionInferenceError:
-            raise
-        except (ImportError, OSError, RuntimeError, ValueError) as exc:
-            raise TranscriptionInferenceError(
-                f"Unable to run Whisper inference: {exc}"
-            ) from exc
+            except TranscriptionInferenceError:
+                raise
+            except (ImportError, OSError, RuntimeError, ValueError) as exc:
+                raise TranscriptionInferenceError(
+                    f"Unable to run Whisper inference: {exc}"
+                ) from exc
 
         segments = [
             TranscribedSegment.model_validate(segment) for segment in result["segments"]
@@ -451,9 +514,14 @@ class WhisperTranscriber(Transcriber):
                 f"Whisper reached its {sample_len}-token decoding limit "
                 f"(affected windows: {limit_hit_count})"
             )
-        return self._normalize_transcription_segments(
+        normalized_segments = self._normalize_transcription_segments(
             segments, source="whisper", cache_path=None, use_vad=settings.use_vad
         )
+        if voice_activity_trace is not None:
+            return self._add_voice_activity_scores(
+                normalized_segments, voice_activity_trace
+            )
+        return normalized_segments
 
     def _transcribe_with_ctc_fallback(
         self,
