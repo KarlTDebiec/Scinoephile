@@ -81,7 +81,7 @@ def test_cache_clear_all_confirmed(tmp_path: Path):
     run_cli_with_args(CacheClearCli, f"--cache-dir {tmp_path} --all --yes")
 
     assert not (tmp_path / "llm").exists()
-    assert not (tmp_path / "audio").exists()
+    assert not (tmp_path / "whisper").exists()
 
 
 def test_cache_clear_requires_scope(tmp_path: Path):

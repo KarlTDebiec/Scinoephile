@@ -35,7 +35,7 @@ class _CacheNamespace(CacheNamespace):
     """Whisper transcription results."""
     AUDIO_VAD = "audio/vad"
     """Voice activity detection traces."""
-    LANG_ZHO_SUBTITLES_ANALYSIS = "lang/zho/subtitles/analysis"
+    LANG_ZHO_SUBTITLES_ANALYSIS = "media/subtitles/analysis"
     """Chinese subtitle script analysis results."""
     LLMS_OPERATION = "llms/<operation>"
     """Operation-specific LLM responses."""
@@ -82,8 +82,8 @@ def test_get_cache_entries_filters_namespace(tmp_path: Path):
     assert entries[0].size_bytes == 3
 
 
-def test_get_cache_entries_separates_subtitles_by_owner(tmp_path: Path):
-    """Test media artifacts and language analysis use independent namespaces.
+def test_get_cache_entries_supports_nested_namespaces(tmp_path: Path):
+    """Test nested namespaces retain independent cache entries.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -93,18 +93,18 @@ def test_get_cache_entries_separates_subtitles_by_owner(tmp_path: Path):
     write_cache_file(
         tmp_path / "media/subtitles/second/image-series/index.html", "index"
     )
-    write_cache_file(tmp_path / "lang/zho/subtitles/analysis/first.json", "analysis")
+    write_cache_file(tmp_path / "media/subtitles/analysis/first.json", "analysis")
 
     assert _CACHE_REGISTRY.discover_names(tmp_path) == [
-        "lang/zho/subtitles/analysis",
         "media/subtitles",
+        "media/subtitles/analysis",
     ]
 
     subtitle_entries = get_cache_entries(
         tmp_path, _CACHE_REGISTRY, namespace="media/subtitles"
     )
     analysis_entries = get_cache_entries(
-        tmp_path, _CACHE_REGISTRY, namespace="lang/zho/subtitles/analysis"
+        tmp_path, _CACHE_REGISTRY, namespace="media/subtitles/analysis"
     )
 
     assert [entry.relative_path for entry in subtitle_entries] == [
@@ -113,7 +113,7 @@ def test_get_cache_entries_separates_subtitles_by_owner(tmp_path: Path):
     ]
     assert [entry.file_count for entry in subtitle_entries] == [1, 2]
     assert [entry.relative_path for entry in analysis_entries] == [
-        Path("lang/zho/subtitles/analysis/first.json")
+        Path("media/subtitles/analysis/first.json")
     ]
 
 
@@ -194,21 +194,22 @@ def test_clear_cache_removes_empty_grouping_directory(tmp_path: Path):
     assert not (tmp_path / "media").exists()
 
 
-def test_clear_cache_preserves_other_owner_namespace(tmp_path: Path):
-    """Test clearing media subtitles preserves language analysis.
+def test_clear_cache_preserves_nested_namespace(tmp_path: Path):
+    """Test clearing a namespace preserves its nested namespaces.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
     """
     write_cache_file(tmp_path / "media/subtitles/first/2.srt")
-    analysis_path = write_cache_file(
-        tmp_path / "lang/zho/subtitles/analysis/first.json"
-    )
+    analysis_path = write_cache_file(tmp_path / "media/subtitles/analysis/first.json")
 
     clear_cache(tmp_path, _CACHE_REGISTRY, namespace="media/subtitles")
 
     assert analysis_path.exists()
-    assert _CACHE_REGISTRY.discover_names(tmp_path) == ["lang/zho/subtitles/analysis"]
+    assert _CACHE_REGISTRY.discover_names(tmp_path) == [
+        "media/subtitles",
+        "media/subtitles/analysis",
+    ]
 
 
 def test_clear_cache_removes_empty_parent_directories(tmp_path: Path):
@@ -217,11 +218,11 @@ def test_clear_cache_removes_empty_parent_directories(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory provided by pytest
     """
-    write_cache_file(tmp_path / "lang/zho/subtitles/analysis/first.json")
+    write_cache_file(tmp_path / "media/subtitles/analysis/first.json")
 
-    clear_cache(tmp_path, _CACHE_REGISTRY, namespace="lang/zho/subtitles/analysis")
+    clear_cache(tmp_path, _CACHE_REGISTRY, namespace="media/subtitles/analysis")
 
-    assert not (tmp_path / "lang").exists()
+    assert not (tmp_path / "media").exists()
 
 
 def test_clear_cache_all_removes_all_registered_namespaces(tmp_path: Path):
@@ -231,13 +232,12 @@ def test_clear_cache_all_removes_all_registered_namespaces(tmp_path: Path):
         tmp_path: temporary directory provided by pytest
     """
     write_cache_file(tmp_path / "media/subtitles/first/2.srt")
-    write_cache_file(tmp_path / "lang/zho/subtitles/analysis/first.json")
+    write_cache_file(tmp_path / "media/subtitles/analysis/first.json")
     external_path = write_cache_file(tmp_path / "huggingface/hub/model/data.json")
 
     clear_cache(tmp_path, _CACHE_REGISTRY, all_namespaces=True)
 
     assert not (tmp_path / "media").exists()
-    assert not (tmp_path / "lang").exists()
     assert external_path.exists()
 
 
