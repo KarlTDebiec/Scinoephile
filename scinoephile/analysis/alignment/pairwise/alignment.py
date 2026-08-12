@@ -7,19 +7,19 @@ from __future__ import annotations
 import numba as nb
 import numpy as np
 
-from .models import LineAlignmentOperation, LineAlignmentPair
+from .models import Column, Operation
 
-__all__ = ["LineAlignment"]
+__all__ = ["Alignment"]
 
 _OPERATION_NONE = 255
-_OPERATION_MATCH = LineAlignmentOperation.MATCH.value
-_OPERATION_SUBSTITUTE = LineAlignmentOperation.SUBSTITUTE.value
-_OPERATION_DELETE = LineAlignmentOperation.DELETE.value
-_OPERATION_INSERT = LineAlignmentOperation.INSERT.value
+_OPERATION_MATCH = Operation.MATCH.value
+_OPERATION_SUBSTITUTE = Operation.SUBSTITUTE.value
+_OPERATION_DELETE = Operation.DELETE.value
+_OPERATION_INSERT = Operation.INSERT.value
 _GAP_NONE = -1
 
 
-class LineAlignment:
+class Alignment:
     """Align two strings at character level.
 
     Uses Levenshtein-style dynamic programming with backtrace. The fill step
@@ -41,12 +41,12 @@ class LineAlignment:
         self.two = two
         """Second string."""
 
-        self.alignment_pairs: list[LineAlignmentPair] = []
-        """Aligned character pairs."""
+        self.columns: list[Column] = []
+        """Aligned character columns."""
 
         # Fill the alignment from the compact operation table
         operation_table = self._get_operation_table()
-        self._populate_alignment_pairs(operation_table)
+        self._populate_columns(operation_table)
 
     def __repr__(self) -> str:
         """Return a reconstructable representation of this alignment.
@@ -66,8 +66,8 @@ class LineAlignment:
         two = _get_codepoints(self.two)
         return _get_alignment_operation_table(one, two)
 
-    def _populate_alignment_pairs(self, operation_table: np.ndarray):
-        """Populate alignment pairs by backtracing DP operations.
+    def _populate_columns(self, operation_table: np.ndarray):
+        """Populate alignment columns by backtracing DP operations.
 
         Arguments:
             operation_table: operation table produced by dynamic programming
@@ -75,37 +75,32 @@ class LineAlignment:
         # Start from the bottom-right table cell
         one_idx = len(self.one)
         two_idx = len(self.two)
-        self.alignment_pairs = []
+        self.columns = []
 
         # Walk backward through chosen edit operations
         while one_idx != 0 or two_idx != 0:
             operation_value = int(operation_table[one_idx, two_idx])
             if operation_value == _OPERATION_NONE:
                 break
-            operation = LineAlignmentOperation(operation_value)
+            operation = Operation(operation_value)
 
             # Resolve matches and substitutions diagonally
-            if operation in (
-                LineAlignmentOperation.MATCH,
-                LineAlignmentOperation.SUBSTITUTE,
-            ):
-                pair = LineAlignmentPair(
-                    self.one[one_idx - 1], self.two[two_idx - 1], operation
-                )
+            if operation in (Operation.MATCH, Operation.SUBSTITUTE):
+                column = Column(self.one[one_idx - 1], self.two[two_idx - 1], operation)
                 one_idx -= 1
                 two_idx -= 1
             # Resolve insertions horizontally
-            elif operation == LineAlignmentOperation.INSERT:
-                pair = LineAlignmentPair(None, self.two[two_idx - 1], operation)
+            elif operation == Operation.INSERT:
+                column = Column(None, self.two[two_idx - 1], operation)
                 two_idx -= 1
             # Resolve deletions vertically
             else:
-                pair = LineAlignmentPair(self.one[one_idx - 1], None, operation)
+                column = Column(self.one[one_idx - 1], None, operation)
                 one_idx -= 1
-            self.alignment_pairs.append(pair)
+            self.columns.append(column)
 
-        # Store pairs in forward order
-        self.alignment_pairs.reverse()
+        # Store columns in forward order
+        self.columns.reverse()
 
 
 @nb.jit(nopython=True, nogil=True, cache=True)

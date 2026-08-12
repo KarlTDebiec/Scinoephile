@@ -4,25 +4,25 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Sequence as AbcSequence
 from math import floor
 from statistics import median
 
-from .models import TimedAlignmentColumn, TimedMultiSequenceAlignment
+from .models import Alignment, Column
 
 __all__ = ["get_timed_alignment_with_pauses"]
 
 
 def get_timed_alignment_with_pauses(
-    alignment: TimedMultiSequenceAlignment,
+    alignment: Alignment,
     *,
-    pause_intervals_seconds: Sequence[tuple[float, float]] | None = None,
-    source_names: Sequence[str] | None = None,
+    pause_intervals_seconds: AbcSequence[tuple[float, float]] | None = None,
+    source_names: AbcSequence[str] | None = None,
     start_seconds: float | None = None,
     end_seconds: float | None = None,
     minimum_pause_seconds: float = 0.25,
     pause_unit_seconds: float = 0.25,
-) -> TimedMultiSequenceAlignment:
+) -> Alignment:
     """Insert shared timed gaps from explicit intervals or source timing.
 
     The first pause column represents the interval beginning at
@@ -92,20 +92,18 @@ def get_timed_alignment_with_pauses(
             if latest_end is None or column_end > latest_end:
                 latest_end = column_end
 
-    return TimedMultiSequenceAlignment(
-        source_names=alignment.source_names, columns=tuple(output_columns)
-    )
+    return Alignment(source_names=alignment.source_names, columns=tuple(output_columns))
 
 
 def _get_alignment_with_explicit_pauses(
-    alignment: TimedMultiSequenceAlignment,
-    pause_intervals_seconds: Sequence[tuple[float, float]],
+    alignment: Alignment,
+    pause_intervals_seconds: AbcSequence[tuple[float, float]],
     source_indexes: tuple[int, ...],
     minimum_pause_seconds: float,
     pause_unit_seconds: float,
-) -> TimedMultiSequenceAlignment:
+) -> Alignment:
     """Insert externally detected pauses at approximate temporal positions."""
-    pauses_by_boundary: dict[int, list[TimedAlignmentColumn]] = {}
+    pauses_by_boundary: dict[int, list[Column]] = {}
     previous_end = 0.0
     previous_boundary = 0
     for pause_interval in pause_intervals_seconds:
@@ -135,13 +133,11 @@ def _get_alignment_with_explicit_pauses(
         output_columns.extend(pauses_by_boundary.get(boundary, ()))
         if boundary < len(alignment.columns):
             output_columns.append(alignment.columns[boundary])
-    return TimedMultiSequenceAlignment(
-        source_names=alignment.source_names, columns=tuple(output_columns)
-    )
+    return Alignment(source_names=alignment.source_names, columns=tuple(output_columns))
 
 
 def _get_explicit_pause_insertion_boundary(
-    alignment: TimedMultiSequenceAlignment,
+    alignment: Alignment,
     source_indexes: tuple[int, ...],
     pause_interval: tuple[float, float],
 ) -> int:
@@ -197,9 +193,7 @@ def _get_explicit_pause_insertion_boundary(
 
 
 def _get_future_source_starts(
-    alignment: TimedMultiSequenceAlignment,
-    source_indexes: tuple[int, ...],
-    end_seconds: float | None,
+    alignment: Alignment, source_indexes: tuple[int, ...], end_seconds: float | None
 ) -> tuple[float | None, ...]:
     """Get the earliest selected-source token start after each boundary."""
     future_starts: list[float | None] = [None] * (len(alignment.columns) + 1)
@@ -220,7 +214,7 @@ def _get_future_source_starts(
 
 
 def _get_future_starts_by_source(
-    alignment: TimedMultiSequenceAlignment, source_indexes: tuple[int, ...]
+    alignment: Alignment, source_indexes: tuple[int, ...]
 ) -> tuple[tuple[float | None, ...], ...]:
     """Get each selected source's next token start after every boundary."""
     starts_by_source = []
@@ -241,7 +235,7 @@ def _get_pause_columns(
     interval_seconds: tuple[float, float],
     minimum_pause_seconds: float,
     pause_unit_seconds: float,
-) -> tuple[TimedAlignmentColumn, ...]:
+) -> tuple[Column, ...]:
     """Encode one shared timing gap as duration-bucketed pause columns."""
     start_seconds, end_seconds = interval_seconds
     duration_seconds = end_seconds - start_seconds
@@ -251,7 +245,7 @@ def _get_pause_columns(
         (duration_seconds - minimum_pause_seconds + 1e-9) / pause_unit_seconds
     )
     return tuple(
-        TimedAlignmentColumn(
+        Column(
             (None,) * source_count,
             pause_interval_seconds=(
                 start_seconds + pause_idx * pause_unit_seconds,
@@ -265,7 +259,7 @@ def _get_pause_columns(
 
 
 def _get_pause_source_indexes(
-    alignment: TimedMultiSequenceAlignment, source_names: Sequence[str] | None
+    alignment: Alignment, source_names: AbcSequence[str] | None
 ) -> tuple[int, ...]:
     """Resolve and validate rows whose shared gaps define pauses."""
     if source_names is None:
@@ -281,9 +275,7 @@ def _get_pause_source_indexes(
 
 
 def _get_timed_insertion_boundary(
-    alignment: TimedMultiSequenceAlignment,
-    source_indexes: tuple[int, ...],
-    target_time: float,
+    alignment: Alignment, source_indexes: tuple[int, ...], target_time: float
 ) -> int:
     """Locate the profile boundary following a local target time."""
     boundary = 0
@@ -303,8 +295,8 @@ def _get_timed_insertion_boundary(
 
 
 def _validate_timed_pause_arguments(
-    alignment: TimedMultiSequenceAlignment,
-    pause_intervals_seconds: Sequence[tuple[float, float]] | None,
+    alignment: Alignment,
+    pause_intervals_seconds: AbcSequence[tuple[float, float]] | None,
     start_seconds: float | None,
     end_seconds: float | None,
     minimum_pause_seconds: float,

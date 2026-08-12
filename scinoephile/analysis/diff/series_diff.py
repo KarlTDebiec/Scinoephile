@@ -10,10 +10,7 @@ from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import TypedDict
 
-from scinoephile.analysis.alignment.pairwise import (
-    LineAlignment,
-    LineAlignmentOperation,
-)
+from scinoephile.analysis.alignment import pairwise
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import are_series_one_to_one
@@ -458,7 +455,7 @@ class SeriesDiff:
         two_pos = 0
         one_changed: set[int] = set()
         two_changed: set[int] = set()
-        changed_columns: list[tuple[LineAlignmentOperation, int, int]] = []
+        changed_columns: list[tuple[pairwise.Operation, int, int]] = []
         spans: list[_LineSpan] = []
 
         def flush_changed():
@@ -478,8 +475,8 @@ class SeriesDiff:
             two_changed.clear()
             changed_columns.clear()
 
-        for column in LineAlignment(one_side.text, two_side.text).alignment_pairs:
-            if column.operation == LineAlignmentOperation.MATCH:
+        for column in pairwise.Alignment(one_side.text, two_side.text).columns:
+            if column.operation == pairwise.Operation.MATCH:
                 flush_changed()
             else:
                 changed_columns.append((column.operation, one_pos, two_pos))
@@ -491,7 +488,7 @@ class SeriesDiff:
                     two_changed.update(
                         self._get_changed_line_idxs(two_side, two_pos, column.operation)
                     )
-                if column.operation == LineAlignmentOperation.DELETE:
+                if column.operation == pairwise.Operation.DELETE:
                     two_changed.update(
                         self._get_context_line_idxs(
                             source_side=one_side,
@@ -500,7 +497,7 @@ class SeriesDiff:
                             target_pos=two_pos,
                         )
                     )
-                if column.operation == LineAlignmentOperation.INSERT:
+                if column.operation == pairwise.Operation.INSERT:
                     one_changed.update(
                         self._get_context_line_idxs(
                             source_side=two_side,
@@ -700,7 +697,7 @@ class SeriesDiff:
 
     @staticmethod
     def _get_changed_line_idxs(
-        side: _SeriesDiffBlockSide, char_pos: int, operation: LineAlignmentOperation
+        side: _SeriesDiffBlockSide, char_pos: int, operation: pairwise.Operation
     ) -> tuple[int, ...]:
         """Get local line indices touched by a changed character.
 
@@ -714,8 +711,8 @@ class SeriesDiff:
         line_idxs = side.char_line_idxs[char_pos]
         char = side.text[char_pos]
         if char == "\n" and operation in {
-            LineAlignmentOperation.DELETE,
-            LineAlignmentOperation.INSERT,
+            pairwise.Operation.DELETE,
+            pairwise.Operation.INSERT,
         }:
             return (line_idxs[-1],)
         return line_idxs
@@ -724,7 +721,7 @@ class SeriesDiff:
         self,
         one_side: _SeriesDiffBlockSide,
         two_side: _SeriesDiffBlockSide,
-        changed_columns: list[tuple[LineAlignmentOperation, int, int]],
+        changed_columns: list[tuple[pairwise.Operation, int, int]],
     ) -> _LineSpan | None:
         """Get changed line spans for a changed separator-only run.
 
@@ -791,7 +788,7 @@ class SeriesDiff:
     def _get_separator_span(
         one_side: _SeriesDiffBlockSide,
         two_side: _SeriesDiffBlockSide,
-        changed_column: tuple[LineAlignmentOperation, int, int],
+        changed_column: tuple[pairwise.Operation, int, int],
     ) -> _LineSpan | None:
         """Get line spans for one changed separator column.
 
@@ -803,11 +800,11 @@ class SeriesDiff:
             line spans if the column is an inserted/deleted separator newline
         """
         operation, one_pos, two_pos = changed_column
-        if operation == LineAlignmentOperation.DELETE:
+        if operation == pairwise.Operation.DELETE:
             return SeriesDiff._get_separator_delete_span(
                 one_side, two_side, one_pos, two_pos
             )
-        if operation == LineAlignmentOperation.INSERT:
+        if operation == pairwise.Operation.INSERT:
             return SeriesDiff._get_separator_insert_span(
                 one_side, two_side, one_pos, two_pos
             )

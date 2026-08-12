@@ -9,7 +9,7 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from .alignment import LineAlignment
-from .models import LineAlignmentOperation, LineAlignmentPair
+from .alignment import Alignment
+from .models import Column, Operation
 
-__all__ = ["LineAlignment", "LineAlignmentOperation", "LineAlignmentPair"]
+__all__ = ["Alignment", "Column", "Operation"]

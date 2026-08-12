@@ -4,22 +4,18 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Sequence
+from collections.abc import Callable
+from collections.abc import Sequence as AbcSequence
 from dataclasses import dataclass
 from itertools import permutations
 
 import numpy as np
 
-from .models import (
-    TimedAlignmentColumn,
-    TimedAlignmentSequence,
-    TimedAlignmentToken,
-    TimedMultiSequenceAlignment,
-)
+from .models import Alignment, Column, Sequence, Token
 
-__all__ = ["TimedAlignmentSettings", "TimedMultiSequenceAligner"]
+__all__ = ["Aligner", "Settings"]
 
-type _TimedTokenSimilarity = Callable[[TimedAlignmentToken, TimedAlignmentToken], float]
+type _TokenSimilarity = Callable[[Token, Token], float]
 """Callable returning a substitution score for two timestamped tokens."""
 
 _STATE_MATCH = 0
@@ -29,7 +25,7 @@ _STATE_NONE = 255
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
-class TimedAlignmentSettings:
+class Settings:
     """Affine-gap settings for progressive multiple alignment."""
 
     exhaustive_order_source_limit: int = 4
@@ -49,14 +45,10 @@ class TimedAlignmentSettings:
             raise ValueError("Timed alignment gap scores must be non-positive.")
 
 
-class TimedMultiSequenceAligner:
+class Aligner:
     """Align timestamped sequences using progressive affine-gap alignment."""
 
-    def __init__(
-        self,
-        similarity: _TimedTokenSimilarity,
-        settings: TimedAlignmentSettings | None = None,
-    ):
+    def __init__(self, similarity: _TokenSimilarity, settings: Settings | None = None):
         """Initialize.
 
         Arguments:
@@ -66,13 +58,11 @@ class TimedMultiSequenceAligner:
         self.similarity = similarity
         """Timestamp-aware token substitution scoring function."""
         if settings is None:
-            settings = TimedAlignmentSettings()
+            settings = Settings()
         self.settings = settings
         """Affine-gap scoring configuration."""
 
-    def __call__(
-        self, sequences: Sequence[TimedAlignmentSequence]
-    ) -> TimedMultiSequenceAlignment:
+    def __call__(self, sequences: AbcSequence[Sequence]) -> Alignment:
         """Align two or more named timestamped sequences.
 
         For small source sets, all progressive source orders are considered and
@@ -109,9 +99,7 @@ class TimedMultiSequenceAligner:
         assert best_alignment is not None
         return best_alignment
 
-    def add_sequence(
-        self, alignment: TimedMultiSequenceAlignment, sequence: TimedAlignmentSequence
-    ) -> TimedMultiSequenceAlignment:
+    def add_sequence(self, alignment: Alignment, sequence: Sequence) -> Alignment:
         """Align one non-authoritative sequence onto a fixed existing profile.
 
         Existing rows retain their mutual alignment. The added sequence may place
@@ -131,22 +119,20 @@ class TimedMultiSequenceAligner:
             raise ValueError("Additional sequences must be aligned before annotations.")
         return self._align_profile_to_sequence(alignment, sequence)
 
-    def _align_in_order(
-        self, sequences: Sequence[TimedAlignmentSequence]
-    ) -> TimedMultiSequenceAlignment:
+    def _align_in_order(self, sequences: AbcSequence[Sequence]) -> Alignment:
         """Progressively align sequences in one specified order."""
         first = sequences[0]
-        alignment = TimedMultiSequenceAlignment(
+        alignment = Alignment(
             source_names=(first.name,),
-            columns=tuple(TimedAlignmentColumn((token,)) for token in first.tokens),
+            columns=tuple(Column((token,)) for token in first.tokens),
         )
         for sequence in sequences[1:]:
             alignment = self._align_profile_to_sequence(alignment, sequence)
         return alignment
 
     def _align_profile_to_sequence(  # noqa: PLR0912, PLR0915
-        self, profile: TimedMultiSequenceAlignment, sequence: TimedAlignmentSequence
-    ) -> TimedMultiSequenceAlignment:
+        self, profile: Alignment, sequence: Sequence
+    ) -> Alignment:
         """Align one existing profile to one additional sequence."""
         profile_length = len(profile.columns)
         sequence_length = len(sequence.tokens)
@@ -239,7 +225,7 @@ class TimedMultiSequenceAligner:
         while profile_idx > 0 or sequence_idx > 0:
             if state == _STATE_MATCH:
                 columns.append(
-                    TimedAlignmentColumn(
+                    Column(
                         (
                             *profile.columns[profile_idx - 1].tokens,
                             sequence.tokens[sequence_idx - 1],
@@ -250,16 +236,12 @@ class TimedMultiSequenceAligner:
                 profile_idx -= 1
                 sequence_idx -= 1
             elif state == _STATE_GAP_IN_SEQUENCE:
-                columns.append(
-                    TimedAlignmentColumn(
-                        (*profile.columns[profile_idx - 1].tokens, None)
-                    )
-                )
+                columns.append(Column((*profile.columns[profile_idx - 1].tokens, None)))
                 state = int(gap_in_sequence_backpointers[profile_idx, sequence_idx])
                 profile_idx -= 1
             elif state == _STATE_GAP_IN_PROFILE:
                 columns.append(
-                    TimedAlignmentColumn(
+                    Column(
                         (
                             *(None for _ in profile.source_names),
                             sequence.tokens[sequence_idx - 1],
@@ -271,13 +253,13 @@ class TimedMultiSequenceAligner:
             else:
                 raise RuntimeError("Timed multiple alignment backtrace is incomplete.")
         columns.reverse()
-        return TimedMultiSequenceAlignment(
+        return Alignment(
             source_names=(*profile.source_names, sequence.name), columns=tuple(columns)
         )
 
     def _get_guide_orders(
-        self, sequences: Sequence[TimedAlignmentSequence]
-    ) -> tuple[tuple[TimedAlignmentSequence, ...], ...]:
+        self, sequences: AbcSequence[Sequence]
+    ) -> tuple[tuple[Sequence, ...], ...]:
         """Get pairwise-affinity progressive orders for a large source set."""
         pairwise_scores: dict[tuple[int, int], float] = {}
         for one_idx in range(len(sequences) - 1):
@@ -315,9 +297,7 @@ class TimedMultiSequenceAligner:
             orders.append(tuple(sequences[idx] for idx in order))
         return tuple(orders)
 
-    def _get_profile_similarity(
-        self, column: TimedAlignmentColumn, token: TimedAlignmentToken
-    ) -> float:
+    def _get_profile_similarity(self, column: Column, token: Token) -> float:
         """Get mean similarity between a profile column and one token."""
         similarities = [
             self.similarity(profile_token, token)
@@ -327,19 +307,19 @@ class TimedMultiSequenceAligner:
         return sum(similarities) / len(similarities)
 
     def _get_reordered(
-        self, alignment: TimedMultiSequenceAlignment, source_names: tuple[str, ...]
-    ) -> TimedMultiSequenceAlignment:
+        self, alignment: Alignment, source_names: tuple[str, ...]
+    ) -> Alignment:
         """Reorder alignment rows to a requested stable source order."""
         indexes = tuple(alignment.source_names.index(name) for name in source_names)
-        return TimedMultiSequenceAlignment(
+        return Alignment(
             source_names=source_names,
             columns=tuple(
-                TimedAlignmentColumn(tuple(column.tokens[idx] for idx in indexes))
+                Column(tuple(column.tokens[idx] for idx in indexes))
                 for column in alignment.columns
             ),
         )
 
-    def _get_sum_of_pairs_score(self, alignment: TimedMultiSequenceAlignment) -> float:
+    def _get_sum_of_pairs_score(self, alignment: Alignment) -> float:
         """Score a completed alignment across every projected source pair."""
         score = 0.0
         for one_idx in range(len(alignment.source_names) - 1):

@@ -6,10 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scinoephile.analysis.alignment.pairwise import (
-    LineAlignment,
-    LineAlignmentOperation,
-)
+from scinoephile.analysis.alignment import pairwise
 from scinoephile.core.text import (
     AnsiColor,
     colorize,
@@ -164,12 +161,12 @@ class LineDiff:
         """
         one_text = join_text_lines(self.one_texts or ())
         two_text = join_text_lines(self.two_texts or ())
-        alignment = LineAlignment(one_text, two_text).alignment_pairs
+        columns = pairwise.Alignment(one_text, two_text).columns
 
         one_out: list[str] = []
         two_out: list[str] = []
-        for column in alignment:
-            if column.operation == LineAlignmentOperation.MATCH:
+        for column in columns:
+            if column.operation == pairwise.Operation.MATCH:
                 one_char = column.one or ""
                 two_char = column.two or ""
                 if color:
@@ -179,7 +176,7 @@ class LineDiff:
                 two_out.append(two_char)
                 continue
 
-            if column.operation == LineAlignmentOperation.SUBSTITUTE:
+            if column.operation == pairwise.Operation.SUBSTITUTE:
                 one_char = column.one or ""
                 two_char = column.two or ""
                 if color:
@@ -189,7 +186,7 @@ class LineDiff:
                 two_out.append(two_char)
                 continue
 
-            if column.operation == LineAlignmentOperation.DELETE:
+            if column.operation == pairwise.Operation.DELETE:
                 assert column.one is not None
                 one_char = column.one
                 if color:

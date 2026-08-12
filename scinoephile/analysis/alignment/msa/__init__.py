@@ -9,19 +9,7 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from .aligner import TimedAlignmentSettings, TimedMultiSequenceAligner
-from .models import (
-    TimedAlignmentColumn,
-    TimedAlignmentSequence,
-    TimedAlignmentToken,
-    TimedMultiSequenceAlignment,
-)
+from .aligner import Aligner, Settings
+from .models import Alignment, Column, Sequence, Token
 
-__all__ = [
-    "TimedAlignmentColumn",
-    "TimedAlignmentSequence",
-    "TimedAlignmentSettings",
-    "TimedAlignmentToken",
-    "TimedMultiSequenceAligner",
-    "TimedMultiSequenceAlignment",
-]
+__all__ = ["Aligner", "Alignment", "Column", "Sequence", "Settings", "Token"]

@@ -7,10 +7,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import IntEnum
 
-__all__ = ["LineAlignmentOperation", "LineAlignmentPair"]
+__all__ = ["Column", "Operation"]
 
 
-class LineAlignmentOperation(IntEnum):
+class Operation(IntEnum):
     """Alignment operation for a single output column."""
 
     MATCH = 0
@@ -27,7 +27,7 @@ class LineAlignmentOperation(IntEnum):
 
 
 @dataclass(frozen=True)
-class LineAlignmentPair:
+class Column:
     """A single aligned output column."""
 
     one: str | None
@@ -36,5 +36,5 @@ class LineAlignmentPair:
     two: str | None
     """Character from the second string, if present."""
 
-    operation: LineAlignmentOperation
+    operation: Operation
     """Alignment operation describing this output column."""

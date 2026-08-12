@@ -7,16 +7,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from statistics import median
 
-__all__ = [
-    "TimedAlignmentColumn",
-    "TimedAlignmentSequence",
-    "TimedAlignmentToken",
-    "TimedMultiSequenceAlignment",
-]
+__all__ = ["Alignment", "Column", "Sequence", "Token"]
 
 
 @dataclass(frozen=True, slots=True)
-class TimedAlignmentToken:
+class Token:
     """One display token with a source-local time interval."""
 
     text: str
@@ -37,12 +32,12 @@ class TimedAlignmentToken:
 
 
 @dataclass(frozen=True, slots=True)
-class TimedAlignmentSequence:
+class Sequence:
     """Named ordered sequence of timestamped characters."""
 
     name: str
     """Stable source name."""
-    tokens: tuple[TimedAlignmentToken, ...]
+    tokens: tuple[Token, ...]
     """Timestamped source characters in transcription order."""
 
     def __post_init__(self):
@@ -59,10 +54,10 @@ class TimedAlignmentSequence:
 
 
 @dataclass(frozen=True, slots=True)
-class TimedAlignmentColumn:
+class Column:
     """One multiple-alignment column containing source tokens or gaps."""
 
-    tokens: tuple[TimedAlignmentToken | None, ...]
+    tokens: tuple[Token | None, ...]
     """Source-ordered token cells; None represents an alignment gap."""
     pause_interval_seconds: tuple[float, float] | None = None
     """Explicit local interval for a shared timed-pause column."""
@@ -134,12 +129,12 @@ class TimedAlignmentColumn:
 
 
 @dataclass(frozen=True, slots=True)
-class TimedMultiSequenceAlignment:
+class Alignment:
     """Multiple alignment of named timestamped character sequences."""
 
     source_names: tuple[str, ...]
     """Source names in row order."""
-    columns: tuple[TimedAlignmentColumn, ...]
+    columns: tuple[Column, ...]
     """Alignment columns in reading order."""
 
     def __post_init__(self):
