@@ -36,7 +36,11 @@ class SileroVadProvider(VadProvider):
 
         Arguments:
             sample_rate: input sample rate expected by Silero
+        Raises:
+            ValueError: if the sample rate is unsupported
         """
+        if sample_rate != 16000:
+            raise ValueError("Silero VAD requires a sample rate of 16000 Hz.")
         self.sample_rate = sample_rate
         """Input sample rate expected by Silero."""
 

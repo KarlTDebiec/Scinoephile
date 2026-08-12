@@ -73,8 +73,12 @@ class DemucsCache:
 
     @property
     def cache_identity(self) -> dict[str, object]:
-        """Get the model and runtime identity for cached vocals."""
-        return {"model_name": self.model_name, "runtime": self.runtime_identity}
+        """Get the cache, model, and runtime identity for separated vocals."""
+        return {
+            "cache_version": _CACHE_VERSION,
+            "model_name": self.model_name,
+            "runtime": self.runtime_identity,
+        }
 
     def get_path(self, audio: AudioSegment) -> Path:
         """Get the cache path for audio and Demucs configuration.
@@ -92,7 +96,6 @@ class DemucsCache:
                     "audio_channels": audio.channels,
                     "audio_frame_rate": audio.frame_rate,
                     "audio_sample_width": audio.sample_width,
-                    "cache_version": _CACHE_VERSION,
                     "demucs": self.cache_identity,
                 },
                 ensure_ascii=False,

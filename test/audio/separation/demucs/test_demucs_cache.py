@@ -57,13 +57,15 @@ def test_get_path_separates_runtime_versions(tmp_path: Path, monkeypatch: Monkey
 
 
 def test_get_path_includes_cache_version(tmp_path: Path, monkeypatch: MonkeyPatch):
-    """Test Demucs cache paths differ between cache versions."""
+    """Test Demucs identities and cache paths differ between cache versions."""
     audio = AudioSegment.silent(duration=100)
     cache = DemucsCache(tmp_path, "model")
+    first_identity = cache.cache_identity
     first_cache_path = cache.get_path(audio)
 
     monkeypatch.setattr("scinoephile.audio.separation.demucs.cache._CACHE_VERSION", 2)
 
+    assert cache.cache_identity != first_identity
     assert cache.get_path(audio) != first_cache_path
 
 

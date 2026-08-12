@@ -80,8 +80,10 @@ class VoiceActivityDetector:
             self._provider = PyannoteVadProvider(sample_rate)
         elif implementation is VadImplementation.SILERO:
             self._provider = SileroVadProvider(sample_rate)
-        else:
+        elif implementation is VadImplementation.TEN:
             self._provider = TenVadProvider(frame_size, sample_rate)
+        else:
+            raise ValueError(f"Unsupported VAD implementation: {implementation!r}.")
 
     def __call__(self, audio: AudioSegment) -> list[tuple[int, int]]:
         """Detect speech intervals.
@@ -100,9 +102,14 @@ class VoiceActivityDetector:
         Returns:
             VAD implementation, model, runtime, and postprocessing configuration
         """
-        identity = self._get_common_cache_identity()
-        identity.update(self._provider.cache_identity)
-        return identity
+        return {
+            **self.trace_cache_identity,
+            "min_silence_duration_seconds": self.min_silence_duration_seconds,
+            "min_speech_duration_seconds": self.min_speech_duration_seconds,
+            "padding_seconds": self.padding_seconds,
+            "postprocessing_version": _POSTPROCESSING_VERSION,
+            "threshold": self.threshold,
+        }
 
     @property
     def implementation(self) -> VadImplementation:
@@ -116,17 +123,12 @@ class VoiceActivityDetector:
         Returns:
             VAD implementation, model, runtime, and inference geometry
         """
-        identity = self.cache_identity
-        for key in (
-            "min_silence_duration_seconds",
-            "min_speech_duration_seconds",
-            "padding_seconds",
-            "postprocessing_version",
-            "threshold",
-        ):
-            identity.pop(key, None)
-        identity["trace_identity_version"] = _TRACE_IDENTITY_VERSION
-        return identity
+        return {
+            **self._provider.cache_identity,
+            "implementation": self.implementation.value,
+            "sample_rate": self._provider.sample_rate,
+            "trace_identity_version": _TRACE_IDENTITY_VERSION,
+        }
 
     def get_speech_intervals(self, trace: VoiceActivityTrace) -> list[tuple[int, int]]:
         """Derive configured binary speech intervals from a model-score trace.
@@ -153,15 +155,3 @@ class VoiceActivityDetector:
             model scores aligned to the original audio timeline
         """
         return self._provider.get_trace(audio)
-
-    def _get_common_cache_identity(self) -> dict[str, object]:
-        """Get cache fields shared by all VAD implementations."""
-        return {
-            "implementation": self.implementation.value,
-            "min_silence_duration_seconds": self.min_silence_duration_seconds,
-            "min_speech_duration_seconds": self.min_speech_duration_seconds,
-            "padding_seconds": self.padding_seconds,
-            "postprocessing_version": _POSTPROCESSING_VERSION,
-            "sample_rate": self._provider.sample_rate,
-            "threshold": self.threshold,
-        }

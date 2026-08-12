@@ -8,6 +8,7 @@ from contextlib import nullcontext
 from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
+from typing import cast
 from unittest.mock import Mock
 
 import numpy as np
@@ -110,6 +111,12 @@ def test_pyannote_rejects_unsupported_sample_rate():
     """Reject sample rates unsupported by pyannote's segmentation model."""
     with pytest.raises(ValueError, match="pyannote VAD requires 16000 Hz"):
         VoiceActivityDetector(VadImplementation.PYANNOTE, sample_rate=8000)
+
+
+def test_rejects_unknown_implementation():
+    """Reject an unknown implementation rather than silently selecting TEN."""
+    with pytest.raises(ValueError, match="Unsupported VAD implementation"):
+        VoiceActivityDetector(cast(VadImplementation, "unknown"))
 
 
 @pytest.mark.parametrize(
@@ -252,6 +259,12 @@ def test_silero_inference_uses_shared_interval_settings(
     assert model.call_count == 32
 
 
+def test_silero_rejects_unsupported_sample_rate():
+    """Reject sample rates incompatible with Silero trace geometry."""
+    with pytest.raises(ValueError, match="Silero VAD requires.*16000 Hz"):
+        VoiceActivityDetector(VadImplementation.SILERO, sample_rate=8000)
+
+
 def test_ten_missing_runtime_is_a_domain_error(monkeypatch: pytest.MonkeyPatch):
     """Wrap a missing TEN runtime in a domain error."""
     monkeypatch.setattr(
@@ -309,6 +322,7 @@ def test_vad_cache_identity_separates_implementation_and_settings(
         "runtime": {"distribution": "ten-vad", "version": "1.0.6.8"},
         "sample_rate": 16000,
         "threshold": 0.6,
+        "trace_identity_version": "1",
     }
     assert silero_metadata["vad"] == {
         "implementation": "silero",
@@ -322,6 +336,7 @@ def test_vad_cache_identity_separates_implementation_and_settings(
         "runtime": {"distribution": "silero-vad", "version": "6.2.1"},
         "sample_rate": 16000,
         "threshold": 0.5,
+        "trace_identity_version": "1",
     }
     assert silero._cache.get_path(audio, silero_metadata) != ten._cache.get_path(
         audio, ten_metadata
@@ -353,6 +368,10 @@ def test_vad_trace_cache_identity_excludes_interval_postprocessing(
 
     assert first.cache_identity != second.cache_identity
     assert first.trace_cache_identity == second.trace_cache_identity
+    assert (
+        first.cache_identity["trace_identity_version"]
+        == first.trace_cache_identity["trace_identity_version"]
+    )
 
 
 def test_vad_cache_identity_pins_pyannote_model_and_runtime(
@@ -381,6 +400,7 @@ def test_vad_cache_identity_pins_pyannote_model_and_runtime(
         "runtime": {"distribution": "pyannote.audio", "version": "4.0.7"},
         "sample_rate": 16000,
         "threshold": 0.5,
+        "trace_identity_version": "1",
     }
 
 
