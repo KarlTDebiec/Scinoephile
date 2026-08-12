@@ -3,5 +3,5 @@
 """Character sequence alignment primitives.
 
 Package hierarchy (modules may import from any above):
-* msa / pairwise
+* pairwise / timed_msa
 """

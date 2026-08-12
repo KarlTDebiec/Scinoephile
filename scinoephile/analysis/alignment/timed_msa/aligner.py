@@ -11,7 +11,8 @@ from itertools import permutations
 
 import numpy as np
 
-from .models import Alignment, Column, Sequence, Token
+from .alignment import Alignment
+from .models import Column, Sequence, Token
 
 __all__ = ["Aligner", "Settings"]
 

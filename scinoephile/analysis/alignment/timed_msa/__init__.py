@@ -4,12 +4,14 @@
 
 Package hierarchy (modules may import from any above):
 * models
-* aligner / pauses
+* alignment
+* aligner
 """
 
 from __future__ import annotations
 
 from .aligner import Aligner, Settings
-from .models import Alignment, Column, Sequence, Token
+from .alignment import Alignment
+from .models import Column, Sequence, Token
 
 __all__ = ["Aligner", "Alignment", "Column", "Sequence", "Settings", "Token"]

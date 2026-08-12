@@ -6,12 +6,12 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.alignment import msa
+from scinoephile.analysis.alignment import timed_msa
 
 
 def test_add_sequence_preserves_existing_profile_alignment():
     """Test a subsequent sequence cannot change existing row relationships."""
-    aligner = msa.Aligner(_get_similarity)
+    aligner = timed_msa.Aligner(_get_similarity)
     alignment = aligner(
         (
             _get_sequence("whisper", "我係", (0.0, 1.0)),
@@ -41,7 +41,7 @@ def test_alignment_preserves_sources_and_insertion_gaps():
         _get_sequence("qwen", "我系", (0.0, 0.4)),
     )
 
-    alignment = msa.Aligner(_get_similarity)(sequences)
+    alignment = timed_msa.Aligner(_get_similarity)(sequences)
 
     assert alignment.source_names == ("whisper", "mimo", "qwen")
     assert alignment.get_sequence_text("whisper") == "我係"
@@ -65,10 +65,12 @@ def test_alignment_preserves_sources_and_insertion_gaps():
 
 def test_alignment_uses_time_to_resolve_repeated_character():
     """Test timestamp scoring aligns a repeated character to its local peer."""
-    one = msa.Sequence("one", (msa.Token("啊", 0.0, 0.2), msa.Token("啊", 10.0, 10.2)))
-    two = msa.Sequence("two", (msa.Token("啊", 10.0, 10.2),))
+    one = timed_msa.Sequence(
+        "one", (timed_msa.Token("啊", 0.0, 0.2), timed_msa.Token("啊", 10.0, 10.2))
+    )
+    two = timed_msa.Sequence("two", (timed_msa.Token("啊", 10.0, 10.2),))
 
-    def similarity(left: msa.Token, right: msa.Token) -> float:
+    def similarity(left: timed_msa.Token, right: timed_msa.Token) -> float:
         """Prefer identical characters that occur at the same time.
 
         Arguments:
@@ -80,7 +82,7 @@ def test_alignment_uses_time_to_resolve_repeated_character():
         distance = abs(left.start_seconds - right.start_seconds)
         return 4.0 - distance
 
-    alignment = msa.Aligner(similarity)((one, two))
+    alignment = timed_msa.Aligner(similarity)((one, two))
 
     assert [column.tokens[1] is None for column in alignment.columns] == [True, False]
 
@@ -97,7 +99,7 @@ def test_large_alignment_uses_guide_orders():
         for idx, text in enumerate(texts)
     )
 
-    alignment = msa.Aligner(_get_similarity)(sequences)
+    alignment = timed_msa.Aligner(_get_similarity)(sequences)
 
     assert alignment.source_names == tuple(sequence.name for sequence in sequences)
     assert (
@@ -111,10 +113,12 @@ def test_settings_reject_too_small_exhaustive_limit():
     with raises(
         ValueError, match="Exhaustive alignment order source limit must be at least two"
     ):
-        msa.Settings(exhaustive_order_source_limit=1)
+        timed_msa.Settings(exhaustive_order_source_limit=1)
 
 
-def _get_sequence(name: str, text: str, starts: tuple[float, ...]) -> msa.Sequence:
+def _get_sequence(
+    name: str, text: str, starts: tuple[float, ...]
+) -> timed_msa.Sequence:
     """Build a compact timed-character test sequence.
 
     Arguments:
@@ -124,16 +128,16 @@ def _get_sequence(name: str, text: str, starts: tuple[float, ...]) -> msa.Sequen
     Returns:
         timestamped character sequence
     """
-    return msa.Sequence(
+    return timed_msa.Sequence(
         name,
         tuple(
-            msa.Token(character, start, start + 0.1)
+            timed_msa.Token(character, start, start + 0.1)
             for character, start in zip(text, starts, strict=True)
         ),
     )
 
 
-def _get_similarity(one: msa.Token, two: msa.Token) -> float:
+def _get_similarity(one: timed_msa.Token, two: timed_msa.Token) -> float:
     """Score exact test characters above substitutions.
 
     Arguments:

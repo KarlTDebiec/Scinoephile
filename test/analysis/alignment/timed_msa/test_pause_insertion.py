@@ -4,41 +4,39 @@
 
 from __future__ import annotations
 
-from scinoephile.analysis.alignment import msa
-from scinoephile.analysis.alignment.msa.pauses import get_timed_alignment_with_pauses
+from scinoephile.analysis.alignment import timed_msa
 
 
-def test_explicit_timed_pause_prefers_matching_source_gap():
+def test_explicit_pause_prefers_matching_source_gap():
     """A real source gap should override correlated forced-alignment timing."""
-    alignment = msa.Alignment(
+    alignment = timed_msa.Alignment(
         source_names=("native", "ctc-one", "ctc-two"),
         columns=(
-            msa.Column(
+            timed_msa.Column(
                 (
-                    msa.Token("三", 0.0, 0.2),
-                    msa.Token("三", 0.0, 1.4),
-                    msa.Token("三", 0.0, 1.4),
+                    timed_msa.Token("三", 0.0, 0.2),
+                    timed_msa.Token("三", 0.0, 1.4),
+                    timed_msa.Token("三", 0.0, 1.4),
                 )
             ),
-            msa.Column(
+            timed_msa.Column(
                 (
-                    msa.Token("夜", 0.2, 0.4),
-                    msa.Token("夜", 1.4, 1.5),
-                    msa.Token("夜", 1.4, 1.5),
+                    timed_msa.Token("夜", 0.2, 0.4),
+                    timed_msa.Token("夜", 1.4, 1.5),
+                    timed_msa.Token("夜", 1.4, 1.5),
                 )
             ),
-            msa.Column(
+            timed_msa.Column(
                 (
-                    msa.Token("見", 1.2, 1.4),
-                    msa.Token("見", 1.5, 1.7),
-                    msa.Token("見", 1.5, 1.7),
+                    timed_msa.Token("見", 1.2, 1.4),
+                    timed_msa.Token("見", 1.5, 1.7),
+                    timed_msa.Token("見", 1.5, 1.7),
                 )
             ),
         ),
     )
 
-    with_pauses = get_timed_alignment_with_pauses(
-        alignment,
+    with_pauses = alignment.with_pauses(
         pause_intervals_seconds=((0.5, 1.1),),
         source_names=("native", "ctc-one", "ctc-two"),
     )
@@ -55,18 +53,21 @@ def test_explicit_timed_pause_prefers_matching_source_gap():
     ] == ["三", "夜", "見"]
 
 
-def test_explicit_timed_pauses_are_inserted_at_source_time():
+def test_explicit_pauses_are_inserted_at_source_time():
     """Externally detected pauses should become shared profile columns."""
-    alignment = msa.Alignment(
+    alignment = timed_msa.Alignment(
         source_names=("one", "two"),
         columns=(
-            msa.Column((msa.Token("甲", 0.0, 0.2), msa.Token("甲", 0.0, 0.2))),
-            msa.Column((msa.Token("乙", 1.2, 1.4), msa.Token("乙", 1.2, 1.4))),
+            timed_msa.Column(
+                (timed_msa.Token("甲", 0.0, 0.2), timed_msa.Token("甲", 0.0, 0.2))
+            ),
+            timed_msa.Column(
+                (timed_msa.Token("乙", 1.2, 1.4), timed_msa.Token("乙", 1.2, 1.4))
+            ),
         ),
     )
 
-    with_pauses = get_timed_alignment_with_pauses(
-        alignment,
+    with_pauses = alignment.with_pauses(
         pause_intervals_seconds=((0.3, 1.1),),
         pause_unit_seconds=1.0,
         source_names=("one", "two"),
@@ -80,16 +81,20 @@ def test_explicit_timed_pauses_are_inserted_at_source_time():
     assert with_pauses.columns[1].pause_interval_seconds == (0.3, 1.1)
 
 
-def test_timed_pause_columns_encode_point_two_five_second_buckets():
+def test_pause_columns_encode_point_two_five_second_buckets():
     """Pause columns should increase once for each 0.25-second duration bucket."""
-    alignment = msa.Alignment(
+    alignment = timed_msa.Alignment(
         source_names=("one", "two"),
-        columns=(msa.Column((msa.Token("甲", 0.0, 0.1), msa.Token("甲", 0.0, 0.1))),),
+        columns=(
+            timed_msa.Column(
+                (timed_msa.Token("甲", 0.0, 0.1), timed_msa.Token("甲", 0.0, 0.1))
+            ),
+        ),
     )
 
     for duration_seconds, expected_count in ((0.3, 1), (0.55, 2), (0.8, 3)):
-        with_pauses = get_timed_alignment_with_pauses(
-            alignment, pause_intervals_seconds=((1.0, 1.0 + duration_seconds),)
+        with_pauses = alignment.with_pauses(
+            pause_intervals_seconds=((1.0, 1.0 + duration_seconds),)
         )
         pauses = [column for column in with_pauses.columns if column.is_pause]
 
@@ -100,15 +105,19 @@ def test_timed_pause_columns_encode_point_two_five_second_buckets():
         assert pauses[-1].pause_interval_seconds[1] == 1.0 + duration_seconds
 
 
-def test_timed_pause_default_threshold_is_point_two_five_seconds():
+def test_pause_default_threshold_is_point_two_five_seconds():
     """Default pause rendering should include 0.25 seconds but exclude shorter gaps."""
-    alignment = msa.Alignment(
+    alignment = timed_msa.Alignment(
         source_names=("one", "two"),
-        columns=(msa.Column((msa.Token("甲", 0.0, 0.1), msa.Token("甲", 0.0, 0.1))),),
+        columns=(
+            timed_msa.Column(
+                (timed_msa.Token("甲", 0.0, 0.1), timed_msa.Token("甲", 0.0, 0.1))
+            ),
+        ),
     )
 
-    with_pauses = get_timed_alignment_with_pauses(
-        alignment, pause_intervals_seconds=((0.0, 0.25), (0.5, 0.74))
+    with_pauses = alignment.with_pauses(
+        pause_intervals_seconds=((0.0, 0.25), (0.5, 0.74))
     )
 
     assert [
@@ -118,30 +127,29 @@ def test_timed_pause_default_threshold_is_point_two_five_seconds():
     ] == [(0.0, 0.25)]
 
 
-def test_timed_pauses_are_shared_columns_with_explicit_duration():
+def test_pauses_are_shared_columns_with_explicit_duration():
     """Test shared timing gaps become bounded pause-unit columns."""
-    alignment = msa.Alignment(
+    alignment = timed_msa.Alignment(
         source_names=("whisper", "qwen", "reference"),
         columns=(
-            msa.Column(
+            timed_msa.Column(
                 (
-                    msa.Token("甲", 0.0, 0.1),
-                    msa.Token("甲", 0.0, 0.1),
-                    msa.Token("甲", 0.0, 0.1),
+                    timed_msa.Token("甲", 0.0, 0.1),
+                    timed_msa.Token("甲", 0.0, 0.1),
+                    timed_msa.Token("甲", 0.0, 0.1),
                 )
             ),
-            msa.Column(
+            timed_msa.Column(
                 (
-                    msa.Token("乙", 2.6, 2.7),
-                    msa.Token("乙", 2.6, 2.7),
-                    msa.Token("乙", 2.6, 2.7),
+                    timed_msa.Token("乙", 2.6, 2.7),
+                    timed_msa.Token("乙", 2.6, 2.7),
+                    timed_msa.Token("乙", 2.6, 2.7),
                 )
             ),
         ),
     )
 
-    alignment = get_timed_alignment_with_pauses(
-        alignment,
+    alignment = alignment.with_pauses(
         source_names=("whisper", "qwen"),
         start_seconds=0.0,
         end_seconds=3.4,

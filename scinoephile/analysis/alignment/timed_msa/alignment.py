@@ -1,98 +1,139 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Timed pause annotations for multiple-sequence alignments."""
+"""Timestamped multiple-sequence alignment and pause annotation."""
 
 from __future__ import annotations
 
 from collections.abc import Sequence as AbcSequence
+from dataclasses import dataclass
 from math import floor
 from statistics import median
 
-from .models import Alignment, Column
+from .models import Column
 
-__all__ = ["get_timed_alignment_with_pauses"]
+__all__ = ["Alignment"]
 
 
-def get_timed_alignment_with_pauses(
-    alignment: Alignment,
-    *,
-    pause_intervals_seconds: AbcSequence[tuple[float, float]] | None = None,
-    source_names: AbcSequence[str] | None = None,
-    start_seconds: float | None = None,
-    end_seconds: float | None = None,
-    minimum_pause_seconds: float = 0.25,
-    pause_unit_seconds: float = 0.25,
-) -> Alignment:
-    """Insert shared timed gaps from explicit intervals or source timing.
+@dataclass(frozen=True, slots=True)
+class Alignment:
+    """Multiple alignment of named timestamped character sequences."""
 
-    The first pause column represents the interval beginning at
-    `minimum_pause_seconds`. Each additional `pause_unit_seconds` adds another
-    column so approximate duration remains visible in the character alignment.
+    source_names: tuple[str, ...]
+    """Source names in row order."""
+    columns: tuple[Column, ...]
+    """Alignment columns in reading order."""
 
-    Arguments:
-        alignment: lexical alignment without existing pause columns
-        pause_intervals_seconds: explicit local pause intervals, when available
-        source_names: rows whose shared timing gaps define pauses, or all rows
-        start_seconds: optional local interval start for a leading pause
-        end_seconds: optional local interval end for a trailing pause
-        minimum_pause_seconds: shortest shared gap represented as a pause
-        pause_unit_seconds: duration increment represented by each additional column
-    Returns:
-        alignment with shared timed-pause columns
-    Raises:
-        ValueError: if names, bounds, settings, or input columns are invalid
-    """
-    _validate_timed_pause_arguments(
-        alignment,
-        pause_intervals_seconds,
-        start_seconds,
-        end_seconds,
-        minimum_pause_seconds,
-        pause_unit_seconds,
-    )
-    source_indexes = _get_pause_source_indexes(alignment, source_names)
-    if pause_intervals_seconds is not None:
-        return _get_alignment_with_explicit_pauses(
-            alignment,
+    def __post_init__(self):
+        """Validate row names and column widths.
+
+        Raises:
+            ValueError: if sources are absent or duplicated, or widths differ
+        """
+        if not self.source_names:
+            raise ValueError("Timed alignment requires at least one source.")
+        if len(set(self.source_names)) != len(self.source_names):
+            raise ValueError("Multiple alignment source names must be unique.")
+        if any(len(column.tokens) != len(self.source_names) for column in self.columns):
+            raise ValueError(
+                "Multiple alignment column width does not match its sources."
+            )
+
+    def get_sequence_text(self, source_name: str) -> str:
+        """Reconstruct one ungapped source sequence.
+
+        Arguments:
+            source_name: source row to reconstruct
+        Returns:
+            original source characters without alignment gaps
+        Raises:
+            ValueError: if the source name is not present in the alignment
+        """
+        source_idx = self.source_names.index(source_name)
+        return "".join(
+            token.text
+            for column in self.columns
+            if (token := column.tokens[source_idx]) is not None
+        )
+
+    def with_pauses(
+        self,
+        *,
+        pause_intervals_seconds: AbcSequence[tuple[float, float]] | None = None,
+        source_names: AbcSequence[str] | None = None,
+        start_seconds: float | None = None,
+        end_seconds: float | None = None,
+        minimum_pause_seconds: float = 0.25,
+        pause_unit_seconds: float = 0.25,
+    ) -> Alignment:
+        """Insert shared timed gaps from explicit intervals or source timing.
+
+        The first pause column represents the interval beginning at
+        `minimum_pause_seconds`. Each additional `pause_unit_seconds` adds another
+        column so approximate duration remains visible in the character alignment.
+
+        Arguments:
+            pause_intervals_seconds: explicit local pause intervals, when available
+            source_names: rows whose shared timing gaps define pauses, or all rows
+            start_seconds: optional local interval start for a leading pause
+            end_seconds: optional local interval end for a trailing pause
+            minimum_pause_seconds: shortest shared gap represented as a pause
+            pause_unit_seconds: duration increment represented by each additional column
+        Returns:
+            alignment with shared timed-pause columns
+        Raises:
+            ValueError: if names, bounds, settings, or input columns are invalid
+        """
+        _validate_timed_pause_arguments(
+            self,
             pause_intervals_seconds,
-            source_indexes,
+            start_seconds,
+            end_seconds,
             minimum_pause_seconds,
             pause_unit_seconds,
         )
-    future_starts = _get_future_source_starts(alignment, source_indexes, end_seconds)
-
-    output_columns = []
-    inserted_pause_intervals = set()
-    latest_end = start_seconds
-    for column_idx in range(len(alignment.columns) + 1):
-        next_start = future_starts[column_idx]
-        if latest_end is not None and next_start is not None:
-            pause_interval = (latest_end, next_start)
-            pause_columns = _get_pause_columns(
-                len(alignment.source_names),
-                pause_interval,
+        source_indexes = _get_pause_source_indexes(self, source_names)
+        if pause_intervals_seconds is not None:
+            return _get_alignment_with_explicit_pauses(
+                self,
+                pause_intervals_seconds,
+                source_indexes,
                 minimum_pause_seconds,
                 pause_unit_seconds,
             )
-            if pause_columns and pause_interval not in inserted_pause_intervals:
-                inserted_pause_intervals.add(pause_interval)
-                output_columns.extend(pause_columns)
-        if column_idx == len(alignment.columns):
-            continue
+        future_starts = _get_future_source_starts(self, source_indexes, end_seconds)
 
-        column = alignment.columns[column_idx]
-        output_columns.append(column)
-        ends = [
-            token.end_seconds
-            for source_idx in source_indexes
-            if (token := column.tokens[source_idx]) is not None
-        ]
-        if ends:
-            column_end = max(ends)
-            if latest_end is None or column_end > latest_end:
-                latest_end = column_end
+        output_columns = []
+        inserted_pause_intervals = set()
+        latest_end = start_seconds
+        for column_idx in range(len(self.columns) + 1):
+            next_start = future_starts[column_idx]
+            if latest_end is not None and next_start is not None:
+                pause_interval = (latest_end, next_start)
+                pause_columns = _get_pause_columns(
+                    len(self.source_names),
+                    pause_interval,
+                    minimum_pause_seconds,
+                    pause_unit_seconds,
+                )
+                if pause_columns and pause_interval not in inserted_pause_intervals:
+                    inserted_pause_intervals.add(pause_interval)
+                    output_columns.extend(pause_columns)
+            if column_idx == len(self.columns):
+                continue
 
-    return Alignment(source_names=alignment.source_names, columns=tuple(output_columns))
+            column = self.columns[column_idx]
+            output_columns.append(column)
+            ends = [
+                token.end_seconds
+                for source_idx in source_indexes
+                if (token := column.tokens[source_idx]) is not None
+            ]
+            if ends:
+                column_end = max(ends)
+                if latest_end is None or column_end > latest_end:
+                    latest_end = column_end
+
+        return Alignment(source_names=self.source_names, columns=tuple(output_columns))
 
 
 def _get_alignment_with_explicit_pauses(

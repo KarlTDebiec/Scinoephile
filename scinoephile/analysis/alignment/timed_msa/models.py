@@ -7,7 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from statistics import median
 
-__all__ = ["Alignment", "Column", "Sequence", "Token"]
+__all__ = ["Column", "Sequence", "Token"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -154,45 +154,3 @@ class Column:
             return self.marker_time_seconds
         starts = [token.start_seconds for token in self.tokens if token is not None]
         return float(median(starts))
-
-
-@dataclass(frozen=True, slots=True)
-class Alignment:
-    """Multiple alignment of named timestamped character sequences."""
-
-    source_names: tuple[str, ...]
-    """Source names in row order."""
-    columns: tuple[Column, ...]
-    """Alignment columns in reading order."""
-
-    def __post_init__(self):
-        """Validate row names and column widths.
-
-        Raises:
-            ValueError: if sources are absent or duplicated, or widths differ
-        """
-        if not self.source_names:
-            raise ValueError("Timed alignment requires at least one source.")
-        if len(set(self.source_names)) != len(self.source_names):
-            raise ValueError("Multiple alignment source names must be unique.")
-        if any(len(column.tokens) != len(self.source_names) for column in self.columns):
-            raise ValueError(
-                "Multiple alignment column width does not match its sources."
-            )
-
-    def get_sequence_text(self, source_name: str) -> str:
-        """Reconstruct one ungapped source sequence.
-
-        Arguments:
-            source_name: source row to reconstruct
-        Returns:
-            original source characters without alignment gaps
-        Raises:
-            ValueError: if the source name is not present in the alignment
-        """
-        source_idx = self.source_names.index(source_name)
-        return "".join(
-            token.text
-            for column in self.columns
-            if (token := column.tokens[source_idx]) is not None
-        )
