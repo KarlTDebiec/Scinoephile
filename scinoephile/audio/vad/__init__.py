@@ -3,8 +3,8 @@
 """Voice activity detection for audio processing.
 
 Package hierarchy (modules may import from any above):
-* exceptions / identity / trace
-* cache / intervals / provider
+* exceptions / trace
+* cache / intervals
 * pyannote / silero / speech_block / ten
 * detector
 """

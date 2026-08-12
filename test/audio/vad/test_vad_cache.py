@@ -19,7 +19,7 @@ def test_vad_cache_round_trip(tmp_path: Path):
     """Persist score values and original-timeline geometry without loss."""
     cache = VoiceActivityCache(tmp_path)
     audio = AudioSegment.silent(duration=300, frame_rate=16000)
-    metadata = {"implementation": "test", "model_version": "one"}
+    metadata = {"implementation": "test", "model": "one"}
     trace = VoiceActivityTrace(
         np.asarray([0.1, 0.7, 0.2], dtype=np.float32),
         start_ms=50,

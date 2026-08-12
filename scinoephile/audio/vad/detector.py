@@ -4,14 +4,11 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from enum import StrEnum
-from functools import partial
+from importlib.metadata import PackageNotFoundError, version
 from typing import TYPE_CHECKING
 
-from .identity import get_distribution_identity
 from .intervals import get_threshold_speech_intervals
-from .provider import VadProvider
 from .pyannote import (
     PYANNOTE_VAD_MODEL_ID,
     PYANNOTE_VAD_MODEL_REVISION,
@@ -111,32 +108,19 @@ class VoiceActivityDetector:
         self.sample_rate = sample_rate
         """Sample rate expected by the VAD implementation."""
 
-        self._provider: VadProvider
+        self._provider: PyannoteVadProvider | SileroVadProvider | TenVadProvider
         """Provider-specific inference adapter."""
-
-        self._derive_speech_intervals: Callable[
-            [VoiceActivityTrace], list[tuple[int, int]]
-        ] = partial(
-            get_threshold_speech_intervals,
-            threshold=self.threshold,
-            min_speech_duration_seconds=self.min_speech_duration_seconds,
-            min_silence_duration_seconds=self.min_silence_duration_seconds,
-            padding_seconds=self.padding_seconds,
-        )
-        """Provider-appropriate trace postprocessor."""
 
         if implementation is VadImplementation.PYANNOTE:
             self._provider = PyannoteVadProvider(sample_rate)
         elif implementation is VadImplementation.SILERO:
-            provider = SileroVadProvider(
+            self._provider = SileroVadProvider(
                 threshold,
                 min_speech_duration_seconds,
                 min_silence_duration_seconds,
                 padding_seconds,
                 sample_rate,
             )
-            self._provider = provider
-            self._derive_speech_intervals = provider.get_speech_intervals
         else:
             self._provider = TenVadProvider(frame_size, sample_rate)
 
@@ -158,39 +142,27 @@ class VoiceActivityDetector:
             VAD implementation, model, runtime, and postprocessing configuration
         """
         if self.implementation is VadImplementation.SILERO:
-            runtime_identity = get_distribution_identity("silero-vad")
+            runtime_identity = _get_distribution_identity("silero-vad")
             identity = self._get_common_cache_identity(runtime_identity)
             identity.update(
-                {
-                    "model": "silero-vad",
-                    "model_format": "onnx",
-                    "model_opset": 16,
-                    "model_version": runtime_identity["version"],
-                }
+                {"model": "silero-vad", "model_format": "onnx", "model_opset": 16}
             )
             return identity
 
         if self.implementation is VadImplementation.PYANNOTE:
-            runtime_identity = get_distribution_identity("pyannote.audio")
+            runtime_identity = _get_distribution_identity("pyannote.audio")
             identity = self._get_common_cache_identity(runtime_identity)
             identity.update(
                 {
                     "model": PYANNOTE_VAD_MODEL_ID,
                     "model_revision": PYANNOTE_VAD_MODEL_REVISION,
-                    "model_version": PYANNOTE_VAD_MODEL_REVISION,
                 }
             )
             return identity
 
-        runtime_identity = get_distribution_identity("ten-vad")
+        runtime_identity = _get_distribution_identity("ten-vad")
         identity = self._get_common_cache_identity(runtime_identity)
-        identity.update(
-            {
-                "frame_size": self.frame_size,
-                "model": "ten-vad-native",
-                "model_version": runtime_identity["version"],
-            }
-        )
+        identity.update({"frame_size": self.frame_size, "model": "ten-vad-native"})
         return identity
 
     @property
@@ -220,7 +192,15 @@ class VoiceActivityDetector:
         Returns:
             speech start and end offsets in milliseconds
         """
-        return self._derive_speech_intervals(trace)
+        if isinstance(self._provider, SileroVadProvider):
+            return self._provider.get_speech_intervals(trace)
+        return get_threshold_speech_intervals(
+            trace,
+            threshold=self.threshold,
+            min_speech_duration_seconds=self.min_speech_duration_seconds,
+            min_silence_duration_seconds=self.min_silence_duration_seconds,
+            padding_seconds=self.padding_seconds,
+        )
 
     def get_trace(self, audio: AudioSegment) -> VoiceActivityTrace:
         """Infer frame-level voice activity scores.
@@ -246,3 +226,12 @@ class VoiceActivityDetector:
             "sample_rate": self.sample_rate,
             "threshold": self.threshold,
         }
+
+
+def _get_distribution_identity(distribution_name: str) -> dict[str, str]:
+    """Get an installed distribution's name and version."""
+    try:
+        distribution_version = version(distribution_name)
+    except PackageNotFoundError:
+        distribution_version = "unavailable"
+    return {"distribution": distribution_name, "version": distribution_version}

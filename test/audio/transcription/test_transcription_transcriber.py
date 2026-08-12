@@ -387,7 +387,7 @@ def test_voice_activity_error_is_translated_at_transcription_boundary(tmp_path: 
     audio = AudioSegment.silent(duration=100)
     voice_activity_error = VoiceActivityError("VAD failed")
     detector = Mock()
-    detector.trace_cache_identity = {"artifact": "resolved"}
+    detector.trace_cache_identity = {"runtime": "test"}
     detector.get_trace.side_effect = voice_activity_error
     cache = Mock()
     cache.load.return_value = None
