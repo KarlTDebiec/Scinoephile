@@ -10,6 +10,16 @@ from scinoephile.analysis.alignment import pairwise
 from test.helpers import parametrize
 
 
+def test_alignment_operation_table_uses_numeric_array():
+    """Test alignment operation table uses a compact numeric array."""
+    alignment = pairwise.Alignment("廣東話", "广东话")
+
+    operation_table = alignment._get_operation_table()
+
+    assert isinstance(operation_table, np.ndarray)
+    assert operation_table.dtype == np.uint8
+
+
 @parametrize(
     ("one", "two", "expected_columns"),
     [
@@ -69,13 +79,3 @@ def test_alignment_operations(
         (column.one, column.two, column.operation) for column in alignment.columns
     ]
     assert columns == expected_columns
-
-
-def test_alignment_operation_table_uses_numeric_array():
-    """Test alignment operation table uses a compact numeric array."""
-    alignment = pairwise.Alignment("廣東話", "广东话")
-
-    operation_table = alignment._get_operation_table()
-
-    assert isinstance(operation_table, np.ndarray)
-    assert operation_table.dtype == np.uint8

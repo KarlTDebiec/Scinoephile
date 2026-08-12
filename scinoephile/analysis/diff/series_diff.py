@@ -552,8 +552,12 @@ class SeriesDiff:
             )
             if not one_local_idxs and not two_local_idxs:
                 continue
-            one_line_stop = one_local_idxs[0] if one_local_idxs else one_line_pos
-            two_line_stop = two_local_idxs[0] if two_local_idxs else two_line_pos
+            one_line_stop = one_line_pos
+            if one_local_idxs:
+                one_line_stop = one_local_idxs[0]
+            two_line_stop = two_line_pos
+            if two_local_idxs:
+                two_line_stop = two_local_idxs[0]
             if one_local_idxs:
                 if not two_local_idxs:
                     two_line_stop = two_line_pos + (one_line_stop - one_line_pos)
@@ -965,9 +969,10 @@ class SeriesDiff:
         substring_ratio = 0.0
         if one_compact and two_compact:
             if len(one_compact) <= len(two_compact):
-                substring_ratio = 1.0 if one_compact in two_compact else 0.0
-            else:
-                substring_ratio = 1.0 if two_compact in one_compact else 0.0
+                if one_compact in two_compact:
+                    substring_ratio = 1.0
+            elif two_compact in one_compact:
+                substring_ratio = 1.0
         return max(full_ratio, substring_ratio)
 
     def _split_uncovered_multiline_spans(
@@ -1402,7 +1407,11 @@ class SeriesDiff:
         source_two = list(range(len(two.events)))
 
         def get_nascent_block_cutoff() -> int:
-            """Get latest acceptable start for the nascent block."""
+            """Get latest acceptable start for the nascent block.
+
+            Returns:
+                latest event start time included in the nascent block
+            """
             cutoff = 0
             if nascent_block_one:
                 cutoff = max(cutoff, one.events[nascent_block_one[-1]].end)

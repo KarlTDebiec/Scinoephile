@@ -99,6 +99,17 @@ class Alignment:
         self.columns.reverse()
 
 
+def _get_codepoints(text: str) -> np.ndarray:
+    """Convert text to Unicode code points.
+
+    Arguments:
+        text: text to convert
+    Returns:
+        integer code points
+    """
+    return np.fromiter((ord(char) for char in text), dtype=np.int32, count=len(text))
+
+
 @nb.jit(nopython=True, nogil=True, cache=True)
 def _get_alignment_operation_table(  # noqa: PLR0915
     one: np.ndarray, two: np.ndarray
@@ -244,17 +255,6 @@ def _get_alignment_operation_table(  # noqa: PLR0915
         previous_gaps, current_gaps = current_gaps, previous_gaps
 
     return operation_table
-
-
-def _get_codepoints(text: str) -> np.ndarray:
-    """Convert text to Unicode code points.
-
-    Arguments:
-        text: text to convert
-    Returns:
-        integer code points
-    """
-    return np.fromiter((ord(char) for char in text), dtype=np.int32, count=len(text))
 
 
 @nb.jit(nopython=True, nogil=True, inline="always")

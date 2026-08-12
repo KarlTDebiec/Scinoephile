@@ -102,7 +102,19 @@ def _get_alignment_with_explicit_pauses(
     minimum_pause_seconds: float,
     pause_unit_seconds: float,
 ) -> Alignment:
-    """Insert externally detected pauses at approximate temporal positions."""
+    """Insert externally detected pauses at approximate temporal positions.
+
+    Arguments:
+        alignment: lexical alignment without existing pause columns
+        pause_intervals_seconds: explicit local pause intervals
+        source_indexes: row indexes used to position pauses
+        minimum_pause_seconds: shortest interval represented as a pause
+        pause_unit_seconds: duration increment represented by each additional column
+    Returns:
+        alignment with explicit timed-pause columns
+    Raises:
+        ValueError: if pause intervals are not ordered and disjoint
+    """
     pauses_by_boundary: dict[int, list[Column]] = {}
     previous_end = 0.0
     previous_boundary = 0
@@ -148,6 +160,13 @@ def _get_explicit_pause_insertion_boundary(
     midpoints, particularly when several sources share the same forced aligner
     and therefore repeat one timing error. The robust median-midpoint placement
     remains the fallback when no source exposes a sufficiently matching gap.
+
+    Arguments:
+        alignment: lexical alignment in which to locate the pause
+        source_indexes: row indexes used as timing evidence
+        pause_interval: explicit local pause interval
+    Returns:
+        insertion boundary between alignment columns
     """
     pause_start, pause_end = pause_interval
     pause_midpoint = (pause_start + pause_end) / 2
@@ -195,7 +214,15 @@ def _get_explicit_pause_insertion_boundary(
 def _get_future_source_starts(
     alignment: Alignment, source_indexes: tuple[int, ...], end_seconds: float | None
 ) -> tuple[float | None, ...]:
-    """Get the earliest selected-source token start after each boundary."""
+    """Get the earliest selected-source token start after each boundary.
+
+    Arguments:
+        alignment: lexical alignment to inspect
+        source_indexes: row indexes used as timing evidence
+        end_seconds: optional trailing interval boundary
+    Returns:
+        earliest future token start at each column boundary
+    """
     future_starts: list[float | None] = [None] * (len(alignment.columns) + 1)
     next_start = end_seconds
     future_starts[-1] = next_start
@@ -216,7 +243,14 @@ def _get_future_source_starts(
 def _get_future_starts_by_source(
     alignment: Alignment, source_indexes: tuple[int, ...]
 ) -> tuple[tuple[float | None, ...], ...]:
-    """Get each selected source's next token start after every boundary."""
+    """Get each selected source's next token start after every boundary.
+
+    Arguments:
+        alignment: lexical alignment to inspect
+        source_indexes: row indexes used as timing evidence
+    Returns:
+        future token starts by source and column boundary
+    """
     starts_by_source = []
     for source_idx in source_indexes:
         future_starts: list[float | None] = [None] * (len(alignment.columns) + 1)
@@ -236,7 +270,16 @@ def _get_pause_columns(
     minimum_pause_seconds: float,
     pause_unit_seconds: float,
 ) -> tuple[Column, ...]:
-    """Encode one shared timing gap as duration-bucketed pause columns."""
+    """Encode one shared timing gap as duration-bucketed pause columns.
+
+    Arguments:
+        source_count: number of source rows in each output column
+        interval_seconds: local pause interval
+        minimum_pause_seconds: shortest interval represented as a pause
+        pause_unit_seconds: duration increment represented by each additional column
+    Returns:
+        shared timed-pause columns representing the interval
+    """
     start_seconds, end_seconds = interval_seconds
     duration_seconds = end_seconds - start_seconds
     if duration_seconds < minimum_pause_seconds or duration_seconds <= 0.0:
@@ -244,24 +287,36 @@ def _get_pause_columns(
     pause_count = 1 + floor(
         (duration_seconds - minimum_pause_seconds + 1e-9) / pause_unit_seconds
     )
-    return tuple(
-        Column(
-            (None,) * source_count,
-            pause_interval_seconds=(
-                start_seconds + pause_idx * pause_unit_seconds,
-                end_seconds
-                if pause_idx == pause_count - 1
-                else start_seconds + (pause_idx + 1) * pause_unit_seconds,
-            ),
+    columns = []
+    for pause_idx in range(pause_count):
+        pause_end_seconds = start_seconds + (pause_idx + 1) * pause_unit_seconds
+        if pause_idx == pause_count - 1:
+            pause_end_seconds = end_seconds
+        columns.append(
+            Column(
+                (None,) * source_count,
+                pause_interval_seconds=(
+                    start_seconds + pause_idx * pause_unit_seconds,
+                    pause_end_seconds,
+                ),
+            )
         )
-        for pause_idx in range(pause_count)
-    )
+    return tuple(columns)
 
 
 def _get_pause_source_indexes(
     alignment: Alignment, source_names: AbcSequence[str] | None
 ) -> tuple[int, ...]:
-    """Resolve and validate rows whose shared gaps define pauses."""
+    """Resolve and validate rows whose shared gaps define pauses.
+
+    Arguments:
+        alignment: alignment containing the available source rows
+        source_names: rows whose timing defines pauses, or all rows
+    Returns:
+        indexes of source rows used as timing evidence
+    Raises:
+        ValueError: if no source rows are selected or names are duplicated
+    """
     if source_names is None:
         source_names = alignment.source_names
     source_indexes = tuple(
@@ -277,7 +332,15 @@ def _get_pause_source_indexes(
 def _get_timed_insertion_boundary(
     alignment: Alignment, source_indexes: tuple[int, ...], target_time: float
 ) -> int:
-    """Locate the profile boundary following a local target time."""
+    """Locate the profile boundary following a local target time.
+
+    Arguments:
+        alignment: lexical alignment in which to locate the time
+        source_indexes: row indexes used as timing evidence
+        target_time: local time after which to insert
+    Returns:
+        insertion boundary between alignment columns
+    """
     boundary = 0
     for column_idx, column in enumerate(alignment.columns):
         if column.is_marker:
@@ -288,7 +351,9 @@ def _get_timed_insertion_boundary(
                 for source_idx in source_indexes
                 if (token := column.tokens[source_idx]) is not None
             ]
-            column_time = median(token_midpoints) if token_midpoints else None
+            column_time = None
+            if token_midpoints:
+                column_time = median(token_midpoints)
         if column_time is not None and column_time <= target_time:
             boundary = column_idx + 1
     return boundary
@@ -302,7 +367,18 @@ def _validate_timed_pause_arguments(
     minimum_pause_seconds: float,
     pause_unit_seconds: float,
 ):
-    """Validate timed-pause insertion settings and input alignment."""
+    """Validate timed-pause insertion settings and input alignment.
+
+    Arguments:
+        alignment: lexical alignment to annotate
+        pause_intervals_seconds: explicit local pause intervals, when available
+        start_seconds: optional local interval start for a leading pause
+        end_seconds: optional local interval end for a trailing pause
+        minimum_pause_seconds: shortest interval represented as a pause
+        pause_unit_seconds: duration increment represented by each additional column
+    Raises:
+        ValueError: if bounds, settings, intervals, or input columns are invalid
+    """
     if minimum_pause_seconds < 0.0:
         raise ValueError("Minimum timed alignment pause must be non-negative.")
     if pause_unit_seconds <= 0.0:

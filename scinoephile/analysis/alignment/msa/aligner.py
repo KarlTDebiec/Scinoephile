@@ -36,7 +36,11 @@ class Settings:
     """Score for opening a new gap."""
 
     def __post_init__(self):
-        """Validate alignment search and scoring settings."""
+        """Validate alignment search and scoring settings.
+
+        Raises:
+            ValueError: if the source limit is too small or a gap score is positive
+        """
         if self.exhaustive_order_source_limit < 2:
             raise ValueError(
                 "Exhaustive alignment order source limit must be at least two."
@@ -120,7 +124,13 @@ class Aligner:
         return self._align_profile_to_sequence(alignment, sequence)
 
     def _align_in_order(self, sequences: AbcSequence[Sequence]) -> Alignment:
-        """Progressively align sequences in one specified order."""
+        """Progressively align sequences in one specified order.
+
+        Arguments:
+            sequences: timestamped character sequences in progressive order
+        Returns:
+            multiple alignment in the specified row order
+        """
         first = sequences[0]
         alignment = Alignment(
             source_names=(first.name,),
@@ -133,7 +143,16 @@ class Aligner:
     def _align_profile_to_sequence(  # noqa: PLR0912, PLR0915
         self, profile: Alignment, sequence: Sequence
     ) -> Alignment:
-        """Align one existing profile to one additional sequence."""
+        """Align one existing profile to one additional sequence.
+
+        Arguments:
+            profile: existing multiple-sequence alignment
+            sequence: additional timestamped character sequence
+        Returns:
+            alignment with the additional sequence appended as its final row
+        Raises:
+            RuntimeError: if the dynamic-programming backtrace is incomplete
+        """
         profile_length = len(profile.columns)
         sequence_length = len(sequence.tokens)
         shape = (profile_length + 1, sequence_length + 1)
@@ -260,7 +279,13 @@ class Aligner:
     def _get_guide_orders(
         self, sequences: AbcSequence[Sequence]
     ) -> tuple[tuple[Sequence, ...], ...]:
-        """Get pairwise-affinity progressive orders for a large source set."""
+        """Get pairwise-affinity progressive orders for a large source set.
+
+        Arguments:
+            sequences: timestamped character sequences to order
+        Returns:
+            candidate progressive sequence orders
+        """
         pairwise_scores: dict[tuple[int, int], float] = {}
         for one_idx in range(len(sequences) - 1):
             for two_idx in range(one_idx + 1, len(sequences)):
@@ -298,7 +323,14 @@ class Aligner:
         return tuple(orders)
 
     def _get_profile_similarity(self, column: Column, token: Token) -> float:
-        """Get mean similarity between a profile column and one token."""
+        """Get mean similarity between a profile column and one token.
+
+        Arguments:
+            column: existing lexical alignment column
+            token: token from the sequence being added
+        Returns:
+            mean substitution score across populated column tokens
+        """
         similarities = [
             self.similarity(profile_token, token)
             for profile_token in column.tokens
@@ -309,7 +341,14 @@ class Aligner:
     def _get_reordered(
         self, alignment: Alignment, source_names: tuple[str, ...]
     ) -> Alignment:
-        """Reorder alignment rows to a requested stable source order."""
+        """Reorder alignment rows to a requested stable source order.
+
+        Arguments:
+            alignment: multiple alignment to reorder
+            source_names: source names in the desired row order
+        Returns:
+            alignment with rows in the requested order
+        """
         indexes = tuple(alignment.source_names.index(name) for name in source_names)
         return Alignment(
             source_names=source_names,
@@ -320,7 +359,13 @@ class Aligner:
         )
 
     def _get_sum_of_pairs_score(self, alignment: Alignment) -> float:
-        """Score a completed alignment across every projected source pair."""
+        """Score a completed alignment across every projected source pair.
+
+        Arguments:
+            alignment: completed multiple-sequence alignment
+        Returns:
+            sum of substitution and affine-gap scores across source pairs
+        """
         score = 0.0
         for one_idx in range(len(alignment.source_names) - 1):
             for two_idx in range(one_idx + 1, len(alignment.source_names)):

@@ -22,7 +22,11 @@ class Token:
     """Exclusive token end relative to the aligned audio."""
 
     def __post_init__(self):
-        """Validate token text and timing."""
+        """Validate token text and timing.
+
+        Raises:
+            ValueError: if text or timing is invalid
+        """
         if len(self.text) != 1:
             raise ValueError("Timed alignment tokens must contain one character.")
         if self.start_seconds < 0.0:
@@ -41,7 +45,11 @@ class Sequence:
     """Timestamped source characters in transcription order."""
 
     def __post_init__(self):
-        """Validate the source name and chronological token order."""
+        """Validate the source name and chronological token order.
+
+        Raises:
+            ValueError: if the name is blank or tokens are out of order
+        """
         if not self.name.strip():
             raise ValueError("Timed alignment sequence name must be nonblank.")
         previous_start = -1.0
@@ -67,7 +75,11 @@ class Column:
     """Local source time of a shared annotation marker."""
 
     def __post_init__(self):
-        """Validate token cells and optional annotation timing."""
+        """Validate token cells and optional annotation timing.
+
+        Raises:
+            ValueError: if cells, annotation types, or timing are invalid
+        """
         if not self.tokens:
             raise ValueError("Timed alignment columns must contain source cells.")
         contains_token = any(token is not None for token in self.tokens)
@@ -99,7 +111,11 @@ class Column:
 
     @property
     def end_seconds(self) -> float:
-        """Get the robust column end time."""
+        """Get the robust column end time.
+
+        Returns:
+            explicit annotation time or median populated-token end time
+        """
         if self.pause_interval_seconds is not None:
             return self.pause_interval_seconds[1]
         if self.marker_time_seconds is not None:
@@ -109,17 +125,29 @@ class Column:
 
     @property
     def is_marker(self) -> bool:
-        """Whether this is a shared timed-marker column."""
+        """Check whether this is a shared timed-marker column.
+
+        Returns:
+            whether the column represents a marker
+        """
         return self.marker is not None
 
     @property
     def is_pause(self) -> bool:
-        """Whether this is a shared timed-pause column."""
+        """Check whether this is a shared timed-pause column.
+
+        Returns:
+            whether the column represents a pause
+        """
         return self.pause_interval_seconds is not None
 
     @property
     def start_seconds(self) -> float:
-        """Get the robust column start time."""
+        """Get the robust column start time.
+
+        Returns:
+            explicit annotation time or median populated-token start time
+        """
         if self.pause_interval_seconds is not None:
             return self.pause_interval_seconds[0]
         if self.marker_time_seconds is not None:
@@ -138,7 +166,11 @@ class Alignment:
     """Alignment columns in reading order."""
 
     def __post_init__(self):
-        """Validate row names and column widths."""
+        """Validate row names and column widths.
+
+        Raises:
+            ValueError: if sources are absent or duplicated, or widths differ
+        """
         if not self.source_names:
             raise ValueError("Timed alignment requires at least one source.")
         if len(set(self.source_names)) != len(self.source_names):
@@ -155,6 +187,8 @@ class Alignment:
             source_name: source row to reconstruct
         Returns:
             original source characters without alignment gaps
+        Raises:
+            ValueError: if the source name is not present in the alignment
         """
         source_idx = self.source_names.index(source_name)
         return "".join(
