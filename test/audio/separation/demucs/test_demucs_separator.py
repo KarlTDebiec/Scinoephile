@@ -91,7 +91,7 @@ def test_separate_vocals_overwrites_matching_cache(
 
     assert len(result) == len(fresh_audio)
     separate.assert_called_once_with(input_audio)
-    assert len(list((tmp_path / "demucs").glob("*.wav"))) == 1
+    assert len(list((tmp_path / "audio/separation/demucs").glob("*.wav"))) == 1
 
 
 def test_separate_vocals_recovers_from_corrupt_cache(

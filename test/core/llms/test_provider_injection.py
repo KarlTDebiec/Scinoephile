@@ -701,7 +701,7 @@ def test_queryer_cache_stores_only_answer_and_preserves_current_metadata(tmp_pat
 
     first = queryer(_TestCase(query=_Query(text="input")))
 
-    cache_paths = list((tmp_path / "llm" / "test").glob("*.json"))
+    cache_paths = list((tmp_path / "llms" / "test").glob("*.json"))
     assert len(cache_paths) == 1
     assert json.loads(cache_paths[0].read_text(encoding="utf-8")) == {
         "output": "cached"
@@ -774,7 +774,7 @@ def test_queryer_overwrites_matching_cache(tmp_path):
         overwrite_cache=True,
     )(test_case)
 
-    cache_paths = list((tmp_path / "llm" / "test").glob("*.json"))
+    cache_paths = list((tmp_path / "llms" / "test").glob("*.json"))
     assert result.answer == _Answer(output="fresh")
     assert len(fresh_provider.calls) == 1
     assert len(cache_paths) == 1

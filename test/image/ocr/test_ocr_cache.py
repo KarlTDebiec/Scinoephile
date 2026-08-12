@@ -23,7 +23,7 @@ def test_ocr_cache_uses_backend_directory_and_configuration(tmp_path: Path):
     chinese_path = cache.get_path(image, {"language": "chi_sim"})
 
     assert cache.cache_root_path == tmp_path.resolve()
-    assert english_path.parent == tmp_path.resolve() / "tesseract"
+    assert english_path.parent == (tmp_path.resolve() / "image/ocr/tesseract/results")
     assert english_path != chinese_path
 
 
@@ -98,5 +98,7 @@ def test_ocr_cache_uses_runtime_default(runtime_cache_root_path: Path):
     cache_path = cache.save(image, metadata, "cached text")
 
     assert cache.cache_root_path == runtime_cache_root_path
-    assert cache_path.parent == runtime_cache_root_path / "tesseract"
+    assert cache_path.parent == (
+        runtime_cache_root_path / "image/ocr/tesseract/results"
+    )
     assert cache.load(image, metadata) == "cached text"

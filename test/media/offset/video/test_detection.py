@@ -361,6 +361,17 @@ def test_get_offsets_clamps_to_requested_end():
     assert max(offsets) == 1.0
 
 
+@parametrize("step", [0.0, -0.1])
+def test_get_offsets_rejects_nonpositive_step(step: float):
+    """Test candidate offsets require a positive step.
+
+    Arguments:
+        step: invalid offset interval
+    """
+    with raises(ValueError, match="less than minimum value"):
+        get_offsets(-1.0, 1.0, step)
+
+
 def test_sample_video_frames_normalizes_brightness():
     """Test sampled video frames normalize brightness during sampling."""
     output = np.array(

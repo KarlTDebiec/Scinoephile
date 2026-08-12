@@ -17,7 +17,6 @@ from scinoephile.core.cache.operations import (
     clear_cache,
     get_cache_entries,
     get_cache_stats,
-    prune_cache,
 )
 from test.helpers.files import set_mtime, write_cache_file
 
@@ -35,8 +34,8 @@ class _CacheNamespace(CacheNamespace):
     """Whisper transcription results."""
     AUDIO_VAD = "audio/vad"
     """Voice activity detection traces."""
-    LANG_ZHO_SUBTITLES_ANALYSIS = "lang/zho/subtitles/analysis"
-    """Chinese subtitle script analysis results."""
+    MEDIA_SUBTITLES_ANALYSIS = "media/subtitles/analysis"
+    """Nested subtitle analysis artifacts."""
     LLMS_OPERATION = "llms/<operation>"
     """Operation-specific LLM responses."""
     MEDIA_SUBTITLES = "media/subtitles"
@@ -82,8 +81,8 @@ def test_get_cache_entries_filters_namespace(tmp_path: Path):
     assert entries[0].size_bytes == 3
 
 
-def test_get_cache_entries_separates_subtitles_by_owner(tmp_path: Path):
-    """Test media artifacts and language analysis use independent namespaces.
+def test_get_cache_entries_supports_nested_namespaces(tmp_path: Path):
+    """Test nested namespaces retain independent cache entries.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -93,18 +92,18 @@ def test_get_cache_entries_separates_subtitles_by_owner(tmp_path: Path):
     write_cache_file(
         tmp_path / "media/subtitles/second/image-series/index.html", "index"
     )
-    write_cache_file(tmp_path / "lang/zho/subtitles/analysis/first.json", "analysis")
+    write_cache_file(tmp_path / "media/subtitles/analysis/first.json", "analysis")
 
     assert _CACHE_REGISTRY.discover_names(tmp_path) == [
-        "lang/zho/subtitles/analysis",
         "media/subtitles",
+        "media/subtitles/analysis",
     ]
 
     subtitle_entries = get_cache_entries(
         tmp_path, _CACHE_REGISTRY, namespace="media/subtitles"
     )
     analysis_entries = get_cache_entries(
-        tmp_path, _CACHE_REGISTRY, namespace="lang/zho/subtitles/analysis"
+        tmp_path, _CACHE_REGISTRY, namespace="media/subtitles/analysis"
     )
 
     assert [entry.relative_path for entry in subtitle_entries] == [
@@ -113,7 +112,7 @@ def test_get_cache_entries_separates_subtitles_by_owner(tmp_path: Path):
     ]
     assert [entry.file_count for entry in subtitle_entries] == [1, 2]
     assert [entry.relative_path for entry in analysis_entries] == [
-        Path("lang/zho/subtitles/analysis/first.json")
+        Path("media/subtitles/analysis/first.json")
     ]
 
 
@@ -155,8 +154,8 @@ def test_get_cache_entries_supports_grouped_audio_namespaces(tmp_path: Path):
     ]
 
 
-def test_prune_cache_prunes_individual_directory_entries(tmp_path: Path):
-    """Test directory-based cache entries preserve entry-level pruning.
+def test_clear_cache_by_age_removes_individual_directory_entries(tmp_path: Path):
+    """Test age-filtered clearing preserves directory entry boundaries.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -167,7 +166,7 @@ def test_prune_cache_prunes_individual_directory_entries(tmp_path: Path):
     set_mtime(old_path, old_timestamp)
     set_mtime(old_path.parent, old_timestamp)
 
-    deleted_entries = prune_cache(
+    deleted_entries = clear_cache(
         tmp_path,
         _CACHE_REGISTRY,
         older_than=timedelta(days=30),
@@ -194,21 +193,22 @@ def test_clear_cache_removes_empty_grouping_directory(tmp_path: Path):
     assert not (tmp_path / "media").exists()
 
 
-def test_clear_cache_preserves_other_owner_namespace(tmp_path: Path):
-    """Test clearing media subtitles preserves language analysis.
+def test_clear_cache_preserves_nested_namespace(tmp_path: Path):
+    """Test clearing a namespace preserves its nested namespaces.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
     """
     write_cache_file(tmp_path / "media/subtitles/first/2.srt")
-    analysis_path = write_cache_file(
-        tmp_path / "lang/zho/subtitles/analysis/first.json"
-    )
+    analysis_path = write_cache_file(tmp_path / "media/subtitles/analysis/first.json")
 
     clear_cache(tmp_path, _CACHE_REGISTRY, namespace="media/subtitles")
 
     assert analysis_path.exists()
-    assert _CACHE_REGISTRY.discover_names(tmp_path) == ["lang/zho/subtitles/analysis"]
+    assert _CACHE_REGISTRY.discover_names(tmp_path) == [
+        "media/subtitles",
+        "media/subtitles/analysis",
+    ]
 
 
 def test_clear_cache_removes_empty_parent_directories(tmp_path: Path):
@@ -217,28 +217,71 @@ def test_clear_cache_removes_empty_parent_directories(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory provided by pytest
     """
-    write_cache_file(tmp_path / "lang/zho/subtitles/analysis/first.json")
+    write_cache_file(tmp_path / "media/subtitles/analysis/first.json")
 
-    clear_cache(tmp_path, _CACHE_REGISTRY, namespace="lang/zho/subtitles/analysis")
+    clear_cache(tmp_path, _CACHE_REGISTRY, namespace="media/subtitles/analysis")
 
-    assert not (tmp_path / "lang").exists()
+    assert not (tmp_path / "media").exists()
 
 
-def test_clear_cache_all_removes_all_registered_namespaces(tmp_path: Path):
-    """Test clearing all namespaces removes every registered namespace.
+def test_clear_cache_all_removes_cache_root_contents(tmp_path: Path):
+    """Test unfiltered all-scope clearing removes every cache root child.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
     """
     write_cache_file(tmp_path / "media/subtitles/first/2.srt")
-    write_cache_file(tmp_path / "lang/zho/subtitles/analysis/first.json")
+    write_cache_file(tmp_path / "media/subtitles/analysis/first.json")
     external_path = write_cache_file(tmp_path / "huggingface/hub/model/data.json")
+    root_file_path = write_cache_file(tmp_path / "root.json")
 
-    clear_cache(tmp_path, _CACHE_REGISTRY, all_namespaces=True)
+    deleted_entries = clear_cache(tmp_path, _CACHE_REGISTRY, all_namespaces=True)
 
-    assert not (tmp_path / "media").exists()
-    assert not (tmp_path / "lang").exists()
-    assert external_path.exists()
+    assert [entry.relative_path for entry in deleted_entries] == [
+        Path("huggingface"),
+        Path("media"),
+        Path("root.json"),
+    ]
+    assert not external_path.exists()
+    assert not root_file_path.exists()
+    assert tmp_path.is_dir()
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_clear_cache_all_dry_run_preserves_cache_root_contents(tmp_path: Path):
+    """Test all-scope dry-run returns root entries without deleting them.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    registered_path = write_cache_file(tmp_path / "llms/test/one.json")
+    legacy_path = write_cache_file(tmp_path / "llm/test/two.json")
+
+    entries = clear_cache(tmp_path, _CACHE_REGISTRY, all_namespaces=True, dry_run=True)
+
+    assert [entry.namespace for entry in entries] == ["cache root", "cache root"]
+    assert [entry.relative_path for entry in entries] == [Path("llm"), Path("llms")]
+    assert registered_path.exists()
+    assert legacy_path.exists()
+
+
+def test_clear_cache_all_does_not_follow_root_symlinks(tmp_path: Path):
+    """Test all-scope clearing unlinks root symlinks without traversing them.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    cache_root_path = tmp_path / "cache"
+    cache_root_path.mkdir()
+    target_path = write_cache_file(tmp_path / "target/data.json")
+    link_path = cache_root_path / "linked"
+    link_path.symlink_to(target_path.parent, target_is_directory=True)
+
+    clear_cache(cache_root_path, _CACHE_REGISTRY, all_namespaces=True)
+
+    assert not link_path.exists()
+    assert target_path.exists()
+    assert list(cache_root_path.iterdir()) == []
 
 
 def test_get_cache_entries_missing_root_is_empty(tmp_path: Path):
@@ -285,21 +328,23 @@ def test_get_cache_stats(tmp_path: Path):
     assert stats["total"].total_bytes == 11
 
 
-def test_prune_cache(tmp_path: Path):
-    """Test confirmed cache pruning.
+def test_clear_cache_by_age(tmp_path: Path):
+    """Test clearing cache entries older than a duration.
 
     Arguments:
         tmp_path: temporary directory
     """
     old_path = write_cache_file(tmp_path / "llms/test/old.json")
     new_path = write_cache_file(tmp_path / "llms/test/new.json")
+    legacy_path = write_cache_file(tmp_path / "llm/test/legacy.json")
     old_timestamp = time() - 60 * 60 * 24 * 40
     old_path.touch()
     new_path.touch()
     set_mtime(old_path, old_timestamp)
+    set_mtime(legacy_path, old_timestamp)
 
-    deleted_entries = prune_cache(
-        tmp_path, _CACHE_REGISTRY, older_than=timedelta(days=30)
+    deleted_entries = clear_cache(
+        tmp_path, _CACHE_REGISTRY, all_namespaces=True, older_than=timedelta(days=30)
     )
 
     assert [entry.relative_path for entry in deleted_entries] == [
@@ -307,6 +352,7 @@ def test_prune_cache(tmp_path: Path):
     ]
     assert not old_path.exists()
     assert new_path.exists()
+    assert legacy_path.exists()
 
 
 def test_clear_cache_namespace(tmp_path: Path):

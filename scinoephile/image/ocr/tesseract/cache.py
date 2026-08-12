@@ -27,7 +27,7 @@ class TesseractCache(OcrCacheBase[str]):
         """
         super().__init__(
             cache_root_path,
-            ImageCacheNamespace.OCR_TESSERACT_RESULTS,
+            ImageCacheNamespace.OCR_TESSERACT,
             "Tesseract OCR",
             _CACHE_VERSION,
             overwrite,

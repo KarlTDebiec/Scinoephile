@@ -88,9 +88,11 @@ def test_get_preprocessing_settings_orders_preferred_configurations_first(
     """Test automatic modes try Demucs and VAD before their fallbacks."""
     transcriber = _TestTranscriber(tmp_path, DemucsMode.AUTO, VadMode.AUTO)
 
-    assert transcriber._cache.cache_dir_path == tmp_path / "whisper"
+    assert transcriber._cache.cache_dir_path == tmp_path / "audio/transcription/whisper"
     assert transcriber.demucs_separator is not None
-    assert transcriber.demucs_separator._cache.cache_dir_path == tmp_path / "demucs"
+    assert transcriber.demucs_separator._cache.cache_dir_path == (
+        tmp_path / "audio/separation/demucs"
+    )
     assert transcriber._get_preprocessing_settings() == (
         TranscriptionPreprocessingSettings(True, True),
         TranscriptionPreprocessingSettings(True, False),
