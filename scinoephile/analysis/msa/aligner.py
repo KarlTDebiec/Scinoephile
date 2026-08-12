@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Sequence
+from dataclasses import dataclass
 from itertools import permutations
 
 import numpy as np
@@ -12,12 +13,11 @@ import numpy as np
 from .models import (
     TimedAlignmentColumn,
     TimedAlignmentSequence,
-    TimedAlignmentSettings,
     TimedAlignmentToken,
     TimedMultiSequenceAlignment,
 )
 
-__all__ = ["TimedMultiSequenceAligner"]
+__all__ = ["TimedAlignmentSettings", "TimedMultiSequenceAligner"]
 
 type _TimedTokenSimilarity = Callable[[TimedAlignmentToken, TimedAlignmentToken], float]
 """Callable returning a substitution score for two timestamped tokens."""
@@ -26,6 +26,27 @@ _STATE_MATCH = 0
 _STATE_GAP_IN_SEQUENCE = 1
 _STATE_GAP_IN_PROFILE = 2
 _STATE_NONE = 255
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class TimedAlignmentSettings:
+    """Affine-gap settings for progressive multiple alignment."""
+
+    exhaustive_order_source_limit: int = 4
+    """Largest source count for which every progressive order is evaluated."""
+    gap_extend_score: float = -1.0
+    """Score for extending an existing gap by one column."""
+    gap_open_score: float = -4.0
+    """Score for opening a new gap."""
+
+    def __post_init__(self):
+        """Validate alignment search and scoring settings."""
+        if self.exhaustive_order_source_limit < 2:
+            raise ValueError(
+                "Exhaustive alignment order source limit must be at least two."
+            )
+        if self.gap_open_score > 0.0 or self.gap_extend_score > 0.0:
+            raise ValueError("Timed alignment gap scores must be non-positive.")
 
 
 class TimedMultiSequenceAligner:
@@ -106,7 +127,7 @@ class TimedMultiSequenceAligner:
         """
         if sequence.name in alignment.source_names:
             raise ValueError("Added alignment sequence name must be unique.")
-        if any(not any(column.tokens) for column in alignment.columns):
+        if any(column.is_marker or column.is_pause for column in alignment.columns):
             raise ValueError("Additional sequences must be aligned before annotations.")
         return self._align_profile_to_sequence(alignment, sequence)
 
@@ -270,7 +291,6 @@ class TimedMultiSequenceAligner:
                 )
 
         orders = []
-        seen_orders = set()
         for first_idx in range(len(sequences)):
             order = [first_idx]
             remaining = list(range(len(sequences)))
@@ -292,11 +312,7 @@ class TimedMultiSequenceAligner:
                         best_score = candidate_score
                 order.append(best_idx)
                 remaining.remove(best_idx)
-            order_tuple = tuple(order)
-            if order_tuple in seen_orders:
-                continue
-            seen_orders.add(order_tuple)
-            orders.append(tuple(sequences[idx] for idx in order_tuple))
+            orders.append(tuple(sequences[idx] for idx in order))
         return tuple(orders)
 
     def _get_profile_similarity(

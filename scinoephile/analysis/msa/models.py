@@ -10,7 +10,6 @@ from statistics import median
 __all__ = [
     "TimedAlignmentColumn",
     "TimedAlignmentSequence",
-    "TimedAlignmentSettings",
     "TimedAlignmentToken",
     "TimedMultiSequenceAlignment",
 ]
@@ -111,21 +110,7 @@ class TimedAlignmentColumn:
         if self.marker_time_seconds is not None:
             return self.marker_time_seconds
         ends = [token.end_seconds for token in self.tokens if token is not None]
-        if not ends:
-            raise ValueError("Timed alignment columns cannot contain only gaps.")
         return float(median(ends))
-
-    @property
-    def start_seconds(self) -> float:
-        """Get the robust column start time."""
-        if self.pause_interval_seconds is not None:
-            return self.pause_interval_seconds[0]
-        if self.marker_time_seconds is not None:
-            return self.marker_time_seconds
-        starts = [token.start_seconds for token in self.tokens if token is not None]
-        if not starts:
-            raise ValueError("Timed alignment columns cannot contain only gaps.")
-        return float(median(starts))
 
     @property
     def is_marker(self) -> bool:
@@ -136,6 +121,16 @@ class TimedAlignmentColumn:
     def is_pause(self) -> bool:
         """Whether this is a shared timed-pause column."""
         return self.pause_interval_seconds is not None
+
+    @property
+    def start_seconds(self) -> float:
+        """Get the robust column start time."""
+        if self.pause_interval_seconds is not None:
+            return self.pause_interval_seconds[0]
+        if self.marker_time_seconds is not None:
+            return self.marker_time_seconds
+        starts = [token.start_seconds for token in self.tokens if token is not None]
+        return float(median(starts))
 
 
 @dataclass(frozen=True, slots=True)
@@ -172,24 +167,3 @@ class TimedMultiSequenceAlignment:
             for column in self.columns
             if (token := column.tokens[source_idx]) is not None
         )
-
-
-@dataclass(frozen=True, slots=True, kw_only=True)
-class TimedAlignmentSettings:
-    """Affine-gap settings for progressive multiple alignment."""
-
-    exhaustive_order_source_limit: int = 4
-    """Largest source count for which every progressive order is evaluated."""
-    gap_extend_score: float = -1.0
-    """Score for extending an existing gap by one column."""
-    gap_open_score: float = -4.0
-    """Score for opening a new gap."""
-
-    def __post_init__(self):
-        """Validate alignment search and scoring settings."""
-        if self.exhaustive_order_source_limit < 2:
-            raise ValueError(
-                "Exhaustive alignment order source limit must be at least two."
-            )
-        if self.gap_open_score > 0.0 or self.gap_extend_score > 0.0:
-            raise ValueError("Timed alignment gap scores must be non-positive.")

@@ -253,7 +253,7 @@ def _get_pause_columns(
     return tuple(
         TimedAlignmentColumn(
             (None,) * source_count,
-            (
+            pause_interval_seconds=(
                 start_seconds + pause_idx * pause_unit_seconds,
                 end_seconds
                 if pause_idx == pause_count - 1
