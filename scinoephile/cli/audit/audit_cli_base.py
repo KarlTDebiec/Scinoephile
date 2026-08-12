@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from enum import Enum
 from pathlib import Path
 
-from scinoephile.cli.helpers.blocks import BLOCK_LOCALIZATIONS, add_block_range_args
+from scinoephile.cli.helpers.blocks import BLOCK_LOCALIZATIONS
 from scinoephile.cli.helpers.llms import LLM_LOCALIZATIONS
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -87,7 +87,6 @@ class AuditCliBase(ScinoephileCliBase):
             type=int_arg(min_value=1),
             help="last 1-indexed subtitle number to include, inclusive",
         )
-        add_block_range_args(arg_groups["operation arguments"])
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",

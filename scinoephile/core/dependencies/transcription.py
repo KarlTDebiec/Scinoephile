@@ -15,27 +15,25 @@ __all__ = [
     "import_huggingface_hub",
     "import_huggingface_hub_utils",
     "import_mlx_audio_stt_load",
+    "import_pyannote_audio",
+    "import_pyannote_audio_voice_activity_detection",
+    "import_silero_vad_load_silero_vad",
+    "import_ten_vad",
     "import_torch",
     "import_torchaudio",
     "import_transformers",
     "import_whisper_timestamped",
-    "import_whisper_timestamped_transcribe",
 ]
 
 if TYPE_CHECKING:
     from demucs_infer.apply import BagOfModels, Model
-    from mlx_audio.stt.models.mimo_v2_asr import Model as MimoModel
-    from mlx_audio.stt.models.qwen3_asr import Model as Qwen3AsrModel
     from torch import Tensor
     from transformers import PreTrainedModel, ProcessorMixin
-    from whisper import Whisper
 
     type CtcModel = PreTrainedModel
     type CtcProcessor = ProcessorMixin
     type DemucsModel = BagOfModels | Model
-    type MlxAudioModel = MimoModel | Qwen3AsrModel
     type TorchTensor = Tensor
-    type WhisperModel = Whisper
 
 _TRANSCRIPTION_EXTRA_MESSAGE = (
     "Transcription support requires optional transcription dependencies. "
@@ -108,6 +106,58 @@ def import_mlx_audio_stt_load() -> Callable[..., object]:
     return load
 
 
+def import_pyannote_audio() -> ModuleType:
+    """Import pyannote.audio on demand.
+
+    Returns:
+        pyannote.audio module
+    """
+    try:
+        import pyannote.audio
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return pyannote.audio
+
+
+def import_pyannote_audio_voice_activity_detection() -> Callable[..., object]:
+    """Import pyannote.audio's VAD pipeline class on demand.
+
+    Returns:
+        pyannote.audio voice activity detection pipeline class
+    """
+    try:
+        from pyannote.audio.pipelines import VoiceActivityDetection
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return VoiceActivityDetection
+
+
+def import_silero_vad_load_silero_vad() -> Callable[..., object]:
+    """Import the official Silero model loader on demand.
+
+    Returns:
+        Silero model loader
+    """
+    try:
+        from silero_vad import load_silero_vad
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return load_silero_vad
+
+
+def import_ten_vad() -> ModuleType:
+    """Import the official TEN VAD runtime on demand.
+
+    Returns:
+        TEN VAD module
+    """
+    try:
+        import ten_vad
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return ten_vad
+
+
 def import_torch() -> ModuleType:
     """Import Torch on demand.
 
@@ -158,16 +208,3 @@ def import_whisper_timestamped() -> ModuleType:
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return whisper_timestamped
-
-
-def import_whisper_timestamped_transcribe() -> ModuleType:
-    """Import the Whisper Timestamped transcription module on demand.
-
-    Returns:
-        Whisper Timestamped transcription module
-    """
-    try:
-        import whisper_timestamped.transcribe as whisper_timestamped_transcribe
-    except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
-    return whisper_timestamped_transcribe
