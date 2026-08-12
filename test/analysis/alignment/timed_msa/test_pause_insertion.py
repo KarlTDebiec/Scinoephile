@@ -81,6 +81,32 @@ def test_explicit_pauses_are_inserted_at_source_time():
     assert with_pauses.columns[1].pause_interval_seconds == (0.3, 1.1)
 
 
+def test_inferred_pauses_are_split_at_marker_time():
+    """Inferred pauses should remain chronological around timed markers."""
+    alignment = timed_msa.Alignment(
+        source_names=("one",),
+        columns=(
+            timed_msa.Column((timed_msa.Token("甲", 0.0, 0.1),)),
+            timed_msa.Column((None,), marker="|", marker_time_seconds=1.0),
+            timed_msa.Column((timed_msa.Token("乙", 2.0, 2.1),)),
+        ),
+    )
+
+    with_pauses = alignment.with_pauses(pause_unit_seconds=1.0)
+
+    assert [
+        column.pause_interval_seconds
+        for column in with_pauses.columns
+        if column.is_pause
+    ] == [(0.1, 1.0), (1.0, 2.0)]
+    assert [column.start_seconds for column in with_pauses.columns] == sorted(
+        column.start_seconds for column in with_pauses.columns
+    )
+    assert [column.end_seconds for column in with_pauses.columns] == sorted(
+        column.end_seconds for column in with_pauses.columns
+    )
+
+
 def test_pause_columns_encode_point_two_five_second_buckets():
     """Pause columns should increase once for each 0.25-second duration bucket."""
     alignment = timed_msa.Alignment(

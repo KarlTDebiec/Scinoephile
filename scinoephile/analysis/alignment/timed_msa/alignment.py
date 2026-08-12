@@ -128,6 +128,8 @@ class Alignment:
                 for source_idx in source_indexes
                 if (token := column.tokens[source_idx]) is not None
             ]
+            if column.marker_time_seconds is not None:
+                ends.append(column.marker_time_seconds)
             if ends:
                 column_end = max(ends)
                 if latest_end is None or column_end > latest_end:
@@ -273,6 +275,9 @@ def _get_future_source_starts(
             for source_idx in source_indexes
             if (token := alignment.columns[column_idx].tokens[source_idx]) is not None
         ]
+        marker_time_seconds = alignment.columns[column_idx].marker_time_seconds
+        if marker_time_seconds is not None:
+            starts.append(marker_time_seconds)
         if starts:
             column_start = min(starts)
             if next_start is None or column_start < next_start:
