@@ -4,9 +4,9 @@
 
 from __future__ import annotations
 
-from argparse import ArgumentParser
+from argparse import ArgumentParser, _ArgumentGroup  # noqa: PLC2701
 
-from scinoephile.common.argument_parsing import ArgumentGroup, int_arg
+from scinoephile.common.argument_parsing import int_arg
 
 __all__ = ["BLOCK_LOCALIZATIONS", "add_block_range_args", "get_block_range_indexes"]
 
@@ -32,7 +32,7 @@ BLOCK_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 def add_block_range_args(
-    operation_arg_group: ArgumentGroup,
+    operation_arg_group: _ArgumentGroup,
     *,
     first_help: str = "first 1-indexed subtitle block to process, inclusive",
     last_help: str = "last 1-indexed subtitle block to process, inclusive",
