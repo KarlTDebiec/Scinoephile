@@ -31,17 +31,19 @@ def clear_cache(
     namespace: str | None = None,
     all_namespaces: bool = False,
     older_than: timedelta | None = None,
+    dry_run: bool = False,
 ) -> list[CacheEntry]:
-    """Clear matching entries from one or every discovered namespace.
+    """Clear matching entries from one namespace or the whole cache root.
 
     Arguments:
         cache_root_path: cache root directory path
         cache_registry: namespaces available to cache maintenance operations
         namespace: optional namespace to clear
-        all_namespaces: whether to clear every discovered namespace
+        all_namespaces: whether to clear all cache root contents
         older_than: optional entry age threshold
+        dry_run: whether to return matching entries without deleting them
     Returns:
-        entries that were deleted
+        matching entries, deleted unless dry_run is enabled
     Raises:
         ScinoephileError: if the arguments are invalid
     """
@@ -50,62 +52,21 @@ def clear_cache(
     if namespace is not None and all_namespaces:
         raise ScinoephileError("--namespace and --all may not be used together")
 
-    discovered_namespace_names = cache_registry.discover_names(cache_root_path)
-    namespace_names = _get_namespace_names(
-        discovered_namespace_names, namespace=namespace
-    )
-    entries = _get_cache_entries(
-        cache_root_path, namespace_names, discovered_namespace_names
-    )
-    entries = _filter_cache_entries(entries, older_than=older_than)
-    for entry in entries:
-        _delete_entry(entry.path)
+    # An unfiltered all-scope operation treats the cache root as disposable
+    if all_namespaces and older_than is None:
+        entries = _get_cache_root_entries(cache_root_path)
+        if not dry_run:
+            for entry in entries:
+                _delete_entry(entry.path)
+        return entries
 
-    # Preserve nested namespaces that were not selected for clearing
-    protected_namespace_paths = {
-        PurePosixPath(namespace_name)
-        for namespace_name in discovered_namespace_names
-        if namespace_name not in namespace_names
-    }
-    removable_namespace_names = namespace_names
-    if older_than is not None:
-        removable_namespace_names = []
-        for namespace_name in namespace_names:
-            namespace_dir_path = _get_namespace_dir_path(
-                cache_root_path, namespace_name
-            )
-            if (
-                namespace_dir_path.is_dir()
-                and not namespace_dir_path.is_symlink()
-                and not any(namespace_dir_path.iterdir())
-            ):
-                removable_namespace_names.append(namespace_name)
-    removable_namespace_names.sort(
-        key=lambda namespace_name: len(PurePosixPath(namespace_name).parts),
-        reverse=True,
+    return _clear_registered_cache_entries(
+        cache_root_path,
+        cache_registry,
+        namespace=namespace,
+        older_than=older_than,
+        dry_run=dry_run,
     )
-    for namespace_name in removable_namespace_names:
-        namespace_path = PurePosixPath(namespace_name)
-        if any(
-            namespace_path in protected_namespace_path.parents
-            for protected_namespace_path in protected_namespace_paths
-        ):
-            continue
-        namespace_dir_path = _get_namespace_dir_path(cache_root_path, namespace_name)
-        if namespace_dir_path.exists():
-            _delete_entry(namespace_dir_path)
-
-            # Remove empty grouping directories up to the cache root
-            parent_dir_path = namespace_dir_path.parent
-            while (
-                parent_dir_path != cache_root_path
-                and parent_dir_path.is_dir()
-                and not parent_dir_path.is_symlink()
-                and not any(parent_dir_path.iterdir())
-            ):
-                parent_dir_path.rmdir()
-                parent_dir_path = parent_dir_path.parent
-    return entries
 
 
 def get_cache_entries(
@@ -220,6 +181,85 @@ def _build_cache_entry(
     )
 
 
+def _clear_registered_cache_entries(
+    cache_root_path: Path,
+    cache_registry: CacheRegistry,
+    *,
+    namespace: str | None,
+    older_than: timedelta | None,
+    dry_run: bool,
+) -> list[CacheEntry]:
+    """Clear matching entries from registered cache namespaces.
+
+    Arguments:
+        cache_root_path: cache root directory path
+        cache_registry: namespaces available to cache maintenance operations
+        namespace: optional namespace to clear
+        older_than: optional entry age threshold
+        dry_run: whether to return matching entries without deleting them
+    Returns:
+        matching entries, deleted unless dry_run is enabled
+    """
+    discovered_namespace_names = cache_registry.discover_names(cache_root_path)
+    namespace_names = _get_namespace_names(
+        discovered_namespace_names, namespace=namespace
+    )
+    entries = _get_cache_entries(
+        cache_root_path, namespace_names, discovered_namespace_names
+    )
+    entries = _filter_cache_entries(entries, older_than=older_than)
+    if dry_run:
+        return entries
+    for entry in entries:
+        _delete_entry(entry.path)
+
+    # Preserve nested namespaces that were not selected for clearing
+    protected_namespace_paths = {
+        PurePosixPath(namespace_name)
+        for namespace_name in discovered_namespace_names
+        if namespace_name not in namespace_names
+    }
+    removable_namespace_names = namespace_names
+    if older_than is not None:
+        removable_namespace_names = []
+        for namespace_name in namespace_names:
+            namespace_dir_path = _get_namespace_dir_path(
+                cache_root_path, namespace_name
+            )
+            if (
+                namespace_dir_path.is_dir()
+                and not namespace_dir_path.is_symlink()
+                and not any(namespace_dir_path.iterdir())
+            ):
+                removable_namespace_names.append(namespace_name)
+    removable_namespace_names.sort(
+        key=lambda namespace_name: len(PurePosixPath(namespace_name).parts),
+        reverse=True,
+    )
+    for namespace_name in removable_namespace_names:
+        namespace_path = PurePosixPath(namespace_name)
+        if any(
+            namespace_path in protected_namespace_path.parents
+            for protected_namespace_path in protected_namespace_paths
+        ):
+            continue
+        namespace_dir_path = _get_namespace_dir_path(cache_root_path, namespace_name)
+        if namespace_dir_path.exists():
+            _delete_entry(namespace_dir_path)
+
+            # Remove empty grouping directories up to the cache root
+            parent_dir_path = namespace_dir_path.parent
+            while (
+                parent_dir_path != cache_root_path
+                and parent_dir_path.is_dir()
+                and not parent_dir_path.is_symlink()
+                and not any(parent_dir_path.iterdir())
+            ):
+                parent_dir_path.rmdir()
+                parent_dir_path = parent_dir_path.parent
+    return entries
+
+
 def _delete_entry(entry_path: Path):
     """Delete a cache entry without following symlinks.
 
@@ -230,6 +270,23 @@ def _delete_entry(entry_path: Path):
         entry_path.unlink(missing_ok=True)
     elif entry_path.is_dir():
         rmtree(entry_path)
+
+
+def _filter_cache_entries(
+    entries: list[CacheEntry], *, older_than: timedelta | None
+) -> list[CacheEntry]:
+    """Filter cache entries by age.
+
+    Arguments:
+        entries: entries to filter
+        older_than: optional entry age threshold
+    Returns:
+        filtered entries
+    """
+    if older_than is None:
+        return entries
+    cutoff = datetime.now().astimezone() - older_than
+    return [entry for entry in entries if entry.modified_at < cutoff]
 
 
 def _get_cache_entries(
@@ -266,21 +323,24 @@ def _get_cache_entries(
     return entries
 
 
-def _filter_cache_entries(
-    entries: list[CacheEntry], *, older_than: timedelta | None
-) -> list[CacheEntry]:
-    """Filter cache entries by age.
+def _get_cache_root_entries(cache_root_path: Path) -> list[CacheEntry]:
+    """Get direct entries beneath a cache root.
 
     Arguments:
-        entries: entries to filter
-        older_than: optional entry age threshold
+        cache_root_path: cache root directory path
     Returns:
-        filtered entries
+        direct cache root entries
+    Raises:
+        NotADirectoryError: if the cache root exists but is not a directory
     """
-    if older_than is None:
-        return entries
-    cutoff = datetime.now().astimezone() - older_than
-    return [entry for entry in entries if entry.modified_at < cutoff]
+    if not cache_root_path.exists():
+        return []
+    if not cache_root_path.is_dir():
+        raise NotADirectoryError(f"{cache_root_path} is not a directory")
+    return [
+        _build_cache_entry(cache_root_path, "cache root", child_path)
+        for child_path in sorted(cache_root_path.iterdir())
+    ]
 
 
 def _get_namespace_dir_path(cache_root_path: Path, namespace_name: str) -> Path:

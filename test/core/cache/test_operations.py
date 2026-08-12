@@ -224,8 +224,8 @@ def test_clear_cache_removes_empty_parent_directories(tmp_path: Path):
     assert not (tmp_path / "media").exists()
 
 
-def test_clear_cache_all_removes_all_registered_namespaces(tmp_path: Path):
-    """Test clearing all namespaces removes every registered namespace.
+def test_clear_cache_all_removes_cache_root_contents(tmp_path: Path):
+    """Test unfiltered all-scope clearing removes every cache root child.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -233,11 +233,55 @@ def test_clear_cache_all_removes_all_registered_namespaces(tmp_path: Path):
     write_cache_file(tmp_path / "media/subtitles/first/2.srt")
     write_cache_file(tmp_path / "media/subtitles/analysis/first.json")
     external_path = write_cache_file(tmp_path / "huggingface/hub/model/data.json")
+    root_file_path = write_cache_file(tmp_path / "root.json")
 
-    clear_cache(tmp_path, _CACHE_REGISTRY, all_namespaces=True)
+    deleted_entries = clear_cache(tmp_path, _CACHE_REGISTRY, all_namespaces=True)
 
-    assert not (tmp_path / "media").exists()
-    assert external_path.exists()
+    assert [entry.relative_path for entry in deleted_entries] == [
+        Path("huggingface"),
+        Path("media"),
+        Path("root.json"),
+    ]
+    assert not external_path.exists()
+    assert not root_file_path.exists()
+    assert tmp_path.is_dir()
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_clear_cache_all_dry_run_preserves_cache_root_contents(tmp_path: Path):
+    """Test all-scope dry-run returns root entries without deleting them.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    registered_path = write_cache_file(tmp_path / "llms/test/one.json")
+    legacy_path = write_cache_file(tmp_path / "llm/test/two.json")
+
+    entries = clear_cache(tmp_path, _CACHE_REGISTRY, all_namespaces=True, dry_run=True)
+
+    assert [entry.namespace for entry in entries] == ["cache root", "cache root"]
+    assert [entry.relative_path for entry in entries] == [Path("llm"), Path("llms")]
+    assert registered_path.exists()
+    assert legacy_path.exists()
+
+
+def test_clear_cache_all_does_not_follow_root_symlinks(tmp_path: Path):
+    """Test all-scope clearing unlinks root symlinks without traversing them.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    cache_root_path = tmp_path / "cache"
+    cache_root_path.mkdir()
+    target_path = write_cache_file(tmp_path / "target/data.json")
+    link_path = cache_root_path / "linked"
+    link_path.symlink_to(target_path.parent, target_is_directory=True)
+
+    clear_cache(cache_root_path, _CACHE_REGISTRY, all_namespaces=True)
+
+    assert not link_path.exists()
+    assert target_path.exists()
+    assert list(cache_root_path.iterdir()) == []
 
 
 def test_get_cache_entries_missing_root_is_empty(tmp_path: Path):
@@ -292,10 +336,12 @@ def test_clear_cache_by_age(tmp_path: Path):
     """
     old_path = write_cache_file(tmp_path / "llms/test/old.json")
     new_path = write_cache_file(tmp_path / "llms/test/new.json")
+    legacy_path = write_cache_file(tmp_path / "llm/test/legacy.json")
     old_timestamp = time() - 60 * 60 * 24 * 40
     old_path.touch()
     new_path.touch()
     set_mtime(old_path, old_timestamp)
+    set_mtime(legacy_path, old_timestamp)
 
     deleted_entries = clear_cache(
         tmp_path, _CACHE_REGISTRY, all_namespaces=True, older_than=timedelta(days=30)
@@ -306,6 +352,7 @@ def test_clear_cache_by_age(tmp_path: Path):
     ]
     assert not old_path.exists()
     assert new_path.exists()
+    assert legacy_path.exists()
 
 
 def test_clear_cache_namespace(tmp_path: Path):

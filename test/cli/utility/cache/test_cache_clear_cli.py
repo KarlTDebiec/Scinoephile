@@ -31,10 +31,10 @@ def test_cache_clear_dry_run(tmp_path: Path, capsys: CaptureFixture[str]):
     assert "llms/test/one.json" in capsys.readouterr().out
 
 
-def test_cache_clear_all_dry_run_limits_output(
+def test_cache_clear_all_dry_run_previews_root_contents(
     tmp_path: Path, capsys: CaptureFixture[str]
 ):
-    """Test all-namespace dry-run output is bounded.
+    """Test all-scope dry-run previews registered and unregistered root contents.
 
     Arguments:
         tmp_path: temporary directory
@@ -43,6 +43,7 @@ def test_cache_clear_all_dry_run_limits_output(
     write_cache_file(tmp_path / "llms/test/one.json")
     write_cache_file(tmp_path / "llms/test/two.json")
     write_cache_file(tmp_path / "audio/transcription/whisper/three.json")
+    legacy_path = write_cache_file(tmp_path / "whisper/legacy.json")
 
     run_cli_with_args(
         CacheClearCli, f"--cache-dir {tmp_path} --all --dry-run --limit 2"
@@ -51,6 +52,7 @@ def test_cache_clear_all_dry_run_limits_output(
     output = capsys.readouterr().out
     assert output.count("\n") == 3
     assert "Showing 2 of 3 entries." in output
+    assert legacy_path.exists()
 
 
 def test_cache_clear_namespace_confirmed(tmp_path: Path):
@@ -71,18 +73,20 @@ def test_cache_clear_namespace_confirmed(tmp_path: Path):
 
 
 def test_cache_clear_all_confirmed(tmp_path: Path):
-    """Test confirmed clearing of all namespaces.
+    """Test confirmed clearing removes all cache root contents.
 
     Arguments:
         tmp_path: temporary directory
     """
     write_cache_file(tmp_path / "llms/test/one.json")
     write_cache_file(tmp_path / "audio/transcription/whisper/two.json")
+    write_cache_file(tmp_path / "whisper/legacy.json")
+    write_cache_file(tmp_path / "unregistered.json")
 
     run_cli_with_args(CacheClearCli, f"--cache-dir {tmp_path} --all --yes")
 
-    assert not (tmp_path / "llms").exists()
-    assert not (tmp_path / "audio").exists()
+    assert tmp_path.is_dir()
+    assert list(tmp_path.iterdir()) == []
 
 
 def test_cache_clear_older_than_dry_run(tmp_path: Path, capsys: CaptureFixture[str]):
@@ -115,7 +119,9 @@ def test_cache_clear_older_than_confirmed(tmp_path: Path):
     """
     old_path = write_cache_file(tmp_path / "llms/test/old.json")
     new_path = write_cache_file(tmp_path / "llms/test/new.json")
+    legacy_path = write_cache_file(tmp_path / "llm/test/legacy.json")
     _set_old(old_path)
+    _set_old(legacy_path)
 
     run_cli_with_args(
         CacheClearCli, f"--cache-dir {tmp_path} --all --older-than 30d --yes"
@@ -123,6 +129,7 @@ def test_cache_clear_older_than_confirmed(tmp_path: Path):
 
     assert not old_path.exists()
     assert new_path.exists()
+    assert legacy_path.exists()
 
 
 def test_cache_clear_requires_scope(tmp_path: Path):

@@ -134,11 +134,14 @@ Cache-producing CLIs should use the shared cache argument bundle, placing
 `--cache-dir` and `--cache-overwrite` in the `cache arguments` group. Cache
 directory help should display the resolved default cache root path.
 
-The cache inspect and clear commands operate on namespace entry boundaries.
-Inspection shows compact statistics by default and individual entries when
-requested. Clearing may optionally select entries by modification age. Caches
-must therefore touch valid hits as described above. Destructive maintenance
-must support dry-run inspection, explicit namespace scope, and confirmation.
+Cache inspection and namespace- or age-filtered clearing operate on registered
+namespace entry boundaries. Inspection shows compact statistics by default and
+individual entries when requested. An unfiltered `cache clear --all` instead
+removes every child beneath the cache root, including unregistered or legacy
+contents, while preserving the root itself. Configured cache roots must
+therefore not contain unrelated durable data. Caches must touch valid hits so
+age filtering reflects recent reuse. Destructive maintenance must support
+dry-run inspection, explicit scope, and confirmation.
 
 ## Tests
 
