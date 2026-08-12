@@ -13,6 +13,7 @@ def test_cache_registry_matches_owned_layout():
         "audio/separation/demucs",
         "audio/transcription/mlx_audio",
         "audio/transcription/whisper",
+        "audio/vad",
         "dictionaries/cuhk/discovery",
         "dictionaries/cuhk/pages",
         "image/ocr/lens",

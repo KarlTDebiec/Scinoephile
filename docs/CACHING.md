@@ -57,10 +57,21 @@ command-line name uses the shorter conventional spelling.
 
 ## Namespaces and entries
 
-Each cache appends its own stable namespace beneath the cache root. Group
-related namespaces under domain directories such as `llms/` and `media/` rather
-than flattening every cache into the root. Do not introduce marker files merely
-to declare namespaces.
+Each cache uses a stable namespace that mirrors the package owning the produced
+artifact. The Scinoephile operation that produces the entry determines
+ownership; third-party model caches remain owned by their dependencies.
+
+`CacheNamespace` provides generic validation, resolution, and discovery. Each
+owning package defines a concrete enum in `cache_namespace.py`, and cache
+constructors resolve their directories through members of that enum.
+
+`scinoephile.workflows.cache_registry.CACHE_REGISTRY` aggregates the owner
+enums for application-wide inspection and clearing. The generic maintenance
+operations in `scinoephile.core.cache` receive this registry from their callers.
+
+Namespace segments use Python module spelling, including underscores such as
+`mlx_audio`. A parameterized `<operation>` segment represents one validated
+path component. Materially different entry types use separate leaf namespaces.
 
 `CacheNamespace.get_dir_path(...)` validates and creates the concrete namespace
 directory. Cache constructors should validate and retain their shared root,
@@ -68,9 +79,8 @@ then use this method directly for their namespaced directory.
 
 Cache inspection treats each direct child of a namespace as one independently
 removable entry. A directory entry may contain related files that must be kept
-or removed together. New grouped or nested namespace layouts must also be made
-discoverable by `scinoephile.core.cache.operations` so inspect and clear agree
-with the owning cache.
+or removed together. Add a new namespace to its owner's enum; the cache
+constructor and application registry then consume the same declaration.
 
 Keep namespace names and entry boundaries stable when possible. Layout changes
 should not cause one cache's maintenance operation to delete another cache's

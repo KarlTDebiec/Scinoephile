@@ -18,3 +18,5 @@ class AudioCacheNamespace(CacheNamespace):
     """MLX-Audio transcription results."""
     TRANSCRIPTION_WHISPER = "audio/transcription/whisper"
     """Whisper transcription results."""
+    VAD = "audio/vad"
+    """Voice activity detection traces."""
