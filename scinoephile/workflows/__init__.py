@@ -3,7 +3,8 @@
 """Reusable workflows that coordinate operations across package domains.
 
 Package hierarchy (modules may import from any above):
-* helpers / ocr_fusion / ocr_validation / prompt_catalog / subtitle_extraction
+* cache_registry / helpers / ocr_fusion / ocr_validation / prompt_catalog
+  / subtitle_extraction
 * clean / flatten / review / romanize / transcription / translation
 * ocr_processing
 """

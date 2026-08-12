@@ -9,6 +9,7 @@ from pathlib import Path
 
 from pydub import AudioSegment
 
+from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.transcription import TranscribedSegment, TranscriptionCache
 
 
@@ -18,7 +19,9 @@ def test_transcription_cache_round_trip(tmp_path: Path):
     Arguments:
         tmp_path: temporary cache directory path
     """
-    cache = TranscriptionCache(tmp_path, "test", "Test")
+    cache = TranscriptionCache(
+        tmp_path, AudioCacheNamespace.TRANSCRIPTION_WHISPER, "test", "Test"
+    )
     audio = AudioSegment.silent(duration=100)
     metadata = {"model_name": "test/model"}
     segments = [TranscribedSegment(id=0, seek=0, start=0.0, end=0.1, text="test")]
@@ -26,7 +29,7 @@ def test_transcription_cache_round_trip(tmp_path: Path):
     cache_path = cache.save(audio, metadata, segments)
     cached_transcription = cache.load(audio, metadata)
 
-    assert cache_path.parent == tmp_path / "test"
+    assert cache_path.parent == tmp_path / "audio/transcription/whisper"
     assert cached_transcription == (cache_path, segments)
     payload = json.loads(cache_path.read_text(encoding="utf-8"))
     assert payload["cache_version"] == 1
@@ -40,7 +43,9 @@ def test_transcription_cache_discards_mismatched_metadata(tmp_path: Path):
     Arguments:
         tmp_path: temporary cache directory path
     """
-    cache = TranscriptionCache(tmp_path, "test", "Test")
+    cache = TranscriptionCache(
+        tmp_path, AudioCacheNamespace.TRANSCRIPTION_WHISPER, "test", "Test"
+    )
     audio = AudioSegment.silent(duration=100)
     metadata = {"model_name": "test/model"}
     cache_path = cache.save(audio, metadata, [])
@@ -58,7 +63,9 @@ def test_transcription_cache_discards_mismatched_version(tmp_path: Path):
     Arguments:
         tmp_path: temporary cache directory path
     """
-    cache = TranscriptionCache(tmp_path, "test", "Test")
+    cache = TranscriptionCache(
+        tmp_path, AudioCacheNamespace.TRANSCRIPTION_WHISPER, "test", "Test"
+    )
     audio = AudioSegment.silent(duration=100)
     metadata = {"model_name": "test/model"}
     cache_path = cache.save(audio, metadata, [])
@@ -74,9 +81,13 @@ def test_transcription_cache_overwrites_matching_entry_once(tmp_path: Path):
     """Test overwrite refreshes a matching transcription once per instance."""
     audio = AudioSegment.silent(duration=100)
     metadata = {"model_name": "test/model"}
-    cache = TranscriptionCache(tmp_path, "test", "Test")
+    cache = TranscriptionCache(
+        tmp_path, AudioCacheNamespace.TRANSCRIPTION_WHISPER, "test", "Test"
+    )
     cache.save(audio, metadata, [])
-    overwrite_cache = TranscriptionCache(tmp_path, "test", "Test", True)
+    overwrite_cache = TranscriptionCache(
+        tmp_path, AudioCacheNamespace.TRANSCRIPTION_WHISPER, "test", "Test", True
+    )
 
     assert overwrite_cache.load(audio, metadata) is None
     cache_path = overwrite_cache.save(audio, metadata, [])
@@ -90,14 +101,16 @@ def test_transcription_cache_uses_runtime_default(runtime_cache_root_path: Path)
     Arguments:
         runtime_cache_root_path: isolated default runtime cache root
     """
-    cache = TranscriptionCache(None, "test", "Test")
+    cache = TranscriptionCache(
+        None, AudioCacheNamespace.TRANSCRIPTION_WHISPER, "test", "Test"
+    )
     audio = AudioSegment.silent(duration=100)
     metadata = {"model_name": "test/model"}
 
     cache_path = cache.save(audio, metadata, [])
 
     assert cache.cache_root_path == runtime_cache_root_path
-    assert cache_path.parent == runtime_cache_root_path / "test"
+    assert cache_path.parent == runtime_cache_root_path / "audio/transcription/whisper"
     assert cache_path.exists()
     assert cache.load(audio, metadata) == (cache_path, [])
     assert cache.remove(audio, metadata) == cache_path
