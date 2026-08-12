@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.msa import (
+from scinoephile.analysis.alignment.msa import (
     TimedAlignmentSequence,
     TimedAlignmentSettings,
     TimedAlignmentToken,

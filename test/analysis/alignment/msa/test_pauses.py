@@ -4,12 +4,12 @@
 
 from __future__ import annotations
 
-from scinoephile.analysis.msa import (
+from scinoephile.analysis.alignment.msa import (
     TimedAlignmentColumn,
     TimedAlignmentToken,
     TimedMultiSequenceAlignment,
 )
-from scinoephile.analysis.msa.pauses import get_timed_alignment_with_pauses
+from scinoephile.analysis.alignment.msa.pauses import get_timed_alignment_with_pauses
 
 
 def test_explicit_timed_pause_prefers_matching_source_gap():

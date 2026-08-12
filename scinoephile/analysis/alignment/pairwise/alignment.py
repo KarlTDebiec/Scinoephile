@@ -1,14 +1,13 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Character-level line alignment."""
+"""Pairwise character alignment."""
 
 from __future__ import annotations
 
 import numba as nb
 import numpy as np
 
-from .line_alignment_operation import LineAlignmentOperation
-from .line_alignment_pair import LineAlignmentPair
+from .models import LineAlignmentOperation, LineAlignmentPair
 
 __all__ = ["LineAlignment"]
 
@@ -21,7 +20,7 @@ _GAP_NONE = -1
 
 
 class LineAlignment:
-    """Character-level alignment between two strings.
+    """Align two strings at character level.
 
     Uses Levenshtein-style dynamic programming with backtrace. The fill step
     keeps only the previous and current metric rows, plus one compact operation

@@ -10,7 +10,10 @@ from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import TypedDict
 
-from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOperation
+from scinoephile.analysis.alignment.pairwise import (
+    LineAlignment,
+    LineAlignmentOperation,
+)
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import are_series_one_to_one

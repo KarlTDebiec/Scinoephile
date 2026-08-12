@@ -1,9 +1,7 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Alignment, comparison, and auditing tools.
+"""Character sequence alignment primitives.
 
 Package hierarchy (modules may import from any above):
-* alignment
-* diff
-* audit / character_error_rate
+* msa / pairwise
 """

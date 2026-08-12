@@ -6,7 +6,10 @@ from __future__ import annotations
 
 from math import inf
 
-from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOperation
+from scinoephile.analysis.alignment.pairwise import (
+    LineAlignment,
+    LineAlignmentOperation,
+)
 from scinoephile.core.text import remove_punc_and_whitespace
 
 __all__ = ["LineCER"]

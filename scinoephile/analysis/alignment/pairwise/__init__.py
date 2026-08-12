@@ -1,17 +1,15 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Character-level alignment helpers.
+"""Pairwise character-sequence alignment.
 
 Package hierarchy (modules may import from any above):
-* line_alignment_metric / line_alignment_operation
-* line_alignment_pair
-* line_alignment
+* models
+* alignment
 """
 
 from __future__ import annotations
 
-from .line_alignment import LineAlignment
-from .line_alignment_operation import LineAlignmentOperation
-from .line_alignment_pair import LineAlignmentPair
+from .alignment import LineAlignment
+from .models import LineAlignmentOperation, LineAlignmentPair
 
 __all__ = ["LineAlignment", "LineAlignmentOperation", "LineAlignmentPair"]

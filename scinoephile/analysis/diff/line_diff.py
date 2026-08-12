@@ -6,7 +6,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOperation
+from scinoephile.analysis.alignment.pairwise import (
+    LineAlignment,
+    LineAlignmentOperation,
+)
 from scinoephile.core.text import (
     AnsiColor,
     colorize,

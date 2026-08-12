@@ -1,12 +1,13 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Operations for line alignment."""
+"""Models for pairwise character alignment."""
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from enum import IntEnum
 
-__all__ = ["LineAlignmentOperation"]
+__all__ = ["LineAlignmentOperation", "LineAlignmentPair"]
 
 
 class LineAlignmentOperation(IntEnum):
@@ -23,3 +24,17 @@ class LineAlignmentOperation(IntEnum):
 
     INSERT = 3
     """A character is present only in the second string."""
+
+
+@dataclass(frozen=True)
+class LineAlignmentPair:
+    """A single aligned output column."""
+
+    one: str | None
+    """Character from the first string, if present."""
+
+    two: str | None
+    """Character from the second string, if present."""
+
+    operation: LineAlignmentOperation
+    """Alignment operation describing this output column."""
