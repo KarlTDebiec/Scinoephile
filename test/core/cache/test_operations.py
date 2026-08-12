@@ -17,7 +17,6 @@ from scinoephile.core.cache.operations import (
     clear_cache,
     get_cache_entries,
     get_cache_stats,
-    prune_cache,
 )
 from test.helpers.files import set_mtime, write_cache_file
 
@@ -155,8 +154,8 @@ def test_get_cache_entries_supports_grouped_audio_namespaces(tmp_path: Path):
     ]
 
 
-def test_prune_cache_prunes_individual_directory_entries(tmp_path: Path):
-    """Test directory-based cache entries preserve entry-level pruning.
+def test_clear_cache_by_age_removes_individual_directory_entries(tmp_path: Path):
+    """Test age-filtered clearing preserves directory entry boundaries.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -167,7 +166,7 @@ def test_prune_cache_prunes_individual_directory_entries(tmp_path: Path):
     set_mtime(old_path, old_timestamp)
     set_mtime(old_path.parent, old_timestamp)
 
-    deleted_entries = prune_cache(
+    deleted_entries = clear_cache(
         tmp_path,
         _CACHE_REGISTRY,
         older_than=timedelta(days=30),
@@ -285,8 +284,8 @@ def test_get_cache_stats(tmp_path: Path):
     assert stats["total"].total_bytes == 11
 
 
-def test_prune_cache(tmp_path: Path):
-    """Test confirmed cache pruning.
+def test_clear_cache_by_age(tmp_path: Path):
+    """Test clearing cache entries older than a duration.
 
     Arguments:
         tmp_path: temporary directory
@@ -298,8 +297,8 @@ def test_prune_cache(tmp_path: Path):
     new_path.touch()
     set_mtime(old_path, old_timestamp)
 
-    deleted_entries = prune_cache(
-        tmp_path, _CACHE_REGISTRY, older_than=timedelta(days=30)
+    deleted_entries = clear_cache(
+        tmp_path, _CACHE_REGISTRY, all_namespaces=True, older_than=timedelta(days=30)
     )
 
     assert [entry.relative_path for entry in deleted_entries] == [

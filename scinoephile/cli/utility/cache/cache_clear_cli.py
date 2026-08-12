@@ -5,10 +5,15 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from datetime import timedelta
 from pathlib import Path
 
 from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_root_arg
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
+from scinoephile.common.argument_parsing import (
+    duration_arg,
+    get_arg_groups_by_name,
+    int_arg,
+)
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import clear_cache, get_cache_entries
 from scinoephile.core.cli import ScinoephileCliBase
@@ -25,9 +30,12 @@ CACHE_CLEAR_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "cache root directory to inspect (default: %(default)s)": (
             "要检查的缓存根目录（默认：%(default)s）"
         ),
-        "clear cache entries": "清除缓存条目",
+        "clear matching cache entries": "清除匹配的缓存条目",
         "clear every discovered namespace": "清除所有发现的命名空间",
         "confirm destructive deletion": "确认破坏性删除",
+        "only clear entries older than a duration such as 7d, 30d, or 12h": (
+            "仅清除早于指定时长的条目，例如 7d、30d 或 12h"
+        ),
         "maximum entries to print; use 0 to show all (default: %(default)s)": (
             "最多输出的条目数；使用 0 显示全部（默认：%(default)s）"
         ),
@@ -40,9 +48,12 @@ CACHE_CLEAR_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "cache root directory to inspect (default: %(default)s)": (
             "要檢查的快取根目錄（預設：%(default)s）"
         ),
-        "clear cache entries": "清除快取條目",
+        "clear matching cache entries": "清除符合條件的快取條目",
         "clear every discovered namespace": "清除所有發現的命名空間",
         "confirm destructive deletion": "確認破壞性刪除",
+        "only clear entries older than a duration such as 7d, 30d, or 12h": (
+            "僅清除早於指定時長的條目，例如 7d、30d 或 12h"
+        ),
         "maximum entries to print; use 0 to show all (default: %(default)s)": (
             "最多輸出的條目數；使用 0 顯示全部（預設：%(default)s）"
         ),
@@ -55,7 +66,7 @@ CACHE_CLEAR_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class CacheClearCli(ScinoephileCliBase):
-    """Clear cache entries."""
+    """Clear matching cache entries."""
 
     localizations = merge_localizations(CACHE_LOCALIZATIONS, CACHE_CLEAR_LOCALIZATIONS)
     """Localized help text keyed by locale and English source text."""
@@ -82,14 +93,20 @@ class CacheClearCli(ScinoephileCliBase):
         )
 
         # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "--namespace", help="cache namespace to clear"
+        scope_group = arg_groups["operation arguments"].add_mutually_exclusive_group(
+            required=True
         )
-        arg_groups["operation arguments"].add_argument(
+        scope_group.add_argument("--namespace", help="cache namespace to clear")
+        scope_group.add_argument(
             "--all",
             action="store_true",
             dest="all_namespaces",
             help="clear every discovered namespace",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--older-than",
+            type=duration_arg,
+            help=("only clear entries older than a duration such as 7d, 30d, or 12h"),
         )
         arg_groups["operation arguments"].add_argument(
             "--dry-run",
@@ -124,6 +141,7 @@ class CacheClearCli(ScinoephileCliBase):
         cache_root_path: Path,
         namespace: str | None,
         all_namespaces: bool,
+        older_than: timedelta | None,
         dry_run: bool,
         limit: int,
         yes: bool,
@@ -133,28 +151,27 @@ class CacheClearCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if not dry_run and not yes:
             parser.error("--yes is required unless --dry-run is specified")
+        if namespace is None and not all_namespaces:
+            parser.error("--namespace is required unless --all is specified")
         if namespace is not None and all_namespaces:
             parser.error("--namespace and --all may not be used together")
 
         # Perform operations
         try:
             if dry_run:
-                if all_namespaces:
-                    entries = get_cache_entries(cache_root_path, CACHE_REGISTRY)
-                elif namespace is None:
-                    raise ScinoephileError(
-                        "--namespace is required unless --all is specified"
-                    )
-                else:
-                    entries = get_cache_entries(
-                        cache_root_path, CACHE_REGISTRY, namespace=namespace
-                    )
+                entries = get_cache_entries(
+                    cache_root_path,
+                    CACHE_REGISTRY,
+                    namespace=namespace,
+                    older_than=older_than,
+                )
             else:
                 entries = clear_cache(
                     cache_root_path,
                     CACHE_REGISTRY,
                     namespace=namespace,
                     all_namespaces=all_namespaces,
+                    older_than=older_than,
                 )
         except (NotADirectoryError, ScinoephileError) as exc:
             parser.error(str(exc))

@@ -21,7 +21,6 @@ __all__ = [
     "clear_cache",
     "get_cache_entries",
     "get_cache_stats",
-    "prune_cache",
 ]
 
 
@@ -31,14 +30,16 @@ def clear_cache(
     *,
     namespace: str | None = None,
     all_namespaces: bool = False,
+    older_than: timedelta | None = None,
 ) -> list[CacheEntry]:
-    """Clear one namespace or every discovered namespace.
+    """Clear matching entries from one or every discovered namespace.
 
     Arguments:
         cache_root_path: cache root directory path
         cache_registry: namespaces available to cache maintenance operations
         namespace: optional namespace to clear
         all_namespaces: whether to clear every discovered namespace
+        older_than: optional entry age threshold
     Returns:
         entries that were deleted
     Raises:
@@ -56,6 +57,7 @@ def clear_cache(
     entries = _get_cache_entries(
         cache_root_path, namespace_names, discovered_namespace_names
     )
+    entries = _filter_cache_entries(entries, older_than=older_than)
     for entry in entries:
         _delete_entry(entry.path)
 
@@ -65,11 +67,24 @@ def clear_cache(
         for namespace_name in discovered_namespace_names
         if namespace_name not in namespace_names
     }
-    namespace_names.sort(
+    removable_namespace_names = namespace_names
+    if older_than is not None:
+        removable_namespace_names = []
+        for namespace_name in namespace_names:
+            namespace_dir_path = _get_namespace_dir_path(
+                cache_root_path, namespace_name
+            )
+            if (
+                namespace_dir_path.is_dir()
+                and not namespace_dir_path.is_symlink()
+                and not any(namespace_dir_path.iterdir())
+            ):
+                removable_namespace_names.append(namespace_name)
+    removable_namespace_names.sort(
         key=lambda namespace_name: len(PurePosixPath(namespace_name).parts),
         reverse=True,
     )
-    for namespace_name in namespace_names:
+    for namespace_name in removable_namespace_names:
         namespace_path = PurePosixPath(namespace_name)
         if any(
             namespace_path in protected_namespace_path.parents
@@ -98,6 +113,7 @@ def get_cache_entries(
     cache_registry: CacheRegistry,
     *,
     namespace: str | None = None,
+    older_than: timedelta | None = None,
 ) -> list[CacheEntry]:
     """Get direct cache entries for one or more namespaces.
 
@@ -105,6 +121,7 @@ def get_cache_entries(
         cache_root_path: cache root directory path
         cache_registry: namespaces available to cache maintenance operations
         namespace: optional namespace filter
+        older_than: optional entry age threshold
     Returns:
         cache entries
     Raises:
@@ -114,9 +131,10 @@ def get_cache_entries(
     namespace_names = _get_namespace_names(
         discovered_namespace_names, namespace=namespace
     )
-    return _get_cache_entries(
+    entries = _get_cache_entries(
         cache_root_path, namespace_names, discovered_namespace_names
     )
+    return _filter_cache_entries(entries, older_than=older_than)
 
 
 def get_cache_stats(
@@ -124,6 +142,7 @@ def get_cache_stats(
     cache_registry: CacheRegistry,
     *,
     namespace: str | None = None,
+    older_than: timedelta | None = None,
 ) -> list[CacheStats]:
     """Get per-namespace and total cache statistics.
 
@@ -131,6 +150,7 @@ def get_cache_stats(
         cache_root_path: cache root directory path
         cache_registry: namespaces available to cache maintenance operations
         namespace: optional namespace filter
+        older_than: optional entry age threshold
     Returns:
         aggregate cache statistics
     """
@@ -141,6 +161,7 @@ def get_cache_stats(
     entries = _get_cache_entries(
         cache_root_path, namespace_names, discovered_namespace_names
     )
+    entries = _filter_cache_entries(entries, older_than=older_than)
     stats = [
         _aggregate_cache_stats(
             namespace_name,
@@ -150,40 +171,6 @@ def get_cache_stats(
     ]
     stats.append(_aggregate_cache_stats("total", entries))
     return stats
-
-
-def prune_cache(
-    cache_root_path: Path,
-    cache_registry: CacheRegistry,
-    *,
-    older_than: timedelta,
-    namespace: str | None = None,
-) -> list[CacheEntry]:
-    """Prune cache entries older than a duration.
-
-    Arguments:
-        cache_root_path: cache root directory path
-        cache_registry: namespaces available to cache maintenance operations
-        older_than: entry age threshold
-        namespace: optional namespace filter
-    Returns:
-        entries that were deleted
-    """
-    cutoff = datetime.now().astimezone() - older_than
-    discovered_namespace_names = cache_registry.discover_names(cache_root_path)
-    namespace_names = _get_namespace_names(
-        discovered_namespace_names, namespace=namespace
-    )
-    entries = [
-        entry
-        for entry in _get_cache_entries(
-            cache_root_path, namespace_names, discovered_namespace_names
-        )
-        if entry.modified_at < cutoff
-    ]
-    for entry in entries:
-        _delete_entry(entry.path)
-    return entries
 
 
 def _aggregate_cache_stats(namespace: str, entries: Iterable[CacheEntry]) -> CacheStats:
@@ -206,12 +193,6 @@ def _aggregate_cache_stats(namespace: str, entries: Iterable[CacheEntry]) -> Cac
         newest_modified_at=max(
             (entry.modified_at for entry in entry_list), default=None
         ),
-        oldest_accessed_at=min(
-            (entry.accessed_at for entry in entry_list), default=None
-        ),
-        newest_accessed_at=max(
-            (entry.accessed_at for entry in entry_list), default=None
-        ),
     )
 
 
@@ -227,7 +208,7 @@ def _build_cache_entry(
     Returns:
         cache entry
     """
-    size_bytes, file_count, modified_at, accessed_at = _measure_path(entry_path)
+    size_bytes, file_count, modified_at = _measure_path(entry_path)
     return CacheEntry(
         namespace=namespace,
         path=entry_path,
@@ -235,7 +216,6 @@ def _build_cache_entry(
         size_bytes=size_bytes,
         file_count=file_count,
         modified_at=modified_at,
-        accessed_at=accessed_at,
         is_dir=entry_path.is_dir() and not entry_path.is_symlink(),
     )
 
@@ -286,6 +266,23 @@ def _get_cache_entries(
     return entries
 
 
+def _filter_cache_entries(
+    entries: list[CacheEntry], *, older_than: timedelta | None
+) -> list[CacheEntry]:
+    """Filter cache entries by age.
+
+    Arguments:
+        entries: entries to filter
+        older_than: optional entry age threshold
+    Returns:
+        filtered entries
+    """
+    if older_than is None:
+        return entries
+    cutoff = datetime.now().astimezone() - older_than
+    return [entry for entry in entries if entry.modified_at < cutoff]
+
+
 def _get_namespace_dir_path(cache_root_path: Path, namespace_name: str) -> Path:
     """Get a namespace directory path from its portable name.
 
@@ -318,20 +315,19 @@ def _get_namespace_names(
     return [namespace]
 
 
-def _measure_path(entry_path: Path) -> tuple[int, int, datetime, datetime]:
+def _measure_path(entry_path: Path) -> tuple[int, int, datetime]:
     """Measure a cache entry without following symlinked directories.
 
     Arguments:
         entry_path: path to measure
     Returns:
-        size, file count, newest modification time, and newest access time
+        size, file count, and newest modification time
     """
     stat = entry_path.lstat()
     is_directory = entry_path.is_dir() and not entry_path.is_symlink()
     size_bytes = 0 if is_directory else stat.st_size
     file_count = 0 if is_directory else 1
     modified_at = datetime.fromtimestamp(stat.st_mtime).astimezone()
-    accessed_at = datetime.fromtimestamp(stat.st_atime).astimezone()
     if is_directory:
         for child_path in entry_path.rglob("*"):
             child_stat = child_path.lstat()
@@ -339,7 +335,5 @@ def _measure_path(entry_path: Path) -> tuple[int, int, datetime, datetime]:
                 size_bytes += child_stat.st_size
                 file_count += 1
             child_modified_at = datetime.fromtimestamp(child_stat.st_mtime).astimezone()
-            child_accessed_at = datetime.fromtimestamp(child_stat.st_atime).astimezone()
             modified_at = max(modified_at, child_modified_at)
-            accessed_at = max(accessed_at, child_accessed_at)
-    return size_bytes, file_count, modified_at, accessed_at
+    return size_bytes, file_count, modified_at

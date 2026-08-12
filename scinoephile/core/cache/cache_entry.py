@@ -27,7 +27,5 @@ class CacheEntry:
     """Number of filesystem objects included in the entry."""
     modified_at: datetime
     """Most recent entry modification time."""
-    accessed_at: datetime
-    """Most recent entry access time."""
     is_dir: bool
     """Whether the entry is a directory."""

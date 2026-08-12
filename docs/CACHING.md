@@ -65,8 +65,8 @@ to declare namespaces.
 Cache inspection treats each direct child of a namespace as one independently
 removable entry. A directory entry may contain related files that must be kept
 or removed together. New grouped or nested namespace layouts must also be made
-discoverable by `scinoephile.core.cache.operations` so list, stats, prune, and
-clear commands agree with the owning cache.
+discoverable by `scinoephile.core.cache.operations` so inspect and clear agree
+with the owning cache.
 
 Keep namespace names and entry boundaries stable when possible. Layout changes
 should not cause one cache's maintenance operation to delete another cache's
@@ -134,10 +134,11 @@ Cache-producing CLIs should use the shared cache argument bundle, placing
 `--cache-dir` and `--cache-overwrite` in the `cache arguments` group. Cache
 directory help should display the resolved default cache root path.
 
-The cache list, stats, prune, and clear commands operate on namespace entry
-boundaries. Because pruning uses modification times, caches must touch valid
-hits as described above. Destructive maintenance commands should continue to
-support dry-run inspection and explicit confirmation.
+The cache inspect and clear commands operate on namespace entry boundaries.
+Inspection shows compact statistics by default and individual entries when
+requested. Clearing may optionally select entries by modification age. Caches
+must therefore touch valid hits as described above. Destructive maintenance
+must support dry-run inspection, explicit namespace scope, and confirmation.
 
 ## Tests
 
