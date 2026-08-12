@@ -10,13 +10,7 @@ from typing import Any
 
 from scinoephile.core.cache import CacheEntry, CacheStats
 
-__all__ = [
-    "format_cache_entry",
-    "format_cache_stats",
-    "print_entries",
-    "print_stats",
-    "sort_entries",
-]
+__all__ = ["format_cache_entry", "format_cache_stats", "print_entries", "print_stats"]
 
 
 def format_cache_entry(entry: CacheEntry) -> dict[str, Any]:
@@ -33,7 +27,6 @@ def format_cache_entry(entry: CacheEntry) -> dict[str, Any]:
         "size_bytes": entry.size_bytes,
         "file_count": entry.file_count,
         "modified_at": _format_datetime(entry.modified_at),
-        "accessed_at": _format_datetime(entry.accessed_at),
         "type": "directory" if entry.is_dir else "file",
     }
 
@@ -52,8 +45,6 @@ def format_cache_stats(stats: CacheStats) -> dict[str, Any]:
         "total_bytes": stats.total_bytes,
         "oldest_modified_at": _format_datetime(stats.oldest_modified_at),
         "newest_modified_at": _format_datetime(stats.newest_modified_at),
-        "oldest_accessed_at": _format_datetime(stats.oldest_accessed_at),
-        "newest_accessed_at": _format_datetime(stats.newest_accessed_at),
     }
 
 
@@ -65,32 +56,28 @@ def print_entries(
     Arguments:
         entries: entries to print
         output_format: output format
-        limit: maximum text entries to print, or 0/None to print all
+        limit: maximum entries to print, or 0/None to print all
     """
-    objects = [format_cache_entry(entry) for entry in entries]
+    display_entries = entries
+    if limit is not None and limit > 0:
+        display_entries = entries[:limit]
+    objects = [format_cache_entry(entry) for entry in display_entries]
     if output_format == "json":
         print(json.dumps(objects, indent=2))
-    elif output_format == "jsonl":
-        for entry_object in objects:
-            print(json.dumps(entry_object))
     else:
         if not objects:
             print("No cache entries found.")
             return
-        display_objects = objects
-        if limit is not None and limit > 0:
-            display_objects = objects[:limit]
-        for entry_object in display_objects:
+        for entry_object in objects:
             print(
                 f"{entry_object['namespace']}\t{entry_object['path']}\t"
                 f"{entry_object['size_bytes']} bytes\t"
                 f"{entry_object['file_count']} file(s)\t"
-                f"mtime {entry_object['modified_at']}\t"
-                f"atime {entry_object['accessed_at']}"
+                f"mtime {entry_object['modified_at']}"
             )
-        if len(display_objects) < len(objects):
+        if len(display_entries) < len(entries):
             print(
-                f"Showing {len(display_objects)} of {len(objects)} entries. "
+                f"Showing {len(display_entries)} of {len(entries)} entries. "
                 "Use --limit 0 to show all."
             )
 
@@ -112,31 +99,8 @@ def print_stats(stats: list[CacheStats], output_format: str):
             f"{stats_object['entry_count']} entries\t"
             f"{stats_object['total_bytes']} bytes\t"
             f"mtime {stats_object['oldest_modified_at']}.."
-            f"{stats_object['newest_modified_at']}\t"
-            f"atime {stats_object['oldest_accessed_at']}.."
-            f"{stats_object['newest_accessed_at']}"
+            f"{stats_object['newest_modified_at']}"
         )
-
-
-def sort_entries(
-    entries: list[CacheEntry], *, sort: str, reverse: bool
-) -> list[CacheEntry]:
-    """Sort cache entries.
-
-    Arguments:
-        entries: entries to sort
-        sort: sort field
-        reverse: whether to reverse sort order
-    Returns:
-        sorted entries
-    """
-    if sort == "size":
-        return sorted(entries, key=lambda entry: entry.size_bytes, reverse=reverse)
-    if sort == "mtime":
-        return sorted(entries, key=lambda entry: entry.modified_at, reverse=reverse)
-    if sort == "atime":
-        return sorted(entries, key=lambda entry: entry.accessed_at, reverse=reverse)
-    return sorted(entries, key=lambda entry: str(entry.relative_path), reverse=reverse)
 
 
 def _format_datetime(value: datetime | None) -> str | None:

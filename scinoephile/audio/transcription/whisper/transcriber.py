@@ -58,6 +58,7 @@ logger = getLogger(__name__)
 class WhisperTranscriber(Transcriber):
     """Transcribes audio using Whisper."""
 
+    cache_dir_name = "whisper"
     backend_name = "whisper"
     """Stable backend name stored in cache metadata."""
 

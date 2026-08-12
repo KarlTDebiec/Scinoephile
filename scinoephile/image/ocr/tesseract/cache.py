@@ -25,7 +25,11 @@ class TesseractCache(OcrCacheBase[str]):
             overwrite: whether to replace matching cache files
         """
         super().__init__(
-            cache_root_path, "tesseract", "Tesseract OCR", _CACHE_VERSION, overwrite
+            cache_root_path,
+            "tesseract/results",
+            "Tesseract OCR",
+            _CACHE_VERSION,
+            overwrite,
         )
 
     def _deserialize(self, payload: object) -> str:

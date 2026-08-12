@@ -31,7 +31,7 @@ class PaddleCache(OcrCacheBase[list[PaddleOcrTextResult]]):
             overwrite: whether to replace matching cache files
         """
         super().__init__(
-            cache_root_path, "paddleocr", "PaddleOCR", _CACHE_VERSION, overwrite
+            cache_root_path, "paddle", "PaddleOCR", _CACHE_VERSION, overwrite
         )
 
     def _deserialize(self, payload: object) -> list[PaddleOcrTextResult]:

@@ -145,12 +145,14 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.recovery_transcriber is not None
     assert transcriber.tail_recovery_transcriber is not None
     assert not hasattr(transcriber.transcriber, "cache_root_path")
-    assert transcriber.transcriber._cache.cache_dir_path == tmp_path / "whisper"
+    assert transcriber.transcriber._cache.cache_dir_path == (
+        tmp_path / "audio/transcription/whisper"
+    )
     assert transcriber.recovery_transcriber._cache.cache_dir_path == (
-        tmp_path / "whisper"
+        tmp_path / "audio/transcription/whisper"
     )
     assert transcriber.tail_recovery_transcriber._cache.cache_dir_path == (
-        tmp_path / "whisper"
+        tmp_path / "audio/transcription/whisper"
     )
     assert transcriber.transcriber._cache.overwrite
     assert transcriber.recovery_transcriber._cache.overwrite
@@ -178,11 +180,11 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert not transcriber.aligner.punctuation_processor.prune_test_cases
     delineation_cache = transcriber.aligner.delineation_processor.queryer._cache
     assert delineation_cache is not None
-    assert delineation_cache.cache_dir_path == tmp_path / "llm" / "delineation"
+    assert delineation_cache.cache_dir_path == tmp_path / "llms" / "delineation"
     assert delineation_cache.overwrite
     punctuation_cache = transcriber.aligner.punctuation_processor.queryer._cache
     assert punctuation_cache is not None
-    assert punctuation_cache.cache_dir_path == tmp_path / "llm" / "punctuation"
+    assert punctuation_cache.cache_dir_path == tmp_path / "llms" / "punctuation"
     assert punctuation_cache.overwrite
 
 

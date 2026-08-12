@@ -7,14 +7,12 @@ from __future__ import annotations
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.cli.utility.cache import CacheCli
 from scinoephile.cli.utility.cache.cache_clear_cli import CacheClearCli
-from scinoephile.cli.utility.cache.cache_list_cli import CacheListCli
-from scinoephile.cli.utility.cache.cache_prune_cli import CachePruneCli
-from scinoephile.cli.utility.cache.cache_stats_cli import CacheStatsCli
+from scinoephile.cli.utility.cache.cache_inspect_cli import CacheInspectCli
 from scinoephile.cli.utility.utility_cli import UtilityCli
 from test.helpers import assert_cli_help
 
 
 def test_cache_subcommand_help():
     """Test cache subcommand help output."""
-    for cli_class in (CacheClearCli, CacheListCli, CachePruneCli, CacheStatsCli):
+    for cli_class in (CacheClearCli, CacheInspectCli):
         assert_cli_help((ScinoephileCli, UtilityCli, CacheCli, cli_class))

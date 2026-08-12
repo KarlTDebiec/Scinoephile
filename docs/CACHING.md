@@ -58,15 +58,15 @@ command-line name uses the shorter conventional spelling.
 ## Namespaces and entries
 
 Each cache appends its own stable namespace beneath the cache root. Group
-related namespaces under domain directories such as `llm/` and `media/` rather
+related namespaces under domain directories such as `llms/` and `media/` rather
 than flattening every cache into the root. Do not introduce marker files merely
 to declare namespaces.
 
 Cache inspection treats each direct child of a namespace as one independently
 removable entry. A directory entry may contain related files that must be kept
 or removed together. New grouped or nested namespace layouts must also be made
-discoverable by `scinoephile.core.cache.operations` so list, stats, prune, and
-clear commands agree with the owning cache.
+discoverable by `scinoephile.core.cache.operations` so inspect and clear agree
+with the owning cache.
 
 Keep namespace names and entry boundaries stable when possible. Layout changes
 should not cause one cache's maintenance operation to delete another cache's
@@ -134,10 +134,14 @@ Cache-producing CLIs should use the shared cache argument bundle, placing
 `--cache-dir` and `--cache-overwrite` in the `cache arguments` group. Cache
 directory help should display the resolved default cache root path.
 
-The cache list, stats, prune, and clear commands operate on namespace entry
-boundaries. Because pruning uses modification times, caches must touch valid
-hits as described above. Destructive maintenance commands should continue to
-support dry-run inspection and explicit confirmation.
+Cache inspection and namespace- or age-filtered clearing operate on registered
+namespace entry boundaries. Inspection shows compact statistics by default and
+individual entries when requested. An unfiltered `cache clear --all` instead
+removes every child beneath the cache root, including unregistered or legacy
+contents, while preserving the root itself. Configured cache roots must
+therefore not contain unrelated durable data. Caches must touch valid hits so
+age filtering reflects recent reuse. Destructive maintenance must support
+dry-run inspection, explicit scope, and confirmation.
 
 ## Tests
 
