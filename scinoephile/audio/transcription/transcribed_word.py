@@ -27,6 +27,10 @@ class TranscribedWord(BaseModel):
         description=("Mean VAD model score between this word and the following word."),
     )
     """Mean VAD model score in the following inter-word gap, when available."""
+    speaker: str | None = Field(
+        None, description="Anonymous source-wide diarization speaker label."
+    )
+    """Anonymous source-wide diarization speaker label, when available."""
     voice_activity_coverage: float | None = Field(
         None,
         ge=0,

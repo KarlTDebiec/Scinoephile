@@ -5,6 +5,6 @@
 Package hierarchy (modules may import from any above):
 * cache_namespace / samples
 * separation / vad
-* transcription
-* subtitles
+* diarization / transcription
+* speaker_assignment / subtitles
 """
