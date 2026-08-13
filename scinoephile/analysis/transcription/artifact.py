@@ -5,22 +5,22 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_validator
 
-from scinoephile.core import Language
+from scinoephile.core.language import Language
 from scinoephile.core.subtitles import Series, Subtitle
 
 __all__ = [
-    "SubtitleTimingSettings",
-    "TranscriptionAlignmentArtifact",
-    "TranscriptionAlignmentBlock",
-    "TranscriptionAlignmentColumn",
-    "TranscriptionAlignmentRow",
-    "TranscriptionAlignmentSource",
-    "TranscriptionAlignmentSubtitle",
-    "TranscriptionTimingSource",
+    "AlignmentArtifact",
+    "AlignmentBlock",
+    "AlignmentColumn",
+    "AlignmentRow",
+    "AlignmentSource",
+    "AlignmentSubtitle",
+    "TimingSettings",
+    "TimingSource",
 ]
 
 _GAP_CHARACTER = "　"
@@ -31,17 +31,17 @@ _SPEAKER_CHARACTERS = frozenset(
     {_GAP_CHARACTER, _PAUSE_CHARACTER, _SPEECH_CHARACTER}
     | {chr(ord("Ａ") + index) for index in range(26)}
 )
+_NonBlankString = Annotated[str, StringConstraints(min_length=1, strip_whitespace=True)]
+"""String normalized by trimming whitespace and rejecting blank values."""
 
-TranscriptionTimingSource = Literal[
-    "ctc-request", "ctc-unconsumed-block", "source", "unknown"
-]
+TimingSource = Literal["ctc-request", "ctc-unconsumed-block", "source"]
 """Origin of one final subtitle's speech timing."""
 
 
-class SubtitleTimingSettings(BaseModel):
+class TimingSettings(BaseModel):
     """Settings that convert speech bounds into nonoverlapping display bounds."""
 
-    model_config = ConfigDict(extra="forbid", frozen=True)
+    model_config = ConfigDict(allow_inf_nan=False, extra="forbid", frozen=True)
 
     lead_in_seconds: float = Field(default=0.25, ge=0.0)
     """Preferred display time before CTC-estimated speech begins."""
@@ -51,20 +51,20 @@ class SubtitleTimingSettings(BaseModel):
     """Preferred minimum subtitle display duration."""
 
 
-class TranscriptionAlignmentSource(BaseModel):
+class AlignmentSource(BaseModel):
     """One ASR source participating in every block alignment."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    name: str = Field(min_length=1)
+    name: _NonBlankString
     """Stable source name used as the alignment row label."""
-    backend: str = Field(min_length=1)
+    backend: _NonBlankString
     """Transcription backend implementation name."""
-    model: str = Field(min_length=1)
+    model: _NonBlankString
     """Backend-specific model identifier."""
 
 
-class TranscriptionAlignmentColumn(BaseModel):
+class AlignmentColumn(BaseModel):
     """Overall-time interval represented by one alignment column."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
@@ -79,7 +79,7 @@ class TranscriptionAlignmentColumn(BaseModel):
     """Whether the column contains lexical evidence or a shared timed pause."""
 
     @model_validator(mode="after")
-    def _validate_timing(self) -> TranscriptionAlignmentColumn:
+    def _validate_timing(self) -> AlignmentColumn:
         """Validate the overall-time interval."""
         if self.end_ms < self.start_ms:
             raise ValueError("Alignment column end must not precede its start.")
@@ -88,18 +88,18 @@ class TranscriptionAlignmentColumn(BaseModel):
         return self
 
 
-class TranscriptionAlignmentRow(BaseModel):
+class AlignmentRow(BaseModel):
     """One equal-width ASR row in a transcription alignment block."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    name: str = Field(min_length=1)
+    name: _NonBlankString
     """Stable source name matching an artifact source descriptor."""
     text: str = Field(min_length=1)
     """Aligned characters, fullwidth gaps, and shared pause markers."""
 
 
-class TranscriptionAlignmentSubtitle(BaseModel):
+class AlignmentSubtitle(BaseModel):
     """One merged subtitle with speech and display timing kept separately."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
@@ -112,20 +112,20 @@ class TranscriptionAlignmentSubtitle(BaseModel):
     """Inclusive CTC-estimated speech start on the complete source timeline."""
     speech_end_ms: int = Field(ge=0)
     """Exclusive CTC-estimated speech end on the complete source timeline."""
-    timing_source: TranscriptionTimingSource = "unknown"
-    """Origin of the speech interval, or unknown for legacy artifacts."""
+    timing_source: TimingSource
+    """Origin of the speech interval."""
     start_ms: int = Field(ge=0)
     """Inclusive final SRT display start."""
     end_ms: int = Field(ge=0)
     """Exclusive final SRT display end."""
-    speaker: str | None = None
+    speaker: _NonBlankString | None = None
     """Anonymous diarization label assigned to the subtitle, when available."""
 
     @model_validator(mode="after")
-    def _validate_timing(self) -> TranscriptionAlignmentSubtitle:
+    def _validate_timing(self) -> AlignmentSubtitle:
         """Validate speech and display intervals."""
-        if self.speech_end_ms < self.speech_start_ms:
-            raise ValueError("Subtitle speech end must not precede its start.")
+        if self.speech_end_ms <= self.speech_start_ms:
+            raise ValueError("Subtitle speech duration must be positive.")
         if self.end_ms <= self.start_ms:
             raise ValueError("Subtitle display duration must be positive.")
         if self.start_ms > self.speech_start_ms:
@@ -135,7 +135,7 @@ class TranscriptionAlignmentSubtitle(BaseModel):
         return self
 
 
-class TranscriptionAlignmentBlock(BaseModel):
+class AlignmentBlock(BaseModel):
     """One VAD-derived block of aligned ASR, speaker, and merged evidence."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
@@ -150,9 +150,9 @@ class TranscriptionAlignmentBlock(BaseModel):
     """Inclusive start of the ASR input interval."""
     buffered_end_ms: int = Field(ge=0)
     """Exclusive end of the ASR input interval."""
-    columns: tuple[TranscriptionAlignmentColumn, ...]
+    columns: tuple[AlignmentColumn, ...]
     """Overall-time alignment column metadata."""
-    rows: tuple[TranscriptionAlignmentRow, ...]
+    rows: tuple[AlignmentRow, ...]
     """Source rows in artifact source order."""
     speaker: str
     """Speaker/VAD annotation row aligned with all source rows."""
@@ -166,18 +166,76 @@ class TranscriptionAlignmentBlock(BaseModel):
     """Independent FireRed music annotation row, when available."""
     merged: str
     """Lexical merged row aligned with all source rows."""
-    subtitles: tuple[TranscriptionAlignmentSubtitle, ...]
+    subtitles: tuple[AlignmentSubtitle, ...]
     """Core-owned merged subtitles produced from this block."""
     source_errors: dict[str, str] = Field(default_factory=dict)
     """Source failures that were tolerated while processing the block."""
 
-    @model_validator(mode="after")
-    def _validate_shape(self) -> TranscriptionAlignmentBlock:
-        """Validate block ranges, column indexes, and row widths."""
-        self._validate_ranges()
-        self._validate_rows()
-        self._validate_annotations()
-        return self
+    def _validate_annotation_characters(self) -> None:
+        """Validate speaker, language, singing, and music row characters."""
+        if any(character not in _SPEAKER_CHARACTERS for character in self.speaker):
+            raise ValueError("Alignment speaker row contains an invalid character.")
+        if any(
+            len(symbol) != 1
+            or symbol in {_GAP_CHARACTER, _PAUSE_CHARACTER}
+            or not label.strip()
+            for symbol, label in self.language_legend.items()
+        ):
+            raise ValueError(
+                "Alignment language legend must map nonreserved characters to labels."
+            )
+        if self.language_trace is None and self.language_legend:
+            raise ValueError("Alignment language legend requires a language row.")
+        if self.language_trace is not None and any(
+            character not in {_GAP_CHARACTER, _PAUSE_CHARACTER}
+            and character not in self.language_legend
+            for character in self.language_trace
+        ):
+            raise ValueError("Alignment language row contains an unknown character.")
+        for name, annotation, marker in (
+            ("singing", self.singing_trace, "唱"),
+            ("music", self.music_trace, "樂"),
+        ):
+            if annotation is not None and any(
+                character not in {_GAP_CHARACTER, _PAUSE_CHARACTER, marker}
+                for character in annotation
+            ):
+                raise ValueError(f"Alignment {name} row contains an invalid character.")
+
+    def _validate_annotations(self) -> None:
+        """Validate production-only annotations and shared pause columns."""
+        self._validate_annotation_characters()
+        if _REFERENCE_BOUNDARY_CHARACTER in self.merged or any(
+            _REFERENCE_BOUNDARY_CHARACTER in row.text for row in self.rows
+        ):
+            raise ValueError(
+                "Production alignment rows must not contain reference boundaries."
+            )
+        self._validate_pause_columns()
+
+    def _validate_pause_columns(self) -> None:
+        """Validate that timed pauses are shared by every present row."""
+        for column_idx, column in enumerate(self.columns):
+            characters = [
+                self.speaker[column_idx],
+                self.merged[column_idx],
+                *(row.text[column_idx] for row in self.rows),
+                *(
+                    annotation[column_idx]
+                    for annotation in (
+                        self.language_trace,
+                        self.singing_trace,
+                        self.music_trace,
+                    )
+                    if annotation is not None
+                ),
+            ]
+            if column.kind == "pause" and any(
+                character != _PAUSE_CHARACTER for character in characters
+            ):
+                raise ValueError("Alignment pause columns must be shared by every row.")
+            if column.kind != "pause" and _PAUSE_CHARACTER in characters:
+                raise ValueError("Alignment pause markers require a pause column.")
 
     def _validate_ranges(self) -> None:
         """Validate core, buffer, and column ranges."""
@@ -196,6 +254,12 @@ class TranscriptionAlignmentBlock(BaseModel):
             range(1, len(self.columns) + 1)
         ):
             raise ValueError("Alignment column indexes must be consecutive.")
+        if any(
+            column.start_ms < self.buffered_start_ms
+            or column.end_ms > self.buffered_end_ms
+            for column in self.columns
+        ):
+            raise ValueError("Alignment columns must lie within the block buffer.")
 
     def _validate_rows(self) -> None:
         """Validate aligned row widths, names, and source errors."""
@@ -223,73 +287,16 @@ class TranscriptionAlignmentBlock(BaseModel):
                 "Alignment source errors must have nonblank names and text."
             )
 
-    def _validate_annotations(self) -> None:
-        """Validate production-only annotations and shared pause columns."""
-        self._validate_annotation_characters()
-        if _REFERENCE_BOUNDARY_CHARACTER in self.merged or any(
-            _REFERENCE_BOUNDARY_CHARACTER in row.text for row in self.rows
-        ):
-            raise ValueError(
-                "Production alignment rows must not contain reference boundaries."
-            )
-        self._validate_pause_columns()
-
-    def _validate_annotation_characters(self) -> None:
-        """Validate speaker, language, singing, and music row characters."""
-        if any(character not in _SPEAKER_CHARACTERS for character in self.speaker):
-            raise ValueError("Alignment speaker row contains an invalid character.")
-        if any(
-            len(symbol) != 1 or not label.strip()
-            for symbol, label in self.language_legend.items()
-        ):
-            raise ValueError("Alignment language legend must map characters to labels.")
-        if self.language_trace is None and self.language_legend:
-            raise ValueError("Alignment language legend requires a language row.")
-        if self.language_trace is not None and any(
-            character not in {_GAP_CHARACTER, _PAUSE_CHARACTER}
-            and character not in self.language_legend
-            for character in self.language_trace
-        ):
-            raise ValueError("Alignment language row contains an unknown character.")
-        for name, annotation, marker in (
-            ("singing", self.singing_trace, "唱"),
-            ("music", self.music_trace, "樂"),
-        ):
-            if annotation is not None and any(
-                character not in {_GAP_CHARACTER, _PAUSE_CHARACTER, marker}
-                for character in annotation
-            ):
-                raise ValueError(f"Alignment {name} row contains an invalid character.")
-
-    def _validate_pause_columns(self) -> None:
-        """Validate that timed pauses are shared by every present row."""
-        for column_idx, column in enumerate(self.columns):
-            if column.kind != "pause":
-                continue
-            if (
-                self.speaker[column_idx] != _PAUSE_CHARACTER
-                or self.merged[column_idx] != _PAUSE_CHARACTER
-            ):
-                raise ValueError(
-                    "Alignment pause columns must be shared by annotation rows."
-                )
-            if any(row.text[column_idx] != _PAUSE_CHARACTER for row in self.rows):
-                raise ValueError("Alignment pause columns must be shared by ASR rows.")
-            for annotation in (
-                self.language_trace,
-                self.singing_trace,
-                self.music_trace,
-            ):
-                if (
-                    annotation is not None
-                    and annotation[column_idx] != _PAUSE_CHARACTER
-                ):
-                    raise ValueError(
-                        "Alignment pause columns must be shared by annotation rows."
-                    )
+    @model_validator(mode="after")
+    def _validate_shape(self) -> AlignmentBlock:
+        """Validate block ranges, column indexes, and row widths."""
+        self._validate_ranges()
+        self._validate_rows()
+        self._validate_annotations()
+        return self
 
 
-class TranscriptionAlignmentArtifact(BaseModel):
+class AlignmentArtifact(BaseModel):
     """Portable versioned record of a multi-source transcription run."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
@@ -298,7 +305,7 @@ class TranscriptionAlignmentArtifact(BaseModel):
         "scinoephile-transcription-alignment"
     )
     """Stable artifact format identifier."""
-    version: Literal[2, 3] = 3
+    version: Literal[3] = 3
     """Artifact schema version."""
     language: Language
     """Language of the ASR rows and merged subtitles."""
@@ -314,41 +321,55 @@ class TranscriptionAlignmentArtifact(BaseModel):
     """Nominal duration represented by one shared pause column."""
     request_pause_columns: int = Field(default=4, gt=0)
     """Consecutive pause columns that divide independent merge requests."""
-    timing: SubtitleTimingSettings = Field(default_factory=SubtitleTimingSettings)
+    timing: TimingSettings = Field(default_factory=TimingSettings)
     """Reference-free policy used to convert speech timing to display timing."""
-    sources: tuple[TranscriptionAlignmentSource, ...]
+    sources: tuple[AlignmentSource, ...]
     """ASR sources in stable alignment row order."""
-    blocks: tuple[TranscriptionAlignmentBlock, ...]
+    blocks: tuple[AlignmentBlock, ...]
     """Processed VAD blocks in source order."""
 
-    @model_validator(mode="after")
-    def _validate_document(self) -> TranscriptionAlignmentArtifact:
-        """Validate source identity and ordered block contents."""
-        source_names = self._validate_sources()
-        previous_block_index = 0
-        previous_core_end_ms = -1
-        subtitle_state = (0, -1, -1)
-        for block in self.blocks:
-            self._validate_block(
-                block, source_names, previous_block_index, previous_core_end_ms
-            )
-            subtitle_state = self._validate_subtitles(block, *subtitle_state)
-            previous_block_index = block.index
-            previous_core_end_ms = block.core_end_ms
-        return self
+    def get_series(self) -> Series:
+        """Get the artifact's merged subtitles as a subtitle series.
 
-    def _validate_sources(self) -> tuple[str, ...]:
-        """Validate and return the stable source-name order."""
-        if len(self.sources) < 2:
-            raise ValueError("Transcription alignments require at least two sources.")
-        source_names = tuple(source.name for source in self.sources)
-        if len(set(source_names)) != len(source_names):
-            raise ValueError("Transcription alignment source names must be unique.")
-        return source_names
+        Returns:
+            merged subtitle series using final display timings
+        """
+        return Series(
+            events=[
+                Subtitle(
+                    start=subtitle.start_ms,
+                    end=subtitle.end_ms,
+                    text=subtitle.text,
+                    name=subtitle.speaker or "",
+                )
+                for block in self.blocks
+                for subtitle in block.subtitles
+            ]
+        )
+
+    def save(self, path: Path):
+        """Save the artifact as canonical UTF-8 JSON.
+
+        Arguments:
+            path: output JSON path
+        """
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(self.model_dump_json(indent=2) + "\n", encoding="utf-8")
+
+    @classmethod
+    def load(cls, path: Path) -> AlignmentArtifact:
+        """Load and validate an alignment artifact.
+
+        Arguments:
+            path: JSON artifact path
+        Returns:
+            validated alignment artifact
+        """
+        return cls.model_validate_json(path.read_text(encoding="utf-8"))
 
     def _validate_block(
         self,
-        block: TranscriptionAlignmentBlock,
+        block: AlignmentBlock,
         source_names: tuple[str, ...],
         previous_block_index: int,
         previous_core_end_ms: int,
@@ -382,9 +403,18 @@ class TranscriptionAlignmentArtifact(BaseModel):
                 "Every absent alignment source must have one source error."
             )
 
+    def _validate_sources(self) -> tuple[str, ...]:
+        """Validate and return the stable source-name order."""
+        if len(self.sources) < 2:
+            raise ValueError("Transcription alignments require at least two sources.")
+        source_names = tuple(source.name for source in self.sources)
+        if len(set(source_names)) != len(source_names):
+            raise ValueError("Transcription alignment source names must be unique.")
+        return source_names
+
     def _validate_subtitles(
         self,
-        block: TranscriptionAlignmentBlock,
+        block: AlignmentBlock,
         previous_subtitle_index: int,
         previous_speech_end_ms: int,
         previous_display_end_ms: int,
@@ -426,41 +456,18 @@ class TranscriptionAlignmentArtifact(BaseModel):
             previous_display_end_ms,
         )
 
-    @classmethod
-    def load(cls, path: Path) -> TranscriptionAlignmentArtifact:
-        """Load and validate an alignment artifact.
-
-        Arguments:
-            path: JSON artifact path
-        Returns:
-            validated alignment artifact
-        """
-        return cls.model_validate_json(path.read_text(encoding="utf-8"))
-
-    def get_series(self) -> Series:
-        """Get the artifact's merged subtitles as a subtitle series.
-
-        Returns:
-            merged subtitle series using final display timings
-        """
-        return Series(
-            events=[
-                Subtitle(
-                    start=subtitle.start_ms,
-                    end=subtitle.end_ms,
-                    text=subtitle.text,
-                    name=subtitle.speaker or "",
-                )
-                for block in self.blocks
-                for subtitle in block.subtitles
-            ]
-        )
-
-    def save(self, path: Path):
-        """Save the artifact as canonical UTF-8 JSON.
-
-        Arguments:
-            path: output JSON path
-        """
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(self.model_dump_json(indent=2) + "\n", encoding="utf-8")
+    @model_validator(mode="after")
+    def _validate_document(self) -> AlignmentArtifact:
+        """Validate source identity and ordered block contents."""
+        source_names = self._validate_sources()
+        previous_block_index = 0
+        previous_core_end_ms = -1
+        subtitle_state = (0, -1, -1)
+        for block in self.blocks:
+            self._validate_block(
+                block, source_names, previous_block_index, previous_core_end_ms
+            )
+            subtitle_state = self._validate_subtitles(block, *subtitle_state)
+            previous_block_index = block.index
+            previous_core_end_ms = block.core_end_ms
+        return self

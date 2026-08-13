@@ -3,7 +3,7 @@
 """Alignment, comparison, and auditing tools.
 
 Package hierarchy (modules may import from any above):
-* alignment / transcription_alignment
+* alignment
 * diff
-* audit / character_error_rate / transcription_timing
+* audit / character_error_rate / transcription
 """

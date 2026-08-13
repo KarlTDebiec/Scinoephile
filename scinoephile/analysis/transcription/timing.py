@@ -4,28 +4,27 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
+from math import isfinite
 
+from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.core.subtitles import Series, Subtitle
 
-from .diff import SeriesDiff
-from .transcription_alignment import (
-    SubtitleTimingSettings,
-    TranscriptionAlignmentArtifact,
-)
+from .artifact import AlignmentArtifact, TimingSettings
 
 __all__ = [
-    "TranscriptionTimingMetrics",
-    "TranscriptionTimingPair",
-    "evaluate_transcription_timing",
+    "TimingMetrics",
+    "TimingPair",
+    "evaluate_timing",
     "get_display_intervals",
     "get_reference_for_alignment",
-    "get_transcription_alignment_with_timing",
+    "retime_alignment",
 ]
 
 
 @dataclass(frozen=True, slots=True)
-class TranscriptionTimingPair:
+class TimingPair:
     """One text-aligned candidate/reference timing comparison."""
 
     candidate_indexes: tuple[int, ...]
@@ -44,6 +43,11 @@ class TranscriptionTimingPair:
     """Duration shared by candidate and reference display intervals."""
     union_ms: int
     """Duration covered by either display interval."""
+
+    @property
+    def end_error_ms(self) -> int:
+        """Get candidate end minus reference end."""
+        return self.candidate_end_ms - self.reference_end_ms
 
     @property
     def intersection_over_union(self) -> float:
@@ -65,24 +69,40 @@ class TranscriptionTimingPair:
         """Get candidate start minus reference start."""
         return self.candidate_start_ms - self.reference_start_ms
 
-    @property
-    def end_error_ms(self) -> int:
-        """Get candidate end minus reference end."""
-        return self.candidate_end_ms - self.reference_end_ms
-
 
 @dataclass(frozen=True, slots=True)
-class TranscriptionTimingMetrics:
+class TimingMetrics:
     """Aggregate timing metrics for text-aligned subtitle groups."""
 
-    settings: SubtitleTimingSettings
+    settings: TimingSettings
     """Reference-free timing settings under evaluation."""
-    pairs: tuple[TranscriptionTimingPair, ...]
+    pairs: tuple[TimingPair, ...]
     """Text-aligned candidate/reference timing groups."""
     unmatched_candidate_subtitles: int
     """Candidate subtitles that could not be paired with reference text."""
     unmatched_reference_subtitles: int
     """Reference subtitles that could not be paired with candidate text."""
+
+    @property
+    def mean_absolute_end_error_ms(self) -> float:
+        """Get mean absolute display-end error."""
+        if not self.pairs:
+            return 0.0
+        return sum(abs(pair.end_error_ms) for pair in self.pairs) / len(self.pairs)
+
+    @property
+    def mean_absolute_start_error_ms(self) -> float:
+        """Get mean absolute display-start error."""
+        if not self.pairs:
+            return 0.0
+        return sum(abs(pair.start_error_ms) for pair in self.pairs) / len(self.pairs)
+
+    @property
+    def mean_end_error_ms(self) -> float:
+        """Get mean signed display-end error."""
+        if not self.pairs:
+            return 0.0
+        return sum(pair.end_error_ms for pair in self.pairs) / len(self.pairs)
 
     @property
     def mean_intersection_over_union(self) -> float:
@@ -94,43 +114,11 @@ class TranscriptionTimingMetrics:
         )
 
     @property
-    def micro_intersection_over_union(self) -> float:
-        """Get duration-weighted temporal intersection over union."""
-        union_ms = sum(pair.union_ms for pair in self.pairs)
-        if union_ms == 0:
-            return 0.0
-        return sum(pair.intersection_ms for pair in self.pairs) / union_ms
-
-    @property
-    def one_to_one_pairs(self) -> tuple[TranscriptionTimingPair, ...]:
-        """Get pairs containing exactly one candidate and one reference subtitle."""
-        return tuple(
-            pair
-            for pair in self.pairs
-            if len(pair.candidate_indexes) == len(pair.reference_indexes) == 1
-        )
-
-    @property
-    def one_to_one_micro_intersection_over_union(self) -> float:
-        """Get duration-weighted temporal IoU for unambiguous subtitle pairs."""
-        union_ms = sum(pair.union_ms for pair in self.one_to_one_pairs)
-        if union_ms == 0:
-            return 0.0
-        return sum(pair.intersection_ms for pair in self.one_to_one_pairs) / union_ms
-
-    @property
     def mean_reference_coverage(self) -> float:
         """Get the mean fraction of reference display time covered."""
         if not self.pairs:
             return 0.0
         return sum(pair.reference_coverage for pair in self.pairs) / len(self.pairs)
-
-    @property
-    def mean_absolute_start_error_ms(self) -> float:
-        """Get mean absolute display-start error."""
-        if not self.pairs:
-            return 0.0
-        return sum(abs(pair.start_error_ms) for pair in self.pairs) / len(self.pairs)
 
     @property
     def mean_start_error_ms(self) -> float:
@@ -140,25 +128,37 @@ class TranscriptionTimingMetrics:
         return sum(pair.start_error_ms for pair in self.pairs) / len(self.pairs)
 
     @property
-    def mean_absolute_end_error_ms(self) -> float:
-        """Get mean absolute display-end error."""
-        if not self.pairs:
+    def micro_intersection_over_union(self) -> float:
+        """Get duration-weighted temporal intersection over union."""
+        union_ms = sum(pair.union_ms for pair in self.pairs)
+        if union_ms == 0:
             return 0.0
-        return sum(abs(pair.end_error_ms) for pair in self.pairs) / len(self.pairs)
+        return sum(pair.intersection_ms for pair in self.pairs) / union_ms
 
     @property
-    def mean_end_error_ms(self) -> float:
-        """Get mean signed display-end error."""
-        if not self.pairs:
+    def one_to_one_micro_intersection_over_union(self) -> float:
+        """Get duration-weighted temporal IoU for unambiguous subtitle pairs."""
+        pairs = self.one_to_one_pairs
+        union_ms = sum(pair.union_ms for pair in pairs)
+        if union_ms == 0:
             return 0.0
-        return sum(pair.end_error_ms for pair in self.pairs) / len(self.pairs)
+        return sum(pair.intersection_ms for pair in pairs) / union_ms
+
+    @property
+    def one_to_one_pairs(self) -> tuple[TimingPair, ...]:
+        """Get pairs containing exactly one candidate and one reference subtitle."""
+        return tuple(
+            pair
+            for pair in self.pairs
+            if len(pair.candidate_indexes) == len(pair.reference_indexes) == 1
+        )
 
 
-def evaluate_transcription_timing(
-    artifact: TranscriptionAlignmentArtifact,
+def evaluate_timing(
+    artifact: AlignmentArtifact,
     reference: Series,
-    settings: SubtitleTimingSettings | None = None,
-) -> TranscriptionTimingMetrics:
+    settings: TimingSettings | None = None,
+) -> TimingMetrics:
     """Evaluate an artifact's speech timing under display-timing settings.
 
     Text alignment pairs the independently generated candidate and reference.
@@ -195,7 +195,7 @@ def evaluate_transcription_timing(
                 candidate, selected_reference, candidate_indexes, reference_indexes
             )
         )
-    return TranscriptionTimingMetrics(
+    return TimingMetrics(
         settings=settings,
         pairs=tuple(pairs),
         unmatched_candidate_subtitles=len(unmatched_candidate_indexes),
@@ -204,9 +204,9 @@ def evaluate_transcription_timing(
 
 
 def get_display_intervals(
-    speech_intervals: list[tuple[float, float]],
+    speech_intervals: Sequence[tuple[float, float]],
     audio_duration_seconds: float,
-    settings: SubtitleTimingSettings | None = None,
+    settings: TimingSettings | None = None,
 ) -> list[tuple[float, float]]:
     """Pad speech intervals into neighboring silence without overlap.
 
@@ -219,15 +219,17 @@ def get_display_intervals(
     Raises:
         ValueError: if source duration or speech timing is invalid
     """
-    if audio_duration_seconds <= 0.0:
-        raise ValueError("Audio duration must be positive.")
+    if not isfinite(audio_duration_seconds) or audio_duration_seconds <= 0.0:
+        raise ValueError("Audio duration must be finite and positive.")
     if settings is None:
-        settings = SubtitleTimingSettings()
+        settings = TimingSettings()
     if not speech_intervals:
         return []
 
     previous_end = -1.0
     for start_seconds, end_seconds in speech_intervals:
+        if not isfinite(start_seconds) or not isfinite(end_seconds):
+            raise ValueError("Merged subtitle speech timing must be finite.")
         if end_seconds <= start_seconds:
             raise ValueError("Merged subtitle speech duration must be positive.")
         if start_seconds < previous_end:
@@ -276,7 +278,7 @@ def get_display_intervals(
 
 
 def get_reference_for_alignment(
-    artifact: TranscriptionAlignmentArtifact, reference: Series
+    artifact: AlignmentArtifact, reference: Series
 ) -> Series:
     """Select reference subtitles owned by the artifact's VAD block cores.
 
@@ -301,9 +303,9 @@ def get_reference_for_alignment(
     )
 
 
-def get_transcription_alignment_with_timing(
-    artifact: TranscriptionAlignmentArtifact, settings: SubtitleTimingSettings
-) -> TranscriptionAlignmentArtifact:
+def retime_alignment(
+    artifact: AlignmentArtifact, settings: TimingSettings
+) -> AlignmentArtifact:
     """Recalculate artifact display bounds from fixed CTC speech bounds.
 
     Arguments:
@@ -346,19 +348,19 @@ def get_transcription_alignment_with_timing(
             ),
         }
     )
-    return TranscriptionAlignmentArtifact.model_validate(updated.model_dump())
+    return AlignmentArtifact.model_validate(updated.model_dump())
 
 
 def _get_candidate_series(
-    artifact: TranscriptionAlignmentArtifact, settings: SubtitleTimingSettings | None
+    artifact: AlignmentArtifact, settings: TimingSettings | None
 ) -> Series:
     """Get candidate subtitles using stored or recalculated display timing."""
     if settings is None:
         return artifact.get_series()
-    return get_transcription_alignment_with_timing(artifact, settings).get_series()
+    return retime_alignment(artifact, settings).get_series()
 
 
-def _get_speech_series(artifact: TranscriptionAlignmentArtifact) -> Series:
+def _get_speech_series(artifact: AlignmentArtifact) -> Series:
     """Get merged text at immutable CTC speech bounds for evaluation pairing."""
     return Series(
         events=[
@@ -378,7 +380,7 @@ def _get_timing_pair(
     reference: Series,
     candidate_indexes: tuple[int, ...],
     reference_indexes: tuple[int, ...],
-) -> TranscriptionTimingPair:
+) -> TimingPair:
     """Get overlap metrics for one text-aligned group."""
     candidate_start_ms = min(candidate[index].start for index in candidate_indexes)
     candidate_end_ms = max(candidate[index].end for index in candidate_indexes)
@@ -392,7 +394,7 @@ def _get_timing_pair(
     union_ms = max(candidate_end_ms, reference_end_ms) - min(
         candidate_start_ms, reference_start_ms
     )
-    return TranscriptionTimingPair(
+    return TimingPair(
         candidate_indexes=tuple(index + 1 for index in candidate_indexes),
         reference_indexes=tuple(index + 1 for index in reference_indexes),
         candidate_start_ms=candidate_start_ms,
