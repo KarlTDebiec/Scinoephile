@@ -13,6 +13,7 @@ from dataclasses import replace
 from pathlib import Path
 from textwrap import dedent
 from types import SimpleNamespace
+from typing import cast
 from unittest.mock import Mock
 
 from pydub import AudioSegment
@@ -97,7 +98,7 @@ def _get_cache_path(transcriber: WhisperTranscriber, audio: AudioSegment) -> Pat
     """Get the cache path for the transcriber's first preprocessing settings."""
     settings = transcriber._get_preprocessing_settings()[0]
     cache_path = transcriber._cache.get_path(
-        audio, transcriber._get_cache_metadata(audio, settings)
+        audio, transcriber._get_cache_identity(audio, settings)
     )
     return cache_path
 
@@ -242,7 +243,7 @@ def test_get_cache_path_separates_configuration(
 
 
 def test_get_cache_path_separates_audio_formats(tmp_path: Path):
-    """Test Whisper cache paths include audio format metadata."""
+    """Test Whisper cache paths include audio format identity."""
     raw_data = b"\0\1" * 100
     first_audio = AudioSegment(
         data=raw_data, sample_width=2, frame_rate=16000, channels=1
@@ -322,11 +323,16 @@ def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
 
     assert len(cache_paths) == 5
     settings = first_fallback._get_preprocessing_settings()[0]
-    metadata = first_fallback._get_cache_metadata(audio, settings)
-    assert metadata["timestamp_fallback"] == "ctc"
-    assert metadata["timestamp_fallback_language"] == "yue-Hant"
-    assert metadata["timestamp_fallback_model_name"] == "ctc/test-model"
-    assert metadata["timestamp_fallback_model_revision"] is None
+    cache_identity = first_fallback._get_cache_identity(audio, settings)
+    assert cache_identity["timestamp_fallback"] == "ctc"
+    assert cache_identity["timestamp_fallback_language"] == "yue-Hant"
+    assert cache_identity["timestamp_fallback_model_name"] == "ctc/test-model"
+    assert cache_identity["timestamp_fallback_model_revision"] is None
+    runtime_identity = cast(Mapping[str, Mapping[str, str]], cache_identity["runtime"])
+    assert runtime_identity["openai_whisper"]["distribution"] == ("openai-whisper")
+    assert runtime_identity["whisper_timestamped"]["distribution"] == (
+        "whisper-timestamped"
+    )
 
 
 def test_transcribe_forwards_recovery_decoding_options(

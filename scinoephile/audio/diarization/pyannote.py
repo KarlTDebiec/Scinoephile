@@ -128,8 +128,8 @@ class PyannoteDiarizer:
             SpeakerDiarizationDependencyError: if optional dependencies are missing
             SpeakerDiarizationInferenceError: if loading or inference fails
         """
-        metadata = self.cache_identity
-        cached_result = self._cache.load(audio, metadata)
+        cache_identity = self.cache_identity
+        cached_result = self._cache.load(audio, cache_identity)
         if cached_result is not None:
             return cached_result
 
@@ -169,7 +169,7 @@ class PyannoteDiarizer:
                 f"pyannote speaker diarization failed: {exc}"
             ) from exc
 
-        self._cache.save(audio, metadata, result)
+        self._cache.save(audio, cache_identity, result)
         return result
 
     @property

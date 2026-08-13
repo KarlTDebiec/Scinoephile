@@ -815,8 +815,14 @@ def test_queryer_cache_is_namespaced_by_provider_implementation(tmp_path):
         _TestCase, provider=_AlternateRecordingProvider(), cache_root_path=tmp_path
     )
 
-    cache_path_one = queryer_one._get_cache_path("system", "tools", "query")
-    cache_path_two = queryer_two._get_cache_path("system", "tools", "query")
+    assert queryer_one._cache is not None
+    assert queryer_two._cache is not None
+    cache_path_one = queryer_one._cache.get_path(
+        queryer_one._get_cache_identity(), "system", "[]", '{"query":"value"}'
+    )
+    cache_path_two = queryer_two._cache.get_path(
+        queryer_two._get_cache_identity(), "system", "[]", '{"query":"value"}'
+    )
 
     assert cache_path_one is not None
     assert cache_path_two is not None
@@ -852,7 +858,13 @@ def test_cache_path_does_not_retain_queryer(tmp_path):
         _TestCase, provider=_RecordingProvider(), cache_root_path=tmp_path
     )
     queryer_ref = ref(queryer)
-    assert queryer._get_cache_path("system", "tools", "query") is not None
+    assert queryer._cache is not None
+    assert (
+        queryer._cache.get_path(
+            queryer._get_cache_identity(), "system", "[]", '{"query":"value"}'
+        )
+        is not None
+    )
 
     del queryer
     gc.collect()

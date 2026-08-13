@@ -26,6 +26,7 @@ from scinoephile.audio.transcription.transcribed_segment import TranscribedSegme
 from scinoephile.audio.transcription.transcriber import Transcriber
 from scinoephile.audio.vad import VoiceActivityDetector, VoiceActivityTrace
 from scinoephile.common.file import get_temp_file_path
+from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.transcription import (
     import_huggingface_hub,
     import_huggingface_hub_utils,
@@ -70,7 +71,7 @@ class WhisperTranscriber(Transcriber):
     """Registered namespace for cached Whisper output."""
 
     backend_name = "whisper"
-    """Stable backend name stored in cache metadata."""
+    """Stable backend name stored in cache identities."""
 
     backend_label = "Whisper"
     """Human-readable backend name used in log messages."""
@@ -449,10 +450,10 @@ class WhisperTranscriber(Transcriber):
             prefix.end = prefix_words[-1].end
         return prefix
 
-    def _get_backend_cache_metadata(
+    def _get_backend_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> dict[str, object]:
-        """Get cache metadata identifying configured Whisper output.
+        """Get the cache identity for configured Whisper output.
 
         Arguments:
             audio: audio whose properties may affect backend behavior
@@ -463,15 +464,19 @@ class WhisperTranscriber(Transcriber):
         temperature: object = self.temperature
         if not isinstance(self.temperature, int | float):
             temperature = list(self.temperature)
-        metadata: dict[str, object] = {
+        cache_identity: dict[str, object] = {
             "condition_on_previous_text": self.condition_on_previous_text,
             "language": self._whisper_language,
             "model_name": self.model_name,
             "model_revision": self.model.model_revision,
+            "runtime": {
+                "openai_whisper": get_distribution_identity("openai-whisper"),
+                "whisper_timestamped": get_distribution_identity("whisper-timestamped"),
+            },
             "temperature": temperature,
         }
         if self.ctc_aligner is not None:
-            metadata.update(
+            cache_identity.update(
                 {
                     "timestamp_fallback": "ctc",
                     "timestamp_fallback_language": self.ctc_aligner.language.code,
@@ -481,7 +486,7 @@ class WhisperTranscriber(Transcriber):
                     ),
                 }
             )
-        return metadata
+        return cache_identity
 
     def _prepare_cached_segments(
         self,

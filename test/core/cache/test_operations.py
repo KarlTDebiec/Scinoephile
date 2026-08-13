@@ -235,7 +235,7 @@ def test_clear_cache_all_removes_cache_root_contents(tmp_path: Path):
     external_path = write_cache_file(tmp_path / "huggingface/hub/model/data.json")
     root_file_path = write_cache_file(tmp_path / "root.json")
 
-    deleted_entries = clear_cache(tmp_path, _CACHE_REGISTRY, all_namespaces=True)
+    deleted_entries = clear_cache(tmp_path, _CACHE_REGISTRY, entire_cache=True)
 
     assert [entry.relative_path for entry in deleted_entries] == [
         Path("huggingface"),
@@ -257,7 +257,7 @@ def test_clear_cache_all_dry_run_preserves_cache_root_contents(tmp_path: Path):
     registered_path = write_cache_file(tmp_path / "llms/test/one.json")
     legacy_path = write_cache_file(tmp_path / "llm/test/two.json")
 
-    entries = clear_cache(tmp_path, _CACHE_REGISTRY, all_namespaces=True, dry_run=True)
+    entries = clear_cache(tmp_path, _CACHE_REGISTRY, entire_cache=True, dry_run=True)
 
     assert [entry.namespace for entry in entries] == ["cache root", "cache root"]
     assert [entry.relative_path for entry in entries] == [Path("llm"), Path("llms")]
@@ -277,7 +277,7 @@ def test_clear_cache_all_does_not_follow_root_symlinks(tmp_path: Path):
     link_path = cache_root_path / "linked"
     link_path.symlink_to(target_path.parent, target_is_directory=True)
 
-    clear_cache(cache_root_path, _CACHE_REGISTRY, all_namespaces=True)
+    clear_cache(cache_root_path, _CACHE_REGISTRY, entire_cache=True)
 
     assert not link_path.exists()
     assert target_path.exists()
@@ -344,7 +344,7 @@ def test_clear_cache_by_age(tmp_path: Path):
     set_mtime(legacy_path, old_timestamp)
 
     deleted_entries = clear_cache(
-        tmp_path, _CACHE_REGISTRY, all_namespaces=True, older_than=timedelta(days=30)
+        tmp_path, _CACHE_REGISTRY, entire_cache=True, older_than=timedelta(days=30)
     )
 
     assert [entry.relative_path for entry in deleted_entries] == [

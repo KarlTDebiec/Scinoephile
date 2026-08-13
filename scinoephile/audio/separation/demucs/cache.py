@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-from importlib.metadata import PackageNotFoundError, version
 from logging import getLogger
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -16,6 +15,8 @@ from pydub.exceptions import CouldntDecodeError, CouldntEncodeError
 
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core.cache.artifact import remove_cache_artifact
+from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_root_path
 
@@ -25,16 +26,6 @@ logger = getLogger(__name__)
 
 _CACHE_VERSION = 1
 """Current Demucs cache version."""
-
-
-def _get_runtime_identity() -> dict[str, str]:
-    """Get the installed Demucs runtime identity."""
-    distribution_name = "demucs-infer"
-    try:
-        distribution_version = version(distribution_name)
-    except PackageNotFoundError:
-        distribution_version = "unavailable"
-    return {"distribution": distribution_name, "version": distribution_version}
 
 
 class DemucsCache:
@@ -62,7 +53,7 @@ class DemucsCache:
         self.model_name = model_name
         """Demucs model name identifying cached vocals."""
 
-        self.runtime_identity = _get_runtime_identity()
+        self.runtime_identity = get_distribution_identity("demucs-infer")
         """Installed Demucs runtime identity."""
 
         self.overwrite = overwrite
@@ -115,17 +106,18 @@ class DemucsCache:
         cache_path = self.get_path(audio)
         if self.overwrite and cache_path not in self._refreshed_paths:
             self._refreshed_paths.add(cache_path)
-            if cache_path.exists():
-                cache_path.unlink()
+            if remove_cache_artifact(cache_path):
                 logger.info(f"Removed Demucs vocals cache: {cache_path}")
-        if not cache_path.exists():
+        if not cache_path.is_file() or cache_path.is_symlink():
+            if remove_cache_artifact(cache_path):
+                logger.warning(f"Discarded invalid Demucs vocals cache: {cache_path}")
             return None
 
         try:
             vocals = AudioSegment.from_file(cache_path)
             cache_path.touch()
         except (CouldntDecodeError, OSError) as exc:
-            cache_path.unlink(missing_ok=True)
+            remove_cache_artifact(cache_path)
             logger.warning(f"Discarded invalid Demucs vocals cache {cache_path}: {exc}")
             return None
         logger.info(f"Loaded Demucs vocals from cache: {cache_path}")
@@ -140,10 +132,8 @@ class DemucsCache:
             removed cache path, if present
         """
         cache_path = self.get_path(audio)
-        if not cache_path.exists():
+        if not remove_cache_artifact(cache_path):
             return None
-
-        cache_path.unlink()
         logger.info(f"Removed Demucs vocals cache: {cache_path}")
         return cache_path
 

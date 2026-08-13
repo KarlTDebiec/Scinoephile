@@ -40,6 +40,7 @@ class CountingPaddleRecognizer(PaddleRecognizer):
         self.paddle_language_code = "en"
         self.min_confidence = 0.0
         self._cache = PaddleCache(cache_root_path, overwrite_cache)
+        self.runtime_identity = {"distribution": "paddleocr", "version": "test"}
         self.predict_count = 0
         self._ocr = self
 

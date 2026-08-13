@@ -25,7 +25,7 @@ class MlxAudioModel:
     model_name: str
     """Hugging Face model name or local model path."""
     family_name: str
-    """Stable model-family name used in cache metadata."""
+    """Stable model-family name used in cache identities."""
     model_type: str
     """Model type passed to the MLX-Audio loader."""
     languages: dict[Language, str | None]

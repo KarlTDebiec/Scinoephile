@@ -17,6 +17,7 @@ import numpy as np
 
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core.cache.artifact import remove_cache_artifact
 from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .trace import VoiceActivityTrace
@@ -28,7 +29,7 @@ if TYPE_CHECKING:
 
 logger = getLogger(__name__)
 
-_CACHE_VERSION = 1
+_CACHE_VERSION = 2
 """Current voice activity trace cache version."""
 
 
@@ -53,12 +54,14 @@ class VoiceActivityCache:
         self._refreshed_paths: set[Path] = set()
         """Cache paths refreshed by this cache instance."""
 
-    def get_path(self, audio: AudioSegment, metadata: Mapping[str, object]) -> Path:
+    def get_path(
+        self, audio: AudioSegment, cache_identity: Mapping[str, object]
+    ) -> Path:
         """Get the cache path for audio and model configuration.
 
         Arguments:
             audio: source audio used to derive the cache key
-            metadata: model configuration identifying the score trace
+            cache_identity: model configuration identifying the score trace
         Returns:
             cache path
         """
@@ -66,39 +69,44 @@ class VoiceActivityCache:
         cache_hash.update(b"\0")
         cache_hash.update(
             json.dumps(
-                self._get_metadata(audio, metadata), ensure_ascii=False, sort_keys=True
+                self._get_cache_identity(audio, cache_identity),
+                ensure_ascii=False,
+                sort_keys=True,
             ).encode("utf-8")
         )
         return self.cache_dir_path / f"{cache_hash.hexdigest()}.npz"
 
     def load(
-        self, audio: AudioSegment, metadata: Mapping[str, object]
+        self, audio: AudioSegment, cache_identity: Mapping[str, object]
     ) -> VoiceActivityTrace | None:
         """Load a cached voice activity trace.
 
         Arguments:
             audio: source audio used to derive the cache key
-            metadata: model configuration identifying the score trace
+            cache_identity: model configuration identifying the score trace
         Returns:
             validated trace, if present
         """
-        cache_path = self.get_path(audio, metadata)
+        cache_path = self.get_path(audio, cache_identity)
         if self.overwrite and cache_path not in self._refreshed_paths:
             self._refreshed_paths.add(cache_path)
-            if cache_path.exists():
-                cache_path.unlink()
+            if remove_cache_artifact(cache_path):
                 logger.info(f"Removed voice activity trace cache: {cache_path}")
-        if not cache_path.exists():
+        if not cache_path.is_file() or cache_path.is_symlink():
+            if remove_cache_artifact(cache_path):
+                logger.warning(
+                    f"Discarded invalid voice activity trace cache: {cache_path}"
+                )
             return None
 
-        expected_metadata = self._get_metadata(audio, metadata)
+        expected_cache_identity = self._get_cache_identity(audio, cache_identity)
         try:
             with np.load(cache_path, allow_pickle=False) as payload:
-                raw_metadata = payload["metadata"].item()
-                if not isinstance(raw_metadata, str):
-                    raise ValueError("cache metadata must be serialized text")
-                if json.loads(raw_metadata) != expected_metadata:
-                    raise ValueError("cache metadata does not match")
+                raw_cache_identity = payload["cache_identity"].item()
+                if not isinstance(raw_cache_identity, str):
+                    raise ValueError("cache identity must be serialized text")
+                if json.loads(raw_cache_identity) != expected_cache_identity:
+                    raise ValueError("cache identity does not match")
                 trace = VoiceActivityTrace(
                     payload["scores"],
                     start_ms=float(payload["start_ms"]),
@@ -108,7 +116,7 @@ class VoiceActivityCache:
                 if trace.duration_ms != len(audio):
                     raise ValueError("cache duration does not match source audio")
         except (BadZipFile, KeyError, OSError, TypeError, ValueError) as exc:
-            cache_path.unlink(missing_ok=True)
+            remove_cache_artifact(cache_path)
             logger.warning(
                 f"Discarded invalid voice activity trace cache {cache_path}: {exc}"
             )
@@ -119,34 +127,33 @@ class VoiceActivityCache:
         return trace
 
     def remove(
-        self, audio: AudioSegment, metadata: Mapping[str, object]
+        self, audio: AudioSegment, cache_identity: Mapping[str, object]
     ) -> Path | None:
         """Remove a cached voice activity trace.
 
         Arguments:
             audio: source audio used to derive the cache key
-            metadata: model configuration identifying the score trace
+            cache_identity: model configuration identifying the score trace
         Returns:
             removed cache path, if present
         """
-        cache_path = self.get_path(audio, metadata)
-        if not cache_path.exists():
+        cache_path = self.get_path(audio, cache_identity)
+        if not remove_cache_artifact(cache_path):
             return None
-        cache_path.unlink()
         logger.info(f"Removed voice activity trace cache: {cache_path}")
         return cache_path
 
     def save(
         self,
         audio: AudioSegment,
-        metadata: Mapping[str, object],
+        cache_identity: Mapping[str, object],
         trace: VoiceActivityTrace,
     ) -> Path:
         """Save a voice activity trace.
 
         Arguments:
             audio: source audio used to derive the cache key
-            metadata: model configuration identifying the score trace
+            cache_identity: model configuration identifying the score trace
             trace: frame-level voice activity scores
         Returns:
             saved cache path
@@ -157,9 +164,11 @@ class VoiceActivityCache:
             raise ValueError(
                 "Voice activity trace duration does not match source audio."
             )
-        cache_path = self.get_path(audio, metadata)
-        serialized_metadata = json.dumps(
-            self._get_metadata(audio, metadata), ensure_ascii=False, sort_keys=True
+        cache_path = self.get_path(audio, cache_identity)
+        serialized_cache_identity = json.dumps(
+            self._get_cache_identity(audio, cache_identity),
+            ensure_ascii=False,
+            sort_keys=True,
         )
         with TemporaryDirectory(
             dir=cache_path.parent, prefix=f".{cache_path.stem}-"
@@ -167,7 +176,7 @@ class VoiceActivityCache:
             staging_path = Path(temp_dir) / cache_path.name
             np.savez_compressed(
                 staging_path,
-                metadata=np.asarray(serialized_metadata),
+                cache_identity=np.asarray(serialized_cache_identity),
                 scores=trace.scores,
                 start_ms=np.asarray(trace.start_ms),
                 step_ms=np.asarray(trace.step_ms),
@@ -179,19 +188,19 @@ class VoiceActivityCache:
         return cache_path
 
     @staticmethod
-    def _get_metadata(
-        audio: AudioSegment, metadata: Mapping[str, object]
+    def _get_cache_identity(
+        audio: AudioSegment, cache_identity: Mapping[str, object]
     ) -> dict[str, object]:
-        """Get complete cache identity metadata.
+        """Get the complete cache identity.
 
         Arguments:
             audio: source audio used to derive the cache identity
-            metadata: model configuration identifying the score trace
+            cache_identity: model configuration identifying the score trace
         Returns:
-            complete cache identity metadata
+            complete cache identity
         """
         return {
-            **metadata,
+            **cache_identity,
             "audio_channels": audio.channels,
             "audio_frame_rate": audio.frame_rate,
             "audio_sample_width": audio.sample_width,

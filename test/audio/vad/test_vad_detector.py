@@ -303,13 +303,12 @@ def test_vad_cache_identity_separates_implementation_and_settings(
 ):
     """Separate transcription caches by VAD model, runtime, and postprocessing."""
     monkeypatch.setattr(
-        "scinoephile.audio.vad.provider.VadProvider._get_distribution_identity",
-        Mock(
-            side_effect=lambda name: {
-                "distribution": name,
-                "version": {"silero-vad": "6.2.1", "ten-vad": "1.0.6.8"}[name],
-            }
-        ),
+        "scinoephile.audio.vad.silero.get_distribution_identity",
+        Mock(return_value={"distribution": "silero-vad", "version": "6.2.1"}),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.vad.ten.get_distribution_identity",
+        Mock(return_value={"distribution": "ten-vad", "version": "1.0.6.8"}),
     )
     audio = AudioSegment.silent(duration=100)
     silero = WhisperTranscriber(
@@ -326,11 +325,11 @@ def test_vad_cache_identity_separates_implementation_and_settings(
     )
     settings = TranscriptionPreprocessingSettings(False, True)
 
-    silero_metadata = silero._get_cache_metadata(audio, settings)
-    ten_metadata = ten._get_cache_metadata(audio, settings)
+    silero_cache_identity = silero._get_cache_identity(audio, settings)
+    ten_cache_identity = ten._get_cache_identity(audio, settings)
 
-    assert silero_metadata["vad"] != ten_metadata["vad"]
-    assert ten_metadata["vad"] == {
+    assert silero_cache_identity["vad"] != ten_cache_identity["vad"]
+    assert ten_cache_identity["vad"] == {
         "frame_size": 256,
         "implementation": "ten",
         "model": "ten-vad-native",
@@ -343,7 +342,7 @@ def test_vad_cache_identity_separates_implementation_and_settings(
         "threshold": 0.6,
         "trace_identity_version": "2",
     }
-    assert silero_metadata["vad"] == {
+    assert silero_cache_identity["vad"] == {
         "implementation": "silero",
         "model": "silero-vad",
         "model_format": "onnx",
@@ -357,8 +356,8 @@ def test_vad_cache_identity_separates_implementation_and_settings(
         "threshold": 0.5,
         "trace_identity_version": "2",
     }
-    assert silero._cache.get_path(audio, silero_metadata) != ten._cache.get_path(
-        audio, ten_metadata
+    assert silero._cache.get_path(audio, silero_cache_identity) != ten._cache.get_path(
+        audio, ten_cache_identity
     )
 
 
@@ -367,7 +366,7 @@ def test_vad_trace_cache_identity_excludes_interval_postprocessing(
 ):
     """Reuse one TEN score trace across threshold and interval parameter sweeps."""
     monkeypatch.setattr(
-        "scinoephile.audio.vad.provider.VadProvider._get_distribution_identity",
+        "scinoephile.audio.vad.ten.get_distribution_identity",
         Mock(return_value={"distribution": "ten-vad", "version": "1.0.6.8"}),
     )
     first = VoiceActivityDetector(
@@ -398,7 +397,7 @@ def test_vad_cache_identity_pins_pyannote_model_and_runtime(
 ):
     """Identify pyannote VAD by its pinned model and installed runtime version."""
     monkeypatch.setattr(
-        "scinoephile.audio.vad.provider.VadProvider._get_distribution_identity",
+        "scinoephile.audio.vad.pyannote.get_distribution_identity",
         Mock(return_value={"distribution": "pyannote.audio", "version": "4.0.7"}),
     )
     detector = VoiceActivityDetector(

@@ -48,7 +48,7 @@ class Transcriber(ABC):
     """Registered namespace for cached backend output."""
 
     backend_name: ClassVar[str]
-    """Stable backend name stored in cache metadata."""
+    """Stable backend name stored in cache identities."""
 
     backend_label: ClassVar[str]
     """Human-readable backend name used in log messages."""
@@ -150,7 +150,7 @@ class Transcriber(ABC):
             audio: audio used for cache-key generation
         """
         for settings in self._get_preprocessing_settings():
-            self._cache.remove(audio, self._get_cache_metadata(audio, settings))
+            self._cache.remove(audio, self._get_cache_identity(audio, settings))
 
     def transcribe(
         self,
@@ -242,8 +242,8 @@ class Transcriber(ABC):
         """
         rejected_settings: set[TranscriptionPreprocessingSettings] = set()
         for settings in preprocessing_settings:
-            metadata = self._get_cache_metadata(audio, settings)
-            cached_transcription = self._cache.load(audio, metadata)
+            cache_identity = self._get_cache_identity(audio, settings)
+            cached_transcription = self._cache.load(audio, cache_identity)
             if cached_transcription is None:
                 continue
             cache_path, segments = cached_transcription
@@ -282,10 +282,10 @@ class Transcriber(ABC):
         )
 
     @abstractmethod
-    def _get_backend_cache_metadata(
+    def _get_backend_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> Mapping[str, object]:
-        """Get backend-specific cache metadata for one configuration.
+        """Get the backend-specific identity for one cache configuration.
 
         Arguments:
             audio: audio whose properties may affect backend behavior
@@ -295,10 +295,10 @@ class Transcriber(ABC):
         """
         raise NotImplementedError()
 
-    def _get_cache_metadata(
+    def _get_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> dict[str, object]:
-        """Get complete backend and preprocessing cache metadata.
+        """Get the complete backend and preprocessing cache identity.
 
         Arguments:
             audio: audio whose properties may affect backend behavior
@@ -311,7 +311,7 @@ class Transcriber(ABC):
             assert self.demucs_separator is not None
             demucs_identity = self.demucs_separator.cache_identity
         return {
-            **self._get_backend_cache_metadata(audio, settings),
+            **self._get_backend_cache_identity(audio, settings),
             "demucs": demucs_identity,
             "use_demucs": settings.use_demucs,
             "use_vad": settings.use_vad,
@@ -349,15 +349,15 @@ class Transcriber(ABC):
         """
         if self._voice_activity_cache is None:
             raise RuntimeError("Voice activity trace requested while VAD is disabled.")
-        metadata = self.vad_detector.trace_cache_identity
-        trace = self._voice_activity_cache.load(audio, metadata)
+        cache_identity = self.vad_detector.trace_cache_identity
+        trace = self._voice_activity_cache.load(audio, cache_identity)
         if trace is not None:
             return trace
         try:
             trace = self.vad_detector.get_trace(audio)
         except VoiceActivityError as exc:
             raise TranscriptionInferenceError(str(exc)) from exc
-        self._voice_activity_cache.save(audio, metadata, trace)
+        self._voice_activity_cache.save(audio, cache_identity, trace)
         return trace
 
     def _prepare_cached_segments(
@@ -411,7 +411,7 @@ class Transcriber(ABC):
                 segments = self._transcribe_attempt(transcription_audio, settings)
             except TranscriptionEmptyError as exc:
                 logger.warning(f"{self.backend_label} attempt failed: {exc}")
-                self._cache.save(audio, self._get_cache_metadata(audio, settings), [])
+                self._cache.save(audio, self._get_cache_identity(audio, settings), [])
                 last_error = exc
                 continue
             except TranscriptionError as exc:
@@ -420,7 +420,7 @@ class Transcriber(ABC):
                 continue
             successful_result = True
 
-            self._cache.save(audio, self._get_cache_metadata(audio, settings), segments)
+            self._cache.save(audio, self._get_cache_identity(audio, settings), segments)
             if is_usable is None or is_usable(segments):
                 return segments
 

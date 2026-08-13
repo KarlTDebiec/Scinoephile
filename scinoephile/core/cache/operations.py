@@ -7,10 +7,10 @@ from __future__ import annotations
 from collections.abc import Iterable
 from datetime import datetime, timedelta
 from pathlib import Path, PurePosixPath
-from shutil import rmtree
 
 from scinoephile.core.exceptions import ScinoephileError
 
+from .artifact import remove_cache_artifact
 from .cache_entry import CacheEntry
 from .cache_registry import CacheRegistry
 from .cache_stats import CacheStats
@@ -29,7 +29,7 @@ def clear_cache(
     cache_registry: CacheRegistry,
     *,
     namespace: str | None = None,
-    all_namespaces: bool = False,
+    entire_cache: bool = False,
     older_than: timedelta | None = None,
     dry_run: bool = False,
 ) -> list[CacheEntry]:
@@ -39,7 +39,7 @@ def clear_cache(
         cache_root_path: cache root directory path
         cache_registry: namespaces available to cache maintenance operations
         namespace: optional namespace to clear
-        all_namespaces: whether to clear all cache root contents
+        entire_cache: whether to clear all cache root contents
         older_than: optional entry age threshold
         dry_run: whether to return matching entries without deleting them
     Returns:
@@ -47,17 +47,17 @@ def clear_cache(
     Raises:
         ScinoephileError: if the arguments are invalid
     """
-    if namespace is None and not all_namespaces:
+    if namespace is None and not entire_cache:
         raise ScinoephileError("--namespace is required unless --all is specified")
-    if namespace is not None and all_namespaces:
+    if namespace is not None and entire_cache:
         raise ScinoephileError("--namespace and --all may not be used together")
 
     # An unfiltered all-scope operation treats the cache root as disposable
-    if all_namespaces and older_than is None:
+    if entire_cache and older_than is None:
         entries = _get_cache_root_entries(cache_root_path)
         if not dry_run:
             for entry in entries:
-                _delete_entry(entry.path)
+                remove_cache_artifact(entry.path)
         return entries
 
     return _clear_registered_cache_entries(
@@ -211,7 +211,7 @@ def _clear_registered_cache_entries(
     if dry_run:
         return entries
     for entry in entries:
-        _delete_entry(entry.path)
+        remove_cache_artifact(entry.path)
 
     # Preserve nested namespaces that were not selected for clearing
     protected_namespace_paths = {
@@ -245,7 +245,7 @@ def _clear_registered_cache_entries(
             continue
         namespace_dir_path = _get_namespace_dir_path(cache_root_path, namespace_name)
         if namespace_dir_path.exists():
-            _delete_entry(namespace_dir_path)
+            remove_cache_artifact(namespace_dir_path)
 
             # Remove empty grouping directories up to the cache root
             parent_dir_path = namespace_dir_path.parent
@@ -258,18 +258,6 @@ def _clear_registered_cache_entries(
                 parent_dir_path.rmdir()
                 parent_dir_path = parent_dir_path.parent
     return entries
-
-
-def _delete_entry(entry_path: Path):
-    """Delete a cache entry without following symlinks.
-
-    Arguments:
-        entry_path: entry to delete
-    """
-    if entry_path.is_symlink() or entry_path.is_file():
-        entry_path.unlink(missing_ok=True)
-    elif entry_path.is_dir():
-        rmtree(entry_path)
 
 
 def _filter_cache_entries(

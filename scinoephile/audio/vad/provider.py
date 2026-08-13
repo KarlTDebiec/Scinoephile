@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from enum import StrEnum
-from importlib.metadata import PackageNotFoundError, version
 from typing import TYPE_CHECKING
 
 from .intervals import get_threshold_speech_intervals
@@ -82,18 +81,3 @@ class VadProvider(ABC):
             model scores aligned to the source timeline
         """
         raise NotImplementedError()
-
-    @staticmethod
-    def _get_distribution_identity(distribution_name: str) -> dict[str, str]:
-        """Get an installed distribution's name and version.
-
-        Arguments:
-            distribution_name: installed distribution name
-        Returns:
-            distribution name and installed version
-        """
-        try:
-            distribution_version = version(distribution_name)
-        except PackageNotFoundError:
-            distribution_version = "unavailable"
-        return {"distribution": distribution_name, "version": distribution_version}

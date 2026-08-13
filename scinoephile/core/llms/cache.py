@@ -11,6 +11,7 @@ from pathlib import Path
 
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core.cache.artifact import remove_cache_artifact
 from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .cache_namespace import LlmCacheNamespace
@@ -19,7 +20,7 @@ __all__ = ["LlmCache"]
 
 logger = getLogger(__name__)
 
-_CACHE_VERSION = 1
+_CACHE_VERSION = 2
 """Current LLM response cache version."""
 
 
@@ -54,79 +55,134 @@ class LlmCache:
         """Cache paths refreshed by this cache instance."""
 
     def get_path(
-        self, identity: object, system_prompt: str, tools_json: str, query_json: str
+        self,
+        cache_identity: object,
+        system_prompt: str,
+        tools_json: str,
+        query_json: str,
     ) -> Path:
         """Get a cache path based on query identity and prompts.
 
         Arguments:
-            identity: provider and test-case identity
+            cache_identity: provider and test-case identity
             system_prompt: system prompt used for the query
             tools_json: JSON representation of configured tools
             query_json: JSON representation of the query
         Returns:
             path to cache file
+        Raises:
+            ValueError: if tools_json or query_json is not valid JSON
         """
-        identity_json = json.dumps(
-            {"cache_version": _CACHE_VERSION, "identity": identity},
+        cache_identity_json = json.dumps(
+            {
+                "cache_version": _CACHE_VERSION,
+                "cache_identity": cache_identity,
+                "query": json.loads(query_json),
+                "system_prompt": system_prompt,
+                "tools": json.loads(tools_json) if tools_json else None,
+            },
             ensure_ascii=True,
             separators=(",", ":"),
             sort_keys=True,
         )
-        content = identity_json + system_prompt + tools_json + query_json
-        sha256 = hashlib.sha256(content.encode("utf-8")).hexdigest()
+        sha256 = hashlib.sha256(cache_identity_json.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{sha256}.json"
 
-    def load(self, cache_path: Path) -> str | None:
+    def load(
+        self,
+        cache_identity: object,
+        system_prompt: str,
+        tools_json: str,
+        query_json: str,
+    ) -> str | None:
         """Load a cached response payload.
 
         Arguments:
-            cache_path: cache file path
+            cache_identity: provider and test-case identity
+            system_prompt: system prompt used for the query
+            tools_json: JSON representation of configured tools
+            query_json: JSON representation of the query
         Returns:
             cached response payload, or None when unavailable
+        Raises:
+            ValueError: if tools_json or query_json is not valid JSON
         """
+        cache_path = self.get_path(
+            cache_identity, system_prompt, tools_json, query_json
+        )
         if self.overwrite and cache_path not in self._refreshed_paths:
             self._refreshed_paths.add(cache_path)
-            if cache_path.exists():
-                cache_path.unlink()
+            if remove_cache_artifact(cache_path):
                 logger.info(f"Removed LLM response cache: {cache_path}")
-        if not cache_path.exists():
+        if not cache_path.is_file() or cache_path.is_symlink():
+            if remove_cache_artifact(cache_path):
+                logger.warning(f"Discarded invalid LLM response cache: {cache_path}")
             return None
 
         try:
             contents = cache_path.read_text(encoding="utf-8")
         except (OSError, UnicodeError) as exc:
-            cache_path.unlink(missing_ok=True)
+            remove_cache_artifact(cache_path)
             logger.warning(f"Discarded invalid LLM response cache {cache_path}: {exc}")
             return None
 
         cache_path.touch()
+        logger.info(f"Loaded LLM response from cache: {cache_path}")
         return contents
 
-    def remove(self, cache_path: Path) -> Path | None:
+    def remove(
+        self,
+        cache_identity: object,
+        system_prompt: str,
+        tools_json: str,
+        query_json: str,
+    ) -> Path | None:
         """Remove a cached LLM response.
 
         Arguments:
-            cache_path: cache file path
+            cache_identity: provider and test-case identity
+            system_prompt: system prompt used for the query
+            tools_json: JSON representation of configured tools
+            query_json: JSON representation of the query
         Returns:
             removed cache path, if present
+        Raises:
+            ValueError: if tools_json or query_json is not valid JSON
         """
-        if not cache_path.exists():
+        cache_path = self.get_path(
+            cache_identity, system_prompt, tools_json, query_json
+        )
+        if not remove_cache_artifact(cache_path):
             return None
-        cache_path.unlink()
         logger.info(f"Removed LLM response cache: {cache_path}")
         return cache_path
 
-    def save(self, cache_path: Path, contents: str) -> Path:
+    def save(
+        self,
+        cache_identity: object,
+        system_prompt: str,
+        tools_json: str,
+        query_json: str,
+        contents: str,
+    ) -> Path:
         """Save an LLM response payload.
 
         Arguments:
-            cache_path: cache file path
+            cache_identity: provider and test-case identity
+            system_prompt: system prompt used for the query
+            tools_json: JSON representation of configured tools
+            query_json: JSON representation of the query
             contents: serialized response payload
         Returns:
             saved cache path
+        Raises:
+            ValueError: if tools_json or query_json is not valid JSON
         """
+        cache_path = self.get_path(
+            cache_identity, system_prompt, tools_json, query_json
+        )
         with open_atomic_text_file(cache_path) as cache_file:
             cache_file.write(contents)
         self._refreshed_paths.add(cache_path)
-        logger.debug(f"Saved to cache: {cache_path}")
+        logger.info(f"Saved LLM response to cache: {cache_path}")
         return cache_path

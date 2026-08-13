@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from scinoephile.audio.samples import get_mono_pcm16_samples
+from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies import transcription
 
 from .exceptions import VoiceActivityError
@@ -52,7 +53,7 @@ class TenVadProvider(VadProvider):
         return {
             "frame_size": self.frame_size,
             "model": "ten-vad-native",
-            "runtime": self._get_distribution_identity("ten-vad"),
+            "runtime": get_distribution_identity("ten-vad"),
         }
 
     def get_trace(self, audio: AudioSegment) -> VoiceActivityTrace:

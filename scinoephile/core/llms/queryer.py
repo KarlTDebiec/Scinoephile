@@ -267,8 +267,9 @@ class Queryer[TTestCase: TestCase]:
 
         query_json = normalized.query.model_dump_json(by_alias=True, indent=4)
         tools_json = self.tool_box.to_json()
-        cache_path = self._get_cache_path(self.system_prompt, tools_json, query_json)
-        return self._get_cached_test_case(normalized, cache_path)
+        return self._get_cached_test_case(
+            normalized, self.system_prompt, tools_json, query_json
+        )
 
     def log_encountered_test_case(self, test_case: TestCase) -> TTestCase:
         """Log a test case as having been encountered.
@@ -307,50 +308,47 @@ class Queryer[TTestCase: TestCase]:
 
         query_json = normalized.query.model_dump_json(by_alias=True, indent=4)
         tools_json = self.tool_box.to_json()
-        cache_path = self._get_cache_path(self.system_prompt, tools_json, query_json)
         contents = normalized.answer.model_dump_json(exclude_defaults=True, indent=2)
-        self._cache.save(cache_path, contents)
-        return normalized
-
-    def _get_cache_path(
-        self, system_prompt: str, tools_json: str, query_json: str
-    ) -> Path:
-        """Get cache path based on hash of prompts.
-
-        Arguments:
-            system_prompt: system prompt used for the query
-            tools_json: JSON representation of configured tools
-            query_json: JSON representation of the query
-        Returns:
-            Path to cache file
-        """
-        assert self._cache is not None
-        return self._cache.get_path(
-            {
-                "provider": self.provider.cache_identity,
-                "test_case": {
-                    "module": self.test_case_cls.__module__,
-                    "qualname": self.test_case_cls.__qualname__,
-                },
-            },
-            system_prompt,
+        self._cache.save(
+            self._get_cache_identity(),
+            self.system_prompt,
             tools_json,
             query_json,
+            contents,
         )
+        return normalized
+
+    def _get_cache_identity(self) -> dict[str, object]:
+        """Get the provider and test-case cache identity."""
+        return {
+            "provider": self.provider.cache_identity,
+            "test_case": {
+                "module": self.test_case_cls.__module__,
+                "qualname": self.test_case_cls.__qualname__,
+            },
+        }
 
     def _get_cached_test_case(
-        self, test_case: TTestCase, cache_path: Path
+        self, test_case: TTestCase, system_prompt: str, tools_json: str, query_json: str
     ) -> TTestCase | None:
         """Get cached test case for the given query if available.
 
         Arguments:
             test_case: test case containing query for which to get cached version
-            cache_path: path to the cached answer
+            system_prompt: system prompt used for the query
+            tools_json: JSON representation of configured tools
+            query_json: JSON representation of the query
         Returns:
             cached test case if available, else None
         """
         assert self._cache is not None
-        contents = self._cache.load(cache_path)
+        cache_identity = self._get_cache_identity()
+        cache_path = self._cache.get_path(
+            cache_identity, system_prompt, tools_json, query_json
+        )
+        contents = self._cache.load(
+            cache_identity, system_prompt, tools_json, query_json
+        )
         if contents is None:
             return None
         try:
@@ -366,13 +364,13 @@ class Queryer[TTestCase: TestCase]:
             if self.auto_verify and test_case.get_auto_verified():
                 test_case.verified = True
             test_case = self.log_encountered_test_case(test_case)
-            logger.info(f"Loaded from cache: {test_case.query.key_str}")
             return test_case
         except ValidationError as exc:
             logger.error(
-                f"Cache content for query {test_case.query.key_str} is invalid: {exc}"
+                f"Cache content for query {test_case.query.key_str} at "
+                f"{cache_path} is invalid: {exc}"
             )
-            self._cache.remove(cache_path)
+            self._cache.remove(cache_identity, system_prompt, tools_json, query_json)
         return None
 
     def _get_verified_test_case(self, query: Query) -> TTestCase | None:
