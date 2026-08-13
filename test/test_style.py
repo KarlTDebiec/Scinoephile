@@ -10,20 +10,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from scinoephile.common import package_root
-
-EXCLUDED_DIR_NAMES = {
-    ".git",
-    ".mypy_cache",
-    ".pytest_cache",
-    ".ruff_cache",
-    ".tox",
-    ".venv",
-    "__pycache__",
-    "build",
-    "dist",
-    "local",
-}
-"""Directory names excluded from recursive source scans."""
+from test.helpers.files import get_python_files
 
 PERCENT_INTERPOLATION_RE = re.compile(
     r"(?<!%)%(?!%)(?:\([^)]+\))?[#0\- +]*(?:\d+|\*)?"
@@ -126,21 +113,6 @@ def test_typed_dict_fields_are_documented():
     assert not violations, "Document TypedDict fields:\n" + "\n".join(violations)
 
 
-def get_python_files(target_dir_path: Path) -> list[Path]:
-    """Get Python files under a target directory.
-
-    Arguments:
-        target_dir_path: directory path to scan
-    Returns:
-        sorted Python file paths
-    """
-    return sorted(
-        file_path
-        for file_path in target_dir_path.rglob("*.py")
-        if not is_excluded_path(file_path, target_dir_path)
-    )
-
-
 def get_string_interpolation_violations(
     file_path: Path, tree: ast.Module
 ) -> list[StringInterpolationViolation]:
@@ -215,19 +187,6 @@ def get_typed_dict_field_documentation_violations(
                     f"{node.name}.{statement.target.id} lacks documentation"
                 )
     return violations
-
-
-def is_excluded_path(file_path: Path, target_dir_path: Path) -> bool:
-    """Check whether a discovered file falls under an excluded directory.
-
-    Arguments:
-        file_path: discovered file path
-        target_dir_path: recursive scan root
-    Returns:
-        whether the file should be omitted from the scan
-    """
-    relative_file_path = file_path.relative_to(target_dir_path)
-    return any(part in EXCLUDED_DIR_NAMES for part in relative_file_path.parts)
 
 
 def is_percent_interpolation_binop(node: ast.BinOp) -> bool:
