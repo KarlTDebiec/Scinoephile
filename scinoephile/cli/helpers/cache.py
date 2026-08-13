@@ -23,15 +23,15 @@ __all__ = [
 
 CACHE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "cache root directory path (default: %(default)s)": (
-            "缓存根目录路径（默认：%(default)s）"
+        "cache root directory path (default: %(field_default)s)": (
+            "缓存根目录路径（默认：%(field_default)s）"
         ),
         "overwrite matching cache files": "覆盖匹配的缓存文件",
         "cache arguments": "缓存参数",
     },
     "zh-hant": {
-        "cache root directory path (default: %(default)s)": (
-            "快取根目錄路徑（預設：%(default)s）"
+        "cache root directory path (default: %(field_default)s)": (
+            "快取根目錄路徑（預設：%(field_default)s）"
         ),
         "overwrite matching cache files": "覆寫匹配的快取檔案",
         "cache arguments": "快取參數",
@@ -68,7 +68,7 @@ def add_cache_args(cache_arg_group: _ArgumentGroup):
         field_name="root_path",
         metavar="CACHE_DIR",
         type=output_dir_arg(create=False),
-        help="cache root directory path (default: %(default)s)",
+        help="cache root directory path (default: %(field_default)s)",
     )
     cache_arg_group.add_argument(
         "--cache-overwrite",

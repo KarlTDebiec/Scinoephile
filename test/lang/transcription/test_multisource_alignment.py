@@ -1,14 +1,10 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of Cantonese-aware timed multi-source alignment helpers."""
+"""Tests of timed multi-source transcription alignment helpers."""
 
 from __future__ import annotations
 
-from scinoephile.analysis.multisequence_alignment import (
-    TimedAlignmentColumn,
-    TimedAlignmentToken,
-    TimedMultiSequenceAlignment,
-)
+from scinoephile.analysis.alignment.timed_msa import Aligner, Alignment, Column, Token
 from scinoephile.audio.classification import (
     AudioEvent,
     AudioEventDetectionResult,
@@ -20,52 +16,12 @@ from scinoephile.audio.diarization import SpeakerDiarizationResult, SpeakerTurn
 from scinoephile.audio.transcription import TranscribedSegment, TranscribedWord
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.multisource_alignment import (
-    CantoneseTimedTokenSimilarity,
     get_timed_alignment_sequence,
     get_timed_multisource_alignment_rows,
     get_timed_reference_alignment_sequence,
+    get_transcription_alignment_block,
 )
-
-
-def test_cantonese_similarity_orders_substitution_evidence():
-    """Test the substitution matrix ranks progressively weaker evidence."""
-    similarity = CantoneseTimedTokenSimilarity(timing_weight=0.0)
-    token = TimedAlignmentToken("係", 0.0, 0.1)
-
-    exact = similarity(token, TimedAlignmentToken("係", 0.0, 0.1))
-    compatibility_width = similarity(
-        TimedAlignmentToken("J", 0.0, 0.1), TimedAlignmentToken("Ｊ", 0.0, 0.1)
-    )
-    script = similarity(
-        TimedAlignmentToken("裡", 0.0, 0.1), TimedAlignmentToken("里", 0.0, 0.1)
-    )
-    equivalent = similarity(token, TimedAlignmentToken("是", 0.0, 0.1))
-    same_jyutping = similarity(
-        TimedAlignmentToken("事", 0.0, 0.1), TimedAlignmentToken("是", 0.0, 0.1)
-    )
-    same_jyutping_base = similarity(
-        TimedAlignmentToken("嗰", 0.0, 0.1), TimedAlignmentToken("個", 0.0, 0.1)
-    )
-    unrelated = similarity(token, TimedAlignmentToken("八", 0.0, 0.1))
-
-    assert compatibility_width == exact
-    assert exact > script > equivalent
-    assert equivalent > same_jyutping > same_jyutping_base > unrelated
-
-
-def test_cantonese_similarity_keeps_lexical_evidence_stronger_than_timing():
-    """Recognized pronunciation should beat an unrelated same-time character."""
-    similarity = CantoneseTimedTokenSimilarity(
-        timing_weight=2.0, timing_tolerance_seconds=0.75
-    )
-    distant_pronunciation = similarity(
-        TimedAlignmentToken("嗰", 0.0, 0.1), TimedAlignmentToken("個", 3.0, 3.1)
-    )
-    unrelated_same_time = similarity(
-        TimedAlignmentToken("嗰", 0.0, 0.1), TimedAlignmentToken("八", 0.0, 0.1)
-    )
-
-    assert distant_pronunciation > unrelated_same_time
+from scinoephile.lang.yue.transcription import YueTimedTokenSimilarity
 
 
 def test_get_timed_alignment_sequence_splits_units_and_omits_punctuation():
@@ -107,16 +63,11 @@ def test_get_timed_reference_alignment_sequence_applies_source_offset():
 
 def test_get_timed_multisource_alignment_rows_preserves_columns():
     """Structured rows should retain equal-width ASR and speaker evidence."""
-    alignment = TimedMultiSequenceAlignment(
+    alignment = Alignment(
         source_names=("one", "two"),
         columns=(
-            TimedAlignmentColumn(
-                (
-                    TimedAlignmentToken("係", 0.0, 0.1),
-                    TimedAlignmentToken("是", 0.0, 0.1),
-                )
-            ),
-            TimedAlignmentColumn((None, None), pause_interval_seconds=(0.1, 0.8)),
+            Column((Token("係", 0.0, 0.1), Token("是", 0.0, 0.1))),
+            Column((None, None), pause_interval_seconds=(0.1, 0.8)),
         ),
     )
     diarization = SpeakerDiarizationResult(
@@ -135,24 +86,61 @@ def test_get_timed_multisource_alignment_rows_preserves_columns():
     assert rows.speaker == "Ａ・"
 
 
-def test_alignment_rows_add_language_singing_and_music():
-    """FireRed classifications should project onto every alignment column."""
-    alignment = TimedMultiSequenceAlignment(
+def test_get_transcription_alignment_block_uses_current_artifact_models():
+    """Test a lexical alignment becomes a validated portable artifact block."""
+    alignment = Alignment(
         source_names=("one", "two"),
         columns=(
-            TimedAlignmentColumn(
-                (
-                    TimedAlignmentToken("甲", 0.0, 0.2),
-                    TimedAlignmentToken("甲", 0.0, 0.2),
-                )
-            ),
-            TimedAlignmentColumn((None, None), pause_interval_seconds=(0.2, 0.5)),
-            TimedAlignmentColumn(
-                (
-                    TimedAlignmentToken("乙", 0.5, 0.7),
-                    TimedAlignmentToken("乙", 0.5, 0.7),
-                )
-            ),
+            Column((Token("係", 0.1, 0.2), Token("是", 0.1, 0.2))),
+            Column((Token("好", 0.7, 0.8), Token("好", 0.7, 0.8))),
+        ),
+    )
+    merged_segments = [
+        TranscribedSegment(
+            id=7,
+            seek=0,
+            start=10.0,
+            end=10.9,
+            text="係好",
+            words=[
+                TranscribedWord(
+                    text="係", start=10.1, end=10.2, confidence=0.9, speaker="speaker"
+                ),
+                TranscribedWord(
+                    text="好", start=10.7, end=10.8, confidence=0.9, speaker="speaker"
+                ),
+            ],
+        )
+    ]
+
+    block = get_transcription_alignment_block(
+        alignment,
+        merged_segments,
+        Aligner(YueTimedTokenSimilarity()),
+        block_index=1,
+        buffered_start_ms=10_000,
+        buffered_end_ms=12_000,
+        core_start_ms=10_000,
+        core_end_ms=12_000,
+        pause_intervals_seconds=((0.2, 0.7),),
+        timing_sources={7: "ctc-request"},
+    )
+
+    assert [row.name for row in block.rows] == ["one", "two"]
+    assert any(column.kind == "pause" for column in block.columns)
+    assert len(block.merged) == len(block.columns)
+    assert block.subtitles[0].timing_source == "ctc-request"
+    assert block.subtitles[0].speaker == "speaker"
+
+
+def test_alignment_rows_add_language_singing_and_music():
+    """FireRed classifications should project onto every alignment column."""
+    alignment = Alignment(
+        source_names=("one", "two"),
+        columns=(
+            Column((Token("甲", 0.0, 0.2), Token("甲", 0.0, 0.2))),
+            Column((None, None), pause_interval_seconds=(0.2, 0.5)),
+            Column((Token("乙", 0.5, 0.7), Token("乙", 0.5, 0.7))),
         ),
     )
     languages = LanguageIdentificationResult(
