@@ -241,13 +241,14 @@ class AudioSeries(Series):
             ScinoephileError: if the media, subtitles, extraction, or decoding fails
         """
         try:
+            validated_media_path = val_input_path(media_path)
             text_series = None
             if subtitle_path is not None:
                 validated_subtitle_path = val_input_path(subtitle_path)
                 text_series = Series.load(validated_subtitle_path, **kwargs)
 
             full_audio = load_audio_segment(
-                media_path, stream_index=stream_index, mode=mode
+                validated_media_path, stream_index=stream_index, mode=mode
             )
             if text_series is None:
                 series = cls(audio=full_audio)

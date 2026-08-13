@@ -20,7 +20,7 @@ logger = getLogger(__name__)
 
 
 def load_audio_segment(
-    media_path: Path | str,
+    media_path: Path,
     *,
     stream_index: int | None = None,
     mode: AudioExtractionMode = AudioExtractionMode.ORIGINAL,

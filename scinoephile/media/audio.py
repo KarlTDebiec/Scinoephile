@@ -37,7 +37,7 @@ class AudioExtractionMode(StrEnum):
 
 
 def extract_audio(
-    infile_path: Path | str,
+    infile_path: Path,
     outfile_path: Path,
     *,
     stream_index: int | None = None,

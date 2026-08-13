@@ -25,11 +25,11 @@ def test_audio_series_load_from_media_without_subtitles_returns_complete_audio()
             return_value=AudioSegment.silent(duration=3126),
         ) as load_audio:
             series = AudioSeries.load_from_media(
-                media_path, stream_index=12, mode=AudioExtractionMode.CENTER_HEAVY
+                str(media_path), stream_index=12, mode=AudioExtractionMode.CENTER_HEAVY
             )
 
     load_audio.assert_called_once_with(
-        media_path, stream_index=12, mode=AudioExtractionMode.CENTER_HEAVY
+        media_path.resolve(), stream_index=12, mode=AudioExtractionMode.CENTER_HEAVY
     )
     assert len(series.audio) == 3126
     assert series.events == []
@@ -53,7 +53,7 @@ def test_audio_series_load_from_media_supports_stream_index():
                 )
 
     load_audio.assert_called_once_with(
-        media_path, stream_index=12, mode=AudioExtractionMode.ORIGINAL
+        media_path.resolve(), stream_index=12, mode=AudioExtractionMode.ORIGINAL
     )
     assert isinstance(yuewen_series, AudioSeries)
     assert [event.text for event in yuewen_series.events] == ["你好"]
@@ -77,7 +77,7 @@ def test_audio_series_load_from_media_defaults_to_first_audio_stream():
                 )
 
     load_audio.assert_called_once_with(
-        media_path, stream_index=None, mode=AudioExtractionMode.ORIGINAL
+        media_path.resolve(), stream_index=None, mode=AudioExtractionMode.ORIGINAL
     )
     assert isinstance(yuewen_series, AudioSeries)
     assert [event.text for event in yuewen_series.events] == ["你好"]
