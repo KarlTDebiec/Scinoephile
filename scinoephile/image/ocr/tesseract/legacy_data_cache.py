@@ -40,6 +40,8 @@ class TesseractLegacyDataCache:
             cache_root_path: root directory beneath which to cache, or None for default
             source_revision: pinned tessdata source revision
             overwrite: whether to replace matching cache files
+        Raises:
+            ValueError: if source_revision is not a simple path segment
         """
         if cache_root_path is None:
             cache_root_path = get_runtime_cache_root_path()

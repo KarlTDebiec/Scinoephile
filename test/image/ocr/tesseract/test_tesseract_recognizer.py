@@ -170,6 +170,21 @@ def test_tesseract_recognizer_cache_key_includes_engine_version(tmp_path: Path):
     assert len(list((tmp_path / "image/ocr/tesseract/results").glob("*.json"))) == 2
 
 
+def test_tesseract_recognizer_cache_key_includes_legacy_data_revision(tmp_path: Path):
+    """Test legacy traineddata upgrades invalidate cached OCR results."""
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+    first_recognizer = CountingTesseractRecognizer(cache_root_path=tmp_path)
+    second_recognizer = CountingTesseractRecognizer(cache_root_path=tmp_path)
+    second_recognizer._legacy_data_cache.source_revision = "updated-revision"
+
+    assert first_recognizer.recognize_image(image) == "cached text eng"
+    assert second_recognizer.recognize_image(image) == "cached text eng"
+
+    assert first_recognizer.recognize_count == 1
+    assert second_recognizer.recognize_count == 1
+    assert len(list((tmp_path / "image/ocr/tesseract/results").glob("*.json"))) == 2
+
+
 def test_tesseract_command_includes_hocr_tessdata_and_language(tmp_path: Path):
     """Test Tesseract command includes hOCR, tessdata, language, psm, and oem."""
     observed_command: list[str] = []

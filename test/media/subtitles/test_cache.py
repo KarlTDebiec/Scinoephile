@@ -17,6 +17,7 @@ from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.media.subtitles.cache import SubtitleCache
 from scinoephile.media.subtitles.extractor import SubtitleExtractor
+from test.helpers import create_symlink_or_skip
 from test.helpers.files import set_mtime
 from test.helpers.media_subtitles import (
     cache_subtitle_stream,
@@ -284,6 +285,23 @@ def test_cache_subtitles_marks_existing_image_series_used(tmp_path: Path):
 
     load.assert_not_called()
     assert index_path.stat().st_mtime > old_timestamp
+
+
+def test_cache_subtitles_rejects_symlinked_image_index(tmp_path: Path):
+    """Test a symlinked image-series index is discarded without following it."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+    stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
+    cache = SubtitleCache(tmp_path / "cache")
+    image_dir_path = cache.get_image_series_dir_path(infile_path, stream)
+    image_dir_path.mkdir(parents=True)
+    target_path = tmp_path / "target.html"
+    target_path.write_text("target", encoding="utf-8")
+    create_symlink_or_skip(image_dir_path / "index.html", target_path)
+
+    assert cache.load_image_series(infile_path, stream) is None
+    assert not image_dir_path.exists()
+    assert target_path.read_text(encoding="utf-8") == "target"
 
 
 def test_cache_subtitles_replaces_malformed_image_index(tmp_path: Path):

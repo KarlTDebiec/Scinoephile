@@ -15,7 +15,7 @@ from test.helpers.files import set_mtime
 
 
 def test_ocr_cache_uses_backend_directory_and_configuration(tmp_path: Path):
-    """Test OCR cache paths use backend directories and configuration cache_identity."""
+    """Test OCR cache paths use backend directories and configuration identities."""
     cache = TesseractCache(tmp_path)
     image = Image.new("RGB", (2, 2), "white")
 

@@ -41,7 +41,7 @@ def test_vad_cache_round_trip(tmp_path: Path):
 
 
 def test_vad_cache_separates_audio_and_model_identity(tmp_path: Path):
-    """Use both source audio and inference cache_identity in cache keys."""
+    """Use both source audio and inference identity in cache keys."""
     cache = VoiceActivityCache(tmp_path)
     first_audio = AudioSegment.silent(duration=100, frame_rate=16000)
     second_audio = AudioSegment.silent(duration=200, frame_rate=16000)

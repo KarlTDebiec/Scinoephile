@@ -270,7 +270,7 @@ def test_token_limit_guard_does_not_change_qwen_behavior(
 
 
 def test_get_cache_path_separates_audio_formats():
-    """Test MLX-Audio cache paths include audio format cache_identity."""
+    """Test MLX-Audio cache paths include audio format identity."""
     raw_data = b"\0\1" * 100
     audio_segments = [
         AudioSegment(data=raw_data, sample_width=2, frame_rate=16000, channels=1),

@@ -120,7 +120,11 @@ class SubtitleCache:
         image_dir_path = self.get_image_series_dir_path(infile_path, stream)
         index_path = image_dir_path / "index.html"
         self._remove_for_overwrite(image_dir_path, "image subtitle series")
-        if index_path.is_file() and not image_dir_path.is_symlink():
+        if (
+            index_path.is_file()
+            and not index_path.is_symlink()
+            and not image_dir_path.is_symlink()
+        ):
             index_path.touch()
             logger.info(f"Loaded image subtitle series from cache: {image_dir_path}")
             return image_dir_path

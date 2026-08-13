@@ -25,7 +25,7 @@ __all__ = ["TesseractRecognizer", "TesseractRecognizerKwargs"]
 
 logger = getLogger(__name__)
 
-TESSERACT_LEGACY_TESSDATA_URL_TEMPLATE = (
+_TESSERACT_LEGACY_TESSDATA_URL_TEMPLATE = (
     "https://raw.githubusercontent.com/tesseract-ocr/tessdata/"
     f"{TESSERACT_LEGACY_DATA_REVISION}/{{language}}.traineddata"
 )
@@ -125,12 +125,16 @@ class TesseractRecognizer:
             cache_root_path, overwrite=overwrite_cache
         )
 
-        if skip_executable_validation:
-            self.executable_path = Path(executable_path)
-            self.executable_version = "unvalidated"
-        else:
-            self.executable_path = val_executable(str(executable_path))
-            self.executable_version = self._get_executable_version()
+        resolved_executable_path = Path(executable_path)
+        if not skip_executable_validation:
+            resolved_executable_path = val_executable(str(executable_path))
+        self.executable_path = resolved_executable_path
+        """Tesseract executable path."""
+
+        executable_version = "unvalidated"
+        if not skip_executable_validation:
+            executable_version = self._get_executable_version()
+        self.executable_version = executable_version
         """Tesseract executable version used for OCR."""
 
         self.tessdata_dir_path: Path | None = None
@@ -164,6 +168,7 @@ class TesseractRecognizer:
         cache_identity = {
             "detect_italics": self.detect_italics,
             "language": self.tesseract_language_code,
+            "legacy_tessdata_revision": self._legacy_data_cache.source_revision,
             "oem": self.oem,
             "psm": self.psm,
             "runtime": {
@@ -288,7 +293,7 @@ class TesseractRecognizer:
         Raises:
             ScinoephileError: if the download fails
         """
-        url = TESSERACT_LEGACY_TESSDATA_URL_TEMPLATE.format(
+        url = _TESSERACT_LEGACY_TESSDATA_URL_TEMPLATE.format(
             language=self.tesseract_language_code
         )
         logger.info(f"Downloading Tesseract legacy traineddata: {url}")

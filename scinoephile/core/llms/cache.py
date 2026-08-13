@@ -70,6 +70,8 @@ class LlmCache:
             query_json: JSON representation of the query
         Returns:
             path to cache file
+        Raises:
+            ValueError: if tools_json or query_json is not valid JSON
         """
         cache_identity_json = json.dumps(
             {
@@ -102,6 +104,8 @@ class LlmCache:
             query_json: JSON representation of the query
         Returns:
             cached response payload, or None when unavailable
+        Raises:
+            ValueError: if tools_json or query_json is not valid JSON
         """
         cache_path = self.get_path(
             cache_identity, system_prompt, tools_json, query_json
@@ -142,6 +146,8 @@ class LlmCache:
             query_json: JSON representation of the query
         Returns:
             removed cache path, if present
+        Raises:
+            ValueError: if tools_json or query_json is not valid JSON
         """
         cache_path = self.get_path(
             cache_identity, system_prompt, tools_json, query_json
@@ -169,6 +175,8 @@ class LlmCache:
             contents: serialized response payload
         Returns:
             saved cache path
+        Raises:
+            ValueError: if tools_json or query_json is not valid JSON
         """
         cache_path = self.get_path(
             cache_identity, system_prompt, tools_json, query_json
