@@ -11,8 +11,10 @@ from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core.cache.artifact import remove_cache_artifact
 from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .exceptions import TranscriptionError, TranscriptionInferenceError
@@ -25,7 +27,7 @@ if TYPE_CHECKING:
 
 logger = getLogger(__name__)
 
-_CACHE_VERSION = 1
+_CACHE_VERSION = 2
 """Current transcription cache version."""
 
 
@@ -35,6 +37,7 @@ class TranscriptionCache:
     def __init__(
         self,
         cache_root_path: Path | None,
+        cache_namespace: AudioCacheNamespace,
         backend_name: str,
         backend_label: str,
         overwrite: bool = False,
@@ -43,19 +46,20 @@ class TranscriptionCache:
 
         Arguments:
             cache_root_path: root directory beneath which to cache, or None for default
-            backend_name: stable backend name stored in cache metadata
+            cache_namespace: registered transcription backend namespace
+            backend_name: stable backend name stored in cache identity
             backend_label: human-readable backend name used in log messages
             overwrite: whether to replace matching cache files
         """
         self.backend_name = backend_name
-        """Stable backend name stored in cache metadata."""
+        """Stable backend name stored in cache identity."""
         self.backend_label = backend_label
         """Human-readable backend name used in log messages."""
         if cache_root_path is None:
             cache_root_path = get_runtime_cache_root_path()
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which transcriptions are cached."""
-        self.cache_dir_path = val_output_dir_path(self.cache_root_path / backend_name)
+        self.cache_dir_path = cache_namespace.get_dir_path(self.cache_root_path)
         """Directory in which cached transcriptions are stored."""
 
         self.overwrite = overwrite
@@ -65,13 +69,13 @@ class TranscriptionCache:
         """Cache paths refreshed by this cache instance."""
 
     def get_path(
-        self, audio: AudioSegment, backend_metadata: Mapping[str, object]
+        self, audio: AudioSegment, cache_identity: Mapping[str, object]
     ) -> Path:
         """Get the cache path for audio and backend configuration.
 
         Arguments:
             audio: audio used to derive the cache key
-            backend_metadata: backend configuration identifying the output
+            cache_identity: backend configuration identifying the output
         Returns:
             cache path
         """
@@ -79,7 +83,7 @@ class TranscriptionCache:
         cache_hash.update(b"\0")
         cache_hash.update(
             json.dumps(
-                self._get_metadata(audio, backend_metadata),
+                self._get_cache_identity(audio, cache_identity),
                 ensure_ascii=False,
                 sort_keys=True,
             ).encode("utf-8")
@@ -87,29 +91,33 @@ class TranscriptionCache:
         return self.cache_dir_path / f"{cache_hash.hexdigest()}.json"
 
     def load(
-        self, audio: AudioSegment, backend_metadata: Mapping[str, object]
+        self, audio: AudioSegment, cache_identity: Mapping[str, object]
     ) -> tuple[Path, list[TranscribedSegment]] | None:
         """Load a cached transcription.
 
         Arguments:
             audio: audio used to derive the cache key
-            backend_metadata: backend configuration identifying the output
+            cache_identity: backend configuration identifying the output
         Returns:
             cache path and cached segments, if present
         """
-        cache_path = self.get_path(audio, backend_metadata)
+        cache_path = self.get_path(audio, cache_identity)
         if self.overwrite and cache_path not in self._refreshed_paths:
             self._refreshed_paths.add(cache_path)
-            if cache_path.exists():
-                cache_path.unlink()
+            if remove_cache_artifact(cache_path):
                 logger.info(
                     f"Removed {self.backend_label} transcription cache: {cache_path}"
                 )
-        if not cache_path.exists():
+        if not cache_path.is_file() or cache_path.is_symlink():
+            if remove_cache_artifact(cache_path):
+                logger.warning(
+                    f"Discarded invalid {self.backend_label} transcription cache: "
+                    f"{cache_path}"
+                )
             return None
 
         # Validate the matching entry, discarding invalid data as a cache miss
-        expected_metadata = self._get_metadata(audio, backend_metadata)
+        expected_cache_identity = self._get_cache_identity(audio, cache_identity)
         try:
             with cache_path.open("r", encoding="utf-8") as file:
                 payload = json.load(file)
@@ -123,9 +131,9 @@ class TranscriptionCache:
                     f"Unsupported {self.backend_label} transcription cache version: "
                     f"{cache_path}"
                 )
-            if payload.get("metadata") != expected_metadata:
+            if payload.get("cache_identity") != expected_cache_identity:
                 raise TranscriptionInferenceError(
-                    f"Mismatched {self.backend_label} transcription cache metadata: "
+                    f"Mismatched {self.backend_label} transcription cache identity: "
                     f"{cache_path}"
                 )
             raw_segments = payload.get("segments")
@@ -155,43 +163,41 @@ class TranscriptionCache:
         return cache_path, segments
 
     def remove(
-        self, audio: AudioSegment, backend_metadata: Mapping[str, object]
+        self, audio: AudioSegment, cache_identity: Mapping[str, object]
     ) -> Path | None:
         """Remove a cached transcription.
 
         Arguments:
             audio: audio used to derive the cache key
-            backend_metadata: backend configuration identifying the output
+            cache_identity: backend configuration identifying the output
         Returns:
             removed cache path, if present
         """
-        cache_path = self.get_path(audio, backend_metadata)
-        if not cache_path.exists():
+        cache_path = self.get_path(audio, cache_identity)
+        if not remove_cache_artifact(cache_path):
             return None
-
-        cache_path.unlink()
         logger.info(f"Removed {self.backend_label} transcription cache: {cache_path}")
         return cache_path
 
     def save(
         self,
         audio: AudioSegment,
-        backend_metadata: Mapping[str, object],
+        cache_identity: Mapping[str, object],
         segments: Sequence[TranscribedSegment],
     ) -> Path:
         """Save a transcription to the cache.
 
         Arguments:
             audio: audio used to derive the cache key
-            backend_metadata: backend configuration identifying the output
+            cache_identity: backend configuration identifying the output
             segments: timestamped transcription segments to cache
         Returns:
             saved cache path
         """
-        cache_path = self.get_path(audio, backend_metadata)
+        cache_path = self.get_path(audio, cache_identity)
         payload = {
             "cache_version": _CACHE_VERSION,
-            "metadata": self._get_metadata(audio, backend_metadata),
+            "cache_identity": self._get_cache_identity(audio, cache_identity),
             "segments": [segment.model_dump() for segment in segments],
         }
         with open_atomic_text_file(cache_path) as file:
@@ -207,25 +213,25 @@ class TranscriptionCache:
             cache_path: invalid transcription cache path
             error: validation or loading error
         """
-        cache_path.unlink(missing_ok=True)
+        remove_cache_artifact(cache_path)
         logger.warning(
             f"Discarded invalid {self.backend_label} transcription cache "
             f"{cache_path}: {error}"
         )
 
-    def _get_metadata(
-        self, audio: AudioSegment, backend_metadata: Mapping[str, object]
+    def _get_cache_identity(
+        self, audio: AudioSegment, cache_identity: Mapping[str, object]
     ) -> dict[str, object]:
-        """Get complete cache identity metadata.
+        """Get the complete cache identity.
 
         Arguments:
             audio: audio used to derive the cache identity
-            backend_metadata: backend configuration identifying the output
+            cache_identity: backend configuration identifying the output
         Returns:
-            complete cache identity metadata
+            complete cache identity
         """
         return {
-            **backend_metadata,
+            **cache_identity,
             "audio_channels": audio.channels,
             "audio_frame_rate": audio.frame_rate,
             "audio_sample_width": audio.sample_width,

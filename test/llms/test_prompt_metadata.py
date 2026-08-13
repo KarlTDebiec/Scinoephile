@@ -60,9 +60,16 @@ def test_registered_prompt_model_and_cache_identities_change_once(tmp_path: Path
 
         tools_json = queryer.tool_box.to_json()
         query_json = '{"same":"query"}'
-        cache_path = queryer._get_cache_path(system_prompt, tools_json, query_json)
-        legacy_cache_path = legacy_queryer._get_cache_path(
-            legacy_system_prompt, tools_json, query_json
+        assert queryer._cache is not None
+        assert legacy_queryer._cache is not None
+        cache_path = queryer._cache.get_path(
+            queryer._get_cache_identity(), system_prompt, tools_json, query_json
+        )
+        legacy_cache_path = legacy_queryer._cache.get_path(
+            legacy_queryer._get_cache_identity(),
+            legacy_system_prompt,
+            tools_json,
+            query_json,
         )
 
         assert cache_path != legacy_cache_path

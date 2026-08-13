@@ -112,9 +112,9 @@ class Queryer[TTestCase: TestCase]:
         """
         test_case = self.test_case_cls.model_validate(test_case.model_dump(mode="json"))
 
-        # Load from verified if available
-        if verified_test_case := self._get_verified_test_case(test_case.query):
-            return verified_test_case
+        # Load a previously answered test case if available
+        if known_test_case := self.get_known_test_case(test_case):
+            return known_test_case
 
         # Produce and log a neutral answer without accessing the response cache
         if self.no_op:
@@ -127,16 +127,11 @@ class Queryer[TTestCase: TestCase]:
                     "verified": False,
                 }
             )
-            self.log_encountered_test_case(test_case)
+            test_case = self.log_encountered_test_case(test_case)
             logger.info(f"Used no-op answer: {test_case.query.key_str}")
             return test_case
 
-        # Load from cache if available
         query_json = test_case.query.model_dump_json(by_alias=True, indent=4)
-        tools_json = self.tool_box.to_json()
-        cache_path = self._get_cache_path(self.system_prompt, tools_json, query_json)
-        if cached_test_case := self._get_cached_test_case(test_case, cache_path):
-            return cached_test_case
 
         # Query provider
         messages = [
@@ -239,15 +234,7 @@ class Queryer[TTestCase: TestCase]:
         if test_case.answer is None:
             raise ScinoephileError("Unable to obtain valid answer")
 
-        # Log encountered test case
-        self.log_encountered_test_case(test_case)
-
-        # Update cache
-        contents = test_case.answer.model_dump_json(exclude_defaults=True, indent=2)
-        assert self._cache is not None
-        self._cache.save(cache_path, contents)
-
-        return test_case
+        return self.store_answered_test_case(test_case)
 
     def get_few_shot_test_cases_str(self) -> str:
         """String representation of all test cases in the log."""
@@ -262,11 +249,35 @@ class Queryer[TTestCase: TestCase]:
             few_shot += test_case.answer.model_dump_json(by_alias=True, indent=4)
         return few_shot
 
-    def log_encountered_test_case(self, test_case: TestCase):
+    def get_known_test_case(self, test_case: TestCase) -> TTestCase | None:
+        """Get a verified or response-cached test case without querying the LLM.
+
+        Arguments:
+            test_case: test case containing the query to look up
+        Returns:
+            previously answered test case if available, else None
+        """
+        normalized = self.test_case_cls.model_validate(
+            test_case.model_dump(mode="json")
+        )
+        if verified_test_case := self._get_verified_test_case(normalized.query):
+            return verified_test_case
+        if self._cache is None:
+            return None
+
+        query_json = normalized.query.model_dump_json(by_alias=True, indent=4)
+        tools_json = self.tool_box.to_json()
+        return self._get_cached_test_case(
+            normalized, self.system_prompt, tools_json, query_json
+        )
+
+    def log_encountered_test_case(self, test_case: TestCase) -> TTestCase:
         """Log a test case as having been encountered.
 
         Arguments:
             test_case: test case to log
+        Returns:
+            normalized logged test case
         """
         normalized = self.test_case_cls.model_validate(
             test_case.model_dump(mode="json")
@@ -276,46 +287,68 @@ class Queryer[TTestCase: TestCase]:
         normalized.verified |= key in self.verified_test_cases
         self.encountered_test_cases[key] = normalized
         logger.debug(f"Logged test case: {normalized.query.key_str}")
+        return normalized
 
-    def _get_cache_path(
-        self, system_prompt: str, tools_json: str, query_json: str
-    ) -> Path:
-        """Get cache path based on hash of prompts.
+    def store_answered_test_case(self, test_case: TestCase) -> TTestCase:
+        """Log an answered test case and store its response under this queryer.
 
         Arguments:
-            system_prompt: system prompt used for the query
-            tools_json: JSON representation of configured tools
-            query_json: JSON representation of the query
+            test_case: answered test case to normalize and store
         Returns:
-            Path to cache file
+            normalized answered test case
+        Raises:
+            ValueError: if the test case has no answer
         """
-        assert self._cache is not None
-        return self._cache.get_path(
-            {
-                "provider": self.provider.cache_identity,
-                "test_case": {
-                    "module": self.test_case_cls.__module__,
-                    "qualname": self.test_case_cls.__qualname__,
-                },
-            },
-            system_prompt,
+        if test_case.answer is None:
+            raise ValueError("Cannot store a test case without an answer.")
+        normalized = self.log_encountered_test_case(test_case)
+        assert normalized.answer is not None
+        if self._cache is None:
+            return normalized
+
+        query_json = normalized.query.model_dump_json(by_alias=True, indent=4)
+        tools_json = self.tool_box.to_json()
+        contents = normalized.answer.model_dump_json(exclude_defaults=True, indent=2)
+        self._cache.save(
+            self._get_cache_identity(),
+            self.system_prompt,
             tools_json,
             query_json,
+            contents,
         )
+        return normalized
+
+    def _get_cache_identity(self) -> dict[str, object]:
+        """Get the provider and test-case cache identity."""
+        return {
+            "provider": self.provider.cache_identity,
+            "test_case": {
+                "module": self.test_case_cls.__module__,
+                "qualname": self.test_case_cls.__qualname__,
+            },
+        }
 
     def _get_cached_test_case(
-        self, test_case: TTestCase, cache_path: Path
+        self, test_case: TTestCase, system_prompt: str, tools_json: str, query_json: str
     ) -> TTestCase | None:
         """Get cached test case for the given query if available.
 
         Arguments:
             test_case: test case containing query for which to get cached version
-            cache_path: path to the cached answer
+            system_prompt: system prompt used for the query
+            tools_json: JSON representation of configured tools
+            query_json: JSON representation of the query
         Returns:
             cached test case if available, else None
         """
         assert self._cache is not None
-        contents = self._cache.load(cache_path)
+        cache_identity = self._get_cache_identity()
+        cache_path = self._cache.get_path(
+            cache_identity, system_prompt, tools_json, query_json
+        )
+        contents = self._cache.load(
+            cache_identity, system_prompt, tools_json, query_json
+        )
         if contents is None:
             return None
         try:
@@ -330,14 +363,14 @@ class Queryer[TTestCase: TestCase]:
             )
             if self.auto_verify and test_case.get_auto_verified():
                 test_case.verified = True
-            self.log_encountered_test_case(test_case)
-            logger.info(f"Loaded from cache: {test_case.query.key_str}")
+            test_case = self.log_encountered_test_case(test_case)
             return test_case
         except ValidationError as exc:
             logger.error(
-                f"Cache content for query {test_case.query.key_str} is invalid: {exc}"
+                f"Cache content for query {test_case.query.key_str} at "
+                f"{cache_path} is invalid: {exc}"
             )
-            self._cache.remove(cache_path)
+            self._cache.remove(cache_identity, system_prompt, tools_json, query_json)
         return None
 
     def _get_verified_test_case(self, query: Query) -> TTestCase | None:
@@ -349,8 +382,7 @@ class Queryer[TTestCase: TestCase]:
             verified test case if available, else None
         """
         if test_case := self.verified_test_cases.get(query.key):
-            self.log_encountered_test_case(test_case)
-            test_case = self.encountered_test_cases[query.key]
+            test_case = self.log_encountered_test_case(test_case)
             logger.info(f"Loaded from verified log: {query.key_str}")
             return test_case
         return None

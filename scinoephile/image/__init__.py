@@ -3,7 +3,7 @@
 """Code related to images.
 
 Package hierarchy (modules may import from any above):
-* bbox / colors
+* bbox / cache_namespace / colors
 * bboxes / drawing
 * subtitles
 * ocr

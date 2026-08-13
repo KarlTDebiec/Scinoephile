@@ -39,10 +39,10 @@ def test_review_cli_uses_guide_terminology():
     assert "--guide-language" in help_text
     assert "--reference-language" not in help_text
     assert actions["language"].help == (
-        "subtitle language (detected from infile if omitted)"
+        "subtitle language (default: detected automatically)"
     )
     assert actions["guide_language"].help == (
-        "guide language (detected from infile if omitted)"
+        "guide language (default: detected automatically)"
     )
     assert actions["json_path"].help == "JSON file containing test cases"
     assert "--llm-no-op" in help_text

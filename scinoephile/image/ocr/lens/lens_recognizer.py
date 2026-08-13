@@ -98,13 +98,13 @@ class LensRecognizer:
         Returns:
             recognized text
         """
-        cache_metadata = {"language": self.lens_language_code}
-        if (lines := self._cache.load(image, cache_metadata)) is not None:
+        cache_identity = {"language": self.lens_language_code}
+        if (lines := self._cache.load(image, cache_identity)) is not None:
             return self._format_lens_lines(lines)
 
         self._raise_if_running_loop()
         lines = self._recognize_image_uncached(image)
-        self._cache.save(image, cache_metadata, lines)
+        self._cache.save(image, cache_identity, lines)
         return self._format_lens_lines(lines)
 
     @staticmethod

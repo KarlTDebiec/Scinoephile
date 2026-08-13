@@ -3,7 +3,7 @@
 """Core code related to interactions with LLMs.
 
 Package hierarchy (modules may import from any above):
-* metrics / models / prompt / tool
+* cache_namespace / metrics / models / prompt / tool
 * answer / query / test_case_subtitle / tool_box
 * llm_provider / test_case
 * manager / openai_provider_base / cache
@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from .answer import Answer
 from .cache import LlmCache
+from .cache_namespace import LlmCacheNamespace
 from .llm_provider import ChatCompletionKwargs, LLMProvider
 from .manager import Manager, PromptModelField
 from .metrics import ChatCompletionMetrics, ChatCompletionMetricsSummary
@@ -37,6 +38,7 @@ __all__ = [
     "ChatCompletionMetricsSummary",
     "LLMProvider",
     "LlmCache",
+    "LlmCacheNamespace",
     "Manager",
     "OpenAIProviderBase",
     "Processor",
