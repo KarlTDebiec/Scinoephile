@@ -17,7 +17,7 @@ from scinoephile.audio.classification import (
 from scinoephile.audio.diarization import SpeakerDiarizationResult, SpeakerTurn
 from scinoephile.audio.transcription import TranscribedSegment, TranscribedWord
 from scinoephile.audio.vad import SpeechBlock
-from scinoephile.lang.yue.transcription import YueTimedTokenSimilarity
+from scinoephile.lang.yue.transcription import YueTokenSimilarity
 from scinoephile.workflows.transcription_alignment import (
     build_transcription_alignment_block,
 )
@@ -58,7 +58,7 @@ def test_build_transcription_alignment_block_uses_current_artifact_models():
     block = build_transcription_alignment_block(
         alignment,
         merged_segments,
-        Aligner(YueTimedTokenSimilarity()),
+        Aligner(YueTokenSimilarity()),
         speech_block=SpeechBlock(
             index=0,
             start_ms=10_000,
@@ -120,7 +120,7 @@ def test_build_transcription_alignment_block_adds_classification_rows():
     block = build_transcription_alignment_block(
         alignment,
         merged_segments,
-        Aligner(YueTimedTokenSimilarity()),
+        Aligner(YueTokenSimilarity()),
         speech_block=SpeechBlock(
             index=0,
             start_ms=10_000,
@@ -153,7 +153,7 @@ def test_build_transcription_alignment_block_rejects_invalid_segment_timing():
         build_transcription_alignment_block(
             alignment,
             merged_segments,
-            Aligner(YueTimedTokenSimilarity()),
+            Aligner(YueTokenSimilarity()),
             speech_block=SpeechBlock(
                 index=0,
                 start_ms=10_000,

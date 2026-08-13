@@ -5,14 +5,12 @@
 from __future__ import annotations
 
 from scinoephile.analysis.alignment.timed_msa import Token
-from scinoephile.lang.yue.transcription import YueTimedTokenSimilarity
+from scinoephile.lang.yue.transcription import YueTokenSimilarity
 
 
 def test_yue_similarity_keeps_lexical_evidence_stronger_than_timing():
     """Recognized pronunciation should beat an unrelated same-time character."""
-    similarity = YueTimedTokenSimilarity(
-        timing_weight=2.0, timing_tolerance_seconds=0.75
-    )
+    similarity = YueTokenSimilarity(timing_weight=2.0, timing_tolerance_seconds=0.75)
     distant_pronunciation = similarity(Token("嗰", 0.0, 0.1), Token("個", 3.0, 3.1))
     unrelated_same_time = similarity(Token("嗰", 0.0, 0.1), Token("八", 0.0, 0.1))
 
@@ -21,7 +19,7 @@ def test_yue_similarity_keeps_lexical_evidence_stronger_than_timing():
 
 def test_yue_similarity_orders_substitution_evidence():
     """Test the substitution matrix ranks progressively weaker evidence."""
-    similarity = YueTimedTokenSimilarity(timing_weight=0.0)
+    similarity = YueTokenSimilarity(timing_weight=0.0)
     token = Token("係", 0.0, 0.1)
 
     exact = similarity(token, Token("係", 0.0, 0.1))

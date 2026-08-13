@@ -10,11 +10,11 @@ from scinoephile.analysis.alignment.timed_msa.models import Token
 from scinoephile.core.text import normalize_nfkc
 from scinoephile.lang.yue.character_features import CharacterFeatures
 
-__all__ = ["YueTimedTokenSimilarity"]
+__all__ = ["YueTokenSimilarity"]
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
-class YueTimedTokenSimilarity:
+class YueTokenSimilarity:
     """Score timed Yue character substitutions by text and proximity."""
 
     exact_score: float = 6.0

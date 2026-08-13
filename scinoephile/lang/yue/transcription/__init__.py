@@ -3,18 +3,18 @@
 """Yue transcription alignment, prompts, and validation.
 
 Package hierarchy (modules may import from any above):
-* prompts / timed_token_similarity / validation
+* prompts / token_similarity / validation
 """
 
 from __future__ import annotations
 
 from .prompts import YueTranscriptionPromptYueHans, YueTranscriptionPromptYueHant
-from .timed_token_similarity import YueTimedTokenSimilarity
+from .token_similarity import YueTokenSimilarity
 from .validation import YueTranscriptionAlignmentScorer
 
 __all__ = [
     "YueTranscriptionAlignmentScorer",
     "YueTranscriptionPromptYueHans",
     "YueTranscriptionPromptYueHant",
-    "YueTimedTokenSimilarity",
+    "YueTokenSimilarity",
 ]
