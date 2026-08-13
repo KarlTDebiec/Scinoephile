@@ -5,14 +5,20 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from datetime import timedelta
 from pathlib import Path
 
 from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_root_arg
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
+from scinoephile.common.argument_parsing import (
+    duration_arg,
+    get_arg_groups_by_name,
+    int_arg,
+)
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cache.operations import clear_cache, get_cache_entries
+from scinoephile.core.cache.operations import clear_cache
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.workflows.cache_registry import CACHE_REGISTRY
 
 from .output import print_entries
 
@@ -21,12 +27,17 @@ __all__ = ["CacheClearCli"]
 CACHE_CLEAR_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "cache namespace to clear": "要清除的缓存命名空间",
-        "cache root directory to inspect (default: %(default)s)": (
-            "要检查的缓存根目录（默认：%(default)s）"
+        "cache root directory to clear (default: %(default)s)": (
+            "要清除的缓存根目录（默认：%(default)s）"
         ),
-        "clear cache entries": "清除缓存条目",
-        "clear every discovered namespace": "清除所有发现的命名空间",
+        "clear matching cache entries": "清除匹配的缓存条目",
+        "clear the cache root; with --older-than, clear registered entries only": (
+            "清除缓存根目录中的所有内容；与 --older-than 一起使用时，仅清除已注册的条目"
+        ),
         "confirm destructive deletion": "确认破坏性删除",
+        "only clear registered entries older than a duration such as 7d, 30d, or 12h": (
+            "仅清除早于指定时长的已注册条目，例如 7d、30d 或 12h"
+        ),
         "maximum entries to print; use 0 to show all (default: %(default)s)": (
             "最多输出的条目数；使用 0 显示全部（默认：%(default)s）"
         ),
@@ -36,12 +47,17 @@ CACHE_CLEAR_LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
     "zh-hant": {
         "cache namespace to clear": "要清除的快取命名空間",
-        "cache root directory to inspect (default: %(default)s)": (
-            "要檢查的快取根目錄（預設：%(default)s）"
+        "cache root directory to clear (default: %(default)s)": (
+            "要清除的快取根目錄（預設：%(default)s）"
         ),
-        "clear cache entries": "清除快取條目",
-        "clear every discovered namespace": "清除所有發現的命名空間",
+        "clear matching cache entries": "清除符合條件的快取條目",
+        "clear the cache root; with --older-than, clear registered entries only": (
+            "清除快取根目錄中的所有內容；與 --older-than 一起使用時，僅清除已註冊的條目"
+        ),
         "confirm destructive deletion": "確認破壞性刪除",
+        "only clear registered entries older than a duration such as 7d, 30d, or 12h": (
+            "僅清除早於指定時長的已註冊條目，例如 7d、30d 或 12h"
+        ),
         "maximum entries to print; use 0 to show all (default: %(default)s)": (
             "最多輸出的條目數；使用 0 顯示全部（預設：%(default)s）"
         ),
@@ -54,7 +70,7 @@ CACHE_CLEAR_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class CacheClearCli(ScinoephileCliBase):
-    """Clear cache entries."""
+    """Clear matching cache entries."""
 
     localizations = merge_localizations(CACHE_LOCALIZATIONS, CACHE_CLEAR_LOCALIZATIONS)
     """Localized help text keyed by locale and English source text."""
@@ -77,18 +93,29 @@ class CacheClearCli(ScinoephileCliBase):
         # Input arguments
         add_cache_root_arg(
             arg_groups["input arguments"],
-            help_text="cache root directory to inspect (default: %(default)s)",
+            help_text="cache root directory to clear (default: %(default)s)",
         )
 
         # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "--namespace", help="cache namespace to clear"
+        scope_group = arg_groups["operation arguments"].add_mutually_exclusive_group(
+            required=True
         )
-        arg_groups["operation arguments"].add_argument(
+        scope_group.add_argument("--namespace", help="cache namespace to clear")
+        scope_group.add_argument(
             "--all",
             action="store_true",
-            dest="all_namespaces",
-            help="clear every discovered namespace",
+            dest="entire_cache",
+            help=(
+                "clear the cache root; with --older-than, clear registered entries only"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--older-than",
+            type=duration_arg,
+            help=(
+                "only clear registered entries older than a duration such as 7d, "
+                "30d, or 12h"
+            ),
         )
         arg_groups["operation arguments"].add_argument(
             "--dry-run",
@@ -122,7 +149,8 @@ class CacheClearCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         cache_root_path: Path,
         namespace: str | None,
-        all_namespaces: bool,
+        entire_cache: bool,
+        older_than: timedelta | None,
         dry_run: bool,
         limit: int,
         yes: bool,
@@ -132,24 +160,21 @@ class CacheClearCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if not dry_run and not yes:
             parser.error("--yes is required unless --dry-run is specified")
-        if namespace is not None and all_namespaces:
+        if namespace is None and not entire_cache:
+            parser.error("--namespace is required unless --all is specified")
+        if namespace is not None and entire_cache:
             parser.error("--namespace and --all may not be used together")
 
         # Perform operations
         try:
-            if dry_run:
-                if all_namespaces:
-                    entries = get_cache_entries(cache_root_path)
-                elif namespace is None:
-                    raise ScinoephileError(
-                        "--namespace is required unless --all is specified"
-                    )
-                else:
-                    entries = get_cache_entries(cache_root_path, namespace=namespace)
-            else:
-                entries = clear_cache(
-                    cache_root_path, namespace=namespace, all_namespaces=all_namespaces
-                )
+            entries = clear_cache(
+                cache_root_path,
+                CACHE_REGISTRY,
+                namespace=namespace,
+                entire_cache=entire_cache,
+                older_than=older_than,
+                dry_run=dry_run,
+            )
         except (NotADirectoryError, ScinoephileError) as exc:
             parser.error(str(exc))
 

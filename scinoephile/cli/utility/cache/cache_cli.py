@@ -11,9 +11,7 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .cache_clear_cli import CacheClearCli
-from .cache_list_cli import CacheListCli
-from .cache_prune_cli import CachePruneCli
-from .cache_stats_cli import CacheStatsCli
+from .cache_inspect_cli import CacheInspectCli
 
 __all__ = ["CacheCli"]
 
@@ -55,9 +53,7 @@ class CacheCli(ScinoephileCliBase):
         """
         return {
             CacheClearCli.name(): CacheClearCli,
-            CacheListCli.name(): CacheListCli,
-            CachePruneCli.name(): CachePruneCli,
-            CacheStatsCli.name(): CacheStatsCli,
+            CacheInspectCli.name(): CacheInspectCli,
         }
 
     @classmethod

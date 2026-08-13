@@ -1,10 +1,10 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code for transcribing audio using guide-language subtitles.
+"""Guided and reference-free audio transcription.
 
 Package hierarchy (modules may import from any above):
-* aligned_merge / alignment / multisource_alignment
-* aligner / multisource
+* alignment / sources / standard
+* aligner
 * transcriber
 * guided
 """
@@ -14,18 +14,16 @@ from __future__ import annotations
 from .aligner import TranscriptionAligner
 from .alignment import TranscriptionAlignment
 from .guided import GuidedTranscriptionSpec, TranscriptionLanguageSpec
-from .multisource import MultiSourceTranscriber
-from .multisource_alignment import CantoneseTimedTokenSimilarity
-from .transcriber import GuidedTranscriber, MlxAudioTimingMode, TranscriptionBackend
+from .sources import TranscriptionSourceSpec
+from .transcriber import GuidedTranscriber, MlxAudioTimingMode, TranscriptionModel
 
 __all__ = [
-    "CantoneseTimedTokenSimilarity",
     "GuidedTranscriber",
     "GuidedTranscriptionSpec",
     "MlxAudioTimingMode",
-    "MultiSourceTranscriber",
     "TranscriptionAligner",
     "TranscriptionAlignment",
-    "TranscriptionBackend",
     "TranscriptionLanguageSpec",
+    "TranscriptionModel",
+    "TranscriptionSourceSpec",
 ]

@@ -7,48 +7,23 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import Mock
 
+import pytest
 from pydub import AudioSegment
 
 from scinoephile.audio.classification import (
+    AudioClassificationInferenceError,
     AudioEvent,
     FireRedAudioEventDetector,
     FireRedLanguageIdentifier,
 )
 
 
-def test_language_identifier_windows_vad_and_applies_source_offset(
-    tmp_path: Path, monkeypatch
-):
-    """FireRedLID results should retain their selected source-timeline position."""
-    monkeypatch.setattr(
-        "scinoephile.audio.classification.firered._get_runtime_version", lambda: "test"
-    )
-    identifier = FireRedLanguageIdentifier(tmp_path, batch_size=2)
-    identifier._model = Mock(  # noqa: SLF001
-        process=Mock(
-            return_value=[
-                {"uttid": "window_000000", "lang": "zh yue", "confidence": 0.9},
-                {"uttid": "window_000001", "lang": "ja", "confidence": 0.8},
-            ]
-        )
-    )
+def test_audio_event_detector_applies_source_offset(tmp_path: Path):
+    """FireRed mVAD timestamps should map from a selected slice to the source.
 
-    result = identifier(
-        AudioSegment.silent(duration=3_000),
-        ((0, 1000), (1500, 2500)),
-        offset_seconds=10.0,
-    )
-
-    assert [
-        (span.start, span.end, span.language, span.confidence) for span in result.spans
-    ] == [(10.0, 11.0, "zh-yue", 0.9), (11.5, 12.5, "ja", 0.8)]
-
-
-def test_audio_event_detector_applies_source_offset(tmp_path: Path, monkeypatch):
-    """FireRed mVAD timestamps should map from a selected slice to the source."""
-    monkeypatch.setattr(
-        "scinoephile.audio.classification.firered._get_runtime_version", lambda: "test"
-    )
+    Arguments:
+        tmp_path: temporary cache root path
+    """
     detector = FireRedAudioEventDetector(tmp_path)
     detector._model = Mock(  # noqa: SLF001
         detect=Mock(
@@ -72,3 +47,131 @@ def test_audio_event_detector_applies_source_offset(tmp_path: Path, monkeypatch)
         (AudioEvent.SPEECH, 20.1, 20.9),
         (AudioEvent.SINGING, 20.4, 20.8),
     ]
+
+
+def test_audio_event_detector_rejects_malformed_span(tmp_path: Path):
+    """A malformed FireRed span should surface as an inference error.
+
+    Arguments:
+        tmp_path: temporary cache root path
+    """
+    detector = FireRedAudioEventDetector(tmp_path)
+    detector._model = Mock(  # noqa: SLF001
+        detect=Mock(
+            return_value=(
+                {
+                    "event2timestamps": {
+                        "speech": [(1.0, 0.0)],
+                        "singing": [],
+                        "music": [],
+                    }
+                },
+                None,
+            )
+        )
+    )
+
+    with pytest.raises(AudioClassificationInferenceError, match="detection failed"):
+        detector(AudioSegment.silent(duration=1_000))
+
+
+def test_language_identifier_preserves_short_tail_when_subdividing(tmp_path: Path):
+    """Balanced subdivisions should preserve short tails of long intervals.
+
+    Arguments:
+        tmp_path: temporary cache root path
+    """
+    identifier = FireRedLanguageIdentifier(tmp_path)
+    identifier._model = Mock(  # noqa: SLF001
+        process=Mock(
+            return_value=[
+                {"uttid": "window_000000", "lang": "zh yue", "confidence": 0.9},
+                {"uttid": "window_000001", "lang": "zh yue", "confidence": 0.9},
+            ]
+        )
+    )
+
+    result = identifier(AudioSegment.silent(duration=30_400), ((0, 30_400),))
+
+    assert [(span.start, span.end) for span in result.spans] == [
+        (0.0, 15.2),
+        (15.2, 30.4),
+    ]
+
+
+def test_language_identifier_rejects_incompatible_window_lengths(tmp_path: Path):
+    """Window limits should allow subdivision without undersized windows.
+
+    Arguments:
+        tmp_path: temporary cache root path
+    """
+    with pytest.raises(ValueError, match="at least twice"):
+        FireRedLanguageIdentifier(
+            tmp_path, minimum_window_seconds=20.0, maximum_window_seconds=30.0
+        )
+
+
+def test_language_identifier_rejects_missing_model_output(tmp_path: Path):
+    """A suppressed FireRedLID failure should surface as an inference error.
+
+    Arguments:
+        tmp_path: temporary cache root path
+    """
+    identifier = FireRedLanguageIdentifier(tmp_path)
+    identifier._model = Mock(  # noqa: SLF001
+        process=Mock(return_value=[{"uttid": "window_000000", "lang": ""}])
+    )
+
+    with pytest.raises(AudioClassificationInferenceError, match="no language"):
+        identifier(AudioSegment.silent(duration=1_000), ((0, 1000),))
+
+
+def test_language_identifier_reuses_cached_result(tmp_path: Path):
+    """A matching language-identification request should not rerun inference.
+
+    Arguments:
+        tmp_path: temporary cache root path
+    """
+    audio = AudioSegment.silent(duration=1_000)
+    first_identifier = FireRedLanguageIdentifier(tmp_path)
+    first_identifier._model = Mock(  # noqa: SLF001
+        process=Mock(
+            return_value=[
+                {"uttid": "window_000000", "lang": "zh yue", "confidence": 0.9}
+            ]
+        )
+    )
+    expected = first_identifier(audio, ((0, 1000),))
+
+    second_identifier = FireRedLanguageIdentifier(tmp_path)
+    second_identifier._model = Mock()  # noqa: SLF001
+
+    assert second_identifier(audio, ((0, 1000),)) == expected
+    second_identifier._model.process.assert_not_called()  # noqa: SLF001
+
+
+def test_language_identifier_windows_vad_and_applies_source_offset(tmp_path: Path):
+    """FireRedLID results should retain their selected source-timeline position.
+
+    Arguments:
+        tmp_path: temporary cache root path
+    """
+    identifier = FireRedLanguageIdentifier(tmp_path, batch_size=2)
+    identifier._model = Mock(  # noqa: SLF001
+        process=Mock(
+            return_value=[
+                {"uttid": "window_000000", "lang": "zh yue", "confidence": 0.9},
+                {"uttid": "window_000001", "lang": "ja", "confidence": 0.8},
+            ]
+        )
+    )
+
+    result = identifier(
+        AudioSegment.silent(duration=3_000),
+        ((0, 1000), (1500, 2500)),
+        offset_seconds=10.0,
+    )
+
+    assert [
+        (span.start, span.end, span.language, span.confidence) for span in result.spans
+    ] == [(10.0, 11.0, "zh-yue", 0.9), (11.5, 12.5, "ja", 0.8)]

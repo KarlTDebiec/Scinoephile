@@ -3,6 +3,7 @@
 """Language-specific and cross-language code for scinoephile.
 
 Package hierarchy (modules may import from any above):
+* cache_namespace
 * cmn / eng / zho
 * yue
 * eng_yue / eng_zho / id / ocr_fusion / yue_eng / yue_zho / zho_eng / zho_yue
