@@ -11,7 +11,7 @@ from statistics import median
 
 from scinoephile.core.text import is_lexical_character
 
-__all__ = ["Column", "Sequence", "Token"]
+__all__ = ["AlignmentSequence", "Column", "Token"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -42,7 +42,7 @@ class Token:
 
 
 @dataclass(frozen=True, slots=True)
-class Sequence:
+class AlignmentSequence:
     """Named ordered sequence of timestamped characters."""
 
     name: str
@@ -69,7 +69,7 @@ class Sequence:
     @classmethod
     def from_timed_texts(
         cls, name: str, timed_texts: Iterable[tuple[str, float, float]]
-    ) -> Sequence:
+    ) -> AlignmentSequence:
         """Create a sequence by uniformly timing lexical characters.
 
         Multi-character timing units are divided uniformly so their characters

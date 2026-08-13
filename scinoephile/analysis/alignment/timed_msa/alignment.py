@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence as AbcSequence
+from collections.abc import Sequence
 from dataclasses import dataclass
 from math import floor
 from statistics import median
@@ -58,8 +58,8 @@ class Alignment:
     def with_pauses(
         self,
         *,
-        pause_intervals_seconds: AbcSequence[tuple[float, float]] | None = None,
-        source_names: AbcSequence[str] | None = None,
+        pause_intervals_seconds: Sequence[tuple[float, float]] | None = None,
+        source_names: Sequence[str] | None = None,
         start_seconds: float | None = None,
         end_seconds: float | None = None,
         minimum_pause_seconds: float = 0.25,
@@ -140,7 +140,7 @@ class Alignment:
 
 def _get_alignment_with_explicit_pauses(
     alignment: Alignment,
-    pause_intervals_seconds: AbcSequence[tuple[float, float]],
+    pause_intervals_seconds: Sequence[tuple[float, float]],
     source_indexes: tuple[int, ...],
     minimum_pause_seconds: float,
     pause_unit_seconds: float,
@@ -351,7 +351,7 @@ def _get_pause_columns(
 
 
 def _get_pause_source_indexes(
-    alignment: Alignment, source_names: AbcSequence[str] | None
+    alignment: Alignment, source_names: Sequence[str] | None
 ) -> tuple[int, ...]:
     """Resolve and validate rows whose shared gaps define pauses.
 
@@ -407,7 +407,7 @@ def _get_timed_insertion_boundary(
 
 def _validate_timed_pause_arguments(
     alignment: Alignment,
-    pause_intervals_seconds: AbcSequence[tuple[float, float]] | None,
+    pause_intervals_seconds: Sequence[tuple[float, float]] | None,
     start_seconds: float | None,
     end_seconds: float | None,
     minimum_pause_seconds: float,

@@ -4,10 +4,10 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence as AbcSequence
+from collections.abc import Sequence
 from math import isfinite
 
-from scinoephile.analysis.alignment.timed_msa.models import Sequence
+from scinoephile.analysis.alignment.timed_msa.models import AlignmentSequence
 
 from .transcribed_segment import TranscribedSegment
 
@@ -15,8 +15,8 @@ __all__ = ["get_transcription_sequence"]
 
 
 def get_transcription_sequence(
-    name: str, segments: AbcSequence[TranscribedSegment], *, offset_seconds: float = 0.0
-) -> Sequence:
+    name: str, segments: Sequence[TranscribedSegment], *, offset_seconds: float = 0.0
+) -> AlignmentSequence:
     """Convert timestamped transcription output into alignable characters.
 
     Arguments:
@@ -49,4 +49,4 @@ def get_transcription_sequence(
             )
     if any(start_seconds < 0.0 for _, start_seconds, _ in timed_texts):
         raise ValueError("Transcription alignment offset exceeds segment timing.")
-    return Sequence.from_timed_texts(name, timed_texts)
+    return AlignmentSequence.from_timed_texts(name, timed_texts)

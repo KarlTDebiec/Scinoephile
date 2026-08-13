@@ -4,8 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
-from collections.abc import Sequence as AbcSequence
+from collections.abc import Mapping, Sequence
 from math import isfinite
 
 from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
@@ -40,7 +39,7 @@ _VAD_SPEECH_THRESHOLD = 0.9
 
 def build_transcription_alignment_block(
     alignment: Alignment,
-    merged_segments: AbcSequence[TranscribedSegment],
+    merged_segments: Sequence[TranscribedSegment],
     aligner: Aligner,
     *,
     speech_block: SpeechBlock,
@@ -48,7 +47,7 @@ def build_transcription_alignment_block(
     diarization: SpeakerDiarizationResult | None = None,
     first_subtitle_index: int = 1,
     language_identification: LanguageIdentificationResult | None = None,
-    pause_intervals_seconds: AbcSequence[tuple[float, float]] = (),
+    pause_intervals_seconds: Sequence[tuple[float, float]] = (),
     source_errors: Mapping[str, str] | None = None,
     timing_sources: Mapping[int, TimingSource] | None = None,
     traditionalize: bool = False,
@@ -206,7 +205,7 @@ def _get_annotation_cell(
 
 
 def _get_event_row(
-    columns: AbcSequence[Column],
+    columns: Sequence[Column],
     audio_events: AudioEventDetectionResult | None,
     event: AudioEvent,
     marker: str,
@@ -305,7 +304,7 @@ def _get_language_symbols(
 
 
 def _get_row_text(
-    columns: AbcSequence[Column], source_idx: int, traditionalize: bool
+    columns: Sequence[Column], source_idx: int, traditionalize: bool
 ) -> str:
     """Get one source's display text while preserving its alignment gaps.
 
