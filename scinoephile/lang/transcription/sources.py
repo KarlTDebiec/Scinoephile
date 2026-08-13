@@ -112,6 +112,11 @@ def get_transcription_sources(
     transcribers: dict[str, Transcriber] = {}
     descriptors = []
     for source in source_specs:
+        if language not in source.model.languages:
+            raise ScinoephileError(
+                f"Transcription source {source.name!r} model "
+                f"{source.model.model_name!r} does not support {language.code}."
+            )
         if isinstance(source.model, WhisperModel):
             transcriber = WhisperTranscriber(
                 model=source.model,
@@ -127,7 +132,9 @@ def get_transcription_sources(
                 model=source.model,
                 language=language,
                 chunk_duration_seconds=_MLX_AUDIO_CHUNK_DURATION_SECONDS,
-                token_limit_guard=source.model is MIMO_MODEL,
+                token_limit_guard=(
+                    source.model.max_safe_audio_duration_seconds is not None
+                ),
                 demucs_mode=demucs_mode,
                 vad_mode=VadMode.OFF,
                 cache_root_path=cache_root_path,
