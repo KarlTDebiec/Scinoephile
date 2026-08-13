@@ -478,8 +478,10 @@ def test_transcribe_derives_language_and_passes_max_tokens(
     assert captured["max_tokens"] == 1024
 
 
-def test_transcribe_chunks_audio_and_offsets_segments(monkeypatch: pytest.MonkeyPatch):
-    """Test MLX-Audio chunking offsets segments and drops overlap duplicates."""
+def test_transcribe_chunks_audio_assigns_and_clips_words(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Assign overlap words by midpoint and clip retained timings to chunk cores."""
     audio = AudioSegment.silent(duration=4500)
     transcriber = MlxAudioTranscriber(
         model=MIMO_MODEL,
@@ -505,11 +507,11 @@ def test_transcribe_chunks_audio_and_offsets_segments(monkeypatch: pytest.Monkey
                     id=0,
                     seek=0,
                     start=0.1,
-                    end=2.2,
-                    text="duplicatetwo",
+                    end=2.7,
+                    text="overlaptwo",
                     words=[
                         TranscribedWord(
-                            text="duplicate", start=0.1, end=0.3, confidence=0.9
+                            text="overlap", start=0.1, end=0.3, confidence=0.9
                         ),
                         TranscribedWord(text="two", start=0.4, end=2.7, confidence=0.9),
                     ],
