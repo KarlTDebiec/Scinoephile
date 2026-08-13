@@ -14,6 +14,7 @@ from typing import cast
 
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core.cache.artifact import remove_cache_artifact
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.lang.cache_namespace import LangCacheNamespace
@@ -107,10 +108,13 @@ class ZhoScriptAnalysisCache:
         cache_path = self.get_path(infile_path, stream, sample_size, ocr_languages)
         if self.overwrite and cache_path not in self._refreshed_paths:
             self._refreshed_paths.add(cache_path)
-            if cache_path.exists():
-                cache_path.unlink()
+            if remove_cache_artifact(cache_path):
                 logger.info(f"Removed subtitle script analysis cache: {cache_path}")
-        if not cache_path.exists():
+        if not cache_path.is_file() or cache_path.is_symlink():
+            if remove_cache_artifact(cache_path):
+                logger.warning(
+                    f"Discarded invalid subtitle script analysis cache: {cache_path}"
+                )
             return None
 
         # Validate the matching entry, discarding invalid data as a cache miss
@@ -119,7 +123,7 @@ class ZhoScriptAnalysisCache:
                 payload: object = json.load(file)
             analysis = self._deserialize(payload)
         except (OSError, TypeError, UnicodeError, ValueError) as exc:
-            cache_path.unlink(missing_ok=True)
+            remove_cache_artifact(cache_path)
             logger.warning(
                 f"Discarded invalid subtitle script analysis cache {cache_path}: {exc}"
             )
@@ -147,9 +151,8 @@ class ZhoScriptAnalysisCache:
             removed cache path, if present
         """
         cache_path = self.get_path(infile_path, stream, sample_size, ocr_languages)
-        if not cache_path.exists():
+        if not remove_cache_artifact(cache_path):
             return None
-        cache_path.unlink()
         logger.info(f"Removed subtitle script analysis cache: {cache_path}")
         return cache_path
 

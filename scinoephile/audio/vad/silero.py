@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, cast
 import numpy as np
 
 from scinoephile.audio.samples import get_mono_pcm16_samples
+from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies import transcription
 
 from .exceptions import VoiceActivityError
@@ -54,7 +55,7 @@ class SileroVadProvider(VadProvider):
             "model": "silero-vad",
             "model_format": "onnx",
             "model_opset": 16,
-            "runtime": self._get_distribution_identity("silero-vad"),
+            "runtime": get_distribution_identity("silero-vad"),
         }
 
     def get_speech_intervals(

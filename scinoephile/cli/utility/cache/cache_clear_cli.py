@@ -104,7 +104,7 @@ class CacheClearCli(ScinoephileCliBase):
         scope_group.add_argument(
             "--all",
             action="store_true",
-            dest="all_namespaces",
+            dest="entire_cache",
             help=(
                 "clear the cache root; with --older-than, clear registered entries only"
             ),
@@ -149,7 +149,7 @@ class CacheClearCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         cache_root_path: Path,
         namespace: str | None,
-        all_namespaces: bool,
+        entire_cache: bool,
         older_than: timedelta | None,
         dry_run: bool,
         limit: int,
@@ -160,9 +160,9 @@ class CacheClearCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if not dry_run and not yes:
             parser.error("--yes is required unless --dry-run is specified")
-        if namespace is None and not all_namespaces:
+        if namespace is None and not entire_cache:
             parser.error("--namespace is required unless --all is specified")
-        if namespace is not None and all_namespaces:
+        if namespace is not None and entire_cache:
             parser.error("--namespace and --all may not be used together")
 
         # Perform operations
@@ -171,7 +171,7 @@ class CacheClearCli(ScinoephileCliBase):
                 cache_root_path,
                 CACHE_REGISTRY,
                 namespace=namespace,
-                all_namespaces=all_namespaces,
+                entire_cache=entire_cache,
                 older_than=older_than,
                 dry_run=dry_run,
             )

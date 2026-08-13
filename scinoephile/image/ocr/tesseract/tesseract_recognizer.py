@@ -18,7 +18,7 @@ from scinoephile.core import Language, ScinoephileError
 
 from .cache import TesseractCache
 from .hocr import parse_tesseract_hocr, transfer_tesseract_hocr_italics
-from .legacy_data_cache import TesseractLegacyDataCache
+from .legacy_data_cache import TESSERACT_LEGACY_DATA_REVISION, TesseractLegacyDataCache
 from .preprocessing import preprocess_tesseract_ocr_image
 
 __all__ = ["TesseractRecognizer", "TesseractRecognizerKwargs"]
@@ -26,8 +26,8 @@ __all__ = ["TesseractRecognizer", "TesseractRecognizerKwargs"]
 logger = getLogger(__name__)
 
 TESSERACT_LEGACY_TESSDATA_URL_TEMPLATE = (
-    "https://raw.githubusercontent.com/tesseract-ocr/tessdata/master/"
-    "{language}.traineddata"
+    "https://raw.githubusercontent.com/tesseract-ocr/tessdata/"
+    f"{TESSERACT_LEGACY_DATA_REVISION}/{{language}}.traineddata"
 )
 """URL template for legacy-capable Tesseract traineddata."""
 _TESSERACT_LANGUAGE_CODES = {
@@ -122,13 +122,16 @@ class TesseractRecognizer:
         self.scale = scale
         self._cache = TesseractCache(cache_root_path, overwrite_cache)
         self._legacy_data_cache = TesseractLegacyDataCache(
-            cache_root_path, overwrite_cache
+            cache_root_path, overwrite=overwrite_cache
         )
 
         if skip_executable_validation:
             self.executable_path = Path(executable_path)
+            self.executable_version = "unvalidated"
         else:
             self.executable_path = val_executable(str(executable_path))
+            self.executable_version = self._get_executable_version()
+        """Tesseract executable version used for OCR."""
 
         self.tessdata_dir_path: Path | None = None
         if tessdata_dir_path is not None:
@@ -158,12 +161,15 @@ class TesseractRecognizer:
         Returns:
             recognized text
         """
-        cache_metadata = {
+        cache_identity = {
             "detect_italics": self.detect_italics,
-            "executable": str(self.executable_path),
             "language": self.tesseract_language_code,
             "oem": self.oem,
             "psm": self.psm,
+            "runtime": {
+                "executable": str(self.executable_path),
+                "version": self.executable_version,
+            },
             "scale": self.scale,
             "tessdata_dir": (
                 str(self.tessdata_dir_path)
@@ -171,11 +177,11 @@ class TesseractRecognizer:
                 else None
             ),
         }
-        if (text := self._cache.load(image, cache_metadata)) is not None:
+        if (text := self._cache.load(image, cache_identity)) is not None:
             return text
 
         text = self._recognize_uncached_image(image)
-        self._cache.save(image, cache_metadata, text)
+        self._cache.save(image, cache_identity, text)
         return text
 
     @property
@@ -296,6 +302,24 @@ class TesseractRecognizer:
                 f"{self.tesseract_language_code}.traineddata from {url}."
             ) from exc
         return response.content
+
+    def _get_executable_version(self) -> str:
+        """Get the configured Tesseract executable version.
+
+        Returns:
+            first nonempty line reported by Tesseract
+        Raises:
+            ValueError: if Tesseract reports no version
+        """
+        _, stdout, stderr = run_command(
+            [str(self.executable_path), "--version"], timeout=10
+        )
+        for line in (*stdout.splitlines(), *stderr.splitlines()):
+            if stripped_line := line.strip():
+                return stripped_line
+        raise ValueError(
+            f"Tesseract executable {self.executable_path} reported no version"
+        )
 
     def _get_legacy_tessdata_dir_path(self) -> Path:
         """Get legacy-capable Tesseract tessdata directory path.

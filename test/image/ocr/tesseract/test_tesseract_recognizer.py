@@ -13,6 +13,7 @@ from pytest import MonkeyPatch, raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.tesseract import TesseractRecognizer
+from scinoephile.image.ocr.tesseract.legacy_data_cache import TesseractLegacyDataCache
 from test.helpers import parametrize
 from test.helpers.files import set_mtime
 
@@ -54,6 +55,20 @@ class CountingTesseractRecognizer(TesseractRecognizer):
         """
         self.recognize_count += 1
         return f"cached text {self.tesseract_language_code}"
+
+
+def _write_legacy_data(cache_root_path: Path, language_code: str) -> Path:
+    """Write nonempty legacy data to its current cache path.
+
+    Arguments:
+        cache_root_path: cache root directory
+        language_code: Tesseract language code
+    Returns:
+        legacy traineddata path
+    """
+    return TesseractLegacyDataCache(cache_root_path).save(
+        language_code, b"legacy traineddata"
+    )
 
 
 def test_tesseract_recognizer_caches_results_by_image(tmp_path: Path):
@@ -139,24 +154,20 @@ def test_tesseract_recognizer_caches_by_configuration(tmp_path: Path):
     assert len(list((tmp_path / "image/ocr/tesseract/results").glob("*.json"))) == 2
 
 
-def test_tesseract_recognizer_cache_key_ignores_engine_version(tmp_path: Path):
-    """Test Tesseract recognizer cache keys do not include an engine version."""
-
-    class VersionedCountingRecognizer(CountingTesseractRecognizer):
-        """Counting recognizer with a legacy cache version attribute."""
-
-        engine_version = "unused-version"
-
+def test_tesseract_recognizer_cache_key_includes_engine_version(tmp_path: Path):
+    """Test Tesseract upgrades invalidate cached OCR results."""
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
-    unversioned_recognizer = CountingTesseractRecognizer(cache_root_path=tmp_path)
-    versioned_recognizer = VersionedCountingRecognizer(cache_root_path=tmp_path)
+    first_recognizer = CountingTesseractRecognizer(cache_root_path=tmp_path)
+    second_recognizer = CountingTesseractRecognizer(cache_root_path=tmp_path)
+    first_recognizer.executable_version = "tesseract 5.0.0"
+    second_recognizer.executable_version = "tesseract 5.1.0"
 
-    assert unversioned_recognizer.recognize_image(image) == "cached text eng"
-    assert versioned_recognizer.recognize_image(image) == "cached text eng"
+    assert first_recognizer.recognize_image(image) == "cached text eng"
+    assert second_recognizer.recognize_image(image) == "cached text eng"
 
-    assert unversioned_recognizer.recognize_count == 1
-    assert versioned_recognizer.recognize_count == 0
-    assert len(list((tmp_path / "image/ocr/tesseract/results").glob("*.json"))) == 1
+    assert first_recognizer.recognize_count == 1
+    assert second_recognizer.recognize_count == 1
+    assert len(list((tmp_path / "image/ocr/tesseract/results").glob("*.json"))) == 2
 
 
 def test_tesseract_command_includes_hocr_tessdata_and_language(tmp_path: Path):
@@ -248,9 +259,7 @@ def test_tesseract_chinese_hocr_words_are_joined_without_spaces():
 def test_tesseract_detect_italics_runs_legacy_hocr_pass(tmp_path: Path):
     """Test italic detection runs a legacy-engine hOCR pass."""
     observed_commands: list[list[str]] = []
-    legacy_tessdata_dir_path = tmp_path / "image/ocr/tesseract/legacy_data" / "eng-v1"
-    legacy_tessdata_dir_path.mkdir(parents=True)
-    (legacy_tessdata_dir_path / "eng.traineddata").touch()
+    legacy_tessdata_dir_path = _write_legacy_data(tmp_path, "eng").parent
 
     class CommandCapturingRecognizer(TesseractRecognizer):
         """Recognizer that captures primary and legacy command arguments."""
@@ -383,12 +392,13 @@ def test_tesseract_detect_italics_downloads_missing_legacy_tessdata(
 
     assert recognizer.recognize_image(Image.new("RGBA", (2, 2))) == "ok"
     assert observed_urls == [
-        "https://raw.githubusercontent.com/tesseract-ocr/tessdata/master/"
+        "https://raw.githubusercontent.com/tesseract-ocr/tessdata/"
+        "ced78752cc61322fb554c280d13360b35b8684e4/"
         "eng.traineddata"
     ]
-    assert (
-        tmp_path / "image/ocr/tesseract/legacy_data" / "eng-v1" / "eng.traineddata"
-    ).read_bytes() == b"legacy traineddata"
+    assert recognizer._legacy_data_cache.get_path("eng").read_bytes() == (
+        b"legacy traineddata"
+    )
 
 
 def test_tesseract_detect_italics_reuses_existing_legacy_tessdata(
@@ -400,10 +410,7 @@ def test_tesseract_detect_italics_reuses_existing_legacy_tessdata(
         monkeypatch: pytest monkeypatch fixture
         tmp_path: temporary path fixture
     """
-    legacy_tessdata_dir_path = tmp_path / "image/ocr/tesseract/legacy_data" / "eng-v1"
-    legacy_tessdata_dir_path.mkdir(parents=True)
-    traineddata_path = legacy_tessdata_dir_path / "eng.traineddata"
-    traineddata_path.write_bytes(b"existing")
+    traineddata_path = _write_legacy_data(tmp_path, "eng")
     old_timestamp = time() - 60 * 60 * 24 * 40
     set_mtime(traineddata_path, old_timestamp)
 
@@ -456,9 +463,7 @@ def test_tesseract_detect_italics_reuses_existing_legacy_tessdata(
 def test_tesseract_blank_english_result_uses_legacy_fallback(tmp_path: Path):
     """Test blank English OCR result falls back to legacy single-line OCR."""
     observed_commands: list[list[str]] = []
-    legacy_tessdata_dir_path = tmp_path / "image/ocr/tesseract/legacy_data" / "eng-v1"
-    legacy_tessdata_dir_path.mkdir(parents=True)
-    (legacy_tessdata_dir_path / "eng.traineddata").touch()
+    legacy_tessdata_dir_path = _write_legacy_data(tmp_path, "eng").parent
 
     class LegacyFallbackRecognizer(TesseractRecognizer):
         """Recognizer that simulates blank primary OCR and useful legacy OCR."""
@@ -507,11 +512,7 @@ def test_tesseract_blank_english_result_uses_legacy_fallback(tmp_path: Path):
 def test_tesseract_blank_chinese_result_uses_legacy_fallback(tmp_path: Path):
     """Test blank Chinese OCR result falls back to legacy single-line OCR."""
     observed_commands: list[list[str]] = []
-    legacy_tessdata_dir_path = (
-        tmp_path / "image/ocr/tesseract/legacy_data" / "chi_tra-v1"
-    )
-    legacy_tessdata_dir_path.mkdir(parents=True)
-    (legacy_tessdata_dir_path / "chi_tra.traineddata").touch()
+    _write_legacy_data(tmp_path, "chi_tra")
 
     class LegacyFallbackRecognizer(TesseractRecognizer):
         """Recognizer that simulates blank primary OCR and useful legacy OCR."""
@@ -548,9 +549,7 @@ def test_tesseract_blank_chinese_result_uses_legacy_fallback(tmp_path: Path):
 
 def test_tesseract_detect_italics_raises_clear_legacy_error(tmp_path: Path):
     """Test italic detection reports missing legacy model support clearly."""
-    legacy_tessdata_dir_path = tmp_path / "image/ocr/tesseract/legacy_data" / "eng-v1"
-    legacy_tessdata_dir_path.mkdir(parents=True)
-    (legacy_tessdata_dir_path / "eng.traineddata").touch()
+    _write_legacy_data(tmp_path, "eng")
 
     class LegacyFailingRecognizer(TesseractRecognizer):
         """Recognizer that simulates a missing legacy Tesseract model."""

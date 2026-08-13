@@ -32,6 +32,7 @@ from scinoephile.audio.transcription.transcriber import Transcriber
 from scinoephile.audio.vad import VoiceActivityDetector
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language
+from scinoephile.core.cache.runtime import get_distribution_identity
 
 from .backend import MlxAudioBackend
 from .model import MIMO_MODEL, MlxAudioModel
@@ -45,6 +46,9 @@ logger = getLogger(__name__)
 
 _LOW_INFORMATION_CHARACTERS = frozenset("啊呀吖哦噢嗯嘶")
 """Standalone vocalizations rejected as unusable transcripts."""
+
+_MLX_AUDIO_SOURCE_REVISION = "ff0197c0ae9f9fd02072904c696f2533e329c06e"
+"""Pinned MLX-Audio source revision."""
 
 _TOKEN_LIMIT_GUARD_FRACTION = 0.95
 """Generation-budget fraction treated as suspicious under the opt-in guard."""
@@ -61,7 +65,7 @@ class MlxAudioTranscriber(Transcriber):
     """Registered namespace for cached MLX-Audio output."""
 
     backend_name = "mlx-audio"
-    """Stable backend name stored in cache metadata."""
+    """Stable backend name stored in cache identities."""
 
     backend_label = "MLX-Audio"
     """Human-readable backend name used in log messages."""
@@ -166,26 +170,29 @@ class MlxAudioTranscriber(Transcriber):
         """Get the MLX-Audio model name or local model path."""
         return self.model.model_name
 
-    def _get_backend_cache_metadata(
+    def _get_backend_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> dict[str, object]:
-        """Get metadata that identifies cached MLX-Audio output.
+        """Get the cache identity for configured MLX-Audio output.
 
         Arguments:
             audio: audio whose duration selects guarded behavior
             settings: preprocessing settings
         Returns:
-            cache identity metadata
+            cache identity
         """
         chunk_duration_ms, chunk_overlap_ms = self._get_effective_chunking(audio)
         chunk_duration_seconds = None
         if chunk_duration_ms is not None:
             chunk_duration_seconds = chunk_duration_ms / 1000
-        metadata: dict[str, object] = {
+        cache_identity: dict[str, object] = {
             "model_family": self.model.family_name,
             "model_name": self.model_name,
             "model_revision": self.backend.model_revision,
-            "runtime": "mlx",
+            "runtime": {
+                **get_distribution_identity("mlx-audio"),
+                "source_revision": _MLX_AUDIO_SOURCE_REVISION,
+            },
             "language": self.language.code,
             "mlx_audio_language": self.backend.mlx_audio_language,
             "max_tokens": self.max_tokens,
@@ -196,8 +203,8 @@ class MlxAudioTranscriber(Transcriber):
             "aligner_model_revision": self.ctc_aligner.model_revision,
         }
         if self._uses_token_limit_guard(audio):
-            metadata["token_limit_guard_fraction"] = _TOKEN_LIMIT_GUARD_FRACTION
-        return metadata
+            cache_identity["token_limit_guard_fraction"] = _TOKEN_LIMIT_GUARD_FRACTION
+        return cache_identity
 
     def _transcribe_attempt(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings

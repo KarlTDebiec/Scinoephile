@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, cast
 import numpy as np
 
 from scinoephile.audio.samples import get_mono_pcm16_samples
+from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies import transcription
 
 from .exceptions import VoiceActivityError
@@ -53,7 +54,7 @@ class PyannoteVadProvider(VadProvider):
         return {
             "model": _MODEL_ID,
             "model_revision": _MODEL_REVISION,
-            "runtime": self._get_distribution_identity("pyannote.audio"),
+            "runtime": get_distribution_identity("pyannote.audio"),
         }
 
     def get_trace(self, audio: AudioSegment) -> VoiceActivityTrace:

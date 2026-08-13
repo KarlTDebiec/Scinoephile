@@ -70,8 +70,11 @@ enums for application-wide inspection and clearing. The generic maintenance
 operations in `scinoephile.core.cache` receive this registry from their callers.
 
 Namespace segments use Python module spelling, including underscores such as
-`mlx_audio`. A parameterized `<operation>` segment represents one validated
-path component. Materially different entry types use separate leaf namespaces.
+`mlx_audio`. Parameterized LLM operation segments are the exception: they use
+stable operation identifiers such as `guided-review`, which need not mirror a
+Python module name. A parameterized `<operation>` segment represents one
+validated path component. Materially different entry types use separate leaf
+namespaces.
 
 `CacheNamespace.get_dir_path(...)` validates and creates the concrete namespace
 directory. Cache constructors should validate and retain their shared root,
@@ -93,6 +96,12 @@ change the reusable result. Depending on the domain, that may include source
 content or file metadata, model and backend identifiers, language, preprocessing
 settings, or prompt content. Exclude credentials, transient client objects, and
 unstable representations.
+
+Local inference identities include the runtime distribution name and version,
+plus model identifiers and revisions when available. Source dependencies pinned
+to a commit include that revision. Remote services may instead rely on a local
+cache version for client-side behavior changes when the service itself cannot be
+identified reproducibly.
 
 Persistent cache implementations should define a private `_CACHE_VERSION`
 constant and include it in the serialized payload, identity hash, or path.

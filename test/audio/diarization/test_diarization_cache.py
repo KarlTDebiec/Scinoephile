@@ -25,15 +25,15 @@ def test_diarization_cache_round_trip(tmp_path: Path):
     """
     cache = SpeakerDiarizationCache(tmp_path)
     audio = AudioSegment.silent(duration=100)
-    metadata = {"model": "test/model"}
+    cache_identity = {"model": "test/model"}
     result = SpeakerDiarizationResult(
         turns=[SpeakerTurn(start=0.0, end=0.1, speaker="SPEAKER_00")],
         exclusive_turns=[SpeakerTurn(start=0.0, end=0.1, speaker="SPEAKER_00")],
     )
 
-    cache_path = cache.save(audio, metadata, result)
+    cache_path = cache.save(audio, cache_identity, result)
     utime(cache_path, (1, 1))
-    loaded = cache.load(audio, metadata)
+    loaded = cache.load(audio, cache_identity)
 
     assert cache_path.parent == tmp_path / "audio/diarization"
     assert loaded == result
@@ -48,11 +48,11 @@ def test_diarization_cache_discards_invalid_payload(tmp_path: Path):
     """
     cache = SpeakerDiarizationCache(tmp_path)
     audio = AudioSegment.silent(duration=100)
-    metadata = {"model": "test/model"}
-    cache_path = cache.get_path(audio, metadata)
+    cache_identity = {"model": "test/model"}
+    cache_path = cache.get_path(audio, cache_identity)
     cache_path.write_text("not JSON", encoding="utf-8")
 
-    assert cache.load(audio, metadata) is None
+    assert cache.load(audio, cache_identity) is None
     assert not cache_path.exists()
 
 
@@ -64,14 +64,14 @@ def test_diarization_cache_discards_unsupported_version(tmp_path: Path):
     """
     cache = SpeakerDiarizationCache(tmp_path)
     audio = AudioSegment.silent(duration=100)
-    metadata = {"model": "test/model"}
+    cache_identity = {"model": "test/model"}
     result = SpeakerDiarizationResult(turns=[], exclusive_turns=[])
-    cache_path = cache.save(audio, metadata, result)
+    cache_path = cache.save(audio, cache_identity, result)
     payload = json.loads(cache_path.read_text(encoding="utf-8"))
     payload["cache_version"] = 0
     cache_path.write_text(json.dumps(payload), encoding="utf-8")
 
-    assert cache.load(audio, metadata) is None
+    assert cache.load(audio, cache_identity) is None
     assert not cache_path.exists()
 
 
@@ -82,15 +82,15 @@ def test_diarization_cache_overwrites_matching_entry_once(tmp_path: Path):
         tmp_path: temporary cache root path
     """
     audio = AudioSegment.silent(duration=100)
-    metadata = {"model": "test/model"}
+    cache_identity = {"model": "test/model"}
     result = SpeakerDiarizationResult(turns=[], exclusive_turns=[])
-    SpeakerDiarizationCache(tmp_path).save(audio, metadata, result)
+    SpeakerDiarizationCache(tmp_path).save(audio, cache_identity, result)
     overwrite_cache = SpeakerDiarizationCache(tmp_path, overwrite=True)
 
-    assert overwrite_cache.load(audio, metadata) is None
-    overwrite_cache.save(audio, metadata, result)
+    assert overwrite_cache.load(audio, cache_identity) is None
+    overwrite_cache.save(audio, cache_identity, result)
 
-    assert overwrite_cache.load(audio, metadata) == result
+    assert overwrite_cache.load(audio, cache_identity) == result
 
 
 def test_diarization_cache_uses_runtime_default(runtime_cache_root_path: Path):

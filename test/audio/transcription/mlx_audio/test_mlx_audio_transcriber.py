@@ -5,8 +5,10 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Mapping
 from dataclasses import replace
 from pathlib import Path
+from typing import cast
 from unittest.mock import Mock
 
 import numpy as np
@@ -66,7 +68,7 @@ def _get_cache_path(
     """Get the cache path for one preprocessing configuration."""
     settings = TranscriptionPreprocessingSettings(use_demucs, use_vad)
     cache_path = transcriber._cache.get_path(
-        audio, transcriber._get_cache_metadata(audio, settings)
+        audio, transcriber._get_cache_identity(audio, settings)
     )
     assert cache_path is not None
     return cache_path
@@ -141,14 +143,18 @@ def test_get_cache_path_separates_model_revisions():
 
 
 def test_get_cache_path_uses_mlx_runtime_on_apple_silicon():
-    """Test cache metadata identifies the fixed MLX runtime."""
+    """Test the cache identity includes MLX-Audio runtime provenance."""
     transcriber = _get_mlx_audio_transcriber(model=MIMO_MODEL)
 
-    metadata = transcriber._get_cache_metadata(
+    cache_identity = transcriber._get_cache_identity(
         _get_cache_audio(), TranscriptionPreprocessingSettings(False, False)
     )
 
-    assert metadata["runtime"] == "mlx"
+    runtime_identity = cast(Mapping[str, object], cache_identity["runtime"])
+    assert runtime_identity["distribution"] == "mlx-audio"
+    assert runtime_identity["source_revision"] == (
+        "ff0197c0ae9f9fd02072904c696f2533e329c06e"
+    )
 
 
 @pytest.mark.parametrize(
@@ -220,17 +226,17 @@ def test_token_limit_guard_cache_identity_depends_on_audio_duration(tmp_path: Pa
     expected_segments = [_get_timed_segment("cached")]
     unguarded._cache.save(
         short_audio,
-        unguarded._get_cache_metadata(short_audio, settings),
+        unguarded._get_cache_identity(short_audio, settings),
         expected_segments,
     )
     assert guarded.get_cached_transcription(short_audio) == expected_segments
 
-    guarded_metadata = guarded._get_cache_metadata(long_audio, settings)
-    assert guarded_metadata["chunk_duration_seconds"] == 53.0
-    assert guarded_metadata["chunk_overlap_seconds"] == 1.0
-    assert guarded_metadata["token_limit_guard_fraction"] == 0.95
+    guarded_cache_identity = guarded._get_cache_identity(long_audio, settings)
+    assert guarded_cache_identity["chunk_duration_seconds"] == 53.0
+    assert guarded_cache_identity["chunk_overlap_seconds"] == 1.0
+    assert guarded_cache_identity["token_limit_guard_fraction"] == 0.95
     assert "token_limit_guard_fraction" not in (
-        guarded._get_cache_metadata(short_audio, settings)
+        guarded._get_cache_identity(short_audio, settings)
     )
 
 
@@ -264,7 +270,7 @@ def test_token_limit_guard_does_not_change_qwen_behavior(
 
 
 def test_get_cache_path_separates_audio_formats():
-    """Test MLX-Audio cache paths include audio format metadata."""
+    """Test MLX-Audio cache paths include audio format cache_identity."""
     raw_data = b"\0\1" * 100
     audio_segments = [
         AudioSegment(data=raw_data, sample_width=2, frame_rate=16000, channels=1),
@@ -335,7 +341,7 @@ def test_init_rejects_chunk_duration_that_rounds_to_zero():
 
 
 def test_get_cached_transcription_reads_mlx_audio_payload(tmp_path: Path):
-    """Test MLX-Audio cache reads segment payloads from metadata-bearing files."""
+    """Test MLX-Audio cache reads segment payloads from cache_identity-bearing files."""
     transcriber = MlxAudioTranscriber(
         cache_root_path=tmp_path, demucs_mode=DemucsMode.OFF, vad_mode=VadMode.OFF
     )
@@ -343,7 +349,7 @@ def test_get_cached_transcription_reads_mlx_audio_payload(tmp_path: Path):
     expected_segments = [_get_timed_segment("你好")]
     transcriber._cache.save(
         audio,
-        transcriber._get_cache_metadata(
+        transcriber._get_cache_identity(
             audio, TranscriptionPreprocessingSettings(False, False)
         ),
         expected_segments,
@@ -915,10 +921,10 @@ def test_transcribe_aligns_text_and_writes_cache(
     transcriber.ctc_aligner.assert_called_once_with(audio, "你好")
     cache_path = _get_cache_path(transcriber, audio)
     cache_payload = json.loads(cache_path.read_text(encoding="utf-8"))
-    assert cache_payload["cache_version"] == 1
-    assert cache_payload["metadata"]["backend"] == "mlx-audio"
-    assert cache_payload["metadata"]["model_family"] == "mimo"
-    assert cache_payload["metadata"]["model_name"] == MIMO_MODEL.model_name
+    assert cache_payload["cache_version"] == 2
+    assert cache_payload["cache_identity"]["backend"] == "mlx-audio"
+    assert cache_payload["cache_identity"]["model_family"] == "mimo"
+    assert cache_payload["cache_identity"]["model_name"] == MIMO_MODEL.model_name
     assert cache_payload["segments"][0]["text"] == "你好"
 
 
@@ -983,7 +989,7 @@ def _get_cache_audio() -> AudioSegment:
     """Get a small audio segment suitable for MLX-Audio cache tests.
 
     Returns:
-        audio segment with concrete format metadata
+        audio segment with concrete format cache_identity
     """
     return AudioSegment(
         data=b"\0\1" * 100, sample_width=2, frame_rate=16000, channels=1
