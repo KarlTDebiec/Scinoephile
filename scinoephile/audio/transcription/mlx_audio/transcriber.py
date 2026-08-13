@@ -44,6 +44,9 @@ if TYPE_CHECKING:
 
 logger = getLogger(__name__)
 
+_CHUNK_POSTPROCESSING_VERSION = "2"
+"""Version of overlapping chunk ownership and timestamp clipping."""
+
 _LOW_INFORMATION_CHARACTERS = frozenset("啊呀吖哦噢嗯嘶")
 """Standalone vocalizations rejected as unusable transcripts."""
 
@@ -198,6 +201,7 @@ class MlxAudioTranscriber(Transcriber):
             "max_tokens": self.max_tokens,
             "chunk_duration_seconds": chunk_duration_seconds,
             "chunk_overlap_seconds": chunk_overlap_ms / 1000,
+            "chunk_postprocessing_version": _CHUNK_POSTPROCESSING_VERSION,
             "aligner": "ctc",
             "aligner_model_name": self.ctc_aligner.model_name,
             "aligner_model_revision": self.ctc_aligner.model_revision,
@@ -592,7 +596,12 @@ class MlxAudioTranscriber(Transcriber):
                 if midpoint < core_start_seconds or midpoint >= core_end_seconds:
                     continue
                 words.append(
-                    word.model_copy(update={"start": global_start, "end": global_end})
+                    word.model_copy(
+                        update={
+                            "start": max(global_start, core_start_seconds),
+                            "end": min(global_end, core_end_seconds),
+                        }
+                    )
                 )
             if not words:
                 continue

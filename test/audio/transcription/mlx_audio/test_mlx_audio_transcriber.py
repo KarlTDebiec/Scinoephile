@@ -234,6 +234,7 @@ def test_token_limit_guard_cache_identity_depends_on_audio_duration(tmp_path: Pa
     guarded_cache_identity = guarded._get_cache_identity(long_audio, settings)
     assert guarded_cache_identity["chunk_duration_seconds"] == 53.0
     assert guarded_cache_identity["chunk_overlap_seconds"] == 1.0
+    assert guarded_cache_identity["chunk_postprocessing_version"] == "2"
     assert guarded_cache_identity["token_limit_guard_fraction"] == 0.95
     assert "token_limit_guard_fraction" not in (
         guarded._get_cache_identity(short_audio, settings)
@@ -477,8 +478,10 @@ def test_transcribe_derives_language_and_passes_max_tokens(
     assert captured["max_tokens"] == 1024
 
 
-def test_transcribe_chunks_audio_and_offsets_segments(monkeypatch: pytest.MonkeyPatch):
-    """Test MLX-Audio chunking offsets segments and drops overlap duplicates."""
+def test_transcribe_chunks_audio_assigns_and_clips_words(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Assign overlap words by midpoint and clip retained timings to chunk cores."""
     audio = AudioSegment.silent(duration=4500)
     transcriber = MlxAudioTranscriber(
         model=MIMO_MODEL,
@@ -504,13 +507,13 @@ def test_transcribe_chunks_audio_and_offsets_segments(monkeypatch: pytest.Monkey
                     id=0,
                     seek=0,
                     start=0.1,
-                    end=2.2,
-                    text="duplicatetwo",
+                    end=2.7,
+                    text="overlaptwo",
                     words=[
                         TranscribedWord(
-                            text="duplicate", start=0.1, end=0.3, confidence=0.9
+                            text="overlap", start=0.1, end=0.3, confidence=0.9
                         ),
-                        TranscribedWord(text="two", start=0.7, end=2.2, confidence=0.9),
+                        TranscribedWord(text="two", start=0.4, end=2.7, confidence=0.9),
                     ],
                 )
             ],
@@ -524,11 +527,11 @@ def test_transcribe_chunks_audio_and_offsets_segments(monkeypatch: pytest.Monkey
     assert transcriber.ctc_aligner.call_count == 3
     assert [segment.text for segment in segments] == ["one", "two", "three"]
     assert [segment.id for segment in segments] == [0, 1, 2]
-    assert [segment.start for segment in segments] == pytest.approx([0.1, 2.2, 4.1])
-    assert [segment.end for segment in segments] == pytest.approx([0.9, 3.7, 4.5])
+    assert [segment.start for segment in segments] == pytest.approx([0.1, 2.0, 4.1])
+    assert [segment.end for segment in segments] == pytest.approx([0.9, 4.0, 4.5])
     assert segments[1].words is not None
-    assert segments[1].words[0].start == pytest.approx(2.2)
-    assert segments[1].words[0].end == pytest.approx(3.7)
+    assert segments[1].words[0].start == pytest.approx(2.0)
+    assert segments[1].words[0].end == pytest.approx(4.0)
 
 
 def test_token_limit_guard_proactively_chunks_long_mimo_audio(
