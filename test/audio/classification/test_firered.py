@@ -75,6 +75,42 @@ def test_audio_event_detector_rejects_malformed_span(tmp_path: Path):
         detector(AudioSegment.silent(duration=1_000))
 
 
+def test_language_identifier_preserves_short_tail_when_subdividing(tmp_path: Path):
+    """Balanced subdivisions should preserve short tails of long intervals.
+
+    Arguments:
+        tmp_path: temporary cache root path
+    """
+    identifier = FireRedLanguageIdentifier(tmp_path)
+    identifier._model = Mock(  # noqa: SLF001
+        process=Mock(
+            return_value=[
+                {"uttid": "window_000000", "lang": "zh yue", "confidence": 0.9},
+                {"uttid": "window_000001", "lang": "zh yue", "confidence": 0.9},
+            ]
+        )
+    )
+
+    result = identifier(AudioSegment.silent(duration=30_400), ((0, 30_400),))
+
+    assert [(span.start, span.end) for span in result.spans] == [
+        (0.0, 15.2),
+        (15.2, 30.4),
+    ]
+
+
+def test_language_identifier_rejects_incompatible_window_lengths(tmp_path: Path):
+    """Window limits should allow subdivision without undersized windows.
+
+    Arguments:
+        tmp_path: temporary cache root path
+    """
+    with pytest.raises(ValueError, match="at least twice"):
+        FireRedLanguageIdentifier(
+            tmp_path, minimum_window_seconds=20.0, maximum_window_seconds=30.0
+        )
+
+
 def test_language_identifier_rejects_missing_model_output(tmp_path: Path):
     """A suppressed FireRedLID failure should surface as an inference error.
 

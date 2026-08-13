@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Mapping, Sequence
 from logging import getLogger
-from math import isfinite
+from math import ceil, isfinite
 from pathlib import Path
 from typing import TYPE_CHECKING, cast
 
@@ -90,9 +90,9 @@ class FireRedLanguageIdentifier:
             raise ValueError("Minimum language window must be positive.")
         if not isfinite(maximum_window_seconds):
             raise ValueError("Maximum language window must be finite.")
-        if maximum_window_seconds < minimum_window_seconds:
+        if maximum_window_seconds < 2 * minimum_window_seconds:
             raise ValueError(
-                "Maximum language window must not be shorter than the minimum."
+                "Maximum language window must be at least twice the minimum."
             )
         self.batch_size = batch_size
         """Utterance windows classified together."""
@@ -288,13 +288,18 @@ class FireRedLanguageIdentifier:
             previous_end_ms = end_ms
             clipped_start = max(0.0, start_ms / 1000)
             clipped_end = min(audio_duration_ms / 1000, end_ms / 1000)
-            window_start = clipped_start
-            while clipped_end - window_start >= self.minimum_window_seconds:
-                window_end = min(
-                    clipped_end, window_start + self.maximum_window_seconds
-                )
+            duration = clipped_end - clipped_start
+            if duration < self.minimum_window_seconds:
+                continue
+            window_count = ceil(duration / self.maximum_window_seconds)
+            window_duration = duration / window_count
+            for window_idx in range(window_count):
+                window_start = clipped_start + window_idx * window_duration
+                if window_idx == window_count - 1:
+                    window_end = clipped_end
+                else:
+                    window_end = clipped_start + (window_idx + 1) * window_duration
                 windows.append((window_start, window_end))
-                window_start = window_end
         return tuple(windows)
 
 
