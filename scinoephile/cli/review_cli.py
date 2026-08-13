@@ -46,11 +46,11 @@ REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "command-line interface for subtitle review": "字幕审校命令行界面",
         'subtitle infile or "-" for stdin': '字幕输入文件，或使用 "-" 表示标准输入',
         "guide subtitle infile for guided review": "用于引导校对的字幕输入文件",
-        "subtitle language (detected from infile if omitted)": (
-            "字幕语言（省略时从输入文件检测）"
+        "subtitle language (default: detected automatically)": (
+            "字幕语言（默认：自动检测）"
         ),
-        "guide language (detected from infile if omitted)": (
-            "引导字幕语言（省略时从输入文件检测）"
+        "guide language (default: detected automatically)": (
+            "引导字幕语言（默认：自动检测）"
         ),
         "subtitle outfile path (default: stdout)": (
             "字幕输出文件路径（默认：标准输出）"
@@ -62,11 +62,11 @@ REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "command-line interface for subtitle review": "字幕審校命令列介面",
         'subtitle infile or "-" for stdin': '字幕輸入檔，或使用 "-" 代表標準輸入',
         "guide subtitle infile for guided review": "用於引導校對的字幕輸入檔",
-        "subtitle language (detected from infile if omitted)": (
-            "字幕語言（省略時從輸入檔偵測）"
+        "subtitle language (default: detected automatically)": (
+            "字幕語言（預設：自動偵測）"
         ),
-        "guide language (detected from infile if omitted)": (
-            "引導字幕語言（省略時從輸入檔偵測）"
+        "guide language (default: detected automatically)": (
+            "引導字幕語言（預設：自動偵測）"
         ),
         "subtitle outfile path (default: stdout)": ("字幕輸出檔路徑（預設：標準輸出）"),
         "review subtitles using an LLM": "使用大型語言模型審校字幕",
@@ -125,13 +125,13 @@ class ReviewCli(ScinoephileCliBase):
             "--language",
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help="subtitle language (detected from infile if omitted)",
+            help="subtitle language (default: detected automatically)",
         )
         arg_groups["operation arguments"].add_argument(
             "--guide-language",
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help="guide language (detected from infile if omitted)",
+            help="guide language (default: detected automatically)",
         )
         add_block_range_args(arg_groups["operation arguments"])
         add_llm_provider_args(

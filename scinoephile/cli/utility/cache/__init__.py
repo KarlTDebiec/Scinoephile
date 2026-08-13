@@ -4,7 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * output
-* cache_clear_cli / cache_list_cli / cache_prune_cli / cache_stats_cli
+* cache_clear_cli / cache_inspect_cli
 * cache_cli
 """
 

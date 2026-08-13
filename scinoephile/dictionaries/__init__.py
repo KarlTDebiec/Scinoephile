@@ -3,6 +3,7 @@
 """Dictionary services, parsers, and lookup workflows.
 
 Package hierarchy (modules may import from any above):
+* cache_namespace
 * cuhk / gzzj / kaifangcidian / unihan / wiktionary
 * lookup
 * dictionary_tools

@@ -3,12 +3,11 @@
 """Code related to audio transcription.
 
 Package hierarchy (modules may import from any above):
-* demucs / exceptions / preprocessing_settings / transcribed_word
+* exceptions / preprocessing_settings / transcribed_word
 * transcribed_segment
 * cache / ctc_aligner
 * transcriber
-* whisper_transcriber
-* mlx_audio
+* mlx_audio / whisper
 """
 
 from __future__ import annotations
@@ -17,7 +16,6 @@ from logging import getLogger
 
 from .cache import TranscriptionCache
 from .ctc_aligner import CtcAligner
-from .demucs import DemucsSeparator
 from .exceptions import (
     TranscriptionAlignmentError,
     TranscriptionAlignmentIncompleteError,
@@ -25,21 +23,21 @@ from .exceptions import (
     TranscriptionError,
     TranscriptionInferenceError,
 )
-from .mlx_audio import MlxAudioTranscriber
+from .mlx_audio import MlxAudioModel, MlxAudioTranscriber
 from .preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
-    VADMode,
+    VadMode,
 )
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 from .transcriber import Transcriber
-from .whisper_transcriber import WhisperTranscriber
+from .whisper import WhisperModel, WhisperTranscriber
 
 __all__ = [
     "CtcAligner",
     "DemucsMode",
-    "DemucsSeparator",
+    "MlxAudioModel",
     "MlxAudioTranscriber",
     "TranscribedSegment",
     "TranscribedWord",
@@ -51,7 +49,8 @@ __all__ = [
     "TranscriptionError",
     "TranscriptionInferenceError",
     "TranscriptionPreprocessingSettings",
-    "VADMode",
+    "VadMode",
+    "WhisperModel",
     "WhisperTranscriber",
     "get_segment_merged",
     "get_segment_split_at_idx",
@@ -128,20 +127,27 @@ def get_segment_split_at_idx(
             split_time = word.start + (word_duration * ratio)
             if first_text:
                 first_words.append(
-                    TranscribedWord(
-                        text=first_text,
-                        start=word.start,
-                        end=split_time,
-                        confidence=word.confidence,
+                    word.model_copy(
+                        update={
+                            "text": first_text,
+                            "end": split_time,
+                            "following_voice_activity_score": None,
+                            "voice_activity_coverage": None,
+                            "voice_activity_peak": None,
+                            "voice_activity_score": None,
+                        }
                     )
                 )
             if second_text:
                 second_words.append(
-                    TranscribedWord(
-                        text=second_text,
-                        start=split_time,
-                        end=word.end,
-                        confidence=word.confidence,
+                    word.model_copy(
+                        update={
+                            "text": second_text,
+                            "start": split_time,
+                            "voice_activity_coverage": None,
+                            "voice_activity_peak": None,
+                            "voice_activity_score": None,
+                        }
                     )
                 )
             split_done = True

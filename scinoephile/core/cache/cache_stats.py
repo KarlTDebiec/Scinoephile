@@ -24,7 +24,3 @@ class CacheStats:
     """Oldest entry modification time."""
     newest_modified_at: datetime | None
     """Newest entry modification time."""
-    oldest_accessed_at: datetime | None
-    """Oldest entry access time."""
-    newest_accessed_at: datetime | None
-    """Newest entry access time."""
