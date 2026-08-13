@@ -65,10 +65,10 @@ def test_alignment_preserves_sources_and_insertion_gaps():
 
 def test_alignment_uses_time_to_resolve_repeated_character():
     """Test timestamp scoring aligns a repeated character to its local peer."""
-    one = timed_msa.Sequence(
+    one = timed_msa.AlignmentSequence(
         "one", (timed_msa.Token("啊", 0.0, 0.2), timed_msa.Token("啊", 10.0, 10.2))
     )
-    two = timed_msa.Sequence("two", (timed_msa.Token("啊", 10.0, 10.2),))
+    two = timed_msa.AlignmentSequence("two", (timed_msa.Token("啊", 10.0, 10.2),))
 
     def similarity(left: timed_msa.Token, right: timed_msa.Token) -> float:
         """Prefer identical characters that occur at the same time.
@@ -118,7 +118,7 @@ def test_settings_reject_too_small_exhaustive_limit():
 
 def _get_sequence(
     name: str, text: str, starts: tuple[float, ...]
-) -> timed_msa.Sequence:
+) -> timed_msa.AlignmentSequence:
     """Build a compact timed-character test sequence.
 
     Arguments:
@@ -128,7 +128,7 @@ def _get_sequence(
     Returns:
         timestamped character sequence
     """
-    return timed_msa.Sequence(
+    return timed_msa.AlignmentSequence(
         name,
         tuple(
             timed_msa.Token(character, start, start + 0.1)

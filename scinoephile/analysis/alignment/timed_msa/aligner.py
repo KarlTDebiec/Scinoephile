@@ -4,15 +4,14 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
-from collections.abc import Sequence as AbcSequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from itertools import permutations
 
 import numpy as np
 
 from .alignment import Alignment
-from .models import Column, Sequence, Token
+from .models import AlignmentSequence, Column, Token
 
 __all__ = ["Aligner", "Settings"]
 
@@ -67,7 +66,7 @@ class Aligner:
         self.settings = settings
         """Affine-gap scoring configuration."""
 
-    def __call__(self, sequences: AbcSequence[Sequence]) -> Alignment:
+    def __call__(self, sequences: Sequence[AlignmentSequence]) -> Alignment:
         """Align two or more named timestamped sequences.
 
         For small source sets, all progressive source orders are considered and
@@ -104,7 +103,9 @@ class Aligner:
         assert best_alignment is not None
         return best_alignment
 
-    def add_sequence(self, alignment: Alignment, sequence: Sequence) -> Alignment:
+    def add_sequence(
+        self, alignment: Alignment, sequence: AlignmentSequence
+    ) -> Alignment:
         """Align one non-authoritative sequence onto a fixed existing profile.
 
         Existing rows retain their mutual alignment. The added sequence may place
@@ -124,7 +125,7 @@ class Aligner:
             raise ValueError("Additional sequences must be aligned before annotations.")
         return self._align_profile_to_sequence(alignment, sequence)
 
-    def _align_in_order(self, sequences: AbcSequence[Sequence]) -> Alignment:
+    def _align_in_order(self, sequences: Sequence[AlignmentSequence]) -> Alignment:
         """Progressively align sequences in one specified order.
 
         Arguments:
@@ -142,7 +143,7 @@ class Aligner:
         return alignment
 
     def _align_profile_to_sequence(  # noqa: PLR0912, PLR0915
-        self, profile: Alignment, sequence: Sequence
+        self, profile: Alignment, sequence: AlignmentSequence
     ) -> Alignment:
         """Align one existing profile to one additional sequence.
 
@@ -278,8 +279,8 @@ class Aligner:
         )
 
     def _get_guide_orders(
-        self, sequences: AbcSequence[Sequence]
-    ) -> tuple[tuple[Sequence, ...], ...]:
+        self, sequences: Sequence[AlignmentSequence]
+    ) -> tuple[tuple[AlignmentSequence, ...], ...]:
         """Get pairwise-affinity progressive orders for a large source set.
 
         Arguments:

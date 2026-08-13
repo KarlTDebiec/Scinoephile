@@ -12,6 +12,6 @@ from __future__ import annotations
 
 from .aligner import Aligner, Settings
 from .alignment import Alignment
-from .models import Column, Sequence, Token
+from .models import AlignmentSequence, Column, Token
 
-__all__ = ["Aligner", "Alignment", "Column", "Sequence", "Settings", "Token"]
+__all__ = ["Aligner", "Alignment", "AlignmentSequence", "Column", "Settings", "Token"]

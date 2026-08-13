@@ -23,16 +23,10 @@ __all__ = [
     "TimingSource",
 ]
 
-_GAP_CHARACTER = "　"
-_PAUSE_CHARACTER = "・"
-_REFERENCE_BOUNDARY_CHARACTER = "｜"
-_SPEECH_CHARACTER = "＊"
-_SPEAKER_CHARACTERS = frozenset(
-    {_GAP_CHARACTER, _PAUSE_CHARACTER, _SPEECH_CHARACTER}
-    | {chr(ord("Ａ") + index) for index in range(26)}
-)
 _NonBlankString = Annotated[str, StringConstraints(min_length=1, strip_whitespace=True)]
 """String normalized by trimming whitespace and rejecting blank values."""
+_SpeakerSymbol = Annotated[str, StringConstraints(pattern=r"^[Ａ-Ｚ]$")]
+"""Anonymous fullwidth Latin speaker symbol."""
 
 TimingSource = Literal["ctc-request", "ctc-unconsumed-block", "source"]
 """Origin of one final subtitle's speech timing."""
@@ -118,8 +112,8 @@ class AlignmentSubtitle(BaseModel):
     """Inclusive final SRT display start."""
     end_ms: int = Field(ge=0)
     """Exclusive final SRT display end."""
-    speaker: _NonBlankString | None = None
-    """Anonymous diarization label assigned to the subtitle, when available."""
+    speaker: _SpeakerSymbol | None = None
+    """Anonymous speaker symbol matching the block's speaker row, when available."""
 
     @model_validator(mode="after")
     def _validate_timing(self) -> AlignmentSubtitle:
@@ -173,12 +167,13 @@ class AlignmentBlock(BaseModel):
 
     def _validate_annotation_characters(self) -> None:
         """Validate speaker, language, singing, and music row characters."""
-        if any(character not in _SPEAKER_CHARACTERS for character in self.speaker):
+        if any(
+            character not in {"　", "・", "＊"} and not "Ａ" <= character <= "Ｚ"
+            for character in self.speaker
+        ):
             raise ValueError("Alignment speaker row contains an invalid character.")
         if any(
-            len(symbol) != 1
-            or symbol in {_GAP_CHARACTER, _PAUSE_CHARACTER}
-            or not label.strip()
+            len(symbol) != 1 or symbol in {"　", "・"} or not label.strip()
             for symbol, label in self.language_legend.items()
         ):
             raise ValueError(
@@ -187,8 +182,7 @@ class AlignmentBlock(BaseModel):
         if self.language_trace is None and self.language_legend:
             raise ValueError("Alignment language legend requires a language row.")
         if self.language_trace is not None and any(
-            character not in {_GAP_CHARACTER, _PAUSE_CHARACTER}
-            and character not in self.language_legend
+            character not in {"　", "・"} and character not in self.language_legend
             for character in self.language_trace
         ):
             raise ValueError("Alignment language row contains an unknown character.")
@@ -197,17 +191,14 @@ class AlignmentBlock(BaseModel):
             ("music", self.music_trace, "樂"),
         ):
             if annotation is not None and any(
-                character not in {_GAP_CHARACTER, _PAUSE_CHARACTER, marker}
-                for character in annotation
+                character not in {"　", "・", marker} for character in annotation
             ):
                 raise ValueError(f"Alignment {name} row contains an invalid character.")
 
     def _validate_annotations(self) -> None:
         """Validate production-only annotations and shared pause columns."""
         self._validate_annotation_characters()
-        if _REFERENCE_BOUNDARY_CHARACTER in self.merged or any(
-            _REFERENCE_BOUNDARY_CHARACTER in row.text for row in self.rows
-        ):
+        if "｜" in self.merged or any("｜" in row.text for row in self.rows):
             raise ValueError(
                 "Production alignment rows must not contain reference boundaries."
             )
@@ -231,10 +222,10 @@ class AlignmentBlock(BaseModel):
                 ),
             ]
             if column.kind == "pause" and any(
-                character != _PAUSE_CHARACTER for character in characters
+                character != "・" for character in characters
             ):
                 raise ValueError("Alignment pause columns must be shared by every row.")
-            if column.kind != "pause" and _PAUSE_CHARACTER in characters:
+            if column.kind != "pause" and "・" in characters:
                 raise ValueError("Alignment pause markers require a pause column.")
 
     def _validate_ranges(self) -> None:
@@ -305,18 +296,12 @@ class AlignmentArtifact(BaseModel):
         "scinoephile-transcription-alignment"
     )
     """Stable artifact format identifier."""
-    version: Literal[3] = 3
+    version: Literal[4] = 4
     """Artifact schema version."""
     language: Language
     """Language of the ASR rows and merged subtitles."""
     audio_duration_ms: int = Field(gt=0)
     """Duration of the complete source audio, including unprocessed regions."""
-    gap_character: Literal["　"] = "　"
-    """Fullwidth character used for ordinary alignment gaps."""
-    pause_character: Literal["・"] = "・"
-    """Fullwidth character used for shared timed pauses."""
-    speech_character: Literal["＊"] = "＊"
-    """Fullwidth character used for unattributed detected speech."""
     pause_unit_ms: int = Field(default=250, gt=0)
     """Nominal duration represented by one shared pause column."""
     request_pause_columns: int = Field(default=4, gt=0)
