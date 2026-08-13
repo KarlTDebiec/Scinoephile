@@ -3,7 +3,7 @@
 """Guided and reference-free audio transcription.
 
 Package hierarchy (modules may import from any above):
-* alignment / standard
+* alignment / sources / standard
 * aligner
 * transcriber
 * guided
@@ -14,6 +14,7 @@ from __future__ import annotations
 from .aligner import TranscriptionAligner
 from .alignment import TranscriptionAlignment
 from .guided import GuidedTranscriptionSpec, TranscriptionLanguageSpec
+from .sources import TranscriptionSourceSpec
 from .transcriber import GuidedTranscriber, MlxAudioTimingMode, TranscriptionModel
 
 __all__ = [
@@ -24,4 +25,5 @@ __all__ = [
     "TranscriptionAlignment",
     "TranscriptionLanguageSpec",
     "TranscriptionModel",
+    "TranscriptionSourceSpec",
 ]
