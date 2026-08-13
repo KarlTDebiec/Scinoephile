@@ -1,37 +1,20 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of pydub audio segment loading and conversion."""
+"""Tests of pydub audio segment loading."""
 
 from __future__ import annotations
 
 from pathlib import Path
 from unittest.mock import patch
 
-import numpy as np
-import pytest
 from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
+from pytest import raises
 
-from scinoephile.audio.segment import get_mono_pcm16_samples, load_audio_segment
+from scinoephile.audio.segment import load_audio_segment
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.media.audio import AudioExtractionMode
-
-
-def test_get_mono_pcm16_samples_converts_channel_rate_and_width():
-    """Convert audio to mono PCM16 samples at the requested rate."""
-    audio = (
-        AudioSegment.silent(duration=100, frame_rate=8000)
-        .set_channels(2)
-        .set_sample_width(1)
-    )
-
-    samples = get_mono_pcm16_samples(audio, 12000)
-
-    assert samples.ndim == 1
-    assert samples.dtype == np.int16
-    assert len(samples) == pytest.approx(1200, abs=1)
-    assert np.all(samples == 0)
 
 
 def test_load_audio_segment_extracts_and_decodes_selected_stream():
@@ -61,7 +44,7 @@ def test_load_audio_segment_wraps_input_path_errors(tmp_path: Path):
     Arguments:
         tmp_path: pytest temporary directory path
     """
-    with pytest.raises(ScinoephileError, match="Unable to extract audio") as excinfo:
+    with raises(ScinoephileError, match="Unable to extract audio") as excinfo:
         load_audio_segment(tmp_path / "missing.mkv")
 
     assert isinstance(excinfo.value.__cause__, OSError)
@@ -77,7 +60,7 @@ def test_load_audio_segment_wraps_decode_errors():
                 "scinoephile.audio.segment.AudioSegment.from_wav",
                 side_effect=CouldntDecodeError("invalid audio"),
             ),
-            pytest.raises(
+            raises(
                 ScinoephileError, match="Unable to load audio from media"
             ) as excinfo,
         ):

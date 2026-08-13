@@ -3,7 +3,7 @@
 """Code related to audio.
 
 Package hierarchy (modules may import from any above):
-* cache_namespace / segment
+* cache_namespace / segment / waveform
 * classification / separation / vad
 * diarization / transcription
 * speaker_assignment / subtitles

@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from scinoephile.audio.segment import get_mono_pcm16_samples
+from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies import transcription
 
@@ -64,7 +64,7 @@ class TenVadProvider(VadProvider):
         Returns:
             model scores aligned to the source timeline
         """
-        samples = get_mono_pcm16_samples(audio, self.sample_rate)
+        samples = to_mono_int16(audio, self.sample_rate)
         step_ms = self.frame_size / self.sample_rate * 1000
         if not len(samples):
             return VoiceActivityTrace(

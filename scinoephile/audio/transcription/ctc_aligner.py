@@ -11,7 +11,7 @@ import numpy as np
 from opencc import OpenCC
 from pydub import AudioSegment
 
-from scinoephile.audio.segment import get_mono_pcm16_samples
+from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core import Language
 from scinoephile.core.dependencies.transcription import (
     import_torch,
@@ -383,7 +383,7 @@ class CtcAligner:
         Raises:
             TranscriptionAlignmentError: if audio contains no samples
         """
-        samples = get_mono_pcm16_samples(audio, sampling_rate).astype(np.float32)
+        samples = to_mono_int16(audio, sampling_rate).astype(np.float32)
         samples /= float(1 << 15)
         if samples.size == 0:
             raise TranscriptionAlignmentError("CTC alignment received empty audio.")
