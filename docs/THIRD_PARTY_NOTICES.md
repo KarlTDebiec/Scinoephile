@@ -1,22 +1,5 @@
 # Third-Party Notices
 
-## pyannote speaker-diarization-community-1 (speaker diarization model)
-
-Scinoephile can download and run the `speaker-diarization-community-1` pipeline
-locally after the user accepts its Hugging Face access conditions. Scinoephile
-pins the model revision and does not bundle its files.
-
-- Model: https://huggingface.co/pyannote/speaker-diarization-community-1
-- Project: https://github.com/pyannote/pyannote-audio
-- Pinned revision:
-  https://huggingface.co/pyannote/speaker-diarization-community-1/tree/3533c8cf8e369892e6b79ff1bf80f7b0286a54ee
-- License: Creative Commons Attribution 4.0 International (CC BY 4.0)
-
-The model license permits sharing and adaptation with attribution. For the
-complete license terms, see:
-
-- https://creativecommons.org/licenses/by/4.0/legalcode
-
 ## jyut-dict (source inspiration and adapted logic)
 
 Scinoephile's CUHK and GZZJ dictionary ingestion code is informed by and
