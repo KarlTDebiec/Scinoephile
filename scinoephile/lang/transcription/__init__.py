@@ -3,7 +3,7 @@
 """Guided and reference-free audio transcription.
 
 Package hierarchy (modules may import from any above):
-* alignment / multisource_alignment / standard
+* alignment / standard
 * aligner
 * transcriber
 * guided

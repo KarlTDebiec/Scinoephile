@@ -1,18 +1,19 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Prepare, render, and serialize timed multi-source ASR alignments."""
+"""Build portable multi-source transcription alignment artifacts."""
 
 from __future__ import annotations
 
 from collections.abc import Mapping
 from collections.abc import Sequence as AbcSequence
-from dataclasses import dataclass
-from unicodedata import category
 
 from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
 from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
-from scinoephile.analysis.alignment.timed_msa.models import Column, Sequence, Token
+from scinoephile.analysis.alignment.timed_msa.models import Column
 from scinoephile.analysis.transcription.artifact import (
+    GAP_CHARACTER,
+    PAUSE_CHARACTER,
+    SPEECH_CHARACTER,
     AlignmentBlock,
     AlignmentColumn,
     AlignmentRow,
@@ -25,211 +26,20 @@ from scinoephile.audio.classification import (
     LanguageIdentificationResult,
 )
 from scinoephile.audio.diarization.models import SpeakerDiarizationResult
+from scinoephile.audio.transcription.alignment_sequence import (
+    get_transcription_sequence,
+)
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.vad.trace import VoiceActivityTrace
-from scinoephile.core.subtitles.series import Series
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 
-__all__ = [
-    "TimedMultisourceAlignmentRows",
-    "TimedMultisourceAlignmentSource",
-    "get_timed_alignment_sequence",
-    "get_timed_multisource_alignment_rows",
-    "get_timed_reference_alignment_sequence",
-    "get_transcription_alignment_block",
-]
-
-_ALIGNMENT_GAP_CHARACTER = "　"
-"""Fullwidth ideographic space used for ordinary alignment gaps."""
-
-_PAUSE_CHARACTER = "・"
-"""Wide middle dot used for shared timed pauses."""
-
-_VAD_SPEECH_CHARACTER = "＊"
-"""Fullwidth marker for speech without an attributed speaker."""
+__all__ = ["build_transcription_alignment_block"]
 
 _VAD_SPEECH_THRESHOLD = 0.9
 """Minimum VAD score rendered as unattributed speech."""
 
 
-@dataclass(frozen=True, slots=True)
-class TimedMultisourceAlignmentRows:
-    """Rendered aligned ASR and annotation rows."""
-
-    sources: tuple[TimedMultisourceAlignmentSource, ...]
-    """Named aligned ASR source rows."""
-    speaker: str
-    """Aligned speaker and voice-activity annotation row."""
-    language_trace: str | None
-    """Aligned spoken-language annotation row, when available."""
-    language_legend: Mapping[str, str]
-    """Language display characters mapped to FireRed language labels."""
-    singing_trace: str | None
-    """Aligned singing annotation row, when available."""
-    music_trace: str | None
-    """Aligned music annotation row, when available."""
-
-
-@dataclass(frozen=True, slots=True)
-class TimedMultisourceAlignmentSource:
-    """One named rendered source row in an alignment."""
-
-    name: str
-    """Stable ASR source name."""
-    text: str
-    """Aligned display characters, fullwidth gaps, and timed pauses."""
-
-
-def get_timed_alignment_sequence(
-    name: str, segments: AbcSequence[TranscribedSegment], *, offset_seconds: float = 0.0
-) -> Sequence:
-    """Convert timestamped transcription output into alignable characters.
-
-    Whitespace, punctuation, symbols, and controls are omitted. Multi-character
-    ASR timing units are divided uniformly so their characters retain monotonic
-    approximate positions without claiming unavailable timing precision.
-
-    Arguments:
-        name: stable transcription source name
-        segments: timestamped transcription segments
-        offset_seconds: source time corresponding to alignment-local zero
-    Returns:
-        named sequence of timestamped lexical characters
-    Raises:
-        ValueError: if the source offset is negative or exceeds segment timings
-    """
-    if offset_seconds < 0.0:
-        raise ValueError("Transcription alignment offset must be non-negative.")
-    timed_texts = []
-    for segment in segments:
-        if segment.words:
-            timed_texts.extend(
-                (word.text, word.start - offset_seconds, word.end - offset_seconds)
-                for word in segment.words
-            )
-        else:
-            timed_texts.append(
-                (
-                    segment.text,
-                    segment.start - offset_seconds,
-                    segment.end - offset_seconds,
-                )
-            )
-    if any(start_seconds < 0.0 for _, start_seconds, _ in timed_texts):
-        raise ValueError("Transcription alignment offset exceeds segment timing.")
-    return Sequence(name=name, tokens=_get_timed_alignment_tokens(timed_texts))
-
-
-def get_timed_multisource_alignment_rows(
-    alignment: Alignment,
-    *,
-    audio_events: AudioEventDetectionResult | None = None,
-    diarization: SpeakerDiarizationResult | None = None,
-    language_identification: LanguageIdentificationResult | None = None,
-    source_offset_seconds: float = 0.0,
-    traditionalize: bool = False,
-    voice_activity_trace: VoiceActivityTrace | None = None,
-) -> TimedMultisourceAlignmentRows:
-    """Render complete aligned source and annotation rows.
-
-    Arguments:
-        alignment: timed character alignment to render
-        audio_events: optional FireRed speech, singing, and music timeline
-        diarization: optional exclusive pyannote speaker timeline
-        language_identification: optional FireRed spoken-language timeline
-        source_offset_seconds: source time corresponding to alignment-local zero
-        traditionalize: whether to render source characters in Traditional Chinese
-        voice_activity_trace: optional pyannote voice-activity score trace
-    Returns:
-        structured complete aligned source and annotation rows
-    """
-    if source_offset_seconds < 0.0:
-        raise ValueError("Alignment source offset must be non-negative.")
-    if not alignment.columns:
-        raise ValueError("Cannot render an empty timed alignment.")
-    speaker_symbols = _get_speaker_symbols(diarization)
-    language_symbols = _get_language_symbols(language_identification)
-    language_legend = {
-        symbol: language for language, symbol in language_symbols.items()
-    }
-    source_cells = tuple(
-        _get_source_cells(alignment.columns, source_idx, traditionalize)
-        for source_idx in range(len(alignment.source_names))
-    )
-    sources = tuple(
-        TimedMultisourceAlignmentSource(
-            name=source_name, text="".join(source_cells[source_idx])
-        )
-        for source_idx, source_name in enumerate(alignment.source_names)
-    )
-    speaker = "".join(
-        _get_annotation_cell(
-            column,
-            diarization,
-            speaker_symbols,
-            source_offset_seconds,
-            voice_activity_trace,
-        )
-        for column in alignment.columns
-    )
-    language_trace = None
-    if language_identification is not None:
-        language_trace = "".join(
-            _get_language_cell(
-                column, language_identification, source_offset_seconds, language_symbols
-            )
-            for column in alignment.columns
-        )
-    return TimedMultisourceAlignmentRows(
-        sources=sources,
-        speaker=speaker,
-        language_trace=language_trace,
-        language_legend=language_legend,
-        singing_trace=_get_event_row(
-            alignment.columns,
-            audio_events,
-            AudioEvent.SINGING,
-            "唱",
-            source_offset_seconds,
-        ),
-        music_trace=_get_event_row(
-            alignment.columns,
-            audio_events,
-            AudioEvent.MUSIC,
-            "樂",
-            source_offset_seconds,
-        ),
-    )
-
-
-def get_timed_reference_alignment_sequence(
-    name: str, series: Series, *, offset_seconds: float = 0.0
-) -> Sequence:
-    """Convert subtitle reference text into approximately timed characters.
-
-    Arguments:
-        name: stable reference row name
-        series: reference subtitles on the complete source timeline
-        offset_seconds: source time corresponding to alignment-local zero
-    Returns:
-        named reference sequence with alignment-local character timings
-    Raises:
-        ValueError: if the source offset is negative
-    """
-    if offset_seconds < 0.0:
-        raise ValueError("Reference alignment offset must be non-negative.")
-    timed_texts = [
-        (
-            subtitle.text_with_newline,
-            max(0.0, subtitle.start / 1000 - offset_seconds),
-            max(0.0, subtitle.end / 1000 - offset_seconds),
-        )
-        for subtitle in series
-    ]
-    return Sequence(name=name, tokens=_get_timed_alignment_tokens(timed_texts))
-
-
-def get_transcription_alignment_block(
+def build_transcription_alignment_block(
     alignment: Alignment,
     merged_segments: AbcSequence[TranscribedSegment],
     aligner: Aligner,
@@ -278,11 +88,13 @@ def get_transcription_alignment_block(
     """
     if not merged_segments:
         raise ValueError("Alignment blocks require merged subtitle segments.")
+    if not alignment.columns:
+        raise ValueError("Alignment blocks require lexical source columns.")
     if any(column.is_pause or column.is_marker for column in alignment.columns):
         raise ValueError("Portable block construction requires lexical alignment.")
 
     offset_seconds = buffered_start_ms / 1000
-    merged_sequence = get_timed_alignment_sequence(
+    merged_sequence = get_transcription_sequence(
         "merged", merged_segments, offset_seconds=offset_seconds
     )
     augmented = aligner.add_sequence(alignment, merged_sequence)
@@ -292,16 +104,30 @@ def get_transcription_alignment_block(
         pause_unit_seconds=0.25,
         source_names=alignment.source_names,
     )
-    rendered = get_timed_multisource_alignment_rows(
-        augmented,
-        audio_events=audio_events,
-        diarization=diarization,
-        language_identification=language_identification,
-        source_offset_seconds=offset_seconds,
-        traditionalize=traditionalize,
-        voice_activity_trace=voice_activity_trace,
+    rendered_rows = tuple(
+        AlignmentRow(
+            name=source_name,
+            text=_get_row_text(augmented.columns, source_idx, traditionalize),
+        )
+        for source_idx, source_name in enumerate(augmented.source_names)
     )
-    rendered_rows = {source.name: source.text for source in rendered.sources}
+    speaker_symbols = _get_speaker_symbols(diarization)
+    speaker = "".join(
+        _get_annotation_cell(
+            column, diarization, speaker_symbols, offset_seconds, voice_activity_trace
+        )
+        for column in augmented.columns
+    )
+    language_symbols = _get_language_symbols(language_identification)
+    language_trace = None
+    if language_identification is not None:
+        language_trace = "".join(
+            _get_language_cell(
+                column, language_identification, offset_seconds, language_symbols
+            )
+            for column in augmented.columns
+        )
+
     columns = []
     for column_idx, column in enumerate(augmented.columns, start=1):
         column_kind = "text"
@@ -316,7 +142,7 @@ def get_transcription_alignment_block(
             )
         )
     subtitles = tuple(
-        _get_transcription_alignment_subtitle(
+        _get_transcription_subtitle(
             segment,
             first_subtitle_index + segment_idx,
             (timing_sources or {}).get(segment.id, "source"),
@@ -330,16 +156,19 @@ def get_transcription_alignment_block(
         buffered_start_ms=buffered_start_ms,
         buffered_end_ms=buffered_end_ms,
         columns=tuple(columns),
-        rows=tuple(
-            AlignmentRow(name=name, text=rendered_rows[name])
-            for name in alignment.source_names
+        rows=rendered_rows[:-1],
+        speaker=speaker,
+        language_trace=language_trace,
+        language_legend={
+            symbol: language for language, symbol in language_symbols.items()
+        },
+        singing_trace=_get_event_row(
+            augmented.columns, audio_events, AudioEvent.SINGING, "唱", offset_seconds
         ),
-        speaker=rendered.speaker,
-        language_trace=rendered.language_trace,
-        language_legend=dict(rendered.language_legend),
-        singing_trace=rendered.singing_trace,
-        music_trace=rendered.music_trace,
-        merged=rendered_rows[merged_sequence.name],
+        music_trace=_get_event_row(
+            augmented.columns, audio_events, AudioEvent.MUSIC, "樂", offset_seconds
+        ),
+        merged=rendered_rows[-1].text,
         subtitles=subtitles,
         source_errors=dict(source_errors or {}),
     )
@@ -366,7 +195,7 @@ def _get_annotation_cell(
     if column.is_marker:
         return _get_column_marker(column)
     if column.is_pause:
-        return _PAUSE_CHARACTER
+        return PAUSE_CHARACTER
     start_seconds = column.start_seconds
     end_seconds = column.end_seconds
     if diarization is not None:
@@ -380,8 +209,8 @@ def _get_annotation_cell(
             start_seconds + source_offset_seconds, end_seconds + source_offset_seconds
         )
         if score is not None and score >= _VAD_SPEECH_THRESHOLD:
-            return _VAD_SPEECH_CHARACTER
-    return _ALIGNMENT_GAP_CHARACTER
+            return SPEECH_CHARACTER
+    return GAP_CHARACTER
 
 
 def _get_column_marker(column: Column) -> str:
@@ -424,7 +253,7 @@ def _get_event_row(
         if column.is_marker:
             cells.append(_get_column_marker(column))
         elif column.is_pause:
-            cells.append(_PAUSE_CHARACTER)
+            cells.append(PAUSE_CHARACTER)
         elif audio_events.has_event(
             event,
             column.start_seconds + offset_seconds,
@@ -432,7 +261,7 @@ def _get_event_row(
         ):
             cells.append(marker)
         else:
-            cells.append(_ALIGNMENT_GAP_CHARACTER)
+            cells.append(GAP_CHARACTER)
     return "".join(cells)
 
 
@@ -455,12 +284,12 @@ def _get_language_cell(
     if column.is_marker:
         return _get_column_marker(column)
     if column.is_pause:
-        return _PAUSE_CHARACTER
+        return PAUSE_CHARACTER
     language = language_identification.get_language(
         column.start_seconds + offset_seconds, column.end_seconds + offset_seconds
     )
     if language is None:
-        return _ALIGNMENT_GAP_CHARACTER
+        return GAP_CHARACTER
     return language_symbols[language]
 
 
@@ -502,17 +331,17 @@ def _get_language_symbols(
     return symbols
 
 
-def _get_source_cells(
+def _get_row_text(
     columns: AbcSequence[Column], source_idx: int, traditionalize: bool
-) -> tuple[str, ...]:
-    """Get one source's display cells while preserving its alignment gaps.
+) -> str:
+    """Get one source's display text while preserving its alignment gaps.
 
     Arguments:
         columns: alignment columns to render
         source_idx: index of the source row to render
         traditionalize: whether to render text in Hong Kong Traditional Chinese
     Returns:
-        one display cell per alignment column
+        one display character per alignment column
     """
     tokens = tuple(column.tokens[source_idx] for column in columns)
     converted_characters = None
@@ -527,9 +356,9 @@ def _get_source_cells(
         if column.is_marker:
             cells.append(_get_column_marker(column))
         elif column.is_pause:
-            cells.append(_PAUSE_CHARACTER)
+            cells.append(PAUSE_CHARACTER)
         elif token is None:
-            cells.append(_ALIGNMENT_GAP_CHARACTER)
+            cells.append(GAP_CHARACTER)
         elif converted_characters is not None:
             cells.append(next(converted_characters))
         elif traditionalize:
@@ -540,7 +369,7 @@ def _get_source_cells(
                 cells.append(token.text)
         else:
             cells.append(token.text)
-    return tuple(cells)
+    return "".join(cells)
 
 
 def _get_speaker_symbols(
@@ -563,35 +392,11 @@ def _get_speaker_symbols(
         if speaker_idx < 26:
             symbols[turn.speaker] = chr(ord("Ａ") + speaker_idx)
         else:
-            symbols[turn.speaker] = _VAD_SPEECH_CHARACTER
+            symbols[turn.speaker] = SPEECH_CHARACTER
     return symbols
 
 
-def _get_timed_alignment_tokens(
-    timed_texts: AbcSequence[tuple[str, float, float]],
-) -> tuple[Token, ...]:
-    """Split timed text units uniformly into lexical character tokens.
-
-    Arguments:
-        timed_texts: text units paired with start and end times
-    Returns:
-        timestamped lexical character tokens
-    """
-    tokens = []
-    for text, start_seconds, end_seconds in timed_texts:
-        characters = [char for char in text if _is_alignment_character(char)]
-        if not characters:
-            continue
-        duration_seconds = max(0.0, end_seconds - start_seconds)
-        step_seconds = duration_seconds / len(characters)
-        for character_idx, character in enumerate(characters):
-            character_start = start_seconds + character_idx * step_seconds
-            character_end = start_seconds + (character_idx + 1) * step_seconds
-            tokens.append(Token(character, character_start, character_end))
-    return tuple(tokens)
-
-
-def _get_transcription_alignment_subtitle(
+def _get_transcription_subtitle(
     segment: TranscribedSegment, index: int, timing_source: TimingSource
 ) -> AlignmentSubtitle:
     """Convert one final segment into a portable subtitle record.
@@ -627,14 +432,3 @@ def _get_transcription_alignment_subtitle(
         end_ms=max(end_ms, speech_end_ms),
         speaker=speaker,
     )
-
-
-def _is_alignment_character(character: str) -> bool:
-    """Check whether a source character should participate in lexical alignment.
-
-    Arguments:
-        character: source character to inspect
-    Returns:
-        whether the character is lexical rather than control or punctuation
-    """
-    return not category(character).startswith(("C", "P", "S", "Z"))

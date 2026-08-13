@@ -4,8 +4,11 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence as AbcSequence
 from dataclasses import dataclass
 from statistics import median
+
+from scinoephile.core.text import is_lexical_character
 
 __all__ = ["Column", "Sequence", "Token"]
 
@@ -59,6 +62,37 @@ class Sequence:
                     "Timed alignment tokens must be chronologically ordered."
                 )
             previous_start = token.start_seconds
+
+    @classmethod
+    def from_timed_texts(
+        cls, name: str, timed_texts: AbcSequence[tuple[str, float, float]]
+    ) -> Sequence:
+        """Create a sequence by uniformly timing lexical characters.
+
+        Multi-character timing units are divided uniformly so their characters
+        retain monotonic approximate positions without claiming unavailable
+        timing precision. Formatting, punctuation, and symbols are omitted.
+
+        Arguments:
+            name: stable source name
+            timed_texts: text units paired with start and end times
+        Returns:
+            named sequence of timestamped lexical characters
+        """
+        tokens = []
+        for text, start_seconds, end_seconds in timed_texts:
+            characters = [
+                character for character in text if is_lexical_character(character)
+            ]
+            if not characters:
+                continue
+            duration_seconds = max(0.0, end_seconds - start_seconds)
+            step_seconds = duration_seconds / len(characters)
+            for character_idx, character in enumerate(characters):
+                character_start = start_seconds + character_idx * step_seconds
+                character_end = start_seconds + (character_idx + 1) * step_seconds
+                tokens.append(Token(character, character_start, character_end))
+        return cls(name=name, tokens=tuple(tokens))
 
 
 @dataclass(frozen=True, slots=True)

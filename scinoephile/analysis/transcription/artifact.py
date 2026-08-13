@@ -19,16 +19,25 @@ __all__ = [
     "AlignmentRow",
     "AlignmentSource",
     "AlignmentSubtitle",
+    "GAP_CHARACTER",
+    "PAUSE_CHARACTER",
+    "SPEECH_CHARACTER",
     "TimingSettings",
     "TimingSource",
 ]
 
-_GAP_CHARACTER = "　"
-_PAUSE_CHARACTER = "・"
+GAP_CHARACTER: Literal["　"] = "　"
+"""Fullwidth character used for ordinary alignment gaps."""
+
+PAUSE_CHARACTER: Literal["・"] = "・"
+"""Fullwidth character used for shared timed pauses."""
+
+SPEECH_CHARACTER: Literal["＊"] = "＊"
+"""Fullwidth character used for unattributed detected speech."""
+
 _REFERENCE_BOUNDARY_CHARACTER = "｜"
-_SPEECH_CHARACTER = "＊"
 _SPEAKER_CHARACTERS = frozenset(
-    {_GAP_CHARACTER, _PAUSE_CHARACTER, _SPEECH_CHARACTER}
+    {GAP_CHARACTER, PAUSE_CHARACTER, SPEECH_CHARACTER}
     | {chr(ord("Ａ") + index) for index in range(26)}
 )
 _NonBlankString = Annotated[str, StringConstraints(min_length=1, strip_whitespace=True)]
@@ -177,7 +186,7 @@ class AlignmentBlock(BaseModel):
             raise ValueError("Alignment speaker row contains an invalid character.")
         if any(
             len(symbol) != 1
-            or symbol in {_GAP_CHARACTER, _PAUSE_CHARACTER}
+            or symbol in {GAP_CHARACTER, PAUSE_CHARACTER}
             or not label.strip()
             for symbol, label in self.language_legend.items()
         ):
@@ -187,7 +196,7 @@ class AlignmentBlock(BaseModel):
         if self.language_trace is None and self.language_legend:
             raise ValueError("Alignment language legend requires a language row.")
         if self.language_trace is not None and any(
-            character not in {_GAP_CHARACTER, _PAUSE_CHARACTER}
+            character not in {GAP_CHARACTER, PAUSE_CHARACTER}
             and character not in self.language_legend
             for character in self.language_trace
         ):
@@ -197,7 +206,7 @@ class AlignmentBlock(BaseModel):
             ("music", self.music_trace, "樂"),
         ):
             if annotation is not None and any(
-                character not in {_GAP_CHARACTER, _PAUSE_CHARACTER, marker}
+                character not in {GAP_CHARACTER, PAUSE_CHARACTER, marker}
                 for character in annotation
             ):
                 raise ValueError(f"Alignment {name} row contains an invalid character.")
@@ -231,10 +240,10 @@ class AlignmentBlock(BaseModel):
                 ),
             ]
             if column.kind == "pause" and any(
-                character != _PAUSE_CHARACTER for character in characters
+                character != PAUSE_CHARACTER for character in characters
             ):
                 raise ValueError("Alignment pause columns must be shared by every row.")
-            if column.kind != "pause" and _PAUSE_CHARACTER in characters:
+            if column.kind != "pause" and PAUSE_CHARACTER in characters:
                 raise ValueError("Alignment pause markers require a pause column.")
 
     def _validate_ranges(self) -> None:
@@ -311,11 +320,11 @@ class AlignmentArtifact(BaseModel):
     """Language of the ASR rows and merged subtitles."""
     audio_duration_ms: int = Field(gt=0)
     """Duration of the complete source audio, including unprocessed regions."""
-    gap_character: Literal["　"] = "　"
+    gap_character: Literal["　"] = GAP_CHARACTER
     """Fullwidth character used for ordinary alignment gaps."""
-    pause_character: Literal["・"] = "・"
+    pause_character: Literal["・"] = PAUSE_CHARACTER
     """Fullwidth character used for shared timed pauses."""
-    speech_character: Literal["＊"] = "＊"
+    speech_character: Literal["＊"] = SPEECH_CHARACTER
     """Fullwidth character used for unattributed detected speech."""
     pause_unit_ms: int = Field(default=250, gt=0)
     """Nominal duration represented by one shared pause column."""

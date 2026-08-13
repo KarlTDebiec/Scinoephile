@@ -3,7 +3,7 @@
 """Transcription artifacts and timing evaluation.
 
 Package hierarchy (modules may import from any above):
-* artifact
+* artifact / sequence
 * timing
 """
 
