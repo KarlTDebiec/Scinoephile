@@ -28,7 +28,7 @@ def test_translate_cli_help_includes_block_range():
         "last 1-indexed subtitle block to process, inclusive"
     )
     assert actions["source_language"].help == (
-        "source language (detected from infile if omitted)"
+        "source language (default: detected automatically)"
     )
     assert actions["target_language"].help == (
         "target language (required unless guide or gapped input is detected)"

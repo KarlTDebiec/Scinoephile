@@ -14,6 +14,7 @@ import numpy as np
 from PIL import Image
 
 from scinoephile.core import Language
+from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.ocr import import_paddleocr
 
 from .bounding_box import PaddleOcrBoundingBox
@@ -80,6 +81,8 @@ class PaddleRecognizer:
 
         self.min_confidence = min_confidence
         self._cache = PaddleCache(cache_root_path, overwrite_cache)
+        self.runtime_identity = get_distribution_identity("paddleocr")
+        """Installed PaddleOCR runtime identity."""
 
         paddleocr = import_paddleocr()
         root_logger = getLogger()
@@ -118,20 +121,21 @@ class PaddleRecognizer:
             recognized text
         """
         array = np.array(image.convert("RGB"))
-        cache_metadata = {
+        cache_identity = {
             "language": self.paddle_language_code,
+            "runtime": self.runtime_identity,
             "text_detection_model": _TEXT_DETECTION_MODEL_NAME,
             "text_recognition_model": _TEXT_RECOGNITION_MODEL_NAME,
             "textline_orientation_model": _TEXTLINE_ORIENTATION_MODEL_NAME,
         }
-        if (results := self._cache.load(image, cache_metadata)) is not None:
+        if (results := self._cache.load(image, cache_identity)) is not None:
             return self._format_paddle_ocr_text(
                 results, min_confidence=self.min_confidence
             )
 
         raw_results = self._ocr.predict(array)
         results = self._normalize_paddle_ocr_results(raw_results)
-        self._cache.save(image, cache_metadata, results)
+        self._cache.save(image, cache_identity, results)
         return self._format_paddle_ocr_text(results, min_confidence=self.min_confidence)
 
     @staticmethod

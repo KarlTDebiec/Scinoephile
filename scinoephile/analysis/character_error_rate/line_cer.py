@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from math import inf
 
-from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOperation
+from scinoephile.analysis.alignment import pairwise
 from scinoephile.core.text import remove_punc_and_whitespace
 
 __all__ = ["LineCER"]
@@ -27,7 +27,7 @@ class LineCER:
     normalized_candidate: str
     """Candidate text after removing punctuation and whitespace."""
 
-    alignment: LineAlignment
+    alignment: pairwise.Alignment
     """Character alignment between normalized reference and candidate text."""
 
     cer: float
@@ -60,7 +60,7 @@ class LineCER:
 
         self.normalized_reference = remove_punc_and_whitespace(reference)
         self.normalized_candidate = remove_punc_and_whitespace(candidate)
-        self.alignment = LineAlignment(
+        self.alignment = pairwise.Alignment(
             self.normalized_reference, self.normalized_candidate
         )
 
@@ -121,12 +121,12 @@ class LineCER:
 
     def _init_edits(self):
         """Count edit operations in this alignment."""
-        for pair in self.alignment.alignment_pairs:
-            if pair.operation == LineAlignmentOperation.MATCH:
+        for column in self.alignment.columns:
+            if column.operation == pairwise.Operation.MATCH:
                 self.correct += 1
-            elif pair.operation == LineAlignmentOperation.SUBSTITUTE:
+            elif column.operation == pairwise.Operation.SUBSTITUTE:
                 self.substitutions += 1
-            elif pair.operation == LineAlignmentOperation.INSERT:
+            elif column.operation == pairwise.Operation.INSERT:
                 self.insertions += 1
             else:
                 self.deletions += 1

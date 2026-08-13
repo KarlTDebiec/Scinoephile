@@ -701,7 +701,7 @@ def test_queryer_cache_stores_only_answer_and_preserves_current_metadata(tmp_pat
 
     first = queryer(_TestCase(query=_Query(text="input")))
 
-    cache_paths = list((tmp_path / "llm" / "test").glob("*.json"))
+    cache_paths = list((tmp_path / "llms" / "test").glob("*.json"))
     assert len(cache_paths) == 1
     assert json.loads(cache_paths[0].read_text(encoding="utf-8")) == {
         "output": "cached"
@@ -724,38 +724,37 @@ def test_queryer_cache_stores_only_answer_and_preserves_current_metadata(tmp_pat
     assert len(provider.calls) == 1
 
 
-def test_processor_migrates_compatible_predecessor_prompt_cache(tmp_path: Path):
-    """Test a prompt alias revision lazily copies compatible cached answers.
+def test_queryer_public_cache_lifecycle_normalizes_and_reuses_answer(tmp_path: Path):
+    """Test public cache lookup and storage methods share normalized state.
 
     Arguments:
         tmp_path: temporary directory path
     """
-    legacy_prompt = Prompt(base_system_prompt="Use old_answer.")
-    current_prompt = Prompt(
-        base_system_prompt="Use new_answer.", legacy_cache_prompts=(legacy_prompt,)
-    )
-    legacy_provider = _RecordingProvider('{"output":"cached"}')
-    legacy_processor = _Processor(
-        legacy_prompt, provider=legacy_provider, cache_root_path=tmp_path
-    )
-    legacy_processor.queryer(legacy_processor.test_case_cls(query=_Query(text="input")))
-
-    current_provider = _RecordingProvider('{"output":"new"}')
-    current_processor = _Processor(
-        current_prompt, provider=current_provider, cache_root_path=tmp_path
-    )
-    result = current_processor.queryer(
-        current_processor.test_case_cls(query=_Query(text="input"))
+    provider = _RecordingProvider()
+    queryer = Queryer(_TestCase, provider=provider, cache_root_path=tmp_path)
+    input_test_case = _CompatibleTestCase(
+        query=_Query(text="input"), answer=_Answer(output="stored")
     )
 
-    assert result.answer == _Answer(output="cached")
-    assert not current_provider.calls
-    cache_paths = list((tmp_path / "llm" / "test").glob("*.json"))
-    assert len(cache_paths) == 2
-    assert all(
-        json.loads(cache_path.read_text(encoding="utf-8")) == {"output": "cached"}
-        for cache_path in cache_paths
+    stored = queryer.store_answered_test_case(input_test_case)
+
+    assert type(stored) is _TestCase
+    assert stored is queryer.encountered_test_cases[stored.query.key]
+    assert not provider.calls
+
+    fresh_provider = _RecordingProvider('{"output":"provider"}')
+    fresh_queryer = Queryer(
+        _TestCase, provider=fresh_provider, cache_root_path=tmp_path
     )
+    loaded = fresh_queryer.get_known_test_case(
+        _CompatibleTestCase(query=_Query(text="input"))
+    )
+
+    assert loaded is not None
+    assert type(loaded) is _TestCase
+    assert loaded.answer == _Answer(output="stored")
+    assert loaded is fresh_queryer.encountered_test_cases[loaded.query.key]
+    assert not fresh_provider.calls
 
 
 def test_queryer_overwrites_matching_cache(tmp_path):
@@ -775,7 +774,7 @@ def test_queryer_overwrites_matching_cache(tmp_path):
         overwrite_cache=True,
     )(test_case)
 
-    cache_paths = list((tmp_path / "llm" / "test").glob("*.json"))
+    cache_paths = list((tmp_path / "llms" / "test").glob("*.json"))
     assert result.answer == _Answer(output="fresh")
     assert len(fresh_provider.calls) == 1
     assert len(cache_paths) == 1
@@ -816,8 +815,14 @@ def test_queryer_cache_is_namespaced_by_provider_implementation(tmp_path):
         _TestCase, provider=_AlternateRecordingProvider(), cache_root_path=tmp_path
     )
 
-    cache_path_one = queryer_one._get_cache_path("system", "tools", "query")
-    cache_path_two = queryer_two._get_cache_path("system", "tools", "query")
+    assert queryer_one._cache is not None
+    assert queryer_two._cache is not None
+    cache_path_one = queryer_one._cache.get_path(
+        queryer_one._get_cache_identity(), "system", "[]", '{"query":"value"}'
+    )
+    cache_path_two = queryer_two._cache.get_path(
+        queryer_two._get_cache_identity(), "system", "[]", '{"query":"value"}'
+    )
 
     assert cache_path_one is not None
     assert cache_path_two is not None
@@ -853,7 +858,13 @@ def test_cache_path_does_not_retain_queryer(tmp_path):
         _TestCase, provider=_RecordingProvider(), cache_root_path=tmp_path
     )
     queryer_ref = ref(queryer)
-    assert queryer._get_cache_path("system", "tools", "query") is not None
+    assert queryer._cache is not None
+    assert (
+        queryer._cache.get_path(
+            queryer._get_cache_identity(), "system", "[]", '{"query":"value"}'
+        )
+        is not None
+    )
 
     del queryer
     gc.collect()

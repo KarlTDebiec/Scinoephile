@@ -21,11 +21,13 @@ from scinoephile.audio.transcription import (
     TranscribedSegment,
     TranscribedWord,
     TranscriptionError,
-    VADMode,
+    VadMode,
     WhisperTranscriber,
     get_segment_split_at_idx,
     get_segment_split_on_word_timings,
 )
+from scinoephile.audio.transcription.mlx_audio.model import MlxAudioModel
+from scinoephile.audio.transcription.whisper.model import WhisperModel
 from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -37,7 +39,8 @@ __all__ = [
     "GuidedTranscriber",
     "MlxAudioTimingMode",
     "TranscribedSegmentSplitter",
-    "TranscriptionBackend",
+    "TranscriptionModel",
+    "get_segment_split_on_phrase_timings",
 ]
 
 
@@ -121,13 +124,21 @@ class MlxAudioTimingMode(StrEnum):
     """Expose every individually timed CTC unit."""
 
 
-class TranscriptionBackend(StrEnum):
-    """Audio transcription backends."""
+class TranscriptionModel(StrEnum):
+    """Supported transcription models."""
 
     WHISPER = "whisper"
     """Transcribe using Whisper."""
-    MLX_AUDIO = "mlx-audio"
-    """Transcribe using MLX-Audio."""
+    MIMO = "mimo"
+    """Transcribe using MiMo through MLX-Audio."""
+    QWEN3_ASR = "qwen3-asr"
+    """Transcribe using Qwen3-ASR through MLX-Audio."""
+    GLM_ASR = "glm-asr"
+    """Transcribe using GLM-ASR through MLX-Audio."""
+    FIRERED_ASR2 = "firered-asr2"
+    """Transcribe using FireRedASR2 through MLX-Audio."""
+    SENSEVOICE = "sensevoice"
+    """Transcribe using SenseVoice through MLX-Audio."""
 
 
 class GuidedTranscriber:
@@ -138,12 +149,10 @@ class GuidedTranscriber:
         *,
         language: Language,
         guide_language: Language,
-        model_name: str,
-        whisper_language: str,
+        audio_model: WhisperModel | MlxAudioModel,
         aligner: TranscriptionAligner,
-        backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
         demucs_mode: DemucsMode = DemucsMode.OFF,
-        vad_mode: VADMode = VADMode.OFF,
+        vad_mode: VadMode = VadMode.OFF,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
         mlx_audio_transcriber: MlxAudioTranscriber | None = None,
@@ -156,10 +165,8 @@ class GuidedTranscriber:
         Arguments:
             language: transcription language
             guide_language: guide subtitle language
-            model_name: backend model name used for transcription
-            whisper_language: language code passed to Whisper
+            audio_model: configured transcription model
             aligner: transcription aligner
-            backend: audio transcription backend
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
             cache_root_path: cache root directory path
@@ -172,10 +179,9 @@ class GuidedTranscriber:
         """
         self.language = language
         self.guide_language = guide_language
-        self.model_name = model_name
-        self.whisper_language = whisper_language
+        self.audio_model = audio_model
+        self.model_name = audio_model.model_name
         self.aligner = aligner
-        self.backend = backend
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
         self.mlx_audio_transcriber = mlx_audio_transcriber
@@ -184,7 +190,7 @@ class GuidedTranscriber:
         self.strip_generated_punctuation = strip_generated_punctuation
 
         # Use MLX-Audio's shared preprocessing fallbacks without Whisper recovery
-        if self.backend is TranscriptionBackend.MLX_AUDIO:
+        if isinstance(self.audio_model, MlxAudioModel):
             if self.mlx_audio_transcriber is None:
                 raise ValueError("MLX-Audio backend requires a MLX-Audio transcriber.")
             self.transcriber = self.mlx_audio_transcriber
@@ -193,10 +199,12 @@ class GuidedTranscriber:
             return
 
         # Configure standard preprocessing fallbacks
+        if not isinstance(self.audio_model, WhisperModel):
+            raise ValueError("Whisper backend requires a Whisper model.")
         whisper_ctc_aligner = CtcAligner(self.language)
         self.transcriber = WhisperTranscriber(
-            model_name=self.model_name,
-            language=self.whisper_language,
+            model=self.audio_model,
+            language=self.language,
             demucs_mode=self.demucs_mode,
             vad_mode=self.vad_mode,
             cache_root_path=cache_root_path,
@@ -208,12 +216,12 @@ class GuidedTranscriber:
         recovery_demucs_mode = DemucsMode.OFF
         if self.demucs_mode is DemucsMode.ON:
             recovery_demucs_mode = DemucsMode.ON
-        recovery_vad_mode = VADMode.OFF
-        if self.vad_mode is VADMode.ON:
-            recovery_vad_mode = VADMode.ON
+        recovery_vad_mode = VadMode.OFF
+        if self.vad_mode is VadMode.ON:
+            recovery_vad_mode = VadMode.ON
         self.recovery_transcriber = WhisperTranscriber(
-            model_name=self.model_name,
-            language=self.whisper_language,
+            model=self.audio_model,
+            language=self.language,
             demucs_mode=recovery_demucs_mode,
             vad_mode=recovery_vad_mode,
             cache_root_path=cache_root_path,
@@ -226,10 +234,10 @@ class GuidedTranscriber:
 
         # Configure focused recovery for missing speech near a guided tail
         self.tail_recovery_transcriber = WhisperTranscriber(
-            model_name=self.model_name,
-            language=self.whisper_language,
+            model=self.audio_model,
+            language=self.language,
             demucs_mode=DemucsMode.OFF,
-            vad_mode=VADMode.OFF,
+            vad_mode=VadMode.OFF,
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
             condition_on_previous_text=False,
@@ -319,13 +327,13 @@ class GuidedTranscriber:
                 split_segments.extend(self.segment_splitter(segment))
 
         # Expose the configured MLX-Audio timing granularity to guided alignment
-        if self.backend is TranscriptionBackend.MLX_AUDIO:
+        if isinstance(self.audio_model, MlxAudioModel):
             timed_segments = []
             for segment in split_segments:
                 if self.mlx_audio_timing_mode is MlxAudioTimingMode.SEGMENT:
                     timed_segments.append(segment)
                 elif self.mlx_audio_timing_mode is MlxAudioTimingMode.PHRASE:
-                    timed_segments.extend(_get_segment_split_on_phrase_timings(segment))
+                    timed_segments.extend(get_segment_split_on_phrase_timings(segment))
                 else:
                     timed_segments.extend(get_segment_split_on_word_timings(segment))
             split_segments = [
@@ -358,7 +366,7 @@ class GuidedTranscriber:
         Returns:
             transcribed segments
         """
-        if self.backend is TranscriptionBackend.MLX_AUDIO:
+        if isinstance(self.audio_model, MlxAudioModel):
             return self._transcribe_block_audio_with_mlx_audio(audio)
 
         audio_duration = len(audio) / 1000
@@ -635,80 +643,7 @@ class GuidedTranscriber:
         return has_text
 
 
-def _get_phrase_boundary_scores(
-    text: str,
-    words: list[TranscribedWord],
-    durations: list[float],
-    pause_threshold: float,
-) -> dict[int, int]:
-    """Score phrase boundaries using punctuation and CTC hold durations."""
-    boundary_scores: dict[int, int] = {}
-    for character_index, character in enumerate(text, 1):
-        if character in _MLX_PHRASE_STRONG_PUNCTUATION:
-            boundary_scores[character_index] = 4
-        elif character in _MLX_PHRASE_WEAK_PUNCTUATION:
-            boundary_scores[character_index] = 2
-
-    character_offset = 0
-    for word, duration in zip(words, durations, strict=True):
-        character_offset += len(word.text)
-        boundary_scores.setdefault(character_offset, 1)
-        if duration >= pause_threshold:
-            boundary_scores[character_offset] = max(
-                boundary_scores[character_offset], 3
-            )
-    return boundary_scores
-
-
-def _get_segment_without_generated_punctuation(
-    segment: TranscribedSegment,
-) -> TranscribedSegment:
-    """Remove generated punctuation from segment text and word timing data.
-
-    Arguments:
-        segment: timed transcription segment
-    Returns:
-        segment whose text and word data use matching character offsets
-    """
-    keep_characters = _get_text_character_retention(segment.text)
-    text = _strip_generated_punctuation(segment.text)
-    if not segment.words:
-        return segment.model_copy(update={"text": text})
-
-    # Apply the segment-level retention map to its corresponding timed words
-    word_text = "".join(word.text for word in segment.words)
-    if word_text == segment.text:
-        words: list[TranscribedWord] = []
-        character_offset = 0
-        for word in segment.words:
-            word_end = character_offset + len(word.text)
-            retained_word_text = "".join(
-                character
-                for character, keep_character in zip(
-                    word.text, keep_characters[character_offset:word_end], strict=True
-                )
-                if keep_character
-            )
-            if retained_word_text:
-                words.append(word.model_copy(update={"text": retained_word_text}))
-            character_offset = word_end
-        return segment.model_copy(update={"text": text, "words": words})
-
-    # Preserve safe offsets when backend word text cannot be mapped character-wise
-    words = []
-    if text:
-        words.append(
-            TranscribedWord(
-                text=text,
-                start=segment.start,
-                end=segment.end,
-                confidence=min(word.confidence for word in segment.words),
-            )
-        )
-    return segment.model_copy(update={"text": text, "words": words})
-
-
-def _get_segment_split_on_phrase_timings(
+def get_segment_split_on_phrase_timings(
     segment: TranscribedSegment,
 ) -> list[TranscribedSegment]:
     """Split an MLX-Audio segment into phrase-sized CTC timing groups.
@@ -788,6 +723,79 @@ def _get_segment_split_on_phrase_timings(
         previous_offset = split_offset
     output.append(remaining)
     return output
+
+
+def _get_phrase_boundary_scores(
+    text: str,
+    words: list[TranscribedWord],
+    durations: list[float],
+    pause_threshold: float,
+) -> dict[int, int]:
+    """Score phrase boundaries using punctuation and CTC hold durations."""
+    boundary_scores: dict[int, int] = {}
+    for character_index, character in enumerate(text, 1):
+        if character in _MLX_PHRASE_STRONG_PUNCTUATION:
+            boundary_scores[character_index] = 4
+        elif character in _MLX_PHRASE_WEAK_PUNCTUATION:
+            boundary_scores[character_index] = 2
+
+    character_offset = 0
+    for word, duration in zip(words, durations, strict=True):
+        character_offset += len(word.text)
+        boundary_scores.setdefault(character_offset, 1)
+        if duration >= pause_threshold:
+            boundary_scores[character_offset] = max(
+                boundary_scores[character_offset], 3
+            )
+    return boundary_scores
+
+
+def _get_segment_without_generated_punctuation(
+    segment: TranscribedSegment,
+) -> TranscribedSegment:
+    """Remove generated punctuation from segment text and word timing data.
+
+    Arguments:
+        segment: timed transcription segment
+    Returns:
+        segment whose text and word data use matching character offsets
+    """
+    keep_characters = _get_text_character_retention(segment.text)
+    text = _strip_generated_punctuation(segment.text)
+    if not segment.words:
+        return segment.model_copy(update={"text": text})
+
+    # Apply the segment-level retention map to its corresponding timed words
+    word_text = "".join(word.text for word in segment.words)
+    if word_text == segment.text:
+        words: list[TranscribedWord] = []
+        character_offset = 0
+        for word in segment.words:
+            word_end = character_offset + len(word.text)
+            retained_word_text = "".join(
+                character
+                for character, keep_character in zip(
+                    word.text, keep_characters[character_offset:word_end], strict=True
+                )
+                if keep_character
+            )
+            if retained_word_text:
+                words.append(word.model_copy(update={"text": retained_word_text}))
+            character_offset = word_end
+        return segment.model_copy(update={"text": text, "words": words})
+
+    # Preserve safe offsets when backend word text cannot be mapped character-wise
+    words = []
+    if text:
+        words.append(
+            TranscribedWord(
+                text=text,
+                start=segment.start,
+                end=segment.end,
+                confidence=min(word.confidence for word in segment.words),
+            )
+        )
+    return segment.model_copy(update={"text": text, "words": words})
 
 
 def _get_text_character_retention(text: str) -> list[bool]:
