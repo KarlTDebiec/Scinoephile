@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import isfinite
 
 from scinoephile.analysis.alignment.timed_msa.models import Token
 from scinoephile.core.text import normalize_nfkc
@@ -65,13 +66,19 @@ class YueTokenSimilarity:
             self.same_jyutping_base_score,
             self.substitution_score,
         )
+        if any(not isfinite(score) for score in lexical_scores):
+            raise ValueError("Yue alignment lexical scores must be finite.")
         if any(
             left < right
             for left, right in zip(lexical_scores, lexical_scores[1:], strict=False)
         ):
             raise ValueError("Yue alignment lexical scores must be descending.")
+        if not isfinite(self.timing_weight):
+            raise ValueError("Yue alignment timing weight must be finite.")
         if self.timing_weight < 0.0:
             raise ValueError("Yue alignment timing weight must be non-negative.")
+        if not isfinite(self.timing_tolerance_seconds):
+            raise ValueError("Yue alignment timing tolerance must be finite.")
         if self.timing_tolerance_seconds <= 0.0:
             raise ValueError("Yue alignment timing tolerance must be positive.")
 

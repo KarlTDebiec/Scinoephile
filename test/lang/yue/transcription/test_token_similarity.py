@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from pytest import raises
+
 from scinoephile.analysis.alignment.timed_msa import Token
 from scinoephile.lang.yue.transcription import YueTokenSimilarity
 
@@ -15,6 +17,16 @@ def test_yue_similarity_keeps_lexical_evidence_stronger_than_timing():
     unrelated_same_time = similarity(Token("嗰", 0.0, 0.1), Token("八", 0.0, 0.1))
 
     assert distant_pronunciation > unrelated_same_time
+
+
+def test_yue_similarity_rejects_nonfinite_configuration():
+    """Non-finite settings should fail before they contaminate alignment scores."""
+    with raises(ValueError, match="lexical scores must be finite"):
+        YueTokenSimilarity(exact_score=float("nan"))
+    with raises(ValueError, match="timing weight must be finite"):
+        YueTokenSimilarity(timing_weight=float("nan"))
+    with raises(ValueError, match="timing tolerance must be finite"):
+        YueTokenSimilarity(timing_tolerance_seconds=float("inf"))
 
 
 def test_yue_similarity_orders_substitution_evidence():
