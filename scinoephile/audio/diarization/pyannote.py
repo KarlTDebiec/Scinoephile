@@ -53,7 +53,7 @@ class PyannoteDiarizer:
         cache_root_path: Path | None,
         *,
         model_id: str = _DEFAULT_MODEL_ID,
-        model_revision: str = _DEFAULT_MODEL_REVISION,
+        model_revision: str | None = None,
         device: str | None = None,
         num_speakers: int | None = None,
         min_speakers: int | None = None,
@@ -68,7 +68,8 @@ class PyannoteDiarizer:
         Arguments:
             cache_root_path: root directory beneath which to cache
             model_id: Hugging Face pipeline identifier
-            model_revision: exact Hugging Face model revision
+            model_revision: exact Hugging Face model revision; None selects the
+                pinned Community-1 revision or a custom repository's default
             device: Torch device, or None to use CPU
             num_speakers: exact source-wide speaker count, when known
             min_speakers: minimum source-wide speaker count, when known
@@ -98,8 +99,10 @@ class PyannoteDiarizer:
 
         self.model_id = model_id
         """Hugging Face pipeline identifier."""
+        if model_revision is None and model_id == _DEFAULT_MODEL_ID:
+            model_revision = _DEFAULT_MODEL_REVISION
         self.model_revision = model_revision
-        """Exact Hugging Face pipeline and model-asset revision."""
+        """Exact Hugging Face pipeline and model-asset revision, or None."""
         self.device = device or "cpu"
         """Torch device used for local inference."""
         self.num_speakers = num_speakers
@@ -217,7 +220,10 @@ class PyannoteDiarizer:
             pyannote_audio = import_pyannote_audio()
             pipeline_cls = getattr(pyannote_audio, "Pipeline")
             from_pretrained = getattr(pipeline_cls, "from_pretrained")
-            pipeline = from_pretrained(self.model_id, revision=self.model_revision)
+            if self.model_revision is None:
+                pipeline = from_pretrained(self.model_id)
+            else:
+                pipeline = from_pretrained(self.model_id, revision=self.model_revision)
             if pipeline is None:
                 raise SpeakerDiarizationAuthorizationError(
                     f"Unable to load gated pyannote model {self.model_id!r}. Accept "

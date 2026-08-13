@@ -195,6 +195,33 @@ def test_cache_identity_separates_exact_model_revisions(
     assert first_path != second_path
 
 
+def test_custom_model_uses_repository_default_revision(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """A custom model without a revision should use its repository default.
+
+    Arguments:
+        tmp_path: temporary cache root path
+        monkeypatch: pytest monkeypatch fixture
+    """
+    pipeline = _FakePipeline()
+    from_pretrained = Mock(return_value=pipeline)
+    pipeline_cls = SimpleNamespace(from_pretrained=from_pretrained)
+    monkeypatch.setattr(
+        "scinoephile.audio.diarization.pyannote.import_pyannote_audio",
+        lambda: SimpleNamespace(Pipeline=pipeline_cls),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.diarization.pyannote.import_torch", lambda: _FakeTorch
+    )
+    diarizer = PyannoteDiarizer(tmp_path, model_id="custom/model")
+
+    diarizer._get_pipeline()  # noqa: SLF001
+
+    from_pretrained.assert_called_once_with("custom/model")
+    assert diarizer.model_revision is None
+
+
 def test_diarizer_rejects_exact_and_bounded_speaker_counts(tmp_path: Path):
     """An exact speaker count should not be combined with count bounds.
 
