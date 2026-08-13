@@ -173,7 +173,11 @@ def evaluate_timing(
         aggregate and per-pair temporal overlap metrics
     """
     candidate = _get_candidate_series(artifact, settings)
-    selected_reference = get_reference_for_alignment(artifact, reference)
+    reference_selection = _get_reference_selection(artifact, reference)
+    selected_reference = Series(
+        events=[subtitle for _, subtitle in reference_selection]
+    )
+    original_reference_indexes = tuple(index for index, _ in reference_selection)
     if settings is None:
         settings = artifact.timing
     # Establish the text correspondence from immutable CTC speech bounds so the
@@ -182,8 +186,7 @@ def evaluate_timing(
     pairs = []
     unmatched_candidate_indexes = set()
     unmatched_reference_indexes = set()
-    for message in diff.get_messages(include_equal=True):
-        candidate_indexes, reference_indexes = diff.get_event_indices(message)
+    for candidate_indexes, reference_indexes in _get_event_index_groups(diff):
         if not candidate_indexes:
             unmatched_reference_indexes.update(reference_indexes)
             continue
@@ -192,7 +195,11 @@ def evaluate_timing(
             continue
         pairs.append(
             _get_timing_pair(
-                candidate, selected_reference, candidate_indexes, reference_indexes
+                candidate,
+                selected_reference,
+                candidate_indexes,
+                reference_indexes,
+                original_reference_indexes,
             )
         )
     return TimingMetrics(
@@ -288,17 +295,9 @@ def get_reference_for_alignment(
     Returns:
         reference subtitles whose midpoint lies within a processed block core
     """
-    core_ranges = tuple(
-        (block.core_start_ms, block.core_end_ms) for block in artifact.blocks
-    )
     return Series(
         events=[
-            subtitle
-            for subtitle in reference
-            if any(
-                start_ms <= (subtitle.start + subtitle.end) / 2 < end_ms
-                for start_ms, end_ms in core_ranges
-            )
+            subtitle for _, subtitle in _get_reference_selection(artifact, reference)
         ]
     )
 
@@ -360,6 +359,69 @@ def _get_candidate_series(
     return retime_alignment(artifact, settings).get_series()
 
 
+def _get_event_index_groups(
+    diff: SeriesDiff,
+) -> tuple[tuple[tuple[int, ...], tuple[int, ...]], ...]:
+    """Consolidate line diff messages into subtitle event groups.
+
+    Arguments:
+        diff: line-level subtitle diff
+    Returns:
+        connected candidate and reference event-index groups
+    """
+    groups: list[tuple[set[int], set[int]]] = []
+    for message in diff.get_messages(include_equal=True):
+        candidate_indexes, reference_indexes = diff.get_event_indices(message)
+        overlapping_group_indexes = [
+            group_index
+            for group_index, (group_candidates, group_references) in enumerate(groups)
+            if not group_candidates.isdisjoint(candidate_indexes)
+            or not group_references.isdisjoint(reference_indexes)
+        ]
+        if not overlapping_group_indexes:
+            groups.append((set(candidate_indexes), set(reference_indexes)))
+            continue
+
+        group_index = overlapping_group_indexes[0]
+        groups[group_index][0].update(candidate_indexes)
+        groups[group_index][1].update(reference_indexes)
+        for overlapping_group_index in reversed(overlapping_group_indexes[1:]):
+            other_candidate_indexes, other_reference_indexes = groups.pop(
+                overlapping_group_index
+            )
+            groups[group_index][0].update(other_candidate_indexes)
+            groups[group_index][1].update(other_reference_indexes)
+
+    return tuple(
+        (tuple(sorted(candidate_indexes)), tuple(sorted(reference_indexes)))
+        for candidate_indexes, reference_indexes in groups
+    )
+
+
+def _get_reference_selection(
+    artifact: AlignmentArtifact, reference: Series
+) -> tuple[tuple[int, Subtitle], ...]:
+    """Select reference subtitles and retain their original indexes.
+
+    Arguments:
+        artifact: alignment artifact whose processed block range is authoritative
+        reference: complete independent reference series
+    Returns:
+        selected original indexes and reference subtitles
+    """
+    core_ranges = tuple(
+        (block.core_start_ms, block.core_end_ms) for block in artifact.blocks
+    )
+    return tuple(
+        (index, subtitle)
+        for index, subtitle in enumerate(reference)
+        if any(
+            start_ms <= (subtitle.start + subtitle.end) / 2 < end_ms
+            for start_ms, end_ms in core_ranges
+        )
+    )
+
+
 def _get_speech_series(artifact: AlignmentArtifact) -> Series:
     """Get merged text at immutable CTC speech bounds for evaluation pairing."""
     return Series(
@@ -380,8 +442,19 @@ def _get_timing_pair(
     reference: Series,
     candidate_indexes: tuple[int, ...],
     reference_indexes: tuple[int, ...],
+    original_reference_indexes: tuple[int, ...],
 ) -> TimingPair:
-    """Get overlap metrics for one text-aligned group."""
+    """Get overlap metrics for one text-aligned group.
+
+    Arguments:
+        candidate: complete candidate subtitle series
+        reference: selected reference subtitle series
+        candidate_indexes: candidate event indexes in the aligned group
+        reference_indexes: selected-reference event indexes in the aligned group
+        original_reference_indexes: original index of each selected reference event
+    Returns:
+        timing comparison for the aligned group
+    """
     candidate_start_ms = min(candidate[index].start for index in candidate_indexes)
     candidate_end_ms = max(candidate[index].end for index in candidate_indexes)
     reference_start_ms = min(reference[index].start for index in reference_indexes)
@@ -396,7 +469,9 @@ def _get_timing_pair(
     )
     return TimingPair(
         candidate_indexes=tuple(index + 1 for index in candidate_indexes),
-        reference_indexes=tuple(index + 1 for index in reference_indexes),
+        reference_indexes=tuple(
+            original_reference_indexes[index] + 1 for index in reference_indexes
+        ),
         candidate_start_ms=candidate_start_ms,
         candidate_end_ms=candidate_end_ms,
         reference_start_ms=reference_start_ms,

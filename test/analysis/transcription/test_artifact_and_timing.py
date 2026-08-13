@@ -168,6 +168,40 @@ def test_timing_evaluation_pairs_text_before_scoring_overlap():
     assert metrics.pairs[0].end_error_ms == -100
 
 
+def test_timing_evaluation_scores_multiline_subtitle_once():
+    """Line-level alignment should not weight subtitles by their line count."""
+    artifact = _get_artifact()
+    block = artifact.blocks[0]
+    multiline_subtitle = block.subtitles[0].model_copy(update={"text": "係\\N呀"})
+    artifact = artifact.model_copy(
+        update={
+            "blocks": (block.model_copy(update={"subtitles": (multiline_subtitle,)}),)
+        }
+    )
+    reference = Series(events=[Subtitle(start=800, end=2300, text="係\\N呀")])
+
+    metrics = evaluate_timing(artifact, reference)
+
+    assert len(metrics.pairs) == 1
+    assert metrics.pairs[0].candidate_indexes == (1,)
+    assert metrics.pairs[0].reference_indexes == (1,)
+
+
+def test_timing_evaluation_preserves_original_reference_indexes():
+    """Filtered references should retain their indexes in the caller's series."""
+    reference = Series(
+        events=[
+            Subtitle(start=0, end=400, text="outside"),
+            Subtitle(start=800, end=2300, text="係呀"),
+        ]
+    )
+
+    metrics = evaluate_timing(_get_artifact(), reference)
+
+    assert len(metrics.pairs) == 1
+    assert metrics.pairs[0].reference_indexes == (2,)
+
+
 def _get_artifact() -> AlignmentArtifact:
     """Get a compact valid artifact with one pause-bearing block."""
     return AlignmentArtifact(
