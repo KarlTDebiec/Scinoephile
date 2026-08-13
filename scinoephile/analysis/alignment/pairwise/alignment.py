@@ -1,27 +1,22 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Character-level line alignment."""
+"""Pairwise character alignment."""
 
 from __future__ import annotations
 
 import numba as nb
 import numpy as np
 
-from .line_alignment_operation import LineAlignmentOperation
-from .line_alignment_pair import LineAlignmentPair
+from .models import Column, Operation
 
-__all__ = ["LineAlignment"]
+__all__ = ["Alignment"]
 
 _OPERATION_NONE = 255
-_OPERATION_MATCH = LineAlignmentOperation.MATCH.value
-_OPERATION_SUBSTITUTE = LineAlignmentOperation.SUBSTITUTE.value
-_OPERATION_DELETE = LineAlignmentOperation.DELETE.value
-_OPERATION_INSERT = LineAlignmentOperation.INSERT.value
 _GAP_NONE = -1
 
 
-class LineAlignment:
-    """Character-level alignment between two strings.
+class Alignment:
+    """Align two strings at character level.
 
     Uses Levenshtein-style dynamic programming with backtrace. The fill step
     keeps only the previous and current metric rows, plus one compact operation
@@ -42,12 +37,12 @@ class LineAlignment:
         self.two = two
         """Second string."""
 
-        self.alignment_pairs: list[LineAlignmentPair] = []
-        """Aligned character pairs."""
+        self.columns: list[Column] = []
+        """Aligned character columns."""
 
         # Fill the alignment from the compact operation table
         operation_table = self._get_operation_table()
-        self._populate_alignment_pairs(operation_table)
+        self._populate_columns(operation_table)
 
     def __repr__(self) -> str:
         """Return a reconstructable representation of this alignment.
@@ -67,8 +62,8 @@ class LineAlignment:
         two = _get_codepoints(self.two)
         return _get_alignment_operation_table(one, two)
 
-    def _populate_alignment_pairs(self, operation_table: np.ndarray):
-        """Populate alignment pairs by backtracing DP operations.
+    def _populate_columns(self, operation_table: np.ndarray):
+        """Populate alignment columns by backtracing DP operations.
 
         Arguments:
             operation_table: operation table produced by dynamic programming
@@ -76,37 +71,43 @@ class LineAlignment:
         # Start from the bottom-right table cell
         one_idx = len(self.one)
         two_idx = len(self.two)
-        self.alignment_pairs = []
+        self.columns = []
 
         # Walk backward through chosen edit operations
         while one_idx != 0 or two_idx != 0:
             operation_value = int(operation_table[one_idx, two_idx])
             if operation_value == _OPERATION_NONE:
                 break
-            operation = LineAlignmentOperation(operation_value)
+            operation = Operation(operation_value)
 
             # Resolve matches and substitutions diagonally
-            if operation in (
-                LineAlignmentOperation.MATCH,
-                LineAlignmentOperation.SUBSTITUTE,
-            ):
-                pair = LineAlignmentPair(
-                    self.one[one_idx - 1], self.two[two_idx - 1], operation
-                )
+            if operation in (Operation.MATCH, Operation.SUBSTITUTE):
+                column = Column(self.one[one_idx - 1], self.two[two_idx - 1], operation)
                 one_idx -= 1
                 two_idx -= 1
             # Resolve insertions horizontally
-            elif operation == LineAlignmentOperation.INSERT:
-                pair = LineAlignmentPair(None, self.two[two_idx - 1], operation)
+            elif operation == Operation.INSERT:
+                column = Column(None, self.two[two_idx - 1], operation)
                 two_idx -= 1
             # Resolve deletions vertically
             else:
-                pair = LineAlignmentPair(self.one[one_idx - 1], None, operation)
+                column = Column(self.one[one_idx - 1], None, operation)
                 one_idx -= 1
-            self.alignment_pairs.append(pair)
+            self.columns.append(column)
 
-        # Store pairs in forward order
-        self.alignment_pairs.reverse()
+        # Store columns in forward order
+        self.columns.reverse()
+
+
+def _get_codepoints(text: str) -> np.ndarray:
+    """Convert text to Unicode code points.
+
+    Arguments:
+        text: text to convert
+    Returns:
+        integer code points
+    """
+    return np.fromiter((ord(char) for char in text), dtype=np.int32, count=len(text))
 
 
 @nb.jit(nopython=True, nogil=True, cache=True)
@@ -128,7 +129,7 @@ def _get_alignment_operation_table(  # noqa: PLR0915
         (one_length + 1, two_length + 1), _OPERATION_NONE, dtype=np.uint8
     )
     if two_length > 0:
-        operation_table[0, 1:] = _OPERATION_INSERT
+        operation_table[0, 1:] = Operation.INSERT
 
     previous_metrics = np.zeros((two_length + 1, 5), dtype=np.int32)
     current_metrics = np.empty((two_length + 1, 5), dtype=np.int32)
@@ -139,14 +140,14 @@ def _get_alignment_operation_table(  # noqa: PLR0915
     previous_gaps[0] = _GAP_NONE
     for two_idx in range(1, two_length + 1):
         _set_metric(previous_metrics, two_idx, two_idx, 1, 0, 0, two_idx)
-        previous_gaps[two_idx] = _OPERATION_INSERT
+        previous_gaps[two_idx] = Operation.INSERT
 
     # Fill each dynamic-programming row
     for one_idx in range(1, one_length + 1):
         # Seed the first column with deletions
-        operation_table[one_idx, 0] = _OPERATION_DELETE
+        operation_table[one_idx, 0] = Operation.DELETE
         _set_metric(current_metrics, 0, one_idx, 1, 0, one_idx, 0)
-        current_gaps[0] = _OPERATION_DELETE
+        current_gaps[0] = Operation.DELETE
         one_char = one[one_idx - 1]
 
         for two_idx in range(1, two_length + 1):
@@ -159,7 +160,7 @@ def _get_alignment_operation_table(  # noqa: PLR0915
                 best_2 = previous_metrics[previous_diagonal_idx, 2]
                 best_3 = previous_metrics[previous_diagonal_idx, 3]
                 best_4 = previous_metrics[previous_diagonal_idx, 4]
-                best_operation = _OPERATION_MATCH
+                best_operation = Operation.MATCH
                 best_gap = _GAP_NONE
             else:
                 best_0 = previous_metrics[previous_diagonal_idx, 0] + 1
@@ -167,13 +168,13 @@ def _get_alignment_operation_table(  # noqa: PLR0915
                 best_2 = previous_metrics[previous_diagonal_idx, 2] + 1
                 best_3 = previous_metrics[previous_diagonal_idx, 3]
                 best_4 = previous_metrics[previous_diagonal_idx, 4]
-                best_operation = _OPERATION_SUBSTITUTE
+                best_operation = Operation.SUBSTITUTE
                 best_gap = _GAP_NONE
 
             # Compare the insertion candidate
             previous_insert_idx = two_idx - 1
             insert_1 = current_metrics[previous_insert_idx, 1]
-            if current_gaps[previous_insert_idx] != _OPERATION_INSERT:
+            if current_gaps[previous_insert_idx] != Operation.INSERT:
                 insert_1 += 1
             insert_0 = current_metrics[previous_insert_idx, 0] + 1
             insert_2 = current_metrics[previous_insert_idx, 2]
@@ -196,12 +197,12 @@ def _get_alignment_operation_table(  # noqa: PLR0915
                 best_2 = insert_2
                 best_3 = insert_3
                 best_4 = insert_4
-                best_operation = _OPERATION_INSERT
-                best_gap = _OPERATION_INSERT
+                best_operation = Operation.INSERT
+                best_gap = Operation.INSERT
 
             # Compare the deletion candidate
             delete_1 = previous_metrics[two_idx, 1]
-            if previous_gaps[two_idx] != _OPERATION_DELETE:
+            if previous_gaps[two_idx] != Operation.DELETE:
                 delete_1 += 1
             delete_0 = previous_metrics[two_idx, 0] + 1
             delete_2 = previous_metrics[two_idx, 2]
@@ -232,15 +233,15 @@ def _get_alignment_operation_table(  # noqa: PLR0915
                 best_4,
             )
             if delete_is_less or (
-                delete_is_equal and _OPERATION_DELETE < best_operation
+                delete_is_equal and Operation.DELETE < best_operation
             ):
                 best_0 = delete_0
                 best_1 = delete_1
                 best_2 = delete_2
                 best_3 = delete_3
                 best_4 = delete_4
-                best_operation = _OPERATION_DELETE
-                best_gap = _OPERATION_DELETE
+                best_operation = Operation.DELETE
+                best_gap = Operation.DELETE
 
             # Store the chosen candidate and operation
             _set_metric(
@@ -254,17 +255,6 @@ def _get_alignment_operation_table(  # noqa: PLR0915
         previous_gaps, current_gaps = current_gaps, previous_gaps
 
     return operation_table
-
-
-def _get_codepoints(text: str) -> np.ndarray:
-    """Convert text to Unicode code points.
-
-    Arguments:
-        text: text to convert
-    Returns:
-        integer code points
-    """
-    return np.fromiter((ord(char) for char in text), dtype=np.int32, count=len(text))
 
 
 @nb.jit(nopython=True, nogil=True, inline="always")
