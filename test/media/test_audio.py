@@ -11,7 +11,7 @@ import ffmpeg
 from pytest import mark, raises
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.media.audio_stream import AudioStream
+from scinoephile.core.media import AudioStream, VideoStream
 from scinoephile.media.audio import AudioExtractionMode, extract_audio
 
 
@@ -71,6 +71,44 @@ def test_extract_audio_selects_stream_and_extracts_track(tmp_path: Path):
     extract_track.assert_called_once_with(
         infile_path.resolve(), outfile_path.resolve(), 3, AudioExtractionMode.ORIGINAL
     )
+
+
+def test_extract_audio_rejects_missing_stream_index(tmp_path: Path):
+    """Test extraction rejects an unavailable absolute stream index.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    infile_path = tmp_path / "movie.mkv"
+    infile_path.touch()
+
+    with (
+        patch(
+            "scinoephile.media.audio.get_streams",
+            return_value=[AudioStream(index=1, codec_type="audio")],
+        ),
+        raises(ScinoephileError, match="No stream index 2"),
+    ):
+        extract_audio(infile_path, tmp_path / "audio.wav", stream_index=2)
+
+
+def test_extract_audio_rejects_non_audio_stream_index(tmp_path: Path):
+    """Test extraction rejects a selected stream that is not audio.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    infile_path = tmp_path / "movie.mkv"
+    infile_path.touch()
+
+    with (
+        patch(
+            "scinoephile.media.audio.get_streams",
+            return_value=[VideoStream(index=0, codec_type="video")],
+        ),
+        raises(ScinoephileError, match="Stream index 0 is not an audio stream"),
+    ):
+        extract_audio(infile_path, tmp_path / "audio.wav", stream_index=0)
 
 
 @mark.parametrize("source_channel_count", [1, 2, 6])

@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter, audit_ocr_fusion
+from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core.exceptions import ScinoephileError
@@ -141,6 +142,7 @@ class AuditOcrFusionCli(AuditCliBase):
                 "verified"
             ),
         )
+        add_block_range_args(arg_groups["operation arguments"])
 
     @classmethod
     def name(cls) -> str:

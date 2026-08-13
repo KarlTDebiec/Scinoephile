@@ -15,7 +15,7 @@ from typing import Any, Self, TypedDict, override
 from pydub import AudioSegment
 from pydub.exceptions import PydubException
 
-from scinoephile.common.file import get_temp_directory_path
+from scinoephile.audio.segment import load_audio_segment
 from scinoephile.common.validation import (
     val_input_dir_path,
     val_input_path,
@@ -24,7 +24,7 @@ from scinoephile.common.validation import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.media.audio import extract_audio
+from scinoephile.media.audio import AudioExtractionMode
 
 from .subtitle import AudioSubtitle
 
@@ -219,36 +219,41 @@ class AudioSeries(Series):
     def load_from_media(
         cls,
         media_path: Path | str,
-        subtitle_path: Path | str,
+        subtitle_path: Path | str | None = None,
         stream_index: int | None = None,
+        mode: AudioExtractionMode = AudioExtractionMode.ORIGINAL,
         buffer: int = 1000,
         **kwargs: Any,
     ) -> Self:
-        """Load series from a subtitle file and associated media file.
+        """Load complete audio and optional subtitles from a media file.
 
         Arguments:
             media_path: path to media file
-            subtitle_path: path to subtitle file
+            subtitle_path: optional path to subtitle file
             stream_index: media stream index of an audio stream, or None to use the
               first audio stream
+            mode: channel preparation used during audio extraction
             buffer: additional buffer to include before and after subtitles (ms)
             **kwargs: additional keyword arguments passed to Series.load
         Returns:
-            loaded series
+            audio series, with buffered subtitle events when subtitles are provided
+        Raises:
+            ScinoephileError: if the media, subtitles, extraction, or decoding fails
         """
         try:
             validated_media_path = val_input_path(media_path)
-            validated_subtitle_path = val_input_path(subtitle_path)
-            text_series = Series.load(validated_subtitle_path, **kwargs)
+            text_series = None
+            if subtitle_path is not None:
+                validated_subtitle_path = val_input_path(subtitle_path)
+                text_series = Series.load(validated_subtitle_path, **kwargs)
 
-            with get_temp_directory_path() as temp_dir_path:
-                full_audio_path = temp_dir_path / "full_audio.wav"
-                extract_audio(
-                    validated_media_path, full_audio_path, stream_index=stream_index
-                )
-                logger.info(f"Loading full audio from {full_audio_path}")
-                full_audio = AudioSegment.from_wav(full_audio_path)
-
+            full_audio = load_audio_segment(
+                validated_media_path, stream_index=stream_index, mode=mode
+            )
+            if text_series is None:
+                series = cls(audio=full_audio)
+                series.format = "wav"
+                return series
             return cls.build_series(text_series, full_audio, buffer)
         except (OSError, PydubException, UnicodeError, ValueError) as exc:
             raise ScinoephileError(

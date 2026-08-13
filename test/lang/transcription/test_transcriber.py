@@ -19,8 +19,10 @@ from scinoephile.audio.transcription import (
     TranscribedSegment,
     TranscribedWord,
     TranscriptionError,
-    VADMode,
+    VadMode,
 )
+from scinoephile.audio.transcription.mlx_audio.model import MIMO_MODEL
+from scinoephile.audio.transcription.whisper.model import WhisperModel
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.aligner import TranscriptionAligner
@@ -28,16 +30,16 @@ from scinoephile.lang.transcription.alignment import TranscriptionAlignment
 from scinoephile.lang.transcription.transcriber import (
     GuidedTranscriber,
     MlxAudioTimingMode,
-    TranscriptionBackend,
-    _get_segment_split_on_phrase_timings,
+    TranscriptionModel,
+    get_segment_split_on_phrase_timings,
 )
 
 
 def _get_transcriber(
     *,
-    backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
+    model: TranscriptionModel = TranscriptionModel.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.OFF,
-    vad_mode: VADMode = VADMode.OFF,
+    vad_mode: VadMode = VadMode.OFF,
     overwrite_cache: bool = False,
     mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
     strip_generated_punctuation: bool = False,
@@ -45,9 +47,9 @@ def _get_transcriber(
     """Get a transcriber with a passthrough alignment mock.
 
     Arguments:
-        backend: audio transcription backend
+        model: supported transcription model
         demucs_mode: Demucs preprocessing mode
-        vad_mode: Whisper VAD mode
+        vad_mode: voice activity detection mode
         overwrite_cache: whether to replace matching transcription cache files
         mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
         strip_generated_punctuation: whether to remove generated punctuation before
@@ -62,16 +64,16 @@ def _get_transcriber(
     aligner.punctuation_processor = Mock()
     aligner.punctuation_processor.prune_test_cases = False
     mlx_audio_transcriber = None
-    if backend is TranscriptionBackend.MLX_AUDIO:
+    audio_model = WhisperModel("test/model", {Language.eng: "en"})
+    if model is not TranscriptionModel.WHISPER:
         mlx_audio_transcriber = Mock(spec=MlxAudioTranscriber)
+        audio_model = MIMO_MODEL
     return (
         GuidedTranscriber(
             language=Language.eng,
             guide_language=Language.zho_hans,
-            model_name="test/model",
-            whisper_language="en",
+            audio_model=audio_model,
             aligner=aligner,
-            backend=backend,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
             overwrite_cache=overwrite_cache,
@@ -166,7 +168,7 @@ def test_segments_are_usable_accepts_partial_guided_tail():
 
 def test_missing_guided_tail_runs_focused_recovery():
     """Test a missing guided tail triggers normalized focused recovery."""
-    transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
+    transcriber, _ = _get_transcriber(vad_mode=VadMode.OFF)
     initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
     recovered_segments = [
         _get_segment(
@@ -199,7 +201,7 @@ def test_missing_guided_tail_runs_focused_recovery():
 
 def test_missing_guided_tail_keeps_base_after_unusable_recovery():
     """Test unusable focused-tail output leaves the base transcription intact."""
-    transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
+    transcriber, _ = _get_transcriber(vad_mode=VadMode.OFF)
     initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
     repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
     transcriber.transcriber = Mock()
@@ -223,7 +225,7 @@ def test_missing_guided_tail_keeps_base_after_unusable_recovery():
 
 def test_missing_guided_tail_keeps_valid_base_without_credible_recovery():
     """Test implausible tail recovery does not invalidate a valid base transcript."""
-    transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
+    transcriber, _ = _get_transcriber(vad_mode=VadMode.OFF)
     initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
     stretched_segment = _get_segment(
         end=5.0, text="x", compression_ratio=1.0, with_words=True
@@ -344,9 +346,9 @@ def test_all_unusable_candidates_leave_gap_for_translation():
 def test_mlx_audio_backend_delegates_to_shared_transcriber():
     """Test guided transcription delegates retries to one MLX-Audio instance."""
     transcriber, _ = _get_transcriber(
-        backend=TranscriptionBackend.MLX_AUDIO,
+        model=TranscriptionModel.MIMO,
         demucs_mode=DemucsMode.AUTO,
-        vad_mode=VADMode.AUTO,
+        vad_mode=VadMode.AUTO,
     )
     repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
     usable_segments = [_get_segment(text="mlx-audio", with_words=True)]
@@ -370,7 +372,7 @@ def test_mlx_audio_backend_delegates_to_shared_transcriber():
 def test_failed_mlx_audio_backend_leaves_gap_for_translation():
     """Test an MLX-Audio failure preserves downstream gap translation behavior."""
     transcriber, _ = _get_transcriber(
-        backend=TranscriptionBackend.MLX_AUDIO, overwrite_cache=True
+        model=TranscriptionModel.MIMO, overwrite_cache=True
     )
     assert transcriber.mlx_audio_transcriber is not None
     mlx_audio = cast(Mock, transcriber.mlx_audio_transcriber)
@@ -484,7 +486,7 @@ def test_process_block_strips_generated_punctuation_after_timing():
 def test_process_block_synchronizes_stripped_punctuation_with_word_timings():
     """Test stripped text indexes continue to target matching timed characters."""
     transcriber, aligner = _get_transcriber(
-        backend=TranscriptionBackend.MLX_AUDIO,
+        model=TranscriptionModel.MIMO,
         mlx_audio_timing_mode=MlxAudioTimingMode.SEGMENT,
         strip_generated_punctuation=True,
     )
@@ -531,7 +533,7 @@ def test_process_block_synchronizes_stripped_punctuation_with_word_timings():
 
 def test_process_block_splits_mlx_audio_segments_on_ctc_unit_timings():
     """Test MLX-Audio CTC timing units reach reference-guided alignment."""
-    transcriber, aligner = _get_transcriber(backend=TranscriptionBackend.MLX_AUDIO)
+    transcriber, aligner = _get_transcriber(model=TranscriptionModel.MIMO)
     audio_block = AudioSeries(
         audio=AudioSegment.silent(duration=1000),
         events=[AudioSubtitle(start=0, end=1000, text="reference")],
@@ -572,8 +574,7 @@ def test_process_block_splits_mlx_audio_segments_on_ctc_unit_timings():
 def test_process_block_retains_complete_mlx_audio_segments():
     """Test segment timing mode retains MLX-Audio segment granularity."""
     transcriber, aligner = _get_transcriber(
-        backend=TranscriptionBackend.MLX_AUDIO,
-        mlx_audio_timing_mode=MlxAudioTimingMode.SEGMENT,
+        model=TranscriptionModel.MIMO, mlx_audio_timing_mode=MlxAudioTimingMode.SEGMENT
     )
     audio_block = AudioSeries(
         audio=AudioSegment.silent(duration=1000),
@@ -607,7 +608,7 @@ def test_process_block_retains_complete_mlx_audio_segments():
 def test_process_block_groups_mlx_audio_segments_on_phrase_timings():
     """Test phrase timing groups use punctuation before it may be stripped."""
     transcriber, aligner = _get_transcriber(
-        backend=TranscriptionBackend.MLX_AUDIO,
+        model=TranscriptionModel.MIMO,
         mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
         strip_generated_punctuation=True,
     )
@@ -663,7 +664,7 @@ def test_phrase_timing_groups_split_on_ctc_hold_time_and_size():
         id=0, seek=0, start=0.0, end=start, text=text, words=words
     )
 
-    output = _get_segment_split_on_phrase_timings(segment)
+    output = get_segment_split_on_phrase_timings(segment)
 
     assert [item.text for item in output] == [
         "甲乙丙",

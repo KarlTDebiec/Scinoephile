@@ -7,6 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import cast
 
+from scinoephile.image.cache_namespace import ImageCacheNamespace
 from scinoephile.image.ocr.cache import OcrCacheBase
 
 __all__ = ["LensCache"]
@@ -26,7 +27,11 @@ class LensCache(OcrCacheBase[list[str]]):
             overwrite: whether to replace matching cache files
         """
         super().__init__(
-            cache_root_path, "google-lens", "Google Lens OCR", _CACHE_VERSION, overwrite
+            cache_root_path,
+            ImageCacheNamespace.OCR_LENS,
+            "Google Lens OCR",
+            _CACHE_VERSION,
+            overwrite,
         )
 
     def _deserialize(self, payload: object) -> list[str]:
