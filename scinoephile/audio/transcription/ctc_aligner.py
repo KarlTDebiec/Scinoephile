@@ -11,7 +11,7 @@ import numpy as np
 from opencc import OpenCC
 from pydub import AudioSegment
 
-from scinoephile.audio.samples import get_mono_pcm16_samples
+from scinoephile.audio.segment import get_mono_pcm16_samples
 from scinoephile.core import Language
 from scinoephile.core.dependencies.transcription import (
     import_torch,

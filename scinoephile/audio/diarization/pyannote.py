@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING, cast
 
 import numpy as np
 
-from scinoephile.audio.samples import get_mono_pcm16_samples
+from scinoephile.audio.segment import get_mono_pcm16_samples
 from scinoephile.core.dependencies.transcription import (
     import_pyannote_audio,
     import_torch,

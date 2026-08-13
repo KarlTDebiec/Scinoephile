@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, cast
 
 import numpy as np
 
-from scinoephile.audio.samples import get_mono_pcm16_samples
+from scinoephile.audio.segment import get_mono_pcm16_samples
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies import transcription
 
