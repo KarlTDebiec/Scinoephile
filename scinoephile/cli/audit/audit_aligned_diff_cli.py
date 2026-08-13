@@ -11,6 +11,7 @@ from scinoephile.analysis.audit.aligned_diff import (
     AlignedDiffAuditFilter,
     audit_aligned_diff,
 )
+from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     float_arg,
@@ -135,6 +136,7 @@ class AuditAlignedDiffCli(AuditCliBase):
                 "similarity threshold used to pair replacements (default: %(default)s)"
             ),
         )
+        add_block_range_args(arg_groups["operation arguments"])
 
     @classmethod
     def name(cls) -> str:

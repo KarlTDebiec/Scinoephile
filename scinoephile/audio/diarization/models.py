@@ -36,7 +36,7 @@ class SpeakerTurn(BaseModel):
     """Anonymous source-wide speaker label."""
 
     @model_validator(mode="after")
-    def validate_duration(self) -> Self:
+    def _validate_duration(self) -> Self:
         """Ensure the turn has positive duration."""
         if self.end <= self.start:
             raise ValueError("Speaker turn end must be after its start.")
@@ -50,24 +50,6 @@ class SpeakerDiarizationResult(BaseModel):
     """Regular overlap-preserving speaker diarization turns."""
     exclusive_turns: list[SpeakerTurn]
     """Non-overlapping turns intended for transcription reconciliation."""
-
-    @model_validator(mode="after")
-    def validate_turn_order(self) -> Self:
-        """Ensure timelines are ordered and exclusive turns do not overlap."""
-        for name, turns in (
-            ("regular", self.turns),
-            ("exclusive", self.exclusive_turns),
-        ):
-            if turns != sorted(
-                turns, key=lambda turn: (turn.start, turn.end, turn.speaker)
-            ):
-                raise ValueError(f"{name.title()} speaker turns must be ordered.")
-        for previous, current in zip(
-            self.exclusive_turns, self.exclusive_turns[1:], strict=False
-        ):
-            if current.start < previous.end:
-                raise ValueError("Exclusive speaker turns must not overlap.")
-        return self
 
     def assign_speakers(
         self, segments: list[TranscribedSegment], *, offset_seconds: float = 0.0
@@ -95,18 +77,10 @@ class SpeakerDiarizationResult(BaseModel):
                 turn = self._get_exclusive_turn(
                     word.start + offset_seconds, word.end + offset_seconds
                 )
-                update: dict[str, str | float | None] = {
-                    "speaker": None,
-                    "speaker_turn_end": None,
-                    "speaker_turn_start": None,
-                }
+                speaker = None
                 if turn is not None:
-                    update = {
-                        "speaker": turn.speaker,
-                        "speaker_turn_end": turn.end,
-                        "speaker_turn_start": turn.start,
-                    }
-                assigned_words.append(word.model_copy(update=update))
+                    speaker = turn.speaker
+                assigned_words.append(word.model_copy(update={"speaker": speaker}))
             assigned_segments.append(
                 segment.model_copy(update={"words": assigned_words}, deep=True)
             )
@@ -129,45 +103,6 @@ class SpeakerDiarizationResult(BaseModel):
         if turn is None:
             return None
         return turn.speaker
-
-    def _get_exclusive_turn(self, start: float, end: float) -> SpeakerTurn | None:
-        """Get the exclusive speaker turn with greatest interval overlap.
-
-        Arguments:
-            start: interval start relative to the complete source, in seconds
-            end: interval end relative to the complete source, in seconds
-        Returns:
-            greatest-overlap exclusive turn, or None when none overlaps
-        Raises:
-            ValueError: if the interval is invalid
-        """
-        if start < 0.0 or end < start:
-            raise ValueError("Speaker-assignment interval is invalid.")
-        interval_end = end
-        if interval_end == start:
-            interval_end = start + 1e-9
-
-        best_turn = None
-        best_overlap = 0.0
-        midpoint = (start + interval_end) / 2
-        for turn in self.exclusive_turns:
-            if turn.start >= interval_end:
-                break
-            overlap = min(interval_end, turn.end) - max(start, turn.start)
-            if overlap <= 0.0:
-                continue
-            if overlap > best_overlap:
-                best_turn = turn
-                best_overlap = overlap
-                continue
-            if overlap == best_overlap and best_turn is not None:
-                current_contains_midpoint = turn.start <= midpoint < turn.end
-                best_contains_midpoint = best_turn.start <= midpoint < best_turn.end
-                if current_contains_midpoint and not best_contains_midpoint:
-                    best_turn = turn
-        if best_turn is None:
-            return None
-        return best_turn
 
     def reconcile_transcription(
         self, segments: list[TranscribedSegment], *, offset_seconds: float = 0.0
@@ -252,3 +187,60 @@ class SpeakerDiarizationResult(BaseModel):
             segment.model_copy(update={"id": segment_id})
             for segment_id, segment in enumerate(reconciled_segments)
         ]
+
+    def _get_exclusive_turn(self, start: float, end: float) -> SpeakerTurn | None:
+        """Get the exclusive speaker turn with greatest interval overlap.
+
+        Arguments:
+            start: interval start relative to the complete source, in seconds
+            end: interval end relative to the complete source, in seconds
+        Returns:
+            greatest-overlap exclusive turn, or None when none overlaps
+        Raises:
+            ValueError: if the interval is invalid
+        """
+        if start < 0.0 or end < start:
+            raise ValueError("Speaker-assignment interval is invalid.")
+        interval_end = end
+        if interval_end == start:
+            interval_end = start + 1e-9
+
+        best_turn = None
+        best_overlap = 0.0
+        midpoint = (start + interval_end) / 2
+        for turn in self.exclusive_turns:
+            if turn.start >= interval_end:
+                break
+            overlap = min(interval_end, turn.end) - max(start, turn.start)
+            if overlap <= 0.0:
+                continue
+            if overlap > best_overlap:
+                best_turn = turn
+                best_overlap = overlap
+                continue
+            if overlap == best_overlap and best_turn is not None:
+                current_contains_midpoint = turn.start <= midpoint < turn.end
+                best_contains_midpoint = best_turn.start <= midpoint < best_turn.end
+                if current_contains_midpoint and not best_contains_midpoint:
+                    best_turn = turn
+        if best_turn is None:
+            return None
+        return best_turn
+
+    @model_validator(mode="after")
+    def _validate_turn_order(self) -> Self:
+        """Ensure timelines are ordered and exclusive turns do not overlap."""
+        for name, turns in (
+            ("regular", self.turns),
+            ("exclusive", self.exclusive_turns),
+        ):
+            if turns != sorted(
+                turns, key=lambda turn: (turn.start, turn.end, turn.speaker)
+            ):
+                raise ValueError(f"{name.title()} speaker turns must be ordered.")
+        for previous, current in zip(
+            self.exclusive_turns, self.exclusive_turns[1:], strict=False
+        ):
+            if current.start < previous.end:
+                raise ValueError("Exclusive speaker turns must not overlap.")
+        return self

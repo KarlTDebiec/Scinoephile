@@ -10,8 +10,10 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common.file import open_atomic_text_file
-from scinoephile.common.validation import val_child_path, val_output_dir_path
+from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.paths import get_runtime_cache_root_path
+
+from .cache_namespace import LlmCacheNamespace
 
 __all__ = ["LlmCache"]
 
@@ -40,9 +42,8 @@ class LlmCache:
         """Root directory beneath which LLM responses are cached."""
         self.operation = operation
         """Stable LLM operation identifier."""
-        llm_cache_dir_path = self.cache_root_path / "llm"
-        self.cache_dir_path = val_output_dir_path(
-            val_child_path(llm_cache_dir_path, self.operation)
+        self.cache_dir_path = LlmCacheNamespace.OPERATION.get_dir_path(
+            self.cache_root_path, operation=self.operation
         )
         """Directory in which cached LLM responses are stored."""
 

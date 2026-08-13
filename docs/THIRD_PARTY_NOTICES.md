@@ -1,46 +1,13 @@
 # Third-Party Notices
 
-## pyannote speaker-diarization-3.0 (speaker diarization model)
+## pyannote speaker-diarization-community-1 (speaker diarization model)
 
-Scinoephile can download and run the `speaker-diarization-3.0` speaker diarization
-pipeline locally after the user accepts its Hugging Face access conditions. The
-model is not bundled with Scinoephile.
-
-- Model: https://huggingface.co/pyannote/speaker-diarization-3.0
-- Pinned revision:
-  https://huggingface.co/pyannote/speaker-diarization-3.0/tree/61bc5e801239695154ba03562a72e1d6254ed4e4
-- License: MIT
-- Project: https://github.com/pyannote/pyannote-audio
-
-The model license permits use, modification, and distribution, provided the
-copyright and permission notice are included in copies or substantial portions
-of the software. For the complete license terms, see:
-
-- https://huggingface.co/pyannote/speaker-diarization-3.0/blob/61bc5e801239695154ba03562a72e1d6254ed4e4/LICENSE
-
-## pyannote segmentation-3.0 (speaker segmentation model)
-
-The pinned diarization pipeline uses the `segmentation-3.0` model. Scinoephile
-pins its revision and does not bundle its files.
-
-- Model: https://huggingface.co/pyannote/segmentation-3.0
-- Pinned revision:
-  https://huggingface.co/pyannote/segmentation-3.0/tree/e66f3d3b9eb0873085418a7b813d3b369bf160bb
-- License: MIT
-- Project: https://github.com/pyannote/pyannote-audio
-
-For the complete license terms, see:
-
-- https://huggingface.co/pyannote/segmentation-3.0/blob/e66f3d3b9eb0873085418a7b813d3b369bf160bb/LICENSE
-
-## pyannote speaker-diarization-community-1 (PLDA assets)
-
-When Scinoephile runs `speaker-diarization-3.0` through pyannote.audio 4, it
-downloads the PLDA clustering assets from `speaker-diarization-community-1`.
-Scinoephile pins the asset revision and does not bundle the files. Users must
-separately accept the repository's Hugging Face access conditions.
+Scinoephile can download and run the `speaker-diarization-community-1` pipeline
+locally after the user accepts its Hugging Face access conditions. Scinoephile
+pins the model revision and does not bundle its files.
 
 - Model: https://huggingface.co/pyannote/speaker-diarization-community-1
+- Project: https://github.com/pyannote/pyannote-audio
 - Pinned revision:
   https://huggingface.co/pyannote/speaker-diarization-community-1/tree/3533c8cf8e369892e6b79ff1bf80f7b0286a54ee
 - License: Creative Commons Attribution 4.0 International (CC BY 4.0)
@@ -49,21 +16,6 @@ The model license permits sharing and adaptation with attribution. For the
 complete license terms, see:
 
 - https://creativecommons.org/licenses/by/4.0/legalcode
-
-## WeSpeaker VoxCeleb ResNet34-LM (speaker embedding model)
-
-The pinned `speaker-diarization-3.0` configuration uses the WeSpeaker
-VoxCeleb ResNet34-LM model to generate speaker embeddings. Scinoephile pins the
-model revision and does not bundle its files.
-
-- Model: https://huggingface.co/hbredin/wespeaker-voxceleb-resnet34-LM
-- Pinned revision:
-  https://huggingface.co/hbredin/wespeaker-voxceleb-resnet34-LM/tree/0ae88dcaf48cacdf741275d6d1a8101f45eee220
-- License: Apache License 2.0
-
-For the complete license terms, see:
-
-- https://huggingface.co/hbredin/wespeaker-voxceleb-resnet34-LM/blob/0ae88dcaf48cacdf741275d6d1a8101f45eee220/LICENCE.md
 
 ## jyut-dict (source inspiration and adapted logic)
 

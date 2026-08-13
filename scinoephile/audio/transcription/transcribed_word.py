@@ -20,19 +20,29 @@ class TranscribedWord(BaseModel):
     """End time of the word in seconds."""
     confidence: float = Field(..., description="Confidence of transcription.")
     """Transcription confidence."""
+    following_voice_activity_score: float | None = Field(
+        None,
+        ge=0,
+        le=1,
+        description=("Mean VAD model score between this word and the following word."),
+    )
+    """Mean VAD model score in the following inter-word gap, when available."""
     speaker: str | None = Field(
         None, description="Anonymous source-wide diarization speaker label."
     )
     """Anonymous source-wide diarization speaker label, when available."""
-    speaker_turn_end: float | None = Field(
-        None,
-        gt=0,
-        description="End of the assigned source-wide diarization turn in seconds.",
-    )
-    """End of the assigned source-wide diarization turn, when available."""
-    speaker_turn_start: float | None = Field(
+    voice_activity_coverage: float | None = Field(
         None,
         ge=0,
-        description="Start of the assigned source-wide diarization turn in seconds.",
+        le=1,
+        description="Fraction of the word duration meeting the VAD threshold.",
     )
-    """Start of the assigned source-wide diarization turn, when available."""
+    """Fraction of the word duration meeting the configured VAD threshold."""
+    voice_activity_peak: float | None = Field(
+        None, ge=0, le=1, description="Peak VAD model score during this word."
+    )
+    """Peak VAD model score during this word, when available."""
+    voice_activity_score: float | None = Field(
+        None, ge=0, le=1, description="Mean VAD model score during this word."
+    )
+    """Mean VAD model score during this word, when available."""

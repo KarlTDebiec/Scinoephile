@@ -22,7 +22,7 @@ def test_process_cli_uses_concise_language_help():
     }
 
     assert actions["language"].help == (
-        "subtitle language (detected from infile if omitted)"
+        "subtitle language (default: detected automatically)"
     )
 
 

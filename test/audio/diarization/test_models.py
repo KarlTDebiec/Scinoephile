@@ -42,8 +42,6 @@ def test_result_preserves_overlaps_and_assigns_exclusive_speakers():
         "SPEAKER_00",
         "SPEAKER_01",
     ]
-    assert [word.speaker_turn_start for word in assigned[0].words or []] == [0.0, 1.0]
-    assert [word.speaker_turn_end for word in assigned[0].words or []] == [1.0, 2.0]
     assert [word.speaker for word in segment.words or []] == [None, None]
 
 
@@ -65,8 +63,6 @@ def test_assignment_uses_source_timeline_offset():
     assigned = result.assign_speakers([segment], offset_seconds=10.0)
 
     assert (assigned[0].words or [])[0].speaker == "SPEAKER_07"
-    assert (assigned[0].words or [])[0].speaker_turn_start == 10.0
-    assert (assigned[0].words or [])[0].speaker_turn_end == 12.0
 
 
 def test_reconciliation_splits_safe_internal_speaker_transitions():

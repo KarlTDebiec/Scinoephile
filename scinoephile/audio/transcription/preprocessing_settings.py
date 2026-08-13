@@ -7,7 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import StrEnum
 
-__all__ = ["DemucsMode", "TranscriptionPreprocessingSettings", "VADMode"]
+__all__ = ["DemucsMode", "TranscriptionPreprocessingSettings", "VadMode"]
 
 
 class DemucsMode(StrEnum):
@@ -21,7 +21,7 @@ class DemucsMode(StrEnum):
     """Skip Demucs preprocessing."""
 
 
-class VADMode(StrEnum):
+class VadMode(StrEnum):
     """Voice activity detection modes for transcription."""
 
     AUTO = "auto"

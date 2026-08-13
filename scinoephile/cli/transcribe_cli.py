@@ -11,7 +11,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import DemucsMode, VADMode
+from scinoephile.audio.transcription import DemucsMode, VadMode
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
@@ -26,7 +26,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.lang.transcription import TranscriptionBackend
+from scinoephile.lang.transcription import TranscriptionModel
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.transcription import transcribe_series_guided
 
@@ -62,28 +62,25 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             '引导字幕输入文件，或使用 "-" 表示标准输入'
         ),
         "transcription language": "转写语言",
-        "guide language (detected from infile if omitted)": (
-            "引导字幕语言（省略时从输入文件检测）"
+        "guide language (default: detected automatically)": (
+            "引导字幕语言（默认：自动检测）"
         ),
         (
-            f"transcription backend (options: "
-            f"{enum_options_list_str(TranscriptionBackend)}; "
+            f"transcription model (options: "
+            f"{enum_options_list_str(TranscriptionModel)}; "
             "default: %(default)s)"
-        ): "转写后端（选项：whisper 或 mlx-audio；默认：%(default)s）",
+        ): (
+            "转写模型（选项：whisper、mimo、qwen3-asr、glm-asr、firered-asr2 "
+            "或 sensevoice；默认：%(default)s）"
+        ),
         (
             f"Demucs vocal-separation mode (options: "
             f"{enum_options_list_str(DemucsMode)}; default: %(default)s)"
         ): "Demucs 人声分离模式（选项：auto、on 或 off；默认：%(default)s）",
         (
             f"voice activity detection mode (options: "
-            f"{enum_options_list_str(VADMode)}; default: %(default)s)"
+            f"{enum_options_list_str(VadMode)}; default: %(default)s)"
         ): "语音活动检测模式（选项：auto、on 或 off；默认：%(default)s）",
-        "transcription model (default: backend default)": (
-            "转写模型（默认：后端默认值）"
-        ),
-        "guard constrained MLX-Audio models against generation-token omissions": (
-            "防止受限的 MLX-Audio 模型因生成词元限制而遗漏内容"
-        ),
         "JSON file containing delineation test cases": ("包含断句测试用例的 JSON 文件"),
         "JSON file containing punctuation test cases": ("包含标点测试用例的 JSON 文件"),
         "subtitle outfile path (default: stdout)": (
@@ -105,28 +102,25 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             '引導字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
         "transcription language": "轉寫語言",
-        "guide language (detected from infile if omitted)": (
-            "引導字幕語言（省略時從輸入檔偵測）"
+        "guide language (default: detected automatically)": (
+            "引導字幕語言（預設：自動偵測）"
         ),
         (
-            f"transcription backend (options: "
-            f"{enum_options_list_str(TranscriptionBackend)}; "
+            f"transcription model (options: "
+            f"{enum_options_list_str(TranscriptionModel)}; "
             "default: %(default)s)"
-        ): "轉寫後端（選項：whisper 或 mlx-audio；預設：%(default)s）",
+        ): (
+            "轉寫模型（選項：whisper、mimo、qwen3-asr、glm-asr、firered-asr2 "
+            "或 sensevoice；預設：%(default)s）"
+        ),
         (
             f"Demucs vocal-separation mode (options: "
             f"{enum_options_list_str(DemucsMode)}; default: %(default)s)"
         ): "Demucs 人聲分離模式（選項：auto、on 或 off；預設：%(default)s）",
         (
             f"voice activity detection mode (options: "
-            f"{enum_options_list_str(VADMode)}; default: %(default)s)"
+            f"{enum_options_list_str(VadMode)}; default: %(default)s)"
         ): "語音活動偵測模式（選項：auto、on 或 off；預設：%(default)s）",
-        "transcription model (default: backend default)": (
-            "轉寫模型（預設：後端預設值）"
-        ),
-        "guard constrained MLX-Audio models against generation-token omissions": (
-            "防止受限的 MLX-Audio 模型因生成詞元限制而遺漏內容"
-        ),
         "JSON file containing delineation test cases": ("包含斷句測試案例的 JSON 檔"),
         "JSON file containing punctuation test cases": ("包含標點測試案例的 JSON 檔"),
         "subtitle outfile path (default: stdout)": ("字幕輸出檔路徑（預設：標準輸出）"),
@@ -174,19 +168,19 @@ class TranscribeCli(ScinoephileCliBase):
             help="media infile used for transcription",
         )
         arg_groups["input arguments"].add_argument(
-            "--guide-infile",
-            dest="guide_infile_path",
-            required=True,
-            type=input_file_arg(allow_stdin=True),
-            help='guide subtitle infile, or "-" for stdin',
-        )
-        arg_groups["input arguments"].add_argument(
             "--stream-index",
             type=int_arg(min_value=0),
             help=(
                 "media stream index of audio stream in media input "
                 "(default: first audio stream)"
             ),
+        )
+        arg_groups["input arguments"].add_argument(
+            "--guide-infile",
+            dest="guide_infile_path",
+            required=True,
+            type=input_file_arg(allow_stdin=True),
+            help='guide subtitle infile, or "-" for stdin',
         )
 
         # Operation arguments
@@ -198,20 +192,13 @@ class TranscribeCli(ScinoephileCliBase):
             help="transcription language",
         )
         arg_groups["operation arguments"].add_argument(
-            "--guide-language",
-            metavar=enum_metavar(Language),
-            type=enum_arg(Language),
-            help="guide language (detected from infile if omitted)",
-        )
-        add_block_range_args(arg_groups["operation arguments"])
-        arg_groups["operation arguments"].add_argument(
-            "--backend",
-            default=TranscriptionBackend.WHISPER,
-            metavar=enum_metavar(TranscriptionBackend),
-            type=enum_arg(TranscriptionBackend),
+            "--model",
+            default=TranscriptionModel.WHISPER,
+            metavar=enum_metavar(TranscriptionModel),
+            type=enum_arg(TranscriptionModel),
             help=(
-                f"transcription backend (options: "
-                f"{enum_options_list_str(TranscriptionBackend)}; "
+                f"transcription model (options: "
+                f"{enum_options_list_str(TranscriptionModel)}; "
                 "default: %(default)s)"
             ),
         )
@@ -228,27 +215,24 @@ class TranscribeCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--vad",
-            default=VADMode.OFF,
+            default=VadMode.OFF,
             dest="vad_mode",
-            metavar=enum_metavar(VADMode),
-            type=enum_arg(VADMode),
+            metavar=enum_metavar(VadMode),
+            type=enum_arg(VadMode),
             help=(
                 f"voice activity detection mode (options: "
-                f"{enum_options_list_str(VADMode)}; default: %(default)s)"
+                f"{enum_options_list_str(VadMode)}; default: %(default)s)"
             ),
         )
         arg_groups["operation arguments"].add_argument(
-            "--model",
-            dest="model_name",
-            help="transcription model (default: backend default)",
+            "--guide-language",
+            metavar=enum_metavar(Language),
+            type=enum_arg(Language),
+            help="guide language (default: detected automatically)",
         )
-        arg_groups["operation arguments"].add_argument(
-            "--mlx-audio-token-limit-guard",
-            action="store_true",
-            help=(
-                "guard constrained MLX-Audio models against generation-token omissions"
-            ),
-        )
+        add_block_range_args(arg_groups["operation arguments"])
+
+        # LLM arguments
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
@@ -293,11 +277,9 @@ class TranscribeCli(ScinoephileCliBase):
         guide_language: Language | None,
         first_block: int | None,
         last_block: int | None,
-        backend: TranscriptionBackend,
+        model: TranscriptionModel,
         demucs_mode: DemucsMode,
-        vad_mode: VADMode,
-        model_name: str | None,
-        mlx_audio_token_limit_guard: bool,
+        vad_mode: VadMode,
         llm_args: LlmArguments,
         cache_args: CacheArguments,
         delineation_json_path: Path | None,
@@ -349,11 +331,9 @@ class TranscribeCli(ScinoephileCliBase):
                 guide,
                 language=language,
                 guide_language=guide_language,
-                model_name=model_name,
-                backend=backend,
+                model=model,
                 demucs_mode=demucs_mode,
                 vad_mode=vad_mode,
-                mlx_audio_token_limit_guard=mlx_audio_token_limit_guard,
                 cache_root_path=cache_args.root_path,
                 overwrite_cache=cache_args.overwrite,
                 provider=get_provider(

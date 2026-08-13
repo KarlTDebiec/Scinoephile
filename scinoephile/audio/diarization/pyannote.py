@@ -1,10 +1,10 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Local speaker diarization using pyannote speaker-diarization-3.0."""
+"""Local speaker diarization using pyannote Community-1."""
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterator, Mapping
+from collections.abc import Callable, Iterator
 from importlib.metadata import PackageNotFoundError, version
 from logging import getLogger
 from pathlib import Path
@@ -12,11 +12,10 @@ from typing import TYPE_CHECKING, cast
 
 import numpy as np
 
+from scinoephile.audio.samples import get_mono_pcm16_samples
 from scinoephile.core.dependencies.transcription import (
-    import_huggingface_hub,
     import_pyannote_audio,
     import_torch,
-    import_yaml,
 )
 
 from .cache import SpeakerDiarizationCache
@@ -34,24 +33,10 @@ if TYPE_CHECKING:
 
 logger = getLogger(__name__)
 
-_DEFAULT_MODEL_ID = "pyannote/speaker-diarization-3.0"
-"""Default speaker diarization pipeline selected for Scinoephile's data."""
-_DEFAULT_MODEL_REVISION = "61bc5e801239695154ba03562a72e1d6254ed4e4"
-"""Pinned Hugging Face revision of the default pipeline and model assets."""
-_EMBEDDING_MODEL_ID = "hbredin/wespeaker-voxceleb-resnet34-LM"
-"""Speaker embedding model referenced by the pinned 3.0 pipeline."""
-_EMBEDDING_MODEL_REVISION = "0ae88dcaf48cacdf741275d6d1a8101f45eee220"
-"""Pinned Hugging Face revision of the speaker embedding model."""
-_PIPELINE_CLASS_NAME = "pyannote.audio.pipelines.SpeakerDiarization"
-"""Pipeline implementation recorded in cache metadata."""
-_PLDA_MODEL_ID = "pyannote/speaker-diarization-community-1"
-"""Repository providing PLDA assets required by pyannote.audio 4."""
-_PLDA_MODEL_REVISION = "3533c8cf8e369892e6b79ff1bf80f7b0286a54ee"
-"""Pinned Hugging Face revision of the PLDA assets."""
-_SEGMENTATION_MODEL_ID = "pyannote/segmentation-3.0"
-"""Speaker segmentation model referenced by the pinned 3.0 pipeline."""
-_SEGMENTATION_MODEL_REVISION = "e66f3d3b9eb0873085418a7b813d3b369bf160bb"
-"""Pinned Hugging Face revision of the speaker segmentation model."""
+_DEFAULT_MODEL_ID = "pyannote/speaker-diarization-community-1"
+"""Default speaker diarization pipeline."""
+_DEFAULT_MODEL_REVISION = "3533c8cf8e369892e6b79ff1bf80f7b0286a54ee"
+"""Pinned Hugging Face revision of the default pipeline and its model assets."""
 _WAVEFORM_CHANNELS = 1
 """Channels supplied to pyannote inference."""
 _WAVEFORM_FRAME_RATE = 16_000
@@ -98,6 +83,12 @@ class PyannoteDiarizer:
             raise ValueError("Minimum speaker count must be positive.")
         if max_speakers is not None and max_speakers < 1:
             raise ValueError("Maximum speaker count must be positive.")
+        if num_speakers is not None and (
+            min_speakers is not None or max_speakers is not None
+        ):
+            raise ValueError(
+                "Exact speaker count cannot be combined with minimum or maximum count."
+            )
         if (
             min_speakers is not None
             and max_speakers is not None
@@ -134,7 +125,7 @@ class PyannoteDiarizer:
             SpeakerDiarizationDependencyError: if optional dependencies are missing
             SpeakerDiarizationInferenceError: if loading or inference fails
         """
-        metadata = self._get_cache_metadata()
+        metadata = self.cache_identity
         cached_result = self._cache.load(audio, metadata)
         if cached_result is not None:
             return cached_result
@@ -142,13 +133,8 @@ class PyannoteDiarizer:
         pipeline = self._get_pipeline()
         try:
             torch = import_torch()
-            inference_audio = (
-                audio.set_channels(_WAVEFORM_CHANNELS)
-                .set_frame_rate(_WAVEFORM_FRAME_RATE)
-                .set_sample_width(_WAVEFORM_SAMPLE_WIDTH)
-            )
-            samples = np.asarray(inference_audio.get_array_of_samples())
-            waveform = samples.reshape(-1, _WAVEFORM_CHANNELS).T.astype(np.float32)
+            samples = get_mono_pcm16_samples(audio, _WAVEFORM_FRAME_RATE)
+            waveform = samples.reshape(1, -1).astype(np.float32)
             waveform /= float(1 << (8 * _WAVEFORM_SAMPLE_WIDTH - 1))
             audio_input = {
                 "waveform": torch.from_numpy(waveform),
@@ -183,6 +169,87 @@ class PyannoteDiarizer:
         self._cache.save(audio, metadata, result)
         return result
 
+    @property
+    def cache_identity(self) -> dict[str, object]:
+        """Get the pipeline, runtime, and inference configuration identity.
+
+        Returns:
+            configuration identifying reusable diarization output
+        Raises:
+            SpeakerDiarizationDependencyError: if pyannote.audio is unavailable
+        """
+        try:
+            pyannote_audio_version = version("pyannote.audio")
+        except PackageNotFoundError as exc:
+            raise SpeakerDiarizationDependencyError(
+                "Speaker diarization requires pyannote.audio. Install Scinoephile "
+                "with the 'transcription' extra."
+            ) from exc
+        return {
+            "device": self.device,
+            "max_speakers": self.max_speakers,
+            "min_speakers": self.min_speakers,
+            "model": self.model_id,
+            "model_revision": self.model_revision,
+            "num_speakers": self.num_speakers,
+            "runtime": {
+                "distribution": "pyannote.audio",
+                "version": pyannote_audio_version,
+            },
+            "waveform_channels": _WAVEFORM_CHANNELS,
+            "waveform_frame_rate": _WAVEFORM_FRAME_RATE,
+            "waveform_sample_width": _WAVEFORM_SAMPLE_WIDTH,
+        }
+
+    def _get_pipeline(self) -> object:
+        """Lazily load and place the configured pyannote pipeline.
+
+        Returns:
+            configured pyannote pipeline
+        Raises:
+            SpeakerDiarizationAuthorizationError: if model access is not authorized
+            SpeakerDiarizationDependencyError: if optional dependencies are missing
+            SpeakerDiarizationInferenceError: if pipeline loading fails
+        """
+        if self._pipeline is not None:
+            return self._pipeline
+        try:
+            pyannote_audio = import_pyannote_audio()
+            pipeline_cls = getattr(pyannote_audio, "Pipeline")
+            from_pretrained = getattr(pipeline_cls, "from_pretrained")
+            pipeline = from_pretrained(self.model_id, revision=self.model_revision)
+            if pipeline is None:
+                raise SpeakerDiarizationAuthorizationError(
+                    f"Unable to load gated pyannote model {self.model_id!r}. Accept "
+                    "its Hugging Face conditions and configure a Hugging Face token."
+                )
+            torch = import_torch()
+            pipeline.to(torch.device(self.device))
+        except ImportError as exc:
+            raise SpeakerDiarizationDependencyError(
+                "Speaker diarization requires pyannote.audio. Install Scinoephile "
+                "with the 'transcription' extra."
+            ) from exc
+        except SpeakerDiarizationAuthorizationError:
+            raise
+        except Exception as exc:
+            exception_name = type(exc).__name__
+            message = str(exc).casefold()
+            if exception_name in {
+                "GatedRepoError",
+                "RepositoryNotFoundError",
+                "UnauthorizedError",
+            } or any(token in message for token in ("401", "403", "gated repo")):
+                raise SpeakerDiarizationAuthorizationError(
+                    f"Hugging Face has not authorized pyannote model "
+                    f"{self.model_id!r}. Accept its conditions and configure a token."
+                ) from exc
+            raise SpeakerDiarizationInferenceError(
+                f"Unable to load pyannote speaker diarization: {exc}"
+            ) from exc
+        self._pipeline = pipeline
+        return pipeline
+
     @staticmethod
     def _convert_annotation(annotation: object, name: str) -> list[SpeakerTurn]:
         """Convert one pyannote Annotation into typed source-timeline turns.
@@ -212,139 +279,8 @@ class PyannoteDiarizer:
                 )
                 for segment, _, speaker in raw_turns
             ]
-        except (TypeError, ValueError) as exc:
+        except (AttributeError, TypeError, ValueError) as exc:
             raise SpeakerDiarizationInferenceError(
                 f"pyannote returned malformed {name} speaker diarization: {exc}"
             ) from exc
         return sorted(turns, key=lambda turn: (turn.start, turn.end, turn.speaker))
-
-    def _get_cache_metadata(self) -> Mapping[str, object]:
-        """Get exact pipeline identity and result-affecting parameters."""
-        try:
-            pyannote_audio_version = version("pyannote.audio")
-        except PackageNotFoundError as exc:
-            raise SpeakerDiarizationDependencyError(
-                "Speaker diarization requires pyannote.audio. Install Scinoephile "
-                "with the 'transcription' extra."
-            ) from exc
-        metadata = {
-            "device": self.device,
-            "max_speakers": self.max_speakers,
-            "min_speakers": self.min_speakers,
-            "model_id": self.model_id,
-            "model_revision": self.model_revision,
-            "num_speakers": self.num_speakers,
-            "pipeline_class": _PIPELINE_CLASS_NAME,
-            "pyannote_audio_version": pyannote_audio_version,
-            "waveform_channels": _WAVEFORM_CHANNELS,
-            "waveform_frame_rate": _WAVEFORM_FRAME_RATE,
-            "waveform_sample_width": _WAVEFORM_SAMPLE_WIDTH,
-        }
-        if self.model_id == _DEFAULT_MODEL_ID:
-            metadata.update(
-                {
-                    "embedding_model_id": _EMBEDDING_MODEL_ID,
-                    "embedding_model_revision": _EMBEDDING_MODEL_REVISION,
-                    "plda_model_id": _PLDA_MODEL_ID,
-                    "plda_model_revision": _PLDA_MODEL_REVISION,
-                    "segmentation_model_id": _SEGMENTATION_MODEL_ID,
-                    "segmentation_model_revision": _SEGMENTATION_MODEL_REVISION,
-                }
-            )
-        return metadata
-
-    def _get_pipeline(self) -> object:
-        """Lazily load and place the configured pyannote pipeline."""
-        if self._pipeline is not None:
-            return self._pipeline
-        try:
-            pyannote_audio = import_pyannote_audio()
-            pipeline_cls = getattr(pyannote_audio, "Pipeline")
-            from_pretrained = getattr(pipeline_cls, "from_pretrained")
-            if self.model_id == _DEFAULT_MODEL_ID:
-                pipeline = from_pretrained(self._load_pinned_pipeline_config())
-            else:
-                pipeline = from_pretrained(self.model_id, revision=self.model_revision)
-            if pipeline is None:
-                raise SpeakerDiarizationAuthorizationError(
-                    "Unable to load the gated pyannote diarization assets. Accept "
-                    "the Hugging Face conditions for speaker-diarization-3.0, "
-                    "segmentation-3.0, and speaker-diarization-community-1, then "
-                    "configure a Hugging Face token."
-                )
-            torch = import_torch()
-            pipeline.to(torch.device(self.device))
-        except ImportError as exc:
-            raise SpeakerDiarizationDependencyError(
-                "Speaker diarization requires pyannote.audio. Install Scinoephile "
-                "with the 'transcription' extra."
-            ) from exc
-        except SpeakerDiarizationAuthorizationError:
-            raise
-        except Exception as exc:
-            exception_name = type(exc).__name__
-            message = str(exc).casefold()
-            if exception_name in {
-                "GatedRepoError",
-                "RepositoryNotFoundError",
-                "UnauthorizedError",
-            } or any(token in message for token in ("401", "403", "gated repo")):
-                raise SpeakerDiarizationAuthorizationError(
-                    "Hugging Face has not authorized all required pyannote assets. "
-                    "Accept the conditions for speaker-diarization-3.0, "
-                    "segmentation-3.0, and speaker-diarization-community-1, then "
-                    "configure a Hugging Face token."
-                ) from exc
-            raise SpeakerDiarizationInferenceError(
-                f"Unable to load pyannote speaker diarization: {exc}"
-            ) from exc
-        self._pipeline = pipeline
-        return pipeline
-
-    def _load_pinned_pipeline_config(self) -> dict[str, object]:
-        """Load the exact pipeline config and pin all transitive model assets.
-
-        Returns:
-            mutable pyannote pipeline configuration
-        Raises:
-            ValueError: if the downloaded pipeline configuration is malformed
-        """
-        huggingface_hub = import_huggingface_hub()
-        hf_hub_download = cast(
-            Callable[..., str], getattr(huggingface_hub, "hf_hub_download")
-        )
-        config_path = Path(
-            hf_hub_download(self.model_id, "config.yaml", revision=self.model_revision)
-        )
-        yaml = import_yaml()
-        safe_load = cast(Callable[[object], object], getattr(yaml, "safe_load"))
-        with config_path.open(encoding="utf-8") as file_handle:
-            config = safe_load(file_handle)
-        if not isinstance(config, dict):
-            raise ValueError("pyannote returned a malformed pipeline configuration.")
-        typed_config = cast(dict[str, object], config)
-        pipeline_config = typed_config.get("pipeline")
-        if not isinstance(pipeline_config, dict):
-            raise ValueError("pyannote returned a malformed pipeline configuration.")
-        typed_pipeline_config = cast(dict[str, object], pipeline_config)
-        pipeline_params = typed_pipeline_config.get("params")
-        if not isinstance(pipeline_params, dict):
-            raise ValueError("pyannote returned a malformed pipeline configuration.")
-        typed_pipeline_params = cast(dict[str, object], pipeline_params)
-
-        embedding_path = hf_hub_download(
-            _EMBEDDING_MODEL_ID,
-            "speaker-embedding.onnx",
-            revision=_EMBEDDING_MODEL_REVISION,
-        )
-        typed_pipeline_params["embedding"] = embedding_path
-        typed_pipeline_params["plda"] = {
-            "checkpoint": _PLDA_MODEL_ID,
-            "revision": _PLDA_MODEL_REVISION,
-            "subfolder": "plda",
-        }
-        typed_pipeline_params["segmentation"] = {
-            "checkpoint": _SEGMENTATION_MODEL_ID,
-            "revision": _SEGMENTATION_MODEL_REVISION,
-        }
-        return typed_config

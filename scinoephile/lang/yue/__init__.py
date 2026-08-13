@@ -3,6 +3,6 @@
 """Code related to Cantonese (yue) text.
 
 Package hierarchy (modules may import from any above):
-* conversion / prompts / romanization
-* ocr_fusion / review
+* character_features / conversion / prompts / romanization
+* ocr_fusion / review / transcription
 """

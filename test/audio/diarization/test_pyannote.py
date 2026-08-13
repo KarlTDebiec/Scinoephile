@@ -4,10 +4,11 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import Mock, call
+from unittest.mock import Mock
 
 from pydub import AudioSegment
 from pytest import MonkeyPatch, raises
@@ -39,11 +40,15 @@ class _FakeAnnotation:
         """
         self.turns = turns
 
-    def itertracks(self, *, yield_label: bool):
+    def itertracks(
+        self, *, yield_label: bool
+    ) -> Iterator[tuple[_FakeSegment, None, str]]:
         """Iterate turns in pyannote's track shape.
 
         Arguments:
             yield_label: whether to include speaker labels
+        Yields:
+            segment, track, and speaker tuples
         """
         assert yield_label
         for start, end, speaker in self.turns:
@@ -94,12 +99,24 @@ class _FakeTorch:
 
     @staticmethod
     def device(name: str) -> str:
-        """Return a device identifier."""
+        """Return a device identifier.
+
+        Arguments:
+            name: requested device name
+        Returns:
+            requested device name
+        """
         return name
 
     @staticmethod
     def from_numpy(value: object) -> object:
-        """Return a waveform array unchanged."""
+        """Return a waveform array unchanged.
+
+        Arguments:
+            value: NumPy waveform array
+        Returns:
+            supplied waveform array
+        """
         return value
 
 
@@ -115,32 +132,12 @@ def test_diarizer_converts_turns_and_reuses_whole_audio_cache(
     pipeline = _FakePipeline()
     from_pretrained = Mock(return_value=pipeline)
     pipeline_cls = SimpleNamespace(from_pretrained=from_pretrained)
-    embedding_path = "/cache/hbredin--wespeaker/speaker-embedding.onnx"
-    hf_hub_download = Mock(side_effect=[tmp_path / "config.yaml", embedding_path])
-    safe_load = Mock(
-        return_value={
-            "pipeline": {
-                "name": "pyannote.audio.pipelines.SpeakerDiarization",
-                "params": {},
-            },
-            "version": "3.0.0",
-        }
-    )
-    (tmp_path / "config.yaml").write_text("pipeline: {}", encoding="utf-8")
-    monkeypatch.setattr(
-        "scinoephile.audio.diarization.pyannote.import_huggingface_hub",
-        lambda: SimpleNamespace(hf_hub_download=hf_hub_download),
-    )
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.import_pyannote_audio",
         lambda: SimpleNamespace(Pipeline=pipeline_cls),
     )
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.import_torch", lambda: _FakeTorch
-    )
-    monkeypatch.setattr(
-        "scinoephile.audio.diarization.pyannote.import_yaml",
-        lambda: SimpleNamespace(safe_load=safe_load),
     )
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.version", lambda name: "4.0.7"
@@ -154,32 +151,10 @@ def test_diarizer_converts_turns_and_reuses_whole_audio_cache(
     second = diarizer(audio)
 
     assert first == second
-    assert hf_hub_download.call_args_list == [
-        call(
-            "pyannote/speaker-diarization-3.0",
-            "config.yaml",
-            revision="61bc5e801239695154ba03562a72e1d6254ed4e4",
-        ),
-        call(
-            "hbredin/wespeaker-voxceleb-resnet34-LM",
-            "speaker-embedding.onnx",
-            revision="0ae88dcaf48cacdf741275d6d1a8101f45eee220",
-        ),
-    ]
-    from_pretrained.assert_called_once()
-    pipeline_config = from_pretrained.call_args.args[0]
-    assert pipeline_config["pipeline"]["params"] == {
-        "embedding": embedding_path,
-        "plda": {
-            "checkpoint": "pyannote/speaker-diarization-community-1",
-            "revision": "3533c8cf8e369892e6b79ff1bf80f7b0286a54ee",
-            "subfolder": "plda",
-        },
-        "segmentation": {
-            "checkpoint": "pyannote/segmentation-3.0",
-            "revision": "e66f3d3b9eb0873085418a7b813d3b369bf160bb",
-        },
-    }
+    from_pretrained.assert_called_once_with(
+        "pyannote/speaker-diarization-community-1",
+        revision="3533c8cf8e369892e6b79ff1bf80f7b0286a54ee",
+    )
     assert pipeline.call_count == 1
     assert pipeline.device == "cpu"
     assert pipeline.kwargs == {"num_speakers": 2}
@@ -189,15 +164,8 @@ def test_diarizer_converts_turns_and_reuses_whole_audio_cache(
         "SPEAKER_00",
         "SPEAKER_01",
     ]
-    metadata = diarizer._get_cache_metadata()  # noqa: SLF001
-    assert metadata["embedding_model_revision"] == (
-        "0ae88dcaf48cacdf741275d6d1a8101f45eee220"
-    )
-    assert metadata["plda_model_revision"] == (
+    assert diarizer.cache_identity["model_revision"] == (
         "3533c8cf8e369892e6b79ff1bf80f7b0286a54ee"
-    )
-    assert metadata["segmentation_model_revision"] == (
-        "e66f3d3b9eb0873085418a7b813d3b369bf160bb"
     )
 
 
@@ -218,15 +186,23 @@ def test_cache_identity_separates_exact_model_revisions(
     second = PyannoteDiarizer(tmp_path, device="cpu", model_revision="revision-b")
 
     first_path = first._cache.get_path(  # noqa: SLF001
-        audio,
-        first._get_cache_metadata(),  # noqa: SLF001
+        audio, first.cache_identity
     )
     second_path = second._cache.get_path(  # noqa: SLF001
-        audio,
-        second._get_cache_metadata(),  # noqa: SLF001
+        audio, second.cache_identity
     )
 
     assert first_path != second_path
+
+
+def test_diarizer_rejects_exact_and_bounded_speaker_counts(tmp_path: Path):
+    """An exact speaker count should not be combined with count bounds.
+
+    Arguments:
+        tmp_path: temporary cache root path
+    """
+    with raises(ValueError, match="cannot be combined"):
+        PyannoteDiarizer(tmp_path, num_speakers=2, min_speakers=1)
 
 
 def test_diarizer_reports_gated_model_authorization(
@@ -238,16 +214,13 @@ def test_diarizer_reports_gated_model_authorization(
         tmp_path: temporary cache root path
         monkeypatch: pytest monkeypatch fixture
     """
-    pipeline_cls = SimpleNamespace(from_pretrained=lambda config: None)
+    pipeline_cls = SimpleNamespace(from_pretrained=Mock(return_value=None))
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.import_pyannote_audio",
         lambda: SimpleNamespace(Pipeline=pipeline_cls),
     )
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.version", lambda name: "4.0.7"
-    )
-    monkeypatch.setattr(
-        PyannoteDiarizer, "_load_pinned_pipeline_config", lambda self: {}
     )
     diarizer = PyannoteDiarizer(tmp_path, device="cpu")
 

@@ -701,7 +701,7 @@ def test_queryer_cache_stores_only_answer_and_preserves_current_metadata(tmp_pat
 
     first = queryer(_TestCase(query=_Query(text="input")))
 
-    cache_paths = list((tmp_path / "llm" / "test").glob("*.json"))
+    cache_paths = list((tmp_path / "llms" / "test").glob("*.json"))
     assert len(cache_paths) == 1
     assert json.loads(cache_paths[0].read_text(encoding="utf-8")) == {
         "output": "cached"
@@ -724,6 +724,39 @@ def test_queryer_cache_stores_only_answer_and_preserves_current_metadata(tmp_pat
     assert len(provider.calls) == 1
 
 
+def test_queryer_public_cache_lifecycle_normalizes_and_reuses_answer(tmp_path: Path):
+    """Test public cache lookup and storage methods share normalized state.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    provider = _RecordingProvider()
+    queryer = Queryer(_TestCase, provider=provider, cache_root_path=tmp_path)
+    input_test_case = _CompatibleTestCase(
+        query=_Query(text="input"), answer=_Answer(output="stored")
+    )
+
+    stored = queryer.store_answered_test_case(input_test_case)
+
+    assert type(stored) is _TestCase
+    assert stored is queryer.encountered_test_cases[stored.query.key]
+    assert not provider.calls
+
+    fresh_provider = _RecordingProvider('{"output":"provider"}')
+    fresh_queryer = Queryer(
+        _TestCase, provider=fresh_provider, cache_root_path=tmp_path
+    )
+    loaded = fresh_queryer.get_known_test_case(
+        _CompatibleTestCase(query=_Query(text="input"))
+    )
+
+    assert loaded is not None
+    assert type(loaded) is _TestCase
+    assert loaded.answer == _Answer(output="stored")
+    assert loaded is fresh_queryer.encountered_test_cases[loaded.query.key]
+    assert not fresh_provider.calls
+
+
 def test_queryer_overwrites_matching_cache(tmp_path):
     """Test cache overwrite queries the provider and replaces the cached answer."""
     cached_provider = _RecordingProvider('{"output":"cached"}')
@@ -741,7 +774,7 @@ def test_queryer_overwrites_matching_cache(tmp_path):
         overwrite_cache=True,
     )(test_case)
 
-    cache_paths = list((tmp_path / "llm" / "test").glob("*.json"))
+    cache_paths = list((tmp_path / "llms" / "test").glob("*.json"))
     assert result.answer == _Answer(output="fresh")
     assert len(fresh_provider.calls) == 1
     assert len(cache_paths) == 1

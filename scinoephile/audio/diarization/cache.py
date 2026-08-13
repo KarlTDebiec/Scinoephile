@@ -11,6 +11,7 @@ from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.paths import get_runtime_cache_root_path
@@ -42,8 +43,8 @@ class SpeakerDiarizationCache:
             cache_root_path = get_runtime_cache_root_path()
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which diarization is cached."""
-        self.cache_dir_path = val_output_dir_path(
-            self.cache_root_path / "audio" / "diarization"
+        self.cache_dir_path = AudioCacheNamespace.DIARIZATION.get_dir_path(
+            self.cache_root_path
         )
         """Directory in which source-wide diarization results are cached."""
         self.overwrite = overwrite
