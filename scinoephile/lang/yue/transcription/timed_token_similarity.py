@@ -15,7 +15,7 @@ __all__ = ["YueTimedTokenSimilarity"]
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class YueTimedTokenSimilarity:
-    """Protein-matrix-style score for timed Yue character substitutions."""
+    """Score timed Yue character substitutions by text and proximity."""
 
     exact_score: float = 6.0
     """Lexical score for identical characters."""

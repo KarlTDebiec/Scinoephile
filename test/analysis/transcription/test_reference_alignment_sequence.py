@@ -4,13 +4,18 @@
 
 from __future__ import annotations
 
-from scinoephile.analysis.transcription.sequence import get_reference_sequence
+from scinoephile.analysis.transcription.alignment_sequence import get_reference_sequence
 from scinoephile.core.subtitles import Series, Subtitle
 
 
 def test_get_reference_sequence_applies_source_offset():
     """Test subtitle reference characters receive alignment-local timings."""
-    reference = Series(events=[Subtitle(start=10_000, end=12_000, text="这是！")])
+    reference = Series(
+        events=[
+            Subtitle(start=8_000, end=9_000, text="之前"),
+            Subtitle(start=10_000, end=12_000, text="这是！"),
+        ]
+    )
 
     sequence = get_reference_sequence("reference", reference, offset_seconds=10.0)
 

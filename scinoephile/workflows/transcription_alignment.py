@@ -6,14 +6,12 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from collections.abc import Sequence as AbcSequence
+from math import isfinite
 
 from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
 from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
 from scinoephile.analysis.alignment.timed_msa.models import Column
 from scinoephile.analysis.transcription.artifact import (
-    GAP_CHARACTER,
-    PAUSE_CHARACTER,
-    SPEECH_CHARACTER,
     AlignmentBlock,
     AlignmentColumn,
     AlignmentRow,
@@ -30,6 +28,7 @@ from scinoephile.audio.transcription.alignment_sequence import (
     get_transcription_sequence,
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
+from scinoephile.audio.vad.speech_block import SpeechBlock
 from scinoephile.audio.vad.trace import VoiceActivityTrace
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 
@@ -44,11 +43,7 @@ def build_transcription_alignment_block(
     merged_segments: AbcSequence[TranscribedSegment],
     aligner: Aligner,
     *,
-    block_index: int,
-    buffered_end_ms: int,
-    buffered_start_ms: int,
-    core_end_ms: int,
-    core_start_ms: int,
+    speech_block: SpeechBlock,
     audio_events: AudioEventDetectionResult | None = None,
     diarization: SpeakerDiarizationResult | None = None,
     first_subtitle_index: int = 1,
@@ -69,11 +64,7 @@ def build_transcription_alignment_block(
         alignment: lexical multi-ASR alignment using block-local times
         merged_segments: core-owned merged segments using complete-source times
         aligner: aligner used to project the merged row onto the ASR profile
-        block_index: one-based index in the complete VAD block plan
-        buffered_end_ms: exclusive end of the ASR input interval
-        buffered_start_ms: inclusive start of the ASR input interval
-        core_end_ms: exclusive end of the block-owned interval
-        core_start_ms: inclusive start of the block-owned interval
+        speech_block: VAD-derived core and buffered source intervals
         audio_events: optional complete-source FireRed audio-event timeline
         diarization: optional complete-source speaker diarization
         first_subtitle_index: one-based global index for the first merged subtitle
@@ -93,15 +84,16 @@ def build_transcription_alignment_block(
     if any(column.is_pause or column.is_marker for column in alignment.columns):
         raise ValueError("Portable block construction requires lexical alignment.")
 
-    offset_seconds = buffered_start_ms / 1000
+    offset_seconds = speech_block.buffered_start_ms / 1000
+    merged_name = "merged"
+    while merged_name in alignment.source_names:
+        merged_name = f"_{merged_name}"
     merged_sequence = get_transcription_sequence(
-        "merged", merged_segments, offset_seconds=offset_seconds
+        merged_name, merged_segments, offset_seconds=offset_seconds
     )
     augmented = aligner.add_sequence(alignment, merged_sequence)
     augmented = augmented.with_pauses(
-        minimum_pause_seconds=0.25,
         pause_intervals_seconds=pause_intervals_seconds,
-        pause_unit_seconds=0.25,
         source_names=alignment.source_names,
     )
     rendered_rows = tuple(
@@ -141,20 +133,22 @@ def build_transcription_alignment_block(
                 kind=column_kind,
             )
         )
+    resolved_timing_sources = timing_sources or {}
     subtitles = tuple(
         _get_transcription_subtitle(
             segment,
             first_subtitle_index + segment_idx,
-            (timing_sources or {}).get(segment.id, "source"),
+            resolved_timing_sources.get(segment.id, "source"),
+            speaker_symbols,
         )
         for segment_idx, segment in enumerate(merged_segments)
     )
     return AlignmentBlock(
-        index=block_index,
-        core_start_ms=core_start_ms,
-        core_end_ms=core_end_ms,
-        buffered_start_ms=buffered_start_ms,
-        buffered_end_ms=buffered_end_ms,
+        index=speech_block.index + 1,
+        core_start_ms=speech_block.start_ms,
+        core_end_ms=speech_block.end_ms,
+        buffered_start_ms=speech_block.buffered_start_ms,
+        buffered_end_ms=speech_block.buffered_end_ms,
         columns=tuple(columns),
         rows=rendered_rows[:-1],
         speaker=speaker,
@@ -190,12 +184,10 @@ def _get_annotation_cell(
         source_offset_seconds: source time corresponding to alignment-local zero
         voice_activity_trace: optional complete-source VAD score trace
     Returns:
-        speaker, speech, pause, marker, or gap display character
+        speaker, speech, pause, or gap display character
     """
-    if column.is_marker:
-        return _get_column_marker(column)
     if column.is_pause:
-        return PAUSE_CHARACTER
+        return "・"
     start_seconds = column.start_seconds
     end_seconds = column.end_seconds
     if diarization is not None:
@@ -209,23 +201,8 @@ def _get_annotation_cell(
             start_seconds + source_offset_seconds, end_seconds + source_offset_seconds
         )
         if score is not None and score >= _VAD_SPEECH_THRESHOLD:
-            return SPEECH_CHARACTER
-    return GAP_CHARACTER
-
-
-def _get_column_marker(column: Column) -> str:
-    """Get one validated alignment marker character.
-
-    Arguments:
-        column: alignment column expected to contain a marker
-    Returns:
-        alignment marker character
-    Raises:
-        ValueError: if the column does not contain a marker
-    """
-    if column.marker is None:
-        raise ValueError("Alignment column does not contain a marker.")
-    return column.marker
+            return "＊"
+    return "　"
 
 
 def _get_event_row(
@@ -250,10 +227,8 @@ def _get_event_row(
         return None
     cells = []
     for column in columns:
-        if column.is_marker:
-            cells.append(_get_column_marker(column))
-        elif column.is_pause:
-            cells.append(PAUSE_CHARACTER)
+        if column.is_pause:
+            cells.append("・")
         elif audio_events.has_event(
             event,
             column.start_seconds + offset_seconds,
@@ -261,7 +236,7 @@ def _get_event_row(
         ):
             cells.append(marker)
         else:
-            cells.append(GAP_CHARACTER)
+            cells.append("　")
     return "".join(cells)
 
 
@@ -279,17 +254,15 @@ def _get_language_cell(
         offset_seconds: source time corresponding to alignment-local zero
         language_symbols: language labels mapped to display characters
     Returns:
-        language, pause, marker, or gap display character
+        language, pause, or gap display character
     """
-    if column.is_marker:
-        return _get_column_marker(column)
     if column.is_pause:
-        return PAUSE_CHARACTER
+        return "・"
     language = language_identification.get_language(
         column.start_seconds + offset_seconds, column.end_seconds + offset_seconds
     )
     if language is None:
-        return GAP_CHARACTER
+        return "　"
     return language_symbols[language]
 
 
@@ -353,12 +326,10 @@ def _get_row_text(
 
     cells = []
     for column, token in zip(columns, tokens, strict=True):
-        if column.is_marker:
-            cells.append(_get_column_marker(column))
-        elif column.is_pause:
-            cells.append(PAUSE_CHARACTER)
+        if column.is_pause:
+            cells.append("・")
         elif token is None:
-            cells.append(GAP_CHARACTER)
+            cells.append("　")
         elif converted_characters is not None:
             cells.append(next(converted_characters))
         elif traditionalize:
@@ -389,15 +360,17 @@ def _get_speaker_symbols(
         if turn.speaker in symbols:
             continue
         speaker_idx = len(symbols)
-        if speaker_idx < 26:
-            symbols[turn.speaker] = chr(ord("Ａ") + speaker_idx)
-        else:
-            symbols[turn.speaker] = SPEECH_CHARACTER
+        if speaker_idx >= 26:
+            raise ValueError("Alignment artifacts support at most 26 speakers.")
+        symbols[turn.speaker] = chr(ord("Ａ") + speaker_idx)
     return symbols
 
 
 def _get_transcription_subtitle(
-    segment: TranscribedSegment, index: int, timing_source: TimingSource
+    segment: TranscribedSegment,
+    index: int,
+    timing_source: TimingSource,
+    speaker_symbols: Mapping[str, str],
 ) -> AlignmentSubtitle:
     """Convert one final segment into a portable subtitle record.
 
@@ -405,19 +378,38 @@ def _get_transcription_subtitle(
         segment: final segment with display timing and optional CTC words
         index: one-based global subtitle index
         timing_source: origin of the segment's speech interval
+        speaker_symbols: diarization labels mapped to artifact speaker symbols
     Returns:
         portable subtitle retaining separate speech and display intervals
     """
+    if not isfinite(segment.start) or not isfinite(segment.end):
+        raise ValueError("Merged subtitle display timing must be finite.")
+    if segment.start < 0.0 or segment.end <= segment.start:
+        raise ValueError("Merged subtitle display timing must be positive.")
+
     speech_start_seconds = segment.start
     speech_end_seconds = segment.end
     speakers = set()
     if segment.words:
+        previous_start_seconds = -1.0
+        for word in segment.words:
+            if not isfinite(word.start) or not isfinite(word.end):
+                raise ValueError("Merged subtitle word timing must be finite.")
+            if word.start < 0.0 or word.end <= word.start:
+                raise ValueError("Merged subtitle word timing must be positive.")
+            if word.start < previous_start_seconds:
+                raise ValueError(
+                    "Merged subtitle words must be chronologically ordered."
+                )
+            previous_start_seconds = word.start
         speech_start_seconds = segment.words[0].start
         speech_end_seconds = segment.words[-1].end
         speakers = {word.speaker for word in segment.words if word.speaker is not None}
     speaker = None
     if len(speakers) == 1:
-        speaker = next(iter(speakers))
+        speaker = speaker_symbols.get(next(iter(speakers)))
+
+    # Preserve positive durations that collapse during millisecond rounding
     start_ms = round(segment.start * 1000)
     end_ms = max(start_ms + 1, round(segment.end * 1000))
     speech_start_ms = round(speech_start_seconds * 1000)

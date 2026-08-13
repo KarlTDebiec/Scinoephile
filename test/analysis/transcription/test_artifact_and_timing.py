@@ -92,7 +92,10 @@ def test_artifact_round_trip_preserves_canonical_schema(tmp_path: Path):
     loaded = AlignmentArtifact.load(artifact_path)
 
     assert loaded == artifact
-    assert loaded.version == 3
+    assert loaded.version == 4
+    assert {"gap_character", "pause_character", "speech_character"}.isdisjoint(
+        loaded.model_dump()
+    )
     assert loaded.get_series()[0].text == "係呀"
     assert loaded.blocks[0].subtitles[0].timing_source == "source"
 
@@ -239,7 +242,7 @@ def _get_artifact() -> AlignmentArtifact:
                         timing_source="source",
                         start_ms=900,
                         end_ms=2200,
-                        speaker="SPEAKER_00",
+                        speaker="Ａ",
                     ),
                 ),
             ),

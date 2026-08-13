@@ -4,8 +4,9 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence as AbcSequence
+from collections.abc import Iterable
 from dataclasses import dataclass
+from math import isfinite
 from statistics import median
 
 from scinoephile.core.text import is_lexical_character
@@ -32,6 +33,8 @@ class Token:
         """
         if len(self.text) != 1:
             raise ValueError("Timed alignment tokens must contain one character.")
+        if not isfinite(self.start_seconds) or not isfinite(self.end_seconds):
+            raise ValueError("Timed alignment token timing must be finite.")
         if self.start_seconds < 0.0:
             raise ValueError("Timed alignment token start must be non-negative.")
         if self.end_seconds < self.start_seconds:
@@ -65,7 +68,7 @@ class Sequence:
 
     @classmethod
     def from_timed_texts(
-        cls, name: str, timed_texts: AbcSequence[tuple[str, float, float]]
+        cls, name: str, timed_texts: Iterable[tuple[str, float, float]]
     ) -> Sequence:
         """Create a sequence by uniformly timing lexical characters.
 
@@ -78,15 +81,23 @@ class Sequence:
             timed_texts: text units paired with start and end times
         Returns:
             named sequence of timestamped lexical characters
+        Raises:
+            ValueError: if a text interval is nonfinite, negative, or reversed
         """
         tokens = []
         for text, start_seconds, end_seconds in timed_texts:
+            if not isfinite(start_seconds) or not isfinite(end_seconds):
+                raise ValueError("Timed alignment text timing must be finite.")
+            if start_seconds < 0.0:
+                raise ValueError("Timed alignment text start must be non-negative.")
+            if end_seconds < start_seconds:
+                raise ValueError("Timed alignment text end must not precede its start.")
             characters = [
                 character for character in text if is_lexical_character(character)
             ]
             if not characters:
                 continue
-            duration_seconds = max(0.0, end_seconds - start_seconds)
+            duration_seconds = end_seconds - start_seconds
             step_seconds = duration_seconds / len(characters)
             for character_idx, character in enumerate(characters):
                 character_start = start_seconds + character_idx * step_seconds
@@ -131,6 +142,8 @@ class Column:
             raise ValueError("Shared alignment gaps require a timed annotation.")
         if self.pause_interval_seconds is not None:
             start_seconds, end_seconds = self.pause_interval_seconds
+            if not isfinite(start_seconds) or not isfinite(end_seconds):
+                raise ValueError("Timed alignment pause timing must be finite.")
             if start_seconds < 0.0:
                 raise ValueError("Timed alignment pause start must be non-negative.")
             if end_seconds <= start_seconds:
@@ -140,8 +153,14 @@ class Column:
         if self.marker is not None:
             if len(self.marker) != 1:
                 raise ValueError("Alignment markers must contain one character.")
-            if self.marker_time_seconds is None or self.marker_time_seconds < 0.0:
-                raise ValueError("Alignment markers require non-negative timing.")
+            if (
+                self.marker_time_seconds is None
+                or not isfinite(self.marker_time_seconds)
+                or self.marker_time_seconds < 0.0
+            ):
+                raise ValueError(
+                    "Alignment markers require finite non-negative timing."
+                )
 
     @property
     def end_seconds(self) -> float:

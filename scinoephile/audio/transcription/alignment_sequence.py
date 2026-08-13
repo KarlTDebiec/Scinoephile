@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence as AbcSequence
+from math import isfinite
 
 from scinoephile.analysis.alignment.timed_msa.models import Sequence
 
@@ -25,10 +26,12 @@ def get_transcription_sequence(
     Returns:
         named sequence of timestamped lexical characters
     Raises:
-        ValueError: if the source offset is negative or exceeds segment timings
+        ValueError: if timing is invalid or the offset exceeds segment timings
     """
-    if offset_seconds < 0.0:
-        raise ValueError("Transcription alignment offset must be non-negative.")
+    if not isfinite(offset_seconds) or offset_seconds < 0.0:
+        raise ValueError(
+            "Transcription alignment offset must be finite and non-negative."
+        )
     timed_texts = []
     for segment in segments:
         if segment.words:

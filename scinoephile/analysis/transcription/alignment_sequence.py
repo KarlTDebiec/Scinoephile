@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from math import isfinite
+
 from scinoephile.analysis.alignment.timed_msa.models import Sequence
 from scinoephile.core.subtitles.series import Series
 
@@ -22,18 +24,19 @@ def get_reference_sequence(
     Returns:
         named reference sequence with alignment-local character timings
     Raises:
-        ValueError: if the source offset is negative
+        ValueError: if the source offset is nonfinite or negative
     """
-    if offset_seconds < 0.0:
-        raise ValueError("Reference alignment offset must be non-negative.")
+    if not isfinite(offset_seconds) or offset_seconds < 0.0:
+        raise ValueError("Reference alignment offset must be finite and non-negative.")
     return Sequence.from_timed_texts(
         name,
-        tuple(
+        (
             (
                 subtitle.text_with_newline,
                 max(0.0, subtitle.start / 1000 - offset_seconds),
-                max(0.0, subtitle.end / 1000 - offset_seconds),
+                subtitle.end / 1000 - offset_seconds,
             )
             for subtitle in series
+            if subtitle.end / 1000 > offset_seconds
         ),
     )
