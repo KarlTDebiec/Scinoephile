@@ -4,7 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * cache_namespace / samples
-* separation / vad
+* classification / separation / vad
 * diarization / transcription
 * speaker_assignment / subtitles
 """

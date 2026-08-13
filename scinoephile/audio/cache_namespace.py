@@ -12,6 +12,10 @@ __all__ = ["AudioCacheNamespace"]
 class AudioCacheNamespace(CacheNamespace):
     """Cache namespaces owned by the audio package."""
 
+    CLASSIFICATION_EVENT = "audio/classification/event"
+    """Audio event detection results."""
+    CLASSIFICATION_LANGUAGE = "audio/classification/language"
+    """Spoken-language identification results."""
     DIARIZATION = "audio/diarization"
     """Speaker diarization results."""
     SEPARATION_DEMUCS = "audio/separation/demucs"

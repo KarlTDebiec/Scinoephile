@@ -24,8 +24,10 @@ from test.helpers.files import set_mtime, write_cache_file
 class _CacheNamespace(CacheNamespace):
     """Cache namespace declarations for maintenance operation tests."""
 
-    AUDIO_CLASSIFICATION_OPERATION = "audio/classification/<operation>"
-    """Operation-specific audio classification artifacts."""
+    AUDIO_CLASSIFICATION_EVENT = "audio/classification/event"
+    """Audio event detection artifacts."""
+    AUDIO_CLASSIFICATION_LANGUAGE = "audio/classification/language"
+    """Spoken-language identification artifacts."""
     AUDIO_DIARIZATION = "audio/diarization"
     """Audio diarization artifacts."""
     AUDIO_SEPARATION_DEMUCS = "audio/separation/demucs"
