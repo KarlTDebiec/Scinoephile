@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, cast
 
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
-from scinoephile.audio.samples import get_mono_pcm16_samples
+from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.transcription import (
     import_firered_aed,
@@ -147,7 +147,7 @@ class FireRedLanguageIdentifier:
             self._cache.save(audio, cache_identity, result)
             return result
 
-        samples = get_mono_pcm16_samples(audio, _WAVEFORM_FRAME_RATE)
+        samples = to_mono_int16(audio, _WAVEFORM_FRAME_RATE)
         model = self._get_model()
         spans: list[LanguageSpan] = []
         try:
@@ -374,7 +374,7 @@ class FireRedAudioEventDetector:
         if cached_result is not None:
             return cached_result
         try:
-            samples = get_mono_pcm16_samples(audio, _WAVEFORM_FRAME_RATE)
+            samples = to_mono_int16(audio, _WAVEFORM_FRAME_RATE)
             result, _ = getattr(self._get_model(), "detect")(samples)
             timestamps = cast(
                 Mapping[str, Sequence[Sequence[float]]], result["event2timestamps"]

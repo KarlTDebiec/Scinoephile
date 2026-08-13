@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING, cast
 
 import numpy as np
 
-from scinoephile.audio.samples import get_mono_pcm16_samples
+from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core.dependencies.transcription import (
     import_pyannote_audio,
     import_torch,
@@ -136,7 +136,7 @@ class PyannoteDiarizer:
         pipeline = self._get_pipeline()
         try:
             torch = import_torch()
-            samples = get_mono_pcm16_samples(audio, _WAVEFORM_FRAME_RATE)
+            samples = to_mono_int16(audio, _WAVEFORM_FRAME_RATE)
             waveform = samples.reshape(1, -1).astype(np.float32)
             waveform /= float(1 << (8 * _WAVEFORM_SAMPLE_WIDTH - 1))
             audio_input = {

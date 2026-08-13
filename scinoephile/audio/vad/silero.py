@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, cast
 
 import numpy as np
 
-from scinoephile.audio.samples import get_mono_pcm16_samples
+from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies import transcription
 
@@ -128,7 +128,7 @@ class SileroVadProvider(VadProvider):
                 "Silero VAD requires the optional transcription dependencies."
             ) from exc
 
-        samples = get_mono_pcm16_samples(audio, self.sample_rate).astype(np.float32)
+        samples = to_mono_int16(audio, self.sample_rate).astype(np.float32)
         samples /= np.iinfo(np.int16).max
         if not len(samples):
             return VoiceActivityTrace(
