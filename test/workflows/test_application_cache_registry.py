@@ -10,7 +10,7 @@ from scinoephile.workflows.cache_registry import CACHE_REGISTRY
 def test_cache_registry_matches_owned_layout():
     """Test the registry contains the complete Scinoephile-owned cache layout."""
     assert {namespace.value for namespace in CACHE_REGISTRY} == {
-        "audio/classification/audio_event",
+        "audio/classification/event",
         "audio/classification/language",
         "audio/diarization",
         "audio/separation/demucs",

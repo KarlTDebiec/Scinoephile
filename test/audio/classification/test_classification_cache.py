@@ -23,9 +23,7 @@ def test_classification_cache_discards_invalid_payload(tmp_path: Path):
     Arguments:
         tmp_path: temporary cache root path
     """
-    cache = AudioClassificationCache(
-        tmp_path, AudioCacheNamespace.CLASSIFICATION_AUDIO_EVENT
-    )
+    cache = AudioClassificationCache(tmp_path, AudioCacheNamespace.CLASSIFICATION_EVENT)
     audio = AudioSegment.silent(duration=100)
     cache_identity = {"model": "test/model"}
     cache_path = cache.get_path(audio, cache_identity)

@@ -339,9 +339,7 @@ class FireRedAudioEventDetector:
         self.use_gpu = use_gpu
         """Whether FireRed mVAD uses CUDA."""
         self._cache = AudioClassificationCache(
-            cache_root_path,
-            AudioCacheNamespace.CLASSIFICATION_AUDIO_EVENT,
-            overwrite_cache,
+            cache_root_path, AudioCacheNamespace.CLASSIFICATION_EVENT, overwrite_cache
         )
         """Source-wide audio-event cache."""
         self._model: object | None = None
