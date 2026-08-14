@@ -29,7 +29,7 @@ _Sha256 = Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
 class ProcessorIdentity(BaseModel):
     """Identity of the configured transcription processor."""
 
-    model_config = ConfigDict(extra="forbid", frozen=True)
+    model_config = ConfigDict(allow_inf_nan=False, extra="forbid", frozen=True)
 
     operation: _NonBlankString
     """Stable LLM operation identifier."""
@@ -65,7 +65,7 @@ class RunBlock(BaseModel):
 class RunManifest(BaseModel):
     """Compact provenance identifying one multi-source transcription run."""
 
-    model_config = ConfigDict(extra="forbid", frozen=True)
+    model_config = ConfigDict(allow_inf_nan=False, extra="forbid", frozen=True)
 
     format: Literal["scinoephile-transcription-run"] = "scinoephile-transcription-run"
     """Stable manifest format identifier."""
