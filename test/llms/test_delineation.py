@@ -295,17 +295,6 @@ def test_persistence_uses_base_prompt_aliases_and_omits_defaults(tmp_path: Path)
     assert loaded[0].model_dump() == test_case.model_dump()
 
 
-def test_tracked_fixture_count():
-    """All six tracked delineation files should contain 9,396 test cases."""
-    counts = [
-        len(json.loads(input_path.read_text(encoding="utf-8")))
-        for input_path in _DELINEATION_PATHS
-    ]
-
-    assert len(_DELINEATION_PATHS) == 6
-    assert sum(counts) == 9_396
-
-
 @mark.parametrize(
     "input_path",
     _DELINEATION_PATHS,

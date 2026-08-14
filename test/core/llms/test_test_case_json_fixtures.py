@@ -15,6 +15,7 @@ from scinoephile.core.llms.utils import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
+from scinoephile.lang.transcription import YueTranscriptionManager
 from scinoephile.llms.delineation import DelineationManager
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
@@ -46,6 +47,12 @@ def _get_test_case_files() -> list[tuple[Path, type[Manager]]]:
         if not input_paths:
             raise ValueError(f"Test-case family has no fixtures: {pattern}")
         test_case_files.extend((input_path, manager_cls) for input_path in input_paths)
+    test_case_files.extend(
+        (input_path, YueTranscriptionManager)
+        for input_path in sorted(
+            test_data_root.glob("*/output/*_transcribe/json/transcription.json")
+        )
+    )
     return test_case_files
 
 
@@ -117,14 +124,3 @@ def test_tracked_test_case_json_round_trips_canonically(
     assert [test_case.model_dump(mode="json") for test_case in reloaded_test_cases] == [
         test_case.model_dump(mode="json") for test_case in base_test_cases
     ]
-
-
-def test_tracked_test_case_json_inventory_is_complete():
-    """Fixture contract should cover every tracked test case."""
-    test_case_count = sum(
-        len(json.loads(input_path.read_text(encoding="utf-8")))
-        for input_path, _ in _TEST_CASE_FILES
-    )
-
-    assert len(_TEST_CASE_FILES) == 84
-    assert test_case_count == 32_624

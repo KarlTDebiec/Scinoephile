@@ -15,6 +15,7 @@ from .aligner import TranscriptionAligner
 from .alignment import TranscriptionAlignment
 from .guided import GuidedTranscriptionSpec, TranscriptionLanguageSpec
 from .sources import TranscriptionSourceSpec
+from .standard import YueTranscriptionManager
 from .transcriber import GuidedTranscriber, MlxAudioTimingMode, TranscriptionModel
 
 __all__ = [
@@ -26,4 +27,5 @@ __all__ = [
     "TranscriptionLanguageSpec",
     "TranscriptionModel",
     "TranscriptionSourceSpec",
+    "YueTranscriptionManager",
 ]

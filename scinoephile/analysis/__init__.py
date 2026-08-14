@@ -5,6 +5,7 @@
 Package hierarchy (modules may import from any above):
 * alignment
 * diff
-* character_error_rate / transcription
+* character_error_rate
+* transcription
 * audit
 """

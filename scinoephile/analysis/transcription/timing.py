@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from collections import Counter
 from collections.abc import Sequence
 from dataclasses import dataclass
 from math import isfinite
@@ -82,6 +83,15 @@ class TimingMetrics:
     """Candidate subtitles that could not be paired with reference text."""
     unmatched_reference_subtitles: int
     """Reference subtitles that could not be paired with candidate text."""
+
+    @property
+    def candidate_to_reference_group_counts(self) -> dict[str, int]:
+        """Get alignment-group counts keyed by candidate:reference shape."""
+        counts = Counter(
+            f"{len(pair.candidate_indexes)}:{len(pair.reference_indexes)}"
+            for pair in self.pairs
+        )
+        return dict(sorted(counts.items()))
 
     @property
     def mean_absolute_end_error_ms(self) -> float:
