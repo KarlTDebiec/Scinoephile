@@ -100,9 +100,6 @@ class TranscriptionProcessor(Processor):
                 }
             ),
         )
-        if self.queryer.no_op:
-            return ()
-
         request_results = []
         for query, (start_column, end_column) in _get_request_queries(validated_query):
             test_case = self.test_case_cls(query=query)

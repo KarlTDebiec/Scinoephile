@@ -5,12 +5,14 @@
 from __future__ import annotations
 
 import unicodedata
+from collections import Counter
 from typing import ClassVar, Self
 
 from pydantic import Field, field_validator, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase
 from scinoephile.core.llms.models import LLMModel
+from scinoephile.core.text import is_lexical_character
 
 from .prompt import TranscriptionPrompt
 from .validation import TranscriptionAlignmentScorer
@@ -215,6 +217,32 @@ class TranscriptionTestCase(TestCase):
     """Reference-free aligned ASR evidence."""
     answer: TranscriptionAnswer | None = None
     """Consensus subtitles, if available."""
+
+    def get_no_op_answer(self) -> TranscriptionAnswer:
+        """Get a deterministic column-wise consensus answer.
+
+        The most common character in each aligned column is selected. Stable source
+        order breaks ties, while gaps, pauses, and nonlexical characters are omitted
+        from the output.
+
+        Returns:
+            plurality consensus split into valid subtitle-length chunks
+        """
+        consensus_characters = []
+        for column in zip(*(source.text for source in self.query.sources), strict=True):
+            character = Counter(column).most_common(1)[0][0]
+            if is_lexical_character(character):
+                consensus_characters.append(character)
+        consensus = "".join(consensus_characters)
+        subtitles = (
+            consensus[start : start + TranscriptionAnswer.max_subtitle_characters]
+            for start in range(
+                0, len(consensus), TranscriptionAnswer.max_subtitle_characters
+            )
+        )
+        return TranscriptionAnswer(
+            text="".join(f"{subtitle}｜" for subtitle in subtitles)
+        )
 
     @model_validator(mode="after")
     def validate_consensus_coverage(self) -> Self:

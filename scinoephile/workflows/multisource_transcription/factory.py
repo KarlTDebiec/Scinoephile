@@ -27,6 +27,7 @@ def get_multi_source_transcriber(
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     additional_context: str | None = None,
+    no_op: bool = False,
     current_test_cases_path: Path | None = None,
     prune_test_cases: bool = False,
     shared_test_cases: list[TestCase] | None = None,
@@ -40,6 +41,7 @@ def get_multi_source_transcriber(
         cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching LLM cache entries
         additional_context: additional context to include in the prompt
+        no_op: whether to use deterministic column consensus instead of an LLM
         current_test_cases_path: current transcription test-case JSON path
         prune_test_cases: whether to remove unencountered persisted test cases
         shared_test_cases: preloaded transcription test cases
@@ -53,6 +55,7 @@ def get_multi_source_transcriber(
         cache_root_path=cache_root_path,
         overwrite_cache=overwrite_cache,
         additional_context=additional_context,
+        no_op=no_op,
         current_test_cases_path=current_test_cases_path,
         prune_test_cases=prune_test_cases,
     )

@@ -438,7 +438,7 @@ def test_factory_uses_current_language_transcription_processor():
         return_value=processor,
     ) as get_processor:
         transcriber = get_multi_source_transcriber(
-            Language.yue_hant, sources, shared_test_cases=[]
+            Language.yue_hant, sources, no_op=True, shared_test_cases=[]
         )
 
     assert transcriber.processor is processor
@@ -450,6 +450,7 @@ def test_factory_uses_current_language_transcription_processor():
         cache_root_path=None,
         overwrite_cache=False,
         additional_context=None,
+        no_op=True,
         current_test_cases_path=None,
         prune_test_cases=False,
     )
