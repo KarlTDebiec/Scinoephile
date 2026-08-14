@@ -1,0 +1,282 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Tests for aligned multi-source transcription test-data generation."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from unittest.mock import Mock, patch
+
+from pydub import AudioSegment
+from pytest import LogCaptureFixture, raises
+
+import test.data.aligned_transcription as transcription_data
+from scinoephile.analysis.character_error_rate import SeriesCER
+from scinoephile.analysis.transcription import (
+    AlignmentArtifact,
+    AlignmentBlock,
+    AlignmentColumn,
+    AlignmentRow,
+    AlignmentSource,
+    AlignmentSubtitle,
+)
+from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.vad import SpeechBlock
+from scinoephile.core import Language, ScinoephileError
+from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.media.audio import AudioExtractionMode
+from scinoephile.workflows.transcription_pipeline import TranscriptionPipeline
+
+
+def test_evaluation_writes_standardized_metrics_and_audit(
+    tmp_path: Path, caplog: LogCaptureFixture
+):
+    """Evaluation should report every source, merged CER, and display timing."""
+    artifact = _get_artifact()
+    reference = Series(events=[Subtitle(start=900, end=2_100, text="係呀")])
+    caplog.set_level("INFO", logger="test.data.aligned_transcription")
+
+    with patch(
+        "scinoephile.analysis.transcription.evaluation.SeriesCER", wraps=SeriesCER
+    ) as series_cer:
+        transcription_data._save_evaluation(  # noqa: SLF001
+            tmp_path,
+            artifact,
+            reference,
+            audit_references={"yue-Hant": reference},
+            terminal_authority="yue-Hant",
+        )
+
+    assert series_cer.call_count == 6
+    metrics = json.loads((tmp_path / "json/metrics.json").read_text(encoding="utf-8"))
+    assert metrics["format"] == "scinoephile-transcription-evaluation"
+    assert set(metrics["cer"]) == {"whisper", "mimo", "merged"}
+    assert metrics["candidate_subtitles"] == 1
+    assert metrics["reference_subtitles"] == 1
+    audit = (tmp_path / "audit.md").read_text(encoding="utf-8")
+    assert "# Transcription Alignment Audit" in audit
+    assert "yue-Hant" in audit
+    assert "support" in audit
+    assert f"- whisper CER: {metrics['cer']['whisper']['cer']:.3%}" in audit
+    assert "Authority: yue-Hant" in caplog.text
+    assert any("\x1b[32m" in record.getMessage() for record in caplog.records)
+
+
+def test_existing_alignment_recreates_srt_without_transcription(tmp_path: Path):
+    """A portable alignment alone should be sufficient to reuse test output."""
+    title_root_path = tmp_path / "title"
+    output_dir_path = title_root_path / "output/yue-Hant_transcribe"
+    artifact_path = output_dir_path / "json/alignment.json"
+    reference_path = tmp_path / "reference.srt"
+    artifact = _get_artifact()
+    artifact.save(artifact_path)
+    artifact.get_series().save(reference_path)
+
+    with (
+        patch("test.data.aligned_transcription._load_audio_series") as load_audio,
+        patch(
+            "test.data.aligned_transcription.get_transcription_pipeline"
+        ) as get_pipeline,
+    ):
+        output = transcription_data.process_transcription(
+            title_root_path, reference_path=reference_path, reference_name="yue-Hant"
+        )
+
+    assert output == artifact.get_series()
+    assert (output_dir_path / "transcribe.srt").exists()
+    load_audio.assert_not_called()
+    get_pipeline.assert_not_called()
+
+
+def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
+    """A fresh run should route provenance and write harness outputs."""
+    title_root_path = tmp_path / "title"
+    output_dir_path = title_root_path / "output/yue-Hant_transcribe"
+    reference_path = tmp_path / "reference.srt"
+    artifact = _get_artifact()
+    output = artifact.get_series()
+    output.save(reference_path)
+    audio = AudioSeries(audio=AudioSegment.silent(duration=3_000), events=[])
+    provider = Mock(completion_metrics=[])
+    pipeline = Mock(spec=TranscriptionPipeline)
+    pipeline.last_alignment_artifact = artifact
+
+    with (
+        patch(
+            "test.data.aligned_transcription._load_audio_series", return_value=audio
+        ) as load_audio,
+        patch("test.data.aligned_transcription.get_provider", return_value=provider),
+        patch(
+            "test.data.aligned_transcription.get_transcription_pipeline",
+            return_value=pipeline,
+        ) as get_pipeline,
+        patch(
+            "test.data.aligned_transcription.save_chat_completion_metrics_to_json"
+        ) as save_usage,
+        patch(
+            "test.data.aligned_transcription.transcribe_series", return_value=output
+        ) as transcribe,
+    ):
+        result = transcription_data.process_transcription(
+            title_root_path,
+            reference_path=reference_path,
+            stop_at_idx=1,
+            target_reference_count=0,
+        )
+
+    json_dir_path = output_dir_path / "json"
+    assert result == output
+    load_audio.assert_called_once_with(
+        output_dir_path / "audio/audio.wav",
+        media_path=None,
+        stream_index=None,
+        audio_extraction_mode=AudioExtractionMode.ORIGINAL,
+        media_start_seconds=0.0,
+    )
+    get_pipeline.assert_called_once_with(
+        Language.yue_hant,
+        provider=provider,
+        additional_context=None,
+        current_test_cases_path=json_dir_path / "transcription.json",
+    )
+    transcribe.assert_called_once_with(
+        audio,
+        language=Language.yue_hant,
+        pipeline=pipeline,
+        alignment_outfile_path=json_dir_path / "alignment.json",
+        run_manifest_outfile_path=json_dir_path / "run.json",
+        stop_at_idx=1,
+    )
+    save_usage.assert_called_once_with(json_dir_path / "llm_usage.json", [])
+    assert (output_dir_path / "transcribe.srt").exists()
+    assert (output_dir_path / "audit.md").exists()
+    assert (json_dir_path / "metrics.json").exists()
+
+
+def test_media_audio_trim_is_applied_before_staging(tmp_path: Path):
+    """Media extraction should apply title-specific leading trim before staging."""
+    extracted = AudioSeries(
+        audio=AudioSegment.silent(duration=5_000, frame_rate=16_000), events=[]
+    )
+    staged = AudioSegment.silent(duration=4_000, frame_rate=16_000)
+    with patch(
+        "test.data.aligned_transcription.load_audio_segment",
+        side_effect=(extracted.audio, staged),
+    ) as load_audio:
+        audio_path = tmp_path / "audio.wav"
+        audio = transcription_data._load_audio_series(  # noqa: SLF001
+            audio_path,
+            media_path=tmp_path / "source.mkv",
+            stream_index=12,
+            media_start_seconds=1.0,
+        )
+        reloaded = transcription_data._load_audio_series(  # noqa: SLF001
+            audio_path,
+            media_path=tmp_path / "source.mkv",
+            stream_index=12,
+            media_start_seconds=1.0,
+        )
+
+    assert len(audio.audio) == 4_000
+    assert len(reloaded.audio) == 4_000
+    assert audio_path.exists()
+    assert not audio_path.with_suffix(".srt").exists()
+    assert load_audio.call_count == 2
+    assert load_audio.call_args_list[0].args == (tmp_path / "source.mkv",)
+    assert load_audio.call_args_list[0].kwargs == {
+        "stream_index": 12,
+        "mode": AudioExtractionMode.ORIGINAL,
+    }
+    assert load_audio.call_args_list[1].args == (audio_path,)
+    assert not load_audio.call_args_list[1].kwargs
+
+
+def test_reference_count_selects_smallest_block_prefix():
+    """The evaluation harness should stop after the target reference count."""
+    pipeline = Mock(spec=TranscriptionPipeline)
+    pipeline.plan_blocks.return_value = (
+        SpeechBlock(
+            index=0,
+            start_ms=1_000,
+            end_ms=3_000,
+            buffered_start_ms=0,
+            buffered_end_ms=4_000,
+        ),
+        SpeechBlock(
+            index=1,
+            start_ms=5_000,
+            end_ms=8_000,
+            buffered_start_ms=4_000,
+            buffered_end_ms=9_000,
+        ),
+    )
+    audio = AudioSeries(audio=AudioSegment.silent(duration=10_000), events=[])
+    reference = Series(
+        events=[
+            Subtitle(start=1_100, end=1_500, text="甲"),
+            Subtitle(start=2_000, end=2_400, text="乙"),
+            Subtitle(start=5_200, end=5_600, text="丙"),
+        ]
+    )
+
+    assert (
+        transcription_data._get_stop_at_idx_for_reference_count(  # noqa: SLF001
+            pipeline, audio, reference, 3
+        )
+        == 2
+    )
+    with raises(ScinoephileError, match="covers only 3"):
+        transcription_data._get_stop_at_idx_for_reference_count(  # noqa: SLF001
+            pipeline, audio, reference, 4
+        )
+
+
+def _get_artifact() -> AlignmentArtifact:
+    """Get a compact valid evaluation artifact.
+
+    Returns:
+        compact valid evaluation artifact
+    """
+    return AlignmentArtifact(
+        language=Language.yue_hant,
+        audio_duration_ms=3_000,
+        sources=(
+            AlignmentSource(name="whisper", backend="whisper", model="whisper"),
+            AlignmentSource(name="mimo", backend="mlx", model="mimo"),
+        ),
+        blocks=(
+            AlignmentBlock(
+                index=1,
+                core_start_ms=500,
+                core_end_ms=2_500,
+                buffered_start_ms=0,
+                buffered_end_ms=3_000,
+                columns=(
+                    AlignmentColumn(index=1, start_ms=1_000, end_ms=1_500, kind="text"),
+                    AlignmentColumn(index=2, start_ms=1_500, end_ms=2_000, kind="text"),
+                ),
+                rows=(
+                    AlignmentRow(name="whisper", text="係呀"),
+                    AlignmentRow(name="mimo", text="是呀"),
+                ),
+                speaker="ＡＡ",
+                language_trace="粵粵",
+                language_legend={"粵": "zh-yue"},
+                singing_trace="　唱",
+                music_trace="樂樂",
+                merged="係呀",
+                subtitles=(
+                    AlignmentSubtitle(
+                        index=1,
+                        text="係呀",
+                        speech_start_ms=1_000,
+                        speech_end_ms=2_000,
+                        timing_source="source",
+                        start_ms=1_000,
+                        end_ms=2_000,
+                    ),
+                ),
+            ),
+        ),
+    )

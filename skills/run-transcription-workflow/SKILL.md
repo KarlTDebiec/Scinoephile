@@ -23,9 +23,9 @@ Use stable outputs:
 
 ```text
 <output_dir>/transcribe.srt
+<output_dir>/transcribe.alignment.json
 <output_dir>/transcribe.run.json
-<output_dir>/json/aligned_merge.json
-<output_dir>/json/alignment.json
+<output_dir>/transcription.json
 ```
 
 Never edit files under `test/data/<dataset>/input/`. Preserve existing caches
@@ -40,7 +40,8 @@ may be supplied only to the completed artifact's audit command.
 
 The VAD speaker row is evidence, not transcript text. `Ａ`/`Ｂ`/… represent
 diarized speakers, `＊` represents unattributed detected speech, `・` represents
-a shared 250 ms pause, and `　` is an ordinary alignment gap.
+a shared timed pause unit whose duration is recorded in the artifact, and `　` is
+an ordinary alignment gap.
 
 ## Run one cumulative batch
 
@@ -53,8 +54,7 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile transcribe \
   --media-infile <media> \
   --language yue-Hant \
   --last-block B \
-  --aligned-merge-json <output_dir>/json/aligned_merge.json \
-  --alignment-outfile <output_dir>/json/alignment.json \
+  --json <output_dir>/transcription.json \
   --outfile <output_dir>/transcribe.srt \
   --overwrite
 ```
@@ -66,12 +66,12 @@ Poll until the command exits and require status 0 before auditing.
 
 ## Audit the artifact
 
-Read `../audit-transcription-alignment/SKILL.md` completely before auditing.
+Read `../audit-transcription/SKILL.md` completely before auditing.
 Without a reference, inspect the production evidence directly:
 
 ```shell
-UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit transcription-alignment \
-  --alignment <output_dir>/json/alignment.json \
+UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit transcription \
+  --alignment <output_dir>/transcribe.alignment.json \
   --first-block A --last-block B \
   --outfile local/<dataset>_alignment_blocks_A_B.md \
   --overwrite

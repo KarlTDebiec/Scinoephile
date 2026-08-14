@@ -9,9 +9,9 @@ from pathlib import Path
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
+from test.data.aligned_transcription import process_transcription
 from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
-from test.data.transcription import process_transcription_pipeline
 from test.helpers import test_data_root
 
 set_logging_verbosity(2)
@@ -73,7 +73,7 @@ if "zho-Hans_eng" in actions:
     eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
     process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
 if "yue-Hant_transcribe" in actions:
-    process_transcription_pipeline(
+    process_transcription(
         title_root,
         reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
         stop_at_idx=11,
@@ -84,5 +84,5 @@ if "yue-Hant_transcribe" in actions:
             )
         },
         reference_name="yue-Hant",
-        terminal_alignment_authority="yue-Hant",
+        terminal_authority="yue-Hant",
     )

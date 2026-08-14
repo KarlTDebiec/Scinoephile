@@ -8,7 +8,7 @@ from logging import info
 from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import VADMode
+from scinoephile.audio.transcription import VadMode
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.ml import get_torch_device
@@ -80,7 +80,7 @@ if "yue-Hans_transcribe" in actions:
     transcriber = get_guided_transcriber(
         Language.yue_hans,
         Language.zho_hans,
-        vad_mode=VADMode.ON,
+        vad_mode=VadMode.ON,
         prune_test_cases=True,
         delineation_json_path=test_case_dir_path / "delineation" / f"{device}.json",
         punctuation_json_path=test_case_dir_path / "punctuation" / f"{device}.json",

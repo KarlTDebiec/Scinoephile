@@ -10,20 +10,28 @@ from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, ClassVar
 
+from scinoephile.audio.cache_namespace import AudioCacheNamespace
+from scinoephile.audio.separation import DemucsSeparator
+from scinoephile.audio.vad import (
+    VoiceActivityCache,
+    VoiceActivityDetector,
+    VoiceActivityError,
+    VoiceActivityTrace,
+)
 from scinoephile.core.exceptions import ScinoephileError
 
 from .cache import TranscriptionCache
-from .demucs import DemucsSeparator
-from .exceptions import TranscriptionEmptyError, TranscriptionError
+from .exceptions import (
+    TranscriptionEmptyError,
+    TranscriptionError,
+    TranscriptionInferenceError,
+)
 from .preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
-    VADMode,
+    VadMode,
 )
 from .transcribed_segment import TranscribedSegment
-from .vad import VADImplementation, VoiceActivityDetector
-from .vad_cache import VoiceActivityCache
-from .voice_activity_trace import VoiceActivityTrace
 
 __all__ = ["Transcriber"]
 
@@ -36,8 +44,11 @@ logger = getLogger(__name__)
 class Transcriber(ABC):
     """Transcribes audio across configured Demucs and VAD fallbacks."""
 
+    cache_namespace: ClassVar[AudioCacheNamespace]
+    """Registered namespace for cached backend output."""
+
     backend_name: ClassVar[str]
-    """Stable backend name stored in cache metadata."""
+    """Stable backend name stored in cache identities."""
 
     backend_label: ClassVar[str]
     """Human-readable backend name used in log messages."""
@@ -46,10 +57,9 @@ class Transcriber(ABC):
         self,
         cache_root_path: Path | None,
         demucs_mode: DemucsMode = DemucsMode.OFF,
-        vad_mode: VADMode = VADMode.OFF,
+        vad_mode: VadMode = VadMode.OFF,
         overwrite_cache: bool = False,
         demucs_separator: DemucsSeparator | None = None,
-        vad_implementation: VADImplementation = VADImplementation.SILERO,
         vad_detector: VoiceActivityDetector | None = None,
     ):
         """Initialize.
@@ -60,7 +70,6 @@ class Transcriber(ABC):
             vad_mode: voice activity detection mode
             overwrite_cache: whether to replace matching cache files
             demucs_separator: optional shared Demucs vocal separator
-            vad_implementation: voice activity detection implementation
             vad_detector: optional shared voice activity detector
         """
         self.demucs_mode = demucs_mode
@@ -70,20 +79,23 @@ class Transcriber(ABC):
         """Voice activity detection mode."""
 
         if vad_detector is None:
-            vad_detector = VoiceActivityDetector(vad_implementation)
+            vad_detector = VoiceActivityDetector()
         self.vad_detector = vad_detector
         """Voice activity detector used by VAD-enabled configurations."""
 
         self._cache = TranscriptionCache(
-            cache_root_path, self.backend_name, self.backend_label, overwrite_cache
+            cache_root_path,
+            self.cache_namespace,
+            self.backend_name,
+            self.backend_label,
+            overwrite_cache,
         )
         """Timestamped transcription cache."""
         self.last_cache_key_sha256: str | None = None
         """Digest of the cache entry selected by the latest transcription call."""
-
         self._voice_activity_cache: VoiceActivityCache | None = None
         """Frame-level voice activity score cache, when VAD is enabled."""
-        if self.vad_mode is not VADMode.OFF:
+        if self.vad_mode is not VadMode.OFF:
             self._voice_activity_cache = VoiceActivityCache(
                 self._cache.cache_root_path, overwrite_cache
             )
@@ -128,6 +140,7 @@ class Transcriber(ABC):
         Returns:
             first usable cached transcription, if present
         """
+        self.last_cache_key_sha256 = None
         segments, _ = self._find_cached_transcription(
             audio, self._get_preprocessing_settings(), is_usable
         )
@@ -140,7 +153,7 @@ class Transcriber(ABC):
             audio: audio used for cache-key generation
         """
         for settings in self._get_preprocessing_settings():
-            self._cache.remove(audio, self._get_cache_metadata(audio, settings))
+            self._cache.remove(audio, self._get_cache_identity(audio, settings))
 
     def transcribe(
         self,
@@ -233,8 +246,8 @@ class Transcriber(ABC):
         """
         rejected_settings: set[TranscriptionPreprocessingSettings] = set()
         for settings in preprocessing_settings:
-            metadata = self._get_cache_metadata(audio, settings)
-            cached_transcription = self._cache.load(audio, metadata)
+            cache_identity = self._get_cache_identity(audio, settings)
+            cached_transcription = self._cache.load(audio, cache_identity)
             if cached_transcription is None:
                 continue
             cache_path, segments = cached_transcription
@@ -260,9 +273,9 @@ class Transcriber(ABC):
         else:
             demucs_values = (True, False)
 
-        if self.vad_mode is VADMode.ON:
+        if self.vad_mode is VadMode.ON:
             vad_values = (True,)
-        elif self.vad_mode is VADMode.OFF:
+        elif self.vad_mode is VadMode.OFF:
             vad_values = (False,)
         else:
             vad_values = (True, False)
@@ -274,10 +287,10 @@ class Transcriber(ABC):
         )
 
     @abstractmethod
-    def _get_backend_cache_metadata(
+    def _get_backend_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> Mapping[str, object]:
-        """Get backend-specific cache metadata for one configuration.
+        """Get the backend-specific identity for one cache configuration.
 
         Arguments:
             audio: audio whose properties may affect backend behavior
@@ -287,10 +300,10 @@ class Transcriber(ABC):
         """
         raise NotImplementedError()
 
-    def _get_cache_metadata(
+    def _get_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> dict[str, object]:
-        """Get complete backend and preprocessing cache metadata.
+        """Get the complete backend and preprocessing cache identity.
 
         Arguments:
             audio: audio whose properties may affect backend behavior
@@ -298,13 +311,13 @@ class Transcriber(ABC):
         Returns:
             configuration identifying the output
         """
-        demucs_model_name = None
+        demucs_identity = None
         if settings.use_demucs:
             assert self.demucs_separator is not None
-            demucs_model_name = self.demucs_separator.model_name
+            demucs_identity = self.demucs_separator.cache_identity
         return {
-            **self._get_backend_cache_metadata(audio, settings),
-            "demucs_model_name": demucs_model_name,
+            **self._get_backend_cache_identity(audio, settings),
+            "demucs": demucs_identity,
             "use_demucs": settings.use_demucs,
             "use_vad": settings.use_vad,
             "vad": self.vad_detector.cache_identity if settings.use_vad else None,
@@ -341,12 +354,15 @@ class Transcriber(ABC):
         """
         if self._voice_activity_cache is None:
             raise RuntimeError("Voice activity trace requested while VAD is disabled.")
-        metadata = self.vad_detector.trace_cache_identity
-        trace = self._voice_activity_cache.load(audio, metadata)
+        cache_identity = self.vad_detector.trace_cache_identity
+        trace = self._voice_activity_cache.load(audio, cache_identity)
         if trace is not None:
             return trace
-        trace = self.vad_detector.get_trace(audio)
-        self._voice_activity_cache.save(audio, metadata, trace)
+        try:
+            trace = self.vad_detector.get_trace(audio)
+        except VoiceActivityError as exc:
+            raise TranscriptionInferenceError(str(exc)) from exc
+        self._voice_activity_cache.save(audio, cache_identity, trace)
         return trace
 
     def _prepare_cached_segments(
@@ -394,13 +410,13 @@ class Transcriber(ABC):
                     continue
                 transcription_audio = separated_audio
 
-            if self.vad_mode is VADMode.AUTO and not settings.use_vad:
+            if self.vad_mode is VadMode.AUTO and not settings.use_vad:
                 logger.info(f"Retrying {self.backend_label} without VAD")
             try:
                 segments = self._transcribe_attempt(transcription_audio, settings)
             except TranscriptionEmptyError as exc:
                 logger.warning(f"{self.backend_label} attempt failed: {exc}")
-                self._cache.save(audio, self._get_cache_metadata(audio, settings), [])
+                self._cache.save(audio, self._get_cache_identity(audio, settings), [])
                 last_error = exc
                 continue
             except TranscriptionError as exc:
@@ -410,7 +426,7 @@ class Transcriber(ABC):
             successful_result = True
 
             cache_path = self._cache.save(
-                audio, self._get_cache_metadata(audio, settings), segments
+                audio, self._get_cache_identity(audio, settings), segments
             )
             if is_usable is None or is_usable(segments):
                 self.last_cache_key_sha256 = cache_path.stem

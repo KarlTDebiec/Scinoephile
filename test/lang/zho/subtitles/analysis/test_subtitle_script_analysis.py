@@ -65,7 +65,7 @@ def test_analyze_text_subtitle_stream_marks_cached_analysis_used(tmp_path: Path)
         infile_path, stream, subtitle_cache=subtitle_cache
     )
     cache_path = next(
-        (cache_root_path / "media" / "subtitles" / "analysis").glob("*.json")
+        (cache_root_path / "lang" / "zho" / "subtitles" / "analysis").glob("*.json")
     )
     old_timestamp = time() - 60 * 60 * 24 * 40
     set_mtime(cache_path, old_timestamp)
@@ -101,7 +101,7 @@ def test_analyze_text_subtitle_stream_regenerates_invalid_analysis_cache(
         infile_path, stream, subtitle_cache=subtitle_cache
     )
     cache_path = next(
-        (cache_root_path / "media" / "subtitles" / "analysis").glob("*.json")
+        (cache_root_path / "lang" / "zho" / "subtitles" / "analysis").glob("*.json")
     )
     cache_path.write_text("{", encoding="utf-8")
 

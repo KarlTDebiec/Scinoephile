@@ -5,13 +5,14 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping, Sequence
-from importlib.metadata import PackageNotFoundError, version
 from logging import getLogger
+from math import ceil, isfinite
 from pathlib import Path
 from typing import TYPE_CHECKING, cast
 
-import numpy as np
-
+from scinoephile.audio.cache_namespace import AudioCacheNamespace
+from scinoephile.audio.waveform import to_mono_int16
+from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.transcription import (
     import_firered_aed,
     import_firered_lid,
@@ -48,9 +49,11 @@ _EVENT_MODEL_ID = "FireRedTeam/FireRedVAD"
 """Official FireRed multi-label VAD repository."""
 _EVENT_MODEL_REVISION = "7990aaccc6b7aec1e527743bd30201f2c4a03b8c"
 """Pinned FireRedVAD model revision."""
-_FRAME_RATE = 16_000
+_WAVEFORM_CHANNELS = 1
+"""Channels supplied to FireRed inference."""
+_WAVEFORM_FRAME_RATE = 16_000
 """Sample rate required by FireRed feature extraction."""
-_SAMPLE_WIDTH = 2
+_WAVEFORM_SAMPLE_WIDTH = 2
 """PCM sample width required by FireRed feature extraction."""
 
 
@@ -78,14 +81,18 @@ class FireRedLanguageIdentifier:
             use_gpu: whether to use CUDA
             use_half: whether to use half precision on CUDA
             overwrite_cache: whether to replace matching cache entries
+        Raises:
+            ValueError: if batch size or window durations are invalid
         """
         if batch_size <= 0:
             raise ValueError("Language-identification batch size must be positive.")
-        if minimum_window_seconds <= 0.0:
+        if not isfinite(minimum_window_seconds) or minimum_window_seconds <= 0.0:
             raise ValueError("Minimum language window must be positive.")
-        if maximum_window_seconds < minimum_window_seconds:
+        if not isfinite(maximum_window_seconds):
+            raise ValueError("Maximum language window must be finite.")
+        if maximum_window_seconds < 2 * minimum_window_seconds:
             raise ValueError(
-                "Maximum language window must not be shorter than the minimum."
+                "Maximum language window must be at least twice the minimum."
             )
         self.batch_size = batch_size
         """Utterance windows classified together."""
@@ -98,7 +105,9 @@ class FireRedLanguageIdentifier:
         self.use_half = use_half
         """Whether FireRedLID uses half precision on CUDA."""
         self._cache = AudioClassificationCache(
-            cache_root_path, "language", overwrite_cache
+            cache_root_path,
+            AudioCacheNamespace.CLASSIFICATION_LANGUAGE,
+            overwrite_cache,
         )
         """Source-wide language-identification cache."""
         self._model: object | None = None
@@ -111,22 +120,36 @@ class FireRedLanguageIdentifier:
         *,
         offset_seconds: float = 0.0,
     ) -> LanguageIdentificationResult:
-        """Identify language in VAD-derived speech windows."""
-        if offset_seconds < 0.0:
+        """Identify language in VAD-derived speech windows.
+
+        Arguments:
+            audio: complete source audio
+            speech_intervals_ms: ordered VAD speech intervals in milliseconds
+            offset_seconds: source-timeline offset added to result spans
+        Returns:
+            source-timeline language identification spans
+        Raises:
+            AudioClassificationDependencyError: if optional dependencies are missing
+            AudioClassificationInferenceError: if model loading or inference fails
+            ValueError: if the offset or speech intervals are invalid
+        """
+        if not isfinite(offset_seconds) or offset_seconds < 0.0:
             raise ValueError("Language-identification offset must be non-negative.")
         windows = self._get_windows(speech_intervals_ms, len(audio))
-        metadata = self._get_cache_metadata(windows, offset_seconds)
-        cached_result = self._cache.load(audio, metadata, LanguageIdentificationResult)
+        cache_identity = self._get_cache_identity(windows, offset_seconds)
+        cached_result = self._cache.load(
+            audio, cache_identity, LanguageIdentificationResult
+        )
         if cached_result is not None:
             return cached_result
         if not windows:
             result = LanguageIdentificationResult(spans=[])
-            self._cache.save(audio, metadata, result)
+            self._cache.save(audio, cache_identity, result)
             return result
 
-        samples = _get_samples(audio)
+        samples = to_mono_int16(audio, _WAVEFORM_FRAME_RATE)
         model = self._get_model()
-        spans = []
+        spans: list[LanguageSpan] = []
         try:
             process = getattr(model, "process")
             for batch_start in range(0, len(windows), self.batch_size):
@@ -137,8 +160,12 @@ class FireRedLanguageIdentifier:
                 ]
                 waveforms = [
                     [
-                        _FRAME_RATE,
-                        samples[round(start * _FRAME_RATE) : round(end * _FRAME_RATE)],
+                        _WAVEFORM_FRAME_RATE,
+                        samples[
+                            round(start * _WAVEFORM_FRAME_RATE) : round(
+                                end * _WAVEFORM_FRAME_RATE
+                            )
+                        ],
                     ]
                     for start, end in batch_windows
                 ]
@@ -152,29 +179,69 @@ class FireRedLanguageIdentifier:
                 ):
                     raw_result = results_by_id.get(utterance_id)
                     if raw_result is None:
-                        continue
+                        raise AudioClassificationInferenceError(
+                            f"FireRedLID returned no result for {utterance_id}."
+                        )
                     language = _normalize_language(str(raw_result.get("lang", "")))
                     if not language:
-                        continue
+                        raise AudioClassificationInferenceError(
+                            f"FireRedLID returned no language for {utterance_id}."
+                        )
                     spans.append(
                         LanguageSpan(
                             start=start + offset_seconds,
                             end=end + offset_seconds,
                             language=language,
-                            confidence=_get_float(raw_result.get("confidence", 0.0)),
+                            confidence=_get_float(raw_result.get("confidence")),
                         )
                     )
+        except AudioClassificationInferenceError:
+            raise
         except Exception as exc:
             raise AudioClassificationInferenceError(
                 f"FireRed language identification failed: {exc}"
             ) from exc
 
         result = LanguageIdentificationResult(spans=spans)
-        self._cache.save(audio, metadata, result)
+        self._cache.save(audio, cache_identity, result)
         return result
 
+    def _get_cache_identity(
+        self, windows: Sequence[tuple[float, float]], offset_seconds: float
+    ) -> dict[str, object]:
+        """Get exact model identity and result-affecting settings.
+
+        Arguments:
+            windows: source-relative windows submitted to FireRedLID
+            offset_seconds: source-timeline offset added to result spans
+        Returns:
+            configuration identifying reusable language-identification output
+        """
+        return {
+            "model_id": _LANGUAGE_MODEL_ID,
+            "model_revision": _LANGUAGE_MODEL_REVISION,
+            "offset_seconds": offset_seconds,
+            "runtime": {
+                **get_distribution_identity("fireredasr2s"),
+                "source_revision": _FIRERED_RUNTIME_REVISION,
+            },
+            "speech_windows": [[start, end] for start, end in windows],
+            "use_gpu": self.use_gpu,
+            "use_half": self.use_half,
+            "waveform_channels": _WAVEFORM_CHANNELS,
+            "waveform_frame_rate": _WAVEFORM_FRAME_RATE,
+            "waveform_sample_width": _WAVEFORM_SAMPLE_WIDTH,
+        }
+
     def _get_model(self) -> object:
-        """Lazily download and load FireRedLID."""
+        """Lazily download and load FireRedLID.
+
+        Returns:
+            loaded FireRedLID model
+        Raises:
+            AudioClassificationDependencyError: if optional dependencies are missing
+            AudioClassificationInferenceError: if the model cannot be loaded
+        """
         if self._model is not None:
             return self._model
         try:
@@ -200,28 +267,19 @@ class FireRedLanguageIdentifier:
             ) from exc
         return self._model
 
-    def _get_cache_metadata(
-        self, windows: Sequence[tuple[float, float]], offset_seconds: float
-    ) -> Mapping[str, object]:
-        """Get exact model identity and result-affecting settings."""
-        return {
-            "batch_size": self.batch_size,
-            "maximum_window_seconds": self.maximum_window_seconds,
-            "minimum_window_seconds": self.minimum_window_seconds,
-            "model_id": _LANGUAGE_MODEL_ID,
-            "model_revision": _LANGUAGE_MODEL_REVISION,
-            "offset_seconds": offset_seconds,
-            "runtime_revision": _FIRERED_RUNTIME_REVISION,
-            "runtime_version": _get_runtime_version(),
-            "speech_windows": [[start, end] for start, end in windows],
-            "use_gpu": self.use_gpu,
-            "use_half": self.use_half,
-        }
-
     def _get_windows(
         self, speech_intervals_ms: Sequence[tuple[int, int]], audio_duration_ms: int
     ) -> tuple[tuple[float, float], ...]:
-        """Validate, clip, and subdivide VAD speech intervals."""
+        """Validate, clip, and subdivide VAD speech intervals.
+
+        Arguments:
+            speech_intervals_ms: ordered VAD speech intervals in milliseconds
+            audio_duration_ms: duration of the source audio in milliseconds
+        Returns:
+            clipped and subdivided intervals in seconds
+        Raises:
+            ValueError: if intervals are unordered or have nonpositive duration
+        """
         windows = []
         previous_end_ms = 0
         for start_ms, end_ms in speech_intervals_ms:
@@ -230,13 +288,18 @@ class FireRedLanguageIdentifier:
             previous_end_ms = end_ms
             clipped_start = max(0.0, start_ms / 1000)
             clipped_end = min(audio_duration_ms / 1000, end_ms / 1000)
-            window_start = clipped_start
-            while clipped_end - window_start >= self.minimum_window_seconds:
-                window_end = min(
-                    clipped_end, window_start + self.maximum_window_seconds
-                )
+            duration = clipped_end - clipped_start
+            if duration < self.minimum_window_seconds:
+                continue
+            window_count = ceil(duration / self.maximum_window_seconds)
+            window_duration = duration / window_count
+            for window_idx in range(window_count):
+                window_start = clipped_start + window_idx * window_duration
+                if window_idx == window_count - 1:
+                    window_end = clipped_end
+                else:
+                    window_end = clipped_start + (window_idx + 1) * window_duration
                 windows.append((window_start, window_end))
-                window_start = window_end
         return tuple(windows)
 
 
@@ -253,13 +316,24 @@ class FireRedAudioEventDetector:
         use_gpu: bool = False,
         overwrite_cache: bool = False,
     ):
-        """Initialize."""
+        """Initialize.
+
+        Arguments:
+            cache_root_path: root directory beneath which to cache
+            speech_threshold: minimum speech detection score
+            singing_threshold: minimum singing detection score
+            music_threshold: minimum music detection score
+            use_gpu: whether to use CUDA
+            overwrite_cache: whether to replace matching cache entries
+        Raises:
+            ValueError: if a detection threshold is outside [0, 1]
+        """
         for name, threshold in (
             ("speech", speech_threshold),
             ("singing", singing_threshold),
             ("music", music_threshold),
         ):
-            if not 0.0 <= threshold <= 1.0:
+            if not isfinite(threshold) or not 0.0 <= threshold <= 1.0:
                 raise ValueError(f"FireRed {name} threshold must be in [0, 1].")
         self.thresholds = {
             AudioEvent.SPEECH: speech_threshold,
@@ -270,7 +344,7 @@ class FireRedAudioEventDetector:
         self.use_gpu = use_gpu
         """Whether FireRed mVAD uses CUDA."""
         self._cache = AudioClassificationCache(
-            cache_root_path, "audio_event", overwrite_cache
+            cache_root_path, AudioCacheNamespace.CLASSIFICATION_EVENT, overwrite_cache
         )
         """Source-wide audio-event cache."""
         self._model: object | None = None
@@ -279,18 +353,39 @@ class FireRedAudioEventDetector:
     def __call__(
         self, audio: AudioSegment, *, offset_seconds: float = 0.0
     ) -> AudioEventDetectionResult:
-        """Detect source-wide independent speech, singing, and music spans."""
-        if offset_seconds < 0.0:
+        """Detect source-wide independent speech, singing, and music spans.
+
+        Arguments:
+            audio: complete source audio
+            offset_seconds: source-timeline offset added to result spans
+        Returns:
+            source-timeline audio event spans
+        Raises:
+            AudioClassificationDependencyError: if optional dependencies are missing
+            AudioClassificationInferenceError: if model loading or inference fails
+            ValueError: if the offset is negative
+        """
+        if not isfinite(offset_seconds) or offset_seconds < 0.0:
             raise ValueError("Audio-event offset must be non-negative.")
-        metadata = self._get_cache_metadata(offset_seconds)
-        cached_result = self._cache.load(audio, metadata, AudioEventDetectionResult)
+        cache_identity = self._get_cache_identity(offset_seconds)
+        cached_result = self._cache.load(
+            audio, cache_identity, AudioEventDetectionResult
+        )
         if cached_result is not None:
             return cached_result
         try:
-            result, _ = getattr(self._get_model(), "detect")(_get_samples(audio))
+            samples = to_mono_int16(audio, _WAVEFORM_FRAME_RATE)
+            result, _ = getattr(self._get_model(), "detect")(samples)
             timestamps = cast(
                 Mapping[str, Sequence[Sequence[float]]], result["event2timestamps"]
             )
+            missing_events = [
+                event.value for event in AudioEvent if event.value not in timestamps
+            ]
+            if missing_events:
+                raise AudioClassificationInferenceError(
+                    f"FireRed audio-event detection omitted {missing_events}."
+                )
             spans = sorted(
                 (
                     AudioEventSpan(
@@ -300,7 +395,6 @@ class FireRedAudioEventDetector:
                     )
                     for event in AudioEvent
                     for start, end in timestamps.get(event.value, ())
-                    if float(end) > float(start)
                 ),
                 key=lambda span: (span.start, span.end, span.event),
             )
@@ -311,11 +405,43 @@ class FireRedAudioEventDetector:
                 f"FireRed audio-event detection failed: {exc}"
             ) from exc
         output = AudioEventDetectionResult(spans=spans)
-        self._cache.save(audio, metadata, output)
+        self._cache.save(audio, cache_identity, output)
         return output
 
+    def _get_cache_identity(self, offset_seconds: float) -> dict[str, object]:
+        """Get exact model identity and result-affecting settings.
+
+        Arguments:
+            offset_seconds: source-timeline offset added to result spans
+        Returns:
+            configuration identifying reusable audio-event output
+        """
+        return {
+            "model_id": _EVENT_MODEL_ID,
+            "model_revision": _EVENT_MODEL_REVISION,
+            "offset_seconds": offset_seconds,
+            "runtime": {
+                **get_distribution_identity("fireredasr2s"),
+                "source_revision": _FIRERED_RUNTIME_REVISION,
+            },
+            "thresholds": {
+                event.value: threshold for event, threshold in self.thresholds.items()
+            },
+            "use_gpu": self.use_gpu,
+            "waveform_channels": _WAVEFORM_CHANNELS,
+            "waveform_frame_rate": _WAVEFORM_FRAME_RATE,
+            "waveform_sample_width": _WAVEFORM_SAMPLE_WIDTH,
+        }
+
     def _get_model(self) -> object:
-        """Lazily download and load FireRed multi-label VAD."""
+        """Lazily download and load FireRed multi-label VAD.
+
+        Returns:
+            loaded FireRed multi-label VAD model
+        Raises:
+            AudioClassificationDependencyError: if optional dependencies are missing
+            AudioClassificationInferenceError: if the model cannot be loaded
+        """
         if self._model is not None:
             return self._model
         try:
@@ -348,52 +474,31 @@ class FireRedAudioEventDetector:
             ) from exc
         return self._model
 
-    def _get_cache_metadata(self, offset_seconds: float) -> Mapping[str, object]:
-        """Get exact model identity and result-affecting settings."""
-        return {
-            "model_id": _EVENT_MODEL_ID,
-            "model_revision": _EVENT_MODEL_REVISION,
-            "offset_seconds": offset_seconds,
-            "runtime_revision": _FIRERED_RUNTIME_REVISION,
-            "runtime_version": _get_runtime_version(),
-            "thresholds": {
-                event.value: threshold for event, threshold in self.thresholds.items()
-            },
-            "use_gpu": self.use_gpu,
-        }
 
+def _get_float(value: object) -> float:
+    """Convert a FireRed scalar result to float with a clear failure.
 
-def _get_runtime_version() -> str:
-    """Get the installed FireRed runtime version for cache identity."""
-    try:
-        return version("fireredasr2s")
-    except PackageNotFoundError as exc:
-        raise AudioClassificationDependencyError(
-            "Audio classification requires FireRedASR2S. Install Scinoephile "
-            "with the 'transcription' extra."
-        ) from exc
-
-
-def _get_samples(audio: AudioSegment) -> np.ndarray:
-    """Convert audio to the mono 16 kHz signed PCM required by FireRed."""
-    inference_audio = (
-        audio.set_channels(1)
-        .set_frame_rate(_FRAME_RATE)
-        .set_sample_width(_SAMPLE_WIDTH)
-    )
-    return np.asarray(inference_audio.get_array_of_samples(), dtype=np.int16)
+    Arguments:
+        value: raw FireRed scalar value
+    Returns:
+        floating-point value
+    Raises:
+        TypeError: if the value is not numeric text or a numeric scalar
+    """
+    if isinstance(value, bool) or not isinstance(value, (int, float, str)):
+        raise TypeError(f"FireRed returned a nonnumeric scalar: {value!r}")
+    return float(value)
 
 
 def _normalize_language(language: str) -> str:
-    """Normalize FireRed's space-separated Chinese dialect labels."""
+    """Normalize FireRed's space-separated Chinese dialect labels.
+
+    Arguments:
+        language: raw FireRed language label
+    Returns:
+        normalized language label
+    """
     parts = language.strip().lower().replace("_", "-").split()
     if not parts:
         return ""
     return "-".join(parts)
-
-
-def _get_float(value: object) -> float:
-    """Convert a FireRed scalar result to float with a clear failure."""
-    if not isinstance(value, (int, float, str)):
-        raise TypeError(f"FireRed returned a nonnumeric scalar: {value!r}")
-    return float(value)

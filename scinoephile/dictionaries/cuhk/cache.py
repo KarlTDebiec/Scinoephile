@@ -9,7 +9,9 @@ from pathlib import Path
 
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_child_path, val_output_dir_path
+from scinoephile.core.cache.artifact import remove_cache_artifact
 from scinoephile.core.paths import get_runtime_cache_root_path
+from scinoephile.dictionaries.cache_namespace import DictionariesCacheNamespace
 
 __all__ = ["CuhkResponseCache"]
 
@@ -23,20 +25,23 @@ class CuhkResponseCache:
     """Caches CUHK HTTP response bodies."""
 
     def __init__(
-        self, cache_root_path: Path | None, cache_dir_name: str, overwrite: bool = False
+        self,
+        cache_root_path: Path | None,
+        cache_namespace: DictionariesCacheNamespace,
+        overwrite: bool = False,
     ):
         """Initialize.
 
         Arguments:
             cache_root_path: root directory beneath which to cache, or None for default
-            cache_dir_name: cache subdirectory name
+            cache_namespace: registered CUHK response namespace
             overwrite: whether to replace matching cache files
         """
         if cache_root_path is None:
             cache_root_path = get_runtime_cache_root_path()
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which CUHK responses are cached."""
-        self.cache_dir_path = val_output_dir_path(self.cache_root_path / cache_dir_name)
+        self.cache_dir_path = cache_namespace.get_dir_path(self.cache_root_path)
         """Directory in which cached CUHK responses are stored."""
 
         self.overwrite = overwrite
@@ -86,16 +91,17 @@ class CuhkResponseCache:
         cache_path = self.get_path(stem)
         if self.overwrite and cache_path not in self._refreshed_paths:
             self._refreshed_paths.add(cache_path)
-            if cache_path.exists():
-                cache_path.unlink()
+            if remove_cache_artifact(cache_path):
                 logger.info(f"Removed CUHK response cache: {cache_path}")
-        if not cache_path.exists():
+        if not cache_path.is_file() or cache_path.is_symlink():
+            if remove_cache_artifact(cache_path):
+                logger.warning(f"Discarded invalid CUHK response cache: {cache_path}")
             return None
 
         try:
             contents = cache_path.read_text(encoding="utf-8")
         except (OSError, UnicodeError) as exc:
-            cache_path.unlink(missing_ok=True)
+            remove_cache_artifact(cache_path)
             logger.warning(f"Discarded invalid CUHK response cache {cache_path}: {exc}")
             return None
 
@@ -112,9 +118,8 @@ class CuhkResponseCache:
             removed cache path, if present
         """
         cache_path = self.get_path(stem)
-        if not cache_path.exists():
+        if not remove_cache_artifact(cache_path):
             return None
-        cache_path.unlink()
         logger.info(f"Removed CUHK response cache: {cache_path}")
         return cache_path
 
