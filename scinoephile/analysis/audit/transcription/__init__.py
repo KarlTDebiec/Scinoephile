@@ -1,10 +1,8 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Alignment, comparison, and auditing tools.
+"""Portable multi-source transcription alignment audits.
 
 Package hierarchy (modules may import from any above):
-* alignment
-* diff
-* character_error_rate / transcription
-* audit
+* rendering
+* report
 """
