@@ -18,11 +18,7 @@ from .artifact import (
     AlignmentSubtitle,
     TimingSettings,
 )
-from .manifest import (
-    TranscriptionRunBlock,
-    TranscriptionRunManifest,
-    TranscriptionRunProcessor,
-)
+from .manifest import ProcessorIdentity, RunBlock, RunManifest
 from .timing import TimingMetrics, TimingPair
 
 __all__ = [
@@ -32,10 +28,10 @@ __all__ = [
     "AlignmentRow",
     "AlignmentSource",
     "AlignmentSubtitle",
+    "ProcessorIdentity",
+    "RunBlock",
+    "RunManifest",
     "TimingMetrics",
     "TimingPair",
     "TimingSettings",
-    "TranscriptionRunBlock",
-    "TranscriptionRunManifest",
-    "TranscriptionRunProcessor",
 ]
