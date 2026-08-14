@@ -265,6 +265,9 @@ def test_audit_renders_merged_reference_and_boundary_by_default():
     assert "＋" not in report
     assert "temporal micro IoU" in report
     assert "1:1 × 1" in report
+    assert "- whisper CER: 0.000%" in report
+    assert "- mimo CER: 50.000%" in report
+    assert "- merged CER: 0.000%" in report
     assert "## Timing Comparisons" not in report
     assert "CTC speech" not in report
     assert "+100 ms" not in report
@@ -353,6 +356,67 @@ def test_audit_renders_timing_tables_when_requested():
     assert "## Timing Comparisons" in report
     assert "CTC speech" in report
     assert "+100 ms" in report
+
+
+def test_audit_timing_tables_preserve_complete_artifact_indexes():
+    """Filtered timing tables should retain complete-artifact subtitle indexes."""
+    artifact = _get_artifact()
+    first_block = artifact.blocks[0]
+    offset_ms = 3_000
+    second_block = first_block.model_copy(
+        update={
+            "index": 2,
+            "core_start_ms": first_block.core_start_ms + offset_ms,
+            "core_end_ms": first_block.core_end_ms + offset_ms,
+            "buffered_start_ms": first_block.buffered_start_ms + offset_ms,
+            "buffered_end_ms": first_block.buffered_end_ms + offset_ms,
+            "columns": tuple(
+                column.model_copy(
+                    update={
+                        "start_ms": column.start_ms + offset_ms,
+                        "end_ms": column.end_ms + offset_ms,
+                    }
+                )
+                for column in first_block.columns
+            ),
+            "subtitles": tuple(
+                subtitle.model_copy(
+                    update={
+                        "index": 2,
+                        "speech_start_ms": subtitle.speech_start_ms + offset_ms,
+                        "speech_end_ms": subtitle.speech_end_ms + offset_ms,
+                        "start_ms": subtitle.start_ms + offset_ms,
+                        "end_ms": subtitle.end_ms + offset_ms,
+                    }
+                )
+                for subtitle in first_block.subtitles
+            ),
+        }
+    )
+    artifact = AlignmentArtifact.model_validate(
+        {
+            **artifact.model_dump(),
+            "audio_duration_ms": artifact.audio_duration_ms + offset_ms,
+            "blocks": (first_block, second_block),
+        }
+    )
+    reference = Series(
+        events=[
+            Subtitle(start=800, end=2_300, text="係呀"),
+            Subtitle(start=3_800, end=5_300, text="係呀"),
+        ]
+    )
+
+    report = audit_transcription_alignment(
+        artifact,
+        {"reference": reference},
+        first_block=2,
+        last_block=2,
+        include_timing_tables=True,
+    )
+
+    assert "| 2 | 2 | 3.900–5.200 s | 3.800–5.300 s |" in report
+    assert "| 1 | 2 | 3.900–5.200 s | 3.800–5.300 s |" not in report
 
 
 def test_audit_reports_subtitle_range_as_complete_block_context():

@@ -10,7 +10,7 @@ from collections.abc import Callable, Mapping, Sequence
 from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
 from scinoephile.analysis.alignment.timed_msa.models import Token
 from scinoephile.analysis.audit.utils import format_index_range, validate_audit_range
-from scinoephile.analysis.character_error_rate import LineCER
+from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.analysis.transcription.artifact import (
     AlignmentArtifact,
     AlignmentBlock,
@@ -19,7 +19,7 @@ from scinoephile.analysis.transcription.timing import (
     evaluate_timing,
     get_reference_for_alignment,
 )
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.text import normalize_nfkc
 
 from .rendering import render_transcription_alignment_block
@@ -279,22 +279,22 @@ def _get_metric_summary(artifact: AlignmentArtifact, reference: Series) -> list[
         Markdown summary list items
     """
     selected_reference = get_reference_for_alignment(artifact, reference)
-    reference_text = "".join(
-        subtitle.text_with_newline for subtitle in selected_reference
-    )
-    source_texts = {source.name: [] for source in artifact.sources}
+    source_events = {source.name: [] for source in artifact.sources}
     for block in artifact.blocks:
         rows = {row.name: row.text for row in block.rows}
         for source in artifact.sources:
-            row = rows.get(source.name, "")
-            source_texts[source.name].append(row.replace("　", "").replace("・", ""))
-    candidates = {name: "".join(parts) for name, parts in source_texts.items()}
-    candidates["merged"] = "".join(
-        subtitle.text for block in artifact.blocks for subtitle in block.subtitles
-    )
+            text = rows.get(source.name, "").replace("　", "").replace("・", "")
+            if text:
+                source_events[source.name].append(
+                    Subtitle(
+                        start=block.core_start_ms, end=block.core_end_ms, text=text
+                    )
+                )
+    candidates = {name: Series(events=events) for name, events in source_events.items()}
+    candidates["merged"] = artifact.get_series()
     lines = [f"- reference subtitles: {len(selected_reference)}"]
-    for name, candidate_text in candidates.items():
-        result = LineCER(reference_text, candidate_text)
+    for name, candidate in candidates.items():
+        result = SeriesCER(selected_reference, candidate)
         lines.append(f"- {name} CER: {result.cer:.3%}")
     timing = evaluate_timing(artifact, reference)
     group_counts = Counter(
@@ -418,14 +418,20 @@ def _get_timing_comparison_lines(
         Markdown timing-comparison table lines
     """
     timing = evaluate_timing(artifact, reference)
+    candidate_indexes = tuple(
+        subtitle.index for block in artifact.blocks for subtitle in block.subtitles
+    )
     lines = [
         "| Candidate | Reference | Candidate display | Reference display | IoU | "
         "Δ start | Δ end |",
         "| :--- | :--- | :--- | :--- | ---: | ---: | ---: |",
     ]
-    lines.extend(
-        (
-            f"| {','.join(map(str, pair.candidate_indexes))} | "
+    for pair in timing.pairs:
+        candidate_index_text = ",".join(
+            str(candidate_indexes[index - 1]) for index in pair.candidate_indexes
+        )
+        lines.append(
+            f"| {candidate_index_text} | "
             f"{','.join(map(str, pair.reference_indexes))} | "
             f"{pair.candidate_start_ms / 1000:.3f}–"
             f"{pair.candidate_end_ms / 1000:.3f} s | "
@@ -434,8 +440,6 @@ def _get_timing_comparison_lines(
             f"{pair.intersection_over_union:.1%} | "
             f"{pair.start_error_ms:+d} ms | {pair.end_error_ms:+d} ms |"
         )
-        for pair in timing.pairs
-    )
     return lines
 
 
