@@ -36,17 +36,17 @@ def get_series_from_segments(
     """Compile transcribed segments to a subtitle series.
 
     Arguments:
-        segments: Transcribed segments to compile
-        audio: Series audio
-        offset: Time offset to apply
+        segments: transcribed segments to compile
+        audio: series audio
+        offset: time offset to apply
     Returns:
-        Compiled subtitle series
+        compiled subtitle series
     """
     events = []
     for segment in segments:
         event = AudioSubtitle(
-            start=offset + int(segment.start * 1000),
-            end=offset + int(segment.end * 1000),
+            start=offset + round(segment.start * 1000),
+            end=offset + round(segment.end * 1000),
             text=segment.text.strip(),
             segment=segment,
         )

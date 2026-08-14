@@ -10,7 +10,7 @@ from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import TypedDict
 
-from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOperation
+from scinoephile.analysis.alignment import pairwise
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import are_series_one_to_one
@@ -455,7 +455,7 @@ class SeriesDiff:
         two_pos = 0
         one_changed: set[int] = set()
         two_changed: set[int] = set()
-        changed_columns: list[tuple[LineAlignmentOperation, int, int]] = []
+        changed_columns: list[tuple[pairwise.Operation, int, int]] = []
         spans: list[_LineSpan] = []
 
         def flush_changed():
@@ -475,8 +475,8 @@ class SeriesDiff:
             two_changed.clear()
             changed_columns.clear()
 
-        for column in LineAlignment(one_side.text, two_side.text).alignment_pairs:
-            if column.operation == LineAlignmentOperation.MATCH:
+        for column in pairwise.Alignment(one_side.text, two_side.text).columns:
+            if column.operation == pairwise.Operation.MATCH:
                 flush_changed()
             else:
                 changed_columns.append((column.operation, one_pos, two_pos))
@@ -488,7 +488,7 @@ class SeriesDiff:
                     two_changed.update(
                         self._get_changed_line_idxs(two_side, two_pos, column.operation)
                     )
-                if column.operation == LineAlignmentOperation.DELETE:
+                if column.operation == pairwise.Operation.DELETE:
                     two_changed.update(
                         self._get_context_line_idxs(
                             source_side=one_side,
@@ -497,7 +497,7 @@ class SeriesDiff:
                             target_pos=two_pos,
                         )
                     )
-                if column.operation == LineAlignmentOperation.INSERT:
+                if column.operation == pairwise.Operation.INSERT:
                     one_changed.update(
                         self._get_context_line_idxs(
                             source_side=two_side,
@@ -552,8 +552,12 @@ class SeriesDiff:
             )
             if not one_local_idxs and not two_local_idxs:
                 continue
-            one_line_stop = one_local_idxs[0] if one_local_idxs else one_line_pos
-            two_line_stop = two_local_idxs[0] if two_local_idxs else two_line_pos
+            one_line_stop = one_line_pos
+            if one_local_idxs:
+                one_line_stop = one_local_idxs[0]
+            two_line_stop = two_line_pos
+            if two_local_idxs:
+                two_line_stop = two_local_idxs[0]
             if one_local_idxs:
                 if not two_local_idxs:
                     two_line_stop = two_line_pos + (one_line_stop - one_line_pos)
@@ -697,7 +701,7 @@ class SeriesDiff:
 
     @staticmethod
     def _get_changed_line_idxs(
-        side: _SeriesDiffBlockSide, char_pos: int, operation: LineAlignmentOperation
+        side: _SeriesDiffBlockSide, char_pos: int, operation: pairwise.Operation
     ) -> tuple[int, ...]:
         """Get local line indices touched by a changed character.
 
@@ -711,8 +715,8 @@ class SeriesDiff:
         line_idxs = side.char_line_idxs[char_pos]
         char = side.text[char_pos]
         if char == "\n" and operation in {
-            LineAlignmentOperation.DELETE,
-            LineAlignmentOperation.INSERT,
+            pairwise.Operation.DELETE,
+            pairwise.Operation.INSERT,
         }:
             return (line_idxs[-1],)
         return line_idxs
@@ -721,7 +725,7 @@ class SeriesDiff:
         self,
         one_side: _SeriesDiffBlockSide,
         two_side: _SeriesDiffBlockSide,
-        changed_columns: list[tuple[LineAlignmentOperation, int, int]],
+        changed_columns: list[tuple[pairwise.Operation, int, int]],
     ) -> _LineSpan | None:
         """Get changed line spans for a changed separator-only run.
 
@@ -788,7 +792,7 @@ class SeriesDiff:
     def _get_separator_span(
         one_side: _SeriesDiffBlockSide,
         two_side: _SeriesDiffBlockSide,
-        changed_column: tuple[LineAlignmentOperation, int, int],
+        changed_column: tuple[pairwise.Operation, int, int],
     ) -> _LineSpan | None:
         """Get line spans for one changed separator column.
 
@@ -800,11 +804,11 @@ class SeriesDiff:
             line spans if the column is an inserted/deleted separator newline
         """
         operation, one_pos, two_pos = changed_column
-        if operation == LineAlignmentOperation.DELETE:
+        if operation == pairwise.Operation.DELETE:
             return SeriesDiff._get_separator_delete_span(
                 one_side, two_side, one_pos, two_pos
             )
-        if operation == LineAlignmentOperation.INSERT:
+        if operation == pairwise.Operation.INSERT:
             return SeriesDiff._get_separator_insert_span(
                 one_side, two_side, one_pos, two_pos
             )
@@ -965,9 +969,10 @@ class SeriesDiff:
         substring_ratio = 0.0
         if one_compact and two_compact:
             if len(one_compact) <= len(two_compact):
-                substring_ratio = 1.0 if one_compact in two_compact else 0.0
-            else:
-                substring_ratio = 1.0 if two_compact in one_compact else 0.0
+                if one_compact in two_compact:
+                    substring_ratio = 1.0
+            elif two_compact in one_compact:
+                substring_ratio = 1.0
         return max(full_ratio, substring_ratio)
 
     def _split_uncovered_multiline_spans(
@@ -1402,7 +1407,11 @@ class SeriesDiff:
         source_two = list(range(len(two.events)))
 
         def get_nascent_block_cutoff() -> int:
-            """Get latest acceptable start for the nascent block."""
+            """Get latest acceptable start for the nascent block.
+
+            Returns:
+                latest event start time included in the nascent block
+            """
             cutoff = 0
             if nascent_block_one:
                 cutoff = max(cutoff, one.events[nascent_block_one[-1]].end)

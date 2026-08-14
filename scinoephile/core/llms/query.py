@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 from abc import ABC
+from hashlib import sha256
 from typing import ClassVar
 
 from .models import LLMModel, make_hashable
@@ -29,8 +30,13 @@ class Query(LLMModel, ABC):
         """Unique key for the query, with hashable values."""
         data = self.model_dump(mode="json")
         return tuple(
-            make_hashable(data.get(field)) for field in sorted(type(self).model_fields)
+            make_hashable(data[field]) for field in sorted(type(self).model_fields)
         )
+
+    @property
+    def key_sha256(self) -> str:
+        """Get the stable SHA-256 digest of the semantic query key."""
+        return sha256(self.key_str.encode("utf-8")).hexdigest()
 
     @property
     def key_str(self) -> str:

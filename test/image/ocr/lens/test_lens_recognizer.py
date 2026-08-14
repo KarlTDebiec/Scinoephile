@@ -208,7 +208,7 @@ def test_lens_recognizer_caches_results_by_image(
     assert recognizer.recognize_image(image) == "cached\ntext"
 
     assert recognizer.predict_count == 1
-    assert len(list((tmp_path / "google-lens").glob("*.json"))) == 1
+    assert len(list((tmp_path / "image/ocr/lens").glob("*.json"))) == 1
 
 
 def test_lens_recognizer_regenerates_invalid_cache(
@@ -219,7 +219,7 @@ def test_lens_recognizer_regenerates_invalid_cache(
     patch_chrome_lens_py(monkeypatch, recognizer)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
     assert recognizer.recognize_image(image) == "cached\ntext"
-    cache_path = next((tmp_path / "google-lens").glob("*.json"))
+    cache_path = next((tmp_path / "image/ocr/lens").glob("*.json"))
     cache_path.write_text("{}", encoding="utf-8")
 
     assert recognizer.recognize_image(image) == "cached\ntext"
@@ -264,7 +264,7 @@ def test_lens_recognizer_formats_cached_results(
 
     assert recognizer.recognize_image(image) == "cached\ntext"
 
-    cache_path = next((tmp_path / "google-lens").glob("*.json"))
+    cache_path = next((tmp_path / "image/ocr/lens").glob("*.json"))
     cache_path.write_text(
         '{"cache_version": 1, "result": {"lines": ["cached", "..."]}}', encoding="utf-8"
     )
@@ -293,7 +293,7 @@ def test_lens_recognizer_does_not_cache_request_errors(
         recognizer.recognize_image(image)
 
     assert recognizer.predict_count == 3
-    assert not list((tmp_path / "google-lens").glob("*.json"))
+    assert not list((tmp_path / "image/ocr/lens").glob("*.json"))
 
 
 def test_lens_recognizer_retries_request_errors_before_caching(
@@ -321,7 +321,7 @@ def test_lens_recognizer_retries_request_errors_before_caching(
     assert recognizer.recognize_image(image) == "recognized"
 
     assert recognizer.predict_count == 3
-    assert len(list((tmp_path / "google-lens").glob("*.json"))) == 1
+    assert len(list((tmp_path / "image/ocr/lens").glob("*.json"))) == 1
 
 
 def test_lens_recognizer_raises_last_request_error_after_retries(
@@ -350,7 +350,7 @@ def test_lens_recognizer_raises_last_request_error_after_retries(
         recognizer.recognize_image(image)
 
     assert recognizer.predict_count == 3
-    assert not list((tmp_path / "google-lens").glob("*.json"))
+    assert not list((tmp_path / "image/ocr/lens").glob("*.json"))
 
 
 def test_lens_recognizer_retries_in_one_asyncio_run(monkeypatch: MonkeyPatch):

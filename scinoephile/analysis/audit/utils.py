@@ -15,6 +15,7 @@ __all__ = [
     "AuditColumn",
     "AuditResult",
     "format_audit_report",
+    "format_index_range",
     "format_verification_marker",
     "get_contextual_index",
     "get_selected_event_indexes",
@@ -102,7 +103,7 @@ def format_audit_report(
         "",
         *(f"- {item}" for item in summary_items),
     ]
-    index_range = _format_index_range(
+    index_range = format_index_range(
         first_index, last_index, track_name=index_track_name
     )
     if index_range is not None:
@@ -122,6 +123,30 @@ def format_audit_report(
         )
     )
     return "\n".join(lines) + "\n"
+
+
+def format_index_range(
+    first_index: int | None, last_index: int | None, *, track_name: str | None = None
+) -> str | None:
+    """Format an optional subtitle range for a report summary.
+
+    Arguments:
+        first_index: first included one-based subtitle index
+        last_index: last included one-based subtitle index
+        track_name: optional name of the subtitle track whose indexes are selected
+    Returns:
+        formatted range summary, or None if the range is unbounded
+    """
+    if first_index is None and last_index is None:
+        return None
+    range_name = "subtitle"
+    if track_name is not None:
+        range_name = f"{track_name} subtitle"
+    if first_index is None:
+        return f"{range_name} range: through {last_index}"
+    if last_index is None:
+        return f"{range_name} range: from {first_index}"
+    return f"{range_name} range: {first_index} through {last_index}"
 
 
 def format_verification_marker(verified: bool | None) -> str:
@@ -381,30 +406,6 @@ def _format_block_range(first_block: int | None, last_block: int | None) -> str 
     if last_block is None:
         return f"block range: from {first_block}"
     return f"block range: {first_block} through {last_block}"
-
-
-def _format_index_range(
-    first_index: int | None, last_index: int | None, *, track_name: str | None = None
-) -> str | None:
-    """Format an optional subtitle range for a report summary.
-
-    Arguments:
-        first_index: first included one-based subtitle index
-        last_index: last included one-based subtitle index
-        track_name: optional name of the subtitle track whose indexes are selected
-    Returns:
-        formatted range summary, or None if the range is unbounded
-    """
-    if first_index is None and last_index is None:
-        return None
-    range_name = "subtitle"
-    if track_name is not None:
-        range_name = f"{track_name} subtitle"
-    if first_index is None:
-        return f"{range_name} range: through {last_index}"
-    if last_index is None:
-        return f"{range_name} range: from {first_index}"
-    return f"{range_name} range: {first_index} through {last_index}"
 
 
 def _validate_block_range(

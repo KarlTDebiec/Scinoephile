@@ -26,9 +26,6 @@ from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
-from scinoephile.cli.audit.audit_transcription_alignment_cli import (
-    AuditTranscriptionAlignmentCli,
-)
 from scinoephile.cli.audit.audit_translation_cli import AuditTranslationCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
@@ -43,7 +40,6 @@ def test_audit_cli_subcommands():
     assert issubclass(AuditReviewCli, AuditCliBase)
     assert issubclass(AuditReviewDualCli, AuditCliBase)
     assert issubclass(AuditReviewTradCli, AuditCliBase)
-    assert issubclass(AuditTranscriptionAlignmentCli, AuditCliBase)
     assert issubclass(AuditTranslationCli, AuditCliBase)
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
@@ -54,7 +50,6 @@ def test_audit_cli_subcommands():
         "review": AuditReviewCli,
         "review-dual": AuditReviewDualCli,
         "review-trad": AuditReviewTradCli,
-        "transcription-alignment": AuditTranscriptionAlignmentCli,
         "translation": AuditTranslationCli,
     }
 
@@ -678,66 +673,6 @@ def test_transcription_audit_cli_help_describes_subtitle_indexes():
         assert "all includes every decision" in filter_action.help
         assert "changes includes" in filter_action.help
         assert "unverified includes" in filter_action.help
-
-
-def test_transcription_alignment_audit_cli_help_and_validation(
-    tmp_path: Path, capsys: CaptureFixture
-):
-    """Test the alignment audit is registered and validates artifact JSON.
-
-    Arguments:
-        tmp_path: temporary path
-        capsys: pytest stdout/stderr capture fixture
-    """
-    actions = {
-        action.dest: action
-        for action in AuditTranscriptionAlignmentCli.argparser()._actions  # noqa: SLF001
-    }
-    assert actions["first_index"].help == (
-        "first 1-indexed subtitle number to include, inclusive"
-    )
-    assert actions["alignment_path"].required
-    assert actions["reference_specs"].metavar == "NAME=PATH"
-    assert actions["reference_specs"].help == (
-        "named reference subtitle as NAME=PATH; repeat for multiple references"
-    )
-    assert actions["include_timing_tables"].default is False
-    assert actions["include_speaker"].default is False
-    assert actions["include_language"].default is False
-    assert actions["include_merge_support"].default is False
-    assert actions["include_audio_events"].default is False
-
-    invalid_path = tmp_path / "alignment.json"
-    invalid_path.write_text("{}", encoding="utf-8")
-    reference_path = tmp_path / "reference.srt"
-    _write_srt(reference_path, ("係呀",))
-    parsed = AuditTranscriptionAlignmentCli.argparser().parse_args(
-        [
-            "--alignment",
-            str(invalid_path),
-            "--reference",
-            f"zho-Hant={reference_path}",
-            "--reference",
-            f"yue-Hant={reference_path}",
-            "--include-speaker",
-            "--include-language",
-            "--include-merge-support",
-            "--include-audio-events",
-            "--include-timing",
-        ]
-    )
-    assert parsed.reference_specs == [
-        ("zho-Hant", reference_path),
-        ("yue-Hant", reference_path),
-    ]
-    assert parsed.include_speaker is True
-    assert parsed.include_language is True
-    assert parsed.include_merge_support is True
-    assert parsed.include_audio_events is True
-    assert parsed.include_timing_tables is True
-    with raises(SystemExit):
-        run_cli_with_args(AuditTranscriptionAlignmentCli, f"--alignment {invalid_path}")
-    assert "Unable to load transcription alignment artifact" in capsys.readouterr().err
 
 
 def _write_srt(file_path: Path, texts: tuple[str, ...]):
