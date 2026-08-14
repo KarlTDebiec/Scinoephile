@@ -7,6 +7,5 @@ subtitles. Each directory contains the following:
 * `input` directory - authoritative input subtitle files
 * `output` directory - processed output subtitle files
 * `__init__.py` - test fixtures for the test cases in the directory
-* `<title>.py` - script to read in the input files and process them to create the output
-  files
+* a Python generation script - reads the input files and creates the output files
 """
