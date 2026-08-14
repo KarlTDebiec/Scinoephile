@@ -140,6 +140,7 @@ class Transcriber(ABC):
         Returns:
             first usable cached transcription, if present
         """
+        self.last_cache_key_sha256 = None
         segments, _ = self._find_cached_transcription(
             audio, self._get_preprocessing_settings(), is_usable
         )

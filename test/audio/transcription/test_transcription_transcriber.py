@@ -139,6 +139,8 @@ def test_per_audio_cache_identity_is_used_for_cache_lifecycle(tmp_path: Path):
 
     transcriber.remove_cached_transcriptions(audio)
     assert not per_audio_cache_path.exists()
+    assert transcriber.get_cached_transcription(audio) is None
+    assert transcriber.last_cache_key_sha256 is None
 
 
 def test_demucs_runtime_separates_transcription_cache_paths(tmp_path: Path):
