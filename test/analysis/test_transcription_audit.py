@@ -7,7 +7,7 @@ from __future__ import annotations
 from pytest import raises
 
 from scinoephile.analysis.alignment.timed_msa.models import Token
-from scinoephile.analysis.audit.transcription_alignment import (
+from scinoephile.analysis.audit.transcription.report import (
     audit_transcription_alignment,
     render_transcription_alignment_terminal,
 )
