@@ -9,38 +9,29 @@ from collections import Counter
 from collections.abc import Callable, Mapping, Sequence
 from statistics import median
 
+from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
+from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
+from scinoephile.analysis.alignment.timed_msa.models import (
+    AlignmentSequence,
+    Column,
+    Token,
+)
 from scinoephile.analysis.character_error_rate import LineCER
-from scinoephile.analysis.multisequence_alignment import (
-    TimedAlignmentColumn,
-    TimedAlignmentSequence,
-    TimedAlignmentToken,
-    TimedMultiSequenceAligner,
-    TimedMultiSequenceAlignment,
+from scinoephile.analysis.transcription.artifact import (
+    AlignmentArtifact,
+    AlignmentBlock,
 )
-from scinoephile.analysis.transcription_alignment import (
-    TranscriptionAlignmentArtifact,
-    TranscriptionAlignmentBlock,
-)
-from scinoephile.analysis.transcription_timing import (
-    evaluate_transcription_timing,
+from scinoephile.analysis.transcription.timing import (
+    evaluate_timing,
     get_reference_for_alignment,
 )
-from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
-from scinoephile.core.text import AnsiColor, colorize
-from scinoephile.llms.aligned_transcription_merge import (
-    get_aligned_transcription_merge_support_row,
-)
-from scinoephile.llms.aligned_transcription_merge.splitting import (
-    get_alignment_content_spans,
-)
+from scinoephile.core.text import AnsiColor, colorize, is_lexical_character
 
 from .utils import validate_audit_range
 
 __all__ = ["audit_transcription_alignment", "render_transcription_alignment_terminal"]
 
-_BOUNDARY_CHARACTER = "｜"
-_GAP_CHARACTER = "　"
 _MERGE_SUPPORT_CHARACTERS = "０１２３４５６７８９"
 """Fullwidth support levels used in Markdown and as terminal color indexes."""
 _MERGE_SUPPORT_RGB_COLORS = (
@@ -56,16 +47,13 @@ _MERGE_SUPPORT_RGB_COLORS = (
     (0, 168, 63),
 )
 """Red-to-green terminal colors for ascending merge-support levels."""
-_PAUSE_CHARACTER = "・"
-_SECTION_SEPARATOR_CHARACTER = "－"
 
 
 def audit_transcription_alignment(
-    artifact: TranscriptionAlignmentArtifact,
+    artifact: AlignmentArtifact,
     references: Mapping[str, Series] | None = None,
     *,
-    reference_similarity: Callable[[TimedAlignmentToken, TimedAlignmentToken], float]
-    | None = None,
+    reference_similarity: Callable[[Token, Token], float] | None = None,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -117,16 +105,13 @@ def audit_transcription_alignment(
         f"- selected VAD blocks: {len(blocks)}",
         f"- selected merged subtitles: {sum(len(block.subtitles) for block in blocks)}",
         f"- references: {', '.join(named_references) or 'none'}",
-        f"- pause encoding: one {_PAUSE_CHARACTER} per {artifact.pause_unit_ms} ms",
-        (
-            "- merge request boundary: "
-            f"{artifact.request_pause_columns} consecutive {_PAUSE_CHARACTER}"
-        ),
+        f"- pause encoding: one ・ per {artifact.pause_unit_ms} ms",
+        (f"- merge request boundary: {artifact.request_pause_columns} consecutive ・"),
     ]
     if include_merge_support:
         lines.append(
-            "- merge support: ０=no successful ASR source; "
-            "９=all successful ASR sources"
+            "- exact merge support: ０=no matching successful ASR source; "
+            "９=all successful ASR sources match"
         )
     selected_artifact = artifact.model_copy(update={"blocks": tuple(blocks)})
     for reference_name, reference in named_references.items():
@@ -142,9 +127,9 @@ def audit_transcription_alignment(
     lines.extend(("", "## Alignments", ""))
     if reference_similarity is None:
         reference_similarity = _get_token_similarity
-    aligner = TimedMultiSequenceAligner(reference_similarity)
+    aligner = Aligner(reference_similarity)
     for block in blocks:
-        lines.extend((f"### Block {block.index}",))
+        lines.append(f"### Block {block.index}")
         if block.source_errors:
             errors = "; ".join(
                 f"{name}: {error}" for name, error in block.source_errors.items()
@@ -161,7 +146,6 @@ def audit_transcription_alignment(
             block,
             block_references,
             aligner,
-            language=artifact.language,
             request_pause_columns=artifact.request_pause_columns,
             include_audio_events=include_audio_events,
             include_language=include_language,
@@ -173,12 +157,11 @@ def audit_transcription_alignment(
 
 
 def render_transcription_alignment_terminal(
-    artifact: TranscriptionAlignmentArtifact,
+    artifact: AlignmentArtifact,
     references: Mapping[str, Series] | None = None,
     *,
     authoritative_row_name: str = "merged",
-    reference_similarity: Callable[[TimedAlignmentToken, TimedAlignmentToken], float]
-    | None = None,
+    reference_similarity: Callable[[Token, Token], float] | None = None,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -230,7 +213,7 @@ def render_transcription_alignment_terminal(
     )
     if reference_similarity is None:
         reference_similarity = _get_token_similarity
-    aligner = TimedMultiSequenceAligner(reference_similarity)
+    aligner = Aligner(reference_similarity)
     lines = [f"Authority: {authoritative_row_name}"]
     for block in blocks:
         lines.extend(("", f"Block {block.index}"))
@@ -249,7 +232,6 @@ def render_transcription_alignment_terminal(
                 block,
                 block_references,
                 aligner,
-                language=artifact.language,
                 request_pause_columns=artifact.request_pause_columns,
                 include_audio_events=include_audio_events,
                 include_language=include_language,
@@ -262,7 +244,7 @@ def render_transcription_alignment_terminal(
 
 
 def _get_named_references(
-    artifact: TranscriptionAlignmentArtifact, references: Mapping[str, Series] | None
+    artifact: AlignmentArtifact, references: Mapping[str, Series] | None
 ) -> dict[str, Series]:
     """Validate and copy optional named audit references."""
     named_references = dict(references or {})
@@ -283,7 +265,7 @@ def _get_named_references(
     return named_references
 
 
-def _get_merged_subtitle_lines(block: TranscriptionAlignmentBlock) -> list[str]:
+def _get_merged_subtitle_lines(block: AlignmentBlock) -> list[str]:
     """Get a table of merged subtitle speech and display timing."""
     lines = [
         "| Index | CTC speech | SRT display | Speaker | Text |",
@@ -302,10 +284,10 @@ def _get_merged_subtitle_lines(block: TranscriptionAlignmentBlock) -> list[str]:
 
 
 def _get_timing_comparison_lines(
-    artifact: TranscriptionAlignmentArtifact, reference: Series
+    artifact: AlignmentArtifact, reference: Series
 ) -> list[str]:
     """Get text-aligned candidate/reference timing comparisons."""
-    timing = evaluate_transcription_timing(artifact, reference)
+    timing = evaluate_timing(artifact, reference)
     lines = [
         "| Candidate | Reference | Candidate display | Reference display | IoU | "
         "Δ start | Δ end |",
@@ -327,9 +309,7 @@ def _get_timing_comparison_lines(
     return lines
 
 
-def _get_metric_summary(
-    artifact: TranscriptionAlignmentArtifact, reference: Series
-) -> list[str]:
+def _get_metric_summary(artifact: AlignmentArtifact, reference: Series) -> list[str]:
     """Get CER and timing summary lines for selected blocks."""
     selected_reference = get_reference_for_alignment(artifact, reference)
     reference_text = "".join(
@@ -340,9 +320,7 @@ def _get_metric_summary(
         rows = {row.name: row.text for row in block.rows}
         for source in artifact.sources:
             row = rows.get(source.name, "")
-            source_texts[source.name].append(
-                row.replace(_GAP_CHARACTER, "").replace(_PAUSE_CHARACTER, "")
-            )
+            source_texts[source.name].append(row.replace("　", "").replace("・", ""))
     candidates = {name: "".join(parts) for name, parts in source_texts.items()}
     candidates["merged"] = "".join(
         subtitle.text for block in artifact.blocks for subtitle in block.subtitles
@@ -351,7 +329,7 @@ def _get_metric_summary(
     for name, candidate_text in candidates.items():
         result = LineCER(reference_text, candidate_text)
         lines.append(f"- {name} CER: {result.cer:.3%}")
-    timing = evaluate_transcription_timing(artifact, reference)
+    timing = evaluate_timing(artifact, reference)
     group_counts = Counter(
         f"{len(pair.candidate_indexes)}:{len(pair.reference_indexes)}"
         for pair in timing.pairs
@@ -394,13 +372,13 @@ def _get_metric_summary(
 
 
 def _get_selected_blocks(
-    blocks: Sequence[TranscriptionAlignmentBlock],
+    blocks: Sequence[AlignmentBlock],
     *,
     first_index: int | None,
     last_index: int | None,
     first_block: int | None,
     last_block: int | None,
-) -> list[TranscriptionAlignmentBlock]:
+) -> list[AlignmentBlock]:
     """Select artifact blocks by their original block or subtitle indexes."""
     selected = []
     for block in blocks:
@@ -421,11 +399,10 @@ def _get_selected_blocks(
 
 
 def _render_block(
-    block: TranscriptionAlignmentBlock,
+    block: AlignmentBlock,
     references: Mapping[str, Series],
-    aligner: TimedMultiSequenceAligner,
+    aligner: Aligner,
     *,
-    language: Language,
     request_pause_columns: int,
     include_audio_events: bool,
     include_language: bool,
@@ -434,15 +411,13 @@ def _render_block(
     authoritative_row_name: str | None = None,
 ) -> str:
     """Reconstruct and render one artifact block with named references."""
-    artifact_rows = (*block.rows,)
-    row_names = tuple(row.name for row in artifact_rows) + ("merged",)
-    row_texts = tuple(row.text for row in artifact_rows) + (block.merged,)
+    row_names = tuple(row.name for row in block.rows) + ("merged",)
+    row_texts = tuple(row.text for row in block.rows) + (block.merged,)
     lexical_columns = []
     pause_intervals_by_profile_boundary: dict[int, list[tuple[float, float]]] = {}
     profile_column_anchor_ids = []
     annotation_rows = _get_annotation_rows(
         block,
-        language,
         include_audio_events=include_audio_events,
         include_language=include_language,
         include_merge_support=include_merge_support,
@@ -459,22 +434,18 @@ def _render_block(
         for row_text in row_texts:
             character = row_text[column_idx]
             token = None
-            if character != _GAP_CHARACTER:
-                token = TimedAlignmentToken(
-                    character, column.start_ms / 1000, column.end_ms / 1000
-                )
+            if character != "　":
+                token = Token(character, column.start_ms / 1000, column.end_ms / 1000)
                 annotations_by_token_id[id(token)] = tuple(
                     row[column_idx] for _, row in annotation_rows
                 )
             tokens.append(token)
-        lexical_column = TimedAlignmentColumn(tuple(tokens))
+        lexical_column = Column(tuple(tokens))
         lexical_columns.append(lexical_column)
         profile_column_anchor_ids.append(
             id(next(token for token in lexical_column.tokens if token is not None))
         )
-    alignment = TimedMultiSequenceAlignment(
-        source_names=row_names, columns=tuple(lexical_columns)
-    )
+    alignment = Alignment(source_names=row_names, columns=tuple(lexical_columns))
 
     for reference_name, reference in references.items():
         reference_sequence = _get_reference_sequence(reference_name, reference)
@@ -499,7 +470,7 @@ def _render_block(
         for name in (*alignment.source_names, *(name for name, _ in annotation_rows))
     )
     rendered_chunks = []
-    content_spans = get_alignment_content_spans(
+    content_spans = _get_content_spans(
         tuple(column.is_pause for column in alignment.columns), request_pause_columns
     )
     for chunk_start, chunk_end in content_spans:
@@ -507,7 +478,6 @@ def _render_block(
         rendered_chunk = _render_chunk(
             columns,
             alignment,
-            artifact_source_count=len(artifact_rows),
             annotation_rows=annotation_rows,
             annotations_by_token_id=annotations_by_token_id,
             marker_source_indexes_by_column_id=marker_source_indexes_by_column_id,
@@ -521,10 +491,9 @@ def _render_block(
 
 
 def _render_chunk(
-    columns: Sequence[TimedAlignmentColumn],
-    alignment: TimedMultiSequenceAlignment,
+    columns: Sequence[Column],
+    alignment: Alignment,
     *,
-    artifact_source_count: int,
     annotation_rows: Sequence[tuple[str, str]],
     annotations_by_token_id: dict[int, tuple[str, ...]],
     marker_source_indexes_by_column_id: dict[int, frozenset[int]],
@@ -533,10 +502,11 @@ def _render_chunk(
     label_width: int,
 ) -> str | None:
     """Render one long-pause-delimited alignment chunk."""
+    profile_source_count = alignment.source_names.index("merged") + 1
     if not any(
         token is not None
         for column in columns
-        for token in column.tokens[:artifact_source_count]
+        for token in column.tokens[:profile_source_count]
     ):
         return None
 
@@ -550,9 +520,7 @@ def _render_chunk(
     lines = []
     for source_idx, source_name in enumerate(alignment.source_names):
         if source_name == "merged":
-            lines.append(
-                " " * (label_width + 2) + _SECTION_SEPARATOR_CHARACTER * len(columns)
-            )
+            lines.append(" " * (label_width + 2) + "－" * len(columns))
         cells = []
         for column in columns:
             cell = _get_alignment_cell(
@@ -578,7 +546,7 @@ def _render_chunk(
 
 
 def _get_rendered_annotation_lines(
-    columns: Sequence[TimedAlignmentColumn],
+    columns: Sequence[Column],
     annotation_rows: Sequence[tuple[str, str]],
     annotations_by_token_id: dict[int, tuple[str, ...]],
     *,
@@ -608,8 +576,7 @@ def _get_rendered_annotation_lines(
 
 
 def _get_annotation_rows(
-    block: TranscriptionAlignmentBlock,
-    language: Language,
+    block: AlignmentBlock,
     *,
     include_audio_events: bool,
     include_language: bool,
@@ -621,14 +588,7 @@ def _get_annotation_rows(
     if include_speaker:
         rows.append(("speaker", block.speaker))
     if include_merge_support:
-        rows.append(
-            (
-                "support",
-                get_aligned_transcription_merge_support_row(
-                    tuple(row.text for row in block.rows), block.merged, language
-                ),
-            )
-        )
+        rows.append(("support", _get_merge_support_row(block)))
     if include_language and block.language_trace is not None:
         rows.append(("language", block.language_trace))
     if include_audio_events:
@@ -644,25 +604,25 @@ def _get_annotation_rows(
 
 
 def _get_alignment_cell(
-    column: TimedAlignmentColumn,
+    column: Column,
     source_idx: int,
     marker_source_indexes_by_column_id: dict[int, frozenset[int]],
 ) -> str:
     """Get one displayed cell from an augmented audit alignment."""
     if column.is_marker:
         if source_idx in marker_source_indexes_by_column_id[id(column)]:
-            return _BOUNDARY_CHARACTER
-        return _GAP_CHARACTER
+            return "｜"
+        return "　"
     if column.is_pause:
-        return _PAUSE_CHARACTER
+        return "・"
     token = column.tokens[source_idx]
     if token is None:
-        return _GAP_CHARACTER
+        return "　"
     return token.text
 
 
 def _get_alignment_cell_color(
-    column: TimedAlignmentColumn,
+    column: Column,
     source_idx: int,
     authoritative_source_idx: int,
     marker_source_indexes_by_column_id: dict[int, frozenset[int]],
@@ -671,7 +631,7 @@ def _get_alignment_cell_color(
     """Get a cell color relative to one authoritative alignment row."""
     cell = _get_alignment_cell(column, source_idx, marker_source_indexes_by_column_id)
     color = None
-    if cell != _GAP_CHARACTER:
+    if cell != "　":
         authoritative_cell = _get_alignment_cell(
             column, authoritative_source_idx, marker_source_indexes_by_column_id
         )
@@ -679,7 +639,7 @@ def _get_alignment_cell_color(
             color = AnsiColor.PURPLE
             if _get_comparison_cell(cell) == _get_comparison_cell(authoritative_cell):
                 color = AnsiColor.GREEN
-            elif authoritative_cell == _GAP_CHARACTER:
+            elif authoritative_cell == "　":
                 color = AnsiColor.BLUE
         else:
             if authoritative_peer_source_indexes is None:
@@ -701,15 +661,14 @@ def _get_alignment_cell_color(
                 for other_cell in other_cells
             ):
                 color = AnsiColor.GREEN
-            elif any(other_cell != _GAP_CHARACTER for other_cell in other_cells):
+            elif any(other_cell != "　" for other_cell in other_cells):
                 color = AnsiColor.PURPLE
     return color
 
 
 def _get_alignment_with_track_markers(
-    alignment: TimedMultiSequenceAlignment,
-    markers_by_source: dict[str, tuple[tuple[int, float], ...]],
-) -> tuple[TimedMultiSequenceAlignment, dict[int, frozenset[int]]]:
+    alignment: Alignment, markers_by_source: dict[str, tuple[tuple[int, float], ...]]
+) -> tuple[Alignment, dict[int, frozenset[int]]]:
     """Insert and collapse row-owned markers at aligned lexical boundaries."""
     markers_by_boundary: dict[int, dict[int, list[float]]] = {}
     for source_name, markers in markers_by_source.items():
@@ -745,9 +704,9 @@ def _get_alignment_with_track_markers(
                 markers_at_boundary[source_idx][marker_idx]
                 for source_idx in marker_source_indexes
             ]
-            marker_column = TimedAlignmentColumn(
+            marker_column = Column(
                 (None,) * len(alignment.source_names),
-                marker=_BOUNDARY_CHARACTER,
+                marker="｜",
                 marker_time_seconds=median(marker_times),
             )
             output_columns.append(marker_column)
@@ -757,18 +716,16 @@ def _get_alignment_with_track_markers(
         if boundary < len(alignment.columns):
             output_columns.append(alignment.columns[boundary])
     return (
-        TimedMultiSequenceAlignment(
-            source_names=alignment.source_names, columns=tuple(output_columns)
-        ),
+        Alignment(source_names=alignment.source_names, columns=tuple(output_columns)),
         marker_source_indexes_by_column_id,
     )
 
 
 def _get_alignment_with_profile_pauses(
-    alignment: TimedMultiSequenceAlignment,
+    alignment: Alignment,
     profile_column_anchor_ids: tuple[int, ...],
     pause_intervals_by_profile_boundary: Mapping[int, Sequence[tuple[float, float]]],
-) -> TimedMultiSequenceAlignment:
+) -> Alignment:
     """Restore artifact pauses at their fixed production profile boundaries."""
     if not pause_intervals_by_profile_boundary:
         return alignment
@@ -792,7 +749,7 @@ def _get_alignment_with_profile_pauses(
     output_columns = []
     for boundary in range(len(alignment.columns) + 1):
         output_columns.extend(
-            TimedAlignmentColumn(
+            Column(
                 (None,) * len(alignment.source_names),
                 pause_interval_seconds=pause_interval,
             )
@@ -800,23 +757,57 @@ def _get_alignment_with_profile_pauses(
         )
         if boundary < len(alignment.columns):
             output_columns.append(alignment.columns[boundary])
-    return TimedMultiSequenceAlignment(
-        source_names=alignment.source_names, columns=tuple(output_columns)
-    )
+    return Alignment(source_names=alignment.source_names, columns=tuple(output_columns))
 
 
 def _get_alignment_characters(text: str) -> tuple[str, ...]:
     """Get lexical characters that participate in the displayed alignment."""
-    return tuple(
-        character
-        for character in text
-        if not unicodedata.category(character).startswith(("C", "P", "S", "Z"))
-    )
+    return tuple(character for character in text if is_lexical_character(character))
 
 
 def _get_comparison_cell(character: str) -> str:
     """Normalize compatibility-width variants for visible diff comparison."""
     return unicodedata.normalize("NFKC", character)
+
+
+def _get_content_spans(
+    shared_pause_columns: Sequence[bool], separator_columns: int
+) -> tuple[tuple[int, int], ...]:
+    """Get content spans between long shared-pause separators.
+
+    Arguments:
+        shared_pause_columns: whether each alignment column is a shared pause
+        separator_columns: minimum consecutive pauses separating content spans
+    Returns:
+        inclusive-start, exclusive-end content spans
+    Raises:
+        ValueError: if the separator threshold is not positive
+    """
+    if separator_columns <= 0:
+        raise ValueError("Alignment separator column count must be positive.")
+
+    separator_spans = []
+    run_start: int | None = None
+    for column_idx, is_shared_pause in enumerate((*shared_pause_columns, False)):
+        if is_shared_pause:
+            if run_start is None:
+                run_start = column_idx
+            continue
+        if run_start is None:
+            continue
+        if column_idx - run_start >= separator_columns:
+            separator_spans.append((run_start, column_idx))
+        run_start = None
+
+    content_spans = []
+    content_start = 0
+    for separator_start, separator_end in separator_spans:
+        if content_start < separator_start:
+            content_spans.append((content_start, separator_start))
+        content_start = separator_end
+    if content_start < len(shared_pause_columns):
+        content_spans.append((content_start, len(shared_pause_columns)))
+    return tuple(content_spans)
 
 
 def _get_display_cell(character: str) -> str:
@@ -838,47 +829,71 @@ def _get_merge_support_display_cell(character: str) -> str:
         return _get_display_cell(character)
     support_level = _MERGE_SUPPORT_CHARACTERS.index(character)
     red, green, blue = _MERGE_SUPPORT_RGB_COLORS[support_level]
-    return f"\x1b[48;2;{red};{green};{blue}m{_GAP_CHARACTER}{AnsiColor.RESET.value}"
+    return f"\x1b[48;2;{red};{green};{blue}m　{AnsiColor.RESET.value}"
+
+
+def _get_merge_support_row(block: AlignmentBlock) -> str:
+    """Get normalized exact source agreement for each merged column.
+
+    Arguments:
+        block: alignment block containing successful source and merged rows
+    Returns:
+        fullwidth support digits, gaps, and shared pause characters
+    """
+    source_count = len(block.rows)
+    output = []
+    for column_idx, merged_character in enumerate(block.merged):
+        if merged_character in {"　", "・"}:
+            output.append(merged_character)
+            continue
+        matching_source_count = sum(
+            _get_comparison_cell(row.text[column_idx])
+            == _get_comparison_cell(merged_character)
+            for row in block.rows
+        )
+        support_level = 0
+        if source_count:
+            support_level = int(
+                matching_source_count
+                / source_count
+                * (len(_MERGE_SUPPORT_CHARACTERS) - 1)
+                + 0.5
+            )
+        output.append(_MERGE_SUPPORT_CHARACTERS[support_level])
+    return "".join(output)
 
 
 def _get_annotation_cell(
-    column: TimedAlignmentColumn,
+    column: Column,
     annotations_by_token_id: dict[int, tuple[str, ...]],
     annotation_idx: int,
 ) -> str:
     """Project one stored annotation row through added reference columns."""
     if column.is_marker:
-        return _GAP_CHARACTER
+        return "　"
     if column.is_pause:
-        return _PAUSE_CHARACTER
+        return "・"
     for token in column.tokens:
         if token is not None and id(token) in annotations_by_token_id:
             return annotations_by_token_id[id(token)][annotation_idx]
-    return _GAP_CHARACTER
+    return "　"
 
 
 def _get_reference_sequence(
     reference_name: str, reference: Series
-) -> TimedAlignmentSequence:
+) -> AlignmentSequence:
     """Convert reference subtitles into approximately timed lexical characters."""
-    tokens = []
-    for subtitle in reference:
-        characters = _get_alignment_characters(subtitle.text_with_newline)
-        if not characters:
-            continue
-        step_seconds = (subtitle.end - subtitle.start) / 1000 / len(characters)
-        for character_idx, character in enumerate(characters):
-            start_seconds = subtitle.start / 1000 + character_idx * step_seconds
-            tokens.append(
-                TimedAlignmentToken(
-                    character, start_seconds, start_seconds + step_seconds
-                )
-            )
-    return TimedAlignmentSequence(reference_name, tuple(tokens))
+    return AlignmentSequence.from_timed_texts(
+        reference_name,
+        (
+            (subtitle.text_with_newline, subtitle.start / 1000, subtitle.end / 1000)
+            for subtitle in reference
+        ),
+    )
 
 
 def _get_track_markers(
-    block: TranscriptionAlignmentBlock, references: Mapping[str, Series]
+    block: AlignmentBlock, references: Mapping[str, Series]
 ) -> dict[str, tuple[tuple[int, float], ...]]:
     """Get subtitle-end token counts and times for each boundary-owning row."""
     merged_token_count = 0
@@ -899,7 +914,7 @@ def _get_track_markers(
     return markers_by_source
 
 
-def _get_token_similarity(one: TimedAlignmentToken, two: TimedAlignmentToken) -> float:
+def _get_token_similarity(one: Token, two: Token) -> float:
     """Score audit-only reference alignment using text and overall timing."""
     lexical_score = -2.0
     if _get_comparison_cell(one.text) == _get_comparison_cell(two.text):

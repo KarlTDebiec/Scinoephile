@@ -30,7 +30,7 @@ class Query(LLMModel, ABC):
         """Unique key for the query, with hashable values."""
         data = self.model_dump(mode="json")
         return tuple(
-            make_hashable(data.get(field)) for field in sorted(type(self).model_fields)
+            make_hashable(data[field]) for field in sorted(type(self).model_fields)
         )
 
     @property

@@ -1,128 +1,27 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of portable transcription alignment artifacts and timing evaluation."""
+"""Tests of portable transcription alignment audits."""
 
 from __future__ import annotations
 
-from pathlib import Path
+from pytest import raises
 
-from pytest import approx, raises
-
+from scinoephile.analysis.alignment.timed_msa.models import Token
 from scinoephile.analysis.audit.transcription_alignment import (
     audit_transcription_alignment,
     render_transcription_alignment_terminal,
 )
-from scinoephile.analysis.multisequence_alignment import TimedAlignmentToken
-from scinoephile.analysis.transcription_alignment import (
-    SubtitleTimingSettings,
-    TranscriptionAlignmentArtifact,
-    TranscriptionAlignmentBlock,
-    TranscriptionAlignmentColumn,
-    TranscriptionAlignmentRow,
-    TranscriptionAlignmentSource,
-    TranscriptionAlignmentSubtitle,
-)
-from scinoephile.analysis.transcription_timing import (
-    evaluate_transcription_timing,
-    get_display_intervals,
-    get_transcription_alignment_with_timing,
+from scinoephile.analysis.transcription.artifact import (
+    AlignmentArtifact,
+    AlignmentBlock,
+    AlignmentColumn,
+    AlignmentRow,
+    AlignmentSource,
+    AlignmentSubtitle,
+    TimingSettings,
 )
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
-
-
-def test_artifact_round_trip_preserves_canonical_schema(tmp_path: Path):
-    """A saved artifact should validate and reconstruct its merged series."""
-    artifact = _get_artifact()
-    artifact_path = tmp_path / "alignment.json"
-
-    artifact.save(artifact_path)
-    loaded = TranscriptionAlignmentArtifact.load(artifact_path)
-
-    assert loaded == artifact
-    assert loaded.version == 3
-    assert loaded.get_series()[0].text == "係呀"
-    assert loaded.blocks[0].subtitles[0].timing_source == "unknown"
-    assert loaded.get_series()[0].start == 900
-    assert loaded.get_series()[0].end == 2200
-
-
-def test_artifact_rejects_missing_source_without_error():
-    """Every absent expected source row should have a diagnostic."""
-    artifact = _get_artifact()
-    incomplete_block = artifact.blocks[0].model_copy(
-        update={"rows": artifact.blocks[0].rows[:1]}
-    )
-
-    with raises(ValueError, match="absent alignment source"):
-        TranscriptionAlignmentArtifact(
-            language=artifact.language,
-            audio_duration_ms=artifact.audio_duration_ms,
-            sources=artifact.sources,
-            blocks=(incomplete_block,),
-        )
-
-
-def test_block_rejects_invalid_speaker_and_inconsistent_pause_rows():
-    """Portable blocks should enforce their production annotation contract."""
-    block_data = _get_artifact().blocks[0].model_dump()
-    with raises(ValueError, match="invalid character"):
-        TranscriptionAlignmentBlock.model_validate({**block_data, "speaker": "Ａ-Ａ"})
-
-    rows = block_data["rows"]
-    rows[0]["text"] = "係　呀"
-    with raises(ValueError, match="shared by ASR rows"):
-        TranscriptionAlignmentBlock.model_validate({**block_data, "rows": rows})
-
-
-def test_display_intervals_apply_global_padding_without_overlap():
-    """Display padding should remain bounded by neighboring speech midpoints."""
-    intervals = get_display_intervals(
-        [(1.0, 1.1), (1.4, 1.5)],
-        3.0,
-        SubtitleTimingSettings(
-            lead_in_seconds=0.2, lead_out_seconds=0.2, minimum_duration_seconds=0.3
-        ),
-    )
-
-    assert intervals[0][0] == approx(0.8)
-    assert intervals[0][1] <= intervals[1][0]
-    assert intervals[1][1] == approx(1.7)
-
-
-def test_timing_evaluation_pairs_text_before_scoring_overlap():
-    """Timing evaluation should compare text-aligned candidate/reference groups."""
-    artifact = _get_artifact()
-    reference = Series(events=[Subtitle(start=800, end=2300, text="係呀")])
-
-    metrics = evaluate_transcription_timing(artifact, reference)
-
-    assert len(metrics.pairs) == 1
-    assert metrics.micro_intersection_over_union == approx(1300 / 1500)
-    assert metrics.one_to_one_micro_intersection_over_union == approx(1300 / 1500)
-    assert metrics.pairs[0].start_error_ms == 100
-    assert metrics.pairs[0].end_error_ms == -100
-    assert metrics.mean_start_error_ms == 100
-    assert metrics.mean_end_error_ms == -100
-
-
-def test_artifact_can_be_retimed_without_changing_text_or_speech_bounds():
-    """Global timing experiments should modify only display bounds and policy."""
-    artifact = _get_artifact()
-    settings = SubtitleTimingSettings(
-        lead_in_seconds=0.25, lead_out_seconds=0.5, minimum_duration_seconds=1.0
-    )
-
-    retimed = get_transcription_alignment_with_timing(artifact, settings)
-
-    original_subtitle = artifact.blocks[0].subtitles[0]
-    retimed_subtitle = retimed.blocks[0].subtitles[0]
-    assert retimed.timing == settings
-    assert retimed_subtitle.text == original_subtitle.text
-    assert retimed_subtitle.speech_start_ms == original_subtitle.speech_start_ms
-    assert retimed_subtitle.speech_end_ms == original_subtitle.speech_end_ms
-    assert retimed_subtitle.start_ms == 750
-    assert retimed_subtitle.end_ms == 2500
 
 
 def test_audit_renders_merged_reference_and_boundary_by_default():
@@ -174,31 +73,24 @@ def test_terminal_alignment_colors_rows_against_merged_authority():
     block = artifact.blocks[0].model_copy(
         update={
             "columns": (
-                TranscriptionAlignmentColumn(
-                    index=1, start_ms=1_000, end_ms=1_200, kind="text"
-                ),
-                TranscriptionAlignmentColumn(
-                    index=2, start_ms=1_200, end_ms=1_400, kind="text"
-                ),
-                TranscriptionAlignmentColumn(
-                    index=3, start_ms=1_400, end_ms=1_600, kind="text"
-                ),
-                TranscriptionAlignmentColumn(
-                    index=4, start_ms=1_600, end_ms=1_800, kind="text"
-                ),
+                AlignmentColumn(index=1, start_ms=1_000, end_ms=1_200, kind="text"),
+                AlignmentColumn(index=2, start_ms=1_200, end_ms=1_400, kind="text"),
+                AlignmentColumn(index=3, start_ms=1_400, end_ms=1_600, kind="text"),
+                AlignmentColumn(index=4, start_ms=1_600, end_ms=1_800, kind="text"),
             ),
             "rows": (
-                TranscriptionAlignmentRow(name="whisper", text="甲丙　戊"),
-                TranscriptionAlignmentRow(name="mimo", text="甲　　　"),
+                AlignmentRow(name="whisper", text="甲丙　戊"),
+                AlignmentRow(name="mimo", text="甲　　　"),
             ),
             "speaker": "ＡＡＡＡ",
             "merged": "甲乙丁　",
             "subtitles": (
-                TranscriptionAlignmentSubtitle(
+                AlignmentSubtitle(
                     index=1,
                     text="甲乙丁",
                     speech_start_ms=1_000,
                     speech_end_ms=1_600,
+                    timing_source="source",
                     start_ms=900,
                     end_ms=1_900,
                 ),
@@ -252,22 +144,21 @@ def test_terminal_alignment_colors_compatibility_width_matches_green():
     block = artifact.blocks[0].model_copy(
         update={
             "columns": (
-                TranscriptionAlignmentColumn(
-                    index=1, start_ms=1_000, end_ms=1_200, kind="text"
-                ),
+                AlignmentColumn(index=1, start_ms=1_000, end_ms=1_200, kind="text"),
             ),
             "rows": (
-                TranscriptionAlignmentRow(name="whisper", text="J"),
-                TranscriptionAlignmentRow(name="mimo", text="Ｊ"),
+                AlignmentRow(name="whisper", text="J"),
+                AlignmentRow(name="mimo", text="Ｊ"),
             ),
             "speaker": "Ａ",
             "merged": "Ｊ",
             "subtitles": (
-                TranscriptionAlignmentSubtitle(
+                AlignmentSubtitle(
                     index=1,
                     text="Ｊ",
                     speech_start_ms=1_000,
                     speech_end_ms=1_200,
+                    timing_source="source",
                     start_ms=900,
                     end_ms=1_300,
                 ),
@@ -291,28 +182,23 @@ def test_terminal_reference_deletion_ignores_asr_matches():
     block = artifact.blocks[0].model_copy(
         update={
             "columns": (
-                TranscriptionAlignmentColumn(
-                    index=1, start_ms=1_000, end_ms=1_200, kind="text"
-                ),
-                TranscriptionAlignmentColumn(
-                    index=2, start_ms=1_200, end_ms=1_400, kind="text"
-                ),
-                TranscriptionAlignmentColumn(
-                    index=3, start_ms=1_400, end_ms=1_600, kind="text"
-                ),
+                AlignmentColumn(index=1, start_ms=1_000, end_ms=1_200, kind="text"),
+                AlignmentColumn(index=2, start_ms=1_200, end_ms=1_400, kind="text"),
+                AlignmentColumn(index=3, start_ms=1_400, end_ms=1_600, kind="text"),
             ),
             "rows": (
-                TranscriptionAlignmentRow(name="whisper", text="甲唉乙"),
-                TranscriptionAlignmentRow(name="mimo", text="甲　乙"),
+                AlignmentRow(name="whisper", text="甲唉乙"),
+                AlignmentRow(name="mimo", text="甲　乙"),
             ),
             "speaker": "ＡＡＡ",
             "merged": "甲　乙",
             "subtitles": (
-                TranscriptionAlignmentSubtitle(
+                AlignmentSubtitle(
                     index=1,
                     text="甲乙",
                     speech_start_ms=1_000,
                     speech_end_ms=1_600,
+                    timing_source="source",
                     start_ms=900,
                     end_ms=1_700,
                 ),
@@ -355,50 +241,44 @@ def test_audit_renders_timing_tables_when_requested():
 def test_audit_preserves_artifact_pause_boundary_despite_column_timing():
     """Reference augmentation should not move a production pause across text."""
     artifact = _get_artifact()
-    block = TranscriptionAlignmentBlock(
+    block = AlignmentBlock(
         index=1,
         core_start_ms=0,
         core_end_ms=1_500,
         buffered_start_ms=0,
         buffered_end_ms=1_500,
         columns=(
-            TranscriptionAlignmentColumn(
-                index=1, start_ms=0, end_ms=1_000, kind="text"
-            ),
-            TranscriptionAlignmentColumn(
-                index=2, start_ms=1_000, end_ms=1_100, kind="text"
-            ),
-            TranscriptionAlignmentColumn(
-                index=3, start_ms=500, end_ms=750, kind="pause"
-            ),
-            TranscriptionAlignmentColumn(
-                index=4, start_ms=1_200, end_ms=1_400, kind="text"
-            ),
+            AlignmentColumn(index=1, start_ms=0, end_ms=1_000, kind="text"),
+            AlignmentColumn(index=2, start_ms=1_000, end_ms=1_100, kind="text"),
+            AlignmentColumn(index=3, start_ms=500, end_ms=750, kind="pause"),
+            AlignmentColumn(index=4, start_ms=1_200, end_ms=1_400, kind="text"),
         ),
         rows=(
-            TranscriptionAlignmentRow(name="whisper", text="三夜・見"),
-            TranscriptionAlignmentRow(name="mimo", text="三夜・見"),
+            AlignmentRow(name="whisper", text="三夜・見"),
+            AlignmentRow(name="mimo", text="三夜・見"),
         ),
         speaker="ＡＡ・Ａ",
         merged="三夜・見",
         subtitles=(
-            TranscriptionAlignmentSubtitle(
+            AlignmentSubtitle(
                 index=1,
                 text="三夜",
                 speech_start_ms=0,
                 speech_end_ms=1_100,
+                timing_source="source",
                 start_ms=0,
                 end_ms=1_100,
-                speaker="SPEAKER_00",
+                speaker="Ａ",
             ),
-            TranscriptionAlignmentSubtitle(
+            AlignmentSubtitle(
                 index=2,
                 text="見",
                 speech_start_ms=1_200,
                 speech_end_ms=1_400,
+                timing_source="source",
                 start_ms=1_200,
                 end_ms=1_500,
-                speaker="SPEAKER_00",
+                speaker="Ａ",
             ),
         ),
     )
@@ -558,15 +438,16 @@ def test_audit_renders_normalized_merge_support_as_optional_row():
     )
 
     assert not any(line.startswith("support") for line in default_report.splitlines())
-    assert "merge support: ０=no successful ASR source" in report
+    assert "exact merge support: ０=no matching successful ASR source" in report
     support_line = next(
         line for line in report.splitlines() if line.startswith("support")
     )
     terminal_support_line = next(
         line for line in terminal.splitlines() if line.startswith("support")
     )
-    assert support_line.rstrip().endswith("９・９")
-    assert terminal_support_line.count("\x1b[48;2;0;168;63m　\x1b[0m") == 2
+    assert support_line.rstrip().endswith("５・９")
+    assert "\x1b[48;2;212;225;87m　\x1b[0m" in terminal_support_line
+    assert terminal_support_line.count("\x1b[48;2;0;168;63m　\x1b[0m") == 1
     assert "⬛︎" not in terminal_support_line
     assert "９" not in terminal_support_line
     report_rows = [
@@ -583,21 +464,61 @@ def test_audit_renders_normalized_merge_support_as_optional_row():
     assert terminal_rows == ["merged", "reference", "support"]
 
 
+def test_audit_retains_merged_text_without_source_support():
+    """A fully unsupported merged chunk should remain visible with zero support."""
+    artifact = _get_artifact()
+    block = AlignmentBlock(
+        index=1,
+        core_start_ms=0,
+        core_end_ms=1_000,
+        buffered_start_ms=0,
+        buffered_end_ms=1_000,
+        columns=(AlignmentColumn(index=1, start_ms=100, end_ms=200, kind="text"),),
+        rows=(
+            AlignmentRow(name="whisper", text="　"),
+            AlignmentRow(name="mimo", text="　"),
+        ),
+        speaker="＊",
+        merged="甲",
+        subtitles=(
+            AlignmentSubtitle(
+                index=1,
+                text="甲",
+                speech_start_ms=100,
+                speech_end_ms=200,
+                timing_source="source",
+                start_ms=0,
+                end_ms=300,
+            ),
+        ),
+    )
+    artifact = artifact.model_copy(update={"blocks": (block,)})
+
+    report = audit_transcription_alignment(artifact, include_merge_support=True)
+
+    merged_line = next(
+        line for line in report.splitlines() if line.startswith("merged")
+    )
+    support_line = next(
+        line for line in report.splitlines() if line.startswith("support")
+    )
+    assert merged_line.endswith("甲｜")
+    assert support_line.endswith("０　")
+
+
 def test_audit_splits_rows_at_merge_request_boundaries():
     """Audit chunks should use the production long-pause request boundaries."""
     artifact = _get_artifact()
-    block = TranscriptionAlignmentBlock(
+    block = AlignmentBlock(
         index=1,
         core_start_ms=500,
         core_end_ms=2500,
         buffered_start_ms=0,
         buffered_end_ms=3000,
         columns=(
-            TranscriptionAlignmentColumn(
-                index=1, start_ms=1000, end_ms=1200, kind="text"
-            ),
+            AlignmentColumn(index=1, start_ms=1000, end_ms=1200, kind="text"),
             *(
-                TranscriptionAlignmentColumn(
+                AlignmentColumn(
                     index=index,
                     start_ms=1200 + (index - 2) * 250,
                     end_ms=1450 + (index - 2) * 250,
@@ -605,34 +526,34 @@ def test_audit_splits_rows_at_merge_request_boundaries():
                 )
                 for index in range(2, 6)
             ),
-            TranscriptionAlignmentColumn(
-                index=6, start_ms=2200, end_ms=2400, kind="text"
-            ),
+            AlignmentColumn(index=6, start_ms=2200, end_ms=2400, kind="text"),
         ),
         rows=(
-            TranscriptionAlignmentRow(name="whisper", text="係・・・・呀"),
-            TranscriptionAlignmentRow(name="mimo", text="是・・・・呀"),
+            AlignmentRow(name="whisper", text="係・・・・呀"),
+            AlignmentRow(name="mimo", text="是・・・・呀"),
         ),
         speaker="Ａ・・・・Ａ",
         merged="係・・・・呀",
         subtitles=(
-            TranscriptionAlignmentSubtitle(
+            AlignmentSubtitle(
                 index=1,
                 text="係",
                 speech_start_ms=1000,
                 speech_end_ms=1200,
+                timing_source="source",
                 start_ms=900,
                 end_ms=1300,
-                speaker="SPEAKER_00",
+                speaker="Ａ",
             ),
-            TranscriptionAlignmentSubtitle(
+            AlignmentSubtitle(
                 index=2,
                 text="呀",
                 speech_start_ms=2200,
                 speech_end_ms=2400,
+                timing_source="source",
                 start_ms=2100,
                 end_ms=2500,
-                speaker="SPEAKER_00",
+                speaker="Ａ",
             ),
         ),
     )
@@ -653,8 +574,8 @@ def test_audit_renders_halfwidth_characters_as_fullwidth_cells():
     block = artifact.blocks[0].model_copy(
         update={
             "rows": (
-                TranscriptionAlignmentRow(name="whisper", text="A・1"),
-                TranscriptionAlignmentRow(name="mimo", text="ｶ・B"),
+                AlignmentRow(name="whisper", text="A・1"),
+                AlignmentRow(name="mimo", text="ｶ・B"),
             ),
             "merged": "A・1",
         }
@@ -673,7 +594,7 @@ def test_audit_accepts_reference_specific_similarity():
     reference = Series(events=[Subtitle(start=800, end=2_300, text="是嗎")])
     compared_characters = []
 
-    def similarity(one: TimedAlignmentToken, two: TimedAlignmentToken) -> float:
+    def similarity(one: Token, two: Token) -> float:
         """Record compared characters and prefer identical text."""
         compared_characters.append((one.text, two.text))
         if one.text == two.text:
@@ -687,51 +608,44 @@ def test_audit_accepts_reference_specific_similarity():
     assert compared_characters
 
 
-def _get_artifact() -> TranscriptionAlignmentArtifact:
+def _get_artifact() -> AlignmentArtifact:
     """Get a compact valid artifact with one pause-bearing block."""
-    return TranscriptionAlignmentArtifact(
+    return AlignmentArtifact(
         language=Language.yue_hant,
         audio_duration_ms=3000,
-        timing=SubtitleTimingSettings(minimum_duration_seconds=0.75),
+        timing=TimingSettings(minimum_duration_seconds=0.75),
         sources=(
-            TranscriptionAlignmentSource(
-                name="whisper", backend="whisper", model="whisper"
-            ),
-            TranscriptionAlignmentSource(name="mimo", backend="mlx", model="mimo"),
+            AlignmentSource(name="whisper", backend="whisper", model="whisper"),
+            AlignmentSource(name="mimo", backend="mlx", model="mimo"),
         ),
         blocks=(
-            TranscriptionAlignmentBlock(
+            AlignmentBlock(
                 index=1,
                 core_start_ms=500,
                 core_end_ms=2500,
                 buffered_start_ms=0,
                 buffered_end_ms=3000,
                 columns=(
-                    TranscriptionAlignmentColumn(
-                        index=1, start_ms=1000, end_ms=1500, kind="text"
-                    ),
-                    TranscriptionAlignmentColumn(
-                        index=2, start_ms=1500, end_ms=1750, kind="pause"
-                    ),
-                    TranscriptionAlignmentColumn(
-                        index=3, start_ms=1750, end_ms=2000, kind="text"
-                    ),
+                    AlignmentColumn(index=1, start_ms=1000, end_ms=1500, kind="text"),
+                    AlignmentColumn(index=2, start_ms=1500, end_ms=1750, kind="pause"),
+                    AlignmentColumn(index=3, start_ms=1750, end_ms=2000, kind="text"),
                 ),
                 rows=(
-                    TranscriptionAlignmentRow(name="whisper", text="係・呀"),
-                    TranscriptionAlignmentRow(name="mimo", text="是・呀"),
+                    AlignmentRow(name="whisper", text="係・呀"),
+                    AlignmentRow(name="mimo", text="是・呀"),
                 ),
                 speaker="Ａ・Ａ",
                 merged="係・呀",
                 subtitles=(
-                    TranscriptionAlignmentSubtitle(
+                    AlignmentSubtitle(
                         index=1,
                         text="係呀",
                         speech_start_ms=1000,
                         speech_end_ms=2000,
+                        timing_source="source",
                         start_ms=900,
                         end_ms=2200,
-                        speaker="SPEAKER_00",
+                        speaker="Ａ",
                     ),
                 ),
             ),
