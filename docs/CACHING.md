@@ -57,16 +57,33 @@ command-line name uses the shorter conventional spelling.
 
 ## Namespaces and entries
 
-Each cache appends its own stable namespace beneath the cache root. Group
-related namespaces under domain directories such as `llm/` and `media/` rather
-than flattening every cache into the root. Do not introduce marker files merely
-to declare namespaces.
+Each cache uses a stable namespace that mirrors the package owning the produced
+artifact. The Scinoephile operation that produces the entry determines
+ownership; third-party model caches remain owned by their dependencies.
+
+`CacheNamespace` provides generic validation, resolution, and discovery. Each
+owning package defines a concrete enum in `cache_namespace.py`, and cache
+constructors resolve their directories through members of that enum.
+
+`scinoephile.workflows.cache_registry.CACHE_REGISTRY` aggregates the owner
+enums for application-wide inspection and clearing. The generic maintenance
+operations in `scinoephile.core.cache` receive this registry from their callers.
+
+Namespace segments use Python module spelling, including underscores such as
+`mlx_audio`. Parameterized LLM operation segments are the exception: they use
+stable operation identifiers such as `guided-review`, which need not mirror a
+Python module name. A parameterized `<operation>` segment represents one
+validated path component. Materially different entry types use separate leaf
+namespaces.
+
+`CacheNamespace.get_dir_path(...)` validates and creates the concrete namespace
+directory. Cache constructors should validate and retain their shared root,
+then use this method directly for their namespaced directory.
 
 Cache inspection treats each direct child of a namespace as one independently
 removable entry. A directory entry may contain related files that must be kept
-or removed together. New grouped or nested namespace layouts must also be made
-discoverable by `scinoephile.core.cache.operations` so list, stats, prune, and
-clear commands agree with the owning cache.
+or removed together. Add a new namespace to its owner's enum; the cache
+constructor and application registry then consume the same declaration.
 
 Keep namespace names and entry boundaries stable when possible. Layout changes
 should not cause one cache's maintenance operation to delete another cache's
@@ -79,6 +96,12 @@ change the reusable result. Depending on the domain, that may include source
 content or file metadata, model and backend identifiers, language, preprocessing
 settings, or prompt content. Exclude credentials, transient client objects, and
 unstable representations.
+
+Local inference identities include the runtime distribution name and version,
+plus model identifiers and revisions when available. Source dependencies pinned
+to a commit include that revision. Remote services may instead rely on a local
+cache version for client-side behavior changes when the service itself cannot be
+identified reproducibly.
 
 Persistent cache implementations should define a private `_CACHE_VERSION`
 constant and include it in the serialized payload, identity hash, or path.
@@ -132,12 +155,16 @@ deleting directory entries.
 
 Cache-producing CLIs should use the shared cache argument bundle, placing
 `--cache-dir` and `--cache-overwrite` in the `cache arguments` group. Cache
-directory help should include `(default: %(default)s)`.
+directory help should display the resolved default cache root path.
 
-The cache list, stats, prune, and clear commands operate on namespace entry
-boundaries. Because pruning uses modification times, caches must touch valid
-hits as described above. Destructive maintenance commands should continue to
-support dry-run inspection and explicit confirmation.
+Cache inspection and namespace- or age-filtered clearing operate on registered
+namespace entry boundaries. Inspection shows compact statistics by default and
+individual entries when requested. An unfiltered `cache clear --all` instead
+removes every child beneath the cache root, including unregistered or legacy
+contents, while preserving the root itself. Configured cache roots must
+therefore not contain unrelated durable data. Caches must touch valid hits so
+age filtering reflects recent reuse. Destructive maintenance must support
+dry-run inspection, explicit scope, and confirmation.
 
 ## Tests
 

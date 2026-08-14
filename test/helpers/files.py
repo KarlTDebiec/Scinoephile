@@ -7,7 +7,49 @@ from __future__ import annotations
 from os import utime
 from pathlib import Path
 
-__all__ = ["set_mtime", "write_cache_file"]
+__all__ = ["get_python_files", "set_mtime", "write_cache_file"]
+
+_EXCLUDED_DIR_NAMES = {
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".tox",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "local",
+}
+"""Directory names excluded from recursive source scans."""
+
+
+def get_python_files(target_dir_path: Path) -> list[Path]:
+    """Get Python files under a target directory.
+
+    Arguments:
+        target_dir_path: directory path to scan
+    Returns:
+        sorted Python file paths
+    """
+    return sorted(
+        file_path
+        for file_path in target_dir_path.rglob("*.py")
+        if not _is_excluded_path(file_path, target_dir_path)
+    )
+
+
+def _is_excluded_path(file_path: Path, target_dir_path: Path) -> bool:
+    """Check whether a discovered file falls under an excluded directory.
+
+    Arguments:
+        file_path: discovered file path
+        target_dir_path: recursive scan root
+    Returns:
+        whether the file should be omitted from the scan
+    """
+    relative_file_path = file_path.relative_to(target_dir_path)
+    return any(part in _EXCLUDED_DIR_NAMES for part in relative_file_path.parts)
 
 
 def set_mtime(path: Path, timestamp: float) -> None:
