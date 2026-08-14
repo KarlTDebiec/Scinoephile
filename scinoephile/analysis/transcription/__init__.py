@@ -4,7 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * alignment_sequence / artifact
-* timing
+* manifest / timing
 """
 
 from __future__ import annotations
@@ -18,6 +18,7 @@ from .artifact import (
     AlignmentSubtitle,
     TimingSettings,
 )
+from .manifest import ProcessorIdentity, RunBlock, RunManifest
 from .timing import TimingMetrics, TimingPair
 
 __all__ = [
@@ -27,6 +28,9 @@ __all__ = [
     "AlignmentRow",
     "AlignmentSource",
     "AlignmentSubtitle",
+    "ProcessorIdentity",
+    "RunBlock",
+    "RunManifest",
     "TimingMetrics",
     "TimingPair",
     "TimingSettings",

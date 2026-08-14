@@ -131,12 +131,16 @@ def test_per_audio_cache_identity_is_used_for_cache_lifecycle(tmp_path: Path):
     generic_cache_path = transcriber._cache.get_path(audio, cache_identity)
     assert per_audio_cache_path.exists()
     assert not generic_cache_path.exists()
+    assert transcriber.last_cache_key_sha256 == per_audio_cache_path.stem
 
     assert transcriber(audio) == segments
     assert transcriber.calls == [(audio, settings)]
+    assert transcriber.last_cache_key_sha256 == per_audio_cache_path.stem
 
     transcriber.remove_cached_transcriptions(audio)
     assert not per_audio_cache_path.exists()
+    assert transcriber.get_cached_transcription(audio) is None
+    assert transcriber.last_cache_key_sha256 is None
 
 
 def test_demucs_runtime_separates_transcription_cache_paths(tmp_path: Path):
@@ -388,6 +392,7 @@ def test_unusable_success_takes_precedence_over_other_configuration_error(
     transcriber.outcomes[no_vad_settings] = TranscriptionInferenceError("failed")
 
     assert transcriber(audio, is_usable=lambda _segments: False) == []
+    assert transcriber.last_cache_key_sha256 is None
 
 
 def test_last_error_propagates_when_every_configuration_fails(tmp_path: Path):

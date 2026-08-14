@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import json
+from hashlib import sha256
 from pathlib import Path
 from typing import Annotated, Literal
 
@@ -312,6 +314,17 @@ class AlignmentArtifact(BaseModel):
     """ASR sources in stable alignment row order."""
     blocks: tuple[AlignmentBlock, ...]
     """Processed VAD blocks in source order."""
+
+    @property
+    def sha256(self) -> str:
+        """Stable digest of the artifact's canonical semantic JSON."""
+        payload = json.dumps(
+            self.model_dump(mode="json"),
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+        return sha256(payload.encode("utf-8")).hexdigest()
 
     def get_series(self) -> Series:
         """Get the artifact's merged subtitles as a subtitle series.
