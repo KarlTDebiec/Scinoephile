@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from argparse import ArgumentParser, ArgumentTypeError
+from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.analysis.audit.transcription.report import (
@@ -13,7 +13,11 @@ from scinoephile.analysis.audit.transcription.report import (
 from scinoephile.analysis.transcription import AlignmentArtifact
 from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.cli.helpers.io import read_series
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
+from scinoephile.common.argument_parsing import (
+    get_arg_groups_by_name,
+    input_file_arg,
+    named_input_file_arg,
+)
 from scinoephile.core import ScinoephileError
 from scinoephile.lang.yue.transcription import YueTokenSimilarity
 
@@ -23,28 +27,30 @@ __all__ = ["AuditTranscriptionCli"]
 
 AUDIT_TRANSCRIPTION_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "audit aligned multi-source transcription evidence": ("审核多来源转写对齐证据"),
+        "audit aligned multi-source transcription evidence": "审核多来源转写对齐证据",
         "transcription alignment artifact JSON file": "转写对齐成品 JSON 文件",
-        "named reference subtitle as NAME=PATH; repeat for multiple references": (
-            "命名的独立参考字幕，格式为名称=路径；多个参考字幕可重复使用"
-        ),
+        (
+            "named independent reference SRT file as NAME=PATH; repeat for "
+            "multiple references"
+        ): ("命名的独立参考 SRT 文件，格式为名称=路径；多个参考文件可重复使用"),
         "include the speaker annotation row": "包含说话者标注行",
         "include the spoken-language annotation row": "包含口语语言标注行",
-        "include the merged-character source-support row": ("包含合并字符的来源支持行"),
+        "include the merged-character source-support row": "包含合并字符的来源支持行",
         "include the singing and music annotation rows": "包含歌唱和音乐标注行",
         "include detailed subtitle and reference timing tables": (
             "包含详细的字幕和参考时间表"
         ),
     },
     "zh-hant": {
-        "audit aligned multi-source transcription evidence": ("稽核多來源轉寫對齊證據"),
+        "audit aligned multi-source transcription evidence": "稽核多來源轉寫對齊證據",
         "transcription alignment artifact JSON file": "轉寫對齊成品 JSON 檔",
-        "named reference subtitle as NAME=PATH; repeat for multiple references": (
-            "具名的獨立參考字幕，格式為名稱=路徑；多個參考字幕可重複使用"
-        ),
+        (
+            "named independent reference SRT file as NAME=PATH; repeat for "
+            "multiple references"
+        ): ("具名的獨立參考 SRT 檔，格式為名稱=路徑；多個參考檔可重複使用"),
         "include the speaker annotation row": "包含說話者標註列",
         "include the spoken-language annotation row": "包含口語語言標註列",
-        "include the merged-character source-support row": ("包含合併字符的來源支持列"),
+        "include the merged-character source-support row": "包含合併字符的來源支持列",
         "include the singing and music annotation rows": "包含歌唱和音樂標註列",
         "include detailed subtitle and reference timing tables": (
             "包含詳細的字幕和參考時間表"
@@ -89,9 +95,10 @@ class AuditTranscriptionCli(AuditCliBase):
             action="append",
             dest="reference_specs",
             metavar="NAME=PATH",
-            type=_named_reference_arg,
+            type=named_input_file_arg(),
             help=(
-                "named reference subtitle as NAME=PATH; repeat for multiple references"
+                "named independent reference SRT file as NAME=PATH; repeat for "
+                "multiple references"
             ),
         )
         # Operation arguments
@@ -183,9 +190,7 @@ class AuditTranscriptionCli(AuditCliBase):
             references[reference_name] = read_series(parser, reference_path)
         reference_similarity = None
         if artifact.language.is_cantonese:
-            reference_similarity = YueTokenSimilarity(
-                timing_weight=2.0, timing_tolerance_seconds=0.75
-            )
+            reference_similarity = YueTokenSimilarity()
 
         # Generate report
         try:
@@ -208,26 +213,6 @@ class AuditTranscriptionCli(AuditCliBase):
 
         # Write output
         cls.write_report(parser, report, outfile_path, overwrite)
-
-
-def _named_reference_arg(value: str) -> tuple[str, Path]:
-    """Parse one named reference argument in NAME=PATH form.
-
-    Arguments:
-        value: raw named-reference argument
-    Returns:
-        reference name and validated subtitle path
-    Raises:
-        ArgumentTypeError: if the argument is malformed or its path is invalid
-    """
-    name, separator, raw_path = value.partition("=")
-    if not separator or not name.strip() or not raw_path.strip():
-        raise ArgumentTypeError("references must use nonblank NAME=PATH syntax")
-    name = name.strip()
-    reference_path = input_file_arg()(raw_path.strip())
-    if not isinstance(reference_path, Path):
-        raise ArgumentTypeError("reference path must identify one input file")
-    return name, reference_path
 
 
 if __name__ == "__main__":

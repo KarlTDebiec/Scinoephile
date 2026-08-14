@@ -1,4 +1,4 @@
 interface:
   display_name: "Audit Transcription"
-  short_description: "Audit aligned multi-ASR transcription evidence"
+  short_description: "Audit multi-source transcription evidence"
   default_prompt: "Use $audit-transcription to audit a multi-source transcription alignment artifact."
