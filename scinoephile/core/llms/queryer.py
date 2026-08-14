@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from hashlib import sha256
 from logging import getLogger
 from pathlib import Path
 
@@ -12,7 +11,6 @@ from pydantic import ValidationError
 
 from scinoephile.core.exceptions import ScinoephileError
 
-from .answer import Answer
 from .cache import LlmCache
 from .llm_provider import LLMProvider
 from .metrics import ChatCompletionMetrics
@@ -34,7 +32,6 @@ class Queryer[TTestCase: TestCase]:
         verified_test_cases: list[TestCase] | None = None,
         *,
         provider: LLMProvider,
-        legacy_cache_test_case_classes: list[type[TestCase]] | None = None,
         cache_root_path: Path | None = None,
         additional_context: str | None = None,
         max_attempts: int = 5,
@@ -50,8 +47,6 @@ class Queryer[TTestCase: TestCase]:
             verified_test_cases: test cases whose answers are verified and for which
               LLM need not be queried
             provider: provider to use for queries
-            legacy_cache_test_case_classes: earlier compatible classes whose cached
-              answers may be migrated
             cache_root_path: root directory beneath which to cache
             additional_context: additional context to include in the system prompt
             max_attempts: maximum number of attempts
@@ -65,17 +60,6 @@ class Queryer[TTestCase: TestCase]:
         self.prompt = test_case_cls.prompt
         """Text for LLM correspondence."""
         self.provider = provider
-        self.legacy_cache_test_case_classes = [
-            legacy_test_case_cls
-            for legacy_test_case_cls in legacy_cache_test_case_classes or []
-            if legacy_test_case_cls is not test_case_cls
-        ]
-        """Earlier compatible test-case classes used to locate response caches."""
-        for legacy_test_case_cls in self.legacy_cache_test_case_classes:
-            if legacy_test_case_cls.operation != self.test_case_cls.operation:
-                raise ValueError(
-                    "Legacy cache test-case classes must use the current operation."
-                )
 
         self.verified_test_cases = self._get_verified_test_cases(
             verified_test_cases or []
@@ -109,13 +93,11 @@ class Queryer[TTestCase: TestCase]:
         """Automatically verify test cases if they meet selected criteria."""
         self.tool_box = tool_box or ToolBox()
         """Available tools and handlers."""
-        self.system_prompt = self._get_system_prompt(self.test_case_cls)
+        self.system_prompt = self.prompt.base_system_prompt
         """System prompt shared by all queries executed by this instance."""
-        self._legacy_system_prompts = {
-            legacy_test_case_cls: self._get_system_prompt(legacy_test_case_cls)
-            for legacy_test_case_cls in self.legacy_cache_test_case_classes
-        }
-        """System prompts used to locate compatible predecessor cache entries."""
+        if self.additional_context:
+            self.system_prompt += f"\n\n{self.additional_context}"
+        self.system_prompt += self.get_few_shot_test_cases_str()
 
     def __call__(  # noqa: PLR0912, PLR0915
         self, test_case: TestCase
@@ -142,12 +124,9 @@ class Queryer[TTestCase: TestCase]:
                     "answer": answer.model_dump(mode="json"),
                     "few_shot": False,
                     "verified": False,
-                },
-                context={"skip_output_quality_validation": True},
+                }
             )
-            self.log_encountered_test_case(
-                test_case, skip_output_quality_validation=True
-            )
+            test_case = self.log_encountered_test_case(test_case)
             logger.info(f"Used no-op answer: {test_case.query.key_str}")
             return test_case
 
@@ -158,7 +137,6 @@ class Queryer[TTestCase: TestCase]:
             {"role": "system", "content": self.system_prompt},
             {"role": "user", "content": query_json},
         ]
-        query_key_sha256 = sha256(test_case.query.key_str.encode()).hexdigest()
         for attempt in range(1, self.max_attempts + 1):
             # Get answer from provider
             initial_completion_count = len(self.provider.completion_metrics)
@@ -168,7 +146,7 @@ class Queryer[TTestCase: TestCase]:
                     self.test_case_cls.answer_cls,
                     self.tool_box,
                     operation=self.test_case_cls.operation,
-                    query_key_sha256=query_key_sha256,
+                    query_key_sha256=test_case.query.key_sha256,
                     query_attempt=attempt,
                 )
             except ScinoephileError as exc:
@@ -256,6 +234,19 @@ class Queryer[TTestCase: TestCase]:
 
         return self.store_answered_test_case(test_case)
 
+    def get_few_shot_test_cases_str(self) -> str:
+        """String representation of all test cases in the log."""
+        if not self.few_shot_test_cases:
+            return ""
+        few_shot = f"\n\n{self.prompt.few_shot_intro}"
+        for test_case in self.few_shot_test_cases.values():
+            assert test_case.answer is not None
+            few_shot += f"\n\n{self.prompt.few_shot_query_intro}\n"
+            few_shot += test_case.query.model_dump_json(by_alias=True, indent=4)
+            few_shot += f"\n{self.prompt.few_shot_answer_intro}\n"
+            few_shot += test_case.answer.model_dump_json(by_alias=True, indent=4)
+        return few_shot
+
     def get_known_test_case(self, test_case: TestCase) -> TTestCase | None:
         """Get a verified or response-cached test case without querying the LLM.
 
@@ -274,8 +265,27 @@ class Queryer[TTestCase: TestCase]:
 
         query_json = normalized.query.model_dump_json(by_alias=True, indent=4)
         tools_json = self.tool_box.to_json()
-        cache_path = self._get_cache_path(self.system_prompt, tools_json, query_json)
-        return self._get_any_cached_test_case(normalized, cache_path, tools_json)
+        return self._get_cached_test_case(
+            normalized, self.system_prompt, tools_json, query_json
+        )
+
+    def log_encountered_test_case(self, test_case: TestCase) -> TTestCase:
+        """Log a test case as having been encountered.
+
+        Arguments:
+            test_case: test case to log
+        Returns:
+            normalized logged test case
+        """
+        normalized = self.test_case_cls.model_validate(
+            test_case.model_dump(mode="json")
+        )
+        key = normalized.query.key
+        normalized.few_shot |= key in self.few_shot_test_cases
+        normalized.verified |= key in self.verified_test_cases
+        self.encountered_test_cases[key] = normalized
+        logger.debug(f"Logged test case: {normalized.query.key_str}")
+        return normalized
 
     def store_answered_test_case(self, test_case: TestCase) -> TTestCase:
         """Log an answered test case and store its response under this queryer.
@@ -287,224 +297,79 @@ class Queryer[TTestCase: TestCase]:
         Raises:
             ValueError: if the test case has no answer
         """
-        normalized = self.test_case_cls.model_validate(
-            test_case.model_dump(mode="json")
-        )
-        if normalized.answer is None:
+        if test_case.answer is None:
             raise ValueError("Cannot store a test case without an answer.")
-        self.log_encountered_test_case(normalized)
+        normalized = self.log_encountered_test_case(test_case)
+        assert normalized.answer is not None
         if self._cache is None:
             return normalized
 
         query_json = normalized.query.model_dump_json(by_alias=True, indent=4)
         tools_json = self.tool_box.to_json()
-        cache_path = self._get_cache_path(self.system_prompt, tools_json, query_json)
         contents = normalized.answer.model_dump_json(exclude_defaults=True, indent=2)
-        self._cache.save(cache_path, contents)
-        return normalized
-
-    def get_few_shot_test_cases_str(
-        self, test_case_cls: type[TestCase] | None = None
-    ) -> str:
-        """Get few-shot examples serialized for a prompt-specific class.
-
-        Arguments:
-            test_case_cls: prompt-specific class, or None for the current class
-        Returns:
-            formatted few-shot examples
-        """
-        if not self.few_shot_test_cases:
-            return ""
-        if test_case_cls is None:
-            test_case_cls = self.test_case_cls
-        prompt = test_case_cls.prompt
-        few_shot = f"\n\n{prompt.few_shot_intro}"
-        for test_case in self.few_shot_test_cases.values():
-            prompt_test_case = test_case_cls.model_validate(
-                test_case.model_dump(mode="json")
-            )
-            assert prompt_test_case.answer is not None
-            few_shot += f"\n\n{prompt.few_shot_query_intro}\n"
-            few_shot += prompt_test_case.query.model_dump_json(by_alias=True, indent=4)
-            few_shot += f"\n{prompt.few_shot_answer_intro}\n"
-            few_shot += prompt_test_case.answer.model_dump_json(by_alias=True, indent=4)
-        return few_shot
-
-    def log_encountered_test_case(
-        self, test_case: TestCase, *, skip_output_quality_validation: bool = False
-    ):
-        """Log a test case as having been encountered.
-
-        Arguments:
-            test_case: test case to log
-            skip_output_quality_validation: retain an intentional no-op fallback
-              even when its unchanged output fails optional quality validation
-        """
-        normalized = self.test_case_cls.model_validate(
-            test_case.model_dump(mode="json"),
-            context={"skip_output_quality_validation": skip_output_quality_validation},
-        )
-        key = normalized.query.key
-        normalized.few_shot |= key in self.few_shot_test_cases
-        normalized.verified |= key in self.verified_test_cases
-        self.encountered_test_cases[key] = normalized
-        logger.debug(f"Logged test case: {normalized.query.key_str}")
-
-    def _get_any_cached_test_case(
-        self, test_case: TTestCase, cache_path: Path, tools_json: str
-    ) -> TTestCase | None:
-        """Load a current or compatible predecessor response cache.
-
-        Arguments:
-            test_case: test case containing the semantic query
-            cache_path: current prompt's cache path
-            tools_json: JSON representation of configured tools
-        Returns:
-            cached test case if a compatible entry exists
-        """
-        cached_test_case = self._get_cached_test_case(test_case, cache_path)
-        if cached_test_case is not None:
-            return cached_test_case
-        return self._get_legacy_cached_test_case(test_case, cache_path, tools_json)
-
-    def _get_cache_path(
-        self,
-        system_prompt: str,
-        tools_json: str,
-        query_json: str,
-        *,
-        test_case_cls: type[TestCase] | None = None,
-    ) -> Path:
-        """Get cache path based on hash of prompts.
-
-        Arguments:
-            system_prompt: system prompt used for the query
-            tools_json: JSON representation of configured tools
-            query_json: JSON representation of the query
-            test_case_cls: prompt-specific class in the cache identity
-        Returns:
-            Path to cache file
-        """
-        assert self._cache is not None
-        if test_case_cls is None:
-            test_case_cls = self.test_case_cls
-        return self._cache.get_path(
-            {
-                "provider": self.provider.cache_identity,
-                "test_case": {
-                    "module": test_case_cls.__module__,
-                    "qualname": test_case_cls.__qualname__,
-                },
-            },
-            system_prompt,
+        self._cache.save(
+            self._get_cache_identity(),
+            self.system_prompt,
             tools_json,
             query_json,
+            contents,
         )
+        return normalized
+
+    def _get_cache_identity(self) -> dict[str, object]:
+        """Get the provider and test-case cache identity."""
+        return {
+            "provider": self.provider.cache_identity,
+            "test_case": {
+                "module": self.test_case_cls.__module__,
+                "qualname": self.test_case_cls.__qualname__,
+            },
+        }
 
     def _get_cached_test_case(
-        self,
-        test_case: TTestCase,
-        cache_path: Path,
-        *,
-        cached_answer_cls: type[Answer] | None = None,
+        self, test_case: TTestCase, system_prompt: str, tools_json: str, query_json: str
     ) -> TTestCase | None:
         """Get cached test case for the given query if available.
 
         Arguments:
             test_case: test case containing query for which to get cached version
-            cache_path: path to the cached answer
-            cached_answer_cls: answer model used to parse the cached content
+            system_prompt: system prompt used for the query
+            tools_json: JSON representation of configured tools
+            query_json: JSON representation of the query
         Returns:
             cached test case if available, else None
         """
         assert self._cache is not None
-        contents = self._cache.load(cache_path)
+        cache_identity = self._get_cache_identity()
+        cache_path = self._cache.get_path(
+            cache_identity, system_prompt, tools_json, query_json
+        )
+        contents = self._cache.load(
+            cache_identity, system_prompt, tools_json, query_json
+        )
         if contents is None:
             return None
         try:
-            if cached_answer_cls is None:
-                cached_answer_cls = self.test_case_cls.answer_cls
-            answer = cached_answer_cls.model_validate_json(contents)
+            answer = self.test_case_cls.answer_cls.model_validate_json(contents)
             test_case = self.test_case_cls.model_validate(
                 {
                     **test_case.model_dump(mode="json"),
-                    "answer": answer.model_dump(mode="json"),
+                    "answer": answer,
                     "few_shot": False,
                     "verified": False,
                 }
             )
             if self.auto_verify and test_case.get_auto_verified():
                 test_case.verified = True
-            self.log_encountered_test_case(test_case)
-            logger.info(f"Loaded from cache: {test_case.query.key_str}")
+            test_case = self.log_encountered_test_case(test_case)
             return test_case
         except ValidationError as exc:
             logger.error(
-                f"Cache content for query {test_case.query.key_str} is invalid: {exc}"
+                f"Cache content for query {test_case.query.key_str} at "
+                f"{cache_path} is invalid: {exc}"
             )
-            self._cache.remove(cache_path)
+            self._cache.remove(cache_identity, system_prompt, tools_json, query_json)
         return None
-
-    def _get_legacy_cached_test_case(
-        self, test_case: TTestCase, cache_path: Path, tools_json: str
-    ) -> TTestCase | None:
-        """Load and migrate an answer cached under a predecessor prompt.
-
-        Arguments:
-            test_case: current test case containing the semantic query
-            cache_path: current prompt's cache path
-            tools_json: JSON representation of configured tools
-        Returns:
-            cached test case if a compatible predecessor entry exists
-        """
-        assert self._cache is not None
-        if self._cache.overwrite:
-            return None
-
-        for legacy_test_case_cls in self.legacy_cache_test_case_classes:
-            legacy_query = legacy_test_case_cls.query_cls.model_validate(
-                test_case.query.model_dump(mode="json")
-            )
-            legacy_query_json = legacy_query.model_dump_json(by_alias=True, indent=4)
-            legacy_cache_path = self._get_cache_path(
-                self._legacy_system_prompts[legacy_test_case_cls],
-                tools_json,
-                legacy_query_json,
-                test_case_cls=legacy_test_case_cls,
-            )
-            cached_test_case = self._get_cached_test_case(
-                test_case,
-                legacy_cache_path,
-                cached_answer_cls=legacy_test_case_cls.answer_cls,
-            )
-            if cached_test_case is None:
-                continue
-
-            assert cached_test_case.answer is not None
-            contents = cached_test_case.answer.model_dump_json(
-                exclude_defaults=True, indent=2
-            )
-            self._cache.save(cache_path, contents)
-            logger.info(
-                "Migrated legacy LLM response cache: "
-                f"{legacy_cache_path} -> {cache_path}"
-            )
-            return cached_test_case
-        return None
-
-    def _get_system_prompt(self, test_case_cls: type[TestCase]) -> str:
-        """Build the complete system prompt for a prompt-specific class.
-
-        Arguments:
-            test_case_cls: prompt-specific test-case class
-        Returns:
-            system prompt including context and few-shot examples
-        """
-        system_prompt = test_case_cls.prompt.base_system_prompt
-        if self.additional_context:
-            system_prompt += f"\n\n{self.additional_context}"
-        system_prompt += self.get_few_shot_test_cases_str(test_case_cls)
-        return system_prompt
 
     def _get_verified_test_case(self, query: Query) -> TTestCase | None:
         """Get verified test case for the given query if available.
@@ -515,8 +380,7 @@ class Queryer[TTestCase: TestCase]:
             verified test case if available, else None
         """
         if test_case := self.verified_test_cases.get(query.key):
-            self.log_encountered_test_case(test_case)
-            test_case = self.encountered_test_cases[query.key]
+            test_case = self.log_encountered_test_case(test_case)
             logger.info(f"Loaded from verified log: {query.key_str}")
             return test_case
         return None

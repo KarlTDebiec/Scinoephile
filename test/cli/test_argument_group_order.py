@@ -36,6 +36,28 @@ def test_cli_argument_groups_follow_canonical_order():
         assert titles == expected, f"{' '.join(path)}: {titles}"
 
 
+def test_block_range_arguments_end_operation_groups():
+    """Test block-range arguments appear last within operation groups."""
+    for path, parser in _iter_parsers(ScinoephileCli.argparser(), ("scinoephile",)):
+        operation_group = next(
+            (
+                group
+                for group in parser._action_groups  # noqa: SLF001
+                if group.title == "operation arguments"
+            ),
+            None,
+        )
+        if operation_group is None:
+            continue
+        destinations = [
+            action.dest
+            for action in operation_group._group_actions  # noqa: SLF001
+        ]
+        if "first_block" not in destinations:
+            continue
+        assert destinations[-2:] == ["first_block", "last_block"], " ".join(path)
+
+
 def _iter_parsers(
     parser: ArgumentParser, path: tuple[str, ...]
 ) -> Iterator[tuple[tuple[str, ...], ArgumentParser]]:

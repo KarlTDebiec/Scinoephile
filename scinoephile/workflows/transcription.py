@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import DemucsMode, VADMode
+from scinoephile.audio.transcription import DemucsMode, VadMode
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.subtitles import Series
@@ -15,7 +15,7 @@ from scinoephile.lang.transcription.guided import get_guided_transcriber
 from scinoephile.lang.transcription.transcriber import (
     GuidedTranscriber,
     MlxAudioTimingMode,
-    TranscriptionBackend,
+    TranscriptionModel,
 )
 from scinoephile.llms.delineation import DelineationPrompt
 from scinoephile.llms.punctuation import PunctuationPrompt
@@ -31,10 +31,9 @@ def transcribe_series_guided(
     *,
     language: Language,
     guide_language: Language | None = None,
-    model_name: str | None = None,
-    backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
+    model: TranscriptionModel = TranscriptionModel.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.OFF,
-    vad_mode: VADMode = VADMode.OFF,
+    vad_mode: VadMode = VadMode.OFF,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
     strip_generated_punctuation: bool = False,
@@ -61,10 +60,9 @@ def transcribe_series_guided(
         reference_series: reference subtitles corresponding to audio blocks
         language: transcription language
         guide_language: explicit guide language, or None to detect it
-        model_name: backend-specific model override
-        backend: audio transcription backend
+        model: supported transcription model
         demucs_mode: Demucs preprocessing mode
-        vad_mode: Whisper VAD mode
+        vad_mode: voice activity detection mode
         cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching generated cache files
         strip_generated_punctuation: whether to remove generated sentence
@@ -95,8 +93,7 @@ def transcribe_series_guided(
         transcriber = get_guided_transcriber(
             language,
             resolved_guide_language,
-            model_name=model_name,
-            backend=backend,
+            model=model,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
             cache_root_path=cache_root_path,

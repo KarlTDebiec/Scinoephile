@@ -20,6 +20,7 @@ from scinoephile.cli.review_cli import ReviewCli
 from scinoephile.cli.transcribe_cli import TranscribeCli
 from scinoephile.cli.translate_cli import TranslateCli
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.paths import get_runtime_cache_root_path
 from test.helpers import parametrize
 
 
@@ -58,4 +59,10 @@ def test_cache_producing_cli_uses_shared_cache_arguments(cli: type[ScinoephileCl
         for option in action.option_strings
     }
     assert option_strings == {"--cache-dir", "--cache-overwrite"}
-    assert "--overwrite-cache" not in parser.format_help()
+    help_text = parser.format_help()
+    normalized_help = " ".join(help_text.split())
+    compact_help = "".join(help_text.split())
+    assert "--overwrite-cache" not in normalized_help
+    assert "cache root directory path (default:" in normalized_help
+    assert str(get_runtime_cache_root_path(create=False)) in compact_help
+    assert "CacheArguments(" not in normalized_help

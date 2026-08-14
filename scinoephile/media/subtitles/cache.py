@@ -8,12 +8,13 @@ import hashlib
 import json
 from logging import getLogger
 from pathlib import Path
-from shutil import rmtree
 
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core.cache.artifact import remove_cache_artifact
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.image.subtitles import ImageSeries
+from scinoephile.media.cache_namespace import MediaCacheNamespace
 
 __all__ = ["SubtitleCache"]
 
@@ -38,8 +39,8 @@ class SubtitleCache:
         self.cache_root_path = val_output_dir_path(cache_root_path)
         """Root directory beneath which subtitle artifacts are cached."""
 
-        self.cache_dir_path = val_output_dir_path(
-            self.cache_root_path / "media" / "subtitles"
+        self.cache_dir_path = MediaCacheNamespace.SUBTITLES.get_dir_path(
+            self.cache_root_path
         )
         """Directory in which cached subtitle streams are stored."""
 
@@ -96,12 +97,12 @@ class SubtitleCache:
         """
         stream_path = self.get_path(infile_path, stream)
         self._remove_for_overwrite(stream_path, "subtitle stream")
-        if stream_path.is_file():
+        if stream_path.is_file() and not stream_path.is_symlink():
             stream_path.touch()
             logger.info(f"Loaded subtitle stream from cache: {stream_path}")
             return stream_path
         if stream_path.exists() or stream_path.is_symlink():
-            self._remove_artifact(stream_path)
+            remove_cache_artifact(stream_path)
             logger.warning(f"Discarded invalid subtitle stream cache: {stream_path}")
         return None
 
@@ -119,12 +120,16 @@ class SubtitleCache:
         image_dir_path = self.get_image_series_dir_path(infile_path, stream)
         index_path = image_dir_path / "index.html"
         self._remove_for_overwrite(image_dir_path, "image subtitle series")
-        if index_path.is_file():
+        if (
+            index_path.is_file()
+            and not index_path.is_symlink()
+            and not image_dir_path.is_symlink()
+        ):
             index_path.touch()
             logger.info(f"Loaded image subtitle series from cache: {image_dir_path}")
             return image_dir_path
         if image_dir_path.exists() or image_dir_path.is_symlink():
-            self._remove_artifact(image_dir_path)
+            remove_cache_artifact(image_dir_path)
             logger.warning(
                 f"Discarded invalid image subtitle series cache: {image_dir_path}"
             )
@@ -140,9 +145,8 @@ class SubtitleCache:
             removed cache path, if present
         """
         stream_path = self.get_path(infile_path, stream)
-        if not stream_path.exists() and not stream_path.is_symlink():
+        if not remove_cache_artifact(stream_path):
             return None
-        self._remove_artifact(stream_path)
         logger.info(f"Removed subtitle stream cache: {stream_path}")
         return stream_path
 
@@ -158,9 +162,8 @@ class SubtitleCache:
             removed cache directory, if present
         """
         image_dir_path = self.get_image_series_dir_path(infile_path, stream)
-        if not image_dir_path.exists() and not image_dir_path.is_symlink():
+        if not remove_cache_artifact(image_dir_path):
             return None
-        self._remove_artifact(image_dir_path)
         logger.info(f"Removed image subtitle series cache: {image_dir_path}")
         return image_dir_path
 
@@ -211,19 +214,5 @@ class SubtitleCache:
         if not self.overwrite or artifact_path in self._refreshed_paths:
             return
         self._refreshed_paths.add(artifact_path)
-        if not artifact_path.exists() and not artifact_path.is_symlink():
-            return
-        self._remove_artifact(artifact_path)
-        logger.info(f"Removed {label} cache: {artifact_path}")
-
-    @staticmethod
-    def _remove_artifact(artifact_path: Path):
-        """Remove a cached file, directory, or symbolic link.
-
-        Arguments:
-            artifact_path: cached artifact to remove
-        """
-        if artifact_path.is_dir() and not artifact_path.is_symlink():
-            rmtree(artifact_path)
-        else:
-            artifact_path.unlink(missing_ok=True)
+        if remove_cache_artifact(artifact_path):
+            logger.info(f"Removed {label} cache: {artifact_path}")
