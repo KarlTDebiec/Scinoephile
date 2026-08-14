@@ -127,12 +127,12 @@ def test_audit_transcription_cli_runs_with_yue_similarity(
     load_artifact.assert_called_once_with(alignment_path)
     load_reference.assert_called_once()
     assert load_reference.call_args.args[1] == reference_path
-    reference_similarity = audit.call_args.kwargs["reference_similarity"]
-    assert reference_similarity == YueTokenSimilarity()
+    token_similarity = audit.call_args.kwargs["token_similarity"]
+    assert token_similarity == YueTokenSimilarity()
     audit.assert_called_once_with(
         artifact,
         {"reference": reference},
-        reference_similarity=reference_similarity,
+        token_similarity=token_similarity,
         first_index=None,
         last_index=None,
         first_block=2,

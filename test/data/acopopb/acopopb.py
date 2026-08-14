@@ -52,7 +52,16 @@ transcription_additional_context = """
 """
 
 
-actions = {"yue-Hant_transcribe"}
+actions = {
+    # "eng_ocr",
+    # "yue-Hans_ocr",
+    # "yue-Hant_ocr",
+    # "zho-Hans_ocr",
+    # "zho-Hant_ocr",
+    # "yue-Hans_eng",
+    # "zho-Hans_eng",
+    "yue-Hant_transcribe"
+}
 
 if "eng_ocr" in actions:
     process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
@@ -76,7 +85,7 @@ if "yue-Hant_transcribe" in actions:
     process_transcription(
         title_root,
         reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        stop_at_idx=11,
+        stop_at_idx=12,
         additional_context=transcription_additional_context,
         additional_audit_references={
             "zho-Hant": Series.load(

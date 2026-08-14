@@ -12,7 +12,7 @@ from pydub import AudioSegment
 from pytest import LogCaptureFixture, raises
 
 import test.data.aligned_transcription as transcription_data
-from scinoephile.analysis.character_error_rate import SeriesCER
+from scinoephile.analysis.character_error_rate import LineCER
 from scinoephile.analysis.transcription import (
     AlignmentArtifact,
     AlignmentBlock,
@@ -38,8 +38,8 @@ def test_evaluation_writes_standardized_metrics_and_audit(
     caplog.set_level("INFO", logger="test.data.aligned_transcription")
 
     with patch(
-        "scinoephile.analysis.transcription.evaluation.SeriesCER", wraps=SeriesCER
-    ) as series_cer:
+        "scinoephile.analysis.transcription.evaluation.LineCER", wraps=LineCER
+    ) as line_cer:
         transcription_data._save_evaluation(  # noqa: SLF001
             tmp_path,
             artifact,
@@ -48,7 +48,7 @@ def test_evaluation_writes_standardized_metrics_and_audit(
             terminal_authority="yue-Hant",
         )
 
-    assert series_cer.call_count == 6
+    assert line_cer.call_count == 6
     metrics = json.loads((tmp_path / "json/metrics.json").read_text(encoding="utf-8"))
     assert metrics["format"] == "scinoephile-transcription-evaluation"
     assert set(metrics["cer"]) == {"whisper", "mimo", "merged"}

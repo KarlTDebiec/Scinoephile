@@ -275,16 +275,16 @@ def _save_evaluation(
     (json_dir_path / "metrics.json").write_text(
         json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    reference_similarity = None
+    token_similarity = None
     if artifact.language in {Language.yue_hans, Language.yue_hant}:
-        reference_similarity = YueTokenSimilarity(
+        token_similarity = YueTokenSimilarity(
             timing_weight=2.0, timing_tolerance_seconds=0.75
         )
     (output_dir_path / "audit.md").write_text(
         audit_transcription_alignment(
             artifact,
             audit_references,
-            reference_similarity=reference_similarity,
+            token_similarity=token_similarity,
             include_merge_support=True,
         ),
         encoding="utf-8",
@@ -294,7 +294,7 @@ def _save_evaluation(
             artifact,
             audit_references,
             authoritative_row_name=terminal_authority,
-            reference_similarity=reference_similarity,
+            token_similarity=token_similarity,
             include_merge_support=True,
         )
         logger.info(f"\n{terminal_alignment.rstrip()}")

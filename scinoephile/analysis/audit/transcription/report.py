@@ -30,7 +30,7 @@ def audit_transcription_alignment(
     artifact: AlignmentArtifact,
     references: Mapping[str, Series] | None = None,
     *,
-    reference_similarity: Callable[[Token, Token], float] | None = None,
+    token_similarity: Callable[[Token, Token], float] | None = None,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -46,7 +46,8 @@ def audit_transcription_alignment(
     Arguments:
         artifact: portable multi-source transcription alignment
         references: optional named independent references
-        reference_similarity: optional audit-only reference substitution scoring
+        token_similarity: optional token substitution scoring for reference alignment
+            and merged-character support
         first_index: first merged subtitle index whose complete block to include
         last_index: last merged subtitle index whose complete block to include
         first_block: first one-based VAD block index to include
@@ -88,7 +89,7 @@ def audit_transcription_alignment(
     ]
     if include_merge_support:
         lines.append(
-            "- exact merge support: ０=no matching successful ASR source; "
+            "- merge support: ０=no similar successful ASR source; "
             "９=all successful ASR sources match"
         )
     index_range = format_index_range(first_index, last_index, track_name="merged")
@@ -106,9 +107,9 @@ def audit_transcription_alignment(
             lines.append("")
 
     lines.extend(("", "## Alignments", ""))
-    if reference_similarity is None:
-        reference_similarity = _get_token_similarity
-    aligner = Aligner(reference_similarity)
+    if token_similarity is None:
+        token_similarity = _get_token_similarity
+    aligner = Aligner(token_similarity)
     for block in blocks:
         lines.append(f"### Block {block.index}")
         if block.source_errors:
@@ -144,7 +145,7 @@ def render_transcription_alignment_terminal(
     references: Mapping[str, Series] | None = None,
     *,
     authoritative_row_name: str = "merged",
-    reference_similarity: Callable[[Token, Token], float] | None = None,
+    token_similarity: Callable[[Token, Token], float] | None = None,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -163,7 +164,8 @@ def render_transcription_alignment_terminal(
         artifact: portable multi-source transcription alignment
         references: optional named independent references
         authoritative_row_name: named reference or merged row used for coloring
-        reference_similarity: optional audit-only reference substitution scoring
+        token_similarity: optional token substitution scoring for reference alignment
+            and merged-character support
         first_index: first merged subtitle index whose complete block to include
         last_index: last merged subtitle index whose complete block to include
         first_block: first one-based VAD block index to include
@@ -194,9 +196,9 @@ def render_transcription_alignment_terminal(
         first_block=first_block,
         last_block=last_block,
     )
-    if reference_similarity is None:
-        reference_similarity = _get_token_similarity
-    aligner = Aligner(reference_similarity)
+    if token_similarity is None:
+        token_similarity = _get_token_similarity
+    aligner = Aligner(token_similarity)
     lines = [f"Authority: {authoritative_row_name}"]
     for block in blocks:
         lines.extend(("", f"Block {block.index}"))

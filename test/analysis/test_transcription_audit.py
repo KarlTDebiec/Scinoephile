@@ -24,7 +24,7 @@ from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
 
 
-def test_audit_accepts_custom_reference_similarity():
+def test_audit_accepts_custom_token_similarity():
     """Reference augmentation should accept custom substitution scoring."""
     artifact = _get_artifact()
     reference = Series(events=[Subtitle(start=800, end=2_300, text="是嗎")])
@@ -45,7 +45,7 @@ def test_audit_accepts_custom_reference_similarity():
         return -2.0
 
     audit_transcription_alignment(
-        artifact, {"reference": reference}, reference_similarity=similarity
+        artifact, {"reference": reference}, token_similarity=similarity
     )
 
     assert compared_characters
@@ -319,7 +319,7 @@ def test_audit_renders_normalized_merge_support_as_optional_row():
     )
 
     assert not any(line.startswith("support") for line in default_report.splitlines())
-    assert "exact merge support: ０=no matching successful ASR source" in report
+    assert "merge support: ０=no similar successful ASR source" in report
     support_line = next(
         line for line in report.splitlines() if line.startswith("support")
     )
@@ -342,6 +342,35 @@ def test_audit_renders_normalized_merge_support_as_optional_row():
     ]
     assert report_rows == ["merged", "reference", "support"]
     assert terminal_rows == ["merged", "reference", "support"]
+
+
+def test_audit_uses_token_similarity_for_merge_support():
+    """The support row should count language-aware character matches."""
+    artifact = _get_artifact()
+
+    def similarity(one: Token, two: Token) -> float:
+        """Treat common copula forms as equivalent.
+
+        Arguments:
+            one: first timed alignment token
+            two: second timed alignment token
+        Returns:
+            positive score for matching copula forms
+        """
+        if one.text in {"係", "是", "系"} and two.text in {"係", "是", "系"}:
+            return 5.0
+        if one.text == two.text:
+            return 6.0
+        return -2.0
+
+    report = audit_transcription_alignment(
+        artifact, token_similarity=similarity, include_merge_support=True
+    )
+
+    support_line = next(
+        line for line in report.splitlines() if line.startswith("support")
+    )
+    assert support_line.rstrip().endswith("９・９")
 
 
 def test_audit_renders_timing_tables_when_requested():
