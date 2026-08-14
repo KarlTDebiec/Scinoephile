@@ -35,20 +35,7 @@ from .utils import format_index_range, validate_audit_range
 __all__ = ["audit_transcription_alignment", "render_transcription_alignment_terminal"]
 
 _MERGE_SUPPORT_CHARACTERS = "０１２３４５６７８９"
-"""Fullwidth support levels used in Markdown and as terminal color indexes."""
-_MERGE_SUPPORT_RGB_COLORS = (
-    (255, 59, 48),
-    (255, 90, 54),
-    (255, 122, 50),
-    (255, 159, 10),
-    (255, 214, 10),
-    (212, 225, 87),
-    (168, 210, 74),
-    (114, 201, 65),
-    (52, 199, 89),
-    (0, 168, 63),
-)
-"""Red-to-green terminal colors for ascending merge-support levels."""
+"""Fullwidth support levels used in Markdown and terminal output."""
 
 
 def audit_transcription_alignment(
@@ -596,7 +583,7 @@ def _get_language_legend(block: AlignmentBlock) -> str | None:
 
 
 def _get_merge_support_display_cell(character: str) -> str:
-    """Render one support level as a fullwidth ANSI background cell.
+    """Render one support level as a named ANSI-colored fullwidth digit.
 
     Arguments:
         character: fullwidth support digit, gap, or pause
@@ -606,8 +593,12 @@ def _get_merge_support_display_cell(character: str) -> str:
     if character not in _MERGE_SUPPORT_CHARACTERS:
         return _get_display_cell(character)
     support_level = _MERGE_SUPPORT_CHARACTERS.index(character)
-    red, green, blue = _MERGE_SUPPORT_RGB_COLORS[support_level]
-    return f"\x1b[48;2;{red};{green};{blue}m　{AnsiColor.RESET.value}"
+    color = AnsiColor.PURPLE
+    if support_level == 0:
+        color = AnsiColor.RED
+    elif support_level == len(_MERGE_SUPPORT_CHARACTERS) - 1:
+        color = AnsiColor.GREEN
+    return colorize(character, color)
 
 
 def _get_merge_support_row(block: AlignmentBlock) -> str:

@@ -324,10 +324,9 @@ def test_audit_renders_normalized_merge_support_as_optional_row():
         line for line in terminal.splitlines() if line.startswith("support")
     )
     assert support_line.rstrip().endswith("５・９")
-    assert "\x1b[48;2;212;225;87m　\x1b[0m" in terminal_support_line
-    assert terminal_support_line.count("\x1b[48;2;0;168;63m　\x1b[0m") == 1
+    assert "\x1b[35m５\x1b[0m" in terminal_support_line
+    assert terminal_support_line.count("\x1b[32m９\x1b[0m") == 1
     assert "⬛︎" not in terminal_support_line
-    assert "９" not in terminal_support_line
     report_rows = [
         line.split(maxsplit=1)[0]
         for line in report.splitlines()
@@ -434,6 +433,9 @@ def test_audit_retains_merged_text_without_source_support():
     artifact = artifact.model_copy(update={"blocks": (block,)})
 
     report = audit_transcription_alignment(artifact, include_merge_support=True)
+    terminal = render_transcription_alignment_terminal(
+        artifact, include_merge_support=True
+    )
 
     merged_line = next(
         line for line in report.splitlines() if line.startswith("merged")
@@ -441,8 +443,12 @@ def test_audit_retains_merged_text_without_source_support():
     support_line = next(
         line for line in report.splitlines() if line.startswith("support")
     )
+    terminal_support_line = next(
+        line for line in terminal.splitlines() if line.startswith("support")
+    )
     assert merged_line.endswith("甲｜")
     assert support_line.endswith("０　")
+    assert "\x1b[31m０\x1b[0m" in terminal_support_line
 
 
 def test_audit_splits_rows_at_merge_request_boundaries():
