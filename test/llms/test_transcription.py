@@ -249,14 +249,36 @@ def test_query_rejects_reference_evidence_and_reference_markers():
         )
 
 
-def test_processor_no_op_returns_empty_answer():
-    """No-op mode should omit aligned content without selecting a source."""
+def test_processor_no_op_uses_column_plurality_consensus():
+    """No-op mode should select each column's plurality without an LLM."""
     provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
     processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider, no_op=True)
 
     answer = processor.process(_get_sources("甲　・乙", "甲丙・乙"), "ＡＡ・Ａ")
 
-    assert answer.text == ""
+    assert answer.text == "甲乙｜"
+    provider.chat_completion.assert_not_called()
+
+
+def test_processor_no_op_preserves_request_spans_and_subtitle_limits():
+    """No-op requests should retain spans and split overlong consensus text."""
+    provider = Mock(spec=LLMProvider, cache_identity={"implementation": "test"})
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider, no_op=True)
+    source_text = f"{'一' * 21}・・・・乙"
+    speaker = f"{'Ａ' * 21}・・・・Ｂ"
+
+    results = processor.process_requests(
+        _get_sources(source_text, source_text), speaker
+    )
+
+    assert [
+        (
+            result.start_column,
+            result.end_column,
+            [subtitle.text for subtitle in result.answer.subtitles],
+        )
+        for result in results
+    ] == [(0, 21, ["一" * 20, "一"]), (25, 26, ["乙"])]
     provider.chat_completion.assert_not_called()
 
 
@@ -320,6 +342,29 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
         "singing": None,
         "music": None,
     }
+
+
+def test_processor_exposes_request_alignment_spans():
+    """Request results should retain their complete-alignment column spans."""
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    provider.chat_completion.side_effect = [
+        json.dumps({"wenben": "甲｜"}, ensure_ascii=False),
+        json.dumps({"wenben": "乙｜"}, ensure_ascii=False),
+    ]
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
+
+    results = processor.process_requests(
+        _get_sources("甲・・・・乙", "甲・・・・乙"), "Ａ・・・・Ｂ"
+    )
+
+    assert [
+        (result.start_column, result.end_column, result.answer.transcript)
+        for result in results
+    ] == [(0, 1, "甲"), (5, 6, "乙")]
 
 
 @parametrize(

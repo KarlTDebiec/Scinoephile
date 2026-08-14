@@ -7,5 +7,5 @@ Package hierarchy (modules may import from any above):
   / subtitle_extraction
 * clean / flatten / review / romanize / transcription / transcription_alignment
   / translation
-* ocr_processing
+* multisource_transcription / ocr_processing
 """

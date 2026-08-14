@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+from dataclasses import dataclass
 from math import isfinite
 
 from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
@@ -31,10 +32,32 @@ from scinoephile.audio.vad.speech_block import SpeechBlock
 from scinoephile.audio.vad.trace import VoiceActivityTrace
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 
-__all__ = ["build_transcription_alignment_block"]
+__all__ = [
+    "RenderedTranscriptionAlignment",
+    "build_transcription_alignment_block",
+    "render_transcription_alignment",
+]
 
 _VAD_SPEECH_THRESHOLD = 0.9
 """Minimum VAD score rendered as unattributed speech."""
+
+
+@dataclass(frozen=True, slots=True)
+class RenderedTranscriptionAlignment:
+    """Column-aligned ASR and audio-analysis rows."""
+
+    rows: tuple[AlignmentRow, ...]
+    """Named ASR rows in alignment source order."""
+    speaker: str
+    """Speaker and unattributed-speech annotation row."""
+    language: str | None
+    """Spoken-language annotation row, when available."""
+    language_legend: Mapping[str, str]
+    """Language-row display characters mapped to language labels."""
+    singing: str | None
+    """Singing annotation row, when available."""
+    music: str | None
+    """Music annotation row, when available."""
 
 
 def build_transcription_alignment_block(
@@ -95,29 +118,16 @@ def build_transcription_alignment_block(
         pause_intervals_seconds=pause_intervals_seconds,
         source_names=alignment.source_names,
     )
-    rendered_rows = tuple(
-        AlignmentRow(
-            name=source_name,
-            text=_get_row_text(augmented.columns, source_idx, traditionalize),
-        )
-        for source_idx, source_name in enumerate(augmented.source_names)
+    rendered = render_transcription_alignment(
+        augmented,
+        audio_events=audio_events,
+        diarization=diarization,
+        language_identification=language_identification,
+        source_offset_seconds=offset_seconds,
+        traditionalize=traditionalize,
+        voice_activity_trace=voice_activity_trace,
     )
     speaker_symbols = _get_speaker_symbols(diarization)
-    speaker = "".join(
-        _get_annotation_cell(
-            column, diarization, speaker_symbols, offset_seconds, voice_activity_trace
-        )
-        for column in augmented.columns
-    )
-    language_symbols = _get_language_symbols(language_identification)
-    language_trace = None
-    if language_identification is not None:
-        language_trace = "".join(
-            _get_language_cell(
-                column, language_identification, offset_seconds, language_symbols
-            )
-            for column in augmented.columns
-        )
 
     columns = []
     for column_idx, column in enumerate(augmented.columns, start=1):
@@ -149,21 +159,89 @@ def build_transcription_alignment_block(
         buffered_start_ms=speech_block.buffered_start_ms,
         buffered_end_ms=speech_block.buffered_end_ms,
         columns=tuple(columns),
-        rows=rendered_rows[:-1],
+        rows=rendered.rows[:-1],
+        speaker=rendered.speaker,
+        language_trace=rendered.language,
+        language_legend=rendered.language_legend,
+        singing_trace=rendered.singing,
+        music_trace=rendered.music,
+        merged=rendered.rows[-1].text,
+        subtitles=subtitles,
+        source_errors=dict(source_errors or {}),
+    )
+
+
+def render_transcription_alignment(
+    alignment: Alignment,
+    *,
+    audio_events: AudioEventDetectionResult | None = None,
+    diarization: SpeakerDiarizationResult | None = None,
+    language_identification: LanguageIdentificationResult | None = None,
+    source_offset_seconds: float = 0.0,
+    traditionalize: bool = False,
+    voice_activity_trace: VoiceActivityTrace | None = None,
+) -> RenderedTranscriptionAlignment:
+    """Render aligned ASR and audio-analysis rows.
+
+    Arguments:
+        alignment: timed lexical and pause alignment to render
+        audio_events: optional complete-source FireRed audio-event timeline
+        diarization: optional complete-source speaker diarization
+        language_identification: optional complete-source FireRed language timeline
+        source_offset_seconds: source time corresponding to alignment-local zero
+        traditionalize: whether to render lexical rows in Hong Kong Traditional
+        voice_activity_trace: optional complete-source VAD score trace
+    Returns:
+        equal-width ASR and annotation rows
+    """
+    rows = tuple(
+        AlignmentRow(
+            name=source_name,
+            text=_get_row_text(alignment.columns, source_idx, traditionalize),
+        )
+        for source_idx, source_name in enumerate(alignment.source_names)
+    )
+    speaker_symbols = _get_speaker_symbols(diarization)
+    speaker = "".join(
+        _get_annotation_cell(
+            column,
+            diarization,
+            speaker_symbols,
+            source_offset_seconds,
+            voice_activity_trace,
+        )
+        for column in alignment.columns
+    )
+    language_symbols = _get_language_symbols(language_identification)
+    language = None
+    if language_identification is not None:
+        language = "".join(
+            _get_language_cell(
+                column, language_identification, source_offset_seconds, language_symbols
+            )
+            for column in alignment.columns
+        )
+    return RenderedTranscriptionAlignment(
+        rows=rows,
         speaker=speaker,
-        language_trace=language_trace,
+        language=language,
         language_legend={
             symbol: language for language, symbol in language_symbols.items()
         },
-        singing_trace=_get_event_row(
-            augmented.columns, audio_events, AudioEvent.SINGING, "唱", offset_seconds
+        singing=_get_event_row(
+            alignment.columns,
+            audio_events,
+            AudioEvent.SINGING,
+            "唱",
+            source_offset_seconds,
         ),
-        music_trace=_get_event_row(
-            augmented.columns, audio_events, AudioEvent.MUSIC, "樂", offset_seconds
+        music=_get_event_row(
+            alignment.columns,
+            audio_events,
+            AudioEvent.MUSIC,
+            "樂",
+            source_offset_seconds,
         ),
-        merged=rendered_rows[-1].text,
-        subtitles=subtitles,
-        source_errors=dict(source_errors or {}),
     )
 
 

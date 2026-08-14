@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+from dataclasses import dataclass
 from typing import cast
 
 from scinoephile.core.llms import Processor
@@ -13,10 +14,22 @@ from .manager import TranscriptionManager
 from .models import TranscriptionAnswer, TranscriptionQuery, TranscriptionSource
 from .prompt import TranscriptionPrompt
 
-__all__ = ["TranscriptionProcessor"]
+__all__ = ["TranscriptionProcessor", "TranscriptionRequestResult"]
 
 _REQUEST_PAUSE_CHARACTERS = 4
 """Shared pause columns required to start a separate LLM request."""
+
+
+@dataclass(frozen=True, slots=True)
+class TranscriptionRequestResult:
+    """Consensus answer and alignment span for one LLM request."""
+
+    start_column: int
+    """Inclusive alignment column index."""
+    end_column: int
+    """Exclusive alignment column index."""
+    answer: TranscriptionAnswer
+    """Consensus subtitles returned for the request."""
 
 
 class TranscriptionProcessor(Processor):
@@ -47,6 +60,33 @@ class TranscriptionProcessor(Processor):
         Returns:
             consensus transcript divided into subtitles
         """
+        request_results = self.process_requests(
+            sources, speaker, language=language, music=music, singing=singing
+        )
+        return TranscriptionAnswer(
+            text="".join(result.answer.text for result in request_results)
+        )
+
+    def process_requests(
+        self,
+        sources: Sequence[TranscriptionSource],
+        speaker: str,
+        *,
+        language: str | None = None,
+        music: str | None = None,
+        singing: str | None = None,
+    ) -> tuple[TranscriptionRequestResult, ...]:
+        """Transcribe aligned ASR evidence as separately timed requests.
+
+        Arguments:
+            sources: named equal-status aligned ASR rows
+            speaker: aligned speaker and voice-activity row
+            language: optional aligned spoken-language row
+            music: optional aligned music row
+            singing: optional aligned singing row
+        Returns:
+            request answers with their complete-alignment column spans
+        """
         query_cls = self.test_case_cls.query_cls
         validated_query = cast(
             TranscriptionQuery,
@@ -60,20 +100,17 @@ class TranscriptionProcessor(Processor):
                 }
             ),
         )
-        if self.queryer.no_op:
-            return TranscriptionAnswer(text="")
-
-        request_answers = []
-        for query in _get_request_queries(validated_query):
+        request_results = []
+        for query, (start_column, end_column) in _get_request_queries(validated_query):
             test_case = self.test_case_cls(query=query)
             test_case = self.queryer(test_case)
             answer = cast(TranscriptionAnswer, test_case.answer)
-            request_answers.append(answer)
+            request_results.append(
+                TranscriptionRequestResult(start_column, end_column, answer)
+            )
 
         self.save_encountered_test_cases()
-        return TranscriptionAnswer(
-            text="".join(answer.text for answer in request_answers)
-        )
+        return tuple(request_results)
 
 
 def _get_query_slice(
@@ -104,7 +141,9 @@ def _get_query_slice(
     return query.model_copy(update=update)
 
 
-def _get_request_queries(query: TranscriptionQuery) -> tuple[TranscriptionQuery, ...]:
+def _get_request_queries(
+    query: TranscriptionQuery,
+) -> tuple[tuple[TranscriptionQuery, tuple[int, int]], ...]:
     """Split a validated alignment query at long shared pause runs."""
     requests = []
     content_spans = []
@@ -143,5 +182,5 @@ def _get_request_queries(query: TranscriptionQuery) -> tuple[TranscriptionQuery,
             for source in request.sources
             for character in source.text
         ):
-            requests.append(request)
+            requests.append((request, (content_start, content_end)))
     return tuple(requests)

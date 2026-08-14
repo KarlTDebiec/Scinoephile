@@ -27,6 +27,7 @@ from scinoephile.audio.transcription import (
     get_segment_split_on_word_timings,
 )
 from scinoephile.audio.transcription.mlx_audio.model import MlxAudioModel
+from scinoephile.audio.transcription.quality import get_transcription_quality_issue
 from scinoephile.audio.transcription.whisper.model import WhisperModel
 from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
@@ -49,14 +50,8 @@ TranscribedSegmentSplitter = Callable[[TranscribedSegment], list[TranscribedSegm
 
 logger = getLogger(__name__)
 
-_AUDIO_END_TOLERANCE_SECONDS = 1.0
-"""Maximum accepted Whisper timestamp extension beyond the source audio."""
-
 _EXPECTED_TAIL_TOLERANCE_SECONDS = 1.0
 """Gap before the final guided subtitle that triggers focused recovery."""
-
-_MAX_COMPRESSION_RATIO = 2.4
-"""Maximum Whisper compression ratio accepted for guided alignment."""
 
 _RECOVERY_TEMPERATURES = (0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
 """Whisper temperature schedule used after standard decoding fails."""
@@ -593,54 +588,13 @@ class GuidedTranscriber:
         Returns:
             whether the segments contain plausible nonempty text with word timings
         """
-        has_text = False
-        for segment in segments:
-            if not segment.text.strip():
-                continue
-            has_text = True
-            if not segment.words:
-                logger.warning(f"Rejecting segment {segment.id} without word timings")
-                return False
-            if int(segment.end * 1000) <= int(segment.start * 1000):
-                logger.warning(
-                    f"Rejecting Whisper segment {segment.id} with non-positive "
-                    f"millisecond duration ({segment.start:.3f}s to "
-                    f"{segment.end:.3f}s)"
-                )
-                return False
-            for word in segment.words:
-                if not word.text.strip():
-                    continue
-                if int(word.end * 1000) <= int(word.start * 1000):
-                    logger.warning(
-                        f"Rejecting Whisper segment {segment.id} with word "
-                        f"{word.text!r} having non-positive millisecond duration "
-                        f"({word.start:.3f}s to {word.end:.3f}s)"
-                    )
-                    return False
-            if (
-                segment.compression_ratio is not None
-                and segment.compression_ratio > _MAX_COMPRESSION_RATIO
-            ):
-                logger.warning(
-                    f"Rejecting repetitive Whisper segment {segment.id} with "
-                    f"compression ratio {segment.compression_ratio:.2f} "
-                    f"(maximum {_MAX_COMPRESSION_RATIO:.2f})"
-                )
-                return False
-            if (
-                audio_duration is not None
-                and segment.end > audio_duration + _AUDIO_END_TOLERANCE_SECONDS
-            ):
-                logger.warning(
-                    f"Rejecting Whisper segment {segment.id} ending at "
-                    f"{segment.end:.2f}s beyond {audio_duration:.2f}s source audio"
-                )
-                return False
-
-        if not has_text:
-            logger.warning("Rejecting empty Whisper transcription")
-        return has_text
+        issue = get_transcription_quality_issue(
+            segments, audio_duration_seconds=audio_duration
+        )
+        if issue is None:
+            return True
+        logger.warning(f"Rejecting transcription: {issue}")
+        return False
 
 
 def get_segment_split_on_phrase_timings(
