@@ -4,11 +4,10 @@
 
 from __future__ import annotations
 
-from collections import Counter
 from dataclasses import dataclass
 
-from scinoephile.analysis.character_error_rate.line_cer import LineCER
-from scinoephile.core.subtitles import Series
+from scinoephile.analysis.character_error_rate.series_cer import SeriesCER
+from scinoephile.core.subtitles import Series, Subtitle
 
 from .artifact import AlignmentArtifact
 from .timing import TimingMetrics, evaluate_timing, get_reference_for_alignment
@@ -46,8 +45,6 @@ class TranscriptionEvaluation:
     """Character-error metrics keyed by source name and `merged`."""
     timing: TimingMetrics
     """Merged candidate timing metrics."""
-    group_counts: dict[str, int]
-    """Candidate-to-reference subtitle alignment group counts."""
 
 
 def evaluate_transcription(
@@ -62,38 +59,33 @@ def evaluate_transcription(
         lexical and timing evaluation
     """
     selected_reference = get_reference_for_alignment(artifact, reference)
-    reference_text = "".join(
-        subtitle.text_with_newline for subtitle in selected_reference
-    )
-    candidate_texts = {source.name: [] for source in artifact.sources}
+    source_events = {source.name: [] for source in artifact.sources}
     for block in artifact.blocks:
         rows = {row.name: row.text for row in block.rows}
         for source in artifact.sources:
-            candidate_texts[source.name].append(
-                rows.get(source.name, "").replace("　", "").replace("・", "")
-            )
-    candidate_texts["merged"] = [
-        subtitle.text for block in artifact.blocks for subtitle in block.subtitles
-    ]
+            text = rows.get(source.name, "").replace("　", "").replace("・", "")
+            if text:
+                source_events[source.name].append(
+                    Subtitle(
+                        start=block.core_start_ms, end=block.core_end_ms, text=text
+                    )
+                )
+    candidates = {name: Series(events=events) for name, events in source_events.items()}
+    candidates["merged"] = artifact.get_series()
     character_errors = {
-        name: _get_character_error_metrics(LineCER(reference_text, "".join(text_parts)))
-        for name, text_parts in candidate_texts.items()
+        name: _get_character_error_metrics(SeriesCER(selected_reference, candidate))
+        for name, candidate in candidates.items()
     }
     timing = evaluate_timing(artifact, reference)
-    group_counts = Counter(
-        f"{len(pair.candidate_indexes)}:{len(pair.reference_indexes)}"
-        for pair in timing.pairs
-    )
     return TranscriptionEvaluation(
         reference_subtitles=len(selected_reference),
         candidate_subtitles=sum(len(block.subtitles) for block in artifact.blocks),
         character_errors=character_errors,
         timing=timing,
-        group_counts=dict(sorted(group_counts.items())),
     )
 
 
-def _get_character_error_metrics(result: LineCER) -> CharacterErrorMetrics:
+def _get_character_error_metrics(result: SeriesCER) -> CharacterErrorMetrics:
     """Copy one character-error result into a serializable value object.
 
     Arguments:

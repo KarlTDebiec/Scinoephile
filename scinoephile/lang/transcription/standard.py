@@ -24,7 +24,7 @@ from scinoephile.llms.transcription import (
     TranscriptionPrompt,
 )
 
-__all__ = ["DEFAULT_PROMPTS", "get_transcriber"]
+__all__ = ["DEFAULT_PROMPTS", "YueTranscriptionManager", "get_transcriber"]
 
 _YUE_HANS_TRANSCRIPTION_JSON_PATHS: tuple[Path, ...] = ()
 """Default simplified Yue transcription JSON paths."""
@@ -39,7 +39,7 @@ _JSON_PATHS: dict[Language, tuple[Path, ...]] = {
 """Transcription JSON paths keyed by language."""
 
 
-class _YueTranscriptionManager(TranscriptionManager):
+class YueTranscriptionManager(TranscriptionManager):
     """Transcription models using Yue evidence scoring."""
 
     alignment_scorer = YueTranscriptionAlignmentScorer()
@@ -49,7 +49,7 @@ class _YueTranscriptionManager(TranscriptionManager):
 class _YueTranscriptionProcessor(TranscriptionProcessor):
     """Transcription processor using Yue evidence scoring."""
 
-    manager_cls = _YueTranscriptionManager
+    manager_cls = YueTranscriptionManager
     """Manager used to construct Yue-aware test-case models."""
 
 
@@ -89,7 +89,7 @@ def get_transcriber(
     if shared_test_cases is None:
         shared_test_cases = list(
             load_shared_test_cases(
-                _YueTranscriptionManager, prompt, _JSON_PATHS[language]
+                YueTranscriptionManager, prompt, _JSON_PATHS[language]
             )
         )
     if provider is None:

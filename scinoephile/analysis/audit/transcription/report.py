@@ -282,14 +282,14 @@ def _get_metric_summary(artifact: AlignmentArtifact, reference: Series) -> list[
     for name, result in evaluation.character_errors.items():
         lines.append(f"- {name} CER: {result.cer:.3%}")
     timing = evaluation.timing
+    group_counts = timing.candidate_to_reference_group_counts
     lines.extend(
         (
             f"- text-aligned timing groups: {len(timing.pairs)}",
             (
                 "- candidate:reference subtitle groups: "
                 + ", ".join(
-                    f"{shape} × {count}"
-                    for shape, count in evaluation.group_counts.items()
+                    f"{shape} × {count}" for shape, count in group_counts.items()
                 )
             ),
             f"- temporal micro IoU: {timing.micro_intersection_over_union:.3%}",

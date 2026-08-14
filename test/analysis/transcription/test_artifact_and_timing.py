@@ -165,6 +165,7 @@ def test_timing_evaluation_pairs_text_before_scoring_overlap():
 
     metrics = evaluate_timing(artifact, reference)
 
+    assert metrics.candidate_to_reference_group_counts == {"1:1": 1}
     assert len(metrics.pairs) == 1
     assert metrics.micro_intersection_over_union == approx(1300 / 1500)
     assert metrics.pairs[0].start_error_ms == 100

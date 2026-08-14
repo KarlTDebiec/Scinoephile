@@ -83,7 +83,7 @@ def process_transcription(
     if stop_at_idx is None and target_reference_count <= 0:
         raise ValueError("target_reference_count must be positive.")
     output_dir_path = title_root_path / "output" / "yue-Hant_transcribe"
-    audio_path = output_dir_path / "audio.wav"
+    audio_path = output_dir_path / "audio" / "audio.wav"
     output_dir_path.mkdir(parents=True, exist_ok=True)
     json_dir_path = output_dir_path / "json"
     json_dir_path.mkdir(parents=True, exist_ok=True)
@@ -162,7 +162,18 @@ def _get_stop_at_idx_for_reference_count(
     reference: Series,
     target_count: int,
 ) -> int:
-    """Get the smallest block prefix covering the target reference count."""
+    """Get the smallest block prefix covering the target reference count.
+
+    Arguments:
+        pipeline: transcription pipeline used to plan blocks
+        audio: complete audio used for block planning
+        reference: independent reference whose subtitles are counted
+        target_count: minimum reference subtitle count to cover
+    Returns:
+        exclusive block index covering the requested number of subtitles
+    Raises:
+        ScinoephileError: if the complete block plan does not cover the target
+    """
     blocks = pipeline.plan_blocks(audio)
     covered = 0
     for stop_at_idx, block in enumerate(blocks, start=1):
@@ -189,7 +200,20 @@ def _load_audio_series(
     audio_extraction_mode: AudioExtractionMode = AudioExtractionMode.ORIGINAL,
     media_start_seconds: float,
 ) -> AudioSeries:
-    """Load staged complete audio without supplying subtitle events to ASR."""
+    """Load staged complete audio without supplying subtitle events to ASR.
+
+    Arguments:
+        audio_path: staged complete-audio WAV path
+        media_path: optional media from which to extract missing staged audio
+        stream_index: optional media audio-stream index
+        audio_extraction_mode: channel preparation used during media extraction
+        media_start_seconds: seconds trimmed from extracted media audio
+    Returns:
+        complete audio without subtitle events
+    Raises:
+        ScinoephileError: if staged audio cannot be loaded or generated
+        ValueError: if the media start time is negative
+    """
     if media_start_seconds < 0.0:
         raise ValueError("media_start_seconds must be non-negative.")
     if audio_path.exists():
@@ -223,7 +247,15 @@ def _save_evaluation(
     audit_references: Mapping[str, Series],
     terminal_authority: str | None = None,
 ):
-    """Save evaluation metrics and readable alignment audits."""
+    """Save evaluation metrics and readable alignment audits.
+
+    Arguments:
+        output_dir_path: transcription output directory
+        artifact: aligned multi-source transcription artifact
+        reference: independent reference used for metrics
+        audit_references: named independent references rendered in the audit
+        terminal_authority: optional authoritative row rendered in the terminal
+    """
     evaluation = evaluate_transcription(artifact, reference)
     cer = {
         name: asdict(character_errors)
@@ -297,5 +329,7 @@ def _serialize_timing(evaluation: TranscriptionEvaluation) -> dict[str, object]:
         "mean_absolute_end_error_ms": timing.mean_absolute_end_error_ms,
         "unmatched_candidate_subtitles": timing.unmatched_candidate_subtitles,
         "unmatched_reference_subtitles": timing.unmatched_reference_subtitles,
-        "candidate_to_reference_group_counts": evaluation.group_counts,
+        "candidate_to_reference_group_counts": (
+            timing.candidate_to_reference_group_counts
+        ),
     }
