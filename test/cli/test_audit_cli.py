@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from pytest import CaptureFixture, mark, raises
 
@@ -26,13 +26,13 @@ from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
-from scinoephile.cli.audit.audit_transcription_alignment_cli import (
-    AuditTranscriptionAlignmentCli,
-)
+from scinoephile.cli.audit.audit_transcription_cli import AuditTranscriptionCli
 from scinoephile.cli.audit.audit_translation_cli import AuditTranslationCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.testing import run_cli_with_args
+from scinoephile.core import Language
+from scinoephile.lang.yue.transcription import YueTokenSimilarity
 
 
 def test_audit_cli_subcommands():
@@ -43,7 +43,7 @@ def test_audit_cli_subcommands():
     assert issubclass(AuditReviewCli, AuditCliBase)
     assert issubclass(AuditReviewDualCli, AuditCliBase)
     assert issubclass(AuditReviewTradCli, AuditCliBase)
-    assert issubclass(AuditTranscriptionAlignmentCli, AuditCliBase)
+    assert issubclass(AuditTranscriptionCli, AuditCliBase)
     assert issubclass(AuditTranslationCli, AuditCliBase)
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
@@ -54,7 +54,7 @@ def test_audit_cli_subcommands():
         "review": AuditReviewCli,
         "review-dual": AuditReviewDualCli,
         "review-trad": AuditReviewTradCli,
-        "transcription-alignment": AuditTranscriptionAlignmentCli,
+        "transcription": AuditTranscriptionCli,
         "translation": AuditTranslationCli,
     }
 
@@ -680,7 +680,7 @@ def test_transcription_audit_cli_help_describes_subtitle_indexes():
         assert "unverified includes" in filter_action.help
 
 
-def test_transcription_alignment_audit_cli_help_and_validation(
+def test_transcription_audit_cli_help_and_validation(
     tmp_path: Path, capsys: CaptureFixture
 ):
     """Test the alignment audit is registered and validates artifact JSON.
@@ -691,10 +691,16 @@ def test_transcription_alignment_audit_cli_help_and_validation(
     """
     actions = {
         action.dest: action
-        for action in AuditTranscriptionAlignmentCli.argparser()._actions  # noqa: SLF001
+        for action in AuditTranscriptionCli.argparser()._actions  # noqa: SLF001
     }
     assert actions["first_index"].help == (
         "first 1-indexed subtitle number to include, inclusive"
+    )
+    assert actions["first_block"].help == (
+        "first 1-indexed subtitle block to process, inclusive"
+    )
+    assert actions["last_block"].help == (
+        "last 1-indexed subtitle block to process, inclusive"
     )
     assert actions["alignment_path"].required
     assert actions["reference_specs"].metavar == "NAME=PATH"
@@ -711,12 +717,12 @@ def test_transcription_alignment_audit_cli_help_and_validation(
     invalid_path.write_text("{}", encoding="utf-8")
     reference_path = tmp_path / "reference.srt"
     _write_srt(reference_path, ("係呀",))
-    parsed = AuditTranscriptionAlignmentCli.argparser().parse_args(
+    parsed = AuditTranscriptionCli.argparser().parse_args(
         [
             "--alignment",
             str(invalid_path),
             "--reference",
-            f"zho-Hant={reference_path}",
+            f" zho-Hant = {reference_path} ",
             "--reference",
             f"yue-Hant={reference_path}",
             "--include-speaker",
@@ -736,8 +742,72 @@ def test_transcription_alignment_audit_cli_help_and_validation(
     assert parsed.include_audio_events is True
     assert parsed.include_timing_tables is True
     with raises(SystemExit):
-        run_cli_with_args(AuditTranscriptionAlignmentCli, f"--alignment {invalid_path}")
+        run_cli_with_args(AuditTranscriptionCli, f"--alignment {invalid_path}")
     assert "Unable to load transcription alignment artifact" in capsys.readouterr().err
+
+
+def test_transcription_audit_cli_runs_with_yue_similarity(
+    tmp_path: Path, capsys: CaptureFixture
+):
+    """Test the transcription audit loads inputs and configures Yue alignment.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    alignment_path = tmp_path / "alignment.json"
+    alignment_path.write_text("{}", encoding="utf-8")
+    reference_path = tmp_path / "reference.srt"
+    _write_srt(reference_path, ("係呀",))
+    artifact = Mock(language=Language.yue_hant)
+    reference = Mock()
+
+    with (
+        patch(
+            "scinoephile.cli.audit.audit_transcription_cli.AlignmentArtifact.load",
+            return_value=artifact,
+        ) as load_artifact,
+        patch(
+            "scinoephile.cli.audit.audit_transcription_cli.read_series",
+            return_value=reference,
+        ) as load_reference,
+        patch(
+            "scinoephile.cli.audit.audit_transcription_cli."
+            "audit_transcription_alignment",
+            return_value="# Audit\n",
+        ) as audit,
+    ):
+        run_cli_with_args(
+            AuditTranscriptionCli,
+            (
+                f"--alignment {alignment_path} "
+                f"--reference reference={reference_path} "
+                "--first-block 2 --last-block 3 "
+                "--include-audio-events --include-language "
+                "--include-merge-support --include-speaker --include-timing"
+            ),
+        )
+
+    load_artifact.assert_called_once_with(alignment_path)
+    load_reference.assert_called_once()
+    assert load_reference.call_args.args[1] == reference_path
+    reference_similarity = audit.call_args.kwargs["reference_similarity"]
+    assert isinstance(reference_similarity, YueTokenSimilarity)
+    audit.assert_called_once_with(
+        artifact,
+        {"reference": reference},
+        reference_similarity=reference_similarity,
+        first_index=None,
+        last_index=None,
+        first_block=2,
+        last_block=3,
+        include_audio_events=True,
+        include_language=True,
+        include_merge_support=True,
+        include_speaker=True,
+        include_timing_tables=True,
+    )
+    assert capsys.readouterr().out == "# Audit\n"
 
 
 def _write_srt(file_path: Path, texts: tuple[str, ...]):

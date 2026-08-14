@@ -1,9 +1,9 @@
 ---
-name: audit-transcription-alignment
-description: Audit Scinoephile versioned multi-ASR transcription alignment JSON, including aligned ASR rows, fullwidth speaker and pause annotations, merged subtitles, optional Cantonese reference alignment, CER, and display-timing overlap. Use when inspecting alignment.json artifacts, evaluating consensus transcription, checking subtitle breaks, diagnosing source disagreement, or calibrating reference-free subtitle timing.
+name: audit-transcription
+description: Audit Scinoephile multi-source transcription alignment artifacts, including ASR rows, speaker and pause annotations, merged subtitles, optional reference alignment, CER, and display-timing overlap. Use when inspecting alignment.json, evaluating consensus transcription, checking subtitle breaks, diagnosing source disagreement, or calibrating reference-free subtitle timing.
 ---
 
-# Audit Transcription Alignment
+# Audit Transcription
 
 Run commands from the repository root. Treat the alignment artifact as the
 complete record of production evidence: source/model metadata, VAD block ranges,
@@ -18,17 +18,17 @@ or CTC alignment. It is safe to pass a reference only to the audit CLI after the
 artifact and SRT have been generated.
 
 Never edit files under `test/data/<dataset>/input/`. For an audit-only request,
-do not modify the alignment artifact, merge JSON, generated SRT, or reference.
+do not modify the alignment artifact, generated SRT, or reference.
 
 ## Generate the report
 
 Always set `UV_CACHE_DIR=/tmp/uv-cache`:
 
 ```shell
-UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit transcription-alignment \
+UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit transcription \
   --alignment <alignment.json> \
   --reference <name>=<independent-reference.srt> \
-  --outfile local/<dataset>_transcription_alignment_audit.md \
+  --outfile local/<dataset>_transcription_audit.md \
   --overwrite
 ```
 
@@ -41,12 +41,12 @@ two range types are mutually exclusive. Request optional evidence rows with
 `--include-audio-events`; request detailed timing tables with `--include-timing`.
 
 The default row order is all available ASR sources, a separator, `merged`, and
-then each named reference. Optional support, language, music, and singing rows
-follow the references; the optional speaker row appears with the annotation
-rows. `　` is an ordinary alignment gap, `・` is a shared 250 ms pause unit,
-`Ａ`/`Ｂ`/… are diarized speakers, and `＊` is speech without a speaker label.
-`｜` appears only in a row whose subtitle ends at that alignment position. All
-times are overall source times.
+then each named reference. The optional speaker row follows `merged`; support,
+language, music, and singing rows follow the references. `　` is an ordinary
+alignment gap, `・` is a shared timed pause unit whose duration is reported in
+the summary, `Ａ`/`Ｂ`/… are diarized speakers, and `＊` is speech without a
+speaker label. `｜` appears only in a row whose subtitle ends at that alignment
+position. All times are overall source times.
 
 ## Interpret the report
 
@@ -62,7 +62,8 @@ Read every selected block and distinguish four kinds of issue:
 - Timing issue: CTC speech bounds or display padding overlap the text-aligned
   reference poorly. Judge timing separately from text accuracy.
 
-CER compares concatenated lexical content and ignores punctuation/whitespace.
+CER compares normalized lexical content across subtitle series and ignores
+punctuation and whitespace.
 Temporal IoU is the primary balanced timing metric; one-to-one IoU separately
 checks unambiguous individual subtitle pairs so split/merge groups cannot hide
 poor internal boundaries. Reference-time coverage is supplementary because it
