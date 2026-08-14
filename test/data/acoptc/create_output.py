@@ -88,7 +88,7 @@ if "yue-Hant_transcribe" in actions:
         language=Language.yue_hant,
         guide_language=Language.zho_hant,
         output_dir_path=yue_hant_transcribe_path,
-        audio_source_path=yue_hant_transcribe_path / "audio" / "audio.wav",
+        audio_source_path=input_path / "yue-Hant_transcribe/audio.wav",
         media_path=input_path / "source.mkv",
         additional_context=transcription_additional_context,
         transcription_kw={

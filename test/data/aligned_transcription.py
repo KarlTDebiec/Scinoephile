@@ -14,7 +14,7 @@ from scinoephile.analysis.audit.transcription.report import (
     audit_transcription_alignment,
     render_transcription_alignment_terminal,
 )
-from scinoephile.analysis.transcription import AlignmentArtifact
+from scinoephile.analysis.transcription import AlignmentArtifact, RunManifest
 from scinoephile.analysis.transcription.evaluation import (
     TranscriptionEvaluation,
     evaluate_transcription,
@@ -83,7 +83,7 @@ def process_transcription(
     if stop_at_idx is None and target_reference_count <= 0:
         raise ValueError("target_reference_count must be positive.")
     output_dir_path = title_root_path / "output" / "yue-Hant_transcribe"
-    audio_path = output_dir_path / "audio" / "audio.wav"
+    audio_path = title_root_path / "input/yue-Hant_transcribe/audio.wav"
     output_dir_path.mkdir(parents=True, exist_ok=True)
     json_dir_path = output_dir_path / "json"
     json_dir_path.mkdir(parents=True, exist_ok=True)
@@ -99,17 +99,37 @@ def process_transcription(
 
     if artifact_path.exists() and not overwrite:
         artifact = AlignmentArtifact.load(artifact_path)
-        output = artifact.get_series()
-        if not transcription_path.exists():
-            output.save(transcription_path)
-        _save_evaluation(
-            output_dir_path,
-            artifact,
-            reference,
-            audit_references=audit_references,
-            terminal_authority=terminal_authority,
+        processed_block_indexes = tuple(block.index for block in artifact.blocks)
+        if run_manifest_path.exists():
+            manifest = RunManifest.load(run_manifest_path)
+            if manifest.alignment_sha256 == artifact.sha256:
+                processed_block_indexes = tuple(
+                    block.index for block in manifest.blocks
+                )
+            else:
+                processed_block_indexes = ()
+        requested_block_indexes = None
+        if stop_at_idx is not None:
+            requested_block_indexes = tuple(range(1, stop_at_idx + 1))
+        if (
+            requested_block_indexes is None
+            or processed_block_indexes == requested_block_indexes
+        ):
+            output = artifact.get_series()
+            if not transcription_path.exists():
+                output.save(transcription_path)
+            _save_evaluation(
+                output_dir_path,
+                artifact,
+                reference,
+                audit_references=audit_references,
+                terminal_authority=terminal_authority,
+            )
+            return output
+        logger.info(
+            f"Existing alignment does not match the requested {stop_at_idx}-block "
+            "prefix; regenerating."
         )
-        return output
 
     audio = _load_audio_series(
         audio_path,

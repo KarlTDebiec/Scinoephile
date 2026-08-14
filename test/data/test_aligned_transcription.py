@@ -89,6 +89,49 @@ def test_existing_alignment_recreates_srt_without_transcription(tmp_path: Path):
     get_pipeline.assert_not_called()
 
 
+def test_existing_alignment_is_regenerated_for_different_block_count(tmp_path: Path):
+    """An explicit block count should invalidate a different existing prefix."""
+    title_root_path = tmp_path / "title"
+    output_dir_path = title_root_path / "output/yue-Hant_transcribe"
+    artifact_path = output_dir_path / "json/alignment.json"
+    reference_path = tmp_path / "reference.srt"
+    artifact = _get_artifact()
+    artifact.save(artifact_path)
+    artifact.get_series().save(reference_path)
+    audio = AudioSeries(audio=AudioSegment.silent(duration=3_000), events=[])
+    provider = Mock(completion_metrics=[])
+    pipeline = Mock(spec=TranscriptionPipeline)
+    pipeline.last_alignment_artifact = artifact
+
+    with (
+        patch(
+            "test.data.aligned_transcription._load_audio_series", return_value=audio
+        ) as load_audio,
+        patch("test.data.aligned_transcription.get_provider", return_value=provider),
+        patch(
+            "test.data.aligned_transcription.get_transcription_pipeline",
+            return_value=pipeline,
+        ),
+        patch(
+            "test.data.aligned_transcription.transcribe_series",
+            return_value=artifact.get_series(),
+        ) as transcribe,
+    ):
+        transcription_data.process_transcription(
+            title_root_path, reference_path=reference_path, stop_at_idx=2
+        )
+
+    load_audio.assert_called_once()
+    transcribe.assert_called_once_with(
+        audio,
+        language=Language.yue_hant,
+        pipeline=pipeline,
+        alignment_outfile_path=artifact_path,
+        run_manifest_outfile_path=output_dir_path / "json/run.json",
+        stop_at_idx=2,
+    )
+
+
 def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
     """A fresh run should route provenance and write harness outputs."""
     title_root_path = tmp_path / "title"
@@ -128,7 +171,7 @@ def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
     json_dir_path = output_dir_path / "json"
     assert result == output
     load_audio.assert_called_once_with(
-        output_dir_path / "audio/audio.wav",
+        title_root_path / "input/yue-Hant_transcribe/audio.wav",
         media_path=None,
         stream_index=None,
         audio_extraction_mode=AudioExtractionMode.ORIGINAL,
