@@ -48,6 +48,7 @@ __all__ = [
     "input_file_or_dir_arg",
     "input_file_arg",
     "int_arg",
+    "named_input_file_arg",
     "output_dir_arg",
     "output_file_arg",
     "str_arg",
@@ -407,6 +408,38 @@ def int_arg(**kwargs: Unpack[IntValidatorKwargs]) -> Callable[[Any], int | list[
         value validator function
     """
     return get_validator(val_int, **kwargs)
+
+
+def named_input_file_arg() -> Callable[[Any], tuple[str, Path]]:
+    """Validate a named input file argument in NAME=PATH form.
+
+    Returns:
+        value validator function
+    """
+
+    def wrapped(value: Any) -> tuple[str, Path]:
+        """Validate one named input file argument.
+
+        Arguments:
+            value: value to validate
+        Returns:
+            trimmed name and validated input file path
+        Raises:
+            ArgumentTypeError: if the value is malformed or its path is invalid
+        """
+        name, separator, raw_path = str(value).partition("=")
+        name = name.strip()
+        raw_path = raw_path.strip()
+        if not separator or not name or not raw_path:
+            raise ArgumentTypeError(
+                "named input files must use nonblank NAME=PATH syntax"
+            )
+        try:
+            return name, val_input_path(raw_path)
+        except (OSError, TypeError, ValueError) as exc:
+            raise ArgumentTypeError(str(exc)) from exc
+
+    return wrapped
 
 
 def output_dir_arg(

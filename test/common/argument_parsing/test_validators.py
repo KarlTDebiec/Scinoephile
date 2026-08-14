@@ -16,6 +16,7 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
     input_file_or_dir_arg,
     int_arg,
+    named_input_file_arg,
     output_dir_arg,
     output_file_arg,
     str_arg,
@@ -95,6 +96,28 @@ def test_input_file_or_dir_arg(tmp_path: Path):
 
     with raises(ArgumentTypeError, match="does not exist"):
         validator(str(tmp_path / "nonexistent"))
+
+
+def test_named_input_file_arg(tmp_path: Path):
+    """Test named_input_file_arg validator.
+
+    Arguments:
+        tmp_path: temporary path
+    """
+    input_path = tmp_path / "reference=input.srt"
+    input_path.write_text("test content", encoding="utf-8")
+    validator = named_input_file_arg()
+
+    assert validator(f" reference = {input_path} ") == (
+        "reference",
+        input_path.resolve(),
+    )
+    with raises(ArgumentTypeError, match="nonblank NAME=PATH syntax"):
+        validator("reference")
+    with raises(ArgumentTypeError, match="nonblank NAME=PATH syntax"):
+        validator(f"={input_path}")
+    with raises(ArgumentTypeError, match="does not exist"):
+        validator(f"reference={tmp_path / 'missing.srt'}")
 
 
 def test_input_dir_arg(tmp_path: Path):

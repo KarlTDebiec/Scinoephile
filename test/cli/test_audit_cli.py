@@ -26,6 +26,7 @@ from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
+from scinoephile.cli.audit.audit_transcription_cli import AuditTranscriptionCli
 from scinoephile.cli.audit.audit_translation_cli import AuditTranslationCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
@@ -40,6 +41,7 @@ def test_audit_cli_subcommands():
     assert issubclass(AuditReviewCli, AuditCliBase)
     assert issubclass(AuditReviewDualCli, AuditCliBase)
     assert issubclass(AuditReviewTradCli, AuditCliBase)
+    assert issubclass(AuditTranscriptionCli, AuditCliBase)
     assert issubclass(AuditTranslationCli, AuditCliBase)
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
@@ -50,6 +52,7 @@ def test_audit_cli_subcommands():
         "review": AuditReviewCli,
         "review-dual": AuditReviewDualCli,
         "review-trad": AuditReviewTradCli,
+        "transcription": AuditTranscriptionCli,
         "translation": AuditTranslationCli,
     }
 
