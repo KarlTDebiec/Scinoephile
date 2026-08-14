@@ -24,6 +24,7 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.vad import SpeechBlock
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.media.audio import AudioExtractionMode
 from scinoephile.workflows.transcription_pipeline import TranscriptionPipeline
 
 
@@ -72,9 +73,10 @@ def test_media_audio_trim_is_applied_before_staging(tmp_path: Path):
     extracted = AudioSeries(
         audio=AudioSegment.silent(duration=5_000, frame_rate=16_000), events=[]
     )
+    staged = AudioSegment.silent(duration=4_000, frame_rate=16_000)
     with patch(
         "test.data.aligned_transcription.load_audio_segment",
-        return_value=extracted.audio,
+        side_effect=(extracted.audio, staged),
     ) as load_audio:
         audio_path = tmp_path / "audio.wav"
         audio = transcription_data._load_audio_series(  # noqa: SLF001
@@ -94,7 +96,14 @@ def test_media_audio_trim_is_applied_before_staging(tmp_path: Path):
     assert len(reloaded.audio) == 4_000
     assert audio_path.exists()
     assert not audio_path.with_suffix(".srt").exists()
-    load_audio.assert_called_once()
+    assert load_audio.call_count == 2
+    assert load_audio.call_args_list[0].args == (tmp_path / "source.mkv",)
+    assert load_audio.call_args_list[0].kwargs == {
+        "stream_index": 12,
+        "mode": AudioExtractionMode.ORIGINAL,
+    }
+    assert load_audio.call_args_list[1].args == (audio_path,)
+    assert not load_audio.call_args_list[1].kwargs
 
 
 def test_existing_alignment_recreates_srt_without_transcription(tmp_path: Path):
@@ -113,7 +122,7 @@ def test_existing_alignment_recreates_srt_without_transcription(tmp_path: Path):
             "test.data.aligned_transcription.get_transcription_pipeline"
         ) as get_pipeline,
     ):
-        output = transcription_data.process_transcription_pipeline(
+        output = transcription_data.process_transcription(
             title_root_path, reference_path=reference_path, reference_name="yue-Hant"
         )
 
@@ -136,7 +145,7 @@ def test_evaluation_writes_standardized_metrics_and_audit(
         artifact,
         reference,
         audit_references={"yue-Hant": reference},
-        terminal_alignment_authority="yue-Hant",
+        terminal_authority="yue-Hant",
     )
 
     metrics = json.loads((tmp_path / "json/metrics.json").read_text(encoding="utf-8"))
@@ -148,8 +157,65 @@ def test_evaluation_writes_standardized_metrics_and_audit(
     assert "# Transcription Alignment Audit" in audit
     assert "yue-Hant" in audit
     assert "support" in audit
+    assert f"- whisper CER: {metrics['cer']['whisper']['cer']:.3%}" in audit
     assert "Authority: yue-Hant" in caplog.text
     assert any("\x1b[32m" in record.getMessage() for record in caplog.records)
+
+
+def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
+    """A fresh run should route provenance and write harness outputs."""
+    title_root_path = tmp_path / "title"
+    output_dir_path = title_root_path / "output/yue-Hant_transcribe"
+    reference_path = tmp_path / "reference.srt"
+    artifact = _get_artifact()
+    output = artifact.get_series()
+    output.save(reference_path)
+    audio = AudioSeries(audio=AudioSegment.silent(duration=3_000), events=[])
+    provider = Mock(completion_metrics=[])
+    pipeline = Mock(spec=TranscriptionPipeline)
+    pipeline.last_alignment_artifact = artifact
+
+    with (
+        patch("test.data.aligned_transcription._load_audio_series", return_value=audio),
+        patch("test.data.aligned_transcription.get_provider", return_value=provider),
+        patch(
+            "test.data.aligned_transcription.get_transcription_pipeline",
+            return_value=pipeline,
+        ) as get_pipeline,
+        patch(
+            "test.data.aligned_transcription.save_chat_completion_metrics_to_json"
+        ) as save_usage,
+        patch(
+            "test.data.aligned_transcription.transcribe_series", return_value=output
+        ) as transcribe,
+    ):
+        result = transcription_data.process_transcription(
+            title_root_path,
+            reference_path=reference_path,
+            stop_at_idx=1,
+            target_reference_count=0,
+        )
+
+    json_dir_path = output_dir_path / "json"
+    assert result == output
+    get_pipeline.assert_called_once_with(
+        Language.yue_hant,
+        provider=provider,
+        additional_context=None,
+        current_test_cases_path=json_dir_path / "transcription.json",
+    )
+    transcribe.assert_called_once_with(
+        audio,
+        language=Language.yue_hant,
+        pipeline=pipeline,
+        alignment_outfile_path=json_dir_path / "alignment.json",
+        run_manifest_outfile_path=json_dir_path / "run.json",
+        stop_at_idx=1,
+    )
+    save_usage.assert_called_once_with(json_dir_path / "llm_usage.json", [])
+    assert (output_dir_path / "transcribe.srt").exists()
+    assert (output_dir_path / "audit.md").exists()
+    assert (json_dir_path / "metrics.json").exists()
 
 
 def _get_artifact() -> AlignmentArtifact:

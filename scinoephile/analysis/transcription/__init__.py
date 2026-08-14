@@ -5,6 +5,7 @@
 Package hierarchy (modules may import from any above):
 * alignment_sequence / artifact
 * manifest / timing
+* evaluation
 """
 
 from __future__ import annotations
@@ -18,6 +19,7 @@ from .artifact import (
     AlignmentSubtitle,
     TimingSettings,
 )
+from .evaluation import CharacterErrorMetrics, TranscriptionEvaluation
 from .manifest import ProcessorIdentity, RunBlock, RunManifest
 from .timing import TimingMetrics, TimingPair
 
@@ -28,10 +30,12 @@ __all__ = [
     "AlignmentRow",
     "AlignmentSource",
     "AlignmentSubtitle",
+    "CharacterErrorMetrics",
     "ProcessorIdentity",
     "RunBlock",
     "RunManifest",
     "TimingMetrics",
     "TimingPair",
     "TimingSettings",
+    "TranscriptionEvaluation",
 ]

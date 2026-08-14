@@ -4,22 +4,21 @@
 
 from __future__ import annotations
 
-from collections import Counter
 from collections.abc import Callable, Mapping, Sequence
 
 from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
 from scinoephile.analysis.alignment.timed_msa.models import Token
 from scinoephile.analysis.audit.utils import format_index_range, validate_audit_range
-from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.analysis.transcription.artifact import (
     AlignmentArtifact,
     AlignmentBlock,
 )
+from scinoephile.analysis.transcription.evaluation import evaluate_transcription
 from scinoephile.analysis.transcription.timing import (
     evaluate_timing,
     get_reference_for_alignment,
 )
-from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.core.subtitles import Series
 from scinoephile.core.text import normalize_nfkc
 
 from .rendering import render_transcription_alignment_block
@@ -278,29 +277,11 @@ def _get_metric_summary(artifact: AlignmentArtifact, reference: Series) -> list[
     Returns:
         Markdown summary list items
     """
-    selected_reference = get_reference_for_alignment(artifact, reference)
-    source_events = {source.name: [] for source in artifact.sources}
-    for block in artifact.blocks:
-        rows = {row.name: row.text for row in block.rows}
-        for source in artifact.sources:
-            text = rows.get(source.name, "").replace("　", "").replace("・", "")
-            if text:
-                source_events[source.name].append(
-                    Subtitle(
-                        start=block.core_start_ms, end=block.core_end_ms, text=text
-                    )
-                )
-    candidates = {name: Series(events=events) for name, events in source_events.items()}
-    candidates["merged"] = artifact.get_series()
-    lines = [f"- reference subtitles: {len(selected_reference)}"]
-    for name, candidate in candidates.items():
-        result = SeriesCER(selected_reference, candidate)
+    evaluation = evaluate_transcription(artifact, reference)
+    lines = [f"- reference subtitles: {evaluation.reference_subtitles}"]
+    for name, result in evaluation.character_errors.items():
         lines.append(f"- {name} CER: {result.cer:.3%}")
-    timing = evaluate_timing(artifact, reference)
-    group_counts = Counter(
-        f"{len(pair.candidate_indexes)}:{len(pair.reference_indexes)}"
-        for pair in timing.pairs
-    )
+    timing = evaluation.timing
     lines.extend(
         (
             f"- text-aligned timing groups: {len(timing.pairs)}",
@@ -308,7 +289,7 @@ def _get_metric_summary(artifact: AlignmentArtifact, reference: Series) -> list[
                 "- candidate:reference subtitle groups: "
                 + ", ".join(
                     f"{shape} × {count}"
-                    for shape, count in sorted(group_counts.items())
+                    for shape, count in evaluation.group_counts.items()
                 )
             ),
             f"- temporal micro IoU: {timing.micro_intersection_over_union:.3%}",

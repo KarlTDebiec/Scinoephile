@@ -15,10 +15,13 @@ from scinoephile.core.llms.utils import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
+from scinoephile.llms.delineation import DelineationManager
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
+from scinoephile.llms.punctuation import PunctuationManager
 from scinoephile.llms.review import ReviewManager
+from scinoephile.llms.transcription import TranscriptionManager
 from test.helpers import test_data_root
 
 _TEST_CASE_FAMILIES: tuple[tuple[str, type[Manager]], ...] = (
@@ -27,6 +30,8 @@ _TEST_CASE_FAMILIES: tuple[tuple[str, type[Manager]], ...] = (
     ("*/output/*/lang/*/simplify_review.json", ReviewManager),
     ("*/output/*/lang/yue_zho/gap_translation/*.json", GapTranslationManager),
     ("*/output/*/lang/yue_zho/guided_review/*.json", GuidedReviewManager),
+    ("*/output/*/lang/yue_zho/transcription/delineation/*.json", DelineationManager),
+    ("*/output/*/lang/yue_zho/transcription/punctuation/*.json", PunctuationManager),
 )
 
 
@@ -42,6 +47,12 @@ def _get_test_case_files() -> list[tuple[Path, type[Manager]]]:
         if not input_paths:
             raise ValueError(f"Test-case family has no fixtures: {pattern}")
         test_case_files.extend((input_path, manager_cls) for input_path in input_paths)
+    test_case_files.extend(
+        (input_path, TranscriptionManager)
+        for input_path in sorted(
+            test_data_root.glob("*/output/*_transcribe/json/transcription.json")
+        )
+    )
     return test_case_files
 
 

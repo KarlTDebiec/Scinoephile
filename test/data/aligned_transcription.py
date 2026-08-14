@@ -5,22 +5,19 @@
 from __future__ import annotations
 
 import json
-from collections import Counter
 from collections.abc import Mapping
+from dataclasses import asdict
 from logging import getLogger
 from pathlib import Path
-
-from pydub import AudioSegment
 
 from scinoephile.analysis.audit.transcription.report import (
     audit_transcription_alignment,
     render_transcription_alignment_terminal,
 )
-from scinoephile.analysis.character_error_rate import LineCER
 from scinoephile.analysis.transcription import AlignmentArtifact
-from scinoephile.analysis.transcription.timing import (
-    evaluate_timing,
-    get_reference_for_alignment,
+from scinoephile.analysis.transcription.evaluation import (
+    TranscriptionEvaluation,
+    evaluate_transcription,
 )
 from scinoephile.audio.segment import load_audio_segment
 from scinoephile.audio.subtitles import AudioSeries
@@ -39,12 +36,12 @@ from scinoephile.workflows.transcription_pipeline.factory import (
     get_transcription_pipeline,
 )
 
-__all__ = ["process_transcription_pipeline"]
+__all__ = ["process_transcription"]
 
 logger = getLogger(__name__)
 
 
-def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
+def process_transcription(
     title_root_path: Path,
     *,
     reference_path: Path,
@@ -53,11 +50,11 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
     audio_extraction_mode: AudioExtractionMode = AudioExtractionMode.ORIGINAL,
     media_start_seconds: float = 0.0,
     stop_at_idx: int | None = None,
-    target_reference_subtitles: int = 100,
+    target_reference_count: int = 100,
     additional_context: str | None = None,
     additional_audit_references: Mapping[str, Series] | None = None,
     reference_name: str = "reference",
-    terminal_alignment_authority: str | None = None,
+    terminal_authority: str | None = None,
     overwrite: bool = False,
 ) -> Series:
     """Run one reference-free transcription experiment and save its evaluation.
@@ -74,17 +71,17 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
         audio_extraction_mode: channel preparation used during media audio extraction
         media_start_seconds: seconds trimmed from extracted media audio
         stop_at_idx: explicit exclusive block index, overriding target count
-        target_reference_subtitles: minimum reference subtitles covered by blocks
+        target_reference_count: minimum reference subtitles covered by blocks
         additional_context: production consensus prompt context
         additional_audit_references: additional named references used only in audits
         reference_name: audit row name for the primary scoring reference
-        terminal_alignment_authority: merged or named reference row for ANSI output
+        terminal_authority: merged or named reference row for ANSI output
         overwrite: whether to regenerate an existing artifact and SRT
     Returns:
         merged transcription series
     """
-    if target_reference_subtitles <= 0:
-        raise ValueError("target_reference_subtitles must be positive.")
+    if stop_at_idx is None and target_reference_count <= 0:
+        raise ValueError("target_reference_count must be positive.")
     output_dir_path = title_root_path / "output" / "yue-Hant_transcribe"
     audio_path = output_dir_path / "audio.wav"
     output_dir_path.mkdir(parents=True, exist_ok=True)
@@ -110,7 +107,7 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
             artifact,
             reference,
             audit_references=audit_references,
-            terminal_alignment_authority=terminal_alignment_authority,
+            terminal_authority=terminal_authority,
         )
         return output
 
@@ -131,7 +128,7 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
     )
     if stop_at_idx is None:
         stop_at_idx = _get_stop_at_idx_for_reference_count(
-            pipeline, audio, reference, target_reference_subtitles
+            pipeline, audio, reference, target_reference_count
         )
     output = transcribe_series(
         audio,
@@ -154,7 +151,7 @@ def process_transcription_pipeline(  # noqa: PLR0912, PLR0915
         artifact,
         reference,
         audit_references=audit_references,
-        terminal_alignment_authority=terminal_alignment_authority,
+        terminal_authority=terminal_authority,
     )
     return output
 
@@ -196,7 +193,7 @@ def _load_audio_series(
     if media_start_seconds < 0.0:
         raise ValueError("media_start_seconds must be non-negative.")
     if audio_path.exists():
-        return AudioSeries(audio=AudioSegment.from_wav(audio_path), events=[])
+        return AudioSeries(audio=load_audio_segment(audio_path), events=[])
     if media_path is None:
         raise ScinoephileError(
             f"Staged audio is missing at {audio_path}; provide media_path."
@@ -224,16 +221,22 @@ def _save_evaluation(
     reference: Series,
     *,
     audit_references: Mapping[str, Series],
-    terminal_alignment_authority: str | None = None,
+    terminal_authority: str | None = None,
 ):
     """Save evaluation metrics and readable alignment audits."""
-    primary_metrics = _get_reference_metrics(artifact, reference)
-    cer = primary_metrics["cer"]
+    evaluation = evaluate_transcription(artifact, reference)
+    cer = {
+        name: asdict(character_errors)
+        for name, character_errors in evaluation.character_errors.items()
+    }
     metrics = {
         "format": "scinoephile-transcription-evaluation",
         "version": 1,
         "processed_blocks": len(artifact.blocks),
-        **primary_metrics,
+        "reference_subtitles": evaluation.reference_subtitles,
+        "candidate_subtitles": evaluation.candidate_subtitles,
+        "cer": cer,
+        "timing": _serialize_timing(evaluation),
     }
     json_dir_path = output_dir_path / "json"
     json_dir_path.mkdir(parents=True, exist_ok=True)
@@ -254,11 +257,11 @@ def _save_evaluation(
         ),
         encoding="utf-8",
     )
-    if terminal_alignment_authority is not None:
+    if terminal_authority is not None:
         terminal_alignment = render_transcription_alignment_terminal(
             artifact,
             audit_references,
-            authoritative_row_name=terminal_alignment_authority,
+            authoritative_row_name=terminal_authority,
             reference_similarity=reference_similarity,
             include_merge_support=True,
         )
@@ -269,65 +272,30 @@ def _save_evaluation(
     )
 
 
-def _get_reference_metrics(artifact: AlignmentArtifact, reference: Series) -> dict:
-    """Calculate lexical and timing metrics against one named reference."""
-    selected_reference = get_reference_for_alignment(artifact, reference)
-    reference_text = "".join(
-        subtitle.text_with_newline for subtitle in selected_reference
-    )
-    candidate_texts = {source.name: [] for source in artifact.sources}
-    for block in artifact.blocks:
-        rows = {row.name: row.text for row in block.rows}
-        for source in artifact.sources:
-            candidate_texts[source.name].append(
-                rows.get(source.name, "").replace("　", "").replace("・", "")
-            )
-    candidate_texts["merged"] = [
-        subtitle.text for block in artifact.blocks for subtitle in block.subtitles
-    ]
-    cer = {
-        name: _get_cer_dict(LineCER(reference_text, "".join(text_parts)))
-        for name, text_parts in candidate_texts.items()
-    }
-    timing = evaluate_timing(artifact, reference)
-    subtitle_alignment_groups = Counter(
-        f"{len(pair.candidate_indexes)}:{len(pair.reference_indexes)}"
-        for pair in timing.pairs
-    )
-    return {
-        "reference_subtitles": len(selected_reference),
-        "candidate_subtitles": sum(len(block.subtitles) for block in artifact.blocks),
-        "cer": cer,
-        "timing": {
-            "settings": timing.settings.model_dump(mode="json"),
-            "text_aligned_groups": len(timing.pairs),
-            "micro_intersection_over_union": timing.micro_intersection_over_union,
-            "one_to_one_groups": len(timing.one_to_one_pairs),
-            "one_to_one_micro_intersection_over_union": (
-                timing.one_to_one_micro_intersection_over_union
-            ),
-            "mean_intersection_over_union": timing.mean_intersection_over_union,
-            "mean_reference_coverage": timing.mean_reference_coverage,
-            "mean_start_error_ms": timing.mean_start_error_ms,
-            "mean_end_error_ms": timing.mean_end_error_ms,
-            "mean_absolute_start_error_ms": timing.mean_absolute_start_error_ms,
-            "mean_absolute_end_error_ms": timing.mean_absolute_end_error_ms,
-            "unmatched_candidate_subtitles": timing.unmatched_candidate_subtitles,
-            "unmatched_reference_subtitles": timing.unmatched_reference_subtitles,
-            "candidate_to_reference_group_counts": dict(
-                sorted(subtitle_alignment_groups.items())
-            ),
-        },
-    }
+def _serialize_timing(evaluation: TranscriptionEvaluation) -> dict[str, object]:
+    """Serialize timing metrics from one transcription evaluation.
 
-
-def _get_cer_dict(result: LineCER) -> dict[str, float | int]:
-    """Serialize one character-error result."""
+    Arguments:
+        evaluation: structured transcription evaluation
+    Returns:
+        JSON-compatible timing metrics
+    """
+    timing = evaluation.timing
     return {
-        "cer": result.cer,
-        "correct": result.correct,
-        "substitutions": result.substitutions,
-        "insertions": result.insertions,
-        "deletions": result.deletions,
-        "reference_length": result.reference_length,
+        "settings": timing.settings.model_dump(mode="json"),
+        "text_aligned_groups": len(timing.pairs),
+        "micro_intersection_over_union": timing.micro_intersection_over_union,
+        "one_to_one_groups": len(timing.one_to_one_pairs),
+        "one_to_one_micro_intersection_over_union": (
+            timing.one_to_one_micro_intersection_over_union
+        ),
+        "mean_intersection_over_union": timing.mean_intersection_over_union,
+        "mean_reference_coverage": timing.mean_reference_coverage,
+        "mean_start_error_ms": timing.mean_start_error_ms,
+        "mean_end_error_ms": timing.mean_end_error_ms,
+        "mean_absolute_start_error_ms": timing.mean_absolute_start_error_ms,
+        "mean_absolute_end_error_ms": timing.mean_absolute_end_error_ms,
+        "unmatched_candidate_subtitles": timing.unmatched_candidate_subtitles,
+        "unmatched_reference_subtitles": timing.unmatched_reference_subtitles,
+        "candidate_to_reference_group_counts": evaluation.group_counts,
     }
